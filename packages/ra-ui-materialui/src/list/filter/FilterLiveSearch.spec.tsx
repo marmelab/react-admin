@@ -30,6 +30,14 @@ describe('FilterLiveSearch', () => {
         fireEvent.click(screen.getByLabelText('ra.action.clear_input_value'));
         expect(screen.queryAllByRole('listitem')).toHaveLength(27);
     });
+    it("input search shouldn't change url on submit", () => {
+        render(<Basic />);
+        const input = screen.getByRole('textbox', { name: 'ra.action.search' });
+        fireEvent.change(input, { target: { value: '23' } });
+        fireEvent.click(input);
+        fireEvent.submit(input);
+        expect(window.location.href).toBe('http://localhost/');
+    });
     describe('hiddenLabel', () => {
         it('turns the label into a placeholder', () => {
             render(<HiddenLabel />);

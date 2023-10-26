@@ -1,9 +1,9 @@
-import SearchIcon from '@mui/icons-material/Search';
-import { InputAdornment } from '@mui/material';
-import { SxProps } from '@mui/system';
-import { useListFilterContext, useTranslate } from 'ra-core';
 import * as React from 'react';
 import { ChangeEvent, memo, useMemo } from 'react';
+import { InputAdornment } from '@mui/material';
+import { SxProps } from '@mui/system';
+import SearchIcon from '@mui/icons-material/Search';
+import { useTranslate, useListFilterContext } from 'ra-core';
 import { FormProvider, useForm } from 'react-hook-form';
 
 import { TextInput, TextInputProps } from '../../input';
