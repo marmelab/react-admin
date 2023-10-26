@@ -515,4 +515,36 @@ describe('useInfiniteListController', () => {
             });
         });
     });
+
+    describe('checkTotalValue', () => {
+        it('should return correct total value for empty data', async () => {
+            const getList = jest.fn().mockImplementation(() =>
+                Promise.resolve({
+                    data: [],
+                    total: 0,
+                })
+            );
+            const dataProvider = testDataProvider({ getList });
+
+            render(
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <InfiniteListController resource="posts">
+                        {({ total }) => (
+                            <div aria-label="Total value">{String(total)}</div>
+                        )}
+                    </InfiniteListController>
+                </CoreAdminContext>
+            );
+
+            await waitFor(() => {
+                const totalDivNode = screen.getByLabelText('Total value');
+                const totalInnerHTML = totalDivNode.innerHTML;
+                const totalValue = Number(totalInnerHTML);
+
+                expect(totalInnerHTML).not.toEqual('undefined');
+                expect(totalValue).not.toBeNaN();
+                expect(totalValue).toEqual(0);
+            });
+        });
+    });
 });
