@@ -106,11 +106,10 @@ export const getI18nProvider = async (
 
     return {
         translate: (key: string, options: any = {}) => {
-            const { _: defaultValue, smart_count: count, ...otherOptions } =
-                options || {};
+            const { _: defaultValue, ...otherOptions } = options || {};
             return translate(key, {
                 defaultValue,
-                count,
+                count: options.smart_count,
                 ...otherOptions,
             }).toString();
         },
