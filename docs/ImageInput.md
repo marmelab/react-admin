@@ -175,7 +175,9 @@ To override the style of all instances of `<ImageInput>` using the [application-
 
 Handling file uploads in react-admin depends on how your server expects the file to be sent (e.g. as a Base64 string, as a multipart/form-data request, uploaded to a CDN via an AJAX request, etc.). When a user submits a form with a file input, the dataProvider method (`create` or `delete`) receives [a `File` object](https://developer.mozilla.org/en-US/docs/Web/API/File). It's the dataProvider's job to convert that `File`, e.g. using the `FileReader` API.
 
-For instance, the following Data Provider extends an existing data provider to convert images passed to `dataProvider.update('posts')` into Base64 strings. The example leverages [`withLifecycleCallbacks`](#adding-lifecycle-callbacks) to modify the `dataProvider.update()` method for the `posts` resource only.
+### How To Send File In Base64
+
+The following Data Provider extends an existing data provider to convert images passed to `dataProvider.update('posts')` into Base64 strings. The example leverages [`withLifecycleCallbacks`](#adding-lifecycle-callbacks) to modify the `dataProvider.update()` method for the `posts` resource only.
 
 ```js
 import { withLifecycleCallbacks } from 'react-admin';
@@ -233,5 +235,8 @@ export default myDataProvider;
 
 **Tip**: Use `beforeSave` instead of `beforeUpdate` to do the same for both create and update calls.
 
-You can use the same technique to upload images to an object storage service, and then update the record using the URL of that stored object.
+### How To Send File Using FormData
 
+In case you need to upload files to your API, as you would with an HTML form, you can use [FormData](https://developer.mozilla.org/en-US/docs/Web/API/FormData) API that uses the same format a form would use if the encoding type were set to `multipart/form-data`.
+
+The following Data Provider extends an existing one to upload images passed to `dataProvider.create('posts')` and `dataProvider.update('posts')` to the API. The example leverages [`withLifecycleCallbacks`](#adding-lifecycle-callbacks) to modify the `dataProvider.update()` method for the `posts` resource only.
