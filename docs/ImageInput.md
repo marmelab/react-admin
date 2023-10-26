@@ -239,4 +239,38 @@ export default myDataProvider;
 
 In case you need to upload files to your API, as you would with an HTML form, you can use [FormData](https://developer.mozilla.org/en-US/docs/Web/API/FormData) API that uses the same format a form would use if the encoding type were set to `multipart/form-data`.
 
-The following Data Provider extends an existing one to upload images passed to `dataProvider.create('posts')` and `dataProvider.update('posts')` to the API. The example leverages [`withLifecycleCallbacks`](#adding-lifecycle-callbacks) to modify the `dataProvider.update()` method for the `posts` resource only.
+The following Data Provider extends an existing one and leverages [`withLifecycleCallbacks`](#adding-lifecycle-callbacks) to modify the `dataProvider.create()` and `dataProvider.update()` methods for the `posts` resource only with the [`beforeSave`](./withLifecycleCallbacks.md#beforesave) methods. 
+
+It creates a new `FormData` object with the file received from the form and sends this file to the API. It is the role of your API to negotiate the request and process the image.
+
+Then it waits for the API response and fills the `params.picture` object with the image source and title sent by the API. The `params` object is finally returned to allow the parent DataProvider to carry out its processes.
+
+```ts
+import { DataProvider, withLifecycleCallbacks } from 'react-admin';
+import simpleRestProvider from 'ra-data-simple-rest';
+
+const dataProvider = withLifecycleCallbacks(simpleRestProvider('http://path.to.my.api/'), [
+  {
+    resource: "posts",
+    beforeSave: async (params: any, dataProvider: DataProvider) => {
+      const formData = new FormData();
+      formData.append("file", params.picture.rawFile);
+  
+      const imageResponse = await fetch(`http://path.to.my.api/posts`, {
+        method: "POST",
+        body: formData,
+      });
+  
+      const image = await imageResponse.json();
+  
+      params.picture = {
+        src: image.src,
+        title: image.title,
+      };
+  
+      return params;
+    },
+  }
+]);
+```
+
