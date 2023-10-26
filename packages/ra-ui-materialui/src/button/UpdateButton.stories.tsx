@@ -97,7 +97,6 @@ const PostList = () => {
 export const InsideAList = () => (
     <AdminContext dataProvider={getDataProvider()} i18nProvider={i18nProvider}>
         <AdminUI>
-            {JSON.stringify(getDataProvider())}
             <Resource name="posts" list={<PostList />} show={<PostShow />} />
         </AdminUI>
     </AdminContext>

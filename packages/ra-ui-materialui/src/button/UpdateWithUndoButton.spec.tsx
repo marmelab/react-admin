@@ -7,7 +7,7 @@ import * as React from 'react';
 import { Edit } from '../detail';
 import { SimpleForm, Toolbar } from '../form';
 import { TextInput } from '../input';
-import { WithAList } from './UpdateButton.stories';
+import { InsideAList } from './UpdateButton.stories';
 import { UpdateWithUndoButton } from './UpdateWithUndoButton';
 
 const theme = createTheme();
@@ -104,15 +104,14 @@ describe('<UpdateWithUndoButton />', () => {
         });
     });
 
-    it("should prevent click propagation", async () => {
-        render(<WithAList />);
-        const startedUrl = global.window.location.pathname;
+    it('should prevent click propagation', async () => {
+        render(<InsideAList />);
         const resetButton = await screen.findByRole('button', {
             name: 'Reset views',
         });
         screen.getByText('500');
         fireEvent.click(resetButton);
-        expect(screen.queryByText('500')).not.toBeNull();
-        expect(global.window.location.pathname).toEqual(startedUrl);
+        expect((await screen.findAllByText('0')).length).toBe(1);
+        screen.getByRole('button', { name: 'Export' }); // check if we still are on the list page
     });
 });
