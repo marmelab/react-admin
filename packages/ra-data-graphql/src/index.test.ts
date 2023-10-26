@@ -5,28 +5,29 @@ import gql from 'graphql-tag';
 import buildDataProvider, { BuildQueryFactory } from './index';
 
 describe('GraphQL data provider', () => {
+    const mockClient = {
+        mutate: async () => {
+            throw new ApolloError({
+                graphQLErrors: [new GraphQLError('some error')],
+            });
+        },
+    };
+    const mockBuildQueryFactory = () => {
+        return () => ({
+            query: gql`
+                mutation {
+                    updateMyResource {
+                        result
+                    }
+                }
+            `,
+            parseResponse: () => ({}),
+        });
+    };
+
     describe('mutate', () => {
         describe('with error', () => {
             it('sets ApolloError in body', async () => {
-                const mockClient = {
-                    mutate: async () => {
-                        throw new ApolloError({
-                            graphQLErrors: [new GraphQLError('some error')],
-                        });
-                    },
-                };
-                const mockBuildQueryFactory = () => {
-                    return () => ({
-                        query: gql`
-                            mutation {
-                                updateMyResource {
-                                    result
-                                }
-                            }
-                        `,
-                        parseResponse: () => ({}),
-                    });
-                };
                 const dataProvider = await buildDataProvider({
                     client: (mockClient as unknown) as ApolloClient<unknown>,
                     introspection: false,
@@ -47,5 +48,16 @@ describe('GraphQL data provider', () => {
                 fail('expected data provider to throw an error');
             });
         });
+    });
+
+    it('makes client available', async () => {
+        const dataProvider = await buildDataProvider({
+            client: (mockClient as unknown) as ApolloClient<unknown>,
+            introspection: false,
+            buildQuery: (mockBuildQueryFactory as unknown) as BuildQueryFactory,
+        });
+
+        expect(dataProvider.client).toBeDefined();
+        expect(dataProvider.client.mutate).toBeDefined();
     });
 });

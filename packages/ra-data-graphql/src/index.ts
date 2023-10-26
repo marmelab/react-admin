@@ -54,7 +54,7 @@ const RaFetchMethodMap = {
     update: UPDATE,
     updateMany: UPDATE_MANY,
 };
-const defaultOptions = {
+export const defaultOptions = {
     resolveIntrospection: introspectSchema,
     introspection: {
         operationNames: {
@@ -153,6 +153,8 @@ export default async (options: Options): Promise<DataProvider> => {
             if (typeof name === 'symbol' || name === 'then') {
                 return;
             }
+            if (name == 'client') return client; // make client accessible to the proxy
+
             const raFetchMethod = RaFetchMethodMap[name];
             return async (resource, params) => {
                 if (introspection) {

@@ -213,6 +213,63 @@ buildApolloProvider({ introspection: introspectionOptions });
 
 Your GraphQL backend may not allow multiple deletions or updates in a single query. This provider simply makes multiple requests to handle those. This is obviously not ideal but can be alleviated by supplying your own `ApolloClient` which could use the [apollo-link-batch-http](https://www.apollographql.com/docs/link/links/batch-http.html) link if your GraphQL backend support query batching.
 
+## Data Provider Extensions
+
+Your GraphQL backend may support functionality that extends beyond the default Data Provider methods. One such example of this would be implementing GraphQL subscriptions and integrating [ra-realtime](https://marmelab.com/ra-enterprise/modules/ra-realtime) to power realtime updates in your React-Admin application. The extensions pattern allows you to easily expand the Data Provider methods to power this additional functionality. A Data Provider Extention is defined by the following type:
+
+```js
+type DataProviderExtension = {
+  methodFactory: (
+    dataProvider: DataProvider,
+    ...args: any[]
+    ) => { [k: string]: DataProviderMethod };
+  factoryArgs?: any[];
+  introspectionOperationNames?: IntrospectionOptions['operationNames'];
+}
+```
+
+The `methodFactory` is a required function attribute that generates the additional Data Provider methods. It always receives the dataProvider as it's first argument. Arguments defined in the factoryArgs optional attribute will also be passed into `methodFactory`. `introspectionOperationNames` is an optional object attribute that allows you to inform React-Admin hooks and UI components of how these methods map to the GraphQL schema.
+
+### Realtime Extension
+
+`ra-data-graphql-simple` comes with a Realtime Data Provider Extension out of the box. If your app uses [ra-realtime](https://marmelab.com/ra-enterprise/modules/ra-realtime), you can drop in the Realtime Extension and light up realtime events in no time. Here is an example integration:
+
+```js
+// in App.js
+import React from 'react';
+import { Component } from 'react';
+import buildGraphQLProvider, { defaultOptions, DataProviderExtensions } from 'ra-data-graphql-simple';
+import { Admin, Resource } from 'react-admin';
+
+import { PostCreate, PostEdit, PostList } from './posts';
+
+const dPOptions = {
+    clientOptions: { uri: 'http://localhost:4000' },
+    extensions: [DataProviderExtensions.Realtime]
+}
+
+const App = () => {
+
+    const [dataProvider, setDataProvider] = React.useState(null);
+    React.useEffect(() => {
+        buildGraphQLProvider(dPOptions)
+            .then(graphQlDataProvider => setDataProvider(() => graphQlDataProvider));
+    }, []);
+
+    if (!dataProvider) {
+        return <div>Loading < /div>;
+    }
+
+    return (
+        <Admin dataProvider= { dataProvider } >
+            <Resource name="Post" list = { PostList } edit = { PostEdit } create = { PostCreate } />
+        </Admin>
+    );
+}
+
+export default App;
+```
+
 ## Contributing
 
 Run the tests with this command:
