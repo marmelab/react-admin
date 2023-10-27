@@ -13,6 +13,14 @@ In addition to [the usual input types](./Inputs.md) (`<TextInput>`, `<SelectInpu
   Your browser does not support the video tag.
 </video>
 
+Is an `<Aside>` component, we invite you to use `<FilterLiveSearch>` component to search your data as you can find in [the component chapter](./FilterLiveSearch.md)
+
+<video controls autoplay playsinline muted loop>
+  <source src="./img/filter-live-search.webm" type="video/webm"/>
+  <source src="./img/filter-live-search.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
 ## Usage
 
 ```jsx
