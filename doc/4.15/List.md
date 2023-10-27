@@ -5,7 +5,7 @@ title: "The List Component"
 
 # `<List>`
 
-The `<List>` component is the root component for list pages. It fetches a list of records from the data provider, puts it in a [`ListContext`](./useListContext.md), renders the default list page layout (title, buttons, filters, pagination), and renders its children. Usual children of `<List>`, like [`<Datagrid>`](./Datagrid.md), are responsible for displaying the list of records. 
+The `<List>` component is the root component for list pages. It fetches a list of records from the data provider, puts it in a [`ListContext`](./useListContext.md), renders the default list page layout (title, buttons, filters, pagination), and renders its children. Usual children of `<List>`, like [`<Datagrid>`](./Datagrid.md), are responsible for displaying the list of records.
 
 ![Simple posts list](./img/simple-post-list.png)
 
@@ -46,7 +46,7 @@ export default App;
 
 That's enough to display a basic post list, with functional sort and pagination.
 
-You can find more advanced examples of `<List>` usage in the [demos](./Demos.md). 
+You can find more advanced examples of `<List>` usage in the [demos](./Demos.md).
 
 ## Props
 
@@ -83,7 +83,7 @@ By default, the `<List>` view displays a toolbar on top of the list. It contains
 
 - A `<FilterButton>` to display the filter form if you set [the `filters` prop](#filters-filter-inputs)
 - A `<CreateButton>` if the resource has a creation view, or if you set [the `hasCreate` prop](#hascreate)
-- An `<ExportButton>` 
+- An `<ExportButton>`
 
 ![Actions Toolbar](./img/actions-toolbar.png)
 
@@ -98,6 +98,7 @@ import {
     List,
     SelectColumnsButton,
     TopToolbar,
+    SearchInput,
 } from 'react-admin';
 import IconEvent from '@mui/icons-material/Event';
 
@@ -111,7 +112,7 @@ const ListActions = () => (
 );
 
 const postFilters = [
-    <TextInput label="Search" source="q" alwaysOn />,
+    <SearchInput source="q" alwaysOn />,
     <TextInput label="Title" source="title" defaultValue="Hello, World!" />,
 ];
 
@@ -127,7 +128,7 @@ export const PostList = () => (
 Use the `useListContext` hook to customize the actions depending on the list context, and the `usePermissions` to show/hide buttons depending on permissions. For example, you can hide the `<CreateButton>` when the user doesn't have the right permission, and disable the `<ExportButton>` when the list is empty:
 
 ```jsx
-import { 
+import {
     useListContext,
     usePermissions,
     TopToolbar,
@@ -200,7 +201,7 @@ const Aside = () => {
 ```
 {% endraw %}
 
-The `aside` prop is also the preferred way to add a [Filter Sidebar](./FilteringTutorial.md#the-filterlist-sidebar) to a list view: 
+The `aside` prop is also the preferred way to add a [Filter Sidebar](./FilteringTutorial.md#the-filterlist-sidebar) to a list view:
 
 {% raw %}
 ```jsx
@@ -278,7 +279,7 @@ React-admin provides several components that can read and display a list of reco
 - [`<SimpleList>`](./SimpleList.md) displays records in a list without many details - suitable for mobile devices
 - [`<Tree>`](./TreeWithDetails.md) displays records in a tree structure
 - [`<Calendar>`](./Calendar.md) displays event records in a calendar
-- [`<SingleFieldList>`](./SingleFieldList.md) displays records inline, showing one field per record 
+- [`<SingleFieldList>`](./SingleFieldList.md) displays records inline, showing one field per record
 
 So for instance, you can use a `<SimpleList>` instead of a `<Datagrid>` on mobile devices:
 
@@ -352,7 +353,7 @@ const PostList = () => (
     </List>
 );
 
-// use a custom component as root component 
+// use a custom component as root component
 const PostList = () => (
     <List component={MyComponent}>
         ...
@@ -379,7 +380,7 @@ const PostList = () => (
 
 ## `disableAuthentication`
 
-By default, all pages using `<List>` require the user to be authenticated - any anonymous access redirects the user to the login page. 
+By default, all pages using `<List>` require the user to be authenticated - any anonymous access redirects the user to the login page.
 
 If you want to allow anonymous access to a List page, set the `disableAuthentication` prop to `true`.
 
@@ -465,7 +466,7 @@ const ProductList = () => (
 ```
 {% endraw %}
 
-The `empty` component can call the `useListContext()` hook to receive the same props as the `List` child component. 
+The `empty` component can call the `useListContext()` hook to receive the same props as the `List` child component.
 
 You can also set the `empty` props value to `false` to bypass the empty page display and render an empty list instead.
 
@@ -527,7 +528,7 @@ const SimpleBookList = () => {
 }
 ```
 
-The `<List emptyWhileLoading>` prop provides a convenient shortcut for that use case. When enabled, `<List>` won't render its child until `data` is defined. 
+The `<List emptyWhileLoading>` prop provides a convenient shortcut for that use case. When enabled, `<List>` won't render its child until `data` is defined.
 
 ```diff
 const BookList = () => (
@@ -641,7 +642,7 @@ You can add an array of filter Inputs to the List using the `filters` prop:
 
 ```jsx
 const postFilters = [
-    <TextInput label="Search" source="q" alwaysOn />,
+    <SearchInput source="q" alwaysOn />,
     <TextInput label="Title" source="title" defaultValue="Hello, World!" />,
 ];
 
@@ -656,7 +657,7 @@ export const PostList = () => (
 
 **Tip**: Filters will render as disabled inputs or menu items (depending on filter context) if passed the prop `disabled`.
 
-Filter Inputs are regular inputs. `<List>` hides them all by default, except those that have the `alwaysOn` prop. 
+Filter Inputs are regular inputs. `<List>` hides them all by default, except those that have the `alwaysOn` prop.
 
 You can also display filters as a sidebar:
 
@@ -667,7 +668,7 @@ You can also display filters as a sidebar:
 </video>
 
 
-For more details about customizing filters, see the [Filtering the List](./FilteringTutorial.md#filtering-the-list) documentation. 
+For more details about customizing filters, see the [Filtering the List](./FilteringTutorial.md#filtering-the-list) documentation.
 
 ## `filter`: Permanent Filter
 
@@ -782,7 +783,7 @@ export const PostList = () => (
 
 ## `queryOptions`
 
-`<List>` accepts a `queryOptions` prop to pass options to the react-query client. 
+`<List>` accepts a `queryOptions` prop to pass options to the react-query client.
 
 This can be useful e.g. to pass [a custom `meta`](./Actions.md#meta-parameter) to the `dataProvider.getList()` call.
 
@@ -856,7 +857,7 @@ export const PostList = () => (
 
 `sort` defines the *default* sort order ; the list remains sortable by clicking on column headers.
 
-For more details on list sort, see the [Sorting The List](./ListTutorial.md#sorting-the-list) section below. 
+For more details on list sort, see the [Sorting The List](./ListTutorial.md#sorting-the-list) section below.
 
 ## `storeKey`
 
@@ -960,7 +961,7 @@ Here is an example:
 {% raw %}
 ```jsx
 const PostList = () => (
-    <List 
+    <List
         sx={{
             backgroundColor: 'yellow',
             '& .RaList-content': {

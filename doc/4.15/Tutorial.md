@@ -703,12 +703,13 @@ export const App = () => (
 
 You can now adjust the `<PostEdit>` component to disable the edition of the primary key (`id`), place it first, and use a textarea for the `body` field, as follows:
 
+{% raw %}
 ```diff
 // in src/posts.tsx
 export const PostEdit = () => (
   <Edit>
     <SimpleForm>
-+     <TextInput source="id" disabled />
++     <TextInput source="id" InputProps={{ disabled: true }} />
       <ReferenceInput source="userId" reference="users" link="show" />
 -     <TextInput source="id" />
       <TextInput source="title" />
@@ -718,6 +719,7 @@ export const PostEdit = () => (
   </Edit>
 );
 ```
+{% endraw %}
 
 If you've understood the `<List>` component, the `<Edit>` component will be no surprise. It's responsible for fetching the record, and displaying the page title. It passes the record down to the `<SimpleForm>` component, which is responsible for the form layout, default values, and validation. Just like `<Datagrid>`, `<SimpleForm>` uses its children to determine the form inputs to display. It expects *input components* as children. `<TextInput>` and `<ReferenceInput>` are such inputs.
 

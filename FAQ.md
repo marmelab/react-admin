@@ -8,7 +8,7 @@ title: "FAQ"
 - [Can I have custom identifiers/primary keys for my resources?](#can-i-have-custom-identifiersprimary-keys-for-my-resources)
 - [I get warning about unique key for child in array](#i-get-warning-about-unique-key-for-child-in-array)
 - [How can I customize forms depending on its inputs values?](#how-can-i-customize-forms-depending-on-its-inputs-values)
-- [UI in production build is empty or broke](#ui-in-production-build-is-empty-or-broke)
+- [UI in production build is empty or broken](#ui-in-production-build-is-empty-or-broken)
 - [My Resource is defined but not displayed on the Menu](#my-resource-is-defined-but-not-displayed-on-the-menu)
 
 ## Can I have custom identifiers/primary keys for my resources?
@@ -137,7 +137,7 @@ Some use cases:
 
 For all those cases, you can use the [`<FormDataConsumer>`](https://marmelab.com/react-admin/Inputs.html#linking-two-inputs) component.
 
-## UI in production build is empty or broke
+## UI in production build is empty or broken
 
 You have probably specified a version requirement for `@mui/material` that is incompatible with the one required by `react-admin`. As a consequence, npm bundled two copies of Material UI in your application, and doesn't work in that case.
 

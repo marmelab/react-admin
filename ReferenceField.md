@@ -146,7 +146,7 @@ You can also use a custom `link` function to get a custom path for the children.
 
 ## `queryOptions`
 
-Use the `queryOptions` prop to pass options to [the `dataProvider.getMany()` query](http://0.0.0.0:4000/useGetOne.html#aggregating-getone-calls) that fetches the referenced record.
+Use the `queryOptions` prop to pass options to [the `dataProvider.getMany()` query](./useGetOne.md#aggregating-getone-calls) that fetches the referenced record.
 
 For instance, to pass [a custom `meta`](./Actions.md#meta-parameter):
 

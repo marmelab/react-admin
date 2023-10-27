@@ -11,7 +11,7 @@ React-admin relies on a several design decisions that structure its codebase.
 
 React-admin is specifically designed to build [Single-Page Applications (SPA)](https://en.wikipedia.org/wiki/Single-page_application). In a react-admin app, the browser fetches the required HTML, CSS, and JavaScript to render the application only once. Subsequently, data is fetched from APIs through AJAX calls. This is in contrast to traditional web applications, where the browser fetches a new HTML page for each screen.
 
-![SPA lifecycle](./img/SPA-lifecycle.png)
+<img class="no-shadow" src="./img/SPA-lifecycle.png" alt="SPA lifecycle" />
 
 The SPA architecture ensures that react-admin apps are [exceptionally fast](./Features.md#fast), easy to host, and compatible with existing APIs without requiring a dedicated backend. 
 

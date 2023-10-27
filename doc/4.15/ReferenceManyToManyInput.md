@@ -61,7 +61,11 @@ export const BandEdit = () => (
 
 Note that although all possible child components support a `defaultValue` prop, it will only be applied on create views.
 
-**Tip**: If you need to edit the fields of the associative table (e.g. the `date` in `performances`), you can use a [`<ReferenceManyInput>`](./ReferenceManyInput.md) instead of `<ReferenceManyToManyInput>`. You will need to let users select the related record (`venues` in the example above) via a `<ReferenceInput>`:
+**Tip**: If you need to edit the fields of the associative table (e.g. the `date` in `performances`), you can use a [`<ReferenceManyInput>`](./ReferenceManyInput.md) instead of `<ReferenceManyToManyInput>`. 
+
+![Screenshot showing the use of ReferenceManyInput instead of ReferenceManyToManyInput](./img/reference-many-input-band-edit.png)
+
+You will need to let users select the related record (`venues` in the example above) via a `<ReferenceInput>`:
 
 ```jsx
 import {

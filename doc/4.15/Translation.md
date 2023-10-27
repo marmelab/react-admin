@@ -147,8 +147,6 @@ You might prefer this package over `ra-i18n-polyglot` when:
 // in src/i18nProvider.js
 import i18n from 'i18next';
 import { useI18nextProvider, convertRaTranslationsToI18next } from 'ra-i18n-i18next';
-import en from 'ra-language-english';
-import fr from 'ra-language-french';
 
 const i18nInstance = i18n.use(
     resourcesToBackend(language => {
