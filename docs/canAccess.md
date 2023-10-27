@@ -121,7 +121,7 @@ export const MyApp = () => (
 In this example, users will see the list of last products and the list of last categories but they won't be able to see the list of last orders.
 
 
-**Note**: that [ra-rbac's `<Resource>` component](./AuthRBAC.md#resource) check automatically the `list`, `show `, `create` and `edit` actions, so you don't actually need to use `canAccess` if you want to restrict a whole resource.
+**Note**: [ra-rbac's `<Resource>` component](./AuthRBAC.md#resource) automatically checks for the `list`, `show`, `create` and `edit` actions, so you don't actually need to use `canAccess` if you want to restrict a whole resource.
 
 ```tsx
 import { Admin, ListGuesser, EditGuesser } from 'react-admin'; // do not import Resource here
