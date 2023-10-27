@@ -1,14 +1,14 @@
-import { ThemeProvider, createTheme } from '@mui/material/styles';
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import expect from 'expect';
-import { CoreAdminContext, MutationMode, testDataProvider } from 'ra-core';
 import * as React from 'react';
+import { screen, render, waitFor, fireEvent } from '@testing-library/react';
+import expect from 'expect';
+import { MutationMode, CoreAdminContext, testDataProvider } from 'ra-core';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 
+import { Toolbar, SimpleForm } from '../form';
 import { Edit } from '../detail';
-import { SimpleForm, Toolbar } from '../form';
 import { TextInput } from '../input';
-import { InsideAList } from './UpdateButton.stories';
 import { UpdateWithUndoButton } from './UpdateWithUndoButton';
+import { InsideAList } from './UpdateButton.stories';
 
 const theme = createTheme();
 
