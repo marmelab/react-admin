@@ -243,55 +243,93 @@ export default myDataProvider;
 
 ### Sending Files In `multipart/form-data`
 
-In case you need to upload files to your API, as you would with an HTML form, you can use [FormData](https://developer.mozilla.org/en-US/docs/Web/API/FormData) API that uses the same format a form would use if the encoding type were set to `multipart/form-data`.
+In case you need to upload files, as you would with an HTML form but to your API, you can use [FormData](https://developer.mozilla.org/en-US/docs/Web/API/FormData) API that uses the same format a form would use if the encoding type were set to `multipart/form-data`.
 
-The following `dataprovider` extends an existing one and leverages [`withLifecycleCallbacks`](#adding-lifecycle-callbacks) to modify the `dataProvider.create()` and `dataProvider.update()` methods for the `posts` resource only with the [`beforeSave`](./withLifecycleCallbacks.md#beforesave) methods. 
+The following `dataProvider` extends an existing one and tweaks its `create` and `update` methods for the `posts` resource only. It is the role of your API to negotiate the request and process the image. 
 
-It creates a new `FormData` object with the file received from the form and sends this file to the API. It is the role of your API to negotiate the request and process the image.
+Its job is to send the `post` data with the attached file and works this way:
+- it checks if the treated resource is `posts`;
+- if so, it creates a new `FormData` object with the file received from the form and it sends this `FormData` to the API with the react-admin `fetchUtils.fetchJson()` function (a `fetch().then(r => r.json())` shortcut); 
+- if not, it simply uses the `baseDataProvider` base methods.
 
-Then it waits for the API response and fills the `params.picture` object with the image source and title sent by the API. The `params` object is finally returned to allow the parent DataProvider to carry out its processes.
+Lets have a look:
 
 ```ts
-import { DataProvider, withLifecycleCallbacks } from 'react-admin';
-import simpleRestProvider from 'ra-data-simple-rest';
+import simpleRestDataProvider from "ra-data-simple-rest";
+import {
+  type CreateParams,
+  type UpdateParams,
+  type DataProvider,
+  fetchUtils,
+} from "react-admin";
 
-const dataProvider = withLifecycleCallbacks(simpleRestProvider('http://path.to.my.api/'), [
-  {
-    resource: "posts",
-    beforeSave: async (params: any, dataProvider: DataProvider) => {
-      const formData = new FormData();
-      formData.append("file", params.picture.rawFile);
-  
-      const imageResponse = await fetch(`http://path.to.my.api/upload-post-file`, {
-        method: "POST",
-        body: formData,
-      });
-  
-      const image = await imageResponse.json();
-  
-      params.picture = {
-        src: image.src,
-        title: image.title,
-      };
-  
-      return params;
-    },
-  }
-]);
+const endpoint = "http://path.to.my.api";
+const baseDataProvider = simpleRestDataProvider(endpoint);
+
+type PostParams = {
+  id: string;
+  title: string;
+  content: string;
+  picture: {
+    rawFile: File;
+    src?: string;
+    title?: string;
+  };
+};
+
+const createPostFormData = (
+  params: CreateParams<PostParams> | UpdateParams<PostParams>
+) => {
+  const formData = new FormData();
+  formData.append("file", params.data.picture?.rawFile ?? "");
+  formData.append("title", params.data.title ?? "");
+  formData.append("content", params.data.content ?? "");
+  return formData;
+};
+
+export const dataProvider: DataProvider = {
+  ...baseDataProvider,
+  create: (resource, params) => {
+    if (resource !== "posts") {
+      const formData = createPostFormData(params);
+      return fetchUtils
+        .fetchJson(`${endpoint}/${resource}`, {
+          method: "POST",
+          body: formData,
+        })
+        .then(({ json }) => ({ data: json }));
+    }
+
+    return baseDataProvider.create(resource, params);
+  },
+  update: (resource, params) => {
+    if (resource !== "posts") {
+      const formData = createPostFormData(params);
+      return fetchUtils
+        .fetchJson(`${endpoint}/${resource}`, {
+          method: "PUT",
+          body: formData,
+        })
+        .then(({ json }) => ({ data: json }));
+    }
+
+    return baseDataProvider.update(resource, params);
+  },
+};
 ```
 
 ### Sending Files To A Third-Party Service
 
 If the third-party service you use allow this, you can upload files via [FormData](https://developer.mozilla.org/en-US/docs/Web/API/FormData) like the previous way.
 
-Lets see an example with [https://cloudinary.com/](Cloudinary) service, by adapting the `dataprovider` according to [their "Authenticated requests" example](hhttps://cloudinary.com/documentation/upload_images#authenticated_requests). This example show how to upload a file with "Authenticated upload requests".
+Lets see an example with [https://cloudinary.com/](Cloudinary) service, by adapting the `dataprovider` according to [their "Authenticated requests" example](hhttps://cloudinary.com/documentation/upload_images#authenticated_requests).
 
-To do that, you need an API that serves a [`signature`](https://cloudinary.com/documentation/upload_images#generating_authentication_signatures) the format that Cloudinary expect. To make it easier, you can install the [`cloudinary package` ](https://cloudinary.com/documentation/node_integration#installation_and_setup).
+To do that, you need an API that serves a [`signature`](https://cloudinary.com/documentation/upload_images#generating_authentication_signatures) the format that Cloudinary expect. To make it easier, you can install the [`cloudinary package`](https://cloudinary.com/documentation/node_integration#installation_and_setup).
 
-The following code example live in a Remix application. It generate and serve the signature needed to send files to Cloudinary:
+The following code example live in a Remix application. It generates and serves the signature needed to send files to Cloudinary:
 
 ```ts
-// negotiates the "http://path.to.my.api/get-cloudinary-signature" request and should be secured
+// handles the "get-cloudinary-signature" route and should be secured
 import { type LoaderFunctionArgs, json } from "@remix-run/node";
 import cloudinary from "cloudinary";
 
@@ -321,9 +359,19 @@ export const loader = ({ request }: LoaderFunctionArgs) => {
 };
 ```
 
-With this in place, you can adapt the previous `dataprovider` as follows:
+The following `dataprovider` extends an existing one and leverages [`withLifecycleCallbacks`](#adding-lifecycle-callbacks) to modify the `dataProvider.create()` and `dataProvider.update()` methods for the `posts` resource only with the [`beforeSave`](./withLifecycleCallbacks.md#beforesave) methods. 
+
+Its only job is to send files to Cloudinary it works as follow:
+- it grabs the Cloudinary signature to allow the autentication in the request;
+- it creates a new `FormData` object with the file received from the form;
+- it sends this file to the Cloudinary API; 
+- it hydrates the `params.picture` object with the data sent by Cloudinary;
+- finally it returns the `params` object to allow the parent `dataProvider` to carry out its processes.
+
+An example is worth a thousand words:
 
 ```ts
+// dataProvider.ts
 import { DataProvider, withLifecycleCallbacks } from "react-admin";
 import simpleRestProvider from "ra-data-simple-rest";
 
@@ -339,14 +387,16 @@ type SignData = {
   cloud_name: string;
 };
 
+const endpoint = "http://path.to.my.api";
+
 const dataProvider = withLifecycleCallbacks(
-  simpleRestProvider("http://path.to.my.api/"),
+  simpleRestProvider(endpoint),
   [
     {
       resource: "posts",
       beforeSave: async (params: any, dataProvider: DataProvider) => {
         const response = await fetch(
-          "http://path.to.my.api/get-cloudinary-signature",
+          `${endpoint}/get-cloudinary-signature`,
           { method: "GET" }
           // should send headers with correct authentications
         );
@@ -379,9 +429,5 @@ const dataProvider = withLifecycleCallbacks(
   ]
 );
 ```
-
-This `dataprovider` works the same way as the previous with some niceties:
-- it grabs the Cloudinary signature to allow the autentication in the request;
-- it hydrates the `params.picture` with the data sent by Cloudinary 
 
 Feel free to read the [Cloudinary Get Started doc](https://cloudinary.com/documentation/programmable_media_overview) to learn more.
