@@ -68,7 +68,7 @@ canAccess({ permissions, resource: 'posts', action: 'export' }); // false
 If you just want to know whether users can access any of the resources, you don't have to provide an `action`. For instance, here's how you may display different components depending on resources access rights in the dashboard:
 
 ```tsx
-import { Admin } from 'react-admin';
+import { Admin, usePermissions } from 'react-admin';
 import { canAccess } from '@react-admin/ra-rbac';
 import { dataProvider } from './dataProvider';
 
