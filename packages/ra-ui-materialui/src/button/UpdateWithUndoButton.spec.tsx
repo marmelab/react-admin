@@ -111,7 +111,7 @@ describe('<UpdateWithUndoButton />', () => {
         });
         screen.getByText('500');
         fireEvent.click(resetButton);
-        expect((await screen.findAllByText('0')).length).toBe(1);
+        await screen.findByText('0');
         screen.getByRole('button', { name: 'Export' }); // check if we still are on the list page
     });
 });
