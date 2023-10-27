@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 
 import { Basic, HiddenLabel } from './FilterLiveSearch.stories';
 
@@ -33,10 +33,12 @@ describe('FilterLiveSearch', () => {
     it("input search shouldn't change url on submit", () => {
         render(<Basic />);
         const input = screen.getByRole('textbox', { name: 'ra.action.search' });
-        fireEvent.change(input, { target: { value: '23' } });
-        fireEvent.click(input);
+        fireEvent.change(input, { target: { value: 'test' } });
         fireEvent.submit(input);
-        expect(window.location.href).toBe('http://localhost/');
+        waitFor(() => {
+            expect(window.location.href).toContain('?filter={"q"%3A"test"}');
+            expect(window.location.href).not.toContain('/?q=test#/');
+        });
     });
     describe('hiddenLabel', () => {
         it('turns the label into a placeholder', () => {
