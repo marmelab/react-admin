@@ -173,7 +173,13 @@ To override the style of all instances of `<ImageInput>` using the [application-
 
 ## Handling File Uploads
 
-Handling file uploads in react-admin depends on how your server expects the file to be sent (e.g. as a Base64 string, as a multipart/form-data request, uploaded to a CDN via an AJAX request, etc.). When a user submits a form with a file input, the dataProvider method (`create` or `delete`) receives [a `File` object](https://developer.mozilla.org/en-US/docs/Web/API/File). It's the dataProvider's job to convert that `File`, e.g. using the `FileReader` API.
+Handling file uploads in react-admin is the dataProvider's job.
+
+When a user submits a form with a file input, the dataProvider method (`create` or `delete`) receives [a `File` object](https://developer.mozilla.org/en-US/docs/Web/API/File). You can use that `File` object to send the file the format your server expect:
+- you can [send files as Base64 string](#sending-files-in-base64), using the [`FileReader`](https://developer.mozilla.org/en-US/docs/Web/API/FileReader) API;
+- you can [send file using multipart/form-data](#sending-files-in-multipartform-data) that allow you to send a whole resource and their files;
+- or you might want [to send files to a third party service](#sending-files-to-a-third-party-service) such as CDN;
+- etc.
 
 ### Sending Files In Base64
 
