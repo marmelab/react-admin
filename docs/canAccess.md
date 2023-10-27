@@ -52,7 +52,7 @@ The `PostEditButton` component will render the `<EditButton>`.
 
 ## `action`
 
-If you want to check a specific action, for instance if the user can `delete` a `post` , you can specify this action in the dedicated prop: 
+If you want to check a specific action, for instance if the user can `delete` a `post`, you can specify this action in the dedicated prop: 
 
 ```tsx
 const permissions = [
