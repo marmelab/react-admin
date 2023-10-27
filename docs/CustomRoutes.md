@@ -17,11 +17,11 @@ Alternatively, you can add your custom routes to resources. They will be availab
 import { Admin, Resource, CustomRoutes } from 'react-admin';
 import { Route } from "react-router-dom";
 
-import dataProvider from './dataProvider';
+import { dataProvider } from './dataProvider';
 import posts from './posts';
 import comments from './comments';
-import Settings from './Settings';
-import Profile from './Profile';
+import { Settings } from './Settings';
+import { Profile } from './Profile';
 
 const App = () => (
     <Admin dataProvider={dataProvider}>
@@ -50,9 +50,9 @@ Now, when a user browses to `/settings` or `/profile`, the components you define
 import { Admin, Resource, CustomRoutes } from 'react-admin';
 import { Route } from "react-router-dom";
 
-import dataProvider from './dataProvider';
-import Settings from './Settings';
-import Profile from './Profile';
+import { dataProvider } from './dataProvider';
+import { Settings } from './Settings';
+import { Profile } from './Profile';
 
 const App = () => (
     <Admin dataProvider={dataProvider}>
@@ -81,10 +81,10 @@ Here is an example of application configuration mixing custom routes with and wi
 import { Admin, CustomRoutes } from 'react-admin';
 import { Route } from "react-router-dom";
 
-import dataProvider from './dataProvider';
-import Register from './Register';
-import Settings from './Settings';
-import Profile from './Profile';
+import { dataProvider } from './dataProvider';
+import { Register } from './Register';
+import { Settings } from './Settings';
+import { Profile } from './Profile';
 
 const App = () => (
     <Admin dataProvider={dataProvider}>
@@ -133,6 +133,8 @@ export default Settings;
 
 To add your custom pages to the navigation menu, you have to replace the default menu by a [custom menu](./Menu.md) with entries for the custom pages.
 
+First, create a custom menu. Make sure to use the same value in the `<Menu.Item to>` prop as in the `<Route path>` prop.
+
 ```jsx
 // in src/MyMenu.js
 import { Menu } from 'react-admin';
@@ -146,6 +148,41 @@ export const MyMenu = () => (
         <Menu.Item to="/settings" primaryText="Users" leftIcon={<SettingsIcon />}/>
         <Menu.Item to="/profile" primaryText="Miscellaneous" leftIcon={<PeopleIcon />}/>
     </Menu>
+);
+```
+
+Next, pass the custom menu to a custom `<Layout>` component:
+
+```jsx
+// in src/MyLayout.js
+import { Layout } from 'react-admin';
+import { MyMenu } from './MyMenu';
+
+export const MyLayout = (props) => <Layout {...props} menu={MyMenu} />;
+```
+
+Finally, pass the custom `<Layout>` component to `<Admin>`:
+
+```jsx
+// in src/App.js
+import { Admin, Resource, CustomRoutes } from 'react-admin';
+import { Route } from "react-router-dom";
+
+import { dataProvider } from './dataProvider';
+import { MyLayout } from './MyLayout';
+import posts from './posts';
+import comments from './comments';
+import { Settings } from './Settings';
+import { Profile } from './Profile';
+
+const App = () => (
+    <Admin dataProvider={dataProvider} layout={MyLayout}>
+        <Resource name="posts" {...posts} />
+        <CustomRoutes>
+            <Route path="/settings" element={<Settings />} />
+            <Route path="/profile" element={<Profile />} />
+        </CustomRoutes>
+    </Admin>
 );
 ```
 
@@ -176,7 +213,7 @@ To do so, add the `<Route>` elements as [children of the `<Resource>` element](.
 import { Admin, Resource } from 'react-admin';
 import { Route } from "react-router-dom";
 
-import dataProvider from './dataProvider';
+import { dataProvider } from './dataProvider';
 import posts from './posts';
 
 const App = () => (
