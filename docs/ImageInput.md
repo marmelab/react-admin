@@ -175,7 +175,7 @@ To override the style of all instances of `<ImageInput>` using the [application-
 
 Handling file uploads in react-admin depends on how your server expects the file to be sent (e.g. as a Base64 string, as a multipart/form-data request, uploaded to a CDN via an AJAX request, etc.). When a user submits a form with a file input, the dataProvider method (`create` or `delete`) receives [a `File` object](https://developer.mozilla.org/en-US/docs/Web/API/File). It's the dataProvider's job to convert that `File`, e.g. using the `FileReader` API.
 
-### How To Send File In Base64
+### Sending Files In Base64
 
 The following `dataprovider` extends an existing `dataprovider` to convert images passed to `dataProvider.update('posts')` into Base64 strings. The example leverages [`withLifecycleCallbacks`](#adding-lifecycle-callbacks) to modify the `dataProvider.update()` method for the `posts` resource only.
 
@@ -235,7 +235,7 @@ export default myDataProvider;
 
 **Tip**: Use `beforeSave` instead of `beforeUpdate` to do the same for both create and update calls.
 
-### How To Send File Using FormData
+### Sending Files In `multipart/form-data`
 
 In case you need to upload files to your API, as you would with an HTML form, you can use [FormData](https://developer.mozilla.org/en-US/docs/Web/API/FormData) API that uses the same format a form would use if the encoding type were set to `multipart/form-data`.
 
@@ -256,7 +256,7 @@ const dataProvider = withLifecycleCallbacks(simpleRestProvider('http://path.to.m
       const formData = new FormData();
       formData.append("file", params.picture.rawFile);
   
-      const imageResponse = await fetch(`http://path.to.my.api/posts`, {
+      const imageResponse = await fetch(`http://path.to.my.api/upload-post-file`, {
         method: "POST",
         body: formData,
       });
@@ -274,7 +274,7 @@ const dataProvider = withLifecycleCallbacks(simpleRestProvider('http://path.to.m
 ]);
 ```
 
-#### Send To A Third-Party Service
+### Sending Files To A Third-Party Service
 
 If the third-party service you use allow this, you can upload files via [FormData](https://developer.mozilla.org/en-US/docs/Web/API/FormData) like the previous way.
 
@@ -341,9 +341,7 @@ const dataProvider = withLifecycleCallbacks(
       beforeSave: async (params: any, dataProvider: DataProvider) => {
         const response = await fetch(
           "http://path.to.my.api/get-cloudinary-signature",
-          {
-            method: "GET",
-          }
+          { method: "GET" }
           // should send headers with correct authentications
         );
 
