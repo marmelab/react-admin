@@ -43,7 +43,11 @@ const CreateButton = (props: CreateButtonProps) => {
     const isSmall = useMediaQuery((theme: Theme) =>
         theme.breakpoints.down('md')
     );
-    const state = merge(scrollStates.get(String(scrollToTop)), initialState);
+    const state = merge(
+        {},
+        scrollStates.get(String(scrollToTop)),
+        initialState
+    );
     // Duplicated behaviour of Button component (legacy use) which will be removed in v5.
     const linkParams = getLinkParams(locationDescriptor);
 
@@ -135,7 +139,8 @@ export default React.memo(CreateButton, (prevProps, nextProps) => {
         prevProps.label === nextProps.label &&
         prevProps.translate === nextProps.translate &&
         prevProps.disabled === nextProps.disabled &&
-        isEqual(prevProps.to, nextProps.to)
+        isEqual(prevProps.to, nextProps.to) &&
+        isEqual(prevProps.state, nextProps.state)
     );
 });
 
