@@ -177,7 +177,7 @@ Handling file uploads in react-admin depends on how your server expects the file
 
 ### How To Send File In Base64
 
-The following Data Provider extends an existing data provider to convert images passed to `dataProvider.update('posts')` into Base64 strings. The example leverages [`withLifecycleCallbacks`](#adding-lifecycle-callbacks) to modify the `dataProvider.update()` method for the `posts` resource only.
+The following `dataprovider` extends an existing `dataprovider` to convert images passed to `dataProvider.update('posts')` into Base64 strings. The example leverages [`withLifecycleCallbacks`](#adding-lifecycle-callbacks) to modify the `dataProvider.update()` method for the `posts` resource only.
 
 ```js
 import { withLifecycleCallbacks } from 'react-admin';
@@ -220,7 +220,7 @@ const dataProvider = withLifecycleCallbacks(simpleRestProvider('http://path.to.m
 /**
  * Convert a `File` object returned by the upload input into a base 64 string.
  * That's not the most optimized way to store images in production, but it's
- * enough to illustrate the idea of data provider decoration.
+ * enough to illustrate the idea of dataprovider decoration.
  */
 const convertFileToBase64 = file =>
     new Promise((resolve, reject) => {
@@ -239,7 +239,7 @@ export default myDataProvider;
 
 In case you need to upload files to your API, as you would with an HTML form, you can use [FormData](https://developer.mozilla.org/en-US/docs/Web/API/FormData) API that uses the same format a form would use if the encoding type were set to `multipart/form-data`.
 
-The following Data Provider extends an existing one and leverages [`withLifecycleCallbacks`](#adding-lifecycle-callbacks) to modify the `dataProvider.create()` and `dataProvider.update()` methods for the `posts` resource only with the [`beforeSave`](./withLifecycleCallbacks.md#beforesave) methods. 
+The following `dataprovider` extends an existing one and leverages [`withLifecycleCallbacks`](#adding-lifecycle-callbacks) to modify the `dataProvider.create()` and `dataProvider.update()` methods for the `posts` resource only with the [`beforeSave`](./withLifecycleCallbacks.md#beforesave) methods. 
 
 It creates a new `FormData` object with the file received from the form and sends this file to the API. It is the role of your API to negotiate the request and process the image.
 
@@ -274,13 +274,13 @@ const dataProvider = withLifecycleCallbacks(simpleRestProvider('http://path.to.m
 ]);
 ```
 
-### How To Send File To A CDN
+#### Send To A Third-Party Service
 
-If the CDN you use allow this, you can upload files via [FormData](https://developer.mozilla.org/en-US/docs/Web/API/FormData) like the previous way.
+If the third-party service you use allow this, you can upload files via [FormData](https://developer.mozilla.org/en-US/docs/Web/API/FormData) like the previous way.
 
-Lets see an example with [https://cloudinary.com/](Cloudinary) service, by adapting the Data Provider according to [their "Authenticated requests" example](hhttps://cloudinary.com/documentation/upload_images#authenticated_requests). This example show how to upload a file with "Authenticated upload requests".
+Lets see an example with [https://cloudinary.com/](Cloudinary) service, by adapting the `dataprovider` according to [their "Authenticated requests" example](hhttps://cloudinary.com/documentation/upload_images#authenticated_requests). This example show how to upload a file with "Authenticated upload requests".
 
-To do that, you need an API that serves a [`signature`](https://cloudinary.com/documentation/upload_images#generating_authentication_signatures) the format that Cloudinary expect it. To make it easier, you can install the [`cloudinary package` ](https://cloudinary.com/documentation/node_integration#installation_and_setup).
+To do that, you need an API that serves a [`signature`](https://cloudinary.com/documentation/upload_images#generating_authentication_signatures) the format that Cloudinary expect. To make it easier, you can install the [`cloudinary package` ](https://cloudinary.com/documentation/node_integration#installation_and_setup).
 
 The following code example live in a Remix application. It generate and serve the signature needed to send files to Cloudinary:
 
@@ -315,13 +315,13 @@ export const loader = ({ request }: LoaderFunctionArgs) => {
 };
 ```
 
-Then, you can adapt the Data Provider as follows.
+With this in place, you can adapt the previous `dataprovider` as follows:
 
 ```ts
 import { DataProvider, withLifecycleCallbacks } from "react-admin";
 import simpleRestProvider from "ra-data-simple-rest";
 
-type CloudinaryImage = {
+type CloudinaryFile = {
   asset_id: string;
   secure_url: string;
 };
@@ -344,8 +344,9 @@ const dataProvider = withLifecycleCallbacks(
           {
             method: "GET",
           }
-          // should send headers with right authentications
+          // should send headers with correct authentications
         );
+
         const signData: SignData = await response.json();
 
         const url = `https://api.cloudinary.com/v1_1/${signData.cloud_name}/auto/upload`;
@@ -361,7 +362,7 @@ const dataProvider = withLifecycleCallbacks(
           body: formData,
         });
 
-        const image: CloudinaryImage = await imageResponse.json();
+        const image: CloudinaryFile = await imageResponse.json();
 
         params.picture = {
           src: image.secure_url,
@@ -375,8 +376,8 @@ const dataProvider = withLifecycleCallbacks(
 );
 ```
 
-Thus Data Provider extends an existing one and leverages [`withLifecycleCallbacks`](#adding-lifecycle-callbacks) to modify the `dataProvider.create()` and `dataProvider.update()` methods for the `posts` resource only with the [`beforeSave`](./withLifecycleCallbacks.md#beforesave) methods. 
+This `dataprovider` works the same way as the previous with some niceties:
+- it grabs the Cloudinary signature to allow the autentication in the request;
+- it hydrates the `params.picture` with the data sent by Cloudinary 
 
-It creates a new `FormData` object with the file received from the form and sends this file to the Cloudinary API.
-
-Then it waits for the API response and fills the `params.picture` object with the image source and title sent by the Cloudinary API. The `params` object is finally returned to allow the parent DataProvider to carry out its processes.
+Feel free to read the [Cloudinary Get Started doc](https://cloudinary.com/documentation/programmable_media_overview) to learn more.
