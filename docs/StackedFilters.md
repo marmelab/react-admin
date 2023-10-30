@@ -351,7 +351,7 @@ import {
 } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
-const PostListFilters: FiltersConfig = {
+const postListFilters: FiltersConfig = {
     id: textFilter({ operators: ['eq', 'neq'] }),
     title: textFilter(),
     published_at: dateFilter(),
