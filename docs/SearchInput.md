@@ -55,7 +55,6 @@ In the example given above, the `q` filter triggers a full-text search on all fi
 | ------------ | -------- | --------- | ------- | -------------------------------------------------------------------- |
 | `placeholder`       | Optional | `string`  | `Search`  | Attribute for displaying default text in the `input` element |
 | `resettable`       | Optional | `boolean`  | `true`  | If `true`, displays a clear button next to the input                        |
-| `variant`       | Optional | `string`  | `filled`  | Type attribute passed to the `<input>` element. Could be `filled` or `standard` too                       |
 
 `<SearchInput>` also accepts the [common input props](./Inputs.md#common-input-props).
 
@@ -81,13 +80,3 @@ You can disable the input reset feature by setting `resettable` to `false`:
   <source src="./img/resettable.webm" type="video/webm"/>
   Your browser does not support the video tag.
 </video>
-
-## `variant`
-
-You can change the component look by setting variant. It accepts these values:
-
-- `filled` (set as default)
-- `outlined`
-- `standard`
-
-![Variant options](./img/variant.png)
