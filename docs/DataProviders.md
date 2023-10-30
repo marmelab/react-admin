@@ -590,7 +590,7 @@ The [Querying the API](./Actions.md) documentation lists all the hooks available
 
 ## Handling File Uploads
 
-When a user submits a form with a file input, the dataProvider method (`create` or `delete`) receives [a `File` object](https://developer.mozilla.org/en-US/docs/Web/API/File). You can use that `File` object to send the file in the format your server expects:
+When a user submits a form with a file input, the dataProvider method (`create` or `update`) receives [a `File` object](https://developer.mozilla.org/en-US/docs/Web/API/File). You can use that `File` object to send the file in the format your server expects:
 - you can [send files as Base64 string](#sending-files-in-base64), using the [`FileReader`](https://developer.mozilla.org/en-US/docs/Web/API/FileReader) API;
 - you can [send file using multipart/form-data](#sending-files-in-multipartform-data) (i.e. send the record data and their files in one query);
 - or you might want [to send files to a third party service](#sending-files-to-a-third-party-service) such as CDN;
@@ -601,7 +601,7 @@ When a user submits a form with a file input, the dataProvider method (`create` 
 The following `dataProvider` extends an existing `dataProvider` to convert images passed to `dataProvider.update('posts')` into Base64 strings. The example leverages [`withLifecycleCallbacks`](#adding-lifecycle-callbacks) to modify the `dataProvider.update()` method for the `posts` resource only.
 
 ```js
-import { withLifecycleCallbacks } from 'react-admin';
+import { withLifecycleCallbacks, DataProvider } from 'react-admin';
 import simpleRestProvider from 'ra-data-simple-rest';
 
 const dataProvider = withLifecycleCallbacks(simpleRestProvider('http://path.to.my.api/'), [
@@ -611,7 +611,7 @@ const dataProvider = withLifecycleCallbacks(simpleRestProvider('http://path.to.m
          * the `picture` sent property, with `src` and `title` attributes.
          */
         resource: 'posts',
-        beforeUpdate: async (params, dataProvider) => {
+        beforeUpdate: async (params: any, dataProvider: DataProvider) => {
             // Freshly dropped pictures are File objects and must be converted to base64 strings
             const newPictures = params.data.pictures.filter(
                 p => p.rawFile instanceof File
@@ -623,6 +623,7 @@ const dataProvider = withLifecycleCallbacks(simpleRestProvider('http://path.to.m
             const base64Pictures = await Promise.all(
                 newPictures.map(convertFileToBase64)
             )
+            
             const pictures = [
                 ...base64Pictures.map((dataUrl, index) => ({
                     src: dataUrl,
@@ -630,10 +631,11 @@ const dataProvider = withLifecycleCallbacks(simpleRestProvider('http://path.to.m
                 })),
                 ...formerPictures,
             ];
-            return dataProvider.update(
-                resource,
-                { data: { ...params.data, pictures } }
-            );  
+
+            return {
+                ...params,
+                pictures,
+            };
         }
     }
 ]);
@@ -658,16 +660,17 @@ export default myDataProvider;
 
 ### Sending Files In `multipart/form-data`
 
-In case you need to upload files, as you would with an HTML form but to your API, you can use the [FormData](https://developer.mozilla.org/en-US/docs/Web/API/FormData) API . It uses the same format as a form would use if the encoding type were set to `multipart/form-data`.
+In case you need to upload files, as you would with an HTML form but to your API, you can use the [FormData](https://developer.mozilla.org/en-US/docs/Web/API/FormData) API. It uses the same format as a form would use if the encoding type were set to `multipart/form-data`.
 
 The following `dataProvider` extends an existing one and tweaks its `create` and `update` methods for the `posts` resource only. It is the role of your API to negotiate the request and process the image. 
 
-The data provider sends the `post` data with the attached file and works this way:
+The data provider sends the `post` data with the attached file in one query and works this way:
 - it checks if the resource is `posts`;
-- if so, it creates a new `FormData` object with the file received from the form and it sends this `FormData` to the API with the react-admin `fetchUtils.fetchJson()` function (a `fetch().then(r => r.json())` shortcut); 
-- if not, it simply uses the `baseDataProvider` base methods.
+- if so, it creates a new `FormData` object with the `post` data and the file received from the form;
+- it sends this `FormData` to the API with the react-admin `fetchUtils.fetchJson()` function; 
+- if the resource is other than `posts`, it simply uses the `baseDataProvider` base methods.
 
-Lets have a look:
+Let's have a look:
 
 ```ts
 import simpleRestDataProvider from "ra-data-simple-rest";
@@ -696,16 +699,17 @@ const createPostFormData = (
   params: CreateParams<PostParams> | UpdateParams<PostParams>
 ) => {
   const formData = new FormData();
-  formData.append("file", params.data.picture?.rawFile ?? "");
-  formData.append("title", params.data.title ?? "");
-  formData.append("content", params.data.content ?? "");
+  params.data.picture?.rawFile && formData.append("file", params.data.picture.rawFile);
+  params.data.title && formData.append("title", params.data.title);
+  params.data.content && formData.append("content", params.data.content);
+
   return formData;
 };
 
 export const dataProvider: DataProvider = {
   ...baseDataProvider,
   create: (resource, params) => {
-    if (resource !== "posts") {
+    if (resource === "posts") {
       const formData = createPostFormData(params);
       return fetchUtils
         .fetchJson(`${endpoint}/${resource}`, {
@@ -718,7 +722,7 @@ export const dataProvider: DataProvider = {
     return baseDataProvider.create(resource, params);
   },
   update: (resource, params) => {
-    if (resource !== "posts") {
+    if (resource === "posts") {
       const formData = createPostFormData(params);
       return fetchUtils
         .fetchJson(`${endpoint}/${resource}`, {
@@ -739,7 +743,7 @@ A common way to handle file uploads in single-page-apps is to first upload the f
 
 Lets see an example with the [https://cloudinary.com/](Cloudinary) service, by adapting the `dataProvider` according to [their "Authenticated requests" example](hhtps://cloudinary.com/documentation/upload_images#authenticated_requests).
 
-To do that, you need an API that serves a [`signature`](https://cloudinary.com/documentation/upload_images#generating_authentication_signatures) the format that Cloudinary expect. To make it easier, you can install the [`cloudinary package`](https://cloudinary.com/documentation/node_integration#installation_and_setup).
+To do that, you need an API that serves a [`signature`](https://cloudinary.com/documentation/upload_images#generating_authentication_signatures) in the format that Cloudinary expect. To make it easier, you can install the [`cloudinary` package](https://cloudinary.com/documentation/node_integration#installation_and_setup).
 
 The following example generates and serves the signature needed to send files to Cloudinary. It uses Remix:
 
@@ -780,7 +784,7 @@ It works as follow:
 - it grabs the Cloudinary signature to allow the autentication in the request;
 - it creates a new `FormData` object with the file received from the form;
 - it sends this file to the Cloudinary API; 
-- it hydrates the `params.picture` object with the data sent by Cloudinary;
+- it populates the `params.picture` object with the data sent by Cloudinary;
 - it returns the `params` object to allow the parent `dataProvider` to carry out its processes.
 
 An example is worth a thousand words:
@@ -833,12 +837,13 @@ const dataProvider = withLifecycleCallbacks(
 
         const image: CloudinaryFile = await imageResponse.json();
 
-        params.picture = {
-          src: image.secure_url,
-          title: image.asset_id,
+        return {
+          ...params,
+          picture: {
+            src: image.secure_url,
+            title: image.asset_id,
+          },
         };
-
-        return params;
       },
     },
   ]
