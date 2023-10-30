@@ -54,7 +54,7 @@ In the example given above, the `q` filter triggers a full-text search on all fi
 | Prop         | Required | Type      | Default | Description                                                          |
 | ------------ | -------- | --------- | ------- | -------------------------------------------------------------------- |
 | `placeholder`       | Optional | `string`  | `Search`  | Attribute for displaying default text in the `input` element |
-| `resettable`       | Optional | `boolean`  | `true`  | If `tue`, a delete button appear on input writing                       |
+| `resettable`       | Optional | `boolean`  | `true`  | If `true`, displays a clear button next to the input                        |
 | `variant`       | Optional | `string`  | `filled`  | Type attribute passed to the `<input>` element. Could be `filled` or `standard` too                       |
 
 `<SearchInput>` also accepts the [common input props](./Inputs.md#common-input-props).
