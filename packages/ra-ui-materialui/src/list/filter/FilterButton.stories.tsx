@@ -14,6 +14,7 @@ import {
     SearchInput,
 } from 'react-admin';
 import fakerestDataProvider from 'ra-data-fakerest';
+import { AutocompleteArrayInput } from '../../input';
 
 export default {
     title: 'ra-ui-materialui/list/filter/FilterButton',
@@ -203,6 +204,16 @@ export const Basic = (args: { disableSaveQuery?: boolean }) => {
             defaultValue={{ foo: 'bar' }}
             format={v => v?.foo || ''}
             parse={v => ({ foo: v })}
+        />,
+        <AutocompleteArrayInput
+            label="Post"
+            source="id"
+            choices={[
+                { id: '1', name: 'post1' },
+                { id: '2', name: 'post2' },
+            ]}
+            alwaysOn
+            multiple
         />,
     ];
     return (

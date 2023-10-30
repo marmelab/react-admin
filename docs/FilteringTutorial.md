@@ -88,7 +88,7 @@ Elements passed as `filters` are regular inputs. That means you can build sophis
 
 ### `<SearchInput>`
 
-To enable users to search for data in the table, you can add the `<LiveSearchInput>` component to the `filters` array of your `<List>` as explained in the component chapter.
+To enable users to search for data in the table, you can add the `<SearchInput>` component to the `filters` array of your `<List>` as explained in [the component chapter](./SearchInput.md).
 
 ### Quick Filters
 
