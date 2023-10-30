@@ -5,6 +5,22 @@ title: "The SearchInput Component"
 
 # `<SearchInput>`
 
+```tsx
+import { SearchInput, TextInput, SelectInput } from 'react-admin';
+
+const postFilters = [
+    <SearchInput source="q" alwaysOn />,
+    <TextInput label="Title" source="title" defaultValue="Hello, World!" />,
+    <SelectInput source="category" choices={choices} />,
+];
+
+export const PostList = () => (
+    <List filters={postFilters}>
+        ...
+    </List>
+);
+```
+
 In addition to [the usual input types](./Inputs.md) (`<TextInput>`, `<SelectInput>`, `<ReferenceInput>`, etc.), you can use the `<SearchInput>` in the `filters` array. This input is designed especially for the [`Filter Form`](./FilterForm.md). It's like a `<TextInput resettable>` with a magnifier glass icon - exactly the type of input users look for when they want to do a full-text search.
 
 <video controls autoplay playsinline muted loop>
@@ -13,7 +29,7 @@ In addition to [the usual input types](./Inputs.md) (`<TextInput>`, `<SelectInpu
   Your browser does not support the video tag.
 </video>
 
-Is an `<Aside>` component, we invite you to use `<FilterLiveSearch>` component to search your data as you can find in [the component chapter](./FilterLiveSearch.md)
+Prefer using [`<FilterLiveSearch>`](./FilterLiveSearch.md) component if you want to provide your users a search features in a [`<List>` aside](./List.md#aside).
 
 <video controls autoplay playsinline muted loop>
   <source src="./img/filter-live-search.webm" type="video/webm"/>
@@ -47,7 +63,7 @@ Additional props are passed down to the underlying Material UI [`<TextField>`](h
 
 ## `placeholder`
 
-The placeholder is an attribute used to display text by default in certain form fields. Here you can write your string instead of `Search`.
+Replace the default `Search` placeholder by setting the placeholder prop:
 
 ```jsx
 <SearchInput source="q" placeholder="My search" alwaysOn />
@@ -55,9 +71,9 @@ The placeholder is an attribute used to display text by default in certain form 
 
 ## `resettable`
 
-You can disable reset function
+You can disable the input reset feature by setting `resettable` to `false`:
 
-```jsx
+```tsx
 <SearchInput source="q" resettable={false} alwaysOn />
 ```
 
@@ -68,7 +84,7 @@ You can disable reset function
 
 ## `variant`
 
-You could change the component display with the 3 variant type :
+You can change the component look by setting variant. It accepts these values:
 
 - `filled` (set as default)
 - `outlined`
