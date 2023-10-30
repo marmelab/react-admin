@@ -667,7 +667,7 @@ The following `dataProvider` extends an existing one and tweaks its `create` and
 The data provider sends the `post` data with the attached file in one query and works this way:
 - it checks if the resource is `posts`;
 - if so, it creates a new `FormData` object with the `post` data and the file received from the form;
-- it sends this `FormData` to the API with the react-admin `fetchUtils.fetchJson()` function; 
+- it sends this `FormData` to the API with the react-admin [`fetchUtils.fetchJson()`](./fetchJson.md) function; 
 - if the resource is other than `posts`, it simply uses the `baseDataProvider` base methods.
 
 Let's have a look:
