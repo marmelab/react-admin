@@ -369,17 +369,11 @@ const PostListFiltersForm = () => {
                 id="filters-header"
             >
                 <Typography>
-                    {Object.keys(filterValues).length ? (
-                        <>
-                            {Object.keys(filterValues).length} filter(s) applied
-                        </>
-                    ) : (
-                        'Filters'
-                    )}
+                    {Object.keys(filterValues).length ? `${Object.keys(filterValues).length} filter(s) applied` : 'Filters'}
                 </Typography>
             </AccordionSummary>
             <AccordionDetails id="filters-content">
-                <StackedFiltersForm config={PostListFilters} />
+                <StackedFiltersForm config={postListFilters} />
             </AccordionDetails>
         </Accordion>
     );
