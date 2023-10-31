@@ -605,13 +605,6 @@ If you provided a React element for the optionText prop, you must also provide t
                                     ? inputText(option)
                                     : getChoiceText(option)
                             }
-                            sx={{
-                                '.MuiSvgIcon-root': {
-                                    // FIXME: Workaround to allow choices deletion
-                                    // Maybe related to storybook and mui using different versions of emotion
-                                    zIndex: 100,
-                                },
-                            }}
                             size="small"
                             {...getTagProps({ index })}
                         />
