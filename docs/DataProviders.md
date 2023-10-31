@@ -634,7 +634,10 @@ const dataProvider = withLifecycleCallbacks(simpleRestProvider('http://path.to.m
 
             return {
                 ...params,
-                pictures,
+                data: {
+                    ...params.data,
+                    pictures,
+                }
             };
         }
     }
