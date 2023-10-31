@@ -47,6 +47,7 @@ title: "Index"
 **- D -**
 * [`<DashboardMenuItem>`](./Menu.md#menudashboarditem)
 * [`<Datagrid>`](./Datagrid.md)
+* [`<DatagridAG>`](./DatagridAG.md)
 * [`<DatagridBody>`](./Datagrid.md#body)
 * [`<DatagridRow>`](./Datagrid.md#body)
 * [`<DatagridHeader>`](./Datagrid.md#header)
