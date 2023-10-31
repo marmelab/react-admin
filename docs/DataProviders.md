@@ -727,6 +727,7 @@ export const dataProvider: DataProvider = {
   update: (resource, params) => {
     if (resource === "posts") {
       const formData = createPostFormData(params);
+      formData.append("id", params.id);
       return fetchUtils
         .fetchJson(`${endpoint}/${resource}`, {
           method: "PUT",
