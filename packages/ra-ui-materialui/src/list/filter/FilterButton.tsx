@@ -210,7 +210,12 @@ export const FilterButton = (props: FilterButtonProps): JSX.Element => {
                     </MenuItem>
                 )}
                 {hasFilterValues && (
-                    <MenuItem onClick={() => setFilters({}, {}, false)}>
+                    <MenuItem
+                        onClick={() => {
+                            setFilters({}, {}, false);
+                            // setOpen(false);
+                        }}
+                    >
                         {translate('ra.action.remove_all_filters', {
                             _: 'Remove all filters',
                         })}
