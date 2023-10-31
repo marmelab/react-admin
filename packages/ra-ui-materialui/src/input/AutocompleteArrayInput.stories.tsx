@@ -28,7 +28,7 @@ import { TextInput } from './TextInput';
 import { ArrayInput, SimpleFormIterator } from './ArrayInput';
 import { AdminUI } from '../AdminUI';
 import { Datagrid, List } from '../list';
-import { TextField as TextFieldByRA } from '../field';
+import { TextField as RATextField } from '../field';
 
 export default { title: 'ra-ui-materialui/input/AutocompleteArrayInput' };
 
@@ -670,17 +670,26 @@ const listHistory = createMemoryHistory({ initialEntries: ['/books'] });
 
 const postFilters: React.ReactElement[] = [
     <AutocompleteArrayInput
-        label="Post"
-        source="id"
+        label="Authors"
+        source="author"
         choices={[
-            { id: '1', name: 'post1' },
-            { id: '2', name: 'post2' },
+            { id: 'Leo Tolstoy', name: 'Leo' },
+            { id: 'Jane Austen', name: 'Jane' },
+            { id: 'Oscar Wilde', name: 'Oscar' },
+            { id: 'Antoine de Saint-Exupéry', name: 'Antoine' },
+            { id: 'Lewis Carroll', name: 'Lewis' },
+            { id: 'Gustave Flaubert', name: 'Gustave' },
+            { id: 'J. R. R. Tolkien', name: 'J. R. R.' },
+            { id: 'J. K. Rowling', name: 'J. K.' },
+            { id: 'Paulo Coelho', name: 'Paulo' },
+            { id: 'J. D. Salinger', name: 'J. D.' },
+            { id: 'James Joyce', name: 'James' },
         ]}
         alwaysOn
         multiple
     />,
 ];
-export const OnAList = () => (
+export const AsListFilter = () => (
     <AdminContext
         dataProvider={booksDataProvider}
         i18nProvider={i18nProvider}
@@ -692,10 +701,10 @@ export const OnAList = () => (
                 list={
                     <List filters={postFilters}>
                         <Datagrid>
-                            <TextFieldByRA source="id" />
-                            <TextFieldByRA source="title" />
-                            <TextFieldByRA source="author" />
-                            <TextFieldByRA source="year" />
+                            <RATextField source="id" />
+                            <RATextField source="title" />
+                            <RATextField source="author" />
+                            <RATextField source="year" />
                         </Datagrid>
                     </List>
                 }
