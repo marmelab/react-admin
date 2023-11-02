@@ -147,7 +147,7 @@ title: "Index"
 * [`<SaveButton>`](./SaveButton.md)
 * [`<SavedQueriesList>`](./SavedQueriesList.md)
 * [`<Search>`](./Search.md)<img class="icon" src="./img/premium.svg" />
-* [`<SearchInput>`](./FilteringTutorial.md#searchinput)
+* [`<SearchInput>`](./SearchInput.md)
 * [`<SelectArrayInput>`](./SelectArrayInput.md)
 * [`<SelectColumnsButton>`](./SelectColumnsButton.md)
 * [`<SelectField>`](./SelectField.md)
@@ -249,7 +249,7 @@ title: "Index"
 * [`useGetOneLive`](./useGetOneLive.md)<img class="icon" src="./img/premium.svg" />
 * [`useGetPermissions`](./WithPermissions.md)
 * [`useGetRecordId`](./useGetRecordId.md)
-* [`useGetRecordRepresentation`](./useGetRecordRepresentation.md) 
+* [`useGetRecordRepresentation`](./useGetRecordRepresentation.md)
 
 **- I -**
 * [`useInfiniteGetList`](./useInfiniteGetList.md)
