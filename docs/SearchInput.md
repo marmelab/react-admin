@@ -5,7 +5,7 @@ title: "The SearchInput Component"
 
 # `<SearchInput>`
 
-In addition to [the usual input types](./Inputs.md) (`<TextInput>`, `<SelectInput>`, `<ReferenceInput>`, etc.), you can use the `<SearchInput>` in the [`filters` array](.//List.md#filters-filter-inputs). This input is designed especially for the [`Filter Form`](./FilterForm.md). It's like a `<TextInput resettable>` with a magnifier glass icon - exactly the type of input users look for when they want to do a full-text search.
+In addition to [the usual input types](./Inputs.md) (`<TextInput>`, `<SelectInput>`, `<ReferenceInput>`, etc.), you can use the `<SearchInput>` in the [`filters` array](./List.md#filters-filter-inputs). This input is designed especially for the [`Filter Form`](./FilterForm.md). It's like a `<TextInput resettable>` with a magnifier glass icon - exactly the type of input users look for when they want to do a full-text search.
 
 <video controls autoplay playsinline muted loop>
   <source src="./img/search_input.webm" type="video/webm"/>
