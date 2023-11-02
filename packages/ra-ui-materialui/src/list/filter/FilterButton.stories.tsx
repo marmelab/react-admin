@@ -14,6 +14,7 @@ import {
     SearchInput,
 } from 'react-admin';
 import fakerestDataProvider from 'ra-data-fakerest';
+import { AutocompleteArrayInput } from '../../input';
 
 export default {
     title: 'ra-ui-materialui/list/filter/FilterButton',
@@ -255,6 +256,46 @@ export const WithSearchInput = (args: {
             <Resource
                 name="posts"
                 list={<PostList postFilters={postFilters} args={args} />}
+            />
+        </Admin>
+    );
+};
+
+export const WithAutoCompleteArrayInput = () => {
+    const postFilters: React.ReactElement[] = [
+        <SearchInput source="q" alwaysOn />,
+        <AutocompleteArrayInput
+            label="Title"
+            source="id"
+            choices={[
+                { id: 1, name: 'Accusantium...' },
+                { id: 2, name: 'Sint...' },
+                { id: 3, name: 'Perspiciatis...' },
+                { id: 4, name: 'Maiores...' },
+                { id: 5, name: 'Sed...' },
+                { id: 6, name: 'Minima...' },
+                { id: 7, name: 'Illum...' },
+                { id: 8, name: 'Culpa...' },
+                { id: 9, name: 'A voluptas...' },
+                { id: 10, name: 'Totam...' },
+                { id: 11, name: 'Omnis...' },
+                { id: 12, name: 'Qui tempore...' },
+                { id: 13, name: 'Fusce...' },
+            ]}
+            alwaysOn
+            multiple
+        />,
+    ];
+    return (
+        <Admin dataProvider={fakerestDataProvider(data)}>
+            <Resource
+                name="posts"
+                list={
+                    <PostList
+                        postFilters={postFilters}
+                        args={{ disableSaveQuery: false }}
+                    />
+                }
             />
         </Admin>
     );

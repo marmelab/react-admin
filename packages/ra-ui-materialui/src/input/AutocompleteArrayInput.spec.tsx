@@ -12,7 +12,6 @@ import { SimpleForm } from '../form';
 import { AutocompleteArrayInput } from './AutocompleteArrayInput';
 import { useCreateSuggestionContext } from './useSupportCreateSuggestion';
 import {
-    AsListFilter,
     InsideReferenceArrayInput,
     InsideReferenceArrayInputOnChange,
     OnChange,
@@ -1103,38 +1102,4 @@ describe('<AutocompleteArrayInput />', () => {
         });
         expect(screen.getByDisplayValue('French')).not.toBeNull();
     });
-
-    it('should close the filter menu on removing all filters', async () => {
-        render(<AsListFilter />);
-
-        await waitFor(() => {
-            expect(screen.queryAllByRole('checkbox')).toHaveLength(11);
-        });
-
-        fireEvent.click(screen.getByText('Authors'));
-        fireEvent.click(screen.getByText('JRR'));
-
-        await waitFor(() => {
-            screen.getByLabelText('Add filter');
-            expect(screen.getAllByRole('checkbox')).toHaveLength(2);
-        });
-
-        fireEvent.click(screen.getByLabelText('Add filter'));
-        fireEvent.click(screen.getByText('Remove all filters'));
-
-        await waitFor(() => {
-            expect(screen.getAllByRole('checkbox')).toHaveLength(11);
-        });
-
-        fireEvent.click(screen.getByText('Authors'));
-        fireEvent.click(screen.getByText('JRR'));
-
-        await waitFor(() => {
-            expect(
-                screen.getAllByTestId('CheckBoxOutlineBlankIcon')
-            ).toHaveLength(2);
-        });
-
-        expect(screen.queryByText('Save current query...')).toBeNull();
-    }, 20000);
 });
