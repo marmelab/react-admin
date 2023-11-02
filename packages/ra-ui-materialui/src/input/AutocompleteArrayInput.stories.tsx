@@ -679,10 +679,10 @@ const postFilters: React.ReactElement[] = [
             { id: 'Antoine de Saint-Exupéry', name: 'Antoine' },
             { id: 'Lewis Carroll', name: 'Lewis' },
             { id: 'Gustave Flaubert', name: 'Gustave' },
-            { id: 'J. R. R. Tolkien', name: 'J. R. R.' },
-            { id: 'J. K. Rowling', name: 'J. K.' },
+            { id: 'J. R. R. Tolkien', name: 'JRR' },
+            { id: 'J. K. Rowling', name: 'JK' },
             { id: 'Paulo Coelho', name: 'Paulo' },
-            { id: 'J. D. Salinger', name: 'J. D.' },
+            { id: 'J. D. Salinger', name: 'JD' },
             { id: 'James Joyce', name: 'James' },
         ]}
         alwaysOn
