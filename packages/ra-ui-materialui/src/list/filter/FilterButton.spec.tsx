@@ -6,7 +6,7 @@ import { createTheme } from '@mui/material/styles';
 import { AdminContext } from '../../AdminContext';
 import { FilterButton } from './FilterButton';
 import { TextInput } from '../../input';
-import { Basic } from './FilterButton.stories';
+import { Basic, WithAutoCompleteArrayInput } from './FilterButton.stories';
 
 const theme = createTheme();
 
@@ -184,5 +184,39 @@ describe('<FilterButton />', () => {
 
             expect(queryByText('ra.saved_queries.new_label')).toBeNull();
         });
+
+        it('should close the filter menu on removing all filters', async () => {
+            render(<WithAutoCompleteArrayInput />);
+
+            await waitFor(() => {
+                expect(screen.queryAllByRole('checkbox')).toHaveLength(11);
+            });
+
+            fireEvent.click(screen.getByLabelText('Open'));
+            fireEvent.click(screen.getByText('Sint...'));
+
+            await waitFor(() => {
+                screen.getByLabelText('Add filter');
+                expect(screen.getAllByRole('checkbox')).toHaveLength(2);
+            });
+
+            fireEvent.click(screen.getByLabelText('Add filter'));
+            fireEvent.click(screen.getByText('Remove all filters'));
+
+            await waitFor(() => {
+                expect(screen.getAllByRole('checkbox')).toHaveLength(11);
+            });
+
+            fireEvent.click(screen.getByLabelText('Open'));
+            fireEvent.click(screen.getByText('Sint...'));
+
+            await waitFor(() => {
+                expect(
+                    screen.getAllByTestId('CheckBoxOutlineBlankIcon')
+                ).toHaveLength(2);
+            });
+
+            expect(screen.queryByText('Save current query...')).toBeNull();
+        }, 20000);
     });
 });

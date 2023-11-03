@@ -3,7 +3,6 @@ import { Admin } from 'react-admin';
 import { Resource, required, useCreate, useRecordContext } from 'ra-core';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
-import fakeRestDataProvider from 'ra-data-fakerest';
 import { createMemoryHistory } from 'history';
 import {
     Dialog,
@@ -26,9 +25,6 @@ import { ReferenceArrayInput } from './ReferenceArrayInput';
 import { useCreateSuggestionContext } from './useSupportCreateSuggestion';
 import { TextInput } from './TextInput';
 import { ArrayInput, SimpleFormIterator } from './ArrayInput';
-import { AdminUI } from '../AdminUI';
-import { Datagrid, List } from '../list';
-import { TextField as RATextField } from '../field';
 
 export default { title: 'ra-ui-materialui/input/AutocompleteArrayInput' };
 
@@ -592,123 +588,4 @@ export const InsideReferenceArrayInputWithCreationSupport = () => (
         <Resource name="authors" />
         <Resource name="books" edit={BookEditWithReferenceAndCreationSupport} />
     </Admin>
-);
-
-const booksDataProvider = fakeRestDataProvider({
-    books: [
-        {
-            id: 1,
-            title: 'War and Peace',
-            author: 'Leo Tolstoy',
-            year: 1869,
-        },
-        {
-            id: 2,
-            title: 'Pride and Predjudice',
-            author: 'Jane Austen',
-            year: 1813,
-        },
-        {
-            id: 3,
-            title: 'The Picture of Dorian Gray',
-            author: 'Oscar Wilde',
-            year: 1890,
-        },
-        {
-            id: 4,
-            title: 'Le Petit Prince',
-            author: 'Antoine de Saint-Exupéry',
-            year: 1943,
-        },
-        {
-            id: 5,
-            title: "Alice's Adventures in Wonderland",
-            author: 'Lewis Carroll',
-            year: 1865,
-        },
-        {
-            id: 6,
-            title: 'Madame Bovary',
-            author: 'Gustave Flaubert',
-            year: 1856,
-        },
-        {
-            id: 7,
-            title: 'The Lord of the Rings',
-            author: 'J. R. R. Tolkien',
-            year: 1954,
-        },
-        {
-            id: 8,
-            title: "Harry Potter and the Philosopher's Stone",
-            author: 'J. K. Rowling',
-            year: 1997,
-        },
-        {
-            id: 9,
-            title: 'The Alchemist',
-            author: 'Paulo Coelho',
-            year: 1988,
-        },
-        {
-            id: 10,
-            title: 'A Catcher in the Rye',
-            author: 'J. D. Salinger',
-            year: 1951,
-        },
-        {
-            id: 11,
-            title: 'Ulysses',
-            author: 'James Joyce',
-            year: 1922,
-        },
-    ],
-    authors: [],
-});
-
-const listHistory = createMemoryHistory({ initialEntries: ['/books'] });
-
-const postFilters: React.ReactElement[] = [
-    <AutocompleteArrayInput
-        label="Authors"
-        source="author"
-        choices={[
-            { id: 'Leo Tolstoy', name: 'Leo' },
-            { id: 'Jane Austen', name: 'Jane' },
-            { id: 'Oscar Wilde', name: 'Oscar' },
-            { id: 'Antoine de Saint-Exupéry', name: 'Antoine' },
-            { id: 'Lewis Carroll', name: 'Lewis' },
-            { id: 'Gustave Flaubert', name: 'Gustave' },
-            { id: 'J. R. R. Tolkien', name: 'J. R. R.' },
-            { id: 'J. K. Rowling', name: 'J. K.' },
-            { id: 'Paulo Coelho', name: 'Paulo' },
-            { id: 'J. D. Salinger', name: 'J. D.' },
-            { id: 'James Joyce', name: 'James' },
-        ]}
-        alwaysOn
-        multiple
-    />,
-];
-export const AsListFilter = () => (
-    <AdminContext
-        dataProvider={booksDataProvider}
-        i18nProvider={i18nProvider}
-        history={listHistory}
-    >
-        <AdminUI>
-            <Resource
-                name="books"
-                list={
-                    <List filters={postFilters}>
-                        <Datagrid>
-                            <RATextField source="id" />
-                            <RATextField source="title" />
-                            <RATextField source="author" />
-                            <RATextField source="year" />
-                        </Datagrid>
-                    </List>
-                }
-            />
-        </AdminUI>
-    </AdminContext>
 );
