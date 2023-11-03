@@ -3,7 +3,6 @@ import { Admin } from 'react-admin';
 import { Resource, required, useCreate, useRecordContext } from 'ra-core';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
-import fakeRestDataProvider from 'ra-data-fakerest';
 import { createMemoryHistory } from 'history';
 import {
     Dialog,
@@ -26,9 +25,6 @@ import { ReferenceArrayInput } from './ReferenceArrayInput';
 import { useCreateSuggestionContext } from './useSupportCreateSuggestion';
 import { TextInput } from './TextInput';
 import { ArrayInput, SimpleFormIterator } from './ArrayInput';
-import { AdminUI } from '../AdminUI';
-import { Datagrid, List } from '../list';
-import { TextField as RATextField } from '../field';
 
 export default { title: 'ra-ui-materialui/input/AutocompleteArrayInput' };
 
