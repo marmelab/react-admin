@@ -10,7 +10,7 @@ import { RefreshIconButton } from '../button';
 import { SxProps } from '@mui/system';
 
 export const LoadingIndicator = (props: LoadingIndicatorProps) => {
-    const { className, sx, ...rest } = props;
+    const { className, onClick, sx, ...rest } = props;
     const loading = useLoading();
 
     const theme = useTheme();
@@ -20,6 +20,7 @@ export const LoadingIndicator = (props: LoadingIndicatorProps) => {
                 className={`${LoadingIndicatorClasses.loadedIcon} ${
                     loading && LoadingIndicatorClasses.loadedLoading
                 }`}
+                onClick={onClick}
             />
             {loading && (
                 <CircularProgress
@@ -45,6 +46,7 @@ LoadingIndicator.propTypes = {
 
 interface LoadingIndicatorProps {
     className?: string;
+    onClick?: (e: MouseEvent) => void;
     sx?: SxProps;
 }
 
