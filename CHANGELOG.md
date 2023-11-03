@@ -15,7 +15,7 @@
 * Fix `useInfiniteGetList` return wrong `total` for empty results ([#9395](https://github.com/marmelab/react-admin/pull/9395)) ([KislyakovDS](https://github.com/KislyakovDS))
 * Fix `<UpdateButton>` cannot be used in a list ([#9391](https://github.com/marmelab/react-admin/pull/9391)) ([erwanMarmelab](https://github.com/erwanMarmelab))
 * Fix `ra-data-graphql-simple` creates incorrect query when schema contains a non-null list ([#9371](https://github.com/marmelab/react-admin/pull/9371)) ([dricholm](https://github.com/dricholm))
-* Bump react-devtools-core from 4.27.4 to 4.28.4 ([#9377](https://github.com/marmelab/react-admin/pull/9377)) ([dependabot bot](https://github.com/dependabot bot))
+* Bump react-devtools-core from 4.27.4 to 4.28.4 ([#9377](https://github.com/marmelab/react-admin/pull/9377)) ([dependabot](https://github.com/dependabot))
 * [Doc] Add `<SearchWithResult>` component ([#9406](https://github.com/marmelab/react-admin/pull/9406)) ([adguernier](https://github.com/adguernier))
 * [Doc] Add `<ReferenceArrayField queryOptions>` documentation ([#9397](https://github.com/marmelab/react-admin/pull/9397)) ([adguernier](https://github.com/adguernier))
 * [Doc] Add gotcha about `<Input disabled>` usage and `isDirty` form state ([#9386](https://github.com/marmelab/react-admin/pull/9386)) ([fzaninotto](https://github.com/fzaninotto))
