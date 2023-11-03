@@ -313,7 +313,11 @@ const MyFilterConfig: FiltersConfig = {
 
 This component is responsible for rendering the filtering form, and is used internally by `<StackedFilters>`. You can use it if you want to use the filter form without the `<FilterButton>` component, e.g. to always show the filter form.
 
-![StackedFiltersForm](./img/StackedFiltersForm.png)
+<video controls autoplay playsinline muted loop width="100%">
+  <source src="./img/stacked-filter-form-preview.webm" type="video/webm"/>
+  <source src="./img/stacked-filter-form-preview.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
 
 ### Usage
 
@@ -328,15 +332,16 @@ import {
     NumberField,
     BooleanField,
     ReferenceArrayField,
+    useListContext,
 } from 'react-admin';
 import {
     StackedFiltersForm,
     FiltersConfig,
     textFilter,
-    numberFilter,
     referenceFilter,
     booleanFilter,
-} from '@react-admin/ra-editable-datagrid';
+    dateFilter,
+} from '@react-admin/ra-form-layout';
 import {
     Accordion,
     AccordionDetails,
@@ -347,36 +352,32 @@ import {
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 const postListFilters: FiltersConfig = {
+    id: textFilter({ operators: ['eq', 'neq'] }),
     title: textFilter(),
-    views: numberFilter(),
+    published_at: dateFilter(),
+    is_public: booleanFilter(),
     tag_ids: referenceFilter({ reference: 'tags' }),
-    published: booleanFilter(),
 };
 
-const PostList = () => (
-    <ListBase>
-        <Accordion sx={{ my: 1 }}>
+const PostListFiltersForm = () => {
+    const { filterValues } = useListContext();
+    return (
+        <Accordion>
             <AccordionSummary
                 expandIcon={<ExpandMoreIcon />}
                 aria-controls="filters-content"
                 id="filters-header"
             >
-                <Typography>Filters</Typography>
+                <Typography>
+                    {Object.keys(filterValues).length ? `${Object.keys(filterValues).length} filter(s) applied` : 'Filters'}
+                </Typography>
             </AccordionSummary>
             <AccordionDetails id="filters-content">
                 <StackedFiltersForm config={postListFilters} />
             </AccordionDetails>
         </Accordion>
-        <Card>
-            <Datagrid>
-                <TextField source="title" />
-                <NumberField source="views" />
-                <ReferenceArrayField tags="tags" source="tag_ids" />
-                <BooleanField source="published" />
-            </Datagrid>
-        </Card>
-    </ListBase>
-);
+    );
+};
 ```
 {% endraw %}
 

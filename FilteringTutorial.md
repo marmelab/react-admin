@@ -107,6 +107,8 @@ const postFilters = [
 
 In the example given above, the `q` filter triggers a full-text search on all fields. It's your responsibility to implement the full-text filtering capabilities in your `dataProvider`, or in your API.
 
+For more details, you can consult [the `<SearchInput>` component chapter](./SearchInput.md).
+
 ### Quick Filters
 
 <video controls autoplay playsinline muted loop>

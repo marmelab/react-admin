@@ -331,70 +331,6 @@ const dataProvider = withLifecycleCallbacks(baseDataProvider, [
 
 Check the [withLifecycleCallbacks](./withLifecycleCallbacks.md) documentation for more details.
 
-## Handling File Uploads
-
-Handling file uploads in react-admin depends on how your server expects the file to be sent (e.g. as a Base64 string, as a multipart/form-data request, uploaded to a CDN via an AJAX request, etc.). When a user submits a form with a file input, the dataProvider method (`create` or `delete`) receives [a `File` object](https://developer.mozilla.org/en-US/docs/Web/API/File). It's the dataProvider's job to convert that `File`, e.g. using the `FileReader` API.
-
-For instance, the following Data Provider extends an existing data provider to convert images passed to `dataProvider.update('posts')` into Base64 strings. The example leverages [`withLifecycleCallbacks`](#adding-lifecycle-callbacks) to modify the `dataProvider.update()` method for the `posts` resource only.
-
-```js
-import { withLifecycleCallbacks } from 'react-admin';
-import simpleRestProvider from 'ra-data-simple-rest';
-
-const dataProvider = withLifecycleCallbacks(simpleRestProvider('http://path.to.my.api/'), [
-    {
-        /**
-         * For posts update only, convert uploaded images to base 64 and attach them to
-         * the `picture` sent property, with `src` and `title` attributes.
-         */
-        resource: 'posts',
-        beforeUpdate: async (params, dataProvider) => {
-            // Freshly dropped pictures are File objects and must be converted to base64 strings
-            const newPictures = params.data.pictures.filter(
-                p => p.rawFile instanceof File
-            );
-            const formerPictures = params.data.pictures.filter(
-                p => !(p.rawFile instanceof File)
-            );
-
-            const base64Pictures = await Promise.all(
-                newPictures.map(convertFileToBase64)
-            )
-            const pictures = [
-                ...base64Pictures.map((dataUrl, index) => ({
-                    src: dataUrl,
-                    title: newPictures[index].name,
-                })),
-                ...formerPictures,
-            ];
-            return dataProvider.update(
-                resource,
-                { data: { ...params.data, pictures } }
-            );  
-        }
-    }
-]);
-
-/**
- * Convert a `File` object returned by the upload input into a base 64 string.
- * That's not the most optimized way to store images in production, but it's
- * enough to illustrate the idea of data provider decoration.
- */
-const convertFileToBase64 = file =>
-    new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = reject;
-        reader.readAsDataURL(file.rawFile);
-    });
-
-export default myDataProvider;
-```
-
-**Tip**: Use `beforeSave` instead of `beforeUpdate` to do the same for both create and update calls.
-
-You can use the same technique to upload images to an object storage service, and then update the record using the URL of that stored object.
-
 ## Adding Custom Methods
 
 Your API backend may expose non-CRUD endpoints, e.g. for calling RPC endpoints. 
@@ -651,3 +587,271 @@ const UserProfile = ({ userId }) => {
 ```
 
 The [Querying the API](./Actions.md) documentation lists all the hooks available for querying the API, as well as the options and return values for each of them.
+
+## Handling File Uploads
+
+When a user submits a form with a file input, the dataProvider method (`create` or `update`) receives [a `File` object](https://developer.mozilla.org/en-US/docs/Web/API/File). You can use that `File` object to send the file in the format your server expects:
+- you can [send files as Base64 string](#sending-files-in-base64), using the [`FileReader`](https://developer.mozilla.org/en-US/docs/Web/API/FileReader) API;
+- you can [send file using multipart/form-data](#sending-files-in-multipartform-data) (i.e. send the record data and their files in one query);
+- or you might want [to send files to a third party service](#sending-files-to-a-third-party-service) such as CDN;
+- etc.
+
+### Sending Files In Base64
+
+The following `dataProvider` extends an existing `dataProvider` to convert images passed to `dataProvider.update('posts')` into Base64 strings. The example leverages [`withLifecycleCallbacks`](#adding-lifecycle-callbacks) to modify the `dataProvider.update()` method for the `posts` resource only.
+
+```js
+import { withLifecycleCallbacks, DataProvider } from 'react-admin';
+import simpleRestProvider from 'ra-data-simple-rest';
+
+const dataProvider = withLifecycleCallbacks(simpleRestProvider('http://path.to.my.api/'), [
+    {
+        /**
+         * For posts update only, convert uploaded images to base 64 and attach them to
+         * the `picture` sent property, with `src` and `title` attributes.
+         */
+        resource: 'posts',
+        beforeUpdate: async (params: any, dataProvider: DataProvider) => {
+            // Freshly dropped pictures are File objects and must be converted to base64 strings
+            const newPictures = params.data.pictures.filter(
+                p => p.rawFile instanceof File
+            );
+            const formerPictures = params.data.pictures.filter(
+                p => !(p.rawFile instanceof File)
+            );
+
+            const base64Pictures = await Promise.all(
+                newPictures.map(convertFileToBase64)
+            )
+            
+            const pictures = [
+                ...base64Pictures.map((dataUrl, index) => ({
+                    src: dataUrl,
+                    title: newPictures[index].name,
+                })),
+                ...formerPictures,
+            ];
+
+            return {
+                ...params,
+                data: {
+                    ...params.data,
+                    pictures,
+                }
+            };
+        }
+    }
+]);
+
+/**
+ * Convert a `File` object returned by the upload input into a base 64 string.
+ * That's not the most optimized way to store images in production, but it's
+ * enough to illustrate the idea of dataprovider decoration.
+ */
+const convertFileToBase64 = file =>
+    new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = reject;
+        reader.readAsDataURL(file.rawFile);
+    });
+
+export default myDataProvider;
+```
+
+**Tip**: Use `beforeSave` instead of `beforeUpdate` to do the same for both create and update calls.
+
+### Sending Files In `multipart/form-data`
+
+In case you need to upload files, as you would with an HTML form but to your API, you can use the [FormData](https://developer.mozilla.org/en-US/docs/Web/API/FormData) API. It uses the same format as a form would use if the encoding type were set to `multipart/form-data`.
+
+The following `dataProvider` extends an existing one and tweaks its `create` and `update` methods for the `posts` resource only. It is the role of your API to negotiate the request and process the image. 
+
+The data provider sends the `post` data with the attached file in one query and works this way:
+- it checks if the resource is `posts`;
+- if so, it creates a new `FormData` object with the `post` data and the file received from the form;
+- it sends this `FormData` to the API with the react-admin [`fetchUtils.fetchJson()`](./fetchJson.md) function; 
+- if the resource is other than `posts`, it simply uses the `baseDataProvider` base methods.
+
+Let's have a look:
+
+```ts
+import simpleRestDataProvider from "ra-data-simple-rest";
+import {
+  CreateParams,
+  UpdateParams,
+  DataProvider,
+  fetchUtils,
+} from "react-admin";
+
+const endpoint = "http://path.to.my.api";
+const baseDataProvider = simpleRestDataProvider(endpoint);
+
+type PostParams = {
+  id: string;
+  title: string;
+  content: string;
+  picture: {
+    rawFile: File;
+    src?: string;
+    title?: string;
+  };
+};
+
+const createPostFormData = (
+  params: CreateParams<PostParams> | UpdateParams<PostParams>
+) => {
+  const formData = new FormData();
+  params.data.picture?.rawFile && formData.append("file", params.data.picture.rawFile);
+  params.data.title && formData.append("title", params.data.title);
+  params.data.content && formData.append("content", params.data.content);
+
+  return formData;
+};
+
+export const dataProvider: DataProvider = {
+  ...baseDataProvider,
+  create: (resource, params) => {
+    if (resource === "posts") {
+      const formData = createPostFormData(params);
+      return fetchUtils
+        .fetchJson(`${endpoint}/${resource}`, {
+          method: "POST",
+          body: formData,
+        })
+        .then(({ json }) => ({ data: json }));
+    }
+
+    return baseDataProvider.create(resource, params);
+  },
+  update: (resource, params) => {
+    if (resource === "posts") {
+      const formData = createPostFormData(params);
+      formData.append("id", params.id);
+      return fetchUtils
+        .fetchJson(`${endpoint}/${resource}`, {
+          method: "PUT",
+          body: formData,
+        })
+        .then(({ json }) => ({ data: json }));
+    }
+
+    return baseDataProvider.update(resource, params);
+  },
+};
+```
+
+### Sending Files To A Third-Party Service
+
+A common way to handle file uploads in single-page-apps is to first upload the file to a CDN such as [Cloudinary](https://cloudinary.com/) or [CloudImage](https://www.cloudimage.io/en/home), then use the the file URL generated by the CDN in the record creation / modification payload.
+
+Lets see an example with the [https://cloudinary.com/](Cloudinary) service, by adapting the `dataProvider` according to [their "Authenticated requests" example](hhtps://cloudinary.com/documentation/upload_images#authenticated_requests).
+
+To do that, you need an API that serves a [`signature`](https://cloudinary.com/documentation/upload_images#generating_authentication_signatures) in the format that Cloudinary expect. To make it easier, you can install the [`cloudinary` package](https://cloudinary.com/documentation/node_integration#installation_and_setup).
+
+The following example generates and serves the signature needed to send files to Cloudinary. It uses Remix:
+
+```ts
+// handles the "get-cloudinary-signature" route and should be secured
+import { LoaderFunctionArgs, json } from "@remix-run/node";
+import cloudinary from "cloudinary";
+
+export const loader = ({ request }: LoaderFunctionArgs) => {
+  cloudinary.v2.config({
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    secure: false,
+  });
+
+  const timestamp = Math.round(new Date().getTime() / 1000);
+
+  const signature = cloudinary.v2.utils.api_sign_request(
+    {
+      timestamp: timestamp,
+    },
+    process.env.CLOUDINARY_API_SECRET as string
+  );
+
+  return json({
+    timestamp,
+    signature,
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+  });
+};
+```
+
+The following `dataProvider` extends an existing one and leverages [`withLifecycleCallbacks`](#adding-lifecycle-callbacks) to modify the `dataProvider.create()` and `dataProvider.update()` methods for the `posts` resource only with the [`beforeSave`](./withLifecycleCallbacks.md#beforesave) methods. 
+
+It works as follow:
+- it grabs the Cloudinary signature to allow the autentication in the request;
+- it creates a new `FormData` object with the file received from the form;
+- it sends this file to the Cloudinary API; 
+- it populates the `params.picture` object with the data sent by Cloudinary;
+- it returns the `params` object to allow the parent `dataProvider` to carry out its processes.
+
+An example is worth a thousand words:
+
+```ts
+// dataProvider.ts
+import { DataProvider, withLifecycleCallbacks } from "react-admin";
+import simpleRestProvider from "ra-data-simple-rest";
+
+type CloudinaryFile = {
+  asset_id: string;
+  secure_url: string;
+};
+
+type SignData = {
+  api_key: string;
+  timestamp: string;
+  signature: string;
+  cloud_name: string;
+};
+
+const endpoint = "http://path.to.my.api";
+
+const dataProvider = withLifecycleCallbacks(
+  simpleRestProvider(endpoint),
+  [
+    {
+      resource: "posts",
+      beforeSave: async (params: any, dataProvider: DataProvider) => {
+        const response = await fetch(
+          `${endpoint}/get-cloudinary-signature`,
+          { method: "GET" }
+          // should send headers with correct authentications
+        );
+
+        const signData: SignData = await response.json();
+
+        const url = `https://api.cloudinary.com/v1_1/${signData.cloud_name}/auto/upload`;
+
+        const formData = new FormData();
+        formData.append("file", params.picture.rawFile);
+        formData.append("api_key", signData.api_key);
+        formData.append("timestamp", signData.timestamp);
+        formData.append("signature", signData.signature);
+
+        const imageResponse = await fetch(url, {
+          method: "POST",
+          body: formData,
+        });
+
+        const image: CloudinaryFile = await imageResponse.json();
+
+        return {
+          ...params,
+          picture: {
+            src: image.secure_url,
+            title: image.asset_id,
+          },
+        };
+      },
+    },
+  ]
+);
+```
+
+Feel free to read the [Cloudinary Get Started doc](https://cloudinary.com/documentation/programmable_media_overview) to learn more.
