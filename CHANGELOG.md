@@ -1,5 +1,12 @@
 # Changelog
 
+## v4.15.3
+
+* Fix `<AutocompleteInput>` clear button appears over the `BulkActionsToolbar` ([#9413](https://github.com/marelab/react-admin/pull/9413)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Doc] Add screencasts for `<StackedFiltersForm>` and update code snippets ([#9410](https://github.com/marelab/react-admin/pull/9410)) ([adguernier](https://github.com/adguernier))
+* [Doc] Add a chapter for `<SearchInput>` ([#9409](https://github.com/marelab/react-admin/pull/9409)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Doc] Update data prodicer chapter to explain how to upload file with with FormData ([#9402](https://github.com/marelab/react-admin/pull/9402)) ([adguernier](https://github.com/adguernier))
+
 ## v4.15.2
 
 * Fix `<CreateButton>` keeps state between pages ([#9407](https://github.com/marmelab/react-admin/pull/9407)) ([fzaninotto](https://github.com/fzaninotto))
