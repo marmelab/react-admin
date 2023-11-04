@@ -184,7 +184,7 @@ By default, the `<AppBar>` renders three buttons in addition to the user menu:
 
 - the [language menu button](./LocalesMenuButton.md),
 - the [theme toggle button](./ToggleThemeButton.md),
-- and [the refresh button](./Buttons.md#refreshbutton).
+- and [the refresh button](./Buttons.md#refreshbutton), which is also a loading indicator.
 
 If you want to reorder or remove these buttons, you can customize the toolbar by passing a `toolbar` prop.
 
@@ -193,8 +193,8 @@ If you want to reorder or remove these buttons, you can customize the toolbar by
 import { 
     AppBar,
     LocalesMenuButton,
-    RefreshIconButton,
     ToggleThemeButton,
+    LoadingIndicator,
 } from 'react-admin';
 
 export const MyAppBar = () => (
@@ -202,7 +202,7 @@ export const MyAppBar = () => (
         <>
             <LocalesMenuButton />
             <ToggleThemeButton />
-            <RefreshIconButton />
+            <LoadingIndicator />
         </>
     } />
 );
@@ -217,7 +217,7 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import { IconButton } from '@mui/material';
 
 const SettingsButton = () => (
-    <IconButton color="inherit">
+    <IconButton color="inherit" onClick={/* ... */}>
         <SettingsIcon />
     </IconButton>
 );
