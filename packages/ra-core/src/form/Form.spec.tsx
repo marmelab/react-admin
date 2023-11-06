@@ -188,10 +188,9 @@ describe('Form', () => {
         );
 
         fireEvent.click(screen.getByText('Submit'));
-        await waitFor(() => {
-            const notification = screen.queryByText('ra.message.invalid_form');
-            expect(notification).toBeNull();
-        });
+        await screen.findByText('@@react-admin@@"ra.validation.required"');
+
+        expect(screen.queryByText('ra.message.invalid_form')).toBeNull();
     });
 
     it('Displays submission errors', async () => {
