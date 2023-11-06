@@ -42,11 +42,19 @@ Additionally, `<DatagridAG>` is compatible with the [Enterprise version of ag-gr
   Your browser does not support the video tag.
 </video>
 
-Check [the `ra-editable-datagrid` documentation](https://marmelab.com/ra-enterprise/modules/ra-editable-datagrid#datagridag) for more details.
-
 ## Usage
 
-Use `<DatagridAG>` as a child of a react-admin `<List>`, `<ReferenceManyField>`, or any other component that creates a `ListContext`.
+First, install the `@react-admin/ra-editable-datagrid` package:
+
+```sh
+npm install --save @react-admin/ra-editable-datagrid
+# or
+yarn add @react-admin/ra-editable-datagrid
+```
+
+**Tip**: `ra-editable-datagrid` is hosted in a private npm registry. You need to subscribe to one of the [Enterprise Edition](https://marmelab.com/ra-enterprise/) plans to access this package.
+
+Than, use `<DatagridAG>` as a child of a react-admin `<List>`, `<ReferenceManyField>`, or any other component that creates a `ListContext`.
 
 ```tsx
 import 'ag-grid-community/styles/ag-grid.css';

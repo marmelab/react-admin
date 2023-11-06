@@ -15,7 +15,17 @@ This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" s
 
 ## Usage
 
-`<EditableDatagrid>` is a drop-in replacement for `<Datagrid>`. It expects 2 additional props: `createForm` and `editForm`, the components to be displayed when a user creates or edits a row. The `<RowForm>` component allows to create such forms using react-admin Input components. 
+First, install the `@react-admin/ra-editable-datagrid` package:
+
+```sh
+npm install --save @react-admin/ra-editable-datagrid
+# or
+yarn add @react-admin/ra-editable-datagrid
+```
+
+**Tip**: `ra-editable-datagrid` is hosted in a private npm registry. You need to subscribe to one of the [Enterprise Edition](https://marmelab.com/ra-enterprise/) plans to access this package.
+
+Than, use `<EditableDatagrid>` as a child of a react-admin `<List>`, `<ReferenceManyField>`, or any other component that creates a `ListContext`.
 
 ```jsx
 import {
@@ -70,5 +80,8 @@ const ArtistForm = () => (
     </RowForm>
 );
 ```
+
+`<EditableDatagrid>` is a drop-in replacement for `<Datagrid>`. It expects 2 additional props: `createForm` and `editForm`, the components to be displayed when a user creates or edits a row. The `<RowForm>` component allows to create such forms using react-admin Input components. 
+
 
 Check [the `ra-editable-datagrid` documentation](https://marmelab.com/ra-enterprise/modules/ra-editable-datagrid) for more details.
