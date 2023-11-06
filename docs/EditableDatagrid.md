@@ -25,7 +25,7 @@ yarn add @react-admin/ra-editable-datagrid
 
 **Tip**: `ra-editable-datagrid` is hosted in a private npm registry. You need to subscribe to one of the [Enterprise Edition](https://marmelab.com/ra-enterprise/) plans to access this package.
 
-Than, use `<EditableDatagrid>` as a child of a react-admin `<List>`, `<ReferenceManyField>`, or any other component that creates a `ListContext`.
+Then, use `<EditableDatagrid>` as a child of a react-admin `<List>`, `<ReferenceManyField>`, or any other component that creates a `ListContext`.
 
 ```jsx
 import {
