@@ -5,22 +5,25 @@ title: "The Show Component"
 
 # `<Show>`
 
-The `<Show>` component handles the logic of the Show page:
+The `<Show>` component is a page component that renders a single record. 
+
+![post show view](./img/post-show.png)
+
+`<Show>` handles the logic of the Show page:
 
 - it calls `useShowController` to fetch the record from the dataProvider via `dataProvider.getOne()`,
 - it computes the default page title
-- it creates a `ShowContext` and a `RecordContext`,
+- it creates a `ShowContext` and a [`RecordContext`](./useRecordContext.md),
 - it renders the page layout with the correct title and actions
-- it renders its child component (a show layout component like `<SimpleShowLayout>`) in a Material UI `<Card>`
+- it renders its child component (a show layout component like [`<SimpleShowLayout>`](./SimpleShowLayout.md) or [`<TabbedShowLayout>`](./TabbedShowLayout.md)) in a Material UI `<Card>`
+
 
 ## Usage
 
 Here is the minimal code necessary to display a view to show a post:
 
-{% raw %}
 ```jsx
 // in src/posts.jsx
-import * as React from "react";
 import { Show, SimpleShowLayout, TextField, DateField, RichTextField } from 'react-admin';
 
 export const PostShow = () => (
@@ -33,101 +36,42 @@ export const PostShow = () => (
         </SimpleShowLayout>
     </Show>
 );
+```
 
+Components using `<Show>` can be used as the `show` prop of a `<Resource>` component:
+
+```jsx
 // in src/App.jsx
-import * as React from "react";
 import { Admin, Resource } from 'react-admin';
-import jsonServerProvider from 'ra-data-json-server';
 
+import { dataProvider } from './dataProvider';
 import { PostShow } from './posts';
 
 const App = () => (
-    <Admin dataProvider={jsonServerProvider('https://jsonplaceholder.typicode.com')}>
+    <Admin dataProvider={dataProvider}>
         <Resource name="posts" show={PostShow} />
     </Admin>
 );
 ```
-{% endraw %}
 
-That's enough to display the post show view:
-
-![post show view](./img/post-show.png)
+That's enough to display the post show view above.
 
 ## Props
 
-* [`actions`](#actions): override the actions toolbar with a custom component
-* [`aside`](#aside): aside element
-* `className`: passed to the root component
-* [`children`](#layout): the components that render the record fields
-* [`component`](#component): overrides the root component
-* [`disableAuthentication`](#disableauthentication): disable the authentication check
-* [`emptyWhileLoading`](#loading-state)
-* [`queryOptions`](#queryoptions): options to pass to the react-query client
-* [`sx`](#sx-css-api): Override the styles
-* [`title`](#title)
-
-## Layout
-
-`<Show>` doesn't render any field by default - it delegates this to its children. Show layout components grab the `record` from the `RecordContext` and render them on screen.
-
-React-admin provides 2 show layout components:
-
-- [`<SimpleShowLayout>`](./SimpleShowLayout.md) displays fields with a label in a single column
-- [`<TabbedShowLayout>`](./TabbedShowLayout.md) displays a list of tabs, each tab rendering a stack of fields with a label
-
-To use an alternative layout, switch the `<Show>` child component:
-
-```diff
-export const PostShow = () => (
-    <Show>
--       <SimpleShowLayout>
-+       <TabbedShowLayout>
-+           <TabbedShowLayout.Tab label="Main>
-                <TextField source="title" />
-                <TextField source="teaser" />
-                <RichTextField source="body" />
-                <DateField label="Publication date" source="created_at" />
-+           </TabbedShowLayout.Tab>
--       </SimpleShowLayout>
-+       </TabbedShowLayout>
-    </Show>
-);
-```
-
-You can also pass a React element as child, to build a custom layout. Check [Building a custom Show Layout](./ShowTutorial.md#building-a-custom-layout) for more details.
-
-## `title`
-
-By default, the title for the Show view is "[resource_name] #[record_id]".
-
-You can customize this title by specifying a custom `title` prop:
-
-```jsx
-export const PostShow = () => (
-    <Show title="Post view">
-        ...
-    </Show>
-);
-```
-
-More interestingly, you can pass a component as `title`. React-admin clones this component, which can access the current record via `useRecordContext`. This allows to customize the title according to the current record:
-
-```jsx
-import { useRecordContext, Show } from 'react-admin';
-
-const PostTitle = () => {
-    const record = useRecordContext();
-    // the record can be empty while loading
-    if (!record) return null;
-    return <span>Post "{record.title}"</span>;
-};
-
-export const PostShow = () => (
-    <Show title={<PostTitle />}>
-        ...
-    </Show>
-);
-```
+| Prop             | Required | Type              | Default | Description
+|------------------|----------|-------------------|---------|--------------------------------------------------------
+| `children`       | Required | `ReactNode`       |         | The components rendering the record fields
+| `actions`        | Optional | `ReactElement`    |         | The actions to display in the toolbar.
+| `aside`          | Optional | `ReactElement`    |         | The component to display on the side of the list.
+| `className`      | Optional | `string`          |         | passed to the root component
+| `component`      | Optional | `Component`       | `Card`  | The component to render as the root element
+| `disable Authentication` | Optional | `boolean` |         | Set to `true` to disable the authentication check.
+| `empty WhileLoading` | Optional | `boolean`     |         | Set to `true` to return `null` while the list is loading.
+| `id`             | Optional | `string | number` |         | The record id. If not provided, it will be deduced from the URL.
+| `queryOptions`   | Optional | `object`          |         | The options to pass to the `useQuery` hook.
+| `resource`       | Optional | `string`          |         | The resource name, e.g. `posts`
+| `sx`             | Optional | `object`          |         | Override or extend the styles applied to the component
+| `title`          | Optional | `string | ReactElement` |   | The title to display in the App Bar.
 
 ## `actions`
 
@@ -198,6 +142,140 @@ const Aside = () => {
 
 **Tip**: Always test the record is defined before using it, as react-admin starts rendering the UI before the `dataProvider.getOne()` call is over.
 
+## `children`
+
+`<Show>` doesn't render any field by default - it delegates this to its children, called "Show layout components". These components read the `record` from the [`RecordContext`](./useRecordContext.md) and render its fields.
+
+React-admin provides 2 built-in show layout components:
+
+- [`<SimpleShowLayout>`](./SimpleShowLayout.md) displays fields with a label in a single column
+- [`<TabbedShowLayout>`](./TabbedShowLayout.md) displays a list of tabs, each tab rendering a stack of fields with a label
+
+To use an alternative layout, switch the `<Show>` child component:
+
+```diff
+export const PostShow = () => (
+    <Show>
+-       <SimpleShowLayout>
++       <TabbedShowLayout>
++           <TabbedShowLayout.Tab label="Main">
+                <TextField source="title" />
+                <TextField source="teaser" />
+                <RichTextField source="body" />
+                <DateField label="Publication date" source="created_at" />
++           </TabbedShowLayout.Tab>
+-       </SimpleShowLayout>
++       </TabbedShowLayout>
+    </Show>
+);
+```
+
+You can also pass a React element as child, to build a custom layout. Check [Building a custom Show Layout](./ShowTutorial.md#building-a-custom-layout) for more details.
+
+**Tip**: Use [`<ShowGuesser>`](./ShowGuesser.md) instead of `<Show>` to let react-admin guess the fields to display based on the dataProvider response.
+
+## `component`
+
+By default, the Show view renders the main content area inside a Material UI `<Card>`. The actual layout of the record fields depends on the Show Layout component you're using (`<SimpleShowLayout>`, `<TabbedShowLayout>`, or a custom layout component).
+
+You can override the main area container by passing a `component` prop:
+
+{% raw %}
+```jsx
+import { Box } from '@mui/material';
+
+const ShowWrapper = ({ children }) => (
+    <Box sx={{ margin: 2, border: 'solid 1px grey' }}>
+        {children}
+    </Box>
+);
+
+// use a ShowWrapper as root component
+const PostShow = props => (
+    <Show component={ShowWrapper} {...props}>
+        ...
+    </Show>
+);
+```
+{% endraw %}
+
+## `disableAuthentication`
+
+By default, the `<Show>` component will automatically redirect the user to the login page if the user is not authenticated. If you want to disable this behavior and allow anonymous access to a show page, set the `disableAuthentication` prop to `true`.
+
+```jsx
+const PostShow = () => (
+    <Show disableAuthentication>
+        ...
+    </Show>
+);
+```
+
+## `emptyWhileLoading`
+
+By default, `<Show>` renders its child component even before the `dataProvider.getOne()` call returns. If you use `<SimpleShowLayout>` or `<TabbedShowLayout>`, this isn't a problem as these components only render when the record has been fetched. 
+
+But if you use a custom child component that expects the record context to be defined, your component will throw an error. For instance, the following will fail on load with a "ReferenceError: data is not defined" error:
+
+```jsx
+import { Show, useShowContext } from 'react-admin';
+import { Stack, Typography } from '@mui/icons-material/Star';
+
+const SimpleBookShow = () => {
+    const { data } = useShowContext();
+    return (
+        <Typography>
+            <i>{data.title}</i>, by {data.author} ({data.year})
+        </Typography>
+    );
+}
+
+const BookShow = () => (
+    <Show>
+        <SimpleBookShow />
+    </Show>
+);
+```
+
+You can handle this case by getting the `isLoading` variable from the [`useShowContext`](./useShowContext.md) hook:
+
+```jsx
+const SimpleBookShow = () => {
+    const { data, isLoading } = useShowContext();
+    if (isLoading) return null;
+    return (
+        <Typography>
+            <i>{data.title}</i>, by {data.author} ({data.year})
+        </Typography>
+    );
+}
+```
+
+The `<Show emptyWhileLoading>` prop provides a convenient shortcut for that use case. When enabled, `<Show>` won't render its child until `data` is defined.
+
+```diff
+const BookShow = () => (
+-   <Show>
++   <Show emptyWhileLoading>
+        <SimpleBookShow />
+    </Show>
+);
+```
+
+## `id`
+
+By default, `<Show>` deduces the identifier of the record to show from the URL path. So under the `/posts/123/show` path, the `id` prop will be `123`. You may want to force a different identifier. In this case, pass a custom `id` prop.
+
+```jsx
+export const PostShow = () => (
+    <Show id="123">
+        ...
+    </Show>
+);
+```
+
+**Tip**: Pass both a custom `id` and a custom `resource` prop to use `<Show>` independently of the current URL. This even allows you to use more than one `<Show>` component in the same page.
+
 ## `queryOptions`
 
 `<Show>` accepts a `queryOptions` prop to pass options to the react-query client. 
@@ -259,44 +337,19 @@ The default `onError` function is:
 }
 ```
 
-## `component`
+## `resource`
 
-By default, the Show view renders the main content area inside a Material UI `<Card>`. The actual layout of the record fields depends on the Show Layout component you're using (`<SimpleShowLayout>`, `<TabbedShowLayout>`, or a custom layout component).
+By default, `<Show>` operates on the current `ResourceContext` (defined at the routing level), so under the `/posts/1/show` path, the `resource` prop will be `posts`. You may want to force a different resource. In this case, pass a custom `resource` prop, and it will override the `ResourceContext` value.
 
-You can override the main area container by passing a `component` prop:
-
-{% raw %}
 ```jsx
-import { Box } from '@mui/material';
-
-const ShowWrapper = ({ children }) => (
-    <Box sx={{ margin: 2, border: 'solid 1px grey' }}>
-        {children}
-    </Box>
-);
-
-// use a ShowWrapper as root component
-const PostShow = props => (
-    <Show component={ShowWrapper} {...props}>
+export const UsersShow = () => (
+    <Show resource="users">
         ...
     </Show>
 );
 ```
-{% endraw %}
 
-## `disableAuthentication`
-
-By default, the `<Show>` component will automatically redirect the user to the login page if the user is not authenticated. If you want to disable this behavior and allow anonymous access to a show page, set the `disableAuthentication` prop to `true`.
-
-{% raw %}
-```jsx
-const PostShow = () => (
-    <Show disableAuthentication>
-        ...
-    </Show>
-);
-```
-{% endraw %}
+**Tip**: Pass both a custom `id` and a custom `resource` prop to use `<Show>` independently of the current URL. This even allows you to use more than one `<Show>` component in the same page.
 
 ## `sx`: CSS API
 
@@ -327,6 +380,39 @@ const PostShow = () => (
 {% endraw %}
 
 To override the style of all instances of `<Show>` using the [application-wide style overrides](./AppTheme.md#theming-individual-components), use the `RaShow` key.
+
+## `title`
+
+By default, the title for the Show view is "[resource_name] #[record_id]".
+
+You can customize this title by specifying a custom `title` prop:
+
+```jsx
+export const PostShow = () => (
+    <Show title="Post view">
+        ...
+    </Show>
+);
+```
+
+More interestingly, you can pass a component as `title`. React-admin clones this component, which can access the current record via `useRecordContext`. This allows to customize the title according to the current record:
+
+```jsx
+import { useRecordContext, Show } from 'react-admin';
+
+const PostTitle = () => {
+    const record = useRecordContext();
+    // the record can be empty while loading
+    if (!record) return null;
+    return <span>Post "{record.title}"</span>;
+};
+
+export const PostShow = () => (
+    <Show title={<PostTitle />}>
+        ...
+    </Show>
+);
+```
 
 ## Loading State
 
@@ -518,25 +604,31 @@ export const PostShow = () => (
 
 **Tips:** If you want the `<PrevNextButtons>` to link to the `<Show>` view, you have to set the `linkType` to `show`. See [the `<PrevNextButtons linkType>` prop](./PrevNextButtons.md#linktype).
 
-## API
+## Headless Version
 
-* [`<Show>`]
-* [`<ShowActions>`]
-* [`<SimpleShowLayout>`]
-* [`<Tab>`]
-* [`<TabbedShowLayout>`]
-* [`useRecordContext`]
-* [`useResourceContext`]
-* [`useShowContext`]
-* [`useShowController`]
+The root component of `<Show>` is a Material UI `<Card>`. Besides, `<Show>` renders an action toolbar, and sets the page title. This may be useless if you have a completely custom layout.
 
-[`<Show>`]: https://github.com/marmelab/react-admin/blob/master/packages/ra-ui-materialui/src/detail/Show.tsx
-[`<ShowActions>`]: https://github.com/marmelab/react-admin/blob/master/packages/ra-ui-materialui/src/detail/ShowActions.tsx
-[`<SimpleShowLayout>`]: https://github.com/marmelab/react-admin/blob/master/packages/ra-ui-materialui/src/detail/SimpleShowLayout.tsx
-[`<Tab>`]: https://github.com/marmelab/react-admin/blob/master/packages/ra-ui-materialui/src/detail/Tab.tsx
-[`<TabbedShowLayout>`]: https://github.com/marmelab/react-admin/blob/master/packages/ra-ui-materialui/src/detail/TabbedShowLayout.tsx
-[`<WithRecord>`]: https://github.com/marmelab/react-admin/blob/master/packages/ra-core/src/controller/record/WithRecord.tsx
-[`useRecordContext`]: https://github.com/marmelab/react-admin/blob/master/packages/ra-core/src/controller/record/useRecordContext.ts
-[`useResourceContext`]: https://github.com/marmelab/react-admin/blob/master/packages/ra-core/src/core/useResourceContext.ts
-[`useShowContext`]: https://github.com/marmelab/react-admin/blob/master/packages/ra-core/src/controller/show/useShowContext.tsx
-[`useShowController`]: https://github.com/marmelab/react-admin/blob/master/packages/ra-core/src/controller/show/useShowController.ts
+In that case, opt for [the `<ShowBase>` component](./ShowBase.md), a headless version of `<Show>`.
+
+```jsx
+// in src/posts.jsx
+import { ShowBase } from 'react-admin';
+
+export const PostShow = () => (
+    <ShowBase>
+        <Grid container>
+            <Grid item xs={8}>
+                <SimpleShowLayout>
+                    ...
+                </SimpleShowLayout>
+            </Grid>
+            <Grid item xs={4}>
+                Show instructions...
+            </Grid>
+        </Grid>
+        <div>
+            Post related links...
+        </div>
+    </ShowBase>
+);
+```

@@ -27,12 +27,16 @@ const PostShow = () => (
 
 ## Props
 
-* [`children`](#children): components rendering a record field
-* `className`: passed to the root component
-* [`divider`](#divider): optional element to render between each field
-* [`record`](#controlled-mode): can be injected when outside a RecordContext 
-* [`spacing`](#spacing): optional integer to set the spacing between the fields
-* [`sx`](#sx-css-api): Override the styles
+The `<SimpleShowLayout>` component accepts the following props:
+
+| Prop             | Required | Type             | Default | Description
+|------------------|----------|------------------|---------|--------------------------------------------------------
+| `children`      | Required | `ReactNode`      |         | The components rendering the record fields
+| `className`      | Optional | `string`         |         | The class name applied to the root element
+| `divider`        | Optional | `ReactElement`   |         | Optional element to render between each field
+| `record`         | Optional | `object`         |         | The record to render. Passed to the `RecordContext`
+| `spacing`        | Optional | `number`         | `1`     | The spacing between fields. Passed to the `<Stack>` component
+| `sx`             | Optional | `object`         |         | Override the styles applied to the root element
 
 Additional props are passed to the root component (`<div>`).
 

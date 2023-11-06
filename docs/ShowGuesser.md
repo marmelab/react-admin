@@ -37,9 +37,3 @@ React-admin provides guessers for the `List` view ([`<ListGuesser>`](./ListGuess
 ## See Also
 
 * [API Platform Admin](https://api-platform.com/docs/admin/) has a much more powerful `<ShowGuesser>` component that takes advantage of the API Schema.
-
-## API
-
-* [`<ShowGuesser>`]
-
-[`<ShowGuesser>`]: https://github.com/marmelab/react-admin/blob/master/packages/ra-ui-materialui/src/detail/ShowGuesser.tsx
