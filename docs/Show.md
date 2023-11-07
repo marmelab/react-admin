@@ -61,7 +61,7 @@ That's enough to display the post show view above.
 | Prop             | Required | Type              | Default | Description
 |------------------|----------|-------------------|---------|--------------------------------------------------------
 | `children`       | Required | `ReactNode`       |         | The components rendering the record fields
-| `actions`        | Optional | `ReactElement`    |         | The actions to display in the toolbar.
+| `actions`        | Optional | `ReactElement`    |         | The actions to display in the toolbar
 | `aside`          | Optional | `ReactElement`    |         | The component to display on the side of the list.
 | `className`      | Optional | `string`          |         | passed to the root component
 | `component`      | Optional | `Component`       | `Card`  | The component to render as the root element
@@ -383,7 +383,7 @@ To override the style of all instances of `<Show>` using the [application-wide s
 
 ## `title`
 
-By default, the title for the Show view is "[resource_name] #[record_id]".
+By default, the title for the Show view is `"[resource_name] #[record_id]"`.
 
 You can customize this title by specifying a custom `title` prop:
 

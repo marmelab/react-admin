@@ -207,7 +207,7 @@ const ShowButton = () => (
 
 ## `label`
 
-The `label` prop allows you to pass a custom label to the button, instead of the default ("Show"). It can be a string, or a React element.
+The `label` prop allows you to pass a custom label to the button, instead of the default ("Show"). It can be a string, a I18N value, or a React element.
 
 ```jsx
 const ShowButton = () => (
@@ -219,7 +219,7 @@ const ShowButton = () => (
 
 ## `queryOptions`
 
-The `queryOptions` prop allows you to pass options to the `useQuery` hook. 
+The `queryOptions` prop allows you to pass options to the [`useQuery`](./Actions.md#usequery-and-usemutation) hook. 
 
 This can be useful e.g. to pass [a custom `meta`](./Actions.md#meta-parameter) to the `dataProvider.getOne()` call.
 

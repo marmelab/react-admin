@@ -112,7 +112,7 @@ export const PostShow = () => (
 
 ## `divider`
 
-`<Stack>` accepts an optional `divider` prop - a component rendered between each row. `<TabbedShowLayout>` also accepts this props, and passes it to the `<Stack>` component.
+[`<Stack>`](https://mui.com/material-ui/react-stack/#dividers) accepts an optional `divider` prop - a component rendered between each row. `<TabbedShowLayout>` also accepts this props, and passes it to the `<Stack>` component.
 
 ```jsx
 import { Divider } from '@mui/material';
@@ -130,7 +130,7 @@ const PostShow = () => (
 
 ## `spacing`
 
-`<TabbedShowLayout.Tab>` renders a Material UI `<Stack>`. You can customize the spacing of each row by passing a `spacing` prop:
+`<TabbedShowLayout.Tab>` renders a Material UI [`<Stack>`](https://mui.com/material-ui/react-stack/#basics). You can customize the spacing of each row by passing a `spacing` prop:
 
 ```jsx
 const PostShow = () => (
