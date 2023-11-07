@@ -66,9 +66,9 @@ const App = () => (
 |------------------|----------|-------------------|---------|--------------------------------------------------------
 | `children`       | Required | `ReactNode`       |         | The components rendering the record fields
 | `disable Authentication` | Optional | `boolean` |         | Set to `true` to disable the authentication check
-| `empty WhileLoading` | Optional | `boolean`     |         | Set to `true` to return `null` while the list is loading.
-| `id`             | Optional | `string`          |         | The record identifier. If not provided, it will be deduced from the URL.
-| `queryOptions`   | Optional | `object`          |         | The options to pass to the `useQuery` hook.
+| `empty WhileLoading` | Optional | `boolean`     |         | Set to `true` to return `null` while the list is loading
+| `id`             | Optional | `string`          |         | The record identifier. If not provided, it will be deduced from the URL
+| `queryOptions`   | Optional | `object`          |         | The options to pass to the `useQuery` hook
 | `resource`       | Optional | `string`          |         | The resource name, e.g. `posts`
 
 ## `children`

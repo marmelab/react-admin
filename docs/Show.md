@@ -62,16 +62,16 @@ That's enough to display the post show view above.
 |------------------|----------|-------------------|---------|--------------------------------------------------------
 | `children`       | Required | `ReactNode`       |         | The components rendering the record fields
 | `actions`        | Optional | `ReactElement`    |         | The actions to display in the toolbar
-| `aside`          | Optional | `ReactElement`    |         | The component to display on the side of the list.
+| `aside`          | Optional | `ReactElement`    |         | The component to display on the side of the list
 | `className`      | Optional | `string`          |         | passed to the root component
 | `component`      | Optional | `Component`       | `Card`  | The component to render as the root element
-| `disable Authentication` | Optional | `boolean` |         | Set to `true` to disable the authentication check.
-| `empty WhileLoading` | Optional | `boolean`     |         | Set to `true` to return `null` while the list is loading.
-| `id`             | Optional | `string | number` |         | The record id. If not provided, it will be deduced from the URL.
-| `queryOptions`   | Optional | `object`          |         | The options to pass to the `useQuery` hook.
+| `disable Authentication` | Optional | `boolean` |         | Set to `true` to disable the authentication check
+| `empty WhileLoading` | Optional | `boolean`     |         | Set to `true` to return `null` while the list is loading
+| `id`             | Optional | `string | number` |         | The record id. If not provided, it will be deduced from the URL
+| `queryOptions`   | Optional | `object`          |         | The options to pass to the `useQuery` hook
 | `resource`       | Optional | `string`          |         | The resource name, e.g. `posts`
 | `sx`             | Optional | `object`          |         | Override or extend the styles applied to the component
-| `title`          | Optional | `string | ReactElement` |   | The title to display in the App Bar.
+| `title`          | Optional | `string | ReactElement` |   | The title to display in the App Bar
 
 ## `actions`
 

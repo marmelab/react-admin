@@ -89,18 +89,20 @@ const EmployerEdit = () => (
 
 This component accepts the following props:
 
-| Prop | Required | Type | Default | Description |
-| --- | --- | --- | --- | --- |
-| `children` | Required | `ReactNode` | | The content of the dialog. |
-| `ButtonProps` | Optional | `object` | | Props to pass to the MUI `<Button>` component. |
-| `empty WhileLoading` | Optional | `boolean`     |         | Set to `true` to return `null` while the list is loading.
-| `icon` | Optional | `ReactElement` | | The icon of the button. |
-| `id`             | Optional | `string | number` |         | The record id. If not provided, it will be deduced from the record context.
-| `inline` | Optional | `boolean` | `false` | Set to `true` to display only an MUI `<IconButton>` instead of the full `<Button>`. The label will still be available as a `<Tooltip>` though. |
-| `label` | Optional | `string` | | The label of the button. I18N is supported. |
-| `queryOptions`   | Optional | `object`          |         | The options to pass to the `useQuery` hook.
-| `resource`       | Optional | `string`          |         | The resource name, e.g. `posts`
-| `sx`             | Optional | `object`          |         | Override the styles applied to the dialog component.
+| Prop           | Required | Type           | Default  | Description               |
+|----------------|----------|----------------|----------|---------------------------|
+| `children`     | Required | `ReactNode`    |          | The content of the dialog |
+| `ButtonProps`  | Optional | `object`       |          | Props to pass to the MUI `<Button>` component |
+| `empty WhileLoading` | Optional | `boolean` |         | Set to `true` to return `null` while the list is loading |
+| `fullWidth`    | Optional | `boolean`      | `false`  | Set to `true` to make the dialog full width |
+| `icon`         | Optional | `ReactElement` |          | The icon of the button |
+| `id`           | Optional | `string | number` |       | The record id. If not provided, it will be deduced from the record context |
+| `inline`       | Optional | `boolean`      | `false`  | Set to `true` to display only an MUI `<IconButton>` instead of the full `<Button>`. The label will still be available as a `<Tooltip>` though. |
+| `label`        | Optional | `string`       |          | The label of the button. I18N is supported. |
+| `maxWidth`     | Optional | `string | boolean` | `sm` | The max width of the dialog. |
+| `queryOptions` | Optional | `object`       |          | The options to pass to the `useQuery` hook |
+| `resource`     | Optional | `string`       |          | The resource name, e.g. `posts` |
+| `sx`           | Optional | `object`       |          | Override the styles applied to the dialog component |
 
 ## `children`
 
@@ -162,6 +164,30 @@ const ShowButton = () => (
 );
 ```
 
+## `fullWidth`
+
+By default, `<EditInDialogButton>` renders a [Material UI `<Dialog>`](https://mui.com/material-ui/react-dialog/#full-screen-dialogs) component that takes the width of its content.
+
+You can make the dialog full width by setting the `fullWidth` prop to `true`:
+
+```jsx
+const EditButton = () => (
+  <EditInDialogButton fullWidth>
+      ...
+  </EditInDialogButton>
+);
+```
+
+In addition, you can set a dialog maximum width by using the `maxWidth` enumerable in combination with the `fullWidth` boolean. When the `fullWidth` prop is true, the dialog will adapt based on the `maxWidth` value.
+
+```jsx
+const EditButton = () => (
+  <EditInDialogButton fullWidth maxWidth="sm">
+      ...
+  </EditInDialogButton>
+);
+```
+
 ## `icon`
 
 The `icon` prop allows you to pass an icon to the button. It can be a MUI icon component, or a custom icon component.
@@ -212,6 +238,20 @@ The `label` prop allows you to pass a custom label to the button, instead of the
 ```jsx
 const ShowButton = () => (
   <ShowInDialogButton label="Show details">
+      ...
+  </ShowInDialogButton>
+);
+```
+
+## `maxWidth`
+
+The `maxWidth` prop allows you to set the max width of the dialog. It can be one of the following values: `xs`, `sm`, `md`, `lg`, `xl`, `false`. The default is `sm`.
+
+For example, you can use that prop to make the dialog full width:
+
+```jsx
+const ShowButton = () => (
+  <ShowInDialogButton fullWidth maxWidth={false}>
       ...
   </ShowInDialogButton>
 );
