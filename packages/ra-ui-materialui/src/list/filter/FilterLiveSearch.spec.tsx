@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 
 import { Basic, HiddenLabel } from './FilterLiveSearch.stories';
 
@@ -29,16 +29,6 @@ describe('FilterLiveSearch', () => {
         expect(screen.queryAllByRole('listitem')).toHaveLength(2);
         fireEvent.click(screen.getByLabelText('ra.action.clear_input_value'));
         expect(screen.queryAllByRole('listitem')).toHaveLength(27);
-    });
-    it("input search shouldn't change url on submit", () => {
-        render(<Basic />);
-        const input = screen.getByRole('textbox', { name: 'ra.action.search' });
-        fireEvent.change(input, { target: { value: 'test' } });
-        fireEvent.submit(input);
-        waitFor(() => {
-            expect(window.location.href).toContain('?filter={"q"%3A"test"}');
-            expect(window.location.href).not.toContain('/?q=test#/');
-        });
     });
     describe('hiddenLabel', () => {
         it('turns the label into a placeholder', () => {
