@@ -6,7 +6,7 @@ import { useTheme } from '@mui/material/styles';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useLoading } from 'ra-core';
 
-import { RefreshIconButton } from '../button';
+import { RefreshIconButton, RefreshIconButtonProps } from '../button';
 import { SxProps } from '@mui/system';
 
 export const LoadingIndicator = (props: LoadingIndicatorProps) => {
@@ -44,11 +44,12 @@ LoadingIndicator.propTypes = {
     width: PropTypes.string,
 };
 
-interface LoadingIndicatorProps {
+interface Props {
     className?: string;
-    onClick?: (e: MouseEvent) => void;
     sx?: SxProps;
 }
+
+type LoadingIndicatorProps = Props & Pick<RefreshIconButtonProps, 'onClick'>;
 
 const PREFIX = 'RaLoadingIndicator';
 
