@@ -351,7 +351,7 @@ const EmployerEdit = () => (
 
 ## Combining With `<CreateInDialogButton>`
 
-Below is an example of an `<Edit>` view, inside which is a nested `<Datagrid>`, offering the ability to **create**, **edit** and **show** the rows thanks to [`<CreateInDialogButton>`](./CreateInDialogButton.md), `<EditInDialogButton>` and [`<EditInDialogButton>`](./EditInDialogButton.md):
+Below is an example of an `<Edit>` view, inside which is a nested `<Datagrid>`, offering the ability to **create**, **edit** and **show** the rows thanks to [`<CreateInDialogButton>`](./CreateInDialogButton.md), `<EditInDialogButton>` and [`<ShowInDialogButton>`](./ShowInDialogButton.md):
 
 {% raw %}
 ```jsx
@@ -365,7 +365,7 @@ import {
   SelectField,
   SelectInput,
   SimpleForm,
-  SimpleForm,
+  SimpleShowLayout,
   TextField,
   TextInput,
   useRecordContext,
@@ -373,7 +373,7 @@ import {
 import {
   CreateInDialogButton,
   EditInDialogButton,
-  EditInDialogButton,
+  ShowInDialogButton,
 } from "@react-admin/ra-form-layout";
 
 const sexChoices = [
@@ -391,12 +391,12 @@ const CustomerForm = (props) => (
 );
 
 const CustomerLayout = (props) => (
-  <SimpleForm {...props}>
+  <SimpleShowLayout {...props}>
     <TextField source="first_name" fullWidth />
     <TextField source="last_name" fullWidth />
     <DateField source="dob" label="born" fullWidth />
     <SelectField source="sex" choices={sexChoices} fullWidth />
-  </SimpleForm>
+  </SimpleShowLayout>
 );
 
 // helper component to add actions buttons in a column (children),
@@ -423,10 +423,10 @@ const NestedCustomersDatagrid = () => {
     </EditInDialogButton>
   );
 
-  const EditButton = (
-    <EditInDialogButton fullWidth maxWidth="md">
+  const showButton = (
+    <ShowInDialogButton fullWidth maxWidth="md">
       <CustomerLayout />
-    </EditInDialogButton>
+    </ShowInDialogButton>
   );
 
   return (
@@ -444,7 +444,7 @@ const NestedCustomersDatagrid = () => {
         {/* Using a component as label is a trick to render it in the Datagrid header */}
         <DatagridActionsColumn label={createButton}>
           {editButton}
-          {EditButton}
+          {showButton}
         </DatagridActionsColumn>
       </Datagrid>
     </ReferenceManyField>
