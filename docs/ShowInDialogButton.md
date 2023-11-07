@@ -27,7 +27,7 @@ yarn add @react-admin/ra-form-layout
 
 **Tip**: [`ra-form-layout`](https://marmelab.com/ra-enterprise/modules/ra-form-layout#createindialogbutton-editindialogbutton-and-showindialogbutton) is hosted in a private npm registry. You need to subscribe to one of the [Enterprise Edition](https://marmelab.com/ra-enterprise/) plans to access this package.
 
-Then, use the `<ShowInDialogButton>` component inside a `RecordContext` (in a `<Datagrid>`, in   a `<Show>` or an `<Edit>` view).
+Then, use the `<ShowInDialogButton>` component inside a `RecordContext` (in a `<Datagrid>`, in a `<Show>` or an `<Edit>` view).
 
 Below is an example of an `<Edit>` view, inside which is a nested `<Datagrid>`, offering the ability to show the detail of each row in a dialog:
 

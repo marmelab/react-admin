@@ -57,7 +57,7 @@ This custom Show view has no action buttons - it's up to you to add them in pure
 
 `useShowController` expects one parameter argument. It's an object with the following attributes: 
 
-| Prop             | Required | Type              | Default | Description
+| Name             | Required | Type              | Default | Description
 |------------------|----------|-------------------|---------|--------------------------------------------------------
 | `disable Authentication` | Optional | `boolean` |         | Set to `true` to disable the authentication check.
 | `id`             | Optional | `string`          |         | The record identifier. If not provided, it will be deduced from the URL.

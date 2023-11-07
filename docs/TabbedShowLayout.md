@@ -121,7 +121,8 @@ const PostShow = () => (
     <Show>
         <TabbedShowLayout divider={<Divider flexItem />}>
             <TabbedShowLayout.Tab label="main">
-                <PostTitle label="title" />
+                <TextField source="title" />
+                <TextField source="subtitle" />
             </TabbedShowLayout.Tab>
         </TabbedShowLayout>
     </Show>
@@ -137,7 +138,8 @@ const PostShow = () => (
     <Show>
         <TabbedShowLayout spacing={2}>
             <TabbedShowLayout.Tab label="main">
-                <PostTitle label="title" />
+                <TextField source="title" />
+                <TextField source="subtitle" />
             </TabbedShowLayout.Tab>
         </TabbedShowLayout>
     </Show>

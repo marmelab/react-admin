@@ -222,10 +222,10 @@ import { Show, useShowContext } from 'react-admin';
 import { Stack, Typography } from '@mui/icons-material/Star';
 
 const SimpleBookShow = () => {
-    const { data } = useShowContext();
+    const { record } = useShowContext();
     return (
         <Typography>
-            <i>{data.title}</i>, by {data.author} ({data.year})
+            <i>{record.title}</i>, by {record.author} ({record.year})
         </Typography>
     );
 }
@@ -241,11 +241,11 @@ You can handle this case by getting the `isLoading` variable from the [`useShowC
 
 ```jsx
 const SimpleBookShow = () => {
-    const { data, isLoading } = useShowContext();
+    const { record, isLoading } = useShowContext();
     if (isLoading) return null;
     return (
         <Typography>
-            <i>{data.title}</i>, by {data.author} ({data.year})
+            <i>{record.title}</i>, by {record.author} ({record.year})
         </Typography>
     );
 }
