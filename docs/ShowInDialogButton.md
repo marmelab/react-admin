@@ -289,3 +289,17 @@ const ShowAuthorButton = () => {
   );
 };
 ```
+
+## `sx`
+
+Customize the styles applied to the Material UI `<Dialog>` component:
+
+{% raw %}
+```jsx
+const ShowButton = () => (
+  <ShowInDialogButton sx={{ backgroundColor: 'paper' }}>
+      ...
+  </ShowInDialogButton>
+);
+```
+{% endraw %}
