@@ -23,7 +23,7 @@ import { ResponsiveStyleValue } from '@mui/system';
 export const Labeled = ({
     children,
     className = '',
-    color = 'textSecondary',
+    color = 'text.secondary',
     component = 'span',
     fullWidth,
     isRequired,

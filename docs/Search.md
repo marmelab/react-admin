@@ -159,19 +159,84 @@ export const App = () => (
 
 ## Props
 
+The `<Search>` component accepts the following props:
 
-| Prop        | Required | Type               | Default  | Description                                                        |
-| ----------- | -------- | ------------------ | -------- | ------------------------------------------------------------------ |
-| `children`  | Optional | `ReactNode`        | `<SearchResultsPanel>` | The search result renderer                           |
-| `options`   | Optional | `object`           | -        | The search options (see details below)                             |
-| `wait`      | Optional | `number`           | 500      | The delay of debounce for the search to launch after typing in ms. |
-| `color`     | Optional | `'light' | 'dark'` | 'light'  | The color mode for the input, applying light or dark background.   |
+| Prop          | Required | Type      | Default                | Description                                                                                        |
+| ------------- | -------- | --------- | ---------------------- | -------------------------------------------------------------------------------------------------- |
+| `children`    | Optional | `Element` | `<SearchResultsPanel>` | A component that will display the results.                                                         |
+| `color`       | Optional | `string`  | `light`                | The color mode for the input, applying light or dark backgrounds. Accept either `light` or `dark`. |
+| `historySize` | Optional | `number`  | 5                      | The number of past queries to keep in history.                                                     |
+| `options`     | Optional | `Object`  | -                      | An object containing options to apply to the search.                                               |
+| `wait`        | Optional | `number`  | 500                    | The delay of debounce for the search to launch after typing in ms.                                 |
 
-The `options` object can contain the following keys:
+## `children`
 
--   `targets`: `string[]` An array of the indices on which to perform the search. Defaults to an empty array.
--   `historySize`: `number` The max number of search texts kept in the history. Default is 5.
--   `{any}`: `{any}` Any custom option to pass to the search engine.
+The `<Search>` children allow you to customize the way results are displayed. The child component can grab the search result using the `useSearchResult` hook.
+
+```tsx
+import { Admin, AppBar, TitlePortal, Layout } from 'react-admin';
+import { Search, useSearchResult } from '@react-admin/ra-search';
+
+const CustomSearchResultsPanel = () => {
+    const { data, onClose } = useSearchResult();
+
+    return (
+        <ul>
+            {data.map(searchResult => (
+                <li key={searchResult.id}>{searchResult.content.label}</li>
+            ))}
+        </ul>
+    );
+};
+
+const MyAppBar = () => (
+    <AppBar>
+        <TitlePortal />
+        <Search>
+            <CustomSearchResultsPanel />
+        </Search>
+    </AppBar>
+);
+
+const MyLayout = props => <Layout {...props} appBar={MyAppBar} />;
+
+export const App = () => (
+    <Admin dataProvider={searchDataProvider} layout={MyLayout}>
+        // ...
+    </Admin>
+);
+```
+
+## `color`
+
+If you need it, you can choose to render the `light` or the `dark` version of search input.
+
+```tsx
+<Search color="dark" />
+```
+
+## `historySize`
+
+The number of previous user searches to keep in the popover. For example, if a user performs 10 searches and `historySize` is set to 5, the popover will display the user's last 5 queries.
+
+```tsx
+<Search historySize={5} />
+```
+
+## `options`
+
+An object containing options to apply to the search:
+
+-   `targets`:`string[]`: an array of the indices on which to perform the search. Defaults to an empty array.
+-   `{any}`:`{any}`: any custom option to pass to the search engine.
+
+## `wait`
+
+The number of milliseconds to wait before processing the search request, immediately after the user enters their last character.
+
+```tsx
+<Search wait={200} />
+```
 
 ## Customizing The Result Items
 

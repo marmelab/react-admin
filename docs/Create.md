@@ -261,6 +261,8 @@ You can customize the redirection by setting the `redirect` prop to one of the f
 - `'list'`: redirect to the List view
 - `'show'`: redirect to the Show view
 - `false`: do not redirect
+- A function `(resource, id, data) => string` to redirect to different targets depending on the record
+
 
 ```jsx
 const PostCreate = () => (

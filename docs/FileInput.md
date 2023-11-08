@@ -237,3 +237,6 @@ const MyEdit = (props) => {
 }
 ```
 
+## Uploading Files
+
+Handling files uploads in react-admin is the dataProvider's job. Learn how to do that in the [Handling File Uploads section from the dataProvider documentation](./DataProviders.md/#handling-file-uploads).

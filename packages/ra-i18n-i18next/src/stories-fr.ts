@@ -1,8 +1,7 @@
 import raMessages from 'ra-language-french';
-import { convertRaTranslationsToI18next } from './convertRaTranslationsToI18next';
 
 export default {
-    ...convertRaTranslationsToI18next(raMessages),
+    ...raMessages,
     resources: {
         posts: {
             name_one: 'Article',

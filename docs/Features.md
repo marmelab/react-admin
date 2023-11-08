@@ -297,6 +297,32 @@ Check the following components to learn more about guessers:
 - [`<EditGuesser>`](./EditGuesser.md)
 - [`<ShowGuesser>`](./ShowGuesser.md)
 
+## Powerful Datagrid Components
+
+Most admins need to display a list of records, letting users sort, filter, and paginate them. React-admin provides a set of components to build such lists, called "Datagrid components".
+
+The basic [`<Datagrid>` component](./Datagrid.md) displays a list of records in a table, with a row for each record and a column for each field. It alsosupports an expand panel, a row selection checkbox, and a bulk action toolbar.
+
+<video controls autoplay playsinline muted loop>
+  <source src="./img/Datagrid.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
+The [`<EditableDatagrid>` component](./EditableDatagrid.md) lets users edit records in place, without having to navigate to an edit form. It's a great way to speed up data entry.
+
+<video controls autoplay playsinline muted loop>
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-editable-datagrid-overview.webm" type="video/webm" />
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-editable-datagrid-overview.mp4" type="video/mp4" />
+  Your browser does not support the video tag.
+</video>
+
+Finally, the [`<DatagridAG>` component](./DatagridAG.md) integrates the powerful [AG Grid](https://www.ag-grid.com/) library to provide a rich set of features, such as cell editing, aggregation, row grouping, master detail, clipboard, pivoting, column filtering, export to excel, context menu, tree data, charting, and more.
+
+<video controls autoplay playsinline muted loop>
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/DatagridAG-enterprise.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
 ## Search & Filtering
 
 In most admin and B2B apps, the most common task is to look for a record. React-admin includes many features to help you **build a user experience that streamlines the search workflow**.
@@ -426,6 +452,7 @@ React-admin offers a **rich set of input components and form layouts** to build 
 
 For instance, here is how to build a tabbed form for editing a blog post:
 
+{% raw %}
 ```jsx
 import {
     TabbedForm,
@@ -445,7 +472,7 @@ export const PostEdit = () => (
     <Edit>
         <TabbedForm>
             <TabbedForm.Tab label="summary">
-                <TextInput disabled label="Id" source="id" />
+                <TextInput label="Id" source="id" InputProps={{ disabled: true }} />
                 <TextInput source="title" validate={required()} />
                 <TextInput multiline source="teaser" validate={required()} />
             </TabbedForm.Tab>
@@ -457,7 +484,7 @@ export const PostEdit = () => (
                 <DateInput label="Publication date" source="published_at" />
                 <NumberInput source="average_note" validate={[ number(), minValue(0) ]} />
                 <BooleanInput label="Allow comments?" source="commentable" defaultValue />
-                <TextInput disabled label="Nb views" source="views" />
+                <TextInput label="Nb views" source="views" InputProps={{ disabled: true }} />
             </TabbedForm.Tab>
             <TabbedForm.Tab label="comments">
                 <ReferenceManyField reference="comments" target="post_id" label={false}>
@@ -472,6 +499,7 @@ export const PostEdit = () => (
     </Edit>
 );
 ```
+{% endraw %}
 
 <video controls autoplay playsinline muted loop>
   <source src="./img/tabbed-form.webm" type="video/webm"/>

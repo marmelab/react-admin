@@ -106,6 +106,26 @@ const UserProfile = () => {
 };
 ```
 
+## Refreshing the Record
+
+If you want to refresh the record, use the `refetch` function returned by the hook.
+
+```jsx
+import { useGetOne } from 'react-admin';
+
+const UserProfile = ({ userId }) => {
+    const { data, isLoading, error, refetch } = useGetOne('users', { id: userId });
+    if (isLoading) { return <Loading />; }
+    if (error) { return <p>ERROR</p>; }
+    return (
+        <>
+            <div>User {data.username}</div>
+            <button onClick={() => refetch()}>Refresh</button>
+        </>
+    );
+};
+```
+
 ## Live Updates
 
 If you want to subscribe to live updates on the record (topic: `resource/[resource]/[id]`), use [the `useGetOneLive` hook](./useGetOneLive.md) instead.

@@ -146,7 +146,7 @@ export const useInfiniteGetList = <RecordType extends RaRecord = any>(
         ? {
               ...result,
               data: result.data,
-              total: result.data?.pages[0]?.total || undefined,
+              total: result.data?.pages[0]?.total ?? undefined,
           }
         : result) as UseInfiniteQueryResult<
         GetInfiniteListResult<RecordType>,

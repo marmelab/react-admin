@@ -3,7 +3,8 @@ import ContentAdd from '@mui/icons-material/Add';
 import { Fab, useMediaQuery, Theme } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import clsx from 'clsx';
-import { isEqual, merge } from 'lodash';
+import isEqual from 'lodash/isEqual';
+import merge from 'lodash/merge';
 import PropTypes from 'prop-types';
 import { useTranslate, useResourceContext, useCreatePath } from 'ra-core';
 import { Link, To } from 'react-router-dom';
@@ -42,7 +43,11 @@ const CreateButton = (props: CreateButtonProps) => {
     const isSmall = useMediaQuery((theme: Theme) =>
         theme.breakpoints.down('md')
     );
-    const state = merge(scrollStates.get(String(scrollToTop)), initialState);
+    const state = merge(
+        {},
+        scrollStates.get(String(scrollToTop)),
+        initialState
+    );
     // Duplicated behaviour of Button component (legacy use) which will be removed in v5.
     const linkParams = getLinkParams(locationDescriptor);
 
@@ -134,7 +139,8 @@ export default React.memo(CreateButton, (prevProps, nextProps) => {
         prevProps.label === nextProps.label &&
         prevProps.translate === nextProps.translate &&
         prevProps.disabled === nextProps.disabled &&
-        isEqual(prevProps.to, nextProps.to)
+        isEqual(prevProps.to, nextProps.to) &&
+        isEqual(prevProps.state, nextProps.state)
     );
 });
 

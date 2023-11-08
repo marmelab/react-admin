@@ -1,9 +1,8 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
+import { alpha, styled } from '@mui/material/styles';
 import { ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import ActionUpdate from '@mui/icons-material/Update';
-import { alpha } from '@mui/material/styles';
 import {
     useRefresh,
     useNotify,
@@ -80,6 +79,7 @@ export const UpdateWithUndoButton = (props: UpdateWithUndoButtonProps) => {
         if (typeof onClick === 'function') {
             onClick(e);
         }
+        e.stopPropagation();
     };
 
     return (
