@@ -7,6 +7,143 @@ title: "React-admin demos"
 
 If you want to see what react-admin is capable of, or if you want to learn from apps built by seasoned react-admin developers, check out these demos.
 
+## Overview
+
+Discover our demos that show you the react-admin potential and help you familiarize with it.
+
+
+<style>
+    .demos-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1.5rem;
+    }
+
+    .card {
+        box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+        transition: 0.3s;
+        width: 40%;
+        background-color: rgba(243, 246, 249, 0.4);
+        border: 1px solid rgba(0,0,0,0.25);
+        border-radius: 30px;
+        margin: 0;
+    }
+
+    .card:hover {
+        box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+    }
+
+    .card > img, .card > a > img, .card > video {
+        border-radius: 15px;
+        width: 100%;
+    }
+
+    .content-card {
+        padding: 2px;
+        margin-left: 1rem;
+        margin-right: 1rem;
+        text-decoration: none !important;
+    }
+
+    .title-card {
+        margin-bottom: 0.4rem !important;
+        font-size: 1.75em;
+        color: black;
+    }
+
+    .description-card {
+        color: rgb(100,100,100);
+    }
+
+    .links-container {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .link {
+        color: rgb(0, 127, 255) !important;
+        padding: 10px;
+        margin-left: -10px;
+        border-radius: 25px
+    }
+
+    .link:hover {
+        background-color: rgba(0, 127, 255, 0.04) !important;
+    }
+
+    .no-decoration, .link {
+        text-decoration: none !important;
+    }
+</style>
+
+<div class="demos-list">
+    <div class="card">
+        <a href="https://vimeo.com/474999017"><img src="https://marmelab.com/react-admin/img/react-admin-demo-still.png" alt="E-commerce"></a>
+        <div class="content-card">
+            <a href="#e-commerce" class="no-decoration">
+                <p class="title-card"><b>E-commerce</b></p>
+                <p  class="description-card">The admin of a fictional poster shop, allowing to manage sales, products, customers and reviews. Built by the core team.</p>
+            </a>
+            <div class="links-container">
+                <p><b><a href="https://marmelab.com/react-admin-demo/" class="demo link">Demo</a></b></p>
+                <p><b><a href="https://github.com/marmelab/react-admin/tree/master/examples/demo" class="source-code link">Source code</a></b></p>
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <video src="https://user-images.githubusercontent.com/99944/116970434-4a926480-acb8-11eb-8ce2-0602c680e45e.mp4" autoplay loop></video>
+        <div class="content-card">
+            <a href="#crm" class="no-decoration">
+                <p class="title-card"><b>CRM</b></p>
+                <p  class="description-card">A complete CRM app allowing to manage contacts, companies, deals, notes, tasks, and tags. Built by the core team.</p>
+            </a>
+            <div class="links-container">
+                <p><b><a href="https://marmelab.com/react-admin-crm/" class="demo link">Demo</a></b></p>
+                <p><b><a href="https://github.com/marmelab/react-admin/tree/master/examples/crm" class="source-code link">Source code</a></b></p>
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <video src="https://user-images.githubusercontent.com/99944/212743583-a4ee135f-f55b-4305-86c4-a3da1c49bb98.mov" autoplay loop></video>
+        <div class="content-card">
+            <a href="#help-desk" class="no-decoration">
+                <p class="title-card"><b>Help Desk</b></p>
+                <p  class="description-card">A simple help desk app allowing to manage tickets, users, and tags. Built by the core team.</p>
+            </a>
+            <div class="links-container">
+                <p><b><a href="https://marmelab.com/react-admin-helpdesk/" class="demo link">Demo</a></b></p>
+                <p><b><a href="https://github.com/marmelab/react-admin-helpdesk" class="source-code link">Source code</a></b></p>
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <img src="./img/navidrome.png" alt="Music Player">
+        <div class="content-card">
+            <a href="#music-player" class="no-decoration">
+                <p class="title-card"><b>Music Player</b></p>
+                <p  class="description-card">Navidrome is a Spotify clone allowing to manage songs, artists, playlists, and favorites.</p>
+            </a>
+            <div class="links-container">
+                <p><b><a href="https://demo.navidrome.org/app/" class="demo link">Demo</a></b></p>
+                <p><b><a href="https://github.com/navidrome/navidrome/" class="source-code link">Source code</a></b></p>
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <img src="./img/blog_demo.png" alt="Blog">
+        <div class="content-card">
+            <a href="#blog" class="no-decoration">
+                <p class="title-card"><b>Blog</b></p>
+                <p  class="description-card">A simple application with posts, comments and users that we use for our e2e tests. Not designed to have a good UX, but to use most of the react-admin features. Built by the core team.</p>
+            </a>
+            <div class="links-container">
+                <p><b><a href="https://stackblitz.com/github/marmelab/react-admin/tree/master/examples/simple" class="demo link">Demo</a></b></p>
+                <p><b><a href="https://github.com/marmelab/react-admin/tree/master/examples/simple" class="source-code link">Source code</a></b></p>
+            </div>
+        </div>
+    </div>
+</div>
+
 ## E-commerce
 
 The admin of a fictional poster shop, allowing to manage sales, products, customers and reviews. Built by the core team.
