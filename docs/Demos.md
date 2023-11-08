@@ -27,6 +27,8 @@ Discover our demos that show you the react-admin potential and help you familiar
         border: 1px solid rgba(0,0,0,0.25);
         border-radius: 30px;
         margin: 0;
+        display: flex;
+        flex-direction: column;
     }
 
     .card:hover {
@@ -55,7 +57,16 @@ Discover our demos that show you the react-admin potential and help you familiar
         color: rgb(100,100,100);
     }
 
+    .card-footer {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column-reverse;
+    }
+
     .links-container {
+        padding: 2px;
+        margin-left: calc(1rem - 10px);
+        margin-right: calc(1rem - 10px);
         display: flex;
         justify-content: space-between;
     }
@@ -63,12 +74,11 @@ Discover our demos that show you the react-admin potential and help you familiar
     .link {
         color: rgb(0, 127, 255) !important;
         padding: 10px;
-        margin-left: -10px;
-        border-radius: 25px
+        border-radius: 15px
     }
 
     .link:hover {
-        background-color: rgba(0, 127, 255, 0.04) !important;
+        background-color: rgba(0, 127, 255, 0.07) !important;
     }
 
     .no-decoration, .link {
@@ -84,9 +94,26 @@ Discover our demos that show you the react-admin potential and help you familiar
                 <p class="title-card"><b>E-commerce</b></p>
                 <p  class="description-card">The admin of a fictional poster shop, allowing to manage sales, products, customers and reviews. Built by the core team.</p>
             </a>
+        </div>
+        <div class="card-footer">
             <div class="links-container">
                 <p><b><a href="https://marmelab.com/react-admin-demo/" class="demo link">Demo</a></b></p>
                 <p><b><a href="https://github.com/marmelab/react-admin/tree/master/examples/demo" class="source-code link">Source code</a></b></p>
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <img src="./img/enterprise-demo.png" alt="E-commerce enterprise version">
+        <div class="content-card">
+            <a href="#e-commerce-enterprise-version" class="no-decoration">
+                <p class="title-card"><b>E-commerce enterprise version</b></p>
+                <p  class="description-card">TODO : The admin of a fictional poster shop, allowing to manage sales, products, customers and reviews. Built by the core team.</p>
+            </a>
+        </div>
+        <div class="card-footer">
+            <div class="links-container">
+                <p><b><a href="https://marmelab.com/ra-enterprise-demo/" class="demo link">Demo</a></b></p>
+                <p><b><a href="https://github.com/marmelab/ra-enterprise-demo" class="source-code link">Source code</a></b></p>
             </div>
         </div>
     </div>
@@ -97,6 +124,8 @@ Discover our demos that show you the react-admin potential and help you familiar
                 <p class="title-card"><b>CRM</b></p>
                 <p  class="description-card">A complete CRM app allowing to manage contacts, companies, deals, notes, tasks, and tags. Built by the core team.</p>
             </a>
+        </div>
+        <div class="card-footer">
             <div class="links-container">
                 <p><b><a href="https://marmelab.com/react-admin-crm/" class="demo link">Demo</a></b></p>
                 <p><b><a href="https://github.com/marmelab/react-admin/tree/master/examples/crm" class="source-code link">Source code</a></b></p>
@@ -110,6 +139,8 @@ Discover our demos that show you the react-admin potential and help you familiar
                 <p class="title-card"><b>Help Desk</b></p>
                 <p  class="description-card">A simple help desk app allowing to manage tickets, users, and tags. Built by the core team.</p>
             </a>
+        </div>
+        <div class="card-footer">
             <div class="links-container">
                 <p><b><a href="https://marmelab.com/react-admin-helpdesk/" class="demo link">Demo</a></b></p>
                 <p><b><a href="https://github.com/marmelab/react-admin-helpdesk" class="source-code link">Source code</a></b></p>
@@ -123,6 +154,8 @@ Discover our demos that show you the react-admin potential and help you familiar
                 <p class="title-card"><b>Music Player</b></p>
                 <p  class="description-card">Navidrome is a Spotify clone allowing to manage songs, artists, playlists, and favorites.</p>
             </a>
+        </div>
+        <div class="card-footer">
             <div class="links-container">
                 <p><b><a href="https://demo.navidrome.org/app/" class="demo link">Demo</a></b></p>
                 <p><b><a href="https://github.com/navidrome/navidrome/" class="source-code link">Source code</a></b></p>
@@ -136,6 +169,8 @@ Discover our demos that show you the react-admin potential and help you familiar
                 <p class="title-card"><b>Blog</b></p>
                 <p  class="description-card">A simple application with posts, comments and users that we use for our e2e tests. Not designed to have a good UX, but to use most of the react-admin features. Built by the core team.</p>
             </a>
+        </div>
+        <div class="card-footer">
             <div class="links-container">
                 <p><b><a href="https://stackblitz.com/github/marmelab/react-admin/tree/master/examples/simple" class="demo link">Demo</a></b></p>
                 <p><b><a href="https://github.com/marmelab/react-admin/tree/master/examples/simple" class="source-code link">Source code</a></b></p>
@@ -165,6 +200,12 @@ The source shows how to implement the following features:
 - [Custom form layout](https://github.com/marmelab/react-admin/blob/master/examples/demo/src/visitors/VisitorEdit.tsx)
 - [Custom page with static list](https://github.com/marmelab/react-admin/blob/master/examples/demo/src/routes.tsx)
 - [Edit view in a sidebar](https://github.com/marmelab/react-admin/blob/master/examples/demo/src/reviews/ReviewList.tsx)
+
+## E-commerce enterprise version
+
+TODO : my desc
+
+TODO : screencast
 
 ## CRM
 
