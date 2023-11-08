@@ -35,9 +35,14 @@ Discover our demos that show you the react-admin potential and help you familiar
         box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
     }
 
-    .card > img, .card > a > img, .card > video {
+    .card > img, .card > video, iframe {
         border-radius: 15px;
         width: 100%;
+    }
+
+    iframe {
+        margin: 1rem;
+        max-width: 90%;
     }
 
     .content-card {
@@ -88,7 +93,7 @@ Discover our demos that show you the react-admin potential and help you familiar
 
 <div class="demos-list">
     <div class="card">
-        <a href="https://vimeo.com/474999017"><img src="https://marmelab.com/react-admin/img/react-admin-demo-still.png" alt="E-commerce"></a>
+        <iframe src="https://player.vimeo.com/video/474999017?autoplay=1&loop=1&muted=1" frameborder="0" allowfullsreen></iframe>
         <div class="content-card">
             <a href="#e-commerce" class="no-decoration">
                 <p class="title-card"><b>E-commerce</b></p>
@@ -103,11 +108,11 @@ Discover our demos that show you the react-admin potential and help you familiar
         </div>
     </div>
     <div class="card">
-        <img src="./img/enterprise-demo.png" alt="E-commerce enterprise version">
+        <video src="https://github.com/erwanMarmelab/ra-experimentation/assets/131013150/ed9f87de-4ab4-4f0e-a6be-8623ad45b770" autoplay loop></video>
         <div class="content-card">
             <a href="#e-commerce-enterprise-version" class="no-decoration">
                 <p class="title-card"><b>E-commerce enterprise version</b></p>
-                <p  class="description-card">TODO : The admin of a fictional poster shop, allowing to manage sales, products, customers and reviews. Built by the core team.</p>
+                <p  class="description-card">Based on the E-commerce demo and upgraded with some ReactAdmin-Enterprise modules.</p>
             </a>
         </div>
         <div class="card-footer">
@@ -203,9 +208,32 @@ The source shows how to implement the following features:
 
 ## E-commerce enterprise version
 
-TODO : my desc
+Based on the E-commerce demo and upgraded with some ReactAdmin-Enterprise modules.
 
-TODO : screencast
+<video src="https://github.com/erwanMarmelab/ra-experimentation/assets/131013150/ed9f87de-4ab4-4f0e-a6be-8623ad45b770" controls="controls" style="max-width: 100%"></video>
+
+* Demo: [https://marmelab.com/ra-enterprise-demo/](https://marmelab.com/ra-enterprise-demo/)
+* Source code: [https://github.com/marmelab/ra-enterprise-demo](https://github.com/marmelab/ra-enterprise-demo)
+
+The source shows how to implement the following features:
+
+- [AccordionForm](./AccordionForm.md)
+- [useDefineAppLocation](./useDefineAppLocation.md)
+- [Breadcrumb](./Breadcrumb.md)
+- [SolarLayout](./SolarLayout.md)
+- [useGetLock](./useGetLock.md)
+- [useGetLocks](./useGetLocks.md)
+- [ListLive](./ListLive.md)
+- [useLockOnMount](./useLockOnMount.md)
+- [useSubscribeToRecordList](./useSubscribeToRecordList.md)
+- [ListLive](./ListLive.md)
+- [RealtimeDataProvider](./RealtimeDataProvider.md)
+- [CompleteCalendar](./Calendar.md#completecalendar)
+- [Audit Log](./Features.html#audit-log)
+- [SearchWithResult](./SearchWithResult.md)
+- [TreeWithDetails](./TreeWithDetails.md)
+- [MarkdownField](./MarkdownField.md)
+- [MarkdownInput](./MarkdownInput.md)
 
 ## CRM
 
