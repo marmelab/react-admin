@@ -108,7 +108,7 @@ Discover our demos that show you the react-admin potential and help you familiar
         </div>
     </div>
     <div class="card">
-        <video src="https://github.com/erwanMarmelab/ra-experimentation/assets/131013150/ed9f87de-4ab4-4f0e-a6be-8623ad45b770" autoplay loop></video>
+        <video src="https://github-production-user-asset-6210df.s3.amazonaws.com/131013150/281469391-ed9f87de-4ab4-4f0e-a6be-8623ad45b770.webm?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAIWNJYAX4CSVEH53A%2F20231108%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20231108T170603Z&X-Amz-Expires=300&X-Amz-Signature=fb856e5dac92ba2bd73da76957ace438256cfec133fb6ae6a28c041f58b1c56c&X-Amz-SignedHeaders=host&actor_id=131013150&key_id=0&repo_id=706068664" autoplay loop></video>
         <div class="content-card">
             <a href="#e-commerce-enterprise-version" class="no-decoration">
                 <p class="title-card"><b>E-commerce enterprise version</b></p>
@@ -210,7 +210,7 @@ The source shows how to implement the following features:
 
 Based on the E-commerce demo and upgraded with some ReactAdmin-Enterprise modules.
 
-<video src="https://github.com/erwanMarmelab/ra-experimentation/assets/131013150/ed9f87de-4ab4-4f0e-a6be-8623ad45b770" controls="controls" style="max-width: 100%"></video>
+<video src="https://github-production-user-asset-6210df.s3.amazonaws.com/131013150/281469391-ed9f87de-4ab4-4f0e-a6be-8623ad45b770.webm?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAIWNJYAX4CSVEH53A%2F20231108%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20231108T170603Z&X-Amz-Expires=300&X-Amz-Signature=fb856e5dac92ba2bd73da76957ace438256cfec133fb6ae6a28c041f58b1c56c&X-Amz-SignedHeaders=host&actor_id=131013150&key_id=0&repo_id=706068664" controls="controls" style="max-width: 100%"></video>
 
 * Demo: [https://marmelab.com/ra-enterprise-demo/](https://marmelab.com/ra-enterprise-demo/)
 * Source code: [https://github.com/marmelab/ra-enterprise-demo](https://github.com/marmelab/ra-enterprise-demo)
