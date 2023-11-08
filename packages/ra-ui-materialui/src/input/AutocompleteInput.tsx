@@ -188,7 +188,7 @@ export const AutocompleteInput = <
         setFilters,
         isFromReference,
     } = useChoicesContext({
-        choices: choicesProp as any[],
+        choices: choicesProp,
         isFetching: isFetchingProp,
         isLoading: isLoadingProp,
         resource: resourceProp,
@@ -763,23 +763,18 @@ const useSelectedChoice = <
     return selectedChoice || null;
 };
 
-const getSelectedItems = (
-    choices: readonly any[] = [],
-    value,
-    optionValue = 'id',
-    multiple
-) => {
+const getSelectedItems = (choices, value, optionValue = 'id', multiple) => {
     if (multiple) {
         return (Array.isArray(value ?? []) ? value : [value])
             .map(item =>
-                choices.find(
+                choices?.find(
                     choice => String(item) === String(get(choice, optionValue))
                 )
             )
             .filter(item => !!item);
     }
     return (
-        choices.find(
+        choices?.find(
             choice => String(get(choice, optionValue)) === String(value)
         ) || ''
     );

@@ -68,7 +68,7 @@ export const DatagridInput = (props: DatagridInputProps) => {
         source,
         ...choicesContext
     } = useChoicesContext({
-        choices: choices as any[],
+        choices,
         resource: resourceProp,
         source: sourceProp,
     });

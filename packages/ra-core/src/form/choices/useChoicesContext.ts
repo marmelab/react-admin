@@ -4,7 +4,9 @@ import { useList } from '../../controller';
 import { ChoicesContext, ChoicesContextValue } from './ChoicesContext';
 
 export const useChoicesContext = <ChoicesType extends RaRecord = RaRecord>(
-    options: Partial<ChoicesContextValue> & { choices?: ChoicesType[] } = {}
+    options: Partial<ChoicesContextValue> & {
+        choices?: readonly ChoicesType[];
+    } = {}
 ): ChoicesContextValue => {
     const context = useContext(ChoicesContext) as ChoicesContextValue<
         ChoicesType

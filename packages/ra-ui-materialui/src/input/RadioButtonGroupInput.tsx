@@ -112,7 +112,7 @@ export const RadioButtonGroupInput = (props: RadioButtonGroupInputProps) => {
         source,
         isFromReference,
     } = useChoicesContext({
-        choices: choicesProp as any[],
+        choices: choicesProp,
         isFetching: isFetchingProp,
         isLoading: isLoadingProp,
         resource: resourceProp,

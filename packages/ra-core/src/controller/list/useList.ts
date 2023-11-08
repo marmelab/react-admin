@@ -55,7 +55,6 @@ export const useList = <RecordType extends RaRecord = any>(
     props: UseListOptions<RecordType>
 ): UseListValue<RecordType> => {
     const {
-        data,
         error,
         filter = defaultFilter,
         isFetching = false,
@@ -66,6 +65,9 @@ export const useList = <RecordType extends RaRecord = any>(
         filterCallback = (record: RecordType) => Boolean(record),
     } = props;
     const resource = useResourceContext(props);
+
+    // Make copy of data so it becomes mutable
+    const data = props.data ? [...props.data] : undefined;
 
     const [fetchingState, setFetchingState] = useSafeSetState<boolean>(
         isFetching
@@ -276,7 +278,7 @@ export const useList = <RecordType extends RaRecord = any>(
 };
 
 export interface UseListOptions<RecordType extends RaRecord = any> {
-    data?: RecordType[];
+    data?: readonly RecordType[];
     error?: any;
     filter?: FilterPayload;
     isFetching?: boolean;

@@ -153,7 +153,7 @@ export const SelectInput = (props: SelectInputProps) => {
         resource,
         isFromReference,
     } = useChoicesContext({
-        choices: choicesProp as any[],
+        choices: choicesProp,
         isLoading: isLoadingProp,
         isFetching: isFetchingProp,
         resource: resourceProp,
