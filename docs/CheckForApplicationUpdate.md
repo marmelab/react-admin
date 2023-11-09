@@ -47,6 +47,7 @@ export const App = () => (
 | `disabled`      | Optional | boolean  | `false` in `production` mode | Whether the automatic check is disabled                              |
 | `notification`  | Optional | ReactElement |                    | The notification to display to the user when an update is available |
 | `url`           | Optional | string   | current URL        | The URL to download to check for code update                        |
+| `fetchOptions`  | Optional | object \| undefined | undefined        | The options passed to fetch function when checking for update          |
 
 ## `interval`
 
@@ -137,6 +138,12 @@ export const MyLayout = ({ children, ...props }: LayoutProps) => (
     </Layout>
 );
 ```
+
+## `fetchOptions`
+
+You can also customize the request [options](https://developer.mozilla.org/en-US/docs/Web/API/fetch#options) passed along to fetch function when detecting updates.
+
+Tip: Depending on your server-side HTTP cache settings, you may want to set the fetchOptions to `{ cache: "no-cache" }` to check if the resource has changed.
 
 ## Internationalization
 
