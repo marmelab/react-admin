@@ -10,7 +10,7 @@ import { useEvent } from './useEvent';
  * @param {UseCheckForApplicationUpdateOptions} options The options
  * @param {Function} options.onNewVersionAvailable The function to call when a new version of the application is available.
  * @param {string} options.url Optional. The URL to download to check for code update. Defaults to the current URL.
- * @param {object|undefined} options.fetchOptions Optional. The options passed to fetch function when checking for update. Defaults to undefined.
+ * @param {RequestInit|undefined} options.fetchOptions Optional. The options passed to fetch function when checking for update. Defaults to undefined.
  * @param {number} options.interval Optional. The interval in milliseconds between two checks. Defaults to 3600000 (1 hour).
  * @param {boolean} options.disabled Optional. Whether the check should be disabled. Defaults to false.
  */
@@ -58,7 +58,7 @@ export const useCheckForApplicationUpdate = (
     }, [delay, onNewVersionAvailable, disabled, url]);
 };
 
-const getHashForUrl = async (url: string, fetchOptions: object | undefined) => {
+const getHashForUrl = async (url: string, fetchOptions: RequestInit | undefined) => {
     try {
         const response = await fetch(url, fetchOptions);
         if (!response.ok) return null;
@@ -92,6 +92,6 @@ export interface UseCheckForApplicationUpdateOptions {
     onNewVersionAvailable: () => void;
     interval?: number;
     url?: string;
-    fetchOptions?: object;
+    fetchOptions?: RequestInit;
     disabled?: boolean;
 }

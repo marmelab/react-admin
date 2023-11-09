@@ -47,7 +47,7 @@ export const App = () => (
 | `disabled`      | Optional | boolean  | `false` in `production` mode | Whether the automatic check is disabled                              |
 | `notification`  | Optional | ReactElement |                    | The notification to display to the user when an update is available |
 | `url`           | Optional | string   | current URL        | The URL to download to check for code update                        |
-| `fetchOptions`  | Optional | object \| undefined | undefined        | The options passed to fetch function when checking for update          |
+| `fetchOptions`  | Optional | RequestInit \| undefined | undefined        | The options passed to fetch function when checking for update          |
 
 ## `interval`
 
