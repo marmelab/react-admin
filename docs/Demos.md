@@ -11,18 +11,27 @@ If you want to see what react-admin is capable of, or if you want to learn from 
 
 Discover our demos that show you the react-admin potential and help you familiarize with it.
 
-
 <style>
     .demos-list {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 1.5rem;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: repeat(3, 1fr);
+        /* grid-column-gap: 10px; */
+        /* grid-row-gap: 10px; */
+        grid-gap: 10px;
+    }
+
+    @media (max-width: 600px) {
+        .demos-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
     }
 
     .card {
         box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
         transition: 0.3s;
-        width: 40%;
         background-color: rgba(243, 246, 249, 0.4);
         border: 1px solid rgba(0,0,0,0.25);
         border-radius: 30px;
@@ -35,14 +44,20 @@ Discover our demos that show you the react-admin potential and help you familiar
         box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
     }
 
-    .card > img, .card > video, iframe {
+    .card > img, .card > video {
         border-radius: 15px;
         width: 100%;
     }
 
     iframe {
+        width: calc(100% - 2rem);
+        height: calc(100% - 2rem);
+        border-radius: 15px;
         margin: 1rem;
-        max-width: 90%;
+    }
+
+    #player {
+        width: 100%;
     }
 
     .content-card {
