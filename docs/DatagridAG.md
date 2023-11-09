@@ -400,8 +400,8 @@ const CarList = () => {
 ```
 
 <video controls autoplay playsinline muted loop>
-  <source src="./img/DatagridAG-without-pagination.mp4" type="video/mp4"/>
-  <source src="./img/DatagridAG-without-pagination.webm" type="video/webm"/>
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/DatagridAG-without-pagination.mp4" type="video/mp4"/>
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/DatagridAG-without-pagination.webm" type="video/webm"/>
   Your browser does not support the video tag.
 </video>
 
@@ -441,7 +441,7 @@ const CarList = () => {
 };
 ```
 
-![DatagridAG with status bar](./img/DatagridAG-status-bar.png)
+![DatagridAG with status bar](https://marmelab.com/ra-enterprise/modules/assets/DatagridAG-status-bar.png)
 
 ## `sx`
 
