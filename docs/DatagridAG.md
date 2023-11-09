@@ -99,6 +99,7 @@ Here are the important things to note:
 | `mutationOptions` | Optional | Object | | The mutation options |
 | `sx` | Optional | Object | | The sx prop passed down to the wrapping `<div>` element |
 | `theme` | Optional | String | `'ag-theme-alpine'` | The name of the ag-grid theme |
+| `pagination` | Optional | Boolean | `true` | Enable or disable pagination |
 
 `<DatagridAG>` also accepts the same props as [`<AgGridReact>`](https://www.ag-grid.com/react-data-grid/grid-options/) with the exception of `rowData`, since the data is fetched from the List context.
 
@@ -289,7 +290,7 @@ export const PostList = () => {
     ];
     return (
         <List perPage={10000} pagination={false}>
-            <DatagridAG 
+            <DatagridAG
                 columnDefs={columnDefs}
                 bulkActionButtons={<PostBulkActionButtons />}
             />
@@ -363,6 +364,84 @@ export const PostList = () => {
 ![DatagridAG Dark](https://marmelab.com/ra-enterprise/modules/assets/DatagridAG-dark.png)
 
 **Tip:** Remember to import the corresponding stylesheet (e.g. `ag-theme-balham[.min].css` for `ag-theme-balham`).
+
+## `pagination`
+
+By default, the `pagination` prop is set to `true`, so that the records are paginated.
+
+If you would like to view all the records at once, you can set the `pagination` prop to `false`. Thanks to [ag-grid's DOM virtualization](https://www.ag-grid.com/react-data-grid/dom-virtualisation/), you will be able to scroll across all of them with no performance issues.
+
+```tsx
+import 'ag-grid-community/styles/ag-grid.css';
+import 'ag-grid-community/styles/ag-theme-alpine.css';
+import React from 'react';
+import { List } from 'react-admin';
+import { DatagridAG } from '@react-admin/ra-editable-datagrid';
+
+const CarList = () => {
+    const columnDefs = [
+        { field: 'make' },
+        { field: 'model' },
+        { field: 'price' },
+    ];
+    const defaultColDef = {
+        flex: 1,
+    };
+    return (
+        <List perPage={10000} pagination={false}>
+            <DatagridAG
+                columnDefs={columnDefs}
+                defaultColDef={defaultColDef}
+                pagination={false}
+            />
+        </List>
+    );
+};
+```
+
+<video controls autoplay playsinline muted loop>
+  <source src="./img/DatagridAG-without-pagination.mp4" type="video/mp4"/>
+  <source src="./img/DatagridAG-without-pagination.webm" type="video/webm"/>
+  Your browser does not support the video tag.
+</video>
+
+If you have subscribed to the [Enterprise version of ag-grid](https://www.ag-grid.com/react-data-grid/licensing/), you can also add a [Status Bar](https://www.ag-grid.com/react-data-grid/status-bar/) to show the total number of rows.
+
+```tsx
+import 'ag-grid-community/styles/ag-grid.css';
+import 'ag-grid-community/styles/ag-theme-alpine.css';
+import React, { useMemo } from 'react';
+import { List } from 'react-admin';
+import { DatagridAG } from '@react-admin/ra-editable-datagrid';
+import 'ag-grid-enterprise';
+
+const CarList = () => {
+    const statusBar = useMemo(() => {
+        return {
+            statusPanels: [
+                {
+                    statusPanel: 'agTotalAndFilteredRowCountComponent',
+                    align: 'left',
+                },
+            ],
+        };
+    }, []);
+    const columnDefs = [{ field: 'make' }, { field: 'model' }, { field: 'price' }];
+    const defaultColDef = { flex: 1 };
+    return (
+        <List perPage={10000} pagination={false}>
+            <DatagridAG
+                columnDefs={columnDefs}
+                defaultColDef={defaultColDef}
+                pagination={false}
+                statusBar={statusBar}
+            />
+        </List>
+    );
+};
+```
+
+![DatagridAG with status bar](./img/DatagridAG-status-bar.png)
 
 ## `sx`
 
@@ -613,7 +692,7 @@ export const PostList = () => {
     ];
     return (
         <List perPage={10000} pagination={false}>
-            <DatagridAG 
+            <DatagridAG
                 columnDefs={columnDefs}
                 bulkActionButtons={<PostBulkActionButtons />}
             />
