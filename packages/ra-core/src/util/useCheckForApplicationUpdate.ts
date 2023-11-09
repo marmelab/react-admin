@@ -35,7 +35,7 @@ export const useCheckForApplicationUpdate = (
                 currentHash.current = hash;
             }
         });
-    }, [disabled, url]);
+    }, [disabled, url, fetchOptions]);
 
     useEffect(() => {
         if (disabled) return;
@@ -55,10 +55,13 @@ export const useCheckForApplicationUpdate = (
                 });
         }, delay);
         return () => clearInterval(interval);
-    }, [delay, onNewVersionAvailable, disabled, url]);
+    }, [delay, onNewVersionAvailable, disabled, url, fetchOptions]);
 };
 
-const getHashForUrl = async (url: string, fetchOptions: RequestInit | undefined) => {
+const getHashForUrl = async (
+    url: string,
+    fetchOptions: RequestInit | undefined
+) => {
     try {
         const response = await fetch(url, fetchOptions);
         if (!response.ok) return null;
