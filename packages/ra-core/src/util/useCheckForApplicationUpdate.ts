@@ -10,6 +10,7 @@ import { useEvent } from './useEvent';
  * @param {UseCheckForApplicationUpdateOptions} options The options
  * @param {Function} options.onNewVersionAvailable The function to call when a new version of the application is available.
  * @param {string} options.url Optional. The URL to download to check for code update. Defaults to the current URL.
+ * @param {object|undefined} options.fetchOptions Optional. The options passed to fetch function when checking for update. Defaults to undefined.
  * @param {number} options.interval Optional. The interval in milliseconds between two checks. Defaults to 3600000 (1 hour).
  * @param {boolean} options.disabled Optional. Whether the check should be disabled. Defaults to false.
  */
@@ -18,6 +19,7 @@ export const useCheckForApplicationUpdate = (
 ) => {
     const {
         url = window.location.href,
+        fetchOptions,
         interval: delay = ONE_HOUR,
         onNewVersionAvailable: onNewVersionAvailableProp,
         disabled = process.env.NODE_ENV !== 'production',
@@ -28,7 +30,7 @@ export const useCheckForApplicationUpdate = (
     useEffect(() => {
         if (disabled) return;
 
-        getHashForUrl(url).then(hash => {
+        getHashForUrl(url, fetchOptions).then(hash => {
             if (hash != null) {
                 currentHash.current = hash;
             }
@@ -39,7 +41,7 @@ export const useCheckForApplicationUpdate = (
         if (disabled) return;
 
         const interval = setInterval(() => {
-            getHashForUrl(url)
+            getHashForUrl(url, fetchOptions)
                 .then(hash => {
                     if (hash != null && currentHash.current !== hash) {
                         // Store the latest hash to avoid calling the onNewVersionAvailable function multiple times
@@ -56,9 +58,9 @@ export const useCheckForApplicationUpdate = (
     }, [delay, onNewVersionAvailable, disabled, url]);
 };
 
-const getHashForUrl = async (url: string) => {
+const getHashForUrl = async (url: string, fetchOptions: object | undefined) => {
     try {
-        const response = await fetch(url);
+        const response = await fetch(url, fetchOptions);
         if (!response.ok) return null;
         const text = await response.text();
         return hash(text);
@@ -90,5 +92,6 @@ export interface UseCheckForApplicationUpdateOptions {
     onNewVersionAvailable: () => void;
     interval?: number;
     url?: string;
+    fetchOptions?: object;
     disabled?: boolean;
 }
