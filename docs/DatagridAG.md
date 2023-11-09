@@ -97,9 +97,9 @@ Here are the important things to note:
 | `cellRenderer` | Optional | String, Function or Element | | Allows to use a custom component to render the cell content |
 | `defaultColDef` | Optional | Object | | The default column definition (applied to all columns) |
 | `mutationOptions` | Optional | Object | | The mutation options |
-| `sx` | Optional | Object | | The sx prop passed down to the wrapping `<div>` element |
 | `theme` | Optional | String | `'ag-theme-alpine'` | The name of the ag-grid theme |
 | `pagination` | Optional | Boolean | `true` | Enable or disable pagination |
+| `sx` | Optional | Object | | The sx prop passed down to the wrapping `<div>` element |
 
 `<DatagridAG>` also accepts the same props as [`<AgGridReact>`](https://www.ag-grid.com/react-data-grid/grid-options/) with the exception of `rowData`, since the data is fetched from the List context.
 
