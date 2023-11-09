@@ -217,23 +217,18 @@ Based on the E-commerce demo and upgraded with some ReactAdmin-Enterprise module
 
 The source shows how to implement the following features:
 
-- [AccordionForm](./AccordionForm.md)
-- [useDefineAppLocation](./useDefineAppLocation.md)
-- [Breadcrumb](./Breadcrumb.md)
-- [SolarLayout](./SolarLayout.md)
-- [useGetLock](./useGetLock.md)
-- [useGetLocks](./useGetLocks.md)
-- [ListLive](./ListLive.md)
-- [useLockOnMount](./useLockOnMount.md)
-- [useSubscribeToRecordList](./useSubscribeToRecordList.md)
-- [ListLive](./ListLive.md)
-- [RealtimeDataProvider](./RealtimeDataProvider.md)
-- [CompleteCalendar](./Calendar.md#completecalendar)
-- [Audit Log](./Features.html#audit-log)
-- [SearchWithResult](./SearchWithResult.md)
-- [TreeWithDetails](./TreeWithDetails.md)
-- [MarkdownField](./MarkdownField.md)
-- [MarkdownInput](./MarkdownInput.md)
+- [AccordionForm](https://github.com/marmelab/ra-enterprise-demo/blob/master/src/products/ProductEdit.tsx)
+- [Breadcrumb](https://github.com/marmelab/ra-enterprise-demo/blob/master/src/layout/Breadcrumb.tsx)
+- [SolarLayout](https://github.com/marmelab/ra-enterprise-demo/blob/master/src/layout/Layout.tsx)
+- [Locks](https://github.com/marmelab/ra-enterprise-demo/blob/master/src/products/GridList.tsx)
+- [ListLive](https://github.com/marmelab/ra-enterprise-demo/blob/master/src/orders/OrderList.tsx)
+- [RealtimeDataProvider](https://github.com/marmelab/ra-enterprise-demo/blob/master/src/dataProvider/addRealtimeMethodsWithFakeTransport.ts)
+- [CompleteCalendar](.https://github.com/marmelab/ra-enterprise-demo/blob/master/src/visits/VisitList.tsx)
+- [Audit Log](https://github.com/marmelab/ra-enterprise-demo/blob/master/src/i18n/en.ts)
+- [SearchWithResult](https://github.com/marmelab/ra-enterprise-demo/blob/master/src/layout/SearchSubMenu.tsx)
+- [TreeWithDetails](https://github.com/marmelab/ra-enterprise-demo/blob/master/src/categories/CategoryList.tsx)
+- [MarkdownField](https://github.com/marmelab/ra-enterprise-demo/blob/master/src/products/ProductPreview.tsx)
+- [MarkdownInput](https://github.com/marmelab/ra-enterprise-demo/blob/master/src/products/ProductCreate.tsx)
 
 ## CRM
 
