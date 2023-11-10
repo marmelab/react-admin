@@ -97,8 +97,9 @@ Here are the important things to note:
 | `cellRenderer` | Optional | String, Function or Element | | Allows to use a custom component to render the cell content |
 | `defaultColDef` | Optional | Object | | The default column definition (applied to all columns) |
 | `mutationOptions` | Optional | Object | | The mutation options |
-| `sx` | Optional | Object | | The sx prop passed down to the wrapping `<div>` element |
 | `theme` | Optional | String | `'ag-theme-alpine'` | The name of the ag-grid theme |
+| `pagination` | Optional | Boolean | `true` | Enable or disable pagination |
+| `sx` | Optional | Object | | The sx prop passed down to the wrapping `<div>` element |
 
 `<DatagridAG>` also accepts the same props as [`<AgGridReact>`](https://www.ag-grid.com/react-data-grid/grid-options/) with the exception of `rowData`, since the data is fetched from the List context.
 
@@ -289,7 +290,7 @@ export const PostList = () => {
     ];
     return (
         <List perPage={10000} pagination={false}>
-            <DatagridAG 
+            <DatagridAG
                 columnDefs={columnDefs}
                 bulkActionButtons={<PostBulkActionButtons />}
             />
@@ -363,6 +364,46 @@ export const PostList = () => {
 ![DatagridAG Dark](https://marmelab.com/ra-enterprise/modules/assets/DatagridAG-dark.png)
 
 **Tip:** Remember to import the corresponding stylesheet (e.g. `ag-theme-balham[.min].css` for `ag-theme-balham`).
+
+## `pagination`
+
+Enable or disable the pagination controls at the bottom of the list. Defaults to `true`. 
+
+Disabling the pagination switches the grid to [infinite pagination mode](#enabling-infinite-pagination): Users reveal new rows simply by scrolling down. This is fast even for large lists thanks to [ag-grid's DOM virtualization](https://www.ag-grid.com/react-data-grid/dom-virtualisation/).
+
+```tsx
+import 'ag-grid-community/styles/ag-grid.css';
+import 'ag-grid-community/styles/ag-theme-alpine.css';
+import React from 'react';
+import { List } from 'react-admin';
+import { DatagridAG } from '@react-admin/ra-editable-datagrid';
+
+const CarList = () => {
+    const columnDefs = [
+        { field: 'make' },
+        { field: 'model' },
+        { field: 'price' },
+    ];
+    const defaultColDef = {
+        flex: 1,
+    };
+    return (
+        <List perPage={10000} pagination={false}>
+            <DatagridAG
+                columnDefs={columnDefs}
+                defaultColDef={defaultColDef}
+                pagination={false}
+            />
+        </List>
+    );
+};
+```
+
+<video controls autoplay playsinline muted loop>
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/DatagridAG-without-pagination.mp4" type="video/mp4"/>
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/DatagridAG-without-pagination.webm" type="video/webm"/>
+  Your browser does not support the video tag.
+</video>
 
 ## `sx`
 
@@ -613,9 +654,87 @@ export const PostList = () => {
     ];
     return (
         <List perPage={10000} pagination={false}>
-            <DatagridAG 
+            <DatagridAG
                 columnDefs={columnDefs}
                 bulkActionButtons={<PostBulkActionButtons />}
+            />
+        </List>
+    );
+};
+```
+
+## Enabling Infinite Pagination
+
+By default, `<DatagridAG>` renders pagination controls at the bottom of the list. You can disable these controls to switch to an infinite pagination mode, where the grid shows the next rows on scroll. Thanks to [ag-grid's DOM virtualization](https://www.ag-grid.com/react-data-grid/dom-virtualisation/), this mode causes no performance problem.
+
+<video controls autoplay playsinline muted loop>
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/DatagridAG-without-pagination.mp4" type="video/mp4"/>
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/DatagridAG-without-pagination.webm" type="video/webm"/>
+  Your browser does not support the video tag.
+</video>
+
+To enable infinite pagination, set the `pagination` prop to `false`. 
+
+```tsx
+import 'ag-grid-community/styles/ag-grid.css';
+import 'ag-grid-community/styles/ag-theme-alpine.css';
+import React from 'react';
+import { List } from 'react-admin';
+import { DatagridAG } from '@react-admin/ra-editable-datagrid';
+
+const CarList = () => {
+    const columnDefs = [
+        { field: 'make' },
+        { field: 'model' },
+        { field: 'price' },
+    ];
+    const defaultColDef = {
+        flex: 1,
+    };
+    return (
+        <List perPage={10000} pagination={false}>
+            <DatagridAG
+                columnDefs={columnDefs}
+                defaultColDef={defaultColDef}
+                pagination={false}
+            />
+        </List>
+    );
+};
+```
+
+If you have subscribed to the [Enterprise version of ag-grid](https://www.ag-grid.com/react-data-grid/licensing/), you can also add a [Status Bar](https://www.ag-grid.com/react-data-grid/status-bar/) to show the total number of rows.
+
+![DatagridAG with status bar](https://marmelab.com/ra-enterprise/modules/assets/DatagridAG-status-bar.png)
+
+```tsx
+import 'ag-grid-community/styles/ag-grid.css';
+import 'ag-grid-community/styles/ag-theme-alpine.css';
+import React, { useMemo } from 'react';
+import { List } from 'react-admin';
+import { DatagridAG } from '@react-admin/ra-editable-datagrid';
+import 'ag-grid-enterprise';
+
+const CarList = () => {
+    const statusBar = useMemo(() => {
+        return {
+            statusPanels: [
+                {
+                    statusPanel: 'agTotalAndFilteredRowCountComponent',
+                    align: 'left',
+                },
+            ],
+        };
+    }, []);
+    const columnDefs = [{ field: 'make' }, { field: 'model' }, { field: 'price' }];
+    const defaultColDef = { flex: 1 };
+    return (
+        <List perPage={10000} pagination={false}>
+            <DatagridAG
+                columnDefs={columnDefs}
+                defaultColDef={defaultColDef}
+                pagination={false}
+                statusBar={statusBar}
             />
         </List>
     );
