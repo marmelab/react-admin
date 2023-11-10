@@ -125,7 +125,7 @@ Discover our demos that show you the react-admin potential and help you familiar
         <div class="content-card">
             <a href="#e-commerce-enterprise-version" class="no-decoration">
                 <p class="title-card"><b>E-commerce enterprise version</b></p>
-                <p  class="description-card">Based on the E-commerce demo and upgraded with some ReactAdmin-Enterprise modules.</p>
+                <p  class="description-card">Based on the E-commerce demo and upgraded with some React Admin Enterprise features. Built by the core team.</p>
             </a>
         </div>
         <div class="card-footer">
