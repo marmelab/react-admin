@@ -56,6 +56,7 @@ export const useCheckForApplicationUpdate = (
                 });
         }, delay);
         return () => clearInterval(interval);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [
         delay,
         onNewVersionAvailable,
