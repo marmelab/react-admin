@@ -5,7 +5,7 @@ title: "useShowController"
 
 # `useShowController`
 
-`useShowController` is the hook that handles all the controller logic for Show views. It's used by `<Show>` and `<ShowBase>`.
+`useShowController` is the hook that handles all the controller logic for Show views. It's used by [`<Show>`](./Show.md) and [`<ShowBase>`](./ShowBase.md).
 
 This hook takes care of three things:
 
@@ -51,13 +51,56 @@ const PostShow = () => {
 
 This custom Show view has no action buttons - it's up to you to add them in pure React.
 
+**Tip**: Use [`<ShowBase>`](./ShowBase.md) instead of `useShowController` if you need a component version of that hook.
+
 ## Parameters
 
 `useShowController` expects one parameter argument. It's an object with the following attributes: 
 
-* [`queryOption`](#client-query-options): options to pass to the react-query client
+| Name             | Required | Type              | Default | Description
+|------------------|----------|-------------------|---------|--------------------------------------------------------
+| `disable Authentication` | Optional | `boolean` |         | Set to `true` to disable the authentication check.
+| `id`             | Optional | `string`          |         | The record identifier. If not provided, it will be deduced from the URL.
+| `queryOptions`   | Optional | `object`          |         | The options to pass to the [`useQuery`](./Actions.mdl#usequery-and-usemutation) hook.
+| `resource`       | Optional | `string`          |         | The resource name, e.g. `posts`
 
-## Client Query Options
+## `disableAuthentication`
+
+By default, the `useShowController` hook will automatically redirect the user to the login page if the user is not authenticated. If you want to disable this behavior and allow anonymous access to a show page, set the `disableAuthentication` prop to `true`.
+
+```jsx
+import { useShowController } from 'react-admin';
+
+const PostShow = () => {
+    const { record } = useShowController({ disableAuthentication: true });
+
+    return (
+        <div>
+            <h1>{record.title}</h1>
+            <p>{record.body}</p>
+        </div>
+    );
+};
+```
+
+## `id`
+
+By default, `useShowController` reads the record id from the browser location. But by passing an `id` prop, you can run the controller logic on an arbitrary record id:
+
+```jsx
+const Post1234Show = () => {
+    const { record } = useShowController({ id: 1234 });
+
+    return (
+        <div>
+            <h1>{record.title}</h1>
+            <p>{record.body}</p>
+        </div>
+    );
+};
+```
+
+## `queryOptions`
 
 `useShowController` accepts a `queryOptions` prop to pass options to the react-query client. 
 
@@ -117,6 +160,22 @@ The default `onError` function is:
 }
 ```
 
+## `resource`
+
+By default, `useShowController` reads the resource name from the resource context. But by passing a `resource` prop, you can run the controller logic on an arbitrary resource:
+
+```jsx
+const PostShow = () => {
+    const { record } = useShowController({ resource: 'posts'; id: 1234 });
+    return (
+        <div>
+            <h1>{record.title}</h1>
+            <p>{record.body}</p>
+        </div>
+    );
+};
+```
+
 ## Controlled Mode
 
 By default, `useShowController` reads the resource name from the resource context, and the record id from the browser location.
@@ -132,17 +191,3 @@ const MyShow = () => {
     return <ShowView {...controllerProps} />;
 };
 ```
-
-## See Also
-
-* [`<ShowBase>`](./ShowBase.md) calls `useShowController`, puts the result in a `RecordContextProvider` and renders the component child. In many cases, you'll prefer this component to the hook version.
-
-## API
-
-* [`useShowController`]
-* [`<ShowBase>`]
-* [`<Show>`]
-
-[`useShowController`]: https://github.com/marmelab/react-admin/blob/master/packages/ra-core/src/controller/show/useShowController.ts
-[`<ShowBase>`]: https://github.com/marmelab/react-admin/blob/master/packages/ra-core/src/controller/show/ShowBase.tsx
-[`<Show>`]: https://github.com/marmelab/react-admin/blob/master/packages/ra-ui-materialui/src/detail/Show.tsx

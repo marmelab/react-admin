@@ -120,7 +120,6 @@ The `useListContext` hook accepts a generic parameter for the record type:
 
 ```tsx
 import { Typography } from '@mui/material';
-import { useListContext } from 'react-admin';
 import { List, Datagrid, TextField, useListContext } from 'react-admin';
 
 type Post = {

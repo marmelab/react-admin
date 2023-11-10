@@ -494,6 +494,7 @@ const App = () => (
 The components you can use as child of `<List>` are called "List Iterator". They render a list of records. `<Datagrid>` is such a List Iterator, but react-admin provides many more:
 
 - [`<Datagrid>`](./Datagrid.md)
+- [`<DatagridAG>`](./DatagridAG.md)
 - [`<SimpleList>`](./SimpleList.md)
 - [`<SingleFieldList>`](./SingleFieldList.md)
 - [`<EditableDatagrid>`](./EditableDatagrid.md)
