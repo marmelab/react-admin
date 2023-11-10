@@ -35,7 +35,7 @@ export const useCheckForApplicationUpdate = (
                 currentHash.current = hash;
             }
         });
-    }, [disabled, url, fetchOptions]);
+    }, [disabled, url, JSON.stringify(fetchOptions)]);
 
     useEffect(() => {
         if (disabled) return;
@@ -58,10 +58,7 @@ export const useCheckForApplicationUpdate = (
     }, [delay, onNewVersionAvailable, disabled, url, fetchOptions]);
 };
 
-const getHashForUrl = async (
-    url: string,
-    fetchOptions?: RequestInit
-) => {
+const getHashForUrl = async (url: string, fetchOptions?: RequestInit) => {
     try {
         const response = await fetch(url, fetchOptions);
         if (!response.ok) return null;
