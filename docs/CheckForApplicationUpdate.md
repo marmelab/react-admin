@@ -140,9 +140,9 @@ export const MyLayout = ({ children, ...props }: LayoutProps) => (
 
 ## `onNewVersionAvailable`
 
-`<CheckForApplicationUpdate>` internally uses the `useCheckForApplicationUpdate` hook to check for updates periodically and displays update notification. 
+`<CheckForApplicationUpdate>` component internally uses the `useCheckForApplicationUpdate` hook to check for updates periodically and displays update notification. The hook shares the same props as the component except for the `notification` prop.
 
-For advanced users who wish to customize the handling function when a new version is available, they can leverage the `onNewVersionAvailable` parameter in this hook.
+For advanced users who wish to customize the handling function other than just displaying a notification, they can leverage the `onNewVersionAvailable` parameter in this hook.
 
 ```tsx
 import { useCheckForApplicationUpdate, useNotify } from "react-admin";
@@ -151,7 +151,7 @@ export const MyCheckForApplicationUpdate = () => {
     const notify = useNotify();
 
     const onNewVersionAvailable = () => {
-        // Perform backup of user preference in localStorage in case bad things happen
+        // Perform a backup of user preference in localStorage in case bad things happen
         const preference1 = localStorage.getItem("preference1");
         const preference2 = localStorage.getItem("preference2");
         const checkpointData = {
