@@ -9,7 +9,10 @@ import { useNotify } from '../notification';
  * as the form state may not have been updated yet when onSubmit validation mode is enabled
  * or when the form hasn't been touched at all.
  */
-export const useNotifyIsFormInvalid = (control?: Control) => {
+export const useNotifyIsFormInvalid = (
+    control?: Control,
+    enabled: boolean = true
+) => {
     const { submitCount, errors } = useFormState(
         control ? { control } : undefined
     );
@@ -19,12 +22,12 @@ export const useNotifyIsFormInvalid = (control?: Control) => {
     useEffect(() => {
         // Checking the submit count allows us to only display the notification after users
         // tried to submit
-        if (submitCount > submitCountRef.current) {
+        if (submitCount > submitCountRef.current && enabled) {
             submitCountRef.current = submitCount;
 
             if (Object.keys(errors).length > 0) {
                 notify('ra.message.invalid_form', { type: 'error' });
             }
         }
-    }, [errors, submitCount, notify]);
+    }, [errors, submitCount, notify, enabled]);
 };
