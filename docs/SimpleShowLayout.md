@@ -7,7 +7,7 @@ title: "SimpleShowLayout"
 
 The `<SimpleShowLayout>` pulls the `record` from the `RecordContext`. It renders the record fields in a single-column layout (via Material UI's `<Stack>` component). `<SimpleShowLayout>` delegates the actual rendering of fields to its children. It wraps each field inside [a `<Labeled>` component](./Labeled.md) to add a label.
 
-![Simple Show Layout](./img/post-show.png)
+![Simple Show Layout](./img/SimpleShowLayout.png)
 
 ## Usage
 
