@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { Chip, Stack, StackProps, styled } from '@mui/material';
-import { cloneElement, Children, ComponentType } from 'react';
 import PropTypes from 'prop-types';
 import {
     sanitizeListRestProps,
@@ -123,7 +122,7 @@ export const SingleFieldList = (props: SingleFieldListProps) => {
 };
 
 SingleFieldList.propTypes = {
-    children: PropTypes.element,
+    children: PropTypes.node,
     classes: PropTypes.object,
     className: PropTypes.string,
     component: ComponentPropType,
@@ -148,10 +147,9 @@ SingleFieldList.propTypes = {
 export interface SingleFieldListProps<RecordType extends RaRecord = any>
     extends StackProps {
     className?: string;
-    component?: string | ComponentType<any>;
     empty?: React.ReactElement;
     linkType?: string | false;
-    children?: React.ReactElement;
+    children?: React.ReactNode;
     // can be injected when using the component without context
     data?: RecordType[];
     total?: number;
