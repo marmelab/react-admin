@@ -221,7 +221,7 @@ The source shows how to implement the following features:
 
 ## E-commerce enterprise version
 
-Based on the E-commerce demo and upgraded with some ReactAdmin-Enterprise modules.
+Based on the E-commerce demo and upgraded with some React Admin Enterprise features.
 
 <video src="https://github.com/marmelab/react-admin/assets/131013150/93ec41f5-81bf-45e1-940b-d5aeccfe628f" controls="controls" style="max-width: 100%"></video>
 
