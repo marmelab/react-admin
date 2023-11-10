@@ -65,6 +65,8 @@ However, you can customize these default app locations in your CRUD pages, and y
 
 ## `appBar`
 
+![Screenshot demonstrating the SolarLayout component with a custom appBar](https://marmelab.com/ra-enterprise/modules/assets/ra-navigation/latest/solar-layout-with-custom-app-bar.png)
+
 You can customize the AppBar that appears on Mobile by setting the `appBar` prop. For instance, here's how you could customize its colors and add some extra content to its far right:
 
 {% raw %}
@@ -351,9 +353,11 @@ By default, just like the classic react-admin menu, it contains menu items for e
 | --------------- | -------- | --------- | ------- | ------------------------------------------------------------ |
 | `bottomToolbar` | Optional | ReactNode |         | The content to render inside the bottom section of the menu. |
 | `children`      | Optional | ReactNode |         | The content to render inside the top section of the menu.    |
+| `className`     | Optional | string    |         | A class name to apply to the AppBar container.               |
 | `dense`         | Optional | boolean   | false   | Whether the menu should be dense.                            |
 | `logo`          | Optional | Component |         | A React component used as the dashboard icon                 |
 | `userMenu`      | Optional | Component |         | Allows to customize the user menu                            |
+| `sx`            | Optional | `SxProps` |         | Style overrides, powered by MUI System                       |
 
 In addition, the `SolarMenu` object provides shortcuts to its items components:
 
@@ -461,6 +465,10 @@ const CustomMenu = () => (
     </SolarMenu>
 );
 ```
+
+### `className`
+
+`className` is passed to the root `<div>` component. It lets you style the layout with CSS - but the `sx` prop is preferred.
 
 ### `dense`
 
@@ -593,6 +601,60 @@ export const App = () => (
     </Admin>
 );
 ```
+
+### `sx`
+
+![Screenshot demonstrating SolarMenu with a pink background](https://marmelab.com/ra-enterprise/modules/assets/ra-navigation/latest/solar-menu-sx-pink.png)
+
+The `sx` prop allows you to customize the menu styles using a MUI [SX](./SX.md) object:
+
+{% raw %}
+```tsx
+import { Admin, Resource, ListGuesser } from 'react-admin';
+import { SolarLayoutProps, SolarLayout, SolarMenu, SolarMenuProps } from '@react-admin/ra-navigation';
+
+const CustomMenu = (props: SolarMenuProps) => (
+    <SolarMenu
+        sx={{
+            '& .RaSolarPrimarySidebar-root .MuiDrawer-paper': {
+                backgroundColor: '#C724B1',
+
+                '& .MuiButtonBase-root': {
+                    color: '#ffffff',
+                },
+                '& .MuiButtonBase-root.Mui-selected': {
+                    backgroundColor: '#3A3A59',
+                    color: '#ffffff',
+                },
+            },
+        }}
+        {...props}
+    />
+);
+
+const CustomLayout = (props: SolarLayoutProps) => (
+    <SolarLayout {...props} menu={CustomMenu} />
+);
+
+export const App = () => (
+    <Admin layout={CustomLayout}>
+        <Resource name="songs" list={ListGuesser} />
+        <Resource name="artists" list={ListGuesser} />
+    </Admin>
+);
+```
+{% endraw %}
+
+
+The `<SolarMenu>` component accepts the usual `className` prop. You can also override the styles of the inner components thanks to the `sx` property. This property accepts the following subclasses:
+
+| Rule name                         | Description                                                           |
+| --------------------------------- | --------------------------------------------------------------------- |
+| `RaSolarMenu`                     | Applied to the root component                                         |
+| `& .RaSolarMenu-topToolbar`       | Applied to the upper section of the menu                              |
+| `& .RaSolarMenu-bottomToolbar`    | Applied to the lower section of the menu                              |
+| `& .RaSolarPrimarySidebar-root`   | Applied to the primary sidebar                                        |
+| `& .RaSolarSecondarySidebar-root` | Applied to the secondary sidebar                                      |
 
 ## `<SolarMenu.Item>`
 
