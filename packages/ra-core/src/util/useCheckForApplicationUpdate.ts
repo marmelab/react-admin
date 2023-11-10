@@ -57,7 +57,13 @@ export const useCheckForApplicationUpdate = (
         }, delay);
         return () => clearInterval(interval);
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [delay, onNewVersionAvailable, disabled, url, JSON.stringify(fetchOptions)]);
+    }, [
+        delay,
+        onNewVersionAvailable,
+        disabled,
+        url,
+        JSON.stringify(fetchOptions),
+    ]);
 };
 
 const getHashForUrl = async (url: string, fetchOptions?: RequestInit) => {
