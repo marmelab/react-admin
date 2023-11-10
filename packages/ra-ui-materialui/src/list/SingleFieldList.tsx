@@ -54,7 +54,6 @@ export const SingleFieldList = (props: SingleFieldListProps) => {
         children,
         empty,
         linkType = 'edit',
-        component: Component = Root,
         gap = 1,
         direction = 'row',
         ...rest
@@ -76,7 +75,7 @@ export const SingleFieldList = (props: SingleFieldListProps) => {
     }
 
     return (
-        <Component
+        <Root
             gap={gap}
             direction={direction}
             className={className}
@@ -119,7 +118,7 @@ export const SingleFieldList = (props: SingleFieldListProps) => {
                     </RecordContextProvider>
                 );
             })}
-        </Component>
+        </Root>
     );
 };
 

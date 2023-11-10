@@ -151,6 +151,12 @@ export const Divider = () => (
     </Wrapper>
 );
 
+export const Component = () => (
+    <Wrapper>
+        <SingleFieldList component="span" />
+    </Wrapper>
+);
+
 export const SX = () => (
     <Wrapper>
         <SingleFieldList sx={{ border: '1px solid grey' }} />
