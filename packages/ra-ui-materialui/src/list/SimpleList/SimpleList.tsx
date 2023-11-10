@@ -103,11 +103,6 @@ export const SimpleList = <RecordType extends RaRecord = any>(
         );
     }
 
-    /**
-     * Once loaded, the data for the list may be empty. Instead of
-     * displaying the table header with zero data rows,
-     * the SimpleList the empty component.
-     */
     if (data == null || data.length === 0 || total === 0) {
         if (empty) {
             return empty;

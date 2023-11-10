@@ -13,15 +13,30 @@ Use `<SingleFieldList>` when you want to display only one property for each reco
 
 ## Usage
 
-Use `<SingleFieldList>` wherever there is a `ListContext`. It is especially useful as child of `<ReferenceManyField>` and `<ReferenceArrayField>` components. `<SingleFieldList>` expects a single `<Field>` as child.
+`<SingleFieldList>` grabs the current `ListContext`, and renders a Material UI `<Stack>` with one `<ChipField>` for each record in the list, using the `recordRepresentation`. It is especially useful as child of `<ReferenceManyField>` and `<ReferenceArrayField>` components. 
 
 ```jsx
-<SingleFieldList>
-    <ChipField source="name" />
-</SingleFieldList>
+import {
+    Show,
+    SimpleShowLayout,
+    TextField,
+    ReferenceArrayField,
+    SingleFieldList
+} from 'react-admin';
+
+const PostShow = () => (
+    <Show>
+        <SimpleShowLayout>
+            <TextField source="title" />
+            <ReferenceArrayField label="Tags" reference="tags" source="tags">
+                <SingleFieldList />
+            </ReferenceArrayField>
+        </SimpleShowLayout>
+    </Show>
+);
 ```
 
-The following example shows how to use `<SingleFieldList>` to display a list of tags for each post in a Datagrid:
+You can customize how each record is displayed by passing a Field component as child. For example, here is how to use `<SingleFieldList>` to display a list of tags for each post in a Datagrid:
 
 ```jsx
 import { 
@@ -45,9 +60,7 @@ const PostList = () => (
             <BooleanField source="commentable" />
             <NumberField source="views" />
             <ReferenceArrayField label="Tags" reference="tags" source="tags">
-                <SingleFieldList>
-                    <ChipField source="name" />
-                </SingleFieldList>
+                <SingleFieldList />
             </ReferenceArrayField>
         </Datagrid>
     </List>
@@ -60,10 +73,34 @@ const PostList = () => (
 
 `<SingleFieldList>` accepts the following props:
 
-| Prop        | Required | Type                      | Default | Description                                   |
-| ----------- | -------- | ------------------------- | ------- | --------------------------------------------- |
-| `linkType`  | Optional | `'edit' | 'show' | false` | `edit`  | The target of the link on each item           |
-| `sx`        | Optional | `object`                  |         | The sx props of the Material UI Box component |
+| Prop        | Required | Type                      | Default | Description                                     |
+| ----------- | -------- | ------------------------- | ------- | ----------------------------------------------- |
+| `children`  | Optional | `ReactNode`               |         | React element to render for each record         |
+| `empty`     | Optional | `ReactNode`               |         | React element to display when the list is empty |
+| `linkType`  | Optional | `'edit' | 'show' | false` | `edit`  | The target of the link on each item             |
+| `sx`        | Optional | `object`                  |         | The sx props of the Material UI Box component   |
+
+Additional props are passed down to the underlying [Material UI `<Stack>` component](https://mui.com/material-ui/react-stack/).
+
+## `children`
+
+By default, `<SingleFieldList>` renders a `<ChipField>` for each record. You can customize the rendering by passing a Field component as child. 
+
+For example, if you want to customize the field name used by the `<ChipField>`:
+
+```jsx
+<SingleFieldList>
+    <ChipField source="tag" clickable />
+</SingleFieldList>
+```
+
+## `empty`
+
+When the list is empty, `<SingleFieldList>` displays nothing. You can customize this behavior by passing a React element as the `empty` prop. For example, to display a message:
+
+```jsx
+<SingleFieldList empty={<p>Nothing to display</p>} />
+```
 
 ## `linkType`
 
@@ -76,9 +113,7 @@ The `<SingleFieldList>` items link to the edition page by default. You can set t
     reference="tags"
     source="tags"
 >
-    <SingleFieldList linkType="show">
-        <ChipField source="name" />
-    </SingleFieldList>
+    <SingleFieldList linkType="show" />
 </ReferenceArrayField>
 ```
 
