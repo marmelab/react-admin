@@ -39,7 +39,7 @@ Discover our demos that show you the react-admin potential and help you familiar
     }
 
     .card:hover {
-        box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+        box-shadow: 0 3px 6px 0 rgba(0,0,0,0.2);
     }
 
     .card > img, .card > video {
