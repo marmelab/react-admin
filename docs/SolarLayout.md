@@ -604,9 +604,11 @@ export const App = () => (
 
 ### `sx`
 
+The `sx` prop allows you to customize the menu styles using a MUI [SX](./SX.md) object:
+
 ![Screenshot demonstrating SolarMenu with a pink background](https://marmelab.com/ra-enterprise/modules/assets/ra-navigation/latest/solar-menu-sx-pink.png)
 
-The `sx` prop allows you to customize the menu styles using a MUI [SX](./SX.md) object:
+For instance, here is how to change the background color of the menu:
 
 {% raw %}
 ```tsx
