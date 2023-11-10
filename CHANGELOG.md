@@ -1,5 +1,17 @@
 # Changelog
 
+## v4.15.4
+
+* Fix bad url upon `<FilterLiveSearch>` submission ([#9398](https://github.com/marmelab/react-admin/pull/9398)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* Fix clicking on "Remove all filters" does not close the filter menu ([#9415](https://github.com/marmelab/react-admin/pull/9415)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [TypeScript] Allow to pass custom provider types to addRefreshAuth functions ([#9428](https://github.com/marmelab/react-admin/pull/9428)) ([djhi](https://github.com/djhi))
+* [Doc] Improve the Show section ([#9423](https://github.com/marmelab/react-admin/pull/9423)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Add documentation for `<DatagridAG>` ([#9414](https://github.com/marmelab/react-admin/pull/9414)) ([slax57](https://github.com/slax57))
+* [Doc] Document `<EditInDialogButton>` deletion side effect ([#9425](https://github.com/marmelab/react-admin/pull/9425)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Update doc for DatagridAg scroll ([#9434](https://github.com/marmelab/react-admin/pull/9434)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Doc] Mention that `<Create redirect>` also supports a function ([#9426](https://github.com/marmelab/react-admin/pull/9426)) ([situplastik](https://github.com/situplastik))
+* [Doc] Fix duplicate import on the `useListContext` page ([#9424](https://github.com/marmelab/react-admin/pull/9424)) ([BoboTiG](https://github.com/BoboTiG))
+
 ## v4.15.3
 
 * Fix `<AutocompleteInput>` clear button appears over the `BulkActionsToolbar` ([#9413](https://github.com/marelab/react-admin/pull/9413)) ([erwanMarmelab](https://github.com/erwanMarmelab))
