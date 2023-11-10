@@ -118,7 +118,7 @@ const MyLayout = ({ children, ...props }) => (
 );
 ```
 
-If you just want to customize the notification texts, including the button, check out the [Internationalization section](#internationalization).
+If you want to customize the behavior when a new version is available, checkout the [`onNewVersionAvailable` section](#onnewversionavailable). If you just want to customize the notification texts, including the button, check out the [Internationalization section](#internationalization).
 
 ## `url`
 
@@ -136,6 +136,40 @@ export const MyLayout = ({ children, ...props }: LayoutProps) => (
         <CheckForApplicationUpdate url={MY_APP_ROOT_URL} />
     </Layout>
 );
+```
+
+## `onNewVersionAvailable`
+
+`<CheckForApplicationUpdate>` internally uses the `useCheckForApplicationUpdate` hook to check for updates periodically and displays update notification. 
+
+For advanced users who wish to customize the handling function when a new version is available, they can leverage the `onNewVersionAvailable` parameter in this hook.
+
+```tsx
+import { useCheckForApplicationUpdate, useNotify } from "react-admin";
+
+export const MyCheckForApplicationUpdate = () => {
+    const notify = useNotify();
+
+    const onNewVersionAvailable = () => {
+        // Perform backup of user preference in localStorage in case bad things happen
+        const preference1 = localStorage.getItem("preference1");
+        const preference2 = localStorage.getItem("preference2");
+        const checkpointData = {
+            preference1,
+            preference2,
+        };
+        localStorage.setItem(
+            `checkpoint_${new Date().toISOString()}`,
+            JSON.stringify(checkpointData),
+        );
+
+        // Notify user
+        notify("New Version Ready to Update");
+    };
+
+    useCheckForApplicationUpdate({ onNewVersionAvailable });
+    return null;
+};
 ```
 
 ## Internationalization
