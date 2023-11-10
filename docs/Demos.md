@@ -9,21 +9,19 @@ If you want to see what react-admin is capable of, or if you want to learn from 
 
 ## Overview
 
-Discover our demos that show you the react-admin potential and help you familiarize with it.
-
 <style>
     .demos-list {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
-        grid-template-rows: repeat(3, 1fr);
         grid-gap: 10px;
     }
 
     @media (max-width: 600px) {
         .demos-list {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
+            grid-template-columns: repeat(1, 1fr);
+        }
+        .iframe-wrapper {
+            max-width: 100%;
         }
     }
 
@@ -32,7 +30,7 @@ Discover our demos that show you the react-admin potential and help you familiar
         transition: 0.3s;
         background-color: rgba(243, 246, 249, 0.4);
         border: 1px solid rgba(0,0,0,0.25);
-        border-radius: 30px;
+        border-radius: 10px;
         margin: 0;
         display: flex;
         flex-direction: column;
@@ -43,19 +41,12 @@ Discover our demos that show you the react-admin potential and help you familiar
     }
 
     .card > img, .card > video {
-        border-radius: 15px;
-        width: 100%;
+        border-radius: 5px;
+        max-width: 100%;
     }
 
-    iframe {
-        width: calc(100% - 2rem);
-        height: calc(100% - 2rem);
-        border-radius: 15px;
-        margin: 1rem;
-    }
-
-    #player {
-        width: 100%;
+    .mardown-section > video, .markdown-section, img {
+        max-width: 100%;
     }
 
     .content-card {
@@ -92,7 +83,7 @@ Discover our demos that show you the react-admin potential and help you familiar
     .link {
         color: rgb(0, 127, 255) !important;
         padding: 10px;
-        border-radius: 15px
+        border-radius: 5px
     }
 
     .link:hover {
@@ -102,11 +93,29 @@ Discover our demos that show you the react-admin potential and help you familiar
     .no-decoration, .link {
         text-decoration: none !important;
     }
+
+    .iframe-wrapper {
+        float: none;
+        clear: both;
+        max-width: 92.25%;
+        position: relative;
+        padding-bottom: 56.25%;
+        padding-top: 25px;
+        height: 0;
+    }
+
+    .iframe-wrapper iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
 </style>
 
 <div class="demos-list">
     <div class="card">
-        <iframe src="https://player.vimeo.com/video/474999017?autoplay=1&loop=1&muted=1" frameborder="0" allowfullsreen></iframe>
+        <video src="https://github-production-user-asset-6210df.s3.amazonaws.com/131013150/282027473-8905036c-f1c3-4536-b7c6-b9da8ffd06aa.mp4" autoplay loop muted></video>
         <div class="content-card">
             <a href="#e-commerce" class="no-decoration">
                 <p class="title-card"><b>E-commerce</b></p>
@@ -121,10 +130,10 @@ Discover our demos that show you the react-admin potential and help you familiar
         </div>
     </div>
     <div class="card">
-        <video src="https://github.com/marmelab/react-admin/assets/131013150/93ec41f5-81bf-45e1-940b-d5aeccfe628f" autoplay loop></video>
+        <video src="https://github-production-user-asset-6210df.s3.amazonaws.com/131013150/282154228-e0ebc28a-4e6e-4684-88f2-bbf4e2b66c82.webm" autoplay loop></video>
         <div class="content-card">
-            <a href="#e-commerce-enterprise-version" class="no-decoration">
-                <p class="title-card"><b>E-commerce enterprise version</b></p>
+            <a href="#e-commerce-enterprise" class="no-decoration">
+                <p class="title-card"><b>E-commerce Enterprise</b></p>
                 <p  class="description-card">Based on the E-commerce demo and upgraded with some React Admin Enterprise features. Built by the core team.</p>
             </a>
         </div>
@@ -201,7 +210,7 @@ Discover our demos that show you the react-admin potential and help you familiar
 
 The admin of a fictional poster shop, allowing to manage sales, products, customers and reviews. Built by the core team.
 
-[![react-admin-demo](https://marmelab.com/react-admin/img/react-admin-demo-still.png)](https://vimeo.com/474999017)
+<video src="https://github-production-user-asset-6210df.s3.amazonaws.com/131013150/282027473-8905036c-f1c3-4536-b7c6-b9da8ffd06aa.mp4" controls="controls"></video>
 
 * Demo: [https://marmelab.com/react-admin-demo/](https://marmelab.com/react-admin-demo/)
 * Source code: [https://github.com/marmelab/react-admin/tree/master/examples/demo](https://github.com/marmelab/react-admin/tree/master/examples/demo)
@@ -219,11 +228,11 @@ The source shows how to implement the following features:
 - [Custom page with static list](https://github.com/marmelab/react-admin/blob/master/examples/demo/src/routes.tsx)
 - [Edit view in a sidebar](https://github.com/marmelab/react-admin/blob/master/examples/demo/src/reviews/ReviewList.tsx)
 
-## E-commerce enterprise version
+## E-commerce Enterprise
 
 Based on the E-commerce demo and upgraded with some React Admin Enterprise features.
 
-<video src="https://github.com/marmelab/react-admin/assets/131013150/93ec41f5-81bf-45e1-940b-d5aeccfe628f" controls="controls" style="max-width: 100%"></video>
+<video src="https://github-production-user-asset-6210df.s3.amazonaws.com/131013150/282154228-e0ebc28a-4e6e-4684-88f2-bbf4e2b66c82.webm" controls="controls"></video>
 
 * Demo: [https://marmelab.com/ra-enterprise-demo/](https://marmelab.com/ra-enterprise-demo/)
 * Source code: [https://github.com/marmelab/ra-enterprise-demo](https://github.com/marmelab/ra-enterprise-demo)
@@ -236,18 +245,20 @@ The source shows how to implement the following features:
 - [Locks](https://github.com/marmelab/ra-enterprise-demo/blob/master/src/products/GridList.tsx)
 - [ListLive](https://github.com/marmelab/ra-enterprise-demo/blob/master/src/orders/OrderList.tsx)
 - [RealtimeDataProvider](https://github.com/marmelab/ra-enterprise-demo/blob/master/src/dataProvider/addRealtimeMethodsWithFakeTransport.ts)
-- [CompleteCalendar](.https://github.com/marmelab/ra-enterprise-demo/blob/master/src/visits/VisitList.tsx)
+- [CompleteCalendar](https://github.com/marmelab/ra-enterprise-demo/blob/master/src/visits/VisitList.tsx)
 - [Audit Log](https://github.com/marmelab/ra-enterprise-demo/blob/master/src/i18n/en.ts)
 - [SearchWithResult](https://github.com/marmelab/ra-enterprise-demo/blob/master/src/layout/SearchSubMenu.tsx)
 - [TreeWithDetails](https://github.com/marmelab/ra-enterprise-demo/blob/master/src/categories/CategoryList.tsx)
 - [MarkdownField](https://github.com/marmelab/ra-enterprise-demo/blob/master/src/products/ProductPreview.tsx)
 - [MarkdownInput](https://github.com/marmelab/ra-enterprise-demo/blob/master/src/products/ProductCreate.tsx)
+- [Tours](https://github.com/marmelab/ra-enterprise-demo/blob/master/src/tours/TourList.tsx)
+- [EditableDatagrid](https://github.com/marmelab/ra-enterprise-demo/blob/master/src/stores/StoreList.tsx)
 
 ## CRM
 
 A complete CRM app allowing to manage contacts, companies, deals, notes, tasks, and tags. Built by the core team.
 
-<video src="https://user-images.githubusercontent.com/99944/116970434-4a926480-acb8-11eb-8ce2-0602c680e45e.mp4" controls="controls" style="max-width: 100%"></video>
+<video src="https://user-images.githubusercontent.com/99944/116970434-4a926480-acb8-11eb-8ce2-0602c680e45e.mp4" controls="controls"></video>
 
 * Demo: [https://marmelab.com/react-admin-crm/](https://marmelab.com/react-admin-crm/)
 * Source code: [https://github.com/marmelab/react-admin/tree/master/examples/crm](https://github.com/marmelab/react-admin/tree/master/examples/crm)
@@ -266,7 +277,7 @@ The source shows how to implement the following features:
 
 A simple help desk app allowing to manage tickets, users, and tags. Built by the core team.
 
-<video src="https://user-images.githubusercontent.com/99944/212743583-a4ee135f-f55b-4305-86c4-a3da1c49bb98.mov" controls="controls" style="max-width: 100%"></video>
+<video src="https://user-images.githubusercontent.com/99944/212743583-a4ee135f-f55b-4305-86c4-a3da1c49bb98.mov" controls="controls"></video>
 
 * Demo: [https://marmelab.com/react-admin-helpdesk/](https://marmelab.com/react-admin-helpdesk/)
 * Source code: [https://github.com/marmelab/react-admin-helpdesk](https://github.com/marmelab/react-admin-helpdesk)
@@ -309,7 +320,7 @@ A simple application with posts, comments and users that we use for our e2e test
 
 A framework built on top of react-admin for building developer portals.
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/ecHsgNmug9E" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<div class="iframe-wrapper"><iframe src="https://www.youtube.com/embed/ecHsgNmug9E" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
 
 * Source code: [https://github.com/CAAPIM/APIHub](https://github.com/CAAPIM/APIHub)
 
