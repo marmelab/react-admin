@@ -60,7 +60,7 @@ export const useCheckForApplicationUpdate = (
 
 const getHashForUrl = async (
     url: string,
-    fetchOptions: RequestInit | undefined
+    fetchOptions?: RequestInit
 ) => {
     try {
         const response = await fetch(url, fetchOptions);
