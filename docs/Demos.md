@@ -28,7 +28,7 @@ Discover our demos that show you the react-admin potential and help you familiar
     }
 
     .card {
-        box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+        box-shadow: 0 2px 4px 0 rgba(0,0,0,0.2);
         transition: 0.3s;
         background-color: rgba(243, 246, 249, 0.4);
         border: 1px solid rgba(0,0,0,0.25);
