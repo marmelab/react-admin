@@ -167,6 +167,32 @@ describe('Form', () => {
         });
     });
 
+    it('should not display a notification on submit when invalid', async () => {
+        const Notification = () => {
+            const { notifications } = useNotificationContext();
+            return notifications.length > 0 ? (
+                <div>{notifications[0].message}</div>
+            ) : null;
+        };
+
+        render(
+            <CoreAdminContext>
+                <>
+                    <Form onSubmit={jest.fn()} disableInvalidFormNotification>
+                        <Input source="name" validate={required()} />
+                        <button type="submit">Submit</button>
+                    </Form>
+                    <Notification />
+                </>
+            </CoreAdminContext>
+        );
+
+        fireEvent.click(screen.getByText('Submit'));
+        await screen.findByText('@@react-admin@@"ra.validation.required"');
+
+        expect(screen.queryByText('ra.message.invalid_form')).toBeNull();
+    });
+
     it('Displays submission errors', async () => {
         const Notification = () => {
             const { notifications } = useNotificationContext();
