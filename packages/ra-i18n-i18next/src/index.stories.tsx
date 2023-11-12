@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Admin, EditGuesser, ListGuesser, Resource } from 'react-admin';
+import { defaultDarkTheme } from '../../ra-ui-materialui/src/theme/defaultTheme';
 import i18n from 'i18next';
 import resourcesToBackend from 'i18next-resources-to-backend';
 import englishMessages from 'ra-language-english';
@@ -29,7 +30,11 @@ export const Basic = () => {
 
     return (
         <MemoryRouter>
-            <Admin dataProvider={dataProvider} i18nProvider={i18nProvider}>
+            <Admin
+                darkTheme={defaultDarkTheme}
+                dataProvider={dataProvider}
+                i18nProvider={i18nProvider}
+            >
                 <Resource
                     name="posts"
                     list={<ListGuesser enableLog={false} />}
@@ -71,7 +76,11 @@ export const WithLazyLoadedLanguages = () => {
 
     return (
         <MemoryRouter>
-            <Admin dataProvider={dataProvider} i18nProvider={i18nProvider}>
+            <Admin
+                darkTheme={defaultDarkTheme}
+                dataProvider={dataProvider}
+                i18nProvider={i18nProvider}
+            >
                 <Resource
                     name="posts"
                     list={<ListGuesser enableLog={false} />}
@@ -113,7 +122,11 @@ export const WithCustomTranslations = () => {
 
     return (
         <MemoryRouter>
-            <Admin dataProvider={dataProvider} i18nProvider={i18nProvider}>
+            <Admin
+                darkTheme={defaultDarkTheme}
+                dataProvider={dataProvider}
+                i18nProvider={i18nProvider}
+            >
                 <Resource
                     name="posts"
                     list={<ListGuesser enableLog={false} />}
@@ -153,7 +166,11 @@ export const WithCustomOptions = () => {
 
     return (
         <MemoryRouter>
-            <Admin dataProvider={dataProvider} i18nProvider={i18nProvider}>
+            <Admin
+                darkTheme={defaultDarkTheme}
+                dataProvider={dataProvider}
+                i18nProvider={i18nProvider}
+            >
                 <Resource
                     name="posts"
                     list={<ListGuesser enableLog={false} />}

@@ -9,6 +9,7 @@ import {
     EditGuesser,
     EditButton,
     useRecordContext,
+    defaultDarkTheme,
 } from './';
 import fakeRestDataProvider from 'ra-data-fakerest';
 import { Button } from '@mui/material';
@@ -156,7 +157,7 @@ const BookList = () => {
 };
 
 export const Nested = () => (
-    <Admin dataProvider={dataProvider}>
+    <Admin darkTheme={defaultDarkTheme} dataProvider={dataProvider}>
         <Resource name="authors" list={AuthorList} edit={EditGuesser}>
             <Route path=":authorId/books" element={<BookList />} />
         </Resource>

@@ -25,6 +25,7 @@ import {
 import { MemoryRouter, Route } from 'react-router-dom';
 
 import { Layout, Menu, Title } from '.';
+import { defaultDarkTheme } from '../theme/defaultTheme';
 
 export default { title: 'ra-ui-materialui/layout/Menu' };
 
@@ -110,7 +111,11 @@ export const Custom = () => {
 
     return (
         <MemoryRouter initialEntries={['/']}>
-            <Admin dataProvider={testDataProvider()} layout={CustomLayout}>
+            <Admin
+                darkTheme={defaultDarkTheme}
+                dataProvider={testDataProvider()}
+                layout={CustomLayout}
+            >
                 <CustomRoutes>
                     <Route path="/" element={<Page title="Dashboard" />} />
                     <Route path="/sales" element={<Page title="Sales" />} />
@@ -199,7 +204,11 @@ export const MenuItemChild = () => {
 
     return (
         <MemoryRouter initialEntries={['/']}>
-            <Admin dataProvider={testDataProvider()} layout={CustomLayout}>
+            <Admin
+                darkTheme={defaultDarkTheme}
+                dataProvider={testDataProvider()}
+                layout={CustomLayout}
+            >
                 <CustomRoutes>
                     <Route path="/" element={<Page title="Dashboard" />} />
                     <Route path="/sales" element={<Page title="Sales" />} />

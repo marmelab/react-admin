@@ -13,6 +13,7 @@ import {
     TopToolbar,
     SearchInput,
 } from 'react-admin';
+import { defaultDarkTheme } from '../../../src/theme/defaultTheme';
 import fakerestDataProvider from 'ra-data-fakerest';
 import { AutocompleteArrayInput } from '../../input';
 
@@ -207,7 +208,10 @@ export const Basic = (args: { disableSaveQuery?: boolean }) => {
         />,
     ];
     return (
-        <Admin dataProvider={fakerestDataProvider(data)}>
+        <Admin
+            darkTheme={defaultDarkTheme}
+            dataProvider={fakerestDataProvider(data)}
+        >
             <Resource
                 name="posts"
                 list={<PostList postFilters={postFilters} args={args} />}
@@ -221,7 +225,10 @@ export const DisabledFilters = (args: { disableSaveQuery?: boolean }) => {
         <TextInput label="Title" source="title" disabled={true} />,
     ];
     return (
-        <Admin dataProvider={fakerestDataProvider(data)}>
+        <Admin
+            darkTheme={defaultDarkTheme}
+            dataProvider={fakerestDataProvider(data)}
+        >
             <Resource
                 name="posts"
                 list={<PostList postFilters={postFilters} args={args} />}
@@ -252,7 +259,10 @@ export const WithSearchInput = (args: {
         />,
     ];
     return (
-        <Admin dataProvider={fakerestDataProvider(data)}>
+        <Admin
+            darkTheme={defaultDarkTheme}
+            dataProvider={fakerestDataProvider(data)}
+        >
             <Resource
                 name="posts"
                 list={<PostList postFilters={postFilters} args={args} />}

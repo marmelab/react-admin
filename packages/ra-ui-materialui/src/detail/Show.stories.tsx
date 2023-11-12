@@ -9,6 +9,7 @@ import { SimpleShowLayout } from './SimpleShowLayout';
 import { EditButton } from '../button';
 import TopToolbar from '../layout/TopToolbar';
 import { Show } from './Show';
+import { defaultDarkTheme } from '../theme/defaultTheme';
 
 export default { title: 'ra-ui-materialui/detail/Show' };
 
@@ -40,7 +41,11 @@ const PostShowBasic = () => (
 );
 
 export const Basic = () => (
-    <Admin dataProvider={dataProvider} history={history}>
+    <Admin
+        darkTheme={defaultDarkTheme}
+        dataProvider={dataProvider}
+        history={history}
+    >
         <Resource name="books" show={PostShowBasic} />
     </Admin>
 );
@@ -65,7 +70,11 @@ const PostShowWithFields = () => (
 );
 
 export const WithFields = () => (
-    <Admin dataProvider={dataProvider} history={history}>
+    <Admin
+        darkTheme={defaultDarkTheme}
+        dataProvider={dataProvider}
+        history={history}
+    >
         <Resource name="books" show={PostShowWithFields} />
     </Admin>
 );
@@ -83,7 +92,11 @@ const PostShowWithCustomActions = () => (
 );
 
 export const Actions = () => (
-    <Admin dataProvider={dataProvider} history={history}>
+    <Admin
+        darkTheme={defaultDarkTheme}
+        dataProvider={dataProvider}
+        history={history}
+    >
         <Resource name="books" show={PostShowWithCustomActions} />
     </Admin>
 );
@@ -95,7 +108,11 @@ const PostShowWithTitle = () => (
 );
 
 export const Title = () => (
-    <Admin dataProvider={dataProvider} history={history}>
+    <Admin
+        darkTheme={defaultDarkTheme}
+        dataProvider={dataProvider}
+        history={history}
+    >
         <Resource name="books" show={PostShowWithTitle} />
     </Admin>
 );
@@ -109,7 +126,11 @@ const PostShowWithAside = () => (
 );
 
 export const Aside = () => (
-    <Admin dataProvider={dataProvider} history={history}>
+    <Admin
+        darkTheme={defaultDarkTheme}
+        dataProvider={dataProvider}
+        history={history}
+    >
         <Resource name="books" show={PostShowWithAside} />
     </Admin>
 );
@@ -130,7 +151,11 @@ const PostShowWithComponent = () => (
 );
 
 export const Component = () => (
-    <Admin dataProvider={dataProvider} history={history}>
+    <Admin
+        darkTheme={defaultDarkTheme}
+        dataProvider={dataProvider}
+        history={history}
+    >
         <Resource name="books" show={PostShowWithComponent} />
     </Admin>
 );
@@ -147,7 +172,11 @@ const PostShowWithStyles = () => (
 );
 
 export const SX = () => (
-    <Admin dataProvider={dataProvider} history={history}>
+    <Admin
+        darkTheme={defaultDarkTheme}
+        dataProvider={dataProvider}
+        history={history}
+    >
         <Resource name="books" show={PostShowWithStyles} />
     </Admin>
 );
@@ -177,13 +206,21 @@ const PostShowWithMeta = () => (
 );
 
 export const Meta = () => (
-    <Admin dataProvider={dataProviderWithLog} history={history}>
+    <Admin
+        darkTheme={defaultDarkTheme}
+        dataProvider={dataProviderWithLog}
+        history={history}
+    >
         <Resource name="books" show={PostShowWithMeta} />
     </Admin>
 );
 
 export const Default = () => (
-    <Admin dataProvider={dataProvider} history={history}>
+    <Admin
+        darkTheme={defaultDarkTheme}
+        dataProvider={dataProvider}
+        history={history}
+    >
         <Resource name="books" show={DefaultPostShow} edit={() => <span />} />
     </Admin>
 );
