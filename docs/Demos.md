@@ -115,7 +115,7 @@ If you want to see what react-admin is capable of, or if you want to learn from 
 
 <div class="demos-list">
     <div class="card">
-        <video src="https://github-production-user-asset-6210df.s3.amazonaws.com/131013150/282027473-8905036c-f1c3-4536-b7c6-b9da8ffd06aa.mp4" autoplay loop muted></video>
+        <img src="./img/demo-ecommerce-oss.png" alt="ecommerce-oss">
         <div class="content-card">
             <a href="#e-commerce" class="no-decoration">
                 <p class="title-card"><b>E-commerce</b></p>
@@ -130,7 +130,7 @@ If you want to see what react-admin is capable of, or if you want to learn from 
         </div>
     </div>
     <div class="card">
-        <video src="https://github-production-user-asset-6210df.s3.amazonaws.com/131013150/282154228-e0ebc28a-4e6e-4684-88f2-bbf4e2b66c82.webm" autoplay loop></video>
+        <img src="./img/demo-ecommerce-ee.png" alt="ecommerce-ee">
         <div class="content-card">
             <a href="#e-commerce-enterprise" class="no-decoration">
                 <p class="title-card"><b>E-commerce Enterprise</b></p>
@@ -145,7 +145,7 @@ If you want to see what react-admin is capable of, or if you want to learn from 
         </div>
     </div>
     <div class="card">
-        <video src="https://user-images.githubusercontent.com/99944/116970434-4a926480-acb8-11eb-8ce2-0602c680e45e.mp4" autoplay loop></video>
+        <img src="./img/demo-CRM.png" alt="CRM">
         <div class="content-card">
             <a href="#crm" class="no-decoration">
                 <p class="title-card"><b>CRM</b></p>
@@ -160,7 +160,7 @@ If you want to see what react-admin is capable of, or if you want to learn from 
         </div>
     </div>
     <div class="card">
-        <video src="https://user-images.githubusercontent.com/99944/212743583-a4ee135f-f55b-4305-86c4-a3da1c49bb98.mov" autoplay loop></video>
+        <img src="./img/demo-help-desk.png" alt="help-desk">
         <div class="content-card">
             <a href="#help-desk" class="no-decoration">
                 <p class="title-card"><b>Help Desk</b></p>
