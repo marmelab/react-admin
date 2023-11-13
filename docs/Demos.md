@@ -3,6 +3,8 @@ layout: default
 title: "React-admin demos"
 ---
 
+<script src="https://player.vimeo.com/api/player.js"></script>
+
 # React-admin Demos
 
 If you want to see what react-admin is capable of, or if you want to learn from apps built by seasoned react-admin developers, check out these demos.
@@ -210,7 +212,8 @@ If you want to see what react-admin is capable of, or if you want to learn from 
 
 The admin of a fictional poster shop, allowing to manage sales, products, customers and reviews. Built by the core team.
 
-<video src="https://github-production-user-asset-6210df.s3.amazonaws.com/131013150/282027473-8905036c-f1c3-4536-b7c6-b9da8ffd06aa.mp4" controls="controls"></video>
+<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/474999017?h=4557e43b02&title=0&byline=0&portrait=0" style="position:absolute;top:0;left:0;width:100%;height:100%;" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe></div>
+<br>
 
 * Demo: [https://marmelab.com/react-admin-demo/](https://marmelab.com/react-admin-demo/)
 * Source code: [https://github.com/marmelab/react-admin/tree/master/examples/demo](https://github.com/marmelab/react-admin/tree/master/examples/demo)
@@ -232,7 +235,8 @@ The source shows how to implement the following features:
 
 Based on the E-commerce demo and upgraded with some React Admin Enterprise features.
 
-<video src="https://github-production-user-asset-6210df.s3.amazonaws.com/131013150/282154228-e0ebc28a-4e6e-4684-88f2-bbf4e2b66c82.webm" controls="controls"></video>
+<div style="padding:56.93% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/884005183?h=7f12a85dcf&title=0&byline=0&portrait=0" style="position:absolute;top:0;left:0;width:100%;height:100%;" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe></div>
+<br>
 
 * Demo: [https://marmelab.com/ra-enterprise-demo/](https://marmelab.com/ra-enterprise-demo/)
 * Source code: [https://github.com/marmelab/ra-enterprise-demo](https://github.com/marmelab/ra-enterprise-demo)
