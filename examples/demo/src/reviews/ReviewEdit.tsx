@@ -21,10 +21,10 @@ interface Props extends EditProps<Review> {
     onCancel: () => void;
 }
 
-const ReviewEdit = ({ onCancel, ...props }: Props) => {
+const ReviewEdit = ({ id, onCancel }: Props) => {
     const translate = useTranslate();
     return (
-        <EditBase {...props}>
+        <EditBase id={id}>
             <Box pt={5} width={{ xs: '100vW', sm: 400 }} mt={{ xs: 2, sm: 1 }}>
                 <Stack direction="row" p={2}>
                     <Typography variant="h6" flex="1">
