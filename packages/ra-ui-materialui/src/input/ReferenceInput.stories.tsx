@@ -13,7 +13,6 @@ import { Edit } from '../detail';
 import { SimpleForm } from '../form';
 import { SelectInput, RadioButtonGroupInput, TextInput } from '../input';
 import { ReferenceInput } from './ReferenceInput';
-import { defaultDarkTheme } from '../theme/defaultTheme';
 
 export default {
     title: 'ra-ui-materialui/input/ReferenceInput',
@@ -88,11 +87,7 @@ const BookEdit = () => (
 const history = createMemoryHistory({ initialEntries: ['/books/1'] });
 
 export const Basic = ({ dataProvider = dataProviderWithAuthors }) => (
-    <Admin
-        darkTheme={defaultDarkTheme}
-        dataProvider={dataProvider}
-        history={history}
-    >
+    <Admin dataProvider={dataProvider} history={history}>
         <Resource
             name="authors"
             recordRepresentation={record =>
@@ -293,7 +288,6 @@ const book = {
 
 export const ErrorAutocomplete = () => (
     <Admin
-        darkTheme={defaultDarkTheme}
         dataProvider={
             {
                 getOne: () => Promise.resolve({ data: book }),
@@ -335,11 +329,7 @@ export const ErrorAutocomplete = () => (
 );
 
 export const WithSelectInput = ({ dataProvider = dataProviderWithAuthors }) => (
-    <Admin
-        darkTheme={defaultDarkTheme}
-        dataProvider={dataProvider}
-        history={history}
-    >
+    <Admin dataProvider={dataProvider} history={history}>
         <Resource
             name="authors"
             recordRepresentation={record =>
@@ -370,7 +360,6 @@ export const WithSelectInput = ({ dataProvider = dataProviderWithAuthors }) => (
 
 export const ErrorSelectInput = () => (
     <Admin
-        darkTheme={defaultDarkTheme}
         dataProvider={
             {
                 getOne: () => Promise.resolve({ data: book }),
@@ -409,11 +398,7 @@ export const ErrorSelectInput = () => (
 );
 
 export const WithRadioButtonGroupInput = () => (
-    <Admin
-        darkTheme={defaultDarkTheme}
-        dataProvider={dataProviderWithAuthors}
-        history={history}
-    >
+    <Admin dataProvider={dataProviderWithAuthors} history={history}>
         <Resource
             name="authors"
             recordRepresentation={record =>
@@ -444,7 +429,6 @@ export const WithRadioButtonGroupInput = () => (
 
 export const ErrorRadioButtonGroupInput = () => (
     <Admin
-        darkTheme={defaultDarkTheme}
         dataProvider={
             {
                 getOne: () => Promise.resolve({ data: book }),
@@ -514,11 +498,7 @@ const BookEditWithSelfReference = () => {
 };
 
 export const SelfReference = ({ dataProvider = dataProviderWithAuthors }) => (
-    <Admin
-        darkTheme={defaultDarkTheme}
-        dataProvider={dataProvider}
-        history={history}
-    >
+    <Admin dataProvider={dataProvider} history={history}>
         <Resource
             name="authors"
             recordRepresentation={record =>
@@ -552,7 +532,6 @@ const BookEditQueryOptions = () => {
 export const QueryOptions = () => (
     <MemoryRouter initialEntries={['/books/1']}>
         <Admin
-            darkTheme={defaultDarkTheme}
             dataProvider={fakeRestDataProvider(
                 {
                     books: [

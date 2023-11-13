@@ -3,7 +3,6 @@ import { MemoryRouter, Routes, Route, Link } from 'react-router-dom';
 
 import { Admin } from './Admin';
 import { Resource, testDataProvider } from 'ra-core';
-import { defaultDarkTheme } from 'ra-ui-materialui';
 
 export default {
     title: 'react-admin/Admin',
@@ -13,7 +12,7 @@ const PostList = () => <h1>Post List</h1>;
 const CommentList = () => <h1>Comment List</h1>;
 
 export const Basic = () => (
-    <Admin darkTheme={defaultDarkTheme} dataProvider={testDataProvider()}>
+    <Admin dataProvider={testDataProvider()}>
         <Resource name="posts" list={PostList} />
         <Resource name="comments" list={CommentList} />
     </Admin>
@@ -21,7 +20,7 @@ export const Basic = () => (
 
 export const InsideRouter = () => (
     <MemoryRouter>
-        <Admin darkTheme={defaultDarkTheme} dataProvider={testDataProvider()}>
+        <Admin dataProvider={testDataProvider()}>
             <Resource name="posts" list={PostList} />
             <Resource name="comments" list={CommentList} />
         </Admin>
@@ -45,11 +44,7 @@ export const SubPath = () => (
             <Route
                 path="/admin/*"
                 element={
-                    <Admin
-                        darkTheme={defaultDarkTheme}
-                        dataProvider={testDataProvider()}
-                        basename="/admin"
-                    >
+                    <Admin dataProvider={testDataProvider()} basename="/admin">
                         <Resource name="posts" list={PostList} />
                         <Resource name="comments" list={CommentList} />
                     </Admin>

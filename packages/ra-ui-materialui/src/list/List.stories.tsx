@@ -11,7 +11,6 @@ import { TextField } from '../field';
 import { SearchInput, TextInput } from '../input';
 import { Route } from 'react-router';
 import { Link } from 'react-router-dom';
-import { defaultDarkTheme } from '../theme/defaultTheme';
 
 export default { title: 'ra-ui-materialui/list/List' };
 
@@ -128,11 +127,7 @@ const BookListBasic = () => (
 );
 
 export const Basic = () => (
-    <Admin
-        darkTheme={defaultDarkTheme}
-        dataProvider={dataProvider}
-        history={history}
-    >
+    <Admin dataProvider={dataProvider} history={history}>
         <Resource name="books" list={BookListBasic} />
     </Admin>
 );
@@ -144,11 +139,7 @@ const BookListBasicWithCustomActions = () => (
 );
 
 export const Actions = () => (
-    <Admin
-        darkTheme={defaultDarkTheme}
-        dataProvider={dataProvider}
-        history={history}
-    >
+    <Admin dataProvider={dataProvider} history={history}>
         <Resource name="books" list={BookListBasicWithCustomActions} />
     </Admin>
 );
@@ -177,11 +168,7 @@ const BookListWithFilters = () => (
 );
 
 export const Filters = () => (
-    <Admin
-        darkTheme={defaultDarkTheme}
-        dataProvider={dataProvider}
-        history={history}
-    >
+    <Admin dataProvider={dataProvider} history={history}>
         <Resource name="books" list={BookListWithFilters} />
     </Admin>
 );
@@ -193,11 +180,7 @@ const BookListWithPermanentFilter = () => (
 );
 
 export const Filter = () => (
-    <Admin
-        darkTheme={defaultDarkTheme}
-        dataProvider={dataProvider}
-        history={history}
-    >
+    <Admin dataProvider={dataProvider} history={history}>
         <Resource name="books" list={BookListWithPermanentFilter} />
     </Admin>
 );
@@ -209,11 +192,7 @@ const BookListWithCustomTitle = () => (
 );
 
 export const Title = () => (
-    <Admin
-        darkTheme={defaultDarkTheme}
-        dataProvider={dataProvider}
-        history={history}
-    >
+    <Admin dataProvider={dataProvider} history={history}>
         <Resource name="books" list={BookListWithCustomTitle} />
     </Admin>
 );
@@ -225,11 +204,7 @@ const BookListWithCreate = () => (
 );
 
 export const HasCreate = () => (
-    <Admin
-        darkTheme={defaultDarkTheme}
-        dataProvider={dataProvider}
-        history={history}
-    >
+    <Admin dataProvider={dataProvider} history={history}>
         <Resource name="books" list={BookListWithCreate} />
     </Admin>
 );
@@ -243,11 +218,7 @@ const BookListWithAside = () => (
 );
 
 export const Aside = () => (
-    <Admin
-        darkTheme={defaultDarkTheme}
-        dataProvider={dataProvider}
-        history={history}
-    >
+    <Admin dataProvider={dataProvider} history={history}>
         <Resource name="books" list={BookListWithAside} />
     </Admin>
 );
@@ -268,11 +239,7 @@ const BookListWithCustomComponent = () => (
 );
 
 export const Component = () => (
-    <Admin
-        darkTheme={defaultDarkTheme}
-        dataProvider={dataProvider}
-        history={history}
-    >
+    <Admin dataProvider={dataProvider} history={history}>
         <Resource name="books" list={BookListWithCustomComponent} />
     </Admin>
 );
@@ -287,11 +254,7 @@ const CreateAuthor = () => <span />;
 const historyAuthors = createMemoryHistory({ initialEntries: ['/authors'] });
 
 export const Empty = () => (
-    <Admin
-        darkTheme={defaultDarkTheme}
-        dataProvider={dataProvider}
-        history={historyAuthors}
-    >
+    <Admin dataProvider={dataProvider} history={historyAuthors}>
         <Resource name="authors" list={EmptyAuthorList} create={CreateAuthor} />
     </Admin>
 );
@@ -310,11 +273,7 @@ const BookListWithStyles = () => (
 );
 
 export const SX = () => (
-    <Admin
-        darkTheme={defaultDarkTheme}
-        dataProvider={dataProvider}
-        history={history}
-    >
+    <Admin dataProvider={dataProvider} history={history}>
         <Resource name="books" list={BookListWithStyles} />
     </Admin>
 );
@@ -339,11 +298,7 @@ const BookListWithMeta = () => (
 );
 
 export const Meta = () => (
-    <Admin
-        darkTheme={defaultDarkTheme}
-        dataProvider={dataProviderWithLog}
-        history={history}
-    >
+    <Admin dataProvider={dataProviderWithLog} history={history}>
         <Resource name="books" list={BookListWithMeta} />
     </Admin>
 );
@@ -360,11 +315,7 @@ const BookListWithDatagrid = () => (
 );
 
 export const Default = () => (
-    <Admin
-        darkTheme={defaultDarkTheme}
-        dataProvider={dataProvider}
-        history={history}
-    >
+    <Admin dataProvider={dataProvider} history={history}>
         <Resource name="books" list={BookListWithDatagrid} />
     </Admin>
 );
@@ -426,7 +377,6 @@ export const StoreKey = () => {
     history.push('/');
     return (
         <Admin
-            darkTheme={defaultDarkTheme}
             dataProvider={dataProvider}
             history={history}
             dashboard={StoreKeyDashboard}
@@ -497,7 +447,6 @@ export const StoreDisabled = () => {
     history.push('/');
     return (
         <Admin
-            darkTheme={defaultDarkTheme}
             dataProvider={dataProvider}
             history={history}
             dashboard={DisabledStoreDashboard}
@@ -513,7 +462,6 @@ export const StoreDisabled = () => {
 
 export const ErrorInFetch = () => (
     <Admin
-        darkTheme={defaultDarkTheme}
         dataProvider={
             {
                 getList: () =>

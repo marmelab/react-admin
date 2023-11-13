@@ -25,7 +25,6 @@ import { ReferenceArrayInput } from './ReferenceArrayInput';
 import { useCreateSuggestionContext } from './useSupportCreateSuggestion';
 import { TextInput } from './TextInput';
 import { ArrayInput, SimpleFormIterator } from './ArrayInput';
-import { defaultDarkTheme } from '../theme/defaultTheme';
 
 export default { title: 'ra-ui-materialui/input/AutocompleteArrayInput' };
 
@@ -183,11 +182,7 @@ const BookEdit = () => {
 };
 
 export const InEdit = () => (
-    <Admin
-        darkTheme={defaultDarkTheme}
-        dataProvider={dataProvider}
-        history={history}
-    >
+    <Admin dataProvider={dataProvider} history={history}>
         <Resource name="books" edit={BookEdit} />
     </Admin>
 );
@@ -222,11 +217,7 @@ const BookEditCustomText = () => {
 };
 
 export const CustomText = () => (
-    <Admin
-        darkTheme={defaultDarkTheme}
-        dataProvider={dataProvider}
-        history={history}
-    >
+    <Admin dataProvider={dataProvider} history={history}>
         <Resource name="books" edit={BookEditCustomText} />
     </Admin>
 );
@@ -261,11 +252,7 @@ const BookEditCustomTextFunction = () => {
 };
 
 export const CustomTextFunction = () => (
-    <Admin
-        darkTheme={defaultDarkTheme}
-        dataProvider={dataProvider}
-        history={history}
-    >
+    <Admin dataProvider={dataProvider} history={history}>
         <Resource name="books" edit={BookEditCustomTextFunction} />
     </Admin>
 );
@@ -323,11 +310,7 @@ const BookEditCustomOptions = () => {
 };
 
 export const CustomOptions = () => (
-    <Admin
-        darkTheme={defaultDarkTheme}
-        dataProvider={dataProvider}
-        history={history}
-    >
+    <Admin dataProvider={dataProvider} history={history}>
         <Resource name="books" edit={BookEditCustomOptions} />
     </Admin>
 );
@@ -374,11 +357,7 @@ const BookEditWithCreationSupport = () => (
 );
 
 export const CreationSupport = () => (
-    <Admin
-        darkTheme={defaultDarkTheme}
-        dataProvider={dataProvider}
-        history={history}
-    >
+    <Admin dataProvider={dataProvider} history={history}>
         <Resource name="books" edit={BookEditWithCreationSupport} />
     </Admin>
 );
@@ -467,11 +446,7 @@ const BookEditWithReference = () => (
 );
 
 export const InsideReferenceArrayInput = () => (
-    <Admin
-        darkTheme={defaultDarkTheme}
-        dataProvider={dataProviderWithAuthors}
-        history={history}
-    >
+    <Admin dataProvider={dataProviderWithAuthors} history={history}>
         <Resource name="authors" />
         <Resource name="books" edit={BookEditWithReference} />
     </Admin>
@@ -502,7 +477,6 @@ export const InsideReferenceArrayInputOnChange = ({
     onChange = (value, records) => console.log({ value, records }),
 }: Pick<AutocompleteArrayInputProps, 'onChange'>) => (
     <Admin
-        darkTheme={defaultDarkTheme}
         dataProvider={dataProviderWithAuthors}
         history={createMemoryHistory({ initialEntries: ['/books/create'] })}
     >
@@ -610,11 +584,7 @@ const BookEditWithReferenceAndCreationSupport = () => (
 );
 
 export const InsideReferenceArrayInputWithCreationSupport = () => (
-    <Admin
-        darkTheme={defaultDarkTheme}
-        dataProvider={dataProviderWithAuthors}
-        history={history}
-    >
+    <Admin dataProvider={dataProviderWithAuthors} history={history}>
         <Resource name="authors" />
         <Resource name="books" edit={BookEditWithReferenceAndCreationSupport} />
     </Admin>

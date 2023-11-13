@@ -23,7 +23,6 @@ import { createMemoryHistory } from 'history';
 
 import { SavedQueriesList } from './SavedQueriesList';
 import { RaThemeOptions } from '../..';
-import { defaultDarkTheme } from '../../theme/defaultTheme';
 import fakeRestProvider from 'ra-data-fakerest';
 
 export default { title: 'ra-ui-materialui/list/filter/SavedQueriesList' };
@@ -152,11 +151,7 @@ const SongList = () => (
 );
 
 export const Basic = () => (
-    <Admin
-        darkTheme={defaultDarkTheme}
-        history={createMemoryHistory()}
-        dataProvider={dataProvider}
-    >
+    <Admin history={createMemoryHistory()} dataProvider={dataProvider}>
         <Resource name="songs" list={SongList} />
     </Admin>
 );

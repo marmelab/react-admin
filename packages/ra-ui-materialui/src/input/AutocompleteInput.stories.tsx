@@ -31,7 +31,6 @@ import { AutocompleteInput, AutocompleteInputProps } from './AutocompleteInput';
 import { ReferenceInput } from './ReferenceInput';
 import { TextInput } from './TextInput';
 import { useCreateSuggestionContext } from './useSupportCreateSuggestion';
-import { defaultDarkTheme } from '../theme/defaultTheme';
 
 export default { title: 'ra-ui-materialui/input/AutocompleteInput' };
 
@@ -100,11 +99,7 @@ const BookEdit = () => {
 };
 
 export const Basic = () => (
-    <Admin
-        darkTheme={defaultDarkTheme}
-        dataProvider={dataProvider}
-        history={history}
-    >
+    <Admin dataProvider={dataProvider} history={history}>
         <Resource name="books" edit={BookEdit} />
     </Admin>
 );
@@ -118,11 +113,7 @@ export const Nullable = ({ onSuccess = console.log }) => {
         { id: 5, name: 'Marcel Proust' },
     ];
     return (
-        <Admin
-            darkTheme={defaultDarkTheme}
-            dataProvider={dataProvider}
-            history={history}
-        >
+        <Admin dataProvider={dataProvider} history={history}>
             <Resource
                 name="books"
                 edit={() => (
@@ -148,11 +139,7 @@ export const Nullable = ({ onSuccess = console.log }) => {
 
 export const IsLoading = () => {
     return (
-        <Admin
-            darkTheme={defaultDarkTheme}
-            dataProvider={dataProvider}
-            history={history}
-        >
+        <Admin dataProvider={dataProvider} history={history}>
             <Resource
                 name="books"
                 edit={() => (
@@ -178,11 +165,7 @@ export const OnChange = ({
         { id: 5, name: 'Marcel Proust' },
     ];
     return (
-        <Admin
-            darkTheme={defaultDarkTheme}
-            dataProvider={dataProvider}
-            history={history}
-        >
+        <Admin dataProvider={dataProvider} history={history}>
             <Resource
                 name="books"
                 edit={() => (
@@ -240,11 +223,7 @@ const BookEditCustomText = () => {
 };
 
 export const CustomText = () => (
-    <Admin
-        darkTheme={defaultDarkTheme}
-        dataProvider={dataProvider}
-        history={history}
-    >
+    <Admin dataProvider={dataProvider} history={history}>
         <Resource name="books" edit={BookEditCustomText} />
     </Admin>
 );
@@ -279,11 +258,7 @@ const BookEditCustomTextFunction = () => {
 };
 
 export const CustomTextFunction = () => (
-    <Admin
-        darkTheme={defaultDarkTheme}
-        dataProvider={dataProvider}
-        history={history}
-    >
+    <Admin dataProvider={dataProvider} history={history}>
         <Resource name="books" edit={BookEditCustomTextFunction} />
     </Admin>
 );
@@ -341,11 +316,7 @@ const BookEditCustomOptions = () => {
 };
 
 export const CustomOptions = () => (
-    <Admin
-        darkTheme={defaultDarkTheme}
-        dataProvider={dataProvider}
-        history={history}
-    >
+    <Admin dataProvider={dataProvider} history={history}>
         <Resource name="books" edit={BookEditCustomOptions} />
     </Admin>
 );
@@ -395,11 +366,7 @@ const BookEditWithCreationSupport = () => (
 );
 
 export const CreationSupport = () => (
-    <Admin
-        darkTheme={defaultDarkTheme}
-        dataProvider={dataProvider}
-        history={history}
-    >
+    <Admin dataProvider={dataProvider} history={history}>
         <Resource name="books" edit={BookEditWithCreationSupport} />
     </Admin>
 );
@@ -501,7 +468,6 @@ const BookEditWithReferenceAndRecordRepresentation = () => (
 
 export const InsideReferenceInputWithRecordRepresentation = () => (
     <Admin
-        darkTheme={defaultDarkTheme}
         dataProvider={dataProviderWithAuthorsWithFirstAndLastName}
         history={history}
     >
@@ -585,11 +551,7 @@ const dataProviderWithAuthors = {
 } as any;
 
 export const InsideReferenceInput = () => (
-    <Admin
-        darkTheme={defaultDarkTheme}
-        dataProvider={dataProviderWithAuthors}
-        history={history}
-    >
+    <Admin dataProvider={dataProviderWithAuthors} history={history}>
         <Resource name="authors" />
         <Resource
             name="books"
@@ -634,7 +596,6 @@ export const InsideReferenceInputOnChange = ({
     onChange = (value, record) => console.log({ value, record }),
 }: Pick<AutocompleteInputProps, 'onChange'>) => (
     <Admin
-        darkTheme={defaultDarkTheme}
         dataProvider={dataProviderWithAuthors}
         history={createMemoryHistory({ initialEntries: ['/books/create'] })}
     >
@@ -664,7 +625,6 @@ export const InsideReferenceInputDefaultValue = ({
     onSuccess = console.log,
 }) => (
     <Admin
-        darkTheme={defaultDarkTheme}
         dataProvider={{
             ...dataProviderWithAuthors,
             getOne: () =>
@@ -704,7 +664,6 @@ export const InsideReferenceInputDefaultValue = ({
 
 export const InsideReferenceInputWithError = () => (
     <Admin
-        darkTheme={defaultDarkTheme}
         dataProvider={{
             ...dataProviderWithAuthors,
             getList: () => Promise.reject('error'),
@@ -812,11 +771,7 @@ const BookEditWithReferenceAndCreationSupport = () => (
 );
 
 export const InsideReferenceInputWithCreationSupport = () => (
-    <Admin
-        darkTheme={defaultDarkTheme}
-        dataProvider={dataProviderWithAuthors}
-        history={history}
-    >
+    <Admin dataProvider={dataProviderWithAuthors} history={history}>
         <Resource name="authors" />
         <Resource name="books" edit={BookEditWithReferenceAndCreationSupport} />
     </Admin>
@@ -831,11 +786,7 @@ const BookOptionText = () => {
 export const InsideReferenceInputWithCustomizedItemRendering = (
     props: Partial<AutocompleteInputProps>
 ) => (
-    <Admin
-        darkTheme={defaultDarkTheme}
-        dataProvider={dataProviderWithAuthors}
-        history={history}
-    >
+    <Admin dataProvider={dataProviderWithAuthors} history={history}>
         <Resource name="authors" />
         <Resource
             name="books"
@@ -927,7 +878,6 @@ const DalmatianEdit = () => {
 export const VeryLargeOptionsNumber = () => {
     return (
         <Admin
-            darkTheme={defaultDarkTheme}
             dataProvider={dataProvider}
             history={createMemoryHistory({
                 initialEntries: ['/dalmatians/1'],
@@ -992,11 +942,7 @@ const BookEditWithEmptyText = () => {
 };
 
 export const EmptyText = () => (
-    <Admin
-        darkTheme={defaultDarkTheme}
-        dataProvider={dataProviderEmpty}
-        history={history}
-    >
+    <Admin dataProvider={dataProviderEmpty} history={history}>
         <Resource name="books" edit={BookEditWithEmptyText} />
     </Admin>
 );
@@ -1140,7 +1086,6 @@ const dataProviderWithDifferentShapeInGetMany = {
 
 export const DifferentShapeInGetMany = () => (
     <Admin
-        darkTheme={defaultDarkTheme}
         dataProvider={dataProviderWithDifferentShapeInGetMany}
         history={history}
     >

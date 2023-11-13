@@ -12,7 +12,6 @@ import { TextInput } from '../TextInput';
 import { DateInput } from '../DateInput';
 import { NumberInput } from '../NumberInput';
 import { AutocompleteInput } from '../AutocompleteInput';
-import { defaultDarkTheme } from '../../theme/defaultTheme';
 
 export default { title: 'ra-ui-materialui/input/ArrayInput' };
 
@@ -67,21 +66,13 @@ const BookEdit = () => {
 };
 
 export const Basic = () => (
-    <Admin
-        darkTheme={defaultDarkTheme}
-        dataProvider={dataProvider}
-        history={history}
-    >
+    <Admin dataProvider={dataProvider} history={history}>
         <Resource name="books" edit={BookEdit} />
     </Admin>
 );
 
 export const Disabled = () => (
-    <Admin
-        darkTheme={defaultDarkTheme}
-        dataProvider={dataProvider}
-        history={history}
-    >
+    <Admin dataProvider={dataProvider} history={history}>
         <Resource
             name="books"
             edit={() => {
@@ -140,21 +131,13 @@ const BookEditWithAutocomplete = () => {
 };
 
 export const AutocompleteFirst = () => (
-    <Admin
-        darkTheme={defaultDarkTheme}
-        dataProvider={dataProvider}
-        history={history}
-    >
+    <Admin dataProvider={dataProvider} history={history}>
         <Resource name="books" edit={BookEditWithAutocomplete} />
     </Admin>
 );
 
 export const Scalar = () => (
-    <Admin
-        darkTheme={defaultDarkTheme}
-        dataProvider={dataProvider}
-        history={history}
-    >
+    <Admin dataProvider={dataProvider} history={history}>
         <Resource
             name="books"
             edit={() => (
@@ -233,7 +216,6 @@ const order = {
 
 export const Realistic = () => (
     <Admin
-        darkTheme={defaultDarkTheme}
         dataProvider={
             {
                 getOne: () => Promise.resolve({ data: order }),
@@ -295,7 +277,6 @@ export const Realistic = () => (
 
 export const NestedInline = () => (
     <Admin
-        darkTheme={defaultDarkTheme}
         dataProvider={
             {
                 getOne: () => Promise.resolve({ data: order }),
@@ -358,11 +339,7 @@ export const NestedInline = () => (
 );
 
 export const ActionsLeft = () => (
-    <Admin
-        darkTheme={defaultDarkTheme}
-        dataProvider={dataProvider}
-        history={history}
-    >
+    <Admin dataProvider={dataProvider} history={history}>
         <Resource
             name="books"
             edit={() => (
@@ -431,8 +408,8 @@ const BookEditGlobalValidation = () => {
             }}
         >
             <SimpleForm validate={globalValidator}>
-                {/*
-                  We still need `validate={required()}` to indicate fields are required
+                {/* 
+                  We still need `validate={required()}` to indicate fields are required 
                   with a '*' symbol after the label, but the real validation happens in `globalValidator`
                 */}
                 <ArrayInput source="authors" fullWidth validate={required()}>
@@ -446,11 +423,7 @@ const BookEditGlobalValidation = () => {
     );
 };
 export const GlobalValidation = () => (
-    <Admin
-        darkTheme={defaultDarkTheme}
-        dataProvider={dataProvider}
-        history={history}
-    >
+    <Admin dataProvider={dataProvider} history={history}>
         <Resource name="books" edit={BookEditGlobalValidation} />
     </Admin>
 );
@@ -465,8 +438,8 @@ const CreateGlobalValidationInFormTab = () => {
             }}
         >
             <TabbedForm validate={globalValidator}>
-                {/*
-                  We still need `validate={required()}` to indicate fields are required
+                {/* 
+                  We still need `validate={required()}` to indicate fields are required 
                   with a '*' symbol after the label, but the real validation happens in `globalValidator`
                 */}
                 <TabbedForm.Tab label="Main">
@@ -489,7 +462,6 @@ const CreateGlobalValidationInFormTab = () => {
 
 export const ValidationInFormTab = () => (
     <Admin
-        darkTheme={defaultDarkTheme}
         dataProvider={dataProvider}
         history={createMemoryHistory({
             initialEntries: ['/books/create'],

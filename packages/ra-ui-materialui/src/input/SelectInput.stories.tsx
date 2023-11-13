@@ -13,7 +13,6 @@ import { ReferenceInput } from './ReferenceInput';
 import { SaveButton } from '../button/SaveButton';
 import { Toolbar } from '../form/Toolbar';
 import { FormInspector } from './common';
-import { defaultDarkTheme } from '../theme/defaultTheme';
 
 export default { title: 'ra-ui-materialui/input/SelectInput' };
 
@@ -270,11 +269,7 @@ export const FetchChoices = () => {
         );
     };
     return (
-        <Admin
-            darkTheme={defaultDarkTheme}
-            dataProvider={dataProviderWithAuthors}
-            history={history}
-        >
+        <Admin dataProvider={dataProviderWithAuthors} history={history}>
             <Resource
                 name="authors"
                 recordRepresentation={record =>
@@ -304,11 +299,7 @@ export const FetchChoices = () => {
 };
 
 export const InsideReferenceInput = () => (
-    <Admin
-        darkTheme={defaultDarkTheme}
-        dataProvider={dataProviderWithAuthors}
-        history={history}
-    >
+    <Admin dataProvider={dataProviderWithAuthors} history={history}>
         <Resource
             name="authors"
             recordRepresentation={record =>
@@ -342,7 +333,6 @@ export const InsideReferenceInputDefaultValue = ({
     onSuccess = console.log,
 }) => (
     <Admin
-        darkTheme={defaultDarkTheme}
         dataProvider={{
             ...dataProviderWithAuthors,
             getOne: () =>
@@ -388,7 +378,6 @@ export const InsideReferenceInputDefaultValue = ({
 
 export const InsideReferenceInputWithError = () => (
     <Admin
-        darkTheme={defaultDarkTheme}
         dataProvider={{
             ...dataProviderWithAuthors,
             getList: () => Promise.reject('error'),

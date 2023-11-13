@@ -15,7 +15,6 @@ import { ReferenceArrayInput } from './ReferenceArrayInput';
 import { AutocompleteArrayInput } from './AutocompleteArrayInput';
 import { SelectArrayInput } from './SelectArrayInput';
 import { CheckboxGroupInput } from './CheckboxGroupInput';
-import { defaultDarkTheme } from '../theme/defaultTheme';
 
 export default { title: 'ra-ui-materialui/input/ReferenceArrayInput' };
 
@@ -28,8 +27,8 @@ const tags = [
 ];
 
 const dataProvider = testDataProvider({
-    // @ts-ignore
     getList: () =>
+        // @ts-ignore
         Promise.resolve({
             data: tags,
             total: tags.length,
@@ -48,11 +47,7 @@ const i18nProvider = polyglotI18nProvider(() => englishMessages);
 const history = createMemoryHistory({ initialEntries: ['/posts/create'] });
 
 export const Basic = () => (
-    <Admin
-        darkTheme={defaultDarkTheme}
-        dataProvider={dataProvider}
-        history={history}
-    >
+    <Admin dataProvider={dataProvider} history={history}>
         <Resource name="tags" recordRepresentation={'name'} />
         <Resource
             name="posts"

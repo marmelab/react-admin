@@ -8,7 +8,6 @@ import { SimpleForm } from '../form';
 import { TextField } from '../field';
 import { DatagridInput } from './DatagridInput';
 import { ReferenceArrayInput } from './ReferenceArrayInput';
-import { defaultDarkTheme } from '../theme/defaultTheme';
 
 export default { title: 'ra-ui-materialui/input/DatagridInput' };
 
@@ -61,11 +60,7 @@ const BookEdit = () => {
 };
 
 export const Basic = () => (
-    <Admin
-        darkTheme={defaultDarkTheme}
-        dataProvider={dataProvider}
-        history={history}
-    >
+    <Admin dataProvider={dataProvider} history={history}>
         <Resource name="books" edit={BookEdit} />
     </Admin>
 );
@@ -156,11 +151,7 @@ const BookEditWithReference = () => (
 );
 
 export const InsideReferenceInput = () => (
-    <Admin
-        darkTheme={defaultDarkTheme}
-        dataProvider={dataProviderWithAuthors}
-        history={history}
-    >
+    <Admin dataProvider={dataProviderWithAuthors} history={history}>
         <Resource name="authors" />
         <Resource name="books" edit={BookEditWithReference} />
     </Admin>
