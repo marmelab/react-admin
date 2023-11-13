@@ -80,7 +80,6 @@ title: "Index"
 * [`<Form>`](./Form.md)
 * [`<FormDataConsumer>`](./Inputs.md#linking-two-inputs)
 * [`<FormTab>`](./TabbedForm.md)
-* [`<FormTab>`](./TabbedFormEnterprise.md)<img class="icon" src="./img/premium.svg" />
 * [`<FunctionField>`](./FunctionField.md)
 
 **- H -**
@@ -177,9 +176,7 @@ title: "Index"
 **- T -**
 * `<Tab>`
 * [`<TabbedForm>`](./TabbedForm.md)
-* [`<TabbedForm>`](./TabbedFormEnterprise.md)<img class="icon" src="./img/premium.svg" />
 * [`<TabbedShowLayout>`](./TabbedShowLayout.md)
-* [`<TabbedShowLayout>`](./TabbedShowLayoutEnterprise.md)<img class="icon" src="./img/premium.svg" />
 * [`<TextField>`](./TextField.md)
 * [`<TextInput>`](./TextInput.md)
 * [`<TimeInput>`](./TimeInput.md)

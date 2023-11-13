@@ -16,7 +16,7 @@ title: "TabbedForm"
 
 ## Usage
 
-`<TabbedForm>` reads the `record` from the `RecordContext`, uses it to initialize the defaultValues of a `<Form>`, renders its children in a Material UI `<Stack>`, and renders a toolbar with a `<SaveButton>` that calls the `save` callback prepared by the edit or the create controller when pressed. 
+`<TabbedForm>` reads the `record` from the `RecordContext`, uses it to initialize the defaultValues of a `<Form>`, renders its children in a Material UI `<Stack>`, and renders a toolbar with a `<SaveButton>` that calls the `save` callback prepared by the edit or the create controller when pressed.
 
 `<TabbedForm>` is often used as child of `<Create>` or `<Edit>`. It accepts `<TabbedForm.Tab>` elements as children. It relies on [react-hook-form](https://react-hook-form.com/) for form handling. It requires no prop by default.
 
@@ -31,7 +31,7 @@ import {
     DateField,
     TextInput,
     ReferenceManyField,
-    NumberInput,    
+    NumberInput,
     DateInput,
     BooleanInput,
     EditButton
@@ -72,7 +72,7 @@ export const PostEdit = () => (
 
 `<TabbedForm>` calls react-hook-form's `useForm` hook, and places the result in a `FormProvider` component. This means you can take advantage of the [`useFormContext`](https://react-hook-form.com/docs/useformcontext) and [`useFormState`](https://react-hook-form.com/docs/useformstate) hooks to access the form state.
 
-React-admin highlights the tabs containing validation errors to help users locate incorrect input values. 
+React-admin highlights the tabs containing validation errors to help users locate incorrect input values.
 
 ## Props
 
@@ -333,14 +333,14 @@ export const PostEdit = () => (
 The solution here is to set a max width on one of the following components:
 
 * the `<Edit>` or `<Create>`
-* the `<TabbedForm>` 
+* the `<TabbedForm>`
 
 ## `toolbar`
 
 By default, `<TabbedForm>` renders a toolbar at the bottom of the form, containing:
 
 - a submit button on Creation pages,
-- a submit button and a delete button on Edition pages. 
+- a submit button and a delete button on Edition pages.
 
 If you want to tweak the look and feel of that toolbar, add or remove buttons, pass yout own toolbar component to the form using the `toolbar` prop.
 
@@ -485,7 +485,7 @@ export const UserCreate = () => (
 
 ## `warnWhenUnsavedChanges`
 
-React-admin keeps track of the form state, so it can detect when the user leaves an `Edit` or `Create` page with unsaved changes. To avoid data loss, you can use this ability to ask the user to confirm before leaving a page with unsaved changes. 
+React-admin keeps track of the form state, so it can detect when the user leaves an `Edit` or `Create` page with unsaved changes. To avoid data loss, you can use this ability to ask the user to confirm before leaving a page with unsaved changes.
 
 ![Warn About Unsaved Changes](./img/warn_when_unsaved_changes.png)
 
@@ -668,12 +668,12 @@ const ProductEditDetails = () => (
 ## Subscribing To Form Changes
 
 `<TabbedForm>` relies on [react-hook-form's `useForm`](https://react-hook-form.com/docs/useform) to manage the form state and validation. You can subscribe to form changes using the [`useFormContext`](https://react-hook-form.com/docs/useformcontext) and [`useFormState`](https://react-hook-form.com/docs/useformstate) hooks.
- 
+
 **Reminder:** [react-hook-form's `formState` is wrapped with a Proxy](https://react-hook-form.com/docs/useformstate/#rules) to improve render performance and skip extra computation if specific state is not subscribed. So, make sure you deconstruct or read the `formState` before render in order to enable the subscription.
 
 ```js
 const { isDirty } = useFormState(); // ✅
-const formState = useFormState(); // ❌ should deconstruct the formState      
+const formState = useFormState(); // ❌ should deconstruct the formState
 ```
 
 ## Dynamic Tab Label
@@ -824,21 +824,78 @@ Check [the `<AutoSave>` component](./AutoSave.md) documentation for more details
 
 ## Role-Based Access Control (RBAC)
 
-Fine-grained permissions control can be added by using the [`<TabbedForm>`](./AuthRBAC.md#tabbedform) and [`<FormTab>`](./AuthRBAC.md#tabbedform) components provided by the `@react-admin/ra-rbac` package. 
+Fine-grained permissions control can be added by using the [`<TabbedForm>`](./AuthRBAC.md#tabbedform) component provided by the `@react-admin/ra-rbac` package.
+
+Use in conjunction with [`<TabbedForm.Tab>`](#tabbedformtab) and add a `name` prop to the `Tab` to define the resource on which the user needs to have the 'write' permissions for.
+
+**Tip:** [`<TabbedForm.Tab>`](#tabbedformtab) also allows to only render the child inputs for which the user has the 'write' permissions.
 
 {% raw %}
 ```jsx
 import { Edit, TextInput } from 'react-admin';
-import { TabbedForm, FormTab } from '@react-admin/ra-rbac';
+import { TabbedForm } from '@react-admin/ra-rbac';
 
 const authProvider = {
     checkAuth: () => Promise.resolve(),
     login: () => Promise.resolve(),
     logout: () => Promise.resolve(),
     checkError: () => Promise.resolve(),
-    getPermissions: () =>Promise.resolve({
-        permissions: [
-            // 'delete' is missing
+    getPermissions: () =>
+        Promise.resolve([
+            // action 'delete' is missing
+            { action: ['list', 'edit'], resource: 'products' },
+            { action: 'write', resource: 'products.reference' },
+            { action: 'write', resource: 'products.width' },
+            { action: 'write', resource: 'products.height' },
+            { action: 'write', resource: 'products.thumbnail' },
+            { action: 'write', resource: 'products.tab.description' },
+            // tab 'stock' is missing
+            { action: 'write', resource: 'products.tab.images' },
+        ]),
+};
+
+const ProductEdit = () => (
+    <Edit>
+        <TabbedForm>
+            <TabbedForm.Tab label="Description" name="description">
+                <TextInput source="reference" />
+                <TextInput source="width" />
+                <TextInput source="height" />
+                <TextInput source="description" />
+            </TabbedForm.Tab>
+            {/* the "Stock" tab is not displayed */}
+            <TabbedForm.Tab label="Stock" name="stock">
+                <TextInput source="stock" />
+            </TabbedForm.Tab>
+            <TabbedForm.Tab label="Images" name="images">
+                <TextInput source="image" />
+                <TextInput source="thumbnail" />
+            </TabbedForm.Tab>
+            {/* the "Delete" button is not displayed */}
+        </TabbedForm>
+    </Edit>
+);
+```
+{% endraw %}
+
+Check [the RBAC `<TabbedForm>` component](./AuthRBAC.md#tabbedform) documentation for more details.
+
+### `<TabbedForm.Tab>`
+
+Replacement for react-admin's `<TabbedForm.Tab>` that only renders a tab and its content if the user has the right permissions.
+
+Add a `name` prop to the `Tab` to define the resource on which the user needs to have the 'write' permissions for.
+
+`<TabbedForm.Tab>` also only renders the child inputs for which the user has the 'write' permissions.
+
+```tsx
+import { Edit, TextInput } from 'react-admin';
+import { TabbedForm } from '@react-admin/ra-rbac';
+
+const authProvider = {
+    // ...
+    getPermissions: () =>
+        Promise.resolve([
             { action: ['list', 'edit'], resource: 'products' },
             { action: 'write', resource: 'products.reference' },
             { action: 'write', resource: 'products.width' },
@@ -847,39 +904,34 @@ const authProvider = {
             { action: 'write', resource: 'products.thumbnail' },
             // 'products.image' is missing
             { action: 'write', resource: 'products.tab.description' },
-            { action: 'write', resource: 'products.tab.images' },
             // 'products.tab.stock' is missing
-        ],
-    }),
+            { action: 'write', resource: 'products.tab.images' },
+        ]),
 };
 
 const ProductEdit = () => (
     <Edit>
         <TabbedForm>
-            <FormTab label="Description" name="description">
+            <TabbedForm.Tab label="Description" name="description">
                 <TextInput source="reference" />
                 <TextInput source="width" />
                 <TextInput source="height" />
-                {/* not displayed */}
+                {/* Input Description is not displayed */}
                 <TextInput source="description" />
-            </FormTab>
-            <FormTab label="Images" name="images">
-                {/* not displayed */}
+            </TabbedForm.Tab>
+            {/* Input Stock is not displayed */}
+            <TabbedForm.Tab label="Stock" name="stock">
+                <TextInput source="stock" />
+            </TabbedForm.Tab>
+            <TabbedForm.Tab label="Images" name="images">
+                {/* Input Image is not displayed */}
                 <TextInput source="image" />
                 <TextInput source="thumbnail" />
-            </FormTab>
-            {/* not displayed */}
-            <FormTab label="Stock" name="stock">
-                <TextInput source="stock" />
-            </FormTab>
-            {/*} delete button not displayed */}
+            </TabbedForm.Tab>
         </TabbedForm>
     </Edit>
 );
 ```
-{% endraw %}
-
-Check [the RBAC `<TabbedForm>` component](./AuthRBAC.md#tabbedform) documentation for more details.
 
 ## Linking Two Inputs
 
