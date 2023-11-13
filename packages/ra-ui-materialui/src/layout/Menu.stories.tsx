@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Resource, CustomRoutes, testDataProvider } from 'ra-core';
+import { Resource, CustomRoutes, testDataProvider, memoryStore } from 'ra-core';
 import { defaultTheme, Admin, useSidebarState } from 'react-admin';
 import {
     Typography,
@@ -45,6 +45,7 @@ export const Default = () => {
 
     return (
         <Admin
+            store={memoryStore()}
             dataProvider={testDataProvider()}
             layout={DefaultLayout}
             darkTheme={darkTheme}
@@ -66,6 +67,7 @@ export const Dense = () => {
 
     return (
         <Admin
+            store={memoryStore()}
             dataProvider={testDataProvider()}
             layout={LayoutDense}
             darkTheme={darkTheme}
