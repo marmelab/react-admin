@@ -41,12 +41,13 @@ export const App = () => (
 
 `<CheckForApplicationUpdate>` accepts the following props:
 
-| Prop            | Required | Type     | Default            | Description                                                         |
-| --------------- | -------- | -------- | ------------------ |-------------------------------------------------------------------- |
-| `interval` | Optional | number   | `3600000` (1 hour) | The interval in milliseconds between two checks                     |
-| `disabled`      | Optional | boolean  | `false` in `production` mode | Whether the automatic check is disabled                              |
-| `notification`  | Optional | ReactElement |                    | The notification to display to the user when an update is available |
-| `url`           | Optional | string   | current URL        | The URL to download to check for code update                        |
+| Prop            | Required | Type           | Default            | Description                                                         |
+| --------------- | -------- | -------------- | ------------------ |-------------------------------------------------------------------- |
+| `interval`      | Optional | `number`       | `3600000` (1 hour) | The interval in milliseconds between two checks                     |
+| `disabled`      | Optional | `boolean`      | `false`            | Whether the automatic check is disabled                             |
+| `notification`  | Optional | `ReactElement` |                    | The notification to display to the user when an update is available |
+| `onNewVersion Available` | Optional | `function` |               | The effect to execute when a new version is detected.               |
+| `url`           | Optional | `string`       | Current URL        | The URL to download to check for code update                        |
 
 ## `interval`
 
@@ -120,32 +121,12 @@ const MyLayout = ({ children, ...props }) => (
 
 If you want to customize the behavior when a new version is available, checkout the [`onNewVersionAvailable` section](#onnewversionavailable). If you just want to customize the notification texts, including the button, check out the [Internationalization section](#internationalization).
 
-## `url`
-
-You can customize the URL fetched to detect updates by providing the `url` prop. By default, it's the current URL.
-
-```tsx
-// in src/MyLayout.tsx
-import { CheckForApplicationUpdate, Layout, LayoutProps } from 'react-admin';
-
-const MY_APP_ROOT_URL = 'https://admin.mycompany.com';
-
-export const MyLayout = ({ children, ...props }: LayoutProps) => (
-    <Layout {...props}>
-        {children}
-        <CheckForApplicationUpdate url={MY_APP_ROOT_URL} />
-    </Layout>
-);
-```
-
 ## `onNewVersionAvailable`
 
-`<CheckForApplicationUpdate>` component internally uses the `useCheckForApplicationUpdate` hook to check for updates periodically and displays update notification. The hook shares the same props as the component except for the `notification` prop.
-
-For advanced users who wish to customize the handling function other than just displaying a notification, they can leverage the `onNewVersionAvailable` parameter in this hook.
+Advanced users who wish to customize the handling function other than just displaying a notification can leverage the `onNewVersionAvailable` prop:
 
 ```tsx
-import { useCheckForApplicationUpdate, useNotify } from "react-admin";
+import { CheckForApplicationUpdate, useNotify } from "react-admin";
 
 export const MyCheckForApplicationUpdate = () => {
     const notify = useNotify();
@@ -167,9 +148,30 @@ export const MyCheckForApplicationUpdate = () => {
         notify("New Version Ready to Update");
     };
 
-    useCheckForApplicationUpdate({ onNewVersionAvailable });
-    return null;
+    return (
+        <CheckForApplicationUpdate
+            onNewVersionAvailable={onNewVersionAvailable}
+        />
+    );
 };
+```
+
+## `url`
+
+You can customize the URL fetched to detect updates by providing the `url` prop. By default, it's the current URL.
+
+```tsx
+// in src/MyLayout.tsx
+import { CheckForApplicationUpdate, Layout, LayoutProps } from 'react-admin';
+
+const MY_APP_ROOT_URL = 'https://admin.mycompany.com';
+
+export const MyLayout = ({ children, ...props }: LayoutProps) => (
+    <Layout {...props}>
+        {children}
+        <CheckForApplicationUpdate url={MY_APP_ROOT_URL} />
+    </Layout>
+);
 ```
 
 ## Internationalization
