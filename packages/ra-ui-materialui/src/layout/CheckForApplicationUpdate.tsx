@@ -86,6 +86,7 @@ export const CheckForApplicationUpdate = (
 
 export interface CheckForApplicationUpdateProps
     extends Omit<UseCheckForApplicationUpdateOptions, 'onNewVersionAvailable'> {
+    onNewVersionAvailable?: UseCheckForApplicationUpdateOptions['onNewVersionAvailable'];
     notification?: ReactElement;
 }
 
