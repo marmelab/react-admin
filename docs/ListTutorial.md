@@ -873,7 +873,7 @@ But if you just want to change the color property of the pagination button, you 
 ```tsx
 import { List, Pagination, PaginationActions } from 'react-admin';
 
-export const PaginationActions = () => (
+export const MyPaginationActions = () => (
     <PaginationActions
         // these props are passed down to the Material UI <Pagination> component
         color="primary"
