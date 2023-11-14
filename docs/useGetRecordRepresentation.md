@@ -3,9 +3,11 @@ layout: default
 title: "The useGetRecordRepresentation Component"
 ---
 
-Returns a function that get the record representation, leveraging the [`recordRepresentation`](./Resource.md#recordrepresentation) prop of the parent `<Resource>` component.
+# `useGetRecordRepresentation`
 
-You can also use its component version: [`<RecordRepresentation>`](./RecordRepresentation.md).
+Get a function that returns the record representation, leveraging the [`<Record recordRepresentation>`](./Resource.md#recordrepresentation) prop.
+
+You can also use the component version: [`<RecordRepresentation>`](./RecordRepresentation.md).
 
 ## Usage
 
@@ -13,12 +15,11 @@ You can also use its component version: [`<RecordRepresentation>`](./RecordRepre
 // in src/posts/PostBreadcrumbs.tsx
 import * as React from 'react';
 import { Breadcrumbs, Typography } from '@mui/material';
-import { Link, useGetRecordRepresentation, useRecordContext, useResourceContext } from 'react-admin';
+import { Link, useGetRecordRepresentation, useRecordContext } from 'react-admin';
 
 export const PostBreadcrumbs = () => {
     const record = useRecordContext();
-    const resource = useResourceContext();
-    const getRecordRepresentation = useGetRecordRepresentation(resource);
+    const getRecordRepresentation = useGetRecordRepresentation('posts');
     return (
         <div role="presentation">
             <Breadcrumbs aria-label="breadcrumb">
