@@ -186,14 +186,14 @@ This example asumes the implementation of a `deleteImages` function in the dataP
 import { Edit, SimpleForm, ImageInput, Confirm, useDataProvider } from 'react-admin';
 import { useMutation } from 'react-query';
 
-const MyEdit = (props) => {
+const MyEdit = () => {
     const [removeImage, setRemoveImage] = React.useState(null);
     const [showModal, setShowModal] = React.useState(false);
     const dataProvider = useDataProvider();
     const { mutate } = useMutation();
 
     return (
-        <Edit {...props}>
+        <Edit>
             <SimpleForm>
                 <ImageInput
                     source="images"

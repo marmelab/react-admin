@@ -368,11 +368,11 @@ For that use case, use the `<SaveButton>` component with a custom `onSuccess` pr
 import * as React from "react";
 import { Create, TabbedForm, SaveButton, Toolbar, useRedirect } from 'react-admin';
 
-const PostCreateToolbar = props => {
+const PostCreateToolbar = () => {
     const redirect = useRedirect();
     const notify = useNotify();
     return (
-        <Toolbar {...props} >
+        <Toolbar>
             <SaveButton
                 label="post.action.save_and_show"
             />
@@ -410,8 +410,8 @@ Another use case is to remove the `<DeleteButton>` from the toolbar in an edit v
 import * as React from "react";
 import { Edit, TabbedForm, SaveButton, Toolbar } from 'react-admin';
 
-const PostEditToolbar = props => (
-    <Toolbar {...props} >
+const PostEditToolbar = () => (
+    <Toolbar>
         <SaveButton />
     </Toolbar>
 );
@@ -431,8 +431,8 @@ In the default `<Toolbar>`, the `<SaveButton>` is disabled when the form is `pri
 import * as React from 'react';
 import { Edit, TabbedForm, SaveButton, DeleteButton, Toolbar } from 'react-admin';
 
-const PostEditToolbar = props => (
-    <Toolbar {...props} >
+const PostEditToolbar = () => (
+    <Toolbar>
         <SaveButton alwaysEnable />
         <DeleteButton />
     </Toolbar>
@@ -900,12 +900,12 @@ const cities = {
 };
 const toChoices = items => items.map(item => ({ id: item, name: item }));
 
-const CityInput = props => {
+const CityInput = () => {
     const country = useWatch({ name: 'country' });
     return (
         <SelectInput
             choices={country ? toChoices(cities[country]) : []}
-            {...props}
+            source="cities"
         />
     );
 };
@@ -914,7 +914,7 @@ const OrderEdit = () => (
     <Edit>
         <SimpleForm>
             <SelectInput source="country" choices={toChoices(countries)} />
-            <CityInput source="cities" />
+            <CityInput />
         </SimpleForm>
     </Edit>
 );
