@@ -10,17 +10,15 @@ import {
     FilterPayload,
     ResourceContextProvider,
     useRecordContext,
-    useResourceDefinition,
     RaRecord,
 } from 'ra-core';
 import { styled } from '@mui/material/styles';
 import { SxProps } from '@mui/system';
+import { UseQueryOptions } from 'react-query';
 
 import { fieldPropTypes, FieldProps } from './types';
 import { LinearProgress } from '../layout';
 import { SingleFieldList } from '../list/SingleFieldList';
-import { ChipField } from './ChipField';
-import { UseQueryOptions } from 'react-query';
 
 /**
  * A container component that fetches records from another resource specified
@@ -152,26 +150,8 @@ export interface ReferenceArrayFieldViewProps
         Omit<ListControllerProps, 'queryOptions'> {}
 
 export const ReferenceArrayFieldView: FC<ReferenceArrayFieldViewProps> = props => {
-    const { children, pagination, reference, className, sx } = props;
+    const { children, pagination, className, sx } = props;
     const { isLoading, total } = useListContext(props);
-
-    const { recordRepresentation } = useResourceDefinition({
-        resource: reference,
-    });
-    let child = children ? (
-        children
-    ) : (
-        <SingleFieldList>
-            <ChipField
-                source={
-                    typeof recordRepresentation === 'string'
-                        ? recordRepresentation
-                        : 'id'
-                }
-                size="small"
-            />
-        </SingleFieldList>
-    );
 
     return (
         <Root className={className} sx={sx}>
@@ -181,7 +161,7 @@ export const ReferenceArrayFieldView: FC<ReferenceArrayFieldViewProps> = props =
                 />
             ) : (
                 <span>
-                    {child}
+                    {children || <SingleFieldList />}
                     {pagination && total !== undefined ? pagination : null}
                 </span>
             )}
