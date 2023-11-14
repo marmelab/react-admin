@@ -828,7 +828,7 @@ Fine-grained permissions control can be added by using the [`<TabbedForm>`](./Au
 
 Use in conjunction with ra-rbac's [`<TabbedForm.Tab>`](#tabbedformtab-1) and add a `name` prop to the `Tab` to define the resource on which the user needs to have the 'write' permissions for.
 
-**Tip:** [`<TabbedForm.Tab>`](#tabbedformtab) also allows to only render the child inputs for which the user has the 'write' permissions.
+**Tip:** ra-rbac's [`<TabbedForm.Tab>`](#tabbedformtab-1) also allows to only render the child inputs for which the user has the 'write' permissions.
 
 {% raw %}
 ```jsx
