@@ -349,9 +349,9 @@ When passed a `record`, `<TabbedShowLayout>` creates a `RecordContext` with the 
 
 Fine-grained permissions control can be added by using the `<TabbedShowLayout>` component provided by the `@react-admin/ra-rbac` package.
 
-Use it in conjuction with [`<TabbedShowLayout.Tab>`](#tabbedshowlayouttab) and add a `name` prop to the `Tab` to define the resource on which the user needs to have the 'read' permissions for.
+Use it in conjunction with ra-rbac's [`<TabbedShowLayout.Tab>`](#tabbedshowlayouttab-1) and add a `name` prop to the `Tab` to define the resource on which the user needs to have the 'read' permissions for.
 
-**Tip:** [`<TabbedShowLayout.Tab>`](#tabbedshowlayouttab) also allows to only render the child fields for which the user has the 'read' permissions.
+**Tip:** ra-rbac's [`<TabbedShowLayout.Tab>`](#tabbedshowlayouttab-1) also allows to only render the child fields for which the user has the 'read' permissions.
 
 ```tsx
 import { Show, TextField } from 'react-admin';
