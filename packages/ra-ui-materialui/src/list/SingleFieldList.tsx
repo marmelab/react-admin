@@ -18,29 +18,31 @@ import { Link } from '../Link';
 /**
  * Iterator component to be used to display a list of entities, using a single field
  *
- * @example Display all the books by the current author
- * <ReferenceManyField reference="books" target="author_id">
+ * @example Display all the orders by the current customer as a list of chips
+ * <ReferenceManyField reference="orders" target="customer_id">
+ *     <SingleFieldList />
+ * </ReferenceManyField>
+
+* @example Choose the field to be used as text label
+ * <ReferenceManyField reference="orders" target="customer_id">
  *     <SingleFieldList>
- *         <ChipField source="title" />
+ *         <ChipField source="reference" />
  *     </SingleFieldList>
  * </ReferenceManyField>
  *
- * By default, it includes a link to the <Edit> page of the related record
- * (`/books/:id` in the previous example).
- *
- * Set the linkType prop to "show" to link to the <Show> page instead.
- *
- * @example
+ * @example Customize the link type
+ * // By default, it includes a link to the <Edit> page of the related record
+ * // (`/orders/:id` in the previous example).
+ * // Set the linkType prop to "show" to link to the <Show> page instead.
  * <ReferenceManyField reference="books" target="author_id">
  *     <SingleFieldList linkType="show">
  *         <ChipField source="title" />
  *     </SingleFieldList>
  * </ReferenceManyField>
  *
- * You can also prevent `<SingleFieldList>` from adding link to children by setting
- * `linkType` to false.
- *
- * @example
+ * @example Disable the link
+ * // You can also prevent `<SingleFieldList>` from adding link to children by
+ * // setting `linkType` to false.
  * <ReferenceManyField reference="books" target="author_id">
  *     <SingleFieldList linkType={false}>
  *         <ChipField source="title" />

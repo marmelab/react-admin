@@ -13,7 +13,9 @@ Use `<SingleFieldList>` when you want to display only one property for each reco
 
 ## Usage
 
-`<SingleFieldList>` grabs the current `ListContext`, and renders a Material UI `<Stack>` with one `<ChipField>` for each record in the list, using the `recordRepresentation`. It is especially useful as child of `<ReferenceManyField>` and `<ReferenceArrayField>` components. 
+`<SingleFieldList>` grabs the current `ListContext`, and renders a Material UI `<Stack>` with one `<ChipField>` for each record in the list, using the `recordRepresentation`. It is especially useful as child of `<ReferenceManyField>` and `<ReferenceArrayField>` components.
+
+Here is an example of a Post show page showing the list of tags for the current post:
 
 ```jsx
 import {
@@ -36,7 +38,7 @@ const PostShow = () => (
 );
 ```
 
-You can customize how each record is displayed by passing a Field component as child. For example, here is how to use `<SingleFieldList>` to display a list of tags for each post in a Datagrid:
+You can also use  `<SingleFieldList>` in a list view, e.g. to display the tags for each post in a `<Datagrid>`:
 
 ```jsx
 import { 
@@ -68,6 +70,14 @@ const PostList = () => (
 ```
 
 ![SingleFieldList in Datagrid](./img/singlefieldlist-datagrid.png)
+
+You can customize how each record is displayed by passing a Field component as child. For example, you can change the field name used by the `<ChipField>`:
+
+```jsx
+<SingleFieldList>
+    <ChipField source="tag" clickable />
+</SingleFieldList>
+```
 
 ## Props
 
