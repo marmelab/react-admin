@@ -1124,6 +1124,12 @@ const Dashboard = () => (
 ```
 {% endraw %}
 
+**Note**: If you need to set the list parameters to render a list of records *related to another record*, there are better components than `<List>` for that. Check out the following components, specialized in fetching and displaying a list of related records:
+
+- [`<ReferenceArrayField>`](./ReferenceArrayField.md),
+- [`<ReferenceManyField>`](./ReferenceManyField.md),
+- [`<ReferenceManyToManyField>`](./ReferenceManyToManyField.md).
+
 If the `<List>` children allow to *modify* the list state (i.e. if they let users change the sort order, the filters, the selection, or the pagination), then you should also use the [`disableSyncWithLocation`](#disablesyncwithlocation) prop to prevent react-admin from changing the URL. This is the case e.g. if you use a `<Datagrid>`, which lets users sort the list by clicking on column headers.
 
 {% raw %}
