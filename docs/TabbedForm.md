@@ -881,7 +881,7 @@ const ProductEdit = () => (
 Check [the RBAC `<TabbedForm>` component](./AuthRBAC.md#tabbedform) documentation for more details.
 
 
-To use the `<TabbedForm>` component, you will work with the `<TabbedForm.tab>` component. Since `<TabbedForm>` is provided by the `@react-admin/ra-rbac` package, then `<TabbedForm.tab>` too. This component will only renders a tab and its content if the user has the right permissions.
+To use the `<TabbedForm>` component, you will work with the `<TabbedForm.Tab>` component. Since `<TabbedForm>` is provided by the `@react-admin/ra-rbac` package, then `<TabbedForm.Tab>` too. This component will only render a tab and its content if the user has the right permissions.
 
 Add a `name` prop to the `Tab` to define the resource on which the user needs to have the 'write' permissions for.
 
