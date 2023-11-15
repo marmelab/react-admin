@@ -58,6 +58,8 @@ const App = () => (
 export default App;
 ```
 
+## Props
+
 You can customize the `<Edit>` component using the following props:
 
 * [`actions`](#actions): override the actions toolbar with a custom component
@@ -770,3 +772,90 @@ export const PostEdit = () => (
 ```
 
 **Tips:** If you want users to be warned if they haven't pressed the Save button when they browse to another record, you can follow the tutorial [Navigating Through Records In`<Edit>` Views](./PrevNextButtons.md#navigating-through-records-in-edit-views-after-submit).
+
+## Controlled Mode
+
+`<Edit>` deduces the resource and the record id from the URL. This is fine for an edition page, but if you need to let users edit records from another page, you probably want to define the edit parameters yourself. 
+
+In that case, use the [`resource`](#resource) and [`id`](#id) props to set the edit parameters regardless of the URL.
+
+```jsx
+import { Edit, SimpleForm, TextInput, SelectInput } from "react-admin";
+
+export const BookEdit = ({ id }) => (
+    <Edit resource="books" id={id} redirect={false}>
+        <SimpleForm>
+            <TextInput source="title" />
+            <TextInput source="author" />
+            <SelectInput source="availability" choices={[
+                { id: "in_stock", name: "In stock" },
+                { id: "out_of_stock", name: "Out of stock" },
+                { id: "out_of_print", name: "Out of print" },
+            ]} />
+        </SimpleForm>
+    </Edit>
+);
+```
+
+**Tip**: You probably also want to customize [the `redirect` prop](#redirect) if you embed an `<Edit>` component in another page.
+
+## Headless Version
+
+Besides fetching a record and preparing a save handler, `<Edit>` renders the default edition page layout (title, actions, a Material UI `<Card>`) and its children. If you need a custom edition layout, you may prefer [the `<EditBase>` component](./EditBase.md), which only renders its children in an [`EditContext`](./useEditContext.md).
+
+```jsx
+import { EditBase, SelectInput, SimpleForm, TextInput, Title } from "react-admin";
+import { Card, CardContent, Container } from "@mui/material";
+
+export const BookEdit = () => (
+    <EditBase>
+        <Container>
+            <Title title="Book Edition" />
+            <Card>
+                <CardContent>
+                    <SimpleForm>
+                        <TextInput source="title" />
+                        <TextInput source="author" />
+                        <SelectInput source="availability" choices={[
+                            { id: "in_stock", name: "In stock" },
+                            { id: "out_of_stock", name: "Out of stock" },
+                            { id: "out_of_print", name: "Out of print" },
+                        ]} />
+                    </SimpleForm>
+                </CardContent>
+            </Card>
+        </Container>
+    </EditBase>
+);
+```
+
+In the previous example, `<SimpleForm>` grabs the record and the save handler from the `EditContext`.
+
+If you don't need the `EditContext`, you can use [the `useEditController` hook](./useEditController.md), which does the same data fetching as `<EditBase>` but lets you render the content.
+
+```tsx
+import { useEditController, SelectInput, SimpleForm, TextInput, Title } from "react-admin";
+import { Card, CardContent, Container } from "@mui/material";
+
+export const BookEdit = () => {
+    const { record, save } = useEditController();
+    return (
+        <Container>
+            <Title title={`Edit book ${record?.title}`} />
+            <Card>
+                <CardContent>
+                    <SimpleForm record={record} onSubmit={save}>
+                        <TextInput source="title" />
+                        <TextInput source="author" />
+                        <SelectInput source="availability" choices={[
+                            { id: "in_stock", name: "In stock" },
+                            { id: "out_of_stock", name: "Out of stock" },
+                            { id: "out_of_print", name: "Out of print" },
+                        ]} />
+                    </SimpleForm>
+                </CardContent>
+            </Card>
+        </Container>
+    );
+};
+```

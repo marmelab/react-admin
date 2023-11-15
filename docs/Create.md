@@ -50,6 +50,8 @@ const App = () => (
 export default App;
 ```
 
+## Props
+
 You can customize the `<Create>` component using the following props:
 
 * [`actions`](#actions): override the actions toolbar with a custom component
@@ -599,3 +601,90 @@ export default OrderEdit;
 ```
 
 **Tip:** If you'd like to avoid creating an intermediate component like `<CityInput>`, or are using an `<ArrayInput>`, you can use the [`<FormDataConsumer>`](./Inputs.md#linking-two-inputs) component as an alternative.
+
+## Controlled Mode
+
+`<Create>` deduces the resource and the initial form values from the URL. This is fine for a creation page, but if you need to let users create records from another page, you probably want to define this parameter yourself. 
+
+In that case, use the [`resource`](#resource) and [`record`](#record) props to set the creation parameters regardless of the URL.
+
+```jsx
+import { Create, SimpleForm, TextInput, SelectInput } from "react-admin";
+
+export const BookCreate = () => (
+    <Create resource="books" redirect={false}>
+        <SimpleForm>
+            <TextInput source="title" />
+            <TextInput source="author" />
+            <SelectInput source="availability" choices={[
+                { id: "in_stock", name: "In stock" },
+                { id: "out_of_stock", name: "Out of stock" },
+                { id: "out_of_print", name: "Out of print" },
+            ]} />
+        </SimpleForm>
+    </Create>
+);
+```
+
+**Tip**: You probably also want to customize [the `redirect` prop](#redirect) if you embed an `<Create>` component in another page.
+
+## Headless Version
+
+Besides preparing a save handler, `<Create>` renders the default creation page layout (title, actions, a Material UI `<Card>`) and its children. If you need a custom creation layout, you may prefer [the `<CreateBase>` component](./CreateBase.md), which only renders its children in a [`CreateContext`](./useCreateContext.md).
+
+```jsx
+import { CreateBase, SelectInput, SimpleForm, TextInput, Title } from "react-admin";
+import { Card, CardContent, Container } from "@mui/material";
+
+export const BookCreate = () => (
+    <CreateBase>
+        <Container>
+            <Title title="Create book" />
+            <Card>
+                <CardContent>
+                    <SimpleForm>
+                        <TextInput source="title" />
+                        <TextInput source="author" />
+                        <SelectInput source="availability" choices={[
+                            { id: "in_stock", name: "In stock" },
+                            { id: "out_of_stock", name: "Out of stock" },
+                            { id: "out_of_print", name: "Out of print" },
+                        ]} />
+                    </SimpleForm>
+                </CardContent>
+            </Card>
+        </Container>
+    </CreateBase>
+);
+```
+
+In the previous example, `<SimpleForm>` grabs the save handler from the `CreateContext`.
+
+If you don't need the `CreateContext`, you can use [the `useCreateController` hook](./useCreateController.md), which does the same data fetching as `<CreateBase>` but lets you render the content.
+
+```jsx
+import { useCreateController, SelectInput, SimpleForm, TextInput, Title } from "react-admin";
+import { Card, CardContent, Container } from "@mui/material";
+
+export const BookCreate = () => {
+    const { save } = useCreateController();
+    return (
+        <Container>
+            <Title title="Create book" />
+            <Card>
+                <CardContent>
+                    <SimpleForm onSubmit={save}>
+                        <TextInput source="title" />
+                        <TextInput source="author" />
+                        <SelectInput source="availability" choices={[
+                            { id: "in_stock", name: "In stock" },
+                            { id: "out_of_stock", name: "Out of stock" },
+                            { id: "out_of_print", name: "Out of print" },
+                        ]} />
+                    </SimpleForm>
+                </CardContent>
+            </Card>
+        </Container>
+    );
+};
+```

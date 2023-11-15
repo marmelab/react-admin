@@ -14,26 +14,27 @@ It does that by calling [`useEditController`](./useEditController.md), and by pu
 Use `<EditBase>` to create a custom Edition view, with exactly the content you add as child and nothing else (no title, Card, or list of actions as in the `<Edit>` component). 
 
 ```jsx
-import * as React from "react";
-import { EditBase, SimpleForm, TextInput, SelectInput } from "react-admin";
-import { Card } from "@mui/material";
+import { EditBase, SelectInput, SimpleForm, TextInput, Title } from "react-admin";
+import { Card, CardContent, Container } from "@mui/material";
 
 export const BookEdit = () => (
     <EditBase>
-        <div>
+        <Container>
             <Title title="Book Edition" />
             <Card>
-                <SimpleForm>
-                    <TextInput source="title" />
-                    <TextInput source="author" />
-                    <SelectInput source="availability" choices={[
-                        { id: "in_stock", name: "In stock" },
-                        { id: "out_of_stock", name: "Out of stock" },
-                        { id: "out_of_print", name: "Out of print" },
-                    ]} />
-                </SimpleForm>
+                <CardContent>
+                    <SimpleForm>
+                        <TextInput source="title" />
+                        <TextInput source="author" />
+                        <SelectInput source="availability" choices={[
+                            { id: "in_stock", name: "In stock" },
+                            { id: "out_of_stock", name: "Out of stock" },
+                            { id: "out_of_print", name: "Out of print" },
+                        ]} />
+                    </SimpleForm>
+                </CardContent>
             </Card>
-        </div>
+        </Container>
     </EditBase>
 );
 ```

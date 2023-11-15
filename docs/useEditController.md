@@ -13,9 +13,7 @@ React-admin calls `useEditController` internally when you use the `<Edit>`, `<Ed
 
 Use `useEditController` to create a custom Edition view, with exactly the content you need. 
 
-{% raw %}
 ```jsx
-import * as React from "react";
 import { useParams } from "react-router-dom";
 import { useEditController, EditContextProvider, SimpleForm, TextInput, SelectInput } from "react-admin";
 import { Card } from "@mui/material";
@@ -42,9 +40,10 @@ export const BookEdit = () => {
   );
 };
 ```
-{% endraw %}
 
 **Tip**: If you just use the return value of `useEditController` to put it in an `EditContext`, use [the `<EditBase>` component](./EditBase.md) instead for simpler markup.
+
+## Input Format
 
 `useEditController` accepts an options argument, with the following fields, all optional:
 
@@ -56,6 +55,10 @@ export const BookEdit = () => {
 * [`redirect`](./Edit.md#redirect): change the redirect location after successful creation
 * [`resource`](./Edit.md#resource): override the name of the resource to create
 * [`transform`](./Edit.md#transform): transform the form data before calling `dataProvider.update()`
+
+These fields are documented in [the `<Edit>` component](./Edit.md) documentation.
+
+## Return Value
 
 `useEditController` returns an object with the following fields:
 
