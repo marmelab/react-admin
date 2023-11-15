@@ -5,7 +5,7 @@ title: "Remix Integration"
 
 # Remix Integration
 
-[Remix](https://remix.run/) is a Node.js framework for server-side-rendered React apps. But even if react-admin is designed to build Single-Page Applications, Remix and react-admin integrate seamlessly. 
+[Remix](https://remix.run/) is a Node.js framework for server-side-rendered React apps. But even if react-admin is designed to build Single-Page Applications, Remix and react-admin integrate seamlessly.
 
 These instructions are targeting Remix v2.
 
@@ -23,7 +23,7 @@ This script will ask you for more details about your project. You can use the fo
 - Initialize a new git repository? Choose Yes
 - Install dependencies with npm? Choose Yes
 
-The project structure should look like this:  
+The project structure should look like this:
 
 ![Remix v2 project structure](./img/remix-structure.png)
 
@@ -107,17 +107,17 @@ You can now start the app in `development` mode with `npm run dev`. The admin sh
 
 ## Adding an API
 
-[Remix allows to serve an API](https://remix.run/docs/en/main/guides/api-routes) from the same server. You *could* use this to build a CRUD API by hand. However, we consider that building a CRUD API on top of a relational database is a solved problem and that developers shouldn't spend time reimplementing it. 
+[Remix allows to serve an API](https://remix.run/docs/en/main/guides/api-routes) from the same server. You *could* use this to build a CRUD API by hand. However, we consider that building a CRUD API on top of a relational database is a solved problem and that developers shouldn't spend time reimplementing it.
 
-For instance, if you store your data in a [PostgreSQL](https://www.postgresql.org/) database, you can use [PostgREST](https://postgrest.org/en/stable/) to expose the data as a REST API with zero configuration. Even better, you can use a Software-as-a-Service like [Supabase](https://supabase.com/) to do that for you. 
+For instance, if you store your data in a [PostgreSQL](https://www.postgresql.org/) database, you can use [PostgREST](https://postgrest.org/en/stable/) to expose the data as a REST API with zero configuration. Even better, you can use a Software-as-a-Service like [Supabase](https://supabase.com/) to do that for you.
 
-In such cases, the Remix API can only serve as a Proxy to authenticate client queries and pass them down to Supabase. 
+In such cases, the Remix API can only serve as a Proxy to authenticate client queries and pass them down to Supabase.
 
-Let's see an example in practice. 
+Let's see an example in practice.
 
 First, create a Supabase REST API and its associated PostgreSQL database directly on the [Supabase website](https://app.supabase.com/) (it's free for tests and low usage). Once the setup is finished, use the Supabase manager to add the following tables:
 
-- `posts` with fields: `id`, `title`, and `body` 
+- `posts` with fields: `id`, `title`, and `body`
 - `comments` with fields: `id`, `name`, `body`, and `postId` (a foreign key to the `posts.id` field)
 
 You can populate these tables via the Supabse UI if you want. Supabase exposes a REST API at `https://YOUR_INSTANCE.supabase.co/rest/v1`.
@@ -146,6 +146,7 @@ export const loader = ({ request }: LoaderFunctionArgs) => {
     headers: {
       prefer: request.headers.get("prefer") ?? "",
       accept: request.headers.get("accept") ?? "application/json",
+      "Accept-Encoding": "",
       apiKey: `${process.env.SUPABASE_SERVICE_ROLE}`,
       Authorization: `Bearer ${process.env.SUPABASE_SERVICE_ROLE}`,
     },
@@ -162,6 +163,7 @@ export const action = ({ request }: ActionFunctionArgs) => {
     headers: {
       prefer: request.headers.get("prefer") ?? "",
       accept: request.headers.get("accept") ?? "application/json",
+      "Accept-Encoding": "",
       apiKey: `${process.env.SUPABASE_SERVICE_ROLE}`,
       Authorization: `Bearer ${process.env.SUPABASE_SERVICE_ROLE}`,
     },
