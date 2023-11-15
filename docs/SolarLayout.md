@@ -500,7 +500,7 @@ If you don't have an `authProvider` but have configured a dark theme or your `i1
 
 Besides, this default menu has a secondary sliding panel.
 
-If you have an `authProvider`, this secondary sliding panel will show the user full name when available from the `authProvider.getIdentity` function and a logout button. If the user full name is not available, it will display a the logout button only.
+If you have an `authProvider`, this secondary sliding panel will show the user full name when available from the `authProvider.getIdentity` function and a logout button. If the user full name is not available, it will display a logout button only.
 
 If you have configured a dark theme, the secondary sliding panel will show a button to toggle it.
 

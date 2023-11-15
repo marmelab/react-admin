@@ -105,7 +105,7 @@ Here are the important things to note:
 
 ## Defaults
 
-Under the hood, `<DatagridAG>` is a wrapper around `<AgGridReact>`. However it sets some important default values:
+Under the hood, `<DatagridAG>` is a wrapper around `<AgGridReact>`. However, it sets some important default values:
 
 -   `pagination` is set to `true`
 -   `paginationAutoPageSize` is set to `true`

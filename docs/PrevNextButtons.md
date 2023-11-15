@@ -300,7 +300,7 @@ export const MyAdmin = () => (
 `<PrevNextButtons>` can get the current list parameters (sort and filters) from the store.
 This prop is useful if you specified a custom `storeKey` for a `<List>` and you want `<PrevNextButtons>` to use the same stored parameters.
 
-See [`storeKey` in `<List>`](./List.md#storekey) for more informations. 
+See [`storeKey` in `<List>`](./List.md#storekey) for more information. 
 
 ```tsx
 export const MyAdmin = () => (
@@ -330,7 +330,7 @@ export const MyAdmin = () => (
 
 ## `sx`
 
-The `<PrevNextButtons>` component accepts the usual `className` prop but you can override many class names injected to the inner components by React-admin thanks to the `sx` property (as most Material UI components, see their [documentation about it](https://mui.com/material-ui/customization/how-to-customize/#overriding-nested-component-styles)). This property accepts the following subclasse:
+The `<PrevNextButtons>` component accepts the usual `className` prop, but you can override many class names injected to the inner components by React-admin thanks to the `sx` property (as most Material UI components, see their [documentation about it](https://mui.com/material-ui/customization/how-to-customize/#overriding-nested-component-styles)). This property accepts the following subclasse:
 
 | Rule name                  | Description                      |
 | -------------------------- | -------------------------------- |
@@ -364,13 +364,13 @@ export const CustomerShow = () => (
 
 ## Navigating Through Records In `<Edit>` Views After Submit
 
-Let's says users want to edit customer records and to navigate between records in the `<Edit>` view. The default react-admin behaviors causes two problems: 
+Let's say users want to edit customer records and to navigate between records in the `<Edit>` view. The default react-admin behaviors causes two problems: 
 - when they save a record the user is redirected to the `<List>` view,
 - when they navigate to another record, the form is not saved.
 
 Thanks to React-admin components, you can solve these issues by using 
 - [`redirect` prop from `<Edit>`](Edit.md#redirect) with which you can specify the redirect to apply. Here we will choose to stay on the page rather than being redirected to the list view.
-- [`warnWhenUnsavedChanges` from `Form`](Form.md#warnwhenunsavedchanges) that will triggers an alert if the user tries to change page while the record has not been saved.
+- [`warnWhenUnsavedChanges` from `Form`](Form.md#warnwhenunsavedchanges) that will trigger an alert if the user tries to change page while the record has not been saved.
 
 {% raw %}
 ```tsx
@@ -393,7 +393,7 @@ export const CustomerEdit = () => (
 
 ## Performance
 
-This components tries to avoid fetching the API to determine the previous and next item link. It does so by inspecting the cache of the list view. If the user has already rendered the list view for the current resource, `<PrevNextButtons>` will not need to call the `dataProvider` at all. 
+This component tries to avoid fetching the API to determine the previous and next item link. It does so by inspecting the cache of the list view. If the user has already rendered the list view for the current resource, `<PrevNextButtons>` will not need to call the `dataProvider` at all. 
 
 However, if the user has never displayed a list view, or if the current record is outside of the boundaries of the list view cache, `<PrevNextButtons>` will have to **fetch the entire list of records** for the current resource to determine the previous and next item link. This can be costly in terms of server and network performance. 
 

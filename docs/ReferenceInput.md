@@ -258,7 +258,7 @@ The name of the reference resource. For instance, in a contact form, if you want
 <ReferenceInput source="company_id" reference="companies" />
 ```
 
-`<ReferenceInput>` will use the reference resource [`recordRepresentation`](./Resource.md#recordrepresentation) to display the selected record and the list of possible records. So for instance, if the `companies` resource is defined as follow:
+`<ReferenceInput>` will use the reference resource [`recordRepresentation`](./Resource.md#recordrepresentation) to display the selected record and the list of possible records. So for instance, if the `companies` resource is defined as follows:
 
 ```jsx
 <Resource name="companies" recordRepresentation="name" />
