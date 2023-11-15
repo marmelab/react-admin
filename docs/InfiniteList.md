@@ -162,3 +162,110 @@ export const BookList = () => (
 );
 ```
 {% endraw %}
+
+## Controlled Mode
+
+`<InfiniteList>` deduces the resource and the list parameters from the URL. This is fine for a page showing a single list of records, but if you need to display more than one list in a page, you probably want to define the list parameters yourself. 
+
+In that case, use the [`resource`](#resource), [`sort`](#sort), and [`filter`](#filter-permanent-filter) props to set the list parameters.
+
+{% raw %}
+```jsx
+import { InfiniteList, SimpleList } from 'react-admin';
+import { Container, Typography } from '@mui/material';
+
+const Dashboard = () => (
+    <Container>
+        <Typography>Latest posts</Typography>
+        <InfiniteList 
+            resource="posts"
+            sort={{ field: 'published_at', order: 'DESC' }}
+            filter={{ is_published: true }}
+            disableSyncWithLocation
+        >
+            <SimpleList
+                primaryText={record => record.title}
+                secondaryText={record => `${record.views} views`}
+            />
+            <InfinitePagination />
+        </InfiniteList>
+        <Typography>Latest comments</Typography>
+        <InfiniteList
+            resource="comments"
+            sort={{ field: 'published_at', order: 'DESC' }}
+            perPage={10}
+            disableSyncWithLocation
+        >
+            <SimpleList
+                primaryText={record => record.author.name}
+                secondaryText={record => record.body}
+                tertiaryText={record => new Date(record.published_at).toLocaleDateString()}
+            />
+            <InfinitePagination />
+        </InfiniteList>
+    </Container>
+)
+```
+{% endraw %}
+
+## Headless Version
+
+Besides fetching a list of records from the data provider, `<InfiniteList>` renders the default list page layout (title, buttons, filters, a Material-UI `<Card>`, infinite pagination) and its children. If you need a custom list layout, you may prefer the `<InfiniteListBase>` component, which only renders its children in a [`ListContext`](./useListContext.md).
+
+```jsx
+import { InfiniteListBase, InfinitePagination } from 'react-admin';
+import { Card, CardContent, Container, Stack, Typography } from '@mui/material';
+
+const ProductList = () => (
+    <InfiniteListBase>
+        <Container>
+            <Typography variant="h4">All products</Typography>
+            <WithListContext render={({ isLoading, data }) => (
+                    !isLoading && (
+                        <Stack spacing={1}>
+                            {data.map(product => (
+                                <Card key={product.id}>
+                                    <CardContent>
+                                        <Typography>{product.name}</Typography>
+                                    </CardContent>
+                                </Card>
+                            ))}
+                        </Stack>
+                    )
+                )} />
+            <InfinitePagination />
+        </Container>
+    </InfiniteListBase>
+);
+```
+
+The previous example leverages [`<WithListContext>`](./WithListContext.md) to grab the data that `<ListBase>` stores in the `ListContext`.
+
+If you don't need the `ListContext`, you can use the `useInfiniteListController` hook, which does the same data fetching as `<InfiniteListBase>` but lets you render the content.
+
+```jsx
+import { useInfiniteListController } from 'react-admin';
+import { Card, CardContent, Container, Stack, Typography } from '@mui/material';
+
+const ProductList = () => {
+    const { isLoading, data } = useInfiniteListController();
+    return (
+        <Container>
+            <Typography variant="h4">All products</Typography>
+                {!isLoading && (
+                    <Stack spacing={1}>
+                        {data.map(product => (
+                            <Card key={product.id}>
+                                <CardContent>
+                                    <Typography>{product.name}</Typography>
+                                </CardContent>
+                            </Card>
+                        ))}
+                    </Stack>
+                )}
+        </Container>
+    );
+};
+```
+
+`useInfiniteListController` returns callbacks to sort, filter, and paginate the list, so you can build a complete List page.
