@@ -5,9 +5,11 @@ title: "The ListBase Component"
 
 # `<ListBase>`
 
-`<ListBase>` is a headless variant of `<List>`, as it does not render anything. `<ListBase>` calls [`useListController`](./useListController.md), puts the result in a `ListContext`, then renders its child. 
+`<ListBase>` is a headless variant of [`<List>`](./List.md). It fetches a list of records from the data provider, puts it in a [`ListContext`](./useListContext.md), and renders its children. Use it to build a custom list layout, or to use another UI kit than Material UI.
 
-If you want to display a record list in an entirely custom layout, i.e. use only the data fetching part of `<List>` and not the view layout, use `<ListBase>`.
+Contrary to [`<List>`](./List.md), it does not render the page layout, so no title, no actions, no `<Card>`, and no pagination.
+
+`<ListBase>` relies on the [`useListController`](./useListController.md) hook.
 
 ## Usage
 

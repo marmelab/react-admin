@@ -5,9 +5,11 @@ title: "Form"
 
 # `<Form>`
 
-The `<Form>` component creates a `<form>` to edit a record, and renders its children. It is a headless component used internally by `<SimpleForm>`, `<TabbedForm>`, and other form components.
+`<Form>` is a headless component that creates a `<form>` to edit a record, and renders its children. Use it to build a custom form layout, or to use another UI kit than Material UI. 
 
 `<Form>` reads the `record` from the `RecordContext`, uses it to initialize the defaultValues of a react-hook-form via `useForm`, turns the `validate` function info a react-hook-form compatible form validator, notifies the user when the input validation fails, and creates a form context via `<FormProvider>`. 
+
+`<Form>` is used internally by `<SimpleForm>`, `<TabbedForm>`, and other form components.
 
 ## Usage
 

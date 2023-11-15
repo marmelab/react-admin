@@ -5,9 +5,11 @@ title: "The EditBase Component"
 
 # `<EditBase>`
 
-The `<EditBase>` component is a headless version of [`<Edit>`](./Edit.md): it fetches a record based on the URL, prepares a form submit handler, and renders its children. 
+`<EditBase>` is a headless variant of [`<Edit>`](./Edit.md): it fetches a record based on the URL, prepares a form submit handler, and renders its children inside an [`EditContext`](./useEditContext.md). Use it to build a custom edition page layout, or to use another UI kit than Material UI.
 
-It does that by calling [`useEditController`](./useEditController.md), and by putting the result in an `EditContext`.
+Contrary to [`<Edit>`](./Edit.md), it does not render the page layout, so no title, no actions, and no `<Card>`.
+
+`<EditBase>` relies on the [`useEditController`](./useEditController.md) hook.
 
 ## Usage
 
@@ -38,6 +40,8 @@ export const BookEdit = () => (
     </EditBase>
 );
 ```
+
+## Props
 
 You can customize the `<EditBase>` component using the following props, documented in the `<Edit>` component:
 
