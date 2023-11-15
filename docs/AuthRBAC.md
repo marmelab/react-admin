@@ -959,24 +959,22 @@ For instance, to allow users access to the following tab `<TabbedForm.Tab label=
 import { Edit, TabbedForm, TextInput } from 'react-admin';
 import { TabbedForm } from '@react-admin/ra-rbac';
 
+
 const authProvider = {
-    // ...
-    getPermissions: () => Promise.resolve({
-        permissions: [
-            { action: ['list', 'edit'], resource: 'products' },
-            { action: 'write', resource: 'products.reference' },
-            { action: 'write', resource: 'products.width' },
-            { action: 'write', resource: 'products.height' },
-            // 'products.description' is missing
-            { action: 'write', resource: 'products.thumbnail' },
-            // 'products.image' is missing
-            // note that the tab with the name 'description' will be displayed
-            { action: 'write', resource: 'products.tab.description' },
-            // note that the tab with the name 'images' will be displayed
-            { action: 'write', resource: 'products.tab.images' },
-            // 'products.tab.stock' is missing
-        ],
-    }),
+  // ...
+  getPermissions: () =>
+    Promise.resolve([
+      { action: ["list", "edit"], resource: "products" },
+      { action: "write", resource: "products.reference" },
+      { action: "write", resource: "products.width" },
+      { action: "write", resource: "products.height" },
+      // 'products.description' is missing
+      { action: "write", resource: "products.thumbnail" },
+      // 'products.image' is missing
+      { action: "write", resource: "products.tab.description" },
+      // 'products.tab.stock' is missing
+      { action: "write", resource: "products.tab.images" },
+    ]),
 };
 
 const ProductEdit = () => (
