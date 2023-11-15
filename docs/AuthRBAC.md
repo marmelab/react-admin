@@ -850,55 +850,47 @@ const ProductShow = () => (
 );
 ```
 
-## `<TabbedShowLayout.Tab>`
+## `<TabbedShowLayout>`
 
-Replacement for the `<TabbedShowLayout.Tab>` that only renders a tab if the user has the right permissions. The enterprise component also only renders the child fields for which the user has the 'read' permissions.
+Replacement for the `<TabbedShowLayout>` that only renders a tab if the user has the right permissions. The enterprise component also only renders the child fields for which the user has the 'read' permissions.
 
 ```jsx
-import { Show, TabbedShowLayout, TextField } from 'react-admin';
-import { Tab } from '@react-admin/ra-rbac';
+import { Show, TextField } from 'react-admin';
+import { TabbedShowLayout } from '@react-admin/ra-rbac';
 
 const authProvider = {
     // ...
-    getPermissions: () => Promise.resolve({
-        permissions: [
-            { action: ['list', 'show'], resource: 'products' },
-            { action: 'read', resource: 'products.reference' },
-            { action: 'read', resource: 'products.width' },
-            { action: 'read', resource: 'products.height' },
-            // 'products.description' is missing
-            { action: 'read', resource: 'products.thumbnail' },
-            // 'products.image' is missing
-            // note that the tab with the name 'description' will be displayed
-            { action: 'read', resource: 'products.tab.description' },
-            // note that the tab with the name 'images' will be displayed
-            { action: 'read', resource: 'products.tab.images' },
-            // 'products.tab.stock' is missing
-        ],
-    }),
+    getPermissions: () => Promise.resolve([
+        { action: ["list", "show"], resource: "products" },
+        { action: "read", resource: "products.reference" },
+        { action: "read", resource: "products.width" },
+        { action: "read", resource: "products.height" },
+        { action: "read", resource: "products.thumbnail" },
+        { action: "read", resource: "products.tab.description" },
+        // 'products.tab.stock' is missing
+        { action: "read", resource: "products.tab.images" },
+    ]),
 };
 
 const ProductShow = () => (
-   <Show>
-       <TabbedShowLayout>
-           <TabbedShowLayout.Tab label="description">
-               <TextField source="reference" />
-               <TextField source="width" />
-               <TextField source="height" />
-               {/* Not displayed */}
-               <TextField source="description" />
-           </TabbedShowLayout.Tab>
-           <TabbedShowLayout.Tab label="images">
-               <TextField source="image" />
-               {/* Not displayed */}
-               <TextField source="thumbnail" />
-           </TabbedShowLayout.Tab>
-           {/* Not displayed */}
-           <TabbedShowLayout.Tab label="stock">
-               <TextField source="stock" />
-           </TabbedShowLayout.Tab>
-       </TabbedShowLayout>
-   </Show>
+    <Show>
+        <TabbedShowLayout>
+        <TabbedShowLayout.Tab label="Description" name="description">
+            <TextField source="reference" />
+            <TextField source="width" />
+            <TextField source="height" />
+            <TextField source="description" />
+        </TabbedShowLayout.Tab>
+        {/* Tab Stock is not displayed */}
+        <TabbedShowLayout.Tab label="Stock" name="stock">
+            <TextField source="stock" />
+        </TabbedShowLayout.Tab>
+        <TabbedShowLayout.Tab label="Images" name="images">
+            <TextField source="image" />
+            <TextField source="thumbnail" />
+        </TabbedShowLayout.Tab>
+        </TabbedShowLayout>
+    </Show>
 );
 ```
 
@@ -909,7 +901,7 @@ For instance, to allow users access to the following tab `<TabbedShowLayout.Tab 
 
 ## `<TabbedForm>`
 
-Alternative to react-admin's `<TabbedForm>` that adds RBAC control to the inputs and the delete button. `<TabbedForm.FormTab>` renders inputs based on permissions.
+Alternative to react-admin's `<TabbedForm>` that adds RBAC control  to the delete button (conditioned by the 'delete' action) and only renders a tab if the user has the right permissions.
 
 ```jsx
 import { Edit, TextInput } from 'react-admin';
@@ -920,45 +912,38 @@ const authProvider = {
     login: () => Promise.resolve(),
     logout: () => Promise.resolve(),
     checkError: () => Promise.resolve(),
-    getPermissions: () =>Promise.resolve({
-        permissions: [
-            // 'delete' is missing
+    getPermissions: () =>
+        Promise.resolve([
+            // action 'delete' is missing
             { action: ['list', 'edit'], resource: 'products' },
             { action: 'write', resource: 'products.reference' },
             { action: 'write', resource: 'products.width' },
             { action: 'write', resource: 'products.height' },
-            // 'products.description' is missing
             { action: 'write', resource: 'products.thumbnail' },
-            // 'products.image' is missing
-            // note that the tab with the name 'description' will be displayed
             { action: 'write', resource: 'products.tab.description' },
-            // note that the tab with the name 'images' will be displayed
+            // tab 'stock' is missing
             { action: 'write', resource: 'products.tab.images' },
-            // 'products.tab.stock' is missing
-        ],
-    }),
+        ]),
 };
 
 const ProductEdit = () => (
     <Edit>
         <TabbedForm>
-            <TabbedForm.Tab label="description">
+            <TabbedForm.Tab label="Description" name="description">
                 <TextInput source="reference" />
                 <TextInput source="width" />
                 <TextInput source="height" />
-                {/* not displayed */}
                 <TextInput source="description" />
             </TabbedForm.Tab>
-            <TabbedForm.Tab label="images">
-                {/* not displayed */}
+            {/* the "Stock" tab is not displayed */}
+            <TabbedForm.Tab label="Stock" name="stock">
+                <TextInput source="stock" />
+            </TabbedForm.Tab>
+            <TabbedForm.Tab label="Images" name="images">
                 <TextInput source="image" />
                 <TextInput source="thumbnail" />
             </TabbedForm.Tab>
-            {/* not displayed */}
-            <TabbedForm.Tab label="stock">
-                <TextInput source="stock" />
-            </TabbedForm.Tab>
-            {/*} delete button not displayed */}
+            {/* the "Delete" button is not displayed */}
         </TabbedForm>
     </Edit>
 );
