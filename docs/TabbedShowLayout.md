@@ -394,9 +394,7 @@ const ProductShow = () => (
 );
 ```
 
-### `<TabbedShowLayout.Tab>`
-
-Replacement for react-admin's `<TabbedShowLayout.Tab>` that only renders a tab and its content if the user has the right permissions.
+To use the `<TabbedShowLayout>` component, you will work with the `<TabbedShowLayout.tab>` component. Since `<TabbedShowLayout>` is provided by the `@react-admin/ra-rbac` package, then `<TabbedShowLayout.tab>` too. This component will only renders a tab and its content if the user has the right permissions.
 
 Add a `name` prop to the `Tab` to define the resource on which the user needs to have the 'read' permissions for.
 
