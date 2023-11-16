@@ -50,7 +50,7 @@ const PostShow = () => (
 * `defaultTitle`: Translated title based on the resource, e.g. 'Post #123'
 * `isFetching`: Boolean, `true` while the record is being fetched, and false once done fetching
 * `isLoading`: Boolean, `true` until the record is available for the first time
-* `record`: Record fetched via `dataProvider.getOne()` based on the id from the location
+* `record`: Either the record fetched via `dataProvider.getOne()` based on the id from the location, a cached version of the record (see also [Caching](./Caching.md#optimistic-rendering)) or `undefined` 
 * `refetch`: Callback to refetch the record via `dataProvider.getOne()`
 * `resource`: The resource name, deduced from the location. e.g. 'posts'
 * `error`: Error returned by dataProvider when it failed to fetch the record. Useful if you want to adapt the view instead of just showing a notification using the `onError` side effect.

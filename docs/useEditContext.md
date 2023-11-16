@@ -51,7 +51,7 @@ const Aside = () => {
 * `isFetching`: Boolean, `true` while the record is being fetched, `false` once done fetching
 * `isLoading`: Boolean, `true` until the record is available for the first time
 * `mutationMode`: Mutation mode argument passed as parameter, or 'undoable' if not defined
-* `record`: Record fetched via `dataProvider.getOne()` based on the id from the location
+* `record`: Either the record fetched via `dataProvider.getOne()` based on the id from the location, a cached version of the record (see also [Caching](./Caching.md#optimistic-rendering)) or `undefined`
 * `redirect`: Default redirection route. Defaults to 'list'
 * `refetch`: Function that allows you to refetch the record 
 * `resource`: Resource name deduced from the location. e.g. 'posts'

@@ -32,7 +32,7 @@ const BookShow = () => (
 
 ## Optimistic Rendering
 
-As react-admin uses optimistic rendering, `useRecordContext` may return an undefined record on load. Make sure you prepare for that! 
+As react-admin uses optimistic rendering, `useRecordContext` may be `undefined` or a cached version of the record on load (see also [Caching](./Caching.md#optimistic-rendering)). Make sure you prepare for that! 
 
 ```jsx
 const BookAuthor = () => {
