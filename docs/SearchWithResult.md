@@ -13,7 +13,7 @@ This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" s
   Your browser does not support the video tag.
 </video>
 
-It relies on the `dataProvider` to provide a `search()` method, so you can use it with any search engine (Lucene, ElasticSearch, Solr, Algolia, Google Cloud Search, and many others). And if you don't have a search engine, no problem! `<Search>` can also do the search across several resources [via parallel `dataProvider.getList()` queries](https://marmelab.com/ra-enterprise/modules/ra-search#addsearchmethod-helper).
+It relies on the `dataProvider` to provide a `search()` method, so you can use it with any search engine (Lucene, ElasticSearch, Solr, Algolia, Google Cloud Search, and many others). And if you don't have a search engine, no problem! `<SearchWithResult>` can also do the search across several resources [via parallel `dataProvider.getList()` queries](https://marmelab.com/ra-enterprise/modules/ra-search#addsearchmethod-helper).
 
 By default, `<SearchWithResult>` will group the search results by target, and show their `content.label` and `content.description`.
 
@@ -21,7 +21,7 @@ By default, `<SearchWithResult>` will group the search results by target, and sh
 
 ### Install `ra-search`
 
-The `<Search>` component is part of the `@react-admin/ra-search` package. To install it, run:
+The `<SearchWithResult>` component is part of the `@react-admin/ra-search` package. To install it, run:
 
 ```sh
 yarn add '@react-admin/ra-search'
