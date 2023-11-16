@@ -147,15 +147,15 @@ const postListFilters: FiltersConfig = {
 
 ## Props
 
-| Prop                      | Required      | Type     | Default         | Description                                            |
-| ------------------------- | ------------- | -------- | --------------- | ------------------------------------------------------ |
-| `config`                  | Required      | object   | -               | The stacked filters configuration                                          |
-| `BadgeProps`              | Optional      | object   | -               | Additional props to pass to the [MUI Badge](https://mui.com/material-ui/react-badge/) element |
-| `ButtonProps`             | Optional      | object   | -               | Additional props to pass to the [Button](./Buttons.html#button) element |
-| `className`               | Optional      | string   | -               | Additional CSS class applied on the root component                                              |
+| Prop                      | Required      | Type     | Default         | Description                                                                                       |
+| ------------------------- | ------------- | -------- | --------------- |---------------------------------------------------------------------------------------------------|
+| `config`                  | Required      | object   | -               | The stacked filters configuration                                                                 |
+| `BadgeProps`              | Optional      | object   | -               | Additional props to pass to the [MUI Badge](https://mui.com/material-ui/react-badge/) element     |
+| `ButtonProps`             | Optional      | object   | -               | Additional props to pass to the [Button](./Buttons.md#button) element                             |
+| `className`               | Optional      | string   | -               | Additional CSS class applied on the root component                                                |
 | `PopoverProps`            | Optional      | Object   | -               | Additional props to pass to the [MUI Popover](https://mui.com/material-ui/react-popover/) element |
-| `StackedFilters FormProps` | Optional      | Object   | -               | Additional props to pass to the [StackedFiltersForm](#stackedfiltersform) element |
-| `sx`                      | Optional      | Object   | -               | An object containing the MUI style overrides to apply to the root component               |
+| `StackedFilters FormProps` | Optional      | Object   | -               | Additional props to pass to the [StackedFiltersForm](#stackedfiltersform) element                 |
+| `sx`                      | Optional      | Object   | -               | An object containing the MUI style overrides to apply to the root component                       |
 
 ## `BadgeProps`
 
@@ -173,7 +173,7 @@ export const MyStackedFilter = () => (
 
 ## `ButtonProps`
 
-This prop lets you pass additional props for the [Button](./Buttons.html#button).
+This prop lets you pass additional props for the [Button](./Buttons.md#button).
 
 {% raw %}
 ```tsx

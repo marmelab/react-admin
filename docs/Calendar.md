@@ -213,7 +213,7 @@ const EventList = () => (
 ```
 {% endraw %}
 
-Check the possible values for `ListProps` in [the `<List>` component documentation](./List.html#the-list-component).
+Check the possible values for `ListProps` in [the `<List>` component documentation](./List.md).
 
 ### `CalendarProps`
 

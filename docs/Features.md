@@ -994,7 +994,7 @@ A UI kit like Material UI provides basic building blocks like a button, a form, 
 These building blocks include:
 
 - A [notification system](./useNotify.md)
-- A smart location framework, simplifying the management of [breadcrumbs](./Breadcrumb.md) an [hierarchical menus](./MultiLevelMenu.md)
+- A smart location framework, simplifying the management of [breadcrumbs](./Breadcrumb.md) and [hierarchical menus](./MultiLevelMenu.md)
 - [Import](https://github.com/benwinding/react-admin-import-csv) / [export](./Buttons.md#exportbutton) buttons
 - An [editable datagrid](./EditableDatagrid.md)
 - A [guided tour system](https://marmelab.com/ra-enterprise/modules/ra-tour)

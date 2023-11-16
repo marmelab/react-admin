@@ -662,7 +662,7 @@ const PostEdit = () => {
 ```
 {% endraw %}
 
-**Tip**: In `optimistic` and `undoable` mutation modes, react-admin calls the the `onSuccess` callback method with no argument. In `pessimistic` mode, it calls it with the response returned by the dataProvider as argument.
+**Tip**: In `optimistic` and `undoable` mutation modes, react-admin calls the `onSuccess` callback method with no argument. In `pessimistic` mode, it calls it with the response returned by the dataProvider as argument.
 
 You can do the same for error notifications, by passing a custom `onError`  callback.
 
