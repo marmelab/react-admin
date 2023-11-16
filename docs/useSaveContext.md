@@ -14,11 +14,7 @@ title: "useSaveContext"
 ```jsx
 import { useSaveContext } from 'react-admin';
 
-const { 
-    save, // the create or update callback, which receives the form data and calls the dataProvider
-    saving, //  boolean that becomes true when the dataProvider is called
-    mutationMode, // the current mutation mode, either 'undoable', 'optimistic', or 'pessimistic'
-} = useSaveContext();
+const { save, saving, mutationMode } = useSaveContext();
 ```
 
 You can create a custom `SaveContext` to override the default `save` callback:
@@ -41,3 +37,11 @@ const MyComponent = () => {
 }
 ```
 {% endraw %}
+
+## Return Value
+
+`useSaveContext` returns an object with the following keys:
+
+* `save`: Create or update callback which receives form data and calls `dataProvider`
+* `saving`: Boolean, `true` when `dataProvider` is called
+* `mutationMode`: Current mutation mode, either 'undoable', 'optimistic' or 'pessimistic'

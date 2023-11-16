@@ -21,15 +21,7 @@ You can use `useShowController` to create your own custom Show view, like this o
 import { useShowController, RecordContextProvider, SimpleShowLayout } from 'react-admin';
 
 const PostShow = () => {
-    const {
-        defaultTitle, // the translated title based on the resource, e.g. 'Post #123'
-        error,  // error returned by dataProvider when it failed to fetch the record. Useful if you want to adapt the view instead of just showing a notification using the `onError` side effect.
-        isFetching, // boolean that is true while the record is being fetched, and false once the record is fetched
-        isLoading, // boolean that is true until the record is available for the first time
-        record, // record fetched via dataProvider.getOne() based on the id from the location
-        refetch, // callback to refetch the record via dataProvider.getOne()
-        resource, // the resource name, deduced from the location. e.g. 'posts'
-    } = useShowController();
+    const { defaultTitle, error, isLoading, record } = useShowController();
 
     if (isLoading) {
         return <div>Loading...</div>;
@@ -53,16 +45,14 @@ This custom Show view has no action buttons - it's up to you to add them in pure
 
 **Tip**: Use [`<ShowBase>`](./ShowBase.md) instead of `useShowController` if you need a component version of that hook.
 
-## Parameters
+## Arguments
 
-`useShowController` expects one parameter argument. It's an object with the following attributes: 
+`useShowController` accepts an object with the following keys, all optional: 
 
-| Name             | Required | Type              | Default | Description
-|------------------|----------|-------------------|---------|--------------------------------------------------------
-| `disable Authentication` | Optional | `boolean` |         | Set to `true` to disable the authentication check.
-| `id`             | Optional | `string`          |         | The record identifier. If not provided, it will be deduced from the URL.
-| `queryOptions`   | Optional | `object`          |         | The options to pass to the [`useQuery`](./Actions.mdl#usequery-and-usemutation) hook.
-| `resource`       | Optional | `string`          |         | The resource name, e.g. `posts`
+* [`disableAuthentication`](#disableauthentication): Boolean, set to `true` to disable the authentication check.
+* [`id`](#id): Record identifier. If not provided, it will be deduced from the URL.
+* [`queryOptions`](#queryoptions): Options object to pass to the [`useQuery`](./Actions.mdl#usequery-and-usemutation) hook.
+* [`resource`](#resource): Resource name, e.g. `posts`
 
 ## `disableAuthentication`
 
@@ -175,6 +165,18 @@ const PostShow = () => {
     );
 };
 ```
+
+## Return Value
+
+`useShowController` returns an object with the following keys:
+
+* `defaultTitle`: Translated title based on the resource, e.g. 'Post #123'
+* `isFetching`: Boolean, `true` while the record is being fetched, and false once done fetching
+* `isLoading`: Boolean, `true` until the record is available for the first time
+* `record`: Record fetched via `dataProvider.getOne()` based on the id from the location
+* `refetch`: Callback to refetch the record via `dataProvider.getOne()`
+* `resource`: The resource name, deduced from the location. e.g. 'posts'
+* `error`: Error returned by dataProvider when it failed to fetch the record. Useful if you want to adapt the view instead of just showing a notification using the `onError` side effect.
 
 ## Controlled Mode
 

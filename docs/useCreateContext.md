@@ -40,14 +40,10 @@ const PostCreateForm = () => {
 
 ## Return Value
 
-The `useCreateContext` hook returns an object with the same keys as returned by [`useCreateController`](./useCreateController.md):
+`useCreateContext` returns an object with the same keys as [`useCreateController`](./useCreateController.md):
 
-```jsx
-const {
-    defaultTitle, // the translated title based on the resource, e.g. 'Create New Post'
-    redirect, // the default redirection route. Defaults to 'list'
-    resource, // the resource name, deduced from the location. e.g. 'posts'
-    save, // the update callback, to be passed to the underlying form as submit handler
-    saving, // boolean that becomes true when the dataProvider is called to create the record
-} = useCreateContext();
-```
+* `defaultTitle`: Translated title based on the resource, e.g. 'Create New Post'
+* `redirect`: Default redirect route. Defaults to 'list'
+* `resource`: Resource name, deduced from the location. e.g. 'posts'
+* `save`: Update callback to be passed to the underlying form as submit handler
+* `saving`: Boolean, `true` when the dataProvider is called to create the record

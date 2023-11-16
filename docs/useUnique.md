@@ -30,14 +30,16 @@ const UserCreateForm = () => {
 };
 ```
 
-## Options
+## Arguments
 
-| Option              | Required | Type           | Default  | Description                                                                        |
-| ------------------- | -------- | -------------- | -------- | ---------------------------------------------------------------------------------- |
-| `message`           | Optional | `string`       | `ra.validation.unique` | A custom message to display when the validation fails                |
-| `debounce`          | Optional | `number`       | 1000                   | The number of milliseconds to wait for new changes before validating |
-| `filter`            | Optional | `object`       | -                      | Additional filters to pass to the `dataProvider.getList` call        |
-| `resource`          | Optional | `string`       | current from Context   | The resource targeted by the `dataProvider.getList` call             |
+`useUnique` accepts an object with the following keys, all optional: 
+
+| Key                     | Type           | Default                | Description                                                          |
+| ----------------------- | -------------- | ---------------------- | -------------------------------------------------------------------- |
+| [`message`](#message)   | `string`       | `ra.validation.unique` | A custom message to display when the validation fails                |
+| [`debounce`](#debounce) | `number`       | 1000                   | The number of milliseconds to wait for new changes before validating |
+| [`filter`](#filter)     | `object`       | -                      | Additional filters to pass to the `dataProvider.getList` call        |
+| [`resource`](#resource) | `string`       | current from Context   | The resource targeted by the `dataProvider.getList` call             |
 
 ## `message`
 
