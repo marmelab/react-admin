@@ -38,6 +38,8 @@ export const BookEdit = () => (
 );
 ```
 
+## Props
+
 You can customize the `<EditBase>` component using the following props, documented in the `<Edit>` component:
 
 * `children`: the components that renders the form

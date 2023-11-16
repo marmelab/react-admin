@@ -54,6 +54,8 @@ In the related `<Resource>`, you don't need to declare an `edit` component as th
 <Resource name="customers" list={CustomerList} />
 ```
 
+## Props
+
 `<EditDialog>` accepts the same props as the [`<Edit>`](./Edit.md) component, and the same type of children (e.g. a [`<SimpleForm>`](./SimpleForm.md) element).
 
 * `children`: the components that renders the form

@@ -58,6 +58,8 @@ const App = () => (
 export default App;
 ```
 
+## Props
+
 You can customize the `<Edit>` component using the following props:
 
 * [`actions`](#actions): override the actions toolbar with a custom component

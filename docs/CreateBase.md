@@ -38,6 +38,8 @@ export const BookCreate = () => (
 );
 ```
 
+## Props
+
 You can customize the `<CreateBase>` component using the following props, documented in the `<Create>` component:
 
 * `children`: the components that renders the form

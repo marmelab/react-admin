@@ -50,6 +50,8 @@ const App = () => (
 export default App;
 ```
 
+## Props
+
 You can customize the `<Create>` component using the following props:
 
 * [`actions`](#actions): override the actions toolbar with a custom component

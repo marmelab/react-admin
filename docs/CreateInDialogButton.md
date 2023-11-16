@@ -63,6 +63,8 @@ const CompanyShow = () => (
 
 In the above example, `<CreateInDialogButton>` is used to create a new employee for the current company. [The `<WithRecord>` component](./WithRecord.md) helps to set the new employee company id by default.
 
+## Props
+
 `<CreateInDialogButton>` accepts the following props:
 
 * `inline`: set to true to display only a Material UI `<IconButton>` instead of the full `<Button>`. The label will still be available as a `<Tooltip>` though.
