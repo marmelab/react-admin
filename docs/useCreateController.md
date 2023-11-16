@@ -5,9 +5,11 @@ title: "The useCreateController hook"
 
 # `useCreateController`
 
-The `useCreateController` hook contains the logic of [the `<Create>` component](./Create.md): it prepares a form submit handler, and returns the data and callbacks necessary to render a Creation view. 
+`useCreateController` contains the headless logic of the [`<Create>`](./Create.md) component. It's useful to create a custom creation view. It's also the base hook when building a custom view with another UI kit than Material UI. 
 
-React-admin calls `useCreateController` internally, when you use the `<Create>`, or `<CreateBase>` component.
+`useCreateController` reads the resource name from the resource context and browser location, computes the form default values, prepares a form submit handler based on `dataProvider.create()`, computes the default page title, and returns them. Its return value matches the [`CreateContext`](./useCreateContext.md) shape. 
+
+`useCreateController` is used internally by [`<Create>`](./Create.md) and [`<CreateBase>`](./CreateBase.md). If your Create view uses react-admin components like `<SimpleForm>`, prefer [`<CreateBase>`](./CreateBase.md) to `useCreateController` as it takes care of creating a `<CreateContext>`.
 
 ## Usage
 
@@ -62,6 +64,7 @@ These fields are documented in [the `<Create>` component](./Create.md) documenta
 ```jsx
 const {
     defaultTitle, // the translated title based on the resource, e.g. 'Create New Post'
+    record, // the default values of the creation form
     redirect, // the default redirection route. Defaults to 'list'
     resource, // the resource name, deduced from the location. e.g. 'posts'
     save, // the update callback, to be passed to the underlying form as submit handler

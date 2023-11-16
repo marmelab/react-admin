@@ -5,13 +5,11 @@ title: "useShowController"
 
 # `useShowController`
 
-`useShowController` is the hook that handles all the controller logic for Show views. It's used by [`<Show>`](./Show.md) and [`<ShowBase>`](./ShowBase.md).
+`useShowController` contains the headless logic of the [`<Show>`](./Show.md) component. It's useful to create a custom Show view. It's also the base hook when building a custom view with another UI kit than Material UI. 
 
-This hook takes care of three things:
+`useShowController` reads the resource name and id from the resource context and browser location, fetches the record from the data provider via `dataProvider.getOne()`, computes the default page title, and returns them. Its return value matches the [`ShowContext`](./useShowContext.md) shape. 
 
-- it reads the resource name and id from the resource context and browser location
-- it fetches the record from the data provider via `dataProvider.getOne()`,
-- it computes the default page title
+`useShowController` is used internally by [`<Show>`](./Show.md) and [`<ShowBase>`](./ShowBase.md). If your Show view uses react-admin components like `<TextField>`, prefer [`<ShowBase>`](./ShowBase.md) to `useShowController` as it takes care of creating a `<ShowContext>`.
 
 ## Usage
 

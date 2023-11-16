@@ -5,9 +5,11 @@ title: "useListController"
 
 # `useListController`
 
-The `useListController` hook fetches the data, prepares callbacks for modifying the pagination, filters, sort and selection, and returns them. Its return value match the `ListContext` shape. `useListController` is used internally by the `<List>` and `<ListBase>` components.
+`useListController` contains the headless logic of the [`<List>`](./List.md) component. It's useful to create a custom List view. It's also the base hook when building a custom view with another UI kit than Material UI. 
 
-You can use it to create a custom List view, although its component counterpart, [`<ListBase>`](./ListBase.md), is probably better in most cases.
+`useListController` reads the list parameters from the URL, calls `dataProvider.getList()`, prepares callbacks for modifying the pagination, filters, sort and selection, and returns them together with the data. Its return value matches the [`ListContext`](./useListContext.md) shape. 
+
+`useListController` is used internally by [`<List>`](./List.md) and [`<ListBase>`](./ListBase.md). If your list view uses react-admin components like `<Datagrid>`, prefer [`<ListBase>`](./ListBase.md) to `useListController` as it takes care of creating a `<ListContext>`.
 
 ## Usage
 

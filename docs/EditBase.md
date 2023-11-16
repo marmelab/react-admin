@@ -5,7 +5,7 @@ title: "The EditBase Component"
 
 # `<EditBase>`
 
-`<EditBase>` is a headless variant of [`<Edit>`](./Edit.md): it fetches a record based on the URL, prepares a form submit handler, and renders its children inside an [`EditContext`](./useEditContext.md). Use it to build a custom edition page layout, or to use another UI kit than Material UI.
+`<EditBase>` is a headless variant of [`<Edit>`](./Edit.md): it fetches a record based on the URL, prepares a form submit handler, and renders its children inside an [`EditContext`](./useEditContext.md). Use it to build a custom edition page layout.
 
 Contrary to [`<Edit>`](./Edit.md), it does not render the page layout, so no title, no actions, and no `<Card>`.
 

@@ -5,7 +5,7 @@ title: "The CreateBase Component"
 
 # `<CreateBase>`
 
-`<CreateBase>` is a headless variant of [`<Create>`](./Create.md). It prepares a form submit handler, and renders its children in a [`CreateContext`](./useCreateContext.md). Use it to build a custom creation page layout, or to use another UI kit than Material UI.
+`<CreateBase>` is a headless variant of [`<Create>`](./Create.md). It prepares a form submit handler, and renders its children in a [`CreateContext`](./useCreateContext.md). Use it to build a custom creation page layout.
 
 Contrary to [`<Create>`](./Create.md), it does not render the page layout, so no title, no actions, and no `<Card>`.
 

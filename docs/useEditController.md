@@ -5,9 +5,11 @@ title: "The useEditController hook"
 
 # `useEditController`
 
-The `useEditController` hook contains the logic of [the `<Edit>` component](./Edit.md): it fetches a record based on the URL, prepares a form submit handler, and returns all the data and callbacks necessary to render an edition view. 
+`useEditController` contains the headless logic of the [`<Edit>`](./Edit.md) component. It's useful to create a custom edition view. It's also the base hook when building a custom view with another UI kit than Material UI. 
 
-React-admin calls `useEditController` internally when you use the `<Edit>`, `<EditBase>`, or `<EditGuesser>` component.
+`useEditController` reads the resource name and id from the resource context and browser location, fetches the record via `dataProvider.getOne()` to initialize the form, prepares a form submit handler based on `dataProvider.update()`, computes the default page title, and returns them. Its return value matches the [`EditContext`](./useEditContext.md) shape. 
+
+`useEditController` is used internally by [`<Edit>`](./Edit.md) and [`<EditBase>`](./EditBase.md). If your Edit view uses react-admin components like `<SimpleForm>`, prefer [`<EditBase>`](./EditBase.md) to `useEditController` as it takes care of creating a `<EditContext>`.
 
 ## Usage
 
