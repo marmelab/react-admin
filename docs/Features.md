@@ -277,7 +277,7 @@ React-admin components use Material UI components by default, which lets you sca
 
 This means you can use react-admin with any UI library you want - not only Material UI, but also [Ant Design](https://ant.design/), [Daisy UI](https://daisyui.com/), [Chakra UI](https://chakra-ui.com/), or even you own custom UI library.
 
-For instance, here a List view built [Ant Design](https://ant.design/):
+For instance, here a List view built with [Ant Design](https://ant.design/):
 
 ![List view built with Ant Design](./img/list_ant_design.png)
 
