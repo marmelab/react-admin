@@ -8,7 +8,6 @@ title: "The SearchWithResult Component"
 This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> component, part of [`ra-search`](https://marmelab.com/ra-enterprise/modules/ra-search), renders a search input and the search results directly below the input. It's ideal for dashboards or menu panels.
 
 <video controls autoplay playsinline muted loop>
-  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-search-with-result-overview.webm" type="video/webm"/>
   <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-search-with-result-overview.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
@@ -349,7 +348,6 @@ export const App = () => (
 The `<SearchWithResult>` component works perfectly when used inside the [`<SolarLayout>`](https://marmelab.com/ra-enterprise/modules/ra-navigation#solarlayout) menu.
 
 <video controls autoplay playsinline muted loop>
-  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-search-with-result-solar-layout-overview.webm" type="video/webm"/>
   <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-search-with-result-solar-layout-overview.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
