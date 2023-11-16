@@ -271,6 +271,93 @@ We have made many improvements to this default layout based on user feedback. In
 
 And for mobile users, react-admin renders a different layout with larger margins and less information density (see [Responsive](#responsive)).
 
+## Headless
+
+React-admin components use Material UI components by default, which lets you scaffold a page in no time. However, the headless logic behind react-admin components is agnostic of the UI library, and is exposed via -Base components and controller hooks. 
+
+This means you can use react-admin with any UI library you want - not only Material UI, but also [Ant Design](https://ant.design/), [Daisy UI](https://daisyui.com/), [Chakra UI](https://chakra-ui.com/), or even you own custom UI library.
+
+For instance, here a List view built [Ant Design](https://ant.design/):
+
+![List view built with Ant Design](./img/list_ant_design.png)
+
+It leverages the `useListController` hook:
+
+{% raw %}
+```jsx
+import { useListController } from 'react-admin'; 
+import { Card, Table, Button } from 'antd';
+import {
+  CheckCircleOutlined,
+  PlusOutlined,
+  EditOutlined,
+} from '@ant-design/icons';
+import { Link } from 'react-router-dom';
+
+const PostList = () => {
+  const { data, page, total, setPage, isLoading } = useListController({
+    sort: { field: 'published_at', order: 'DESC' },
+    perPage: 10,
+  });
+  const handleTableChange = (pagination) => {
+    setPage(pagination.current);
+  };
+  return (
+    <>
+      <div style={{ margin: 10, textAlign: 'right' }}>
+        <Link to="/posts/create">
+          <Button icon={<PlusOutlined />}>Create</Button>
+        </Link>
+      </div>
+      <Card bodyStyle={{ padding: '0' }} loading={isLoading}>
+        <Table
+          size="small"
+          dataSource={data}
+          columns={columns}
+          pagination={{ current: page, pageSize: 10, total }}
+          onChange={handleTableChange}
+        />
+      </Card>
+    </>
+  );
+};
+
+const columns = [
+  { title: 'Id', dataIndex: 'id', key: 'id' },
+  { title: 'Title', dataIndex: 'title', key: 'title' },
+  {
+    title: 'Publication date',
+    dataIndex: 'published_at',
+    key: 'pub_at',
+    render: (value) => new Date(value).toLocaleDateString(),
+  },
+  {
+    title: 'Commentable',
+    dataIndex: 'commentable',
+    key: 'commentable',
+    render: (value) => (value ? <CheckCircleOutlined /> : null),
+  },
+  {
+    title: 'Actions',
+    render: (_, record) => (
+      <Link to={`/posts/${record.id}`}>
+        <Button icon={<EditOutlined />}>Edit</Button>
+      </Link>
+    ),
+  },
+];
+
+export default PostList;
+```
+{% endraw %}
+
+Check the following hooks to learn more about headless controllers:
+
+- [`useListController`](./useListController.md)
+- [`useEditController`](./useEditController.md)
+- [`useCreateController`](./useCreateController.md)
+- [`useShowController`](./useShowController.md)
+
 ## Guessers & Scaffolding
 
 When mapping a new API route to a CRUD view, adding fields one by one can be tedious. React-admin provides a set of guessers that can automatically **generate a complete CRUD UI based on an API response**.
