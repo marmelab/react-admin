@@ -347,59 +347,15 @@ When passed a `record`, `<TabbedShowLayout>` creates a `RecordContext` with the 
 
 ## Role-Based Access Control (RBAC)
 
-Fine-grained permissions control can be added by using the `<TabbedShowLayout>` component provided by the `@react-admin/ra-rbac` package.
+Fine-grained permissions control can be added by using the `<TabbedShowLayout>` and `<TabbedShowLayout.Tab>` component provided by the @react-admin/ra-rbac package.
 
-Use it in conjunction with ra-rbac's `<TabbedShowLayout.Tab>` and add a `name` prop to the `Tab` to define the resource on which the user needs to have the 'read' permissions for.
+`<TabbedShowLayout>` allow you to show or hide different `<form>`s to edit records, piloted by the RBAC. `<TabbedShowLayout.Tab>` also only renders the child inputs for which the user has the ‘write’ permissions.
 
-**Tip:** ra-rbac's `<TabbedShowLayout.Tab>` also allows to only render the child fields for which the user has the 'read' permissions.
+Use in conjunction with ra-rbac’s `<TabbedShowLayout.Tab>` and add a name prop to the Tab to define the resource on which the user needs to have the ‘write’ permissions for.
 
-```tsx
-import { Show, TextField } from 'react-admin';
-import { TabbedShowLayout } from '@react-admin/ra-rbac';
+**Tip:** Add a name prop to the Tab to define the resource on which the user needs to have the ‘write’ permissions for.
 
-const authProvider = {
-    // ...
-    getPermissions: () =>
-        Promise.resolve([
-            { action: ['list', 'show'], resource: 'products' },
-            { action: 'read', resource: 'products.reference' },
-            { action: 'read', resource: 'products.width' },
-            { action: 'read', resource: 'products.height' },
-            { action: 'read', resource: 'products.thumbnail' },
-            { action: 'read', resource: 'products.tab.description' },
-            // 'products.tab.stock' is missing
-            { action: 'read', resource: 'products.tab.images' },
-        ]),
-};
-
-const ProductShow = () => (
-    <Show>
-        <TabbedShowLayout>
-            <TabbedShowLayout.Tab label="Description" name="description">
-                <TextField source="reference" />
-                <TextField source="width" />
-                <TextField source="height" />
-                <TextField source="description" />
-            </TabbedShowLayout.Tab>
-            {/* Tab Stock is not displayed */}
-            <TabbedShowLayout.Tab label="Stock" name="stock">
-                <TextField source="stock" />
-            </TabbedShowLayout.Tab>
-            <TabbedShowLayout.Tab label="Images" name="images">
-                <TextField source="image" />
-                <TextField source="thumbnail" />
-            </TabbedShowLayout.Tab>
-        </TabbedShowLayout>
-    </Show>
-);
-```
-
-To use the `<TabbedShowLayout>` component, you will work with the `<TabbedShowLayout.tab>` component. Since `<TabbedShowLayout>` is provided by the `@react-admin/ra-rbac` package, then `<TabbedShowLayout.tab>` too. This component will only renders a tab and its content if the user has the right permissions.
-
-Add a `name` prop to the `Tab` to define the resource on which the user needs to have the 'read' permissions for.
-
-`<TabbedShowLayout.Tab>` also only renders the child fields for which the user has the 'read' permissions.
-
+{% raw %}
 ```tsx
 import { Show, TextField } from 'react-admin';
 import { TabbedShowLayout } from '@react-admin/ra-rbac';
@@ -444,6 +400,9 @@ const ProductShow = () => (
     </Show>
 );
 ```
+{% endraw %}
+
+Check [the RBAC `<TabbedShowLayout>` component](./AuthRBAC.md#tabbedshowlayout) documentation for more details.
 
 
 ## See Also
