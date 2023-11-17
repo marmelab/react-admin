@@ -1,5 +1,13 @@
 # Changelog
 
+## v4.16.0
+
+* Add `<SingleFieldList empty gap direction>` props, and allow it to be used without `children` ([#9439](https://github.com/marmelab/react-admin/pull/9439)) ([fzaninotto](https://github.com/fzaninotto))
+* Add `<LoadingIndicator onClick>` prop, allowing to trigger actions (like a refresh) on click ([#9420](https://github.com/marmelab/react-admin/pull/9420)) ([david-bezero](https://github.com/david-bezero))
+* Add `<LocalesMenuButton icon>` prop to customize the locales button icon ([#9380](https://github.com/marmelab/react-admin/pull/9380)) ([djhi](https://github.com/djhi))
+* Add `<Form disableInvalidFormNotification>` to allow disabling notifications when the form is invalid ([#9353](https://github.com/marmelab/react-admin/pull/9353)) ([tim-hoffmann](https://github.com/tim-hoffmann))
+
+
 ## v4.15.5
 
 * Add support for `fetchOptions` to `<CheckForApplicationUpdate>` ([#9436](https://github.com/marmelab/react-admin/pull/9436)) ([smeng9](https://github.com/smeng9))
