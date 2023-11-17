@@ -41,12 +41,13 @@ export const App = () => (
 
 `<CheckForApplicationUpdate>` accepts the following props:
 
-| Prop            | Required | Type     | Default            | Description                                                         |
-| --------------- | -------- | -------- | ------------------ |-------------------------------------------------------------------- |
-| `interval` | Optional | number   | `3600000` (1 hour) | The interval in milliseconds between two checks                     |
-| `disabled`      | Optional | boolean  | `false` in `production` mode | Whether the automatic check is disabled                              |
-| `notification`  | Optional | ReactElement |                    | The notification to display to the user when an update is available |
-| `url`           | Optional | string   | current URL        | The URL to download to check for code update                        |
+| Prop            | Required | Type           | Default            | Description                                                         |
+| --------------- | -------- | -------------- | ------------------ |-------------------------------------------------------------------- |
+| `interval`      | Optional | `number`       | `3600000` (1 hour) | The interval in milliseconds between two checks                     |
+| `disabled`      | Optional | `boolean`      | `false`            | Whether the automatic check is disabled                             |
+| `notification`  | Optional | `ReactElement` |                    | The notification to display to the user when an update is available |
+| `onNewVersion Available` | Optional | `function` |               | The effect to execute when a new version is detected.               |
+| `url`           | Optional | `string`       | Current URL        | The URL to download to check for code update                        |
 | `fetchOptions`  | Optional | `RequestInit | undefined` | `undefined`    | The options passed to `fetch` when checking for an update       |
 
 ## `interval`
@@ -119,7 +120,42 @@ const MyLayout = ({ children, ...props }) => (
 );
 ```
 
-If you just want to customize the notification texts, including the button, check out the [Internationalization section](#internationalization).
+If you want to customize the behavior when a new version is available, checkout the [`onNewVersionAvailable` section](#onnewversionavailable). If you just want to customize the notification texts, including the button, check out the [Internationalization section](#internationalization).
+
+## `onNewVersionAvailable`
+
+Advanced users who wish to customize the handling function other than just displaying a notification can leverage the `onNewVersionAvailable` prop:
+
+```tsx
+import { CheckForApplicationUpdate, useNotify } from "react-admin";
+
+export const MyCheckForApplicationUpdate = () => {
+    const notify = useNotify();
+
+    const onNewVersionAvailable = () => {
+        // Perform a backup of user preference in localStorage in case bad things happen
+        const preference1 = localStorage.getItem("preference1");
+        const preference2 = localStorage.getItem("preference2");
+        const checkpointData = {
+            preference1,
+            preference2,
+        };
+        localStorage.setItem(
+            `checkpoint_${new Date().toISOString()}`,
+            JSON.stringify(checkpointData),
+        );
+
+        // Notify user
+        notify("New Version Ready to Update");
+    };
+
+    return (
+        <CheckForApplicationUpdate
+            onNewVersionAvailable={onNewVersionAvailable}
+        />
+    );
+};
+```
 
 ## `url`
 

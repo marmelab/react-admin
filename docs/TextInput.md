@@ -80,6 +80,11 @@ You can choose a specific input type using the `type` attribute, for instance `t
 
 If you want to let users edit rich text, use [`<RichTextInput>`](./RichTextInput.md) instead. This component leverages [TipTap](https://www.tiptap.dev/) to provide a WYSIWYG editor.
 
+<video controls autoplay playsinline muted loop>
+  <source src="./img/rich-text-input.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
 ```jsx
 import { Edit, SimpleForm, TextInput } from 'react-admin';
 import { RichTextInput } from 'ra-input-rich-text';
@@ -93,6 +98,8 @@ export const PostEdit = () => (
 	</Edit>
 );
 ```
+
+See [the `<RichTextInput>` documentation](./RichTextInput.md) for more details.
 
 ## Predictive Text Input
 

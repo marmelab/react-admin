@@ -109,8 +109,8 @@ import { Edit, TextField, TextInput, DateInput, SelectInput, ArrayInput, SimpleF
 import { AccordionForm } from '@react-admin/ra-form-layout';
 
 // don't forget the component="div" prop on the main component to disable the main Card
-const CustomerEdit = (props: EditProps) => (
-    <Edit {...props} component="div">
+const CustomerEdit = () => (
+    <Edit component="div">
 -       <AccordionForm>
 +       <AccordionForm autoClose>
             <AccordionForm.Panel label="Identity" defaultExpanded>

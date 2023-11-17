@@ -281,11 +281,8 @@ import {
     SimpleForm,
 } from 'react-admin';
 
-const CustomToolbar = props => (
-    <Toolbar
-        {...props}
-        sx={{ display: 'flex', justifyContent: 'space-between' }}
-    >
+const CustomToolbar = () => (
+    <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
         <SaveButton />
         <DeleteButton mutationMode="pessimistic" />
     </Toolbar>
@@ -544,13 +541,13 @@ The `title` value can be a string or a React element.
 To transform a record after the user has submitted the form but before the record is passed to `dataProvider.update()`, use the `transform` prop. It expects a function taking a record as argument, and returning a modified record. For instance, to add a computed field upon edition:
 
 ```jsx
-export const UserEdit = (props) => {
+export const UserEdit = () => {
     const transform = data => ({
         ...data,
         fullName: `${data.firstName} ${data.lastName}`
     });
     return (
-        <Edit {...props} transform={transform}>
+        <Edit transform={transform}>
             ...
         </Edit>
     );
@@ -564,13 +561,13 @@ The `transform` function can also return a `Promise`, which allows you to do all
 **Tip**: The `transform` function also get the `previousData` in its second argument:
 
 ```jsx
-export const UserEdit = (props) => {
+export const UserEdit = () => {
     const transform = (data, { previousData }) => ({
         ...data,
         avoidChangeField: previousData.avoidChangeField
     });
     return (
-        <Edit {...props} transform={transform}>
+        <Edit transform={transform}>
             ...
         </Edit>
     );
@@ -593,7 +590,7 @@ As a reminder, HTML form inputs always return strings, even for numbers and bool
 If you prefer to have `null` values, or to omit the key for empty values, use [the `transform` prop](#transform) to sanitize the form data before submission:
 
 ```jsx
-export const UserEdit = (props) => {
+export const UserEdit = () => {
     const transform = (data) => {
         const sanitizedData = {};
         for (const key in data) {
@@ -603,7 +600,7 @@ export const UserEdit = (props) => {
         return sanitizedData;
     };
     return (
-        <Edit {...props} transform={transform}>
+        <Edit transform={transform}>
             ...
         </Edit>
     );
@@ -722,12 +719,12 @@ const cities = {
 };
 const toChoices = items => items.map(item => ({ id: item, name: item }));
 
-const CityInput = props => {
+const CityInput = () => {
     const country = useWatch({ name: 'country' });
     return (
         <SelectInput
             choices={country ? toChoices(cities[country]) : []}
-            {...props}
+            source="cities"
         />
     );
 };
@@ -736,7 +733,7 @@ const OrderEdit = () => (
     <Edit>
         <SimpleForm>
             <SelectInput source="country" choices={toChoices(countries)} />
-            <CityInput source="cities" />
+            <CityInput />
         </SimpleForm>
     </Edit>
 );

@@ -871,15 +871,10 @@ export const PostList = () => (
 But if you just want to change the color property of the pagination button, you can extend the existing components:
 
 ```tsx
-import {
-    List,
-    Pagination as RaPagination,
-    PaginationActions as RaPaginationActions,
-} from 'react-admin';
+import { List, Pagination, PaginationActions } from 'react-admin';
 
-export const PaginationActions = props => (
-    <RaPaginationActions
-        {...props}
+export const MyPaginationActions = () => (
+    <PaginationActions
         // these props are passed down to the Material UI <Pagination> component
         color="primary"
         showFirstButton
@@ -887,10 +882,10 @@ export const PaginationActions = props => (
     />
 );
 
-export const Pagination = () => <RaPagination ActionsComponent={PaginationActions} />;
+export const MyPagination = () => <Pagination ActionsComponent={MyPaginationActions} />;
 
 export const UserList = () => (
-    <List pagination={<Pagination />} >
+    <List pagination={<MyPagination />} >
         //...
     </List>
 );

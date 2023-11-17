@@ -676,10 +676,10 @@ Delete the current record after a confirm dialog has been accepted. To be used i
 import * as React from 'react';
 import { DeleteWithConfirmButton, Toolbar, Edit, SaveButton,useRecordContext } from 'react-admin';
 
-const EditToolbar = props => {
+const EditToolbar = () => {
     const record = useRecordContext();
 
-    <Toolbar {...props}>
+    <Toolbar>
         <SaveButton/>
         <DeleteWithConfirmButton
             confirmContent="You will not be able to recover this record. Are you sure?"
@@ -782,8 +782,8 @@ import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
 import PeopleIcon from '@mui/icons-material/People';
 import LabelIcon from '@mui/icons-material/Label';
 
-export const Menu = (props) => (
-    <Menu {...props}>
+export const Menu = () => (
+    <Menu>
         <DashboardMenuItem />
         <MenuItemLink to="/posts" primaryText="Posts" leftIcon={<BookIcon />}/>
         <MenuItemLink to="/comments" primaryText="Comments" leftIcon={<ChatBubbleIcon />}/>
