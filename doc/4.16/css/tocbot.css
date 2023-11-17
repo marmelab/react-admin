@@ -1,0 +1,55 @@
+:root {
+    --black: #000;
+    --deepblue: #00023b;
+}
+
+.toc-list-item {
+    padding-bottom: 8px;
+    line-height: normal;
+}
+
+.toc-list-item code {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    line-height: normal;
+    font-size: 0.9em;
+}
+
+.toc-list-item > ol > li.toc-list-item:first-child {
+    padding-top: 8px;
+}
+
+.toc-list-item > ol > li.toc-list-item:last-child {
+    padding-bottom: 0;
+}
+
+.toc-link {
+    font-size: 0.9em;
+    color: var(--black) !important;
+}
+
+.toc-link::before {
+    margin-top: -3px !important;
+}
+
+.toc-link:hover {
+    color: var(--deepblue) !important;
+    font-weight: 700;
+}
+
+.toc-link:hover::before {
+    color: var(--deepblue) !important;
+    background-color: var(--deepblue);
+}
+
+.is-active-link {
+    color: var(--deepblue) !important;
+}
+
+.is-active-link::before {
+    background-color: var(--deepblue) !important;
+}
+
+.is-position-fixed {
+    margin-top: 0;
+}
