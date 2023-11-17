@@ -824,13 +824,9 @@ Check [the `<AutoSave>` component](./AutoSave.md) documentation for more details
 
 ## Role-Based Access Control (RBAC)
 
-Fine-grained permissions control can be added by using the [`<TabbedForm>`](./AuthRBAC.md#tabbedform) and `<TabbedForm.Tab>` component provided by the `@react-admin/ra-rbac` package.
+You can show or hide tabs and inputs based on user permissions by using the [`<TabbedForm>`](./AuthRBAC.md#tabbedform) component from the `@react-admin/ra-rbac` package instead of the `react-admin` package.
 
-[`<TabbedForm>`](./AuthRBAC.md#tabbedform) allow you to show or hide different `<form>`s to edit records, piloted by the RBAC. `<TabbedForm.Tab>` also only renders the child inputs for which the user has the 'write' permissions.
-
-Use in conjunction with ra-rbac's `<TabbedForm.Tab>` and add a `name` prop to the `Tab` to define the resource on which the user needs to have the 'write' permissions for.
-
-**Tip:** Add a `name` prop to the `Tab` to define the resource on which the user needs to have the 'write' permissions for.
+[`<TabbedForm>`](./AuthRBAC.md#tabbedform) shows only the tabs for which users have write permissions, using the `[resource].tab.[tabName]` string as resource identifier. It also renders the delete button only if the user has a permission for the `delete` action in the current resource. `<TabbedForm.Tab>` shows only the child inputs for which users have the write permissions, using the `[resource].[source]` string as resource identifier.
 
 {% raw %}
 ```tsx
@@ -838,23 +834,19 @@ import { Edit, TextInput } from 'react-admin';
 import { TabbedForm } from '@react-admin/ra-rbac';
 
 const authProvider = {
-    checkAuth: () => Promise.resolve(),
-    login: () => Promise.resolve(),
-    logout: () => Promise.resolve(),
-    checkError: () => Promise.resolve(),
-    getPermissions: () =>
-        Promise.resolve([
-            { action: ['list', 'edit'], resource: 'products' },
-            { action: 'write', resource: 'products.reference' },
-            { action: 'write', resource: 'products.width' },
-            { action: 'write', resource: 'products.height' },
-            // 'products.description' is missing
-            { action: 'write', resource: 'products.thumbnail' },
-            // 'products.image' is missing
-            { action: 'write', resource: 'products.tab.description' },
-            // 'products.tab.stock' is missing
-            { action: 'write', resource: 'products.tab.images' },
-        ]),
+    // ...
+    getPermissions: () => Promise.resolve([
+        // crud (the delete action is missing)
+        { action: ['list', 'edit'], resource: 'products' },
+        // tabs ('products.tab.stock' is missing)
+        { action: 'write', resource: 'products.tab.description' },
+        { action: 'write', resource: 'products.tab.images' },
+        // fields ('products.description' and 'products.image' are missing)
+        { action: 'write', resource: 'products.reference' },
+        { action: 'write', resource: 'products.width' },
+        { action: 'write', resource: 'products.height' },
+        { action: 'write', resource: 'products.thumbnail' },
+    ]),
 };
 
 const ProductEdit = () => (
@@ -864,19 +856,19 @@ const ProductEdit = () => (
                 <TextInput source="reference" />
                 <TextInput source="width" />
                 <TextInput source="height" />
-                {/* Input Description is not displayed */}
+                {/* the description input is not displayed */}
                 <TextInput source="description" />
             </TabbedForm.Tab>
-            {/* the "Stock" tab is not displayed */}
+            {/* the stock tab is not displayed */}
             <TabbedForm.Tab label="Stock" name="stock">
                 <TextInput source="stock" />
             </TabbedForm.Tab>
             <TabbedForm.Tab label="Images" name="images">
-                {/* Input Image is not displayed */}
+                {/* the images input is not displayed */}
                 <TextInput source="image" />
                 <TextInput source="thumbnail" />
             </TabbedForm.Tab>
-            {/* the "Delete" button is not displayed */}
+            {/* the delete button is not displayed */}
         </TabbedForm>
     </Edit>
 );

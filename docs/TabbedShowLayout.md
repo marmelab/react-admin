@@ -347,13 +347,9 @@ When passed a `record`, `<TabbedShowLayout>` creates a `RecordContext` with the 
 
 ## Role-Based Access Control (RBAC)
 
-Fine-grained permissions control can be added by using the `<TabbedShowLayout>` and `<TabbedShowLayout.Tab>` component provided by the @react-admin/ra-rbac package.
+You can show or hide tabs and inputs based on user permissions by using the [`<TabbedShowLayout>`](./AuthRBAC.md#tabbedshowlayout) component from the `@react-admin/ra-rbac` package instead of the `react-admin` package.
 
-`<TabbedShowLayout>` allow you to show or hide different `<form>`s to edit records, piloted by the RBAC. `<TabbedShowLayout.Tab>` also only renders the child inputs for which the user has the ‘write’ permissions.
-
-Use in conjunction with ra-rbac’s `<TabbedShowLayout.Tab>` and add a name prop to the Tab to define the resource on which the user needs to have the ‘write’ permissions for.
-
-**Tip:** Add a name prop to the Tab to define the resource on which the user needs to have the ‘write’ permissions for.
+[`<TabbedShowLayout>`](./AuthRBAC.md#tabbedshowlayout) shows only the tabs for which users have read permissions, using the `[resource].tab.[tabName]` string as resource identifier. `<TabbedShowLayout.Tab>` shows only the child fields for which users have the read permissions, using the `[resource].[source]` string as resource identifier.
 
 {% raw %}
 ```tsx
@@ -362,19 +358,18 @@ import { TabbedShowLayout } from '@react-admin/ra-rbac';
 
 const authProvider = {
     // ...
-    getPermissions: () =>
-        Promise.resolve([
-            { action: ['list', 'show'], resource: 'products' },
-            { action: 'read', resource: 'products.reference' },
-            { action: 'read', resource: 'products.width' },
-            { action: 'read', resource: 'products.height' },
-            // 'products.description' is missing
-            { action: 'read', resource: 'products.thumbnail' },
-            // 'products.image' is missing
-            { action: 'read', resource: 'products.tab.description' },
-            // 'products.tab.stock' is missing
-            { action: 'read', resource: 'products.tab.images' },
-        ]),
+    getPermissions: () => Promise.resolve([
+        // crud
+        { action: ['list', 'show'], resource: 'products' },
+        // tabs ('products.tab.stock' is missing)
+        { action: 'read', resource: 'products.tab.description' },
+        { action: 'read', resource: 'products.tab.images' },
+        // fields ('products.description' and 'products.image' are missing)
+        { action: 'read', resource: 'products.reference' },
+        { action: 'read', resource: 'products.width' },
+        { action: 'read', resource: 'products.height' },
+        { action: 'read', resource: 'products.thumbnail' },
+    ]),
 };
 
 const ProductShow = () => (
@@ -384,15 +379,15 @@ const ProductShow = () => (
                 <TextField source="reference" />
                 <TextField source="width" />
                 <TextField source="height" />
-                {/* Field Description is not displayed */}
+                {/* the description field is not displayed */}
                 <TextField source="description" />
             </TabbedShowLayout.Tab>
-            {/* Tab Stock is not displayed */}
+            {/* the stock tab is not displayed */}
             <TabbedShowLayout.Tab label="Stock" name="stock">
                 <TextField source="stock" />
             </TabbedShowLayout.Tab>
             <TabbedShowLayout.Tab label="Images" name="images">
-                {/* Field Image is not displayed */}
+                {/* the images field is not displayed */}
                 <TextField source="image" />
                 <TextField source="thumbnail" />
             </TabbedShowLayout.Tab>

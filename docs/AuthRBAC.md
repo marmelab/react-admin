@@ -852,7 +852,7 @@ const ProductShow = () => (
 
 ## `<TabbedShowLayout>`
 
-Replacement for the `<TabbedShowLayout>` that only renders a tab if the user has the right permissions. The enterprise component also only renders the child fields for which the user has the 'read' permissions.
+`<TabbedShowLayout>` shows only the tabs for which users have read permissions, using the `[resource].tab.[tabName]` string as resource identifier. `<TabbedShowLayout.Tab>` shows only the child fields for which users have the read permissions, using the `[resource].[source]` string as resource identifier.
 
 ```jsx
 import { Show, TextField } from 'react-admin';
@@ -861,119 +861,71 @@ import { TabbedShowLayout } from '@react-admin/ra-rbac';
 const authProvider = {
     // ...
     getPermissions: () => Promise.resolve([
-        { action: ["list", "show"], resource: "products" },
-        { action: "read", resource: "products.reference" },
-        { action: "read", resource: "products.width" },
-        { action: "read", resource: "products.height" },
-        { action: "read", resource: "products.thumbnail" },
-        { action: "read", resource: "products.tab.description" },
-        // 'products.tab.stock' is missing
-        { action: "read", resource: "products.tab.images" },
+        // crud
+        { action: ['list', 'show'], resource: 'products' },
+        // tabs ('products.tab.stock' is missing)
+        { action: 'read', resource: 'products.tab.description' },
+        { action: 'read', resource: 'products.tab.images' },
+        // fields ('products.description' and 'products.image' are missing)
+        { action: 'read', resource: 'products.reference' },
+        { action: 'read', resource: 'products.width' },
+        { action: 'read', resource: 'products.height' },
+        { action: 'read', resource: 'products.thumbnail' },
     ]),
 };
 
 const ProductShow = () => (
     <Show>
         <TabbedShowLayout>
-        <TabbedShowLayout.Tab label="Description" name="description">
-            <TextField source="reference" />
-            <TextField source="width" />
-            <TextField source="height" />
-            <TextField source="description" />
-        </TabbedShowLayout.Tab>
-        {/* Tab Stock is not displayed */}
-        <TabbedShowLayout.Tab label="Stock" name="stock">
-            <TextField source="stock" />
-        </TabbedShowLayout.Tab>
-        <TabbedShowLayout.Tab label="Images" name="images">
-            <TextField source="image" />
-            <TextField source="thumbnail" />
-        </TabbedShowLayout.Tab>
+            <TabbedShowLayout.Tab label="Description" name="description">
+                <TextField source="reference" />
+                <TextField source="width" />
+                <TextField source="height" />
+                {/* the description field is not displayed */}
+                <TextField source="description" />
+            </TabbedShowLayout.Tab>
+            {/* the stock tab is not displayed */}
+            <TabbedShowLayout.Tab label="Stock" name="stock">
+                <TextField source="stock" />
+            </TabbedShowLayout.Tab>
+            <TabbedShowLayout.Tab label="Images" name="images">
+                {/* the images field is not displayed */}
+                <TextField source="image" />
+                <TextField source="thumbnail" />
+            </TabbedShowLayout.Tab>
         </TabbedShowLayout>
     </Show>
 );
 ```
 
-**Tip**: You must add a `name` prop to the `<TabbedShowLayout.Tab>` so you can reference it in the permissions.
+You must add a `name` prop to the `<TabbedShowLayout.Tab>` so you can reference it in the permissions.
 Then, to allow users to access a particular `<TabbedShowLayout.Tab>`, update the permissions definition as follows: `{ action: 'read', resource: '{RESOURCE}.tab.{NAME}' }`, where `RESOURCE` is the resource name, and `NAME` the name you provided to the `<TabbedShowLayout.Tab>`.
 
 For instance, to allow users access to the following tab `<TabbedShowLayout.Tab label="description">` in `products` resource, add this line in permissions: `{ action: 'read', resource: 'products.tab.description' }`.
 
 ## `<TabbedForm>`
 
-Alternative to react-admin's `<TabbedForm>` that adds RBAC control  to the delete button (conditioned by the 'delete' action) and only renders a tab if the user has the right permissions.
+<TabbedForm> shows only the tabs for which users have write permissions, using the `[resource].tab.[tabName]` string as resource identifier. It also renders the delete button only if the user has a permission for the `delete` action in the current resource. `<TabbedForm.Tab>` shows only the child inputs for which users have the write permissions, using the `[resource].[source]` string as resource identifier.
+
 
 ```jsx
+```tsx
 import { Edit, TextInput } from 'react-admin';
 import { TabbedForm } from '@react-admin/ra-rbac';
 
 const authProvider = {
-    checkAuth: () => Promise.resolve(),
-    login: () => Promise.resolve(),
-    logout: () => Promise.resolve(),
-    checkError: () => Promise.resolve(),
-    getPermissions: () =>
-        Promise.resolve([
-            // action 'delete' is missing
-            { action: ['list', 'edit'], resource: 'products' },
-            { action: 'write', resource: 'products.reference' },
-            { action: 'write', resource: 'products.width' },
-            { action: 'write', resource: 'products.height' },
-            { action: 'write', resource: 'products.thumbnail' },
-            { action: 'write', resource: 'products.tab.description' },
-            // tab 'stock' is missing
-            { action: 'write', resource: 'products.tab.images' },
-        ]),
-};
-
-const ProductEdit = () => (
-    <Edit>
-        <TabbedForm>
-            <TabbedForm.Tab label="Description" name="description">
-                <TextInput source="reference" />
-                <TextInput source="width" />
-                <TextInput source="height" />
-                <TextInput source="description" />
-            </TabbedForm.Tab>
-            {/* the "Stock" tab is not displayed */}
-            <TabbedForm.Tab label="Stock" name="stock">
-                <TextInput source="stock" />
-            </TabbedForm.Tab>
-            <TabbedForm.Tab label="Images" name="images">
-                <TextInput source="image" />
-                <TextInput source="thumbnail" />
-            </TabbedForm.Tab>
-            {/* the "Delete" button is not displayed */}
-        </TabbedForm>
-    </Edit>
-);
-```
-
-**Tip**: You must add a `name` prop to the `<TabbedForm.Tab>` so you can reference it in the permissions. Then, to allow users to access a particular `<TabbedForm.Tab>`, update the permissions definition as follows: `{ action: 'write', resource: '{RESOURCE}.tab.{NAME}' }`, where `RESOURCE` is the resource name, and `NAME` the name you provided to the `<TabbedForm.Tab>`.
-
-For instance, to allow users access to the following tab `<TabbedForm.Tab label="Description" name="description">` in `products` resource, add this line in permissions: `{ action: 'write', resource: 'products.tab.description' }`.
-
-`<TabbedForm.Tab>` only renders the child inputs for which the user has the 'write' permissions.
-
-```jsx
-import { Edit, TabbedForm, TextInput } from 'react-admin';
-import { TabbedForm } from '@react-admin/ra-rbac';
-
-
-const authProvider = {
-  // ...
-  getPermissions: () =>
-    Promise.resolve([
-      { action: ["list", "edit"], resource: "products" },
-      { action: "write", resource: "products.reference" },
-      { action: "write", resource: "products.width" },
-      { action: "write", resource: "products.height" },
-      // 'products.description' is missing
-      { action: "write", resource: "products.thumbnail" },
-      // 'products.image' is missing
-      { action: "write", resource: "products.tab.description" },
-      // 'products.tab.stock' is missing
-      { action: "write", resource: "products.tab.images" },
+    // ...
+    getPermissions: () => Promise.resolve([
+        // crud (the delete action is missing)
+        { action: ['list', 'edit'], resource: 'products' },
+        // tabs ('products.tab.stock' is missing)
+        { action: 'write', resource: 'products.tab.description' },
+        { action: 'write', resource: 'products.tab.images' },
+        // fields ('products.description' and 'products.image' are missing)
+        { action: 'write', resource: 'products.reference' },
+        { action: 'write', resource: 'products.width' },
+        { action: 'write', resource: 'products.height' },
+        { action: 'write', resource: 'products.thumbnail' },
     ]),
 };
 
@@ -984,22 +936,28 @@ const ProductEdit = () => (
                 <TextInput source="reference" />
                 <TextInput source="width" />
                 <TextInput source="height" />
-                {/* not displayed */}
+                {/* the description input is not displayed */}
                 <TextInput source="description" />
             </TabbedForm.Tab>
-            <TabbedForm.Tab label="Images" name="images">
-                {/* not displayed */}
-                <TextInput source="image" />
-                <TextInput source="thumbnail" />
-            </TabbedForm.Tab>
-            {/* not displayed */}
+            {/* the stock tab is not displayed */}
             <TabbedForm.Tab label="Stock" name="stock">
                 <TextInput source="stock" />
             </TabbedForm.Tab>
+            <TabbedForm.Tab label="Images" name="images">
+                {/* the images input is not displayed */}
+                <TextInput source="image" />
+                <TextInput source="thumbnail" />
+            </TabbedForm.Tab>
+            {/* the delete button is not displayed */}
         </TabbedForm>
     </Edit>
 );
 ```
+```
+
+You must add a `name` prop to the `<TabbedForm.Tab>` so you can reference it in the permissions. Then, to allow users to access a particular `<TabbedForm.Tab>`, update the permissions definition as follows: `{ action: 'write', resource: '{RESOURCE}.tab.{NAME}' }`, where `RESOURCE` is the resource name, and `NAME` the name you provided to the `<TabbedForm.Tab>`.
+
+For instance, to allow users access to the following tab `<TabbedForm.Tab label="Description" name="description">` in `products` resource, add this line in permissions: `{ action: 'write', resource: 'products.tab.description' }`.
 
 ## `<WizardForm>`
 
