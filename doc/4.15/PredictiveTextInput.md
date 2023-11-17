@@ -116,16 +116,24 @@ For instance, the OpenAI implementation uses the `meta` parameter as a way to ad
 
 ![PredictiveTextInput multiline](./img/PredictiveTextInput-multiline.png)
 
-Set to true to use a `<textarea>` instead of an `<input>`. Defaults to false.
+Set to true to allow the edited content to span multiple lines. This is the equivalent of using a `<textarea>` instead of an `<input>`. Defaults to false.
 
 ```jsx
 <PredictiveTextInput source="description" multiline />
 ```
 
-By default, `<PredictiveTextInput multiline>` renders [a material-ui `<TextareaAutosize>` component](https://mui.com/base/react-textarea-autosize/components-api/#textarea-autosize), which automatically resizes the textarea to fit its content. If you want to use a regular `<textarea>` element, set the `rows` prop:
+By default, `<PredictiveTextInput multiline>` renders a [`<div contenteditable>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/contenteditable) with the same style as [a Material UI `<TextField multiline>` component](https://mui.com/base/react-textarea-autosize/components-api/#textarea-autosize), which automatically resizes the textarea to fit its content.
+
+You can also set the `rows` prop to fix the number of rows:
 
 ```jsx
 <PredictiveTextInput source="description" multiline rows={5} />
+```
+
+You can also set the `minRows` prop to set the minimum number of rows:
+
+```jsx
+<PredictiveTextInput source="description" multiline minRows={5} />
 ```
 
 ## `locale`

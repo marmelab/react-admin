@@ -191,8 +191,8 @@ const ShowWrapper = ({ children }) => (
 );
 
 // use a ShowWrapper as root component
-const PostShow = props => (
-    <Show component={ShowWrapper} {...props}>
+const PostShow = () => (
+    <Show component={ShowWrapper}>
         ...
     </Show>
 );
@@ -304,7 +304,7 @@ You can override this behavior and pass custom side effects by providing a custo
 import * as React from 'react';
 import { useNotify, useRefresh, useRedirect, Show, SimpleShowLayout } from 'react-admin';
 
-const PostShow = props => {
+const PostShow = () => {
     const notify = useNotify();
     const refresh = useRefresh();
     const redirect = useRedirect();
@@ -316,7 +316,7 @@ const PostShow = props => {
     };
 
     return (
-        <Show queryOptions={{ onError }} {...props}>
+        <Show queryOptions={{ onError }}>
             <SimpleShowLayout>
                 ...
             </SimpleShowLayout>

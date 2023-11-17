@@ -465,7 +465,7 @@ React-admin relies on [react-hook-form](https://react-hook-form.com/) for form h
 
 ```tsx
 import * as React from "react";
-import { Edit, SimpleForm, SelectInput, SelectInputProps } from "react-admin";
+import { Edit, SimpleForm, SelectInput } from "react-admin";
 import { useWatch } from "react-hook-form";
 
 const countries = ["USA", "UK", "France"];
@@ -476,13 +476,13 @@ const cities: Record<string, string[]> = {
 };
 const toChoices = (items: string[]) => items.map((item) => ({ id: item, name: item }));
 
-const CityInput = (props: SelectInputProps) => {
+const CityInput = () => {
     const country = useWatch<{ country: string }>({ name: "country" });
 
     return (
         <SelectInput
             choices={country ? toChoices(cities[country]) : []}
-            {...props}
+            source="cities"
         />
     );
 };
@@ -491,7 +491,7 @@ const OrderEdit = () => (
     <Edit>
         <SimpleForm>
             <SelectInput source="country" choices={toChoices(countries)} />
-            <CityInput source="cities" />
+            <CityInput />
         </SimpleForm>
     </Edit>
 );

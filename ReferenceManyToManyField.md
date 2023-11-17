@@ -76,8 +76,8 @@ export const BandShow = () => (
 This means you can use a `<Datagrid>` instead of a `<SingleFieldList>`, which is useful if you want to display more details about related records. For instance, to display the venue `name` and `location`:
 
 ```diff
-export const BandShow = (props) => (
-    <Show {...props}>
+export const BandShow = () => (
+    <Show>
         <SimpleShowLayout>
            <TextField source="name" />
             <ReferenceManyToManyField

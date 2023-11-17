@@ -19,7 +19,7 @@ React-admin provides the **best-in-class documentation**, demo apps, and support
 
 That probably explains why more than 3,000 new apps are published every month using react-admin.
 
-So react-admin is not just the assembly of [react-query](https://react-query.tanstack.com/), [react-hook-form](https://marmelab.com/react-admin/assets/techs/react-hook-form.jpeg), [react-router](https://reacttraining.com/react-router/), [Material UI](https://mui.com/material-ui/getting-started/) and [Emotion](https://github.com/emotion-js/emotion). It's a **framework** made to speed up and facilitate the development of single-page apps in React.
+So react-admin is not just the assembly of [react-query](https://react-query.tanstack.com/), [react-hook-form](https://react-hook-form.com/), [react-router](https://reacttraining.com/react-router/), [Material UI](https://mui.com/material-ui/getting-started/) and [Emotion](https://github.com/emotion-js/emotion). It's a **framework** made to speed up and facilitate the development of single-page apps in React.
 
 ## Basic CRUD
 
@@ -564,12 +564,12 @@ const toChoices = items => items.map(item => ({ id: item, name: item }));
 // toChoices(coutries) should be [{ id: 'USA', name: 'USA' }, ...]
 
 
-const CityInput = props => {
+const CityInput = () => {
     const country = useWatch({ name: 'country' });
     return (
         <SelectInput
             choices={country ? toChoices(cities[country]) : []}
-            {...props}
+            source="cities"
         />
     );
 };
@@ -578,7 +578,7 @@ const OrderEdit = () => (
     <Edit>
         <SimpleForm>
             <SelectInput source="country" choices={toChoices(countries)} />
-            <CityInput source="cities" />
+            <CityInput />
         </SimpleForm>
     </Edit>
 );

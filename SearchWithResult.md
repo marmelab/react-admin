@@ -8,12 +8,11 @@ title: "The SearchWithResult Component"
 This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> component, part of [`ra-search`](https://marmelab.com/ra-enterprise/modules/ra-search), renders a search input and the search results directly below the input. It's ideal for dashboards or menu panels.
 
 <video controls autoplay playsinline muted loop>
-  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-search-with-result-overview.webm" type="video/webm"/>
   <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-search-with-result-overview.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
-It relies on the `dataProvider` to provide a `search()` method, so you can use it with any search engine (Lucene, ElasticSearch, Solr, Algolia, Google Cloud Search, and many others). And if you don't have a search engine, no problem! `<Search>` can also do the search across several resources [via parallel `dataProvider.getList()` queries](https://marmelab.com/ra-enterprise/modules/ra-search#addsearchmethod-helper).
+It relies on the `dataProvider` to provide a `search()` method, so you can use it with any search engine (Lucene, ElasticSearch, Solr, Algolia, Google Cloud Search, and many others). And if you don't have a search engine, no problem! `<SearchWithResult>` can also do the search across several resources [via parallel `dataProvider.getList()` queries](https://marmelab.com/ra-enterprise/modules/ra-search#addsearchmethod-helper).
 
 By default, `<SearchWithResult>` will group the search results by target, and show their `content.label` and `content.description`.
 
@@ -21,7 +20,7 @@ By default, `<SearchWithResult>` will group the search results by target, and sh
 
 ### Install `ra-search`
 
-The `<Search>` component is part of the `@react-admin/ra-search` package. To install it, run:
+The `<SearchWithResult>` component is part of the `@react-admin/ra-search` package. To install it, run:
 
 ```sh
 yarn add '@react-admin/ra-search'
@@ -349,7 +348,6 @@ export const App = () => (
 The `<SearchWithResult>` component works perfectly when used inside the [`<SolarLayout>`](https://marmelab.com/ra-enterprise/modules/ra-navigation#solarlayout) menu.
 
 <video controls autoplay playsinline muted loop>
-  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-search-with-result-solar-layout-overview.webm" type="video/webm"/>
   <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-search-with-result-solar-layout-overview.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>

@@ -565,8 +565,8 @@ In the following example, a create view for a Post displays a form with two subm
 So the save button with 'save and notify' will *transform* the record before react-admin calls the `dataProvider.create()` method, adding a `notify` field:
 
 ```jsx
-const PostCreateToolbar = props => (
-    <Toolbar {...props}>
+const PostCreateToolbar = () => (
+    <Toolbar>
         <SaveButton />
         <SaveButton
             label="post.action.save_and_notify"
@@ -612,8 +612,8 @@ const dataProvider = {
 **Tip**: `<Edit>`'s transform prop function also get the `previousData` in its second argument:
 
 ```jsx
-const PostEditToolbar = props => (
-    <Toolbar {...props}>
+const PostEditToolbar = () => (
+    <Toolbar>
         <SaveButton />
         <SaveButton
             label="post.action.save_and_notify"

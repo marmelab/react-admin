@@ -740,7 +740,7 @@ The `pagination` prop allows to replace the default pagination controls by your 
 // in src/MyPagination.js
 import { Pagination, List } from 'react-admin';
 
-const PostPagination = props => <Pagination rowsPerPageOptions={[10, 25, 50, 100]} {...props} />;
+const PostPagination = () => <Pagination rowsPerPageOptions={[10, 25, 50, 100]} />;
 
 export const PostList = () => (
     <List pagination={<PostPagination />}>

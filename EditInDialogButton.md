@@ -381,8 +381,8 @@ const sexChoices = [
   { id: "female", name: "Female" },
 ];
 
-const CustomerForm = (props) => (
-  <SimpleForm defaultValues={{ firstname: "John", name: "Doe" }} {...props}>
+const CustomerForm = () => (
+  <SimpleForm defaultValues={{ firstname: "John", name: "Doe" }}>
     <TextInput source="first_name" validate={required()} fullWidth />
     <TextInput source="last_name" validate={required()} fullWidth />
     <DateInput source="dob" label="born" validate={required()} fullWidth />
@@ -390,8 +390,8 @@ const CustomerForm = (props) => (
   </SimpleForm>
 );
 
-const CustomerLayout = (props) => (
-  <SimpleShowLayout {...props}>
+const CustomerLayout = () => (
+  <SimpleShowLayout>
     <TextField source="first_name" fullWidth />
     <TextField source="last_name" fullWidth />
     <DateField source="dob" label="born" fullWidth />

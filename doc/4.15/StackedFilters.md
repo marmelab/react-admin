@@ -314,8 +314,7 @@ const MyFilterConfig: FiltersConfig = {
 This component is responsible for rendering the filtering form, and is used internally by `<StackedFilters>`. You can use it if you want to use the filter form without the `<FilterButton>` component, e.g. to always show the filter form.
 
 <video controls autoplay playsinline muted loop width="100%">
-  <source src="./img/stacked-filter-form-preview.webm" type="video/webm"/>
-  <source src="./img/stacked-filter-form-preview.mp4" type="video/mp4"/>
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/stacked-filter-form-preview.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 

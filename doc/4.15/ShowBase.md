@@ -160,7 +160,7 @@ You can override this behavior and pass custom side effects by providing a custo
 import * as React from 'react';
 import { useNotify, useRefresh, useRedirect, ShowBase, SimpleShowLayout } from 'react-admin';
 
-const PostShow = props => {
+const PostShow = () => {
     const notify = useNotify();
     const refresh = useRefresh();
     const redirect = useRedirect();
@@ -172,7 +172,7 @@ const PostShow = props => {
     };
 
     return (
-        <ShowBase queryOptions={{ onError }} {...props}>
+        <ShowBase queryOptions={{ onError }}>
             <SimpleShowLayout>
                 ...
             </SimpleShowLayout>

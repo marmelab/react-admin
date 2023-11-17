@@ -11,8 +11,8 @@ This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" s
 import { Show, SimpleShowLayout, TextField } from 'react-admin';
 import { MarkdownField } from '@react-admin/ra-markdown';
 
-const PostShow = props => (
-    <Show {...props}>
+const PostShow = () => (
+    <Show>
         <SimpleShowLayout>
             <TextField source="title" />
             <MarkdownField source="description" />

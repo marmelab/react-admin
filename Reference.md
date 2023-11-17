@@ -149,6 +149,7 @@ title: "Index"
 * [`<SavedQueriesList>`](./SavedQueriesList.md)
 * [`<Search>`](./Search.md)<img class="icon" src="./img/premium.svg" />
 * [`<SearchInput>`](./SearchInput.md)
+* [`<SearchWithResult>`](./SearchWithResult.md)<img class="icon" src="./img/premium.svg" />
 * [`<SelectArrayInput>`](./SelectArrayInput.md)
 * [`<SelectColumnsButton>`](./SelectColumnsButton.md)
 * [`<SelectField>`](./SelectField.md)

@@ -5,11 +5,13 @@ title: "The RecordRepresentation Component"
 
 # `<RecordRepresentation>`
 
-Render the record representation, leveraging the [`recordRepresentation`](./Resource.md#recordrepresentation) prop of the parent `<Resource>` component.
+Render the current record as text, leveraging the [`<Resource recordRepresentation>`](./Resource.md#recordrepresentation) prop.
 
-You can also use its hook version: [`<useGetRecordRepresentation>`](./useGetRecordRepresentation.md).
+You can also use its hook version: [`useGetRecordRepresentation`](./useGetRecordRepresentation.md).
 
 ## Usage
+
+`<RecordRepresentation>` doesn't require any argument. It reads the current record from the parent [`RecordContext`](./useRecordContext.md) and the current resource from the parent `ResourceContext`.
 
 ```tsx
 // in src/posts/PostBreadcrumbs.tsx
@@ -64,6 +66,14 @@ Here are all the props you can set on the `<RecordRepresentation>` component:
 
 The record to display. Defaults to the record from the parent `RecordContext`.
 
+```tsx
+<RecordRepresentation record={record} />
+```
+
 ## `resource`
 
 The record's resource. Defaults to the resource from the parent `ResourceContext`.
+
+```tsx
+<RecordRepresentation resource="posts" />
+```
