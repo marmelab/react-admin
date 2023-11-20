@@ -38,8 +38,8 @@
     },
     "homepage": "https://github.com/marmelab/react-admin#readme",
     "scripts": {
-        "build": "yarn tsup",
-        "watch": "tsc --outDir dist/esm --module es2015 --watch"
+        "build": "yarn tsup --onSuccess tsc",
+        "watch": "yarn tsup --watch"
     },
     "dependencies": {
         "lodash": "~4.17.5",

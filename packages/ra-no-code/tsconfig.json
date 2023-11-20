@@ -1,13 +1,10 @@
 {
     "extends": "../../tsconfig.json",
     "compilerOptions": {
-        "outDir": "lib",
+        "outDir": "dist",
         "rootDir": "src",
         "allowJs": false,
-        "types": [
-            "jest",
-            "@types/node"
-        ]
+        "types": ["jest", "@types/node"]
     },
     "exclude": ["**/*.spec.ts", "**/*.spec.tsx", "**/*.spec.js"],
     "include": ["src"]

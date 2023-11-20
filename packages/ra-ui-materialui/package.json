@@ -28,8 +28,8 @@
     "bugs": "https://github.com/marmelab/react-admin/issues",
     "license": "MIT",
     "scripts": {
-        "build": "yarn tsup",
-        "watch": "tsc --outDir dist/esm --module es2015 --watch"
+        "build": "yarn tsup --onSuccess tsc",
+        "watch": "yarn tsup --watch"
     },
     "devDependencies": {
         "@mui/icons-material": "^5.0.1",

@@ -9,7 +9,7 @@
     "types": "dist/index.d.ts",
     "scripts": {
         "build": "yarn tsup",
-        "watch": "tsc --outDir dist/esm --module es2015 --watch"
+        "watch": "yarn tsup --watch"
     },
     "dependencies": {
         "date-fns": "^2.19.0",

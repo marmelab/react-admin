@@ -22,8 +22,8 @@
         }
     },
     "scripts": {
-        "build": "yarn tsup",
-        "watch": "tsc --outDir dist/esm --module es2015 --watch"
+        "build": "yarn tsup --onSuccess tsc",
+        "watch": "yarn tsup --watch"
     },
     "dependencies": {
         "ra-core": "^4.15.5"

@@ -41,8 +41,8 @@
     },
     "homepage": "https://github.com/marmelab/react-admin#readme",
     "scripts": {
-        "build": "yarn tsup",
-        "watch": "tsc --outDir dist/esm --module es2015 --watch"
+        "build": "yarn tsup --onSuccess tsc",
+        "watch": "yarn tsup --watch"
     },
     "dependencies": {
         "localforage": "^1.7.1",

@@ -1,9 +1,14 @@
 {
     "extends": "../../tsconfig.json",
     "compilerOptions": {
-        "outDir": "lib",
-        "rootDir": "src",
+        "outDir": "dist",
+        "rootDir": "src"
     },
-    "exclude": ["**/*.spec.ts", "**/*.spec.tsx", "**/*.spec.js", "**/*.stories.tsx"],
+    "exclude": [
+        "**/*.spec.ts",
+        "**/*.spec.tsx",
+        "**/*.spec.js",
+        "**/*.stories.tsx"
+    ],
     "include": ["src"]
 }
