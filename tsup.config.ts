@@ -16,4 +16,6 @@ export default defineConfig({
     format: ['esm', 'cjs'],
     target: 'es2015',
     silent: true,
+    keepNames: true,
+    metafile: true,
 });
