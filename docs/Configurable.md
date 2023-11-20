@@ -214,3 +214,53 @@ const MyAppBar = () => (
     </AppBar>
 );
 ```
+
+## `<Inspector>`
+
+The `<Inspector>` component exists within the layouts provided by react-admin. If you are using a custom layout then you should add the `<Inspector>` component within your layout 
+
+{% raw %}
+```jsx
+// in src/MyLayout.js
+import * as React from 'react';
+import { Box } from '@mui/material';
+import { AppBar, Menu, Sidebar, InspectorButton } from 'react-admin';
+
+const MyLayout = ({ children, dashboard }) => (
+    <Box 
+        display="flex"
+        flexDirection="column"
+        zIndex={1}
+        minHeight="100vh"
+        backgroundColor="theme.palette.background.default"
+        position="relative"
+    >
+        <Box
+            display="flex"
+            flexDirection="column"
+            overflowX="auto"
+        >
+            <AppBar />
+            <Box display="flex" flexGrow={1}>
+                <Sidebar>
+                    <Menu hasDashboard={!!dashboard} />
+                </Sidebar>
+                <Box
+                    display="flex"
+                    flexDirection="column"
+                    flexGrow={2}
+                    p={3}
+                    marginTop="4em"
+                    paddingLeft={5}
+                >
+                    {children}
+                </Box>
+            </Box>
+        </Box>
+        <InspectorButton />
+    </Box>
+);
+
+export default MyLayout;
+```
+{% endraw %}
