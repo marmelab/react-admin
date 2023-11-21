@@ -1,5 +1,5 @@
-import { useMemo } from 'react';
-import { useQuery, UseQueryOptions } from 'react-query';
+import { useEffect } from 'react';
+import { useQuery, UseQueryOptions } from '@tanstack/react-query';
 import useAuthProvider from './useAuthProvider';
 import useLogoutIfAccessDenied from './useLogoutIfAccessDenied';
 
@@ -35,40 +35,51 @@ const emptyParams = {};
  *         }
  *     };
  */
-const usePermissions = <Permissions = any, Error = any>(
+const usePermissions = <Permissions = any>(
     params = emptyParams,
-    queryParams: UseQueryOptions<Permissions, Error> = {
+    queryParams: UsePermissionsOptions<Permissions> = {
         staleTime: 5 * 60 * 1000,
     }
 ) => {
     const authProvider = useAuthProvider();
     const logoutIfAccessDenied = useLogoutIfAccessDenied();
+    const { onSuccess, onError, ...queryOptions } = queryParams ?? {};
 
-    const result = useQuery(
-        ['auth', 'getPermissions', params],
-        authProvider
-            ? () => authProvider.getPermissions(params)
-            : async () => [],
-        {
-            onError: error => {
-                if (process.env.NODE_ENV === 'development') {
-                    console.error(error);
-                }
-                logoutIfAccessDenied(error);
-            },
-            ...queryParams,
+    const result = useQuery({
+        queryKey: ['auth', 'getPermissions', params],
+        queryFn: () => {
+            return authProvider
+                ? authProvider.getPermissions(params)
+                : Promise.resolve([]);
+        },
+        ...queryOptions,
+    });
+
+    useEffect(() => {
+        if (result.data && onSuccess) {
+            onSuccess(result.data);
         }
-    );
+    }, [onSuccess, result.data]);
 
-    return useMemo(
-        () => ({
-            permissions: result.data,
-            isLoading: result.isLoading,
-            error: result.error,
-            refetch: result.refetch,
-        }),
-        [result]
-    );
+    useEffect(() => {
+        if (result.error) {
+            if (onError) {
+                return onError(result.error);
+            }
+            if (process.env.NODE_ENV === 'development') {
+                console.error(result.error);
+            }
+            logoutIfAccessDenied(result.error);
+        }
+    }, [logoutIfAccessDenied, onError, result.error]);
+
+    return result;
 };
 
 export default usePermissions;
+
+export interface UsePermissionsOptions<Permissions>
+    extends Omit<UseQueryOptions<Permissions>, 'queryKey' | 'queryFn'> {
+    onSuccess?: (data: Permissions) => void;
+    onError?: (err: Error) => void;
+}

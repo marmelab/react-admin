@@ -14,7 +14,7 @@ import {
     RaRecord,
     UpdateManyParams,
 } from 'ra-core';
-import { UseMutationOptions } from 'react-query';
+import { UseMutationOptions } from '@tanstack/react-query';
 
 import { Button, ButtonProps } from './Button';
 import { BulkActionProps } from '../types';

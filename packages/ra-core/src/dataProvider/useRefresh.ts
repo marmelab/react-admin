@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import { useQueryClient } from 'react-query';
+import { useQueryClient } from '@tanstack/react-query';
 
 /**
  * Hook for triggering a page refresh. Returns a callback function.

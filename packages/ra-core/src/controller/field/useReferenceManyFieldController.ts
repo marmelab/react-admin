@@ -163,7 +163,7 @@ export const useReferenceManyFieldController = <
         },
         {
             enabled: get(record, source) != null,
-            keepPreviousData: true,
+            placeholderData: previousData => previousData,
             onError: error =>
                 notify(
                     typeof error === 'string'

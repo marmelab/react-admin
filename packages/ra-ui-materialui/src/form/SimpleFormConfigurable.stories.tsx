@@ -2,7 +2,7 @@ import * as React from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { PreferencesEditorContextProvider, I18nContextProvider } from 'ra-core';
 import { ThemeProvider, createTheme, Box, Paper } from '@mui/material';
-import { QueryClientProvider, QueryClient } from 'react-query';
+import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import en from 'ra-language-english';
 

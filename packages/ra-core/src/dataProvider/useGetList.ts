@@ -1,10 +1,10 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import {
     useQuery,
     UseQueryOptions,
     UseQueryResult,
     useQueryClient,
-} from 'react-query';
+} from '@tanstack/react-query';
 
 import { RaRecord, GetListParams, GetListResult } from '../types';
 import { useDataProvider } from './useDataProvider';
@@ -56,7 +56,7 @@ const MAX_DATA_LENGTH_TO_CACHE = 100;
 export const useGetList = <RecordType extends RaRecord = any>(
     resource: string,
     params: Partial<GetListParams> = {},
-    options?: UseQueryOptions<GetListResult<RecordType>, Error>
+    options: UseGetListOptions<RecordType> = {}
 ): UseGetListHookValue<RecordType> => {
     const {
         pagination = { page: 1, perPage: 25 },
@@ -66,13 +66,14 @@ export const useGetList = <RecordType extends RaRecord = any>(
     } = params;
     const dataProvider = useDataProvider();
     const queryClient = useQueryClient();
+    const { onError, onSuccess, ...queryOptions } = options;
     const result = useQuery<
         GetListResult<RecordType>,
         Error,
         GetListResult<RecordType>
-    >(
-        [resource, 'getList', { pagination, sort, filter, meta }],
-        () =>
+    >({
+        queryKey: [resource, 'getList', { pagination, sort, filter, meta }],
+        queryFn: () =>
             dataProvider
                 .getList<RecordType>(resource, {
                     pagination,
@@ -85,32 +86,34 @@ export const useGetList = <RecordType extends RaRecord = any>(
                     total,
                     pageInfo,
                 })),
-        {
-            ...options,
-            onSuccess: value => {
-                // optimistically populate the getOne cache
-                if (
-                    value?.data &&
-                    value.data.length <= MAX_DATA_LENGTH_TO_CACHE
-                ) {
-                    value.data.forEach(record => {
-                        queryClient.setQueryData(
-                            [
-                                resource,
-                                'getOne',
-                                { id: String(record.id), meta },
-                            ],
-                            oldRecord => oldRecord ?? record
-                        );
-                    });
-                }
-                // execute call-time onSuccess if provided
-                if (options?.onSuccess) {
-                    options.onSuccess(value);
-                }
-            },
+        ...queryOptions,
+    });
+
+    useEffect(() => {
+        // optimistically populate the getOne cache
+        if (
+            result.data &&
+            result.data?.data &&
+            result.data.data.length <= MAX_DATA_LENGTH_TO_CACHE
+        ) {
+            result.data.data.forEach(record => {
+                queryClient.setQueryData(
+                    [resource, 'getOne', { id: String(record.id), meta }],
+                    oldRecord => oldRecord ?? record
+                );
+            });
         }
-    );
+        // execute call-time onSuccess if provided
+        if (onSuccess) {
+            onSuccess(result.data);
+        }
+    }, [meta, onSuccess, queryClient, resource, result.data]);
+
+    useEffect(() => {
+        if (result.error && onError) {
+            onError(result.error);
+        }
+    }, [onError, result.error]);
 
     return useMemo(
         () =>
@@ -130,6 +133,14 @@ export const useGetList = <RecordType extends RaRecord = any>(
             hasPreviousPage?: boolean;
         };
     };
+};
+
+export type UseGetListOptions<RecordType extends RaRecord = any> = Omit<
+    UseQueryOptions<GetListResult<RecordType>, Error>,
+    'queryKey' | 'queryFn'
+> & {
+    onSuccess?: (value: GetListResult<RecordType>) => void;
+    onError?: (error: Error) => void;
 };
 
 export type UseGetListHookValue<

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useState } from 'react';
-import { QueryClient, useIsMutating } from 'react-query';
+import { QueryClient, useIsMutating } from '@tanstack/react-query';
 
 import { CoreAdminContext } from '../core';
 import undoableEventEmitter from './undoableEventEmitter';

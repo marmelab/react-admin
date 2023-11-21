@@ -38,7 +38,7 @@
         "ra-core": "^4.15.5",
         "ra-i18n-polyglot": "^4.15.5",
         "ra-language-english": "^4.15.5",
-        "react": "^17.0.0",
+        "react": "^18.0.0",
         "react-dom": "^17.0.0",
         "react-hook-form": "^7.43.9",
         "react-is": "^17.0.0",
@@ -60,6 +60,7 @@
         "react-router-dom": "^6.1.0"
     },
     "dependencies": {
+        "@tanstack/react-query": "^5.8.4",
         "autosuggest-highlight": "^3.1.1",
         "clsx": "^1.1.1",
         "css-mediaquery": "^0.1.2",
@@ -72,7 +73,6 @@
         "query-string": "^7.1.1",
         "react-dropzone": "^12.0.4",
         "react-error-boundary": "^3.1.4",
-        "react-query": "^3.32.1",
         "react-transition-group": "^4.4.1"
     },
     "gitHead": "b227592132da6ae5f01438fa8269e04596cdfdd8"

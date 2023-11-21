@@ -10,7 +10,7 @@ import englishMessages from 'ra-language-english';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import { MemoryRouter } from 'react-router';
 import { seed, address, internet, name } from 'faker/locale/en_GB';
-import { QueryClient } from 'react-query';
+import { QueryClient } from '@tanstack/react-query';
 
 import {
     AdminUI,

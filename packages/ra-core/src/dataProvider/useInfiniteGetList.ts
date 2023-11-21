@@ -1,12 +1,15 @@
 import {
+    InfiniteData,
+    QueryKey,
     useInfiniteQuery,
     UseInfiniteQueryOptions,
     UseInfiniteQueryResult,
     useQueryClient,
-} from 'react-query';
+} from '@tanstack/react-query';
 
 import { RaRecord, GetListParams, GetInfiniteListResult } from '../types';
 import { useDataProvider } from './useDataProvider';
+import { useEffect } from 'react';
 
 /**
  * Call the dataProvider.getList() method and return the resolved result
@@ -63,7 +66,7 @@ import { useDataProvider } from './useDataProvider';
 export const useInfiniteGetList = <RecordType extends RaRecord = any>(
     resource: string,
     params: Partial<GetListParams> = {},
-    options?: UseInfiniteQueryOptions<GetInfiniteListResult<RecordType>, Error>
+    options?: UseInfiniteGetListOptions<RecordType>
 ): UseInfiniteGetListHookValue<RecordType> => {
     const {
         pagination = { page: 1, perPage: 25 },
@@ -77,10 +80,16 @@ export const useInfiniteGetList = <RecordType extends RaRecord = any>(
     const result = useInfiniteQuery<
         GetInfiniteListResult<RecordType>,
         Error,
-        GetInfiniteListResult<RecordType>
-    >(
-        [resource, 'getInfiniteList', { pagination, sort, filter, meta }],
-        ({ pageParam = pagination.page }) =>
+        InfiniteData<GetInfiniteListResult<RecordType>>,
+        QueryKey,
+        number
+    >({
+        queryKey: [
+            resource,
+            'getInfiniteList',
+            { pagination, sort, filter, meta },
+        ],
+        queryFn: ({ pageParam = pagination.page }) =>
             dataProvider
                 .getList<RecordType>(resource, {
                     pagination: {
@@ -97,50 +106,48 @@ export const useInfiniteGetList = <RecordType extends RaRecord = any>(
                     pageParam,
                     pageInfo,
                 })),
-        {
-            onSuccess: data => {
-                // optimistically populate the getOne cache
-                data.pages.forEach(page => {
-                    page.data.forEach(record => {
-                        queryClient.setQueryData(
-                            [
-                                resource,
-                                'getOne',
-                                { id: String(record.id), meta },
-                            ],
-                            oldRecord => oldRecord ?? record
-                        );
-                    });
-                });
-            },
-            ...options,
-            getNextPageParam: lastLoadedPage => {
-                if (lastLoadedPage.pageInfo) {
-                    return lastLoadedPage.pageInfo.hasNextPage
-                        ? lastLoadedPage.pageParam + 1
-                        : undefined;
-                }
-                const totalPages = Math.ceil(
-                    (lastLoadedPage.total || 0) / pagination.perPage
-                );
-
-                return lastLoadedPage.pageParam < totalPages
-                    ? Number(lastLoadedPage.pageParam) + 1
+        initialPageParam: pagination.page,
+        ...options,
+        getNextPageParam: lastLoadedPage => {
+            if (lastLoadedPage.pageInfo) {
+                return lastLoadedPage.pageInfo.hasNextPage
+                    ? lastLoadedPage.pageParam + 1
                     : undefined;
-            },
-            getPreviousPageParam: lastLoadedPage => {
-                if (lastLoadedPage.pageInfo) {
-                    return lastLoadedPage.pageInfo.hasPreviousPage
-                        ? lastLoadedPage.pageParam - 1
-                        : undefined;
-                }
+            }
+            const totalPages = Math.ceil(
+                (lastLoadedPage.total || 0) / pagination.perPage
+            );
 
-                return lastLoadedPage.pageParam === 1
-                    ? undefined
-                    : lastLoadedPage.pageParam - 1;
-            },
+            return lastLoadedPage.pageParam < totalPages
+                ? Number(lastLoadedPage.pageParam) + 1
+                : undefined;
+        },
+        getPreviousPageParam: lastLoadedPage => {
+            if (lastLoadedPage.pageInfo) {
+                return lastLoadedPage.pageInfo.hasPreviousPage
+                    ? lastLoadedPage.pageParam - 1
+                    : undefined;
+            }
+
+            return lastLoadedPage.pageParam === 1
+                ? undefined
+                : lastLoadedPage.pageParam - 1;
+        },
+    });
+
+    useEffect(() => {
+        if (result.data) {
+            // optimistically populate the getOne cache
+            result.data.pages.forEach(page => {
+                page.data.forEach(record => {
+                    queryClient.setQueryData(
+                        [resource, 'getOne', { id: String(record.id), meta }],
+                        oldRecord => oldRecord ?? record
+                    );
+                });
+            });
         }
-    );
+    }, [meta, queryClient, resource, result.data]);
 
     return (result.data
         ? {
@@ -149,16 +156,35 @@ export const useInfiniteGetList = <RecordType extends RaRecord = any>(
               total: result.data?.pages[0]?.total ?? undefined,
           }
         : result) as UseInfiniteQueryResult<
-        GetInfiniteListResult<RecordType>,
+        InfiniteData<GetInfiniteListResult<RecordType>>,
         Error
     > & {
         total?: number;
     };
 };
 
+export type UseInfiniteGetListOptions<RecordType extends RaRecord = any> = Omit<
+    UseInfiniteQueryOptions<
+        GetInfiniteListResult<RecordType>,
+        Error,
+        InfiniteData<GetInfiniteListResult<RecordType>>,
+        GetInfiniteListResult<RecordType>,
+        QueryKey,
+        number
+    >,
+    | 'queryKey'
+    | 'queryFn'
+    | 'getNextPageParam'
+    | 'getPreviousPageParam'
+    | 'initialPageParam'
+> & {
+    onSuccess?: (data: GetInfiniteListResult<RecordType>) => void;
+    onError?: (error: Error) => void;
+};
+
 export type UseInfiniteGetListHookValue<
     RecordType extends RaRecord = any
-> = UseInfiniteQueryResult<GetInfiniteListResult<RecordType>, Error> & {
+> = UseInfiniteQueryResult<InfiniteData<GetInfiniteListResult<RecordType>>> & {
     total?: number;
     pageParam?: number;
 };

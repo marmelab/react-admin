@@ -12,7 +12,7 @@ import {
     IconButton,
 } from '@mui/material';
 import SettingsIcon from '@mui/icons-material/Settings';
-import { QueryClientProvider, QueryClient } from 'react-query';
+import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 import { MemoryRouter } from 'react-router';
 import { I18nContextProvider, AuthContext } from 'ra-core';
 

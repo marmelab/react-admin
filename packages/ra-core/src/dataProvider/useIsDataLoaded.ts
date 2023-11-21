@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useQueryClient, QueryObserver } from 'react-query';
+import { useQueryClient, QueryObserver } from '@tanstack/react-query';
 
 /**
  * Check if react-query has already fetched data for a query key.

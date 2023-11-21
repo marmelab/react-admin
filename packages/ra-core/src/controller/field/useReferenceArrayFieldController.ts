@@ -4,7 +4,7 @@ import { RaRecord, SortPayload } from '../../types';
 import { useGetManyAggregate } from '../../dataProvider';
 import { ListControllerResult, useList } from '../list';
 import { useNotify } from '../../notification';
-import { UseQueryOptions } from 'react-query';
+import { UseQueryOptions } from '@tanstack/react-query';
 
 export interface UseReferenceArrayFieldControllerParams<
     RecordType extends RaRecord = RaRecord,
@@ -18,7 +18,10 @@ export interface UseReferenceArrayFieldControllerParams<
     resource: string;
     sort?: SortPayload;
     source: string;
-    queryOptions?: UseQueryOptions<ReferenceRecordType[], Error>;
+    queryOptions?: Omit<
+        UseQueryOptions<ReferenceRecordType[]>,
+        'queryFn' | 'queryKey'
+    >;
 }
 
 const emptyArray = [];

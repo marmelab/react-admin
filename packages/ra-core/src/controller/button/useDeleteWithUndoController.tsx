@@ -1,5 +1,5 @@
 import { useCallback, ReactEventHandler } from 'react';
-import { UseMutationOptions } from 'react-query';
+import { UseMutationOptions } from '@tanstack/react-query';
 
 import { useDelete } from '../../dataProvider';
 import { useUnselect } from '../../controller';
@@ -57,7 +57,7 @@ const useDeleteWithUndoController = <RecordType extends RaRecord = any>(
     const notify = useNotify();
     const unselect = useUnselect(resource);
     const redirect = useRedirect();
-    const [deleteOne, { isLoading }] = useDelete<RecordType>();
+    const [deleteOne, { isPending }] = useDelete<RecordType>();
 
     const handleDelete = useCallback(
         event => {
@@ -119,7 +119,7 @@ const useDeleteWithUndoController = <RecordType extends RaRecord = any>(
         ]
     );
 
-    return { isLoading, handleDelete };
+    return { isPending, handleDelete };
 };
 
 export interface UseDeleteWithUndoControllerParams<
@@ -139,7 +139,7 @@ export interface UseDeleteWithUndoControllerParams<
 }
 
 export interface UseDeleteWithUndoControllerReturn {
-    isLoading: boolean;
+    isPending: boolean;
     handleDelete: ReactEventHandler<any>;
 }
 

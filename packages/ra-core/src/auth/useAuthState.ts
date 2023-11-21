@@ -1,5 +1,5 @@
-import { useMemo } from 'react';
-import { useQuery, UseQueryOptions } from 'react-query';
+import { useEffect, useMemo } from 'react';
+import { useQuery, UseQueryOptions } from '@tanstack/react-query';
 import useAuthProvider, { defaultAuthParams } from './useAuthProvider';
 import useLogout from './useLogout';
 import { removeDoubleSlashes, useBasename } from '../routing';
@@ -52,43 +52,61 @@ const emptyParams = {};
 const useAuthState = (
     params: any = emptyParams,
     logoutOnFailure: boolean = false,
-    queryOptions?: UseQueryOptions<boolean, any>
+    queryOptions: UseAuthStateOptions = emptyParams
 ): State => {
     const authProvider = useAuthProvider();
     const logout = useLogout();
     const basename = useBasename();
     const notify = useNotify();
+    const { onSuccess, onError, ...options } = queryOptions;
 
-    const result = useQuery<boolean, any>(
-        ['auth', 'checkAuth', params],
-        () => {
+    const result = useQuery<boolean, any>({
+        queryKey: ['auth', 'checkAuth', params],
+        queryFn: () => {
             // The authProvider is optional in react-admin
             return authProvider?.checkAuth(params).then(() => true);
         },
-        {
-            onError: error => {
-                const loginUrl = removeDoubleSlashes(
-                    `${basename}/${defaultAuthParams.loginUrl}`
-                );
-                if (logoutOnFailure) {
-                    logout(
-                        {},
-                        error && error.redirectTo != null
-                            ? error.redirectTo
-                            : loginUrl
-                    );
-                    const shouldSkipNotify = error && error.message === false;
-                    !shouldSkipNotify &&
-                        notify(
-                            getErrorMessage(error, 'ra.auth.auth_check_error'),
-                            { type: 'error' }
-                        );
-                }
-            },
-            retry: false,
-            ...queryOptions,
+        retry: false,
+        ...options,
+    });
+
+    useEffect(() => {
+        if (result.data && onSuccess) {
+            onSuccess(result.data);
         }
-    );
+    }, [onSuccess, result.data]);
+
+    useEffect(() => {
+        if (result.error) {
+            if (onError) {
+                return onError(result.error);
+            }
+
+            const loginUrl = removeDoubleSlashes(
+                `${basename}/${defaultAuthParams.loginUrl}`
+            );
+            if (logoutOnFailure) {
+                logout(
+                    {},
+                    result.error && result.error.redirectTo != null
+                        ? result.error.redirectTo
+                        : loginUrl
+                );
+                const shouldSkipNotify =
+                    result.error && result.error.message === false;
+                !shouldSkipNotify &&
+                    notify(
+                        getErrorMessage(
+                            result.error,
+                            'ra.auth.auth_check_error'
+                        ),
+                        {
+                            type: 'error',
+                        }
+                    );
+            }
+        }
+    }, [basename, logout, logoutOnFailure, notify, onError, result.error]);
 
     return useMemo(() => {
         return {
@@ -100,6 +118,14 @@ const useAuthState = (
             error: result.error,
         };
     }, [authProvider, result]);
+};
+
+type UseAuthStateOptions = Omit<
+    UseQueryOptions<boolean, any>,
+    'queryKey' | 'queryFn'
+> & {
+    onSuccess?: (data: boolean) => void;
+    onError?: (err: Error) => void;
 };
 
 export default useAuthState;

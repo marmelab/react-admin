@@ -5,7 +5,7 @@ import { FilterPayload, RaRecord, SortPayload } from '../../types';
 import { useGetList, useGetManyAggregate } from '../../dataProvider';
 import { useReferenceParams } from './useReferenceParams';
 import { ChoicesContextValue } from '../../form';
-import { UseQueryOptions } from 'react-query';
+import { UseQueryOptions } from '@tanstack/react-query';
 
 /**
  * Prepare data for the ReferenceArrayInput components
@@ -111,7 +111,7 @@ export const useReferenceArrayInputController = <
         {
             retry: false,
             enabled: isGetMatchingEnabled,
-            keepPreviousData: true,
+            placeholderData: previousData => previousData,
             ...otherQueryOptions,
         }
     );
@@ -193,14 +193,17 @@ export interface UseReferenceArrayInputParams<
 > {
     debounce?: number;
     filter?: FilterPayload;
-    queryOptions?: UseQueryOptions<{
-        data: RecordType[];
-        total?: number;
-        pageInfo?: {
-            hasNextPage?: boolean;
-            hasPreviousPage?: boolean;
-        };
-    }> & { meta?: any };
+    queryOptions?: Omit<
+        UseQueryOptions<{
+            data: RecordType[];
+            total?: number;
+            pageInfo?: {
+                hasNextPage?: boolean;
+                hasPreviousPage?: boolean;
+            };
+        }>,
+        'queryFn' | 'queryKey'
+    > & { meta?: any };
     page?: number;
     perPage?: number;
     record?: RecordType;

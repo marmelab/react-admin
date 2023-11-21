@@ -9,7 +9,7 @@ import {
     UseCreateMutateParams,
     UseUpdateMutateParams,
 } from 'ra-core';
-import { UseQueryOptions, UseMutationOptions } from 'react-query';
+import { UseQueryOptions, UseMutationOptions } from '@tanstack/react-query';
 
 export interface EditProps<
     RecordType extends RaRecord = RaRecord,

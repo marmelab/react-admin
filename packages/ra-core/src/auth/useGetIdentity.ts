@@ -1,5 +1,9 @@
-import { useMemo } from 'react';
-import { useQuery, UseQueryOptions, QueryObserverResult } from 'react-query';
+import { useEffect } from 'react';
+import {
+    useQuery,
+    UseQueryOptions,
+    QueryObserverResult,
+} from '@tanstack/react-query';
 
 import useAuthProvider from './useAuthProvider';
 import { UserIdentity } from '../types';
@@ -42,63 +46,42 @@ const defaultQueryParams = {
  * }
  */
 export const useGetIdentity = (
-    queryParams: UseQueryOptions<UserIdentity, Error> = defaultQueryParams
-): UseGetIdentityResult => {
+    options: UseGetIdentityOptions = defaultQueryParams
+): QueryObserverResult<UserIdentity> => {
     const authProvider = useAuthProvider();
+    const { onSuccess, onError, ...queryOptions } = options;
 
-    const result = useQuery(
-        ['auth', 'getIdentity'],
-        authProvider
-            ? () => authProvider.getIdentity()
-            : async () => defaultIdentity,
-        {
-            enabled: typeof authProvider?.getIdentity === 'function',
-            ...queryParams,
+    const result = useQuery({
+        queryKey: ['auth', 'getIdentity'],
+        queryFn: () => {
+            return authProvider
+                ? authProvider.getIdentity()
+                : Promise.resolve(defaultIdentity);
+        },
+        enabled: typeof authProvider?.getIdentity === 'function',
+        ...queryOptions,
+    });
+
+    useEffect(() => {
+        if (result.data && onSuccess) {
+            onSuccess(result.data);
         }
-    );
+    }, [onSuccess, result.data]);
+
+    useEffect(() => {
+        if (result.error && onError) {
+            onError(result.error);
+        }
+    }, [onError, result.error]);
 
     // @FIXME: return useQuery's result directly by removing identity prop (BC break - to be done in v5)
-    return useMemo(
-        () =>
-            result.isLoading
-                ? { isLoading: true }
-                : result.error
-                ? { error: result.error, isLoading: false }
-                : {
-                      data: result.data,
-                      identity: result.data,
-                      refetch: result.refetch,
-                      isLoading: false,
-                  },
-
-        [result]
-    );
+    return result;
 };
 
-export type UseGetIdentityResult =
-    | {
-          isLoading: true;
-          data?: undefined;
-          identity?: undefined;
-          error?: undefined;
-          refetch?: undefined;
-      }
-    | {
-          isLoading: false;
-          data?: undefined;
-          identity?: undefined;
-          error: Error;
-          refetch?: undefined;
-      }
-    | {
-          isLoading: false;
-          data: UserIdentity;
-          /**
-           * @deprecated Use data instead
-           */
-          identity: UserIdentity;
-          error?: undefined;
-          refetch: () => Promise<QueryObserverResult<UserIdentity, Error>>;
-      };
+export interface UseGetIdentityOptions
+    extends Omit<UseQueryOptions<UserIdentity>, 'queryKey' | 'queryFn'> {
+    onSuccess?: (data: UserIdentity) => void;
+    onError?: (err: Error) => void;
+}
 
 export default useGetIdentity;

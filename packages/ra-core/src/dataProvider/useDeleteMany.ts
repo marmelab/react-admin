@@ -7,7 +7,8 @@ import {
     MutateOptions,
     QueryKey,
     UseInfiniteQueryResult,
-} from 'react-query';
+    InfiniteData,
+} from '@tanstack/react-query';
 
 import { useDataProvider } from './useDataProvider';
 import undoableEventEmitter from './undoableEventEmitter';
@@ -124,7 +125,7 @@ export const useDeleteMany = <
         };
 
         queryClient.setQueriesData(
-            [resource, 'getList'],
+            { queryKey: [resource, 'getList'] },
             (res: GetListResult) => {
                 if (!res || !res.data) return res;
                 const newCollection = updateColl(res.data);
@@ -143,8 +144,12 @@ export const useDeleteMany = <
             { updatedAt }
         );
         queryClient.setQueriesData(
-            [resource, 'getInfiniteList'],
-            (res: UseInfiniteQueryResult<GetInfiniteListResult>['data']) => {
+            { queryKey: [resource, 'getInfiniteList'] },
+            (
+                res: UseInfiniteQueryResult<
+                    InfiniteData<GetInfiniteListResult>
+                >['data']
+            ) => {
                 if (!res || !res.pages) return res;
                 return {
                     ...res,
@@ -170,13 +175,13 @@ export const useDeleteMany = <
             { updatedAt }
         );
         queryClient.setQueriesData(
-            [resource, 'getMany'],
+            { queryKey: [resource, 'getMany'] },
             (coll: RecordType[]) =>
                 coll && coll.length > 0 ? updateColl(coll) : coll,
             { updatedAt }
         );
         queryClient.setQueriesData(
-            [resource, 'getManyReference'],
+            { queryKey: [resource, 'getManyReference'] },
             (res: GetListResult) => {
                 if (!res || !res.data) return res;
                 const newCollection = updateColl(res.data);
@@ -198,8 +203,8 @@ export const useDeleteMany = <
         RecordType['id'][],
         MutationError,
         Partial<UseDeleteManyMutateParams<RecordType>>
-    >(
-        ({
+    >({
+        mutationFn: ({
             resource: callTimeResource = resource,
             ids: callTimeIds = paramsRef.current.ids,
             meta: callTimeMeta = paramsRef.current.meta,
@@ -210,101 +215,85 @@ export const useDeleteMany = <
                     meta: callTimeMeta,
                 })
                 .then(({ data }) => data),
-        {
-            ...reactMutationOptions,
-            onMutate: async (
-                variables: Partial<UseDeleteManyMutateParams<RecordType>>
-            ) => {
-                if (reactMutationOptions.onMutate) {
-                    const userContext =
-                        (await reactMutationOptions.onMutate(variables)) || {};
-                    return {
-                        snapshot: snapshot.current,
-                        // @ts-ignore
-                        ...userContext,
-                    };
-                } else {
-                    // Return a context object with the snapshot value
-                    return { snapshot: snapshot.current };
-                }
-            },
-            onError: (
-                error: MutationError,
-                variables: Partial<UseDeleteManyMutateParams<RecordType>> = {},
-                context: { snapshot: Snapshot }
-            ) => {
-                if (
-                    mode.current === 'optimistic' ||
-                    mode.current === 'undoable'
-                ) {
-                    // If the mutation fails, use the context returned from onMutate to rollback
-                    context.snapshot.forEach(([key, value]) => {
-                        queryClient.setQueryData(key, value);
-                    });
-                }
+        ...reactMutationOptions,
+        onMutate: async (
+            variables: Partial<UseDeleteManyMutateParams<RecordType>>
+        ) => {
+            if (reactMutationOptions.onMutate) {
+                const userContext =
+                    (await reactMutationOptions.onMutate(variables)) || {};
+                return {
+                    snapshot: snapshot.current,
+                    // @ts-ignore
+                    ...userContext,
+                };
+            } else {
+                // Return a context object with the snapshot value
+                return { snapshot: snapshot.current };
+            }
+        },
+        onError: (
+            error: MutationError,
+            variables: Partial<UseDeleteManyMutateParams<RecordType>> = {},
+            context: { snapshot: Snapshot }
+        ) => {
+            if (mode.current === 'optimistic' || mode.current === 'undoable') {
+                // If the mutation fails, use the context returned from onMutate to rollback
+                context.snapshot.forEach(([key, value]) => {
+                    queryClient.setQueryData(key, value);
+                });
+            }
 
-                if (reactMutationOptions.onError) {
-                    return reactMutationOptions.onError(
-                        error,
-                        variables,
-                        context
-                    );
-                }
-                // call-time error callback is executed by react-query
-            },
-            onSuccess: (
-                data: RecordType['id'][],
-                variables: Partial<UseDeleteManyMutateParams<RecordType>> = {},
-                context: unknown
-            ) => {
-                if (mode.current === 'pessimistic') {
-                    // update the getOne and getList query cache with the new result
-                    const {
-                        resource: callTimeResource = resource,
-                        ids: callTimeIds = ids,
-                    } = variables;
-                    updateCache({
-                        resource: callTimeResource,
-                        ids: callTimeIds,
-                    });
+            if (reactMutationOptions.onError) {
+                return reactMutationOptions.onError(error, variables, context);
+            }
+            // call-time error callback is executed by react-query
+        },
+        onSuccess: (
+            data: RecordType['id'][],
+            variables: Partial<UseDeleteManyMutateParams<RecordType>> = {},
+            context: unknown
+        ) => {
+            if (mode.current === 'pessimistic') {
+                // update the getOne and getList query cache with the new result
+                const {
+                    resource: callTimeResource = resource,
+                    ids: callTimeIds = ids,
+                } = variables;
+                updateCache({
+                    resource: callTimeResource,
+                    ids: callTimeIds,
+                });
 
-                    if (reactMutationOptions.onSuccess) {
-                        reactMutationOptions.onSuccess(
-                            data,
-                            variables,
-                            context
-                        );
-                    }
-                    // call-time success callback is executed by react-query
+                if (reactMutationOptions.onSuccess) {
+                    reactMutationOptions.onSuccess(data, variables, context);
                 }
-            },
-            onSettled: (
-                data: RecordType['id'][],
-                error: MutationError,
-                variables: Partial<UseDeleteManyMutateParams<RecordType>> = {},
-                context: { snapshot: Snapshot }
-            ) => {
-                if (
-                    mode.current === 'optimistic' ||
-                    mode.current === 'undoable'
-                ) {
-                    // Always refetch after error or success:
-                    context.snapshot.forEach(([key]) => {
-                        queryClient.invalidateQueries(key);
-                    });
-                }
+                // call-time success callback is executed by react-query
+            }
+        },
+        onSettled: (
+            data: RecordType['id'][],
+            error: MutationError,
+            variables: Partial<UseDeleteManyMutateParams<RecordType>> = {},
+            context: { snapshot: Snapshot }
+        ) => {
+            if (mode.current === 'optimistic' || mode.current === 'undoable') {
+                // Always refetch after error or success:
+                context.snapshot.forEach(([queryKey]) => {
+                    queryClient.invalidateQueries({ queryKey });
+                });
+            }
 
-                if (reactMutationOptions.onSettled) {
-                    return reactMutationOptions.onSettled(
-                        data,
-                        error,
-                        variables,
-                        context
-                    );
-                }
-            },
-        }
-    );
+            if (reactMutationOptions.onSettled) {
+                return reactMutationOptions.onSettled(
+                    data,
+                    error,
+                    variables,
+                    context
+                );
+            }
+        },
+    });
 
     const mutate = async (
         callTimeResource: string = resource,
@@ -361,13 +350,16 @@ export const useDeleteMany = <
          * @see https://react-query-v3.tanstack.com/reference/QueryClient#queryclientgetqueriesdata
          */
         snapshot.current = queryKeys.reduce(
-            (prev, curr) => prev.concat(queryClient.getQueriesData(curr)),
+            (prev, queryKey) =>
+                prev.concat(queryClient.getQueriesData({ queryKey })),
             [] as Snapshot
         );
 
         // Cancel any outgoing re-fetches (so they don't overwrite our optimistic update)
         await Promise.all(
-            snapshot.current.map(([key]) => queryClient.cancelQueries(key))
+            snapshot.current.map(([queryKey]) =>
+                queryClient.cancelQueries({ queryKey })
+            )
         );
 
         // Optimistically update to the new value

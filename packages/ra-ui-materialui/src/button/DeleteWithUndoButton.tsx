@@ -3,7 +3,7 @@ import { ReactElement, ReactEventHandler } from 'react';
 import PropTypes from 'prop-types';
 import ActionDelete from '@mui/icons-material/Delete';
 import clsx from 'clsx';
-import { UseMutationOptions } from 'react-query';
+import { UseMutationOptions } from '@tanstack/react-query';
 import {
     RaRecord,
     useDeleteWithUndoController,
