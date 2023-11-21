@@ -13,7 +13,7 @@ import {
     Form,
     useInput,
 } from 'ra-core';
-import { QueryClient } from 'react-query';
+import { QueryClient } from '@tanstack/react-query';
 
 import { AdminContext } from '../AdminContext';
 import { SimpleForm } from '../form';
