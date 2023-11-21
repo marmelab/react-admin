@@ -64,7 +64,10 @@ const useAuthState = (
         queryKey: ['auth', 'checkAuth', params],
         queryFn: () => {
             // The authProvider is optional in react-admin
-            return authProvider?.checkAuth(params).then(() => true);
+            if (!authProvider) {
+                return true;
+            }
+            return authProvider.checkAuth(params).then(() => true);
         },
         retry: false,
         ...options,
