@@ -31,7 +31,7 @@ export const DeleteWithUndoButton = <RecordType extends RaRecord = any>(
 
     const record = useRecordContext(props);
     const resource = useResourceContext(props);
-    const { isLoading, handleDelete } = useDeleteWithUndoController({
+    const { isPending, handleDelete } = useDeleteWithUndoController({
         record,
         resource,
         redirect,
@@ -42,7 +42,7 @@ export const DeleteWithUndoButton = <RecordType extends RaRecord = any>(
     return (
         <Button
             onClick={handleDelete}
-            disabled={isLoading}
+            disabled={isPending}
             label={label}
             className={clsx('ra-delete-button', className)}
             key="button"

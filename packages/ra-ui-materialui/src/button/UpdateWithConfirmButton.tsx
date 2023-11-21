@@ -73,7 +73,7 @@ export const UpdateWithConfirmButton = (
         ...otherMutationOptions
     } = mutationOptions;
 
-    const [updateMany, { isLoading }] = useUpdate();
+    const [updateMany, { isPending }] = useUpdate();
 
     const handleClick = e => {
         setOpen(true);
@@ -113,7 +113,7 @@ export const UpdateWithConfirmButton = (
             </StyledButton>
             <Confirm
                 isOpen={isOpen}
-                loading={isLoading}
+                loading={isPending}
                 title={confirmTitle}
                 content={confirmContent}
                 translateOptions={{

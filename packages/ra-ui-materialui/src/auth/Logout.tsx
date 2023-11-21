@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { styled, Theme } from '@mui/material/styles';
-import { useCallback, FunctionComponent, ReactElement } from 'react';
+import { useCallback, FunctionComponent, ReactNode } from 'react';
 import PropTypes from 'prop-types';
 import {
     ListItemIcon,
@@ -60,7 +60,7 @@ export const Logout: FunctionComponent<
 Logout.propTypes = {
     className: PropTypes.string,
     redirectTo: PropTypes.string,
-    icon: PropTypes.element,
+    icon: PropTypes.node,
 };
 
 const PREFIX = 'RaLogout';
@@ -79,5 +79,5 @@ const StyledMenuItem = styled(MenuItem, {
 export interface LogoutProps {
     className?: string;
     redirectTo?: string;
-    icon?: ReactElement;
+    icon?: ReactNode;
 }
