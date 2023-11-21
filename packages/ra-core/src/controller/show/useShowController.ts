@@ -1,9 +1,13 @@
 import { useParams } from 'react-router-dom';
-import { UseQueryOptions } from '@tanstack/react-query';
 
 import { useAuthenticated } from '../../auth';
 import { RaRecord } from '../../types';
-import { useGetOne, useRefresh, UseGetOneHookValue } from '../../dataProvider';
+import {
+    useGetOne,
+    useRefresh,
+    UseGetOneHookValue,
+    UseGetOneOptions,
+} from '../../dataProvider';
 import { useTranslate } from '../../i18n';
 import { useRedirect } from '../../routing';
 import { useNotify } from '../../notification';
@@ -111,9 +115,7 @@ export const useShowController = <RecordType extends RaRecord = any>(
 export interface ShowControllerProps<RecordType extends RaRecord = any> {
     disableAuthentication?: boolean;
     id?: RecordType['id'];
-    queryOptions?: Omit<UseQueryOptions<RecordType>, 'queryFn' | 'queryKey'> & {
-        meta?: any;
-    };
+    queryOptions?: UseGetOneOptions<RecordType>;
     resource?: string;
 }
 
