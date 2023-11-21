@@ -47,7 +47,7 @@
         "react-is": "^18.2.0",
         "react-router": "^6.1.0",
         "react-router-dom": "^6.1.0",
-        "react-test-renderer": "~16.8.6",
+        "react-test-renderer": "^18.2.0",
         "rimraf": "^3.0.2",
         "typescript": "^5.1.3"
     },
