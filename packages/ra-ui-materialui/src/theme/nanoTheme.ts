@@ -304,6 +304,22 @@ const componentsOverrides = (theme: Theme) => ({
             },
         },
     },
+    RaSolarPrimarySidebar: {
+        styleOverrides: {
+            root: {
+                '& .RaSolarMenu-topToolbar': {
+                    '& .RaSolarMenuItem-icon': {
+                        justifyContent: 'center',
+                    },
+                },
+                '& .RaSolarMenu-bottomToolbar': {
+                    '& .RaSolarMenuItem-icon, & .RaSolarMenuItem-root': {
+                        justifyContent: 'center',
+                    },
+                },
+            },
+        },
+    },
 });
 
 const alert = {
