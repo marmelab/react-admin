@@ -171,7 +171,7 @@ In that case, use the [`resource`](#resource), [`sort`](#sort), and [`filter`](#
 
 {% raw %}
 ```jsx
-import { InfiniteList, SimpleList } from 'react-admin';
+import { InfiniteList, InfinitePagination, SimpleList } from 'react-admin';
 import { Container, Typography } from '@mui/material';
 
 const Dashboard = () => (
@@ -213,7 +213,7 @@ const Dashboard = () => (
 Besides fetching a list of records from the data provider, `<InfiniteList>` renders the default list page layout (title, buttons, filters, a Material-UI `<Card>`, infinite pagination) and its children. If you need a custom list layout, you may prefer the `<InfiniteListBase>` component, which only renders its children in a [`ListContext`](./useListContext.md).
 
 ```jsx
-import { InfiniteListBase, InfinitePagination } from 'react-admin';
+import { InfiniteListBase, InfinitePagination, WithListContext } from 'react-admin';
 import { Card, CardContent, Container, Stack, Typography } from '@mui/material';
 
 const ProductList = () => (

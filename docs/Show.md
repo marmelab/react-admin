@@ -611,7 +611,7 @@ export const PostShow = () => (
 In that case, use the [`resource`](#resource) and [`id`](#id) props to set the show parameters regardless of the URL.
 
 ```jsx
-import { Show, SelectField, SimpleShowLayout, TextField, Title } from "react-admin";
+import { Show, SelectField, SimpleShowLayout, TextField } from "react-admin";
 
 export const BookShow = ({ id }) => (
     <Show resource="books" id={id}>

@@ -1177,7 +1177,7 @@ const Dashboard = () => (
 Besides fetching a list of records from the data provider, `<List>` renders the default list page layout (title, buttons, filters, a Material-UI `<Card>`, pagination) and its children. If you need a custom list layout, you may prefer [the `<ListBase>` component](./ListBase.md), which only renders its children in a [`ListContext`](./useListContext.md).
 
 ```jsx
-import { ListBase } from 'react-admin';
+import { ListBase, WithListContext } from 'react-admin';
 import { Card, CardContent, Container, Stack, Typography } from '@mui/material';
 
 const ProductList = () => (
