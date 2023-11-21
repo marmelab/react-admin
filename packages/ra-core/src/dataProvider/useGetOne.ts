@@ -5,6 +5,7 @@ import {
     UseQueryResult,
 } from '@tanstack/react-query';
 import { useDataProvider } from './useDataProvider';
+import { useEffect } from 'react';
 
 /**
  * Call the dataProvider.getOne() method and return the resolved value
@@ -65,6 +66,18 @@ export const useGetOne = <RecordType extends RaRecord = any>(
         ...queryOptions,
     });
 
+    useEffect(() => {
+        if (result.data && onSuccess) {
+            onSuccess(result.data);
+        }
+    }, [onSuccess, result.data]);
+
+    useEffect(() => {
+        if (result.error && onError) {
+            onError(result.error);
+        }
+    }, [onError, result.error]);
+
     return result;
 };
 
@@ -72,7 +85,7 @@ export type UseGetOneOptions<RecordType extends RaRecord = any> = Omit<
     UseQueryOptions<GetOneResult<RecordType>['data']>,
     'queryKey' | 'queryFn'
 > & {
-    onSuccess?: (data: GetOneResult<RecordType>) => void;
+    onSuccess?: (data: GetOneResult<RecordType>['data']) => void;
     onError?: (error: Error) => void;
 };
 
