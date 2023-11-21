@@ -190,7 +190,10 @@ const TestedComponentWithPermissions = () => {
 };
 
 const TestedComponentWithOnlyLazyCustomRoutes = ({ history }) => {
-    const [lazyRoutes, setLazyRoutes] = React.useState(null);
+    const [
+        lazyRoutes,
+        setLazyRoutes,
+    ] = React.useState<React.ReactElement | null>(null);
 
     React.useEffect(() => {
         const timer = setTimeout(
@@ -243,31 +246,18 @@ const TestedComponentWithForcedRoutes = () => {
     );
 };
 
-const expectResource = (resource: string) =>
-    expect(screen.queryByText(`"name":"${resource}"`, { exact: false }));
-
-const expectResourceView = (
-    resource: string,
-    view: 'list' | 'create' | 'edit' | 'show'
-) =>
-    expect(
-        screen.queryByText(
-            `"has${view.at(0).toUpperCase()}${view.substring(1)}":true`,
-            {
-                selector: `[data-resource=${resource}]`,
-                exact: false,
-            }
-        )
-    );
-
 describe('useConfigureAdminRouterFromChildren', () => {
     it('should always load static resources', async () => {
         render(<TestedComponent role="guest" />);
         await waitFor(() => expect(screen.queryByText('Loading')).toBeNull());
-        await waitFor(() => expectResource('posts').not.toBeNull());
-        expectResource('comments').not.toBeNull();
-        expectResource('user').toBeNull();
-        expectResource('admin').toBeNull();
+        await screen.findByText(`"name":"posts"`, { exact: false });
+        await screen.findByText(`"name":"comments"`, { exact: false });
+        expect(
+            screen.queryByText(`"name":"user"`, { exact: false })
+        ).toBeNull();
+        expect(
+            screen.queryByText(`"name":"admin"`, { exact: false })
+        ).toBeNull();
     });
     it('should not call the children function until the permissions have been retrieved', async () => {
         const callback = jest.fn(() =>
@@ -282,61 +272,99 @@ describe('useConfigureAdminRouterFromChildren', () => {
     it('should load dynamic resource definitions', async () => {
         render(<TestedComponent role="admin" />);
         await waitFor(() => expect(screen.queryByText('Loading')).toBeNull());
-        expectResource('user').not.toBeNull();
-        expectResource('admin').not.toBeNull();
+        await screen.findByText(`"name":"user"`, { exact: false });
+        await screen.findByText(`"name":"admin"`, { exact: false });
     });
     it('should accept function returning null', async () => {
         render(<TestedComponentReturningNull role="admin" />);
         await waitFor(() => expect(screen.queryByText('Loading')).toBeNull());
-        expectResource('user').not.toBeNull();
-        expectResource('admin').not.toBeNull();
+        await screen.findByText(`"name":"user"`, { exact: false });
+        await screen.findByText(`"name":"admin"`, { exact: false });
     });
     it('should call registerResource with the permissions', async () => {
         render(<TestedComponentWithPermissions />);
         await waitFor(() => expect(screen.queryByText('Loading')).toBeNull());
-
-        expectResourceView('posts', 'list').not.toBeNull();
-        expectResourceView('posts', 'create').not.toBeNull();
-        expectResourceView('posts', 'edit').not.toBeNull();
-        expectResourceView('posts', 'show').not.toBeNull();
-        expectResourceView('comments', 'list').not.toBeNull();
-        expectResourceView('comments', 'create').toBeNull();
-        expectResourceView('comments', 'edit').toBeNull();
-        expectResourceView('comments', 'show').not.toBeNull();
-        expectResourceView('users', 'list').not.toBeNull();
-        expectResourceView('users', 'create').toBeNull();
-        expectResourceView('users', 'edit').toBeNull();
-        expectResourceView('users', 'show').toBeNull();
+        await screen.findByText(`"name":"posts"`, {
+            exact: false,
+        });
+        await screen.findByText(`"hasList":true`, {
+            selector: `[data-resource=posts]`,
+            exact: false,
+        });
+        await screen.findByText(`"hasCreate":true`, {
+            selector: `[data-resource=posts]`,
+            exact: false,
+        });
+        await screen.findByText(`"hasShow":true`, {
+            selector: `[data-resource=posts]`,
+            exact: false,
+        });
+        await screen.findByText(`"hasList":true`, {
+            selector: `[data-resource=comments]`,
+            exact: false,
+        });
+        await screen.findByText(`"hasShow":true`, {
+            selector: `[data-resource=comments]`,
+            exact: false,
+        });
+        await screen.findByText(`"hasCreate":false`, {
+            selector: `[data-resource=comments]`,
+            exact: false,
+        });
+        await screen.findByText(`"hasEdit":false`, {
+            selector: `[data-resource=comments]`,
+            exact: false,
+        });
+        await screen.findByText(`"hasList":true`, {
+            selector: `[data-resource=users]`,
+            exact: false,
+        });
+        await screen.findByText(`"hasShow":false`, {
+            selector: `[data-resource=users]`,
+            exact: false,
+        });
+        await screen.findByText(`"hasCreate":false`, {
+            selector: `[data-resource=users]`,
+            exact: false,
+        });
+        await screen.findByText(`"hasEdit":false`, {
+            selector: `[data-resource=users]`,
+            exact: false,
+        });
     });
     it('should allow adding new resource after the first render', async () => {
         const { rerender } = render(<TestedComponent role="user" />);
         await waitFor(() => expect(screen.queryByText('Loading')).toBeNull());
-        expectResource('posts').not.toBeNull();
-        expectResource('comments').not.toBeNull();
-        expectResource('user').not.toBeNull();
-        expectResource('admin').toBeNull();
+        await screen.findByText(`"name":"posts"`, { exact: false });
+        await screen.findByText(`"name":"comments"`, { exact: false });
+        await screen.findByText(`"name":"user"`, { exact: false });
+        expect(
+            screen.queryByText(`"name":"admin"`, { exact: false })
+        ).toBeNull();
 
         rerender(<TestedComponent role="admin" />);
         await waitFor(() => expect(screen.queryByText('Loading')).toBeNull());
-        expectResource('posts').not.toBeNull();
-        expectResource('comments').not.toBeNull();
-        expectResource('user').not.toBeNull();
-        expectResource('admin').not.toBeNull();
+        await screen.findByText(`"name":"posts"`, { exact: false });
+        await screen.findByText(`"name":"comments"`, { exact: false });
+        await screen.findByText(`"name":"user"`, { exact: false });
+        await screen.findByText(`"name":"admin"`, { exact: false });
     });
     it('should allow removing a resource after the first render', async () => {
         const { rerender } = render(<TestedComponent role="admin" />);
         await waitFor(() => expect(screen.queryByText('Loading')).toBeNull());
-        expectResource('posts').not.toBeNull();
-        expectResource('comments').not.toBeNull();
-        expectResource('user').not.toBeNull();
-        expectResource('admin').not.toBeNull();
+        await screen.findByText(`"name":"posts"`, { exact: false });
+        await screen.findByText(`"name":"comments"`, { exact: false });
+        await screen.findByText(`"name":"user"`, { exact: false });
+        await screen.findByText(`"name":"admin"`, { exact: false });
 
         rerender(<TestedComponent role="user" />);
         await waitFor(() => expect(screen.queryByText('Loading')).toBeNull());
-        expectResource('posts').not.toBeNull();
-        expectResource('comments').not.toBeNull();
-        expectResource('user').not.toBeNull();
-        expectResource('admin').toBeNull();
+        await screen.findByText(`"name":"posts"`, { exact: false });
+        await screen.findByText(`"name":"comments"`, { exact: false });
+        await screen.findByText(`"name":"user"`, { exact: false });
+        expect(
+            screen.queryByText(`"name":"admin"`, { exact: false })
+        ).toBeNull();
     });
     it('should allow dynamically loaded custom routes without any resources', async () => {
         const history = createMemoryHistory();
@@ -346,23 +374,59 @@ describe('useConfigureAdminRouterFromChildren', () => {
         await new Promise(resolve => setTimeout(resolve, 1010));
         expect(screen.queryByText('Ready')).toBeNull();
         history.push('/foo');
-        expect(screen.queryByText('Foo')).not.toBeNull();
+        await screen.findByText('Foo');
     });
     it('should support forcing hasEdit hasCreate or hasShow', async () => {
         render(<TestedComponentWithForcedRoutes />);
         await waitFor(() => expect(screen.queryByText('Loading')).toBeNull());
 
-        expectResourceView('posts', 'list').not.toBeNull();
-        expectResourceView('posts', 'create').not.toBeNull();
-        expectResourceView('posts', 'edit').not.toBeNull();
-        expectResourceView('posts', 'show').not.toBeNull();
-        expectResourceView('comments', 'list').not.toBeNull();
-        expectResourceView('comments', 'create').toBeNull();
-        expectResourceView('comments', 'edit').toBeNull();
-        expectResourceView('comments', 'show').toBeNull();
-        expectResourceView('user', 'list').not.toBeNull();
-        expectResourceView('user', 'create').toBeNull();
-        expectResourceView('user', 'edit').not.toBeNull();
-        expectResourceView('user', 'show').toBeNull();
+        await screen.findByText(`"hasList":true`, {
+            selector: `[data-resource=posts]`,
+            exact: false,
+        });
+        await screen.findByText(`"hasShow":true`, {
+            selector: `[data-resource=posts]`,
+            exact: false,
+        });
+        await screen.findByText(`"hasEdit":true`, {
+            selector: `[data-resource=posts]`,
+            exact: false,
+        });
+        await screen.findByText(`"hasCreate":true`, {
+            selector: `[data-resource=posts]`,
+            exact: false,
+        });
+        await screen.findByText(`"hasList":true`, {
+            selector: `[data-resource=comments]`,
+            exact: false,
+        });
+        await screen.findByText(`"hasShow":false`, {
+            selector: `[data-resource=comments]`,
+            exact: false,
+        });
+        await screen.findByText(`"hasEdit":false`, {
+            selector: `[data-resource=comments]`,
+            exact: false,
+        });
+        await screen.findByText(`"hasCreate":false`, {
+            selector: `[data-resource=comments]`,
+            exact: false,
+        });
+        await screen.findByText(`"hasList":true`, {
+            selector: `[data-resource=user]`,
+            exact: false,
+        });
+        await screen.findByText(`"hasShow":false`, {
+            selector: `[data-resource=user]`,
+            exact: false,
+        });
+        await screen.findByText(`"hasEdit":true`, {
+            selector: `[data-resource=user]`,
+            exact: false,
+        });
+        await screen.findByText(`"hasCreate":false`, {
+            selector: `[data-resource=user]`,
+            exact: false,
+        });
     });
 });
