@@ -117,7 +117,7 @@ export const Confirm = (props: ConfirmProps) => {
 };
 
 export interface ConfirmProps
-    extends Omit<DialogProps, 'open' | 'onClose' | 'title'> {
+    extends Omit<DialogProps, 'open' | 'onClose' | 'title' | 'content'> {
     cancel?: string;
     className?: string;
     confirm?: string;

@@ -61,7 +61,7 @@ import { Logout } from '../auth/Logout';
 export const UserMenu = (props: UserMenuProps) => {
     const [anchorEl, setAnchorEl] = useState(null);
     const translate = useTranslate();
-    const { isLoading, identity } = useGetIdentity();
+    const { isLoading, data: identity } = useGetIdentity();
     const authProvider = useAuthProvider();
     const isLargeEnough = useMediaQuery<Theme>(theme =>
         theme.breakpoints.up('sm')

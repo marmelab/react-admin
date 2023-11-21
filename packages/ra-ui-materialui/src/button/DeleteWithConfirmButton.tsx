@@ -42,7 +42,7 @@ export const DeleteWithConfirmButton = <RecordType extends RaRecord = any>(
 
     const {
         open,
-        isLoading,
+        isPending,
         handleDialogOpen,
         handleDialogClose,
         handleDelete,
@@ -69,7 +69,7 @@ export const DeleteWithConfirmButton = <RecordType extends RaRecord = any>(
             </Button>
             <Confirm
                 isOpen={open}
-                loading={isLoading}
+                loading={isPending}
                 title={confirmTitle}
                 content={confirmContent}
                 confirmColor={confirmColor}

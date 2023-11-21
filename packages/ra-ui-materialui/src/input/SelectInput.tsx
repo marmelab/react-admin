@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { ReactElement, useCallback, useEffect, ChangeEvent } from 'react';
-import { isElement } from 'react-is';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { MenuItem, TextFieldProps } from '@mui/material';
@@ -202,11 +201,11 @@ export const SelectInput = (props: SelectInputProps) => {
     const { error, invalid, isTouched } = fieldState;
 
     const renderEmptyItemOption = useCallback(() => {
-        return isElement(emptyText)
-            ? emptyText
-            : emptyText === ''
-            ? ' ' // em space, forces the display of an empty line of normal height
-            : translate(emptyText, { _: emptyText });
+        return typeof emptyText === 'string'
+            ? emptyText === ''
+                ? ' ' // em space, forces the display of an empty line of normal height
+                : translate(emptyText, { _: emptyText })
+            : emptyText;
     }, [emptyText, translate]);
 
     const renderMenuItemOption = useCallback(choice => getChoiceText(choice), [

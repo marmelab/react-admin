@@ -86,7 +86,6 @@ DatagridBody.propTypes = {
     rowSx: PropTypes.func,
     rowStyle: PropTypes.func,
     selectedIds: PropTypes.arrayOf(PropTypes.any),
-    styles: PropTypes.object,
     isRowSelectable: PropTypes.func,
 };
 
