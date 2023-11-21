@@ -1,10 +1,13 @@
 import { isValidElement, useEffect, useMemo } from 'react';
-import { UseQueryOptions } from '@tanstack/react-query';
 
 import { useAuthenticated } from '../../auth';
 import { useTranslate } from '../../i18n';
 import { useNotify } from '../../notification';
-import { useGetList, UseGetListHookValue } from '../../dataProvider';
+import {
+    useGetList,
+    UseGetListHookValue,
+    UseGetListOptions,
+} from '../../dataProvider';
 import { SORT_ASC } from './queryReducer';
 import { defaultExporter } from '../../export';
 import { FilterPayload, SortPayload, RaRecord, Exporter } from '../../types';
@@ -336,17 +339,7 @@ export interface ListControllerProps<RecordType extends RaRecord = any> {
      *     );
      * }
      */
-    queryOptions?: Omit<
-        UseQueryOptions<{
-            data: RecordType[];
-            total?: number;
-            pageInfo?: {
-                hasNextPage?: boolean;
-                hasPreviousPage?: boolean;
-            };
-        }>,
-        'queryFn' | 'queryKey'
-    > & { meta?: any };
+    queryOptions?: UseGetListOptions<RecordType>;
 
     /**
      * The resource name. Defaults to the resource from ResourceContext.
