@@ -306,6 +306,7 @@ const getRoutesAndResourceFromNodes = (
             resources: [],
         };
     }
+    // @ts-ignore
     Children.forEach(children, element => {
         if (!React.isValidElement(element)) {
             // Ignore non-elements. This allows people to more easily inline

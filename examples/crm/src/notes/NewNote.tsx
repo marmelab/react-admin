@@ -27,10 +27,10 @@ export const NewNote = ({
     const [text, setText] = useState('');
     const [status, setStatus] = useState(record && record.status);
     const [date, setDate] = useState(getCurrentDate());
-    const [create, { isLoading }] = useCreate();
+    const [create, { isPending }] = useCreate();
     const [update] = useUpdate();
     const notify = useNotify();
-    const { identity } = useGetIdentity();
+    const { data: identity } = useGetIdentity();
     if (!record || !identity) return null;
 
     const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -124,7 +124,7 @@ export const NewNote = ({
                         type="submit"
                         variant="contained"
                         color="primary"
-                        disabled={!text || isLoading}
+                        disabled={!text || isPending}
                     >
                         Add this note
                     </Button>

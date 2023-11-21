@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import expect from 'expect';
 import { screen, render, waitFor } from '@testing-library/react';
 import { unstable_HistoryRouter as HistoryRouter } from 'react-router-dom';
-import { QueryClientProvider, QueryClient } from 'react-query';
+import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 import { createMemoryHistory } from 'history';
 
 import { useCheckAuth } from './useCheckAuth';

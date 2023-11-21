@@ -46,7 +46,7 @@ export default defineConfig({
         preserveSymlinks: true,
         alias: [
             // allow profiling in production
-            { find: 'react-dom', replacement: 'react-dom/profiling' },
+            // { find: 'react-dom', replacement: 'react-dom/profiling' },
             {
                 find: 'scheduler/tracing',
                 replacement: 'scheduler/tracing-profiling',

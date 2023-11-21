@@ -307,7 +307,10 @@ export type RenderResourcesFunction = (
     | Promise<ReactNode> // (permissions) => fetch().then(() => <><Resource /><Resource /><Resource /></>)
     | ResourceElement[] // // (permissions) => [<Resource />, <Resource />, <Resource />]
     | Promise<ResourceElement[]>; // (permissions) => fetch().then(() => [<Resource />, <Resource />, <Resource />])
-export type AdminChildren = RenderResourcesFunction | ReactNode;
+export type AdminChildren =
+    | RenderResourcesFunction
+    | Iterable<ReactNode | RenderResourcesFunction>
+    | ReactNode;
 
 export type TitleComponent = string | ReactElement<any>;
 export type CatchAllComponent = ComponentType<{ title?: TitleComponent }>;

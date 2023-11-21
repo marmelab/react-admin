@@ -128,7 +128,7 @@ const ContactListActions = () => (
 );
 
 export const ContactList = () => {
-    const { identity } = useGetIdentity();
+    const { data: identity } = useGetIdentity();
     return identity ? (
         <RaList
             actions={<ContactListActions />}

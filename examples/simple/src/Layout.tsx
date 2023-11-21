@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ReactQueryDevtools } from 'react-query/devtools';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { AppBar, Layout, InspectorButton, TitlePortal } from 'react-admin';
 
 const MyAppBar = () => (
@@ -12,9 +12,6 @@ const MyAppBar = () => (
 export default props => (
     <>
         <Layout {...props} appBar={MyAppBar} />
-        <ReactQueryDevtools
-            initialIsOpen={false}
-            toggleButtonProps={{ style: { width: 20, height: 30 } }}
-        />
+        <ReactQueryDevtools initialIsOpen={false} />
     </>
 );
