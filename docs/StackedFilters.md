@@ -147,15 +147,15 @@ const postListFilters: FiltersConfig = {
 
 ## Props
 
-| Prop                      | Required      | Type     | Default         | Description                                            |
-| ------------------------- | ------------- | -------- | --------------- | ------------------------------------------------------ |
-| `config`                  | Required      | object   | -               | The stacked filters configuration                                          |
-| `BadgeProps`              | Optional      | object   | -               | Additional props to pass to the [MUI Badge](https://mui.com/material-ui/react-badge/) element |
-| `ButtonProps`             | Optional      | object   | -               | Additional props to pass to the [Button](./Buttons.html#button) element |
-| `className`               | Optional      | string   | -               | Additional CSS class applied on the root component                                              |
+| Prop                      | Required      | Type     | Default         | Description                                                                                       |
+| ------------------------- | ------------- | -------- | --------------- |---------------------------------------------------------------------------------------------------|
+| `config`                  | Required      | object   | -               | The stacked filters configuration                                                                 |
+| `BadgeProps`              | Optional      | object   | -               | Additional props to pass to the [MUI Badge](https://mui.com/material-ui/react-badge/) element     |
+| `ButtonProps`             | Optional      | object   | -               | Additional props to pass to the [Button](./Buttons.md#button) element                             |
+| `className`               | Optional      | string   | -               | Additional CSS class applied on the root component                                                |
 | `PopoverProps`            | Optional      | Object   | -               | Additional props to pass to the [MUI Popover](https://mui.com/material-ui/react-popover/) element |
-| `StackedFilters FormProps` | Optional      | Object   | -               | Additional props to pass to the [StackedFiltersForm](#stackedfiltersform) element |
-| `sx`                      | Optional      | Object   | -               | An object containing the MUI style overrides to apply to the root component               |
+| `StackedFilters FormProps` | Optional      | Object   | -               | Additional props to pass to the [StackedFiltersForm](#stackedfiltersform) element                 |
+| `sx`                      | Optional      | Object   | -               | An object containing the MUI style overrides to apply to the root component                       |
 
 ## `BadgeProps`
 
@@ -173,7 +173,7 @@ export const MyStackedFilter = () => (
 
 ## `ButtonProps`
 
-This prop lets you pass additional props for the [Button](./Buttons.html#button).
+This prop lets you pass additional props for the [Button](./Buttons.md#button).
 
 {% raw %}
 ```tsx
@@ -314,8 +314,7 @@ const MyFilterConfig: FiltersConfig = {
 This component is responsible for rendering the filtering form, and is used internally by `<StackedFilters>`. You can use it if you want to use the filter form without the `<FilterButton>` component, e.g. to always show the filter form.
 
 <video controls autoplay playsinline muted loop width="100%">
-  <source src="./img/stacked-filter-form-preview.webm" type="video/webm"/>
-  <source src="./img/stacked-filter-form-preview.mp4" type="video/mp4"/>
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/stacked-filter-form-preview.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 

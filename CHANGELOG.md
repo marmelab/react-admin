@@ -1,5 +1,26 @@
 # Changelog
 
+## v4.16.0
+
+* Add `<SingleFieldList empty gap direction>` props, and allow it to be used without `children` ([#9439](https://github.com/marmelab/react-admin/pull/9439)) ([fzaninotto](https://github.com/fzaninotto))
+* Add `<LoadingIndicator onClick>` prop, allowing to trigger actions (like a refresh) on click ([#9420](https://github.com/marmelab/react-admin/pull/9420)) ([david-bezero](https://github.com/david-bezero))
+* Add `<LocalesMenuButton icon>` prop to customize the locales button icon ([#9380](https://github.com/marmelab/react-admin/pull/9380)) ([djhi](https://github.com/djhi))
+* Add `<Form disableInvalidFormNotification>` to allow disabling notifications when the form is invalid ([#9353](https://github.com/marmelab/react-admin/pull/9353)) ([tim-hoffmann](https://github.com/tim-hoffmann))
+
+
+## v4.15.5
+
+* Add support for `fetchOptions` to `<CheckForApplicationUpdate>` ([#9436](https://github.com/marmelab/react-admin/pull/9436)) ([smeng9](https://github.com/smeng9))
+* Bump axios from 1.4.0 to 1.6.1 ([#9438](https://github.com/marmelab/react-admin/pull/9438)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* [Typescript] Fix `<CheckForApplicationUpdate>` props type should allow `onNewVersionAvailable` ([#9444](https://github.com/marmelab/react-admin/pull/9444)) ([slax57](https://github.com/slax57))
+* [Doc] Fix typos and anchors ([#9449](https://github.com/marmelab/react-admin/pull/9449)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Fix api implementation in Remix tutorial throws a decoding error when less than 10 records are returned ([#9448](https://github.com/marmelab/react-admin/pull/9448)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Doc] Fix various snippets containing props forwarding ([#9443](https://github.com/marmelab/react-admin/pull/9443)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Update RBAC OSS Doc ([#9435](https://github.com/marmelab/react-admin/pull/9435)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Doc] Introduce classname and sx prop for SolarMenu component ([#9440](https://github.com/marmelab/react-admin/pull/9440)) ([adguernier](https://github.com/adguernier))
+* [Doc] Add documentation for `<CheckForApplicationUpdate onNewVersionAvailable>` ([#9437](https://github.com/marmelab/react-admin/pull/9437)) ([smeng9](https://github.com/smeng9))
+* [Storybook] Fix stories with ToggleThemeButton should not persist theme in localStorage ([#9441](https://github.com/marmelab/react-admin/pull/9441)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+
 ## v4.15.4
 
 * Fix bad url upon `<FilterLiveSearch>` submission ([#9398](https://github.com/marmelab/react-admin/pull/9398)) ([erwanMarmelab](https://github.com/erwanMarmelab))

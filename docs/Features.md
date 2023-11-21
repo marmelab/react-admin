@@ -19,7 +19,7 @@ React-admin provides the **best-in-class documentation**, demo apps, and support
 
 That probably explains why more than 3,000 new apps are published every month using react-admin.
 
-So react-admin is not just the assembly of [react-query](https://react-query.tanstack.com/), [react-hook-form](https://marmelab.com/react-admin/assets/techs/react-hook-form.jpeg), [react-router](https://reacttraining.com/react-router/), [Material UI](https://mui.com/material-ui/getting-started/) and [Emotion](https://github.com/emotion-js/emotion). It's a **framework** made to speed up and facilitate the development of single-page apps in React.
+So react-admin is not just the assembly of [react-query](https://react-query.tanstack.com/), [react-hook-form](https://react-hook-form.com/), [react-router](https://reacttraining.com/react-router/), [Material UI](https://mui.com/material-ui/getting-started/) and [Emotion](https://github.com/emotion-js/emotion). It's a **framework** made to speed up and facilitate the development of single-page apps in React.
 
 ## Basic CRUD
 
@@ -1081,7 +1081,7 @@ A UI kit like Material UI provides basic building blocks like a button, a form, 
 These building blocks include:
 
 - A [notification system](./useNotify.md)
-- A smart location framework, simplifying the management of [breadcrumbs](./Breadcrumb.md) an [hierarchical menus](./MultiLevelMenu.md)
+- A smart location framework, simplifying the management of [breadcrumbs](./Breadcrumb.md) and [hierarchical menus](./MultiLevelMenu.md)
 - [Import](https://github.com/benwinding/react-admin-import-csv) / [export](./Buttons.md#exportbutton) buttons
 - An [editable datagrid](./EditableDatagrid.md)
 - A [guided tour system](https://marmelab.com/ra-enterprise/modules/ra-tour)

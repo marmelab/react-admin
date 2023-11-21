@@ -5,6 +5,7 @@ import { ListContext, ResourceContextProvider } from 'ra-core';
 import { AdminContext } from '../AdminContext';
 import { SingleFieldList } from './SingleFieldList';
 import { ChipField } from '../field';
+import { Empty } from './SingleFieldList.stories';
 
 describe('<SingleFieldList />', () => {
     it('should render a link to the Edit page of the related record by default', () => {
@@ -149,28 +150,43 @@ describe('<SingleFieldList />', () => {
         });
     });
 
-    it('should render no link when the linkType is false', () => {
-        render(
-            <AdminContext>
-                <ListContext.Provider
-                    value={{
-                        data: [
-                            { id: 1, title: 'foo' },
-                            { id: 2, title: 'bar' },
-                        ],
-                        resource: 'bar',
-                    }}
-                >
-                    <SingleFieldList linkType={false}>
-                        <ChipField source="title" />
-                    </SingleFieldList>
-                </ListContext.Provider>
-            </AdminContext>
-        );
+    describe('linkType', () => {
+        it('should render no link when the linkType is false', () => {
+            render(
+                <AdminContext>
+                    <ListContext.Provider
+                        value={{
+                            data: [
+                                { id: 1, title: 'foo' },
+                                { id: 2, title: 'bar' },
+                            ],
+                            resource: 'bar',
+                        }}
+                    >
+                        <SingleFieldList linkType={false}>
+                            <ChipField source="title" />
+                        </SingleFieldList>
+                    </ListContext.Provider>
+                </AdminContext>
+            );
 
-        const linkElements = screen.queryAllByRole('link');
-        expect(linkElements).toHaveLength(0);
-        expect(screen.queryByText('foo')).not.toBeNull();
-        expect(screen.queryByText('bar')).not.toBeNull();
+            const linkElements = screen.queryAllByRole('link');
+            expect(linkElements).toHaveLength(0);
+            expect(screen.queryByText('foo')).not.toBeNull();
+            expect(screen.queryByText('bar')).not.toBeNull();
+        });
+    });
+
+    describe('empty', () => {
+        it('should use the empty element when there is no data', () => {
+            render(<Empty />);
+            expect(screen.queryByText('No genres')).not.toBeNull();
+        });
+        it('should not render the empty element while loading', () => {
+            render(
+                <Empty listContext={{ isLoading: true, data: [] } as any} />
+            );
+            expect(screen.queryByText('No genres')).toBeNull();
+        });
     });
 });

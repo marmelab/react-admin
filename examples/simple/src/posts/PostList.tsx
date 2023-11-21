@@ -192,8 +192,8 @@ const PostListDesktop = () => (
                 cellClassName="hiddenOnSmallScreens"
                 headerClassName="hiddenOnSmallScreens"
             >
-                <SingleFieldList sx={{ my: -2 }}>
-                    <ChipField source="name.en" size="small" />
+                <SingleFieldList>
+                    <ChipField clickable source="name.en" size="small" />
                 </SingleFieldList>
             </ReferenceArrayField>
             <NumberField source="average_note" />

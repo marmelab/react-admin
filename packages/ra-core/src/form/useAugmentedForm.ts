@@ -41,6 +41,7 @@ export const useAugmentedForm = (props: UseAugmentedFormProps) => {
         sanitizeEmptyValues,
         warnWhenUnsavedChanges,
         validate,
+        disableInvalidFormNotification,
         ...rest
     } = props;
     const record = useRecordContext(props);
@@ -78,7 +79,7 @@ export const useAugmentedForm = (props: UseAugmentedFormProps) => {
     const formRef = useRef(form);
 
     // notify on invalid form
-    useNotifyIsFormInvalid(form.control);
+    useNotifyIsFormInvalid(form.control, !disableInvalidFormNotification);
 
     // warn when unsaved change
     useWarnWhenUnsavedChanges(
@@ -138,4 +139,5 @@ export interface UseFormOwnProps {
     onSubmit?: SubmitHandler<FieldValues>;
     warnWhenUnsavedChanges?: boolean;
     sanitizeEmptyValues?: boolean;
+    disableInvalidFormNotification?: boolean;
 }

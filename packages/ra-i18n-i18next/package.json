@@ -1,6 +1,6 @@
 {
     "name": "ra-i18n-i18next",
-    "version": "4.15.4",
+    "version": "4.16.0",
     "description": "i18next i18n provider for react-admin",
     "main": "dist/cjs/index.js",
     "module": "dist/esm/index.js",
@@ -26,7 +26,7 @@
     },
     "dependencies": {
         "i18next": "^23.5.1",
-        "ra-core": "^4.15.4",
+        "ra-core": "^4.16.0",
         "react-i18next": "^13.2.2"
     },
     "devDependencies": {

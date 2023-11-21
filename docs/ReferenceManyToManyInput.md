@@ -8,8 +8,7 @@ title: "The ReferenceManyToManyInput Component"
 This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> component allows to create, edit or remove relationships between two resources sharing an associative table. The changes in the associative table are sent to the dataProvider _when the user submits the form_, so that they can cancel the changes before submission.
 
 <video controls autoplay playsinline muted loop width="100%">
-  <source src="./img/reference-many-to-many-input.webm" type="video/webm" />
-  <source src="./img/reference-many-to-many-input.mp4" type="video/mp4" />
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/reference-many-to-many-input.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
 
@@ -116,7 +115,7 @@ const BandEdit = () => (
 
 ## `children`
 
-`<ReferenceManyToManyInput>` expects an _select_ component as child, i.e. a component working inside a `ChoiceContext`. That means you can use a [`<SelectArrayInput>`](./SelectArrayInput.md), or a [`<AutocompleteArrayInput>`](./AutocompleteArrayInput.md). 
+`<ReferenceManyToManyInput>` expects a _select_ component as child, i.e. a component working inside a `ChoiceContext`. That means you can use a [`<SelectArrayInput>`](./SelectArrayInput.md), or a [`<AutocompleteArrayInput>`](./AutocompleteArrayInput.md). 
 
 For instance, to allow user to choose `performances` using a `<SelectArrayInput>` instead of an `<AutocompleteArrayInput>`, you can write:
 

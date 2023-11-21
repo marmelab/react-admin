@@ -14,6 +14,7 @@ import { ApplicationUpdatedNotification } from './ApplicationUpdatedNotification
  * @param {boolean} options.disabled Optional. Whether the check should be disabled. Defaults to false.
  * @param {string|ReactElement} props.notification The notification to display to the user. Displayed only if `updateMode` is manual. Defaults to `<ApplicationUpdatedNotification />`.
  * @param {string} options.url Optional. The URL to download to check for code update. Defaults to the current URL.
+ * @param {RequestInit} options.fetchOptions Optional. The options passed to fetch function when checking for update.
  * @param {number} options.interval Optional. The interval in milliseconds between two checks. Defaults to 3600000 (1 hour).
  *
  * @example <caption>Basic usage</caption>

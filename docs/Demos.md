@@ -3,8 +3,6 @@ layout: default
 title: "React-admin demos"
 ---
 
-<script src="https://player.vimeo.com/api/player.js"></script>
-
 # React-admin Demos
 
 If you want to see what react-admin is capable of, or if you want to learn from apps built by seasoned react-admin developers, check out these demos.
@@ -335,3 +333,5 @@ Check out [Issue #4027](https://github.com/marmelab/react-admin/issues/4027) on 
 ## Your App Here / showcase
 
 Did you publish an app built with react-admin with open-source code? Open a PR on this page to add it to this list.
+
+<script src="https://player.vimeo.com/api/player.js"></script>

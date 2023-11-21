@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { MouseEvent, useState } from 'react';
+import { MouseEvent, ReactNode, useState } from 'react';
 import { useLocaleState, useLocales } from 'ra-core';
 import { Box, Button, Menu, MenuItem, styled } from '@mui/material';
 import LanguageIcon from '@mui/icons-material/Translate';
@@ -22,8 +22,9 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
  * );
  */
 export const LocalesMenuButton = (props: LocalesMenuButtonProps) => {
+    const { icon = DefaultIcon, languages: languagesProp } = props;
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-    const languages = useLocales({ locales: props.languages });
+    const languages = useLocales({ locales: languagesProp });
     const [locale, setLocale] = useLocaleState();
 
     const getNameForLocale = (locale: string): string => {
@@ -53,7 +54,7 @@ export const LocalesMenuButton = (props: LocalesMenuButtonProps) => {
                 aria-label=""
                 aria-haspopup="true"
                 onClick={handleLanguageClick}
-                startIcon={<LanguageIcon />}
+                startIcon={icon}
                 endIcon={<ExpandMoreIcon fontSize="small" />}
             >
                 {getNameForLocale(locale)}
@@ -79,6 +80,7 @@ export const LocalesMenuButton = (props: LocalesMenuButtonProps) => {
     );
 };
 
+const DefaultIcon = <LanguageIcon />;
 const PREFIX = 'RaLocalesMenuButton';
 
 export const LocalesMenuButtonClasses = {};
@@ -89,5 +91,6 @@ const Root = styled(Box, {
 })({});
 
 export interface LocalesMenuButtonProps {
+    icon?: ReactNode;
     languages?: { locale: string; name: string }[];
 }
