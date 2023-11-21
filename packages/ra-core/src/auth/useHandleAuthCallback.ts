@@ -40,7 +40,7 @@ export const useHandleAuthCallback = (
     useEffect(() => {
         if (queryResult.data) {
             if (onSuccess) {
-                onSuccess(queryResult.data);
+                return onSuccess(queryResult.data);
             }
             // AuthProviders relying on a third party services redirect back to the app can't
             // use the location state to store the path on which the user was before the login.

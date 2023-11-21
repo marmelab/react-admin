@@ -49,14 +49,14 @@ const authProvider: AuthProvider = {
         return Promise.resolve();
     },
     getPermissions: () => Promise.reject('not authenticated'),
-    handleCallback: () => Promise.resolve(),
+    handleCallback: () => Promise.resolve({}),
 };
 
 const queryClient = new QueryClient();
 
 describe('useHandleAuthCallback', () => {
     afterEach(() => {
-        redirect.mockClear();
+        jest.clearAllMocks();
     });
 
     it('should redirect to the home route by default when the callback was successfully handled', async () => {

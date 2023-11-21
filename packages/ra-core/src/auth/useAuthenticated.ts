@@ -37,7 +37,7 @@ export type UseAuthenticatedOptions<ParamsType> = Omit<
     UseQueryOptions<boolean, any> & {
         params?: ParamsType;
     },
-    'queryKey'
+    'queryKey' | 'queryFn'
 >;
 
 const emptyParams = {};

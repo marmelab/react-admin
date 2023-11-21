@@ -8,8 +8,8 @@ describe('addRefreshAuthToAuthProvider', () => {
         logout: jest.fn(),
         checkAuth: jest.fn(),
         checkError: jest.fn(),
-        getIdentity: jest.fn(),
-        getPermissions: jest.fn(),
+        getIdentity: jest.fn().mockResolvedValue({}),
+        getPermissions: jest.fn().mockResolvedValue({}),
     };
 
     it('should call refreshAuth before calling checkAuth', async () => {
