@@ -673,7 +673,7 @@ export const BookCreate = () => {
             <Title title="Create book" />
             <Card>
                 <CardContent>
-                    <SimpleForm onSubmit={save}>
+                    <SimpleForm onSubmit={values => save(values)}>
                         <TextInput source="title" />
                         <TextInput source="author" />
                         <SelectInput source="availability" choices={[

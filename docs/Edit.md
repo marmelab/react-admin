@@ -844,7 +844,7 @@ export const BookEdit = () => {
             <Title title={`Edit book ${record?.title}`} />
             <Card>
                 <CardContent>
-                    <SimpleForm record={record} onSubmit={save}>
+                    <SimpleForm record={record} onSubmit={values => save(values)}>
                         <TextInput source="title" />
                         <TextInput source="author" />
                         <SelectInput source="availability" choices={[
