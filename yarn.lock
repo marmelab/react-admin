@@ -6321,10 +6321,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/prop-types@npm:*, @types/prop-types@npm:^15.6.0, @types/prop-types@npm:^15.7.4":
+"@types/prop-types@npm:*, @types/prop-types@npm:^15.7.4":
   version: 15.7.4
   resolution: "@types/prop-types@npm:15.7.4"
   checksum: 014bb826592fab01499931259969aafc21d5a8ff4ece3e3fb8e2b5186bed17656f7dcdccf9a98c27fee74d7d0697aa3f53ea971a72679597f0ca0c3d5ca585d3
+  languageName: node
+  linkType: hard
+
+"@types/prop-types@npm:^15.7.11":
+  version: 15.7.11
+  resolution: "@types/prop-types@npm:15.7.11"
+  checksum: e53423cf9d510515ef8b47ff42f4f1b65a7b7b37c8704e2dbfcb9a60defe0c0e1f3cb1acfdeb466bad44ca938d7c79bffdd51b48ffb659df2432169d0b27a132
   languageName: node
   linkType: hard
 
@@ -6342,7 +6349,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react-dom@npm:>=16.9.0, @types/react-dom@npm:^17.0.9":
+"@types/react-dom@npm:>=16.9.0":
   version: 17.0.11
   resolution: "@types/react-dom@npm:17.0.11"
   dependencies:
@@ -6351,12 +6358,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react-dom@npm:^18.0.7":
-  version: 18.0.8
-  resolution: "@types/react-dom@npm:18.0.8"
+"@types/react-dom@npm:^18.2.16":
+  version: 18.2.16
+  resolution: "@types/react-dom@npm:18.2.16"
   dependencies:
     "@types/react": "*"
-  checksum: e5e18d30a272b799e7579929b27f8cd078c5ee92cc11a4be80b63d9f4330d22c97cc2aeb89945fc8e88d59a92438fa89f37ac92021665021988ed56cb864b424
+  checksum: 6efd8936c103b17d24c33fbba9f90aa390559b9027308a20bc08a4af84c2b915a5f615149d106768b14c3b04796cc70e5759ae01fb2d20b307b75697e38473cd
   languageName: node
   linkType: hard
 
@@ -6387,29 +6394,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react@npm:*, @types/react@npm:>=16.9.0":
-  version: 17.0.38
-  resolution: "@types/react@npm:17.0.38"
+"@types/react-transition-group@npm:^4.4.9":
+  version: 4.4.9
+  resolution: "@types/react-transition-group@npm:4.4.9"
   dependencies:
-    "@types/prop-types": "*"
-    "@types/scheduler": "*"
-    csstype: ^3.0.2
-  checksum: 828cd27ac220be8232535c4451b0020f6f05535d62407e5fe2547544a7d3123777ed31ab547d7c7f3d8b59d37268ee4b9209f1c110809f084cbbf0a7e27cd7ef
+    "@types/react": "*"
+  checksum: 279cd319202f7ec24ecad174dffd19fd161250bc438bf3c62951f467093e5664a0c895b185976bf45f55b68ec901e520924216eb8abafe934b66f55337319ff5
   languageName: node
   linkType: hard
 
-"@types/react@npm:>=16":
-  version: 18.2.6
-  resolution: "@types/react@npm:18.2.6"
-  dependencies:
-    "@types/prop-types": "*"
-    "@types/scheduler": "*"
-    csstype: ^3.0.2
-  checksum: 7740541afde84a50c557e576dd564a861b45ad436d1c3ed33496d70046a6eb734bfe7f7f18995f88bdc50be0d295c2b878f705a6b9573cc0781e11ea58470139
-  languageName: node
-  linkType: hard
-
-"@types/react@npm:>=18.0.0, @types/react@npm:^18.2.37":
+"@types/react@npm:*, @types/react@npm:>=16, @types/react@npm:>=16.9.0, @types/react@npm:>=18.0.0, @types/react@npm:^18.2.37":
   version: 18.2.37
   resolution: "@types/react@npm:18.2.37"
   dependencies:
@@ -9937,9 +9931,9 @@ __metadata:
     "@types/inflection": ^1.5.28
     "@types/jest": ^29.5.2
     "@types/node": ^12.12.14
-    "@types/prop-types": ^15.6.0
+    "@types/prop-types": ^15.7.11
     "@types/react": ^18.2.37
-    "@types/react-dom": ^17.0.9
+    "@types/react-dom": ^18.2.16
     "@types/recharts": ^1.8.10
     "@vitejs/plugin-react": ^2.2.0
     clsx: ^1.1.1
@@ -9951,7 +9945,7 @@ __metadata:
     graphql-tag: ^2.12.6
     inflection: ~1.12.0
     json-graphql-server: ~2.3.0
-    prop-types: ^15.6.1
+    prop-types: ^15.8.1
     proxy-polyfill: ^0.3.0
     query-string: ^7.1.1
     ra-data-fakerest: ^4.12.0
@@ -9965,7 +9959,7 @@ __metadata:
     react: ^18.0.0
     react-admin: ^4.12.0
     react-app-polyfill: ^2.0.0
-    react-dom: ^17.0.0
+    react-dom: ^18.2.0
     react-router: ^6.1.0
     react-router-dom: ^6.1.0
     recharts: ^2.1.15
@@ -16124,7 +16118,7 @@ __metadata:
     ra-no-code: ^4.12.0
     react: ^18.0.0
     react-admin: ^4.12.0
-    react-dom: ^17.0.0
+    react-dom: ^18.2.0
     typescript: ^5.1.3
     vite: ^3.2.0
   languageName: unknown
@@ -17631,7 +17625,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prop-types@npm:^15.6.1, prop-types@npm:^15.6.2, prop-types@npm:^15.7.0, prop-types@npm:^15.7.2, prop-types@npm:^15.8.1":
+"prop-types@npm:^15.6.2, prop-types@npm:^15.7.2, prop-types@npm:^15.8.1":
   version: 15.8.1
   resolution: "prop-types@npm:15.8.1"
   dependencies:
@@ -18059,12 +18053,12 @@ __metadata:
     inflection: ~1.12.0
     jsonexport: ^3.2.0
     lodash: ~4.17.5
-    prop-types: ^15.6.1
+    prop-types: ^15.8.1
     query-string: ^7.1.1
     react: ^18.0.0
-    react-dom: ^17.0.0
+    react-dom: ^18.2.0
     react-hook-form: ^7.43.9
-    react-is: ^17.0.2
+    react-is: ^18.2.0
     react-router: ^6.1.0
     react-router-dom: ^6.1.0
     react-test-renderer: ^16.9.0 || ^17.0.0
@@ -18243,7 +18237,7 @@ __metadata:
     ra-data-fakerest: ^4.15.5
     ra-ui-materialui: ^4.15.5
     react: ^18.0.0
-    react-dom: ^17.0.0
+    react-dom: ^18.2.0
     react-hook-form: ^7.43.9
     rimraf: ^3.0.2
     tippy.js: ^6.3.7
@@ -18293,11 +18287,11 @@ __metadata:
     inflection: ~1.12.0
     lodash: ~4.17.5
     papaparse: ^5.3.0
-    prop-types: ^15.6.1
+    prop-types: ^15.8.1
     ra-data-local-storage: ^4.15.5
     react: ^18.0.0
     react-admin: ^4.15.5
-    react-dom: ^17.0.0
+    react-dom: ^18.2.0
     react-dropzone: ^12.0.4
     react-router: ^6.1.0
     react-router-dom: ^6.1.0
@@ -18318,6 +18312,9 @@ __metadata:
     "@tanstack/react-query": ^5.8.4
     "@testing-library/react": ^11.2.3
     "@types/dompurify": ^3.0.2
+    "@types/react": ^18.2.37
+    "@types/react-dom": ^18.2.16
+    "@types/react-transition-group": ^4.4.9
     autosuggest-highlight: ^3.1.1
     clsx: ^1.1.1
     cross-env: ^5.2.0
@@ -18331,21 +18328,21 @@ __metadata:
     inflection: ~1.12.0
     jsonexport: ^3.2.0
     lodash: ~4.17.5
-    prop-types: ^15.7.0
+    prop-types: ^15.8.1
     query-string: ^7.1.1
     ra-core: ^4.15.5
     ra-i18n-polyglot: ^4.15.5
     ra-language-english: ^4.15.5
     react: ^18.0.0
-    react-dom: ^17.0.0
+    react-dom: ^18.2.0
     react-dropzone: ^12.0.4
     react-error-boundary: ^3.1.4
     react-hook-form: ^7.43.9
-    react-is: ^17.0.0
+    react-is: ^18.2.0
     react-router: ^6.1.0
     react-router-dom: ^6.1.0
     react-test-renderer: ~16.8.6
-    react-transition-group: ^4.4.1
+    react-transition-group: ^4.4.5
     rimraf: ^3.0.2
     typescript: ^5.1.3
   peerDependencies:
@@ -18440,17 +18437,17 @@ __metadata:
     "@types/jest": ^29.5.2
     "@types/lodash": ~4.14.168
     "@types/react": ^18.2.37
-    "@types/react-dom": ^17.0.9
+    "@types/react-dom": ^18.2.16
     "@vitejs/plugin-react": ^2.2.0
     clsx: ^1.1.1
     date-fns: ^2.19.0
     faker: ~5.4.0
     lodash: ~4.17.5
-    prop-types: ^15.7.2
+    prop-types: ^15.8.1
     ra-data-fakerest: ^4.12.0
     react: ^18.0.0
     react-admin: ^4.12.0
-    react-dom: ^17.0.0
+    react-dom: ^18.2.0
     react-error-boundary: ^3.1.4
     react-router: ^6.1.0
     react-router-dom: ^6.1.0
@@ -18500,7 +18497,7 @@ __metadata:
     prettier: ~2.1.1
     raf: ~3.4.1
     react: ^18.0.0
-    react-dom: ^17.0.0
+    react-dom: ^18.2.0
     storybook: ^7.5.1
     ts-jest: ^29.1.0
     typescript: ^5.1.3
@@ -18615,19 +18612,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-dom@npm:^17.0.0":
-  version: 17.0.2
-  resolution: "react-dom@npm:17.0.2"
-  dependencies:
-    loose-envify: ^1.1.0
-    object-assign: ^4.1.1
-    scheduler: ^0.20.2
-  peerDependencies:
-    react: 17.0.2
-  checksum: 51abbcb72450fe527ebf978c3bc989ba266630faaa53f47a2fae5392369729e8de62b2e4683598cbe651ea7873cd34ec7d5127e2f50bf4bfe6bd0c3ad9bddcb0
-  languageName: node
-  linkType: hard
-
 "react-dom@npm:^18.2.0":
   version: 18.2.0
   resolution: "react-dom@npm:18.2.0"
@@ -18728,14 +18712,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-is@npm:^16.12.0 || ^17.0.0, react-is@npm:^17.0.0, react-is@npm:^17.0.1, react-is@npm:^17.0.2":
+"react-is@npm:^16.12.0 || ^17.0.0, react-is@npm:^17.0.1, react-is@npm:^17.0.2":
   version: 17.0.2
   resolution: "react-is@npm:17.0.2"
   checksum: 2bdb6b93fbb1820b024b496042cce405c57e2f85e777c9aabd55f9b26d145408f9f74f5934676ffdc46f3dcff656d78413a6e43968e7b3f92eea35b3052e9053
   languageName: node
   linkType: hard
 
-"react-is@npm:^18.0.0":
+"react-is@npm:^18.0.0, react-is@npm:^18.2.0":
   version: 18.2.0
   resolution: "react-is@npm:18.2.0"
   checksum: 6eb5e4b28028c23e2bfcf73371e72cd4162e4ac7ab445ddae2afe24e347a37d6dc22fae6e1748632cd43c6d4f9b8f86dcf26bf9275e1874f436d129952528ae0
@@ -18990,7 +18974,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-transition-group@npm:^4.4.1, react-transition-group@npm:^4.4.2":
+"react-transition-group@npm:^4.4.2":
   version: 4.4.2
   resolution: "react-transition-group@npm:4.4.2"
   dependencies:
@@ -19002,6 +18986,21 @@ __metadata:
     react: ">=16.6.0"
     react-dom: ">=16.6.0"
   checksum: afaf835854526065d246532714a3833a7c5fbcf21303e1479008ff6f1ec1ae44ecd151f74f357c60511a1e49de65cb9b81bf4d7858b9ee19e636b9a62a6daaa4
+  languageName: node
+  linkType: hard
+
+"react-transition-group@npm:^4.4.5":
+  version: 4.4.5
+  resolution: "react-transition-group@npm:4.4.5"
+  dependencies:
+    "@babel/runtime": ^7.5.5
+    dom-helpers: ^5.0.1
+    loose-envify: ^1.4.0
+    prop-types: ^15.6.2
+  peerDependencies:
+    react: ">=16.6.0"
+    react-dom: ">=16.6.0"
+  checksum: 2ba754ba748faefa15f87c96dfa700d5525054a0141de8c75763aae6734af0740e77e11261a1e8f4ffc08fd9ab78510122e05c21c2d79066c38bb6861a886c82
   languageName: node
   linkType: hard
 
@@ -20050,7 +20049,7 @@ __metadata:
     "@vitejs/plugin-react": ^2.2.0
     jsonexport: ^3.2.0
     lodash: ~4.17.5
-    prop-types: ^15.7.2
+    prop-types: ^15.8.1
     proxy-polyfill: ^0.3.0
     ra-data-fakerest: ^4.15.5
     ra-i18n-polyglot: ^4.15.5
@@ -20060,7 +20059,7 @@ __metadata:
     react: ^18.0.0
     react-admin: ^4.15.5
     react-app-polyfill: ^1.0.4
-    react-dom: ^17.0.0
+    react-dom: ^18.2.0
     react-hook-form: ^7.43.9
     react-router: ^6.1.0
     react-router-dom: ^6.1.0
@@ -21236,7 +21235,7 @@ __metadata:
   resolution: "tutorial@workspace:examples/tutorial"
   dependencies:
     "@types/react": ^18.2.37
-    "@types/react-dom": ^18.0.7
+    "@types/react-dom": ^18.2.16
     "@vitejs/plugin-react": ^2.2.0
     ra-data-json-server: ^4.12.0
     react: ^18.2.0
