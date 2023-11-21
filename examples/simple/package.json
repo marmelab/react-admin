@@ -16,7 +16,7 @@
         "@tanstack/react-query": "^5.8.4",
         "jsonexport": "^3.2.0",
         "lodash": "~4.17.5",
-        "prop-types": "^15.7.2",
+        "prop-types": "^15.8.1",
         "proxy-polyfill": "^0.3.0",
         "ra-data-fakerest": "^4.15.5",
         "ra-i18n-polyglot": "^4.15.5",
@@ -25,7 +25,7 @@
         "ra-language-french": "^4.15.5",
         "react": "^18.0.0",
         "react-admin": "^4.15.5",
-        "react-dom": "^17.0.0",
+        "react-dom": "^18.2.0",
         "react-hook-form": "^7.43.9",
         "react-router": "^6.1.0",
         "react-router-dom": "^6.1.0"
