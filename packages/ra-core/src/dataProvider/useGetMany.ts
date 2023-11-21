@@ -3,11 +3,12 @@ import {
     UseQueryOptions,
     UseQueryResult,
     useQueryClient,
-    hashQueryKey,
-} from 'react-query';
+    hashKey,
+} from '@tanstack/react-query';
 
 import { RaRecord, GetManyParams } from '../types';
 import { useDataProvider } from './useDataProvider';
+import { useEffect } from 'react';
 
 /**
  * Call the dataProvider.getMany() method and return the resolved result
@@ -52,15 +53,16 @@ import { useDataProvider } from './useDataProvider';
 export const useGetMany = <RecordType extends RaRecord = any>(
     resource: string,
     params: Partial<GetManyParams> = {},
-    options?: UseQueryOptions<RecordType[], Error>
+    options: UseGetManyOptions<RecordType> = {}
 ): UseGetManyHookValue<RecordType> => {
     const { ids, meta } = params;
     const dataProvider = useDataProvider();
     const queryClient = useQueryClient();
     const queryCache = queryClient.getQueryCache();
+    const { onError, onSuccess, ...queryOptions } = options;
 
-    return useQuery<RecordType[], Error, RecordType[]>(
-        [
+    const result = useQuery<RecordType[], Error, RecordType[]>({
+        queryKey: [
             resource,
             'getMany',
             {
@@ -68,7 +70,7 @@ export const useGetMany = <RecordType extends RaRecord = any>(
                 meta,
             },
         ],
-        () => {
+        queryFn: () => {
             if (!ids || ids.length === 0) {
                 // no need to call the dataProvider
                 return Promise.resolve([]);
@@ -77,39 +79,61 @@ export const useGetMany = <RecordType extends RaRecord = any>(
                 .getMany<RecordType>(resource, { ids, meta })
                 .then(({ data }) => data);
         },
-        {
-            placeholderData: () => {
-                const records =
-                    !ids || ids.length === 0
-                        ? []
-                        : ids.map(id => {
-                              const queryHash = hashQueryKey([
-                                  resource,
-                                  'getOne',
-                                  { id: String(id), meta },
-                              ]);
-                              return queryCache.get<RecordType>(queryHash)
-                                  ?.state?.data;
-                          });
-                if (records.some(record => record === undefined)) {
-                    return undefined;
-                } else {
-                    return records as RecordType[];
-                }
-            },
-            onSuccess: data => {
-                // optimistically populate the getOne cache
-                data.forEach(record => {
-                    queryClient.setQueryData(
-                        [resource, 'getOne', { id: String(record.id), meta }],
-                        oldRecord => oldRecord ?? record
-                    );
-                });
-            },
-            retry: false,
-            ...options,
+        placeholderData: () => {
+            const records =
+                !ids || ids.length === 0
+                    ? []
+                    : ids.map(id => {
+                          const queryHash = hashKey([
+                              resource,
+                              'getOne',
+                              { id: String(id), meta },
+                          ]);
+                          return queryCache.get<RecordType>(queryHash)?.state
+                              ?.data;
+                      });
+            if (records.some(record => record === undefined)) {
+                return undefined;
+            } else {
+                return records as RecordType[];
+            }
+        },
+        retry: false,
+        ...queryOptions,
+    });
+
+    useEffect(() => {
+        if (result.data) {
+            // optimistically populate the getOne cache
+            result.data.forEach(record => {
+                queryClient.setQueryData(
+                    [resource, 'getOne', { id: String(record.id), meta }],
+                    oldRecord => oldRecord ?? record
+                );
+            });
         }
-    );
+
+        // execute call-time onSuccess if provided
+        if (onSuccess) {
+            onSuccess(result.data);
+        }
+    }, [queryClient, meta, onSuccess, resource, result.data]);
+
+    useEffect(() => {
+        if (result.error && onError) {
+            onError(result.error);
+        }
+    }, [onError, result.error]);
+
+    return result;
+};
+
+export type UseGetManyOptions<RecordType extends RaRecord = any> = Omit<
+    UseQueryOptions<RecordType[], Error>,
+    'queryKey' | 'queryFn'
+> & {
+    onSuccess?: (data: RecordType[]) => void;
+    onError?: (error: Error) => void;
 };
 
 export type UseGetManyHookValue<

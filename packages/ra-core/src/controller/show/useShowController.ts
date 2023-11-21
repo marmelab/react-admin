@@ -1,5 +1,5 @@
 import { useParams } from 'react-router-dom';
-import { UseQueryOptions } from 'react-query';
+import { UseQueryOptions } from '@tanstack/react-query';
 
 import { useAuthenticated } from '../../auth';
 import { RaRecord } from '../../types';
@@ -111,7 +111,9 @@ export const useShowController = <RecordType extends RaRecord = any>(
 export interface ShowControllerProps<RecordType extends RaRecord = any> {
     disableAuthentication?: boolean;
     id?: RecordType['id'];
-    queryOptions?: UseQueryOptions<RecordType> & { meta?: any };
+    queryOptions?: Omit<UseQueryOptions<RecordType>, 'queryFn' | 'queryKey'> & {
+        meta?: any;
+    };
     resource?: string;
 }
 

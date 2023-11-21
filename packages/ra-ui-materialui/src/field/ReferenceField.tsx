@@ -19,7 +19,7 @@ import {
     useTranslate,
     RaRecord,
 } from 'ra-core';
-import { UseQueryOptions } from 'react-query';
+import { UseQueryOptions } from '@tanstack/react-query';
 
 import { LinearProgress } from '../layout';
 import { Link } from '../Link';

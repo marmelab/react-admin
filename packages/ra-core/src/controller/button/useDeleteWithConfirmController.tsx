@@ -4,7 +4,7 @@ import {
     ReactEventHandler,
     SyntheticEvent,
 } from 'react';
-import { UseMutationOptions } from 'react-query';
+import { UseMutationOptions } from '@tanstack/react-query';
 
 import { useDelete } from '../../dataProvider';
 import { useUnselect } from '../../controller';
@@ -79,7 +79,7 @@ const useDeleteWithConfirmController = <RecordType extends RaRecord = any>(
     const notify = useNotify();
     const unselect = useUnselect(resource);
     const redirect = useRedirect();
-    const [deleteOne, { isLoading }] = useDelete<RecordType>();
+    const [deleteOne, { isPending }] = useDelete<RecordType>();
 
     const handleDialogOpen = e => {
         setOpen(true);
@@ -157,7 +157,7 @@ const useDeleteWithConfirmController = <RecordType extends RaRecord = any>(
 
     return {
         open,
-        isLoading,
+        isPending,
         handleDialogOpen,
         handleDialogClose,
         handleDelete,
@@ -183,7 +183,7 @@ export interface UseDeleteWithConfirmControllerParams<
 
 export interface UseDeleteWithConfirmControllerReturn {
     open: boolean;
-    isLoading: boolean;
+    isPending: boolean;
     handleDialogOpen: (e: SyntheticEvent) => void;
     handleDialogClose: (e: SyntheticEvent) => void;
     handleDelete: ReactEventHandler<any>;

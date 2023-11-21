@@ -5,7 +5,7 @@ import {
     UseMutationResult,
     useQueryClient,
     MutateOptions,
-} from 'react-query';
+} from '@tanstack/react-query';
 
 import { useDataProvider } from './useDataProvider';
 import { RaRecord, CreateParams, Identifier } from '../types';
@@ -88,8 +88,8 @@ export const useCreate = <
         ResultRecordType,
         MutationError,
         Partial<UseCreateMutateParams<RecordType>>
-    >(
-        ({
+    >({
+        mutationFn: ({
             resource: callTimeResource = resource,
             data: callTimeData = paramsRef.current.data,
             meta: callTimeMeta = paramsRef.current.meta,
@@ -100,36 +100,36 @@ export const useCreate = <
                     meta: callTimeMeta,
                 })
                 .then(({ data }) => data),
-        {
-            ...options,
-            onSuccess: (
-                data: ResultRecordType,
-                variables: Partial<UseCreateMutateParams<RecordType>> = {},
-                context: unknown
-            ) => {
-                const { resource: callTimeResource = resource } = variables;
-                queryClient.setQueryData(
-                    [callTimeResource, 'getOne', { id: String(data.id) }],
-                    data
-                );
-                queryClient.invalidateQueries([callTimeResource, 'getList']);
-                queryClient.invalidateQueries([
-                    callTimeResource,
-                    'getInfiniteList',
-                ]);
-                queryClient.invalidateQueries([callTimeResource, 'getMany']);
-                queryClient.invalidateQueries([
-                    callTimeResource,
-                    'getManyReference',
-                ]);
+        ...options,
+        onSuccess: (
+            data: ResultRecordType,
+            variables: Partial<UseCreateMutateParams<RecordType>> = {},
+            context: unknown
+        ) => {
+            const { resource: callTimeResource = resource } = variables;
+            queryClient.setQueryData(
+                [callTimeResource, 'getOne', { id: String(data.id) }],
+                data
+            );
+            queryClient.invalidateQueries({
+                queryKey: [callTimeResource, 'getList'],
+            });
+            queryClient.invalidateQueries({
+                queryKey: [callTimeResource, 'getInfiniteList'],
+            });
+            queryClient.invalidateQueries({
+                queryKey: [callTimeResource, 'getMany'],
+            });
+            queryClient.invalidateQueries({
+                queryKey: [callTimeResource, 'getManyReference'],
+            });
 
-                if (options.onSuccess) {
-                    options.onSuccess(data, variables, context);
-                }
-                // call-time success callback is executed by react-query
-            },
-        }
-    );
+            if (options.onSuccess) {
+                options.onSuccess(data, variables, context);
+            }
+            // call-time success callback is executed by react-query
+        },
+    });
 
     const create = (
         callTimeResource: string = resource,
@@ -172,10 +172,13 @@ export type UseCreateOptions<
     RecordType extends Omit<RaRecord, 'id'> = any,
     MutationError = unknown,
     ResultRecordType extends RaRecord = RecordType & { id: Identifier }
-> = UseMutationOptions<
-    ResultRecordType,
-    MutationError,
-    Partial<UseCreateMutateParams<RecordType>>
+> = Omit<
+    UseMutationOptions<
+        ResultRecordType,
+        MutationError,
+        Partial<UseCreateMutateParams<RecordType>>
+    >,
+    'mutationFn'
 > & { returnPromise?: boolean };
 
 export type CreateMutationFunction<

@@ -24,11 +24,13 @@ export interface SaveContextValue<
 
 export type SaveHandler<RecordType> = (
     record: Partial<RecordType>,
-    callbacks?: {
-        onSuccess?: OnSuccess;
-        onError?: OnError;
-        transform?: TransformData;
-    }
+    callbacks?: SaveHandlerCallbacks
 ) => Promise<void | RecordType> | Record<string, string>;
 
+export type SaveHandlerCallbacks = {
+    onSuccess?: OnSuccess;
+    onError?: OnError;
+    transform?: TransformData;
+    meta?: any;
+};
 export const SaveContext = createContext<SaveContextValue>(undefined);

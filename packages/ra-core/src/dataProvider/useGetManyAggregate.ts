@@ -1,11 +1,11 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import {
     QueryClient,
     useQueryClient,
     useQuery,
     UseQueryOptions,
-    hashQueryKey,
-} from 'react-query';
+    hashKey,
+} from '@tanstack/react-query';
 import union from 'lodash/union';
 
 import { UseGetManyHookValue } from './useGetMany';
@@ -68,15 +68,16 @@ import { useDataProvider } from './useDataProvider';
 export const useGetManyAggregate = <RecordType extends RaRecord = any>(
     resource: string,
     params: GetManyParams,
-    options: UseQueryOptions<RecordType[], Error> = {}
+    options: UseGetManyAggregateOptions<RecordType> = {}
 ): UseGetManyHookValue<RecordType> => {
     const dataProvider = useDataProvider();
     const queryClient = useQueryClient();
     const queryCache = queryClient.getQueryCache();
+    const { onError, onSuccess, ...queryOptions } = options;
     const { ids, meta } = params;
     const placeholderData = useMemo(() => {
         const records = (Array.isArray(ids) ? ids : [ids]).map(id => {
-            const queryHash = hashQueryKey([
+            const queryHash = hashKey([
                 resource,
                 'getOne',
                 { id: String(id), meta },
@@ -90,8 +91,8 @@ export const useGetManyAggregate = <RecordType extends RaRecord = any>(
         }
     }, [ids, queryCache, resource, meta]);
 
-    return useQuery<RecordType[], Error, RecordType[]>(
-        [
+    const result = useQuery<RecordType[], Error, RecordType[]>({
+        queryKey: [
             resource,
             'getMany',
             {
@@ -99,7 +100,7 @@ export const useGetManyAggregate = <RecordType extends RaRecord = any>(
                 meta,
             },
         ],
-        () =>
+        queryFn: () =>
             new Promise((resolve, reject) => {
                 if (!ids || ids.length === 0) {
                     // no need to call the dataProvider
@@ -116,21 +117,35 @@ export const useGetManyAggregate = <RecordType extends RaRecord = any>(
                     queryClient,
                 });
             }),
-        {
-            placeholderData,
-            onSuccess: data => {
-                // optimistically populate the getOne cache
-                (data ?? []).forEach(record => {
-                    queryClient.setQueryData(
-                        [resource, 'getOne', { id: String(record.id), meta }],
-                        oldRecord => oldRecord ?? record
-                    );
-                });
-            },
-            retry: false,
-            ...options,
+        placeholderData,
+        retry: false,
+        ...queryOptions,
+    });
+
+    useEffect(() => {
+        if (result.data) {
+            // optimistically populate the getOne cache
+            (result.data ?? []).forEach(record => {
+                queryClient.setQueryData(
+                    [resource, 'getOne', { id: String(record.id), meta }],
+                    oldRecord => oldRecord ?? record
+                );
+            });
+
+            // execute call-time onSuccess if provided
+            if (onSuccess) {
+                onSuccess(result.data);
+            }
         }
-    );
+    }, [queryClient, meta, onSuccess, resource, result.data]);
+
+    useEffect(() => {
+        if (result.error && onError) {
+            onError(result.error);
+        }
+    }, [onError, result.error]);
+
+    return result;
 };
 
 /**
@@ -269,8 +284,8 @@ const callGetManyQueries = batch((calls: GetManyCallArgs[]) => {
          * and resolve each of the promises using the results
          */
         queryClient
-            .fetchQuery<any[], Error, any[]>(
-                [
+            .fetchQuery<any[], Error, any[]>({
+                queryKey: [
                     resource,
                     'getMany',
                     {
@@ -278,14 +293,14 @@ const callGetManyQueries = batch((calls: GetManyCallArgs[]) => {
                         meta: uniqueMeta,
                     },
                 ],
-                () =>
+                queryFn: () =>
                     dataProvider
                         .getMany<any>(resource, {
                             ids: aggregatedIds,
                             meta: uniqueMeta,
                         })
-                        .then(({ data }) => data)
-            )
+                        .then(({ data }) => data),
+            })
             .then(data => {
                 callsForResource.forEach(({ ids, resolve }) => {
                     resolve(
@@ -302,3 +317,11 @@ const callGetManyQueries = batch((calls: GetManyCallArgs[]) => {
             );
     });
 });
+
+export type UseGetManyAggregateOptions<RecordType extends RaRecord> = Omit<
+    UseQueryOptions<RecordType[]>,
+    'queryKey' | 'queryFn'
+> & {
+    onSuccess?: (data: RecordType[]) => void;
+    onError?: (error: Error) => void;
+};

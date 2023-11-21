@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { QueryClientProvider, QueryClient } from 'react-query';
+import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 import {
     DataProviderContext,
     RecordContextProvider,

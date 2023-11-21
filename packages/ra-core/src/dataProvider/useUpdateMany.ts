@@ -7,7 +7,8 @@ import {
     MutateOptions,
     QueryKey,
     UseInfiniteQueryResult,
-} from 'react-query';
+    InfiniteData,
+} from '@tanstack/react-query';
 
 import { useDataProvider } from './useDataProvider';
 import undoableEventEmitter from './undoableEventEmitter';
@@ -132,22 +133,26 @@ export const useUpdateMany = <
             data?: RecordType[];
         };
 
-        ids.forEach(id =>
+        ids.forEach(id => {
             queryClient.setQueryData(
                 [resource, 'getOne', { id: String(id), meta }],
                 (record: RecordType) => ({ ...record, ...data }),
                 { updatedAt }
-            )
-        );
+            );
+        });
         queryClient.setQueriesData(
-            [resource, 'getList'],
+            { queryKey: [resource, 'getList'] },
             (res: GetListResult) =>
                 res && res.data ? { ...res, data: updateColl(res.data) } : res,
             { updatedAt }
         );
         queryClient.setQueriesData(
-            [resource, 'getInfiniteList'],
-            (res: UseInfiniteQueryResult<GetInfiniteListResult>['data']) =>
+            { queryKey: [resource, 'getInfiniteList'] },
+            (
+                res: UseInfiniteQueryResult<
+                    InfiniteData<GetInfiniteListResult>
+                >['data']
+            ) =>
                 res && res.pages
                     ? {
                           ...res,
@@ -160,13 +165,13 @@ export const useUpdateMany = <
             { updatedAt }
         );
         queryClient.setQueriesData(
-            [resource, 'getMany'],
+            { queryKey: [resource, 'getMany'] },
             (coll: RecordType[]) =>
                 coll && coll.length > 0 ? updateColl(coll) : coll,
             { updatedAt }
         );
         queryClient.setQueriesData(
-            [resource, 'getManyReference'],
+            { queryKey: [resource, 'getManyReference'] },
             (res: GetListResult) =>
                 res && res.data
                     ? { data: updateColl(res.data), total: res.total }
@@ -179,8 +184,8 @@ export const useUpdateMany = <
         Array<RecordType['id']>,
         MutationError,
         Partial<UseUpdateManyMutateParams<RecordType>>
-    >(
-        ({
+    >({
+        mutationFn: ({
             resource: callTimeResource = resource,
             ids: callTimeIds = paramsRef.current.ids,
             data: callTimeData = paramsRef.current.data,
@@ -193,105 +198,89 @@ export const useUpdateMany = <
                     meta: callTimeMeta,
                 })
                 .then(({ data }) => data),
-        {
-            ...reactMutationOptions,
-            onMutate: async (
-                variables: Partial<UseUpdateManyMutateParams<RecordType>>
-            ) => {
-                if (reactMutationOptions.onMutate) {
-                    const userContext =
-                        (await reactMutationOptions.onMutate(variables)) || {};
-                    return {
-                        snapshot: snapshot.current,
-                        // @ts-ignore
-                        ...userContext,
-                    };
-                } else {
-                    // Return a context object with the snapshot value
-                    return { snapshot: snapshot.current };
-                }
-            },
-            onError: (
-                error: MutationError,
-                variables: Partial<UseUpdateManyMutateParams<RecordType>> = {},
-                context: { snapshot: Snapshot }
-            ) => {
-                if (
-                    mode.current === 'optimistic' ||
-                    mode.current === 'undoable'
-                ) {
-                    // If the mutation fails, use the context returned from onMutate to rollback
-                    context.snapshot.forEach(([key, value]) => {
-                        queryClient.setQueryData(key, value);
-                    });
-                }
+        ...reactMutationOptions,
+        onMutate: async (
+            variables: Partial<UseUpdateManyMutateParams<RecordType>>
+        ) => {
+            if (reactMutationOptions.onMutate) {
+                const userContext =
+                    (await reactMutationOptions.onMutate(variables)) || {};
+                return {
+                    snapshot: snapshot.current,
+                    // @ts-ignore
+                    ...userContext,
+                };
+            } else {
+                // Return a context object with the snapshot value
+                return { snapshot: snapshot.current };
+            }
+        },
+        onError: (
+            error: MutationError,
+            variables: Partial<UseUpdateManyMutateParams<RecordType>> = {},
+            context: { snapshot: Snapshot }
+        ) => {
+            if (mode.current === 'optimistic' || mode.current === 'undoable') {
+                // If the mutation fails, use the context returned from onMutate to rollback
+                context.snapshot.forEach(([key, value]) => {
+                    queryClient.setQueryData(key, value);
+                });
+            }
 
-                if (reactMutationOptions.onError) {
-                    return reactMutationOptions.onError(
-                        error,
-                        variables,
-                        context
-                    );
-                }
-                // call-time error callback is executed by react-query
-            },
-            onSuccess: (
-                data: Array<RecordType['id']>,
-                variables: Partial<UseUpdateManyMutateParams<RecordType>> = {},
-                context: unknown
-            ) => {
-                if (mode.current === 'pessimistic') {
-                    // update the getOne and getList query cache with the new result
-                    const {
-                        resource: callTimeResource = resource,
-                        ids: callTimeIds = ids,
-                        data: callTimeData = data,
-                        meta: callTimeMeta = meta,
-                    } = variables;
-                    updateCache({
-                        resource: callTimeResource,
-                        ids: callTimeIds,
-                        data: callTimeData,
-                        meta: callTimeMeta,
-                    });
+            if (reactMutationOptions.onError) {
+                return reactMutationOptions.onError(error, variables, context);
+            }
+            // call-time error callback is executed by react-query
+        },
+        onSuccess: (
+            data: Array<RecordType['id']>,
+            variables: Partial<UseUpdateManyMutateParams<RecordType>> = {},
+            context: unknown
+        ) => {
+            if (mode.current === 'pessimistic') {
+                // update the getOne and getList query cache with the new result
+                const {
+                    resource: callTimeResource = resource,
+                    ids: callTimeIds = ids,
+                    data: callTimeData = data,
+                    meta: callTimeMeta = meta,
+                } = variables;
+                updateCache({
+                    resource: callTimeResource,
+                    ids: callTimeIds,
+                    data: callTimeData,
+                    meta: callTimeMeta,
+                });
 
-                    if (reactMutationOptions.onSuccess) {
-                        reactMutationOptions.onSuccess(
-                            data,
-                            variables,
-                            context
-                        );
-                    }
-                    // call-time success callback is executed by react-query
+                if (reactMutationOptions.onSuccess) {
+                    reactMutationOptions.onSuccess(data, variables, context);
                 }
-            },
-            onSettled: (
-                data: Array<RecordType['id']>,
-                error: MutationError,
-                variables: Partial<UseUpdateManyMutateParams<RecordType>> = {},
-                context: { snapshot: Snapshot }
-            ) => {
-                if (
-                    mode.current === 'optimistic' ||
-                    mode.current === 'undoable'
-                ) {
-                    // Always refetch after error or success:
-                    context.snapshot.forEach(([key]) => {
-                        queryClient.invalidateQueries(key);
-                    });
-                }
+                // call-time success callback is executed by react-query
+            }
+        },
+        onSettled: (
+            data: Array<RecordType['id']>,
+            error: MutationError,
+            variables: Partial<UseUpdateManyMutateParams<RecordType>> = {},
+            context: { snapshot: Snapshot }
+        ) => {
+            if (mode.current === 'optimistic' || mode.current === 'undoable') {
+                // Always refetch after error or success:
+                context.snapshot.forEach(([queryKey]) => {
+                    queryClient.invalidateQueries({ queryKey });
+                });
+            }
 
-                if (reactMutationOptions.onSettled) {
-                    return reactMutationOptions.onSettled(
-                        data,
-                        error,
-                        variables,
-                        context
-                    );
-                }
-            },
-        }
-    );
+            if (reactMutationOptions.onSettled) {
+                return reactMutationOptions.onSettled(
+                    data,
+                    error,
+                    variables,
+                    context
+                );
+            }
+        },
+    });
 
     const updateMany = async (
         callTimeResource: string = resource,
@@ -372,13 +361,16 @@ export const useUpdateMany = <
          * @see https://react-query-v3.tanstack.com/reference/QueryClient#queryclientgetqueriesdata
          */
         snapshot.current = queryKeys.reduce(
-            (prev, curr) => prev.concat(queryClient.getQueriesData(curr)),
+            (prev, queryKey) =>
+                prev.concat(queryClient.getQueriesData({ queryKey })),
             [] as Snapshot
         );
 
         // Cancel any outgoing re-fetches (so they don't overwrite our optimistic update)
         await Promise.all(
-            snapshot.current.map(([key]) => queryClient.cancelQueries(key))
+            snapshot.current.map(([queryKey]) =>
+                queryClient.cancelQueries({ queryKey })
+            )
         );
 
         // Optimistically update to the new data
@@ -457,7 +449,7 @@ export type UseUpdateManyOptions<
 > = UseMutationOptions<
     Array<RecordType['id']>,
     MutationError,
-    Partial<UseUpdateManyMutateParams<RecordType>>
+    Partial<Omit<UseUpdateManyMutateParams<RecordType>, 'mutationFn'>>
 > & { mutationMode?: MutationMode };
 
 export type UseUpdateManyResult<

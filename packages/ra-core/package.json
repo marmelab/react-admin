@@ -32,12 +32,12 @@
         "@types/jest": "^29.5.2",
         "@types/node": "^17.0.8",
         "@types/node-polyglot": "^0.4.31",
-        "@types/react": "^17.0.20",
+        "@types/react": "^18.2.37",
         "cross-env": "^5.2.0",
         "expect": "^27.4.6",
         "history": "^5.1.0",
         "ignore-styles": "~5.0.1",
-        "react": "^17.0.0",
+        "react": "^18.0.0",
         "react-dom": "^17.0.0",
         "react-hook-form": "^7.43.9",
         "react-router": "^6.1.0",
@@ -58,6 +58,7 @@
         "react-router-dom": "^6.1.0"
     },
     "dependencies": {
+        "@tanstack/react-query": "^5.8.4",
         "clsx": "^1.1.1",
         "date-fns": "^2.19.0",
         "eventemitter3": "^4.0.7",
@@ -66,8 +67,7 @@
         "lodash": "~4.17.5",
         "prop-types": "^15.6.1",
         "query-string": "^7.1.1",
-        "react-is": "^17.0.2",
-        "react-query": "^3.32.1"
+        "react-is": "^17.0.2"
     },
     "gitHead": "e936ff2c3f887d2e98ef136cf3b3f3d254725fc4"
 }

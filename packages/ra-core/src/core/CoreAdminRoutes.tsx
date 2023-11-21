@@ -120,7 +120,8 @@ export const CoreAdminRoutes = (props: CoreAdminRoutesProps) => {
     );
 };
 
-export interface CoreAdminRoutesProps extends CoreLayoutProps {
+export interface CoreAdminRoutesProps
+    extends Omit<CoreLayoutProps, 'children'> {
     layout: LayoutComponent;
     catchAll: CatchAllComponent;
     children?: AdminChildren;

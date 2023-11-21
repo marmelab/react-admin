@@ -1,5 +1,5 @@
 import get from 'lodash/get';
-import { UseQueryOptions } from 'react-query';
+import { UseQueryOptions } from '@tanstack/react-query';
 
 import { useGetManyReference } from '../../dataProvider';
 import { useNotify } from '../../notification';
@@ -15,10 +15,13 @@ export interface UseReferenceOneFieldControllerParams<
     target: string;
     sort?: SortPayload;
     filter?: any;
-    queryOptions?: UseQueryOptions<{
-        data: RecordType[];
-        total: number;
-    }> & { meta?: any };
+    queryOptions?: Omit<
+        UseQueryOptions<{
+            data: RecordType[];
+            total: number;
+        }>,
+        'queryFn' | 'queryKey'
+    > & { meta?: any };
 }
 
 /**

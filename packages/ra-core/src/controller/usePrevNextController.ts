@@ -1,4 +1,8 @@
-import { UseQueryOptions, useQuery, useQueryClient } from 'react-query';
+import {
+    UseQueryOptions,
+    useQuery,
+    useQueryClient,
+} from '@tanstack/react-query';
 import { useResourceContext } from '../core';
 import { useDataProvider } from '../dataProvider';
 import { useStore } from '../store';
@@ -180,14 +184,12 @@ export const usePrevNextController = <RecordType extends RaRecord = any>(
     // If the previous and next ids are not in the cache, fetch the entire list.
     // This is necessary e.g. when coming directly to a detail page,
     // without displaying the list first
-    const { data, error, isLoading } = useQuery(
-        [resource, 'getList', params],
-        () => dataProvider.getList(resource, params),
-        {
-            enabled: !canUseCacheData,
-            ...otherQueryOptions,
-        }
-    );
+    const { data, error, isLoading } = useQuery({
+        queryKey: [resource, 'getList', params],
+        queryFn: () => dataProvider.getList(resource, params),
+        enabled: !canUseCacheData,
+        ...otherQueryOptions,
+    });
 
     const finalData = canUseCacheData ? queryData.data : data?.data || [];
 
@@ -234,14 +236,17 @@ export interface UsePrevNextControllerProps<RecordType extends RaRecord = any> {
     filterDefaultValues?: FilterPayload;
     sort?: SortPayload;
     resource?: string;
-    queryOptions?: UseQueryOptions<{
-        data: RecordType[];
-        total?: number;
-        pageInfo?: {
-            hasNextPage?: boolean;
-            hasPreviousPage?: boolean;
-        };
-    }> & { meta?: any };
+    queryOptions?: Omit<
+        UseQueryOptions<{
+            data: RecordType[];
+            total?: number;
+            pageInfo?: {
+                hasNextPage?: boolean;
+                hasPreviousPage?: boolean;
+            };
+        }>,
+        'queryFn' | 'queryKey'
+    > & { meta?: any };
 }
 
 export type UsePrevNextControllerResult =

@@ -2,7 +2,7 @@ import * as React from 'react';
 import { createContext, useCallback, useState, useMemo } from 'react';
 import isEqual from 'lodash/isEqual';
 
-import { ResourceDefinition, ResourceOptions } from '../types';
+import { AdminChildren, ResourceDefinition, ResourceOptions } from '../types';
 
 export type ResourceDefinitions<OptionsType extends ResourceOptions = any> = {
     [name: string]: ResourceDefinition<OptionsType>;
@@ -47,7 +47,7 @@ export const ResourceDefinitionContextProvider = ({
     children,
 }: {
     definitions?: ResourceDefinitions;
-    children: React.ReactNode;
+    children: AdminChildren;
 }) => {
     const [definitions, setState] = useState<ResourceDefinitions>(
         defaultDefinitions
@@ -78,7 +78,8 @@ export const ResourceDefinitionContextProvider = ({
 
     return (
         <ResourceDefinitionContext.Provider value={contextValue}>
-            {children}
+            {/* Had to cast here because Provider only accepts ReactNode but we might have a render function */}
+            {children as React.ReactNode}
         </ResourceDefinitionContext.Provider>
     );
 };

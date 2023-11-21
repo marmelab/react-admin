@@ -1,10 +1,10 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import {
     useQuery,
     UseQueryOptions,
     UseQueryResult,
     useQueryClient,
-} from 'react-query';
+} from '@tanstack/react-query';
 
 import {
     RaRecord,
@@ -62,7 +62,7 @@ import { useDataProvider } from './useDataProvider';
 export const useGetManyReference = <RecordType extends RaRecord = any>(
     resource: string,
     params: Partial<GetManyReferenceParams> = {},
-    options?: UseQueryOptions<{ data: RecordType[]; total: number }, Error>
+    options: UseGetManyReferenceHookOptions<RecordType> = {}
 ): UseGetManyReferenceHookValue<RecordType> => {
     const {
         target,
@@ -74,17 +74,19 @@ export const useGetManyReference = <RecordType extends RaRecord = any>(
     } = params;
     const dataProvider = useDataProvider();
     const queryClient = useQueryClient();
+    const { onError, onSuccess, ...queryOptions } = options;
+
     const result = useQuery<
         GetManyReferenceResult<RecordType>,
         Error,
         GetManyReferenceResult<RecordType>
-    >(
-        [
+    >({
+        queryKey: [
             resource,
             'getManyReference',
             { target, id, pagination, sort, filter, meta },
         ],
-        () => {
+        queryFn: () => {
             if (!target || id == null) {
                 // check at runtime to support partial parameters with the enabled option
                 return Promise.reject(new Error('target and id are required'));
@@ -104,19 +106,31 @@ export const useGetManyReference = <RecordType extends RaRecord = any>(
                     pageInfo,
                 }));
         },
-        {
-            onSuccess: value => {
-                // optimistically populate the getOne cache
-                value?.data?.forEach(record => {
-                    queryClient.setQueryData(
-                        [resource, 'getOne', { id: String(record.id), meta }],
-                        oldRecord => oldRecord ?? record
-                    );
-                });
-            },
-            ...options,
+        ...queryOptions,
+    });
+
+    useEffect(() => {
+        if (result.data) {
+            // optimistically populate the getOne cache
+            result.data?.data?.forEach(record => {
+                queryClient.setQueryData(
+                    [resource, 'getOne', { id: String(record.id), meta }],
+                    oldRecord => oldRecord ?? record
+                );
+            });
         }
-    );
+
+        // execute call-time onSuccess if provided
+        if (onSuccess) {
+            onSuccess(result.data);
+        }
+    }, [queryClient, meta, onSuccess, resource, result.data]);
+
+    useEffect(() => {
+        if (result.error && onError) {
+            onError(result.error);
+        }
+    }, [onError, result.error]);
 
     return useMemo(
         () =>
@@ -138,9 +152,19 @@ export const useGetManyReference = <RecordType extends RaRecord = any>(
     };
 };
 
+export type UseGetManyReferenceHookOptions<
+    RecordType extends RaRecord = any
+> = Omit<
+    UseQueryOptions<GetManyReferenceResult<RecordType>>,
+    'queryKey' | 'queryFn'
+> & {
+    onSuccess?: (data: GetManyReferenceResult<RecordType>) => void;
+    onError?: (error: Error) => void;
+};
+
 export type UseGetManyReferenceHookValue<
     RecordType extends RaRecord = any
-> = UseQueryResult<RecordType[], Error> & {
+> = Omit<UseQueryResult<RecordType[]>, 'queryKey' | 'queryFn'> & {
     total?: number;
     pageInfo?: {
         hasNextPage?: boolean;

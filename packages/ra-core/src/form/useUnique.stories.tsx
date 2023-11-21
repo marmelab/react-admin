@@ -15,7 +15,7 @@ import {
     useUnique,
 } from '..';
 import { createMemoryHistory } from 'history';
-import { QueryClient } from 'react-query';
+import { QueryClient } from '@tanstack/react-query';
 
 export default {
     title: 'ra-core/form/useUnique',

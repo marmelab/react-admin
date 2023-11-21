@@ -3,7 +3,7 @@ import { useCallback } from 'react';
 import { parse } from 'query-string';
 import { useLocation } from 'react-router-dom';
 import { Location } from 'history';
-import { UseMutationOptions } from 'react-query';
+import { UseMutationOptions } from '@tanstack/react-query';
 
 import { useAuthenticated } from '../../auth';
 import {
@@ -13,7 +13,11 @@ import {
 } from '../../dataProvider';
 import { useRedirect, RedirectionSideEffect } from '../../routing';
 import { useNotify } from '../../notification';
-import { SaveContextValue, useMutationMiddlewares } from '../saveContext';
+import {
+    SaveContextValue,
+    SaveHandlerCallbacks,
+    useMutationMiddlewares,
+} from '../saveContext';
 import { useTranslate } from '../../i18n';
 import { Identifier, RaRecord, TransformData } from '../../types';
 import {
@@ -80,7 +84,7 @@ export const useCreateController = <
         unregisterMutationMiddleware,
     } = useMutationMiddlewares();
 
-    const [create, { isLoading: saving }] = useCreate<
+    const [create, { isPending: saving }] = useCreate<
         RecordType,
         MutationOptionsError,
         ResultRecordType
@@ -94,7 +98,7 @@ export const useCreateController = <
                 onError: onErrorFromSave,
                 transform: transformFromSave,
                 meta: metaFromSave,
-            } = {}
+            } = {} as SaveHandlerCallbacks
         ) =>
             Promise.resolve(
                 transformFromSave

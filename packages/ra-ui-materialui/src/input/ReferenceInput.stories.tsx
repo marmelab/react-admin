@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { createMemoryHistory } from 'history';
 import { Admin, AdminContext, Datagrid, List, TextField } from 'react-admin';
-import { QueryClient } from 'react-query';
+import { QueryClient } from '@tanstack/react-query';
 import { Resource, Form, testDataProvider, useRedirect } from 'ra-core';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';

@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import { useParams } from 'react-router-dom';
-import { UseQueryOptions, UseMutationOptions } from 'react-query';
+import { UseQueryOptions, UseMutationOptions } from '@tanstack/react-query';
 
 import { useAuthenticated } from '../../auth';
 import { RaRecord, MutationMode, TransformData } from '../../types';
@@ -20,7 +20,11 @@ import {
     useGetResourceLabel,
     useGetRecordRepresentation,
 } from '../../core';
-import { SaveContextValue, useMutationMiddlewares } from '../saveContext';
+import {
+    SaveContextValue,
+    SaveHandlerCallbacks,
+    useMutationMiddlewares,
+} from '../saveContext';
 
 /**
  * Prepare data for the Edit view.
@@ -121,7 +125,7 @@ export const useEditController = <
 
     const recordCached = { id, previousData: record };
 
-    const [update, { isLoading: saving }] = useUpdate<
+    const [update, { isPending: saving }] = useUpdate<
         RecordType,
         MutationOptionsError
     >(resource, recordCached, {
@@ -138,7 +142,7 @@ export const useEditController = <
                 onError: onErrorFromSave,
                 transform: transformFromSave,
                 meta: metaFromSave,
-            } = {}
+            } = {} as SaveHandlerCallbacks
         ) =>
             Promise.resolve(
                 transformFromSave
@@ -256,7 +260,9 @@ export interface EditControllerProps<
         MutationOptionsError,
         UseUpdateMutateParams<RecordType>
     > & { meta?: any };
-    queryOptions?: UseQueryOptions<RecordType> & { meta?: any };
+    queryOptions?: Omit<UseQueryOptions<RecordType>, 'queryFn' | 'queryKey'> & {
+        meta?: any;
+    };
     redirect?: RedirectionSideEffect;
     resource?: string;
     transform?: TransformData;

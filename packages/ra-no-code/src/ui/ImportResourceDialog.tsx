@@ -10,7 +10,7 @@ import {
     TextField,
 } from '@mui/material';
 import { useDropzone } from 'react-dropzone';
-import { useQueryClient } from 'react-query';
+import { useQueryClient } from '@tanstack/react-query';
 
 import { useNotify } from 'react-admin';
 import { useNavigate } from 'react-router-dom';

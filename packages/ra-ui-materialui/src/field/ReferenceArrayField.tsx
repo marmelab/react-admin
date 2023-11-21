@@ -14,7 +14,7 @@ import {
 } from 'ra-core';
 import { styled } from '@mui/material/styles';
 import { SxProps } from '@mui/system';
-import { UseQueryOptions } from 'react-query';
+import { UseQueryOptions } from '@tanstack/react-query';
 
 import { fieldPropTypes, FieldProps } from './types';
 import { LinearProgress } from '../layout';

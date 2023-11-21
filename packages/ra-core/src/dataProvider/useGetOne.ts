@@ -1,5 +1,9 @@
-import { RaRecord, GetOneParams } from '../types';
-import { useQuery, UseQueryOptions, UseQueryResult } from 'react-query';
+import { RaRecord, GetOneParams, GetOneResult } from '../types';
+import {
+    useQuery,
+    UseQueryOptions,
+    UseQueryResult,
+} from '@tanstack/react-query';
 import { useDataProvider } from './useDataProvider';
 
 /**
@@ -44,22 +48,34 @@ import { useDataProvider } from './useDataProvider';
 export const useGetOne = <RecordType extends RaRecord = any>(
     resource: string,
     { id, meta }: GetOneParams<RecordType>,
-    options?: UseQueryOptions<RecordType>
+    options: UseGetOneOptions<RecordType> = {}
 ): UseGetOneHookValue<RecordType> => {
     const dataProvider = useDataProvider();
-    return useQuery<RecordType, unknown, RecordType>(
+    const { onError, onSuccess, ...queryOptions } = options;
+
+    const result = useQuery<RecordType>({
         // Sometimes the id comes as a string (e.g. when read from the URL in a Show view).
         // Sometimes the id comes as a number (e.g. when read from a Record in useGetList response).
         // As the react-query cache is type-sensitive, we always stringify the identifier to get a match
-        [resource, 'getOne', { id: String(id), meta }],
-        () =>
+        queryKey: [resource, 'getOne', { id: String(id), meta }],
+        queryFn: () =>
             dataProvider
                 .getOne<RecordType>(resource, { id, meta })
                 .then(({ data }) => data),
-        options
-    );
+        ...queryOptions,
+    });
+
+    return result;
+};
+
+export type UseGetOneOptions<RecordType extends RaRecord = any> = Omit<
+    UseQueryOptions<GetOneResult<RecordType>['data']>,
+    'queryKey' | 'queryFn'
+> & {
+    onSuccess?: (data: GetOneResult<RecordType>) => void;
+    onError?: (error: Error) => void;
 };
 
 export type UseGetOneHookValue<
     RecordType extends RaRecord = any
-> = UseQueryResult<RecordType>;
+> = UseQueryResult<GetOneResult<RecordType>['data']>;

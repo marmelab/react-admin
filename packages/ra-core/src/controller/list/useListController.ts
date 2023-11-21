@@ -1,5 +1,5 @@
 import { isValidElement, useEffect, useMemo } from 'react';
-import { UseQueryOptions } from 'react-query';
+import { UseQueryOptions } from '@tanstack/react-query';
 
 import { useAuthenticated } from '../../auth';
 import { useTranslate } from '../../i18n';
@@ -94,7 +94,7 @@ export const useListController = <RecordType extends RaRecord = any>(
             meta,
         },
         {
-            keepPreviousData: true,
+            placeholderData: previousData => previousData,
             retry: false,
             onError: error =>
                 notify(error?.message || 'ra.notification.http_error', {
@@ -336,14 +336,17 @@ export interface ListControllerProps<RecordType extends RaRecord = any> {
      *     );
      * }
      */
-    queryOptions?: UseQueryOptions<{
-        data: RecordType[];
-        total?: number;
-        pageInfo?: {
-            hasNextPage?: boolean;
-            hasPreviousPage?: boolean;
-        };
-    }> & { meta?: any };
+    queryOptions?: Omit<
+        UseQueryOptions<{
+            data: RecordType[];
+            total?: number;
+            pageInfo?: {
+                hasNextPage?: boolean;
+                hasPreviousPage?: boolean;
+            };
+        }>,
+        'queryFn' | 'queryKey'
+    > & { meta?: any };
 
     /**
      * The resource name. Defaults to the resource from ResourceContext.
