@@ -53,7 +53,9 @@ export const ImportResourceDialog = (props: ImportResourceDialogProps) => {
                     if (resourceAlreadyExists) {
                         // If we imported more records for an existing resource,
                         // we must refresh the list
-                        queryClient.refetchQueries([resource, 'getList']);
+                        queryClient.refetchQueries({
+                            queryKey: [resource, 'getList'],
+                        });
                     }
                 })
                 .catch(() => {
