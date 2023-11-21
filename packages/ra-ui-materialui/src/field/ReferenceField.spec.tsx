@@ -8,7 +8,7 @@ import {
     useGetMany,
     ResourceDefinitionContextProvider,
 } from 'ra-core';
-import { QueryClient } from 'react-query';
+import { QueryClient } from '@tanstack/react-query';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import { ReferenceField } from './ReferenceField';

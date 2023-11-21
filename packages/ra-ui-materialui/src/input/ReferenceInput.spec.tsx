@@ -1,7 +1,7 @@
 import * as React from 'react';
 import expect from 'expect';
 import { render, screen, waitFor, fireEvent } from '@testing-library/react';
-import { QueryClient } from 'react-query';
+import { QueryClient } from '@tanstack/react-query';
 import {
     testDataProvider,
     useChoicesContext,
