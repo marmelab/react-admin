@@ -27,8 +27,8 @@
     },
     "devDependencies": {
         "@hookform/resolvers": "^3.2.0",
-        "@testing-library/react": "^11.2.3",
-        "@testing-library/react-hooks": "^7.0.2",
+        "@testing-library/react": "^14.1.2",
+        "@testing-library/react-hooks": "^8.0.1",
         "@types/jest": "^29.5.2",
         "@types/node": "^17.0.8",
         "@types/node-polyglot": "^0.4.31",

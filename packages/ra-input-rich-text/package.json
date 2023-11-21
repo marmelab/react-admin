@@ -48,7 +48,7 @@
     "devDependencies": {
         "@mui/icons-material": "^5.0.1",
         "@mui/material": "^5.0.2",
-        "@testing-library/react": "^11.2.3",
+        "@testing-library/react": "^14.1.2",
         "@tiptap/extension-mention": "^2.0.3",
         "@tiptap/suggestion": "^2.0.3",
         "data-generator-retail": "^4.15.5",
