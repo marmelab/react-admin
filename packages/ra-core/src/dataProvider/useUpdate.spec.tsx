@@ -17,7 +17,7 @@ import {
     ErrorCase as ErrorCaseUndoable,
     SuccessCase as SuccessCaseUndoable,
 } from './useUpdate.undoable.stories';
-import { QueryClient } from 'react-query';
+import { QueryClient } from '@tanstack/react-query';
 
 describe('useUpdate', () => {
     describe('mutate', () => {

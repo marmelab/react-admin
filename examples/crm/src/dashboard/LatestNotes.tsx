@@ -13,7 +13,7 @@ import { formatDistance } from 'date-fns';
 import { Contact as ContactType } from '../types';
 
 export const LatestNotes = () => {
-    const { identity } = useGetIdentity();
+    const { data: identity } = useGetIdentity();
     const {
         data: contactNotesData,
         isLoading: contactNotesLoading,

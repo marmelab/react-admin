@@ -1,7 +1,7 @@
 import * as React from 'react';
 import expect from 'expect';
 import { render, waitFor } from '@testing-library/react';
-import { QueryClient } from 'react-query';
+import { QueryClient } from '@tanstack/react-query';
 
 import { CoreAdminContext } from '../core';
 import { useGetList } from './useGetList';

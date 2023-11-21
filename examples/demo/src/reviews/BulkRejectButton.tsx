@@ -17,7 +17,7 @@ const BulkRejectButton = () => {
     const notify = useNotify();
     const unselectAll = useUnselectAll('reviews');
 
-    const [updateMany, { isLoading }] = useUpdateMany(
+    const [updateMany, { isPending }] = useUpdateMany(
         'reviews',
         { ids: selectedIds, data: { status: 'rejected' } },
         {
@@ -41,7 +41,7 @@ const BulkRejectButton = () => {
         <Button
             label="resources.reviews.action.reject"
             onClick={() => updateMany()}
-            disabled={isLoading}
+            disabled={isPending}
         >
             <ThumbDown />
         </Button>

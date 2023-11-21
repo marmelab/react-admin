@@ -18,7 +18,7 @@ import {
     ErrorCase as ErrorCaseUndoable,
     SuccessCase as SuccessCaseUndoable,
 } from './useDelete.undoable.stories';
-import { QueryClient } from 'react-query';
+import { QueryClient } from '@tanstack/react-query';
 
 describe('useDelete', () => {
     it('returns a callback that can be used with deleteOne arguments', async () => {

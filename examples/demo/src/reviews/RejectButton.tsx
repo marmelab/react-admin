@@ -20,7 +20,7 @@ const RejectButton = () => {
     const redirectTo = useRedirect();
     const record = useRecordContext<Review>();
 
-    const [reject, { isLoading }] = useUpdate(
+    const [reject, { isPending }] = useUpdate(
         'reviews',
         { id: record.id, data: { status: 'rejected' }, previousData: record },
         {
@@ -50,7 +50,7 @@ const RejectButton = () => {
             startIcon={
                 <ThumbDown sx={{ color: theme => theme.palette.error.main }} />
             }
-            disabled={isLoading}
+            disabled={isPending}
         >
             {translate('resources.reviews.action.reject')}
         </Button>

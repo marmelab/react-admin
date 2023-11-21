@@ -1,7 +1,7 @@
 /* eslint react/jsx-key: off */
 import * as React from 'react';
 import { Admin, Resource, CustomRoutes } from 'react-admin'; // eslint-disable-line import/no-unresolved
-import { render } from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import { Route } from 'react-router-dom';
 
 import authProvider from './authProvider';
@@ -15,7 +15,10 @@ import posts from './posts';
 import users from './users';
 import tags from './tags';
 
-render(
+const container = document.getElementById('root');
+const root = createRoot(container);
+
+root.render(
     <React.StrictMode>
         <Admin
             authProvider={authProvider}
@@ -61,6 +64,5 @@ render(
                 />
             </CustomRoutes>
         </Admin>
-    </React.StrictMode>,
-    document.getElementById('root')
+    </React.StrictMode>
 );

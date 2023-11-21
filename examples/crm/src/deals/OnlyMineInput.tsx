@@ -8,7 +8,7 @@ export const OnlyMineInput = (_: { alwaysOn: boolean }) => {
         displayedFilters,
         setFilters,
     } = useListFilterContext();
-    const { identity } = useGetIdentity();
+    const { data: identity } = useGetIdentity();
 
     const handleChange = () => {
         const newFilterValues = { ...filterValues };

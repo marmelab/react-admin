@@ -2,7 +2,7 @@ import * as React from 'react';
 import expect from 'expect';
 import { render, screen, waitFor } from '@testing-library/react';
 import { unstable_HistoryRouter as HistoryRouter } from 'react-router-dom';
-import { QueryClientProvider, QueryClient } from 'react-query';
+import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 import { createMemoryHistory } from 'history';
 
 import { useHandleAuthCallback } from './useHandleAuthCallback';
