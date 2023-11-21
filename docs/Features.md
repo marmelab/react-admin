@@ -273,9 +273,9 @@ And for mobile users, react-admin renders a different layout with larger margins
 
 ## Headless
 
-React-admin components use Material UI components by default, which lets you scaffold a page in no time. However, the headless logic behind react-admin components is agnostic of the UI library, and is exposed via `...Base` components and controller hooks. 
+React-admin components use Material UI components by default, which lets you scaffold a page in no time. As material UI supports [theming](#theming), you can easily customize the look and feel of your app. But in some cases, this is not enough, and you need to use another UI library.
 
-This means you can use react-admin with any UI library you want - not only Material UI, but also [Ant Design](https://ant.design/), [Daisy UI](https://daisyui.com/), [Chakra UI](https://chakra-ui.com/), or even you own custom UI library.
+You can change the UI library you use with react-admin to use [Ant Design](https://ant.design/), [Daisy UI](https://daisyui.com/), [Chakra UI](https://chakra-ui.com/), or even you own custom UI library. The **headless logic** behind react-admin components is agnostic of the UI library, and is exposed via `...Base` components and controller hooks. 
 
 For instance, here a List view built with [Ant Design](https://ant.design/):
 
