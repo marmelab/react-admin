@@ -66,7 +66,7 @@ import { useEffect } from 'react';
 export const useInfiniteGetList = <RecordType extends RaRecord = any>(
     resource: string,
     params: Partial<GetListParams> = {},
-    options?: UseInfiniteGetListOptions<RecordType>
+    options: UseInfiniteGetListOptions<RecordType> = {}
 ): UseInfiniteGetListHookValue<RecordType> => {
     const {
         pagination = { page: 1, perPage: 25 },
@@ -76,6 +76,7 @@ export const useInfiniteGetList = <RecordType extends RaRecord = any>(
     } = params;
     const dataProvider = useDataProvider();
     const queryClient = useQueryClient();
+    const { onSuccess, onError, ...queryOptions } = options;
 
     const result = useInfiniteQuery<
         GetInfiniteListResult<RecordType>,
@@ -107,7 +108,7 @@ export const useInfiniteGetList = <RecordType extends RaRecord = any>(
                     pageInfo,
                 })),
         initialPageParam: pagination.page,
-        ...options,
+        ...queryOptions,
         getNextPageParam: lastLoadedPage => {
             if (lastLoadedPage.pageInfo) {
                 return lastLoadedPage.pageInfo.hasNextPage
@@ -146,8 +147,18 @@ export const useInfiniteGetList = <RecordType extends RaRecord = any>(
                     );
                 });
             });
+
+            if (onSuccess) {
+                onSuccess(result.data);
+            }
         }
-    }, [meta, queryClient, resource, result.data]);
+    }, [meta, onSuccess, queryClient, resource, result.data]);
+
+    useEffect(() => {
+        if (result.error && onError) {
+            onError(result.error);
+        }
+    }, [onError, result.error]);
 
     return (result.data
         ? {
@@ -178,7 +189,7 @@ export type UseInfiniteGetListOptions<RecordType extends RaRecord = any> = Omit<
     | 'getPreviousPageParam'
     | 'initialPageParam'
 > & {
-    onSuccess?: (data: GetInfiniteListResult<RecordType>) => void;
+    onSuccess?: (data: InfiniteData<GetInfiniteListResult<RecordType>>) => void;
     onError?: (error: Error) => void;
 };
 
