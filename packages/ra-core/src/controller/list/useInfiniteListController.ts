@@ -1,15 +1,16 @@
 import { isValidElement, useEffect, useMemo } from 'react';
 import {
-    UseInfiniteQueryOptions,
     InfiniteQueryObserverBaseResult,
     InfiniteData,
-    QueryKey,
 } from '@tanstack/react-query';
 
 import { useAuthenticated } from '../../auth';
 import { useTranslate } from '../../i18n';
 import { useNotify } from '../../notification';
-import { useInfiniteGetList } from '../../dataProvider';
+import {
+    UseInfiniteGetListOptions,
+    useInfiniteGetList,
+} from '../../dataProvider';
 import { defaultExporter } from '../../export';
 import {
     RaRecord,
@@ -214,17 +215,7 @@ export interface InfiniteListControllerProps<
     filterDefaultValues?: object;
     perPage?: number;
     // FIXME: Make it generic, but Parameters<typeof useInfiniteQuery<RecordType>>[2] doesn't work
-    queryOptions?: Omit<
-        UseInfiniteQueryOptions<
-            GetInfiniteListResult<RecordType>,
-            Error,
-            InfiniteData<GetInfiniteListResult<RecordType>>,
-            GetInfiniteListResult<RecordType>,
-            QueryKey,
-            number
-        >,
-        'queryFn' | 'queryKey'
-    > & { meta?: any };
+    queryOptions?: UseInfiniteGetListOptions<RecordType>;
     resource?: string;
     sort?: SortPayload;
     storeKey?: string | false;
