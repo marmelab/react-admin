@@ -23,7 +23,7 @@ describe('<AutocompleteArrayInput />', () => {
         resource: 'posts',
     };
 
-    it('should extract suggestions from choices', () => {
+    it('should extract suggestions from choices', async () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <SimpleForm onSubmit={jest.fn()}>
@@ -42,12 +42,15 @@ describe('<AutocompleteArrayInput />', () => {
             screen.getByLabelText('resources.posts.fields.tags'),
             'a'
         );
-        expect(screen.queryAllByRole('option')).toHaveLength(2);
+
+        await waitFor(() => {
+            expect(screen.queryAllByRole('option')).toHaveLength(2);
+        });
         expect(screen.getByText('Technical')).not.toBeNull();
         expect(screen.getByText('Programming')).not.toBeNull();
     });
 
-    it('should use optionText with a string value as text identifier', () => {
+    it('should use optionText with a string value as text identifier', async () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <SimpleForm onSubmit={jest.fn()}>
@@ -68,12 +71,14 @@ describe('<AutocompleteArrayInput />', () => {
             'a'
         );
 
-        expect(screen.queryAllByRole('option')).toHaveLength(2);
+        await waitFor(() => {
+            expect(screen.queryAllByRole('option')).toHaveLength(2);
+        });
         expect(screen.getByText('Technical')).not.toBeNull();
         expect(screen.getByText('Programming')).not.toBeNull();
     });
 
-    it('should use optionText with a string value including "." as text identifier', () => {
+    it('should use optionText with a string value including "." as text identifier', async () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <SimpleForm onSubmit={jest.fn()}>
@@ -94,12 +99,14 @@ describe('<AutocompleteArrayInput />', () => {
             'a'
         );
 
-        expect(screen.queryAllByRole('option')).toHaveLength(2);
+        await waitFor(() => {
+            expect(screen.queryAllByRole('option')).toHaveLength(2);
+        });
         expect(screen.getByText('Technical')).not.toBeNull();
         expect(screen.getByText('Programming')).not.toBeNull();
     });
 
-    it('should use optionText with a function value as text identifier', () => {
+    it('should use optionText with a function value as text identifier', async () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <SimpleForm onSubmit={jest.fn()}>
@@ -120,12 +127,14 @@ describe('<AutocompleteArrayInput />', () => {
             'a'
         );
 
-        expect(screen.queryAllByRole('option')).toHaveLength(2);
+        await waitFor(() => {
+            expect(screen.queryAllByRole('option')).toHaveLength(2);
+        });
         expect(screen.getByText('Technical')).not.toBeNull();
         expect(screen.getByText('Programming')).not.toBeNull();
     });
 
-    it('should translate the choices by default', () => {
+    it('should translate the choices by default', async () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <TestTranslationProvider translate={x => `**${x}**`}>
@@ -147,12 +156,14 @@ describe('<AutocompleteArrayInput />', () => {
             'a'
         );
 
-        expect(screen.queryAllByRole('option')).toHaveLength(2);
+        await waitFor(() => {
+            expect(screen.queryAllByRole('option')).toHaveLength(2);
+        });
         expect(screen.getByText('**Technical**')).not.toBeNull();
         expect(screen.getByText('**Programming**')).not.toBeNull();
     });
 
-    it('should not translate the choices if translateChoice is false', () => {
+    it('should not translate the choices if translateChoice is false', async () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <TestTranslationProvider translate={x => `**${x}**`}>
@@ -175,7 +186,9 @@ describe('<AutocompleteArrayInput />', () => {
             'a'
         );
 
-        expect(screen.queryAllByRole('option')).toHaveLength(2);
+        await waitFor(() => {
+            expect(screen.queryAllByRole('option')).toHaveLength(2);
+        });
         expect(screen.getByText('Technical')).not.toBeNull();
         expect(screen.getByText('Programming')).not.toBeNull();
     });
@@ -202,7 +215,9 @@ describe('<AutocompleteArrayInput />', () => {
         userEvent.type(input, 'fooo');
         userEvent.type(input, 'foooo');
         await new Promise(resolve => setTimeout(resolve, 300));
-        expect(setFilter).toHaveBeenCalledTimes(1);
+        await waitFor(() => {
+            expect(setFilter).toHaveBeenCalledTimes(1);
+        });
     });
 
     it('should respect shouldRenderSuggestions over default if passed in', async () => {
@@ -274,10 +289,12 @@ describe('<AutocompleteArrayInput />', () => {
         expect(screen.queryAllByRole('option')).toHaveLength(0);
         fireEvent.blur(input);
         userEvent.type(input, 'a');
-        expect(screen.queryAllByRole('option')).toHaveLength(1);
+        await waitFor(() => {
+            expect(screen.queryAllByRole('option')).toHaveLength(1);
+        });
     });
 
-    it('should not rerender searchText while having focus and new choices arrive', () => {
+    it('should not rerender searchText while having focus and new choices arrive', async () => {
         const { rerender } = render(
             <AdminContext dataProvider={testDataProvider()}>
                 <SimpleForm onSubmit={jest.fn()}>
@@ -294,7 +311,7 @@ describe('<AutocompleteArrayInput />', () => {
 
         fireEvent.focus(input);
         userEvent.type(input, 'foo');
-        expect(input.value).toEqual('foo');
+        await screen.findByDisplayValue('foo');
         expect(screen.queryAllByRole('option')).toHaveLength(0);
 
         rerender(
@@ -385,8 +402,9 @@ describe('<AutocompleteArrayInput />', () => {
         );
         const input = screen.getByLabelText('resources.posts.fields.tags');
         userEvent.type(input, 'p');
-        await new Promise(resolve => setTimeout(resolve, 300));
-        expect(setFilter).toHaveBeenCalledTimes(1);
+        await waitFor(() => {
+            expect(setFilter).toHaveBeenCalledTimes(1);
+        });
         expect(setFilter).toHaveBeenCalledWith('p');
         rerender(
             <AdminContext dataProvider={testDataProvider()}>
@@ -460,7 +478,7 @@ describe('<AutocompleteArrayInput />', () => {
         expect(setFilter).toHaveBeenCalledWith('');
     });
 
-    it('should allow customized rendering of suggesting item', () => {
+    it('should allow customized rendering of suggesting item', async () => {
         const SuggestionItem = props => {
             const record = useRecordContext();
             return <div {...props} aria-label={record && record.name} />;
@@ -486,8 +504,8 @@ describe('<AutocompleteArrayInput />', () => {
             screen.getByLabelText('resources.posts.fields.tags'),
             'a'
         );
-        expect(screen.getByLabelText('Technical')).not.toBeNull();
-        expect(screen.getByLabelText('Programming')).not.toBeNull();
+        await screen.findByLabelText('Technical');
+        await screen.findByLabelText('Programming');
     });
 
     it('should display helperText', () => {
@@ -598,7 +616,7 @@ describe('<AutocompleteArrayInput />', () => {
         expect(onChange).not.toHaveBeenCalled();
     });
 
-    it('should limit suggestions when suggestionLimit is passed', () => {
+    it('should limit suggestions when suggestionLimit is passed', async () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <SimpleForm onSubmit={jest.fn()}>
@@ -615,7 +633,9 @@ describe('<AutocompleteArrayInput />', () => {
         );
         const input = screen.getByLabelText('resources.posts.fields.tags');
         userEvent.type(input, 'a');
-        expect(screen.queryAllByRole('option')).toHaveLength(1);
+        await waitFor(() =>
+            expect(screen.queryAllByRole('option')).toHaveLength(1)
+        );
     });
 
     it('should support creation of a new choice through the onCreate event', async () => {
@@ -814,7 +834,7 @@ describe('<AutocompleteArrayInput />', () => {
         expect(screen.getByText('Programming')).not.toBeNull();
     });
 
-    it('should use optionText with a string value including "." as text identifier when a create element is passed', () => {
+    it('should use optionText with a string value including "." as text identifier when a create element is passed', async () => {
         const choices = [
             { id: 't', foobar: { name: 'Technical' } },
             { id: 'p', foobar: { name: 'Programming' } },
@@ -851,7 +871,9 @@ describe('<AutocompleteArrayInput />', () => {
             screen.getByLabelText('resources.posts.fields.tags'),
             'a'
         );
-        expect(screen.queryAllByRole('option')).toHaveLength(3);
+        await waitFor(() => {
+            expect(screen.queryAllByRole('option')).toHaveLength(3);
+        });
         expect(screen.getByText('Technical')).not.toBeNull();
         expect(screen.getByText('Programming')).not.toBeNull();
         expect(screen.getByText('ra.action.create_item')).not.toBeNull();
@@ -911,7 +933,7 @@ describe('<AutocompleteArrayInput />', () => {
         ).not.toBeNull();
     });
 
-    it('should show the suggestions when the input value is empty and the input is focused and choices arrived late', () => {
+    it('should show the suggestions when the input value is empty and the input is focused and choices arrived late', async () => {
         const { rerender } = render(
             <AdminContext dataProvider={testDataProvider()}>
                 <SimpleForm onSubmit={jest.fn()}>
@@ -937,7 +959,9 @@ describe('<AutocompleteArrayInput />', () => {
             screen.getByLabelText('resources.posts.fields.tags'),
             'a'
         );
-        expect(screen.queryAllByRole('option')).toHaveLength(2);
+        await waitFor(() => {
+            expect(screen.queryAllByRole('option')).toHaveLength(2);
+        });
     });
 
     it('should display "No options" and not throw any error inside a ReferenceArrayInput field when referenced list is empty', async () => {

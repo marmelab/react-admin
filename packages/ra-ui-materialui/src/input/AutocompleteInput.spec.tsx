@@ -95,7 +95,7 @@ describe('<AutocompleteInput />', () => {
         fireEvent.focus(input);
         userEvent.type(input, '{end}');
         userEvent.type(input, '2');
-        expect(input.value).toEqual('foo2');
+        await screen.findByDisplayValue('foo2');
         userEvent.type(input, '{backspace}');
         await waitFor(() => {
             expect(input.value).toEqual('foo');
@@ -1440,7 +1440,7 @@ describe('<AutocompleteInput />', () => {
         });
     });
 
-    it("should allow to edit the input if it's inside a FormDataConsumer", () => {
+    it("should allow to edit the input if it's inside a FormDataConsumer", async () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <SimpleForm
@@ -1481,7 +1481,7 @@ describe('<AutocompleteInput />', () => {
         }) as HTMLInputElement;
         fireEvent.focus(input);
         userEvent.type(input, 'Hello World!');
-        expect(input.value).toEqual('Hello World!');
+        await screen.findByDisplayValue('Hello World!');
     });
 
     it('should display "No options" and not throw any error inside a ReferenceArrayInput field when referenced list is empty', async () => {
