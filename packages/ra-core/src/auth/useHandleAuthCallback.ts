@@ -1,9 +1,9 @@
+import { useEffect } from 'react';
 import { useQuery, UseQueryOptions } from '@tanstack/react-query';
 import { useLocation } from 'react-router';
 import { useRedirect } from '../routing';
 import { AuthProvider, AuthRedirectResult } from '../types';
 import useAuthProvider from './useAuthProvider';
-import { useEffect } from 'react';
 
 /**
  * This hook calls the `authProvider.handleCallback()` method on mount. This is meant to be used in a route called
@@ -51,7 +51,6 @@ export const useHandleAuthCallback = (
             const redirectTo =
                 (queryResult.data as AuthRedirectResult)?.redirectTo ??
                 previousLocation;
-
             if (redirectTo === false) {
                 return;
             }
