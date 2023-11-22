@@ -1,5 +1,4 @@
 import * as React from 'react';
-import expect from 'expect';
 import { render, screen } from '@testing-library/react';
 import { createMemoryHistory } from 'history';
 
@@ -27,7 +26,7 @@ const resource = {
 };
 
 describe('<Resource>', () => {
-    it('renders resource routes by default', () => {
+    it('renders resource routes by default', async () => {
         const history = createMemoryHistory();
         render(
             <CoreAdminContext history={history}>
@@ -37,14 +36,14 @@ describe('<Resource>', () => {
         // Resource does not declare a route matching its name, it only renders its child routes
         // so we don't need to navigate to a path matching its name
         history.push('/');
-        expect(screen.getByText('PostList')).not.toBeNull();
+        await screen.findByText('PostList');
         history.push('/123');
-        expect(screen.getByText('PostEdit')).not.toBeNull();
+        await screen.findByText('PostEdit');
         history.push('/123/show');
-        expect(screen.getByText('PostShow')).not.toBeNull();
+        await screen.findByText('PostShow');
         history.push('/create');
-        expect(screen.getByText('PostCreate')).not.toBeNull();
+        await screen.findByText('PostCreate');
         history.push('/customroute');
-        expect(screen.getByText('PostCustomRoute')).not.toBeNull();
+        await screen.findByText('PostCustomRoute');
     });
 });
