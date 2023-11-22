@@ -1,6 +1,6 @@
 import * as React from 'react';
 import expect from 'expect';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 
 import { ListContextProvider, ListControllerResult } from 'ra-core';
 import GoogleIcon from '@mui/icons-material/Google';
@@ -166,7 +166,7 @@ describe('<FilterListItem/>', () => {
         );
     });
 
-    it('should allow to customize isSelected and toggleFilter', () => {
+    it('should allow to customize isSelected and toggleFilter', async () => {
         const { container } = render(<Cumulative />);
 
         expect(getSelectedItemsLabels(container)).toEqual([
@@ -177,18 +177,24 @@ describe('<FilterListItem/>', () => {
 
         screen.getByText('News').click();
 
-        expect(getSelectedItemsLabels(container)).toEqual(['Tutorials']);
-        screen.getByText(JSON.stringify({ category: ['tutorials'] }));
+        await waitFor(() =>
+            expect(getSelectedItemsLabels(container)).toEqual(['Tutorials'])
+        );
+        await screen.findByText(JSON.stringify({ category: ['tutorials'] }));
 
         screen.getByText('Tutorials').click();
 
-        expect(getSelectedItemsLabels(container)).toEqual([]);
+        await waitFor(() =>
+            expect(getSelectedItemsLabels(container)).toEqual([])
+        );
         expect(screen.getAllByText(JSON.stringify({})).length).toBe(2);
 
         screen.getByText('Tests').click();
 
-        expect(getSelectedItemsLabels(container)).toEqual(['Tests']);
-        screen.getByText(JSON.stringify({ category: ['tests'] }));
+        await waitFor(() =>
+            expect(getSelectedItemsLabels(container)).toEqual(['Tests'])
+        );
+        await screen.findByText(JSON.stringify({ category: ['tests'] }));
     });
 });
 

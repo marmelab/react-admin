@@ -1,7 +1,7 @@
 import * as React from 'react';
 import expect from 'expect';
 import { render, screen, waitFor } from '@testing-library/react';
-import { CoreAdminContext } from 'ra-core';
+import { CoreAdminContext, testDataProvider } from 'ra-core';
 
 import { ListGuesser } from './ListGuesser';
 import { ThemeProvider } from '../theme/ThemeProvider';
@@ -9,7 +9,7 @@ import { ThemeProvider } from '../theme/ThemeProvider';
 describe('<ListGuesser />', () => {
     it('should log the guessed List view based on the fetched records', async () => {
         const logSpy = jest.spyOn(console, 'log').mockImplementation(() => {});
-        const dataProvider = {
+        const dataProvider = testDataProvider({
             getList: () =>
                 Promise.resolve({
                     data: [
@@ -25,7 +25,7 @@ describe('<ListGuesser />', () => {
                     ],
                     total: 1,
                 }),
-        };
+        });
         render(
             <ThemeProvider theme={{}}>
                 <CoreAdminContext dataProvider={dataProvider as any}>
