@@ -5,14 +5,11 @@ title: "The ShowBase Component"
 
 # `<ShowBase>`
 
-`<ShowBase>` is a headless component that lets you build custom Show pages. It handles the logic of the Show page:
-
-- it calls `useShowController` to fetch the record from the data provider via `dataProvider.getOne()`,
-- it computes the default page title
-- it creates a `ShowContext` and a `RecordContext`,
-- it renders its child component
+`<ShowBase>` is a headless variant of [`<Show>`](./Show.md). It fetches the record from the data provider via `dataProvider.getOne()`, puts it in a [`ShowContext`](./useShowContext.md), and renders its child. Use it to build a custom show page layout.
 
 Contrary to [`<Show>`](./Show.md), it does not render the page layout, so no title, no actions, and no `<Card>`.
+
+`<ShowBase>` relies on the [`useShowController`](./useShowController.md) hook.
 
 ## Usage
 
