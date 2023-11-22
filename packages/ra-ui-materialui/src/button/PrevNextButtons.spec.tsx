@@ -67,6 +67,7 @@ describe('<PrevNextButtons />', () => {
         render(<Basic />);
         const row = await screen.findByText('Deja');
         fireEvent.click(row);
+        fireEvent.click(screen.getByLabelText('Edit'));
         const next = await screen.findByLabelText('Go to next page');
         fireEvent.click(next);
         expect(screen.getByLabelText('First name').getAttribute('type')).toBe(
@@ -91,7 +92,6 @@ describe('<PrevNextButtons />', () => {
             render(<Basic />);
             const row = await screen.findByText('Deja');
             fireEvent.click(row);
-            fireEvent.click(screen.getByLabelText('Show'));
             const next = await screen.findByLabelText('Go to next page');
             fireEvent.click(next);
             expect(screen.queryByLabelText('First name')).toBeNull();
