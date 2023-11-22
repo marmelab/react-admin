@@ -303,36 +303,66 @@ describe('buildFields', () => {
         ]);
     });
 
-    it('returns an object with the sparse fields to retrieve', () => {
-        const {
-            introspectionResults,
-            resource,
-            params,
-        } = buildGQLParamsWithSparseFieldsFactory();
+    describe('with sparse fields', () => {
+        it('returns an object with the fields to retrieve', () => {
+            const {
+                introspectionResults,
+                resource,
+                params,
+            } = buildGQLParamsWithSparseFieldsFactory();
 
-        // nested sparse params
-        params.meta.sparseFields[1].linked.push({ nestedLink: ['bar'] });
+            // nested sparse params
+            params.meta.sparseFields[1].linked.push({ nestedLink: ['bar'] });
 
-        expect(
-            print(
-                buildFields(introspectionResults)(
-                    resource.type.fields,
-                    params.meta.sparseFields
+            expect(
+                print(
+                    buildFields(introspectionResults)(
+                        resource.type.fields,
+                        params.meta.sparseFields
+                    )
                 )
-            )
-        ).toEqual([
-            'address',
-            `linked {
+            ).toEqual([
+                'address',
+                `linked {
   title
   nestedLink {
     bar
   }
 }`,
-            `resource {
-  name
+                `resource {
   foo
+  name
 }`,
-        ]);
+            ]);
+        });
+
+        it('throws an error when sparse fields is requested but empty', () => {
+            const {
+                introspectionResults,
+                resource,
+            } = buildGQLParamsWithSparseFieldsFactory();
+
+            expect(() =>
+                buildFields(introspectionResults)(resource.type.fields, [])
+            ).toThrowError(
+                "Empty sparse fields. Specify at least one field or remove the 'sparseFields' param"
+            );
+        });
+
+        it('throws an error when requested sparse fields are not available', () => {
+            const {
+                introspectionResults,
+                resource,
+            } = buildGQLParamsWithSparseFieldsFactory();
+
+            expect(() =>
+                buildFields(introspectionResults)(resource.type.fields, [
+                    'unavailbleField',
+                ])
+            ).toThrowError(
+                "Requested sparse fields not found. Ensure sparse fields are available in the resource's type"
+            );
+        });
     });
 });
 
@@ -586,8 +616,8 @@ describe('buildGqlQuery', () => {
                                 title
                             }
                             resource {
-                                name
                                 foo
+                                name
                             }
                         }
                         total: _allCommandMeta(foo: $foo) {
@@ -655,8 +685,8 @@ describe('buildGqlQuery', () => {
                                 title
                             }
                             resource {
-                                name
                                 foo
+                                name
                             }
                         }
                         total: _allCommandMeta(foo: $foo) {
@@ -725,8 +755,8 @@ describe('buildGqlQuery', () => {
                                 title
                             }
                             resource {
-                                name
                                 foo
+                                name
                             }
                         }
                         total: _allCommandMeta(foo: $foo) {
@@ -791,8 +821,8 @@ describe('buildGqlQuery', () => {
                                 title
                             }
                             resource {
-                                name
                                 foo
+                                name
                             }
                         }
                     }
@@ -854,8 +884,8 @@ describe('buildGqlQuery', () => {
                                 title
                             }
                             resource {
-                                name
                                 foo
+                                name
                             }
                         }
                     }
@@ -917,8 +947,8 @@ describe('buildGqlQuery', () => {
                                 title
                             }
                             resource {
-                                name
                                 foo
+                                name
                             }
                         }
                     }
@@ -980,8 +1010,8 @@ describe('buildGqlQuery', () => {
                                 title
                             }
                             resource {
-                                name
                                 foo
+                                name
                             }
                         }
                     }

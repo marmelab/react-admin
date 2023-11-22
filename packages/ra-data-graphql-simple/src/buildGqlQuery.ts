@@ -21,43 +21,64 @@ import getFinalType from './getFinalType';
 import isList from './isList';
 import isRequired from './isRequired';
 
-type SparseFields = (string | { [k: string]: SparseFields })[];
-type ExpandedSparseFields = { linkedType?: string; fields: SparseFields }[];
+type SparseField = string | { [k: string]: SparseField[] };
+type ExpandedSparseField = { linkedType?: string; fields: SparseField[] };
+type ProcessedFields = {
+    resourceFields: IntrospectionField[];
+    linkedSparseFields: ExpandedSparseField[];
+};
 
 function processSparseFields(
     resourceFields: readonly IntrospectionField[],
-    sparseFields: SparseFields
-): {
-    fields: readonly IntrospectionField[];
-    linkedSparseFields: ExpandedSparseFields;
-} {
-    if (!sparseFields || sparseFields.length == 0)
-        return { fields: resourceFields, linkedSparseFields: [] }; // default (which is all available resource fields) if sparse fields not specified
+    sparseFields: SparseField[]
+): ProcessedFields & { resourceFields: readonly IntrospectionField[] } {
+    if (!sparseFields || sparseFields.length === 0)
+        throw new Error(
+            "Empty sparse fields. Specify at least one field or remove the 'sparseFields' param"
+        );
 
-    const resourceFNames = resourceFields.map(f => f.name);
+    const permittedSparseFields: ProcessedFields = sparseFields.reduce(
+        (permitted: ProcessedFields, sparseField: SparseField) => {
+            let expandedSparseField: ExpandedSparseField;
+            if (typeof sparseField == 'string')
+                expandedSparseField = { fields: [sparseField] };
+            else {
+                const [linkedType, linkedSparseFields] = Object.entries(
+                    sparseField
+                )[0];
+                expandedSparseField = {
+                    linkedType,
+                    fields: linkedSparseFields,
+                };
+            }
 
-    const expandedSparseFields: ExpandedSparseFields = sparseFields.map(sP => {
-        if (typeof sP == 'string') return { fields: [sP] };
+            const availableField = resourceFields.find(
+                resourceField =>
+                    resourceField.name ===
+                    (expandedSparseField.linkedType ||
+                        expandedSparseField.fields[0])
+            );
 
-        const [linkedType, linkedSparseFields] = Object.entries(sP)[0];
+            if (availableField && expandedSparseField.linkedType) {
+                permitted.linkedSparseFields.push(expandedSparseField);
+                permitted.resourceFields.push(availableField);
+            } else if (availableField)
+                permitted.resourceFields.push(availableField);
 
-        return { linkedType, fields: linkedSparseFields };
-    });
-
-    const permittedSparseFields = expandedSparseFields.filter(sF =>
-        resourceFNames.includes((sF.linkedType || sF.fields[0]) as string)
+            return permitted;
+        },
+        { resourceFields: [], linkedSparseFields: [] }
     ); // ensure the requested fields are available
 
-    const sparseFNames = permittedSparseFields.map(
-        sF => sF.linkedType || sF.fields[0]
-    );
+    if (
+        permittedSparseFields.resourceFields.length === 0 &&
+        permittedSparseFields.linkedSparseFields.length === 0
+    )
+        throw new Error(
+            "Requested sparse fields not found. Ensure sparse fields are available in the resource's type"
+        );
 
-    const fields = resourceFields.filter(rF => sparseFNames.includes(rF.name));
-    const linkedSparseFields = permittedSparseFields.filter(
-        sF => !!sF.linkedType
-    ); // sparse fields to be used for linked resources / types
-
-    return { fields, linkedSparseFields };
+    return permittedSparseFields;
 }
 
 export default (introspectionResults: IntrospectionResult) => (
@@ -153,12 +174,12 @@ export default (introspectionResults: IntrospectionResult) => (
 export const buildFields = (
     introspectionResults: IntrospectionResult,
     paths = []
-) => (fields: readonly IntrospectionField[], sparseFields?: SparseFields) => {
-    const { fields: requestedFields, linkedSparseFields } = sparseFields
+) => (fields: readonly IntrospectionField[], sparseFields?: SparseField[]) => {
+    const { resourceFields, linkedSparseFields } = sparseFields
         ? processSparseFields(fields, sparseFields)
-        : { fields, linkedSparseFields: [] };
+        : { resourceFields: fields, linkedSparseFields: [] };
 
-    return requestedFields.reduce((acc, field) => {
+    return resourceFields.reduce((acc, field) => {
         const type = getFinalType(field.type);
 
         if (type.name.startsWith('_')) {
