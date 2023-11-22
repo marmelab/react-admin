@@ -1,4 +1,5 @@
 import { TypeKind, print } from 'graphql';
+import { gql } from '@apollo/client';
 import {
     GET_LIST,
     GET_ONE,
@@ -238,7 +239,12 @@ function buildGQLParamsWithSparseFieldsFactory() {
         },
     };
 
-    return { introspectionResults, queryType, params, resource };
+    return {
+        introspectionResults,
+        queryType,
+        params,
+        resource,
+    };
 }
 
 describe('buildFields', () => {
@@ -296,25 +302,16 @@ describe('buildFields', () => {
 }`,
         ]);
     });
-});
 
-describe('buildFields with nested sparse fields', () => {
-    const params = {
-        foo: 'foo_value',
-        meta: {
-            sparseFields: [
-                'address',
-                { linked: ['title', { nestedLink: ['bar'] }] },
-                { resource: ['foo', 'name'] },
-            ],
-        },
-    };
-
-    it('returns an object with the fields to retrieve', () => {
+    it('returns an object with the sparse fields to retrieve', () => {
         const {
             introspectionResults,
             resource,
+            params,
         } = buildGQLParamsWithSparseFieldsFactory();
+
+        // nested sparse params
+        params.meta.sparseFields[1].linked.push({ nestedLink: ['bar'] });
 
         expect(
             print(
@@ -532,431 +529,464 @@ describe('buildGqlQuery', () => {
     };
     const params = { foo: 'foo_value' };
 
-    it('returns the correct query for GET_LIST', () => {
-        expect(
-            print(
-                buildGqlQuery(introspectionResults)(
-                    resource,
-                    GET_LIST,
-                    queryType,
-                    params
+    describe('GET_LIST', () => {
+        it('returns the correct query', () => {
+            expect(
+                print(
+                    buildGqlQuery(introspectionResults)(
+                        resource,
+                        GET_LIST,
+                        queryType,
+                        params
+                    )
                 )
-            )
-        ).toEqual(
-            `query allCommand($foo: Int!) {
-  items: allCommand(foo: $foo) {
-    foo
-    linked {
-      foo
-    }
-    resource {
-      id
-    }
-  }
-  total: _allCommandMeta(foo: $foo) {
-    count
-  }
-}
-`
-        );
-    });
-    it('returns the correct query for GET_MANY', () => {
-        expect(
-            print(
-                buildGqlQuery(introspectionResults)(
-                    resource,
-                    GET_MANY,
-                    queryType,
-                    params
-                )
-            )
-        ).toEqual(
-            `query allCommand($foo: Int!) {
-  items: allCommand(foo: $foo) {
-    foo
-    linked {
-      foo
-    }
-    resource {
-      id
-    }
-  }
-  total: _allCommandMeta(foo: $foo) {
-    count
-  }
-}
-`
-        );
-    });
-    it('returns the correct query for GET_MANY_REFERENCE', () => {
-        expect(
-            print(
-                buildGqlQuery(introspectionResults)(
-                    resource,
-                    GET_MANY_REFERENCE,
-                    queryType,
-                    params
-                )
-            )
-        ).toEqual(
-            `query allCommand($foo: Int!) {
-  items: allCommand(foo: $foo) {
-    foo
-    linked {
-      foo
-    }
-    resource {
-      id
-    }
-  }
-  total: _allCommandMeta(foo: $foo) {
-    count
-  }
-}
-`
-        );
-    });
-    it('returns the correct query for GET_ONE', () => {
-        expect(
-            print(
-                buildGqlQuery(introspectionResults)(
-                    resource,
-                    GET_ONE,
-                    { ...queryType, name: 'getCommand' },
-                    params
-                )
-            )
-        ).toEqual(
-            `query getCommand($foo: Int!) {
-  data: getCommand(foo: $foo) {
-    foo
-    linked {
-      foo
-    }
-    resource {
-      id
-    }
-  }
-}
-`
-        );
-    });
-    it('returns the correct query for UPDATE', () => {
-        expect(
-            print(
-                buildGqlQuery(introspectionResults)(
-                    resource,
-                    UPDATE,
-                    { ...queryType, name: 'updateCommand' },
-                    params
-                )
-            )
-        ).toEqual(
-            `mutation updateCommand($foo: Int!) {
-  data: updateCommand(foo: $foo) {
-    foo
-    linked {
-      foo
-    }
-    resource {
-      id
-    }
-  }
-}
-`
-        );
-    });
-    it('returns the correct query for CREATE', () => {
-        expect(
-            print(
-                buildGqlQuery(introspectionResults)(
-                    resource,
-                    CREATE,
-                    { ...queryType, name: 'createCommand' },
-                    params
-                )
-            )
-        ).toEqual(
-            `mutation createCommand($foo: Int!) {
-  data: createCommand(foo: $foo) {
-    foo
-    linked {
-      foo
-    }
-    resource {
-      id
-    }
-  }
-}
-`
-        );
-    });
-    it('returns the correct query for DELETE', () => {
-        expect(
-            print(
-                buildGqlQuery(introspectionResults)(
-                    resource,
-                    DELETE,
-                    { ...queryType, name: 'deleteCommand' },
-                    params
-                )
-            )
-        ).toEqual(
-            `mutation deleteCommand($foo: Int!) {
-  data: deleteCommand(foo: $foo) {
-    foo
-    linked {
-      foo
-    }
-    resource {
-      id
-    }
-  }
-}
-`
-        );
-    });
-});
+            ).toEqual(
+                print(gql`
+                    query allCommand($foo: Int!) {
+                        items: allCommand(foo: $foo) {
+                            foo
+                            linked {
+                                foo
+                            }
+                            resource {
+                                id
+                            }
+                        }
+                        total: _allCommandMeta(foo: $foo) {
+                            count
+                        }
+                    }
+                `)
+            );
+        });
 
-describe('buildGqlQuery with sparse fields', () => {
-    it('returns the correct query for GET_LIST', () => {
-        const {
-            introspectionResults,
-            params,
-            queryType,
-            resource,
-        } = buildGQLParamsWithSparseFieldsFactory();
+        it('returns the correct query with sparse fields', () => {
+            const {
+                introspectionResults,
+                params,
+                queryType,
+                resource,
+            } = buildGQLParamsWithSparseFieldsFactory();
 
-        expect(
-            print(
-                buildGqlQuery(introspectionResults)(
-                    resource,
-                    GET_LIST,
-                    queryType,
-                    params
+            expect(
+                print(
+                    buildGqlQuery(introspectionResults)(
+                        resource,
+                        GET_LIST,
+                        queryType,
+                        params
+                    )
                 )
-            )
-        ).toEqual(
-            `query allCommand($foo: Int!) {
-  items: allCommand(foo: $foo) {
-    address
-    linked {
-      title
-    }
-    resource {
-      name
-      foo
-    }
-  }
-  total: _allCommandMeta(foo: $foo) {
-    count
-  }
-}
-`
-        );
+            ).toEqual(
+                print(gql`
+                    query allCommand($foo: Int!) {
+                        items: allCommand(foo: $foo) {
+                            address
+                            linked {
+                                title
+                            }
+                            resource {
+                                name
+                                foo
+                            }
+                        }
+                        total: _allCommandMeta(foo: $foo) {
+                            count
+                        }
+                    }
+                `)
+            );
+        });
     });
-    it('returns the correct query for GET_MANY', () => {
-        const {
-            introspectionResults,
-            params,
-            queryType,
-            resource,
-        } = buildGQLParamsWithSparseFieldsFactory();
-
-        expect(
-            print(
-                buildGqlQuery(introspectionResults)(
-                    resource,
-                    GET_MANY,
-                    queryType,
-                    params
+    describe('GET_MANY', () => {
+        it('returns the correct query', () => {
+            expect(
+                print(
+                    buildGqlQuery(introspectionResults)(
+                        resource,
+                        GET_MANY,
+                        queryType,
+                        params
+                    )
                 )
-            )
-        ).toEqual(
-            `query allCommand($foo: Int!) {
-  items: allCommand(foo: $foo) {
-    address
-    linked {
-      title
-    }
-    resource {
-      name
-      foo
-    }
-  }
-  total: _allCommandMeta(foo: $foo) {
-    count
-  }
-}
-`
-        );
+            ).toEqual(
+                print(gql`
+                    query allCommand($foo: Int!) {
+                        items: allCommand(foo: $foo) {
+                            foo
+                            linked {
+                                foo
+                            }
+                            resource {
+                                id
+                            }
+                        }
+                        total: _allCommandMeta(foo: $foo) {
+                            count
+                        }
+                    }
+                `)
+            );
+        });
+
+        it('returns the correct query with sparse fields', () => {
+            const {
+                introspectionResults,
+                params,
+                queryType,
+                resource,
+            } = buildGQLParamsWithSparseFieldsFactory();
+
+            expect(
+                print(
+                    buildGqlQuery(introspectionResults)(
+                        resource,
+                        GET_MANY,
+                        queryType,
+                        params
+                    )
+                )
+            ).toEqual(
+                print(gql`
+                    query allCommand($foo: Int!) {
+                        items: allCommand(foo: $foo) {
+                            address
+                            linked {
+                                title
+                            }
+                            resource {
+                                name
+                                foo
+                            }
+                        }
+                        total: _allCommandMeta(foo: $foo) {
+                            count
+                        }
+                    }
+                `)
+            );
+        });
     });
-    it('returns the correct query for GET_MANY_REFERENCE', () => {
-        const {
-            introspectionResults,
-            params,
-            queryType,
-            resource,
-        } = buildGQLParamsWithSparseFieldsFactory();
 
-        expect(
-            print(
-                buildGqlQuery(introspectionResults)(
-                    resource,
-                    GET_MANY_REFERENCE,
-                    queryType,
-                    params
+    describe('GET_MANY_REFERENCE', () => {
+        it('returns the correct query', () => {
+            expect(
+                print(
+                    buildGqlQuery(introspectionResults)(
+                        resource,
+                        GET_MANY_REFERENCE,
+                        queryType,
+                        params
+                    )
                 )
-            )
-        ).toEqual(
-            `query allCommand($foo: Int!) {
-  items: allCommand(foo: $foo) {
-    address
-    linked {
-      title
-    }
-    resource {
-      name
-      foo
-    }
-  }
-  total: _allCommandMeta(foo: $foo) {
-    count
-  }
-}
-`
-        );
+            ).toEqual(
+                print(gql`
+                    query allCommand($foo: Int!) {
+                        items: allCommand(foo: $foo) {
+                            foo
+                            linked {
+                                foo
+                            }
+                            resource {
+                                id
+                            }
+                        }
+                        total: _allCommandMeta(foo: $foo) {
+                            count
+                        }
+                    }
+                `)
+            );
+        });
+
+        it('returns the correct query with sparse fields', () => {
+            const {
+                introspectionResults,
+                params,
+                queryType,
+                resource,
+            } = buildGQLParamsWithSparseFieldsFactory();
+
+            expect(
+                print(
+                    buildGqlQuery(introspectionResults)(
+                        resource,
+                        GET_MANY_REFERENCE,
+                        queryType,
+                        params
+                    )
+                )
+            ).toEqual(
+                print(gql`
+                    query allCommand($foo: Int!) {
+                        items: allCommand(foo: $foo) {
+                            address
+                            linked {
+                                title
+                            }
+                            resource {
+                                name
+                                foo
+                            }
+                        }
+                        total: _allCommandMeta(foo: $foo) {
+                            count
+                        }
+                    }
+                `)
+            );
+        });
     });
-    it('returns the correct query for GET_ONE', () => {
-        const {
-            introspectionResults,
-            params,
-            queryType,
-            resource,
-        } = buildGQLParamsWithSparseFieldsFactory();
-
-        expect(
-            print(
-                buildGqlQuery(introspectionResults)(
-                    resource,
-                    GET_ONE,
-                    { ...queryType, name: 'getCommand' },
-                    params
+    describe('GET_ONE', () => {
+        it('returns the correct query', () => {
+            expect(
+                print(
+                    buildGqlQuery(introspectionResults)(
+                        resource,
+                        GET_ONE,
+                        { ...queryType, name: 'getCommand' },
+                        params
+                    )
                 )
-            )
-        ).toEqual(
-            `query getCommand($foo: Int!) {
-  data: getCommand(foo: $foo) {
-    address
-    linked {
-      title
-    }
-    resource {
-      name
-      foo
-    }
-  }
-}
-`
-        );
+            ).toEqual(
+                print(gql`
+                    query getCommand($foo: Int!) {
+                        data: getCommand(foo: $foo) {
+                            foo
+                            linked {
+                                foo
+                            }
+                            resource {
+                                id
+                            }
+                        }
+                    }
+                `)
+            );
+        });
+
+        it('returns the correct query with sparse fields', () => {
+            const {
+                introspectionResults,
+                params,
+                queryType,
+                resource,
+            } = buildGQLParamsWithSparseFieldsFactory();
+
+            expect(
+                print(
+                    buildGqlQuery(introspectionResults)(
+                        resource,
+                        GET_ONE,
+                        { ...queryType, name: 'getCommand' },
+                        params
+                    )
+                )
+            ).toEqual(
+                print(gql`
+                    query getCommand($foo: Int!) {
+                        data: getCommand(foo: $foo) {
+                            address
+                            linked {
+                                title
+                            }
+                            resource {
+                                name
+                                foo
+                            }
+                        }
+                    }
+                `)
+            );
+        });
     });
-    it('returns the correct query for UPDATE', () => {
-        const {
-            introspectionResults,
-            params,
-            queryType,
-            resource,
-        } = buildGQLParamsWithSparseFieldsFactory();
-
-        expect(
-            print(
-                buildGqlQuery(introspectionResults)(
-                    resource,
-                    UPDATE,
-                    { ...queryType, name: 'updateCommand' },
-                    params
+    describe('UPDATE', () => {
+        it('returns the correct query', () => {
+            expect(
+                print(
+                    buildGqlQuery(introspectionResults)(
+                        resource,
+                        UPDATE,
+                        { ...queryType, name: 'updateCommand' },
+                        params
+                    )
                 )
-            )
-        ).toEqual(
-            `mutation updateCommand($foo: Int!) {
-  data: updateCommand(foo: $foo) {
-    address
-    linked {
-      title
-    }
-    resource {
-      name
-      foo
-    }
-  }
-}
-`
-        );
+            ).toEqual(
+                print(gql`
+                    mutation updateCommand($foo: Int!) {
+                        data: updateCommand(foo: $foo) {
+                            foo
+                            linked {
+                                foo
+                            }
+                            resource {
+                                id
+                            }
+                        }
+                    }
+                `)
+            );
+        });
+
+        it('returns the correct query with sparse fields', () => {
+            const {
+                introspectionResults,
+                params,
+                queryType,
+                resource,
+            } = buildGQLParamsWithSparseFieldsFactory();
+
+            expect(
+                print(
+                    buildGqlQuery(introspectionResults)(
+                        resource,
+                        UPDATE,
+                        { ...queryType, name: 'updateCommand' },
+                        params
+                    )
+                )
+            ).toEqual(
+                print(gql`
+                    mutation updateCommand($foo: Int!) {
+                        data: updateCommand(foo: $foo) {
+                            address
+                            linked {
+                                title
+                            }
+                            resource {
+                                name
+                                foo
+                            }
+                        }
+                    }
+                `)
+            );
+        });
     });
-    it('returns the correct query for CREATE', () => {
-        const {
-            introspectionResults,
-            params,
-            queryType,
-            resource,
-        } = buildGQLParamsWithSparseFieldsFactory();
-
-        expect(
-            print(
-                buildGqlQuery(introspectionResults)(
-                    resource,
-                    CREATE,
-                    { ...queryType, name: 'createCommand' },
-                    params
+    describe('CREATE', () => {
+        it('returns the correct query', () => {
+            expect(
+                print(
+                    buildGqlQuery(introspectionResults)(
+                        resource,
+                        CREATE,
+                        { ...queryType, name: 'createCommand' },
+                        params
+                    )
                 )
-            )
-        ).toEqual(
-            `mutation createCommand($foo: Int!) {
-  data: createCommand(foo: $foo) {
-    address
-    linked {
-      title
-    }
-    resource {
-      name
-      foo
-    }
-  }
-}
-`
-        );
+            ).toEqual(
+                print(gql`
+                    mutation createCommand($foo: Int!) {
+                        data: createCommand(foo: $foo) {
+                            foo
+                            linked {
+                                foo
+                            }
+                            resource {
+                                id
+                            }
+                        }
+                    }
+                `)
+            );
+        });
+
+        it('returns the correct query with sparse fields', () => {
+            const {
+                introspectionResults,
+                params,
+                queryType,
+                resource,
+            } = buildGQLParamsWithSparseFieldsFactory();
+
+            expect(
+                print(
+                    buildGqlQuery(introspectionResults)(
+                        resource,
+                        CREATE,
+                        { ...queryType, name: 'createCommand' },
+                        params
+                    )
+                )
+            ).toEqual(
+                print(gql`
+                    mutation createCommand($foo: Int!) {
+                        data: createCommand(foo: $foo) {
+                            address
+                            linked {
+                                title
+                            }
+                            resource {
+                                name
+                                foo
+                            }
+                        }
+                    }
+                `)
+            );
+        });
     });
-    it('returns the correct query for DELETE', () => {
-        const {
-            introspectionResults,
-            params,
-            queryType,
-            resource,
-        } = buildGQLParamsWithSparseFieldsFactory();
-
-        expect(
-            print(
-                buildGqlQuery(introspectionResults)(
-                    resource,
-                    DELETE,
-                    { ...queryType, name: 'deleteCommand' },
-                    params
+    describe('DELETE', () => {
+        it('returns the correct query', () => {
+            expect(
+                print(
+                    buildGqlQuery(introspectionResults)(
+                        resource,
+                        DELETE,
+                        { ...queryType, name: 'deleteCommand' },
+                        params
+                    )
                 )
-            )
-        ).toEqual(
-            `mutation deleteCommand($foo: Int!) {
-  data: deleteCommand(foo: $foo) {
-    address
-    linked {
-      title
-    }
-    resource {
-      name
-      foo
-    }
-  }
-}
-`
-        );
+            ).toEqual(
+                print(gql`
+                    mutation deleteCommand($foo: Int!) {
+                        data: deleteCommand(foo: $foo) {
+                            foo
+                            linked {
+                                foo
+                            }
+                            resource {
+                                id
+                            }
+                        }
+                    }
+                `)
+            );
+        });
+
+        it('returns the correct query with sparse fields', () => {
+            const {
+                introspectionResults,
+                params,
+                queryType,
+                resource,
+            } = buildGQLParamsWithSparseFieldsFactory();
+
+            expect(
+                print(
+                    buildGqlQuery(introspectionResults)(
+                        resource,
+                        DELETE,
+                        { ...queryType, name: 'deleteCommand' },
+                        params
+                    )
+                )
+            ).toEqual(
+                print(gql`
+                    mutation deleteCommand($foo: Int!) {
+                        data: deleteCommand(foo: $foo) {
+                            address
+                            linked {
+                                title
+                            }
+                            resource {
+                                name
+                                foo
+                            }
+                        }
+                    }
+                `)
+            );
+        });
     });
 });
