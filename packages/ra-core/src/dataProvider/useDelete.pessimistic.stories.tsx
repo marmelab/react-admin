@@ -46,7 +46,7 @@ const SuccessCore = () => {
     const isMutating = useIsMutating();
     const [success, setSuccess] = useState<string>();
     const { data, refetch } = useGetList('posts');
-    const [deleteOne, { isLoading }] = useDelete();
+    const [deleteOne, { isPending }] = useDelete();
     const handleClick = () => {
         deleteOne(
             'posts',
@@ -68,7 +68,7 @@ const SuccessCore = () => {
                 ))}
             </ul>
             <div>
-                <button onClick={handleClick} disabled={isLoading}>
+                <button onClick={handleClick} disabled={isPending}>
                     Delete first post
                 </button>
                 &nbsp;
@@ -117,7 +117,7 @@ const ErrorCore = () => {
     const [success, setSuccess] = useState<string>();
     const [error, setError] = useState<any>();
     const { data, refetch } = useGetList('posts');
-    const [deleteOne, { isLoading }] = useDelete();
+    const [deleteOne, { isPending }] = useDelete();
     const handleClick = () => {
         setError(undefined);
         deleteOne(
@@ -141,7 +141,7 @@ const ErrorCore = () => {
                 ))}
             </ul>
             <div>
-                <button onClick={handleClick} disabled={isLoading}>
+                <button onClick={handleClick} disabled={isPending}>
                     Delete first post
                 </button>
                 &nbsp;
