@@ -38,7 +38,7 @@ describe('<Authenticated>', () => {
         const authProvider = {
             login: jest.fn().mockResolvedValue(''),
             logout: jest.fn().mockResolvedValue(''),
-            checkAuth: jest.fn().mockRejectedValue(undefined),
+            checkAuth: jest.fn().mockRejectedValue({}),
             checkError: jest.fn().mockResolvedValue(''),
             getPermissions: jest.fn().mockResolvedValue(''),
         };
