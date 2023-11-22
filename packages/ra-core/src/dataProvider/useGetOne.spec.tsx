@@ -11,7 +11,13 @@ const UseGetOne = ({
     id,
     meta = undefined,
     options = {},
-    callback = null,
+    callback = undefined,
+}: {
+    resource: string;
+    id: string | number;
+    meta?: object;
+    options?: object;
+    callback?: Function;
 }) => {
     const hookValue = useGetOne(resource, { id, meta }, options);
     if (callback) callback(hookValue);
@@ -162,11 +168,13 @@ describe('useGetOne', () => {
         await waitFor(() => {
             expect(dataProvider.getOne).toHaveBeenCalledTimes(1);
         });
-        expect(hookValue).toHaveBeenCalledWith(
-            expect.objectContaining({
-                error: new Error('failed'),
-            })
-        );
+        await waitFor(() => {
+            expect(hookValue).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    error: new Error('failed'),
+                })
+            );
+        });
     });
 
     it('should execute success side effects on success', async () => {
