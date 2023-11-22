@@ -259,7 +259,7 @@ const BookList = () => {
     const { authorId } = useParams();
     return (
         <List resource="books" filter={{ authorId }}>
-            <Datagrid rowClick="edit">
+            <Datagrid>
                 <TextField source="id" />
                 <TextField source="title" />
                 <TextField source="year" />

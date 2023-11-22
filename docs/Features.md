@@ -214,7 +214,7 @@ const BookList = () => (
     <List filters={[
         <ReferenceInput source="authorId" reference="authors" alwaysOn />,
     ]}>
-        <Datagrid rowClick="edit">
+        <Datagrid>
             <TextField source="id" />
             <TextField source="title" />
             <ReferenceField source="authorId" reference="authors" />
