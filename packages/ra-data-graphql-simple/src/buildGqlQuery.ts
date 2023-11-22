@@ -154,10 +154,9 @@ export const buildFields = (
     introspectionResults: IntrospectionResult,
     paths = []
 ) => (fields: readonly IntrospectionField[], sparseFields?: SparseFields) => {
-    const { fields: requestedFields, linkedSparseFields } = processSparseFields(
-        fields,
-        sparseFields
-    );
+    const { fields: requestedFields, linkedSparseFields } = sparseFields
+        ? processSparseFields(fields, sparseFields)
+        : { fields, linkedSparseFields: [] };
 
     return requestedFields.reduce((acc, field) => {
         const type = getFinalType(field.type);
