@@ -104,7 +104,7 @@ export const useGetList = <RecordType extends RaRecord = any>(
             });
         }
         // execute call-time onSuccess if provided
-        if (onSuccess) {
+        if (result.data && onSuccess) {
             onSuccess(result.data);
         }
     }, [meta, onSuccess, queryClient, resource, result.data]);
