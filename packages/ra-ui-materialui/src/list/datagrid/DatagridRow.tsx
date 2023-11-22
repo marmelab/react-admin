@@ -23,6 +23,7 @@ import {
     useTranslate,
     useCreatePath,
     useRecordContext,
+    useResourceDefinition,
 } from 'ra-core';
 import { useNavigate } from 'react-router-dom';
 
@@ -39,6 +40,13 @@ const computeNbColumns = (expand, children, hasBulkActions) =>
         : 0; // we don't need to compute columns if there is no expand panel;
 
 const DatagridRow: FC<DatagridRowProps> = React.forwardRef((props, ref) => {
+    const definition = useResourceDefinition(props);
+    const defaultRowClick = definition?.hasShow
+        ? 'show'
+        : definition?.hasEdit
+        ? 'edit'
+        : false;
+
     const {
         children,
         className,
@@ -48,7 +56,7 @@ const DatagridRow: FC<DatagridRowProps> = React.forwardRef((props, ref) => {
         id,
         onToggleItem,
         record: recordOverride,
-        rowClick,
+        rowClick = defaultRowClick,
         selected = false,
         style,
         selectable = true,

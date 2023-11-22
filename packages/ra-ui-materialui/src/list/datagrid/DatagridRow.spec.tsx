@@ -5,11 +5,12 @@ import {
     screen,
 } from '@testing-library/react';
 import { useLocation } from 'react-router-dom';
-import { useRecordContext } from 'ra-core';
+import { ResourceDefinitionContextProvider, useRecordContext } from 'ra-core';
 
 import { AdminContext } from '../../AdminContext';
 import DatagridRow from './DatagridRow';
 import DatagridContextProvider from './DatagridContextProvider';
+import { createMemoryHistory } from 'history';
 
 const TitleField = (): JSX.Element => {
     const record = useRecordContext();
@@ -21,13 +22,16 @@ const ExpandPanel = () => <span>expanded</span>;
 // remove validateDomNesting warnings by react-testing-library
 const render = element =>
     baseRender(element, {
-        wrapper: ({ children }) => (
-            <AdminContext>
-                <table>
-                    <tbody>{children}</tbody>
-                </table>
-            </AdminContext>
-        ),
+        wrapper: ({ children }) => {
+            const history = createMemoryHistory();
+            return (
+                <AdminContext history={history}>
+                    <table>
+                        <tbody>{children}</tbody>
+                    </table>
+                </AdminContext>
+            );
+        },
     });
 
 describe('<DatagridRow />', () => {
@@ -194,6 +198,21 @@ describe('<DatagridRow />', () => {
             );
         });
 
+        it('should not call push if onRowClick is false', () => {
+            let spy = jest.fn();
+            render(
+                <LocationSpy spy={spy}>
+                    <DatagridRow {...defaultProps} rowClick={false}>
+                        <TitleField />
+                    </DatagridRow>
+                </LocationSpy>
+            );
+            fireEvent.click(screen.getByText('hello'));
+            expect(spy).toHaveBeenCalledWith(
+                expect.objectContaining({ pathname: '/' })
+            );
+        });
+
         it('should not call push if onRowClick is falsy', () => {
             let spy = jest.fn();
             render(
@@ -201,6 +220,97 @@ describe('<DatagridRow />', () => {
                     <DatagridRow {...defaultProps} rowClick="">
                         <TitleField />
                     </DatagridRow>
+                </LocationSpy>
+            );
+            fireEvent.click(screen.getByText('hello'));
+            expect(spy).toHaveBeenCalledWith(
+                expect.objectContaining({ pathname: '/' })
+            );
+        });
+
+        it("should default to 'edit' if the resource has an edit page", () => {
+            let spy = jest.fn();
+            render(
+                <LocationSpy spy={spy}>
+                    <ResourceDefinitionContextProvider
+                        definitions={{
+                            posts: { name: 'posts', hasEdit: true },
+                        }}
+                    >
+                        <DatagridRow {...defaultProps}>
+                            <TitleField />
+                        </DatagridRow>
+                    </ResourceDefinitionContextProvider>
+                </LocationSpy>
+            );
+            fireEvent.click(screen.getByText('hello'));
+            expect(spy).toHaveBeenCalledWith(
+                expect.objectContaining({ pathname: '/posts/15' })
+            );
+        });
+
+        it("should default to 'show' if the resource has a show page", () => {
+            let spy = jest.fn();
+            render(
+                <LocationSpy spy={spy}>
+                    <ResourceDefinitionContextProvider
+                        definitions={{
+                            posts: { name: 'posts', hasShow: true },
+                        }}
+                    >
+                        <DatagridRow {...defaultProps}>
+                            <TitleField />
+                        </DatagridRow>
+                    </ResourceDefinitionContextProvider>
+                </LocationSpy>
+            );
+            fireEvent.click(screen.getByText('hello'));
+            expect(spy).toHaveBeenCalledWith(
+                expect.objectContaining({ pathname: '/posts/15/show' })
+            );
+        });
+
+        it("should default to 'show' if the resource has both a show and an edit page", () => {
+            let spy = jest.fn();
+            render(
+                <LocationSpy spy={spy}>
+                    <ResourceDefinitionContextProvider
+                        definitions={{
+                            posts: {
+                                name: 'posts',
+                                hasShow: true,
+                                hasEdit: true,
+                            },
+                        }}
+                    >
+                        <DatagridRow {...defaultProps}>
+                            <TitleField />
+                        </DatagridRow>
+                    </ResourceDefinitionContextProvider>
+                </LocationSpy>
+            );
+            fireEvent.click(screen.getByText('hello'));
+            expect(spy).toHaveBeenCalledWith(
+                expect.objectContaining({ pathname: '/posts/15/show' })
+            );
+        });
+
+        it('should default to false if the resource has no show nor edit page', () => {
+            let spy = jest.fn();
+            render(
+                <LocationSpy spy={spy}>
+                    <ResourceDefinitionContextProvider
+                        definitions={{
+                            posts: {
+                                name: 'posts',
+                                hasList: true,
+                            },
+                        }}
+                    >
+                        <DatagridRow {...defaultProps}>
+                            <TitleField />
+                        </DatagridRow>
+                    </ResourceDefinitionContextProvider>
                 </LocationSpy>
             );
             fireEvent.click(screen.getByText('hello'));
