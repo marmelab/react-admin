@@ -255,6 +255,7 @@ describe('useUpdate', () => {
                 expect(screen.queryByText('Hello World')).toBeNull();
                 expect(screen.queryByText('mutating')).toBeNull();
             });
+            await screen.findByText('Hello');
         });
         it('when undoable, displays result and success side effects right away and fetched on confirm', async () => {
             jest.spyOn(console, 'log').mockImplementation(() => {});
@@ -271,15 +272,19 @@ describe('useUpdate', () => {
                 expect(screen.queryByText('Hello World')).not.toBeNull();
                 expect(screen.queryByText('mutating')).not.toBeNull();
             });
-            await waitFor(() => {
-                expect(screen.queryByText('success')).not.toBeNull();
-                expect(screen.queryByText('Hello World')).not.toBeNull();
-                expect(screen.queryByText('mutating')).toBeNull();
-            });
+            await waitFor(
+                () => {
+                    expect(screen.queryByText('mutating')).toBeNull();
+                },
+                { timeout: 4000 }
+            );
+            expect(screen.queryByText('success')).not.toBeNull();
+            expect(screen.queryByText('Hello World')).not.toBeNull();
         });
         it('when undoable, displays result and success side effects right away and reverts on cancel', async () => {
             jest.spyOn(console, 'log').mockImplementation(() => {});
             render(<SuccessCaseUndoable />);
+            await screen.findByText('Hello');
             screen.getByText('Update title').click();
             await waitFor(() => {
                 expect(screen.queryByText('success')).not.toBeNull();
@@ -289,13 +294,15 @@ describe('useUpdate', () => {
             screen.getByText('Cancel').click();
             await waitFor(() => {
                 expect(screen.queryByText('Hello World')).toBeNull();
-                expect(screen.queryByText('mutating')).toBeNull();
             });
+            expect(screen.queryByText('mutating')).toBeNull();
+            await screen.findByText('Hello');
         });
-        it('when undoable,  displays result and success side effects right away and reverts on error', async () => {
+        it('when undoable, displays result and success side effects right away and reverts on error', async () => {
             jest.spyOn(console, 'log').mockImplementation(() => {});
             jest.spyOn(console, 'error').mockImplementation(() => {});
             render(<ErrorCaseUndoable />);
+            await screen.findByText('Hello');
             screen.getByText('Update title').click();
             await waitFor(() => {
                 expect(screen.queryByText('success')).not.toBeNull();
@@ -308,6 +315,7 @@ describe('useUpdate', () => {
                 expect(screen.queryByText('Hello World')).not.toBeNull();
                 expect(screen.queryByText('mutating')).not.toBeNull();
             });
+            await screen.findByText('Hello', undefined, { timeout: 4000 });
             await waitFor(() => {
                 expect(screen.queryByText('success')).toBeNull();
                 expect(screen.queryByText('Hello World')).toBeNull();
