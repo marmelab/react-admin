@@ -1285,6 +1285,7 @@ describe('<AutocompleteInput />', () => {
     describe('Inside <ReferenceInput>', () => {
         it('should work inside a ReferenceInput field', async () => {
             render(<InsideReferenceInput />);
+            await screen.findByDisplayValue('Leo Tolstoy');
             await waitFor(() => {
                 expect(
                     (screen.getByRole('combobox') as HTMLInputElement).value
@@ -1311,6 +1312,7 @@ describe('<AutocompleteInput />', () => {
 
         it('should allow to clear the value inside a ReferenceInput field', async () => {
             render(<InsideReferenceInput />);
+            await screen.findByDisplayValue('Leo Tolstoy');
             await waitFor(() => {
                 expect(
                     (screen.getByRole('combobox') as HTMLInputElement).value
