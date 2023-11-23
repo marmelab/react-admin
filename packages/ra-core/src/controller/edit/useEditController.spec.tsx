@@ -321,8 +321,7 @@ describe('useEditController', () => {
         await new Promise(resolve => setTimeout(resolve, 10));
         screen.getByText('{"id":12}');
         await act(async () => saveCallback({ foo: 'bar' }));
-        await new Promise(resolve => setTimeout(resolve, 10));
-        screen.getByText('{"id":12,"foo":"bar"}');
+        await screen.findByText('{"id":12,"foo":"bar"}');
         expect(update).toHaveBeenCalledWith('posts', {
             id: 12,
             data: { foo: 'bar' },

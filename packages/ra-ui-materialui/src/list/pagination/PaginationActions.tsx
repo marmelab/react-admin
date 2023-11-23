@@ -13,6 +13,8 @@ export const PaginationActions: FC<PaginationActionsProps> = memo(props => {
         onPageChange,
         size = 'small',
         className,
+        // @ts-ignore
+        slotProps,
         ...rest
     } = props;
     const translate = useTranslate();
