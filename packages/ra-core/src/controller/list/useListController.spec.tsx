@@ -146,7 +146,9 @@ describe('useListController', () => {
             fireEvent.change(searchInput, { target: { value: 'hello' } });
             await new Promise(resolve => setTimeout(resolve, 210));
 
-            expect(storeSpy).toHaveBeenCalledTimes(1);
+            await waitFor(() => {
+                expect(storeSpy).toHaveBeenCalledTimes(1);
+            });
             expect(storeSpy).toHaveBeenCalledWith('posts.listParams', {
                 filter: { q: 'hello' },
                 order: 'ASC',
