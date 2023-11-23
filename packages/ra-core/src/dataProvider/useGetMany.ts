@@ -103,7 +103,7 @@ export const useGetMany = <RecordType extends RaRecord = any>(
     });
 
     useEffect(() => {
-        if (result.data) {
+        if (result.data != null) {
             // optimistically populate the getOne cache
             result.data.forEach(record => {
                 queryClient.setQueryData(
@@ -120,7 +120,7 @@ export const useGetMany = <RecordType extends RaRecord = any>(
     }, [queryClient, meta, onSuccess, resource, result.data]);
 
     useEffect(() => {
-        if (result.error && onError) {
+        if (result.error != null && onError) {
             onError(result.error);
         }
     }, [onError, result.error]);

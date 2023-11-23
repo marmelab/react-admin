@@ -92,7 +92,7 @@ export const useGetList = <RecordType extends RaRecord = any>(
     useEffect(() => {
         // optimistically populate the getOne cache
         if (
-            result.data &&
+            result.data != null &&
             result.data?.data &&
             result.data.data.length <= MAX_DATA_LENGTH_TO_CACHE
         ) {
@@ -104,13 +104,13 @@ export const useGetList = <RecordType extends RaRecord = any>(
             });
         }
         // execute call-time onSuccess if provided
-        if (result.data && onSuccess) {
+        if (result.data != null && onSuccess) {
             onSuccess(result.data);
         }
     }, [meta, onSuccess, queryClient, resource, result.data]);
 
     useEffect(() => {
-        if (result.error && onError) {
+        if (result.error != null && onError) {
             onError(result.error);
         }
     }, [onError, result.error]);
