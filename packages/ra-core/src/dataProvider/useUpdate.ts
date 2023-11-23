@@ -83,14 +83,11 @@ import { useEvent } from '../util';
  * const [update, { data }] = useUpdate<Product>('products', { id, data: diff, previousData: product });
  *                    \-- data is Product
  */
-export const useUpdate = <
-    RecordType extends RaRecord = any,
-    MutationError = unknown
->(
+export const useUpdate = <RecordType extends RaRecord = any>(
     resource?: string,
     params: Partial<UpdateParams<RecordType>> = {},
-    options: UseUpdateOptions<RecordType, MutationError> = {}
-): UseUpdateResult<RecordType, boolean, MutationError> => {
+    options: UseUpdateOptions<RecordType> = {}
+): UseUpdateResult<RecordType, boolean> => {
     const dataProvider = useDataProvider();
     const queryClient = useQueryClient();
     const { id, data, meta } = params;
@@ -172,7 +169,7 @@ export const useUpdate = <
 
     const mutation = useMutation<
         RecordType,
-        MutationError,
+        Error,
         Partial<UseUpdateMutateParams<RecordType>>
     >({
         mutationFn: ({
@@ -207,11 +204,7 @@ export const useUpdate = <
                 return { snapshot: snapshot.current };
             }
         },
-        onError: (
-            error: MutationError,
-            variables: Partial<UseUpdateMutateParams<RecordType>> = {},
-            context: { snapshot: Snapshot }
-        ) => {
+        onError: (error, variables = {}, context: { snapshot: Snapshot }) => {
             if (mode.current === 'optimistic' || mode.current === 'undoable') {
                 // If the mutation fails, use the context returned from onMutate to rollback
                 context.snapshot.forEach(([key, value]) => {
@@ -248,9 +241,9 @@ export const useUpdate = <
             }
         },
         onSettled: (
-            data: RecordType,
-            error: MutationError,
-            variables: Partial<UseUpdateMutateParams<RecordType>> = {},
+            data,
+            error,
+            variables = {},
             context: { snapshot: Snapshot }
         ) => {
             if (mode.current === 'optimistic' || mode.current === 'undoable') {
@@ -421,7 +414,10 @@ export const useUpdate = <
                     // call the mutate method without success side effects
                     mutation.mutate(
                         { resource: callTimeResource, ...callTimeParams },
-                        { onSettled, onError }
+                        {
+                            onSettled,
+                            onError,
+                        }
                     );
                 }
             });
@@ -442,24 +438,22 @@ export interface UseUpdateMutateParams<RecordType extends RaRecord = any> {
 }
 
 export type UseUpdateOptions<
-    RecordType extends RaRecord = any,
-    MutationError = unknown
+    RecordType extends RaRecord = any
 > = UseMutationOptions<
     RecordType,
-    MutationError,
+    Error,
     Partial<Omit<UseUpdateMutateParams<RecordType>, 'mutationFn'>>
 > & { mutationMode?: MutationMode; returnPromise?: boolean };
 
 export type UpdateMutationFunction<
     RecordType extends RaRecord = any,
-    TReturnPromise extends boolean = boolean,
-    MutationError = unknown
+    TReturnPromise extends boolean = boolean
 > = (
     resource?: string,
     params?: Partial<UpdateParams<RecordType>>,
     options?: MutateOptions<
         RecordType,
-        MutationError,
+        Error,
         Partial<UseUpdateMutateParams<RecordType>>,
         unknown
     > & { mutationMode?: MutationMode; returnPromise?: TReturnPromise }
@@ -467,13 +461,12 @@ export type UpdateMutationFunction<
 
 export type UseUpdateResult<
     RecordType extends RaRecord = any,
-    TReturnPromise extends boolean = boolean,
-    MutationError = unknown
+    TReturnPromise extends boolean = boolean
 > = [
-    UpdateMutationFunction<RecordType, TReturnPromise, MutationError>,
+    UpdateMutationFunction<RecordType, TReturnPromise>,
     UseMutationResult<
         RecordType,
-        MutationError,
+        Error,
         Partial<UpdateParams<RecordType> & { resource?: string }>,
         unknown
     >

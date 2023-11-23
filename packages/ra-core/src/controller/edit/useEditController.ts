@@ -48,11 +48,8 @@ import {
  *     return <EditView {...controllerProps} {...props} />;
  * }
  */
-export const useEditController = <
-    RecordType extends RaRecord = any,
-    MutationOptionsError = unknown
->(
-    props: EditControllerProps<RecordType, MutationOptionsError> = {}
+export const useEditController = <RecordType extends RaRecord = any>(
+    props: EditControllerProps<RecordType> = {}
 ): EditControllerResult<RecordType> => {
     const {
         disableAuthentication,
@@ -125,14 +122,48 @@ export const useEditController = <
 
     const recordCached = { id, previousData: record };
 
-    const [update, { isPending: saving }] = useUpdate<
-        RecordType,
-        MutationOptionsError
-    >(resource, recordCached, {
-        ...otherMutationOptions,
-        mutationMode,
-        returnPromise: mutationMode === 'pessimistic',
-    });
+    const [update, { isPending: saving }] = useUpdate<RecordType>(
+        resource,
+        recordCached,
+        {
+            onSuccess: async (data, variables, context) => {
+                if (onSuccess) {
+                    return onSuccess(data, variables, context);
+                }
+
+                notify('ra.notification.updated', {
+                    type: 'info',
+                    messageArgs: { smart_count: 1 },
+                    undoable: mutationMode === 'undoable',
+                });
+                redirect(redirectTo, resource, data.id, data);
+            },
+            onError: (error, variables, context) => {
+                if (onError) {
+                    return onError(error, variables, context);
+                }
+                notify(
+                    typeof error === 'string'
+                        ? error
+                        : error.message || 'ra.notification.http_error',
+                    {
+                        type: 'error',
+                        messageArgs: {
+                            _:
+                                typeof error === 'string'
+                                    ? error
+                                    : error && error.message
+                                    ? error.message
+                                    : undefined,
+                        },
+                    }
+                );
+            },
+            ...otherMutationOptions,
+            mutationMode,
+            returnPromise: mutationMode === 'pessimistic',
+        }
+    );
 
     const save = useCallback(
         (
@@ -160,52 +191,14 @@ export const useEditController = <
                 try {
                     await mutate(
                         resource,
-                        { id, data, meta: metaFromSave ?? mutationMeta },
                         {
-                            onSuccess: async (data, variables, context) => {
-                                if (onSuccessFromSave) {
-                                    return onSuccessFromSave(
-                                        data,
-                                        variables,
-                                        context
-                                    );
-                                }
-
-                                if (onSuccess) {
-                                    return onSuccess(data, variables, context);
-                                }
-
-                                notify('ra.notification.updated', {
-                                    type: 'info',
-                                    messageArgs: { smart_count: 1 },
-                                    undoable: mutationMode === 'undoable',
-                                });
-                                redirect(redirectTo, resource, data.id, data);
-                            },
-                            onError: onErrorFromSave
-                                ? onErrorFromSave
-                                : onError
-                                ? onError
-                                : (error: Error | string) => {
-                                      notify(
-                                          typeof error === 'string'
-                                              ? error
-                                              : error.message ||
-                                                    'ra.notification.http_error',
-                                          {
-                                              type: 'error',
-                                              messageArgs: {
-                                                  _:
-                                                      typeof error === 'string'
-                                                          ? error
-                                                          : error &&
-                                                            error.message
-                                                          ? error.message
-                                                          : undefined,
-                                              },
-                                          }
-                                      );
-                                  },
+                            id,
+                            data,
+                            meta: metaFromSave ?? mutationMeta,
+                        },
+                        {
+                            onSuccess: onSuccessFromSave,
+                            oneError: onErrorFromSave,
                         }
                     );
                 } catch (error) {
@@ -218,12 +211,6 @@ export const useEditController = <
             id,
             getMutateWithMiddlewares,
             mutationMeta,
-            mutationMode,
-            notify,
-            onError,
-            onSuccess,
-            redirect,
-            redirectTo,
             resource,
             transform,
             update,
@@ -248,16 +235,13 @@ export const useEditController = <
     };
 };
 
-export interface EditControllerProps<
-    RecordType extends RaRecord = any,
-    MutationOptionsError = unknown
-> {
+export interface EditControllerProps<RecordType extends RaRecord = any> {
     disableAuthentication?: boolean;
     id?: RecordType['id'];
     mutationMode?: MutationMode;
     mutationOptions?: UseMutationOptions<
         RecordType,
-        MutationOptionsError,
+        Error,
         UseUpdateMutateParams<RecordType>
     > & { meta?: any };
     queryOptions?: Omit<UseQueryOptions<RecordType>, 'queryFn' | 'queryKey'> & {
