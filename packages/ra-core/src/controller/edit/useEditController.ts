@@ -1,6 +1,7 @@
-import { useCallback } from 'react';
+import { useCallback, useMemo, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import { UseQueryOptions, UseMutationOptions } from '@tanstack/react-query';
+import merge from 'lodash/merge';
 
 import { useAuthenticated } from '../../auth';
 import { RaRecord, MutationMode, TransformData } from '../../types';
@@ -25,6 +26,7 @@ import {
     SaveHandlerCallbacks,
     useMutationMiddlewares,
 } from '../saveContext';
+import { on } from 'events';
 
 /**
  * Prepare data for the Edit view.
@@ -71,9 +73,9 @@ export const useEditController = <RecordType extends RaRecord = any>(
     const id = propsId != null ? propsId : decodeURIComponent(routeId);
     const { meta: queryMeta, ...otherQueryOptions } = queryOptions;
     const {
+        meta: mutationMeta,
         onSuccess,
         onError,
-        meta: mutationMeta,
         ...otherMutationOptions
     } = mutationOptions;
     const {
@@ -122,43 +124,64 @@ export const useEditController = <RecordType extends RaRecord = any>(
 
     const recordCached = { id, previousData: record };
 
+    const hasOverridenOnSuccess = useRef(false);
+    const hasOverridenOnError = useRef(false);
+
+    const defaultSideEffects = useMemo(
+        () => ({
+            onSuccess: async (data, variables, context) => {
+                if (!hasOverridenOnSuccess.current) {
+                    if (onSuccess) {
+                        return onSuccess(data, variables, context);
+                    }
+                    notify('ra.notification.updated', {
+                        type: 'info',
+                        messageArgs: { smart_count: 1 },
+                        undoable: mutationMode === 'undoable',
+                    });
+                    redirect(redirectTo, resource, data.id, data);
+                }
+            },
+            onError: (error, variables, context) => {
+                if (!hasOverridenOnError.current) {
+                    if (onError) {
+                        return onError(error, variables, context);
+                    }
+                    notify(
+                        typeof error === 'string'
+                            ? error
+                            : error.message || 'ra.notification.http_error',
+                        {
+                            type: 'error',
+                            messageArgs: {
+                                _:
+                                    typeof error === 'string'
+                                        ? error
+                                        : error && error.message
+                                        ? error.message
+                                        : undefined,
+                            },
+                        }
+                    );
+                }
+            },
+        }),
+        [
+            mutationMode,
+            notify,
+            onSuccess,
+            onError,
+            redirect,
+            redirectTo,
+            resource,
+        ]
+    );
+
     const [update, { isPending: saving }] = useUpdate<RecordType>(
         resource,
         recordCached,
         {
-            onSuccess: async (data, variables, context) => {
-                if (onSuccess) {
-                    return onSuccess(data, variables, context);
-                }
-
-                notify('ra.notification.updated', {
-                    type: 'info',
-                    messageArgs: { smart_count: 1 },
-                    undoable: mutationMode === 'undoable',
-                });
-                redirect(redirectTo, resource, data.id, data);
-            },
-            onError: (error, variables, context) => {
-                if (onError) {
-                    return onError(error, variables, context);
-                }
-                notify(
-                    typeof error === 'string'
-                        ? error
-                        : error.message || 'ra.notification.http_error',
-                    {
-                        type: 'error',
-                        messageArgs: {
-                            _:
-                                typeof error === 'string'
-                                    ? error
-                                    : error && error.message
-                                    ? error.message
-                                    : undefined,
-                        },
-                    }
-                );
-            },
+            ...(mutationMode !== 'pessimistic' ? defaultSideEffects : {}),
             ...otherMutationOptions,
             mutationMode,
             returnPromise: mutationMode === 'pessimistic',
@@ -186,7 +209,16 @@ export const useEditController = <RecordType extends RaRecord = any>(
                       })
                     : data
             ).then(async (data: Partial<RecordType>) => {
+                hasOverridenOnSuccess.current = !!onSuccessFromSave;
+                hasOverridenOnError.current = !!onErrorFromSave;
+
                 const mutate = getMutateWithMiddlewares(update);
+
+                let options = merge(
+                    {},
+                    mutationMode === 'pessimistic' ? defaultSideEffects : {},
+                    { onError: onErrorFromSave, onSuccess: onSuccessFromSave }
+                );
 
                 try {
                     await mutate(
@@ -196,10 +228,7 @@ export const useEditController = <RecordType extends RaRecord = any>(
                             data,
                             meta: metaFromSave ?? mutationMeta,
                         },
-                        {
-                            onSuccess: onSuccessFromSave,
-                            oneError: onErrorFromSave,
-                        }
+                        options
                     );
                 } catch (error) {
                     if ((error as HttpError).body?.errors != null) {
@@ -208,6 +237,8 @@ export const useEditController = <RecordType extends RaRecord = any>(
                 }
             }),
         [
+            defaultSideEffects,
+            mutationMode,
             id,
             getMutateWithMiddlewares,
             mutationMeta,
