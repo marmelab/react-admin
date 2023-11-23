@@ -43,7 +43,7 @@ const EditActions = () => (
 );
 
 const UserEditForm = () => {
-    const { permissions } = usePermissions();
+    const { data: permissions } = usePermissions();
     const { save } = useSaveContext();
 
     const newSave = values =>

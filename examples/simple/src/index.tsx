@@ -14,6 +14,7 @@ import Layout from './Layout';
 import posts from './posts';
 import users from './users';
 import tags from './tags';
+import { queryClient } from './queryClient';
 
 const container = document.getElementById('root');
 const root = createRoot(container);
@@ -24,6 +25,7 @@ root.render(
             authProvider={authProvider}
             dataProvider={dataProvider}
             i18nProvider={i18nProvider}
+            queryClient={queryClient}
             title="Example Admin"
             layout={Layout}
         >

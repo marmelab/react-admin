@@ -47,17 +47,17 @@ export default {
     },
     checkError: ({ status }) => {
         return status === 401 || status === 403
-            ? Promise.reject()
+            ? Promise.reject('')
             : Promise.resolve();
     },
     checkAuth: () => {
         return localStorage.getItem('not_authenticated')
-            ? Promise.reject()
+            ? Promise.reject('')
             : Promise.resolve();
     },
     getPermissions: () => {
         const role = localStorage.getItem('role');
-        return Promise.resolve(role);
+        return Promise.resolve(role ?? '');
     },
     getIdentity: () => {
         return Promise.resolve({

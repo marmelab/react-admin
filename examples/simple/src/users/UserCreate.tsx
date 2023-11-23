@@ -53,7 +53,7 @@ const isValidName = async value =>
     );
 
 const UserCreate = () => {
-    const { permissions } = usePermissions();
+    const { data: permissions } = usePermissions();
     const unique = useUnique();
     return (
         <Create aside={<Aside />} redirect="show">

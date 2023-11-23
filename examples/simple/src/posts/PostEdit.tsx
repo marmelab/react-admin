@@ -101,7 +101,7 @@ const categories = [
 ];
 
 const PostEdit = () => {
-    const { permissions } = usePermissions();
+    const { data: permissions } = usePermissions();
     return (
         <Edit title={<PostTitle />} actions={<EditActions />}>
             <TabbedForm

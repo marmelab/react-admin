@@ -101,7 +101,7 @@ const PostCreate = () => {
         }),
         []
     );
-    const { permissions } = usePermissions();
+    const { data: permissions } = usePermissions();
     const dateDefaultValue = useMemo(() => new Date(), []);
     return (
         <Create redirect="edit">
