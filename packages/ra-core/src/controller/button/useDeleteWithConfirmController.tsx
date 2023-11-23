@@ -79,7 +79,42 @@ const useDeleteWithConfirmController = <RecordType extends RaRecord = any>(
     const notify = useNotify();
     const unselect = useUnselect(resource);
     const redirect = useRedirect();
-    const [deleteOne, { isPending }] = useDelete<RecordType>();
+    const [deleteOne, { isPending }] = useDelete<RecordType>(
+        resource,
+        { id: record?.id },
+        {
+            onSuccess: () => {
+                setOpen(false);
+                notify('ra.notification.deleted', {
+                    type: 'info',
+                    messageArgs: { smart_count: 1 },
+                    undoable: mutationMode === 'undoable',
+                });
+                unselect([record.id]);
+                redirect(redirectTo, resource);
+            },
+            onError: (error: Error) => {
+                setOpen(false);
+
+                notify(
+                    typeof error === 'string'
+                        ? error
+                        : error.message || 'ra.notification.http_error',
+                    {
+                        type: 'error',
+                        messageArgs: {
+                            _:
+                                typeof error === 'string'
+                                    ? error
+                                    : error && error.message
+                                    ? error.message
+                                    : undefined,
+                        },
+                    }
+                );
+            },
+        }
+    );
 
     const handleDialogOpen = e => {
         setOpen(true);
@@ -102,36 +137,6 @@ const useDeleteWithConfirmController = <RecordType extends RaRecord = any>(
                     meta: mutationMeta,
                 },
                 {
-                    onSuccess: () => {
-                        setOpen(false);
-                        notify('ra.notification.deleted', {
-                            type: 'info',
-                            messageArgs: { smart_count: 1 },
-                            undoable: mutationMode === 'undoable',
-                        });
-                        unselect([record.id]);
-                        redirect(redirectTo, resource);
-                    },
-                    onError: (error: Error) => {
-                        setOpen(false);
-
-                        notify(
-                            typeof error === 'string'
-                                ? error
-                                : error.message || 'ra.notification.http_error',
-                            {
-                                type: 'error',
-                                messageArgs: {
-                                    _:
-                                        typeof error === 'string'
-                                            ? error
-                                            : error && error.message
-                                            ? error.message
-                                            : undefined,
-                                },
-                            }
-                        );
-                    },
                     mutationMode,
                     ...otherMutationOptions,
                 }
@@ -145,13 +150,9 @@ const useDeleteWithConfirmController = <RecordType extends RaRecord = any>(
             mutationMeta,
             mutationMode,
             otherMutationOptions,
-            notify,
             onClick,
             record,
-            redirect,
-            redirectTo,
             resource,
-            unselect,
         ]
     );
 
