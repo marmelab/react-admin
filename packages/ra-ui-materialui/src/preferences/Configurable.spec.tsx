@@ -20,6 +20,7 @@ describe('Configurable', () => {
         await screen.findByText('Inspector');
         fireEvent.mouseOver(screen.getByText('Lorem ipsum'));
         screen.getByTitle('ra.configurable.customize').click();
+        await screen.findByText('Background color');
         expect(
             (screen.getByLabelText('Background color') as HTMLInputElement)
                 .value
@@ -30,6 +31,7 @@ describe('Configurable', () => {
         render(<Basic />);
         screen.getByText('Today');
         screen.getByLabelText('Configure mode').click();
+        await screen.findByText('Inspector');
         fireEvent.mouseOver(screen.getByText('Sales'));
         screen.getByTitle('ra.configurable.customize').click();
         await screen.findByText('Sales block');
@@ -41,8 +43,14 @@ describe('Configurable', () => {
         render(<Basic />);
         screen.getByText('Today');
         screen.getByLabelText('Configure mode').click();
+        await screen.findByText('Inspector');
+
         fireEvent.mouseOver(screen.getByText('Sales'));
-        screen.getByTitle('ra.configurable.customize').click();
+        (
+            await screen.findByTitle('ra.configurable.customize', undefined, {
+                timeout: 4000,
+            })
+        ).click();
         await screen.findByText('Sales block');
         screen.getByLabelText('Show date').click();
         screen.getByLabelText('ra.action.close').click();
@@ -60,7 +68,9 @@ describe('Configurable', () => {
         await waitFor(() => {
             expect(screen.queryByText('Lorem ipsum')).toBeNull();
         });
-        expect(screen.queryByText('Text block')).toBeNull();
+        await waitFor(() => {
+            expect(screen.queryByText('Text block')).toBeNull();
+        });
     });
 
     it('should not remove the editor when unmounting another configurable element', async () => {

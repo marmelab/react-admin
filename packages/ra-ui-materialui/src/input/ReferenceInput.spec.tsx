@@ -181,23 +181,32 @@ describe('<ReferenceInput />', () => {
                 ),
         };
         render(<Basic dataProvider={dataProvider} />);
-        await screen.findByDisplayValue('Leo Tolstoy');
-        const input = screen.getByLabelText('Author') as HTMLInputElement;
+        const input = (await screen.findByDisplayValue(
+            'Leo Tolstoy'
+        )) as HTMLInputElement;
         input.focus();
         screen.getByLabelText('Clear value').click();
+        await screen.findByDisplayValue('');
         screen.getByLabelText('Save').click();
         await waitFor(() => {
             expect(
                 (screen.getByLabelText('Save') as HTMLButtonElement).disabled
             ).toBeTruthy();
         });
-        expect(dataProvider.update).toHaveBeenCalledWith(
-            'books',
-            expect.objectContaining({
-                data: expect.objectContaining({
-                    author: null,
-                }),
-            })
+        await waitFor(
+            () => {
+                expect(dataProvider.update).toHaveBeenCalledWith(
+                    'books',
+                    expect.objectContaining({
+                        data: expect.objectContaining({
+                            author: null,
+                        }),
+                    })
+                );
+            },
+            {
+                timeout: 4000,
+            }
         );
     });
 

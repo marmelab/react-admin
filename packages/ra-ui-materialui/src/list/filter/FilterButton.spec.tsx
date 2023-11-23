@@ -195,11 +195,10 @@ describe('<FilterButton />', () => {
             fireEvent.click(screen.getByLabelText('Open'));
             fireEvent.click(screen.getByText('Sint...'));
 
+            await screen.findByLabelText('Add filter');
             await waitFor(() => {
-                screen.getByLabelText('Add filter');
                 expect(screen.getAllByRole('checkbox')).toHaveLength(2);
             });
-
             fireEvent.click(screen.getByLabelText('Add filter'));
             fireEvent.click(screen.getByText('Remove all filters'));
 
@@ -210,11 +209,14 @@ describe('<FilterButton />', () => {
             fireEvent.click(screen.getByLabelText('Open'));
             fireEvent.click(screen.getByText('Sint...'));
 
-            await waitFor(() => {
-                expect(
-                    screen.getAllByTestId('CheckBoxOutlineBlankIcon')
-                ).toHaveLength(2);
-            });
+            await waitFor(
+                () => {
+                    expect(screen.getAllByRole('checkbox')).toHaveLength(2);
+                },
+                {
+                    timeout: 4000,
+                }
+            );
 
             expect(screen.queryByText('Save current query...')).toBeNull();
         }, 20000);

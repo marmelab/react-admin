@@ -107,7 +107,7 @@ describe('<ReferenceField />', () => {
                 </ThemeProvider>
             );
             await new Promise(resolve => setTimeout(resolve, 1001));
-            expect(screen.queryByRole('progressbar')).not.toBeNull();
+            await screen.findByRole('progressbar');
             expect(screen.queryAllByRole('link')).toHaveLength(0);
         });
 
