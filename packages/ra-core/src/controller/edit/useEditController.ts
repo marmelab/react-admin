@@ -26,7 +26,6 @@ import {
     SaveHandlerCallbacks,
     useMutationMiddlewares,
 } from '../saveContext';
-import { on } from 'events';
 
 /**
  * Prepare data for the Edit view.
