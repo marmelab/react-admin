@@ -38,16 +38,16 @@
         "clsx": "^1.1.1"
     },
     "peerDependencies": {
-        "@mui/icons-material": "^5.0.1",
-        "@mui/material": "^5.0.2",
+        "@mui/icons-material": "^5.14.18",
+        "@mui/material": "^5.14.18",
         "ra-core": "^4.0.0",
         "ra-ui-materialui": "^4.0.0",
         "react": "^16.9.0 || ^17.0.0 || ^18.0.0",
         "react-dom": "^16.9.0 || ^17.0.0 || ^18.0.0"
     },
     "devDependencies": {
-        "@mui/icons-material": "^5.0.1",
-        "@mui/material": "^5.0.2",
+        "@mui/icons-material": "^5.14.18",
+        "@mui/material": "^5.14.18",
         "@testing-library/react": "^14.1.2",
         "@tiptap/extension-mention": "^2.0.3",
         "@tiptap/suggestion": "^2.0.3",

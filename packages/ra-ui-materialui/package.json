@@ -26,8 +26,8 @@
         "watch": "tsc --outDir dist/esm --module es2015 --watch"
     },
     "devDependencies": {
-        "@mui/icons-material": "^5.0.1",
-        "@mui/material": "^5.0.2",
+        "@mui/icons-material": "^5.14.18",
+        "@mui/material": "^5.14.18",
         "@testing-library/react": "^14.1.2",
         "@types/dompurify": "^3.0.2",
         "@types/react": "^18.2.37",
@@ -52,8 +52,8 @@
         "typescript": "^5.1.3"
     },
     "peerDependencies": {
-        "@mui/icons-material": "^5.0.1",
-        "@mui/material": "^5.0.2",
+        "@mui/icons-material": "^5.14.18",
+        "@mui/material": "^5.14.18",
         "ra-core": "^4.0.0",
         "react": "^16.9.0 || ^17.0.0 || ^18.0.0",
         "react-dom": "^16.9.0 || ^17.0.0 || ^18.0.0",
