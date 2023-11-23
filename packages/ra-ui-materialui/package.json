@@ -32,6 +32,7 @@
         "@types/dompurify": "^3.0.2",
         "@types/react": "^18.2.37",
         "@types/react-dom": "^18.2.16",
+        "@types/react-is": "^18.2.4",
         "@types/react-transition-group": "^4.4.9",
         "cross-env": "^5.2.0",
         "expect": "^27.4.6",
