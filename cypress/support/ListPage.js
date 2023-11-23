@@ -6,7 +6,7 @@ export default url => ({
         filter: name => `.filter-field[data-source='${name}'] input`,
         filterButton: name => `.filter-field[data-source='${name}']`,
         filterMenuItems: `.new-filter-item`,
-        menuItems: `[role=menuitem]`,
+        menuItems: `a[role=menuitem]`,
         filterMenuItem: source => `.new-filter-item[data-key="${source}"]`,
         hideFilterButton: source =>
             `.filter-field[data-source="${source}"] .hide-filter`,

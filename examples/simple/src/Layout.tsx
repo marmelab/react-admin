@@ -12,6 +12,11 @@ const MyAppBar = () => (
 export default props => (
     <>
         <Layout {...props} appBar={MyAppBar} />
-        <ReactQueryDevtools initialIsOpen={false} />
+        {process.env.NODE_ENV === 'development' ? (
+            <ReactQueryDevtools
+                initialIsOpen={false}
+                buttonPosition="bottom-left"
+            />
+        ) : null}
     </>
 );
