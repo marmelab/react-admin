@@ -190,7 +190,9 @@ describe('<FilterForm />', () => {
 
         fireEvent.click(await screen.findByTitle('Remove this filter'));
         await screen.findByText('1-10 of 13');
-        expect(screen.queryByText('Nested')).toBeNull();
+        await waitFor(() => {
+            expect(screen.queryByText('Nested')).toBeNull();
+        });
         expect(screen.queryByLabelText('Nested')).toBeNull();
     });
 
