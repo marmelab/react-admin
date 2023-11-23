@@ -6453,6 +6453,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/react-is@npm:^18.2.4":
+  version: 18.2.4
+  resolution: "@types/react-is@npm:18.2.4"
+  dependencies:
+    "@types/react": "*"
+  checksum: f1085c3c27aed16b89fac137ee3771ce161b6faa63be90e47f91a3867864c4612df24e9937d2eb621feaa84d29cb8829cf2c42f69f611fad8abc15929377e5db
+  languageName: node
+  linkType: hard
+
 "@types/react-transition-group@npm:^4.4.8, @types/react-transition-group@npm:^4.4.9":
   version: 4.4.9
   resolution: "@types/react-transition-group@npm:4.4.9"
@@ -18575,6 +18584,7 @@ __metadata:
     "@types/dompurify": ^3.0.2
     "@types/react": ^18.2.37
     "@types/react-dom": ^18.2.16
+    "@types/react-is": ^18.2.4
     "@types/react-transition-group": ^4.4.9
     autosuggest-highlight: ^3.1.1
     clsx: ^1.1.1
