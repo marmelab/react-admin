@@ -8,6 +8,7 @@ import {
 } from 'ra-core';
 import { ThemeProvider, createTheme } from '@mui/material';
 import { Datagrid } from './Datagrid';
+import { TextField } from '../../field/TextField';
 
 const TitleField = (): JSX.Element => {
     const record = useRecordContext();
@@ -272,7 +273,9 @@ describe('<Datagrid />', () => {
     it('should display a message when there is no result', () => {
         render(
             <Wrapper listContext={{ ...contextValue, data: [], total: 0 }}>
-                <Datagrid />
+                <Datagrid>
+                    <TextField source="id" />
+                </Datagrid>
             </Wrapper>
         );
         expect(screen.queryByText('ra.navigation.no_results')).not.toBeNull();

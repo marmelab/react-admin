@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { render, screen, waitFor } from '@testing-library/react';
+import { act, render, screen, waitFor } from '@testing-library/react';
 import expect from 'expect';
 
 import { CoreAdminContext } from '../core';
@@ -260,13 +260,17 @@ describe('useUpdate', () => {
         it('when undoable, displays result and success side effects right away and fetched on confirm', async () => {
             jest.spyOn(console, 'log').mockImplementation(() => {});
             render(<SuccessCaseUndoable />);
-            screen.getByText('Update title').click();
+            act(() => {
+                screen.getByText('Update title').click();
+            });
             await waitFor(() => {
                 expect(screen.queryByText('success')).not.toBeNull();
                 expect(screen.queryByText('Hello World')).not.toBeNull();
                 expect(screen.queryByText('mutating')).toBeNull();
             });
-            screen.getByText('Confirm').click();
+            act(() => {
+                screen.getByText('Confirm').click();
+            });
             await waitFor(() => {
                 expect(screen.queryByText('success')).not.toBeNull();
                 expect(screen.queryByText('Hello World')).not.toBeNull();
@@ -285,13 +289,17 @@ describe('useUpdate', () => {
             jest.spyOn(console, 'log').mockImplementation(() => {});
             render(<SuccessCaseUndoable />);
             await screen.findByText('Hello');
-            screen.getByText('Update title').click();
+            act(() => {
+                screen.getByText('Update title').click();
+            });
             await waitFor(() => {
                 expect(screen.queryByText('success')).not.toBeNull();
                 expect(screen.queryByText('Hello World')).not.toBeNull();
                 expect(screen.queryByText('mutating')).toBeNull();
             });
-            screen.getByText('Cancel').click();
+            act(() => {
+                screen.getByText('Cancel').click();
+            });
             await waitFor(() => {
                 expect(screen.queryByText('Hello World')).toBeNull();
             });

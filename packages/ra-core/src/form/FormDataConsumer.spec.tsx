@@ -66,7 +66,7 @@ describe('FormDataConsumerView', () => {
                 <SimpleForm>
                     <BooleanInput source="hi" defaultValue />
                     <FormDataConsumer>
-                        {({ formData, ...rest }) => {
+                        {({ formData, getSource, ...rest }) => {
                             globalFormData = formData;
 
                             return <TextInput source="bye" {...rest} />;

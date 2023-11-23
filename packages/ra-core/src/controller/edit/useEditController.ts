@@ -1,6 +1,5 @@
 import { useCallback, useMemo, useRef } from 'react';
 import { useParams } from 'react-router-dom';
-import { UseQueryOptions, UseMutationOptions } from '@tanstack/react-query';
 import merge from 'lodash/merge';
 
 import { useAuthenticated } from '../../auth';
@@ -12,8 +11,9 @@ import {
     useUpdate,
     useRefresh,
     UseGetOneHookValue,
-    UseUpdateMutateParams,
     HttpError,
+    UseGetOneOptions,
+    UseUpdateOptions,
 } from '../../dataProvider';
 import { useTranslate } from '../../i18n';
 import {
@@ -269,14 +269,8 @@ export interface EditControllerProps<RecordType extends RaRecord = any> {
     disableAuthentication?: boolean;
     id?: RecordType['id'];
     mutationMode?: MutationMode;
-    mutationOptions?: UseMutationOptions<
-        RecordType,
-        Error,
-        UseUpdateMutateParams<RecordType>
-    > & { meta?: any };
-    queryOptions?: Omit<UseQueryOptions<RecordType>, 'queryFn' | 'queryKey'> & {
-        meta?: any;
-    };
+    mutationOptions?: UseUpdateOptions<RecordType>;
+    queryOptions?: UseGetOneOptions<RecordType>;
     redirect?: RedirectionSideEffect;
     resource?: string;
     transform?: TransformData;
