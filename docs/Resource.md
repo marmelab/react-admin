@@ -130,7 +130,7 @@ export const BookList = () => {
     const { authorId } = useParams();
     return (
         <List resource="books" filter={{ authorId }}>
-            <Datagrid rowClick="edit">
+            <Datagrid>
                 <TextField source="id" />
                 <TextField source="title" />
                 <TextField source="year" />
@@ -347,7 +347,7 @@ export const SongList = () => {
     const { id } = useParams();
     return (
         <List resource="songs" filter={{ artistId: id }}>
-            <Datagrid rowClick="edit">
+            <Datagrid>
                 <TextField source="title" />
                 <DateField source="released" />
                 <TextField source="writer" />

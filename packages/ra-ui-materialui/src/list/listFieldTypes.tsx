@@ -17,17 +17,9 @@ import {
 export const listFieldTypes = {
     table: {
         component: props => {
-            const { hasEdit, hasShow, ...rest } = props;
-            return (
-                <Datagrid
-                    rowClick={!hasEdit && hasShow ? 'show' : 'edit'}
-                    {...rest}
-                />
-            );
+            return <Datagrid {...props} />;
         }, // eslint-disable-line react/display-name
-        representation: (props, children) => `        <Datagrid rowClick="${
-            !props.hasEdit && props.hasShow ? 'show' : 'edit'
-        }">
+        representation: (_props, children) => `        <Datagrid>
 ${children.map(child => `            ${child.getRepresentation()}`).join('\n')}
         </Datagrid>`,
     },

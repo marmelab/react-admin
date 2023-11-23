@@ -763,7 +763,7 @@ export const SongList = () => {
     useDefineAppLocation('music.songs');
     return (
         <List>
-            <Datagrid rowClick="edit">
+            <Datagrid>
                 <TextField source="title" />
             </Datagrid>
         </List>

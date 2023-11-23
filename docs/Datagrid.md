@@ -61,7 +61,7 @@ Both are [Enterprise Edition](https://marmelab.com/ra-enterprise) components.
 | `isRowExpandable` | Optional | Function | `() => true` | A function that returns whether a row is expandable. |
 | `isRowSelectable` | Optional | Function | `() => true` | A function that returns whether a row is selectable. |
 | `optimized` | Optional | Boolean | `false` | Whether to optimize the rendering of the table. |
-| `rowClick` | Optional | mixed | | The action to trigger when the user clicks on a row.  |
+| `rowClick` | Optional | mixed | `'show'` or `'edit'` | The action to trigger when the user clicks on a row. |
 | `rowStyle` | Optional | Function | | A function that returns the style to apply to a row. |
 | `rowSx` | Optional | Function | | A function that returns the sx prop to apply to a row. |
 | `size` | Optional | `'small'` or `'medium'` | `'small'` | The size of the table. |
@@ -409,7 +409,7 @@ const FullNameField = () => {
 
 export const UserList = () => (
     <List>
-        <Datagrid rowclick="edit">
+        <Datagrid>
             <FullNameField source="last_name" label="Name" />
             <DateField source="dob" />
             <TextField source="city" />
@@ -676,7 +676,9 @@ const PostList = () => (
 
 ## `rowClick`
 
-You can catch clicks on rows to redirect to the show or edit view by setting the `rowClick` prop:
+By default, `<Datagrid>` will look at the current [resource definition](https://marmelab.com/react-admin/Resource.html) to determine what to do when the user clicks on a row. If the resource has a `show` page, it will redirect to the Show view. If the resource has an `edit` page, it will redirect to the Edit view. Otherwise, the row will not be clickable.
+
+You can choose what happens when the user clicks on a row by setting the `rowClick` prop. For instance, set the `rowClick` prop to `"edit"` to redirect to the Edit view:
 
 ```tsx
 import { List, Datagrid } from 'react-admin';
@@ -692,10 +694,10 @@ export const PostList = () => (
 
 `rowClick` accepts the following values:
 
-* "edit" to redirect to the edition view
-* "show" to redirect to the show view
-* "expand" to open the `expand` panel
-* "toggleSelection" to trigger the `onToggleItem` function
+* `"edit"` to redirect to the edition view
+* `"show"` to redirect to the show view
+* `"expand"` to open the `expand` panel
+* `"toggleSelection"` to trigger the `onToggleItem` function
 * `false` to do nothing
 * a function `(id, resource, record) => path` that may return any of the above values or a custom path
 

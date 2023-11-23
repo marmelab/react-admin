@@ -300,7 +300,7 @@ export const PostList = () => {
                     tertiaryText={record => new Date(record.published_at).toLocaleDateString()}
                 />
             ) : (
-                <Datagrid rowClick="edit">
+                <Datagrid>
                     <TextField source="id" />
                     <ReferenceField label="User" source="userId" reference="users">
                         <TextField source="name" />

@@ -42,7 +42,7 @@ import { Datagrid, DateField, List, NumberField, ReferenceField, TextField } fro
 
 export const CommentList = () => (
     <List>
-        <Datagrid rowClick="edit">
+        <Datagrid>
             <TextField source="id" />
             <TextField source="author" />
             <ReferenceField source="post_id" reference="posts" />
