@@ -74,13 +74,13 @@ const useAuthState = (
     });
 
     useEffect(() => {
-        if (result.data && onSuccess) {
+        if (result.data != null && onSuccess) {
             onSuccess(result.data);
         }
     }, [onSuccess, result.data]);
 
     useEffect(() => {
-        if (result.error) {
+        if (result.error != null) {
             if (onError) {
                 return onError(result.error);
             }
