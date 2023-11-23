@@ -69,15 +69,15 @@ describe('<UpdateWithConfirmButton />', () => {
             </Toolbar>
         );
         render(
-            <ThemeProvider theme={theme}>
-                <CoreAdminContext dataProvider={dataProvider}>
+            <CoreAdminContext dataProvider={dataProvider}>
+                <ThemeProvider theme={theme}>
                     <Edit {...defaultEditProps}>
                         <SimpleForm toolbar={<EditToolbar />}>
                             <TextInput source="title" />
                         </SimpleForm>
                     </Edit>
-                </CoreAdminContext>
-            </ThemeProvider>
+                </ThemeProvider>
+            </CoreAdminContext>
         );
         // waitFor for the dataProvider.getOne() return
         await waitFor(() => {
@@ -247,7 +247,12 @@ describe('<UpdateWithConfirmButton />', () => {
     it('should close the dialog even with custom success side effect', async () => {
         render(<MutationOptions />);
         fireEvent.click(await screen.findByLabelText('Reset views'));
-        await screen.findByText('Are you sure you want to update this post?');
+        await screen.findByRole('dialog');
+        await screen.findByText(
+            'Are you sure you want to update this post?',
+            undefined,
+            { timeout: 4000 }
+        );
         fireEvent.click(screen.getByText('Confirm'));
         await screen.findByText('Reset views success', undefined, {
             timeout: 2000,

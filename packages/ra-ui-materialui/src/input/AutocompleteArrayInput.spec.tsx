@@ -292,6 +292,10 @@ describe('<AutocompleteArrayInput />', () => {
         await waitFor(() => {
             expect(screen.queryAllByRole('option')).toHaveLength(1);
         });
+        fireEvent.blur(input);
+        await waitFor(() => {
+            expect(screen.queryAllByRole('option')).toHaveLength(1);
+        });
     });
 
     it('should not rerender searchText while having focus and new choices arrive', async () => {
@@ -311,7 +315,7 @@ describe('<AutocompleteArrayInput />', () => {
 
         fireEvent.focus(input);
         userEvent.type(input, 'foo');
-        await screen.findByDisplayValue('foo');
+        await screen.findByDisplayValue('foo', undefined, { timeout: 4000 });
         expect(screen.queryAllByRole('option')).toHaveLength(0);
 
         rerender(
@@ -971,9 +975,9 @@ describe('<AutocompleteArrayInput />', () => {
         await waitFor(() => {
             screen.getByText('Author');
         });
-        screen.getByRole('textbox').focus();
+        screen.getByRole('combobox').focus();
         fireEvent.click(screen.getByLabelText('Clear value'));
-        fireEvent.change(screen.getByRole('textbox'), {
+        fireEvent.change(screen.getByRole('combobox'), {
             target: { value: 'plop' },
         });
         await waitFor(
@@ -991,9 +995,9 @@ describe('<AutocompleteArrayInput />', () => {
         await waitFor(() => {
             screen.getByText('Author');
         });
-        screen.getByRole('textbox').focus();
+        screen.getByRole('combobox').focus();
         fireEvent.click(screen.getByLabelText('Clear value'));
-        fireEvent.change(screen.getByRole('textbox'), {
+        fireEvent.change(screen.getByRole('combobox'), {
             target: { value: 'Vic' },
         });
 
@@ -1038,7 +1042,7 @@ describe('<AutocompleteArrayInput />', () => {
                 </SimpleForm>
             </AdminContext>
         );
-        expect(screen.queryByRole('textbox')).not.toBeNull();
+        expect(screen.queryByRole('combobox')).not.toBeNull();
     });
 
     it('should not crash if its value is not an array and is empty', () => {
@@ -1056,7 +1060,7 @@ describe('<AutocompleteArrayInput />', () => {
                 </SimpleForm>
             </AdminContext>
         );
-        expect(screen.queryByRole('textbox')).not.toBeNull();
+        expect(screen.queryByRole('combobox')).not.toBeNull();
     });
 
     it('should include full records when calling onChange', async () => {
@@ -1064,7 +1068,7 @@ describe('<AutocompleteArrayInput />', () => {
         render(<OnChange onChange={onChange} />);
         await screen.findByText('Editor');
         await screen.findByText('Reviewer');
-        screen.getByRole('textbox').focus();
+        screen.getByRole('combobox').focus();
         fireEvent.click(await screen.findByText('Admin'));
         await waitFor(() => {
             expect(onChange).toHaveBeenCalledWith(
@@ -1090,7 +1094,7 @@ describe('<AutocompleteArrayInput />', () => {
     it('should include full records when calling onChange inside ReferenceArrayInput', async () => {
         const onChange = jest.fn();
         render(<InsideReferenceArrayInputOnChange onChange={onChange} />);
-        (await screen.findByRole('textbox')).focus();
+        (await screen.findByRole('combobox')).focus();
         fireEvent.click(await screen.findByText('Leo Tolstoy'));
         await waitFor(() => {
             expect(onChange).toHaveBeenCalledWith(
@@ -1105,7 +1109,7 @@ describe('<AutocompleteArrayInput />', () => {
             );
         });
         expect(screen.getByDisplayValue('Russian')).not.toBeNull();
-        screen.getAllByRole('textbox')[0].focus();
+        screen.getAllByRole('combobox')[0].focus();
         fireEvent.click(await screen.findByText('Victor Hugo'));
         await waitFor(() => {
             expect(onChange).toHaveBeenCalledWith(

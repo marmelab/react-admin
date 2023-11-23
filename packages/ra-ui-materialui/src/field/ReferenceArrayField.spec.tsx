@@ -47,7 +47,7 @@ describe('<ReferenceArrayField />', () => {
         );
 
         await new Promise(resolve => setTimeout(resolve, 1001));
-        expect(queryAllByRole('progressbar')).toHaveLength(1);
+        await screen.findByRole('progressbar');
     });
 
     it('should render a list of the child component', () => {

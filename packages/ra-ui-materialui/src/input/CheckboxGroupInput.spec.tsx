@@ -370,7 +370,7 @@ describe('<CheckboxGroupInput />', () => {
 
         await new Promise(resolve => setTimeout(resolve, 1001));
 
-        expect(screen.queryByRole('progressbar')).not.toBeNull();
+        await screen.findByRole('progressbar');
     });
 
     it('should not render a LinearProgress if loading is false', () => {

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import expect from 'expect';
 
 import { Basic } from './ToggleThemeButton.stories';
@@ -9,7 +9,7 @@ describe('ToggleThemeButton', () => {
         render(<Basic />);
         screen.getByLabelText('Toggle light/dark mode');
     });
-    it('should allow to change the theme between light and dark', () => {
+    it('should allow to change the theme between light and dark', async () => {
         const { container } = render(<Basic />);
         const root = container.querySelector<HTMLDivElement>(
             '.MuiScopedCssBaseline-root'
@@ -19,8 +19,12 @@ describe('ToggleThemeButton', () => {
         }
         expect(getComputedStyle(root).colorScheme).toBe('light');
         screen.getByLabelText('Toggle light/dark mode').click();
-        expect(getComputedStyle(root).colorScheme).toBe('dark');
+        await waitFor(() => {
+            expect(getComputedStyle(root).colorScheme).toBe('dark');
+        });
         screen.getByLabelText('Toggle light/dark mode').click();
-        expect(getComputedStyle(root).colorScheme).toBe('light');
+        await waitFor(() => {
+            expect(getComputedStyle(root).colorScheme).toBe('light');
+        });
     });
 });

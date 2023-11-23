@@ -123,7 +123,7 @@ describe('<AutocompleteInput />', () => {
 
             expect(screen.queryAllByRole('option').length).toEqual(1);
 
-            const input = screen.getByRole('textbox') as HTMLInputElement;
+            const input = screen.getByRole('combobox') as HTMLInputElement;
 
             expect(input.value).toEqual('Default');
         });
@@ -1269,10 +1269,10 @@ describe('<AutocompleteInput />', () => {
         render(<OnChange onChange={onChange} />);
         await waitFor(() => {
             expect(
-                (screen.getByRole('textbox') as HTMLInputElement).value
+                (screen.getByRole('combobox') as HTMLInputElement).value
             ).toBe('Leo Tolstoy');
         });
-        screen.getByRole('textbox').focus();
+        screen.getByRole('combobox').focus();
         fireEvent.click(await screen.findByText('Victor Hugo'));
         await waitFor(() => {
             expect(onChange).toHaveBeenCalledWith(2, {
@@ -1287,15 +1287,15 @@ describe('<AutocompleteInput />', () => {
             render(<InsideReferenceInput />);
             await waitFor(() => {
                 expect(
-                    (screen.getByRole('textbox') as HTMLInputElement).value
+                    (screen.getByRole('combobox') as HTMLInputElement).value
                 ).toBe('Leo Tolstoy');
             });
-            screen.getByRole('textbox').focus();
+            screen.getByRole('combobox').focus();
             fireEvent.click(screen.getByLabelText('Clear value'));
             await waitFor(() => {
                 expect(screen.getByRole('listbox').children).toHaveLength(5);
             });
-            fireEvent.change(screen.getByRole('textbox'), {
+            fireEvent.change(screen.getByRole('combobox'), {
                 target: { value: 'Vic' },
             });
             await waitFor(
@@ -1313,7 +1313,7 @@ describe('<AutocompleteInput />', () => {
             render(<InsideReferenceInput />);
             await waitFor(() => {
                 expect(
-                    (screen.getByRole('textbox') as HTMLInputElement).value
+                    (screen.getByRole('combobox') as HTMLInputElement).value
                 ).toBe('Leo Tolstoy');
             });
             fireEvent.click(screen.getByLabelText('Clear value'));
@@ -1323,7 +1323,7 @@ describe('<AutocompleteInput />', () => {
             await new Promise(resolve => setTimeout(resolve, 2000));
             await waitFor(() => {
                 expect(
-                    (screen.getByRole('textbox') as HTMLInputElement).value
+                    (screen.getByRole('combobox') as HTMLInputElement).value
                 ).toEqual('');
             });
             expect(screen.queryByText('Leo Tolstoy')).toBeNull();
@@ -1402,17 +1402,17 @@ describe('<AutocompleteInput />', () => {
             await waitFor(
                 () => {
                     expect(
-                        (screen.getByRole('textbox') as HTMLInputElement).value
+                        (screen.getByRole('combobox') as HTMLInputElement).value
                     ).toBe('Leo Tolstoy - Russian');
                 },
                 { timeout: 2000 }
             );
-            screen.getByRole('textbox').focus();
+            screen.getByRole('combobox').focus();
             fireEvent.click(screen.getByLabelText('Clear value'));
             await waitFor(() => {
                 expect(screen.getByRole('listbox').children).toHaveLength(5);
             });
-            fireEvent.change(screen.getByRole('textbox'), {
+            fireEvent.change(screen.getByRole('combobox'), {
                 target: { value: 'French' },
             });
             await waitFor(
@@ -1427,7 +1427,7 @@ describe('<AutocompleteInput />', () => {
         it('should include full record when calling onChange', async () => {
             const onChange = jest.fn();
             render(<InsideReferenceInputOnChange onChange={onChange} />);
-            (await screen.findAllByRole('textbox'))[0].focus();
+            (await screen.findAllByRole('combobox'))[0].focus();
             fireEvent.click(await screen.findByText('Victor Hugo'));
             await waitFor(() => {
                 expect(onChange).toHaveBeenCalledWith(2, {
@@ -1511,12 +1511,10 @@ describe('<AutocompleteInput />', () => {
 
     it('should allow a very large number of choices', async () => {
         render(<VeryLargeOptionsNumber />);
-        await waitFor(() => {
-            expect(screen.getByRole('textbox'));
-        });
+        await screen.findByRole('combobox');
 
-        screen.getByRole('textbox').click();
-        userEvent.type(screen.getByRole('textbox'), '1050');
+        screen.getByRole('combobox').click();
+        userEvent.type(screen.getByRole('combobox'), '1050');
         await waitFor(() => {
             screen.getByText(/Dalmatian #1050/);
         });
