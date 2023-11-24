@@ -257,7 +257,7 @@ const MyLayout = ({ children, dashboard }) => (
                 </Box>
             </Box>
         </Box>
-        <InspectorButton />
+        <Inspector />
     </Box>
 );
 
