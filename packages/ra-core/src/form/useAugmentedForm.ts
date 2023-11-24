@@ -7,7 +7,7 @@ import {
 } from 'react-hook-form';
 
 import { RaRecord } from '../types';
-import { useSaveContext } from '../controller';
+import { SaveHandler, useSaveContext } from '../controller';
 import { useRecordContext } from '../controller';
 import getFormInitialValues from './getFormInitialValues';
 import {
@@ -30,7 +30,9 @@ import { sanitizeEmptyValues as sanitizeValues } from './sanitizeEmptyValues';
  * - notification on invalid form
  * - stop form submission event propagation
  */
-export const useAugmentedForm = (props: UseAugmentedFormProps) => {
+export const useAugmentedForm = <RecordType extends RaRecord = any>(
+    props: UseAugmentedFormProps<RecordType>
+) => {
     const {
         criteriaMode = 'firstError',
         defaultValues,
@@ -127,16 +129,18 @@ export const useAugmentedForm = (props: UseAugmentedFormProps) => {
     };
 };
 
-export type UseAugmentedFormProps = UseFormOwnProps &
+export type UseAugmentedFormProps<
+    RecordType extends RaRecord = any
+> = UseFormOwnProps<RecordType> &
     Omit<UseFormProps, 'onSubmit'> & {
         validate?: ValidateForm;
     };
 
-export interface UseFormOwnProps {
+export interface UseFormOwnProps<RecordType extends RaRecord = any> {
     defaultValues?: any;
     formRootPathname?: string;
     record?: Partial<RaRecord>;
-    onSubmit?: SubmitHandler<FieldValues>;
+    onSubmit?: SubmitHandler<FieldValues> | SaveHandler<RecordType>;
     warnWhenUnsavedChanges?: boolean;
     sanitizeEmptyValues?: boolean;
     disableInvalidFormNotification?: boolean;
