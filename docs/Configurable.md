@@ -217,7 +217,7 @@ const MyAppBar = () => (
 
 ## `<Inspector>`
 
-The `<Inspector>` component exists within the layouts provided by react-admin. If you are using a custom layout then you should add the `<Inspector>` component within your layout 
+The `<Inspector>` is already included in the layouts provided by react-admin. If you are using a custom layout, you need to add the `<Inspector>` component to your layout.
 
 {% raw %}
 ```jsx
