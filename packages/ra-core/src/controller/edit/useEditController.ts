@@ -123,46 +123,52 @@ export const useEditController = <RecordType extends RaRecord = any>(
 
     const recordCached = { id, previousData: record };
 
-    const hasOverridenOnSuccess = useRef(false);
-    const hasOverridenOnError = useRef(false);
+    // In react-query, both declaration time and call time side effects callbacks are called.
+    // We only want one of them and call time have priority over declaration time.
+    // We can't always put our default side effects at call time because they may not run if the component is unmounted
+    // which may often be the case in optimistic and undoable modes.
+    const hasCallTimeOnSuccess = useRef(false);
+    const hasCallTimeOnError = useRef(false);
 
     const defaultSideEffects = useMemo(
         () => ({
             onSuccess: async (data, variables, context) => {
-                if (!hasOverridenOnSuccess.current) {
-                    if (onSuccess) {
-                        return onSuccess(data, variables, context);
-                    }
-                    notify('ra.notification.updated', {
-                        type: 'info',
-                        messageArgs: { smart_count: 1 },
-                        undoable: mutationMode === 'undoable',
-                    });
-                    redirect(redirectTo, resource, data.id, data);
+                if (hasCallTimeOnSuccess.current) {
+                    return;
                 }
+                if (onSuccess) {
+                    return onSuccess(data, variables, context);
+                }
+                notify('ra.notification.updated', {
+                    type: 'info',
+                    messageArgs: { smart_count: 1 },
+                    undoable: mutationMode === 'undoable',
+                });
+                redirect(redirectTo, resource, data.id, data);
             },
             onError: (error, variables, context) => {
-                if (!hasOverridenOnError.current) {
-                    if (onError) {
-                        return onError(error, variables, context);
-                    }
-                    notify(
-                        typeof error === 'string'
-                            ? error
-                            : error.message || 'ra.notification.http_error',
-                        {
-                            type: 'error',
-                            messageArgs: {
-                                _:
-                                    typeof error === 'string'
-                                        ? error
-                                        : error && error.message
-                                        ? error.message
-                                        : undefined,
-                            },
-                        }
-                    );
+                if (hasCallTimeOnError.current) {
+                    return;
                 }
+                if (onError) {
+                    return onError(error, variables, context);
+                }
+                notify(
+                    typeof error === 'string'
+                        ? error
+                        : error.message || 'ra.notification.http_error',
+                    {
+                        type: 'error',
+                        messageArgs: {
+                            _:
+                                typeof error === 'string'
+                                    ? error
+                                    : error && error.message
+                                    ? error.message
+                                    : undefined,
+                        },
+                    }
+                );
             },
         }),
         [
@@ -208,8 +214,8 @@ export const useEditController = <RecordType extends RaRecord = any>(
                       })
                     : data
             ).then(async (data: Partial<RecordType>) => {
-                hasOverridenOnSuccess.current = !!onSuccessFromSave;
-                hasOverridenOnError.current = !!onErrorFromSave;
+                hasCallTimeOnSuccess.current = !!onSuccessFromSave;
+                hasCallTimeOnError.current = !!onErrorFromSave;
 
                 const mutate = getMutateWithMiddlewares(update);
 
@@ -278,7 +284,7 @@ export interface EditControllerProps<RecordType extends RaRecord = any> {
 }
 
 export interface EditControllerResult<RecordType extends RaRecord = any>
-    extends SaveContextValue {
+    extends SaveContextValue<RecordType> {
     // Necessary for actions (EditActions) which expect a data prop containing the record
     // @deprecated - to be removed in 4.0d
     data?: RecordType;
