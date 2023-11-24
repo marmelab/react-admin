@@ -26,11 +26,10 @@ const BookList = () => (
 ```
 
 ```jsx
-import {Edit, WrapperField, TextInput} from 'react-admin';
-import {SimpleFormConfigurable} from "./SimpleFormConfigurable";
+import { Edit, WrapperField, TextInput, SimpleFormConfigurable } from 'react-admin';
 import { Stack } from '@mui/material';
 
-const CustomForm = () => (
+const PostEdit = () => (
     <Edit>
         <SimpleFormConfigurable>
             <TextInput source="title"/>
