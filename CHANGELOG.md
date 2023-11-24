@@ -1,5 +1,16 @@
 # Changelog
 
+## v4.16.1
+
+* Fix `<FileInput>` should display a validation errors right away when form mode is 'onChange' ([#9459](https://github.com/marmelab/react-admin/pull/9459)) ([slax57](https://github.com/slax57))
+* [TypeScript] Fix useRecordContext may return undefined ([#9460](https://github.com/marmelab/react-admin/pull/9460)) ([groomain](https://github.com/groomain))
+* [Doc] Add link to new demo: Note-taking app ([#9465](https://github.com/marmelab/react-admin/pull/9465)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Add headless section in pages components ([#9447](https://github.com/marmelab/react-admin/pull/9447)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Add example showing how to add `<Inspector>` to a custom layout ([#9458](https://github.com/marmelab/react-admin/pull/9458)) ([rossb220](https://github.com/rossb220))
+* [Doc] Update `<DatagridAG>` doc to use the new package, and document the column order/size persistence ([#9472](https://github.com/marmelab/react-admin/pull/9472)) ([slax57](https://github.com/slax57))
+* [Doc] Update authProvider and dataProvider lists to target the documentation instead of the repository's root ([#9471](https://github.com/marmelab/react-admin/pull/9471)) ([slax57](https://github.com/slax57))
+* [Website] Reorder documentation's Discord and Github icons to match the website order ([#9454](https://github.com/marmelab/react-admin/pull/9454)) ([adguernier](https://github.com/adguernier))
+
 ## v4.16.0
 
 * Add `<SingleFieldList empty gap direction>` props, and allow it to be used without `children` ([#9439](https://github.com/marmelab/react-admin/pull/9439)) ([fzaninotto](https://github.com/fzaninotto))
