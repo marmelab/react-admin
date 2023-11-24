@@ -44,15 +44,15 @@ Additionally, `<DatagridAG>` is compatible with the [Enterprise version of ag-gr
 
 ## Usage
 
-First, install the `@react-admin/ra-editable-datagrid` package:
+First, install the `@react-admin/ra-datagrid-ag` package:
 
 ```sh
-npm install --save @react-admin/ra-editable-datagrid
+npm install --save @react-admin/ra-datagrid-ag
 # or
-yarn add @react-admin/ra-editable-datagrid
+yarn add @react-admin/ra-datagrid-ag
 ```
 
-**Tip**: `ra-editable-datagrid` is hosted in a private npm registry. You need to subscribe to one of the [Enterprise Edition](https://marmelab.com/ra-enterprise/) plans to access this package.
+**Tip**: `ra-datagrid-ag` is hosted in a private npm registry. You need to subscribe to one of the [Enterprise Edition](https://marmelab.com/ra-enterprise/) plans to access this package.
 
 Then, use `<DatagridAG>` as a child of a react-admin `<List>`, `<ReferenceManyField>`, or any other component that creates a `ListContext`.
 
@@ -61,7 +61,7 @@ import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 import React from 'react';
 import { List } from 'react-admin';
-import { DatagridAG } from '@react-admin/ra-editable-datagrid';
+import { DatagridAG } from '@react-admin/ra-datagrid-ag';
 
 export const PostList = () => {
     const columnDefs = [
@@ -142,7 +142,7 @@ import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 import React from 'react';
 import { List } from 'react-admin';
-import { DatagridAG } from '@react-admin/ra-editable-datagrid';
+import { DatagridAG } from '@react-admin/ra-datagrid-ag';
 
 const truncate = (str: string, n: number) => {
     return str.length > n ? str.slice(0, n - 1) + '...' : str;
@@ -191,7 +191,7 @@ import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 import React from 'react';
 import { List } from 'react-admin';
-import { DatagridAG } from '@react-admin/ra-editable-datagrid';
+import { DatagridAG } from '@react-admin/ra-datagrid-ag';
 
 export const PostList = () => {
     const columnDefs = [
@@ -221,7 +221,7 @@ import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 import React from 'react';
 import { EmailField, List, ReferenceField, TextField } from 'react-admin';
-import { DatagridAG } from '@react-admin/ra-editable-datagrid';
+import { DatagridAG } from '@react-admin/ra-datagrid-ag';
 
 export const CommentList = () => {
     const columnDefs = [
@@ -267,7 +267,7 @@ import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 import React from 'react';
 import { List, BulkExportButton, BulkDeleteButton } from 'react-admin';
-import { DatagridAG } from '@react-admin/ra-editable-datagrid';
+import { DatagridAG } from '@react-admin/ra-datagrid-ag';
 
 const PostBulkActionButtons = () => (
     <>
@@ -313,7 +313,7 @@ import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 import React from 'react';
 import { List } from 'react-admin';
-import { DatagridAG } from '@react-admin/ra-editable-datagrid';
+import { DatagridAG } from '@react-admin/ra-datagrid-ag';
 
 export const PostList = () => {
     const columnDefs = [
@@ -346,7 +346,7 @@ import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 import React from 'react';
 import { List, useNotify } from 'react-admin';
-import { DatagridAG } from '@react-admin/ra-editable-datagrid';
+import { DatagridAG } from '@react-admin/ra-datagrid-ag';
 
 export const PostList = () => {
     const columnDefs = [
@@ -389,7 +389,7 @@ import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 import React from 'react';
 import { List } from 'react-admin';
-import { DatagridAG } from '@react-admin/ra-editable-datagrid';
+import { DatagridAG } from '@react-admin/ra-datagrid-ag';
 
 export const PostList = () => {
     const columnDefs = [
@@ -420,7 +420,7 @@ import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 import React from 'react';
 import { List } from 'react-admin';
-import { DatagridAG } from '@react-admin/ra-editable-datagrid';
+import { DatagridAG } from '@react-admin/ra-datagrid-ag';
 
 const CarList = () => {
     const columnDefs = [
@@ -482,7 +482,7 @@ import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 import React from 'react';
 import { List } from 'react-admin';
-import { DatagridAG } from '@react-admin/ra-editable-datagrid';
+import { DatagridAG } from '@react-admin/ra-datagrid-ag';
 
 export const PostList = () => {
     const columnDefs = [
@@ -514,7 +514,7 @@ import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 import React from 'react';
 import { List } from 'react-admin';
-import { DatagridAG } from '@react-admin/ra-editable-datagrid';
+import { DatagridAG } from '@react-admin/ra-datagrid-ag';
 
 export const PostList = () => {
     const columnDefs = [
@@ -547,7 +547,7 @@ import 'ag-grid-community/styles/ag-theme-alpine.css';
 import React from 'react';
 import { AgGridReact } from 'ag-grid-react';
 import { List } from 'react-admin';
-import { DatagridAG } from '@react-admin/ra-editable-datagrid';
+import { DatagridAG } from '@react-admin/ra-datagrid-ag';
 
 export const PostList = () => {
     const columnDefs = [
@@ -584,7 +584,7 @@ import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 import React from 'react';
 import { List } from 'react-admin';
-import { DatagridAG } from '@react-admin/ra-editable-datagrid';
+import { DatagridAG } from '@react-admin/ra-datagrid-ag';
 
 export const PostList = () => {
     const columnDefs = [
@@ -613,7 +613,7 @@ import 'ag-grid-community/styles/ag-theme-alpine.css';
 import React from 'react';
 import { AgGridReact } from 'ag-grid-react';
 import { List } from 'react-admin';
-import { DatagridAG } from '@react-admin/ra-editable-datagrid';
+import { DatagridAG } from '@react-admin/ra-datagrid-ag';
 
 export const PostList = () => {
     const columnDefs = [
@@ -664,7 +664,7 @@ import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 import React from 'react';
 import { List } from 'react-admin';
-import { DatagridAG } from '@react-admin/ra-editable-datagrid';
+import { DatagridAG } from '@react-admin/ra-datagrid-ag';
 
 export const PostList = () => {
     const columnDefs = [
@@ -696,7 +696,7 @@ import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 import React from 'react';
 import { List, BulkExportButton, BulkDeleteButton } from 'react-admin';
-import { DatagridAG } from '@react-admin/ra-editable-datagrid';
+import { DatagridAG } from '@react-admin/ra-datagrid-ag';
 
 const PostBulkActionButtons = () => (
     <>
@@ -746,7 +746,7 @@ import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 import React from 'react';
 import { List } from 'react-admin';
-import { DatagridAG } from '@react-admin/ra-editable-datagrid';
+import { DatagridAG } from '@react-admin/ra-datagrid-ag';
 
 const CarList = () => {
     const columnDefs = [
@@ -778,7 +778,7 @@ import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 import React, { useMemo } from 'react';
 import { List } from 'react-admin';
-import { DatagridAG } from '@react-admin/ra-editable-datagrid';
+import { DatagridAG } from '@react-admin/ra-datagrid-ag';
 import 'ag-grid-enterprise';
 
 const CarList = () => {
@@ -820,7 +820,7 @@ import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 import React from 'react';
 import { List } from 'react-admin';
-import { DatagridAG } from '@react-admin/ra-editable-datagrid';
+import { DatagridAG } from '@react-admin/ra-datagrid-ag';
 
 export const PostList = () => {
     const columnDefs = [
@@ -845,7 +845,7 @@ import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 import React from 'react';
 import { List } from 'react-admin';
-import { DatagridAG } from '@react-admin/ra-editable-datagrid';
+import { DatagridAG } from '@react-admin/ra-datagrid-ag';
 
 export const PostList = () => {
     const columnDefs = [
@@ -868,7 +868,7 @@ import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 import React from 'react';
 import { List } from 'react-admin';
-import { DatagridAG } from '@react-admin/ra-editable-datagrid';
+import { DatagridAG } from '@react-admin/ra-datagrid-ag';
 
 export const PostList = () => {
     const columnDefs = [
@@ -905,7 +905,7 @@ import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-enterprise';
 import React from 'react';
 import { List } from 'react-admin';
-import { DatagridAG } from '@react-admin/ra-editable-datagrid';
+import { DatagridAG } from '@react-admin/ra-datagrid-ag';
 
 const OlympicWinnersList = () => {
     const columnDefs = [
