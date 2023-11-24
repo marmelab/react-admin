@@ -604,31 +604,87 @@ export const PostShow = () => (
 
 **Tips:** If you want the `<PrevNextButtons>` to link to the `<Show>` view, you have to set the `linkType` to `show`. See [the `<PrevNextButtons linkType>` prop](./PrevNextButtons.md#linktype).
 
-## Headless Version
+## Controlled Mode
 
-The root component of `<Show>` is a Material UI `<Card>`. Besides, `<Show>` renders an action toolbar, and sets the page title. This may be useless if you have a completely custom layout.
+`<show>` deduces the resource and the record id from the URL. This is fine for a detail page, but if you need to embed the details of a record in another page, you probably want to define these parameters yourself. 
 
-In that case, opt for [the `<ShowBase>` component](./ShowBase.md), a headless version of `<Show>`.
+In that case, use the [`resource`](#resource) and [`id`](#id) props to set the show parameters regardless of the URL.
 
 ```jsx
-// in src/posts.jsx
-import { ShowBase } from 'react-admin';
+import { Show, SelectField, SimpleShowLayout, TextField } from "react-admin";
 
-export const PostShow = () => (
+export const BookShow = ({ id }) => (
+    <Show resource="books" id={id}>
+        <SimpleShowLayout>
+            <TextField source="title" />
+            <TextField source="author" />
+            <SelectField source="availability" choices={[
+                { id: "in_stock", name: "In stock" },
+                { id: "out_of_stock", name: "Out of stock" },
+                { id: "out_of_print", name: "Out of print" },
+            ]} />
+        </SimpleShowLayout>
+    </Show>
+);
+```
+
+## Headless Version
+
+Besides fetching a record, `<Show>` renders the default detail page layout (title, actions, a Material UI `<Card>`) and its children. If you need a custom detail layout, you may prefer [the `<ShowBase>` component](./ShowBase.md), which only renders its children in a [`ShowContext`](./useShowContext.md).
+
+```jsx
+import { ShowBase, SelectField, SimpleShowLayout, TextField, Title } from "react-admin";
+import { Card, CardContent, Container } from "@mui/material";
+
+export const BookShow = () => (
     <ShowBase>
-        <Grid container>
-            <Grid item xs={8}>
-                <SimpleShowLayout>
-                    ...
-                </SimpleShowLayout>
-            </Grid>
-            <Grid item xs={4}>
-                Show instructions...
-            </Grid>
-        </Grid>
-        <div>
-            Post related links...
-        </div>
+        <Container>
+            <Title title="Book Detail" />
+            <Card>
+                <CardContent>
+                    <SimpleShowLayout>
+                        <TextField source="title" />
+                        <TextField source="author" />
+                        <SelectField source="availability" choices={[
+                            { id: "in_stock", name: "In stock" },
+                            { id: "out_of_stock", name: "Out of stock" },
+                            { id: "out_of_print", name: "Out of print" },
+                        ]} />
+                    </SimpleShowLayout>
+                </CardContent>
+            </Card>
+        </Container>
     </ShowBase>
 );
+```
+
+In the previous example, `<SimpleShowLayout>` grabs the record from the `ShowContext`.
+
+If you don't need the `ShowContext`, you can use [the `useShowController` hook](./useShowController.md), which does the same data fetching as `<ShowBase>` but lets you render the content.
+
+```tsx
+import { useShowController, SelectField, SimpleShowLayout, TextField, Title } from "react-admin";
+import { Card, CardContent, Container } from "@mui/material";
+
+export const BookShow = () => {
+    const { record } = useShowController();
+    return (
+        <Container>
+            <Title title={`Edit book ${record?.title}`} />
+            <Card>
+                <CardContent>
+                    <SimpleShowLayout record={record}>
+                        <TextField source="title" />
+                        <TextField source="author" />
+                        <SelectField source="availability" choices={[
+                            { id: "in_stock", name: "In stock" },
+                            { id: "out_of_stock", name: "Out of stock" },
+                            { id: "out_of_print", name: "Out of print" },
+                        ]} />
+                    </SimpleShowLayout>
+                </CardContent>
+            </Card>
+        </Container>
+    );
+};
 ```

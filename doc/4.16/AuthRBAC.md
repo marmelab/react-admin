@@ -1069,4 +1069,3 @@ const authProvider = {
     },
 };
 ```
-

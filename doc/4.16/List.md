@@ -1081,3 +1081,158 @@ const ProductList = () => (
     </List>
 )
 ```
+
+## Controlled Mode
+
+`<List>` deduces the resource and the list parameters from the URL. This is fine for a page showing a single list of records, but if you need to display more than one list in a page, you probably want to define the list parameters yourself. 
+
+In that case, use the [`resource`](#resource), [`sort`](#sort), [`filter`](#filter-permanent-filter), and [`perPage`](#perpage) props to set the list parameters.
+
+{% raw %}
+```jsx
+import { List, SimpleList } from 'react-admin';
+import { Container, Typography } from '@mui/material';
+
+const Dashboard = () => (
+    <Container>
+        <Typography>Latest posts</Typography>
+        <List 
+            resource="posts"
+            sort={{ field: 'published_at', order: 'DESC' }}
+            filter={{ is_published: true }}
+            perPage={10}
+        >
+            <SimpleList
+                primaryText={record => record.title}
+                secondaryText={record => `${record.views} views`}
+            />
+        </List>
+        <Typography>Latest comments</Typography>
+        <List
+            resource="comments"
+            sort={{ field: 'published_at', order: 'DESC' }}
+            perPage={10}
+        >
+            <SimpleList
+                primaryText={record => record.author.name}
+                secondaryText={record => record.body}
+                tertiaryText={record => new Date(record.published_at).toLocaleDateString()}
+            />
+        </List>
+    </Container>
+)
+```
+{% endraw %}
+
+**Note**: If you need to set the list parameters to render a list of records *related to another record*, there are better components than `<List>` for that. Check out the following components, specialized in fetching and displaying a list of related records:
+
+- [`<ReferenceArrayField>`](./ReferenceArrayField.md),
+- [`<ReferenceManyField>`](./ReferenceManyField.md),
+- [`<ReferenceManyToManyField>`](./ReferenceManyToManyField.md).
+
+If the `<List>` children allow to *modify* the list state (i.e. if they let users change the sort order, the filters, the selection, or the pagination), then you should also use the [`disableSyncWithLocation`](#disablesyncwithlocation) prop to prevent react-admin from changing the URL. This is the case e.g. if you use a `<Datagrid>`, which lets users sort the list by clicking on column headers.
+
+{% raw %}
+```jsx
+import { List, Datagrid, TextField, NumberField, DateField } from 'react-admin';
+import { Container, Typography } from '@mui/material';
+
+const Dashboard = () => (
+    <Container>
+        <Typography>Latest posts</Typography>
+        <List 
+            resource="posts"
+            sort={{ field: 'published_at', order: 'DESC' }}
+            filter={{ is_published: true }}
+            perPage={10}
+            disableSyncWithLocation
+        >
+            <Datagrid bulkActionButtons={false}>
+                <TextField source="title" />
+                <NumberField source="views" />
+            </Datagrid>
+        </List>
+        <Typography>Latest comments</Typography>
+        <List
+            resource="comments"
+            sort={{ field: 'published_at', order: 'DESC' }}
+            perPage={10}
+            disableSyncWithLocation
+        >
+            <Datagrid bulkActionButtons={false}>
+                <TextField source="author.name" />
+                <TextField source="body" />
+                <DateField source="published_at" />
+            </Datagrid>
+        </List>
+    </Container>
+)
+```
+{% endraw %}
+
+**Note**: If you render more than one `<Datagrid>` for the same resource in the same page, they will share the selection state (i.e. the checked checkboxes). This is a design choice because if row selection is not tied to a resource, then when a user deletes a record it may remain selected without any ability to unselect it. You can get rid of the checkboxes by setting `<Datagrid bulkActionButtons={false}>`.
+
+## Headless Version
+
+Besides fetching a list of records from the data provider, `<List>` renders the default list page layout (title, buttons, filters, a Material-UI `<Card>`, pagination) and its children. If you need a custom list layout, you may prefer [the `<ListBase>` component](./ListBase.md), which only renders its children in a [`ListContext`](./useListContext.md).
+
+```jsx
+import { ListBase, WithListContext } from 'react-admin';
+import { Card, CardContent, Container, Stack, Typography } from '@mui/material';
+
+const ProductList = () => (
+    <ListBase>
+        <Container>
+            <Typography variant="h4">All products</Typography>
+            <WithListContext render={({ isLoading, data }) => (
+                    !isLoading && (
+                        <Stack spacing={1}>
+                            {data.map(product => (
+                                <Card key={product.id}>
+                                    <CardContent>
+                                        <Typography>{product.name}</Typography>
+                                    </CardContent>
+                                </Card>
+                            ))}
+                        </Stack>
+                    )
+                )} />
+            <WithListContext render={({ isLoading, total }) => (
+                !isLoading && <Typography>{total} results</Typography>
+            )} />
+        </Container>
+    </ListBase>
+);
+```
+
+The previous example leverages [`<WithListContext>`](./WithListContext.md) to grab the data that `<ListBase>` stores in the `ListContext`.
+
+If you don't need the `ListContext`, you can use [the `useListController` hook](./useListController.md), which does the same data fetching as `<ListBase>` but lets you render the content.
+
+```jsx
+import { useListController } from 'react-admin';
+import { Card, CardContent, Container, Stack, Typography } from '@mui/material';
+
+const ProductList = () => {
+    const { isLoading, data, total } = useListController();
+    return (
+        <Container>
+            <Typography variant="h4">All products</Typography>
+                {!isLoading && (
+                    <Stack spacing={1}>
+                        {data.map(product => (
+                            <Card key={product.id}>
+                                <CardContent>
+                                    <Typography>{product.name}</Typography>
+                                </CardContent>
+                            </Card>
+                        ))}
+                    </Stack>
+                )}
+            {!isLoading && <Typography>{total} results</Typography>}
+        </Container>
+    );
+};
+```
+
+`useListController` returns callbacks to sort, filter, and paginate the list, so you can build a complete List page. Check [the `useListController`hook documentation](./useListController.md) for details.

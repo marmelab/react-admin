@@ -369,8 +369,8 @@ Let's say users want to edit customer records and to navigate between records in
 - when they navigate to another record, the form is not saved.
 
 Thanks to React-admin components, you can solve these issues by using 
-- [`redirect` prop from `<Edit>`](Edit.md#redirect) with which you can specify the redirect to apply. Here we will choose to stay on the page rather than being redirected to the list view.
-- [`warnWhenUnsavedChanges` from `Form`](Form.md#warnwhenunsavedchanges) that will trigger an alert if the user tries to change page while the record has not been saved.
+- [`redirect` prop from `<Edit>`](./Edit.md#redirect) with which you can specify the redirect to apply. Here we will choose to stay on the page rather than being redirected to the list view.
+- [`warnWhenUnsavedChanges` from `Form`](./Form.md#warnwhenunsavedchanges) that will trigger an alert if the user tries to change page while the record has not been saved.
 
 {% raw %}
 ```tsx

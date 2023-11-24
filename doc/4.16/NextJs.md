@@ -31,7 +31,7 @@ This creates a project with the following folder structure:
 
 | Pages Router                                                                                                 | App Router                                                                                                |
 |-------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------|
-| ![ Next Admin folder structure with Pages Router ]( ./img/next-admin-with-page-router-folder-structure.png ) | ![ Next Admin folder structure with App Router ]( ./img/next-admin-with-app-router-folder-structure.png ) |
+| ![Next Admin folder structure with Pages Router](./img/next-admin-with-page-router-folder-structure.png) | ![Next Admin folder structure with App Router](./img/next-admin-with-app-router-folder-structure.png) |
 
 ## Adding React-Admin Dependencies
 
