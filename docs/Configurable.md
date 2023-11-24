@@ -224,7 +224,7 @@ The `<Inspector>` is already included in the layouts provided by react-admin. If
 // in src/MyLayout.js
 import * as React from 'react';
 import { Box } from '@mui/material';
-import { AppBar, Menu, Sidebar, InspectorButton } from 'react-admin';
+import { AppBar, Menu, Sidebar, Inspector } from 'react-admin';
 
 const MyLayout = ({ children, dashboard }) => (
     <Box 
