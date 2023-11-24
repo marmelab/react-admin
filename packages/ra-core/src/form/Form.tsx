@@ -9,7 +9,11 @@ import {
 
 import { FormGroupsProvider } from './FormGroupsProvider';
 import { RaRecord } from '../types';
-import { useRecordContext, OptionalRecordContextProvider } from '../controller';
+import {
+    useRecordContext,
+    OptionalRecordContextProvider,
+    SaveHandler,
+} from '../controller';
 import { useResourceContext } from '../core';
 import { LabelPrefixContextProvider } from '../util';
 import { ValidateForm } from './getSimpleValidationResolver';
@@ -42,7 +46,9 @@ import { useAugmentedForm } from './useAugmentedForm';
  *
  * @link https://react-hook-form.com/docs/useformcontext
  */
-export const Form = (props: FormProps) => {
+export const Form = <RecordType extends RaRecord = any>(
+    props: FormProps<RecordType>
+) => {
     const { children, id, className, noValidate = false } = props;
     const record = useRecordContext(props);
     const resource = useResourceContext(props);
@@ -68,13 +74,15 @@ export const Form = (props: FormProps) => {
     );
 };
 
-export type FormProps = FormOwnProps &
+export type FormProps<RecordType extends RaRecord = any> = FormOwnProps<
+    RecordType
+> &
     Omit<UseFormProps, 'onSubmit'> & {
         validate?: ValidateForm;
         noValidate?: boolean;
     };
 
-export interface FormOwnProps {
+export interface FormOwnProps<RecordType extends RaRecord = any> {
     children: ReactNode;
     className?: string;
     defaultValues?: any;
@@ -82,7 +90,7 @@ export interface FormOwnProps {
     id?: string;
     record?: Partial<RaRecord>;
     resource?: string;
-    onSubmit?: SubmitHandler<FieldValues>;
+    onSubmit?: SubmitHandler<FieldValues> | SaveHandler<RecordType>;
     warnWhenUnsavedChanges?: boolean;
     sanitizeEmptyValues?: boolean;
     disableInvalidFormNotification?: boolean;
