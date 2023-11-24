@@ -85,7 +85,7 @@
         "minimist": "^1.2.6",
         "ejs": "^3.1.7"
     },
-    "packageManager": "yarn@3.1.1",
+    "packageManager": "yarn@4.0.2",
     "changelog": {
         "repo": "marmelab/react-admin",
         "labels": {
