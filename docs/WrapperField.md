@@ -5,8 +5,7 @@ title: "The WrapperField Component"
 
 # `<WrapperField>`
 
-This component simply renders its children. Why would you want to use such a dumb component? To combine several fields in a single cell (in a `<Datagrid>`) or in a single row (in a `<SimpleShowLayout>`) or 
-a group of form fields (in a `<SimpleFormConfigurable>`) 
+This component simply renders its children. Why would you want to use such a dumb component? To combine several fields in a single cell (in a `<Datagrid>`), in a single row (in a `<SimpleShowLayout>`) or in a group of inputs (in a `<SimpleFormConfigurable>`) .
 
 `<WrapperField>` allows to define the `label` and sort field for a combination of fields:
 
