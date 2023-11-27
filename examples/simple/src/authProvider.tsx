@@ -47,12 +47,12 @@ export default {
     },
     checkError: ({ status }) => {
         return status === 401 || status === 403
-            ? Promise.reject('')
+            ? Promise.reject()
             : Promise.resolve();
     },
     checkAuth: () => {
         return localStorage.getItem('not_authenticated')
-            ? Promise.reject('')
+            ? Promise.reject()
             : Promise.resolve();
     },
     getPermissions: () => {
