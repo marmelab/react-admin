@@ -196,7 +196,7 @@ export const buildFields = (
 
         if (linkedResource) {
             const linkedResourceSparseFields = linkedSparseFields.find(
-                lSP => lSP.linkedType == field.name
+                lSP => lSP.linkedType === field.name
             )?.fields || ['id']; // default to id if no sparse fields specified for linked resource
 
             const linkedResourceFields = buildFields(introspectionResults)(
@@ -239,7 +239,7 @@ export const buildFields = (
                         ])(
                             (linkedType as IntrospectionObjectType).fields,
                             linkedSparseFields.find(
-                                lSP => lSP.linkedType == field.name
+                                lSP => lSP.linkedType === field.name
                             )?.fields
                         ),
                     ])
