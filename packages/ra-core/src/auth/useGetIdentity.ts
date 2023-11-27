@@ -55,7 +55,7 @@ export const useGetIdentity = <ErrorType extends Error = Error>(
         queryKey: ['auth', 'getIdentity'],
         queryFn: () => {
             return authProvider
-                ? authProvider.getIdentity()
+                ? authProvider.getIdentity() ?? null
                 : Promise.resolve(defaultIdentity);
         },
         enabled: typeof authProvider?.getIdentity === 'function',

@@ -40,7 +40,7 @@ const authProvider: AuthProvider = {
         return Promise.resolve();
     },
     getPermissions: () => Promise.reject('not authenticated'),
-    handleCallback: () => Promise.resolve({}),
+    handleCallback: () => Promise.resolve(),
 };
 
 describe('useHandleAuthCallback', () => {

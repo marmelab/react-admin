@@ -5,11 +5,6 @@ import useLogout from './useLogout';
 import { removeDoubleSlashes, useBasename } from '../routing';
 import { useNotify } from '../notification';
 
-interface State {
-    isLoading: boolean;
-    authenticated?: boolean;
-}
-
 const emptyParams = {};
 
 /**
@@ -53,7 +48,7 @@ const useAuthState = <ErrorType = Error>(
     params: any = emptyParams,
     logoutOnFailure: boolean = false,
     queryOptions: UseAuthStateOptions<ErrorType> = emptyParams
-): State => {
+) => {
     const authProvider = useAuthProvider();
     const logout = useLogout();
     const basename = useBasename();
@@ -62,13 +57,23 @@ const useAuthState = <ErrorType = Error>(
 
     const result = useQuery<boolean, any>({
         queryKey: ['auth', 'checkAuth', params],
-        initialData: true, // Optimistic
+        placeholderData: true, // Optimistic
         queryFn: () => {
             // The authProvider is optional in react-admin
             if (!authProvider) {
                 return true;
             }
-            return authProvider.checkAuth(params).then(() => true);
+            return authProvider
+                .checkAuth(params)
+                .then(() => true)
+                .catch(error => {
+                    // This is necessary because react-query requires the error to be defined
+                    if (error != null) {
+                        throw error;
+                    }
+
+                    throw new Error();
+                });
         },
         retry: false,
         ...options,

@@ -26,7 +26,8 @@ export const useHandleAuthCallback = (
 
     const queryResult = useQuery({
         queryKey: ['auth', 'handleCallback'],
-        queryFn: () => authProvider.handleCallback(),
+        queryFn: () =>
+            authProvider.handleCallback().then(result => result ?? {}),
         retry: false,
         ...queryOptions,
     });
