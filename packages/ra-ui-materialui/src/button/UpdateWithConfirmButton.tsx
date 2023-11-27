@@ -73,7 +73,17 @@ export const UpdateWithConfirmButton = (
         ...otherMutationOptions
     } = mutationOptions;
 
-    const [updateMany, { isPending }] = useUpdate();
+    const [update, { isPending }] = useUpdate(
+        resource,
+        { id: record?.id, data, meta: mutationMeta, previousData: record },
+        {
+            onSuccess,
+            onError,
+            onSettled,
+            mutationMode,
+            ...otherMutationOptions,
+        }
+    );
 
     const handleClick = e => {
         setOpen(true);
@@ -85,17 +95,12 @@ export const UpdateWithConfirmButton = (
     };
 
     const handleUpdate = e => {
-        updateMany(
-            resource,
-            { id: record.id, data, meta: mutationMeta, previousData: record },
-            {
-                onSuccess,
-                onError,
-                onSettled,
-                mutationMode,
-                ...otherMutationOptions,
-            }
-        );
+        update(resource, {
+            id: record?.id,
+            data,
+            meta: mutationMeta,
+            previousData: record,
+        });
 
         if (typeof onClick === 'function') {
             onClick(e);

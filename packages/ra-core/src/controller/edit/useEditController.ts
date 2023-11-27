@@ -1,6 +1,5 @@
-import { useCallback, useMemo, useRef } from 'react';
+import { useCallback } from 'react';
 import { useParams } from 'react-router-dom';
-import merge from 'lodash/merge';
 
 import { useAuthenticated } from '../../auth';
 import { RaRecord, MutationMode, TransformData } from '../../types';
@@ -123,19 +122,11 @@ export const useEditController = <RecordType extends RaRecord = any>(
 
     const recordCached = { id, previousData: record };
 
-    // In react-query, both declaration time and call time side effects callbacks are called.
-    // We only want one of them and call time have priority over declaration time.
-    // We can't always put our default side effects at call time because they may not run if the component is unmounted
-    // which may often be the case in optimistic and undoable modes.
-    const hasCallTimeOnSuccess = useRef(false);
-    const hasCallTimeOnError = useRef(false);
-
-    const defaultSideEffects = useMemo(
-        () => ({
+    const [update, { isPending: saving }] = useUpdate<RecordType>(
+        resource,
+        recordCached,
+        {
             onSuccess: async (data, variables, context) => {
-                if (hasCallTimeOnSuccess.current) {
-                    return;
-                }
                 if (onSuccess) {
                     return onSuccess(data, variables, context);
                 }
@@ -147,9 +138,6 @@ export const useEditController = <RecordType extends RaRecord = any>(
                 redirect(redirectTo, resource, data.id, data);
             },
             onError: (error, variables, context) => {
-                if (hasCallTimeOnError.current) {
-                    return;
-                }
                 if (onError) {
                     return onError(error, variables, context);
                 }
@@ -170,23 +158,6 @@ export const useEditController = <RecordType extends RaRecord = any>(
                     }
                 );
             },
-        }),
-        [
-            mutationMode,
-            notify,
-            onSuccess,
-            onError,
-            redirect,
-            redirectTo,
-            resource,
-        ]
-    );
-
-    const [update, { isPending: saving }] = useUpdate<RecordType>(
-        resource,
-        recordCached,
-        {
-            ...(mutationMode !== 'pessimistic' ? defaultSideEffects : {}),
             ...otherMutationOptions,
             mutationMode,
             returnPromise: mutationMode === 'pessimistic',
@@ -214,16 +185,7 @@ export const useEditController = <RecordType extends RaRecord = any>(
                       })
                     : data
             ).then(async (data: Partial<RecordType>) => {
-                hasCallTimeOnSuccess.current = !!onSuccessFromSave;
-                hasCallTimeOnError.current = !!onErrorFromSave;
-
                 const mutate = getMutateWithMiddlewares(update);
-
-                let options = merge(
-                    {},
-                    mutationMode === 'pessimistic' ? defaultSideEffects : {},
-                    { onError: onErrorFromSave, onSuccess: onSuccessFromSave }
-                );
 
                 try {
                     await mutate(
@@ -233,7 +195,10 @@ export const useEditController = <RecordType extends RaRecord = any>(
                             data,
                             meta: metaFromSave ?? mutationMeta,
                         },
-                        options
+                        {
+                            onError: onErrorFromSave,
+                            onSuccess: onSuccessFromSave,
+                        }
                     );
                 } catch (error) {
                     if ((error as HttpError).body?.errors != null) {
@@ -242,8 +207,6 @@ export const useEditController = <RecordType extends RaRecord = any>(
                 }
             }),
         [
-            defaultSideEffects,
-            mutationMode,
             id,
             getMutateWithMiddlewares,
             mutationMeta,

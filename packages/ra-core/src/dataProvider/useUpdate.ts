@@ -91,10 +91,19 @@ export const useUpdate = <RecordType extends RaRecord = any>(
     const dataProvider = useDataProvider();
     const queryClient = useQueryClient();
     const { id, data, meta } = params;
-    const { mutationMode = 'pessimistic', ...reactMutationOptions } = options;
+    const {
+        mutationMode = 'pessimistic',
+        // onSuccess,
+        // onError,
+        // onSettled,
+        ...reactMutationOptions
+    } = options;
     const mode = useRef<MutationMode>(mutationMode);
     const paramsRef = useRef<Partial<UpdateParams<RecordType>>>(params);
     const snapshot = useRef<Snapshot>([]);
+    const hasCallTimeOnError = useRef(false);
+    const hasCallTimeOnSuccess = useRef(false);
+    const hasCallTimeOnSettled = useRef(false);
 
     const updateCache = ({ resource, id, data }) => {
         // hack: only way to tell react-query not to fetch this query for the next 5 seconds
@@ -212,7 +221,7 @@ export const useUpdate = <RecordType extends RaRecord = any>(
                 });
             }
 
-            if (reactMutationOptions.onError) {
+            if (reactMutationOptions.onError && !hasCallTimeOnError.current) {
                 return reactMutationOptions.onError(error, variables, context);
             }
             // call-time error callback is executed by react-query
@@ -233,12 +242,15 @@ export const useUpdate = <RecordType extends RaRecord = any>(
                     id: callTimeId,
                     data,
                 });
-
-                if (reactMutationOptions.onSuccess) {
-                    reactMutationOptions.onSuccess(data, variables, context);
-                }
-                // call-time success callback is executed by react-query
             }
+
+            if (
+                reactMutationOptions.onSuccess &&
+                !hasCallTimeOnSuccess.current
+            ) {
+                reactMutationOptions.onSuccess(data, variables, context);
+            }
+            // call-time success callback is executed by react-query
         },
         onSettled: (
             data,
@@ -253,7 +265,10 @@ export const useUpdate = <RecordType extends RaRecord = any>(
                 });
             }
 
-            if (reactMutationOptions.onSettled) {
+            if (
+                reactMutationOptions.onSettled &&
+                !hasCallTimeOnSettled.current
+            ) {
                 return reactMutationOptions.onSettled(
                     data,
                     error,
@@ -267,7 +282,7 @@ export const useUpdate = <RecordType extends RaRecord = any>(
     const update = async (
         callTimeResource: string = resource,
         callTimeParams: Partial<UpdateParams<RecordType>> = {},
-        updateOptions: MutateOptions<
+        callTimeOptions: MutateOptions<
             RecordType,
             unknown,
             Partial<UseUpdateMutateParams<RecordType>>,
@@ -277,10 +292,14 @@ export const useUpdate = <RecordType extends RaRecord = any>(
         const {
             mutationMode,
             returnPromise = reactMutationOptions.returnPromise,
-            onSuccess,
-            onSettled,
-            onError,
-        } = updateOptions;
+            onSuccess: callTimeOnSuccess,
+            onSettled: callTimeOnSettled,
+            onError: callTimeOnError,
+        } = callTimeOptions;
+
+        hasCallTimeOnError.current = !!callTimeOnError;
+        hasCallTimeOnSuccess.current = !!callTimeOnSuccess;
+        hasCallTimeOnSettled.current = !!callTimeOnSettled;
 
         // store the hook time params *at the moment of the call*
         // because they may change afterwards, which would break the undoable mode
@@ -301,12 +320,20 @@ export const useUpdate = <RecordType extends RaRecord = any>(
             if (returnPromise) {
                 return mutation.mutateAsync(
                     { resource: callTimeResource, ...callTimeParams },
-                    { onSuccess, onSettled, onError }
+                    {
+                        onSuccess: callTimeOnSuccess,
+                        onSettled: callTimeOnSettled,
+                        onError: callTimeOnError,
+                    }
                 );
             }
             return mutation.mutate(
                 { resource: callTimeResource, ...callTimeParams },
-                { onSuccess, onSettled, onError }
+                {
+                    onSuccess: callTimeOnSuccess,
+                    onSettled: callTimeOnSettled,
+                    onError: callTimeOnError,
+                }
             );
         }
 
@@ -373,10 +400,10 @@ export const useUpdate = <RecordType extends RaRecord = any>(
         });
 
         // run the success callbacks during the next tick
-        if (onSuccess) {
+        if (callTimeOnSuccess) {
             setTimeout(
                 () =>
-                    onSuccess(
+                    callTimeOnSuccess(
                         { ...previousRecord, ...callTimeData },
                         { resource: callTimeResource, ...callTimeParams },
                         { snapshot: snapshot.current }
@@ -384,7 +411,7 @@ export const useUpdate = <RecordType extends RaRecord = any>(
                 0
             );
         }
-        if (reactMutationOptions.onSuccess) {
+        if (reactMutationOptions.onSuccess && !hasCallTimeOnSuccess.current) {
             setTimeout(
                 () =>
                     reactMutationOptions.onSuccess(
@@ -400,7 +427,7 @@ export const useUpdate = <RecordType extends RaRecord = any>(
             // call the mutate method without success side effects
             return mutation.mutate(
                 { resource: callTimeResource, ...callTimeParams },
-                { onSettled, onError }
+                { onSettled: callTimeOnSettled, onError: callTimeOnError }
             );
         } else {
             // undoable mutation: register the mutation for later
@@ -415,8 +442,8 @@ export const useUpdate = <RecordType extends RaRecord = any>(
                     mutation.mutate(
                         { resource: callTimeResource, ...callTimeParams },
                         {
-                            onSettled,
-                            onError,
+                            onSettled: callTimeOnSettled,
+                            onError: callTimeOnError,
                         }
                     );
                 }

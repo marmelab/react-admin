@@ -248,7 +248,8 @@ describe('<UpdateWithConfirmButton />', () => {
 
     it('should close the dialog even with custom success side effect', async () => {
         render(<MutationOptions />);
-        fireEvent.click(await screen.findByLabelText('Reset views'));
+        await screen.findByText('Reset views');
+        fireEvent.click(await screen.findByText('Reset views'));
         await screen.findByRole('dialog');
         await screen.findByText(
             'Are you sure you want to update this post?',
