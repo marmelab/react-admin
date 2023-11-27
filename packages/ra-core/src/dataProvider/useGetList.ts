@@ -8,6 +8,7 @@ import {
 
 import { RaRecord, GetListParams, GetListResult } from '../types';
 import { useDataProvider } from './useDataProvider';
+import { useEvent } from '../util';
 
 const MAX_DATA_LENGTH_TO_CACHE = 100;
 
@@ -66,7 +67,10 @@ export const useGetList = <RecordType extends RaRecord = any>(
     } = params;
     const dataProvider = useDataProvider();
     const queryClient = useQueryClient();
-    const { onError, onSuccess, ...queryOptions } = options;
+    const { onError = noop, onSuccess = noop, ...queryOptions } = options;
+    const onSuccessEvent = useEvent(onSuccess);
+    const onErrorEvent = useEvent(onError);
+
     const result = useQuery<
         GetListResult<RecordType>,
         Error,
@@ -104,16 +108,16 @@ export const useGetList = <RecordType extends RaRecord = any>(
             });
         }
         // execute call-time onSuccess if provided
-        if (result.data != null && onSuccess) {
-            onSuccess(result.data);
+        if (result.data != null && onSuccessEvent) {
+            onSuccessEvent(result.data);
         }
-    }, [meta, onSuccess, queryClient, resource, result.data]);
+    }, [meta, onSuccessEvent, queryClient, resource, result.data]);
 
     useEffect(() => {
-        if (result.error != null && onError) {
-            onError(result.error);
+        if (result.error != null && onErrorEvent) {
+            onErrorEvent(result.error);
         }
-    }, [onError, result.error]);
+    }, [onErrorEvent, result.error]);
 
     return useMemo(
         () =>
@@ -134,6 +138,8 @@ export const useGetList = <RecordType extends RaRecord = any>(
         };
     };
 };
+
+const noop = () => undefined;
 
 export type UseGetListOptions<RecordType extends RaRecord = any> = Omit<
     UseQueryOptions<GetListResult<RecordType>, Error>,

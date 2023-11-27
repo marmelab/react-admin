@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import {
     useQuery,
     UseQueryOptions,
@@ -8,7 +9,7 @@ import {
 
 import { RaRecord, GetManyParams } from '../types';
 import { useDataProvider } from './useDataProvider';
-import { useEffect } from 'react';
+import { useEvent } from '../util';
 
 /**
  * Call the dataProvider.getMany() method and return the resolved result
@@ -59,7 +60,9 @@ export const useGetMany = <RecordType extends RaRecord = any>(
     const dataProvider = useDataProvider();
     const queryClient = useQueryClient();
     const queryCache = queryClient.getQueryCache();
-    const { onError, onSuccess, ...queryOptions } = options;
+    const { onError = noop, onSuccess = noop, ...queryOptions } = options;
+    const onSuccessEvent = useEvent(onSuccess);
+    const onErrorEvent = useEvent(onError);
 
     const result = useQuery<RecordType[], Error, RecordType[]>({
         queryKey: [
@@ -111,22 +114,24 @@ export const useGetMany = <RecordType extends RaRecord = any>(
                     oldRecord => oldRecord ?? record
                 );
             });
-        }
 
-        // execute call-time onSuccess if provided
-        if (onSuccess) {
-            onSuccess(result.data);
+            // execute call-time onSuccess if provided
+            if (onSuccessEvent) {
+                onSuccessEvent(result.data);
+            }
         }
-    }, [queryClient, meta, onSuccess, resource, result.data]);
+    }, [queryClient, meta, onSuccessEvent, resource, result.data]);
 
     useEffect(() => {
-        if (result.error != null && onError) {
-            onError(result.error);
+        if (result.error != null && onErrorEvent) {
+            onErrorEvent(result.error);
         }
-    }, [onError, result.error]);
+    }, [onErrorEvent, result.error]);
 
     return result;
 };
+
+const noop = () => undefined;
 
 export type UseGetManyOptions<RecordType extends RaRecord = any> = Omit<
     UseQueryOptions<RecordType[], Error>,

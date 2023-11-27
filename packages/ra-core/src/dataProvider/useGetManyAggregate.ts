@@ -11,6 +11,7 @@ import union from 'lodash/union';
 import { UseGetManyHookValue } from './useGetMany';
 import { Identifier, RaRecord, GetManyParams, DataProvider } from '../types';
 import { useDataProvider } from './useDataProvider';
+import { useEvent } from '../util';
 
 /**
  * Call the dataProvider.getMany() method and return the resolved result
@@ -73,7 +74,10 @@ export const useGetManyAggregate = <RecordType extends RaRecord = any>(
     const dataProvider = useDataProvider();
     const queryClient = useQueryClient();
     const queryCache = queryClient.getQueryCache();
-    const { onError, onSuccess, ...queryOptions } = options;
+    const { onError = noop, onSuccess = noop, ...queryOptions } = options;
+    const onSuccessEvent = useEvent(onSuccess);
+    const onErrorEvent = useEvent(onError);
+
     const { ids, meta } = params;
     const placeholderData = useMemo(() => {
         const records = (Array.isArray(ids) ? ids : [ids]).map(id => {
@@ -133,17 +137,17 @@ export const useGetManyAggregate = <RecordType extends RaRecord = any>(
             });
 
             // execute call-time onSuccess if provided
-            if (onSuccess) {
-                onSuccess(result.data);
+            if (onSuccessEvent) {
+                onSuccessEvent(result.data);
             }
         }
-    }, [queryClient, meta, onSuccess, resource, result.data]);
+    }, [queryClient, meta, onSuccessEvent, resource, result.data]);
 
     useEffect(() => {
-        if (result.error != null && onError) {
-            onError(result.error);
+        if (result.error != null && onErrorEvent) {
+            onErrorEvent(result.error);
         }
-    }, [onError, result.error]);
+    }, [onErrorEvent, result.error]);
 
     return result;
 };
@@ -317,6 +321,8 @@ const callGetManyQueries = batch((calls: GetManyCallArgs[]) => {
             );
     });
 });
+
+const noop = () => undefined;
 
 export type UseGetManyAggregateOptions<RecordType extends RaRecord> = Omit<
     UseQueryOptions<RecordType[]>,

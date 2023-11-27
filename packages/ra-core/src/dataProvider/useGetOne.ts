@@ -6,6 +6,7 @@ import {
 } from '@tanstack/react-query';
 import { useDataProvider } from './useDataProvider';
 import { useEffect } from 'react';
+import { useEvent } from '../util';
 
 /**
  * Call the dataProvider.getOne() method and return the resolved value
@@ -52,7 +53,9 @@ export const useGetOne = <RecordType extends RaRecord = any>(
     options: UseGetOneOptions<RecordType> = {}
 ): UseGetOneHookValue<RecordType> => {
     const dataProvider = useDataProvider();
-    const { onError, onSuccess, ...queryOptions } = options;
+    const { onError = noop, onSuccess = noop, ...queryOptions } = options;
+    const onSuccessEvent = useEvent(onSuccess);
+    const onErrorEvent = useEvent(onError);
 
     const result = useQuery<RecordType>({
         // Sometimes the id comes as a string (e.g. when read from the URL in a Show view).
@@ -67,19 +70,21 @@ export const useGetOne = <RecordType extends RaRecord = any>(
     });
 
     useEffect(() => {
-        if (result.data != null && onSuccess) {
-            onSuccess(result.data);
+        if (result.data != null && onSuccessEvent) {
+            onSuccessEvent(result.data);
         }
-    }, [onSuccess, result.data]);
+    }, [onSuccessEvent, result.data]);
 
     useEffect(() => {
-        if (result.error != null && onError) {
-            onError(result.error);
+        if (result.error != null && onErrorEvent) {
+            onErrorEvent(result.error);
         }
-    }, [onError, result.error]);
+    }, [onErrorEvent, result.error]);
 
     return result;
 };
+
+const noop = () => undefined;
 
 export type UseGetOneOptions<RecordType extends RaRecord = any> = Omit<
     UseQueryOptions<GetOneResult<RecordType>['data']>,

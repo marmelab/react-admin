@@ -10,6 +10,7 @@ import {
 import { RaRecord, GetListParams, GetInfiniteListResult } from '../types';
 import { useDataProvider } from './useDataProvider';
 import { useEffect } from 'react';
+import { useEvent } from '../util';
 
 /**
  * Call the dataProvider.getList() method and return the resolved result
@@ -76,7 +77,9 @@ export const useInfiniteGetList = <RecordType extends RaRecord = any>(
     } = params;
     const dataProvider = useDataProvider();
     const queryClient = useQueryClient();
-    const { onSuccess, onError, ...queryOptions } = options;
+    const { onSuccess = noop, onError = noop, ...queryOptions } = options;
+    const onSuccessEvent = useEvent(onSuccess);
+    const onErrorEvent = useEvent(onError);
 
     const result = useInfiniteQuery<
         GetInfiniteListResult<RecordType>,
@@ -148,17 +151,17 @@ export const useInfiniteGetList = <RecordType extends RaRecord = any>(
                 });
             });
 
-            if (onSuccess) {
-                onSuccess(result.data);
+            if (onSuccessEvent) {
+                onSuccessEvent(result.data);
             }
         }
-    }, [meta, onSuccess, queryClient, resource, result.data]);
+    }, [meta, onSuccessEvent, queryClient, resource, result.data]);
 
     useEffect(() => {
-        if (result.error != null && onError) {
-            onError(result.error);
+        if (result.error != null && onErrorEvent) {
+            onErrorEvent(result.error);
         }
-    }, [onError, result.error]);
+    }, [onErrorEvent, result.error]);
 
     return (result.data
         ? {
@@ -173,6 +176,8 @@ export const useInfiniteGetList = <RecordType extends RaRecord = any>(
         total?: number;
     };
 };
+
+const noop = () => undefined;
 
 export type UseInfiniteGetListOptions<RecordType extends RaRecord = any> = Omit<
     UseInfiniteQueryOptions<
