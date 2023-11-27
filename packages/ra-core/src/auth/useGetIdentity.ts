@@ -45,9 +45,9 @@ const defaultQueryParams = {
  *     }
  * }
  */
-export const useGetIdentity = (
-    options: UseGetIdentityOptions = defaultQueryParams
-): QueryObserverResult<UserIdentity> => {
+export const useGetIdentity = <ErrorType extends Error = Error>(
+    options: UseGetIdentityOptions<ErrorType> = defaultQueryParams
+): QueryObserverResult<UserIdentity, ErrorType> => {
     const authProvider = useAuthProvider();
     const { onSuccess, onError, ...queryOptions } = options;
 
@@ -77,8 +77,11 @@ export const useGetIdentity = (
     return result;
 };
 
-export interface UseGetIdentityOptions
-    extends Omit<UseQueryOptions<UserIdentity>, 'queryKey' | 'queryFn'> {
+export interface UseGetIdentityOptions<ErrorType extends Error = Error>
+    extends Omit<
+        UseQueryOptions<UserIdentity, ErrorType>,
+        'queryKey' | 'queryFn'
+    > {
     onSuccess?: (data: UserIdentity) => void;
     onError?: (err: Error) => void;
 }

@@ -14,7 +14,7 @@ const emptyParams = {};
  * The return value updates according to the request state:
  *
  * - start: { isLoading: true }
- * - success: { permissions: [any], isLoading: false }
+ * - success: { data: [any], isLoading: false }
  * - error: { error: [error from provider], isLoading: false }
  *
  * Useful to enable features based on user permissions
@@ -27,7 +27,7 @@ const emptyParams = {};
  *     import { usePermissions } from 'react-admin';
  *
  *     const PostDetail = props => {
- *         const { isLoading, permissions } = usePermissions();
+ *         const { isLoading, data: permissions } = usePermissions();
  *         if (!isLoading && permissions == 'editor') {
  *             return <PostEdit {...props} />
  *         } else {
@@ -35,9 +35,9 @@ const emptyParams = {};
  *         }
  *     };
  */
-const usePermissions = <Permissions = any>(
+const usePermissions = <PermissionsType = any, ErrorType = Error>(
     params = emptyParams,
-    queryParams: UsePermissionsOptions<Permissions> = {
+    queryParams: UsePermissionsOptions<PermissionsType, ErrorType> = {
         staleTime: 5 * 60 * 1000,
     }
 ) => {
@@ -45,7 +45,7 @@ const usePermissions = <Permissions = any>(
     const logoutIfAccessDenied = useLogoutIfAccessDenied();
     const { onSuccess, onError, ...queryOptions } = queryParams ?? {};
 
-    const result = useQuery({
+    const result = useQuery<PermissionsType, ErrorType>({
         queryKey: ['auth', 'getPermissions', params],
         queryFn: () => {
             return authProvider
@@ -78,8 +78,11 @@ const usePermissions = <Permissions = any>(
 
 export default usePermissions;
 
-export interface UsePermissionsOptions<Permissions>
-    extends Omit<UseQueryOptions<Permissions>, 'queryKey' | 'queryFn'> {
-    onSuccess?: (data: Permissions) => void;
-    onError?: (err: Error) => void;
+export interface UsePermissionsOptions<PermissionsType = any, ErrorType = Error>
+    extends Omit<
+        UseQueryOptions<PermissionsType, ErrorType>,
+        'queryKey' | 'queryFn'
+    > {
+    onSuccess?: (data: PermissionsType) => void;
+    onError?: (err: ErrorType) => void;
 }

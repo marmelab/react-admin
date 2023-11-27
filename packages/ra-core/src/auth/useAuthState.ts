@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react';
+import { useEffect } from 'react';
 import { useQuery, UseQueryOptions } from '@tanstack/react-query';
 import useAuthProvider, { defaultAuthParams } from './useAuthProvider';
 import useLogout from './useLogout';
@@ -20,7 +20,7 @@ const emptyParams = {};
  * The return value updates according to the authProvider request state:
  *
  * - isLoading: true just after mount, while the authProvider is being called. false once the authProvider has answered.
- * - authenticated: true while loading. then true or false depending on the authProvider response.
+ * - data: true while loading. then true or false depending on the authProvider response.
  *
  * To avoid rendering a component and force waiting for the authProvider response, use the useAuthState() hook
  * instead of the useAuthenticated() hook.
@@ -39,7 +39,7 @@ const emptyParams = {};
  * import { useAuthState, Loading } from 'react-admin';
  *
  * const MyPage = () => {
- *     const { isLoading, authenticated } = useAuthState();
+ *     const { isLoading, data: authenticated } = useAuthState();
  *     if (isLoading) {
  *         return <Loading />;
  *     }
@@ -49,10 +49,10 @@ const emptyParams = {};
  *     return <AnonymousContent />;
  * };
  */
-const useAuthState = (
+const useAuthState = <ErrorType = Error>(
     params: any = emptyParams,
     logoutOnFailure: boolean = false,
-    queryOptions: UseAuthStateOptions = emptyParams
+    queryOptions: UseAuthStateOptions<ErrorType> = emptyParams
 ): State => {
     const authProvider = useAuthProvider();
     const logout = useLogout();
@@ -62,6 +62,7 @@ const useAuthState = (
 
     const result = useQuery<boolean, any>({
         queryKey: ['auth', 'checkAuth', params],
+        initialData: true, // Optimistic
         queryFn: () => {
             // The authProvider is optional in react-admin
             if (!authProvider) {
@@ -111,24 +112,15 @@ const useAuthState = (
         }
     }, [basename, logout, logoutOnFailure, notify, onError, result.error]);
 
-    return useMemo(() => {
-        return {
-            // If the data is undefined and the query isn't loading anymore, it means the query failed.
-            // In that case, we set authenticated to false unless there's no authProvider.
-            authenticated:
-                result.data ?? result.isLoading ? true : authProvider == null, // Optimistic
-            isLoading: result.isLoading,
-            error: result.error,
-        };
-    }, [authProvider, result]);
+    return result;
 };
 
-type UseAuthStateOptions = Omit<
-    UseQueryOptions<boolean, any>,
+type UseAuthStateOptions<ErrorType = Error> = Omit<
+    UseQueryOptions<boolean, ErrorType>,
     'queryKey' | 'queryFn'
 > & {
     onSuccess?: (data: boolean) => void;
-    onError?: (err: Error) => void;
+    onError?: (err: ErrorType) => void;
 };
 
 export default useAuthState;
