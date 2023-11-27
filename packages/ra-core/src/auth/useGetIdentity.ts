@@ -74,7 +74,6 @@ export const useGetIdentity = (
         }
     }, [onError, result.error]);
 
-    // @FIXME: return useQuery's result directly by removing identity prop (BC break - to be done in v5)
     return result;
 };
 
