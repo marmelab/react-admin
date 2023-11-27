@@ -76,7 +76,7 @@ describe('<DeleteWithConfirmButton />', () => {
         await waitFor(() => {
             expect(screen.queryByDisplayValue('lorem')).not.toBeNull();
         });
-        fireEvent.click(screen.getByLabelText('ra.action.delete'));
+        fireEvent.click(await screen.findByLabelText('ra.action.delete'));
         fireEvent.click(screen.getByText('ra.action.confirm'));
         await waitFor(() => {
             expect(dataProvider.delete).toHaveBeenCalledWith('comments', {
@@ -118,7 +118,7 @@ describe('<DeleteWithConfirmButton />', () => {
         await waitFor(() => {
             expect(screen.queryByDisplayValue('lorem')).not.toBeNull();
         });
-        fireEvent.click(screen.getByLabelText('ra.action.delete'));
+        fireEvent.click(await screen.findByLabelText('ra.action.delete'));
         fireEvent.click(screen.getByText('ra.action.confirm'));
 
         await waitFor(() => {
@@ -159,7 +159,7 @@ describe('<DeleteWithConfirmButton />', () => {
         await waitFor(() => {
             expect(screen.queryByDisplayValue('lorem')).not.toBeNull();
         });
-        fireEvent.click(screen.getByLabelText('ra.action.delete'));
+        fireEvent.click(await screen.findByLabelText('ra.action.delete'));
         fireEvent.click(screen.getByText('ra.action.confirm'));
         await waitFor(() => {
             expect(dataProvider.delete).toHaveBeenCalled();
@@ -206,7 +206,7 @@ describe('<DeleteWithConfirmButton />', () => {
         await waitFor(() => {
             expect(screen.queryByDisplayValue('lorem')).toBeDefined();
         });
-        fireEvent.click(screen.getByLabelText('ra.action.delete'));
+        fireEvent.click(await screen.findByLabelText('ra.action.delete'));
         fireEvent.click(screen.getByText('ra.action.confirm'));
         await waitFor(() => {
             expect(dataProvider.delete).toHaveBeenCalled();
@@ -258,7 +258,7 @@ describe('<DeleteWithConfirmButton />', () => {
             expect(screen.queryByDisplayValue('lorem')).toBeDefined();
         });
 
-        fireEvent.click(screen.getByLabelText('ra.action.delete'));
+        fireEvent.click(await screen.findByLabelText('ra.action.delete'));
         expect(screen.queryByDisplayValue('#20061703')).toBeDefined();
     });
 });

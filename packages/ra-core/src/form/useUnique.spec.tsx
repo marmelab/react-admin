@@ -85,6 +85,7 @@ describe('useUnique', () => {
                 id: 1,
             })
         );
+        await new Promise(resolve => setTimeout(resolve, 500));
         fireEvent.change(await screen.findByDisplayValue('John Doe'), {
             target: { value: 'Jane Doe' },
         });

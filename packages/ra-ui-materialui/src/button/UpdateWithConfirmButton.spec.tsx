@@ -21,7 +21,7 @@ const invalidButtonDomProps = {
 };
 
 describe('<UpdateWithConfirmButton />', () => {
-    it('should render a button with no DOM errors', () => {
+    it('should render a button with no DOM errors', async () => {
         const spy = jest.spyOn(console, 'error').mockImplementation(() => {});
 
         render(
@@ -37,7 +37,9 @@ describe('<UpdateWithConfirmButton />', () => {
 
         expect(spy).not.toHaveBeenCalled();
         expect(
-            screen.getByLabelText('ra.action.update').getAttribute('type')
+            (await screen.findByLabelText('ra.action.update')).getAttribute(
+                'type'
+            )
         ).toEqual('button');
 
         spy.mockRestore();
@@ -83,7 +85,7 @@ describe('<UpdateWithConfirmButton />', () => {
         await waitFor(() => {
             expect(screen.queryByDisplayValue('lorem')).not.toBeNull();
         });
-        fireEvent.click(screen.getByLabelText('ra.action.update'));
+        fireEvent.click(await screen.findByLabelText('ra.action.update'));
         fireEvent.click(screen.getByText('ra.action.confirm'));
         await waitFor(() => {
             expect(dataProvider.update).toHaveBeenCalledWith('comments', {
@@ -130,7 +132,7 @@ describe('<UpdateWithConfirmButton />', () => {
         await waitFor(() => {
             expect(screen.queryByDisplayValue('lorem')).not.toBeNull();
         });
-        fireEvent.click(screen.getByLabelText('ra.action.update'));
+        fireEvent.click(await screen.findByLabelText('ra.action.update'));
         fireEvent.click(screen.getByText('ra.action.confirm'));
 
         await waitFor(() => {
@@ -174,7 +176,7 @@ describe('<UpdateWithConfirmButton />', () => {
         await waitFor(() => {
             expect(screen.queryByDisplayValue('lorem')).not.toBeNull();
         });
-        fireEvent.click(screen.getByLabelText('ra.action.update'));
+        fireEvent.click(await screen.findByLabelText('ra.action.update'));
         fireEvent.click(screen.getByText('ra.action.confirm'));
         await waitFor(() => {
             expect(dataProvider.update).toHaveBeenCalled();
@@ -226,7 +228,7 @@ describe('<UpdateWithConfirmButton />', () => {
         await waitFor(() => {
             expect(screen.queryByDisplayValue('lorem')).toBeDefined();
         });
-        fireEvent.click(screen.getByLabelText('ra.action.update'));
+        fireEvent.click(await screen.findByLabelText('ra.action.update'));
         fireEvent.click(screen.getByText('ra.action.confirm'));
         await waitFor(() => {
             expect(dataProvider.update).toHaveBeenCalled();
