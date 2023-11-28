@@ -166,3 +166,23 @@ export const SX = () => (
         </ResourceContext.Provider>
     </MemoryRouter>
 );
+
+export const WithPath = () => (
+    <MemoryRouter>
+        <ResourceContext.Provider value="books">
+            <RecordContextProvider value={record}>
+                <TabbedShowLayout>
+                    <TabbedShowLayout.Tab label="First">
+                        <TextField source="id" />
+                        <TextField source="title" />
+                    </TabbedShowLayout.Tab>
+                    <TabbedShowLayout.Tab label="Second" path="second">
+                        <TextField source="author" />
+                        <TextField source="summary" />
+                        <NumberField source="year" />
+                    </TabbedShowLayout.Tab>
+                </TabbedShowLayout>
+            </RecordContextProvider>
+        </ResourceContext.Provider>
+    </MemoryRouter>
+);

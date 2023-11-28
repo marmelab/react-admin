@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { isValidElement, ReactElement, ReactNode } from 'react';
 import PropTypes from 'prop-types';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useResolvedPath } from 'react-router-dom';
 import { Tab as MuiTab, TabProps as MuiTabProps, Stack } from '@mui/material';
 import { ResponsiveStyleValue } from '@mui/system';
 import { useTranslate, RaRecord } from 'ra-core';
@@ -71,9 +71,10 @@ export const Tab = ({
 }: TabProps) => {
     const translate = useTranslate();
     const location = useLocation();
+    const resolvedPath = useResolvedPath('..');
     const propsForLink = {
         component: Link,
-        to: { ...location, pathname: value },
+        to: { ...location, pathname: `${resolvedPath.pathname}${value}` },
     };
 
     const renderHeader = () => {
