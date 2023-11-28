@@ -83,6 +83,10 @@ export const useCreate = <
     const paramsRef = useRef<Partial<CreateParams<Partial<RecordType>>>>(
         params
     );
+    const { onError, onSettled, onSuccess, ...otherMutationOptions } = options;
+    const hasCallTimeOnError = useRef(false);
+    const hasCallTimeOnSuccess = useRef(false);
+    const hasCallTimeOnSettled = useRef(false);
 
     const mutation = useMutation<
         ResultRecordType,
@@ -100,7 +104,12 @@ export const useCreate = <
                     meta: callTimeMeta,
                 })
                 .then(({ data }) => data),
-        ...options,
+        ...otherMutationOptions,
+        onError: (error, variables, context) => {
+            if (onError && !hasCallTimeOnError.current) {
+                return onError(error, variables, context);
+            }
+        },
         onSuccess: (
             data: ResultRecordType,
             variables: Partial<UseCreateMutateParams<RecordType>> = {},
@@ -124,17 +133,22 @@ export const useCreate = <
                 queryKey: [callTimeResource, 'getManyReference'],
             });
 
-            if (options.onSuccess) {
-                options.onSuccess(data, variables, context);
+            if (onSuccess && !hasCallTimeOnSuccess.current) {
+                onSuccess(data, variables, context);
             }
             // call-time success callback is executed by react-query
+        },
+        onSettled: (data, error, variables, context) => {
+            if (onSettled && !hasCallTimeOnSettled.current) {
+                return onSettled(data, error, variables, context);
+            }
         },
     });
 
     const create = (
         callTimeResource: string = resource,
         callTimeParams: Partial<CreateParams<Partial<RecordType>>> = {},
-        createOptions: MutateOptions<
+        callTimeOptions: MutateOptions<
             ResultRecordType,
             MutationError,
             Partial<UseCreateMutateParams<RecordType>>,
@@ -143,17 +157,30 @@ export const useCreate = <
     ) => {
         const {
             returnPromise = options.returnPromise,
+            onSuccess: callTimeOnSuccess,
+            onSettled: callTimeOnSettled,
+            onError: callTimeOnError,
             ...reactCreateOptions
-        } = createOptions;
+        } = callTimeOptions;
+
+        hasCallTimeOnError.current = !!callTimeOnError;
+        hasCallTimeOnSuccess.current = !!callTimeOnSuccess;
+        hasCallTimeOnSettled.current = !!callTimeOnSettled;
+
         if (returnPromise) {
             return mutation.mutateAsync(
                 { resource: callTimeResource, ...callTimeParams },
-                createOptions
+                callTimeOptions
             );
         }
         mutation.mutate(
             { resource: callTimeResource, ...callTimeParams },
-            reactCreateOptions
+            {
+                onSuccess: callTimeOnSuccess,
+                onSettled: callTimeOnSettled,
+                onError: callTimeOnError,
+                ...reactCreateOptions,
+            }
         );
     };
 
