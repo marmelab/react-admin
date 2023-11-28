@@ -214,7 +214,6 @@ export interface InfiniteListControllerProps<
     filter?: FilterPayload;
     filterDefaultValues?: object;
     perPage?: number;
-    // FIXME: Make it generic, but Parameters<typeof useInfiniteQuery<RecordType>>[2] doesn't work
     queryOptions?: UseInfiniteGetListOptions<RecordType>;
     resource?: string;
     sort?: SortPayload;
