@@ -93,9 +93,10 @@ export const useUpdate = <RecordType extends RaRecord = any>(
     const { id, data, meta } = params;
     const {
         mutationMode = 'pessimistic',
-        // onSuccess,
-        // onError,
-        // onSettled,
+        onSuccess,
+        onError,
+        onSettled,
+        onMutate,
         ...reactMutationOptions
     } = options;
     const mode = useRef<MutationMode>(mutationMode);
@@ -200,9 +201,8 @@ export const useUpdate = <RecordType extends RaRecord = any>(
         onMutate: async (
             variables: Partial<UseUpdateMutateParams<RecordType>>
         ) => {
-            if (reactMutationOptions.onMutate) {
-                const userContext =
-                    (await reactMutationOptions.onMutate(variables)) || {};
+            if (onMutate) {
+                const userContext = (await onMutate(variables)) || {};
                 return {
                     snapshot: snapshot.current,
                     // @ts-ignore
@@ -221,8 +221,8 @@ export const useUpdate = <RecordType extends RaRecord = any>(
                 });
             }
 
-            if (reactMutationOptions.onError && !hasCallTimeOnError.current) {
-                return reactMutationOptions.onError(error, variables, context);
+            if (onError && !hasCallTimeOnError.current) {
+                return onError(error, variables, context);
             }
             // call-time error callback is executed by react-query
         },
@@ -244,11 +244,8 @@ export const useUpdate = <RecordType extends RaRecord = any>(
                 });
             }
 
-            if (
-                reactMutationOptions.onSuccess &&
-                !hasCallTimeOnSuccess.current
-            ) {
-                reactMutationOptions.onSuccess(data, variables, context);
+            if (onSuccess && !hasCallTimeOnSuccess.current) {
+                onSuccess(data, variables, context);
             }
             // call-time success callback is executed by react-query
         },
@@ -265,16 +262,8 @@ export const useUpdate = <RecordType extends RaRecord = any>(
                 });
             }
 
-            if (
-                reactMutationOptions.onSettled &&
-                !hasCallTimeOnSettled.current
-            ) {
-                return reactMutationOptions.onSettled(
-                    data,
-                    error,
-                    variables,
-                    context
-                );
+            if (onSettled && !hasCallTimeOnSettled.current) {
+                return onSettled(data, error, variables, context);
             }
         },
     });
@@ -411,10 +400,10 @@ export const useUpdate = <RecordType extends RaRecord = any>(
                 0
             );
         }
-        if (reactMutationOptions.onSuccess && !hasCallTimeOnSuccess.current) {
+        if (onSuccess && !hasCallTimeOnSuccess.current) {
             setTimeout(
                 () =>
-                    reactMutationOptions.onSuccess(
+                    onSuccess(
                         { ...previousRecord, ...callTimeData },
                         { resource: callTimeResource, ...callTimeParams },
                         { snapshot: snapshot.current }
