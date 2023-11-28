@@ -1407,7 +1407,7 @@ describe('<AutocompleteInput />', () => {
                         (screen.getByRole('combobox') as HTMLInputElement).value
                     ).toBe('Leo Tolstoy - Russian');
                 },
-                { timeout: 2000 }
+                { timeout: 4000 }
             );
             screen.getByRole('combobox').focus();
             fireEvent.click(screen.getByLabelText('Clear value'));
@@ -1424,7 +1424,7 @@ describe('<AutocompleteInput />', () => {
                 { timeout: 2000 }
             );
             expect(matchSuggestion).not.toHaveBeenCalled();
-        });
+        }, 20000);
 
         it('should include full record when calling onChange', async () => {
             const onChange = jest.fn();

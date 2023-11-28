@@ -193,21 +193,21 @@ describe('<FilterButton />', () => {
             });
 
             fireEvent.click(screen.getByLabelText('Open'));
-            fireEvent.click(screen.getByText('Sint...'));
+            fireEvent.click(await screen.findByText('Sint...'));
 
             await screen.findByLabelText('Add filter');
             await waitFor(() => {
                 expect(screen.getAllByRole('checkbox')).toHaveLength(2);
             });
             fireEvent.click(screen.getByLabelText('Add filter'));
-            fireEvent.click(screen.getByText('Remove all filters'));
+            fireEvent.click(await screen.findByText('Remove all filters'));
 
             await waitFor(() => {
                 expect(screen.getAllByRole('checkbox')).toHaveLength(11);
             });
 
-            fireEvent.click(screen.getByLabelText('Open'));
-            fireEvent.click(screen.getByText('Sint...'));
+            fireEvent.click(await screen.findByLabelText('Open'));
+            fireEvent.click(await screen.findByText('Sint...'));
 
             await waitFor(
                 () => {
