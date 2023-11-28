@@ -17,3 +17,7 @@ If you previously relied on the fact that the rows were not clickable by default
    ...
 </Datagrid>
 ```
+
+## Upgrading to v4
+
+If you are on react-admin v3, follow the [Upgrading to v4](https://marmelab.com/react-admin/doc/4.16/Upgrade.html) guide before upgrading to v5. 
