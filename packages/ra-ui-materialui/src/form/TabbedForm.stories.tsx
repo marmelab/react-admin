@@ -104,3 +104,18 @@ export const Count = () => (
         </TabbedForm>
     </Wrapper>
 );
+
+export const WithPath = () => (
+    <Wrapper>
+        <TabbedForm>
+            <TabbedForm.Tab label="main">
+                <TextInput source="title" fullWidth />
+                <TextInput source="author" />
+                <NumberInput source="year" />
+            </TabbedForm.Tab>
+            <TabbedForm.Tab label="details" path="details">
+                <TextInput multiline source="bio" fullWidth />
+            </TabbedForm.Tab>
+        </TabbedForm>
+    </Wrapper>
+);

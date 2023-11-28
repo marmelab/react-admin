@@ -2,7 +2,7 @@ import * as React from 'react';
 import { ReactElement, ReactNode } from 'react';
 import { isElement } from 'react-is';
 import PropTypes from 'prop-types';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useResolvedPath } from 'react-router-dom';
 import { Tab as MuiTab, TabProps as MuiTabProps } from '@mui/material';
 import clsx from 'clsx';
 import { useTranslate, useFormGroup } from 'ra-core';
@@ -22,12 +22,13 @@ export const FormTabHeader = ({
 }: FormTabHeaderProps): ReactElement => {
     const translate = useTranslate();
     const location = useLocation();
+    const resolvedPath = useResolvedPath('..');
     const { isSubmitted } = useFormState();
     const formGroup = useFormGroup(value.toString());
 
     const propsForLink = {
         component: Link,
-        to: { ...location, pathname: value },
+        to: { ...location, pathname: `${resolvedPath.pathname}${value}` },
     };
 
     let tabLabel = isElement(label) ? label : translate(label, { _: label });

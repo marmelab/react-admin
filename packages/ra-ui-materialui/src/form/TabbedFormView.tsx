@@ -36,7 +36,7 @@ export const TabbedFormView = (props: TabbedFormViewProps): ReactElement => {
         ...rest
     } = props;
     const location = useLocation();
-    const resolvedPath = useResolvedPath('');
+    const resolvedPath = useResolvedPath('..');
     const resource = useResourceContext(props);
     const [tabValue, setTabValue] = useState(0);
 
