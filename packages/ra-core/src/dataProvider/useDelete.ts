@@ -144,9 +144,7 @@ export const useDelete = <
             { updatedAt }
         );
         queryClient.setQueriesData(
-            {
-                queryKey: [resource, 'getInfiniteList'],
-            },
+            { queryKey: [resource, 'getInfiniteList'] },
             (
                 res: UseInfiniteQueryResult<
                     InfiniteData<GetInfiniteListResult>
