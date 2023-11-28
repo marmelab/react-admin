@@ -28,7 +28,7 @@ export const FormTabHeader = ({
 
     const propsForLink = {
         component: Link,
-        to: { ...location, pathname: `${resolvedPath.pathname}${value}` },
+        to: { ...location, pathname: `${resolvedPath.pathname}/${value}` },
     };
 
     let tabLabel = isElement(label) ? label : translate(label, { _: label });

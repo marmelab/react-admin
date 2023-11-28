@@ -6,6 +6,7 @@ import { Edit } from '../detail';
 import { NumberInput, TextInput } from '../input';
 import { TabbedForm } from './TabbedForm';
 import { Stack } from '@mui/material';
+import { Navigate, Route, Routes } from 'react-router-dom';
 
 export default { title: 'ra-ui-materialui/forms/TabbedForm' };
 
@@ -29,11 +30,22 @@ const Wrapper = ({ children }) => (
             getOne: () => Promise.resolve({ data }),
         })}
     >
-        <ResourceContextProvider value="books">
-            <Edit id={1} sx={{ width: 600 }}>
-                {children}
-            </Edit>
-        </ResourceContextProvider>
+        <Routes>
+            <Route
+                path="/books/:id/*"
+                element={
+                    <ResourceContextProvider value="books">
+                        <Edit id={1} sx={{ width: 600 }}>
+                            {children}
+                        </Edit>
+                    </ResourceContextProvider>
+                }
+            />
+            <Route
+                path="*"
+                element={<Navigate to="/books/1" replace={true} />}
+            />
+        </Routes>
     </AdminContext>
 );
 

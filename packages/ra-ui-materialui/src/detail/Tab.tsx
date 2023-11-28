@@ -74,7 +74,7 @@ export const Tab = ({
     const resolvedPath = useResolvedPath('..');
     const propsForLink = {
         component: Link,
-        to: { ...location, pathname: `${resolvedPath.pathname}${value}` },
+        to: { ...location, pathname: `${resolvedPath.pathname}/${value}` },
     };
 
     const renderHeader = () => {
