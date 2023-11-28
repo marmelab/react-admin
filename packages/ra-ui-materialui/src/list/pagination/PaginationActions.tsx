@@ -13,8 +13,6 @@ export const PaginationActions: FC<PaginationActionsProps> = memo(props => {
         onPageChange,
         size = 'small',
         className,
-        // @ts-ignore
-        slotProps,
         ...rest
     } = props;
     const translate = useTranslate();
@@ -94,5 +92,6 @@ const Root = styled('div', {
 const sanitizeRestProps = ({
     nextIconButtonProps,
     backIconButtonProps,
+    slotProps,
     ...rest
 }: any) => rest;
