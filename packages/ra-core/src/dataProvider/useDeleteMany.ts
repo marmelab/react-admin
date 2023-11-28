@@ -90,10 +90,20 @@ export const useDeleteMany = <
     const dataProvider = useDataProvider();
     const queryClient = useQueryClient();
     const { ids } = params;
-    const { mutationMode = 'pessimistic', ...reactMutationOptions } = options;
+    const {
+        mutationMode = 'pessimistic',
+        onError,
+        onMutate,
+        onSettled,
+        onSuccess,
+        ...reactMutationOptions
+    } = options;
     const mode = useRef<MutationMode>(mutationMode);
     const paramsRef = useRef<Partial<DeleteManyParams<RecordType>>>({});
     const snapshot = useRef<Snapshot>([]);
+    const hasCallTimeOnError = useRef(false);
+    const hasCallTimeOnSuccess = useRef(false);
+    const hasCallTimeOnSettled = useRef(false);
 
     const updateCache = ({ resource, ids }) => {
         // hack: only way to tell react-query not to fetch this query for the next 5 seconds
@@ -219,9 +229,8 @@ export const useDeleteMany = <
         onMutate: async (
             variables: Partial<UseDeleteManyMutateParams<RecordType>>
         ) => {
-            if (reactMutationOptions.onMutate) {
-                const userContext =
-                    (await reactMutationOptions.onMutate(variables)) || {};
+            if (onMutate) {
+                const userContext = (await onMutate(variables)) || {};
                 return {
                     snapshot: snapshot.current,
                     // @ts-ignore
@@ -244,8 +253,8 @@ export const useDeleteMany = <
                 });
             }
 
-            if (reactMutationOptions.onError) {
-                return reactMutationOptions.onError(error, variables, context);
+            if (onError && !hasCallTimeOnError.current) {
+                return onError(error, variables, context);
             }
             // call-time error callback is executed by react-query
         },
@@ -265,8 +274,8 @@ export const useDeleteMany = <
                     ids: callTimeIds,
                 });
 
-                if (reactMutationOptions.onSuccess) {
-                    reactMutationOptions.onSuccess(data, variables, context);
+                if (onSuccess && !hasCallTimeOnSuccess.current) {
+                    onSuccess(data, variables, context);
                 }
                 // call-time success callback is executed by react-query
             }
@@ -284,13 +293,8 @@ export const useDeleteMany = <
                 });
             }
 
-            if (reactMutationOptions.onSettled) {
-                return reactMutationOptions.onSettled(
-                    data,
-                    error,
-                    variables,
-                    context
-                );
+            if (onSettled && !hasCallTimeOnSettled.current) {
+                return onSettled(data, error, variables, context);
             }
         },
     });
@@ -298,14 +302,19 @@ export const useDeleteMany = <
     const mutate = async (
         callTimeResource: string = resource,
         callTimeParams: Partial<DeleteManyParams<RecordType>> = {},
-        updateOptions: MutateOptions<
+        callTimeOptions: MutateOptions<
             RecordType['id'][],
             unknown,
             Partial<UseDeleteManyMutateParams<RecordType>>,
             unknown
         > & { mutationMode?: MutationMode } = {}
     ) => {
-        const { mutationMode, onSuccess, onSettled, onError } = updateOptions;
+        const {
+            mutationMode,
+            onSuccess: callTimeOnSuccess,
+            onSettled: callTimeOnSettled,
+            onError: callTimeOnError,
+        } = callTimeOptions;
 
         // store the hook time params *at the moment of the call*
         // because they may change afterwards, which would break the undoable mode
@@ -319,7 +328,11 @@ export const useDeleteMany = <
         if (mode.current === 'pessimistic') {
             return mutation.mutate(
                 { resource: callTimeResource, ...callTimeParams },
-                { onSuccess, onSettled, onError }
+                {
+                    onSuccess: callTimeOnSuccess,
+                    onSettled: callTimeOnSettled,
+                    onError: callTimeOnError,
+                }
             );
         }
 
@@ -369,10 +382,10 @@ export const useDeleteMany = <
         });
 
         // run the success callbacks during the next tick
-        if (onSuccess) {
+        if (callTimeOnSuccess) {
             setTimeout(
                 () =>
-                    onSuccess(
+                    callTimeOnSuccess(
                         callTimeIds,
                         { resource: callTimeResource, ...callTimeParams },
                         { snapshot: snapshot.current }
@@ -380,10 +393,10 @@ export const useDeleteMany = <
                 0
             );
         }
-        if (reactMutationOptions.onSuccess) {
+        if (onSuccess) {
             setTimeout(
                 () =>
-                    reactMutationOptions.onSuccess(
+                    onSuccess(
                         callTimeIds,
                         { resource: callTimeResource, ...callTimeParams },
                         { snapshot: snapshot.current }
@@ -396,7 +409,7 @@ export const useDeleteMany = <
             // call the mutate method without success side effects
             return mutation.mutate(
                 { resource: callTimeResource, ...callTimeParams },
-                { onSettled, onError }
+                { onSettled: callTimeOnSettled, onError: callTimeOnError }
             );
         } else {
             // undoable mutation: register the mutation for later
@@ -410,7 +423,10 @@ export const useDeleteMany = <
                     // call the mutate method without success side effects
                     mutation.mutate(
                         { resource: callTimeResource, ...callTimeParams },
-                        { onSettled, onError }
+                        {
+                            onSettled: callTimeOnSettled,
+                            onError: callTimeOnError,
+                        }
                     );
                 }
             });
