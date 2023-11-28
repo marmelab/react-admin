@@ -45,7 +45,7 @@ import {
  */
 export const useCreateController = <
     RecordType extends Omit<RaRecord, 'id'> = any,
-    MutationOptionsError = unknown,
+    MutationOptionsError = Error,
     ResultRecordType extends RaRecord = RecordType & { id: Identifier }
 >(
     props: CreateControllerProps<
@@ -88,16 +88,50 @@ export const useCreateController = <
         RecordType,
         MutationOptionsError,
         ResultRecordType
-    >(resource, undefined, { ...otherMutationOptions, returnPromise: true });
+    >(resource, undefined, {
+        onSuccess: async (data, variables, context) => {
+            if (onSuccess) {
+                return onSuccess(data, variables, context);
+            }
+
+            notify('ra.notification.created', {
+                type: 'info',
+                messageArgs: { smart_count: 1 },
+            });
+            redirect(finalRedirectTo, resource, data.id, data);
+        },
+        onError: (error: MutationOptionsError, variables, context) => {
+            if (onError) {
+                return onError(error, variables, context);
+            }
+            notify(
+                typeof error === 'string'
+                    ? error
+                    : (error as Error).message || 'ra.notification.http_error',
+                {
+                    type: 'error',
+                    messageArgs: {
+                        _:
+                            typeof error === 'string'
+                                ? error
+                                : error && (error as Error).message
+                                ? (error as Error).message
+                                : undefined,
+                    },
+                }
+            );
+        },
+        ...otherMutationOptions,
+        returnPromise: true,
+    });
 
     const save = useCallback(
         (
             data: Partial<RecordType>,
             {
-                onSuccess: onSuccessFromSave,
-                onError: onErrorFromSave,
                 transform: transformFromSave,
                 meta: metaFromSave,
+                ...callTimeOptions
             } = {} as SaveHandlerCallbacks
         ) =>
             Promise.resolve(
@@ -112,55 +146,7 @@ export const useCreateController = <
                     await mutate(
                         resource,
                         { data, meta: metaFromSave ?? meta },
-                        {
-                            onSuccess: async (data, variables, context) => {
-                                if (onSuccessFromSave) {
-                                    return onSuccessFromSave(
-                                        data,
-                                        variables,
-                                        context
-                                    );
-                                }
-                                if (onSuccess) {
-                                    return onSuccess(data, variables, context);
-                                }
-
-                                notify('ra.notification.created', {
-                                    type: 'info',
-                                    messageArgs: { smart_count: 1 },
-                                });
-                                redirect(
-                                    finalRedirectTo,
-                                    resource,
-                                    data.id,
-                                    data
-                                );
-                            },
-                            onError: onErrorFromSave
-                                ? onErrorFromSave
-                                : onError
-                                ? onError
-                                : (error: Error) => {
-                                      notify(
-                                          typeof error === 'string'
-                                              ? error
-                                              : error.message ||
-                                                    'ra.notification.http_error',
-                                          {
-                                              type: 'error',
-                                              messageArgs: {
-                                                  _:
-                                                      typeof error === 'string'
-                                                          ? error
-                                                          : error &&
-                                                            error.message
-                                                          ? error.message
-                                                          : undefined,
-                                              },
-                                          }
-                                      );
-                                  },
-                        }
+                        callTimeOptions
                     );
                 } catch (error) {
                     if ((error as HttpError).body?.errors != null) {
@@ -168,18 +154,7 @@ export const useCreateController = <
                     }
                 }
             }),
-        [
-            create,
-            finalRedirectTo,
-            getMutateWithMiddlewares,
-            meta,
-            notify,
-            onError,
-            onSuccess,
-            redirect,
-            resource,
-            transform,
-        ]
+        [create, getMutateWithMiddlewares, meta, resource, transform]
     );
 
     const getResourceLabel = useGetResourceLabel();
