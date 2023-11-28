@@ -8,7 +8,6 @@ import { AdminContext } from '../AdminContext';
 import { AdminUI } from '../AdminUI';
 import { ListGuesser } from '../list';
 import { EditGuesser } from '../detail';
-import { defaultLightTheme, defaultDarkTheme } from './defaultTheme';
 import { testData } from './testData';
 
 export default {
@@ -18,8 +17,6 @@ export default {
 export const Default = () => (
     <AdminContext
         dataProvider={fakerestDataProvider(testData)}
-        lightTheme={defaultLightTheme}
-        darkTheme={defaultDarkTheme}
         defaultTheme="light"
         i18nProvider={polyglotI18nProvider(() => englishTranslations, 'en')}
     >

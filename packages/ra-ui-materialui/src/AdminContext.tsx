@@ -6,6 +6,7 @@ import {
     ThemesContext,
     RaThemeOptions,
     defaultLightTheme,
+    defaultDarkTheme,
 } from './theme';
 
 export const AdminContext = (props: AdminContextProps) => {
@@ -22,7 +23,12 @@ export const AdminContext = (props: AdminContextProps) => {
             <ThemesContext.Provider
                 value={{
                     lightTheme: theme || lightTheme,
-                    darkTheme,
+                    darkTheme:
+                        theme && !darkTheme
+                            ? null
+                            : !darkTheme && darkTheme !== null
+                            ? defaultDarkTheme
+                            : darkTheme,
                     defaultTheme,
                 }}
             >
@@ -80,7 +86,7 @@ export interface AdminContextProps extends CoreAdminContextProps {
      *     </Admin>
      * );
      */
-    darkTheme?: RaThemeOptions;
+    darkTheme?: RaThemeOptions | null;
 
     /**
      * The default theme to use when the user hasn't chosen a theme yet.
