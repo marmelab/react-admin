@@ -242,10 +242,10 @@ export const useUpdate = <RecordType extends RaRecord = any>(
                     id: callTimeId,
                     data,
                 });
-            }
 
-            if (onSuccess && !hasCallTimeOnSuccess.current) {
-                onSuccess(data, variables, context);
+                if (onSuccess && !hasCallTimeOnSuccess.current) {
+                    onSuccess(data, variables, context);
+                }
             }
             // call-time success callback is executed by react-query
         },
