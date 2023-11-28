@@ -60,14 +60,17 @@ It's a common practice to support both a light theme and a dark theme in an appl
   Your browser does not support the video tag.
 </video>
 
+React-admin provides a [built-in dark theme by default](#default), the default application theme depends on the user's system settings. If the user has chosen a dark mode in their OS, react-admin will use the dark theme. Otherwise, it will use the light theme.
 
-React-admin's `<Admin>` component accepts a `darkTheme` prop in addition to the `theme` prop. 
+In addition, users can switch from one theme to the other using [the `<ToggleThemeButton>` component](./ToggleThemeButton.md), which appears in the AppBar as soon as you define a `darkTheme` prop.
 
-```jsx
-import { Admin, defaultTheme } from 'react-admin';
+You can override the dark theme by setting the `<Admin>`'s `darkTheme` prop with your own theme:
 
-const lightTheme = defaultTheme;
-const darkTheme = { ...defaultTheme, palette: { mode: 'dark' } };
+```tsx
+import { Admin, defaultDarkTheme, defaultLightTheme } from 'react-admin';
+
+const lightTheme = defaultLightTheme;
+const darkTheme = { ...defaultDarkTheme, palette: { mode: 'dark' } };
 
 const App = () => (
     <Admin
@@ -80,9 +83,15 @@ const App = () => (
 );
 ```
 
-With this setup, the default application theme depends on the user's system settings. If the user has chosen a dark mode in their OS, react-admin will use the dark theme. Otherwise, it will use the light theme.
+**Tip**: If you don't need the default dark theme, you can set the `<Admin>`'s `darkTheme` prop to `null`:
 
-In addition, users can switch from one theme to the other using [the `<ToggleThemeButton>` component](./ToggleThemeButton.md), which appears in the AppBar as soon as you define a `darkTheme` prop.
+```tsx
+const App = () => (
+    <Admin darkTheme={null}>
+        // ...
+    </Admin>
+);
+``` 
 
 ## Built-In Themes
 
