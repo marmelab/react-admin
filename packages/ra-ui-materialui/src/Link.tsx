@@ -16,7 +16,6 @@ export const Link = (props: LinkProps) => {
             component={RRLink}
             to={to}
             className={clsx(LinkClasses.link, className)}
-            underline="none"
             {...rest}
         >
             {children}

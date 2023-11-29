@@ -1,8 +1,7 @@
 import * as React from 'react';
-import { Link as RouterLink } from 'react-router-dom';
-import { Card, Box, Link } from '@mui/material';
+import { Card, Box } from '@mui/material';
 import ContactsIcon from '@mui/icons-material/Contacts';
-import { useGetList, SimpleList, useGetIdentity } from 'react-admin';
+import { useGetList, Link, SimpleList, useGetIdentity } from 'react-admin';
 import { formatDistance } from 'date-fns';
 
 import { Avatar } from '../contacts/Avatar';
@@ -33,7 +32,6 @@ export const HotContacts = () => {
                     underline="none"
                     variant="h5"
                     color="textSecondary"
-                    component={RouterLink}
                     to="/contacts"
                 >
                     Hot contacts

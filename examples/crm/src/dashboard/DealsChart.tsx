@@ -1,9 +1,8 @@
 import * as React from 'react';
 import { useMemo } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
-import { Box, Link } from '@mui/material';
+import { Box } from '@mui/material';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
-import { useGetList } from 'react-admin';
+import { useGetList, Link } from 'react-admin';
 import { startOfMonth, format } from 'date-fns';
 import { ResponsiveBar } from '@nivo/bar';
 
@@ -89,7 +88,6 @@ export const DealsChart = () => {
                     underline="none"
                     variant="h5"
                     color="textSecondary"
-                    component={RouterLink}
                     to="/deals"
                 >
                     Upcoming Deal Revenue
