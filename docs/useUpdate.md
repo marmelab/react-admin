@@ -10,7 +10,7 @@ This hook allows to call `dataProvider.update()` when the callback is executed, 
 ## Syntax
 
 ```jsx
-const [update, { data, isLoading, error }] = useUpdate(
+const [update, { data, isPending, error }] = useUpdate(
     resource,
     { id, data, previousData },
     options
@@ -38,7 +38,7 @@ import { useUpdate, useRecordContext } from 'react-admin';
 const IncreaseLikeButton = () => {
     const record = useRecordContext();
     const diff = { likes: record.likes + 1 };
-    const [update, { isLoading, error }] = useUpdate(
+    const [update, { isPending, error }] = useUpdate(
         'likes',
         { id: record.id, data: diff, previousData: record }
     );
@@ -46,7 +46,7 @@ const IncreaseLikeButton = () => {
         update()
     }
     if (error) { return <p>ERROR</p>; }
-    return <button disabled={isLoading} onClick={handleClick}>Like</button>;
+    return <button disabled={isPending} onClick={handleClick}>Like</button>;
 };
 
 // set params when calling the update callback
@@ -55,7 +55,7 @@ import { useUpdate, useRecordContext } from 'react-admin';
 const IncreaseLikeButton = () => {
     const record = useRecordContext();
     const diff = { likes: record.likes + 1 };
-    const [update, { isLoading, error }] = useUpdate();
+    const [update, { isPending, error }] = useUpdate();
     const handleClick = () => {
         update(
             'likes',
@@ -63,7 +63,7 @@ const IncreaseLikeButton = () => {
         )
     }
     if (error) { return <p>ERROR</p>; }
-    return <button disabled={isLoading} onClick={handleClick}>Like</button>;
+    return <button disabled={isPending} onClick={handleClick}>Like</button>;
 };
 ```
 

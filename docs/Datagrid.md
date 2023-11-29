@@ -249,7 +249,7 @@ const CustomResetViewsButton = () => {
     const refresh = useRefresh();
     const notify = useNotify();
     const unselectAll = useUnselectAll('posts');
-    const [updateMany, { isLoading }] = useUpdateMany(
+    const [updateMany, { isPending }] = useUpdateMany(
         'posts',
         { ids: selectedIds, data: { views: 0 } },
         {
@@ -265,7 +265,7 @@ const CustomResetViewsButton = () => {
     return (
         <Button
             label="simple.action.resetViews"
-            disabled={isLoading}
+            disabled={isPending}
             onClick={() => updateMany}
         >
             <VisibilityOff />
@@ -297,7 +297,7 @@ const CustomResetViewsButton = () => {
     const refresh = useRefresh();
     const notify = useNotify();
     const unselectAll = useUnselectAll('posts');
-    const [updateMany, { isLoading }] = useUpdateMany(
+    const [updateMany, { isPending }] = useUpdateMany(
         'posts',
         { ids: selectedIds, data: { views: 0 } },
         {
@@ -322,7 +322,7 @@ const CustomResetViewsButton = () => {
             <Button label="Reset Views" onClick={handleClick} />
             <Confirm
                 isOpen={open}
-                loading={isLoading}
+                loading={isPending}
                 title="Update View Count"
                 content="Are you sure you want to reset the views for these items?"
                 onConfirm={handleConfirm}
@@ -362,7 +362,7 @@ const CustomResetViewsButton = () => {
 -   const refresh = useRefresh();
     const notify = useNotify();
     const unselectAll = useUnselectAll('posts');
-    const [updateMany, { isLoading }] = useUpdateMany(
+    const [updateMany, { isPending }] = useUpdateMany(
         'posts',
         { ids: selectedIds, data: { views: 0 } },
         {
@@ -380,7 +380,7 @@ const CustomResetViewsButton = () => {
     return (
         <Button
             label="simple.action.resetViews"
-            disabled={isLoading}
+            disabled={isPending}
             onClick={updateMany}
         >
             <VisibilityOff />

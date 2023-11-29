@@ -227,7 +227,7 @@ const DeleteButton = () => {
     const record = useRecordContext();
     const {
         open,
-        isLoading,
+        isPending,
         handleDialogOpen,
         handleDialogClose,
         handleDelete,
@@ -240,7 +240,7 @@ const DeleteButton = () => {
             </Button>
             <Confirm
                 isOpen={open}
-                loading={isLoading}
+                loading={isPending}
                 title="ra.message.delete_title"
                 content="ra.message.delete_content"
                 translateOptions={{

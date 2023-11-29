@@ -36,7 +36,7 @@ export const BookEdit = () => {
     { id },
     { onSuccess: (data) => reset(data) }
   );
-  const [update, { isLoading: isSubmitting }] = useUpdate();
+  const [update, { isPending: isSubmitting }] = useUpdate();
   const navigate = useNavigate();
   const onSubmit = (data) => {
     update(
@@ -113,7 +113,7 @@ export const BookEdit = () => {
     { id },
 -   { onSuccess: (data) => reset(data) }
   );
-  const [update, { isLoading: isSubmitting }] = useUpdate();
+  const [update, { isPending: isSubmitting }] = useUpdate();
   const navigate = useNavigate();
   const onSubmit = (data) => {
     update(
@@ -179,7 +179,7 @@ import { Controller } from "react-hook-form";
 export const BookEdit = () => {
   const { id } = useParams();
   const { isLoading, data } = useGetOne("books", { id });
-  const [update, { isLoading: isSubmitting }] = useUpdate();
+  const [update, { isPending: isSubmitting }] = useUpdate();
   const navigate = useNavigate();
   const onSubmit = (data) => {
     update(
@@ -244,7 +244,7 @@ import { useParams, useNavigate } from "react-router-dom";
 export const BookEdit = () => {
   const { id } = useParams();
   const { isLoading, data } = useGetOne("books", { id });
-  const [update, { isLoading: isSubmitting }] = useUpdate();
+  const [update, { isPending: isSubmitting }] = useUpdate();
   const navigate = useNavigate();
   const onSubmit = (data) => {
     update(
@@ -306,7 +306,7 @@ import { Card } from "@mui/material";
 export const BookEdit = () => {
   const { id } = useParams();
   const { isLoading, data } = useGetOne("books", { id });
-  const [update, { isLoading: isSubmitting }] = useUpdate();
+  const [update, { isPending: isSubmitting }] = useUpdate();
   const navigate = useNavigate();
   const onSubmit = (data) => {
     update(
@@ -361,7 +361,7 @@ import { Card } from "@mui/material";
 export const BookEdit = () => {
 - const { id } = useParams();
 - const { isLoading, data } = useGetOne("books", { id });
-- const [update, { isLoading: isSubmitting }] = useUpdate();
+- const [update, { isPending: isSubmitting }] = useUpdate();
 - const navigate = useNavigate();
 - const onSubmit = (data) => {
 -   update(
