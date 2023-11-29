@@ -41,6 +41,8 @@ export const AdminContext = (props: AdminContextProps) => {
 export interface AdminContextProps extends CoreAdminContextProps {
     /**
      * The material-UI theme to customize the UI
+     * If not provided, the default light and dark theme and are used
+     * If provided, the lightTheme and darkTheme prop are ignored except if they are themeselves provided
      *
      * @see https://marmelab.com/react-admin/Admin.html#theme
      * @example
@@ -62,6 +64,7 @@ export interface AdminContextProps extends CoreAdminContextProps {
 
     /**
      * The material-UI theme to customize the UI. Prefer the theme prop.
+     * If not provided, the default light theme is used.
      *
      * @see https://marmelab.com/react-admin/Admin.html#theme
      */
@@ -69,6 +72,8 @@ export interface AdminContextProps extends CoreAdminContextProps {
 
     /**
      * The material-UI theme to apply to the UI when the dark mode is activated.
+     * If not provided, the default dark theme is used.
+     * If set to null, the dark mode is disabled.
      *
      * @see https://marmelab.com/react-admin/Admin.html#darktheme
      * @example
