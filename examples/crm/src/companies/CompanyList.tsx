@@ -12,7 +12,7 @@ import { ImageList } from './GridList';
 import { CompanyListFilter } from './CompanyListFilter';
 
 export const CompanyList = () => {
-    const { data: identity } = useGetIdentity();
+    const { identity } = useGetIdentity();
     if (!identity) return null;
     return (
         <List

@@ -5,7 +5,7 @@ import { Show, TabbedShowLayout, TextField, usePermissions } from 'react-admin';
 import Aside from './Aside';
 
 const UserShow = () => {
-    const { data: permissions } = usePermissions();
+    const { permissions } = usePermissions();
     return (
         <Show>
             <TabbedShowLayout>

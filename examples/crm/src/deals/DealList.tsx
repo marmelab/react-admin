@@ -18,7 +18,7 @@ import { OnlyMineInput } from './OnlyMineInput';
 import { typeChoices } from './types';
 
 const DealList = () => {
-    const { data: identity } = useGetIdentity();
+    const { identity } = useGetIdentity();
     const location = useLocation();
     const matchCreate = matchPath('/deals/create', location.pathname);
     const matchShow = matchPath('/deals/:id/show', location.pathname);

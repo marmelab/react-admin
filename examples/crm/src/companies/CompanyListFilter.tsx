@@ -15,7 +15,7 @@ import { sizes } from './sizes';
 import { sectors } from './sectors';
 
 export const CompanyListFilter = () => {
-    const { data: identity } = useGetIdentity();
+    const { identity } = useGetIdentity();
     return (
         <Box width="13em" minWidth="13em" order={-1} mr={2} mt={5}>
             <FilterLiveSearch hiddenLabel />

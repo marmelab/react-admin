@@ -13,7 +13,7 @@ const authProvider: AuthProvider = {
     checkError: () => Promise.resolve(),
     checkAuth: () =>
         localStorage.getItem('username') ? Promise.resolve() : Promise.reject(),
-    getPermissions: () => Promise.resolve([]),
+    getPermissions: () => Promise.resolve(),
     getIdentity: () =>
         Promise.resolve({
             id: 'user',

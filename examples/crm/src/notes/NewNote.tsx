@@ -30,7 +30,7 @@ export const NewNote = ({
     const [create, { isPending }] = useCreate();
     const [update] = useUpdate();
     const notify = useNotify();
-    const { data: identity } = useGetIdentity();
+    const { identity } = useGetIdentity();
     if (!record || !identity) return null;
 
     const handleSubmit = (event: FormEvent<HTMLFormElement>) => {

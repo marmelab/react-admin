@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import {
     useQuery,
     UseQueryOptions,
@@ -22,7 +22,7 @@ const defaultQueryParams = {
  * The return value updates according to the call state:
  *
  * - mount: { isLoading: true }
- * - success: { data: Identity, refetch: () => {}, isLoading: false }
+ * - success: { identity, refetch: () => {}, isLoading: false }
  * - error: { error: Error, isLoading: false }
  *
  * The implementation is left to the authProvider.
@@ -34,7 +34,7 @@ const defaultQueryParams = {
  *
  * const PostDetail = ({ id }) => {
  *     const { data: post, isLoading: postLoading } = useGetOne('posts', { id });
- *     const { data: identity, isLoading: identityLoading } = useGetIdentity();
+ *     const { identity, isLoading: identityLoading } = useGetIdentity();
  *     if (postLoading || identityLoading) return <>Loading...</>;
  *     if (!post.lockedBy || post.lockedBy === identity.id) {
  *         // post isn't locked, or is locked by me
@@ -47,7 +47,7 @@ const defaultQueryParams = {
  */
 export const useGetIdentity = <ErrorType extends Error = Error>(
     options: UseGetIdentityOptions<ErrorType> = defaultQueryParams
-): QueryObserverResult<UserIdentity, ErrorType> => {
+): UseGetIdentityResult<ErrorType> => {
     const authProvider = useAuthProvider();
     const { onSuccess, onError, ...queryOptions } = options;
 
@@ -74,7 +74,13 @@ export const useGetIdentity = <ErrorType extends Error = Error>(
         }
     }, [onError, result.error]);
 
-    return result;
+    return useMemo(
+        () => ({
+            ...result,
+            identity: result.data,
+        }),
+        [result]
+    );
 };
 
 export interface UseGetIdentityOptions<ErrorType extends Error = Error>
@@ -85,5 +91,12 @@ export interface UseGetIdentityOptions<ErrorType extends Error = Error>
     onSuccess?: (data: UserIdentity) => void;
     onError?: (err: Error) => void;
 }
+
+export type UseGetIdentityResult<ErrorType = Error> = QueryObserverResult<
+    UserIdentity,
+    ErrorType
+> & {
+    identity: UserIdentity;
+};
 
 export default useGetIdentity;

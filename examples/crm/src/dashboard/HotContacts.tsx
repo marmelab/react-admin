@@ -9,7 +9,7 @@ import { Avatar } from '../contacts/Avatar';
 import { Contact } from '../types';
 
 export const HotContacts = () => {
-    const { data: identity } = useGetIdentity();
+    const { identity } = useGetIdentity();
     const {
         data: contactData,
         total: contactTotal,

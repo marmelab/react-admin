@@ -1,5 +1,9 @@
-import { useEffect } from 'react';
-import { useQuery, UseQueryOptions } from '@tanstack/react-query';
+import { useEffect, useMemo } from 'react';
+import {
+    QueryObserverResult,
+    useQuery,
+    UseQueryOptions,
+} from '@tanstack/react-query';
 import useAuthProvider from './useAuthProvider';
 import useLogoutIfAccessDenied from './useLogoutIfAccessDenied';
 
@@ -27,7 +31,7 @@ const emptyParams = {};
  *     import { usePermissions } from 'react-admin';
  *
  *     const PostDetail = props => {
- *         const { isLoading, data: permissions } = usePermissions();
+ *         const { isLoading, permissions } = usePermissions();
  *         if (!isLoading && permissions == 'editor') {
  *             return <PostEdit {...props} />
  *         } else {
@@ -40,7 +44,7 @@ const usePermissions = <PermissionsType = any, ErrorType = Error>(
     queryParams: UsePermissionsOptions<PermissionsType, ErrorType> = {
         staleTime: 5 * 60 * 1000,
     }
-) => {
+): UsePermissionsResult<PermissionsType, ErrorType> => {
     const authProvider = useAuthProvider();
     const logoutIfAccessDenied = useLogoutIfAccessDenied();
     const { onSuccess, onError, ...queryOptions } = queryParams ?? {};
@@ -73,7 +77,13 @@ const usePermissions = <PermissionsType = any, ErrorType = Error>(
         }
     }, [logoutIfAccessDenied, onError, result.error]);
 
-    return result;
+    return useMemo(
+        () => ({
+            ...result,
+            permissions: result.data,
+        }),
+        [result]
+    );
 };
 
 export default usePermissions;
@@ -86,3 +96,10 @@ export interface UsePermissionsOptions<PermissionsType = any, ErrorType = Error>
     onSuccess?: (data: PermissionsType) => void;
     onError?: (err: ErrorType) => void;
 }
+
+export type UsePermissionsResult<
+    PermissionsType = any,
+    ErrorType = Error
+> = QueryObserverResult<PermissionsType, ErrorType> & {
+    permissions: PermissionsType;
+};

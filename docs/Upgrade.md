@@ -55,29 +55,6 @@ const ApproveButton = () => {
 };
 ```
 
-## Use `data` in Authentication hooks return value
-
-Hooks that call the `authProvider` now return the `data` property of the result instead of a variable named after the hook.
-
-The following hooks are impacted by this change:
-
-- `useAuthState`
-- `useIdentity`
-- `usePermissions`
-
-If you use these hooks, replace the variable name by `data`:
-
-```diff
--const { isLoading, authenticated }       = useAuthState();
-+const { isLoading, data: authenticated } = useAuthState();
-
--const { isLoading, identity }       = useIdentity();
-+const { isLoading, data: identity } = useIdentity();
-
--const { isLoading, permissions }       = usePermissions();
-+const { isLoading, data: permissions } = usePermissions();
-```
-
 ## Use `@tanstack/react-query` instead of `react-query`
 
 React-admin now uses `react-query` v5 instead of v3. The library name has changed to `@tanstack/react-query` (but it's almost the same API).

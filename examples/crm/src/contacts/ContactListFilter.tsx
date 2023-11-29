@@ -17,7 +17,7 @@ import { endOfYesterday, startOfWeek, startOfMonth, subMonths } from 'date-fns';
 import { Status } from '../misc/Status';
 
 export const ContactListFilter = () => {
-    const { data: identity } = useGetIdentity();
+    const { identity } = useGetIdentity();
     const { data } = useGetList('tags', {
         pagination: { page: 1, perPage: 10 },
         sort: { field: 'name', order: 'ASC' },

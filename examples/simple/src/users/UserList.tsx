@@ -36,7 +36,7 @@ const rowClick = memoize(permissions => () => {
 });
 
 const UserList = () => {
-    const { data: permissions } = usePermissions();
+    const { permissions } = usePermissions();
     return (
         <List
             filters={getUserFilters(permissions)}

@@ -1,5 +1,9 @@
-import { useEffect } from 'react';
-import { useQuery, UseQueryOptions } from '@tanstack/react-query';
+import { useEffect, useMemo } from 'react';
+import {
+    QueryObserverResult,
+    useQuery,
+    UseQueryOptions,
+} from '@tanstack/react-query';
 import useAuthProvider, { defaultAuthParams } from './useAuthProvider';
 import useLogout from './useLogout';
 import { removeDoubleSlashes, useBasename } from '../routing';
@@ -34,7 +38,7 @@ const emptyParams = {};
  * import { useAuthState, Loading } from 'react-admin';
  *
  * const MyPage = () => {
- *     const { isLoading, data: authenticated } = useAuthState();
+ *     const { isLoading, authenticated } = useAuthState();
  *     if (isLoading) {
  *         return <Loading />;
  *     }
@@ -48,7 +52,7 @@ const useAuthState = <ErrorType = Error>(
     params: any = emptyParams,
     logoutOnFailure: boolean = false,
     queryOptions: UseAuthStateOptions<ErrorType> = emptyParams
-) => {
+): UseAuthStateResult<ErrorType> => {
     const authProvider = useAuthProvider();
     const logout = useLogout();
     const basename = useBasename();
@@ -115,7 +119,15 @@ const useAuthState = <ErrorType = Error>(
         }
     }, [basename, logout, logoutOnFailure, notify, onError, result.error]);
 
-    return result;
+    return useMemo(() => {
+        return {
+            ...result,
+            // If the data is undefined and the query isn't loading anymore, it means the query failed.
+            // In that case, we set authenticated to false unless there's no authProvider.
+            authenticated:
+                result.data ?? result.isLoading ? true : authProvider == null, // Optimistic
+        };
+    }, [authProvider, result]);
 };
 
 type UseAuthStateOptions<ErrorType = Error> = Omit<
@@ -124,6 +136,13 @@ type UseAuthStateOptions<ErrorType = Error> = Omit<
 > & {
     onSuccess?: (data: boolean) => void;
     onError?: (err: ErrorType) => void;
+};
+
+export type UseAuthStateResult<ErrorType = Error> = QueryObserverResult<
+    boolean,
+    ErrorType
+> & {
+    authenticated: boolean;
 };
 
 export default useAuthState;

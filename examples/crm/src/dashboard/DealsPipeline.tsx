@@ -14,7 +14,7 @@ import { stages, stageNames } from '../deals/stages';
 import { Deal } from '../types';
 
 export const DealsPipeline = () => {
-    const { data: identity } = useGetIdentity();
+    const { identity } = useGetIdentity();
     const { data, total, isLoading } = useGetList<Deal>(
         'deals',
         {
