@@ -23,7 +23,7 @@ npm install --save @react-admin/ra-form-layout
 yarn add @react-admin/ra-form-layout
 ```
 
-**Tip**: [`ra-form-layout`](https://marmelab.com/ra-enterprise/modules/ra-form-layout#createindialogbutton-editindialogbutton-and-EditInDialogButton) is hosted in a private npm registry. You need to subscribe to one of the [Enterprise Edition](https://marmelab.com/ra-enterprise/) plans to access this package.
+**Tip**: [`ra-form-layout`](https://marmelab.com/ra-enterprise/modules/ra-form-layout#createdialog-editdialog--showdialog) is hosted in a private npm registry. You need to subscribe to one of the [Enterprise Edition](https://marmelab.com/ra-enterprise/) plans to access this package.
 
 Then, add the `<EditDialog>` component as a sibling to a `<List>` component.
 
@@ -94,7 +94,7 @@ React-admin provides several built-in form layout components:
 - [`EditDialog`](./EditDialog.md) for sub-forms in a modal dialog
 - and [`Form`](./Form.md), a headless component to use as a base for your custom layouts
 
-To use an alternative form layout, switch the `<EditInDialogButton>` child component:
+To use an alternative form layout, switch the `<EditDialog>` child component:
 
 ```diff
 const MyEditDialog = () => (
@@ -225,7 +225,7 @@ Customize the styles applied to the Material UI `<Dialog>` component:
 
 {% raw %}
 ```jsx
-const EditButton = () => (
+const MyEditDialog = () => (
   <EditDialog sx={{ backgroundColor: 'paper' }}>
       ...
   </EditDialog>
