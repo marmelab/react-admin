@@ -150,9 +150,7 @@ describe('useAuthenticated', () => {
             () => {
                 expect(authProvider.logout).toHaveBeenCalledTimes(1);
             },
-            {
-                timeout: 4000,
-            }
+            { timeout: 4000 }
         );
         expect(authProvider.logout.mock.calls[0][0]).toEqual({});
         expect(reset).toHaveBeenCalledTimes(1);

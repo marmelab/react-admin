@@ -109,9 +109,7 @@ const useAuthState = <ErrorType = Error>(
                             result.error,
                             'ra.auth.auth_check_error'
                         ),
-                        {
-                            type: 'error',
-                        }
+                        { type: 'error' }
                     );
             }
         }

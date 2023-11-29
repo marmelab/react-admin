@@ -204,9 +204,7 @@ describe('<ReferenceInput />', () => {
                     })
                 );
             },
-            {
-                timeout: 4000,
-            }
+            { timeout: 4000 }
         );
     });
 
