@@ -74,7 +74,7 @@ const CompanyShow = () => (
 | -------------- | -------- | ----------------- | ------- | ----------- |
 | `children`     | Required | `ReactNode`       |         | The content of the dialog. |
 | `ButtonProps`  | Optional | `object`          |         | Object containing props to pass to Material UI's `<Button>`. |
-| `empty WhileLoading` | Optional | `boolean`   |         | Set to `true` to return `null` while the list is loading. |
+| `emptyWhileLoading` | Optional | `boolean`   |         | Set to `true` to return `null` while the list is loading. |
 | `fullWidth`    | Optional | `boolean`         | `false` | If `true`, the dialog stretches to the full width of the screen. |
 | `icon`         | Optional | `ReactElement`    |         | Allows to override the default icon. |
 | `id`           | Optional | `string | number` |         | The record id. If not provided, it will be deduced from the record context. |
@@ -246,7 +246,7 @@ const EditButton = () => (
 
 ## `mutationOptions`
 
-The `queryOptions` prop allows you to pass options to the `useMutation` hook. 
+The `mutationOptions` prop allows you to pass options to the `useMutation` hook. 
 
 This can be useful e.g. to pass [a custom `meta`](./Actions.md#meta-parameter) to the `dataProvider.update()` call.
 
