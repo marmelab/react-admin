@@ -54,8 +54,8 @@
         "react": "^16.9.0 || ^17.0.0 || ^18.0.0",
         "react-dom": "^16.9.0 || ^17.0.0 || ^18.0.0",
         "react-hook-form": "^7.43.9",
-        "react-router": "^6.1.0",
-        "react-router-dom": "^6.1.0"
+        "react-router": "6.1.0 - 6.18.0",
+        "react-router-dom": "6.1.0 - 6.18.0"
     },
     "dependencies": {
         "clsx": "^1.1.1",
