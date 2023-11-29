@@ -5,104 +5,144 @@ title: "Upgrading to v5"
 
 # Upgrading to v5
 
-React-admin v5 has upgraded all its dependencies to their latest major version. Some major dependencies were swapped (`@tanstack/react-query` instead of `react-query`).
+## React 18
 
-## `@tanstack/react-query` instead of `react-query`
+React-admin v5 uses React 18. If you use react-admin as a library in your own application, you'll have to upgrade to React 18 as well.
 
-We upgraded `react-query` to version 5. If you used some features directly from this library, you'll have to follow their migration guide for [v4](https://tanstack.com/query/v5/docs/react/guides/migrating-to-react-query-4) and [v5](https://tanstack.com/query/v5/docs/react/guides/migrating-to-v5). Here's a list of the most important things:
+The React team has published a [migration guide](https://react.dev/blog/2022/03/08/react-18-upgrade-guide) to help you upgrade. On most projects, this should be a matter of updating the root file of your application:
 
- - The package has been renamed to `@tanstack/react-query` so you'll have to change your imports:
-
-    ```diff
-    -import { useQuery } from 'react-query';
-    +import { useQuery } from '@tanstack/react-query';
-    ```
-
-- `isLoading` has been renamed to `isPending`:
-
-    ```diff
-    import * as React from 'react';
-    import { useUpdate, useRecordContext, Button } from 'react-admin';
-
-    const ApproveButton = () => {
-        const record = useRecordContext();
-    -    const [approve, { isLoading }] = useUpdate('comments', { id: record.id, data: { isApproved: true }, previousData: record });
-    +    const [approve, { isPending }] = useUpdate('comments', { id: record.id, data: { isApproved: true }, previousData: record });
-    -    return <Button label="Approve" onClick={() => approve()} disabled={isLoading} />;
-    +    return <Button label="Approve" onClick={() => approve()} disabled={isPending} />;
-    };
-    ```
-
-    The following hooks are impacted by this change:
-
-    - `useCreate`
-    - `useDelete`
-    - `useDeleteMany`
-    - `useUpdate`
-    - `useUpdateMany`
-    - `useCreateController`
-    - `useEditController`
-    - `useDeleteWithUndoController`
-    - `useDeleteWithConfirmController`
-
-- All react-query hooks, `queryClient` and `queryCache` methods now accept a single object argument:
-
-    ```diff
-    - useQuery(key, fn, options)
-    + useQuery({ queryKey, queryFn, ...options })
-    - useInfiniteQuery(key, fn, options)
-    + useInfiniteQuery({ queryKey, queryFn, ...options })
-    - useMutation(fn, options)
-    + useMutation({ mutationFn, ...options })
-    - useIsFetching(key, filters)
-    + useIsFetching({ queryKey, ...filters })
-    - useIsMutating(key, filters)
-    + useIsMutating({ mutationKey, ...filters })
-
-    - queryClient.isFetching(key, filters)
-    + queryClient.isFetching({ queryKey, ...filters })
-    - queryClient.ensureQueryData(key, filters)
-    + queryClient.ensureQueryData({ queryKey, ...filters })
-    - queryClient.getQueriesData(key, filters)
-    + queryClient.getQueriesData({ queryKey, ...filters })
-    - queryClient.setQueriesData(key, updater, filters, options)
-    + queryClient.setQueriesData({ queryKey, ...filters }, updater, options)
-    - queryClient.removeQueries(key, filters)
-    + queryClient.removeQueries({ queryKey, ...filters })
-    - queryClient.resetQueries(key, filters, options)
-    + queryClient.resetQueries({ queryKey, ...filters }, options)
-    - queryClient.cancelQueries(key, filters, options)
-    + queryClient.cancelQueries({ queryKey, ...filters }, options)
-    - queryClient.invalidateQueries(key, filters, options)
-    + queryClient.invalidateQueries({ queryKey, ...filters }, options)
-    - queryClient.refetchQueries(key, filters, options)
-    + queryClient.refetchQueries({ queryKey, ...filters }, options)
-    - queryClient.fetchQuery(key, fn, options)
-    + queryClient.fetchQuery({ queryKey, queryFn, ...options })
-    - queryClient.prefetchQuery(key, fn, options)
-    + queryClient.prefetchQuery({ queryKey, queryFn, ...options })
-    - queryClient.fetchInfiniteQuery(key, fn, options)
-    + queryClient.fetchInfiniteQuery({ queryKey, queryFn, ...options })
-    - queryClient.prefetchInfiniteQuery(key, fn, options)
-    + queryClient.prefetchInfiniteQuery({ queryKey, queryFn, ...options })
-
-    - queryCache.find(key, filters)
-    + queryCache.find({ queryKey, ...filters })
-    - queryCache.findAll(key, filters)
-    + queryCache.findAll({ queryKey, ...filters })
-    ```
-
-## Authentication hooks now return react-query hook result object directly
-
-The `useAuthState`, `useIdentity` and `usePermissions` hooks no longer wrap the underlying react-query hook result and return it directly without adding anything.
-
+```diff
+-import { render } from 'react-dom';
+-const container = document.getElementById('app');
+-render(<App tab="home" />, container);
++import { createRoot } from 'react-dom/client';
++const container = document.getElementById('app');
++const root = createRoot(container); // createRoot(container!) if you use TypeScript
++root.render(<App tab="home" />);
 ```
--const { isLoading, authenticated } = useAuthState();
+
+React 18 adds out-of-the-box performance improvements by doing more batching by default. 
+
+## Drop support for IE11
+
+React-admin v5 uses React 18, which dropped support for Internet Explorer. If you need to support IE11, you'll have to stay on react-admin v4.
+
+## Rename `isLoading` to `isPending` in mutations
+
+In the return state of data provider mutation hooks, `isLoading` has been renamed to `isPending` to be consistent with the same change in react-query.
+
+The following hooks are impacted by this change:
+
+- `useCreate`
+- `useDelete`
+- `useDeleteMany`
+- `useUpdate`
+- `useUpdateMany`
+- `useCreateController`
+- `useEditController`
+- `useDeleteWithUndoController`
+- `useDeleteWithConfirmController`
+
+If you use these hooks, replace `isLoading` by `isPending`:
+
+```diff
+import { useUpdate, useRecordContext, Button } from 'react-admin';
+
+const ApproveButton = () => {
+    const record = useRecordContext();
+-    const [approve, { isLoading }] = useUpdate('comments', { id: record.id, data: { isApproved: true }, previousData: record });
++    const [approve, { isPending }] = useUpdate('comments', { id: record.id, data: { isApproved: true }, previousData: record });
+-    return <Button label="Approve" onClick={() => approve()} disabled={isLoading} />;
++    return <Button label="Approve" onClick={() => approve()} disabled={isPending} />;
+};
+```
+
+## Use `data` in Authentication hooks return value
+
+Hooks that call the `authProvider` now return the `data` property of the result instead of a variable named after the hook.
+
+The following hooks are impacted by this change:
+
+- `useAuthState`
+- `useIdentity`
+- `usePermissions`
+
+If you use these hooks, replace the variable name by `data`:
+
+```diff
+-const { isLoading, authenticated }       = useAuthState();
 +const { isLoading, data: authenticated } = useAuthState();
--const { isLoading, identity } = useIdentity();
+
+-const { isLoading, identity }       = useIdentity();
 +const { isLoading, data: identity } = useIdentity();
--const { isLoading, permissions } = usePermissions();
+
+-const { isLoading, permissions }       = usePermissions();
 +const { isLoading, data: permissions } = usePermissions();
+```
+
+## Use `@tanstack/react-query` instead of `react-query`
+
+React-admin now uses `react-query` v5 instead of v3. The library name has changed to `@tanstack/react-query` (but it's almost the same API).
+ 
+If you used `react-query` directly in your code, you'll have to update it, following their migration guides:
+
+- [From react-query v3 to @transtack/query v4](https://tanstack.com/query/v5/docs/react/guides/migrating-to-react-query-4) 
+- [From @transtack/query v4 to @transtack/query v5](https://tanstack.com/query/v5/docs/react/guides/migrating-to-v5).
+
+Here is a focus of the most important changes. 
+
+The package has been renamed to `@tanstack/react-query` so you'll have to change your imports:
+
+```diff
+-import { useQuery } from 'react-query';
++import { useQuery } from '@tanstack/react-query';
+```
+
+All react-query hooks, `queryClient` and `queryCache` methods now accept a single object argument:
+
+```diff
+- useQuery(key, fn, options)
++ useQuery({ queryKey, queryFn, ...options })
+- useInfiniteQuery(key, fn, options)
++ useInfiniteQuery({ queryKey, queryFn, ...options })
+- useMutation(fn, options)
++ useMutation({ mutationFn, ...options })
+- useIsFetching(key, filters)
++ useIsFetching({ queryKey, ...filters })
+- useIsMutating(key, filters)
++ useIsMutating({ mutationKey, ...filters })
+
+- queryClient.isFetching(key, filters)
++ queryClient.isFetching({ queryKey, ...filters })
+- queryClient.ensureQueryData(key, filters)
++ queryClient.ensureQueryData({ queryKey, ...filters })
+- queryClient.getQueriesData(key, filters)
++ queryClient.getQueriesData({ queryKey, ...filters })
+- queryClient.setQueriesData(key, updater, filters, options)
++ queryClient.setQueriesData({ queryKey, ...filters }, updater, options)
+- queryClient.removeQueries(key, filters)
++ queryClient.removeQueries({ queryKey, ...filters })
+- queryClient.resetQueries(key, filters, options)
++ queryClient.resetQueries({ queryKey, ...filters }, options)
+- queryClient.cancelQueries(key, filters, options)
++ queryClient.cancelQueries({ queryKey, ...filters }, options)
+- queryClient.invalidateQueries(key, filters, options)
++ queryClient.invalidateQueries({ queryKey, ...filters }, options)
+- queryClient.refetchQueries(key, filters, options)
++ queryClient.refetchQueries({ queryKey, ...filters }, options)
+- queryClient.fetchQuery(key, fn, options)
++ queryClient.fetchQuery({ queryKey, queryFn, ...options })
+- queryClient.prefetchQuery(key, fn, options)
++ queryClient.prefetchQuery({ queryKey, queryFn, ...options })
+- queryClient.fetchInfiniteQuery(key, fn, options)
++ queryClient.fetchInfiniteQuery({ queryKey, queryFn, ...options })
+- queryClient.prefetchInfiniteQuery(key, fn, options)
++ queryClient.prefetchInfiniteQuery({ queryKey, queryFn, ...options })
+
+- queryCache.find(key, filters)
++ queryCache.find({ queryKey, ...filters })
+- queryCache.findAll(key, filters)
++ queryCache.findAll({ queryKey, ...filters })
 ```
 
 ## Removed deprecated hooks
