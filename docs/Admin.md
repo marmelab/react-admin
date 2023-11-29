@@ -434,28 +434,47 @@ const App = () => (
 
 ## `darkTheme`
 
-React-admin provides a [built-in dark theme by default](./AppTheme.md#default). The app will use the `darkTheme` by default for users who prefer the dark mode at the OS level, and users will be able to switch from light to dark mode using an app bar button leveraging [the `<ToggleThemeButton>` component](./ToggleThemeButton.md). If you want to override it, you can provide your custom `darkTheme` in addition to the `theme` prop.
+React-admin provides a [built-in dark theme by default](./AppTheme.md#default). The app will use the `darkTheme` by default for users who prefer the dark mode at the OS level, and users will be able to switch from light to dark mode using an app bar button leveraging [the `<ToggleThemeButton>` component](./ToggleThemeButton.md).
 
 <video controls autoplay muted loop>
   <source src="./img/ToggleThemeButton.webm" type="video/webm"/>
   Your browser does not support the video tag.
 </video>
 
+If you want to override it, you can provide your custom `darkTheme` in addition to the `theme` prop:
+
 ```tsx
 import { Admin } from 'react-admin';
 import { dataProvider } from './dataProvider';
-import { darkTheme, lightTheme } from './themes';
+import { myDarkTheme } from './themes';
 
 const App = () => (
     <Admin
         dataProvider={dataProvider}
-        theme={lightTheme}
-        darkTheme={darkTheme}
+        darkTheme={myDarkTheme}
     >
         ...
     </Admin>
 );
 ```
+
+If you want to remove the user's ability to switch to dark theme, you can set `darkTheme` to `null`, therefore the `<ToggleThemeButton>` component won't be shown: 
+
+```tsx
+import { Admin } from 'react-admin';
+import { dataProvider } from './dataProvider';
+
+const App = () => (
+    <Admin
+        dataProvider={dataProvider}
+        darkTheme={null}
+    >
+        ...
+    </Admin>
+);
+```
+
+If the `theme` prop is provided and the `darkTheme` prop is not, the dark theme is disabled.
 
 **Tip**: To disable OS preference detection and always use one theme by default, see the [`defaultTheme`](#defaulttheme) prop.
 
@@ -603,28 +622,31 @@ Finally, you can also pass a custom component as the `layout` prop. It must cont
 
 ## `lightTheme`
 
-React-admin provides a [built-in light theme by default](./AppTheme.md#default). The app will use the `lightTheme` by default for users who prefer the light mode at the OS / browser level, and users will be able to switch from light to dark mode using an app bar button leveraging [the `<ToggleThemeButton>` component](./ToggleThemeButton.md). If you want to override it, you can provide your custom `lightTheme` in addition to the `theme` prop.
+React-admin provides a [built-in light theme by default](./AppTheme.md#default). The app will use the `lightTheme` by default for users who prefer the light mode at the OS / browser level, and users will be able to switch from light to dark mode using an app bar button leveraging [the `<ToggleThemeButton>` component](./ToggleThemeButton.md) if the `darkTheme` prop is provided or leaved by default.
 
 <video controls autoplay muted loop>
   <source src="./img/ToggleThemeButton.webm" type="video/webm"/>
   Your browser does not support the video tag.
 </video>
 
+If you want to override it, you can provide your custom `lightTheme`:
+
 ```tsx
 import { Admin } from 'react-admin';
 import { dataProvider } from './dataProvider';
-import { darkTheme, lightTheme } from './themes';
+import { mylightTheme } from './themes';
 
 const App = () => (
     <Admin
         dataProvider={dataProvider}
-        theme={lightTheme}
-        lightTheme={lightTheme}
+        lightTheme={mylightTheme}
     >
         ...
     </Admin>
 );
 ```
+
+If the `theme` prop is provided, the `lightTheme` prop is ignored.
 
 **Tip**: To disable OS preference detection and always use one theme by default, see the [`defaultTheme`](#defaulttheme) prop.
 
@@ -872,6 +894,14 @@ const App = () => (
 You can also [write your own theme](./AppTheme.md#writing-a-custom-theme) to fit your company branding. For more details on predefined and custom themes, refer to [the Application Theme chapter](./AppTheme.md).
 
 React-admin provides a [built-in dark theme by default](./AppTheme.md#default). If you want to override it, check out [the `<Admin darkTheme>` prop](#darktheme). 
+
+### Theme Priorities
+
+The following priorities are applied depending on whether the `theme` prop is provided or not:
+
+- if `theme` is not provided, the default light and dark theme and are used;
+- if `theme` is not provided the `lightTheme` prop is ignored;
+- if `theme` is provided and `darkTheme` prop is not, `darkTheme` is ignored and disabled;
 
 ## `title`
 

@@ -18,7 +18,7 @@ By default, the `<AppBar>` component displays:
 - a hamburger icon to toggle the sidebar width,
 - the page title,
 - a button to change locales (if the application uses [i18n](./Translation.md)),
-- a button to change the theme (if the application uses a [dark theme](./Admin.md#darktheme)),
+- a button to change the theme (if the [dark theme](./Admin.md#darktheme) is not disabled),
 - a loading indicator,
 - a button to display the user menu.
 
