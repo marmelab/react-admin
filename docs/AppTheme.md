@@ -62,7 +62,7 @@ It's a common practice to support both a light theme and a dark theme in an appl
 
 React-admin provides a [built-in dark theme by default](#default), the default application theme depends on the user's system settings. If the user has chosen a dark mode in their OS, react-admin will use the dark theme. Otherwise, it will use the light theme.
 
-In addition, users can switch from one theme to the other using [the `<ToggleThemeButton>` component](./ToggleThemeButton.md), which appears in the AppBar as soon as you define a `darkTheme` prop.
+In addition, users can switch from one theme to the other using [the `<ToggleThemeButton>` component](./ToggleThemeButton.md), that appears in the AppBar as soon as you define a `darkTheme` prop.  
 
 You can override the dark theme by setting the `<Admin>`'s `darkTheme` prop with your own theme:
 

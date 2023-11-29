@@ -434,14 +434,14 @@ const App = () => (
 
 ## `darkTheme`
 
-React-admin provides a [built-in dark theme by default](./AppTheme.md#default). The app will use the `darkTheme` by default for users who prefer the dark mode at the OS level, and users will be able to switch from light to dark mode using an app bar button leveraging [the `<ToggleThemeButton>` component](./ToggleThemeButton.md).
+React-admin provides a [built-in dark theme](./AppTheme.md#default). The app will use the `darkTheme` by default for users who prefer the dark mode at the OS level, and users will be able to switch from light to dark mode using [the `<ToggleThemeButton>` component](./ToggleThemeButton.md).
 
 <video controls autoplay muted loop>
   <source src="./img/ToggleThemeButton.webm" type="video/webm"/>
   Your browser does not support the video tag.
 </video>
 
-If you want to override it, you can provide your custom `darkTheme` in addition to the `theme` prop:
+If you want to override it, you can provide your own `darkTheme` in addition to the `theme` prop:
 
 ```tsx
 import { Admin } from 'react-admin';
@@ -622,14 +622,14 @@ Finally, you can also pass a custom component as the `layout` prop. It must cont
 
 ## `lightTheme`
 
-React-admin provides a [built-in light theme by default](./AppTheme.md#default). The app will use the `lightTheme` by default for users who prefer the light mode at the OS / browser level, and users will be able to switch from light to dark mode using an app bar button leveraging [the `<ToggleThemeButton>` component](./ToggleThemeButton.md) if the `darkTheme` prop is provided or leaved by default.
+React-admin provides a [built-in light theme](./AppTheme.md#default). The app will use the `lightTheme` by default for users who prefer the light mode at the OS / browser level, and users will be able to switch from light to dark mode using [the `<ToggleThemeButton>` component](./ToggleThemeButton.md) if the `darkTheme` prop is provided or leaved by default.  
 
 <video controls autoplay muted loop>
   <source src="./img/ToggleThemeButton.webm" type="video/webm"/>
   Your browser does not support the video tag.
 </video>
 
-If you want to override it, you can provide your custom `lightTheme`:
+If you want to override it, you can provide your own `lightTheme`:
 
 ```tsx
 import { Admin } from 'react-admin';
@@ -900,7 +900,7 @@ React-admin provides a [built-in dark theme by default](./AppTheme.md#default). 
 The following priorities are applied depending on whether the `theme` prop is provided or not:
 
 - if `theme` is not provided, the default light and dark theme are used;
-- if `theme` is not provided the `lightTheme` prop is ignored;
+- if `theme` is provided the `lightTheme` prop is ignored;
 - if `theme` is provided and `darkTheme` prop is not, `darkTheme` is ignored and disabled;
 
 ## `title`

@@ -13,7 +13,7 @@ The `<ToggleThemeButton>` component lets users switch from light to dark mode, a
   Your browser does not support the video tag.
 </video>
 
-It is enabled by default in the `<AppBar>` as soon React-admin provides a [built-in dark theme by default](./AppTheme.md#default).
+It is enabled by default in the `<AppBar>` as React-admin provides a [built-in dark theme](./AppTheme.md#default).  
 
 ## Usage
 
@@ -84,7 +84,7 @@ export const MyAppBar = () => (
 
 ## Creating A Dark Theme
 
-For this button to work, you must provide a dark theme to the `<Admin>` component. React-admin provides a [built-in dark theme by default](./AppTheme.md#default), but you can override it according to your needs.
+For this button to work, you must provide a dark theme to the `<Admin>` component. React-admin provides a [built-in dark theme](./AppTheme.md#default), but you can override it according to your needs.
 
 The `darkTheme` should be a JSON object that follows the [Material UI theme specification](https://material-ui.com/customization/theming/).
 

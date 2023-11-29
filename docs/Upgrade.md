@@ -20,9 +20,9 @@ If you previously relied on the fact that the rows were not clickable by default
 
 ## A `darkTheme` is now provided by default
 
-If not themes are configured in the `<Admin>` component prop, React-admin enable the [dark mode feature](https://marmelab.com/react-admin/AppTheme.html#light-and-dark-themes) by default.
+If themes are not configured using the `<Admin>` component props, React-admin enables the [dark mode feature](https://marmelab.com/react-admin/AppTheme.html#light-and-dark-themes).
 
-If you don't need the dark mode feature, you need to explicitly disable it:
+If you don't need the dark mode feature, you'll have to explicitly disable it:
 ```diff
 -<Admin>
 +<Admin darkTheme={null}>
@@ -30,10 +30,10 @@ If you don't need the dark mode feature, you need to explicitly disable it:
 </Admin>
 ```
 
-To best manage the `theme` prop, here are the priorities applied depending on whether the `theme` prop is provided or not:
+Here are the priorities applied depending on whether the `theme` prop is provided or not:
 
 - if `theme` is not provided, the [default light and dark theme](https://marmelab.com/react-admin/AppTheme.html#default) are used;
-- if `theme` is not provided the `lightTheme` prop is ignored (no change from before);
+- if `theme` is provided the `lightTheme` prop is ignored (no change from before);
 - if `theme` is provided and `darkTheme` prop is not, `darkTheme` is ignored and disabled;
 
 ## Upgrading to v4
