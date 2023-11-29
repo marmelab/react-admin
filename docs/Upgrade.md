@@ -33,7 +33,18 @@ const MyComponent = () => (
 );
 ```
 
-If you use a react-admin component that uses `<Link>` under the hood, like `<ReferenceField>`, and you want to remove the underline, use the `sx` prop:
+Some react-admin component use `<Link>` under the hood, and will also render underlined links:
+
+- `<Count>`
+- `<EmailField>`
+- `<FileField>`
+- `<ReferenceField>`
+- `<ReferenceManyCount>`
+- `<UrlField>`
+
+`<SingleFieldList>` still disables the underline by default.
+
+To remove the underline in these components, use the `sx` prop. For instance, to remove the underline in `<ReferenceField>`:
 
 {% raw %}
 ```diff
