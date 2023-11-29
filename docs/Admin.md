@@ -145,12 +145,12 @@ Here are all the props accepted by the component:
 | `basename`         | Optional | `string`       | -              | The base path for all URLs                               |
 | `catchAll`         | Optional | `Component`    | `NotFound`     | The fallback component for unknown routes                |
 | `dashboard`        | Optional | `Component`    | -              | The content of the dashboard page                        |
-| `darkTheme`        | Optional | `object`       | `defaultDarkTheme` (the default built-in dark theme)              | The dark theme configuration                             |
+| `darkTheme`        | Optional | `object`       | `default DarkTheme` (the default built-in dark theme)              | The dark theme configuration                             |
 | `defaultTheme`     | Optional | `boolean`      | `false`        | Flag to default to the light theme                       |
 | `disableTelemetry` | Optional | `boolean`      | `false`        | Set to `true` to disable telemetry collection            |
 | `i18nProvider`     | Optional | `I18NProvider` | -              | The internationalization provider for translations       |
 | `layout`           | Optional | `Component`    | `Layout`       | The content of the layout                                |
-| `lightTheme`        | Optional | `object`       | `defaultLightTheme` (the default built-in light theme)              | The light theme configuration                             |
+| `lightTheme`        | Optional | `object`       | `default LightTheme` (the default built-in light theme)              | The light theme configuration                             |
 | `loginPage`        | Optional | `Component`    | `LoginPage`    | The content of the login page                            |
 | `notification`     | Optional | `Component`    | `Notification` | The notification component                               |
 | `queryClient`      | Optional | `QueryClient`  | -              | The react-query client                                   |
