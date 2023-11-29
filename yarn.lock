@@ -4320,13 +4320,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@remix-run/router@npm:1.11.0":
-  version: 1.11.0
-  resolution: "@remix-run/router@npm:1.11.0"
-  checksum: 046b382e149e198f4aac02355545ef83c4c97b203d08008dcdb9b25d0f2193e21c3ba2332aba572d4f1450b68aabc77cbc278cb5a7b252cc6e1d239d81a6f7e2
-  languageName: node
-  linkType: hard
-
 "@rushstack/eslint-patch@npm:^1.1.0":
   version: 1.1.0
   resolution: "@rushstack/eslint-patch@npm:1.1.0"
@@ -12785,7 +12778,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"history@npm:^5.1.0":
+"history@npm:^5.1.0, history@npm:^5.2.0":
   version: 5.2.0
   resolution: "history@npm:5.2.0"
   dependencies:
@@ -18930,26 +18923,26 @@ __metadata:
   linkType: hard
 
 "react-router-dom@npm:6.1.0 - 6.18.0":
-  version: 6.18.0
-  resolution: "react-router-dom@npm:6.18.0"
+  version: 6.2.1
+  resolution: "react-router-dom@npm:6.2.1"
   dependencies:
-    "@remix-run/router": 1.11.0
-    react-router: 6.18.0
+    history: ^5.2.0
+    react-router: 6.2.1
   peerDependencies:
     react: ">=16.8"
     react-dom: ">=16.8"
-  checksum: 9c2893f6b95ca2f25e0ee816d9467fcd18bf1e854d53cde6edf93efbb49972693a898dde6bb8e9ce3c9a2a26f27291b904740e84da9b92a1e560740d5677ce0c
+  checksum: cdec44b06c89f95bb038f964079597ff02a87db62ce231bf61e23500ad75cc321087d06def3b68f38f7805eb84a43fdd0b9f61b45fb3d7f0158d2604da5a538f
   languageName: node
   linkType: hard
 
-"react-router@npm:6.1.0 - 6.18.0, react-router@npm:6.18.0":
-  version: 6.18.0
-  resolution: "react-router@npm:6.18.0"
+"react-router@npm:6.1.0 - 6.18.0, react-router@npm:6.2.1":
+  version: 6.2.1
+  resolution: "react-router@npm:6.2.1"
   dependencies:
-    "@remix-run/router": 1.11.0
+    history: ^5.2.0
   peerDependencies:
     react: ">=16.8"
-  checksum: 185d240cb8c6119eefcb16e6df0fb0a75fb736eb1a1f24e7569783286295da48cf66e922c1eee43aa497e464cf2d455b89d1d552e288889ae0c355790b1eac0d
+  checksum: 591b4f1fe1c7904b608dfe693b82518c9b453b790421e6ebfec76cee72f7bc2db7a61fb187edf5501484b1f738f090561b8b9ba104b5c1b8757c330c11ece485
   languageName: node
   linkType: hard
 
