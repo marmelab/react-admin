@@ -10,7 +10,7 @@ import { ListGuesser } from '../list';
 import { EditGuesser } from '../detail';
 import { testData } from './testData';
 import { nanoDarkTheme, nanoLightTheme } from './nanoTheme';
-import { radiantDarkTheme } from './radiantTheme';
+import { radiantDarkTheme, radiantLightTheme } from './radiantTheme';
 
 export default {
     title: 'ra-ui-materialui/theme/Priority',
@@ -136,6 +136,36 @@ export const DefaultLighThemeAndCustomDarkTheme = () => (
     <AdminContext
         dataProvider={fakerestDataProvider(testData)}
         i18nProvider={polyglotI18nProvider(() => englishTranslations, 'en')}
+        darkTheme={nanoDarkTheme}
+    >
+        <AdminUI>
+            <Resource
+                name="products"
+                list={ListGuesser}
+                edit={EditGuesser}
+                recordRepresentation="name"
+            />
+            <Resource
+                name="categories"
+                list={ListGuesser}
+                edit={EditGuesser}
+                recordRepresentation="name"
+            />
+            <Resource
+                name="tags"
+                list={ListGuesser}
+                edit={EditGuesser}
+                recordRepresentation="name"
+            />
+        </AdminUI>
+    </AdminContext>
+);
+
+export const CustomLighThemeAndCustomDarkTheme = () => (
+    <AdminContext
+        dataProvider={fakerestDataProvider(testData)}
+        i18nProvider={polyglotI18nProvider(() => englishTranslations, 'en')}
+        lightTheme={radiantLightTheme}
         darkTheme={nanoDarkTheme}
     >
         <AdminUI>
