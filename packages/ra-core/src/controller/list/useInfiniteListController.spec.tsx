@@ -471,6 +471,7 @@ describe('useInfiniteListController', () => {
                 hideFilter: undefined,
                 isFetching: undefined,
                 isLoading: undefined,
+                isPending: undefined,
                 onSelect: undefined,
                 onToggleItem: undefined,
                 onUnselectItems: undefined,

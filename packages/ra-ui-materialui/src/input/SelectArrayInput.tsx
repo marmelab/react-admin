@@ -100,6 +100,7 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
         label,
         isFetching: isFetchingProp,
         isLoading: isLoadingProp,
+        isPending: isPendingProp,
         margin,
         onBlur,
         onChange,
@@ -121,7 +122,7 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
 
     const {
         allChoices,
-        isLoading,
+        isPending,
         error: fetchError,
         source,
         resource,
@@ -129,6 +130,7 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
     } = useChoicesContext({
         choices: choicesProp,
         isLoading: isLoadingProp,
+        isPending: isPendingProp,
         isFetching: isFetchingProp,
         resource: resourceProp,
         source: sourceProp,
@@ -237,7 +239,7 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
         [getChoiceValue, getDisableValue, renderMenuItemOption, createItem]
     );
 
-    if (isLoading) {
+    if (isPending) {
         return (
             <Labeled
                 label={label}

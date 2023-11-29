@@ -18,7 +18,7 @@ const emptyParams = {};
  *
  * The return value updates according to the authProvider request state:
  *
- * - isLoading: true just after mount, while the authProvider is being called. false once the authProvider has answered.
+ * - isPending: true just after mount, while the authProvider is being called. false once the authProvider has answered.
  * - data: true while loading. then true or false depending on the authProvider response.
  *
  * To avoid rendering a component and force waiting for the authProvider response, use the useAuthState() hook
@@ -32,14 +32,14 @@ const emptyParams = {};
  *
  * @param {Boolean} logoutOnFailure: Optional. Whether the user should be logged out if the authProvider fails to authenticate them. False by default.
  *
- * @returns The current auth check state. Destructure as { authenticated, error, isLoading }.
+ * @returns The current auth check state. Destructure as { authenticated, error, isPending }.
  *
  * @example
  * import { useAuthState, Loading } from 'react-admin';
  *
  * const MyPage = () => {
- *     const { isLoading, authenticated } = useAuthState();
- *     if (isLoading) {
+ *     const { isPending, authenticated } = useAuthState();
+ *     if (isPending) {
  *         return <Loading />;
  *     }
  *     if (authenticated) {
@@ -125,7 +125,7 @@ const useAuthState = <ErrorType = Error>(
             // If the data is undefined and the query isn't loading anymore, it means the query failed.
             // In that case, we set authenticated to false unless there's no authProvider.
             authenticated:
-                result.data ?? result.isLoading ? true : authProvider == null, // Optimistic
+                result.data ?? result.isPending ? true : authProvider == null, // Optimistic
         };
     }, [authProvider, result]);
 };

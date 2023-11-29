@@ -88,6 +88,7 @@ export const RadioButtonGroupInput = (props: RadioButtonGroupInputProps) => {
         helperText,
         isFetching: isFetchingProp,
         isLoading: isLoadingProp,
+        isPending: isPendingProp,
         label,
         margin = 'dense',
         onBlur,
@@ -106,7 +107,7 @@ export const RadioButtonGroupInput = (props: RadioButtonGroupInputProps) => {
 
     const {
         allChoices,
-        isLoading,
+        isPending,
         error: fetchError,
         resource,
         source,
@@ -115,6 +116,7 @@ export const RadioButtonGroupInput = (props: RadioButtonGroupInputProps) => {
         choices: choicesProp,
         isFetching: isFetchingProp,
         isLoading: isLoadingProp,
+        isPending: isPendingProp,
         resource: resourceProp,
         source: sourceProp,
     });
@@ -125,7 +127,7 @@ export const RadioButtonGroupInput = (props: RadioButtonGroupInputProps) => {
         );
     }
 
-    if (!isLoading && !fetchError && allChoices === undefined) {
+    if (!isPending && !fetchError && allChoices === undefined) {
         throw new Error(
             `If you're not wrapping the RadioButtonGroupInput inside a ReferenceArrayInput, you must provide the choices prop`
         );
@@ -145,7 +147,7 @@ export const RadioButtonGroupInput = (props: RadioButtonGroupInputProps) => {
     const { error, invalid, isTouched } = fieldState;
     const { isSubmitted } = formState;
 
-    if (isLoading) {
+    if (isPending) {
         return (
             <Labeled
                 htmlFor={id}

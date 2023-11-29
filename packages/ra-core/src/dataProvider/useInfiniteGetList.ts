@@ -32,18 +32,18 @@ import { useEvent } from '../util';
  * @prop params.filter The request filters, e.g. { title: 'hello, world' }
  * @prop params.meta Optional meta parameters
  *
- * @returns The current request state. Destructure as { data, total, error, isLoading, isSuccess, hasNextPage, fetchNextPage }.
+ * @returns The current request state. Destructure as { data, total, error, isPending, isSuccess, hasNextPage, fetchNextPage }.
  *
  * @example
  *
  * import { useInfiniteGetList } from 'react-admin';
  *
  * const LatestNews = () => {
- *     const { data, total, isLoading, error, hasNextPage, fetchNextPage } = useInfiniteGetList(
+ *     const { data, total, isPending, error, hasNextPage, fetchNextPage } = useInfiniteGetList(
  *         'posts',
  *         { pagination: { page: 1, perPage: 10 }, sort: { field: 'published_at', order: 'DESC' } }
  *     );
- *     if (isLoading) { return <Loading />; }
+ *     if (isPending) { return <Loading />; }
  *     if (error) { return <p>ERROR</p>; }
  *     return (
  *        <>

@@ -84,6 +84,7 @@ export const useListController = <RecordType extends RaRecord = any>(
         error,
         isLoading,
         isFetching,
+        isPending,
         refetch,
     } = useGetList<RecordType>(
         resource,
@@ -158,6 +159,7 @@ export const useListController = <RecordType extends RaRecord = any>(
         hideFilter: queryModifiers.hideFilter,
         isFetching,
         isLoading,
+        isPending,
         onSelect: selectionModifiers.select,
         onToggleItem: selectionModifiers.toggle,
         onUnselectItems: selectionModifiers.clearSelection,
@@ -404,6 +406,7 @@ export interface ListControllerResult<RecordType extends RaRecord = any> {
     hideFilter: (filterName: string) => void;
     isFetching: boolean;
     isLoading: boolean;
+    isPending: boolean;
     onSelect: (ids: RecordType['id'][]) => void;
     onToggleItem: (id: RecordType['id']) => void;
     onUnselectItems: () => void;

@@ -36,14 +36,14 @@ import { useEvent } from '../util';
  * @prop params.previousData The record before the update is applied
  * @prop params.meta Optional meta data
  *
- * @returns The current mutation state. Destructure as [update, { data, error, isLoading }].
+ * @returns The current mutation state. Destructure as [update, { data, error, isPending }].
  *
  * The return value updates according to the request state:
  *
- * - initial: [update, { isLoading: false, isIdle: true }]
- * - start:   [update, { isLoading: true }]
- * - success: [update, { data: [data from response], isLoading: false, isSuccess: true }]
- * - error:   [update, { error: [error from response], isLoading: false, isError: true }]
+ * - initial: [update, { isPending: false, isIdle: true }]
+ * - start:   [update, { isPending: true }]
+ * - success: [update, { data: [data from response], isPending: false, isSuccess: true }]
+ * - error:   [update, { error: [error from response], isPending: false, isError: true }]
  *
  * The update() function must be called with a resource and a parameter object: update(resource, { id, data, previousData }, options)
  *
@@ -59,12 +59,12 @@ import { useEvent } from '../util';
  * const IncreaseLikeButton = () => {
  *     const record = useRecordContext();
  *     const diff = { likes: record.likes + 1 };
- *     const [update, { isLoading, error }] = useUpdate();
+ *     const [update, { isPending, error }] = useUpdate();
  *     const handleClick = () => {
  *         update('likes', { id: record.id, data: diff, previousData: record })
  *     }
  *     if (error) { return <p>ERROR</p>; }
- *     return <button disabled={isLoading} onClick={handleClick}>Like</div>;
+ *     return <button disabled={isPending} onClick={handleClick}>Like</div>;
  * };
  *
  * @example // set params when calling the hook
@@ -74,9 +74,9 @@ import { useEvent } from '../util';
  * const IncreaseLikeButton = () => {
  *     const record = useRecordContext();
  *     const diff = { likes: record.likes + 1 };
- *     const [update, { isLoading, error }] = useUpdate('likes', { id: record.id, data: diff, previousData: record });
+ *     const [update, { isPending, error }] = useUpdate('likes', { id: record.id, data: diff, previousData: record });
  *     if (error) { return <p>ERROR</p>; }
- *     return <button disabled={isLoading} onClick={() => update()}>Like</button>;
+ *     return <button disabled={isPending} onClick={() => update()}>Like</button>;
  * };
  *
  * @example // TypeScript

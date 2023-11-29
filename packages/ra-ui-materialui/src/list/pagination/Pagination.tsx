@@ -28,7 +28,7 @@ export const Pagination: FC<PaginationProps> = memo(props => {
         ...rest
     } = props;
     const {
-        isLoading,
+        isPending,
         hasNextPage,
         page,
         perPage,
@@ -92,7 +92,7 @@ export const Pagination: FC<PaginationProps> = memo(props => {
         [translate]
     );
 
-    if (isLoading) {
+    if (isPending) {
         return <Toolbar variant="dense" />;
     }
 
@@ -123,7 +123,7 @@ export const Pagination: FC<PaginationProps> = memo(props => {
 
     const ActionsComponent = actions
         ? actions // overridden by caller
-        : !isLoading && total != null
+        : !isPending && total != null
         ? PaginationActions // regular navigation
         : undefined; // partial navigation (uses default TablePaginationActions)
 

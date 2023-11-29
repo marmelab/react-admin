@@ -43,13 +43,13 @@ import { useResourceDefinitionContext } from './useResourceDefinitionContext';
 export const useConfigureAdminRouterFromChildren = (
     children: AdminChildren
 ): RoutesAndResources & { status: AdminRouterStatus } => {
-    const { permissions, isLoading } = usePermissions();
+    const { permissions, isPending } = usePermissions();
 
     // Whenever children are updated, update our custom routes and resources
     const [routesAndResources, status] = useRoutesAndResourcesFromChildren(
         children,
         permissions,
-        isLoading
+        isPending
     );
 
     // Whenever the resources change, we must ensure they're all registered

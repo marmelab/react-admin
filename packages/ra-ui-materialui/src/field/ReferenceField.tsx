@@ -170,7 +170,7 @@ export const ReferenceFieldView = <
         className,
         emptyText,
         error,
-        isLoading,
+        isPending,
         reference,
         referenceRecord,
         resourceLinkPath,
@@ -193,7 +193,7 @@ export const ReferenceFieldView = <
             /* eslint-enable */
         );
     }
-    if (isLoading) {
+    if (isPending) {
         return <LinearProgress />;
     }
     if (!referenceRecord) {

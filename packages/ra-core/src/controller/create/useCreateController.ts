@@ -165,6 +165,7 @@ export const useCreateController = <
     return {
         isFetching: false,
         isLoading: false,
+        isPending: saving,
         saving,
         defaultTitle,
         save,
@@ -203,6 +204,7 @@ export interface CreateControllerResult<
     data?: RecordType;
     defaultTitle: string;
     isFetching: boolean;
+    isPending: boolean;
     isLoading: boolean;
     record?: Partial<RecordType>;
     redirect: RedirectionSideEffect;

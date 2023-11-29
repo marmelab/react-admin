@@ -59,13 +59,13 @@ const dataProvider = new Proxy(baseDataProvider, {
 const BookListView = () => {
     const {
         data,
-        isLoading,
+        isPending,
         sort,
         setSort,
         filterValues,
         setFilters,
     } = useListContext();
-    if (isLoading) {
+    if (isPending) {
         return <div>Loading...</div>;
     }
     const toggleSort = () => {

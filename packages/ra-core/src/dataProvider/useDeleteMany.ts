@@ -33,14 +33,14 @@ import { useEvent } from '../util';
  * @typedef Params
  * @prop params.ids The resource identifiers, e.g. [123, 456]
  *
- * @returns The current mutation state. Destructure as [deleteMany, { data, error, isLoading }].
+ * @returns The current mutation state. Destructure as [deleteMany, { data, error, isPending }].
  *
  * The return value updates according to the request state:
  *
- * - initial: [deleteMany, { isLoading: false, isIdle: true }]
- * - start:   [deleteMany, { isLoading: true }]
- * - success: [deleteMany, { data: [data from response], isLoading: false, isSuccess: true }]
- * - error:   [deleteMany, { error: [error from response], isLoading: false, isError: true }]
+ * - initial: [deleteMany, { isPending: false, isIdle: true }]
+ * - start:   [deleteMany, { isPending: true }]
+ * - success: [deleteMany, { data: [data from response], isPending: false, isSuccess: true }]
+ * - error:   [deleteMany, { error: [error from response], isPending: false, isError: true }]
  *
  * The deleteMany() function must be called with a resource and a parameter object: deleteMany(resource, { ids, meta }, options)
  *
@@ -54,12 +54,12 @@ import { useEvent } from '../util';
  * import { useDeleteMany } from 'react-admin';
  *
  * const BulkDeletePostsButton = ({ selectedIds }) => {
- *     const [deleteMany, { isLoading, error }] = useDeleteMany();
+ *     const [deleteMany, { isPending, error }] = useDeleteMany();
  *     const handleClick = () => {
  *         deleteMany('posts', { ids: selectedIds })
  *     }
  *     if (error) { return <p>ERROR</p>; }
- *     return <button disabled={isLoading} onClick={handleClick}>Delete selected posts</button>;
+ *     return <button disabled={isPending} onClick={handleClick}>Delete selected posts</button>;
  * };
  *
  * @example // set params when calling the hook
@@ -67,12 +67,12 @@ import { useEvent } from '../util';
  * import { useDeleteMany } from 'react-admin';
  *
  * const BulkDeletePostsButton = ({ selectedIds }) => {
- *     const [deleteMany, { isLoading, error }] = useDeleteMany('posts', { ids: selectedIds });
+ *     const [deleteMany, { isPending, error }] = useDeleteMany('posts', { ids: selectedIds });
  *     const handleClick = () => {
  *         deleteMany()
  *     }
  *     if (error) { return <p>ERROR</p>; }
- *     return <button disabled={isLoading} onClick={handleClick}>Delete selected posts</button>;
+ *     return <button disabled={isPending} onClick={handleClick}>Delete selected posts</button>;
  * };
  *
  * @example // TypeScript

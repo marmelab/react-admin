@@ -29,7 +29,7 @@ export const useIsDataLoaded = (
         if (queryClient.getQueryData(queryKey) === undefined) {
             const observer = new QueryObserver(queryClient, { queryKey });
             const unsubscribe = observer.subscribe(result => {
-                setDataLoaded(!result.isLoading);
+                setDataLoaded(!result.isPending);
                 unsubscribe();
             });
             return unsubscribe;

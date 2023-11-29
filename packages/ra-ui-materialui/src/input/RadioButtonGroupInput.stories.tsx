@@ -61,9 +61,9 @@ export const Invalid = () => (
     </Wrapper>
 );
 
-export const IsLoading = () => (
+export const IsPending = () => (
     <Wrapper>
-        <RadioButtonGroupInput source="category" isLoading />
+        <RadioButtonGroupInput source="category" isPending />
     </Wrapper>
 );
 

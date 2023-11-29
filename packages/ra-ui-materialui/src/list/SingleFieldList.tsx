@@ -59,11 +59,11 @@ export const SingleFieldList = (props: SingleFieldListProps) => {
         direction = 'row',
         ...rest
     } = props;
-    const { data, total, isLoading } = useListContext(props);
+    const { data, total, isPending } = useListContext(props);
     const resource = useResourceContext(props);
     const createPath = useCreatePath();
 
-    if (isLoading === true) {
+    if (isPending === true) {
         return <LinearProgress />;
     }
 

@@ -32,7 +32,7 @@ import { useCreatePath } from '../routing';
  *         index,
  *         total,
  *         error,
- *         isLoading,
+ *         isPending,
  *     } = usePrevNextController(props);
  *
  * @example <caption>Custom PrevNextButton</caption>
@@ -52,12 +52,12 @@ import { useCreatePath } from '../routing';
  *         index,
  *         total,
  *         error,
- *         isLoading,
+ *         isPending,
  *     } = usePrevNextController(props);
  *
  *     const translate = useTranslate();
  *
- *     if (isLoading) {
+ *     if (isPending) {
  *         return <CircularProgress size={14} />;
  *     }
  *
@@ -184,7 +184,7 @@ export const usePrevNextController = <RecordType extends RaRecord = any>(
     // If the previous and next ids are not in the cache, fetch the entire list.
     // This is necessary e.g. when coming directly to a detail page,
     // without displaying the list first
-    const { data, error, isLoading } = useQuery({
+    const { data, error, isFetching, isLoading, isPending } = useQuery({
         queryKey: [resource, 'getList', params],
         queryFn: () => dataProvider.getList(resource, params),
         enabled: !canUseCacheData,
@@ -193,7 +193,18 @@ export const usePrevNextController = <RecordType extends RaRecord = any>(
 
     const finalData = canUseCacheData ? queryData.data : data?.data || [];
 
-    if (!record || isLoading) return { isLoading: true };
+    if (!record || isPending)
+        return {
+            isFetching: true,
+            isLoading: true,
+            isPending: true,
+            prevPath: undefined,
+            nextPath: undefined,
+            index: undefined,
+            total: undefined,
+            hasPrev: false,
+            hasNext: false,
+        };
 
     const ids = finalData.map(record => record.id);
     const index = ids.indexOf(record.id);
@@ -224,7 +235,9 @@ export const usePrevNextController = <RecordType extends RaRecord = any>(
         index: index === -1 ? undefined : index,
         total: canUseCacheData ? queryData?.total : data?.total,
         error,
+        isFetching,
         isLoading,
+        isPending,
     };
 };
 
@@ -249,24 +262,15 @@ export interface UsePrevNextControllerProps<RecordType extends RaRecord = any> {
     > & { meta?: any };
 }
 
-export type UsePrevNextControllerResult =
-    | {
-          isLoading: true;
-          hasPrev?: boolean;
-          hasNext?: boolean;
-          prevPath?: string | undefined;
-          nextPath?: string | undefined;
-          index?: number | undefined;
-          total?: number | undefined;
-          error?: any;
-      }
-    | {
-          isLoading: false;
-          hasPrev: boolean;
-          hasNext: boolean;
-          prevPath: string | undefined;
-          nextPath: string | undefined;
-          index: number | undefined;
-          total: number | undefined;
-          error?: any;
-      };
+export type UsePrevNextControllerResult = {
+    isFetching: boolean;
+    isLoading: boolean;
+    isPending: boolean;
+    hasPrev: boolean;
+    hasNext: boolean;
+    prevPath: string | undefined;
+    nextPath: string | undefined;
+    index: number | undefined;
+    total: number | undefined;
+    error?: any;
+};

@@ -22,14 +22,14 @@ import { useEvent } from '../util';
  * @typedef Params
  * @prop params.data The record to create, e.g. { title: 'hello, world' }
  *
- * @returns The current mutation state. Destructure as [create, { data, error, isLoading }].
+ * @returns The current mutation state. Destructure as [create, { data, error, isPending }].
  *
  * The return value updates according to the request state:
  *
- * - initial: [create, { isLoading: false, isIdle: true }]
- * - start:   [create, { isLoading: true }]
- * - success: [create, { data: [data from response], isLoading: false, isSuccess: true }]
- * - error:   [create, { error: [error from response], isLoading: false, isError: true }]
+ * - initial: [create, { isPending: false, isIdle: true }]
+ * - start:   [create, { isPending: true }]
+ * - success: [create, { data: [data from response], isPending: false, isSuccess: true }]
+ * - error:   [create, { error: [error from response], isPending: false, isError: true }]
  *
  * The create() function must be called with a resource and a parameter object: create(resource, { data, meta }, options)
  *
@@ -45,12 +45,12 @@ import { useEvent } from '../util';
  * const LikeButton = () => {
  *     const record = useRecordContext();
  *     const like = { postId: record.id };
- *     const [create, { isLoading, error }] = useCreate();
+ *     const [create, { isPending, error }] = useCreate();
  *     const handleClick = () => {
  *         create('likes', { data: like })
  *     }
  *     if (error) { return <p>ERROR</p>; }
- *     return <button disabled={isLoading} onClick={handleClick}>Like</button>;
+ *     return <button disabled={isPending} onClick={handleClick}>Like</button>;
  * };
  *
  * @example // set params when calling the hook
@@ -60,9 +60,9 @@ import { useEvent } from '../util';
  * const LikeButton = () => {
  *     const record = useRecordContext();
  *     const like = { postId: record.id };
- *     const [create, { isLoading, error }] = useCreate('likes', { data: like });
+ *     const [create, { isPending, error }] = useCreate('likes', { data: like });
  *     if (error) { return <p>ERROR</p>; }
- *     return <button disabled={isLoading} onClick={() => create()}>Like</button>;
+ *     return <button disabled={isPending} onClick={() => create()}>Like</button>;
  * };
  *
  * @example // TypeScript

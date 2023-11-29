@@ -81,9 +81,14 @@ export const useEditController = <RecordType extends RaRecord = any>(
         getMutateWithMiddlewares,
         unregisterMutationMiddleware,
     } = useMutationMiddlewares();
-    const { data: record, error, isLoading, isFetching, refetch } = useGetOne<
-        RecordType
-    >(
+    const {
+        data: record,
+        error,
+        isLoading,
+        isFetching,
+        isPending,
+        refetch,
+    } = useGetOne<RecordType>(
         resource,
         { id, meta: queryMeta },
         {
@@ -222,6 +227,7 @@ export const useEditController = <RecordType extends RaRecord = any>(
         error,
         isFetching,
         isLoading,
+        isPending,
         mutationMode,
         record,
         redirect: redirectTo,
@@ -255,6 +261,7 @@ export interface EditControllerResult<RecordType extends RaRecord = any>
     defaultTitle: string;
     isFetching: boolean;
     isLoading: boolean;
+    isPending: boolean;
     record?: RecordType;
     refetch: UseGetOneHookValue<RecordType>['refetch'];
     redirect: RedirectionSideEffect;

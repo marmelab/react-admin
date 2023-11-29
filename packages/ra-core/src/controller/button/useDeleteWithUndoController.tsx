@@ -24,7 +24,7 @@ import { useResourceContext } from '../../core';
  *     onClick,
  *     ...rest
  * }) => {
- *     const { isLoading, handleDelete } = useDeleteWithUndoController({
+ *     const { isPending, handleDelete } = useDeleteWithUndoController({
  *         resource,
  *         record,
  *         redirect,
@@ -34,7 +34,7 @@ import { useResourceContext } from '../../core';
  *     return (
  *         <Button
  *             onClick={handleDelete}
- *             disabled={isLoading}
+ *             disabled={isPending}
  *             label="ra.action.delete"
  *             {...rest}
  *         >

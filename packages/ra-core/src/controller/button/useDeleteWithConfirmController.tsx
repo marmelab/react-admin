@@ -27,7 +27,7 @@ import { useResourceContext } from '../../core';
  * }) => {
  *     const {
  *         open,
- *         isLoading,
+ *         isPending,
  *         handleDialogOpen,
  *         handleDialogClose,
  *         handleDelete,
@@ -49,7 +49,7 @@ import { useResourceContext } from '../../core';
  *             </Button>
  *             <Confirm
  *                 isOpen={open}
- *                 loading={isLoading}
+ *                 loading={isPending}
  *                 title="ra.message.delete_title"
  *                 content="ra.message.delete_content"
  *                 translateOptions={{

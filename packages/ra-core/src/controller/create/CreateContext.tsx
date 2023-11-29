@@ -24,6 +24,7 @@ export const CreateContext = createContext<CreateControllerResult>({
     defaultTitle: null,
     isFetching: null,
     isLoading: null,
+    isPending: null,
     redirect: null,
     resource: null,
     save: null,

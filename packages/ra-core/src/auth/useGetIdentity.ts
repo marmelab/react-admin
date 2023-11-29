@@ -21,20 +21,20 @@ const defaultQueryParams = {
  *
  * The return value updates according to the call state:
  *
- * - mount: { isLoading: true }
- * - success: { identity, refetch: () => {}, isLoading: false }
- * - error: { error: Error, isLoading: false }
+ * - mount: { isPending: true }
+ * - success: { identity, refetch: () => {}, isPending: false }
+ * - error: { error: Error, isPending: false }
  *
  * The implementation is left to the authProvider.
  *
- * @returns The current user identity. Destructure as { isLoading, data, error, refetch }.
+ * @returns The current user identity. Destructure as { isPending, data, error, refetch }.
  *
  * @example
  * import { useGetIdentity, useGetOne } from 'react-admin';
  *
  * const PostDetail = ({ id }) => {
- *     const { data: post, isLoading: postLoading } = useGetOne('posts', { id });
- *     const { identity, isLoading: identityLoading } = useGetIdentity();
+ *     const { data: post, isPending: postLoading } = useGetOne('posts', { id });
+ *     const { identity, isPending: identityLoading } = useGetIdentity();
  *     if (postLoading || identityLoading) return <>Loading...</>;
  *     if (!post.lockedBy || post.lockedBy === identity.id) {
  *         // post isn't locked, or is locked by me

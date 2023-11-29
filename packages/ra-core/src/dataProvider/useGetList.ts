@@ -18,9 +18,9 @@ const MAX_DATA_LENGTH_TO_CACHE = 100;
  *
  * The return value updates according to the request state:
  *
- * - start: { isLoading: true, refetch }
- * - success: { data: [data from store], total: [total from response], isLoading: false, refetch }
- * - error: { error: [error from response], isLoading: false, refetch }
+ * - start: { isPending: true, refetch }
+ * - success: { data: [data from store], total: [total from response], isPending: false, refetch }
+ * - error: { error: [error from response], isPending: false, refetch }
  *
  * This hook will return the cached result when called a second time
  * with the same parameters, until the response arrives.
@@ -36,18 +36,18 @@ const MAX_DATA_LENGTH_TO_CACHE = 100;
  * @prop params.filter The request filters, e.g. { title: 'hello, world' }
  * @prop params.meta Optional meta parameters
  *
- * @returns The current request state. Destructure as { data, total, error, isLoading, refetch }.
+ * @returns The current request state. Destructure as { data, total, error, isPending, refetch }.
  *
  * @example
  *
  * import { useGetList } from 'react-admin';
  *
  * const LatestNews = () => {
- *     const { data, total, isLoading, error } = useGetList(
+ *     const { data, total, isPending, error } = useGetList(
  *         'posts',
  *         { pagination: { page: 1, perPage: 10 }, sort: { field: 'published_at', order: 'DESC' } }
  *     );
- *     if (isLoading) { return <Loading />; }
+ *     if (isPending) { return <Loading />; }
  *     if (error) { return <p>ERROR</p>; }
  *     return <ul>{data.map(item =>
  *         <li key={item.id}>{item.title}</li>

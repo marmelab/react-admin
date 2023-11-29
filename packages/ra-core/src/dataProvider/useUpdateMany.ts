@@ -36,14 +36,14 @@ import { Identifier } from '..';
  * @prop params.data The updates to merge into the record, e.g. { views: 10 }
  * @prop params.meta Optional meta parameters
  *
- * @returns The current mutation state. Destructure as [updateMany, { data, error, isLoading }].
+ * @returns The current mutation state. Destructure as [updateMany, { data, error, isPending }].
  *
  * The return value updates according to the request state:
  *
- * - initial: [updateMany, { isLoading: false, isIdle: true }]
- * - start:   [updateMany, { isLoading: true }]
- * - success: [updateMany, { data: [data from response], isLoading: false, isSuccess: true }]
- * - error:   [updateMany, { error: [error from response], isLoading: false, isError: true }]
+ * - initial: [updateMany, { isPending: false, isIdle: true }]
+ * - start:   [updateMany, { isPending: true }]
+ * - success: [updateMany, { data: [data from response], isPending: false, isSuccess: true }]
+ * - error:   [updateMany, { error: [error from response], isPending: false, isError: true }]
  *
  * The updateMany() function must be called with a resource and a parameter object: updateMany(resource, { ids, data, previousData }, options)
  *
@@ -58,12 +58,12 @@ import { Identifier } from '..';
  *
  * const BulkResetViewsButton = () => {
  *     const { selectedIds } = useListContext();
- *     const [updateMany, { isLoading, error }] = useUpdateMany();
+ *     const [updateMany, { isPending, error }] = useUpdateMany();
  *     const handleClick = () => {
  *         updateMany('posts', { ids: selectedIds, data: { views: 0 } });
  *     }
  *     if (error) { return <p>ERROR</p>; }
- *     return <button disabled={isLoading} onClick={handleClick}>Reset views</button>;
+ *     return <button disabled={isPending} onClick={handleClick}>Reset views</button>;
  * };
  *
  * @example // set params when calling the hook
@@ -72,9 +72,9 @@ import { Identifier } from '..';
  *
  * const BulkResetViewsButton = () => {
  *     const { selectedIds } = useListContext();
- *     const [updateMany, { isLoading, error }] = useUpdateMany('posts', { ids: selectedIds, data: { views: 0 } });
+ *     const [updateMany, { isPending, error }] = useUpdateMany('posts', { ids: selectedIds, data: { views: 0 } });
  *     if (error) { return <p>ERROR</p>; }
- *     return <button disabled={isLoading} onClick={() => updateMany()}>Reset views</button>;
+ *     return <button disabled={isPending} onClick={() => updateMany()}>Reset views</button>;
  * };
  */
 export const useUpdateMany = <

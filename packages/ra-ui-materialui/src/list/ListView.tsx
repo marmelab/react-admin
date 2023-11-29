@@ -41,12 +41,12 @@ export const ListView = <RecordType extends RaRecord = any>(
         defaultTitle,
         data,
         error,
-        isLoading,
+        isPending,
         filterValues,
         resource,
     } = useListContext<RecordType>(props);
 
-    if (!children || (!data && isLoading && emptyWhileLoading)) {
+    if (!children || (!data && isPending && emptyWhileLoading)) {
         return null;
     }
 
@@ -83,7 +83,7 @@ export const ListView = <RecordType extends RaRecord = any>(
         cloneElement(empty, { className: ListClasses.noResults, hasCreate });
 
     const shouldRenderEmptyPage =
-        !isLoading &&
+        !isPending &&
         data?.length === 0 &&
         !Object.keys(filterValues).length &&
         empty !== false;
@@ -161,8 +161,8 @@ export interface ListViewProps {
      * import { Typography } from '@mui/material';
      *
      * const Aside = () => {
-     *     const { data, isLoading } = useListContext();
-     *     if (isLoading) return null;
+     *     const { data, isPending } = useListContext();
+     *     if (isPending) return null;
      *     return (
      *         <div style={{ width: 200, margin: '4em 1em' }}>
      *             <Typography variant="h6">Posts stats</Typography>

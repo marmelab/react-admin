@@ -153,8 +153,8 @@ describe('useCreate', () => {
             },
         });
         const ProductPage = () => {
-            const { data: products, isLoading } = useGetList('products');
-            if (isLoading) return null;
+            const { data: products, isPending } = useGetList('products');
+            if (isPending) return null;
             return (
                 <ul>
                     {products?.map(product => (

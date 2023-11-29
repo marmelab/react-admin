@@ -10,7 +10,7 @@ import useAuthProvider from './useAuthProvider';
  * by an external authentication service (e.g. Auth0) after the user has logged in.
  * By default, it redirects to application home page upon success, or to the `redirectTo` location returned by `authProvider. handleCallback`.
  *
- * @returns An object containing { isLoading, data, error, refetch }.
+ * @returns An object containing { isPending, data, error, refetch }.
  */
 export const useHandleAuthCallback = (
     options?: UseHandleAuthCallbackOptions

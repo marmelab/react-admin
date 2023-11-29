@@ -17,9 +17,9 @@ import { useEvent } from '../util';
  *
  * The return value updates according to the request state:
  *
- * - start: { isLoading: true, refetch }
- * - success: { data: [data from store], isLoading: false, refetch }
- * - error: { error: [error from response], isLoading: false, refetch }
+ * - start: { isPending: true, refetch }
+ * - success: { data: [data from store], isPending: false, refetch }
+ * - error: { error: [error from response], isPending: false, refetch }
  *
  * This hook will return the cached result when called a second time
  * with the same parameters, until the response arrives.
@@ -33,18 +33,18 @@ import { useEvent } from '../util';
  * @prop params.ids The ids to get, e.g. [123, 456, 789]
  * @prop params.meta Optional meta parameters
  *
- * @returns The current request state. Destructure as { data, error, isLoading, refetch }.
+ * @returns The current request state. Destructure as { data, error, isPending, refetch }.
  *
  * @example
  *
  * import { useGetMany } from 'react-admin';
  *
  * const PostTags = ({ post }) => {
- *     const { data, isLoading, error } = useGetMany(
+ *     const { data, isPending, error } = useGetMany(
  *         'tags',
  *         { ids: post.tags },
  *     );
- *     if (isLoading) { return <Loading />; }
+ *     if (isPending) { return <Loading />; }
  *     if (error) { return <p>ERROR</p>; }
  *     return <ul>{data.map(tag =>
  *         <li key={tag.id}>{tag.name}</li>

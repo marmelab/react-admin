@@ -15,7 +15,7 @@ const UsePermissions = ({ children }: any) => {
 
 const stateInpector = state => (
     <div>
-        <span>{state.isLoading && 'LOADING'}</span>
+        <span>{state.isPending && 'LOADING'}</span>
         {state.data && <span>PERMISSIONS: {state.data}</span>}
         <span>{state.error && 'ERROR'}</span>
     </div>

@@ -64,6 +64,7 @@ export const ListContext = createContext<ListControllerResult>({
     hideFilter: null,
     isFetching: null,
     isLoading: null,
+    isPending: null,
     onSelect: null,
     onToggleItem: null,
     onUnselectItems: null,

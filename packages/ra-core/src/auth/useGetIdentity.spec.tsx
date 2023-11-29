@@ -34,8 +34,8 @@ describe('useGetIdentity', () => {
             getPermissions: () => Promise.resolve(),
         };
         const Identity = () => {
-            const { data, error, isLoading } = useGetIdentity({ retry: false });
-            return isLoading ? (
+            const { data, error, isPending } = useGetIdentity({ retry: false });
+            return isPending ? (
                 <>Loading</>
             ) : error ? (
                 <>{`Error: ${error.message}`}</>

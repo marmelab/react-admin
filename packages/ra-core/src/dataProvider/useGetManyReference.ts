@@ -19,9 +19,9 @@ import { useDataProvider } from './useDataProvider';
  *
  * The return value updates according to the request state:
  *
- * - start: { isLoading: true, refetch }
- * - success: { data: [data from store], total: [total from response], isLoading: false, refetch }
- * - error: { error: [error from response], isLoading: false, refetch }
+ * - start: { isPending: true, refetch }
+ * - success: { data: [data from store], total: [total from response], isPending: false, refetch }
+ * - error: { error: [error from response], isPending: false, refetch }
  *
  * This hook will return the cached result when called a second time
  * with the same parameters, until the response arrives.
@@ -39,7 +39,7 @@ import { useDataProvider } from './useDataProvider';
  * @prop params.filter The request filters, e.g. { title: 'hello, world' }
  * @prop params.meta Optional meta parameters
  *
- * @returns The current request state. Destructure as { data, total, error, isLoading, refetch }.
+ * @returns The current request state. Destructure as { data, total, error, isPending, refetch }.
  *
  * @example
  *
@@ -48,11 +48,11 @@ import { useDataProvider } from './useDataProvider';
  * const PostComments = () => {
  *     const record = useRecordContext();
  *     // fetch all comments related to the current record
- *     const { data, isLoading, error } = useGetManyReference(
+ *     const { data, isPending, error } = useGetManyReference(
  *         'comments',
  *         { target: 'post_id', id: record.id, pagination: { page: 1, perPage: 10 }, sort: { field: 'published_at', order: 'DESC' } }
  *     );
- *     if (isLoading) { return <Loading />; }
+ *     if (isPending) { return <Loading />; }
  *     if (error) { return <p>ERROR</p>; }
  *     return <ul>{data.map(comment =>
  *         <li key={comment.id}>{comment.body}</li>

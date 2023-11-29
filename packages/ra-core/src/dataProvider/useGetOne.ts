@@ -14,9 +14,9 @@ import { useEvent } from '../util';
  *
  * The return value updates according to the request state:
  *
- * - start: { isLoading: true, isFetching: true, refetch }
- * - success: { data: [data from response], isLoading: false, refetch }
- * - error: { error: [error from response], isLoading: false, refetch }
+ * - start: { isPending: true, isFetching: true, refetch }
+ * - success: { data: [data from response], isPending: false, refetch }
+ * - error: { error: [error from response], isPending: false, refetch }
  *
  * This hook will return the cached result when called a second time
  * with the same parameters, until the response arrives.
@@ -33,7 +33,7 @@ import { useEvent } from '../util';
  * @prop onSuccess Side effect function to be executed upon success, e.g. { onSuccess: { refresh: true } }
  * @prop onError Side effect function to be executed upon failure, e.g. { onError: error => notify(error.message) }
  *
- * @returns The current request state. Destructure as { data, error, isLoading, refetch }.
+ * @returns The current request state. Destructure as { data, error, isPending, refetch }.
  *
  * @example
  *
@@ -41,8 +41,8 @@ import { useEvent } from '../util';
  *
  * const UserProfile = () => {
  *     const record = useRecordContext();
- *     const { data, isLoading, error } = useGetOne('users', { id: record.id });
- *     if (isLoading) { return <Loading />; }
+ *     const { data, isPending, error } = useGetOne('users', { id: record.id });
+ *     if (isPending) { return <Loading />; }
  *     if (error) { return <p>ERROR</p>; }
  *     return <div>User {data.username}</div>;
  * };

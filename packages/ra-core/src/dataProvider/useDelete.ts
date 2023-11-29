@@ -34,14 +34,14 @@ import { useEvent } from '../util';
  * @prop params.id The resource identifier, e.g. 123
  * @prop params.previousData The record before the update is applied
  *
- * @returns The current mutation state. Destructure as [deleteOne, { data, error, isLoading }].
+ * @returns The current mutation state. Destructure as [deleteOne, { data, error, isPending }].
  *
  * The return value updates according to the request state:
  *
- * - initial: [deleteOne, { isLoading: false, isIdle: true }]
- * - start:   [deleteOne, { isLoading: true }]
- * - success: [deleteOne, { data: [data from response], isLoading: false, isSuccess: true }]
- * - error:   [deleteOne, { error: [error from response], isLoading: false, isError: true }]
+ * - initial: [deleteOne, { isPending: false, isIdle: true }]
+ * - start:   [deleteOne, { isPending: true }]
+ * - success: [deleteOne, { data: [data from response], isPending: false, isSuccess: true }]
+ * - error:   [deleteOne, { error: [error from response], isPending: false, isError: true }]
  *
  * The deleteOne() function must be called with a resource and a parameter object: deleteOne(resource, { id, previousData, meta }, options)
  *
@@ -56,12 +56,12 @@ import { useEvent } from '../util';
  *
  * const DeleteButton = () => {
  *     const record = useRecordContext();
- *     const [deleteOne, { isLoading, error }] = useDelete();
+ *     const [deleteOne, { isPending, error }] = useDelete();
  *     const handleClick = () => {
  *         deleteOne('likes', { id: record.id, previousData: record })
  *     }
  *     if (error) { return <p>ERROR</p>; }
- *     return <button disabled={isLoading} onClick={handleClick}>Delete</div>;
+ *     return <button disabled={isPending} onClick={handleClick}>Delete</div>;
  * };
  *
  * @example // set params when calling the hook
@@ -70,9 +70,9 @@ import { useEvent } from '../util';
  *
  * const DeleteButton = () => {
  *     const record = useRecordContext();
- *     const [deleteOne, { isLoading, error }] = useDelete('likes', { id: record.id, previousData: record });
+ *     const [deleteOne, { isPending, error }] = useDelete('likes', { id: record.id, previousData: record });
  *     if (error) { return <p>ERROR</p>; }
- *     return <button disabled={isLoading} onClick={() => deleteOne()}>Delete</button>;
+ *     return <button disabled={isPending} onClick={() => deleteOne()}>Delete</button>;
  * };
  *
  * @example // TypeScript

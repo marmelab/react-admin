@@ -16,6 +16,7 @@ export interface ChoicesProps {
     choices?: any[];
     isFetching?: boolean;
     isLoading?: boolean;
+    isPending?: boolean;
     optionValue?: string;
     optionText?: OptionText;
     translateChoice?: boolean;

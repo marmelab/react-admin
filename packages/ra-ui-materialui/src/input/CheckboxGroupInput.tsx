@@ -94,6 +94,7 @@ export const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = pr
         label,
         labelPlacement,
         isLoading: isLoadingProp,
+        isPending: isPendingProp,
         isFetching: isFetchingProp,
         margin = 'dense',
         onBlur,
@@ -112,7 +113,7 @@ export const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = pr
 
     const {
         allChoices,
-        isLoading,
+        isPending,
         error: fetchError,
         resource,
         source,
@@ -121,6 +122,7 @@ export const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = pr
         choices: choicesProp,
         isFetching: isFetchingProp,
         isLoading: isLoadingProp,
+        isPending: isPendingProp,
         resource: resourceProp,
         source: sourceProp,
     });
@@ -131,7 +133,7 @@ export const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = pr
         );
     }
 
-    if (!isLoading && !fetchError && allChoices === undefined) {
+    if (!isPending && !fetchError && allChoices === undefined) {
         throw new Error(
             `If you're not wrapping the CheckboxGroupInput inside a ReferenceArrayInput, you must provide the choices prop`
         );
@@ -184,7 +186,7 @@ export const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = pr
         [allChoices, formOnChange, formOnBlur, optionValue, value]
     );
 
-    if (isLoading && (!allChoices || allChoices.length === 0)) {
+    if (isPending && (!allChoices || allChoices.length === 0)) {
         return (
             <Labeled
                 id={id}

@@ -19,9 +19,9 @@ import { useEvent } from '../util';
  *
  * The return value updates according to the request state:
  *
- * - start: { isLoading: true, isFetching: true, refetch }
- * - success: { data: [data from response], isLoading: false, isFetching: false, refetch }
- * - error: { error: [error from response], isLoading: false, isFetching: false, refetch }
+ * - start: { isPending: true, isFetching: true, refetch }
+ * - success: { data: [data from response], isPending: false, isFetching: false, refetch }
+ * - error: { error: [error from response], isPending: false, isFetching: false, refetch }
  *
  * This hook will return the cached result when called a second time
  * with the same parameters, until the response arrives.
@@ -46,7 +46,7 @@ import { useEvent } from '../util';
  * @prop params.ids The ids to get, e.g. [123, 456, 789]
  * @prop params.meta Optional meta parameters
 
- * @returns The current request state. Destructure as { data, error, isLoading, isFetching, refetch }.
+ * @returns The current request state. Destructure as { data, error, isPending, isFetching, refetch }.
  *
  * @example
  *
@@ -54,8 +54,8 @@ import { useEvent } from '../util';
  *
  * const PostTags = () => {
  *     const record = useRecordContext();
- *     const { data, isLoading, error } = useGetManyAggregate('tags', { ids: record.tagIds });
- *     if (isLoading) { return <Loading />; }
+ *     const { data, isPending, error } = useGetManyAggregate('tags', { ids: record.tagIds });
+ *     if (isPending) { return <Loading />; }
  *     if (error) { return <p>ERROR</p>; }
  *     return (
  *          <ul>

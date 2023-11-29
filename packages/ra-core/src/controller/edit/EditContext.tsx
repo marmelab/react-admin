@@ -24,6 +24,7 @@ export const EditContext = createContext<EditControllerResult>({
     defaultTitle: null,
     isFetching: null,
     isLoading: null,
+    isPending: null,
     mutationMode: null,
     redirect: null,
     refetch: null,

@@ -64,9 +64,14 @@ export const useShowController = <RecordType extends RaRecord = any>(
     const id = propsId != null ? propsId : decodeURIComponent(routeId);
     const { meta, ...otherQueryOptions } = queryOptions;
 
-    const { data: record, error, isLoading, isFetching, refetch } = useGetOne<
-        RecordType
-    >(
+    const {
+        data: record,
+        error,
+        isLoading,
+        isFetching,
+        isPending,
+        refetch,
+    } = useGetOne<RecordType>(
         resource,
         { id, meta },
         {
@@ -106,6 +111,7 @@ export const useShowController = <RecordType extends RaRecord = any>(
         error,
         isLoading,
         isFetching,
+        isPending,
         record,
         refetch,
         resource,
@@ -127,6 +133,7 @@ export interface ShowControllerResult<RecordType extends RaRecord = any> {
     error?: any;
     isFetching: boolean;
     isLoading: boolean;
+    isPending: boolean;
     resource: string;
     record?: RecordType;
     refetch: UseGetOneHookValue<RecordType>['refetch'];

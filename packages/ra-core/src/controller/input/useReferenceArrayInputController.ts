@@ -12,7 +12,7 @@ import { UseQueryOptions } from '@tanstack/react-query';
  *
  * @example
  *
- * const { allChoices, availableChoices, selectedChoices, error, isFetching, isLoading } = useReferenceArrayInputController({
+ * const { allChoices, availableChoices, selectedChoices, error, isFetching, isLoading, isPending } = useReferenceArrayInputController({
  *      record: { referenceIds: ['id1', 'id2']};
  *      reference: 'reference';
  *      resource: 'resource';
@@ -59,6 +59,7 @@ export const useReferenceArrayInputController = <
         error: errorGetMany,
         isLoading: isLoadingGetMany,
         isFetching: isFetchingGetMany,
+        isPending: isPendingGetMany,
         refetch: refetchGetMany,
     } = useGetManyAggregate<RecordType>(
         reference,
@@ -96,6 +97,7 @@ export const useReferenceArrayInputController = <
         error: errorGetList,
         isLoading: isLoadingGetList,
         isFetching: isFetchingGetList,
+        isPending: isPendingGetList,
         refetch: refetchGetMatching,
     } = useGetList<RecordType>(
         reference,
@@ -149,6 +151,7 @@ export const useReferenceArrayInputController = <
         hideFilter: paramsModifiers.hideFilter,
         isFetching: isFetchingGetMany || isFetchingGetList,
         isLoading: isLoadingGetMany || isLoadingGetList,
+        isPending: isPendingGetMany || isPendingGetList,
         page: params.page,
         perPage: params.perPage,
         refetch,

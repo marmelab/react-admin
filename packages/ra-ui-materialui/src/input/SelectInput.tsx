@@ -119,6 +119,7 @@ export const SelectInput = (props: SelectInputProps) => {
         helperText,
         isFetching: isFetchingProp,
         isLoading: isLoadingProp,
+        isPending: isPendingProp,
         label,
         margin = 'dense',
         onBlur,
@@ -146,7 +147,7 @@ export const SelectInput = (props: SelectInputProps) => {
 
     const {
         allChoices,
-        isLoading,
+        isPending,
         error: fetchError,
         source,
         resource,
@@ -155,6 +156,7 @@ export const SelectInput = (props: SelectInputProps) => {
         choices: choicesProp,
         isLoading: isLoadingProp,
         isFetching: isFetchingProp,
+        isPending: isPendingProp,
         resource: resourceProp,
         source: sourceProp,
     });
@@ -165,7 +167,7 @@ export const SelectInput = (props: SelectInputProps) => {
         );
     }
 
-    if (!isLoading && !fetchError && allChoices === undefined) {
+    if (!isPending && !fetchError && allChoices === undefined) {
         throw new Error(
             `If you're not wrapping the SelectInput inside a ReferenceInput, you must provide the choices prop`
         );
@@ -264,7 +266,7 @@ export const SelectInput = (props: SelectInputProps) => {
         [getChoiceValue, getDisableValue, renderMenuItemOption, createItem]
     );
 
-    if (isLoading) {
+    if (isPending) {
         return (
             <LoadingInput
                 label={

@@ -17,22 +17,22 @@ const emptyParams = {};
  *
  * The return value updates according to the request state:
  *
- * - start: { isLoading: true }
- * - success: { data: [any], isLoading: false }
- * - error: { error: [error from provider], isLoading: false }
+ * - start: { isPending: true }
+ * - success: { data: [any], isPending: false }
+ * - error: { error: [error from provider], isPending: false }
  *
  * Useful to enable features based on user permissions
  *
  * @param {Object} params Any params you want to pass to the authProvider
  *
- * @returns The current auth check state. Destructure as { permissions, error, isLoading, refetch }.
+ * @returns The current auth check state. Destructure as { permissions, error, isPending, refetch }.
  *
  * @example
  *     import { usePermissions } from 'react-admin';
  *
  *     const PostDetail = props => {
- *         const { isLoading, permissions } = usePermissions();
- *         if (!isLoading && permissions == 'editor') {
+ *         const { isPending, permissions } = usePermissions();
+ *         if (!isPending && permissions == 'editor') {
  *             return <PostEdit {...props} />
  *         } else {
  *             return <PostShow {...props} />

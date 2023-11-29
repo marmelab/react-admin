@@ -42,10 +42,10 @@ export const Authenticated = (props: AuthenticatedProps) => {
     const { authParams, children, requireAuth = false } = props;
 
     // this hook will log out if the authProvider doesn't validate that the user is authenticated
-    const { isLoading, authenticated } = useAuthState(authParams, true);
+    const { isPending, authenticated } = useAuthState(authParams, true);
 
     // in pessimistic mode don't render the children until authenticated
-    if ((requireAuth && isLoading) || !authenticated) {
+    if ((requireAuth && isPending) || !authenticated) {
         return null;
     }
 
