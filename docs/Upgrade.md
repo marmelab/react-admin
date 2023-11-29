@@ -38,8 +38,6 @@ The following hooks are impacted by this change:
 - `useDeleteMany`
 - `useUpdate`
 - `useUpdateMany`
-- `useCreateController`
-- `useEditController`
 - `useDeleteWithUndoController`
 - `useDeleteWithConfirmController`
 
