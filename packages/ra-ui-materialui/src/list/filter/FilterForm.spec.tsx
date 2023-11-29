@@ -11,7 +11,7 @@ import * as React from 'react';
 import { AdminContext } from '../../AdminContext';
 import { ReferenceInput, SelectInput, TextInput } from '../../input';
 import { Filter } from './Filter';
-import { Basic } from './FilterButton.stories';
+import { Basic, WithAutoCompleteArrayInput } from './FilterButton.stories';
 import {
     FilterForm,
     getFilterFormValues,
@@ -255,7 +255,7 @@ describe('<FilterForm />', () => {
                 getFilterFormValues(currentFormValues, newFilterValues)
             ).toEqual({
                 classicToClear: '',
-                nestedToClear: '',
+                nestedToClear: { nestedValue: '' },
                 classicUpdated: 'ghi2',
                 nestedUpdated: { nestedValue: 'jkl2' },
                 published_at: '2022-01-01T03:00:00.000Z',
@@ -263,4 +263,48 @@ describe('<FilterForm />', () => {
             });
         });
     });
+
+    it('should not reapply previous filter form values when clearing nested AutocompleteArrayInput', async () => {
+        render(<WithAutoCompleteArrayInput />);
+
+        // Open Posts List
+        fireEvent.click(await screen.findByText('Posts'));
+
+        // Set nested filter value to 'bar'
+        fireEvent.click(await screen.findByLabelText('Add filter'));
+        fireEvent.click(
+            await screen.findByRole('menuitem', { name: 'Nested' })
+        );
+        fireEvent.click(await screen.findByText('bar'));
+        fireEvent.blur(await screen.findByLabelText('Nested'));
+        await screen.findByText('1-7 of 7');
+        expect(screen.queryByRole('button', { name: 'bar' })).not.toBeNull();
+
+        // Navigate to Dashboard
+        fireEvent.click(await screen.findByText('Dashboard'));
+        // Navigate back to Posts List
+        fireEvent.click(await screen.findByText('Posts'));
+        // Filter should still be applied
+        await screen.findByText('1-7 of 7');
+        expect(screen.queryByRole('button', { name: 'bar' })).not.toBeNull();
+
+        // Clear nested filter value
+        fireEvent.mouseDown(
+            await screen.findByLabelText('Nested', { selector: 'input' })
+        );
+        fireEvent.keyDown(
+            await screen.findByLabelText('Nested', { selector: 'input' }),
+            {
+                key: 'Backspace',
+            }
+        );
+        fireEvent.blur(
+            await screen.findByLabelText('Nested', { selector: 'input' })
+        );
+
+        // Wait until filter is cleared
+        await screen.findByText('1-10 of 13');
+        // Make sure the 'bar' value is not displayed anymore
+        expect(screen.queryByRole('button', { name: 'bar' })).toBeNull();
+    }, 10000);
 });
