@@ -81,7 +81,7 @@ In the above example, `<CreateInDialogButton>` is used to create a new employee 
 | -------------- | -------- | ----------------- | ------- | ----------- |
 | `children`     | Required | `ReactNode`       |         | The content of the dialog. |
 | `ButtonProps`  | Optional | `object`          |         | Object containing props to pass to Material UI's `<Button>`. |
-| `emptyWhileLoading` | Optional | `boolean`   |         | Set to `true` to return `null` while the list is loading. |
+| `empty WhileLoading` | Optional | `boolean`   |         | Set to `true` to return `null` while the list is loading. |
 | `fullWidth`    | Optional | `boolean`         | `false` | If `true`, the dialog stretches to the full width of the screen. |
 | `icon`         | Optional | `ReactElement`    |         | Allows to override the default icon. |
 | `inline`       | Optional | `boolean`         |         | Set to true to display only a Material UI `<IconButton>` instead of the full `<Button>`. |

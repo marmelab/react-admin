@@ -74,7 +74,7 @@ const CompanyShow = () => (
 | -------------- | -------- | ----------------- | ------- | ----------- |
 | `children`     | Required | `ReactNode`       |         | The content of the dialog. |
 | `ButtonProps`  | Optional | `object`          |         | Object containing props to pass to Material UI's `<Button>`. |
-| `emptyWhileLoading` | Optional | `boolean`   |         | Set to `true` to return `null` while the list is loading. |
+| `empty WhileLoading` | Optional | `boolean`   |         | Set to `true` to return `null` while the list is loading. |
 | `fullWidth`    | Optional | `boolean`         | `false` | If `true`, the dialog stretches to the full width of the screen. |
 | `icon`         | Optional | `ReactElement`    |         | Allows to override the default icon. |
 | `id`           | Optional | `string | number` |         | The record id. If not provided, it will be deduced from the record context. |
