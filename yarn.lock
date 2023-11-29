@@ -4320,6 +4320,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@remix-run/router@npm:1.11.0":
+  version: 1.11.0
+  resolution: "@remix-run/router@npm:1.11.0"
+  checksum: 046b382e149e198f4aac02355545ef83c4c97b203d08008dcdb9b25d0f2193e21c3ba2332aba572d4f1450b68aabc77cbc278cb5a7b252cc6e1d239d81a6f7e2
+  languageName: node
+  linkType: hard
+
 "@rushstack/eslint-patch@npm:^1.1.0":
   version: 1.1.0
   resolution: "@rushstack/eslint-patch@npm:1.1.0"
@@ -9968,8 +9975,8 @@ __metadata:
     react-admin: ^4.12.0
     react-app-polyfill: ^2.0.0
     react-dom: ^17.0.0
-    react-router: ^6.1.0
-    react-router-dom: ^6.1.0
+    react-router: 6.1.0 - 6.18.0
+    react-router-dom: 6.1.0 - 6.18.0
     recharts: ^2.1.15
     rewire: ^5.0.0
     rollup-plugin-visualizer: ^5.9.2
@@ -18114,8 +18121,8 @@ __metadata:
     react-hook-form: ^7.43.9
     react-is: ^17.0.2
     react-query: ^3.32.1
-    react-router: ^6.1.0
-    react-router-dom: ^6.1.0
+    react-router: ~6.3.0
+    react-router-dom: ~6.3.0
     react-test-renderer: ^16.9.0 || ^17.0.0
     recharts: ^2.1.15
     rimraf: ^3.0.2
@@ -18127,8 +18134,8 @@ __metadata:
     react: ^16.9.0 || ^17.0.0 || ^18.0.0
     react-dom: ^16.9.0 || ^17.0.0 || ^18.0.0
     react-hook-form: ^7.43.9
-    react-router: ^6.1.0
-    react-router-dom: ^6.1.0
+    react-router: 6.1.0 - 6.18.0
+    react-router-dom: 6.1.0 - 6.18.0
   languageName: unknown
   linkType: soft
 
@@ -18348,8 +18355,8 @@ __metadata:
     react-dom: ^17.0.0
     react-dropzone: ^12.0.4
     react-query: ^3.32.1
-    react-router: ^6.1.0
-    react-router-dom: ^6.1.0
+    react-router: ~6.3.0
+    react-router-dom: ~6.3.0
     rimraf: ^3.0.2
     typescript: ^5.1.3
   peerDependencies:
@@ -18391,8 +18398,8 @@ __metadata:
     react-hook-form: ^7.43.9
     react-is: ^17.0.0
     react-query: ^3.32.1
-    react-router: ^6.1.0
-    react-router-dom: ^6.1.0
+    react-router: ~6.3.0
+    react-router-dom: ~6.3.0
     react-test-renderer: ~16.8.6
     react-transition-group: ^4.4.1
     rimraf: ^3.0.2
@@ -18405,8 +18412,8 @@ __metadata:
     react-dom: ^16.9.0 || ^17.0.0 || ^18.0.0
     react-hook-form: "*"
     react-is: ^16.9.0 || ^17.0.0 || ^18.0.0
-    react-router: ^6.1.0
-    react-router-dom: ^6.1.0
+    react-router: 6.1.0 - 6.18.0
+    react-router-dom: 6.1.0 - 6.18.0
   languageName: unknown
   linkType: soft
 
@@ -18501,8 +18508,8 @@ __metadata:
     react-admin: ^4.12.0
     react-dom: ^17.0.0
     react-error-boundary: ^3.1.4
-    react-router: ^6.1.0
-    react-router-dom: ^6.1.0
+    react-router: 6.1.0 - 6.18.0
+    react-router-dom: 6.1.0 - 6.18.0
     rollup-plugin-visualizer: ^5.9.2
     typescript: ^5.1.3
     vite: ^3.2.0
@@ -18577,8 +18584,8 @@ __metadata:
     ra-language-english: ^4.16.1
     ra-ui-materialui: ^4.16.1
     react-hook-form: ^7.43.9
-    react-router: ^6.1.0
-    react-router-dom: ^6.1.0
+    react-router: 6.1.0 - 6.18.0
+    react-router-dom: 6.1.0 - 6.18.0
     rimraf: ^3.0.2
     typescript: ^5.1.3
   peerDependencies:
@@ -18922,27 +18929,51 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-router-dom@npm:^6.1.0":
-  version: 6.2.1
-  resolution: "react-router-dom@npm:6.2.1"
+"react-router-dom@npm:6.1.0 - 6.18.0":
+  version: 6.18.0
+  resolution: "react-router-dom@npm:6.18.0"
   dependencies:
-    history: ^5.2.0
-    react-router: 6.2.1
+    "@remix-run/router": 1.11.0
+    react-router: 6.18.0
   peerDependencies:
     react: ">=16.8"
     react-dom: ">=16.8"
-  checksum: cdec44b06c89f95bb038f964079597ff02a87db62ce231bf61e23500ad75cc321087d06def3b68f38f7805eb84a43fdd0b9f61b45fb3d7f0158d2604da5a538f
+  checksum: 9c2893f6b95ca2f25e0ee816d9467fcd18bf1e854d53cde6edf93efbb49972693a898dde6bb8e9ce3c9a2a26f27291b904740e84da9b92a1e560740d5677ce0c
   languageName: node
   linkType: hard
 
-"react-router@npm:6.2.1, react-router@npm:^6.1.0":
-  version: 6.2.1
-  resolution: "react-router@npm:6.2.1"
+"react-router-dom@npm:~6.3.0":
+  version: 6.3.0
+  resolution: "react-router-dom@npm:6.3.0"
+  dependencies:
+    history: ^5.2.0
+    react-router: 6.3.0
+  peerDependencies:
+    react: ">=16.8"
+    react-dom: ">=16.8"
+  checksum: 490b0c50d46c32ad1a3264f8bcaf6b423bef86dc3b62e9070d5e81d90ce086a73af55834133920fc4125e7c8661ede901a550d73429c969b303d4dd9ce7bbaf2
+  languageName: node
+  linkType: hard
+
+"react-router@npm:6.1.0 - 6.18.0, react-router@npm:6.18.0":
+  version: 6.18.0
+  resolution: "react-router@npm:6.18.0"
+  dependencies:
+    "@remix-run/router": 1.11.0
+  peerDependencies:
+    react: ">=16.8"
+  checksum: 185d240cb8c6119eefcb16e6df0fb0a75fb736eb1a1f24e7569783286295da48cf66e922c1eee43aa497e464cf2d455b89d1d552e288889ae0c355790b1eac0d
+  languageName: node
+  linkType: hard
+
+"react-router@npm:6.3.0, react-router@npm:~6.3.0":
+  version: 6.3.0
+  resolution: "react-router@npm:6.3.0"
   dependencies:
     history: ^5.2.0
   peerDependencies:
     react: ">=16.8"
-  checksum: 591b4f1fe1c7904b608dfe693b82518c9b453b790421e6ebfec76cee72f7bc2db7a61fb187edf5501484b1f738f090561b8b9ba104b5c1b8757c330c11ece485
+  checksum: ac8785a0b28d363940763e49119e5160331099d4f0196235b143ba9cdc984048ca44a77497f393b12165c99baf8ae6c11386f1f6f20ef52d99c2e07b31920862
   languageName: node
   linkType: hard
 
@@ -20146,8 +20177,8 @@ __metadata:
     react-dom: ^17.0.0
     react-hook-form: ^7.43.9
     react-query: ^3.32.1
-    react-router: ^6.1.0
-    react-router-dom: ^6.1.0
+    react-router: 6.1.0 - 6.18.0
+    react-router-dom: 6.1.0 - 6.18.0
     typescript: ^5.1.3
     vite: ^3.2.0
   languageName: unknown
