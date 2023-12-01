@@ -30,8 +30,8 @@
         "cross-env": "^5.2.0",
         "react": "^17.0.0",
         "react-dom": "^17.0.0",
-        "react-router": "6.1.0 - 6.18.0",
-        "react-router-dom": "6.1.0 - 6.18.0",
+        "react-router": "^6.1.0",
+        "react-router-dom": "^6.1.0",
         "rimraf": "^3.0.2",
         "typescript": "^5.1.3"
     },
