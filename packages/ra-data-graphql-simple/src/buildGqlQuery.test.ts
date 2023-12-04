@@ -7,6 +7,8 @@ import {
     UPDATE,
     CREATE,
     DELETE,
+    DELETE_MANY,
+    UPDATE_MANY,
 } from 'ra-core';
 
 import buildGqlQuery, {
@@ -280,6 +282,49 @@ describe('buildGqlQuery', () => {
             { name: 'bar' },
         ],
     };
+
+    const queryTypeDeleteMany = {
+        name: 'deleteCommands',
+        args: [
+            {
+                name: 'ids',
+                type: {
+                    kind: TypeKind.LIST,
+                    ofType: {
+                        kind: TypeKind.NON_NULL,
+                        ofType: {
+                            kind: TypeKind.SCALAR,
+                            name: 'ID',
+                        },
+                    },
+                },
+            },
+        ],
+    };
+
+    const queryTypeUpdateMany = {
+        name: 'updateCommands',
+        args: [
+            {
+                name: 'ids',
+                type: {
+                    kind: TypeKind.LIST,
+                    ofType: {
+                        kind: TypeKind.NON_NULL,
+                        ofType: {
+                            kind: TypeKind.SCALAR,
+                            name: 'ID',
+                        },
+                    },
+                },
+            },
+            {
+                name: 'data',
+                type: { kind: TypeKind.OBJECT, name: 'CommandType' },
+            },
+        ],
+    };
+
     const params = { foo: 'foo_value' };
 
     it('returns the correct query for GET_LIST', () => {
@@ -461,6 +506,49 @@ describe('buildGqlQuery', () => {
     resource {
       id
     }
+  }
+}
+`
+        );
+    });
+
+    it('returns the correct query for DELETE_MANY', () => {
+        expect(
+            print(
+                buildGqlQuery(introspectionResults)(
+                    resource,
+                    DELETE_MANY,
+                    queryTypeDeleteMany,
+                    { ids: [1, 2, 3] }
+                )
+            )
+        ).toEqual(
+            `mutation deleteCommands($ids: [ID!]) {
+  data: deleteCommands(ids: $ids) {
+    ids
+  }
+}
+`
+        );
+    });
+
+    it('returns the correct query for UPDATE_MANY', () => {
+        expect(
+            print(
+                buildGqlQuery(introspectionResults)(
+                    resource,
+                    UPDATE_MANY,
+                    queryTypeUpdateMany,
+                    {
+                        ids: [1, 2, 3],
+                        data: params,
+                    }
+                )
+            )
+        ).toEqual(
+            `mutation updateCommands($ids: [ID!], $data: CommandType) {
+  data: updateCommands(ids: $ids, data: $data) {
+    ids
   }
 }
 `

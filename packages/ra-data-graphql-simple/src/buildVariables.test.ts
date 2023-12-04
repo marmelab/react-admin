@@ -5,6 +5,8 @@ import {
     CREATE,
     UPDATE,
     DELETE,
+    DELETE_MANY,
+    UPDATE_MANY,
 } from 'ra-core';
 import buildVariables from './buildVariables';
 
@@ -169,6 +171,48 @@ describe('buildVariables', () => {
                 )
             ).toEqual({
                 id: 'post1',
+            });
+        });
+    });
+
+    describe('DELETE_MANY', () => {
+        it('returns correct variables', () => {
+            const params = {
+                ids: ['post1'],
+            };
+            expect(
+                buildVariables(introspectionResult)(
+                    { type: { name: 'Post', inputFields: [] } },
+                    DELETE_MANY,
+                    params,
+                    {}
+                )
+            ).toEqual({
+                ids: ['post1'],
+            });
+        });
+    });
+
+    describe('UPDATE_MANY', () => {
+        it('returns correct variables', () => {
+            const params = {
+                ids: ['post1', 'post2'],
+                data: {
+                    title: 'New Title',
+                },
+            };
+            expect(
+                buildVariables(introspectionResult)(
+                    { type: { name: 'Post', inputFields: [] } },
+                    UPDATE_MANY,
+                    params,
+                    {}
+                )
+            ).toEqual({
+                ids: ['post1', 'post2'],
+                data: {
+                    title: 'New Title',
+                },
             });
         });
     });

@@ -1,4 +1,11 @@
-import { GET_LIST, GET_MANY, GET_MANY_REFERENCE, DELETE } from 'ra-core';
+import {
+    GET_LIST,
+    GET_MANY,
+    GET_MANY_REFERENCE,
+    DELETE,
+    DELETE_MANY,
+    UPDATE_MANY,
+} from 'ra-core';
 import {
     QUERY_TYPES,
     IntrospectionResult,
@@ -73,6 +80,27 @@ export default (introspectionResults: IntrospectionResult) => (
                         args,
                         null,
                         gqlTypes.selectionSet(fields)
+                    ),
+                ]),
+                gqlTypes.name(queryType.name),
+                apolloArgs
+            ),
+        ]);
+    }
+
+    if (raFetchMethod === DELETE_MANY || raFetchMethod === UPDATE_MANY) {
+        return gqlTypes.document([
+            gqlTypes.operationDefinition(
+                'mutation',
+                gqlTypes.selectionSet([
+                    gqlTypes.field(
+                        gqlTypes.name(queryType.name),
+                        gqlTypes.name('data'),
+                        args,
+                        null,
+                        gqlTypes.selectionSet([
+                            gqlTypes.field(gqlTypes.name('ids')),
+                        ])
                     ),
                 ]),
                 gqlTypes.name(queryType.name),

@@ -82,7 +82,12 @@ type Mutation {
     views: Int!
     user_id: ID!
   ): Post
+  updatePosts(
+    ids: [ID!]
+    data: PostBulkUpdatePayload
+  ) : { ids: [ID!]}
   deletePost(id: ID!): Post
+  deletePosts(ids: [ID!]) : { ids: [ID!]}
 }
 
 type Post {
@@ -104,6 +109,10 @@ input PostFilter {
     views_gt: Int
     views_gte: Int
     user_id: ID
+}
+
+input PostBulkUpdatePayload {
+    title: String
 }
 
 type ListMetadata {
@@ -211,7 +220,7 @@ buildApolloProvider({ introspection: introspectionOptions });
 
 ## `DELETE_MANY` and `UPDATE_MANY` Optimizations
 
-Your GraphQL backend may not allow multiple deletions or updates in a single query. This provider simply makes multiple requests to handle those. This is obviously not ideal but can be alleviated by supplying your own `ApolloClient` which could use the [apollo-link-batch-http](https://www.apollographql.com/docs/link/links/batch-http.html) link if your GraphQL backend support query batching.
+Your GraphQL backend may not allow multiple deletions or updates in a single query. This provider defaults to simply making multiple requests to handle those. This is obviously not ideal but can be alleviated by supplying your own `ApolloClient` which could use the [apollo-link-batch-http](https://www.apollographql.com/docs/link/links/batch-http.html) link if your GraphQL backend support query batching.
 
 ## Contributing
 
