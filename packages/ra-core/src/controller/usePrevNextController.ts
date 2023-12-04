@@ -193,7 +193,7 @@ export const usePrevNextController = <RecordType extends RaRecord = any>(
 
     const finalData = canUseCacheData ? queryData.data : data?.data || [];
 
-    if (!record || isPending)
+    if (!record || (isPending && !canUseCacheData))
         return {
             isFetching: true,
             isLoading: true,
@@ -235,9 +235,9 @@ export const usePrevNextController = <RecordType extends RaRecord = any>(
         index: index === -1 ? undefined : index,
         total: canUseCacheData ? queryData?.total : data?.total,
         error,
-        isFetching,
-        isLoading,
-        isPending,
+        isFetching: canUseCacheData ? false : isFetching,
+        isLoading: canUseCacheData ? false : isLoading,
+        isPending: canUseCacheData ? false : isPending,
     };
 };
 
