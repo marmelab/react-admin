@@ -54,6 +54,6 @@ describe('useGetIdentity', () => {
             expect(screen.queryByText('Loading')).toBeNull();
         });
         expect(screen.queryByText(/Error/)).toBeNull();
-        expect(screen.queryByText('undefined')).not.toBeNull();
+        expect(screen.queryByText('null')).not.toBeNull();
     });
 });
