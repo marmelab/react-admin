@@ -34,6 +34,7 @@ const Wrapper = ({
         dataProvider={testDataProvider({
             getOne: () => Promise.resolve({ data }),
         })}
+        defaultTheme="light"
     >
         <ResourceContextProvider value="books">
             <Edit id={1} sx={{ width: 600 }}>

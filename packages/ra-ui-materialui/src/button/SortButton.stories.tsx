@@ -54,13 +54,17 @@ const PlayerList = () => (
 );
 
 export const Basic = () => (
-    <AdminContext dataProvider={dataProvider}>
+    <AdminContext dataProvider={dataProvider} defaultTheme="light">
         <Resource name="players" list={PlayerList} />
     </AdminContext>
 );
 
 export const I18N = () => (
-    <AdminContext dataProvider={dataProvider} i18nProvider={i18nProvider}>
+    <AdminContext
+        dataProvider={dataProvider}
+        defaultTheme="light"
+        i18nProvider={i18nProvider}
+    >
         <Resource name="players" list={PlayerList} />
     </AdminContext>
 );
@@ -92,7 +96,7 @@ const PlayerListSX = () => (
 );
 
 export const SX = () => (
-    <AdminContext dataProvider={dataProvider}>
+    <AdminContext dataProvider={dataProvider} defaultTheme="light">
         <Resource name="players" list={PlayerListSX} />
     </AdminContext>
 );

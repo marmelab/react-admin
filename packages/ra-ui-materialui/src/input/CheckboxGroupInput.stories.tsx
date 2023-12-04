@@ -27,7 +27,7 @@ const choices = [
 ];
 
 export const Basic = () => (
-    <AdminContext i18nProvider={i18nProvider}>
+    <AdminContext i18nProvider={i18nProvider} defaultTheme="light">
         <Create
             resource="posts"
             record={{ roles: ['u001', 'u003'] }}
@@ -60,7 +60,11 @@ const dataProvider = testDataProvider({
 });
 
 export const InsideReferenceArrayInput = () => (
-    <AdminContext dataProvider={dataProvider} i18nProvider={i18nProvider}>
+    <AdminContext
+        dataProvider={dataProvider}
+        i18nProvider={i18nProvider}
+        defaultTheme="light"
+    >
         <Create
             resource="posts"
             record={{ options: [1, 2] }}
@@ -76,7 +80,7 @@ export const InsideReferenceArrayInput = () => (
 );
 
 export const Disabled = () => (
-    <AdminContext i18nProvider={i18nProvider}>
+    <AdminContext i18nProvider={i18nProvider} defaultTheme="light">
         <Create
             resource="posts"
             record={{ options: [1, 2] }}
@@ -94,7 +98,7 @@ export const Disabled = () => (
 );
 
 export const LabelPlacement = () => (
-    <AdminContext i18nProvider={i18nProvider}>
+    <AdminContext i18nProvider={i18nProvider} defaultTheme="light">
         <Create
             resource="posts"
             record={{ options: [1, 2] }}
@@ -112,7 +116,7 @@ export const LabelPlacement = () => (
 );
 
 export const Column = () => (
-    <AdminContext i18nProvider={i18nProvider}>
+    <AdminContext i18nProvider={i18nProvider} defaultTheme="light">
         <Create
             resource="posts"
             record={{ options: [1, 2] }}
@@ -130,7 +134,7 @@ export const Column = () => (
 );
 
 export const Options = () => (
-    <AdminContext i18nProvider={i18nProvider}>
+    <AdminContext i18nProvider={i18nProvider} defaultTheme="light">
         <Create
             resource="posts"
             record={{ options: [1, 2] }}
@@ -151,7 +155,7 @@ export const Options = () => (
 );
 
 export const CustomOptionText = () => (
-    <AdminContext i18nProvider={i18nProvider}>
+    <AdminContext i18nProvider={i18nProvider} defaultTheme="light">
         <Create
             resource="posts"
             record={{ options: [1, 2] }}
@@ -187,7 +191,7 @@ const OptionText = () => {
 };
 
 export const Validate = () => (
-    <AdminContext i18nProvider={i18nProvider}>
+    <AdminContext i18nProvider={i18nProvider} defaultTheme="light">
         <Create resource="posts" sx={{ width: 600 }}>
             <SimpleForm>
                 <CheckboxGroupInput
@@ -202,7 +206,7 @@ export const Validate = () => (
 );
 
 export const HelperText = () => (
-    <AdminContext i18nProvider={i18nProvider}>
+    <AdminContext i18nProvider={i18nProvider} defaultTheme="light">
         <Create resource="posts" sx={{ width: 600 }}>
             <SimpleForm>
                 <CheckboxGroupInput
@@ -246,6 +250,7 @@ export const TranslateChoice = () => {
                         }),
                 } as any
             }
+            defaultTheme="light"
         >
             <Edit resource="posts" id="1">
                 <SimpleForm>
@@ -302,7 +307,7 @@ const SetFocusButton = ({ source }) => {
 };
 
 export const SetFocus = () => (
-    <AdminContext>
+    <AdminContext defaultTheme="light">
         <Create resource="posts" sx={{ width: 600 }}>
             <SimpleForm>
                 <TextInput source="title" />

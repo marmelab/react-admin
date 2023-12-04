@@ -38,7 +38,7 @@ const FormInspector = ({ source }) => {
 };
 
 export const Basic = () => (
-    <AdminContext i18nProvider={i18nProvider}>
+    <AdminContext i18nProvider={i18nProvider} defaultTheme="light">
         <Create
             resource="users"
             record={{ roles: ['u001', 'u003'] }}
@@ -83,7 +83,7 @@ export const Basic = () => (
 );
 
 export const DefaultValue = () => (
-    <AdminContext i18nProvider={i18nProvider}>
+    <AdminContext i18nProvider={i18nProvider} defaultTheme="light">
         <Create resource="users" sx={{ width: 600 }}>
             <SimpleForm>
                 <SelectArrayInput
@@ -103,7 +103,7 @@ export const DefaultValue = () => (
 );
 
 export const InsideArrayInput = () => (
-    <AdminContext i18nProvider={i18nProvider}>
+    <AdminContext i18nProvider={i18nProvider} defaultTheme="light">
         <Create resource="users" sx={{ width: 600 }}>
             <SimpleForm>
                 <ArrayInput
@@ -178,7 +178,7 @@ const CreateRole = () => {
 };
 
 export const CreateProp = () => (
-    <AdminContext i18nProvider={i18nProvider}>
+    <AdminContext i18nProvider={i18nProvider} defaultTheme="light">
         <Create
             resource="users"
             record={{ roles: ['u001', 'u003'] }}
@@ -207,7 +207,7 @@ export const DifferentIdTypes = () => {
     };
     const dataProvider = fakeRestProvider(fakeData, false);
     return (
-        <AdminContext dataProvider={dataProvider}>
+        <AdminContext dataProvider={dataProvider} defaultTheme="light">
             <Edit resource="bands" id={1} sx={{ width: 600 }}>
                 <SimpleForm>
                     <TextInput source="name" fullWidth />
@@ -233,7 +233,7 @@ export const DifferentSizes = () => {
     };
     const dataProvider = fakeRestProvider(fakeData, false);
     return (
-        <AdminContext dataProvider={dataProvider}>
+        <AdminContext dataProvider={dataProvider} defaultTheme="light">
             <Edit resource="bands" id={1} sx={{ width: 600 }}>
                 <SimpleForm>
                     <TextInput source="name" fullWidth />
@@ -299,6 +299,7 @@ export const TranslateChoice = () => {
                         }),
                 } as any
             }
+            defaultTheme="light"
         >
             <Edit resource="posts" id="1">
                 <SimpleForm>

@@ -6,6 +6,7 @@ import {
     ThemesContext,
     RaThemeOptions,
     defaultLightTheme,
+    defaultDarkTheme,
 } from './theme';
 
 export const AdminContext = (props: AdminContextProps) => {
@@ -22,7 +23,12 @@ export const AdminContext = (props: AdminContextProps) => {
             <ThemesContext.Provider
                 value={{
                     lightTheme: theme || lightTheme,
-                    darkTheme,
+                    darkTheme:
+                        theme && !darkTheme
+                            ? null
+                            : !darkTheme && darkTheme !== null
+                            ? defaultDarkTheme
+                            : darkTheme,
                     defaultTheme,
                 }}
             >
@@ -56,6 +62,7 @@ export interface AdminContextProps extends CoreAdminContextProps {
 
     /**
      * The material-UI theme to customize the UI. Prefer the theme prop.
+     * If not provided, the default light theme is used.
      *
      * @see https://marmelab.com/react-admin/Admin.html#theme
      */
@@ -63,6 +70,8 @@ export interface AdminContextProps extends CoreAdminContextProps {
 
     /**
      * The material-UI theme to apply to the UI when the dark mode is activated.
+     * If not provided, the default dark theme is used.
+     * If set to null, the dark mode is disabled.
      *
      * @see https://marmelab.com/react-admin/Admin.html#darktheme
      * @example
@@ -80,7 +89,7 @@ export interface AdminContextProps extends CoreAdminContextProps {
      *     </Admin>
      * );
      */
-    darkTheme?: RaThemeOptions;
+    darkTheme?: RaThemeOptions | null;
 
     /**
      * The default theme to use when the user hasn't chosen a theme yet.

@@ -18,9 +18,22 @@ If you previously relied on the fact that the rows were not clickable by default
 </Datagrid>
 ```
 
+## Dark Theme Is Available By Default
+
+In addition to the light theme, React-admin v5 includes a [dark theme](https://marmelab.com/react-admin/AppTheme.html#light-and-dark-themes), renders a theme switcher in the app bar, and chooses the default theme based on the user OS preferences.
+
+If you don't need the dark mode feature, you'll have to explicitly disable it:
+
+```diff
+-<Admin>
++<Admin darkTheme={null}>
+   ...
+</Admin>
+```
+
 ## Links are now underlined by default
- 
-In the default theme, links are now underlined by default. 
+
+In the default theme, links are now underlined by default.
 
 If you use the `<Link>` component from `react-admin`, and you want to remove the underline, set the `underline` prop to `none`:
 
