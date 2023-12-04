@@ -30,7 +30,7 @@ import { sanitizeEmptyValues as sanitizeValues } from './sanitizeEmptyValues';
  * - notification on invalid form
  * - stop form submission event propagation
  */
-export const useAugmentedForm = <RecordType extends RaRecord = any>(
+export const useAugmentedForm = <RecordType = any>(
     props: UseAugmentedFormProps<RecordType>
 ) => {
     const {
@@ -129,14 +129,14 @@ export const useAugmentedForm = <RecordType extends RaRecord = any>(
     };
 };
 
-export type UseAugmentedFormProps<
-    RecordType extends RaRecord = any
-> = UseFormOwnProps<RecordType> &
+export type UseAugmentedFormProps<RecordType = any> = UseFormOwnProps<
+    RecordType
+> &
     Omit<UseFormProps, 'onSubmit'> & {
         validate?: ValidateForm;
     };
 
-export interface UseFormOwnProps<RecordType extends RaRecord = any> {
+export interface UseFormOwnProps<RecordType = any> {
     defaultValues?: any;
     formRootPathname?: string;
     record?: Partial<RaRecord>;

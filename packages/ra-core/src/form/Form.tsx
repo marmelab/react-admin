@@ -46,9 +46,9 @@ import { useAugmentedForm } from './useAugmentedForm';
  *
  * @link https://react-hook-form.com/docs/useformcontext
  */
-export const Form = <RecordType extends RaRecord = any>(
-    props: FormProps<RecordType>
-) => {
+// TODO: remove after upgrading prettier
+// eslint-disable-next-line prettier/prettier
+export const Form = <RecordType = any>(props: FormProps<RecordType>) => {
     const { children, id, className, noValidate = false } = props;
     const record = useRecordContext(props);
     const resource = useResourceContext(props);
@@ -74,15 +74,13 @@ export const Form = <RecordType extends RaRecord = any>(
     );
 };
 
-export type FormProps<RecordType extends RaRecord = any> = FormOwnProps<
-    RecordType
-> &
+export type FormProps<RecordType = any> = FormOwnProps<RecordType> &
     Omit<UseFormProps, 'onSubmit'> & {
         validate?: ValidateForm;
         noValidate?: boolean;
     };
 
-export interface FormOwnProps<RecordType extends RaRecord = any> {
+export interface FormOwnProps<RecordType = any> {
     children: ReactNode;
     className?: string;
     defaultValues?: any;
