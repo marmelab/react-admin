@@ -1,5 +1,15 @@
 # Changelog
 
+## v4.16.2
+
+* Fix clearing a nested filter re-renders the previous value when navigating back to the list ([#9491](https://github.com/marmelab/react-admin/pull/9491)) ([slax57](https://github.com/slax57))
+* Fix `ra-data-graphql` uses a Proxy, which prevents adding more methods automatically ([#9487](https://github.com/marmelab/react-admin/pull/9487)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `useUpdateMany` doesn't accept the `returnPromise` option at call time ([#9486](https://github.com/marmelab/react-admin/pull/9486)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<Pagination>` logs a warning ([#9474](https://github.com/marmelab/react-admin/pull/9474)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Update ra-form-layouts dialogs documentation ([#9482](https://github.com/marmelab/react-admin/pull/9482)) ([djhi](https://github.com/djhi))
+* [Doc] Fix snippets fails to render in JS ([#9478](https://github.com/marmelab/react-admin/pull/9478)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Add link to tutorial for headless admin ([#9477](https://github.com/marmelab/react-admin/pull/9477)) ([fzaninotto](https://github.com/fzaninotto))
+
 ## v4.16.1
 
 * Fix `<FileInput>` should display a validation errors right away when form mode is 'onChange' ([#9459](https://github.com/marmelab/react-admin/pull/9459)) ([slax57](https://github.com/slax57))
