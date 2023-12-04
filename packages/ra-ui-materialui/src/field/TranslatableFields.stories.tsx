@@ -44,7 +44,7 @@ const defaultData = [
 const i18nProvider = polyglotI18nProvider(() => englishMessages);
 
 const Wrapper = ({ children }) => (
-    <AdminContext i18nProvider={i18nProvider}>
+    <AdminContext i18nProvider={i18nProvider} defaultTheme="light">
         <RecordContextProvider value={defaultData[0]}>
             <SimpleShowLayout>{children}</SimpleShowLayout>
         </RecordContextProvider>

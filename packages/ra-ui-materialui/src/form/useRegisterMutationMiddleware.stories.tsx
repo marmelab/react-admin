@@ -107,7 +107,7 @@ export const Basic = () => {
         true
     );
     return (
-        <AdminContext dataProvider={dataProvider}>
+        <AdminContext dataProvider={dataProvider} defaultTheme="light">
             <Create resource="posts">
                 <SimpleForm>
                     <MyImageInput source="thumbnail" />

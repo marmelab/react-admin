@@ -30,51 +30,47 @@ export default { title: 'ra-ui-materialui/input/AutocompleteArrayInput' };
 
 const i18nProvider = polyglotI18nProvider(() => englishMessages);
 
-export const Basic = () => (
-    <AdminContext i18nProvider={i18nProvider}>
+const Wrapper = ({ children }) => (
+    <AdminContext i18nProvider={i18nProvider} defaultTheme="light">
         <Create
             resource="posts"
             record={{ roles: ['u001', 'u003'] }}
             sx={{ width: 600 }}
         >
-            <SimpleForm>
-                <AutocompleteArrayInput
-                    source="roles"
-                    choices={[
-                        { id: 'admin', name: 'Admin' },
-                        { id: 'u001', name: 'Editor' },
-                        { id: 'u002', name: 'Moderator' },
-                        { id: 'u003', name: 'Reviewer' },
-                    ]}
-                />
-            </SimpleForm>
+            <SimpleForm>{children}</SimpleForm>
         </Create>
     </AdminContext>
+);
+
+export const Basic = () => (
+    <Wrapper>
+        <AutocompleteArrayInput
+            source="roles"
+            choices={[
+                { id: 'admin', name: 'Admin' },
+                { id: 'u001', name: 'Editor' },
+                { id: 'u002', name: 'Moderator' },
+                { id: 'u003', name: 'Reviewer' },
+            ]}
+        />
+    </Wrapper>
 );
 
 export const OnChange = ({
     onChange = (value, records) => console.log({ value, records }),
 }: Pick<AutocompleteArrayInputProps, 'onChange'>) => (
-    <AdminContext i18nProvider={i18nProvider}>
-        <Create
-            resource="posts"
-            record={{ roles: ['u001', 'u003'] }}
-            sx={{ width: 600 }}
-        >
-            <SimpleForm>
-                <AutocompleteArrayInput
-                    source="roles"
-                    choices={[
-                        { id: 'admin', name: 'Admin' },
-                        { id: 'u001', name: 'Editor' },
-                        { id: 'u002', name: 'Moderator' },
-                        { id: 'u003', name: 'Reviewer' },
-                    ]}
-                    onChange={onChange}
-                />
-            </SimpleForm>
-        </Create>
-    </AdminContext>
+    <Wrapper>
+        <AutocompleteArrayInput
+            source="roles"
+            choices={[
+                { id: 'admin', name: 'Admin' },
+                { id: 'u001', name: 'Editor' },
+                { id: 'u002', name: 'Moderator' },
+                { id: 'u003', name: 'Reviewer' },
+            ]}
+            onChange={onChange}
+        />
+    </Wrapper>
 );
 
 const choices = [
@@ -117,22 +113,14 @@ const CreateRole = () => {
 };
 
 export const CreateProp = () => (
-    <AdminContext i18nProvider={i18nProvider}>
-        <Create
-            resource="users"
-            record={{ roles: ['u001', 'u003'] }}
-            sx={{ width: 600 }}
-        >
-            <SimpleForm>
-                <AutocompleteArrayInput
-                    source="roles"
-                    choices={choices}
-                    sx={{ width: 400 }}
-                    create={<CreateRole />}
-                />
-            </SimpleForm>
-        </Create>
-    </AdminContext>
+    <Wrapper>
+        <AutocompleteArrayInput
+            source="roles"
+            choices={choices}
+            sx={{ width: 400 }}
+            create={<CreateRole />}
+        />
+    </Wrapper>
 );
 
 const dataProvider = {
