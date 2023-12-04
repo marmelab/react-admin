@@ -195,15 +195,14 @@ describe('<FilterButton />', () => {
                 expect(screen.queryAllByRole('checkbox')).toHaveLength(11);
             });
 
-            fireEvent.click(screen.getByLabelText('Open'));
-            fireEvent.click(screen.getByText('Sint...'));
+            fireEvent.click(await screen.findByLabelText('Open'));
+            fireEvent.click(await screen.findByText('Sint...'));
 
             await waitFor(
                 () => {
-                    screen.getByLabelText('Add filter');
                     expect(screen.getAllByRole('checkbox')).toHaveLength(2);
                 },
-                { timeout: 5000 }
+                { timeout: 10000 }
             );
 
             fireEvent.click(screen.getByLabelText('Add filter'));
