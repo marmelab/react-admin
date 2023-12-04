@@ -15,7 +15,18 @@ This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" s
 
 ## Usage
 
-Add the `<CreateDialog>` component as a sibling to a `<List>` component.
+
+First, install the `@react-admin/ra-form-layout` package:
+
+```sh
+npm install --save @react-admin/ra-form-layout
+# or
+yarn add @react-admin/ra-form-layout
+```
+
+**Tip**: [`ra-form-layout`](https://marmelab.com/ra-enterprise/modules/ra-form-layout#createdialog-editdialog--showdialog) is hosted in a private npm registry. You need to subscribe to one of the [Enterprise Edition](https://marmelab.com/ra-enterprise/) plans to access this package.
+
+Then, add the `<CreateDialog>` component as a sibling to a `<List>` component.
 
 ```jsx
 import {
@@ -57,21 +68,177 @@ In the related `<Resource>`, you don't need to declare a `create` component as t
 
 **Note**: You can't use the `<CreateDialog>` and have a standard `<Edit>` specified on your `<Resource>`, because the `<Routes>` declarations would conflict. If you need this, use the [`<CreateInDialogButton>`](./CreateInDialogButton.md) instead.
 
-`<CreateDialog>` accepts the same props as the [`<Create>`](./Create.md) component, and the same type of children (e.g. a [`<SimpleForm>`](./SimpleForm.md) element).
 
-* `children`: the components that renders the form
-* `className`: passed to the root component
-* [`component`](./Create.md#component): override the root component
-* [`disableAuthentication`](./Create.md#disableauthentication): disable the authentication check
-* [`mutationOptions`](./Create.md#mutationoptions): options for the `dataProvider.create()` call
-* [`record`](./Create.md#record): initialize the form with a record
-* [`redirect`](./Create.md#redirect): change the redirect location after successful creation
-* [`resource`](./Create.md#resource): override the name of the resource to create
-* [`sx`](./Create.md#sx-css-api): Override the styles
-* [`title`](./Create.md#title): override the page title
-* [`transform`](./Create.md#transform): transform the form data before calling `dataProvider.create()`
+## Props
 
-Check [the `ra-form-layout` documentation](https://marmelab.com/ra-enterprise/modules/ra-form-layout#createdialog-editdialog--showdialog) for more details.
+`<CreateDialog>` accepts the following props:
+
+| Prop           | Required | Type              | Default | Description |
+| -------------- | -------- | ----------------- | ------- | ----------- |
+| `children`     | Required | `ReactNode`       |         | The content of the dialog. |
+| `fullWidth`    | Optional | `boolean`         | `false` | If `true`, the dialog stretches to the full width of the screen. |
+| `maxWidth`     | Optional | `string`          | `sm`    | The max width of the dialog. |
+| `mutation Options` | Optional | `object`       |         | The options to pass to the `useMutation` hook. |
+| `resource`     | Optional | `string`          |         | The resource name, e.g. `posts`
+| `sx`           | Optional | `object`          |         | Override the styles applied to the dialog component. |
+| `transform`    | Optional | `function`        |         | Transform the form data before calling `dataProvider.create()`. |
+
+## `children`
+
+`<CreateDialog>` doesn't render any field by default - it delegates this to its children, usually a Form component.
+
+React-admin provides several built-in form layout components:
+
+- [`SimpleForm`](./SimpleForm.md) for a single-column layout
+- [`TabbedForm`](./TabbedForm.md) for a tabbed layout
+- [`AccordionForm`](./AccordionForm.md) for long forms with collapsible sections
+- [`LongForm`](./LongForm.md) for long forms with a navigation sidebar
+- [`WizardForm`](./WizardForm.md) for multi-step forms
+- and [`Form`](./Form.md), a headless component to use as a base for your custom layouts
+
+To use an alternative form layout, switch the `<CreateDialog>` child component:
+
+```diff
+const MyCreateDialog = () => (
+    <CreateDialog fullWidth maxWidth="md">
+-       <SimpleForm>
++       <TabbedForm>
++           <TabbedForm.Tab label="Identity">
+                <TextInput source="first_name" fullWidth />
+                <TextInput source="last_name" fullWidth />
++           </TabbedForm.Tab>
++           <TabbedForm.Tab label="Informations">
+                <DateInput source="dob" label="born" fullWidth />
+                <SelectInput source="sex" choices={sexChoices} fullWidth />
++           </TabbedForm.Tab>
+-       </SimpleForm>
++       </TabbedForm>
+    </CreateDialog>
+);
+```
+
+## `fullWidth`
+
+By default, `<CreateDialog>` renders a [Material UI `<Dialog>`](https://mui.com/material-ui/react-dialog/#full-screen-dialogs) component that takes the width of its content.
+
+You can make the dialog full width by setting the `fullWidth` prop to `true`:
+
+```jsx
+const MyCreateDialog = () => (
+  <CreateDialog fullWidth>
+      ...
+  </CreateDialog>
+);
+```
+
+In addition, you can set a dialog maximum width by using the `maxWidth` enumerable in combination with the `fullWidth` boolean. When the `fullWidth` prop is true, the dialog will adapt based on the `maxWidth` value.
+
+```jsx
+const MyCreateDialog = () => (
+  <CreateDialog fullWidth maxWidth="sm">
+      ...
+  </CreateDialog>
+);
+```
+
+## `maxWidth`
+
+The `maxWidth` prop allows you to set the max width of the dialog. It can be one of the following values: `xs`, `sm`, `md`, `lg`, `xl`, `false`. The default is `sm`.
+
+For example, you can use that prop to make the dialog full width:
+
+```jsx
+const MyCreateDialog = () => (
+  <CreateDialog fullWidth maxWidth={false}>
+      ...
+  </CreateDialog>
+);
+```
+
+## `mutationOptions`
+
+The `mutationOptions` prop allows you to pass options to the `useMutation` hook. 
+
+This can be useful e.g. to pass [a custom `meta`](./Actions.md#meta-parameter) to the `dataProvider.create()` call.
+
+{% raw %}
+```jsx
+const MyCreateDialog = () => (
+  <CreateDialog mutationOptions={{ meta: { fetch: 'author' } }}>
+      ...
+  </CreateDialog>
+);
+```
+{% endraw %}
+
+## `resource`
+
+The `resource` prop allows you to pass the resource name to the `<CreateDialog>` component. If not provided, it will be deduced from the resource context.
+
+This is useful to link to a related record. For instance, the following dialog lets you create the author of a book:
+
+```jsx
+const EditAuthorDialog = () => {
+  const book = useRecordContext();
+  return (
+    <CreateDialog resource="authors">
+        ...
+    </CreateDialog>
+  );
+};
+```
+
+## `sx`
+
+Customize the styles applied to the Material UI `<Dialog>` component:
+
+{% raw %}
+```jsx
+const MyCreateDialog = () => (
+  <CreateDialog sx={{ backgroundColor: 'paper' }}>
+      ...
+  </CreateDialog>
+);
+```
+{% endraw %}
+
+## `transform`
+
+To transform a record after the user has submitted the form but before the record is passed to `dataProvider.create()`, use the `transform` prop. It expects a function taking a record as argument, and returning a modified record. For instance, to add a computed field upon edition:
+
+```jsx
+export const UseCreate = () => {
+    const transform = data => ({
+        ...data,
+        fullName: `${data.firstName} ${data.lastName}`
+    });
+    return (
+        <CreateDialog transform={transform}>
+            ...
+        </CreateDialog>
+    );
+}
+```
+
+The `transform` function can also return a `Promise`, which allows you to do all sorts of asynchronous calls (e.g. to the `dataProvider`) during the transformation.
+
+**Tip**: If you want to have different transformations based on the button clicked by the user (e.g. if the creation form displays two submit buttons, one to "save", and another to "save and notify other admins"), you can set the `transform` prop on [the `<SaveButton>` component](./SaveButton.md), too.
+
+**Tip**: The `transform` function also gets the `previousData` in its second argument:
+
+```jsx
+export const UseCreate = () => {
+    const transform = (data, { previousData }) => ({
+        ...data,
+        avoidChangeField: previousData.avoidChangeField
+    });
+    return (
+        <CreateDialog transform={transform}>
+            ...
+        </CreateDialog>
+    );
+}
+```
 
 ## Usage Without Routing
 

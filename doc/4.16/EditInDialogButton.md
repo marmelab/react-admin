@@ -74,7 +74,6 @@ const CompanyShow = () => (
 | -------------- | -------- | ----------------- | ------- | ----------- |
 | `children`     | Required | `ReactNode`       |         | The content of the dialog. |
 | `ButtonProps`  | Optional | `object`          |         | Object containing props to pass to Material UI's `<Button>`. |
-| `empty WhileLoading` | Optional | `boolean`   |         | Set to `true` to return `null` while the list is loading. |
 | `fullWidth`    | Optional | `boolean`         | `false` | If `true`, the dialog stretches to the full width of the screen. |
 | `icon`         | Optional | `ReactElement`    |         | Allows to override the default icon. |
 | `id`           | Optional | `string | number` |         | The record id. If not provided, it will be deduced from the record context. |
@@ -97,7 +96,6 @@ React-admin provides several built-in form layout components:
 - [`AccordionForm`](./AccordionForm.md) for long forms with collapsible sections
 - [`LongForm`](./LongForm.md) for long forms with a navigation sidebar
 - [`WizardForm`](./WizardForm.md) for multi-step forms
-- [`EditDialog`](./EditDialog.md) for sub-forms in a modal dialog
 - and [`Form`](./Form.md), a headless component to use as a base for your custom layouts
 
 To use an alternative form layout, switch the `<EditInDialogButton>` child component:
@@ -136,20 +134,6 @@ const EditButton = () => (
 );
 ```
 {% endraw %}
-
-## `emptyWhileLoading`
-
-By default, `<EditInDialogButton>` renders its child component even before the `dataProvider.getOne()` call returns. If you use `<SimpleForm>` or `<TabbedForm>`, this isn't a problem as these components only render when the record has been fetched. But if you use a custom child component that expects the record context to be defined, your component will throw an error.
-
-To avoid this, set the `emptyWhileLoading` prop to `true`:
-
-```jsx
-const EditButton = () => (
-  <EditInDialogButton emptyWhileLoading>
-      ...
-  </EditInDialogButton>
-);
-```
 
 ## `fullWidth`
 
@@ -246,7 +230,7 @@ const EditButton = () => (
 
 ## `mutationOptions`
 
-The `queryOptions` prop allows you to pass options to the `useMutation` hook. 
+The `mutationOptions` prop allows you to pass options to the `useMutation` hook. 
 
 This can be useful e.g. to pass [a custom `meta`](./Actions.md#meta-parameter) to the `dataProvider.update()` call.
 

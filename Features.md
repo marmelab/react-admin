@@ -271,7 +271,7 @@ We have made many improvements to this default layout based on user feedback. In
 
 And for mobile users, react-admin renders a different layout with larger margins and less information density (see [Responsive](#responsive)).
 
-## Headless
+## Headless Core
 
 React-admin components use Material UI components by default, which lets you scaffold a page in no time. As material UI supports [theming](#theming), you can easily customize the look and feel of your app. But in some cases, this is not enough, and you need to use another UI library.
 
@@ -357,6 +357,11 @@ Check the following hooks to learn more about headless controllers:
 - [`useEditController`](./useEditController.md)
 - [`useCreateController`](./useCreateController.md)
 - [`useShowController`](./useShowController.md)
+
+And check these examples for admin panels built with react-admin but without Material UI:
+
+- [DaisyUI, Tailwind CSS, Tanstack Table and React-Aria](https://marmelab.com/blog/2023/11/28/using-react-admin-with-your-favorite-ui-library.html)
+- [shadcn/ui, Tailwind CSS and Radix UI](https://github.com/marmelab/ra-shadcn-demo)
 
 ## Guessers & Scaffolding
 
