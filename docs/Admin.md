@@ -150,7 +150,6 @@ Here are all the props accepted by the component:
 | `disableTelemetry` | Optional | `boolean`      | `false`        | Set to `true` to disable telemetry collection            |
 | `i18nProvider`     | Optional | `I18NProvider` | -              | The internationalization provider for translations       |
 | `layout`           | Optional | `Component`    | `Layout`       | The content of the layout                                |
-| `lightTheme`        | Optional | `object`       | `defaultLightTheme` (the default built-in light theme)              | The light theme configuration                             |
 | `loginPage`        | Optional | `Component`    | `LoginPage`    | The content of the login page                            |
 | `notification`     | Optional | `Component`    | `Notification` | The notification component                               |
 | `queryClient`      | Optional | `QueryClient`  | -              | The react-query client                                   |
@@ -619,36 +618,6 @@ const App = () => (
 Refer to each layout component documentation to understand the props it accepts.
 
 Finally, you can also pass a custom component as the `layout` prop. It must contain a `{children}` placeholder, where react-admin will render the page content. Check [the custom layout documentation](./Layout.md#writing-a-layout-from-scratch) for examples, and use the [default `<Layout>`](https://github.com/marmelab/react-admin/blob/master/packages/ra-ui-materialui/src/layout/Layout.tsx) as a starting point.
-
-## `lightTheme`
-
-React-admin provides a [built-in light theme](./AppTheme.md#default). The app will use the `lightTheme` by default for users who prefer the light mode at the OS / browser level, and users will be able to switch from light to dark mode using [the `<ToggleThemeButton>` component](./ToggleThemeButton.md) if the `darkTheme` prop is provided or leaved by default.  
-
-<video controls autoplay muted loop>
-  <source src="./img/ToggleThemeButton.webm" type="video/webm"/>
-  Your browser does not support the video tag.
-</video>
-
-If you want to override it, you can provide your own `lightTheme`:
-
-```tsx
-import { Admin } from 'react-admin';
-import { dataProvider } from './dataProvider';
-import { mylightTheme } from './themes';
-
-const App = () => (
-    <Admin
-        dataProvider={dataProvider}
-        lightTheme={mylightTheme}
-    >
-        ...
-    </Admin>
-);
-```
-
-If the `theme` prop is provided, the `lightTheme` prop is ignored.
-
-**Tip**: To disable OS preference detection and always use one theme by default, see the [`defaultTheme`](#defaulttheme) prop.
 
 ## `loginPage`
 
