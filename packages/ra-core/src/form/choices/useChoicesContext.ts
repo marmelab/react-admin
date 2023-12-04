@@ -13,6 +13,7 @@ export const useChoicesContext = <ChoicesType extends RaRecord = RaRecord>(
         data: options.choices,
         isLoading: options.isLoading,
         isPending: options.isPending,
+        isFetching: options.isFetching,
         // When not in a ChoicesContext, paginating does not make sense (e.g. AutocompleteInput).
         perPage: Infinity,
     });

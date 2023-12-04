@@ -338,14 +338,14 @@ describe('<CheckboxGroupInput />', () => {
         });
     });
 
-    it('should not render a LinearProgress if loading is true and a second has not passed yet', () => {
+    it('should not render a LinearProgress if isPending is true and a second has not passed yet', () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <SimpleForm onSubmit={jest.fn()}>
                     <CheckboxGroupInput
                         {...defaultProps}
                         isFetching
-                        isLoading
+                        isPending
                     />
                 </SimpleForm>
             </AdminContext>
@@ -354,15 +354,14 @@ describe('<CheckboxGroupInput />', () => {
         expect(screen.queryByRole('progressbar')).toBeNull();
     });
 
-    it('should render a LinearProgress if loading is true, choices are empty and a second has passed', async () => {
+    it('should render a LinearProgress if isPending is true, choices are empty and a second has passed', async () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <SimpleForm mode="onBlur" onSubmit={jest.fn()}>
                     <CheckboxGroupInput
                         {...defaultProps}
                         choices={[]}
-                        isFetching
-                        isLoading
+                        isPending
                     />
                 </SimpleForm>
             </AdminContext>
@@ -373,7 +372,7 @@ describe('<CheckboxGroupInput />', () => {
         await screen.findByRole('progressbar');
     });
 
-    it('should not render a LinearProgress if loading is false', () => {
+    it('should not render a LinearProgress if isPending is false', () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <SimpleForm onSubmit={jest.fn()}>

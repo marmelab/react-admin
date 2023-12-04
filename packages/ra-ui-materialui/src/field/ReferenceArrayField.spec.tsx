@@ -30,7 +30,7 @@ describe('<ReferenceArrayField />', () => {
                     value={{
                         resource: 'foo',
                         data: null,
-                        isLoading: true,
+                        isPending: true,
                     }}
                 >
                     <ReferenceArrayFieldView

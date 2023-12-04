@@ -305,11 +305,11 @@ describe('<SelectArrayInput />', () => {
             });
         });
 
-        it('should not render a LinearProgress if loading is true and a second has not passed yet', () => {
+        it('should not render a LinearProgress isPending is true and a second has not passed yet', () => {
             render(
                 <AdminContext dataProvider={testDataProvider()}>
                     <SimpleForm onSubmit={jest.fn()}>
-                        <SelectArrayInput {...defaultProps} isLoading />
+                        <SelectArrayInput {...defaultProps} isPending />
                     </SimpleForm>
                 </AdminContext>
             );
@@ -317,11 +317,11 @@ describe('<SelectArrayInput />', () => {
             expect(screen.queryByRole('progressbar')).toBeNull();
         });
 
-        it('should render a LinearProgress if loading is true and a second has passed', async () => {
+        it('should render a LinearProgress if isPending true and a second has passed', async () => {
             render(
                 <AdminContext dataProvider={testDataProvider()}>
                     <SimpleForm onSubmit={jest.fn()}>
-                        <SelectArrayInput {...defaultProps} isLoading />
+                        <SelectArrayInput {...defaultProps} isPending />
                     </SimpleForm>
                 </AdminContext>
             );
@@ -331,7 +331,7 @@ describe('<SelectArrayInput />', () => {
             await screen.findByRole('progressbar');
         });
 
-        it('should not render a LinearProgress if loading is false', () => {
+        it('should not render a LinearProgress if isPending is false', () => {
             render(
                 <AdminContext dataProvider={testDataProvider()}>
                     <SimpleForm onSubmit={jest.fn()}>

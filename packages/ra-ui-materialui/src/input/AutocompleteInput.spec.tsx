@@ -1417,12 +1417,7 @@ describe('<AutocompleteInput />', () => {
             fireEvent.change(screen.getByRole('combobox'), {
                 target: { value: 'French' },
             });
-            await waitFor(
-                () => {
-                    screen.getByText('No options');
-                },
-                { timeout: 2000 }
-            );
+            await screen.findByText('Loading…', undefined, { timeout: 5000 });
             expect(matchSuggestion).not.toHaveBeenCalled();
         }, 20000);
 
