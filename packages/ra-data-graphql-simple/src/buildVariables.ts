@@ -45,6 +45,7 @@ export default (introspectionResults: IntrospectionResult) => (
         case GET_MANY:
             return {
                 filter: { ids: preparedParams.ids },
+                ...(preparedParams.meta ? { meta: preparedParams.meta } : {}),
             };
         case GET_MANY_REFERENCE: {
             let variables = buildGetListVariables(introspectionResults)(
@@ -64,6 +65,7 @@ export default (introspectionResults: IntrospectionResult) => (
         case DELETE:
             return {
                 id: preparedParams.id,
+                ...(preparedParams.meta ? { meta: preparedParams.meta } : {}),
             };
         case DELETE_MANY:
             return preparedParams;
@@ -205,6 +207,7 @@ const buildGetListVariables = (introspectionResults: IntrospectionResult) => (
         perPage: number;
         sortField: string;
         sortOrder: string;
+        meta?: object;
     }> = { filter: {} };
     if (params.filter) {
         variables.filter = Object.keys(params.filter).reduce((acc, key) => {
@@ -301,6 +304,8 @@ const buildGetListVariables = (introspectionResults: IntrospectionResult) => (
         variables.sortField = params.sort.field;
         variables.sortOrder = params.sort.order;
     }
+
+    if (params.meta) variables = { ...variables, meta: params.meta };
 
     return variables;
 };

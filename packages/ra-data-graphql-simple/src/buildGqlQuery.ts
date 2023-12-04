@@ -25,17 +25,86 @@ import * as gqlTypes from 'graphql-ast-types-browser';
 import getFinalType from './getFinalType';
 import { getGqlType } from './getGqlType';
 
+type SparseField = string | { [k: string]: SparseField[] };
+type ExpandedSparseField = { linkedType?: string; fields: SparseField[] };
+type ProcessedFields = {
+    resourceFields: IntrospectionField[];
+    linkedSparseFields: ExpandedSparseField[];
+};
+
+function processSparseFields(
+    resourceFields: readonly IntrospectionField[],
+    sparseFields: SparseField[]
+): ProcessedFields & { resourceFields: readonly IntrospectionField[] } {
+    if (!sparseFields || sparseFields.length === 0)
+        throw new Error(
+            "Empty sparse fields. Specify at least one field or remove the 'sparseFields' param"
+        );
+
+    const permittedSparseFields: ProcessedFields = sparseFields.reduce(
+        (permitted: ProcessedFields, sparseField: SparseField) => {
+            let expandedSparseField: ExpandedSparseField;
+            if (typeof sparseField == 'string')
+                expandedSparseField = { fields: [sparseField] };
+            else {
+                const [linkedType, linkedSparseFields] = Object.entries(
+                    sparseField
+                )[0];
+                expandedSparseField = {
+                    linkedType,
+                    fields: linkedSparseFields,
+                };
+            }
+
+            const availableField = resourceFields.find(
+                resourceField =>
+                    resourceField.name ===
+                    (expandedSparseField.linkedType ||
+                        expandedSparseField.fields[0])
+            );
+
+            if (availableField && expandedSparseField.linkedType) {
+                permitted.linkedSparseFields.push(expandedSparseField);
+                permitted.resourceFields.push(availableField);
+            } else if (availableField)
+                permitted.resourceFields.push(availableField);
+
+            return permitted;
+        },
+        { resourceFields: [], linkedSparseFields: [] }
+    ); // ensure the requested fields are available
+
+    if (
+        permittedSparseFields.resourceFields.length === 0 &&
+        permittedSparseFields.linkedSparseFields.length === 0
+    )
+        throw new Error(
+            "Requested sparse fields not found. Ensure sparse fields are available in the resource's type"
+        );
+
+    return permittedSparseFields;
+}
+
 export default (introspectionResults: IntrospectionResult) => (
     resource: IntrospectedResource,
     raFetchMethod: string,
     queryType: IntrospectionField,
     variables: any
 ) => {
-    const { sortField, sortOrder, ...metaVariables } = variables;
+    let { sortField, sortOrder, ...metaVariables } = variables;
+
     const apolloArgs = buildApolloArgs(queryType, variables);
     const args = buildArgs(queryType, variables);
+
+    const sparseFields = metaVariables.meta?.sparseFields;
+    if (sparseFields) delete metaVariables.meta.sparseFields;
+
     const metaArgs = buildArgs(queryType, metaVariables);
-    const fields = buildFields(introspectionResults)(resource.type.fields);
+
+    const fields = buildFields(introspectionResults)(
+        resource.type.fields,
+        sparseFields
+    );
 
     if (
         raFetchMethod === GET_LIST ||
@@ -130,8 +199,12 @@ export default (introspectionResults: IntrospectionResult) => (
 export const buildFields = (
     introspectionResults: IntrospectionResult,
     paths = []
-) => fields =>
-    fields.reduce((acc, field) => {
+) => (fields: readonly IntrospectionField[], sparseFields?: SparseField[]) => {
+    const { resourceFields, linkedSparseFields } = sparseFields
+        ? processSparseFields(fields, sparseFields)
+        : { resourceFields: fields, linkedSparseFields: [] };
+
+    return resourceFields.reduce((acc, field) => {
         const type = getFinalType(field.type);
 
         if (type.name.startsWith('_')) {
@@ -147,6 +220,15 @@ export const buildFields = (
         );
 
         if (linkedResource) {
+            const linkedResourceSparseFields = linkedSparseFields.find(
+                lSP => lSP.linkedType === field.name
+            )?.fields || ['id']; // default to id if no sparse fields specified for linked resource
+
+            const linkedResourceFields = buildFields(introspectionResults)(
+                linkedResource.type.fields,
+                linkedResourceSparseFields
+            );
+
             return [
                 ...acc,
                 gqlTypes.field(
@@ -154,7 +236,7 @@ export const buildFields = (
                     null,
                     null,
                     null,
-                    gqlTypes.selectionSet([gqlTypes.field(gqlTypes.name('id'))])
+                    gqlTypes.selectionSet(linkedResourceFields)
                 ),
             ];
         }
@@ -166,6 +248,7 @@ export const buildFields = (
         if (linkedType && !paths.includes(linkedType.name)) {
             const possibleTypes =
                 (linkedType as IntrospectionUnionType).possibleTypes || [];
+
             return [
                 ...acc,
                 gqlTypes.field(
@@ -178,7 +261,12 @@ export const buildFields = (
                         ...buildFields(introspectionResults, [
                             ...paths,
                             linkedType.name,
-                        ])((linkedType as IntrospectionObjectType).fields),
+                        ])(
+                            (linkedType as IntrospectionObjectType).fields,
+                            linkedSparseFields.find(
+                                lSP => lSP.linkedType === field.name
+                            )?.fields
+                        ),
                     ])
                 ),
             ];
@@ -188,6 +276,7 @@ export const buildFields = (
         // ending with endless circular dependencies
         return acc;
     }, []);
+};
 
 export const buildFragments = (introspectionResults: IntrospectionResult) => (
     possibleTypes: readonly IntrospectionNamedTypeRef<IntrospectionObjectType>[]

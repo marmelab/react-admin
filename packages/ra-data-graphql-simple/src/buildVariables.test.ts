@@ -52,6 +52,25 @@ describe('buildVariables', () => {
                 sortOrder: 'DESC',
             });
         });
+
+        it('should return correct meta', () => {
+            const params = {
+                filter: {},
+                meta: { sparseFields: [] },
+            };
+
+            expect(
+                buildVariables(introspectionResult)(
+                    { type: { name: 'Post', fields: [] } },
+                    GET_LIST,
+                    params,
+                    {}
+                )
+            ).toEqual({
+                filter: {},
+                meta: { sparseFields: [] },
+            });
+        });
     });
 
     describe('CREATE', () => {
@@ -78,6 +97,27 @@ describe('buildVariables', () => {
                 authorId: 'author1',
                 tagsIds: ['tag1', 'tag2'],
                 title: 'Foo',
+            });
+        });
+        it('should return correct meta', () => {
+            const params = {
+                data: {
+                    meta: { sparseFields: [] },
+                },
+            };
+            const queryType = {
+                args: [],
+            };
+
+            expect(
+                buildVariables(introspectionResult)(
+                    { type: { name: 'Post' } },
+                    CREATE,
+                    params,
+                    queryType
+                )
+            ).toEqual({
+                meta: { sparseFields: [] },
             });
         });
     });
@@ -110,6 +150,28 @@ describe('buildVariables', () => {
                 title: 'Foo',
             });
         });
+
+        it('should return correct meta', () => {
+            const params = {
+                data: {
+                    meta: { sparseFields: [] },
+                },
+            };
+            const queryType = {
+                args: [],
+            };
+
+            expect(
+                buildVariables(introspectionResult)(
+                    { type: { name: 'Post' } },
+                    UPDATE,
+                    params,
+                    queryType
+                )
+            ).toEqual({
+                meta: { sparseFields: [] },
+            });
+        });
     });
 
     describe('GET_MANY', () => {
@@ -127,6 +189,24 @@ describe('buildVariables', () => {
                 )
             ).toEqual({
                 filter: { ids: ['tag1', 'tag2'] },
+            });
+        });
+
+        it('should return correct meta', () => {
+            const params = {
+                meta: { sparseFields: [] },
+            };
+
+            expect(
+                buildVariables(introspectionResult)(
+                    { type: { name: 'Post' } },
+                    GET_MANY,
+                    params,
+                    {}
+                )
+            ).toEqual({
+                filter: {},
+                meta: { sparseFields: [] },
             });
         });
     });
@@ -155,6 +235,24 @@ describe('buildVariables', () => {
                 sortOrder: 'ASC',
             });
         });
+
+        it('should return correct meta', () => {
+            const params = {
+                meta: { sparseFields: [] },
+            };
+
+            expect(
+                buildVariables(introspectionResult)(
+                    { type: { name: 'Post' } },
+                    GET_MANY_REFERENCE,
+                    params,
+                    {}
+                )
+            ).toEqual({
+                filter: {},
+                meta: { sparseFields: [] },
+            });
+        });
     });
 
     describe('DELETE', () => {
@@ -171,6 +269,22 @@ describe('buildVariables', () => {
                 )
             ).toEqual({
                 id: 'post1',
+            });
+        });
+
+        it('should return correct meta', () => {
+            const params = {
+                meta: { sparseFields: [] },
+            };
+            expect(
+                buildVariables(introspectionResult)(
+                    { type: { name: 'Post', inputFields: [] } },
+                    DELETE,
+                    params,
+                    {}
+                )
+            ).toEqual({
+                meta: { sparseFields: [] },
             });
         });
     });
