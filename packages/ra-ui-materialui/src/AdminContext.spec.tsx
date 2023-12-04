@@ -6,6 +6,7 @@ import { memoryStore } from 'ra-core';
 
 import { AdminContext } from './AdminContext';
 import { ThemeTestWrapper } from './layout/ThemeTestWrapper';
+import { defaultLightTheme } from './theme';
 
 const LIGHT_MODE_TEXT_COLOR = 'rgb(25, 118, 210)'; // text is dark blue in light mode
 const DARK_MODE_TEXT_COLOR = 'rgb(144, 202, 249)'; // text is light blue in dark mode
@@ -55,6 +56,17 @@ describe('AdminContext', () => {
         render(
             <ThemeTestWrapper mode="dark">
                 <AdminContext store={memoryStore({ theme: 'light' })}>
+                    <Typography color="primary">Test</Typography>
+                </AdminContext>
+            </ThemeTestWrapper>
+        );
+        const text = screen.getByText('Test');
+        expect(getComputedStyle(text).color).toBe(LIGHT_MODE_TEXT_COLOR);
+    });
+    it('should only use main theme even the browser detects a dark mode preference', () => {
+        render(
+            <ThemeTestWrapper mode="dark">
+                <AdminContext theme={defaultLightTheme}>
                     <Typography color="primary">Test</Typography>
                 </AdminContext>
             </ThemeTestWrapper>
