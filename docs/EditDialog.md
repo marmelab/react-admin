@@ -91,7 +91,6 @@ React-admin provides several built-in form layout components:
 - [`AccordionForm`](./AccordionForm.md) for long forms with collapsible sections
 - [`LongForm`](./LongForm.md) for long forms with a navigation sidebar
 - [`WizardForm`](./WizardForm.md) for multi-step forms
-- [`EditDialog`](./EditDialog.md) for sub-forms in a modal dialog
 - and [`Form`](./Form.md), a headless component to use as a base for your custom layouts
 
 To use an alternative form layout, switch the `<EditDialog>` child component:
