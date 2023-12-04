@@ -145,7 +145,7 @@ Here are all the props accepted by the component:
 | `basename`         | Optional | `string`       | -              | The base path for all URLs                               |
 | `catchAll`         | Optional | `Component`    | `NotFound`     | The fallback component for unknown routes                |
 | `dashboard`        | Optional | `Component`    | -              | The content of the dashboard page                        |
-| `darkTheme`        | Optional | `object`       | `default DarkTheme` (the default built-in dark theme)              | The dark theme configuration                             |
+| `darkTheme`        | Optional | `object`       | `default DarkTheme` | The dark theme configuration                             |
 | `defaultTheme`     | Optional | `boolean`      | `false`        | Flag to default to the light theme                       |
 | `disableTelemetry` | Optional | `boolean`      | `false`        | Set to `true` to disable telemetry collection            |
 | `i18nProvider`     | Optional | `I18NProvider` | -              | The internationalization provider for translations       |
@@ -156,7 +156,7 @@ Here are all the props accepted by the component:
 | `ready`            | Optional | `Component`    | `Ready`        | The content of the ready page                            |
 | `requireAuth`      | Optional | `boolean`      | `false`        | Flag to require authentication for all routes            |
 | `store`            | Optional | `Store`        | -              | The Store for managing user preferences                  |
-| `theme`            | Optional | `object`       | `defaultLightTheme` (the default built-in light theme)              | The main (light) theme configuration                     |
+| `theme`            | Optional | `object`       | `default LightTheme` | The main (light) theme configuration                     |
 | `title`            | Optional | `string`       | -              | The error page title                                     |
 
 
