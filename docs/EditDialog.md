@@ -255,7 +255,7 @@ The `transform` function can also return a `Promise`, which allows you to do all
 
 **Tip**: If you want to have different transformations based on the button clicked by the user (e.g. if the creation form displays two submit buttons, one to "save", and another to "save and notify other admins"), you can set the `transform` prop on [the `<SaveButton>` component](./SaveButton.md), too.
 
-**Tip**: The `transform` function also get the `previousData` in its second argument:
+**Tip**: The `transform` function also gets the `previousData` in its second argument:
 
 ```jsx
 export const UserEdit = () => {

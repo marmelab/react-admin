@@ -81,7 +81,7 @@ In the related `<Resource>`, you don't need to declare a `create` component as t
 | `mutation Options` | Optional | `object`       |         | The options to pass to the `useMutation` hook. |
 | `resource`     | Optional | `string`          |         | The resource name, e.g. `posts`
 | `sx`           | Optional | `object`          |         | Override the styles applied to the dialog component. |
-| `transform`    | Optional | `function`        |         | Transform the form data before calling `dataProvider.update()`. |
+| `transform`    | Optional | `function`        |         | Transform the form data before calling `dataProvider.create()`. |
 
 ## `children`
 
@@ -94,7 +94,6 @@ React-admin provides several built-in form layout components:
 - [`AccordionForm`](./AccordionForm.md) for long forms with collapsible sections
 - [`LongForm`](./LongForm.md) for long forms with a navigation sidebar
 - [`WizardForm`](./WizardForm.md) for multi-step forms
-- [`CreateDialog`](./CreateDialog.md) for sub-forms in a modal dialog
 - and [`Form`](./Form.md), a headless component to use as a base for your custom layouts
 
 To use an alternative form layout, switch the `<CreateDialog>` child component:
@@ -160,7 +159,7 @@ const MyCreateDialog = () => (
 
 The `mutationOptions` prop allows you to pass options to the `useMutation` hook. 
 
-This can be useful e.g. to pass [a custom `meta`](./Actions.md#meta-parameter) to the `dataProvider.update()` call.
+This can be useful e.g. to pass [a custom `meta`](./Actions.md#meta-parameter) to the `dataProvider.create()` call.
 
 {% raw %}
 ```jsx
@@ -225,7 +224,7 @@ The `transform` function can also return a `Promise`, which allows you to do all
 
 **Tip**: If you want to have different transformations based on the button clicked by the user (e.g. if the creation form displays two submit buttons, one to "save", and another to "save and notify other admins"), you can set the `transform` prop on [the `<SaveButton>` component](./SaveButton.md), too.
 
-**Tip**: The `transform` function also get the `previousData` in its second argument:
+**Tip**: The `transform` function also gets the `previousData` in its second argument:
 
 ```jsx
 export const UseCreate = () => {

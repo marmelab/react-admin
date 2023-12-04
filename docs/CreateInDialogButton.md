@@ -81,7 +81,6 @@ In the above example, `<CreateInDialogButton>` is used to create a new employee 
 | -------------- | -------- | ----------------- | ------- | ----------- |
 | `children`     | Required | `ReactNode`       |         | The content of the dialog. |
 | `ButtonProps`  | Optional | `object`          |         | Object containing props to pass to Material UI's `<Button>`. |
-| `empty WhileLoading` | Optional | `boolean`   |         | Set to `true` to return `null` while the list is loading. |
 | `fullWidth`    | Optional | `boolean`         | `false` | If `true`, the dialog stretches to the full width of the screen. |
 | `icon`         | Optional | `ReactElement`    |         | Allows to override the default icon. |
 | `inline`       | Optional | `boolean`         |         | Set to true to display only a Material UI `<IconButton>` instead of the full `<Button>`. |
@@ -103,7 +102,6 @@ React-admin provides several built-in form layout components:
 - [`AccordionForm`](./AccordionForm.md) for long forms with collapsible sections
 - [`LongForm`](./LongForm.md) for long forms with a navigation sidebar
 - [`WizardForm`](./WizardForm.md) for multi-step forms
-- [`CreateDialog`](./CreateDialog.md) for sub-forms in a modal dialog
 - and [`Form`](./Form.md), a headless component to use as a base for your custom layouts
 
 To use an alternative form layout, switch the `<CreateInDialogButton>` child component:
@@ -142,20 +140,6 @@ const CreateButton = () => (
 );
 ```
 {% endraw %}
-
-## `emptyWhileLoading`
-
-By default, `<CreateInDialogButton>` renders its child component even before the `dataProvider.getOne()` call returns. If you use `<SimpleForm>` or `<TabbedForm>`, this isn't a problem as these components only render when the record has been fetched. But if you use a custom child component that expects the record context to be defined, your component will throw an error.
-
-To avoid this, set the `emptyWhileLoading` prop to `true`:
-
-```jsx
-const CreateButton = () => (
-  <CreateInDialogButton emptyWhileLoading>
-      ...
-  </CreateInDialogButton>
-);
-```
 
 ## `fullWidth`
 
