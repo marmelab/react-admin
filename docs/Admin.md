@@ -864,14 +864,6 @@ You can also [write your own theme](./AppTheme.md#writing-a-custom-theme) to fit
 
 React-admin provides a [built-in dark theme by default](./AppTheme.md#default). If you want to override it, check out [the `<Admin darkTheme>` prop](#darktheme). 
 
-### Theme Priorities
-
-The following priorities are applied depending on whether the `theme` prop is provided or not:
-
-- if `theme` is not provided, the default light and dark theme are used;
-- if `theme` is provided the `lightTheme` prop is ignored;
-- if `theme` is provided and `darkTheme` prop is not, `darkTheme` is ignored and disabled;
-
 ## `title`
 
 On error pages, the header of an admin app uses 'React Admin' as the main app title. Use the `title` to customize it.
