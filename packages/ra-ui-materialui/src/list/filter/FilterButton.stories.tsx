@@ -294,6 +294,7 @@ export const WithAutoCompleteArrayInput = (args: {
                 { id: 13, name: 'Fusce...' },
             ]}
             size={args.size}
+            alwaysOn
         />,
         <AutocompleteArrayInput
             label="Nested"
