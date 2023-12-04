@@ -27,34 +27,6 @@ React 18 adds out-of-the-box performance improvements by doing more batching by 
 
 React-admin v5 uses React 18, which dropped support for Internet Explorer. If you need to support IE11, you'll have to stay on react-admin v4.
 
-## Rename `isLoading` to `isPending` in mutations
-
-In the return state of data provider mutation hooks, `isLoading` has been renamed to `isPending` to be consistent with the same change in react-query.
-
-The following hooks are impacted by this change:
-
-- `useCreate`
-- `useDelete`
-- `useDeleteMany`
-- `useUpdate`
-- `useUpdateMany`
-- `useDeleteWithUndoController`
-- `useDeleteWithConfirmController`
-
-If you use these hooks, replace `isLoading` by `isPending`:
-
-```diff
-import { useUpdate, useRecordContext, Button } from 'react-admin';
-
-const ApproveButton = () => {
-    const record = useRecordContext();
--    const [approve, { isLoading }] = useUpdate('comments', { id: record.id, data: { isApproved: true }, previousData: record });
-+    const [approve, { isPending }] = useUpdate('comments', { id: record.id, data: { isApproved: true }, previousData: record });
--    return <Button label="Approve" onClick={() => approve()} disabled={isLoading} />;
-+    return <Button label="Approve" onClick={() => approve()} disabled={isPending} />;
-};
-```
-
 ## Use `@tanstack/react-query` instead of `react-query`
 
 React-admin now uses `react-query` v5 instead of v3. The library name has changed to `@tanstack/react-query` (but it's almost the same API).
