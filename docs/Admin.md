@@ -145,7 +145,7 @@ Here are all the props accepted by the component:
 | `basename`         | Optional | `string`       | -              | The base path for all URLs                               |
 | `catchAll`         | Optional | `Component`    | `NotFound`     | The fallback component for unknown routes                |
 | `dashboard`        | Optional | `Component`    | -              | The content of the dashboard page                        |
-| `darkTheme`        | Optional | `object`       | `defaultDarkTheme` (the default built-in dark theme)              | The dark theme configuration                             |
+| `darkTheme`        | Optional | `object`       | `default DarkTheme` (the default built-in dark theme)              | The dark theme configuration                             |
 | `defaultTheme`     | Optional | `boolean`      | `false`        | Flag to default to the light theme                       |
 | `disableTelemetry` | Optional | `boolean`      | `false`        | Set to `true` to disable telemetry collection            |
 | `i18nProvider`     | Optional | `I18NProvider` | -              | The internationalization provider for translations       |
