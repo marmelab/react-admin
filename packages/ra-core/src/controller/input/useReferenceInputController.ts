@@ -124,6 +124,11 @@ export const useReferenceInputController = <RecordType extends RaRecord = any>(
         },
     });
 
+    const isPending =
+        // The reference query isn't enabled when there is no value yet but as it has no data, react-query will flag it as pending
+        (currentValue != null && currentValue !== '' && isPendingReference) ||
+        isPendingPossibleValues;
+
     // We need to delay the update of the referenceRecord and the finalData
     // to the next React state update, because otherwise it can raise a warning
     // with AutocompleteInput saying the current value is not in the list of choices
@@ -169,7 +174,7 @@ export const useReferenceInputController = <RecordType extends RaRecord = any>(
         hideFilter: paramsModifiers.hideFilter,
         isFetching: isFetchingReference || isFetchingPossibleValues,
         isLoading: isLoadingReference || isLoadingPossibleValues,
-        isPending: isPendingReference || isPendingPossibleValues,
+        isPending: isPending,
         page: params.page,
         perPage: params.perPage,
         refetch,
