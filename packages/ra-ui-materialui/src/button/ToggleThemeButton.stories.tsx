@@ -97,12 +97,7 @@ const BookList = () => (
 );
 
 export const Basic = () => (
-    <Admin
-        store={memoryStore()}
-        dataProvider={dataProvider}
-        history={history}
-        darkTheme={{ palette: { mode: 'dark' } }}
-    >
+    <Admin store={memoryStore()} dataProvider={dataProvider} history={history}>
         <Resource name="books" list={BookList} />
     </Admin>
 );

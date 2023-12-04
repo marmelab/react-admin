@@ -1,10 +1,9 @@
 import * as React from 'react';
 import { Resource, CustomRoutes, testDataProvider, memoryStore } from 'ra-core';
-import { defaultTheme, Admin, useSidebarState } from 'react-admin';
+import { Admin, useSidebarState } from 'react-admin';
 import {
     Typography,
     Skeleton,
-    ThemeOptions,
     MenuItem,
     ListItemText,
     ListItemIcon,
@@ -30,8 +29,6 @@ export default { title: 'ra-ui-materialui/layout/Menu' };
 
 const resources = ['Posts', 'Comments', 'Tags', 'Users', 'Orders', 'Reviews'];
 
-const darkTheme: ThemeOptions = { ...defaultTheme, palette: { mode: 'dark' } };
-
 const DemoList = ({ name }) => (
     <>
         <Title title={name} />
@@ -48,7 +45,6 @@ export const Default = () => {
             store={memoryStore()}
             dataProvider={testDataProvider()}
             layout={DefaultLayout}
-            darkTheme={darkTheme}
         >
             {resources.map((resource, index) => (
                 <Resource
@@ -70,7 +66,6 @@ export const Dense = () => {
             store={memoryStore()}
             dataProvider={testDataProvider()}
             layout={LayoutDense}
-            darkTheme={darkTheme}
         >
             {resources.map((resource, index) => (
                 <Resource
