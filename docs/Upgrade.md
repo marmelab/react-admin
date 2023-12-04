@@ -18,11 +18,12 @@ If you previously relied on the fact that the rows were not clickable by default
 </Datagrid>
 ```
 
-## A `darkTheme` is now provided by default
+## Dark Theme Is Available By Default
 
-If themes are not configured using the `<Admin>` component props, React-admin enables the [dark mode feature](https://marmelab.com/react-admin/AppTheme.html#light-and-dark-themes).
+In addition to the light theme, React-admin v5 includes a [dark theme](https://marmelab.com/react-admin/AppTheme.html#light-and-dark-themes), renders a theme switcher in the app bar, and chooses the default theme based on the user OS preferences. 
 
 If you don't need the dark mode feature, you'll have to explicitly disable it:
+
 ```diff
 -<Admin>
 +<Admin darkTheme={null}>
@@ -30,11 +31,14 @@ If you don't need the dark mode feature, you'll have to explicitly disable it:
 </Admin>
 ```
 
-Here are the priorities applied depending on whether the `theme` prop is provided or not:
+If the `theme` prop is defined but not the `darkTheme` prop, theme switcher button in the app bar isn't displayed:
 
-- if `theme` is not provided, the [default light and dark theme](https://marmelab.com/react-admin/AppTheme.html#default) are used;
-- if `theme` is provided the `lightTheme` prop is ignored (no change from before);
-- if `theme` is provided and `darkTheme` prop is not, `darkTheme` is ignored and disabled;
+```diff
+-<Admin>
++<Admin theme={myMainTheme}>
+   ...
+</Admin>
+```
 
 ## Upgrading to v4
 
