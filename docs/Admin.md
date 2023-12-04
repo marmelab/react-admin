@@ -156,7 +156,7 @@ Here are all the props accepted by the component:
 | `ready`            | Optional | `Component`    | `Ready`        | The content of the ready page                            |
 | `requireAuth`      | Optional | `boolean`      | `false`        | Flag to require authentication for all routes            |
 | `store`            | Optional | `Store`        | -              | The Store for managing user preferences                  |
-| `theme`            | Optional | `object`       | -              | The main (light) theme configuration                     |
+| `theme`            | Optional | `object`       | `defaultLightTheme` (the default built-in light theme)              | The main (light) theme configuration                     |
 | `title`            | Optional | `string`       | -              | The error page title                                     |
 
 
