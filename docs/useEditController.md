@@ -46,7 +46,7 @@ export const BookEdit = () => {
 
 **Tip**: If you just use the return value of `useEditController` to put it in an `EditContext`, use [the `<EditBase>` component](./EditBase.md) instead for simpler markup.
 
-## Arguments
+## Parameters
 
 `useEditController` accepts an object with the following keys, all optional:
 

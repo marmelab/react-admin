@@ -43,7 +43,7 @@ export const BookCreate = () => {
 
 **Tip**: If you just use the return value of `useCreateController` to put it in an `CreateContext`, use [the `<CreateBase>` component](./CreateBase.md) instead for simpler markup.
 
-## Arguments
+## Parameters
 
 `useCreateController` accepts an object with the following keys, all optional:
 

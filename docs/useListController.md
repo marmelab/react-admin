@@ -29,7 +29,7 @@ const MyList = () => {
 };
 ```
 
-## Arguments
+## Parameters
 
 `useListController` expects an object as parameter. All keys are optional.
 

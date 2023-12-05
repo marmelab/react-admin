@@ -61,7 +61,7 @@ const MyComponent = () => {
     );
 };
 ```
-## Arguments
+## Parameters
 
 `useList` expects an object with the following keys:
 

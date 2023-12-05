@@ -30,7 +30,7 @@ const UserCreateForm = () => {
 };
 ```
 
-## Arguments
+## Parameters
 
 `useUnique` accepts an object with the following keys, all optional: 
 

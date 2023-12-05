@@ -45,7 +45,7 @@ This custom Show view has no action buttons - it's up to you to add them in pure
 
 **Tip**: Use [`<ShowBase>`](./ShowBase.md) instead of `useShowController` if you need a component version of that hook.
 
-## Arguments
+## Parameters
 
 `useShowController` accepts an object with the following keys, all optional: 
 
