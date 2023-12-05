@@ -42,8 +42,12 @@ const PostCreateForm = () => {
 
 `useCreateContext` returns an object with the same keys as [`useCreateController`](./useCreateController.md):
 
-* `defaultTitle`: Translated title based on the resource, e.g. 'Create New Post'
-* `redirect`: Default redirect route. Defaults to 'list'
-* `resource`: Resource name, deduced from the location. e.g. 'posts'
-* `save`: Update callback to be passed to the underlying form as submit handler
-* `saving`: Boolean, `true` when the dataProvider is called to create the record
+```jsx
+const {
+    defaultTitle, // Translated title based on the resource, e.g. 'Create New Post'
+    redirect, // Default redirect route. Defaults to 'list'
+    resource, // Resource name, deduced from the location. e.g. 'posts'
+    save, // Update callback to be passed to the underlying form as submit handler
+    saving, // Boolean, true when the dataProvider is called to create the record
+} = useCreateContext();
+```

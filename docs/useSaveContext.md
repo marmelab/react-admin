@@ -42,6 +42,10 @@ const MyComponent = () => {
 
 `useSaveContext` returns an object with the following keys:
 
-* `save`: Create or update callback which receives form data and calls `dataProvider`
-* `saving`: Boolean, `true` when `dataProvider` is called
-* `mutationMode`: Current mutation mode, either 'undoable', 'optimistic' or 'pessimistic'
+```jsx
+const {
+    save, // Create or update callback which receives form data and calls dataProvider
+    saving, // Boolean, true when dataProvider is called
+    mutationMode, // Current mutation mode, either 'undoable', 'optimistic' or 'pessimistic'
+} = useSaveContext();
+```

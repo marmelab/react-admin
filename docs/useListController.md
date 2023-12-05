@@ -143,44 +143,37 @@ You can disable this feature by setting the `storeKey` prop to `false`. When dis
 
 `useListController` returns an object with the following keys: 
 
-**Data**
-
-* `data`: Array of the list records, e.g. `[{ id: 123, title: 'hello world' }, { ... }`
-* `total`: Total number of results for the current filters, excluding pagination. Useful to build the pagination controls, e.g. 23      
-* `isFetching`: Boolean, `true` while the data is being fetched, `false` once the data is fetched
-* `isLoading`: Boolean, `true` until the data is available for the first time
-
-**Pagination**
-
-* `page`: Current page. Starts at 1
-* `perPage`: Number of results per page. Defaults to 25
-* `setPage`: Callback to change the page, e.g. `setPage(3)`
-* `setPerPage`: Callback to change the number of results per page, e.g. `setPerPage(25)`
-* `hasPreviousPage`: Boolean, `true` if the current page is not the first one
-* `hasNextPage`: Boolean, `true` if the current page is not the last one
-
-**Sorting**
-
-* `sort`: Sort object `{ field, order }`, e.g. `{ field: 'date', order: 'DESC' }`
-* `setSort`: Callback to change the sort, e.g. `setSort({ field: 'name', order: 'ASC' })`
-
-**Filtering**
-
-* `filterValues`: Dictionary of filter values, e.g. `{ title: 'lorem', nationality: 'fr' }`
-* `displayedFilters`: Dictionary of displayed filters, e.g. `{ title: true, nationality: true }`
-* `setFilters`: Callback to update the filters, e.g. `setFilters(filters, displayedFilters)`
-* `showFilter`: Callback to show one of the filters, e.g. `showFilter('title', defaultValue)`
-* `hideFilter`: Callback to hide one of the filters, e.g. `hideFilter('title')`
-
-**Record selection**
-
-* `selectedIds`: Array listing the ids of the selected records, e.g. `[123, 456]`
-* `onSelect`: Callback to change the list of selected records, e.g. `onSelect([456, 789])`
-* `onToggleItem`: Callback to toggle the record selection for a given id, e.g. `onToggleItem(456)`
-* `onUnselectItems`: Callback to clear the record selection, e.g. `onUnselectItems();`
-
-**Misc**
-
-* `defaultTitle`: Translated title based on the resource, e.g. 'Posts'
-* `resource`: Resource name, deduced from the location. e.g. 'posts'
-* `refetch`: Callback for fetching the list data again
+```jsx
+const {
+    // Data
+    data, // Array of the list records, e.g. [{ id: 123, title: 'hello world' }, { ... }
+    total, // Total number of results for the current filters, excluding pagination. Useful to build the pagination controls, e.g. 23      
+    isFetching, // Boolean, true while the data is being fetched, false once the data is fetched
+    isLoading, // Boolean, true until the data is available for the first time
+    // Pagination
+    page, // Current page. Starts at 1
+    perPage, // Number of results per page. Defaults to 25
+    setPage, // Callback to change the page, e.g. setPage(3)
+    setPerPage, // Callback to change the number of results per page, e.g. setPerPage(25)
+    hasPreviousPage, // Boolean, true if the current page is not the first one
+    hasNextPage, // Boolean, true if the current page is not the last one
+    // Sorting
+    sort, // Sort object { field, order }, e.g. { field: 'date', order: 'DESC' }
+    setSort, // Callback to change the sort, e.g. setSort({ field: 'name', order: 'ASC' })
+    // Filtering
+    filterValues, // Dictionary of filter values, e.g. { title: 'lorem', nationality: 'fr' }
+    displayedFilters, // Dictionary of displayed filters, e.g. { title: true, nationality: true }
+    setFilters, // Callback to update the filters, e.g. setFilters(filters, displayedFilters)
+    showFilter, // Callback to show one of the filters, e.g. showFilter('title', defaultValue)
+    hideFilter, // Callback to hide one of the filters, e.g. hideFilter('title')
+    // Record selection
+    selectedIds, // Array listing the ids of the selected records, e.g. [123, 456]
+    onSelect, // Callback to change the list of selected records, e.g. onSelect([456, 789])
+    onToggleItem, // Callback to toggle the record selection for a given id, e.g. onToggleItem(456)
+    onUnselectItems, // Callback to clear the record selection, e.g. onUnselectItems();
+    // Misc
+    defaultTitle, // Translated title based on the resource, e.g. 'Posts'
+    resource, // Resource name, deduced from the location. e.g. 'posts'
+    refetch, // Callback for fetching the list data again
+} = useListController();
+```
