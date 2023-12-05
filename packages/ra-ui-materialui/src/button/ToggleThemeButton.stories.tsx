@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Admin } from 'react-admin';
-import { Resource } from 'ra-core';
+import { Resource, memoryStore } from 'ra-core';
 import fakeRestDataProvider from 'ra-data-fakerest';
 import { createMemoryHistory } from 'history';
 
@@ -97,11 +97,7 @@ const BookList = () => (
 );
 
 export const Basic = () => (
-    <Admin
-        dataProvider={dataProvider}
-        history={history}
-        darkTheme={{ palette: { mode: 'dark' } }}
-    >
+    <Admin store={memoryStore()} dataProvider={dataProvider} history={history}>
         <Resource name="books" list={BookList} />
     </Admin>
 );
@@ -115,7 +111,12 @@ const MyAppBar = () => (
 const MyLayout = props => <Layout {...props} appBar={MyAppBar} />;
 
 export const Legacy = () => (
-    <Admin dataProvider={dataProvider} history={history} layout={MyLayout}>
+    <Admin
+        store={memoryStore()}
+        dataProvider={dataProvider}
+        history={history}
+        layout={MyLayout}
+    >
         <Resource name="books" list={BookList} />
     </Admin>
 );

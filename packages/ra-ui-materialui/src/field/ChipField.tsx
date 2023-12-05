@@ -71,5 +71,5 @@ const StyledChip = styled(Chip, {
     name: PREFIX,
     overridesResolver: (props, styles) => styles.root,
 })({
-    [`&.${ChipFieldClasses.chip}`]: { margin: 4, cursor: 'inherit' },
+    [`&.${ChipFieldClasses.chip}`]: { cursor: 'inherit' },
 });

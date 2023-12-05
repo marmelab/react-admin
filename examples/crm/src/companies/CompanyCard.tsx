@@ -1,10 +1,14 @@
 import * as React from 'react';
 import { useState } from 'react';
-import { Paper, Typography, Link as MuiLink, Box } from '@mui/material';
+import { Paper, Typography, Box } from '@mui/material';
 import ContactsIcon from '@mui/icons-material/AccountCircle';
 import DealIcon from '@mui/icons-material/MonetizationOn';
-import { useCreatePath, SelectField, useRecordContext } from 'react-admin';
-import { Link } from 'react-router-dom';
+import {
+    useCreatePath,
+    SelectField,
+    useRecordContext,
+    Link,
+} from 'react-admin';
 
 import { sectors } from './sectors';
 import { CompanyAvatar } from './CompanyAvatar';
@@ -17,8 +21,7 @@ export const CompanyCard = (props: { record?: Company }) => {
     if (!record) return null;
 
     return (
-        <MuiLink
-            component={Link}
+        <Link
             to={createPath({
                 resource: 'companies',
                 id: record.id,
@@ -79,6 +82,6 @@ export const CompanyCard = (props: { record?: Company }) => {
                     </Box>
                 </Box>
             </Paper>
-        </MuiLink>
+        </Link>
     );
 };

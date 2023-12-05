@@ -239,9 +239,11 @@ export const ReferenceFieldView = <
     }
 
     return (
-        <RecordContextProvider value={referenceRecord}>
-            {child}
-        </RecordContextProvider>
+        <Root className={className} sx={sx}>
+            <RecordContextProvider value={referenceRecord}>
+                {child}
+            </RecordContextProvider>
+        </Root>
     );
 };
 

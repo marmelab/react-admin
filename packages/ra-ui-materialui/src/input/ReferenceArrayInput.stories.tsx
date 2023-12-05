@@ -71,7 +71,11 @@ export const Basic = () => (
 );
 
 export const WithAutocompleteInput = () => (
-    <AdminContext dataProvider={dataProvider} i18nProvider={i18nProvider}>
+    <AdminContext
+        dataProvider={dataProvider}
+        i18nProvider={i18nProvider}
+        defaultTheme="light"
+    >
         <Form onSubmit={() => {}} defaultValues={{ tag_ids: [1, 3] }}>
             <ReferenceArrayInput
                 reference="tags"
@@ -94,6 +98,7 @@ export const ErrorAutocomplete = () => (
             } as unknown) as DataProvider
         }
         i18nProvider={i18nProvider}
+        defaultTheme="light"
     >
         <Form onSubmit={() => {}} defaultValues={{ tag_ids: [1, 3] }}>
             <ReferenceArrayInput
@@ -108,7 +113,11 @@ export const ErrorAutocomplete = () => (
 );
 
 export const WithSelectArrayInput = () => (
-    <AdminContext dataProvider={dataProvider} i18nProvider={i18nProvider}>
+    <AdminContext
+        dataProvider={dataProvider}
+        i18nProvider={i18nProvider}
+        defaultTheme="light"
+    >
         <Form onSubmit={() => {}} defaultValues={{ tag_ids: [1, 3] }}>
             <ReferenceArrayInput
                 reference="tags"
@@ -131,6 +140,7 @@ export const ErrorSelectArray = () => (
             } as unknown) as DataProvider
         }
         i18nProvider={i18nProvider}
+        defaultTheme="light"
     >
         <Form onSubmit={() => {}} defaultValues={{ tag_ids: [1, 3] }}>
             <ReferenceArrayInput
@@ -145,7 +155,11 @@ export const ErrorSelectArray = () => (
 );
 
 export const WithCheckboxGroupInput = () => (
-    <AdminContext dataProvider={dataProvider} i18nProvider={i18nProvider}>
+    <AdminContext
+        dataProvider={dataProvider}
+        i18nProvider={i18nProvider}
+        defaultTheme="light"
+    >
         <Form onSubmit={() => {}} defaultValues={{ tag_ids: [1, 3] }}>
             <ReferenceArrayInput
                 reference="tags"
@@ -168,6 +182,7 @@ export const ErrorCheckboxGroupInput = () => (
             } as unknown) as DataProvider
         }
         i18nProvider={i18nProvider}
+        defaultTheme="light"
     >
         <Form onSubmit={() => {}} defaultValues={{ tag_ids: [1, 3] }}>
             <ReferenceArrayInput
@@ -182,7 +197,11 @@ export const ErrorCheckboxGroupInput = () => (
 );
 
 export const WithDatagridInput = () => (
-    <AdminContext dataProvider={dataProvider} i18nProvider={i18nProvider}>
+    <AdminContext
+        dataProvider={dataProvider}
+        i18nProvider={i18nProvider}
+        defaultTheme="light"
+    >
         <Form onSubmit={() => {}} defaultValues={{ tag_ids: [1, 3] }}>
             <ReferenceArrayInput
                 reference="tags"
@@ -209,6 +228,7 @@ export const ErrorDatagridInput = () => (
             } as unknown) as DataProvider
         }
         i18nProvider={i18nProvider}
+        defaultTheme="light"
     >
         <Form onSubmit={() => {}} defaultValues={{ tag_ids: [1, 3] }}>
             <ReferenceArrayInput
@@ -234,7 +254,10 @@ export const DifferentIdTypes = () => {
         ],
     };
     return (
-        <AdminContext dataProvider={fakeRestProvider(fakeData, false)}>
+        <AdminContext
+            dataProvider={fakeRestProvider(fakeData, false)}
+            defaultTheme="light"
+        >
             <Edit resource="bands" id={1} sx={{ width: 600 }}>
                 <SimpleForm>
                     <TextInput source="name" fullWidth />

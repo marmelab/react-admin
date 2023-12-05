@@ -5,6 +5,7 @@ import {
     Edit,
     Form,
     Labeled,
+    Link as RaLink,
     PrevNextButtons,
     ReferenceField,
     SelectInput,
@@ -13,7 +14,6 @@ import {
     useRecordContext,
     useTranslate,
 } from 'react-admin';
-import { Link as RouterLink } from 'react-router-dom';
 import { Card, CardContent, Box, Grid, Typography, Link } from '@mui/material';
 
 import { Order, Customer } from '../types';
@@ -41,25 +41,13 @@ const OrderTitle = () => {
 const CustomerDetails = () => {
     const record = useRecordContext<Customer>();
     return (
-        <div>
-            <Typography
-                component={RouterLink}
-                color="primary"
-                to={`/customers/${record?.id}`}
-                style={{ textDecoration: 'none' }}
-            >
+        <Typography>
+            <RaLink to={`/customers/${record?.id}`}>
                 {record?.first_name} {record?.last_name}
-            </Typography>
+            </RaLink>
             <br />
-            <Typography
-                component={Link}
-                color="primary"
-                href={`mailto:${record?.email}`}
-                style={{ textDecoration: 'none' }}
-            >
-                {record?.email}
-            </Typography>
-        </div>
+            <Link href={`mailto:${record?.email}`}>{record?.email}</Link>
+        </Typography>
     );
 };
 

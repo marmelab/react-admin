@@ -20,10 +20,12 @@ import { AuthProvider } from '../types';
  *
  * const authProvider = addRefreshAuthToAuthProvider(authProvider, refreshAuth);
  */
-export const addRefreshAuthToAuthProvider = (
-    provider: AuthProvider,
+export const addRefreshAuthToAuthProvider = <
+    AuthProviderType extends AuthProvider = AuthProvider
+>(
+    provider: AuthProviderType,
     refreshAuth: () => Promise<void>
-): AuthProvider => {
+): AuthProviderType => {
     const proxy = new Proxy(provider, {
         get(_, name) {
             const shouldIntercept =

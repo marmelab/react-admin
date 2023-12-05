@@ -6,23 +6,22 @@ import {
     useTranslate,
     useGetList,
     RecordContextProvider,
-    ReferenceField,
     useLocaleState,
     useRecordContext,
+    Link,
+    useReference,
 } from 'react-admin';
 import {
     Typography,
     Card,
     CardContent,
     Box,
-    Link,
     Stepper,
     Step,
     StepLabel,
     StepContent,
     Grid,
 } from '@mui/material';
-import { Link as RouterLink } from 'react-router-dom';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 
 import order from '../orders';
@@ -46,18 +45,23 @@ const Aside = () => {
 const EventList = () => {
     const record = useRecordContext<Customer>();
     const translate = useTranslate();
-    const [locale] = useLocaleState();
 
-    const { data: orders } = useGetList<OrderRecord>('commands', {
-        pagination: { page: 1, perPage: 100 },
-        sort: { field: 'date', order: 'DESC' },
-        filter: { customer_id: record.id },
-    });
-    const { data: reviews } = useGetList<ReviewRecord>('reviews', {
-        pagination: { page: 1, perPage: 100 },
-        sort: { field: 'date', order: 'DESC' },
-        filter: { customer_id: record.id },
-    });
+    const { data: orders, total: totalOrders } = useGetList<OrderRecord>(
+        'commands',
+        {
+            pagination: { page: 1, perPage: 100 },
+            sort: { field: 'date', order: 'DESC' },
+            filter: { customer_id: record.id },
+        }
+    );
+    const { data: reviews, total: totalReviews } = useGetList<ReviewRecord>(
+        'reviews',
+        {
+            pagination: { page: 1, perPage: 100 },
+            sort: { field: 'date', order: 'DESC' },
+            filter: { customer_id: record.id },
+        }
+    );
     const events = mixOrdersAndReviews(orders, reviews);
 
     return (
@@ -82,16 +86,36 @@ const EventList = () => {
                                 />
                             </Box>
                         </Grid>
-                        {orders && (
-                            <Grid item xs={6} display="flex" gap={1}>
-                                <order.icon fontSize="small" color="disabled" />
-                                <Typography variant="body2" flexGrow={1}>
-                                    {translate('resources.commands.amount', {
-                                        smart_count: orders.length,
-                                    })}
-                                </Typography>
-                            </Grid>
-                        )}
+                        <Grid item xs={6} display="flex" gap={1}>
+                            {totalOrders! > 0 && (
+                                <>
+                                    <order.icon
+                                        fontSize="small"
+                                        color="disabled"
+                                    />
+                                    <Link
+                                        variant="body2"
+                                        flexGrow={1}
+                                        to={{
+                                            pathname: '/commands',
+                                            search: `displayedFilters=${JSON.stringify(
+                                                { customer_id: true }
+                                            )}&filter=${JSON.stringify({
+                                                customer_id: record.id,
+                                                status: 'delivered',
+                                            })}`,
+                                        }}
+                                    >
+                                        {translate(
+                                            'resources.commands.amount',
+                                            {
+                                                smart_count: totalOrders,
+                                            }
+                                        )}
+                                    </Link>
+                                </>
+                            )}
+                        </Grid>
                         <Grid item xs={6} display="flex" gap={1}>
                             <AccessTimeIcon fontSize="small" color="disabled" />
                             <Box flexGrow={1}>
@@ -103,67 +127,37 @@ const EventList = () => {
                                 <DateField record={record} source="last_seen" />
                             </Box>
                         </Grid>
-                        {reviews && (
-                            <Grid item xs={6} display="flex" gap={1}>
-                                <review.icon
-                                    fontSize="small"
-                                    color="disabled"
-                                />
-                                <Typography variant="body2" flexGrow={1}>
-                                    {translate('resources.reviews.amount', {
-                                        smart_count: reviews.length,
-                                    })}
-                                </Typography>
-                            </Grid>
-                        )}
+                        <Grid item xs={6} display="flex" gap={1}>
+                            {totalReviews! > 0 && (
+                                <>
+                                    <review.icon
+                                        fontSize="small"
+                                        color="disabled"
+                                    />
+                                    <Link
+                                        variant="body2"
+                                        flexGrow={1}
+                                        to={{
+                                            pathname: '/reviews',
+                                            search: `displayedFilters=${JSON.stringify(
+                                                { customer_id: true }
+                                            )}&filter=${JSON.stringify({
+                                                customer_id: record.id,
+                                            })}`,
+                                        }}
+                                    >
+                                        {translate('resources.reviews.amount', {
+                                            smart_count: totalReviews,
+                                        })}
+                                    </Link>
+                                </>
+                            )}
+                        </Grid>
                     </Grid>
                 </CardContent>
             </Card>
 
-            <Stepper orientation="vertical" sx={{ mt: 1 }}>
-                {events.map(event => (
-                    <Step
-                        key={`${event.type}-${event.data.id}`}
-                        expanded
-                        active
-                        completed
-                    >
-                        <StepLabel
-                            icon={
-                                event.type === 'order' ? (
-                                    <order.icon
-                                        color="disabled"
-                                        sx={{ pl: 0.5, fontSize: '1.25rem' }}
-                                    />
-                                ) : (
-                                    <review.icon
-                                        color="disabled"
-                                        sx={{ pl: 0.5, fontSize: '1.25rem' }}
-                                    />
-                                )
-                            }
-                        >
-                            {new Date(event.date).toLocaleString(locale, {
-                                weekday: 'long',
-                                year: 'numeric',
-                                month: 'short',
-                                day: 'numeric',
-                                hour: 'numeric',
-                                minute: 'numeric',
-                            })}
-                        </StepLabel>
-                        <StepContent>
-                            <RecordContextProvider value={event.data}>
-                                {event.type === 'order' ? (
-                                    <Order />
-                                ) : (
-                                    <Review />
-                                )}
-                            </RecordContextProvider>
-                        </StepContent>
-                    </Step>
-                ))}
-            </Stepper>
+            {events && <Timeline events={events} />}
         </Box>
     );
 };
@@ -199,57 +193,125 @@ const mixOrdersAndReviews = (
     return events;
 };
 
-const Order = () => {
+const Timeline = ({ events }: { events: AsideEvent[] }) => (
+    <Stepper orientation="vertical" sx={{ my: 1, ml: 1.5 }}>
+        {events.map(event => (
+            <Step
+                key={`${event.type}-${event.data.id}`}
+                expanded
+                active
+                completed
+            >
+                <Link
+                    to={`/${event.type === 'order' ? 'commands' : 'reviews'}/${
+                        event.data.id
+                    }`}
+                >
+                    <RecordContextProvider value={event.data}>
+                        <StepLabel
+                            icon={
+                                event.type === 'order' ? (
+                                    <order.icon
+                                        color="disabled"
+                                        sx={{ pl: 0.5 }}
+                                    />
+                                ) : (
+                                    <review.icon
+                                        color="disabled"
+                                        sx={{ pl: 0.5 }}
+                                    />
+                                )
+                            }
+                        >
+                            {event.type === 'order' ? (
+                                <OrderTitle />
+                            ) : (
+                                <ReviewTitle />
+                            )}
+                        </StepLabel>
+                        <StepContent>
+                            {event.type === 'order' ? <Order /> : <Review />}
+                        </StepContent>
+                    </RecordContextProvider>
+                </Link>
+            </Step>
+        ))}
+    </Stepper>
+);
+
+const OrderTitle = () => {
     const record = useRecordContext();
     const translate = useTranslate();
     if (!record) return null;
     return (
         <>
-            <Typography variant="body2" gutterBottom>
-                <Link to={`/commands/${record.id}`} component={RouterLink}>
-                    {translate('resources.commands.name', { smart_count: 1 })}
-                    &nbsp;#{record.reference}
-                </Link>
+            {translate('pos.events.order.title', {
+                smart_count: record.basket.length,
+            })}
+        </>
+    );
+};
+
+const Order = () => {
+    const record = useRecordContext();
+    const [locale] = useLocaleState();
+    if (!record) return null;
+    return (
+        <>
+            <Typography variant="body2" color="textSecondary" gutterBottom>
+                {new Date(record.date).toLocaleString(locale, {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric',
+                    hour: 'numeric',
+                    minute: 'numeric',
+                })}
+            </Typography>
+            <Typography variant="body2" color="textSecondary" gutterBottom>
+                Reference &nbsp;#{record.reference}&nbsp;-&nbsp;
+                <TextField source="status" />
             </Typography>
             <Typography variant="body2" color="textSecondary">
-                {translate('resources.commands.nb_items', {
-                    smart_count: record.basket.length,
-                    _: '1 item |||| %{smart_count} items',
-                })}
-                &nbsp;-&nbsp;
                 <NumberField
                     source="total"
                     options={{ style: 'currency', currency: 'USD' }}
                 />
-                &nbsp;-&nbsp;
-                <TextField source="status" />
             </Typography>
         </>
     );
 };
 
-const Review = () => {
+const ReviewTitle = () => {
     const record = useRecordContext();
     const translate = useTranslate();
+    const { referenceRecord } = useReference({
+        reference: 'products',
+        id: record?.product_id,
+    });
     if (!record) return null;
     return (
         <>
-            <Typography variant="body2" gutterBottom>
-                <Link to={`/reviews/${record.id}`} component={RouterLink}>
-                    {translate('resources.reviews.relative_to_poster')} "
-                    <ReferenceField
-                        source="product_id"
-                        reference="products"
-                        resource="reviews"
-                        link={false}
-                    >
-                        <TextField source="reference" component="span" />
-                    </ReferenceField>
-                    "
-                </Link>
-            </Typography>
+            {translate('pos.events.review.title', {
+                product: referenceRecord?.reference,
+            })}
+        </>
+    );
+};
+
+const Review = () => {
+    const [locale] = useLocaleState();
+    const record = useRecordContext();
+    if (!record) return null;
+    return (
+        <>
             <Typography variant="body2" color="textSecondary" gutterBottom>
-                <StarRatingField />
+                {new Date(record.date).toLocaleString(locale, {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric',
+                    hour: 'numeric',
+                    minute: 'numeric',
+                })}
             </Typography>
             <Typography
                 variant="body2"
@@ -260,8 +322,12 @@ const Review = () => {
                     WebkitBoxOrient: 'vertical',
                     overflow: 'hidden',
                 }}
+                gutterBottom
             >
                 {record.comment}
+            </Typography>
+            <Typography variant="body2" color="textSecondary">
+                <StarRatingField />
             </Typography>
         </>
     );

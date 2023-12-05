@@ -82,7 +82,12 @@ type Mutation {
     views: Int!
     user_id: ID!
   ): Post
+  updatePosts(
+    ids: [ID!]
+    data: PostBulkUpdatePayload
+  ) : { ids: [ID!]}
   deletePost(id: ID!): Post
+  deletePosts(ids: [ID!]) : { ids: [ID!]}
 }
 
 type Post {
@@ -104,6 +109,10 @@ input PostFilter {
     views_gt: Int
     views_gte: Int
     user_id: ID
+}
+
+input PostBulkUpdatePayload {
+    title: String
 }
 
 type ListMetadata {
@@ -209,9 +218,40 @@ Pass the introspection options to the `buildApolloProvider` function:
 buildApolloProvider({ introspection: introspectionOptions });
 ```
 
+## Sparse Field Support for Queries and Mutations
+
+By default, for every API call this data provider returns all top level fields in your GraphQL schema as well as association objects containing the association's ID. If you would like to implement sparse field support for your requests, you can request the specific fields you want in a request by passing them to the dataProvider via the available [meta param](https://marmelab.com/react-admin/Actions.html#meta-parameter). For example,
+
+```js
+dataProvider.getOne(
+    'posts',
+    { 
+        id, 
+        meta: { 
+            sparseFields: [
+                'id', 
+                'title', 
+                { 
+                    comments: [
+                        'description', 
+                        { 
+                            author : [
+                                'name', 
+                                'email'
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+);
+```
+This can increase efficiency, optimize client performance, improve security and reduce over-fetching. Also, it allows for the request of nested association fields beyond just their ID. It is available for all dataprovider actions.
+
 ## `DELETE_MANY` and `UPDATE_MANY` Optimizations
 
-Your GraphQL backend may not allow multiple deletions or updates in a single query. This provider simply makes multiple requests to handle those. This is obviously not ideal but can be alleviated by supplying your own `ApolloClient` which could use the [apollo-link-batch-http](https://www.apollographql.com/docs/link/links/batch-http.html) link if your GraphQL backend support query batching.
+Your GraphQL backend may not allow multiple deletions or updates in a single query. This provider defaults to simply making multiple requests to handle those. This is obviously not ideal but can be alleviated by supplying your own `ApolloClient` which could use the [apollo-link-batch-http](https://www.apollographql.com/docs/link/links/batch-http.html) link if your GraphQL backend support query batching.
 
 ## Data Provider Extensions
 

@@ -127,6 +127,32 @@ const LatestNews = () => {
 
 Alternately, you can use [the `useInfiniteGetList` hook](./useInfiniteGetList.md) to keep the previous pages on screen while loading new pages - just like users see older content when they scroll down their feed on social media. 
 
+## Refreshing The List
+
+If you want to refresh the list, you can use the `refetch` function returned by the hook:
+
+```jsx
+import { useGetList } from 'react-admin';
+
+const LatestNews = () => {
+    const { data, total, isLoading, error, refetch } = useGetList(/* ... */);
+    if (isLoading) { return <Loading />; }
+    if (error) { return <p>ERROR</p>; }
+    return (
+        <>
+            <h1>Latest news</h1>
+            <ul>
+                {data.map(record =>
+                    <li key={record.id}>{record.title}</li>
+                )}
+            </ul>
+            <p>{data.length} / {total} articles</p>
+            <button onClick={() => refetch()}>Refresh</button>
+        </>
+    );
+};
+```
+
 ## Live Updates
 
 If you want to subscribe to live updates on the list of records (topic: `resource/[resource]`), use [the `useGetListLive` hook](./useGetListLive.md) instead.

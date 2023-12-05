@@ -5,9 +5,12 @@ title: "The Datagrid Component"
 
 # `<Datagrid>`
 
-![The `<Datagrid>` component](./img/tutorial_post_list_less_columns.png)
+The `<Datagrid>` component renders a list of records as a table. It supports sorting, row selection for bulk actions, and an expand panel. It is usually used as a descendant of the [`<List>`](List.md#list) and [`<ReferenceManyField>`](./ReferenceManyField.md) components. Outside these components, it must be used inside a `ListContext`.
 
-The `Datagrid` component renders a list of records as a table. It is usually used as a descendant of the [`<List>`](List.md#list) and [`<ReferenceManyField>`](./ReferenceManyField.md) components. Outside these components, it must be used inside a `ListContext`.
+<video controls autoplay playsinline muted loop>
+  <source src="./img/Datagrid.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
 
 ## Usage
 
@@ -16,25 +19,32 @@ The `Datagrid` component renders a list of records as a table. It is usually use
 ```tsx
 // in src/posts.tsx
 import * as React from "react";
-import { List, Datagrid, TextField, EditButton } from 'react-admin';
+import { List, Datagrid, TextField, ReferenceField, EditButton } from 'react-admin';
 
 export const PostList = () => (
     <List>
         <Datagrid>
             <TextField source="id" />
+            <ReferenceField source="user_id" reference="users" />
             <TextField source="title" />
-            <TextField source="body" />
             <EditButton />
         </Datagrid>
     </List>
 );
 ```
 
+![The `<Datagrid>` component](./img/tutorial_post_list_less_columns.png)
+
 You can find more advanced examples of `<Datagrid>` usage in the [demos](./Demos.md). 
 
-**Tip**: To let users edit the content right in the datagrid, check [`<EditableDatagrid>`](./EditableDatagrid.md)<img class="icon" src="./img/premium.svg" />, an [Enterprise Edition](https://marmelab.com/ra-enterprise) component.
-
 The `<Datagrid>` is an **iterator** component: it gets an array of records from the `ListContext`, and iterates to display each record in a row. Other examples of iterator component are [`<SimpleList>`](./SimpleList.md) and [`<SingleFieldList>`](./SingleFieldList.md).
+
+**Tip**: If you need more Datagrid features, check out these two alternative components:
+
+- [`<EditableDatagrid>`](./EditableDatagrid.md)<img class="icon" src="./img/premium.svg" /> lets users edit the content right in the datagrid
+- [`<DatagridAG>`](./DatagridAG.md)<img class="icon" src="./img/premium.svg" /> adds suport for column reordering, aggregation, pivoting, row grouping, infinite scroll, etc. 
+
+Both are [Enterprise Edition](https://marmelab.com/ra-enterprise) components.
 
 ## Props
 
@@ -51,7 +61,7 @@ The `<Datagrid>` is an **iterator** component: it gets an array of records from 
 | `isRowExpandable` | Optional | Function | `() => true` | A function that returns whether a row is expandable. |
 | `isRowSelectable` | Optional | Function | `() => true` | A function that returns whether a row is selectable. |
 | `optimized` | Optional | Boolean | `false` | Whether to optimize the rendering of the table. |
-| `rowClick` | Optional | mixed | | The action to trigger when the user clicks on a row.  |
+| `rowClick` | Optional | mixed | `'show'` or `'edit'` | The action to trigger when the user clicks on a row. |
 | `rowStyle` | Optional | Function | | A function that returns the style to apply to a row. |
 | `rowSx` | Optional | Function | | A function that returns the sx prop to apply to a row. |
 | `size` | Optional | `'small'` or `'medium'` | `'small'` | The size of the table. |
@@ -136,13 +146,21 @@ export default PostList;
 
 ## `bulkActionButtons`
 
+Bulk action buttons appear when users select one or several rows, and affect all the selected records. This is useful for actions like mass deletion or mass edition.
+
 <video controls autoplay playsinline muted loop>
-  <source src="./img/bulk-actions-toolbar.webm" type="video/webm"/>
   <source src="./img/bulk-actions-toolbar.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
-Bulk action buttons are buttons that affect several records at once, like mass deletion for instance. In the `<Datagrid>` component, the bulk actions toolbar appears when a user ticks the checkboxes in the first column of the table. The user can then choose a button from the bulk actions toolbar. By default, all Datagrids have a single bulk action button, the bulk delete button. You can add other bulk action buttons by passing a custom element as the `bulkActionButtons` prop of the `<Datagrid>` component:
+Users can select a range of rows by pressing the shift key while clicking on a row checkbox.
+
+<video controls autoplay playsinline muted loop>
+  <source src="./img/datagrid-select-range.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
+By default, all Datagrids have a single bulk action button, the bulk delete button. You can add other bulk action buttons by passing a custom element as the `bulkActionButtons` prop of the `<Datagrid>` component:
 
 ```tsx
 import { Button } from '@mui/material';
@@ -391,7 +409,7 @@ const FullNameField = () => {
 
 export const UserList = () => (
     <List>
-        <Datagrid rowclick="edit">
+        <Datagrid>
             <FullNameField source="last_name" label="Name" />
             <DateField source="dob" />
             <TextField source="city" />
@@ -658,7 +676,9 @@ const PostList = () => (
 
 ## `rowClick`
 
-You can catch clicks on rows to redirect to the show or edit view by setting the `rowClick` prop:
+By default, `<Datagrid>` will look at the current [resource definition](https://marmelab.com/react-admin/Resource.html) to determine what to do when the user clicks on a row. If the resource has a `show` page, it will redirect to the Show view. If the resource has an `edit` page, it will redirect to the Edit view. Otherwise, the row will not be clickable.
+
+You can choose what happens when the user clicks on a row by setting the `rowClick` prop. For instance, set the `rowClick` prop to `"edit"` to redirect to the Edit view:
 
 ```tsx
 import { List, Datagrid } from 'react-admin';
@@ -674,10 +694,10 @@ export const PostList = () => (
 
 `rowClick` accepts the following values:
 
-* "edit" to redirect to the edition view
-* "show" to redirect to the show view
-* "expand" to open the `expand` panel
-* "toggleSelection" to trigger the `onToggleItem` function
+* `"edit"` to redirect to the edition view
+* `"show"` to redirect to the show view
+* `"expand"` to open the `expand` panel
+* `"toggleSelection"` to trigger the `onToggleItem` function
 * `false` to do nothing
 * a function `(id, resource, record) => path` that may return any of the above values or a custom path
 
@@ -881,10 +901,9 @@ const PostList = () => (
 );
 ```
 
-The inspector uses the field `source` (or `label` when it's a string) to display the column name. If you use non-field children (e.g. action buttons), then it's your responsibility to wrap them in a component with a `label` prop, that will be used by the inspector:
+The inspector uses the field `source` (or `label` when it's a string) to display the column name. If you use non-field children (e.g. action buttons), then it's your responsibility to wrap them in a component with a `label` prop, that will be used by the inspector. You can use a [`<WrapperField>`](./WrapperField.md) for that purpose:
 
 ```tsx
-const FieldWrapper = ({ children, label }) => children;
 const PostList = () => (
     <List>
         <DatagridConfigurable>
@@ -892,19 +911,33 @@ const PostList = () => (
             <TextField source="title" />
             <TextField source="author" />
             <TextField source="year" />
-            <FieldWrapper label="Actions">
+            <WrapperField label="Actions">
                 <EditButton />
-            </FieldWrapper>
+            </WrapperField>
         </DatagridConfigurable>
     </List>
 );
 ```
 
+**Tip:** You may need to clear your local storage to reflect the changes, as react-admin saves the computed column names in the Store. For the same reason, your users may need to log out and in again to see the changes. Alternatively, you can leverage [Store Invalidation](./Store.md#store-invalidation) to do it automatically.
+
 `<DatagridConfigurable>` accepts the same props as `<Datagrid>`.
+
+**Tip**: For even more column customization (resizable columns, column grouping, etc.), check out the [`<DatagridAG>`](./DatagridAG.md) component.
+
+<video controls autoplay playsinline muted loop>
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/DatagridAG.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
 
 ## Editable Spreadsheet
 
-You can combine a datagrid and an edition form into a unified spreadsheet view, "à la" Excel. This is useful when you want to let users edit a large number of records at once.
+The separation between list pages and edit pages is not always relevant. Sometimes, you want to let users edit records directly in the list page. React-admin provides two alternative components to edit records in a Datagrid:
+
+- [`<EditableDatagrid>`](./EditableDatagrid.md) leverages the react-admin input components to turn a row into an editable form.
+- [`<DatagridAG>`](./DatagridAG.md) provides a spreadsheet-like interface, "à la" Excel, using the [ag-Grid](https://www.ag-grid.com/) library.
+
+### `<EditableDatagrid>`: Editable Rows
 
 <video controls autoplay playsinline muted loop>
   <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-editable-datagrid-overview.webm" type="video/webm" />
@@ -968,7 +1001,44 @@ const ArtistForm = () => (
 );
 ```
 
-Check [the `ra-editable-datagrid` documentation](https://marmelab.com/ra-enterprise/modules/ra-editable-datagrid) for more details.
+Check [the `<EditableDatagrid>` documentation](./EditableDatagrid.md) for more details.
+
+### `<DatagridAG>`: Spreadsheet-like Interface
+
+<video controls autoplay playsinline muted loop>
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/DatagridAG.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
+`<DatagridAG>` is an advanced Datagrid component based on [ag-grid](https://www.ag-grid.com/). Here is a (non-exhaustive) list of [features](https://www.ag-grid.com/react-data-grid/) that `<DatagridAG>` offers:
+
+-   In place editing of cells or rows
+-   Advanced filtering
+-   Columns resizing and reordering
+-   Automatic page size
+-   Automatic column size
+-   Themes
+-   Row selection and bulk actions
+-   Compatibility with React Admin fields
+
+Additionally, `<DatagridAG>` is compatible with the [Enterprise version of ag-grid](https://www.ag-grid.com/react-data-grid/licensing/), which offers even more features:
+
+-   Row Grouping
+-   Aggregation
+-   Tree Data
+-   Pivoting
+-   More advanced filtering
+-   Master Detail views
+-   Range Selection
+-   Excel Export
+-   And more...
+
+<video controls autoplay playsinline muted loop>
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/DatagridAG-enterprise.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
+Check [the `<DatagridAG>` documentation](./DatagridAG.md) for more details.
 
 ## Fields And Permissions
 
@@ -1173,6 +1243,13 @@ const PostList = () => (
 ```
 
 `<SelectColumnsButton>` must be used in conjunction with `<DatagridConfigurable>`, the configurable version of `<Datagrid>`, described in the next section.
+
+**Tip**: For even more column customization (resizable columns, column grouping, etc.), check out the [`<DatagridAG>`](./DatagridAG.md) component.
+
+<video controls autoplay playsinline muted loop>
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/DatagridAG.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
 
 ## Hiding Checkboxes
 

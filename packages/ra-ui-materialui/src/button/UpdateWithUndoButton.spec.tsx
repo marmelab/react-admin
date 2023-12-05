@@ -8,6 +8,7 @@ import { Toolbar, SimpleForm } from '../form';
 import { Edit } from '../detail';
 import { TextInput } from '../input';
 import { UpdateWithUndoButton } from './UpdateWithUndoButton';
+import { InsideAList } from './UpdateButton.stories';
 
 const theme = createTheme();
 
@@ -58,7 +59,7 @@ describe('<UpdateWithUndoButton />', () => {
             // @ts-ignore
             getOne: () =>
                 Promise.resolve({
-                    data: { id: 123, title: 'lorem', views: 1000 },
+                    data: { id: 123, title: 'lorem', views: 500 },
                 }),
             // @ts-ignore
             update: () => Promise.resolve({ data: { id: 123 } }),
@@ -95,11 +96,22 @@ describe('<UpdateWithUndoButton />', () => {
                     id: 123,
                     data: { views: 0 },
                     meta: undefined,
-                    previousData: { id: 123, title: 'lorem', views: 1000 },
+                    previousData: { id: 123, title: 'lorem', views: 500 },
                     resource: 'posts',
                 },
                 { snapshot: expect.any(Array) }
             );
         });
+    });
+
+    it('should prevent click propagation', async () => {
+        render(<InsideAList />);
+        const resetButton = await screen.findByRole('button', {
+            name: 'Reset views',
+        });
+        screen.getByText('500');
+        fireEvent.click(resetButton);
+        await screen.findByText('0');
+        screen.getByRole('button', { name: 'Export' }); // check if we still are on the list page
     });
 });

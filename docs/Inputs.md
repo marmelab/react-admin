@@ -158,6 +158,14 @@ If `true`, the input is disabled and the user can't change the value.
 <TextInput source="title" disabled />
 ```
 
+**Tip**: The form framework used by react-admin, react-hook-form, [considers](https://github.com/react-hook-form/react-hook-form/pull/10805) that a `disabled` input shouldn't submit any value. So react-hook-form sets the value of all `disabled` inputs to `undefined`. As a consequence, a form with a `disabled` input is always considered `dirty` (i.e. react-hook-form considers that the form values and the initial record values are different), and it triggers [the `warnWhenUnsavedChanges` feature](./EditTutorial.md#warning-about-unsaved-changes) when leaving the form, even though the user changed nothing. The workaround is to set the `disabled` prop on the underlying input component, as follows:
+
+{% raw %}
+```jsx
+<TextInput source="title" InputProps={{ disabled: true }} />
+```
+{% endraw %}
+
 ## `format`
 
 The `format` prop accepts a callback taking the value from the form state, and returning the input value (which should be a string).
@@ -457,7 +465,7 @@ React-admin relies on [react-hook-form](https://react-hook-form.com/) for form h
 
 ```tsx
 import * as React from "react";
-import { Edit, SimpleForm, SelectInput, SelectInputProps } from "react-admin";
+import { Edit, SimpleForm, SelectInput } from "react-admin";
 import { useWatch } from "react-hook-form";
 
 const countries = ["USA", "UK", "France"];
@@ -468,13 +476,13 @@ const cities: Record<string, string[]> = {
 };
 const toChoices = (items: string[]) => items.map((item) => ({ id: item, name: item }));
 
-const CityInput = (props: SelectInputProps) => {
+const CityInput = () => {
     const country = useWatch<{ country: string }>({ name: "country" });
 
     return (
         <SelectInput
             choices={country ? toChoices(cities[country]) : []}
-            {...props}
+            source="cities"
         />
     );
 };
@@ -483,7 +491,7 @@ const OrderEdit = () => (
     <Edit>
         <SimpleForm>
             <SelectInput source="country" choices={toChoices(countries)} />
-            <CityInput source="cities" />
+            <CityInput />
         </SimpleForm>
     </Edit>
 );

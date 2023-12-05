@@ -145,7 +145,7 @@ Here are all the props accepted by the component:
 | `basename`         | Optional | `string`       | -              | The base path for all URLs                               |
 | `catchAll`         | Optional | `Component`    | `NotFound`     | The fallback component for unknown routes                |
 | `dashboard`        | Optional | `Component`    | -              | The content of the dashboard page                        |
-| `darkTheme`        | Optional | `object`       | -              | The dark theme configuration                             |
+| `darkTheme`        | Optional | `object`       | `default DarkTheme` | The dark theme configuration                             |
 | `defaultTheme`     | Optional | `boolean`      | `false`        | Flag to default to the light theme                       |
 | `disableTelemetry` | Optional | `boolean`      | `false`        | Set to `true` to disable telemetry collection            |
 | `i18nProvider`     | Optional | `I18NProvider` | -              | The internationalization provider for translations       |
@@ -156,7 +156,7 @@ Here are all the props accepted by the component:
 | `ready`            | Optional | `Component`    | `Ready`        | The content of the ready page                            |
 | `requireAuth`      | Optional | `boolean`      | `false`        | Flag to require authentication for all routes            |
 | `store`            | Optional | `Store`        | -              | The Store for managing user preferences                  |
-| `theme`            | Optional | `object`       | -              | The main (light) theme configuration                     |
+| `theme`            | Optional | `object`       | `default LightTheme` | The main (light) theme configuration                     |
 | `title`            | Optional | `string`       | -              | The error page title                                     |
 
 
@@ -433,28 +433,47 @@ const App = () => (
 
 ## `darkTheme`
 
-If you want to support both light and dark mode, you can provide a `darkTheme` in addition to the `theme` prop. The app will use the `darkTheme` by default for users who prefer the dark mode at the OS level, and users will be able to switch from light to dark mode using a new app bar button leveraging [the `<ToggleThemeButton>` component](./ToggleThemeButton.md).
+React-admin provides a [built-in dark theme](./AppTheme.md#default). The app will use the `darkTheme` by default for users who prefer the dark mode at the OS level, and users will be able to switch from light to dark mode using [the `<ToggleThemeButton>` component](./ToggleThemeButton.md).
 
 <video controls autoplay muted loop>
   <source src="./img/ToggleThemeButton.webm" type="video/webm"/>
   Your browser does not support the video tag.
 </video>
 
+If you want to override it, you can provide your own `darkTheme` in addition to the `theme` prop:
+
 ```tsx
 import { Admin } from 'react-admin';
 import { dataProvider } from './dataProvider';
-import { darkTheme, lightTheme } from './themes';
+import { myDarkTheme } from './themes';
 
 const App = () => (
     <Admin
         dataProvider={dataProvider}
-        theme={lightTheme}
-        darkTheme={darkTheme}
+        darkTheme={myDarkTheme}
     >
         ...
     </Admin>
 );
 ```
+
+If you want to remove the user's ability to switch to dark theme, you can set `darkTheme` to `null`, therefore the `<ToggleThemeButton>` component won't be shown: 
+
+```tsx
+import { Admin } from 'react-admin';
+import { dataProvider } from './dataProvider';
+
+const App = () => (
+    <Admin
+        dataProvider={dataProvider}
+        darkTheme={null}
+    >
+        ...
+    </Admin>
+);
+```
+
+If the `theme` prop is provided and the `darkTheme` prop is not, the dark theme is disabled.
 
 **Tip**: To disable OS preference detection and always use one theme by default, see the [`defaultTheme`](#defaulttheme) prop.
 
@@ -843,7 +862,7 @@ const App = () => (
 
 You can also [write your own theme](./AppTheme.md#writing-a-custom-theme) to fit your company branding. For more details on predefined and custom themes, refer to [the Application Theme chapter](./AppTheme.md).
 
-If you want to support both a light and a dark theme, check out [the `<Admin darkTheme>` prop](#darktheme). 
+React-admin provides a [built-in dark theme by default](./AppTheme.md#default). If you want to override it, check out [the `<Admin darkTheme>` prop](#darktheme). 
 
 ## `title`
 

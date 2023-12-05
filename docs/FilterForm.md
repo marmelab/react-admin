@@ -14,14 +14,14 @@ Part of the filter button/form combo, `<FilterForm>` renders whenever you use th
 </video>
 
 
-It's an internal component that you should only need if you build a custom List layout. 
+It's an internal component that you should only need if you build a custom List layout.
 
 ## Usage
 
 `<FilterForm>` expects an array of filter inputs as `filters` prop:
 
 ```jsx
-import { 
+import {
     CreateButton,
     Datagrid,
     FilterButton,
@@ -30,11 +30,12 @@ import {
     Pagination,
     TextField,
     TextInput,
+    SearchInput
 } from 'react-admin';
 import { Stack } from '@mui/material';
 
 const postFilters = [
-    <TextInput label="Search" source="q" alwaysOn />,
+    <SearchInput source="q" alwaysOn />,
     <TextInput label="Title" source="title" defaultValue="Hello, World!" />,
 ];
 
@@ -60,4 +61,3 @@ const PostList = () => (
     </ListBase>
 )
 ```
-

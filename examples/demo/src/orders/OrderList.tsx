@@ -58,6 +58,7 @@ const orderFilters = [
                     ? `${choice.first_name} ${choice.last_name}`
                     : ''
             }
+            sx={{ minWidth: 200 }}
         />
     </ReferenceInput>,
     <DateInput source="date_gte" />,

@@ -392,7 +392,7 @@ For instance, to display several fields in a single line, you can use Material U
 
 {% raw %}
 ```jsx
-import { Show, SimpleShowLayout, TextField, DateField, ReferenceField } from 'react-admin';
+import { Show, TextField, DateField, ReferenceField, WithRecord } from 'react-admin';
 import { Grid } from '@mui/material';
 import StarIcon from '@mui/icons-material/Star';
 

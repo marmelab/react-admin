@@ -261,6 +261,8 @@ You can customize the redirection by setting the `redirect` prop to one of the f
 - `'list'`: redirect to the List view
 - `'show'`: redirect to the Show view
 - `false`: do not redirect
+- A function `(resource, id, data) => string` to redirect to different targets depending on the record
+
 
 ```jsx
 const PostCreate = () => (
@@ -321,13 +323,13 @@ The `title` value can be a string or a React element.
 To transform a record after the user has submitted the form but before the record is passed to `dataProvider.create()`, use the `transform` prop. It expects a function taking a record as argument, and returning a modified record. For instance, to add a computed field upon creation:
 
 ```jsx
-export const UserCreate = (props) => {
+export const UserCreate = () => {
     const transform = data => ({
         ...data,
         fullName: `${data.firstName} ${data.lastName}`
     });
     return (
-        <Create {...props} transform={transform}>
+        <Create transform={transform}>
             ...
         </Create>
     );
@@ -354,7 +356,7 @@ As a reminder, HTML form inputs always return strings, even for numbers and bool
 If you prefer to have `null` values, or to omit the key for empty values, use [the `transform` prop](#transform) to sanitize the form data before submission:
 
 ```jsx
-export const UserCreate = (props) => {
+export const UserCreate = () => {
     const transform = (data) => {
         const sanitizedData = {};
         for (const key in data) {
@@ -364,7 +366,7 @@ export const UserCreate = (props) => {
         return sanitizedData;
     };
     return (
-        <Create {...props} transform={transform}>
+        <Create transform={transform}>
             ...
         </Create>
     );
@@ -574,12 +576,12 @@ const cities = {
 };
 const toChoices = items => items.map(item => ({ id: item, name: item }));
 
-const CityInput = props => {
+const CityInput = () => {
     const country = useWatch({ name: 'country' });
     return (
         <SelectInput
             choices={country ? toChoices(cities[country]) : []}
-            {...props}
+            source="cities"
         />
     );
 };
@@ -588,7 +590,7 @@ const OrderEdit = () => (
     <Edit>
         <SimpleForm>
             <SelectInput source="country" choices={toChoices(countries)} />
-            <CityInput source="cities" />
+            <CityInput />
         </SimpleForm>
     </Edit>
 );

@@ -49,6 +49,7 @@ export const InitialValue = () => (
                 getOne: () => Promise.resolve({ data: { id: 1, gender: 'F' } }),
             } as any
         }
+        defaultTheme="light"
     >
         <Edit resource="posts" id="1">
             <SimpleForm>
@@ -176,6 +177,7 @@ const Wrapper = ({ children, onSuccess = console.log }) => (
                     Promise.resolve({ data: { id: 1, ...params.data } }),
             } as any
         }
+        defaultTheme="light"
     >
         <Create resource="posts" mutationOptions={{ onSuccess }}>
             <SimpleForm
@@ -443,6 +445,7 @@ export const TranslateChoice = () => {
                         }),
                 } as any
             }
+            defaultTheme="light"
         >
             <Edit resource="posts" id="1">
                 <SimpleForm>

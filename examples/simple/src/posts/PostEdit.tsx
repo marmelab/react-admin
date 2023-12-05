@@ -116,7 +116,10 @@ const PostEdit = () => {
                         justifyContent="space-between"
                         fullWidth
                     >
-                        <TextInput disabled source="id" />
+                        <TextInput
+                            InputProps={{ disabled: true }}
+                            source="id"
+                        />
                         <TextInput
                             source="title"
                             validate={required()}
@@ -224,7 +227,7 @@ const PostEdit = () => {
                         validate={[required(), number(), minValue(0)]}
                     />
                     <BooleanInput source="commentable" defaultValue />
-                    <TextInput disabled source="views" />
+                    <TextInput InputProps={{ disabled: true }} source="views" />
                     <ArrayInput source="pictures">
                         <SimpleFormIterator>
                             <TextInput source="url" defaultValue="" />

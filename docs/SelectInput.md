@@ -14,7 +14,7 @@ To let users choose a value in a list using a dropdown, use `<SelectInput>`. It 
 </video>
 
 
-This input allows editing record fields that are scalar values, e.g. `123`, `'admin'`, etc. 
+This input allows editing record fields that are scalar values, e.g. `123`, `'admin'`, etc.
 
 ## Usage
 
@@ -63,7 +63,6 @@ The form value for the source must be the selected value, e.g.
 | `emptyValue`      | Optional | `any`                      | ''                 | The value to use for the empty option                                                                                                  |
 | `isLoading`       | Optional | `boolean`                  | `false`            | If `true`, the component will display a loading indicator.                                                                             |
 | `onCreate`        | Optional | `Function`                 | `-`                | A function called with the current filter value when users choose to create a new choice.                                              |
-| `options`         | Optional | `Object`                   | -                  | Props to pass to the underlying `<SelectInput>` element                                                                                |
 | `optionText`      | Optional | `string` &#124; `Function` &#124; `Component` | `undefined` &#124; `record Representation` | Field name of record to display in the suggestion item or function using the choice object as argument |
 | `optionValue`     | Optional | `string`                   | `id`               | Field name of record containing the value to use as input value                                                                        |
 | `resettable`      | Optional | `boolean`                  | `false`            | If `true`, display a button to reset the changes in this input value                                                                   |
@@ -261,7 +260,7 @@ You can override that label with the `emptyText` prop.
 
 The `emptyText` prop accepts either a string or a React Element.
 
-And if you want to hide that empty choice, make the input required. 
+And if you want to hide that empty choice, make the input required.
 
 ```jsx
 <SelectInput source="category"  choices={choices} validate={required()} />
@@ -277,7 +276,7 @@ You can override this value with the `emptyValue` prop.
 <SelectInput source="category" choices={choices} emptyValue={0} />
 ```
 
-**Tip**: While you can set `emptyValue` to a non-string value (e.g. `0`), you cannot use `null` or `undefined`, as it would turn the `<SelectInput>` into an [uncontrolled component](https://react.dev/learn/sharing-state-between-components#controlled-and-uncontrolled-components). If you need the empty choice to be stored as `null` or `undefined`, use [the `parse` prop](./Inputs.md#parse) to convert the default empty value ('') to `null` or `undefined`, or use [the `sanitizeEmptyValues` prop](./SimpleForm.md#sanitizeemptyvalues) on the Form component. 
+**Tip**: While you can set `emptyValue` to a non-string value (e.g. `0`), you cannot use `null` or `undefined`, as it would turn the `<SelectInput>` into an [uncontrolled component](https://react.dev/learn/sharing-state-between-components#controlled-and-uncontrolled-components). If you need the empty choice to be stored as `null` or `undefined`, use [the `parse` prop](./Inputs.md#parse) to convert the default empty value ('') to `null` or `undefined`, or use [the `sanitizeEmptyValues` prop](./SimpleForm.md#sanitizeemptyvalues) on the Form component.
 
 ## `isLoading`
 
@@ -290,7 +289,7 @@ const UserCountry = () => {
     const { data, isLoading } = useGetList('countries');
     // data is an array of { id: 123, code: 'FR', name: 'France' }
     return (
-        <SelectInput 
+        <SelectInput
             source="country"
             choices={data}
             optionText="name"
@@ -336,18 +335,6 @@ const PostCreate = () => {
 {% endraw %}
 
 If a prompt is not enough, you can use [the `create` prop](#create) to render a custom component instead.
-
-## `options`
-
-Use the `options` attribute if you want to override any of Material UI's `<Select>` attributes:
-
-{% raw %}
-```jsx
-<SelectInput source="category" choices={choices} options={{ maxHeight: 200 }} />
-```
-{% endraw %}
-
-Refer to [Material UI Select documentation](https://mui.com/api/select) for more details.
 
 ## `optionText`
 
@@ -413,7 +400,7 @@ const FullNameField = () => {
 <SelectInput source="author_id" choices={choices} optionText={<FullNameField />}/>
 ```
 
-`optionText` is also useful when the choices are records [fetched from another resource](#fetching-choices), and `<SelectInput>` is a child of a [`<ReferenceInput>`](./ReferenceInput.md). 
+`optionText` is also useful when the choices are records [fetched from another resource](#fetching-choices), and `<SelectInput>` is a child of a [`<ReferenceInput>`](./ReferenceInput.md).
 
 ```jsx
 import { SelectInput, ReferenceInput } from 'react-admin';
@@ -498,7 +485,7 @@ const CountryInput = () => {
     const { data, isLoading } = useGetList('countries');
     // data is an array of { id: 123, code: 'FR', name: 'France' }
     return (
-        <SelectInput 
+        <SelectInput
             source="country"
             choices={data}
             optionText="name"
@@ -511,11 +498,11 @@ const CountryInput = () => {
 
 The `isLoading` prop is used to display a loading indicator while the data is being fetched.
 
-However, most of the time, if you need to populate a `<SelectInput>` with choices fetched from another resource, it's because you are trying to set a foreign key. In that case, you should use [`<ReferenceInput>`](./ReferenceInput.md) to fetch the choices instead (see next section). 
+However, most of the time, if you need to populate a `<SelectInput>` with choices fetched from another resource, it's because you are trying to set a foreign key. In that case, you should use [`<ReferenceInput>`](./ReferenceInput.md) to fetch the choices instead (see next section).
 
 ## Selecting a Foreign Key
 
-If you use `<SelectInput>` to set a foreign key for a many-to-one or a one-to-one relationship, you'll have to [fetch choices](#fetching-choices), as explained in the previous section. You'll also have to fetch the record corresponding to the current value of the foreign key, as it may not be in the list of choices. 
+If you use `<SelectInput>` to set a foreign key for a many-to-one or a one-to-one relationship, you'll have to [fetch choices](#fetching-choices), as explained in the previous section. You'll also have to fetch the record corresponding to the current value of the foreign key, as it may not be in the list of choices.
 
 For example, if a `contact` has one `company` via the `company_id` foreign key, a contact form can let users select a company as follows:
 
@@ -538,7 +525,7 @@ const CompanyInput = () => {
             : [...choices, currentCompany]
         : [];
     return (
-        <SelectInput 
+        <SelectInput
             label="Company"
             source="company_id"
             choices={choicesWithCurrentCompany}
@@ -556,7 +543,7 @@ import { ReferenceInput, SelectInput } from 'react-admin';
 
 const CompanyInput = () => (
     <ReferenceInput reference="companies" source="company_id">
-        <SelectInput 
+        <SelectInput
             label="Company"
             source="company_id"
             optionText="name"
@@ -566,7 +553,7 @@ const CompanyInput = () => (
 ```
 
 `<ReferenceInput>` is a headless component that:
- 
+
  - fetches a list of records with `dataProvider.getList()` and `dataProvider.getOne()`, using the `reference` prop for the resource,
  - puts the result of the fetch in the `ChoiceContext` as the `choices` prop, as well as the `isLoading` state,
  - and renders its child component
@@ -576,8 +563,8 @@ When rendered as a child of `<ReferenceInput>`, `<SelectInput>` reads that `Choi
 In fact, you can simplify the code even further:
 
 - `<ReferenceInput>` puts all its props inside the `ChoiceContext`, including `source`, so `<SelectInput>` doesn't need to repeat it.
-- You can also put the `label` prop on the `<ReferenceInput>` rather than `<SelectInput>` so that it looks just like [`<ReferenceField>`](./ReferenceField.md) (for easier memorization). 
-- `<SelectInput>` uses the [`recordRepresentation`](./Resource.md#recordrepresentation) to determine how to represent the related choices. In the example above, the `companies` resource uses `name` as its `recordRepresentation`, so `<SelectInput>` will default to `optionText="name"`. 
+- You can also put the `label` prop on the `<ReferenceInput>` rather than `<SelectInput>` so that it looks just like [`<ReferenceField>`](./ReferenceField.md) (for easier memorization).
+- `<SelectInput>` uses the [`recordRepresentation`](./Resource.md#recordrepresentation) to determine how to represent the related choices. In the example above, the `companies` resource uses `name` as its `recordRepresentation`, so `<SelectInput>` will default to `optionText="name"`.
 
 The code for the `<CompanyInput>` component can be reduced to:
 

@@ -54,6 +54,7 @@ const RaFetchMethodMap = {
     update: UPDATE,
     updateMany: UPDATE_MANY,
 };
+
 export const defaultOptions = {
     resolveIntrospection: introspectSchema,
     introspection: {

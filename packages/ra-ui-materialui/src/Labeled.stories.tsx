@@ -25,7 +25,7 @@ export const Basic = () => (
     </ResourceContext.Provider>
 );
 
-export const CustomLabel = () => (
+export const LabelIntrospection = () => (
     <ResourceContext.Provider value="books">
         <RecordContextProvider value={record}>
             <Labeled>
@@ -35,7 +35,7 @@ export const CustomLabel = () => (
     </ResourceContext.Provider>
 );
 
-export const ExplicitLabel = () => (
+export const Label = () => (
     <ResourceContext.Provider value="books">
         <RecordContextProvider value={record}>
             <Labeled label="My custom Title">
@@ -50,6 +50,34 @@ export const NoLabel = () => (
         <RecordContextProvider value={record}>
             <Labeled>
                 <TextField label={false} source="title" />
+            </Labeled>
+        </RecordContextProvider>
+    </ResourceContext.Provider>
+);
+
+export const Color = () => (
+    <ResourceContext.Provider value="books">
+        <RecordContextProvider value={record}>
+            <Stack gap={1} sx={{ m: 1 }}>
+                <Labeled>
+                    <TextField source="title" />
+                </Labeled>
+                <Labeled color="success.main">
+                    <TextField source="title" />
+                </Labeled>
+                <Labeled color="#abcdef">
+                    <TextField source="title" />
+                </Labeled>
+            </Stack>
+        </RecordContextProvider>
+    </ResourceContext.Provider>
+);
+
+export const IsRequired = () => (
+    <ResourceContext.Provider value="books">
+        <RecordContextProvider value={record}>
+            <Labeled isRequired>
+                <TextField source="title" />
             </Labeled>
         </RecordContextProvider>
     </ResourceContext.Provider>

@@ -3,7 +3,6 @@ import merge from 'lodash/merge';
 
 import {
     Admin,
-    defaultTheme,
     Resource,
     Datagrid,
     List,
@@ -12,6 +11,7 @@ import {
     DateField,
     FilterList,
     FilterListItem,
+    memoryStore,
 } from 'react-admin';
 import { Card, CardContent, styled } from '@mui/material';
 import BusinessIcon from '@mui/icons-material/Business';
@@ -22,7 +22,6 @@ import frenchMessages from 'ra-language-french';
 import { createMemoryHistory } from 'history';
 
 import { SavedQueriesList } from './SavedQueriesList';
-import { RaThemeOptions } from '../..';
 import fakeRestProvider from 'ra-data-fakerest';
 
 export default { title: 'ra-ui-materialui/list/filter/SavedQueriesList' };
@@ -187,25 +186,12 @@ const i18nProvider = polyglotI18nProvider(
     ]
 );
 
-const darkTheme: RaThemeOptions = {
-    ...defaultTheme,
-    palette: {
-        secondary: {
-            light: '#5f5fc4',
-            main: '#283593',
-            dark: '#001064',
-            contrastText: '#fff',
-        },
-        mode: 'dark',
-    },
-};
-
 export const WithThemeAndLocale = () => (
     <Admin
+        store={memoryStore()}
         history={createMemoryHistory()}
         i18nProvider={i18nProvider}
         dataProvider={dataProvider}
-        darkTheme={darkTheme}
     >
         <Resource name="songs" list={SongList} />
     </Admin>

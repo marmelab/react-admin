@@ -14,6 +14,8 @@ import {
     CREATE,
     UPDATE,
     DELETE,
+    DELETE_MANY,
+    UPDATE_MANY,
 } from 'ra-core';
 import { IntrospectionResult, IntrospectedResource } from 'ra-data-graphql';
 
@@ -43,6 +45,7 @@ export default (introspectionResults: IntrospectionResult) => (
         case GET_MANY:
             return {
                 filter: { ids: preparedParams.ids },
+                ...(preparedParams.meta ? { meta: preparedParams.meta } : {}),
             };
         case GET_MANY_REFERENCE: {
             let variables = buildGetListVariables(introspectionResults)(
@@ -62,7 +65,10 @@ export default (introspectionResults: IntrospectionResult) => (
         case DELETE:
             return {
                 id: preparedParams.id,
+                ...(preparedParams.meta ? { meta: preparedParams.meta } : {}),
             };
+        case DELETE_MANY:
+            return preparedParams;
         case CREATE:
         case UPDATE: {
             return buildCreateUpdateVariables(
@@ -71,6 +77,19 @@ export default (introspectionResults: IntrospectionResult) => (
                 preparedParams,
                 queryType
             );
+        }
+        case UPDATE_MANY: {
+            const { ids, data: resourceData } = preparedParams;
+            const { id, ...data } = buildCreateUpdateVariables(
+                resource,
+                raFetchMethod,
+                { data: resourceData },
+                queryType
+            );
+            return {
+                ids,
+                data,
+            };
         }
     }
 };
@@ -188,6 +207,7 @@ const buildGetListVariables = (introspectionResults: IntrospectionResult) => (
         perPage: number;
         sortField: string;
         sortOrder: string;
+        meta?: object;
     }> = { filter: {} };
     if (params.filter) {
         variables.filter = Object.keys(params.filter).reduce((acc, key) => {
@@ -284,6 +304,8 @@ const buildGetListVariables = (introspectionResults: IntrospectionResult) => (
         variables.sortField = params.sort.field;
         variables.sortOrder = params.sort.order;
     }
+
+    if (params.meta) variables = { ...variables, meta: params.meta };
 
     return variables;
 };

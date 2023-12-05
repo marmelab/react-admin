@@ -207,22 +207,24 @@ Both of these examples work without server—the API is simulated on the client-
 
 ### Testing Your Changes In Your App
 
-Using `yarn link`, you can have your project use a local checkout of the react-admin package instead of npm. This allows you to test react-admin changes in your app: 
+Using `yarn link`, you can have your project use a local checkout of the react-admin package instead of downloading from npm. This allows you to test react-admin changes in your app.
+
+The following instructions are targeting yarn >= v3 in the client app.
 
 ```sh
-# Register your local react-admin as a linkable package
-$ cd /code/path/to/react-admin/packages/react-admin && yarn link
+# Go to the folder of your client app
+$ cd /code/path/to/myapp/
+
+# Use the latest version of yarn package manager
+$ corepack enable && yarn set version stable
 
 # Replace the npm-installed version with a symlink to your local version 
-$ cd /code/path/to/myapp/ && yarn link react-admin
+$ yarn link /code/path/to/react-admin/packages/react-admin
 
-# If you run into issues with React red-screen, then you need to register your app's version of React as a linkable package 
+# If you modified additional internal packages in the react-admin monorepo, e.g. ra-core, also make a link
+$ yarn link /code/path/to/react-admin/packages/ra-core
 
-$ cd /code/path/to/myapp/node_modules/react && yarn link
-# And then replace the npm-installed version of React with a symlink to your app's node_modules version
-$ cd /code/path/to/react-admin/ && yarn link react
-
-# Rebuild the packages with the same version of React
+# Build all of the react-admin package distribution
 $ cd /code/path/to/react-admin/ && make build
 
 # Return to your app and ensure all dependencies have resolved 
@@ -231,6 +233,8 @@ $ cd /code/path/to/myapp/ && yarn install
 # Start your app
 $ yarn start
 ```
+
+Tip: If you are still using yarn v1 as your package manager in your client app, we strongly recommend you to update as it is frozen and no longer maintained.
 
 ### Automated Tests
 

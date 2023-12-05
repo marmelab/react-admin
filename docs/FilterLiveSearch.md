@@ -23,7 +23,7 @@ To add a full-text search filter on customers, include `<FilterLiveSearch>` in a
 {% raw %}
 ```tsx
 import { List, FilterLiveSearch } from 'react-admin';
-import { Card, CardContent } from '@material-ui/core';
+import { Card, CardContent } from '@mui/material';
 import { LastVisitedFilter, HasOrderedFilter, HasNewsletterFilter, SegmentFilter } from './filters';
 
 const FilterSidebar = () => (

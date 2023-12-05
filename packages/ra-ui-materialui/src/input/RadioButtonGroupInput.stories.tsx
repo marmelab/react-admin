@@ -77,7 +77,11 @@ const dataProvider = testDataProvider({
 } as any);
 
 export const InsideReferenceArrayInput = () => (
-    <AdminContext dataProvider={dataProvider} i18nProvider={i18nProvider}>
+    <AdminContext
+        dataProvider={dataProvider}
+        i18nProvider={i18nProvider}
+        defaultTheme="light"
+    >
         <Create
             resource="posts"
             record={{ options: [1, 2] }}
@@ -99,6 +103,7 @@ export const InsideReferenceArrayInputWithError = () => (
             getList: () => Promise.reject(new Error('fetch error')),
         }}
         i18nProvider={i18nProvider}
+        defaultTheme="light"
     >
         <Create
             resource="posts"
@@ -136,7 +141,7 @@ export const Id = () => (
 const i18nProvider = polyglotI18nProvider(() => englishMessages);
 
 const Wrapper = ({ children }) => (
-    <AdminContext i18nProvider={i18nProvider}>
+    <AdminContext i18nProvider={i18nProvider} defaultTheme="light">
         <Create resource="posts">
             <SimpleForm>
                 {children}
@@ -176,6 +181,7 @@ export const TranslateChoice = () => {
                         }),
                 } as any
             }
+            defaultTheme="light"
         >
             <Edit resource="posts" id="1">
                 <SimpleForm>
