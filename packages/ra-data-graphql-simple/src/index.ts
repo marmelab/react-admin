@@ -19,7 +19,6 @@ export { default as getResponseParser } from './getResponseParser';
 const defaultOptions = {
     ...baseDefaultOptions,
     buildQuery: defaultBuildQuery,
-    extensions: [],
 };
 
 export { defaultOptions, DataProviderExtensions };
@@ -36,11 +35,9 @@ export default (
         extensions?: DataProviderExtension[];
     }
 ): Promise<DataProvider> => {
-    const { bulkActionsEnabled = false, extensions = [], ...dPOptions } = merge(
-        {},
-        defaultOptions,
-        options
-    );
+    const { bulkActionsEnabled = false, extensions = [], ...rest } = options;
+
+    const dPOptions = merge({}, defaultOptions, rest);
 
     if (bulkActionsEnabled && dPOptions.introspection?.operationNames)
         dPOptions.introspection.operationNames = merge(
@@ -112,7 +109,7 @@ export default (
             ...extensions.reduce(
                 (acc, { methodFactory, factoryArgs = [] }) => ({
                     ...acc,
-                    ...methodFactory(...[defaultDataProvider, ...factoryArgs]),
+                    ...methodFactory(defaultDataProvider, ...factoryArgs),
                 }),
                 {}
             ),

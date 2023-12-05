@@ -98,7 +98,8 @@ const methodFactory = (
                 subscription,
                 subscriptionCallback,
             });
-            return Promise.resolve({ data: null });
+
+            return { data: subscriptionStore };
         },
 
         unsubscribe: async (topic: string, subscriptionCallback: any) => {
@@ -114,7 +115,7 @@ const methodFactory = (
 
             if (subscription) subscription.unsubscribe();
 
-            return Promise.resolve({ data: null });
+            return { data: subscriptionStore };
         },
     };
 };
