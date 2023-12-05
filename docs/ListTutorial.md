@@ -479,9 +479,10 @@ For these cases, react-admin provides a `<ListGuesser>` component that will gues
 
 ```tsx
 import { Admin, Resource, ListGuesser } from 'react-admin';
+import { dataProvider } from './dataProvider';
 
 const App = () => (
-    <Admin dataProvider={...}>
+    <Admin dataProvider={dataProvider}>
         <Resource name="posts" list={ListGuesser} />
     </Admin>
 );

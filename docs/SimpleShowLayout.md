@@ -161,7 +161,7 @@ const PostShow = () => (
 
 ## `sx`: CSS API
 
-The `<SimpleShowLayout>` component accepts the usual `className` prop but you can override many class names injected to the inner components by React-admin thanks to the `sx` property (see [the `sx` documentation](./SX.md) for syntax and examples). This property accepts the following subclasses:
+The `<SimpleShowLayout>` component accepts the usual `className` prop, but you can override many class names injected to the inner components by React-admin thanks to the `sx` property (see [the `sx` documentation](./SX.md) for syntax and examples). This property accepts the following subclasses:
 
 | Rule name                     | Description                                             |
 |-------------------------------|---------------------------------------------------------|

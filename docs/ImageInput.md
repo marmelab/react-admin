@@ -45,7 +45,7 @@ After modification by the user, the value is stored as an array of objects with 
 * `src`: An [object URL](https://developer.mozilla.org/en-US/docs/Web/API/URL/createObjectURL) for the `File`, e.g. 'blob:https://example.com/1e67e00e-860d-40a5-89ae-6ab0cbee6273'
 * `rawFile`: [The `File` object](https://developer.mozilla.org/fr/docs/Web/API/File) itself
 
-It is the responsibility of your `dataProvider` to send the file to the server (encoded in Base64, or using multipart upload) and to transform the `src` property. See the [Handling File Uploads section from the dataProvider documentation](./DataProviders.md/#handling-file-uploads) for an example.
+It is the responsibility of your `dataProvider` to send the file to the server (encoded in Base64, or using multipart upload) and to transform the `src` property. See the [Handling File Uploads section from the dataProvider documentation](./DataProviders.md#handling-file-uploads) for an example.
 
 Files are accepted or rejected based on the `accept`, `multiple`, `minSize` and `maxSize` props.
 
@@ -173,4 +173,4 @@ To override the style of all instances of `<ImageInput>` using the [application-
 
 ## Uploading Images
 
-Handling image uploads in react-admin is the dataProvider's job. Learn how to do that in the [Handling File Uploads section from the dataProvider documentation](./DataProviders.md/#handling-file-uploads).
+Handling image uploads in react-admin is the dataProvider's job. Learn how to do that in the [Handling File Uploads section from the dataProvider documentation](./DataProviders.md#handling-file-uploads).

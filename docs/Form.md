@@ -5,9 +5,11 @@ title: "Form"
 
 # `<Form>`
 
-The `<Form>` component creates a `<form>` to edit a record, and renders its children. It is a headless component used internally by `<SimpleForm>`, `<TabbedForm>`, and other form components.
+`<Form>` is a headless component that creates a `<form>` to edit a record, and renders its children. Use it to build a custom form layout, or to use another UI kit than Material UI. 
 
 `<Form>` reads the `record` from the `RecordContext`, uses it to initialize the defaultValues of a react-hook-form via `useForm`, turns the `validate` function info a react-hook-form compatible form validator, notifies the user when the input validation fails, and creates a form context via `<FormProvider>`. 
+
+`<Form>` is used internally by `<SimpleForm>`, `<TabbedForm>`, and other form components.
 
 ## Usage
 
@@ -45,15 +47,16 @@ export const PostCreate = () => (
 
 Here are all the props you can set on the `<Form>` component:
 
-| Prop                     | Required | Type              | Default | Description                                                |
-| ------------------------ | -------- | ----------------- | ------- | ---------------------------------------------------------- |
-| `defaultValues`          | Optional | `object|function` | -       | The default values of the record.                          |
-| `id`                     | Optional | `string`          | -       | The id of the underlying `<form>` tag.                     |
-| `noValidate`             | Optional | `boolean`         | -       | Set to `true` to disable the browser's default validation. |
-| `onSubmit`               | Optional | `function`        | `save`  | A callback to call when the form is submitted.             |
-| `sanitizeEmptyValues`    | Optional | `boolean`         | -       | Set to `true` to remove empty values from the form state.  |
-| `validate`               | Optional | `function`        | -       | A function to validate the form values.                    |
-| `warnWhenUnsavedChanges` | Optional | `boolean`         | -       | Set to `true` to warn the user when leaving the form with unsaved changes. |
+| Prop                             | Required | Type              | Default | Description                                                                |
+| -------------------------------- | -------- | ----------------- | ------- | -------------------------------------------------------------------------- |
+| `defaultValues`                  | Optional | `object|function` | -       | The default values of the record.                                          |
+| `id`                             | Optional | `string`          | -       | The id of the underlying `<form>` tag.                                     |
+| `noValidate`                     | Optional | `boolean`         | -       | Set to `true` to disable the browser's default validation.                 |
+| `onSubmit`                       | Optional | `function`        | `save`  | A callback to call when the form is submitted.                             |
+| `sanitizeEmptyValues`            | Optional | `boolean`         | -       | Set to `true` to remove empty values from the form state.                  |
+| `validate`                       | Optional | `function`        | -       | A function to validate the form values.                                    |
+| `warnWhenUnsavedChanges`         | Optional | `boolean`         | -       | Set to `true` to warn the user when leaving the form with unsaved changes. |
+| `disableInvalidFormNotification` | Optional | `boolean`         | -       | Set to `true` to disable the notification on submitting an invalid form.   |
 
 Additional props are passed to [the `useForm` hook](https://react-hook-form.com/docs/useform).
 

@@ -17,7 +17,7 @@ title: "TabbedShowLayout"
 
 Switching tabs will update the current url. By default, it uses the tabs indexes and the first tab will be displayed at the root url. You can customize the path by providing a `path` prop to each `<TabbedShowLayout.Tab>` component. If you'd like the first one to act as an index page, just omit the `path` prop.
 
-## Usage 
+## Usage
 
 Use `<TabbedShowLayout>` as descendant of a `<Show>` component (or any component creating a `<RecordContext>`), define the tabs via `<TabbedShowLayout.Tab>` children, and set the fields to be displayed as children of each tab:
 
@@ -314,7 +314,7 @@ const PostShow = () => (
 
 ## `sx`: CSS API
 
-The `<TabbedShowLayout>` component accepts the usual `className` prop but you can override many class names injected to the inner components by React-admin thanks to the `sx` property (see [the `sx` documentation](./SX.md) for syntax and examples). This property accepts the following subclasses:
+The `<TabbedShowLayout>` component accepts the usual `className` prop, but you can override many class names injected to the inner components by React-admin thanks to the `sx` property (see [the `sx` documentation](./SX.md) for syntax and examples). This property accepts the following subclasses:
 
 | Rule name                       | Description                                              |
 |---------------------------------| ---------------------------------------------------------|
@@ -345,9 +345,63 @@ const StaticPostShow = () => (
 
 When passed a `record`, `<TabbedShowLayout>` creates a `RecordContext` with the given record.
 
+## Role-Based Access Control (RBAC)
+
+You can show or hide tabs and inputs based on user permissions by using the [`<TabbedShowLayout>`](./AuthRBAC.md#tabbedshowlayout) component from the `@react-admin/ra-rbac` package instead of the `react-admin` package.
+
+[`<TabbedShowLayout>`](./AuthRBAC.md#tabbedshowlayout) shows only the tabs for which users have read permissions, using the `[resource].tab.[tabName]` string as resource identifier. `<TabbedShowLayout.Tab>` shows only the child fields for which users have the read permissions, using the `[resource].[source]` string as resource identifier.
+
+{% raw %}
+```tsx
+import { Show, TextField } from 'react-admin';
+import { TabbedShowLayout } from '@react-admin/ra-rbac';
+
+const authProvider = {
+    // ...
+    getPermissions: () => Promise.resolve([
+        // crud
+        { action: ['list', 'show'], resource: 'products' },
+        // tabs ('products.tab.stock' is missing)
+        { action: 'read', resource: 'products.tab.description' },
+        { action: 'read', resource: 'products.tab.images' },
+        // fields ('products.description' and 'products.image' are missing)
+        { action: 'read', resource: 'products.reference' },
+        { action: 'read', resource: 'products.width' },
+        { action: 'read', resource: 'products.height' },
+        { action: 'read', resource: 'products.thumbnail' },
+    ]),
+};
+
+const ProductShow = () => (
+    <Show>
+        <TabbedShowLayout>
+            <TabbedShowLayout.Tab label="Description" name="description">
+                <TextField source="reference" />
+                <TextField source="width" />
+                <TextField source="height" />
+                {/* the description field is not displayed */}
+                <TextField source="description" />
+            </TabbedShowLayout.Tab>
+            {/* the stock tab is not displayed */}
+            <TabbedShowLayout.Tab label="Stock" name="stock">
+                <TextField source="stock" />
+            </TabbedShowLayout.Tab>
+            <TabbedShowLayout.Tab label="Images" name="images">
+                {/* the images field is not displayed */}
+                <TextField source="image" />
+                <TextField source="thumbnail" />
+            </TabbedShowLayout.Tab>
+        </TabbedShowLayout>
+    </Show>
+);
+```
+{% endraw %}
+
+Check [the RBAC `<TabbedShowLayout>` component](./AuthRBAC.md#tabbedshowlayout) documentation for more details.
+
+
 ## See Also
 
 * [Field components](./Fields.md)
 * [Show Guesser](./ShowGuesser.md) guesses the fields based on the record type
 * [SimpleShowLayout](./TabbedShowLayout.md) provides a simpler layout with no tabs
-

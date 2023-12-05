@@ -75,6 +75,7 @@ const PostShow = () => {
                                 <ChipField
                                     source={`name.${locale}`}
                                     size="small"
+                                    clickable
                                 />
                             </SingleFieldList>
                         </ReferenceArrayField>

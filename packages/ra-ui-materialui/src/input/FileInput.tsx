@@ -83,7 +83,7 @@ export const FileInput = (props: FileInputProps) => {
 
     const {
         id,
-        field: { onChange, value },
+        field: { onChange, onBlur, value },
         fieldState,
         formState: { isSubmitted },
         isRequired,
@@ -102,8 +102,10 @@ export const FileInput = (props: FileInputProps) => {
 
         if (multiple) {
             onChange(updatedFiles);
+            onBlur();
         } else {
             onChange(updatedFiles[0]);
+            onBlur();
         }
 
         if (onDropProp) {
@@ -124,8 +126,10 @@ export const FileInput = (props: FileInputProps) => {
                 stateFile => !shallowEqual(stateFile, file)
             );
             onChange(filteredFiles as any);
+            onBlur();
         } else {
             onChange(null);
+            onBlur();
         }
 
         if (onRemoveProp) {

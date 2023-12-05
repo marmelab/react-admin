@@ -5,88 +5,30 @@ title: "Advanced Tutorials"
 
 # Advanced Tutorials
 
-## Creating a Record Related to the Current One
+If you want to learn the best practices of react-admin development by example, you've come to the right place. This page lists the advanced tutorials we've published on [the react-admin blog](https://marmelab.com/en/blog/#react-admin).
 
-This tutorial explains how to add a button on a show or edit page to create a new resource related to the one displayed.
+* 2023-11: [Using React-Admin With DaisyUI, Tailwind CSS, Tanstack Table and React-aria](https://marmelab.com/blog/2023/11/28/using-react-admin-with-your-favorite-ui-library.html)
+* 2023-10: [Creating a Record Related to the Current One](https://marmelab.com/blog/2023/10/12/react-admin-v4-advanced-recipes-creating-a-record-related-to-the-current-one.html)
+* 2023-09: [Authentication using ActiveDirectory](https://marmelab.com/blog/2023/09/13/active-directory-integration-tutorial.html)
+* 2023-08: [Building AI-Augmented Apps](https://marmelab.com/blog/2023/08/09/ai-augmented%20react-apps.html)
+* 2023-07: [Building a Kanban Board](https://marmelab.com/blog/2023/07/28/create-a-kanban-board-in-react-admin.html)
+* 2023-04: [Building A Custom Tags Selector](https://marmelab.com/blog/2023/04/26/build-a-custom-tags-selector-with-react-admin.html)
+* 2023-03: [Creating Custom Form Layouts](https://marmelab.com/blog/2023/03/22/creating-custom-form-layouts-with-react-admin.html)
+* 2022-12: [Multi-Tenant Single-Page Apps: Dos and Don'ts](https://marmelab.com/blog/2022/12/14/multitenant-spa.html)
+* 2022-11: [Building a B2B app with Strapi and React-Admin](https://marmelab.com/blog/2022/11/28/building-a-crud-app-with-strapi-and-react-admin.html)
+* 2022-10: [Writing A Data Provider For Offline-First Applications](https://marmelab.com/blog/2022/10/26/create-an-localforage-dataprovider-in-react-admin.html)
+* 2022-04: [Introducing React-admin V4](https://marmelab.com/blog/2022/04/13/react-admin-v4.html)
 
-<video controls autoplay playsinline muted loop>
-  <source src="https://marmelab.com/5b5e4e19163f7baca76cce020c23c41a/create-related.mp4" type="video/mp4" />
-  Your browser does not support the video tag.
-</video>
+Older blog posts contain advice that can be outdated. We keep them here for reference.
 
-* [Article](https://marmelab.com/blog/2023/10/12/react-admin-v4-advanced-recipes-creating-a-record-related-to-the-current-one.html)
-* [Code](https://github.com/marmelab/react-admin/blob/master/examples/demo/src/products/ProductEdit.tsx)
-
-## Custom Forms and UI for related records
-
-This tutorial explains how to have a `create`, `show` or `edit` view of a referenced resource inside a modal or a sliding side panel.
-
-![Screencast](https://marmelab.com/dd58004986d3bb98a32972ba8fd25fc8/screencast.gif)
-
-* [Article](https://marmelab.com/blog/2020/04/27/react-admin-tutorials-custom-forms-related-records.html)
-* [Codesandbox](https://codesandbox.io/s/react-admin-v3-advanced-recipes-quick-createpreview-voyci)
-
-## Build a Timeline as a replacement for a List component
-
-This tutorial shows how to use pure react to implement a custom component replacing react-admin default List.
-
-![Screencast](https://marmelab.com/d9b4cf0e7faf3ed208c102f8b2334409/storybook_App5.gif)
-
-* [Article](https://marmelab.com/blog/2019/01/17/react-timeline.html)
-* [Repository](https://github.com/marmelab/timeline-react-admin)
-
-## Creating and Editing a Record From the List Page
-
-This tutorial shows how to display Creation and Edition forms in a drawer or a dialog from the List page.
-
-![Screencast](https://marmelab.com/07b25da5494055c4306dd7e7a48fd010/end-result.gif)
-
-* [Article](https://marmelab.com/blog/2019/02/07/react-admin-advanced-recipes-creating-and-editing-a-record-from-the-list-page.html)
-* [Codesandbox](https://codesandbox.io/s/lrm6kl00nl)
-
-## Add a User Profile Page
-
-This tutorial explains how to create a profile page based on an `<Edit>` component, and accessible as a standalone page.
-
-![Screencast](https://marmelab.com/668056e9d8273ff5ce75dfc641151a90/end_result.gif)
-
-* [Article](https://marmelab.com/blog/2019/03/07/react-admin-advanced-recipes-user-profile.html)
-* [Codesandbox](https://codesandbox.io/s/o1jmj4lwv9)
-
-## Supplying your own Defaults to React Admin
-
-This article shows how you can customize many parts of the framework without repeating yourself.
-
-![Screencast](https://marmelab.com/54d42faced9043f7933df212cbda0f1b/react-admin-edit-defaults.gif)
-
-* [Article](https://marmelab.com/blog/2019/03/27/supplying-your-own-defaults-to-react-admin.html)
-* [Codesandbox](https://codesandbox.io/s/qzxx4mjl59)
-
-## OpenID Connect Authentication with React Admin
-
-![OpenID Connect on React Admin with a button "Login With Google"](./img/openid-connect-example.png)
-
-* [Live Example](https://marmelab.com/ra-example-oauth)
-* [Code Repository](https://github.com/marmelab/ra-example-oauth)
-
-## Changing The Look And Feel Of React-Admin Without JSX
-
-This article shows how to customize react-admin look and feel using only the Material UI theme.
-
-![Screencast](https://marmelab.com/097bee867a1d1dc55dec5456732fe94a/screencast.gif)
-
-* [Article](https://marmelab.com/blog/2020/09/11/react-admin-tutorials-build-your-own-theme.html)
-* [Code Repository](https://github.com/Luwangel/react-admin-tutorials-build-your-own-theme)
-
-## Build A Custom Tags Selector
-
-This tutorial explains how to create a custom component to select tags for a record, fetching the list of existing tags and allowing to create new tags on the fly.
-
-<video controls autoplay playsinline muted loop width="100%">
-    <source src="https://marmelab.com/b612ecd6bf066e85bad0a036614f55b0/tags-list-edit.webm" type="video/webm" />
-    Your browser does not support the video tag.
-</video>
-
-* [Article](https://marmelab.com/blog/2023/04/26/build-a-custom-tags-selector-with-react-admin.html)
-* Test it live in the [CRM Demo](https://marmelab.com/react-admin-crm/#/contacts/1/show)
-* CRM Demo [Repository](https://github.com/marmelab/react-admin/blob/master/examples/crm/src/contacts/TagsListEdit.tsx)
+* 2021-12: [Building A Retro React-Admin Theme For Fun And Profit](https://marmelab.com/blog/2021/12/15/retro-admin.html)
+* 2021-10: [Using An SQLite Database Live In React-Admin](https://marmelab.com/blog/2021/10/14/using-an-sqlite-database-live-in-react-admin.html)
+* 2020-12: [Managing a User Profile](https://marmelab.com/blog/2020/12/14/react-admin-v3-userprofile.html)
+* 2020-11: [Changing The Look And Feel Of React-Admin Without JSX](https://marmelab.com/blog/2020/09/11/react-admin-tutorials-build-your-own-theme.html)
+* 2020-08: [Handling JWT in Admin Apps the Right Way](https://marmelab.com/blog/2020/07/02/manage-your-jwt-react-admin-authentication-in-memory.html)
+* 2020-04: [Custom Forms and UI for related records](https://marmelab.com/blog/2020/04/27/react-admin-tutorials-custom-forms-related-records.html)
+* 2019-11: [Introducing React-admin v3](https://marmelab.com/blog/2019/11/20/react-admin-3-0.html)
+* 2019-03: [Supplying your own Defaults to React Admin](https://marmelab.com/blog/2019/03/27/supplying-your-own-defaults-to-react-admin.html)
+* 2019-03: [Adding a User Profile Page](https://marmelab.com/blog/2019/03/07/react-admin-advanced-recipes-user-profile.html)
+* 2019-02: [Creating and Editing a Record From the List Page](https://marmelab.com/blog/2019/02/07/react-admin-advanced-recipes-creating-and-editing-a-record-from-the-list-page.html)
+* 2019-01: [Building a Timeline as a replacement for a List component](https://marmelab.com/blog/2019/01/17/react-timeline.html)

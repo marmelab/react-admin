@@ -43,17 +43,19 @@ export const QUERY_TYPES = INNER_QUERY_TYPES;
 export const MUTATION_TYPES = INNER_MUTATION_TYPES;
 export const ALL_TYPES = INNER_ALL_TYPES;
 
-const RaFetchMethodMap = {
-    getList: GET_LIST,
-    getMany: GET_MANY,
-    getManyReference: GET_MANY_REFERENCE,
-    getOne: GET_ONE,
-    create: CREATE,
-    delete: DELETE,
-    deleteMany: DELETE_MANY,
-    update: UPDATE,
-    updateMany: UPDATE_MANY,
-};
+/**
+ * Map dataProvider method names to GraphQL queries and mutations
+ *
+ * @example for the Customer resource:
+ * dataProvider.getList()          // query allCustomers() { ... }
+ * dataProvider.getOne()           // query Customer($id: id) { ... }
+ * dataProvider.getMany()          // query allCustomers($filter: { ids: [ids] }) { ... }
+ * dataProvider.getManyReference() // query allCustomers($filter: { [target]: [id] }) { ... }
+ * dataProvider.create()           // mutation createCustomer($firstName: firstName, $lastName: lastName, ...) { ... }
+ * dataProvider.update()           // mutation updateCustomer($id: id, firstName: firstName, $lastName: lastName, ...) { ... }
+ * dataProvider.delete()           // mutation deleteCustomer($id: id) { ... }
+ * // note that updateMany and deleteMany aren't mapped in this adapter
+ */
 const defaultOptions = {
     resolveIntrospection: introspectSchema,
     introspection: {
@@ -125,7 +127,10 @@ export type Options = {
     watchQuery?: GetWatchQueryOptions;
 };
 
-export default async (options: Options): Promise<DataProvider> => {
+// @FIXME in v5: This doesn't need to be an async method
+const buildGraphQLProvider = async (
+    options: Options
+): Promise<DataProvider> => {
     const {
         client: clientObject,
         clientOptions,
@@ -148,79 +153,78 @@ export default async (options: Options): Promise<DataProvider> => {
     let introspectionResults;
     let introspectionResultsPromise;
 
-    const raDataProvider = new Proxy<DataProvider>(defaultDataProvider, {
-        get: (target, name) => {
-            if (typeof name === 'symbol' || name === 'then') {
-                return;
+    const callApollo = async (raFetchMethod, resource, params) => {
+        if (introspection) {
+            if (!introspectionResultsPromise) {
+                introspectionResultsPromise = resolveIntrospection(
+                    client,
+                    introspection
+                );
             }
-            const raFetchMethod = RaFetchMethodMap[name];
-            return async (resource, params) => {
-                if (introspection) {
-                    if (!introspectionResultsPromise) {
-                        introspectionResultsPromise = resolveIntrospection(
-                            client,
-                            introspection
-                        );
-                    }
 
-                    introspectionResults = await introspectionResultsPromise;
-                }
+            introspectionResults = await introspectionResultsPromise;
+        }
 
-                const buildQuery = buildQueryFactory(introspectionResults);
-                const overriddenBuildQuery = get(
-                    override,
-                    `${resource}.${raFetchMethod}`
-                );
+        const buildQuery = buildQueryFactory(introspectionResults);
+        const overriddenBuildQuery = get(
+            override,
+            `${resource}.${raFetchMethod}`
+        );
 
-                const { parseResponse, ...query } = overriddenBuildQuery
-                    ? {
-                          ...buildQuery(raFetchMethod, resource, params),
-                          ...overriddenBuildQuery(params),
-                      }
-                    : buildQuery(raFetchMethod, resource, params);
+        const { parseResponse, ...query } = overriddenBuildQuery
+            ? {
+                  ...buildQuery(raFetchMethod, resource, params),
+                  ...overriddenBuildQuery(params),
+              }
+            : buildQuery(raFetchMethod, resource, params);
 
-                const operation = getQueryOperation(query.query);
+        const operation = getQueryOperation(query.query);
 
-                if (operation === 'query') {
-                    const apolloQuery = {
-                        ...query,
-                        fetchPolicy: 'network-only',
-                        ...getOptions(
-                            otherOptions.query,
-                            raFetchMethod,
-                            resource
-                        ),
-                    };
-
-                    return (
-                        client
-                            // @ts-ignore
-                            .query(apolloQuery)
-                            .then(response => parseResponse(response))
-                            .catch(handleError)
-                    );
-                }
-
-                const apolloQuery = {
-                    mutation: query.query,
-                    variables: query.variables,
-                    ...getOptions(
-                        otherOptions.mutation,
-                        raFetchMethod,
-                        resource
-                    ),
-                };
-
-                return (
-                    client
-                        // @ts-ignore
-                        .mutate(apolloQuery)
-                        .then(parseResponse)
-                        .catch(handleError)
-                );
+        if (operation === 'query') {
+            const apolloQuery = {
+                ...query,
+                fetchPolicy: 'network-only',
+                ...getOptions(otherOptions.query, raFetchMethod, resource),
             };
-        },
-    });
+
+            return (
+                client
+                    // @ts-ignore
+                    .query(apolloQuery)
+                    .then(response => parseResponse(response))
+                    .catch(handleError)
+            );
+        }
+
+        const apolloQuery = {
+            mutation: query.query,
+            variables: query.variables,
+            ...getOptions(otherOptions.mutation, raFetchMethod, resource),
+        };
+
+        return (
+            client
+                // @ts-ignore
+                .mutate(apolloQuery)
+                .then(parseResponse)
+                .catch(handleError)
+        );
+    };
+
+    const raDataProvider = {
+        create: (resource, params) => callApollo(CREATE, resource, params),
+        delete: (resource, params) => callApollo(DELETE, resource, params),
+        deleteMany: (resource, params) =>
+            callApollo(DELETE_MANY, resource, params),
+        getList: (resource, params) => callApollo(GET_LIST, resource, params),
+        getMany: (resource, params) => callApollo(GET_MANY, resource, params),
+        getManyReference: (resource, params) =>
+            callApollo(GET_MANY_REFERENCE, resource, params),
+        getOne: (resource, params) => callApollo(GET_ONE, resource, params),
+        update: (resource, params) => callApollo(UPDATE, resource, params),
+        updateMany: (resource, params) =>
+            callApollo(UPDATE_MANY, resource, params),
+    };
 
     return raDataProvider;
 };
@@ -244,15 +248,4 @@ const getQueryOperation = query => {
     throw new Error('Unable to determine the query operation');
 };
 
-// Only used to initialize proxy
-const defaultDataProvider = {
-    create: () => Promise.resolve({ data: null }), // avoids adding a context in tests
-    delete: () => Promise.resolve({ data: null }), // avoids adding a context in tests
-    deleteMany: () => Promise.resolve({ data: [] }), // avoids adding a context in tests
-    getList: () => Promise.resolve({ data: [], total: 0 }), // avoids adding a context in tests
-    getMany: () => Promise.resolve({ data: [] }), // avoids adding a context in tests
-    getManyReference: () => Promise.resolve({ data: [], total: 0 }), // avoids adding a context in tests
-    getOne: () => Promise.resolve({ data: null }), // avoids adding a context in tests
-    update: () => Promise.resolve({ data: null }), // avoids adding a context in tests
-    updateMany: () => Promise.resolve({ data: [] }), // avoids adding a context in tests
-};
+export default buildGraphQLProvider;

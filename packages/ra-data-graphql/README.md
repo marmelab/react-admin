@@ -39,39 +39,35 @@ yarn add graphql ra-data-graphql
 
 ## Usage
 
+Build the data provider on mount, and pass it to the `<Admin>` component when ready:
+
 ```jsx
 // in App.js
 import * as React from 'react';
-import { Component } from 'react';
+import { useState, useEffect } from 'react';
 import buildGraphQLProvider from 'ra-data-graphql';
-import { Admin, Resource, Delete } from 'react-admin';
+import { Admin, Resource } from 'react-admin';
 
 import buildQuery from './buildQuery'; // see Specify your queries and mutations section below
 import { PostCreate, PostEdit, PostList } from '../components/admin/posts';
 
-class App extends Component {
-    constructor() {
-        super();
-        this.state = { dataProvider: null };
-    }
-    componentDidMount() {
+const App = () => {
+    const [dataProvider, setDataProvider] = useState(null);
+
+    useEffect(() => {
         buildGraphQLProvider({ buildQuery })
-            .then(dataProvider => this.setState({ dataProvider }));
+            .then(dataProvider => setDataProvider(dataProvider));
+    }, []);
+
+    if (!dataProvider) {
+        return <div>Loading</div>;
     }
 
-    render() {
-        const { dataProvider } = this.state;
-
-        if (!dataProvider) {
-            return <div>Loading</div>;
-        }
-
-        return (
-            <Admin dataProvider={dataProvider}>
-                <Resource name="Post" list={PostList} edit={PostEdit} create={PostCreate} />
-            </Admin>
-        );
-    }
+    return (
+        <Admin dataProvider={dataProvider}>
+            <Resource name="Post" list={PostList} edit={PostEdit} create={PostCreate} />
+        </Admin>
+    );
 }
 
 export default App;
@@ -79,51 +75,11 @@ export default App;
 
 ## Options
 
-### Customize the Apollo client
+## Specify queries and mutations
 
-You can specify the client options by calling `buildGraphQLProvider` like this:
+For the provider to know how to map react-admin request to apollo queries and mutations, you must provide a `buildQuery` option. The `buildQuery` is a factory function that will be called with the introspection query result.
 
-```js
-import { createNetworkInterface } from 'react-apollo';
-
-buildGraphQLProvider({
-    client: {
-        networkInterface: createNetworkInterface({
-            uri: 'http://api.myproduct.com/graphql',
-        }),
-    },
-});
-```
-
-You can pass any options supported by the [ApolloClient](https://www.apollographql.com/docs/react/api/core/ApolloClient/) constructor with the addition of `uri` which can be specified so that we create the network interface for you. Pass those options as `clientOptions`.
-
-You can also supply your own [ApolloClient](https://www.apollographql.com/docs/react/api/core/ApolloClient/) instance directly with:
-
-```js
-buildGraphQLProvider({ client: myClient });
-```
-
-### Introspection Options
-
-Instead of running an introspection query you can also provide the introspection query result directly. This speeds up the initial rendering of the `Admin` component as it no longer has to wait for the introspection query request to resolve.
-
-```js
-import { __schema as schema } from './schema';
-
-buildGraphQLProvider({
-    introspection: { schema }
-});
-```
-
-The `./schema` file is a `schema.json` in `./src` retrieved with [get-graphql-schema --json <graphql_endpoint>](https://github.com/graphcool/get-graphql-schema).
-
-> Note: Importing the `schema.json` file will significantly increase the bundle size.
-
-## Specify your queries and mutations
-
-For the provider to know how to map react-admin request to apollo queries and mutations, you must provide a `buildQuery` option. The `buildQuery` is a factory function which will be called with the introspection query result.
-
-The introspection result is an object with 4 properties:
+As a reminder, the result of a GraphQL introspection query is an object with 4 properties:
 
 - `types`: an array of all the GraphQL types discovered on your endpoint
 - `queries`: an array of all the GraphQL queries and mutations discovered on your endpoint
@@ -181,7 +137,7 @@ For example:
 }
 ```
 
-The `buildQuery` function must return a function which will be called with the same parameters as the react-admin data provider, but must return an object matching the `options` of the ApolloClient [query](http://dev.apollodata.com/core/apollo-client-api.html#ApolloClient.query) method with an additional `parseResponse` function.
+The `buildQuery` function receives this object and must return a function which will be called with the same parameters as the react-admin data provider, but must return an object matching the `options` of the ApolloClient [query](http://dev.apollodata.com/core/apollo-client-api.html#ApolloClient.query) method with an additional `parseResponse` function.
 
 This `parseResponse` function will be called with an [ApolloQueryResult](http://dev.apollodata.com/core/apollo-client-api.html#ApolloQueryResult) and must return the data expected by react-admin.
 
@@ -213,6 +169,46 @@ const buildQuery = introspectionResults => (raFetchType, resourceName, params) =
 ```js
 buildGraphQLProvider({ buildQuery });
 ```
+
+### Customize the Apollo client
+
+You can specify the client options by calling `buildGraphQLProvider` like this:
+
+```js
+import { createNetworkInterface } from 'react-apollo';
+
+buildGraphQLProvider({
+    client: {
+        networkInterface: createNetworkInterface({
+            uri: 'http://api.myproduct.com/graphql',
+        }),
+    },
+});
+```
+
+You can pass any options supported by the [ApolloClient](https://www.apollographql.com/docs/react/api/core/ApolloClient/) constructor with the addition of `uri` which can be specified so that we create the network interface for you. Pass those options as `clientOptions`.
+
+You can also supply your own [ApolloClient](https://www.apollographql.com/docs/react/api/core/ApolloClient/) instance directly with:
+
+```js
+buildGraphQLProvider({ client: myClient });
+```
+
+### Introspection Options
+
+Instead of running an introspection query you can also provide the introspection query result directly. This speeds up the initial rendering of the `Admin` component as it no longer has to wait for the introspection query request to resolve.
+
+```js
+import { __schema as schema } from './schema';
+
+buildGraphQLProvider({
+    introspection: { schema }
+});
+```
+
+The `./schema` file is a `schema.json` in `./src` retrieved with [get-graphql-schema --json <graphql_endpoint>](https://github.com/graphcool/get-graphql-schema).
+
+> Note: Importing the `schema.json` file will significantly increase the bundle size.
 
 ## Troubleshooting
 

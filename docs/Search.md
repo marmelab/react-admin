@@ -169,6 +169,8 @@ The `<Search>` component accepts the following props:
 | `options`     | Optional | `Object`  | -                      | An object containing options to apply to the search.                                               |
 | `wait`        | Optional | `number`  | 500                    | The delay of debounce for the search to launch after typing in ms.                                 |
 
+Additional props are passed down to the Material UI [`<TextField>`](https://mui.com/material-ui/react-text-field/) component.
+
 ## `children`
 
 The `<Search>` children allow you to customize the way results are displayed. The child component can grab the search result using the `useSearchResult` hook.

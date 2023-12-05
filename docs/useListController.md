@@ -5,13 +5,89 @@ title: "useListController"
 
 # `useListController`
 
-The `useListController` hook fetches the data, prepares callbacks for modifying the pagination, filters, sort and selection, and returns them. Its return value match the `ListContext` shape. `useListController` is used internally by the `<List>` and `<ListBase>` components.
+`useListController` contains the headless logic of the [`<List>`](./List.md) component. It's useful to create a custom List view. It's also the base hook when building a custom view with another UI kit than Material UI. 
 
-You can use it to create a custom List view, although its component counterpart, [`<ListBase>`](./ListBase.md), is probably better in most cases.
+![List view built with Ant Design](./img/list_ant_design.png)
+
+`useListController` reads the list parameters from the URL, calls `dataProvider.getList()`, prepares callbacks for modifying the pagination, filters, sort and selection, and returns them together with the data. Its return value matches the [`ListContext`](./useListContext.md) shape. 
+
+`useListController` is used internally by [`<List>`](./List.md) and [`<ListBase>`](./ListBase.md). If your list view uses react-admin components like [`<Datagrid>`](./Datagrid.md), prefer [`<ListBase>`](./ListBase.md) to `useListController` as it takes care of creating a `<ListContext>`.
 
 ## Usage
 
-It's common to call `useListController()` without parameters, and to put the result in a `ListContext` to make it available to the rest of the component tree.
+`useListController` expects a parameters object defining the list sorting, pagination, and filters. It returns an object with the fetched data, and callbacks to modify the list parameters.
+
+Here the code for the post list view above, built with [Ant Design](https://ant.design/):
+
+{% raw %}
+```jsx
+import { useListController } from 'react-admin'; 
+import { Card, Table, Button } from 'antd';
+import {
+  CheckCircleOutlined,
+  PlusOutlined,
+  EditOutlined,
+} from '@ant-design/icons';
+import { Link } from 'react-router-dom';
+
+const PostList = () => {
+  const { data, page, total, setPage, isLoading } = useListController({
+    sort: { field: 'published_at', order: 'DESC' },
+    perPage: 10,
+  });
+  const handleTableChange = (pagination) => {
+    setPage(pagination.current);
+  };
+  return (
+    <>
+      <div style={{ margin: 10, textAlign: 'right' }}>
+        <Link to="/posts/create">
+          <Button icon={<PlusOutlined />}>Create</Button>
+        </Link>
+      </div>
+      <Card bodyStyle={{ padding: '0' }} loading={isLoading}>
+        <Table
+          size="small"
+          dataSource={data}
+          columns={columns}
+          pagination={{ current: page, pageSize: 10, total }}
+          onChange={handleTableChange}
+        />
+      </Card>
+    </>
+  );
+};
+
+const columns = [
+  { title: 'Id', dataIndex: 'id', key: 'id' },
+  { title: 'Title', dataIndex: 'title', key: 'title' },
+  {
+    title: 'Publication date',
+    dataIndex: 'published_at',
+    key: 'pub_at',
+    render: (value) => new Date(value).toLocaleDateString(),
+  },
+  {
+    title: 'Commentable',
+    dataIndex: 'commentable',
+    key: 'commentable',
+    render: (value) => (value ? <CheckCircleOutlined /> : null),
+  },
+  {
+    title: 'Actions',
+    render: (_, record) => (
+      <Link to={`/posts/${record.id}`}>
+        <Button icon={<EditOutlined />}>Edit</Button>
+      </Link>
+    ),
+  },
+];
+
+export default PostList;
+```
+{% endraw %}
+
+When using react-admin components, it's common to call `useListController()` without parameters, and to put the result in a `ListContext` to make it available to the rest of the component tree.
 
 ```jsx
 import { 

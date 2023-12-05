@@ -285,9 +285,6 @@ const getInputValue = (
                     innerKey,
                     (filterValues || {})[key] ?? {}
                 );
-                if (nestedInputValue === '') {
-                    return acc;
-                }
                 acc[innerKey] = nestedInputValue;
                 return acc;
             },
