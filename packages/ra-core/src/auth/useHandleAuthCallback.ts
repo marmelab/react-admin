@@ -4,6 +4,7 @@ import { useLocation } from 'react-router';
 import { useRedirect } from '../routing';
 import { AuthProvider, AuthRedirectResult } from '../types';
 import useAuthProvider from './useAuthProvider';
+import { useEvent } from '../util';
 
 /**
  * This hook calls the `authProvider.handleCallback()` method on mount. This is meant to be used in a route called
@@ -32,33 +33,36 @@ export const useHandleAuthCallback = (
         ...queryOptions,
     });
 
-    useEffect(() => {
-        if (queryResult.error && onError) {
-            onError(queryResult.error);
-        }
-    }, [onError, queryResult.error]);
+    const onSuccessEvent = useEvent(
+        onSuccess ??
+            (() => {
+                // AuthProviders relying on a third party services redirect back to the app can't
+                // use the location state to store the path on which the user was before the login.
+                // So we support a fallback on the localStorage.
+                const previousLocation = localStorage.getItem(
+                    PreviousLocationStorageKey
+                );
+                const redirectTo =
+                    (queryResult.data as AuthRedirectResult)?.redirectTo ??
+                    previousLocation;
+                if (redirectTo === false) {
+                    return;
+                }
+
+                redirect(redirectTo ?? defaultRedirectUrl);
+            })
+    );
+    const onErrorEvent = useEvent(onError ?? noop);
 
     useEffect(() => {
-        if (queryResult.data) {
-            if (onSuccess) {
-                return onSuccess(queryResult.data);
-            }
-            // AuthProviders relying on a third party services redirect back to the app can't
-            // use the location state to store the path on which the user was before the login.
-            // So we support a fallback on the localStorage.
-            const previousLocation = localStorage.getItem(
-                PreviousLocationStorageKey
-            );
-            const redirectTo =
-                (queryResult.data as AuthRedirectResult)?.redirectTo ??
-                previousLocation;
-            if (redirectTo === false) {
-                return;
-            }
+        if (queryResult.error == null) return;
+        onErrorEvent(queryResult.error);
+    }, [onErrorEvent, queryResult.error]);
 
-            redirect(redirectTo ?? defaultRedirectUrl);
-        }
-    }, [defaultRedirectUrl, onSuccess, queryResult.data, redirect]);
+    useEffect(() => {
+        if (queryResult.data == null) return;
+        onSuccessEvent(queryResult.data);
+    }, [onSuccessEvent, queryResult.data]);
 
     return queryResult;
 };
@@ -76,3 +80,5 @@ export type UseHandleAuthCallbackOptions = Omit<
     onSuccess?: (data: ReturnType<AuthProvider['handleCallback']>) => void;
     onError?: (err: Error) => void;
 };
+
+const noop = () => {};

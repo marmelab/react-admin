@@ -140,27 +140,23 @@ export const useInfiniteGetList = <RecordType extends RaRecord = any>(
     });
 
     useEffect(() => {
-        if (result.data != null) {
-            // optimistically populate the getOne cache
-            result.data.pages.forEach(page => {
-                page.data.forEach(record => {
-                    queryClient.setQueryData(
-                        [resource, 'getOne', { id: String(record.id), meta }],
-                        oldRecord => oldRecord ?? record
-                    );
-                });
+        if (result.data == null) return;
+        // optimistically populate the getOne cache
+        result.data.pages.forEach(page => {
+            page.data.forEach(record => {
+                queryClient.setQueryData(
+                    [resource, 'getOne', { id: String(record.id), meta }],
+                    oldRecord => oldRecord ?? record
+                );
             });
+        });
 
-            if (onSuccessEvent) {
-                onSuccessEvent(result.data);
-            }
-        }
+        onSuccessEvent(result.data);
     }, [meta, onSuccessEvent, queryClient, resource, result.data]);
 
     useEffect(() => {
-        if (result.error != null && onErrorEvent) {
-            onErrorEvent(result.error);
-        }
+        if (result.error == null) return;
+        onErrorEvent(result.error);
     }, [onErrorEvent, result.error]);
 
     return (result.data

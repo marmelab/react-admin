@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useMemo, useRef } from 'react';
 import {
     useMutation,
     useQueryClient,
@@ -88,14 +88,7 @@ export const useUpdateMany = <
     const dataProvider = useDataProvider();
     const queryClient = useQueryClient();
     const { ids, data, meta } = params;
-    const {
-        mutationMode = 'pessimistic',
-        onError,
-        onMutate,
-        onSettled,
-        onSuccess,
-        ...reactMutationOptions
-    } = options;
+    const { mutationMode = 'pessimistic', ...mutationOptions } = options;
     const mode = useRef<MutationMode>(mutationMode);
     const paramsRef = useRef<Partial<UpdateManyParams<Partial<RecordType>>>>(
         params
@@ -208,12 +201,13 @@ export const useUpdateMany = <
                     meta: callTimeMeta,
                 })
                 .then(({ data }) => data),
-        ...reactMutationOptions,
+        ...mutationOptions,
         onMutate: async (
             variables: Partial<UseUpdateManyMutateParams<RecordType>>
         ) => {
-            if (onMutate) {
-                const userContext = (await onMutate(variables)) || {};
+            if (mutationOptions.onMutate) {
+                const userContext =
+                    (await mutationOptions.onMutate(variables)) || {};
                 return {
                     snapshot: snapshot.current,
                     // @ts-ignore
@@ -236,8 +230,8 @@ export const useUpdateMany = <
                 });
             }
 
-            if (onError && !hasCallTimeOnError.current) {
-                return onError(error, variables, context);
+            if (mutationOptions.onError && !hasCallTimeOnError.current) {
+                return mutationOptions.onError(error, variables, context);
             }
             // call-time error callback is executed by react-query
         },
@@ -261,10 +255,12 @@ export const useUpdateMany = <
                     meta: callTimeMeta,
                 });
 
-                if (onSuccess && !hasCallTimeOnSuccess.current) {
-                    onSuccess(data, variables, context);
+                if (
+                    mutationOptions.onSuccess &&
+                    !hasCallTimeOnSuccess.current
+                ) {
+                    mutationOptions.onSuccess(data, variables, context);
                 }
-                // call-time success callback is executed by react-query
             }
         },
         onSettled: (
@@ -280,8 +276,13 @@ export const useUpdateMany = <
                 });
             }
 
-            if (onSettled && !hasCallTimeOnSettled.current) {
-                return onSettled(data, error, variables, context);
+            if (mutationOptions.onSettled && !hasCallTimeOnSettled.current) {
+                return mutationOptions.onSettled(
+                    data,
+                    error,
+                    variables,
+                    context
+                );
             }
         },
     });
@@ -299,14 +300,12 @@ export const useUpdateMany = <
         const {
             mutationMode,
             returnPromise,
-            onSuccess: callTimeOnSuccess,
-            onSettled: callTimeOnSettled,
-            onError: callTimeOnError,
+            ...otherCallTimeOptions
         } = callTimeOptions;
 
-        hasCallTimeOnError.current = !!callTimeOnError;
-        hasCallTimeOnSuccess.current = !!callTimeOnSuccess;
-        hasCallTimeOnSettled.current = !!callTimeOnSettled;
+        hasCallTimeOnError.current = !!otherCallTimeOptions.onError;
+        hasCallTimeOnSuccess.current = !!otherCallTimeOptions.onSuccess;
+        hasCallTimeOnSettled.current = !!otherCallTimeOptions.onSettled;
 
         // store the hook time params *at the moment of the call*
         // because they may change afterwards, which would break the undoable mode
@@ -327,20 +326,12 @@ export const useUpdateMany = <
             if (returnPromise) {
                 return mutation.mutateAsync(
                     { resource: callTimeResource, ...callTimeParams },
-                    {
-                        onSuccess: callTimeOnSuccess,
-                        onSettled: callTimeOnSettled,
-                        onError: callTimeOnError,
-                    }
+                    otherCallTimeOptions
                 );
             }
             return mutation.mutate(
                 { resource: callTimeResource, ...callTimeParams },
-                {
-                    onSuccess: callTimeOnSuccess,
-                    onSettled: callTimeOnSettled,
-                    onError: callTimeOnError,
-                }
+                otherCallTimeOptions
             );
         }
 
@@ -398,21 +389,20 @@ export const useUpdateMany = <
         });
 
         // run the success callbacks during the next tick
-        if (callTimeOnSuccess) {
+        if (otherCallTimeOptions.onSuccess) {
             setTimeout(
                 () =>
-                    callTimeOnSuccess(
+                    otherCallTimeOptions.onSuccess(
                         callTimeIds,
                         { resource: callTimeResource, ...callTimeParams },
                         { snapshot: snapshot.current }
                     ),
                 0
             );
-        }
-        if (onSuccess) {
+        } else if (mutationOptions.onSuccess) {
             setTimeout(
                 () =>
-                    onSuccess(
+                    mutationOptions.onSuccess(
                         callTimeIds,
                         { resource: callTimeResource, ...callTimeParams },
                         { snapshot: snapshot.current }
@@ -425,7 +415,10 @@ export const useUpdateMany = <
             // call the mutate method without success side effects
             return mutation.mutate(
                 { resource: callTimeResource, ...callTimeParams },
-                { onSettled: callTimeOnSettled, onError: callTimeOnError }
+                {
+                    onSettled: otherCallTimeOptions.onSettled,
+                    onError: otherCallTimeOptions.onError,
+                }
             );
         } else {
             // undoable mutation: register the mutation for later
@@ -440,8 +433,8 @@ export const useUpdateMany = <
                     mutation.mutate(
                         { resource: callTimeResource, ...callTimeParams },
                         {
-                            onSettled: callTimeOnSettled,
-                            onError: callTimeOnError,
+                            onSettled: otherCallTimeOptions.onSettled,
+                            onError: otherCallTimeOptions.onError,
                         }
                     );
                 }
@@ -449,7 +442,15 @@ export const useUpdateMany = <
         }
     };
 
-    return [useEvent(updateMany), mutation];
+    const mutationResult = useMemo(
+        () => ({
+            isLoading: mutation.isPending,
+            ...mutation,
+        }),
+        [mutation]
+    );
+
+    return [useEvent(updateMany), mutationResult];
 };
 
 type Snapshot = [key: QueryKey, value: any][];

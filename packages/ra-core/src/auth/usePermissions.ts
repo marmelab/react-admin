@@ -6,6 +6,7 @@ import {
 } from '@tanstack/react-query';
 import useAuthProvider from './useAuthProvider';
 import useLogoutIfAccessDenied from './useLogoutIfAccessDenied';
+import { useEvent } from '../util';
 
 const emptyParams = {};
 
@@ -18,7 +19,7 @@ const emptyParams = {};
  * The return value updates according to the request state:
  *
  * - start: { isPending: true }
- * - success: { data: [any], isPending: false }
+ * - success: { permissions: [any], isPending: false }
  * - error: { error: [error from provider], isPending: false }
  *
  * Useful to enable features based on user permissions
@@ -59,23 +60,26 @@ const usePermissions = <PermissionsType = any, ErrorType = Error>(
         ...queryOptions,
     });
 
-    useEffect(() => {
-        if (result.data != null && onSuccess) {
-            onSuccess(result.data);
-        }
-    }, [onSuccess, result.data]);
+    const onSuccessEvent = useEvent(onSuccess ?? noop);
+    const onErrorEvent = useEvent(
+        onError ??
+            (() => {
+                if (process.env.NODE_ENV === 'development') {
+                    console.error(result.error);
+                }
+                logoutIfAccessDenied(result.error);
+            })
+    );
 
     useEffect(() => {
-        if (result.error != null) {
-            if (onError) {
-                return onError(result.error);
-            }
-            if (process.env.NODE_ENV === 'development') {
-                console.error(result.error);
-            }
-            logoutIfAccessDenied(result.error);
-        }
-    }, [logoutIfAccessDenied, onError, result.error]);
+        if (result.data == null) return;
+        onSuccessEvent(result.data);
+    }, [onSuccessEvent, result.data]);
+
+    useEffect(() => {
+        if (result.error == null) return;
+        onErrorEvent(result.error);
+    }, [onErrorEvent, result.error]);
 
     return useMemo(
         () => ({
@@ -103,3 +107,5 @@ export type UsePermissionsResult<
 > = QueryObserverResult<PermissionsType, ErrorType> & {
     permissions: PermissionsType;
 };
+
+const noop = () => {};

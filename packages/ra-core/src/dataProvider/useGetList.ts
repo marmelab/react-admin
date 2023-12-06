@@ -94,9 +94,10 @@ export const useGetList = <RecordType extends RaRecord = any>(
     });
 
     useEffect(() => {
+        if (result.data == null) return;
+
         // optimistically populate the getOne cache
         if (
-            result.data != null &&
             result.data?.data &&
             result.data.data.length <= MAX_DATA_LENGTH_TO_CACHE
         ) {
@@ -107,16 +108,12 @@ export const useGetList = <RecordType extends RaRecord = any>(
                 );
             });
         }
-        // execute call-time onSuccess if provided
-        if (result.data != null && onSuccessEvent) {
-            onSuccessEvent(result.data);
-        }
+        onSuccessEvent(result.data);
     }, [meta, onSuccessEvent, queryClient, resource, result.data]);
 
     useEffect(() => {
-        if (result.error != null && onErrorEvent) {
-            onErrorEvent(result.error);
-        }
+        if (result.error == null) return;
+        onErrorEvent(result.error);
     }, [onErrorEvent, result.error]);
 
     return useMemo(

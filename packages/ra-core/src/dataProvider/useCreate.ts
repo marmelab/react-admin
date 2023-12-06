@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useMemo, useRef } from 'react';
 import {
     useMutation,
     UseMutationOptions,
@@ -83,7 +83,6 @@ export const useCreate = <
     const paramsRef = useRef<Partial<CreateParams<Partial<RecordType>>>>(
         params
     );
-    const { onError, onSettled, onSuccess, ...otherMutationOptions } = options;
     const hasCallTimeOnError = useRef(false);
     const hasCallTimeOnSuccess = useRef(false);
     const hasCallTimeOnSettled = useRef(false);
@@ -104,10 +103,10 @@ export const useCreate = <
                     meta: callTimeMeta,
                 })
                 .then(({ data }) => data),
-        ...otherMutationOptions,
+        ...options,
         onError: (error, variables, context) => {
-            if (onError && !hasCallTimeOnError.current) {
-                return onError(error, variables, context);
+            if (options.onError && !hasCallTimeOnError.current) {
+                return options.onError(error, variables, context);
             }
         },
         onSuccess: (
@@ -133,14 +132,13 @@ export const useCreate = <
                 queryKey: [callTimeResource, 'getManyReference'],
             });
 
-            if (onSuccess && !hasCallTimeOnSuccess.current) {
-                onSuccess(data, variables, context);
+            if (options.onSuccess && !hasCallTimeOnSuccess.current) {
+                options.onSuccess(data, variables, context);
             }
-            // call-time success callback is executed by react-query
         },
         onSettled: (data, error, variables, context) => {
-            if (onSettled && !hasCallTimeOnSettled.current) {
-                return onSettled(data, error, variables, context);
+            if (options.onSettled && !hasCallTimeOnSettled.current) {
+                return options.onSettled(data, error, variables, context);
             }
         },
     });
@@ -157,34 +155,34 @@ export const useCreate = <
     ) => {
         const {
             returnPromise = options.returnPromise,
-            onSuccess: callTimeOnSuccess,
-            onSettled: callTimeOnSettled,
-            onError: callTimeOnError,
-            ...reactCreateOptions
+            ...otherCallTimeOptions
         } = callTimeOptions;
 
-        hasCallTimeOnError.current = !!callTimeOnError;
-        hasCallTimeOnSuccess.current = !!callTimeOnSuccess;
-        hasCallTimeOnSettled.current = !!callTimeOnSettled;
+        hasCallTimeOnError.current = !!otherCallTimeOptions.onError;
+        hasCallTimeOnSuccess.current = !!otherCallTimeOptions.onSuccess;
+        hasCallTimeOnSettled.current = !!otherCallTimeOptions.onSettled;
 
         if (returnPromise) {
             return mutation.mutateAsync(
                 { resource: callTimeResource, ...callTimeParams },
-                callTimeOptions
+                otherCallTimeOptions
             );
         }
         mutation.mutate(
             { resource: callTimeResource, ...callTimeParams },
-            {
-                onSuccess: callTimeOnSuccess,
-                onSettled: callTimeOnSettled,
-                onError: callTimeOnError,
-                ...reactCreateOptions,
-            }
+            otherCallTimeOptions
         );
     };
 
-    return [useEvent(create), mutation];
+    const mutationResult = useMemo(
+        () => ({
+            isLoading: mutation.isPending,
+            ...mutation,
+        }),
+        [mutation]
+    );
+
+    return [useEvent(create), mutationResult];
 };
 
 export interface UseCreateMutateParams<

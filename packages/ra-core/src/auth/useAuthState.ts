@@ -8,6 +8,7 @@ import useAuthProvider, { defaultAuthParams } from './useAuthProvider';
 import useLogout from './useLogout';
 import { removeDoubleSlashes, useBasename } from '../routing';
 import { useNotify } from '../notification';
+import { useEvent } from '../util';
 
 const emptyParams = {};
 
@@ -19,7 +20,7 @@ const emptyParams = {};
  * The return value updates according to the authProvider request state:
  *
  * - isPending: true just after mount, while the authProvider is being called. false once the authProvider has answered.
- * - data: true while loading. then true or false depending on the authProvider response.
+ * - authenticated: true while loading. then true or false depending on the authProvider response.
  *
  * To avoid rendering a component and force waiting for the authProvider response, use the useAuthState() hook
  * instead of the useAuthenticated() hook.
@@ -83,51 +84,52 @@ const useAuthState = <ErrorType = Error>(
         ...options,
     });
 
-    useEffect(() => {
-        if (result.data != null && onSuccess) {
-            onSuccess(result.data);
-        }
-    }, [onSuccess, result.data]);
-
-    useEffect(() => {
-        if (result.error != null) {
-            if (onError) {
-                return onError(result.error);
-            }
-
-            const loginUrl = removeDoubleSlashes(
-                `${basename}/${defaultAuthParams.loginUrl}`
-            );
-            if (logoutOnFailure) {
-                logout(
-                    {},
-                    result.error && result.error.redirectTo != null
-                        ? result.error.redirectTo
-                        : loginUrl
+    const onSuccessEvent = useEvent(onSuccess ?? noop);
+    const onErrorEvent = useEvent(
+        onError ??
+            (() => {
+                const loginUrl = removeDoubleSlashes(
+                    `${basename}/${defaultAuthParams.loginUrl}`
                 );
-                const shouldSkipNotify =
-                    result.error && result.error.message === false;
-                !shouldSkipNotify &&
-                    notify(
-                        getErrorMessage(
-                            result.error,
-                            'ra.auth.auth_check_error'
-                        ),
-                        { type: 'error' }
+                if (logoutOnFailure) {
+                    logout(
+                        {},
+                        result.error && result.error.redirectTo != null
+                            ? result.error.redirectTo
+                            : loginUrl
                     );
-            }
-        }
-    }, [basename, logout, logoutOnFailure, notify, onError, result.error]);
+                    const shouldSkipNotify =
+                        result.error && result.error.message === false;
+                    !shouldSkipNotify &&
+                        notify(
+                            getErrorMessage(
+                                result.error,
+                                'ra.auth.auth_check_error'
+                            ),
+                            { type: 'error' }
+                        );
+                }
+            })
+    );
+
+    useEffect(() => {
+        if (result.data == null) return;
+        onSuccessEvent(result.data);
+    }, [onSuccessEvent, result.data]);
+
+    useEffect(() => {
+        if (result.error == null) return;
+        onErrorEvent(result.error);
+    }, [onErrorEvent, result.error]);
 
     return useMemo(() => {
         return {
             ...result,
             // If the data is undefined and the query isn't loading anymore, it means the query failed.
             // In that case, we set authenticated to false unless there's no authProvider.
-            authenticated:
-                result.data ?? result.isPending ? true : authProvider == null, // Optimistic
+            authenticated: result.data,
         };
-    }, [authProvider, result]);
+    }, [result]);
 };
 
 type UseAuthStateOptions<ErrorType = Error> = Omit<
@@ -153,3 +155,5 @@ const getErrorMessage = (error, defaultMessage) =>
         : typeof error === 'undefined' || !error.message
         ? defaultMessage
         : error.message;
+
+const noop = () => {};

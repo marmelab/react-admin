@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useMemo, useRef } from 'react';
 import {
     useMutation,
     useQueryClient,
@@ -91,14 +91,7 @@ export const useUpdate = <RecordType extends RaRecord = any>(
     const dataProvider = useDataProvider();
     const queryClient = useQueryClient();
     const { id, data, meta } = params;
-    const {
-        mutationMode = 'pessimistic',
-        onSuccess,
-        onError,
-        onSettled,
-        onMutate,
-        ...reactMutationOptions
-    } = options;
+    const { mutationMode = 'pessimistic', ...mutationOptions } = options;
     const mode = useRef<MutationMode>(mutationMode);
     const paramsRef = useRef<Partial<UpdateParams<RecordType>>>(params);
     const snapshot = useRef<Snapshot>([]);
@@ -197,12 +190,13 @@ export const useUpdate = <RecordType extends RaRecord = any>(
                     meta: callTimeMeta,
                 })
                 .then(({ data }) => data),
-        ...reactMutationOptions,
+        ...mutationOptions,
         onMutate: async (
             variables: Partial<UseUpdateMutateParams<RecordType>>
         ) => {
-            if (onMutate) {
-                const userContext = (await onMutate(variables)) || {};
+            if (mutationOptions.onMutate) {
+                const userContext =
+                    (await mutationOptions.onMutate(variables)) || {};
                 return {
                     snapshot: snapshot.current,
                     // @ts-ignore
@@ -221,8 +215,8 @@ export const useUpdate = <RecordType extends RaRecord = any>(
                 });
             }
 
-            if (onError && !hasCallTimeOnError.current) {
-                return onError(error, variables, context);
+            if (mutationOptions.onError && !hasCallTimeOnError.current) {
+                return mutationOptions.onError(error, variables, context);
             }
             // call-time error callback is executed by react-query
         },
@@ -243,11 +237,13 @@ export const useUpdate = <RecordType extends RaRecord = any>(
                     data,
                 });
 
-                if (onSuccess && !hasCallTimeOnSuccess.current) {
-                    onSuccess(data, variables, context);
+                if (
+                    mutationOptions.onSuccess &&
+                    !hasCallTimeOnSuccess.current
+                ) {
+                    mutationOptions.onSuccess(data, variables, context);
                 }
             }
-            // call-time success callback is executed by react-query
         },
         onSettled: (
             data,
@@ -262,8 +258,13 @@ export const useUpdate = <RecordType extends RaRecord = any>(
                 });
             }
 
-            if (onSettled && !hasCallTimeOnSettled.current) {
-                return onSettled(data, error, variables, context);
+            if (mutationOptions.onSettled && !hasCallTimeOnSettled.current) {
+                return mutationOptions.onSettled(
+                    data,
+                    error,
+                    variables,
+                    context
+                );
             }
         },
     });
@@ -280,15 +281,13 @@ export const useUpdate = <RecordType extends RaRecord = any>(
     ) => {
         const {
             mutationMode,
-            returnPromise = reactMutationOptions.returnPromise,
-            onSuccess: callTimeOnSuccess,
-            onSettled: callTimeOnSettled,
-            onError: callTimeOnError,
+            returnPromise = mutationOptions.returnPromise,
+            ...otherCallTimeOptions
         } = callTimeOptions;
 
-        hasCallTimeOnError.current = !!callTimeOnError;
-        hasCallTimeOnSuccess.current = !!callTimeOnSuccess;
-        hasCallTimeOnSettled.current = !!callTimeOnSettled;
+        hasCallTimeOnError.current = !!otherCallTimeOptions.onError;
+        hasCallTimeOnSuccess.current = !!otherCallTimeOptions.onSuccess;
+        hasCallTimeOnSettled.current = !!otherCallTimeOptions.onSettled;
 
         // store the hook time params *at the moment of the call*
         // because they may change afterwards, which would break the undoable mode
@@ -309,20 +308,12 @@ export const useUpdate = <RecordType extends RaRecord = any>(
             if (returnPromise) {
                 return mutation.mutateAsync(
                     { resource: callTimeResource, ...callTimeParams },
-                    {
-                        onSuccess: callTimeOnSuccess,
-                        onSettled: callTimeOnSettled,
-                        onError: callTimeOnError,
-                    }
+                    otherCallTimeOptions
                 );
             }
             return mutation.mutate(
                 { resource: callTimeResource, ...callTimeParams },
-                {
-                    onSuccess: callTimeOnSuccess,
-                    onSettled: callTimeOnSettled,
-                    onError: callTimeOnError,
-                }
+                otherCallTimeOptions
             );
         }
 
@@ -389,21 +380,20 @@ export const useUpdate = <RecordType extends RaRecord = any>(
         });
 
         // run the success callbacks during the next tick
-        if (callTimeOnSuccess) {
+        if (otherCallTimeOptions.onSuccess) {
             setTimeout(
                 () =>
-                    callTimeOnSuccess(
+                    otherCallTimeOptions.onSuccess(
                         { ...previousRecord, ...callTimeData },
                         { resource: callTimeResource, ...callTimeParams },
                         { snapshot: snapshot.current }
                     ),
                 0
             );
-        }
-        if (onSuccess && !hasCallTimeOnSuccess.current) {
+        } else if (mutationOptions.onSuccess && !hasCallTimeOnSuccess.current) {
             setTimeout(
                 () =>
-                    onSuccess(
+                    mutationOptions.onSuccess(
                         { ...previousRecord, ...callTimeData },
                         { resource: callTimeResource, ...callTimeParams },
                         { snapshot: snapshot.current }
@@ -416,7 +406,10 @@ export const useUpdate = <RecordType extends RaRecord = any>(
             // call the mutate method without success side effects
             return mutation.mutate(
                 { resource: callTimeResource, ...callTimeParams },
-                { onSettled: callTimeOnSettled, onError: callTimeOnError }
+                {
+                    onSettled: otherCallTimeOptions.onSettled,
+                    onError: otherCallTimeOptions.onError,
+                }
             );
         } else {
             // undoable mutation: register the mutation for later
@@ -431,8 +424,8 @@ export const useUpdate = <RecordType extends RaRecord = any>(
                     mutation.mutate(
                         { resource: callTimeResource, ...callTimeParams },
                         {
-                            onSettled: callTimeOnSettled,
-                            onError: callTimeOnError,
+                            onSettled: otherCallTimeOptions.onSettled,
+                            onError: otherCallTimeOptions.onError,
                         }
                     );
                 }
@@ -440,7 +433,15 @@ export const useUpdate = <RecordType extends RaRecord = any>(
         }
     };
 
-    return [useEvent(update), mutation];
+    const mutationResult = useMemo(
+        () => ({
+            isLoading: mutation.isPending,
+            ...mutation,
+        }),
+        [mutation]
+    );
+
+    return [useEvent(update), mutationResult];
 };
 
 type Snapshot = [key: QueryKey, value: any][];

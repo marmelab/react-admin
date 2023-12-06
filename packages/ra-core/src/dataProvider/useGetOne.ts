@@ -70,15 +70,13 @@ export const useGetOne = <RecordType extends RaRecord = any>(
     });
 
     useEffect(() => {
-        if (result.data != null && onSuccessEvent) {
-            onSuccessEvent(result.data);
-        }
+        if (result.data == null) return;
+        onSuccessEvent(result.data);
     }, [onSuccessEvent, result.data]);
 
     useEffect(() => {
-        if (result.error != null && onErrorEvent) {
-            onErrorEvent(result.error);
-        }
+        if (result.error == null) return;
+        onErrorEvent(result.error);
     }, [onErrorEvent, result.error]);
 
     return result;

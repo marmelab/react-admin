@@ -59,7 +59,11 @@ const useDeleteWithUndoController = <RecordType extends RaRecord = any>(
     const redirect = useRedirect();
     const [deleteOne, { isPending }] = useDelete<RecordType>(
         resource,
-        { id: record?.id },
+        {
+            id: record.id,
+            previousData: record,
+            meta: mutationMeta,
+        },
         {
             onSuccess: () => {
                 notify('ra.notification.deleted', {
@@ -120,7 +124,7 @@ const useDeleteWithUndoController = <RecordType extends RaRecord = any>(
         ]
     );
 
-    return { isPending, handleDelete };
+    return { isPending, isLoading: isPending, handleDelete };
 };
 
 export interface UseDeleteWithUndoControllerParams<
@@ -141,6 +145,7 @@ export interface UseDeleteWithUndoControllerParams<
 
 export interface UseDeleteWithUndoControllerReturn {
     isPending: boolean;
+    isLoading: boolean;
     handleDelete: ReactEventHandler<any>;
 }
 

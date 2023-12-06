@@ -81,7 +81,11 @@ const useDeleteWithConfirmController = <RecordType extends RaRecord = any>(
     const redirect = useRedirect();
     const [deleteOne, { isPending }] = useDelete<RecordType>(
         resource,
-        { id: record?.id },
+        {
+            id: record.id,
+            previousData: record,
+            meta: mutationMeta,
+        },
         {
             onSuccess: () => {
                 setOpen(false);
@@ -159,6 +163,7 @@ const useDeleteWithConfirmController = <RecordType extends RaRecord = any>(
     return {
         open,
         isPending,
+        isLoading: isPending,
         handleDialogOpen,
         handleDialogClose,
         handleDelete,
@@ -184,6 +189,7 @@ export interface UseDeleteWithConfirmControllerParams<
 
 export interface UseDeleteWithConfirmControllerReturn {
     open: boolean;
+    isLoading: boolean;
     isPending: boolean;
     handleDialogOpen: (e: SyntheticEvent) => void;
     handleDialogClose: (e: SyntheticEvent) => void;

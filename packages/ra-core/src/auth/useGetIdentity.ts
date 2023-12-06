@@ -7,6 +7,7 @@ import {
 
 import useAuthProvider from './useAuthProvider';
 import { UserIdentity } from '../types';
+import { useEvent } from '../util';
 
 const defaultIdentity = {
     id: '',
@@ -27,7 +28,7 @@ const defaultQueryParams = {
  *
  * The implementation is left to the authProvider.
  *
- * @returns The current user identity. Destructure as { isPending, data, error, refetch }.
+ * @returns The current user identity. Destructure as { isPending, identity, error, refetch }.
  *
  * @example
  * import { useGetIdentity, useGetOne } from 'react-admin';
@@ -63,17 +64,18 @@ export const useGetIdentity = <ErrorType extends Error = Error>(
         ...queryOptions,
     });
 
-    useEffect(() => {
-        if (result.data != null && onSuccess) {
-            onSuccess(result.data);
-        }
-    }, [onSuccess, result.data]);
+    const onSuccessEvent = useEvent(onSuccess ?? noop);
+    const onErrorEvent = useEvent(onError ?? noop);
 
     useEffect(() => {
-        if (result.error != null && onError) {
-            onError(result.error);
-        }
-    }, [onError, result.error]);
+        if (result.data == null) return;
+        onSuccessEvent(result.data);
+    }, [onSuccessEvent, result.data]);
+
+    useEffect(() => {
+        if (result.error == null) return;
+        onErrorEvent(result.error);
+    }, [onErrorEvent, result.error]);
 
     return useMemo(
         () => ({
@@ -101,3 +103,5 @@ export type UseGetIdentityResult<ErrorType = Error> = QueryObserverResult<
 };
 
 export default useGetIdentity;
+
+const noop = () => {};

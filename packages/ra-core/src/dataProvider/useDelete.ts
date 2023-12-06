@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useMemo, useRef } from 'react';
 import {
     useMutation,
     useQueryClient,
@@ -90,14 +90,7 @@ export const useDelete = <
     const dataProvider = useDataProvider();
     const queryClient = useQueryClient();
     const { id, previousData } = params;
-    const {
-        mutationMode = 'pessimistic',
-        onError,
-        onMutate,
-        onSettled,
-        onSuccess,
-        ...reactMutationOptions
-    } = options;
+    const { mutationMode = 'pessimistic', ...mutationOptions } = options;
     const mode = useRef<MutationMode>(mutationMode);
     const paramsRef = useRef<Partial<DeleteParams<RecordType>>>(params);
     const snapshot = useRef<Snapshot>([]);
@@ -213,12 +206,13 @@ export const useDelete = <
                     meta: callTimeMeta,
                 })
                 .then(({ data }) => data),
-        ...reactMutationOptions,
+        ...mutationOptions,
         onMutate: async (
             variables: Partial<UseDeleteMutateParams<RecordType>>
         ) => {
-            if (onMutate) {
-                const userContext = (await onMutate(variables)) || {};
+            if (mutationOptions.onMutate) {
+                const userContext =
+                    (await mutationOptions.onMutate(variables)) || {};
                 return {
                     snapshot: snapshot.current,
                     // @ts-ignore
@@ -241,8 +235,8 @@ export const useDelete = <
                 });
             }
 
-            if (onError && !hasCallTimeOnError.current) {
-                return onError(error, variables, context);
+            if (mutationOptions.onError && !hasCallTimeOnError.current) {
+                return mutationOptions.onError(error, variables, context);
             }
             // call-time error callback is executed by react-query
         },
@@ -262,8 +256,11 @@ export const useDelete = <
                     id: callTimeId,
                 });
 
-                if (onSuccess && !hasCallTimeOnSuccess.current) {
-                    onSuccess(data, variables, context);
+                if (
+                    mutationOptions.onSuccess &&
+                    !hasCallTimeOnSuccess.current
+                ) {
+                    mutationOptions.onSuccess(data, variables, context);
                 }
                 // call-time success callback is executed by react-query
             }
@@ -281,8 +278,13 @@ export const useDelete = <
                 });
             }
 
-            if (onSettled && !hasCallTimeOnSettled.current) {
-                return onSettled(data, error, variables, context);
+            if (mutationOptions.onSettled && !hasCallTimeOnSettled.current) {
+                return mutationOptions.onSettled(
+                    data,
+                    error,
+                    variables,
+                    context
+                );
             }
         },
     });
@@ -297,12 +299,10 @@ export const useDelete = <
             unknown
         > & { mutationMode?: MutationMode } = {}
     ) => {
-        const {
-            mutationMode,
-            onSuccess: callTimeOnSuccess,
-            onSettled: callTimeOnSettled,
-            onError: callTimeOnError,
-        } = callTimeOptions;
+        const { mutationMode } = callTimeOptions;
+        hasCallTimeOnError.current = !!callTimeOptions.onError;
+        hasCallTimeOnSuccess.current = !!callTimeOptions.onSuccess;
+        hasCallTimeOnSettled.current = !!callTimeOptions.onSettled;
 
         // store the hook time params *at the moment of the call*
         // because they may change afterwards, which would break the undoable mode
@@ -316,11 +316,7 @@ export const useDelete = <
         if (mode.current === 'pessimistic') {
             return mutation.mutate(
                 { resource: callTimeResource, ...callTimeParams },
-                {
-                    onSuccess: callTimeOnSuccess,
-                    onSettled: callTimeOnSettled,
-                    onError: callTimeOnError,
-                }
+                callTimeOptions
             );
         }
 
@@ -373,21 +369,20 @@ export const useDelete = <
         });
 
         // run the success callbacks during the next tick
-        if (callTimeOnSuccess) {
+        if (callTimeOptions.onSuccess) {
             setTimeout(
                 () =>
-                    callTimeOnSuccess(
+                    callTimeOptions.onSuccess(
                         callTimePreviousData,
                         { resource: callTimeResource, ...callTimeParams },
                         { snapshot: snapshot.current }
                     ),
                 0
             );
-        }
-        if (onSuccess) {
+        } else if (mutationOptions.onSuccess) {
             setTimeout(
                 () =>
-                    onSuccess(
+                    mutationOptions.onSuccess(
                         callTimePreviousData,
                         { resource: callTimeResource, ...callTimeParams },
                         { snapshot: snapshot.current }
@@ -400,7 +395,10 @@ export const useDelete = <
             // call the mutate method without success side effects
             return mutation.mutate(
                 { resource: callTimeResource, ...callTimeParams },
-                { onSettled: callTimeOnSettled, onError: callTimeOnError }
+                {
+                    onSettled: callTimeOptions.onSettled,
+                    onError: callTimeOptions.onError,
+                }
             );
         } else {
             // undoable mutation: register the mutation for later
@@ -415,8 +413,8 @@ export const useDelete = <
                     mutation.mutate(
                         { resource: callTimeResource, ...callTimeParams },
                         {
-                            onSettled: callTimeOnSettled,
-                            onError: callTimeOnError,
+                            onSettled: callTimeOptions.onSettled,
+                            onError: callTimeOptions.onError,
                         }
                     );
                 }
@@ -424,7 +422,15 @@ export const useDelete = <
         }
     };
 
-    return [useEvent(mutate), mutation];
+    const mutationResult = useMemo(
+        () => ({
+            isLoading: mutation.isPending,
+            ...mutation,
+        }),
+        [mutation]
+    );
+
+    return [useEvent(mutate), mutationResult];
 };
 
 type Snapshot = [key: QueryKey, value: any][];
