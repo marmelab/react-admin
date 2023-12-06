@@ -67,9 +67,15 @@ export const useGetList = <RecordType extends RaRecord = any>(
     } = params;
     const dataProvider = useDataProvider();
     const queryClient = useQueryClient();
-    const { onError = noop, onSuccess = noop, ...queryOptions } = options;
+    const {
+        onError = noop,
+        onSuccess = noop,
+        onSettled = noop,
+        ...queryOptions
+    } = options;
     const onSuccessEvent = useEvent(onSuccess);
     const onErrorEvent = useEvent(onError);
+    const onSettledEvent = useEvent(onSettled);
 
     const result = useQuery<
         GetListResult<RecordType>,
@@ -116,6 +122,11 @@ export const useGetList = <RecordType extends RaRecord = any>(
         onErrorEvent(result.error);
     }, [onErrorEvent, result.error]);
 
+    useEffect(() => {
+        if (result.status === 'pending') return;
+        onSettledEvent(result.data, result.error);
+    }, [onSettledEvent, result.data, result.error, result.status]);
+
     return useMemo(
         () =>
             result.data
@@ -144,6 +155,7 @@ export type UseGetListOptions<RecordType extends RaRecord = any> = Omit<
 > & {
     onSuccess?: (value: GetListResult<RecordType>) => void;
     onError?: (error: Error) => void;
+    onSettled?: (data?: GetListResult<RecordType>, error?: Error) => void;
 };
 
 export type UseGetListHookValue<

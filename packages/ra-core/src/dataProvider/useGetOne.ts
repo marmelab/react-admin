@@ -53,9 +53,15 @@ export const useGetOne = <RecordType extends RaRecord = any>(
     options: UseGetOneOptions<RecordType> = {}
 ): UseGetOneHookValue<RecordType> => {
     const dataProvider = useDataProvider();
-    const { onError = noop, onSuccess = noop, ...queryOptions } = options;
+    const {
+        onError = noop,
+        onSuccess = noop,
+        onSettled = noop,
+        ...queryOptions
+    } = options;
     const onSuccessEvent = useEvent(onSuccess);
     const onErrorEvent = useEvent(onError);
+    const onSettledEvent = useEvent(onSettled);
 
     const result = useQuery<RecordType>({
         // Sometimes the id comes as a string (e.g. when read from the URL in a Show view).
@@ -79,6 +85,11 @@ export const useGetOne = <RecordType extends RaRecord = any>(
         onErrorEvent(result.error);
     }, [onErrorEvent, result.error]);
 
+    useEffect(() => {
+        if (result.status === 'pending') return;
+        onSettledEvent(result.data, result.error);
+    }, [onSettledEvent, result.data, result.error, result.status]);
+
     return result;
 };
 
@@ -90,6 +101,10 @@ export type UseGetOneOptions<RecordType extends RaRecord = any> = Omit<
 > & {
     onSuccess?: (data: GetOneResult<RecordType>['data']) => void;
     onError?: (error: Error) => void;
+    onSettled?: (
+        data?: GetOneResult<RecordType>['data'],
+        error?: Error
+    ) => void;
 };
 
 export type UseGetOneHookValue<

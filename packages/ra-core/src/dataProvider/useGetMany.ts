@@ -60,9 +60,15 @@ export const useGetMany = <RecordType extends RaRecord = any>(
     const dataProvider = useDataProvider();
     const queryClient = useQueryClient();
     const queryCache = queryClient.getQueryCache();
-    const { onError = noop, onSuccess = noop, ...queryOptions } = options;
+    const {
+        onError = noop,
+        onSuccess = noop,
+        onSettled = noop,
+        ...queryOptions
+    } = options;
     const onSuccessEvent = useEvent(onSuccess);
     const onErrorEvent = useEvent(onError);
+    const onSettledEvent = useEvent(onSettled);
 
     const result = useQuery<RecordType[], Error, RecordType[]>({
         queryKey: [
@@ -123,6 +129,11 @@ export const useGetMany = <RecordType extends RaRecord = any>(
         onErrorEvent(result.error);
     }, [onErrorEvent, result.error]);
 
+    useEffect(() => {
+        if (result.status === 'pending') return;
+        onSettledEvent(result.data, result.error);
+    }, [onSettledEvent, result.data, result.error, result.status]);
+
     return result;
 };
 
@@ -134,6 +145,7 @@ export type UseGetManyOptions<RecordType extends RaRecord = any> = Omit<
 > & {
     onSuccess?: (data: RecordType[]) => void;
     onError?: (error: Error) => void;
+    onSettled?: (data?: RecordType[], error?: Error) => void;
 };
 
 export type UseGetManyHookValue<

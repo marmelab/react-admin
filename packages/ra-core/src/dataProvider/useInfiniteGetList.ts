@@ -77,9 +77,15 @@ export const useInfiniteGetList = <RecordType extends RaRecord = any>(
     } = params;
     const dataProvider = useDataProvider();
     const queryClient = useQueryClient();
-    const { onSuccess = noop, onError = noop, ...queryOptions } = options;
+    const {
+        onSuccess = noop,
+        onError = noop,
+        onSettled = noop,
+        ...queryOptions
+    } = options;
     const onSuccessEvent = useEvent(onSuccess);
     const onErrorEvent = useEvent(onError);
+    const onSettledEvent = useEvent(onSettled);
 
     const result = useInfiniteQuery<
         GetInfiniteListResult<RecordType>,
@@ -159,6 +165,11 @@ export const useInfiniteGetList = <RecordType extends RaRecord = any>(
         onErrorEvent(result.error);
     }, [onErrorEvent, result.error]);
 
+    useEffect(() => {
+        if (result.status === 'pending') return;
+        onSettledEvent(result.data, result.error);
+    }, [onSettledEvent, result.data, result.error, result.status]);
+
     return (result.data
         ? {
               ...result,
@@ -192,6 +203,10 @@ export type UseInfiniteGetListOptions<RecordType extends RaRecord = any> = Omit<
 > & {
     onSuccess?: (data: InfiniteData<GetInfiniteListResult<RecordType>>) => void;
     onError?: (error: Error) => void;
+    onSettled?: (
+        data?: InfiniteData<GetInfiniteListResult<RecordType>>,
+        error?: Error
+    ) => void;
 };
 
 export type UseInfiniteGetListHookValue<
