@@ -28,7 +28,7 @@ export const useHandleAuthCallback = (
     const queryResult = useQuery({
         queryKey: ['auth', 'handleCallback'],
         queryFn: () =>
-            authProvider.handleCallback().then(result => result ?? {}),
+            authProvider.handleCallback().then(result => result ?? null),
         retry: false,
         ...queryOptions,
     });
@@ -60,7 +60,7 @@ export const useHandleAuthCallback = (
     }, [onErrorEvent, queryResult.error]);
 
     useEffect(() => {
-        if (queryResult.data == null) return;
+        if (queryResult.data === undefined) return;
         onSuccessEvent(queryResult.data);
     }, [onSuccessEvent, queryResult.data]);
 
