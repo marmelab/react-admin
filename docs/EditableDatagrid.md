@@ -5,9 +5,9 @@ title: "The EditableDatagrid Component"
 
 # `<EditableDatagrid>`
 
-The default react-admin user-experience consists of three pages: List, Edit, and Create. However, in some cases, users may prefer to do all search and edition tasks in one page.
+The default react-admin user experience consists of three pages: List, Edit, and Create. However, in some cases, users may prefer to do all CRUD tasks in one page.
 
-This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> component offers an "edit-in-place" experience, that allows users to edit, create, and delete records in place inside a `<Datagrid>`.
+`<EditableDatagrid>` is an [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> component that offers an "edit-in-place" experience, allowing users to edit, create, and delete records in place inside a `<Datagrid>`.
 
 <video controls autoplay playsinline muted loop>
   <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-editable-datagrid-overview.webm" type="video/webm" />
@@ -15,9 +15,11 @@ This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" s
   Your browser does not support the video tag.
 </video>
 
-With `<EditableDatagrid>`, users can click on a row in the datagrid to replace the row with an edition form, and edit the corresponding record without leaving the list. They can also create new records by clicking on the Create button, which inserts an empty editable row as the first line of the list. Finally, they can delete a record by clicking on the Delete button on each row.
+With `<EditableDatagrid>`, when users click on a row in the datagrid, the row content is replaced by the edition form. They can also create new records by clicking on the Create button, which inserts an empty editable row as the first line of the list. Finally, they can delete a record by clicking on the Delete button on each row.
 
-You can test it live in [the Enterprise Edition Storybook](https://react-admin.github.io/ra-enterprise/?path=/story/ra-editable-datagrid-editabledatagrid--undoable) and in [the e-commerce demo](https://marmelab.com/ra-enterprise-demo/#/tours/ra-editable-datagrid).
+You can test it live in [the Enterprise Edition Storybook](https://react-admin.github.io/ra-enterprise/?path=/story/ra-editable-datagrid-editabledatagrid--undoable) and [the e-commerce demo](https://marmelab.com/ra-enterprise-demo/#/tours/ra-editable-datagrid).
+
+`<EditableDatagrid>` allows you to use any [Input component](./ImageInput.md) to edit the record - including Reference Inputs for foreign keys.
 
 ## Usage
 
@@ -29,68 +31,51 @@ npm install --save @react-admin/ra-editable-datagrid
 yarn add @react-admin/ra-editable-datagrid
 ```
 
-**Tip**: `ra-editable-datagrid` is part of the [React-Admin Enterprise Edition](https://marmelab.com/ra-enterprise/), and hosted in a private npm registry. You need to subscribe to one of the Enterprise Edition plans to access this package.
+**Tip**: `ra-editable-datagrid` is part of the [React-Admin Enterprise Edition](https://marmelab.com/ra-enterprise/), and hosted in a private npm registry. You need to subscribe to one of the Enterprise Edition plans to access this registry.
 
-Then, use `<EditableDatagrid>` in replacement of a `<Datagrid>`, as a child of a react-admin `<List>`, `<ReferenceManyField>` or any other component that creates a `ListContext`. In addition, pass a form component to be displayed when the user switches to edit or create mode.
+Then, replace `<Datagrid>` with `<EditableDatagrid>` in a react-admin `<List>`, `<ReferenceManyField>`, or any other component that creates a `ListContext`. In addition, pass a form component to be displayed when the user switches to edit or create mode.
 
-{% raw %}
 ```tsx
-import {
-    List,
-    TextField,
-    TextInput,
-    DateField,
-    DateInput,
-    SelectField,
-    SelectInput,
-    required,
-} from 'react-admin';
+import { List, TextField, TextInput, DateField, DateInput, SelectField, SelectInput, required } from 'react-admin';
 import { EditableDatagrid, RowForm } from '@react-admin/ra-editable-datagrid';
-
-const professionChoices = [
-    { id: 'actor', name: 'Actor' },
-    { id: 'singer', name: 'Singer' },
-    { id: 'other', name: 'Other' },
-];
-
-const ArtistForm = () => (
-    <RowForm>
-        <TextField source="id" />
-        <TextInput source="firstname" validate={required()} />
-        <TextInput source="name" validate={required()} />
-        <DateInput source="dob" label="born" validate={required()} />
-        <SelectInput
-            source="prof"
-            label="Profession"
-            choices={professionChoices}
-        />
-    </RowForm>
-);
 
 export const ArtistList = () => (
     <List hasCreate empty={false}>
         <EditableDatagrid
-            mutationMode="undoable"
             createForm={<ArtistForm />}
             editForm={<ArtistForm />}
         >
             <TextField source="id" />
-            <TextField source="firstname" />
-            <TextField source="name" />
+            <TextField source="firstName" />
+            <TextField source="lastName" />
             <DateField source="dob" label="born" />
-            <SelectField
-                source="prof"
-                label="Profession"
-                choices={professionChoices}
-            />
+            <SelectField source="profession" choices={professionChoices} />
         </EditableDatagrid>
     </List>
 );
-```
-{% endraw %}
 
+const ArtistForm = () => (
+    <RowForm>
+        <TextField source="id" />
+        <TextInput source="firstName" validate={required()} />
+        <TextInput source="lastName" validate={required()} />
+        <DateInput source="dob" label="born" validate={required()} />
+        <SelectInput source="profession" choices={professions} />
+    </RowForm>
+);
+
+const professions = [
+    { id: 'actor', name: 'Actor' },
+    { id: 'singer', name: 'Singer' },
+    { id: 'other', name: 'Other' },
+];
+```
+
+**Tip**: No need to include an `<EditButton>` in the datagrid children, as `<EditableDatagrid>` automatically adds a column with edit/delete buttons.
 
 ## Props
+
+As `<EditableDatagrid>` is a drop-in replacement for `<Datagrid>`, it accepts all [the `<Datagrid>` props](./Datagrid.md#props), plus a few extra props:
 
 | Prop           | Required | Type         | Default    | Description                                                               |
 | -------------- | -------- | ------------ | ---------- | ------------------------------------------------------------------------- |
@@ -100,39 +85,12 @@ export const ArtistList = () => (
 | `mutationMode` | Optional | `string`     | `undoable` | Mutation mode (`'undoable'`, `'pessimistic'` or `'optimistic'`).          |
 | `noDelete`     | Optional | boolean      | -          | Disable the inline Delete button.                                         |
 
-`<EditableDatagrid>` is a drop-in replacement for `<Datagrid>` it means that you can provide additional props to passed them down to [`<Datagrid>` component](./Datagrid.md#props).
-
-## `editForm` 
-
-The component to display instead of a row when the users edit a record. It renders as many columns as the `<EditableDatagrid>` has children.
-
-The `<EditableDatagrid>` component renders the `editForm` elements in a `<table>`, so these elements should render a `<tr>`. We advise you to use the [`<RowForm>`](#rowform) component for `editForm`, which renders a `<tr>` by default. But you can also use your own component to render the row form ([see below](#rowform)).
-
-```tsx
-const ArtistForm = () => (
-    <RowForm>
-        <TextField source="id" />
-        {/*...*/}
-    </RowForm>
-);
-
-export const ArtistList = () => (
-    <List>
-        <EditableDatagrid editForm={<ArtistForm />}>
-            <TextField source="id" />
-            {/*...*/}
-        </EditableDatagrid>
-    </List>
-);
-```
-
-**Tip**: No need to include an `<EditButton>` as child, the `<EditableDatagrid>` component adds a column with edit/delete/save/cancel buttons itself.
-
 ## `actions`
 
-By default, the `<EditableDatagrid>` will show both edit and delete buttons when users hover a row. If you want to either customize the buttons behavior or provide more actions, you can leverage the `actions` prop, which accepts a React element. For instance, here's how to customize the delete button so that it asks users for a confirmation but still allows to undo the deletion:
+By default, the `<EditableDatagrid>` will show both edit and delete buttons when users hover a row. If you want to either customize the button's behavior or provide more actions, you can leverage the `actions` prop. It accepts a React element.
 
-{% raw %}
+For instance, here's how to customize the delete button so that it asks users for a confirmation but still allows them to undo the deletion:
+
 ```tsx
 import React from 'react';
 import { List, TextField } from 'react-admin';
@@ -143,96 +101,106 @@ import {
 } from '@react-admin/ra-editable-datagrid';
 import { ArtistForm } from './ArtistForm';
 
-const CustomAction = () => (
-    <>
-        <EditRowButton />
-        <DeleteWithConfirmIconButton mutationMode="undoable" />
-    </>
-);
-
 export const ArtistList = () => (
-    <List hasCreate sort={{ field: 'id', order: 'DESC' }} empty={false}>
+    <List>
         <EditableDatagrid
-            actions={<CustomAction />}
+            actions={<RowAction />}
             // The mutation mode is still applied to updates
             mutationMode="undoable"
             editForm={<ArtistForm />}
         >
             <TextField source="id" />
-            <TextField source="firstname" />
+            <TextField source="firstName" />
             <TextField source="name" />
         </EditableDatagrid>
     </List>
 );
+
+const RowAction = () => (
+    <>
+        <EditRowButton />
+        <DeleteWithConfirmIconButton mutationMode="undoable" />
+    </>
+);
 ```
-{% endraw %}
 
 ## `createForm`
 
-The component to display as the first row when the user creates a record.
-
-The `<EditableDatagrid>` component renders the `createForm` elements in a `<table>`, so these elements should render a `<tr>`. We advise you to use the [`<RowForm>`](#rowform) component for `createForm`, which renders a `<tr>` by default. But you can also use your own component to render the row form ([see below](#rowform))
-
-To display a create button on top of the list, you should add the [`hasCreate`](./List.md#hascreate) prop to the `<List>` component, as in the example below.
+The component displayed as the first row when a user clicks on the Create button. It's usually a form built with [`<RowForm>`](#rowform), with the same number of children as the `<EditableDatagrid>` has children.
 
 ```tsx
-const ArtistForm = () => (
-    <RowForm>
-        <TextField source="id" />
-        {/*...*/}
-    </RowForm>
-);
-
 export const ArtistList = () => (
-    <List hasCreate>
-        <EditableDatagrid createForm={<ArtistForm />}>
+    <List hasCreate empty={false}>
+        <EditableDatagrid 
+            editForm={<ArtistForm />}
+            createForm={<ArtistForm />}
+        >
             <TextField source="id" />
+            <TextField source="firstName" />
+            <TextField source="lastName" />
             {/*...*/}
         </EditableDatagrid>
     </List>
 );
+
+const ArtistForm = () => (
+    <RowForm>
+        <TextField source="id" />
+        <TextInput source="firstName" />
+        <TextInput source="lastName" />
+        {/*...*/}
+    </RowForm>
+);
 ```
 
-To be able to add a new row when the list is empty, you need to bypass the default `<List>` empty page system by passing `empty={false}` as `<List>` prop.
+**Tip**: It's a good idea to reuse the same form component for `createForm` and `editForm`, as in the example above.
+
+Since the creation form is embedded in the List view, you shouldn't set the `<Resource create>` prop. But react-admin's `<List>` only displays a Create button if the current `Resource` has a `create` page. That's why you must force the [`<List hasCreate>`](./List.md#hascreate) prop to `true`, as in the example above, to have the Create button show up with `<EditableDatagrid>`.
+
+Also, when the list is empty, the `<List>` component normally doesn't render its children (it renders an `empty` component instead). To bypass this system and see the empty editable datagrid with a create button instead, you need to force the `<List empty={false}>` prop, as in the example above.
+
+`<EditableDatagrid>` renders the `createForm` elements in a `<table>`, so the create form element should render a `<tr>`. We advise you to use the [`<RowForm>`](#rowform) component, which renders a `<tr>` by default. But you can also use your own component to render the creation form ([see `<RowForm>` below](#rowform)).
+
+**Tip**: The `createForm` component must render as many columns as there are children in the `<EditableDatagrid>`. That's why in the example above, the `<ArtistForm>` component renders a `<TextInput>` for each `<TextField>` (except for the read-only `id` field, for which it renders a `<TextField>`).
+
+## `editForm`
+
+The component displayed when a user clicks on a row to edit it. It's usually a form built with [`<RowForm>`](#rowform), with the same number of children as the `<EditableDatagrid>` has children.
 
 ```tsx
 export const ArtistList = () => (
-    <List hasCreate empty={false}>
-        <EditableDatagrid createForm={<ArtistForm />}>
-           {/*...*/}
+    <List>
+        <EditableDatagrid  editForm={<ArtistForm />}>
+            <TextField source="id" />
+            <TextField source="firstName" />
+            <TextField source="lastName" />
+            {/*...*/}
         </EditableDatagrid>
     </List>
 );
-```
 
-**Tip**: To display a custom create button, pass a custom component as the [`empty`](./Datagrid.md#empty) `Datagrid>` prop. It can use the [`useEditableDatagridContext`](#useeditabledatagridcontext) hook that allows you to manage the visibility of the creation form.
-
-```tsx
-const MyCreateButton = () => (
-    <Box>
-        <Typography>No books yet</Typography>
-        <Typography>Do you want to add one?</Typography>
-        <CreateButton label="Create the first book" />
-    </Box>
-);
-
-export const ArtistList = () => (
-    <List hasCreate empty={false}>
-        <EditableDatagrid createForm={<ArtistForm />} empty={<MyCreateButton />}>
-           {/*...*/}
-        </EditableDatagrid>
-    </List>
+const ArtistForm = () => (
+    <RowForm>
+        <TextField source="id" />
+        <TextInput source="firstName" />
+        <TextInput source="lastName" />
+        {/*...*/}
+    </RowForm>
 );
 ```
 
-Feel free to visit the [dedicated stories](https://react-admin.github.io/ra-enterprise/?path=/story/ra-editable-datagrid-empty--custom-empty-in-list) to see more examples.
+**Tip**: No need to include a `<SaveButton>` in the form, as `<RowForm>` automatically adds a column with save/cancel buttons.
+
+**Tip**: If one column isn't editable, use a `<Field>` component instead of an `<Input>` component (like the `<TextField>` in the `<RowForm>` above).
+
+The `<EditableDatagrid>` component renders the `editForm` elements in a `<table>`, so these elements should render a `<tr>`. We advise you to use [the `<RowForm>` component](#rowform) for `editForm`, which renders a `<tr>` by default. But you can also use your own component to render the row form.
 
 ## `mutationMode`
 
-Use the `mutationMode` prop to specify the [mutation mode](./Edit.html#mutationmode). By default, the `<EditableDatagrid>` uses the `undoable` mutation mode. 
+Use the `mutationMode` prop to specify the [mutation mode](./Edit.html#mutationmode) for the edit and delete actions. By default, the `<EditableDatagrid>` uses the `undoable` mutation mode. You can change it to `optimistic` or `pessimistic` if you prefer.
 
 ```jsx
-<EditableDatagrid mutationMode="undoable">
+<EditableDatagrid mutationMode="pessimistic">
     {/*...*/}
 </EditableDatagrid>
 ```
@@ -242,14 +210,44 @@ Use the `mutationMode` prop to specify the [mutation mode](./Edit.html#mutationm
 You can disable the delete button by setting the `noDelete` prop to `true`:
 
 ```jsx
-<EditableDatagrid noDelete={true}>
+<EditableDatagrid noDelete>
     {/*...*/}
 </EditableDatagrid>
 ```
 
 ## `<RowForm>`
 
-`<RowForm>` renders a table row with one cell per child. That means that `<RowForm>` and `<EditableDatagrid>` should have the same number of children, and these children should concern the same `source`.
+`<RowForm>` renders a form in a table row, with one table cell per child. It is designed to be used as [`editForm`](#editform) and [`createForm`](#createform) element.
+
+```tsx
+import { List, TextField, TextInput } from 'react-admin';
+import { EditableDatagrid, RowForm } from '@react-admin/ra-editable-datagrid';
+
+export const ArtistList = () => (
+    <List hasCreate empty={false}>
+        <EditableDatagrid
+            createForm={<ArtistForm />}
+            editForm={<ArtistForm />}
+        >
+            <TextField source="id" />
+            <TextField source="firstName" />
+            <TextField source="lastName" />
+        </EditableDatagrid>
+    </List>
+);
+
+const ArtistForm = () => (
+    <RowForm>
+        <TextField source="id" />
+        <TextInput source="firstName" />
+        <TextInput source="lastName" />
+    </RowForm>
+);
+```
+
+`<RowForm>` and `<EditableDatagrid>` should have the same number of children, and these children should concern the same `source`.
+
+**Tip**: No need to include a `<SaveButton>` in the form, as `<RowForm>` automatically adds a column with save/cancel buttons.
 
 If you want to avoid the edition of a column, use a `<Field>` component instead of an `<Input>` component (like the `<TextField>` in the example above).
 
@@ -261,14 +259,14 @@ If you want to avoid the edition of a column, use a `<Field>` component instead 
 | `submitOnEnter`   | Optional | `function` | -       | A function to transform the row before it is saved. |
 | `transform`       | Optional | `boolean` | `true`       |  Whether the form can be submitted by pressing the Enter key.                 |
 
-Any additional props passed to `<RowForm>` are passed to the underlying react-admin [`<Form>`](./Form.md) component. That means that you can pass e.g. `defaultValues`, or `validate` props.
+Any additional props passed to `<RowForm>` are passed down to the underlying react-admin [`<Form>`](./Form.md) component. That means that you can pass e.g. `defaultValues`, or `validate` props.
 
 {% raw %}
 ```tsx
 import { RowForm } from '@react-admin/ra-editable-datagrid';
 
 const ArtistForm = () => (
-    <RowForm defaultValues={{ firstname: 'John', name: 'Doe' }}>
+    <RowForm defaultValues={{ firstName: 'John', name: 'Doe' }}>
         <TextField source="id" disabled />
         <TextInput source="name" validate={required()} />
     </RowForm>
@@ -282,6 +280,8 @@ For advanced use cases, you can use the `useEditableDatagridContext` hook to man
 
 -   `openStandaloneCreateForm`: A function to open the create form.
 -   `closeStandaloneCreateForm`: A function to close the create form.
+
+For instance, the following example displays a custom message when the list is empty, and a button to open the create form:
 
 ```tsx
 import React from 'react';
@@ -317,15 +317,12 @@ export const BookList = () => (
 
 Feel free to visit the [dedicated stories](https://react-admin.github.io/ra-enterprise/?path=/story/ra-editable-datagrid-empty--custom-empty-standalone) to see more examples.
 
-## Recipes
+## Using Inside a `<ReferenceManyField>`
 
-### Inside A `<ReferenceManyField>`
-
-Here is another example inside a `<ReferenceManyField>`. The only difference with its usage in a `<List>` is that you have to initialize the foreign key in the create form using the `defaultValues` prop:
+You can use `<EditableDatagrid>` inside a `<ReferenceManyField>`. The only difference with its usage in a `<List>` is that you have to initialize the foreign key in the creation form using the `defaultValues` prop:
 
 {% raw %}
 ```tsx
-import React from 'react';
 import {
     DateField,
     DateInput,
@@ -358,7 +355,7 @@ const OrderEdit = () => (
                 >
                     <TextField source="id" />
                     <TextField source="name" />
-                    <NumberField source="price" label="Default Price" />
+                    <NumberField source="price" />
                     <DateField source="available_since" />
                 </EditableDatagrid>
             </ReferenceManyField>
@@ -373,11 +370,7 @@ const ProductForm = () => {
         <RowForm defaultValues={{ order_id: getValues('id') }}>
             <TextInput source="id" disabled />
             <TextInput source="name" validate={required()} />
-            <NumberInput
-                source="price"
-                label="Default Price"
-                validate={required()}
-            />
+            <NumberInput source="price" validate={required()} />
             <DateInput source="available_since" validate={required()} />
         </RowForm>
     );
@@ -385,18 +378,19 @@ const ProductForm = () => {
 ```
 {% endraw %}
 
-In these examples, the same form component is used in `createForm` and `editForm`, but you can pass different forms (e.g. if some fields can be set at creation but not changed afterwards).
+In these examples, the same form component is used in `createForm` and `editForm`, but you can pass different forms (e.g. if some fields can be set at creation but not changed afterward).
 
-### Providing Custom Side Effects
+**Tip**: To edit a one-to-many relationship, you can also use [the `<ReferenceManyInput>` component](./ReferenceManyInput.md).
 
-Like other forms in react-admin, you can provide your own side effects in response to successful or failed actions by passing functions to the `onSuccess` or `onError` inside the `mutationOptions` prop:
+## Providing Custom Side Effects
+
+You can provide your own side effects in response to successful or failed save and delete actions, by passing functions to the `onSuccess` or `onError` inside the `mutationOptions` prop:
 
 {% raw %}
 ```tsx
-import { TextInput, DateInput, SelectInput, useNotify } from 'react-admin';
 import { RowForm, useRowContext } from '@react-admin/ra-editable-datagrid';
 
-const ArtistEditForm = () => {
+const ArtistEditionForm = () => {
     const notify = useNotify();
     const { close } = useRowContext();
 
@@ -409,20 +403,12 @@ const ArtistEditForm = () => {
 
     return (
         <RowForm mutationOptions={{ onSuccess: handleSuccess }}>
-            <TextField source="id" />
-            <TextInput source="firstname" validate={required()} />
-            <TextInput source="name" validate={required()} />
-            <DateInput source="dob" label="born" validate={required()} />
-            <SelectInput
-                source="prof"
-                label="Profession"
-                choices={professionChoices}
-            />
+            {/*...*/}
         </RowForm>
     );
 };
 
-const ArtistCreateForm = () => {
+const ArtistCreationForm = () => {
     const notify = useNotify();
     const { close } = useRowContext();
 
@@ -433,21 +419,14 @@ const ArtistCreateForm = () => {
 
     return (
         <RowForm mutationOptions={{ onSuccess: handleSuccess }}>
-            <TextInput source="firstname" validate={required()} />
-            <TextInput source="name" validate={required()} />
-            <DateInput source="dob" label="born" validate={required()} />
-            <SelectInput
-                source="prof"
-                label="Profession"
-                choices={professionChoices}
-            />
+            {/*...*/}
         </RowForm>
     );
 };
 ```
 {% endraw %}
 
-Note that we provide an additional side effects hook: `useRowContext` which allows you to close the form.
+Note that we provide an additional side effects hook: `useRowContext` allows you to close the form.
 
 **Tip**: If you use `useNotify` inside an `onSuccess` side effect for an Edit form in addition to the `<EditableDatagrid mutationMode="undoable">` prop, you will need to set the notification as undoable for the changes to take effects. Also, note that, on undoable forms, the `onSuccess` side effect will be called immediately, without any `response` argument.
 
@@ -458,7 +437,7 @@ const handleSuccess = () => {
 };
 ```
 
-Besides, the `<RowForm>` also accept a function for its `transform` prop allowing you to alter the data before sending it to the dataProvider:
+Besides, the `<RowForm>` also accepts a function for its `transform` prop allowing you to alter the data before sending it to the dataProvider:
 
 ```tsx
 import { TextInput, DateInput, SelectInput } from 'react-admin';
@@ -474,7 +453,7 @@ const ArtistCreateForm = () => {
 
     return (
         <RowForm transform={handleTransform}>
-            <TextInput source="firstname" validate={required()} />
+            <TextInput source="firstName" validate={required()} />
             <TextInput source="name" validate={required()} />
             <DateInput source="dob" label="born" validate={required()} />
             <SelectInput
@@ -487,7 +466,7 @@ const ArtistCreateForm = () => {
 };
 ```
 
-### Adding A `meta` Prop To All Mutations
+## Adding A `meta` Prop To All Mutations
 
 Just like with `<Datagrid>`, if you'd like to add a `meta` prop to all the dataProvider calls, you will need to provide custom `mutationOptions` at all the places where mutations occur:
 
@@ -499,7 +478,6 @@ Here is a complete example:
 
 {% raw %}
 ```tsx
-import * as React from 'react';
 import {
     TextInput,
     DateInput,
@@ -520,11 +498,11 @@ import {
 
 const ArtistForm = ({ meta }) => (
     <RowForm
-        defaultValues={{ firstname: 'John', name: 'Doe' }}
+        defaultValues={{ firstName: 'John', name: 'Doe' }}
         mutationOptions={{ meta }}
     >
         <TextField source="id" />
-        <TextInput source="firstname" validate={required()} />
+        <TextInput source="firstName" validate={required()} />
         <TextInput source="name" validate={required()} />
         <DateInput source="dob" label="Born" validate={required()} />
         <SelectInput
@@ -551,7 +529,7 @@ const ArtistListWithMeta = () => {
                 }
             >
                 <TextField source="id" />
-                <TextField source="firstname" />
+                <TextField source="firstName" />
                 <TextField source="name" />
                 <DateField source="dob" label="Born" />
                 <SelectField
@@ -566,7 +544,7 @@ const ArtistListWithMeta = () => {
 ```
 {% endraw %}
 
-### Configurable
+## Configurable
 
 You can let end users customize what fields are displayed in the `<EditableDatagrid>` by using the `<EditableDatagridConfigurable>` component instead, together with the `<RowFormConfigurable>` component.
 
@@ -589,7 +567,7 @@ const ArtistForm = ({ meta }) => (
 -    <RowForm>
 +    <RowFormConfigurable>
         <TextField source="id" />
-        <TextInput source="firstname" validate={required()} />
+        <TextInput source="firstName" validate={required()} />
         <TextInput source="name" validate={required()} />
         <DateInput source="dob" label="Born" validate={required()} />
         <SelectInput
@@ -610,7 +588,7 @@ const ArtistList = () => (
             editForm={<ArtistForm />}
         >
             <TextField source="id" />
-            <TextField source="firstname" />
+            <TextField source="firstName" />
             <TextField source="name" />
             <DateField source="dob" label="born" />
             <SelectField
@@ -624,7 +602,7 @@ const ArtistList = () => (
 );
 ```
 
-When users enter the configuration mode and select the `<EditableDatagrid>`, they can show / hide datagrid columns. They can also use the [`<SelectColumnsButton>`](./SelectColumnsButton.md)
+When users enter the configuration mode and select the `<EditableDatagrid>`, they can show/hide datagrid columns. They can also use the [`<SelectColumnsButton>`](./SelectColumnsButton.md)
 
 By default, `<EditableDatagridConfigurable>` renders all child fields. But you can also omit some of them by passing an `omit` prop containing an array of field sources:
 
@@ -643,7 +621,7 @@ const PostList = () => (
 );
 ```
 
-If you render more than one `<EditableDatagridConfigurable>` in the same page, you must pass a unique `preferenceKey` prop to each one:
+If you render more than one `<EditableDatagridConfigurable>` on the same page, you must pass a unique `preferenceKey` prop to each one:
 
 ```tsx
 const PostList = () => (
