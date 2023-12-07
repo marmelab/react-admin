@@ -88,6 +88,8 @@ Here are the important things to note:
 
 `<DatagridAG>` doesn't currently support the [server-side row model](https://www.ag-grid.com/react-data-grid/row-models/), so you have to load all data client-side. The client-side performance isn't affected by a large number of records, as ag-grid uses [DOM virtualization](https://www.ag-grid.com/react-data-grid/dom-virtualisation/). `<DatagridAG>` has been tested with 10,000 records without any performance issue.
 
+> **Note:** To mitigate an [issue](https://github.com/ag-grid/ag-grid/issues/7241) preventing tree shaking with some bundlers, `<DatagridAG>` uses React's [lazy loading](https://react.dev/reference/react/lazy#suspense-for-code-splitting) by default. This feature relies on [dynamic `import()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/import), which might require support from your bundler or framework.
+
 ## Props
 
 | Prop                | Required | Type                        | Default                      | Description                                                                                  |
