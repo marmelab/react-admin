@@ -19,7 +19,7 @@ With `<EditableDatagrid>`, when users click on a row in the datagrid, the row co
 
 You can test it live in [the Enterprise Edition Storybook](https://react-admin.github.io/ra-enterprise/?path=/story/ra-editable-datagrid-editabledatagrid--undoable) and [the e-commerce demo](https://marmelab.com/ra-enterprise-demo/#/tours/ra-editable-datagrid).
 
-`<EditableDatagrid>` allows you to use any [Input component](./ImageInput.md) to edit the record - including Reference Inputs for foreign keys.
+`<EditableDatagrid>` allows you to use any [Input component](./Inputs.md) to edit the record - including Reference Inputs for foreign keys.
 
 ## Usage
 
@@ -256,8 +256,8 @@ If you want to avoid the edition of a column, use a `<Field>` component instead 
 | Prop              | Required | Type         | Default | Description                                                               |
 | ----------------- | -------- | ------------ | ------- | ------------------------------------------------------------------------- |
 | `mutationOptions` | Optional | `Object` | -       | An object that can contain `onSuccess` and `onError` functions to be executed after the row has been saved and after the row has failed to be saved respectively.   |
-| `submitOnEnter`   | Optional | `function` | -       | A function to transform the row before it is saved. |
-| `transform`       | Optional | `boolean` | `true`       |  Whether the form can be submitted by pressing the Enter key.                 |
+| `submitOnEnter`       | Optional | `boolean` | `true`       |  Whether the form can be submitted by pressing the Enter key.                 |
+| `transform`       | Optional | `function` | -       | A function to transform the row before it is saved. |
 
 Any additional props passed to `<RowForm>` are passed down to the underlying react-admin [`<Form>`](./Form.md) component. That means that you can pass e.g. `defaultValues`, or `validate` props.
 
