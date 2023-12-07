@@ -1059,7 +1059,7 @@ export const dataProvider: DataProvider = {
 
         return httpClient(url).then(({ headers, json }) => ({
             data: json,
-            total: parseInt((headers.get('content-range') || "0").split('/').pop() || 0, 10),
+            total: parseInt((headers.get('content-range') || "0").split('/').pop() || '0', 10),
         }));
     },
 
@@ -1091,7 +1091,7 @@ export const dataProvider: DataProvider = {
 
         return httpClient(url).then(({ headers, json }) => ({
             data: json,
-            total: parseInt((headers.get('content-range') || "0").split('/').pop() || 0, 10),
+            total: parseInt((headers.get('content-range') || "0").split('/').pop() || '0', 10),
         }));
     },
 
@@ -1116,7 +1116,7 @@ export const dataProvider: DataProvider = {
             method: 'POST',
             body: JSON.stringify(params.data),
         }).then(({ json }) => ({
-            data: { ...params.data, id: json.id },
+            data: { ...params.data, id: json.id } as any,
         })),
 
     delete: (resource, params) =>
