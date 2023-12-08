@@ -304,6 +304,12 @@ const UserProfile = () => {
 
 We won't re-explain all these options here, but we'll focus on the most useful ones in react-admin. 
 
+- `onSuccess(data, variables, context)`: The `onSuccess` function is called when the query returns. It receives the query data, the [query variables](https://tanstack.com/query/latest/docs/react/guides/query-functions#query-function-variables) and the [query context](https://tanstack.com/query/latest/docs/react/guides/query-functions#queryfunctioncontext).
+
+- `onError(error, variables, context)`: The `onSuccess` function is called when the query fails. It receives the error, the [query variables](https://tanstack.com/query/latest/docs/react/guides/query-functions#query-function-variables) and the [query context](https://tanstack.com/query/latest/docs/react/guides/query-functions#queryfunctioncontext).
+
+- `onSettled(data, error, variables, context)`: The `onSuccess` function is called after the query either succeeded or failed. It receives the query data (can be `undefined` if the query failed), the error (can be `undefined` when the query succeeded), the [query variables](https://tanstack.com/query/latest/docs/react/guides/query-functions#query-function-variables) and the [query context](https://tanstack.com/query/latest/docs/react/guides/query-functions#queryfunctioncontext).
+
 **Tip**: In react-admin components that use the data provider method hooks, you can override the query options using the `queryOptions` prop, and the mutation options using the `mutationOptions` prop. For instance, to log the dataProvider calls, in the `<List>` component, you can do the following:
 
 {% raw %}
