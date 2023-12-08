@@ -52,10 +52,10 @@ const usePermissions = <PermissionsType = any, ErrorType = Error>(
 
     const result = useQuery<PermissionsType, ErrorType>({
         queryKey: ['auth', 'getPermissions', params],
-        queryFn: () => {
-            return authProvider
-                ? authProvider.getPermissions(params)
-                : Promise.resolve([]);
+        queryFn: async () => {
+            if (!authProvider) return Promise.resolve([]);
+            const permissions = await authProvider.getPermissions(params);
+            return permissions ?? null;
         },
         ...queryOptions,
     });
