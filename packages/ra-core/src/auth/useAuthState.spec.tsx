@@ -10,7 +10,7 @@ const UseAuth = (authParams: any) => {
     return (
         <div>
             <span>{state.isPending && 'LOADING'}</span>
-            <span>{state.authenticated && 'AUTHENTICATED'}</span>
+            <span>AUTHENTICATED: {state.authenticated.toString()}</span>
         </div>
     );
 };
@@ -24,8 +24,8 @@ describe('useAuthState', () => {
         );
         await waitFor(() => {
             expect(screen.queryByText('LOADING')).toBeNull();
-            expect(screen.queryByText('AUTHENTICATED')).not.toBeNull();
         });
+        screen.getByText('AUTHENTICATED: true');
     });
 
     it('should return an error after a tick if the auth fails', async () => {
@@ -43,7 +43,7 @@ describe('useAuthState', () => {
         );
         await waitFor(() => {
             expect(screen.queryByText('LOADING')).toBeNull();
-            expect(screen.queryByText('AUTHENTICATED')).toBeNull();
         });
+        screen.getByText('AUTHENTICATED: false');
     });
 });
