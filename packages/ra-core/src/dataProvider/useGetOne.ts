@@ -76,7 +76,7 @@ export const useGetOne = <RecordType extends RaRecord = any>(
     });
 
     useEffect(() => {
-        if (result.data == null) return;
+        if (result.data === undefined) return;
         onSuccessEvent(result.data);
     }, [onSuccessEvent, result.data]);
 

@@ -68,7 +68,7 @@ export const useGetIdentity = <ErrorType extends Error = Error>(
     const onErrorEvent = useEvent(onError ?? noop);
 
     useEffect(() => {
-        if (result.data == null) return;
+        if (result.data === undefined) return;
         onSuccessEvent(result.data);
     }, [onSuccessEvent, result.data]);
 

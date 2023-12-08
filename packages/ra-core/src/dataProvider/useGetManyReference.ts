@@ -12,6 +12,7 @@ import {
     GetManyReferenceResult,
 } from '../types';
 import { useDataProvider } from './useDataProvider';
+import { useEvent } from '../util';
 
 /**
  * Call the dataProvider.getManyReference() method and return the resolved result
@@ -74,7 +75,15 @@ export const useGetManyReference = <RecordType extends RaRecord = any>(
     } = params;
     const dataProvider = useDataProvider();
     const queryClient = useQueryClient();
-    const { onError, onSuccess, ...queryOptions } = options;
+    const {
+        onError = noop,
+        onSuccess = noop,
+        onSettled = noop,
+        ...queryOptions
+    } = options;
+    const onSuccessEvent = useEvent(onSuccess);
+    const onErrorEvent = useEvent(onError);
+    const onSettledEvent = useEvent(onSettled);
 
     const result = useQuery<
         GetManyReferenceResult<RecordType>,
@@ -110,27 +119,27 @@ export const useGetManyReference = <RecordType extends RaRecord = any>(
     });
 
     useEffect(() => {
-        if (result.data != null) {
-            // optimistically populate the getOne cache
-            result.data?.data?.forEach(record => {
-                queryClient.setQueryData(
-                    [resource, 'getOne', { id: String(record.id), meta }],
-                    oldRecord => oldRecord ?? record
-                );
-            });
-        }
+        if (result.data === undefined) return;
+        // optimistically populate the getOne cache
+        result.data?.data?.forEach(record => {
+            queryClient.setQueryData(
+                [resource, 'getOne', { id: String(record.id), meta }],
+                oldRecord => oldRecord ?? record
+            );
+        });
 
-        // execute call-time onSuccess if provided
-        if (onSuccess) {
-            onSuccess(result.data);
-        }
-    }, [queryClient, meta, onSuccess, resource, result.data]);
+        onSuccessEvent(result.data);
+    }, [queryClient, meta, onSuccessEvent, resource, result.data]);
 
     useEffect(() => {
-        if (result.error != null && onError) {
-            onError(result.error);
-        }
-    }, [onError, result.error]);
+        if (result.error == null) return;
+        onErrorEvent(result.error);
+    }, [onErrorEvent, result.error]);
+
+    useEffect(() => {
+        if (result.status === 'pending') return;
+        onSettledEvent(result.data, result.error);
+    }, [onSettledEvent, result.data, result.error, result.status]);
 
     return useMemo(
         () =>
@@ -160,6 +169,10 @@ export type UseGetManyReferenceHookOptions<
 > & {
     onSuccess?: (data: GetManyReferenceResult<RecordType>) => void;
     onError?: (error: Error) => void;
+    onSettled?: (
+        data?: GetManyReferenceResult<RecordType>,
+        error?: Error
+    ) => void;
 };
 
 export type UseGetManyReferenceHookValue<
@@ -171,3 +184,5 @@ export type UseGetManyReferenceHookValue<
         hasPreviousPage?: boolean;
     };
 };
+
+const noop = () => undefined;

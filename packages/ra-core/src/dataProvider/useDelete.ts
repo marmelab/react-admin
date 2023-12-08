@@ -299,7 +299,7 @@ export const useDelete = <
             unknown
         > & { mutationMode?: MutationMode } = {}
     ) => {
-        const { mutationMode } = callTimeOptions;
+        const { mutationMode, ...otherCallTimeOptions } = callTimeOptions;
         hasCallTimeOnError.current = !!callTimeOptions.onError;
         hasCallTimeOnSuccess.current = !!callTimeOptions.onSuccess;
         hasCallTimeOnSettled.current = !!callTimeOptions.onSettled;
@@ -316,7 +316,7 @@ export const useDelete = <
         if (mode.current === 'pessimistic') {
             return mutation.mutate(
                 { resource: callTimeResource, ...callTimeParams },
-                callTimeOptions
+                otherCallTimeOptions
             );
         }
 

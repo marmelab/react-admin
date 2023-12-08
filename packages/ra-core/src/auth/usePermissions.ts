@@ -72,7 +72,7 @@ const usePermissions = <PermissionsType = any, ErrorType = Error>(
     );
 
     useEffect(() => {
-        if (result.data == null) return;
+        if (result.data === undefined) return;
         onSuccessEvent(result.data);
     }, [onSuccessEvent, result.data]);
 

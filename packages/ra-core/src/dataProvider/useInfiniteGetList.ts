@@ -146,7 +146,7 @@ export const useInfiniteGetList = <RecordType extends RaRecord = any>(
     });
 
     useEffect(() => {
-        if (result.data == null) return;
+        if (result.data === undefined) return;
         // optimistically populate the getOne cache
         result.data.pages.forEach(page => {
             page.data.forEach(record => {

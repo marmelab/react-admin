@@ -74,9 +74,15 @@ export const useGetManyAggregate = <RecordType extends RaRecord = any>(
     const dataProvider = useDataProvider();
     const queryClient = useQueryClient();
     const queryCache = queryClient.getQueryCache();
-    const { onError = noop, onSuccess = noop, ...queryOptions } = options;
+    const {
+        onError = noop,
+        onSuccess = noop,
+        onSettled = noop,
+        ...queryOptions
+    } = options;
     const onSuccessEvent = useEvent(onSuccess);
     const onErrorEvent = useEvent(onError);
+    const onSettledEvent = useEvent(onSettled);
 
     const { ids, meta } = params;
     const placeholderData = useMemo(() => {
@@ -127,27 +133,28 @@ export const useGetManyAggregate = <RecordType extends RaRecord = any>(
     });
 
     useEffect(() => {
-        if (result.data != null) {
-            // optimistically populate the getOne cache
-            (result.data ?? []).forEach(record => {
-                queryClient.setQueryData(
-                    [resource, 'getOne', { id: String(record.id), meta }],
-                    oldRecord => oldRecord ?? record
-                );
-            });
+        if (result.data === undefined) return;
 
-            // execute call-time onSuccess if provided
-            if (onSuccessEvent) {
-                onSuccessEvent(result.data);
-            }
-        }
+        // optimistically populate the getOne cache
+        (result.data ?? []).forEach(record => {
+            queryClient.setQueryData(
+                [resource, 'getOne', { id: String(record.id), meta }],
+                oldRecord => oldRecord ?? record
+            );
+        });
+
+        onSuccessEvent(result.data);
     }, [queryClient, meta, onSuccessEvent, resource, result.data]);
 
     useEffect(() => {
-        if (result.error != null && onErrorEvent) {
-            onErrorEvent(result.error);
-        }
+        if (result.error == null) return;
+        onErrorEvent(result.error);
     }, [onErrorEvent, result.error]);
+
+    useEffect(() => {
+        if (result.status === 'pending') return;
+        onSettledEvent(result.data, result.error);
+    }, [onSettledEvent, result.data, result.error, result.status]);
 
     return result;
 };
@@ -330,4 +337,5 @@ export type UseGetManyAggregateOptions<RecordType extends RaRecord> = Omit<
 > & {
     onSuccess?: (data: RecordType[]) => void;
     onError?: (error: Error) => void;
+    onSettled?: (data?: RecordType[], error?: Error) => void;
 };
