@@ -11,7 +11,7 @@ This hook calls `dataProvider.getList()` when the component mounts. It's ideal f
 ## Syntax
 
 ```jsx
-const { data, total, isLoading, error, refetch } = useGetList(
+const { data, total, isPending, error, refetch } = useGetList(
     resource,
     {
         pagination: { page, perPage },
@@ -65,14 +65,14 @@ The react-query [query key](https://react-query-v3.tanstack.com/guides/query-key
 import { useGetList } from 'react-admin';
 
 const LatestNews = () => {
-    const { data, total, isLoading, error } = useGetList(
+    const { data, total, isPending, error } = useGetList(
         'posts',
         { 
             pagination: { page: 1, perPage: 10 },
             sort: { field: 'published_at', order: 'DESC' }
         }
     );
-    if (isLoading) { return <Loading />; }
+    if (isPending) { return <Loading />; }
     if (error) { return <p>ERROR</p>; }
     return (
         <>
@@ -98,14 +98,14 @@ import { useGetList } from 'react-admin';
 
 const LatestNews = () => {
     const [page, setPage] = useState(1);
-    const { data, pageInfo, isLoading, error } = useGetList(
+    const { data, pageInfo, isPending, error } = useGetList(
         'posts',
         { 
             pagination: { page, perPage: 10 },
             sort: { field: 'published_at', order: 'DESC' }
         }
     );
-    if (isLoading) { return <Loading />; }
+    if (isPending) { return <Loading />; }
     if (error) { return <p>ERROR</p>; }
     const { hasNextPage, hasPreviousPage } = pageInfo;
 
@@ -135,8 +135,8 @@ If you want to refresh the list, you can use the `refetch` function returned by 
 import { useGetList } from 'react-admin';
 
 const LatestNews = () => {
-    const { data, total, isLoading, error, refetch } = useGetList(/* ... */);
-    if (isLoading) { return <Loading />; }
+    const { data, total, isPending, error, refetch } = useGetList(/* ... */);
+    if (isPending) { return <Loading />; }
     if (error) { return <p>ERROR</p>; }
     return (
         <>
@@ -162,12 +162,12 @@ If you want to subscribe to live updates on the list of records (topic: `resourc
 +import { useGetListLive } from '@react-admin/ra-realtime';
 
 const LatestNews = () => {
--   const { data, total, isLoading, error } = useGetList('posts', {
-+   const { data, total, isLoading, error } = useGetListLive('posts', {
+-   const { data, total, isPending, error } = useGetList('posts', {
++   const { data, total, isPending, error } = useGetListLive('posts', {
         pagination: { page: 1, perPage: 10 },
         sort: { field: 'published_at', order: 'DESC' },
     });
-    if (isLoading) {
+    if (isPending) {
         return <Loading />;
     }
     if (error) {
@@ -199,14 +199,14 @@ type Post = {
 };
 
 const LatestNews = () => {
-    const { data: posts, total, isLoading, error } = useGetList<Post>(
+    const { data: posts, total, isPending, error } = useGetList<Post>(
         'posts',
         { 
             pagination: { page: 1, perPage: 10 },
             sort: { field: 'published_at', order: 'DESC' }
         }
     );
-    if (isLoading) { return <Loading />; }
+    if (isPending) { return <Loading />; }
     if (error) { return <p>ERROR</p>; }
     return (
         <>

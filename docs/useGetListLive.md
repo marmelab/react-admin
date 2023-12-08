@@ -13,11 +13,11 @@ This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" s
 import { useGetListLive } from '@react-admin/ra-realtime';
 
 const LatestNews = () => {
-    const { data, total, isLoading, error } = useGetListLive('posts', {
+    const { data, total, isPending, error } = useGetListLive('posts', {
         pagination: { page: 1, perPage: 10 },
         sort: { field: 'published_at', order: 'DESC' },
     });
-    if (isLoading) {
+    if (isPending) {
         return <Loading />;
     }
     if (error) {
@@ -51,14 +51,14 @@ type Post = {
 };
 
 const LatestNews = () => {
-    const { data: posts, total, isLoading, error } = useGetListLive<Post>(
+    const { data: posts, total, isPending, error } = useGetListLive<Post>(
         'posts',
         { 
             pagination: { page: 1, perPage: 10 },
             sort: { field: 'published_at', order: 'DESC' }
         }
     );
-    if (isLoading) { return <Loading />; }
+    if (isPending) { return <Loading />; }
     if (error) { return <p>ERROR</p>; }
     return (
         <>

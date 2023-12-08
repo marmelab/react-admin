@@ -25,7 +25,7 @@ const {
     data: { pages, pageParams },
     total,
     pageInfo,
-    isLoading, 
+    isPending, 
     error,
     fetchNextPage,
     fetchPreviousPage,
@@ -55,7 +55,7 @@ const LatestNews = () => {
     const { 
         data,
         total,
-        isLoading,
+        isPending,
         error,
         hasNextPage,
         isFetchingNextPage,
@@ -67,7 +67,7 @@ const LatestNews = () => {
             sort: { field: 'published_at', order: 'DESC' }
         }
     );
-    if (isLoading) { return <p>Loading</p>; }
+    if (isPending) { return <p>Loading</p>; }
     if (error) { return <p>ERROR</p>; }
 
     return (

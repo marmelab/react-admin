@@ -10,7 +10,7 @@ This hook calls `dataProvider.getOne()` when the component mounts. It queries th
 ## Syntax
 
 ```jsx
-const { data, isLoading, error, refetch } = useGetOne(
+const { data, isPending, error, refetch } = useGetOne(
     resource,
     { id, meta },
     options
@@ -62,8 +62,8 @@ import { useGetOne, useRecordContext } from 'react-admin';
 
 const UserProfile = () => {
     const record = useRecordContext();
-    const { data: user, isLoading, error } = useGetOne('users', { id: record.userId });
-    if (isLoading) { return <Loading />; }
+    const { data: user, isPending, error } = useGetOne('users', { id: record.userId });
+    if (isPending) { return <Loading />; }
     if (error) { return <p>ERROR</p>; }
     return <div>User {user.username}</div>;
 };
@@ -79,9 +79,9 @@ If you use `useGetOne` several times on a page for the same resource, replace th
 
 const UserProfile = () => {
     const record = useRecordContext();
--   const { data: user, isLoading, error } = useGetOne('users', { id: record.userId });
-+   const { data: users, isLoading, error } = useGetManyAggregate('users', { ids: [record.userId] });
-    if (isLoading) { return <Loading />; }
+-   const { data: user, isPending, error } = useGetOne('users', { id: record.userId });
++   const { data: users, isPending, error } = useGetManyAggregate('users', { ids: [record.userId] });
+    if (isPending) { return <Loading />; }
     if (error) { return <p>ERROR</p>; }
 -   return <div>User {user.username}</div>;
 +   return <div>User {users[0].username}</div>;
@@ -98,9 +98,9 @@ As `useGetManyAggregate` is often used to fetch references, react-admin exposes 
 
 const UserProfile = () => {
     const record = useRecordContext();
--   const { data: user, isLoading, error } = useGetOne('users', { id: record.userId });
-+   const { referenceRecord: user, isLoading, error } = useReference({ reference: 'users', id: record.userId });
-    if (isLoading) { return <Loading />; }
+-   const { data: user, isPending, error } = useGetOne('users', { id: record.userId });
++   const { referenceRecord: user, isPending, error } = useReference({ reference: 'users', id: record.userId });
+    if (isPending) { return <Loading />; }
     if (error) { return <p>ERROR</p>; }
     return <div>User {data.username}</div>;
 };
@@ -114,8 +114,8 @@ If you want to refresh the record, use the `refetch` function returned by the ho
 import { useGetOne } from 'react-admin';
 
 const UserProfile = ({ userId }) => {
-    const { data, isLoading, error, refetch } = useGetOne('users', { id: userId });
-    if (isLoading) { return <Loading />; }
+    const { data, isPending, error, refetch } = useGetOne('users', { id: userId });
+    if (isPending) { return <Loading />; }
     if (error) { return <p>ERROR</p>; }
     return (
         <>
@@ -137,9 +137,9 @@ If you want to subscribe to live updates on the record (topic: `resource/[resour
 
 const UserProfile = () => {
     const record = useRecordContext();
--   const { data, isLoading, error } = useGetOne('users', { id: record.userId });
-+   const { data, isLoading, error } = useGetOneLive('users', { id: record.userId });
-    if (isLoading) {
+-   const { data, isPending, error } = useGetOne('users', { id: record.userId });
++   const { data, isPending, error } = useGetOneLive('users', { id: record.userId });
+    if (isPending) {
         return <Loading />;
     }
     if (error) {
@@ -169,8 +169,8 @@ type User = {
 
 const UserProfile = () => {
     const ticket = useRecordContext<Ticket>();
-    const { data: user, isLoading, error } = useGetOne<User>('users', { id: ticket.userId });
-    if (isLoading) { return <Loading />; }
+    const { data: user, isPending, error } = useGetOne<User>('users', { id: ticket.userId });
+    if (isPending) { return <Loading />; }
     if (error) { return <p>ERROR</p>; }
     // TypeScript knows that user is of type User
     return <div>User {user.username}</div>;
