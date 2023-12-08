@@ -361,7 +361,7 @@ Then you can use react-query's `useMutation` hook to call the `dataProvider.banU
 
 ```jsx
 import { useDataProvider } from 'react-admin';
-import { useMutation } from 'react-query';
+import { useMutation } from '@tanstack/react-query';
 
 const BanUserButton = ({ userId }) => {
     const dataProvider = useDataProvider();
@@ -504,7 +504,7 @@ If you want to override the react-query default query and mutation default optio
 
 ```jsx
 import { Admin } from 'react-admin';
-import { QueryClient } from 'react-query';
+import { QueryClient } from '@tanstack/react-query';
 
 const queryClient = new QueryClient({
     defaultOptions: {
@@ -530,7 +530,7 @@ To know which options you can pass to the `QueryClient` constructor, check the [
 The settings that react-admin developers often overwrite are:
 
 ```jsx
-import { QueryClient } from 'react-query';
+import { QueryClient } from '@tanstack/react-query';
 
 const queryClient = new QueryClient({
     defaultOptions: {

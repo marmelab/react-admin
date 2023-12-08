@@ -688,7 +688,7 @@ If you want to override the react-query default query and mutation default optio
 
 ```tsx
 import { Admin } from 'react-admin';
-import { QueryClient } from 'react-query';
+import { QueryClient } from '@tanstack/react-query';
 
 const queryClient = new QueryClient({
     defaultOptions: {
@@ -714,7 +714,7 @@ To know which options you can pass to the `QueryClient` constructor, check the [
 The common settings that react-admin developers often overwrite are:
 
 ```tsx
-import { QueryClient } from 'react-query';
+import { QueryClient } from '@tanstack/react-query';
 
 const queryClient = new QueryClient({
     defaultOptions: {

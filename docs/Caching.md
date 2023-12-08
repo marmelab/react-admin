@@ -89,7 +89,7 @@ Finally, if your API uses GraphQL, it probably doesn't offer HTTP caching.
 React-admin uses react-query for data fetching. React-query comes with its own caching system, allowing you to skip API calls completely. React-admin calls this the *application cache*. It's a good way to overcome the limitations if the HTTP cache. **This cache is opt-in** - you have to enable it by setting a custom `queryClient` in your `<Admin>` with a specific `staleTime` option. 
 
 ```jsx
-import { QueryClient } from 'react-query';
+import { QueryClient } from '@tanstack/react-query';
 import { Admin, Resource } from 'react-admin';
 
 const App = () => {

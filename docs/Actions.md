@@ -126,7 +126,7 @@ Internally, react-admin uses [TanStack Query](https://tanstack.com/query/v5/) to
 3. It supports a vast array of options
 4. It displays stale data while fetching up-to-date data, leading to a snappier UI
 
-React-query offers 2 main hooks to interact with the dataProvider:
+TanStack Query offers 2 main hooks to interact with the dataProvider:
 
 * [`useQuery`](https://tanstack.com/query/v5/docs/react/reference/useQuery): fetches the dataProvider on mount. This is for *read* queries.
 * [`useMutation`](https://tanstack.com/query/v5/docs/react/reference/useMutation): fetches the dataProvider when you call a callback. This is for *write* queries, and *read* queries that execute on user interaction.
@@ -137,7 +137,7 @@ For instance, the initial code snippet of this chapter can be rewritten with `us
 
 ```jsx
 import * as React from 'react';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import { useDataProvider, Loading, Error } from 'react-admin';
 
 const UserProfile = ({ userId }) => {
@@ -164,7 +164,7 @@ To illustrate the usage of `useMutation`, here is an implementation of an "Appro
 
 ```jsx
 import * as React from 'react';
-import { useMutation } from 'react-query';
+import { useMutation } from '@tanstack/react-query';
 import { useDataProvider, useRecordContext, Button } from 'react-admin';
 
 const ApproveButton = () => {
@@ -177,7 +177,7 @@ const ApproveButton = () => {
 };
 ```
 
-If you want to go beyond data provider method hooks, we recommend that you read [the react-query documentation](https://react-query-v5.tanstack.com/overview).
+If you want to go beyond data provider method hooks, we recommend that you read [the TanStack Query documentation](https://react-query-v5.tanstack.com/overview).
 
 ## `isPending` vs `isLoading` vs `isFetching`
 
