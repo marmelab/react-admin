@@ -24,7 +24,7 @@ const theme = createTheme({});
 
 describe('<ReferenceArrayField />', () => {
     it('should render a loading indicator when related records are not yet fetched and a second has passed', async () => {
-        const { queryAllByRole } = render(
+        render(
             <ThemeProvider theme={theme}>
                 <ListContextProvider
                     value={{
