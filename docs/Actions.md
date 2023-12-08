@@ -5,7 +5,7 @@ title: "Querying the API"
 
 # Querying the API
 
-React-admin provides special hooks to emit read and write queries to the [`dataProvider`](./DataProviders.md), which in turn sends requests to your API. Under the hood, it uses [react-query](https://tanstack.com/query/v5/) to call the `dataProvider` and cache the results.
+React-admin provides special hooks to emit read and write queries to the [`dataProvider`](./DataProviders.md), which in turn sends requests to your API. Under the hood, it uses [TanStack Query](https://tanstack.com/query/v5/) to call the `dataProvider` and cache the results.
 
 ## Getting The `dataProvider` Instance
 
@@ -119,7 +119,7 @@ It's up to the Data Provider to interpret this parameter.
 
 ## `useQuery` and `useMutation`
 
-Internally, react-admin uses [react-query](https://tanstack.com/query/v5/) to call the dataProvider. When fetching data from the dataProvider in your components, if you can't use any of the dataProvider method hooks, you should use that library, too. It brings several benefits:
+Internally, react-admin uses [TanStack Query](https://tanstack.com/query/v5/) to call the dataProvider. When fetching data from the dataProvider in your components, if you can't use any of the dataProvider method hooks, you should use that library, too. It brings several benefits:
 
 1. It triggers the loader in the AppBar when the query is running.
 2. It reduces the boilerplate code since you don't need to use `useState`.
@@ -177,7 +177,7 @@ const ApproveButton = () => {
 };
 ```
 
-If you want to go beyond data provider method hooks, we recommend that you read [the react-query documentation](https://react-query-v3.tanstack.com/overview).
+If you want to go beyond data provider method hooks, we recommend that you read [the react-query documentation](https://react-query-v5.tanstack.com/overview).
 
 ## `isPending` vs `isLoading` vs `isFetching`
 
@@ -185,7 +185,7 @@ Data fetching hooks return three loading state variables: `isPending`, `isFetchi
 
 The short answer is: use `isPending`. Read on to understand why.
 
-The source of these three variables is [react-query](https://tanstack.com/query/v5/docs/react/reference/useQuery). Here is how they defined these variables:
+The source of these three variables is [TanStack Query](https://tanstack.com/query/v5/docs/react/reference/useQuery). Here is how they defined these variables:
 
 - `isPending`:  The query has no data
 - `isFetching`: In any state, if the query is fetching at any time (including background refetching) isFetching will be true.
