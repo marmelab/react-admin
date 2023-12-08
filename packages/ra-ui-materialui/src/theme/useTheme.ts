@@ -34,5 +34,7 @@ export const useTheme = (
         'theme',
         type ?? (prefersDarkMode && darkTheme ? 'dark' : 'light')
     );
-    return [theme, setter];
+
+    // Ensure that even though the store has its value set to 'dark', we still use the light theme when no dark theme is available
+    return [darkTheme != null ? theme : 'light', setter];
 };

@@ -46,6 +46,16 @@ describe('useTheme', () => {
         expect(screen.queryByText('light')).not.toBeNull();
     });
 
+    it('should return the light theme when no dark theme is provided even though the stored theme is dark', () => {
+        const store = memoryStore({ theme: 'dark' });
+        render(
+            <CoreAdminContext authProvider={authProvider} store={store}>
+                <Foo />
+            </CoreAdminContext>
+        );
+        expect(screen.queryByText('light')).not.toBeNull();
+    });
+
     it('should return the user preferred theme by default', async () => {
         const ssrMatchMedia = query => ({
             matches: query === '(prefers-color-scheme: dark)' ? true : false,
@@ -76,23 +86,42 @@ describe('useTheme', () => {
 
     it('should return current theme when set', () => {
         render(
-            <CoreAdminContext
+            <AdminContext
                 authProvider={authProvider}
                 store={memoryStore({ theme: 'dark' })}
+                darkTheme={defaultDarkTheme}
             >
                 <Foo />
-            </CoreAdminContext>
+            </AdminContext>
         );
         expect(screen.getByLabelText('has-theme')).not.toBeNull();
         expect(screen.queryByText('dark')).not.toBeNull();
     });
 
     it('should return theme from settings when available', () => {
-        const { result: storeResult } = renderHook(() => useStore('theme'));
+        const { result: storeResult } = renderHook(() => useStore('theme'), {
+            wrapper: ({ children }) => (
+                <AdminContext
+                    authProvider={authProvider}
+                    darkTheme={defaultDarkTheme}
+                >
+                    {children}
+                </AdminContext>
+            ),
+        });
         const [_, setTheme] = storeResult.current;
         setTheme('dark');
 
-        const { result: themeResult } = renderHook(() => useTheme());
+        const { result: themeResult } = renderHook(() => useTheme(), {
+            wrapper: ({ children }) => (
+                <AdminContext
+                    authProvider={authProvider}
+                    darkTheme={defaultDarkTheme}
+                >
+                    {children}
+                </AdminContext>
+            ),
+        });
         const [theme, __] = themeResult.current;
 
         expect(theme).toEqual('dark');
