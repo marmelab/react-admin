@@ -85,6 +85,14 @@
                 font-family: 'Helvetica', sans-serif;
                 color: #c0ccda;
             }
+            #closeBanner {
+                cursor: pointer;
+            }
+            @media screen and (max-width: 576px) {
+                #closeBanner {
+                    display: none;
+                }
+            }
         </style>
         <link
             rel="stylesheet"
@@ -94,6 +102,34 @@
 
     <body>
         <header>
+            <a href="https://react-admin.lemonsqueezy.com/" id="banner" style="
+                            background-color: #db2777;
+                            padding: 3px;
+                            text-align: center;
+                            color: #fff;
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            gap: 0.5rem;
+                            padding: 0.75rem;
+                            display: none;">
+                <span aria-hidden="true" id="randomEmoji"></span>
+                <span style="text-align: center;">
+                    <span style="font-weight: 600;">
+                        - 30% on all our yearly plans
+                    </span>
+                    until December 15th with
+                    <span style="font-weight: 600;">XMAS</span> code
+                </span>
+                <span style="position: relative; bottom: -3px;">
+                    <svg aria-hidden="true" fill="#db2777" width="30px" height="30px" viewBox="0 0 24 24">
+                        <path d="M9 6L15 12L9 18" stroke="#fff" />
+                    </svg>
+                </span>
+                <span id="closeBanner" aria-label="Close" style="position: absolute; right: 10px;">
+                    <span aria-hidden="true">X</span>
+                </span>
+            </a>
             {% include nav.html %}
             <ul id="slide-out" class="sidenav sidenav-fixed">
                 <li class="logo">
@@ -347,5 +383,23 @@
             defer
             src="https://unpkg.com/prettier@2.8.8/parser-babel.js"
         ></script>
+        <script>
+            function hideBanner() {
+                document.getElementById('banner').style.display = 'none';
+            }
+
+            document.getElementById('closeBanner').addEventListener('click', (e) => {
+                e.preventDefault()
+                hideBanner()
+            });
+
+            const emojis = ['🎄', '🎅', '🎁', '🎉', '🦌', '🤶', '🌟', '🔔', '🧦'];
+            if (
+                Date.now() < new Date('2023-12-16').getTime()
+            ) {
+                document.getElementById('randomEmoji').innerHTML = emojis[Math.floor(Math.random() * emojis.length)];
+                document.getElementById('banner').style.display = 'flex';
+            }
+        </script>
     </body>
 </html>
