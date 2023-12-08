@@ -63,11 +63,11 @@ const usePermissions = <PermissionsType = any, ErrorType = Error>(
     const onSuccessEvent = useEvent(onSuccess ?? noop);
     const onErrorEvent = useEvent(
         onError ??
-            (() => {
+            ((error: ErrorType) => {
                 if (process.env.NODE_ENV === 'development') {
-                    console.error(result.error);
+                    console.error(error);
                 }
-                logoutIfAccessDenied(result.error);
+                logoutIfAccessDenied(error);
             })
     );
 

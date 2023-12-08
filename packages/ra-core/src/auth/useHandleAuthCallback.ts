@@ -35,7 +35,7 @@ export const useHandleAuthCallback = (
 
     const onSuccessEvent = useEvent(
         onSuccess ??
-            (() => {
+            ((data: any) => {
                 // AuthProviders relying on a third party services redirect back to the app can't
                 // use the location state to store the path on which the user was before the login.
                 // So we support a fallback on the localStorage.
@@ -43,7 +43,7 @@ export const useHandleAuthCallback = (
                     PreviousLocationStorageKey
                 );
                 const redirectTo =
-                    (queryResult.data as AuthRedirectResult)?.redirectTo ??
+                    (data as AuthRedirectResult)?.redirectTo ??
                     previousLocation;
                 if (redirectTo === false) {
                     return;
