@@ -62,7 +62,6 @@ const useAuthState = <ErrorType = Error>(
 
     const result = useQuery<boolean, any>({
         queryKey: ['auth', 'checkAuth', params],
-        placeholderData: true, // Optimistic
         queryFn: () => {
             // The authProvider is optional in react-admin
             if (!authProvider) {
@@ -127,9 +126,10 @@ const useAuthState = <ErrorType = Error>(
             ...result,
             // If the data is undefined and the query isn't loading anymore, it means the query failed.
             // In that case, we set authenticated to false unless there's no authProvider.
-            authenticated: result.data,
+            authenticated:
+                result.data ?? result.isLoading ? true : authProvider == null, // Optimistic,
         };
-    }, [result]);
+    }, [authProvider, result]);
 };
 
 type UseAuthStateOptions<ErrorType = Error> = Omit<
