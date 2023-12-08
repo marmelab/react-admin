@@ -4,7 +4,9 @@ import expect from 'expect';
 import { render, screen } from '@testing-library/react';
 import { renderHook } from '@testing-library/react-hooks';
 import { useTheme } from './useTheme';
+import { AdminContext } from '../AdminContext';
 import { ThemeTestWrapper } from '../layout/ThemeTestWrapper';
+import { defaultDarkTheme } from './defaultTheme';
 
 const authProvider = {
     login: jest.fn().mockResolvedValueOnce(''),
@@ -33,7 +35,7 @@ describe('useTheme', () => {
         expect(screen.queryByText('light')).not.toBeNull();
     });
 
-    it('should return the user preferred theme by default', () => {
+    it('should return the light theme when no dark theme is provided even though user prefers dark mode', () => {
         render(
             <ThemeTestWrapper mode="dark">
                 <CoreAdminContext authProvider={authProvider}>
@@ -41,7 +43,35 @@ describe('useTheme', () => {
                 </CoreAdminContext>
             </ThemeTestWrapper>
         );
-        expect(screen.queryByText('dark')).not.toBeNull();
+        expect(screen.queryByText('light')).not.toBeNull();
+    });
+
+    it('should return the user preferred theme by default', async () => {
+        const ssrMatchMedia = query => ({
+            matches: query === '(prefers-color-scheme: dark)' ? true : false,
+        });
+
+        render(
+            <ThemeTestWrapper mode="dark">
+                <AdminContext
+                    authProvider={authProvider}
+                    darkTheme={{
+                        ...defaultDarkTheme,
+                        components: {
+                            MuiUseMediaQuery: {
+                                defaultProps: {
+                                    ssrMatchMedia,
+                                    matchMedia: ssrMatchMedia,
+                                },
+                            },
+                        },
+                    }}
+                >
+                    <Foo />
+                </AdminContext>
+            </ThemeTestWrapper>
+        );
+        await screen.findByText('dark');
     });
 
     it('should return current theme when set', () => {
