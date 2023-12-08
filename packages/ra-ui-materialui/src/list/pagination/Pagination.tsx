@@ -23,8 +23,6 @@ export const Pagination: FC<PaginationProps> = memo(props => {
         rowsPerPageOptions = DefaultRowsPerPageOptions,
         actions,
         limit = null,
-        hasNextPage: _hasNextPage,
-        hasPreviousPage: _hasPreviousPage,
         ...rest
     } = props;
     const {
