@@ -70,7 +70,7 @@ import { useDataProvider } from 'react-admin';
 const PostList = () => {
     const [posts, setPosts] = useState([]);
     const [error, setError] = useState();
-    const [isLoading, setIsLoading] = useState(true);
+    const [isPending, setIsPending] = useState(true);
     const dataProvider = useDataProvider();
     useEffect(() => {
         dataProvider.getList('posts', {
@@ -80,9 +80,9 @@ const PostList = () => {
         })
             .then(({ data }) => setPosts(data))
             .catch(error => setError(error))
-            .finally(() => setIsLoading(false));
+            .finally(() => setIsPendin(false));
     }, []);
-    if (isLoading) { return <p>Loading</p>; }
+    if (isPending) { return <p>Loading</p>; }
     if (error) { return <p>ERROR</p>; }
     return (
         <ul>
@@ -868,7 +868,7 @@ const Dashboard = () => {
     { field: "date", order: "desc" }
   );
 
-  return <Timeline isLoading={isPending} records={data} />;
+  return <Timeline isPending={isPending} records={data} />;
 };
 ```
 

@@ -290,7 +290,7 @@ The `<ReferenceArrayField>` component accepts the usual `className` prop. You ca
 
 | Rule name                           | Description                                                                              |
 |-------------------------------------|------------------------------------------------------------------------------------------|
-| `& .RaReferenceArrayField-progress` | Applied to the Material UI's `LinearProgress` component while `isLoading` prop is `true` |
+| `& .RaReferenceArrayField-progress` | Applied to the Material UI's `LinearProgress` component while `isPending` prop is `true` |
 
 To override the style of all instances of `<ReferenceArrayField>` using the [application-wide style overrides](./AppTheme.md#theming-individual-components), use the `RaReferenceArrayField` key.
 

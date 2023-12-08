@@ -68,7 +68,8 @@ const {
     selectedChoices, // an array of the selected choices records, e.g. [{ id: 123, title: 'hello world' }, { ... }],. 
     total, // the total number of results for the current filters, excluding pagination. Useful to build the pagination controls, e.g. 23      
     isFetching, // boolean that is true while the data is being fetched, and false once the data is fetched
-    isLoading, // boolean that is true until the data is available for the first time
+    isLoading, // boolean that is true until the data has been fetched for the first time
+    isPending, // boolean that is true until the data is available for the first time
     error, // Will contain any error that occurred while fetching data
     // pagination
     page, // the current page. Starts at 1

@@ -66,7 +66,7 @@ The form value for the source must be the selected value, e.g.
 | `emptyText`                | Optional | `string`              | `''`                                                                | The text to use for the empty element                                                                                                                                                                               |
 | `emptyValue`               | Optional | `any`                 | `''`                                                                | The value to use for the empty element                                                                                                                                                                              |
 | `filterToQuery`            | Optional | `string` => `Object`  | `q => ({ q })`                                                      | How to transform the searchText into a parameter for the data provider                                                                                                                                              |
-| `isLoading`                | Optional | `boolean`             | `false`                                                             | If `true`, the component will display a loading indicator.                                                                                                                                                          |
+| `isPending`                | Optional | `boolean`             | `false`                                                             | If `true`, the component will display a loading indicator.                                                                                                                                                          |
 | `inputText`                | Optional | `Function`            | `-`                                                                 | Required if `optionText` is a custom Component, this function must return the text displayed for the current selection.                                                                                             |
 | `matchSuggestion`          | Optional | `Function`            | `-`                                                                 | Required if `optionText` is a React element. Function returning a boolean indicating whether a choice matches the filter. `(filter, choice) => boolean`                                                             |
 | `onChange`                 | Optional | `Function`            | `-`                                                                 | A function called with the new value, along with the selected record, when the input value changes |
@@ -277,15 +277,15 @@ const filterToQuery = searchText => ({ name_ilike: `%${searchText}%` });
 </ReferenceInput>
 ```
 
-## `isLoading`
+## `isPending`
 
-When [fetching choices from a remote API](#fetching-choices), the `<AutocompleteInput>` can't be used until the choices are fetched. To let the user know, you can pass the `isLoading` prop to `<AutocompleteInput>`. This displays a loading message in the autocomplete box while the choices are being fetched.
+When [fetching choices from a remote API](#fetching-choices), the `<AutocompleteInput>` can't be used until the choices are fetched. To let the user know, you can pass the `isPending` prop to `<AutocompleteInput>`. This displays a loading message in the autocomplete box while the choices are being fetched.
 
 ```jsx
 import { useGetList, AutocompleteInput } from 'react-admin';
 
 const UserCountry = () => {
-    const { data, isLoading } = useGetList('countries');
+    const { data, isPending } = useGetList('countries');
     // data is an array of { id: 123, code: 'FR', name: 'France' }
     return (
         <AutocompleteInput 
@@ -293,7 +293,7 @@ const UserCountry = () => {
             choices={data}
             optionText="name"
             optionValue="code"
-            isLoading={isLoading}
+            isPending={isPending}
         />
     );
 }
@@ -601,7 +601,7 @@ You can use [`useGetList`](./useGetList.md) to fetch choices. For example, to fe
 import { useGetList, AutocompleteInput } from 'react-admin';
 
 const CountryInput = () => {
-    const { data, isLoading } = useGetList('countries');
+    const { data, isPending } = useGetList('countries');
     // data is an array of { id: 123, code: 'FR', name: 'France' }
     return (
         <AutocompleteInput 
@@ -609,13 +609,13 @@ const CountryInput = () => {
             choices={data}
             optionText="name"
             optionValue="code"
-            isLoading={isLoading}
+            isPending={isPending}
         />
     );
 }
 ```
 
-The `isLoading` prop is used to display a loading indicator while the data is being fetched.
+The `isPending` prop is used to display a loading indicator while the data is being fetched.
 
 However, most of the time, if you need to populate a `<AutocompleteInput>` with choices fetched from another resource, it's because you are trying to set a foreign key. In that case, you should use [`<ReferenceInput>`](./ReferenceInput.md) to fetch the choices instead (see next section). 
 
@@ -633,25 +633,26 @@ import { useWatch } from 'react-hook-form';
 const CompanyInput = () => {
     const [filter, setFilter] = useState({ q: '' });
     // fetch possible companies
-    const { data: choices, isLoading: isLoadingChoices } = useGetList('companies', { filter });
+    const { data: choices, isPending: isPendingChoices } = useGetList('companies', { filter });
     // companies are like { id: 123, name: 'Acme' }
     // get the current value of the foreign key
     const companyId = useWatch({ name: 'company_id'})
     // fetch the current company
-    const { data: currentCompany, isLoading: isLoadingCurrentCompany } = useGetOne('companies', { id: companyId });
+    const { data: currentCompany, isPending: isPendingCurrentCompany } = useGetOne('companies', { id: companyId });
     // if the current company is not in the list of possible companies, add it
     const choicesWithCurrentCompany = choices
         ? choices.find(choice => choice.id === companyId)
             ? choices
             : [...choices, currentCompany]
         : [];
+    const isPending = isPendingChoices && isPendingCurrentCompany;
     return (
         <AutocompleteInput 
             label="Company"
             source="company_id"
             choices={choicesWithCurrentCompany}
             optionText="name"
-            disabled={isLoading}
+            disabled={isPending}
             onInputChange={e => setFilter({ q: e.target.value })}
         />
     );
@@ -677,10 +678,10 @@ const CompanyInput = () => (
 `<ReferenceInput>` is a headless component that:
  
  - fetches a list of records with `dataProvider.getList()` and `dataProvider.getOne()`, using the `reference` prop for the resource,
- - puts the result of the fetch in the `ChoiceContext` as the `choices` prop, as well as the `isLoading` state,
+ - puts the result of the fetch in the `ChoiceContext` as the `choices` prop, as well as the `isPending` state,
  - and renders its child component
 
-When rendered as a child of `<ReferenceInput>`, `<AutocompleteInput>` reads that `ChoiceContext` to populate its own `choices` and `isLoading` props. It also sends the current input prop to the `useGetList` hook, so that the list of choices is filtered as the user types.
+When rendered as a child of `<ReferenceInput>`, `<AutocompleteInput>` reads that `ChoiceContext` to populate its own `choices` and `isPending` props. It also sends the current input prop to the `useGetList` hook, so that the list of choices is filtered as the user types.
 
 In fact, you can simplify the code even further:
 

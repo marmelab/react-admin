@@ -14,7 +14,7 @@ React-admin calls `authProvider.getIdentity()` to retrieve and display the curre
 `useGetIdentity()` calls `authProvider.getIdentity()` on mount. It returns an object containing the loading state, the error state, and the identity.
 
 ```jsx
-const { data, isLoading, error } = useGetIdentity();
+const { data, isPending, error } = useGetIdentity();
 ```
 
 Once loaded, the `data` object contains the following properties:
@@ -33,9 +33,9 @@ Here is an example Edit component, which falls back to a Show component if the r
 import { useGetIdentity, useGetOne } from 'react-admin';
 
 const PostDetail = ({ id }) => {
-    const { data: post, isLoading: postLoading } = useGetOne('posts', { id });
-    const { data: identity, isLoading: identityLoading } = useGetIdentity();
-    if (postLoading || identityLoading) return <>Loading...</>;
+    const { data: post, isPending: isPendingPost } = useGetOne('posts', { id });
+    const { data: identity, isPending: isPendingIdentity } = useGetIdentity();
+    if (isPendingPost || isPendingIdentity) return <>Loading...</>;
     if (!post.lockedBy || post.lockedBy === identity.id) {
         // post isn't locked, or is locked by me
         return <PostEdit post={post} />
@@ -52,10 +52,10 @@ If your application contains a form letting the current user update their name a
 
 ```jsx
 const IdentityForm = () => {
-    const { isLoading, error, data, refetch } = useGetIdentity();
+    const { isPending, error, data, refetch } = useGetIdentity();
     const [newIdentity, setNewIdentity] = useState('');
     
-    if (isLoading) return <>Loading</>;
+    if (isPending) return <>Loading</>;
     if (error) return <>Error</>;
 
     const handleChange = event => {

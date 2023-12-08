@@ -30,8 +30,8 @@ export const PostEdit = () => (
 );
 
 const Aside = () => {
-    const { record, isLoading } = useEditContext();
-    if (isLoading) return null;
+    const { record, isPending } = useEditContext();
+    if (isPending) return null;
     return (
         <div>
             <Typography variant="h6">Posts stats</Typography>
@@ -52,7 +52,7 @@ const {
     defaultTitle, // the translated title based on the resource, e.g. 'Post #123'
     error,  // error returned by dataProvider when it failed to fetch the record. Useful if you want to adapt the view instead of just showing a notification using the `onError` side effect.
     isFetching, // boolean that is true while the record is being fetched, and false once the record is fetched
-    isLoading, // boolean that is true until the record is available for the first time
+    isPending, // boolean that is true until the record is available for the first time
     mutationMode, // mutation mode argument passed as parameter, or 'undoable' if not defined
     record, // record fetched via dataProvider.getOne() based on the id from the location
     redirect, // the default redirection route. Defaults to 'list'
@@ -84,8 +84,8 @@ export const PostEdit = () => (
 );
 
 const Aside = () => {
-    const { record: post, isLoading } = useEditContext<Post>();
-    if (isLoading) return null;
+    const { record: post, isPending } = useEditContext<Post>();
+    if (isPending) return null;
     return (
         <div>
             <Typography variant="h6">Posts stats</Typography>
