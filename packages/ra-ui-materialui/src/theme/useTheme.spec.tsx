@@ -4,7 +4,7 @@ import expect from 'expect';
 import { render, screen } from '@testing-library/react';
 import { renderHook } from '@testing-library/react-hooks';
 import { useTheme } from './useTheme';
-import { act } from 'react-test-renderer';
+import { ThemeTestWrapper } from '../layout/ThemeTestWrapper';
 
 const authProvider = {
     login: jest.fn().mockResolvedValueOnce(''),
@@ -24,23 +24,6 @@ const Foo = () => {
 };
 
 describe('useTheme', () => {
-    beforeEach(() => {
-        window.matchMedia = jest.fn(query => ({
-            matches: false,
-            media: query,
-            addListener: jest.fn(),
-            removeListener: jest.fn(),
-            addEventListener: jest.fn(),
-            removeEventListener: jest.fn(),
-            dispatchEvent: jest.fn(),
-            onchange: jest.fn(),
-        }));
-    });
-
-    afterEach(() => {
-        jest.resetAllMocks();
-    });
-
     it('should return the light theme by default', () => {
         render(
             <CoreAdminContext authProvider={authProvider}>
@@ -51,20 +34,12 @@ describe('useTheme', () => {
     });
 
     it('should return the user preferred theme by default', () => {
-        window.matchMedia = jest.fn(query => ({
-            matches: true,
-            media: query,
-            addListener: jest.fn(),
-            removeListener: jest.fn(),
-            addEventListener: jest.fn(),
-            removeEventListener: jest.fn(),
-            dispatchEvent: jest.fn(),
-            onchange: jest.fn(),
-        }));
         render(
-            <CoreAdminContext authProvider={authProvider}>
-                <Foo />
-            </CoreAdminContext>
+            <ThemeTestWrapper mode="dark">
+                <CoreAdminContext authProvider={authProvider}>
+                    <Foo />
+                </CoreAdminContext>
+            </ThemeTestWrapper>
         );
         expect(screen.queryByText('dark')).not.toBeNull();
     });

@@ -30,7 +30,7 @@ export const useTheme = (
     // FIXME: remove legacy mode in v5, and remove the RaThemeOptions type
     const [theme, setter] = useStore<ThemeType | RaThemeOptions>(
         'theme',
-        type ?? prefersDarkMode ? 'dark' : 'light'
+        type ?? (prefersDarkMode ? 'dark' : 'light')
     );
     return [theme, setter];
 };
