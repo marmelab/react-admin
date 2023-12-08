@@ -1,5 +1,6 @@
 import { useStore } from 'ra-core';
 import { RaThemeOptions, ThemeType } from './types';
+import { useMediaQuery } from '@mui/material';
 
 export type ThemeSetter = (theme: ThemeType | RaThemeOptions) => void;
 
@@ -23,7 +24,13 @@ export type ThemeSetter = (theme: ThemeType | RaThemeOptions) => void;
 export const useTheme = (
     type?: ThemeType | RaThemeOptions
 ): [ThemeType | RaThemeOptions, ThemeSetter] => {
+    const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)', {
+        noSsr: true,
+    });
     // FIXME: remove legacy mode in v5, and remove the RaThemeOptions type
-    const [theme, setter] = useStore<ThemeType | RaThemeOptions>('theme', type);
+    const [theme, setter] = useStore<ThemeType | RaThemeOptions>(
+        'theme',
+        type ?? prefersDarkMode ? 'dark' : 'light'
+    );
     return [theme, setter];
 };

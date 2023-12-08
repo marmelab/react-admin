@@ -4,6 +4,7 @@ import expect from 'expect';
 import { render, screen } from '@testing-library/react';
 import { renderHook } from '@testing-library/react-hooks';
 import { useTheme } from './useTheme';
+import { act } from 'react-test-renderer';
 
 const authProvider = {
     login: jest.fn().mockResolvedValueOnce(''),
@@ -23,13 +24,49 @@ const Foo = () => {
 };
 
 describe('useTheme', () => {
-    it('should return undefined by default', () => {
+    beforeEach(() => {
+        window.matchMedia = jest.fn(query => ({
+            matches: false,
+            media: query,
+            addListener: jest.fn(),
+            removeListener: jest.fn(),
+            addEventListener: jest.fn(),
+            removeEventListener: jest.fn(),
+            dispatchEvent: jest.fn(),
+            onchange: jest.fn(),
+        }));
+    });
+
+    afterEach(() => {
+        jest.resetAllMocks();
+    });
+
+    it('should return the light theme by default', () => {
         render(
             <CoreAdminContext authProvider={authProvider}>
                 <Foo />
             </CoreAdminContext>
         );
-        expect(screen.queryByLabelText('has-theme')).toBeNull();
+        expect(screen.queryByText('light')).not.toBeNull();
+    });
+
+    it('should return the user preferred theme by default', () => {
+        window.matchMedia = jest.fn(query => ({
+            matches: true,
+            media: query,
+            addListener: jest.fn(),
+            removeListener: jest.fn(),
+            addEventListener: jest.fn(),
+            removeEventListener: jest.fn(),
+            dispatchEvent: jest.fn(),
+            onchange: jest.fn(),
+        }));
+        render(
+            <CoreAdminContext authProvider={authProvider}>
+                <Foo />
+            </CoreAdminContext>
+        );
+        expect(screen.queryByText('dark')).not.toBeNull();
     });
 
     it('should return current theme when set', () => {
@@ -42,6 +79,7 @@ describe('useTheme', () => {
             </CoreAdminContext>
         );
         expect(screen.getByLabelText('has-theme')).not.toBeNull();
+        expect(screen.queryByText('dark')).not.toBeNull();
     });
 
     it('should return theme from settings when available', () => {
