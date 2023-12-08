@@ -240,11 +240,11 @@ In `react-hook-form`, `defaultValue` is only used on mount - changing its value 
 import { usePermissions, Create, SimpleForm, TextInput } from 'react-admin';
 
 export const UserCreate = () => {
-    const { isLoading, permissions } = usePermissions();
+    const { isPending, permissions } = usePermissions();
     return (
         <Create>
             <SimpleForm>
-                {!isLoading && <TextInput source="name" defaultValue={
+                {!isPending && <TextInput source="name" defaultValue={
                     permissions === 'admin' ? 'admin' : 'user'
                 } />}
             </SimpleForm>

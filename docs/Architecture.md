@@ -339,8 +339,8 @@ export const ContactShow = () => (
 );
 
 const ContactShowContent = () => {
-    const { record, isLoading } = useShowContext<Contact>();
-    if (isLoading || !record) return null;
+    const { record, isPending } = useShowContext<Contact>();
+    if (isPending || !record) return null;
     return (
         <Box mt={2} display="flex">
             <Box flex="1">

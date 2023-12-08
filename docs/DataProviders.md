@@ -571,9 +571,9 @@ import { useGetOne } from 'react-admin';
 import { Loading, Error } from './MyComponents';
 
 const UserProfile = ({ userId }) => {
-    const { data: user, isLoading, error } = useGetOne('users', { id: userId });
+    const { data: user, isPending, error } = useGetOne('users', { id: userId });
 
-    if (isLoading) return <Loading />;
+    if (isPending) return <Loading />;
     if (error) return <Error />;
     if (!user) return null;
 

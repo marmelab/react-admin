@@ -102,12 +102,12 @@ And by the way, using `useEffect` for data fetching is cumbersome. Instead, you 
 import { useGetList } from 'react-admin';
 
 const PostList = () => {
-    const { data, isLoading, error } = useGetList('posts', {
+    const { data, isPending, error } = useGetList('posts', {
         pagination: { page: 1, perPage: 10 },
         sort: { field: 'published_at', order: 'DESC' },
         filter: { status: 'published' }
     });
-    if (isLoading) { return <Loading />; }
+    if (isPending) { return <Loading />; }
     if (error) { return <p>ERROR</p>; }
     return (
         <ul>
@@ -862,13 +862,13 @@ import { useGetList } from "react-admin";
 import { Timeline } from "@react-admin/ra-audit-log";
 
 const Dashboard = () => {
-  const { data, isLoading } = useGetList(
+  const { data, isPending } = useGetList(
     "events",
     { page: 1, perPage: 25 },
     { field: "date", order: "desc" }
   );
 
-  return <Timeline isLoading={isLoading} records={data} />;
+  return <Timeline isLoading={isPending} records={data} />;
 };
 ```
 

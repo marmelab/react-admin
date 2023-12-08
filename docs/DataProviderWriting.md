@@ -432,7 +432,7 @@ All data provider methods accept a `meta` parameter. React-admin core components
 For instance, you could pass an option to embed related records in the response:
 
 ```jsx
-const { data, isLoading, error } = useGetOne(
+const { data, isPending, error } = useGetOne(
     'books',
     { id, meta: { _embed: 'authors' } },
 );
