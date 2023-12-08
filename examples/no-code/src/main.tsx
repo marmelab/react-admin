@@ -7,8 +7,8 @@ import { createTheme } from '@mui/material/styles';
 // FIXME Material UI bug https://github.com/mui/material-ui/issues/13394
 const theme = createTheme(defaultTheme);
 
-const container = document.createElement('root');
-const root = createRoot(container);
+const container = document.getElementById('root');
+const root = createRoot(container!);
 
 root.render(
     <React.StrictMode>
