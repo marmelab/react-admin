@@ -38,8 +38,8 @@
         "clsx": "^1.1.1"
     },
     "peerDependencies": {
-        "@mui/icons-material": "^5.14.18",
-        "@mui/material": "^5.14.18",
+        "@mui/icons-material": "^5.0.1",
+        "@mui/material": "^5.0.1",
         "ra-core": "^4.0.0",
         "ra-ui-materialui": "^4.0.0",
         "react": "^16.9.0 || ^17.0.0 || ^18.0.0",
