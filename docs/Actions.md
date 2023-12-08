@@ -30,7 +30,7 @@ Refer to [the `useDataProvider` hook documentation](./useDataProvider.md) for mo
 
 React-admin provides one hook for each of the Data Provider methods. They are useful shortcuts that make your code more readable and more robust.
 
-The query hooks execute on mount. They return an object with the following properties: `{ data, isLoading, error }`. Query hooks are:
+The query hooks execute on mount. They return an object with the following properties: `{ data, isPending, error }`. Query hooks are:
 
 * [`useGetList`](./useGetList.md)
 * [`useGetOne`](./useGetOne.md)
@@ -49,7 +49,7 @@ Their signature is the same as the related dataProvider method, e.g.:
 
 ```jsx
 // calls dataProvider.getOne(resource, { id })
-const { data, isLoading, error } = useGetOne(resource, { id });
+const { data, isPending, error } = useGetOne(resource, { id });
 ```
 
 For instance, here is how to fetch one record from the API using the `useGetOne` hook:
@@ -59,9 +59,9 @@ import { useGetOne } from 'react-admin';
 import { Loading, Error } from './MyComponents';
 
 const UserProfile = ({ userId }) => {
-    const { data: user, isLoading, error } = useGetOne('users', { id: userId });
+    const { data: user, isPending, error } = useGetOne('users', { id: userId });
 
-    if (isLoading) return <Loading />;
+    if (isPending) return <Loading />;
     if (error) return <Error />;
     if (!user) return null;
 
@@ -90,7 +90,7 @@ const ApproveButton = () => {
 Both the query and mutation hooks accept an `options` argument, to override the query options:
 
 ```jsx
-const { data: user, isLoading, error } = useGetOne(
+const { data: user, isPending, error } = useGetOne(
     'users',
     { id: userId },
     { enabled: userId !== undefined }
@@ -100,7 +100,7 @@ const { data: user, isLoading, error } = useGetOne(
 **Tip**: If you use TypeScript, you can specify the record type for more type safety:
 
 ```jsx
-const { data, isLoading } = useGetOne<Product>('products', { id: 123 });
+const { data, isPending } = useGetOne<Product>('products', { id: 123 });
 //        \- type of data is Product
 ```
 
@@ -109,7 +109,7 @@ const { data, isLoading } = useGetOne<Product>('products', { id: 123 });
 All Data Provider methods accept a `meta` parameter. React-admin doesn't set this parameter by default in its queries, but it's a good way to pass special arguments or metadata to an API call.
 
 ```jsx
-const { data, isLoading, error } = useGetOne(
+const { data, isPending, error } = useGetOne(
     'books',
     { id, meta: { _embed: 'authors' } },
 );
@@ -142,12 +142,12 @@ import { useDataProvider, Loading, Error } from 'react-admin';
 
 const UserProfile = ({ userId }) => {
     const dataProvider = useDataProvider();
-    const { data, isLoading, error } = useQuery({
+    const { data, isPending, error } = useQuery({
         queryKey: ['users', 'getOne', { id: userId }], 
         queryFn: () => dataProvider.getOne('users', { id: userId })
     });
 
-    if (isLoading) return <Loading />;
+    if (isPending) return <Loading />;
     if (error) return <Error />;
     if (!data) return null;
 
@@ -179,40 +179,41 @@ const ApproveButton = () => {
 
 If you want to go beyond data provider method hooks, we recommend that you read [the react-query documentation](https://react-query-v3.tanstack.com/overview).
 
-## `isLoading` vs `isFetching`
+## `isPending` vs `isLoading` vs `isFetching`
 
-Data fetching hooks return two loading state variables: `isLoading` and `isFetching`. Which one should you use?
+Data fetching hooks return three loading state variables: `isPending`, `isFetching`, and `isLoading`. Which one should you use?
 
-The short answer is: use `isLoading`. Read on to understand why.
+The short answer is: use `isPending`. Read on to understand why.
 
-The source of these two variables is [react-query](https://tanstack.com/query/v5/docs/react/reference/useQuery). Here is how they defined these two variables:
+The source of these three variables is [react-query](https://tanstack.com/query/v5/docs/react/reference/useQuery). Here is how they defined these variables:
 
-- `isLoading`:  The query has no data and is currently fetching
+- `isPending`:  The query has no data
 - `isFetching`: In any state, if the query is fetching at any time (including background refetching) isFetching will be true.
+- `isLoading`:  The query is pending and fetching
 
 Let's see how what these variables contain in a typical usage scenario:
 
-1. The user first loads a page. `isLoading` is true because the data was never loaded, and `isFetching` is also true because data is being fetched.
-2. The dataProvider returns the data. Both `isLoading` and `isFetching` become false
+1. The user first loads a page. `isPending` is true because the data was never loaded, and `isFetching` is also true because data is being fetched. So `isLoading` is also true.
+2. The dataProvider returns the data. All three variables become false.
 3. The user navigates away
-4. The user comes back to the first page, which triggers a new fetch. `isLoading` is false, because the stale data is available, and `isFetching` is true because data is being fetched via the dataProvider.
-5. The dataProvider returns the data. Both `isLoading` and `isFetching` become false
+4. The user comes back to the first page, which triggers a new fetch. `isPending` is false, because the stale data is available, and `isFetching` is true because data is being fetched via the dataProvider.
+5. The dataProvider returns the data. Both `isPending` and `isFetching` become false
 
-Components use the loading state to show a loading indicator when there is no data to show. In the example above, the loading indicator is necessary for step 2, but not in step 4, because you can display the stale data while fresh data is being loaded.
+Components use the pending state to show a loading indicator when there is no data to show. In the example above, the loading indicator is necessary for step 2, but not in step 4, because you can display the stale data while fresh data is being loaded.
 
 ```jsx
 import { useGetOne, useRecordContext } from 'react-admin';
 
 const UserProfile = () => {
     const record = useRecordContext();
-    const { data, isLoading, error } = useGetOne('users', { id: record.id });
-    if (isLoading) { return <Loading />; }
+    const { data, isPending, error } = useGetOne('users', { id: record.id });
+    if (isPending) { return <Loading />; }
     if (error) { return <p>ERROR</p>; }
     return <div>User {data.username}</div>;
 };
 ```
 
-As a consequence, you should always use `isLoading` to determine if you need to show a loading indicator.
+As a consequence, you should always use `isPending` to determine if you need to show a loading indicator.
 
 ## Calling Custom Methods
 
@@ -290,12 +291,12 @@ import { useGetOne, useRecordContext } from 'react-admin';
 
 const UserProfile = () => {
     const record = useRecordContext();
-    const { data, isLoading, error } = useGetOne(
+    const { data, isPending, error } = useGetOne(
         'users',
         { id: record.id },
         { onSettled: (data, error) => console.log(data, error) }
     );
-    if (isLoading) { return <Loading />; }
+    if (isPending) { return <Loading />; }
     if (error) { return <p>ERROR</p>; }
     return <div>User {data.username}</div>;
 };
@@ -331,17 +332,17 @@ For example, the following code only fetches the categories if at least one post
 
 ```jsx
 // fetch posts
-const { data: posts, isLoading } = useGetList(
+const { data: posts, isPending } = useGetList(
     'posts',
     { pagination: { page: 1, perPage: 20 }, sort: { field: 'name', order: 'ASC' } },
 );
 
 // then fetch categories for these posts
-const { data: categories, isLoading: isLoadingCategories } = useGetMany(
+const { data: categories, isPending: isPendingCategories } = useGetMany(
     'categories',
     { ids: posts.map(post => posts.category_id) },
     // run only if the first query returns non-empty result
-    { enabled: !isLoading && posts.length > 0 }
+    { enabled: !isPending && posts.length > 0 }
 );
 ```
 
