@@ -157,7 +157,7 @@ export const useInfiniteGetList = <RecordType extends RaRecord = any>(
     }, [resource]);
 
     useEffect(() => {
-        if (result.data === undefined) return;
+        if (result.data === undefined || result.isFetching) return;
         // optimistically populate the getOne cache
         result.data.pages.forEach(page => {
             page.data.forEach(record => {
@@ -173,17 +173,23 @@ export const useInfiniteGetList = <RecordType extends RaRecord = any>(
         });
 
         onSuccessEvent(result.data);
-    }, [onSuccessEvent, queryClient, result.data]);
+    }, [onSuccessEvent, queryClient, result.data, result.isFetching]);
 
     useEffect(() => {
-        if (result.error == null) return;
+        if (result.error == null || result.isFetching) return;
         onErrorEvent(result.error);
-    }, [onErrorEvent, result.error]);
+    }, [onErrorEvent, result.error, result.isFetching]);
 
     useEffect(() => {
-        if (result.status === 'pending') return;
+        if (result.status === 'pending' || result.isFetching) return;
         onSettledEvent(result.data, result.error);
-    }, [onSettledEvent, result.data, result.error, result.status]);
+    }, [
+        onSettledEvent,
+        result.data,
+        result.error,
+        result.status,
+        result.isFetching,
+    ]);
 
     return (result.data
         ? {

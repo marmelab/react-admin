@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import {
     useQuery,
     UseQueryOptions,
@@ -111,28 +111,49 @@ export const useGetMany = <RecordType extends RaRecord = any>(
         ...queryOptions,
     });
 
+    const metaValue = useRef(meta);
+    const resourceValue = useRef(resource);
+
     useEffect(() => {
-        if (result.data === undefined) return;
+        metaValue.current = meta;
+    }, [meta]);
+
+    useEffect(() => {
+        resourceValue.current = resource;
+    }, [resource]);
+
+    useEffect(() => {
+        if (result.data === undefined || result.isFetching) return;
         // optimistically populate the getOne cache
         result.data.forEach(record => {
             queryClient.setQueryData(
-                [resource, 'getOne', { id: String(record.id), meta }],
+                [
+                    resourceValue.current,
+                    'getOne',
+                    { id: String(record.id), meta: metaValue.current },
+                ],
                 oldRecord => oldRecord ?? record
             );
         });
 
         onSuccessEvent(result.data);
-    }, [queryClient, meta, onSuccessEvent, resource, result.data]);
+    }, [queryClient, onSuccessEvent, result.data, result.isFetching]);
 
     useEffect(() => {
-        if (result.error == null) return;
+        if (result.error == null || result.isFetching) return;
         onErrorEvent(result.error);
-    }, [onErrorEvent, result.error]);
+    }, [onErrorEvent, result.error, result.isFetching]);
 
     useEffect(() => {
-        if (result.status === 'pending') return;
+        if (result.status === 'pending' || result.isFetching) return;
         onSettledEvent(result.data, result.error);
-    }, [onSettledEvent, result.data, result.error, result.status]);
+    }, [
+        onSettledEvent,
+        result.data,
+        result.error,
+        result.status,
+        result.isFetching,
+    ]);
 
     return result;
 };

@@ -76,19 +76,25 @@ export const useGetOne = <RecordType extends RaRecord = any>(
     });
 
     useEffect(() => {
-        if (result.data === undefined) return;
+        if (result.data === undefined || result.isFetching) return;
         onSuccessEvent(result.data);
-    }, [onSuccessEvent, result.data]);
+    }, [onSuccessEvent, result.data, result.isFetching]);
 
     useEffect(() => {
-        if (result.error == null) return;
+        if (result.error == null || result.isFetching) return;
         onErrorEvent(result.error);
-    }, [onErrorEvent, result.error]);
+    }, [onErrorEvent, result.error, result.isFetching]);
 
     useEffect(() => {
-        if (result.status === 'pending') return;
+        if (result.status === 'pending' || result.isFetching) return;
         onSettledEvent(result.data, result.error);
-    }, [onSettledEvent, result.data, result.error, result.status]);
+    }, [
+        onSettledEvent,
+        result.data,
+        result.error,
+        result.status,
+        result.isFetching,
+    ]);
 
     return result;
 };
