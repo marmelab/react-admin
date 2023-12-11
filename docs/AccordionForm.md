@@ -424,7 +424,7 @@ Here are all the props you can set on the `<AccordionSection>` component:
 | `AccordionSummary` | Optional | `Component` | -       | The component to use as the accordion summary.                |
 | `label`            | Required | `string`    | -       | The main label used as the accordion summary.                 |
 | `children`         | Required | `ReactNode` | -       | A list of `<Input>` elements                                  |
-| `fullWidth`        | Optional | `boolean`   | `false` | If true, the Accordion take sthe entire form width.           |
+| `fullWidth`        | Optional | `boolean`   | `false` | If true, the Accordion takes the entire form width.           |
 | `className`        | Optional | `string`    | -       | A class name to style the underlying `<Accordion>`            |
 | `secondary`        | Optional | `string`    | -       | The secondary label used as the accordion summary             |
 | `defaultExpanded`  | Optional | `boolean`   | `false` | Set to true to have the accordion expanded by default         |
