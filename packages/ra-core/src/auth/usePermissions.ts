@@ -105,7 +105,7 @@ export type UsePermissionsResult<
     PermissionsType = any,
     ErrorType = Error
 > = QueryObserverResult<PermissionsType, ErrorType> & {
-    permissions: PermissionsType;
+    permissions: PermissionsType | null;
 };
 
 const noop = () => {};

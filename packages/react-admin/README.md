@@ -9,7 +9,7 @@ A frontend Framework for building data-driven applications running in the browse
 ## Features
 
 * Adapts to any backend (REST, GraphQL, SOAP, etc.)
-* Powered by [Material UI](https://mui.com/material-ui/getting-started/), [react-query](https://react-query-v3.tanstack.com/), [react-hook-form](https://react-hook-form.com), [react-router](https://reacttraining.com/react-router/) and a few more
+* Powered by [Material UI](https://mui.com/material-ui/getting-started/), [react-query](https://react-query-v5.tanstack.com/), [react-hook-form](https://react-hook-form.com), [react-router](https://reacttraining.com/react-router/) and a few more
 * Super-fast UI thanks to optimistic rendering (renders before the server returns)
 * Undo updates and deletes for a few seconds
 * Relationships (many to one, one to many)

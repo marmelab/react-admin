@@ -83,11 +83,11 @@ import { useEvent } from '../util';
  * const [update, { data }] = useUpdate<Product>('products', { id, data: diff, previousData: product });
  *                    \-- data is Product
  */
-export const useUpdate = <RecordType extends RaRecord = any>(
+export const useUpdate = <RecordType extends RaRecord = any, ErrorType = Error>(
     resource?: string,
     params: Partial<UpdateParams<RecordType>> = {},
-    options: UseUpdateOptions<RecordType> = {}
-): UseUpdateResult<RecordType, boolean> => {
+    options: UseUpdateOptions<RecordType, ErrorType> = {}
+): UseUpdateResult<RecordType, boolean, ErrorType> => {
     const dataProvider = useDataProvider();
     const queryClient = useQueryClient();
     const { id, data, meta } = params;
@@ -172,7 +172,7 @@ export const useUpdate = <RecordType extends RaRecord = any>(
 
     const mutation = useMutation<
         RecordType,
-        Error,
+        ErrorType,
         Partial<UseUpdateMutateParams<RecordType>>
     >({
         mutationFn: ({
@@ -274,7 +274,7 @@ export const useUpdate = <RecordType extends RaRecord = any>(
         callTimeParams: Partial<UpdateParams<RecordType>> = {},
         callTimeOptions: MutateOptions<
             RecordType,
-            unknown,
+            ErrorType,
             Partial<UseUpdateMutateParams<RecordType>>,
             unknown
         > & { mutationMode?: MutationMode; returnPromise?: boolean } = {}
@@ -455,22 +455,24 @@ export interface UseUpdateMutateParams<RecordType extends RaRecord = any> {
 }
 
 export type UseUpdateOptions<
-    RecordType extends RaRecord = any
+    RecordType extends RaRecord = any,
+    ErrorType = Error
 > = UseMutationOptions<
     RecordType,
-    Error,
+    ErrorType,
     Partial<Omit<UseUpdateMutateParams<RecordType>, 'mutationFn'>>
 > & { mutationMode?: MutationMode; returnPromise?: boolean };
 
 export type UpdateMutationFunction<
     RecordType extends RaRecord = any,
-    TReturnPromise extends boolean = boolean
+    TReturnPromise extends boolean = boolean,
+    ErrorType = Error
 > = (
     resource?: string,
     params?: Partial<UpdateParams<RecordType>>,
     options?: MutateOptions<
         RecordType,
-        Error,
+        ErrorType,
         Partial<UseUpdateMutateParams<RecordType>>,
         unknown
     > & { mutationMode?: MutationMode; returnPromise?: TReturnPromise }
@@ -478,12 +480,13 @@ export type UpdateMutationFunction<
 
 export type UseUpdateResult<
     RecordType extends RaRecord = any,
-    TReturnPromise extends boolean = boolean
+    TReturnPromise extends boolean = boolean,
+    ErrorType = Error
 > = [
-    UpdateMutationFunction<RecordType, TReturnPromise>,
+    UpdateMutationFunction<RecordType, TReturnPromise, ErrorType>,
     UseMutationResult<
         RecordType,
-        Error,
+        ErrorType,
         Partial<UpdateParams<RecordType> & { resource?: string }>,
         unknown
     >

@@ -404,40 +404,4 @@ describe('useGetList', () => {
             queryClient.getQueryData(['posts', 'getOne', { id: '1' }])
         ).toBeUndefined();
     });
-
-    // NOTE: it seems that disabled queries are not updated anymore when the cache is updated
-    it.skip('should not fail when the query is disabled and the cache gets updated by another query', async () => {
-        const callback: any = jest.fn();
-        const onSuccess = jest.fn();
-        const queryClient = new QueryClient();
-        const dataProvider = testDataProvider({
-            // @ts-ignore
-            getList: jest.fn(() =>
-                Promise.resolve({ data: [{ id: 1, title: 'live' }], total: 1 })
-            ),
-        });
-        render(
-            <CoreAdminContext
-                queryClient={queryClient}
-                dataProvider={dataProvider}
-            >
-                <UseGetList
-                    options={{ enabled: false, onSuccess }}
-                    callback={callback}
-                />
-            </CoreAdminContext>
-        );
-        await waitFor(() => {
-            expect(callback).toHaveBeenCalled();
-        });
-        // Simulate the side-effect of e.g. a call to delete
-        queryClient.setQueriesData(
-            { queryKey: ['posts', 'getList'] },
-            res => res
-        );
-        // If we get this far without an error being thrown, the test passes
-        await waitFor(() => {
-            expect(onSuccess).toHaveBeenCalled();
-        });
-    });
 });

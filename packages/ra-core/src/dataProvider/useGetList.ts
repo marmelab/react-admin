@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import {
     useQuery,
     UseQueryOptions,
@@ -99,6 +99,17 @@ export const useGetList = <RecordType extends RaRecord = any>(
         ...queryOptions,
     });
 
+    const metaValue = useRef(meta);
+    const resourceValue = useRef(resource);
+
+    useEffect(() => {
+        metaValue.current = meta;
+    }, [meta]);
+
+    useEffect(() => {
+        resourceValue.current = resource;
+    }, [resource]);
+
     useEffect(() => {
         if (result.data === undefined) return;
 
@@ -109,13 +120,17 @@ export const useGetList = <RecordType extends RaRecord = any>(
         ) {
             result.data.data.forEach(record => {
                 queryClient.setQueryData(
-                    [resource, 'getOne', { id: String(record.id), meta }],
+                    [
+                        resourceValue.current,
+                        'getOne',
+                        { id: String(record.id), meta: metaValue.current },
+                    ],
                     oldRecord => oldRecord ?? record
                 );
             });
         }
         onSuccessEvent(result.data);
-    }, [meta, onSuccessEvent, queryClient, resource, result.data]);
+    }, [onSuccessEvent, queryClient, result.data]);
 
     useEffect(() => {
         if (result.error == null) return;

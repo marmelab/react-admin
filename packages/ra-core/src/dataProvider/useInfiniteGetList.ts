@@ -9,14 +9,14 @@ import {
 
 import { RaRecord, GetListParams, GetInfiniteListResult } from '../types';
 import { useDataProvider } from './useDataProvider';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useEvent } from '../util';
 
 /**
  * Call the dataProvider.getList() method and return the resolved result
  * as well as the loading state. The return from useInfiniteGetList is equivalent to the return from react-hook form useInfiniteQuery.
  *
- * @see https://react-query-v3.tanstack.com/reference/useInfiniteQuery
+ * @see https://react-query-v5.tanstack.com/reference/useInfiniteQuery
  *
  * This hook will return the cached result when called a second time
  * with the same parameters, until the response arrives.
@@ -145,20 +145,35 @@ export const useInfiniteGetList = <RecordType extends RaRecord = any>(
         },
     });
 
+    const metaValue = useRef(meta);
+    const resourceValue = useRef(resource);
+
+    useEffect(() => {
+        metaValue.current = meta;
+    }, [meta]);
+
+    useEffect(() => {
+        resourceValue.current = resource;
+    }, [resource]);
+
     useEffect(() => {
         if (result.data === undefined) return;
         // optimistically populate the getOne cache
         result.data.pages.forEach(page => {
             page.data.forEach(record => {
                 queryClient.setQueryData(
-                    [resource, 'getOne', { id: String(record.id), meta }],
+                    [
+                        resourceValue.current,
+                        'getOne',
+                        { id: String(record.id), meta: metaValue.current },
+                    ],
                     oldRecord => oldRecord ?? record
                 );
             });
         });
 
         onSuccessEvent(result.data);
-    }, [meta, onSuccessEvent, queryClient, resource, result.data]);
+    }, [onSuccessEvent, queryClient, result.data]);
 
     useEffect(() => {
         if (result.error == null) return;

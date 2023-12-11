@@ -99,7 +99,7 @@ export type UseGetIdentityResult<ErrorType = Error> = QueryObserverResult<
     UserIdentity,
     ErrorType
 > & {
-    identity: UserIdentity;
+    identity: UserIdentity | null;
 };
 
 export default useGetIdentity;

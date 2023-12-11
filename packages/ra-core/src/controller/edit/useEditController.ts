@@ -48,8 +48,11 @@ import {
  *     return <EditView {...controllerProps} {...props} />;
  * }
  */
-export const useEditController = <RecordType extends RaRecord = any>(
-    props: EditControllerProps<RecordType> = {}
+export const useEditController = <
+    RecordType extends RaRecord = any,
+    ErrorType = Error
+>(
+    props: EditControllerProps<RecordType, ErrorType> = {}
 ): EditControllerResult<RecordType> => {
     const {
         disableAuthentication,
@@ -127,7 +130,7 @@ export const useEditController = <RecordType extends RaRecord = any>(
 
     const recordCached = { id, previousData: record };
 
-    const [update, { isPending: saving }] = useUpdate<RecordType>(
+    const [update, { isPending: saving }] = useUpdate<RecordType, ErrorType>(
         resource,
         recordCached,
         {
@@ -149,15 +152,16 @@ export const useEditController = <RecordType extends RaRecord = any>(
                 notify(
                     typeof error === 'string'
                         ? error
-                        : error.message || 'ra.notification.http_error',
+                        : (error as Error).message ||
+                              'ra.notification.http_error',
                     {
                         type: 'error',
                         messageArgs: {
                             _:
                                 typeof error === 'string'
                                     ? error
-                                    : error && error.message
-                                    ? error.message
+                                    : error && (error as Error).message
+                                    ? (error as Error).message
                                     : undefined,
                         },
                     }
@@ -240,11 +244,14 @@ export const useEditController = <RecordType extends RaRecord = any>(
     };
 };
 
-export interface EditControllerProps<RecordType extends RaRecord = any> {
+export interface EditControllerProps<
+    RecordType extends RaRecord = any,
+    ErrorType = Error
+> {
     disableAuthentication?: boolean;
     id?: RecordType['id'];
     mutationMode?: MutationMode;
-    mutationOptions?: UseUpdateOptions<RecordType>;
+    mutationOptions?: UseUpdateOptions<RecordType, ErrorType>;
     queryOptions?: UseGetOneOptions<RecordType>;
     redirect?: RedirectionSideEffect;
     resource?: string;
