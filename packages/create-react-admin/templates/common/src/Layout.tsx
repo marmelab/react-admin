@@ -1,9 +1,12 @@
-
-import { Layout as LayoutRA, LayoutProps, CheckForApplicationUpdate } from 'react-admin';
+import {
+  Layout as RALayout,
+  LayoutProps,
+  CheckForApplicationUpdate,
+} from "react-admin";
 
 export const Layout = ({ children, ...props }: LayoutProps) => (
-  <LayoutRA {...props}>
+  <RALayout {...props}>
     {children}
     <CheckForApplicationUpdate />
-  </LayoutRA>
+  </RALayout>
 );
