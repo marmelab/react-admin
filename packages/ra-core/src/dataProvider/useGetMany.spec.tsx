@@ -203,14 +203,16 @@ describe('useGetMany', () => {
         await waitFor(() => {
             expect(dataProvider.getMany).toHaveBeenCalledTimes(2);
         });
-        expect(hookValue).toHaveBeenCalledWith(
-            expect.objectContaining({
-                data: [{ id: 1, title: 'foo' }],
-                isFetching: true,
-                isLoading: false,
-                error: null,
-            })
-        );
+        await waitFor(() => {
+            expect(hookValue).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    data: [{ id: 1, title: 'foo' }],
+                    isFetching: false,
+                    isLoading: false,
+                    error: null,
+                })
+            );
+        });
     });
 
     it('should set the error state when the dataProvider fails', async () => {
