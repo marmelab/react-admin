@@ -58,7 +58,7 @@ const useAuthState = <ErrorType = Error>(
     const logout = useLogout();
     const basename = useBasename();
     const notify = useNotify();
-    const { onSuccess, onError, ...options } = queryOptions;
+    const { onSuccess, onError, onSettled, ...options } = queryOptions;
 
     const result = useQuery<boolean, any>({
         queryKey: ['auth', 'checkAuth', params],
@@ -84,6 +84,7 @@ const useAuthState = <ErrorType = Error>(
     });
 
     const onSuccessEvent = useEvent(onSuccess ?? noop);
+    const onSettledEvent = useEvent(onSettled ?? noop);
     const onErrorEvent = useEvent(
         onError ??
             ((error: any) => {
@@ -108,14 +109,25 @@ const useAuthState = <ErrorType = Error>(
     );
 
     useEffect(() => {
-        if (result.data === undefined) return;
+        if (result.data === undefined || result.isFetching) return;
         onSuccessEvent(result.data);
-    }, [onSuccessEvent, result.data]);
+    }, [onSuccessEvent, result.data, result.isFetching]);
 
     useEffect(() => {
-        if (result.error == null) return;
+        if (result.error == null || result.isFetching) return;
         onErrorEvent(result.error);
-    }, [onErrorEvent, result.error]);
+    }, [onErrorEvent, result.error, result.isFetching]);
+
+    useEffect(() => {
+        if (result.status === 'pending' || result.isFetching) return;
+        onSettledEvent(result.data, result.error);
+    }, [
+        onSettledEvent,
+        result.data,
+        result.error,
+        result.status,
+        result.isFetching,
+    ]);
 
     return useMemo(() => {
         return {
@@ -134,6 +146,7 @@ type UseAuthStateOptions<ErrorType = Error> = Omit<
 > & {
     onSuccess?: (data: boolean) => void;
     onError?: (err: ErrorType) => void;
+    onSettled?: (data?: boolean, error?: Error) => void;
 };
 
 export type UseAuthStateResult<ErrorType = Error> = QueryObserverResult<

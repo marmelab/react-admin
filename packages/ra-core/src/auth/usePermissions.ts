@@ -48,7 +48,8 @@ const usePermissions = <PermissionsType = any, ErrorType = Error>(
 ): UsePermissionsResult<PermissionsType, ErrorType> => {
     const authProvider = useAuthProvider();
     const logoutIfAccessDenied = useLogoutIfAccessDenied();
-    const { onSuccess, onError, ...queryOptions } = queryParams ?? {};
+    const { onSuccess, onError, onSettled, ...queryOptions } =
+        queryParams ?? {};
 
     const result = useQuery<PermissionsType, ErrorType>({
         queryKey: ['auth', 'getPermissions', params],
@@ -61,6 +62,7 @@ const usePermissions = <PermissionsType = any, ErrorType = Error>(
     });
 
     const onSuccessEvent = useEvent(onSuccess ?? noop);
+    const onSettledEvent = useEvent(onSettled ?? noop);
     const onErrorEvent = useEvent(
         onError ??
             ((error: ErrorType) => {
@@ -72,14 +74,25 @@ const usePermissions = <PermissionsType = any, ErrorType = Error>(
     );
 
     useEffect(() => {
-        if (result.data === undefined) return;
+        if (result.data === undefined || result.isFetching) return;
         onSuccessEvent(result.data);
-    }, [onSuccessEvent, result.data]);
+    }, [onSuccessEvent, result.data, result.isFetching]);
 
     useEffect(() => {
-        if (result.error == null) return;
+        if (result.error == null || result.isFetching) return;
         onErrorEvent(result.error);
-    }, [onErrorEvent, result.error]);
+    }, [onErrorEvent, result.error, result.isFetching]);
+
+    useEffect(() => {
+        if (result.status === 'pending' || result.isFetching) return;
+        onSettledEvent(result.data, result.error);
+    }, [
+        onSettledEvent,
+        result.data,
+        result.error,
+        result.status,
+        result.isFetching,
+    ]);
 
     return useMemo(
         () => ({
@@ -99,6 +112,7 @@ export interface UsePermissionsOptions<PermissionsType = any, ErrorType = Error>
     > {
     onSuccess?: (data: PermissionsType) => void;
     onError?: (err: ErrorType) => void;
+    onSettled?: (data?: PermissionsType, error?: ErrorType) => void;
 }
 
 export type UsePermissionsResult<

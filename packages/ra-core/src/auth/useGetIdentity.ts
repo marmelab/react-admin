@@ -50,7 +50,7 @@ export const useGetIdentity = <ErrorType extends Error = Error>(
     options: UseGetIdentityOptions<ErrorType> = defaultQueryParams
 ): UseGetIdentityResult<ErrorType> => {
     const authProvider = useAuthProvider();
-    const { onSuccess, onError, ...queryOptions } = options;
+    const { onSuccess, onError, onSettled, ...queryOptions } = options;
 
     const result = useQuery({
         queryKey: ['auth', 'getIdentity'],
@@ -66,16 +66,28 @@ export const useGetIdentity = <ErrorType extends Error = Error>(
 
     const onSuccessEvent = useEvent(onSuccess ?? noop);
     const onErrorEvent = useEvent(onError ?? noop);
+    const onSettledEvent = useEvent(onSettled ?? noop);
 
     useEffect(() => {
-        if (result.data === undefined) return;
+        if (result.data === undefined || result.isFetching) return;
         onSuccessEvent(result.data);
-    }, [onSuccessEvent, result.data]);
+    }, [onSuccessEvent, result.data, result.isFetching]);
 
     useEffect(() => {
-        if (result.error == null) return;
+        if (result.error == null || result.isFetching) return;
         onErrorEvent(result.error);
-    }, [onErrorEvent, result.error]);
+    }, [onErrorEvent, result.error, result.isFetching]);
+
+    useEffect(() => {
+        if (result.status === 'pending' || result.isFetching) return;
+        onSettledEvent(result.data, result.error);
+    }, [
+        onSettledEvent,
+        result.data,
+        result.error,
+        result.status,
+        result.isFetching,
+    ]);
 
     return useMemo(
         () => ({
@@ -93,6 +105,7 @@ export interface UseGetIdentityOptions<ErrorType extends Error = Error>
     > {
     onSuccess?: (data: UserIdentity) => void;
     onError?: (err: Error) => void;
+    onSettled?: (data?: UserIdentity, error?: Error) => void;
 }
 
 export type UseGetIdentityResult<ErrorType = Error> = QueryObserverResult<

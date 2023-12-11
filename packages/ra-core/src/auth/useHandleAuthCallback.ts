@@ -23,7 +23,7 @@ export const useHandleAuthCallback = (
     const nextPathName = locationState && locationState.nextPathname;
     const nextSearch = locationState && locationState.nextSearch;
     const defaultRedirectUrl = nextPathName ? nextPathName + nextSearch : '/';
-    const { onSuccess, onError, ...queryOptions } = options ?? {};
+    const { onSuccess, onError, onSettled, ...queryOptions } = options ?? {};
 
     const queryResult = useQuery({
         queryKey: ['auth', 'handleCallback'],
@@ -53,16 +53,28 @@ export const useHandleAuthCallback = (
             })
     );
     const onErrorEvent = useEvent(onError ?? noop);
+    const onSettledEvent = useEvent(onSettled ?? noop);
 
     useEffect(() => {
-        if (queryResult.error == null) return;
+        if (queryResult.error == null || queryResult.isFetching) return;
         onErrorEvent(queryResult.error);
-    }, [onErrorEvent, queryResult.error]);
+    }, [onErrorEvent, queryResult.error, queryResult.isFetching]);
 
     useEffect(() => {
-        if (queryResult.data === undefined) return;
+        if (queryResult.data === undefined || queryResult.isFetching) return;
         onSuccessEvent(queryResult.data);
-    }, [onSuccessEvent, queryResult.data]);
+    }, [onSuccessEvent, queryResult.data, queryResult.isFetching]);
+
+    useEffect(() => {
+        if (queryResult.status === 'pending' || queryResult.isFetching) return;
+        onSettledEvent(queryResult.data, queryResult.error);
+    }, [
+        onSettledEvent,
+        queryResult.data,
+        queryResult.error,
+        queryResult.status,
+        queryResult.isFetching,
+    ]);
 
     return queryResult;
 };
@@ -79,6 +91,10 @@ export type UseHandleAuthCallbackOptions = Omit<
 > & {
     onSuccess?: (data: ReturnType<AuthProvider['handleCallback']>) => void;
     onError?: (err: Error) => void;
+    onSettled?: (
+        data?: ReturnType<AuthProvider['handleCallback']>,
+        error?: Error
+    ) => void;
 };
 
 const noop = () => {};
