@@ -115,7 +115,9 @@ const DatagridRow: FC<DatagridRowProps> = React.forwardRef((props, ref) => {
                 return;
             }
             if (['edit', 'show'].includes(type)) {
-                navigate(createPath({ resource, id, type }));
+                navigate(createPath({ resource, id, type }), {
+                    state: { _scrollToTop: true },
+                });
                 return;
             }
             if (type === 'expand') {
