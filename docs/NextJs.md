@@ -23,7 +23,7 @@ npx create-next-app@latest
 ```
 
 A prompt will asks you some questions, feel free to choose answers according to your needs. 
-This tutorial assumes you're using an `src` folder, so answer 'Yes' to the 5th question. As for the App Router, you can choose to use it or not, this tutorial will explain how to use both. (For new applications, Next.js recommend using the App Router.)
+This tutorial assumes you're using an `src` folder, so answer 'Yes' to the 5th question. As for the App Router, you can choose to use it or not, this tutorial will explain how to use both. (For new applications, Next.js recommends using the App Router.)
 
 ![Install Next.js with command line](./img/install-next-js-command-line.png)
 
@@ -50,7 +50,7 @@ Next, create a `components` directory inside `src`, and an admin App component i
 
 ```jsx
 // in src/components/AdminApp.tsx
-"use client"; // remove it if you choose Pages Router
+"use client"; // remove this line if you choose Pages Router
 import { Admin, Resource, ListGuesser, EditGuesser } from "react-admin";
 import jsonServerProvider from "ra-data-json-server";
 
