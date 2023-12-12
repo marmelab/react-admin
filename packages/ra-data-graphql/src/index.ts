@@ -154,7 +154,7 @@ export default async (options: Options): Promise<DataProvider> => {
             if (typeof name === 'symbol' || name === 'then') {
                 return;
             }
-            if (name == 'client') return client; // make client accessible to the proxy
+            if (name === 'client') return client; // make client accessible to the proxy
 
             const raFetchMethod = RaFetchMethodMap[name];
             return async (resource, params) => {

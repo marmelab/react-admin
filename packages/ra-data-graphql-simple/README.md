@@ -255,7 +255,7 @@ Your GraphQL backend may not allow multiple deletions or updates in a single que
 
 ## Data Provider Extensions
 
-Your GraphQL backend may support functionality that extends beyond the default Data Provider methods. One such example of this would be implementing GraphQL subscriptions and integrating [ra-realtime](https://marmelab.com/ra-enterprise/modules/ra-realtime) to power realtime updates in your React-Admin application. The extensions pattern allows you to easily expand the Data Provider methods to power this additional functionality. A Data Provider Extention is defined by the following type:
+Your GraphQL backend may support functionality that extends beyond the default Data Provider methods. One such example of this would be implementing GraphQL subscriptions and integrating [ra-realtime](https://marmelab.com/ra-enterprise/modules/ra-realtime) to power realtime updates in your React-Admin application. The extensions pattern allows you to expand the Data Provider methods to power this additional functionality. A Data Provider Extention is defined by the following type:
 
 ```js
 type DataProviderExtension = {
