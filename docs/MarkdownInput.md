@@ -132,5 +132,45 @@ You can disable the keyboard shortcuts by setting the `useCommandShortcut` prop 
 ```
 {% endraw %}
 
+## Add Your Own Buttons
+
+You can add your own buttons to the markdown editor by using the `toolbarItems` prop. It accepts an array of [toolbar items](https://nhn.github.io/tui.editor/latest/ToastUIEditorToolbar#toolbar-items) and is set to `null` by default.
+
+{% raw %}
+```jsx
+function createLastButton() {
+    const button = document.createElement('button');
+    button.className = 'toastui-editor-toolbar-icons last';
+    button.style.backgroundImage = 'none';
+    button.style.margin = '0';
+    button.style.width = '100%';
+    button.innerHTML = `<i>Custom Button</i>`;
+    button.addEventListener('click', () => {
+        alert('Custom Button action');
+    });
+
+    return button;
+}
+
+return (
+    <SimpleForm>
+        <MarkdownInput 
+            source="description" 
+            toolbarItems={[
+                ['heading', 'bold', 'italic', 'strike'],
+                [
+                    {
+                        el: createLastButton(),
+                        tooltip: 'Custom Command',
+                        name: 'custom',
+                    },
+                ],
+            ]
+        } />
+    </SimpleForm>
+);
+```
+{% endraw %}
+
 
 Check [the `ra-markdown` documentation](https://marmelab.com/ra-enterprise/modules/ra-markdown) for more details.
