@@ -74,6 +74,7 @@ const generateAppFile = (
         path.join(projectDirectory, 'src', 'App.tsx'),
         `
 import { Admin, Resource, ListGuesser, EditGuesser, ShowGuesser } from 'react-admin';
+import { Layout } from './Layout';
 ${
     state.dataProvider !== 'none'
         ? `import { dataProvider } from './dataProvider';\n`
@@ -83,8 +84,10 @@ ${
                 ? `import { authProvider } from './authProvider';\n`
                 : ''
         }
+
 export const App = () => (
     <Admin
+        layout={Layout}
         ${
             state.dataProvider !== 'none'
                 ? `dataProvider={dataProvider}\n\t`
