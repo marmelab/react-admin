@@ -138,9 +138,7 @@ export const TabClasses = {
 const Root = styled(Stack, {
     name: PREFIX,
     overridesResolver: (props, styles) => styles.root,
-})(({ theme }) => ({
-    flex: 1,
-    padding: `${theme.spacing(1)} ${theme.spacing(2)}`,
+})(() => ({
     [`& .${TabClasses.row}`]: {
         display: 'inline',
     },
