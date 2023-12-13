@@ -11,7 +11,11 @@ import * as React from 'react';
 import { AdminContext } from '../../AdminContext';
 import { ReferenceInput, SelectInput, TextInput } from '../../input';
 import { Filter } from './Filter';
-import { Basic, WithAutoCompleteArrayInput } from './FilterButton.stories';
+import {
+    Basic,
+    WithAutoCompleteArrayInput,
+    WithArrayInput,
+} from './FilterButton.stories';
 import {
     FilterForm,
     getFilterFormValues,
@@ -192,6 +196,25 @@ describe('<FilterForm />', () => {
         await screen.findByText('1-10 of 13');
         expect(screen.queryByText('Nested')).toBeNull();
         expect(screen.queryByLabelText('Nested')).toBeNull();
+    });
+
+    it('should provide a FormGroupContext', async () => {
+        render(<WithArrayInput />);
+
+        fireEvent.click(await screen.findByLabelText('Add'));
+        fireEvent.change((await screen.findAllByLabelText('Title'))[0], {
+            target: { value: 'Sint dignissimos in architecto aut' },
+        });
+        fireEvent.click(await screen.findByLabelText('Add'));
+
+        await waitFor(() => {
+            expect(screen.getAllByText('Title')).toHaveLength(3);
+        });
+        fireEvent.change((await screen.findAllByLabelText('Title'))[1], {
+            target: { value: 'Sed quo et et fugiat modi' },
+        });
+
+        await screen.findByText('1-2 of 2');
     });
 
     describe('mergeInitialValuesWithDefaultValues', () => {

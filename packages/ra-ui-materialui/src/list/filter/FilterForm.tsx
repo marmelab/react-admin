@@ -9,6 +9,7 @@ import {
 import PropTypes from 'prop-types';
 import { styled } from '@mui/material/styles';
 import {
+    FormGroupsProvider,
     LabelPrefixContextProvider,
     ListFilterContextValue,
     useListContext,
@@ -84,11 +85,13 @@ export const FilterForm = (props: FilterFormProps) => {
 
     return (
         <FormProvider {...form}>
-            <FilterFormBase
-                onSubmit={handleFormSubmit}
-                filters={filters}
-                {...rest}
-            />
+            <FormGroupsProvider>
+                <FilterFormBase
+                    onSubmit={handleFormSubmit}
+                    filters={filters}
+                    {...rest}
+                />
+            </FormGroupsProvider>
         </FormProvider>
     );
 };
