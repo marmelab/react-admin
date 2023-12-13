@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ListBase } from 'ra-core';
+import { ListBase, memoryStore } from 'ra-core';
 import {
     Admin,
     Resource,
@@ -14,7 +14,12 @@ import {
     SearchInput,
 } from 'react-admin';
 import fakerestDataProvider from 'ra-data-fakerest';
-import { AutocompleteArrayInput } from '../../input';
+import {
+    ArrayInput,
+    AutocompleteArrayInput,
+    SimpleFormIterator,
+} from '../../input';
+import { MemoryRouter } from 'react-router';
 
 export default {
     title: 'ra-ui-materialui/list/filter/FilterButton',
@@ -197,12 +202,43 @@ export const Basic = (args: { disableSaveQuery?: boolean }) => {
         <TextInput label="Nested" source="nested.foo" defaultValue="bar" />,
     ];
     return (
-        <Admin dataProvider={fakerestDataProvider(data)}>
-            <Resource
-                name="posts"
-                list={<PostList postFilters={postFilters} args={args} />}
-            />
-        </Admin>
+        <MemoryRouter>
+            <Admin
+                dataProvider={fakerestDataProvider(data)}
+                store={memoryStore()}
+            >
+                <Resource
+                    name="posts"
+                    list={<PostList postFilters={postFilters} args={args} />}
+                />
+            </Admin>
+        </MemoryRouter>
+    );
+};
+
+export const WithArrayInput = (args: { disableSaveQuery?: boolean }) => {
+    const postFilters: React.ReactElement[] = [
+        <ArrayInput source="title" label="Title include" alwaysOn>
+            <SimpleFormIterator disableReordering>
+                <TextInput source="" label="Title" helperText={false} />
+            </SimpleFormIterator>
+        </ArrayInput>,
+    ];
+    return (
+        <MemoryRouter>
+            <Admin
+                dataProvider={fakerestDataProvider(
+                    data,
+                    process.env.NODE_ENV !== 'test'
+                )}
+                store={memoryStore()}
+            >
+                <Resource
+                    name="posts"
+                    list={<PostList postFilters={postFilters} args={args} />}
+                />
+            </Admin>
+        </MemoryRouter>
     );
 };
 
@@ -211,12 +247,17 @@ export const DisabledFilters = (args: { disableSaveQuery?: boolean }) => {
         <TextInput label="Title" source="title" disabled={true} />,
     ];
     return (
-        <Admin dataProvider={fakerestDataProvider(data)}>
-            <Resource
-                name="posts"
-                list={<PostList postFilters={postFilters} args={args} />}
-            />
-        </Admin>
+        <MemoryRouter>
+            <Admin
+                dataProvider={fakerestDataProvider(data)}
+                store={memoryStore()}
+            >
+                <Resource
+                    name="posts"
+                    list={<PostList postFilters={postFilters} args={args} />}
+                />
+            </Admin>
+        </MemoryRouter>
     );
 };
 
@@ -242,12 +283,17 @@ export const WithSearchInput = (args: {
         />,
     ];
     return (
-        <Admin dataProvider={fakerestDataProvider(data)}>
-            <Resource
-                name="posts"
-                list={<PostList postFilters={postFilters} args={args} />}
-            />
-        </Admin>
+        <MemoryRouter>
+            <Admin
+                dataProvider={fakerestDataProvider(data)}
+                store={memoryStore()}
+            >
+                <Resource
+                    name="posts"
+                    list={<PostList postFilters={postFilters} args={args} />}
+                />
+            </Admin>
+        </MemoryRouter>
     );
 };
 
@@ -307,19 +353,22 @@ export const WithAutoCompleteArrayInput = (args: {
         />,
     ];
     return (
-        <Admin
-            dataProvider={withNestedFiltersSupportDataProvider()}
-            dashboard={Dashboard}
-        >
-            <Resource
-                name="posts"
-                list={
-                    <PostList
-                        postFilters={postFilters}
-                        args={{ disableSaveQuery: args.disableSaveQuery }}
-                    />
-                }
-            />
-        </Admin>
+        <MemoryRouter>
+            <Admin
+                dataProvider={withNestedFiltersSupportDataProvider()}
+                dashboard={Dashboard}
+                store={memoryStore()}
+            >
+                <Resource
+                    name="posts"
+                    list={
+                        <PostList
+                            postFilters={postFilters}
+                            args={{ disableSaveQuery: args.disableSaveQuery }}
+                        />
+                    }
+                />
+            </Admin>
+        </MemoryRouter>
     );
 };
