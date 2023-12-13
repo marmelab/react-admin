@@ -50,7 +50,7 @@ import { Identifier } from '..';
  * This hook uses react-query useMutation under the hood.
  * This means the state object contains mutate, isIdle, reset and other react-query methods.
  *
- * @see https://react-query-v5.tanstack.com/reference/useMutation
+ * @see https://tanstack.com/query/v5/docs/react/reference/useMutation
  *
  * @example // set params when calling the updateMany callback
  *
@@ -365,7 +365,7 @@ export const useUpdateMany = <
          *   [['posts', 'getMany'], [{ id: 1, title: 'Hello' }]],
          * ]
          *
-         * @see https://react-query-v5.tanstack.com/reference/QueryClient#queryclientgetqueriesdata
+         * @see https://tanstack.com/query/v5/docs/react/reference/QueryClient#queryclientgetqueriesdata
          */
         snapshot.current = queryKeys.reduce(
             (prev, queryKey) =>

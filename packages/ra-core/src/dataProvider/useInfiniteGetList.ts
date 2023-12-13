@@ -16,7 +16,7 @@ import { useEvent } from '../util';
  * Call the dataProvider.getList() method and return the resolved result
  * as well as the loading state. The return from useInfiniteGetList is equivalent to the return from react-hook form useInfiniteQuery.
  *
- * @see https://react-query-v5.tanstack.com/reference/useInfiniteQuery
+ * @see https://tanstack.com/query/v5/docs/react/reference/useInfiniteQuery
  *
  * This hook will return the cached result when called a second time
  * with the same parameters, until the response arrives.
