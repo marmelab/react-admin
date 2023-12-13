@@ -59,10 +59,10 @@ Additional props are passed to [react-hook-form's `useController` hook](https://
 ```jsx
 // in LatLongInput.js
 import TextField from '@mui/material/TextField';
-import { useInput, required } from 'react-admin';
+import { useInput, required, InputHelperText } from 'react-admin';
 
 const BoundedTextField = (props) => {
-    const { onChange, onBlur, label, ...rest } = props;
+    const { onChange, onBlur, label, helperText, ...rest } = props;
     const {
         field,
         fieldState: { isTouched, invalid, error },
@@ -81,12 +81,22 @@ const BoundedTextField = (props) => {
             {...field}
             label={label}
             error={(isTouched || isSubmitted) && invalid}
-            helperText={(isTouched || isSubmitted) && invalid ? error : ''}
+            helperText={helperText !== false || ((isTouched || isSubmitted) && invalid)
+                ? (
+                    <InputHelperText
+                        touched={isTouched || isSubmitted}
+                        error={error?.message}
+                        helperText={helperText}
+                    />
+                )
+                : ''
+            }
             required={isRequired}
             {...rest}
         />
     );
 };
+
 const LatLngInput = props => {
     const { source, ...rest } = props;
 
@@ -99,6 +109,7 @@ const LatLngInput = props => {
     );
 };
 ```
+
 ## Usage with Material UI `<Select>`
 
 ```jsx
