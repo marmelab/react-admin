@@ -82,6 +82,7 @@ const sanitizeRestProps = ({
     history = null,
     isFetching = null,
     isLoading = null,
+    isPending = null,
     location = null,
     match = null,
     mutationOptions = null,

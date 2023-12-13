@@ -75,6 +75,7 @@ export const ArrayInput = (props: ArrayInputProps) => {
         label,
         isFetching,
         isLoading,
+        isPending,
         children,
         helperText,
         record,
@@ -141,7 +142,7 @@ export const ArrayInput = (props: ArrayInputProps) => {
 
     const { isDirty, error } = getFieldState(source, formState);
 
-    if (isLoading) {
+    if (isPending) {
         return (
             <Labeled label={label} className={className}>
                 <LinearProgress />
@@ -219,6 +220,7 @@ export interface ArrayInputProps
     disabled?: boolean;
     isFetching?: boolean;
     isLoading?: boolean;
+    isPending?: boolean;
     record?: Partial<RaRecord>;
 }
 

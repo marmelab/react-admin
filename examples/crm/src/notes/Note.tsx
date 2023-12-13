@@ -40,7 +40,7 @@ export const Note = ({
     const record = useRecordContext();
     const notify = useNotify();
 
-    const [update, { isLoading }] = useUpdate();
+    const [update, { isPending }] = useUpdate();
 
     const [deleteNote] = useDelete(
         resource,
@@ -150,7 +150,7 @@ export const Note = ({
                             type="submit"
                             color="primary"
                             variant="contained"
-                            disabled={isLoading}
+                            disabled={isPending}
                         >
                             Update Note
                         </Button>

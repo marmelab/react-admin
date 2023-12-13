@@ -20,7 +20,7 @@ const AcceptButton = () => {
     const redirectTo = useRedirect();
     const record = useRecordContext<Review>();
 
-    const [approve, { isLoading }] = useUpdate(
+    const [approve, { isPending }] = useUpdate(
         'reviews',
         { id: record.id, data: { status: 'accepted' }, previousData: record },
         {
@@ -49,7 +49,7 @@ const AcceptButton = () => {
             startIcon={
                 <ThumbUp sx={{ color: theme => theme.palette.success.main }} />
             }
-            disabled={isLoading}
+            disabled={isPending}
         >
             {translate('resources.reviews.action.accept')}
         </Button>

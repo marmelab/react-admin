@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react';
 import PropTypes from 'prop-types';
-import { UseQueryOptions } from 'react-query';
+import { UseQueryOptions } from '@tanstack/react-query';
 import { Typography } from '@mui/material';
 import {
     useReferenceOneFieldController,
@@ -48,8 +48,9 @@ export const ReferenceOneField = <
     const translate = useTranslate();
 
     const {
-        isLoading,
         isFetching,
+        isLoading,
+        isPending,
         referenceRecord,
         error,
         refetch,
@@ -75,7 +76,7 @@ export const ReferenceOneField = <
                           : link,
               });
 
-    return !record || (!isLoading && referenceRecord == null) ? (
+    return !record || (!isPending && referenceRecord == null) ? (
         emptyText ? (
             <Typography component="span" variant="body2">
                 {emptyText && translate(emptyText, { _: emptyText })}
@@ -85,6 +86,7 @@ export const ReferenceOneField = <
         <ResourceContextProvider value={reference}>
             <ReferenceFieldView
                 isLoading={isLoading}
+                isPending={isPending}
                 isFetching={isFetching}
                 referenceRecord={referenceRecord}
                 resourceLinkPath={resourceLinkPath}

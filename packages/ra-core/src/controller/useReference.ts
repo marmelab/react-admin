@@ -1,15 +1,18 @@
 import { RaRecord, Identifier } from '../types';
 import { UseGetManyHookValue, useGetManyAggregate } from '../dataProvider';
-import { UseQueryOptions } from 'react-query';
+import { UseQueryOptions } from '@tanstack/react-query';
 
 interface UseReferenceProps<RecordType extends RaRecord = any> {
     id: Identifier;
     reference: string;
-    options?: UseQueryOptions<RecordType[], Error> & { meta?: any };
+    options?: Omit<UseQueryOptions<RecordType[]>, 'queryFn' | 'queryKey'> & {
+        meta?: any;
+    };
 }
 
 export interface UseReferenceResult<RecordType extends RaRecord = any> {
     isLoading: boolean;
+    isPending: boolean;
     isFetching: boolean;
     referenceRecord?: RecordType;
     error?: any;
@@ -50,14 +53,24 @@ export const useReference = <RecordType extends RaRecord = RaRecord>({
     options = {},
 }: UseReferenceProps<RecordType>): UseReferenceResult<RecordType> => {
     const { meta, ...otherQueryOptions } = options;
-    const { data, error, isLoading, isFetching, refetch } = useGetManyAggregate<
-        RecordType
-    >(reference, { ids: [id], meta }, otherQueryOptions);
+    const {
+        data,
+        error,
+        isLoading,
+        isFetching,
+        isPending,
+        refetch,
+    } = useGetManyAggregate<RecordType>(
+        reference,
+        { ids: [id], meta },
+        otherQueryOptions
+    );
     return {
         referenceRecord: error ? undefined : data ? data[0] : undefined,
         refetch,
         error,
         isLoading,
         isFetching,
+        isPending,
     };
 };

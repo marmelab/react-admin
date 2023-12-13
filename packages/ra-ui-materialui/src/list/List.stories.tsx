@@ -102,8 +102,8 @@ const dataProvider = fakeRestDataProvider(data);
 const history = createMemoryHistory({ initialEntries: ['/books'] });
 
 const BookList = () => {
-    const { data, error, isLoading } = useListContext();
-    if (isLoading) {
+    const { data, error, isPending } = useListContext();
+    if (isPending) {
         return <div>Loading...</div>;
     }
     if (error) {

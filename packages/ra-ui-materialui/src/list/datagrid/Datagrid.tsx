@@ -86,7 +86,7 @@ const defaultBulkActionButtons = <BulkDeleteButton />;
  * const sort = { field: 'published_at', order: 'DESC' };
  *
  * export const MyCustomList = (props) => {
- *     const { data, total, isLoading } = useGetList(
+ *     const { data, total, isPending } = useGetList(
  *         'posts',
  *         { pagination: { page: 1, perPage: 10 }, sort: sort }
  *     );
@@ -95,7 +95,7 @@ const defaultBulkActionButtons = <BulkDeleteButton />;
  *         <Datagrid
  *             data={data}
  *             total={total}
- *             isLoading={isLoading}
+ *             isPending={isPending}
  *             sort={sort}
  *             selectedIds={[]}
  *             setSort={() => {
@@ -140,7 +140,7 @@ export const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
     const {
         sort,
         data,
-        isLoading,
+        isPending,
         onSelect,
         onToggleItem,
         selectedIds,
@@ -197,7 +197,7 @@ export const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
         [data, isRowSelectable, onSelect, onToggleItem, selectedIds]
     );
 
-    if (isLoading === true) {
+    if (isPending === true) {
         return (
             <DatagridLoading
                 className={className}
@@ -574,6 +574,7 @@ export interface DatagridProps<RecordType extends RaRecord = any>
     sort?: SortPayload;
     data?: RecordType[];
     isLoading?: boolean;
+    isPending?: boolean;
     onSelect?: (ids: Identifier[]) => void;
     onToggleItem?: (id: Identifier) => void;
     setSort?: (sort: SortPayload) => void;

@@ -346,14 +346,16 @@ describe('<ArrayInput />', () => {
         });
         it('should turn form tab in red if the array is required and empty', async () => {
             render(<ValidationInFormTab />);
-            const input = screen.getByLabelText('Title');
-            userEvent.type(input, 'a');
-            const SaveButton = screen.getByText('Save');
-            fireEvent.click(SaveButton);
+            userEvent.type(screen.getByLabelText('Title'), 'a');
+            await screen.findByDisplayValue('a');
+            fireEvent.click(screen.getByText('Save'));
             const formTab = await screen.findByText('Main');
-            expect(
-                formTab.classList.contains('RaTabbedForm-errorTabButton')
-            ).toBe(true);
+            await screen.findByText('Required');
+            await waitFor(() => {
+                expect(
+                    formTab.classList.contains('RaTabbedForm-errorTabButton')
+                ).toBe(true);
+            });
             expect(formTab.classList.contains('error')).toBe(true);
         });
     });

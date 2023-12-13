@@ -305,11 +305,11 @@ describe('<SelectArrayInput />', () => {
             });
         });
 
-        it('should not render a LinearProgress if loading is true and a second has not passed yet', () => {
+        it('should not render a LinearProgress isPending is true and a second has not passed yet', () => {
             render(
                 <AdminContext dataProvider={testDataProvider()}>
                     <SimpleForm onSubmit={jest.fn()}>
-                        <SelectArrayInput {...defaultProps} isLoading />
+                        <SelectArrayInput {...defaultProps} isPending />
                     </SimpleForm>
                 </AdminContext>
             );
@@ -317,21 +317,21 @@ describe('<SelectArrayInput />', () => {
             expect(screen.queryByRole('progressbar')).toBeNull();
         });
 
-        it('should render a LinearProgress if loading is true and a second has passed', async () => {
+        it('should render a LinearProgress if isPending true and a second has passed', async () => {
             render(
                 <AdminContext dataProvider={testDataProvider()}>
                     <SimpleForm onSubmit={jest.fn()}>
-                        <SelectArrayInput {...defaultProps} isLoading />
+                        <SelectArrayInput {...defaultProps} isPending />
                     </SimpleForm>
                 </AdminContext>
             );
 
             await new Promise(resolve => setTimeout(resolve, 1001));
 
-            expect(screen.queryByRole('progressbar')).not.toBeNull();
+            await screen.findByRole('progressbar');
         });
 
-        it('should not render a LinearProgress if loading is false', () => {
+        it('should not render a LinearProgress if isPending is false', () => {
             render(
                 <AdminContext dataProvider={testDataProvider()}>
                     <SimpleForm onSubmit={jest.fn()}>
@@ -370,8 +370,10 @@ describe('<SelectArrayInput />', () => {
 
         fireEvent.click(screen.getByText('ra.action.create'));
         await new Promise(resolve => setTimeout(resolve));
-        // 2 because there is both the chip for the new selected item and the option (event if hidden)
-        expect(screen.queryAllByText(newChoice.name).length).toEqual(2);
+        await waitFor(() => {
+            // 2 because there is both the chip for the new selected item and the option (event if hidden)
+            expect(screen.queryAllByText(newChoice.name).length).toEqual(2);
+        });
     });
 
     it('should support creation of a new choice through the onCreate event with a promise', async () => {
@@ -447,8 +449,10 @@ describe('<SelectArrayInput />', () => {
         fireEvent.click(screen.getByText('ra.action.create'));
         await new Promise(resolve => setTimeout(resolve));
         input.blur();
-        // 2 because there is both the chip for the new selected item and the option (event if hidden)
-        expect(screen.queryAllByText(newChoice.name.en).length).toEqual(2);
+        await waitFor(() => {
+            // 2 because there is both the chip for the new selected item and the option (event if hidden)
+            expect(screen.queryAllByText(newChoice.name.en).length).toEqual(2);
+        });
     });
 
     it('should support creation of a new choice with function optionText', async () => {
@@ -479,8 +483,10 @@ describe('<SelectArrayInput />', () => {
         fireEvent.click(screen.getByText('ra.action.create'));
         await new Promise(resolve => setTimeout(resolve));
         input.blur();
-        // 2 because there is both the chip for the new selected item and the option (event if hidden)
-        expect(screen.queryAllByText(newChoice.name).length).toEqual(2);
+        await waitFor(() => {
+            // 2 because there is both the chip for the new selected item and the option (event if hidden)
+            expect(screen.queryAllByText(newChoice.name).length).toEqual(2);
+        });
     });
 
     it('should support creation of a new choice through the create element', async () => {
@@ -518,11 +524,13 @@ describe('<SelectArrayInput />', () => {
         fireEvent.click(screen.getByText('Get the kid'));
         input.blur();
 
-        // 2 because there is both the chip for the new selected item and the option (event if hidden)
-        expect(screen.queryAllByText(newChoice.name).length).toEqual(2);
+        await waitFor(() => {
+            // 2 because there is both the chip for the new selected item and the option (event if hidden)
+            expect(screen.queryAllByText(newChoice.name).length).toEqual(2);
+        });
     });
 
-    it('should recive an event object on change', async () => {
+    it('should receive an event object on change', async () => {
         const choices = [...defaultProps.choices];
         const onChange = jest.fn();
 

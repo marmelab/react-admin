@@ -26,10 +26,14 @@
         "watch": "tsc --outDir dist/esm --module es2015 --watch"
     },
     "devDependencies": {
-        "@mui/icons-material": "^5.0.1",
-        "@mui/material": "^5.0.2",
-        "@testing-library/react": "^11.2.3",
+        "@mui/icons-material": "^5.14.18",
+        "@mui/material": "^5.14.18",
+        "@testing-library/react": "^14.1.2",
         "@types/dompurify": "^3.0.2",
+        "@types/react": "^18.2.37",
+        "@types/react-dom": "^18.2.16",
+        "@types/react-is": "^18.2.4",
+        "@types/react-transition-group": "^4.4.9",
         "cross-env": "^5.2.0",
         "expect": "^27.4.6",
         "file-api": "~0.10.4",
@@ -38,19 +42,19 @@
         "ra-core": "^4.15.5",
         "ra-i18n-polyglot": "^4.15.5",
         "ra-language-english": "^4.15.5",
-        "react": "^17.0.0",
-        "react-dom": "^17.0.0",
+        "react": "^18.0.0",
+        "react-dom": "^18.2.0",
         "react-hook-form": "^7.43.9",
-        "react-is": "^17.0.0",
+        "react-is": "^18.2.0",
         "react-router": "^6.1.0",
         "react-router-dom": "^6.1.0",
-        "react-test-renderer": "~16.8.6",
+        "react-test-renderer": "^18.2.0",
         "rimraf": "^3.0.2",
         "typescript": "^5.1.3"
     },
     "peerDependencies": {
         "@mui/icons-material": "^5.0.1",
-        "@mui/material": "^5.0.2",
+        "@mui/material": "^5.0.1",
         "ra-core": "^4.0.0",
         "react": "^16.9.0 || ^17.0.0 || ^18.0.0",
         "react-dom": "^16.9.0 || ^17.0.0 || ^18.0.0",
@@ -60,6 +64,7 @@
         "react-router-dom": "^6.1.0"
     },
     "dependencies": {
+        "@tanstack/react-query": "^5.8.4",
         "autosuggest-highlight": "^3.1.1",
         "clsx": "^1.1.1",
         "css-mediaquery": "^0.1.2",
@@ -68,12 +73,11 @@
         "inflection": "~1.12.0",
         "jsonexport": "^3.2.0",
         "lodash": "~4.17.5",
-        "prop-types": "^15.7.0",
+        "prop-types": "^15.8.1",
         "query-string": "^7.1.1",
         "react-dropzone": "^12.0.4",
         "react-error-boundary": "^3.1.4",
-        "react-query": "^3.32.1",
-        "react-transition-group": "^4.4.1"
+        "react-transition-group": "^4.4.5"
     },
     "gitHead": "b227592132da6ae5f01438fa8269e04596cdfdd8"
 }

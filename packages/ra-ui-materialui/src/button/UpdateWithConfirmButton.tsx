@@ -18,7 +18,7 @@ import {
 import { Confirm } from '../layout';
 import { Button, ButtonProps } from './Button';
 import { BulkActionProps } from '../types';
-import { UseMutationOptions } from 'react-query';
+import { UseMutationOptions } from '@tanstack/react-query';
 
 export const UpdateWithConfirmButton = (
     props: UpdateWithConfirmButtonProps
@@ -73,7 +73,17 @@ export const UpdateWithConfirmButton = (
         ...otherMutationOptions
     } = mutationOptions;
 
-    const [updateMany, { isLoading }] = useUpdate();
+    const [update, { isPending }] = useUpdate(
+        resource,
+        { id: record?.id, data, meta: mutationMeta, previousData: record },
+        {
+            onSuccess,
+            onError,
+            onSettled,
+            mutationMode,
+            ...otherMutationOptions,
+        }
+    );
 
     const handleClick = e => {
         setOpen(true);
@@ -85,17 +95,12 @@ export const UpdateWithConfirmButton = (
     };
 
     const handleUpdate = e => {
-        updateMany(
-            resource,
-            { id: record.id, data, meta: mutationMeta, previousData: record },
-            {
-                onSuccess,
-                onError,
-                onSettled,
-                mutationMode,
-                ...otherMutationOptions,
-            }
-        );
+        update(resource, {
+            id: record?.id,
+            data,
+            meta: mutationMeta,
+            previousData: record,
+        });
 
         if (typeof onClick === 'function') {
             onClick(e);
@@ -113,7 +118,7 @@ export const UpdateWithConfirmButton = (
             </StyledButton>
             <Confirm
                 isOpen={isOpen}
-                loading={isLoading}
+                loading={isPending}
                 title={confirmTitle}
                 content={confirmContent}
                 translateOptions={{

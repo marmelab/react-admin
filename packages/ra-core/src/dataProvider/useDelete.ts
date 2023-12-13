@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useMemo, useRef } from 'react';
 import {
     useMutation,
     useQueryClient,
@@ -7,7 +7,8 @@ import {
     MutateOptions,
     QueryKey,
     UseInfiniteQueryResult,
-} from 'react-query';
+    InfiniteData,
+} from '@tanstack/react-query';
 
 import { useDataProvider } from './useDataProvider';
 import undoableEventEmitter from './undoableEventEmitter';
@@ -33,21 +34,21 @@ import { useEvent } from '../util';
  * @prop params.id The resource identifier, e.g. 123
  * @prop params.previousData The record before the update is applied
  *
- * @returns The current mutation state. Destructure as [deleteOne, { data, error, isLoading }].
+ * @returns The current mutation state. Destructure as [deleteOne, { data, error, isPending }].
  *
  * The return value updates according to the request state:
  *
- * - initial: [deleteOne, { isLoading: false, isIdle: true }]
- * - start:   [deleteOne, { isLoading: true }]
- * - success: [deleteOne, { data: [data from response], isLoading: false, isSuccess: true }]
- * - error:   [deleteOne, { error: [error from response], isLoading: false, isError: true }]
+ * - initial: [deleteOne, { isPending: false, isIdle: true }]
+ * - start:   [deleteOne, { isPending: true }]
+ * - success: [deleteOne, { data: [data from response], isPending: false, isSuccess: true }]
+ * - error:   [deleteOne, { error: [error from response], isPending: false, isError: true }]
  *
  * The deleteOne() function must be called with a resource and a parameter object: deleteOne(resource, { id, previousData, meta }, options)
  *
  * This hook uses react-query useMutation under the hood.
  * This means the state object contains mutate, isIdle, reset and other react-query methods.
  *
- * @see https://react-query-v3.tanstack.com/reference/useMutation
+ * @see https://tanstack.com/query/v5/docs/react/reference/useMutation
  *
  * @example // set params when calling the deleteOne callback
  *
@@ -55,12 +56,12 @@ import { useEvent } from '../util';
  *
  * const DeleteButton = () => {
  *     const record = useRecordContext();
- *     const [deleteOne, { isLoading, error }] = useDelete();
+ *     const [deleteOne, { isPending, error }] = useDelete();
  *     const handleClick = () => {
  *         deleteOne('likes', { id: record.id, previousData: record })
  *     }
  *     if (error) { return <p>ERROR</p>; }
- *     return <button disabled={isLoading} onClick={handleClick}>Delete</div>;
+ *     return <button disabled={isPending} onClick={handleClick}>Delete</div>;
  * };
  *
  * @example // set params when calling the hook
@@ -69,9 +70,9 @@ import { useEvent } from '../util';
  *
  * const DeleteButton = () => {
  *     const record = useRecordContext();
- *     const [deleteOne, { isLoading, error }] = useDelete('likes', { id: record.id, previousData: record });
+ *     const [deleteOne, { isPending, error }] = useDelete('likes', { id: record.id, previousData: record });
  *     if (error) { return <p>ERROR</p>; }
- *     return <button disabled={isLoading} onClick={() => deleteOne()}>Delete</button>;
+ *     return <button disabled={isPending} onClick={() => deleteOne()}>Delete</button>;
  * };
  *
  * @example // TypeScript
@@ -89,10 +90,13 @@ export const useDelete = <
     const dataProvider = useDataProvider();
     const queryClient = useQueryClient();
     const { id, previousData } = params;
-    const { mutationMode = 'pessimistic', ...reactMutationOptions } = options;
+    const { mutationMode = 'pessimistic', ...mutationOptions } = options;
     const mode = useRef<MutationMode>(mutationMode);
     const paramsRef = useRef<Partial<DeleteParams<RecordType>>>(params);
     const snapshot = useRef<Snapshot>([]);
+    const hasCallTimeOnError = useRef(false);
+    const hasCallTimeOnSuccess = useRef(false);
+    const hasCallTimeOnSettled = useRef(false);
 
     const updateCache = ({ resource, id }) => {
         // hack: only way to tell react-query not to fetch this query for the next 5 seconds
@@ -117,7 +121,7 @@ export const useDelete = <
         };
 
         queryClient.setQueriesData(
-            [resource, 'getList'],
+            { queryKey: [resource, 'getList'] },
             (res: GetListResult) => {
                 if (!res || !res.data) return res;
                 const newCollection = updateColl(res.data);
@@ -133,8 +137,12 @@ export const useDelete = <
             { updatedAt }
         );
         queryClient.setQueriesData(
-            [resource, 'getInfiniteList'],
-            (res: UseInfiniteQueryResult<GetInfiniteListResult>['data']) => {
+            { queryKey: [resource, 'getInfiniteList'] },
+            (
+                res: UseInfiniteQueryResult<
+                    InfiniteData<GetInfiniteListResult>
+                >['data']
+            ) => {
                 if (!res || !res.pages) return res;
                 return {
                     ...res,
@@ -158,13 +166,13 @@ export const useDelete = <
             { updatedAt }
         );
         queryClient.setQueriesData(
-            [resource, 'getMany'],
+            { queryKey: [resource, 'getMany'] },
             (coll: RecordType[]) =>
                 coll && coll.length > 0 ? updateColl(coll) : coll,
             { updatedAt }
         );
         queryClient.setQueriesData(
-            [resource, 'getManyReference'],
+            { queryKey: [resource, 'getManyReference'] },
             (res: GetListResult) => {
                 if (!res || !res.data) return res;
                 const newCollection = updateColl(res.data);
@@ -184,8 +192,8 @@ export const useDelete = <
         RecordType,
         MutationError,
         Partial<UseDeleteMutateParams<RecordType>>
-    >(
-        ({
+    >({
+        mutationFn: ({
             resource: callTimeResource = resource,
             id: callTimeId = paramsRef.current.id,
             previousData: callTimePreviousData = paramsRef.current.previousData,
@@ -198,113 +206,103 @@ export const useDelete = <
                     meta: callTimeMeta,
                 })
                 .then(({ data }) => data),
-        {
-            ...reactMutationOptions,
-            onMutate: async (
-                variables: Partial<UseDeleteMutateParams<RecordType>>
-            ) => {
-                if (reactMutationOptions.onMutate) {
-                    const userContext =
-                        (await reactMutationOptions.onMutate(variables)) || {};
-                    return {
-                        snapshot: snapshot.current,
-                        // @ts-ignore
-                        ...userContext,
-                    };
-                } else {
-                    // Return a context object with the snapshot value
-                    return { snapshot: snapshot.current };
-                }
-            },
-            onError: (
-                error: MutationError,
-                variables: Partial<UseDeleteMutateParams<RecordType>> = {},
-                context: { snapshot: Snapshot }
-            ) => {
+        ...mutationOptions,
+        onMutate: async (
+            variables: Partial<UseDeleteMutateParams<RecordType>>
+        ) => {
+            if (mutationOptions.onMutate) {
+                const userContext =
+                    (await mutationOptions.onMutate(variables)) || {};
+                return {
+                    snapshot: snapshot.current,
+                    // @ts-ignore
+                    ...userContext,
+                };
+            } else {
+                // Return a context object with the snapshot value
+                return { snapshot: snapshot.current };
+            }
+        },
+        onError: (
+            error: MutationError,
+            variables: Partial<UseDeleteMutateParams<RecordType>> = {},
+            context: { snapshot: Snapshot }
+        ) => {
+            if (mode.current === 'optimistic' || mode.current === 'undoable') {
+                // If the mutation fails, use the context returned from onMutate to rollback
+                context.snapshot.forEach(([key, value]) => {
+                    queryClient.setQueryData(key, value);
+                });
+            }
+
+            if (mutationOptions.onError && !hasCallTimeOnError.current) {
+                return mutationOptions.onError(error, variables, context);
+            }
+            // call-time error callback is executed by react-query
+        },
+        onSuccess: (
+            data: RecordType,
+            variables: Partial<UseDeleteMutateParams<RecordType>> = {},
+            context: unknown
+        ) => {
+            if (mode.current === 'pessimistic') {
+                // update the getOne and getList query cache with the new result
+                const {
+                    resource: callTimeResource = resource,
+                    id: callTimeId = id,
+                } = variables;
+                updateCache({
+                    resource: callTimeResource,
+                    id: callTimeId,
+                });
+
                 if (
-                    mode.current === 'optimistic' ||
-                    mode.current === 'undoable'
+                    mutationOptions.onSuccess &&
+                    !hasCallTimeOnSuccess.current
                 ) {
-                    // If the mutation fails, use the context returned from onMutate to rollback
-                    context.snapshot.forEach(([key, value]) => {
-                        queryClient.setQueryData(key, value);
-                    });
+                    mutationOptions.onSuccess(data, variables, context);
                 }
+                // call-time success callback is executed by react-query
+            }
+        },
+        onSettled: (
+            data: RecordType,
+            error: MutationError,
+            variables: Partial<UseDeleteMutateParams<RecordType>> = {},
+            context: { snapshot: Snapshot }
+        ) => {
+            if (mode.current === 'optimistic' || mode.current === 'undoable') {
+                // Always refetch after error or success:
+                context.snapshot.forEach(([queryKey]) => {
+                    queryClient.invalidateQueries({ queryKey });
+                });
+            }
 
-                if (reactMutationOptions.onError) {
-                    return reactMutationOptions.onError(
-                        error,
-                        variables,
-                        context
-                    );
-                }
-                // call-time error callback is executed by react-query
-            },
-            onSuccess: (
-                data: RecordType,
-                variables: Partial<UseDeleteMutateParams<RecordType>> = {},
-                context: unknown
-            ) => {
-                if (mode.current === 'pessimistic') {
-                    // update the getOne and getList query cache with the new result
-                    const {
-                        resource: callTimeResource = resource,
-                        id: callTimeId = id,
-                    } = variables;
-                    updateCache({
-                        resource: callTimeResource,
-                        id: callTimeId,
-                    });
-
-                    if (reactMutationOptions.onSuccess) {
-                        reactMutationOptions.onSuccess(
-                            data,
-                            variables,
-                            context
-                        );
-                    }
-                    // call-time success callback is executed by react-query
-                }
-            },
-            onSettled: (
-                data: RecordType,
-                error: MutationError,
-                variables: Partial<UseDeleteMutateParams<RecordType>> = {},
-                context: { snapshot: Snapshot }
-            ) => {
-                if (
-                    mode.current === 'optimistic' ||
-                    mode.current === 'undoable'
-                ) {
-                    // Always refetch after error or success:
-                    context.snapshot.forEach(([key]) => {
-                        queryClient.invalidateQueries(key);
-                    });
-                }
-
-                if (reactMutationOptions.onSettled) {
-                    return reactMutationOptions.onSettled(
-                        data,
-                        error,
-                        variables,
-                        context
-                    );
-                }
-            },
-        }
-    );
+            if (mutationOptions.onSettled && !hasCallTimeOnSettled.current) {
+                return mutationOptions.onSettled(
+                    data,
+                    error,
+                    variables,
+                    context
+                );
+            }
+        },
+    });
 
     const mutate = async (
         callTimeResource: string = resource,
         callTimeParams: Partial<DeleteParams<RecordType>> = {},
-        updateOptions: MutateOptions<
+        callTimeOptions: MutateOptions<
             RecordType,
             MutationError,
             Partial<UseDeleteMutateParams<RecordType>>,
             unknown
         > & { mutationMode?: MutationMode } = {}
     ) => {
-        const { mutationMode, onSuccess, onSettled, onError } = updateOptions;
+        const { mutationMode, ...otherCallTimeOptions } = callTimeOptions;
+        hasCallTimeOnError.current = !!callTimeOptions.onError;
+        hasCallTimeOnSuccess.current = !!callTimeOptions.onSuccess;
+        hasCallTimeOnSettled.current = !!callTimeOptions.onSettled;
 
         // store the hook time params *at the moment of the call*
         // because they may change afterwards, which would break the undoable mode
@@ -318,7 +316,7 @@ export const useDelete = <
         if (mode.current === 'pessimistic') {
             return mutation.mutate(
                 { resource: callTimeResource, ...callTimeParams },
-                { onSuccess, onSettled, onError }
+                otherCallTimeOptions
             );
         }
 
@@ -327,7 +325,7 @@ export const useDelete = <
             previousData: callTimePreviousData = previousData,
         } = callTimeParams;
 
-        // optimistic update as documented in https://react-query-v3.tanstack.com/guides/optimistic-updates
+        // optimistic update as documented in https://react-query-v5.tanstack.com/guides/optimistic-updates
         // except we do it in a mutate wrapper instead of the onMutate callback
         // to have access to success side effects
 
@@ -349,16 +347,19 @@ export const useDelete = <
          *   [['posts', 'getMany'], [{ id: 1, title: 'Hello' }]],
          * ]
          *
-         * @see https://react-query-v3.tanstack.com/reference/QueryClient#queryclientgetqueriesdata
+         * @see https://tanstack.com/query/v5/docs/react/reference/QueryClient#queryclientgetqueriesdata
          */
         snapshot.current = queryKeys.reduce(
-            (prev, curr) => prev.concat(queryClient.getQueriesData(curr)),
+            (prev, queryKey) =>
+                prev.concat(queryClient.getQueriesData({ queryKey })),
             [] as Snapshot
         );
 
         // Cancel any outgoing re-fetches (so they don't overwrite our optimistic update)
         await Promise.all(
-            snapshot.current.map(([key]) => queryClient.cancelQueries(key))
+            snapshot.current.map(([queryKey]) =>
+                queryClient.cancelQueries({ queryKey })
+            )
         );
 
         // Optimistically update to the new value
@@ -368,21 +369,20 @@ export const useDelete = <
         });
 
         // run the success callbacks during the next tick
-        if (onSuccess) {
+        if (callTimeOptions.onSuccess) {
             setTimeout(
                 () =>
-                    onSuccess(
+                    callTimeOptions.onSuccess(
                         callTimePreviousData,
                         { resource: callTimeResource, ...callTimeParams },
                         { snapshot: snapshot.current }
                     ),
                 0
             );
-        }
-        if (reactMutationOptions.onSuccess) {
+        } else if (mutationOptions.onSuccess) {
             setTimeout(
                 () =>
-                    reactMutationOptions.onSuccess(
+                    mutationOptions.onSuccess(
                         callTimePreviousData,
                         { resource: callTimeResource, ...callTimeParams },
                         { snapshot: snapshot.current }
@@ -395,7 +395,10 @@ export const useDelete = <
             // call the mutate method without success side effects
             return mutation.mutate(
                 { resource: callTimeResource, ...callTimeParams },
-                { onSettled, onError }
+                {
+                    onSettled: callTimeOptions.onSettled,
+                    onError: callTimeOptions.onError,
+                }
             );
         } else {
             // undoable mutation: register the mutation for later
@@ -409,14 +412,25 @@ export const useDelete = <
                     // call the mutate method without success side effects
                     mutation.mutate(
                         { resource: callTimeResource, ...callTimeParams },
-                        { onSettled, onError }
+                        {
+                            onSettled: callTimeOptions.onSettled,
+                            onError: callTimeOptions.onError,
+                        }
                     );
                 }
             });
         }
     };
 
-    return [useEvent(mutate), mutation];
+    const mutationResult = useMemo(
+        () => ({
+            isLoading: mutation.isPending,
+            ...mutation,
+        }),
+        [mutation]
+    );
+
+    return [useEvent(mutate), mutationResult];
 };
 
 type Snapshot = [key: QueryKey, value: any][];

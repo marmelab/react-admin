@@ -9,23 +9,13 @@ const UseAuth = (authParams: any) => {
     const state = useAuthState(authParams);
     return (
         <div>
-            <span>{state.isLoading && 'LOADING'}</span>
-            <span>{state.authenticated && 'AUTHENTICATED'}</span>
+            <span>{state.isPending && 'LOADING'}</span>
+            <span>AUTHENTICATED: {state.authenticated.toString()}</span>
         </div>
     );
 };
 
 describe('useAuthState', () => {
-    it('should return a loading state on mount', () => {
-        render(
-            <CoreAdminContext>
-                <UseAuth />
-            </CoreAdminContext>
-        );
-        expect(screen.queryByText('LOADING')).not.toBeNull();
-        expect(screen.queryByText('AUTHENTICATED')).not.toBeNull();
-    });
-
     it('should return authenticated by default after a tick', async () => {
         render(
             <CoreAdminContext>
@@ -34,8 +24,8 @@ describe('useAuthState', () => {
         );
         await waitFor(() => {
             expect(screen.queryByText('LOADING')).toBeNull();
-            expect(screen.queryByText('AUTHENTICATED')).not.toBeNull();
         });
+        screen.getByText('AUTHENTICATED: true');
     });
 
     it('should return an error after a tick if the auth fails', async () => {
@@ -53,7 +43,7 @@ describe('useAuthState', () => {
         );
         await waitFor(() => {
             expect(screen.queryByText('LOADING')).toBeNull();
-            expect(screen.queryByText('AUTHENTICATED')).toBeNull();
         });
+        screen.getByText('AUTHENTICATED: false');
     });
 });

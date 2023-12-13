@@ -132,7 +132,7 @@ const BooksButton = () => {
 
 const AuthorList = () => (
     <List>
-        <Datagrid>
+        <Datagrid rowClick={false}>
             <TextField source="id" />
             <TextField source="firstName" />
             <TextField source="lastName" />

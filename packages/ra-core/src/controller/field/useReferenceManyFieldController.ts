@@ -34,7 +34,7 @@ const defaultFilter = {};
  * Uses dataProvider.getManyReference() internally.
  *
  * @example // fetch the comments related to the current post
- * const { isLoading, data } = useReferenceManyFieldController({
+ * const { isPending, data } = useReferenceManyFieldController({
  *     reference: 'comments',
  *     target: 'post_id',
  *     record: { id: 123, title: 'hello, world' },
@@ -151,6 +151,7 @@ export const useReferenceManyFieldController = <
         error,
         isFetching,
         isLoading,
+        isPending,
         refetch,
     } = useGetManyReference<ReferenceRecordType>(
         reference,
@@ -163,7 +164,7 @@ export const useReferenceManyFieldController = <
         },
         {
             enabled: get(record, source) != null,
-            keepPreviousData: true,
+            placeholderData: previousData => previousData,
             onError: error =>
                 notify(
                     typeof error === 'string'
@@ -194,6 +195,7 @@ export const useReferenceManyFieldController = <
         hideFilter,
         isFetching,
         isLoading,
+        isPending,
         onSelect: selectionModifiers.select,
         onToggleItem: selectionModifiers.toggle,
         onUnselectItems: selectionModifiers.clearSelection,

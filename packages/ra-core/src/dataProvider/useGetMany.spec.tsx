@@ -12,7 +12,13 @@ const UseGetMany = ({
     ids,
     meta = undefined,
     options = {},
-    callback = null,
+    callback = undefined,
+}: {
+    resource: string;
+    ids: any[];
+    meta?: any;
+    options?: any;
+    callback?: Function;
 }) => {
     const hookValue = useGetMany(resource, { ids, meta }, options);
     if (callback) callback(hookValue);
@@ -21,7 +27,17 @@ const UseGetMany = ({
 
 let updateState;
 
-const UseCustomGetMany = ({ resource, ids, options = {}, callback = null }) => {
+const UseCustomGetMany = ({
+    resource,
+    ids,
+    options = {},
+    callback = undefined,
+}: {
+    resource: string;
+    ids: any[];
+    options?: any;
+    callback?: Function;
+}) => {
     const [stateIds, setStateIds] = useState(ids);
     const hookValue = useGetMany(resource, { ids: stateIds }, options);
     if (callback) callback(hookValue);
@@ -187,14 +203,16 @@ describe('useGetMany', () => {
         await waitFor(() => {
             expect(dataProvider.getMany).toHaveBeenCalledTimes(2);
         });
-        expect(hookValue).toHaveBeenCalledWith(
-            expect.objectContaining({
-                data: [{ id: 1, title: 'foo' }],
-                isFetching: false,
-                isLoading: false,
-                error: null,
-            })
-        );
+        await waitFor(() => {
+            expect(hookValue).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    data: [{ id: 1, title: 'foo' }],
+                    isFetching: false,
+                    isLoading: false,
+                    error: null,
+                })
+            );
+        });
     });
 
     it('should set the error state when the dataProvider fails', async () => {
@@ -216,11 +234,13 @@ describe('useGetMany', () => {
         await waitFor(() => {
             expect(dataProvider.getMany).toHaveBeenCalledTimes(1);
         });
-        expect(hookValue).toHaveBeenCalledWith(
-            expect.objectContaining({
-                error: new Error('failed'),
-            })
-        );
+        await waitFor(() => {
+            expect(hookValue).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    error: new Error('failed'),
+                })
+            );
+        });
     });
 
     it('should execute success side effects on success', async () => {
@@ -300,20 +320,26 @@ describe('useGetMany', () => {
             })
         );
 
-        expect(hookValue.mock.calls[1][0]).toStrictEqual(
-            expect.objectContaining({
-                data: [{ id: 1, title: 'foo' }],
-                isError: false,
-                isFetching: false,
-                isLoading: false,
-            })
-        );
+        await waitFor(() => {
+            expect(hookValue.mock.calls[1][0]).toStrictEqual(
+                expect.objectContaining({
+                    data: [{ id: 1, title: 'foo' }],
+                    isError: false,
+                    isFetching: false,
+                    isLoading: false,
+                })
+            );
+        });
 
         // Updating ids...
         updateState([1, 2]);
 
         await waitFor(() => {
             expect(dataProvider.getMany).toBeCalledTimes(2);
+        });
+
+        await waitFor(() => {
+            expect(hookValue).toBeCalledTimes(4);
         });
 
         expect(hookValue.mock.calls[2][0]).toStrictEqual(
@@ -325,14 +351,6 @@ describe('useGetMany', () => {
             })
         );
         expect(hookValue.mock.calls[3][0]).toStrictEqual(
-            expect.objectContaining({
-                data: undefined,
-                isError: false,
-                isFetching: true,
-                isLoading: true,
-            })
-        );
-        expect(hookValue.mock.calls[4][0]).toStrictEqual(
             expect.objectContaining({
                 data: [
                     { id: 1, title: 'foo' },

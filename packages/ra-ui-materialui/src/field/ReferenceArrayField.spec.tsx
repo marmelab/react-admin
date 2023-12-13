@@ -24,13 +24,13 @@ const theme = createTheme({});
 
 describe('<ReferenceArrayField />', () => {
     it('should render a loading indicator when related records are not yet fetched and a second has passed', async () => {
-        const { queryAllByRole } = render(
+        render(
             <ThemeProvider theme={theme}>
                 <ListContextProvider
                     value={{
                         resource: 'foo',
                         data: null,
-                        isLoading: true,
+                        isPending: true,
                     }}
                 >
                     <ReferenceArrayFieldView
@@ -47,7 +47,7 @@ describe('<ReferenceArrayField />', () => {
         );
 
         await new Promise(resolve => setTimeout(resolve, 1001));
-        expect(queryAllByRole('progressbar')).toHaveLength(1);
+        await screen.findByRole('progressbar');
     });
 
     it('should render a list of the child component', () => {

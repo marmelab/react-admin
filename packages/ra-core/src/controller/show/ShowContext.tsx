@@ -24,6 +24,7 @@ export const ShowContext = createContext<ShowControllerResult>({
     defaultTitle: null,
     isFetching: null,
     isLoading: null,
+    isPending: null,
     refetch: null,
     resource: null,
 });

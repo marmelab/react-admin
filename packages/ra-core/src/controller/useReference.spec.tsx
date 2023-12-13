@@ -129,6 +129,7 @@ describe('useReference', () => {
             referenceRecord: undefined,
             isFetching: true,
             isLoading: true,
+            isPending: true,
             error: null,
             refetch: expect.any(Function),
         });
@@ -136,6 +137,7 @@ describe('useReference', () => {
             referenceRecord: { id: 1, title: 'foo' },
             isFetching: false,
             isLoading: false,
+            isPending: false,
             error: null,
             refetch: expect.any(Function),
         });
@@ -167,6 +169,7 @@ describe('useReference', () => {
             referenceRecord: { id: 1, title: 'foo' },
             isFetching: true,
             isLoading: false,
+            isPending: false,
             error: null,
             refetch: expect.any(Function),
         });
@@ -174,6 +177,7 @@ describe('useReference', () => {
             referenceRecord: { id: 1, title: 'foo' },
             isFetching: false,
             isLoading: false,
+            isPending: false,
             error: null,
             refetch: expect.any(Function),
         });

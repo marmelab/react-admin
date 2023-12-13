@@ -3,6 +3,7 @@ import { DataProvider, withLifecycleCallbacks, HttpError } from 'react-admin';
 import get from 'lodash/get';
 import data from './data';
 import addUploadFeature from './addUploadFeature';
+import { queryClient } from './queryClient';
 
 const dataProvider = withLifecycleCallbacks(fakeRestProvider(data, true), [
     {
@@ -17,6 +18,8 @@ const dataProvider = withLifecycleCallbacks(fakeRestProvider(data, true), [
             await dp.deleteMany('comments', {
                 ids: comments.map(comment => comment.id),
             });
+            // The queryClient would be unaware of the deleted comments without this.
+            queryClient.invalidateQueries({ queryKey: ['comments'] });
             return { id };
         },
     },

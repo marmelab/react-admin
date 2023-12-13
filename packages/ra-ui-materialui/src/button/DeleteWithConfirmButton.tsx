@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import ActionDelete from '@mui/icons-material/Delete';
 import clsx from 'clsx';
 import inflection from 'inflection';
-import { UseMutationOptions } from 'react-query';
+import { UseMutationOptions } from '@tanstack/react-query';
 import {
     MutationMode,
     RaRecord,
@@ -42,7 +42,7 @@ export const DeleteWithConfirmButton = <RecordType extends RaRecord = any>(
 
     const {
         open,
-        isLoading,
+        isPending,
         handleDialogOpen,
         handleDialogClose,
         handleDelete,
@@ -69,7 +69,7 @@ export const DeleteWithConfirmButton = <RecordType extends RaRecord = any>(
             </Button>
             <Confirm
                 isOpen={open}
-                loading={isLoading}
+                loading={isPending}
                 title={confirmTitle}
                 content={confirmContent}
                 confirmColor={confirmColor}

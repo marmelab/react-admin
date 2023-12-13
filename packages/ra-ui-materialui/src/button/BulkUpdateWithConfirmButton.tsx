@@ -20,7 +20,7 @@ import {
 import { Confirm } from '../layout';
 import { Button, ButtonProps } from './Button';
 import { BulkActionProps } from '../types';
-import { UseMutationOptions } from 'react-query';
+import { UseMutationOptions } from '@tanstack/react-query';
 
 export const BulkUpdateWithConfirmButton = (
     props: BulkUpdateWithConfirmButtonProps
@@ -75,7 +75,7 @@ export const BulkUpdateWithConfirmButton = (
     } = props;
     const { meta: mutationMeta, ...otherMutationOptions } = mutationOptions;
 
-    const [updateMany, { isLoading }] = useUpdateMany(
+    const [updateMany, { isPending }] = useUpdateMany(
         resource,
         { ids: selectedIds, data, meta: mutationMeta },
         {
@@ -114,7 +114,7 @@ export const BulkUpdateWithConfirmButton = (
             </StyledButton>
             <Confirm
                 isOpen={isOpen}
-                loading={isLoading}
+                loading={isPending}
                 title={confirmTitle}
                 content={confirmContent}
                 translateOptions={{

@@ -5,7 +5,7 @@ import expect from 'expect';
 import { CoreAdminContext } from '../core';
 import { testDataProvider } from './testDataProvider';
 import { useDeleteMany } from './useDeleteMany';
-import { QueryClient } from 'react-query';
+import { QueryClient } from '@tanstack/react-query';
 
 describe('useDeleteMany', () => {
     it('returns a callback that can be used with update arguments', async () => {

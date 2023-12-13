@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { render, fireEvent, screen } from '@testing-library/react';
 import { MemoryRouter, Routes, Route } from 'react-router-dom';
-import { QueryClient } from 'react-query';
+import { QueryClient } from '@tanstack/react-query';
 import expect from 'expect';
 
 import { useGetOne } from '../dataProvider';

@@ -46,7 +46,7 @@ export const ReferenceManyCount = <RecordType extends RaRecord = RaRecord>(
     const oneSecondHasPassed = useTimeout(timeout);
     const createPath = useCreatePath();
 
-    const { isLoading, error, total } = useReferenceManyFieldController<
+    const { isPending, error, total } = useReferenceManyFieldController<
         RecordType
     >({
         filter,
@@ -61,7 +61,7 @@ export const ReferenceManyCount = <RecordType extends RaRecord = RaRecord>(
         target,
     });
 
-    const body = isLoading ? (
+    const body = isPending ? (
         oneSecondHasPassed ? (
             <CircularProgress size={14} />
         ) : (

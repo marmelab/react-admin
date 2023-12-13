@@ -8,7 +8,7 @@ import {
     useGetMany,
     ResourceDefinitionContextProvider,
 } from 'ra-core';
-import { QueryClient } from 'react-query';
+import { QueryClient } from '@tanstack/react-query';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import { ReferenceField } from './ReferenceField';
@@ -107,7 +107,7 @@ describe('<ReferenceField />', () => {
                 </ThemeProvider>
             );
             await new Promise(resolve => setTimeout(resolve, 1001));
-            expect(screen.queryByRole('progressbar')).not.toBeNull();
+            await screen.findByRole('progressbar');
             expect(screen.queryAllByRole('link')).toHaveLength(0);
         });
 
@@ -369,7 +369,7 @@ describe('<ReferenceField />', () => {
         );
         await new Promise(resolve => setTimeout(resolve, 10));
         expect(screen.queryByRole('progressbar')).toBeNull();
-        expect(screen.getByText('foo')).not.toBeNull();
+        await screen.findByText('foo');
         expect(screen.queryAllByRole('link')).toHaveLength(1);
         expect(screen.queryByRole('link')?.getAttribute('href')).toBe(
             '#/posts/123'

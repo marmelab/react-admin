@@ -20,7 +20,7 @@ import {
 import { Confirm } from '../layout';
 import { Button, ButtonProps } from './Button';
 import { BulkActionProps } from '../types';
-import { UseMutationOptions } from 'react-query';
+import { UseMutationOptions } from '@tanstack/react-query';
 
 export const BulkDeleteWithConfirmButton = (
     props: BulkDeleteWithConfirmButtonProps
@@ -43,7 +43,7 @@ export const BulkDeleteWithConfirmButton = (
     const resource = useResourceContext(props);
     const refresh = useRefresh();
     const translate = useTranslate();
-    const [deleteMany, { isLoading }] = useDeleteMany(
+    const [deleteMany, { isPending }] = useDeleteMany(
         resource,
         { ids: selectedIds, meta: mutationMeta },
         {
@@ -109,7 +109,7 @@ export const BulkDeleteWithConfirmButton = (
             </StyledButton>
             <Confirm
                 isOpen={isOpen}
-                loading={isLoading}
+                loading={isPending}
                 title={confirmTitle}
                 content={confirmContent}
                 confirmColor={confirmColor}

@@ -19,7 +19,7 @@ const postFilters = [
 
 export const PostList = () => (
     <List filters={postFilters}>
-        <Datagrid>
+        <Datagrid rowClick={false}>
             <TextField source="id" />
             <ReferenceField source="userId" reference="users" link="show" />
             <TextField source="title" />

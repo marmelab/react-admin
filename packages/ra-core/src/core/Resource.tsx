@@ -30,7 +30,8 @@ const getElement = (ElementOrComponent: ComponentType<any> | ReactElement) => {
     }
 
     if (isValidElementType(ElementOrComponent)) {
-        return <ElementOrComponent />;
+        const Element = ElementOrComponent as ComponentType<any>;
+        return <Element />;
     }
 
     return null;

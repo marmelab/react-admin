@@ -21,7 +21,7 @@ describe('<CoreAdminRoutes>', () => {
     };
 
     describe('With resources as regular children', () => {
-        it('should render resources and custom routes with and without layout', () => {
+        it('should render resources and custom routes with and without layout', async () => {
             const history = createMemoryHistory();
             render(
                 <CoreAdminContext
@@ -50,17 +50,17 @@ describe('<CoreAdminRoutes>', () => {
                     </CoreAdminRoutes>
                 </CoreAdminContext>
             );
-            expect(screen.getByText('Layout')).not.toBeNull();
+            await screen.findByText('Layout');
             history.push('/posts');
-            expect(screen.getByText('PostList')).not.toBeNull();
+            await screen.findByText('PostList');
             history.push('/comments');
-            expect(screen.getByText('CommentList')).not.toBeNull();
+            await screen.findByText('CommentList');
             history.push('/foo');
+            await screen.findByText('Foo');
             expect(screen.queryByText('Layout')).toBeNull();
-            expect(screen.getByText('Foo')).not.toBeNull();
             history.push('/bar');
-            expect(screen.getByText('Layout')).not.toBeNull();
-            expect(screen.getByText('Bar')).not.toBeNull();
+            await screen.findByText('Layout');
+            await screen.findByText('Bar');
         });
     });
 
@@ -102,17 +102,16 @@ describe('<CoreAdminRoutes>', () => {
                 </CoreAdminContext>
             );
             history.push('/foo');
+            await screen.findByText('Foo');
             expect(screen.queryByText('Layout')).toBeNull();
-            expect(screen.getByText('Foo')).not.toBeNull();
             history.push('/bar');
-            await waitFor(() => {
-                expect(screen.queryByText('Layout')).not.toBeNull();
-            });
-            expect(screen.getByText('Bar')).not.toBeNull();
+            await screen.findByText('Bar');
+            await screen.findByText('Layout');
+            await screen.findByText('Bar');
             history.push('/posts');
-            expect(screen.queryByText('PostList')).not.toBeNull();
+            await screen.findByText('PostList');
             history.push('/comments');
-            expect(screen.queryByText('CommentList')).not.toBeNull();
+            await screen.findByText('CommentList');
         });
 
         it('should render resources and custom routes with and without layout even without an authProvider', async () => {
@@ -152,17 +151,15 @@ describe('<CoreAdminRoutes>', () => {
                 </CoreAdminContext>
             );
             history.push('/foo');
+            await screen.findByText('Foo');
             expect(screen.queryByText('Layout')).toBeNull();
-            expect(screen.getByText('Foo')).not.toBeNull();
             history.push('/bar');
-            await waitFor(() => {
-                expect(screen.queryByText('Layout')).not.toBeNull();
-            });
-            expect(screen.getByText('Bar')).not.toBeNull();
+            await screen.findByText('Bar');
+            expect(screen.queryByText('Layout')).not.toBeNull();
             history.push('/posts');
-            expect(screen.queryByText('PostList')).not.toBeNull();
+            await screen.findByText('PostList');
             history.push('/comments');
-            expect(screen.queryByText('CommentList')).not.toBeNull();
+            await screen.findByText('CommentList');
         });
 
         it('should return loading while the function child is not resolved', async () => {
@@ -198,10 +195,10 @@ describe('<CoreAdminRoutes>', () => {
             // Timeout needed because we wait for a second before displaying the loading screen
             jest.advanceTimersByTime(1010);
             history.push('/posts');
-            expect(screen.queryByText('Loading')).not.toBeNull();
+            await screen.findByText('Loading');
             history.push('/foo');
+            await screen.findByText('Custom');
             expect(screen.queryByText('Loading')).toBeNull();
-            expect(screen.queryByText('Custom')).not.toBeNull();
             jest.useRealTimers();
         });
     });

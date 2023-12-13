@@ -1,10 +1,10 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import {
     useQuery,
     UseQueryOptions,
     UseQueryResult,
     useQueryClient,
-} from 'react-query';
+} from '@tanstack/react-query';
 
 import {
     RaRecord,
@@ -12,6 +12,7 @@ import {
     GetManyReferenceResult,
 } from '../types';
 import { useDataProvider } from './useDataProvider';
+import { useEvent } from '../util';
 
 /**
  * Call the dataProvider.getManyReference() method and return the resolved result
@@ -19,9 +20,9 @@ import { useDataProvider } from './useDataProvider';
  *
  * The return value updates according to the request state:
  *
- * - start: { isLoading: true, refetch }
- * - success: { data: [data from store], total: [total from response], isLoading: false, refetch }
- * - error: { error: [error from response], isLoading: false, refetch }
+ * - start: { isPending: true, refetch }
+ * - success: { data: [data from store], total: [total from response], isPending: false, refetch }
+ * - error: { error: [error from response], isPending: false, refetch }
  *
  * This hook will return the cached result when called a second time
  * with the same parameters, until the response arrives.
@@ -39,7 +40,7 @@ import { useDataProvider } from './useDataProvider';
  * @prop params.filter The request filters, e.g. { title: 'hello, world' }
  * @prop params.meta Optional meta parameters
  *
- * @returns The current request state. Destructure as { data, total, error, isLoading, refetch }.
+ * @returns The current request state. Destructure as { data, total, error, isPending, refetch }.
  *
  * @example
  *
@@ -48,11 +49,11 @@ import { useDataProvider } from './useDataProvider';
  * const PostComments = () => {
  *     const record = useRecordContext();
  *     // fetch all comments related to the current record
- *     const { data, isLoading, error } = useGetManyReference(
+ *     const { data, isPending, error } = useGetManyReference(
  *         'comments',
  *         { target: 'post_id', id: record.id, pagination: { page: 1, perPage: 10 }, sort: { field: 'published_at', order: 'DESC' } }
  *     );
- *     if (isLoading) { return <Loading />; }
+ *     if (isPending) { return <Loading />; }
  *     if (error) { return <p>ERROR</p>; }
  *     return <ul>{data.map(comment =>
  *         <li key={comment.id}>{comment.body}</li>
@@ -62,7 +63,7 @@ import { useDataProvider } from './useDataProvider';
 export const useGetManyReference = <RecordType extends RaRecord = any>(
     resource: string,
     params: Partial<GetManyReferenceParams> = {},
-    options?: UseQueryOptions<{ data: RecordType[]; total: number }, Error>
+    options: UseGetManyReferenceHookOptions<RecordType> = {}
 ): UseGetManyReferenceHookValue<RecordType> => {
     const {
         target,
@@ -74,17 +75,27 @@ export const useGetManyReference = <RecordType extends RaRecord = any>(
     } = params;
     const dataProvider = useDataProvider();
     const queryClient = useQueryClient();
+    const {
+        onError = noop,
+        onSuccess = noop,
+        onSettled = noop,
+        ...queryOptions
+    } = options;
+    const onSuccessEvent = useEvent(onSuccess);
+    const onErrorEvent = useEvent(onError);
+    const onSettledEvent = useEvent(onSettled);
+
     const result = useQuery<
         GetManyReferenceResult<RecordType>,
         Error,
         GetManyReferenceResult<RecordType>
-    >(
-        [
+    >({
+        queryKey: [
             resource,
             'getManyReference',
             { target, id, pagination, sort, filter, meta },
         ],
-        () => {
+        queryFn: () => {
             if (!target || id == null) {
                 // check at runtime to support partial parameters with the enabled option
                 return Promise.reject(new Error('target and id are required'));
@@ -104,19 +115,31 @@ export const useGetManyReference = <RecordType extends RaRecord = any>(
                     pageInfo,
                 }));
         },
-        {
-            onSuccess: value => {
-                // optimistically populate the getOne cache
-                value?.data?.forEach(record => {
-                    queryClient.setQueryData(
-                        [resource, 'getOne', { id: String(record.id), meta }],
-                        oldRecord => oldRecord ?? record
-                    );
-                });
-            },
-            ...options,
-        }
-    );
+        ...queryOptions,
+    });
+
+    useEffect(() => {
+        if (result.data === undefined) return;
+        // optimistically populate the getOne cache
+        result.data?.data?.forEach(record => {
+            queryClient.setQueryData(
+                [resource, 'getOne', { id: String(record.id), meta }],
+                oldRecord => oldRecord ?? record
+            );
+        });
+
+        onSuccessEvent(result.data);
+    }, [queryClient, meta, onSuccessEvent, resource, result.data]);
+
+    useEffect(() => {
+        if (result.error == null) return;
+        onErrorEvent(result.error);
+    }, [onErrorEvent, result.error]);
+
+    useEffect(() => {
+        if (result.status === 'pending') return;
+        onSettledEvent(result.data, result.error);
+    }, [onSettledEvent, result.data, result.error, result.status]);
 
     return useMemo(
         () =>
@@ -138,12 +161,28 @@ export const useGetManyReference = <RecordType extends RaRecord = any>(
     };
 };
 
+export type UseGetManyReferenceHookOptions<
+    RecordType extends RaRecord = any
+> = Omit<
+    UseQueryOptions<GetManyReferenceResult<RecordType>>,
+    'queryKey' | 'queryFn'
+> & {
+    onSuccess?: (data: GetManyReferenceResult<RecordType>) => void;
+    onError?: (error: Error) => void;
+    onSettled?: (
+        data?: GetManyReferenceResult<RecordType>,
+        error?: Error
+    ) => void;
+};
+
 export type UseGetManyReferenceHookValue<
     RecordType extends RaRecord = any
-> = UseQueryResult<RecordType[], Error> & {
+> = Omit<UseQueryResult<RecordType[]>, 'queryKey' | 'queryFn'> & {
     total?: number;
     pageInfo?: {
         hasNextPage?: boolean;
         hasPreviousPage?: boolean;
     };
 };
+
+const noop = () => undefined;

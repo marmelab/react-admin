@@ -146,6 +146,7 @@ export const AutocompleteInput = <
         inputText,
         isFetching: isFetchingProp,
         isLoading: isLoadingProp,
+        isPending: isPendingProp,
         isRequired: isRequiredOverride,
         label,
         limitChoicesToValue,
@@ -181,7 +182,7 @@ export const AutocompleteInput = <
 
     const {
         allChoices,
-        isLoading,
+        isPending,
         error: fetchError,
         resource,
         source,
@@ -191,6 +192,7 @@ export const AutocompleteInput = <
         choices: choicesProp,
         isFetching: isFetchingProp,
         isLoading: isLoadingProp,
+        isPending: isPendingProp,
         resource: resourceProp,
         source: sourceProp,
     });
@@ -630,7 +632,7 @@ If you provided a React element for the optionText prop, you must also provide t
                 getOptionLabel={getOptionLabel}
                 inputValue={filterValue}
                 loading={
-                    isLoading &&
+                    isPending &&
                     (!finalChoices || finalChoices.length === 0) &&
                     oneSecondHasPassed
                 }

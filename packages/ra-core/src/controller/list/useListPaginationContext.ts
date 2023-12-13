@@ -50,6 +50,7 @@ export const useListPaginationContext = (
  */
 const extractListPaginationContextProps = ({
     isLoading,
+    isPending,
     page,
     perPage,
     setPage,
@@ -60,6 +61,7 @@ const extractListPaginationContextProps = ({
     resource,
 }) => ({
     isLoading,
+    isPending,
     page,
     perPage,
     setPage,

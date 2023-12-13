@@ -59,7 +59,7 @@ export const ListGuesser = <RecordType extends RaRecord = any>(
             filter={filter}
             filterDefaultValues={filterDefaultValues}
             perPage={perPage}
-            queryOptions={{ keepPreviousData: false }}
+            queryOptions={{ placeholderData: null }}
             resource={resource}
             sort={sort}
         >

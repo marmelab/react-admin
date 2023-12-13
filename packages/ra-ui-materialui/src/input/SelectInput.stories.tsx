@@ -79,9 +79,9 @@ export const Disabled = () => (
     </Wrapper>
 );
 
-export const IsLoading = () => (
+export const IsPending = () => (
     <Wrapper>
-        <SelectInput source="gender" isLoading />
+        <SelectInput source="gender" isPending />
     </Wrapper>
 );
 
@@ -258,7 +258,7 @@ const history = createMemoryHistory({ initialEntries: ['/books/1'] });
 
 export const FetchChoices = () => {
     const BookAuthorsInput = () => {
-        const { data, isLoading } = useGetList('authors');
+        const { data, isPending } = useGetList('authors');
         return (
             <SelectInput
                 source="author"
@@ -266,7 +266,7 @@ export const FetchChoices = () => {
                 optionText={record =>
                     `${record.first_name} ${record.last_name}`
                 }
-                isLoading={isLoading}
+                isPending={isPending}
             />
         );
     };

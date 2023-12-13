@@ -1,4 +1,10 @@
-import { act, fireEvent, render, screen } from '@testing-library/react';
+import {
+    act,
+    fireEvent,
+    render,
+    screen,
+    waitFor,
+} from '@testing-library/react';
 import expect from 'expect';
 import React from 'react';
 import { Location, MemoryRouter, Route, Routes } from 'react-router-dom';
@@ -205,7 +211,7 @@ describe('useCreateController', () => {
             </CoreAdminContext>
         );
         await act(async () => saveCallback({ foo: 'bar' }));
-        expect(onSuccess).toHaveBeenCalled();
+        await waitFor(() => expect(onSuccess).toHaveBeenCalled());
         expect(notificationsSpy).toEqual([]);
     });
 
@@ -288,7 +294,7 @@ describe('useCreateController', () => {
             </CoreAdminContext>
         );
         await act(async () => saveCallback({ foo: 'bar' }));
-        expect(onError).toHaveBeenCalled();
+        await waitFor(() => expect(onError).toHaveBeenCalled());
         expect(notificationsSpy).toEqual([]);
     });
 

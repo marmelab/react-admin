@@ -60,6 +60,7 @@ export const useList = <RecordType extends RaRecord = any>(
         filter = defaultFilter,
         isFetching = false,
         isLoading = false,
+        isPending = false,
         page: initialPage = 1,
         perPage: initialPerPage = 1000,
         sort: initialSort,
@@ -73,7 +74,11 @@ export const useList = <RecordType extends RaRecord = any>(
 
     const [loadingState, setLoadingState] = useSafeSetState<boolean>(
         isLoading
-    ) as [boolean, (isFetching: boolean) => void];
+    ) as [boolean, (isLoading: boolean) => void];
+
+    const [pendingState, setPendingState] = useSafeSetState<boolean>(
+        isPending
+    ) as [boolean, (isPending: boolean) => void];
 
     const [finalItems, setFinalItems] = useSafeSetState<{
         data?: RecordType[];
@@ -243,6 +248,12 @@ export const useList = <RecordType extends RaRecord = any>(
         }
     }, [isLoading, loadingState, setLoadingState]);
 
+    useEffect(() => {
+        if (isPending !== pendingState) {
+            setPendingState(isPending);
+        }
+    }, [isPending, pendingState, setPendingState]);
+
     return {
         sort,
         data: finalItems?.data,
@@ -258,6 +269,7 @@ export const useList = <RecordType extends RaRecord = any>(
         hideFilter,
         isFetching: fetchingState,
         isLoading: loadingState,
+        isPending: pendingState,
         onSelect: selectionModifiers.select,
         onToggleItem: selectionModifiers.toggle,
         onUnselectItems: selectionModifiers.clearSelection,
@@ -281,6 +293,7 @@ export interface UseListOptions<RecordType extends RaRecord = any> {
     filter?: FilterPayload;
     isFetching?: boolean;
     isLoading?: boolean;
+    isPending?: boolean;
     page?: number;
     perPage?: number;
     sort?: SortPayload;

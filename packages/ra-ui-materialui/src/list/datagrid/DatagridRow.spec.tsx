@@ -3,6 +3,7 @@ import {
     render as baseRender,
     fireEvent,
     screen,
+    waitFor,
 } from '@testing-library/react';
 import { useLocation } from 'react-router-dom';
 import { ResourceDefinitionContextProvider, useRecordContext } from 'ra-core';
@@ -193,9 +194,11 @@ describe('<DatagridRow />', () => {
             );
             fireEvent.click(screen.getByText('hello'));
             await new Promise(resolve => setTimeout(resolve)); // waitFor one tick
-            expect(spy).toHaveBeenCalledWith(
-                expect.objectContaining({ pathname: '/bar/foo' })
-            );
+            await waitFor(() => {
+                expect(spy).toHaveBeenCalledWith(
+                    expect.objectContaining({ pathname: '/bar/foo' })
+                );
+            });
         });
 
         it('should not call push if onRowClick is false', () => {

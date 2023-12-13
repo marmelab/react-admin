@@ -3,7 +3,7 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 
 import { Basic, ErrorCase, ResetIdentity } from './useGetIdentity.stories';
 import useGetIdentity from './useGetIdentity';
-import { QueryClient, QueryClientProvider } from 'react-query';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import AuthContext from './AuthContext';
 
 describe('useGetIdentity', () => {
@@ -34,8 +34,8 @@ describe('useGetIdentity', () => {
             getPermissions: () => Promise.resolve(),
         };
         const Identity = () => {
-            const { data, error, isLoading } = useGetIdentity({ retry: false });
-            return isLoading ? (
+            const { data, error, isPending } = useGetIdentity({ retry: false });
+            return isPending ? (
                 <>Loading</>
             ) : error ? (
                 <>{`Error: ${error.message}`}</>
@@ -54,6 +54,6 @@ describe('useGetIdentity', () => {
             expect(screen.queryByText('Loading')).toBeNull();
         });
         expect(screen.queryByText(/Error/)).toBeNull();
-        expect(screen.queryByText('undefined')).not.toBeNull();
+        expect(screen.queryByText('null')).not.toBeNull();
     });
 });

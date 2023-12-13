@@ -14,7 +14,7 @@ import {
     RaRecord,
     UpdateManyParams,
 } from 'ra-core';
-import { UseMutationOptions } from 'react-query';
+import { UseMutationOptions } from '@tanstack/react-query';
 
 import { Button, ButtonProps } from './Button';
 import { BulkActionProps } from '../types';
@@ -67,7 +67,7 @@ export const BulkUpdateWithUndoButton = (
     } = props;
     const { meta: mutationMeta, ...otherMutationOptions } = mutationOptions;
 
-    const [updateMany, { isLoading }] = useUpdateMany(
+    const [updateMany, { isPending }] = useUpdateMany(
         resource,
         { ids: selectedIds, data, meta: mutationMeta },
         {
@@ -89,7 +89,7 @@ export const BulkUpdateWithUndoButton = (
         <StyledButton
             onClick={handleClick}
             label={label}
-            disabled={isLoading}
+            disabled={isPending}
             {...sanitizeRestProps(rest)}
         >
             {icon}

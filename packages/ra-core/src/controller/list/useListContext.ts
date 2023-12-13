@@ -48,8 +48,8 @@ import { RaRecord } from '../../types';
  * import { useListContext } from 'react-admin';
  *
  * const MyList = () => {
- *     const { data, isLoading } = useListContext();
- *     if (isLoading) {
+ *     const { data, isPending } = useListContext();
+ *     if (isPending) {
  *         return <>Loading...</>;
  *     }
  *     return (
@@ -125,6 +125,7 @@ const extractListContextProps = ({
     hideFilter,
     isFetching,
     isLoading,
+    isPending,
     onSelect,
     onToggleItem,
     onUnselectItems,
@@ -150,6 +151,7 @@ const extractListContextProps = ({
     hideFilter,
     isFetching,
     isLoading,
+    isPending,
     onSelect,
     onToggleItem,
     onUnselectItems,

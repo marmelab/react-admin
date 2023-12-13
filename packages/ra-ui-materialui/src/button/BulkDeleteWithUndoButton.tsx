@@ -16,7 +16,7 @@ import {
 
 import { Button, ButtonProps } from './Button';
 import { BulkActionProps } from '../types';
-import { UseMutationOptions } from 'react-query';
+import { UseMutationOptions } from '@tanstack/react-query';
 
 export const BulkDeleteWithUndoButton = (
     props: BulkDeleteWithUndoButtonProps
@@ -34,7 +34,7 @@ export const BulkDeleteWithUndoButton = (
     const notify = useNotify();
     const resource = useResourceContext(props);
     const refresh = useRefresh();
-    const [deleteMany, { isLoading }] = useDeleteMany();
+    const [deleteMany, { isPending }] = useDeleteMany();
 
     const handleClick = e => {
         deleteMany(
@@ -81,7 +81,7 @@ export const BulkDeleteWithUndoButton = (
         <StyledButton
             onClick={handleClick}
             label={label}
-            disabled={isLoading}
+            disabled={isPending}
             {...sanitizeRestProps(rest)}
         >
             {icon}

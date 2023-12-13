@@ -9,7 +9,11 @@ import {
 
 import { FormGroupsProvider } from './FormGroupsProvider';
 import { RaRecord } from '../types';
-import { useRecordContext, OptionalRecordContextProvider } from '../controller';
+import {
+    useRecordContext,
+    OptionalRecordContextProvider,
+    SaveHandler,
+} from '../controller';
 import { useResourceContext } from '../core';
 import { LabelPrefixContextProvider } from '../util';
 import { ValidateForm } from './getSimpleValidationResolver';
@@ -42,7 +46,9 @@ import { useAugmentedForm } from './useAugmentedForm';
  *
  * @link https://react-hook-form.com/docs/useformcontext
  */
-export const Form = (props: FormProps) => {
+// TODO: remove after upgrading prettier
+// eslint-disable-next-line prettier/prettier
+export const Form = <RecordType = any>(props: FormProps<RecordType>) => {
     const { children, id, className, noValidate = false } = props;
     const record = useRecordContext(props);
     const resource = useResourceContext(props);
@@ -68,13 +74,13 @@ export const Form = (props: FormProps) => {
     );
 };
 
-export type FormProps = FormOwnProps &
+export type FormProps<RecordType = any> = FormOwnProps<RecordType> &
     Omit<UseFormProps, 'onSubmit'> & {
         validate?: ValidateForm;
         noValidate?: boolean;
     };
 
-export interface FormOwnProps {
+export interface FormOwnProps<RecordType = any> {
     children: ReactNode;
     className?: string;
     defaultValues?: any;
@@ -82,7 +88,7 @@ export interface FormOwnProps {
     id?: string;
     record?: Partial<RaRecord>;
     resource?: string;
-    onSubmit?: SubmitHandler<FieldValues>;
+    onSubmit?: SubmitHandler<FieldValues> | SaveHandler<RecordType>;
     warnWhenUnsavedChanges?: boolean;
     sanitizeEmptyValues?: boolean;
     disableInvalidFormNotification?: boolean;

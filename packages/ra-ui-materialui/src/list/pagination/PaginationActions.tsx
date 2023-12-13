@@ -92,5 +92,6 @@ const Root = styled('div', {
 const sanitizeRestProps = ({
     nextIconButtonProps,
     backIconButtonProps,
+    slotProps,
     ...rest
 }: any) => rest;

@@ -2,7 +2,6 @@ import AuthContext from './AuthContext';
 import useAuthProvider from './useAuthProvider';
 import useAuthState from './useAuthState';
 import usePermissions from './usePermissions';
-import usePermissionsOptimized from './usePermissionsOptimized';
 import WithPermissions, { WithPermissionsProps } from './WithPermissions';
 import useLogin from './useLogin';
 import useLogout from './useLogout';
@@ -29,7 +28,6 @@ export {
     useGetPermissions,
     // hooks with state management
     usePermissions,
-    usePermissionsOptimized,
     useAuthState,
     // hook with immediate effect
     useLogoutIfAccessDenied,

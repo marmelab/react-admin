@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useQueryClient } from 'react-query';
+import { useQueryClient } from '@tanstack/react-query';
 import {
     SimpleShowLayout,
     TextField,

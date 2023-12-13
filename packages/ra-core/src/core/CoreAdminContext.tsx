@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useMemo } from 'react';
-import { QueryClientProvider, QueryClient } from 'react-query';
+import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 import { History } from 'history';
 
 import { AdminRouter } from '../routing';
@@ -119,7 +119,7 @@ export interface CoreAdminContextProps {
      * @see https://marmelab.com/react-admin/Admin.html#queryclient
      * @example
      * import { Admin } from 'react-admin';
-     * import { QueryClient } from 'react-query';
+     * import { QueryClient } from '@tanstack/react-query';
      *
      * const queryClient = new QueryClient({
      *     defaultOptions: {

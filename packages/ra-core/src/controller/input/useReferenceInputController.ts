@@ -5,7 +5,7 @@ import { FilterPayload, RaRecord, SortPayload } from '../../types';
 import { useReference } from '../useReference';
 import { ChoicesContextValue } from '../../form';
 import { useReferenceParams } from './useReferenceParams';
-import { UseQueryOptions } from 'react-query';
+import { UseQueryOptions } from '@tanstack/react-query';
 
 const defaultReferenceSource = (resource: string, source: string) =>
     `${resource}@${source}`;
@@ -82,9 +82,10 @@ export const useReferenceInputController = <RecordType extends RaRecord = any>(
         data: possibleValuesData = [],
         total,
         pageInfo,
-        isFetching: possibleValuesFetching,
-        isLoading: possibleValuesLoading,
-        error: possibleValuesError,
+        isFetching: isFetchingPossibleValues,
+        isLoading: isLoadingPossibleValues,
+        isPending: isPendingPossibleValues,
+        error: errorPossibleValues,
         refetch: refetchGetList,
     } = useGetList<RecordType>(
         reference,
@@ -99,7 +100,7 @@ export const useReferenceInputController = <RecordType extends RaRecord = any>(
         },
         {
             enabled: isGetMatchingEnabled,
-            keepPreviousData: true,
+            placeholderData: previousData => previousData,
             ...otherQueryOptions,
         }
     );
@@ -108,9 +109,10 @@ export const useReferenceInputController = <RecordType extends RaRecord = any>(
     const {
         referenceRecord: currentReferenceRecord,
         refetch: refetchReference,
-        error: referenceError,
-        isLoading: referenceLoading,
-        isFetching: referenceFetching,
+        error: errorReference,
+        isLoading: isLoadingReference,
+        isFetching: isFetchingReference,
+        isPending: isPendingReference,
     } = useReference<RecordType>({
         id: currentValue,
         reference,
@@ -121,6 +123,11 @@ export const useReferenceInputController = <RecordType extends RaRecord = any>(
             ...otherQueryOptions,
         },
     });
+
+    const isPending =
+        // The reference query isn't enabled when there is no value yet but as it has no data, react-query will flag it as pending
+        (currentValue != null && currentValue !== '' && isPendingReference) ||
+        isPendingPossibleValues;
 
     // We need to delay the update of the referenceRecord and the finalData
     // to the next React state update, because otherwise it can raise a warning
@@ -161,12 +168,13 @@ export const useReferenceInputController = <RecordType extends RaRecord = any>(
         availableChoices: possibleValuesData,
         selectedChoices: [referenceRecord],
         displayedFilters: params.displayedFilters,
-        error: referenceError || possibleValuesError,
+        error: errorReference || errorPossibleValues,
         filter: params.filter,
         filterValues: params.filterValues,
         hideFilter: paramsModifiers.hideFilter,
-        isFetching: referenceFetching || possibleValuesFetching,
-        isLoading: referenceLoading || possibleValuesLoading,
+        isFetching: isFetchingReference || isFetchingPossibleValues,
+        isLoading: isLoadingReference || isLoadingPossibleValues,
+        isPending: isPending,
         page: params.page,
         perPage: params.perPage,
         refetch,
@@ -193,14 +201,17 @@ export interface UseReferenceInputControllerParams<
 > {
     debounce?: number;
     filter?: FilterPayload;
-    queryOptions?: UseQueryOptions<{
-        data: RecordType[];
-        total?: number;
-        pageInfo?: {
-            hasNextPage?: boolean;
-            hasPreviousPage?: boolean;
-        };
-    }> & { meta?: any };
+    queryOptions?: Omit<
+        UseQueryOptions<{
+            data: RecordType[];
+            total?: number;
+            pageInfo?: {
+                hasNextPage?: boolean;
+                hasPreviousPage?: boolean;
+            };
+        }>,
+        'queryFn' | 'queryKey'
+    > & { meta?: any };
     page?: number;
     perPage?: number;
     record?: RaRecord;

@@ -19,7 +19,7 @@ import {
     useTranslate,
     RaRecord,
 } from 'ra-core';
-import { UseQueryOptions } from 'react-query';
+import { UseQueryOptions } from '@tanstack/react-query';
 
 import { LinearProgress } from '../layout';
 import { Link } from '../Link';
@@ -170,7 +170,7 @@ export const ReferenceFieldView = <
         className,
         emptyText,
         error,
-        isLoading,
+        isPending,
         reference,
         referenceRecord,
         resourceLinkPath,
@@ -193,7 +193,7 @@ export const ReferenceFieldView = <
             /* eslint-enable */
         );
     }
-    if (isLoading) {
+    if (isPending) {
         return <LinearProgress />;
     }
     if (!referenceRecord) {

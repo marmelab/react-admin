@@ -7,7 +7,6 @@ import {
     screen,
     act,
 } from '@testing-library/react';
-import lolex from 'lolex';
 // TODO: we shouldn't import mui components in ra-core
 import { TextField } from '@mui/material';
 import { createMemoryHistory } from 'history';
@@ -87,9 +86,9 @@ describe('useListController', () => {
                 <CoreAdminContext dataProvider={dataProvider}>
                     <ListController
                         disableSyncWithLocation
-                        resource="posts"
                         queryOptions={{ enabled: false }}
                         {...props}
+                        resource="posts"
                     />
                 </CoreAdminContext>
             );
@@ -110,7 +109,6 @@ describe('useListController', () => {
     });
 
     describe('setFilters', () => {
-        let clock;
         let childFunction = ({ setFilters, filterValues }) => (
             // TODO: we shouldn't import mui components in ra-core
             <TextField
@@ -125,11 +123,7 @@ describe('useListController', () => {
             />
         );
 
-        beforeEach(() => {
-            clock = lolex.install();
-        });
-
-        it('should take only last change in case of a burst of changes (case of inputs being currently edited)', () => {
+        it('should take only last change in case of a burst of changes (case of inputs being currently edited)', async () => {
             const props = {
                 ...defaultProps,
                 children: childFunction,
@@ -150,9 +144,11 @@ describe('useListController', () => {
             fireEvent.change(searchInput, { target: { value: 'hel' } });
             fireEvent.change(searchInput, { target: { value: 'hell' } });
             fireEvent.change(searchInput, { target: { value: 'hello' } });
-            clock.tick(210);
+            await new Promise(resolve => setTimeout(resolve, 210));
 
-            expect(storeSpy).toHaveBeenCalledTimes(1);
+            await waitFor(() => {
+                expect(storeSpy).toHaveBeenCalledTimes(1);
+            });
             expect(storeSpy).toHaveBeenCalledWith('posts.listParams', {
                 filter: { q: 'hello' },
                 order: 'ASC',
@@ -162,7 +158,7 @@ describe('useListController', () => {
             });
         });
 
-        it('should remove empty filters', () => {
+        it('should remove empty filters', async () => {
             const props = {
                 ...defaultProps,
                 children: childFunction,
@@ -192,7 +188,7 @@ describe('useListController', () => {
             // FIXME: For some reason, triggering the change event with an empty string
             // does not call the event handler on childFunction
             fireEvent.change(searchInput, { target: { value: '' } });
-            clock.tick(210);
+            await new Promise(resolve => setTimeout(resolve, 210));
 
             expect(storeSpy).toHaveBeenCalledTimes(2);
 
@@ -258,10 +254,6 @@ describe('useListController', () => {
                 expect.objectContaining({ filter: { foo: 2 } })
             );
             expect(children).toHaveBeenCalledTimes(2);
-        });
-
-        afterEach(() => {
-            clock.uninstall();
         });
     });
 

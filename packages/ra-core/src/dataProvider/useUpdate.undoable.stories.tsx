@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useState } from 'react';
-import { QueryClient, useIsMutating } from 'react-query';
+import { QueryClient, useIsMutating } from '@tanstack/react-query';
 
 import { CoreAdminContext } from '../core';
 import undoableEventEmitter from './undoableEventEmitter';
@@ -23,7 +23,9 @@ export const SuccessCase = () => {
             return new Promise(resolve => {
                 setTimeout(() => {
                     const post = posts.find(p => p.id === params.id);
-                    post.title = params.data.title;
+                    if (post) {
+                        post.title = params.data.title;
+                    }
                     resolve({ data: post });
                 }, 1000);
             });
@@ -44,7 +46,7 @@ const SuccessCore = () => {
     const [notification, setNotification] = useState<boolean>(false);
     const [success, setSuccess] = useState<string>();
     const { data, refetch } = useGetOne('posts', { id: 1 });
-    const [update, { isLoading }] = useUpdate();
+    const [update, { isPending }] = useUpdate();
     const handleClick = () => {
         update(
             'posts',
@@ -93,7 +95,7 @@ const SuccessCore = () => {
                         </button>
                     </>
                 ) : (
-                    <button onClick={handleClick} disabled={isLoading}>
+                    <button onClick={handleClick} disabled={isPending}>
                         Update title
                     </button>
                 )}
@@ -140,7 +142,7 @@ const ErrorCore = () => {
     const [success, setSuccess] = useState<string>();
     const [error, setError] = useState<any>();
     const { data, refetch } = useGetOne('posts', { id: 1 });
-    const [update, { isLoading }] = useUpdate();
+    const [update, { isPending }] = useUpdate();
     const handleClick = () => {
         update(
             'posts',
@@ -193,7 +195,7 @@ const ErrorCore = () => {
                         </button>
                     </>
                 ) : (
-                    <button onClick={handleClick} disabled={isLoading}>
+                    <button onClick={handleClick} disabled={isPending}>
                         Update title
                     </button>
                 )}

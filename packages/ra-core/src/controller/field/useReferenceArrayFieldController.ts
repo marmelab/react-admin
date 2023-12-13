@@ -4,7 +4,7 @@ import { RaRecord, SortPayload } from '../../types';
 import { useGetManyAggregate } from '../../dataProvider';
 import { ListControllerResult, useList } from '../list';
 import { useNotify } from '../../notification';
-import { UseQueryOptions } from 'react-query';
+import { UseQueryOptions } from '@tanstack/react-query';
 
 export interface UseReferenceArrayFieldControllerParams<
     RecordType extends RaRecord = RaRecord,
@@ -18,7 +18,10 @@ export interface UseReferenceArrayFieldControllerParams<
     resource: string;
     sort?: SortPayload;
     source: string;
-    queryOptions?: UseQueryOptions<ReferenceRecordType[], Error>;
+    queryOptions?: Omit<
+        UseQueryOptions<ReferenceRecordType[]>,
+        'queryFn' | 'queryKey'
+    >;
 }
 
 const emptyArray = [];
@@ -31,7 +34,7 @@ const defaultSort = { field: null, order: null };
  *
  * @example
  *
- * const { data, error, isFetching, isLoading } = useReferenceArrayFieldController({
+ * const { data, error, isFetching, isPending } = useReferenceArrayFieldController({
  *      record: { referenceIds: ['id1', 'id2']};
  *      reference: 'reference';
  *      resource: 'resource';
@@ -77,9 +80,14 @@ export const useReferenceArrayFieldController = <
         return emptyArray;
     }, [value, source]);
 
-    const { data, error, isLoading, isFetching, refetch } = useGetManyAggregate<
-        ReferenceRecordType
-    >(
+    const {
+        data,
+        error,
+        isLoading,
+        isFetching,
+        isPending,
+        refetch,
+    } = useGetManyAggregate<ReferenceRecordType>(
         reference,
         { ids, meta },
         {
@@ -110,6 +118,7 @@ export const useReferenceArrayFieldController = <
         filter,
         isFetching,
         isLoading,
+        isPending,
         page,
         perPage,
         sort,

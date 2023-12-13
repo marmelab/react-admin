@@ -9,6 +9,7 @@ import { useMediaQuery } from '@mui/material';
 import { RaThemeOptions } from './types';
 import { useTheme } from './useTheme';
 import { useThemesContext } from './useThemesContext';
+import { AdminChildren } from 'ra-core';
 
 /**
  * This sets the Material UI theme based on the preferred theme type.
@@ -57,11 +58,16 @@ export const ThemeProvider = ({
         }
     }, [mode, themeOverride, lightTheme, darkTheme]);
 
-    return <MuiThemeProvider theme={themeValue}>{children}</MuiThemeProvider>;
+    return (
+        <MuiThemeProvider theme={themeValue}>
+            {/* Had to cast here because Provider only accepts ReactNode but we might have a render function */}
+            {children as ReactNode}
+        </MuiThemeProvider>
+    );
 };
 
 export interface ThemeProviderProps {
-    children: ReactNode;
+    children: AdminChildren;
     /**
      * @deprecated Use the `ThemesProvider` component instead.
      */

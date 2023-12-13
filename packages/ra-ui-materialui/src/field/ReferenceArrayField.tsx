@@ -14,7 +14,7 @@ import {
 } from 'ra-core';
 import { styled } from '@mui/material/styles';
 import { SxProps } from '@mui/system';
-import { UseQueryOptions } from 'react-query';
+import { UseQueryOptions } from '@tanstack/react-query';
 
 import { fieldPropTypes, FieldProps } from './types';
 import { LinearProgress } from '../layout';
@@ -151,11 +151,11 @@ export interface ReferenceArrayFieldViewProps
 
 export const ReferenceArrayFieldView: FC<ReferenceArrayFieldViewProps> = props => {
     const { children, pagination, className, sx } = props;
-    const { isLoading, total } = useListContext(props);
+    const { isPending, total } = useListContext(props);
 
     return (
         <Root className={className} sx={sx}>
-            {isLoading ? (
+            {isPending ? (
                 <LinearProgress
                     className={ReferenceArrayFieldClasses.progress}
                 />

@@ -43,13 +43,13 @@ import { useResourceDefinitionContext } from './useResourceDefinitionContext';
 export const useConfigureAdminRouterFromChildren = (
     children: AdminChildren
 ): RoutesAndResources & { status: AdminRouterStatus } => {
-    const { permissions, isLoading } = usePermissions();
+    const { permissions, isPending } = usePermissions();
 
     // Whenever children are updated, update our custom routes and resources
     const [routesAndResources, status] = useRoutesAndResourcesFromChildren(
         children,
         permissions,
-        isLoading
+        isPending
     );
 
     // Whenever the resources change, we must ensure they're all registered
@@ -70,7 +70,7 @@ export const useConfigureAdminRouterFromChildren = (
  * @param permissions The permissions
  */
 const useRoutesAndResourcesFromChildren = (
-    children: ReactNode,
+    children: AdminChildren,
     permissions: any,
     isLoading: boolean
 ): [RoutesAndResources, AdminRouterStatus] => {
@@ -109,7 +109,9 @@ const useRoutesAndResourcesFromChildren = (
                     );
                 } else {
                     mergeRoutesAndResources(
-                        getRoutesAndResourceFromNodes(childrenFuncResult)
+                        getRoutesAndResourceFromNodes(
+                            childrenFuncResult as ReactNode
+                        )
                     );
                     setStatus('ready');
                 }
@@ -243,7 +245,7 @@ const getStatus = ({
     customRoutesWithLayout,
     customRoutesWithoutLayout,
 }: {
-    children: ReactNode;
+    children: AdminChildren;
     resources: ReactElement<ResourceProps>[];
     customRoutesWithLayout: ReactElement<CustomRoutesProps>[];
     customRoutesWithoutLayout: ReactElement<CustomRoutesProps>[];
@@ -263,7 +265,7 @@ const getStatus = ({
  * Returns the function child if one was provided, or null otherwise.
  */
 const getSingleChildFunction = (
-    children: ReactNode
+    children: AdminChildren
 ): RenderResourcesFunction | null => {
     const childrenArray = Array.isArray(children) ? children : [children];
 
@@ -291,11 +293,20 @@ const getSingleChildFunction = (
  * - resources: an array of resources elements
  */
 const getRoutesAndResourceFromNodes = (
-    children: ReactNode
+    children: AdminChildren
 ): RoutesAndResources => {
     const customRoutesWithLayout = [];
     const customRoutesWithoutLayout = [];
     const resources = [];
+
+    if (typeof children === 'function') {
+        return {
+            customRoutesWithLayout: [],
+            customRoutesWithoutLayout: [],
+            resources: [],
+        };
+    }
+    // @ts-ignore
     Children.forEach(children, element => {
         if (!React.isValidElement(element)) {
             // Ignore non-elements. This allows people to more easily inline

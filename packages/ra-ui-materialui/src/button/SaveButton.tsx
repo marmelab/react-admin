@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { MouseEventHandler, ReactElement, useCallback } from 'react';
-import { UseMutationOptions } from 'react-query';
+import { UseMutationOptions } from '@tanstack/react-query';
 import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
 import { Button, ButtonProps, CircularProgress } from '@mui/material';

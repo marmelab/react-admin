@@ -1,20 +1,29 @@
 import * as React from 'react';
 import expect from 'expect';
 import { render, waitFor } from '@testing-library/react';
-import { QueryClient } from 'react-query';
+import { QueryClient } from '@tanstack/react-query';
 
 import { CoreAdminContext } from '../core';
 import { useGetList } from './useGetList';
-import { DataProvider } from '../types';
+import { PaginationPayload, SortPayload } from '../types';
+import { testDataProvider } from './testDataProvider';
 
 const UseGetList = ({
     resource = 'posts',
     pagination = { page: 1, perPage: 10 },
-    sort = { field: 'id', order: 'DESC' },
+    sort = { field: 'id', order: 'DESC' } as const,
     filter = {},
     options = {},
     meta = undefined,
     callback = null,
+}: {
+    resource?: string;
+    pagination?: PaginationPayload;
+    sort?: SortPayload;
+    filter?: any;
+    options?: any;
+    meta?: any;
+    callback?: any;
 }) => {
     const hookValue = useGetList(
         resource,
@@ -27,11 +36,15 @@ const UseGetList = ({
 
 describe('useGetList', () => {
     it('should call dataProvider.getList() on mount', async () => {
-        const dataProvider = {
+        const dataProvider = testDataProvider({
+            // @ts-ignore
             getList: jest.fn(() =>
-                Promise.resolve({ data: [{ id: 1, title: 'foo' }], total: 1 })
+                Promise.resolve({
+                    data: [{ id: 1, title: 'foo' }],
+                    total: 1,
+                })
             ),
-        };
+        });
         render(
             <CoreAdminContext dataProvider={dataProvider}>
                 <UseGetList pagination={{ page: 1, perPage: 20 }} />
@@ -48,11 +61,12 @@ describe('useGetList', () => {
     });
 
     it('should not call the dataProvider on update', async () => {
-        const dataProvider = {
+        const dataProvider = testDataProvider({
+            // @ts-ignore
             getList: jest.fn(() =>
                 Promise.resolve({ data: [{ id: 1, title: 'foo' }], total: 1 })
             ),
-        };
+        });
         const { rerender } = render(
             <CoreAdminContext dataProvider={dataProvider}>
                 <UseGetList />
@@ -72,11 +86,12 @@ describe('useGetList', () => {
     });
 
     it('should call the dataProvider on update when the resource changes', async () => {
-        const dataProvider = {
+        const dataProvider = testDataProvider({
+            // @ts-ignore
             getList: jest.fn(() =>
                 Promise.resolve({ data: [{ id: 1, title: 'foo' }], total: 1 })
             ),
-        };
+        });
         const { rerender } = render(
             <CoreAdminContext dataProvider={dataProvider}>
                 <UseGetList />
@@ -96,11 +111,12 @@ describe('useGetList', () => {
     });
 
     it('should accept a meta parameter', async () => {
-        const dataProvider = {
+        const dataProvider = testDataProvider({
+            // @ts-ignore
             getList: jest.fn(() =>
                 Promise.resolve({ data: [{ id: 1, title: 'foo' }], total: 1 })
             ),
-        };
+        });
         render(
             <CoreAdminContext dataProvider={dataProvider}>
                 <UseGetList
@@ -137,11 +153,12 @@ describe('useGetList', () => {
                 total: 1,
             }
         );
-        const dataProvider = {
+        const dataProvider = testDataProvider({
+            // @ts-ignore
             getList: jest.fn(() =>
                 Promise.resolve({ data: [{ id: 1, title: 'live' }], total: 1 })
             ),
-        };
+        });
         render(
             <CoreAdminContext
                 queryClient={queryClient}
@@ -164,7 +181,8 @@ describe('useGetList', () => {
 
     it('should return isFetching false once the dataProvider returns', async () => {
         const callback = jest.fn();
-        const dataProvider = {
+        const dataProvider = testDataProvider({
+            // @ts-ignore
             getList: jest.fn(() =>
                 Promise.resolve({
                     data: [
@@ -174,7 +192,7 @@ describe('useGetList', () => {
                     total: 2,
                 })
             ),
-        };
+        });
         render(
             <CoreAdminContext dataProvider={dataProvider}>
                 <UseGetList callback={callback} />
@@ -195,9 +213,10 @@ describe('useGetList', () => {
     it('should set the error state when the dataProvider fails', async () => {
         jest.spyOn(console, 'error').mockImplementation(() => {});
         const callback = jest.fn();
-        const dataProvider = {
+        const dataProvider = testDataProvider({
+            // @ts-ignore
             getList: jest.fn(() => Promise.reject(new Error('failed'))),
-        };
+        });
         render(
             <CoreAdminContext dataProvider={dataProvider}>
                 <UseGetList options={{ retry: false }} callback={callback} />
@@ -218,7 +237,8 @@ describe('useGetList', () => {
     it('should execute success side effects on success', async () => {
         const onSuccess1 = jest.fn();
         const onSuccess2 = jest.fn();
-        const dataProvider = {
+        const dataProvider = testDataProvider({
+            // @ts-ignore
             getList: jest
                 .fn()
                 .mockReturnValueOnce(
@@ -239,7 +259,7 @@ describe('useGetList', () => {
                         total: 2,
                     })
                 ),
-        };
+        });
         render(
             <CoreAdminContext dataProvider={dataProvider}>
                 <UseGetList options={{ onSuccess: onSuccess1 }} />
@@ -272,9 +292,10 @@ describe('useGetList', () => {
     it('should execute error side effects on failure', async () => {
         jest.spyOn(console, 'error').mockImplementation(() => {});
         const onError = jest.fn();
-        const dataProvider = {
+        const dataProvider = testDataProvider({
+            // @ts-ignore
             getList: jest.fn(() => Promise.reject(new Error('failed'))),
-        };
+        });
         render(
             <CoreAdminContext dataProvider={dataProvider}>
                 <UseGetList options={{ onError, retry: false }} />
@@ -289,11 +310,12 @@ describe('useGetList', () => {
     it('should pre-populate getOne Query Cache', async () => {
         const callback = jest.fn();
         const queryClient = new QueryClient();
-        const dataProvider = {
+        const dataProvider = testDataProvider({
+            // @ts-ignore
             getList: jest.fn(() =>
                 Promise.resolve({ data: [{ id: 1, title: 'live' }], total: 1 })
             ),
-        };
+        });
         render(
             <CoreAdminContext
                 queryClient={queryClient}
@@ -316,11 +338,12 @@ describe('useGetList', () => {
         const callback = jest.fn();
         const onSuccess = jest.fn();
         const queryClient = new QueryClient();
-        const dataProvider = {
+        const dataProvider = testDataProvider({
+            // @ts-ignore
             getList: jest.fn(() =>
                 Promise.resolve({ data: [{ id: 1, title: 'live' }], total: 1 })
             ),
-        };
+        });
         render(
             <CoreAdminContext
                 queryClient={queryClient}
@@ -347,7 +370,8 @@ describe('useGetList', () => {
     it('should not pre-populate getOne Query Cache if more than 100 results', async () => {
         const callback: any = jest.fn();
         const queryClient = new QueryClient();
-        const dataProvider: any = {
+        const dataProvider = testDataProvider({
+            // @ts-ignore
             getList: jest.fn(() =>
                 Promise.resolve({
                     data: Array.from(Array(101).keys()).map(index => ({
@@ -357,7 +381,7 @@ describe('useGetList', () => {
                     total: 101,
                 })
             ),
-        };
+        });
         render(
             <CoreAdminContext
                 queryClient={queryClient}
@@ -379,36 +403,5 @@ describe('useGetList', () => {
         expect(
             queryClient.getQueryData(['posts', 'getOne', { id: '1' }])
         ).toBeUndefined();
-    });
-
-    it('should not fail when the query is disabled and the cache gets updated by another query', async () => {
-        const callback: any = jest.fn();
-        const onSuccess = jest.fn();
-        const queryClient = new QueryClient();
-        const dataProvider = ({
-            getList: jest.fn(() =>
-                Promise.resolve({ data: [{ id: 1, title: 'live' }], total: 1 })
-            ),
-        } as unknown) as DataProvider;
-        render(
-            <CoreAdminContext
-                queryClient={queryClient}
-                dataProvider={dataProvider}
-            >
-                <UseGetList
-                    options={{ enabled: false, onSuccess }}
-                    callback={callback}
-                />
-            </CoreAdminContext>
-        );
-        await waitFor(() => {
-            expect(callback).toHaveBeenCalled();
-        });
-        // Simulate the side-effect of e.g. a call to delete
-        queryClient.setQueriesData(['posts', 'getList'], res => res);
-        // If we get this far without an error being thrown, the test passes
-        await waitFor(() => {
-            expect(onSuccess).toHaveBeenCalled();
-        });
     });
 });

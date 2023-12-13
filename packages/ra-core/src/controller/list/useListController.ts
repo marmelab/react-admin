@@ -1,10 +1,13 @@
 import { isValidElement, useEffect, useMemo } from 'react';
-import { UseQueryOptions } from 'react-query';
 
 import { useAuthenticated } from '../../auth';
 import { useTranslate } from '../../i18n';
 import { useNotify } from '../../notification';
-import { useGetList, UseGetListHookValue } from '../../dataProvider';
+import {
+    useGetList,
+    UseGetListHookValue,
+    UseGetListOptions,
+} from '../../dataProvider';
 import { SORT_ASC } from './queryReducer';
 import { defaultExporter } from '../../export';
 import { FilterPayload, SortPayload, RaRecord, Exporter } from '../../types';
@@ -81,6 +84,7 @@ export const useListController = <RecordType extends RaRecord = any>(
         error,
         isLoading,
         isFetching,
+        isPending,
         refetch,
     } = useGetList<RecordType>(
         resource,
@@ -94,7 +98,7 @@ export const useListController = <RecordType extends RaRecord = any>(
             meta,
         },
         {
-            keepPreviousData: true,
+            placeholderData: previousData => previousData,
             retry: false,
             onError: error =>
                 notify(error?.message || 'ra.notification.http_error', {
@@ -155,6 +159,7 @@ export const useListController = <RecordType extends RaRecord = any>(
         hideFilter: queryModifiers.hideFilter,
         isFetching,
         isLoading,
+        isPending,
         onSelect: selectionModifiers.select,
         onToggleItem: selectionModifiers.toggle,
         onUnselectItems: selectionModifiers.clearSelection,
@@ -336,14 +341,7 @@ export interface ListControllerProps<RecordType extends RaRecord = any> {
      *     );
      * }
      */
-    queryOptions?: UseQueryOptions<{
-        data: RecordType[];
-        total?: number;
-        pageInfo?: {
-            hasNextPage?: boolean;
-            hasPreviousPage?: boolean;
-        };
-    }> & { meta?: any };
+    queryOptions?: UseGetListOptions<RecordType>;
 
     /**
      * The resource name. Defaults to the resource from ResourceContext.
@@ -408,6 +406,7 @@ export interface ListControllerResult<RecordType extends RaRecord = any> {
     hideFilter: (filterName: string) => void;
     isFetching: boolean;
     isLoading: boolean;
+    isPending: boolean;
     onSelect: (ids: RecordType['id'][]) => void;
     onToggleItem: (id: RecordType['id']) => void;
     onUnselectItems: () => void;

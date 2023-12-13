@@ -457,11 +457,11 @@ describe('<SelectInput />', () => {
     });
 
     describe('loading', () => {
-        it('should not render a LinearProgress if isLoading is true and a second has not passed yet', () => {
+        it('should not render a LinearProgress if isPending is true and a second has not passed yet', () => {
             render(
                 <AdminContext dataProvider={testDataProvider()}>
                     <SimpleForm onSubmit={jest.fn()}>
-                        <SelectInput {...defaultProps} isLoading />
+                        <SelectInput {...defaultProps} isPending />
                     </SimpleForm>
                 </AdminContext>
             );
@@ -469,21 +469,21 @@ describe('<SelectInput />', () => {
             expect(screen.queryByRole('progressbar')).toBeNull();
         });
 
-        it('should render a LinearProgress if isLoading is true and a second has passed', async () => {
+        it('should render a LinearProgress if isPending is true and a second has passed', async () => {
             render(
                 <AdminContext dataProvider={testDataProvider()}>
                     <SimpleForm onSubmit={jest.fn()}>
-                        <SelectInput {...defaultProps} isLoading />
+                        <SelectInput {...defaultProps} isPending />
                     </SimpleForm>
                 </AdminContext>
             );
 
             await new Promise(resolve => setTimeout(resolve, 1001));
 
-            expect(screen.queryByRole('progressbar')).not.toBeNull();
+            await screen.findByRole('progressbar');
         });
 
-        it('should not render a LinearProgress if isLoading is false', () => {
+        it('should not render a LinearProgress if isPending is false', () => {
             render(
                 <AdminContext dataProvider={testDataProvider()}>
                     <SimpleForm onSubmit={jest.fn()}>

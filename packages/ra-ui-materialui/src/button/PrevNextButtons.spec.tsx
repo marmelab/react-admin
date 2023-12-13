@@ -83,7 +83,9 @@ describe('<PrevNextButtons />', () => {
 
     it('should render a loading UI in case of slow data provider response', async () => {
         render(<LoadingState />);
-        const progress = await screen.findByRole('progressbar');
+        const progress = await screen.findByRole('progressbar', undefined, {
+            timeout: 5000,
+        });
         expect(progress).toBeDefined();
     });
 

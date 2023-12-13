@@ -55,7 +55,7 @@ describe('useCreatePath', () => {
         screen.getByText('Post list').click();
         await screen.findByText('Posts');
         screen.getByText('Home').click();
-        screen.getByText('Post detail').click();
+        (await screen.findByText('Post detail')).click();
         await screen.findByText('Post 123');
     });
 
@@ -67,7 +67,7 @@ describe('useCreatePath', () => {
         screen.getByText('Post list').click();
         await screen.findByText('Posts');
         screen.getByText('Home').click();
-        screen.getByText('Post detail').click();
+        (await screen.findByText('Post detail')).click();
         await screen.findByText('Post 123');
     });
 });

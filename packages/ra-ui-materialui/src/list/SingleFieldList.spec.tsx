@@ -184,7 +184,7 @@ describe('<SingleFieldList />', () => {
         });
         it('should not render the empty element while loading', () => {
             render(
-                <Empty listContext={{ isLoading: true, data: [] } as any} />
+                <Empty listContext={{ isPending: true, data: [] } as any} />
             );
             expect(screen.queryByText('No genres')).toBeNull();
         });

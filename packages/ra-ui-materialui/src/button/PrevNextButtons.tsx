@@ -108,12 +108,12 @@ export const PrevNextButtons = <RecordType extends RaRecord = any>(
         index,
         total,
         error,
-        isLoading,
+        isPending,
     } = usePrevNextController<RecordType>(props);
 
     const translate = useTranslate();
 
-    if (isLoading) {
+    if (isPending) {
         return (
             <Box minHeight={34} display="flex" alignItems="center">
                 <LinearProgress />

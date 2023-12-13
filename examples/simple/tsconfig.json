@@ -8,6 +8,7 @@
         "jsx": "react",
         "lib": ["es2017", "dom"],
         "target": "es2016",
+        "module": "esnext",
         "moduleResolution": "node",
         "allowSyntheticDefaultImports": true,
         "esModuleInterop": true,

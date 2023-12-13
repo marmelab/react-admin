@@ -12,7 +12,7 @@ import {
     useUpdate,
     UpdateParams,
 } from 'ra-core';
-import { UseMutationOptions } from 'react-query';
+import { UseMutationOptions } from '@tanstack/react-query';
 
 import { Button, ButtonProps } from './Button';
 import { BulkActionProps } from '../types';
@@ -32,7 +32,7 @@ export const UpdateWithUndoButton = (props: UpdateWithUndoButtonProps) => {
         ...rest
     } = props;
 
-    const [updateMany, { isLoading }] = useUpdate();
+    const [updateMany, { isPending }] = useUpdate();
 
     const {
         meta: mutationMeta,
@@ -86,7 +86,7 @@ export const UpdateWithUndoButton = (props: UpdateWithUndoButtonProps) => {
         <StyledButton
             onClick={handleClick}
             label={label}
-            disabled={isLoading}
+            disabled={isPending}
             {...sanitizeRestProps(rest)}
         >
             {icon}

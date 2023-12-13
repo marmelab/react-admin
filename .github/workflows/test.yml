@@ -20,7 +20,7 @@ jobs:
     - name: Use Node.js LTS
       uses: actions/setup-node@v1
       with:
-        node-version: '16.x'
+        node-version: '18.x'
     - uses: bahmutov/npm-install@v1
       with:
         install-command: yarn --immutable
@@ -37,7 +37,7 @@ jobs:
     - name: Use Node.js LTS
       uses: actions/setup-node@v1
       with:
-        node-version: '16.x'
+        node-version: '18.x'
     - uses: bahmutov/npm-install@v1
       with:
         install-command: yarn --immutable
@@ -54,7 +54,7 @@ jobs:
     - name: Use Node.js LTS
       uses: actions/setup-node@v1
       with:
-        node-version: '16.x'
+        node-version: '18.x'
     - uses: bahmutov/npm-install@v1
       with:
         install-command: yarn --immutable
@@ -71,7 +71,7 @@ jobs:
     - name: Use Node.js LTS
       uses: actions/setup-node@v1
       with:
-        node-version: '16.x'
+        node-version: '18.x'
     - uses: bahmutov/npm-install@v1
       with:
         install-command: yarn --immutable
@@ -100,7 +100,7 @@ jobs:
     - name: Use Node.js LTS
       uses: actions/setup-node@v1
       with:
-        node-version: '16.x'
+        node-version: '18.x'
     - uses: bahmutov/npm-install@v1
       with:
         install-command: yarn --immutable

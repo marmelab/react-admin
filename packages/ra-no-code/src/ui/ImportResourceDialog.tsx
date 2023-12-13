@@ -10,7 +10,7 @@ import {
     TextField,
 } from '@mui/material';
 import { useDropzone } from 'react-dropzone';
-import { useQueryClient } from 'react-query';
+import { useQueryClient } from '@tanstack/react-query';
 
 import { useNotify } from 'react-admin';
 import { useNavigate } from 'react-router-dom';
@@ -53,7 +53,9 @@ export const ImportResourceDialog = (props: ImportResourceDialogProps) => {
                     if (resourceAlreadyExists) {
                         // If we imported more records for an existing resource,
                         // we must refresh the list
-                        queryClient.refetchQueries([resource, 'getList']);
+                        queryClient.refetchQueries({
+                            queryKey: [resource, 'getList'],
+                        });
                     }
                 })
                 .catch(() => {

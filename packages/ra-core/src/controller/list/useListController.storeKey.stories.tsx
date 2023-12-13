@@ -85,7 +85,7 @@ const OrderedPostList = ({
                 Decrement perPage
             </button>
             <ul style={styles.ul}>
-                {!params.isLoading &&
+                {!params.isPending &&
                     params.data.map(post => (
                         <li key={`post_${post.id}`}>
                             {post.title} - {post.votes} votes

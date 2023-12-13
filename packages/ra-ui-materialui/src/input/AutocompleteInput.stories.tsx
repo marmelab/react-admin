@@ -137,7 +137,7 @@ export const Nullable = ({ onSuccess = console.log }) => {
     );
 };
 
-export const IsLoading = () => {
+export const IsPending = () => {
     return (
         <Admin dataProvider={dataProvider} history={history}>
             <Resource
@@ -145,7 +145,7 @@ export const IsLoading = () => {
                 edit={() => (
                     <Edit>
                         <SimpleForm>
-                            <AutocompleteInput source="author" isLoading />
+                            <AutocompleteInput source="author" isPending />
                         </SimpleForm>
                     </Edit>
                 )}

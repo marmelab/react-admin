@@ -115,6 +115,8 @@ const PostListBulkActions = memo(
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         children,
         ...props
+    }: {
+        children?: React.ReactNode;
     }) => (
         <Fragment>
             <ResetViewsButton {...props} />
@@ -149,7 +151,7 @@ const PostPanel = ({ record }) => (
     <div dangerouslySetInnerHTML={{ __html: record.body }} />
 );
 
-const tagSort = { field: 'name.en', order: 'ASC' };
+const tagSort = { field: 'name.en', order: 'ASC' } as const;
 
 const PostListDesktop = () => (
     <List

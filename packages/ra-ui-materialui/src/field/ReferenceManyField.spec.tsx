@@ -51,7 +51,7 @@ describe('<ReferenceManyField />', () => {
         await waitFor(() => {
             expect(screen.queryAllByRole('progressbar')).toHaveLength(0);
         });
-        const links = screen.queryAllByRole('link');
+        const links = await screen.findAllByRole('link');
         expect(links).toHaveLength(2);
         expect(links[0].textContent).toEqual('hello');
         expect(links[1].textContent).toEqual('world');
@@ -143,7 +143,7 @@ describe('<ReferenceManyField />', () => {
         await waitFor(() => {
             expect(screen.queryAllByRole('progressbar')).toHaveLength(0);
         });
-        const links = screen.queryAllByRole('link');
+        const links = await screen.findAllByRole('link');
         expect(links).toHaveLength(2);
         expect(links[0].textContent).toEqual('hello');
         expect(links[1].textContent).toEqual('world');
@@ -174,7 +174,7 @@ describe('<ReferenceManyField />', () => {
         await waitFor(() => {
             expect(screen.queryAllByRole('progressbar')).toHaveLength(0);
         });
-        const links = screen.queryAllByRole('link');
+        const links = await screen.findAllByRole('link');
         expect(links).toHaveLength(2);
         expect(links[0].textContent).toEqual('hello');
         expect(links[1].textContent).toEqual('world');

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { QueryClientProvider, QueryClient } from 'react-query';
+import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 import { useGetIdentity } from './useGetIdentity';
 import AuthContext from './AuthContext';
 
@@ -17,8 +17,14 @@ const authProvider = {
 };
 
 const Identity = () => {
-    const { data, error, isLoading } = useGetIdentity();
-    return isLoading ? <>Loading</> : error ? <>Error</> : <>{data.fullName}</>;
+    const { identity, error, isPending } = useGetIdentity();
+    return isPending ? (
+        <>Loading</>
+    ) : error ? (
+        <>Error</>
+    ) : (
+        <>{identity.fullName}</>
+    );
 };
 
 export const Basic = () => (
@@ -56,10 +62,10 @@ export const ResetIdentity = () => {
     let fullName = 'John Doe';
 
     const IdentityForm = () => {
-        const { isLoading, error, data, refetch } = useGetIdentity();
+        const { isPending, error, identity, refetch } = useGetIdentity();
         const [newIdentity, setNewIdentity] = React.useState('');
 
-        if (isLoading) return <>Loading</>;
+        if (isPending) return <>Loading</>;
         if (error) return <>Error</>;
 
         const handleChange = event => {
@@ -75,7 +81,10 @@ export const ResetIdentity = () => {
 
         return (
             <form onSubmit={handleSubmit}>
-                <input defaultValue={data.fullName} onChange={handleChange} />
+                <input
+                    defaultValue={identity.fullName}
+                    onChange={handleChange}
+                />
                 <input type="submit" value="Save" />
             </form>
         );

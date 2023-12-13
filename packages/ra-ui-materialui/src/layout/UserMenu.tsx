@@ -61,7 +61,7 @@ import { Logout } from '../auth/Logout';
 export const UserMenu = (props: UserMenuProps) => {
     const [anchorEl, setAnchorEl] = useState(null);
     const translate = useTranslate();
-    const { isLoading, identity } = useGetIdentity();
+    const { isPending, identity } = useGetIdentity();
     const authProvider = useAuthProvider();
     const isLargeEnough = useMediaQuery<Theme>(theme =>
         theme.breakpoints.up('sm')
@@ -82,7 +82,7 @@ export const UserMenu = (props: UserMenuProps) => {
 
     return (
         <Root className={className}>
-            {isLargeEnough && !isLoading && identity?.fullName ? (
+            {isLargeEnough && !isPending && identity?.fullName ? (
                 <Button
                     aria-label={label && translate(label, { _: label })}
                     className={UserMenuClasses.userButton}
@@ -112,7 +112,7 @@ export const UserMenu = (props: UserMenuProps) => {
                         color="inherit"
                         onClick={handleMenu}
                     >
-                        {!isLoading && identity?.avatar ? (
+                        {!isPending && identity?.avatar ? (
                             <Avatar
                                 className={UserMenuClasses.avatar}
                                 src={identity.avatar}
