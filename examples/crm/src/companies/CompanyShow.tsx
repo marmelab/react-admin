@@ -45,12 +45,12 @@ export const CompanyShow = () => (
 );
 
 const CompanyShowContent = () => {
-    const { record, isLoading } = useShowContext<Company>();
+    const { record, isPending } = useShowContext<Company>();
     const [tabValue, setTabValue] = useState(0);
     const handleTabChange = (event: ChangeEvent<{}>, newValue: number) => {
         setTabValue(newValue);
     };
-    if (isLoading || !record) return null;
+    if (isPending || !record) return null;
     return (
         <Box mt={2} display="flex">
             <Box flex="1">
@@ -146,8 +146,8 @@ const TabPanel = (props: TabPanelProps) => {
 };
 
 const ContactsIterator = () => {
-    const { data: contacts, isLoading } = useListContext<Contact>();
-    if (isLoading) return null;
+    const { data: contacts, isPending } = useListContext<Contact>();
+    if (isPending) return null;
 
     const now = Date.now();
     return (
@@ -214,8 +214,8 @@ const CreateRelatedContactButton = () => {
 };
 
 const DealsIterator = () => {
-    const { data: deals, isLoading } = useListContext<Deal>();
-    if (isLoading) return null;
+    const { data: deals, isPending } = useListContext<Deal>();
+    if (isPending) return null;
 
     const now = Date.now();
     return (

@@ -26,9 +26,9 @@ const LoadingGridList = () => (
 );
 
 const LoadedGridList = () => {
-    const { data, isLoading } = useListContext<Company>();
+    const { data, isPending } = useListContext<Company>();
 
-    if (isLoading) return null;
+    if (isPending) return null;
 
     return (
         <Box display="flex" flexWrap="wrap" width="100%" gap={1}>
@@ -42,6 +42,6 @@ const LoadedGridList = () => {
 };
 
 export const ImageList = () => {
-    const { isLoading } = useListContext();
-    return isLoading ? <LoadingGridList /> : <LoadedGridList />;
+    const { isPending } = useListContext();
+    return isPending ? <LoadingGridList /> : <LoadedGridList />;
 };

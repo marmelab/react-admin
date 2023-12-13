@@ -16,7 +16,7 @@ const multiplier = {
 };
 
 export const DealsChart = () => {
-    const { data, isLoading } = useGetList<Deal>('deals', {
+    const { data, isPending } = useGetList<Deal>('deals', {
         pagination: { perPage: 100, page: 1 },
         sort: {
             field: 'start_at',
@@ -67,7 +67,7 @@ export const DealsChart = () => {
         return amountByMonth;
     }, [data]);
 
-    if (isLoading) return null; // FIXME return skeleton instead
+    if (isPending) return null; // FIXME return skeleton instead
 
     const range = months.reduce(
         (acc, month) => {

@@ -12,12 +12,12 @@ const sort = { field: 'published_at', order: 'DESC' } as const;
 const CustomRouteLayout = ({ title = 'Posts' }) => {
     useAuthenticated();
 
-    const { data, total, isLoading } = useGetList('posts', {
+    const { data, total, isPending } = useGetList('posts', {
         pagination: { page: 1, perPage: 10 },
         sort,
     });
 
-    return !isLoading ? (
+    return !isPending ? (
         <div>
             <Title title="Example Admin" />
             <h1>{title}</h1>
@@ -27,7 +27,7 @@ const CustomRouteLayout = ({ title = 'Posts' }) => {
             <Datagrid
                 sort={sort}
                 data={data}
-                isLoading={isLoading}
+                isPending={isPending}
                 total={total}
                 rowClick="edit"
             >

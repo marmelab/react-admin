@@ -17,9 +17,9 @@ import { Customer } from '../types';
 
 const MobileGrid = () => {
     const translate = useTranslate();
-    const { data, isLoading } = useListContext<Customer>();
+    const { data, isPending } = useListContext<Customer>();
 
-    if (isLoading || data.length === 0) {
+    if (isPending || data.length === 0) {
         return null;
     }
 

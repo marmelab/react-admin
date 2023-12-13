@@ -14,8 +14,8 @@ export const ContactEdit = () => (
 );
 
 const ContactEditContent = () => {
-    const { isLoading, record } = useEditContext<Contact>();
-    if (isLoading || !record) return null;
+    const { isPending, record } = useEditContext<Contact>();
+    if (isPending || !record) return null;
     return (
         <Box mt={2} display="flex">
             <Box flex="1">

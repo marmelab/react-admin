@@ -31,8 +31,8 @@ const CategoryList = () => (
 );
 
 const CategoryGrid = () => {
-    const { data, isLoading } = useListContext<Category>();
-    if (isLoading) {
+    const { data, isPending } = useListContext<Category>();
+    if (isPending) {
         return null;
     }
     return (

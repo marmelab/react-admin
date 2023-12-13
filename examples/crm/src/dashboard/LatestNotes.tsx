@@ -16,7 +16,7 @@ export const LatestNotes = () => {
     const { identity } = useGetIdentity();
     const {
         data: contactNotesData,
-        isLoading: contactNotesLoading,
+        isPending: contactNotesLoading,
     } = useGetList(
         'contactNotes',
         {
@@ -26,7 +26,7 @@ export const LatestNotes = () => {
         },
         { enabled: Number.isInteger(identity?.id) }
     );
-    const { data: dealNotesData, isLoading: dealNotesLoading } = useGetList(
+    const { data: dealNotesData, isPending: dealNotesLoading } = useGetList(
         'dealNotes',
         {
             pagination: { page: 1, perPage: 5 },

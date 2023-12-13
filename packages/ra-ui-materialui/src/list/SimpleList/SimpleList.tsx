@@ -287,6 +287,7 @@ export interface SimpleListProps<RecordType extends RaRecord = any>
     resource?: string;
     data?: RecordType[];
     isLoading?: boolean;
+    isPending?: boolean;
     isLoaded?: boolean;
     total?: number;
 }
