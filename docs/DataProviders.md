@@ -5,7 +5,7 @@ title: "Data Fetching"
 
 # Data Fetching
 
-You can build a react-admin app on top of any API, whether it uses REST, GraphQL, RPC, or even SOAP, regardless of the dialect it uses. This works because react-admin doesn't use `fetch` directly. Instead, it uses a Data Provider object to interface with your API, and [TanStack Query](https://tanstack.com/query/v5/docs/react/overview) to handle data fetching.
+You can build a react-admin app on top of any API, whether it uses REST, GraphQL, RPC, or even SOAP, regardless of the dialect it uses. This works because react-admin doesn't use `fetch` directly. Instead, it uses a Data Provider object to interface with your API, and [React Query](https://tanstack.com/query/v5/docs/react/overview) to handle data fetching.
 
 ## The Data Provider
 
@@ -487,7 +487,7 @@ export const App = () => (
 
 ## React-Query Options
 
-React-admin uses [TanStack Query](https://tanstack.com/query/v5/) to fetch, cache and update data. Internally, the `<Admin>` component creates a react-query [`QueryClient`](https://tanstack.com/query/v5/docs/react/reference/QueryClient) on mount, using [react-query's "aggressive but sane" defaults](https://tanstack.com/query/v5/docs/react/guides/important-defaults):
+React-admin uses [React Query](https://tanstack.com/query/v5/) to fetch, cache and update data. Internally, the `<Admin>` component creates a react-query [`QueryClient`](https://tanstack.com/query/v5/docs/react/reference/QueryClient) on mount, using [react-query's "aggressive but sane" defaults](https://tanstack.com/query/v5/docs/react/guides/important-defaults):
 
 * Queries consider cached data as stale
 * Stale queries are refetched automatically in the background when:

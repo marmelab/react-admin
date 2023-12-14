@@ -426,7 +426,7 @@ Many excellent open-source libraries already address partial requirements of B2B
 
 Rather than reinventing the wheel, react-admin uses the best tools in each category (in terms of features, developer experience, active maintenance, documentation, user base), and provides a glue around these libraries.
 
-In react-admin v4, these libraries are called [TanStack Query](https://tanstack.com/query/v3), [react-router](https://reactrouter.com/en/main), [react-hook-form](https://react-hook-form.com/), [Material UI](https://mui.com/), [emotion](https://emotion.sh/docs/introduction), [testing-library](https://testing-library.com/docs/react-testing-library/intro), [date-fns](https://date-fns.org/), and [lodash](https://lodash.com/).
+In react-admin v4, these libraries are called [React Query](https://tanstack.com/query/v3), [react-router](https://reactrouter.com/en/main), [react-hook-form](https://react-hook-form.com/), [Material UI](https://mui.com/), [emotion](https://emotion.sh/docs/introduction), [testing-library](https://testing-library.com/docs/react-testing-library/intro), [date-fns](https://date-fns.org/), and [lodash](https://lodash.com/).
 
 When a new requirement arises, the react-admin teams always looks for an existing solution, and prefers integrating it rather than redeveloping it.
 

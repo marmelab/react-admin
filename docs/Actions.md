@@ -314,7 +314,7 @@ const { data: categories, isPending: isPendingCategories } = useGetMany(
 
 To execute some logic after a query or a mutation is complete, use the `onSuccess`, `onError` and `onSettled` options. React-admin uses the term "side effects" for this type of logic, as it's usually modifying another part of the UI.
 
-- `onSuccess(data, variables, context)`: The `onSuccess` function is called when the query returns. It receives the query data, the [query variables](https://tanstack.com/query/latest/docs/react/guides/query-functions#query-function-variables) or [mutation variables]() and the [query context](https://tanstack.com/query/latest/docs/react/guides/query-functions#queryfunctioncontext). This could be useful when you have different shapes for a resource in lists and single record views. In those cases, you might want to avoid react-admin to prefill the cache.
+- `onSuccess(data, variables, context)`: The `onSuccess` function is called when the query returns. It receives the query data, the [query variables](https://tanstack.com/query/latest/docs/react/guides/query-functions#query-function-variables) or mutation variables and the [query context](https://tanstack.com/query/latest/docs/react/guides/query-functions#queryfunctioncontext). This could be useful when you have different shapes for a resource in lists and single record views. In those cases, you might want to avoid react-admin to prefill the cache.
 
     ```tsx
     import { useGetList } from 'react-admin';
