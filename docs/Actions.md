@@ -5,7 +5,7 @@ title: "Querying the API"
 
 # Querying the API
 
-React-admin provides special hooks to emit read and write queries to the [`dataProvider`](./DataProviders.md), which in turn sends requests to your API. Under the hood, it uses [TanStack Query](https://tanstack.com/query/v5/) to call the `dataProvider` and cache the results.
+React-admin provides special hooks to emit read and write queries to the [`dataProvider`](./DataProviders.md), which in turn sends requests to your API. Under the hood, it uses [React Query](https://tanstack.com/query/v5/) to call the `dataProvider` and cache the results.
 
 ## Getting The `dataProvider` Instance
 
@@ -119,14 +119,14 @@ It's up to the Data Provider to interpret this parameter.
 
 ## `useQuery` and `useMutation`
 
-Internally, react-admin uses [TanStack Query](https://tanstack.com/query/v5/) to call the dataProvider. When fetching data from the dataProvider in your components, if you can't use any of the dataProvider method hooks, you should use that library, too. It brings several benefits:
+Internally, react-admin uses [React Query](https://tanstack.com/query/v5/) to call the dataProvider. When fetching data from the dataProvider in your components, if you can't use any of the dataProvider method hooks, you should use that library, too. It brings several benefits:
 
 1. It triggers the loader in the AppBar when the query is running.
 2. It reduces the boilerplate code since you don't need to use `useState`.
 3. It supports a vast array of options
 4. It displays stale data while fetching up-to-date data, leading to a snappier UI
 
-TanStack Query offers 2 main hooks to interact with the dataProvider:
+React Query offers 2 main hooks to interact with the dataProvider:
 
 * [`useQuery`](https://tanstack.com/query/v5/docs/react/reference/useQuery): fetches the dataProvider on mount. This is for *read* queries.
 * [`useMutation`](https://tanstack.com/query/v5/docs/react/reference/useMutation): fetches the dataProvider when you call a callback. This is for *write* queries, and *read* queries that execute on user interaction.
@@ -177,7 +177,7 @@ const ApproveButton = () => {
 };
 ```
 
-If you want to go beyond data provider method hooks, we recommend that you read [the TanStack Query documentation](https://react-query-v5.tanstack.com/overview).
+If you want to go beyond data provider method hooks, we recommend that you read [the React Query documentation](https://react-query-v5.tanstack.com/overview).
 
 ## `isPending` vs `isLoading` vs `isFetching`
 
@@ -185,7 +185,7 @@ Data fetching hooks return three loading state variables: `isPending`, `isFetchi
 
 The short answer is: use `isPending`. Read on to understand why.
 
-The source of these three variables is [TanStack Query](https://tanstack.com/query/v5/docs/react/reference/useQuery). Here is how they defined these variables:
+The source of these three variables is [React Query](https://tanstack.com/query/v5/docs/react/reference/useQuery). Here is how they defined these variables:
 
 - `isPending`:  The query has no data
 - `isFetching`: In any state, if the query is fetching at any time (including background refetching) isFetching will be true.
@@ -286,120 +286,7 @@ In addition to these props, react-admin hooks also have the following callbacks 
 - `onSettled`
 - `onSuccess`
 
-For instance, if you want to execute a callback when the query completes (whether it's successful or failed), you can use the `onSettled` option. this can be useful e.g. to log all calls to the dataProvider:
-
-```jsx
-import { useGetOne, useRecordContext } from 'react-admin';
-
-const UserProfile = () => {
-    const record = useRecordContext();
-    const { data, isPending, error } = useGetOne(
-        'users',
-        { id: record.id },
-        { onSettled: (data, error) => console.log(data, error) }
-    );
-    if (isPending) { return <Loading />; }
-    if (error) { return <p>ERROR</p>; }
-    return <div>User {data.username}</div>;
-};
-```
-
-- `onSuccess(data, variables, context)`: The `onSuccess` function is called when the query returns. It receives the query data, the [query variables](https://tanstack.com/query/latest/docs/react/guides/query-functions#query-function-variables) and the [query context](https://tanstack.com/query/latest/docs/react/guides/query-functions#queryfunctioncontext). This could be useful when you have different shapes for a resource in lists and single record views. In those cases, you might want to avoid react-admin to prefill the cache.
-
-```tsx
-import { useGetList } from 'react-admin';
-import { useQueryClient } from '@tanstack/react-query';
-import { ListView } from './ListView';
-
-const UserList = () => {
-    const queryClient = useQueryClient();
-
-    const { data, isPending, error } = useGetList(
-        'users',
-        { filters: {}, pagination: { page: 1, perPage: 10 }, sort: { field: 'id', order: 'DESC' } },
-        {
-            onSuccess: () =>
-                queryClient.resetQueries(
-                    { queryKey: ['users', 'getOne'] },
-                )
-        }
-    );
-    if (isPending) { return <Loading />; }
-    if (error) { return <p>ERROR</p>; }
-    return <ListView data={data} />;
-};
-```
-
-- `onError(error, variables, context)`: The `onError` function is called when the query fails. It receives the error, the [query variables](https://tanstack.com/query/latest/docs/react/guides/query-functions#query-function-variables) and the [query context](https://tanstack.com/query/latest/docs/react/guides/query-functions#queryfunctioncontext). This is useful to notify users about the error for instance.
-
-```tsx
-import { useGetOne, useNotify, useRecordContext } from 'react-admin';
-
-const UserProfile = () => {
-    const record = useRecordContext();
-    const notify = useNotify();
-    const { data, isPending, error } = useGetOne(
-        'users',
-        { id: record.id },
-        { onError: (error) => notify(error.message, { type: 'error' }) }
-    );
-    if (isPending) { return <Loading />; }
-    if (error) { return <p>ERROR</p>; }
-    return <div>User {data.username}</div>;
-};
-```
-
-- `onSettled(data, error, variables, context)`: The `onSettled` function is called after the query either succeeded or failed. It receives the query data (can be `undefined` if the query failed), the error (can be `undefined` when the query succeeded), the [query variables](https://tanstack.com/query/latest/docs/react/guides/query-functions#query-function-variables) and the [query context](https://tanstack.com/query/latest/docs/react/guides/query-functions#queryfunctioncontext).
-
-```tsx
-import { useGetList, useNotify } from 'react-admin';
-import { useQueryClient } from '@tanstack/react-query';
-import { ListView } from './ListView';
-
-const UserList = () => {
-    const queryClient = useQueryClient();
-    const notify = useNotify();
-
-    const { data, isPending, error } = useGetList(
-        'users',
-        { filters: {}, pagination: { page: 1, perPage: 10 }, sort: { field: 'id', order: 'DESC' } },
-        {
-            onSettled: (data, error) => {
-                if (data !== undefined) {
-                    queryClient.resetQueries(
-                        { queryKey: ['users', 'getOne'] },
-                    )
-                } else {
-                    notify(error.message, { type: 'error' })
-                }
-            }
-        }
-    );
-    if (isPending) { return <Loading />; }
-    if (error) { return <p>ERROR</p>; }
-    return <ListView data={data} />;
-};
-```
-
-**Tip**: In react-admin components that use the data provider method hooks, you can override the query options using the `queryOptions` prop, and the mutation options using the `mutationOptions` prop. For instance, to log the dataProvider calls, in the `<List>` component, you can do the following:
-
-{% raw %}
-```jsx
-import { List, Datagrid, TextField } from 'react-admin';
-
-const PostList = () => (
-    <List
-        queryOptions={{ onSettled: (data, error) => console.log(data, error) }}
-    >
-        <Datagrid>
-            <TextField source="id" />
-            <TextField source="title" />
-            <TextField source="body" />
-        </Datagrid>
-    </List>
-);
-```
-{% endraw %}
+See the [Success and Error Side Effects](#success-and-error-side-effects) for more details.
 
 ## Synchronizing Dependent Queries
 
@@ -425,7 +312,90 @@ const { data: categories, isPending: isPendingCategories } = useGetMany(
 
 ## Success and Error Side Effects
 
-To execute some logic after a query or a mutation is complete, use the `onSuccess` and `onError` options. React-admin uses the term "side effects" for this type of logic, as it's usually modifying another part of the UI.
+To execute some logic after a query or a mutation is complete, use the `onSuccess`, `onError` and `onSettled` options. React-admin uses the term "side effects" for this type of logic, as it's usually modifying another part of the UI.
+
+- `onSuccess(data, variables, context)`: The `onSuccess` function is called when the query returns. It receives the query data, the [query variables](https://tanstack.com/query/latest/docs/react/guides/query-functions#query-function-variables) or [mutation variables]() and the [query context](https://tanstack.com/query/latest/docs/react/guides/query-functions#queryfunctioncontext). This could be useful when you have different shapes for a resource in lists and single record views. In those cases, you might want to avoid react-admin to prefill the cache.
+
+    ```tsx
+    import { useGetList } from 'react-admin';
+    import { useQueryClient } from '@tanstack/react-query';
+    import { ListView } from './ListView';
+
+    const UserList = () => {
+        const queryClient = useQueryClient();
+
+        const { data, isPending, error } = useGetList(
+            'users',
+            { filters: {}, pagination: { page: 1, perPage: 10 }, sort: { field: 'id', order: 'DESC' } },
+            {
+                onSuccess: () =>
+                    queryClient.resetQueries(
+                        { queryKey: ['users', 'getOne'] },
+                    )
+            }
+        );
+        if (isPending) { return <Loading />; }
+        if (error) { return <p>ERROR</p>; }
+        return <ListView data={data} />;
+    };
+    ```
+
+- `onError(error, variables, context)`: The `onError` function is called when the query fails. It receives the error, the [query variables](https://tanstack.com/query/latest/docs/react/guides/query-functions#query-function-variables) and the [query context](https://tanstack.com/query/latest/docs/react/guides/query-functions#queryfunctioncontext). This is useful to notify users about the error for instance.
+
+    ```tsx
+    import { useGetOne, useNotify, useRecordContext } from 'react-admin';
+
+    const UserProfile = () => {
+        const record = useRecordContext();
+        const notify = useNotify();
+        const { data, isPending, error } = useGetOne(
+            'users',
+            { id: record.id },
+            { onError: (error) => notify(error.message, { type: 'error' }) }
+        );
+        if (isPending) { return <Loading />; }
+        if (error) { return <p>ERROR</p>; }
+        return <div>User {data.username}</div>;
+    };
+    ```
+
+- `onSettled(data, error, variables, context)`: The `onSettled` function is called after the query either succeeded or failed. It receives the query data (can be `undefined` if the query failed), the error (can be `undefined` when the query succeeded), the [query variables](https://tanstack.com/query/latest/docs/react/guides/query-functions#query-function-variables) and the [query context](https://tanstack.com/query/latest/docs/react/guides/query-functions#queryfunctioncontext).This can be useful e.g. to log all calls to the dataProvider:
+
+    ```jsx
+    import { useGetOne, useRecordContext } from 'react-admin';
+
+    const UserProfile = () => {
+        const record = useRecordContext();
+        const { data, isPending, error } = useGetOne(
+            'users',
+            { id: record.id },
+            { onSettled: (data, error) => console.log(data, error) }
+        );
+        if (isPending) { return <Loading />; }
+        if (error) { return <p>ERROR</p>; }
+        return <div>User {data.username}</div>;
+    };
+    ```
+
+**Tip**: In react-admin components that use the data provider method hooks, you can override the query options using the `queryOptions` prop, and the mutation options using the `mutationOptions` prop. For instance, to log the dataProvider calls, in the `<List>` component, you can do the following:
+
+{% raw %}
+```jsx
+import { List, Datagrid, TextField } from 'react-admin';
+
+const PostList = () => (
+    <List
+        queryOptions={{ onSettled: (data, error) => console.log(data, error) }}
+    >
+        <Datagrid>
+            <TextField source="id" />
+            <TextField source="title" />
+            <TextField source="body" />
+        </Datagrid>
+    </List>
+);
+```
+{% endraw %}
 
 This is very common when using mutation hooks like `useUpdate`, e.g. to display a notification, or redirect to another page. For instance, here is an `<ApproveButton>` that notifies the user of success or failure using the bottom notification banner:
 
