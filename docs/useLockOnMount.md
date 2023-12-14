@@ -83,7 +83,7 @@ const { isLocked, error, isLoading } = useLockOnMount({
 });
 ```
 
-**Tip**: If the record can't be locked because another user is already locking it, you can use [`react-query`'s retry feature](https://react-query-v5.tanstack.com/guides/mutations#retry) to try again later:
+**Tip**: If the record can't be locked because another user is already locking it, you can use [`react-query`'s retry feature](https://tanstack.com/query/v5/docs/react/guides/mutations#retry) to try again later:
 
 ```jsx
 const { isLocked, error, isLoading } = useLockOnMount({

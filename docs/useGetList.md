@@ -57,7 +57,7 @@ The `options` parameter is optional, and is passed to [react-query's `useQuery` 
 
 Check [react-query's `useQuery` hook documentation](https://tanstack.com/query/v5/docs/react/reference/useQuery) for details on each of these options.
 
-The react-query [query key](https://react-query-v5.tanstack.com/guides/query-keys) for this hook is `[resource, 'getList', { pagination, sort, filter, meta }]`.
+The react-query [query key](https://tanstack.com/query/v5/docs/react/guides/query-keys) for this hook is `[resource, 'getList', { pagination, sort, filter, meta }]`.
 
 ## Usage
 

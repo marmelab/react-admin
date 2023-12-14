@@ -671,7 +671,7 @@ const App = () => (
 
 ## `queryClient`
 
-React-admin uses [TanStack Query](https://react-query-v5.tanstack.com/) to fetch, cache and update data. Internally, the `<Admin>` component creates a react-query [`QueryClient`](https://tanstack.com/query/v5/docs/react/reference/QueryClient) on mount, using [react-query's "aggressive but sane" defaults](https://react-query-v5.tanstack.com/guides/important-defaults):
+React-admin uses [TanStack Query](https://tanstack.com/query/v5/) to fetch, cache and update data. Internally, the `<Admin>` component creates a react-query [`QueryClient`](https://tanstack.com/query/v5/docs/react/reference/QueryClient) on mount, using [react-query's "aggressive but sane" defaults](https://tanstack.com/query/v5/docs/react/guides/important-defaults):
 
 * Queries consider cached data as stale
 * Stale queries are refetched automatically in the background when:

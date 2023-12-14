@@ -177,7 +177,7 @@ const ApproveButton = () => {
 };
 ```
 
-If you want to go beyond data provider method hooks, we recommend that you read [the React Query documentation](https://react-query-v5.tanstack.com/overview).
+If you want to go beyond data provider method hooks, we recommend that you read [the React Query documentation](https://tanstack.com/query/v5/docs/react/overview).
 
 ## `isPending` vs `isLoading` vs `isFetching`
 
