@@ -19,6 +19,7 @@ import {
     TextField,
     Typography,
     Box,
+    InputAdornment,
 } from '@mui/material';
 import { useFormContext } from 'react-hook-form';
 import fakeRestProvider from 'ra-data-fakerest';
@@ -31,6 +32,8 @@ import { AutocompleteInput, AutocompleteInputProps } from './AutocompleteInput';
 import { ReferenceInput } from './ReferenceInput';
 import { TextInput } from './TextInput';
 import { useCreateSuggestionContext } from './useSupportCreateSuggestion';
+import ExpandCircleDownIcon from '@mui/icons-material/ExpandCircleDown';
+import AttributionIcon from '@mui/icons-material/Attribution';
 
 export default { title: 'ra-ui-materialui/input/AutocompleteInput' };
 
@@ -1192,5 +1195,48 @@ export const TranslateChoice = () => {
                 </SimpleForm>
             </Edit>
         </AdminContext>
+    );
+};
+
+export const WithInputProps = () => {
+    const choices = [
+        { id: 1, name: 'Leo Tolstoy' },
+        { id: 2, name: 'Victor Hugo' },
+        { id: 3, name: 'William Shakespeare' },
+        { id: 4, name: 'Charles Baudelaire' },
+        { id: 5, name: 'Marcel Proust' },
+    ];
+
+    return (
+        <Admin dataProvider={dataProvider} history={history}>
+            <Resource
+                name="books"
+                edit={() => (
+                    <Edit>
+                        <SimpleForm>
+                            <AutocompleteInput
+                                source="author"
+                                fullWidth
+                                choices={choices}
+                                TextFieldProps={{
+                                    InputProps: {
+                                        startAdornment: (
+                                            <InputAdornment position="end">
+                                                <AttributionIcon />
+                                            </InputAdornment>
+                                        ),
+                                        endAdornment: (
+                                            <InputAdornment position="end">
+                                                <ExpandCircleDownIcon />
+                                            </InputAdornment>
+                                        ),
+                                    },
+                                }}
+                            />
+                        </SimpleForm>
+                    </Edit>
+                )}
+            />
+        </Admin>
     );
 };
