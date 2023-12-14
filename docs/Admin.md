@@ -648,7 +648,8 @@ You can also disable the `/login` route completely by passing `false` to this pr
 const authProvider = {
     // ...
     async checkAuth() {
-        if (/* not authenticated */) {
+        // ...
+        if (!authenticated) {
             throw { redirectTo: '/no-access' };
         }
     },
@@ -708,6 +709,7 @@ If you want to override the react-query default query and mutation default optio
 ```tsx
 import { Admin } from 'react-admin';
 import { QueryClient } from 'react-query';
+import { dataProvider } from './dataProvider';
 
 const queryClient = new QueryClient({
     defaultOptions: {
@@ -722,7 +724,7 @@ const queryClient = new QueryClient({
 });
 
 const App = () => (
-    <Admin queryClient={queryClient} dataProvider={...}>
+    <Admin queryClient={queryClient} dataProvider={dataProvider}>
         ...
     </Admin>
 );
@@ -915,10 +917,11 @@ But you may want to use another routing strategy, e.g. to allow server-side rend
 ```tsx
 import { BrowserRouter } from 'react-router-dom';
 import { Admin, Resource } from 'react-admin';
+import { dataProvider } from './dataProvider';
 
 const App = () => (
     <BrowserRouter>
-        <Admin dataProvider={...}>
+        <Admin dataProvider={dataProvider}>
             <Resource name="posts" />
         </Admin>
     </BrowserRouter>
@@ -934,10 +937,11 @@ However, if you serve your admin from a sub path AND use another Router (like [`
 ```tsx
 import { Admin, Resource } from 'react-admin';
 import { BrowserRouter } from 'react-router-dom';
+import { dataProvider } from './dataProvider';
 
 const App = () => (
     <BrowserRouter>
-        <Admin basename="/admin" dataProvider={...}>
+        <Admin basename="/admin" dataProvider={dataProvider}>
             <Resource name="posts" />
         </Admin>
     </BrowserRouter>
@@ -974,9 +978,11 @@ React-admin will have to prefix all the internal links with `/admin`. Use the `<
 ```tsx
 // in src/StoreAdmin.js
 import { Admin, Resource } from 'react-admin';
+import { dataProvider } from './dataProvider';
+import posts from './posts';
 
 export const StoreAdmin = () => (
-    <Admin basename="/admin" dataProvider={...}>
+    <Admin basename="/admin" dataProvider={dataProvider}>
         <Resource name="posts" {...posts} />
     </Admin>
 );

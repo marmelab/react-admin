@@ -1,5 +1,7 @@
 import { useStore } from 'ra-core';
 import { RaThemeOptions, ThemeType } from './types';
+import { useMediaQuery } from '@mui/material';
+import { useThemesContext } from './useThemesContext';
 
 export type ThemeSetter = (theme: ThemeType | RaThemeOptions) => void;
 
@@ -23,7 +25,16 @@ export type ThemeSetter = (theme: ThemeType | RaThemeOptions) => void;
 export const useTheme = (
     type?: ThemeType | RaThemeOptions
 ): [ThemeType | RaThemeOptions, ThemeSetter] => {
+    const { darkTheme } = useThemesContext();
+    const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)', {
+        noSsr: true,
+    });
     // FIXME: remove legacy mode in v5, and remove the RaThemeOptions type
-    const [theme, setter] = useStore<ThemeType | RaThemeOptions>('theme', type);
-    return [theme, setter];
+    const [theme, setter] = useStore<ThemeType | RaThemeOptions>(
+        'theme',
+        type ?? (prefersDarkMode && darkTheme ? 'dark' : 'light')
+    );
+
+    // Ensure that even though the store has its value set to 'dark', we still use the light theme when no dark theme is available
+    return [darkTheme != null ? theme : 'light', setter];
 };

@@ -4,6 +4,9 @@ import expect from 'expect';
 import { render, screen } from '@testing-library/react';
 import { renderHook } from '@testing-library/react-hooks';
 import { useTheme } from './useTheme';
+import { AdminContext } from '../AdminContext';
+import { ThemeTestWrapper } from '../layout/ThemeTestWrapper';
+import { defaultDarkTheme } from './defaultTheme';
 
 const authProvider = {
     login: jest.fn().mockResolvedValueOnce(''),
@@ -23,33 +26,102 @@ const Foo = () => {
 };
 
 describe('useTheme', () => {
-    it('should return undefined by default', () => {
+    it('should return the light theme by default', () => {
         render(
             <CoreAdminContext authProvider={authProvider}>
                 <Foo />
             </CoreAdminContext>
         );
-        expect(screen.queryByLabelText('has-theme')).toBeNull();
+        expect(screen.queryByText('light')).not.toBeNull();
+    });
+
+    it('should return the light theme when no dark theme is provided even though user prefers dark mode', () => {
+        render(
+            <ThemeTestWrapper mode="dark">
+                <CoreAdminContext authProvider={authProvider}>
+                    <Foo />
+                </CoreAdminContext>
+            </ThemeTestWrapper>
+        );
+        expect(screen.queryByText('light')).not.toBeNull();
+    });
+
+    it('should return the light theme when no dark theme is provided even though the stored theme is dark', () => {
+        const store = memoryStore({ theme: 'dark' });
+        render(
+            <CoreAdminContext authProvider={authProvider} store={store}>
+                <Foo />
+            </CoreAdminContext>
+        );
+        expect(screen.queryByText('light')).not.toBeNull();
+    });
+
+    it('should return the user preferred theme by default', async () => {
+        const ssrMatchMedia = query => ({
+            matches: query === '(prefers-color-scheme: dark)' ? true : false,
+        });
+
+        render(
+            <ThemeTestWrapper mode="dark">
+                <AdminContext
+                    authProvider={authProvider}
+                    darkTheme={{
+                        ...defaultDarkTheme,
+                        components: {
+                            MuiUseMediaQuery: {
+                                defaultProps: {
+                                    ssrMatchMedia,
+                                    matchMedia: ssrMatchMedia,
+                                },
+                            },
+                        },
+                    }}
+                >
+                    <Foo />
+                </AdminContext>
+            </ThemeTestWrapper>
+        );
+        await screen.findByText('dark');
     });
 
     it('should return current theme when set', () => {
         render(
-            <CoreAdminContext
+            <AdminContext
                 authProvider={authProvider}
                 store={memoryStore({ theme: 'dark' })}
+                darkTheme={defaultDarkTheme}
             >
                 <Foo />
-            </CoreAdminContext>
+            </AdminContext>
         );
         expect(screen.getByLabelText('has-theme')).not.toBeNull();
+        expect(screen.queryByText('dark')).not.toBeNull();
     });
 
     it('should return theme from settings when available', () => {
-        const { result: storeResult } = renderHook(() => useStore('theme'));
+        const { result: storeResult } = renderHook(() => useStore('theme'), {
+            wrapper: ({ children }) => (
+                <AdminContext
+                    authProvider={authProvider}
+                    darkTheme={defaultDarkTheme}
+                >
+                    {children}
+                </AdminContext>
+            ),
+        });
         const [_, setTheme] = storeResult.current;
         setTheme('dark');
 
-        const { result: themeResult } = renderHook(() => useTheme());
+        const { result: themeResult } = renderHook(() => useTheme(), {
+            wrapper: ({ children }) => (
+                <AdminContext
+                    authProvider={authProvider}
+                    darkTheme={defaultDarkTheme}
+                >
+                    {children}
+                </AdminContext>
+            ),
+        });
         const [theme, __] = themeResult.current;
 
         expect(theme).toEqual('dark');

@@ -5,7 +5,7 @@ title: "The Datagrid Component"
 
 # `<Datagrid>`
 
-The `<Datagrid>` component renders a list of records as a table. It supports sorting, row selection for bulk actions, and an expand panel. It is usually used as a descendant of the [`<List>`](List.md#list) and [`<ReferenceManyField>`](./ReferenceManyField.md) components. Outside these components, it must be used inside a `ListContext`.
+The `<Datagrid>` component renders a list of records as a table. It supports sorting, row selection for bulk actions, and an expand panel. It is usually used as a descendant of the [`<List>`](./List.md#list) and [`<ReferenceManyField>`](./ReferenceManyField.md) components. Outside these components, it must be used inside a `ListContext`.
 
 <video controls autoplay playsinline muted loop>
   <source src="./img/Datagrid.mp4" type="video/mp4"/>

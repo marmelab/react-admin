@@ -7,8 +7,6 @@ title: "React-admin demos"
 
 If you want to see what react-admin is capable of, or if you want to learn from apps built by seasoned react-admin developers, check out these demos.
 
-## Overview
-
 <style>
     .demos-list {
         display: grid;
@@ -115,7 +113,7 @@ If you want to see what react-admin is capable of, or if you want to learn from 
 
 <div class="demos-list">
     <div class="card">
-        <img src="./img/demo-ecommerce-oss.png" alt="ecommerce-oss">
+        <a href="#e-commerce" class="no-decoration"><img src="./img/demo-ecommerce-oss.png" alt="ecommerce-oss"></a>
         <div class="content-card">
             <a href="#e-commerce" class="no-decoration">
                 <p class="title-card"><b>E-commerce</b></p>
@@ -130,7 +128,7 @@ If you want to see what react-admin is capable of, or if you want to learn from 
         </div>
     </div>
     <div class="card">
-        <img src="./img/demo-ecommerce-ee.png" alt="ecommerce-ee">
+        <a href="#e-commerce-enterprise" class="no-decoration"><img src="./img/demo-ecommerce-ee.png" alt="ecommerce-ee"></a>
         <div class="content-card">
             <a href="#e-commerce-enterprise" class="no-decoration">
                 <p class="title-card"><b>E-commerce Enterprise</b></p>
@@ -145,11 +143,11 @@ If you want to see what react-admin is capable of, or if you want to learn from 
         </div>
     </div>
     <div class="card">
-        <img src="./img/demo-CRM.png" alt="CRM">
+        <a href="#crm" class="no-decoration"><img src="./img/demo-CRM.png" alt="CRM"></a>
         <div class="content-card">
             <a href="#crm" class="no-decoration">
                 <p class="title-card"><b>CRM</b></p>
-                <p  class="description-card">A complete CRM app allowing to manage contacts, companies, deals, notes, tasks, and tags. Built by the core team.</p>
+                <p  class="description-card">A complete CRM app with an address book and a Kanban board for deals. Built by the core team.</p>
             </a>
         </div>
         <div class="card-footer">
@@ -160,11 +158,11 @@ If you want to see what react-admin is capable of, or if you want to learn from 
         </div>
     </div>
     <div class="card">
-        <img src="./img/demo-help-desk.png" alt="help-desk">
+        <a href="#help-desk" class="no-decoration"><img src="./img/demo-help-desk.png" alt="help-desk"></a>
         <div class="content-card">
             <a href="#help-desk" class="no-decoration">
                 <p class="title-card"><b>Help Desk</b></p>
-                <p  class="description-card">A simple help desk app allowing to manage tickets, users, and tags. Built by the core team.</p>
+                <p  class="description-card">A ticketing app with realtime collaboration and site-wide search. Built by the core team.</p>
             </a>
         </div>
         <div class="card-footer">
@@ -175,7 +173,37 @@ If you want to see what react-admin is capable of, or if you want to learn from 
         </div>
     </div>
     <div class="card">
-        <img src="./img/navidrome.png" alt="Music Player">
+        <a href="#note-taking-app" class="no-decoration"><img src="./img/writers-delight.png" alt="Music Player"></a>
+        <div class="content-card">
+            <a href="#note-taking-app" class="no-decoration">
+                <p class="title-card"><b>Note-taking app</b></p>
+                <p  class="description-card">Writer's Delight lets you write notes, essays, and stories with an AI assistant. Built by the core team.</p>
+            </a>
+        </div>
+        <div class="card-footer">
+            <div class="links-container">
+                <p><b><a href="https://marmelab.com/writers-delight/" class="demo link">Demo</a></b></p>
+                <p><b><a href="https://github.com/marmelab/writers-delight/" class="source-code link">Source code</a></b></p>
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <a href="#blog" class="no-decoration"><img src="./img/blog_demo.png" alt="Blog"></a>
+        <div class="content-card">
+            <a href="#blog" class="no-decoration">
+                <p class="title-card"><b>Blog</b></p>
+                <p  class="description-card">A simple application with posts, comments and users that we use for our e2e tests. Designed to use most of the react-admin features. Built by the core team.</p>
+            </a>
+        </div>
+        <div class="card-footer">
+            <div class="links-container">
+                <p><b><a href="https://stackblitz.com/github/marmelab/react-admin/tree/master/examples/simple" class="demo link">Demo</a></b></p>
+                <p><b><a href="https://github.com/marmelab/react-admin/tree/master/examples/simple" class="source-code link">Source code</a></b></p>
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <a href="#music-player" class="no-decoration"><img src="./img/navidrome.png" alt="Music Player"></a>
         <div class="content-card">
             <a href="#music-player" class="no-decoration">
                 <p class="title-card"><b>Music Player</b></p>
@@ -186,21 +214,6 @@ If you want to see what react-admin is capable of, or if you want to learn from 
             <div class="links-container">
                 <p><b><a href="https://demo.navidrome.org/app/" class="demo link">Demo</a></b></p>
                 <p><b><a href="https://github.com/navidrome/navidrome/" class="source-code link">Source code</a></b></p>
-            </div>
-        </div>
-    </div>
-    <div class="card">
-        <img src="./img/blog_demo.png" alt="Blog">
-        <div class="content-card">
-            <a href="#blog" class="no-decoration">
-                <p class="title-card"><b>Blog</b></p>
-                <p  class="description-card">A simple application with posts, comments and users that we use for our e2e tests. Not designed to have a good UX, but to use most of the react-admin features. Built by the core team.</p>
-            </a>
-        </div>
-        <div class="card-footer">
-            <div class="links-container">
-                <p><b><a href="https://stackblitz.com/github/marmelab/react-admin/tree/master/examples/simple" class="demo link">Demo</a></b></p>
-                <p><b><a href="https://github.com/marmelab/react-admin/tree/master/examples/simple" class="source-code link">Source code</a></b></p>
             </div>
         </div>
     </div>
@@ -268,12 +281,12 @@ A complete CRM app allowing to manage contacts, companies, deals, notes, tasks, 
 The source shows how to implement the following features:
 
 - [Horizontal navigation](https://github.com/marmelab/react-admin/blob/7c60db09aea34a90607a4e7560e9e4b51bd7b9a3/examples/crm/src/Layout.tsx)
+- [Trello-like Kanban board for the deals pipeline](https://github.com/marmelab/react-admin/blob/7c60db09aea34a90607a4e7560e9e4b51bd7b9a3/examples/crm/src/deals/DealListContent.tsx)
 - [Custom d3.js / Nivo Chart in the dashboard](https://github.com/marmelab/react-admin/blob/7c60db09aea34a90607a4e7560e9e4b51bd7b9a3/examples/crm/src/dashboard/DealsChart.tsx)
 - [Add or remove tags to a contact](https://github.com/marmelab/react-admin/blob/7c60db09aea34a90607a4e7560e9e4b51bd7b9a3/examples/crm/src/contacts/TagsListEdit.tsx)
 - [Use dataProvider hooks to update notes](https://github.com/marmelab/react-admin/blob/7c60db09aea34a90607a4e7560e9e4b51bd7b9a3/examples/crm/src/notes/Note.tsx)
 - [Custom grid layout for companies](https://github.com/marmelab/react-admin/blob/7c60db09aea34a90607a4e7560e9e4b51bd7b9a3/examples/crm/src/companies/GridList.tsx)
 - [Filter by "my favorites" in the company list](https://github.com/marmelab/react-admin/blob/7c60db09aea34a90607a4e7560e9e4b51bd7b9a3/examples/crm/src/deals/OnlyMineInput.tsx)
-- [Trello-like board for the deals pipeline](https://github.com/marmelab/react-admin/blob/7c60db09aea34a90607a4e7560e9e4b51bd7b9a3/examples/crm/src/deals/DealListContent.tsx)
 
 ## Help Desk
 
@@ -300,14 +313,28 @@ The source shows how to implement the following features:
 * [Mark as read on visit](https://github.com/marmelab/react-admin-helpdesk/blob/6208ab49597544f0e8d7e238c5c676f73f30c114/src/tickets/TicketShow.tsx#L18)
 * [List with live updates](https://github.com/marmelab/react-admin-helpdesk/blob/6208ab49597544f0e8d7e238c5c676f73f30c114/src/tickets/useGetTicketReadsForRecord.ts)
 
-## Music Player
+## Note-taking App
 
-Navidrome is a Spotify clone allowing to manage songs, artists, playlists, and favorites.
+Writer's Delight lets you write notes, essays, and stories with an AI assistant. Built by the core team.
 
-![Navidrome](./img/navidrome.png)
+[<img src="https://github.com/marmelab/writers-delight/raw/main/public/writers-delight.png" class="no-shadow" alt="Writer's Delight" />](https://marmelab.com/writers-delight/)
 
-* Demo: [https://demo.navidrome.org/app/](https://demo.navidrome.org/app/)
-* Source code: [https://github.com/navidrome/navidrome/](https://github.com/navidrome/navidrome/)
+* Demo: [https://marmelab.com/writers-delight/](https://marmelab.com/writers-delight/)
+* Source code: [https://github.com/marmelab/writers-delight/](https://github.com/marmelab/writers-delight/)
+
+The source shows how to implement the following features:
+
+* [Predictive Text Input](https://github.com/marmelab/writers-delight/blob/main/src/compositions/CompositionEdit.tsx#L34)
+* [AutoSave](https://github.com/marmelab/writers-delight/blob/main/src/compositions/CompositionEdit.tsx#L30)
+* [Infinite List](https://github.com/marmelab/writers-delight/blob/main/src/compositions/CompositionList.tsx#L56)
+* [Edit with List sidebar](https://github.com/marmelab/writers-delight/blob/main/src/compositions/CompositionList.tsx#L43)
+* [Offline-first data provider](https://github.com/marmelab/writers-delight/blob/main/src/dataProvider.ts#L26)
+* [Custom Layout](https://github.com/marmelab/writers-delight/blob/main/src/Layout.tsx)
+* [Custom theme](https://github.com/marmelab/writers-delight/blob/main/src/App.tsx#L8-L12)
+* [Splash Screen](https://github.com/marmelab/writers-delight/blob/main/src/SplashScreen.tsx)
+* [Headless Delete](https://github.com/marmelab/writers-delight/blob/main/src/compositions/MoreActionsButton.tsx#L24)
+* [useCreate](https://github.com/marmelab/writers-delight/blob/main/src/compositions/CreateCompositionButton.tsx#L6)
+* [useStore](https://github.com/marmelab/writers-delight/blob/main/src/compositions/AISwitch.tsx#L23)
 
 ## Blog
 
@@ -317,6 +344,15 @@ A simple application with posts, comments and users that we use for our e2e test
 
 * Demo: [https://stackblitz.com/github/marmelab/react-admin/tree/master/examples/simple](https://stackblitz.com/github/marmelab/react-admin/tree/master/examples/simple)
 * Source code: [https://github.com/marmelab/react-admin/tree/master/examples/simple](https://github.com/marmelab/react-admin/tree/master/examples/simple)
+
+## Music Player
+
+Navidrome is a Spotify clone allowing to manage songs, artists, playlists, and favorites.
+
+![Navidrome](./img/navidrome.png)
+
+* Demo: [https://demo.navidrome.org/app/](https://demo.navidrome.org/app/)
+* Source code: [https://github.com/navidrome/navidrome/](https://github.com/navidrome/navidrome/)
 
 ## Broadcom Layer 7 API Hub
 
