@@ -23,7 +23,7 @@ npx create-next-app@latest
 ```
 
 A prompt will asks you some questions, feel free to choose answers according to your needs. 
-This tutorial assumes you're using an `src` folder, so answer 'Yes' to the 5th question. As for the App Router, you can choose to use it or not, this tutorial will explain how to use both. (For new applications, Next.js recommends using the App Router.)
+This tutorial assumes you're using a `src` folder, so answer `Yes` to the 5th question. As for the App Router, you can choose to use it or not, this tutorial will explain how to use both. (For new applications, Next.js recommends using the App Router).
 
 ![Install Next.js with command line](./img/install-next-js-command-line.png)
 
@@ -78,8 +78,6 @@ export default AdminApp;
 ```
 
 This is a minimal configuration to render CRUD pages for users, posts and comments. React-admin will guess the fields to display in the list and edition pages based on the API response. 
-
-**Tips**: If you choose Pages Router, do not forget to remove [the `"use client"` directive](https://nextjs.org/docs/getting-started/react-essentials#the-use-client-directive).
 
 ## Exposing The Admin App Component
 
@@ -159,7 +157,7 @@ SUPABASE_URL="https://MY_INSTANCE.supabase.co"
 SUPABASE_SERVICE_ROLE="MY_SERVICE_ROLE_KEY"
 ```
 
-**Tip**: This example uses the **service role key** here and not the anonymous role. This allows mutations without dealing with authorization (You may have to modify the safety policies.). **You shouldn't do this in production**, but use the [Supabase authorization](https://supabase.com/docs/guides/auth) feature instead.
+**Tip**: This example uses the **service role key** here and not the anonymous role. This allows mutations without dealing with authorization (You may have to modify the safety policies). **You shouldn't do this in production**, but use the [Supabase authorization](https://supabase.com/docs/guides/auth) feature instead.
 
 Create [a "catch-all" API route](https://nextjs.org/docs/app/building-your-application/routing/dynamic-routes#catch-all-segmentss) in the Next.js app by adding a new file at the following location:
 
@@ -172,10 +170,8 @@ From this point on, the logic for handling is different depending on the router.
 
 ### App Router
 
-For more information about routes handler with the App Router, see [the official documentation](https://nextjs.org/docs/app/building-your-application/routing/route-handlers).
-
 ```tsx
-// In src/app/api/admin/[...slug]/route.ts
+// in src/app/api/admin/[...slug]/route.ts
 
 export const dynamic = 'force-dynamic'; // defaults to auto
 export async function GET(request: Request) {
@@ -239,15 +235,14 @@ async function handler(request: Request) {
 }
 ```
 
+For more information about routes handler with the App Router, see [the official documentation](https://nextjs.org/docs/app/building-your-application/routing/route-handlers).
+
 ### Pages Router
-
-For more information about routes handler with the Pages Router, see [the official documentation](https://nextjs.org/docs/pages/building-your-application/routing/api-routes#optional-catch-all-api-routes).
-
 
 This API route redirects all calls from the react-admin app to the Supabase CRUD API:
 
 ```tsx
-// In src/pages/api/admin/[[...slug]].ts
+// in src/pages/api/admin/[[...slug]].ts
 import { NextApiRequest, NextApiResponse } from "next";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -279,14 +274,17 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 }
 ```
 
+For more information about routes handler with the Pages Router, see [the official documentation](https://nextjs.org/docs/pages/building-your-application/routing/api-routes#optional-catch-all-api-routes).
+
 **Tip**: Some of this code is really PostgREST-specific. The `prefer` header is required to let PostgREST return one record instead of an array containing one record in response to `getOne` requests. The `Content-Range` header is returned by PostgREST and must be passed down to the client. A proxy for another CRUD API will require different parameters.
 
-### Dataprovider
+### Data Provider
 
 Finally, update the react-admin data provider to use the Supabase adapter instead of the JSON Server one. As Supabase provides a PostgREST endpoint, we'll use [`ra-data-postgrest`](https://github.com/raphiniert-com/ra-data-postgrest):
 
 ```sh
-npm install @raphiniert/ra-data-postgrest // or
+npm install @raphiniert/ra-data-postgrest
+# or
 yarn add @raphiniert/ra-data-postgrest
 ```
 
