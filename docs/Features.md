@@ -80,7 +80,7 @@ const PostList = () => {
         })
             .then(({ data }) => setPosts(data))
             .catch(error => setError(error))
-            .finally(() => setIsPendin(false));
+            .finally(() => setIsPending(false));
     }, []);
     if (isPending) { return <p>Loading</p>; }
     if (error) { return <p>ERROR</p>; }

@@ -41,7 +41,7 @@ Here is a focus of the most important changes.
 The package has been renamed to `@tanstack/react-query` so you'll have to change your imports:
 
 ```diff
--import { useQuery } from '@tanstack/react-query';
+-import { useQuery } from 'react-query';
 +import { useQuery } from '@tanstack/react-query';
 ```
 
