@@ -1,11 +1,11 @@
 ---
 layout: default
-title: "The MarkdownInput Component"
+title: 'The MarkdownInput Component'
 ---
 
 # `<MarkdownInput>`
 
-This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> component allows to edit and preview Markdown data, based on [the Toast UI editor](https://nhn.github.io/tui.editor/latest/ToastUIEditor).
+This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> component allows to edit and preview Markdown data, based on [the Toast UI editor](https://nhn.github.io/tui.editor/latest/ToastUIEditor). To be used in Edit and Create views.
 
 <video controls autoplay playsinline muted loop>
   <source src="./img/markdown-input.webm" type="video/webm"/>
@@ -29,36 +29,59 @@ const PostEdit = () => (
 );
 ```
 
+You can customize the markdown renderer used for the preview, so that it matches the rendering you need in read mode just by applying the CSS rules you want.
+
+```JSX
+import { Edit, SimpleForm, TextInput } from "react-admin";
+import { MarkdownInput } from "@react-admin/ra-markdown";
+
+// Additional props are passed to `tui-editor`'s `<Editor>` component
+const options = {
+  previewStyle: "tab",
+  height: "300px",
+  initialEditType: "markdown",
+  useCommandShortcut: false,
+};
+
+const PostEdit = () => (
+  <Edit>
+    <SimpleForm>
+      <TextInput source="title" />
+      <MarkdownInput source="description" {...options} />
+    </SimpleForm>
+  </Edit>
+);
+```
+
 ## Props
 
 `<MarkdownInput>` accepts the following props:
 
-| Prop                 | Required | Type      | Default    | Description                                                           |
-| -------------------- | -------- | --------- | ---------- | --------------------------------------------------------------------- |
-| `source`             | Required | `string`  |            | The field name in the record                                          |
-| `fullWidth`          | Optional | `boolean` | `true`     | If `true`, the input will expand to fill the form width               |
-| `label`              | Optional | `string`  |            | The label. If not set, the label is inferred from the child component |
-| `helperText`         | Optional | `string`  |            | The helper text to display under the input                            |
-| `previewStyle`       | Optional | `string`  | `vertical` | Markdown editor's preview style. Can be `tab` or `vertical`           |
-| `height`             | Optional | `string`  | `512px`    | Markdown editor's height                                              |
-| `initialEditType`    | Optional | `string`  | `wysiwyg`  | Markdown editor's initial edit type. Can be `markdown` or `wysiwyg`   |
-| `useCommandShortcut` | Optional | `boolean` | `true`     | Whether use keyboard shortcuts to perform commands                    |
+| Prop                 | Required | Type      | Default    | Description                                                                                         |
+| -------------------- | -------- | --------- | ---------- | --------------------------------------------------------------------------------------------------- |
+| `source`             | Required | `string`  |            | The field name in the record                                                                        |
+| `fullWidth`          | Optional | `boolean` | `true`     | If `true`, the input will expand to fill the form width                                             |
+| `height`             | Optional | `string`  | `512px`    | Markdown editor's height                                                                            |
+| `helperText`         | Optional | `string`  |            | The helper text to display under the input                                                          |
+| `initialEditType`    | Optional | `string`  | `wysiwyg`  | Markdown editor's initial edit type. Can be `markdown` or `wysiwyg`                                 |
+| `label`              | Optional | `string`  |            | The label. If not set, the label is inferred from the child component                               |
+| `previewStyle`       | Optional | `string`  | `vertical` | Markdown editor's preview style. Can be `tab` or `vertical`                                         |
+| `toolbarItems`       | Optional | `array`   |            | The toolbar items to display in the editor. See [Adding Buttons](#adding-buttons) for more details. |
+| `useCommandShortcut` | Optional | `boolean` | `true`     | Whether use keyboard shortcuts to perform commands                                                  |
 
-`<MarkdownInput>` also accepts the [common input props](https://marmelab.com/react-admin/Inputs.html#common-input-props) and the [editor props](https://nhn.github.io/tui.editor/latest/ToastUIEditorCore) from the Toast UI editor.
+`<MarkdownInput>` also accepts the [common input props](https://marmelab.com/react-admin/Inputs.html#common-input-props) and the [editor props](https://nhn.github.io/tui.editor/latest/ToastUIEditorCore) from the [Toast UI](https://ui.toast.com/) editor.
 
 ## `source`
 
 Specifies the field of the record that the input should edit. It is required.
 
 {% raw %}
-
 ```jsx
-<Form record={{ id: 123, title: 'Hello, world!', body: '<p>Lorem Ipsum</p>' }}>
+<Form record={{ id: 123, title: 'Hello, world!', body: '**Lorem Ipsum**' }}>
     <MarkdownInput source="body" />
-    {/* default value is "<p>Lorem Ipsum</p>" */}
+    {/* default value is "**Lorem Ipsum**" */}
 </Form>
 ```
-
 {% endraw %}
 
 ## `fullWidth`
@@ -66,13 +89,23 @@ Specifies the field of the record that the input should edit. It is required.
 You can make the markdown editor full width by setting the `fullWidth` prop to `true`:
 
 {% raw %}
-
 ```jsx
 <SimpleForm>
     <MarkdownInput source="description" fullwidth />
 </SimpleForm>
 ```
+{% endraw %}
 
+## `height`
+
+The editor has a size that can be customized by setting the `height` prop. It is set to `512px` by default. You can use `px` or `%` units.
+
+{% raw %}
+```jsx
+<SimpleForm>
+    <MarkdownInput source="description" height="300px" />
+</SimpleForm>
+```
 {% endraw %}
 
 ## `helperText`
@@ -80,7 +113,6 @@ You can make the markdown editor full width by setting the `fullWidth` prop to `
 If you need to display a text below the markdown editor (usually to explain the expected data to the user), use the `helperText` prop.
 
 {% raw %}
-
 ```jsx
 <SimpleForm>
     <MarkdownInput
@@ -89,35 +121,6 @@ If you need to display a text below the markdown editor (usually to explain the 
     />
 </SimpleForm>
 ```
-
-{% endraw %}
-
-## `previewStyle`
-
-You can customize the preview style by setting the `previewStyle` prop. It accepts `tab` or `vertical` and is set to `vertical` by default.
-
-{% raw %}
-
-```jsx
-<SimpleForm>
-    <MarkdownInput source="description" previewStyle="tab" />
-</SimpleForm>
-```
-
-{% endraw %}
-
-## `height`
-
-The editor has a size that can be customized by setting the `height` prop. It is set to `512px` by default. You can use `px` or `%` units.
-
-{% raw %}
-
-```jsx
-<SimpleForm>
-    <MarkdownInput source="description" height="300px" />
-</SimpleForm>
-```
-
 {% endraw %}
 
 ## `initialEditType`
@@ -125,13 +128,36 @@ The editor has a size that can be customized by setting the `height` prop. It is
 This prop allows to set the initial edit type of the editor. It accepts `markdown` or `wysiwyg` and is set to `wysiwyg` by default.
 
 {% raw %}
-
 ```jsx
 <SimpleForm>
     <MarkdownInput source="description" initialEditType="markdown" />
 </SimpleForm>
 ```
+{% endraw %}
 
+## `label`
+
+You can customize the label by setting the `label` prop. It is inferred from the `source` prop by default.
+
+{% raw %}
+```jsx
+<SimpleForm>
+    <MarkdownInput source="description" label="Description" />
+</SimpleForm>
+```
+{% endraw %}
+
+## `previewStyle`
+
+You can customize the preview style by setting the `previewStyle` prop. It accepts `tab` or `vertical` and is set to `vertical` by default.
+If you chose `vertical`, the content and the preview will be displayed side by side. If you chose `tab`, the content and the preview will be displayed in two separate tabs. You can switch between the two tabs by clicking on it.
+
+{% raw %}
+```jsx
+<SimpleForm>
+    <MarkdownInput source="description" previewStyle="tab" />
+</SimpleForm>
+```
 {% endraw %}
 
 ## `useCommandShortcut`
@@ -139,23 +165,23 @@ This prop allows to set the initial edit type of the editor. It accepts `markdow
 You can disable the keyboard shortcuts by setting the `useCommandShortcut` prop to `false`. It is set to `true` by default.
 
 {% raw %}
-
 ```jsx
 <SimpleForm>
     <MarkdownInput source="description" useCommandShortcut={false} />
 </SimpleForm>
 ```
-
 {% endraw %}
 
-## Add Your Own Buttons
+## Adding Buttons
 
-You can add your own buttons to the markdown editor by using the `toolbarItems` prop. It accepts an array of [toolbar items](https://nhn.github.io/tui.editor/latest/ToastUIEditorToolbar#toolbar-items) and is set to `null` by default.
+You can add your own buttons to the markdown editor by using the `toolbarItems` prop. It accepts an array of [toolbar items](https://nhn.github.io/tui.editor/latest/tutorial-example15-customizing-toolbar-buttons) and is set to `null` by default.
 
 {% raw %}
+```tsx
+// src/Example.tsx
+import { Edit, SimpleForm, MarkdownInput } from 'react-admin';
 
-```jsx
-function createLastButton() {
+function createLastButton(): HTMLButtonElement {
     const button = document.createElement('button');
     button.className = 'toastui-editor-toolbar-icons last';
     button.style.backgroundImage = 'none';
@@ -169,25 +195,26 @@ function createLastButton() {
     return button;
 }
 
-return (
-    <SimpleForm>
-        <MarkdownInput
-            source="description"
-            toolbarItems={[
-                ['heading', 'bold', 'italic', 'strike'],
-                [
-                    {
-                        el: createLastButton(),
-                        tooltip: 'Custom Command',
-                        name: 'custom',
-                    },
-                ],
-            ]}
-        />
-    </SimpleForm>
+const Example = () => (
+    <Edit>
+        <SimpleForm>
+           <MarkdownInput
+                source="description"
+                toolbarItems={[
+                    ['heading', 'bold', 'italic', 'strike'],
+                    [
+                        {
+                            el: createLastButton(),
+                            tooltip: 'Custom Command',
+                            name: 'custom',
+                        },
+                    ],
+                ]}
+            />
+        </SimpleForm>
+    </Edit>
 );
 ```
-
 {% endraw %}
 
 Check [the `ra-markdown` documentation](https://marmelab.com/ra-enterprise/modules/ra-markdown) for more details.
