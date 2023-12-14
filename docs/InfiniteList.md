@@ -220,8 +220,8 @@ const ProductList = () => (
     <InfiniteListBase>
         <Container>
             <Typography variant="h4">All products</Typography>
-            <WithListContext render={({ isLoading, data }) => (
-                    !isLoading && (
+            <WithListContext render={({ isPending, data }) => (
+                    !isPending && (
                         <Stack spacing={1}>
                             {data.map(product => (
                                 <Card key={product.id}>
@@ -248,11 +248,11 @@ import { useInfiniteListController } from 'react-admin';
 import { Card, CardContent, Container, Stack, Typography } from '@mui/material';
 
 const ProductList = () => {
-    const { isLoading, data } = useInfiniteListController();
+    const { isPending, data } = useInfiniteListController();
     return (
         <Container>
             <Typography variant="h4">All products</Typography>
-                {!isLoading && (
+                {!isPending && (
                     <Stack spacing={1}>
                         {data.map(product => (
                             <Card key={product.id}>

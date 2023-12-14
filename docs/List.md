@@ -1184,8 +1184,8 @@ const ProductList = () => (
     <ListBase>
         <Container>
             <Typography variant="h4">All products</Typography>
-            <WithListContext render={({ isLoading, data }) => (
-                    !isLoading && (
+            <WithListContext render={({ isPending, data }) => (
+                    !isPending && (
                         <Stack spacing={1}>
                             {data.map(product => (
                                 <Card key={product.id}>
@@ -1197,8 +1197,8 @@ const ProductList = () => (
                         </Stack>
                     )
                 )} />
-            <WithListContext render={({ isLoading, total }) => (
-                !isLoading && <Typography>{total} results</Typography>
+            <WithListContext render={({ isPending, total }) => (
+                !isPending && <Typography>{total} results</Typography>
             )} />
         </Container>
     </ListBase>
@@ -1214,11 +1214,11 @@ import { useListController } from 'react-admin';
 import { Card, CardContent, Container, Stack, Typography } from '@mui/material';
 
 const ProductList = () => {
-    const { isLoading, data, total } = useListController();
+    const { isPending, data, total } = useListController();
     return (
         <Container>
             <Typography variant="h4">All products</Typography>
-                {!isLoading && (
+                {!isPending && (
                     <Stack spacing={1}>
                         {data.map(product => (
                             <Card key={product.id}>
@@ -1229,7 +1229,7 @@ const ProductList = () => {
                         ))}
                     </Stack>
                 )}
-            {!isLoading && <Typography>{total} results</Typography>}
+            {!isPending && <Typography>{total} results</Typography>}
         </Container>
     );
 };

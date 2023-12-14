@@ -31,7 +31,7 @@ import {
 import { Link } from 'react-router-dom';
 
 const PostList = () => {
-  const { data, page, total, setPage, isLoading } = useListController({
+  const { data, page, total, setPage, isPending } = useListController({
     sort: { field: 'published_at', order: 'DESC' },
     perPage: 10,
   });
@@ -45,7 +45,7 @@ const PostList = () => {
           <Button icon={<PlusOutlined />}>Create</Button>
         </Link>
       </div>
-      <Card bodyStyle={{ padding: '0' }} loading={isLoading}>
+      <Card bodyStyle={{ padding: '0' }} loading={isPending}>
         <Table
           size="small"
           dataSource={data}
