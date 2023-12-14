@@ -180,7 +180,7 @@ By default, `<ReferenceManyField>` does not refresh the data as soon as the user
 You can customize the debounce duration in milliseconds - or disable it completely - by passing a `debounce` prop to the `<ReferenceManyField>` component:
 
 ```jsx
-// wait 1 seconds instead of 500 milliseconds befoce calling the dataProvider
+// wait 1 seconds instead of 500 milliseconds before calling the dataProvider
 const PostCommentsField = () => (
     <ReferenceManyField debounce={1000}>
         ...
