@@ -266,9 +266,6 @@ The data provider method hooks (like `useGetOne`) and react-query's hooks (like 
 - `meta`
 - `notifyOnChangeProps`
 - `notifyOnChangePropsExclusions`
-- `onError`
-- `onSettled`
-- `onSuccess`
 - `queryKeyHashFn`
 - `refetchInterval`
 - `refetchIntervalInBackground`
@@ -283,6 +280,11 @@ The data provider method hooks (like `useGetOne`) and react-query's hooks (like 
 - `structuralSharing`
 - `suspense`
 - `useErrorBoundary`
+
+In addition to these props, react-admin hooks also have the following callbacks props:
+- `onError`
+- `onSettled`
+- `onSuccess`
 
 For instance, if you want to execute a callback when the query completes (whether it's successful or failed), you can use the `onSettled` option. this can be useful e.g. to log all calls to the dataProvider:
 
@@ -302,13 +304,82 @@ const UserProfile = () => {
 };
 ```
 
-We won't re-explain all these options here, but we'll focus on the most useful ones in react-admin. 
+- `onSuccess(data, variables, context)`: The `onSuccess` function is called when the query returns. It receives the query data, the [query variables](https://tanstack.com/query/latest/docs/react/guides/query-functions#query-function-variables) and the [query context](https://tanstack.com/query/latest/docs/react/guides/query-functions#queryfunctioncontext). This could be useful when you have different shapes for a resource in lists and single record views. In those cases, you might want to avoid react-admin to prefill the cache.
 
-- `onSuccess(data, variables, context)`: The `onSuccess` function is called when the query returns. It receives the query data, the [query variables](https://tanstack.com/query/latest/docs/react/guides/query-functions#query-function-variables) and the [query context](https://tanstack.com/query/latest/docs/react/guides/query-functions#queryfunctioncontext).
+```tsx
+import { useGetList } from 'react-admin';
+import { useQueryClient } from '@tanstack/react-query';
+import { ListView } from './ListView';
 
-- `onError(error, variables, context)`: The `onSuccess` function is called when the query fails. It receives the error, the [query variables](https://tanstack.com/query/latest/docs/react/guides/query-functions#query-function-variables) and the [query context](https://tanstack.com/query/latest/docs/react/guides/query-functions#queryfunctioncontext).
+const UserList = () => {
+    const queryClient = useQueryClient();
 
-- `onSettled(data, error, variables, context)`: The `onSuccess` function is called after the query either succeeded or failed. It receives the query data (can be `undefined` if the query failed), the error (can be `undefined` when the query succeeded), the [query variables](https://tanstack.com/query/latest/docs/react/guides/query-functions#query-function-variables) and the [query context](https://tanstack.com/query/latest/docs/react/guides/query-functions#queryfunctioncontext).
+    const { data, isPending, error } = useGetList(
+        'users',
+        { filters: {}, pagination: { page: 1, perPage: 10 }, sort: { field: 'id', order: 'DESC' } },
+        {
+            onSuccess: () =>
+                queryClient.resetQueries(
+                    { queryKey: ['users', 'getOne'] },
+                )
+        }
+    );
+    if (isPending) { return <Loading />; }
+    if (error) { return <p>ERROR</p>; }
+    return <ListView data={data} />;
+};
+```
+
+- `onError(error, variables, context)`: The `onError` function is called when the query fails. It receives the error, the [query variables](https://tanstack.com/query/latest/docs/react/guides/query-functions#query-function-variables) and the [query context](https://tanstack.com/query/latest/docs/react/guides/query-functions#queryfunctioncontext). This is useful to notify users about the error for instance.
+
+```tsx
+import { useGetOne, useNotify, useRecordContext } from 'react-admin';
+
+const UserProfile = () => {
+    const record = useRecordContext();
+    const notify = useNotify();
+    const { data, isPending, error } = useGetOne(
+        'users',
+        { id: record.id },
+        { onError: (error) => notify(error.message, { type: 'error' }) }
+    );
+    if (isPending) { return <Loading />; }
+    if (error) { return <p>ERROR</p>; }
+    return <div>User {data.username}</div>;
+};
+```
+
+- `onSettled(data, error, variables, context)`: The `onSettled` function is called after the query either succeeded or failed. It receives the query data (can be `undefined` if the query failed), the error (can be `undefined` when the query succeeded), the [query variables](https://tanstack.com/query/latest/docs/react/guides/query-functions#query-function-variables) and the [query context](https://tanstack.com/query/latest/docs/react/guides/query-functions#queryfunctioncontext).
+
+```tsx
+import { useGetList, useNotify } from 'react-admin';
+import { useQueryClient } from '@tanstack/react-query';
+import { ListView } from './ListView';
+
+const UserList = () => {
+    const queryClient = useQueryClient();
+    const notify = useNotify();
+
+    const { data, isPending, error } = useGetList(
+        'users',
+        { filters: {}, pagination: { page: 1, perPage: 10 }, sort: { field: 'id', order: 'DESC' } },
+        {
+            onSettled: (data, error) => {
+                if (data !== undefined) {
+                    queryClient.resetQueries(
+                        { queryKey: ['users', 'getOne'] },
+                    )
+                } else {
+                    notify(error.message, { type: 'error' })
+                }
+            }
+        }
+    );
+    if (isPending) { return <Loading />; }
+    if (error) { return <p>ERROR</p>; }
+    return <ListView data={data} />;
+};
+```
 
 **Tip**: In react-admin components that use the data provider method hooks, you can override the query options using the `queryOptions` prop, and the mutation options using the `mutationOptions` prop. For instance, to log the dataProvider calls, in the `<List>` component, you can do the following:
 
