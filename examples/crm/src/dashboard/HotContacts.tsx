@@ -12,7 +12,7 @@ export const HotContacts = () => {
     const {
         data: contactData,
         total: contactTotal,
-        isLoading: contactsLoading,
+        isPending: contactsLoading,
     } = useGetList<Contact>(
         'contacts',
         {
@@ -42,7 +42,7 @@ export const HotContacts = () => {
                     linkType="show"
                     data={contactData}
                     total={contactTotal}
-                    isLoading={contactsLoading}
+                    isPending={contactsLoading}
                     primaryText={contact =>
                         `${contact.first_name} ${contact.last_name}`
                     }

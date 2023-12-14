@@ -15,7 +15,7 @@ import { Deal } from '../types';
 
 export const DealsPipeline = () => {
     const { identity } = useGetIdentity();
-    const { data, total, isLoading } = useGetList<Deal>(
+    const { data, total, isPending } = useGetList<Deal>(
         'deals',
         {
             pagination: { page: 1, perPage: 10 },
@@ -61,7 +61,7 @@ export const DealsPipeline = () => {
                     linkType="show"
                     data={getOrderedDeals(data)}
                     total={total}
-                    isLoading={isLoading}
+                    isPending={isPending}
                     primaryText={deal => deal.name}
                     secondaryText={deal =>
                         `${deal.amount.toLocaleString('en-US', {

@@ -5,8 +5,8 @@ import { useCreatePath, NumberField, useListContext } from 'react-admin';
 import { Link } from 'react-router-dom';
 
 const GridList = () => {
-    const { isLoading } = useListContext();
-    return isLoading ? <LoadingGridList /> : <LoadedGridList />;
+    const { isPending } = useListContext();
+    return isPending ? <LoadingGridList /> : <LoadedGridList />;
 };
 
 const useColsForWidth = () => {

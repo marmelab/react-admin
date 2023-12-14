@@ -440,6 +440,7 @@ export const injectedProps = [
     'hideFilter',
     'isFetching',
     'isLoading',
+    'isPending',
     'onSelect',
     'onToggleItem',
     'onUnselectItems',

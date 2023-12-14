@@ -17,7 +17,7 @@ const Basket = () => {
 
     const productIds = record ? record.basket.map(item => item.product_id) : [];
 
-    const { isLoading, data: products } = useGetMany<Product>(
+    const { isPending, data: products } = useGetMany<Product>(
         'products',
         { ids: productIds },
         { enabled: !!record }
@@ -29,7 +29,7 @@ const Basket = () => {
           }, {} as any)
         : {};
 
-    if (isLoading || !record || !products) return null;
+    if (isPending || !record || !products) return null;
 
     return (
         <Table>

@@ -12,8 +12,8 @@ export const NotesIterator = ({
     showStatus?: boolean;
     reference: 'contacts' | 'deals';
 }) => {
-    const { data, isLoading } = useListContext();
-    if (isLoading) return null;
+    const { data, isPending } = useListContext();
+    if (isPending) return null;
     return (
         <>
             <NewNote showStatus={showStatus} reference={reference} />

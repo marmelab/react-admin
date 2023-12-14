@@ -34,14 +34,14 @@ export const TagsListEdit = () => {
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const [disabled, setDisabled] = useState(false);
 
-    const { data: allTags, isLoading: isLoadingAllTags } = useGetList<Tag>(
+    const { data: allTags, isPending: isPendingAllTags } = useGetList<Tag>(
         'tags',
         {
             pagination: { page: 1, perPage: 10 },
             sort: { field: 'name', order: 'ASC' },
         }
     );
-    const { data: tags, isLoading: isLoadingRecordTags } = useGetMany<Tag>(
+    const { data: tags, isPending: isPendingRecordTags } = useGetMany<Tag>(
         'tags',
         { ids: record.tags },
         { enabled: record && record.tags && record.tags.length > 0 }
@@ -119,7 +119,7 @@ export const TagsListEdit = () => {
         );
     };
 
-    if (isLoadingRecordTags || isLoadingAllTags) return null;
+    if (isPendingRecordTags || isPendingAllTags) return null;
     return (
         <>
             {tags?.map(tag => (
