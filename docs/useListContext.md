@@ -28,8 +28,6 @@ import { useListContext } from 'react-admin';
 
 export const Aside = () => {
     const { data, isPending } = useListContext();
-    const { data, isPending } = useListContext();
-    if (isPending) return null;
     if (isPending) return null;
     return (
         <div>
@@ -133,8 +131,6 @@ type Post = {
 
 export const Aside = () => {
     const { data: posts, isPending } = useListContext<Post>();
-    const { data: posts, isPending } = useListContext<Post>();
-    if (isPending) return null;
     if (isPending) return null;
     return (
         <div>
