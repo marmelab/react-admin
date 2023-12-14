@@ -66,7 +66,7 @@ const {
     data, // an array of the list records, e.g. [{ id: 123, title: 'hello world' }, { ... }]
     total, // the total number of results for the current filters, excluding pagination. Useful to build the pagination controls, e.g. 23      
     isFetching, // boolean that is true while the data is being fetched, and false once the data is fetched
-    isPending, // boolean that is true until the data is fetched for the first time
+    isLoading, // boolean that is true until the data is fetched for the first time
     isPending, // boolean that is true until the data is available for the first time
     // pagination
     page, // the current page. Starts at 1
@@ -106,8 +106,6 @@ import { Typography } from '@mui/material';
 
 export const Aside = () => (
     <WithListContext render={({ data, isPending }) => 
-    <WithListContext render={({ data, isPending }) => 
-        !isPending && (
         !isPending && (
             <div>
                 <Typography variant="h6">Posts stats</Typography>
