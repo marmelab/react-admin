@@ -19,7 +19,7 @@ const authProvider = {
 const Foo = () => {
     const [theme] = useTheme();
     return theme !== undefined ? (
-        <div aria-label="has-theme">{theme}</div>
+        <div aria-label="has-theme">{theme as any}</div>
     ) : (
         <></>
     );
@@ -59,6 +59,8 @@ describe('useTheme', () => {
     it('should return the user preferred theme by default', async () => {
         const ssrMatchMedia = query => ({
             matches: query === '(prefers-color-scheme: dark)' ? true : false,
+            addListener: () => {},
+            removeListener: () => {},
         });
 
         render(
@@ -100,7 +102,7 @@ describe('useTheme', () => {
 
     it('should return theme from settings when available', () => {
         const { result: storeResult } = renderHook(() => useStore('theme'), {
-            wrapper: ({ children }) => (
+            wrapper: ({ children }: any) => (
                 <AdminContext
                     authProvider={authProvider}
                     darkTheme={defaultDarkTheme}
@@ -113,7 +115,7 @@ describe('useTheme', () => {
         setTheme('dark');
 
         const { result: themeResult } = renderHook(() => useTheme(), {
-            wrapper: ({ children }) => (
+            wrapper: ({ children }: any) => (
                 <AdminContext
                     authProvider={authProvider}
                     darkTheme={defaultDarkTheme}

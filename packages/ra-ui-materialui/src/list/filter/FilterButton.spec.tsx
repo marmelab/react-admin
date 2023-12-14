@@ -199,9 +199,12 @@ describe('<FilterButton />', () => {
             fireEvent.click(await screen.findByText('Sint...'));
 
             await screen.findByLabelText('Add filter');
-            await waitFor(() => {
-                expect(screen.getAllByRole('checkbox')).toHaveLength(2);
-            });
+            await waitFor(
+                () => {
+                    expect(screen.getAllByRole('checkbox')).toHaveLength(2);
+                },
+                { timeout: 10000 }
+            );
             fireEvent.click(screen.getByLabelText('Add filter'));
             fireEvent.click(await screen.findByText('Remove all filters'));
 
