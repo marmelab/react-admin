@@ -111,6 +111,7 @@ This example leverages [`<SingleFieldList>`](./SingleFieldList.md) to display an
 | `pagination` | Optional | `Element` | -       | Pagination element to display pagination controls. empty by default (no pagination) |
 | `perPage`    | Optional | `number`  | 25      | Maximum number of referenced records to fetch                                       |
 | `sort`       | Optional | `{ field, order }` | `{ field: 'id', order: 'DESC' }` | Sort order to use when fetching the related records, passed to `getManyReference()` |
+| `debounce`   | Optional | `number`  | 500     | debounce time in ms for the `setFilters` callbacks                                  |
 
 `<ReferenceManyField>` also accepts the [common field props](./Fields.md#common-field-props), except `emptyText` (use the child `empty` prop instead).
 
@@ -169,6 +170,21 @@ export const AuthorShow = () => (
       </ReferenceManyField>
     </SimpleShowLayout>
   </Show>
+);
+```
+
+## `debounce`
+
+By default, `<ReferenceManyField>` does not refresh the data as soon as the user enters data in the filter form. Instead, it waits for half a second of user inactivity (via `lodash.debounce`) before calling the `dataProvider` on filter change. This is to prevent repeated (and useless) calls to the API.
+
+You can customize the debounce duration in milliseconds - or disable it completely - by passing a `debounce` prop to the `<ReferenceManyField>` component:
+
+```jsx
+// wait 1 seconds instead of 500 milliseconds befoce calling the dataProvider
+const PostCommentsField = () => (
+    <ReferenceManyField debounce={1000}>
+        ...
+    </ReferenceManyField>
 );
 ```
 
