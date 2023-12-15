@@ -135,15 +135,21 @@ Read more about the [Architecture choices](./Architecture.md).
 The [React-Admin Enterprise Edition](https://marmelab.com/ra-enterprise) <img class="icon" src="./img/premium.svg" /> offers additional features and services for react-admin:
 
 - Save weeks of development thanks to the **Private Modules**, valid on an unlimited number of domains and projects.
-  - `ra-preferences`: Persist user preferences (language, theme, filters, datagrid columns, sidebar position, etc.) in local storage.
-  - `ra-navigation`: Multi-level menu and breadcrumb, with the ability to define a custom path for your resources.
-  - `ra-realtime`: Display live notifications, auto-update content on the screen, lock content when editing, with adapters for real-time backends.
+  - `ra-ai`: Components powered by Artificial Intelligence (AI) to boost user productivity. Suggest completion for user inputs, fix and improve large chunks of text in React-Admin forms.
+  - `ra-audit-log`: Track all changes made to your data, and display them in a dedicated view.
+  - `ra-calendar`: Display and manipulate events, drag and resize appointments, and browse a calendar in react-admin apps.
+  - `ra-datagrid-ag`: Integration with the [ag-Grid](https://www.ag-grid.com/) data grid, for better performance and advanced features (row grouping, aggregation, tree data, pivoting, column resizing, and much more).
   - `ra-editable-datagrid`: Edit data directly in the list view, for better productivity. Excel-like editing experience.
   - `ra-form-layout`: New form layouts for complex data entry tasks (accordion, wizard, etc.)
-  - `ra-relationships`: Visualize and edit complex relationships, including many-to-many relationships.
-  - `ra-tree`: Edit and visualize tree structures. Reorganize by drag and drop. Adapts to any data structure on the backend (parent_id, children, nested sets, etc.).
-  - `ra-tour`: Guided tours for react-admin applications. Step-by-step instructions, Material UI skin.
+  - `ra-json-schema-form`: Generate react-admin apps from a JSON Schema.
   - `ra-markdown`: Read Markdown data, and edit it using a WYSIWYG editor in your admin
+  - `ra-navigation`: Alternative layouts and menus, breadcrumb, and hooks for applications with a deep navigation tree.
+  - `ra-rbac`: Role-based access control for fine-grained permissions.
+  - `ra-realtime`: Display live notifications, auto-update content on the screen, lock content when editing, with adapters for real-time backends.
+  - `ra-relationships`: Visualize and edit complex relationships, including many-to-many relationships.
+  - `ra-search`: Plug your search engine and let users search across all resources via a smart Omnibox.
+  - `ra-tour`: Guided tours for react-admin applications. Step-by-step instructions, Material UI skin.
+  - `ra-tree`: Edit and visualize tree structures. Reorganize by drag and drop. Adapts to any data structure on the backend (parent_id, children, nested sets, etc.).
 - Get **Support** from experienced react and react-admin developers, who will help you find the right information and troubleshoot your bugs.
 - Get a **50% Discount on Professional Services** in case you need coaching, audit, or custom development by our experts.
 - Get access to exclusive **Learning Material**, including a Storybook full of examples, and a dedicated demo app.
