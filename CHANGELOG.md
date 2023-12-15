@@ -1,5 +1,21 @@
 # Changelog
 
+## v4.16.3
+
+* Fix `useNotify` types ([#9529](https://github.com/marmelab/react-admin/pull/9529)) ([djhi](https://github.com/djhi))
+* Fix `<AutocompleteInput TextFieldProps>` are not applied ([#9527](https://github.com/marmelab/react-admin/pull/9527)) ([adguernier](https://github.com/adguernier))
+* Fix `useReferenceManyFieldController` does not debounce `setFilters` ([#9523](https://github.com/marmelab/react-admin/pull/9523)) ([djhi](https://github.com/djhi))
+* Fix `<TabbedShowLayout>` displays its fields as full width blocks ([#9522](https://github.com/marmelab/react-admin/pull/9522)) ([djhi](https://github.com/djhi))
+* Fix `<ArrayInput>` does not work in `<FilterForm>` ([#9521](https://github.com/marmelab/react-admin/pull/9521)) ([djhi](https://github.com/djhi))
+* Fix `<Datagrid>`'s `rowClick` and `<ReferenceField>`'s link should scroll to top ([#9510](https://github.com/marmelab/react-admin/pull/9510)) ([DavidVergnaultMoank](https://github.com/DavidVergnaultMoank))
+* Fix `useTheme` may return `undefined` ([#9503](https://github.com/marmelab/react-admin/pull/9503)) ([djhi](https://github.com/djhi))
+* [Doc] Fix `useInput` documentation regarding errors display ([#9520](https://github.com/marmelab/react-admin/pull/9520)) ([djhi](https://github.com/djhi))
+* [Doc] Update documentation for handling App router part ([#9513](https://github.com/marmelab/react-admin/pull/9513)) ([arimet](https://github.com/arimet))
+* [Doc] Fix TS warnings in Connecting To A Real API tutorial ([#9501](https://github.com/marmelab/react-admin/pull/9501)) ([adguernier](https://github.com/adguernier))
+* [Doc] Removed postgrest from auth providers ([#9500](https://github.com/marmelab/react-admin/pull/9500)) ([gheesh](https://github.com/gheesh))
+* [Doc] Update `<DatagridAG>` doc to mention the component is lazy loaded by default ([#9499](https://github.com/marmelab/react-admin/pull/9499)) ([slax57](https://github.com/slax57))
+* [Doc] Improve `<EditableDatagrid>` doc ([#9494](https://github.com/marmelab/react-admin/pull/9494)) ([adguernier](https://github.com/adguernier))
+
 ## v4.16.2
 
 * Fix clearing a nested filter re-renders the previous value when navigating back to the list ([#9491](https://github.com/marmelab/react-admin/pull/9491)) ([slax57](https://github.com/slax57))
