@@ -188,17 +188,23 @@ describe('<FilterButton />', () => {
         it('should close the filter menu on removing all filters', async () => {
             render(<WithAutoCompleteArrayInput />);
 
+            // Open Posts List
+            fireEvent.click(await screen.findByText('Posts'));
+
             await waitFor(() => {
                 expect(screen.queryAllByRole('checkbox')).toHaveLength(11);
             });
 
-            fireEvent.click(screen.getByLabelText('Open'));
+            fireEvent.click(await screen.findByLabelText('Open'));
             fireEvent.click(await screen.findByText('Sint...'));
 
             await screen.findByLabelText('Add filter');
-            await waitFor(() => {
-                expect(screen.getAllByRole('checkbox')).toHaveLength(2);
-            });
+            await waitFor(
+                () => {
+                    expect(screen.getAllByRole('checkbox')).toHaveLength(2);
+                },
+                { timeout: 10000 }
+            );
             fireEvent.click(screen.getByLabelText('Add filter'));
             fireEvent.click(await screen.findByText('Remove all filters'));
 

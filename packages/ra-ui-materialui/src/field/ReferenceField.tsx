@@ -230,6 +230,7 @@ export const ReferenceFieldView = <
                         to={link}
                         className={ReferenceFieldClasses.link}
                         onClick={stopPropagation}
+                        state={{ _scrollToTop: true }}
                     >
                         {child}
                     </Link>

@@ -305,7 +305,7 @@ interface DeleteParams {
 interface DeleteResult {
     data: Record;
 }
-function delete(resource: string, params: DeleteParams): Promise<DeleteResult>
+function _delete(resource: string, params: DeleteParams): Promise<DeleteResult>
 ```
 
 **Example**

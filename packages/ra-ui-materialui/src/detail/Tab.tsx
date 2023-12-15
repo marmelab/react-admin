@@ -2,7 +2,12 @@ import * as React from 'react';
 import { isValidElement, ReactElement, ReactNode } from 'react';
 import PropTypes from 'prop-types';
 import { Link, useLocation } from 'react-router-dom';
-import { Tab as MuiTab, TabProps as MuiTabProps, Stack } from '@mui/material';
+import {
+    Tab as MuiTab,
+    TabProps as MuiTabProps,
+    Stack,
+    styled,
+} from '@mui/material';
 import { ResponsiveStyleValue } from '@mui/system';
 import { useTranslate, RaRecord } from 'ra-core';
 import clsx from 'clsx';
@@ -101,7 +106,7 @@ export const Tab = ({
     };
 
     const renderContent = () => (
-        <Stack className={contentClassName} spacing={spacing} divider={divider}>
+        <Root className={contentClassName} spacing={spacing} divider={divider}>
             {React.Children.map(children, field =>
                 field && isValidElement<any>(field) ? (
                     <Labeled
@@ -110,6 +115,7 @@ export const Tab = ({
                             'ra-field',
                             field.props.source &&
                                 `ra-field-${field.props.source}`,
+                            TabClasses.row,
                             field.props.className
                         )}
                     >
@@ -117,11 +123,26 @@ export const Tab = ({
                     </Labeled>
                 ) : null
             )}
-        </Stack>
+        </Root>
     );
 
     return context === 'header' ? renderHeader() : renderContent();
 };
+
+const PREFIX = 'RaTab';
+
+export const TabClasses = {
+    row: `${PREFIX}-row`,
+};
+
+const Root = styled(Stack, {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})(() => ({
+    [`& .${TabClasses.row}`]: {
+        display: 'inline',
+    },
+}));
 
 Tab.propTypes = {
     children: PropTypes.node,

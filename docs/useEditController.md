@@ -5,17 +5,17 @@ title: "The useEditController hook"
 
 # `useEditController`
 
-The `useEditController` hook contains the logic of [the `<Edit>` component](./Edit.md): it fetches a record based on the URL, prepares a form submit handler, and returns all the data and callbacks necessary to render an edition view. 
+`useEditController` contains the headless logic of the [`<Edit>`](./Edit.md) component. It's useful to create a custom edition view. It's also the base hook when building a custom view with another UI kit than Material UI. 
 
-React-admin calls `useEditController` internally when you use the `<Edit>`, `<EditBase>`, or `<EditGuesser>` component.
+`useEditController` reads the resource name and id from the resource context and browser location, fetches the record via `dataProvider.getOne()` to initialize the form, prepares a form submit handler based on `dataProvider.update()`, computes the default page title, and returns them. Its return value matches the [`EditContext`](./useEditContext.md) shape. 
+
+`useEditController` is used internally by [`<Edit>`](./Edit.md) and [`<EditBase>`](./EditBase.md). If your Edit view uses react-admin components like [`<SimpleForm>`](./SimpleForm.md), prefer [`<EditBase>`](./EditBase.md) to `useEditController` as it takes care of creating a `<EditContext>`.
 
 ## Usage
 
 Use `useEditController` to create a custom Edition view, with exactly the content you need. 
 
-{% raw %}
 ```jsx
-import * as React from "react";
 import { useParams } from "react-router-dom";
 import { useEditController, EditContextProvider, SimpleForm, TextInput, SelectInput } from "react-admin";
 import { Card } from "@mui/material";
@@ -42,9 +42,10 @@ export const BookEdit = () => {
   );
 };
 ```
-{% endraw %}
 
 **Tip**: If you just use the return value of `useEditController` to put it in an `EditContext`, use [the `<EditBase>` component](./EditBase.md) instead for simpler markup.
+
+## Input Format
 
 `useEditController` accepts an options argument, with the following fields, all optional:
 
@@ -56,6 +57,10 @@ export const BookEdit = () => {
 * [`redirect`](./Edit.md#redirect): change the redirect location after successful creation
 * [`resource`](./Edit.md#resource): override the name of the resource to create
 * [`transform`](./Edit.md#transform): transform the form data before calling `dataProvider.update()`
+
+These fields are documented in [the `<Edit>` component](./Edit.md) documentation.
+
+## Return Value
 
 `useEditController` returns an object with the following fields:
 
