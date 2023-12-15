@@ -30,7 +30,7 @@ The hook takes no argument and returns a callback. The callback takes 2 argument
     - `type`: The notification type (`info`, `success`, `error` or `warning` - the default is `info`)
     - `messageArgs`: options to pass to the `translate` function (because notification messages are translated if your admin has an `i18nProvider`). It is useful for inserting variables into the translation.
     - `undoable`: Set it to `true` if the notification should contain an "undo" button
-    - `autoHideDuration`: Duration (in milliseconds) after which the notification hides. Set it to `0` if the notification should not be dismissible.
+    - `autoHideDuration`: Duration (in milliseconds) after which the notification hides. Set it to `null` if the notification should not be dismissible.
     - `multiLine`: Set it to `true` if the notification message should be shown in more than one line.
     - `anchorOrigin`: The position of the notification. The default is `{ vertical: 'top', horizontal: 'right' }`. See [the Material UI documentation](https://mui.com/material-ui/react-snackbar/) for more details.
 
