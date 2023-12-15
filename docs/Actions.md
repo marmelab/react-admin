@@ -52,7 +52,7 @@ const UserProfile = ({ userId }) => {
 
 Refer to [the `useDataProvider` hook documentation](./useDataProvider.md) for more information.
 
-**Tip**: For standard data provider methods (like  `getOne()` or `update()`), you should use the [Query hooks](#dquery-hooks) and the [Mutation hooks](#mutation-hooks), both documented below, instead of calling `useDataProvider`. These hooks are easier to use, more robust, they handle the loading state for you, and they are typed.
+**Tip**: For standard data provider methods (like  `getOne()` or `update()`), you should use the [Query hooks](#query-hooks) and the [Mutation hooks](#mutation-hooks), both documented below, instead of calling `useDataProvider`. These hooks are easier to use, more robust, they handle the loading state for you, and they are typed.
 
 ## Query Hooks
 
