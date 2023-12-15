@@ -738,3 +738,35 @@ export default OrderEdit;
 ```
 
 **Tip:** If you'd like to avoid creating an intermediate component like `<CityInput>`, or are using an `<ArrayInput>`, you can use the [`<FormDataConsumer>`](./Inputs.md#linking-two-inputs) component as an alternative.
+
+## Headless Version
+
+`<SimpleForm>` renders its children in a Material UI `<Stack>`, and renders a toolbar with a `<SaveButton>`. If you want to build a custom form layout, you can use [the `<Form>` component](./Form.md) instead.
+
+```jsx
+import { Create, Form, TextInput, RichTextInput, SaveButton } from 'react-admin';
+import { Grid } from '@mui/material';
+
+export const PostCreate = () => (
+    <Create>
+        <Form>
+            <Grid container>
+                <Grid item xs={6}>
+                    <TextInput source="title" fullWidth />
+                </Grid>
+                <Grid item xs={6}>
+                    <TextInput source="author" fullWidth />
+                </Grid>
+                <Grid item xs={12}>
+                    <RichTextInput source="body" fullWidth />
+                </Grid>
+                <Grid item xs={12}>
+                    <SaveButton />
+                </Grid>
+            </Grid>
+        </Form>
+    </Create>
+);
+```
+
+React-admin forms leverage react-hook-form's [`useForm` hook](https://react-hook-form.com/docs/useform).

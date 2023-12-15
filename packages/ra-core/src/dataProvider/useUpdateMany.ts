@@ -299,7 +299,7 @@ export const useUpdateMany = <
     ) => {
         const {
             mutationMode,
-            returnPromise,
+            returnPromise = mutationOptions.returnPromise,
             ...otherCallTimeOptions
         } = callTimeOptions;
 
@@ -470,7 +470,7 @@ export type UseUpdateManyOptions<
     Array<RecordType['id']>,
     MutationError,
     Partial<Omit<UseUpdateManyMutateParams<RecordType>, 'mutationFn'>>
-> & { mutationMode?: MutationMode };
+> & { mutationMode?: MutationMode; returnPromise?: boolean };
 
 export type UseUpdateManyResult<
     RecordType extends RaRecord = any,

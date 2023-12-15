@@ -6,12 +6,13 @@ import {
     waitFor,
     waitForElementToBeRemoved,
 } from '@testing-library/react';
-import { testDataProvider } from 'ra-core';
+import { required, testDataProvider } from 'ra-core';
 
 import { AdminContext } from '../AdminContext';
 import { SimpleForm, Toolbar } from '../form';
 import { FileField, ImageField } from '../field';
 import { FileInput } from './FileInput';
+import { TextInput } from './TextInput';
 import { SaveButton } from '../button';
 
 describe('<FileInput />', () => {
@@ -467,6 +468,105 @@ describe('<FileInput />', () => {
         test('custom label');
         test(<h1>Custom label</h1>, 'Custom label');
         test(<CustomLabel />, 'Custom label in component');
+    });
+
+    describe('Validation', () => {
+        it('should display a validation error if the value is required and there is no file', async () => {
+            const onSubmit = jest.fn();
+
+            render(
+                <AdminContext dataProvider={testDataProvider()}>
+                    <SimpleForm onSubmit={onSubmit}>
+                        <FileInput
+                            {...defaultPropsMultiple}
+                            validate={required()}
+                        >
+                            <FileField source="src" title="title" />
+                        </FileInput>
+                        <TextInput source="title" resource="posts" />
+                    </SimpleForm>
+                </AdminContext>
+            );
+
+            fireEvent.change(
+                await screen.findByLabelText('resources.posts.fields.title'),
+                {
+                    target: { value: 'Hello world!' },
+                }
+            );
+            fireEvent.click(screen.getByLabelText('ra.action.save'));
+
+            await screen.findByText('ra.validation.required');
+            expect(onSubmit).not.toHaveBeenCalled();
+        });
+
+        it('should display a validation error if the value is required and the file is removed', async () => {
+            const onSubmit = jest.fn();
+
+            render(
+                <AdminContext dataProvider={testDataProvider()}>
+                    <SimpleForm
+                        onSubmit={onSubmit}
+                        defaultValues={{
+                            images: [
+                                {
+                                    src: 'test.png',
+                                    title: 'cats',
+                                },
+                            ],
+                        }}
+                    >
+                        <FileInput
+                            {...defaultPropsMultiple}
+                            validate={required()}
+                        >
+                            <FileField source="src" title="title" />
+                        </FileInput>
+                    </SimpleForm>
+                </AdminContext>
+            );
+
+            expect(screen.getByTitle('cats')).not.toBeNull();
+            fireEvent.click(screen.getAllByLabelText('ra.action.delete')[0]);
+            fireEvent.click(screen.getByLabelText('ra.action.save'));
+
+            await screen.findByText('ra.validation.required');
+            expect(onSubmit).not.toHaveBeenCalled();
+        });
+
+        it('should display a validation error right away when form mode is onChange', async () => {
+            const onSubmit = jest.fn();
+
+            render(
+                <AdminContext dataProvider={testDataProvider()}>
+                    <SimpleForm
+                        onSubmit={onSubmit}
+                        defaultValues={{
+                            images: [
+                                {
+                                    src: 'test.png',
+                                    title: 'cats',
+                                },
+                            ],
+                        }}
+                        mode="onChange"
+                    >
+                        <FileInput
+                            {...defaultPropsMultiple}
+                            validate={required()}
+                        >
+                            <FileField source="src" title="title" />
+                        </FileInput>
+                    </SimpleForm>
+                </AdminContext>
+            );
+
+            expect(screen.getByTitle('cats')).not.toBeNull();
+            fireEvent.click(screen.getAllByLabelText('ra.action.delete')[0]);
+
+            await screen.findByText('ra.validation.required');
+            expect(onSubmit).not.toHaveBeenCalled();
+        });
     });
 
     describe('Image Preview', () => {

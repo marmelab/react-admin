@@ -37,7 +37,7 @@ export const useRecordContext = <
 ): RecordType | undefined => {
     // Can't find a way to specify the RecordType when CreateContext is declared
     // @ts-ignore
-    const context = useContext<RecordType>(RecordContext);
+    const context = useContext<RecordType | undefined>(RecordContext);
 
     return (props && props.record) || context;
 };

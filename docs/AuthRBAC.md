@@ -7,7 +7,7 @@ title: "RBAC"
 
 React-admin Enterprise Edition contains [the ra-rbac module](https://marmelab.com/ra-enterprise/modules/ra-rbac)<img class="icon" src="./img/premium.svg" />, which adds fine-grained permissions to your admin. This module extends the `authProvider` and adds replacement for many react-admin components that use these permissions.
 
-<video controls="controls" style="max-width: 100%">
+<video controls="controls" style="max-width: 96%">
     <source src="./img/ra-rbac.mp4" type="video/mp4" />
 </video>
 
@@ -905,10 +905,9 @@ For instance, to allow users access to the following tab `<TabbedShowLayout.Tab 
 
 ## `<TabbedForm>`
 
-<TabbedForm> shows only the tabs for which users have write permissions, using the `[resource].tab.[tabName]` string as resource identifier. It also renders the delete button only if the user has a permission for the `delete` action in the current resource. `<TabbedForm.Tab>` shows only the child inputs for which users have the write permissions, using the `[resource].[source]` string as resource identifier.
+`<TabbedForm>` shows only the tabs for which users have write permissions, using the `[resource].tab.[tabName]` string as resource identifier. It also renders the delete button only if the user has a permission for the `delete` action in the current resource. `<TabbedForm.Tab>` shows only the child inputs for which users have the write permissions, using the `[resource].[source]` string as resource identifier.
 
 
-```jsx
 ```tsx
 import { Edit, TextInput } from 'react-admin';
 import { TabbedForm } from '@react-admin/ra-rbac';
@@ -952,7 +951,6 @@ const ProductEdit = () => (
         </TabbedForm>
     </Edit>
 );
-```
 ```
 
 You must add a `name` prop to the `<TabbedForm.Tab>` so you can reference it in the permissions. Then, to allow users to access a particular `<TabbedForm.Tab>`, update the permissions definition as follows: `{ action: 'write', resource: '{RESOURCE}.tab.{NAME}' }`, where `RESOURCE` is the resource name, and `NAME` the name you provided to the `<TabbedForm.Tab>`.

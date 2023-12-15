@@ -1,5 +1,34 @@
 # Changelog
 
+## v4.16.2
+
+* Fix clearing a nested filter re-renders the previous value when navigating back to the list ([#9491](https://github.com/marmelab/react-admin/pull/9491)) ([slax57](https://github.com/slax57))
+* Fix `ra-data-graphql` uses a Proxy, which prevents adding more methods automatically ([#9487](https://github.com/marmelab/react-admin/pull/9487)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `useUpdateMany` doesn't accept the `returnPromise` option at call time ([#9486](https://github.com/marmelab/react-admin/pull/9486)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<Pagination>` logs a warning ([#9474](https://github.com/marmelab/react-admin/pull/9474)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Update ra-form-layouts dialogs documentation ([#9482](https://github.com/marmelab/react-admin/pull/9482)) ([djhi](https://github.com/djhi))
+* [Doc] Fix snippets fails to render in JS ([#9478](https://github.com/marmelab/react-admin/pull/9478)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Add link to tutorial for headless admin ([#9477](https://github.com/marmelab/react-admin/pull/9477)) ([fzaninotto](https://github.com/fzaninotto))
+
+## v4.16.1
+
+* Fix `<FileInput>` should display a validation errors right away when form mode is 'onChange' ([#9459](https://github.com/marmelab/react-admin/pull/9459)) ([slax57](https://github.com/slax57))
+* [TypeScript] Fix useRecordContext may return undefined ([#9460](https://github.com/marmelab/react-admin/pull/9460)) ([groomain](https://github.com/groomain))
+* [Doc] Add link to new demo: Note-taking app ([#9465](https://github.com/marmelab/react-admin/pull/9465)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Add headless section in pages components ([#9447](https://github.com/marmelab/react-admin/pull/9447)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Add example showing how to add `<Inspector>` to a custom layout ([#9458](https://github.com/marmelab/react-admin/pull/9458)) ([rossb220](https://github.com/rossb220))
+* [Doc] Update `<DatagridAG>` doc to use the new package, and document the column order/size persistence ([#9472](https://github.com/marmelab/react-admin/pull/9472)) ([slax57](https://github.com/slax57))
+* [Doc] Update authProvider and dataProvider lists to target the documentation instead of the repository's root ([#9471](https://github.com/marmelab/react-admin/pull/9471)) ([slax57](https://github.com/slax57))
+* [Website] Reorder documentation's Discord and Github icons to match the website order ([#9454](https://github.com/marmelab/react-admin/pull/9454)) ([adguernier](https://github.com/adguernier))
+
+## v4.16.0
+
+* Add `<SingleFieldList empty gap direction>` props, and allow it to be used without `children` ([#9439](https://github.com/marmelab/react-admin/pull/9439)) ([fzaninotto](https://github.com/fzaninotto))
+* Add `<LoadingIndicator onClick>` prop, allowing to trigger actions (like a refresh) on click ([#9420](https://github.com/marmelab/react-admin/pull/9420)) ([david-bezero](https://github.com/david-bezero))
+* Add `<LocalesMenuButton icon>` prop to customize the locales button icon ([#9380](https://github.com/marmelab/react-admin/pull/9380)) ([djhi](https://github.com/djhi))
+* Add `<Form disableInvalidFormNotification>` to allow disabling notifications when the form is invalid ([#9353](https://github.com/marmelab/react-admin/pull/9353)) ([tim-hoffmann](https://github.com/tim-hoffmann))
+
+
 ## v4.15.5
 
 * Add support for `fetchOptions` to `<CheckForApplicationUpdate>` ([#9436](https://github.com/marmelab/react-admin/pull/9436)) ([smeng9](https://github.com/smeng9))
