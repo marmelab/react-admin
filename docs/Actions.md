@@ -9,57 +9,75 @@ React-admin provides special hooks to emit read and write queries to the [`dataP
 
 ## Getting The `dataProvider` Instance
 
-React-admin stores the `dataProvider` object in a React context, so it's available from anywhere in your application code. The `useDataProvider` hook grabs the Data Provider from that context, so you can call it directly.
+React-admin stores the `dataProvider` object in a React context, so it's available from anywhere in your application code. The `useDataProvider` hook grabs the Data Provider from that context, so you can call it directly. 
 
-For instance, here is how to query the Data Provider for the current user profile:
+As `dataProvider` methods are asynchronous, it's common to call them in a React `useEffect` (for queries) or in an event handler (for mutations).
+
+For instance, here is how to query the Data Provider for a User record on mount, combining the `useDataProvider` hook with the `useState` and `useEffect` hooks:
 
 ```jsx
+import { useState, useEffect } from 'react';
 import { useDataProvider } from 'react-admin';
+import { Loading, Error } from './MyComponents';
 
-const MyComponent = () => {
+const UserProfile = ({ userId }) => {
     const dataProvider = useDataProvider();
-    // ...
-}
+    const [user, setUser] = useState();
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState();
+    useEffect(() => {
+        dataProvider.getOne('users', { id: userId })
+            .then(({ data }) => {
+                setUser(data);
+                setLoading(false);
+            })
+            .catch(error => {
+                setError(error);
+                setLoading(false);
+            })
+    }, []);
+
+    if (loading) return <Loading />;
+    if (error) return <Error />;
+    if (!user) return null;
+
+    return (
+        <ul>
+            <li>Name: {user.name}</li>
+            <li>Email: {user.email}</li>
+        </ul>
+    )
+};
 ```
 
 Refer to [the `useDataProvider` hook documentation](./useDataProvider.md) for more information.
 
-**Tip**: The `dataProvider` returned by the hook is actually a *wrapper* around your Data Provider. This wrapper logs the user out if the `dataProvider` returns an error, and if the `authProvider` sees that error as an authentication error (via `authProvider.checkError()`).
+**Tip**: For standard data provider methods (like  `getOne()` or `update()`), you should use the [Query hooks](#dquery-hooks) and the [Mutation hooks](#mutation-hooks), both documented below, instead of calling `useDataProvider`. These hooks are easier to use, more robust, they handle the loading state for you, and they are typed.
 
-## DataProvider Method Hooks
+## Query Hooks
 
-React-admin provides one hook for each of the Data Provider methods. They are useful shortcuts that make your code more readable and more robust.
+React-admin provides one query hook for each of the Data Provider read methods. They are useful shortcuts that make your code more readable and more robust. The query hooks execute on mount. They return an object with the following properties: `{ data, isPending, error }`. Query hooks are:
 
-The query hooks execute on mount. They return an object with the following properties: `{ data, isPending, error }`. Query hooks are:
+* [`useGetList`](./useGetList.md) calls `dataProvider.getList()`
+* [`useGetOne`](./useGetOne.md) calls `dataProvider.getOne()`
+* [`useGetMany`](./useGetMany.md) calls `dataProvider.getMany()`
+* [`useGetManyReference`](./useGetManyReference.md) calls `dataProvider.getManyReference()`
 
-* [`useGetList`](./useGetList.md)
-* [`useGetOne`](./useGetOne.md)
-* [`useGetMany`](./useGetMany.md)
-* [`useGetManyReference`](./useGetManyReference.md)
-
-The mutation hooks execute the query when you call a callback. They return an array with the following items: `[mutate, { data, isPending, error }]`. Mutation hooks are:
-
-* [`useCreate`](./useCreate.md)
-* [`useUpdate`](./useUpdate.md)
-* [`useUpdateMany`](./useUpdateMany.md)
-* [`useDelete`](./useDelete.md)
-* [`useDeleteMany`](./useDeleteMany.md)
-
-Their signature is the same as the related dataProvider method, e.g.:
+Their input signature is the same as the related dataProvider method, i.e. they expect the resource name and the query parameters:
 
 ```jsx
+const { isPending, error, data } = useGetOne(resource, { id });
 // calls dataProvider.getOne(resource, { id })
-const { data, isPending, error } = useGetOne(resource, { id });
 ```
 
-For instance, here is how to fetch one record from the API using the `useGetOne` hook:
+For instance, here is how to fetch one User record on mount using the `useGetOne` hook:
 
 ```jsx
 import { useGetOne } from 'react-admin';
 import { Loading, Error } from './MyComponents';
 
 const UserProfile = ({ userId }) => {
-    const { data: user, isPending, error } = useGetOne('users', { id: userId });
+    const { isPending, error, data: user } = useGetOne('users', { id: userId });
 
     if (isPending) return <Loading />;
     if (error) return <Error />;
@@ -74,7 +92,104 @@ const UserProfile = ({ userId }) => {
 };
 ```
 
-Here is another example, using `useUpdate()`:
+**Tip**: If you use TypeScript, you can specify the record type for more type safety:
+
+```tsx
+const { data } = useGetOne<Product>('products', { id: 123 });
+//        \- type of data is Product
+```
+
+## Query Options
+
+Query hooks are powered by [React Query](https://tanstack.com/query/v5/)'s [`useQuery`](https://tanstack.com/query/v5/docs/react/reference/useQuery) hook. The third argument of query hooks is an `options` object letting you override `useQuery` options:
+
+```jsx
+const { isPending, error, data } = useGetOne(
+    'users',
+    { id: userId },
+    { enabled: userId !== undefined } // query options
+);
+// translates to
+// const { isPending, error, data } = useQuery({
+//     queryKey: ['users', 'getOne', { id: userId }],
+//     queryFn: () => dataProvider.getOne('users', { id: userId }),
+//     enabled: userId !== undefined
+// });
+```
+
+Check [the useQuery documentation](https://tanstack.com/query/v5/docs/react/reference/useQuery) for a detailed description of all options:
+
+- `gcTime`,
+- `enabled`,
+- `networkMode`,
+- `initialData`,
+- `initialDataUpdatedAt`,
+- `meta`,
+- `notifyOnChangeProps`,
+- `placeholderData`,
+- `queryKey`,
+- `queryKeyHashFn`,
+- `refetchInterval`,
+- `refetchIntervalInBackground`,
+- `refetchOnMount`,
+- `refetchOnReconnect`,
+- `refetchOnWindowFocus`,
+- `retry`,
+- `retryOnMount`,
+- `retryDelay`,
+- `select`,
+- `staleTime`,
+- `structuralSharing`,
+- `throwOnError`.
+
+In addition to the `useQuery` options, react-admin query hooks also accept callbacks props in the `options` argument:
+
+- `onError`
+- `onSettled`
+- `onSuccess`
+
+See the [Success and Error Side Effects](#success-and-error-side-effects) below for more details.
+
+**Tip**: In react-admin components that use the query hooks, you can override the query options using the `queryOptions` prop. For instance, to log the dataProvider calls, in the `<List>` component, you can do the following:
+
+{% raw %}
+```jsx
+import { List, Datagrid, TextField } from 'react-admin';
+
+const PostList = () => (
+    <List
+        queryOptions={{ onSettled: (data, error) => console.log(data, error) }}
+    >
+        <Datagrid>
+            <TextField source="id" />
+            <TextField source="title" />
+            <TextField source="body" />
+        </Datagrid>
+    </List>
+);
+```
+{% endraw %}
+
+## Mutation Hooks
+
+React-admin provides one mutation hook for each of the Data Provider write methods. These hooks execute the query when you call a callback. They return an array with the following items: `[mutate, { data, isPending, error }]`. `mutate` is a callback that you can call to execute the mutation.
+
+Mutation hooks are:
+
+* [`useCreate`](./useCreate.md) calls `dataProvider.create()`
+* [`useUpdate`](./useUpdate.md) calls `dataProvider.update()`
+* [`useUpdateMany`](./useUpdateMany.md) calls `dataProvider.updateMany()`
+* [`useDelete`](./useDelete.md) calls `dataProvider.delete()`
+* [`useDeleteMany`](./useDeleteMany.md) calls `dataProvider.deleteMany()`
+
+Their input signature is the same as the related dataProvider method, e.g.:
+
+```jsx
+const [update, { isPending, error, data }] = useUpdate(resource, { id, data, previousData });
+// calls dataProvider.update(resource, { id, data, previousData })
+```
+
+For instance, here is a button that updates a comment record when clicked, using the `useUpdate` hook:
 
 ```jsx
 import * as React from 'react';
@@ -82,51 +197,230 @@ import { useUpdate, useRecordContext, Button } from 'react-admin';
 
 const ApproveButton = () => {
     const record = useRecordContext();
-    const [approve, { isPending }] = useUpdate('comments', { id: record.id, data: { isApproved: true }, previousData: record });
+    const [approve, { isPending }] = useUpdate('comments', {
+        id: record.id,
+        data: { isApproved: true },
+        previousData: record
+    });
     return <Button label="Approve" onClick={() => approve()} disabled={isPending} />;
 };
 ```
 
-Both the query and mutation hooks accept an `options` argument, to override the query options:
+## Mutation Options
+
+Mutation hooks are powered by [React Query](https://tanstack.com/query/v5/)'s [`useMutation`](https://tanstack.com/query/v5/docs/react/reference/useMutation) hook. The third argument of mutation hooks is an `options` object letting you override `useMutation` options:
 
 ```jsx
-const { data: user, isPending, error } = useGetOne(
-    'users',
-    { id: userId },
-    { enabled: userId !== undefined }
+const [update, { data, isPending, error }] = useUpdate(
+    'comments',
+    { id: record.id, data: { isApproved: true } },
+    { 
+        onSuccess: () => { /* ... */},
+        onError: () => { /* ... */},
+    }
+);
+// translates to
+// const { mutate: update, data isPending, error } = useMutation({
+//     mutationKey: ['comments', 'update', { id: record.id }],
+//     mutationFn: () => dataProvider.update('comments', { id: record.id, data: { isApproved: true } }),
+//     onSuccess: () => { /* ... */ }
+//     onError: () => { /* ... */ }
+// });
+```
+
+Check [the useMutation documentation](https://tanstack.com/query/v5/docs/react/reference/useMutation) for a detailed description of all options:
+
+- `gcTime`,
+- `meta`,
+- `mutationKey`,
+- `networkMode`,
+- `onError`,
+- `onMutate`,
+- `onSettled`,
+- `onSuccess`,
+- `retry`,
+- `retryDelay`,
+- `throwOnError`.
+
+In addition to the `useMutation` options, react-admin mutation hooks also accept the `mutationMode` option, letting you switch between `pessimistic` rendering, `optimistic` rendering and `undoable` modes. By default, side effect callbacks (`onSuccess`, `onError`, `onSettled`) are "pessimistic", ie. react-admin executes them after the dataProvider responds. You can switch to "optimistic" to execute them right when the dataProvider is called, without waiting for the response.
+
+```jsx
+const [update, { data, isPending, error }] = useUpdate(
+    'comments',
+    { id: record.id, data: { isApproved: true } },
+    { 
+        mutationMode: 'optimistic',
+        onSuccess: () => { /* ... */},
+        onError: () => { /* ... */},
+    }
 );
 ```
 
-**Tip**: If you use TypeScript, you can specify the record type for more type safety:
+See [Optimistic Rendering and Undo](#optimistic-rendering-and-undo) below for more details.
 
+**Tip**: In react-admin components that use the mutation hooks, you can override the mutation options using the `mutationOptions` prop. This is very common when using mutation hooks like `useUpdate`, e.g. to display a notification, or redirect to another page. 
+
+For instance, here is a button to approve the current comment that notifies the user of success or failure using the bottom notification banner:
+
+{% raw %}
 ```jsx
-const { data, isPending } = useGetOne<Product>('products', { id: 123 });
-//        \- type of data is Product
+import * as React from 'react';
+import { UpdateButton, useNotify, useRedirect } from 'react-admin';
+
+const ApproveButton = () => {
+    const notify = useNotify();
+    const redirect = useRedirect();
+    return <UpdateButton
+        label="Approve"
+        data={{ isApproved: true }}
+        mutationOptions={
+            onSuccess: (data) => {
+                // success side effects go here
+                redirect('/comments');
+                notify('Comment approved');
+            },
+            onError: (error) => {
+                // failure side effects go here 
+                notify(`Comment approval error: ${error.message}`, { type: 'error' });
+            },
+        }
+    />;
+};
 ```
+{% endraw %}
 
 ## `meta` Parameter
 
-All Data Provider methods accept a `meta` parameter. React-admin doesn't set this parameter by default in its queries, but it's a good way to pass special arguments or metadata to an API call.
+All query and mutation hooks accept a `meta` key in they second argument, in addition to normal parameters. For instance, for `dataProvider.getOne()`:
 
 ```jsx
-const { data, isPending, error } = useGetOne(
+useGetOne('books', { id, meta: /* ... */ });
+```
+
+It's the responsibility of your Data Provider to interpret this parameter. React-admin doesn't set this `meta` parameter in its queries, but you can use it in your components to pass special arguments or metadata to an API call.
+
+A common usage is to require additional information from the API. For instance, the following code fetches a book and its author in one call:
+
+```jsx
+const { isPending, error, data } = useGetOne(
     'books',
-    { id, meta: { _embed: 'authors' } },
+    { id, meta: { _embed: 'authors' } }
 );
 ```
 
-It's up to the Data Provider to interpret this parameter.
+## Success and Error Side Effects
+
+To execute some logic after a query or a mutation is complete, use the `onSuccess`, `onError` and `onSettled` options. Such logic can be showing a notification, redirecting to another page, refreshing the data, etc. React-admin uses the term "side effects" for this type of logic, as it's usually modifying another part of the UI.
+
+**Tip**: React-admin provides the various hooks to handle the most common side effects:
+
+- [`useNotify`](./useNotify.md): Return a function to display a notification.
+- [`useRedirect`](./useRedirect.md): Return a function to redirect the user to another page.
+- [`useRefresh`](./useRefresh.md): Return a function to force a rerender of the current view (equivalent to pressing the Refresh button).
+- [`useUnselect`](./useUnselect.md): Return a function to unselect lines in the current `Datagrid` based on the ids passed to it.
+- [`useUnselectAll`](./useUnselectAll.md): Return a function to unselect all lines in the current `Datagrid`.
+
+### `onSuccess`
+
+The `onSuccess` function is called when the query returns. It receives the query data, the [query variables](https://tanstack.com/query/latest/docs/react/guides/query-functions#query-function-variables) or mutation variables and the [query context](https://tanstack.com/query/latest/docs/react/guides/query-functions#queryfunctioncontext). 
+
+```jsx
+onSuccess(data, variables, context) { /* ... */ }
+``` 
+
+This could be useful when you have different shapes for a resource in lists and single record views. In those cases, you might want to avoid react-admin to prefill the cache.
+
+```tsx
+import { useGetList } from 'react-admin';
+import { useQueryClient } from '@tanstack/react-query';
+import { ListView } from './ListView';
+
+const UserList = () => {
+    const queryClient = useQueryClient();
+
+    const { data, isPending, error } = useGetList(
+        'users',
+        { filters: {}, pagination: { page: 1, perPage: 10 }, sort: { field: 'id', order: 'DESC' } },
+        {
+            onSuccess: () =>
+                queryClient.resetQueries(
+                    { queryKey: ['users', 'getOne'] },
+                )
+        }
+    );
+    if (isPending) { return <Loading />; }
+    if (error) { return <p>ERROR</p>; }
+    return <ListView data={data} />;
+};
+```
+
+### `onError`
+
+The `onError` function is called when the query fails. It receives the error, the [query variables](https://tanstack.com/query/latest/docs/react/guides/query-functions#query-function-variables) and the [query context](https://tanstack.com/query/latest/docs/react/guides/query-functions#queryfunctioncontext). 
+
+```jsx
+onError(error, variables, context) { /* ... */ }
+```
+
+This is useful to notify users about the error for instance.
+
+```tsx
+import { useGetOne, useNotify, useRecordContext } from 'react-admin';
+
+const UserProfile = () => {
+    const record = useRecordContext();
+    const notify = useNotify();
+    const { data, isPending, error } = useGetOne(
+        'users',
+        { id: record.id },
+        { onError: (error) => notify(error.message, { type: 'error' }) }
+    );
+    if (isPending) { return <Loading />; }
+    if (error) { return <p>ERROR</p>; }
+    return <div>User {data.username}</div>;
+};
+```
+
+### `onSettled`
+
+The `onSettled` function is called after the query either succeeded or failed. It receives the query data (can be `undefined` if the query failed), the error (can be `undefined` when the query succeeded), the [query variables](https://tanstack.com/query/latest/docs/react/guides/query-functions#query-function-variables) and the [query context](https://tanstack.com/query/latest/docs/react/guides/query-functions#queryfunctioncontext).
+
+```jsx
+onSettled(data, error, variables, context) { /* ... */ }
+```
+
+This can be useful e.g. to log all calls to the dataProvider:
+
+```jsx
+import { useGetOne, useRecordContext } from 'react-admin';
+
+const UserProfile = () => {
+    const record = useRecordContext();
+    const { data, isPending, error } = useGetOne(
+        'users',
+        { id: record.id },
+        { onSettled: (data, error) => console.log(data, error) }
+    );
+    if (isPending) { return <Loading />; }
+    if (error) { return <p>ERROR</p>; }
+    return <div>User {data.username}</div>;
+};
+```
 
 ## `useQuery` and `useMutation`
 
-Internally, react-admin uses [React Query](https://tanstack.com/query/v5/) to call the dataProvider. When fetching data from the dataProvider in your components, if you can't use any of the dataProvider method hooks, you should use that library, too. It brings several benefits:
+Internally, react-admin uses [React Query](https://tanstack.com/query/v5/) to call the dataProvider. When fetching data from the dataProvider in your components, if you can't use any of the [query hooks](#query-hooks) and [mutation hooks](#mutation-hooks), you should use that library, too.
+
+It brings several benefits to [manual data fetching](#getting-the-dataprovider-instance):
 
 1. It triggers the loader in the AppBar when the query is running.
-2. It reduces the boilerplate code since you don't need to use `useState`.
+2. It reduces the boilerplate code since you don't need to use `useState`, `useEffect` or `useCallback`.
 3. It supports a vast array of options
 4. It displays stale data while fetching up-to-date data, leading to a snappier UI
 
-React Query offers 2 main hooks to interact with the dataProvider:
+See [Why You Need React Query](https://tkdodo.eu/blog/why-you-want-react-query) for more details.
+
+React Query offers 2 main hooks to interact with the `dataProvider`:
 
 * [`useQuery`](https://tanstack.com/query/v5/docs/react/reference/useQuery): fetches the dataProvider on mount. This is for *read* queries.
 * [`useMutation`](https://tanstack.com/query/v5/docs/react/reference/useMutation): fetches the dataProvider when you call a callback. This is for *write* queries, and *read* queries that execute on user interaction.
@@ -181,15 +475,19 @@ If you want to go beyond data provider method hooks, we recommend that you read 
 
 ## `isPending` vs `isLoading` vs `isFetching`
 
-Data fetching hooks return three loading state variables: `isPending`, `isFetching`, and `isLoading`. Which one should you use?
+[Query hooks](#query-hooks) and [mutation hooks](#mutation-hooks) actually return more than one loading state variable. They return three: `isPending`, `isFetching`, and `isLoading`.
 
-The short answer is: use `isPending`. Read on to understand why.
+```jsx
+const { data, isPending, isFetching, isLoading } = useGetOne('users', { id: record.id });
+```
 
-The source of these three variables is [React Query](https://tanstack.com/query/v5/docs/react/reference/useQuery). Here is how they defined these variables:
+Which one should you use? The short answer is: use `isPending`. Read on to understand why.
 
-- `isPending`:  The query has no data
-- `isFetching`: In any state, if the query is fetching at any time (including background refetching) isFetching will be true.
-- `isLoading`:  The query is pending and fetching
+The source of these three variables is [React Query](https://tanstack.com/query/v5/docs/react/reference/useQuery). Here is how they define these variables:
+
+- `isPending`: The query has no data
+- `isFetching`: The query function was called and didn't respond yet. This includes background refetching.
+- `isLoading`: The query is both pending and fetching
 
 Let's see how what these variables contain in a typical usage scenario:
 
@@ -253,40 +551,6 @@ const BanUserButton = ({ userId }) => {
 };
 ```
 
-## Query Options
-
-The data provider method hooks (like `useGetOne`) and react-query's hooks (like `useQuery`) accept a query options object as the last argument. This object can be used to modify the way the query is executed. There are many options, all documented [in the react-query documentation](https://tanstack.com/query/v5/docs/react/reference/useQuery):
-
-- `cacheTime`
-- `enabled`
-- `initialData`
-- `initialDataUpdatedA`
-- `isDataEqual`
-- `keepPreviousData`
-- `meta`
-- `notifyOnChangeProps`
-- `notifyOnChangePropsExclusions`
-- `queryKeyHashFn`
-- `refetchInterval`
-- `refetchIntervalInBackground`
-- `refetchOnMount`
-- `refetchOnReconnect`
-- `refetchOnWindowFocus`
-- `retry`
-- `retryOnMount`
-- `retryDelay`
-- `select`
-- `staleTime`
-- `structuralSharing`
-- `suspense`
-- `useErrorBoundary`
-
-In addition to these props, react-admin hooks also have the following callbacks props:
-- `onError`
-- `onSettled`
-- `onSuccess`
-
-See the [Success and Error Side Effects](#success-and-error-side-effects) for more details.
 
 ## Synchronizing Dependent Queries
 
@@ -309,131 +573,6 @@ const { data: categories, isPending: isPendingCategories } = useGetMany(
     { enabled: !isPending && posts.length > 0 }
 );
 ```
-
-## Success and Error Side Effects
-
-To execute some logic after a query or a mutation is complete, use the `onSuccess`, `onError` and `onSettled` options. React-admin uses the term "side effects" for this type of logic, as it's usually modifying another part of the UI.
-
-- `onSuccess(data, variables, context)`: The `onSuccess` function is called when the query returns. It receives the query data, the [query variables](https://tanstack.com/query/v5/docs/react/guides/query-functions#query-function-variables) or mutation variables and the [query context](https://tanstack.com/query/v5/docs/react/guides/query-functions#queryfunctioncontext). This could be useful when you have different shapes for a resource in lists and single record views. In those cases, you might want to avoid react-admin to prefill the cache.
-
-    ```tsx
-    import { useGetList } from 'react-admin';
-    import { useQueryClient } from '@tanstack/react-query';
-    import { ListView } from './ListView';
-
-    const UserList = () => {
-        const queryClient = useQueryClient();
-
-        const { data, isPending, error } = useGetList(
-            'users',
-            { filters: {}, pagination: { page: 1, perPage: 10 }, sort: { field: 'id', order: 'DESC' } },
-            {
-                onSuccess: () =>
-                    queryClient.resetQueries(
-                        { queryKey: ['users', 'getOne'] },
-                    )
-            }
-        );
-        if (isPending) { return <Loading />; }
-        if (error) { return <p>ERROR</p>; }
-        return <ListView data={data} />;
-    };
-    ```
-
-- `onError(error, variables, context)`: The `onError` function is called when the query fails. It receives the error, the [query variables](https://tanstack.com/query/v5/docs/react/guides/query-functions#query-function-variables) and the [query context](https://tanstack.com/query/v5/docs/react/guides/query-functions#queryfunctioncontext). This is useful to notify users about the error for instance.
-
-    ```tsx
-    import { useGetOne, useNotify, useRecordContext } from 'react-admin';
-
-    const UserProfile = () => {
-        const record = useRecordContext();
-        const notify = useNotify();
-        const { data, isPending, error } = useGetOne(
-            'users',
-            { id: record.id },
-            { onError: (error) => notify(error.message, { type: 'error' }) }
-        );
-        if (isPending) { return <Loading />; }
-        if (error) { return <p>ERROR</p>; }
-        return <div>User {data.username}</div>;
-    };
-    ```
-
-- `onSettled(data, error, variables, context)`: The `onSettled` function is called after the query either succeeded or failed. It receives the query data (can be `undefined` if the query failed), the error (can be `undefined` when the query succeeded), the [query variables](https://tanstack.com/query/v5/docs/react/guides/query-functions#query-function-variables) and the [query context](https://tanstack.com/query/v5/docs/react/guides/query-functions#queryfunctioncontext).This can be useful e.g. to log all calls to the dataProvider:
-
-    ```jsx
-    import { useGetOne, useRecordContext } from 'react-admin';
-
-    const UserProfile = () => {
-        const record = useRecordContext();
-        const { data, isPending, error } = useGetOne(
-            'users',
-            { id: record.id },
-            { onSettled: (data, error) => console.log(data, error) }
-        );
-        if (isPending) { return <Loading />; }
-        if (error) { return <p>ERROR</p>; }
-        return <div>User {data.username}</div>;
-    };
-    ```
-
-**Tip**: In react-admin components that use the data provider method hooks, you can override the query options using the `queryOptions` prop, and the mutation options using the `mutationOptions` prop. For instance, to log the dataProvider calls, in the `<List>` component, you can do the following:
-
-{% raw %}
-```jsx
-import { List, Datagrid, TextField } from 'react-admin';
-
-const PostList = () => (
-    <List
-        queryOptions={{ onSettled: (data, error) => console.log(data, error) }}
-    >
-        <Datagrid>
-            <TextField source="id" />
-            <TextField source="title" />
-            <TextField source="body" />
-        </Datagrid>
-    </List>
-);
-```
-{% endraw %}
-
-This is very common when using mutation hooks like `useUpdate`, e.g. to display a notification, or redirect to another page. For instance, here is an `<ApproveButton>` that notifies the user of success or failure using the bottom notification banner:
-
-```jsx
-import * as React from 'react';
-import { useUpdate, useNotify, useRedirect, useRecordContext, Button } from 'react-admin';
-
-const ApproveButton = () => {
-    const record = useRecordContext();
-    const notify = useNotify();
-    const redirect = useRedirect();
-    const [approve, { isPending }] = useUpdate(
-        'comments',
-        { id: record.id, data: { isApproved: true } },
-        {
-            onSuccess: (data) => {
-                // success side effects go here
-                redirect('/comments');
-                notify('Comment approved');
-            },
-            onError: (error) => {
-                // failure side effects go here 
-                notify(`Comment approval error: ${error.message}`, { type: 'error' });
-            },
-        }
-    );
-    
-    return <Button label="Approve" onClick={() => approve()} disabled={isPending} />;
-};
-```
-
-React-admin provides the following hooks to handle the most common side effects:
-
-- [`useNotify`](./useNotify.md): Return a function to display a notification.
-- [`useRedirect`](./useRedirect.md): Return a function to redirect the user to another page.
-- [`useRefresh`](./useRefresh.md): Return a function to force a rerender of the current view (equivalent to pressing the Refresh button).
-- [`useUnselect`](./useUnselect.md): Return a function to unselect lines in the current `Datagrid` based on the ids passed to it.
-- [`useUnselectAll`](./useUnselectAll.md): Return a function to unselect all lines in the current `Datagrid`.
 
 ## Optimistic Rendering and Undo
 
