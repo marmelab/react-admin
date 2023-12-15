@@ -314,7 +314,7 @@ const { data: categories, isPending: isPendingCategories } = useGetMany(
 
 To execute some logic after a query or a mutation is complete, use the `onSuccess`, `onError` and `onSettled` options. React-admin uses the term "side effects" for this type of logic, as it's usually modifying another part of the UI.
 
-- `onSuccess(data, variables, context)`: The `onSuccess` function is called when the query returns. It receives the query data, the [query variables](https://tanstack.com/query/latest/docs/react/guides/query-functions#query-function-variables) or mutation variables and the [query context](https://tanstack.com/query/latest/docs/react/guides/query-functions#queryfunctioncontext). This could be useful when you have different shapes for a resource in lists and single record views. In those cases, you might want to avoid react-admin to prefill the cache.
+- `onSuccess(data, variables, context)`: The `onSuccess` function is called when the query returns. It receives the query data, the [query variables](https://tanstack.com/query/v5/docs/react/guides/query-functions#query-function-variables) or mutation variables and the [query context](https://tanstack.com/query/v5/docs/react/guides/query-functions#queryfunctioncontext). This could be useful when you have different shapes for a resource in lists and single record views. In those cases, you might want to avoid react-admin to prefill the cache.
 
     ```tsx
     import { useGetList } from 'react-admin';
@@ -340,7 +340,7 @@ To execute some logic after a query or a mutation is complete, use the `onSucces
     };
     ```
 
-- `onError(error, variables, context)`: The `onError` function is called when the query fails. It receives the error, the [query variables](https://tanstack.com/query/latest/docs/react/guides/query-functions#query-function-variables) and the [query context](https://tanstack.com/query/latest/docs/react/guides/query-functions#queryfunctioncontext). This is useful to notify users about the error for instance.
+- `onError(error, variables, context)`: The `onError` function is called when the query fails. It receives the error, the [query variables](https://tanstack.com/query/v5/docs/react/guides/query-functions#query-function-variables) and the [query context](https://tanstack.com/query/v5/docs/react/guides/query-functions#queryfunctioncontext). This is useful to notify users about the error for instance.
 
     ```tsx
     import { useGetOne, useNotify, useRecordContext } from 'react-admin';
@@ -359,7 +359,7 @@ To execute some logic after a query or a mutation is complete, use the `onSucces
     };
     ```
 
-- `onSettled(data, error, variables, context)`: The `onSettled` function is called after the query either succeeded or failed. It receives the query data (can be `undefined` if the query failed), the error (can be `undefined` when the query succeeded), the [query variables](https://tanstack.com/query/latest/docs/react/guides/query-functions#query-function-variables) and the [query context](https://tanstack.com/query/latest/docs/react/guides/query-functions#queryfunctioncontext).This can be useful e.g. to log all calls to the dataProvider:
+- `onSettled(data, error, variables, context)`: The `onSettled` function is called after the query either succeeded or failed. It receives the query data (can be `undefined` if the query failed), the error (can be `undefined` when the query succeeded), the [query variables](https://tanstack.com/query/v5/docs/react/guides/query-functions#query-function-variables) and the [query context](https://tanstack.com/query/v5/docs/react/guides/query-functions#queryfunctioncontext).This can be useful e.g. to log all calls to the dataProvider:
 
     ```jsx
     import { useGetOne, useRecordContext } from 'react-admin';
