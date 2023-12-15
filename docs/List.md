@@ -140,13 +140,13 @@ import {
 import IconEvent from '@mui/icons-material/Event';
 
 const ListActions = () => {
-    const { total, isLoading } = useListContext();
+    const { total, isPending } = useListContext();
     const { permissions } = usePermissions();
     return (
         <TopToolbar>
             <FilterButton />
             {permissions === "admin" && <CreateButton/>}
-            <ExportButton disabled={isLoading || total === 0} />
+            <ExportButton disabled={isPending || total === 0} />
         </TopToolbar>
     );
 }
@@ -187,8 +187,8 @@ import { Typography } from '@mui/material';
 import { useListContext } from 'react-admin';
 
 const Aside = () => {
-    const { data, isLoading } = useListContext();
-    if (isLoading) return null;
+    const { data, isPending } = useListContext();
+    if (isPending) return null;
     return (
         <div style={{ width: 200, margin: '4em 1em' }}>
             <Typography variant="h6">Posts stats</Typography>
@@ -510,12 +510,12 @@ const BookList = () => (
 );
 ```
 
-You can handle this case by getting the `isLoading` variable from the [`useListContext`](./useListContext.md) hook:
+You can handle this case by getting the `isPending` variable from the [`useListContext`](./useListContext.md) hook:
 
 ```jsx
 const SimpleBookList = () => {
-    const { data, isLoading } = useListContext();
-    if (isLoading) return null;
+    const { data, isPending } = useListContext();
+    if (isPending) return null;
     return (
         <Stack spacing={2}>
             {data.map(book => (

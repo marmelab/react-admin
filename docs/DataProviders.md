@@ -5,7 +5,7 @@ title: "Data Fetching"
 
 # Data Fetching
 
-You can build a react-admin app on top of any API, whether it uses REST, GraphQL, RPC, or even SOAP, regardless of the dialect it uses. This works because react-admin doesn't use `fetch` directly. Instead, it uses a Data Provider object to interface with your API, and [react-query](https://tanstack.com/query/v3/docs/react/overview) to handle data fetching.
+You can build a react-admin app on top of any API, whether it uses REST, GraphQL, RPC, or even SOAP, regardless of the dialect it uses. This works because react-admin doesn't use `fetch` directly. Instead, it uses a Data Provider object to interface with your API, and [React Query](https://tanstack.com/query/v5/docs/react/overview) to handle data fetching.
 
 ## The Data Provider
 
@@ -114,7 +114,7 @@ Access-Control-Expose-Headers: Content-Range
 
 ## Enabling Query Logs
 
-React-admin uses `react-query` to call the dataProvider. You can see all the calls made by react-query in the browser thanks to [the react-query devtools](https://react-query-v3.tanstack.com/devtools).
+React-admin uses `react-query` to call the dataProvider. You can see all the calls made by react-query in the browser thanks to [the react-query devtools](https://tanstack.com/query/v5/docs/react/devtools).
 
 ![React-Query DevTools](./img/react-query-devtools.png)
 
@@ -361,14 +361,14 @@ Then you can use react-query's `useMutation` hook to call the `dataProvider.banU
 
 ```jsx
 import { useDataProvider } from 'react-admin';
-import { useMutation } from 'react-query';
+import { useMutation } from '@tanstack/react-query';
 
 const BanUserButton = ({ userId }) => {
     const dataProvider = useDataProvider();
-    const { mutate, isLoading } = useMutation(
-        () => dataProvider.banUser(userId)
-    );
-    return <Button label="Ban" onClick={() => mutate()} disabled={isLoading} />;
+    const { mutate, isPending } = useMutation({
+        mutationFn: () => dataProvider.banUser(userId)
+    });
+    return <Button label="Ban" onClick={() => mutate()} disabled={isPending} />;
 };
 ```
 
@@ -487,7 +487,7 @@ export const App = () => (
 
 ## React-Query Options
 
-React-admin uses [react-query](https://react-query-v3.tanstack.com/) to fetch, cache and update data. Internally, the `<Admin>` component creates a react-query [`QueryClient`](https://tanstack.com/query/v3/docs/react/reference/QueryClient) on mount, using [react-query's "aggressive but sane" defaults](https://react-query-v3.tanstack.com/guides/important-defaults):
+React-admin uses [React Query](https://tanstack.com/query/v5/) to fetch, cache and update data. Internally, the `<Admin>` component creates a react-query [`QueryClient`](https://tanstack.com/query/v5/docs/react/reference/QueryClient) on mount, using [react-query's "aggressive but sane" defaults](https://tanstack.com/query/v5/docs/react/guides/important-defaults):
 
 * Queries consider cached data as stale
 * Stale queries are refetched automatically in the background when:
@@ -504,7 +504,7 @@ If you want to override the react-query default query and mutation default optio
 
 ```jsx
 import { Admin } from 'react-admin';
-import { QueryClient } from 'react-query';
+import { QueryClient } from '@tanstack/react-query';
 
 const queryClient = new QueryClient({
     defaultOptions: {
@@ -525,12 +525,12 @@ const App = () => (
 );
 ```
 
-To know which options you can pass to the `QueryClient` constructor, check the [react-query documentation](https://tanstack.com/query/v3/docs/react/reference/QueryClient) and the [query options](https://tanstack.com/query/v3/docs/react/reference/useQuery) and [mutation options](https://tanstack.com/query/v3/docs/react/reference/useMutation) sections.
+To know which options you can pass to the `QueryClient` constructor, check the [react-query documentation](https://tanstack.com/query/v5/docs/react/reference/QueryClient) and the [query options](https://tanstack.com/query/v5/docs/react/reference/useQuery) and [mutation options](https://tanstack.com/query/v5/docs/react/reference/useMutation) sections.
 
 The settings that react-admin developers often overwrite are:
 
 ```jsx
-import { QueryClient } from 'react-query';
+import { QueryClient } from '@tanstack/react-query';
 
 const queryClient = new QueryClient({
     defaultOptions: {
@@ -571,9 +571,9 @@ import { useGetOne } from 'react-admin';
 import { Loading, Error } from './MyComponents';
 
 const UserProfile = ({ userId }) => {
-    const { data: user, isLoading, error } = useGetOne('users', { id: userId });
+    const { data: user, isPending, error } = useGetOne('users', { id: userId });
 
-    if (isLoading) return <Loading />;
+    if (isPending) return <Loading />;
     if (error) return <Error />;
     if (!user) return null;
 

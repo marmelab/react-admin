@@ -66,7 +66,7 @@ If you include `<SelectColumnsButton>` in a page that has more than one `<Datagr
 
 ```jsx
 const BookList = () => {
-    const { data, total, isLoading } = useGetList('books', {
+    const { data, total, isPending } = useGetList('books', {
         pagination: { page: 1, perPage: 10 },
         sort,
     });
@@ -77,7 +77,7 @@ const BookList = () => {
                 preferenceKey="postList1"
                 data={data}
                 total={total}
-                isLoading={isLoading}
+                isPending={isPending}
                 sort={sort}
                 bulkActionButtons={false}
             >

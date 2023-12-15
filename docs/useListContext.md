@@ -27,8 +27,8 @@ import { Typography } from '@mui/material';
 import { useListContext } from 'react-admin';
 
 export const Aside = () => {
-    const { data, isLoading } = useListContext();
-    if (isLoading) return null;
+    const { data, isPending } = useListContext();
+    if (isPending) return null;
     return (
         <div>
             <Typography variant="h6">Posts stats</Typography>
@@ -64,7 +64,8 @@ const {
     data, // an array of the list records, e.g. [{ id: 123, title: 'hello world' }, { ... }]
     total, // the total number of results for the current filters, excluding pagination. Useful to build the pagination controls, e.g. 23      
     isFetching, // boolean that is true while the data is being fetched, and false once the data is fetched
-    isLoading, // boolean that is true until the data is available for the first time
+    isLoading, // boolean that is true until the data is fetched for the first time
+    isPending, // boolean that is true until the data is available for the first time
     // pagination
     page, // the current page. Starts at 1
     perPage, // the number of results per page. Defaults to 25
@@ -102,8 +103,8 @@ import { WithListContext } from 'react-admin';
 import { Typography } from '@mui/material';
 
 export const Aside = () => (
-    <WithListContext render={({ data, isLoading }) => 
-        !isLoading && (
+    <WithListContext render={({ data, isPending }) => 
+        !isPending && (
             <div>
                 <Typography variant="h6">Posts stats</Typography>
                 <Typography variant="body2">
@@ -129,8 +130,8 @@ type Post = {
 };
 
 export const Aside = () => {
-    const { data: posts, isLoading } = useListContext<Post>();
-    if (isLoading) return null;
+    const { data: posts, isPending } = useListContext<Post>();
+    if (isPending) return null;
     return (
         <div>
             <Typography variant="h6">Posts stats</Typography>

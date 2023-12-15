@@ -184,7 +184,7 @@ This example asumes the implementation of a `deleteImages` function in the dataP
 
 ```jsx
 import { Edit, SimpleForm, ImageInput, Confirm, useDataProvider } from 'react-admin';
-import { useMutation } from 'react-query';
+import { useMutation } from '@tanstack/react-query';
 
 const MyEdit = () => {
     const [removeImage, setRemoveImage] = React.useState(null);

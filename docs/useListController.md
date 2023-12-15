@@ -192,7 +192,7 @@ const OrderedPostList = ({
     return (
         <div>
             <ul style={styles.ul}>
-                {!params.isLoading &&
+                {!params.isPending &&
                     params.data.map(post => (
                         <li key={`post_${post.id}`}>
                             {post.title} - {post.votes} votes
@@ -225,7 +225,8 @@ const {
     data, // an array of the list records, e.g. [{ id: 123, title: 'hello world' }, { ... }]
     total, // the total number of results for the current filters, excluding pagination. Useful to build the pagination controls, e.g. 23      
     isFetching, // boolean that is true while the data is being fetched, and false once the data is fetched
-    isLoading, // boolean that is true until the data is available for the first time
+    isLoading, // boolean that is true until the data is fetched for the first time
+    isPending, // boolean that is true until the data is available for the first time
     // pagination
     page, // the current page. Starts at 1
     perPage, // the number of results per page. Defaults to 25

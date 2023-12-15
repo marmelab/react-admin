@@ -381,8 +381,8 @@ React-admin uses the `fullName` and the `avatar` (an image source, or a data-uri
 import { useGetIdentity, useGetOne } from 'react-admin';
 
 const PostDetail = ({ id }) => {
-    const { data: post, isLoading: postLoading } = useGetOne('posts', { id });
-    const { identity, isLoading: identityLoading } = useGetIdentity();
+    const { data: post, isPending: postLoading } = useGetOne('posts', { id });
+    const { identity, isPending: identityLoading } = useGetIdentity();
     if (postLoading || identityLoading) return <>Loading...</>;
     if (!post.lockedBy || post.lockedBy === identity.id) {
         // post isn't locked, or is locked by me

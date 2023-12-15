@@ -87,7 +87,7 @@ You can change how the list of related records is rendered by passing a custom c
 | `filter`       | Optional | `Object`                                                                          | -                                | Filters to use when fetching the related records (the filtering is done client-side)                   |
 | `pagination`   | Optional | `Element`                                                                         | -                                | Pagination element to display pagination controls. empty by default (no pagination)                    |
 | `perPage`      | Optional | `number`                                                                          | 1000                             | Maximum number of results to display                                                                   |
-| `queryOptions` | Optional | [`UseQuery Options`](https://tanstack.com/query/v3/docs/react/reference/useQuery) | `{}`                             | `react-query` options for the `getMany` query                                                                           |
+| `queryOptions` | Optional | [`UseQuery Options`](https://tanstack.com/query/v5/docs/react/reference/useQuery) | `{}`                             | `react-query` options for the `getMany` query                                                                           |
 | `sort`         | Optional | `{ field, order }`                                                                | `{ field: 'id', order: 'DESC' }` | Sort order to use when displaying the related records (the sort is done client-side)                   |
 | `sortBy`       | Optional | `string | Function`                                                               | `source`                         | When used in a `List`, name of the field to use for sorting when the user clicks on the column header. |
 
@@ -290,7 +290,7 @@ The `<ReferenceArrayField>` component accepts the usual `className` prop. You ca
 
 | Rule name                           | Description                                                                              |
 |-------------------------------------|------------------------------------------------------------------------------------------|
-| `& .RaReferenceArrayField-progress` | Applied to the Material UI's `LinearProgress` component while `isLoading` prop is `true` |
+| `& .RaReferenceArrayField-progress` | Applied to the Material UI's `LinearProgress` component while `isPending` prop is `true` |
 
 To override the style of all instances of `<ReferenceArrayField>` using the [application-wide style overrides](./AppTheme.md#theming-individual-components), use the `RaReferenceArrayField` key.
 

@@ -17,8 +17,8 @@ import CardContent from '@mui/material/CardContent';
 import { usePermissions } from 'react-admin';
 
 const MyPage = () => {
-    const { isLoading, permissions } = usePermissions();
-    return isLoading
+    const { isPending, permissions } = usePermissions();
+    return isPending
         ? (<div>Waiting for permissions...</div>)
         : (
             <Card>
@@ -44,12 +44,12 @@ export default [
 
 ## Loading State
 
-The `usePermissions` hook is optimistic: it doesn't block rendering during the `authProvider` call. In the above example, the `MyPage` component renders even before getting the response from the `authProvider`. To avoid a blink in the interface while the `authProvider` is answering, use the `isLoading` return value of `usePermissions()`:
+The `usePermissions` hook is optimistic: it doesn't block rendering during the `authProvider` call. In the above example, the `MyPage` component renders even before getting the response from the `authProvider`. To avoid a blink in the interface while the `authProvider` is answering, use the `isPending` return value of `usePermissions()`:
 
 ```jsx
 const MyPage = () => {
-    const { isLoading, permissions } = usePermissions();
-    if (isLoading) return null;
+    const { isPending, permissions } = usePermissions();
+    if (isPending) return null;
     return (
         <Card>
             <CardContent>Lorem ipsum sic dolor amet...</CardContent>
@@ -94,7 +94,7 @@ const GrantAdminPermissionsButton = () => {
 When using [the ra-rbac module](https://marmelab.com/ra-enterprise/modules/ra-rbac)<img class="icon" src="./img/premium.svg" />, the `usePermissions` hook returns an array of permissions.
 
 ```jsx
-import { usePermissions } from "@react-admin/ra-rbac";
+import { usePermissions } from "react-admin";
 
 const authProvider = {
     // ...
@@ -104,9 +104,9 @@ const authProvider = {
     ])
 };
 
-const { isLoading, permissions } = usePermissions();
+const { isPending, permissions } = usePermissions();
 // {
-//      isLoading: false,
+//      isPending: false,
 //      permissions: [
 //          { action: "read", resource: "*" },
 //          { action: ["read", "write"], resource: "users", record: { "id": "123" } },

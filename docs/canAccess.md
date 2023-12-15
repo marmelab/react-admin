@@ -16,8 +16,8 @@ import { usePermissions, EditButton  } from 'react-admin';
 import { canAccess } from '@react-admin/ra-rbac';
 
 const PostEditButton = () => {
-    const { isLoading, permissions } = usePermissions();
-    if (isLoading) return null;
+    const { isPending, permissions } = usePermissions();
+    if (isPending) return null;
     if (canAccess({ permissions, action: "edit", resource: "posts" })) {
         return <EditButton />;
     } else {
@@ -158,8 +158,8 @@ The `resource` parameter is the resource you want to check. It can be the name o
 
 ```tsx
 const ProductList = () => {
-    const { isLoading, permissions } = usePermissions();
-    if (isLoading) return null;
+    const { isPending, permissions } = usePermissions();
+    if (isPending) return null;
     return (
         <List>
             <Datagrid>
@@ -230,8 +230,8 @@ const authProvider = {
 };
 
 const ProductList = () => {
-    const { isLoading, permissions } = usePermissions();
-    if (isLoading) return null;
+    const { isPending, permissions } = usePermissions();
+    if (isPending) return null;
     return (
         <List>
             <Datagrid>

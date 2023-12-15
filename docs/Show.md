@@ -237,12 +237,12 @@ const BookShow = () => (
 );
 ```
 
-You can handle this case by getting the `isLoading` variable from the [`useShowContext`](./useShowContext.md) hook:
+You can handle this case by getting the `isPending` variable from the [`useShowContext`](./useShowContext.md) hook:
 
 ```jsx
 const SimpleBookShow = () => {
-    const { record, isLoading } = useShowContext();
-    if (isLoading) return null;
+    const { record, isPending } = useShowContext();
+    if (isPending) return null;
     return (
         <Typography>
             <i>{record.title}</i>, by {record.author} ({record.year})
@@ -445,8 +445,8 @@ import { useShowContext, useRecordContext } from 'react-admin';
 
 const PostTitle = () => {
     const record = useRecordContext();
-    const { isLoading } = useShowContext();
-    if (!isLoading) return null;
+    const { isPending } = useShowContext();
+    if (!isPending) return null;
     return <span>{record.title}</span>;
 };
 ```
