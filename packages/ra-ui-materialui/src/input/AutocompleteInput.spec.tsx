@@ -23,6 +23,7 @@ import {
     TranslateChoice,
     OnChange,
     InsideReferenceInputOnChange,
+    WithInputProps,
 } from './AutocompleteInput.stories';
 import { act } from '@testing-library/react-hooks';
 import { ReferenceArrayInput } from './ReferenceArrayInput';
@@ -1586,5 +1587,14 @@ describe('<AutocompleteInput />', () => {
         ) as HTMLInputElement;
         fireEvent.change(input, { target: { value: 'newValue' } });
         await waitFor(() => expect(onInputChange).toHaveBeenCalled());
+    });
+
+    describe('InputProps', () => {
+        it('should pass InputProps to the input', async () => {
+            render(<WithInputProps />);
+            await screen.findByRole('textbox');
+            screen.getByTestId('AttributionIcon');
+            screen.getByTestId('ExpandCircleDownIcon');
+        });
     });
 });

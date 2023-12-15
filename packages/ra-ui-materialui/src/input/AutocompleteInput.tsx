@@ -591,8 +591,8 @@ If you provided a React element for the optionText prop, you must also provide t
                         margin={margin}
                         variant={variant}
                         className={AutocompleteInputClasses.textField}
-                        {...TextFieldProps}
                         {...params}
+                        {...TextFieldProps}
                         size={size}
                     />
                 )}
