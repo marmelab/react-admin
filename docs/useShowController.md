@@ -25,13 +25,14 @@ const PostShow = () => {
         defaultTitle, // the translated title based on the resource, e.g. 'Post #123'
         error,  // error returned by dataProvider when it failed to fetch the record. Useful if you want to adapt the view instead of just showing a notification using the `onError` side effect.
         isFetching, // boolean that is true while the record is being fetched, and false once the record is fetched
-        isLoading, // boolean that is true until the record is available for the first time
+        isPending, // boolean that is true until the record is available for the first time
+        isLoading, // boolean that is true until the record is fetched for the first time
         record, // record fetched via dataProvider.getOne() based on the id from the location
         refetch, // callback to refetch the record via dataProvider.getOne()
         resource, // the resource name, deduced from the location. e.g. 'posts'
     } = useShowController();
 
-    if (isLoading) {
+    if (isPending) {
         return <div>Loading...</div>;
     }
     if (error) {
@@ -126,11 +127,11 @@ const PostShow = props => {
     const {
         defaultTitle,
         error,
-        isLoading,
+        isPending,
         record,
     } = useShowController({ queryOptions: { onError } });
 
-    if (isLoading) {
+    if (isPending) {
         return <div>Loading...</div>;
     }
     if (error) {

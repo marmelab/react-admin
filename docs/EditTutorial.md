@@ -31,12 +31,12 @@ import { Card, TextField, Button, Stack, MenuItem } from "@mui/material";
 export const BookEdit = () => {
   const { id } = useParams();
   const { handleSubmit, reset, control } = useForm();
-  const { isLoading } = useGetOne(
+  const { isPending } = useGetOne(
     "books",
     { id },
     { onSuccess: (data) => reset(data) }
   );
-  const [update, { isLoading: isSubmitting }] = useUpdate();
+  const [update, { isPending: isSubmitting }] = useUpdate();
   const navigate = useNavigate();
   const onSubmit = (data) => {
     update(
@@ -46,7 +46,7 @@ export const BookEdit = () => {
     );
   };
 
-  if (isLoading) return null;
+  if (isPending) return null;
   return (
     <div>
       <Title title="Book Edition" />
@@ -107,13 +107,13 @@ import { Card, TextField, Stack, MenuItem } from "@mui/material";
 export const BookEdit = () => {
   const { id } = useParams();
 - const { handleSubmit, reset, control } = useForm();
-- const { isLoading } = useGetOne(
-+ const { isLoading, data } = useGetOne(
+- const { isPending } = useGetOne(
++ const { isPending, data } = useGetOne(
     "books",
     { id },
 -   { onSuccess: (data) => reset(data) }
   );
-  const [update, { isLoading: isSubmitting }] = useUpdate();
+  const [update, { isPending: isSubmitting }] = useUpdate();
   const navigate = useNavigate();
   const onSubmit = (data) => {
     update(
@@ -122,7 +122,7 @@ export const BookEdit = () => {
         { onSuccess: () => { navigate('/books'); } }
     );
   };
-  if (isLoading) return null;
+  if (isPending) return null;
   return (
     <div>
       <Title title="Book Edition" />
@@ -178,8 +178,8 @@ import { Controller } from "react-hook-form";
 
 export const BookEdit = () => {
   const { id } = useParams();
-  const { isLoading, data } = useGetOne("books", { id });
-  const [update, { isLoading: isSubmitting }] = useUpdate();
+  const { isPending, data } = useGetOne("books", { id });
+  const [update, { isPending: isSubmitting }] = useUpdate();
   const navigate = useNavigate();
   const onSubmit = (data) => {
     update(
@@ -188,7 +188,7 @@ export const BookEdit = () => {
         { onSuccess: () => { navigate('/books'); } }
     );
   };
-  if (isLoading) return null;
+  if (isPending) return null;
   return (
     <div>
       <Title title="Book Edition" />
@@ -243,8 +243,8 @@ import { useParams, useNavigate } from "react-router-dom";
 
 export const BookEdit = () => {
   const { id } = useParams();
-  const { isLoading, data } = useGetOne("books", { id });
-  const [update, { isLoading: isSubmitting }] = useUpdate();
+  const { isPending, data } = useGetOne("books", { id });
+  const [update, { isPending: isSubmitting }] = useUpdate();
   const navigate = useNavigate();
   const onSubmit = (data) => {
     update(
@@ -253,7 +253,7 @@ export const BookEdit = () => {
         { onSuccess: () => { navigate('/books'); } }
     );
   };
-  if (isLoading) return null;
+  if (isPending) return null;
   return (
     <div>
       <Title title="Book Edition" />
@@ -305,8 +305,8 @@ import { Card } from "@mui/material";
 
 export const BookEdit = () => {
   const { id } = useParams();
-  const { isLoading, data } = useGetOne("books", { id });
-  const [update, { isLoading: isSubmitting }] = useUpdate();
+  const { isPending, data } = useGetOne("books", { id });
+  const [update, { isPending: isSubmitting }] = useUpdate();
   const navigate = useNavigate();
   const onSubmit = (data) => {
     update(
@@ -315,11 +315,11 @@ export const BookEdit = () => {
         { onSuccess: () => { navigate('/books'); } }
     );
   };
-  if (isLoading) return null;
+  if (isPending) return null;
   return (
 +   <EditContextProvider value={{
 +     record: data,
-+     isLoading,
++     isPending,
 +     save: onSubmit,
 +     saving: isSubmitting,
 +   }}>
@@ -360,8 +360,8 @@ import { Card } from "@mui/material";
 
 export const BookEdit = () => {
 - const { id } = useParams();
-- const { isLoading, data } = useGetOne("books", { id });
-- const [update, { isLoading: isSubmitting }] = useUpdate();
+- const { isPending, data } = useGetOne("books", { id });
+- const [update, { isPending: isSubmitting }] = useUpdate();
 - const navigate = useNavigate();
 - const onSubmit = (data) => {
 -   update(
@@ -371,12 +371,12 @@ export const BookEdit = () => {
 -   );
 - };
 + const editContext = useEditController();
-- if (isLoading) return null;
-+ if (editContext.isLoading) return null;
+- if (isPending) return null;
++ if (editContext.isPending) return null;
   return (
 -   <EditContextProvider value={{
 -     record: data,
--     isLoading,
+-     isPending,
 -     save: onSubmit,
 -     saving: isSubmitting,
 -   }}>
@@ -415,7 +415,7 @@ import { Card } from "@mui/material";
 
 export const BookEdit = () => {
 - const editContext = useEditController();
-- if (editContext.isLoading) return null;
+- if (editContext.isPending) return null;
   return (
 -   <EditContextProvider value={editContext}>
 +   <EditBase>

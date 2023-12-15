@@ -40,17 +40,17 @@ const MyComponent = () => {
 };
 ```
 
-If you use it with data coming from the `dataProvider`, don't forget to pass the `isLoading` prop so that it only manipulates the data once it's available:
+If you use it with data coming from the `dataProvider`, don't forget to pass the `isPending` prop so that it only manipulates the data once it's available:
 
 ```jsx
 import { useGetList, useList } from 'react-admin';
 
 const MyComponent = () => {
-    const { data, isLoading } = useGetList(
+    const { data, isPending } = useGetList(
         'posts',
         { pagination: { page: 1, perPage: 10 } },
     );
-    const listContext = useList({ data, isLoading });
+    const listContext = useList({ data, isPending });
     return (
         <ListContextProvider value={listContext}>
             <Datagrid>
@@ -68,7 +68,7 @@ The `useList` parameter accepts the following options:
 * [`filter`](#filter)
 * [`filterCallback](#filtercallback)
 * [`isFetching`](#isfetching)
-* [`isLoading`](#isloading)
+* [`isPending`](#isPending)
 * [`page`](#page)
 * [`perPage`](#perpage)
 * [`sort`](#sort)
@@ -161,7 +161,7 @@ const MyComponent = () => {
 };
 ```
 
-## `isLoading`
+## `isPending`
 
 This value ends up in the return value. It is used by list iterators (like `<Datagrid>`) to know when to display a loading indicator.
 
@@ -175,11 +175,11 @@ import {
 } from 'react-admin';
 
 const MyComponent = () => {
-    const { data, isLoading } = useGetList(
+    const { data, isPending } = useGetList(
         'posts',
         { page: 1, perPage: 10 }
     );
-    const listContext = useList({ data, isLoading });
+    const listContext = useList({ data, isPending });
     return (
         <ListContextProvider value={listContext}>
             <Datagrid>
@@ -263,7 +263,8 @@ const {
     data, // a paginated, sorted, and filtered array of records, e.g. [{ id: 123, title: 'hello world' }, { ... }]
     total, // the total number of results for the current filters, excluding pagination. Useful to build the pagination controls, e.g. 23      
     isFetching, // boolean that is true while the data is being fetched, and false once the data is fetched
-    isLoading, // boolean that is true until the data is available for the first time
+    isPending, // boolean that is true until the data is available for the first time
+    isLoading, // boolean that is true until the data is fetched for the first time
     // pagination
     page, // the current page. Starts at 1
     perPage, // the number of results per page. Defaults to 1000

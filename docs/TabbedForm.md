@@ -687,7 +687,7 @@ To achieve that, create a custom commponent that renders a `<TabbedForm.Tab>` wi
 ```jsx
 const ReviewsFormTab = props => {
     const record = useRecordContext();
-    const { isLoading, total } = useGetManyReference(
+    const { isPending, total } = useGetManyReference(
         'reviews',
         {
             target: 'product_id',
@@ -699,7 +699,7 @@ const ReviewsFormTab = props => {
     );
     const translate = useTranslate();
     let label = translate('resources.products.tabs.reviews');
-    if (!isLoading) {
+    if (!isPending) {
         label += ` (${total})`;
     }
     return <TabbedForm.Tab label={label} {...props} />;

@@ -10,7 +10,7 @@ This hook calls `dataProvider.getOne()` when the component mounts. It queries th
 ## Syntax
 
 ```jsx
-const { data, isLoading, error, refetch } = useGetOne(
+const { data, isPending, error, refetch } = useGetOne(
     resource,
     { id, meta },
     options
@@ -19,7 +19,7 @@ const { data, isLoading, error, refetch } = useGetOne(
 
 The `meta` argument is optional. It can be anything you want to pass to the data provider, e.g. a list of fields to show in the result.
 
-The `options` parameter is optional, and is passed to [react-query's `useQuery` hook](https://tanstack.com/query/v3/docs/react/reference/useQuery). It may contain the following options:
+The `options` parameter is optional, and is passed to [react-query's `useQuery` hook](https://tanstack.com/query/v5/docs/react/reference/useQuery). It may contain the following options:
 
 * `cacheTime`
 * `enabled`
@@ -49,9 +49,9 @@ The `options` parameter is optional, and is passed to [react-query's `useQuery` 
 * `suspense`
 * `useErrorBoundary`
 
-Check [react-query's `useQuery` hook documentation](https://tanstack.com/query/v3/docs/react/reference/useQuery) for details on each of these options.
+Check [react-query's `useQuery` hook documentation](https://tanstack.com/query/v5/docs/react/reference/useQuery) for details on each of these options.
 
-The react-query [query key](https://react-query-v3.tanstack.com/guides/query-keys) for this hook is `[resource, 'getOne', { id: String(id), meta }]`.
+The react-query [query key](https://tanstack.com/query/v5/docs/react/guides/query-keys) for this hook is `[resource, 'getOne', { id: String(id), meta }]`.
 
 ## Usage
 
@@ -62,8 +62,8 @@ import { useGetOne, useRecordContext } from 'react-admin';
 
 const UserProfile = () => {
     const record = useRecordContext();
-    const { data: user, isLoading, error } = useGetOne('users', { id: record.userId });
-    if (isLoading) { return <Loading />; }
+    const { data: user, isPending, error } = useGetOne('users', { id: record.userId });
+    if (isPending) { return <Loading />; }
     if (error) { return <p>ERROR</p>; }
     return <div>User {user.username}</div>;
 };
@@ -79,9 +79,9 @@ If you use `useGetOne` several times on a page for the same resource, replace th
 
 const UserProfile = () => {
     const record = useRecordContext();
--   const { data: user, isLoading, error } = useGetOne('users', { id: record.userId });
-+   const { data: users, isLoading, error } = useGetManyAggregate('users', { ids: [record.userId] });
-    if (isLoading) { return <Loading />; }
+-   const { data: user, isPending, error } = useGetOne('users', { id: record.userId });
++   const { data: users, isPending, error } = useGetManyAggregate('users', { ids: [record.userId] });
+    if (isPending) { return <Loading />; }
     if (error) { return <p>ERROR</p>; }
 -   return <div>User {user.username}</div>;
 +   return <div>User {users[0].username}</div>;
@@ -98,9 +98,9 @@ As `useGetManyAggregate` is often used to fetch references, react-admin exposes 
 
 const UserProfile = () => {
     const record = useRecordContext();
--   const { data: user, isLoading, error } = useGetOne('users', { id: record.userId });
-+   const { referenceRecord: user, isLoading, error } = useReference({ reference: 'users', id: record.userId });
-    if (isLoading) { return <Loading />; }
+-   const { data: user, isPending, error } = useGetOne('users', { id: record.userId });
++   const { referenceRecord: user, isPending, error } = useReference({ reference: 'users', id: record.userId });
+    if (isPending) { return <Loading />; }
     if (error) { return <p>ERROR</p>; }
     return <div>User {data.username}</div>;
 };
@@ -114,8 +114,8 @@ If you want to refresh the record, use the `refetch` function returned by the ho
 import { useGetOne } from 'react-admin';
 
 const UserProfile = ({ userId }) => {
-    const { data, isLoading, error, refetch } = useGetOne('users', { id: userId });
-    if (isLoading) { return <Loading />; }
+    const { data, isPending, error, refetch } = useGetOne('users', { id: userId });
+    if (isPending) { return <Loading />; }
     if (error) { return <p>ERROR</p>; }
     return (
         <>
@@ -137,9 +137,9 @@ If you want to subscribe to live updates on the record (topic: `resource/[resour
 
 const UserProfile = () => {
     const record = useRecordContext();
--   const { data, isLoading, error } = useGetOne('users', { id: record.userId });
-+   const { data, isLoading, error } = useGetOneLive('users', { id: record.userId });
-    if (isLoading) {
+-   const { data, isPending, error } = useGetOne('users', { id: record.userId });
++   const { data, isPending, error } = useGetOneLive('users', { id: record.userId });
+    if (isPending) {
         return <Loading />;
     }
     if (error) {
@@ -169,8 +169,8 @@ type User = {
 
 const UserProfile = () => {
     const ticket = useRecordContext<Ticket>();
-    const { data: user, isLoading, error } = useGetOne<User>('users', { id: ticket.userId });
-    if (isLoading) { return <Loading />; }
+    const { data: user, isPending, error } = useGetOne<User>('users', { id: ticket.userId });
+    if (isPending) { return <Loading />; }
     if (error) { return <p>ERROR</p>; }
     // TypeScript knows that user is of type User
     return <div>User {user.username}</div>;

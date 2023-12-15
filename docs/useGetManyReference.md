@@ -10,7 +10,7 @@ This hook calls `dataProvider.getManyReference()` when the component mounts. It 
 ## Syntax
 
 ```jsx
-const { data, total, isLoading, error, refetch } = useGetManyReference(
+const { data, total, isPending, error, refetch } = useGetManyReference(
     resource,
     { target, id, pagination, sort, filter, meta },
     options
@@ -25,7 +25,7 @@ import { useGetManyReference, useRecordContext } from 'react-admin';
 const PostComments = () => {
     const record = useRecordContext();
     // fetch all comments related to the current record
-    const { data, isLoading, error } = useGetManyReference(
+    const { data, isPending, error } = useGetManyReference(
         'comments',
         { 
             target: 'post_id',
@@ -34,7 +34,7 @@ const PostComments = () => {
             sort: { field: 'published_at', order: 'DESC' }
         }
     );
-    if (isLoading) { return <Loading />; }
+    if (isPending) { return <Loading />; }
     if (error) { return <p>ERROR</p>; }
     return (
         <ul>
@@ -57,7 +57,7 @@ import { useGetManyReference, useRecordContext } from 'react-admin';
 const PostComments = () => {
     const record = useRecordContext();
     const [page, setPage] = useState(1);
-    const { data, isLoading, pageInfo, error } = useGetManyReference(
+    const { data, isPending, pageInfo, error } = useGetManyReference(
         'comments',
         { 
             target: 'post_id',
@@ -66,7 +66,7 @@ const PostComments = () => {
             sort: { field: 'published_at', order: 'DESC' }
         }
     );
-    if (isLoading) { return <Loading />; }
+    if (isPending) { return <Loading />; }
     if (error) { return <p>ERROR</p>; }
     const { hasNextPage, hasPreviousPage } = pageInfo;
 
@@ -107,7 +107,7 @@ type Comment = {
 const PostComments = () => {
     const post = useRecordContext<Post>();
     // fetch all comments related to the current record
-    const { data: comments, isLoading, error } = useGetManyReference<Comment>(
+    const { data: comments, isPending, error } = useGetManyReference<Comment>(
         'comments',
         { 
             target: 'post_id',
@@ -116,7 +116,7 @@ const PostComments = () => {
             sort: { field: 'published_at', order: 'DESC' }
         }
     );
-    if (isLoading) { return <Loading />; }
+    if (isPending) { return <Loading />; }
     if (error) { return <p>ERROR</p>; }
     return (
         <ul>

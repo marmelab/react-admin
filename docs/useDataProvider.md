@@ -14,7 +14,18 @@ The hook takes no parameter and returns the Data Provider:
 const dataProvider = useDataProvider();
 ```
 
-**Tip**: The `dataProvider` returned by the hook is actually a *wrapper* around your Data Provider. This wrapper logs the user out if the dataProvider returns an error, and if the authProvider sees that error as an authentication error (via `authProvider.checkError()`).
+You can then call the Data Provider methods directly:
+
+```jsx
+dataProvider.getOne('users', { id: 123 })
+    .then(({ data }) => {
+        // ...
+    })
+```
+
+As `dataProvider` methods are asynchronous, it's common to call them in a React `useEffect` (for queries) or in an event handler (for mutations).
+
+**Tip**: The `dataProvider` returned by the `useDataProvider` hook is actually a *wrapper* around your Data Provider. This wrapper logs the user out if the `dataProvider` returns an error, and if the `authProvider` sees that error as an authentication error (via `authProvider.checkError()`).
 
 ## Usage
 
@@ -55,7 +66,44 @@ const UserProfile = ({ userId }) => {
 };
 ```
 
-But the recommended way to query the Data Provider is to use the dataProvider method hooks (like [`useGetOne`](./useGetOne.md) for instance).
+In practice, you should seldom use `useDataProvider` to call the dataProvider standard methods (like  `getOne()` or `update()`). The [query hooks](./Actions.md#query-hooks) (like [`useGetOne`](./useGetOne.md)) and [mutation hooks](./Actions.md#mutation-hooks) (like [`useUpdate`](./useUpdate.md)) are much more convenient. 
+
+`useDataProvider` is mostly useful to call custom methods you added to your Data Provider. 
+
+For instance, if your `dataProvider` exposes a `banUser()` method:
+
+```js
+const dataProvider = {
+    getList: /* ... */,
+    getOne: /* ... */,
+    getMany: /* ... */,
+    getManyReference: /* ... */,
+    create: /* ... */,
+    update: /* ... */,
+    updateMany: /* ... */,
+    delete: /* ... */,
+    deleteMany: /* ... */,
+    banUser: (userId) => {
+        return fetch(`/api/user/${userId}/ban`, { method: 'POST' })
+            .then(response => response.json());
+    },
+}
+```
+
+It is necessary to use `useDataProvider` in conjunction with React Query's `useMutation` to call this method when the user clicks on a button:
+
+```jsx
+import { useDataProvider, Button } from 'react-admin';
+import { useMutation } from '@tanstack/react-query';
+
+const BanUserButton = ({ userId }) => {
+    const dataProvider = useDataProvider();
+    const { mutate, isPending } = useMutation({
+        mutationFn: () => dataProvider.banUser(userId)
+    });
+    return <Button label="Ban" onClick={() => mutate()} disabled={isPending} />;
+};
+```
 
 ## TypeScript
 
