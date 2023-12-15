@@ -1,5 +1,3 @@
-require('raf/polyfill');
-
 // Ignore warnings about act()
 // See https://github.com/testing-library/react-testing-library/issues/281,
 // https://github.com/facebook/react/issues/14769
