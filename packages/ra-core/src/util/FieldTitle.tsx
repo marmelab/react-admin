@@ -2,6 +2,7 @@ import * as React from 'react';
 import { ReactElement, memo } from 'react';
 
 import { useTranslateLabel } from '../i18n';
+import { useSourcePrefix } from '../core';
 
 export interface FieldTitleProps {
     isRequired?: boolean;
@@ -12,6 +13,8 @@ export interface FieldTitleProps {
 
 export const FieldTitle = (props: FieldTitleProps) => {
     const { source, label, resource, isRequired } = props;
+    const prefix = useSourcePrefix();
+    const finalSource = prefix ? `${prefix}.${source}` : source;
     const translateLabel = useTranslateLabel();
 
     if (label === true) {
@@ -33,7 +36,7 @@ export const FieldTitle = (props: FieldTitleProps) => {
             {translateLabel({
                 label,
                 resource,
-                source,
+                source: finalSource,
             })}
             {isRequired && <span aria-hidden="true">&thinsp;*</span>}
         </span>

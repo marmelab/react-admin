@@ -1,17 +1,15 @@
 import * as React from 'react';
 import {
-    Children,
     cloneElement,
     MouseEvent,
     MouseEventHandler,
-    isValidElement,
     ReactElement,
     ReactNode,
     useMemo,
 } from 'react';
 import { Typography } from '@mui/material';
 import clsx from 'clsx';
-import { RaRecord } from 'ra-core';
+import { RaRecord, SourcePrefixContextProvider } from 'ra-core';
 
 import { SimpleFormIteratorClasses } from './useSimpleFormIteratorStyles';
 import { useSimpleFormIterator } from './useSimpleFormIterator';
@@ -35,7 +33,6 @@ export const SimpleFormIteratorItem = React.forwardRef(
             record,
             removeButton,
             reOrderButtons,
-            resource,
             source,
         } = props;
 
@@ -94,24 +91,9 @@ export const SimpleFormIteratorItem = React.forwardRef(
                             inline && SimpleFormIteratorClasses.inline
                         )}
                     >
-                        {Children.map(
-                            children,
-                            (input: ReactElement, index2) => {
-                                if (!isValidElement<any>(input)) {
-                                    return null;
-                                }
-                                const { source, ...inputProps } = input.props;
-                                return cloneElement(input, {
-                                    source: source
-                                        ? `${member}.${source}`
-                                        : member,
-                                    index: source ? undefined : index2,
-                                    resource,
-                                    disabled,
-                                    ...inputProps,
-                                });
-                            }
-                        )}
+                        <SourcePrefixContextProvider value={member}>
+                            {children}
+                        </SourcePrefixContextProvider>
                     </section>
                     {!disabled && (
                         <span className={SimpleFormIteratorClasses.action}>

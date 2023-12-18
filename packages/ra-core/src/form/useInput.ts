@@ -16,6 +16,7 @@ import { useFormGroupContext } from './useFormGroupContext';
 import { useFormGroups } from './useFormGroups';
 import { useApplyInputDefaultValues } from './useApplyInputDefaultValues';
 import { useEvent } from '../util';
+import { useSourcePrefix } from '../core';
 
 // replace null or undefined values by empty string to avoid controlled/uncontrolled input warning
 const defaultFormat = (value: any) => (value == null ? '' : value);
@@ -38,7 +39,9 @@ export const useInput = <ValueType = any>(
         validate,
         ...options
     } = props;
-    const finalName = name || source;
+    const prefix = useSourcePrefix();
+    const finalSource = prefix ? `${prefix}.${source}` : source;
+    const finalName = name || finalSource;
     const formGroupName = useFormGroupContext();
     const formGroups = useFormGroups();
     const record = useRecordContext();
@@ -48,12 +51,12 @@ export const useInput = <ValueType = any>(
             return;
         }
 
-        formGroups.registerField(source, formGroupName);
+        formGroups.registerField(finalSource, formGroupName);
 
         return () => {
-            formGroups.unregisterField(source, formGroupName);
+            formGroups.unregisterField(finalSource, formGroupName);
         };
-    }, [formGroups, formGroupName, source]);
+    }, [formGroups, formGroupName, finalSource]);
 
     const sanitizedValidate = Array.isArray(validate)
         ? composeValidators(validate)
@@ -120,7 +123,7 @@ export const useInput = <ValueType = any>(
     };
 
     return {
-        id: id || source,
+        id: id || finalSource,
         field,
         fieldState,
         formState,

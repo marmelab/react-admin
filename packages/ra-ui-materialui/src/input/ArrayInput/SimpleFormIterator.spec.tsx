@@ -57,33 +57,6 @@ describe('<SimpleFormIterator />', () => {
         expect((inputElements[1] as HTMLInputElement).value).toBe('bar');
     });
 
-    it('should render disabled inputs when disabled is true', () => {
-        render(
-            <Wrapper>
-                <SimpleForm
-                    record={{
-                        id: 'whatever',
-                        emails: [{ email: 'foo' }, { email: 'bar' }],
-                    }}
-                >
-                    <ArrayInput source="emails" disabled>
-                        <SimpleFormIterator>
-                            <TextInput source="email" />
-                        </SimpleFormIterator>
-                    </ArrayInput>
-                </SimpleForm>
-            </Wrapper>
-        );
-        const inputElements = screen.queryAllByLabelText(
-            'resources.undefined.fields.emails.email'
-        );
-        expect(inputElements).toHaveLength(2);
-        expect((inputElements[0] as HTMLInputElement).disabled).toBeTruthy();
-        expect((inputElements[0] as HTMLInputElement).value).toBe('foo');
-        expect((inputElements[1] as HTMLInputElement).disabled).toBeTruthy();
-        expect((inputElements[1] as HTMLInputElement).value).toBe('bar');
-    });
-
     it('should allow to override the disabled prop of each inputs', () => {
         render(
             <Wrapper>
@@ -501,17 +474,14 @@ describe('<SimpleFormIterator />', () => {
                     <ArrayInput source="emails">
                         <SimpleFormIterator>
                             <FormDataConsumer>
-                                {({ getSource }) => (
+                                {() => (
                                     <>
                                         <TextInput
-                                            source={getSource!('email')}
+                                            source="email"
                                             label="Email"
                                             defaultValue="default@marmelab.com"
                                         />
-                                        <TextInput
-                                            source={getSource!('name')}
-                                            label="Name"
-                                        />
+                                        <TextInput source="name" label="Name" />
                                     </>
                                 )}
                             </FormDataConsumer>

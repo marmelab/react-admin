@@ -34,31 +34,6 @@ describe('FormDataConsumerView', () => {
         });
     });
 
-    it('calls its children function with scopedFormData and getSource if it received an index prop', () => {
-        const children = jest.fn(({ getSource }) => {
-            getSource('id');
-            return null;
-        });
-        const formData = { id: 123, title: 'A title', authors: [{ id: 0 }] };
-
-        render(
-            <FormDataConsumerView
-                form="a-form"
-                source="authors[0]"
-                index={0}
-                formData={formData}
-            >
-                {children}
-            </FormDataConsumerView>
-        );
-
-        expect(children.mock.calls[0][0].formData).toEqual(formData);
-        expect(children.mock.calls[0][0].scopedFormData).toEqual({ id: 0 });
-        expect(children.mock.calls[0][0].getSource('id')).toEqual(
-            'authors[0].id'
-        );
-    });
-
     it('calls its children with updated formData on first render', async () => {
         let globalFormData;
         render(
@@ -130,10 +105,7 @@ describe('FormDataConsumerView', () => {
                                     globalScopedFormData = scopedFormData;
                                     return scopedFormData &&
                                         scopedFormData.name ? (
-                                        <TextInput
-                                            source={getSource('role')}
-                                            {...rest}
-                                        />
+                                        <TextInput source="role" {...rest} />
                                     ) : null;
                                 }}
                             </FormDataConsumer>
