@@ -20,6 +20,7 @@ import {
     useChoicesContext,
     useChoices,
     RaRecord,
+    useGetRecordRepresentation,
 } from 'ra-core';
 import { InputHelperText } from './InputHelperText';
 import { FormControlProps } from '@mui/material/FormControl';
@@ -105,7 +106,7 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
         onChange,
         onCreate,
         options = defaultOptions,
-        optionText = 'name',
+        optionText,
         optionValue = 'id',
         parse,
         resource: resourceProp,
@@ -134,8 +135,11 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
         source: sourceProp,
     });
 
+    const getRecordRepresentation = useGetRecordRepresentation(resource);
     const { getChoiceText, getChoiceValue, getDisableValue } = useChoices({
-        optionText,
+        optionText:
+            optionText ??
+            (isFromReference ? getRecordRepresentation : undefined),
         optionValue,
         disableValue,
         translateChoice: translateChoice ?? !isFromReference,
