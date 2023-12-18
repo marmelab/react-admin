@@ -7774,13 +7774,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"asap@npm:~2.0.6":
-  version: 2.0.6
-  resolution: "asap@npm:2.0.6"
-  checksum: c6d5e39fe1f15e4b87677460bd66b66050cd14c772269cee6688824c1410a08ab20254bb6784f9afb75af9144a9f9a7692d49547f4d19d715aeb7c0318f3136d
-  languageName: node
-  linkType: hard
-
 "asn1@npm:~0.2.3":
   version: 0.2.6
   resolution: "asn1@npm:0.2.6"
@@ -9483,7 +9476,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"core-js@npm:^3.0.0, core-js@npm:^3.5.0, core-js@npm:^3.6.5":
+"core-js@npm:^3.0.0":
   version: 3.20.3
   resolution: "core-js@npm:3.20.3"
   checksum: 7c53c1971572cc6bcfb89eef612d1602fdd97cc8872172ea64a73f5216c3ef43af472a40be76994cbf854b3fb11dd7e01bbbbad0177e0ec79e502c1d86b516fe
@@ -10251,7 +10244,6 @@ __metadata:
     inflection: "npm:~1.12.0"
     json-graphql-server: "npm:~2.3.0"
     prop-types: "npm:^15.8.1"
-    proxy-polyfill: "npm:^0.3.0"
     query-string: "npm:^7.1.1"
     ra-data-fakerest: "npm:^4.12.0"
     ra-data-graphql: "npm:^4.12.0"
@@ -10263,7 +10255,6 @@ __metadata:
     ra-language-french: "npm:^4.12.0"
     react: "npm:^18.0.0"
     react-admin: "npm:^4.12.0"
-    react-app-polyfill: "npm:^2.0.0"
     react-dom: "npm:^18.2.0"
     react-router: "npm:^6.1.0"
     react-router-dom: "npm:^6.1.0"
@@ -18050,15 +18041,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"promise@npm:^8.0.3, promise@npm:^8.1.0":
-  version: 8.1.0
-  resolution: "promise@npm:8.1.0"
-  dependencies:
-    asap: "npm:~2.0.6"
-  checksum: bd6594e66b200a0c5aa18b46502e859d5abe7daeae2f9edaaf4e440628e6f960158ca0b9a12763d845ea7532e832566eee6fcceaa52b6862cc90908a51c4eca8
-  languageName: node
-  linkType: hard
-
 "prompts@npm:^2.0.1, prompts@npm:^2.4.0":
   version: 2.4.2
   resolution: "prompts@npm:2.4.2"
@@ -18327,13 +18309,6 @@ __metadata:
   version: 1.1.0
   resolution: "proxy-from-env@npm:1.1.0"
   checksum: fe7dd8b1bdbbbea18d1459107729c3e4a2243ca870d26d34c2c1bcd3e4425b7bcc5112362df2d93cc7fb9746f6142b5e272fd1cc5c86ddf8580175186f6ad42b
-  languageName: node
-  linkType: hard
-
-"proxy-polyfill@npm:^0.3.0":
-  version: 0.3.2
-  resolution: "proxy-polyfill@npm:0.3.2"
-  checksum: 89575586d7624263bd7fefa543f14a6dfd14dd878f64e25ab10e3eefb42d56015caa830ae9def8b41d1e5329f8bbdb63c69cd7427e9a0c43d628e372b6a19140
   languageName: node
   linkType: hard
 
@@ -18819,7 +18794,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"raf@npm:^3.4.1, raf@npm:~3.4.1":
+"raf@npm:~3.4.1":
   version: 3.4.1
   resolution: "raf@npm:3.4.1"
   dependencies:
@@ -18988,34 +18963,6 @@ __metadata:
     react-dom: ^16.9.0 || ^17.0.0 || ^18.0.0
   languageName: unknown
   linkType: soft
-
-"react-app-polyfill@npm:^1.0.4":
-  version: 1.0.6
-  resolution: "react-app-polyfill@npm:1.0.6"
-  dependencies:
-    core-js: "npm:^3.5.0"
-    object-assign: "npm:^4.1.1"
-    promise: "npm:^8.0.3"
-    raf: "npm:^3.4.1"
-    regenerator-runtime: "npm:^0.13.3"
-    whatwg-fetch: "npm:^3.0.0"
-  checksum: 51c3b462be000071d355baf89edf1eeed0b35ba83a70c44ae13a1bf128307f06ec3ae3f95f889783988b59c19d51f3ddb8b293b5a6be9ab673f319bbe7fe36f0
-  languageName: node
-  linkType: hard
-
-"react-app-polyfill@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "react-app-polyfill@npm:2.0.0"
-  dependencies:
-    core-js: "npm:^3.6.5"
-    object-assign: "npm:^4.1.1"
-    promise: "npm:^8.1.0"
-    raf: "npm:^3.4.1"
-    regenerator-runtime: "npm:^0.13.7"
-    whatwg-fetch: "npm:^3.4.1"
-  checksum: 1200ead64186911fa68f0782a417a7734a88d262a5e1ff5f064a6d2c0e23e44bf0df8d264100b4041d8c4a49166e8e0263f66777783652a53afba09f65b5fd68
-  languageName: node
-  linkType: hard
 
 "react-colorful@npm:^5.1.2":
   version: 5.5.1
@@ -19688,7 +19635,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"regenerator-runtime@npm:^0.13.3, regenerator-runtime@npm:^0.13.4, regenerator-runtime@npm:^0.13.7":
+"regenerator-runtime@npm:^0.13.4":
   version: 0.13.9
   resolution: "regenerator-runtime@npm:0.13.9"
   checksum: b0f26612204f061a84064d2f3361629eae09993939112b9ffc3680bb369ecd125764d6654eace9ef11b36b44282ee52b988dda946ea52d372e7599a30eea73ee
@@ -20499,7 +20446,6 @@ __metadata:
     jsonexport: "npm:^3.2.0"
     lodash: "npm:~4.17.5"
     prop-types: "npm:^15.8.1"
-    proxy-polyfill: "npm:^0.3.0"
     ra-data-fakerest: "npm:^4.16.2"
     ra-i18n-polyglot: "npm:^4.16.2"
     ra-input-rich-text: "npm:^4.16.2"
@@ -20507,7 +20453,6 @@ __metadata:
     ra-language-french: "npm:^4.16.2"
     react: "npm:^18.0.0"
     react-admin: "npm:^4.16.2"
-    react-app-polyfill: "npm:^1.0.4"
     react-dom: "npm:^18.2.0"
     react-hook-form: "npm:^7.43.9"
     react-router: "npm:^6.1.0"
@@ -22510,7 +22455,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"whatwg-fetch@npm:^3.0.0, whatwg-fetch@npm:^3.4.1":
+"whatwg-fetch@npm:^3.0.0":
   version: 3.6.2
   resolution: "whatwg-fetch@npm:3.6.2"
   checksum: cc10f6893fe71839250b6e2fa9bc293bcf0ca5b93129712a7d1097fb7528b3ff617eb065098dc972e74d1455378e514aa34c0901ded41584be16508db63477c8
