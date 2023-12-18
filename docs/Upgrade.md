@@ -92,6 +92,47 @@ All react-query hooks, `queryClient` and `queryCache` methods now accept a singl
 + queryCache.findAll({ queryKey, ...filters })
 ```
 
+### Codemod
+
+Fortunately, React Query comes with [codemods](https://tanstack.com/query/latest/docs/react/guides/migrating-to-v5#codemod) to make the migration easier.
+
+> **DISCLAIMER**
+>
+> The codemod is a best efforts attempt to help you migrate the breaking change. Please review the generated code thoroughly! Also, there are edge cases that cannot be found by the codemod, so please keep an eye on the log output.
+>
+> Applying the codemod might break your code formatting, so please don't forget to run `prettier` and/or `eslint` after you've applied the codemod!
+
+Once you have added `@tanstack/react-query` to your dependencies, you can run a codemod like so:
+
+For `.js` or `.jsx` files:
+
+```sh
+npx jscodeshift ./path/to/src/ \
+    --extensions=js,jsx \
+    --transform=./node_modules/@tanstack/react-query/build/codemods/src/v4/replace-import-specifier.js
+```
+
+For `.ts` or `.tsx` files:
+
+```sh
+npx jscodeshift ./path/to/src/ \
+    --extensions=ts,tsx \
+    --parser=tsx \
+    --transform=./node_modules/@tanstack/react-query/build/codemods/src/v4/replace-import-specifier.js
+```
+
+Here are the available codemods you may need to run on your codebase:
+
+- `v4/replace-import-specifier.js`
+- `v4/key-transformation.js`
+- `v5/remove-overloads/remove-overloads.js`
+- `v5/is-loading/is-loading.js`
+- `v5/keep-previous-data/keep-previous-data.js`
+- `v5/rename-properties/rename-properties.js`
+- `v5/rename-hydrate/rename-hydrate.js`
+
+Check out React Query [codemod documentation](https://tanstack.com/query/latest/docs/react/guides/migrating-to-v5#codemod) for more information.
+
 ## Removed deprecated hooks
 
 The following deprecated hooks have been removed
