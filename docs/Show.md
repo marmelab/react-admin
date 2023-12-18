@@ -300,6 +300,7 @@ You can also use the `queryOptions` prop to override the default error side effe
 
 You can override this behavior and pass custom side effects by providing a custom `queryOptions` prop:
 
+{% raw %}
 ```jsx
 import * as React from 'react';
 import { useNotify, useRefresh, useRedirect, Show, SimpleShowLayout } from 'react-admin';
@@ -324,6 +325,7 @@ const PostShow = () => {
     );
 }
 ```
+{% endraw %}
 
 The `onError` function receives the error from the dataProvider call (`dataProvider.getOne()`), which is a JavaScript Error object (see [the dataProvider documentation for details](./DataProviderWriting.md#error-format)).
 
