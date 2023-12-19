@@ -15,22 +15,16 @@ You can use `useShowContext` inside show components to access the data computed 
 import { useShowContext, SimpleShowLayout, Show } from 'react-admin';
 
 const PostShowLayout = () => {
-    const {
-        defaultTitle, // the translated title based on the resource, e.g. 'Post #123'
-        error,  // error returned by dataProvider when it failed to fetch the record. Useful if you want to adapt the view instead of just showing a notification using the `onError` side effect.
-        isFetching, // boolean that is true while the record is being fetched, and false once the record is fetched
-        isLoading, // boolean that is true until the record is available for the first time
-        record, // record fetched via dataProvider.getOne() based on the id from the location
-        refetch, // callback to refetch the record via dataProvider.getOne()
-        resource, // the resource name, deduced from the location. e.g. 'posts'
-    } = useShowContext();
+    const { defaultTitle, error, isLoading } = useShowContext();
 
     if (isLoading) {
         return <div>Loading...</div>;
     }
+
     if (error) {
         return <div>Error!</div>;
     }
+
     return (
         <>
             <h1>{defaultTitle}</h1>
@@ -47,6 +41,22 @@ const PostShow = () => (
         <PostShowLayout />
     </Show>
 )
+```
+
+## Return Value
+
+`useShowContext` returns an object with the same keys as [`useShowController`](./useShowController.md):
+
+```jsx
+const {
+    defaultTitle, // Translated title based on the resource, e.g. 'Post #123'
+    isFetching, // Boolean, true while the record is being fetched, and false once done fetching
+    isLoading, // Boolean, true until the record is available for the first time
+    record, // Either the record fetched via dataProvider.getOne() based on the id from the location, a cached version of the record (see also the Caching documentation page) or undefined 
+    refetch, // Callback to refetch the record via dataProvider.getOne()
+    resource, // The resource name, deduced from the location. e.g. 'posts'
+    error, // Error returned by dataProvider when it failed to fetch the record. Useful if you want to adapt the view instead of just showing a notification using the onError side effect.
+} = useShowContext();
 ```
 
 ## TypeScript

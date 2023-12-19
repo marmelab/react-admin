@@ -46,6 +46,8 @@ const PostEdit = () => (
 );
 ```
 
+## Props
+
 `<SaveButton>` accepts the following props:
 
 - [`icon`](#icon)
