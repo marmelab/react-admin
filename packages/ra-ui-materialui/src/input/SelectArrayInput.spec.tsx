@@ -11,6 +11,7 @@ import {
     DifferentIdTypes,
     TranslateChoice,
     InsideArrayInput,
+    WithRecordRepresentation,
 } from './SelectArrayInput.stories';
 
 describe('<SelectArrayInput />', () => {
@@ -658,5 +659,21 @@ describe('<SelectArrayInput />', () => {
         await screen.findByText('Foo');
         fireEvent.click(screen.getByLabelText('Add'));
         expect(await screen.findAllByText('Foo')).toHaveLength(2);
+    });
+
+    describe('record representation', () => {
+        it('should use record representation if defined', async () => {
+            render(<WithRecordRepresentation />);
+            await screen.findByText('resources.tags.fields.tag_ids');
+            expect(screen.queryByText('1 - Architecture')).not.toBeNull();
+            expect(screen.queryByText('3 - Painting')).not.toBeNull();
+        });
+
+        it('should use option text instead of record representation if defined', async () => {
+            render(<WithRecordRepresentation setOptionText />);
+            await screen.findByText('resources.tags.fields.tag_ids');
+            expect(screen.queryByText('Architecture')).not.toBeNull();
+            expect(screen.queryByText('Painting')).not.toBeNull();
+        });
     });
 });

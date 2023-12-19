@@ -18,7 +18,11 @@ import { ReferenceArrayInput } from './ReferenceArrayInput';
 import { useCreateSuggestionContext } from './useSupportCreateSuggestion';
 import { TextInput } from './TextInput';
 import { ArrayInput, SimpleFormIterator } from './ArrayInput';
-import { FormDataConsumer } from 'ra-core';
+import {
+    DataProvider,
+    FormDataConsumer,
+    ResourceDefinitionContextProvider,
+} from 'ra-core';
 import { useWatch } from 'react-hook-form';
 
 export default { title: 'ra-ui-materialui/input/SelectArrayInput' };
@@ -351,3 +355,56 @@ export const TranslateChoice = () => {
         </AdminContext>
     );
 };
+
+export const WithRecordRepresentation = ({ setOptionText = false }) => {
+    const tags = [
+        { id: 0, name: '3D' },
+        { id: 1, name: 'Architecture' },
+        { id: 2, name: 'Design' },
+        { id: 3, name: 'Painting' },
+        { id: 4, name: 'Photography' },
+    ];
+    const resouceDefs = {
+        tags: {
+            name: 'tags',
+            recordRepresentation: record => `${record.id} - ${record.name}`,
+        },
+    };
+    return (
+        <AdminContext
+            dataProvider={
+                ({
+                    getList: () =>
+                        Promise.resolve({
+                            data: tags,
+                            total: tags.length,
+                        }),
+                    getMany: (_, params) => {
+                        return Promise.resolve({
+                            data: params.ids.map(id =>
+                                tags.find(tag => tag.id === id)
+                            ),
+                        });
+                    },
+                } as unknown) as DataProvider
+            }
+        >
+            <ResourceDefinitionContextProvider definitions={resouceDefs}>
+                <SimpleForm
+                    defaultValues={{ tag_ids: [1, 3] }}
+                    onSubmit={() => {}}
+                >
+                    <ReferenceArrayInput reference="tags" source="tag_ids">
+                        <SelectArrayInput
+                            optionText={setOptionText ? 'name' : undefined}
+                        />
+                    </ReferenceArrayInput>
+                </SimpleForm>
+            </ResourceDefinitionContextProvider>
+        </AdminContext>
+    );
+};
+
+export const WithRecordRepresentationAndOptionText = () => (
+    <WithRecordRepresentation setOptionText />
+);
