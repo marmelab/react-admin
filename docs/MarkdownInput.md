@@ -31,7 +31,7 @@ const PostEdit = () => (
 
 You can customize the markdown renderer used for the preview, so that it matches the rendering you need in read mode just by applying the CSS rules you want.
 
-```JSX
+```jsx
 import { Edit, SimpleForm, TextInput } from "react-admin";
 import { MarkdownInput } from "@react-admin/ra-markdown";
 
@@ -88,31 +88,26 @@ Specifies the field of the record that the input should edit. It is required.
 
 You can make the markdown editor full width by setting the `fullWidth` prop to `true`:
 
-{% raw %}
 ```jsx
 <SimpleForm>
     <MarkdownInput source="description" fullwidth />
 </SimpleForm>
 ```
-{% endraw %}
 
 ## `height`
 
 The editor has a size that can be customized by setting the `height` prop. It is set to `512px` by default. You can use `px` or `%` units.
 
-{% raw %}
 ```jsx
 <SimpleForm>
     <MarkdownInput source="description" height="300px" />
 </SimpleForm>
 ```
-{% endraw %}
 
 ## `helperText`
 
 If you need to display a text below the markdown editor (usually to explain the expected data to the user), use the `helperText` prop.
 
-{% raw %}
 ```jsx
 <SimpleForm>
     <MarkdownInput
@@ -121,44 +116,38 @@ If you need to display a text below the markdown editor (usually to explain the 
     />
 </SimpleForm>
 ```
-{% endraw %}
 
 ## `initialEditType`
 
 This prop allows to set the initial edit type of the editor. It accepts `markdown` or `wysiwyg` and is set to `wysiwyg` by default.
 
-{% raw %}
 ```jsx
 <SimpleForm>
     <MarkdownInput source="description" initialEditType="markdown" />
 </SimpleForm>
 ```
-{% endraw %}
 
 ## `label`
 
 You can customize the label by setting the `label` prop. It is inferred from the `source` prop by default.
 
-{% raw %}
 ```jsx
 <SimpleForm>
-    <MarkdownInput source="description" label="Description" />
+    <MarkdownInput source="description" label="Explanation" />
 </SimpleForm>
 ```
-{% endraw %}
 
 ## `previewStyle`
 
 You can customize the preview style by setting the `previewStyle` prop. It accepts `tab` or `vertical` and is set to `vertical` by default.
-If you chose `vertical`, the content and the preview will be displayed side by side. If you chose `tab`, the content and the preview will be displayed in two separate tabs. You can switch between the two tabs by clicking on it.
+- With the `vertical` style, the content and the preview will be displayed side by side.
+- With the `tab` style, the content and the preview will be displayed in two separate tabs. Users can switch between the two tabs by clicking on the tab header.
 
-{% raw %}
 ```jsx
 <SimpleForm>
     <MarkdownInput source="description" previewStyle="tab" />
 </SimpleForm>
 ```
-{% endraw %}
 
 ## `useCommandShortcut`
 
@@ -175,6 +164,8 @@ You can disable the keyboard shortcuts by setting the `useCommandShortcut` prop 
 ## Adding Buttons
 
 You can add your own buttons to the markdown editor by using the `toolbarItems` prop. It accepts an array of [toolbar items](https://nhn.github.io/tui.editor/latest/tutorial-example15-customizing-toolbar-buttons) and is set to `null` by default.
+
+In this example, we will add a custom button to the toolbar that will display an alert when clicked. We create an HTML button element via the `createLastButton` function and pass it to the `toolbarItems` prop.
 
 {% raw %}
 ```tsx
