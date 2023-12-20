@@ -3,7 +3,7 @@ import { createContext, useContext } from 'react';
 export type SourceContextValue = (source: string) => string;
 
 /**
- * Context to that provides a function that accept a source and return a modified source (prefixed, suffixed, etc.) for fields and inputs.
+ * Context that provides a function that accept a source and return a modified source (prefixed, suffixed, etc.) for fields and inputs.
  */
 export const SourceContext = createContext<SourceContextValue>(null);
 
