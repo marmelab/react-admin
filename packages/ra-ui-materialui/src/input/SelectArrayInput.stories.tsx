@@ -9,6 +9,7 @@ import {
     TextField,
 } from '@mui/material';
 import fakeRestProvider from 'ra-data-fakerest';
+import { useWatch } from 'react-hook-form';
 
 import { AdminContext } from '../AdminContext';
 import { Create, Edit } from '../detail';
@@ -18,8 +19,6 @@ import { ReferenceArrayInput } from './ReferenceArrayInput';
 import { useCreateSuggestionContext } from './useSupportCreateSuggestion';
 import { TextInput } from './TextInput';
 import { ArrayInput, SimpleFormIterator } from './ArrayInput';
-import { FormDataConsumer } from 'ra-core';
-import { useWatch } from 'react-hook-form';
 
 export default { title: 'ra-ui-materialui/input/SelectArrayInput' };
 
