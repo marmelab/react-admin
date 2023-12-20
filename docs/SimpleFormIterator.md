@@ -114,7 +114,7 @@ A list of Input elements, that will be rendered on each row.
 
 By default, `<SimpleFormIterator>` renders one input per line, but they can be displayed inline with the `inline` prop.
 
-`<SimpleFormIterator>` also accepts `<FormDataConsumer>` as child. When used inside a form iterator, `<FormDataConsumer>` provides two additional properties to its children function:
+`<SimpleFormIterator>` also accepts `<FormDataConsumer>` as child. When used inside a form iterator, `<FormDataConsumer>` provides one additional propertie to its children function:
 
 - `scopedFormData`: an object containing the current values of the currently rendered item from the ArrayInput
 
