@@ -218,3 +218,8 @@ export const I18n = () => {
 };
 
 export const NotInContext = () => <TextBlock />;
+
+export const UsePreferenceOutsideConfigurable = () => {
+    const [color] = usePreference('color', '#ffffff');
+    return <TextBlock color={color} />;
+};

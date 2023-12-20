@@ -37,7 +37,7 @@ const ConfigurableTextBlock = ({ preferenceKey = "textBlock", ...props }) => (
 
 `<Configurable>` creates a context for the `preferenceKey`, so that both the child component and the editor can access it.
 
-The editor commponent lets users edit the preferences for the configurable compoonent. It does so using the `usePreference` hook, which is a namespaced version of [the `useStore` hook](./useStore.md) for the current `preferenceKey`:
+The editor commponent lets users edit the preferences for the configurable component. It does so using the `usePreference` hook, which is a namespaced version of [the `useStore` hook](./useStore.md) for the current `preferenceKey`:
 
 ```jsx
 import { usePreference } from 'react-admin';
@@ -58,7 +58,6 @@ const TextBlockEditor = () => {
     );
 };
 ```
- 
 The inner component reads the preferences using the same `usePreference` hook:
 
 ```jsx
