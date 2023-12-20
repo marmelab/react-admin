@@ -10,7 +10,7 @@ import {
     useGetValidationErrorMessage,
     useFormGroupContext,
     useFormGroups,
-    useSourcePrefix,
+    useWrappedSource,
 } from 'ra-core';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 import {
@@ -91,8 +91,7 @@ export const ArrayInput = (props: ArrayInputProps) => {
 
     const formGroupName = useFormGroupContext();
     const formGroups = useFormGroups();
-    const prefix = useSourcePrefix();
-    const finalSource = prefix ? `${prefix}.${source}` : source;
+    const finalSource = useWrappedSource(source);
 
     const sanitizedValidate = Array.isArray(validate)
         ? composeSyncValidators(validate)
@@ -161,7 +160,7 @@ export const ArrayInput = (props: ArrayInputProps) => {
             margin={margin}
             className={clsx(
                 'ra-input',
-                `ra-input-${finalSource}`,
+                `ra-input-${source}`,
                 ArrayInputClasses.root,
                 className
             )}

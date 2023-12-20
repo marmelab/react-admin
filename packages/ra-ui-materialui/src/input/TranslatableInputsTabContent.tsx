@@ -2,16 +2,11 @@ import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import { Stack, StackProps } from '@mui/material';
 import clsx from 'clsx';
-import {
-    Children,
-    cloneElement,
-    isValidElement,
-    ReactElement,
-    ReactNode,
-} from 'react';
+import { ReactElement, ReactNode, useMemo } from 'react';
 import {
     FormGroupContextProvider,
     RaRecord,
+    SourceContextProvider,
     useTranslatableContext,
 } from 'ra-core';
 
@@ -23,7 +18,11 @@ export const TranslatableInputsTabContent = (
     props: TranslatableInputsTabContentProps
 ): ReactElement => {
     const { children, groupKey = '', locale, ...other } = props;
-    const { selectedLocale, getLabel, getSource } = useTranslatableContext();
+    const { selectedLocale, getSource } = useTranslatableContext();
+    const sourceContext = useMemo(
+        () => (source: string) => getSource(source, locale),
+        [getSource, locale]
+    );
 
     return (
         <FormGroupContextProvider name={`${groupKey}${locale}`}>
@@ -37,18 +36,9 @@ export const TranslatableInputsTabContent = (
                 })}
                 {...other}
             >
-                {Children.map(children, child =>
-                    isValidElement(child)
-                        ? cloneElement(child, {
-                              ...child.props,
-                              label: getLabel(
-                                  child.props.source,
-                                  child.props.label
-                              ),
-                              source: getSource(child.props.source, locale),
-                          })
-                        : null
-                )}
+                <SourceContextProvider value={sourceContext}>
+                    {children}
+                </SourceContextProvider>
             </Root>
         </FormGroupContextProvider>
     );

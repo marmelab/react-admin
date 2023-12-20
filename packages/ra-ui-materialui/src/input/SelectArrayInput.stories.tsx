@@ -112,24 +112,15 @@ export const InsideArrayInput = () => (
                     defaultValue={[{ data: ['foo'] }]}
                 >
                     <SimpleFormIterator>
-                        <FormDataConsumer>
-                            {({ getSource }) => {
-                                const source = getSource!('data');
-                                return (
-                                    <>
-                                        <SelectArrayInput
-                                            label="data"
-                                            source={source}
-                                            choices={[
-                                                { id: 'foo', name: 'Foo' },
-                                                { id: 'bar', name: 'Bar' },
-                                            ]}
-                                            defaultValue={['foo']}
-                                        />
-                                    </>
-                                );
-                            }}
-                        </FormDataConsumer>
+                        <SelectArrayInput
+                            label="data"
+                            source="data"
+                            choices={[
+                                { id: 'foo', name: 'Foo' },
+                                { id: 'bar', name: 'Bar' },
+                            ]}
+                            defaultValue={['foo']}
+                        />
                     </SimpleFormIterator>
                 </ArrayInput>
                 <FormInspector source="items" />

@@ -537,9 +537,8 @@ const OrderEdit = () => (
 **Tip**: When using a `FormDataConsumer` inside an `ArrayInput`, the `FormDataConsumer` will provide two additional properties to its children function:
 
 - `scopedFormData`: an object containing the current values of the currently rendered item from the `ArrayInput`
-- `getSource`: a function that translates the source into a valid one for the `ArrayInput`
 
-And here is an example usage for `getSource` inside `<ArrayInput>`:
+And here is an example usage for `scopedFormData` inside `<ArrayInput>`:
 
 ```tsx
 import { FormDataConsumer } from 'react-admin';
@@ -554,12 +553,11 @@ const PostEdit = () => (
                         {({
                             formData, // The whole form data
                             scopedFormData, // The data for this item of the ArrayInput
-                            getSource, // A function to get the valid source inside an ArrayInput
                             ...rest
                         }) =>
-                            scopedFormData && getSource && scopedFormData.name ? (
+                            scopedFormData && scopedFormData.name ? (
                                 <SelectInput
-                                    source={getSource('role')} // Will translate to "authors[0].role"
+                                    source="role" // Will translate to "authors[0].role"
                                     choices={[{ id: 1, name: 'Head Writer' }, { id: 2, name: 'Co-Writer' }]}
                                     {...rest}
                                 />
@@ -573,7 +571,7 @@ const PostEdit = () => (
 );
 ```
 
-**Tip:** TypeScript users will notice that `scopedFormData` and `getSource` are typed as optional parameters. This is because the `<FormDataConsumer>` component can be used outside of an `<ArrayInput>` and in that case, these parameters will be `undefined`. If you are inside an `<ArrayInput>`, you can safely assume that these parameters will be defined.
+**Tip:** TypeScript users will notice that `scopedFormData` is typed as optional parameters. This is because the `<FormDataConsumer>` component can be used outside of an `<ArrayInput>` and in that case, these parameters will be `undefined`. If you are inside an `<ArrayInput>`, you can safely assume that these parameters will be defined.
 
 ## Hiding Inputs Based On Other Inputs
 

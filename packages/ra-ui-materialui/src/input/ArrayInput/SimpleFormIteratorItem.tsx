@@ -9,7 +9,7 @@ import {
 } from 'react';
 import { Typography } from '@mui/material';
 import clsx from 'clsx';
-import { RaRecord, SourcePrefixContextProvider } from 'ra-core';
+import { RaRecord, SourceContextProvider } from 'ra-core';
 
 import { SimpleFormIteratorClasses } from './useSimpleFormIteratorStyles';
 import { useSimpleFormIterator } from './useSimpleFormIterator';
@@ -74,6 +74,11 @@ export const SimpleFormIteratorItem = React.forwardRef(
                 ? getItemLabel(index)
                 : getItemLabel;
 
+        const sourceContext = useMemo(
+            () => (source: string) => (source ? `${member}.${source}` : member),
+            [member]
+        );
+
         return (
             <SimpleFormIteratorItemContext.Provider value={context}>
                 <li className={SimpleFormIteratorClasses.line} ref={ref}>
@@ -91,9 +96,9 @@ export const SimpleFormIteratorItem = React.forwardRef(
                             inline && SimpleFormIteratorClasses.inline
                         )}
                     >
-                        <SourcePrefixContextProvider value={member}>
+                        <SourceContextProvider value={sourceContext}>
                             {children}
-                        </SourcePrefixContextProvider>
+                        </SourceContextProvider>
                     </section>
                     {!disabled && (
                         <span className={SimpleFormIteratorClasses.action}>

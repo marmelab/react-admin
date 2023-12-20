@@ -30,7 +30,6 @@ describe('FormDataConsumerView', () => {
 
         expect(children).toHaveBeenCalledWith({
             formData,
-            getSource: expect.anything(),
         });
     });
 
@@ -41,7 +40,7 @@ describe('FormDataConsumerView', () => {
                 <SimpleForm>
                     <BooleanInput source="hi" defaultValue />
                     <FormDataConsumer>
-                        {({ formData, getSource, ...rest }) => {
+                        {({ formData, ...rest }) => {
                             globalFormData = formData;
 
                             return <TextInput source="bye" {...rest} />;
@@ -96,12 +95,7 @@ describe('FormDataConsumerView', () => {
                         <SimpleFormIterator>
                             <TextInput source="name" />
                             <FormDataConsumer>
-                                {({
-                                    formData,
-                                    scopedFormData,
-                                    getSource,
-                                    ...rest
-                                }) => {
+                                {({ formData, scopedFormData, ...rest }) => {
                                     globalScopedFormData = scopedFormData;
                                     return scopedFormData &&
                                         scopedFormData.name ? (
@@ -122,7 +116,7 @@ describe('FormDataConsumerView', () => {
         expect(globalScopedFormData).toEqual({ name: null });
 
         fireEvent.change(
-            screen.getByLabelText('resources.undefined.fields.authors.name'),
+            screen.getByLabelText('resources.undefined.fields.name'),
             {
                 target: { value: 'a' },
             }

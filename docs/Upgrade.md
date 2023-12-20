@@ -204,9 +204,9 @@ const CompanyField = () => (
 ```
 {% endraw %}
 
-## `<SimpleFormIterator>` no longer clone its children
+## `<SimpleFormIterator>` no longer clones its children
 
-One consequence is that defining the `disabled` prop on the `<ArrayInput>` component does not disable its children inputs anymore. If you relied on this behavior, you now have to specify the `disabled` prop on each input:
+We've changed the implementation of `<SimpleFormIterator>`, the companion child of `<ArrayInput>`. This internal change is mostly backwards compatible, with one exception: defining the `disabled` prop on the `<ArrayInput>` component does not disable the children inputs anymore. If you relied on this behavior, you now have to specify the `disabled` prop on each input:
 
 ```diff
 <ArrayInput disabled={someCondition}>

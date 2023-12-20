@@ -1,19 +1,20 @@
 import { createContext, useContext } from 'react';
 
-export type SourcePrefixContextValue = string;
+export type SourceContextValue = (source: string) => string;
 
 /**
- * Context to that provides a possible prefix for the source prop of fields and inputs.
+ * Context to that provides a function that accept a source and return a modified source (prefixed, suffixed, etc.) for fields and inputs.
  */
-export const SourcePrefixContext = createContext<SourcePrefixContextValue>('');
+export const SourceContext = createContext<SourceContextValue>(null);
 
-export const SourcePrefixContextProvider = SourcePrefixContext.Provider;
+export const SourceContextProvider = SourceContext.Provider;
 
 /**
- * Hook to get the source prefix that a field or input should add to its source prop.
- * @returns The source prefix that a field or input should add to its source prop.
+ * Hook to get a source that may be prefixed, suffixed, etc. by a parent component.
+ * @param source The original field or input source
+ * @returns The modified source
  */
-export const useSourcePrefix = (): string => {
-    const prefix = useContext(SourcePrefixContext);
-    return prefix ?? '';
+export const useWrappedSource = (source: string) => {
+    const context = useContext(SourceContext);
+    return context ? context(source) : source;
 };

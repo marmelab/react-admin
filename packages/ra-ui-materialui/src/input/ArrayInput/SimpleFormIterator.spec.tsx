@@ -48,7 +48,7 @@ describe('<SimpleFormIterator />', () => {
             </Wrapper>
         );
         const inputElements = screen.queryAllByLabelText(
-            'resources.undefined.fields.emails.email'
+            'resources.undefined.fields.email'
         );
         expect(inputElements).toHaveLength(2);
         expect((inputElements[0] as HTMLInputElement).disabled).toBeFalsy();
@@ -75,7 +75,7 @@ describe('<SimpleFormIterator />', () => {
             </Wrapper>
         );
         const inputElements = screen.queryAllByLabelText(
-            'resources.undefined.fields.emails.email'
+            'resources.undefined.fields.email'
         );
         expect(inputElements).toHaveLength(2);
         expect((inputElements[0] as HTMLInputElement).disabled).toBeTruthy();
@@ -224,7 +224,7 @@ describe('<SimpleFormIterator />', () => {
         fireEvent.click(screen.getByText('ra.action.confirm'));
         await waitFor(() => {
             const inputElements = screen.queryAllByLabelText(
-                'resources.undefined.fields.emails.email'
+                'resources.undefined.fields.email'
             );
             expect(inputElements.length).toBe(0);
         });
@@ -250,7 +250,7 @@ describe('<SimpleFormIterator />', () => {
         fireEvent.click(addItemElement);
         await waitFor(() => {
             const inputElements = screen.queryAllByLabelText(
-                'resources.undefined.fields.emails.email'
+                'resources.undefined.fields.email'
             );
 
             expect(inputElements.length).toBe(1);
@@ -259,14 +259,14 @@ describe('<SimpleFormIterator />', () => {
         fireEvent.click(addItemElement);
         await waitFor(() => {
             const inputElements = screen.queryAllByLabelText(
-                'resources.undefined.fields.emails.email'
+                'resources.undefined.fields.email'
             );
 
             expect(inputElements.length).toBe(2);
         });
 
         const inputElements = screen.queryAllByLabelText(
-            'resources.undefined.fields.emails.email'
+            'resources.undefined.fields.email'
         ) as HTMLInputElement[];
 
         expect(
@@ -542,7 +542,7 @@ describe('<SimpleFormIterator />', () => {
         );
 
         const inputElements = screen.queryAllByLabelText(
-            'resources.undefined.fields.emails.email'
+            'resources.undefined.fields.email'
         ) as HTMLInputElement[];
 
         expect(
@@ -560,7 +560,7 @@ describe('<SimpleFormIterator />', () => {
         fireEvent.click(removeFirstButton);
         await waitFor(() => {
             const inputElements = screen.queryAllByLabelText(
-                'resources.undefined.fields.emails.email'
+                'resources.undefined.fields.email'
             ) as HTMLInputElement[];
 
             expect(
@@ -587,7 +587,7 @@ describe('<SimpleFormIterator />', () => {
         );
 
         const inputElements = screen.queryAllByLabelText(
-            'resources.undefined.fields.emails.email'
+            'resources.undefined.fields.email'
         ) as HTMLInputElement[];
 
         expect(
@@ -603,7 +603,7 @@ describe('<SimpleFormIterator />', () => {
         fireEvent.click(moveDownFirstButton[0]);
         await waitFor(() => {
             const inputElements = screen.queryAllByLabelText(
-                'resources.undefined.fields.emails.email'
+                'resources.undefined.fields.email'
             ) as HTMLInputElement[];
 
             expect(
@@ -618,7 +618,7 @@ describe('<SimpleFormIterator />', () => {
         fireEvent.click(moveUpButton[1]);
         await waitFor(() => {
             const inputElements = screen.queryAllByLabelText(
-                'resources.undefined.fields.emails.email'
+                'resources.undefined.fields.email'
             ) as HTMLInputElement[];
 
             expect(
@@ -834,13 +834,9 @@ describe('<SimpleFormIterator />', () => {
                         <SimpleFormIterator>
                             <TextInput source="email" />
                             <FormDataConsumer>
-                                {({ scopedFormData, getSource }) =>
+                                {({ scopedFormData }) =>
                                     scopedFormData && scopedFormData.name ? (
-                                        <TextInput
-                                            source={(getSource as (
-                                                arg: string
-                                            ) => string)('role')}
-                                        />
+                                        <TextInput source="role" />
                                     ) : null
                                 }
                             </FormDataConsumer>
@@ -881,14 +877,7 @@ describe('<SimpleFormIterator />', () => {
                         <SimpleFormIterator>
                             <TextInput source="email" label="Email" />
                             <FormDataConsumer>
-                                {({ getSource }) => (
-                                    <TextInput
-                                        label="Role"
-                                        source={(getSource as (
-                                            arg: string
-                                        ) => string)('role')}
-                                    />
-                                )}
+                                {() => <TextInput label="Role" source="role" />}
                             </FormDataConsumer>
                         </SimpleFormIterator>
                     </ArrayInput>

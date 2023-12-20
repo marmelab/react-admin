@@ -16,7 +16,7 @@ import { useFormGroupContext } from './useFormGroupContext';
 import { useFormGroups } from './useFormGroups';
 import { useApplyInputDefaultValues } from './useApplyInputDefaultValues';
 import { useEvent } from '../util';
-import { useSourcePrefix } from '../core';
+import { useWrappedSource } from '../core';
 
 // replace null or undefined values by empty string to avoid controlled/uncontrolled input warning
 const defaultFormat = (value: any) => (value == null ? '' : value);
@@ -39,8 +39,7 @@ export const useInput = <ValueType = any>(
         validate,
         ...options
     } = props;
-    const prefix = useSourcePrefix();
-    const finalSource = prefix ? `${prefix}.${source}` : source;
+    const finalSource = useWrappedSource(source);
     const finalName = name || finalSource;
     const formGroupName = useFormGroupContext();
     const formGroups = useFormGroups();
@@ -68,7 +67,7 @@ export const useInput = <ValueType = any>(
     // (i.e. field level defaultValue override form level defaultValues for this field).
     const { field: controllerField, fieldState, formState } = useController({
         name: finalName,
-        defaultValue: get(record, source, defaultValue),
+        defaultValue: get(record, finalSource, defaultValue),
         rules: {
             validate: async (value, values) => {
                 if (!sanitizedValidate) return true;

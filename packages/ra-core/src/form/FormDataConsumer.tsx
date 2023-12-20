@@ -3,7 +3,7 @@ import { ReactNode } from 'react';
 import { useFormContext, FieldValues } from 'react-hook-form';
 import get from 'lodash/get';
 import { useFormValues } from './useFormValues';
-import { useSourcePrefix } from '../core';
+import { useWrappedSource } from '../core';
 
 /**
  * Get the current (edited) value of the record from the form and pass it
@@ -68,21 +68,15 @@ export const FormDataConsumerView = <
     const { children, form, formData, source, ...rest } = props;
     let ret;
 
-    const prefix = useSourcePrefix();
-    const matches = ArraySourceRegex.exec(prefix);
+    const finalSource = useWrappedSource('');
+    const matches = ArraySourceRegex.exec(finalSource);
 
     // If we have an index, we are in an iterator like component (such as the SimpleFormIterator)
-    if (matches && prefix) {
-        const scopedFormData = get(formData, prefix);
-        // Not needed anymore. Kept to avoid breaking existing code
-        const getSource = (scopedSource: string) => scopedSource;
-        ret = children({ formData, scopedFormData, getSource, ...rest });
+    if (matches) {
+        const scopedFormData = get(formData, matches[0]);
+        ret = children({ formData, scopedFormData, ...rest });
     } else {
-        ret = children({
-            formData,
-            getSource: (scopedSource: string) => scopedSource,
-            ...rest,
-        });
+        ret = children({ formData, ...rest });
     }
 
     return ret === undefined ? null : ret;
@@ -98,7 +92,6 @@ export interface FormDataConsumerRenderParams<
 > {
     formData: TFieldValues;
     scopedFormData?: TScopedFieldValues;
-    getSource: (source: string) => string;
 }
 
 export type FormDataConsumerRender<

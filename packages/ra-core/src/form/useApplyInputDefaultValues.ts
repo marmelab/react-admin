@@ -7,7 +7,7 @@ import {
 import get from 'lodash/get';
 import { useRecordContext } from '../controller';
 import { InputProps } from './useInput';
-import { useSourcePrefix } from '../core';
+import { useWrappedSource } from '../core';
 
 interface StandardInput {
     inputProps: Partial<InputProps> & { source: string };
@@ -33,8 +33,7 @@ export const useApplyInputDefaultValues = ({
     fieldArrayInputControl,
 }: Props) => {
     const { defaultValue, source } = inputProps;
-    const prefix = useSourcePrefix();
-    const finalSource = prefix ? `${prefix}.${source}` : source;
+    const finalSource = useWrappedSource(source);
 
     const record = useRecordContext(inputProps);
     const {
