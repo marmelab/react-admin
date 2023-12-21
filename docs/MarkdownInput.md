@@ -71,19 +71,6 @@ const PostEdit = () => (
 
 `<MarkdownInput>` also accepts the [common input props](https://marmelab.com/react-admin/Inputs.html#common-input-props) and the [editor props](https://nhn.github.io/tui.editor/latest/ToastUIEditorCore) from the [Toast UI](https://ui.toast.com/) editor.
 
-## `source`
-
-Specifies the field of the record that the input should edit. It is required.
-
-{% raw %}
-```jsx
-<Form record={{ id: 123, title: 'Hello, world!', body: '**Lorem Ipsum**' }}>
-    <MarkdownInput source="body" />
-    {/* default value is "**Lorem Ipsum**" */}
-</Form>
-```
-{% endraw %}
-
 ## `fullWidth`
 
 You can make the markdown editor full width by setting the `fullWidth` prop to `true`:
@@ -149,6 +136,19 @@ You can customize the preview style by setting the `previewStyle` prop. It accep
 </SimpleForm>
 ```
 
+## `source`
+
+Specifies the field of the record that the input should edit. It is required.
+
+{% raw %}
+```jsx
+<Form record={{ id: 123, title: 'Hello, world!', body: '**Lorem Ipsum**' }}>
+    <MarkdownInput source="body" />
+    {/* default value is "**Lorem Ipsum**" */}
+</Form>
+```
+{% endraw %}
+
 ## `useCommandShortcut`
 
 You can disable the keyboard shortcuts by setting the `useCommandShortcut` prop to `false`. It is set to `true` by default.
@@ -165,7 +165,7 @@ You can disable the keyboard shortcuts by setting the `useCommandShortcut` prop 
 
 You can add your own buttons to the markdown editor by using the `toolbarItems` prop. It accepts an array of [toolbar items](https://nhn.github.io/tui.editor/latest/tutorial-example15-customizing-toolbar-buttons) and is set to `null` by default.
 
-In this example, we will add a custom button to the toolbar that will display an alert when clicked. We create an HTML button element via the `createLastButton` function and pass it to the `toolbarItems` prop.
+The following example shows a custom button in the toolbar that displays an alert when clicked. It uses the `createLastButton` function to create an HTML button element, and the `toolbarItems` prop to pass it to the toolbar.
 
 {% raw %}
 ```tsx
