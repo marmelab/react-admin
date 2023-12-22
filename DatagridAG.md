@@ -99,7 +99,7 @@ Here are the important things to note:
 | `cellRenderer`      | Optional | String, Function or Element |                              | Allows to use a custom component to render the cell content                                  |
 | `defaultColDef`     | Optional | Object                      |                              | The default column definition (applied to all columns)                                       |
 | `mutationOptions`   | Optional | Object                      |                              | The mutation options                                                                         |
-| `preferenceKey`     | Optional | String or `false`           | `${resource}.ag-grid.params` | The key used to persist columns order and sizing in the Store. `false` disables persistence. |
+| `preferenceKey` | Optional | String or `false` | `${resource}.ag-grid.params` | The key used to persist [`gridState`](https://www.ag-grid.com/react-data-grid/grid-state/) in the Store. `false` disables persistence. |
 | `sx`                | Optional | Object                      |                              | The sx prop passed down to the wrapping `<div>` element                                      |
 | `theme`             | Optional | String                      | `'ag-theme-alpine'`          | The name of the ag-grid theme                                                                |
 | `pagination`        | Optional | Boolean                     | `true`                       | Enable or disable pagination                                                                 |
@@ -453,7 +453,7 @@ const CarList = () => {
 
 ### `preferenceKey`
 
-`<DatagridAG>` will store the order and size of columns in the [Store](./Store.md), under the key `${resource}.ag-grid.params`.
+`<DatagridAG>` will store the [`gridState`](https://www.ag-grid.com/react-data-grid/grid-state/) in the [Store](https://marmelab.com/react-admin/Store.html), under the key `${resource}.ag-grid.params.grid`. This `gridState` persisted in the store is applied once when the grid is created, it means that users will find the grid as they left it previously.
 
 If you wish to change the key used to store the columns order and size, you can pass a `preferenceKey` prop to `<DatagridAG>`.
 
@@ -471,7 +471,7 @@ If, instead, you want to disable the persistence of the columns order and size, 
 </List>
 ```
 
-**Note:** Saving the columns size in the Store is disabled when using the [`flex` config](https://www.ag-grid.com/react-data-grid/column-sizing/#column-flex).
+**Tip:** If you update the `columnDefs` prop, make sure to clear or [invalidate](Store.md#store-invalidation) the React-admin store in order to view your changes.
 
 ## `sx`
 

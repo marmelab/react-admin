@@ -44,31 +44,31 @@ export const BookCreate = () => {
 
 **Tip**: If you just use the return value of `useCreateController` to put it in an `CreateContext`, use [the `<CreateBase>` component](./CreateBase.md) instead for simpler markup.
 
-## Input Format
 
-`useCreateController` accepts an options argument, with the following fields, all optional:
+## Parameters
 
-* [`disableAuthentication`](./Create.md#disableauthentication): disable the authentication check
-* [`mutationOptions`](./Create.md#mutationoptions): options for the `dataProvider.create()` call
-* [`record`](./Create.md#record): use the provided record as base instead of fetching it
-* [`redirect`](./Create.md#redirect): change the redirect location after successful creation
-* [`resource`](./Create.md#resource): override the name of the resource to create
-* [`transform`](./Create.md#transform): transform the form data before calling `dataProvider.create()`
+`useCreateController` accepts an object with the following keys, all optional:
+
+* [`disableAuthentication`](./Create.md#disableauthentication): Disable the authentication check
+* [`mutationOptions`](./Create.md#mutationoptions): Options for the `dataProvider.create()` call
+* [`record`](./Create.md#record): Use the provided record as base instead of fetching it
+* [`redirect`](./Create.md#redirect): Change the redirect location after successful creation
+* [`resource`](./Create.md#resource): Override the name of the resource to create
+* [`transform`](./Create.md#transform): Transform the form data before calling `dataProvider.create()`
 
 These fields are documented in [the `<Create>` component](./Create.md) documentation.
 
 ## Return Value
 
-`useCreateController` returns an object with the following fields:
+`useCreateController` returns an object with the following keys:
 
 ```jsx
 const {
-    defaultTitle, // the translated title based on the resource, e.g. 'Create New Post'
-    record, // the default values of the creation form
-    redirect, // the default redirection route. Defaults to 'list'
-    resource, // the resource name, deduced from the location. e.g. 'posts'
-    save, // the update callback, to be passed to the underlying form as submit handler
-    saving, // boolean that becomes true when the dataProvider is called to create the record
+    defaultTitle, // Translated title based on the resource, e.g. 'Create New Post'
+    record, // Default values of the creation form
+    redirect, // Default redirect route. Defaults to 'list'
+    resource, // Resource name, deduced from the location. e.g. 'posts'
+    save, // Update callback to be passed to the underlying form as submit handler
+    saving, // Boolean, true when the dataProvider is called to create the record
 } = useCreateController();
 ```
-

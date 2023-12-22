@@ -58,9 +58,9 @@ React-admin will wrap each call to the `dataProvider.create()` mutation with the
 
 `useRegisterMutationMiddleware` unregisters the middleware function when the component unmounts. For this to work correctly, you must provide a stable reference to the function by wrapping it in a `useCallback` hook for instance.
 
-## Params
+## Parameters
 
-`useRegisterMutationMiddleware` expects a single parameter: a middleware function.
+`useRegisterMutationMiddleware` expects a single argument: a middleware function.
 
 A middleware function must have the following signature:
 
