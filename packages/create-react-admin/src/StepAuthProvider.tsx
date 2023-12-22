@@ -4,7 +4,7 @@ import SelectInput from 'ink-select-input';
 import { ChoiceType, SelectInputChoice } from './SelectInputChoice';
 import { Stack } from './Stack';
 
-const SupportedAuthProviders: ChoiceType[] = [
+export const SupportedAuthProviders: ChoiceType[] = [
     {
         label: 'Hard coded local username/password',
         value: 'local-auth-provider',
