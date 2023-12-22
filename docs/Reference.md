@@ -276,7 +276,7 @@ title: "Index"
 
 **- P -**
 * [`usePermissions`](./usePermissions.md)
-* [`usePreferences`](https://marmelab.com/ra-enterprise/modules/ra-preferences#usepreferences-reading-and-writing-user-preferences)<img class="icon" src="./img/premium.svg" />
+* [`usePreference`](./Configurable.md#usage)
 * [`usePublish`](./usePublish.md)<img class="icon" src="./img/premium.svg" />
 
 **- R -**
