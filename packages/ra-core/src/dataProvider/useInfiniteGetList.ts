@@ -12,6 +12,8 @@ import { useDataProvider } from './useDataProvider';
 import { useEffect, useRef } from 'react';
 import { useEvent } from '../util';
 
+const MAX_DATA_LENGTH_TO_CACHE = 100;
+
 /**
  * Call the dataProvider.getList() method and return the resolved result
  * as well as the loading state. The return from useInfiniteGetList is equivalent to the return from react-hook form useInfiniteQuery.
@@ -159,18 +161,24 @@ export const useInfiniteGetList = <RecordType extends RaRecord = any>(
     useEffect(() => {
         if (result.data === undefined || result.isFetching) return;
         // optimistically populate the getOne cache
-        result.data.pages.forEach(page => {
-            page.data.forEach(record => {
-                queryClient.setQueryData(
-                    [
-                        resourceValue.current,
-                        'getOne',
-                        { id: String(record.id), meta: metaValue.current },
-                    ],
-                    oldRecord => oldRecord ?? record
-                );
+        const allPagesDataLength = result.data.pages.reduce(
+            (acc, page) => acc + page.data.length,
+            0
+        );
+        if (allPagesDataLength <= MAX_DATA_LENGTH_TO_CACHE) {
+            result.data.pages.forEach(page => {
+                page.data.forEach(record => {
+                    queryClient.setQueryData(
+                        [
+                            resourceValue.current,
+                            'getOne',
+                            { id: String(record.id), meta: metaValue.current },
+                        ],
+                        oldRecord => oldRecord ?? record
+                    );
+                });
             });
-        });
+        }
 
         onSuccessEvent(result.data);
     }, [onSuccessEvent, queryClient, result.data, result.isFetching]);
