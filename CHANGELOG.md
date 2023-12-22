@@ -1,5 +1,13 @@
 # Changelog
 
+## v4.16.4
+
+* Fix `<SelectArrayInput>` does not use `recordRepresentation` ([#9532](https://github.com/marmelab/react-admin/pull/9532)) ([adguernier](https://github.com/adguernier))
+* [Doc] Fix `<DatagridAG>` doc on column state persistence ([#9540](https://github.com/marmelab/react-admin/pull/9540)) ([djhi](https://github.com/djhi))
+* [Doc] Fix typo in `<Show queryOptions>` doc([#9531](https://github.com/marmelab/react-admin/pull/9531)) ([slax57](https://github.com/slax57))
+* [Doc] Update the hooks documentation for consistent TOC ([#9453](https://github.com/marmelab/react-admin/pull/9453)) ([sebashwa](https://github.com/sebashwa))
+* [Doc] Improve `<MarkdownInput>` documentation([#9511](https://github.com/marmelab/react-admin/pull/9511)) ([arimet](https://github.com/arimet))
+
 ## v4.16.3
 
 * Fix `useNotify` types ([#9529](https://github.com/marmelab/react-admin/pull/9529)) ([djhi](https://github.com/djhi))
