@@ -26,7 +26,6 @@ export const DateTimeInput = ({
     defaultValue,
     format = formatDateTime,
     label,
-    name,
     helperText,
     margin,
     onBlur,
@@ -47,7 +46,6 @@ export const DateTimeInput = ({
         isRequired,
     } = useInput({
         defaultValue,
-        name,
         onBlur,
         resource,
         source,
@@ -56,17 +54,22 @@ export const DateTimeInput = ({
     });
     const [renderCount, setRenderCount] = React.useState(1);
 
-    const initialDefaultValueRef = React.useRef(defaultValue);
+    const initialDefaultValueRef = React.useRef(field.value);
 
     React.useEffect(() => {
-        if (initialDefaultValueRef.current !== defaultValue) {
+        const initialDateValue =
+            new Date(initialDefaultValueRef.current).getTime() || null;
+
+        const fieldDateValue = new Date(field.value).getTime() || null;
+
+        if (initialDateValue !== fieldDateValue) {
             setRenderCount(r => r + 1);
             parse
-                ? field.onChange(parse(defaultValue))
-                : field.onChange(defaultValue);
-            initialDefaultValueRef.current = defaultValue;
+                ? field.onChange(parse(field.value))
+                : field.onChange(field.value);
+            initialDefaultValueRef.current = field.value;
         }
-    }, [defaultValue, setRenderCount, parse, field]);
+    }, [setRenderCount, parse, field]);
 
     const { onBlur: onBlurFromField } = field;
     const hasFocus = React.useRef(false);
@@ -115,13 +118,14 @@ export const DateTimeInput = ({
     const renderHelperText =
         helperText !== false || ((isTouched || isSubmitted) && invalid);
 
-    const { ref } = field;
+    const { ref, name } = field;
 
     return (
         <TextField
             id={id}
             inputRef={ref}
-            defaultValue={format(defaultValue)}
+            name={name}
+            defaultValue={format(initialDefaultValueRef.current)}
             key={renderCount}
             type="datetime-local"
             onChange={handleChange}

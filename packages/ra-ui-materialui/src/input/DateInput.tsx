@@ -35,7 +35,6 @@ export const DateInput = ({
     defaultValue,
     format = getStringFromDate,
     label,
-    name,
     source,
     resource,
     helperText,
@@ -56,7 +55,6 @@ export const DateInput = ({
         isRequired,
     } = useInput({
         defaultValue,
-        name,
         onBlur,
         resource,
         source,
@@ -65,17 +63,22 @@ export const DateInput = ({
     });
     const [renderCount, setRenderCount] = React.useState(1);
 
-    const initialDefaultValueRef = React.useRef(defaultValue);
+    const initialDefaultValueRef = React.useRef(field.value);
 
     React.useEffect(() => {
-        if (initialDefaultValueRef.current !== defaultValue) {
+        const initialDateValue =
+            new Date(initialDefaultValueRef.current).getTime() || null;
+
+        const fieldDateValue = new Date(field.value).getTime() || null;
+
+        if (initialDateValue !== fieldDateValue) {
             setRenderCount(r => r + 1);
             parse
-                ? field.onChange(parse(defaultValue))
-                : field.onChange(defaultValue);
-            initialDefaultValueRef.current = defaultValue;
+                ? field.onChange(parse(field.value))
+                : field.onChange(field.value);
+            initialDefaultValueRef.current = field.value;
         }
-    }, [defaultValue, setRenderCount, parse, field]);
+    }, [setRenderCount, parse, field]);
 
     const { onBlur: onBlurFromField } = field;
     const hasFocus = React.useRef(false);
@@ -99,10 +102,16 @@ export const DateInput = ({
             !isNaN(new Date(target.valueAsDate).getTime())
                 ? parse
                     ? parse(target.valueAsDate)
-                    : target.valueAsDate
+                    : getStringFromDate(target.valueAsDate)
                 : parse
                 ? parse(target.value)
                 : getStringFromDate(target.value);
+
+        // if value empty, set it to null
+        if (newValue === '') {
+            field.onChange(null);
+            return;
+        }
 
         field.onChange(newValue);
     };
@@ -124,13 +133,16 @@ export const DateInput = ({
     const renderHelperText =
         helperText !== false || ((isTouched || isSubmitted) && invalid);
 
-    const { ref } = field;
+    const { ref, name } = field;
+
+    console.log('field', field);
 
     return (
         <TextField
             id={id}
+            name={name}
             inputRef={ref}
-            defaultValue={format(defaultValue)}
+            defaultValue={format(initialDefaultValueRef.current)}
             key={renderCount}
             type="date"
             onChange={handleChange}
@@ -199,7 +211,8 @@ const getStringFromDate = (value: string | Date) => {
     // null, undefined and empty string values should not go through dateFormatter
     // otherwise, it returns undefined and will make the input an uncontrolled one.
     if (value == null || value === '') {
-        return '';
+        console.log('toto');
+        return null;
     }
 
     if (value instanceof Date) {
