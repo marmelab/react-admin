@@ -534,11 +534,7 @@ const OrderEdit = () => (
 );
 ```
 
-**Tip**: When using a `FormDataConsumer` inside an `ArrayInput`, the `FormDataConsumer` will provide one additional property to its children function:
-
-- `scopedFormData`: an object containing the current values of the currently rendered item from the `ArrayInput`
-
-And here is an example usage for `scopedFormData` inside `<ArrayInput>`:
+**Tip**: When used inside an `ArrayInput`, `<FormDataConsumer>` provides one additional property to its child function called `scopedFormData`. It's an object containing the current values of the *currently rendered item*. This allows you to create dependencies between inputs inside a `<SimpleFormIterator>`, as in the following example:
 
 ```tsx
 import { FormDataConsumer } from 'react-admin';

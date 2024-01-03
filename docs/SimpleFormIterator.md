@@ -114,11 +114,7 @@ A list of Input elements, that will be rendered on each row.
 
 By default, `<SimpleFormIterator>` renders one input per line, but they can be displayed inline with the `inline` prop.
 
-`<SimpleFormIterator>` also accepts `<FormDataConsumer>` as child. When used inside a form iterator, `<FormDataConsumer>` provides one additional property to its children function:
-
-- `scopedFormData`: an object containing the current values of the currently rendered item from the ArrayInput
-
-And here is an example usage for `scopedFormData` inside `<ArrayInput>`:
+`<SimpleFormIterator>` also accepts `<FormDataConsumer>` as child. In this case, `<FormDataConsumer>` provides one additional property to its child function called `scopedFormData`. It's an object containing the current values of the *currently rendered item*. This allows you to create dependencies between inputs inside a `<SimpleFormIterator>`, as in the following example:
 
 ```jsx
 import { FormDataConsumer } from 'react-admin';
