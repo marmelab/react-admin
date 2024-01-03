@@ -21,9 +21,7 @@ export const WithRecord = <RecordType extends Record<string, any> = any>({
     return record ? <>{render(record)}</> : null;
 };
 
-export interface WithRecordProps<
-    RecordType extends Record<string, any> = any
-> {
+export interface WithRecordProps<RecordType extends Record<string, any> = any> {
     render: (record: RecordType) => ReactNode;
     label?: string;
 }
