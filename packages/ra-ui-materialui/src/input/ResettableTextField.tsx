@@ -26,7 +26,6 @@ export const ResettableTextField = forwardRef(
             variant,
             margin,
             className,
-            size = 'small',
             ...rest
         } = props;
 
