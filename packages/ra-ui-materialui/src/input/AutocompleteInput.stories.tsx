@@ -1221,7 +1221,7 @@ export const WithInputProps = () => {
                                 TextFieldProps={{
                                     InputProps: {
                                         startAdornment: (
-                                            <InputAdornment position="end">
+                                            <InputAdornment position="start">
                                                 <AttributionIcon />
                                             </InputAdornment>
                                         ),

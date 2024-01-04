@@ -1592,9 +1592,11 @@ describe('<AutocompleteInput />', () => {
     describe('InputProps', () => {
         it('should pass InputProps to the input', async () => {
             render(<WithInputProps />);
-            await screen.findByRole('textbox');
+            const input = await screen.findByRole('textbox');
             screen.getByTestId('AttributionIcon');
             screen.getByTestId('ExpandCircleDownIcon');
+            fireEvent.click(input);
+            screen.getByText('Victor Hugo');
         });
     });
 });
