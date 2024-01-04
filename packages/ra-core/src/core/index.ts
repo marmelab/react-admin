@@ -13,4 +13,5 @@ export * from './useResourceContext';
 export * from './useResourceDefinition';
 export * from './useResourceDefinitions';
 export * from './useGetRecordRepresentation';
-export * from './SourcePrefixContext';
+export * from './SourceContext';
+export * from './useWrappedSource';
