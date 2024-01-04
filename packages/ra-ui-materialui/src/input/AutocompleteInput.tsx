@@ -563,7 +563,7 @@ If you provided a React element for the optionText prop, you must also provide t
                 renderInput={params => {
                     const mergedTextFieldProps = {
                         ...params.InputProps,
-                        ...TextFieldProps.InputProps,
+                        ...TextFieldProps?.InputProps,
                     };
                     return (
                         <TextField
