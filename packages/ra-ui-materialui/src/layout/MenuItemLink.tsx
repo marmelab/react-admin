@@ -140,16 +140,19 @@ export const MenuItemLink = forwardRef<any, MenuItemLinkProps>((props, ref) => {
     );
 });
 
-export type MenuItemLinkProps = LinkProps &
-    MenuItemProps<'li'> & {
-        leftIcon?: ReactElement;
-        primaryText?: ReactNode;
-        /**
-         * @deprecated
-         */
-        sidebarIsOpen?: boolean;
-        tooltipProps?: TooltipProps;
-    };
+export type MenuItemLinkProps = Omit<
+    LinkProps &
+        MenuItemProps<'li'> & {
+            leftIcon?: ReactElement;
+            primaryText?: ReactNode;
+            /**
+             * @deprecated
+             */
+            sidebarIsOpen?: boolean;
+            tooltipProps?: TooltipProps;
+        },
+    'placeholder'
+>;
 
 MenuItemLink.propTypes = {
     className: PropTypes.string,
