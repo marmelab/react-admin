@@ -141,7 +141,7 @@ export const MenuItemLink = forwardRef<any, MenuItemLinkProps>((props, ref) => {
 });
 
 export type MenuItemLinkProps = LinkProps &
-    MenuItemProps<'li'> & {
+    Omit<MenuItemProps<'li'>, 'placeholder'> & {
         leftIcon?: ReactElement;
         primaryText?: ReactNode;
         /**
