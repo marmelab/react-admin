@@ -14,7 +14,7 @@ import {
 import expect from 'expect';
 
 describe('FormDataConsumerView', () => {
-    it('does not call its children function with scopedFormData if it did not receive an index prop', () => {
+    it('does not call its children function with scopedFormData if it did not receive a source containing an index', () => {
         const children = jest.fn();
         const formData = { id: 123, title: 'A title' };
 
