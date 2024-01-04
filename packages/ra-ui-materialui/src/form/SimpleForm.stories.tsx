@@ -2,6 +2,7 @@ import * as React from 'react';
 import {
     maxValue,
     required,
+    Resource,
     ResourceContextProvider,
     testDataProvider,
 } from 'ra-core';
@@ -12,6 +13,7 @@ import { AdminContext } from '../AdminContext';
 import { Edit } from '../detail';
 import { NumberInput, TextInput } from '../input';
 import { SimpleForm } from './SimpleForm';
+import { AdminUI } from '..';
 
 export default { title: 'ra-ui-materialui/forms/SimpleForm' };
 
@@ -143,6 +145,36 @@ export const GlobalValidation = () => (
             <NumberInput source="year" />
         </SimpleForm>
     </Wrapper>
+);
+
+export const CustomNotificationMessage = () => (
+    <AdminContext
+        i18nProvider={{
+            translate,
+            changeLocale: () => Promise.resolve(),
+            getLocale: () => 'en',
+        }}
+        dataProvider={testDataProvider({
+            getOne: () => Promise.resolve({ data }),
+            update: () => {
+                return Promise.reject({ message: 'Custom error message' });
+            },
+        } as any)}
+    >
+        <AdminUI
+            dashboard={() => (
+                <Edit resource="books" id={1} mutationMode="pessimistic">
+                    <SimpleForm>
+                        <TextInput source="title" fullWidth />
+                        <TextInput source="author" />
+                        <NumberInput source="year" />
+                    </SimpleForm>
+                </Edit>
+            )}
+        >
+            <Resource name="books" />
+        </AdminUI>
+    </AdminContext>
 );
 
 export const InputBasedValidation = () => (
