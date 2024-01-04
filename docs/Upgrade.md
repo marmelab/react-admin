@@ -219,6 +219,43 @@ We've changed the implementation of `<SimpleFormIterator>`, the companion child 
 </ArrayInput>
 ```
 
+## `<FormDataConsumer>` no longer pass a `getSource` function
+
+As we introduced the `SourceContext`, we don't need the `getSource` function anymore when using the `<FormDataConsumer>` inside an `<ArrayInput>`:
+
+```diff
+import { FormDataConsumer } from 'react-admin';
+
+const PostEdit = () => (
+    <Edit>
+        <SimpleForm>
+            <ArrayInput source="authors">
+                <SimpleFormIterator>
+                    <TextInput source="name" />
+                    <FormDataConsumer<{ name: string }>>
+                        {({
+                            formData, // The whole form data
+                            scopedFormData, // The data for this item of the ArrayInput
+-                            getSource, // A function to get the valid source inside an ArrayInput
+                            ...rest
+                        }) =>
+                            scopedFormData && getSource && scopedFormData.name ? (
+                                <SelectInput
+-                                    source={getSource('role')} // Will translate to "authors[0].role"
++                                    source="role" // Will translate to "authors[0].role" thanks to the SourceContext
+                                    choices={[{ id: 1, name: 'Head Writer' }, { id: 2, name: 'Co-Writer' }]}
+                                    {...rest}
+                                />
+                            ) : null
+                        }
+                    </FormDataConsumer>
+                </SimpleFormIterator>
+            </ArrayInput>
+        </SimpleForm>
+    </Edit>
+);
+```
+
 ## Upgrading to v4
 
 If you are on react-admin v3, follow the [Upgrading to v4](https://marmelab.com/react-admin/doc/4.16/Upgrade.html) guide before upgrading to v5. 
