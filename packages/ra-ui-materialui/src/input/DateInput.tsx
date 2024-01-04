@@ -211,7 +211,6 @@ const getStringFromDate = (value: string | Date) => {
     // null, undefined and empty string values should not go through dateFormatter
     // otherwise, it returns undefined and will make the input an uncontrolled one.
     if (value == null || value === '') {
-        console.log('toto');
         return null;
     }
 
