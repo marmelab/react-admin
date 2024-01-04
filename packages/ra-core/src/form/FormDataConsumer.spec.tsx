@@ -14,7 +14,7 @@ import {
 import expect from 'expect';
 
 describe('FormDataConsumerView', () => {
-    it('does not call its children function with scopedFormData and getSource if it did not receive an index prop', () => {
+    it('does not call its children function with scopedFormData if it did not receive an index prop', () => {
         const children = jest.fn();
         const formData = { id: 123, title: 'A title' };
 
@@ -116,7 +116,7 @@ describe('FormDataConsumerView', () => {
         expect(globalScopedFormData).toEqual({ name: null });
 
         fireEvent.change(
-            screen.getByLabelText('resources.undefined.fields.name'),
+            screen.getByLabelText('resources.undefined.fields.authors.name'),
             {
                 target: { value: 'a' },
             }

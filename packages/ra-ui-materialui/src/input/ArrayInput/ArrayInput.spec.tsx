@@ -126,19 +126,19 @@ describe('<ArrayInput />', () => {
             </AdminContext>
         );
         expect(
-            screen.queryAllByLabelText('resources.bar.fields.id')
+            screen.queryAllByLabelText('resources.bar.fields.arr.id')
         ).toHaveLength(2);
         expect(
             screen
-                .queryAllByLabelText('resources.bar.fields.id')
+                .queryAllByLabelText('resources.bar.fields.arr.id')
                 .map(input => (input as HTMLInputElement).value)
         ).toEqual(['123', '456']);
         expect(
-            screen.queryAllByLabelText('resources.bar.fields.foo')
+            screen.queryAllByLabelText('resources.bar.fields.arr.foo')
         ).toHaveLength(2);
         expect(
             screen
-                .queryAllByLabelText('resources.bar.fields.foo')
+                .queryAllByLabelText('resources.bar.fields.arr.foo')
                 .map(input => (input as HTMLInputElement).value)
         ).toEqual(['bar', 'baz']);
     });
@@ -180,7 +180,7 @@ describe('<ArrayInput />', () => {
         });
         fireEvent.click(screen.getByLabelText('ra.action.add'));
         const firstId = screen.getAllByLabelText(
-            'resources.bar.fields.id *'
+            'resources.bar.fields.arr.id *'
         )[0];
         fireEvent.change(firstId, {
             target: { value: 'aaa' },
@@ -190,7 +190,7 @@ describe('<ArrayInput />', () => {
         });
         fireEvent.blur(firstId);
         const firstFoo = screen.getAllByLabelText(
-            'resources.bar.fields.foo *'
+            'resources.bar.fields.arr.foo *'
         )[0];
         fireEvent.change(firstFoo, {
             target: { value: 'aaa' },

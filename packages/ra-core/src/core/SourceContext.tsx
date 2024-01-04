@@ -1,4 +1,4 @@
-import { createContext } from 'react';
+import { createContext, useContext } from 'react';
 
 export type SourceContextValue = (source: string) => string;
 
@@ -18,3 +18,5 @@ export type SourceContextValue = (source: string) => string;
 export const SourceContext = createContext<SourceContextValue>(null);
 
 export const SourceContextProvider = SourceContext.Provider;
+
+export const useSourceContext = () => useContext(SourceContext);

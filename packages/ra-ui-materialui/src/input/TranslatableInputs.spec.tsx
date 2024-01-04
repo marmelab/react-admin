@@ -126,17 +126,17 @@ describe('<TranslatableInputs />', () => {
         );
 
         fireEvent.change(
-            screen.getAllByLabelText('resources.undefined.fields.name')[0],
+            screen.getByLabelText('resources.undefined.fields.name.en'),
             {
                 target: { value: 'english value' },
             }
         );
         fireEvent.click(screen.getByText('ra.locales.fr'));
         fireEvent.focus(
-            screen.getAllByLabelText('resources.undefined.fields.name')[1]
+            screen.getByLabelText('resources.undefined.fields.name.fr')
         );
         fireEvent.blur(
-            screen.getAllByLabelText('resources.undefined.fields.name')[1]
+            screen.getByLabelText('resources.undefined.fields.name.fr')
         );
         await waitFor(() => {
             expect(screen.queryByText('error')).not.toBeNull();
