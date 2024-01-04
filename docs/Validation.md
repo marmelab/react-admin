@@ -370,6 +370,7 @@ Server-side validation is supported out of the box for `pessimistic` mode only. 
 ```
 {
     body: {
+        message: 'Error: my custom message in notification popover',
         errors: {
             title: 'An article with this title already exists. The title must be unique.',
             date: 'The date is required',
@@ -383,7 +384,9 @@ Server-side validation is supported out of the box for `pessimistic` mode only. 
 
 **Tip**: The returned validation errors might have any validation format we support (simple strings, translation strings or translation objects with a `message` attribute) for each key.
 
-**Tip**: If your data provider leverages React Admin's [`httpClient`](https://marmelab.com/react-admin/DataProviderWriting.html#example-rest-implementation), all error response bodies are wrapped and thrown as `HttpError`. This means your API only needs to return an invalid response with a json body containing the `errors` key.
+Note: you can use the `message` key to customize the message displayed in the notification popover but it is not mandatory. By default the notification message is the translatable key `ra.notification.http_error`.
+
+If your data provider leverages React Admin's [`httpClient`](https://marmelab.com/react-admin/DataProviderWriting.html#example-rest-implementation), all error response bodies are wrapped and thrown as `HttpError`. This means your API only needs to return an invalid response with a json body containing the `errors` key.
 
 ```js
 import { fetchUtils } from "react-admin";
@@ -414,7 +417,7 @@ const myDataProvider = {
 }
 ```
 
-**Tip:** If you are not using React Admin's `httpClient`, you can still wrap errors in an `HttpError` to return them with the correct shape:
+If you are not using React Admin's `httpClient`, you can still wrap errors in an `HttpError` to return them with the correct shape:
 
 ```js
 import { HttpError } from 'react-admin'
