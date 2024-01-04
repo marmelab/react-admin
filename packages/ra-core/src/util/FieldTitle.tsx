@@ -28,14 +28,13 @@ export const FieldTitle = (props: FieldTitleProps) => {
         return label;
     }
 
-    const translatedLabel = translateLabel({
-        label,
-        resource,
-        source,
-    });
     return (
         <span>
-            {translatedLabel}
+            {translateLabel({
+                label,
+                resource,
+                source,
+            })}
             {isRequired && <span aria-hidden="true">&thinsp;*</span>}
         </span>
     );
