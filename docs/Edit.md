@@ -747,7 +747,7 @@ export default OrderEdit;
 
 ## Navigating Through Records
 
-[`<PrevNextButtons`](./PrevNextButtons.md) renders a navigation with two buttons, allowing users to navigate through records without leaving an `<Edit>` view. 
+[`<PrevNextButtons>`](./PrevNextButtons.md) renders a navigation with two buttons, allowing users to navigate through records without leaving an `<Edit>` view. 
 
 <video controls autoplay playsinline muted loop>
   <source src="./img/prev-next-buttons-edit.webm" type="video/webm" />
