@@ -1221,12 +1221,25 @@ export const WithInputProps = () => {
                                 TextFieldProps={{
                                     InputProps: {
                                         startAdornment: (
-                                            <InputAdornment position="start">
+                                            <InputAdornment
+                                                position="start"
+                                                sx={{
+                                                    position: 'relative',
+                                                    top: '-8px',
+                                                }}
+                                            >
                                                 <AttributionIcon />
                                             </InputAdornment>
                                         ),
                                         endAdornment: (
-                                            <InputAdornment position="end">
+                                            <InputAdornment
+                                                position="end"
+                                                sx={{
+                                                    position: 'relative',
+                                                    top: '-8px',
+                                                    left: '50px',
+                                                }}
+                                            >
                                                 <ExpandCircleDownIcon />
                                             </InputAdornment>
                                         ),
