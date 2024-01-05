@@ -64,7 +64,7 @@ const BookShow = () => (
 | `queryOptions` | Optional | [`UseQueryOptions`](https://tanstack.com/query/v3/docs/react/reference/useQuery) | `{}` | `react-query` client options |
 | `sort`         | Optional | `{ field: String, order: 'ASC' or 'DESC' }` | `{ field: 'id', order: 'ASC' }`  | Used to order referenced records                                                    |
 
-`<ReferenceOneField>` also accepts the [common field props](./Fields.md#common-field-props), except `emptyText` (use the child `empty` prop instead).
+`<ReferenceOneField>` also accepts the [common field props](./Fields.md#common-field-props).
 
 ## `children`
 
@@ -74,6 +74,24 @@ For instance, if you want to render both the genre and the ISBN for a book:
 
 ```jsx
 <ReferenceOneField label="Details" reference="book_details" target="book_id">
+    <TextField source="genre" /> (<TextField source="ISBN" />)
+</ReferenceOneField>
+```
+
+## `emptyText`
+
+Use `emptyText` to customize the text displayed when the related record is empty.
+
+```jsx
+<ReferenceOneField label="Details" reference="book_details" target="book_id" emptyText="no detail">
+    <TextField source="genre" /> (<TextField source="ISBN" />)
+</ReferenceOneField>
+```
+
+`emptyText` also accepts a translation key.
+
+```jsx
+<ReferenceOneField label="Details" reference="book_details" target="book_id" emptyText="resources.books.not_found">
     <TextField source="genre" /> (<TextField source="ISBN" />)
 </ReferenceOneField>
 ```
