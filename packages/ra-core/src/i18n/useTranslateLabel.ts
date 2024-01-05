@@ -30,27 +30,10 @@ export const useTranslateLabel = () => {
                 return label;
             }
 
-            if (label && typeof label === 'string') {
-                return translate(label, { _: label });
-            }
-
-            const sourceContextLabel = sourceContext?.getLabel(source);
-
-            if (sourceContextLabel) {
-                return translate(
-                    sourceContextLabel,
-                    // Here we want the default inferred label if the translation is missing
-                    getFieldLabelTranslationArgs({
-                        prefix,
-                        resource,
-                        resourceFromContext,
-                        source: finalSource,
-                    })[1]
-                );
-            }
-
             return translate(
                 ...getFieldLabelTranslationArgs({
+                    label: label as string,
+                    labelFromSourceContext: sourceContext?.getLabel(source),
                     prefix,
                     resource,
                     resourceFromContext,

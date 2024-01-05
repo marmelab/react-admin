@@ -2,6 +2,7 @@ import inflection from 'inflection';
 
 interface Args {
     label?: string;
+    labelFromSourceContext?: string;
     prefix?: string;
     resource?: string;
     resourceFromContext?: string;
@@ -24,7 +25,16 @@ type TranslationArguments = [string, any?];
 export default (options?: Args): TranslationArguments => {
     if (!options) return [''];
 
-    const { prefix, resource, resourceFromContext, source } = options;
+    const {
+        label,
+        labelFromSourceContext,
+        prefix,
+        resource,
+        resourceFromContext,
+        source,
+    } = options;
+
+    if (typeof label !== 'undefined') return [label, { _: label }];
 
     if (typeof source === 'undefined') return [''];
 
@@ -34,6 +44,10 @@ export default (options?: Args): TranslationArguments => {
         sourceSuffix.replace(/\./g, ' '),
         ['underscore', 'humanize']
     );
+
+    if (labelFromSourceContext) {
+        return [labelFromSourceContext, { _: defaultLabel }];
+    }
 
     if (resource) {
         return [
