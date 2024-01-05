@@ -224,7 +224,7 @@ We've changed the implementation of `<SimpleFormIterator>`, the companion child 
 As we introduced the `SourceContext`, we don't need the `getSource` function anymore when using the `<FormDataConsumer>` inside an `<ArrayInput>`:
 
 ```diff
-import { FormDataConsumer } from 'react-admin';
+import { Edit, SimpleForm, TextInput, ArrayInput, SelectInput, FormDataConsumer } from 'react-admin';
 
 const PostEdit = () => (
     <Edit>
@@ -232,7 +232,7 @@ const PostEdit = () => (
             <ArrayInput source="authors">
                 <SimpleFormIterator>
                     <TextInput source="name" />
-                    <FormDataConsumer<{ name: string }>>
+                    <FormDataConsumer>
                         {({
                             formData, // The whole form data
                             scopedFormData, // The data for this item of the ArrayInput
