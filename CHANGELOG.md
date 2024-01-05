@@ -1,5 +1,15 @@
 # Changelog
 
+## v4.16.5
+
+* Fix `<AutocompleteInput>` should keep working when passing custom `InputProps` ([#9559](https://github.com/marmelab/react-admin/pull/9559)) ([adguernier](https://github.com/adguernier))
+* Fix `usePreference` should throw an error when used outside a `<Configurable>` context ([#9537](https://github.com/marmelab/react-admin/pull/9537)) ([arimet](https://github.com/arimet))
+* Revert "Fix `<SelectArrayInput>` does not use `recordRepresentation`" ([#9563](https://github.com/marmelab/react-admin/pull/9563)) ([slax57](https://github.com/slax57))
+* [TypeScript] Fix error when using typed args in `<WithRecord render>` function  ([#9552](https://github.com/marmelab/react-admin/pull/9552)) ([seongwon-privatenote](https://github.com/seongwon-privatenote))
+* [TypeScript] Fix `<MenuItemLink>` prop type should omit `placeholder` ([#9555](https://github.com/marmelab/react-admin/pull/9555)) ([smeng9](https://github.com/smeng9))
+* [Doc] Improve `<MarkdownField>` doc ([#9557](https://github.com/marmelab/react-admin/pull/9557)) ([adguernier](https://github.com/adguernier))
+* [Doc] Better document `<ReferenceOneField emptyText>` prop ([#9562](https://github.com/marmelab/react-admin/pull/9562)) ([slax57](https://github.com/slax57))
+
 ## v4.16.4
 
 * Fix `<SelectArrayInput>` does not use `recordRepresentation` ([#9532](https://github.com/marmelab/react-admin/pull/9532)) ([adguernier](https://github.com/adguernier))
