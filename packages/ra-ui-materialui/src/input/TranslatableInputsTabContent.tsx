@@ -18,10 +18,13 @@ export const TranslatableInputsTabContent = (
     props: TranslatableInputsTabContentProps
 ): ReactElement => {
     const { children, groupKey = '', locale, ...other } = props;
-    const { selectedLocale, getSource } = useTranslatableContext();
+    const { selectedLocale, getLabel, getSource } = useTranslatableContext();
     const sourceContext = useMemo(
-        () => (source: string) => getSource(source, locale),
-        [getSource, locale]
+        () => ({
+            getSource: (source: string) => getSource(source, locale),
+            getLabel,
+        }),
+        [getLabel, getSource, locale]
     );
 
     return (

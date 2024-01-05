@@ -16,7 +16,7 @@ import { useFormGroupContext } from './useFormGroupContext';
 import { useFormGroups } from './useFormGroups';
 import { useApplyInputDefaultValues } from './useApplyInputDefaultValues';
 import { useEvent } from '../util';
-import { useWrappedSource } from '../core';
+import { useSourceContext } from '../core';
 
 // replace null or undefined values by empty string to avoid controlled/uncontrolled input warning
 const defaultFormat = (value: any) => (value == null ? '' : value);
@@ -39,7 +39,8 @@ export const useInput = <ValueType = any>(
         validate,
         ...options
     } = props;
-    const finalSource = useWrappedSource(source);
+    const sourceContext = useSourceContext();
+    const finalSource = sourceContext?.getSource(source) ?? source;
     const finalName = name || finalSource;
     const formGroupName = useFormGroupContext();
     const formGroups = useFormGroups();

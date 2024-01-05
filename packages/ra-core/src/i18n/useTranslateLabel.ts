@@ -2,12 +2,13 @@ import { useCallback, ReactElement } from 'react';
 
 import { useTranslate } from './useTranslate';
 import { useLabelPrefix, getFieldLabelTranslationArgs } from '../util';
-import { useResourceContext } from '../core';
+import { useResourceContext, useSourceContext } from '../core';
 
 export const useTranslateLabel = () => {
     const translate = useTranslate();
     const prefix = useLabelPrefix();
     const resourceFromContext = useResourceContext();
+    const sourceContext = useSourceContext();
 
     return useCallback(
         ({
@@ -19,6 +20,8 @@ export const useTranslateLabel = () => {
             label?: string | false | ReactElement;
             resource?: string;
         }) => {
+            const finalSource = sourceContext?.getSource(source) ?? source;
+
             if (label === false || label === '') {
                 return null;
             }
@@ -27,16 +30,34 @@ export const useTranslateLabel = () => {
                 return label;
             }
 
+            if (label && typeof label === 'string') {
+                return translate(label, { _: label });
+            }
+
+            const sourceContextLabel = sourceContext?.getLabel(source);
+
+            if (sourceContextLabel) {
+                return translate(
+                    sourceContextLabel,
+                    // Here we want the default inferred label if the translation is missing
+                    getFieldLabelTranslationArgs({
+                        prefix,
+                        resource,
+                        resourceFromContext,
+                        source: finalSource,
+                    })[1]
+                );
+            }
+
             return translate(
                 ...getFieldLabelTranslationArgs({
-                    label: label as string,
                     prefix,
                     resource,
                     resourceFromContext,
-                    source,
+                    source: finalSource,
                 })
             );
         },
-        [prefix, resourceFromContext, translate]
+        [prefix, resourceFromContext, translate, sourceContext]
     );
 };

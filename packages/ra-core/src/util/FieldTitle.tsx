@@ -2,7 +2,6 @@ import * as React from 'react';
 import { ReactElement, memo } from 'react';
 
 import { useTranslateLabel } from '../i18n';
-import { useWrappedSource } from '../core';
 
 export interface FieldTitleProps {
     isRequired?: boolean;
@@ -14,7 +13,6 @@ export interface FieldTitleProps {
 export const FieldTitle = (props: FieldTitleProps) => {
     const { source, label, resource, isRequired } = props;
     const translateLabel = useTranslateLabel();
-    const finalSource = useWrappedSource(source);
 
     if (label === true) {
         throw new Error(
@@ -35,7 +33,7 @@ export const FieldTitle = (props: FieldTitleProps) => {
             {translateLabel({
                 label,
                 resource,
-                source: finalSource,
+                source,
             })}
             {isRequired && <span aria-hidden="true">&thinsp;*</span>}
         </span>

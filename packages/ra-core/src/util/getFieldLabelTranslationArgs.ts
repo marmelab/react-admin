@@ -12,7 +12,7 @@ type TranslationArguments = [string, any?];
 
 /**
  * Returns an array of arguments to use with the translate function for the label of a field.
- * The label will be the one specified by the label prop or one computed from the resource and source props.
+ * The label will be computed from the resource and source props.
  *
  * Usage:
  *  <span>
@@ -24,9 +24,7 @@ type TranslationArguments = [string, any?];
 export default (options?: Args): TranslationArguments => {
     if (!options) return [''];
 
-    const { label, prefix, resource, resourceFromContext, source } = options;
-
-    if (typeof label !== 'undefined') return [label, { _: label }];
+    const { prefix, resource, resourceFromContext, source } = options;
 
     if (typeof source === 'undefined') return [''];
 

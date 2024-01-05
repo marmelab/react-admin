@@ -9,7 +9,7 @@ import {
 } from 'react';
 import { Typography } from '@mui/material';
 import clsx from 'clsx';
-import { RaRecord, SourceContextProvider } from 'ra-core';
+import { RaRecord, SourceContextProvider, useResourceContext } from 'ra-core';
 
 import { SimpleFormIteratorClasses } from './useSimpleFormIteratorStyles';
 import { useSimpleFormIterator } from './useSimpleFormIterator';
@@ -35,7 +35,7 @@ export const SimpleFormIteratorItem = React.forwardRef(
             reOrderButtons,
             source,
         } = props;
-
+        const resource = useResourceContext(props);
         const { total, reOrder, remove } = useSimpleFormIterator();
         // Returns a boolean to indicate whether to disable the remove button for certain fields.
         // If disableRemove is a function, then call the function with the current record to
@@ -75,8 +75,18 @@ export const SimpleFormIteratorItem = React.forwardRef(
                 : getItemLabel;
 
         const sourceContext = useMemo(
-            () => (source: string) => (source ? `${member}.${source}` : member),
-            [member]
+            () => ({
+                getSource: (source: string) =>
+                    source ? `${member}.${source}` : member,
+                getLabel: (source: string) => {
+                    // remove digits, e.g. 'book.authors.2.categories.3.identifier.name' => 'book.authors.categories.identifier.name'
+                    return `resources.${resource}.fields.${member.replace(
+                        /\.\d+/g,
+                        ''
+                    )}.${source}`;
+                },
+            }),
+            [member, resource]
         );
 
         return (
