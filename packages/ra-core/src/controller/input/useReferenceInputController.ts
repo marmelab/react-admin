@@ -58,6 +58,7 @@ export const useReferenceInputController = <RecordType extends RaRecord = any>(
         queryOptions = {},
         reference,
         source,
+        lookupSource = source
     } = props;
     const { meta, ...otherQueryOptions } = queryOptions;
 
@@ -72,6 +73,7 @@ export const useReferenceInputController = <RecordType extends RaRecord = any>(
 
     // selection logic
     const currentValue = useWatch({ name: source });
+    const lookupCurrentValue = useWatch({ name: lookupSource });
 
     const isGetMatchingEnabled = enableGetChoices
         ? enableGetChoices(params.filterValues)
@@ -112,7 +114,7 @@ export const useReferenceInputController = <RecordType extends RaRecord = any>(
         isLoading: referenceLoading,
         isFetching: referenceFetching,
     } = useReference<RecordType>({
-        id: currentValue,
+        id: lookupCurrentValue,
         reference,
         // @ts-ignore the types of the queryOptions for the getMAny and getList are not compatible
         options: {
@@ -210,5 +212,6 @@ export interface UseReferenceInputControllerParams<
     resource?: string;
     sort?: SortPayload;
     source: string;
+    lookupSource?: string;
     enableGetChoices?: (filters: any) => boolean;
 }
