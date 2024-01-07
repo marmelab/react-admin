@@ -245,6 +245,7 @@ export const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
                         ref={ref}
                         className={DatagridClasses.table}
                         size={size}
+                        onClick={e => e.stopPropagation()}
                         {...sanitizeRestProps(rest)}
                     >
                         {createOrCloneElement(
