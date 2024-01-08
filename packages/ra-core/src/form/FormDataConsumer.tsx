@@ -3,7 +3,7 @@ import { ReactNode } from 'react';
 import { useFormContext, FieldValues } from 'react-hook-form';
 import get from 'lodash/get';
 import { useFormValues } from './useFormValues';
-import { useSourceContext } from '../core';
+import { useWrappedSource } from '../core';
 
 /**
  * Get the current (edited) value of the record from the form and pass it
@@ -68,11 +68,9 @@ export const FormDataConsumerView = <
     const { children, form, formData, source, ...rest } = props;
     let ret;
 
-    const sourceContext = useSourceContext();
+    const finalSource = useWrappedSource(source);
     // Passes an empty string here as we don't have the children sources and we just want to know if we are in an iterator
-    const matches = ArraySourceRegex.exec(
-        sourceContext?.getSource('') ?? source
-    );
+    const matches = ArraySourceRegex.exec(finalSource);
 
     // If we have an index, we are in an iterator like component (such as the SimpleFormIterator)
     if (matches) {
