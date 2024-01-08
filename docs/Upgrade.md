@@ -219,9 +219,9 @@ We've changed the implementation of `<SimpleFormIterator>`, the companion child 
 </ArrayInput>
 ```
 
-## `<FormDataConsumer>` no longer pass a `getSource` function
+## `<FormDataConsumer>` no longer passes a `getSource` function
 
-As we introduced the `SourceContext`, we don't need the `getSource` function anymore when using the `<FormDataConsumer>` inside an `<ArrayInput>`:
+When using `<FormDataConsumer>` inside an `<ArrayInput>`, the child function no longer receives a `getSource` callback. We've made all Input components able to work seamlessly inside an `<ArrayInput>`, so it's no longer necessary to transform their source with `getSource`:
 
 ```diff
 import { Edit, SimpleForm, TextInput, ArrayInput, SelectInput, FormDataConsumer } from 'react-admin';
@@ -236,13 +236,13 @@ const PostEdit = () => (
                         {({
                             formData, // The whole form data
                             scopedFormData, // The data for this item of the ArrayInput
--                            getSource, // A function to get the valid source inside an ArrayInput
+-                           getSource,
                             ...rest
                         }) =>
                             scopedFormData && getSource && scopedFormData.name ? (
                                 <SelectInput
--                                    source={getSource('role')} // Will translate to "authors[0].role"
-+                                    source="role" // Will translate to "authors[0].role" thanks to the SourceContext
+-                                    source={getSource('role')}
++                                    source="role" // Will translate to "authors[0].role"
                                     choices={[{ id: 1, name: 'Head Writer' }, { id: 2, name: 'Co-Writer' }]}
                                     {...rest}
                                 />
