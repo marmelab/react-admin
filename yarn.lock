@@ -6625,10 +6625,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^12.12.14, @types/node@npm:^14.14.31, @types/node@npm:^17.0.8":
+"@types/node@npm:^14.14.31":
   version: 17.0.9
   resolution: "@types/node@npm:17.0.9"
   checksum: 4c15489e4e1d1a6ccce2689523a1335f89cfd742339fc6c0a41de12d8e9a016cec43b2ef47f1f043194fb40b8a3d6f30036f6c611035c9662d9c0f924a5b94da
+  languageName: node
+  linkType: hard
+
+"@types/node@npm:^20.10.7":
+  version: 20.10.7
+  resolution: "@types/node@npm:20.10.7"
+  dependencies:
+    undici-types: "npm:~5.26.4"
+  checksum: d626cea1b7da4784ee7b335dcc54e64adba9725dab7ca51a690167de502ef89fec07b05ad8e25845d188d7ad7f72c192ec92964d456321ed5b9452113bf9351f
   languageName: node
   linkType: hard
 
@@ -10301,7 +10310,7 @@ __metadata:
     "@types/fetch-mock": "npm:^7.3.2"
     "@types/inflection": "npm:^1.5.28"
     "@types/jest": "npm:^29.5.2"
-    "@types/node": "npm:^12.12.14"
+    "@types/node": "npm:^20.10.7"
     "@types/prop-types": "npm:^15.7.11"
     "@types/react": "npm:^18.2.37"
     "@types/react-dom": "npm:^18.2.16"
@@ -18554,7 +18563,7 @@ __metadata:
     "@testing-library/react": "npm:^14.1.2"
     "@testing-library/react-hooks": "npm:^8.0.1"
     "@types/jest": "npm:^29.5.2"
-    "@types/node": "npm:^17.0.8"
+    "@types/node": "npm:^20.10.7"
     "@types/node-polyglot": "npm:^0.4.31"
     "@types/react": "npm:^18.2.37"
     clsx: "npm:^1.1.1"
@@ -21942,6 +21951,13 @@ __metadata:
     has-symbols: "npm:^1.0.2"
     which-boxed-primitive: "npm:^1.0.2"
   checksum: 6f0b91b0744c6f9fd05afa70484914b70686596be628543a143fab018733f902ff39fad2c3cf8f00fd5d32ba8bce8edf9cf61cee940c1af892316e112b25812b
+  languageName: node
+  linkType: hard
+
+"undici-types@npm:~5.26.4":
+  version: 5.26.5
+  resolution: "undici-types@npm:5.26.5"
+  checksum: bb673d7876c2d411b6eb6c560e0c571eef4a01c1c19925175d16e3a30c4c428181fb8d7ae802a261f283e4166a0ac435e2f505743aa9e45d893f9a3df017b501
   languageName: node
   linkType: hard
 

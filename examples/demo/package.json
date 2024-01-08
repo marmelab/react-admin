@@ -44,7 +44,7 @@
     "devDependencies": {
         "@types/fetch-mock": "^7.3.2",
         "@types/jest": "^29.5.2",
-        "@types/node": "^12.12.14",
+        "@types/node": "^20.10.7",
         "@types/prop-types": "^15.7.11",
         "@types/react": "^18.2.37",
         "@types/react-dom": "^18.2.16",

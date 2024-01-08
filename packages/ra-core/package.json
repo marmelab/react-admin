@@ -30,7 +30,7 @@
         "@testing-library/react": "^14.1.2",
         "@testing-library/react-hooks": "^8.0.1",
         "@types/jest": "^29.5.2",
-        "@types/node": "^17.0.8",
+        "@types/node": "^20.10.7",
         "@types/node-polyglot": "^0.4.31",
         "@types/react": "^18.2.37",
         "cross-env": "^5.2.0",
