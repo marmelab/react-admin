@@ -200,7 +200,7 @@ const BasePackageJson = {
     devDependencies: {
         '@typescript-eslint/parser': '^5.60.1',
         '@typescript-eslint/eslint-plugin': '^5.60.1',
-        '@types/node': '^18.16.1',
+        '@types/node': '^20.10.7',
         '@types/react': '^18.0.22',
         '@types/react-dom': '^18.0.7',
         '@vitejs/plugin-react': '^4.0.1',
