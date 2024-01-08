@@ -7,6 +7,7 @@ import {
     FormGroupContextProvider,
     RaRecord,
     SourceContextProvider,
+    useResourceContext,
     useTranslatableContext,
 } from 'ra-core';
 
@@ -18,13 +19,18 @@ export const TranslatableInputsTabContent = (
     props: TranslatableInputsTabContentProps
 ): ReactElement => {
     const { children, groupKey = '', locale, ...other } = props;
-    const { selectedLocale, getLabel, getSource } = useTranslatableContext();
+    const resource = useResourceContext(props);
+    const { selectedLocale } = useTranslatableContext();
     const sourceContext = useMemo(
         () => ({
-            getSource: (source: string) => getSource(source, locale),
-            getLabel,
+            getSource: (source: string) => `${source}.${locale}`,
+            getLabel: (source: string) =>
+                `resources.${resource}.fields.${source.replace(
+                    `.${locale}`,
+                    ''
+                )}`,
         }),
-        [getLabel, getSource, locale]
+        [locale, resource]
     );
 
     return (
