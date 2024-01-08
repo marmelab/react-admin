@@ -115,7 +115,7 @@ describe('useTranslateLabel', () => {
         screen.getByText('My Title');
     });
 
-    it('should return the label from SourceContext when no label is provided but a SourceContext is present', () => {
+    it('should return the inferred label from SourceContext when no label is provided but a SourceContext is present', () => {
         render(
             <TestTranslationProvider messages={{}}>
                 <SourceContextProvider
