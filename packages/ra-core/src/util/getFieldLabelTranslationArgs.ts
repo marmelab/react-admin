@@ -2,7 +2,7 @@ import inflection from 'inflection';
 
 interface Args {
     label?: string;
-    labelFromSourceContext?: string;
+    defaultLabel?: string;
     prefix?: string;
     resource?: string;
     resourceFromContext?: string;
@@ -27,7 +27,7 @@ export default (options?: Args): TranslationArguments => {
 
     const {
         label,
-        labelFromSourceContext,
+        defaultLabel,
         prefix,
         resource,
         resourceFromContext,
@@ -40,29 +40,32 @@ export default (options?: Args): TranslationArguments => {
 
     const { sourceWithoutDigits, sourceSuffix } = getSourceParts(source);
 
-    const defaultLabel = inflection.transform(
+    const defaultLabelTranslation = inflection.transform(
         sourceSuffix.replace(/\./g, ' '),
         ['underscore', 'humanize']
     );
 
-    if (labelFromSourceContext) {
-        return [labelFromSourceContext, { _: defaultLabel }];
+    if (defaultLabel) {
+        return [defaultLabel, { _: defaultLabelTranslation }];
     }
 
     if (resource) {
         return [
             `resources.${resource}.fields.${sourceWithoutDigits}`,
-            { _: defaultLabel },
+            { _: defaultLabelTranslation },
         ];
     }
 
     if (prefix) {
-        return [`${prefix}.${sourceWithoutDigits}`, { _: defaultLabel }];
+        return [
+            `${prefix}.${sourceWithoutDigits}`,
+            { _: defaultLabelTranslation },
+        ];
     }
 
     return [
         `resources.${resourceFromContext}.fields.${sourceWithoutDigits}`,
-        { _: defaultLabel },
+        { _: defaultLabelTranslation },
     ];
 };
 

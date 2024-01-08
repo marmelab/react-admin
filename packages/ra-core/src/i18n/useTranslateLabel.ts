@@ -33,7 +33,7 @@ export const useTranslateLabel = () => {
             return translate(
                 ...getFieldLabelTranslationArgs({
                     label: label as string,
-                    labelFromSourceContext: sourceContext?.getLabel(source),
+                    defaultLabel: sourceContext?.getLabel(source),
                     prefix,
                     resource,
                     resourceFromContext,
