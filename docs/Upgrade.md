@@ -21,7 +21,7 @@ The React team has published a [migration guide](https://react.dev/blog/2022/03/
 +root.render(<App tab="home" />);
 ```
 
-React 18 adds out-of-the-box performance improvements by doing more batching by default. 
+React 18 adds out-of-the-box performance improvements by doing more batching by default.
 
 ## Drop support for IE11
 
@@ -30,13 +30,13 @@ React-admin v5 uses React 18, which dropped support for Internet Explorer. If yo
 ## Use `@tanstack/react-query` instead of `react-query`
 
 React-admin now uses `react-query` v5 instead of v3. The library name has changed to `@tanstack/react-query` (but it's almost the same API).
- 
+
 If you used `react-query` directly in your code, you'll have to update it, following their migration guides:
 
-- [From react-query v3 to @transtack/query v4](https://tanstack.com/query/v5/docs/react/guides/migrating-to-react-query-4) 
+- [From react-query v3 to @transtack/query v4](https://tanstack.com/query/v5/docs/react/guides/migrating-to-react-query-4)
 - [From @transtack/query v4 to @transtack/query v5](https://tanstack.com/query/v5/docs/react/guides/migrating-to-v5).
 
-Here is a focus of the most important changes. 
+Here is a focus of the most important changes.
 
 The package has been renamed to `@tanstack/react-query` so you'll have to change your imports:
 
@@ -204,6 +204,30 @@ const CompanyField = () => (
 ```
 {% endraw %}
 
+## `useTheme` no longer accepts a theme object as an optional argument
+
+The useTheme hook no longer accepts a `RaTheme` object as an argument to return a `RaTheme` object; instead, it now only takes an optional default value for the theme **preference** (`ThemeType`, like `"light"` and `"dark"`), and returns the current theme **preference** (`ThemeType`, like `"light"` and `"dark"`) and a setter for the **preference**.
+
+If you're using a theme object to have `useTheme` determine the default value it should use, you should pass the value instead:
+
+```diff
+const myThemeObject = {
+    ...
+    palette: {
+        type: "light",
+        ...
+    }
+    ...
+};
+
+- const [themeObject, setTheme] = useTheme(myThemeObject)
++ const [themePreference, setTheme] = useTheme(myThemeObject.palette.type)
+// Alternatively
++ const [themePreference, setTheme] = const useTheme("light")
+// Alternatively, since you usually don't need a default value for the theme preference
++ const [themePreference, setTheme] = useTheme();
+```
+
 ## Upgrading to v4
 
-If you are on react-admin v3, follow the [Upgrading to v4](https://marmelab.com/react-admin/doc/4.16/Upgrade.html) guide before upgrading to v5. 
+If you are on react-admin v3, follow the [Upgrading to v4](https://marmelab.com/react-admin/doc/4.16/Upgrade.html) guide before upgrading to v5.

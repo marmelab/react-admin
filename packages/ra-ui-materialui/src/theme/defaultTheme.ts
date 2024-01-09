@@ -1,5 +1,4 @@
 import { RaThemeOptions } from './types';
-import { createTheme } from '@mui/material';
 import { deepmerge } from '@mui/utils';
 
 const defaultThemeInvariants = {
@@ -48,8 +47,9 @@ const defaultThemeInvariants = {
     },
 };
 
-export const defaultLightTheme: RaThemeOptions = createTheme(
-    deepmerge(defaultThemeInvariants, {
+export const defaultLightTheme: RaThemeOptions = deepmerge(
+    defaultThemeInvariants,
+    {
         palette: {
             background: {
                 default: '#fafafb',
@@ -73,11 +73,12 @@ export const defaultLightTheme: RaThemeOptions = createTheme(
                 },
             },
         },
-    })
+    }
 );
 
-export const defaultDarkTheme: RaThemeOptions = createTheme(
-    deepmerge(defaultThemeInvariants, {
+export const defaultDarkTheme: RaThemeOptions = deepmerge(
+    defaultThemeInvariants,
+    {
         palette: {
             mode: 'dark',
             primary: {
@@ -87,7 +88,7 @@ export const defaultDarkTheme: RaThemeOptions = createTheme(
                 default: '#313131',
             },
         },
-    })
+    }
 );
 
 export const defaultTheme = defaultLightTheme;
