@@ -146,10 +146,32 @@ describe('useTranslateLabel', () => {
                         getLabel: source => `test.${source}`,
                     }}
                 >
-                    <TranslateLabel source="title" resource="posts" />
+                    <TranslateLabel source="title" />
                 </SourceContextProvider>
             </TestTranslationProvider>
         );
         screen.getByText('Label for title');
+    });
+
+    it('should return the inferred label when a resource prop is provided even when a SourceContext is present', () => {
+        render(
+            <TestTranslationProvider
+                messages={{
+                    test: {
+                        title: 'Label for title',
+                    },
+                }}
+            >
+                <SourceContextProvider
+                    value={{
+                        getSource: source => source,
+                        getLabel: source => `test.${source}`,
+                    }}
+                >
+                    <TranslateLabel source="title" resource="posts" />
+                </SourceContextProvider>
+            </TestTranslationProvider>
+        );
+        screen.getByText('Title');
     });
 });

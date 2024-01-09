@@ -3,7 +3,6 @@ import inflection from 'inflection';
 interface Args {
     label?: string;
     defaultLabel?: string;
-    prefix?: string;
     resource?: string;
     resourceFromContext?: string;
     source?: string;
@@ -22,13 +21,14 @@ type TranslationArguments = [string, any?];
  *
  * @see useTranslateLabel for a ready-to-use hook
  */
-export default (options?: Args): TranslationArguments => {
+export const getFieldLabelTranslationArgs = (
+    options?: Args
+): TranslationArguments => {
     if (!options) return [''];
 
     const {
         label,
         defaultLabel,
-        prefix,
         resource,
         resourceFromContext,
         source,
@@ -45,29 +45,27 @@ export default (options?: Args): TranslationArguments => {
         ['underscore', 'humanize']
     );
 
+    if (resource) {
+        return [
+            getResourceFieldLabelKey(resource, sourceWithoutDigits),
+            { _: defaultLabelTranslation },
+        ];
+    }
+
     if (defaultLabel) {
         return [defaultLabel, { _: defaultLabelTranslation }];
     }
 
-    if (resource) {
-        return [
-            `resources.${resource}.fields.${sourceWithoutDigits}`,
-            { _: defaultLabelTranslation },
-        ];
-    }
-
-    if (prefix) {
-        return [
-            `${prefix}.${sourceWithoutDigits}`,
-            { _: defaultLabelTranslation },
-        ];
-    }
-
     return [
-        `resources.${resourceFromContext}.fields.${sourceWithoutDigits}`,
+        getResourceFieldLabelKey(resourceFromContext, sourceWithoutDigits),
         { _: defaultLabelTranslation },
     ];
 };
+
+export default getFieldLabelTranslationArgs;
+
+export const getResourceFieldLabelKey = (resource: string, source: string) =>
+    `resources.${resource}.fields.${source}`;
 
 /**
  * Uses the source string to guess a translation message and a default label.

@@ -9,7 +9,13 @@ import {
 } from 'react';
 import { Typography } from '@mui/material';
 import clsx from 'clsx';
-import { RaRecord, SourceContextProvider, useResourceContext } from 'ra-core';
+import {
+    getResourceFieldLabelKey,
+    RaRecord,
+    SourceContextProvider,
+    useResourceContext,
+    useSourceContext,
+} from 'ra-core';
 
 import { SimpleFormIteratorClasses } from './useSimpleFormIteratorStyles';
 import { useSimpleFormIterator } from './useSimpleFormIterator';
@@ -74,19 +80,23 @@ export const SimpleFormIteratorItem = React.forwardRef(
                 ? getItemLabel(index)
                 : getItemLabel;
 
+        const parentSourceContext = useSourceContext();
         const sourceContext = useMemo(
             () => ({
                 getSource: (source: string) =>
                     source ? `${member}.${source}` : member,
                 getLabel: (source: string) => {
                     // remove digits, e.g. 'book.authors.2.categories.3.identifier.name' => 'book.authors.categories.identifier.name'
-                    return `resources.${resource}.fields.${member.replace(
+                    const itemSource = `${member.replace(
                         /\.\d+/g,
                         ''
                     )}.${source}`;
+                    return parentSourceContext
+                        ? parentSourceContext.getLabel(itemSource)
+                        : getResourceFieldLabelKey(resource, itemSource);
                 },
             }),
-            [member, resource]
+            [member, parentSourceContext, resource]
         );
 
         return (

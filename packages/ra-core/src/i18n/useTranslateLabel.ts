@@ -1,12 +1,11 @@
 import { useCallback, ReactElement } from 'react';
 
 import { useTranslate } from './useTranslate';
-import { useLabelPrefix, getFieldLabelTranslationArgs } from '../util';
+import { getFieldLabelTranslationArgs } from '../util';
 import { useResourceContext, useSourceContext } from '../core';
 
 export const useTranslateLabel = () => {
     const translate = useTranslate();
-    const prefix = useLabelPrefix();
     const resourceFromContext = useResourceContext();
     const sourceContext = useSourceContext();
 
@@ -34,13 +33,12 @@ export const useTranslateLabel = () => {
                 ...getFieldLabelTranslationArgs({
                     label: label as string,
                     defaultLabel: sourceContext?.getLabel(source),
-                    prefix,
                     resource,
                     resourceFromContext,
                     source: finalSource,
                 })
             );
         },
-        [prefix, resourceFromContext, translate, sourceContext]
+        [resourceFromContext, translate, sourceContext]
     );
 };
