@@ -832,6 +832,17 @@ const PostList = () => (
 
 **Tip**: The `Datagrid` component `classes` can also be customized for all instances of the component with its global css name `"RaDatagrid"` as [describe here](https://marmelab.com/blog/2019/12/18/react-admin-3-1.html#theme-overrides)
 
+## Header Pinning
+
+`<Datagrid>` has sticky headers, which means that the header row will remain visible even when scrolling down the page.
+
+<video controls autoplay playsinline muted loop>
+  <source src="./img/datagrid-headers-pinning.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
+You don't need to do anything for this to work, as it's enabled by default. 
+
 ## Configurable
 
 You can let end users customize the fields displayed in the `<Datagrid>` by using the `<DatagridConfigurable>` component instead.
