@@ -842,6 +842,7 @@ const PostList = () => (
 </video>
 
 You don't need to do anything for this to work, as it's enabled by default. 
+
 ## Configurable
 
 You can let end users customize the fields displayed in the `<Datagrid>` by using the `<DatagridConfigurable>` component instead.
