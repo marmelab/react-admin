@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import inflection from 'inflection';
 
 import getValuesFromRecords from './getValuesFromRecords';
@@ -51,7 +51,7 @@ const hasType = (type, types) => typeof types[type] !== 'undefined';
  *     // new InferredElement(<StringField source="address" />)
  *
  * Types are optional: if a type isn't provided, the function falls back
- * to the neareast type.
+ * to the nearest type.
  *
  * @example
  *     inferElementFromValues(
@@ -89,28 +89,20 @@ const inferElementFromValues = (
         const reference = inflection.pluralize(name.substr(0, name.length - 3));
         return (
             types.reference &&
-            new InferredElement(
-                types.reference,
-                {
-                    source: name,
-                    reference,
-                },
-                new InferredElement(types.referenceChild)
-            )
+            new InferredElement(types.reference, {
+                source: name,
+                reference,
+            })
         );
     }
     if (name.substr(name.length - 2) === 'Id' && hasType('reference', types)) {
         const reference = inflection.pluralize(name.substr(0, name.length - 2));
         return (
             types.reference &&
-            new InferredElement(
-                types.reference,
-                {
-                    source: name,
-                    reference,
-                },
-                new InferredElement(types.referenceChild)
-            )
+            new InferredElement(types.reference, {
+                source: name,
+                reference,
+            })
         );
     }
     if (
@@ -120,14 +112,10 @@ const inferElementFromValues = (
         const reference = inflection.pluralize(name.substr(0, name.length - 4));
         return (
             types.referenceArray &&
-            new InferredElement(
-                types.referenceArray,
-                {
-                    source: name,
-                    reference,
-                },
-                new InferredElement(types.referenceArrayChild)
-            )
+            new InferredElement(types.referenceArray, {
+                source: name,
+                reference,
+            })
         );
     }
     if (
@@ -137,14 +125,10 @@ const inferElementFromValues = (
         const reference = inflection.pluralize(name.substr(0, name.length - 3));
         return (
             types.referenceArray &&
-            new InferredElement(
-                types.referenceArray,
-                {
-                    source: name,
-                    reference,
-                },
-                new InferredElement(types.referenceArrayChild)
-            )
+            new InferredElement(types.referenceArray, {
+                source: name,
+                reference,
+            })
         );
     }
     if (values.length === 0) {
@@ -208,6 +192,9 @@ const inferElementFromValues = (
         // we need to go deeper
         // Arbitrarily, choose the first prop of the first object
         const propName = Object.keys(values[0]).shift();
+        if (!propName) {
+            return new InferredElement(types.string, { source: name });
+        }
         const leafValues = values.map(v => v[propName]);
         return inferElementFromValues(`${name}.${propName}`, leafValues, types);
     }

@@ -1,39 +1,37 @@
-import React from 'react';
-import polyglotI18nProvider from 'ra-i18n-polyglot';
-import { cleanup } from '@testing-library/react';
+import * as React from 'react';
+import { render } from '@testing-library/react';
 
 import ValidationError from './ValidationError';
-import { TranslationProvider } from '../i18n';
+import { TestTranslationProvider } from '../i18n';
 
-import { renderWithRedux } from '../util';
-
-const translate = jest.fn(key => key);
+const translate = jest.fn(key => {
+    return key;
+});
 
 const renderWithTranslations = content =>
-    renderWithRedux(
-        <TranslationProvider
-            i18nProvider={polyglotI18nProvider(() => ({
+    render(
+        <TestTranslationProvider
+            messages={{
                 ra: {
                     validation: {
                         required: 'Required',
-                        minValue: 'Min Value %{value}',
-                        oneOf: 'Must be one of %{list}',
+                        minValue: ({ value }) => `Min Value ${value}`,
+                        oneOf: ({ list }) => `Must be one of ${list}`,
                     },
                 },
                 myapp: {
                     validation: {
-                        match: 'Must match %{match}',
+                        match: ({ match }) => `Must match ${match}`,
                     },
                 },
-            }))}
+            }}
         >
             {content}
-        </TranslationProvider>
+        </TestTranslationProvider>
     );
 
 describe('ValidationError', () => {
     afterEach(() => {
-        cleanup();
         translate.mockClear();
     });
 
@@ -76,7 +74,7 @@ describe('ValidationError', () => {
             />
         );
 
-        expect(getByText('Min Value 10')).toBeDefined();
+        expect(getByText('Min Value 10')).not.toBeNull();
     });
 
     it('renders the error message translated if it is an object, interpolating strings', () => {
@@ -89,7 +87,7 @@ describe('ValidationError', () => {
             />
         );
 
-        expect(getByText('Must match IAmMatch')).toBeDefined();
+        expect(getByText('Must match IAmMatch')).not.toBeNull();
     });
 
     it('renders the error message translated if it is an object, interpolating arrays', () => {
@@ -102,6 +100,6 @@ describe('ValidationError', () => {
             />
         );
 
-        expect(getByText('Must be one of foo,bar')).toBeDefined();
+        expect(getByText('Must be one of foo,bar')).not.toBeNull();
     });
 });

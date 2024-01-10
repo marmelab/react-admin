@@ -1,6 +1,7 @@
 import inferElementFromValues from './inferElementFromValues';
 import getValuesFromRecords from './getValuesFromRecords';
 import { InferredTypeMap } from './types';
+import InferredElement from './InferredElement';
 
 /**
  * Get a list of React-admin field components from a list of records
@@ -45,7 +46,7 @@ export default (records: any[], types: InferredTypeMap) => {
                         types
                     )
                 ),
-            []
+            [] as InferredElement[]
         )
         .filter(inferredElement => inferredElement.isDefined());
 };

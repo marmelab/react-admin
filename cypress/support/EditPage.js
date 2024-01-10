@@ -2,12 +2,17 @@ export default url => ({
     elements: {
         body: 'body',
         deleteButton: '.ra-delete-button',
+        addBacklinkButton: '.button-add-backlinks',
+        removeBacklinkButton: '[aria-label="Remove"]',
         input: (name, type = 'input') => {
             if (type === 'rich-text-input') {
-                return `.ra-input-${name} .ql-editor`;
+                return `.ra-input-${name} .ProseMirror`;
+            }
+            if (type === 'checkbox-group-input') {
+                return `.ra-input-${name} label`;
             }
             if (type === 'reference-array-input') {
-                return `.ra-input div[role=combobox]`;
+                return `.ra-input-${name}`;
             }
             return `.edit-page [name='${name}']`;
         },
@@ -18,7 +23,7 @@ export default url => ({
         cloneButton: '.button-clone',
         tab: index => `.form-tab:nth-of-type(${index})`,
         title: '#react-admin-title',
-        userMenu: 'button[title="Profile"]',
+        userMenu: 'button[aria-label="Profile"]',
         logout: '.logout',
     },
 
@@ -45,7 +50,7 @@ export default url => ({
     },
 
     gotoTab(index) {
-        cy.get(this.elements.tab(index)).click();
+        cy.get(this.elements.tab(index)).click({ force: true });
     },
 
     submit() {

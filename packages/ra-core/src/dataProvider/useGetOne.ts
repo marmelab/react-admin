@@ -1,5 +1,6 @@
-import { Identifier, Record, ReduxState } from '../types';
-import useQueryWithStore from './useQueryWithStore';
+import { RaRecord, GetOneParams } from '../types';
+import { useQuery, UseQueryOptions, UseQueryResult } from 'react-query';
+import { useDataProvider } from './useDataProvider';
 
 /**
  * Call the dataProvider.getOne() method and return the resolved value
@@ -7,49 +8,58 @@ import useQueryWithStore from './useQueryWithStore';
  *
  * The return value updates according to the request state:
  *
- * - start: { loading: true, loaded: false }
- * - success: { data: [data from response], loading: false, loaded: true }
- * - error: { error: [error from response], loading: false, loaded: true }
+ * - start: { isLoading: true, isFetching: true, refetch }
+ * - success: { data: [data from response], isLoading: false, refetch }
+ * - error: { error: [error from response], isLoading: false, refetch }
  *
  * This hook will return the cached result when called a second time
  * with the same parameters, until the response arrives.
  *
  * @param resource The resource name, e.g. 'posts'
- * @param id The resource identifier, e.g. 123
- * @param options Options object to pass to the dataProvider. May include side effects to be executed upon success of failure, e.g. { onSuccess: { refresh: true } }
+ * @param {Params} params The getOne parameters { id, meta }, e.g. { id: 123 }
+ * @param {Options} options Options object to pass to the react-query queryClient.
  *
- * @returns The current request state. Destructure as { data, error, loading, loaded }.
+ * @typedef Params
+ * @prop id a resource identifier, e.g. 123
+ *
+ * @typedef Options
+ * @prop enabled Flag to conditionally run the query. If it's false, the query will not run
+ * @prop onSuccess Side effect function to be executed upon success, e.g. { onSuccess: { refresh: true } }
+ * @prop onError Side effect function to be executed upon failure, e.g. { onError: error => notify(error.message) }
+ *
+ * @returns The current request state. Destructure as { data, error, isLoading, refetch }.
  *
  * @example
  *
- * import { useGetOne } from 'react-admin';
+ * import { useGetOne, useRecordContext } from 'react-admin';
  *
- * const UserProfile = ({ record }) => {
- *     const { data, loading, error } = useGetOne('users', record.id);
- *     if (loading) { return <Loading />; }
+ * const UserProfile = () => {
+ *     const record = useRecordContext();
+ *     const { data, isLoading, error } = useGetOne('users', { id: record.id });
+ *     if (isLoading) { return <Loading />; }
  *     if (error) { return <p>ERROR</p>; }
  *     return <div>User {data.username}</div>;
  * };
  */
-const useGetOne = (
+export const useGetOne = <RecordType extends RaRecord = any>(
     resource: string,
-    id: Identifier,
-    options?: any
-): UseGetOneHookValue =>
-    useQueryWithStore(
-        { type: 'getOne', resource, payload: { id } },
-        options,
-        (state: ReduxState) =>
-            state.admin.resources[resource]
-                ? state.admin.resources[resource].data[id]
-                : null
+    { id, meta }: GetOneParams<RecordType>,
+    options?: UseQueryOptions<RecordType>
+): UseGetOneHookValue<RecordType> => {
+    const dataProvider = useDataProvider();
+    return useQuery<RecordType, unknown, RecordType>(
+        // Sometimes the id comes as a string (e.g. when read from the URL in a Show view).
+        // Sometimes the id comes as a number (e.g. when read from a Record in useGetList response).
+        // As the react-query cache is type-sensitive, we always stringify the identifier to get a match
+        [resource, 'getOne', { id: String(id), meta }],
+        () =>
+            dataProvider
+                .getOne<RecordType>(resource, { id, meta })
+                .then(({ data }) => data),
+        options
     );
-
-export type UseGetOneHookValue = {
-    data?: Record;
-    loading: boolean;
-    loaded: boolean;
-    error?: any;
 };
 
-export default useGetOne;
+export type UseGetOneHookValue<
+    RecordType extends RaRecord = any
+> = UseQueryResult<RecordType>;

@@ -1,160 +1,207 @@
-import React, {
-    useContext,
-    cloneElement,
-    FC,
-    ReactElement,
-    SyntheticEvent,
-} from 'react';
+import * as React from 'react';
+import { MouseEventHandler, ReactElement, useCallback } from 'react';
+import { UseMutationOptions } from 'react-query';
+import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
-import Button, { ButtonProps } from '@material-ui/core/Button';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import { makeStyles } from '@material-ui/core/styles';
-import ContentSave from '@material-ui/icons/Save';
-import classnames from 'classnames';
+import { Button, ButtonProps, CircularProgress } from '@mui/material';
+import ContentSave from '@mui/icons-material/Save';
+import { useFormContext, useFormState } from 'react-hook-form';
 import {
+    CreateParams,
+    RaRecord,
+    TransformData,
+    UpdateParams,
+    useSaveContext,
     useTranslate,
-    useNotify,
-    RedirectionSideEffect,
-    Record,
-    FormContext,
+    warning,
+    setSubmissionErrors,
 } from 'ra-core';
 
-import { sanitizeButtonRestProps } from './Button';
-
-const SaveButton: FC<SaveButtonProps> = props => {
+/**
+ * Submit button for resource forms (Edit and Create).
+ *
+ * @typedef {Object} Props the props you can use (other props are injected by the <Toolbar>)
+ * @prop {string} className
+ * @prop {string} label Button label. Defaults to 'ra.action.save', translated.
+ * @prop {boolean} disabled Disable the button.
+ * @prop {string} variant Material UI variant for the button. Defaults to 'contained'.
+ * @prop {ReactElement} icon
+ * @prop {function} mutationOptions Object of options passed to react-query.
+ * @prop {function} transform Callback to execute before calling the dataProvider. Receives the data from the form, must return that transformed data. Can be asynchronous (and return a Promise)
+ * @prop {boolean} alwaysEnable Force enabling the <SaveButton>. If it's not defined, the `<SaveButton>` will be enabled using `react-hook-form`'s `isValidating` state props and form context's `saving` prop (disabled if isValidating or saving, enabled otherwise).
+ *
+ * @param {Props} props
+ *
+ * @example // with custom success side effect
+ *
+ * const MySaveButton = props => {
+ *     const notify = useNotify();
+ *     const redirect = useRedirect();
+ *     const onSuccess = (response) => {
+ *         notify(`Post "${response.data.title}" saved!`);
+ *         redirect('/posts');
+ *     };
+ *     return <SaveButton {...props} mutationOptions={{ onSuccess }} />;
+ * }
+ */
+export const SaveButton = <RecordType extends RaRecord = any>(
+    props: SaveButtonProps<RecordType>
+) => {
     const {
-        className,
-        classes: classesOverride,
+        color = 'primary',
+        icon = defaultIcon,
         invalid,
         label = 'ra.action.save',
-        pristine,
-        redirect,
-        saving,
-        submitOnEnter,
-        variant = 'contained',
-        icon = defaultIcon,
         onClick,
-        handleSubmitWithRedirect,
-        onSave,
+        mutationOptions,
+        disabled: disabledProp,
+        type = 'submit',
+        transform,
+        variant = 'contained',
+        alwaysEnable = false,
         ...rest
     } = props;
-    const classes = useStyles(props);
-    const notify = useNotify();
     const translate = useTranslate();
-    const { setOnSave } = useContext(FormContext);
+    const form = useFormContext();
+    const saveContext = useSaveContext();
+    const { dirtyFields, isValidating, isSubmitting } = useFormState();
+    // useFormState().isDirty might differ from useFormState().dirtyFields (https://github.com/react-hook-form/react-hook-form/issues/4740)
+    const isDirty = Object.keys(dirtyFields).length > 0;
+    // Use form isDirty, isValidating and form context saving to enable or disable the save button
+    // if alwaysEnable is undefined
+    const disabled = valueOrDefault(
+        alwaysEnable === false || alwaysEnable === undefined
+            ? undefined
+            : !alwaysEnable,
+        disabledProp || !isDirty || isValidating || isSubmitting
+    );
 
-    const handleClick = event => {
-        if (typeof onSave === 'function') {
-            setOnSave(onSave);
-        } else {
-            // we reset to the Form default save function
-            setOnSave();
-        }
-        if (saving) {
-            // prevent double submission
-            event.preventDefault();
-        } else {
-            if (invalid) {
-                notify('ra.message.invalid_form', 'warning');
+    warning(
+        type === 'submit' &&
+            ((mutationOptions &&
+                (mutationOptions.onSuccess || mutationOptions.onError)) ||
+                transform),
+        'Cannot use <SaveButton mutationOptions> props on a button of type "submit". To override the default mutation options on a particular save button, set the <SaveButton type="button"> prop, or set mutationOptions in the main view component (<Create> or <Edit>).'
+    );
+
+    const handleSubmit = useCallback(
+        async values => {
+            let errors;
+            if (saveContext?.save) {
+                errors = await saveContext.save(values, {
+                    ...mutationOptions,
+                    transform,
+                });
             }
-            // always submit form explicitly regardless of button type
-            if (event) {
-                event.preventDefault();
+            if (errors != null) {
+                setSubmissionErrors(errors, form.setError);
             }
-            handleSubmitWithRedirect(redirect);
-        }
+        },
+        [form.setError, saveContext, mutationOptions, transform]
+    );
 
-        if (typeof onClick === 'function') {
-            onClick(event);
-        }
-    };
+    const handleClick: MouseEventHandler<HTMLButtonElement> = useCallback(
+        async event => {
+            if (onClick) {
+                onClick(event);
+            }
+            if (event.defaultPrevented) {
+                return;
+            }
+            if (type === 'button') {
+                // this button doesn't submit the form, so it doesn't trigger useIsFormInvalid in <FormContent>
+                // therefore we need to check for errors manually
+                event.stopPropagation();
+                await form.handleSubmit(handleSubmit)(event);
+            }
+        },
+        [onClick, type, form, handleSubmit]
+    );
 
-    const type = submitOnEnter ? 'submit' : 'button';
     const displayedLabel = label && translate(label, { _: label });
+
     return (
-        <Button
-            className={classnames(classes.button, className)}
+        <StyledButton
             variant={variant}
             type={type}
-            onClick={handleClick}
-            color={saving ? 'default' : 'primary'}
+            color={color}
             aria-label={displayedLabel}
-            {...sanitizeButtonRestProps(rest)}
+            disabled={disabled}
+            onClick={handleClick}
+            {...rest}
         >
-            {saving ? (
+            {isSubmitting ? (
                 <CircularProgress
-                    size={18}
-                    thickness={2}
-                    className={classes.leftIcon}
+                    sx={circularProgressStyle}
+                    size={14}
+                    thickness={3}
+                    color="inherit"
                 />
             ) : (
-                cloneElement(icon, {
-                    className: classnames(classes.leftIcon, classes.icon),
-                })
+                icon
             )}
             {displayedLabel}
-        </Button>
+        </StyledButton>
     );
+};
+
+const circularProgressStyle = {
+    '&.MuiCircularProgress-root': {
+        marginRight: '10px',
+        marginLeft: '2px',
+    },
 };
 
 const defaultIcon = <ContentSave />;
 
-const useStyles = makeStyles(
-    theme => ({
-        button: {
-            position: 'relative',
-        },
-        leftIcon: {
-            marginRight: theme.spacing(1),
-        },
-        icon: {
-            fontSize: 18,
-        },
-    }),
-    { name: 'RaSaveButton' }
-);
-
-interface Props {
-    classes?: object;
+interface Props<
+    RecordType extends RaRecord = any,
+    MutationOptionsError = unknown
+> {
     className?: string;
-    handleSubmitWithRedirect?: (redirect?: RedirectionSideEffect) => void;
-    onSave?: (values: object, redirect: RedirectionSideEffect) => void;
+    disabled?: boolean;
     icon?: ReactElement;
     invalid?: boolean;
     label?: string;
-    onClick?: () => void;
-    pristine?: boolean;
-    redirect?: RedirectionSideEffect;
-    saving?: boolean;
-    submitOnEnter?: boolean;
+    mutationOptions?: UseMutationOptions<
+        RecordType,
+        MutationOptionsError,
+        CreateParams<RecordType> | UpdateParams<RecordType>
+    >;
+    transform?: TransformData;
     variant?: string;
-    // May be injected by Toolbar - sanitized in Button
-    basePath?: string;
-    handleSubmit?: (event?: SyntheticEvent<HTMLFormElement>) => Promise<Object>;
-    record?: Record;
-    resource?: string;
-    undoable?: boolean;
 }
 
-type SaveButtonProps = Props & ButtonProps;
+export type SaveButtonProps<RecordType extends RaRecord = any> = Props<
+    RecordType
+> &
+    ButtonProps & {
+        alwaysEnable?: boolean;
+    };
 
 SaveButton.propTypes = {
     className: PropTypes.string,
-    classes: PropTypes.object,
-    handleSubmitWithRedirect: PropTypes.func,
-    onSave: PropTypes.func,
     invalid: PropTypes.bool,
     label: PropTypes.string,
-    pristine: PropTypes.bool,
-    redirect: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.bool,
-        PropTypes.func,
-    ]),
-    saving: PropTypes.bool,
-    submitOnEnter: PropTypes.bool,
     variant: PropTypes.oneOf(['text', 'outlined', 'contained']),
     icon: PropTypes.element,
+    alwaysEnable: PropTypes.bool,
 };
 
-export default SaveButton;
+const PREFIX = 'RaSaveButton';
+
+const StyledButton = styled(Button, {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})(({ theme }) => ({
+    position: 'relative',
+    [`& .MuiSvgIcon-root, & .MuiIcon-root, & .MuiCircularProgress-root`]: {
+        marginRight: theme.spacing(1),
+    },
+    [`& .MuiSvgIcon-root, & .MuiIcon-root`]: {
+        fontSize: 18,
+    },
+}));
+
+const valueOrDefault = (value, defaultValue) =>
+    typeof value === 'undefined' ? defaultValue : value;

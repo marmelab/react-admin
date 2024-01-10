@@ -1,11 +1,13 @@
-import { useEffect, useRef, useState, useCallback } from 'react';
+import { useEffect, useRef, useCallback } from 'react';
 import debounce from 'lodash/debounce';
 import isEqual from 'lodash/isEqual';
-import { Filter } from '../types';
+
+import { useSafeSetState } from '../util';
+import { FilterPayload } from '../types';
 
 interface UseFilterStateOptions {
-    filterToQuery?: (v: string) => Filter;
-    permanentFilter?: Filter;
+    filterToQuery?: (v: string) => FilterPayload;
+    permanentFilter?: FilterPayload;
     debounceTime?: number;
 }
 
@@ -15,7 +17,7 @@ interface UseFilterStateOptions {
  * @property {setFilter} setFilter: Update the filter with the given string
  */
 interface UseFilterStateProps {
-    filter: Filter;
+    filter: FilterPayload;
     setFilter: (v: string) => void;
 }
 
@@ -31,7 +33,7 @@ const defaultFilterToQuery = (v: string) => ({ q: v });
  *      permanentFilter: { foo: 'bar' },
  *      debounceTime: 500,
  * });
- * // filter inital value:
+ * // filter initial value:
  * {
  *      query: '',
  *      foo: 'bar'
@@ -57,7 +59,7 @@ export default ({
 }: UseFilterStateOptions): UseFilterStateProps => {
     const permanentFilterProp = useRef(permanentFilter);
     const latestValue = useRef<string>();
-    const [filter, setFilterValue] = useState({
+    const [filter, setFilterValue] = useSafeSetState({
         ...permanentFilter,
         ...filterToQuery(''),
     });
@@ -79,6 +81,7 @@ export default ({
         }
     }, [permanentFilterSignature, permanentFilterProp, filterToQuery]); // eslint-disable-line react-hooks/exhaustive-deps
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     const setFilter = useCallback(
         debounce((value: string) => {
             setFilterValue({

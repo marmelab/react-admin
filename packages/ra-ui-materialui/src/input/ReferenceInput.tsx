@@ -1,61 +1,38 @@
-import React, {
-    Children,
-    cloneElement,
-    FunctionComponent,
-    ReactElement,
-} from 'react';
+import React, { Children, ReactElement } from 'react';
 import PropTypes from 'prop-types';
-import { FieldInputProps, FieldMetaState } from 'react-final-form';
 import {
-    useInput,
+    ChoicesContextProvider,
     useReferenceInputController,
     InputProps,
-    Pagination,
-    Sort,
-    warning as warningLog,
+    ResourceContextProvider,
+    UseReferenceInputControllerParams,
 } from 'ra-core';
 
-import sanitizeInputProps from './sanitizeRestProps';
-import LinearProgress from '../layout/LinearProgress';
-import Labeled from './Labeled';
-import ReferenceError from './ReferenceError';
+import { AutocompleteInput } from './AutocompleteInput';
 
-interface Props {
-    allowEmpty: boolean;
-    basePath: string;
-    children: ReactElement;
-    classes: any;
-    className: string;
-    label: string;
-    reference: string;
-    resource: string;
-    [key: string]: any;
-}
 /**
  * An Input component for choosing a reference record. Useful for foreign keys.
  *
  * This component fetches the possible values in the reference resource
- * (using `dataProvider.getMatching()`), then delegates rendering
- * to a subcomponent, to which it passes the possible choices
- * as the `choices` attribute.
+ * (using `dataProvider.getList()`), then renders an `<AutocompleteInput>`,
+ * to which it passes the possible choices via a `ChoicesContext`.
  *
- * Use it with a selector component as child, like `<AutocompleteInput>`,
- * `<SelectInput>`, or `<RadioButtonGroupInput>`.
+ * You can pass a child select component to customize the way the reference
+ * selector is displayed (e.g. using `<SelectInput>` or `<RadioButtonGroupInput>`
+ * instead of `<AutocompleteInput>`).
  *
- * @example
- * export const CommentEdit = (props) => (
- *     <Edit {...props}>
+ * @example // default selector: AutocompleteInput
+ * export const CommentEdit = () => (
+ *     <Edit>
  *         <SimpleForm>
- *             <ReferenceInput label="Post" source="post_id" reference="posts">
- *                 <AutocompleteInput optionText="title" />
- *             </ReferenceInput>
+ *             <ReferenceInput label="Post" source="post_id" reference="posts" />
  *         </SimpleForm>
  *     </Edit>
  * );
  *
- * @example
- * export const CommentEdit = (props) => (
- *     <Edit {...props}>
+ * @example // using a SelectInput as selector
+ * export const CommentEdit = () => (
+ *     <Edit>
  *         <SimpleForm>
  *             <ReferenceInput label="Post" source="post_id" reference="posts">
  *                 <SelectInput optionText="title" />
@@ -68,12 +45,7 @@ interface Props {
  * by setting the `perPage` prop.
  *
  * @example
- * <ReferenceInput
- *      source="post_id"
- *      reference="posts"
- *      perPage={100}>
- *     <SelectInput optionText="title" />
- * </ReferenceInput>
+ * <ReferenceInput source="post_id" reference="posts" perPage={100}/>
  *
  * By default, orders the possible values by id desc. You can change this order
  * by setting the `sort` prop (an object with `field` and `order` properties).
@@ -82,9 +54,8 @@ interface Props {
  * <ReferenceInput
  *      source="post_id"
  *      reference="posts"
- *      sort={{ field: 'title', order: 'ASC' }}>
- *     <SelectInput optionText="title" />
- * </ReferenceInput>
+ *      sort={{ field: 'title', order: 'ASC' }}
+ * />
  *
  * Also, you can filter the query used to populate the possible values. Use the
  * `filter` prop for that.
@@ -93,60 +64,44 @@ interface Props {
  * <ReferenceInput
  *      source="post_id"
  *      reference="posts"
- *      filter={{ is_published: true }}>
- *     <SelectInput optionText="title" />
- * </ReferenceInput>
+ *      filter={{ is_published: true }}
+ * />
  *
- * The enclosed component may filter results. ReferenceInput passes a `setFilter`
- * function as prop to its child component. It uses the value to create a filter
- * for the query - by default { q: [searchText] }. You can customize the mapping
- * searchText => searchQuery by setting a custom `filterToQuery` function prop:
- *
- * @example
- * <ReferenceInput
- *      source="post_id"
- *      reference="posts"
- *      filterToQuery={searchText => ({ title: searchText })}>
- *     <AutocompleteInput optionText="title" />
- * </ReferenceInput>
+ * The enclosed component may filter results. ReferenceInput create a ChoicesContext which provides
+ * a `setFilters` function. You can call this function to filter the results.
  */
-const ReferenceInput: FunctionComponent<Props & InputProps> = ({
-    format,
-    onBlur,
-    onChange,
-    onFocus,
-    parse,
-    validate,
-    ...props
-}) => {
-    const inputProps = useInput({
-        format,
-        onBlur,
-        onChange,
-        onFocus,
-        parse,
-        validate,
+export const ReferenceInput = (props: ReferenceInputProps) => {
+    const {
+        children = defaultChildren,
+        reference,
+        sort = { field: 'id', order: 'DESC' },
+        filter = {},
+    } = props;
+
+    const controllerProps = useReferenceInputController({
         ...props,
+        sort,
+        filter,
     });
+
+    if (Children.count(children) !== 1) {
+        throw new Error('<ReferenceInput> only accepts a single child');
+    }
+
     return (
-        <ReferenceInputView
-            {...inputProps}
-            {...props}
-            {...useReferenceInputController({ ...props, ...inputProps })}
-        />
+        <ResourceContextProvider value={reference}>
+            <ChoicesContextProvider value={controllerProps}>
+                {children}
+            </ChoicesContextProvider>
+        </ResourceContextProvider>
     );
 };
 
 ReferenceInput.propTypes = {
-    allowEmpty: PropTypes.bool,
-    basePath: PropTypes.string,
-    children: PropTypes.element.isRequired,
-    className: PropTypes.string,
-    classes: PropTypes.object,
+    children: PropTypes.element,
     filter: PropTypes.object,
-    filterToQuery: PropTypes.func.isRequired,
     label: PropTypes.string,
-    onChange: PropTypes.func,
+    page: PropTypes.number,
     perPage: PropTypes.number,
     record: PropTypes.object,
     reference: PropTypes.string.isRequired,
@@ -158,144 +113,12 @@ ReferenceInput.propTypes = {
     source: PropTypes.string,
 };
 
-ReferenceInput.defaultProps = {
-    filter: {},
-    filterToQuery: searchText => (searchText ? { q: searchText } : {}),
-    perPage: 25,
-    sort: { field: 'id', order: 'DESC' },
-};
+const defaultChildren = <AutocompleteInput />;
 
-const sanitizeRestProps = ({
-    choices,
-    className,
-    crudGetMatching,
-    crudGetOne,
-    filter,
-    filterToQuery,
-    onChange,
-    perPage,
-    reference,
-    referenceSource,
-    setFilter,
-    setPagination,
-    setSort,
-    sort,
-    validation,
-    ...rest
-}: any) => sanitizeInputProps(rest);
-
-interface ReferenceInputViewProps {
-    allowEmpty?: boolean;
-    basePath: string;
-    children: ReactElement;
-    choices: any[];
-    classes?: object;
-    className?: string;
-    error?: string;
-    helperText?: string | boolean;
-    id: string;
-    input: FieldInputProps<any, HTMLElement>;
-    isRequired: boolean;
-    label: string;
-    loading: boolean;
-    meta: FieldMetaState<any>;
-    reference: string;
-    resource: string;
-    setFilter: (v: string) => void;
-    setPagination: (pagination: Pagination) => void;
-    setSort: (sort: Sort) => void;
-    source: string;
-    warning?: string;
+export interface ReferenceInputProps
+    extends InputProps,
+        UseReferenceInputControllerParams {
+    children?: ReactElement;
+    label?: string;
+    [key: string]: any;
 }
-
-export const ReferenceInputView: FunctionComponent<ReferenceInputViewProps> = ({
-    allowEmpty,
-    basePath,
-    children,
-    choices,
-    classes,
-    className,
-    error,
-    helperText,
-    id,
-    input,
-    isRequired,
-    loading,
-    label,
-    meta,
-    resource,
-    setFilter,
-    setPagination,
-    setSort,
-    source,
-    warning,
-    ...rest
-}) => {
-    if (Children.count(children) !== 1) {
-        throw new Error('<ReferenceInput> only accepts a single child');
-    }
-
-    if (loading) {
-        return (
-            <Labeled
-                id={id}
-                label={label}
-                source={source}
-                resource={resource}
-                className={className}
-                isRequired={isRequired}
-                meta={meta}
-                input={input}
-            >
-                <LinearProgress />
-            </Labeled>
-        );
-    }
-
-    // This is not a final-form error but an unrecoverable error from the
-    // useReferenceInputController hook
-    if (error) {
-        return <ReferenceError label={label} error={error} />;
-    }
-
-    // When the useReferenceInputController returns a warning, it means there it
-    // had an issue trying to load the referenced record
-    // We display it by overriding the final-form meta
-    const finalMeta = warning
-        ? {
-              ...meta,
-              error: warning,
-          }
-        : meta;
-
-    // helperText should never be set on ReferenceInput, only in child component
-    // But in a Filter component, the child helperText have to be forced to false
-    warningLog(
-        helperText !== undefined && helperText !== false,
-        "<ReferenceInput> doesn't accept a helperText prop. Set the helperText prop on the child component instead"
-    );
-
-    const disabledHelperText = helperText === false ? { helperText } : {};
-
-    return cloneElement(children, {
-        allowEmpty,
-        classes,
-        className,
-        input,
-        isRequired,
-        label,
-        resource,
-        meta: finalMeta,
-        source,
-        choices,
-        basePath,
-        setFilter,
-        setPagination,
-        setSort,
-        translateChoice: false,
-        ...disabledHelperText,
-        ...sanitizeRestProps(rest),
-    });
-};
-
-export default ReferenceInput;

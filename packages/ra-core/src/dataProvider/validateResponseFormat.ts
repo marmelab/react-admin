@@ -3,7 +3,7 @@ import {
     fetchActionsWithArrayOfIdentifiedRecordsResponse,
     fetchActionsWithArrayOfRecordsResponse,
     fetchActionsWithTotalResponse,
-} from '../core';
+} from './dataFetchActions';
 
 function validateResponseFormat(
     response,
@@ -51,10 +51,11 @@ function validateResponseFormat(
     }
     if (
         fetchActionsWithTotalResponse.includes(type) &&
-        !response.hasOwnProperty('total')
+        !response.hasOwnProperty('total') &&
+        !response.hasOwnProperty('pageInfo')
     ) {
         logger(
-            `The response to '${type}' must be like  { data: [...], total: 123 }, but the received response does not have a 'total' key. The dataProvider is probably wrong for '${type}'`
+            `The response to '${type}' must be like { data: [...], total: 123 } or { data: [...], pageInfo: {...} }, but the received response has neither a 'total' nor a 'pageInfo' key. The dataProvider is probably wrong for '${type}'`
         );
         throw new Error('ra.notification.data_provider_error');
     }

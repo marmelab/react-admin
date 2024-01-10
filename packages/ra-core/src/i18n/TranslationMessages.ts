@@ -1,4 +1,4 @@
-interface StringMap {
+export interface StringMap {
     [key: string]: StringMap | string | undefined;
 }
 
@@ -12,26 +12,39 @@ export interface TranslationMessages extends StringMap {
             back: string;
             bulk_actions: string;
             cancel: string;
+            clear_array_input: string;
             clear_input_value: string;
             clone: string;
             confirm: string;
             create: string;
+            create_item: string;
             delete: string;
             edit: string;
             export: string;
             list: string;
             refresh: string;
             remove_filter: string;
+            remove_all_filters: string;
             remove: string;
             save: string;
             search: string;
+            select_all: string;
+            select_row: string;
             show: string;
             sort: string;
             undo: string;
+            unselect: string;
             expand: string;
             close: string;
             open_menu: string;
             close_menu: string;
+            update: string;
+            move_up: string;
+            move_down: string;
+            open: string;
+            toggle_theme: string;
+            select_columns: string;
+            update_application: string;
         };
         boolean: {
             [key: string]: StringMap | string;
@@ -80,8 +93,12 @@ export interface TranslationMessages extends StringMap {
             [key: string]: StringMap | string;
             about: string;
             are_you_sure: string;
+            auth_error: string;
             bulk_delete_content: string;
             bulk_delete_title: string;
+            bulk_update_content: string;
+            bulk_update_title: string;
+            clear_array_input: string;
             delete_content: string;
             delete_title: string;
             details: string;
@@ -101,9 +118,20 @@ export interface TranslationMessages extends StringMap {
             page_out_from_end: string;
             page_out_from_begin: string;
             page_range_info: string;
+            partial_page_range_info: string;
             page_rows_per_page: string;
+            current_page: string;
+            page: string;
+            first: string;
+            last: string;
             next: string;
-            prev: string;
+            previous: string;
+            skip_nav: string;
+        };
+        sort: {
+            sort_by: string;
+            ASC: string;
+            DESC: string;
         };
         auth: {
             [key: string]: StringMap | string;
@@ -127,6 +155,8 @@ export interface TranslationMessages extends StringMap {
             i18n_error: string;
             canceled: string;
             logged_out: string;
+            not_authorized: string;
+            application_update_available: string;
         };
         validation: {
             [key: string]: StringMap | string;
@@ -139,6 +169,42 @@ export interface TranslationMessages extends StringMap {
             email: string;
             oneOf: string;
             regex: string;
+        };
+        saved_queries: {
+            label: string;
+            query_name: string;
+            new_label: string;
+            new_dialog_title: string;
+            remove_label: string;
+            remove_label_with_name: string;
+            remove_dialog_title: string;
+            remove_message: string;
+            help: string;
+        };
+        configurable?: {
+            customize: string;
+            configureMode: string;
+            inspector: {
+                title: string;
+                content: string;
+                reset: string;
+                hideAll: string;
+                showAll: string;
+            };
+            Datagrid: {
+                title: string;
+                unlabeled: string;
+            };
+            SimpleForm: {
+                title: string;
+                unlabeled: string;
+            };
+            SimpleList: {
+                title: string;
+                primaryText: string;
+                secondaryText: string;
+                tertiaryText: string;
+            };
         };
     };
 }

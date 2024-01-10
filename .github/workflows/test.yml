@@ -1,0 +1,136 @@
+name: "Test - action"
+
+on: 
+  push:
+    paths-ignore:
+      - 'docs/**'
+    branches:
+      - master
+      - next
+  pull_request:
+    paths-ignore:
+      - 'docs/**'
+
+jobs:
+  typecheck:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Use Node.js LTS
+      uses: actions/setup-node@v1
+      with:
+        node-version: '16.x'
+    - uses: bahmutov/npm-install@v1
+      with:
+        install-command: yarn --immutable
+    - name: Lint
+      run: make lint        
+    - name: Build
+      run: make build
+
+  unit-test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Use Node.js LTS
+      uses: actions/setup-node@v1
+      with:
+        node-version: '16.x'
+    - uses: bahmutov/npm-install@v1
+      with:
+        install-command: yarn --immutable
+    - name: Unit Tests
+      run: make test-unit
+      env:
+        CI: true
+
+  e2e-test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Use Node.js LTS
+      uses: actions/setup-node@v1
+      with:
+        node-version: '16.x'
+    - uses: bahmutov/npm-install@v1
+      with:
+        install-command: yarn --immutable
+    - name: e2e Tests
+      run: make test-e2e
+      env:
+        CI: true
+
+  e-commerce:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Use Node.js LTS
+      uses: actions/setup-node@v1
+      with:
+        node-version: '16.x'
+    - uses: bahmutov/npm-install@v1
+      with:
+        install-command: yarn --immutable
+    - name: Build
+      run: make build
+    - name: Build e-commerce
+      run: make build-demo
+      env:
+          # Needed as workaround for Vite https://github.com/vitejs/vite/issues/2433#issuecomment-831399876
+          # value = (your memory in GiB, 6.51 for GH Actions) * 1024 - 512
+          NODE_OPTIONS: '--max-old-space-size=6163'
+    - name: Zip demo build
+      run: zip demo-build.zip -r examples/demo/dist examples/demo/package.json
+    - name: Upload demo build artifact
+      uses: actions/upload-artifact@v3
+      with:
+          name: demo-build
+          path: demo-build.zip
+          retention-days: 1
+
+  crm:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Use Node.js LTS
+      uses: actions/setup-node@v1
+      with:
+        node-version: '16.x'
+    - uses: bahmutov/npm-install@v1
+      with:
+        install-command: yarn --immutable
+    - name: Build
+      run: make build
+    - name: Build crm
+      run: make build-crm
+
+  greenframe:
+    runs-on: ubuntu-latest
+    name: GreenFrame
+    needs: [e-commerce]
+    if: success() && github.ref == 'refs/heads/master'
+    steps:
+      # To use this repository's private action,
+      # you must check out the repository
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 2 # Fetch HEAD^ to enable git comparison
+      - name: Download demo build
+        uses: actions/download-artifact@v3
+        with:
+            name: demo-build
+      - name: Unzip demo build
+        run: unzip -o -u demo-build.zip
+      - name: Run e-commerce
+        # Run the demo in production mode
+        run: cd ./examples/demo/dist && python3 -m http.server 4173 &
+      - name: Run GreenFrame Analysis
+        uses: marmelab/greenframe-action@1.0.0
+        env:
+          GREENFRAME_SECRET_TOKEN: ${{secrets.GREENFRAME_SECRET_TOKEN}}

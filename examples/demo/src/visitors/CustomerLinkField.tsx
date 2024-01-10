@@ -1,19 +1,23 @@
-import React, { FC } from 'react';
-import { Link } from 'react-admin';
+import * as React from 'react';
+import { Link, FieldProps, useRecordContext } from 'react-admin';
 
 import FullNameField from './FullNameField';
-import { FieldProps, Customer } from '../types';
+import { Customer } from '../types';
 
-const CustomerLinkField: FC<FieldProps<Customer>> = props =>
-    props.record ? (
-        <Link to={`/customers/${props.record.id}`}>
-            <FullNameField {...props} />
+const CustomerLinkField = (_: FieldProps<Customer>) => {
+    const record = useRecordContext<Customer>();
+    if (!record) {
+        return null;
+    }
+    return (
+        <Link to={`/customers/${record.id}`}>
+            <FullNameField />
         </Link>
-    ) : null;
+    );
+};
 
 CustomerLinkField.defaultProps = {
     source: 'customer_id',
-    addLabel: true,
 };
 
 export default CustomerLinkField;

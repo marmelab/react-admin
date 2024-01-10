@@ -1,4 +1,4 @@
-import assert from 'assert';
+import expect from 'expect';
 import {
     createHeadersFromOptions,
     queryParameters,
@@ -8,26 +8,25 @@ import {
 describe('queryParameters', () => {
     it('should generate a query parameter', () => {
         const data = { foo: 'bar' };
-        assert.equal(queryParameters(data), 'foo=bar');
+        expect(queryParameters(data)).toEqual('foo=bar');
     });
 
     it('should generate multiple query parameters', () => {
         const data = { foo: 'fooval', bar: 'barval' };
         const actual = queryParameters(data);
-        assert(
-            ['foo=fooval&bar=barval', 'bar=barval&foo=fooval'].includes(actual)
+        expect(['foo=fooval&bar=barval', 'bar=barval&foo=fooval']).toContain(
+            actual
         );
     });
 
     it('should generate multiple query parameters with a same name', () => {
         const data = { foo: ['bar', 'baz'] };
-        assert.equal(queryParameters(data), 'foo=bar&foo=baz');
+        expect(queryParameters(data)).toEqual('foo=bar&foo=baz');
     });
 
     it('should generate an encoded query parameter', () => {
         const data = ['foo=bar', 'foo?bar&baz'];
-        assert.equal(
-            queryParameters({ [data[0]]: data[1] }),
+        expect(queryParameters({ [data[0]]: data[1] })).toEqual(
             data.map(encodeURIComponent).join('=')
         );
     });
@@ -35,30 +34,30 @@ describe('queryParameters', () => {
 
 describe('flattenObject', () => {
     it('should return null with null', () => {
-        assert.strictEqual(flattenObject(null), null);
+        expect(flattenObject(null)).toBeNull();
     });
 
     it('should return itself with a string', () => {
-        assert.equal(flattenObject('foo'), 'foo');
+        expect(flattenObject('foo')).toEqual('foo');
     });
 
     it('should return itself with an array', () => {
-        assert.deepEqual(flattenObject(['foo']), ['foo']);
+        expect(flattenObject(['foo'])).toEqual(['foo']);
     });
 
     it('should return a same object with an empty object', () => {
-        assert.deepEqual(flattenObject({}), {});
+        expect(flattenObject({})).toEqual({});
     });
 
     it('should return a same object with a non-nested object', () => {
         const value = { foo: 'fooval', bar: 'barval' };
-        assert.deepEqual(flattenObject(value), value);
+        expect(flattenObject(value)).toEqual(value);
     });
 
     it('should return a same object with a nested object', () => {
         const input = { foo: 'foo', bar: { baz: 'barbaz' } };
         const expected = { foo: 'foo', 'bar.baz': 'barbaz' };
-        assert.deepEqual(flattenObject(input), expected);
+        expect(flattenObject(input)).toEqual(expected);
     });
 });
 
@@ -69,7 +68,7 @@ describe('createHeadersFromOptions', () => {
         };
 
         const headers = createHeadersFromOptions(options);
-        assert.strictEqual(headers.get('Content-Type'), 'application/json');
+        expect(headers.get('Content-Type')).toStrictEqual('application/json');
     });
 
     it('should not add a Content-Type header for GET requests', () => {
@@ -79,11 +78,11 @@ describe('createHeadersFromOptions', () => {
         };
 
         const headersWithMethod = createHeadersFromOptions(optionsWithMethod);
-        assert.strictEqual(headersWithMethod.get('Content-Type'), null);
+        expect(headersWithMethod.get('Content-Type')).toBeNull();
 
         const headersWithoutMethod = createHeadersFromOptions(
             optionsWithoutMethod
         );
-        assert.strictEqual(headersWithoutMethod.get('Content-Type'), null);
+        expect(headersWithoutMethod.get('Content-Type')).toBeNull();
     });
 });

@@ -1,4 +1,5 @@
-import React, { FunctionComponent } from 'react';
+import * as React from 'react';
+import { FunctionComponent } from 'react';
 import inferElementFromValues from './inferElementFromValues';
 import InferredElement from './InferredElement';
 
@@ -40,35 +41,24 @@ describe('inferElementFromValues', () => {
         const types = {
             reference: { component: Good },
             string: { component: Bad },
-            referenceChild: { component: Dummy },
         };
         expect(
             inferElementFromValues('foo_id', ['foo', 'bar'], types).getElement()
-        ).toEqual(
-            <Good source="foo_id" reference="foos">
-                <Dummy />
-            </Good>
-        );
+        ).toEqual(<Good source="foo_id" reference="foos" />);
     });
     it('should return a reference field for field named *Id', () => {
         const types = {
             reference: { component: Good },
             string: { component: Bad },
-            referenceChild: { component: Dummy },
         };
         expect(
             inferElementFromValues('fooId', ['foo', 'bar'], types).getElement()
-        ).toEqual(
-            <Good source="fooId" reference="foos">
-                <Dummy />
-            </Good>
-        );
+        ).toEqual(<Good source="fooId" reference="foos" />);
     });
     it('should return a reference array field for field named *_ids', () => {
         const types = {
             referenceArray: { component: Good },
             string: { component: Bad },
-            referenceArrayChild: { component: Dummy },
         };
         expect(
             inferElementFromValues(
@@ -76,25 +66,16 @@ describe('inferElementFromValues', () => {
                 ['foo', 'bar'],
                 types
             ).getElement()
-        ).toEqual(
-            <Good source="foo_ids" reference="foos">
-                <Dummy />
-            </Good>
-        );
+        ).toEqual(<Good source="foo_ids" reference="foos" />);
     });
     it('should return a reference array field for field named *Ids', () => {
         const types = {
             referenceArray: { component: Good },
             string: { component: Bad },
-            referenceArrayChild: { component: Dummy },
         };
         expect(
             inferElementFromValues('fooIds', ['foo', 'bar'], types).getElement()
-        ).toEqual(
-            <Good source="fooIds" reference="foos">
-                <Dummy />
-            </Good>
-        );
+        ).toEqual(<Good source="fooIds" reference="foos" />);
     });
     it('should return a string field for no values', () => {
         const types = {
@@ -114,7 +95,10 @@ describe('inferElementFromValues', () => {
         expect(
             inferElementFromValues(
                 'foo',
-                [[{ bar: 1 }, { bar: 2 }], [{ bar: 3 }, { bar: 4 }]],
+                [
+                    [{ bar: 1 }, { bar: 2 }],
+                    [{ bar: 3 }, { bar: 4 }],
+                ],
                 types
             ).getElement()
         ).toEqual(<Good source="foo">{[<Dummy key="0" source="bar" />]}</Good>);
@@ -125,7 +109,14 @@ describe('inferElementFromValues', () => {
             string: { component: Good },
         };
         expect(
-            inferElementFromValues('foo', [[1, 2], [3, 4]], types).getElement()
+            inferElementFromValues(
+                'foo',
+                [
+                    [1, 2],
+                    [3, 4],
+                ],
+                types
+            ).getElement()
         ).toEqual(<Good source="foo" />);
     });
     it('should return a boolean field for boolean values', () => {
@@ -176,7 +167,7 @@ describe('inferElementFromValues', () => {
             ).getElement()
         ).toEqual(<Good source="foo" />);
     });
-    it('should return an url field for url name', () => {
+    it('should return a url field for url name', () => {
         const types = {
             url: { component: Good },
             string: { component: Bad },
@@ -189,7 +180,7 @@ describe('inferElementFromValues', () => {
             ).getElement()
         ).toEqual(<Good source="url" />);
     });
-    it.skip('should return an url field for url string values', () => {
+    it.skip('should return a url field for url string values', () => {
         const types = {
             url: { component: Good },
             string: { component: Bad },
@@ -262,7 +253,10 @@ describe('inferElementFromValues', () => {
         expect(
             inferElementFromValues(
                 'foo',
-                [{ bar: 1, baz: 2 }, { bar: 3, baz: 4 }],
+                [
+                    { bar: 1, baz: 2 },
+                    { bar: 3, baz: 4 },
+                ],
                 types
             ).getElement()
         ).toEqual(<Good source="foo.bar" />);

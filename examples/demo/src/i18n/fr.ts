@@ -1,4 +1,4 @@
-import { TranslationMessages } from 'ra-core';
+import { TranslationMessages } from 'react-admin';
 import frenchMessages from 'ra-language-french';
 
 const customFrenchMessages: TranslationMessages = {
@@ -14,19 +14,22 @@ const customFrenchMessages: TranslationMessages = {
         },
         dashboard: {
             monthly_revenue: 'CA à 30 jours',
+            month_history: "Chiffre d'affaire sur 30 jours",
             new_orders: 'Nouvelles commandes',
             pending_reviews: 'Commentaires à modérer',
+            all_reviews: 'Voir tous les commentaires',
             new_customers: 'Nouveaux clients',
+            all_customers: 'Voir tous les clients',
             pending_orders: 'Commandes à traiter',
             order: {
                 items:
                     'par %{customer_name}, un poster |||| par %{customer_name}, %{nb_items} posters',
             },
             welcome: {
-                title: 'Bienvenue sur la démo de react-admin',
+                title: 'Bienvenue sur la démo e-commerce de react-admin',
                 subtitle:
                     "Ceci est le back-office d'un magasin de posters imaginaire. N'hésitez pas à explorer et à modifier les données. La démo s'exécute en local dans votre navigateur, et se remet à zéro chaque fois que vous rechargez la page.",
-                aor_button: 'Site web de react-admin',
+                ra_button: 'Site web de react-admin',
                 demo_button: 'Code source de cette démo',
             },
         },
@@ -34,6 +37,14 @@ const customFrenchMessages: TranslationMessages = {
             sales: 'Ventes',
             catalog: 'Catalogue',
             customers: 'Clients',
+        },
+        events: {
+            review: {
+                title: 'Commente sur "%{product}"',
+            },
+            order: {
+                title: 'Commande 1 poster |||| Commande %{smart_count} posters',
+            },
         },
     },
     resources: {
@@ -43,6 +54,7 @@ const customFrenchMessages: TranslationMessages = {
                 address: 'Rue',
                 birthday: 'Anniversaire',
                 city: 'Ville',
+                stateAbbr: 'Etat',
                 commands: 'Commandes',
                 first_name: 'Prénom',
                 first_seen: 'Première visite',
@@ -58,6 +70,18 @@ const customFrenchMessages: TranslationMessages = {
                 zipcode: 'Code postal',
                 password: 'Mot de passe',
                 confirm_password: 'Confirmez le mot de passe',
+            },
+            filters: {
+                last_visited: 'Dernière visite',
+                today: "Aujourd'hui",
+                this_week: 'Cette semaine',
+                last_week: 'La semaine dernière',
+                this_month: 'Ce mois-ci',
+                last_month: 'Le mois dernier',
+                earlier: 'Plus tôt',
+                has_ordered: 'A déjà commandé',
+                has_newsletter: 'Abonné newsletter',
+                group: 'Segment',
             },
             fieldGroups: {
                 identity: 'Identité',
@@ -86,9 +110,11 @@ const customFrenchMessages: TranslationMessages = {
                     quantity: 'Quantité',
                     sum: 'Sous-total',
                     tax_rate: 'TVA',
+                    taxes: 'TVA',
                     total: 'Total',
                     unit_price: 'P.U.',
                 },
+                address: 'Adresse',
                 customer_id: 'Client',
                 date_gte: 'Emises depuis',
                 date_lte: 'Emises avant',
@@ -97,6 +123,13 @@ const customFrenchMessages: TranslationMessages = {
                 returned: 'Annulée',
                 status: 'Etat',
                 total_gte: 'Montant minimum',
+            },
+            section: {
+                order: 'Commande',
+                customer: 'Client',
+                shipping_address: 'Adresse de livraison',
+                items: 'Articles',
+                total: 'Total',
             },
         },
         invoices: {
@@ -124,6 +157,7 @@ const customFrenchMessages: TranslationMessages = {
                 image: 'Photo',
                 price: 'Prix',
                 reference: 'Référence',
+                sales: 'Ventes',
                 stock_lte: 'Stock faible',
                 stock: 'Stock',
                 thumbnail: 'Aperçu',
@@ -136,6 +170,19 @@ const customFrenchMessages: TranslationMessages = {
                 details: 'Détails',
                 description: 'Description',
                 reviews: 'Commentaires',
+            },
+            filters: {
+                categories: 'Catégories',
+                stock: 'Stock',
+                no_stock: 'En rupture',
+                low_stock: '1 - 9 unités',
+                average_stock: '10 - 49 unités',
+                enough_stock: '50 unités et plus',
+                sales: 'Ventes',
+                best_sellers: 'Meilleures ventes',
+                average_sellers: 'Moyennes',
+                low_sellers: 'Peu vendu',
+                never_sold: 'Jamais vendu',
             },
         },
         categories: {
@@ -173,7 +220,7 @@ const customFrenchMessages: TranslationMessages = {
             },
         },
         segments: {
-            name: 'Segments',
+            name: 'Segment |||| Segments',
             fields: {
                 customers: 'Clients',
                 name: 'Nom',

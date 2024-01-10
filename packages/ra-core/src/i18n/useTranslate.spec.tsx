@@ -1,58 +1,50 @@
-import React from 'react';
+import * as React from 'react';
 import expect from 'expect';
-import { cleanup } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 
-import useTranslate from './useTranslate';
-import TranslationProvider from './TranslationProvider';
-import { TranslationContext } from './TranslationContext';
-import { renderWithRedux } from '../util';
+import { useTranslate } from './useTranslate';
+import { I18nContext } from './I18nContext';
 
 describe('useTranslate', () => {
-    afterEach(cleanup);
-
     const Component = () => {
         const translate = useTranslate();
         return <div>{translate('hello')}</div>;
     };
 
     it('should not fail when used outside of a translation provider', () => {
-        const { queryAllByText } = renderWithRedux(<Component />);
-        expect(queryAllByText('hello')).toHaveLength(1);
+        render(<Component />);
+        expect(screen.queryAllByText('hello')).toHaveLength(1);
     });
 
     it('should use the i18nProvider.translate() method', () => {
-        const { queryAllByText } = renderWithRedux(
-            <TranslationContext.Provider
+        render(
+            <I18nContext.Provider
                 value={{
-                    locale: 'de',
-                    i18nProvider: {
-                        translate: () => 'hallo',
-                        changeLocale: () => Promise.resolve(),
-                        getLocale: () => 'de',
-                    },
-                    setLocale: () => Promise.resolve(),
+                    translate: () => 'hallo',
+                    changeLocale: () => Promise.resolve(),
+                    getLocale: () => 'de',
                 }}
             >
                 <Component />
-            </TranslationContext.Provider>
+            </I18nContext.Provider>
         );
-        expect(queryAllByText('hello')).toHaveLength(0);
-        expect(queryAllByText('hallo')).toHaveLength(1);
+        expect(screen.queryAllByText('hello')).toHaveLength(0);
+        expect(screen.queryAllByText('hallo')).toHaveLength(1);
     });
 
-    it('should use the i18n provider when using TranslationProvider', () => {
-        const { queryAllByText } = renderWithRedux(
-            <TranslationProvider
-                i18nProvider={{
+    it('should use the i18n provider when using I18nProvider', () => {
+        render(
+            <I18nContext.Provider
+                value={{
                     translate: () => 'bonjour',
                     changeLocale: () => Promise.resolve(),
                     getLocale: () => 'fr',
                 }}
             >
                 <Component />
-            </TranslationProvider>
+            </I18nContext.Provider>
         );
-        expect(queryAllByText('hello')).toHaveLength(0);
-        expect(queryAllByText('bonjour')).toHaveLength(1);
+        expect(screen.queryAllByText('hello')).toHaveLength(0);
+        expect(screen.queryAllByText('bonjour')).toHaveLength(1);
     });
 });

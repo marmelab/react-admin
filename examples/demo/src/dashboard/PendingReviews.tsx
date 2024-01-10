@@ -1,122 +1,118 @@
-import React, { FC } from 'react';
-import Card from '@material-ui/core/Card';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import ListItemText from '@material-ui/core/ListItemText';
-import Avatar from '@material-ui/core/Avatar';
-import Typography from '@material-ui/core/Typography';
-import CommentIcon from '@material-ui/icons/Comment';
-import Divider from '@material-ui/core/Divider';
-import { makeStyles } from '@material-ui/core/styles';
+import * as React from 'react';
+import {
+    Avatar,
+    Box,
+    Button,
+    List,
+    ListItem,
+    ListItemAvatar,
+    ListItemText,
+} from '@mui/material';
+import CommentIcon from '@mui/icons-material/Comment';
 import { Link } from 'react-router-dom';
-import { useTranslate } from 'react-admin';
 
-import CardIcon from './CardIcon';
+import {
+    ReferenceField,
+    FunctionField,
+    useGetList,
+    useTranslate,
+    useIsDataLoaded,
+} from 'react-admin';
 
+import { stringify } from 'query-string';
+
+import CardWithIcon from './CardWithIcon';
 import StarRatingField from '../reviews/StarRatingField';
 import { Customer, Review } from '../types';
 
-interface Props {
-    reviews?: Review[];
-    customers?: { [key: string]: Customer };
-    nb?: number;
-}
-
-const useStyles = makeStyles(theme => ({
-    main: {
-        flex: '1',
-        marginRight: '1em',
-        marginTop: 20,
-    },
-    titleLink: { textDecoration: 'none', color: 'inherit' },
-    card: {
-        padding: '16px 0',
-        overflow: 'inherit',
-        textAlign: 'right',
-    },
-    title: {
-        padding: '0 16px',
-    },
-    value: {
-        padding: '0 16px',
-        minHeight: 48,
-    },
-    avatar: {
-        background: theme.palette.background.paper,
-    },
-    listItemText: {
-        overflowY: 'hidden',
-        height: '4em',
-        display: '-webkit-box',
-        WebkitLineClamp: 2,
-        WebkitBoxOrient: 'vertical',
-    },
-}));
-
-const location = {
-    pathname: 'reviews',
-    query: { filter: JSON.stringify({ status: 'pending' }) },
-};
-
-const PendingReviews: FC<Props> = ({ reviews = [], customers = {}, nb }) => {
-    const classes = useStyles();
+const PendingReviews = () => {
     const translate = useTranslate();
-    return (
-        <div className={classes.main}>
-            <CardIcon Icon={CommentIcon} bgColor="#f44336" />
-            <Card className={classes.card}>
-                <Typography className={classes.title} color="textSecondary">
-                    {translate('pos.dashboard.pending_reviews')}
-                </Typography>
-                <Typography
-                    variant="h5"
-                    component="h2"
-                    className={classes.value}
-                >
-                    <Link to={location} className={classes.titleLink}>
-                        {nb}
-                    </Link>
-                </Typography>
-                <Divider />
-                <List>
-                    {reviews.map((record: Review) => (
-                        <ListItem
-                            key={record.id}
-                            button
-                            component={Link}
-                            to={`/reviews/${record.id}`}
-                            alignItems="flex-start"
-                        >
-                            <ListItemAvatar>
-                                {customers[record.customer_id] ? (
-                                    <Avatar
-                                        src={`${
-                                            customers[record.customer_id].avatar
-                                        }?size=32x32`}
-                                        className={classes.avatar}
-                                    />
-                                ) : (
-                                    <Avatar />
-                                )}
-                            </ListItemAvatar>
+    const { data: reviews, total, isLoading } = useGetList<Review>('reviews', {
+        filter: { status: 'pending' },
+        sort: { field: 'date', order: 'DESC' },
+        pagination: { page: 1, perPage: 100 },
+    });
 
-                            <ListItemText
-                                primary={
-                                    <StarRatingField
-                                        record={record}
-                                        size="small"
-                                    />
-                                }
-                                secondary={record.comment}
-                                className={classes.listItemText}
-                                style={{ paddingRight: 0 }}
-                            />
-                        </ListItem>
-                    ))}
-                </List>
-            </Card>
-        </div>
+    // Poor man's Suspense: hide the content until all the data is loaded,
+    // including the reference customers.
+    // As ReferenceField aggregates the calls to reference customers,
+    // if the first customer is loaded, then all the customers are loaded.
+    const isCustomerDataLoaded = useIsDataLoaded(
+        ['customers', 'getMany', { ids: [String(reviews?.[0].customer_id)] }],
+        { enabled: !isLoading && reviews && reviews.length > 0 }
+    );
+    const display = isLoading || !isCustomerDataLoaded ? 'none' : 'block';
+
+    return (
+        <CardWithIcon
+            to={{
+                pathname: '/reviews',
+                search: stringify({
+                    filter: JSON.stringify({ status: 'pending' }),
+                }),
+            }}
+            icon={CommentIcon}
+            title={translate('pos.dashboard.pending_reviews')}
+            subtitle={total}
+        >
+            <List sx={{ display }}>
+                {reviews?.map((record: Review) => (
+                    <ListItem
+                        key={record.id}
+                        button
+                        component={Link}
+                        to={`/reviews/${record.id}`}
+                        alignItems="flex-start"
+                    >
+                        <ListItemAvatar>
+                            <ReferenceField
+                                record={record}
+                                source="customer_id"
+                                reference="customers"
+                                link={false}
+                            >
+                                <FunctionField<Customer>
+                                    render={customer => (
+                                        <Avatar
+                                            src={`${customer.avatar}?size=32x32`}
+                                            sx={{
+                                                bgcolor: 'background.paper',
+                                            }}
+                                            alt={`${customer.first_name} ${customer.last_name}`}
+                                        />
+                                    )}
+                                />
+                            </ReferenceField>
+                        </ListItemAvatar>
+
+                        <ListItemText
+                            primary={<StarRatingField record={record} />}
+                            secondary={record.comment}
+                            sx={{
+                                overflowY: 'hidden',
+                                height: '4em',
+                                display: '-webkit-box',
+                                WebkitLineClamp: 2,
+                                WebkitBoxOrient: 'vertical',
+                                paddingRight: 0,
+                            }}
+                        />
+                    </ListItem>
+                ))}
+            </List>
+            <Box flexGrow={1}>&nbsp;</Box>
+            <Button
+                sx={{ borderRadius: 0 }}
+                component={Link}
+                to="/reviews"
+                size="small"
+                color="primary"
+            >
+                <Box p={1} sx={{ color: 'primary.main' }}>
+                    {translate('pos.dashboard.all_reviews')}
+                </Box>
+            </Button>
+        </CardWithIcon>
     );
 };
 

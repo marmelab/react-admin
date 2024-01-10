@@ -1,53 +1,44 @@
-import React, { FC } from 'react';
-import Icon from '@material-ui/icons/Stars';
-import { makeStyles } from '@material-ui/core';
+import * as React from 'react';
+import { Box } from '@mui/material';
+import Icon from '@mui/icons-material/Stars';
 
-import { FieldProps } from '../types';
-
-const useStyles = makeStyles({
-    root: {
-        opacity: 0.87,
-        whiteSpace: 'nowrap',
-    },
-    large: {
-        width: 20,
-        height: 20,
-    },
-    small: {
-        width: 15,
-        height: 15,
-    },
-});
+import { FieldProps, useRecordContext } from 'react-admin';
 
 interface OwnProps {
-    size: 'large' | 'small';
+    size?: 'large' | 'small';
 }
 
-const StarRatingField: FC<FieldProps & OwnProps> = ({
-    record,
-    size = 'large',
-}) => {
-    const classes = useStyles();
-    return record ? (
-        <span>
+const StarRatingField = ({ size = 'large' }: FieldProps & OwnProps) => {
+    const record = useRecordContext();
+    if (!record) return null;
+
+    return (
+        <Box
+            component="span"
+            display="flex"
+            sx={{
+                opacity: 0.87,
+                whiteSpace: 'nowrap',
+            }}
+        >
             {Array(record.rating)
                 .fill(true)
                 .map((_, i) => (
                     <Icon
                         key={i}
-                        className={
-                            size === 'large' ? classes.large : classes.small
-                        }
+                        sx={{
+                            width: size === 'large' ? 20 : 15,
+                            height: size === 'large' ? 20 : 15,
+                        }}
                     />
                 ))}
-        </span>
-    ) : null;
+        </Box>
+    );
 };
 
 StarRatingField.defaultProps = {
     label: 'resources.reviews.fields.rating',
     source: 'rating',
-    addLabel: true,
 };
 
 export default StarRatingField;

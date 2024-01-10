@@ -1,51 +1,45 @@
-import React, { FC } from 'react';
+import * as React from 'react';
 import PropTypes from 'prop-types';
-import classNames from 'classnames';
+import clsx from 'clsx';
 import { Link as RRLink, LinkProps as RRLinkProps } from 'react-router-dom';
-import { makeStyles } from '@material-ui/core/styles';
-import { ClassNameMap } from '@material-ui/styles';
+import {
+    styled,
+    Link as MuiLink,
+    LinkProps as MuiLinkProps,
+} from '@mui/material';
 
-const useStyles = makeStyles(
-    theme => ({
-        link: {
-            textDecoration: 'none',
-            color: theme.palette.primary.main,
-        },
-    }),
-    { name: 'RaLink' }
-);
+export const Link = (props: LinkProps) => {
+    const { to, children, className, ...rest } = props;
 
-type LinkClassKey = 'link';
-
-export interface LinkProps extends RRLinkProps {
-    classes?: Partial<ClassNameMap<LinkClassKey>>;
-    className?: string;
-}
-
-const Link: FC<LinkProps> = props => {
-    const {
-        to,
-        children,
-        classes: classesOverride,
-        className,
-        ...rest
-    } = props;
-    const classes = useStyles(props);
     return (
-        <RRLink
+        <StyledMuiLink
+            component={RRLink}
             to={to}
-            className={classNames(classes.link, className)}
+            className={clsx(LinkClasses.link, className)}
+            underline="none"
             {...rest}
         >
             {children}
-        </RRLink>
+        </StyledMuiLink>
     );
 };
+
+const PREFIX = 'RaLink';
+
+export const LinkClasses = {
+    link: `${PREFIX}-link`,
+};
+
+const StyledMuiLink = styled(MuiLink)({}) as typeof MuiLink; // @see https://mui.com/material-ui/guides/typescript/#complications-with-the-component-prop
+
+// @see https://mui.com/material-ui/guides/composition/#with-typescript
+export interface LinkProps
+    extends MuiLinkProps<React.ElementType<any>, RRLinkProps> {
+    className?: string;
+}
 
 Link.propTypes = {
     className: PropTypes.string,
     children: PropTypes.node,
     to: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
 };
-
-export default Link;

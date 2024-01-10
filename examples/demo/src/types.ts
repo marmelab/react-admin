@@ -1,16 +1,12 @@
-import { ReduxState, Record, Identifier } from 'ra-core';
+import { Identifier, RaRecord } from 'react-admin';
 
 export type ThemeName = 'light' | 'dark';
 
-export interface AppState extends ReduxState {
-    theme: ThemeName;
-}
-
-export interface Category extends Record {
+export interface Category extends RaRecord {
     name: string;
 }
 
-export interface Product extends Record {
+export interface Product extends RaRecord {
     category_id: Identifier;
     description: string;
     height: number;
@@ -22,10 +18,11 @@ export interface Product extends Record {
     width: number;
 }
 
-export interface Customer extends Record {
+export interface Customer extends RaRecord {
     first_name: string;
     last_name: string;
     address: string;
+    stateAbbr: string;
     city: string;
     zipcode: string;
     avatar: string;
@@ -38,27 +35,45 @@ export interface Customer extends Record {
     groups: string[];
     nb_commands: number;
     total_spent: number;
+    email: string;
 }
 
-export interface Order extends Record {
+export type OrderStatus = 'ordered' | 'delivered' | 'cancelled';
+
+export interface Order extends RaRecord {
+    status: OrderStatus;
     basket: BasketItem[];
+    date: Date;
+    total: number;
+    total_ex_taxes: number;
+    delivery_fees: number;
+    tax_rate: number;
+    taxes: number;
+    customer_id: Identifier;
+    reference: string;
 }
 
-export interface BasketItem {
-    product_id: string;
+export type BasketItem = {
+    product_id: Identifier;
     quantity: number;
+};
+
+export interface Invoice extends RaRecord {
+    date: Date;
 }
 
-/**
- * Types to eventually add in react-admin
- */
-export interface FieldProps<T extends Record = Record> {
-    addLabel?: boolean;
-    label?: string;
-    record?: T;
-    source?: string;
+export type ReviewStatus = 'accepted' | 'pending' | 'rejected';
+
+export interface Review extends RaRecord {
+    date: Date;
+    status: ReviewStatus;
+    customer_id: Identifier;
+    product_id: Identifier;
+    comment: string;
 }
 
-export interface Review extends Record {
-    customer_id: string;
+declare global {
+    interface Window {
+        restServer: any;
+    }
 }

@@ -1,79 +1,52 @@
-import React, { useCallback, FC, ReactElement, SyntheticEvent } from 'react';
+import * as React from 'react';
+import { ReactElement, ReactEventHandler } from 'react';
 import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/core/styles';
-import { fade } from '@material-ui/core/styles/colorManipulator';
-import ActionDelete from '@material-ui/icons/Delete';
-import classnames from 'classnames';
+import ActionDelete from '@mui/icons-material/Delete';
+import clsx from 'clsx';
+import { UseMutationOptions } from 'react-query';
 import {
-    useDelete,
-    useRefresh,
-    useNotify,
-    useRedirect,
-    CRUD_DELETE,
-    Record,
+    RaRecord,
+    useDeleteWithUndoController,
+    DeleteParams,
+    useRecordContext,
+    useResourceContext,
     RedirectionSideEffect,
 } from 'ra-core';
 
-import Button, { ButtonProps } from './Button';
+import { Button, ButtonProps } from './Button';
 
-const DeleteWithUndoButton: FC<DeleteWithUndoButtonProps> = props => {
+export const DeleteWithUndoButton = <RecordType extends RaRecord = any>(
+    props: DeleteWithUndoButtonProps<RecordType>
+) => {
     const {
         label = 'ra.action.delete',
-        classes: classesOverride,
         className,
         icon = defaultIcon,
         onClick,
-        resource,
-        record,
-        basePath,
-        redirect: redirectTo = 'list',
+        redirect = 'list',
+        mutationOptions,
+        color = 'error',
         ...rest
     } = props;
-    const classes = useStyles(props);
-    const notify = useNotify();
-    const redirect = useRedirect();
-    const refresh = useRefresh();
 
-    const [deleteOne, { loading }] = useDelete(resource, null, null, {
-        action: CRUD_DELETE,
-        onSuccess: () => {
-            notify('ra.notification.deleted', 'info', { smart_count: 1 }, true);
-            redirect(redirectTo, basePath);
-            refresh();
-        },
-        onFailure: error =>
-            notify(
-                typeof error === 'string'
-                    ? error
-                    : error.message || 'ra.notification.http_error',
-                'warning'
-            ),
-        undoable: true,
+    const record = useRecordContext(props);
+    const resource = useResourceContext(props);
+    const { isLoading, handleDelete } = useDeleteWithUndoController({
+        record,
+        resource,
+        redirect,
+        onClick,
+        mutationOptions,
     });
-    const handleDelete = useCallback(
-        event => {
-            event.stopPropagation();
-            deleteOne({
-                payload: { id: record.id, previousData: record },
-            });
-            if (typeof onClick === 'function') {
-                onClick(event);
-            }
-        },
-        [deleteOne, onClick, record]
-    );
 
     return (
         <Button
             onClick={handleDelete}
-            disabled={loading}
+            disabled={isLoading}
             label={label}
-            className={classnames(
-                'ra-delete-button',
-                classes.deleteButton,
-                className
-            )}
+            className={clsx('ra-delete-button', className)}
             key="button"
+            color={color}
             {...rest}
         >
             {icon}
@@ -81,49 +54,25 @@ const DeleteWithUndoButton: FC<DeleteWithUndoButtonProps> = props => {
     );
 };
 
-const useStyles = makeStyles(
-    theme => ({
-        deleteButton: {
-            color: theme.palette.error.main,
-            '&:hover': {
-                backgroundColor: fade(theme.palette.error.main, 0.12),
-                // Reset on mouse devices
-                '@media (hover: none)': {
-                    backgroundColor: 'transparent',
-                },
-            },
-        },
-    }),
-    { name: 'RaDeleteWithUndoButton' }
-);
-
-interface Props {
-    basePath?: string;
-    classes?: object;
-    className?: string;
-    icon?: ReactElement;
-    label?: string;
-    onClick?: (e: MouseEvent) => void;
-    record?: Record;
-    redirect?: RedirectionSideEffect;
-    resource?: string;
-    // May be injected by Toolbar - sanitized in Button
-    handleSubmit?: (event?: SyntheticEvent<HTMLFormElement>) => Promise<Object>;
-    handleSubmitWithRedirect?: (redirect?: RedirectionSideEffect) => void;
-    invalid?: boolean;
-    pristine?: boolean;
-    saving?: boolean;
-    submitOnEnter?: boolean;
-    undoable?: boolean;
-}
-
 const defaultIcon = <ActionDelete />;
 
-export type DeleteWithUndoButtonProps = Props & ButtonProps;
+export interface DeleteWithUndoButtonProps<
+    RecordType extends RaRecord = any,
+    MutationOptionsError = unknown
+> extends ButtonProps {
+    icon?: ReactElement;
+    onClick?: ReactEventHandler<any>;
+    mutationOptions?: UseMutationOptions<
+        RecordType,
+        MutationOptionsError,
+        DeleteParams<RecordType>
+    >;
+    record?: RecordType;
+    redirect?: RedirectionSideEffect;
+    resource?: string;
+}
 
 DeleteWithUndoButton.propTypes = {
-    basePath: PropTypes.string,
-    classes: PropTypes.object,
     className: PropTypes.string,
     label: PropTypes.string,
     record: PropTypes.any,
@@ -135,5 +84,3 @@ DeleteWithUndoButton.propTypes = {
     resource: PropTypes.string,
     icon: PropTypes.element,
 };
-
-export default DeleteWithUndoButton;

@@ -1,44 +1,41 @@
-import React from 'react';
+import * as React from 'react';
 import expect from 'expect';
-import { cleanup, wait } from '@testing-library/react';
+import { waitFor, render, screen } from '@testing-library/react';
+import { CoreAdminContext } from '../core/CoreAdminContext';
 
 import useAuthState from './useAuthState';
-import AuthContext from './AuthContext';
-import renderWithRedux from '../util/renderWithRedux';
 
-const UseAuth = ({ children, authParams }: any) => {
-    const res = useAuthState(authParams);
-    return children(res);
+const UseAuth = (authParams: any) => {
+    const state = useAuthState(authParams);
+    return (
+        <div>
+            <span>{state.isLoading && 'LOADING'}</span>
+            <span>{state.authenticated && 'AUTHENTICATED'}</span>
+        </div>
+    );
 };
 
-const stateInpector = state => (
-    <div>
-        <span>{state.loading && 'LOADING'}</span>
-        <span>{state.loaded && 'LOADED'}</span>
-        <span>{state.authenticated && 'AUTHENTICATED'}</span>
-    </div>
-);
-
 describe('useAuthState', () => {
-    afterEach(cleanup);
-
     it('should return a loading state on mount', () => {
-        const { queryByText } = renderWithRedux(
-            <UseAuth>{stateInpector}</UseAuth>
+        render(
+            <CoreAdminContext>
+                <UseAuth />
+            </CoreAdminContext>
         );
-        expect(queryByText('LOADING')).not.toBeNull();
-        expect(queryByText('LOADED')).toBeNull();
-        expect(queryByText('AUTHENTICATED')).not.toBeNull();
+        expect(screen.queryByText('LOADING')).not.toBeNull();
+        expect(screen.queryByText('AUTHENTICATED')).not.toBeNull();
     });
 
     it('should return authenticated by default after a tick', async () => {
-        const { queryByText } = renderWithRedux(
-            <UseAuth>{stateInpector}</UseAuth>
+        render(
+            <CoreAdminContext>
+                <UseAuth />
+            </CoreAdminContext>
         );
-        await wait();
-        expect(queryByText('LOADING')).toBeNull();
-        expect(queryByText('LOADED')).not.toBeNull();
-        expect(queryByText('AUTHENTICATED')).not.toBeNull();
+        await waitFor(() => {
+            expect(screen.queryByText('LOADING')).toBeNull();
+            expect(screen.queryByText('AUTHENTICATED')).not.toBeNull();
+        });
     });
 
     it('should return an error after a tick if the auth fails', async () => {
@@ -49,16 +46,14 @@ describe('useAuthState', () => {
             checkError: () => Promise.reject('bad method'),
             getPermissions: () => Promise.reject('bad method'),
         };
-        const { queryByText } = renderWithRedux(
-            <AuthContext.Provider value={authProvider}>
-                <UseAuth options={{ logoutOnFailure: false }}>
-                    {stateInpector}
-                </UseAuth>
-            </AuthContext.Provider>
+        render(
+            <CoreAdminContext authProvider={authProvider}>
+                <UseAuth options={{ logoutOnFailure: false }} />
+            </CoreAdminContext>
         );
-        await wait();
-        expect(queryByText('LOADING')).toBeNull();
-        expect(queryByText('LOADED')).not.toBeNull();
-        expect(queryByText('AUTHENTICATED')).toBeNull();
+        await waitFor(() => {
+            expect(screen.queryByText('LOADING')).toBeNull();
+            expect(screen.queryByText('AUTHENTICATED')).toBeNull();
+        });
     });
 });

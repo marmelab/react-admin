@@ -1,22 +1,17 @@
-import React, {
-    FC,
-    Fragment,
-    cloneElement,
-    Children,
-    ReactElement,
-} from 'react';
+import React, { FC, ReactElement, ReactNode } from 'react';
 import PropTypes from 'prop-types';
 import {
-    Filter,
-    Sort,
-    usePaginationState,
+    FilterPayload,
+    SortPayload,
     useReferenceManyFieldController,
-    useSortState,
-    ReferenceManyProps,
-    PaginationProps,
-    SortProps,
+    ListContextProvider,
+    ListControllerResult,
+    ResourceContextProvider,
+    useRecordContext,
+    RaRecord,
 } from 'ra-core';
-import { FieldProps, InjectedFieldProps } from './types';
+
+import { fieldPropTypes, FieldProps } from './types';
 
 /**
  * Render related records to the current one.
@@ -40,7 +35,7 @@ import { FieldProps, InjectedFieldProps } from './types';
  *     </SingleFieldList>
  * </ReferenceManyField>
  *
- * By default, restricts the possible values to 25. You can extend this limit
+ * By default, restricts the displayed values to 25. You can extend this limit
  * by setting the `perPage` prop.
  *
  * @example
@@ -64,163 +59,124 @@ import { FieldProps, InjectedFieldProps } from './types';
  *    ...
  * </ReferenceManyField>
  */
-export const ReferenceManyField: FC<ReferenceManyFieldProps> = props => {
+export const ReferenceManyField = <
+    RecordType extends RaRecord = RaRecord,
+    ReferenceRecordType extends RaRecord = RaRecord
+>(
+    props: ReferenceManyFieldProps<RecordType>
+) => {
     const {
         children,
-        sort: initialSort,
-        perPage: initialPerPage,
-        resource,
+        debounce,
+        filter = defaultFilter,
+        page = 1,
+        pagination = null,
+        perPage = 25,
         reference,
-        record,
+        resource,
+        sort = defaultSort,
+        source = 'id',
         target,
-        filter,
-        source,
-        basePath,
     } = props;
-    if (React.Children.count(children) !== 1) {
-        throw new Error(
-            '<ReferenceManyField> only accepts a single child (like <Datagrid>)'
-        );
-    }
-    const { sort, setSortField } = useSortState(initialSort);
-    const { page, perPage, setPage, setPerPage } = usePaginationState({
-        perPage: initialPerPage,
-    });
+    const record = useRecordContext(props);
 
-    const controllerProps = useReferenceManyFieldController({
-        resource,
-        reference,
-        record,
-        target,
+    const controllerProps = useReferenceManyFieldController<
+        RecordType,
+        ReferenceRecordType
+    >({
+        debounce,
         filter,
-        source,
-        basePath,
         page,
         perPage,
+        record,
+        reference,
+        resource,
         sort,
+        source,
+        target,
     });
 
     return (
-        <ReferenceManyFieldView
-            {...props}
-            {...{
-                currentSort: sort,
-                page,
-                perPage,
-                setPage,
-                setPerPage,
-                setSort: setSortField,
-                ...controllerProps,
-            }}
-        />
+        <ResourceContextProvider value={reference}>
+            <ListContextProvider value={controllerProps}>
+                {children}
+                {pagination}
+            </ListContextProvider>
+        </ResourceContextProvider>
     );
 };
 
-interface ReferenceManyFieldProps extends FieldProps, InjectedFieldProps {
-    children: ReactElement;
-    filter?: Filter;
-    sort?: Sort;
+export interface ReferenceManyFieldProps<
+    RecordType extends Record<string, any> = Record<string, any>
+> extends FieldProps<RecordType> {
+    children: ReactNode;
+    debounce?: number;
+    filter?: FilterPayload;
+    page?: number;
+    pagination?: ReactElement;
     perPage?: number;
     reference: string;
-    resource?: string;
+    sort?: SortPayload;
     target: string;
 }
 
 ReferenceManyField.propTypes = {
-    addLabel: PropTypes.bool,
-    basePath: PropTypes.string,
-    children: PropTypes.element.isRequired,
+    children: PropTypes.node.isRequired,
     className: PropTypes.string,
     filter: PropTypes.object,
-    label: PropTypes.string,
+    label: fieldPropTypes.label,
     perPage: PropTypes.number,
     record: PropTypes.any,
     reference: PropTypes.string.isRequired,
     resource: PropTypes.string,
     sortBy: PropTypes.string,
-    source: PropTypes.string.isRequired,
+    sortByOrder: fieldPropTypes.sortByOrder,
+    source: PropTypes.string,
     sort: PropTypes.exact({
         field: PropTypes.string,
-        order: PropTypes.string,
+        order: PropTypes.oneOf(['ASC', 'DESC'] as const),
     }),
     target: PropTypes.string.isRequired,
 };
 
-ReferenceManyField.defaultProps = {
-    filter: {},
-    perPage: 25,
-    sort: { field: 'id', order: 'DESC' },
-    source: 'id',
-    addLabel: true,
+// FIXME kept for backwards compatibility, unused, to be removed in v5
+export const ReferenceManyFieldView: FC<ReferenceManyFieldViewProps> = props => {
+    const { children, pagination } = props;
+    if (process.env.NODE_ENV !== 'production') {
+        console.error(
+            '<ReferenceManyFieldView> is deprecated, use <ReferenceManyField> directly'
+        );
+    }
+    return (
+        <>
+            {children}
+            {pagination && props.total !== undefined ? pagination : null}
+        </>
+    );
 };
 
-export const ReferenceManyFieldView: FC<ReferenceManyFieldViewProps> = ({
-    children,
-    className,
-    currentSort,
-    data,
-    ids,
-    loaded,
-    page,
-    pagination,
-    perPage,
-    reference,
-    referenceBasePath,
-    setPage,
-    setPerPage,
-    setSort,
-    total,
-}) => (
-    <Fragment>
-        {cloneElement(Children.only(children), {
-            className,
-            resource: reference,
-            ids,
-            loaded,
-            data,
-            basePath: referenceBasePath,
-            currentSort,
-            setSort,
-            total,
-        })}
-        {pagination &&
-            total !== undefined &&
-            cloneElement(pagination, {
-                page,
-                perPage,
-                setPage,
-                setPerPage,
-                total,
-            })}
-    </Fragment>
-);
-
-interface ReferenceManyFieldViewProps
-    extends FieldProps,
-        InjectedFieldProps,
-        Partial<ReferenceManyProps>,
-        Pick<PaginationProps, 'page' | 'perPage' | 'setPage' | 'setPerPage'> {
+export interface ReferenceManyFieldViewProps
+    extends Omit<
+            ReferenceManyFieldProps,
+            'resource' | 'page' | 'perPage' | 'sort'
+        >,
+        ListControllerResult {
     children: ReactElement;
-    currentSort?: Sort;
-    pagination?: ReactElement;
-    reference?: string;
-    setSort?: SortProps['setSortField'];
 }
 
 ReferenceManyFieldView.propTypes = {
     children: PropTypes.element,
     className: PropTypes.string,
-    currentSort: PropTypes.exact({
+    sort: PropTypes.exact({
         field: PropTypes.string,
-        order: PropTypes.string,
+        order: PropTypes.oneOf(['ASC', 'DESC'] as const),
     }),
     data: PropTypes.any,
-    ids: PropTypes.array,
-    loaded: PropTypes.bool,
+    isLoading: PropTypes.bool,
     pagination: PropTypes.element,
     reference: PropTypes.string,
-    referenceBasePath: PropTypes.string,
     setSort: PropTypes.func,
 };
 
-export default ReferenceManyField;
+const defaultFilter = {};
+const defaultSort = { field: 'id', order: 'DESC' as const };

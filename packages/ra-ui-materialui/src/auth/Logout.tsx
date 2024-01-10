@@ -1,71 +1,83 @@
-import React, { useCallback, FunctionComponent, ReactElement } from 'react';
+import * as React from 'react';
+import { styled, Theme } from '@mui/material/styles';
+import { useCallback, FunctionComponent, ReactElement } from 'react';
 import PropTypes from 'prop-types';
-import { ListItemIcon, MenuItem, makeStyles } from '@material-ui/core';
-import { MenuItemProps } from '@material-ui/core/MenuItem';
-import { Theme } from '@material-ui/core/styles';
+import {
+    ListItemIcon,
+    ListItemText,
+    MenuItem,
+    useMediaQuery,
+} from '@mui/material';
+import { MenuItemProps } from '@mui/material/MenuItem';
 
-import ExitIcon from '@material-ui/icons/PowerSettingsNew';
-import classnames from 'classnames';
-import { useTranslate, useLogout } from 'ra-core';
-
-interface Props {
-    className?: string;
-    redirectTo?: string;
-    icon?: ReactElement;
-}
-
-const useStyles = makeStyles(
-    (theme: Theme) => ({
-        menuItem: {
-            color: theme.palette.text.secondary,
-        },
-        icon: { minWidth: theme.spacing(5) },
-    }),
-    { name: 'RaLogout' }
-);
+import ExitIcon from '@mui/icons-material/PowerSettingsNew';
+import clsx from 'clsx';
+import { useTranslate, useLogout, useAuthState } from 'ra-core';
 
 /**
  * Logout button component, to be passed to the Admin component
  *
  * Used for the Logout Menu item in the sidebar
  */
-const LogoutWithRef: FunctionComponent<
-    Props & MenuItemProps<'li', { button: true }> // HACK: https://github.com/mui-org/material-ui/issues/16245
+export const Logout: FunctionComponent<
+    LogoutProps & MenuItemProps<'li'>
 > = React.forwardRef(function Logout(props, ref) {
-    const {
-        className,
-        classes: classesOverride,
-        redirectTo,
-        icon,
-        ...rest
-    } = props;
-    const classes = useStyles(props);
+    const { className, redirectTo, icon, ...rest } = props;
+
+    const { authenticated } = useAuthState();
+    const isXSmall = useMediaQuery((theme: Theme) =>
+        theme.breakpoints.down('sm')
+    );
     const translate = useTranslate();
     const logout = useLogout();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    const handleClick = useCallback(() => logout(redirectTo), [
+    const handleClick = useCallback(() => logout(null, redirectTo, false), [
         redirectTo,
         logout,
     ]);
+
+    if (!authenticated) return null;
+
     return (
-        <MenuItem
-            className={classnames('logout', classes.menuItem, className)}
+        <StyledMenuItem
+            className={clsx('logout', className)}
             onClick={handleClick}
             ref={ref}
+            // @ts-ignore
+            component={isXSmall ? 'span' : 'li'}
             {...rest}
         >
-            <ListItemIcon className={classes.icon}>
-                {icon ? icon : <ExitIcon />}
+            <ListItemIcon className={LogoutClasses.icon}>
+                {icon ? icon : <ExitIcon fontSize="small" />}
             </ListItemIcon>
-            {translate('ra.auth.logout')}
-        </MenuItem>
+            <ListItemText>
+                {translate('ra.auth.logout', { _: 'Logout' })}
+            </ListItemText>
+        </StyledMenuItem>
     );
 });
 
-LogoutWithRef.propTypes = {
+Logout.propTypes = {
     className: PropTypes.string,
     redirectTo: PropTypes.string,
     icon: PropTypes.element,
 };
 
-export default LogoutWithRef;
+const PREFIX = 'RaLogout';
+
+export const LogoutClasses = {
+    icon: `${PREFIX}-icon`,
+};
+
+const StyledMenuItem = styled(MenuItem, {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})({
+    [`& .${LogoutClasses.icon}`]: {},
+});
+
+export interface LogoutProps {
+    className?: string;
+    redirectTo?: string;
+    icon?: ReactElement;
+}

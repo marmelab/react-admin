@@ -1,8 +1,8 @@
 # Polyglot i18n provider for react-admin
 
-Polyglot i18n provider for [react-admin](https://github.com/marmelab/react-admin), the frontend framework for building admin applications on top of REST/GraphQL services. It relies on [polyglot.js](http://airbnb.io/polyglot.js/), which uses JSON files for translations.
+Polyglot i18n provider for [react-admin](https://github.com/marmelab/react-admin), the frontend framework for building admin applications on top of REST/GraphQL services. It relies on [polyglot.js](https://airbnb.io/polyglot.js/), which uses JSON files for translations.
 
-![react-admin demo](http://static.marmelab.com/react-admin.gif)
+[![react-admin-demo](https://marmelab.com/react-admin/img/react-admin-demo-still.png)](https://vimeo.com/268958716)
 
 ## Installation
 
@@ -15,7 +15,7 @@ npm install --save ra-i18n-polyglot
 Wrap the function exported by this package around a function returning translation messages based on a locale to produce a valid `i18nProvider`.
 
 ```jsx
-import React from 'react';
+import * as React from "react";
 import { Admin, Resource } from 'react-admin';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
@@ -60,7 +60,7 @@ The `message` returned by the function argument should be a dictionary where the
 
 All core translations are in the `ra` namespace, in order to prevent collisions with your own custom translations. The root key used at runtime is determined by the value of the `locale` prop.
 
-The default messages are available [here](https://github.com/marmelab/react-admin/blob/master/packages/ra-language-english/index.js).
+The default messages are available [here](https://github.com/marmelab/react-admin/blob/master/packages/ra-language-english/src/index.ts).
 
 ## Asynchronous Locale Change
 
@@ -115,4 +115,4 @@ translate('not_yet_translated', { _: 'Default translation' });
 => 'Default translation'
 ```
 
-To find more detailed examples, please refer to [http://airbnb.io/polyglot.js/](http://airbnb.io/polyglot.js/)
+To find more detailed examples, please refer to [http://airbnb.io/polyglot.js/](https://airbnb.io/polyglot.js/)

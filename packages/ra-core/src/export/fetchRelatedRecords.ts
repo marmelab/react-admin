@@ -1,4 +1,4 @@
-import { DataProvider, Record, Identifier } from '../types';
+import { RaRecord, Identifier, DataProvider } from '../types';
 
 /**
  * Helper function for calling the dataProvider.getMany() method,
@@ -6,10 +6,11 @@ import { DataProvider, Record, Identifier } from '../types';
  *
  * @example
  *     fetchRelatedRecords(dataProvider)(records, 'post_id', 'posts').then(posts =>
- *          posts.map(record => ({
- *              ...record,
- *              post_title: posts[record.post_id].title,
- *          }));
+ *         posts.map(record => ({
+ *             ...record,
+ *             post_title: posts[record.post_id].title,
+ *         }))
+ *     );
  */
 const fetchRelatedRecords = (dataProvider: DataProvider) => (
     data,
@@ -47,7 +48,10 @@ const fetchRelatedRecords = (dataProvider: DataProvider) => (
  * @param {Object[]} records An array of records
  * @param {string} field the identifier of the record field to use
  */
-export const getRelatedIds = (records: Record[], field: string): Identifier[] =>
+export const getRelatedIds = (
+    records: RaRecord[],
+    field: string
+): Identifier[] =>
     Array.from(
         new Set(
             records

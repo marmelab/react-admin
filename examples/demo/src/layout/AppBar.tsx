@@ -1,54 +1,19 @@
-import React, { forwardRef } from 'react';
-import { AppBar, UserMenu, MenuItemLink, useTranslate } from 'react-admin';
-import Typography from '@material-ui/core/Typography';
-import SettingsIcon from '@material-ui/icons/Settings';
-import { makeStyles } from '@material-ui/core/styles';
+import * as React from 'react';
+import { AppBar, TitlePortal } from 'react-admin';
+import { Box, useMediaQuery, Theme } from '@mui/material';
 
 import Logo from './Logo';
+import { AppBarToolbar } from './AppBarToolbar';
 
-const useStyles = makeStyles({
-    title: {
-        flex: 1,
-        textOverflow: 'ellipsis',
-        whiteSpace: 'nowrap',
-        overflow: 'hidden',
-    },
-    spacer: {
-        flex: 1,
-    },
-});
-
-const ConfigurationMenu = forwardRef<any, any>((props, ref) => {
-    const translate = useTranslate();
-    return (
-        <MenuItemLink
-            ref={ref}
-            to="/configuration"
-            primaryText={translate('pos.configuration')}
-            leftIcon={<SettingsIcon />}
-            onClick={props.onClick}
-        />
+const CustomAppBar = () => {
+    const isLargeEnough = useMediaQuery<Theme>(theme =>
+        theme.breakpoints.up('sm')
     );
-});
-
-const CustomUserMenu = (props: any) => (
-    <UserMenu {...props}>
-        <ConfigurationMenu />
-    </UserMenu>
-);
-
-const CustomAppBar = (props: any) => {
-    const classes = useStyles();
     return (
-        <AppBar {...props} userMenu={<CustomUserMenu />}>
-            <Typography
-                variant="h6"
-                color="inherit"
-                className={classes.title}
-                id="react-admin-title"
-            />
-            <Logo />
-            <span className={classes.spacer} />
+        <AppBar color="secondary" toolbar={<AppBarToolbar />}>
+            <TitlePortal />
+            {isLargeEnough && <Logo />}
+            {isLargeEnough && <Box component="span" sx={{ flex: 1 }} />}
         </AppBar>
     );
 };

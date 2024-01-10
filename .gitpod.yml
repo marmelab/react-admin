@@ -1,0 +1,6 @@
+tasks:
+  - init: make install
+    command: make run
+ports: 
+  - port: 8080
+    onOpen: open-preview

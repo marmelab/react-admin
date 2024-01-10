@@ -1,18 +1,22 @@
-import React, { FunctionComponent, HtmlHTMLAttributes } from 'react';
+import * as React from 'react';
 import get from 'lodash/get';
-import pure from 'recompose/pure';
-import Typography from '@material-ui/core/Typography';
+import Typography from '@mui/material/Typography';
+import { Link, LinkProps } from '@mui/material';
+import { useRecordContext, useTranslate } from 'ra-core';
 
-import sanitizeRestProps from './sanitizeRestProps';
-import { FieldProps, InjectedFieldProps, fieldPropTypes } from './types';
+import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
+import { FieldProps, fieldPropTypes } from './types';
+import { genericMemo } from './genericMemo';
 
-// useful to prevent click bubbling in a datagrid with rowClick
-const stopPropagation = e => e.stopPropagation();
-
-const EmailField: FunctionComponent<
-    FieldProps & InjectedFieldProps & HtmlHTMLAttributes<HTMLAnchorElement>
-> = ({ className, source, record = {}, emptyText, ...rest }) => {
+const EmailFieldImpl = <
+    RecordType extends Record<string, any> = Record<string, any>
+>(
+    props: EmailFieldProps<RecordType>
+) => {
+    const { className, source, emptyText, ...rest } = props;
+    const record = useRecordContext(props);
     const value = get(record, source);
+    const translate = useTranslate();
 
     if (value == null) {
         return emptyText ? (
@@ -20,34 +24,35 @@ const EmailField: FunctionComponent<
                 component="span"
                 variant="body2"
                 className={className}
-                {...sanitizeRestProps(rest)}
+                {...sanitizeFieldRestProps(rest)}
             >
-                {emptyText}
+                {emptyText && translate(emptyText, { _: emptyText })}
             </Typography>
         ) : null;
     }
 
     return (
-        <a
+        <Link
             className={className}
             href={`mailto:${value}`}
             onClick={stopPropagation}
-            {...sanitizeRestProps(rest)}
+            variant="body2"
+            {...sanitizeFieldRestProps(rest)}
         >
             {value}
-        </a>
+        </Link>
     );
 };
 
-const EnhancedEmailField = pure<
-    FieldProps & HtmlHTMLAttributes<HTMLAnchorElement>
->(EmailField);
+EmailFieldImpl.propTypes = fieldPropTypes;
+EmailFieldImpl.displayName = 'EmailFieldImpl';
 
-EnhancedEmailField.defaultProps = {
-    addLabel: true,
-};
+export const EmailField = genericMemo(EmailFieldImpl);
 
-EnhancedEmailField.propTypes = fieldPropTypes;
-EnhancedEmailField.displayName = 'EnhancedEmailField';
+export interface EmailFieldProps<
+    RecordType extends Record<string, any> = Record<string, any>
+> extends FieldProps<RecordType>,
+        Omit<LinkProps, 'textAlign'> {}
 
-export default EnhancedEmailField;
+// useful to prevent click bubbling in a Datagrid with rowClick
+const stopPropagation = e => e.stopPropagation();

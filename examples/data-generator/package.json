@@ -1,22 +1,30 @@
 {
     "name": "data-generator-retail",
-    "version": "3.2.2",
+    "version": "4.16.5",
     "homepage": "https://github.com/marmelab/react-admin/tree/master/examples/data-generator",
     "bugs": "https://github.com/marmelab/react-admin/issues",
     "license": "MIT",
-    "main": "./lib/index.js",
+    "main": "dist/cjs/index.js",
+    "module": "dist/esm/index.js",
+    "types": "dist/cjs/index.d.ts",
     "scripts": {
         "build": "yarn run build-cjs && yarn run build-esm",
-        "build-cjs": "rimraf ./lib && tsc",
-        "build-esm": "rimraf ./esm && tsc --outDir esm --module es2015",
-        "watch": "tsc --outDir esm --module es2015 --watch"
+        "build-cjs": "rimraf ./dist/cjs && tsc --outDir dist/cjs",
+        "build-esm": "rimraf ./dist/esm && tsc --outDir dist/esm --module es2015",
+        "watch": "tsc --outDir dist/esm --module es2015 --watch"
     },
     "dependencies": {
-        "date-fns": "~1.29.0",
+        "date-fns": "^2.19.0",
         "faker": "^4.1.0"
     },
     "devDependencies": {
         "cross-env": "^5.2.0",
-        "rimraf": "^2.6.3"
-    }
+        "ra-core": "^4.16.5",
+        "rimraf": "^3.0.2",
+        "typescript": "^5.1.3"
+    },
+    "peerDependencies": {
+        "ra-core": "^4.0.0"
+    },
+    "gitHead": "e936ff2c3f887d2e98ef136cf3b3f3d254725fc4"
 }

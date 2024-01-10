@@ -1,11 +1,4 @@
-import { ReactNode, ReactElement, ComponentType } from 'react';
-import {
-    RouteProps,
-    RouteComponentProps,
-    match as Match,
-} from 'react-router-dom';
-import { Location, History } from 'history';
-
+import { ComponentType, ReactElement, ReactNode } from 'react';
 import { WithPermissionsChildrenParams } from './auth/WithPermissions';
 import { AuthActionType } from './auth/types';
 
@@ -14,25 +7,20 @@ import { AuthActionType } from './auth/types';
  */
 
 export type Identifier = string | number;
-export interface Record {
-    id: Identifier;
-    [key: string]: any;
+
+export interface RaRecord<IdentifierType extends Identifier = Identifier>
+    extends Record<string, any> {
+    id: IdentifierType;
 }
 
-export interface RecordMap<RecordType = Record> {
-    // Accept strings and numbers as identifiers
-    [id: string]: RecordType;
-    [id: number]: RecordType;
-}
-
-export interface Sort {
+export interface SortPayload {
     field: string;
-    order: string;
+    order: 'ASC' | 'DESC';
 }
-export interface Filter {
+export interface FilterPayload {
     [k: string]: any;
 }
-export interface Pagination {
+export interface PaginationPayload {
     page: number;
     perPage: number;
 }
@@ -46,24 +34,45 @@ export const I18N_CHANGE_LOCALE = 'I18N_CHANGE_LOCALE';
 
 export type Translate = (key: string, options?: any) => string;
 
+export type Locale = {
+    locale: string;
+    name: string;
+};
+
 export type I18nProvider = {
     translate: Translate;
     changeLocale: (locale: string, options?: any) => Promise<void>;
     getLocale: () => string;
+    getLocales?: () => Locale[];
     [key: string]: any;
 };
+
+export interface UserIdentity {
+    id: Identifier;
+    fullName?: string;
+    avatar?: string;
+    [key: string]: any;
+}
 
 /**
  * authProvider types
  */
-
 export type AuthProvider = {
-    login: (params: any) => Promise<any>;
-    logout: (params: any) => Promise<void | string>;
+    login: (
+        params: any
+    ) => Promise<{ redirectTo?: string | boolean } | void | any>;
+    logout: (params: any) => Promise<void | false | string>;
     checkAuth: (params: any) => Promise<void>;
     checkError: (error: any) => Promise<void>;
+    getIdentity?: () => Promise<UserIdentity>;
     getPermissions: (params: any) => Promise<any>;
+    handleCallback?: () => Promise<AuthRedirectResult | void | any>;
     [key: string]: any;
+};
+
+export type AuthRedirectResult = {
+    redirectTo?: string | false;
+    logoutOnFailure?: boolean;
 };
 
 export type LegacyAuthProvider = (
@@ -75,200 +84,189 @@ export type LegacyAuthProvider = (
  * dataProvider types
  */
 
-export type DataProvider = {
-    getList: (
-        resource: string,
+export type DataProvider<ResourceType extends string = string> = {
+    getList: <RecordType extends RaRecord = any>(
+        resource: ResourceType,
         params: GetListParams
-    ) => Promise<GetListResult>;
+    ) => Promise<GetListResult<RecordType>>;
 
-    getOne: (resource: string, params: GetOneParams) => Promise<GetOneResult>;
+    getOne: <RecordType extends RaRecord = any>(
+        resource: ResourceType,
+        params: GetOneParams<RecordType>
+    ) => Promise<GetOneResult<RecordType>>;
 
-    getMany: (
-        resource: string,
+    getMany: <RecordType extends RaRecord = any>(
+        resource: ResourceType,
         params: GetManyParams
-    ) => Promise<GetManyResult>;
+    ) => Promise<GetManyResult<RecordType>>;
 
-    getManyReference: (
-        resource: string,
+    getManyReference: <RecordType extends RaRecord = any>(
+        resource: ResourceType,
         params: GetManyReferenceParams
-    ) => Promise<GetManyReferenceResult>;
+    ) => Promise<GetManyReferenceResult<RecordType>>;
 
-    update: (resource: string, params: UpdateParams) => Promise<UpdateResult>;
+    update: <RecordType extends RaRecord = any>(
+        resource: ResourceType,
+        params: UpdateParams
+    ) => Promise<UpdateResult<RecordType>>;
 
-    updateMany: (
-        resource: string,
+    updateMany: <RecordType extends RaRecord = any>(
+        resource: ResourceType,
         params: UpdateManyParams
-    ) => Promise<UpdateManyResult>;
+    ) => Promise<UpdateManyResult<RecordType>>;
 
-    create: (resource: string, params: CreateParams) => Promise<CreateResult>;
+    create: <
+        RecordType extends Omit<RaRecord, 'id'> = any,
+        ResultRecordType extends RaRecord = RecordType & { id: Identifier }
+    >(
+        resource: ResourceType,
+        params: CreateParams
+    ) => Promise<CreateResult<ResultRecordType>>;
 
-    delete: (resource: string, params: DeleteParams) => Promise<DeleteResult>;
+    delete: <RecordType extends RaRecord = any>(
+        resource: ResourceType,
+        params: DeleteParams<RecordType>
+    ) => Promise<DeleteResult<RecordType>>;
 
-    deleteMany: (
-        resource: string,
-        params: DeleteManyParams
-    ) => Promise<DeleteManyResult>;
+    deleteMany: <RecordType extends RaRecord = any>(
+        resource: ResourceType,
+        params: DeleteManyParams<RecordType>
+    ) => Promise<DeleteManyResult<RecordType>>;
 
     [key: string]: any;
 };
 
 export interface GetListParams {
-    pagination: Pagination;
-    sort: Sort;
+    pagination: PaginationPayload;
+    sort: SortPayload;
     filter: any;
+    meta?: any;
 }
-export interface GetListResult {
-    data: Record[];
-    total: number;
-    validUntil?: ValidUntil;
+export interface GetListResult<RecordType extends RaRecord = any> {
+    data: RecordType[];
+    total?: number;
+    pageInfo?: {
+        hasNextPage?: boolean;
+        hasPreviousPage?: boolean;
+    };
 }
 
-export interface GetOneParams {
-    id: Identifier;
+export interface GetInfiniteListResult<RecordType extends RaRecord = any>
+    extends GetListResult<RecordType> {
+    pageParam?: number;
 }
-export interface GetOneResult {
-    data: Record;
-    validUntil?: ValidUntil;
+export interface GetOneParams<RecordType extends RaRecord = any> {
+    id: RecordType['id'];
+    meta?: any;
+}
+export interface GetOneResult<RecordType extends RaRecord = any> {
+    data: RecordType;
 }
 
 export interface GetManyParams {
     ids: Identifier[];
+    meta?: any;
 }
-export interface GetManyResult {
-    data: Record[];
-    validUntil?: ValidUntil;
+export interface GetManyResult<RecordType extends RaRecord = any> {
+    data: RecordType[];
 }
 
 export interface GetManyReferenceParams {
     target: string;
     id: Identifier;
-    pagination: Pagination;
-    sort: Sort;
+    pagination: PaginationPayload;
+    sort: SortPayload;
     filter: any;
+    meta?: any;
 }
-export interface GetManyReferenceResult {
-    data: Record[];
-    total: number;
-    validUntil?: ValidUntil;
-}
-
-export interface UpdateParams {
-    id: Identifier;
-    data: any;
-    previousData: Record;
-}
-export interface UpdateResult {
-    data: Record;
-    validUntil?: ValidUntil;
+export interface GetManyReferenceResult<RecordType extends RaRecord = any> {
+    data: RecordType[];
+    total?: number;
+    pageInfo?: {
+        hasNextPage?: boolean;
+        hasPreviousPage?: boolean;
+    };
 }
 
-export interface UpdateManyParams {
+export interface UpdateParams<RecordType extends RaRecord = any> {
+    id: RecordType['id'];
+    data: Partial<RecordType>;
+    previousData: RecordType;
+    meta?: any;
+}
+export interface UpdateResult<RecordType extends RaRecord = any> {
+    data: RecordType;
+}
+
+export interface UpdateManyParams<T = any> {
     ids: Identifier[];
-    data: any;
+    data: Partial<T>;
+    meta?: any;
 }
-export interface UpdateManyResult {
-    data?: Identifier[];
-    validUntil?: ValidUntil;
-}
-
-export interface CreateParams {
-    data: any;
-}
-export interface CreateResult {
-    data: Record;
-    validUntil?: ValidUntil;
+export interface UpdateManyResult<RecordType extends RaRecord = any> {
+    data?: RecordType['id'][];
 }
 
-export interface DeleteParams {
-    id: Identifier;
+export interface CreateParams<T = any> {
+    data: Partial<T>;
+    meta?: any;
 }
-export interface DeleteResult {
-    data?: Record;
-}
-
-export interface DeleteManyParams {
-    ids: Identifier[];
-}
-export interface DeleteManyResult {
-    data?: Identifier[];
+export interface CreateResult<RecordType extends RaRecord = any> {
+    data: RecordType;
 }
 
-export type DataProviderResult =
-    | CreateResult
-    | DeleteResult
+export interface DeleteParams<RecordType extends RaRecord = any> {
+    id: RecordType['id'];
+    previousData?: RecordType;
+    meta?: any;
+}
+export interface DeleteResult<RecordType extends RaRecord = any> {
+    data: RecordType;
+}
+
+export interface DeleteManyParams<RecordType extends RaRecord = any> {
+    ids: RecordType['id'][];
+    meta?: any;
+}
+export interface DeleteManyResult<RecordType extends RaRecord = any> {
+    data?: RecordType['id'][];
+}
+
+export type DataProviderResult<RecordType extends RaRecord = any> =
+    | CreateResult<RecordType>
+    | DeleteResult<RecordType>
     | DeleteManyResult
-    | GetListResult
-    | GetManyResult
-    | GetManyReferenceResult
-    | GetOneResult
-    | UpdateResult
+    | GetListResult<RecordType>
+    | GetManyResult<RecordType>
+    | GetManyReferenceResult<RecordType>
+    | GetOneResult<RecordType>
+    | UpdateResult<RecordType>
     | UpdateManyResult;
 
-export type DataProviderProxy = {
-    getList: (
-        resource: string,
-        params: GetListParams,
-        options?: UseDataProviderOptions
-    ) => Promise<GetListResult>;
+export type MutationMode = 'pessimistic' | 'optimistic' | 'undoable';
+export type OnSuccess = (
+    response?: any,
+    variables?: any,
+    context?: any
+) => void;
 
-    getOne: (
-        resource: string,
-        params: GetOneParams,
-        options?: UseDataProviderOptions
-    ) => Promise<GetOneResult>;
+export type OnError = (error?: any, variables?: any, context?: any) => void;
+// @deprecated - use OnError instead
+export type onError = OnError;
 
-    getMany: (
-        resource: string,
-        params: GetManyParams,
-        options?: UseDataProviderOptions
-    ) => Promise<GetManyResult>;
-
-    getManyReference: (
-        resource: string,
-        params: GetManyReferenceParams,
-        options?: UseDataProviderOptions
-    ) => Promise<GetManyReferenceResult>;
-
-    update: (
-        resource: string,
-        params: UpdateParams,
-        options?: UseDataProviderOptions
-    ) => Promise<UpdateResult>;
-
-    updateMany: (
-        resource: string,
-        params: UpdateManyParams,
-        options?: UseDataProviderOptions
-    ) => Promise<UpdateManyResult>;
-
-    create: (
-        resource: string,
-        params: CreateParams,
-        options?: UseDataProviderOptions
-    ) => Promise<CreateResult>;
-
-    delete: (
-        resource: string,
-        params: DeleteParams,
-        options?: UseDataProviderOptions
-    ) => Promise<DeleteResult>;
-
-    deleteMany: (
-        resource: string,
-        params: DeleteManyParams,
-        options?: UseDataProviderOptions
-    ) => Promise<DeleteManyResult>;
-
-    [key: string]: any;
-};
+export type TransformData = (
+    data: any,
+    options?: { previousData: any }
+) => any | Promise<any>;
 
 export interface UseDataProviderOptions {
     action?: string;
     fetch?: string;
     meta?: object;
-    undoable?: boolean;
-    onSuccess?: any;
-    onFailure?: any;
+    mutationMode?: MutationMode;
+    onSuccess?: OnSuccess;
+    onError?: onError;
+    enabled?: boolean;
 }
 
 export type LegacyDataProvider = (
@@ -277,58 +275,21 @@ export type LegacyDataProvider = (
     params: any
 ) => Promise<any>;
 
-/**
- * Redux state type
- */
+export type RecordToStringFunction = (record: any) => string;
 
-export interface ReduxState {
-    admin: {
-        ui: {
-            optimistic: boolean;
-            sidebarOpen: boolean;
-            viewVersion: number;
-        };
-        resources: {
-            [name: string]: {
-                data: {
-                    [key: string]: Record;
-                    [key: number]: Record;
-                };
-                list: {
-                    cachedRequests?: {
-                        ids: Identifier[];
-                        total: number;
-                        validity: Date;
-                    };
-                    expanded: Identifier[];
-                    ids: Identifier[];
-                    loadedOnce: boolean;
-                    params: any;
-                    selectedIds: Identifier[];
-                    total: number;
-                };
-                validity: {
-                    [key: string]: Date;
-                    [key: number]: Date;
-                };
-            };
-        };
-        references: {
-            oneToMany: {
-                [relatedTo: string]: { ids: Identifier[]; total: number };
-            };
-        };
-        loading: number;
-        customQueries: {
-            [key: string]: any;
-        };
-    };
-    router: {
-        location: Location;
-    };
+export interface ResourceDefinition<OptionsType extends ResourceOptions = any> {
+    readonly name: string;
+    readonly options?: OptionsType;
+    readonly hasList?: boolean;
+    readonly hasEdit?: boolean;
+    readonly hasShow?: boolean;
+    readonly hasCreate?: boolean;
+    readonly icon?: any;
+    readonly recordRepresentation?:
+        | ReactElement
+        | RecordToStringFunction
+        | string;
 }
-
-export type InitialState = object | (() => object);
 
 /**
  * Misc types
@@ -341,82 +302,63 @@ export type Dispatch<T> = T extends (...args: infer A) => any
 export type ResourceElement = ReactElement<ResourceProps>;
 export type RenderResourcesFunction = (
     permissions: any
-) => ResourceElement[] | Promise<ResourceElement[]>;
+) =>
+    | ReactNode // (permissions) => <><Resource /><Resource /><Resource /></>
+    | Promise<ReactNode> // (permissions) => fetch().then(() => <><Resource /><Resource /><Resource /></>)
+    | ResourceElement[] // // (permissions) => [<Resource />, <Resource />, <Resource />]
+    | Promise<ResourceElement[]>; // (permissions) => fetch().then(() => [<Resource />, <Resource />, <Resource />])
 export type AdminChildren = RenderResourcesFunction | ReactNode;
-
-export interface CustomRoute extends RouteProps {
-    noLayout?: boolean;
-}
-
-export type CustomRoutes = Array<ReactElement<CustomRoute>>;
 
 export type TitleComponent = string | ReactElement<any>;
 export type CatchAllComponent = ComponentType<{ title?: TitleComponent }>;
 
-interface LoginComponentProps extends RouteComponentProps {
-    title?: TitleComponent;
-    theme?: object;
-}
-export type LoginComponent = ComponentType<LoginComponentProps>;
+export type LoginComponent = ComponentType<{}> | ReactElement<any>;
 export type DashboardComponent = ComponentType<WithPermissionsChildrenParams>;
 
-export interface LayoutProps {
+export interface CoreLayoutProps {
+    children?: ReactNode;
     dashboard?: DashboardComponent;
-    logout: ReactNode;
-    menu: ComponentType;
-    theme: object;
+    menu?: ComponentType<{
+        hasDashboard?: boolean;
+    }>;
     title?: TitleComponent;
 }
 
-export type LayoutComponent = ComponentType<LayoutProps>;
-
-export interface ReactAdminComponentProps {
-    basePath: string;
-    permissions?: any;
-}
-export interface ReactAdminComponentPropsWithId {
-    basePath: string;
-    permissions?: any;
-    id: Identifier;
-}
-
-export type ResourceMatch = Match<{
-    id?: string;
+export type LayoutComponent = ComponentType<CoreLayoutProps>;
+export type LoadingComponent = ComponentType<{
+    loadingPrimary?: string;
+    loadingSecondary?: string;
 }>;
+
+export interface ResourceComponentInjectedProps {
+    permissions?: any;
+    resource?: string;
+    options?: any;
+    hasList?: boolean;
+    hasEdit?: boolean;
+    hasShow?: boolean;
+    hasCreate?: boolean;
+}
+
+export interface ResourceOptions {
+    label?: string;
+    [key: string]: any;
+}
 
 export interface ResourceProps {
     intent?: 'route' | 'registration';
-    match?: ResourceMatch;
     name: string;
-    list?: ComponentType<ReactAdminComponentProps>;
-    create?: ComponentType<ReactAdminComponentProps>;
-    edit?: ComponentType<ReactAdminComponentPropsWithId>;
-    show?: ComponentType<ReactAdminComponentPropsWithId>;
+    list?: ComponentType<any> | ReactElement;
+    create?: ComponentType<any> | ReactElement;
+    edit?: ComponentType<any> | ReactElement;
+    show?: ComponentType<any> | ReactElement;
+    hasCreate?: boolean;
+    hasEdit?: boolean;
+    hasShow?: boolean;
     icon?: ComponentType<any>;
-    options?: object;
-}
-
-export interface AdminProps {
-    appLayout?: LayoutComponent;
-    authProvider?: AuthProvider | LegacyAuthProvider;
-    catchAll?: CatchAllComponent;
-    children?: AdminChildren;
-    customReducers?: object;
-    customRoutes?: CustomRoutes;
-    customSagas?: any[];
-    dashboard?: DashboardComponent;
-    dataProvider: DataProvider | LegacyDataProvider;
-    history?: History;
-    i18nProvider?: I18nProvider;
-    initialState?: InitialState;
-    layout?: LayoutComponent;
-    loading?: ComponentType;
-    locale?: string;
-    loginPage?: LoginComponent | boolean;
-    logoutButton?: ComponentType;
-    menu?: ComponentType;
-    theme?: object;
-    title?: TitleComponent;
+    recordRepresentation?: ReactElement | RecordToStringFunction | string;
+    options?: ResourceOptions;
+    children?: ReactNode;
 }
 
 export type Exporter = (
@@ -428,7 +370,7 @@ export type Exporter = (
     ) => Promise<any>,
     dataProvider: DataProvider,
     resource?: string
-) => Promise<void>;
+) => void | Promise<void>;
 
 export type SetOnSave = (
     onSave?: (values: object, redirect: any) => void

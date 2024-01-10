@@ -1,22 +1,12 @@
-import React, { FunctionComponent } from 'react';
+import * as React from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
-import pure from 'recompose/pure';
-import Typography, { TypographyProps } from '@material-ui/core/Typography';
+import Typography, { TypographyProps } from '@mui/material/Typography';
+import { useRecordContext, useTranslate } from 'ra-core';
 
-import sanitizeRestProps from './sanitizeRestProps';
-import { FieldProps, InjectedFieldProps, fieldPropTypes } from './types';
-
-const hasNumberFormat = !!(
-    typeof Intl === 'object' &&
-    Intl &&
-    typeof Intl.NumberFormat === 'function'
-);
-
-interface Props extends FieldProps {
-    locales?: string | string[];
-    options?: object;
-}
+import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
+import { FieldProps, fieldPropTypes } from './types';
+import { genericMemo } from './genericMemo';
 
 /**
  * Display a numeric value as a locale string.
@@ -46,33 +36,44 @@ interface Props extends FieldProps {
  * // renders the record { id: 1234, price: 25.99 } as
  * <span>25,99 $US</span>
  */
-export const NumberField: FunctionComponent<
-    Props & InjectedFieldProps & TypographyProps
-> = ({
-    className,
-    emptyText,
-    record,
-    source,
-    locales,
-    options,
-    textAlign,
-    ...rest
-}) => {
+const NumberFieldImpl = <
+    RecordType extends Record<string, any> = Record<string, any>
+>(
+    props: NumberFieldProps<RecordType>
+) => {
+    const {
+        className,
+        emptyText,
+        source,
+        locales,
+        options,
+        textAlign,
+        transform = defaultTransform,
+        ...rest
+    } = props;
+    const record = useRecordContext<RecordType>(props);
+    const translate = useTranslate();
+
     if (!record) {
         return null;
     }
-    const value = get(record, source);
+    let value: any = get(record, source);
+
     if (value == null) {
         return emptyText ? (
             <Typography
                 component="span"
                 variant="body2"
                 className={className}
-                {...sanitizeRestProps(rest)}
+                {...sanitizeFieldRestProps(rest)}
             >
-                {emptyText}
+                {emptyText && translate(emptyText, { _: emptyText })}
             </Typography>
         ) : null;
+    }
+
+    if (transform) {
+        value = transform(value);
     }
 
     return (
@@ -80,24 +81,19 @@ export const NumberField: FunctionComponent<
             variant="body2"
             component="span"
             className={className}
-            {...sanitizeRestProps(rest)}
+            {...sanitizeFieldRestProps(rest)}
         >
-            {hasNumberFormat ? value.toLocaleString(locales, options) : value}
+            {hasNumberFormat && typeof value === 'number'
+                ? value.toLocaleString(locales, options)
+                : value}
         </Typography>
     );
 };
 
-// wat? TypeScript looses the displayName if we don't set it explicitly
-NumberField.displayName = 'NumberField';
+const defaultTransform = value =>
+    value && typeof value === 'string' && !isNaN(value as any) ? +value : value;
 
-const EnhancedNumberField = pure<Props & TypographyProps>(NumberField);
-
-EnhancedNumberField.defaultProps = {
-    addLabel: true,
-    textAlign: 'right',
-};
-
-EnhancedNumberField.propTypes = {
+NumberFieldImpl.propTypes = {
     // @ts-ignore
     ...Typography.propTypes,
     ...fieldPropTypes,
@@ -108,6 +104,25 @@ EnhancedNumberField.propTypes = {
     options: PropTypes.object,
 };
 
-EnhancedNumberField.displayName = 'EnhancedNumberField';
+// what? TypeScript loses the displayName if we don't set it explicitly
+NumberFieldImpl.displayName = 'NumberFieldImpl';
+NumberFieldImpl.defaultProps = {
+    textAlign: 'right',
+};
 
-export default EnhancedNumberField;
+export const NumberField = genericMemo(NumberFieldImpl);
+
+export interface NumberFieldProps<
+    RecordType extends Record<string, any> = Record<string, any>
+> extends FieldProps<RecordType>,
+        Omit<TypographyProps, 'textAlign'> {
+    locales?: string | string[];
+    options?: object;
+    transform?: (value: any) => number;
+}
+
+const hasNumberFormat = !!(
+    typeof Intl === 'object' &&
+    Intl &&
+    typeof Intl.NumberFormat === 'function'
+);

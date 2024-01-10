@@ -2,7 +2,7 @@
 
 JSON Server Data Provider for [react-admin](https://github.com/marmelab/react-admin), the frontend framework for building admin applications on top of REST/GraphQL services.
 
-![react-admin demo](http://static.marmelab.com/react-admin.gif)
+[![react-admin-demo](https://marmelab.com/react-admin/img/react-admin-demo-still.png)](https://vimeo.com/268958716)
 
 ## Installation
 
@@ -12,18 +12,18 @@ npm install --save ra-data-json-server
 
 ## REST Dialect
 
-This Data Provider fits REST APIs powered by [JSON Server](https://github.com/typicode/json-server), such as [JSONPlaceholder](http://jsonplaceholder.typicode.com/).
+This Data Provider fits REST APIs powered by [JSON Server](https://github.com/typicode/json-server), such as [JSONPlaceholder](https://jsonplaceholder.typicode.com/).
 
-| Method             | API calls
-|--------------------|----------------------------------------------------------------
-| `getList`          | `GET http://my.api.url/posts?_sort=title&_order=ASC&_start=0&_end=24&title=bar`
-| `getOne`           | `GET http://my.api.url/posts/123`
-| `getMany`          | `GET http://my.api.url/posts/123, GET http://my.api.url/posts/456, GET http://my.api.url/posts/789`
-| `getManyReference` | `GET http://my.api.url/posts?author_id=345`
-| `create`           | `POST http://my.api.url/posts/123`
-| `update`           | `PUT http://my.api.url/posts/123`
-| `updateMany`       | `PUT http://my.api.url/posts/123`, `PUT http://my.api.url/posts/456`, `PUT http://my.api.url/posts/789`
-| `delete`           | `DELETE http://my.api.url/posts/123`
+| Method             | API calls                                                                                               |
+| ------------------ | ------------------------------------------------------------------------------------------------------- |
+| `getList`          | `GET http://my.api.url/posts?_sort=title&_order=ASC&_start=0&_end=24&title=bar`                         |
+| `getOne`           | `GET http://my.api.url/posts/123`                                                                       |
+| `getMany`          | `GET http://my.api.url/posts?id=123&id=456&id=789`     |
+| `getManyReference` | `GET http://my.api.url/posts?author_id=345`                                                             |
+| `create`           | `POST http://my.api.url/posts`                                                                      |
+| `update`           | `PUT http://my.api.url/posts/123`                                                                       |
+| `updateMany`       | `PUT http://my.api.url/posts/123`, `PUT http://my.api.url/posts/456`, `PUT http://my.api.url/posts/789` |
+| `delete`           | `DELETE http://my.api.url/posts/123`                                                                    |
 
 **Note**: The JSON Server REST Data Provider expects the API to include a `X-Total-Count` header in the response to `getList` and `getManyReference` calls. The value must be the total number of resources in the collection. This allows react-admin to know how many pages of resources there are in total, and build the pagination controls.
 
@@ -41,14 +41,14 @@ Access-Control-Expose-Headers: X-Total-Count
 
 ```jsx
 // in src/App.js
-import React from 'react';
+import * as React from "react";
 import { Admin, Resource } from 'react-admin';
 import jsonServerProvider from 'ra-data-json-server';
 
 import { PostList } from './posts';
 
 const App = () => (
-    <Admin dataProvider={jsonServerProvider('http://jsonplaceholder.typicode.com')}>
+    <Admin dataProvider={jsonServerProvider('https://jsonplaceholder.typicode.com')}>
         <Resource name="posts" list={PostList} />
     </Admin>
 );
@@ -74,7 +74,7 @@ const httpClient = (url, options = {}) => {
     options.headers.set('X-Custom-Header', 'foobar');
     return fetchUtils.fetchJson(url, options);
 };
-const dataProvider = jsonServerProvider('http://jsonplaceholder.typicode.com', httpClient);
+const dataProvider = jsonServerProvider('https://jsonplaceholder.typicode.com', httpClient);
 
 render(
     <Admin dataProvider={dataProvider} title="Example Admin">
@@ -102,4 +102,4 @@ Now all the requests to the REST API will contain the `Authorization: SRTRDFVESG
 
 ## License
 
-This data provider is licensed under the MIT License, and sponsored by [marmelab](http://marmelab.com).
+This data provider is licensed under the MIT License, and sponsored by [marmelab](https://marmelab.com).

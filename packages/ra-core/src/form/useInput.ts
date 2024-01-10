@@ -1,116 +1,159 @@
+import { ReactElement, useEffect } from 'react';
 import {
-    useField as useFinalFormField,
-    FieldProps,
-    FieldRenderProps,
-    FieldInputProps,
-} from 'react-final-form';
-import { Validator, composeValidators } from './validate';
+    ControllerFieldState,
+    ControllerRenderProps,
+    useController,
+    UseControllerProps,
+    UseControllerReturn,
+    UseFormStateReturn,
+} from 'react-hook-form';
+import get from 'lodash/get';
+
+import { useRecordContext } from '../controller';
+import { composeValidators, Validator } from './validate';
 import isRequired from './isRequired';
-import { useCallback, ChangeEvent } from 'react';
+import { useFormGroupContext } from './useFormGroupContext';
+import { useFormGroups } from './useFormGroups';
+import { useApplyInputDefaultValues } from './useApplyInputDefaultValues';
+import { useEvent } from '../util';
 
-export interface InputProps<T = any>
-    extends Omit<
-        FieldProps<any, FieldRenderProps<any, HTMLElement>, HTMLElement>,
-        'validate' | 'children'
-    > {
-    source: string;
-    name?: string;
-    id?: string;
-    defaultValue?: any;
-    validate?: Validator | Validator[];
-    onBlur?: (event: FocusEvent) => void;
-    onChange?: (event: ChangeEvent | any) => void;
-    onFocus?: (event: FocusEvent) => void;
-    options?: T;
-    input?: FieldInputProps<any, HTMLElement>;
-    meta?: any;
-}
+// replace null or undefined values by empty string to avoid controlled/uncontrolled input warning
+const defaultFormat = (value: any) => (value == null ? '' : value);
+// parse empty string into null as it's more suitable for a majority of backends
+const defaultParse = (value: string) => (value === '' ? null : value);
 
-interface ComputedInputProps extends FieldRenderProps<any, HTMLElement> {
-    id: string;
-    isRequired: boolean;
-}
-
-const useInput = ({
-    defaultValue,
-    id,
-    name,
-    source,
-    validate,
-    onBlur: customOnBlur,
-    onChange: customOnChange,
-    onFocus: customOnFocus,
-    ...options
-}: InputProps): ComputedInputProps => {
+export const useInput = <ValueType = any>(
+    props: InputProps<ValueType>
+): UseInputValue => {
+    const {
+        defaultValue,
+        format = defaultFormat,
+        id,
+        isRequired: isRequiredOption,
+        name,
+        onBlur: initialOnBlur,
+        onChange: initialOnChange,
+        parse = defaultParse,
+        source,
+        validate,
+        ...options
+    } = props;
     const finalName = name || source;
+    const formGroupName = useFormGroupContext();
+    const formGroups = useFormGroups();
+    const record = useRecordContext();
+
+    useEffect(() => {
+        if (!formGroups || formGroupName == null) {
+            return;
+        }
+
+        formGroups.registerField(source, formGroupName);
+
+        return () => {
+            formGroups.unregisterField(source, formGroupName);
+        };
+    }, [formGroups, formGroupName, source]);
 
     const sanitizedValidate = Array.isArray(validate)
         ? composeValidators(validate)
         : validate;
 
-    const { input, meta } = useFinalFormField(finalName, {
-        initialValue: defaultValue,
-        validate: sanitizedValidate,
+    // Fetch the defaultValue from the record if available or apply the provided defaultValue.
+    // This ensures dynamically added inputs have their value set correctly (ArrayInput for example).
+    // We don't do this for the form level defaultValues so that it works as it should in react-hook-form
+    // (i.e. field level defaultValue override form level defaultValues for this field).
+    const { field: controllerField, fieldState, formState } = useController({
+        name: finalName,
+        defaultValue: get(record, source, defaultValue),
+        rules: {
+            validate: async (value, values) => {
+                if (!sanitizedValidate) return true;
+                const error = await sanitizedValidate(value, values, props);
+
+                if (!error) return true;
+                // react-hook-form expects errors to be plain strings but our validators can return objects
+                // that have message and args.
+                // To avoid double translation for users that validate with a schema instead of our validators
+                // we use a special format for our validators errors.
+                // The ValidationError component will check for this format and extract the message and args
+                // to translate.
+                return `@@react-admin@@${JSON.stringify(error)}`;
+            },
+        },
         ...options,
+        // Workaround for https://github.com/react-hook-form/react-hook-form/issues/10907
+        // FIXME - remove when fixed
+        // @ts-ignore - only exists since react-hook-form 7.46.0
+        disabled: options.disabled || undefined,
     });
 
-    // Extract the event handlers so that we can provide ours
-    // allowing users to provide theirs without breaking the form
-    const { onBlur, onChange, onFocus, ...inputProps } = input;
+    // Because our forms may receive an asynchronously loaded record for instance,
+    // they may reset their default values which would override the input default value.
+    // This hook ensures that the input default value is applied when a new record is loaded but has
+    // no value for the input.
+    useApplyInputDefaultValues({ inputProps: props });
 
-    const handleBlur = useCallback(
-        event => {
-            onBlur(event);
+    const onBlur = useEvent((...event: any[]) => {
+        controllerField.onBlur();
+        if (initialOnBlur) {
+            initialOnBlur(...event);
+        }
+    });
 
-            if (typeof customOnBlur === 'function') {
-                customOnBlur(event);
-            }
-        },
-        [onBlur, customOnBlur]
-    );
+    const onChange = useEvent((...event: any[]) => {
+        const eventOrValue = (props.type === 'checkbox' &&
+        event[0]?.target?.value === 'on'
+            ? event[0].target.checked
+            : event[0]?.target?.value ?? event[0]) as any;
+        controllerField.onChange(parse ? parse(eventOrValue) : eventOrValue);
+        if (initialOnChange) {
+            initialOnChange(...event);
+        }
+    });
 
-    const handleChange = useCallback(
-        event => {
-            onChange(event);
-            if (typeof customOnChange === 'function') {
-                customOnChange(event);
-            }
-        },
-        [onChange, customOnChange]
-    );
-
-    const handleFocus = useCallback(
-        event => {
-            onFocus(event);
-            if (typeof customOnFocus === 'function') {
-                customOnFocus(event);
-            }
-        },
-        [onFocus, customOnFocus]
-    );
-
-    // If there is an input prop, this input has already been enhanced by final-form
-    // This is required in for inputs used inside other inputs (such as the SelectInput inside a ReferenceInput)
-    if (options.input) {
-        return {
-            id: id || source,
-            input: options.input,
-            meta: options.meta,
-            isRequired: isRequired(validate),
-        };
-    }
+    const field = {
+        ...controllerField,
+        value: format ? format(controllerField.value) : controllerField.value,
+        onBlur,
+        onChange,
+    };
 
     return {
         id: id || source,
-        input: {
-            ...inputProps,
-            onBlur: handleBlur,
-            onChange: handleChange,
-            onFocus: handleFocus,
-        },
-        meta,
-        isRequired: isRequired(validate),
+        field,
+        fieldState,
+        formState,
+        isRequired: isRequiredOption || isRequired(validate),
     };
 };
 
-export default useInput;
+export type InputProps<ValueType = any> = Omit<
+    UseControllerProps,
+    'name' | 'defaultValue' | 'rules'
+> &
+    Partial<UseControllerReturn> & {
+        alwaysOn?: any;
+        defaultValue?: any;
+        format?: (value: ValueType) => any;
+        id?: string;
+        isRequired?: boolean;
+        label?: string | ReactElement | false;
+        helperText?: string | ReactElement | false;
+        name?: string;
+        onBlur?: (...event: any[]) => void;
+        onChange?: (...event: any[]) => void;
+        parse?: (value: any) => ValueType;
+        type?: string;
+        resource?: string;
+        source: string;
+        validate?: Validator | Validator[];
+    };
+
+export type UseInputValue = {
+    id: string;
+    isRequired: boolean;
+    field: ControllerRenderProps;
+    formState: UseFormStateReturn<Record<string, string>>;
+    fieldState: ControllerFieldState;
+};

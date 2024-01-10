@@ -1,28 +1,37 @@
-import React from 'react';
+import * as React from 'react';
 import expect from 'expect';
-import { cleanup, wait } from '@testing-library/react';
-
-import Authenticated from './Authenticated';
-import AuthContext from './AuthContext';
-import renderWithRedux from '../util/renderWithRedux';
-import { showNotification } from '../actions/notificationActions';
+import { render, screen, waitFor } from '@testing-library/react';
 import { createMemoryHistory } from 'history';
-import { Router } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
+
+import { memoryStore } from '../store';
+import { CoreAdminContext } from '../core';
+import { useNotificationContext } from '../notification';
+import { Authenticated } from './Authenticated';
 
 describe('<Authenticated>', () => {
-    afterEach(cleanup);
-
     const Foo = () => <div>Foo</div>;
 
     it('should render its child by default', async () => {
-        const { dispatch, queryByText } = renderWithRedux(
-            <Authenticated>
-                <Foo />
-            </Authenticated>
+        const authProvider = {
+            login: () => Promise.reject('bad method'),
+            logout: () => Promise.reject('bad method'),
+            checkAuth: jest.fn().mockResolvedValueOnce(''),
+            checkError: () => Promise.reject('bad method'),
+            getPermissions: () => Promise.reject('bad method'),
+        };
+        const store = memoryStore();
+        const reset = jest.spyOn(store, 'reset');
+
+        render(
+            <CoreAdminContext authProvider={authProvider} store={store}>
+                <Authenticated>
+                    <Foo />
+                </Authenticated>
+            </CoreAdminContext>
         );
-        expect(queryByText('Foo')).toBeDefined();
-        await wait();
-        expect(dispatch).toHaveBeenCalledTimes(0);
+        expect(screen.queryByText('Foo')).not.toBeNull();
+        expect(reset).toHaveBeenCalledTimes(0);
     });
 
     it('should logout, redirect to login and show a notification after a tick if the auth fails', async () => {
@@ -33,30 +42,62 @@ describe('<Authenticated>', () => {
             checkError: jest.fn().mockResolvedValue(''),
             getPermissions: jest.fn().mockResolvedValue(''),
         };
-
+        const store = memoryStore();
+        const reset = jest.spyOn(store, 'reset');
         const history = createMemoryHistory();
 
-        const { dispatch } = renderWithRedux(
-            <Router history={history}>
-                <AuthContext.Provider value={authProvider}>
-                    <Authenticated>
-                        <Foo />
-                    </Authenticated>
-                </AuthContext.Provider>
-            </Router>
+        const Login = () => {
+            const location = useLocation();
+            return (
+                <div aria-label="nextPathname">
+                    {(location.state as any).nextPathname}
+                </div>
+            );
+        };
+
+        let notificationsSpy;
+        const Notification = () => {
+            const { notifications } = useNotificationContext();
+            React.useEffect(() => {
+                notificationsSpy = notifications;
+            }, [notifications]);
+            return null;
+        };
+
+        render(
+            <CoreAdminContext
+                authProvider={authProvider}
+                store={store}
+                history={history}
+            >
+                <Notification />
+                <Routes>
+                    <Route
+                        path="/"
+                        element={
+                            <Authenticated>
+                                <Foo />
+                            </Authenticated>
+                        }
+                    />
+                    <Route path="/login" element={<Login />} />
+                </Routes>
+            </CoreAdminContext>
         );
-        await wait();
-        expect(authProvider.checkAuth.mock.calls[0][0]).toEqual({});
-        expect(authProvider.logout.mock.calls[0][0]).toEqual({});
-        expect(dispatch).toHaveBeenCalledTimes(2);
-        expect(dispatch.mock.calls[0][0]).toEqual(
-            showNotification('ra.auth.auth_check_error', 'warning', {
-                messageArgs: {},
-                undoable: false,
-            })
-        );
-        expect(dispatch.mock.calls[1][0]).toEqual({ type: 'RA/CLEAR_STATE' });
-        expect(history.location.pathname).toEqual('/login');
-        expect(history.location.state).toEqual({ nextPathname: '/' });
+        await waitFor(() => {
+            expect(authProvider.checkAuth.mock.calls[0][0]).toEqual({});
+            expect(authProvider.logout.mock.calls[0][0]).toEqual({});
+            expect(reset).toHaveBeenCalledTimes(1);
+            expect(notificationsSpy).toEqual([
+                {
+                    message: 'ra.auth.auth_check_error',
+                    type: 'error',
+                    notificationOptions: {},
+                },
+            ]);
+            expect(screen.getByLabelText('nextPathname').innerHTML).toEqual(
+                '/'
+            );
+        });
     });
 });

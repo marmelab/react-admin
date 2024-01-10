@@ -1,106 +1,83 @@
-import React, { FunctionComponent } from 'react';
+import * as React from 'react';
+import { styled } from '@mui/material/styles';
+import { Box, Typography } from '@mui/material';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
-import { makeStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
-import classnames from 'classnames';
+import { useRecordContext, useTranslate } from 'ra-core';
 
-import sanitizeRestProps from './sanitizeRestProps';
-import { FieldProps, InjectedFieldProps, fieldPropTypes } from './types';
+import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
+import { FieldProps, fieldPropTypes } from './types';
+import { SxProps } from '@mui/system';
 
-const useStyles = makeStyles(
-    {
-        list: {
-            display: 'flex',
-            listStyleType: 'none',
-        },
-        image: {
-            margin: '0.5rem',
-            maxHeight: '10rem',
-        },
-    },
-    { name: 'RaImageField' }
-);
-
-interface Props extends FieldProps {
-    src?: string;
-    title?: string;
-    classes?: object;
-}
-
-const ImageField: FunctionComponent<Props & InjectedFieldProps> = props => {
-    const {
-        className,
-        classes: classesOverride,
-        emptyText,
-        record,
-        source,
-        src,
-        title,
-        ...rest
-    } = props;
+export const ImageField = <
+    RecordType extends Record<string, any> = Record<string, any>
+>(
+    props: ImageFieldProps<RecordType>
+) => {
+    const { className, emptyText, source, src, title, ...rest } = props;
+    const record = useRecordContext(props);
     const sourceValue = get(record, source);
-    const classes = useStyles(props);
+    const translate = useTranslate();
+
     if (!sourceValue) {
         return emptyText ? (
             <Typography
                 component="span"
                 variant="body2"
                 className={className}
-                {...sanitizeRestProps(rest)}
+                {...sanitizeFieldRestProps(rest)}
             >
-                {emptyText}
+                {emptyText && translate(emptyText, { _: emptyText })}
             </Typography>
         ) : (
-            <div className={className} {...sanitizeRestProps(rest)} />
+            <Typography
+                component="div"
+                className={className}
+                {...sanitizeFieldRestProps(rest)}
+            />
         );
     }
 
     if (Array.isArray(sourceValue)) {
         return (
-            <ul
-                className={classnames(classes.list, className)}
-                {...sanitizeRestProps(rest)}
-            >
-                {sourceValue.map((file, index) => {
-                    const fileTitleValue = get(file, title) || title;
-                    const srcValue = get(file, src) || title;
+            <Root className={className} {...sanitizeFieldRestProps(rest)}>
+                <ul className={ImageFieldClasses.list}>
+                    {sourceValue.map((file, index) => {
+                        const fileTitleValue = get(file, title) || title;
+                        const srcValue = get(file, src) || title;
 
-                    return (
-                        <li key={index}>
-                            <img
-                                alt={fileTitleValue}
-                                title={fileTitleValue}
-                                src={srcValue}
-                                className={classes.image}
-                            />
-                        </li>
-                    );
-                })}
-            </ul>
+                        return (
+                            <li key={index}>
+                                <img
+                                    alt={fileTitleValue}
+                                    title={fileTitleValue}
+                                    src={srcValue}
+                                    className={ImageFieldClasses.image}
+                                />
+                            </li>
+                        );
+                    })}
+                </ul>
+            </Root>
         );
     }
 
-    const titleValue = get(record, title) || title;
+    const titleValue = get(record, title)?.toString() || title;
 
     return (
-        <div className={className} {...sanitizeRestProps(rest)}>
+        <Root className={className} {...sanitizeFieldRestProps(rest)}>
             <img
                 title={titleValue}
                 alt={titleValue}
-                src={sourceValue}
-                className={classes.image}
+                src={sourceValue?.toString()}
+                className={ImageFieldClasses.image}
             />
-        </div>
+        </Root>
     );
 };
 
-// wat? TypeScript looses the displayName if we don't set it explicitly
+// What? TypeScript loses the displayName if we don't set it explicitly
 ImageField.displayName = 'ImageField';
-
-ImageField.defaultProps = {
-    addLabel: true,
-};
 
 ImageField.propTypes = {
     ...fieldPropTypes,
@@ -108,4 +85,33 @@ ImageField.propTypes = {
     title: PropTypes.string,
 };
 
-export default ImageField;
+const PREFIX = 'RaImageField';
+
+export const ImageFieldClasses = {
+    list: `${PREFIX}-list`,
+    image: `${PREFIX}-image`,
+};
+
+const Root = styled(Box, {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})({
+    [`& .${ImageFieldClasses.list}`]: {
+        display: 'flex',
+        listStyleType: 'none',
+    },
+    [`& .${ImageFieldClasses.image}`]: {
+        margin: '0.25rem',
+        width: 200,
+        height: 100,
+        objectFit: 'contain',
+    },
+});
+
+export interface ImageFieldProps<
+    RecordType extends Record<string, any> = Record<string, any>
+> extends FieldProps<RecordType> {
+    src?: string;
+    title?: string;
+    sx?: SxProps;
+}

@@ -1,4 +1,4 @@
-import InvoiceIcon from '@material-ui/icons/LibraryBooks';
+import InvoiceIcon from '@mui/icons-material/LibraryBooks';
 
 import InvoiceList from './InvoiceList';
 

@@ -1,0 +1,37 @@
+{% assign v = page.dir | split: '/' | last %}
+<a class="dropdown-trigger" href="#" data-target="versions">
+    {% if page.dir contains "doc" %}
+    {% for version in site.data.versions %}
+    {% if v == version %}
+    {{ version }}
+    {% endif %}
+    {% endfor %}
+    {% else %}
+    {{ site.data.versions[0] }}
+    {% endif %}
+    <svg class="caret" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M7 10l5 5 5-5z"></path>
+        <path d="M0 0h24v24H0z" fill="none"></path>
+    </svg>
+</a>
+<ul id="versions" class="dropdown-content">
+    {% for version in site.data.versions %}
+    <li>
+        {% if version contains "latest" %}
+        {% if page.dir contains "doc" %}
+        <a href="{{ site.url }}/{{ page.name | replace: "md", "html" }}">{{
+                version
+            }}</a>
+        {% else %}
+        <a href="#">{{ version }}</a>
+        {% endif %}
+        {% elsif page.dir contains version %}
+        <a href="#">{{ version }}</a>
+        {% else %}
+        <a href="{{ site.url }}/doc/{{ version }}/{{ page.name | replace: "md", "html" }}">{{
+            version
+        }}</a>
+        {% endif %}
+    </li>
+    {% endfor %}
+</ul>

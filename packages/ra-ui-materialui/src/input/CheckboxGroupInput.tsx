@@ -1,38 +1,22 @@
-import React, { useCallback, FunctionComponent } from 'react';
+import * as React from 'react';
+import { styled } from '@mui/material/styles';
+import clsx from 'clsx';
+import { useCallback, FunctionComponent } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
-import FormLabel from '@material-ui/core/FormLabel';
-import FormControl, { FormControlProps } from '@material-ui/core/FormControl';
-import FormGroup from '@material-ui/core/FormGroup';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import { makeStyles } from '@material-ui/core/styles';
-import { CheckboxProps } from '@material-ui/core/Checkbox';
-import { FieldTitle, useInput, InputProps, ChoicesProps } from 'ra-core';
+import FormLabel from '@mui/material/FormLabel';
+import FormControl, { FormControlProps } from '@mui/material/FormControl';
+import FormGroup from '@mui/material/FormGroup';
+import FormHelperText from '@mui/material/FormHelperText';
+import { CheckboxProps } from '@mui/material/Checkbox';
+import { FieldTitle, useInput, ChoicesProps, useChoicesContext } from 'ra-core';
 
-import defaultSanitizeRestProps from './sanitizeRestProps';
-import CheckboxGroupInputItem from './CheckboxGroupInputItem';
-import InputHelperText from './InputHelperText';
-
-const sanitizeRestProps = ({
-    setFilter,
-    setPagination,
-    setSort,
-    loaded,
-    ...rest
-}: any) => defaultSanitizeRestProps(rest);
-
-const useStyles = makeStyles(
-    theme => ({
-        root: {},
-        label: {
-            transform: 'translate(0, 8px) scale(0.75)',
-            transformOrigin: `top ${
-                theme.direction === 'ltr' ? 'left' : 'right'
-            }`,
-        },
-    }),
-    { name: 'RaCheckboxGroupInput' }
-);
+import { CommonInputProps } from './CommonInputProps';
+import { sanitizeInputRestProps } from './sanitizeInputRestProps';
+import { CheckboxGroupInputItem } from './CheckboxGroupInputItem';
+import { InputHelperText } from './InputHelperText';
+import { Labeled } from '../Labeled';
+import { LinearProgress } from '../layout';
 
 /**
  * An Input component for a checkbox group, using an array of objects for the options
@@ -44,7 +28,7 @@ const useStyles = makeStyles(
  *
  * By default, the options are built from:
  *  - the 'id' property as the option value,
- *  - the 'name' property an the option text
+ *  - the 'name' property as the option text
  * @example
  * const choices = [
  *     { id: 12, name: 'Ray Hakt' },
@@ -71,14 +55,18 @@ const useStyles = makeStyles(
  * const optionRenderer = choice => `${choice.first_name} ${choice.last_name}`;
  * <CheckboxGroupInput source="recipients" choices={choices} optionText={optionRenderer} />
  *
- * `optionText` also accepts a React Element, that will be cloned and receive
- * the related choice as the `record` prop. You can use Field components there.
+ * `optionText` also accepts a React Element, that can access
+ * the related choice through the `useRecordContext` hook. You can use Field components there.
  * @example
  * const choices = [
  *    { id: 123, first_name: 'Leo', last_name: 'Tolstoi' },
  *    { id: 456, first_name: 'Jane', last_name: 'Austen' },
  * ];
- * const FullNameField = ({ record }) => <span>{record.first_name} {record.last_name}</span>;
+ * const FullNameField = () => {
+ *     const record = useRecordContext();
+ *     return <span>{record.first_name} {record.last_name}</span>;
+ * };
+ *
  * <CheckboxGroupInput source="recipients" choices={choices} optionText={<FullNameField />}/>
  *
  * The choices are translated by default, so you can use translation identifiers as choices:
@@ -89,85 +77,146 @@ const useStyles = makeStyles(
  *    { id: 'photography', name: 'myroot.category.photography' },
  * ];
  *
- * However, in some cases (e.g. inside a `<ReferenceInput>`), you may not want
+ * However, in some cases (e.g. inside a `<ReferenceArrayInput>`), you may not want
  * the choice to be translated. In that case, set the `translateChoice` prop to false.
  * @example
- * <CheckboxGroupInput source="gender" choices={choices} translateChoice={false}/>
+ * <CheckboxGroupInput source="tags" choices={choices} translateChoice={false}/>
  *
- * The object passed as `options` props is passed to the material-ui <Checkbox> components
+ * The object passed as `options` props is passed to the Material UI <Checkbox> components
  */
-const CheckboxGroupInput: FunctionComponent<
-    ChoicesProps & InputProps<CheckboxProps> & FormControlProps
-> = props => {
+export const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = props => {
     const {
-        choices = [],
+        choices: choicesProp,
+        className,
         classes: classesOverride,
         format,
         helperText,
         label,
+        labelPlacement,
+        isLoading: isLoadingProp,
+        isFetching: isFetchingProp,
         margin = 'dense',
         onBlur,
         onChange,
-        onFocus,
-        optionText,
-        optionValue,
         options,
+        optionText = 'name',
+        optionValue = 'id',
         parse,
-        resource,
-        row,
-        source,
-        translate,
+        resource: resourceProp,
+        row = true,
+        source: sourceProp,
         translateChoice,
         validate,
         ...rest
     } = props;
-    const classes = useStyles(props);
 
     const {
+        allChoices,
+        isLoading,
+        error: fetchError,
+        resource,
+        source,
+        isFromReference,
+    } = useChoicesContext({
+        choices: choicesProp,
+        isFetching: isFetchingProp,
+        isLoading: isLoadingProp,
+        resource: resourceProp,
+        source: sourceProp,
+    });
+
+    if (source === undefined) {
+        throw new Error(
+            `If you're not wrapping the CheckboxGroupInput inside a ReferenceArrayInput, you must provide the source prop`
+        );
+    }
+
+    if (!isLoading && !fetchError && allChoices === undefined) {
+        throw new Error(
+            `If you're not wrapping the CheckboxGroupInput inside a ReferenceArrayInput, you must provide the choices prop`
+        );
+    }
+
+    const {
+        field: { onChange: formOnChange, onBlur: formOnBlur, value, ref },
+        fieldState: { error, invalid, isTouched },
+        formState: { isSubmitted },
         id,
-        input: { onChange: finalFormOnChange, onBlur: finalFormOnBlur, value },
         isRequired,
-        meta: { error, touched },
     } = useInput({
         format,
-        onBlur,
-        onChange,
-        onFocus,
         parse,
         resource,
         source,
         validate,
+        onChange,
+        onBlur,
         ...rest,
     });
 
     const handleCheck = useCallback(
         (event, isChecked) => {
             let newValue;
-            try {
-                // try to convert string value to number, e.g. '123'
-                newValue = JSON.parse(event.target.value);
-            } catch (e) {
-                // impossible to convert value, e.g. 'abc'
+
+            if (
+                allChoices.every(
+                    item => typeof get(item, optionValue) === 'number'
+                )
+            ) {
+                try {
+                    // try to convert string value to number, e.g. '123'
+                    newValue = JSON.parse(event.target.value);
+                } catch (e) {
+                    // impossible to convert value, e.g. 'abc'
+                    newValue = event.target.value;
+                }
+            } else {
                 newValue = event.target.value;
             }
+
             if (isChecked) {
-                finalFormOnChange([...(value || []), ...[newValue]]);
+                formOnChange([...(value || []), ...[newValue]]);
             } else {
-                finalFormOnChange(value.filter(v => v != newValue)); // eslint-disable-line eqeqeq
+                formOnChange(value.filter(v => v != newValue)); // eslint-disable-line eqeqeq
             }
-            finalFormOnBlur(); // HACK: See https://github.com/final-form/react-final-form/issues/365#issuecomment-515045503
+            formOnBlur(); // Ensure field is flagged as touched
         },
-        [finalFormOnChange, finalFormOnBlur, value]
+        [allChoices, formOnChange, formOnBlur, optionValue, value]
     );
 
+    if (isLoading && (!allChoices || allChoices.length === 0)) {
+        return (
+            <Labeled
+                id={id}
+                label={label}
+                source={source}
+                resource={resource}
+                className={clsx('ra-input', `ra-input-${source}`, className)}
+                isRequired={isRequired}
+                {...rest}
+            >
+                <LinearProgress />
+            </Labeled>
+        );
+    }
+
+    const renderHelperText =
+        !!fetchError ||
+        helperText !== false ||
+        ((isTouched || isSubmitted) && invalid);
+
     return (
-        <FormControl
+        <StyledFormControl
             component="fieldset"
             margin={margin}
-            error={touched && !!error}
+            error={fetchError || ((isTouched || isSubmitted) && invalid)}
+            className={clsx('ra-input', `ra-input-${source}`, className)}
             {...sanitizeRestProps(rest)}
         >
-            <FormLabel component="legend" className={classes.label}>
+            <FormLabel
+                component="legend"
+                className={CheckboxGroupInputClasses.label}
+            >
                 <FieldTitle
                     label={label}
                     source={source}
@@ -176,7 +225,7 @@ const CheckboxGroupInput: FunctionComponent<
                 />
             </FormLabel>
             <FormGroup row={row}>
-                {choices.map(choice => (
+                {allChoices?.map((choice, index) => (
                     <CheckboxGroupInputItem
                         key={get(choice, optionValue)}
                         choice={choice}
@@ -185,28 +234,46 @@ const CheckboxGroupInput: FunctionComponent<
                         options={options}
                         optionText={optionText}
                         optionValue={optionValue}
-                        translateChoice={translateChoice}
+                        translateChoice={translateChoice ?? !isFromReference}
                         value={value}
+                        labelPlacement={labelPlacement}
+                        inputRef={index === 0 ? ref : undefined}
+                        {...sanitizeRestProps(rest)}
                     />
                 ))}
             </FormGroup>
-            <FormHelperText>
-                <InputHelperText
-                    touched={touched}
-                    error={error}
-                    helperText={helperText}
-                />
-            </FormHelperText>
-        </FormControl>
+            {renderHelperText ? (
+                <FormHelperText
+                    error={
+                        fetchError || ((isTouched || isSubmitted) && !!error)
+                    }
+                    className={CheckboxGroupInputClasses.helperText}
+                >
+                    <InputHelperText
+                        touched={isTouched || isSubmitted || fetchError}
+                        error={error?.message || fetchError?.message}
+                        helperText={helperText}
+                    />
+                </FormHelperText>
+            ) : null}
+        </StyledFormControl>
     );
 };
 
+const sanitizeRestProps = ({
+    refetch,
+    setFilter,
+    setPagination,
+    setSort,
+    loaded,
+    touched,
+    ...rest
+}: any) => sanitizeInputRestProps(rest);
+
 CheckboxGroupInput.propTypes = {
-    choices: PropTypes.arrayOf(PropTypes.object),
+    choices: PropTypes.arrayOf(PropTypes.any),
     className: PropTypes.string,
-    label: PropTypes.string,
     source: PropTypes.string,
-    options: PropTypes.object,
     optionText: PropTypes.oneOfType([
         PropTypes.string,
         PropTypes.func,
@@ -218,13 +285,34 @@ CheckboxGroupInput.propTypes = {
     translateChoice: PropTypes.bool,
 };
 
-CheckboxGroupInput.defaultProps = {
-    options: {},
-    optionText: 'name',
-    optionValue: 'id',
-    translateChoice: true,
-    fullWidth: true,
-    row: true,
+export type CheckboxGroupInputProps = Omit<CommonInputProps, 'source'> &
+    ChoicesProps &
+    CheckboxProps &
+    FormControlProps & {
+        options?: CheckboxProps;
+        row?: boolean;
+        // Optional as this input can be used inside a ReferenceInput
+        source?: string;
+        labelPlacement?: 'bottom' | 'end' | 'start' | 'top';
+    };
+
+const PREFIX = 'RaCheckboxGroupInput';
+
+export const CheckboxGroupInputClasses = {
+    label: `${PREFIX}-label`,
+    helperText: `${PREFIX}-helperText`,
 };
 
-export default CheckboxGroupInput;
+const StyledFormControl = styled(FormControl, {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})(({ theme }) => ({
+    [`& .${CheckboxGroupInputClasses.label}`]: {
+        transform: 'translate(0, 4px) scale(0.75)',
+        transformOrigin: `top ${theme.direction === 'ltr' ? 'left' : 'right'}`,
+    },
+    [`& .${CheckboxGroupInputClasses.helperText}`]: {
+        marginLeft: 0,
+        marginRight: 0,
+    },
+}));

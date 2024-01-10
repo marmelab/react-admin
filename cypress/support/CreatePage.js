@@ -4,7 +4,7 @@ export default url => ({
         body: 'body',
         input: (name, type = 'input') => {
             if (type === 'rich-text-input') {
-                return `.ra-input-${name} .ql-editor`;
+                return `.ra-input-${name} .ProseMirror`;
             }
             return `.create-page ${type}[name='${name}']`;
         },
@@ -18,11 +18,12 @@ export default url => ({
             ".create-page form div[role='toolbar'] button[type='button']:nth-child(3)",
         submitCommentable:
             ".create-page form div[role='toolbar'] button[type='button']:last-child",
-        descInput: '.ql-editor',
+        descInput: '.ProseMirror',
         tab: index => `.form-tab:nth-of-type(${index})`,
         title: '#react-admin-title',
-        userMenu: 'button[title="Profile"]',
+        userMenu: 'button[aria-label="Profile"]',
         logout: '.logout',
+        nameError: '#name-helper-text',
     },
 
     navigate() {
@@ -43,7 +44,9 @@ export default url => ({
         if (clearPreviousValue) {
             cy.get(this.elements.input(name, type)).clear();
         }
-        cy.get(this.elements.input(name, type)).type(value);
+        cy.get(this.elements.input(name, type)).type(
+            `${clearPreviousValue ? '{selectall}' : ''}${value}`
+        );
         if (type === 'rich-text-input') {
             cy.wait(500);
         }
@@ -60,43 +63,45 @@ export default url => ({
         });
     },
 
-    submit() {
+    submit(expectNotification = true) {
         cy.get(this.elements.submitButton).click();
-        cy.get(this.elements.snackbar);
-        cy.get(this.elements.body).click(); // dismiss notification
-        cy.wait(200); // let the notification disappear (could block further submits)
+        if (expectNotification) {
+            cy.get(this.elements.snackbar);
+            cy.get(this.elements.body).click(); // dismiss notification
+            cy.wait(200); // let the notification disappear (could block further submits)
+        }
     },
 
     submitWithKeyboard() {
-        cy.get('input:first').type('{enter}');
+        cy.get("input[type='text']:first").type('{enter}');
         cy.get(this.elements.snackbar);
-        cy.get(this.elements.body).click(); // dismiss notification
+        cy.get(this.elements.snackbar).click(); // dismiss notification
         cy.wait(200); // let the notification disappear (could block further submits)
     },
 
     submitAndShow() {
         cy.get(this.elements.submitAndShowButton).click();
         cy.get(this.elements.snackbar);
-        cy.get(this.elements.body).click(); // dismiss notification
+        cy.get(this.elements.snackbar).click(); // dismiss notification
         cy.wait(200); // let the notification disappear (could block further submits)
     },
 
     submitAndAdd() {
         cy.get(this.elements.submitAndAddButton).click();
         cy.get(this.elements.snackbar);
-        cy.get(this.elements.body).click(); // dismiss notification
+        cy.get(this.elements.snackbar).click(); // dismiss notification
         cy.wait(200); // let the notification disappear (could block further submits)
     },
 
     submitWithAverageNote() {
         cy.get(this.elements.submitCommentable).click();
         cy.get(this.elements.snackbar);
-        cy.get(this.elements.body).click(); // dismiss notification
+        cy.get(this.elements.snackbar).click(); // dismiss notification
         cy.wait(200); // let the notification disappear (could block further submits)
     },
 
     gotoTab(index) {
-        cy.get(this.elements.tab(index)).click();
+        cy.get(this.elements.tab(index)).click({ force: true });
     },
 
     logout() {

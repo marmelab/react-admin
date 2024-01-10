@@ -1,1 +1,1 @@
-require('cypress-skip-and-only-ui/support');
+import 'cypress-plugin-tab';

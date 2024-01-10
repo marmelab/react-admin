@@ -1,44 +1,57 @@
-import React, { FunctionComponent, HtmlHTMLAttributes } from 'react';
+import * as React from 'react';
+import { AnchorHTMLAttributes } from 'react';
 import get from 'lodash/get';
-import pure from 'recompose/pure';
-import sanitizeRestProps from './sanitizeRestProps';
-import { Typography, Link } from '@material-ui/core';
-import { FieldProps, InjectedFieldProps, fieldPropTypes } from './types';
+import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
+import { Typography, Link } from '@mui/material';
+import { useRecordContext, useTranslate } from 'ra-core';
+import { FieldProps, fieldPropTypes } from './types';
+import { genericMemo } from './genericMemo';
 
-const UrlField: FunctionComponent<
-    FieldProps & InjectedFieldProps & HtmlHTMLAttributes<HTMLAnchorElement>
-> = ({ className, emptyText, source, record = {}, ...rest }) => {
+const UrlFieldImpl = <
+    RecordType extends Record<string, any> = Record<string, any>
+>(
+    props: UrlFieldProps<RecordType>
+) => {
+    const { className, emptyText, source, ...rest } = props;
+    const record = useRecordContext(props);
     const value = get(record, source);
+    const translate = useTranslate();
 
-    if (value == null && emptyText) {
+    if (value == null) {
         return (
             <Typography
                 component="span"
                 variant="body2"
                 className={className}
-                {...sanitizeRestProps(rest)}
+                {...sanitizeFieldRestProps(rest)}
             >
-                {emptyText}
+                {emptyText && translate(emptyText, { _: emptyText })}
             </Typography>
         );
     }
 
     return (
-        <Link className={className} href={value} {...sanitizeRestProps(rest)}>
+        <Link
+            className={className}
+            href={value}
+            onClick={stopPropagation}
+            variant="body2"
+            {...sanitizeFieldRestProps(rest)}
+        >
             {value}
         </Link>
     );
 };
 
-const EnhancedUrlField = pure<
-    FieldProps & HtmlHTMLAttributes<HTMLAnchorElement>
->(UrlField);
+UrlFieldImpl.propTypes = fieldPropTypes;
+UrlFieldImpl.displayName = 'UrlFieldImpl';
 
-EnhancedUrlField.defaultProps = {
-    addLabel: true,
-};
+export const UrlField = genericMemo(UrlFieldImpl);
 
-EnhancedUrlField.propTypes = fieldPropTypes;
-EnhancedUrlField.displayName = 'EnhancedUrlField';
+export interface UrlFieldProps<
+    RecordType extends Record<string, any> = Record<string, any>
+> extends FieldProps<RecordType>,
+        AnchorHTMLAttributes<HTMLAnchorElement> {}
 
-export default EnhancedUrlField;
+// useful to prevent click bubbling in a Datagrid with rowClick
+const stopPropagation = e => e.stopPropagation();

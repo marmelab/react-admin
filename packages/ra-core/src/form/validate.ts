@@ -4,7 +4,7 @@ import lodashMemoize from 'lodash/memoize';
 /* @link http://stackoverflow.com/questions/46155/validate-email-address-in-javascript */
 const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/; // eslint-disable-line no-useless-escape
 
-const isEmpty = (value: any) =>
+export const isEmpty = (value: any) =>
     typeof value === 'undefined' ||
     value === null ||
     value === '' ||
@@ -23,7 +23,18 @@ export type Validator = (
     value: any,
     values: any,
     props: any
-) => ValidationErrorMessage | null | undefined;
+) =>
+    | ValidationErrorMessage
+    | null
+    | undefined
+    | Promise<ValidationErrorMessage | null | undefined>;
+
+// type predicate, see https://www.typescriptlang.org/docs/handbook/2/narrowing.html#using-type-predicates
+function isValidationErrorMessageWithArgs(
+    error: ReturnType<Validator>
+): error is ValidationErrorMessageWithArgs {
+    return error ? error.hasOwnProperty('message') : false;
+}
 
 interface MessageFuncParams {
     args: any;
@@ -63,18 +74,60 @@ type Memoize = <T extends (...args: any[]) => any>(
 const memoize: Memoize = (fn: any) =>
     lodashMemoize(fn, (...args) => JSON.stringify(args));
 
-// Compose multiple validators into a single one for use with final-form
-export const composeValidators = (...validators) => (value, values, meta) => {
-    const allValidators = Array.isArray(validators[0])
-        ? validators[0]
-        : validators;
+const isFunction = value => typeof value === 'function';
 
-    return allValidators.reduce(
-        (error, validator) =>
-            error ||
-            (typeof validator === 'function' && validator(value, values, meta)),
-        undefined
-    );
+export const combine2Validators = (
+    validator1: Validator,
+    validator2: Validator
+): Validator => {
+    return (value, values, meta) => {
+        const result1 = validator1(value, values, meta);
+        if (!result1) {
+            return validator2(value, values, meta);
+        }
+        if (
+            typeof result1 === 'string' ||
+            isValidationErrorMessageWithArgs(result1)
+        ) {
+            return result1;
+        }
+
+        return result1.then(resolvedResult1 => {
+            if (!resolvedResult1) {
+                return validator2(value, values, meta);
+            }
+            return resolvedResult1;
+        });
+    };
+};
+
+// Compose multiple validators into a single one for use with react-hook-form
+export const composeValidators = (...validators) => {
+    const allValidators = (Array.isArray(validators[0])
+        ? validators[0]
+        : validators
+    ).filter(isFunction) as Validator[];
+    return allValidators.reduce(combine2Validators, () => null);
+};
+
+// Compose multiple validators into a single one for use with react-hook-form
+export const composeSyncValidators = (...validators) => (
+    value,
+    values,
+    meta
+) => {
+    const allValidators = (Array.isArray(validators[0])
+        ? validators[0]
+        : validators
+    ).filter(isFunction) as Validator[];
+
+    for (const validator of allValidators) {
+        const error = validator(value, values, meta);
+
+        if (error) {
+            return error;
+        }
+    }
 };
 
 /**
@@ -82,7 +135,7 @@ export const composeValidators = (...validators) => (value, values, meta) => {
  *
  * Returns an error if the value is null, undefined, or empty
  *
- * @param {string|function} message
+ * @param {string|Function} message
  *
  * @example
  *
@@ -105,7 +158,7 @@ export const required = memoize((message = 'ra.validation.required') =>
  * Returns an error if the value has a length less than the parameter
  *
  * @param {integer} min
- * @param {string|function} message
+ * @param {string|Function} message
  *
  * @example
  *
@@ -125,7 +178,7 @@ export const minLength = memoize(
  * Returns an error if the value has a length higher than the parameter
  *
  * @param {integer} max
- * @param {string|function} message
+ * @param {string|Function} message
  *
  * @example
  *
@@ -145,7 +198,7 @@ export const maxLength = memoize(
  * Returns an error if the value is less than the parameter
  *
  * @param {integer} min
- * @param {string|function} message
+ * @param {string|Function} message
  *
  * @example
  *
@@ -165,7 +218,7 @@ export const minValue = memoize(
  * Returns an error if the value is higher than the parameter
  *
  * @param {integer} max
- * @param {string|function} message
+ * @param {string|Function} message
  *
  * @example
  *
@@ -184,7 +237,7 @@ export const maxValue = memoize(
  *
  * Returns an error if the value is not a number
  *
- * @param {string|function} message
+ * @param {string|Function} message
  *
  * @example
  *
@@ -204,7 +257,7 @@ export const number = memoize(
  * Returns an error if the value does not match the pattern given as parameter
  *
  * @param {RegExp} pattern
- * @param {string|function} message
+ * @param {string|Function} message
  *
  * @example
  *
@@ -212,7 +265,7 @@ export const number = memoize(
  * <TextInput name="zip" validate={zipValidators} />
  */
 export const regex = lodashMemoize(
-    (pattern, message = 'ra.validation.regex') => (value, values) =>
+    (pattern, message = 'ra.validation.regex') => (value, values?) =>
         !isEmpty(value) && typeof value === 'string' && !pattern.test(value)
             ? getMessage(message, { pattern }, value, values)
             : undefined,
@@ -226,7 +279,7 @@ export const regex = lodashMemoize(
  *
  * Returns an error if the value is not a valid email
  *
- * @param {string|function} message
+ * @param {string|Function} message
  *
  * @example
  *
@@ -248,7 +301,7 @@ const oneOfTypeMessage: MessageFunc = ({ args }) => ({
  * Returns an error if the value is not among the list passed as parameter
  *
  * @param {array} list
- * @param {string|function} message
+ * @param {string|Function} message
  *
  * @example
  *
@@ -261,3 +314,16 @@ export const choices = memoize(
             ? getMessage(message, { list }, value, values)
             : undefined
 );
+
+/**
+ * Given a validator, returns a boolean indicating whether the field is required or not.
+ */
+export const isRequired = validate => {
+    if (validate && validate.isRequired) {
+        return true;
+    }
+    if (Array.isArray(validate)) {
+        return !!validate.find(it => it.isRequired);
+    }
+    return false;
+};

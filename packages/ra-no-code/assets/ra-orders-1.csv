@@ -1,0 +1,11 @@
+id,reference,date,customer_id,basket.product_id,basket.quantity,total_ex_taxes,delivery_fees,tax_rate,taxes,total,status,returned
+408,5TFGTA,2021-04-23T02:07:38.273Z,17,87,1,108.28,5.38,0.2,22.73,136.39,ordered,false
+,,,,10,2,,,,,,,
+93,M2GL49,2021-04-19T23:49:46.313Z,750,87,5,92.4,5.61,0.12,11.76,109.77,ordered,false
+413,JTI3CU,2021-04-18T02:56:46.786Z,879,28,2,81.12,6.19,0.12,10.48,97.79,ordered,false
+,,,,35,2,,,,,,,
+421,80EPRZ,2021-04-14T19:53:26.605Z,362,20,1,141.78,3.14,0.17,24.64,169.56,ordered,false
+,,,,97,1,,,,,,,
+,,,,84,2,,,,,,,
+386,WREQLW,2021-04-13T23:33:12.169Z,265,109,1,76.94999999999999,4.25,0.12,9.74,90.94,ordered,false
+,,,,98,1,,,,,,,

@@ -1,112 +1,122 @@
-import React, { FC, ReactElement } from 'react';
+import * as React from 'react';
+import { ReactNode } from 'react';
+import { MenuList } from '@mui/material';
+import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
-import { shallowEqual, useSelector } from 'react-redux';
-// @ts-ignore
-import inflection from 'inflection';
-import { makeStyles, useMediaQuery, Theme } from '@material-ui/core';
-import DefaultIcon from '@material-ui/icons/ViewList';
-import classnames from 'classnames';
-import { getResources, useTranslate, Translate, ReduxState } from 'ra-core';
+import lodashGet from 'lodash/get';
+import clsx from 'clsx';
 
-import DashboardMenuItem from './DashboardMenuItem';
-import MenuItemLink from './MenuItemLink';
+import { DRAWER_WIDTH, CLOSED_DRAWER_WIDTH } from './Sidebar';
+import { useSidebarState } from './useSidebarState';
+import { DashboardMenuItem } from './DashboardMenuItem';
+import { MenuItemLink } from './MenuItemLink';
+import { ResourceMenuItem } from './ResourceMenuItem';
+import { ResourceMenuItems } from './ResourceMenuItems';
 
-const useStyles = makeStyles(
-    {
-        main: {
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'flex-start',
-        },
-    },
-    { name: 'RaMenu' }
-);
-
-const translatedResourceName = (resource: any, translate: Translate) =>
-    translate(`resources.${resource.name}.name`, {
-        smart_count: 2,
-        _:
-            resource.options && resource.options.label
-                ? translate(resource.options.label, {
-                      smart_count: 2,
-                      _: resource.options.label,
-                  })
-                : inflection.humanize(inflection.pluralize(resource.name)),
-    });
-
-const Menu: FC<MenuProps> = props => {
+/**
+ * Renders a menu with one menu item per resource by default. You can also set menu items by hand.
+ *
+ * @example
+ * import * as React from 'react';
+ * import { Menu } from 'react-admin';
+ *
+ * import BookIcon from '@mui/icons-material/Book';
+ * import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
+ * import PeopleIcon from '@mui/icons-material/People';
+ * import LabelIcon from '@mui/icons-material/Label';
+ *
+ * export const MyMenu = () => (
+ *     <Menu>
+ *         <Menu.DashboardItem />
+ *         <Menu.Item to="/posts" primaryText="Posts" leftIcon={<BookIcon />}/>
+ *         <Menu.Item to="/comments" primaryText="Comments" leftIcon={<ChatBubbleIcon />}/>
+ *         <Menu.Item to="/users" primaryText="Users" leftIcon={<PeopleIcon />}/>
+ *         <Menu.Item to="/custom-route" primaryText="Miscellaneous" leftIcon={<LabelIcon />}/>
+ *     </Menu>
+ * );
+ */
+export const Menu = (props: MenuProps) => {
     const {
-        classes: classesOverride,
-        className,
-        dense,
         hasDashboard,
-        onMenuClick,
-        logout,
+        children = hasDashboard ? (
+            [
+                <DashboardMenuItem key="default-dashboard-menu-item" />,
+                <ResourceMenuItems key="default-resource-menu-items" />,
+            ]
+        ) : (
+            <ResourceMenuItems />
+        ),
+
+        className,
         ...rest
     } = props;
-    const translate = useTranslate();
-    const classes = useStyles(props);
-    const isXSmall = useMediaQuery((theme: Theme) =>
-        theme.breakpoints.down('xs')
-    );
-    const open = useSelector((state: ReduxState) => state.admin.ui.sidebarOpen);
-    const resources = useSelector(getResources, shallowEqual) as Array<any>;
 
-    // Used to force redraw on navigation
-    useSelector((state: ReduxState) => state.router.location.pathname);
+    const [open] = useSidebarState();
 
     return (
-        <div className={classnames(classes.main, className)} {...rest}>
-            {hasDashboard && (
-                <DashboardMenuItem
-                    onClick={onMenuClick}
-                    dense={dense}
-                    sidebarIsOpen={open}
-                />
+        <Root
+            className={clsx(
+                {
+                    [MenuClasses.open]: open,
+                    [MenuClasses.closed]: !open,
+                },
+                className
             )}
-            {resources
-                .filter(r => r.hasList)
-                .map(resource => (
-                    <MenuItemLink
-                        key={resource.name}
-                        to={`/${resource.name}`}
-                        primaryText={translatedResourceName(
-                            resource,
-                            translate
-                        )}
-                        leftIcon={
-                            resource.icon ? <resource.icon /> : <DefaultIcon />
-                        }
-                        onClick={onMenuClick}
-                        dense={dense}
-                        sidebarIsOpen={open}
-                    />
-                ))}
-            {isXSmall && logout}
-        </div>
+            {...rest}
+        >
+            {children}
+        </Root>
     );
 };
 
+// NOTE: We don't extends MenuListProps here to avoid breaking changes
 export interface MenuProps {
-    classes?: object;
+    children?: ReactNode;
     className?: string;
     dense?: boolean;
-    hasDashboard: boolean;
-    logout?: ReactElement;
-    onMenuClick?: () => void;
+    hasDashboard?: boolean;
+    [key: string]: any;
 }
 
 Menu.propTypes = {
-    classes: PropTypes.object,
     className: PropTypes.string,
     dense: PropTypes.bool,
     hasDashboard: PropTypes.bool,
-    logout: PropTypes.element,
-    onMenuClick: PropTypes.func,
 };
 
-Menu.defaultProps = {
-    onMenuClick: () => null,
+// re-export MenuItem components for convenience
+Menu.Item = MenuItemLink;
+Menu.DashboardItem = DashboardMenuItem;
+Menu.ResourceItem = ResourceMenuItem;
+Menu.ResourceItems = ResourceMenuItems;
+
+const PREFIX = 'RaMenu';
+
+export const MenuClasses = {
+    open: `${PREFIX}-open`,
+    closed: `${PREFIX}-closed`,
 };
 
-export default Menu;
+const Root = styled(MenuList, {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})(({ theme }) => ({
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+    [theme.breakpoints.only('xs')]: {
+        marginTop: 0,
+    },
+    transition: theme.transitions.create('width', {
+        easing: theme.transitions.easing.sharp,
+        duration: theme.transitions.duration.leavingScreen,
+    }),
+
+    [`&.${MenuClasses.open}`]: {
+        width: lodashGet(theme, 'sidebar.width', DRAWER_WIDTH),
+    },
+
+    [`&.${MenuClasses.closed}`]: {
+        width: lodashGet(theme, 'sidebar.closedWidth', CLOSED_DRAWER_WIDTH),
+    },
+}));

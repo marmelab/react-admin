@@ -1,123 +1,136 @@
-import React, { FC, ReactElement } from 'react';
+import * as React from 'react';
+import { styled } from '@mui/material/styles';
+import { ReactElement } from 'react';
 import PropTypes from 'prop-types';
-import ActionDelete from '@material-ui/icons/Delete';
-import { fade } from '@material-ui/core/styles/colorManipulator';
-import { makeStyles } from '@material-ui/core/styles';
+import ActionDelete from '@mui/icons-material/Delete';
+import { alpha } from '@mui/material/styles';
 import {
     useDeleteMany,
     useRefresh,
     useNotify,
-    useUnselectAll,
-    CRUD_DELETE_MANY,
-    Identifier,
+    useResourceContext,
+    useListContext,
+    RaRecord,
+    DeleteManyParams,
 } from 'ra-core';
 
-import Button, { ButtonProps } from './Button';
+import { Button, ButtonProps } from './Button';
+import { BulkActionProps } from '../types';
+import { UseMutationOptions } from 'react-query';
 
-const useStyles = makeStyles(
-    theme => ({
-        deleteButton: {
-            color: theme.palette.error.main,
-            '&:hover': {
-                backgroundColor: fade(theme.palette.error.main, 0.12),
-                // Reset on mouse devices
-                '@media (hover: none)': {
-                    backgroundColor: 'transparent',
-                },
-            },
-        },
-    }),
-    { name: 'RaBulkDeleteWithUndoButton' }
-);
-
-const BulkDeleteWithUndoButton: FC<BulkDeleteWithUndoButtonProps> = props => {
+export const BulkDeleteWithUndoButton = (
+    props: BulkDeleteWithUndoButtonProps
+) => {
     const {
-        basePath,
-        classes: classesOverride,
-        icon,
-        label,
+        label = 'ra.action.delete',
+        icon = defaultIcon,
         onClick,
-        resource,
-        selectedIds,
+        mutationOptions = {},
         ...rest
     } = props;
-    const classes = useStyles(props);
+    const { meta: mutationMeta, ...otherMutationOptions } = mutationOptions;
+    const { selectedIds, onUnselectItems } = useListContext(props);
+
     const notify = useNotify();
-    const unselectAll = useUnselectAll();
+    const resource = useResourceContext(props);
     const refresh = useRefresh();
-    const [deleteMany, { loading }] = useDeleteMany(resource, selectedIds, {
-        action: CRUD_DELETE_MANY,
-        onSuccess: () => {
-            notify(
-                'ra.notification.deleted',
-                'info',
-                { smart_count: selectedIds.length },
-                true
-            );
-            unselectAll(resource);
-            refresh();
-        },
-        onFailure: error =>
-            notify(
-                typeof error === 'string'
-                    ? error
-                    : error.message || 'ra.notification.http_error',
-                'warning'
-            ),
-        undoable: true,
-    });
+    const [deleteMany, { isLoading }] = useDeleteMany();
 
     const handleClick = e => {
-        deleteMany();
+        deleteMany(
+            resource,
+            { ids: selectedIds, meta: mutationMeta },
+            {
+                onSuccess: () => {
+                    notify('ra.notification.deleted', {
+                        type: 'info',
+                        messageArgs: { smart_count: selectedIds.length },
+                        undoable: true,
+                    });
+                    onUnselectItems();
+                },
+                onError: (error: Error) => {
+                    notify(
+                        typeof error === 'string'
+                            ? error
+                            : error.message || 'ra.notification.http_error',
+                        {
+                            type: 'error',
+                            messageArgs: {
+                                _:
+                                    typeof error === 'string'
+                                        ? error
+                                        : error && error.message
+                                        ? error.message
+                                        : undefined,
+                            },
+                        }
+                    );
+                    refresh();
+                },
+                mutationMode: 'undoable',
+                ...otherMutationOptions,
+            }
+        );
         if (typeof onClick === 'function') {
             onClick(e);
         }
     };
 
     return (
-        <Button
+        <StyledButton
             onClick={handleClick}
             label={label}
-            className={classes.deleteButton}
-            disabled={loading}
+            disabled={isLoading}
             {...sanitizeRestProps(rest)}
         >
             {icon}
-        </Button>
+        </StyledButton>
     );
 };
 
+const defaultIcon = <ActionDelete />;
+
 const sanitizeRestProps = ({
-    basePath,
     classes,
     filterValues,
     label,
+    selectedIds,
     ...rest
-}: Omit<BulkDeleteWithUndoButtonProps, 'resource' | 'selectedIds' | 'icon'>) =>
-    rest;
+}: Omit<BulkDeleteWithUndoButtonProps, 'resource' | 'icon'>) => rest;
 
-interface Props {
-    basePath?: string;
-    filterValues?: any;
-    icon: ReactElement;
-    resource: string;
-    selectedIds: Identifier[];
+export interface BulkDeleteWithUndoButtonProps<
+    RecordType extends RaRecord = any,
+    MutationOptionsError = unknown
+> extends BulkActionProps,
+        ButtonProps {
+    icon?: ReactElement;
+    mutationOptions?: UseMutationOptions<
+        RecordType,
+        MutationOptionsError,
+        DeleteManyParams<RecordType>
+    > & { meta?: any };
 }
 
-export type BulkDeleteWithUndoButtonProps = Props & ButtonProps;
+const PREFIX = 'RaBulkDeleteWithUndoButton';
+
+const StyledButton = styled(Button, {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})(({ theme }) => ({
+    color: theme.palette.error.main,
+    '&:hover': {
+        backgroundColor: alpha(theme.palette.error.main, 0.12),
+        // Reset on mouse devices
+        '@media (hover: none)': {
+            backgroundColor: 'transparent',
+        },
+    },
+}));
 
 BulkDeleteWithUndoButton.propTypes = {
-    basePath: PropTypes.string,
-    classes: PropTypes.object,
     label: PropTypes.string,
-    resource: PropTypes.string.isRequired,
-    selectedIds: PropTypes.arrayOf(PropTypes.any).isRequired,
+    resource: PropTypes.string,
+    selectedIds: PropTypes.arrayOf(PropTypes.any),
     icon: PropTypes.element,
 };
-
-BulkDeleteWithUndoButton.defaultProps = {
-    label: 'ra.action.delete',
-    icon: <ActionDelete />,
-};
-
-export default BulkDeleteWithUndoButton;

@@ -19,7 +19,7 @@ import { fetchUtils, DataProvider } from 'ra-core';
  *
  * @example
  *
- * import React from 'react';
+ * import * as React from "react";
  * import { Admin, Resource } from 'react-admin';
  * import simpleRestProvider from 'ra-data-simple-rest';
  *
@@ -33,32 +33,49 @@ import { fetchUtils, DataProvider } from 'ra-core';
  *
  * export default App;
  */
-export default (apiUrl, httpClient = fetchUtils.fetchJson): DataProvider => ({
+export default (
+    apiUrl: string,
+    httpClient = fetchUtils.fetchJson,
+    countHeader: string = 'Content-Range'
+): DataProvider => ({
     getList: (resource, params) => {
         const { page, perPage } = params.pagination;
         const { field, order } = params.sort;
+
+        const rangeStart = (page - 1) * perPage;
+        const rangeEnd = page * perPage - 1;
+
         const query = {
             sort: JSON.stringify([field, order]),
-            range: JSON.stringify([(page - 1) * perPage, page * perPage - 1]),
+            range: JSON.stringify([rangeStart, rangeEnd]),
             filter: JSON.stringify(params.filter),
         };
         const url = `${apiUrl}/${resource}?${stringify(query)}`;
+        const options =
+            countHeader === 'Content-Range'
+                ? {
+                      // Chrome doesn't return `Content-Range` header if no `Range` is provided in the request.
+                      headers: new Headers({
+                          Range: `${resource}=${rangeStart}-${rangeEnd}`,
+                      }),
+                  }
+                : {};
 
-        return httpClient(url).then(({ headers, json }) => {
-            if (!headers.has('content-range')) {
+        return httpClient(url, options).then(({ headers, json }) => {
+            if (!headers.has(countHeader)) {
                 throw new Error(
-                    'The Content-Range header is missing in the HTTP Response. The simple REST data provider expects responses for lists of resources to contain this header with the total number of results to build the pagination. If you are using CORS, did you declare Content-Range in the Access-Control-Expose-Headers header?'
+                    `The ${countHeader} header is missing in the HTTP Response. The simple REST data provider expects responses for lists of resources to contain this header with the total number of results to build the pagination. If you are using CORS, did you declare ${countHeader} in the Access-Control-Expose-Headers header?`
                 );
             }
             return {
                 data: json,
-                total: parseInt(
-                    headers
-                        .get('content-range')
-                        .split('/')
-                        .pop(),
-                    10
-                ),
+                total:
+                    countHeader === 'Content-Range'
+                        ? parseInt(
+                              headers.get('content-range').split('/').pop(),
+                              10
+                          )
+                        : parseInt(headers.get(countHeader.toLowerCase())),
             };
         });
     },
@@ -79,6 +96,10 @@ export default (apiUrl, httpClient = fetchUtils.fetchJson): DataProvider => ({
     getManyReference: (resource, params) => {
         const { page, perPage } = params.pagination;
         const { field, order } = params.sort;
+
+        const rangeStart = (page - 1) * perPage;
+        const rangeEnd = page * perPage - 1;
+
         const query = {
             sort: JSON.stringify([field, order]),
             range: JSON.stringify([(page - 1) * perPage, page * perPage - 1]),
@@ -88,22 +109,31 @@ export default (apiUrl, httpClient = fetchUtils.fetchJson): DataProvider => ({
             }),
         };
         const url = `${apiUrl}/${resource}?${stringify(query)}`;
+        const options =
+            countHeader === 'Content-Range'
+                ? {
+                      // Chrome doesn't return `Content-Range` header if no `Range` is provided in the request.
+                      headers: new Headers({
+                          Range: `${resource}=${rangeStart}-${rangeEnd}`,
+                      }),
+                  }
+                : {};
 
-        return httpClient(url).then(({ headers, json }) => {
-            if (!headers.has('content-range')) {
+        return httpClient(url, options).then(({ headers, json }) => {
+            if (!headers.has(countHeader)) {
                 throw new Error(
-                    'The Content-Range header is missing in the HTTP Response. The simple REST data provider expects responses for lists of resources to contain this header with the total number of results to build the pagination. If you are using CORS, did you declare Content-Range in the Access-Control-Expose-Headers header?'
+                    `The ${countHeader} header is missing in the HTTP Response. The simple REST data provider expects responses for lists of resources to contain this header with the total number of results to build the pagination. If you are using CORS, did you declare ${countHeader} in the Access-Control-Expose-Headers header?`
                 );
             }
             return {
                 data: json,
-                total: parseInt(
-                    headers
-                        .get('content-range')
-                        .split('/')
-                        .pop(),
-                    10
-                ),
+                total:
+                    countHeader === 'Content-Range'
+                        ? parseInt(
+                              headers.get('content-range').split('/').pop(),
+                              10
+                          )
+                        : parseInt(headers.get(countHeader.toLowerCase())),
             };
         });
     },
@@ -129,13 +159,14 @@ export default (apiUrl, httpClient = fetchUtils.fetchJson): DataProvider => ({
         httpClient(`${apiUrl}/${resource}`, {
             method: 'POST',
             body: JSON.stringify(params.data),
-        }).then(({ json }) => ({
-            data: { ...params.data, id: json.id },
-        })),
+        }).then(({ json }) => ({ data: json })),
 
     delete: (resource, params) =>
         httpClient(`${apiUrl}/${resource}/${params.id}`, {
             method: 'DELETE',
+            headers: new Headers({
+                'Content-Type': 'text/plain',
+            }),
         }).then(({ json }) => ({ data: json })),
 
     // simple-rest doesn't handle filters on DELETE route, so we fallback to calling DELETE n times instead
@@ -144,7 +175,12 @@ export default (apiUrl, httpClient = fetchUtils.fetchJson): DataProvider => ({
             params.ids.map(id =>
                 httpClient(`${apiUrl}/${resource}/${id}`, {
                     method: 'DELETE',
+                    headers: new Headers({
+                        'Content-Type': 'text/plain',
+                    }),
                 })
             )
-        ).then(responses => ({ data: responses.map(({ json }) => json.id) })),
+        ).then(responses => ({
+            data: responses.map(({ json }) => json.id),
+        })),
 });

@@ -1,17 +1,17 @@
-import React, { FC, ReactElement, SyntheticEvent, ReactNode } from 'react';
-import PropTypes from 'prop-types';
+import * as React from 'react';
 import {
     Button as MuiButton,
+    ButtonProps as MuiButtonProps,
     Tooltip,
     IconButton,
     useMediaQuery,
-    makeStyles,
-    PropTypes as MuiPropTypes,
-} from '@material-ui/core';
-import { ButtonProps as MuiButtonProps } from '@material-ui/core/Button';
-import { Theme } from '@material-ui/core';
-import classnames from 'classnames';
-import { Record, RedirectionSideEffect, useTranslate } from 'ra-core';
+    Theme,
+} from '@mui/material';
+import { styled } from '@mui/material/styles';
+import { To } from 'history';
+import PropTypes from 'prop-types';
+import { useTranslate } from 'ra-core';
+import { Path } from 'react-router';
 
 /**
  * A generic Button with side icon. Only the icon is displayed on small screens.
@@ -26,33 +26,38 @@ import { Record, RedirectionSideEffect, useTranslate } from 'ra-core';
  * </Button>
  *
  */
-const Button: FC<ButtonProps> = props => {
+export const Button = <RootComponent extends React.ElementType = 'button'>(
+    props: ButtonProps<RootComponent>
+) => {
     const {
         alignIcon = 'left',
         children,
-        classes: classesOverride,
         className,
-        color,
         disabled,
         label,
-        size,
+        color = 'primary',
+        size = 'small',
+        to: locationDescriptor,
         ...rest
     } = props;
     const translate = useTranslate();
-    const classes = useStyles(props);
+    const translatedLabel = label ? translate(label, { _: label }) : undefined;
+    const linkParams = getLinkParams(locationDescriptor);
+
     const isXSmall = useMediaQuery((theme: Theme) =>
-        theme.breakpoints.down('xs')
+        theme.breakpoints.down('sm')
     );
-    const restProps = sanitizeButtonRestProps(rest);
 
     return isXSmall ? (
         label && !disabled ? (
-            <Tooltip title={translate(label, { _: label })}>
+            <Tooltip title={translatedLabel}>
                 <IconButton
-                    aria-label={translate(label, { _: label })}
+                    aria-label={translatedLabel}
                     className={className}
                     color={color}
-                    {...restProps}
+                    size="large"
+                    {...linkParams}
+                    {...rest}
                 >
                     {children}
                 </IconButton>
@@ -62,131 +67,101 @@ const Button: FC<ButtonProps> = props => {
                 className={className}
                 color={color}
                 disabled={disabled}
-                {...restProps}
+                size="large"
+                {...linkParams}
+                {...rest}
             >
                 {children}
             </IconButton>
         )
     ) : (
-        <MuiButton
-            className={classnames(classes.button, className)}
+        <StyledButton
+            className={className}
             color={color}
             size={size}
-            aria-label={label ? translate(label, { _: label }) : undefined}
+            aria-label={translatedLabel}
             disabled={disabled}
-            {...restProps}
+            startIcon={alignIcon === 'left' && children ? children : undefined}
+            endIcon={alignIcon === 'right' && children ? children : undefined}
+            {...linkParams}
+            {...rest}
         >
-            {alignIcon === 'left' &&
-                children &&
-                React.cloneElement(children, {
-                    className: classes[`${size}Icon`],
-                })}
-            {label && (
-                <span
-                    className={classnames({
-                        [classes.label]: alignIcon === 'left',
-                        [classes.labelRightIcon]: alignIcon !== 'left',
-                    })}
-                >
-                    {translate(label, { _: label })}
-                </span>
-            )}
-            {alignIcon === 'right' &&
-                children &&
-                React.cloneElement(children, {
-                    className: classes[`${size}Icon`],
-                })}
-        </MuiButton>
+            {translatedLabel}
+        </StyledButton>
     );
 };
 
-const useStyles = makeStyles(
-    {
-        button: {
-            display: 'inline-flex',
-            alignItems: 'center',
-        },
-        label: {
-            paddingLeft: '0.5em',
-        },
-        labelRightIcon: {
-            paddingRight: '0.5em',
-        },
-        smallIcon: {
-            fontSize: 20,
-        },
-        mediumIcon: {
-            fontSize: 22,
-        },
-        largeIcon: {
-            fontSize: 24,
-        },
-    },
-    { name: 'RaButton' }
-);
-
-interface Props {
+interface Props<RootComponent extends React.ElementType> {
     alignIcon?: 'left' | 'right';
-    children?: ReactElement;
-    classes?: object;
+    children?: React.ReactElement;
     className?: string;
-    color?: MuiPropTypes.Color;
-    component?: ReactNode;
-    to?: string | { pathname: string; search: string };
+    component?: RootComponent;
+    to?: LocationDescriptor | To;
     disabled?: boolean;
     label?: string;
     size?: 'small' | 'medium' | 'large';
-    icon?: ReactElement;
-    onClick?: (e: MouseEvent) => void;
-    redirect?: RedirectionSideEffect;
     variant?: string;
-    // May be injected by Toolbar
-    basePath?: string;
-    handleSubmit?: (event?: SyntheticEvent<HTMLFormElement>) => Promise<Object>;
-    handleSubmitWithRedirect?: (redirect?: RedirectionSideEffect) => void;
-    invalid?: boolean;
-    onSave?: (values: object, redirect: RedirectionSideEffect) => void;
-    saving?: boolean;
-    submitOnEnter?: boolean;
-    pristine?: boolean;
-    record?: Record;
-    resource?: string;
-    undoable?: boolean;
 }
 
-export type ButtonProps = Props & MuiButtonProps;
-
-export const sanitizeButtonRestProps = ({
-    // The next props are injected by Toolbar
-    basePath,
-    handleSubmit,
-    handleSubmitWithRedirect,
-    invalid,
-    onSave,
-    pristine,
-    record,
-    redirect,
-    resource,
-    saving,
-    submitOnEnter,
-    undoable,
-    ...rest
-}: any) => rest;
+export type ButtonProps<
+    RootComponent extends React.ElementType = 'button'
+> = Props<RootComponent> & MuiButtonProps<RootComponent>;
 
 Button.propTypes = {
     alignIcon: PropTypes.oneOf(['left', 'right']),
     children: PropTypes.element,
-    classes: PropTypes.object,
     className: PropTypes.string,
-    color: PropTypes.oneOf(['default', 'inherit', 'primary', 'secondary']),
+    color: PropTypes.oneOfType([
+        PropTypes.oneOf([
+            'inherit',
+            'default',
+            'primary',
+            'secondary',
+            'error',
+            'info',
+            'success',
+            'warning',
+        ]),
+        PropTypes.string,
+    ]),
     disabled: PropTypes.bool,
     label: PropTypes.string,
     size: PropTypes.oneOf(['small', 'medium', 'large']),
 };
 
-Button.defaultProps = {
-    color: 'primary',
-    size: 'small',
+const PREFIX = 'RaButton';
+
+const StyledButton = styled(MuiButton, {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})({
+    '&.MuiButton-sizeSmall': {
+        // fix for icon misalignment on small buttons, see https://github.com/mui/material-ui/pull/30240
+        lineHeight: 1.5,
+    },
+});
+
+const getLinkParams = (locationDescriptor?: LocationDescriptor | string) => {
+    // eslint-disable-next-line eqeqeq
+    if (locationDescriptor == undefined) {
+        return undefined;
+    }
+
+    if (typeof locationDescriptor === 'string') {
+        return { to: locationDescriptor };
+    }
+
+    const { redirect, replace, state, ...to } = locationDescriptor;
+    return {
+        to,
+        redirect,
+        replace,
+        state,
+    };
 };
 
-export default Button;
+export type LocationDescriptor = Partial<Path> & {
+    redirect?: boolean;
+    state?: any;
+    replace?: boolean;
+};

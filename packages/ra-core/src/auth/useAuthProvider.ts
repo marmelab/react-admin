@@ -11,6 +11,8 @@ export const defaultAuthParams = {
 /**
  * Get the authProvider stored in the context
  */
-const useAuthProvider = (): AuthProvider => useContext(AuthContext);
+const useAuthProvider = <
+    AuthProviderType extends AuthProvider = AuthProvider
+>(): AuthProviderType => useContext(AuthContext) as AuthProviderType;
 
 export default useAuthProvider;

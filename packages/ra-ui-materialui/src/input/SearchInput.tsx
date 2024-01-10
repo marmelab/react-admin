@@ -1,30 +1,25 @@
-import React, { FunctionComponent } from 'react';
-import PropTypes from 'prop-types';
-import SearchIcon from '@material-ui/icons/Search';
-import { makeStyles, InputAdornment } from '@material-ui/core';
-import { TextFieldProps } from '@material-ui/core/TextField';
-import { useTranslate, InputProps } from 'ra-core';
+import * as React from 'react';
+import { styled } from '@mui/material/styles';
+import SearchIcon from '@mui/icons-material/Search';
+import { InputAdornment } from '@mui/material';
+import { useTranslate } from 'ra-core';
 
-import TextInput from './TextInput';
+import { CommonInputProps } from './CommonInputProps';
+import { TextInput, TextInputProps } from './TextInput';
 
-const useStyles = makeStyles(
-    {
-        input: {
-            marginTop: 32,
-        },
-    },
-    { name: 'RaSearchInput' }
-);
+export const SearchInput = (props: SearchInputProps) => {
+    const { label, ...rest } = props;
 
-const SearchInput: FunctionComponent<
-    InputProps<TextFieldProps> & Omit<TextFieldProps, 'label' | 'helperText'>
-> = props => {
-    const { classes: classesOverride, ...rest } = props;
     const translate = useTranslate();
-    const classes = useStyles(props);
+
+    if (label) {
+        throw new Error(
+            "<SearchInput> isn't designed to be used with a label prop. Use <TextInput> if you need a label."
+        );
+    }
 
     return (
-        <TextInput
+        <StyledTextInput
             hiddenLabel
             label=""
             resettable
@@ -36,14 +31,19 @@ const SearchInput: FunctionComponent<
                     </InputAdornment>
                 ),
             }}
-            className={classes.input}
+            size="small"
             {...rest}
         />
     );
 };
 
-SearchInput.propTypes = {
-    classes: PropTypes.object,
-};
+export type SearchInputProps = CommonInputProps & TextInputProps;
 
-export default SearchInput;
+const PREFIX = 'RaSearchInput';
+
+const StyledTextInput = styled(TextInput, {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})({
+    marginTop: 0,
+});

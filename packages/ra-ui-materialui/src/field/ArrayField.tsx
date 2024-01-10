@@ -1,37 +1,45 @@
-import { Component, cloneElement, Children } from 'react';
+import * as React from 'react';
+import { ReactNode } from 'react';
 import get from 'lodash/get';
-import pure from 'recompose/pure';
-import { Identifier } from 'ra-core';
+import {
+    ListContextProvider,
+    useRecordContext,
+    useList,
+    SortPayload,
+    FilterPayload,
+} from 'ra-core';
 
-import { FieldProps, InjectedFieldProps, fieldPropTypes } from './types';
-
-interface State {
-    data: object;
-    ids: Identifier[];
-}
-
-const initialState = {
-    data: {},
-    ids: [],
-};
+import { FieldProps, fieldPropTypes } from './types';
+import { genericMemo } from './genericMemo';
 
 /**
- * Display a collection
+ * Renders an embedded array of objects.
  *
- * Ideal for embedded arrays of objects, e.g.
- * {
- *   id: 123
- *   tags: [
- *     { name: 'foo' },
- *     { name: 'bar' }
- *   ]
- * }
+ * ArrayField creates a ListContext with the field value, and renders its children components -
+ * usually iterator components like Datagrid, SingleFieldList, or SimpleList.
  *
- * The child must be an iterator component
- * (like <Datagrid> or <SingleFieldList>).
+ * @example // Display all the tags of the current post as `<Chip>` components
+ * // const post = {
+ * //   id: 123
+ * //   tags: [
+ * //     { name: 'foo' },
+ * //     { name: 'bar' }
+ * //   ]
+ * // };
+ * const PostShow = () => (
+ *    <Show>
+ *       <SimpleShowLayout>
+ *           <ArrayField source="tags">
+ *               <SingleFieldList>
+ *                   <ChipField source="name" />
+ *               </SingleFieldList>
+ *           </ArrayField>
+ *      </SimpleShowLayout>
+ *   </Show>
+ * );
  *
- * @example Display all the backlinks of the current post as a <Datagrid>
- * // post = {
+ * @example // Display all the backlinks of the current post as a `<Datagrid>`
+ * // const post = {
  * //   id: 123
  * //   backlinks: [
  * //       {
@@ -45,129 +53,57 @@ const initialState = {
  * //           url: 'https://blog.johndoe.com/2012/08/12/foobar.html',
  * //       }
  * //    ]
- * // }
- *     <ArrayField source="backlinks">
- *         <Datagrid>
- *             <DateField source="date" />
- *             <UrlField source="url" />
- *         </Datagrid>
- *     </ArrayField>
+ * // };
+ * <ArrayField source="backlinks">
+ *     <Datagrid>
+ *         <DateField source="date" />
+ *         <UrlField source="url" />
+ *     </Datagrid>
+ * </ArrayField>
  *
- * @example Display all the tags of the current post as <Chip> components
- * // post = {
- * //   id: 123
- * //   tags: [
- * //     { name: 'foo' },
- * //     { name: 'bar' }
- * //   ]
- * // }
- *     <ArrayField source="tags">
- *         <SingleFieldList>
- *             <ChipField source="name" />
- *         </SingleFieldList>
- *     </ArrayField>
+ * @example // If you need to render a collection of strings, it's often simpler to write your own component
+ * const TagsField = () => {
+ *     const record = useRecordContext();
+ *     return (
+ *         <ul>
+ *             {record.tags.map(item => (
+ *                 <li key={item.name}>{item.name}</li>
+ *             ))}
+ *         </ul>
+ *     );
+ * };
  *
- * If the array value contains a lot of items, you may experience slowdowns in the UI.
- * In such cases, set the `fieldKey` prop to use one field as key, and reduce CPU and memory usage:
- *
- * @example
- *     <ArrayField source="backlinks" fieldKey="uuid">
- *         ...
- *     </ArrayField>
- *
- * If you need to render a collection in a custom way, it's often simpler
- * to write your own component:
- *
- * @example
- *     const TagsField = ({ record }) => (
- *          <ul>
- *              {record.tags.map(item => (
- *                  <li key={item.name}>{item.name}</li>
- *              ))}
- *          </ul>
- *     )
- *     TagsField.defaultProps = { addLabel: true };
+ * @see useListContext
  */
-export class ArrayField extends Component<
-    FieldProps & InjectedFieldProps,
-    State
-> {
-    constructor(props: FieldProps & InjectedFieldProps) {
-        super(props);
-        this.state = props.record
-            ? this.getDataAndIds(props.record, props.source, props.fieldKey)
-            : initialState;
-    }
+const ArrayFieldImpl = <
+    RecordType extends Record<string, any> = Record<string, any>
+>(
+    props: ArrayFieldProps<RecordType>
+) => {
+    const { children, resource, source, perPage, sort, filter } = props;
+    const record = useRecordContext(props);
+    const data =
+        (get(record, source, emptyArray) as Record<string, any>[]) ||
+        emptyArray;
+    const listContext = useList({ data, resource, perPage, sort, filter });
+    return (
+        <ListContextProvider value={listContext}>
+            {children}
+        </ListContextProvider>
+    );
+};
+ArrayFieldImpl.propTypes = { ...fieldPropTypes };
+ArrayFieldImpl.displayName = 'ArrayFieldImpl';
 
-    componentWillReceiveProps(
-        nextProps: FieldProps & InjectedFieldProps,
-        prevProps: FieldProps & InjectedFieldProps
-    ) {
-        if (nextProps.record !== prevProps.record) {
-            this.setState(
-                this.getDataAndIds(
-                    nextProps.record,
-                    nextProps.source,
-                    nextProps.fieldKey
-                )
-            );
-        }
-    }
+export const ArrayField = genericMemo(ArrayFieldImpl);
 
-    getDataAndIds(record: object, source: string, fieldKey: string) {
-        const list = get(record, source);
-        if (!list) {
-            return initialState;
-        }
-        return fieldKey
-            ? {
-                  data: list.reduce((prev, item) => {
-                      prev[item[fieldKey]] = item;
-                      return prev;
-                  }, {}),
-                  ids: list.map(item => item[fieldKey]),
-              }
-            : {
-                  data: list.reduce((prev, item) => {
-                      prev[JSON.stringify(item)] = item;
-                      return prev;
-                  }, {}),
-                  ids: list.map(JSON.stringify),
-              };
-    }
-
-    render() {
-        const {
-            addLabel,
-            basePath,
-            children,
-            record,
-            sortable,
-            source,
-            fieldKey,
-            ...rest
-        } = this.props;
-        const { ids, data } = this.state;
-
-        // @ts-ignore
-        return cloneElement(Children.only(children), {
-            ids,
-            data,
-            loading: false,
-            basePath,
-            currentSort: {},
-            ...rest,
-        });
-    }
+export interface ArrayFieldProps<
+    RecordType extends Record<string, any> = Record<string, any>
+> extends FieldProps<RecordType> {
+    children?: ReactNode;
+    perPage?: number;
+    sort?: SortPayload;
+    filter?: FilterPayload;
 }
 
-const EnhancedArrayField = pure<FieldProps>(ArrayField);
-
-EnhancedArrayField.defaultProps = {
-    addLabel: true,
-};
-
-EnhancedArrayField.propTypes = fieldPropTypes;
-EnhancedArrayField.displayName = 'EnhancedArrayField';
-
-export default EnhancedArrayField;
+const emptyArray = [];

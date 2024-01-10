@@ -1,2 +1,2 @@
-import FileInputPreview from './FileInputPreview';
-export default FileInputPreview;
+import { FileInputPreview } from './FileInputPreview';
+export const ImageInputPreview = FileInputPreview;

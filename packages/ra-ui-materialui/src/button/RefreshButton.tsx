@@ -1,27 +1,28 @@
-import React, { FC, ReactElement, MouseEvent, useCallback } from 'react';
+import * as React from 'react';
+import { ReactElement, MouseEvent, useCallback } from 'react';
 import PropTypes from 'prop-types';
-import { useDispatch } from 'react-redux';
-import NavigationRefresh from '@material-ui/icons/Refresh';
-import { refreshView } from 'ra-core';
+import NavigationRefresh from '@mui/icons-material/Refresh';
+import { useRefresh } from 'ra-core';
 
-import Button, { ButtonProps } from './Button';
+import { Button, ButtonProps } from './Button';
 
-const RefreshButton: FC<RefreshButtonProps> = ({
-    label = 'ra.action.refresh',
-    icon = defaultIcon,
-    onClick,
-    ...rest
-}) => {
-    const dispatch = useDispatch();
+export const RefreshButton = (props: RefreshButtonProps) => {
+    const {
+        label = 'ra.action.refresh',
+        icon = defaultIcon,
+        onClick,
+        ...rest
+    } = props;
+    const refresh = useRefresh();
     const handleClick = useCallback(
         event => {
             event.preventDefault();
-            dispatch(refreshView());
+            refresh();
             if (typeof onClick === 'function') {
                 onClick(event);
             }
         },
-        [dispatch, onClick]
+        [refresh, onClick]
     );
 
     return (
@@ -46,5 +47,3 @@ RefreshButton.propTypes = {
     icon: PropTypes.element,
     onClick: PropTypes.func,
 };
-
-export default RefreshButton;

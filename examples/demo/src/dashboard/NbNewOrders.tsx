@@ -1,46 +1,23 @@
-import React, { FC } from 'react';
-import Card from '@material-ui/core/Card';
-import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
-import { makeStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
+import * as React from 'react';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { useTranslate } from 'react-admin';
 
-import CardIcon from './CardIcon';
+import CardWithIcon from './CardWithIcon';
 
 interface Props {
     value?: number;
 }
 
-const useStyles = makeStyles({
-    main: {
-        flex: '1',
-        marginLeft: '1em',
-        marginTop: 20,
-    },
-    card: {
-        overflow: 'inherit',
-        textAlign: 'right',
-        padding: 16,
-        minHeight: 52,
-    },
-    title: {},
-});
-
-const NbNewOrders: FC<Props> = ({ value }) => {
+const NbNewOrders = (props: Props) => {
+    const { value } = props;
     const translate = useTranslate();
-    const classes = useStyles();
     return (
-        <div className={classes.main}>
-            <CardIcon Icon={ShoppingCartIcon} bgColor="#ff9800" />
-            <Card className={classes.card}>
-                <Typography className={classes.title} color="textSecondary">
-                    {translate('pos.dashboard.new_orders')}
-                </Typography>
-                <Typography variant="h5" component="h2">
-                    {value}
-                </Typography>
-            </Card>
-        </div>
+        <CardWithIcon
+            to="/commands"
+            icon={ShoppingCartIcon}
+            title={translate('pos.dashboard.new_orders')}
+            subtitle={value}
+        />
     );
 };
 

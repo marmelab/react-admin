@@ -1,4 +1,8 @@
 import getElementsFromRecords from './getElementsFromRecords';
 import InferredElement from './InferredElement';
+import getValuesFromRecords from './getValuesFromRecords';
 
-export { getElementsFromRecords, InferredElement };
+export * from './inferTypeFromValues';
+export * from './types';
+
+export { getElementsFromRecords, getValuesFromRecords, InferredElement };

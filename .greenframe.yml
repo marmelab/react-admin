@@ -1,0 +1,12 @@
+scenarios:
+  - path: "./greenframe/sales.js"
+    name: "Sales"
+    threshold: 0.136
+  - path: "./greenframe/catalog.js"
+    name: "Catalog"
+    threshold: 0.116
+  - path: "./greenframe/customers.js"
+    name: "Customers"
+    threshold: 0.106
+baseURL: "http://localhost:4173"
+projectName: "react-admin"

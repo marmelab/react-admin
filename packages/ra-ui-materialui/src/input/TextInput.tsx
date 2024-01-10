@@ -1,14 +1,15 @@
-import React, { FunctionComponent } from 'react';
+import * as React from 'react';
 import PropTypes from 'prop-types';
-import { useInput, FieldTitle, InputProps } from 'ra-core';
-import { TextFieldProps } from '@material-ui/core/TextField';
+import clsx from 'clsx';
+import { useInput, FieldTitle } from 'ra-core';
 
-import ResettableTextField from './ResettableTextField';
-import InputHelperText from './InputHelperText';
-import sanitizeRestProps from './sanitizeRestProps';
-
-export type TextInputProps = InputProps<TextFieldProps> &
-    Omit<TextFieldProps, 'label' | 'helperText'>;
+import { CommonInputProps } from './CommonInputProps';
+import {
+    ResettableTextField,
+    ResettableTextFieldProps,
+} from './ResettableTextField';
+import { InputHelperText } from './InputHelperText';
+import { sanitizeInputRestProps } from './sanitizeInputRestProps';
 
 /**
  * An Input component for a string
@@ -22,79 +23,84 @@ export type TextInputProps = InputProps<TextFieldProps> &
  * <TextInput source="email" type="email" />
  * <NumberInput source="nb_views" />
  *
- * The object passed as `options` props is passed to the <ResettableTextField> component
  */
-const TextInput: FunctionComponent<TextInputProps> = ({
-    label,
-    format,
-    helperText,
-    onBlur,
-    onFocus,
-    onChange,
-    options,
-    parse,
-    resource,
-    source,
-    validate,
-    ...rest
-}) => {
+export const TextInput = (props: TextInputProps) => {
     const {
-        id,
-        input,
-        isRequired,
-        meta: { error, touched },
-    } = useInput({
+        className,
+        defaultValue,
+        label,
         format,
+        helperText,
         onBlur,
         onChange,
-        onFocus,
+        parse,
+        resource,
+        source,
+        validate,
+        ...rest
+    } = props;
+    const {
+        field,
+        fieldState: { error, invalid, isTouched },
+        formState: { isSubmitted },
+        id,
+        isRequired,
+    } = useInput({
+        defaultValue,
+        format,
         parse,
         resource,
         source,
         type: 'text',
         validate,
+        onBlur,
+        onChange,
         ...rest,
     });
+
+    const renderHelperText =
+        helperText !== false || ((isTouched || isSubmitted) && invalid);
 
     return (
         <ResettableTextField
             id={id}
-            {...input}
+            {...field}
+            className={clsx('ra-input', `ra-input-${source}`, className)}
             label={
-                label !== '' &&
-                label !== false && (
+                label !== '' && label !== false ? (
                     <FieldTitle
                         label={label}
                         source={source}
                         resource={resource}
                         isRequired={isRequired}
                     />
-                )
+                ) : null
             }
-            error={!!(touched && error)}
+            error={(isTouched || isSubmitted) && invalid}
             helperText={
-                <InputHelperText
-                    touched={touched}
-                    error={error}
-                    helperText={helperText}
-                />
+                renderHelperText ? (
+                    <InputHelperText
+                        touched={isTouched || isSubmitted}
+                        error={error?.message}
+                        helperText={helperText}
+                    />
+                ) : null
             }
-            {...options}
-            {...sanitizeRestProps(rest)}
+            {...sanitizeInputRestProps(rest)}
         />
     );
 };
 
 TextInput.propTypes = {
     className: PropTypes.string,
-    label: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
-    options: PropTypes.object,
+    label: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.bool,
+        PropTypes.element,
+    ]),
     resource: PropTypes.string,
     source: PropTypes.string,
 };
 
-TextInput.defaultProps = {
-    options: {},
-};
-
-export default TextInput;
+export type TextInputProps = CommonInputProps &
+    Omit<ResettableTextFieldProps, 'label' | 'helperText'>;

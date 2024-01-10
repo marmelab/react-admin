@@ -1,21 +1,67 @@
-import React, { FC } from 'react';
+import * as React from 'react';
 import {
     Datagrid,
     Edit,
     EditButton,
     NumberField,
+    Labeled,
     ReferenceManyField,
     SimpleForm,
     TextInput,
     useTranslate,
+    useRecordContext,
 } from 'react-admin';
 
 import ThumbnailField from '../products/ThumbnailField';
 import ProductRefField from '../products/ProductRefField';
-import { FieldProps, Category } from '../types';
+import { Category } from '../types';
 
-const CategoryTitle: FC<FieldProps<Category>> = ({ record }) => {
+const CategoryEdit = () => (
+    <Edit title={<CategoryTitle />}>
+        <SimpleForm>
+            <TextInput source="name" />
+            <Labeled label="resources.categories.fields.products" fullWidth>
+                <ReferenceManyField
+                    reference="products"
+                    target="category_id"
+                    perPage={20}
+                >
+                    <Datagrid
+                        sx={{
+                            '& .column-thumbnail': {
+                                width: 25,
+                                padding: 0,
+                            },
+                        }}
+                    >
+                        <ThumbnailField source="thumbnail" label="" />
+                        <ProductRefField source="reference" />
+                        <NumberField
+                            source="price"
+                            options={{ style: 'currency', currency: 'USD' }}
+                        />
+                        <NumberField
+                            source="width"
+                            options={{ minimumFractionDigits: 2 }}
+                        />
+                        <NumberField
+                            source="height"
+                            options={{ minimumFractionDigits: 2 }}
+                        />
+                        <NumberField source="stock" />
+                        <NumberField source="sales" />
+                        <EditButton />
+                    </Datagrid>
+                </ReferenceManyField>
+            </Labeled>
+        </SimpleForm>
+    </Edit>
+);
+
+const CategoryTitle = () => {
+    const record = useRecordContext<Category>();
     const translate = useTranslate();
+
     return record ? (
         <span>
             {translate('resources.categories.name', { smart_count: 1 })} &quot;
@@ -23,38 +69,5 @@ const CategoryTitle: FC<FieldProps<Category>> = ({ record }) => {
         </span>
     ) : null;
 };
-
-const CategoryEdit = (props: any) => (
-    <Edit title={<CategoryTitle />} {...props}>
-        <SimpleForm>
-            <TextInput source="name" />
-            <ReferenceManyField
-                reference="products"
-                target="category_id"
-                label="resources.categories.fields.products"
-                perPage={5}
-            >
-                <Datagrid>
-                    <ThumbnailField />
-                    <ProductRefField source="reference" />
-                    <NumberField
-                        source="price"
-                        options={{ style: 'currency', currency: 'USD' }}
-                    />
-                    <NumberField
-                        source="width"
-                        options={{ minimumFractionDigits: 2 }}
-                    />
-                    <NumberField
-                        source="height"
-                        options={{ minimumFractionDigits: 2 }}
-                    />
-                    <NumberField source="stock" />
-                    <EditButton />
-                </Datagrid>
-            </ReferenceManyField>
-        </SimpleForm>
-    </Edit>
-);
 
 export default CategoryEdit;

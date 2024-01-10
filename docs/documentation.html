@@ -1,0 +1,351 @@
+---
+---
+
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <title>React-admin - Documentation</title>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+        <meta name="description" content="React-admin Documentation index" />
+        <meta name="HandheldFriendly" content="true" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+        <link
+            rel="stylesheet"
+            href="{{ '/css/materialize.min.css' | relative_url }}"
+        />
+        <link
+            rel="stylesheet"
+            href="{{ '/css/style-v19.css' | relative_url }}"
+        />
+        <link rel="stylesheet" href="{{ '/css/syntax.css' | relative_url }}" />
+        <link rel="stylesheet" href="{{ '/css/prism.css' | relative_url }}" />
+        <link rel="stylesheet" href="{{ '/css/tocbot.css' | relative_url }}" />
+        <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/icon?family=Material+Icons"
+        />
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/@docsearch/css@3"
+        />
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.12.0/tocbot.css"
+        />
+        <link rel="stylesheet" href="css/docsearch.css" />
+        <!-- Newsletter form -->
+        <style>
+            @font-face {
+                font-display: block;
+                font-family: Roboto;
+                src: url(https://assets.brevo.com/font/Roboto/Latin/normal/normal/7529907e9eaf8ebb5220c5f9850e3811.woff2)
+                        format('woff2'),
+                    url(https://assets.brevo.com/font/Roboto/Latin/normal/normal/25c678feafdc175a70922a116c9be3e7.woff)
+                        format('woff');
+            }
+
+            @font-face {
+                font-display: fallback;
+                font-family: Roboto;
+                font-weight: 600;
+                src: url(https://assets.brevo.com/font/Roboto/Latin/medium/normal/6e9caeeafb1f3491be3e32744bc30440.woff2)
+                        format('woff2'),
+                    url(https://assets.brevo.com/font/Roboto/Latin/medium/normal/71501f0d8d5aa95960f6475d5487d4c2.woff)
+                        format('woff');
+            }
+
+            @font-face {
+                font-display: fallback;
+                font-family: Roboto;
+                font-weight: 700;
+                src: url(https://assets.brevo.com/font/Roboto/Latin/bold/normal/3ef7cf158f310cf752d5ad08cd0e7e60.woff2)
+                        format('woff2'),
+                    url(https://assets.brevo.com/font/Roboto/Latin/bold/normal/ece3a1d82f18b60bcce0211725c476aa.woff)
+                        format('woff');
+            }
+
+            #sib-container input:-ms-input-placeholder {
+                text-align: left;
+                font-family: 'Helvetica', sans-serif;
+                color: #c0ccda;
+            }
+
+            #sib-container input::placeholder {
+                text-align: left;
+                font-family: 'Helvetica', sans-serif;
+                color: #c0ccda;
+            }
+
+            #sib-container textarea::placeholder {
+                text-align: left;
+                font-family: 'Helvetica', sans-serif;
+                color: #c0ccda;
+            }
+        </style>
+        <link
+            rel="stylesheet"
+            href="{{ '/css/newsletter.css' | relative_url }}"
+        />
+    </head>
+
+    <body>
+        <header>
+            {% include nav.html %}
+            <ul id="slide-out" class="sidenav sidenav-fixed">
+                <li class="logo">
+                    <a href="{{ site.url }}"
+                        ><img src="{{ site.url }}/assets/logo_white.png"
+                    /></a>
+                </li>
+                <li class="version">{% include versions.html %}</li>
+                {% include_relative navigation.html %}
+            </ul>
+        </header>
+
+        <main>
+            <div class="container">
+                <div class="row nav_root">
+                    <div class="docBlocks">
+                        <a href="./Tutorial.html">
+                            <div class="docBlock">
+                                <h2>Getting Started</h2>
+                                30 minutes tutorial, installation instructions
+                            </div>
+                            <div class="material-icons">&#xe425;</div>
+                        </a>
+
+                        <a href="./Admin.html">
+                            <div class="docBlock">
+                                <h2>App configuration</h2>
+                                <code>&lt;Admin&gt;</code>,
+                                <code>&lt;Resource&gt;</code> and routing
+                                explained.
+                            </div>
+                            <div class="material-icons">&#xe87b;</div>
+                        </a>
+
+                        <a href="./DataProviders.html">
+                            <div class="docBlock">
+                                <h2>Data Fetching</h2>
+                                Plugging in a REST or GraphQL API with
+                                <code>dataProvider</code>
+                            </div>
+                            <div class="material-icons">&#xf8ef;</div>
+                        </a>
+
+                        <a href="./Authentication.html">
+                            <div class="docBlock">
+                                <h2>Security</h2>
+                                Authentication, roles and permissions with
+                                <code>authProvider</code>
+                            </div>
+                            <div class="material-icons">&#xe73c;</div>
+                        </a>
+
+                        <a href="./ListTutorial.html">
+                            <div class="docBlock">
+                                <h2>List pages</h2>
+                                <code>&lt;List&gt;</code>,
+                                <code>&lt;Datagrid&gt;</code>, filters, sorting,
+                                etc.
+                            </div>
+                            <div class="material-icons">&#xe0ee;</div>
+                        </a>
+
+                        <a href="./EditTutorial.html">
+                            <div class="docBlock">
+                                <h2>Forms & Edition pages</h2>
+                                <code>&lt;Edit&gt;</code>,
+                                <code>&lt;Create&gt;</code>,
+                                <code>&lt;Form&gt;</code>, validation, etc.
+                            </div>
+                            <div class="material-icons">&#xe3c9;</div>
+                        </a>
+
+                        <a href="./Show.html">
+                            <div class="docBlock">
+                                <h2>Show pages</h2>
+                                <code>&lt;Show&gt;</code>,
+                                <code>&lt;SimpleShowLayout&gt;</code>, etc.
+                            </div>
+                            <div class="material-icons">&#xe8f4;</div>
+                        </a>
+
+                        <a href="./useRecordContext.html">
+                            <div class="docBlock">
+                                <h2>Common Hooks</h2>
+                                <code>useRecordContext</code>,
+                                <code>useNotify</code>,
+                                <code>useRedirect</code>, etc.
+                            </div>
+                            <div class="material-icons">&#xe031;</div>
+                        </a>
+
+                        <a href="./Fields.html">
+                            <div class="docBlock">
+                                <h2>Fields</h2>
+                                <code>&lt;TextField&gt;</code>,
+                                <code>&lt;SelectField&gt;</code>,
+                                <code>&lt;ReferenceField&gt;</code>, etc.
+                            </div>
+                            <div class="material-icons">&#xe8f4;</div>
+                        </a>
+
+                        <a class="nav-link" href="./Inputs.html">
+                            <div class="docBlock">
+                                <h2>Inputs</h2>
+                                <code>&lt;TextInput&gt;</code>,
+                                <code>&lt;DateInput&gt;</code>,
+                                <code>&lt;AutocompleteInput&gt;</code>, etc.
+                            </div>
+                            <div class="material-icons">&#xe762;</div>
+                        </a>
+
+                        <a href="./Store.html">
+                            <div class="docBlock">
+                                <h2>Preferences</h2>
+
+                                <code>useStore</code> and configurable
+                                components
+                            </div>
+                            <div class="material-icons">&#xe87c;</div>
+                        </a>
+
+                        <a href="./Translation.html">
+                            <div class="docBlock">
+                                <h2>I18N</h2>
+                                Localize the interface in multiple languages
+                            </div>
+                            <div class="material-icons">&#xe8e2;</div>
+                        </a>
+
+                        <a href="./Layout.html">
+                            <div class="docBlock">
+                                <h2>UI components</h2>
+                                App building blocks: <code>&lt;Menu&gt;</code>,
+                                <code>&lt;Breadcrumb&gt;</code>,
+                                <code>&lt;Button&gt;</code>, etc.
+                            </div>
+                            <div class="material-icons">&#xf1c1;</div>
+                        </a>
+
+                        <a href="./Theming.html">
+                            <div class="docBlock">
+                                <h2>Theming</h2>
+                                Customizing the look and feel
+                            </div>
+                            <div class="material-icons">&#xe40a;</div>
+                        </a>
+
+                        <a href="./Realtime.html">
+                            <div class="docBlock">
+                                <h2>Realtime</h2>
+                                Pub/Sub, live updates, menu badges, locks.
+                            </div>
+                            <div class="material-icons">&#xe627;</div>
+                        </a>
+
+                        <a href="./Caching.html">
+                            <div class="docBlock">
+                                <h2>Recipes</h2>
+                                For advanced configuration
+                            </div>
+                            <div class="material-icons">&#xe1bd;</div>
+                        </a>
+                    </div>
+                    <div
+                        class="needHelp"
+                        style="text-align: center; padding-top: 0; color: #888"
+                    >
+                        Need help with your React-admin app?
+                        <br />
+                        Turn to Marmelab, its creators and seasoned full-stack
+                        JS development agency.
+                        <br />
+                        <a href="mailto:react-admin-ee@marmelab.com"
+                            >Get in touch</a
+                        >
+                        to hire an expert for a day, or a team for a month.
+                    </div>
+
+                    <div class="col s12 m9">
+                        <div
+                            class="markdown-section DocSearch-content toc-content"
+                        ></div>
+                    </div>
+                    <div class="toc-container">
+                        <div class="toc"></div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <script src="js/materialize.min.js"></script>
+        <script src="js/prism.js"></script>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.12.0/tocbot.min.js"
+            defer
+            integrity="sha512-oD3xGN8YTxenx6tdS4D/RKqO4OtORBQtAb2/FseM17GGMIi6jMwKUBc8duX4A5RwMOGGXoFBZrsqbOk8GpXFgQ=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+        ></script>
+        <script src="js/ra-doc-exec.js"></script>
+
+        <script src="https://cdn.jsdelivr.net/npm/@docsearch/js@3"></script>
+        {% if page.dir contains "doc" %} {% assign version = page.dir | split:
+        '/' | last %} {% else %} {% assign version = "latest" %} {% endif %}
+        <script type="text/javascript">
+            docsearch({
+                container: '#docsearch',
+                appId: 'QY9T9CVM2N',
+                indexName: 'marmelab-react-admin',
+                apiKey: '75332227370be3dc35777cee6244881a',
+                searchParameters: { facetFilters: ['version:  {{ version }}'] },
+            });
+        </script>
+
+        <!--
+        React-admin protects your privacy!
+        We use our own self-hosted tracking solution to collect some raw metrics,
+        like page views, device type (mobile, desktop, etc.) or country.
+        We don't track any personal information about our visitors.
+    -->
+        <script
+            async
+            defer
+            data-website-id="ef7f8242-2808-4cbf-9dff-564daa515bbd"
+            src="https://analytics.marmelab.com/umami.js"
+        ></script>
+
+        <!-- Newsletter form -->
+        <script>
+            window.REQUIRED_CODE_ERROR_MESSAGE = 'Please choose a country code';
+            window.LOCALE = 'en';
+            window.GENERIC_INVALID_MESSAGE = window.EMAIL_INVALID_MESSAGE = window.SMS_INVALID_MESSAGE =
+                'The information provided is invalid. Please review the field format and try again.';
+            window.REQUIRED_ERROR_MESSAGE = 'This field is required.';
+
+            var AUTOHIDE = Boolean(0);
+        </script>
+
+        <script
+            async
+            defer
+            src="https://unpkg.com/typescript@5.1.3/lib/typescript.js"
+        ></script>
+        <script
+            async
+            defer
+            src="https://unpkg.com/prettier@2.8.8/standalone.js"
+        ></script>
+        <script
+            async
+            defer
+            src="https://unpkg.com/prettier@2.8.8/parser-babel.js"
+        ></script>
+    </body>
+</html>

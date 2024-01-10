@@ -1,12 +1,10 @@
+
 {
     "parser": "@typescript-eslint/parser",
-    "extends": [
-        "react-app",
-        "plugin:prettier/recommended",
-        "prettier/@typescript-eslint",
-        "prettier/babel",
-        "prettier/react"
-    ],
+    "parserOptions": {
+        "warnOnUnsupportedTypeScriptVersion": false
+    },
+    "extends": ["react-app", "plugin:prettier/recommended"],
     "plugins": [
         "@typescript-eslint",
         "import",
@@ -17,6 +15,31 @@
     ],
     "rules": {
         "no-use-before-define": "off",
-        "prettier/prettier": "error"
+        "prettier/prettier": "error",
+        "no-restricted-imports": [
+            "error",
+            {
+                "paths": [
+                    {
+                        "name": "@mui/material",
+                        "importNames": ["makeStyles", "createMuiTheme"],
+                        "message": "Please import from @mui/material/styles instead. See https://material-ui.com/guides/minimizing-bundle-size/#option-2 for more information"
+                    }
+                ]
+            }
+        ],
+        "no-redeclare": "off",
+        "import/no-anonymous-default-export": "off",
+        "@typescript-eslint/no-redeclare": ["error"],
+        "no-unused-vars": "off",
+        "@typescript-eslint/no-unused-vars": [
+            "warn", // or "error"
+            { 
+                "argsIgnorePattern": "^_",
+                "varsIgnorePattern": "^_",
+                "caughtErrorsIgnorePattern": "^_",
+                "ignoreRestSiblings": true
+            }
+        ]
     }
 }

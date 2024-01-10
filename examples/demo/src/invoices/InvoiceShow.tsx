@@ -1,32 +1,15 @@
-import React, { FC } from 'react';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
-import { useShowController, ReferenceField, TextField } from 'react-admin';
+import * as React from 'react';
+import { Box, Card, CardContent, Grid, Typography } from '@mui/material';
+import { ReferenceField, TextField, useRecordContext } from 'react-admin';
 
 import Basket from '../orders/Basket';
-import { FieldProps, Customer } from '../types';
+import { Customer, Invoice } from '../types';
 
-const CustomerField: FC<FieldProps<Customer>> = ({ record }) =>
-    record ? (
-        <Typography>
-            {record.first_name} {record.last_name}
-            <br />
-            {record.address}
-            <br />
-            {record.city}, {record.zipcode}
-        </Typography>
-    ) : null;
-
-const InvoiceShow = (props: any) => {
-    const { record } = useShowController(props);
-    const classes = useStyles();
-
+const InvoiceShow = () => {
+    const record = useRecordContext<Invoice>();
     if (!record) return null;
     return (
-        <Card className={classes.root}>
+        <Card sx={{ width: 600, margin: 'auto' }}>
             <CardContent>
                 <Grid container spacing={2}>
                     <Grid item xs={6}>
@@ -43,18 +26,15 @@ const InvoiceShow = (props: any) => {
                 <Grid container spacing={2}>
                     <Grid item xs={12} container alignContent="flex-end">
                         <ReferenceField
-                            resource="invoices"
                             reference="customers"
                             source="customer_id"
-                            basePath="/invoices"
-                            record={record}
                             link={false}
                         >
                             <CustomerField />
                         </ReferenceField>
                     </Grid>
                 </Grid>
-                <div className={classes.spacer}>&nbsp;</div>
+                <Box height={20}>&nbsp;</Box>
                 <Grid container spacing={2}>
                     <Grid item xs={6}>
                         <Typography variant="h6" gutterBottom align="center">
@@ -70,11 +50,8 @@ const InvoiceShow = (props: any) => {
                             Order
                         </Typography>
                         <ReferenceField
-                            resource="invoices"
                             reference="commands"
                             source="command_id"
-                            basePath="/invoices"
-                            record={record}
                             link={false}
                         >
                             <TextField
@@ -86,27 +63,31 @@ const InvoiceShow = (props: any) => {
                         </ReferenceField>
                     </Grid>
                 </Grid>
-                <div className={classes.invoices}>
+                <Box margin="10px 0">
                     <ReferenceField
-                        resource="invoices"
                         reference="commands"
                         source="command_id"
-                        basePath="/invoices"
-                        record={record}
                         link={false}
                     >
                         <Basket />
                     </ReferenceField>
-                </div>
+                </Box>
             </CardContent>
         </Card>
     );
 };
 
-export default InvoiceShow;
+const CustomerField = () => {
+    const record = useRecordContext<Customer>();
+    return record ? (
+        <Typography>
+            {record.first_name} {record.last_name}
+            <br />
+            {record.address}
+            <br />
+            {record.city}, {record.zipcode}
+        </Typography>
+    ) : null;
+};
 
-const useStyles = makeStyles({
-    root: { width: 600, margin: 'auto' },
-    spacer: { height: 20 },
-    invoices: { margin: '10px 0' },
-});
+export default InvoiceShow;

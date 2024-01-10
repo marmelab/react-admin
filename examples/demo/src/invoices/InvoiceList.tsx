@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import {
     List,
     Datagrid,
@@ -6,7 +6,6 @@ import {
     DateField,
     ReferenceField,
     NumberField,
-    Filter,
     DateInput,
 } from 'react-admin';
 
@@ -14,16 +13,35 @@ import FullNameField from '../visitors/FullNameField';
 import AddressField from '../visitors/AddressField';
 import InvoiceShow from './InvoiceShow';
 
-const ListFilters = (props: any) => (
-    <Filter {...props}>
-        <DateInput source="date_gte" alwaysOn />
-        <DateInput source="date_lte" alwaysOn />
-    </Filter>
-);
+const listFilters = [
+    <DateInput source="date_gte" alwaysOn />,
+    <DateInput source="date_lte" alwaysOn />,
+];
 
-const InvoiceList = (props: any) => (
-    <List {...props} filters={<ListFilters />} perPage={25}>
-        <Datagrid rowClick="expand" expand={<InvoiceShow />}>
+const InvoiceList = () => (
+    <List
+        filters={listFilters}
+        perPage={25}
+        sort={{ field: 'date', order: 'DESC' }}
+    >
+        <Datagrid
+            rowClick="expand"
+            expand={<InvoiceShow />}
+            sx={{
+                '& .column-customer_id': {
+                    display: { xs: 'none', md: 'table-cell' },
+                },
+                '& .column-total_ex_taxes': {
+                    display: { xs: 'none', md: 'table-cell' },
+                },
+                '& .column-delivery_fees': {
+                    display: { xs: 'none', md: 'table-cell' },
+                },
+                '& .column-taxes': {
+                    display: { xs: 'none', md: 'table-cell' },
+                },
+            }}
+        >
             <TextField source="id" />
             <DateField source="date" />
             <ReferenceField source="customer_id" reference="customers">

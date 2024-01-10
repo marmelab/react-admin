@@ -1,42 +1,18 @@
-import React, { FC, useCallback, MouseEventHandler } from 'react';
+import * as React from 'react';
+import { styled } from '@mui/material/styles';
+import { useCallback, MouseEventHandler } from 'react';
 import PropTypes, { ReactComponentLike } from 'prop-types';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import Button from '@material-ui/core/Button';
-import { makeStyles } from '@material-ui/core/styles';
-import { fade } from '@material-ui/core/styles/colorManipulator';
-import ActionCheck from '@material-ui/icons/CheckCircle';
-import AlertError from '@material-ui/icons/ErrorOutline';
-import classnames from 'classnames';
+import Dialog, { DialogProps } from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import Button from '@mui/material/Button';
+import { alpha } from '@mui/material/styles';
+import ActionCheck from '@mui/icons-material/CheckCircle';
+import AlertError from '@mui/icons-material/ErrorOutline';
+import clsx from 'clsx';
 import { useTranslate } from 'ra-core';
-
-const useStyles = makeStyles(
-    theme => ({
-        contentText: {
-            minWidth: 400,
-        },
-        confirmPrimary: {
-            color: theme.palette.primary.main,
-        },
-        confirmWarning: {
-            color: theme.palette.error.main,
-            '&:hover': {
-                backgroundColor: fade(theme.palette.error.main, 0.12),
-                // Reset on mouse devices
-                '@media (hover: none)': {
-                    backgroundColor: 'transparent',
-                },
-            },
-        },
-        iconPaddingStyle: {
-            paddingRight: '0.5em',
-        },
-    }),
-    { name: 'RaConfirm' }
-);
 
 /**
  * Confirmation dialog
@@ -55,22 +31,24 @@ const useStyles = makeStyles(
  *     onClose={() => { // do something }}
  * />
  */
-const Confirm: FC<ConfirmProps> = props => {
+export const Confirm = (props: ConfirmProps) => {
     const {
-        isOpen,
+        className,
+        isOpen = false,
         loading,
         title,
         content,
-        confirm,
-        cancel,
-        confirmColor,
-        ConfirmIcon,
-        CancelIcon,
+        cancel = 'ra.action.cancel',
+        confirm = 'ra.action.confirm',
+        confirmColor = 'primary',
+        ConfirmIcon = ActionCheck,
+        CancelIcon = AlertError,
         onClose,
         onConfirm,
         translateOptions = {},
+        ...rest
     } = props;
-    const classes = useStyles(props);
+
     const translate = useTranslate();
 
     const handleConfirm = useCallback(
@@ -86,84 +64,114 @@ const Confirm: FC<ConfirmProps> = props => {
     }, []);
 
     return (
-        <Dialog
+        <StyledDialog
+            className={className}
             open={isOpen}
             onClose={onClose}
             onClick={handleClick}
             aria-labelledby="alert-dialog-title"
+            {...rest}
         >
             <DialogTitle id="alert-dialog-title">
-                {translate(title, { _: title, ...translateOptions })}
+                {typeof title === 'string'
+                    ? translate(title, { _: title, ...translateOptions })
+                    : title}
             </DialogTitle>
             <DialogContent>
-                <DialogContentText className={classes.contentText}>
-                    {translate(content, {
-                        _: content,
-                        ...translateOptions,
-                    })}
-                </DialogContentText>
+                {typeof content === 'string' ? (
+                    <DialogContentText>
+                        {translate(content, {
+                            _: content,
+                            ...translateOptions,
+                        })}
+                    </DialogContentText>
+                ) : (
+                    content
+                )}
             </DialogContent>
             <DialogActions>
-                <Button disabled={loading} onClick={onClose}>
-                    <CancelIcon className={classes.iconPaddingStyle} />
+                <Button
+                    disabled={loading}
+                    onClick={onClose}
+                    startIcon={<CancelIcon />}
+                >
                     {translate(cancel, { _: cancel })}
                 </Button>
                 <Button
                     disabled={loading}
                     onClick={handleConfirm}
-                    className={classnames('ra-confirm', {
-                        [classes.confirmWarning]: confirmColor === 'warning',
-                        [classes.confirmPrimary]: confirmColor === 'primary',
+                    className={clsx('ra-confirm', {
+                        [ConfirmClasses.confirmWarning]:
+                            confirmColor === 'warning',
+                        [ConfirmClasses.confirmPrimary]:
+                            confirmColor === 'primary',
                     })}
                     autoFocus
+                    startIcon={<ConfirmIcon />}
                 >
-                    <ConfirmIcon className={classes.iconPaddingStyle} />
                     {translate(confirm, { _: confirm })}
                 </Button>
             </DialogActions>
-        </Dialog>
+        </StyledDialog>
     );
 };
 
-export interface ConfirmProps {
+export interface ConfirmProps
+    extends Omit<DialogProps, 'open' | 'onClose' | 'title'> {
     cancel?: string;
-    classes?: object;
+    className?: string;
     confirm?: string;
-    confirmColor?: string;
+    confirmColor?: 'primary' | 'warning';
     ConfirmIcon?: ReactComponentLike;
     CancelIcon?: ReactComponentLike;
-    content: string;
+    content: React.ReactNode;
     isOpen?: boolean;
     loading?: boolean;
     onClose: MouseEventHandler;
     onConfirm: MouseEventHandler;
-    title: string;
+    title: React.ReactNode;
     translateOptions?: object;
 }
 
 Confirm.propTypes = {
     cancel: PropTypes.string,
-    classes: PropTypes.object,
+    className: PropTypes.string,
     confirm: PropTypes.string,
     confirmColor: PropTypes.string,
     ConfirmIcon: PropTypes.elementType,
     CancelIcon: PropTypes.elementType,
-    content: PropTypes.string.isRequired,
+    content: PropTypes.node.isRequired,
     isOpen: PropTypes.bool,
     loading: PropTypes.bool,
     onClose: PropTypes.func.isRequired,
     onConfirm: PropTypes.func.isRequired,
-    title: PropTypes.string.isRequired,
+    title: PropTypes.node.isRequired,
+    sx: PropTypes.any,
 };
 
-Confirm.defaultProps = {
-    cancel: 'ra.action.cancel',
-    classes: {},
-    confirm: 'ra.action.confirm',
-    confirmColor: 'primary',
-    ConfirmIcon: ActionCheck,
-    CancelIcon: AlertError,
-    isOpen: false,
+const PREFIX = 'RaConfirm';
+
+export const ConfirmClasses = {
+    confirmPrimary: `${PREFIX}-confirmPrimary`,
+    confirmWarning: `${PREFIX}-confirmWarning`,
 };
 
-export default Confirm;
+const StyledDialog = styled(Dialog, {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})(({ theme }) => ({
+    [`& .${ConfirmClasses.confirmPrimary}`]: {
+        color: theme.palette.primary.main,
+    },
+
+    [`& .${ConfirmClasses.confirmWarning}`]: {
+        color: theme.palette.error.main,
+        '&:hover': {
+            backgroundColor: alpha(theme.palette.error.main, 0.12),
+            // Reset on mouse devices
+            '@media (hover: none)': {
+                backgroundColor: 'transparent',
+            },
+        },
+    },
+}));

@@ -1,17 +1,24 @@
-import React, { Children, cloneElement, FC, memo, ReactElement } from 'react';
+import * as React from 'react';
+import { FC, memo, ReactElement, ReactNode } from 'react';
 import PropTypes from 'prop-types';
-import LinearProgress from '@material-ui/core/LinearProgress';
-import { makeStyles } from '@material-ui/core/styles';
-import { ReferenceArrayProps, useReferenceArrayFieldController } from 'ra-core';
-import { fieldPropTypes, FieldProps, InjectedFieldProps } from './types';
-import { ClassNameMap } from '@material-ui/styles';
+import {
+    ListContextProvider,
+    useListContext,
+    ListControllerProps,
+    useReferenceArrayFieldController,
+    SortPayload,
+    FilterPayload,
+    ResourceContextProvider,
+    useRecordContext,
+    RaRecord,
+} from 'ra-core';
+import { styled } from '@mui/material/styles';
+import { SxProps } from '@mui/system';
+import { UseQueryOptions } from 'react-query';
 
-interface ReferenceArrayFieldProps extends FieldProps, InjectedFieldProps {
-    reference: string;
-    classes?: Partial<ClassNameMap<ReferenceArrayFieldClassKey>>;
-    children: ReactElement;
-    resource?: string;
-}
+import { fieldPropTypes, FieldProps } from './types';
+import { LinearProgress } from '../layout';
+import { SingleFieldList } from '../list/SingleFieldList';
 
 /**
  * A container component that fetches records from another resource specified
@@ -44,106 +51,143 @@ interface ReferenceArrayFieldProps extends FieldProps, InjectedFieldProps {
  *     </SingleFieldList>
  * </ReferenceArrayField>
  *
+ * By default, restricts the displayed values to 1000. You can extend this limit
+ * by setting the `perPage` prop.
+ *
+ * @example
+ * <ReferenceArrayField perPage={10} reference="categories" source="category_ids">
+ *    ...
+ * </ReferenceArrayField>
+ *
+ * By default, the field displays the results in the order in which they are referenced
+ * (i.e. in the order of the list of ids). You can change this order
+ * by setting the `sort` prop (an object with `field` and `order` properties).
+ *
+ * @example
+ * <ReferenceArrayField sort={{ field: 'name', order: 'ASC' }} reference="categories" source="category_ids">
+ *    ...
+ * </ReferenceArrayField>
+ *
+ * Also, you can filter the results to display only a subset of values. Use the
+ * `filter` prop for that.
+ *
+ * @example
+ * <ReferenceArrayField filter={{ is_published: true }} reference="categories" source="category_ids">
+ *    ...
+ * </ReferenceArrayField>
  */
-
-const ReferenceArrayField: FC<ReferenceArrayFieldProps> = props => {
-    const { children, basePath, reference, resource, record, source } = props;
-
-    if (React.Children.count(children) !== 1) {
-        throw new Error(
-            '<ReferenceArrayField> only accepts a single child (like <Datagrid>)'
-        );
-    }
-
+export const ReferenceArrayField = <
+    RecordType extends RaRecord = RaRecord,
+    ReferenceRecordType extends RaRecord = RaRecord
+>(
+    props: ReferenceArrayFieldProps<RecordType, ReferenceRecordType>
+) => {
+    const {
+        filter,
+        page = 1,
+        perPage,
+        reference,
+        resource,
+        sort,
+        source,
+        queryOptions,
+    } = props;
+    const record = useRecordContext(props);
+    const controllerProps = useReferenceArrayFieldController<
+        RecordType,
+        ReferenceRecordType
+    >({
+        filter,
+        page,
+        perPage,
+        record,
+        reference,
+        resource,
+        sort,
+        source,
+        queryOptions,
+    });
     return (
-        <PureReferenceArrayFieldView
-            {...props}
-            {...useReferenceArrayFieldController({
-                basePath,
-                reference,
-                resource,
-                record,
-                source,
-            })}
-        >
-            {children}
-        </PureReferenceArrayFieldView>
+        <ResourceContextProvider value={reference}>
+            <ListContextProvider value={controllerProps}>
+                <PureReferenceArrayFieldView {...props} />
+            </ListContextProvider>
+        </ResourceContextProvider>
     );
 };
 
 ReferenceArrayField.propTypes = {
     ...fieldPropTypes,
-    addLabel: PropTypes.bool,
-    basePath: PropTypes.string,
-    classes: PropTypes.object,
     className: PropTypes.string,
-    children: PropTypes.element.isRequired,
-    label: PropTypes.string,
+    children: PropTypes.node,
+    label: fieldPropTypes.label,
     record: PropTypes.any,
     reference: PropTypes.string.isRequired,
     resource: PropTypes.string,
     sortBy: PropTypes.string,
+    sortByOrder: fieldPropTypes.sortByOrder,
     source: PropTypes.string.isRequired,
+    queryOptions: PropTypes.any,
 };
 
-ReferenceArrayField.defaultProps = {
-    addLabel: true,
-};
-
-const useStyles = makeStyles(
-    theme => ({
-        progress: { marginTop: theme.spacing(2) },
-    }),
-    { name: 'RaReferenceArrayField' }
-);
-
-type ReferenceArrayFieldClassKey = 'progress';
-
-interface ReferenceArrayFieldViewProps extends FieldProps, ReferenceArrayProps {
-    children: ReactElement;
-    classes?: Partial<ClassNameMap<ReferenceArrayFieldClassKey>>;
+export interface ReferenceArrayFieldProps<
+    RecordType extends RaRecord = RaRecord,
+    ReferenceRecordType extends RaRecord = RaRecord
+> extends FieldProps<RecordType> {
+    children?: ReactNode;
+    filter?: FilterPayload;
+    page?: number;
+    pagination?: ReactElement;
+    perPage?: number;
     reference: string;
+    sort?: SortPayload;
+    sx?: SxProps;
+    queryOptions?: UseQueryOptions<ReferenceRecordType[], Error>;
 }
 
-export const ReferenceArrayFieldView: FC<
-    ReferenceArrayFieldViewProps
-> = props => {
-    const {
-        children,
-        className,
-        data,
-        ids,
-        loaded,
-        reference,
-        referenceBasePath,
-    } = props;
-    const classes = useStyles(props);
-    if (!loaded) {
-        return <LinearProgress className={classes.progress} />;
-    }
+export interface ReferenceArrayFieldViewProps
+    extends Omit<ReferenceArrayFieldProps, 'resource' | 'page' | 'perPage'>,
+        Omit<ListControllerProps, 'queryOptions'> {}
 
-    return cloneElement(Children.only(children), {
-        className,
-        resource: reference,
-        ids,
-        data,
-        loaded,
-        basePath: referenceBasePath,
-        currentSort: {},
-    });
+export const ReferenceArrayFieldView: FC<ReferenceArrayFieldViewProps> = props => {
+    const { children, pagination, className, sx } = props;
+    const { isLoading, total } = useListContext(props);
+
+    return (
+        <Root className={className} sx={sx}>
+            {isLoading ? (
+                <LinearProgress
+                    className={ReferenceArrayFieldClasses.progress}
+                />
+            ) : (
+                <span>
+                    {children || <SingleFieldList />}
+                    {pagination && total !== undefined ? pagination : null}
+                </span>
+            )}
+        </Root>
+    );
 };
 
 ReferenceArrayFieldView.propTypes = {
-    classes: PropTypes.any,
     className: PropTypes.string,
-    data: PropTypes.any,
-    ids: PropTypes.array,
-    loaded: PropTypes.bool,
-    children: PropTypes.element.isRequired,
+    children: PropTypes.node,
     reference: PropTypes.string.isRequired,
-    referenceBasePath: PropTypes.string,
 };
 
-const PureReferenceArrayFieldView = memo(ReferenceArrayFieldView);
+const PREFIX = 'RaReferenceArrayField';
 
-export default ReferenceArrayField;
+export const ReferenceArrayFieldClasses = {
+    progress: `${PREFIX}-progress`,
+};
+
+const Root = styled('div', {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})(({ theme }) => ({
+    [`& .${ReferenceArrayFieldClasses.progress}`]: {
+        marginTop: theme.spacing(2),
+    },
+}));
+
+const PureReferenceArrayFieldView = memo(ReferenceArrayFieldView);

@@ -1,121 +1,197 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html lang="en-US">
+    <head>
+        <title>React-admin - {{ page.title }}</title>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+        <meta name="description" content="{{ page.description }}" />
+        <meta name="HandheldFriendly" content="true" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+        <link
+            rel="canonical"
+            href="{{ page.name | replace: '.md', '.html' | relative_url }}"
+        />
+        <link
+            rel="stylesheet"
+            href="{{ '/css/materialize.min.css' | relative_url }}"
+        />
+        <link
+            rel="stylesheet"
+            href="{{ '/css/style-v19.css' | relative_url }}"
+        />
+        <link rel="stylesheet" href="{{ '/css/syntax.css' | relative_url }}" />
+        <link rel="stylesheet" href="{{ '/css/prism.css' | relative_url }}" />
+        <link rel="stylesheet" href="{{ '/css/tocbot.css' | relative_url }}" />
+        <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/icon?family=Material+Icons"
+        />
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/@docsearch/css@3"
+        />
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.12.0/tocbot.css"
+            integrity="sha512-2kqK5bWDwdrluTn6Wkj+jgiwyzvAHLirVp08Kz7kN5I8PWQ0tUtEMxfhyWDCrnws91BJ9PfrUy6ImfA7Qb22TA=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+        />
+        <link
+            rel="stylesheet"
+            href="{{ '/css/docsearch.css' | relative_url }}"
+        />
+        <!-- Newsletter form -->
+        <style>
+            @font-face {
+                font-display: block;
+                font-family: Roboto;
+                src: url(https://assets.brevo.com/font/Roboto/Latin/normal/normal/7529907e9eaf8ebb5220c5f9850e3811.woff2)
+                        format('woff2'),
+                    url(https://assets.brevo.com/font/Roboto/Latin/normal/normal/25c678feafdc175a70922a116c9be3e7.woff)
+                        format('woff');
+            }
 
-<head>
-    <title>React-admin - {{ page.title }}</title>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-    <meta name="description" content="{{ page.description }}">
-    <meta name="HandheldFriendly" content="true" />
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <link rel="stylesheet" href="{{ '/css/materialize.min.css' | relative_url }}">
-    <link rel="stylesheet" href="{{ '/css/style-v4.css' | relative_url }}">
-    <link rel="stylesheet" href="{{ '/css/syntax.css' | relative_url }}">
-    <link rel="stylesheet" href="{{ '/css/prism.css' | relative_url }}">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css" />
-    <!-- You won't find analytics tags in this page. React-admin protects your privacy! -->
-</head>
+            @font-face {
+                font-display: fallback;
+                font-family: Roboto;
+                font-weight: 600;
+                src: url(https://assets.brevo.com/font/Roboto/Latin/medium/normal/6e9caeeafb1f3491be3e32744bc30440.woff2)
+                        format('woff2'),
+                    url(https://assets.brevo.com/font/Roboto/Latin/medium/normal/71501f0d8d5aa95960f6475d5487d4c2.woff)
+                        format('woff');
+            }
 
-<body>
+            @font-face {
+                font-display: fallback;
+                font-family: Roboto;
+                font-weight: 700;
+                src: url(https://assets.brevo.com/font/Roboto/Latin/bold/normal/3ef7cf158f310cf752d5ad08cd0e7e60.woff2)
+                        format('woff2'),
+                    url(https://assets.brevo.com/font/Roboto/Latin/bold/normal/ece3a1d82f18b60bcce0211725c476aa.woff)
+                        format('woff');
+            }
 
-    <header>
-        <nav>
-            <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
-            <div class="nav-wrapper" style="background: linear-gradient(145deg,#027be3 11%,#1a237e 75%)">
-                <div class="left">
-                    <form action="#" onsubmit="return false;">
-                        <div class="input-field" style="position:absolute">
-                            <input type="search" name="q" id="query" size="31" maxlength="255" value=""
-                                style="vertical-align:inherit!important" />
-                            <label class="label-icon" for="test"><i class="material-icons">search</i></label>
-                            <i class="material-icons">close</i>
+            #sib-container input:-ms-input-placeholder {
+                text-align: left;
+                font-family: 'Helvetica', sans-serif;
+                color: #c0ccda;
+            }
+
+            #sib-container input::placeholder {
+                text-align: left;
+                font-family: 'Helvetica', sans-serif;
+                color: #c0ccda;
+            }
+
+            #sib-container textarea::placeholder {
+                text-align: left;
+                font-family: 'Helvetica', sans-serif;
+                color: #c0ccda;
+            }
+        </style>
+        <link
+            rel="stylesheet"
+            href="{{ '/css/newsletter.css' | relative_url }}"
+        />
+    </head>
+
+    <body>
+        <header>
+            {% include nav.html %}
+            <ul id="slide-out" class="sidenav sidenav-fixed">
+                <li class="logo">
+                    <a href="{{ site.url }}"
+                        ><img src="{{ site.url }}/assets/logo_white.png"
+                    /></a>
+                </li>
+                <li class="version">{% include versions.html %}</li>
+                {% include_relative navigation.html %}
+            </ul>
+        </header>
+
+        <main>
+            <div class="container sticker-container">
+                <div class="row">
+                    <div class="col s12 m9">
+                        <div
+                            class="markdown-section DocSearch-content toc-content"
+                        >
+                            {{ content }}
                         </div>
-                        <span id="search"></span>
-                    </form>
-                </div>
-                <ul id="nav-mobile" class="right hide-on-med-and-down">
-                    <li class="active"><a href="https://marmelab.com/react-admin/Readme.html">Documentation</a></li>
-                    <li><a href="https://marmelab.com/react-admin-demo">Demo</a></li>
-                    <li><a href="https://marmelab.com/en/blog/#react-admin">Blog</a></li>
-                    <li><a href="https://github.com/marmelab/react-admin">GitHub</a></li>
-                </ul>
-            </div>
-        </nav>
-        <ul id="slide-out" class="sidenav sidenav-fixed">
-            <li class="logo">
-                <a href="{{ site.url }}"><img src="{{ site.url }}/assets/logo_white.png" /></a>
-            </li>
-            <li class="version">
-                {% include versions.html %}
-            </li>
-            {% include_relative navigation.html %}
-        </ul>
-
-    </header>
-
-    <main>
-        <div class="container">
-            <div class="row">
-                <div class="col s12 m8 offset-m1 xl7 offset-xl1 markdown-section DocSearch-content">
-                    {{ content }}
-                </div>
-                <div class="col hide-on-small-only m3 xl3 offset-xl1">
-                    <div class="toc-wrapper">
-                        <div style="height: 1px;">
-                            <ul class="section table-of-contents pushpin">
-                            </ul>
-                        </div>
+                    </div>
+                    <div class="col hide-on-small-only m3 toc-container">
+                        <div class="toc"></div>
                     </div>
                 </div>
             </div>
-        </div>
-    </main>
+        </main>
 
-    <script src="{{ '/js/materialize.min.js' | relative_url }}"></script>
-    <script src="{{ 'js/prism.js' | relative_url }}"></script>
-    <script>
-        function slugify(text) {
-            return text.toString().toLowerCase()
-                .replace(/\s+/g, '-')           // Replace spaces with -
-                .replace(/[^\w\-]+/g, '')       // Remove all non-word chars
-                .replace(/\-\-+/g, '-')         // Replace multiple - with single -
-                .replace(/^-+/, '')             // Trim - from start of text
-                .replace(/-+$/, '');            // Trim - from end of text
-        }
-        document.addEventListener('DOMContentLoaded', function () {
-            /* Generate table of contents */
-            document.querySelectorAll('.markdown-section h2').forEach(element => {
-                element.classList.add('scrollspy');
-                var a = document.createElement('a');
-                a.href = "#" + slugify(element.innerText);
-                a.innerText = element.innerText;
-                var li = document.createElement('li');
-                li.appendChild(a);
-                document.querySelector('.table-of-contents').appendChild(li)
-            })
-            M.Sidenav.init(document.querySelectorAll('.sidenav'));
-            M.Pushpin.init(document.querySelector('.pushpin'), { offset: 75, top: 75 });
-            M.ScrollSpy.init(document.querySelectorAll('.scrollspy'));
-            M.Dropdown.init(document.querySelectorAll('.dropdown-trigger'));
-        });
-    </script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js"></script>
-    <script type="text/javascript">
-        docsearch({
-            apiKey: '32f254b1de6a25a96665d1229b6eb8f7',
-            indexName: 'marmelab-react-admin',
-            inputSelector: '#query',
-            debug: false, // Set debug to true if you want to inspect the dropdown 
-            autocompleteOptions: {
-                appendTo: '#search',
-                hint: false,
-            }
-        }); 
-    </script>
-</body>
+        <script src="{{ '/js/materialize.min.js' | relative_url }}"></script>
+        <script src="{{ 'js/prism.js' | relative_url }}"></script>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.12.0/tocbot.min.js"
+            defer
+            integrity="sha512-oD3xGN8YTxenx6tdS4D/RKqO4OtORBQtAb2/FseM17GGMIi6jMwKUBc8duX4A5RwMOGGXoFBZrsqbOk8GpXFgQ=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+        ></script>
+        <script src="{{ 'js/ra-doc-exec.js' | relative_url }}"></script>
 
+        <script src="https://cdn.jsdelivr.net/npm/@docsearch/js@3"></script>
+        {% if page.dir contains "doc" %} {% assign version = page.dir | split:
+        '/' | last %} {% else %} {% assign version = "latest" %} {% endif %}
+        <script type="text/javascript">
+            docsearch({
+                container: '#docsearch',
+                appId: 'QY9T9CVM2N',
+                indexName: 'marmelab-react-admin',
+                apiKey: '75332227370be3dc35777cee6244881a',
+                searchParameters: { facetFilters: ['version:  {{ version }}'] },
+            });
+        </script>
+
+        <!--
+        React-admin protects your privacy!
+        We use our own self-hosted tracking solution to collect some raw metrics,
+        like page views, device type (mobile, desktop, etc.) or country.
+        We don't track any personal information about our visitors.
+    -->
+        <script
+            async
+            defer
+            data-website-id="ef7f8242-2808-4cbf-9dff-564daa515bbd"
+            src="https://analytics.marmelab.com/umami.js"
+        ></script>
+
+        <!-- Newsletter form -->
+        <script>
+            window.REQUIRED_CODE_ERROR_MESSAGE = 'Please choose a country code';
+            window.LOCALE = 'en';
+            window.GENERIC_INVALID_MESSAGE = window.EMAIL_INVALID_MESSAGE = window.SMS_INVALID_MESSAGE =
+                'The information provided is invalid. Please review the field format and try again.';
+            window.REQUIRED_ERROR_MESSAGE = 'This field is required.';
+
+            var AUTOHIDE = Boolean(0);
+        </script>
+
+        <script
+            async
+            defer
+            src="https://unpkg.com/typescript@5.1.3/lib/typescript.js"
+        ></script>
+        <script
+            async
+            defer
+            src="https://unpkg.com/prettier@2.8.8/standalone.js"
+        ></script>
+        <script
+            async
+            defer
+            src="https://unpkg.com/prettier@2.8.8/parser-babel.js"
+        ></script>
+    </body>
 </html>

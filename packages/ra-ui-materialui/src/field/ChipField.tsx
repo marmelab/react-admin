@@ -1,35 +1,24 @@
-import React, { FunctionComponent } from 'react';
-import compose from 'recompose/compose';
+import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import get from 'lodash/get';
-import pure from 'recompose/pure';
-import Chip, { ChipProps } from '@material-ui/core/Chip';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
-import classnames from 'classnames';
+import Chip, { ChipProps } from '@mui/material/Chip';
+import Typography from '@mui/material/Typography';
+import clsx from 'clsx';
+import { useRecordContext, useTranslate } from 'ra-core';
 
-import sanitizeRestProps from './sanitizeRestProps';
-import { FieldProps, InjectedFieldProps, fieldPropTypes } from './types';
+import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
+import { FieldProps, fieldPropTypes } from './types';
+import { genericMemo } from './genericMemo';
 
-const useStyles = makeStyles(
-    {
-        chip: { margin: 4 },
-    },
-    { name: 'RaChipField' }
-);
-
-export const ChipField: FunctionComponent<
-    FieldProps & InjectedFieldProps & ChipProps
-> = props => {
-    const {
-        className,
-        classes: classesOverride,
-        source,
-        record = {},
-        emptyText,
-        ...rest
-    } = props;
-    const classes = useStyles(props);
+const ChipFieldImpl = <
+    RecordType extends Record<string, any> = Record<string, any>
+>(
+    props: ChipFieldProps<RecordType>
+) => {
+    const { className, source, emptyText, ...rest } = props;
+    const record = useRecordContext<RecordType>(props);
     const value = get(record, source);
+    const translate = useTranslate();
 
     if (value == null && emptyText) {
         return (
@@ -37,36 +26,50 @@ export const ChipField: FunctionComponent<
                 component="span"
                 variant="body2"
                 className={className}
-                {...sanitizeRestProps(rest)}
+                {...sanitizeFieldRestProps(rest)}
             >
-                {emptyText}
+                {emptyText && translate(emptyText, { _: emptyText })}
             </Typography>
         );
     }
 
     return (
-        <Chip
-            className={classnames(classes.chip, className)}
+        <StyledChip
+            className={clsx(ChipFieldClasses.chip, className)}
             label={value}
-            {...sanitizeRestProps(rest)}
+            {...sanitizeFieldRestProps(rest)}
         />
     );
 };
 
-const EnhancedChipField = compose<
-    FieldProps & InjectedFieldProps & ChipProps,
-    FieldProps & ChipProps
->(pure)(ChipField);
-
-EnhancedChipField.defaultProps = {
-    addLabel: true,
-};
-
-EnhancedChipField.propTypes = {
-    ...ChipField.propTypes,
+ChipFieldImpl.propTypes = {
+    // @ts-ignore
+    ...Chip.propTypes,
     ...fieldPropTypes,
 };
+ChipFieldImpl.displayName = 'ChipFieldImpl';
 
-EnhancedChipField.displayName = 'EnhancedChipField';
+export const ChipField = genericMemo(ChipFieldImpl);
 
-export default EnhancedChipField;
+export interface ChipFieldProps<
+    RecordType extends Record<string, any> = Record<string, any>
+> extends FieldProps<RecordType>,
+        Omit<ChipProps, 'label' | 'children'> {
+    /**
+     * @internal do not use (prop required for TS to be able to cast ChipField as FunctionComponent)
+     */
+    children?: React.ReactNode;
+}
+
+const PREFIX = 'RaChipField';
+
+const ChipFieldClasses = {
+    chip: `${PREFIX}-chip`,
+};
+
+const StyledChip = styled(Chip, {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})({
+    [`&.${ChipFieldClasses.chip}`]: { cursor: 'inherit' },
+});

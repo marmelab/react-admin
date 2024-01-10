@@ -1,27 +1,55 @@
-import React, { useCallback, useContext, FunctionComponent } from 'react';
+import * as React from 'react';
+import { useCallback } from 'react';
 import PropTypes from 'prop-types';
-import DownloadIcon from '@material-ui/icons/GetApp';
+import DownloadIcon from '@mui/icons-material/GetApp';
 import {
     fetchRelatedRecords,
     useDataProvider,
     useNotify,
     Identifier,
-    ExporterContext,
     Exporter,
+    useListContext,
 } from 'ra-core';
 
-import Button, { ButtonProps } from './Button';
+import { Button, ButtonProps } from './Button';
 
-const BulkExportButton: FunctionComponent<BulkExportButtonProps> = ({
-    resource,
-    selectedIds,
-    onClick,
-    label = 'ra.action.export',
-    icon = defaultIcon,
-    exporter: customExporter,
-    ...rest
-}) => {
-    const exporterFromContext = useContext(ExporterContext);
+/**
+ * Export the selected rows
+ *
+ * To be used inside the <List bulkActionButtons> prop.
+ *
+ * @example // basic usage
+ * import * as React from 'react';
+ * import { Fragment } from 'react';
+ * import { BulkDeleteButton, BulkExportButton } from 'react-admin';
+ *
+ * const PostBulkActionButtons = () => (
+ *     <Fragment>
+ *         <BulkExportButton />
+ *         <BulkDeleteButton />
+ *     </Fragment>
+ * );
+ *
+ * export const PostList = () => (
+ *     <List bulkActionButtons={<PostBulkActionButtons />}>
+ *         ...
+ *     </List>
+ * );
+ */
+export const BulkExportButton = (props: BulkExportButtonProps) => {
+    const {
+        onClick,
+        label = 'ra.action.export',
+        icon = defaultIcon,
+        exporter: customExporter,
+        meta,
+        ...rest
+    } = props;
+    const {
+        exporter: exporterFromContext,
+        resource,
+        selectedIds,
+    } = useListContext(props);
     const exporter = customExporter || exporterFromContext;
     const dataProvider = useDataProvider();
     const notify = useNotify();
@@ -29,7 +57,7 @@ const BulkExportButton: FunctionComponent<BulkExportButtonProps> = ({
         event => {
             exporter &&
                 dataProvider
-                    .getMany(resource, { ids: selectedIds })
+                    .getMany(resource, { ids: selectedIds, meta })
                     .then(({ data }) =>
                         exporter(
                             data,
@@ -40,13 +68,15 @@ const BulkExportButton: FunctionComponent<BulkExportButtonProps> = ({
                     )
                     .catch(error => {
                         console.error(error);
-                        notify('ra.notification.http_error', 'warning');
+                        notify('ra.notification.http_error', {
+                            type: 'error',
+                        });
                     });
             if (typeof onClick === 'function') {
                 onClick(event);
             }
         },
-        [dataProvider, exporter, notify, onClick, resource, selectedIds]
+        [dataProvider, exporter, notify, onClick, resource, selectedIds, meta]
     );
 
     return (
@@ -63,34 +93,30 @@ const BulkExportButton: FunctionComponent<BulkExportButtonProps> = ({
 const defaultIcon = <DownloadIcon />;
 
 const sanitizeRestProps = ({
-    basePath,
     filterValues,
+    selectedIds,
+    resource,
     ...rest
-}: Omit<
-    BulkExportButtonProps,
-    'exporter' | 'selectedIds' | 'resource' | 'label'
->) => rest;
+}: Omit<BulkExportButtonProps, 'exporter' | 'label' | 'meta'>) => rest;
 
 interface Props {
-    basePath?: string;
     exporter?: Exporter;
     filterValues?: any;
     icon?: JSX.Element;
     label?: string;
     onClick?: (e: Event) => void;
-    selectedIds: Identifier[];
+    selectedIds?: Identifier[];
     resource?: string;
+    meta?: any;
 }
 
 export type BulkExportButtonProps = Props & ButtonProps;
 
 BulkExportButton.propTypes = {
-    basePath: PropTypes.string,
     exporter: PropTypes.func,
     label: PropTypes.string,
-    resource: PropTypes.string.isRequired,
-    selectedIds: PropTypes.arrayOf(PropTypes.any).isRequired,
+    resource: PropTypes.string,
+    selectedIds: PropTypes.arrayOf(PropTypes.any),
     icon: PropTypes.element,
+    meta: PropTypes.any,
 };
-
-export default BulkExportButton;

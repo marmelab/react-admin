@@ -1,27 +1,12 @@
-import React, { FunctionComponent } from 'react';
+import * as React from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
-import pure from 'recompose/pure';
-import Typography, { TypographyProps } from '@material-ui/core/Typography';
+import { Typography, TypographyProps } from '@mui/material';
+import { useRecordContext, useTranslate } from 'ra-core';
 
-import sanitizeRestProps from './sanitizeRestProps';
-import { FieldProps, InjectedFieldProps, fieldPropTypes } from './types';
-
-const toLocaleStringSupportsLocales = (() => {
-    // from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toLocaleString
-    try {
-        new Date().toLocaleString('i');
-    } catch (error) {
-        return error instanceof RangeError;
-    }
-    return false;
-})();
-
-interface Props extends FieldProps {
-    locales?: string | string[];
-    options?: object;
-    showTime?: boolean;
-}
+import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
+import { FieldProps, fieldPropTypes } from './types';
+import { genericMemo } from './genericMemo';
 
 /**
  * Display a date value as a locale string.
@@ -47,63 +32,87 @@ interface Props extends FieldProps {
  * // renders the record { id: 1234, new Date('2012-11-07') } as
  * <span>mercredi 7 novembre 2012</span>
  */
-export const DateField: FunctionComponent<
-    Props & InjectedFieldProps & TypographyProps
-> = ({
-    className,
-    emptyText,
-    locales,
-    options,
-    record,
-    showTime = false,
-    source,
-    ...rest
-}) => {
+const DateFieldImpl = <
+    RecordType extends Record<string, any> = Record<string, any>
+>(
+    props: DateFieldProps<RecordType>
+) => {
+    const {
+        className,
+        emptyText,
+        locales,
+        options,
+        showTime = false,
+        showDate = true,
+        source,
+        transform = defaultTransform,
+        ...rest
+    } = props;
+    const translate = useTranslate();
+
+    if (!showTime && !showDate) {
+        throw new Error(
+            '<DateField> cannot have showTime and showDate false at the same time'
+        );
+    }
+
+    const record = useRecordContext<RecordType>(props);
     if (!record) {
         return null;
     }
-    const value = get(record, source);
-    if (value == null) {
+
+    const value = get(record, source) as any;
+    if (value == null || value === '') {
         return emptyText ? (
             <Typography
                 component="span"
                 variant="body2"
                 className={className}
-                {...sanitizeRestProps(rest)}
+                {...sanitizeFieldRestProps(rest)}
             >
-                {emptyText}
+                {emptyText && translate(emptyText, { _: emptyText })}
             </Typography>
         ) : null;
     }
 
-    const date = value instanceof Date ? value : new Date(value);
-    const dateString = showTime
-        ? toLocaleStringSupportsLocales
+    const date = transform(value);
+
+    let dateString = '';
+    if (showTime && showDate) {
+        dateString = toLocaleStringSupportsLocales
             ? date.toLocaleString(locales, options)
-            : date.toLocaleString()
-        : toLocaleStringSupportsLocales
-        ? date.toLocaleDateString(locales, options)
-        : date.toLocaleDateString();
+            : date.toLocaleString();
+    } else if (showDate) {
+        // If input is a date string (e.g. '2022-02-15') without time and time zone,
+        // force timezone to UTC to fix issue with people in negative time zones
+        // who may see a different date when calling toLocaleDateString().
+        const dateOptions =
+            options ??
+            (typeof value === 'string' && value.length <= 10
+                ? { timeZone: 'UTC' }
+                : undefined);
+        dateString = toLocaleStringSupportsLocales
+            ? date.toLocaleDateString(locales, dateOptions)
+            : date.toLocaleDateString();
+    } else if (showTime) {
+        dateString = toLocaleStringSupportsLocales
+            ? date.toLocaleTimeString(locales, options)
+            : date.toLocaleTimeString();
+    }
 
     return (
         <Typography
             component="span"
             variant="body2"
             className={className}
-            {...sanitizeRestProps(rest)}
+            {...sanitizeFieldRestProps(rest)}
         >
             {dateString}
         </Typography>
     );
 };
 
-const EnhancedDateField = pure<Props>(DateField);
-
-EnhancedDateField.defaultProps = {
-    addLabel: true,
-};
-
-EnhancedDateField.propTypes = {
+DateFieldImpl.propTypes = {
     // @ts-ignore
     ...Typography.propTypes,
     ...fieldPropTypes,
@@ -113,8 +122,36 @@ EnhancedDateField.propTypes = {
     ]),
     options: PropTypes.object,
     showTime: PropTypes.bool,
+    showDate: PropTypes.bool,
 };
+DateFieldImpl.displayName = 'DateFieldImpl';
 
-EnhancedDateField.displayName = 'EnhancedDateField';
+export const DateField = genericMemo(DateFieldImpl);
 
-export default EnhancedDateField;
+export interface DateFieldProps<
+    RecordType extends Record<string, any> = Record<string, any>
+> extends FieldProps<RecordType>,
+        Omit<TypographyProps, 'textAlign'> {
+    locales?: Intl.LocalesArgument;
+    options?: Intl.DateTimeFormatOptions;
+    showTime?: boolean;
+    showDate?: boolean;
+    transform?: (value: any) => Date;
+}
+
+const defaultTransform = value =>
+    value instanceof Date
+        ? value
+        : typeof value === 'string' || typeof value === 'number'
+        ? new Date(value)
+        : undefined;
+
+const toLocaleStringSupportsLocales = (() => {
+    // from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toLocaleString
+    try {
+        new Date().toLocaleString('i');
+    } catch (error) {
+        return error instanceof RangeError;
+    }
+    return false;
+})();

@@ -1,24 +1,29 @@
-import React from 'react';
+import * as React from 'react';
 import PropTypes from 'prop-types';
-import useScrollTrigger from '@material-ui/core/useScrollTrigger';
-import Slide from '@material-ui/core/Slide';
+import useScrollTrigger from '@mui/material/useScrollTrigger';
+import Slide from '@mui/material/Slide';
 
-interface Props {
-    children: React.ReactElement;
-}
-
-function HideOnScroll(props: Props) {
-    const { children } = props;
+export const HideOnScroll = (props: HideOnScrollProps) => {
+    const { children, className } = props;
     const trigger = useScrollTrigger();
     return (
-        <Slide appear={false} direction="down" in={!trigger}>
+        <Slide
+            appear={false}
+            direction="down"
+            in={!trigger}
+            className={className}
+        >
             {children}
         </Slide>
     );
-}
+};
 
 HideOnScroll.propTypes = {
     children: PropTypes.node.isRequired,
+    className: PropTypes.string,
 };
 
-export default HideOnScroll;
+export interface HideOnScrollProps {
+    children: React.ReactElement;
+    className?: string;
+}

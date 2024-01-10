@@ -1,34 +1,46 @@
-import React, { FunctionComponent } from 'react';
-import pure from 'recompose/pure';
+import * as React from 'react';
+import { ReactElement, memo } from 'react';
 
-import useTranslate from '../i18n/useTranslate';
-import getFieldLabelTranslationArgs from './getFieldLabelTranslationArgs';
+import { useTranslateLabel } from '../i18n';
 
-interface Props {
+export interface FieldTitleProps {
     isRequired?: boolean;
     resource?: string;
     source?: string;
-    label?: string;
+    label?: string | ReactElement | boolean;
 }
 
-export const FieldTitle: FunctionComponent<Props> = ({
-    resource,
-    source,
-    label,
-    isRequired,
-}) => {
-    const translate = useTranslate();
+export const FieldTitle = (props: FieldTitleProps) => {
+    const { source, label, resource, isRequired } = props;
+    const translateLabel = useTranslateLabel();
+
+    if (label === true) {
+        throw new Error(
+            'Label parameter must be a string, a ReactElement or false'
+        );
+    }
+
+    if (label === false || label === '') {
+        return null;
+    }
+
+    if (label && typeof label !== 'string') {
+        return label;
+    }
+
     return (
         <span>
-            {translate(
-                ...getFieldLabelTranslationArgs({ label, resource, source })
-            )}
-            {isRequired && ' *'}
+            {translateLabel({
+                label,
+                resource,
+                source,
+            })}
+            {isRequired && <span aria-hidden="true">&thinsp;*</span>}
         </span>
     );
 };
 
-// wat? TypeScript looses the displayName if we don't set it explicitly
+// What? TypeScript loses the displayName if we don't set it explicitly
 FieldTitle.displayName = 'FieldTitle';
 
-export default pure(FieldTitle);
+export default memo(FieldTitle);

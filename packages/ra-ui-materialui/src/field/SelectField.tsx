@@ -1,12 +1,17 @@
-import React, { FunctionComponent } from 'react';
+import * as React from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
-import pure from 'recompose/pure';
-import { ChoicesProps, useChoices } from 'ra-core';
-import Typography from '@material-ui/core/Typography';
+import {
+    ChoicesProps,
+    useChoices,
+    useRecordContext,
+    useTranslate,
+} from 'ra-core';
+import { Typography, TypographyProps } from '@mui/material';
 
-import sanitizeRestProps from './sanitizeRestProps';
-import { FieldProps, InjectedFieldProps, fieldPropTypes } from './types';
+import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
+import { FieldProps, fieldPropTypes } from './types';
+import { genericMemo } from './genericMemo';
 
 /**
  * Display a value in an enumeration
@@ -22,7 +27,7 @@ import { FieldProps, InjectedFieldProps, fieldPropTypes } from './types';
  *
  * By default, the text is built by
  * - finding a choice where the 'id' property equals the field value
- * - using the 'name' property an the option text
+ * - using the 'name' property as the option text
  *
  * You can also customize the properties to use for the value and text,
  * thanks to the 'optionValue' and 'optionText' attributes.
@@ -43,14 +48,17 @@ import { FieldProps, InjectedFieldProps, fieldPropTypes } from './types';
  * const optionRenderer = choice => `${choice.first_name} ${choice.last_name}`;
  * <SelectField source="author_id" choices={choices} optionText={optionRenderer} />
  *
- * `optionText` also accepts a React Element, that will be cloned and receive
- * the related choice as the `record` prop. You can use Field components there.
+ * `optionText` also accepts a React Element, that can access
+ * the related choice through the `useRecordContext` hook. You can use Field components there.
  * @example
  * const choices = [
  *    { id: 123, first_name: 'Leo', last_name: 'Tolstoi' },
  *    { id: 456, first_name: 'Jane', last_name: 'Austen' },
  * ];
- * const FullNameField = ({ record }) => <Chip>{record.first_name} {record.last_name}</Chip>;
+ * const FullNameField = () => {
+ *     const record = useRecordContext();
+ *     return (<Chip>{record.first_name} {record.last_name}</Chip>)
+ * };
  * <SelectField source="gender" choices={choices} optionText={<FullNameField />}/>
  *
  * The current choice is translated by default, so you can use translation identifiers as choices:
@@ -67,25 +75,29 @@ import { FieldProps, InjectedFieldProps, fieldPropTypes } from './types';
  *
  * **Tip**: <ReferenceField> sets `translateChoice` to false by default.
  */
-export const SelectField: FunctionComponent<
-    ChoicesProps & FieldProps & InjectedFieldProps
-> = ({
-    className,
-    emptyText,
-    source,
-    record,
-    choices,
-    optionValue,
-    optionText,
-    translateChoice,
-    ...rest
-}) => {
+const SelectFieldImpl = <
+    RecordType extends Record<string, any> = Record<string, any>
+>(
+    props: SelectFieldProps<RecordType>
+) => {
+    const {
+        className,
+        emptyText,
+        source,
+        choices,
+        optionValue = 'id',
+        optionText = 'name',
+        translateChoice = true,
+        ...rest
+    } = props;
+    const record = useRecordContext(props);
     const value = get(record, source);
     const { getChoiceText, getChoiceValue } = useChoices({
         optionText,
         optionValue,
         translateChoice,
     });
+    const translate = useTranslate();
 
     const choice = choices.find(choice => getChoiceValue(choice) === value);
 
@@ -95,9 +107,9 @@ export const SelectField: FunctionComponent<
                 component="span"
                 variant="body2"
                 className={className}
-                {...sanitizeRestProps(rest)}
+                {...sanitizeFieldRestProps(rest)}
             >
-                {emptyText}
+                {emptyText && translate(emptyText, { _: emptyText })}
             </Typography>
         ) : null;
     }
@@ -109,26 +121,14 @@ export const SelectField: FunctionComponent<
             component="span"
             variant="body2"
             className={className}
-            {...sanitizeRestProps(rest)}
+            {...sanitizeFieldRestProps(rest)}
         >
             {choiceText}
         </Typography>
     );
 };
 
-SelectField.defaultProps = {
-    optionText: 'name',
-    optionValue: 'id',
-    translateChoice: true,
-};
-
-const EnhancedSelectField = pure(SelectField);
-
-EnhancedSelectField.defaultProps = {
-    addLabel: true,
-};
-
-EnhancedSelectField.propTypes = {
+SelectFieldImpl.propTypes = {
     // @ts-ignore
     ...Typography.propTypes,
     ...fieldPropTypes,
@@ -142,6 +142,12 @@ EnhancedSelectField.propTypes = {
     translateChoice: PropTypes.bool,
 };
 
-EnhancedSelectField.displayName = 'EnhancedSelectField';
+SelectFieldImpl.displayName = 'SelectFieldImpl';
 
-export default EnhancedSelectField;
+export const SelectField = genericMemo(SelectFieldImpl);
+
+export interface SelectFieldProps<
+    RecordType extends Record<string, any> = Record<string, any>
+> extends ChoicesProps,
+        FieldProps<RecordType>,
+        Omit<TypographyProps, 'textAlign'> {}

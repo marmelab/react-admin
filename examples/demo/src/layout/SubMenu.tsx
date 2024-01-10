@@ -1,26 +1,15 @@
-import React, { FC, Fragment, ReactElement } from 'react';
-import ExpandMore from '@material-ui/icons/ExpandMore';
-import List from '@material-ui/core/List';
-import MenuItem from '@material-ui/core/MenuItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import Typography from '@material-ui/core/Typography';
-import Divider from '@material-ui/core/Divider';
-import Collapse from '@material-ui/core/Collapse';
-import Tooltip from '@material-ui/core/Tooltip';
-import { makeStyles } from '@material-ui/core/styles';
-import { useTranslate } from 'react-admin';
-
-const useStyles = makeStyles(theme => ({
-    icon: { minWidth: theme.spacing(5) },
-    sidebarIsOpen: {
-        paddingLeft: 25,
-        transition: 'padding-left 195ms cubic-bezier(0.4, 0, 0.6, 1) 0ms',
-    },
-    sidebarIsClosed: {
-        paddingLeft: 0,
-        transition: 'padding-left 195ms cubic-bezier(0.4, 0, 0.6, 1) 0ms',
-    },
-}));
+import * as React from 'react';
+import { ReactElement, ReactNode } from 'react';
+import {
+    List,
+    MenuItem,
+    ListItemIcon,
+    Typography,
+    Collapse,
+    Tooltip,
+} from '@mui/material';
+import ExpandMore from '@mui/icons-material/ExpandMore';
+import { useTranslate, useSidebarState } from 'react-admin';
 
 interface Props {
     dense: boolean;
@@ -28,24 +17,18 @@ interface Props {
     icon: ReactElement;
     isOpen: boolean;
     name: string;
-    sidebarIsOpen: boolean;
+    children: ReactNode;
 }
 
-const SubMenu: FC<Props> = ({
-    handleToggle,
-    sidebarIsOpen,
-    isOpen,
-    name,
-    icon,
-    children,
-    dense,
-}) => {
+const SubMenu = (props: Props) => {
+    const { handleToggle, isOpen, name, icon, children, dense } = props;
     const translate = useTranslate();
-    const classes = useStyles();
+
+    const [sidebarIsOpen] = useSidebarState();
 
     const header = (
-        <MenuItem dense={dense} button onClick={handleToggle}>
-            <ListItemIcon className={classes.icon}>
+        <MenuItem dense={dense} onClick={handleToggle}>
+            <ListItemIcon sx={{ minWidth: 5 }}>
                 {isOpen ? <ExpandMore /> : icon}
             </ListItemIcon>
             <Typography variant="inherit" color="textSecondary">
@@ -55,7 +38,7 @@ const SubMenu: FC<Props> = ({
     );
 
     return (
-        <Fragment>
+        <div>
             {sidebarIsOpen || isOpen ? (
                 header
             ) : (
@@ -68,17 +51,21 @@ const SubMenu: FC<Props> = ({
                     dense={dense}
                     component="div"
                     disablePadding
-                    className={
-                        sidebarIsOpen
-                            ? classes.sidebarIsOpen
-                            : classes.sidebarIsClosed
-                    }
+                    sx={{
+                        '& .MuiMenuItem-root': {
+                            transition:
+                                'padding-left 195ms cubic-bezier(0.4, 0, 0.6, 1) 0ms',
+                            paddingLeft: theme =>
+                                sidebarIsOpen
+                                    ? theme.spacing(4)
+                                    : theme.spacing(2),
+                        },
+                    }}
                 >
                     {children}
                 </List>
-                <Divider />
             </Collapse>
-        </Fragment>
+        </div>
     );
 };
 

@@ -1,0 +1,11 @@
+id,reference,date,customer_id,basket.product_id,basket.quantity,total_ex_taxes,delivery_fees,tax_rate,taxes,total,status,returned
+12,MHWV4O,2021-04-20T21:10:35.516Z,520,83,1,23.01,3.88,0.17,4.57,31.46,delivered,false
+18,GYYHGX,2021-04-20T06:59:34.831Z,543,105,1,68.77,7.49,0.12,9.15,85.41,delivered,false
+174,XAH660,2021-04-13T20:06:44.191Z,165,90,3,54,3.54,0.12,6.9,64.44,delivered,false
+453,5W2ST6,2021-04-12T20:26:11.626Z,608,75,3,243.12,7.68,0.12,30.1,280.9,delivered,false
+270,KGDZ3F,2021-04-09T04:11:23.181Z,711,115,1,110.13,5.96,0.17,19.74,135.83,delivered,false
+,,,,119,2,,,,,,,
+468,OFA1OP,2021-04-08T06:58:34.635Z,272,66,3,334.08,5.99,0.12,40.81,380.88,delivered,false
+,,,,11,3,,,,,,,
+,,,,71,3,,,,,,,
+68,K9TZVO,2021-04-05T17:20:16.741Z,65,4,2,91.14,4.09,0.17,16.19,111.42,delivered,false

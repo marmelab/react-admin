@@ -1,55 +1,94 @@
-import React, { FunctionComponent } from 'react';
+import * as React from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
-import pure from 'recompose/pure';
-import Typography, { TypographyProps } from '@material-ui/core/Typography';
-import sanitizeRestProps from './sanitizeRestProps';
-import { InjectedFieldProps, FieldProps, fieldPropTypes } from './types';
+import Typography, { TypographyProps } from '@mui/material/Typography';
+import { useRecordContext, useTranslate } from 'ra-core';
+import purify from 'dompurify';
 
-export const removeTags = (input: string) =>
-    input ? input.replace(/<[^>]+>/gm, '') : '';
+import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
+import { FieldProps, fieldPropTypes } from './types';
+import { genericMemo } from './genericMemo';
 
-interface Props extends FieldProps {
-    stripTags: boolean;
-}
-
-const RichTextField: FunctionComponent<
-    Props & InjectedFieldProps & TypographyProps
-> = ({ className, emptyText, source, record = {}, stripTags, ...rest }) => {
-    const value = get(record, source);
+/**
+ * Render an HTML string as rich text
+ *
+ * Note: This component leverages the `dangerouslySetInnerHTML` attribute,
+ * but uses the DomPurify library to sanitize the HTML before rendering it.
+ *
+ * It means it is safe from Cross-Site Scripting (XSS) attacks - but it's still
+ * a good practice to sanitize the value server-side.
+ *
+ * @example
+ * <RichTextField source="description" />
+ *
+ * @example // remove all tags and output text only
+ * <RichTextField source="description" stripTags />
+ */
+const RichTextFieldImpl = <
+    RecordType extends Record<string, any> = Record<string, any>
+>(
+    props: RichTextFieldProps<RecordType>
+) => {
+    const {
+        className,
+        emptyText,
+        source,
+        stripTags = false,
+        purifyOptions,
+        ...rest
+    } = props;
+    const record = useRecordContext(props);
+    const value = get(record, source)?.toString();
+    const translate = useTranslate();
 
     return (
         <Typography
             className={className}
             variant="body2"
             component="span"
-            {...sanitizeRestProps(rest)}
+            {...sanitizeFieldRestProps(rest)}
         >
             {value == null && emptyText ? (
-                emptyText
+                translate(emptyText, { _: emptyText })
             ) : stripTags ? (
                 removeTags(value)
             ) : (
-                <span dangerouslySetInnerHTML={{ __html: value }} />
+                <span
+                    dangerouslySetInnerHTML={{
+                        __html: purify.sanitize(value, purifyOptions),
+                    }}
+                />
             )}
         </Typography>
     );
 };
 
-const EnhancedRichTextField = pure<Props & TypographyProps>(RichTextField);
-
-EnhancedRichTextField.defaultProps = {
-    addLabel: true,
-    stripTags: false,
-};
-
-EnhancedRichTextField.propTypes = {
+RichTextFieldImpl.propTypes = {
     // @ts-ignore
     ...Typography.propTypes,
     ...fieldPropTypes,
     stripTags: PropTypes.bool,
+    purifyOptions: PropTypes.any,
+};
+RichTextFieldImpl.displayName = 'RichTextFieldImpl';
+
+export const RichTextField = genericMemo(RichTextFieldImpl);
+
+// We only support the case when sanitize() returns a string
+// hence we need to force the RETURN_DOM_FRAGMENT and RETURN_DOM
+// options to false
+export type PurifyOptions = purify.Config & {
+    RETURN_DOM_FRAGMENT?: false | undefined;
+    RETURN_DOM?: false | undefined;
 };
 
-EnhancedRichTextField.displayName = 'EnhancedRichTextField';
+export interface RichTextFieldProps<
+    RecordType extends Record<string, any> = Record<string, any>
+> extends FieldProps<RecordType>,
+        Omit<TypographyProps, 'textAlign'> {
+    stripTags?: boolean;
+    purifyOptions?: PurifyOptions;
+}
 
-export default EnhancedRichTextField;
+export const removeTags = (input: string) =>
+    input ? input.replace(/<[^>]+>/gm, '') : '';

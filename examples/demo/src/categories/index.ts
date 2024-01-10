@@ -1,4 +1,4 @@
-import CategoryIcon from '@material-ui/icons/Bookmark';
+import CategoryIcon from '@mui/icons-material/Bookmark';
 
 import CategoryList from './CategoryList';
 import CategoryEdit from './CategoryEdit';

@@ -1,19 +1,10 @@
 # React-admin Simple Example
 
-This is the application we use for our end to end tests, and for reproducing bugs via CodeSandbox.  
+This is the application we use for our end-to-end tests, and for reproducing bugs via [Stackblitz](https://stackblitz.com/github/marmelab/react-admin/tree/master/examples/simple).
 
 ## How to run
 
-If you're running this app standalone:
-
-```sh
-# install dependencies
-yarn
-# run the app in watch mode (reloads when a change is detected in the app code)
-yarn dev
-```
-
-If you're in the react-admin repository:
+From the react-admin repository:
 
 ```sh
 # install the dependencies for the monorepo

@@ -1,68 +1,86 @@
-import React, { FunctionComponent, useCallback } from 'react';
+import * as React from 'react';
+import { useCallback } from 'react';
 import PropTypes from 'prop-types';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import FormGroup, { FormGroupProps } from '@material-ui/core/FormGroup';
-import Switch, { SwitchProps } from '@material-ui/core/Switch';
-import { FieldTitle, useInput, InputProps } from 'ra-core';
+import clsx from 'clsx';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormHelperText from '@mui/material/FormHelperText';
+import FormGroup, { FormGroupProps } from '@mui/material/FormGroup';
+import Switch, { SwitchProps } from '@mui/material/Switch';
+import { FieldTitle, useInput } from 'ra-core';
 
-import sanitizeRestProps from './sanitizeRestProps';
-import InputHelperText from './InputHelperText';
-import InputPropTypes from './InputPropTypes';
+import { CommonInputProps } from './CommonInputProps';
+import { sanitizeInputRestProps } from './sanitizeInputRestProps';
+import { InputHelperText } from './InputHelperText';
+import { InputPropTypes } from './InputPropTypes';
 
-const BooleanInput: FunctionComponent<
-    InputProps<SwitchProps> &
-        Omit<FormGroupProps, 'defaultValue' | 'onChange' | 'onBlur' | 'onFocus'>
-> = ({
-    format,
-    label,
-    fullWidth,
-    helperText,
-    onBlur,
-    onChange,
-    onFocus,
-    options,
-    disabled,
-    parse,
-    resource,
-    source,
-    validate,
-    ...rest
-}) => {
+export const BooleanInput = (props: BooleanInputProps) => {
     const {
-        id,
-        input: { onChange: finalFormOnChange, type, value, ...inputProps },
-        isRequired,
-        meta: { error, touched },
-    } = useInput({
+        className,
+        row = false,
+        defaultValue = false,
         format,
+        label,
+        fullWidth,
+        helperText,
         onBlur,
         onChange,
         onFocus,
+        disabled,
         parse,
         resource,
         source,
+        validate,
+        options = defaultOptions,
+        sx,
+        ...rest
+    } = props;
+    const {
+        id,
+        field,
+        isRequired,
+        fieldState: { error, invalid, isTouched },
+        formState: { isSubmitted },
+    } = useInput({
+        defaultValue,
+        format,
+        parse,
+        resource,
+        source,
+        onBlur,
+        onChange,
         type: 'checkbox',
         validate,
         ...rest,
     });
 
     const handleChange = useCallback(
-        (event, value) => {
-            finalFormOnChange(value);
+        event => {
+            field.onChange(event);
+            // Ensure field is considered as touched
+            field.onBlur();
         },
-        [finalFormOnChange]
+        [field]
     );
 
+    const renderHelperText =
+        helperText !== false || ((isTouched || isSubmitted) && invalid);
+
     return (
-        <FormGroup {...sanitizeRestProps(rest)}>
+        <FormGroup
+            className={clsx('ra-input', `ra-input-${source}`, className)}
+            row={row}
+            sx={sx}
+        >
             <FormControlLabel
+                inputRef={field.ref}
                 control={
                     <Switch
                         id={id}
-                        color="primary"
+                        name={field.name}
                         onChange={handleChange}
-                        {...inputProps}
+                        onFocus={onFocus}
+                        checked={Boolean(field.value)}
+                        {...sanitizeInputRestProps(rest)}
                         {...options}
                         disabled={disabled}
                     />
@@ -76,25 +94,30 @@ const BooleanInput: FunctionComponent<
                     />
                 }
             />
-            <FormHelperText error={!!error}>
-                <InputHelperText
-                    touched={touched}
-                    error={error}
-                    helperText={helperText}
-                />
-            </FormHelperText>
+            {renderHelperText ? (
+                <FormHelperText error={(isTouched || isSubmitted) && invalid}>
+                    <InputHelperText
+                        touched={isTouched || isSubmitted}
+                        error={error?.message}
+                        helperText={helperText}
+                    />
+                </FormHelperText>
+            ) : null}
         </FormGroup>
     );
 };
 
 BooleanInput.propTypes = {
     ...InputPropTypes,
+    // @ts-ignore
     options: PropTypes.shape(Switch.propTypes),
     disabled: PropTypes.bool,
 };
 
-BooleanInput.defaultProps = {
-    options: {},
-};
+export type BooleanInputProps = CommonInputProps &
+    SwitchProps &
+    Omit<FormGroupProps, 'defaultValue' | 'onChange' | 'onBlur' | 'onFocus'> & {
+        options?: SwitchProps;
+    };
 
-export default BooleanInput;
+const defaultOptions = {};

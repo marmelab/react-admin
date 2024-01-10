@@ -10,9 +10,9 @@
         "allowJs": true /* Allow javascript files to be compiled. */,
         // "checkJs": true,                       /* Report errors in .js files. */
         "jsx": "react" /* Specify JSX code generation: 'preserve', 'react-native', or 'react'. */,
-        // "declaration": true /* Generates corresponding '.d.ts' file. */,
-        // "declarationMap": true,                /* Generates a sourcemap for each corresponding '.d.ts' file. */
-        // "sourceMap": true /* Generates corresponding '.map' file. */,
+        "declaration": true /* Generates corresponding '.d.ts' file. */,
+        "declarationMap": true,                /* Generates a sourcemap for each corresponding '.d.ts' file. */
+        "sourceMap": true /* Generates corresponding '.map' file. */,
         // "outFile": "./",                       /* Concatenate and emit output to single file. */
         // "outDir": "./lib",                        /* Redirect output structure to the directory. */
         // "rootDir": "./",                       /* Specify the root directory of input files. Use to control the output directory structure with --outDir. */
@@ -36,7 +36,7 @@
         // "noUnusedLocals": true,                /* Report errors on unused locals. */
         // "noUnusedParameters": true,            /* Report errors on unused parameters. */
         // "noImplicitReturns": true,             /* Report error when not all code paths in function return a value. */
-        // "noFallthroughCasesInSwitch": true,    /* Report errors for fallthrough cases in switch statement. */
+        "noFallthroughCasesInSwitch": true /* Report errors for fallthrough cases in switch statement. */,
 
         /* Module Resolution Options */
         "moduleResolution": "node" /* Specify module resolution strategy: 'node' (Node.js) or 'classic' (TypeScript pre-1.6). */,
@@ -63,7 +63,6 @@
     // "references": [
     //     { "path": "./packages/ra-core" },
     //     { "path": "./packages/ra-data-fakerest" },
-    //     { "path": "./packages/ra-data-graphcool" },
     //     { "path": "./packages/ra-data-graphql" },
     //     { "path": "./packages/ra-data-graphql-simple" },
     //     { "path": "./packages/ra-data-json-server" },

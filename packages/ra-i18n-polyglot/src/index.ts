@@ -1,6 +1,6 @@
 import Polyglot from 'node-polyglot';
 
-import { I18nProvider, TranslationMessages } from 'ra-core';
+import { I18nProvider, TranslationMessages, Locale } from 'ra-core';
 
 type GetMessages = (
     locale: string
@@ -19,11 +19,16 @@ type GetMessages = (
  *     fr: frenchMessages,
  *     en: englishMessages,
  * };
- * const i18nProvider = polyglotI18nProvider(locale => messages[locale])
+ * const i18nProvider = polyglotI18nProvider(
+ *     locale => messages[locale],
+ *     'en',
+ *     [{ locale: 'en', name: 'English' }, { locale: 'fr', name: 'Français' }]
+ * )
  */
 export default (
     getMessages: GetMessages,
     initialLocale: string = 'en',
+    availableLocales: Locale[] | any = [{ locale: 'en', name: 'English' }],
     polyglotOptions: any = {}
 ): I18nProvider => {
     let locale = initialLocale;
@@ -33,29 +38,41 @@ export default (
             `The i18nProvider returned a Promise for the messages of the default locale (${initialLocale}). Please update your i18nProvider to return the messages of the default locale in a synchronous way.`
         );
     }
+
+    let availableLocalesFinal, polyglotOptionsFinal;
+    if (Array.isArray(availableLocales)) {
+        // third argument is an array of locales
+        availableLocalesFinal = availableLocales;
+        polyglotOptionsFinal = polyglotOptions;
+    } else {
+        // third argument is the polyglotOptions
+        availableLocalesFinal = [{ locale: 'en', name: 'English' }];
+        polyglotOptionsFinal = availableLocales;
+    }
     const polyglot = new Polyglot({
         locale,
         phrases: { '': '', ...messages },
-        ...polyglotOptions,
+        ...polyglotOptionsFinal,
     });
     let translate = polyglot.t.bind(polyglot);
 
     return {
         translate: (key: string, options: any = {}) => translate(key, options),
         changeLocale: (newLocale: string) =>
-            new Promise(resolve =>
-                // so we systematically return a Promise for the messages
-                // i18nProvider may return a Promise for language changes,
-                resolve(getMessages(newLocale as string))
-            ).then((messages: TranslationMessages) => {
-                locale = newLocale;
-                const newPolyglot = new Polyglot({
-                    locale: newLocale,
-                    phrases: { '': '', ...messages },
-                    ...polyglotOptions,
-                });
-                translate = newPolyglot.t.bind(newPolyglot);
-            }),
+            // We systematically return a Promise for the messages because
+            // getMessages may return a Promise
+            Promise.resolve(getMessages(newLocale as string)).then(
+                (messages: TranslationMessages) => {
+                    locale = newLocale;
+                    const newPolyglot = new Polyglot({
+                        locale: newLocale,
+                        phrases: { '': '', ...messages },
+                        ...polyglotOptions,
+                    });
+                    translate = newPolyglot.t.bind(newPolyglot);
+                }
+            ),
         getLocale: () => locale,
+        getLocales: () => availableLocalesFinal,
     };
 };

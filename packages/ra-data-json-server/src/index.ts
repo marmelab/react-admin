@@ -11,7 +11,7 @@ import { fetchUtils, DataProvider } from 'ra-core';
  * getList          => GET http://my.api.url/posts?_sort=title&_order=ASC&_start=0&_end=24
  * getOne           => GET http://my.api.url/posts/123
  * getManyReference => GET http://my.api.url/posts?author_id=345
- * getMany          => GET http://my.api.url/posts/123, GET http://my.api.url/posts/456, GET http://my.api.url/posts/789
+ * getMany          => GET http://my.api.url/posts?id=123&id=456&id=789
  * create           => POST http://my.api.url/posts/123
  * update           => PUT http://my.api.url/posts/123
  * updateMany       => PUT http://my.api.url/posts/123, PUT http://my.api.url/posts/456, PUT http://my.api.url/posts/789
@@ -19,7 +19,7 @@ import { fetchUtils, DataProvider } from 'ra-core';
  *
  * @example
  *
- * import React from 'react';
+ * import * as React from "react";
  * import { Admin, Resource } from 'react-admin';
  * import jsonServerProvider from 'ra-data-json-server';
  *
@@ -55,10 +55,7 @@ export default (apiUrl, httpClient = fetchUtils.fetchJson): DataProvider => ({
             return {
                 data: json,
                 total: parseInt(
-                    headers
-                        .get('x-total-count')
-                        .split('/')
-                        .pop(),
+                    headers.get('x-total-count').split('/').pop(),
                     10
                 ),
             };
@@ -100,10 +97,7 @@ export default (apiUrl, httpClient = fetchUtils.fetchJson): DataProvider => ({
             return {
                 data: json,
                 total: parseInt(
-                    headers
-                        .get('x-total-count')
-                        .split('/')
-                        .pop(),
+                    headers.get('x-total-count').split('/').pop(),
                     10
                 ),
             };
@@ -132,7 +126,7 @@ export default (apiUrl, httpClient = fetchUtils.fetchJson): DataProvider => ({
             method: 'POST',
             body: JSON.stringify(params.data),
         }).then(({ json }) => ({
-            data: { ...params.data, id: json.id },
+            data: { ...params.data, id: json.id } as any,
         })),
 
     delete: (resource, params) =>

@@ -18,8 +18,11 @@ describe('getValuesFromRecords', () => {
         });
     });
 
-    it('should acept recods with variable fields', () => {
-        const records = [{ a: 1, b: 1, c: 1 }, { b: 2, c: 2, d: 2 }];
+    it('should accept records with variable fields', () => {
+        const records = [
+            { a: 1, b: 1, c: 1 },
+            { b: 2, c: 2, d: 2 },
+        ];
         expect(getValuesFromRecords(records)).toEqual({
             a: [1],
             b: [1, 2],
@@ -29,7 +32,10 @@ describe('getValuesFromRecords', () => {
     });
 
     it('should keep duplicate values', () => {
-        const records = [{ a: 1, b: 1 }, { a: 1, b: 1 }];
+        const records = [
+            { a: 1, b: 1 },
+            { a: 1, b: 1 },
+        ];
         expect(getValuesFromRecords(records)).toEqual({
             a: [1, 1],
             b: [1, 1],

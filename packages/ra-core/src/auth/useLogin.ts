@@ -1,7 +1,10 @@
 import { useCallback } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 
+import { useNotificationContext } from '../notification';
+import { useBasename } from '../routing';
 import useAuthProvider, { defaultAuthParams } from './useAuthProvider';
-import { useLocation, useHistory } from 'react-router-dom';
+import { removeDoubleSlashes } from '../routing/useCreatePath';
 
 /**
  * Get a callback for calling the authProvider.login() method
@@ -30,24 +33,48 @@ const useLogin = (): Login => {
     const authProvider = useAuthProvider();
     const location = useLocation();
     const locationState = location.state as any;
-    const history = useHistory();
+    const navigate = useNavigate();
+    const basename = useBasename();
+    const { resetNotifications } = useNotificationContext();
     const nextPathName = locationState && locationState.nextPathname;
+    const nextSearch = locationState && locationState.nextSearch;
+    const afterLoginUrl = removeDoubleSlashes(
+        `${basename}/${defaultAuthParams.afterLoginUrl}`
+    );
 
     const login = useCallback(
-        (params: any = {}, pathName = defaultAuthParams.afterLoginUrl) =>
+        (params: any = {}, pathName) =>
             authProvider.login(params).then(ret => {
-                history.push(nextPathName || pathName);
+                resetNotifications();
+                if (ret && ret.hasOwnProperty('redirectTo')) {
+                    if (ret) {
+                        navigate(ret.redirectTo);
+                    }
+                } else {
+                    const redirectUrl = pathName
+                        ? pathName
+                        : nextPathName + nextSearch || afterLoginUrl;
+                    navigate(redirectUrl);
+                }
                 return ret;
             }),
-        [authProvider, history, nextPathName]
+        [
+            authProvider,
+            navigate,
+            nextPathName,
+            nextSearch,
+            resetNotifications,
+            afterLoginUrl,
+        ]
     );
 
     const loginWithoutProvider = useCallback(
         (_, __) => {
-            history.push(defaultAuthParams.afterLoginUrl);
+            resetNotifications();
+            navigate(afterLoginUrl);
             return Promise.resolve();
         },
-        [history]
+        [navigate, resetNotifications, afterLoginUrl]
     );
 
     return authProvider ? login : loginWithoutProvider;
@@ -57,7 +84,7 @@ const useLogin = (): Login => {
  * Log a user in by calling the authProvider.login() method
  *
  * @param {Object} params Login parameters to pass to the authProvider. May contain username/email, password, etc
- * @param {string} pathName The path to redirect to after login. By default, redirects to the home page, or to the last page visited after deconnexion.
+ * @param {string} pathName The path to redirect to after login. By default, redirects to the home page, or to the last page visited after disconnection.
  *
  * @return {Promise} The authProvider response
  */

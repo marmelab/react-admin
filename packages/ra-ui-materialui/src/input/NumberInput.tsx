@@ -1,20 +1,12 @@
-import React, { FunctionComponent } from 'react';
+import * as React from 'react';
 import PropTypes from 'prop-types';
-import TextField, { TextFieldProps } from '@material-ui/core/TextField';
-import { useInput, FieldTitle, InputProps } from 'ra-core';
+import clsx from 'clsx';
+import TextField, { TextFieldProps } from '@mui/material/TextField';
+import { useInput, FieldTitle } from 'ra-core';
 
-import InputHelperText from './InputHelperText';
-import sanitizeRestProps from './sanitizeRestProps';
-
-const convertStringToNumber = value => {
-    const float = parseFloat(value);
-
-    return isNaN(float) ? null : float;
-};
-
-interface Props {
-    step?: string | number;
-}
+import { CommonInputProps } from './CommonInputProps';
+import { InputHelperText } from './InputHelperText';
+import { sanitizeInputRestProps } from './sanitizeInputRestProps';
 
 /**
  * An Input component for a number
@@ -26,62 +18,133 @@ interface Props {
  * @example
  * <NumberInput source="nb_views" step={1} />
  *
- * The object passed as `options` props is passed to the material-ui <TextField> component
  */
-const NumberInput: FunctionComponent<
-    Props &
-        InputProps<TextFieldProps> &
-        Omit<TextFieldProps, 'label' | 'helperText'>
-> = ({
-    format,
+export const NumberInput = ({
+    className,
+    defaultValue = null,
+    format = convertNumberToString,
     helperText,
     label,
-    margin = 'dense',
+    margin,
+    onChange,
     onBlur,
     onFocus,
-    onChange,
-    options,
-    parse = convertStringToNumber,
+    parse,
     resource,
     source,
-    step,
+    step = 'any',
+    min,
+    max,
     validate,
-    variant = 'filled',
+    variant,
     inputProps: overrideInputProps,
     ...rest
-}) => {
+}: NumberInputProps) => {
     const {
+        field,
+        fieldState: { error, invalid, isTouched },
+        formState: { isSubmitted },
         id,
-        input,
         isRequired,
-        meta: { error, touched },
     } = useInput({
-        format,
+        defaultValue,
         onBlur,
-        onChange,
-        onFocus,
-        parse,
         resource,
         source,
-        type: 'number',
         validate,
         ...rest,
     });
+    const { onBlur: onBlurFromField } = field;
 
-    const inputProps = { ...overrideInputProps, step };
+    const inputProps = { ...overrideInputProps, step, min, max };
 
+    // This is a controlled input that renders directly the string typed by the user.
+    // This string is converted to a number on change, and stored in the form state,
+    // but that number is not not displayed.
+    // This is to allow transitory values like '1.0' that will lead to '1.02'
+
+    // text typed by the user and displayed in the input, unparsed
+    const [value, setValue] = React.useState(format(field.value));
+
+    const hasFocus = React.useRef(false);
+
+    // update the input text when the record changes
+    React.useEffect(() => {
+        if (!hasFocus.current) {
+            const stringValue = format(field.value);
+            setValue(value => (value !== stringValue ? stringValue : value));
+        }
+    }, [field.value, format]); // eslint-disable-line react-hooks/exhaustive-deps
+
+    // update the input text when the user types in the input
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        if (onChange) {
+            onChange(event);
+        }
+        if (
+            typeof event.target === 'undefined' ||
+            typeof event.target.value === 'undefined'
+        ) {
+            return;
+        }
+        const target = event.target;
+        setValue(target.value);
+        const newValue =
+            target.valueAsNumber !== undefined &&
+            target.valueAsNumber !== null &&
+            !isNaN(target.valueAsNumber)
+                ? parse
+                    ? parse(target.valueAsNumber)
+                    : target.valueAsNumber
+                : parse
+                ? parse(target.value)
+                : convertStringToNumber(target.value);
+        field.onChange(newValue);
+    };
+
+    const handleFocus = (event: React.FocusEvent<HTMLInputElement>) => {
+        if (onFocus) {
+            onFocus(event);
+        }
+        hasFocus.current = true;
+    };
+
+    const handleBlur = () => {
+        if (onBlurFromField) {
+            onBlurFromField();
+        }
+        hasFocus.current = false;
+        const stringValue = format(field.value);
+        setValue(value => (value !== stringValue ? stringValue : value));
+    };
+
+    const renderHelperText =
+        helperText !== false || ((isTouched || isSubmitted) && invalid);
+
+    const { ref, ...fieldWithoutRef } = field;
     return (
         <TextField
             id={id}
-            {...input}
+            {...fieldWithoutRef}
+            inputRef={ref}
+            // use the locally controlled state instead of the react-hook-form field state
+            value={value}
+            onChange={handleChange}
+            onFocus={handleFocus}
+            onBlur={handleBlur}
+            className={clsx('ra-input', `ra-input-${source}`, className)}
+            type="number"
+            size="small"
             variant={variant}
-            error={!!(touched && error)}
+            error={(isTouched || isSubmitted) && invalid}
             helperText={
-                <InputHelperText
-                    touched={touched}
-                    error={error}
-                    helperText={helperText}
-                />
+                renderHelperText ? (
+                    <InputHelperText
+                        touched={isTouched || isSubmitted}
+                        error={error?.message}
+                        helperText={helperText}
+                    />
+                ) : null
             }
             label={
                 <FieldTitle
@@ -93,24 +156,51 @@ const NumberInput: FunctionComponent<
             }
             margin={margin}
             inputProps={inputProps}
-            {...options}
-            {...sanitizeRestProps(rest)}
+            {...sanitizeInputRestProps(rest)}
         />
     );
 };
 
 NumberInput.propTypes = {
-    label: PropTypes.string,
-    options: PropTypes.object,
+    label: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.bool,
+        PropTypes.element,
+    ]),
     resource: PropTypes.string,
     source: PropTypes.string,
     step: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 };
 
 NumberInput.defaultProps = {
-    options: {},
     step: 'any',
     textAlign: 'right',
 };
 
-export default NumberInput;
+export interface NumberInputProps
+    extends CommonInputProps,
+        Omit<
+            TextFieldProps,
+            | 'label'
+            | 'helperText'
+            | 'defaultValue'
+            | 'onChange'
+            | 'onBlur'
+            | 'type'
+        > {
+    step?: string | number;
+    min?: string | number;
+    max?: string | number;
+}
+
+const convertStringToNumber = value => {
+    if (value == null || value === '') {
+        return null;
+    }
+    const float = parseFloat(value);
+
+    return isNaN(float) ? 0 : float;
+};
+
+const convertNumberToString = value =>
+    value == null || isNaN(value) ? '' : value.toString();

@@ -1,11 +1,21 @@
-import React, { FC } from 'react';
+import * as React from 'react';
 import { Link } from 'react-router-dom';
-import { FieldProps, Product } from '../types';
+import { Link as MuiLink } from '@mui/material';
+import { useRecordContext } from 'react-admin';
+import { Product } from '../types';
 
-const ProductRefField: FC<FieldProps<Product>> = ({ record }) =>
-    record ? (
-        <Link to={`products/${record.id}`}>{record.reference}</Link>
+const ProductRefField = () => {
+    const record = useRecordContext<Product>();
+    return record ? (
+        <MuiLink
+            component={Link}
+            to={`/products/${record.id}`}
+            underline="none"
+        >
+            {record.reference}
+        </MuiLink>
     ) : null;
+};
 
 ProductRefField.defaultProps = {
     source: 'id',

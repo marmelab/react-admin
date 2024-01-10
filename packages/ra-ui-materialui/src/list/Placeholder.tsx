@@ -1,27 +1,20 @@
-import React, { FC } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import classnames from 'classnames';
+import * as React from 'react';
+import { styled } from '@mui/material/styles';
 
-const useStyles = makeStyles(
-    theme => ({
-        root: {
-            backgroundColor: theme.palette.grey[300],
-            display: 'flex',
-        },
-    }),
-    { name: 'RaPlaceholder' }
-);
-
-interface Props {
+interface PlaceholderProps {
     className?: string;
-    classes?: Record<'root', string>;
 }
 
-const Placeholder: FC<Props> = props => {
-    const classes = useStyles(props);
-    return (
-        <div className={classnames(props.className, classes.root)}>&nbsp;</div>
-    );
-};
+export const Placeholder = (props: PlaceholderProps) => (
+    <Root className={props.className}>&nbsp;</Root>
+);
 
-export default Placeholder;
+const PREFIX = 'RaPlaceholder';
+
+const Root = styled('span', {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})(({ theme }) => ({
+    backgroundColor: theme.palette.grey[300],
+    display: 'flex',
+}));

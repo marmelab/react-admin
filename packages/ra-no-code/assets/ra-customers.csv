@@ -1,0 +1,11 @@
+id,first_name,last_name,email,address,zipcode,city,stateAbbr,avatar,birthday,first_seen,last_seen,has_ordered,latest_purchase,has_newsletter,nb_commands,total_spent,groups
+470,Kaela,Nolan,Kaela.Nolan41@hotmail.com,19270 Schinner Fork,15063-7481,Shanahanport,OH,https://marmelab.com/posters/avatar-124.jpeg,2011-09-03T18:19:06.601Z,2021-04-23T08:50:21.272Z,2021-04-23T13:00:16.355Z,true,,false,0,0
+123,Mallie,Labadie,Mallie.Labadie@gmail.com,313 Jaclyn Manor,63546-3960,Maceyfort,AL,https://marmelab.com/posters/avatar-38.jpeg,2010-07-23T09:17:28.279Z,2021-04-22T02:07:21.103Z,2021-04-23T12:44:34.152Z,true,2019-08-19T10:29:33.863Z,true,1,93.25,ordered_once;regular;reviewer
+431,Marcelino,Steuber,Marcelino_Steuber66@hotmail.com,,,,,,,2020-10-30T03:50:30.265Z,2021-04-23T12:29:41.586Z,false,,true,0,0,
+441,Francis,Smitham,Francis_Smitham89@hotmail.com,,,,,,,2021-04-22T22:28:58.884Z,2021-04-23T11:14:07.539Z,false,,true,0,0,
+191,Micheal,Bogisich,Micheal.Bogisich6@hotmail.com,,,,,,,2021-04-22T23:55:07.778Z,2021-04-23T10:29:16.721Z,false,,true,0,0,
+187,Emmy,Murray,Emmy_Murray42@hotmail.com,,,,,,,2021-03-13T02:46:35.106Z,2021-04-23T08:40:55.366Z,false,,true,0,0,
+623,Rick,Dach,Rick.Dach@hotmail.com,,,,,,,2021-02-08T12:10:39.046Z,2021-04-23T04:29:09.293Z,false,,true,0,0,
+343,Mortimer,Jones,Mortimer.Jones95@gmail.com,,,,,,,2021-04-04T06:04:49.627Z,2021-04-23T01:40:51.884Z,false,,true,0,0,
+723,Wilfredo,Renner,Wilfredo.Renner@gmail.com,,,,,,,2019-08-01T06:25:59.666Z,2021-04-22T23:30:43.699Z,false,,true,0,0,regular
+803,Kellen,Schoen,Kellen_Schoen25@yahoo.com,,,,,,,2020-01-24T19:43:18.566Z,2021-04-22T23:28:44.813Z,false,,true,0,0,

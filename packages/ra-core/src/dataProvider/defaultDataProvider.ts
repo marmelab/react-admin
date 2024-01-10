@@ -1,4 +1,4 @@
-export default {
+export const defaultDataProvider = {
     create: () => Promise.resolve({ data: null }), // avoids adding a context in tests
     delete: () => Promise.resolve({ data: null }), // avoids adding a context in tests
     deleteMany: () => Promise.resolve({ data: [] }), // avoids adding a context in tests

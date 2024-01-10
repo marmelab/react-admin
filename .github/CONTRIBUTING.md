@@ -4,7 +4,7 @@ So you want to contribute to react-admin? Awesome! Thank you in advance for your
 
 ## Asking Questions
 
-For how-to questions and other non-issues, please use [StackOverflow](http://stackoverflow.com/questions/tagged/react-admin) instead of Github issues. There is a StackOverflow tag called "react-admin" that you can use to tag your questions.
+For how-to questions and other non-issues, please use [StackOverflow](https://stackoverflow.com/questions/tagged/react-admin) instead of GitHub issues. There is a StackOverflow tag called "react-admin" that you can use to tag your questions.
 
 ## Opening an Issue
 
@@ -16,7 +16,7 @@ For code issues please include:
 * React-admin version
 * React version
 * Browser version
-* A code example or link to a repo, gist or running site. (hint: fork [this sandbox](https://codesandbox.io/s/github/marmelab/react-admin/tree/master/examples/simple) to create a reproducible version of your bug)
+* A code example or link to a repo, gist or running site. (hint: fork [this sandbox](https://stackblitz.com/github/marmelab/react-admin/tree/master/examples/simple) to create a reproducible version of your bug)
 
 For visual or layout problems, images or animated gifs can help explain your issue.
 It's even better with a live reproduction test case.

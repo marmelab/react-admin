@@ -1,14 +1,21 @@
-import React from 'react';
-import { render, cleanup, fireEvent } from '@testing-library/react';
-import { Form } from 'react-final-form';
+import * as React from 'react';
+import {
+    fireEvent,
+    render,
+    screen,
+    waitFor,
+    waitForElementToBeRemoved,
+} from '@testing-library/react';
+import { required, testDataProvider } from 'ra-core';
 
-import ImageField from '../field/ImageField';
-import FileField from '../field/FileField';
-import FileInput from './FileInput';
+import { AdminContext } from '../AdminContext';
+import { SimpleForm, Toolbar } from '../form';
+import { FileField, ImageField } from '../field';
+import { FileInput } from './FileInput';
+import { TextInput } from './TextInput';
+import { SaveButton } from '../button';
 
 describe('<FileInput />', () => {
-    afterEach(cleanup);
-
     const defaultProps = {
         source: 'image',
         resource: 'posts',
@@ -21,62 +28,60 @@ describe('<FileInput />', () => {
     };
 
     it('should display a dropzone for single file dropping', () => {
-        const { queryByText } = render(
-            <Form
-                onSubmit={jest.fn()}
-                render={() => (
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm onSubmit={jest.fn()}>
                     <FileInput {...defaultProps}>
                         <div />
                     </FileInput>
-                )}
-            />
+                </SimpleForm>
+            </AdminContext>
         );
 
-        expect(queryByText('ra.input.file.upload_single')).not.toBeNull();
+        expect(
+            screen.queryByText('ra.input.file.upload_single')
+        ).not.toBeNull();
     });
 
     it('should display a dropzone for multiple files dropping', () => {
-        const { queryByText } = render(
-            <Form
-                onSubmit={jest.fn()}
-                render={() => (
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm onSubmit={jest.fn()}>
                     <FileInput {...defaultProps} multiple>
                         <div />
                     </FileInput>
-                )}
-            />
+                </SimpleForm>
+            </AdminContext>
         );
 
-        expect(queryByText('ra.input.file.upload_several')).not.toBeNull();
+        expect(
+            screen.queryByText('ra.input.file.upload_several')
+        ).not.toBeNull();
     });
 
     // Skipped until https://github.com/jsdom/jsdom/issues/1568 is fixed
     it.skip('should correctly update upon drop when allowing a single file', async () => {
         const onSubmit = jest.fn();
 
-        const { getByTestId, getByLabelText } = render(
-            <Form
-                initialValues={{
-                    image: undefined,
-                }}
-                onSubmit={onSubmit}
-                render={({ handleSubmit }) => (
-                    <form onSubmit={handleSubmit}>
-                        <FileInput {...defaultProps}>
-                            <div />
-                        </FileInput>
-                        <button type="submit" aria-label="Save" />
-                    </form>
-                )}
-            />
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm onSubmit={onSubmit}>
+                    <FileInput {...defaultProps}>
+                        <div />
+                    </FileInput>
+                </SimpleForm>
+            </AdminContext>
         );
 
         const file = createFile('cats.gif', 1234, 'image/gif');
-        fireEvent.drop(getByTestId('dropzone'), createDataTransfer([file]));
+        fireEvent.drop(
+            screen.getByTestId('dropzone'),
+            createDataTransfer([file])
+        );
         // Required because react-dropzone handle drag & drop operations asynchronously
-        await new Promise(resolve => setImmediate(resolve));
+        await new Promise(resolve => setTimeout(resolve));
 
-        fireEvent.click(getByLabelText('Save'));
+        fireEvent.click(screen.getByLabelText('ra.action.save'));
 
         expect(onSubmit.mock.calls[0][0]).toEqual({
             images: [
@@ -91,33 +96,26 @@ describe('<FileInput />', () => {
     it.skip('should correctly update upon drop when allowing multiple files', async () => {
         const onSubmit = jest.fn();
 
-        const { getByTestId, getByLabelText } = render(
-            <Form
-                initialValues={{
-                    images: [],
-                }}
-                onSubmit={onSubmit}
-                render={({ handleSubmit }) => (
-                    <form onSubmit={handleSubmit}>
-                        <FileInput {...defaultPropsMultiple}>
-                            <div />
-                        </FileInput>
-                        <button type="submit" aria-label="Save" />
-                    </form>
-                )}
-            />
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm onSubmit={onSubmit}>
+                    <FileInput {...defaultPropsMultiple}>
+                        <div />
+                    </FileInput>
+                </SimpleForm>
+            </AdminContext>
         );
 
         const file1 = createFile('cats.gif', 1234, 'image/gif');
         const file2 = createFile('cats2.gif', 1234, 'image/gif');
         fireEvent.drop(
-            getByTestId('dropzone'),
+            screen.getByTestId('dropzone'),
             createDataTransfer([file1, file2])
         );
         // Required because react-dropzone handle drag & drop operations asynchronously
-        await new Promise(resolve => setImmediate(resolve));
+        await new Promise(resolve => setTimeout(resolve));
 
-        fireEvent.click(getByLabelText('Save'));
+        fireEvent.click(screen.getByLabelText('ra.action.save'));
 
         expect(onSubmit.mock.calls[0][0]).toEqual({
             images: [
@@ -131,143 +129,339 @@ describe('<FileInput />', () => {
         });
     });
 
-    it('should correctly update upon removal when allowing a single file', () => {
+    it('should correctly update upon removal when allowing a single file', async () => {
         const onSubmit = jest.fn();
 
-        const { getByLabelText, getByTitle } = render(
-            <Form
-                initialValues={{
-                    image: {
-                        src: 'test.png',
-                        title: 'cats',
-                    },
-                }}
-                onSubmit={onSubmit}
-                render={({ handleSubmit }) => (
-                    <form onSubmit={handleSubmit}>
-                        <FileInput {...defaultProps}>
-                            <FileField source="src" title="title" />
-                        </FileInput>
-                        <button type="submit" aria-label="Save" />
-                    </form>
-                )}
-            />
-        );
-
-        expect(getByTitle('cats')).not.toBeNull();
-        fireEvent.click(getByLabelText('ra.action.delete'));
-        fireEvent.click(getByLabelText('Save'));
-
-        expect(onSubmit.mock.calls[0][0]).toEqual({
-            image: null,
-        });
-    });
-
-    it('should correctly update upon removal when allowing multiple file (removing first file)', () => {
-        const onSubmit = jest.fn();
-
-        const { getByLabelText, getAllByLabelText, getByTitle } = render(
-            <Form
-                initialValues={{
-                    images: [
-                        {
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm
+                    onSubmit={onSubmit}
+                    defaultValues={{
+                        image: {
                             src: 'test.png',
                             title: 'cats',
                         },
+                    }}
+                >
+                    <FileInput {...defaultProps}>
+                        <FileField source="src" title="title" />
+                    </FileInput>
+                </SimpleForm>
+            </AdminContext>
+        );
+
+        expect(screen.getByTitle('cats')).not.toBeNull();
+        fireEvent.click(screen.getByLabelText('ra.action.delete'));
+        fireEvent.click(screen.getByLabelText('ra.action.save'));
+
+        await waitFor(() => {
+            expect(onSubmit).toHaveBeenCalledWith(
+                {
+                    image: null,
+                },
+                expect.anything()
+            );
+        });
+    });
+
+    it('should correctly update upon removal when allowing multiple file (removing first file)', async () => {
+        const onSubmit = jest.fn();
+
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm
+                    onSubmit={onSubmit}
+                    defaultValues={{
+                        images: [
+                            {
+                                src: 'test.png',
+                                title: 'cats',
+                            },
+                            {
+                                src: 'test2.png',
+                                title: 'cats2',
+                            },
+                        ],
+                    }}
+                >
+                    <FileInput {...defaultPropsMultiple}>
+                        <FileField source="src" title="title" />
+                    </FileInput>
+                </SimpleForm>
+            </AdminContext>
+        );
+
+        expect(screen.getByTitle('cats')).not.toBeNull();
+        fireEvent.click(screen.getAllByLabelText('ra.action.delete')[0]);
+        fireEvent.click(screen.getByLabelText('ra.action.save'));
+
+        await waitFor(() => {
+            expect(onSubmit).toHaveBeenCalledWith(
+                {
+                    images: [
                         {
                             src: 'test2.png',
                             title: 'cats2',
                         },
                     ],
-                }}
-                onSubmit={onSubmit}
-                render={({ handleSubmit }) => (
-                    <form onSubmit={handleSubmit}>
-                        <FileInput {...defaultPropsMultiple}>
-                            <FileField source="src" title="title" />
-                        </FileInput>
-                        <button type="submit" aria-label="Save" />
-                    </form>
-                )}
-            />
-        );
-
-        expect(getByTitle('cats')).not.toBeNull();
-        fireEvent.click(getAllByLabelText('ra.action.delete')[0]);
-        fireEvent.click(getByLabelText('Save'));
-
-        expect(onSubmit.mock.calls[0][0]).toEqual({
-            images: [
-                {
-                    src: 'test2.png',
-                    title: 'cats2',
                 },
-            ],
+                expect.anything()
+            );
         });
     });
 
-    it('should correctly update upon removal when allowing multiple files (removing second file)', () => {
+    it('should correctly update upon removal when allowing multiple files (removing second file)', async () => {
         const onSubmit = jest.fn();
 
-        const { getAllByLabelText, getByLabelText, getByTitle } = render(
-            <Form
-                initialValues={{
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm
+                    onSubmit={onSubmit}
+                    defaultValues={{
+                        images: [
+                            {
+                                src: 'test.png',
+                                title: 'cats',
+                            },
+                            {
+                                src: 'test2.png',
+                                title: 'cats 2',
+                            },
+                        ],
+                    }}
+                >
+                    <FileInput {...defaultPropsMultiple}>
+                        <FileField source="src" title="title" />
+                    </FileInput>
+                </SimpleForm>
+            </AdminContext>
+        );
+
+        await waitFor(() => {
+            expect(screen.getByTitle('cats')).not.toBeNull();
+        });
+        await waitFor(() => {
+            expect(screen.getByTitle('cats 2')).not.toBeNull();
+        });
+        fireEvent.click(screen.getAllByLabelText('ra.action.delete')[1]);
+        fireEvent.click(screen.getByLabelText('ra.action.save'));
+
+        await waitFor(() => {
+            expect(onSubmit).toHaveBeenCalledWith(
+                {
                     images: [
                         {
                             src: 'test.png',
                             title: 'cats',
                         },
-                        {
-                            src: 'test2.png',
-                            title: 'cats 2',
-                        },
                     ],
-                }}
-                onSubmit={onSubmit}
-                render={({ handleSubmit }) => (
-                    <form onSubmit={handleSubmit}>
-                        <FileInput {...defaultPropsMultiple}>
+                },
+                expect.anything()
+            );
+        });
+    });
+
+    describe('should call validateFileRemoval on removal to allow developers to conditionally prevent the removal', () => {
+        it('normal function', async () => {
+            const onSubmit = jest.fn();
+
+            render(
+                <AdminContext dataProvider={testDataProvider()}>
+                    <SimpleForm
+                        defaultValues={{
+                            image: {
+                                src: 'test.png',
+                                title: 'cats',
+                            },
+                        }}
+                        onSubmit={onSubmit}
+                        toolbar={
+                            <Toolbar>
+                                <SaveButton alwaysEnable />
+                            </Toolbar>
+                        }
+                    >
+                        <FileInput
+                            {...defaultProps}
+                            validateFileRemoval={() => {
+                                throw Error('Cancel Removal Action');
+                            }}
+                        >
                             <FileField source="src" title="title" />
                         </FileInput>
-                        <button type="submit" aria-label="Save" />
-                    </form>
-                )}
-            />
-        );
+                    </SimpleForm>
+                </AdminContext>
+            );
 
-        expect(getByTitle('cats')).not.toBeNull();
-        expect(getByTitle('cats 2')).not.toBeNull();
-        fireEvent.click(getAllByLabelText('ra.action.delete')[1]);
-        fireEvent.click(getByLabelText('Save'));
+            const fileDom = screen.getByTitle('cats');
+            expect(fileDom).not.toBeNull();
+            fireEvent.click(screen.getByLabelText('ra.action.delete'));
+            await waitFor(() => {
+                expect(fileDom).not.toBeNull();
+            });
+            fireEvent.click(screen.getByLabelText('ra.action.save'));
 
-        expect(onSubmit.mock.calls[0][0]).toEqual({
-            images: [
-                {
-                    src: 'test.png',
-                    title: 'cats',
-                },
-            ],
+            await waitFor(() => {
+                expect(onSubmit).toHaveBeenCalledWith(
+                    {
+                        image: {
+                            src: 'test.png',
+                            title: 'cats',
+                        },
+                    },
+                    expect.anything()
+                );
+            });
+        });
+
+        it('promise function', async () => {
+            const onSubmit = jest.fn();
+
+            render(
+                <AdminContext dataProvider={testDataProvider()}>
+                    <SimpleForm
+                        defaultValues={{
+                            image: {
+                                src: 'test.png',
+                                title: 'cats',
+                            },
+                        }}
+                        onSubmit={onSubmit}
+                        toolbar={
+                            <Toolbar>
+                                <SaveButton alwaysEnable />
+                            </Toolbar>
+                        }
+                    >
+                        <FileInput
+                            {...defaultProps}
+                            validateFileRemoval={async () => {
+                                throw Error('Cancel Removal Action');
+                            }}
+                        >
+                            <FileField source="src" title="title" />
+                        </FileInput>
+                    </SimpleForm>
+                </AdminContext>
+            );
+            const fileDom = screen.getByTitle('cats');
+            expect(fileDom).not.toBeNull();
+            fireEvent.click(screen.getByLabelText('ra.action.delete'));
+            await waitFor(() => {
+                expect(fileDom).not.toBeNull();
+            });
+            fireEvent.click(screen.getByLabelText('ra.action.save'));
+            await waitFor(() => {
+                expect(onSubmit).toHaveBeenCalledWith(
+                    {
+                        image: {
+                            src: 'test.png',
+                            title: 'cats',
+                        },
+                    },
+                    expect.anything()
+                );
+            });
+        });
+    });
+
+    describe('should continue to remove file when validateFileRemoval returns true.', () => {
+        it('normal function', async () => {
+            const onSubmit = jest.fn();
+
+            render(
+                <AdminContext dataProvider={testDataProvider()}>
+                    <SimpleForm
+                        defaultValues={{
+                            image: {
+                                src: 'test.png',
+                                title: 'cats',
+                            },
+                        }}
+                        onSubmit={onSubmit}
+                    >
+                        <FileInput
+                            {...defaultProps}
+                            validateFileRemoval={() => true}
+                        >
+                            <FileField source="src" title="title" />
+                        </FileInput>
+                    </SimpleForm>
+                </AdminContext>
+            );
+
+            const fileDom = screen.getByTitle('cats');
+            expect(fileDom).not.toBeNull();
+            fireEvent.click(screen.getByLabelText('ra.action.delete'));
+            await waitForElementToBeRemoved(fileDom);
+            fireEvent.click(screen.getByLabelText('ra.action.save'));
+
+            await waitFor(() => {
+                expect(onSubmit).toHaveBeenCalledWith(
+                    {
+                        image: null,
+                    },
+                    expect.anything()
+                );
+            });
+        });
+        it('promise function', async () => {
+            const onSubmit = jest.fn();
+
+            render(
+                <AdminContext dataProvider={testDataProvider()}>
+                    <SimpleForm
+                        defaultValues={{
+                            image: {
+                                src: 'test.png',
+                                title: 'cats',
+                            },
+                        }}
+                        onSubmit={onSubmit}
+                    >
+                        <FileInput
+                            {...defaultProps}
+                            validateFileRemoval={async () => true}
+                        >
+                            <FileField source="src" title="title" />
+                        </FileInput>
+                    </SimpleForm>
+                </AdminContext>
+            );
+
+            const fileDom = screen.getByTitle('cats');
+            expect(fileDom).not.toBeNull();
+            fireEvent.click(screen.getByLabelText('ra.action.delete'));
+            await waitForElementToBeRemoved(fileDom);
+            fireEvent.click(screen.getByLabelText('ra.action.save'));
+
+            await waitFor(() => {
+                expect(onSubmit).toHaveBeenCalledWith(
+                    {
+                        image: null,
+                    },
+                    expect.anything()
+                );
+            });
         });
     });
 
     it('should display correct custom label', () => {
         const test = (expectedLabel, expectedLabelText = expectedLabel) => {
-            const { getByText } = render(
-                <Form
-                    onSubmit={jest.fn()}
-                    render={() => (
+            render(
+                <AdminContext dataProvider={testDataProvider()}>
+                    <SimpleForm onSubmit={jest.fn()}>
                         <FileInput
                             {...defaultProps}
                             placeholder={expectedLabel}
                         >
                             <div />
                         </FileInput>
-                    )}
-                />
+                    </SimpleForm>
+                </AdminContext>
             );
 
-            expect(getByText(expectedLabelText)).not.toBeNull();
-            cleanup();
+            expect(screen.getByText(expectedLabelText)).not.toBeNull();
         };
 
         const CustomLabel = () => <div>Custom label in component</div>;
@@ -276,26 +470,126 @@ describe('<FileInput />', () => {
         test(<CustomLabel />, 'Custom label in component');
     });
 
+    describe('Validation', () => {
+        it('should display a validation error if the value is required and there is no file', async () => {
+            const onSubmit = jest.fn();
+
+            render(
+                <AdminContext dataProvider={testDataProvider()}>
+                    <SimpleForm onSubmit={onSubmit}>
+                        <FileInput
+                            {...defaultPropsMultiple}
+                            validate={required()}
+                        >
+                            <FileField source="src" title="title" />
+                        </FileInput>
+                        <TextInput source="title" resource="posts" />
+                    </SimpleForm>
+                </AdminContext>
+            );
+
+            fireEvent.change(
+                await screen.findByLabelText('resources.posts.fields.title'),
+                {
+                    target: { value: 'Hello world!' },
+                }
+            );
+            fireEvent.click(screen.getByLabelText('ra.action.save'));
+
+            await screen.findByText('ra.validation.required');
+            expect(onSubmit).not.toHaveBeenCalled();
+        });
+
+        it('should display a validation error if the value is required and the file is removed', async () => {
+            const onSubmit = jest.fn();
+
+            render(
+                <AdminContext dataProvider={testDataProvider()}>
+                    <SimpleForm
+                        onSubmit={onSubmit}
+                        defaultValues={{
+                            images: [
+                                {
+                                    src: 'test.png',
+                                    title: 'cats',
+                                },
+                            ],
+                        }}
+                    >
+                        <FileInput
+                            {...defaultPropsMultiple}
+                            validate={required()}
+                        >
+                            <FileField source="src" title="title" />
+                        </FileInput>
+                    </SimpleForm>
+                </AdminContext>
+            );
+
+            expect(screen.getByTitle('cats')).not.toBeNull();
+            fireEvent.click(screen.getAllByLabelText('ra.action.delete')[0]);
+            fireEvent.click(screen.getByLabelText('ra.action.save'));
+
+            await screen.findByText('ra.validation.required');
+            expect(onSubmit).not.toHaveBeenCalled();
+        });
+
+        it('should display a validation error right away when form mode is onChange', async () => {
+            const onSubmit = jest.fn();
+
+            render(
+                <AdminContext dataProvider={testDataProvider()}>
+                    <SimpleForm
+                        onSubmit={onSubmit}
+                        defaultValues={{
+                            images: [
+                                {
+                                    src: 'test.png',
+                                    title: 'cats',
+                                },
+                            ],
+                        }}
+                        mode="onChange"
+                    >
+                        <FileInput
+                            {...defaultPropsMultiple}
+                            validate={required()}
+                        >
+                            <FileField source="src" title="title" />
+                        </FileInput>
+                    </SimpleForm>
+                </AdminContext>
+            );
+
+            expect(screen.getByTitle('cats')).not.toBeNull();
+            fireEvent.click(screen.getAllByLabelText('ra.action.delete')[0]);
+
+            await screen.findByText('ra.validation.required');
+            expect(onSubmit).not.toHaveBeenCalled();
+        });
+    });
+
     describe('Image Preview', () => {
         it('should display file preview using child as preview component', () => {
-            const { queryByTitle } = render(
-                <Form
-                    initialValues={{
-                        image: {
-                            url: 'http://foo.com/bar.jpg',
-                            title: 'Hello world!',
-                        },
-                    }}
-                    onSubmit={jest.fn()}
-                    render={() => (
+            render(
+                <AdminContext dataProvider={testDataProvider()}>
+                    <SimpleForm
+                        onSubmit={jest.fn()}
+                        defaultValues={{
+                            image: {
+                                url: 'http://foo.com/bar.jpg',
+                                title: 'Hello world!',
+                            },
+                        }}
+                    >
                         <FileInput {...defaultProps} source="image">
                             <ImageField source="url" title="title" />
                         </FileInput>
-                    )}
-                />
+                    </SimpleForm>
+                </AdminContext>
             );
 
-            const previewImage = queryByTitle('Hello world!');
+            const previewImage = screen.queryByTitle('Hello world!');
             expect(previewImage).not.toBeNull();
             expect(previewImage.getAttribute('src')).toEqual(
                 'http://foo.com/bar.jpg'
@@ -303,84 +597,87 @@ describe('<FileInput />', () => {
         });
 
         it('should display all files (when several) previews using child as preview component', () => {
-            const { queryByTitle } = render(
-                <Form
-                    onSubmit={jest.fn()}
-                    initialValues={{
-                        images: [
-                            {
-                                url: 'http://foo.com/bar.jpg',
-                                title: 'Hello world!',
-                            },
-                            {
-                                url: 'http://foo.com/qux.bmp',
-                                title: 'A good old Bitmap!',
-                            },
-                        ],
-                    }}
-                    render={() => (
+            render(
+                <AdminContext dataProvider={testDataProvider()}>
+                    <SimpleForm
+                        onSubmit={jest.fn()}
+                        defaultValues={{
+                            images: [
+                                {
+                                    url: 'http://foo.com/bar.jpg',
+                                    title: 'Hello world!',
+                                },
+                                {
+                                    url: 'http://foo.com/qux.bmp',
+                                    title: 'A good old Bitmap!',
+                                },
+                            ],
+                        }}
+                    >
                         <FileInput {...defaultPropsMultiple}>
                             <ImageField source="url" title="title" />
                         </FileInput>
-                    )}
-                />
+                    </SimpleForm>
+                </AdminContext>
             );
 
-            const previewImage1 = queryByTitle('Hello world!');
+            const previewImage1 = screen.queryByTitle('Hello world!');
             expect(previewImage1).not.toBeNull();
             expect(previewImage1.getAttribute('src')).toEqual(
                 'http://foo.com/bar.jpg'
             );
 
-            const previewImage2 = queryByTitle('A good old Bitmap!');
+            const previewImage2 = screen.queryByTitle('A good old Bitmap!');
             expect(previewImage2).not.toBeNull();
             expect(previewImage2.getAttribute('src')).toEqual(
                 'http://foo.com/qux.bmp'
             );
         });
 
-        it('should update previews when updating input value', () => {
-            const { queryByTitle, rerender } = render(
-                <Form
-                    onSubmit={jest.fn()}
-                    initialValues={{
-                        image: {
-                            title: 'Hello world!',
-                            url: 'http://static.acme.com/foo.jpg',
-                        },
-                    }}
-                    render={() => (
+        it('should update previews when updating input value', async () => {
+            const { rerender } = render(
+                <AdminContext dataProvider={testDataProvider()}>
+                    <SimpleForm
+                        onSubmit={jest.fn()}
+                        record={{
+                            image: {
+                                title: 'Hello world!',
+                                url: 'http://static.acme.com/foo.jpg',
+                            },
+                        }}
+                    >
                         <FileInput {...defaultProps} source="image">
                             <ImageField source="url" title="title" />
                         </FileInput>
-                    )}
-                />
+                    </SimpleForm>
+                </AdminContext>
             );
 
-            const previewImage = queryByTitle('Hello world!');
+            const previewImage = screen.queryByTitle('Hello world!');
             expect(previewImage).not.toBeNull();
             expect(previewImage.getAttribute('src')).toEqual(
                 'http://static.acme.com/foo.jpg'
             );
 
             rerender(
-                <Form
-                    onSubmit={jest.fn()}
-                    initialValues={{
-                        image: {
-                            title: 'Hello world!',
-                            url: 'http://static.acme.com/bar.jpg',
-                        },
-                    }}
-                    render={() => (
+                <AdminContext dataProvider={testDataProvider()}>
+                    <SimpleForm
+                        onSubmit={jest.fn()}
+                        record={{
+                            image: {
+                                title: 'Hello world!',
+                                url: 'http://static.acme.com/bar.jpg',
+                            },
+                        }}
+                    >
                         <FileInput {...defaultProps} source="image">
                             <ImageField source="url" title="title" />
                         </FileInput>
-                    )}
-                />
+                    </SimpleForm>
+                </AdminContext>
             );
 
-            const updatedPreviewImage = queryByTitle('Hello world!');
+            const updatedPreviewImage = screen.queryByTitle('Hello world!');
             expect(updatedPreviewImage).not.toBeNull();
             expect(updatedPreviewImage.getAttribute('src')).toEqual(
                 'http://static.acme.com/bar.jpg'
@@ -391,29 +688,30 @@ describe('<FileInput />', () => {
         it.skip('should update previews when dropping a file', async () => {
             const onSubmit = jest.fn();
 
-            const { getByTestId, queryByRole } = render(
-                <Form
-                    initialValues={{
-                        images: [],
-                    }}
-                    onSubmit={onSubmit}
-                    render={({ handleSubmit }) => (
-                        <form onSubmit={handleSubmit}>
-                            <FileInput {...defaultPropsMultiple}>
-                                <ImageField source="url" />
-                            </FileInput>
-                            <button type="submit" aria-label="Save" />
-                        </form>
-                    )}
-                />
+            render(
+                <AdminContext dataProvider={testDataProvider()}>
+                    <SimpleForm
+                        defaultValues={{
+                            images: [],
+                        }}
+                        onSubmit={onSubmit}
+                    >
+                        <FileInput {...defaultPropsMultiple}>
+                            <ImageField source="url" />
+                        </FileInput>
+                    </SimpleForm>
+                </AdminContext>
             );
 
             const file = createFile('cats.gif', 1234, 'image/gif');
-            fireEvent.drop(getByTestId('dropzone'), createDataTransfer([file]));
+            fireEvent.drop(
+                screen.getByTestId('dropzone'),
+                createDataTransfer([file])
+            );
             // Required because react-dropzone handle drag & drop operations asynchronously
-            await new Promise(resolve => setImmediate(resolve));
+            await new Promise(resolve => setTimeout(resolve));
 
-            const previewImage = queryByRole('image');
+            const previewImage = screen.queryByRole('image');
             expect(previewImage).not.toBeNull();
             expect(previewImage.getAttribute('src')).toMatch(/blob:.*/);
         });
