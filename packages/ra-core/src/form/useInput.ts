@@ -51,7 +51,7 @@ export const useInput = <ValueType = any>(
         process.env.NODE_ENV === 'development'
     ) {
         console.warn(
-            'If your input source is empty, you must provide a label prop.'
+            'Input components require either a source or a label prop.'
         );
     }
 
