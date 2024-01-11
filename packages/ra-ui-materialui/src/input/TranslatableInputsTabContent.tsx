@@ -28,10 +28,9 @@ export const TranslatableInputsTabContent = (
         () => ({
             getSource: (source: string) => `${source}.${locale}`,
             getLabel: (source: string) => {
-                const itemSource = source.replace(`.${locale}`, '');
                 return parentSourceContext
-                    ? parentSourceContext.getLabel(itemSource)
-                    : getResourceFieldLabelKey(resource, itemSource);
+                    ? parentSourceContext.getLabel(source)
+                    : getResourceFieldLabelKey(resource, source);
             },
         }),
         [locale, parentSourceContext, resource]
