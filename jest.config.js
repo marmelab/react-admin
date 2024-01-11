@@ -25,6 +25,7 @@ module.exports = {
         '/lib/',
         '/esm/',
         '/examples/simple/',
+        '/packages/create-react-admin/templates',
     ],
     transformIgnorePatterns: [
         '[/\\\\]node_modules[/\\\\](?!(@hookform)/).+\\.(js|jsx|mjs|ts|tsx)$',
