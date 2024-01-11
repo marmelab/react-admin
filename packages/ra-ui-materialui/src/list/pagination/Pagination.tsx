@@ -159,7 +159,7 @@ const emptyArray = [];
 export interface PaginationProps
     extends TablePaginationBaseProps,
         Partial<ListPaginationContextValue> {
-    rowsPerPageOptions?: number[];
+    rowsPerPageOptions?: { label: string; value: number }[] | number[];
     actions?: FC<PaginationActionsProps>;
     limit?: ReactElement;
 }
