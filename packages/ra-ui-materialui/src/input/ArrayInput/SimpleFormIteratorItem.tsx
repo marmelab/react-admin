@@ -87,10 +87,12 @@ export const SimpleFormIteratorItem = React.forwardRef(
                     source ? `${member}.${source}` : member,
                 getLabel: (source: string) => {
                     // remove digits, e.g. 'book.authors.2.categories.3.identifier.name' => 'book.authors.categories.identifier.name'
-                    const itemSource = `${member.replace(
-                        /\.\d+/g,
-                        ''
-                    )}.${source}`;
+                    const sanitizedMember = member.replace(/\.\d+/g, '');
+                    // source may be empty for scalar values arrays
+                    const itemSource = source
+                        ? `${sanitizedMember}.${source}`
+                        : sanitizedMember;
+
                     return parentSourceContext
                         ? parentSourceContext.getLabel(itemSource)
                         : getResourceFieldLabelKey(resource, itemSource);

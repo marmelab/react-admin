@@ -45,6 +45,16 @@ export const useInput = <ValueType = any>(
     const formGroups = useFormGroups();
     const record = useRecordContext();
 
+    if (
+        !source &&
+        props.label == null &&
+        process.env.NODE_ENV === 'development'
+    ) {
+        console.warn(
+            'If your input source is empty, you must provide a label prop.'
+        );
+    }
+
     useEffect(() => {
         if (!formGroups || formGroupName == null) {
             return;
