@@ -20,7 +20,7 @@ export const generateProject = async (state: ProjectConfiguration) => {
     if (state.dataProvider !== 'none') {
         copyDirectoryFiles(
             path.join(__dirname, '../templates', state.dataProvider),
-            path.join(path.join(projectDirectory, 'src')),
+            projectDirectory,
             ['package.json', '.env', 'README.md', 'help.txt']
         );
     }
@@ -28,7 +28,7 @@ export const generateProject = async (state: ProjectConfiguration) => {
     if (state.authProvider !== 'none') {
         copyDirectoryFiles(
             path.join(__dirname, '../templates', state.authProvider),
-            path.join(path.join(projectDirectory, 'src')),
+            projectDirectory,
             ['package.json', '.env', 'README.md', 'help.txt']
         );
     }
