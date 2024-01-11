@@ -5,13 +5,11 @@ title: "useShowController"
 
 # `useShowController`
 
-`useShowController` is the hook that handles all the controller logic for Show views. It's used by `<Show>` and `<ShowBase>`.
+`useShowController` contains the headless logic of the [`<Show>`](./Show.md) component. It's useful to create a custom Show view. It's also the base hook when building a custom view with another UI kit than Material UI. 
 
-This hook takes care of three things:
+`useShowController` reads the resource name and id from the resource context and browser location, fetches the record from the data provider via `dataProvider.getOne()`, computes the default page title, and returns them. Its return value matches the [`ShowContext`](./useShowContext.md) shape. 
 
-- it reads the resource name and id from the resource context and browser location
-- it fetches the record from the data provider via `dataProvider.getOne()`,
-- it computes the default page title
+`useShowController` is used internally by [`<Show>`](./Show.md) and [`<ShowBase>`](./ShowBase.md). If your Show view uses react-admin components like `<TextField>`, prefer [`<ShowBase>`](./ShowBase.md) to `useShowController` as it takes care of creating a `<ShowContext>`.
 
 ## Usage
 
@@ -21,15 +19,7 @@ You can use `useShowController` to create your own custom Show view, like this o
 import { useShowController, RecordContextProvider, SimpleShowLayout } from 'react-admin';
 
 const PostShow = () => {
-    const {
-        defaultTitle, // the translated title based on the resource, e.g. 'Post #123'
-        error,  // error returned by dataProvider when it failed to fetch the record. Useful if you want to adapt the view instead of just showing a notification using the `onError` side effect.
-        isFetching, // boolean that is true while the record is being fetched, and false once the record is fetched
-        isLoading, // boolean that is true until the record is available for the first time
-        record, // record fetched via dataProvider.getOne() based on the id from the location
-        refetch, // callback to refetch the record via dataProvider.getOne()
-        resource, // the resource name, deduced from the location. e.g. 'posts'
-    } = useShowController();
+    const { defaultTitle, error, isLoading, record } = useShowController();
 
     if (isLoading) {
         return <div>Loading...</div>;
@@ -51,13 +41,55 @@ const PostShow = () => {
 
 This custom Show view has no action buttons - it's up to you to add them in pure React.
 
+**Tip**: Use [`<ShowBase>`](./ShowBase.md) instead of `useShowController` if you need a component version of that hook.
+
 ## Parameters
 
-`useShowController` expects one parameter argument. It's an object with the following attributes: 
+`useShowController` accepts an object with the following keys, all optional: 
 
-* [`queryOption`](#client-query-options): options to pass to the react-query client
+* [`disableAuthentication`](#disableauthentication): Boolean, set to `true` to disable the authentication check.
+* [`id`](#id): Record identifier. If not provided, it will be deduced from the URL.
+* [`queryOptions`](#queryoptions): Options object to pass to the [`useQuery`](./Actions.mdl#usequery-and-usemutation) hook.
+* [`resource`](#resource): Resource name, e.g. `posts`
 
-## Client Query Options
+
+## `disableAuthentication`
+
+By default, the `useShowController` hook will automatically redirect the user to the login page if the user is not authenticated. If you want to disable this behavior and allow anonymous access to a show page, set the `disableAuthentication` prop to `true`.
+
+```jsx
+import { useShowController } from 'react-admin';
+
+const PostShow = () => {
+    const { record } = useShowController({ disableAuthentication: true });
+
+    return (
+        <div>
+            <h1>{record.title}</h1>
+            <p>{record.body}</p>
+        </div>
+    );
+};
+```
+
+## `id`
+
+By default, `useShowController` reads the record id from the browser location. But by passing an `id` prop, you can run the controller logic on an arbitrary record id:
+
+```jsx
+const Post1234Show = () => {
+    const { record } = useShowController({ id: 1234 });
+
+    return (
+        <div>
+            <h1>{record.title}</h1>
+            <p>{record.body}</p>
+        </div>
+    );
+};
+```
+
+## `queryOptions`
 
 `useShowController` accepts a `queryOptions` prop to pass options to the react-query client. 
 
@@ -117,6 +149,38 @@ The default `onError` function is:
 }
 ```
 
+## `resource`
+
+By default, `useShowController` reads the resource name from the resource context. But by passing a `resource` prop, you can run the controller logic on an arbitrary resource:
+
+```jsx
+const PostShow = () => {
+    const { record } = useShowController({ resource: 'posts'; id: 1234 });
+    return (
+        <div>
+            <h1>{record.title}</h1>
+            <p>{record.body}</p>
+        </div>
+    );
+};
+```
+
+## Return Value
+
+`useShowController` returns an object with the following keys:
+
+```jsx
+const {
+    defaultTitle, // Translated title based on the resource, e.g. 'Post #123'
+    isFetching, // Boolean, true while the record is being fetched, and false once done fetching
+    isLoading, // Boolean, true until the record is available for the first time
+    record, // Either the record fetched via dataProvider.getOne() based on the id from the location, a cached version of the record (see also the Caching documentation page) or undefined 
+    refetch, // Callback to refetch the record via dataProvider.getOne()
+    resource, // The resource name, deduced from the location. e.g. 'posts'
+    error, // Error returned by dataProvider when it failed to fetch the record. Useful if you want to adapt the view instead of just showing a notification using the onError side effect.
+} = useShowController();
+```
+
 ## Controlled Mode
 
 By default, `useShowController` reads the resource name from the resource context, and the record id from the browser location.
@@ -132,17 +196,3 @@ const MyShow = () => {
     return <ShowView {...controllerProps} />;
 };
 ```
-
-## See Also
-
-* [`<ShowBase>`](./ShowBase.md) calls `useShowController`, puts the result in a `RecordContextProvider` and renders the component child. In many cases, you'll prefer this component to the hook version.
-
-## API
-
-* [`useShowController`]
-* [`<ShowBase>`]
-* [`<Show>`]
-
-[`useShowController`]: https://github.com/marmelab/react-admin/blob/master/packages/ra-core/src/controller/show/useShowController.ts
-[`<ShowBase>`]: https://github.com/marmelab/react-admin/blob/master/packages/ra-core/src/controller/show/ShowBase.tsx
-[`<Show>`]: https://github.com/marmelab/react-admin/blob/master/packages/ra-ui-materialui/src/detail/Show.tsx

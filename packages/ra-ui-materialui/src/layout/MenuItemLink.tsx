@@ -73,6 +73,7 @@ export const MenuItemLink = forwardRef<any, MenuItemLinkProps>((props, ref) => {
         onClick,
         sidebarIsOpen,
         tooltipProps,
+        children,
         ...rest
     } = props;
 
@@ -113,7 +114,9 @@ export const MenuItemLink = forwardRef<any, MenuItemLinkProps>((props, ref) => {
                         {leftIcon}
                     </ListItemIcon>
                 )}
-                {typeof primaryText === 'string'
+                {children
+                    ? children
+                    : typeof primaryText === 'string'
                     ? translate(primaryText, { _: primaryText })
                     : primaryText}
             </StyledMenuItem>
@@ -137,16 +140,18 @@ export const MenuItemLink = forwardRef<any, MenuItemLinkProps>((props, ref) => {
     );
 });
 
-export type MenuItemLinkProps = LinkProps &
-    MenuItemProps<'li'> & {
-        leftIcon?: ReactElement;
-        primaryText?: ReactNode;
-        /**
-         * @deprecated
-         */
-        sidebarIsOpen?: boolean;
-        tooltipProps?: TooltipProps;
-    };
+export type MenuItemLinkProps = Omit<
+    LinkProps & MenuItemProps<'li'>,
+    'placeholder'
+> & {
+    leftIcon?: ReactElement;
+    primaryText?: ReactNode;
+    /**
+     * @deprecated
+     */
+    sidebarIsOpen?: boolean;
+    tooltipProps?: TooltipProps;
+};
 
 MenuItemLink.propTypes = {
     className: PropTypes.string,

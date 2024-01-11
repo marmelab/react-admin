@@ -58,6 +58,8 @@ const App = () => (
 export default App;
 ```
 
+## Props
+
 You can customize the `<Edit>` component using the following props:
 
 * [`actions`](#actions): override the actions toolbar with a custom component
@@ -281,11 +283,8 @@ import {
     SimpleForm,
 } from 'react-admin';
 
-const CustomToolbar = props => (
-    <Toolbar
-        {...props}
-        sx={{ display: 'flex', justifyContent: 'space-between' }}
-    >
+const CustomToolbar = () => (
+    <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
         <SaveButton />
         <DeleteButton mutationMode="pessimistic" />
     </Toolbar>
@@ -544,13 +543,13 @@ The `title` value can be a string or a React element.
 To transform a record after the user has submitted the form but before the record is passed to `dataProvider.update()`, use the `transform` prop. It expects a function taking a record as argument, and returning a modified record. For instance, to add a computed field upon edition:
 
 ```jsx
-export const UserEdit = (props) => {
+export const UserEdit = () => {
     const transform = data => ({
         ...data,
         fullName: `${data.firstName} ${data.lastName}`
     });
     return (
-        <Edit {...props} transform={transform}>
+        <Edit transform={transform}>
             ...
         </Edit>
     );
@@ -564,13 +563,13 @@ The `transform` function can also return a `Promise`, which allows you to do all
 **Tip**: The `transform` function also get the `previousData` in its second argument:
 
 ```jsx
-export const UserEdit = (props) => {
+export const UserEdit = () => {
     const transform = (data, { previousData }) => ({
         ...data,
         avoidChangeField: previousData.avoidChangeField
     });
     return (
-        <Edit {...props} transform={transform}>
+        <Edit transform={transform}>
             ...
         </Edit>
     );
@@ -593,7 +592,7 @@ As a reminder, HTML form inputs always return strings, even for numbers and bool
 If you prefer to have `null` values, or to omit the key for empty values, use [the `transform` prop](#transform) to sanitize the form data before submission:
 
 ```jsx
-export const UserEdit = (props) => {
+export const UserEdit = () => {
     const transform = (data) => {
         const sanitizedData = {};
         for (const key in data) {
@@ -603,7 +602,7 @@ export const UserEdit = (props) => {
         return sanitizedData;
     };
     return (
-        <Edit {...props} transform={transform}>
+        <Edit transform={transform}>
             ...
         </Edit>
     );
@@ -662,7 +661,7 @@ const PostEdit = () => {
 ```
 {% endraw %}
 
-**Tip**: In `optimistic` and `undoable` mutation modes, react-admin calls the the `onSuccess` callback method with no argument. In `pessimistic` mode, it calls it with the response returned by the dataProvider as argument.
+**Tip**: In `optimistic` and `undoable` mutation modes, react-admin calls the `onSuccess` callback method with no argument. In `pessimistic` mode, it calls it with the response returned by the dataProvider as argument.
 
 You can do the same for error notifications, by passing a custom `onError`  callback.
 
@@ -722,12 +721,12 @@ const cities = {
 };
 const toChoices = items => items.map(item => ({ id: item, name: item }));
 
-const CityInput = props => {
+const CityInput = () => {
     const country = useWatch({ name: 'country' });
     return (
         <SelectInput
             choices={country ? toChoices(cities[country]) : []}
-            {...props}
+            source="cities"
         />
     );
 };
@@ -736,7 +735,7 @@ const OrderEdit = () => (
     <Edit>
         <SimpleForm>
             <SelectInput source="country" choices={toChoices(countries)} />
-            <CityInput source="cities" />
+            <CityInput />
         </SimpleForm>
     </Edit>
 );
@@ -748,7 +747,7 @@ export default OrderEdit;
 
 ## Navigating Through Records
 
-[`<PrevNextButtons`](./PrevNextButtons.md) renders a navigation with two buttons, allowing users to navigate through records without leaving an `<Edit>` view. 
+[`<PrevNextButtons>`](./PrevNextButtons.md) renders a navigation with two buttons, allowing users to navigate through records without leaving an `<Edit>` view. 
 
 <video controls autoplay playsinline muted loop>
   <source src="./img/prev-next-buttons-edit.webm" type="video/webm" />
@@ -772,4 +771,91 @@ export const PostEdit = () => (
 );
 ```
 
-**Tips:** If you want users to be warned if they haven't pressed the Save button when they browse to another record, you can follow the tutorial [Navigating Through Records In`<Edit>` Views](./PrevNextButtons.md#navigating-through-records-inedit-views-after-submit).
+**Tips:** If you want users to be warned if they haven't pressed the Save button when they browse to another record, you can follow the tutorial [Navigating Through Records In`<Edit>` Views](./PrevNextButtons.md#navigating-through-records-in-edit-views-after-submit).
+
+## Controlled Mode
+
+`<Edit>` deduces the resource and the record id from the URL. This is fine for an edition page, but if you need to let users edit records from another page, you probably want to define the edit parameters yourself. 
+
+In that case, use the [`resource`](#resource) and [`id`](#id) props to set the edit parameters regardless of the URL.
+
+```jsx
+import { Edit, SimpleForm, TextInput, SelectInput } from "react-admin";
+
+export const BookEdit = ({ id }) => (
+    <Edit resource="books" id={id} redirect={false}>
+        <SimpleForm>
+            <TextInput source="title" />
+            <TextInput source="author" />
+            <SelectInput source="availability" choices={[
+                { id: "in_stock", name: "In stock" },
+                { id: "out_of_stock", name: "Out of stock" },
+                { id: "out_of_print", name: "Out of print" },
+            ]} />
+        </SimpleForm>
+    </Edit>
+);
+```
+
+**Tip**: You probably also want to customize [the `redirect` prop](#redirect) if you embed an `<Edit>` component in another page.
+
+## Headless Version
+
+Besides fetching a record and preparing a save handler, `<Edit>` renders the default edition page layout (title, actions, a Material UI `<Card>`) and its children. If you need a custom edition layout, you may prefer [the `<EditBase>` component](./EditBase.md), which only renders its children in an [`EditContext`](./useEditContext.md).
+
+```jsx
+import { EditBase, SelectInput, SimpleForm, TextInput, Title } from "react-admin";
+import { Card, CardContent, Container } from "@mui/material";
+
+export const BookEdit = () => (
+    <EditBase>
+        <Container>
+            <Title title="Book Edition" />
+            <Card>
+                <CardContent>
+                    <SimpleForm>
+                        <TextInput source="title" />
+                        <TextInput source="author" />
+                        <SelectInput source="availability" choices={[
+                            { id: "in_stock", name: "In stock" },
+                            { id: "out_of_stock", name: "Out of stock" },
+                            { id: "out_of_print", name: "Out of print" },
+                        ]} />
+                    </SimpleForm>
+                </CardContent>
+            </Card>
+        </Container>
+    </EditBase>
+);
+```
+
+In the previous example, `<SimpleForm>` grabs the record and the save handler from the `EditContext`.
+
+If you don't need the `EditContext`, you can use [the `useEditController` hook](./useEditController.md), which does the same data fetching as `<EditBase>` but lets you render the content.
+
+```tsx
+import { useEditController, SelectInput, SimpleForm, TextInput, Title } from "react-admin";
+import { Card, CardContent, Container } from "@mui/material";
+
+export const BookEdit = () => {
+    const { record, save } = useEditController();
+    return (
+        <Container>
+            <Title title={`Edit book ${record?.title}`} />
+            <Card>
+                <CardContent>
+                    <SimpleForm record={record} onSubmit={values => save(values)}>
+                        <TextInput source="title" />
+                        <TextInput source="author" />
+                        <SelectInput source="availability" choices={[
+                            { id: "in_stock", name: "In stock" },
+                            { id: "out_of_stock", name: "Out of stock" },
+                            { id: "out_of_print", name: "Out of print" },
+                        ]} />
+                    </SimpleForm>
+                </CardContent>
+            </Card>
+        </Container>
+    );
+};
+```

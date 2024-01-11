@@ -100,6 +100,10 @@ build-ra-i18n-polyglot:
 	@echo "Transpiling ra-i18n-polyglot files...";
 	@cd ./packages/ra-i18n-polyglot && yarn build
 
+build-ra-i18n-i18next:
+	@echo "Transpiling ra-i18n-i18next files...";
+	@cd ./packages/ra-i18n-i18next && yarn build
+
 build-ra-input-rich-text:
 	@echo "Transpiling ra-input-rich-text files...";
 	@cd ./packages/ra-input-rich-text && yarn build

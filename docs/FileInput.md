@@ -44,7 +44,7 @@ The input value must be an object or an array of objects with a `title` and a `s
 After modification by the user, the value is stored as an array of objects with 3 properties: 
 
 * `title`: the file name with extension, e.g. 'Invoice-2929-01-06.pdf',
-* `src`: An [object URL](https://developer.mozilla.org/fr/docs/Web/API/URL/createObjectURL) for the `File`, e.g. 'blob:https://example.com/1e67e00e-860d-40a5-89ae-6ab0cbee6273'
+* `src`: An [object URL](https://developer.mozilla.org/en-US/docs/Web/API/URL/createObjectURL) for the `File`, e.g. 'blob:https://example.com/1e67e00e-860d-40a5-89ae-6ab0cbee6273'
 * `rawFile`: [The `File` object](https://developer.mozilla.org/fr/docs/Web/API/File) itself
 
 It is the responsibility of your `dataProvider` to send the file to the server (encoded in Base64, or using multipart upload) and to transform the `src` property. See [the Data Provider documentation](./DataProviders.md#handling-file-uploads) for an example.
@@ -186,14 +186,14 @@ This example asumes the implementation of a `deleteImages` function in the dataP
 import { Edit, SimpleForm, ImageInput, Confirm, useDataProvider } from 'react-admin';
 import { useMutation } from 'react-query';
 
-const MyEdit = (props) => {
+const MyEdit = () => {
     const [removeImage, setRemoveImage] = React.useState(null);
     const [showModal, setShowModal] = React.useState(false);
     const dataProvider = useDataProvider();
     const { mutate } = useMutation();
 
     return (
-        <Edit {...props}>
+        <Edit>
             <SimpleForm>
                 <ImageInput
                     source="images"
@@ -237,3 +237,6 @@ const MyEdit = (props) => {
 }
 ```
 
+## Uploading Files
+
+Handling files uploads in react-admin is the dataProvider's job. Learn how to do that in the [Handling File Uploads section from the dataProvider documentation](./DataProviders.md#handling-file-uploads).

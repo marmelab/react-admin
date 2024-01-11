@@ -1,6 +1,4 @@
 import * as React from 'react';
-import { ReactElement, ElementType } from 'react';
-import PropTypes from 'prop-types';
 import {
     Button as MuiButton,
     ButtonProps as MuiButtonProps,
@@ -10,6 +8,8 @@ import {
     Theme,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
+import { To } from 'history';
+import PropTypes from 'prop-types';
 import { useTranslate } from 'ra-core';
 import { Path } from 'react-router';
 
@@ -26,7 +26,9 @@ import { Path } from 'react-router';
  * </Button>
  *
  */
-export const Button = (props: ButtonProps) => {
+export const Button = <RootComponent extends React.ElementType = 'button'>(
+    props: ButtonProps<RootComponent>
+) => {
     const {
         alignIcon = 'left',
         children,
@@ -54,8 +56,8 @@ export const Button = (props: ButtonProps) => {
                     className={className}
                     color={color}
                     size="large"
-                    {...rest}
                     {...linkParams}
+                    {...rest}
                 >
                     {children}
                 </IconButton>
@@ -66,8 +68,8 @@ export const Button = (props: ButtonProps) => {
                 color={color}
                 disabled={disabled}
                 size="large"
-                {...rest}
                 {...linkParams}
+                {...rest}
             >
                 {children}
             </IconButton>
@@ -81,27 +83,29 @@ export const Button = (props: ButtonProps) => {
             disabled={disabled}
             startIcon={alignIcon === 'left' && children ? children : undefined}
             endIcon={alignIcon === 'right' && children ? children : undefined}
-            {...rest}
             {...linkParams}
+            {...rest}
         >
             {translatedLabel}
         </StyledButton>
     );
 };
 
-interface Props {
+interface Props<RootComponent extends React.ElementType> {
     alignIcon?: 'left' | 'right';
-    children?: ReactElement;
+    children?: React.ReactElement;
     className?: string;
-    component?: ElementType;
-    to?: string | LocationDescriptor;
+    component?: RootComponent;
+    to?: LocationDescriptor | To;
     disabled?: boolean;
     label?: string;
     size?: 'small' | 'medium' | 'large';
     variant?: string;
 }
 
-export type ButtonProps = Props & MuiButtonProps;
+export type ButtonProps<
+    RootComponent extends React.ElementType = 'button'
+> = Props<RootComponent> & MuiButtonProps<RootComponent>;
 
 Button.propTypes = {
     alignIcon: PropTypes.oneOf(['left', 'right']),

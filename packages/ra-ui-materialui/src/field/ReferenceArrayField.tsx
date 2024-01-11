@@ -10,16 +10,15 @@ import {
     FilterPayload,
     ResourceContextProvider,
     useRecordContext,
-    useResourceDefinition,
     RaRecord,
 } from 'ra-core';
 import { styled } from '@mui/material/styles';
 import { SxProps } from '@mui/system';
+import { UseQueryOptions } from 'react-query';
 
 import { fieldPropTypes, FieldProps } from './types';
 import { LinearProgress } from '../layout';
 import { SingleFieldList } from '../list/SingleFieldList';
-import { ChipField } from './ChipField';
 
 /**
  * A container component that fetches records from another resource specified
@@ -81,7 +80,7 @@ export const ReferenceArrayField = <
     RecordType extends RaRecord = RaRecord,
     ReferenceRecordType extends RaRecord = RaRecord
 >(
-    props: ReferenceArrayFieldProps<RecordType>
+    props: ReferenceArrayFieldProps<RecordType, ReferenceRecordType>
 ) => {
     const {
         filter,
@@ -91,6 +90,7 @@ export const ReferenceArrayField = <
         resource,
         sort,
         source,
+        queryOptions,
     } = props;
     const record = useRecordContext(props);
     const controllerProps = useReferenceArrayFieldController<
@@ -105,6 +105,7 @@ export const ReferenceArrayField = <
         resource,
         sort,
         source,
+        queryOptions,
     });
     return (
         <ResourceContextProvider value={reference}>
@@ -126,10 +127,12 @@ ReferenceArrayField.propTypes = {
     sortBy: PropTypes.string,
     sortByOrder: fieldPropTypes.sortByOrder,
     source: PropTypes.string.isRequired,
+    queryOptions: PropTypes.any,
 };
 
 export interface ReferenceArrayFieldProps<
-    RecordType extends RaRecord = RaRecord
+    RecordType extends RaRecord = RaRecord,
+    ReferenceRecordType extends RaRecord = RaRecord
 > extends FieldProps<RecordType> {
     children?: ReactNode;
     filter?: FilterPayload;
@@ -139,33 +142,16 @@ export interface ReferenceArrayFieldProps<
     reference: string;
     sort?: SortPayload;
     sx?: SxProps;
+    queryOptions?: UseQueryOptions<ReferenceRecordType[], Error>;
 }
 
 export interface ReferenceArrayFieldViewProps
     extends Omit<ReferenceArrayFieldProps, 'resource' | 'page' | 'perPage'>,
-        ListControllerProps {}
+        Omit<ListControllerProps, 'queryOptions'> {}
 
 export const ReferenceArrayFieldView: FC<ReferenceArrayFieldViewProps> = props => {
-    const { children, pagination, reference, className, sx } = props;
+    const { children, pagination, className, sx } = props;
     const { isLoading, total } = useListContext(props);
-
-    const { recordRepresentation } = useResourceDefinition({
-        resource: reference,
-    });
-    let child = children ? (
-        children
-    ) : (
-        <SingleFieldList>
-            <ChipField
-                source={
-                    typeof recordRepresentation === 'string'
-                        ? recordRepresentation
-                        : 'id'
-                }
-                size="small"
-            />
-        </SingleFieldList>
-    );
 
     return (
         <Root className={className} sx={sx}>
@@ -175,7 +161,7 @@ export const ReferenceArrayFieldView: FC<ReferenceArrayFieldViewProps> = props =
                 />
             ) : (
                 <span>
-                    {child}
+                    {children || <SingleFieldList />}
                     {pagination && total !== undefined ? pagination : null}
                 </span>
             )}

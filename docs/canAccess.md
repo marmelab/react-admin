@@ -52,23 +52,23 @@ The `PostEditButton` component will render the `<EditButton>`.
 
 ## `action`
 
-Specify the action you want to check. 
+If you want to check a specific action, for instance if the user can `delete` a `post`, you can specify this action in the dedicated prop: 
 
 ```tsx
 const permissions = [
-    { resource: 'posts', action: ['read', 'edit', 'create'] },
+    { resource: 'posts', action: ['read', 'edit', 'create', 'delete'] },
 ];
 canAccess({ permissions, resource: 'posts', action: 'read' }); // true
 canAccess({ permissions, resource: 'posts', action: 'edit' }); // true
 canAccess({ permissions, resource: 'posts', action: 'create' }); // true
-canAccess({ permissions, resource: 'posts', action: 'delete' }); // false
+canAccess({ permissions, resource: 'posts', action: 'delete' }); // true
 canAccess({ permissions, resource: 'posts', action: 'export' }); // false
 ```
 
-You don't have to provide an `action` if you just want to know whether users can access the CRUD pages of a resource. This is useful to leverage `canAccess` in an `<Admin>` component children function:
+If you just want to know whether users can access any of the resources, you don't have to provide an `action`. For instance, here's how you may display different components depending on resources access rights in the dashboard:
 
 ```tsx
-import { Admin, Resource, ListGuesser, EditGuesser } from 'react-admin';
+import { Admin, usePermissions } from 'react-admin';
 import { canAccess } from '@react-admin/ra-rbac';
 import { dataProvider } from './dataProvider';
 
@@ -84,28 +84,44 @@ const authProvider = {
         ]),
 };
 
+const AccessDashboard = () => {
+    const { permissions } = usePermissions();
+    return (
+        <>
+            {canAccess({
+                permissions,
+                resource: 'commands',
+            }) ? (
+                <>List of last orders...</> // no access to this component
+            ) : null}
+
+            {canAccess({
+                permissions,
+                resource: 'products',
+            }) ? (
+               <>List of last products...</>
+            ) : null}
+            {canAccess({
+                permissions,
+                resource: 'categories',
+            }) ? (
+                <>List of last categories...</>
+            ) : null}
+        </>
+    );
+};
+
 export const MyApp = () => (
-    <Admin authProvider={authProvider} dataProvider={dataProvider}>
-        {(permissions: Permissions) => (
-            <>
-                {canAccess({ permissions, resource: 'products' }) ? (
-                    <Resource name="products" list={ListGuesser} />
-                ) : null}
-                {canAccess({ permissions, resource: 'categories' }) ? (
-                    <Resource name="categories" list={ListGuesser} edit={EditGuesser} />
-                ) : null}
-                {canAccess({ permissions, resource: 'commands' }) ? (
-                    <Resource name="commands" list={ListGuesser} />
-                ) : null}
-            </>
-        )}
+    <Admin authProvider={authProvider} dataProvider={dataProvider} dashboard={AccessDashboard}>
+        {/*...*/}
     </Admin>
 );
 ```
 
-In this example, users will see the products list and will be able to click on its category link to edit the category. However, they won't see the categories list nor the commands list.
+In this example, users will see the list of last products and the list of last categories but they won't be able to see the list of last orders.
 
-Note that [ra-rbac's `<Resource>` component](./AuthRBAC.md#resource) does this check automatically, so you don't actually need to use `canAccess` in this case.
+
+**Note**: [ra-rbac's `<Resource>` component](./AuthRBAC.md#resource) automatically checks for the `list`, `show`, `create` and `edit` actions, so you don't actually need to use `canAccess` if you want to restrict a whole resource.
 
 ```tsx
 import { Admin, ListGuesser, EditGuesser } from 'react-admin'; // do not import Resource here
@@ -241,3 +257,111 @@ const ProductList = () => {
 ```
 
 **Tip**: Ra-rbac actually proposes a `<Datagrid>` component that hides columns depending on permissions. Check [the RBAC documentation](./AuthRBAC.md) for details.
+
+## Disable Menu Items Instead Of Not Showing Them
+
+The `ra-rbac` `<Menu>` component does not show menu items the current user has not access to.
+It is considered good security practice not to disclose to a potentially malicious user that a page exists if they are not allowed to see it.
+
+However, you might want to disable menu items instead of not showing them.
+
+To achieve this, you can build a custom menu with the core `<Menu>` component provided by React-admin and leverage the 
+[`usePermissions`](./usePermissions.md) hook with the [`canAccess`](#canaccess) function to disable a `<Menu.Item>`
+
+Let's take a look at the following code: 
+
+{% raw %}
+```tsx
+// In src/App.tsx
+import { Admin, Resource } from "react-admin";
+import { dataProvider } from "./dataProvider";
+import {
+    Admin,
+    usePermissions,
+    ListGuesser,
+    Menu,
+    Layout,
+    Title,
+} from 'react-admin';
+import { canAccess, Permissions, Resource } from '@react-admin/ra-rbac';
+import { Card, CardContent } from '@mui/material';
+import InventoryIcon from '@mui/icons-material/Inventory';
+import ClassIcon from '@mui/icons-material/Class';
+import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
+
+const authProvider = () => ({
+    checkAuth: () => Promise.resolve(),
+    login: () => Promise.resolve(),
+    logout: () => Promise.resolve(),
+    checkError: () => Promise.resolve(),
+    getPermissions: () =>
+        promiseFor([{ action: 'list', resource: 'products' }]),
+});
+
+const MyDashboard = () => {
+    return (
+        <Card sx={{ marginTop: 5 }}>
+            <Title title="Welcome to the administration" />
+            <CardContent>Lorem ipsum sic dolor amet...</CardContent>
+        </Card>
+    );
+};
+
+const MyMenu = () => {
+    const { permissions } = usePermissions();
+    return (
+        <Menu>
+            <Menu.DashboardItem />
+            <Menu.Item
+                to="/categories"
+                primaryText="Categories"
+                leftIcon={<ClassIcon />}
+                disabled={
+                    !canAccess({
+                        permissions,
+                        resource: 'categories',
+                    })
+                }
+            />
+            <Menu.Item
+                to="/products"
+                primaryText="Products"
+                leftIcon={<InventoryIcon />}
+                disabled={
+                    !canAccess({
+                        permissions,
+                        resource: 'products',
+                    })
+                }
+            />
+            <Menu.Item
+                to="/commands"
+                primaryText="Commands"
+                leftIcon={<ShoppingCartCheckoutIcon />}
+                disabled={
+                    !canAccess({
+                        permissions,
+                        resource: 'commands',
+                    })
+                }
+            />
+        </Menu>
+    );
+};
+
+const MyLayout = props => <Layout {...props} menu={MyMenu} />;
+
+export const App = () => (
+    <Admin
+        authProvider={authProvider}
+        dataProvider={dataProvider}
+        layout={MyLayout}
+        dashboard={MyDashboard}
+    >
+        <Resource name="categories" list={ListGuesser} />
+        <Resource name="products" list={ListGuesser} />
+        <Resource name="commands" list={ListGuesser} />
+    </Admin>
+);
+```
+{% endraw %}

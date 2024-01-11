@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef } from 'react';
 import get from 'lodash/get';
 import isEqual from 'lodash/isEqual';
+import lodashDebounce from 'lodash/debounce';
 
 import { useSafeSetState, removeEmpty } from '../../util';
 import { useGetManyReference } from '../../dataProvider';
@@ -15,6 +16,7 @@ import { useResourceContext } from '../../core';
 export interface UseReferenceManyFieldControllerParams<
     RecordType extends RaRecord = RaRecord
 > {
+    debounce?: number;
     filter?: any;
     page?: number;
     perPage?: number;
@@ -61,6 +63,7 @@ export const useReferenceManyFieldController = <
     props: UseReferenceManyFieldControllerParams<RecordType>
 ): ListControllerResult<ReferenceRecordType> => {
     const {
+        debounce = 500,
         reference,
         record,
         target,
@@ -128,13 +131,28 @@ export const useReferenceManyFieldController = <
         },
         [setDisplayedFilters, setFilterValues]
     );
-    const setFilters = useCallback(
-        (filters, displayedFilters) => {
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const debouncedSetFilters = useCallback(
+        lodashDebounce((filters, displayedFilters) => {
             setFilterValues(removeEmpty(filters));
             setDisplayedFilters(displayedFilters);
             setPage(1);
-        },
+        }, debounce),
         [setDisplayedFilters, setFilterValues, setPage]
+    );
+
+    const setFilters = useCallback(
+        (filters, displayedFilters, debounce = true) => {
+            if (debounce) {
+                debouncedSetFilters(filters, displayedFilters);
+            } else {
+                setFilterValues(removeEmpty(filters));
+                setDisplayedFilters(displayedFilters);
+                setPage(1);
+            }
+        },
+        [setDisplayedFilters, setFilterValues, setPage, debouncedSetFilters]
     );
     // handle filter prop change
     useEffect(() => {

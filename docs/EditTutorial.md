@@ -562,11 +562,11 @@ Sometimes, you may want to alter the form values before sending them to the `dat
 
 In the following example, a create view for a Post displays a form with two submit buttons. Both buttons create a new record, but the 'save and notify' button should trigger an email to other admins on the server side. The `POST /posts` API route only sends the email when the request contains a special HTTP header.
 
-So the save button with 'save and notify' will *transform* the record before react-admin calls the `dataProvier.create()` method, adding a `notify` field:
+So the save button with 'save and notify' will *transform* the record before react-admin calls the `dataProvider.create()` method, adding a `notify` field:
 
 ```jsx
-const PostCreateToolbar = props => (
-    <Toolbar {...props}>
+const PostCreateToolbar = () => (
+    <Toolbar>
         <SaveButton />
         <SaveButton
             label="post.action.save_and_notify"
@@ -612,8 +612,8 @@ const dataProvider = {
 **Tip**: `<Edit>`'s transform prop function also get the `previousData` in its second argument:
 
 ```jsx
-const PostEditToolbar = props => (
-    <Toolbar {...props}>
+const PostEditToolbar = () => (
+    <Toolbar>
         <SaveButton />
         <SaveButton
             label="post.action.save_and_notify"
@@ -959,4 +959,3 @@ Users often need to edit data from several resources in the same form. React-adm
   <source src="./img/reference-many-input.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
-

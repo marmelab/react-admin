@@ -59,10 +59,10 @@ Additional props are passed to [react-hook-form's `useController` hook](https://
 ```jsx
 // in LatLongInput.js
 import TextField from '@mui/material/TextField';
-import { useInput, required } from 'react-admin';
+import { useInput, required, InputHelperText } from 'react-admin';
 
 const BoundedTextField = (props) => {
-    const { onChange, onBlur, ...rest } = props;
+    const { onChange, onBlur, label, helperText, ...rest } = props;
     const {
         field,
         fieldState: { isTouched, invalid, error },
@@ -73,20 +73,30 @@ const BoundedTextField = (props) => {
         // useInput will call the provided onChange and onBlur in addition to the default needed by react-hook-form.
         onChange,
         onBlur,
-        ...props,
+        ...rest,
     });
 
     return (
         <TextField
             {...field}
-            label={props.label}
+            label={label}
             error={(isTouched || isSubmitted) && invalid}
-            helperText={(isTouched || isSubmitted) && invalid ? error : ''}
+            helperText={helperText !== false || ((isTouched || isSubmitted) && invalid)
+                ? (
+                    <InputHelperText
+                        touched={isTouched || isSubmitted}
+                        error={error?.message}
+                        helperText={helperText}
+                    />
+                )
+                : ''
+            }
             required={isRequired}
             {...rest}
         />
     );
 };
+
 const LatLngInput = props => {
     const { source, ...rest } = props;
 
@@ -98,13 +108,6 @@ const LatLngInput = props => {
         </span>
     );
 };
-```
-
-**Reminder:** [react-hook-form's `formState` is wrapped with a Proxy](https://react-hook-form.com/docs/useformstate/#rules) to improve render performance and skip extra computation if specific state is not subscribed. So, make sure you deconstruct or read the `formState` before render in order to enable the subscription.
-
-```js
-const { isDirty } = useFormState(); // ✅
-const formState = useFormState(); // ❌ should deconstruct the formState      
 ```
 
 ## Usage with Material UI `<Select>`
@@ -154,9 +157,22 @@ const PersonEdit = () => (
 );
 ```
 
-**Reminder:** [react-hook-form's `formState` is wrapped with a Proxy](https://react-hook-form.com/docs/useformstate/#rules) to improve render performance and skip extra computation if specific state is not subscribed. So, make sure you deconstruct or read the `formState` before render in order to enable the subscription.
+**Tip**: Remember to use react-admin's `<InputHelperText>` component in custom inputs to properly translate and render messages and errors coming from `useInput()`.
+
+## Important note about formState
+
+[react-hook-form's `formState` is wrapped with a Proxy](https://react-hook-form.com/docs/useformstate/#rules) to improve render performance and skip extra computation if specific state is not subscribed. So, make sure you deconstruct or read the `formState` before render in order to enable the subscription.
 
 ```js
 const { isDirty } = useFormState(); // ✅
 const formState = useFormState(); // ❌ should deconstruct the formState      
+```
+
+This pattern should be followed when writing a custom input with `useInput()`.
+
+```jsx
+const { formState: { isSubmitted }} = useInput(props); // ✅
+
+const { formState } = useInput(props);
+const submitted = formState.isSubmitted; // ❌
 ```

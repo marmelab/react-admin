@@ -21,7 +21,7 @@ import * as React from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { MemoryRouter } from 'react-router';
 
-import { defaultTheme } from '../defaultTheme';
+import { defaultTheme } from '../theme/defaultTheme';
 import { Layout } from './Layout';
 import { Title } from './Title';
 

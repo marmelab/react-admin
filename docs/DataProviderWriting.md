@@ -305,7 +305,7 @@ interface DeleteParams {
 interface DeleteResult {
     data: Record;
 }
-function delete(resource: string, params: DeleteParams): Promise<DeleteResult>
+function _delete(resource: string, params: DeleteParams): Promise<DeleteResult>
 ```
 
 **Example**
@@ -642,7 +642,7 @@ export default {
             method: 'POST',
             body: JSON.stringify(params.data),
         })
-        return { data: { ...params.data, id: json.id } };
+        return { data: json };
     },
 
     update: async (resource, params) => {

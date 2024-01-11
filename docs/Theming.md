@@ -119,11 +119,41 @@ const App = () => (
 );
 ```
 
+React-admin comes with 4 built-in themes: [Default](./AppTheme.md#default), [Nano](./AppTheme.md#nano), [Radiant](./AppTheme.md#radiant), and [House](./AppTheme.md#house). The [e-commerce demo](https://marmelab.com/react-admin-demo/) contains a theme switcher, so you can test them in a real application. 
+
+<video controls autoplay playsinline muted loop>
+  <source src="./img/demo-themes.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
 The application theme lets you customize color, typography, spacing, and component defaults. Check the [dedicated Application Theme chapter](./AppTheme.md) for more information.
 
 ## Customizing The Page Layout
 
-React-admin provides alternative layout components. For instance, you can replace the default `<Layout>`, which uses a sidebar for navigation, with a [`<ContainerLayout>`](./ContainerLayout.md), which uses a top bar instead.
+React-admin provides 3 built-in layout components, and you can easily create your own.
+
+<figure>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1177 290" preserveAspectRatio="xMinYMin meet">
+        <image width="1177" height="290" xlink:href="./img/layouts.png" />
+        <g opacity="0">
+            <a href="./Layout.html" aria-label="Layout">
+                <rect x="0" y="0" width="348" height="290"/>
+            </a>
+        </g>
+        <g opacity="0">
+            <a href="./ContainerLayout.html" aria-label="ContainerLayout">
+                <rect x="373" y="0" width="408" height="290"/>
+            </a>
+        </g>
+        <g opacity="0">
+            <a href="./SolarLayout.html" aria-label="SolarLayout">
+                <rect x="801" y="0" width="376" height="290"/>
+            </a>
+        </g>
+    </svg>
+</figure>
+
+For instance, you can replace the default `<Layout>`, which uses a sidebar for navigation, with a [`<ContainerLayout>`](./ContainerLayout.md), which uses a top bar instead.
 
 ![Container layout](https://marmelab.com/ra-enterprise/modules/assets/ra-navigation/latest/container-layout.png)
 

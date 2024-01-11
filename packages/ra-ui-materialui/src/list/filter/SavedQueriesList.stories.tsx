@@ -12,6 +12,7 @@ import {
     DateField,
     FilterList,
     FilterListItem,
+    memoryStore,
 } from 'react-admin';
 import { Card, CardContent, styled } from '@mui/material';
 import BusinessIcon from '@mui/icons-material/Business';
@@ -202,6 +203,7 @@ const darkTheme: RaThemeOptions = {
 
 export const WithThemeAndLocale = () => (
     <Admin
+        store={memoryStore()}
         history={createMemoryHistory()}
         i18nProvider={i18nProvider}
         dataProvider={dataProvider}

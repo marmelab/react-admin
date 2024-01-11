@@ -12,7 +12,7 @@ const ReviewListMobile = () => {
         return null;
     }
     return (
-        <List sx={{ width: '100vw' }}>
+        <List sx={{ width: 'calc(100vw - 33px)' }}>
             {data.map(review => (
                 <RecordContextProvider value={review} key={review.id}>
                     <ReviewItem />

@@ -4,8 +4,8 @@ import { render, screen } from '@testing-library/react';
 
 import {
     Basic,
-    CustomLabel,
-    ExplicitLabel,
+    LabelIntrospection,
+    Label,
     NoLabel,
     NonField,
     NoDoubleLabel,
@@ -23,12 +23,12 @@ describe('<Labeled />', () => {
     });
 
     it('should use custom label in child', () => {
-        render(<CustomLabel />);
+        render(<LabelIntrospection />);
         screen.getByText('My custom Title');
     });
 
     it('should use explicit label prop', () => {
-        render(<ExplicitLabel />);
+        render(<Label />);
         screen.getByText('My custom Title');
     });
 

@@ -5,12 +5,13 @@ import {
     ResourceContextProvider,
     testDataProvider,
 } from 'ra-core';
+import { Stack, ThemeProvider, createTheme } from '@mui/material';
+import { MemoryRouter } from 'react-router-dom';
 
 import { AdminContext } from '../AdminContext';
 import { Edit } from '../detail';
 import { NumberInput, TextInput } from '../input';
 import { SimpleForm } from './SimpleForm';
-import { Stack } from '@mui/material';
 
 export default { title: 'ra-ui-materialui/forms/SimpleForm' };
 
@@ -33,7 +34,7 @@ const Wrapper = ({
         i18nProvider={i18nProvider}
         dataProvider={testDataProvider({
             getOne: () => Promise.resolve({ data }),
-        })}
+        } as any)}
     >
         <ResourceContextProvider value="books">
             <Edit id={1} sx={{ width: 600 }}>
@@ -169,3 +170,22 @@ export const InputBasedValidation = () => (
         </SimpleForm>
     </Wrapper>
 );
+
+export const Controlled = () => {
+    const [record, setRecord] = React.useState({} as any);
+    return (
+        <MemoryRouter>
+            <ThemeProvider theme={createTheme()}>
+                <SimpleForm
+                    resource="books"
+                    onSubmit={values => setRecord(values)}
+                >
+                    <TextInput source="title" fullWidth />
+                    <TextInput source="author" />
+                    <NumberInput source="year" />
+                </SimpleForm>
+                <div>Record values: {JSON.stringify(record)}</div>
+            </ThemeProvider>
+        </MemoryRouter>
+    );
+};

@@ -28,6 +28,7 @@ export const BulkDeleteWithConfirmButton = (
     const {
         confirmTitle = 'ra.message.bulk_delete_title',
         confirmContent = 'ra.message.bulk_delete_content',
+        confirmColor = 'primary',
         icon = defaultIcon,
         label = 'ra.action.delete',
         mutationMode = 'pessimistic',
@@ -111,6 +112,7 @@ export const BulkDeleteWithConfirmButton = (
                 loading={isLoading}
                 title={confirmTitle}
                 content={confirmContent}
+                confirmColor={confirmColor}
                 translateOptions={{
                     smart_count: selectedIds.length,
                     name: translate(`resources.${resource}.forcedCaseName`, {
@@ -152,6 +154,7 @@ export interface BulkDeleteWithConfirmButtonProps<
         ButtonProps {
     confirmContent?: React.ReactNode;
     confirmTitle?: React.ReactNode;
+    confirmColor?: 'primary' | 'warning';
     icon?: ReactElement;
     mutationMode: MutationMode;
     mutationOptions?: UseMutationOptions<
@@ -182,6 +185,7 @@ const defaultIcon = <ActionDelete />;
 BulkDeleteWithConfirmButton.propTypes = {
     confirmTitle: PropTypes.node,
     confirmContent: PropTypes.node,
+    confirmColor: PropTypes.string,
     icon: PropTypes.element,
     label: PropTypes.string,
     mutationMode: PropTypes.oneOf(['pessimistic', 'optimistic', 'undoable']),

@@ -530,12 +530,36 @@ The [Translation Documentation](./Translation.md) details this process.
 
 ## `layout`
 
-If you want to deeply customize the app header, the menu, or the notifications, the best way is to provide a custom layout component. It must contain a `{children}` placeholder, where react-admin will render the resources. 
+If you want to deeply customize the app header, the menu, or the notifications, the best way is to provide a custom layout component.
 
 React-admin offers predefined layouts for you to use:
 
+<figure>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1177 290" preserveAspectRatio="xMinYMin meet">
+        <image width="1177" height="290" xlink:href="./img/layouts.png" />
+        <g opacity="0">
+            <a href="./Layout.html" aria-label="Layout">
+                <rect x="0" y="0" width="348" height="290"/>
+            </a>
+        </g>
+        <g opacity="0">
+            <a href="./ContainerLayout.html" aria-label="ContainerLayout">
+                <rect x="373" y="0" width="408" height="290"/>
+            </a>
+        </g>
+        <g opacity="0">
+            <a href="./SolarLayout.html" aria-label="SolarLayout">
+                <rect x="801" y="0" width="376" height="290"/>
+            </a>
+        </g>
+    </svg>
+</figure>
+
 - [`<Layout>`](./Layout.md): The default layout. It renders a top app bar and the navigation menu in a side bar.
-- [`<ContainerLayout>`](./ContainerLayout.md): A centered layout with horizontal navigation.
+- [`<ContainerLayout>`](./ContainerLayout.md) is centered layout with horizontal navigation.
+- [`<SolarLayout>`](./SolarLayout.md) is a layout with a small icon sidebar, no top bar, and a full-width content area.
+
+For instance, here is how to replace the default `Layout` with the `ContainerLayout`:
 
 ```tsx
 import { Admin } from 'react-admin';
@@ -548,14 +572,14 @@ export const App = () => (
 );
 ```
 
-These layouts can be customized by passing props to them. For instance, you can pass a custom `appBar` prop to `<Layout>` to override the default app bar:
+Layout components can be customized via props. For instance, you can pass a custom `menu` prop to `<Layout>` to override the default menu:
 
 ```tsx
 // in src/MyLayout.js
 import { Layout } from 'react-admin';
-import MyAppBar from './MyAppBar';
+import MyMenu from './MyMenu';
 
-export const MyLayout = (props) => <Layout {...props} appBar={MyAppBar} />;
+export const MyLayout = (props) => <Layout {...props} menu={MyMenu} />;
 ```
 
 Then, pass it to the `<Admin>` component as the `layout` prop:
@@ -572,9 +596,9 @@ const App = () => (
 );
 ```
 
-Refer to each component documentation to understand the props it accepts.
+Refer to each layout component documentation to understand the props it accepts.
 
-Finally, you can also pass a custom component as the `layout` prop. It must contain a `{children}` placeholder, where react-admin will render the content. Use the [default `<Layout>`](https://github.com/marmelab/react-admin/blob/master/packages/ra-ui-materialui/src/layout/Layout.tsx) as a starting point, and check [the custom layout documentation](./Layout.md#writing-a-layout-from-scratch) for examples.
+Finally, you can also pass a custom component as the `layout` prop. It must contain a `{children}` placeholder, where react-admin will render the page content. Check [the custom layout documentation](./Layout.md#writing-a-layout-from-scratch) for examples, and use the [default `<Layout>`](https://github.com/marmelab/react-admin/blob/master/packages/ra-ui-materialui/src/layout/Layout.tsx) as a starting point.
 
 ## `loginPage`
 
@@ -605,7 +629,8 @@ You can also disable the `/login` route completely by passing `false` to this pr
 const authProvider = {
     // ...
     async checkAuth() {
-        if (/* not authenticated */) {
+        // ...
+        if (!authenticated) {
             throw { redirectTo: '/no-access' };
         }
     },
@@ -658,13 +683,14 @@ React-admin uses [react-query](https://react-query-v3.tanstack.com/) to fetch, c
 * Query results that are no longer used in the current page are labeled as "inactive" and remain in the cache in case they are used again at a later time.
 * By default, "inactive" queries are garbage collected after 5 minutes.
 * Queries that fail are silently retried 3 times, with exponential backoff delay before capturing and displaying an error to the UI.
-* Query results by default are structurally shared to detect if data has actually changed and if not, the data reference remains unchanged to better help with value stabilization with regards to `useMemo` and `useCallback`. 
+* Query results by default are structurally shared to detect if data have actually changed and if not, the data reference remains unchanged to better help with value stabilization with regards to `useMemo` and `useCallback`. 
 
 If you want to override the react-query default query and mutation default options, or use a specific client or mutation cache, you can create your own `QueryClient` instance and pass it to the `<Admin queryClient>` prop:
 
 ```tsx
 import { Admin } from 'react-admin';
 import { QueryClient } from 'react-query';
+import { dataProvider } from './dataProvider';
 
 const queryClient = new QueryClient({
     defaultOptions: {
@@ -679,7 +705,7 @@ const queryClient = new QueryClient({
 });
 
 const App = () => (
-    <Admin queryClient={queryClient} dataProvider={...}>
+    <Admin queryClient={queryClient} dataProvider={dataProvider}>
         ...
     </Admin>
 );
@@ -795,28 +821,31 @@ Check the [Preferences documentation](./Store.md) for more details.
 
 Material UI supports [theming](https://mui.com/material-ui/customization/theming/). This lets you customize the look and feel of an admin by overriding fonts, colors, and spacing. You can provide a custom Material UI theme by using the `theme` prop.
 
-For instance, to use a dark theme by default:
+React-admin comes with 4 built-in themes: [Default](./AppTheme.md#default), [Nano](./AppTheme.md#nano), [Radiant](./AppTheme.md#radiant), and [House](./AppTheme.md#house). The [e-commerce demo](https://marmelab.com/react-admin-demo/) contains a theme switcher, so you can test them in a real application. 
+
+<video controls autoplay playsinline muted loop>
+  <source src="./img/demo-themes.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
+For instance, to use the Nano theme instead of the default theme:
 
 ```tsx
-import { defaultTheme } from 'react-admin';
-
-const theme = {
-    ...defaultTheme,
-    palette: { mode: 'dark' },
-};
+import { Admin, nanoLightTheme } from 'react-admin';
+import { dataProvider } from './dataProvider';
 
 const App = () => (
-    <Admin theme={theme} dataProvider={simpleRestProvider('http://path.to.my.api')}>
+    <Admin theme={nanoLightTheme} dataProvider={dataProvider}>
         // ...
     </Admin>
 );
 ```
 
-![Dark theme](./img/dark-theme.png)
+![Nano light theme](./img/nanoLightTheme1.jpg)
+
+You can also [write your own theme](./AppTheme.md#writing-a-custom-theme) to fit your company branding. For more details on predefined and custom themes, refer to [the Application Theme chapter](./AppTheme.md).
 
 If you want to support both a light and a dark theme, check out [the `<Admin darkTheme>` prop](#darktheme). 
-
-For more details on predefined and custom themes, refer to [the Application Theme chapter](./AppTheme.md).
 
 ## `title`
 
@@ -869,10 +898,11 @@ But you may want to use another routing strategy, e.g. to allow server-side rend
 ```tsx
 import { BrowserRouter } from 'react-router-dom';
 import { Admin, Resource } from 'react-admin';
+import { dataProvider } from './dataProvider';
 
 const App = () => (
     <BrowserRouter>
-        <Admin dataProvider={...}>
+        <Admin dataProvider={dataProvider}>
             <Resource name="posts" />
         </Admin>
     </BrowserRouter>
@@ -888,10 +918,11 @@ However, if you serve your admin from a sub path AND use another Router (like [`
 ```tsx
 import { Admin, Resource } from 'react-admin';
 import { BrowserRouter } from 'react-router-dom';
+import { dataProvider } from './dataProvider';
 
 const App = () => (
     <BrowserRouter>
-        <Admin basename="/admin" dataProvider={...}>
+        <Admin basename="/admin" dataProvider={dataProvider}>
             <Resource name="posts" />
         </Admin>
     </BrowserRouter>
@@ -928,9 +959,11 @@ React-admin will have to prefix all the internal links with `/admin`. Use the `<
 ```tsx
 // in src/StoreAdmin.js
 import { Admin, Resource } from 'react-admin';
+import { dataProvider } from './dataProvider';
+import posts from './posts';
 
 export const StoreAdmin = () => (
-    <Admin basename="/admin" dataProvider={...}>
+    <Admin basename="/admin" dataProvider={dataProvider}>
         <Resource name="posts" {...posts} />
     </Admin>
 );

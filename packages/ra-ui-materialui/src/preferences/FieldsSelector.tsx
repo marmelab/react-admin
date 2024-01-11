@@ -87,18 +87,26 @@ export const FieldsSelector = ({
 
     return (
         <Box pt={0.5}>
-            {availableFields.map(field => (
-                <FieldToggle
-                    key={field.index}
-                    source={field.source}
-                    label={field.label}
-                    index={field.index}
-                    selected={fields.includes(field.index)}
-                    onToggle={handleToggle}
-                    onMove={handleMove}
-                />
-            ))}
-            <Box display="flex" justifyContent="space-between" mx={-0.5} mt={1}>
+            <Box component="ul" sx={{ paddingInlineStart: 0, m: 0 }}>
+                {availableFields.map(field => (
+                    <FieldToggle
+                        key={field.index}
+                        source={field.source}
+                        label={field.label}
+                        index={field.index}
+                        selected={fields.includes(field.index)}
+                        onToggle={handleToggle}
+                        onMove={handleMove}
+                    />
+                ))}
+            </Box>
+            <Box
+                onDrop={e => e.preventDefault()}
+                display="flex"
+                justifyContent="space-between"
+                mx={-0.5}
+                mt={1}
+            >
                 <Button size="small" onClick={handleHideAll}>
                     {translate('ra.inspector.hideAll', {
                         _: 'Hide All',

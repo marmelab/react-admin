@@ -25,25 +25,25 @@ import { FilterButton } from './filter';
  * use it in the `actions` prop to pass a custom component.
  *
  * @example
- *     import { cloneElement } from 'react';
- *     import Button from '@mui/material/Button';
- *     import { TopToolbar, List, CreateButton, ExportButton } from 'react-admin';
+ * import { cloneElement } from 'react';
+ * import Button from '@mui/material/Button';
+ * import { TopToolbar, List, CreateButton, ExportButton } from 'react-admin';
  *
- *     const PostListActions = ({ filters }) => (
- *         <TopToolbar>
- *             { cloneElement(filters, { context: 'button' }) }
- *             <CreateButton/>
- *             <ExportButton/>
- *             // Add your custom actions here //
- *             <Button onClick={customAction}>Custom Action</Button>
- *         </TopToolbar>
- *     );
+ * const PostListActions = ({ filters }) => (
+ *     <TopToolbar>
+ *         { cloneElement(filters, { context: 'button' }) }
+ *         <CreateButton/>
+ *         <ExportButton/>
+ *         // Add your custom actions here //
+ *         <Button onClick={customAction}>Custom Action</Button>
+ *     </TopToolbar>
+ * );
  *
- *     export const PostList = (props) => (
- *         <List actions={<PostListActions />} {...props}>
- *             ...
- *         </List>
- *     );
+ * export const PostList = () => (
+ *     <List actions={<PostListActions />}>
+ *         ...
+ *     </List>
+ * );
  */
 export const ListActions = (props: ListActionsProps) => {
     const {

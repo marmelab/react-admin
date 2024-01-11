@@ -9,7 +9,7 @@ import en from 'ra-language-english';
 import { Inspector, InspectorButton } from '../preferences';
 import { NumberInput, TextInput } from '../input';
 import { SimpleFormConfigurable } from './SimpleFormConfigurable';
-import { defaultTheme } from '../defaultTheme';
+import { defaultTheme } from '../theme/defaultTheme';
 
 export default { title: 'ra-ui-materialui/forms/SimpleFormConfigurable' };
 

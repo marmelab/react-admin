@@ -88,7 +88,8 @@ const ContactListContent = () => {
                                             <TextField source="name" />
                                         </ReferenceField>{' '}
                                         {contact.nb_notes &&
-                                            `- ${contact.nb_notes} notes `}
+                                            `- ${contact.nb_notes} notes`}
+                                        &nbsp;&nbsp;
                                         <TagsList />
                                     </>
                                 }

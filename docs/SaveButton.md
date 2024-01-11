@@ -18,14 +18,16 @@ Create a `<SaveButton>` with custom UI options, or custom side effects, then use
 ```jsx
 import { SaveButton, Toolbar, Edit, SimpleForm, useNotify, useRedirect } from 'react-admin';
 
-const PostSaveButton = props => {
+const PostSaveButton = () => {
     const notify = useNotify();
     const redirect = useRedirect();
-    const onSuccess = (response) => {
-        notify(`Post "${response.data.title}" saved!`);
+    const onSuccess = data => {
+        notify(`Post "${data.title}" saved!`);
         redirect('/posts');
     };
-    return <SaveButton {...props} mutationOptions={{ onSuccess }} />;
+    return (
+        <SaveButton type="button" mutationOptions={{ onSuccess }} />
+    );
 };
 
 const PostEditToolbar = () => (
@@ -43,6 +45,8 @@ const PostEdit = () => (
     </Edit>
 );
 ```
+
+## Props
 
 `<SaveButton>` accepts the following props:
 
@@ -65,7 +69,7 @@ By default, `<SaveButton>` renders a disk icon. You can can pass another icon el
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import { SaveButton } from 'react-admin';
 
-const MySaveButton = props => <SaveButton {...props} icon={<AddBoxIcon />} />;
+const MySaveButton = () => <SaveButton icon={<AddBoxIcon />} />;
 ```
 
 ## `label`

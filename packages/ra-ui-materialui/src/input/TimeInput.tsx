@@ -36,8 +36,8 @@ const parseTime = (value: string) => {
  * @example
  * import { Edit, SimpleForm, TimeInput } from 'react-admin';
  *
- * const PostEdit = (props) => (
- *     <Edit {...props}>
+ * const PostEdit = () => (
+ *     <Edit>
  *         <SimpleForm>
  *             <TimeInput source="published_at" />
  *         </SimpleForm>

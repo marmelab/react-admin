@@ -7,7 +7,7 @@ title: "RBAC"
 
 React-admin Enterprise Edition contains [the ra-rbac module](https://marmelab.com/ra-enterprise/modules/ra-rbac)<img class="icon" src="./img/premium.svg" />, which adds fine-grained permissions to your admin. This module extends the `authProvider` and adds replacement for many react-admin components that use these permissions.
 
-<video controls="controls" style="max-width: 100%">
+<video controls="controls" style="max-width: 96%">
     <source src="./img/ra-rbac.mp4" type="video/mp4" />
 </video>
 
@@ -80,15 +80,15 @@ React-admin treats permissions in an optimistic way: While it fetches permission
 
 Ra-rbac takes the opposite strategy: while permissions are loading, react-admin doesn't render the components that require permissions, assuming that these components are restricted by default.
 
-It's only when ra-rbac is sure that the user has the right permissions that it renders the content. 
+It's only when ra-rbac is sure that the user has the right permissions that it renders the content.
 
 ### Principle Of Least Privilege
 
-A user with no permissions has access to nothing. By default, any restricted action is accessible to nobody. This is also called an "implicit deny". 
+A user with no permissions has access to nothing. By default, any restricted action is accessible to nobody. This is also called an "implicit deny".
 
 To put it otherwise, only users with the right permissions can execute an action on a resource and a record.
 
-Permissions are additive, each permission granting access to a subset of the application. 
+Permissions are additive, each permission granting access to a subset of the application.
 
 ### Roles And Permissions
 
@@ -199,11 +199,11 @@ const authProvider = {
 };
 ```
 
-For every restricted resource, ra-rbac calls `authProvider.getPermissions()` to get the permissions. 
+For every restricted resource, ra-rbac calls `authProvider.getPermissions()` to get the permissions.
 
 In practice, most auth providers get the permissions as a response from the login query, and store these permissions in memory or localStorage. When a component calls `authProvider.getPermissions()`, the auth provider only needs to read from that local copy of the permissions.
 
-`authProvider.getPermissions()` doesn't return roles - only permissions. Usually, the role definitions are committed with the application code, as a constant. The roles of the current user are fetched at login, and the permissions are computed from the roles and the role definitions. 
+`authProvider.getPermissions()` doesn't return roles - only permissions. Usually, the role definitions are committed with the application code, as a constant. The roles of the current user are fetched at login, and the permissions are computed from the roles and the role definitions.
 
 You can use the `getPermissionsFromRoles` helper in the `authProvider` to compute the permissions that the user has based on their permissions. This function takes an object as argument with the following fields:
 
@@ -318,9 +318,9 @@ const authProvider = {
         // 'products.description' is missing
         { action: 'write', resource: 'products.thumbnail' },
         // 'products.image' is missing
-        // note that the panel with the name 'description' will be displayed 
+        // note that the panel with the name 'description' will be displayed
         { action: 'write', resource: 'products.panel.description' },
-        // note that the panel with the name 'images' will be displayed 
+        // note that the panel with the name 'images' will be displayed
         { action: 'write', resource: 'products.panel.images' },
         // 'products.panel.stock' is missing
     ]),
@@ -352,7 +352,7 @@ const ProductEdit = () => (
 ```
 {% endraw %}
 
-**Tip**: You must add a `name` prop to the `<AccordionForm.Panel>` so you can reference it in the permissions.  
+**Tip**: You must add a `name` prop to the `<AccordionForm.Panel>` so you can reference it in the permissions.
 Then, to allow users to access a particular `<AccordionForm.Panel>`, update the permissions definition as follows: `{ action: 'write', resource: '{RESOURCE}.panel.{NAME}' }`, where `RESOURCE` is the resource name, and `NAME` the name you provided to the `<FormTab>`.
 
 For instance, to allow users access to the following tab `<AccordionForm.Panel label="Description" name="description">` in `products` resource, add this line in permissions: `{ action: 'write', resource: 'products.panel.description' }`.
@@ -378,9 +378,9 @@ const authProvider = {
         // 'products.description' is missing
         { action: 'write', resource: 'products.thumbnail' },
         // 'products.image' is missing
-        // note that the section with the name 'description' will be displayed 
+        // note that the section with the name 'description' will be displayed
         { action: 'write', resource: 'products.section.description' },
-        // note that the section with the name 'images' will be displayed 
+        // note that the section with the name 'images' will be displayed
         { action: 'write', resource: 'products.section.images' },
         // 'products.section.stock' is missing
     ]),
@@ -412,7 +412,7 @@ const ProductEdit = () => (
 {% endraw %}
 
 
-Add a `name` prop to the `<AccordionSection>` so you can reference it in the permissions.  
+Add a `name` prop to the `<AccordionSection>` so you can reference it in the permissions.
 Then, to allow users to access a particular `<AccordionSection>`, update the permissions definition as follows: `{ action: 'write', resource: '{RESOURCE}.section.{NAME}' }`, where `RESOURCE` is the resource name, and `NAME` the name you provided to the `<AccordionSection>`.
 
 For instance, to allow users access to the following tab `<AccordionSection label="Description" name="description">` in `products` resource, add this line in permissions: `{ action: 'write', resource: 'products.section.description' }`.
@@ -608,7 +608,7 @@ const ProductEdit = () => (
 
 {% endraw %}
 
-**Tip**: You must add a `name` prop to the `<LongForm.Section>` so you can reference it in the permissions.  
+**Tip**: You must add a `name` prop to the `<LongForm.Section>` so you can reference it in the permissions.
 Then, to allow users to access a particular `<LongForm.Section>`, update the permissions definition as follows: `{ action: 'write', resource: '{RESOURCE}.section.{NAME}' }`, where `RESOURCE` is the resource name, and `NAME` the name you provided to the `<LongForm.Section>`.
 
 For instance, to allow users access to the following tab `<LongForm.Section label="Description" name="description">` in `products` resource, add this line in permissions: `{ action: 'write', resource: 'products.section.description' }`.
@@ -656,7 +656,7 @@ const App = () => (
 
 To restrict access to Create, Edit, List and Show views for your resources, use the `<Resource>` component from ra-rbac rather than the one from react-admin:
 
-```jsx  
+```jsx
 import { Admin } from 'react-admin';
 import { Resource } from '@react-admin/ra-rbac';
 import { UserList, UserEdit, UserShow, UserCreate } from './users';
@@ -850,93 +850,82 @@ const ProductShow = () => (
 );
 ```
 
-## `<Tab>`
+## `<TabbedShowLayout>`
 
-Replacement for the `<TabbedShowLayout.Tab>` that only renders a tab if the user has the right permissions. `<Tab>` also only renders the child fields for which the user has the 'read' permissions.
+`<TabbedShowLayout>` shows only the tabs for which users have read permissions, using the `[resource].tab.[tabName]` string as resource identifier. `<TabbedShowLayout.Tab>` shows only the child fields for which users have the read permissions, using the `[resource].[source]` string as resource identifier.
 
 ```jsx
-import { Show, TabbedShowLayout, TextField } from 'react-admin';
-import { Tab } from '@react-admin/ra-rbac';
+import { Show, TextField } from 'react-admin';
+import { TabbedShowLayout } from '@react-admin/ra-rbac';
 
 const authProvider = {
     // ...
-    getPermissions: () => Promise.resolve({
-        permissions: [
-            { action: ['list', 'show'], resource: 'products' },
-            { action: 'read', resource: 'products.reference' },
-            { action: 'read', resource: 'products.width' },
-            { action: 'read', resource: 'products.height' },
-            // 'products.description' is missing
-            { action: 'read', resource: 'products.thumbnail' },
-            // 'products.image' is missing
-            // note that the tab with the name 'description' will be displayed 
-            { action: 'read', resource: 'products.tab.description' },
-            // note that the tab with the name 'images' will be displayed 
-            { action: 'read', resource: 'products.tab.images' },
-            // 'products.tab.stock' is missing
-        ],
-    }),
+    getPermissions: () => Promise.resolve([
+        // crud
+        { action: ['list', 'show'], resource: 'products' },
+        // tabs ('products.tab.stock' is missing)
+        { action: 'read', resource: 'products.tab.description' },
+        { action: 'read', resource: 'products.tab.images' },
+        // fields ('products.description' and 'products.image' are missing)
+        { action: 'read', resource: 'products.reference' },
+        { action: 'read', resource: 'products.width' },
+        { action: 'read', resource: 'products.height' },
+        { action: 'read', resource: 'products.thumbnail' },
+    ]),
 };
 
 const ProductShow = () => (
-   <Show>
-       <TabbedShowLayout>
-           <Tab label="Description" name="description">
-               <TextField source="reference" />
-               <TextField source="width" />
-               <TextField source="height" />
-               {/* Not displayed */}
-               <TextField source="description" />
-           </Tab>
-           <Tab label="Images" name="images">
-               <TextField source="image" />
-               {/* Not displayed */}
-               <TextField source="thumbnail" />
-           </Tab>
-           {/* Not displayed */}
-           <Tab label="Stock" name="stock">
-               <TextField source="stock" />
-           </Tab>
-       </TabbedShowLayout>
-   </Show>
+    <Show>
+        <TabbedShowLayout>
+            <TabbedShowLayout.Tab label="Description" name="description">
+                <TextField source="reference" />
+                <TextField source="width" />
+                <TextField source="height" />
+                {/* the description field is not displayed */}
+                <TextField source="description" />
+            </TabbedShowLayout.Tab>
+            {/* the stock tab is not displayed */}
+            <TabbedShowLayout.Tab label="Stock" name="stock">
+                <TextField source="stock" />
+            </TabbedShowLayout.Tab>
+            <TabbedShowLayout.Tab label="Images" name="images">
+                {/* the images field is not displayed */}
+                <TextField source="image" />
+                <TextField source="thumbnail" />
+            </TabbedShowLayout.Tab>
+        </TabbedShowLayout>
+    </Show>
 );
 ```
 
-**Tip**: You must add a `name` prop to the `<Tab>` so you can reference it in the permissions.  
-Then, to allow users to access a particular `<Tab>`, update the permissions definition as follows: `{ action: 'read', resource: '{RESOURCE}.tab.{NAME}' }`, where `RESOURCE` is the resource name, and `NAME` the name you provided to the `<Tab>`.
+You must add a `name` prop to the `<TabbedShowLayout.Tab>` so you can reference it in the permissions.
+Then, to allow users to access a particular `<TabbedShowLayout.Tab>`, update the permissions definition as follows: `{ action: 'read', resource: '{RESOURCE}.tab.{NAME}' }`, where `RESOURCE` is the resource name, and `NAME` the name you provided to the `<TabbedShowLayout.Tab>`.
 
-For instance, to allow users access to the following tab `<Tab label="Description" name="description">` in `products` resource, add this line in permissions: `{ action: 'read', resource: 'products.tab.description' }`. 
+For instance, to allow users access to the following tab `<TabbedShowLayout.Tab label="description">` in `products` resource, add this line in permissions: `{ action: 'read', resource: 'products.tab.description' }`.
 
 ## `<TabbedForm>`
 
-Alternative to react-admin's `<TabbedForm>` that adds RBAC control to the inputs and the delete button. `<TabbedForm.FormTab>` renders inputs based on permissions.
+`<TabbedForm>` shows only the tabs for which users have write permissions, using the `[resource].tab.[tabName]` string as resource identifier. It also renders the delete button only if the user has a permission for the `delete` action in the current resource. `<TabbedForm.Tab>` shows only the child inputs for which users have the write permissions, using the `[resource].[source]` string as resource identifier.
 
-```jsx
+
+```tsx
 import { Edit, TextInput } from 'react-admin';
 import { TabbedForm } from '@react-admin/ra-rbac';
 
 const authProvider = {
-    checkAuth: () => Promise.resolve(),
-    login: () => Promise.resolve(),
-    logout: () => Promise.resolve(),
-    checkError: () => Promise.resolve(),
-    getPermissions: () =>Promise.resolve({
-        permissions: [
-            // 'delete' is missing
-            { action: ['list', 'edit'], resource: 'products' },
-            { action: 'write', resource: 'products.reference' },
-            { action: 'write', resource: 'products.width' },
-            { action: 'write', resource: 'products.height' },
-            // 'products.description' is missing
-            { action: 'write', resource: 'products.thumbnail' },
-            // 'products.image' is missing
-            // note that the tab with the name 'description' will be displayed 
-            { action: 'write', resource: 'products.tab.description' },
-            // note that the tab with the name 'images' will be displayed 
-            { action: 'write', resource: 'products.tab.images' },
-            // 'products.tab.stock' is missing
-        ],
-    }),
+    // ...
+    getPermissions: () => Promise.resolve([
+        // crud (the delete action is missing)
+        { action: ['list', 'edit'], resource: 'products' },
+        // tabs ('products.tab.stock' is missing)
+        { action: 'write', resource: 'products.tab.description' },
+        { action: 'write', resource: 'products.tab.images' },
+        // fields ('products.description' and 'products.image' are missing)
+        { action: 'write', resource: 'products.reference' },
+        { action: 'write', resource: 'products.width' },
+        { action: 'write', resource: 'products.height' },
+        { action: 'write', resource: 'products.thumbnail' },
+    ]),
 };
 
 const ProductEdit = () => (
@@ -946,77 +935,27 @@ const ProductEdit = () => (
                 <TextInput source="reference" />
                 <TextInput source="width" />
                 <TextInput source="height" />
-                {/* not displayed */}
+                {/* the description input is not displayed */}
                 <TextInput source="description" />
             </TabbedForm.Tab>
-            <TabbedForm.Tab label="Images" name="images">
-                {/* not displayed */}
-                <TextInput source="image" />
-                <TextInput source="thumbnail" />
-            </TabbedForm.Tab>
-            {/* not displayed */}
+            {/* the stock tab is not displayed */}
             <TabbedForm.Tab label="Stock" name="stock">
                 <TextInput source="stock" />
             </TabbedForm.Tab>
-            {/*} delete button not displayed */}
+            <TabbedForm.Tab label="Images" name="images">
+                {/* the images input is not displayed */}
+                <TextInput source="image" />
+                <TextInput source="thumbnail" />
+            </TabbedForm.Tab>
+            {/* the delete button is not displayed */}
         </TabbedForm>
     </Edit>
 );
 ```
 
-**Tip**: You must add a `name` prop to the `<TabbedForm.Tab>` so you can reference it in the permissions. Then, to allow users to access a particular `<TabbedForm.Tab>`, update the permissions definition as follows: `{ action: 'write', resource: '{RESOURCE}.tab.{NAME}' }`, where `RESOURCE` is the resource name, and `NAME` the name you provided to the `<TabbedForm.Tab>`.
+You must add a `name` prop to the `<TabbedForm.Tab>` so you can reference it in the permissions. Then, to allow users to access a particular `<TabbedForm.Tab>`, update the permissions definition as follows: `{ action: 'write', resource: '{RESOURCE}.tab.{NAME}' }`, where `RESOURCE` is the resource name, and `NAME` the name you provided to the `<TabbedForm.Tab>`.
 
 For instance, to allow users access to the following tab `<TabbedForm.Tab label="Description" name="description">` in `products` resource, add this line in permissions: `{ action: 'write', resource: 'products.tab.description' }`.
-
-`<TabbedForm.Tab>` only renders the child inputs for which the user has the 'write' permissions.
-
-```jsx
-import { Edit, TabbedForm, TextInput } from 'react-admin';
-import { TabbedForm } from '@react-admin/ra-rbac';
-
-const authProvider = {
-    // ...
-    getPermissions: () => Promise.resolve({
-        permissions: [
-            { action: ['list', 'edit'], resource: 'products' },
-            { action: 'write', resource: 'products.reference' },
-            { action: 'write', resource: 'products.width' },
-            { action: 'write', resource: 'products.height' },
-            // 'products.description' is missing
-            { action: 'write', resource: 'products.thumbnail' },
-            // 'products.image' is missing
-            // note that the tab with the name 'description' will be displayed 
-            { action: 'write', resource: 'products.tab.description' },
-            // note that the tab with the name 'images' will be displayed 
-            { action: 'write', resource: 'products.tab.images' },
-            // 'products.tab.stock' is missing
-        ],
-    }),
-};
-
-const ProductEdit = () => (
-    <Edit>
-        <TabbedForm>
-            <TabbedForm.Tab label="Description" name="description">
-                <TextInput source="reference" />
-                <TextInput source="width" />
-                <TextInput source="height" />
-                {/* not displayed */}
-                <TextInput source="description" />
-            </TabbedForm.Tab>
-            <TabbedForm.Tab label="Images" name="images">
-                {/* not displayed */}
-                <TextInput source="image" />
-                <TextInput source="thumbnail" />
-            </TabbedForm.Tab>
-            {/* not displayed */}
-            <TabbedForm.Tab label="Stock" name="stock">
-                <TextInput source="stock" />
-            </TabbedForm.Tab>
-        </TabbedForm>
-    </Edit>
-);
-```
 
 ## `<WizardForm>`
 
@@ -1042,9 +981,9 @@ const authProvider = {
         // 'products.description' is missing
         { action: 'write', resource: 'products.thumbnail' },
         // 'products.image' is missing
-        // note that the step with the name 'description' will be displayed 
+        // note that the step with the name 'description' will be displayed
         { action: 'write', resource: 'products.step.description' },
-        // note that the step with the name 'images' will be displayed 
+        // note that the step with the name 'images' will be displayed
         { action: 'write', resource: 'products.step.images' },
         // 'products.step.stock' is missing
     ]),
@@ -1076,7 +1015,7 @@ const ProductCreate = () => (
 ```
 {% endraw %}
 
-**Tip**: You must add a `name` prop to the `<WizardForm.Step>` so you can reference it in the permissions.  
+**Tip**: You must add a `name` prop to the `<WizardForm.Step>` so you can reference it in the permissions.
 Then, to allow users to access a particular `<WizardForm.Step>`, update the permissions definition as follows: `{ action: 'write', resource: '{RESOURCE}.step.{NAME}' }`, where `RESOURCE` is the resource name, and `NAME` the name you provided to the `<WizardForm.Step>`.
 
 For instance, to allow users access to the following tab `<WizardForm.Step label="Description" name="description">` in `products` resource, add this line in permissions: `{ action: 'write', resource: 'products.step.description' }`.
@@ -1089,7 +1028,7 @@ To compensate for that, `usePermissions` uses a stale-while-revalidate approach,
 
 In practice, your `authProvider` should use short-lived sessions, and refresh the permissions only when the session ends. JSON Web tokens (JWT) work that way.
 
-Here is an example of an `authProvider` that stores the permissions in memory, and refreshes them only every 5 minutes: 
+Here is an example of an `authProvider` that stores the permissions in memory, and refreshes them only every 5 minutes:
 
 ```jsx
 let permissions; // memory cache

@@ -269,8 +269,8 @@ import {
 } from 'react-admin';
 import { LongForm } from '@react-admin/ra-form-layout';
 
-const CustomToolbar = props => (
-    <RaToolbar {...props}>
+const CustomToolbar = () => (
+    <RaToolbar>
         <SaveButton label="Save and return" type="button" variant="outlined" />
     </RaToolbar>
 );

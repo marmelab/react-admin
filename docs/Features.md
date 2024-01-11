@@ -11,15 +11,15 @@ React-admin is a **rich framework** that covers most of the needs of typical adm
 
 With react-admin, developers assemble application components without having to worry about low-level details. They need less code for the same result, and they can **focus on the business logic** of their app.
 
-[![List view without and with react-admin](./img/list-from-react-to-react-admin.webp)](./ListTutorial.md#from-pure-react-to-react-admin)
+[![List view without and with react-admin](./img/list-from-react-to-react-admin.webp)](./img/list-from-react-to-react-admin.webp)
 
 We've crafted the API of react-admin's components and hooks to be as **intuitive** as possible. The react-admin core team uses react-admin every day, and we're always looking for ways to improve the developer experience.
 
 React-admin provides the **best-in-class documentation**, demo apps, and support. Error messages are clear and actionable. Thanks to extensive TypeScript types and JSDoc, it's easy to use react-admin in any IDE. The API is stable and **breaking changes are very rare**. You can debug your app with the [query](./DataProviders.md#enabling-query-logs) and [form](https://react-hook-form.com/dev-tools) developer tools, and inspect the react-admin code right in your browser.
 
-That probably explains why more than 3,000 new apps are published every month using react-admin. 
+That probably explains why more than 3,000 new apps are published every month using react-admin.
 
-So react-admin is not just the assembly of [react-query](https://react-query.tanstack.com/), [react-hook-form](https://marmelab.com/react-admin/assets/techs/react-hook-form.jpeg), [react-router](https://reacttraining.com/react-router/), [Material UI](https://mui.com/material-ui/getting-started/) and [Emotion](https://github.com/emotion-js/emotion). It's a **framework** made to speed up and facilitate the development of single-page apps in React.
+So react-admin is not just the assembly of [react-query](https://react-query.tanstack.com/), [react-hook-form](https://react-hook-form.com/), [react-router](https://reacttraining.com/react-router/), [Material UI](https://mui.com/material-ui/getting-started/) and [Emotion](https://github.com/emotion-js/emotion). It's a **framework** made to speed up and facilitate the development of single-page apps in React.
 
 ## Basic CRUD
 
@@ -61,26 +61,28 @@ Which kind of API? **All kinds**. React-admin is backend agnostic. It doesn't ca
 
 React-admin ships with [more than 50 adapters](./DataProviderList.md) for popular API flavors, and gives you all the tools to build your own adapter. This works thanks to a powerful abstraction layer called the [Data Provider](./DataProviders.md).
 
-In a react-admin app, you don't write API Calls. Instead, you communicate with your API using a set of high-level functions, called "Data Provider methods". For instance, to fetch a list of posts, you call the `getList()` method, passing the resource name and the query parameters. 
+In a react-admin app, you don't write API Calls. Instead, you communicate with your API using a set of high-level functions, called "Data Provider methods". For instance, to fetch a list of posts, you call the `getList()` method, passing the resource name and the query parameters.
 
 ```jsx
 import { useState, useEffect } from 'react';
 import { useDataProvider } from 'react-admin';
 
 const PostList = () => {
-    const [posts, setPosts] = useState();
-    const [error, setError] = useState([]);
+    const [posts, setPosts] = useState([]);
+    const [error, setError] = useState();
+    const [isLoading, setIsLoading] = useState(true);
     const dataProvider = useDataProvider();
     useEffect(() => {
-        dataProvider.getList('posts', { 
+        dataProvider.getList('posts', {
             pagination: { page: 1, perPage: 10 },
             sort: { field: 'published_at', order: 'DESC' },
-            filter: { status: 'published' } 
+            filter: { status: 'published' }
         })
             .then(({ data }) => setPosts(data))
-            .catch(error => setError(error));
+            .catch(error => setError(error))
+            .finally(() => setIsLoading(false));
     }, []);
-    if (posts) { return <Loading />; }
+    if (isLoading) { return <p>Loading</p>; }
     if (error) { return <p>ERROR</p>; }
     return (
         <ul>
@@ -119,7 +121,7 @@ const PostList = () => {
 
 React-admin is also **backend agnostic for authentication and authorization**. Whether your API uses JWT, OAuth, a third-party provider like Auth0 or Cognito, or even Azure Active Directory, you can communicate with the authentication backend through an adapter object called [the Auth Provider](./Authentication.md).
 
-You can then use specialized hooks on your components to restrict access. For instance, to forbid anonymous access, use `useAuthenticated`: 
+You can then use specialized hooks on your components to restrict access. For instance, to forbid anonymous access, use `useAuthenticated`:
 
 ```jsx
 import { useAuthenticated } from 'react-admin';
@@ -138,7 +140,7 @@ export default MyPage;
 
 ## Relationships
 
-APIs often expose a relational model, i.e. endpoints returning foreign keys to other endpoints. **React-admin leverages relational APIs** to provide smart components that display related records and components that allow editing of related records. 
+APIs often expose a relational model, i.e. endpoints returning foreign keys to other endpoints. **React-admin leverages relational APIs** to provide smart components that display related records and components that allow editing of related records.
 
 ```
 ┌──────────────┐       ┌────────────────┐
@@ -151,7 +153,7 @@ APIs often expose a relational model, i.e. endpoints returning foreign keys to o
 └──────────────┘       └────────────────┘
 ```
 
-For instance, `<ReferenceField>` displays the name of a related record, like the name of an author for a book. 
+For instance, `<ReferenceField>` displays the name of a related record, like the name of an author for a book.
 
 ```jsx
 const BookList = () => (
@@ -168,7 +170,7 @@ const BookList = () => (
 
 ![ReferenceField](./img/reference-field-link.png)
 
-You don't need anything fancy on the API side to support that. Simple CRUD routes for both the `books` and `authors` resources are enough. `<ReferenceField>` will fetch the book authors via one single API call: 
+You don't need anything fancy on the API side to support that. Simple CRUD routes for both the `books` and `authors` resources are enough. `<ReferenceField>` will fetch the book authors via one single API call:
 
 ```
 GET https://my.api.url/authors?filter={ids:[1,2,3,4,5,6,7]}
@@ -261,7 +263,7 @@ And if the default design isn't good enough for you, you can easily customize it
 
 Modern web apps are often very visually pleasing, but they can be difficult to use due to low information density. End users need a lot of scrolling and clicking to complete moderately complex tasks.
 
-On the other hand, the default React-admin skin is designed to be dense, giving **more space to the content and less to the chrome**, which allows for faster user interaction. 
+On the other hand, the default React-admin skin is designed to be dense, giving **more space to the content and less to the chrome**, which allows for faster user interaction.
 
 [![Dense layout](./img/dense.webp)](https://marmelab.com/react-admin-demo/#/)
 
@@ -269,9 +271,101 @@ We have made many improvements to this default layout based on user feedback. In
 
 And for mobile users, react-admin renders a different layout with larger margins and less information density (see [Responsive](#responsive)).
 
+## Headless Core
+
+React-admin components use Material UI components by default, which lets you scaffold a page in no time. As material UI supports [theming](#theming), you can easily customize the look and feel of your app. But in some cases, this is not enough, and you need to use another UI library.
+
+You can change the UI library you use with react-admin to use [Ant Design](https://ant.design/), [Daisy UI](https://daisyui.com/), [Chakra UI](https://chakra-ui.com/), or even you own custom UI library. The **headless logic** behind react-admin components is agnostic of the UI library, and is exposed via `...Base` components and controller hooks. 
+
+For instance, here a List view built with [Ant Design](https://ant.design/):
+
+![List view built with Ant Design](./img/list_ant_design.png)
+
+It leverages the `useListController` hook:
+
+{% raw %}
+```jsx
+import { useListController } from 'react-admin'; 
+import { Card, Table, Button } from 'antd';
+import {
+  CheckCircleOutlined,
+  PlusOutlined,
+  EditOutlined,
+} from '@ant-design/icons';
+import { Link } from 'react-router-dom';
+
+const PostList = () => {
+  const { data, page, total, setPage, isLoading } = useListController({
+    sort: { field: 'published_at', order: 'DESC' },
+    perPage: 10,
+  });
+  const handleTableChange = (pagination) => {
+    setPage(pagination.current);
+  };
+  return (
+    <>
+      <div style={{ margin: 10, textAlign: 'right' }}>
+        <Link to="/posts/create">
+          <Button icon={<PlusOutlined />}>Create</Button>
+        </Link>
+      </div>
+      <Card bodyStyle={{ padding: '0' }} loading={isLoading}>
+        <Table
+          size="small"
+          dataSource={data}
+          columns={columns}
+          pagination={{ current: page, pageSize: 10, total }}
+          onChange={handleTableChange}
+        />
+      </Card>
+    </>
+  );
+};
+
+const columns = [
+  { title: 'Id', dataIndex: 'id', key: 'id' },
+  { title: 'Title', dataIndex: 'title', key: 'title' },
+  {
+    title: 'Publication date',
+    dataIndex: 'published_at',
+    key: 'pub_at',
+    render: (value) => new Date(value).toLocaleDateString(),
+  },
+  {
+    title: 'Commentable',
+    dataIndex: 'commentable',
+    key: 'commentable',
+    render: (value) => (value ? <CheckCircleOutlined /> : null),
+  },
+  {
+    title: 'Actions',
+    render: (_, record) => (
+      <Link to={`/posts/${record.id}`}>
+        <Button icon={<EditOutlined />}>Edit</Button>
+      </Link>
+    ),
+  },
+];
+
+export default PostList;
+```
+{% endraw %}
+
+Check the following hooks to learn more about headless controllers:
+
+- [`useListController`](./useListController.md)
+- [`useEditController`](./useEditController.md)
+- [`useCreateController`](./useCreateController.md)
+- [`useShowController`](./useShowController.md)
+
+And check these examples for admin panels built with react-admin but without Material UI:
+
+- [DaisyUI, Tailwind CSS, Tanstack Table and React-Aria](https://marmelab.com/blog/2023/11/28/using-react-admin-with-your-favorite-ui-library.html)
+- [shadcn/ui, Tailwind CSS and Radix UI](https://github.com/marmelab/ra-shadcn-demo)
+
 ## Guessers & Scaffolding
 
-When mapping a new API route to a CRUD view, adding fields one by one can be tedious. React-admin provides a set of guessers that can automatically **generate a complete CRUD UI based on an API response**. 
+When mapping a new API route to a CRUD view, adding fields one by one can be tedious. React-admin provides a set of guessers that can automatically **generate a complete CRUD UI based on an API response**.
 
 For instance, the following code will generate a complete CRUD UI for the `posts` resource:
 
@@ -294,6 +388,32 @@ Check the following components to learn more about guessers:
 - [`<ListGuesser>`](./ListGuesser.md)
 - [`<EditGuesser>`](./EditGuesser.md)
 - [`<ShowGuesser>`](./ShowGuesser.md)
+
+## Powerful Datagrid Components
+
+Most admins need to display a list of records, letting users sort, filter, and paginate them. React-admin provides a set of components to build such lists, called "Datagrid components".
+
+The basic [`<Datagrid>` component](./Datagrid.md) displays a list of records in a table, with a row for each record and a column for each field. It alsosupports an expand panel, a row selection checkbox, and a bulk action toolbar.
+
+<video controls autoplay playsinline muted loop>
+  <source src="./img/Datagrid.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
+The [`<EditableDatagrid>` component](./EditableDatagrid.md) lets users edit records in place, without having to navigate to an edit form. It's a great way to speed up data entry.
+
+<video controls autoplay playsinline muted loop>
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-editable-datagrid-overview.webm" type="video/webm" />
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-editable-datagrid-overview.mp4" type="video/mp4" />
+  Your browser does not support the video tag.
+</video>
+
+Finally, the [`<DatagridAG>` component](./DatagridAG.md) integrates the powerful [AG Grid](https://www.ag-grid.com/) library to provide a rich set of features, such as cell editing, aggregation, row grouping, master detail, clipboard, pivoting, column filtering, export to excel, context menu, tree data, charting, and more.
+
+<video controls autoplay playsinline muted loop>
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/DatagridAG-enterprise.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
 
 ## Search & Filtering
 
@@ -339,7 +459,7 @@ In most admin and B2B apps, the most common task is to look for a record. React-
 </tr>
 </tbody></table>
 
-These features rely on powerful components with an intuitive API. For instance, you can set the Filter Button/Form Combo with the `<List filters>` prop, using the same input components as in edition forms: 
+These features rely on powerful components with an intuitive API. For instance, you can set the Filter Button/Form Combo with the `<List filters>` prop, using the same input components as in edition forms:
 
 ```jsx
 import { List, TextInput } from 'react-admin';
@@ -363,7 +483,7 @@ Check the following chapters to learn more about each search and filtering compo
 - [`<StackedFilters>`](./StackedFilters.md)
 - [`<Search>`](./Search.md)
 
-Users often apply the same filters over and over again. Saved Queries **let users save a combination of filters** and sort parameters into a new, personal filter, that persists between sessions. 
+Users often apply the same filters over and over again. Saved Queries **let users save a combination of filters** and sort parameters into a new, personal filter, that persists between sessions.
 
 <video controls autoplay playsinline muted loop>
   <source src="./img/SavedQueriesList.webm" type="video/webm"/>
@@ -424,6 +544,7 @@ React-admin offers a **rich set of input components and form layouts** to build 
 
 For instance, here is how to build a tabbed form for editing a blog post:
 
+{% raw %}
 ```jsx
 import {
     TabbedForm,
@@ -433,7 +554,7 @@ import {
     DateField,
     TextInput,
     ReferenceManyField,
-    NumberInput,    
+    NumberInput,
     DateInput,
     BooleanInput,
     EditButton
@@ -443,7 +564,7 @@ export const PostEdit = () => (
     <Edit>
         <TabbedForm>
             <TabbedForm.Tab label="summary">
-                <TextInput disabled label="Id" source="id" />
+                <TextInput label="Id" source="id" InputProps={{ disabled: true }} />
                 <TextInput source="title" validate={required()} />
                 <TextInput multiline source="teaser" validate={required()} />
             </TabbedForm.Tab>
@@ -455,7 +576,7 @@ export const PostEdit = () => (
                 <DateInput label="Publication date" source="published_at" />
                 <NumberInput source="average_note" validate={[ number(), minValue(0) ]} />
                 <BooleanInput label="Allow comments?" source="commentable" defaultValue />
-                <TextInput disabled label="Nb views" source="views" />
+                <TextInput label="Nb views" source="views" InputProps={{ disabled: true }} />
             </TabbedForm.Tab>
             <TabbedForm.Tab label="comments">
                 <ReferenceManyField reference="comments" target="post_id" label={false}>
@@ -470,6 +591,7 @@ export const PostEdit = () => (
     </Edit>
 );
 ```
+{% endraw %}
 
 <video controls autoplay playsinline muted loop>
   <source src="./img/tabbed-form.webm" type="video/webm"/>
@@ -491,7 +613,7 @@ React-admin offers, out of the box, several form layouts:
 
 ### Input Components
 
-Inside forms, you can use specialize [input components](./Inputs.md), designed for many types of data: 
+Inside forms, you can use specialize [input components](./Inputs.md), designed for many types of data:
 
 | Data Type             | Example value                                                | Input Components                                                                                                                                                                                     |
 |-----------------------|--------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -515,7 +637,7 @@ Inside forms, you can use specialize [input components](./Inputs.md), designed f
 | Translations          | `{ en: 'Hello', fr: 'Bonjour' }`                             | [`<TranslatableInputs>`](./TranslatableInputs.md)                                                                                                                                                    |
 | Related records       | `[{ id: 42, title: 'Hello' }, { id: 43, title: 'World' }]`   | [`<ReferenceManyInput>`](./ReferenceManyInput.md), [`<ReferenceManyToManyInput>`](./ReferenceManyToManyInput.md), [`<ReferenceOneInput>`](./ReferenceOneInput.md)                                    |
 
-### Dependent Inputs 
+### Dependent Inputs
 
 You can build dependent inputs, using the [react-hook-form's `useWatch` hook](https://react-hook-form.com/docs/usewatch). For instance, here is a `CityInput` that displays the cities of the selected country:
 
@@ -534,12 +656,12 @@ const toChoices = items => items.map(item => ({ id: item, name: item }));
 // toChoices(coutries) should be [{ id: 'USA', name: 'USA' }, ...]
 
 
-const CityInput = props => {
+const CityInput = () => {
     const country = useWatch({ name: 'country' });
     return (
         <SelectInput
             choices={country ? toChoices(cities[country]) : []}
-            {...props}
+            source="cities"
         />
     );
 };
@@ -548,7 +670,7 @@ const OrderEdit = () => (
     <Edit>
         <SimpleForm>
             <SelectInput source="country" choices={toChoices(countries)} />
-            <CityInput source="cities" />
+            <CityInput />
         </SimpleForm>
     </Edit>
 );
@@ -731,7 +853,7 @@ React-admin takes advantage of the Single-Page-Application architecture, impleme
 
 ## Undo
 
-When users submit a form, or delete a record, the UI reflects their change immediately. They also see a confirmation message for the change, containing an "Undo" button. If they click on it before the confirmation slides out (the default delay is 5s), react-admin reverts to the previous state and cancels the call to the data provider. 
+When users submit a form, or delete a record, the UI reflects their change immediately. They also see a confirmation message for the change, containing an "Undo" button. If they click on it before the confirmation slides out (the default delay is 5s), react-admin reverts to the previous state and cancels the call to the data provider.
 
 <video controls autoplay playsinline muted loop>
   <source src="./img/tutorial_post_edit_undo.webm" type="video/webm"/>
@@ -963,8 +1085,8 @@ A UI kit like Material UI provides basic building blocks like a button, a form, 
 
 These building blocks include:
 
-- A [notification system](./useNotify.md) 
-- A smart location framework, simplifying the management of [breadcrumbs](./Breadcrumb.md) an [hierarchical menus](./MultiLevelMenu.md)
+- A [notification system](./useNotify.md)
+- A smart location framework, simplifying the management of [breadcrumbs](./Breadcrumb.md) and [hierarchical menus](./MultiLevelMenu.md)
 - [Import](https://github.com/benwinding/react-admin-import-csv) / [export](./Buttons.md#exportbutton) buttons
 - An [editable datagrid](./EditableDatagrid.md)
 - A [guided tour system](https://marmelab.com/ra-enterprise/modules/ra-tour)
@@ -974,7 +1096,7 @@ These building blocks include:
 - A [clone button](./Buttons.md#clonebutton)
 - Various navigation menus ([simple](./Menu.md), [hierarchical](./MultiLevelMenu.md), [horizontal](./HorizontalMenu.md), etc.)
 - Various [page](./ContainerLayout.md) and [form](https://marmelab.com/ra-enterprise/modules/ra-form-layout) layouts
-- ...and many more. 
+- ...and many more.
 
 And if you want to create your building blocks, you can use any of the [75+ hooks](./Reference.md#hooks) that carry **headless, reusable logic**. To name a few of them:
 
@@ -1146,7 +1268,7 @@ This feature leverages the following hooks:
 
 ## Preferences
 
-End-users tweak the UI to their liking, and **they expect these preferences to be saved** so that they don't need to do it again the next time they visit the app. React-admin provides a persistent `Store` for user preferences and uses it in many components. 
+End-users tweak the UI to their liking, and **they expect these preferences to be saved** so that they don't need to do it again the next time they visit the app. React-admin provides a persistent `Store` for user preferences and uses it in many components.
 
 For instance, the Saved Queries feature lets users **save a combination of filters** and sort parameters into a new, personal filter.
 
@@ -1188,7 +1310,7 @@ const SongList = () => (
 );
 ```
 
-React-admin also **persists the light/dark mode and the language choice** of end-users. 
+React-admin also **persists the light/dark mode and the language choice** of end-users.
 
 <video controls autoplay playsinline muted loop>
   <source src="./img/ToggleThemeButton.webm" type="video/webm"/>
@@ -1255,7 +1377,31 @@ Check the following components for details:
 
 The default [Material Design](https://material.io/) look and feel is nice, but a bit... Google-y. If this bothers you, or if you need to brand your app, rest assured: react-admin is fully themeable.
 
-For instance, you can use react-admin to build a [Music Player](https://demo.navidrome.org/app/):
+React-admin comes with 4 built-in themes: [Default](./AppTheme.md#default), [Nano](./AppTheme.md#nano), [Radiant](./AppTheme.md#radiant), and [House](./AppTheme.md#house). The [e-commerce demo](https://marmelab.com/react-admin-demo/) contains a theme switcher, so you can test them in a real application.
+
+<video controls autoplay playsinline muted loop>
+  <source src="./img/demo-themes.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
+To use a custom theme, pass a theme object to the `<Admin>` [`theme`](./Admin.md#theme) and [`darkTheme`](./Admin.md#darktheme) props:
+
+```jsx
+import { Admin, nanoLightTheme, nanoDarkTheme } from 'react-admin';
+import { dataProvider } from './dataProvider';
+
+export const App = () => (
+    <Admin
+        dataProvider={dataProvider}
+        theme={nanoLightTheme}
+        darkTheme={nanoDarkTheme}
+    >
+        // ...
+    </Admin>
+);
+```
+
+Theming is so powerful that you can even use react-admin to build a [Music Player](https://demo.navidrome.org/app/):
 
 ![Music Player](./img/navidrome.png)
 
@@ -1355,9 +1501,12 @@ const App = () => (
 
 To learn more about theming in react-admin, check the following sections:
 
+- [Introduction to Theming](./Theming.md)
+- [Page Layouts](./Theming.md#customizing-the-page-layout)
 - [The `sx` prop](./SX.md)
-- [App-wide component overrides](./AppTheme.md#theming-individual-components)
-- [Writing a custom theme](./AppTheme.md)
+- [Built-In Themes](./AppTheme.md#built-in-themes)
+- [App-wide theming](./AppTheme.md#theming-individual-components)
+- [Helper Components For Layouts](./BoxStackGrid.md)
 - [`<ToggleThemeButton>`](./ToggleThemeButton.md)
 - [`useTheme`](./useTheme.md)
 - [`useMediaQuery`](./useMediaQuery.md)
@@ -1513,7 +1662,7 @@ Check the following sections for help on making your app responsive:
 
 ## Type-Safe
 
-React-admin is written in TypeScript. That doesn't mean you have to use TypeScript to use react-admin - **you can write react-admin apps in JavaScript**. But if you do, you get compile-time type checking for your components, hooks, data providers, auth providers, translation messages, and more. 
+React-admin is written in TypeScript. That doesn't mean you have to use TypeScript to use react-admin - **you can write react-admin apps in JavaScript**. But if you do, you get compile-time type checking for your components, hooks, data providers, auth providers, translation messages, and more.
 
 And if your IDE supports TypeScript, you get autocompletion and inline documentation for all react-admin components and hooks.
 
@@ -1527,7 +1676,7 @@ Building react-admin apps with TypeScript brings more safety and productivity to
 
 ## Sustainable
 
-Last but not least, react-admin is here to stay. That's because the development of the open-source project is **funded by the customers** of the [Enterprise Edition](https://marmelab.com/ra-enterprise/). 
+Last but not least, react-admin is here to stay. That's because the development of the open-source project is **funded by the customers** of the [Enterprise Edition](https://marmelab.com/ra-enterprise/).
 
 Maintaining a large open-source project in the long term is a challenge. But the react-admin core team, hosted by [Marmelab](https://marmelab.com), doesn't have to worry about the next funding round, or about paying back venture capital by raising prices. React-admin has zero debt, has already **passed the break-even point**, and the team will only grow as the number of customers grows.
 

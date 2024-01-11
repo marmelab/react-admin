@@ -158,6 +158,14 @@ If `true`, the input is disabled and the user can't change the value.
 <TextInput source="title" disabled />
 ```
 
+**Tip**: The form framework used by react-admin, react-hook-form, [considers](https://github.com/react-hook-form/react-hook-form/pull/10805) that a `disabled` input shouldn't submit any value. So react-hook-form sets the value of all `disabled` inputs to `undefined`. As a consequence, a form with a `disabled` input is always considered `dirty` (i.e. react-hook-form considers that the form values and the initial record values are different), and it triggers [the `warnWhenUnsavedChanges` feature](./EditTutorial.md#warning-about-unsaved-changes) when leaving the form, even though the user changed nothing. The workaround is to set the `disabled` prop on the underlying input component, as follows:
+
+{% raw %}
+```jsx
+<TextInput source="title" InputProps={{ disabled: true }} />
+```
+{% endraw %}
+
 ## `format`
 
 The `format` prop accepts a callback taking the value from the form state, and returning the input value (which should be a string).
@@ -457,7 +465,7 @@ React-admin relies on [react-hook-form](https://react-hook-form.com/) for form h
 
 ```tsx
 import * as React from "react";
-import { Edit, SimpleForm, SelectInput, SelectInputProps } from "react-admin";
+import { Edit, SimpleForm, SelectInput } from "react-admin";
 import { useWatch } from "react-hook-form";
 
 const countries = ["USA", "UK", "France"];
@@ -468,13 +476,13 @@ const cities: Record<string, string[]> = {
 };
 const toChoices = (items: string[]) => items.map((item) => ({ id: item, name: item }));
 
-const CityInput = (props: SelectInputProps) => {
+const CityInput = () => {
     const country = useWatch<{ country: string }>({ name: "country" });
 
     return (
         <SelectInput
             choices={country ? toChoices(cities[country]) : []}
-            {...props}
+            source="cities"
         />
     );
 };
@@ -483,7 +491,7 @@ const OrderEdit = () => (
     <Edit>
         <SimpleForm>
             <SelectInput source="country" choices={toChoices(countries)} />
-            <CityInput source="cities" />
+            <CityInput />
         </SimpleForm>
     </Edit>
 );
@@ -526,7 +534,7 @@ const OrderEdit = () => (
 );
 ```
 
-**Tip**: When using a `FormDataConsumer` inside an `ArrayInput`, the `FormDataConsumer` will provide three additional properties to its children function:
+**Tip**: When using a `FormDataConsumer` inside an `ArrayInput`, the `FormDataConsumer` will provide two additional properties to its children function:
 
 - `scopedFormData`: an object containing the current values of the currently rendered item from the `ArrayInput`
 - `getSource`: a function that translates the source into a valid one for the `ArrayInput`
@@ -774,6 +782,7 @@ const BoundedTextField = ({ name, label }: { name: string; label: string }) => {
         fieldState: { isTouched, invalid, error },
         formState: { isSubmitted }
     } = useController({ name, defaultValue: '' });
+
     return (
         <TextField
             {...field}
@@ -832,7 +841,7 @@ import { useInput, required, InputProps } from "react-admin";
 interface BoundedTextFieldProps
     extends Omit<
         TextFieldProps,
-        "label" | "helperText" | "onChange" | "onBlur" | "type" | "defaultValue"
+        "label" | "onChange" | "onBlur" | "type" | "defaultValue"
     >,
     InputProps {}
 
@@ -935,12 +944,57 @@ const { isDirty } = useFormState(); // ✅
 const formState = useFormState(); // ❌ should deconstruct the formState      
 ```
 
+## i18n
+
+In order to properly format the input's `helperText` and error messages from `useInput()`, custom inputs should make use of the react-admin component `<InputHelperText>`, which ensures that the text below the input returns consistently whether it's a string or a React component, and whether it's a simple message or an error. Importantly, react-admin messages from `useInput()` are passed through `useTranslate()` inside `<InputHelperText>`, which makes this component important for localization.
+
+```jsx
+import TextField from '@mui/material/TextField';
+import { useInput, InputHelperText } from 'react-admin';
+
+const BoundedTextField = (props: BoundedTextFieldProps) => {
+    const { onChange, onBlur, label, helperText, ...rest } = props;
+    const {
+        field,
+        fieldState: { isTouched, invalid, error },
+        formState: { isSubmitted },
+        isRequired,
+    } = useInput({
+        onChange,
+        onBlur,
+        ...rest,
+    });
+
+    const renderHelperText =
+        helperText !== false || ((isTouched || isSubmitted) && invalid);
+
+    return (
+        <TextField
+            {...field}
+            label={label}
+            error={(isTouched || isSubmitted) && invalid}
+            helperText={
+                renderHelperText ? (
+                    <InputHelperText
+                        touched={isTouched || isSubmitted}
+                        error={error?.message}
+                        helperText={helperText}
+                    />
+                ) : null
+            }
+            required={isRequired}
+            {...rest}
+        />
+    );
+};
+```
+
 ## Third-Party Components
 
 You can find components for react-admin in third-party repositories.
 
 - [alexgschwend/react-admin-color-picker](https://github.com/alexgschwend/react-admin-color-picker): a color input using [React Color](https://casesandberg.github.io/react-color/), a collection of color pickers.
-- [vascofg/react-admin-date-inputs](https://github.com/vascofg/react-admin-date-inputs): a collection of Date Inputs, based on [material-ui-pickers](https://material-ui-pickers.firebaseapp.com/)
+- [react-admin-mui-dateinputs](https://www.npmjs.com/package/react-admin-mui-dateinputs): a collection of Date/Time Inputs for react-admin based on [MUI X Date Pickers](https://mui.com/x/react-date-pickers/date-picker/).
 - [MrHertal/react-admin-json-view](https://github.com/MrHertal/react-admin-json-view): JSON field and input for react-admin.
 - [@bb-tech/ra-components](https://github.com/bigbasket/ra-components): `JsonInput` which allows only valid JSON as input, `JsonField` to view JSON properly on show card and `TrimField` to trim the fields while showing in `Datagrid` in `List` component.
 - [@react-page/react-admin](https://react-page.github.io/docs/#/integration-react-admin): ReactPage is a rich content editor and comes with a ready-to-use React-admin input component. [check out the demo](https://react-page.github.io/examples/reactadmin)

@@ -305,7 +305,7 @@ export const useUpdateMany = <
     ) => {
         const {
             mutationMode,
-            returnPromise,
+            returnPromise = reactMutationOptions.returnPromise,
             onSuccess,
             onSettled,
             onError,
@@ -458,7 +458,7 @@ export type UseUpdateManyOptions<
     Array<RecordType['id']>,
     MutationError,
     Partial<UseUpdateManyMutateParams<RecordType>>
-> & { mutationMode?: MutationMode };
+> & { mutationMode?: MutationMode; returnPromise?: boolean };
 
 export type UseUpdateManyResult<
     RecordType extends RaRecord = any,

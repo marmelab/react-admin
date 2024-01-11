@@ -22,8 +22,8 @@ import { AutocompleteInput } from './AutocompleteInput';
  * instead of `<AutocompleteInput>`).
  *
  * @example // default selector: AutocompleteInput
- * export const CommentEdit = (props) => (
- *     <Edit {...props}>
+ * export const CommentEdit = () => (
+ *     <Edit>
  *         <SimpleForm>
  *             <ReferenceInput label="Post" source="post_id" reference="posts" />
  *         </SimpleForm>
@@ -31,8 +31,8 @@ import { AutocompleteInput } from './AutocompleteInput';
  * );
  *
  * @example // using a SelectInput as selector
- * export const CommentEdit = (props) => (
- *     <Edit {...props}>
+ * export const CommentEdit = () => (
+ *     <Edit>
  *         <SimpleForm>
  *             <ReferenceInput label="Post" source="post_id" reference="posts">
  *                 <SelectInput optionText="title" />

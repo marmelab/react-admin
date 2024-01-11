@@ -12,7 +12,7 @@ export const TopToolbar = (props: ToolbarProps) => {
         <StyledToolbar
             disableGutters
             variant={isXSmall ? 'regular' : 'dense'}
-            {...props}
+            {...sanitizeToolbarRestProps(props)}
         />
     );
 };
@@ -46,3 +46,5 @@ const StyledToolbar = styled(Toolbar, {
         paddingBottom: 0,
     },
 }));
+
+const sanitizeToolbarRestProps = ({ hasCreate, ...props }: any) => props;

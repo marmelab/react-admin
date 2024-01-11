@@ -5,60 +5,30 @@ title: "Ecosystem"
 
 # Ecosystem
 
-  - [List Related Components](#list-related-components)
-  - [Fields](#fields)
-  - [Inputs](#inputs)
-  - [Translations](#translations)
-  - [Authentication Providers](#authentication-providers)
-  - [Authorization Management](#authorization-management)
-  - [Data Providers](#data-providers)
-  - [User Interface](#user-interface)
-  - [Miscellaneous](#miscellaneous)
+While most of the react-admin components come from the [marmelab/react-admin](https://github.com/marmelab/react-admin) repository, you can find more hooks and components for react-admin in other packages.
 
-## List Related Components
+## Enterprise Packages
 
-See the [List](./ListTutorial.md#third-party-components) page.
+[React-admin Enterprise Edition](https://marmelab.com/ra-enterprise) provides additional packages:
 
-## Show Related Components
+- [@react-admin/ra-ai](https://marmelab.com/ra-enterprise/modules/ra-ai): Components powered by Artificial Intelligence (AI) to boost user productivity. Suggest completion for user inputs, fix and improve large chunks of text in React-Admin forms.
+- [@react-admin/ra-audit-log](https://marmelab.com/ra-enterprise/modules/ra-audit-log): Keep track of user actions, and get an overview of the activity of your admin.
+- [@react-admin/ra-calendar](https://marmelab.com/ra-enterprise/modules/ra-calendar): Display and manipulate events, drag and resize appointments, and browse a calendar in react-admin apps.
+- [@react-admin/ra-editable-datagrid](https://marmelab.com/ra-enterprise/modules/ra-editable-datagrid): Enhance the features of react-admin's `<Datagrid>` component, including an "edit-in-place" experience.
+- [@react-admin/ra-enterprise](https://marmelab.com/ra-enterprise/modules/ra-enterprise): Preconfigured components replacing the default react-admin ones to quickly integrate the Enterprise Edition modules.
+- [@react-admin/ra-form-layout](https://marmelab.com/ra-enterprise/modules/ra-form-layout): New form layouts for complex data entry tasks (accordion, wizard, autosave, etc.).
+- [@react-admin/ra-json-schema-form](https://marmelab.com/ra-enterprise/modules/ra-json-schema-form): Build forms based on a JSON Schema description
+- [@react-admin/ra-markdown](https://marmelab.com/ra-enterprise/modules/ra-markdown): Markdown field and Input
+- [@react-admin/ra-navigation](https://marmelab.com/ra-enterprise/modules/ra-navigation): New page layouts, Menus layouts, Smart Breadcrumb, and hooks to handle the user location.
+- [@react-admin/ra-relationships](https://marmelab.com/ra-enterprise/modules/ra-relationships): A set of alternative inputs and fields to edit relationships, including many-to-many relationships using a join table.
+- [@react-admin/ra-rbac](https://marmelab.com/ra-enterprise/modules/ra-rbac): Role-Based Access Control for React-admin apps. This module extends the authProvider to manage roles and fine-grained permissions, and adds replacement for many react-admin components that use these permissions.
+- [@react-admin/ra-realtime](https://marmelab.com/ra-enterprise/modules/ra-realtime): Hooks and UI components for collaborative applications where several people work in parallel. It allows publishing and subscribing to real-time events, updating views when another user pushes a change, notifying end users of events, and preventing data loss when two editors work on the same resource concurrently.
+- [@react-admin/ra-search](https://marmelab.com/ra-enterprise/modules/ra-search): Plug your search engine and let users search across all resources via a smart Omnibox.
+- [@react-admin/ra-tour](https://marmelab.com/ra-enterprise/modules/ra-tour): Guide users through tutorials to showcase and explain important features of your interfaces.
+- [@react-admin/ra-tree](https://marmelab.com/ra-enterprise/modules/ra-tree): Tree hooks and components for react-admin. Allows to display, edit, and rearrange tree structures like directories, categories, etc.
 
-See the [Show](./ShowTutorial.md#third-party-components) page.
+## Third-Party Packages
 
-## Fields
-
-See the [Field](./Fields.md#third-party-components) page.
-
-## Inputs
-
-See the [Input](./Inputs.md#third-party-components) page.
-
-## Translations
-
-See the [Available Translation](./TranslationLocales.md) page.
-
-## Authentication Providers
-
-See the [Auth Provider List](./AuthProviderList.md) page. Here is a list of additional packages:
-
-## Authorization Management
-
-- **[Role-Based Access Control (RBAC)](https://marmelab.com/ra-enterprise/modules/ra-rbac)**: This module published by Marmelab lets you manage fine-grained permissions
-- **[Access Control List (ACL) for Resources](https://github.com/marmelab/ra-auth-acl)**: [marmelab/ra-auth-acl](https://github.com/marmelab/ra-auth-acl)
-- **[Access Control List (ACL) utilities and components](https://github.com/andrico1234/ra-acl)**: Easily manage role-based permissions with hooks and ready-to-use components
-
-## Data Providers
-
-See the [Data Provider Backends](./DataProviderList.md) page.
-
-## User Interface
-
-- [**Bootstrap**](https://getbootstrap.com/): [bootstrap-styled/react-admin](https://bootstrap-styled.github.io/react-admin)
-
-## Miscellaneous
-
-- [@react-admin/ra-preferences](https://marmelab.com/ra-enterprise/modules/ra-preferences) <img class="icon" src="./img/premium.svg" />: a [ra-enterprise](https://marmelab.com/ra-enterprise) module which persists user preferences (language, theme, filters, datagrid columns, sidebar position, etc.) in local storage.
-- [@react-admin/ra-navigation](https://marmelab.com/ra-enterprise/modules/ra-navigation) <img class="icon" src="./img/premium.svg" />: a [ra-enterprise](https://marmelab.com/ra-enterprise) module which offers specialized UI components (`<Breadcrumb>`, `<MultiLevelMenu>`) and hooks (`useDefineAppLocation`, `useAppLocationstate`) to organize pages in a tree structure, and provide navigation widgets () to help users find their way in that structure.
-- [@react-admin/ra-realtime](https://marmelab.com/ra-enterprise/modules/ra-realtime) <img class="icon" src="./img/premium.svg" />: a [ra-enterprise](https://marmelab.com/ra-enterprise) module which provides hooks and UI components to lock records, live update views when a change occurs in the background, and notify the user of these events.
-- [@react-admin/ra-tour](https://marmelab.com/ra-enterprise/modules/ra-tour) <img class="icon" src="./img/premium.svg" />: a [ra-enterprise](https://marmelab.com/ra-enterprise) module which provides a way to guide users through tutorials to showcase and explain important features of your interfaces.
 - [FusionWorks/react-admin-google-maps](https://github.com/FusionWorks/react-admin-google-maps): Input/view components for displaying location using Google Maps.
 - [api-platform/admin](https://api-platform.com/docs/admin): create a fully featured admin using React Admin for API supporting the [Hydra Core Vocabulary](https://www.hydra-cg.com/), including but not limited to APIs created using the [API Platform framework](https://api-platform.com)
 - [zifnab87/ra-component-factory](https://github.com/zifnab87/ra-component-factory): a centralized configuration of immutability/visibility of fields/menu-links/action buttons, easy re-ordering of fields/properties and tab reorganization based on permission roles
@@ -66,4 +36,6 @@ See the [Data Provider Backends](./DataProviderList.md) page.
 - [dryhten/ra-resource-aggregator](https://github.com/dryhten/ra-resource-aggregator): Resource aggregator for react-admin. It allows you to edit/create/delete multiple resources in the same view.
 - [Dev XP demo (YouTube)](https://youtu.be/nHkVxDEnB3g): How to make changes to the core React Admin project locally
 - [react-admin-import-csv](https://github.com/benwinding/react-admin-import-csv): A csv file import button for react-admin.
-- [@bb-tech/ra-treemenu](https://github.com/BigBasket/ra-treemenu): A tree-like menu implementation which enables quick and easy integration of a hierarchical menu structure in react-admin.
+- [@bb-tech/ra-components](https://github.com/BigBasket/ra-components): Hierarchical menu structure, JSON field and input, Email, URL and Phone inputs
+
+If you authored or know another package for react-admin, please open a pull request on the `docs` folder to add the package to this list. 

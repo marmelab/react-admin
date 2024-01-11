@@ -85,4 +85,5 @@ export interface FormOwnProps {
     onSubmit?: SubmitHandler<FieldValues>;
     warnWhenUnsavedChanges?: boolean;
     sanitizeEmptyValues?: boolean;
+    disableInvalidFormNotification?: boolean;
 }

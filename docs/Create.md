@@ -50,6 +50,8 @@ const App = () => (
 export default App;
 ```
 
+## Props
+
 You can customize the `<Create>` component using the following props:
 
 * [`actions`](#actions): override the actions toolbar with a custom component
@@ -261,6 +263,8 @@ You can customize the redirection by setting the `redirect` prop to one of the f
 - `'list'`: redirect to the List view
 - `'show'`: redirect to the Show view
 - `false`: do not redirect
+- A function `(resource, id, data) => string` to redirect to different targets depending on the record
+
 
 ```jsx
 const PostCreate = () => (
@@ -321,13 +325,13 @@ The `title` value can be a string or a React element.
 To transform a record after the user has submitted the form but before the record is passed to `dataProvider.create()`, use the `transform` prop. It expects a function taking a record as argument, and returning a modified record. For instance, to add a computed field upon creation:
 
 ```jsx
-export const UserCreate = (props) => {
+export const UserCreate = () => {
     const transform = data => ({
         ...data,
         fullName: `${data.firstName} ${data.lastName}`
     });
     return (
-        <Create {...props} transform={transform}>
+        <Create transform={transform}>
             ...
         </Create>
     );
@@ -354,7 +358,7 @@ As a reminder, HTML form inputs always return strings, even for numbers and bool
 If you prefer to have `null` values, or to omit the key for empty values, use [the `transform` prop](#transform) to sanitize the form data before submission:
 
 ```jsx
-export const UserCreate = (props) => {
+export const UserCreate = () => {
     const transform = (data) => {
         const sanitizedData = {};
         for (const key in data) {
@@ -364,7 +368,7 @@ export const UserCreate = (props) => {
         return sanitizedData;
     };
     return (
-        <Create {...props} transform={transform}>
+        <Create transform={transform}>
             ...
         </Create>
     );
@@ -424,31 +428,24 @@ You can do the same for error notifications, by passing a custom `onError`  call
 
 ## Prefilling the Form
 
-You sometimes need to pre-populate a record based on a *related* record. For instance, to create a comment related to an existing post. 
+You sometimes need to pre-populate a record based on a *related* record. For instance, to create a comment related to an existing post.
 
 By default, the `<Create>` view starts with an empty `record`. However, if the `location` object (injected by [react-router-dom](https://reacttraining.com/react-router/web/api/location)) contains a `record` in its `state`, the `<Create>` view uses that `record` instead of the empty object. That's how the `<CloneButton>` works under the hood.
 
-That means that if you want to create a link to a creation form, presetting *some* values, all you have to do is to set the location `state`. `react-router-dom` provides the `<Link>` component for that:
+That means that if you want to create a link to a creation form, presetting *some* values, all you have to do is to set the `state` prop of the `<CreateButton>`:
 
 {% raw %}
 ```jsx
 import * as React from 'react';
-import { Datagrid, useRecordContext } from 'react-admin';
-import { Button } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { CreateButton, Datagrid, List, useRecordContext } from 'react-admin';
 
 const CreateRelatedCommentButton = () => {
     const record = useRecordContext();
     return (
-        <Button
-            component={Link}
-            to={{
-                pathname: '/comments/create',
-            }}
+        <CreateButton
+            resource="comments"
             state={{ record: { post_id: record.id } }}
-        >
-            Write a comment for that post
-        </Button>
+        />
     );
 };
 
@@ -463,29 +460,22 @@ export default PostList = () => (
 ```
 {% endraw %}
 
-**Tip**: To style the button with the main color from the Material UI theme, use the `Link` component from the `react-admin` package rather than the one from `react-router-dom`.
-
 **Tip**: The `<Create>` component also watches the "source" parameter of `location.search` (the query string in the URL) in addition to `location.state` (a cross-page message hidden in the router memory). So the `CreateRelatedCommentButton` could also be written as:
 
 {% raw %}
 ```jsx
 import * as React from 'react';
-import { useRecordContext } from 'react-admin';
-import Button from '@mui/material/Button';
-import { Link } from 'react-router-dom';
+import { CreateButton, useRecordContext } from 'react-admin';
 
 const CreateRelatedCommentButton = () => {
     const record = useRecordContext();
     return (
-        <Button
-            component={Link}
+        <CreateButton
+            resource="comments"
             to={{
-                pathname: '/comments/create',
                 search: `?source=${JSON.stringify({ post_id: record.id })}`,
             }}
-        >
-            Write a comment for that post
-        </Button>
+        />
     );
 };
 ```
@@ -588,12 +578,12 @@ const cities = {
 };
 const toChoices = items => items.map(item => ({ id: item, name: item }));
 
-const CityInput = props => {
+const CityInput = () => {
     const country = useWatch({ name: 'country' });
     return (
         <SelectInput
             choices={country ? toChoices(cities[country]) : []}
-            {...props}
+            source="cities"
         />
     );
 };
@@ -602,7 +592,7 @@ const OrderEdit = () => (
     <Edit>
         <SimpleForm>
             <SelectInput source="country" choices={toChoices(countries)} />
-            <CityInput source="cities" />
+            <CityInput />
         </SimpleForm>
     </Edit>
 );
@@ -611,3 +601,90 @@ export default OrderEdit;
 ```
 
 **Tip:** If you'd like to avoid creating an intermediate component like `<CityInput>`, or are using an `<ArrayInput>`, you can use the [`<FormDataConsumer>`](./Inputs.md#linking-two-inputs) component as an alternative.
+
+## Controlled Mode
+
+`<Create>` deduces the resource and the initial form values from the URL. This is fine for a creation page, but if you need to let users create records from another page, you probably want to define this parameter yourself. 
+
+In that case, use the [`resource`](#resource) and [`record`](#record) props to set the creation parameters regardless of the URL.
+
+```jsx
+import { Create, SimpleForm, TextInput, SelectInput } from "react-admin";
+
+export const BookCreate = () => (
+    <Create resource="books" redirect={false}>
+        <SimpleForm>
+            <TextInput source="title" />
+            <TextInput source="author" />
+            <SelectInput source="availability" choices={[
+                { id: "in_stock", name: "In stock" },
+                { id: "out_of_stock", name: "Out of stock" },
+                { id: "out_of_print", name: "Out of print" },
+            ]} />
+        </SimpleForm>
+    </Create>
+);
+```
+
+**Tip**: You probably also want to customize [the `redirect` prop](#redirect) if you embed an `<Create>` component in another page.
+
+## Headless Version
+
+Besides preparing a save handler, `<Create>` renders the default creation page layout (title, actions, a Material UI `<Card>`) and its children. If you need a custom creation layout, you may prefer [the `<CreateBase>` component](./CreateBase.md), which only renders its children in a [`CreateContext`](./useCreateContext.md).
+
+```jsx
+import { CreateBase, SelectInput, SimpleForm, TextInput, Title } from "react-admin";
+import { Card, CardContent, Container } from "@mui/material";
+
+export const BookCreate = () => (
+    <CreateBase>
+        <Container>
+            <Title title="Create book" />
+            <Card>
+                <CardContent>
+                    <SimpleForm>
+                        <TextInput source="title" />
+                        <TextInput source="author" />
+                        <SelectInput source="availability" choices={[
+                            { id: "in_stock", name: "In stock" },
+                            { id: "out_of_stock", name: "Out of stock" },
+                            { id: "out_of_print", name: "Out of print" },
+                        ]} />
+                    </SimpleForm>
+                </CardContent>
+            </Card>
+        </Container>
+    </CreateBase>
+);
+```
+
+In the previous example, `<SimpleForm>` grabs the save handler from the `CreateContext`.
+
+If you don't need the `CreateContext`, you can use [the `useCreateController` hook](./useCreateController.md), which does the same data fetching as `<CreateBase>` but lets you render the content.
+
+```jsx
+import { useCreateController, SelectInput, SimpleForm, TextInput, Title } from "react-admin";
+import { Card, CardContent, Container } from "@mui/material";
+
+export const BookCreate = () => {
+    const { save } = useCreateController();
+    return (
+        <Container>
+            <Title title="Create book" />
+            <Card>
+                <CardContent>
+                    <SimpleForm onSubmit={values => save(values)}>
+                        <TextInput source="title" />
+                        <TextInput source="author" />
+                        <SelectInput source="availability" choices={[
+                            { id: "in_stock", name: "In stock" },
+                            { id: "out_of_stock", name: "Out of stock" },
+                            { id: "out_of_print", name: "Out of print" },
+                        ]} />
+                    </SimpleForm>
+                </CardContent>
+            </Card>
+        </Container>
+    );
+};
+```

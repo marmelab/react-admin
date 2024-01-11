@@ -230,6 +230,7 @@ export const ReferenceFieldView = <
                         to={link}
                         className={ReferenceFieldClasses.link}
                         onClick={stopPropagation}
+                        state={{ _scrollToTop: true }}
                     >
                         {child}
                     </Link>
@@ -239,9 +240,11 @@ export const ReferenceFieldView = <
     }
 
     return (
-        <RecordContextProvider value={referenceRecord}>
-            {child}
-        </RecordContextProvider>
+        <Root className={className} sx={sx}>
+            <RecordContextProvider value={referenceRecord}>
+                {child}
+            </RecordContextProvider>
+        </Root>
     );
 };
 

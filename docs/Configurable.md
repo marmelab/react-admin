@@ -37,7 +37,7 @@ const ConfigurableTextBlock = ({ preferenceKey = "textBlock", ...props }) => (
 
 `<Configurable>` creates a context for the `preferenceKey`, so that both the child component and the editor can access it.
 
-The editor commponent lets users edit the preferences for the configurable compoonent. It does so using the `usePreference` hook, which is a namespaced version of [the `useStore` hook](./useStore.md) for the current `preferenceKey`:
+The editor commponent lets users edit the preferences for the configurable component. It does so using the `usePreference` hook, which is a namespaced version of [the `useStore` hook](./useStore.md) for the current `preferenceKey`:
 
 ```jsx
 import { usePreference } from 'react-admin';
@@ -58,7 +58,6 @@ const TextBlockEditor = () => {
     );
 };
 ```
- 
 The inner component reads the preferences using the same `usePreference` hook:
 
 ```jsx
@@ -214,3 +213,53 @@ const MyAppBar = () => (
     </AppBar>
 );
 ```
+
+## `<Inspector>`
+
+The `<Inspector>` is already included in the layouts provided by react-admin. If you are using a custom layout, you need to add the `<Inspector>` component to your layout.
+
+{% raw %}
+```jsx
+// in src/MyLayout.js
+import * as React from 'react';
+import { Box } from '@mui/material';
+import { AppBar, Menu, Sidebar, Inspector } from 'react-admin';
+
+const MyLayout = ({ children, dashboard }) => (
+    <Box 
+        display="flex"
+        flexDirection="column"
+        zIndex={1}
+        minHeight="100vh"
+        backgroundColor="theme.palette.background.default"
+        position="relative"
+    >
+        <Box
+            display="flex"
+            flexDirection="column"
+            overflowX="auto"
+        >
+            <AppBar />
+            <Box display="flex" flexGrow={1}>
+                <Sidebar>
+                    <Menu hasDashboard={!!dashboard} />
+                </Sidebar>
+                <Box
+                    display="flex"
+                    flexDirection="column"
+                    flexGrow={2}
+                    p={3}
+                    marginTop="4em"
+                    paddingLeft={5}
+                >
+                    {children}
+                </Box>
+            </Box>
+        </Box>
+        <Inspector />
+    </Box>
+);
+
+export default MyLayout;
+```
+{% endraw %}
