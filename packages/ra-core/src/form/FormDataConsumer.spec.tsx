@@ -40,10 +40,10 @@ describe('FormDataConsumerView', () => {
                 <SimpleForm>
                     <BooleanInput source="hi" defaultValue />
                     <FormDataConsumer>
-                        {({ formData, ...rest }) => {
+                        {({ formData }) => {
                             globalFormData = formData;
 
-                            return <TextInput source="bye" {...rest} />;
+                            return <TextInput source="bye" />;
                         }}
                     </FormDataConsumer>
                 </SimpleForm>
@@ -61,10 +61,8 @@ describe('FormDataConsumerView', () => {
                 <SimpleForm>
                     <BooleanInput source="hi" defaultValue />
                     <FormDataConsumer>
-                        {({ formData, ...rest }) =>
-                            !formData.hi ? (
-                                <TextInput source="bye" {...rest} />
-                            ) : null
+                        {({ formData }) =>
+                            !formData.hi ? <TextInput source="bye" /> : null
                         }
                     </FormDataConsumer>
                 </SimpleForm>
@@ -95,11 +93,11 @@ describe('FormDataConsumerView', () => {
                         <SimpleFormIterator>
                             <TextInput source="name" />
                             <FormDataConsumer>
-                                {({ formData, scopedFormData, ...rest }) => {
+                                {({ scopedFormData }) => {
                                     globalScopedFormData = scopedFormData;
                                     return scopedFormData &&
                                         scopedFormData.name ? (
-                                        <TextInput source="role" {...rest} />
+                                        <TextInput source="role" />
                                     ) : null;
                                 }}
                             </FormDataConsumer>

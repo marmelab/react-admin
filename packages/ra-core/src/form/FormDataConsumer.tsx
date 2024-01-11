@@ -16,8 +16,8 @@ import { useWrappedSource } from '../core';
  *         <SimpleForm<FieldValues>>
  *             <BooleanInput source="hasEmail" />
  *             <FormDataConsumer>
- *                 {({ formData, ...rest }) => formData.hasEmail &&
- *                      <TextInput source="email" {...rest} />
+ *                 {({ formData }) => formData.hasEmail &&
+ *                      <TextInput source="email" />
  *                 }
  *             </FormDataConsumer>
  *         </SimpleForm>
@@ -31,11 +31,10 @@ import { useWrappedSource } from '../core';
  *         <SimpleForm>
  *             <SelectInput source="country" choices={countries} />
  *             <FormDataConsumer<FieldValues>>
- *                 {({ formData, ...rest }) =>
+ *                 {({ formData }) =>
  *                      <SelectInput
  *                          source="city"
  *                          choices={getCitiesFor(formData.country)}
- *                          {...rest}
  *                      />
  *                 }
  *             </FormDataConsumer>
@@ -65,7 +64,7 @@ export const FormDataConsumerView = <
 >(
     props: Props<TFieldValues>
 ) => {
-    const { children, form, formData, source, ...rest } = props;
+    const { children, formData, source } = props;
     let ret;
 
     const finalSource = useWrappedSource(source);
@@ -75,9 +74,9 @@ export const FormDataConsumerView = <
     // If we have an index, we are in an iterator like component (such as the SimpleFormIterator)
     if (matches) {
         const scopedFormData = get(formData, matches[0]);
-        ret = children({ formData, scopedFormData, ...rest });
+        ret = children({ formData, scopedFormData });
     } else {
-        ret = children({ formData, ...rest });
+        ret = children({ formData });
     }
 
     return ret === undefined ? null : ret;

@@ -36,7 +36,7 @@ export const ConfigurationInputsFromFieldDefinition = ({
                         choices={ReferenceSelectionChoice}
                     />
                     <FormDataConsumer>
-                        {({ formData, ...rest }) => {
+                        {({ formData }) => {
                             const resourceName = get(
                                 formData,
                                 `${sourcePrefix}.props.reference`
@@ -54,7 +54,6 @@ export const ConfigurationInputsFromFieldDefinition = ({
                                             field.props.label ||
                                             field.props.source,
                                     }))}
-                                    {...rest}
                                 />
                             );
                         }}

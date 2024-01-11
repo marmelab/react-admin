@@ -163,7 +163,7 @@ const PostCreate = () => {
                                 />
                             </ReferenceInput>
                             <FormDataConsumer>
-                                {({ scopedFormData, ...rest }) =>
+                                {({ scopedFormData }) =>
                                     scopedFormData && scopedFormData.user_id ? (
                                         <SelectInput
                                             source="role"
@@ -181,7 +181,6 @@ const PostCreate = () => {
                                                     name: 'Co-Writer',
                                                 },
                                             ]}
-                                            {...rest}
                                             label="Role"
                                         />
                                     ) : null

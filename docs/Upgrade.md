@@ -237,14 +237,12 @@ const PostEdit = () => (
                             formData, // The whole form data
                             scopedFormData, // The data for this item of the ArrayInput
 -                           getSource,
-                            ...rest
                         }) =>
                             scopedFormData && getSource && scopedFormData.name ? (
                                 <SelectInput
 -                                    source={getSource('role')}
 +                                    source="role" // Will translate to "authors[0].role"
                                     choices={[{ id: 1, name: 'Head Writer' }, { id: 2, name: 'Co-Writer' }]}
-                                    {...rest}
                                 />
                             ) : null
                         }
