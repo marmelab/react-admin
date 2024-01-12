@@ -14,7 +14,7 @@ import {
 import expect from 'expect';
 
 describe('FormDataConsumerView', () => {
-    it('does not call its children function with scopedFormData and getSource if it did not receive an index prop', () => {
+    it('does not call its children function with scopedFormData if it did not receive a source containing an index', () => {
         const children = jest.fn();
         const formData = { id: 123, title: 'A title' };
 
@@ -30,33 +30,7 @@ describe('FormDataConsumerView', () => {
 
         expect(children).toHaveBeenCalledWith({
             formData,
-            getSource: expect.anything(),
         });
-    });
-
-    it('calls its children function with scopedFormData and getSource if it received an index prop', () => {
-        const children = jest.fn(({ getSource }) => {
-            getSource('id');
-            return null;
-        });
-        const formData = { id: 123, title: 'A title', authors: [{ id: 0 }] };
-
-        render(
-            <FormDataConsumerView
-                form="a-form"
-                source="authors[0]"
-                index={0}
-                formData={formData}
-            >
-                {children}
-            </FormDataConsumerView>
-        );
-
-        expect(children.mock.calls[0][0].formData).toEqual(formData);
-        expect(children.mock.calls[0][0].scopedFormData).toEqual({ id: 0 });
-        expect(children.mock.calls[0][0].getSource('id')).toEqual(
-            'authors[0].id'
-        );
     });
 
     it('calls its children with updated formData on first render', async () => {
@@ -66,10 +40,10 @@ describe('FormDataConsumerView', () => {
                 <SimpleForm>
                     <BooleanInput source="hi" defaultValue />
                     <FormDataConsumer>
-                        {({ formData, getSource, ...rest }) => {
+                        {({ formData }) => {
                             globalFormData = formData;
 
-                            return <TextInput source="bye" {...rest} />;
+                            return <TextInput source="bye" />;
                         }}
                     </FormDataConsumer>
                 </SimpleForm>
@@ -87,10 +61,8 @@ describe('FormDataConsumerView', () => {
                 <SimpleForm>
                     <BooleanInput source="hi" defaultValue />
                     <FormDataConsumer>
-                        {({ formData, ...rest }) =>
-                            !formData.hi ? (
-                                <TextInput source="bye" {...rest} />
-                            ) : null
+                        {({ formData }) =>
+                            !formData.hi ? <TextInput source="bye" /> : null
                         }
                     </FormDataConsumer>
                 </SimpleForm>
@@ -121,19 +93,11 @@ describe('FormDataConsumerView', () => {
                         <SimpleFormIterator>
                             <TextInput source="name" />
                             <FormDataConsumer>
-                                {({
-                                    formData,
-                                    scopedFormData,
-                                    getSource,
-                                    ...rest
-                                }) => {
+                                {({ scopedFormData }) => {
                                     globalScopedFormData = scopedFormData;
                                     return scopedFormData &&
                                         scopedFormData.name ? (
-                                        <TextInput
-                                            source={getSource('role')}
-                                            {...rest}
-                                        />
+                                        <TextInput source="role" />
                                     ) : null;
                                 }}
                             </FormDataConsumer>

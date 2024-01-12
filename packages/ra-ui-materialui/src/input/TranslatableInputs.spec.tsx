@@ -163,11 +163,11 @@ describe('<TranslatableInputs />', () => {
             </AdminContext>
         );
 
-        fireEvent.change(screen.queryByDisplayValue('english name'), {
+        fireEvent.change(screen.getByDisplayValue('english name'), {
             target: { value: 'english name updated' },
         });
         fireEvent.click(screen.getByText('ra.locales.fr'));
-        fireEvent.change(screen.queryByDisplayValue('french nested field'), {
+        fireEvent.change(screen.getByDisplayValue('french nested field'), {
             target: { value: 'french nested field updated' },
         });
         fireEvent.click(screen.getByText('ra.action.save'));

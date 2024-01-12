@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Admin } from 'react-admin';
-import { required, Resource } from 'ra-core';
+import { required, Resource, testI18nProvider } from 'ra-core';
 import { createMemoryHistory } from 'history';
 import { InputAdornment } from '@mui/material';
 
@@ -156,6 +156,52 @@ export const Scalar = () => (
                                 <TextInput
                                     source=""
                                     label="tag"
+                                    helperText={false}
+                                />
+                            </SimpleFormIterator>
+                        </ArrayInput>
+                    </SimpleForm>
+                </Edit>
+            )}
+        />
+    </Admin>
+);
+
+export const ScalarI18n = () => (
+    <Admin
+        dataProvider={dataProvider}
+        history={history}
+        i18nProvider={testI18nProvider({
+            messages: {
+                resources: {
+                    books: {
+                        fields: {
+                            tags: 'Some tags',
+                            tag: 'A tag',
+                        },
+                    },
+                },
+            },
+        })}
+    >
+        <Resource
+            name="books"
+            edit={() => (
+                <Edit
+                    mutationMode="pessimistic"
+                    mutationOptions={{
+                        onSuccess: data => {
+                            console.log(data);
+                        },
+                    }}
+                >
+                    <SimpleForm>
+                        <TextInput source="title" />
+                        <ArrayInput source="tags" fullWidth>
+                            <SimpleFormIterator disableReordering>
+                                <TextInput
+                                    source=""
+                                    label="resources.books.fields.tag"
                                     helperText={false}
                                 />
                             </SimpleFormIterator>

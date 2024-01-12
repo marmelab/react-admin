@@ -3,6 +3,7 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {
     RecordContextProvider,
+    ResourceContextProvider,
     minLength,
     required,
     testDataProvider,
@@ -104,22 +105,24 @@ describe('<ArrayInput />', () => {
     it('should clone each input once per value in the array', () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm
-                    onSubmit={jest.fn}
-                    defaultValues={{
-                        arr: [
-                            { id: 123, foo: 'bar' },
-                            { id: 456, foo: 'baz' },
-                        ],
-                    }}
-                >
-                    <ArrayInput resource="bar" source="arr">
-                        <SimpleFormIterator>
-                            <NumberInput source="id" />
-                            <TextInput source="foo" />
-                        </SimpleFormIterator>
-                    </ArrayInput>
-                </SimpleForm>
+                <ResourceContextProvider value="bar">
+                    <SimpleForm
+                        onSubmit={jest.fn}
+                        defaultValues={{
+                            arr: [
+                                { id: 123, foo: 'bar' },
+                                { id: 456, foo: 'baz' },
+                            ],
+                        }}
+                    >
+                        <ArrayInput source="arr">
+                            <SimpleFormIterator>
+                                <NumberInput source="id" />
+                                <TextInput source="foo" />
+                            </SimpleFormIterator>
+                        </ArrayInput>
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
         expect(
@@ -143,29 +146,30 @@ describe('<ArrayInput />', () => {
     it('should apply validation to both itself and its inner inputs', async () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm
-                    onSubmit={jest.fn}
-                    defaultValues={{
-                        arr: [],
-                    }}
-                >
-                    <ArrayInput
-                        resource="bar"
-                        source="arr"
-                        validate={[minLength(2, 'array_min_length')]}
+                <ResourceContextProvider value="bar">
+                    <SimpleForm
+                        onSubmit={jest.fn}
+                        defaultValues={{
+                            arr: [],
+                        }}
                     >
-                        <SimpleFormIterator>
-                            <TextInput
-                                source="id"
-                                validate={[required('id_required')]}
-                            />
-                            <TextInput
-                                source="foo"
-                                validate={[required('foo_required')]}
-                            />
-                        </SimpleFormIterator>
-                    </ArrayInput>
-                </SimpleForm>
+                        <ArrayInput
+                            source="arr"
+                            validate={[minLength(2, 'array_min_length')]}
+                        >
+                            <SimpleFormIterator>
+                                <TextInput
+                                    source="id"
+                                    validate={[required('id_required')]}
+                                />
+                                <TextInput
+                                    source="foo"
+                                    validate={[required('foo_required')]}
+                                />
+                            </SimpleFormIterator>
+                        </ArrayInput>
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
 

@@ -10,8 +10,9 @@ import PropTypes from 'prop-types';
 import { styled } from '@mui/material/styles';
 import {
     FormGroupsProvider,
-    LabelPrefixContextProvider,
     ListFilterContextValue,
+    SourceContextProvider,
+    SourceContextValue,
     useListContext,
     useResourceContext,
 } from 'ra-core';
@@ -133,8 +134,17 @@ export const FilterFormBase = (props: FilterFormBaseProps) => {
         [hideFilter]
     );
 
+    const sourceContext = React.useMemo<SourceContextValue>(
+        () => ({
+            getSource: (source: string) => source,
+            getLabel: (source: string) =>
+                `resources.${resource}.fields.${source}`,
+        }),
+        [resource]
+    );
+
     return (
-        <LabelPrefixContextProvider prefix={`resources.${resource}.fields`}>
+        <SourceContextProvider value={sourceContext}>
             <StyledForm
                 className={className}
                 {...sanitizeRestProps(rest)}
@@ -151,7 +161,7 @@ export const FilterFormBase = (props: FilterFormBaseProps) => {
                 ))}
                 <div className={FilterFormClasses.clearFix} />
             </StyledForm>
-        </LabelPrefixContextProvider>
+        </SourceContextProvider>
     );
 };
 

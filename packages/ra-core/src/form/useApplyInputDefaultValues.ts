@@ -7,6 +7,7 @@ import {
 import get from 'lodash/get';
 import { useRecordContext } from '../controller';
 import { InputProps } from './useInput';
+import { useWrappedSource } from '../core';
 
 interface StandardInput {
     inputProps: Partial<InputProps> & { source: string };
@@ -32,6 +33,8 @@ export const useApplyInputDefaultValues = ({
     fieldArrayInputControl,
 }: Props) => {
     const { defaultValue, source } = inputProps;
+    const finalSource = useWrappedSource(source);
+
     const record = useRecordContext(inputProps);
     const {
         getValues,
@@ -40,9 +43,9 @@ export const useApplyInputDefaultValues = ({
         formState,
         reset,
     } = useFormContext();
-    const recordValue = get(record, source);
-    const formValue = get(getValues(), source);
-    const { isDirty } = getFieldState(source, formState);
+    const recordValue = get(record, finalSource);
+    const formValue = get(getValues(), finalSource);
+    const { isDirty } = getFieldState(finalSource, formState);
 
     useEffect(() => {
         if (
@@ -58,11 +61,11 @@ export const useApplyInputDefaultValues = ({
         // Since we use get(record, source), if source is like foo.23.bar,
         // this effect will run. However we only want to set the default value
         // for the subfield bar if the record actually has a value for foo.23
-        const pathContainsIndex = source
+        const pathContainsIndex = finalSource
             .split('.')
             .some(pathPart => numericRegex.test(pathPart));
         if (pathContainsIndex) {
-            const parentPath = source.split('.').slice(0, -1).join('.');
+            const parentPath = finalSource.split('.').slice(0, -1).join('.');
             const parentValue = get(getValues(), parentPath);
             if (parentValue == null) {
                 // the parent is undefined, so we don't want to set the default value
@@ -88,7 +91,7 @@ export const useApplyInputDefaultValues = ({
             return;
         }
 
-        resetField(source, { defaultValue });
+        resetField(finalSource, { defaultValue });
     });
 };
 

@@ -2,16 +2,14 @@ import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import { Stack, StackProps } from '@mui/material';
 import clsx from 'clsx';
-import {
-    Children,
-    cloneElement,
-    isValidElement,
-    ReactElement,
-    ReactNode,
-} from 'react';
+import { ReactElement, ReactNode, useMemo } from 'react';
 import {
     FormGroupContextProvider,
     RaRecord,
+    SourceContextProvider,
+    getResourceFieldLabelKey,
+    useResourceContext,
+    useSourceContext,
     useTranslatableContext,
 } from 'ra-core';
 
@@ -23,7 +21,20 @@ export const TranslatableInputsTabContent = (
     props: TranslatableInputsTabContentProps
 ): ReactElement => {
     const { children, groupKey = '', locale, ...other } = props;
-    const { selectedLocale, getLabel, getSource } = useTranslatableContext();
+    const resource = useResourceContext(props);
+    const { selectedLocale } = useTranslatableContext();
+    const parentSourceContext = useSourceContext();
+    const sourceContext = useMemo(
+        () => ({
+            getSource: (source: string) => `${source}.${locale}`,
+            getLabel: (source: string) => {
+                return parentSourceContext
+                    ? parentSourceContext.getLabel(source)
+                    : getResourceFieldLabelKey(resource, source);
+            },
+        }),
+        [locale, parentSourceContext, resource]
+    );
 
     return (
         <FormGroupContextProvider name={`${groupKey}${locale}`}>
@@ -37,18 +48,9 @@ export const TranslatableInputsTabContent = (
                 })}
                 {...other}
             >
-                {Children.map(children, child =>
-                    isValidElement(child)
-                        ? cloneElement(child, {
-                              ...child.props,
-                              label: getLabel(
-                                  child.props.source,
-                                  child.props.label
-                              ),
-                              source: getSource(child.props.source, locale),
-                          })
-                        : null
-                )}
+                <SourceContextProvider value={sourceContext}>
+                    {children}
+                </SourceContextProvider>
             </Root>
         </FormGroupContextProvider>
     );

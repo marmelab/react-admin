@@ -3,6 +3,7 @@ import { ReactNode } from 'react';
 import { useFormContext, FieldValues } from 'react-hook-form';
 import get from 'lodash/get';
 import { useFormValues } from './useFormValues';
+import { useWrappedSource } from '../core';
 
 /**
  * Get the current (edited) value of the record from the form and pass it
@@ -15,8 +16,8 @@ import { useFormValues } from './useFormValues';
  *         <SimpleForm<FieldValues>>
  *             <BooleanInput source="hasEmail" />
  *             <FormDataConsumer>
- *                 {({ formData, ...rest }) => formData.hasEmail &&
- *                      <TextInput source="email" {...rest} />
+ *                 {({ formData }) => formData.hasEmail &&
+ *                      <TextInput source="email" />
  *                 }
  *             </FormDataConsumer>
  *         </SimpleForm>
@@ -30,11 +31,10 @@ import { useFormValues } from './useFormValues';
  *         <SimpleForm>
  *             <SelectInput source="country" choices={countries} />
  *             <FormDataConsumer<FieldValues>>
- *                 {({ formData, ...rest }) =>
+ *                 {({ formData }) =>
  *                      <SelectInput
  *                          source="city"
  *                          choices={getCitiesFor(formData.country)}
- *                          {...rest}
  *                      />
  *                 }
  *             </FormDataConsumer>
@@ -64,20 +64,19 @@ export const FormDataConsumerView = <
 >(
     props: Props<TFieldValues>
 ) => {
-    const { children, form, formData, source, index, ...rest } = props;
+    const { children, formData, source } = props;
     let ret;
 
+    const finalSource = useWrappedSource(source);
+    // Passes an empty string here as we don't have the children sources and we just want to know if we are in an iterator
+    const matches = ArraySourceRegex.exec(finalSource);
+
     // If we have an index, we are in an iterator like component (such as the SimpleFormIterator)
-    if (typeof index !== 'undefined' && source) {
-        const scopedFormData = get(formData, source);
-        const getSource = (scopedSource: string) => `${source}.${scopedSource}`;
-        ret = children({ formData, scopedFormData, getSource, ...rest });
+    if (matches) {
+        const scopedFormData = get(formData, matches[0]);
+        ret = children({ formData, scopedFormData });
     } else {
-        ret = children({
-            formData,
-            getSource: (scopedSource: string) => scopedSource,
-            ...rest,
-        });
+        ret = children({ formData });
     }
 
     return ret === undefined ? null : ret;
@@ -85,13 +84,14 @@ export const FormDataConsumerView = <
 
 export default FormDataConsumer;
 
+const ArraySourceRegex = new RegExp(/.+\.\d+$/);
+
 export interface FormDataConsumerRenderParams<
     TFieldValues extends FieldValues = FieldValues,
     TScopedFieldValues extends FieldValues = TFieldValues
 > {
     formData: TFieldValues;
     scopedFormData?: TScopedFieldValues;
-    getSource: (source: string) => string;
 }
 
 export type FormDataConsumerRender<
