@@ -21,7 +21,7 @@ export const generateProject = async (state: ProjectConfiguration) => {
         copyDirectoryFiles(
             path.join(__dirname, '../templates', state.dataProvider),
             projectDirectory,
-            ['package.json', '.env', 'README.md', 'help.txt']
+            ['package.json', '.env', 'README.md', 'help.txt', 'gitignore']
         );
     }
 
@@ -29,7 +29,7 @@ export const generateProject = async (state: ProjectConfiguration) => {
         copyDirectoryFiles(
             path.join(__dirname, '../templates', state.authProvider),
             projectDirectory,
-            ['package.json', '.env', 'README.md', 'help.txt']
+            ['package.json', '.env', 'README.md', 'help.txt', 'gitignore']
         );
     }
 
