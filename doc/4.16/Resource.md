@@ -90,7 +90,7 @@ The routing will map the component as follows:
 
 * [`name`](#name)
 * [`icon`](#icon)
-* [`options`](#icon)
+* [`options`](#options)
 * [`recordRepresentation`](#recordrepresentation)
 
 ## `children`

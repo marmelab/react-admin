@@ -365,6 +365,7 @@ The default `onSuccess` function is:
 
 **Tip**: When you use `mutationMode="pessimistic"`, the `onSuccess` function receives the response from the `dataProvider.update()` call, which is the created/edited record (see [the dataProvider documentation for details](./DataProviderWriting.md#response-format)). You can use that response in the success side effects: 
 
+{% raw %}
 ```jsx
 import * as React from 'react';
 import { useNotify, useRefresh, useRedirect, Edit, SimpleForm } from 'react-admin';
@@ -389,6 +390,7 @@ const PostEdit = () => {
     );
 }
 ```
+{% endraw %}
 
 **Tip**: If you want to have different success side effects based on the button clicked by the user (e.g. if the creation form displays two submit buttons, one to "save and redirect to the list", and another to "save and display an empty form"), you can set the `mutationOptions` prop on [the `<SaveButton>` component](./SaveButton.md), too.
 
@@ -747,7 +749,7 @@ export default OrderEdit;
 
 ## Navigating Through Records
 
-[`<PrevNextButtons`](./PrevNextButtons.md) renders a navigation with two buttons, allowing users to navigate through records without leaving an `<Edit>` view. 
+[`<PrevNextButtons>`](./PrevNextButtons.md) renders a navigation with two buttons, allowing users to navigate through records without leaving an `<Edit>` view. 
 
 <video controls autoplay playsinline muted loop>
   <source src="./img/prev-next-buttons-edit.webm" type="video/webm" />
