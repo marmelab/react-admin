@@ -11,9 +11,10 @@ import {
     useRedirect,
     useDataProvider,
     useGetIdentity,
+    GetListResult,
 } from 'react-admin';
 import { Dialog } from '@mui/material';
-
+import { useQueryClient } from 'react-query';
 import { stageChoices } from './stages';
 import { typeChoices } from './types';
 import { Deal } from '../types';
@@ -28,26 +29,41 @@ export const DealCreate = ({ open }: { open: boolean }) => {
         redirect('/deals');
     };
 
-    const onSuccess = (deal: Deal) => {
+    const queryClient = useQueryClient();
+
+    const onSuccess = async (deal: Deal) => {
         redirect('/deals');
         // increase the index of all deals in the same stage as the new deal
-        dataProvider
-            .getList('deals', {
-                pagination: { page: 1, perPage: 50 },
-                sort: { field: 'id', order: 'ASC' },
-                filter: { stage: deal.stage },
-            })
-            .then(({ data: deals }) =>
-                Promise.all(
-                    deals.map(oldDeal =>
-                        dataProvider.update('deals', {
+        const deals = await dataProvider.getList('deals', {
+            pagination: { page: 1, perPage: 50 },
+            sort: { field: 'id', order: 'ASC' },
+            filter: { stage: deal.stage },
+        });
+
+        const updatedDeals = await Promise.all(
+            deals.data
+                .filter(oldDeal => oldDeal.id !== deal.id)
+                .map(async oldDeal => {
+                    return (
+                        await dataProvider.update('deals', {
                             id: oldDeal.id,
                             data: { index: oldDeal.index + 1 },
                             previousData: oldDeal,
                         })
-                    )
-                )
-            );
+                    ).data;
+                })
+        );
+
+        const now = Date.now();
+
+        queryClient.setQueriesData<GetListResult | undefined>(
+            ['deals', 'getList'],
+            res => {
+                if (!res) return res;
+                return { ...res, data: updatedDeals };
+            },
+            { updatedAt: now }
+        );
     };
 
     const { identity } = useGetIdentity();
