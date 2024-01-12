@@ -177,6 +177,7 @@ export const ScalarI18n = () => (
                     books: {
                         fields: {
                             tags: 'Some tags',
+                            tag: 'A tag',
                         },
                     },
                 },
@@ -198,7 +199,11 @@ export const ScalarI18n = () => (
                         <TextInput source="title" />
                         <ArrayInput source="tags" fullWidth>
                             <SimpleFormIterator disableReordering>
-                                <TextInput source="" helperText={false} />
+                                <TextInput
+                                    source=""
+                                    label="resources.books.fields.tag"
+                                    helperText={false}
+                                />
                             </SimpleFormIterator>
                         </ArrayInput>
                     </SimpleForm>
