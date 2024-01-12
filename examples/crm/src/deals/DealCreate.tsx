@@ -10,6 +10,7 @@ import {
     required,
     useRedirect,
     useDataProvider,
+    useGetIdentity,
 } from 'react-admin';
 import { Dialog } from '@mui/material';
 
@@ -38,18 +39,18 @@ export const DealCreate = ({ open }: { open: boolean }) => {
             })
             .then(({ data: deals }) =>
                 Promise.all(
-                    deals
-                        .filter(oldDeal => oldDeal.id !== deal.id)
-                        .map(oldDeal =>
-                            dataProvider.update('deals', {
-                                id: oldDeal.id,
-                                data: { index: oldDeal.index + 1 },
-                                previousData: oldDeal,
-                            })
-                        )
+                    deals.map(oldDeal =>
+                        dataProvider.update('deals', {
+                            id: oldDeal.id,
+                            data: { index: oldDeal.index + 1 },
+                            previousData: oldDeal,
+                        })
+                    )
                 )
             );
     };
+
+    const { identity } = useGetIdentity();
 
     return (
         <Dialog open={open} onClose={handleClose}>
@@ -58,7 +59,12 @@ export const DealCreate = ({ open }: { open: boolean }) => {
                 mutationOptions={{ onSuccess }}
                 sx={{ width: 500, '& .RaCreate-main': { mt: 0 } }}
             >
-                <SimpleForm defaultValues={{ index: 0 }}>
+                <SimpleForm
+                    defaultValues={{
+                        index: 0,
+                        sales_id: identity && identity?.id,
+                    }}
+                >
                     <TextInput
                         source="name"
                         label="Deal name"
