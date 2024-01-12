@@ -1,5 +1,15 @@
 # Changelog
 
+## v4.16.6
+
+* Fix click on `<Datagrid>` Select All button bubbles up to parent Datagrid ([#9567](https://github.com/marmelab/react-admin/pull/9567)) ([Dreamsorcerer](https://github.com/Dreamsorcerer))
+* Bump follow-redirects from 1.15.2 to 1.15.4 ([#9574](https://github.com/marmelab/react-admin/pull/9574)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* [Doc] Add a section demonstrating the `<Datagrid>` headers pinning feature  ([#9564](https://github.com/marmelab/react-admin/pull/9564)) ([adguernier](https://github.com/adguernier))
+* [Doc] Add LinuxForHealth FHIR to DataProvider List ([#9572](https://github.com/marmelab/react-admin/pull/9572)) ([scheiblr](https://github.com/scheiblr))
+* [Doc] Fix jekyll trying to parse jsx code on `<Edit mutationOptions>` example snippet ([#9573](https://github.com/marmelab/react-admin/pull/9573)) ([Szulerinio](https://github.com/Szulerinio))
+* [Doc] Fix linking to wrong prop anchor on `<Resource>` documentation ([#9570](https://github.com/marmelab/react-admin/pull/9570)) ([Szulerinio](https://github.com/Szulerinio))
+* [Demo] Fix new deals do not appear in the CRM demo ([#9581](https://github.com/marmelab/react-admin/pull/9581)) ([adguernier](https://github.com/adguernier))
+
 ## v4.16.5
 
 * Fix `<AutocompleteInput>` should keep working when passing custom `InputProps` ([#9559](https://github.com/marmelab/react-admin/pull/9559)) ([adguernier](https://github.com/adguernier))
