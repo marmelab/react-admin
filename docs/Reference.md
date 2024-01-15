@@ -69,6 +69,7 @@ title: "Index"
 * [`<Empty>`](./List.md#empty)
 
 **- F -**
+* [`<FieldDiff>`](https://marmelab.com/ra-enterprise/modules/ra-history#fielddiff)<img class="icon" src="./img/premium.svg" />
 * [`<FileField>`](./FileField.md)
 * [`<FileInput>`](./FileInput.md)
 * [`<Filter>`](./List.md#filters-filter-inputs)
@@ -140,6 +141,8 @@ title: "Index"
 * [`<ReferenceOneField>`](./ReferenceOneField.md)
 * [`<ReferenceOneInput>`](./ReferenceOneInput.md)
 * [`<Resource>`](./Resource.md)
+* [`<RevisionsButton>`](./RevisionsButton.md)<img class="icon" src="./img/premium.svg" />
+* [`<RevisionListWithDetailsInDialog>`](https://marmelab.com/ra-enterprise/modules/ra-history#revisionlistwithdetailsindialog)<img class="icon" src="./img/premium.svg" />
 * [`<RichTextField>`](./RichTextField.md)
 * [`<RichTextInput>`](./RichTextInput.md)
 * [`<RowForm>`](https://marmelab.com/ra-enterprise/modules/ra-editable-datagrid#rowform)<img class="icon" src="./img/premium.svg" />
@@ -168,6 +171,7 @@ title: "Index"
 * [`<SimpleList>`](./SimpleList.md)
 * [`<SimpleShowLayout>`](./SimpleShowLayout.md)
 * [`<SingleFieldList>`](./SingleFieldList.md)
+* [`<SmartFieldDiff>`](https://marmelab.com/ra-enterprise/modules/ra-history#smartfielddiff)<img class="icon" src="./img/premium.svg" />
 * [`<SmartRichTextInput>`](./SmartRichTextInput.md)<img class="icon" src="./img/premium.svg" />
 * [`<SolarLayout>`](./SolarLayout.md)<img class="icon" src="./img/premium.svg" />
 * [`<SolarMenu>`](./SolarLayout.md#solarmenu)<img class="icon" src="./img/premium.svg" />

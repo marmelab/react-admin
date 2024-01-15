@@ -958,7 +958,7 @@ These features are available through the following components:
 
 - [`<SimpleFormWithRevision>`](https://marmelab.com/ra-enterprise/modules/ra-history#simpleformwithrevision)
 - [`<TabbedFormWithRevision>`](https://marmelab.com/ra-enterprise/modules/ra-history#tabbedformwithrevision)
-- [`<RevisionsButton>`](https://marmelab.com/ra-enterprise/modules/ra-history#revisionsbutton)
+- [`<RevisionsButton>`](./RevisionsButton.md)
 - [`<RevisionListWithDetailsInDialog>`](https://marmelab.com/ra-enterprise/modules/ra-history#revisionlistwithdetailsindialog)
 - [`<FieldDiff>`](https://marmelab.com/ra-enterprise/modules/ra-history#fielddiff)
 - [`<SmartFieldDiff>`](https://marmelab.com/ra-enterprise/modules/ra-history#smartfielddiff)
