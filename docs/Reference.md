@@ -164,6 +164,7 @@ title: "Index"
 * [`<SidebarOpenPreferenceSync>`](https://marmelab.com/ra-enterprise/modules/ra-preferences#sidebaropenpreferencesync-store-the-sidebar-openclose-state-in-preferences)<img class="icon" src="./img/premium.svg" />
 * [`<SimpleForm>`](./SimpleForm.md)
 * [`<SimpleFormIterator>`](./SimpleFormIterator.md)
+* [`<SimpleFormWithRevision>`](./SimpleForm.md#versioning)<img class="icon" src="./img/premium.svg" />
 * [`<SimpleList>`](./SimpleList.md)
 * [`<SimpleShowLayout>`](./SimpleShowLayout.md)
 * [`<SingleFieldList>`](./SingleFieldList.md)
@@ -177,6 +178,7 @@ title: "Index"
 **- T -**
 * `<Tab>`
 * [`<TabbedForm>`](./TabbedForm.md)
+* [`<TabbedFormWithRevision>`](./TabbedForm.md#versioning)<img class="icon" src="./img/premium.svg" />
 * [`<TabbedShowLayout>`](./TabbedShowLayout.md)
 * [`<TextField>`](./TextField.md)
 * [`<TextInput>`](./TextInput.md)
