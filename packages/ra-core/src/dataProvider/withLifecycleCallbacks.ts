@@ -123,43 +123,6 @@ export const withLifecycleCallbacks = (
     dataProvider: DataProvider,
     handlers: ResourceCallbacks[]
 ): DataProvider => {
-    /**
-     * Apply callbacks to the params for the given resource and hook
-     * @param {string} resource The resource name
-     * @param {string} hook The hook name (beforeGetList, afterGetOne, etc.)
-     * @param {U} params The params / result to pass to the callbacks
-     * @returns {Promise<U>} The params / result after the callbacks have been applied
-     */
-    const applyCallbacks = async function <U>(
-        resource: string,
-        hook: string,
-        params: U
-    ): Promise<U> {
-        let newParams = params;
-        const handlersToApply = handlers.filter(
-            h => (h.resource === resource || h.resource === '*') && h[hook]
-        );
-        for (let handler of handlersToApply) {
-            const callbacksValue: ResourceCallbacksValue<any> = handler[hook];
-            if (Array.isArray(callbacksValue)) {
-                for (let callback of callbacksValue ?? []) {
-                    newParams = await callback(
-                        newParams,
-                        dataProvider,
-                        resource
-                    );
-                }
-            } else {
-                newParams = await callbacksValue(
-                    newParams,
-                    dataProvider,
-                    resource
-                );
-            }
-        }
-        return newParams;
-    };
-
     return {
         ...dataProvider,
 
@@ -170,6 +133,8 @@ export const withLifecycleCallbacks = (
             let newParams = params;
 
             newParams = await applyCallbacks(
+                dataProvider,
+                handlers,
                 resource,
                 'beforeGetList',
                 newParams
@@ -178,10 +143,22 @@ export const withLifecycleCallbacks = (
                 resource,
                 newParams
             );
-            result = await applyCallbacks(resource, 'afterGetList', result);
+            result = await applyCallbacks(
+                dataProvider,
+                handlers,
+                resource,
+                'afterGetList',
+                result
+            );
             result.data = await Promise.all(
                 result.data.map(record =>
-                    applyCallbacks(resource, 'afterRead', record)
+                    applyCallbacks(
+                        dataProvider,
+                        handlers,
+                        resource,
+                        'afterRead',
+                        record
+                    )
                 )
             );
 
@@ -195,6 +172,8 @@ export const withLifecycleCallbacks = (
             let newParams = params;
 
             newParams = await applyCallbacks(
+                dataProvider,
+                handlers,
                 resource,
                 'beforeGetOne',
                 newParams
@@ -203,8 +182,16 @@ export const withLifecycleCallbacks = (
                 resource,
                 newParams
             );
-            result = await applyCallbacks(resource, 'afterGetOne', result);
+            result = await applyCallbacks(
+                dataProvider,
+                handlers,
+                resource,
+                'afterGetOne',
+                result
+            );
             result.data = await applyCallbacks(
+                dataProvider,
+                handlers,
                 resource,
                 'afterRead',
                 result.data
@@ -220,6 +207,8 @@ export const withLifecycleCallbacks = (
             let newParams = params;
 
             newParams = await applyCallbacks(
+                dataProvider,
+                handlers,
                 resource,
                 'beforeGetMany',
                 newParams
@@ -228,10 +217,22 @@ export const withLifecycleCallbacks = (
                 resource,
                 newParams
             );
-            result = await applyCallbacks(resource, 'afterGetMany', result);
+            result = await applyCallbacks(
+                dataProvider,
+                handlers,
+                resource,
+                'afterGetMany',
+                result
+            );
             result.data = await Promise.all(
                 result.data.map(record =>
-                    applyCallbacks(resource, 'afterRead', record)
+                    applyCallbacks(
+                        dataProvider,
+                        handlers,
+                        resource,
+                        'afterRead',
+                        record
+                    )
                 )
             );
 
@@ -245,6 +246,8 @@ export const withLifecycleCallbacks = (
             let newParams = params;
 
             newParams = await applyCallbacks(
+                dataProvider,
+                handlers,
                 resource,
                 'beforeGetManyReference',
                 newParams
@@ -254,13 +257,21 @@ export const withLifecycleCallbacks = (
                 newParams
             );
             result = await applyCallbacks(
+                dataProvider,
+                handlers,
                 resource,
                 'afterGetManyReference',
                 result
             );
             result.data = await Promise.all(
                 result.data.map(record =>
-                    applyCallbacks(resource, 'afterRead', record)
+                    applyCallbacks(
+                        dataProvider,
+                        handlers,
+                        resource,
+                        'afterRead',
+                        record
+                    )
                 )
             );
             return result;
@@ -273,11 +284,15 @@ export const withLifecycleCallbacks = (
             let newParams = params;
 
             newParams = await applyCallbacks(
+                dataProvider,
+                handlers,
                 resource,
                 'beforeUpdate',
                 newParams
             );
             newParams.data = await applyCallbacks(
+                dataProvider,
+                handlers,
                 resource,
                 'beforeSave',
                 newParams.data
@@ -286,8 +301,16 @@ export const withLifecycleCallbacks = (
                 resource,
                 newParams
             );
-            result = await applyCallbacks(resource, 'afterUpdate', result);
+            result = await applyCallbacks(
+                dataProvider,
+                handlers,
+                resource,
+                'afterUpdate',
+                result
+            );
             result.data = await applyCallbacks(
+                dataProvider,
+                handlers,
                 resource,
                 'afterSave',
                 result.data
@@ -303,11 +326,15 @@ export const withLifecycleCallbacks = (
             let newParams = params;
 
             newParams = await applyCallbacks(
+                dataProvider,
+                handlers,
                 resource,
                 'beforeCreate',
                 newParams
             );
             newParams.data = await applyCallbacks(
+                dataProvider,
+                handlers,
                 resource,
                 'beforeSave',
                 newParams.data
@@ -316,8 +343,20 @@ export const withLifecycleCallbacks = (
                 resource,
                 newParams
             );
-            result = await applyCallbacks(resource, 'afterCreate', result);
-            result = await applyCallbacks(resource, 'afterSave', result);
+            result = await applyCallbacks(
+                dataProvider,
+                handlers,
+                resource,
+                'afterCreate',
+                result
+            );
+            result = await applyCallbacks(
+                dataProvider,
+                handlers,
+                resource,
+                'afterSave',
+                result
+            );
 
             return result;
         },
@@ -329,6 +368,8 @@ export const withLifecycleCallbacks = (
             let newParams = params;
 
             newParams = await applyCallbacks(
+                dataProvider,
+                handlers,
                 resource,
                 'beforeDelete',
                 newParams
@@ -337,7 +378,13 @@ export const withLifecycleCallbacks = (
                 resource,
                 newParams
             );
-            result = await applyCallbacks(resource, 'afterDelete', result);
+            result = await applyCallbacks(
+                dataProvider,
+                handlers,
+                resource,
+                'afterDelete',
+                result
+            );
 
             return result;
         },
@@ -349,6 +396,8 @@ export const withLifecycleCallbacks = (
             let newParams = params;
 
             newParams = await applyCallbacks(
+                dataProvider,
+                handlers,
                 resource,
                 'beforeUpdateMany',
                 newParams
@@ -357,7 +406,13 @@ export const withLifecycleCallbacks = (
                 resource,
                 newParams
             );
-            result = await applyCallbacks(resource, 'afterUpdateMany', result);
+            result = await applyCallbacks(
+                dataProvider,
+                handlers,
+                resource,
+                'afterUpdateMany',
+                result
+            );
 
             const afterSaveHandlers = handlers.filter(
                 h =>
@@ -371,7 +426,13 @@ export const withLifecycleCallbacks = (
                 });
                 await Promise.all(
                     records.map(record =>
-                        applyCallbacks(resource, 'afterSave', record)
+                        applyCallbacks(
+                            dataProvider,
+                            handlers,
+                            resource,
+                            'afterSave',
+                            record
+                        )
                     )
                 );
             }
@@ -386,6 +447,8 @@ export const withLifecycleCallbacks = (
             let newParams = params;
 
             newParams = await applyCallbacks(
+                dataProvider,
+                handlers,
                 resource,
                 'beforeDeleteMany',
                 newParams
@@ -394,11 +457,50 @@ export const withLifecycleCallbacks = (
                 resource,
                 newParams
             );
-            result = await applyCallbacks(resource, 'afterDeleteMany', result);
+            result = await applyCallbacks(
+                dataProvider,
+                handlers,
+                resource,
+                'afterDeleteMany',
+                result
+            );
 
             return result;
         },
     };
+};
+
+/**
+ * Apply callbacks to the params for the given resource and hook
+ * @param {DataProvider} dataProvider The dataProvider
+ * @param {ResourceCallbacks[]} handlers An array of ResourceCallbacks
+ * @param {string} resource The resource name
+ * @param {string} hook The hook name (beforeGetList, afterGetOne, etc.)
+ * @param {U} params The params / result to pass to the callbacks
+ * @returns {Promise<U>} The params / result after the callbacks have been applied
+ */
+export const applyCallbacks = async function <U>(
+    dataProvider: DataProvider,
+    handlers: ResourceCallbacks[],
+    resource: string,
+    hook: string,
+    params: U
+): Promise<U> {
+    let newParams = params;
+    const handlersToApply = handlers.filter(
+        h => (h.resource === resource || h.resource === '*') && h[hook]
+    );
+    for (let handler of handlersToApply) {
+        const callbacksValue: ResourceCallbacksValue<any> = handler[hook];
+        if (Array.isArray(callbacksValue)) {
+            for (let callback of callbacksValue ?? []) {
+                newParams = await callback(newParams, dataProvider, resource);
+            }
+        } else {
+            newParams = await callbacksValue(newParams, dataProvider, resource);
+        }
+    }
+    return newParams;
 };
 
 export type ResourceCallback<U> = {
