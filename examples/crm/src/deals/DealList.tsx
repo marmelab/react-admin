@@ -44,7 +44,7 @@ const DealList = () => {
 
 const dealFilters = [
     <SearchInput source="q" alwaysOn />,
-    <OnlyMineInput alwaysOn />,
+    <OnlyMineInput source="sales_id" alwaysOn />,
     <SelectInput source="type" choices={typeChoices} />,
 ];
 

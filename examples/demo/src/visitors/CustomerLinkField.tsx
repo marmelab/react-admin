@@ -16,8 +16,4 @@ const CustomerLinkField = (_: FieldProps<Customer>) => {
     );
 };
 
-CustomerLinkField.defaultProps = {
-    source: 'customer_id',
-};
-
 export default CustomerLinkField;

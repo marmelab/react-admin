@@ -19,8 +19,4 @@ const ProductReferenceField = (
     </ReferenceField>
 );
 
-ProductReferenceField.defaultProps = {
-    source: 'product_id',
-};
-
 export default ProductReferenceField;

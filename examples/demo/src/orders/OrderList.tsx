@@ -142,7 +142,10 @@ const TabbedDatagrid = () => {
                             >
                                 <AddressField />
                             </ReferenceField>
-                            <NbItemsField />
+                            <NbItemsField
+                                label="resources.commands.fields.nb_items"
+                                textAlign="right"
+                            />
                             <NumberField
                                 source="total_ex_taxes"
                                 options={{
@@ -190,7 +193,10 @@ const TabbedDatagrid = () => {
                             >
                                 <AddressField />
                             </ReferenceField>
-                            <NbItemsField />
+                            <NbItemsField
+                                label="resources.commands.fields.nb_items"
+                                textAlign="right"
+                            />
                             <NumberField
                                 source="total_ex_taxes"
                                 options={{
@@ -242,7 +248,10 @@ const TabbedDatagrid = () => {
                             >
                                 <AddressField />
                             </ReferenceField>
-                            <NbItemsField />
+                            <NbItemsField
+                                label="resources.commands.fields.nb_items"
+                                textAlign="right"
+                            />
                             <NumberField
                                 source="total_ex_taxes"
                                 options={{

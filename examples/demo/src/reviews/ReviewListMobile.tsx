@@ -30,9 +30,4 @@ ReviewListMobile.propTypes = {
     selectedIds: PropTypes.arrayOf(PropTypes.any).isRequired,
 };
 
-ReviewListMobile.defaultProps = {
-    hasBulkActions: false,
-    selectedIds: [],
-};
-
 export default ReviewListMobile;

@@ -53,6 +53,7 @@ const customEnglishMessages: TranslationMessages = {
             fields: {
                 commands: 'Orders',
                 first_seen: 'First seen',
+                full_name: 'Name',
                 groups: 'Segments',
                 last_seen: 'Last seen',
                 last_seen_gte: 'Visited Since',
