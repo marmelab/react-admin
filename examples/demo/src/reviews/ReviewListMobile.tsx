@@ -22,12 +22,4 @@ const ReviewListMobile = () => {
     );
 };
 
-ReviewListMobile.propTypes = {
-    data: PropTypes.any,
-    hasBulkActions: PropTypes.bool.isRequired,
-    ids: PropTypes.array,
-    onToggleItem: PropTypes.func,
-    selectedIds: PropTypes.arrayOf(PropTypes.any).isRequired,
-};
-
 export default ReviewListMobile;
