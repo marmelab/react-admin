@@ -35,8 +35,8 @@ const DealList = () => {
                 component="div"
             >
                 <DealListContent />
+                <DealCreate open={!!matchCreate} />
             </List>
-            <DealCreate open={!!matchCreate} />
             <DealShow open={!!matchShow} id={matchShow?.params.id} />
         </>
     );
