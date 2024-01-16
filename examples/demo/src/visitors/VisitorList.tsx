@@ -51,7 +51,10 @@ const VisitorList = () => {
                         },
                     }}
                 >
-                    <CustomerLinkField />
+                    <CustomerLinkField
+                        source="last_name"
+                        label="resources.customers.fields.full_name"
+                    />
                     <DateField source="last_seen" />
                     <NumberField
                         source="nb_commands"

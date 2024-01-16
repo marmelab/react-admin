@@ -58,6 +58,7 @@ const customFrenchMessages: TranslationMessages = {
                 commands: 'Commandes',
                 first_name: 'Prénom',
                 first_seen: 'Première visite',
+                full_name: 'Nom',
                 groups: 'Segments',
                 has_newsletter: 'Abonné à la newsletter',
                 has_ordered: 'A commandé',

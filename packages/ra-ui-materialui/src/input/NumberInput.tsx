@@ -172,11 +172,6 @@ NumberInput.propTypes = {
     step: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 };
 
-NumberInput.defaultProps = {
-    step: 'any',
-    textAlign: 'right',
-};
-
 export interface NumberInputProps
     extends CommonInputProps,
         Omit<

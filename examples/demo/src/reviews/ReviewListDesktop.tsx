@@ -49,7 +49,7 @@ const ReviewListDesktop = ({ selectedRow }: ReviewListDesktopProps) => (
     >
         <DateField source="date" />
         <CustomerReferenceField link={false} />
-        <ProductReferenceField link={false} />
+        <ProductReferenceField source="product_id" link={false} />
         <StarRatingField size="small" />
         <TextField source="comment" />
         <TextField source="status" />

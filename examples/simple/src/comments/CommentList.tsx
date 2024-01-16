@@ -135,11 +135,6 @@ const CommentGrid = () => {
     );
 };
 
-CommentGrid.defaultProps = {
-    data: {},
-    ids: [],
-};
-
 const CommentMobileList = () => (
     <SimpleList
         primaryText={record => record.author.name}

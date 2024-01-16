@@ -81,9 +81,4 @@ const MobileGrid = () => {
     );
 };
 
-MobileGrid.defaultProps = {
-    data: {},
-    ids: [],
-};
-
 export default MobileGrid;
