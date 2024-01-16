@@ -59,7 +59,7 @@ export const generateDeals = (db: Db): Deal[] => {
         deals
             .filter(deal => deal.stage === stage)
             .forEach((deal, index) => {
-                deals[deal.id].index = index + 1;
+                deals[deal.id].index = index;
             });
     });
     return deals;

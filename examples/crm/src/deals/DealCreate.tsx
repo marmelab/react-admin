@@ -11,9 +11,11 @@ import {
     useRedirect,
     useDataProvider,
     useGetIdentity,
+    useListContext,
+    GetListResult,
 } from 'react-admin';
 import { Dialog } from '@mui/material';
-
+import { useQueryClient } from 'react-query';
 import { stageChoices } from './stages';
 import { typeChoices } from './types';
 import { Deal } from '../types';
@@ -23,31 +25,52 @@ const validateRequired = required();
 export const DealCreate = ({ open }: { open: boolean }) => {
     const redirect = useRedirect();
     const dataProvider = useDataProvider();
+    const { data: allDeals } = useListContext<Deal>();
 
     const handleClose = () => {
         redirect('/deals');
     };
 
-    const onSuccess = (deal: Deal) => {
-        redirect('/deals');
+    const queryClient = useQueryClient();
+
+    const onSuccess = async (deal: Deal) => {
         // increase the index of all deals in the same stage as the new deal
-        dataProvider
-            .getList('deals', {
-                pagination: { page: 1, perPage: 50 },
-                sort: { field: 'id', order: 'ASC' },
-                filter: { stage: deal.stage },
-            })
-            .then(({ data: deals }) =>
-                Promise.all(
-                    deals.map(oldDeal =>
-                        dataProvider.update('deals', {
-                            id: oldDeal.id,
-                            data: { index: oldDeal.index + 1 },
-                            previousData: oldDeal,
-                        })
-                    )
-                )
-            );
+        // first, get the list of deals in the same stage
+        const deals = allDeals.filter(
+            (d: Deal) => d.stage === deal.stage && d.id !== deal.id
+        );
+        // update the actual deals in the database
+        await Promise.all(
+            deals.map(async oldDeal =>
+                dataProvider.update('deals', {
+                    id: oldDeal.id,
+                    data: { index: oldDeal.index + 1 },
+                    previousData: oldDeal,
+                })
+            )
+        );
+        // refresh the list of deals in the cache as we used dataProvider.update(),
+        // which does not update the cache
+        const dealsById = deals.reduce(
+            (acc, d) => ({
+                ...acc,
+                [d.id]: { ...d, index: d.index + 1 },
+            }),
+            {} as { [key: string]: Deal }
+        );
+        const now = Date.now();
+        queryClient.setQueriesData<GetListResult | undefined>(
+            ['deals', 'getList'],
+            res => {
+                if (!res) return res;
+                return {
+                    ...res,
+                    data: res.data.map((d: Deal) => dealsById[d.id] || d),
+                };
+            },
+            { updatedAt: now }
+        );
+        redirect('/deals');
     };
 
     const { identity } = useGetIdentity();
