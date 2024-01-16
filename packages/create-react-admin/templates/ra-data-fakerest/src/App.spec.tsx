@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { App } from "./App";
 
 test("should pass", async () => {
@@ -14,19 +14,23 @@ test("should pass", async () => {
 	});
 	fireEvent.click(await screen.findByText("Sign in"));
 
-	// Test posts
+	// Open the first post
 	fireEvent.click(await screen.findByText("Post 1"));
+	// Update its title
 	fireEvent.change(await screen.findByDisplayValue("Post 1"), {
 		target: { value: "Post 1 edited" },
 	});
 	fireEvent.click(await screen.findByText("Save"));
 	await screen.findByText("Post 1 edited");
 
-	// Test comments
+	// Navigate to the comments
 	fireEvent.click(await screen.findByText("Comments"));
+	// Open the first comment
 	fireEvent.click(await screen.findByText("Comment 1"));
+	// Edit the comment selected post
 	fireEvent.click(await screen.findByDisplayValue("#0"));
 	fireEvent.click(await screen.findByText("#11"));
 	fireEvent.click(await screen.findByText("Save"));
+	// Check the comment has been updated by finding the post link in the comments list page
 	await screen.findByText("#11", { selector: "a *" });
 });
