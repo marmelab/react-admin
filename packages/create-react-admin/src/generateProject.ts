@@ -36,7 +36,12 @@ export const generateProject = async (state: ProjectConfiguration) => {
     }
 
     generateAppFile(projectDirectory, state);
-    if (state.dataProvider === 'ra-data-fakerest') {
+    if (
+        state.dataProvider === 'ra-data-fakerest' &&
+        ['posts', 'comments'].every(resource =>
+            state.resources.includes(resource)
+        )
+    ) {
         generateAppTestFile(projectDirectory, state);
     }
 
