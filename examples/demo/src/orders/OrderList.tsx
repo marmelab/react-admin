@@ -31,8 +31,8 @@ import { Customer } from '../types';
 
 const ListActions = () => (
     <TopToolbar>
-        <SelectColumnsButton />
         <FilterButton />
+        <SelectColumnsButton />
         <ExportButton />
     </TopToolbar>
 );
