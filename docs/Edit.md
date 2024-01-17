@@ -7,7 +7,7 @@ title: "The Edit Component"
 
 The `<Edit>` component is the main component for edition pages. It fetches a record based on the URL, prepares a form submit handler, and renders the page title and actions. It is not responsible for rendering the actual form - that's the job of its child component (usually a form component, like [`<SimpleForm>`](./SimpleForm.md)). This form component uses its children ([`<Input>`](./Inputs.md) components) to render each form input.
 
-![post edition form](./img/edit-view.png)
+<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/FTSSwE6Ks4c?si=qKOlIiAczSbfJWQg" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="margin: 1em auto;display: block;"></iframe>
 
 The `<Edit>` component calls `dataProvider.getOne()`, using the `id` from the URL. It creates a `RecordContext` with the result. It also creates a [`SaveContext`](./useSaveContext.md) containing a `save` callback, which calls `dataProvider.update()` when executed, and [an `EditContext`](./useEditContext.md) containing both the record and the callback.
 
@@ -19,7 +19,6 @@ For instance, the following component will render an edition form for posts when
 
 ```jsx
 // in src/posts.js
-import * as React from "react";
 import { Edit, SimpleForm, TextInput, DateInput, ReferenceManyField, Datagrid, TextField, DateField, EditButton, required } from 'react-admin';
 import RichTextInput from 'ra-input-rich-text';
 
@@ -43,14 +42,13 @@ export const PostEdit = () => (
 );
 
 // in src/App.js
-import * as React from "react";
 import { Admin, Resource } from 'react-admin';
-import jsonServerProvider from 'ra-data-json-server';
 
+import { dataProvider } from './dataProvider';
 import { PostEdit } from './posts';
 
 const App = () => (
-    <Admin dataProvider={jsonServerProvider('https://jsonplaceholder.typicode.com')}>
+    <Admin dataProvider={dataProvider}>
         <Resource name="posts" edit={PostEdit} />
     </Admin>
 );
@@ -577,6 +575,30 @@ export const UserEdit = () => {
     );
 }
 ```
+
+## Scaffolding An Edit Page
+
+You can use [`<EditGuesser>`](./EditGuesser.md) to quickly bootstrap an Edit view on top of an existing API, without adding the inputs one by one.
+
+```tsx
+// in src/App.js
+import * as React from "react";
+import { Admin, Resource, EditGuesser } from 'react-admin';
+import dataProvider from './dataProvider';
+
+const App = () => (
+    <Admin dataProvider={dataProvider}>
+        {/* ... */}
+        <Resource name="users" edit={EditGuesser} />
+    </Admin>
+);
+```
+
+Just like `<Edit>`, `<EditGuesser>` fetches the data. It then analyzes the response, and guesses the inputs it should use to display a basic `<SimpleForm>` with the data. It also dumps the components it has guessed in the console, so you can copy it into your own code.
+
+![Guessed Edit](./img/guessed-edit.png)
+
+You can learn more by reading [the `<EditGuesser>` documentation](./EditGuesser.md).
 
 ## Cleaning Up Empty Strings
 

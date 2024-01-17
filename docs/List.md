@@ -7,7 +7,7 @@ title: "The List Component"
 
 The `<List>` component is the root component for list pages. It fetches a list of records from the data provider, puts it in a [`ListContext`](./useListContext.md), renders the default list page layout (title, buttons, filters, pagination), and renders its children. Usual children of `<List>`, like [`<Datagrid>`](./Datagrid.md), are responsible for displaying the list of records.
 
-![Simple posts list](./img/simple-post-list.png)
+<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/NNNPPmEMz6s" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="margin: 1em auto;display: block;"></iframe>
 
 ## Usage
 
@@ -45,6 +45,8 @@ export default App;
 ```
 
 That's enough to display a basic post list, with functional sort and pagination.
+
+![Simple posts list](./img/simple-post-list.png)
 
 You can find more advanced examples of `<List>` usage in the [demos](./Demos.md).
 
@@ -976,6 +978,30 @@ const PostList = () => (
 {% endraw %}
 
 **Tip**: The `List` component `classes` can also be customized for all instances of the component with its global css name `RaList` as [describe here](https://marmelab.com/blog/2019/12/18/react-admin-3-1.html#theme-overrides)
+
+## Scaffolding a List page
+
+You can use [`<ListGuesser>`](./ListGuesser.md) to quickly bootstrap an List view on top of an existing API, without adding the fields one by one.
+
+```jsx
+// in src/App.js
+import * as React from "react";
+import { Admin, Resource, ListGuesser } from 'react-admin';
+import { dataProvider } from './dataProvider';
+
+const App = () => (
+    <Admin dataProvider={dataProvider}>
+        {/* ... */}
+        <Resource name="comments" list={ListGuesser} />
+    </Admin>
+);
+```
+
+Just like `<List>`, `<ListGuesser>` fetches the data. It then analyzes the response, and guesses the fields it should use to display a basic `<Datagrid>` with the data. It also dumps the components it has guessed in the console, so you can copy it into your own code.
+
+![Guessed List](./img/guessed-list.png)
+
+You can learn more by reading [the `<ListGuesser>` documentation](./ListGuesser.md).
 
 ## Infinite Scroll Pagination
 
