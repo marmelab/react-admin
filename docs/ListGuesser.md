@@ -7,7 +7,7 @@ title: "The ListGuesser Component"
 
 Use `<ListGuesser>` to quickly bootstrap a List view on top of an existing API, without adding the fields one by one.
 
-<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/zImWX8HBr7A" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="margin: 1em auto;display: block;"></iframe>
+<iframe src="https://www.youtube-nocookie.com/embed/zImWX8HBr7A" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;"></iframe>
 
 Just like [`<List>`](./List.md), `<ListGuesser>` fetches the data. It then analyzes the response, and guesses the fields it should use to display a basic `<Datagrid>` with the data. It also dumps the components it has guessed in the console, so you can copy it into your own code.
 
