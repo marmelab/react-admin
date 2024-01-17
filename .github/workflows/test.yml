@@ -142,18 +142,15 @@ jobs:
     # TODO: uncomment once ready
     # if: success() && github.ref_type == 'tag'
     steps:
-      # TODO: remove once latest create-react-admin is released
       - name: Checkout
         uses: actions/checkout@v2
       - name: Use Node.js LTS
         uses: actions/setup-node@v1
         with:
           node-version: '18.x'
-      # TODO: remove once latest create-react-admin is released
       - uses: bahmutov/npm-install@v1
         with:
           install-command: yarn --immutable
-      # TODO: remove once latest create-react-admin is released
       - name: Build create-react-admin
         run: make build-create-react-admin install
       - name: Create new project
