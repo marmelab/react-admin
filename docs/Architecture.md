@@ -200,7 +200,11 @@ The trade-off with this approach is that sometimes react-admin may require you t
 import { Layout } from 'react-admin';
 import { Menu } from './Menu';
 
-export const Layout = (props) => <Layout {...props} menu={Menu} />;
+export const Layout = ({ children }) => (
+    <Layout menu={Menu}>
+        {children}
+    </Layout>
+);
 
 // in src/App.js
 import { Layout }  from './Layout';

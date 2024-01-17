@@ -31,8 +31,8 @@ import { AutocompleteArrayInput } from './AutocompleteArrayInput';
  * or <CheckboxGroupInput>.
  *
  * @example
- * export const PostEdit = (props) => (
- *     <Edit {...props}>
+ * export const PostEdit = () => (
+ *     <Edit>
  *         <SimpleForm>
  *             <ReferenceArrayInput source="tag_ids" reference="tags">
  *                 <SelectArrayInput optionText="name" />

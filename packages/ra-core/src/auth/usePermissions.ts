@@ -31,12 +31,12 @@ const emptyParams = {};
  * @example
  *     import { usePermissions } from 'react-admin';
  *
- *     const PostDetail = props => {
+ *     const PostDetail = () => {
  *         const { isPending, permissions } = usePermissions();
  *         if (!isPending && permissions == 'editor') {
- *             return <PostEdit {...props} />
+ *             return <PostEdit />
  *         } else {
- *             return <PostShow {...props} />
+ *             return <PostShow />
  *         }
  *     };
  */

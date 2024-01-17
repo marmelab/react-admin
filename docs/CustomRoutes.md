@@ -158,7 +158,11 @@ Next, pass the custom menu to a custom `<Layout>` component:
 import { Layout } from 'react-admin';
 import { MyMenu } from './MyMenu';
 
-export const MyLayout = (props) => <Layout {...props} menu={MyMenu} />;
+export const MyLayout = ({ children }) => (
+    <Layout menu={MyMenu}>
+        {children}
+    </Layout>
+);
 ```
 
 Finally, pass the custom `<Layout>` component to `<Admin>`:

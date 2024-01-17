@@ -598,7 +598,11 @@ Layout components can be customized via props. For instance, you can pass a cust
 import { Layout } from 'react-admin';
 import MyMenu from './MyMenu';
 
-export const MyLayout = (props) => <Layout {...props} menu={MyMenu} />;
+export const MyLayout = ({ children }) => (
+    <Layout menu={MyMenu}>
+        {children}
+    </Layout>
+);
 ```
 
 Then, pass it to the `<Admin>` component as the `layout` prop:

@@ -800,7 +800,11 @@ To use this custom menu component, pass it to a custom Layout:
 import { Layout } from 'react-admin';
 import { Menu } from './Menu';
 
-export const Layout = (props) => <Layout {...props} menu={Menu} />;
+export const Layout = ({ children }) => (
+    <Layout menu={Menu}>
+        {children}
+    </Layout>
+);
 ```
 
 Then, use this layout in the `<Admin>` `layout` prop:

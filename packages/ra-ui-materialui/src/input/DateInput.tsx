@@ -16,8 +16,8 @@ import { InputHelperText } from './InputHelperText';
  * @example
  * import { Edit, SimpleForm, DateInput } from 'react-admin';
  *
- * const PostEdit = (props) => (
- *     <Edit {...props}>
+ * const PostEdit = () => (
+ *     <Edit>
  *         <SimpleForm>
  *             <DateInput source="published_at" />
  *         </SimpleForm>

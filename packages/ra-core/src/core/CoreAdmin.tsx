@@ -97,7 +97,6 @@ export const CoreAdmin = (props: CoreAdminProps) => {
         layout,
         loading,
         loginPage,
-        menu, // deprecated, use a custom layout instead
         ready,
         requireAuth,
         store,
@@ -117,7 +116,6 @@ export const CoreAdmin = (props: CoreAdminProps) => {
                 layout={layout}
                 dashboard={dashboard}
                 disableTelemetry={disableTelemetry}
-                menu={menu}
                 catchAll={catchAll}
                 title={title}
                 loading={loading}

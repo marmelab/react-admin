@@ -5,14 +5,15 @@ import Button from '@mui/material/Button';
 import HotTub from '@mui/icons-material/HotTub';
 import History from '@mui/icons-material/History';
 
-import { useAuthenticated, useTranslate } from 'ra-core';
+import { useAuthenticated, useDefaultTitle, useTranslate } from 'ra-core';
 import { Title } from './Title';
 
 export const NotFound = props => {
-    const { className, title, ...rest } = props;
+    const { className, ...rest } = props;
 
     const translate = useTranslate();
     useAuthenticated();
+    const title = useDefaultTitle();
     return (
         <Root className={className} {...sanitizeRestProps(rest)}>
             <Title defaultTitle={title} />

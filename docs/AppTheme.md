@@ -352,7 +352,11 @@ const MySidebar = (props) => (
     />
 );
 
-const MyLayout = props => <Layout {...props} sidebar={MySidebar} />
+const MyLayout = ({ children }) => (
+    <Layout sidebar={MySidebar}>
+        {children}
+    </Layout>
+);
 ```
 {% endraw %}
 

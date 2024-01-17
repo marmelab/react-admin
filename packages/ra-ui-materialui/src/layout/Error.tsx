@@ -13,7 +13,9 @@ import {
 import ErrorIcon from '@mui/icons-material/Report';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import History from '@mui/icons-material/History';
-import { TitleComponent, useTranslate } from 'ra-core';
+import { useTranslate, useDefaultTitle } from 'ra-core';
+import type { TitleComponent } from 'ra-core';
+
 import { Title, TitlePropType } from './Title';
 import { useResetErrorBoundaryOnLocationChange } from './useResetErrorBoundaryOnLocationChange';
 
@@ -28,11 +30,11 @@ export const Error = (
         errorInfo,
         resetErrorBoundary,
         className,
-        title,
         ...rest
     } = props;
 
     const translate = useTranslate();
+    const title = useDefaultTitle();
     useResetErrorBoundaryOnLocationChange(resetErrorBoundary);
 
     if (ErrorComponent) {
@@ -129,9 +131,9 @@ Error.propTypes = {
 
 interface InternalErrorProps
     extends Omit<HtmlHTMLAttributes<HTMLDivElement>, 'title'>,
-        FallbackProps,
-        ErrorProps {
+        FallbackProps {
     className?: string;
+    errorInfo?: ErrorInfo;
 }
 
 export interface ErrorProps extends Pick<FallbackProps, 'error'> {

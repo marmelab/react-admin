@@ -50,7 +50,7 @@ const Content = () => (
 const Wrapper = ({
     children = <Content />,
     theme = createTheme(defaultTheme),
-    layout: LayoutProp = Layout,
+    layout: LayoutComponent = Layout,
 }) => (
     <MemoryRouter>
         <QueryClientProvider client={new QueryClient()}>
@@ -58,10 +58,10 @@ const Wrapper = ({
                 <StoreContextProvider value={memoryStore()}>
                     <PreferencesEditorContextProvider>
                         <AuthContext.Provider value={undefined as any}>
-                            <LayoutProp>
+                            <LayoutComponent>
                                 {children}
                                 <Title title="React Admin" />
-                            </LayoutProp>
+                            </LayoutComponent>
                         </AuthContext.Provider>
                     </PreferencesEditorContextProvider>
                 </StoreContextProvider>
@@ -93,8 +93,12 @@ const Menu = () => (
     </MenuList>
 );
 
-const BasicLayout = props => <Layout menu={Menu} {...props} />;
+const BasicLayout = ({ children }) => <Layout menu={Menu}>{children}</Layout>;
 export const Basic = () => <Wrapper layout={BasicLayout} />;
 
-const AppBarAlwaysOnLayout = props => <BasicLayout appBarAlwaysOn {...props} />;
+const AppBarAlwaysOnLayout = ({ children }) => (
+    <Layout appBarAlwaysOn menu={Menu}>
+        {children}
+    </Layout>
+);
 export const AppBarAlwaysOn = () => <Wrapper layout={AppBarAlwaysOnLayout} />;

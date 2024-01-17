@@ -11,8 +11,8 @@ import { useWrappedSource } from '../core';
  *
  * @example
  *
- * const PostEdit = (props) => (
- *     <Edit {...props}>
+ * const PostEdit = () => (
+ *     <Edit>
  *         <SimpleForm<FieldValues>>
  *             <BooleanInput source="hasEmail" />
  *             <FormDataConsumer>
@@ -26,8 +26,8 @@ import { useWrappedSource } from '../core';
  *
  * @example
  *
- * const OrderEdit = (props) => (
- *     <Edit {...props}>
+ * const OrderEdit = () => (
+ *     <Edit>
  *         <SimpleForm>
  *             <SelectInput source="country" choices={countries} />
  *             <FormDataConsumer<FieldValues>>

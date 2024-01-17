@@ -34,10 +34,13 @@ Then, create a custom layout using [the `<Layout>` component](./Layout.md) and p
 ```jsx
 // in src/MyLayout.js
 import { Layout } from 'react-admin';
-
 import { MyMenu } from './MyMenu';
 
-export const MyLayout = props => <Layout {...props} menu={MyMenu} />;
+export const MyLayout = ({ children }) => (
+    <Layout menu={MyMenu}>
+        {children}
+    </Layout>
+);
 ```
 
 Finally, pass this custom layout to the `<Admin>` component:
@@ -79,7 +82,11 @@ import PeopleIcon from '@mui/icons-material/People';
 import { dataProvider } from './dataProvider';
 
 const MyMenu = () => <Menu />;
-const MyLayout = (props) => <Layout {...props} menu={MyMenu} />
+const MyLayout = ({ children }) => (
+    <Layout menu={MyMenu}>
+        {children}
+    </Layout>
+);
 
 const App = () => (
     <Admin dataProvider={dataProvider} layout={MyLayout} dashboard={MyDashboard}>
@@ -91,7 +98,7 @@ const App = () => (
 );
 ```
 
-Renders the following menu: 
+Renders the following menu:
 
 ![standard menu with dashboard](./img/menu-with-dashboard.webp)
 
@@ -416,12 +423,15 @@ If you need to display a menu item with a submenu, you should use [the `<MultiLe
 You can display a badge on the menu item to indicate that new data is available. Use [the `<MenuLive>` component](./MenuLive.md) instead of `<Menu>` to enable this feature.
 
 ```tsx
-import { Admin, Layout, LayoutProps, Resource } from 'react-admin';
+import type { ReactNode } from 'react';
+import { Admin, Layout, Resource } from 'react-admin';
 import { MenuLive } from '@react-admin/ra-realtime';
 import { PostList, PostShow, PostEdit, realTimeDataProvider } from '.';
 
-const CustomLayout = (props: LayoutProps) => (
-    <Layout {...props} menu={MenuLive} />
+const CustomLayout = ({ children}: { children: ReactNode }) => (
+    <Layout menu={MenuLive}>
+        {children}
+    </Layout>
 );
 
 const MyReactAdmin = () => (

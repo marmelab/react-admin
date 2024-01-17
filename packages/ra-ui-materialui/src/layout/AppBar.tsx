@@ -49,8 +49,6 @@ export const AppBar: FC<AppBarProps> = memo(props => {
         children,
         className,
         color = 'secondary',
-        open,
-        title,
         toolbar = defaultToolbarElement,
         userMenu = DefaultUserMenu,
         container: Container = alwaysOn ? 'div' : HideOnScroll,
@@ -119,17 +117,13 @@ AppBar.propTypes = {
         'transparent',
     ]),
     container: ComponentPropType,
-    /**
-     * @deprecated
-     */
-    open: PropTypes.bool,
     toolbar: PropTypes.element,
     userMenu: PropTypes.oneOfType([PropTypes.element, PropTypes.bool]),
 };
 
 const DefaultUserMenu = <UserMenu />;
 
-export interface AppBarProps extends Omit<MuiAppBarProps, 'title'> {
+export interface AppBarProps extends MuiAppBarProps {
     /**
      * This prop is injected by Layout. You should not use it directly unless
      * you are using a custom layout.
@@ -137,14 +131,6 @@ export interface AppBarProps extends Omit<MuiAppBarProps, 'title'> {
      */
     alwaysOn?: boolean;
     container?: React.ElementType<any>;
-    /**
-     * @deprecated injected by Layout but not used by this AppBar
-     */
-    open?: boolean;
-    /**
-     * @deprecated injected by Layout but not used by this AppBar
-     */
-    title?: string | JSX.Element;
     toolbar?: JSX.Element;
     userMenu?: JSX.Element | boolean;
 }

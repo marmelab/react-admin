@@ -318,16 +318,9 @@ export type CatchAllComponent = ComponentType<{ title?: TitleComponent }>;
 export type LoginComponent = ComponentType<{}> | ReactElement<any>;
 export type DashboardComponent = ComponentType<WithPermissionsChildrenParams>;
 
-export interface CoreLayoutProps {
-    children?: ReactNode;
-    dashboard?: DashboardComponent;
-    menu?: ComponentType<{
-        hasDashboard?: boolean;
-    }>;
-    title?: TitleComponent;
-}
-
-export type LayoutComponent = ComponentType<CoreLayoutProps>;
+export type LayoutComponent = ComponentType<{
+    children: ReactNode;
+}>;
 export type LoadingComponent = ComponentType<{
     loadingPrimary?: string;
     loadingSecondary?: string;

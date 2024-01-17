@@ -108,7 +108,9 @@ const MyAppBar = () => (
         <ToggleThemeButton darkTheme={{ palette: { mode: 'dark' } }} />
     </AppBar>
 );
-const MyLayout = props => <Layout {...props} appBar={MyAppBar} />;
+const MyLayout = ({ children }) => (
+    <Layout appBar={MyAppBar}>{children}</Layout>
+);
 
 export const Legacy = () => (
     <Admin

@@ -19,7 +19,11 @@ import { RaThemeOptions, useThemesContext, useTheme } from '../theme';
  *     <AppBar toolbar={<ToggleThemeButton />} />
  * );
  *
- * const MyLayout = props => <Layout {...props} appBar={MyAppBar} />;
+ * const MyLayout = ({ children }) => (
+ *     <Layout appBar={MyAppBar}>
+ *         {children}
+ *     </Layout>
+ * );
  */
 export const ToggleThemeButton = (props: ToggleThemeButtonProps) => {
     const translate = useTranslate();

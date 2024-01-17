@@ -33,10 +33,13 @@ Then, pass the custom App Bar in a custom `<Layout>`, and the `<Layout>` to your
 {% raw %}
 ```jsx
 import { Admin, Layout } from 'react-admin';
-
 import { MyAppBar } from './MyAppBar';
 
-const MyLayout = (props) => <Layout {...props} appBar={MyAppBar} />;
+const MyLayout = ({ children }) => (
+    <Layout appBar={MyAppBar}>
+        {children}
+    </Layout>
+);
 
 const App = () => (
     <Admin

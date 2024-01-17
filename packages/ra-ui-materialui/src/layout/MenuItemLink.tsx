@@ -53,7 +53,11 @@ import { useTranslate, useBasename } from 'ra-core';
  * import { Layout } from 'react-admin';
  * import { Menu } from './Menu';
  *
- * export const Layout = (props) => <Layout {...props} menu={Menu} />;
+ * export const Layout = ({ children }) => (
+ *     <Layout menu={Menu}>
+ *         {children}
+ *     </Layout>
+ * );
  *
  * // then, use this layout in the <Admin layout> prop:
  * // in src/App.js

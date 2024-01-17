@@ -17,10 +17,11 @@ Include this component in a custom layout:
 
 ```tsx
 // in src/MyLayout.tsx
-import { CheckForApplicationUpdate, Layout, LayoutProps } from 'react-admin';
+import type { ReactNode } from 'react';
+import { CheckForApplicationUpdate, Layout } from 'react-admin';
 
-export const MyLayout = ({ children, ...props }: LayoutProps) => (
-    <Layout {...props}>
+export const MyLayout = ({ children }: { children: ReactNode}) => (
+    <Layout>
         {children}
         <CheckForApplicationUpdate />
     </Layout>
@@ -56,12 +57,13 @@ You can customize the interval between each check by providing the `interval` pr
 
 ```tsx
 // in src/MyLayout.tsx
-import { CheckForApplicationUpdate, Layout, LayoutProps } from 'react-admin';
+import type { ReactNode } from 'react';
+import { CheckForApplicationUpdate, Layout } from 'react-admin';
 
 const HALF_HOUR = 30 * 60 * 1000;
 
-export const MyLayout = ({ children, ...props }: LayoutProps) => (
-    <Layout {...props}>
+export const MyLayout = ({ children }: { children: ReactNode}) => (
+    <Layout>
         {children}
         <CheckForApplicationUpdate interval={HALF_HOUR} />
     </Layout>
@@ -74,10 +76,11 @@ You can dynamically disable the automatic application update detection by provid
 
 ```tsx
 // in src/MyLayout.tsx
-import { CheckForApplicationUpdate, Layout, LayoutProps } from 'react-admin';
+import type { ReactNode } from 'react';
+import { CheckForApplicationUpdate, Layout } from 'react-admin';
 
-export const MyLayout = ({ children, ...props }: LayoutProps) => (
-    <Layout {...props}>
+export const MyLayout = ({ children }: { children: ReactNode}) => (
+    <Layout>
         {children}
         <CheckForApplicationUpdate disabled={process.env.NODE_ENV !== 'production'} />
     </Layout>
@@ -91,7 +94,7 @@ Note that you must wrap your component with `forwardRef`.
 
 ```tsx
 // in src/MyLayout.tsx
-import { forwardRef } from 'react';
+import { forwardRef, ReactNode } from 'react';
 import { Layout, CheckForApplicationUpdate } from 'react-admin';
 
 const CustomAppUpdatedNotification = forwardRef((props, ref) => (
@@ -112,8 +115,8 @@ const CustomAppUpdatedNotification = forwardRef((props, ref) => (
     </Alert>
 ));
 
-const MyLayout = ({ children, ...props }) => (
-    <Layout {...props}>
+const MyLayout = ({ children }: { children: ReactNode}) => (
+    <Layout>
         {children}
         <CheckForApplicationUpdate notification={<CustomAppUpdatedNotification />}/>
     </Layout>
@@ -163,12 +166,13 @@ You can customize the URL fetched to detect updates by providing the `url` prop.
 
 ```tsx
 // in src/MyLayout.tsx
-import { CheckForApplicationUpdate, Layout, LayoutProps } from 'react-admin';
+import type { ReactNode } from 'react';
+import { CheckForApplicationUpdate, Layout } from 'react-admin';
 
 const MY_APP_ROOT_URL = 'https://admin.mycompany.com';
 
-export const MyLayout = ({ children, ...props }: LayoutProps) => (
-    <Layout {...props}>
+export const MyLayout = ({ children }: { children: ReactNode}) => (
+    <Layout>
         {children}
         <CheckForApplicationUpdate url={MY_APP_ROOT_URL} />
     </Layout>
