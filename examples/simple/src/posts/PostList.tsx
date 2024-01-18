@@ -110,13 +110,21 @@ const StyledDatagrid = styled(DatagridConfigurable)(({ theme }) => ({
     '& .publishedAt': { fontStyle: 'italic' },
 }));
 
-const PostListBulkActions = memo(() => (
-    <Fragment>
-        <ResetViewsButton />
-        <BulkDeleteButton />
-        <BulkExportButton />
-    </Fragment>
-));
+const PostListBulkActions = memo(
+    ({
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        children,
+        ...props
+    }: {
+        children?: React.ReactNode;
+    }) => (
+        <Fragment>
+            <ResetViewsButton {...props} />
+            <BulkDeleteButton {...props} />
+            <BulkExportButton {...props} />
+        </Fragment>
+    )
+);
 
 const PostListActions = () => (
     <TopToolbar>
