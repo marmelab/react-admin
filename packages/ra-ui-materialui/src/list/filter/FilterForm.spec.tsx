@@ -78,7 +78,7 @@ describe('<FilterForm />', () => {
             </AdminContext>
         );
         expect(screen.queryAllByLabelText('Title')).toHaveLength(1);
-        expect(screen.queryAllByLabelText('Name')).toHaveLength(1);
+        expect(screen.queryAllByLabelText('Title2')).toHaveLength(1);
     });
 
     it('should change the filter when the user updates an input', async () => {
