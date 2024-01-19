@@ -19,8 +19,6 @@ export const useTranslateLabel = () => {
             label?: string | false | ReactElement;
             resource?: string;
         }) => {
-            const finalSource = sourceContext?.getSource(source) ?? source;
-
             if (label === false || label === '') {
                 return null;
             }
@@ -35,7 +33,7 @@ export const useTranslateLabel = () => {
                     defaultLabel: sourceContext?.getLabel(source),
                     resource,
                     resourceFromContext,
-                    source: finalSource,
+                    source,
                 })
             );
         },
