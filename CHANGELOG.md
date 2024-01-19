@@ -1,5 +1,12 @@
 # Changelog
 
+## v4.16.7
+
+* Fix `<FileInputPreview>` propTypes ([#9596](https://github.com/marmelab/react-admin/pull/9596)) ([djhi](https://github.com/djhi))
+* [Demo] Remove useless `defaultProps` usage ([#9586](https://github.com/marmelab/react-admin/pull/9586)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Add documentation for the versioning features ([#9584](https://github.com/marmelab/react-admin/pull/9584)) ([fzaninotto](https://github.com/fzaninotto))
+* [Demo] Fix new deal does not appear in the correct order in CRM ([#9582](https://github.com/marmelab/react-admin/pull/9582)) ([adguernier](https://github.com/adguernier))
+
 ## v4.16.6
 
 * Fix click on `<Datagrid>` Select All button bubbles up to parent Datagrid ([#9567](https://github.com/marmelab/react-admin/pull/9567)) ([Dreamsorcerer](https://github.com/Dreamsorcerer))
