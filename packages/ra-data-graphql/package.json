@@ -1,6 +1,6 @@
 {
     "name": "ra-data-graphql",
-    "version": "4.16.6",
+    "version": "4.16.7",
     "description": "A GraphQL data provider for react-admin",
     "main": "dist/cjs/index.js",
     "module": "dist/esm/index.js",
