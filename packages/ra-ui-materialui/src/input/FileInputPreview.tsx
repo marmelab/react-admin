@@ -50,7 +50,7 @@ FileInputPreview.propTypes = {
     className: PropTypes.string,
     file: PropTypes.object,
     onRemove: PropTypes.func.isRequired,
-    removeIcon: PropTypes.element,
+    removeIcon: PropTypes.elementType,
 };
 
 const PREFIX = 'RaFileInputPreview';
