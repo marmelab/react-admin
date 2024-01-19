@@ -451,7 +451,7 @@ const CarList = () => {
   Your browser does not support the video tag.
 </video>
 
-### `preferenceKey`
+## `preferenceKey`
 
 `<DatagridAG>` will store the [`gridState`](https://www.ag-grid.com/react-data-grid/grid-state/) in the [Store](https://marmelab.com/react-admin/Store.html), under the key `${resource}.ag-grid.params.grid`. This `gridState` persisted in the store is applied once when the grid is created, it means that users will find the grid as they left it previously.
 

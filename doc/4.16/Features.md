@@ -840,7 +840,6 @@ You can also use the [`<SmartRichTextInput>`](./SmartRichTextInput.md) component
 
 ## Fast
 
-
 React-admin takes advantage of the Single-Page-Application architecture, implementing various performance optimizations that make react-admin apps incredibly fast by default.
 
 - **Non-Blocking Data Fetching**: Instead of waiting for API data before starting to render the UI, React-admin initiates the rendering process immediately. This strategy ensures a snappy application where user interactions receive instant feedback, outperforming Server-side Rendered apps by eliminating waiting times for server responses.
@@ -939,6 +938,31 @@ To learn more about authentication, roles, and permissions, check out the follow
 - [`useCanAccess`](./useCanAccess.md)
 - [`canAccess`](./canAccess.md)
 
+## Revisions & Versioning
+
+React-admin lets users **track the changes** made to any record. They can see the **history of revisions**, **compare differences** between any two versions, and **revert to a previous state** if needed.
+
+<video controls autoplay playsinline muted loop>
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-history.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
+In detail, revision tracking lets you:
+
+- Prevent data loss with robust version control
+- Enhance transparency with detailed change logs
+- Uncover insights with the 'diff' feature, a powerful tool for comparing versions
+- Boost confidence in making changes with easy rollback options
+
+These features are available through the following components:
+
+- [`<SimpleFormWithRevision>`](https://marmelab.com/ra-enterprise/modules/ra-history#simpleformwithrevision)
+- [`<TabbedFormWithRevision>`](https://marmelab.com/ra-enterprise/modules/ra-history#tabbedformwithrevision)
+- [`<RevisionsButton>`](./RevisionsButton.md)
+- [`<RevisionListWithDetailsInDialog>`](https://marmelab.com/ra-enterprise/modules/ra-history#revisionlistwithdetailsindialog)
+- [`<FieldDiff>`](https://marmelab.com/ra-enterprise/modules/ra-history#fielddiff)
+- [`<SmartFieldDiff>`](https://marmelab.com/ra-enterprise/modules/ra-history#smartfielddiff)
+
 ## Audit Log
 
 Most admin and B2B apps require that user actions are recorded for audit purposes. React-admin provides templates for displaying such audit logs, and helpers to automatically **record user actions**.
@@ -963,6 +987,14 @@ const Dashboard = () => {
   return <Timeline isLoading={isLoading} records={data} />;
 };
 ```
+
+The Audit Log features let you:
+
+- Comply with data and action traceability regulations
+- Troubleshoot and resolve problems with a clear action trail
+- Boost security by detecting unusual activity
+- Improve accountability with detailed action records
+- Monitor user activity with an aggregated timeline
 
 These features are available through the following components:
 
