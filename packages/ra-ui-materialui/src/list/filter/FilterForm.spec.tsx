@@ -59,8 +59,8 @@ describe('<FilterForm />', () => {
     it('should retain key values in the form inputs', () => {
         // As key is not rendered, we just test that the React warning doesn't occur.
         const origWarn = console.warn;
-        console.warn = (message) => {
-            throw new Error(message)
+        console.warn = message => {
+            throw new Error(message);
         };
 
         const setFilters = jest.fn();
