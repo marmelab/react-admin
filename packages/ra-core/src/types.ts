@@ -318,9 +318,11 @@ export type CatchAllComponent = ComponentType<{ title?: TitleComponent }>;
 export type LoginComponent = ComponentType<{}> | ReactElement<any>;
 export type DashboardComponent = ComponentType<WithPermissionsChildrenParams>;
 
-export type LayoutComponent = ComponentType<{
+export interface CoreLayoutProps {
     children: ReactNode;
-}>;
+}
+
+export type LayoutComponent = ComponentType<CoreLayoutProps>;
 export type LoadingComponent = ComponentType<{
     loadingPrimary?: string;
     loadingSecondary?: string;
