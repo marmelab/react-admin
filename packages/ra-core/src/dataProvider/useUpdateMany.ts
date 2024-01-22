@@ -236,7 +236,7 @@ export const useUpdateMany = <
                 // call-time error callback is executed by react-query
             },
             onSuccess: (
-                data: Array<RecordType['id']>,
+                dataFromResponse: Array<RecordType['id']>,
                 variables: Partial<UseUpdateManyMutateParams<RecordType>> = {},
                 context: unknown
             ) => {
@@ -257,7 +257,7 @@ export const useUpdateMany = <
 
                     if (reactMutationOptions.onSuccess) {
                         reactMutationOptions.onSuccess(
-                            data,
+                            dataFromResponse,
                             variables,
                             context
                         );
