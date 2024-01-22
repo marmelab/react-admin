@@ -2,7 +2,7 @@ import inflection from 'inflection';
 
 interface Args {
     label?: string;
-    prefix?: string;
+    defaultLabel?: string;
     resource?: string;
     resourceFromContext?: string;
     source?: string;
@@ -12,7 +12,7 @@ type TranslationArguments = [string, any?];
 
 /**
  * Returns an array of arguments to use with the translate function for the label of a field.
- * The label will be the one specified by the label prop or one computed from the resource and source props.
+ * The label will be computed from the resource and source props.
  *
  * Usage:
  *  <span>
@@ -21,10 +21,18 @@ type TranslationArguments = [string, any?];
  *
  * @see useTranslateLabel for a ready-to-use hook
  */
-export default (options?: Args): TranslationArguments => {
+export const getFieldLabelTranslationArgs = (
+    options?: Args
+): TranslationArguments => {
     if (!options) return [''];
 
-    const { label, prefix, resource, resourceFromContext, source } = options;
+    const {
+        label,
+        defaultLabel,
+        resource,
+        resourceFromContext,
+        source,
+    } = options;
 
     if (typeof label !== 'undefined') return [label, { _: label }];
 
@@ -32,27 +40,32 @@ export default (options?: Args): TranslationArguments => {
 
     const { sourceWithoutDigits, sourceSuffix } = getSourceParts(source);
 
-    const defaultLabel = inflection.transform(
+    const defaultLabelTranslation = inflection.transform(
         sourceSuffix.replace(/\./g, ' '),
         ['underscore', 'humanize']
     );
 
     if (resource) {
         return [
-            `resources.${resource}.fields.${sourceWithoutDigits}`,
-            { _: defaultLabel },
+            getResourceFieldLabelKey(resource, sourceWithoutDigits),
+            { _: defaultLabelTranslation },
         ];
     }
 
-    if (prefix) {
-        return [`${prefix}.${sourceWithoutDigits}`, { _: defaultLabel }];
+    if (defaultLabel) {
+        return [defaultLabel, { _: defaultLabelTranslation }];
     }
 
     return [
-        `resources.${resourceFromContext}.fields.${sourceWithoutDigits}`,
-        { _: defaultLabel },
+        getResourceFieldLabelKey(resourceFromContext, sourceWithoutDigits),
+        { _: defaultLabelTranslation },
     ];
 };
+
+export default getFieldLabelTranslationArgs;
+
+export const getResourceFieldLabelKey = (resource: string, source: string) =>
+    `resources.${resource}.fields.${source}`;
 
 /**
  * Uses the source string to guess a translation message and a default label.

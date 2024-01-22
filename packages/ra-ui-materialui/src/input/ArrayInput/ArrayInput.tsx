@@ -10,6 +10,7 @@ import {
     useGetValidationErrorMessage,
     useFormGroupContext,
     useFormGroups,
+    useWrappedSource,
 } from 'ra-core';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 import {
@@ -90,6 +91,7 @@ export const ArrayInput = (props: ArrayInputProps) => {
 
     const formGroupName = useFormGroupContext();
     const formGroups = useFormGroups();
+    const finalSource = useWrappedSource(source);
 
     const sanitizedValidate = Array.isArray(validate)
         ? composeSyncValidators(validate)
@@ -105,7 +107,7 @@ export const ArrayInput = (props: ArrayInputProps) => {
     } = useFormContext();
 
     const fieldProps = useFieldArray({
-        name: source,
+        name: finalSource,
         rules: {
             validate: async value => {
                 if (!sanitizedValidate) return true;
@@ -125,14 +127,14 @@ export const ArrayInput = (props: ArrayInputProps) => {
 
     // We need to register the array itself as a field to enable validation at its level
     useEffect(() => {
-        register(source);
-        formGroups.registerField(source, formGroupName);
+        register(finalSource);
+        formGroups.registerField(finalSource, formGroupName);
 
         return () => {
-            unregister(source, { keepValue: true });
-            formGroups.unregisterField(source, formGroupName);
+            unregister(finalSource, { keepValue: true });
+            formGroups.unregisterField(finalSource, formGroupName);
         };
-    }, [register, unregister, source, formGroups, formGroupName]);
+    }, [register, unregister, finalSource, formGroups, formGroupName]);
 
     useApplyInputDefaultValues({
         inputProps: props,
@@ -140,7 +142,7 @@ export const ArrayInput = (props: ArrayInputProps) => {
         fieldArrayInputControl: fieldProps,
     });
 
-    const { isDirty, error } = getFieldState(source, formState);
+    const { isDirty, error } = getFieldState(finalSource, formState);
 
     if (isPending) {
         return (
@@ -166,7 +168,7 @@ export const ArrayInput = (props: ArrayInputProps) => {
             {...sanitizeInputRestProps(rest)}
         >
             <InputLabel
-                htmlFor={source}
+                htmlFor={finalSource}
                 className={ArrayInputClasses.label}
                 shrink
                 error={(isDirty || isSubmitted) && !!error}

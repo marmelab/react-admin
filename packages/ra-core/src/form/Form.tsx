@@ -14,8 +14,7 @@ import {
     OptionalRecordContextProvider,
     SaveHandler,
 } from '../controller';
-import { useResourceContext } from '../core';
-import { LabelPrefixContextProvider } from '../util';
+import { SourceContextProvider, SourceContextValue, useResourceContext } from '../core';
 import { ValidateForm } from './getSimpleValidationResolver';
 import { useAugmentedForm } from './useAugmentedForm';
 
@@ -53,10 +52,14 @@ export const Form = <RecordType = any>(props: FormProps<RecordType>) => {
     const record = useRecordContext(props);
     const resource = useResourceContext(props);
     const { form, formHandleSubmit } = useAugmentedForm(props);
+    const sourceContext = React.useMemo<SourceContextValue>(() => ({
+        getSource: (source: string) => source,
+        getLabel: (source: string) => `resources.${resource}.fields.${source}`,
+    }), [resource]);
 
     return (
         <OptionalRecordContextProvider value={record}>
-            <LabelPrefixContextProvider prefix={`resources.${resource}.fields`}>
+            <SourceContextProvider value={sourceContext}>
                 <FormProvider {...form}>
                     <FormGroupsProvider>
                         <form
@@ -69,7 +72,7 @@ export const Form = <RecordType = any>(props: FormProps<RecordType>) => {
                         </form>
                     </FormGroupsProvider>
                 </FormProvider>
-            </LabelPrefixContextProvider>
+            </SourceContextProvider>
         </OptionalRecordContextProvider>
     );
 };

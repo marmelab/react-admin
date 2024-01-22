@@ -160,11 +160,11 @@ const PostEdit = () => {
                                     <AutocompleteInput helperText={false} />
                                 </ReferenceInput>
                                 <FormDataConsumer>
-                                    {({ scopedFormData, getSource, ...rest }) =>
+                                    {({ scopedFormData }) =>
                                         scopedFormData &&
                                         scopedFormData.user_id ? (
                                             <SelectInput
-                                                source={getSource('role')}
+                                                source="source"
                                                 choices={[
                                                     {
                                                         id: 'headwriter',
@@ -180,7 +180,6 @@ const PostEdit = () => {
                                                     },
                                                 ]}
                                                 helperText={false}
-                                                {...rest}
                                             />
                                         ) : null
                                     }

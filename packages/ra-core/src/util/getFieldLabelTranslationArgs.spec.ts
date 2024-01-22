@@ -80,17 +80,17 @@ describe('getFieldLabelTranslationArgs', () => {
             getFieldLabelTranslationArgs({
                 resource: 'posts',
                 resourceFromContext: 'users',
-                prefix: 'resources.users.fields',
+                defaultLabel: 'resources.users.fields.name',
                 source: 'referenceOne.users@@name',
             })
         ).toEqual(['resources.users.fields.name', { _: 'Name' }]);
     });
 
-    it('should prefer the resource over the prefix', () => {
+    it('should prefer the resource over the defaultLabel', () => {
         expect(
             getFieldLabelTranslationArgs({
                 resource: 'books',
-                prefix: 'resources.posts.fields',
+                defaultLabel: 'resources.posts.fields.title',
                 source: 'title',
             })
         ).toEqual([`resources.books.fields.title`, { _: 'Title' }]);
@@ -106,10 +106,10 @@ describe('getFieldLabelTranslationArgs', () => {
         ).toEqual([`resources.posts.fields.title`, { _: 'Title' }]);
     });
 
-    it('should prefer the prefix over the resourceFromContext', () => {
+    it('should prefer the defaultLabel over the resourceFromContext', () => {
         expect(
             getFieldLabelTranslationArgs({
-                prefix: 'resources.posts.fields',
+                defaultLabel: 'resources.posts.fields.title',
                 resourceFromContext: 'books',
                 source: 'title',
             })

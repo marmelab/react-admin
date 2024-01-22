@@ -114,12 +114,7 @@ A list of Input elements, that will be rendered on each row.
 
 By default, `<SimpleFormIterator>` renders one input per line, but they can be displayed inline with the `inline` prop.
 
-`<SimpleFormIterator>` also accepts `<FormDataConsumer>` as child. When used inside a form iterator, `<FormDataConsumer>` provides two additional properties to its children function:
-
-- `scopedFormData`: an object containing the current values of the currently rendered item from the ArrayInput
-- `getSource`: a function that translates the source into a valid one for the ArrayInput
-
-And here is an example usage for `getSource` inside `<ArrayInput>`:
+`<SimpleFormIterator>` also accepts `<FormDataConsumer>` as child. In this case, `<FormDataConsumer>` provides one additional property to its child function called `scopedFormData`. It's an object containing the current values of the *currently rendered item*. This allows you to create dependencies between inputs inside a `<SimpleFormIterator>`, as in the following example:
 
 ```jsx
 import { FormDataConsumer } from 'react-admin';
@@ -134,14 +129,11 @@ const PostEdit = () => (
                         {({
                             formData, // The whole form data
                             scopedFormData, // The data for this item of the ArrayInput
-                            getSource, // A function to get the valid source inside an ArrayInput
-                            ...rest
                         }) =>
                             scopedFormData && scopedFormData.name ? (
                                 <SelectInput
-                                    source={getSource('role')} // Will translate to "authors[0].role"
+                                    source="role" // Will translate to "authors[0].role"
                                     choices={[{ id: 1, name: 'Head Writer' }, { id: 2, name: 'Co-Writer' }]}
-                                    {...rest}
                                 />
                             ) : null
                         }
@@ -153,7 +145,7 @@ const PostEdit = () => (
 );
 ```
 
-**Tip:** TypeScript users will notice that `scopedFormData` and `getSource` are typed as optional parameters. This is because the `<FormDataConsumer>` component can be used outside of a `<SimpleFormIterator>` and in that case, these parameters will be `undefined`. If you are inside a `<SimpleFormIterator>`, you can safely assume that these parameters will be defined.
+**Tip:** TypeScript users will notice that `scopedFormData` is typed as an optional parameter. This is because the `<FormDataConsumer>` component can be used outside of an `<ArrayInput>` and in that case, this parameter will be `undefined`. If you are inside an `<ArrayInput>`, you can safely assume that this parameter will be defined.
 
 **Note**: `<SimpleFormIterator>` only accepts `Input` components as children. If you want to use some `Fields` instead, you have to use a `<FormDataConsumer>`, as follows:
 

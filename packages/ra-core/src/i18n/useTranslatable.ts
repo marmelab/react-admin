@@ -30,8 +30,10 @@ export const useTranslatable = (
 
     const context = useMemo<TranslatableContextValue>(
         () => ({
+            // TODO: remove once fields use SourceContext
             getSource: (source: string, locale: string = selectedLocale) =>
                 `${source}.${locale}`,
+            // TODO: remove once fields use SourceContext
             getLabel: (source: string, label?: string) =>
                 translateLabel({ source, resource, label }) as string,
             locales,

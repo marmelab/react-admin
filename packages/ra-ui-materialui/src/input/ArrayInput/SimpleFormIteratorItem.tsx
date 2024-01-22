@@ -1,17 +1,21 @@
 import * as React from 'react';
 import {
-    Children,
     cloneElement,
     MouseEvent,
     MouseEventHandler,
-    isValidElement,
     ReactElement,
     ReactNode,
     useMemo,
 } from 'react';
 import { Typography } from '@mui/material';
 import clsx from 'clsx';
-import { RaRecord } from 'ra-core';
+import {
+    getResourceFieldLabelKey,
+    RaRecord,
+    SourceContextProvider,
+    useResourceContext,
+    useSourceContext,
+} from 'ra-core';
 
 import { SimpleFormIteratorClasses } from './useSimpleFormIteratorStyles';
 import { useSimpleFormIterator } from './useSimpleFormIterator';
@@ -35,10 +39,9 @@ export const SimpleFormIteratorItem = React.forwardRef(
             record,
             removeButton,
             reOrderButtons,
-            resource,
             source,
         } = props;
-
+        const resource = useResourceContext(props);
         const { total, reOrder, remove } = useSimpleFormIterator();
         // Returns a boolean to indicate whether to disable the remove button for certain fields.
         // If disableRemove is a function, then call the function with the current record to
@@ -77,6 +80,27 @@ export const SimpleFormIteratorItem = React.forwardRef(
                 ? getItemLabel(index)
                 : getItemLabel;
 
+        const parentSourceContext = useSourceContext();
+        const sourceContext = useMemo(
+            () => ({
+                getSource: (source: string) =>
+                    source ? `${member}.${source}` : member,
+                getLabel: (source: string) => {
+                    // remove digits, e.g. 'book.authors.2.categories.3.identifier.name' => 'book.authors.categories.identifier.name'
+                    const sanitizedMember = member.replace(/\.\d+/g, '');
+                    // source may be empty for scalar values arrays
+                    const itemSource = source
+                        ? `${sanitizedMember}.${source}`
+                        : sanitizedMember;
+
+                    return parentSourceContext
+                        ? parentSourceContext.getLabel(itemSource)
+                        : getResourceFieldLabelKey(resource, itemSource);
+                },
+            }),
+            [member, parentSourceContext, resource]
+        );
+
         return (
             <SimpleFormIteratorItemContext.Provider value={context}>
                 <li className={SimpleFormIteratorClasses.line} ref={ref}>
@@ -94,24 +118,9 @@ export const SimpleFormIteratorItem = React.forwardRef(
                             inline && SimpleFormIteratorClasses.inline
                         )}
                     >
-                        {Children.map(
-                            children,
-                            (input: ReactElement, index2) => {
-                                if (!isValidElement<any>(input)) {
-                                    return null;
-                                }
-                                const { source, ...inputProps } = input.props;
-                                return cloneElement(input, {
-                                    source: source
-                                        ? `${member}.${source}`
-                                        : member,
-                                    index: source ? undefined : index2,
-                                    resource,
-                                    disabled,
-                                    ...inputProps,
-                                });
-                            }
-                        )}
+                        <SourceContextProvider value={sourceContext}>
+                            {children}
+                        </SourceContextProvider>
                     </section>
                     {!disabled && (
                         <span className={SimpleFormIteratorClasses.action}>

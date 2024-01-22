@@ -229,7 +229,58 @@ const myThemeObject = {
 ```
 
 ## `ToggleThemeButton` no longer accepts themes as props
+
 Passing the light and dark themes as props (previously deprecated) has been fully removed. Set them in the `<Admin>` component instead.
+
+## `<SimpleFormIterator>` no longer clones its children
+
+We've changed the implementation of `<SimpleFormIterator>`, the companion child of `<ArrayInput>`. This internal change is mostly backwards compatible, with one exception: defining the `disabled` prop on the `<ArrayInput>` component does not disable the children inputs anymore. If you relied on this behavior, you now have to specify the `disabled` prop on each input:
+
+```diff
+<ArrayInput disabled={someCondition}>
+   <SimpleFormIterator>
+-      <TextInput source="lastName" />
+-      <TextInput source="firstName" />
++      <TextInput source="lastName" disabled={someCondition} />
++      <TextInput source="firstName" disabled={someCondition} />
+   </SimpleFormIterator>
+</ArrayInput>
+```
+
+## `<FormDataConsumer>` no longer passes a `getSource` function
+
+When using `<FormDataConsumer>` inside an `<ArrayInput>`, the child function no longer receives a `getSource` callback. We've made all Input components able to work seamlessly inside an `<ArrayInput>`, so it's no longer necessary to transform their source with `getSource`:
+
+```diff
+import { Edit, SimpleForm, TextInput, ArrayInput, SelectInput, FormDataConsumer } from 'react-admin';
+
+const PostEdit = () => (
+    <Edit>
+        <SimpleForm>
+            <ArrayInput source="authors">
+                <SimpleFormIterator>
+                    <TextInput source="name" />
+                    <FormDataConsumer>
+                        {({
+                            formData, // The whole form data
+                            scopedFormData, // The data for this item of the ArrayInput
+-                           getSource,
+                        }) =>
+                            scopedFormData && getSource && scopedFormData.name ? (
+                                <SelectInput
+-                                    source={getSource('role')}
++                                    source="role" // Will translate to "authors[0].role"
+                                    choices={[{ id: 1, name: 'Head Writer' }, { id: 2, name: 'Co-Writer' }]}
+                                />
+                            ) : null
+                        }
+                    </FormDataConsumer>
+                </SimpleFormIterator>
+            </ArrayInput>
+        </SimpleForm>
+    </Edit>
+);
+```
 
 ## Upgrading to v4
 
