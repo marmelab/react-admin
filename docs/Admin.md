@@ -882,6 +882,17 @@ const App = () => (
 );
 ```
 
+If you need to display this application title somewhere in your app, use the `useDefaultTitle` hook:
+
+```tsx
+import { useDefaultTitle } from 'react-admin';
+
+const MyTitle = () => {
+    const defaultTitle = useDefaultTitle();
+    return <span>{defaultTitle}</span>; // My Custom Admin
+};
+```
+
 ## Adding Custom Pages
 
 The [`children`](#children) prop of the `<Admin>` component define the routes of the application.

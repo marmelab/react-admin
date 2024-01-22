@@ -8,7 +8,6 @@ export const DefaultTitleContextProvider = DefaultTitleContext.Provider;
 /**
  * Get the application title defined at the `<Admin>` level
  *
- * @private
  * @example
  * import { useDefaultTitle } from 'react-admin';
  *
