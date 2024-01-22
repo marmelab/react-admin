@@ -164,7 +164,7 @@ import * as React from 'react';
 import Button from '@mui/material/Button';
 import ErrorIcon from '@mui/icons-material/Report';
 import History from '@mui/icons-material/History';
-import { Title, useTranslate } from 'react-admin';
+import { Title, useTranslate, useDefaultTitle } from 'react-admin';
 import { useLocation } from 'react-router-dom';
 
 export const MyError = ({
@@ -183,9 +183,10 @@ export const MyError = ({
     }, [pathname, resetErrorBoundary]);
 
     const translate = useTranslate();
+    const defaultTitle = useDefaultTitle();
     return (
         <div>
-            <Title title="Error" />
+            <Title title={`${defaultTitle}: Error`} />
             <h1><ErrorIcon /> Something Went Wrong </h1>
             <div>A client error occurred and your request couldn't be completed.</div>
             {process.env.NODE_ENV !== 'production' && (
