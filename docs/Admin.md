@@ -621,7 +621,30 @@ const App = () => (
 
 Refer to each layout component documentation to understand the props it accepts.
 
-Finally, you can also pass a custom component as the `layout` prop. It must contain a `{children}` placeholder, where react-admin will render the page content. Check [the custom layout documentation](./Layout.md#writing-a-layout-from-scratch) for examples, and use the [default `<Layout>`](https://github.com/marmelab/react-admin/blob/master/packages/ra-ui-materialui/src/layout/Layout.tsx) as a starting point.
+Finally, you can also pass a custom component as the `layout` prop. Your custom layout will receive the page content as `children`, so it should render it somewhere.
+
+```tsx
+// in src/MyLayout.js
+export const MyLayout = ({ children }) => (
+    <div>
+        <h1>My App</h1>
+        <main>{children}</main>
+    </div>
+);
+
+// in src/App.js
+import { Admin } from 'react-admin';
+import { dataProvider } from './dataProvider';
+import { MyLayout } from './MyLayout';
+
+const App = () => (
+    <Admin dataProvider={dataProvider} layout={MyLayout}>
+        // ...
+    </Admin>
+);
+```
+
+Check [the custom layout documentation](./Layout.md#writing-a-layout-from-scratch) for examples, and use the [default `<Layout>`](https://github.com/marmelab/react-admin/blob/master/packages/ra-ui-materialui/src/layout/Layout.tsx) as a starting point.
 
 ## `loginPage`
 

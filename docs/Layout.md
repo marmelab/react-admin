@@ -455,16 +455,28 @@ You can also write your own layout component from scratch (see below).
 
 ## Writing A Layout From Scratch
 
-For more custom layouts, write a component from scratch. It must contain a `{children}` placeholder, where react-admin will render the resources. Use the [default layout](https://github.com/marmelab/react-admin/blob/master/packages/ra-ui-materialui/src/layout/Layout.tsx) as a starting point. Here is a simplified version (with no responsive support):
+For more custom layouts, write a component from scratch. Your custom layout will receive the page content as `children`, so it should render it somewhere.
+
+In its simplest form, a custom layout is just a component that renders its children:
+
+```tsx
+const MyLayout = ({ children }) => (
+    <div>
+        <h1>My App</h1>
+        <main>{children}</main>
+    </div>
+);
+```
+
+You can use the [default layout](https://github.com/marmelab/react-admin/blob/master/packages/ra-ui-materialui/src/layout/Layout.tsx) as a starting point for your custom layout. Here is a simplified version (with no responsive support):
 
 {% raw %}
 ```jsx
 // in src/MyLayout.js
-import * as React from 'react';
 import { Box } from '@mui/material';
 import { AppBar, Menu, Sidebar } from 'react-admin';
 
-const MyLayout = ({ children, dashboard }) => (
+const MyLayout = ({ children }) => (
     <Box 
         display="flex"
         flexDirection="column"
@@ -481,7 +493,7 @@ const MyLayout = ({ children, dashboard }) => (
             <AppBar />
             <Box display="flex" flexGrow={1}>
                 <Sidebar>
-                    <Menu hasDashboard={!!dashboard} />
+                    <Menu />
                 </Sidebar>
                 <Box
                     display="flex"
