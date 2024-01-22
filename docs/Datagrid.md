@@ -146,7 +146,7 @@ export default PostList;
 
 ## `bulkActionButtons`
 
-Bulk action buttons appear when users select one or several rows, and affect all the selected records. This is useful for actions like mass deletion or mass edition.
+Bulk action buttons appear when users select one or several rows. Clicking on a bulk action button affects all the selected records. This is useful for actions like mass deletion or mass edition.
 
 <video controls autoplay playsinline muted loop>
   <source src="./img/bulk-actions-toolbar.mp4" type="video/mp4"/>
@@ -159,6 +159,20 @@ Users can select a range of rows by pressing the shift key while clicking on a r
   <source src="./img/datagrid-select-range.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
+
+You disable this feature by setting the `bulkActionButtons` prop to `false`:
+
+```tsx
+import { Datagrid, List } from 'react-admin';
+
+export const PostList = () => (
+    <List>
+        <Datagrid bulkActionButtons={false}>
+            ...
+        </Datagrid>
+    </List>
+);
+```
 
 By default, all Datagrids have a single bulk action button, the bulk delete button. You can add other bulk action buttons by passing a custom element as the `bulkActionButtons` prop of the `<Datagrid>` component:
 
