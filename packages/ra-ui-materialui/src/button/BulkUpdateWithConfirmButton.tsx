@@ -42,7 +42,6 @@ export const BulkUpdateWithConfirmButton = (
         mutationMode = 'pessimistic',
         onClick,
         onSuccess = () => {
-            refresh();
             notify('ra.notification.updated', {
                 type: 'info',
                 messageArgs: { smart_count: selectedIds.length },

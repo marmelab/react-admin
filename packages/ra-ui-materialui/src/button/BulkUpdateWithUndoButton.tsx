@@ -41,7 +41,6 @@ export const BulkUpdateWithUndoButton = (
                 undoable: true,
             });
             unselectAll();
-            refresh();
         },
         onError = (error: Error | string) => {
             notify(
