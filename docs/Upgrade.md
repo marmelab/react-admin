@@ -228,6 +228,9 @@ const myThemeObject = {
 + const [themePreference, setTheme] = useTheme();
 ```
 
+## `ToggleThemeButton` no longer accepts themes as props
+Passing the light and dark themes as props (previously deprecated) has been fully removed. Set them in the `<Admin>` component instead.
+
 ## Upgrading to v4
 
 If you are on react-admin v3, follow the [Upgrading to v4](https://marmelab.com/react-admin/doc/4.16/Upgrade.html) guide before upgrading to v5.

@@ -423,7 +423,7 @@ const App = () => (
 );
 ```
 
-You can write a custom theme from scratch, or start from the [default theme](#default-theme) and override some values, using the Material UI's utility function deepmerge:
+You can write a custom theme from scratch, or start from the [default theme](#default-theme) and override some values, using Material UI's utility function deepmerge:
 
 ```jsx
 import { deepmerge } from '@mui/utils';
@@ -466,7 +466,6 @@ Here is the default theme:
 
 ```tsx
 import { RaThemeOptions } from './types';
-import { createTheme } from '@mui/material';
 import { deepmerge } from '@mui/utils';
 
 const defaultThemeInvariants = {
@@ -515,8 +514,9 @@ const defaultThemeInvariants = {
     },
 };
 
-export const defaultLightTheme: RaThemeOptions = createTheme(
-    deepmerge(defaultThemeInvariants, {
+export const defaultLightTheme: RaThemeOptions = deepmerge(
+    defaultThemeInvariants,
+    {
         palette: {
             background: {
                 default: '#fafafb',
@@ -540,11 +540,12 @@ export const defaultLightTheme: RaThemeOptions = createTheme(
                 },
             },
         },
-    })
+    }
 );
 
-export const defaultDarkTheme: RaThemeOptions = createTheme(
-    deepmerge(defaultThemeInvariants, {
+export const defaultDarkTheme: RaThemeOptions = deepmerge(
+    defaultThemeInvariants,
+    {
         palette: {
             mode: 'dark',
             primary: {
@@ -554,7 +555,7 @@ export const defaultDarkTheme: RaThemeOptions = createTheme(
                 default: '#313131',
             },
         },
-    })
+    }
 );
 
 export const defaultTheme = defaultLightTheme;
