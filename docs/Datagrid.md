@@ -254,11 +254,13 @@ const CustomResetViewsButton = () => {
         { ids: selectedIds, data: { views: 0 } },
         {
             onSuccess: () => {
-                refresh();
                 notify('Posts updated');
                 unselectAll();
             },
-            onError: () => notify('Error: posts not updated', { type: 'error' }),
+            onError: () => {
+                notify('Error: posts not updated', { type: 'error' });
+                refresh();
+            },
         }
     );
 
@@ -302,11 +304,13 @@ const CustomResetViewsButton = () => {
         { ids: selectedIds, data: { views: 0 } },
         {
             onSuccess: () => {
-                refresh();
                 notify('Posts updated');
                 unselectAll();
             },
-            onError: error => notify('Error: posts not updated', { type: 'error' }),
+            onError: error => {
+                notify('Error: posts not updated', { type: 'error' });
+                refresh();
+            },
         }
     );
     const handleClick = () => setOpen(true);
