@@ -1,7 +1,10 @@
 import path from 'path';
 import fs from 'fs';
 import fsExtra from 'fs-extra';
+import merge from 'lodash/merge';
 import { ProjectConfiguration } from './ProjectState.js';
+import { generateAppFile } from './generateAppFile.js';
+import { generateAppTestFile } from './generateAppTestFile.js';
 
 export const generateProject = async (state: ProjectConfiguration) => {
     const projectDirectory = initializeProjectDirectory(state.name);
@@ -19,20 +22,29 @@ export const generateProject = async (state: ProjectConfiguration) => {
     if (state.dataProvider !== 'none') {
         copyDirectoryFiles(
             path.join(__dirname, '../templates', state.dataProvider),
-            path.join(path.join(projectDirectory, 'src')),
-            ['package.json', '.env', 'README.md', 'help.txt']
+            projectDirectory,
+            ['package.json', '.env', 'README.md', 'help.txt', 'gitignore']
         );
     }
 
     if (state.authProvider !== 'none') {
         copyDirectoryFiles(
             path.join(__dirname, '../templates', state.authProvider),
-            path.join(path.join(projectDirectory, 'src')),
-            ['package.json', '.env', 'README.md', 'help.txt']
+            projectDirectory,
+            ['package.json', '.env', 'README.md', 'help.txt', 'gitignore']
         );
     }
 
     generateAppFile(projectDirectory, state);
+    if (
+        state.dataProvider === 'ra-data-fakerest' &&
+        ['posts', 'comments'].every(resource =>
+            state.resources.includes(resource)
+        )
+    ) {
+        generateAppTestFile(projectDirectory, state);
+    }
+
     generatePackageJson(projectDirectory, state);
     generateGitIgnore(projectDirectory);
     generateEnvFile(projectDirectory, state);
@@ -66,74 +78,21 @@ const getTemplateHelpMessages = (template: string) => {
     return '';
 };
 
-const generateAppFile = (
-    projectDirectory: string,
-    state: ProjectConfiguration
-) => {
-    fs.writeFileSync(
-        path.join(projectDirectory, 'src', 'App.tsx'),
-        `
-import { Admin, Resource, ListGuesser, EditGuesser, ShowGuesser } from 'react-admin';
-import { Layout } from './Layout';
-${
-    state.dataProvider !== 'none'
-        ? `import { dataProvider } from './dataProvider';\n`
-        : ''
-}${
-            state.authProvider !== 'none'
-                ? `import { authProvider } from './authProvider';\n`
-                : ''
-        }
-
-export const App = () => (
-    <Admin
-        layout={Layout}
-        ${
-            state.dataProvider !== 'none'
-                ? `dataProvider={dataProvider}\n\t`
-                : ''
-        }${
-            state.authProvider !== 'none'
-                ? `\tauthProvider={authProvider}\n\t`
-                : ''
-        }>
-        ${state.resources
-            .map(
-                resource =>
-                    `<Resource name="${resource}" list={ListGuesser} edit={EditGuesser} show={ShowGuesser} />`
-            )
-            .join('\n\t\t')}
-    </Admin>
-);
-
-    `
-    );
-};
-
 const generatePackageJson = (
     projectDirectory: string,
     state: ProjectConfiguration
 ) => {
-    const dataProviderDeps = getTemplateDependencies(state.dataProvider);
-    const authProviderDeps = getTemplateDependencies(state.authProvider);
-    const allDeps = {
-        ...BasePackageJson.dependencies,
-        ...dataProviderDeps,
-        ...authProviderDeps,
-    };
-    const allDepsNames = Object.keys(allDeps).sort();
-    const dependencies = allDepsNames.reduce(
-        (acc, depName) => ({
-            ...acc,
-            [depName]: allDeps[depName],
-        }),
-        {}
+    const basePackageJson = getTemplatePackageJson('common');
+    const dataProviderPackageJson = getTemplatePackageJson(state.dataProvider);
+    const authProviderPackageJson = getTemplatePackageJson(state.authProvider);
+    const packageJson = merge(
+        basePackageJson,
+        dataProviderPackageJson,
+        authProviderPackageJson,
+        {
+            name: state.name,
+        }
     );
-    const packageJson = {
-        name: state.name,
-        ...BasePackageJson,
-        dependencies,
-    };
 
     fs.writeFileSync(
         path.join(projectDirectory, 'package.json'),
@@ -142,9 +101,9 @@ const generatePackageJson = (
 };
 
 const generateGitIgnore = (projectDirectory: string) => {
-    fs.writeFileSync(
-        path.join(projectDirectory, '.gitignore'),
-        defaultGitIgnore
+    fs.copyFileSync(
+        path.join(__dirname, '../templates/common/gitignore'),
+        path.join(projectDirectory, '.gitignore')
     );
 };
 
@@ -182,39 +141,7 @@ const getTemplateEnv = (template: string) => {
     return undefined;
 };
 
-const BasePackageJson = {
-    private: true,
-    scripts: {
-        dev: 'vite',
-        build: 'vite build',
-        serve: 'vite preview',
-        'type-check': 'tsc --noEmit',
-        lint: 'eslint --fix --ext .js,.jsx,.ts,.tsx ./src',
-        format: 'prettier --write ./src',
-    },
-    dependencies: {
-        react: '^18.2.0',
-        'react-admin': '^4.16.0',
-        'react-dom': '^18.2.0',
-    },
-    devDependencies: {
-        '@typescript-eslint/parser': '^5.60.1',
-        '@typescript-eslint/eslint-plugin': '^5.60.1',
-        '@types/node': '^20.10.7',
-        '@types/react': '^18.0.22',
-        '@types/react-dom': '^18.0.7',
-        '@vitejs/plugin-react': '^4.0.1',
-        eslint: '^8.43.0',
-        'eslint-config-prettier': '^8.8.0',
-        'eslint-plugin-react': '^7.32.2',
-        'eslint-plugin-react-hooks': '^4.6.0',
-        prettier: '^2.8.8',
-        typescript: '^5.1.6',
-        vite: '^4.3.9',
-    },
-};
-
-const getTemplateDependencies = (template: string) => {
+const getTemplatePackageJson = (template: string) => {
     if (template === 'none' || template === '') {
         return {};
     }
@@ -226,7 +153,7 @@ const getTemplateDependencies = (template: string) => {
     );
     if (fs.existsSync(packageJsonPath)) {
         const packageJson = fs.readFileSync(packageJsonPath, 'utf-8');
-        return JSON.parse(packageJson).dependencies;
+        return JSON.parse(packageJson);
     }
     return {};
 };
@@ -344,29 +271,3 @@ const replaceTokensInFile = (filePath: string, state: ProjectConfiguration) => {
     fileContent = replaceTokens(fileContent, state);
     fs.writeFileSync(filePath, fileContent);
 };
-
-const defaultGitIgnore = `# Logs
-logs
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-lerna-debug.log*
-
-node_modules
-dist
-dist-ssr
-*.local
-
-# Editor directories and files
-.vscode/*
-!.vscode/extensions.json
-.idea
-.DS_Store
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
-`;
