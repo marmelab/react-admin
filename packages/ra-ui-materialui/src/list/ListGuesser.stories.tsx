@@ -112,3 +112,38 @@ export const LinkedShow = () => (
         </AdminUI>
     </AdminContext>
 );
+
+const delayedDataProvider = new Proxy(dataProvider, {
+    get: (target, name) => (resource, params) => {
+        if (typeof name === 'symbol' || name === 'then') {
+            return;
+        }
+        return new Promise(resolve =>
+            setTimeout(() => resolve(dataProvider[name](resource, params)), 300)
+        );
+    },
+});
+export const ManyResources = () => (
+    <AdminContext
+        dataProvider={delayedDataProvider}
+        i18nProvider={polyglotI18nProvider(() => defaultMessages, 'en')}
+    >
+        <AdminUI>
+            <Resource
+                name="products"
+                list={ListGuesser}
+                recordRepresentation="name"
+            />
+            <Resource
+                name="categories"
+                list={ListGuesser}
+                recordRepresentation="name"
+            />
+            <Resource
+                name="tags"
+                list={ListGuesser}
+                recordRepresentation="name"
+            />
+        </AdminUI>
+    </AdminContext>
+);
