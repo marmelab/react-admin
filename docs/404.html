@@ -58,7 +58,11 @@ d88   888  888    888 d88   888
     function replaceNavigationWithVersion(version) {
         var location = document.location.href.split('#')[0];
         var locationSlices = location.split('/');
-        var href = [...locationSlices.slice(0, locationSlices.length - 2), version, 'Readme.html'].join('/');
+        var href = [
+            ...locationSlices.slice(0, locationSlices.length - 2),
+            version,
+            'navigation.html',
+        ].join('/');
         // fetch the new content
         fetch(href)
             .then(res => res.text())
