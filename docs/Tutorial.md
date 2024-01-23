@@ -367,7 +367,7 @@ For instance, the `website` field looks like a URL. Instead of displaying it as 
 
 This reflects the early stages of development with react-admin: let the guesser component bootstrap a basic page, then tweak the generated code to better match your business logic.
 
-## Writing A Custom Field 
+## Writing A Custom Field
 
 In react-admin, fields are just React components. When rendered, they grab the `record` fetched from the API (e.g. `{ "id": 2, "name": "Ervin Howell", "website": "anastasia.net", ... }`) using a custom hook, and use the `source` field (e.g. `website`) to get the value they should display (e.g. "anastasia.net").
 
@@ -380,7 +380,7 @@ import { useRecordContext } from "react-admin";
 const MyUrlField = ({ source }: { source: string }) => {
     const record = useRecordContext();
     if (!record) return null;
-    return <a href={record[source]}>{record[source]}</a>;
+    return <a href={`http://${record[source]}`}>{record[source]}</a>;
 };
 
 export default MyUrlField;
