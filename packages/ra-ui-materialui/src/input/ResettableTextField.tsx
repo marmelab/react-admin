@@ -166,7 +166,6 @@ export const ResettableTextField = forwardRef(
                 variant={variant}
                 margin={margin}
                 className={className}
-                size="small"
                 {...rest}
                 onFocus={handleFocus}
                 onBlur={handleBlur}

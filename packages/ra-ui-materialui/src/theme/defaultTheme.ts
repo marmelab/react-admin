@@ -1,4 +1,5 @@
 import { RaThemeOptions } from './types';
+import { deepmerge } from '@mui/utils';
 
 const defaultThemeInvariants = {
     typography: {
@@ -46,45 +47,48 @@ const defaultThemeInvariants = {
     },
 };
 
-export const defaultLightTheme: RaThemeOptions = {
-    palette: {
-        background: {
-            default: '#fafafb',
+export const defaultLightTheme: RaThemeOptions = deepmerge(
+    defaultThemeInvariants,
+    {
+        palette: {
+            background: {
+                default: '#fafafb',
+            },
+            secondary: {
+                light: '#6ec6ff',
+                main: '#2196f3',
+                dark: '#0069c0',
+                contrastText: '#fff',
+            },
         },
-        secondary: {
-            light: '#6ec6ff',
-            main: '#2196f3',
-            dark: '#0069c0',
-            contrastText: '#fff',
-        },
-    },
-    ...defaultThemeInvariants,
-    components: {
-        ...defaultThemeInvariants.components,
-        MuiFilledInput: {
-            styleOverrides: {
-                root: {
-                    backgroundColor: 'rgba(0, 0, 0, 0.04)',
-                    '&$disabled': {
+        components: {
+            MuiFilledInput: {
+                styleOverrides: {
+                    root: {
                         backgroundColor: 'rgba(0, 0, 0, 0.04)',
+                        '&$disabled': {
+                            backgroundColor: 'rgba(0, 0, 0, 0.04)',
+                        },
                     },
                 },
             },
         },
-    },
-};
+    }
+);
 
-export const defaultDarkTheme: RaThemeOptions = {
-    palette: {
-        mode: 'dark',
-        primary: {
-            main: '#90caf9',
+export const defaultDarkTheme: RaThemeOptions = deepmerge(
+    defaultThemeInvariants,
+    {
+        palette: {
+            mode: 'dark',
+            primary: {
+                main: '#90caf9',
+            },
+            background: {
+                default: '#313131',
+            },
         },
-        background: {
-            default: '#313131',
-        },
-    },
-    ...defaultThemeInvariants,
-};
+    }
+);
 
 export const defaultTheme = defaultLightTheme;

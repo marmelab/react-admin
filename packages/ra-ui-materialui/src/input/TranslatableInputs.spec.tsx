@@ -10,6 +10,7 @@ import { SimpleForm } from '../form';
 import { TranslatableInputs } from './TranslatableInputs';
 import { TranslatableInputsTab } from './TranslatableInputsTab';
 import { TranslatableInputsTabContentClasses } from './TranslatableInputsTabContent';
+import { Basic } from './TranslatableInputs.stories';
 
 const record = {
     id: 123,
@@ -272,5 +273,12 @@ describe('<TranslatableInputs />', () => {
         expect(screen.getByLabelText('fr').classList).not.toContain(
             TranslatableInputsTabContentClasses.hidden
         );
+    });
+
+    it('should infer labels correctly', async () => {
+        render(<Basic />);
+
+        expect(await screen.findAllByLabelText('Title')).toHaveLength(2);
+        expect(await screen.findAllByLabelText('Description')).toHaveLength(2);
     });
 });
