@@ -230,7 +230,24 @@ const myThemeObject = {
 
 ## `ToggleThemeButton` no longer accepts themes as props
 
-Passing the light and dark themes as props (previously deprecated) has been fully removed. Set them in the `<Admin>` component instead.
+In previous versions, `<ToggleThemeButton>` used to accept `lighTheme` and `darkTheme` props. These props are no longer supported in v5. Instead, you should set the themes in the `<Admin>` component. And by the way, react-admin is smart enough to include the `ToggleThemeButton` in the app bar if you set the themes in `<Admin>`, so you probably don't need to include the button manually anymore. 
+
+```diff
+-import { Admin, Layout, AppBar, ToggleThemeButton } from 'react-admin';
++import { Admin } from 'react-admin';
+import { dataProvider } from './dataProvider';
+import { lightTheme, darkTheme } from './themes';
+
+-const MyAppBar = () => <AppBar toolbar={<ToggleThemeButton lightTheme={lightTheme} darkTheme={darkTheme} />} />
+-const MyLayout = (props) => <Layout {...props} appBar={<MyAppBar />} />;
+
+const App = () => (
+-   <Admin dataProvider={dataProvider} layout={MyLayout}>
++   <Admin dataProvider={dataProvider} lightTheme={lightTheme} darkTheme={darkTheme}>
+       ...
+    </Admin>
+);
+```
 
 ## `<SimpleFormIterator>` no longer clones its children
 
