@@ -1,9 +1,9 @@
 import { useStore } from 'ra-core';
-import { RaThemeOptions, ThemeType } from './types';
+import { ThemeType } from './types';
 import { useMediaQuery } from '@mui/material';
 import { useThemesContext } from './useThemesContext';
 
-export type ThemeSetter = (theme: ThemeType | RaThemeOptions) => void;
+export type ThemeSetter = (theme: ThemeType) => void;
 
 /**
  * Read and update the theme mode (light or dark)
@@ -14,23 +14,13 @@ export type ThemeSetter = (theme: ThemeType | RaThemeOptions) => void;
  *    setTheme(theme === 'light' ? 'dark' : 'light');
  * };
  *
- * @example // legacy mode, stores the full theme object
- * // to be removed in v5
- * const [theme, setTheme] = useTheme({
- *    palette: {
- *       type: 'light',
- *   },
- * });
  */
-export const useTheme = (
-    type?: ThemeType | RaThemeOptions
-): [ThemeType | RaThemeOptions, ThemeSetter] => {
+export const useTheme = (type?: ThemeType): [ThemeType, ThemeSetter] => {
     const { darkTheme } = useThemesContext();
     const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)', {
         noSsr: true,
     });
-    // FIXME: remove legacy mode in v5, and remove the RaThemeOptions type
-    const [theme, setter] = useStore<ThemeType | RaThemeOptions>(
+    const [theme, setter] = useStore<ThemeType>(
         'theme',
         type ?? (prefersDarkMode && darkTheme ? 'dark' : 'light')
     );

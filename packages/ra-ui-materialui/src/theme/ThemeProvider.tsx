@@ -46,11 +46,7 @@ export const ThemeProvider = ({
     const themeValue = useMemo(() => {
         try {
             return createTheme(
-                typeof mode === 'object'
-                    ? mode // FIXME: legacy useTheme, to be removed in v5
-                    : mode === 'dark'
-                    ? darkTheme
-                    : lightTheme || themeOverride
+                mode === 'dark' ? darkTheme : lightTheme || themeOverride
             );
         } catch (e) {
             console.warn('Failed to reuse custom theme from store', e);
