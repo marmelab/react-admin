@@ -135,7 +135,7 @@ Check out React Query [codemod documentation](https://tanstack.com/query/latest/
 
 ## `<Admin menu>` Is No Longer Supported
 
-The `<Admin menu>` prop was deprecated since 4.0. It's no longer supported. If you want to customize the application menu, you'll have to do it un a custom Layout instead:
+The `<Admin menu>` prop was deprecated since 4.0. It's no longer supported. If you want to customize the application menu, you'll have to do it in a custom Layout instead:
 
 ```diff
 -import { Admin } from 'react-admin';
