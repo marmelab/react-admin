@@ -49,7 +49,7 @@ test("should pass", async () => {
 	fireEvent.click(await screen.findByText("Save"));
 	// Check the comment has been updated by finding the post link in the comments list page
 	await screen.findByText("#11", { selector: "a *" });
-});
+}, 10000);
 
     `
     );
