@@ -595,10 +595,11 @@ Layout components can be customized via props. For instance, you can pass a cust
 
 ```tsx
 // in src/MyLayout.js
+import type { ReactNode } from 'react';
 import { Layout } from 'react-admin';
 import MyMenu from './MyMenu';
 
-export const MyLayout = ({ children }) => (
+export const MyLayout = ({ children }: { children: ReactNode }) => (
     <Layout menu={MyMenu}>
         {children}
     </Layout>
@@ -625,7 +626,8 @@ Finally, you can also pass a custom component as the `layout` prop. Your custom 
 
 ```tsx
 // in src/MyLayout.js
-export const MyLayout = ({ children }) => (
+import type { ReactNode } from 'react';
+export const MyLayout = ({ children }: { children: ReactNode }) => (
     <div>
         <h1>My App</h1>
         <main>{children}</main>
