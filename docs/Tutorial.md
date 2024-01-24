@@ -17,7 +17,7 @@ Here is an overview of the result:
 
 ## Setting Up
 
-React-admin uses React. We'll use [create-react-admin](./CreateReactAdmin.md) to bootstrap a new admin:
+React-admin uses React. We'll use [create-react-admin](./CreateReactAdmin.md) to bootstrap a new web application:
 
 ```sh
 npm init react-admin test-admin
@@ -38,7 +38,7 @@ You should be up and running with an empty React admin application on port 5173:
 
 [![Empty Admin](./img/tutorial_empty.png)](./img/tutorial_empty.png)
 
-**Tip**: Although this tutorial uses [Vite](https://vitejs.dev/) with [TypeScript](https://www.typescriptlang.org/), you can use react-admin with JavaScript if you prefer. Also, you can use [Next.js](./NextJs.md), [Remix](./Remix.md), [create-react-app](./CreateReactApp.md), or any other React framework to create your admin app. React-admin is framework-agnostic.
+**Tip**: The `create-react-admin` script creates a single-page application powered by [Vite](https://vitejs.dev/) and [TypeScript](https://www.typescriptlang.org/). You can also use react-admin with JavaScript if you prefer. Additionally, you can use [Next.js](./NextJs.md), [Remix](./Remix.md), or any other React framework to create your react-admin app. React-admin is framework-agnostic.
 
 Let's take a look at the generated code. The main entry point is `index.tsx`, which renders the `App` component in the DOM:
 
