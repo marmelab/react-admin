@@ -140,12 +140,16 @@ describe('<PrevNextButtons />', () => {
             const item = await screen.findByText('9');
             fireEvent.click(item);
             await screen.findByText('10 / 900');
-            expect(spy).toHaveBeenCalledWith('customers', {
-                pagination: { page: 1, perPage: 500 },
-                sort: { field: 'id', order: 'ASC' },
-                filter: {},
-                meta: undefined,
-            });
+            expect(spy).toHaveBeenCalledWith(
+                'customers',
+                {
+                    pagination: { page: 1, perPage: 500 },
+                    sort: { field: 'id', order: 'ASC' },
+                    filter: {},
+                    meta: undefined,
+                },
+                expect.anything()
+            );
         });
     });
 });

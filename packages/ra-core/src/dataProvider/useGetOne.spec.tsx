@@ -5,6 +5,7 @@ import { render, waitFor } from '@testing-library/react';
 import { CoreAdminContext } from '../core';
 import { useGetOne } from './useGetOne';
 import { testDataProvider } from '../dataProvider';
+import { QueryClient } from '@tanstack/react-query';
 
 const UseGetOne = ({
     resource,
@@ -43,9 +44,13 @@ describe('useGetOne', () => {
         );
         await waitFor(() => {
             expect(dataProvider.getOne).toHaveBeenCalledTimes(1);
-            expect(dataProvider.getOne).toHaveBeenCalledWith('posts', {
-                id: 1,
-            });
+            expect(dataProvider.getOne).toHaveBeenCalledWith(
+                'posts',
+                {
+                    id: 1,
+                },
+                expect.anything()
+            );
         });
     });
 
@@ -137,10 +142,14 @@ describe('useGetOne', () => {
         );
         await waitFor(() => {
             expect(dataProvider.getOne).toHaveBeenCalledTimes(1);
-            expect(dataProvider.getOne).toHaveBeenCalledWith('posts', {
-                id: 1,
-                meta: { hello: 'world' },
-            });
+            expect(dataProvider.getOne).toHaveBeenCalledWith(
+                'posts',
+                {
+                    id: 1,
+                    meta: { hello: 'world' },
+                },
+                expect.anything()
+            );
         });
     });
 
@@ -208,6 +217,38 @@ describe('useGetOne', () => {
         await waitFor(() => {
             expect(dataProvider.getOne).toHaveBeenCalledTimes(1);
             expect(onError).toHaveBeenCalledWith(new Error('failed'));
+        });
+    });
+
+    it('should abort the request if the query is canceled', async () => {
+        const abort = jest.fn();
+        const dataProvider = testDataProvider({
+            getOne: jest.fn(
+                (_resource, _params, { signal }) =>
+                    new Promise(() => {
+                        signal.addEventListener('abort', () => {
+                            abort(signal.reason);
+                        });
+                    })
+            ) as any,
+        });
+        const queryClient = new QueryClient();
+        render(
+            <CoreAdminContext
+                dataProvider={dataProvider}
+                queryClient={queryClient}
+            >
+                <UseGetOne resource="posts" id={1} />
+            </CoreAdminContext>
+        );
+        await waitFor(() => {
+            expect(dataProvider.getOne).toHaveBeenCalled();
+        });
+        queryClient.cancelQueries({
+            queryKey: ['posts', 'getOne', { id: '1' }],
+        });
+        await waitFor(() => {
+            expect(abort).toHaveBeenCalled();
         });
     });
 });

@@ -110,7 +110,8 @@ describe('useReferenceManyFieldController', () => {
                     pagination: { page: 1, perPage: 25 },
                     sort: { field: 'id', order: 'DESC' },
                     filter: {},
-                }
+                },
+                expect.anything()
             );
         });
     });
@@ -230,7 +231,8 @@ describe('useReferenceManyFieldController', () => {
                     pagination: { page: 1, perPage: 25 },
                     sort: { field: 'id', order: 'DESC' },
                     filter: {},
-                }
+                },
+                expect.anything()
             );
         });
     });
@@ -269,7 +271,8 @@ describe('useReferenceManyFieldController', () => {
                     pagination: { page: 1, perPage: 25 },
                     sort: { field: 'id', order: 'ASC' },
                     filter: {},
-                }
+                },
+                expect.anything()
             );
         });
     });

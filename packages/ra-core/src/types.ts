@@ -62,11 +62,16 @@ export type AuthProvider = {
         params: any
     ) => Promise<{ redirectTo?: string | boolean } | void | any>;
     logout: (params: any) => Promise<void | false | string>;
-    checkAuth: (params: any) => Promise<void>;
+    checkAuth: (params: any, contex?: QueryFunctionContext) => Promise<void>;
     checkError: (error: any) => Promise<void>;
-    getIdentity?: () => Promise<UserIdentity>;
-    getPermissions: (params: any) => Promise<any>;
-    handleCallback?: () => Promise<AuthRedirectResult | void | any>;
+    getIdentity?: (contex?: QueryFunctionContext) => Promise<UserIdentity>;
+    getPermissions: (
+        params: any,
+        contex?: QueryFunctionContext
+    ) => Promise<any>;
+    handleCallback?: (
+        contex?: QueryFunctionContext
+    ) => Promise<AuthRedirectResult | void | any>;
     [key: string]: any;
 };
 
@@ -87,22 +92,26 @@ export type LegacyAuthProvider = (
 export type DataProvider<ResourceType extends string = string> = {
     getList: <RecordType extends RaRecord = any>(
         resource: ResourceType,
-        params: GetListParams
+        params: GetListParams,
+        contex?: QueryFunctionContext
     ) => Promise<GetListResult<RecordType>>;
 
     getOne: <RecordType extends RaRecord = any>(
         resource: ResourceType,
-        params: GetOneParams<RecordType>
+        params: GetOneParams<RecordType>,
+        contex?: QueryFunctionContext
     ) => Promise<GetOneResult<RecordType>>;
 
     getMany: <RecordType extends RaRecord = any>(
         resource: ResourceType,
-        params: GetManyParams
+        params: GetManyParams,
+        contex?: QueryFunctionContext
     ) => Promise<GetManyResult<RecordType>>;
 
     getManyReference: <RecordType extends RaRecord = any>(
         resource: ResourceType,
-        params: GetManyReferenceParams
+        params: GetManyReferenceParams,
+        contex?: QueryFunctionContext
     ) => Promise<GetManyReferenceResult<RecordType>>;
 
     update: <RecordType extends RaRecord = any>(
@@ -135,6 +144,10 @@ export type DataProvider<ResourceType extends string = string> = {
 
     [key: string]: any;
 };
+
+export interface QueryFunctionContext {
+    signal?: AbortSignal;
+}
 
 export interface GetListParams {
     pagination: PaginationPayload;

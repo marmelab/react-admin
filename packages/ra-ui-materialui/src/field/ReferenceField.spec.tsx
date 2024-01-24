@@ -649,10 +649,14 @@ describe('<ReferenceField />', () => {
             </ThemeProvider>
         );
         await waitFor(() => {
-            expect(dataProvider.getMany).toHaveBeenCalledWith('posts', {
-                ids: [123],
-                meta: { foo: 'bar' },
-            });
+            expect(dataProvider.getMany).toHaveBeenCalledWith(
+                'posts',
+                {
+                    ids: [123],
+                    meta: { foo: 'bar' },
+                },
+                expect.anything()
+            );
         });
     });
     describe('sx', () => {

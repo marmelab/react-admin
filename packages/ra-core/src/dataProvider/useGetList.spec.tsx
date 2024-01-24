@@ -52,11 +52,15 @@ describe('useGetList', () => {
         );
         await waitFor(() => {
             expect(dataProvider.getList).toBeCalledTimes(1);
-            expect(dataProvider.getList).toBeCalledWith('posts', {
-                filter: {},
-                pagination: { page: 1, perPage: 20 },
-                sort: { field: 'id', order: 'DESC' },
-            });
+            expect(dataProvider.getList).toBeCalledWith(
+                'posts',
+                {
+                    filter: {},
+                    pagination: { page: 1, perPage: 20 },
+                    sort: { field: 'id', order: 'DESC' },
+                },
+                expect.anything()
+            );
         });
     });
 
@@ -126,12 +130,16 @@ describe('useGetList', () => {
             </CoreAdminContext>
         );
         await waitFor(() => {
-            expect(dataProvider.getList).toBeCalledWith('posts', {
-                filter: {},
-                pagination: { page: 1, perPage: 20 },
-                sort: { field: 'id', order: 'DESC' },
-                meta: { hello: 'world' },
-            });
+            expect(dataProvider.getList).toBeCalledWith(
+                'posts',
+                {
+                    filter: {},
+                    pagination: { page: 1, perPage: 20 },
+                    sort: { field: 'id', order: 'DESC' },
+                    meta: { hello: 'world' },
+                },
+                expect.anything()
+            );
         });
     });
 
@@ -403,5 +411,37 @@ describe('useGetList', () => {
         expect(
             queryClient.getQueryData(['posts', 'getOne', { id: '1' }])
         ).toBeUndefined();
+    });
+
+    it('should abort the request if the query is canceled', async () => {
+        const abort = jest.fn();
+        const dataProvider = testDataProvider({
+            getList: jest.fn(
+                (_resource, _params, { signal }) =>
+                    new Promise(() => {
+                        signal.addEventListener('abort', () => {
+                            abort(signal.reason);
+                        });
+                    })
+            ) as any,
+        });
+        const queryClient = new QueryClient();
+        render(
+            <CoreAdminContext
+                dataProvider={dataProvider}
+                queryClient={queryClient}
+            >
+                <UseGetList resource="posts" />
+            </CoreAdminContext>
+        );
+        await waitFor(() => {
+            expect(dataProvider.getList).toHaveBeenCalled();
+        });
+        queryClient.cancelQueries({
+            queryKey: ['posts', 'getList'],
+        });
+        await waitFor(() => {
+            expect(abort).toHaveBeenCalled();
+        });
     });
 });

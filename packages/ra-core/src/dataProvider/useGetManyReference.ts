@@ -95,20 +95,24 @@ export const useGetManyReference = <RecordType extends RaRecord = any>(
             'getManyReference',
             { target, id, pagination, sort, filter, meta },
         ],
-        queryFn: () => {
+        queryFn: ({ signal }) => {
             if (!target || id == null) {
                 // check at runtime to support partial parameters with the enabled option
                 return Promise.reject(new Error('target and id are required'));
             }
             return dataProvider
-                .getManyReference<RecordType>(resource, {
-                    target,
-                    id,
-                    pagination,
-                    sort,
-                    filter,
-                    meta,
-                })
+                .getManyReference<RecordType>(
+                    resource,
+                    {
+                        target,
+                        id,
+                        pagination,
+                        sort,
+                        filter,
+                        meta,
+                    },
+                    { signal }
+                )
                 .then(({ data, total, pageInfo }) => ({
                     data,
                     total,

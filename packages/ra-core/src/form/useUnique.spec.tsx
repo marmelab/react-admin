@@ -35,19 +35,23 @@ describe('useUnique', () => {
         fireEvent.click(screen.getByText('Submit'));
         await waitFor(
             () => {
-                expect(dataProvider.getList).toHaveBeenCalledWith('users', {
-                    filter: {
-                        name: 'John Doe',
+                expect(dataProvider.getList).toHaveBeenCalledWith(
+                    'users',
+                    {
+                        filter: {
+                            name: 'John Doe',
+                        },
+                        pagination: {
+                            page: 1,
+                            perPage: 1,
+                        },
+                        sort: {
+                            field: 'id',
+                            order: 'ASC',
+                        },
                     },
-                    pagination: {
-                        page: 1,
-                        perPage: 1,
-                    },
-                    sort: {
-                        field: 'id',
-                        order: 'ASC',
-                    },
-                });
+                    expect.anything()
+                );
             },
             { timeout: 5000 }
         );
@@ -81,9 +85,13 @@ describe('useUnique', () => {
         render(<Edit dataProvider={dataProvider} id={1} />);
 
         await waitFor(() =>
-            expect(dataProvider.getOne).toHaveBeenCalledWith('users', {
-                id: 1,
-            })
+            expect(dataProvider.getOne).toHaveBeenCalledWith(
+                'users',
+                {
+                    id: 1,
+                },
+                expect.anything()
+            )
         );
         await new Promise(resolve => setTimeout(resolve, 500));
         fireEvent.change(await screen.findByDisplayValue('John Doe'), {
@@ -94,19 +102,23 @@ describe('useUnique', () => {
 
         await waitFor(
             () =>
-                expect(dataProvider.getList).toHaveBeenCalledWith('users', {
-                    filter: {
-                        name: 'Jane Doe',
+                expect(dataProvider.getList).toHaveBeenCalledWith(
+                    'users',
+                    {
+                        filter: {
+                            name: 'Jane Doe',
+                        },
+                        pagination: {
+                            page: 1,
+                            perPage: 1,
+                        },
+                        sort: {
+                            field: 'id',
+                            order: 'ASC',
+                        },
                     },
-                    pagination: {
-                        page: 1,
-                        perPage: 1,
-                    },
-                    sort: {
-                        field: 'id',
-                        order: 'ASC',
-                    },
-                }),
+                    expect.anything()
+                ),
             { timeout: 5000 }
         );
         await screen.findByText('Must be unique');
@@ -205,20 +217,24 @@ describe('useUnique', () => {
 
         await waitFor(
             () => {
-                expect(dataProvider.getList).toHaveBeenCalledWith('users', {
-                    filter: {
-                        name: 'John Doe',
-                        organization_id: 1,
+                expect(dataProvider.getList).toHaveBeenCalledWith(
+                    'users',
+                    {
+                        filter: {
+                            name: 'John Doe',
+                            organization_id: 1,
+                        },
+                        pagination: {
+                            page: 1,
+                            perPage: 1,
+                        },
+                        sort: {
+                            field: 'id',
+                            order: 'ASC',
+                        },
                     },
-                    pagination: {
-                        page: 1,
-                        perPage: 1,
-                    },
-                    sort: {
-                        field: 'id',
-                        order: 'ASC',
-                    },
-                });
+                    expect.anything()
+                );
             },
             { timeout: 5000 }
         );
@@ -235,21 +251,25 @@ describe('useUnique', () => {
 
         await waitFor(
             () => {
-                expect(dataProvider.getList).toHaveBeenCalledWith('users', {
-                    filter: {
-                        identity: {
-                            name: 'John Doe',
+                expect(dataProvider.getList).toHaveBeenCalledWith(
+                    'users',
+                    {
+                        filter: {
+                            identity: {
+                                name: 'John Doe',
+                            },
+                        },
+                        pagination: {
+                            page: 1,
+                            perPage: 1,
+                        },
+                        sort: {
+                            field: 'id',
+                            order: 'ASC',
                         },
                     },
-                    pagination: {
-                        page: 1,
-                        perPage: 1,
-                    },
-                    sort: {
-                        field: 'id',
-                        order: 'ASC',
-                    },
-                });
+                    expect.anything()
+                );
             },
             { timeout: 5000 }
         );

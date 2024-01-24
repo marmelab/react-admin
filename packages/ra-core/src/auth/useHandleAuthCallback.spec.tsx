@@ -117,4 +117,45 @@ describe('useHandleAuthCallback', () => {
         });
         expect(screen.queryByText('Home')).toBeNull();
     });
+
+    it('should abort the request if the query is canceled', async () => {
+        const abort = jest.fn();
+        const testAuthProvider = {
+            ...authProvider,
+            handleCallback: jest.fn(
+                ({ signal }) =>
+                    new Promise(() => {
+                        signal.addEventListener('abort', () => {
+                            abort(signal.reason);
+                        });
+                    })
+            ) as any,
+        };
+        const queryClient = new QueryClient();
+        render(
+            <MemoryRouter initialEntries={['/auth-callback']}>
+                <AuthContext.Provider value={testAuthProvider}>
+                    <QueryClientProvider client={queryClient}>
+                        <Routes>
+                            <Route path="/" element={<div>Home</div>} />
+                            <Route path="/test" element={<div>Test</div>} />
+                            <Route
+                                path="/auth-callback"
+                                element={<TestComponent />}
+                            />
+                        </Routes>
+                    </QueryClientProvider>
+                </AuthContext.Provider>
+            </MemoryRouter>
+        );
+        await waitFor(() => {
+            expect(testAuthProvider.handleCallback).toHaveBeenCalled();
+        });
+        queryClient.cancelQueries({
+            queryKey: ['auth', 'handleCallback'],
+        });
+        await waitFor(() => {
+            expect(abort).toHaveBeenCalled();
+        });
+    });
 });

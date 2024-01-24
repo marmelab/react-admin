@@ -240,12 +240,16 @@ describe('<ReferenceArrayInput />', () => {
             </CoreAdminContext>
         );
         await waitFor(() => {
-            expect(getList).toHaveBeenCalledWith('tags', {
-                filter: {},
-                pagination: { page: 1, perPage: 25 },
-                sort: { field: 'id', order: 'DESC' },
-                meta: { foo: 'bar' },
-            });
+            expect(getList).toHaveBeenCalledWith(
+                'tags',
+                {
+                    filter: {},
+                    pagination: { page: 1, perPage: 25 },
+                    sort: { field: 'id', order: 'DESC' },
+                    meta: { foo: 'bar' },
+                },
+                expect.anything()
+            );
         });
     });
 

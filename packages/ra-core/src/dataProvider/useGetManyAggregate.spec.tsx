@@ -5,6 +5,7 @@ import { render, waitFor } from '@testing-library/react';
 import { CoreAdminContext } from '../core';
 import { useGetManyAggregate } from './useGetManyAggregate';
 import { testDataProvider } from '../dataProvider';
+import { QueryClient } from '@tanstack/react-query';
 
 const UseGetManyAggregate = ({
     resource,
@@ -36,9 +37,13 @@ describe('useGetManyAggregate', () => {
         );
         await waitFor(() => {
             expect(dataProvider.getMany).toHaveBeenCalledTimes(1);
-            expect(dataProvider.getMany).toHaveBeenCalledWith('posts', {
-                ids: [1],
-            });
+            expect(dataProvider.getMany).toHaveBeenCalledWith(
+                'posts',
+                {
+                    ids: [1],
+                },
+                expect.anything()
+            );
         });
     });
 
@@ -261,9 +266,13 @@ describe('useGetManyAggregate', () => {
         );
         await waitFor(() => {
             expect(dataProvider.getMany).toHaveBeenCalledTimes(1);
-            expect(dataProvider.getMany).toHaveBeenCalledWith('posts', {
-                ids: [1, 2, 3, 4, 5, 6],
-            });
+            expect(dataProvider.getMany).toHaveBeenCalledWith(
+                'posts',
+                {
+                    ids: [1, 2, 3, 4, 5, 6],
+                },
+                expect.anything()
+            );
         });
     });
 
@@ -277,12 +286,20 @@ describe('useGetManyAggregate', () => {
         );
         await waitFor(() => {
             expect(dataProvider.getMany).toHaveBeenCalledTimes(2);
-            expect(dataProvider.getMany).toHaveBeenCalledWith('posts', {
-                ids: [1, 2, 3, 4],
-            });
-            expect(dataProvider.getMany).toHaveBeenCalledWith('comments', {
-                ids: [5, 6],
-            });
+            expect(dataProvider.getMany).toHaveBeenCalledWith(
+                'posts',
+                {
+                    ids: [1, 2, 3, 4],
+                },
+                expect.anything()
+            );
+            expect(dataProvider.getMany).toHaveBeenCalledWith(
+                'comments',
+                {
+                    ids: [5, 6],
+                },
+                expect.anything()
+            );
         });
     });
 
@@ -296,9 +313,13 @@ describe('useGetManyAggregate', () => {
         );
         await waitFor(() => {
             expect(dataProvider.getMany).toHaveBeenCalledTimes(1);
-            expect(dataProvider.getMany).toHaveBeenCalledWith('posts', {
-                ids: [1, 2, 3, 4],
-            });
+            expect(dataProvider.getMany).toHaveBeenCalledWith(
+                'posts',
+                {
+                    ids: [1, 2, 3, 4],
+                },
+                expect.anything()
+            );
         });
     });
 
@@ -336,9 +357,13 @@ describe('useGetManyAggregate', () => {
         );
         await waitFor(() => {
             expect(dataProvider.getMany).toHaveBeenCalledTimes(1);
-            expect(dataProvider.getMany).toHaveBeenCalledWith('posts', {
-                ids: [1, 2, 3],
-            });
+            expect(dataProvider.getMany).toHaveBeenCalledWith(
+                'posts',
+                {
+                    ids: [1, 2, 3],
+                },
+                expect.anything()
+            );
         });
 
         await waitFor(() => {
@@ -366,5 +391,37 @@ describe('useGetManyAggregate', () => {
                 ],
             })
         );
+    });
+
+    it('should abort the request if the query is canceled', async () => {
+        const abort = jest.fn();
+        const dataProvider = testDataProvider({
+            getMany: jest.fn(
+                (_resource, _params, { signal }) =>
+                    new Promise(() => {
+                        signal.addEventListener('abort', () => {
+                            abort(signal.reason);
+                        });
+                    })
+            ) as any,
+        });
+        const queryClient = new QueryClient();
+        render(
+            <CoreAdminContext
+                dataProvider={dataProvider}
+                queryClient={queryClient}
+            >
+                <UseGetManyAggregate resource="posts" ids={[1]} />
+            </CoreAdminContext>
+        );
+        await waitFor(() => {
+            expect(dataProvider.getMany).toHaveBeenCalled();
+        });
+        queryClient.cancelQueries({
+            queryKey: ['posts', 'getMany', { ids: ['1'] }],
+        });
+        await waitFor(() => {
+            expect(abort).toHaveBeenCalled();
+        });
     });
 });

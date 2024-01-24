@@ -36,9 +36,13 @@ describe('useReference', () => {
         );
         await waitFor(() => {
             expect(dataProvider.getMany).toHaveBeenCalledTimes(1);
-            expect(dataProvider.getMany).toHaveBeenCalledWith('posts', {
-                ids: ['1'],
-            });
+            expect(dataProvider.getMany).toHaveBeenCalledWith(
+                'posts',
+                {
+                    ids: ['1'],
+                },
+                expect.anything()
+            );
         });
     });
 
@@ -193,9 +197,13 @@ describe('useReference', () => {
         );
         await waitFor(() => {
             expect(dataProvider.getMany).toHaveBeenCalledTimes(1);
-            expect(dataProvider.getMany).toHaveBeenCalledWith('posts', {
-                ids: [1, 2, 3],
-            });
+            expect(dataProvider.getMany).toHaveBeenCalledWith(
+                'posts',
+                {
+                    ids: [1, 2, 3],
+                },
+                expect.anything()
+            );
         });
     });
 
@@ -209,12 +217,20 @@ describe('useReference', () => {
         );
         await waitFor(() => {
             expect(dataProvider.getMany).toHaveBeenCalledTimes(2);
-            expect(dataProvider.getMany).toHaveBeenCalledWith('posts', {
-                ids: [1, 2],
-            });
-            expect(dataProvider.getMany).toHaveBeenCalledWith('comments', {
-                ids: [3],
-            });
+            expect(dataProvider.getMany).toHaveBeenCalledWith(
+                'posts',
+                {
+                    ids: [1, 2],
+                },
+                expect.anything()
+            );
+            expect(dataProvider.getMany).toHaveBeenCalledWith(
+                'comments',
+                {
+                    ids: [3],
+                },
+                expect.anything()
+            );
         });
     });
 
@@ -228,9 +244,13 @@ describe('useReference', () => {
         );
         await waitFor(() => {
             expect(dataProvider.getMany).toHaveBeenCalledTimes(1);
-            expect(dataProvider.getMany).toHaveBeenCalledWith('posts', {
-                ids: [1, 2],
-            });
+            expect(dataProvider.getMany).toHaveBeenCalledWith(
+                'posts',
+                {
+                    ids: [1, 2],
+                },
+                expect.anything()
+            );
         });
     });
 });

@@ -110,7 +110,7 @@ export const useGetManyAggregate = <RecordType extends RaRecord = any>(
                 meta,
             },
         ],
-        queryFn: () =>
+        queryFn: ({ signal }) =>
             new Promise((resolve, reject) => {
                 if (!ids || ids.length === 0) {
                     // no need to call the dataProvider
@@ -125,6 +125,7 @@ export const useGetManyAggregate = <RecordType extends RaRecord = any>(
                     reject,
                     dataProvider,
                     queryClient,
+                    signal,
                 });
             }),
         placeholderData,
@@ -214,6 +215,7 @@ interface GetManyCallArgs {
     reject: (error?: any) => void;
     dataProvider: DataProvider;
     queryClient: QueryClient;
+    signal: AbortSignal;
 }
 
 /**
@@ -225,6 +227,7 @@ interface GetManyCallArgs {
 const callGetManyQueries = batch((calls: GetManyCallArgs[]) => {
     const dataProvider = calls[0].dataProvider;
     const queryClient = calls[0].queryClient;
+    const signal = calls[0].signal;
 
     /**
      * Aggregate calls by resource
@@ -286,7 +289,7 @@ const callGetManyQueries = batch((calls: GetManyCallArgs[]) => {
             } = callThatHasAllAggregatedIds;
 
             dataProvider
-                .getMany<any>(resource, { ids, meta })
+                .getMany<any>(resource, { ids, meta }, { signal })
                 .then(({ data }) => data)
                 .then(
                     data => {
@@ -325,12 +328,16 @@ const callGetManyQueries = batch((calls: GetManyCallArgs[]) => {
                         meta: uniqueMeta,
                     },
                 ],
-                queryFn: () =>
+                queryFn: ({ signal }) =>
                     dataProvider
-                        .getMany<any>(resource, {
-                            ids: aggregatedIds,
-                            meta: uniqueMeta,
-                        })
+                        .getMany<any>(
+                            resource,
+                            {
+                                ids: aggregatedIds,
+                                meta: uniqueMeta,
+                            },
+                            { signal }
+                        )
                         .then(({ data }) => data),
             })
             .then(data => {

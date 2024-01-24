@@ -4,6 +4,7 @@ import { waitFor, render, screen } from '@testing-library/react';
 import { CoreAdminContext } from '../core/CoreAdminContext';
 
 import usePermissions from './usePermissions';
+import { QueryClient } from '@tanstack/react-query';
 
 const UsePermissions = ({ children }: any) => {
     const permissionQueryParams = {
@@ -98,5 +99,37 @@ describe('usePermissions', () => {
             expect(screen.queryByText('LOADING')).toBeNull();
         });
         expect(authProvider.logout).toHaveBeenCalled();
+    });
+
+    it('should abort the request if the query is canceled', async () => {
+        const abort = jest.fn();
+        const authProvider = {
+            getPermissions: jest.fn(
+                (_params, { signal }) =>
+                    new Promise(() => {
+                        signal.addEventListener('abort', () => {
+                            abort(signal.reason);
+                        });
+                    })
+            ) as any,
+        } as any;
+        const queryClient = new QueryClient();
+        render(
+            <CoreAdminContext
+                authProvider={authProvider}
+                queryClient={queryClient}
+            >
+                <UsePermissions>{stateInpector}</UsePermissions>
+            </CoreAdminContext>
+        );
+        await waitFor(() => {
+            expect(authProvider.getPermissions).toHaveBeenCalled();
+        });
+        queryClient.cancelQueries({
+            queryKey: ['auth', 'getPermissions'],
+        });
+        await waitFor(() => {
+            expect(abort).toHaveBeenCalled();
+        });
     });
 });
