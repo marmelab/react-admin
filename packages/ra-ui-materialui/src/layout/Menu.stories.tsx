@@ -38,7 +38,9 @@ const DemoList = ({ name }) => (
 
 export const Default = () => {
     const MenuDefault = () => <Menu hasDashboard={true} dense={false} />;
-    const DefaultLayout = props => <Layout {...props} menu={MenuDefault} />;
+    const DefaultLayout = ({ children }) => (
+        <Layout menu={MenuDefault}>{children}</Layout>
+    );
 
     return (
         <Admin
@@ -59,7 +61,9 @@ export const Default = () => {
 
 export const Dense = () => {
     const MenuDense = () => <Menu hasDashboard={true} dense={true} />;
-    const LayoutDense = props => <Layout {...props} menu={MenuDense} />;
+    const LayoutDense = ({ children }) => (
+        <Layout menu={MenuDense}>{children}</Layout>
+    );
 
     return (
         <Admin
@@ -103,7 +107,9 @@ export const Custom = () => {
             />
         </Menu>
     );
-    const CustomLayout = props => <Layout {...props} menu={CustomMenu} />;
+    const CustomLayout = ({ children }) => (
+        <Layout menu={CustomMenu}>{children}</Layout>
+    );
 
     return (
         <MemoryRouter initialEntries={['/']}>
@@ -192,7 +198,9 @@ export const MenuItemChild = () => {
             </Menu>
         );
     };
-    const CustomLayout = props => <Layout {...props} menu={CustomMenu} />;
+    const CustomLayout = ({ children }) => (
+        <Layout menu={CustomMenu}>{children}</Layout>
+    );
 
     return (
         <MemoryRouter initialEntries={['/']}>

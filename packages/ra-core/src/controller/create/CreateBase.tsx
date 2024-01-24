@@ -19,8 +19,8 @@ import { ResourceContextProvider } from '../../core';
  *
  * @example // Custom edit layout
  *
- * const PostCreate = props => (
- *     <CreateBase {...props}>
+ * const PostCreate = () => (
+ *     <CreateBase>
  *         <Grid container>
  *             <Grid item xs={8}>
  *                 <SimpleForm>

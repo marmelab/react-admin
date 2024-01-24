@@ -167,7 +167,9 @@ const MyAppBar = () => (
         />
     </AppBar>
 );
-const MyLayout = props => <Layout {...props} appBar={MyAppBar} />;
+const MyLayout = ({ children }) => (
+    <Layout appBar={MyAppBar}>{children}</Layout>
+);
 
 export const FullApp = () => (
     <AdminContext

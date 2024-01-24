@@ -338,9 +338,9 @@ export const Title = () => (
     </Admin>
 );
 
-const LayoutWithFooter = props => (
+const LayoutWithFooter = ({ children }) => (
     <>
-        <Layout {...props} />
+        <Layout>{children}</Layout>
         <div style={{ height: '100px', backgroundColor: 'red' }}>Footer</div>
     </>
 );

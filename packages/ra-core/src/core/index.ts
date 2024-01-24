@@ -3,6 +3,8 @@ export * from './CoreAdminContext';
 export * from './CoreAdminRoutes';
 export * from './CoreAdminUI';
 export * from './CustomRoutes';
+export * from './DefaultTitleContext';
+export * from './HasDashboardContext';
 export * from './Resource';
 export * from './ResourceContext';
 export * from './ResourceContextProvider';

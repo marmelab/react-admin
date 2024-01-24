@@ -12,6 +12,7 @@ import { DashboardMenuItem } from './DashboardMenuItem';
 import { MenuItemLink } from './MenuItemLink';
 import { ResourceMenuItem } from './ResourceMenuItem';
 import { ResourceMenuItems } from './ResourceMenuItems';
+import { useHasDashboard } from 'ra-core';
 
 /**
  * Renders a menu with one menu item per resource by default. You can also set menu items by hand.
@@ -36,21 +37,8 @@ import { ResourceMenuItems } from './ResourceMenuItems';
  * );
  */
 export const Menu = (props: MenuProps) => {
-    const {
-        hasDashboard,
-        children = hasDashboard ? (
-            [
-                <DashboardMenuItem key="default-dashboard-menu-item" />,
-                <ResourceMenuItems key="default-resource-menu-items" />,
-            ]
-        ) : (
-            <ResourceMenuItems />
-        ),
-
-        className,
-        ...rest
-    } = props;
-
+    const { children, className, ...rest } = props;
+    const hasDashboard = useHasDashboard();
     const [open] = useSidebarState();
 
     return (
@@ -64,7 +52,8 @@ export const Menu = (props: MenuProps) => {
             )}
             {...rest}
         >
-            {children}
+            {hasDashboard && !children && <DashboardMenuItem />}
+            {children ?? <ResourceMenuItems />}
         </Root>
     );
 };
@@ -74,14 +63,12 @@ export interface MenuProps {
     children?: ReactNode;
     className?: string;
     dense?: boolean;
-    hasDashboard?: boolean;
     [key: string]: any;
 }
 
 Menu.propTypes = {
     className: PropTypes.string,
     dense: PropTypes.bool,
-    hasDashboard: PropTypes.bool,
 };
 
 // re-export MenuItem components for convenience

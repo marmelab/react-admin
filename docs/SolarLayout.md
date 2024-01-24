@@ -71,10 +71,10 @@ You can customize the AppBar that appears on Mobile by setting the `appBar` prop
 
 {% raw %}
 ```tsx
+import type { ReactNode } from 'react';
 import { Admin, Resource, ListGuesser } from 'react-admin';
 import {
     SolarAppBar,
-    SolarLayoutProps,
     SolarLayout,
 } from '@react-admin/ra-navigation';
 
@@ -96,8 +96,10 @@ const CustomAppBar = () => (
     />
 );
 
-const CustomLayout = (props: SolarLayoutProps) => (
-    <SolarLayout {...props} appBar={CustomAppBar} />
+const CustomLayout = ({ children }: { children: ReactNode }) => (
+    <SolarLayout appBar={CustomAppBar}>
+        {children}
+    </SolarLayout>
 );
 
 export const App = () => (
@@ -121,10 +123,15 @@ If you want to customize this page, or log the error to a third-party service, c
 
 ```tsx
 // in src/MyLayout.tsx
+import type { ReactNode } from 'react';
 import { Layout } from 'react-admin';
 import { MyError } from './MyError';
 
-export const MyLayout = props => <Layout {...props} error={MyError} />;
+export const MyLayout = ({ children }: { children: ReactNode }) => (
+    <SolarLayout error={MyError}>
+        {children}
+    </SolarLayout>
+);
 ```
 
 The following snippet is a simplified version of the react-admin `Error` component, that you can use as a base for your own:
@@ -193,13 +200,16 @@ export const MyError = ({
 You can customize the icon of the dashboard menu item of the default menu by setting the `logo` prop:
 
 ```tsx
+import type { ReactNode } from 'react';
 import { Admin, Resource, ListGuesser } from 'react-admin';
-import { SolarLayoutProps, SolarLayout } from '@react-admin/ra-navigation';
+import { SolarLayout } from '@react-admin/ra-navigation';
 import { Dashboard } from './Dashboard';
 import { Logo } from './Logo';
 
-const CustomLayout = (props: SolarLayoutProps) => (
-    <SolarLayout {...props} logo={<Logo />} />
+const CustomLayout = ({ children }: { children: ReactNode }) => (
+    <SolarLayout logo={<Logo />}>
+        {children}
+    </SolarLayout>
 );
 
 export const WithDashboardAndCustomLogo = () => (
@@ -215,12 +225,9 @@ export const WithDashboardAndCustomLogo = () => (
 If you need a customized menu, pass it to the `menu` prop. It's recommended to pass a customized [`<SolarMenu>`](#solarmenu) to leverage this layout. This is useful to organize many resources into categories or to provide shortcuts to filtered lists:
 
 ```tsx
+import type { ReactNode } from 'react';
 import { Admin, Resource, ListGuesser } from 'react-admin';
-import {
-    SolarLayoutProps,
-    SolarLayout,
-    SolarMenu,
-} from '@react-admin/ra-navigation';
+import { SolarLayout, SolarMenu } from '@react-admin/ra-navigation';
 
 export const App = () => (
     <Admin
@@ -233,8 +240,8 @@ export const App = () => (
     </Admin>
 );
 
-const CustomLayout = ({ children, ...props }: SolarLayoutProps) => (
-    <SolarLayout {...props} menu={CustomMenu}>
+const CustomLayout = ({ children }: { children: ReactNode }) => (
+    <SolarLayout menu={CustomMenu}>
         {children}
     </SolarLayout>
 );
@@ -325,11 +332,14 @@ The `sx` prop allows you to customize the layout styles using a MUI [SX](./SX.md
 
 {% raw %}
 ```tsx
+import type { ReactNode } from 'react';
 import { Admin, Resource, ListGuesser } from 'react-admin';
-import { SolarLayoutProps, SolarLayout } from '@react-admin/ra-navigation';
+import { SolarLayout } from '@react-admin/ra-navigation';
 
-const CustomLayout = (props: SolarLayoutProps) => (
-    <SolarLayout {...props} sx={{ bgcolor: 'white' }} />
+const CustomLayout = ({ children }: { children: ReactNode }) => (
+    <SolarLayout sx={{ bgcolor: 'white' }}>
+        {children}
+    </SolarLayout>
 );
 
 export const App = () => (
@@ -475,19 +485,18 @@ const CustomMenu = () => (
 Set the `dense` prop to `true` to reduce the vertical space between items:
 
 ```tsx
+import type { ReactNode } from 'react';
 import { Admin, Resource, ListGuesser } from 'react-admin';
-import {
-    SolarLayoutProps,
-    SolarLayout,
-    SolarMenu,
-} from '@react-admin/ra-navigation';
+import { SolarLayout, SolarMenu } from '@react-admin/ra-navigation';
 import { ListItemButton } from '@mui/material';
 import { dataProvider } from './dataProvider';
 
 const CustomMenu = () => <SolarMenu dense />;
 
-const CustomLayout = (props: SolarLayoutProps) => (
-    <SolarLayout {...props} menu={CustomMenu} />
+const CustomLayout = ({ children }: { children: ReactNode }) => (
+    <SolarLayout menu={CustomMenu}>
+        {children}
+    </SolarLayout>
 );
 
 export const App = () => (
@@ -518,12 +527,9 @@ You can customize it by passing your own content to the `userMenu` prop.
 For instance, here's how to only show a logout button:
 
 ```tsx
+import type { ReactNode } from 'react';
 import { Admin, Resource, ListGuesser } from 'react-admin';
-import {
-    SolarLayoutProps,
-    SolarLayout,
-    SolarMenu,
-} from '@react-admin/ra-navigation';
+import { SolarLayout, SolarMenu } from '@react-admin/ra-navigation';
 import { ListItemButton } from '@mui/material';
 import { dataProvider } from './dataProvider';
 
@@ -539,8 +545,8 @@ const CustomUserMenu = () => {
 
 const CustomMenu = () => <SolarMenu userMenu={<CustomUserMenu />} />;
 
-const CustomLayout = ({ children, ...props }: SolarLayoutProps) => (
-    <SolarLayout {...props} menu={CustomMenu}>
+const CustomLayout = ({ children }: { children: ReactNode }) => (
+    <SolarLayout menu={CustomMenu}>
         {children}
     </SolarLayout>
 );
@@ -566,12 +572,9 @@ You can customize it by passing your own content to the `bottomToolbar` prop.
 For instance, here's how to show a settings menu item in addition to the existing bottom menu items:
 
 ```tsx
+import type { ReactNode } from 'react';
 import { Admin, Resource, ListGuesser } from 'react-admin';
-import {
-    SolarLayoutProps,
-    SolarLayout,
-    SolarMenu,
-} from '@react-admin/ra-navigation';
+import { SolarLayout, SolarMenu } from '@react-admin/ra-navigation';
 import { ListItemButton } from '@mui/material';
 import { dataProvider } from './dataProvider';
 
@@ -590,8 +593,10 @@ const CustomBottomToolbar = () => (
 
 const CustomMenu = () => <SolarMenu bottomToolbar={<CustomBottomToolbar />} />;
 
-const CustomLayout = (props: SolarLayoutProps) => (
-    <SolarLayout {...props} menu={CustomMenu} />
+const CustomLayout = ({ children }: { children: ReactNode }) => (
+    <SolarLayout menu={CustomMenu}>
+        {children}
+    </SolarLayout>
 );
 
 export const App = () => (
@@ -612,8 +617,9 @@ For instance, here is how to change the background color of the menu:
 
 {% raw %}
 ```tsx
+import type { ReactNode } from 'react';
 import { Admin, Resource, ListGuesser } from 'react-admin';
-import { SolarLayoutProps, SolarLayout, SolarMenu, SolarMenuProps } from '@react-admin/ra-navigation';
+import { SolarLayout, SolarMenu, SolarMenuProps } from '@react-admin/ra-navigation';
 
 const CustomMenu = (props: SolarMenuProps) => (
     <SolarMenu
@@ -634,8 +640,10 @@ const CustomMenu = (props: SolarMenuProps) => (
     />
 );
 
-const CustomLayout = (props: SolarLayoutProps) => (
-    <SolarLayout {...props} menu={CustomMenu} />
+const CustomLayout = ({ children }: { children: ReactNode }) => (
+    <SolarLayout menu={CustomMenu}>
+        {children}
+    </SolarLayout>
 );
 
 export const App = () => (
@@ -824,12 +832,9 @@ An AppBar alternative for the SolarLayout that is only shown on small devices. I
 You can customize it by passing children:
 
 ```tsx
+import type { ReactNode } from 'react';
 import { Admin, AppBarProps, Resource, LoadingIndicator } from 'react-admin';
-import {
-    SolarAppBar,
-    SolarLayout,
-    SolarLayoutProps,
-} from '@react-admin/ra-navigation';
+import { SolarAppBar, SolarLayout } from '@react-admin/ra-navigation';
 import { Search } from '@react-admin/ra-search';
 
 const CustomAppBar = () => (
@@ -839,8 +844,10 @@ const CustomAppBar = () => (
     </SolarAppBar>
 );
 
-export const CustomLayout = (props: SolarLayoutProps) => (
-    <SolarLayout {...props} appBar={CustomAppBar} />
+export const CustomLayout = ({ children }: { children: ReactNode }) => (
+    <SolarLayout appBar={CustomAppBar}>
+        {children}
+    </SolarLayout>
 );
 
 export const App = () => (

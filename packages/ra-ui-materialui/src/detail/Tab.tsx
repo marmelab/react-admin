@@ -32,8 +32,8 @@ import { Labeled } from '../Labeled';
  *     import PersonPinIcon from '@mui/icons-material/PersonPin';
  *     import { Show, TabbedShowLayout, TextField } from 'react-admin';
  *
- *     export const PostShow = (props) => (
- *         <Show {...props}>
+ *     export const PostShow = () => (
+ *         <Show>
  *             <TabbedShowLayout>
  *                 <TabbedShowLayout.Tab label="Content" icon={<FavoriteIcon />}>
  *                     <TextField source="title" />

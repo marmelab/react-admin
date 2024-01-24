@@ -1,11 +1,11 @@
+import type { ReactNode } from 'react';
 import {
   Layout as RALayout,
-  LayoutProps,
   CheckForApplicationUpdate,
 } from "react-admin";
 
-export const Layout = ({ children, ...props }: LayoutProps) => (
-  <RALayout {...props}>
+export const Layout = ({ children }: { children: ReactNode }) => (
+  <RALayout>
     {children}
     <CheckForApplicationUpdate />
   </RALayout>

@@ -29,8 +29,8 @@ import { CreateBase } from 'ra-core';
  * import * as React from "react";
  * import { Create, SimpleForm, TextInput } from 'react-admin';
  *
- * export const PostCreate = (props) => (
- *     <Create {...props}>
+ * export const PostCreate = () => (
+ *     <Create>
  *         <SimpleForm>
  *             <TextInput source="title" />
  *         </SimpleForm>

@@ -10,9 +10,9 @@ const MyAppBar = () => (
     </AppBar>
 );
 
-export default props => (
+export default ({ children }) => (
     <>
-        <Layout {...props} appBar={MyAppBar} />
+        <Layout appBar={MyAppBar}>{children}</Layout>
         <ReactQueryDevtools
             initialIsOpen={false}
             buttonPosition="bottom-left"

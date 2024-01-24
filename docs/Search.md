@@ -102,7 +102,11 @@ Include that AppBar in [a custom layout component](./Layout.md):
 import { Layout } from "react-admin";
 import { MyAppbar } from "./MyAppBar";
 
-export const MyLayout = (props) => <Layout {...props} appBar={MyAppbar} />;
+export const MyLayout = ({ children }) => (
+    <Layout appBar={MyAppbar}>
+        {children}
+    </Layout>
+);
 ```
 
 Finally, include that custom layout in the `<Admin>`.
@@ -133,8 +137,10 @@ If you're using [the `<ContainerLayout>` component](./ContainerLayout.md), you c
 import { ContainerLayout } from "@react-admin/ra-navigation";
 import { Search } from "@react-admin/ra-search";
 
-const MyLayout = (props: any) => (
-    <ContainerLayout {...props} maxWidth="xl" toolbar={<Search />} />
+const MyLayout = ({ children }) => (
+    <ContainerLayout maxWidth="xl" toolbar={<Search />}>
+        {children}
+    </ContainerLayout>
 );
 ```
 
@@ -200,7 +206,11 @@ const MyAppBar = () => (
     </AppBar>
 );
 
-const MyLayout = props => <Layout {...props} appBar={MyAppBar} />;
+const MyLayout = ({ children }) => (
+    <Layout appBar={MyAppBar}>
+        {children}
+    </Layout>
+);
 
 export const App = () => (
     <Admin dataProvider={searchDataProvider} layout={MyLayout}>

@@ -108,7 +108,6 @@ export const Admin = (props: AdminProps) => {
         loading,
         loginPage,
         authCallbackPage,
-        menu, // deprecated, use a custom layout instead
         notification,
         queryClient,
         requireAuth,
@@ -145,7 +144,6 @@ export const Admin = (props: AdminProps) => {
                 layout={layout}
                 dashboard={dashboard}
                 disableTelemetry={disableTelemetry}
-                menu={menu}
                 catchAll={catchAll}
                 title={title}
                 loading={loading}

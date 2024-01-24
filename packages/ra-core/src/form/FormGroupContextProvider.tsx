@@ -12,8 +12,8 @@ import { useFormGroups } from './useFormGroups';
  * import { Edit, SimpleForm, TextInput, FormGroupContextProvider, useFormGroup } from 'react-admin';
  * import { Accordion, AccordionDetails, AccordionSummary, Typography } from '@mui/material';
  *
- * const PostEdit = (props) => (
- *     <Edit {...props}>
+ * const PostEdit = () => (
+ *     <Edit>
  *         <SimpleForm>
  *             <TextInput source="title" />
  *             <FormGroupContextProvider name="options">

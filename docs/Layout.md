@@ -13,7 +13,6 @@ The default react-admin layout renders a horizontal app bar at the top, a naviga
   Your browser does not support the video tag.
 </video>
 
-
 In addition, the layout renders the menu as a dropdown on mobile.
 
 <video controls autoplay playsinline muted loop>
@@ -22,12 +21,11 @@ In addition, the layout renders the menu as a dropdown on mobile.
   Your browser does not support the video tag.
 </video>
 
-
 React-admin lets you override the app layout using [the `<Admin layout>` prop](./Admin.md#layout). You can use any component you want as layout ; but if you just need to tweak the default layout, you can use the `<Layout>` component.
 
 ## Usage
 
-Create a custom layout overriding some of the components of the default layout:
+Create a custom layout overriding some of the props of the default layout. Remember to pass down the `children` prop:
 
 ```jsx
 // in src/MyLayout.js
@@ -35,7 +33,11 @@ import { Layout } from 'react-admin';
 
 import { MyAppBar } from './MyAppBar';
 
-export const MyLayout = props => <Layout {...props} appBar={MyAppBar} />;
+export const MyLayout = ({ children }) => (
+    <Layout appBar={MyAppBar}>
+        {children}
+    </Layout>
+);
 ```
 
 Then pass this custom layout to the `<Admin>` component:
@@ -57,6 +59,7 @@ const App = () => (
 
 | Prop             | Required | Type        | Default  | Description                                                             |
 | ---------------- | -------- | ----------- | -------- | ----------------------------------------------------------------------- |
+| `children`       | Required | `Element`   | -        | The content of the layout                                               |
 | `appBar`         | Optional | `Component` | -        | A React component rendered at the top of the layout                     |
 | `appBarAlwaysOn` | Optional | `boolean`   | -        | When true, the app bar is always visible                                |
 | `className`      | Optional | `string`    | -        | Passed to the root `<div>` component                                    |
@@ -64,23 +67,6 @@ const App = () => (
 | `menu`           | Optional | `Component` | -        | A React component rendered at the side of the screen                    |
 | `sidebar`        | Optional | `Component` | -        | A React component responsible for rendering the menu (e.g. in a drawer) |
 | `sx`             | Optional | `SxProps`   | -        | Style overrides, powered by MUI System                                  |
-
-React-admin injects more props at runtime based on the `<Admin>` props:
-
-* `dashboard`: The dashboard component. Used to enable the dahboard link in the menu
-* `title`: The default page tile, rendered in the AppBar for error pages
-* `children`: The main content of the page
-
-Any value set for these props in a custom layout will be ignored. That's why you're supposed to pass down the props when creating a layout based on `<Layout>`:
-
-```jsx
-// in src/MyLayout.js
-import { Layout } from 'react-admin';
-
-import { MyAppBar } from './MyAppBar';
-
-export const MyLayout = props => <Layout {...props} appBar={MyAppBar} />;
-```
 
 ## `appBar`
 
@@ -93,7 +79,11 @@ import { Layout } from 'react-admin';
 
 import { MyAppBar } from './MyAppBar';
 
-export const MyLayout = (props) => <Layout {...props} appBar={MyAppBar} />;
+export const MyLayout = ({ children }) => (
+    <Layout appBar={MyAppBar}>
+        {children}
+    </Layout>
+);
 ```
 
 You can use [react-admin's `<AppBar>` component](./AppBar.md) as a base for your custom app bar, or the component of your choice. 
@@ -135,7 +125,11 @@ By default, the app bar is hidden when the user scrolls down the page. This is u
 import * as React from 'react';
 import { Layout } from 'react-admin';
 
-export const MyLayout = (props) => <Layout {...props} appBarAlwaysOn />;
+export const MyLayout = ({ children }) => (
+    <Layout appBarAlwaysOn>
+        {children}
+    </Layout>
+);
 ```
 
 ## `className`
@@ -153,10 +147,13 @@ If you want to customize this page, or log the error to a third-party service, c
 ```jsx
 // in src/MyLayout.js
 import { Layout } from 'react-admin';
-
 import { MyError } from './MyError';
 
-export const MyLayout = (props) => <Layout {...props} error={MyError} />;
+export const MyLayout = ({ children }) => (
+    <Layout error={MyError}>
+        {children}
+    </Layout>
+);
 ```
 
 The following snippet is a simplified version of the react-admin `Error` component, that you can use as a base for your own:
@@ -167,7 +164,7 @@ import * as React from 'react';
 import Button from '@mui/material/Button';
 import ErrorIcon from '@mui/icons-material/Report';
 import History from '@mui/icons-material/History';
-import { Title, useTranslate } from 'react-admin';
+import { Title, useTranslate, useDefaultTitle } from 'react-admin';
 import { useLocation } from 'react-router-dom';
 
 export const MyError = ({
@@ -186,9 +183,10 @@ export const MyError = ({
     }, [pathname, resetErrorBoundary]);
 
     const translate = useTranslate();
+    const defaultTitle = useDefaultTitle();
     return (
         <div>
-            <Title title="Error" />
+            <Title title={`${defaultTitle}: Error`} />
             <h1><ErrorIcon /> Something Went Wrong </h1>
             <div>A client error occurred and your request couldn't be completed.</div>
             {process.env.NODE_ENV !== 'production' && (
@@ -220,10 +218,13 @@ Lets you override the menu.
 ```jsx
 // in src/Layout.js
 import { Layout } from 'react-admin';
-
 import { MyMenu } from './MyMenu';
 
-export const Layout = (props) => <Layout {...props} menu={MyMenu} />;
+export const Layout = ({ children }) => (
+    <Layout menu={MyMenu}>
+        {children}
+    </Layout>
+);
 ```
 
 You can create a custom menu component using [react-admin's `<Menu>` component](./Menu.md):
@@ -276,8 +277,11 @@ import { Layout } from 'react-admin';
 
 import { MySidebar } from './MySidebar';
 
-export const Layout = (props) => <Layout {...props} sidebar={MySidebar} />;
-
+export const Layout = ({ children }) => (
+    <Layout sidebar={MySidebar}>
+        {children}
+    </Layout>
+);
 
 // in src/MySidebar.js
 import * as React from 'react';
@@ -340,7 +344,11 @@ const MySidebar = (props) => (
     />
 );
 
-const MyLayout = props => <Layout {...props} sidebar={MySidebar} />
+const MyLayout = ({ children }) => (
+    <Layout sidebar={MySidebar}>
+        {children}
+    </Layout>
+);
 ```
 {% endraw %}
 
@@ -350,8 +358,10 @@ Pass an `sx` prop to customize the style of the main component and the underlyin
 
 {% raw %}
 ```jsx
-export const MyLayout = (props) => (
-    <Layout sx={{ '& .RaLayout-appFrame': { marginTop: 55 } }} {...props} />
+export const MyLayout = ({ children }) => (
+    <Layout sx={{ '& .RaLayout-appFrame': { marginTop: 55 } }}>
+        {children}
+    </Layout>
 );
 ```
 {% endraw %}
@@ -385,9 +395,11 @@ const getCookie = (name) => document.cookie
   .find(row => row.startsWith(`${name}=`))
   ?.split('=')[1];
 
-export const MyLayout = (props) => (
+export const MyLayout = ({ children }) => (
     <TenantContext.Provider value={getCookie('tenant')}>
-        <Layout {...props} />
+        <Layout>
+            {children}
+        </Layout>
     </TenantContext.Provider>
 );
 ```
@@ -401,11 +413,11 @@ A custom layout is also the ideal place to add debug tools, e.g. [react-query de
 import { Layout } from 'react-admin';
 import { ReactQueryDevtools } from 'react-query/devtools'
 
-export const MyLayout = (props) => (
-    <>
-        <Layout {...props} />
+export const MyLayout = ({ children }) => (
+    <Layout>
+        {children}
         <ReactQueryDevtools />
-    </>
+    </Layout>
 );
 ```
 
@@ -443,16 +455,28 @@ You can also write your own layout component from scratch (see below).
 
 ## Writing A Layout From Scratch
 
-For more custom layouts, write a component from scratch. It must contain a `{children}` placeholder, where react-admin will render the resources. Use the [default layout](https://github.com/marmelab/react-admin/blob/master/packages/ra-ui-materialui/src/layout/Layout.tsx) as a starting point. Here is a simplified version (with no responsive support):
+For more custom layouts, write a component from scratch. Your custom layout will receive the page content as `children`, so it should render it somewhere.
+
+In its simplest form, a custom layout is just a component that renders its children:
+
+```tsx
+const MyLayout = ({ children }) => (
+    <div>
+        <h1>My App</h1>
+        <main>{children}</main>
+    </div>
+);
+```
+
+You can use the [default layout](https://github.com/marmelab/react-admin/blob/master/packages/ra-ui-materialui/src/layout/Layout.tsx) as a starting point for your custom layout. Here is a simplified version (with no responsive support):
 
 {% raw %}
 ```jsx
 // in src/MyLayout.js
-import * as React from 'react';
 import { Box } from '@mui/material';
 import { AppBar, Menu, Sidebar } from 'react-admin';
 
-const MyLayout = ({ children, dashboard }) => (
+const MyLayout = ({ children }) => (
     <Box 
         display="flex"
         flexDirection="column"
@@ -469,7 +493,7 @@ const MyLayout = ({ children, dashboard }) => (
             <AppBar />
             <Box display="flex" flexGrow={1}>
                 <Sidebar>
-                    <Menu hasDashboard={!!dashboard} />
+                    <Menu />
                 </Sidebar>
                 <Box
                     display="flex"

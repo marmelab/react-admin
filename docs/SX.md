@@ -366,10 +366,11 @@ Sometimes you want the format to depend on the value. Use `useRecordContext` to 
 The following example shows how to create a new `<ColoredNumberField>` component, which renders with red text when its value is less than 0.
 
 {% raw %}
-```jsx
+```tsx
 import { useRecordContext, NumberField, List, Datagrid, TextField, EditButton } from 'react-admin';
+import type { NumberFieldProps } from 'react-admin';
 
-const ColoredNumberField = (props) => {
+const ColoredNumberField = (props: NumberFieldProps) => {
     const record = useRecordContext();
     return (
         <NumberField

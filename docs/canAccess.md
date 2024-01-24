@@ -349,7 +349,11 @@ const MyMenu = () => {
     );
 };
 
-const MyLayout = props => <Layout {...props} menu={MyMenu} />;
+const MyLayout = ({ children }) => (
+    <Layout menu={MyMenu}>
+        {children}
+    </Layout>
+);
 
 export const App = () => (
     <Admin

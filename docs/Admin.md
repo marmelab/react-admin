@@ -595,10 +595,15 @@ Layout components can be customized via props. For instance, you can pass a cust
 
 ```tsx
 // in src/MyLayout.js
+import type { ReactNode } from 'react';
 import { Layout } from 'react-admin';
 import MyMenu from './MyMenu';
 
-export const MyLayout = (props) => <Layout {...props} menu={MyMenu} />;
+export const MyLayout = ({ children }: { children: ReactNode }) => (
+    <Layout menu={MyMenu}>
+        {children}
+    </Layout>
+);
 ```
 
 Then, pass it to the `<Admin>` component as the `layout` prop:
@@ -617,7 +622,31 @@ const App = () => (
 
 Refer to each layout component documentation to understand the props it accepts.
 
-Finally, you can also pass a custom component as the `layout` prop. It must contain a `{children}` placeholder, where react-admin will render the page content. Check [the custom layout documentation](./Layout.md#writing-a-layout-from-scratch) for examples, and use the [default `<Layout>`](https://github.com/marmelab/react-admin/blob/master/packages/ra-ui-materialui/src/layout/Layout.tsx) as a starting point.
+Finally, you can also pass a custom component as the `layout` prop. Your custom layout will receive the page content as `children`, so it should render it somewhere.
+
+```tsx
+// in src/MyLayout.js
+import type { ReactNode } from 'react';
+export const MyLayout = ({ children }: { children: ReactNode }) => (
+    <div>
+        <h1>My App</h1>
+        <main>{children}</main>
+    </div>
+);
+
+// in src/App.js
+import { Admin } from 'react-admin';
+import { dataProvider } from './dataProvider';
+import { MyLayout } from './MyLayout';
+
+const App = () => (
+    <Admin dataProvider={dataProvider} layout={MyLayout}>
+        // ...
+    </Admin>
+);
+```
+
+Check [the custom layout documentation](./Layout.md#writing-a-layout-from-scratch) for examples, and use the [default `<Layout>`](https://github.com/marmelab/react-admin/blob/master/packages/ra-ui-materialui/src/layout/Layout.tsx) as a starting point.
 
 ## `loginPage`
 
@@ -876,6 +905,17 @@ const App = () => (
         // ...
     </Admin>
 );
+```
+
+If you need to display this application title somewhere in your app, use the `useDefaultTitle` hook:
+
+```tsx
+import { useDefaultTitle } from 'react-admin';
+
+const MyTitle = () => {
+    const defaultTitle = useDefaultTitle();
+    return <span>{defaultTitle}</span>; // My Custom Admin
+};
 ```
 
 ## Adding Custom Pages

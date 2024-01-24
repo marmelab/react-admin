@@ -28,8 +28,8 @@ type FormGroupState = {
  * import { Accordion, AccordionDetails, AccordionSummary, Typography } from '@mui/material';
  * import ExpandMoreIcon from '@mui/icons-material/ExpandMoreIcon';
  *
- * const PostEdit = (props) => (
- *     <Edit {...props}>
+ * const PostEdit = () => (
+ *     <Edit>
  *         <SimpleForm>
  *             <TextInput source="title" />
  *             <FormGroupContextProvider name="options">

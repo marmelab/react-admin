@@ -23,7 +23,7 @@ The React team has published a [migration guide](https://react.dev/blog/2022/03/
 
 React 18 adds out-of-the-box performance improvements by doing more batching by default.
 
-## Drop support for IE11
+## IE11 Is No Longer Supported
 
 React-admin v5 uses React 18, which dropped support for Internet Explorer. If you need to support IE11, you'll have to stay on react-admin v4.
 
@@ -132,6 +132,144 @@ Here are the available codemods you may need to run on your codebase:
 - `v5/rename-hydrate/rename-hydrate.js`
 
 Check out React Query [codemod documentation](https://tanstack.com/query/latest/docs/react/guides/migrating-to-v5#codemod) for more information.
+
+## `<Admin menu>` Is No Longer Supported
+
+The `<Admin menu>` prop was deprecated since 4.0. It's no longer supported. If you want to customize the application menu, you'll have to do it in a custom Layout instead:
+
+```diff
+-import { Admin } from 'react-admin';
++import { Admin, Layout } from 'react-admin';
+import { MyMenu } from './MyMenu';
+
++const MyLayout = ({ children }) => (
++    <Layout menu={MyMenu}>{children}</Layout>
++);
+
+const App = () => (
+-   <Admin menu={MyMenu} dataProvider={dataProvider}>
++   <Admin layout={MyLayout} dataProvider={dataProvider}>
+        ...
+    </Admin>
+);
+```
+
+## Custom Layout No Longer Receives Props
+
+React-admin used to inject 4 props to [custom layouts](https://marmelab.com/react-admin/Admin.html#layout): `children`, `dashboard`, `menu`, and `title`. In react-admin v5, only the `children` prop is injected.
+
+This means that you'll need to use hooks to get the other props:
+
+```diff
++import { useHasDashboard, useDefaultTitle } from 'react-admin';
+
+-const MyLayout = ({ children, dashboard, title }) => (
++const MyLayout = ({ children }) => {
+-   const hasDashboard = !!dashboard;
++   const hasDashboard = useHasDashboard();
++   const title = useDefaultTitle();
+    // ...
+}
+
+const App = () => (
+    <Admin layout={MyLayout} dataProvider={dataProvider}>
+        ...
+    </Admin>
+);
+```
+
+As for the `menu` prop, it's no longer injected by react-admin because the `<Admin menu>` prop is no longer supported. But you can still customize the menu of the default Layout as before:
+
+```tsx
+import { Layout } from 'react-admin';
+import { MyMenu } from './MyMenu';
+
+const MyLayout = ({ children }) => (
+    <Layout menu={MyMenu}>{children}</Layout>
+);
+
+const App = () => (
+    <Admin layout={MyLayout} dataProvider={dataProvider}>
+        ...
+    </Admin>
+);
+```
+
+## Custom App Bars No Longer Receive Props
+
+React-admin used to inject 2 props to [custom app bars](https://marmelab.com/react-admin/Layout.html#appbar): `open`, and `title`. These deprecated props are no longer injected in v5. If you need them, you'll have to use hooks:
+
+```diff
++import { useSidebarState, useDefaultTitle } from 'react-admin';
+
+-const MyAppBar = ({ open, title }) => (
++const MyAppBar = () => {
++   const [open] = useSidebarState();
++   const title = useDefaultTitle();
+    // ...
+}
+
+const MyLayout = ({ children }) => (
+    <Layout appBar={MyAppBar}>{children}</Layout>
+);
+```
+
+## Custom Menu No Longer Receive Props
+
+React-admin used to inject one prop to [custom menus](https://marmelab.com/react-admin/Layout.html#menu): `hasDashboard`. This deprecated prop is no longer injected in v5. If you need it, you'll have to use the `useHasDashboard` hook instead:
+
+```diff
++import { useHasDashboard } from 'react-admin';
+
+-const MyMenu = ({ hasDashboard }) => (
++const MyMenu = () => {
++   const hasDashboard = useHasDashboard();
+    // ...
+}
+
+const MyLayout = ({ children }) => (
+    <Layout menu={MyMenu}>{children}</Layout>
+);
+```
+
+## Custom Error Page No Longer Receives Title
+
+React-admin injects several props to [custom error pages](https://marmelab.com/react-admin/Layout.html#error), including the default app `title`. This prop is no longer injected in v5. If you need it, you'll have to use the `useDefaultTitle` hook instead:
+
+```diff
++import { useDefaultTitle } from 'react-admin';
+
+-const MyError = ({ error, errorInfo, title }) => (
++const MyError = ({ error, errorInfo }) => {
++   const title = useDefaultTitle();
+    // ...
+}
+
+const MyLayout = ({ children }) => (
+    <Layout error={MyError}>{children}</Layout>
+);
+```
+
+## Custom Catch All No Longer Receives Title
+
+React-admin used to inject the default app `title` to [custom catch all pages](https://marmelab.com/react-admin/Admin.html#catchall). This prop is no longer injected in v5. If you need it, you'll have to use the `useDefaultTitle` hook instead:
+
+```diff
++import { useDefaultTitle } from 'react-admin';
+
+-const MyCatchAll = ({ title }) => (
++const MyCatchAll = () => {
++   const title = useDefaultTitle();
+    // ...
+}
+
+const App = () => (
+    <Admin catchAll={MyCatchAll} dataProvider={dataProvider}>
+        ...
+    </Admin>
+);
+```
+```
 
 ## Removed deprecated hooks
 

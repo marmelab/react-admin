@@ -50,7 +50,7 @@ const MyMenu = () => (
 
 Note that each `<MultiLevelMenu.Item>` requires a unique `name` attribute.
 
-Then, create a custom layout using [the `<Layout>` component](./Layout.md) and pass your custom menu component to it. Make sure you wrap the layout with the `<AppLocationContext>` component. 
+Then, create a custom layout using [the `<Layout>` component](./Layout.md) and pass your custom menu component to it. Make sure you wrap the layout with the `<AppLocationContext>` component.
 
 ```jsx
 // in src/MyLayout.js
@@ -59,9 +59,11 @@ import { AppLocationContext } from '@react-admin/ra-navigation';
 
 import { MyMenu } from './MyMenu';
 
-export const MyLayout = (props) => (
+export const MyLayout = ({ children }) => (
   <AppLocationContext>
-    <Layout {...props} menu={MyMenu} />
+    <Layout menu={MyMenu}>
+        {children}
+    </Layout>
   </AppLocationContext>
 );
 ```

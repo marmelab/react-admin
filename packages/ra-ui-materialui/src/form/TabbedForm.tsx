@@ -36,8 +36,8 @@ import { FormTab } from './FormTab';
  *     EditButton
  * } from 'react-admin';
  *
- * export const PostEdit = (props) => (
- *     <Edit {...props}>
+ * export const PostEdit = () => (
+ *     <Edit>
  *         <TabbedForm>
  *             <TabbedForm.Tab label="summary">
  *                 <TextInput disabled label="Id" source="id" />

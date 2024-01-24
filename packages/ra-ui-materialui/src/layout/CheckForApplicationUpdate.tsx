@@ -20,8 +20,8 @@ import { ApplicationUpdatedNotification } from './ApplicationUpdatedNotification
  * @example <caption>Basic usage</caption>
  * import { Admin, Resource, Layout, CheckForApplicationUpdate, ListGuesser } from 'react-admin';
  *
- * const MyLayout = ({ children, ...props }) => (
- *   <Layout {...props}>
+ * const MyLayout = ({ children }) => (
+ *   <Layout>
  *     {children}
  *     <CheckForApplicationUpdate />
  *   </Layout>
@@ -55,8 +55,8 @@ import { ApplicationUpdatedNotification } from './ApplicationUpdatedNotification
  *   </Alert>
  * ));
  *
- * const MyLayout = ({ children, ...props }) => (
- *   <Layout {...props}>
+ * const MyLayout = ({ children }) => (
+ *   <Layout>
  *     {children}
  *     <CheckForApplicationUpdate notification={<CustomAppUpdatedNotification />} />
  *   </Layout>

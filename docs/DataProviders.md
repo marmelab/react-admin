@@ -124,11 +124,11 @@ To enable these devtools, add the `<ReactQueryDevtools>` component to a custom L
 import { Layout } from 'react-admin';
 import { ReactQueryDevtools } from 'react-query/devtools';
 
-export const MyLayout = props => (
-    <>
-        <Layout {...props} />
+export const MyLayout = ({ children }) => (
+    <Layout>
+        {children}
         <ReactQueryDevtools initialIsOpen={false} />
-    </>
+    </Layout>
 );
 ```
 

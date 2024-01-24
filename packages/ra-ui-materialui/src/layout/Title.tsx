@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { ReactElement } from 'react';
 import { createPortal } from 'react-dom';
 import PropTypes from 'prop-types';
-import { RaRecord, warning } from 'ra-core';
+import { RaRecord, TitleComponent, warning } from 'ra-core';
 
 import { PageTitleConfigurable } from './PageTitleConfigurable';
 
@@ -57,7 +57,7 @@ Title.propTypes = {
 
 export interface TitleProps {
     className?: string;
-    defaultTitle?: string;
+    defaultTitle?: TitleComponent;
     record?: Partial<RaRecord>;
     title?: string | ReactElement;
     preferenceKey?: string;

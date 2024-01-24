@@ -1,12 +1,12 @@
-import React, { Suspense, HtmlHTMLAttributes } from 'react';
+import React, { Suspense, ReactNode } from 'react';
 import { CssBaseline, Container } from '@mui/material';
-import { CoreLayoutProps, CheckForApplicationUpdate } from 'react-admin';
+import { CheckForApplicationUpdate } from 'react-admin';
 import { ErrorBoundary } from 'react-error-boundary';
 
 import { Error, Loading } from 'react-admin';
 import Header from './Header';
 
-const Layout = ({ children }: LayoutProps) => (
+const Layout = ({ children }: { children: ReactNode }) => (
     <>
         <CssBaseline />
         <Header />
@@ -21,9 +21,5 @@ const Layout = ({ children }: LayoutProps) => (
         <CheckForApplicationUpdate interval={30 * 1000} />
     </>
 );
-
-export interface LayoutProps
-    extends CoreLayoutProps,
-        Omit<HtmlHTMLAttributes<HTMLDivElement>, 'title'> {}
 
 export default Layout;

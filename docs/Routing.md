@@ -83,9 +83,9 @@ import { Layout } from 'react-admin';
 
 import { usePageTracking } from './usePageTracking';
 
-export const MyLayout = (props) => {
+export const MyLayout = ({ children }) => {
     usePageTracking();
-    return <Layout {...props} />;
+    return <Layout>{children}</Layout>;
 }
 ```
 

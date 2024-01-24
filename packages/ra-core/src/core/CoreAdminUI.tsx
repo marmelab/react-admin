@@ -4,11 +4,11 @@ import { Routes, Route } from 'react-router-dom';
 
 import { CoreAdminRoutes } from './CoreAdminRoutes';
 import { Ready } from '../util';
-import {
+import { DefaultTitleContextProvider } from './DefaultTitleContext';
+import type {
     TitleComponent,
     LoginComponent,
     LayoutComponent,
-    CoreLayoutProps,
     AdminChildren,
     CatchAllComponent,
     DashboardComponent,
@@ -17,7 +17,9 @@ import {
 
 export type ChildrenFunction = () => ComponentType[];
 
-const DefaultLayout = ({ children }: CoreLayoutProps) => <>{children}</>;
+const DefaultLayout = ({ children }: { children: React.ReactNode }) => (
+    <>{children}</>
+);
 
 export interface CoreAdminUIProps {
     /**
@@ -94,7 +96,11 @@ export interface CoreAdminUIProps {
      * @example
      * import { Admin, Layout } from 'react-admin';
      *
-     * const MyLayout = props => <Layout {...props} appBarAlwaysOn />;
+     * const MyLayout = ({ children }) => (
+     *     <Layout appBarAlwaysOn>
+     *        {children}
+     *     </Layout>
+     * );
      *
      * export const App = () => (
      *     <Admin dataProvider={dataProvider} layout={MyLayout}>
@@ -151,12 +157,6 @@ export interface CoreAdminUIProps {
      * );
      */
     loginPage?: LoginComponent | boolean;
-
-    /**
-     * @deprecated use a custom layout instead
-     * @see https://marmelab.com/react-admin/Admin.html#layout
-     */
-    menu?: ComponentType;
 
     /**
      * Flag to require authentication for all routes. Defaults to false.
@@ -227,9 +227,8 @@ export const CoreAdminUI = (props: CoreAdminUIProps) => {
         loading = Noop,
         loginPage: LoginPage = false,
         authCallbackPage: LoginCallbackPage = false,
-        menu, // deprecated, use a custom layout instead
         ready = Ready,
-        title = 'React Admin',
+        title,
         requireAuth = false,
     } = props;
 
@@ -248,36 +247,39 @@ export const CoreAdminUI = (props: CoreAdminUIProps) => {
     }, [disableTelemetry]);
 
     return (
-        <Routes>
-            {LoginPage !== false && LoginPage !== true ? (
-                <Route path="/login" element={createOrGetElement(LoginPage)} />
-            ) : null}
+        <DefaultTitleContextProvider value={title}>
+            <Routes>
+                {LoginPage !== false && LoginPage !== true ? (
+                    <Route
+                        path="/login"
+                        element={createOrGetElement(LoginPage)}
+                    />
+                ) : null}
 
-            {LoginCallbackPage !== false && LoginCallbackPage !== true ? (
+                {LoginCallbackPage !== false && LoginCallbackPage !== true ? (
+                    <Route
+                        path="/auth-callback"
+                        element={createOrGetElement(LoginCallbackPage)}
+                    />
+                ) : null}
+
                 <Route
-                    path="/auth-callback"
-                    element={createOrGetElement(LoginCallbackPage)}
+                    path="/*"
+                    element={
+                        <CoreAdminRoutes
+                            catchAll={catchAll}
+                            dashboard={dashboard}
+                            layout={layout}
+                            loading={loading}
+                            requireAuth={requireAuth}
+                            ready={ready}
+                        >
+                            {children}
+                        </CoreAdminRoutes>
+                    }
                 />
-            ) : null}
-
-            <Route
-                path="/*"
-                element={
-                    <CoreAdminRoutes
-                        catchAll={catchAll}
-                        dashboard={dashboard}
-                        layout={layout}
-                        loading={loading}
-                        menu={menu}
-                        requireAuth={requireAuth}
-                        ready={ready}
-                        title={title}
-                    >
-                        {children}
-                    </CoreAdminRoutes>
-                }
-            />
-        </Routes>
+            </Routes>
+        </DefaultTitleContextProvider>
     );
 };
 
