@@ -139,8 +139,7 @@ jobs:
     runs-on: ubuntu-latest
     name: create-react-admin
     needs: []
-    # TODO: uncomment once ready
-    # if: success() && github.ref_type == 'tag'
+    if: success() && (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/next')
     steps:
       - name: Checkout
         uses: actions/checkout@v2
