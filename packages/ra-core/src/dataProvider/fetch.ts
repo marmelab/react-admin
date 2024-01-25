@@ -13,18 +13,16 @@ export const createHeadersFromOptions = (options: Options): Headers => {
         new Headers({
             Accept: 'application/json',
         })) as Headers;
-    const shouldSetContentType = () => {
-        const hasBody = options && options.body;
-        const isContentTypeSet = requestHeaders.has('Content-Type');
-        const isGetMethod = !options?.method || options?.method === 'GET';
-        const isFormData = options?.body instanceof FormData;
+    const hasBody = options && options.body;
+    const isContentTypeSet = requestHeaders.has('Content-Type');
+    const isGetMethod = !options?.method || options?.method === 'GET';
+    const isFormData = options?.body instanceof FormData;
 
-        return hasBody && !isContentTypeSet && !isGetMethod && !isFormData;
-    };
-
-    if (shouldSetContentType()) {
+    const shouldSetContentType = !isContentTypeSet && !isGetMethod && !isFormData;
+    if (shouldSetContentType) {
         requestHeaders.set('Content-Type', 'application/json');
     }
+    
     if (options.user && options.user.authenticated && options.user.token) {
         requestHeaders.set('Authorization', options.user.token);
     }
