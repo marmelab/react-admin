@@ -70,6 +70,9 @@ describe('createHeadersFromOptions', () => {
 
         const headers = createHeadersFromOptions(optionsWithBody);
         expect(headers.get('Content-Type')).toStrictEqual('application/json');
+    });
+
+    it('should not add a Content-Type header for POST requests with no body', () => {
         const optionsWithoutBody = {
             method: 'POST',
         };
@@ -93,7 +96,7 @@ describe('createHeadersFromOptions', () => {
         expect(headersWithoutMethod.get('Content-Type')).toBeNull();
     });
 
-    it('should not add a Content-Type header if there is no body', () => {
+    it('should not add a Content-Type header for DELETE requests with no body', () => {
         const optionsWithDelete = {
             method: 'DELETE',
         };
@@ -118,6 +121,7 @@ describe('createHeadersFromOptions', () => {
             headers: new Headers({
                 'Content-Type': 'not undefined',
             }) as Headers,
+            method: 'POST',
             body: 'not undefined either',
         };
 
