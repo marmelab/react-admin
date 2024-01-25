@@ -52,7 +52,7 @@ describe('useAuthState', () => {
         const abort = jest.fn();
         const authProvider = {
             checkAuth: jest.fn(
-                (_params, { signal }) =>
+                ({ signal }) =>
                     new Promise(() => {
                         signal.addEventListener('abort', () => {
                             abort(signal.reason);

@@ -101,18 +101,15 @@ export const useGetManyReference = <RecordType extends RaRecord = any>(
                 return Promise.reject(new Error('target and id are required'));
             }
             return dataProvider
-                .getManyReference<RecordType>(
-                    resource,
-                    {
-                        target,
-                        id,
-                        pagination,
-                        sort,
-                        filter,
-                        meta,
-                    },
-                    { signal }
-                )
+                .getManyReference<RecordType>(resource, {
+                    target,
+                    id,
+                    pagination,
+                    sort,
+                    filter,
+                    meta,
+                    signal,
+                })
                 .then(({ data, total, pageInfo }) => ({
                     data,
                     total,

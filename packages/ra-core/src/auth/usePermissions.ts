@@ -55,7 +55,8 @@ const usePermissions = <PermissionsType = any, ErrorType = Error>(
         queryKey: ['auth', 'getPermissions', params],
         queryFn: async ({ signal }) => {
             if (!authProvider) return Promise.resolve([]);
-            const permissions = await authProvider.getPermissions(params, {
+            const permissions = await authProvider.getPermissions({
+                ...params,
                 signal,
             });
             return permissions ?? null;

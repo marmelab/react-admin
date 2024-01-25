@@ -62,15 +62,12 @@ export type AuthProvider = {
         params: any
     ) => Promise<{ redirectTo?: string | boolean } | void | any>;
     logout: (params: any) => Promise<void | false | string>;
-    checkAuth: (params: any, contex?: QueryFunctionContext) => Promise<void>;
+    checkAuth: (params: any & QueryFunctionContext) => Promise<void>;
     checkError: (error: any) => Promise<void>;
-    getIdentity?: (contex?: QueryFunctionContext) => Promise<UserIdentity>;
-    getPermissions: (
-        params: any,
-        contex?: QueryFunctionContext
-    ) => Promise<any>;
+    getIdentity?: (params?: QueryFunctionContext) => Promise<UserIdentity>;
+    getPermissions: (params: any & QueryFunctionContext) => Promise<any>;
     handleCallback?: (
-        contex?: QueryFunctionContext
+        params?: QueryFunctionContext
     ) => Promise<AuthRedirectResult | void | any>;
     [key: string]: any;
 };
@@ -92,26 +89,22 @@ export type LegacyAuthProvider = (
 export type DataProvider<ResourceType extends string = string> = {
     getList: <RecordType extends RaRecord = any>(
         resource: ResourceType,
-        params: GetListParams,
-        contex?: QueryFunctionContext
+        params: GetListParams & QueryFunctionContext
     ) => Promise<GetListResult<RecordType>>;
 
     getOne: <RecordType extends RaRecord = any>(
         resource: ResourceType,
-        params: GetOneParams<RecordType>,
-        contex?: QueryFunctionContext
+        params: GetOneParams<RecordType> & QueryFunctionContext
     ) => Promise<GetOneResult<RecordType>>;
 
     getMany: <RecordType extends RaRecord = any>(
         resource: ResourceType,
-        params: GetManyParams,
-        contex?: QueryFunctionContext
+        params: GetManyParams & QueryFunctionContext
     ) => Promise<GetManyResult<RecordType>>;
 
     getManyReference: <RecordType extends RaRecord = any>(
         resource: ResourceType,
-        params: GetManyReferenceParams,
-        contex?: QueryFunctionContext
+        params: GetManyReferenceParams & QueryFunctionContext
     ) => Promise<GetManyReferenceResult<RecordType>>;
 
     update: <RecordType extends RaRecord = any>(

@@ -289,7 +289,7 @@ const callGetManyQueries = batch((calls: GetManyCallArgs[]) => {
             } = callThatHasAllAggregatedIds;
 
             dataProvider
-                .getMany<any>(resource, { ids, meta }, { signal })
+                .getMany<any>(resource, { ids, meta, signal })
                 .then(({ data }) => data)
                 .then(
                     data => {
@@ -330,14 +330,11 @@ const callGetManyQueries = batch((calls: GetManyCallArgs[]) => {
                 ],
                 queryFn: ({ signal }) =>
                     dataProvider
-                        .getMany<any>(
-                            resource,
-                            {
-                                ids: aggregatedIds,
-                                meta: uniqueMeta,
-                            },
-                            { signal }
-                        )
+                        .getMany<any>(resource, {
+                            ids: aggregatedIds,
+                            meta: uniqueMeta,
+                            signal,
+                        })
                         .then(({ data }) => data),
             })
             .then(data => {

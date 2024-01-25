@@ -68,7 +68,7 @@ const useAuthState = <ErrorType = Error>(
                 return true;
             }
             return authProvider
-                .checkAuth(params, { signal })
+                .checkAuth({ ...params, signal })
                 .then(() => true)
                 .catch(error => {
                     // This is necessary because react-query requires the error to be defined

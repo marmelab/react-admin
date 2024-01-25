@@ -105,7 +105,7 @@ describe('usePermissions', () => {
         const abort = jest.fn();
         const authProvider = {
             getPermissions: jest.fn(
-                (_params, { signal }) =>
+                ({ signal }) =>
                     new Promise(() => {
                         signal.addEventListener('abort', () => {
                             abort(signal.reason);

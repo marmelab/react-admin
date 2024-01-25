@@ -37,13 +37,10 @@ describe('useGetManyAggregate', () => {
         );
         await waitFor(() => {
             expect(dataProvider.getMany).toHaveBeenCalledTimes(1);
-            expect(dataProvider.getMany).toHaveBeenCalledWith(
-                'posts',
-                {
-                    ids: [1],
-                },
-                expect.anything()
-            );
+            expect(dataProvider.getMany).toHaveBeenCalledWith('posts', {
+                ids: [1],
+                signal: expect.anything(),
+            });
         });
     });
 
@@ -266,13 +263,10 @@ describe('useGetManyAggregate', () => {
         );
         await waitFor(() => {
             expect(dataProvider.getMany).toHaveBeenCalledTimes(1);
-            expect(dataProvider.getMany).toHaveBeenCalledWith(
-                'posts',
-                {
-                    ids: [1, 2, 3, 4, 5, 6],
-                },
-                expect.anything()
-            );
+            expect(dataProvider.getMany).toHaveBeenCalledWith('posts', {
+                ids: [1, 2, 3, 4, 5, 6],
+                signal: expect.anything(),
+            });
         });
     });
 
@@ -286,20 +280,14 @@ describe('useGetManyAggregate', () => {
         );
         await waitFor(() => {
             expect(dataProvider.getMany).toHaveBeenCalledTimes(2);
-            expect(dataProvider.getMany).toHaveBeenCalledWith(
-                'posts',
-                {
-                    ids: [1, 2, 3, 4],
-                },
-                expect.anything()
-            );
-            expect(dataProvider.getMany).toHaveBeenCalledWith(
-                'comments',
-                {
-                    ids: [5, 6],
-                },
-                expect.anything()
-            );
+            expect(dataProvider.getMany).toHaveBeenCalledWith('posts', {
+                ids: [1, 2, 3, 4],
+                signal: expect.anything(),
+            });
+            expect(dataProvider.getMany).toHaveBeenCalledWith('comments', {
+                ids: [5, 6],
+                signal: expect.anything(),
+            });
         });
     });
 
@@ -313,13 +301,10 @@ describe('useGetManyAggregate', () => {
         );
         await waitFor(() => {
             expect(dataProvider.getMany).toHaveBeenCalledTimes(1);
-            expect(dataProvider.getMany).toHaveBeenCalledWith(
-                'posts',
-                {
-                    ids: [1, 2, 3, 4],
-                },
-                expect.anything()
-            );
+            expect(dataProvider.getMany).toHaveBeenCalledWith('posts', {
+                ids: [1, 2, 3, 4],
+                signal: expect.anything(),
+            });
         });
     });
 
@@ -357,13 +342,10 @@ describe('useGetManyAggregate', () => {
         );
         await waitFor(() => {
             expect(dataProvider.getMany).toHaveBeenCalledTimes(1);
-            expect(dataProvider.getMany).toHaveBeenCalledWith(
-                'posts',
-                {
-                    ids: [1, 2, 3],
-                },
-                expect.anything()
-            );
+            expect(dataProvider.getMany).toHaveBeenCalledWith('posts', {
+                ids: [1, 2, 3],
+                signal: expect.anything(),
+            });
         });
 
         await waitFor(() => {
@@ -397,7 +379,7 @@ describe('useGetManyAggregate', () => {
         const abort = jest.fn();
         const dataProvider = testDataProvider({
             getMany: jest.fn(
-                (_resource, _params, { signal }) =>
+                (_resource, { signal }) =>
                     new Promise(() => {
                         signal.addEventListener('abort', () => {
                             abort(signal.reason);

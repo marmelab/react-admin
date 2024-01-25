@@ -70,7 +70,7 @@ export const useGetOne = <RecordType extends RaRecord = any>(
         queryKey: [resource, 'getOne', { id: String(id), meta }],
         queryFn: ({ signal }) =>
             dataProvider
-                .getOne<RecordType>(resource, { id, meta }, { signal })
+                .getOne<RecordType>(resource, { id, meta, signal })
                 .then(({ data }) => data),
         ...queryOptions,
     });

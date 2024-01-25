@@ -69,16 +69,13 @@ describe('useListController', () => {
                 </CoreAdminContext>
             );
             await waitFor(() => {
-                expect(getList).toHaveBeenCalledWith(
-                    'posts',
-                    {
-                        filter: {},
-                        pagination: { page: 1, perPage: 10 },
-                        sort: { field: 'id', order: 'ASC' },
-                        meta: { foo: 'bar' },
-                    },
-                    expect.anything()
-                );
+                expect(getList).toHaveBeenCalledWith('posts', {
+                    filter: {},
+                    pagination: { page: 1, perPage: 10 },
+                    sort: { field: 'id', order: 'ASC' },
+                    meta: { foo: 'bar' },
+                    signal: expect.anything(),
+                });
             });
         });
 
@@ -233,8 +230,7 @@ describe('useListController', () => {
             expect(getList).toHaveBeenCalledTimes(1);
             expect(getList).toHaveBeenCalledWith(
                 'posts',
-                expect.objectContaining({ filter: { foo: 1 } }),
-                expect.anything()
+                expect.objectContaining({ filter: { foo: 1 } })
             );
 
             // Check that the permanent filter is not included in the displayedFilters and filterValues (passed to Filter form and button)
@@ -256,8 +252,7 @@ describe('useListController', () => {
             expect(getList).toHaveBeenCalledTimes(2);
             expect(getList).toHaveBeenCalledWith(
                 'posts',
-                expect.objectContaining({ filter: { foo: 2 } }),
-                expect.anything()
+                expect.objectContaining({ filter: { foo: 2 } })
             );
             expect(children).toHaveBeenCalledTimes(2);
         });

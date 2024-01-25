@@ -85,7 +85,7 @@ export const useGetMany = <RecordType extends RaRecord = any>(
                 return Promise.resolve([]);
             }
             return dataProvider
-                .getMany<RecordType>(resource, { ids, meta }, { signal })
+                .getMany<RecordType>(resource, { ids, meta, signal })
                 .then(({ data }) => data);
         },
         placeholderData: () => {

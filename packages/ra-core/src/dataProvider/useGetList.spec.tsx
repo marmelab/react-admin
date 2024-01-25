@@ -52,15 +52,12 @@ describe('useGetList', () => {
         );
         await waitFor(() => {
             expect(dataProvider.getList).toBeCalledTimes(1);
-            expect(dataProvider.getList).toBeCalledWith(
-                'posts',
-                {
-                    filter: {},
-                    pagination: { page: 1, perPage: 20 },
-                    sort: { field: 'id', order: 'DESC' },
-                },
-                expect.anything()
-            );
+            expect(dataProvider.getList).toBeCalledWith('posts', {
+                filter: {},
+                pagination: { page: 1, perPage: 20 },
+                sort: { field: 'id', order: 'DESC' },
+                signal: expect.anything(),
+            });
         });
     });
 
@@ -130,16 +127,13 @@ describe('useGetList', () => {
             </CoreAdminContext>
         );
         await waitFor(() => {
-            expect(dataProvider.getList).toBeCalledWith(
-                'posts',
-                {
-                    filter: {},
-                    pagination: { page: 1, perPage: 20 },
-                    sort: { field: 'id', order: 'DESC' },
-                    meta: { hello: 'world' },
-                },
-                expect.anything()
-            );
+            expect(dataProvider.getList).toBeCalledWith('posts', {
+                filter: {},
+                pagination: { page: 1, perPage: 20 },
+                sort: { field: 'id', order: 'DESC' },
+                meta: { hello: 'world' },
+                signal: expect.anything(),
+            });
         });
     });
 
@@ -417,7 +411,7 @@ describe('useGetList', () => {
         const abort = jest.fn();
         const dataProvider = testDataProvider({
             getList: jest.fn(
-                (_resource, _params, { signal }) =>
+                (_resource, { signal }) =>
                     new Promise(() => {
                         signal.addEventListener('abort', () => {
                             abort(signal.reason);

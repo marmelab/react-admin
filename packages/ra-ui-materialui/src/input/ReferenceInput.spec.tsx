@@ -128,16 +128,13 @@ describe('<ReferenceInput />', () => {
             </CoreAdminContext>
         );
         await waitFor(() => {
-            expect(getList).toHaveBeenCalledWith(
-                'posts',
-                {
-                    filter: {},
-                    pagination: { page: 1, perPage: 25 },
-                    sort: { field: 'id', order: 'DESC' },
-                    meta: { foo: 'bar' },
-                },
-                expect.anything()
-            );
+            expect(getList).toHaveBeenCalledWith('posts', {
+                filter: {},
+                pagination: { page: 1, perPage: 25 },
+                sort: { field: 'id', order: 'DESC' },
+                meta: { foo: 'bar' },
+                signal: expect.anything(),
+            });
         });
     });
 
@@ -157,14 +154,11 @@ describe('<ReferenceInput />', () => {
             </CoreAdminContext>
         );
         await waitFor(() => {
-            expect(getMany).toHaveBeenCalledWith(
-                'posts',
-                {
-                    ids: [23],
-                    meta: { foo: 'bar' },
-                },
-                expect.anything()
-            );
+            expect(getMany).toHaveBeenCalledWith('posts', {
+                ids: [23],
+                meta: { foo: 'bar' },
+                signal: expect.anything(),
+            });
         });
     });
 

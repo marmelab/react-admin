@@ -85,16 +85,13 @@ export const useGetList = <RecordType extends RaRecord = any>(
         queryKey: [resource, 'getList', { pagination, sort, filter, meta }],
         queryFn: ({ signal }) =>
             dataProvider
-                .getList<RecordType>(
-                    resource,
-                    {
-                        pagination,
-                        sort,
-                        filter,
-                        meta,
-                    },
-                    { signal }
-                )
+                .getList<RecordType>(resource, {
+                    pagination,
+                    sort,
+                    filter,
+                    meta,
+                    signal,
+                })
                 .then(({ data, total, pageInfo }) => ({
                     data,
                     total,

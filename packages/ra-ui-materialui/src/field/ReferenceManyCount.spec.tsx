@@ -36,17 +36,14 @@ describe('<ReferenceManyCount />', () => {
                 />
             </Wrapper>
         );
-        expect(dataProvider.getManyReference).toHaveBeenCalledWith(
-            'comments',
-            {
-                target: 'post_id',
-                id: 1,
-                filter: {},
-                pagination: { page: 1, perPage: 1 },
-                sort: { field: 'custom_id', order: 'ASC' },
-                meta: undefined,
-            },
-            expect.anything()
-        );
+        expect(dataProvider.getManyReference).toHaveBeenCalledWith('comments', {
+            target: 'post_id',
+            id: 1,
+            filter: {},
+            pagination: { page: 1, perPage: 1 },
+            sort: { field: 'custom_id', order: 'ASC' },
+            meta: undefined,
+            signal: expect.anything(),
+        });
     });
 });

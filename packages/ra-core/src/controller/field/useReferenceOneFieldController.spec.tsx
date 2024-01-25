@@ -99,17 +99,14 @@ describe('useReferenceOneFieldController', () => {
         );
 
         await waitFor(() => {
-            expect(dataProvider.getManyReference).toHaveBeenCalledWith(
-                'bios',
-                {
-                    target: 'author_id',
-                    id: 123,
-                    pagination: { page: 1, perPage: 1 },
-                    sort: { field: 'name', order: 'DESC' },
-                    filter: { gender: 'female' },
-                },
-                expect.anything()
-            );
+            expect(dataProvider.getManyReference).toHaveBeenCalledWith('bios', {
+                target: 'author_id',
+                id: 123,
+                pagination: { page: 1, perPage: 1 },
+                sort: { field: 'name', order: 'DESC' },
+                filter: { gender: 'female' },
+                signal: expect.anything(),
+            });
         });
     });
 
@@ -179,8 +176,8 @@ describe('useReferenceOneFieldController', () => {
                     pagination: { page: 1, perPage: 1 },
                     sort: { field: 'id', order: 'ASC' },
                     filter: {},
-                },
-                expect.anything()
+                    signal: expect.anything(),
+                }
             );
         });
     });
@@ -222,8 +219,8 @@ describe('useReferenceOneFieldController', () => {
                     pagination: { page: 1, perPage: 1 },
                     sort: { field: 'id', order: 'ASC' },
                     filter: {},
-                },
-                expect.anything()
+                    signal: expect.anything(),
+                }
             );
         });
     });

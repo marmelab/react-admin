@@ -44,13 +44,10 @@ describe('useGetOne', () => {
         );
         await waitFor(() => {
             expect(dataProvider.getOne).toHaveBeenCalledTimes(1);
-            expect(dataProvider.getOne).toHaveBeenCalledWith(
-                'posts',
-                {
-                    id: 1,
-                },
-                expect.anything()
-            );
+            expect(dataProvider.getOne).toHaveBeenCalledWith('posts', {
+                id: 1,
+                signal: expect.anything(),
+            });
         });
     });
 
@@ -142,14 +139,11 @@ describe('useGetOne', () => {
         );
         await waitFor(() => {
             expect(dataProvider.getOne).toHaveBeenCalledTimes(1);
-            expect(dataProvider.getOne).toHaveBeenCalledWith(
-                'posts',
-                {
-                    id: 1,
-                    meta: { hello: 'world' },
-                },
-                expect.anything()
-            );
+            expect(dataProvider.getOne).toHaveBeenCalledWith('posts', {
+                id: 1,
+                meta: { hello: 'world' },
+                signal: expect.anything(),
+            });
         });
     });
 
@@ -224,7 +218,7 @@ describe('useGetOne', () => {
         const abort = jest.fn();
         const dataProvider = testDataProvider({
             getOne: jest.fn(
-                (_resource, _params, { signal }) =>
+                (_resource, { signal }) =>
                     new Promise(() => {
                         signal.addEventListener('abort', () => {
                             abort(signal.reason);

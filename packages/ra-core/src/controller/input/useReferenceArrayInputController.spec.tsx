@@ -187,22 +187,19 @@ describe('useReferenceArrayInputController', () => {
                 </Form>
             </CoreAdminContext>
         );
-        expect(dataProvider.getList).toHaveBeenCalledWith(
-            'tags',
-            {
-                pagination: {
-                    page: 1,
-                    perPage: 25,
-                },
-                sort: {
-                    field: 'id',
-                    order: 'DESC',
-                },
-                filter: {},
-                meta: undefined,
+        expect(dataProvider.getList).toHaveBeenCalledWith('tags', {
+            pagination: {
+                page: 1,
+                perPage: 25,
             },
-            expect.anything()
-        );
+            sort: {
+                field: 'id',
+                order: 'DESC',
+            },
+            filter: {},
+            meta: undefined,
+            signal: expect.anything(),
+        });
     });
 
     it('should call getList with meta when provided', async () => {
@@ -225,22 +222,19 @@ describe('useReferenceArrayInputController', () => {
                 </Form>
             </CoreAdminContext>
         );
-        expect(dataProvider.getList).toHaveBeenCalledWith(
-            'tags',
-            {
-                pagination: {
-                    page: 1,
-                    perPage: 25,
-                },
-                sort: {
-                    field: 'id',
-                    order: 'DESC',
-                },
-                filter: {},
-                meta: { value: 'a' },
+        expect(dataProvider.getList).toHaveBeenCalledWith('tags', {
+            pagination: {
+                page: 1,
+                perPage: 25,
             },
-            expect.anything()
-        );
+            sort: {
+                field: 'id',
+                order: 'DESC',
+            },
+            filter: {},
+            meta: { value: 'a' },
+            signal: expect.anything(),
+        });
     });
 
     it('should allow to customize getList arguments with perPage, sort, and filter props', () => {
@@ -265,22 +259,19 @@ describe('useReferenceArrayInputController', () => {
                 </Form>
             </CoreAdminContext>
         );
-        expect(dataProvider.getList).toHaveBeenCalledWith(
-            'tags',
-            {
-                pagination: {
-                    page: 2,
-                    perPage: 5,
-                },
-                sort: {
-                    field: 'foo',
-                    order: 'ASC',
-                },
-                filter: { permanentFilter: 'foo' },
-                meta: undefined,
+        expect(dataProvider.getList).toHaveBeenCalledWith('tags', {
+            pagination: {
+                page: 2,
+                perPage: 5,
             },
-            expect.anything()
-        );
+            sort: {
+                field: 'foo',
+                order: 'ASC',
+            },
+            filter: { permanentFilter: 'foo' },
+            meta: undefined,
+            signal: expect.anything(),
+        });
     });
 
     it('should call getList when setFilters is called', async () => {
@@ -307,21 +298,18 @@ describe('useReferenceArrayInputController', () => {
 
         fireEvent.click(screen.getByLabelText('Filter'));
         await waitFor(() => {
-            expect(dataProvider.getList).toHaveBeenCalledWith(
-                'tags',
-                {
-                    pagination: {
-                        page: 1,
-                        perPage: 25,
-                    },
-                    sort: {
-                        field: 'id',
-                        order: 'DESC',
-                    },
-                    filter: { q: 'bar' },
+            expect(dataProvider.getList).toHaveBeenCalledWith('tags', {
+                pagination: {
+                    page: 1,
+                    perPage: 25,
                 },
-                expect.anything()
-            );
+                sort: {
+                    field: 'id',
+                    order: 'DESC',
+                },
+                filter: { q: 'bar' },
+                signal: expect.anything(),
+            });
         });
     });
 
@@ -345,13 +333,10 @@ describe('useReferenceArrayInputController', () => {
             </CoreAdminContext>
         );
         await waitFor(() => {
-            expect(dataProvider.getMany).toHaveBeenCalledWith(
-                'tags',
-                {
-                    ids: [5, 6],
-                },
-                expect.anything()
-            );
+            expect(dataProvider.getMany).toHaveBeenCalledWith('tags', {
+                ids: [5, 6],
+                signal: expect.anything(),
+            });
         });
     });
 
@@ -378,14 +363,11 @@ describe('useReferenceArrayInputController', () => {
             </CoreAdminContext>
         );
         await waitFor(() => {
-            expect(dataProvider.getMany).toHaveBeenCalledWith(
-                'tags',
-                {
-                    ids: [5, 6],
-                    meta: { value: 'a' },
-                },
-                expect.anything()
-            );
+            expect(dataProvider.getMany).toHaveBeenCalledWith('tags', {
+                ids: [5, 6],
+                meta: { value: 'a' },
+                signal: expect.anything(),
+            });
         });
     });
 
@@ -533,13 +515,10 @@ describe('useReferenceArrayInputController', () => {
             </CoreAdminContext>
         );
         await waitFor(() => {
-            expect(dataProvider.getMany).toHaveBeenCalledWith(
-                'tags',
-                {
-                    ids: [5],
-                },
-                expect.anything()
-            );
+            expect(dataProvider.getMany).toHaveBeenCalledWith('tags', {
+                ids: [5],
+                signal: expect.anything(),
+            });
         });
         rerender(
             <CoreAdminContext dataProvider={dataProvider}>
@@ -551,13 +530,10 @@ describe('useReferenceArrayInputController', () => {
             </CoreAdminContext>
         );
         await waitFor(() => {
-            expect(dataProvider.getMany).toHaveBeenCalledWith(
-                'tags',
-                {
-                    ids: [5, 6],
-                },
-                expect.anything()
-            );
+            expect(dataProvider.getMany).toHaveBeenCalledWith('tags', {
+                ids: [5, 6],
+                signal: expect.anything(),
+            });
         });
     });
 
@@ -610,62 +586,53 @@ describe('useReferenceArrayInputController', () => {
 
         fireEvent.click(screen.getByLabelText('setPage'));
         await waitFor(() => {
-            expect(dataProvider.getList).toHaveBeenCalledWith(
-                'tags',
-                {
-                    pagination: {
-                        page: 2,
-                        perPage: 25,
-                    },
-                    sort: {
-                        field: 'id',
-                        order: 'DESC',
-                    },
-                    filter: {},
-                    meta: undefined,
+            expect(dataProvider.getList).toHaveBeenCalledWith('tags', {
+                pagination: {
+                    page: 2,
+                    perPage: 25,
                 },
-                expect.anything()
-            );
+                sort: {
+                    field: 'id',
+                    order: 'DESC',
+                },
+                filter: {},
+                meta: undefined,
+                signal: expect.anything(),
+            });
         });
 
         fireEvent.click(screen.getByLabelText('setPerPage'));
         await waitFor(() => {
-            expect(dataProvider.getList).toHaveBeenCalledWith(
-                'tags',
-                {
-                    pagination: {
-                        page: 1,
-                        perPage: 50,
-                    },
-                    sort: {
-                        field: 'id',
-                        order: 'DESC',
-                    },
-                    filter: {},
-                    meta: undefined,
+            expect(dataProvider.getList).toHaveBeenCalledWith('tags', {
+                pagination: {
+                    page: 1,
+                    perPage: 50,
                 },
-                expect.anything()
-            );
+                sort: {
+                    field: 'id',
+                    order: 'DESC',
+                },
+                filter: {},
+                meta: undefined,
+                signal: expect.anything(),
+            });
         });
 
         fireEvent.click(screen.getByLabelText('setSort'));
         await waitFor(() => {
-            expect(dataProvider.getList).toHaveBeenCalledWith(
-                'tags',
-                {
-                    pagination: {
-                        page: 1,
-                        perPage: 50,
-                    },
-                    sort: {
-                        field: 'name',
-                        order: 'ASC',
-                    },
-                    filter: {},
-                    meta: undefined,
+            expect(dataProvider.getList).toHaveBeenCalledWith('tags', {
+                pagination: {
+                    page: 1,
+                    perPage: 50,
                 },
-                expect.anything()
-            );
+                sort: {
+                    field: 'name',
+                    order: 'ASC',
+                },
+                filter: {},
+                meta: undefined,
+                signal: expect.anything(),
+            });
         });
     });
 
@@ -724,21 +691,18 @@ describe('useReferenceArrayInputController', () => {
             await waitFor(() => {
                 expect(dataProvider.getList).toHaveBeenCalledTimes(1);
             });
-            expect(dataProvider.getList).toHaveBeenCalledWith(
-                'tags',
-                {
-                    pagination: {
-                        page: 1,
-                        perPage: 25,
-                    },
-                    sort: {
-                        field: 'id',
-                        order: 'DESC',
-                    },
-                    filter: { q: 'hello world' },
+            expect(dataProvider.getList).toHaveBeenCalledWith('tags', {
+                pagination: {
+                    page: 1,
+                    perPage: 25,
                 },
-                expect.anything()
-            );
+                sort: {
+                    field: 'id',
+                    order: 'DESC',
+                },
+                filter: { q: 'hello world' },
+                signal: expect.anything(),
+            });
             expect(enableGetChoices).toHaveBeenCalledWith({ q: 'hello world' });
         });
 
@@ -767,13 +731,10 @@ describe('useReferenceArrayInputController', () => {
                 </CoreAdminContext>
             );
             await waitFor(() => {
-                expect(dataProvider.getMany).toHaveBeenCalledWith(
-                    'tags',
-                    {
-                        ids: [5, 6],
-                    },
-                    expect.anything()
-                );
+                expect(dataProvider.getMany).toHaveBeenCalledWith('tags', {
+                    ids: [5, 6],
+                    signal: expect.anything(),
+                });
             });
         });
 

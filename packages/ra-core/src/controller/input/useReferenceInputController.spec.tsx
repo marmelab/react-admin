@@ -62,22 +62,19 @@ describe('useReferenceInputController', () => {
         await waitFor(() => {
             expect(dataProvider.getList).toBeCalledTimes(1);
         });
-        expect(dataProvider.getList).toBeCalledWith(
-            'posts',
-            {
-                filter: {},
-                meta: undefined,
-                pagination: {
-                    page: 1,
-                    perPage: 25,
-                },
-                sort: {
-                    field: 'id',
-                    order: 'ASC',
-                },
+        expect(dataProvider.getList).toBeCalledWith('posts', {
+            filter: {},
+            meta: undefined,
+            pagination: {
+                page: 1,
+                perPage: 25,
             },
-            expect.anything()
-        );
+            sort: {
+                field: 'id',
+                order: 'ASC',
+            },
+            signal: expect.anything(),
+        });
     });
 
     it('should allow getList pagination and sorting customization', async () => {
@@ -99,22 +96,19 @@ describe('useReferenceInputController', () => {
 
         await waitFor(() => {
             expect(dataProvider.getList).toBeCalledTimes(1);
-            expect(dataProvider.getList).toBeCalledWith(
-                'posts',
-                {
-                    filter: {},
-                    meta: undefined,
-                    pagination: {
-                        page: 5,
-                        perPage: 10,
-                    },
-                    sort: {
-                        field: 'title',
-                        order: 'ASC',
-                    },
+            expect(dataProvider.getList).toBeCalledWith('posts', {
+                filter: {},
+                meta: undefined,
+                pagination: {
+                    page: 5,
+                    perPage: 10,
                 },
-                expect.anything()
-            );
+                sort: {
+                    field: 'title',
+                    order: 'ASC',
+                },
+                signal: expect.anything(),
+            });
         });
     });
 
@@ -133,11 +127,10 @@ describe('useReferenceInputController', () => {
         await waitFor(() => {
             expect(dataProvider.getList).toBeCalledTimes(1);
             expect(dataProvider.getMany).toBeCalledTimes(1);
-            expect(dataProvider.getMany).toBeCalledWith(
-                'posts',
-                { ids: [1] },
-                expect.anything()
-            );
+            expect(dataProvider.getMany).toBeCalledWith('posts', {
+                ids: [1],
+                signal: expect.anything(),
+            });
         });
     });
 
@@ -243,43 +236,37 @@ describe('useReferenceInputController', () => {
         await waitFor(() => {
             expect(dataProvider.getList).toBeCalledTimes(1);
         });
-        expect(dataProvider.getList).toHaveBeenCalledWith(
-            'posts',
-            {
-                filter: {},
-                meta: undefined,
-                pagination: {
-                    page: 1,
-                    perPage: 25,
-                },
-                sort: {
-                    field: 'title',
-                    order: 'ASC',
-                },
+        expect(dataProvider.getList).toHaveBeenCalledWith('posts', {
+            filter: {},
+            meta: undefined,
+            pagination: {
+                page: 1,
+                perPage: 25,
             },
-            expect.anything()
-        );
+            sort: {
+                field: 'title',
+                order: 'ASC',
+            },
+            signal: expect.anything(),
+        });
 
         fireEvent.click(screen.getByLabelText('Change sort'));
         await waitFor(() => {
             expect(dataProvider.getList).toBeCalledTimes(2);
         });
-        expect(dataProvider.getList).toHaveBeenCalledWith(
-            'posts',
-            {
-                filter: {},
-                meta: undefined,
-                pagination: {
-                    page: 1,
-                    perPage: 25,
-                },
-                sort: {
-                    field: 'body',
-                    order: 'DESC',
-                },
+        expect(dataProvider.getList).toHaveBeenCalledWith('posts', {
+            filter: {},
+            meta: undefined,
+            pagination: {
+                page: 1,
+                perPage: 25,
             },
-            expect.anything()
-        );
+            sort: {
+                field: 'body',
+                order: 'DESC',
+            },
+            signal: expect.anything(),
+        });
     });
 
     describe('enableGetChoices', () => {

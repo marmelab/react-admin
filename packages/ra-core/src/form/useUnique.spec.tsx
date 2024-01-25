@@ -81,13 +81,10 @@ describe('useUnique', () => {
         render(<Edit dataProvider={dataProvider} id={1} />);
 
         await waitFor(() =>
-            expect(dataProvider.getOne).toHaveBeenCalledWith(
-                'users',
-                {
-                    id: 1,
-                },
-                expect.anything()
-            )
+            expect(dataProvider.getOne).toHaveBeenCalledWith('users', {
+                id: 1,
+                signal: expect.anything(),
+            })
         );
         await new Promise(resolve => setTimeout(resolve, 500));
         fireEvent.change(await screen.findByDisplayValue('John Doe'), {

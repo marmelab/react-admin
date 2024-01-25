@@ -78,11 +78,10 @@ describe('useEditController', () => {
             </CoreAdminContext>
         );
         await waitFor(() => {
-            expect(getOne).toHaveBeenCalledWith(
-                'posts',
-                { id: 'test?' },
-                expect.anything()
-            );
+            expect(getOne).toHaveBeenCalledWith('posts', {
+                id: 'test?',
+                signal: expect.anything(),
+            });
         });
         await waitFor(() => {
             expect(screen.queryAllByText('hello')).toHaveLength(1);
@@ -117,11 +116,10 @@ describe('useEditController', () => {
             </CoreAdminContext>
         );
         await waitFor(() => {
-            expect(getOne).toHaveBeenCalledWith(
-                'posts',
-                { id: 0 },
-                expect.anything()
-            );
+            expect(getOne).toHaveBeenCalledWith('posts', {
+                id: 0,
+                signal: expect.anything(),
+            });
         });
         await waitFor(() => {
             expect(screen.queryAllByText('hello')).toHaveLength(1);
@@ -200,14 +198,11 @@ describe('useEditController', () => {
                 </CoreAdminContext>
             );
             await waitFor(() => {
-                expect(getOne).toHaveBeenCalledWith(
-                    'posts',
-                    {
-                        id: 12,
-                        meta: { foo: 'bar' },
-                    },
-                    expect.anything()
-                );
+                expect(getOne).toHaveBeenCalledWith('posts', {
+                    id: 12,
+                    meta: { foo: 'bar' },
+                    signal: expect.anything(),
+                });
             });
         });
     });

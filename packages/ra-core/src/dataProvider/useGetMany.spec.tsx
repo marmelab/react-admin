@@ -69,13 +69,10 @@ describe('useGetMany', () => {
         );
         await waitFor(() => {
             expect(dataProvider.getMany).toHaveBeenCalledTimes(1);
-            expect(dataProvider.getMany).toHaveBeenCalledWith(
-                'posts',
-                {
-                    ids: [1],
-                },
-                expect.anything()
-            );
+            expect(dataProvider.getMany).toHaveBeenCalledWith('posts', {
+                ids: [1],
+                signal: expect.anything(),
+            });
         });
     });
 
@@ -171,14 +168,11 @@ describe('useGetMany', () => {
         );
         await waitFor(() => {
             expect(dataProvider.getMany).toHaveBeenCalledTimes(1);
-            expect(dataProvider.getMany).toHaveBeenCalledWith(
-                'posts',
-                {
-                    ids: [1],
-                    meta: { hello: 'world' },
-                },
-                expect.anything()
-            );
+            expect(dataProvider.getMany).toHaveBeenCalledWith('posts', {
+                ids: [1],
+                meta: { hello: 'world' },
+                signal: expect.anything(),
+            });
         });
     });
 
@@ -376,7 +370,7 @@ describe('useGetMany', () => {
         const abort = jest.fn();
         const dataProvider = testDataProvider({
             getMany: jest.fn(
-                (_resource, _params, { signal }) =>
+                (_resource, { signal }) =>
                     new Promise(() => {
                         signal.addEventListener('abort', () => {
                             abort(signal.reason);
