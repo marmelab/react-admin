@@ -141,10 +141,10 @@ export const dataProvider = withLifecycleCallbacks(baseDataProvider, [ /* lifecy
 
 ## `lifecycleCallbacks`
 
-The second argument is an array of objects that define the callbacks to execute.
-One lifecycle callback object is required for each resource that needs to be decorated. You can also use the wilcard '*' to apply callbacks for every resources.
+The second argument is an array of objects that define the callbacks to execute. They are executed in the order they are defined in the array.
+One lifecycle callback object is required for each resource that needs to be decorated. You can also use the wilcard '*' to apply the callback for every resources.
 One lifecycle callback object can define callbacks for multiple events.
-You can pass either a single function, or an array of functions instead for each event.
+For each event, you can pass a single function, or an array of functions that will be executed, for this resource and event, in the provided order.
 
 ```jsx
 import jsonServerProvider from "ra-data-json-server";
@@ -340,6 +340,16 @@ export const dataProvider = withLifecycleCallbacks(baseDataProvider, [
     commentLifecycleCallbacks,
     userLifecycleCallbacks,
 ]);
+```
+
+If you have many callbacks for the same resource and event, this is a good practice to passe arrays of named functions instead of a single function for each event.
+
+```jsx
+// in src/posts/index.js
+export const postLifecycleCallbacks = {
+    resource: 'posts',
+    beforeDelete: [deleteCommentsRelatedToPosts, removeLinksFromOtherPosts],
+};
 ```
 
 You can test isolated lifecycle callbacks by mocking the `dataProvider`:
