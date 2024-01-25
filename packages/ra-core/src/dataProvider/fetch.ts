@@ -14,9 +14,12 @@ export const createHeadersFromOptions = (options: Options): Headers => {
             Accept: 'application/json',
         })) as Headers;
     if (
+        // An application/json Content-Type header in requests without a body breaks some parsers, like fastify
+        options &&
+        options.body &&
         !requestHeaders.has('Content-Type') &&
-        !(options && (!options.method || options.method === 'GET')) &&
-        !(options && options.body && options.body instanceof FormData)
+        !(!options.method || options.method === 'GET') &&
+        !(options.body instanceof FormData)
     ) {
         requestHeaders.set('Content-Type', 'application/json');
     }
