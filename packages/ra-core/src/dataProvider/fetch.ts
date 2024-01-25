@@ -18,7 +18,7 @@ export const createHeadersFromOptions = (options: Options): Headers => {
     const isGetMethod = !options?.method || options?.method === 'GET';
     const isFormData = options?.body instanceof FormData;
 
-    const shouldSetContentType = !isContentTypeSet && !isGetMethod && !isFormData;
+    const shouldSetContentType = hasBody && !isContentTypeSet && !isGetMethod && !isFormData;
     if (shouldSetContentType) {
         requestHeaders.set('Content-Type', 'application/json');
     }
