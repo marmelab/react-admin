@@ -350,12 +350,12 @@ export const withLifecycleCallbacks = (
                 'afterCreate',
                 result
             );
-            result = await applyCallbacks(
+            result.data = await applyCallbacks(
                 dataProvider,
                 handlers,
                 resource,
                 'afterSave',
-                result
+                result.data
             );
 
             return result;
@@ -402,6 +402,15 @@ export const withLifecycleCallbacks = (
                 'beforeUpdateMany',
                 newParams
             );
+
+            newParams.data = await applyCallbacks(
+                dataProvider,
+                handlers,
+                resource,
+                'beforeSave',
+                newParams.data
+            );
+
             let result = await dataProvider.updateMany<RecordType>(
                 resource,
                 newParams
@@ -419,6 +428,7 @@ export const withLifecycleCallbacks = (
                     (h.resource === resource || h.resource === '*') &&
                     h.afterSave
             );
+
             if (afterSaveHandlers.length > 0) {
                 const { data: records } = await dataProvider.getMany(resource, {
                     //@ts-ignore
@@ -556,31 +566,3 @@ export type ResourceCallbacks<T extends RaRecord = any> = {
      */
     afterSave?: ResourceCallbacksValue<T>;
 };
-
-/**
- * The list of all possible data provider hooks
- * @see https://marmelab.com/react-admin/DataProviders.html#data-provider-hooks
- */
-export enum dataProviderHooks {
-    afterCreate = 'afterCreate',
-    afterDelete = 'afterDelete',
-    afterDeleteMany = 'afterDeleteMany',
-    afterGetList = 'afterGetList',
-    afterGetMany = 'afterGetMany',
-    afterGetManyReference = 'afterGetManyReference',
-    afterGetOne = 'afterGetOne',
-    afterUpdate = 'afterUpdate',
-    afterUpdateMany = 'afterUpdateMany',
-    beforeCreate = 'beforeCreate',
-    beforeDelete = 'beforeDelete',
-    beforeDeleteMany = 'beforeDeleteMany',
-    beforeGetList = 'beforeGetList',
-    beforeGetMany = 'beforeGetMany',
-    beforeGetManyReference = 'beforeGetManyReference',
-    beforeGetOne = 'beforeGetOne',
-    beforeUpdate = 'beforeUpdate',
-    beforeUpdateMany = 'beforeUpdateMany',
-    beforeSave = 'beforeSave',
-    afterRead = 'afterRead',
-    afterSave = 'afterSave',
-}
