@@ -134,3 +134,26 @@ jobs:
         uses: marmelab/greenframe-action@1.0.0
         env:
           GREENFRAME_SECRET_TOKEN: ${{secrets.GREENFRAME_SECRET_TOKEN}}
+
+  create-react-admin:
+    runs-on: ubuntu-latest
+    name: create-react-admin
+    needs: []
+    if: success() && (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/next')
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Use Node.js LTS
+        uses: actions/setup-node@v1
+        with:
+          node-version: '18.x'
+      - uses: bahmutov/npm-install@v1
+        with:
+          install-command: yarn --immutable
+      - name: Build create-react-admin
+        run: make build-create-react-admin install
+      - name: Create new project
+        run: ./node_modules/.bin/create-react-admin myadmin --data-provider ra-data-fakerest --auth-provider local-auth-provider --install npm
+      - name: Run the tests
+        working-directory: ./myadmin
+        run: npm run test

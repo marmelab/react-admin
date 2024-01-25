@@ -11,7 +11,8 @@ export const generateProject = async (state: ProjectConfiguration) => {
 
     copyDirectoryFiles(
         path.join(__dirname, '../templates/common'),
-        projectDirectory
+        projectDirectory,
+        ['gitignore']
     );
     replaceTokensInFile(path.join(projectDirectory, 'index.html'), state);
     replaceTokensInFile(
