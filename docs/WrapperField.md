@@ -50,4 +50,4 @@ const PostEdit = () => (
 
 ## Props
 
-`<FunctionField>` accepts the [common field props](./Fields.md#common-field-props).
+`<WrapperField>` accepts the [common field props](./Fields.md#common-field-props).
