@@ -185,6 +185,11 @@ const buildGraphQLProvider = async (
                 ...query,
                 fetchPolicy: 'network-only',
                 ...getOptions(otherOptions.query, raFetchMethod, resource),
+                context: {
+                    fetchOptions: {
+                        signal: params?.signal,
+                    },
+                },
             };
 
             return (
