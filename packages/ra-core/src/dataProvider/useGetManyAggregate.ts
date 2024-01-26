@@ -227,7 +227,6 @@ interface GetManyCallArgs {
 const callGetManyQueries = batch((calls: GetManyCallArgs[]) => {
     const dataProvider = calls[0].dataProvider;
     const queryClient = calls[0].queryClient;
-    const signal = calls[0].signal;
 
     /**
      * Aggregate calls by resource
@@ -286,6 +285,7 @@ const callGetManyQueries = batch((calls: GetManyCallArgs[]) => {
                 resource,
                 ids,
                 meta,
+                signal,
             } = callThatHasAllAggregatedIds;
 
             dataProvider
