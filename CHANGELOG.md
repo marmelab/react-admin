@@ -1,5 +1,21 @@
 # Changelog
 
+## v4.16.8
+
+* Fix `useUpdateMany` doesn't properly update cache in pessimistic mode ([#9600](https://github.com/marmelab/react-admin/pull/9600)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix Datagrid Header Sort Tooltip ([#9605](https://github.com/marmelab/react-admin/pull/9605)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `fetchJSON` adds useless Content-Type header for empty requests ([#9613](https://github.com/marmelab/react-admin/pull/9613)) ([chrisDeFouRire](https://github.com/chrisDeFouRire))
+* Fix `<ListGuesser>` flashes when changing sort or pagination ([#9606](https://github.com/marmelab/react-admin/pull/9606)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `ra-i18n-i18next` broken package ([#9603](https://github.com/marmelab/react-admin/pull/9603)) ([fzaninotto](https://github.com/fzaninotto))
+* Bump vite from 3.2.7 to 3.2.8 ([#9598](https://github.com/marmelab/react-admin/pull/9598)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* [TypeScript] Fix `<Pagination rowsPerPageOptions>` doesn't accept an array of objects ([#9607](https://github.com/marmelab/react-admin/pull/9607)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Improve FunctionField documentation ([#9614](https://github.com/marmelab/react-admin/pull/9614)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Remove create-react-app chapter ([#9610](https://github.com/marmelab/react-admin/pull/9610)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix Tutorial misses URL scheme in custom Field ([#9604](https://github.com/marmelab/react-admin/pull/9604)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix link to documentation root ([#9602](https://github.com/marmelab/react-admin/pull/9602)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Update `<DatagridAG>` page to reflect latest changes ([#9599](https://github.com/marmelab/react-admin/pull/9599)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Update Vietnamese i18n package link ([#9597](https://github.com/marmelab/react-admin/pull/9597)) ([completejavascript](https://github.com/completejavascript))
+
 ## v4.16.7
 
 * Fix `<FileInputPreview>` propTypes ([#9596](https://github.com/marmelab/react-admin/pull/9596)) ([djhi](https://github.com/djhi))
