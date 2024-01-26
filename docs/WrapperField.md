@@ -7,6 +7,8 @@ title: "The WrapperField Component"
 
 This component simply renders its children. Why would you want to use such a dumb component? To combine several fields in a single cell (in a `<Datagrid>`), in a single row (in a `<SimpleShowLayout>`) or in a group of inputs (in a `<SimpleFormConfigurable>`) .
 
+## Usage
+
 `<WrapperField>` allows to define the `label` and sort field for a combination of fields:
 
 ```jsx
@@ -44,5 +46,8 @@ const PostEdit = () => (
 );
 ```
 
-
 **Tip**: If you just want to combine two fields in a string, check  [the `<FunctionField>` component](./FunctionField.md) instead.
+
+## Props
+
+`<WrapperField>` accepts the [common field props](./Fields.md#common-field-props).
