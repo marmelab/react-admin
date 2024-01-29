@@ -3,7 +3,7 @@ import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import Typography from '@mui/material/Typography';
-import { useRecordContext, useTranslate } from 'ra-core';
+import { useFieldValue, useTranslate } from 'ra-core';
 
 import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
 import { FieldProps, fieldPropTypes } from './types';
@@ -31,7 +31,6 @@ export const FileField = <
     const {
         className,
         emptyText,
-        source,
         title,
         src,
         target,
@@ -40,8 +39,12 @@ export const FileField = <
         rel,
         ...rest
     } = props;
-    const record = useRecordContext(props);
-    const sourceValue = get(record, source);
+    const sourceValue = useFieldValue(props);
+    const titleValue =
+        useFieldValue({
+            ...props,
+            source: title,
+        }) ?? title;
     const translate = useTranslate();
 
     if (!sourceValue) {
@@ -86,8 +89,6 @@ export const FileField = <
             </StyledList>
         );
     }
-
-    const titleValue = get(record, title)?.toString() || title;
 
     return (
         <Root className={className} {...sanitizeFieldRestProps(rest)}>

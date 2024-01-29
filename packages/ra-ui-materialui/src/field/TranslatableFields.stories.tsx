@@ -1,6 +1,7 @@
 import {
     RecordContextProvider,
     Resource,
+    ResourceContextProvider,
     useTranslatableContext,
 } from 'ra-core';
 import fakeRestDataProvider from 'ra-data-fakerest';
@@ -45,9 +46,11 @@ const i18nProvider = polyglotI18nProvider(() => englishMessages);
 
 const Wrapper = ({ children }) => (
     <AdminContext i18nProvider={i18nProvider} defaultTheme="light">
-        <RecordContextProvider value={defaultData[0]}>
-            <SimpleShowLayout>{children}</SimpleShowLayout>
-        </RecordContextProvider>
+        <ResourceContextProvider value="ngos">
+            <RecordContextProvider value={defaultData[0]}>
+                <SimpleShowLayout>{children}</SimpleShowLayout>
+            </RecordContextProvider>
+        </ResourceContextProvider>
     </AdminContext>
 );
 

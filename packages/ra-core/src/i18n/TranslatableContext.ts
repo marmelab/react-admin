@@ -5,8 +5,6 @@ export const TranslatableContext = createContext<
 >(undefined);
 
 export interface TranslatableContextValue {
-    getLabel: GetTranslatableLabel;
-    getSource: GetTranslatableSource;
     locales: string[];
     selectedLocale: string;
     selectLocale: SelectTranslatableLocale;

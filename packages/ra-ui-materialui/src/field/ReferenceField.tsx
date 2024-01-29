@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { ReactNode } from 'react';
 import PropTypes from 'prop-types';
-import get from 'lodash/get';
 import { Typography, SxProps } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import ErrorIcon from '@mui/icons-material/Error';
@@ -18,6 +17,7 @@ import {
     useResourceDefinition,
     useTranslate,
     RaRecord,
+    useFieldValue,
 } from 'ra-core';
 import { UseQueryOptions } from '@tanstack/react-query';
 
@@ -63,9 +63,10 @@ export const ReferenceField = <
 >(
     props: ReferenceFieldProps<RecordType, ReferenceRecordType>
 ) => {
-    const { source, emptyText, link = 'edit', ...rest } = props;
+    const { emptyText, link = 'edit', ...rest } = props;
     const record = useRecordContext<RecordType>(props);
-    const id = get(record, source);
+    const id = useFieldValue(props);
+
     const translate = useTranslate();
 
     return id == null ? (
