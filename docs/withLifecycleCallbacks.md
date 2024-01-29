@@ -141,22 +141,25 @@ export const dataProvider = withLifecycleCallbacks(baseDataProvider, [ /* lifecy
 
 ## `lifecycleCallbacks`
 
-The second argument is an array of objects that define the callbacks to execute. They are executed in the order they are defined in the array.
-One lifecycle callback object is required for each resource that needs to be decorated. You can also use the wilcard '*' to apply the callback for every resources.
-One lifecycle callback object can define callbacks for multiple events.
-For each event, you can pass a single function, or an array of functions that will be executed, for this resource and event, in the provided order.
+The second argument is an array of objects that define the callbacks to execute.
+
+A lifecycle callback is an object that defines a resource and callbacks for lifecycle events object. One lifecycle callback object can define callbacks for multiple events. For each event, you can pass a single function, or an array of functions that will be executed in the provided order.
+
+You can also use the wilcard value '*' for the resource to apply the callback to every resource.
+
+Lifecycle callbacks are are executed in the order they are defined.
 
 ```jsx
-import jsonServerProvider from "ra-data-json-server";
+import { baseDataProvider } from "./baseDataProvider";
 
 export const dataProvider = withLifecycleCallbacks(
-  jsonServerProvider("http://localhost:3000"),
+  baseDataProvider,
   [
     {
         resource: "posts",
         afterRead: async (data, dataProvider) => { /* ... */ },
-        afterSave: [callback1, callback2, callback3], // You can also pass arrays of callbacks
-        beforeDelete: async (params, dataProvider) => { /* ... */ },
+        afterSave: async (params, dataProvider) => { /* ... */ },
+        beforeDelete: [callback1, callback2, callback3], // You can also pass arrays of callbacks
     },
     {
         resource: "users",
@@ -166,7 +169,6 @@ export const dataProvider = withLifecycleCallbacks(
     {
         resource: "*", // Wildcard : will be applied for every resource
         beforeSave: async (data, dataProvider, resource) => { /* ... */ },
-        afterCreate: [callback1, callback2, callback3],
     },
   ]
 );
@@ -175,7 +177,7 @@ export const dataProvider = withLifecycleCallbacks(
 A lifecycle callback object can have the following properties:
 
 ```jsx
-const fooLifecycleCallback = {
+const exampleLifecycleCallback = {
   resource: /* resource name, or wildcard * (required) */,
   // before callbacks
   beforeGetList: /* a single function, or array or functions : async (params, dataProvider, resource) => params */,
@@ -212,6 +214,7 @@ The `beforeGetList`, `beforeGetOne`, `beforeGetMany `, `beforeGetManyReference`,
 
 - `params`: the parameters passed to the dataProvider method
 - `dataProvider`: the dataProvider itself, so you can call other dataProvider methods
+- `resource`: the resource the callback is applied on (useful when using wildcard resource)
 
 ### After callbacks 
 
@@ -219,6 +222,7 @@ The `afterGetList`, `afterGetOne`, `afterGetMany `, `afterGetManyReference`, `af
 
 - `response`: the response returned by the dataProvider method
 - `dataProvider`: the dataProvider itself, so you can call other dataProvider methods
+- `resource`: the resource the callback is applied on (useful when using wildcard resource)
 
 ### `afterRead` 
 
@@ -226,6 +230,7 @@ Called after any dataProvider method that reads data (`getList`, `getOne`, `getM
 
 - `record`: the record returned by the backend 
 - `dataProvider`: the dataProvider itself, so you can call other dataProvider methods
+- `resource`: the resource the callback is applied on (useful when using wildcard resource)
 
 For methods that return many records (`getList`, `getMany`, `getManyReference`), the callback is called once for each record.
 
@@ -246,6 +251,7 @@ Called before any dataProvider method that saves data (`create`, `update`, `upda
 
 - `data`: the record update to be sent to the backend (often, a diff of the record)
 - `dataProvider`: the dataProvider itself, so you can call other dataProvider methods
+- `resource`: the resource the callback is applied on (useful when using wildcard resource)
 
 ```jsx
 const postLifecycleCallbacks = {
@@ -263,6 +269,7 @@ Called after any dataProvider method that saves data (`create`, `update`, `updat
 
 - `record`: the record returned by the backend 
 - `dataProvider`: the dataProvider itself, so you can call other dataProvider methods
+- `resource`: the resource the callback is applied on (useful when using wildcard resource)
 
 ```jsx
 const postLifecycleCallback = {
