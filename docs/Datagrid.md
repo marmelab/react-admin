@@ -148,17 +148,7 @@ export default PostList;
 
 Bulk action buttons appear when users select one or several rows. Clicking on a bulk action button affects all the selected records. This is useful for actions like mass deletion or mass edition.
 
-<video controls autoplay playsinline muted loop>
-  <source src="./img/bulk-actions-toolbar.mp4" type="video/mp4"/>
-  Your browser does not support the video tag.
-</video>
-
-Users can select a range of rows by pressing the shift key while clicking on a row checkbox.
-
-<video controls autoplay playsinline muted loop>
-  <source src="./img/datagrid-select-range.mp4" type="video/mp4"/>
-  Your browser does not support the video tag.
-</video>
+<iframe src="https://www.youtube-nocookie.com/embed/zbr1xLjAXz4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;"></iframe>
 
 You disable this feature by setting the `bulkActionButtons` prop to `false`:
 
@@ -176,17 +166,16 @@ export const PostList = () => (
 
 By default, all Datagrids have a single bulk action button, the bulk delete button. You can add other bulk action buttons by passing a custom element as the `bulkActionButtons` prop of the `<Datagrid>` component:
 
+{% raw %}
 ```tsx
-import { Button } from '@mui/material';
-import { List, Datagrid, BulkDeleteButton } from 'react-admin';
-
-import ResetViewsButton from './ResetViewsButton';
+import { List, Datagrid, BulkUpdateButton, BulkDeleteButton, BulkExportButton } from 'react-admin';
+import { VisibilityOff } from '@mui/icons-material';
 
 const PostBulkActionButtons = () => (
     <>
-        <ResetViewsButton label="Reset Views" />
-        {/* default bulk delete action */}
+        <BulkUpdateButton label="Reset Views" data={{ views: 0 }} icon={<VisibilityOff/>} />
         <BulkDeleteButton />
+        <BulkExportButton />
     </>
 );
 
@@ -198,53 +187,35 @@ export const PostList = () => (
     </List>
 );
 ```
+{% endraw %}
 
-**Tip**: React-admin provides four components that you can use in `bulkActionButtons`:
+<video controls autoplay playsinline muted loop>
+  <source src="./img/bulk-actions-toolbar.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
+React-admin provides four components that you can use in `bulkActionButtons`:
 
 - [`<BulkDeleteButton>`](./Buttons.md#bulkdeletebutton) (enabled by default)
 - [`<BulkExportButton>`](./Buttons.md#bulkexportbutton) to export only the selection
 - [`<BulkUpdateButton>`](./Buttons.md#bulkupdatebutton) to immediately update the selection
 - [`<BulkUpdateFormButton>`](./Buttons.md#bulkupdateformbutton) to display a form allowing to update the selection
 
-**Tip**: You can also disable bulk actions altogether by passing `false` to the `bulkActionButtons` prop. In this case, the checkboxes column doesn't show up.
+**Tip**: Users can select a range of rows by pressing the shift key while clicking on a row checkbox.
 
-Bulk action button components can use the [`useListContext`](./useListContext.md) hook to get the elements they need to perform their job:
+<video controls autoplay playsinline muted loop>
+  <source src="./img/datagrid-select-range.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
+You can write a custom bulk action button components using the [`useListContext`](./useListContext.md) hook to get the following data and callbacks:
 
 * `selectedIds`: the identifiers of the currently selected items.
+* `onUnselectItems`: a callback to empty the selection.
 * `resource`: the currently displayed resource (eg `posts`, `comments`, etc.)
 * `filterValues`: the filter values. This can be useful if you want to apply your action on all items matching the filter.
 
-Here is an example of custom bulk action button, which sets the `views` property of all posts to `0`:
-
-```tsx
-// in ./ResetViewsButton.tsx
-import { VisibilityOff } from '@mui/icons-material';
-import { BulkUpdateButton } from 'react-admin';
-
-const views = { views: 0 };
-
-const ResetViewsButton = () => (
-    <BulkUpdateButton label="Reset Views" data={views} icon={<VisibilityOff/>} />
-);
-
-export default ResetViewsButton;
-```
-
-You can also implement the same `<ResetViewsButton>` behind a [confirmation dialog](./Confirm.md) by using the [`mutationMode`](./Edit.md#mutationmode) prop:
-
-```diff
-// in ./ResetViewsButton.js
-const ResetViewsButton = () => (
-    <BulkUpdateButton
-        label="Reset Views"
-        data={views}
-        icon={VisibilityOff}
-+       mutationMode="pessimistic"
-    />
-);
-```
-
-But let's say you need a customized bulkAction button. Here is an example leveraging the `useUpdateMany` hook, which sets the `views` property of all posts to `0`:
+Here is an example leveraging the `useUpdateMany` hook, which sets the `views` property of all posts to `0`:
 
 ```tsx
 // in ./CustomResetViewsButton.tsx
@@ -263,33 +234,30 @@ const CustomResetViewsButton = () => {
     const refresh = useRefresh();
     const notify = useNotify();
     const unselectAll = useUnselectAll('posts');
-    const [updateMany, { isLoading }] = useUpdateMany(
-        'posts',
-        { ids: selectedIds, data: { views: 0 } },
-        {
-            onSuccess: () => {
-                notify('Posts updated');
-                unselectAll();
-            },
-            onError: () => {
-                notify('Error: posts not updated', { type: 'error' });
-                refresh();
-            },
-        }
-    );
+    const [updateMany, { isLoading }] = useUpdateMany();
+    const handleClick = () => {
+        updateMany(
+            'posts',
+            { ids: selectedIds, data: { views: 0 } },
+            {
+                onSuccess: () => {
+                    notify('Posts updated');
+                    unselectAll();
+                },
+                onError: () => {
+                    notify('Error: posts not updated', { type: 'error' });
+                    refresh();
+                },
+            }
+        );
+    }
 
     return (
-        <Button
-            label="simple.action.resetViews"
-            disabled={isLoading}
-            onClick={() => updateMany}
-        >
+        <Button label="Reset views" onClick={handleClick} disabled={isLoading}>
             <VisibilityOff />
         </Button>
     );
 };
-
-export default CustomResetViewsButton;
 ```
 
 But most of the time, bulk actions are mini-applications with a standalone user interface (in a Dialog). Here is the same `<CustomResetViewsAction>` implemented behind a confirmation dialog:

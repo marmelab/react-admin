@@ -7,6 +7,8 @@ title: "withLifecycleCallbacks"
 
 This helper function adds logic to an existing [`dataProvider`](./DataProviders.md) for particular resources, using pre- and post- event handlers like `beforeGetOne` and `afterSave`.
 
+<iframe src="https://www.youtube-nocookie.com/embed/o8U-wjfUwGk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;"></iframe>
+
 **Note**: It's always preferable to **define custom business logic on the server side**. This helper is useful when you can't alter the underlying API, but has some serious [limitations](#limitations).
 
 ## Usage
