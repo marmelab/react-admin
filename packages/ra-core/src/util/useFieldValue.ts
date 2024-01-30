@@ -27,6 +27,6 @@ export const useFieldValue = <RecordType = RaRecord>(
 };
 
 export interface UseFieldValueOptions<RecordType = RaRecord> {
-    source: string;
+    source?: string;
     record?: RecordType;
 }
