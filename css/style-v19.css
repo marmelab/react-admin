@@ -69,6 +69,21 @@ nav ul#nav-mobile a {
     font-size: 16px;
 }
 
+nav ul a {
+    padding: 0 12px;
+}
+
+nav ul li.social a {
+    padding: 0 6px;
+}
+
+nav ul li:nth-child(5) {
+    padding-left: 6px;
+}
+
+nav ul li:nth-child(7) {
+    padding-right: 6px;
+}
 .sidenav {
     height: 100%;
     padding-bottom: 1em;
