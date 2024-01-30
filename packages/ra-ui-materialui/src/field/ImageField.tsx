@@ -20,7 +20,7 @@ export const ImageField = <
         useFieldValue({
             ...props,
             source: title,
-        }) ?? title;
+        })?.toString() ?? title;
     const translate = useTranslate();
 
     if (!sourceValue) {

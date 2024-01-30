@@ -38,6 +38,18 @@ describe('useFieldValue', () => {
         await screen.findByText('Johnny Silverhand');
     });
 
+    it('should return the field value from a deep path', async () => {
+        render(
+            <RecordContextProvider
+                value={{ id: 2, name: { firstName: 'John', lastName: 'Wick' } }}
+            >
+                <Component source="name.firstName" />
+            </RecordContextProvider>
+        );
+
+        await screen.findByText('John');
+    });
+
     it('should return the field value from the record inside a SourceContext', async () => {
         render(
             <RecordContextProvider

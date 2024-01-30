@@ -44,7 +44,7 @@ export const FileField = <
         useFieldValue({
             ...props,
             source: title,
-        }) ?? title;
+        })?.toString() ?? title;
     const translate = useTranslate();
 
     if (!sourceValue) {

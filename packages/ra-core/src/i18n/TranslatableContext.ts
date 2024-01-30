@@ -10,6 +10,4 @@ export interface TranslatableContextValue {
     selectLocale: SelectTranslatableLocale;
 }
 
-export type GetTranslatableSource = (field: string, locale?: string) => string;
-export type GetTranslatableLabel = (field: string, label?: string) => string;
 export type SelectTranslatableLocale = (locale: string) => void;

@@ -508,7 +508,7 @@ import * as React from 'react';
 -import { useRecordContext } from 'react-admin';
 +import { useFieldValue } from 'react-admin';
 
-const TextField = ({ source }) => {
+const TextField = (props) => {
 -    const record = useRecordContext();
 +   const value = useFieldValue(props);
 -   return record ? <span>{record[source]}</span> : null;

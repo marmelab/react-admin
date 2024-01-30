@@ -33,7 +33,10 @@ export const TranslatableFieldsTabContent = (
     const parentSourceContext = useSourceContext();
     const sourceContext = React.useMemo(
         () => ({
-            getSource: (source: string) => `${source}.${locale}`,
+            getSource: (source: string) =>
+                parentSourceContext
+                    ? parentSourceContext.getSource(`${source}.${locale}`)
+                    : `${source}.${locale}`,
             getLabel: (source: string) => {
                 return parentSourceContext
                     ? parentSourceContext.getLabel(source)
@@ -65,9 +68,7 @@ export const TranslatableFieldsTabContent = (
                                     {addLabel ? (
                                         <Labeled
                                             resource={resource}
-                                            label={sourceContext.getLabel(
-                                                field.props.source
-                                            )}
+                                            label={field.props.source}
                                             source={sourceContext.getSource(
                                                 field.props.source
                                             )}

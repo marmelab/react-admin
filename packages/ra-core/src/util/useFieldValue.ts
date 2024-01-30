@@ -5,9 +5,9 @@ import { useSourceContext } from '../core';
 
 /**
  * A hook that gets the value of a field of the current record.
- * @param options The hook options
- * @param options.source The field source
- * @param options.record The record to use. Uses the record from the RecordContext if not provided
+ * @param params The hook parameters
+ * @param params.source The field source
+ * @param params.record The record to use. Uses the record from the RecordContext if not provided
  * @returns The field value
  *
  * @example
@@ -17,16 +17,16 @@ import { useSourceContext } from '../core';
  * }
  */
 export const useFieldValue = <RecordType = RaRecord>(
-    options: UseFieldValueOptions<RecordType>
+    params: UseFieldValueOptions<RecordType>
 ) => {
-    const { source } = options;
+    const { source } = params;
     const sourceContext = useSourceContext();
-    const record = useRecordContext<RecordType>(options);
+    const record = useRecordContext<RecordType>(params);
 
     return get(record, sourceContext?.getSource(source) ?? source);
 };
 
 export interface UseFieldValueOptions<RecordType = RaRecord> {
-    source?: string;
+    source: string;
     record?: RecordType;
 }

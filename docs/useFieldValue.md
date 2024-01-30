@@ -5,7 +5,7 @@ title: "useFieldValue"
 
 # `useFieldValue`
 
-A hook that gets the value of a field of the current record. It gets the current record from the context or use the one provided as a prof. It supports deep sources such as `name.fr`.
+A hook that gets the value of a field of the current record. It gets the current record from the context or use the one provided as a prop. It supports deep sources such as `name.fr`.
 
 ## Usage
 
@@ -15,13 +15,13 @@ Here is an example `TextField` component:
 import * as React from 'react';
 +import { useFieldValue } from 'react-admin';
 
-const TextField = ({ source }) => {
+const TextField = (props) => {
     const value = useFieldValue(props);
     return record ? <span>{value}</span> : null;
 }
 ```
 
-## Options
+## Params
 
 ### `source`
 

@@ -63,7 +63,7 @@ export const ReferenceField = <
 >(
     props: ReferenceFieldProps<RecordType, ReferenceRecordType>
 ) => {
-    const { emptyText, link = 'edit', ...rest } = props;
+    const { source, emptyText, link = 'edit', ...rest } = props;
     const record = useRecordContext<RecordType>(props);
     const id = useFieldValue(props);
 
