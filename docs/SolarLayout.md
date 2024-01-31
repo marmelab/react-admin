@@ -50,7 +50,7 @@ You don't need to define the app location for CRUD pages as react-admin does it 
 -   Edit: `[resource].edit`. The location also contains the current `record`
 -   Show: `[resource].show`. The location also contains the current `record`
 
-However, you can customize these default app locations in your CRUD pages, and you must define the location for custom pages. 
+However, you can customize these default app locations in your CRUD pages, and you must define the location for custom pages.
 
 ## Props
 
@@ -358,6 +358,8 @@ By default, just like the classic react-admin menu, it contains menu items for e
 | `logo`          | Optional | Component |         | A React component used as the dashboard icon                 |
 | `userMenu`      | Optional | Component |         | Allows to customize the user menu                            |
 | `sx`            | Optional | `SxProps` |         | Style overrides, powered by MUI System                       |
+
+It also accept the props of its root `HTMLDivElement`.
 
 In addition, the `SolarMenu` object provides shortcuts to its items components:
 
