@@ -721,7 +721,7 @@ body.no-sidebar .sidenav-trigger {
 
 /* Auth and Data Provider icons */
 
-img {
+.providers-list img {
     max-width: 25px !important;
     max-height: 17px !important;
     margin: 0px 5px 0px 0px !important;
@@ -742,4 +742,13 @@ img {
     margin: 0px 10px 0px 3px;
     border-radius: 100%;
     font-size: 12px;
+}
+.providers-list ul {
+    padding-left: 0;
+}
+.providers-list ul > li {
+    list-style-type: none;
+}
+.providers-list .avatar {
+    margin: 0 5px 0 0;
 }
