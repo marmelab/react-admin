@@ -9,6 +9,7 @@ Thanks to the Data Provider architecture, react-admin supports a lot of API back
 
 If you can't find a Data Provider for your backend below, no worries! [Writing a Data Provider](./DataProviderWriting.md) takes a couple of hours, and won't prevent you from using react-admin.
 
+<div class="data-providers-list" markdown="1">
 * ![AppWrite Logo](/img/backend-logos/appwrite.svg "AppWrite Logo")**[AppWrite](https://appwrite.io/)**: [g33kdev/ra-appwrite](https://github.com/g33kdev/ra-appwrite)
 * ![AWS Amplify Logo](/img/backend-logos/amplify.svg "AWS Amplify Logo")**[AWS Amplify](https://docs.amplify.aws)**: [MrHertal/react-admin-amplify](https://github.com/MrHertal/react-admin-amplify)
 * ![blitz Logo](/img/backend-logos/blitz.svg "blitz Logo")**[Blitz-js](https://blitzjs.com/docs)**: [theapexlab/ra-data-blitz](https://github.com/theapexlab/ra-data-blitz)
@@ -73,6 +74,19 @@ If you can't find a Data Provider for your backend below, no worries! [Writing a
 * ![surrealDB Logo](/img/backend-logos/surrealdb.svg "surrealDB Logo")**[SurrealDB](https://surrealdb.com/)**: [djedi23/ra-surrealdb](https://github.com/djedi23/ra-surrealdb)
 * ![treeql Logo](/img/backend-logos/treeql.png "treeql Logo")**[TreeQL / PHP-CRUD-API](https://treeql.org/)**: [nkappler/ra-data-treeql](https://github.com/nkappler/ra-data-treeql)
 * ![wooCommerce Logo](/img/backend-logos/wooCommerce.png "wooCommerce Logo")**[WooCommerce REST API](https://woocommerce.github.io/woocommerce-rest-api-docs)**: [zackha/ra-data-woocommerce](https://github.com/zackha/ra-data-woocommerce)
+</div>
+
+<style>
+.data-providers-list ul {
+  padding-left: 0;
+}
+.data-providers-list ul > li {
+  list-style-type: none;
+}
+.data-providers-list .avatar {
+  margin: 0 5px 0 0;
+}
+</style>
 
 That's a long list!
 
