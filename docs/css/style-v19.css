@@ -55,7 +55,7 @@ main > .container .markdown-section {
 .toc.is-position-fixed {
     position: static !important;
     max-height: calc(
-        100vh - 10px 
+        100vh - 10px
     ); /* container top padding */
 }
 
@@ -719,3 +719,27 @@ body.no-sidebar .sidenav-trigger {
     text-decoration: none !important;
 }
 
+/* Auth and Data Provider icons */
+
+img {
+    max-width: 25px !important;
+    max-height: 17px !important;
+    margin: 0px 5px 0px 0px !important;
+    box-shadow: none !important;
+}
+.flex {
+    display: flex !important;
+    text-align: -webkit-match-parent !important;
+    align-items: center !important;
+}
+.avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: DarkGray;
+    width: 17px;
+    height: 17px;
+    margin: 0px 10px 0px 3px;
+    border-radius: 100%;
+    font-size: 12px;
+}
