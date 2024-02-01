@@ -722,24 +722,24 @@ body.no-sidebar .sidenav-trigger {
 /* Auth and Data Provider icons */
 
 .providers-list img {
-    max-width: 25px !important;
-    max-height: 17px !important;
-    margin: 0px 5px 0px 0px !important;
+    width: 25px !important;
+    margin: 2px 10px 2px 0px !important;
     box-shadow: none !important;
+    vertical-align: middle;
 }
-.flex {
+.providers-list .flex {
     display: flex !important;
     text-align: -webkit-match-parent !important;
     align-items: center !important;
 }
-.avatar {
+.providers-list .avatar {
     display: flex;
     align-items: center;
     justify-content: center;
     background-color: DarkGray;
-    width: 17px;
-    height: 17px;
-    margin: 0px 10px 0px 3px;
+    width: 25px;
+    height: 25px;
+    margin: 2px 10px 2px 0px;
     border-radius: 100%;
     font-size: 12px;
 }
@@ -748,7 +748,5 @@ body.no-sidebar .sidenav-trigger {
 }
 .providers-list ul > li {
     list-style-type: none;
-}
-.providers-list .avatar {
-    margin: 0 5px 0 0;
+    max-height: 2em;
 }
