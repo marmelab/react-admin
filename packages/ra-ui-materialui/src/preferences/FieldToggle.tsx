@@ -126,7 +126,7 @@ export const FieldToggle = props => {
 const Root = styled('li', {
     name: 'RaFieldToggle',
     overridesResolver: (_props, styles) => styles.root,
- })(({ theme }) => ({
+})(({ theme }) => ({
     display: 'flex',
     justifyContent: 'space-between',
     paddingLeft: 0,
