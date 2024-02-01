@@ -862,6 +862,7 @@ export const App = () => (
 | `className` | Optional | string      |              | A class name to apply to the AppBar container.                                                                                                                                                                                                |
 | `color`     | Optional | string      | 'secondary'  | The color of the AppBar. Can be primary, secondary, or inherit. Defaults to secondary.                                                                                                                                                        |
 | `container` | Optional | ElementType | HideOnScroll | The component used for the root node.                                                                                                                                                                                                         |
+
 ## Use It With `<SearchWithResult>`
 
 The `<SearchWithResult>` component works perfectly when used inside the [`<SolarLayout>`](https://marmelab.com/ra-enterprise/modules/ra-navigation#solarlayout) menu.
