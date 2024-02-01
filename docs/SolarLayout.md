@@ -862,3 +862,88 @@ export const App = () => (
 | `className` | Optional | string      |              | A class name to apply to the AppBar container.                                                                                                                                                                                                |
 | `color`     | Optional | string      | 'secondary'  | The color of the AppBar. Can be primary, secondary, or inherit. Defaults to secondary.                                                                                                                                                        |
 | `container` | Optional | ElementType | HideOnScroll | The component used for the root node.                                                                                                                                                                                                         |
+## Use It With `<SearchWithResult>`
+
+The `<SearchWithResult>` component works perfectly when used inside the [`<SolarLayout>`](https://marmelab.com/ra-enterprise/modules/ra-navigation#solarlayout) menu.
+
+<video controls autoplay playsinline muted loop>
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-search-with-result-solar-layout-overview.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
+The `useSolarSidebarActiveMenu` hook combined with the `onNavigate` prop allow you to close the `<SolarMenu>` when the user selects an element in the result.
+
+Here is an implementation example:
+
+{% raw %}
+```tsx
+import { Admin } from 'react-admin';
+import { Box } from '@mui/material';
+import SearchIcon from '@mui/icons-material/Search';
+import AlbumIcon from '@mui/icons-material/Album';
+import Groups3Icon from '@mui/icons-material/Groups3';
+import {
+    SolarLayout,
+    SolarLayoutProps,
+    SolarMenu,
+    useSolarSidebarActiveMenu,
+} from '@react-admin/ra-navigation';
+import { SearchWithResult } from '@react-admin/ra-search';
+import { searchDataProvider } from './searchDataProvider';
+
+const MySolarLayout = (props: SolarLayoutProps) => (
+    <SolarLayout {...props} menu={MySolarMenu} />
+);
+
+const MySolarMenu = () => (
+    <SolarMenu bottomToolbar={<CustomBottomToolbar />}>
+        <SolarMenu.Item
+            name="artists"
+            to="/artists"
+            icon={<Groups3Icon />}
+            label="resources.stores.name"
+        />
+        <SolarMenu.Item
+            name="songs"
+            to="/songs"
+            icon={<AlbumIcon />}
+            label="resources.events.name"
+        />
+    </SolarMenu>
+);
+
+const CustomBottomToolbar = () => (
+    <>
+        <SearchMenuItem />
+        <SolarMenu.LoadingIndicatorItem />
+    </>
+);
+
+const SearchMenuItem = () => {
+    const [, setActiveMenu] = useSolarSidebarActiveMenu();
+    const handleClose = () => {
+        setActiveMenu('');
+    };
+
+    return (
+        <SolarMenu.Item
+            icon={<SearchIcon />}
+            label="Search"
+            name="search"
+            subMenu={
+                <Box sx={{ maxWidth: 298 }}>
+                    <SearchWithResult onNavigate={handleClose} />
+                </Box>
+            }
+            data-testid="search-button"
+        />
+    );
+};
+
+export const App = () => (
+    <Admin dataProvider={searchDataProvider} layout={MySolarLayout}>
+        {/*...*/}
+    </Admin>
+);
+```
+{% endraw %}
