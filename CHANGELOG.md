@@ -1,5 +1,15 @@
 # Changelog
 
+## v4.16.9
+
+* Fix `<FieldToggle>` cannot be styled using the application theme ([#9634](https://github.com/marmelab/react-admin/pull/9634)) ([megantaylor](https://github.com/megantaylor))
+* [Doc] Add video tutorial to the Resource chapter ([#9635](https://github.com/marmelab/react-admin/pull/9635)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Update doc SolarLayout with SearchWithResult ([#9632](https://github.com/marmelab/react-admin/pull/9632)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Doc] Update SolarMenu doc ([#9629](https://github.com/marmelab/react-admin/pull/9629)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Doc] Add providers logos ([#9627](https://github.com/marmelab/react-admin/pull/9627)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Doc] Add doc section ([#9626](https://github.com/marmelab/react-admin/pull/9626)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Doc] Add video tutorials to the `withLifecycleCallbacks` and the `<Datagrid bulkActionButtons>` sections ([#9621](https://github.com/marmelab/react-admin/pull/9621)) ([fzaninotto](https://github.com/fzaninotto))
+
 ## v4.16.8
 
 * Fix `useUpdateMany` doesn't properly update cache in pessimistic mode ([#9600](https://github.com/marmelab/react-admin/pull/9600)) ([fzaninotto](https://github.com/fzaninotto))
