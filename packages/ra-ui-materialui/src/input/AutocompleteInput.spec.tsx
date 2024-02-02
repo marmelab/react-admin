@@ -17,7 +17,7 @@ import {
     InsideReferenceInput,
     InsideReferenceInputDefaultValue,
     InsideReferenceInputWithCustomizedItemRendering,
-    Nullable,
+    Basic,
     NullishValuesSupport,
     VeryLargeOptionsNumber,
     TranslateChoice,
@@ -1252,7 +1252,7 @@ describe('<AutocompleteInput />', () => {
 
     it('should return null when no choice is selected', async () => {
         const onSuccess = jest.fn();
-        render(<Nullable onSuccess={onSuccess} />);
+        render(<Basic onSuccess={onSuccess} />);
         const clearBtn = await screen.findByLabelText('Clear value');
         fireEvent.click(clearBtn);
         screen.getByText('Save').click();
