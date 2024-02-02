@@ -3,11 +3,31 @@ layout: default
 title: "Community"
 ---
 
+<style>
+    .iframe-wrapper {
+        float: none;
+        clear: both;
+        max-width: 92.25%;
+        position: relative;
+        padding-bottom: 56.25%;
+        padding-top: 25px;
+        height: 0;
+    }
+
+    .iframe-wrapper iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+</style>
+
 # Community
 
 Thousands of new react-admin applications are created every month. [Many developers](https://github.com/marmelab/react-admin/network/dependents) use react-admin on a day-to-day basis. We're excited that you're a part of this large and friendly community.
 
-We're doing our best to keep it a convivial place where people want to hang out and help/be helped. 
+We're doing our best to keep it a convivial place where people want to hang out and help/be helped.
 
 ## Newsletter
 
@@ -18,6 +38,16 @@ We're doing our best to keep it a convivial place where people want to hang out 
 The [React-admin Discord Server](https://discord.gg/GeZF9sqh3N) is a great place to have conversations, answer and ask questions, all about react-admin.
 
 <iframe src="https://discord.com/widget?id=830711057643208724&theme=dark" width="350" height="500" allowtransparency="true" frameborder="0" sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"></iframe>
+
+## Youtube
+
+On our [Youtube channel](https://www.youtube.com/@react-admin), you can find some beginner, intermediate and advanced tutorials.
+
+<div class="iframe-wrapper">
+    <iframe
+        src="https://www.youtube.com/embed?listType=playlist&list=UUx-g3k3eDFyy-3E7vxWVN-Q">
+    </iframe>
+</div>
 
 ## Support
 
@@ -69,17 +99,16 @@ Please note that we don't provide support via GitHub issues - use them only for 
 
 ## Contributing
 
-If you want to give a hand: Thank you! There are many things you can do to help make react-admin better. 
+If you want to give a hand: Thank you! There are many things you can do to help make react-admin better.
 
-The easiest task is **bug triaging**. Check that new issues on GitHub follow the issue template and give a way to reproduce the issue. If not, comment on the issue to ask for precisions. Then, try and reproduce the issue following the description. If you managed to reproduce the issue, add a comment to say it. Otherwise, add a comment to say that something is missing. 
+The easiest task is **bug triaging**. Check that new issues on GitHub follow the issue template and give a way to reproduce the issue. If not, comment on the issue to ask for precisions. Then, try and reproduce the issue following the description. If you managed to reproduce the issue, add a comment to say it. Otherwise, add a comment to say that something is missing.
 
-The second way to contribute is to **answer support questions on [StackOverflow](https://stackoverflow.com/questions/tagged/react-admin) and [Discord](https://discord.com/channels/830711057643208724/1022443113391853578)**. There are many beginner questions there, so even if you're not super experienced with react-admin, your contribution will be appreciated. 
+The second way to contribute is to **answer support questions on [StackOverflow](https://stackoverflow.com/questions/tagged/react-admin) and [Discord](https://discord.com/channels/830711057643208724/1022443113391853578)**. There are many beginner questions there, so even if you're not super experienced with react-admin, your contribution will be appreciated.
 
-Pull requests for **bug fixes** are welcome on the [GitHub repository](https://github.com/marmelab/react-admin). There is always a bunch of [issues labeled "Good First Issue"](https://github.com/marmelab/react-admin/issues?q=is%3Aopen+is%3Aissue+label%3A%22good+first+issue%22) in the bug tracker - start with these. 
+Pull requests for **bug fixes** are welcome on the [GitHub repository](https://github.com/marmelab/react-admin). There is always a bunch of [issues labeled "Good First Issue"](https://github.com/marmelab/react-admin/issues?q=is%3Aopen+is%3Aissue+label%3A%22good+first+issue%22) in the bug tracker - start with these.
 
 If you want to **add a feature**, you can open a Pull request on the `next` branch. We don't accept all features - we try to keep the react-admin code small and manageable. Try and see if your feature can't be built as an additional `npm` package. If you're in doubt, open a "Feature Request" issue to see if the core team would accept your feature before developing it.
 
 For all Pull requests, you must follow the coding style of the existing files (based on [prettier](https://github.com/prettier/prettier)), and include unit tests and documentation. Be prepared for a thorough code review, and be patient for the merge - this is an open-source initiative.
 
-**Tip**: Most of the commands used by the react-admin developers are automated in the `makefile`. Feel free to type `make` without argument to see a list of the available commands. 
-
+**Tip**: Most of the commands used by the react-admin developers are automated in the `makefile`. Feel free to type `make` without argument to see a list of the available commands.

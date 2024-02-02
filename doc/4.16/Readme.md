@@ -23,12 +23,13 @@ yarn add react-admin
 
 ## How To Learn React-Admin
 
-1. Read the [Tutorial](./Tutorial.md) for a 30 minutes introduction. 
-2. Read the source code of [the demos](./Demos.md) for real-life examples.
-3. Read the [Documentation](./Admin.md) for a deep dive into the react-admin components and hooks.
-4. Read the [Architecture decisions](./Architecture.md) to better understand why features are implemented that way.
-5. Check out the [API Reference](./Reference.md) for a complete list of the public API.
-6. Get [Support](#support) for fixing your own problems
+1. Read the [Tutorial](./Tutorial.md) for a 30 minutes introduction.
+2. Watch the [YouTube video tutorials](https://www.youtube.com/@react-admin) for quick introductions to the main features.
+3. Read the source code of [the demos](./Demos.md) for real-life examples.
+4. Read the [Documentation](./Admin.md) for a deep dive into the react-admin components and hooks.
+5. Read the [Architecture decisions](./Architecture.md) to better understand why features are implemented that way.
+6. Check out the [API Reference](./Reference.md) for a complete list of the public API.
+7. Get [Support](#support) for fixing your own problems
 
 ## Usage
 
