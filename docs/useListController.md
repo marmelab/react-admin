@@ -253,3 +253,66 @@ const {
     refetch, // Callback for fetching the list data again
 } = useListController();
 ```
+
+## Using `setFilters` to Update Filters
+
+The `setFilters` method is used to update the filters. It takes three arguments:
+
+- `filters`: an object containing the new filter values
+- `displayedFilters`: an object containing the new displayed filters
+- `debounced`: set to false to disable the debounce (true by default)
+
+You can use it to update the list filters:
+
+```jsx
+import { useState } from 'react';
+import { useListController } from 'react-admin';
+
+const OfficeList = () => {
+    const { filterValues, setFilters, data, isLoading } = useListController({ resource: 'offices' });
+    const [formValues, setFormValues] = useState(filterValues);
+
+    const handleChange = (event) => {
+        setFormValues(formValues => ({
+            ...formValues,
+            [event.target.name]: event.target.value
+        }));
+    };
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        // The 3rd parameter disables the debounce ⤵
+        setFilters(filterFormValues, undefined, false);
+    };
+
+    if (isLoading) return <div>Loading...</div>;
+
+    return (
+        <>
+            <form onSubmit={handleSubmit}>
+                <input name="country" value={formValues.country} onChange={handleChange} />
+                <input name="city" value={formValues.city} onChange={handleChange} />
+                <input name="zipcode" value={formValues.zipcode} onChange={handleChange} />
+                <input type="submit">Filter</input>
+            </form>
+            <ul>
+                {data.map(record => (
+                    <li key={record.id}>{record.name}</li>
+                ))}
+            </ul>
+        </>
+    );
+};
+```
+
+Beware that `setFilters` is debounced by default, to avoid making too many requests to the server when using search-as-you-type inputs. In the example above, this is not necessary. That's why you should set the third argument to `setFilters` is set to `false` to disable the debounce.
+
+Disabling the debounce with the third parameter is also necessary when you use `setFilters` and other list controller methods (like `setSort`) in a single function. Otherwise, the `setFilters` call would override the other changes.
+
+```jsx
+const changeListParams = () => {
+    setSort({ field: 'name', order: 'ASC' });
+    // The 3rd parameter disables the debounce     ⤵
+    setFilters({ is_published: true }, undefined, false);
+};
+```
