@@ -1,6 +1,7 @@
 import { createContext } from 'react';
 import { UseGetListHookValue } from '../../dataProvider/useGetList';
 import { FilterPayload, RaRecord, SortPayload } from '../../types';
+import { ListParams } from '../../controller';
 
 /**
  * Context to store choices and functions to retrieve them.
@@ -38,6 +39,7 @@ export type ChoicesContextValue<RecordType extends RaRecord = any> = {
     setPerPage: (page: number) => void;
     setSort: (sort: SortPayload) => void;
     showFilter: (filterName: string, defaultValue: any) => void;
+    setParams: (params: Partial<ListParams>) => void;
     sort: SortPayload;
     source: string;
     total: number;

@@ -12,6 +12,8 @@ import {
     SET_SORT,
     SHOW_FILTER,
     SORT_ASC,
+    SET_PARAMS,
+    ListParams,
 } from '../list';
 
 /**
@@ -176,6 +178,17 @@ export const useReferenceParams = ({
             },
         });
     }, requestSignature); // eslint-disable-line react-hooks/exhaustive-deps
+
+    const setParamsCallback = useCallback(
+        (params: Partial<ListParams>) => {
+            changeParams({
+                type: SET_PARAMS,
+                payload: params,
+            });
+        },
+        [changeParams]
+    );
+
     return [
         {
             displayedFilters: displayedFilterValues,
@@ -191,6 +204,7 @@ export const useReferenceParams = ({
             setFilters,
             hideFilter,
             showFilter,
+            setParams: setParamsCallback,
         },
     ];
 };
@@ -313,6 +327,7 @@ interface Modifiers {
     setFilters: (filters: any, displayedFilters: any) => void;
     hideFilter: (filterName: string) => void;
     showFilter: (filterName: string, defaultValue: any) => void;
+    setParams: (params: Partial<ListParams>) => void;
 }
 
 const emptyObject = {};

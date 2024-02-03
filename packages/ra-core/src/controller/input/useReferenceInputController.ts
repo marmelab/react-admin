@@ -184,6 +184,7 @@ export const useReferenceInputController = <RecordType extends RaRecord = any>(
         setPerPage: paramsModifiers.setPerPage,
         setSort: paramsModifiers.setSort,
         showFilter: paramsModifiers.showFilter,
+        setParams: paramsModifiers.setParams,
         source,
         total: finalTotal,
         hasNextPage: pageInfo

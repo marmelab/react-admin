@@ -45,6 +45,7 @@ export const useChoicesContext = <ChoicesType extends RaRecord = RaRecord>(
                 setPerPage: options.setPerPage ?? list.setPerPage,
                 setSort: options.setSort ?? list.setSort,
                 showFilter: options.showFilter ?? list.showFilter,
+                setParams: options.setParams ?? list.setParams,
                 sort: options.sort ?? list.sort,
                 source: options.source,
                 total: options.total ?? list.total,
