@@ -428,6 +428,91 @@ describe('useListController', () => {
         });
     });
 
+    describe('setParams', () => {
+        it('should apply the list parameters', async () => {
+            const callback = jest.fn();
+            const getList = jest
+                .fn()
+                .mockImplementation(() =>
+                    Promise.resolve({ data: [], total: 0 })
+                );
+            const dataProvider = testDataProvider({ getList });
+            const history = createMemoryHistory({
+                initialEntries: [`/posts`],
+            });
+            const ChangeParamsButton = ({ setParams }) => (
+                <button
+                    onClick={() =>
+                        setParams({
+                            sort: 'title',
+                            order: 'ASC',
+                            filter: { title: 'hello' },
+                            perPage: 5,
+                        })
+                    }
+                >
+                    Change Params
+                </button>
+            );
+
+            const store = memoryStore();
+
+            render(
+                <CoreAdminContext
+                    dataProvider={dataProvider}
+                    history={history}
+                    store={store}
+                >
+                    <ListController
+                        resource="posts"
+                        sort={{ field: 'title', order: 'DESC' }}
+                        perPage={10}
+                    >
+                        {listParams => {
+                            callback(listParams);
+                            return (
+                                <ChangeParamsButton
+                                    setParams={listParams.setParams}
+                                />
+                            );
+                        }}
+                    </ListController>
+                </CoreAdminContext>
+            );
+
+            await waitFor(() => {
+                expect(callback).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        sort: { field: 'title', order: 'DESC' },
+                        perPage: 10,
+                        isFetching: false,
+                        isLoading: false,
+                        data: [],
+                        error: null,
+                        total: 0,
+                    })
+                );
+            });
+
+            fireEvent.click(screen.getByText('Change Params'));
+
+            await waitFor(() => {
+                expect(callback).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        sort: { field: 'title', order: 'ASC' },
+                        perPage: 5,
+                        filterValues: { title: 'hello' },
+                        isFetching: false,
+                        isLoading: false,
+                        data: [],
+                        error: null,
+                        total: 0,
+                    })
+                );
+            });
+        });
+    });
+
     describe('getListControllerProps', () => {
         it('should only pick the props injected by the ListController', () => {
             expect(

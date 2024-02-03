@@ -13,7 +13,7 @@ import { defaultExporter } from '../../export';
 import { FilterPayload, SortPayload, RaRecord, Exporter } from '../../types';
 import { useResourceContext, useGetResourceLabel } from '../../core';
 import { useRecordSelection } from './useRecordSelection';
-import { useListParams } from './useListParams';
+import { ListParams, useListParams } from './useListParams';
 
 /**
  * Prepare data for the List view
@@ -173,6 +173,7 @@ export const useListController = <RecordType extends RaRecord = any>(
         setPerPage: queryModifiers.setPerPage,
         setSort: queryModifiers.setSort,
         showFilter: queryModifiers.showFilter,
+        setParams: queryModifiers.setParams,
         total: total,
         hasNextPage: pageInfo
             ? pageInfo.hasNextPage
@@ -424,6 +425,7 @@ export interface ListControllerResult<RecordType extends RaRecord = any> {
     setPerPage: (page: number) => void;
     setSort: (sort: SortPayload) => void;
     showFilter: (filterName: string, defaultValue: any) => void;
+    setParams: (params: Partial<ListParams>) => void;
     total: number;
     hasNextPage: boolean;
     hasPreviousPage: boolean;

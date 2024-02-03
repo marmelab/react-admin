@@ -16,6 +16,8 @@ export const SET_FILTER = 'SET_FILTER';
 export const SHOW_FILTER = 'SHOW_FILTER';
 export const HIDE_FILTER = 'HIDE_FILTER';
 
+export const SET_PARAMS = 'SET_PARAMS';
+
 const oppositeOrder = direction =>
     direction === SORT_DESC ? SORT_ASC : SORT_DESC;
 
@@ -49,6 +51,10 @@ type ActionTypes =
     | {
           type: typeof HIDE_FILTER;
           payload: string;
+      }
+    | {
+          type: typeof SET_PARAMS;
+          payload: Partial<ListParams>;
       };
 
 /**
@@ -138,6 +144,23 @@ export const queryReducer: Reducer<ListParams, ActionTypes> = (
                       )
                     : previousState.displayedFilters,
             };
+        }
+
+        case SET_PARAMS: {
+            const newParams = { ...action.payload };
+            // reset pagination if sort changes
+            if ((newParams.sort || newParams.order) && !newParams.page) {
+                newParams.page = 1;
+            }
+            // reset pagination if filter changes
+            if (newParams.filter && !newParams.page) {
+                newParams.page = 1;
+            }
+            // remove empty filters
+            if (newParams.filter) {
+                newParams.filter = removeEmpty(newParams.filter);
+            }
+            return { ...previousState, ...newParams };
         }
 
         default:

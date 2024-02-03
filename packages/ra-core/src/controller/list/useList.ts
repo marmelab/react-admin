@@ -9,6 +9,7 @@ import useSortState from '../useSortState';
 import { useRecordSelection } from './useRecordSelection';
 import { ListControllerResult } from './useListController';
 import { flattenObject } from '../../dataProvider/fetch';
+import { ListParams } from './useListParams';
 
 const refetch = () => {
     throw new Error(
@@ -161,6 +162,33 @@ export const useList = <RecordType extends RaRecord = any>(
         }
     });
 
+    const setParams = useCallback(
+        (params: Partial<ListParams>) => {
+            if (params.filter) {
+                setFilters(params.filter, undefined);
+            }
+            if (params.displayedFilters) {
+                setDisplayedFilters(params.displayedFilters);
+            }
+            if (params.sort && !params.order) {
+                throw new Error('sort must be used with order');
+            }
+            if (params.order && !params.sort) {
+                throw new Error('order must be used with sort');
+            }
+            if (params.sort || params.order) {
+                setSort({ field: params.sort, order: params.order });
+            }
+            if (params.perPage) {
+                setPerPage(params.perPage);
+            }
+            if (params.page) {
+                setPage(params.page);
+            }
+        },
+        [setFilters, setPerPage, setSort, setPage, setDisplayedFilters]
+    );
+
     // We do all the data processing (filtering, sorting, paginating) client-side
     useEffect(
         () => {
@@ -283,6 +311,7 @@ export const useList = <RecordType extends RaRecord = any>(
         setPerPage,
         setSort,
         showFilter,
+        setParams,
         total: finalItems?.total,
     };
 };

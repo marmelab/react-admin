@@ -6,12 +6,13 @@ import { useNavigate, useLocation } from 'react-router-dom';
 
 import { useStore } from '../../store';
 import queryReducer, {
-    SET_FILTER,
     HIDE_FILTER,
-    SHOW_FILTER,
+    SET_FILTER,
     SET_PAGE,
+    SET_PARAMS,
     SET_PER_PAGE,
     SET_SORT,
+    SHOW_FILTER,
     SORT_ASC,
 } from './queryReducer';
 import { SortPayload, FilterPayload } from '../../types';
@@ -73,6 +74,7 @@ export interface ListParams {
  *      showFilter,
  *      setPage,
  *      setPerPage,
+ *      setParams,
  *      setSort,
  * } = listParamsActions;
  */
@@ -90,7 +92,7 @@ export const useListParams = ({
     const [localParams, setLocalParams] = useState(defaultParams);
     // As we can't conditionally call a hook, if the storeKey is false,
     // we'll ignore the params variable later on and won't call setParams either.
-    const [params, setParams] = useStore(
+    const [storeParams, setStoreParams] = useStore(
         storeKey || `${resource}.listParams`,
         defaultParams
     );
@@ -105,7 +107,7 @@ export const useListParams = ({
         JSON.stringify(
             disableSyncWithLocation || disableSyncWithStore
                 ? localParams
-                : params
+                : storeParams
         ),
         JSON.stringify(filterDefaultValues),
         JSON.stringify(sort),
@@ -124,7 +126,7 @@ export const useListParams = ({
                 params:
                     disableSyncWithLocation || disableSyncWithStore
                         ? localParams
-                        : params,
+                        : storeParams,
                 filterDefaultValues,
                 sort,
                 perPage,
@@ -141,7 +143,7 @@ export const useListParams = ({
             Object.keys(queryFromLocation).length > 0 &&
             !disableSyncWithStore
         ) {
-            setParams(query);
+            setStoreParams(query);
         }
     }, [location.search]); // eslint-disable-line
 
@@ -260,6 +262,16 @@ export const useListParams = ({
         [changeParams]
     );
 
+    const setParams = useCallback(
+        (params: Partial<ListParams>) => {
+            changeParams({
+                type: SET_PARAMS,
+                payload: params,
+            });
+        },
+        [changeParams]
+    );
+
     return [
         {
             displayedFilters: displayedFilterValues,
@@ -269,11 +281,12 @@ export const useListParams = ({
         },
         {
             changeParams,
+            hideFilter,
+            setFilters,
             setPage,
+            setParams,
             setPerPage,
             setSort,
-            setFilters,
-            hideFilter,
             showFilter,
         },
     ];
@@ -412,6 +425,15 @@ interface Modifiers {
     setFilters: (filters: any, displayedFilters: any) => void;
     hideFilter: (filterName: string) => void;
     showFilter: (filterName: string, defaultValue: any) => void;
+    /**
+     * Set some of the list parameters. Useful to set the sort and filter at the same time.
+     *
+     * **Note**: This is a basic setter with less logic than individual params setter, namely:
+     *  - It isn't debounced, which can be surprising for text filters.
+     *  - It doesn't set the value of new shown filters to the default value
+     *  - The name of the parameter for the sort field is `sort` and not `field` as in the `setSort` method.
+     */
+    setParams: (params: Partial<ListParams>) => void;
 }
 
 const emptyObject = {};

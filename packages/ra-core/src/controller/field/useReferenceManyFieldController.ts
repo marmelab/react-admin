@@ -6,7 +6,7 @@ import { useSafeSetState, removeEmpty } from '../../util';
 import { useGetManyReference } from '../../dataProvider';
 import { useNotify } from '../../notification';
 import { Identifier, RaRecord, SortPayload } from '../../types';
-import { ListControllerResult } from '../list';
+import { ListControllerResult, ListParams } from '../list';
 import usePaginationState from '../usePaginationState';
 import { useRecordSelection } from '../list/useRecordSelection';
 import useSortState from '../useSortState';
@@ -144,6 +144,30 @@ export const useReferenceManyFieldController = <
         }
     });
 
+    const setParams = useCallback(
+        (params: Partial<ListParams>) => {
+            if (params.filter) {
+                setFilters(params.filter, params.displayedFilters);
+            }
+            if (params.sort && !params.order) {
+                throw new Error('sort must be used with order');
+            }
+            if (params.order && !params.sort) {
+                throw new Error('order must be used with sort');
+            }
+            if (params.sort || params.order) {
+                setSort({ field: params.sort, order: params.order });
+            }
+            if (params.perPage) {
+                setPerPage(params.perPage);
+            }
+            if (params.page) {
+                setPage(params.page);
+            }
+        },
+        [setFilters, setPerPage, setSort, setPage]
+    );
+
     const {
         data,
         total,
@@ -213,6 +237,7 @@ export const useReferenceManyFieldController = <
             ? page * perPage < total
             : undefined,
         hasPreviousPage: pageInfo ? pageInfo.hasPreviousPage : page > 1,
+        setParams,
         setSort,
         showFilter,
         total,

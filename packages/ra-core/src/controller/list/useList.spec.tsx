@@ -3,7 +3,7 @@ import { ReactNode } from 'react';
 import expect from 'expect';
 
 import { useList, UseListOptions, UseListValue } from './useList';
-import { fireEvent, render, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { ListContextProvider } from './ListContextProvider';
 import { useListContext } from './useListContext';
 
@@ -124,6 +124,78 @@ describe('<useList />', () => {
                     total: 7,
                 })
             );
+        });
+    });
+
+    describe('setParams', () => {
+        it('should apply all params to the list', async () => {
+            const callback = jest.fn();
+            const data = [
+                { id: 1, title: 'hello' },
+                { id: 2, title: 'world' },
+            ];
+
+            const ChangeParamsButton = () => {
+                const { setParams } = useListContext();
+                return (
+                    <button
+                        onClick={() =>
+                            setParams({
+                                sort: 'title',
+                                order: 'ASC',
+                                filter: { title: 'hello' },
+                                perPage: 5,
+                            })
+                        }
+                    >
+                        Change Params
+                    </button>
+                );
+            };
+
+            render(
+                <UseList
+                    data={data}
+                    sort={{ field: 'title', order: 'DESC' }}
+                    perPage={10}
+                    callback={callback}
+                >
+                    <ChangeParamsButton />
+                </UseList>
+            );
+
+            await waitFor(() => {
+                expect(callback).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        sort: { field: 'title', order: 'DESC' },
+                        isFetching: false,
+                        isLoading: false,
+                        data: [
+                            { id: 2, title: 'world' },
+                            { id: 1, title: 'hello' },
+                        ],
+                        error: undefined,
+                        total: 2,
+                    })
+                );
+            });
+
+            fireEvent.click(screen.getByText('Change Params'));
+
+            await waitFor(() => {
+                expect(callback).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        sort: { field: 'title', order: 'ASC' },
+                        perPage: 5,
+                        filterValues: { title: 'hello' },
+                        isFetching: false,
+                        isLoading: false,
+                        data: [{ id: 1, title: 'hello' }],
+                        error: undefined,
+                        total: 1,
+                    })
+                );
+            });
         });
     });
 

@@ -193,6 +193,7 @@ export const useInfiniteListController = <RecordType extends RaRecord = any>(
         setPerPage: queryModifiers.setPerPage,
         setSort: queryModifiers.setSort,
         showFilter: queryModifiers.showFilter,
+        setParams: queryModifiers.setParams,
         total: total,
         hasNextPage,
         hasPreviousPage,
