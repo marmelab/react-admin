@@ -161,6 +161,7 @@ export const useReferenceArrayInputController = <
         setPerPage: paramsModifiers.setPerPage,
         setSort: paramsModifiers.setSort,
         showFilter: paramsModifiers.showFilter,
+        setParams: paramsModifiers.setParams,
         source,
         total: total,
         hasNextPage: pageInfo
