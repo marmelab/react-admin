@@ -13,9 +13,12 @@ This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" s
   Your browser does not support the video tag.
 </video>
 
+Sometimes, even menus with sub-menus are not enough to organize the navigation. `ra-navigation` offers an alternative UI for that case: a vertical bar with small items, where the menu label renders underneath the icon. Clicking on any of those items opens a panel containing as many navigation links as you like, laid out as you wish.
+
 Test it live on [the Enterprise Edition Storybook](https://storybook.ra-enterprise.marmelab.com/?path=/story/ra-navigation-iconmenu--basic).
 
 ## Usage
+
 
 Create a custom menu component using the `<IconMenu>` and `<IconMenu.Item>` components from the `ra-navigation` package:
 
@@ -28,15 +31,16 @@ import MusicIcon from '@mui/icons-material/MusicNote';
 import PeopleIcon from '@mui/icons-material/People';
 
 const MyMenu = () => (
-  <IconMenu>
+  <IconMenu variant="categories">
     <IconMenu.Item name="dashboard" to="/" label="Dashboard" icon={<DashboardIcon />} />
     <IconMenu.Item name="songs" to="/songs" label="Songs" icon={<MusicIcon />}  />
+    {/* The empty filter is required to avoid falling back to the previously set filter */}
     <IconMenu.Item name="artists" to="/artists" label="Artists" icon={<PeopleIcon />} />
   </IconMenu>
 );
 ```
 
-Then, create a custom layout using [the `<Layout>` component](./Layout.md) and pass your custom menu component to it. Make sure you wrap the layout with the `<AppLocationContext>` component. 
+Then, create a custom layout using [the `<Layout>` component](./Layout.md) and pass your custom menu component to it. Make sure you wrap the layout with the `<AppLocationContext>` component.
 
 ```jsx
 // in src/MyLayout.js
@@ -52,7 +56,7 @@ export const MyLayout = (props) => (
 );
 ```
 
-`<AppLocationContext>` is necessary because `ra-navigation` doesn't use the URL to detect the current location. Instead, page components *declare* their location using a custom hook (`useDefineAppLocation()`). This allows complex site maps, with multiple levels of nesting. Check [the ra-navigation documentation](https://marmelab.com/ra-enterprise/modules/ra-navigation) to learn more about App Location. 
+`<AppLocationContext>` is necessary because `ra-navigation` doesn't use the URL to detect the current location. Instead, page components *declare* their location using a custom hook (`useDefineAppLocation()`). This allows complex site maps, with multiple levels of nesting. Check [the ra-navigation documentation](https://marmelab.com/ra-enterprise/modules/ra-navigation) to learn more about App Location.
 
 Finally, pass this custom layout to the `<Admin>` component. You should apply the theme provided by ra-navigation:
 
@@ -73,6 +77,29 @@ const App = () => (
     </Admin>
 );
 ```
+
+In order to adjust the size of the React-Admin `<Sidebar>` component according to the categories, you should either apply the `theme` provided by the `@react-admin/ra-navigation` package (as above), or merge it in your own custom theme.
+
+```tsx
+import merge from 'lodash/merge';
+import { defaultTheme } from 'react-admin';
+import { ThemeOptions } from '@react-admin/ra-navigation';
+export const theme: ThemeOptions = merge({}, defaultTheme, {
+    sidebar: {
+        width: 96,
+        closedWidth: 48,
+    },
+    overrides: {
+        RaSidebar: {
+            fixed: {
+                zIndex: 1200,
+            },
+        },
+    },
+});
+```
+
+**Tip**: With `<IconMenu />`, labels may disappear when the sidebar is in reduced mode. This is because of the internal workings of react-admin. That's why we recommend implementing your own `<AppBar />`, and hiding the Hamburger Button. `<IconMenu />` is thin enough not to interfere with the navigation anyway.
 
 ## Props
 
@@ -127,7 +154,7 @@ To override the style of `<IconMenu>` using the [application-wide style override
 The `<IconMenu.Item>` component displays a menu item with a label and an icon.
 
 ```jsx
-<IconMenu.Item 
+<IconMenu.Item
     name="dashboard"
     to="/"
     label="Dashboard"
@@ -212,7 +239,7 @@ import LabelIcon from '@mui/icons-material/Label';
 
 export const MyMenu = () => {
     const resources = useResourceDefinitions();
-    
+
     return (
         <IconMenu>
             {Object.keys(resources).map(name => (
