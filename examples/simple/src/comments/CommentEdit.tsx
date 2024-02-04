@@ -28,28 +28,6 @@ import {
     useCreatePath,
     useRecordContext,
 } from 'react-admin';
-import { Link, useGetRecordRepresentation } from 'react-admin';
-import { Breadcrumbs } from '@mui/material';
-
-export const PostBreadcrumbs = () => {
-    const record = useRecordContext();
-    const getRecordRepresentation = useGetRecordRepresentation('posts');
-    return (
-        <div role="presentation">
-            <Breadcrumbs aria-label="breadcrumb">
-                <Link underline="hover" color="inherit" to="/">
-                    Home
-                </Link>
-                <Link underline="hover" color="inherit" to="/posts">
-                    Posts
-                </Link>
-                <Typography color="text.primary">
-                    {getRecordRepresentation(record)}
-                </Typography>
-            </Breadcrumbs>
-        </div>
-    );
-};
 
 const LinkToRelatedPost = () => {
     const record = useRecordContext();
