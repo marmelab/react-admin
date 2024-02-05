@@ -84,6 +84,7 @@ In order to adjust the size of the React-Admin `<Sidebar>` component according t
 import merge from 'lodash/merge';
 import { defaultTheme } from 'react-admin';
 import { ThemeOptions } from '@react-admin/ra-navigation';
+
 export const theme: ThemeOptions = merge({}, defaultTheme, {
     sidebar: {
         width: 96,

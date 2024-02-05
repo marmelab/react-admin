@@ -19,6 +19,7 @@ In the following example, the `<SongEditForArtist>` component is a [nested resou
 import { useParams } from 'react-router-dom';
 import { Edit, SimpleForm, TextInput, DateInput, useGetOne } from 'react-admin';
 import { useDefineAppLocation } from '@react-admin/ra-navigation';
+
 const SongEditForArtist = () => {
     const { id, songId } = useParams<{ id: string; songId: string }>();
     const { data: record } = useGetOne('artists', { id });
