@@ -7,6 +7,8 @@ title: "The DateInput Component"
 
 Ideal for editing dates, `<DateInput>` renders an HTML `<input type="date">` element, that most browsers display as a  [date picker](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/date).
 
+If you don't want to use your browser's legacy component and want to use a more customized one, you can use [MUI's twin component DatePicker](https://mui.com/x/react-date-pickers/date-picker/) documented in the [Material UI](#material-ui) section.
+
 <video controls autoplay playsinline muted loop>
   <source src="./img/date-input.webm" type="video/webm"/>
   <source src="./img/date-input.mp4" type="video/mp4"/>
@@ -53,7 +55,7 @@ If you need to render a UI despite the browser locale, MUI also proposes a [Date
   Your browser does not support the video tag.
 </video>
 
-## Enterprise Component
+## Material UI
 
 `<DateInput>` [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> is a wrapper around the [MUI X Date/Time pickers](https://mui.com/x/react-date-pickers/getting-started/). It allow for more customization of the UI than the default browser pickers. It also make it easier to work with specific locale and date formats.
 

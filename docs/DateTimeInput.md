@@ -7,6 +7,8 @@ title: "The DateTimeInput Component"
 
 An input for editing dates with time. `<DateTimeInput>` renders an `<input type="datetime-local" >` element, that most browsers display as [date and time picker](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/datetime-local).
 
+If you don't want to use your browser's legacy component and want to use a more customized one, you can use [MUI's twin component DateTimePicker](https://mui.com/x/react-date-pickers/date-time-picker/) documented in the [Material UI](#material-ui) section.
+
 <video controls autoplay playsinline muted loop>
   <source src="./img/date-time-input.webm" type="video/webm"/>
   <source src="./img/date-time-input.mp4" type="video/mp4"/>
@@ -40,7 +42,7 @@ Internally, `<DateTimeInput>` renders an [`<input type="datetime-local">`](https
 
 If you need to implement your own `format` and `parse` functions, make sure the **format** function actually formats the input into [a valid local date and time string](https://developer.mozilla.org/en-US/docs/Web/HTML/Date_and_time_formats#local_date_and_time_strings).
 
-## Enterprise Component
+## Material UI
 
 `<DateTimeInput>` [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> is a wrapper around the [MUI X Date/Time pickers](https://mui.com/x/react-date-pickers/getting-started/). It allow for more customization of the UI than the default browser pickers. It also make it easier to work with specific locale and date formats.
 

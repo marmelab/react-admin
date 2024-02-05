@@ -7,6 +7,8 @@ title: "The TimeInput Component"
 
 An input for editing time. `<TimeInput>` renders a standard browser [Time Picker](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/time), so the appearance depends on the browser.
 
+If you don't want to use your browser's legacy component and want to use a more customized one, you can use [MUI's twin component TimePicker](https://mui.com/x/react-date-pickers/time-picker/) documented in the [Material UI](#material-ui) section.
+
 <table>
   <thead>
     <tr>
@@ -52,7 +54,7 @@ import { TimeInput } from 'react-admin';
 `<TimeInput>` accepts the [common input props](./Inputs.md#common-input-props).
 
 
-## Enterprise Component
+## Material UI
 
 `<TimeInput>` [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> is a wrapper around the [MUI X Date/Time pickers](https://mui.com/x/react-date-pickers/getting-started/). It allow for more customization of the UI than the default browser pickers. It also make it easier to work with specific locale and date formats.
 
