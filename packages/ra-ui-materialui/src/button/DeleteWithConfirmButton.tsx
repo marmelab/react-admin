@@ -84,7 +84,7 @@ export const DeleteWithConfirmButton = <RecordType extends RaRecord = any>(
                             true
                         ),
                     }),
-                    id: record.id,
+                    id: record?.id,
                     ...translateOptions,
                 }}
                 onConfirm={handleDelete}
