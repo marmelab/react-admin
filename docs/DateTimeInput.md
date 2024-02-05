@@ -7,8 +7,6 @@ title: "The DateTimeInput Component"
 
 An input for editing dates with time. `<DateTimeInput>` renders an `<input type="datetime-local" >` element, that most browsers display as [date and time picker](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/datetime-local).
 
-If you don't want to use your browser's legacy component and want to use a more customized one, you can use [MUI's twin component DateTimePicker](https://mui.com/x/react-date-pickers/date-time-picker/) documented in the [Material UI](#material-ui) section.
-
 <video controls autoplay playsinline muted loop>
   <source src="./img/date-time-input.webm" type="video/webm"/>
   <source src="./img/date-time-input.mp4" type="video/mp4"/>
@@ -17,6 +15,8 @@ If you don't want to use your browser's legacy component and want to use a more 
 
 
 The appearance depends on the browser, and falls back to a text input on safari. The date formatting in this input depends on the user's locale.
+
+React-admin also proposes a [DateTimeInput styled with Material UI](#material-ui) documented at the end of this page.
 
 ## Usage
 
@@ -44,7 +44,13 @@ If you need to implement your own `format` and `parse` functions, make sure the 
 
 ## Material UI
 
-`<DateTimeInput>` [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> is a wrapper around the [MUI X Date/Time pickers](https://mui.com/x/react-date-pickers/getting-started/). It allow for more customization of the UI than the default browser pickers. It also make it easier to work with specific locale and date formats.
+[React-admin Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> proposes an alternative `<DateTimeInput>` styled with Material UI. 
+
+![DateTimeInput with Material UI](./img/DateTimeInput-MUI.png)
+
+This input also allows to specify the date format and the locale used. It is based on the [MUI X Date/Time pickers](https://mui.com/x/react-date-pickers/getting-started/).
+
+### Usage
 
 ```tsx
 import { DateTimeInput } from '@react-admin/ra-form-layout';
