@@ -9,7 +9,7 @@ The `<Admin>` component is the root component of a react-admin app. It allows to
 
 `<Admin>` creates a series of context providers to allow its children to access the app configuration. It renders the main routes and layout. It delegates the rendering of the content area to its `<Resource>` children.
 
-![Admin Component](./img/dense.webp)
+<iframe src="https://www.youtube-nocookie.com/embed/StCR3gB7nKU" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;"></iframe>
 
 ## Usage
 
