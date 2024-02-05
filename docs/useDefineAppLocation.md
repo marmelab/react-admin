@@ -5,13 +5,82 @@ title: "useDefineAppLocation"
 
 # `useDefineAppLocation`
 
-This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> hook lets you define the app location for a page, used by components like [`<Breadcrumb>`](./Breadcrumb.md) and [`<IconMenu>`](./IconMenu.md) to render the current location. 
+This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> hook lets you define the app location for a page, used by components like [`<Breadcrumb>`](./Breadcrumb.md) and [`<IconMenu>`](./IconMenu.md) to render the current location.
 
 <video controls autoplay playsinline muted loop width="100%">
   <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-navigation/latest/breadcumb-nested-resource.webm" type="video/webm" />
   <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-navigation/latest/breadcumb-nested-resource.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
+
+In the following example, the `<SongEditForArtist>` component is a [nested resource](https://marmelab.com/react-admin/Resource.html#nested-resources) rendering at the `/artists/:id/songs/:songId` path. It uses `useDefineAppLocation` to define the app location as `artists.edit.songs.edit`, and passes the `record` and `song` objects as parameters to let the breadcrumb component render the record and song names.
+
+```tsx
+import { useParams } from 'react-router-dom';
+import { Edit, SimpleForm, TextInput, DateInput, useGetOne } from 'react-admin';
+import { useDefineAppLocation } from '@react-admin/ra-navigation';
+
+const SongEditForArtist = () => {
+    const { id, songId } = useParams<{ id: string; songId: string }>();
+    const { data: record } = useGetOne('artists', { id });
+    const { data: song } = useGetOne('songs', { id: songId });
+    useDefineAppLocation('artists.edit.songs.edit', { record, song });
+    return (
+        <Edit resource="songs" id={songId} redirect={`/artists/${id}/songs`}>
+            <SimpleForm>
+                <TextInput source="title" />
+                <DateInput source="released" />
+                <TextInput source="writer" />
+                <TextInput source="producer" />
+                <TextInput source="recordCompany" label="Label" />
+            </SimpleForm>
+        </Edit>
+    );
+};
+```
+
+**Tip**: The `<Edit>` component will call `dataProvider.getOne("songs", { id: songId })` to fetch the song record. Since the `<SongEditForArtist>` component makes the same request, React-admin will deduplicate the calls and only make one request to the dataProvider.
+
+**Tip**: If you don't call `useDefineAppLocation` anywhere on a page, the AppLocationContext will deduce a resource app location from the current URL path (e.g. `artists.edit` for the `/artists/:id` path).
+
+Here is how a custom Breadcrumb would use location `values` to render the record and song names:
+
+```tsx
+const MyBreadcrumb = () => (
+    <Breadcrumb>
+        <Breadcrumb.Item name="artists" label="Artists" to="/artists">
+            <Breadcrumb.Item
+                name="edit"
+                label={({ record }: { record?: Artist }) => record?.name}
+                to={({ record }: { record?: Artist }) =>
+                    `/artists/${record?.id}`
+                }
+            >
+                <Breadcrumb.Item
+                    name="songs"
+                    label="Songs"
+                    to={({ record }: { record?: Artist }) =>
+                        `/artists/${record?.id}/songs`
+                    }
+                >
+                    <Breadcrumb.Item
+                        name="edit"
+                        label={({ song }: { song?: Song }) => song?.title}
+                        to={({ song }: { song?: Song }) =>
+                            `/artists/${song?.artist_id}/songs/${song?.id}`
+                        }
+                    />
+                </Breadcrumb.Item>
+            </Breadcrumb.Item>
+            <Breadcrumb.Item
+                name="create"
+                label="Create"
+                to="/artists/create"
+            />
+        </Breadcrumb.Item>
+    </Breadcrumb>
+);
+```
 
 ## Usage
 
@@ -66,7 +135,7 @@ const App = () => (
 );
 ```
 
-Components inside the app, like [`<Breadcrumb>`](./Breadcrumb.md), can read the current app location and define custom items for the `'user.preferences'` location. 
+Components inside the app, like [`<Breadcrumb>`](./Breadcrumb.md), can read the current app location and define custom items for the `'user.preferences'` location.
 
 ```jsx
 // in src/MyBreadcrumb.jsx

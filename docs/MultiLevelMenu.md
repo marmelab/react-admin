@@ -5,7 +5,11 @@ title: "The MultiLevelMenu Component"
 
 # `<MultiLevelMenu>`
 
-This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> component adds support for nested sub menus in the left navigation bar. 
+This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> component adds support for nested sub menus in the left navigation bar.
+
+![MultiLevelMenu](./img/multilevelmenu.png)
+
+When a React-admin application grows significantly, the default menu might not be the best solution. The `<MultiLevelMenu>` can help unclutter the navigation: it renders a menu with an infinite number of levels and sub-menus. Menu Items that are not at the top level are rendered inside a collapsible panel.
 
 <video controls autoplay playsinline muted loop>
   <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-multilevelmenu-item.webm" type="video/webm" />
@@ -50,7 +54,7 @@ const MyMenu = () => (
 
 Note that each `<MultiLevelMenu.Item>` requires a unique `name` attribute.
 
-Then, create a custom layout using [the `<Layout>` component](./Layout.md) and pass your custom menu component to it. Make sure you wrap the layout with the `<AppLocationContext>` component. 
+Then, create a custom layout using [the `<Layout>` component](./Layout.md) and pass your custom menu component to it. Make sure you wrap the layout with the `<AppLocationContext>` component.
 
 ```jsx
 // in src/MyLayout.js
@@ -66,7 +70,7 @@ export const MyLayout = (props) => (
 );
 ```
 
-`<AppLocationContext>` is necessary because `ra-navigation` doesn't use the URL to detect the current location. Instead, page components *declare* their location using a custom hook (`useDefineAppLocation()`). This allows complex site maps, with multiple levels of nesting. That's the reason why each `<MultiLevelMenu.Item>` requires a unique `name`, that matches a particular page location. 
+`<AppLocationContext>` is necessary because `ra-navigation` doesn't use the URL to detect the current location. Instead, page components *declare* their location using a custom hook (`useDefineAppLocation()`). This allows complex site maps, with multiple levels of nesting. That's the reason why each `<MultiLevelMenu.Item>` requires a unique `name`, that matches a particular page location.
 
 You can set the `AppLocation` for a given page like so:
 
@@ -89,7 +93,7 @@ And then use this `AppLocation` as `name` for `<MultiLevelMenu.Item>`:
 >
 ```
 
-Check [the ra-navigation documentation](https://marmelab.com/ra-enterprise/modules/ra-navigation) to learn more about App Location. 
+Check [the ra-navigation documentation](https://marmelab.com/ra-enterprise/modules/ra-navigation) to learn more about App Location.
 
 Finally, pass this custom layout to the `<Admin>` component
 
@@ -111,11 +115,12 @@ const App = () => (
 
 ## Props
 
-| Prop          | Required | Type        | Default  | Description                            |
-| ------------- | -------- | ----------- | -------- | -------------------------------------- |
-| `children`    | Optional | `ReactNode` | -        | The Menu Items  to be rendered.        |
-| `initialOpen` | Optional | `boolean`   | `false`  | Whether the menu is initially open.    |
-| `sx`          | Optional | `SxProps`   | -        | Style overrides, powered by MUI System |
+| Prop           | Required | Type        | Default  | Description                                                   |
+| -------------- | -------- | ----------- | -------- | ------------------------------------------------------------- |
+| `children`     | Optional | `ReactNode` | -        | The Menu Items  to be rendered.                               |
+| `initialOpen`  | Optional | `boolean`   | `false`  | Whether the menu is initially open.                           |
+| `openItemList` | Optional | `Array`     | -        | List of names of menu items that should be opened by default. |
+| `sx`           | Optional | `SxProps`   | -        | Style overrides, powered by MUI System                        |
 
 Additional props are passed down to the root `<div>` component.
 
@@ -175,7 +180,7 @@ To override the style of `<MultiLevelMenu>` using the [application-wide style ov
 The `<MultiLevelMenu.Item>` component displays a menu item with a label and an icon.
 
 ```jsx
-<MultiLevelMenu.Item 
+<MultiLevelMenu.Item
     name="dashboard"
     to="/"
     label="Dashboard"
@@ -210,7 +215,7 @@ import LabelIcon from '@mui/icons-material/Label';
 
 export const MyMenu = () => {
     const resources = useResourceDefinitions();
-    
+
     return (
         <MultiLevelMenu>
             {Object.keys(resources).map(name => (
