@@ -31,6 +31,18 @@ export const useGetRecordRepresentation = (
             if (React.isValidElement(recordRepresentation)) {
                 return recordRepresentation;
             }
+            if ('name' in record) {
+                return record.name;
+            }
+            if ('title' in record) {
+                return record.title;
+            }
+            if ('label' in record) {
+                return record.label;
+            }
+            if ('reference' in record) {
+                return `#${record.reference}`;
+            }
             return `#${record.id}`;
         },
         [recordRepresentation]
