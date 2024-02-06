@@ -9,7 +9,7 @@ Get a function that returns the record representation, leveraging the [`<Record 
 
 You can also use the component version: [`<RecordRepresentation>`](./RecordRepresentation.md).
 
-If you don't specify anything, the `useGetRecordRepresentation` function will choose the column to return according to this preference order:
+when `<Resource recordRepresentation>` is not defined, the `useGetRecordRepresentation` function will choose the column to return according to this preference order:
 1. `name`
 2. `title`
 3. `label`
