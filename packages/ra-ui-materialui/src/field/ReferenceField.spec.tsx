@@ -332,7 +332,7 @@ describe('<ReferenceField />', () => {
         );
         await new Promise(resolve => setTimeout(resolve, 10));
         expect(screen.queryByRole('progressbar')).toBeNull();
-        expect(screen.getByText('#123')).not.toBeNull();
+        expect(screen.getByText('foo')).not.toBeNull();
         expect(screen.queryAllByRole('link')).toHaveLength(1);
         expect(screen.queryByRole('link')?.getAttribute('href')).toBe(
             '#/posts/123'

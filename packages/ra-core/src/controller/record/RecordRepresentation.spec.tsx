@@ -10,7 +10,7 @@ import {
 describe('RecordRepresentation', () => {
     it('should render the record id when not provided on its parent <Resource>', async () => {
         render(<NoRecordRepresentation />);
-        await screen.findByText('#1');
+        await screen.findByText("The Hitchhiker's Guide to the Galaxy");
     });
     it('should render the record representation when provided as a field name on its parent <Resource>', async () => {
         render(<StringRecordRepresentation />);
