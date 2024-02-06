@@ -831,7 +831,7 @@ describe('<Edit />', () => {
                     </Edit>
                 </AdminContext>
             );
-            await screen.findByText('Foo #123');
+            await screen.findByText('Foo lorem');
         });
         it('should use the recordRepresentation when defined', async () => {
             const dataProvider = {
