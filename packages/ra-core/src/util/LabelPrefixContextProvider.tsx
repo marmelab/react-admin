@@ -1,17 +1,9 @@
 import * as React from 'react';
 import { LabelPrefixContext } from './LabelPrefixContext';
-import { useLabelPrefix } from './useLabelPrefix';
 
-export const LabelPrefixContextProvider = ({
-    prefix,
-    concatenate = true,
-    children,
-}) => {
-    const oldPrefix = useLabelPrefix();
-    const newPrefix =
-        oldPrefix && concatenate ? `${oldPrefix}.${prefix}` : prefix;
+export const LabelPrefixContextProvider = ({ prefix, children }) => {
     return (
-        <LabelPrefixContext.Provider value={newPrefix}>
+        <LabelPrefixContext.Provider value={prefix}>
             {children}
         </LabelPrefixContext.Provider>
     );
