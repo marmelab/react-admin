@@ -14,6 +14,7 @@ import { SimpleForm } from '../../form';
 import { ArrayInput } from './ArrayInput';
 import { TextInput } from '../TextInput';
 import { SimpleFormIterator } from './SimpleFormIterator';
+import { Basic } from './SimpleFormIterator.stories';
 
 describe('<SimpleFormIterator />', () => {
     // bypass confirm leave form with unsaved changes
@@ -977,5 +978,24 @@ describe('<SimpleFormIterator />', () => {
                 expect.anything()
             );
         });
+    });
+
+    it('should have the correct translation keys', async () => {
+        render(<Basic />);
+        const authorsTranslationKey = screen.queryByLabelText(
+            'resources.books.fields.authors'
+        );
+
+        expect(authorsTranslationKey).toBeDefined();
+
+        const authorsNameTranslationKey = await screen.findAllByLabelText(
+            'resources.books.fields.authors.name'
+        );
+        expect(authorsNameTranslationKey).toHaveLength(2);
+
+        const authorsRoleTranslationKey = await screen.findAllByLabelText(
+            'resources.books.fields.authors.role'
+        );
+        expect(authorsRoleTranslationKey).toHaveLength(2);
     });
 });
