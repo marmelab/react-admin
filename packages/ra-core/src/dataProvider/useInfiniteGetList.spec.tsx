@@ -52,6 +52,7 @@ describe('useInfiniteGetList', () => {
                 filter: {},
                 pagination: { page: 1, perPage: 20 },
                 sort: { field: 'id', order: 'DESC' },
+                signal: expect.anything(),
             });
         });
     });
@@ -119,6 +120,7 @@ describe('useInfiniteGetList', () => {
                 pagination: { page: 1, perPage: 20 },
                 sort: { field: 'id', order: 'DESC' },
                 meta: { hello: 'world' },
+                signal: expect.anything(),
             });
         });
     });
@@ -377,6 +379,38 @@ describe('useInfiniteGetList', () => {
         expect(
             queryClient.getQueryData(['posts', 'getOne', { id: '1' }])
         ).toEqual({ id: 1, title: 'changed!' });
+    });
+
+    it('should abort the request if the query is canceled', async () => {
+        const abort = jest.fn();
+        const dataProvider = testDataProvider({
+            getList: jest.fn(
+                (_resource, { signal }) =>
+                    new Promise(() => {
+                        signal.addEventListener('abort', () => {
+                            abort(signal.reason);
+                        });
+                    })
+            ) as any,
+        });
+        const queryClient = new QueryClient();
+        render(
+            <CoreAdminContext
+                dataProvider={dataProvider}
+                queryClient={queryClient}
+            >
+                <UseInfiniteGetList />
+            </CoreAdminContext>
+        );
+        await waitFor(() => {
+            expect(dataProvider.getList).toHaveBeenCalled();
+        });
+        queryClient.cancelQueries({
+            queryKey: ['posts', 'getInfiniteList'],
+        });
+        await waitFor(() => {
+            expect(abort).toHaveBeenCalled();
+        });
     });
 
     describe('fetchNextPage', () => {
