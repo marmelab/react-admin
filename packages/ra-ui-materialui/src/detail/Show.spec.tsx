@@ -115,7 +115,7 @@ describe('<Show />', () => {
         await screen.findByText('Edit');
     });
 
-    it('should display a default title based on resource and id', async () => {
+    it('should display by default the title of the resource', async () => {
         render(<Basic />);
         await screen.findByText('Book War and Peace');
     });

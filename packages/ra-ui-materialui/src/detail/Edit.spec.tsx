@@ -811,7 +811,7 @@ describe('<Edit />', () => {
     });
 
     describe('defaultTitle', () => {
-        it('should use the record id by default', async () => {
+        it('should use the record title by default', async () => {
             const dataProvider = {
                 getOne: () =>
                     Promise.resolve({ data: { id: 123, title: 'lorem' } }),
