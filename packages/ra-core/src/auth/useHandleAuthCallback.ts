@@ -1,7 +1,7 @@
 import { useQuery, UseQueryOptions } from 'react-query';
 import { useLocation } from 'react-router';
 import { useRedirect } from '../routing';
-import { AuthProvider, AuthRedirectResult } from '../types';
+import { AuthRedirectResult } from '../types';
 import useAuthProvider from './useAuthProvider';
 
 /**
@@ -12,7 +12,7 @@ import useAuthProvider from './useAuthProvider';
  * @returns An object containing { isLoading, data, error, refetch }.
  */
 export const useHandleAuthCallback = (
-    options?: UseQueryOptions<ReturnType<AuthProvider['handleCallback']>>
+    options?: UseQueryOptions<AuthRedirectResult | void | any>
 ) => {
     const authProvider = useAuthProvider();
     const redirect = useRedirect();
@@ -24,7 +24,10 @@ export const useHandleAuthCallback = (
 
     return useQuery(
         ['auth', 'handleCallback'],
-        () => authProvider.handleCallback(),
+        () =>
+            authProvider && typeof authProvider.handleCallback === 'function'
+                ? authProvider.handleCallback()
+                : Promise.resolve(),
         {
             retry: false,
             onSuccess: data => {

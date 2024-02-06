@@ -95,7 +95,7 @@ const isValidObject = value => {
     return !isArray && !isBuffer && isObject && hasKeys;
 };
 
-export const flattenObject = (value, path = []) => {
+export const flattenObject = (value: any, path: string[] = []) => {
     if (isValidObject(value)) {
         return Object.assign(
             {},

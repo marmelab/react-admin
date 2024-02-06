@@ -106,7 +106,11 @@ export const useUnique = (options?: UseUniqueOptions) => {
                         }
                     );
 
-                    if (total > 0 && !data.some(r => r.id === record?.id)) {
+                    if (
+                        typeof total !== 'undefined' &&
+                        total > 0 &&
+                        !data.some(r => r.id === record?.id)
+                    ) {
                         return {
                             message,
                             args: {

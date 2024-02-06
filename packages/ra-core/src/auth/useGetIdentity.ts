@@ -4,9 +4,8 @@ import { useQuery, UseQueryOptions, QueryObserverResult } from 'react-query';
 import useAuthProvider from './useAuthProvider';
 import { UserIdentity } from '../types';
 
-const defaultIdentity = {
+const defaultIdentity: UserIdentity = {
     id: '',
-    fullName: null,
 };
 const defaultQueryParams = {
     staleTime: 5 * 60 * 1000,
@@ -48,9 +47,18 @@ export const useGetIdentity = (
 
     const result = useQuery(
         ['auth', 'getIdentity'],
-        authProvider
-            ? () => authProvider.getIdentity()
-            : async () => defaultIdentity,
+        async () => {
+            if (
+                authProvider &&
+                typeof authProvider.getIdentity === 'function'
+            ) {
+                const identity = await authProvider.getIdentity();
+                return identity || defaultIdentity;
+            } else {
+                return defaultIdentity;
+            }
+        },
+
         {
             enabled: typeof authProvider?.getIdentity === 'function',
             ...queryParams,
@@ -64,18 +72,29 @@ export const useGetIdentity = (
                 ? { isLoading: true }
                 : result.error
                 ? { error: result.error, isLoading: false }
-                : {
+                : result.isSuccess
+                ? {
                       data: result.data,
                       identity: result.data,
                       refetch: result.refetch,
                       isLoading: false,
-                  },
+                  }
+                : { isLoading: false },
 
         [result]
     );
 };
 
 export type UseGetIdentityResult =
+    // idle result
+    | {
+          isLoading: false;
+          data?: undefined;
+          identity?: undefined;
+          error?: undefined;
+          refetch?: undefined;
+      }
+    // loading result
     | {
           isLoading: true;
           data?: undefined;
@@ -83,6 +102,7 @@ export type UseGetIdentityResult =
           error?: undefined;
           refetch?: undefined;
       }
+    // error result
     | {
           isLoading: false;
           data?: undefined;
@@ -90,6 +110,7 @@ export type UseGetIdentityResult =
           error: Error;
           refetch?: undefined;
       }
+    // success result
     | {
           isLoading: false;
           data: UserIdentity;
