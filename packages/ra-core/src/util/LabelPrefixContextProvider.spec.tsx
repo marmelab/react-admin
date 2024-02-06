@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { render, screen } from '@testing-library/react';
 import { LabelPrefixContextProvider } from './LabelPrefixContextProvider';
-import { LabelPrefixContext } from './LabelPrefixContext';
+import { useLabelPrefix } from './useLabelPrefix';
 
 describe('LabelPrefixContextProvider', () => {
     it('should return the prefix', () => {
         const Label = () => {
-            return <>{React.useContext(LabelPrefixContext)}</>;
+            return <>{useLabelPrefix()}</>;
         };
         render(
             <LabelPrefixContextProvider prefix="resource.posts.fields.title">
@@ -17,7 +17,7 @@ describe('LabelPrefixContextProvider', () => {
     });
     it('should return the last prefix in the nested tree, even in nested contexts', () => {
         const Label = () => {
-            return <>{React.useContext(LabelPrefixContext)}</>;
+            return <>{useLabelPrefix()}</>;
         };
         render(
             <LabelPrefixContextProvider prefix="resource.posts.fields.title">
