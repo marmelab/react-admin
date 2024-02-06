@@ -9,13 +9,6 @@ Get a function that returns the record representation, leveraging the [`<Record 
 
 You can also use the component version: [`<RecordRepresentation>`](./RecordRepresentation.md).
 
-when `<Resource recordRepresentation>` is not defined, the `useGetRecordRepresentation` function will choose the column to return according to this preference order:
-1. `name`
-2. `title`
-3. `label`
-4. `reference`
-5. `id`
-
 ## Usage
 
 ```tsx
@@ -59,6 +52,17 @@ const PostEdit = () => (
     </EditBase>
 )
 ```
+
+## Preferences
+
+When [`<Resource recordRepresentation>`](./Resource.md#recordrepresentation) is not defined, the `useGetRecordRepresentation` function will choose the column to return according to this preference order:
+1. `name`
+2. `title`
+3. `label`
+4. `reference`
+5. `id`
+
+
 
 ## Options
 
