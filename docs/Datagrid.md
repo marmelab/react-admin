@@ -896,7 +896,7 @@ const PostList = () => (
 );
 ```
 
-If you include a `<SelectColumnsButton>` to your `<DatagridConfigurable>`, you have to link the two components by giving them the same preferenceKey:
+If you include a `<SelectColumnsButton>` in a page that has more than one `<DatagridConfigurable>`, you have to link the two components by giving them the same preferenceKey:
 
 ```tsx
 const PostList = () => (
