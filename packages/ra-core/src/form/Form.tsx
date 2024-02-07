@@ -50,7 +50,10 @@ export const Form = (props: FormProps) => {
 
     return (
         <OptionalRecordContextProvider value={record}>
-            <LabelPrefixContextProvider prefix={`resources.${resource}.fields`}>
+            <LabelPrefixContextProvider
+                prefix={`resources.${resource}.fields`}
+                concatenate={false}
+            >
                 <FormProvider {...form}>
                     <FormGroupsProvider>
                         <form
