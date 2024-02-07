@@ -134,7 +134,10 @@ export const FilterFormBase = (props: FilterFormBaseProps) => {
     );
 
     return (
-        <LabelPrefixContextProvider prefix={`resources.${resource}.fields`}>
+        <LabelPrefixContextProvider
+            prefix={`resources.${resource}.fields`}
+            concatenate={false}
+        >
             <StyledForm
                 className={className}
                 {...sanitizeRestProps(rest)}
