@@ -881,9 +881,22 @@ const PostList = () => (
 );
 ```
 
-If you render more than one `<DatagridConfigurable>` in the same page, you must pass a unique `preferenceKey` prop to each one.
+If you render more than one `<DatagridConfigurable>` in the same page, you must pass a unique `preferenceKey` prop to each one:
 
-And if you include a `<SelectColumnsButton>` to your `<DatagridConfigurable>`, you have to link the two components by giving them the same preferenceKey:
+```tsx
+const PostList = () => (
+    <List>
+        <DatagridConfigurable preferenceKey="posts.datagrid">
+            <TextField source="id" />
+            <TextField source="title" />
+            <TextField source="author" />
+            <TextField source="year" />
+        </DatagridConfigurable>
+    </List>
+);
+```
+
+If you include a `<SelectColumnsButton>` to your `<DatagridConfigurable>`, you have to link the two components by giving them the same preferenceKey:
 
 ```tsx
 const PostList = () => (
