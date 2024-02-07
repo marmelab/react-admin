@@ -15,13 +15,16 @@ describe('LabelPrefixContextProvider', () => {
         );
         screen.getByText('resource.posts.fields.title');
     });
-    it('should return the last prefix in the nested tree, even in nested contexts', () => {
+    it('should not concatenate previous prefix', () => {
         const Label = () => {
             return <>{useLabelPrefix()}</>;
         };
         render(
             <LabelPrefixContextProvider prefix="resource.posts.fields.title">
-                <LabelPrefixContextProvider prefix="resource.comments.fields.body">
+                <LabelPrefixContextProvider
+                    prefix="resource.comments.fields.body"
+                    concatenate={false}
+                >
                     <Label />
                 </LabelPrefixContextProvider>
             </LabelPrefixContextProvider>
