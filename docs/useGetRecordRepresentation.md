@@ -53,6 +53,17 @@ const PostEdit = () => (
 )
 ```
 
+## Default Representation
+
+When [`<Resource recordRepresentation>`](./Resource.md#recordrepresentation) is not defined, `useGetRecordRepresentation` will return the first non-empty field from this list:  
+1. `name`
+2. `title`
+3. `label`
+4. `reference`
+5. `id`
+
+
+
 ## Options
 
 Here are all the options you can set on the `useGetRecordRepresentation` hook:
