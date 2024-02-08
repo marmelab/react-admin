@@ -145,7 +145,7 @@ describe('useRecordRepresentation', () => {
                 record={{ reference: '456', id: '123', author: 'John Doe' }}
             />
         );
-        screen.getByText('#456');
+        screen.getByText('456');
     });
     it('should return the record id by default', () => {
         render(
