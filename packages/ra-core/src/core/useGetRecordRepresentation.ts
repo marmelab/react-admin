@@ -31,16 +31,16 @@ export const useGetRecordRepresentation = (
             if (React.isValidElement(recordRepresentation)) {
                 return recordRepresentation;
             }
-            if (record?.name != null && record?.name !== '') {  
+            if (record?.name != null && record?.name !== '') {
                 return record.name;
             }
-            if (record?.title != null && record?.title !== '') {  
+            if (record?.title != null && record?.title !== '') {
                 return record.title;
             }
-            if (record?.label != null && record?.label !== '') {  
+            if (record?.label != null && record?.label !== '') {
                 return record.label;
             }
-            if (record?.reference != null && record?.reference !== '') {  
+            if (record?.reference != null && record?.reference !== '') {
                 return record.reference;
             }
             return `#${record.id}`;
