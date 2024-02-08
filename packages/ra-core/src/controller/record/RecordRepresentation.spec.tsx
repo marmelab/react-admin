@@ -8,7 +8,7 @@ import {
 } from './RecordRepresentation.stories';
 
 describe('RecordRepresentation', () => {
-    it('should render the record id when not provided on its parent <Resource>', async () => {
+    it('should render the record title when not provided on its parent <Resource>', async () => {
         render(<NoRecordRepresentation />);
         await screen.findByText("The Hitchhiker's Guide to the Galaxy");
     });

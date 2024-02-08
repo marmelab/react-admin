@@ -53,9 +53,9 @@ const PostEdit = () => (
 )
 ```
 
-## Preferences
+## Default Representation
 
-When [`<Resource recordRepresentation>`](./Resource.md#recordrepresentation) is not defined, the `useGetRecordRepresentation` function will choose the column to return according to this preference order:
+When [`<Resource recordRepresentation>`](./Resource.md#recordrepresentation) is not defined, `useGetRecordRepresentation` will return the first non-empty field from this list:  
 1. `name`
 2. `title`
 3. `label`

@@ -124,7 +124,7 @@ describe('useRecordRepresentation', () => {
         );
         screen.getByText('Lorem');
     });
-    it('should return the record label at second', () => {
+    it('should return the record label at third', () => {
         render(
             <UseRecordRepresentation
                 resource="users"
@@ -138,7 +138,7 @@ describe('useRecordRepresentation', () => {
         );
         screen.getByText('lorem-ipsum');
     });
-    it('should return the record reference at third', () => {
+    it('should return the record reference at fourth', () => {
         render(
             <UseRecordRepresentation
                 resource="users"
