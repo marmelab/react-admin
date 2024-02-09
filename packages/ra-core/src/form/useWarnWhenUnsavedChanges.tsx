@@ -1,7 +1,6 @@
-import { useContext, useEffect, useRef } from 'react';
-import { useFormState, Control } from 'react-hook-form';
-import { UNSAFE_NavigationContext, useLocation } from 'react-router-dom';
-import { History, Transition } from 'history';
+import { useEffect, useState } from 'react';
+import { Control, useFormState } from 'react-hook-form';
+import { useBlocker } from 'react-router-dom';
 import { useTranslate } from '../i18n';
 
 /**
@@ -14,66 +13,50 @@ export const useWarnWhenUnsavedChanges = (
     formRootPathname?: string,
     control?: Control
 ) => {
-    // react-router v6 does not yet provide a way to block navigation
-    // This is planned for a future release
-    // See https://github.com/remix-run/react-router/issues/8139
-    const navigator = useContext(UNSAFE_NavigationContext).navigator as History;
-    const location = useLocation();
     const translate = useTranslate();
     const { isSubmitSuccessful, isSubmitting, dirtyFields } = useFormState(
         control ? { control } : undefined
     );
     const isDirty = Object.keys(dirtyFields).length > 0;
-    const initialLocation = useRef(formRootPathname || location.pathname);
+    const [shouldNotify, setShouldNotify] = useState(false);
+
+    const blocker = useBlocker(({ currentLocation, nextLocation }) => {
+        if (!enable || !isDirty) return false;
+        if (isSubmitting) return false;
+        if (isSubmitSuccessful) return false;
+
+        const initialLocation = formRootPathname || currentLocation.pathname;
+        const newLocationIsInsideCurrentLocation = nextLocation.pathname.startsWith(
+            initialLocation
+        );
+        const newLocationIsShowView = nextLocation.pathname.startsWith(
+            `${initialLocation}/show`
+        );
+        const newLocationIsInsideForm =
+            newLocationIsInsideCurrentLocation && !newLocationIsShowView;
+        if (newLocationIsInsideForm) return false;
+
+        return true;
+    });
 
     useEffect(() => {
-        if (!enable || !isDirty) return;
-        if (!navigator.block) {
-            if (process.env.NODE_ENV !== 'production') {
-                console.warn(
-                    'warnWhenUnsavedChanged is not compatible with react-router >= 6.4. If you need this feature, please downgrade react-router to 6.3.0'
-                );
-            }
-            return;
+        if (blocker.state === 'blocked') {
+            setShouldNotify(true);
         }
+    }, [blocker.state]);
 
-        let unblock = navigator.block((tx: Transition) => {
-            const newLocationIsInsideCurrentLocation = tx.location.pathname.startsWith(
-                initialLocation.current
+    useEffect(() => {
+        if (shouldNotify) {
+            const shouldProceed = window.confirm(
+                translate('ra.message.unsaved_changes')
             );
-            const newLocationIsShowView = tx.location.pathname.startsWith(
-                `${initialLocation.current}/show`
-            );
-            const newLocationIsInsideForm =
-                newLocationIsInsideCurrentLocation && !newLocationIsShowView;
-
-            if (
-                !isSubmitting &&
-                (newLocationIsInsideForm ||
-                    isSubmitSuccessful ||
-                    window.confirm(translate('ra.message.unsaved_changes')))
-            ) {
-                unblock();
-                tx.retry();
+            if (shouldProceed) {
+                blocker.proceed();
             } else {
-                if (isSubmitting) {
-                    // Retry the transition (possibly several times) until the form is no longer submitting.
-                    // The value of 100ms is arbitrary, it allows to give some time between retries.
-                    setTimeout(() => {
-                        tx.retry();
-                    }, 100);
-                }
+                blocker.reset();
             }
-        });
-
-        return unblock;
-    }, [
-        enable,
-        location,
-        navigator,
-        isDirty,
-        isSubmitting,
-        isSubmitSuccessful,
-        translate,
-    ]);
+        }
+        setShouldNotify(false);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [shouldNotify]);
 };
