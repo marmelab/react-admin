@@ -627,7 +627,7 @@ const dataProvider = withLifecycleCallbacks(simpleRestProvider('http://path.to.m
             const pictures = [
                 ...base64Pictures.map((dataUrl, index) => ({
                     src: dataUrl,
-                    title: newPictures[index].name,
+                    title: newPictures[index].title,
                 })),
                 ...formerPictures,
             ];

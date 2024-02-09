@@ -249,7 +249,7 @@ export const PostList = () => (
 
 ## `children`
 
-`<List>` itself doesn't render the list of records. It delegates this task to its children components. These children components grab the `data` from the `ListContext` and render them on screen.
+`<List>` itself doesn't render the list of records. It delegates this task to its children components. These children components grab the `data` from the [`ListContext`](./useListContext.md) and render them on screen.
 
 ![List children](./img/list-children.webp)
 
