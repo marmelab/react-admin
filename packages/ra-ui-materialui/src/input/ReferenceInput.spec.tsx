@@ -247,4 +247,23 @@ describe('<ReferenceInput />', () => {
         screen.getByLabelText('Save').click();
         await screen.findByText('Proust', undefined, { timeout: 5000 });
     });
+
+    it('should throw an error when using the validate prop', () => {
+        jest.spyOn(console, 'error').mockImplementation(jest.fn());
+        const dataProvider = testDataProvider({
+            getList: async () => ({ data: [], total: 25 }),
+        });
+        expect(() =>
+            render(
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <Form>
+                        <ReferenceInput
+                            {...defaultProps}
+                            validate={() => undefined}
+                        />
+                    </Form>
+                </CoreAdminContext>
+            )
+        ).toThrowError();
+    });
 });
