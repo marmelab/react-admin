@@ -896,12 +896,17 @@ const PostList = () => (
 );
 ```
 
-If you include a `<SelectColumnsButton>` in a page that has more than one `<DatagridConfigurable>`, you have to link the two components by giving them the same preferenceKey:
+If you include a [`<SelectColumnsButton>`](./SelectColumnsButton.md) in a page that has more than one `<DatagridConfigurable>`, you have to link the two components by giving them the same preferenceKey:
 
 ```tsx
-const PostList = () => (
-    <List>
+const PostListActions = () => (
+    <TopToolbar>
         <SelectColumnsButton preferenceKey="posts.datagrid" />
+    </TopToolbar>
+);
+
+const PostList = () => (
+    <List actions={<PostListActions />}>
         <DatagridConfigurable preferenceKey="posts.datagrid">
             <TextField source="id" />
             <TextField source="title" />
@@ -1253,7 +1258,7 @@ const PostList = () => (
 );
 ```
 
-`<SelectColumnsButton>` must be used in conjunction with `<DatagridConfigurable>`, the configurable version of `<Datagrid>`, described in the next section.
+[`<SelectColumnsButton>`](./SelectColumnsButton.md) must be used in conjunction with `<DatagridConfigurable>`, the configurable version of `<Datagrid>`, described in the next section.
 
 **Tip**: For even more column customization (resizable columns, column grouping, etc.), check out the [`<DatagridAG>`](./DatagridAG.md) component.
 

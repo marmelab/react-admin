@@ -14,10 +14,10 @@ This button lets users show or hide columns in a Datagrid. It must be used in co
 </video>
 
 
-## Usage 
+## Usage
 
 Add the `<SelectColumnsButton>` component to the `<List actions>` prop:
- 
+
 ```jsx
 import {
     DatagridConfigurable,
@@ -65,30 +65,22 @@ const ListActions = () => (
 If you include `<SelectColumnsButton>` in a page that has more than one `<DatagridConfigurable>` (e.g. in a dasboard), you have to link the two components by giving them the same `preferenceKey`:
 
 ```jsx
-const BookList = () => {
-    const { data, total, isLoading } = useGetList('books', {
-        pagination: { page: 1, perPage: 10 },
-        sort,
-    });
-    return (
-        <div>
-            <SelectColumnsButton preferenceKey="postList1" />
-            <DatagridConfigurable
-                preferenceKey="postList1"
-                data={data}
-                total={total}
-                isLoading={isLoading}
-                sort={sort}
-                bulkActionButtons={false}
-            >
-                <TextField source="id" />
-                <TextField source="title" />
-                <TextField source="author" />
-                <TextField source="year" />
-            </DatagridConfigurable>
-        </div>
-    );
-};
+const BookListActions = () => (
+    <TopToolbar>
+        <SelectColumnsButton preferenceKey="postList1" />
+    </TopToolbar>
+);
+
+const BookList = () => (
+    <List actions={<BookListActions />}>
+        <DatagridConfigurable preferenceKey="postList1">
+            <TextField source="id" />
+            <TextField source="title" />
+            <TextField source="author" />
+            <TextField source="year" />
+        </DatagridConfigurable>
+    </List>
+);
 ```
 
 ## Adding a label to unlabeled columns
