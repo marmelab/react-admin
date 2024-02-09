@@ -5,31 +5,31 @@ import englishMessages from 'ra-language-english';
 import { AdminContext } from '../AdminContext';
 import { Create } from '../detail';
 import { SimpleForm } from '../form';
-import { TimeInput } from './TimeInput';
 import { FormInspector } from './common';
+import { PasswordInput } from './PasswordInput';
 
-export default { title: 'ra-ui-materialui/input/TimeInput' };
+export default { title: 'ra-ui-materialui/input/PasswordInput' };
 
 export const Basic = () => (
     <Wrapper>
-        <TimeInput source="published" />
+        <PasswordInput source="published" />
     </Wrapper>
 );
 
 export const FullWidth = () => (
     <Wrapper>
-        <TimeInput source="published" fullWidth />
+        <PasswordInput source="published" fullWidth />
     </Wrapper>
 );
 
 export const Disabled = () => (
     <Wrapper>
-        <TimeInput source="published" disabled />
+        <PasswordInput source="published" disabled />
     </Wrapper>
 );
 export const ReadOnly = () => (
     <Wrapper>
-        <TimeInput source="published" readOnly />
+        <PasswordInput source="published" readOnly />
     </Wrapper>
 );
 

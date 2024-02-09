@@ -27,6 +27,21 @@ export const Basic = () => (
     </AdminContext>
 );
 
+export const readOnly = () => (
+    <AdminContext>
+        <Create
+            resource="posts"
+            record={{ id: 123, title: 'Lorem ipsum' }}
+            sx={{ width: 600 }}
+        >
+            <SimpleForm>
+                <TextInput source="title" readOnly />
+                <FormInspector />
+            </SimpleForm>
+        </Create>
+    </AdminContext>
+);
+
 export const DefaultValue = () => (
     <AdminContext>
         <Create

@@ -29,6 +29,12 @@ export const Disabled = () => (
     </Wrapper>
 );
 
+export const ReadOnly = () => (
+    <Wrapper>
+        <DateInput source="published" readOnly />
+    </Wrapper>
+);
+
 export const Validate = () => (
     <Wrapper>
         <DateInput source="published" validate={minValue('2022-10-26')} />

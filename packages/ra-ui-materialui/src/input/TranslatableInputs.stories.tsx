@@ -20,6 +20,15 @@ export const Basic = () => (
     </Wrapper>
 );
 
+export const ReadOnly = () => (
+    <Wrapper>
+        <TranslatableInputs locales={['en', 'fr']} readOnly>
+            <TextInput source="title" />
+            <TextInput source="description" />
+        </TranslatableInputs>
+    </Wrapper>
+);
+
 export const FullWidth = () => (
     <Wrapper>
         <TranslatableInputs locales={['en', 'fr']} fullWidth>

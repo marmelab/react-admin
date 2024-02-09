@@ -78,6 +78,19 @@ export const Disabled = () => (
     </Wrapper>
 );
 
+export const ReadOnly = () => (
+    <Wrapper>
+        <SelectInput
+            source="gender"
+            choices={[
+                { id: 'M', name: 'Male ' },
+                { id: 'F', name: 'Female' },
+            ]}
+            readOnly
+        />
+    </Wrapper>
+);
+
 export const IsLoading = () => (
     <Wrapper>
         <SelectInput source="gender" isLoading />

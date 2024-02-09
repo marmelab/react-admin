@@ -52,6 +52,29 @@ export const Basic = () => (
     </AdminContext>
 );
 
+export const ReadOnly = () => (
+    <AdminContext i18nProvider={i18nProvider}>
+        <Create
+            resource="posts"
+            record={{ roles: ['u001', 'u003'] }}
+            sx={{ width: 600 }}
+        >
+            <SimpleForm>
+                <AutocompleteArrayInput
+                    source="roles"
+                    choices={[
+                        { id: 'admin', name: 'Admin' },
+                        { id: 'u001', name: 'Editor' },
+                        { id: 'u002', name: 'Moderator' },
+                        { id: 'u003', name: 'Reviewer' },
+                    ]}
+                    readOnly
+                />
+            </SimpleForm>
+        </Create>
+    </AdminContext>
+);
+
 export const OnChange = ({
     onChange = (value, records) => console.log({ value, records }),
 }: Pick<AutocompleteArrayInputProps, 'onChange'>) => (

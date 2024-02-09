@@ -75,6 +75,15 @@ export const Disabled = () => (
     </Wrapper>
 );
 
+export const ReadOnly = () => (
+    <Wrapper>
+        <ImageInput source="attachment" readOnly>
+            <ImageField source="src" title="title" />
+        </ImageInput>
+        <FormInspector name="attachment" />
+    </Wrapper>
+);
+
 export const Required = () => (
     <Wrapper>
         <ImageInput source="attachment" isRequired validate={required()}>

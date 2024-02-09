@@ -93,6 +93,24 @@ export const Disabled = () => (
     </AdminContext>
 );
 
+export const ReadOnly = () => (
+    <AdminContext i18nProvider={i18nProvider}>
+        <Create
+            resource="posts"
+            record={{ options: [1, 2] }}
+            sx={{ width: 600 }}
+        >
+            <SimpleForm>
+                <CheckboxGroupInput
+                    source="options"
+                    readOnly
+                    choices={choices}
+                />
+            </SimpleForm>
+        </Create>
+    </AdminContext>
+);
+
 export const LabelPlacement = () => (
     <AdminContext i18nProvider={i18nProvider}>
         <Create

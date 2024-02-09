@@ -82,6 +82,54 @@ export const Basic = () => (
     </AdminContext>
 );
 
+export const ReadOnly = () => (
+    <AdminContext i18nProvider={i18nProvider}>
+        <Create
+            resource="users"
+            record={{ roles: ['u001', 'u003'] }}
+            sx={{ width: 600 }}
+        >
+            <SimpleForm>
+                <SelectArrayInput
+                    source="roles"
+                    choices={[
+                        { id: 'admin', name: 'Admin' },
+                        { id: 'u001', name: 'Editor' },
+                        { id: 'u002', name: 'Moderator' },
+                        { id: 'u003', name: 'Reviewer' },
+                    ]}
+                    sx={{ width: 300 }}
+                    readOnly
+                />
+                <SelectArrayInput
+                    source="roles"
+                    variant="outlined"
+                    choices={[
+                        { id: 'admin', name: 'Admin' },
+                        { id: 'u001', name: 'Editor' },
+                        { id: 'u002', name: 'Moderator' },
+                        { id: 'u003', name: 'Reviewer' },
+                    ]}
+                    sx={{ width: 300 }}
+                    readOnly
+                />
+                <SelectArrayInput
+                    source="roles"
+                    variant="standard"
+                    choices={[
+                        { id: 'admin', name: 'Admin' },
+                        { id: 'u001', name: 'Editor' },
+                        { id: 'u002', name: 'Moderator' },
+                        { id: 'u003', name: 'Reviewer' },
+                    ]}
+                    sx={{ width: 300 }}
+                    readOnly
+                />
+            </SimpleForm>
+        </Create>
+    </AdminContext>
+);
+
 export const DefaultValue = () => (
     <AdminContext i18nProvider={i18nProvider}>
         <Create resource="users" sx={{ width: 600 }}>

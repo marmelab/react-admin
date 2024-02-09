@@ -46,6 +46,21 @@ export const Basic = () => (
     </AdminContext>
 );
 
+export const ReadOnly = () => (
+    <AdminContext dataProvider={dataProvider}>
+        <Edit resource="books" id="1">
+            <SimpleForm>
+                <ArrayInput source="authors">
+                    <SimpleFormIterator readOnly>
+                        <TextInput source="name" />
+                        <TextInput source="role" />
+                    </SimpleFormIterator>
+                </ArrayInput>
+            </SimpleForm>
+        </Edit>
+    </AdminContext>
+);
+
 export const AddButton = () => (
     <AdminContext dataProvider={dataProvider}>
         <Edit resource="books" id="1">

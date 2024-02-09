@@ -105,6 +105,15 @@ export const Disabled = () => (
     </Wrapper>
 );
 
+export const ReadOnly = () => (
+    <Wrapper>
+        <FileInput source="attachment" readOnly>
+            <FileField source="src" title="title" />
+        </FileInput>
+        <FormInspector name="attachment" />
+    </Wrapper>
+);
+
 export const CustomRemoveIcon = () => (
     <Wrapper>
         <FileInput source="attachments" removeIcon={DeleteIcon}>
