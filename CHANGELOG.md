@@ -1,5 +1,22 @@
 # Changelog
 
+## v4.16.10
+
+* Fix DeleteWithConfirmButton raises an error when the record is not loaded ([#9636](https://github.com/marmelab/react-admin/pull/9636)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix field label translation concatenates previous prefix ([#9648](https://github.com/marmelab/react-admin/pull/9648)) ([adguernier](https://github.com/adguernier))
+* Fix `<ReferenceInput>` accepts a validate prop while it should not ([#9637](https://github.com/marmelab/react-admin/pull/9637)) ([fzaninotto](https://github.com/fzaninotto))
+* [TypeScript] Fix some strict null checks errors in core ([#9644](https://github.com/marmelab/react-admin/pull/9644)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Add video tutorial for the `<Admin>` component ([#9641](https://github.com/marmelab/react-admin/pull/9641)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Update `<AccordionForm>` and `<AccordionFormPanel>` docs ([#9646](https://github.com/marmelab/react-admin/pull/9646)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Doc] Update DateInput, TimeInput, and DateTimeInput chapters to mention MUI variant ([#9631](https://github.com/marmelab/react-admin/pull/9631)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Doc] Update docs for `<Breadcrumb>` ([#9640](https://github.com/marmelab/react-admin/pull/9640)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Doc] Add screencasts and screenshot to `<EditableDatagrid>` docs ([#9633](https://github.com/marmelab/react-admin/pull/9633)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Doc] Add warning about using setFilters with other callbacks ([#9639](https://github.com/marmelab/react-admin/pull/9639)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix example code for sending files in Base64 ([#9647](https://github.com/marmelab/react-admin/pull/9647)) ([davidhenley](https://github.com/davidhenley))
+* [Doc] Fix authProvider images ([#9654](https://github.com/marmelab/react-admin/pull/9654)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Doc] Fix dataproviders images ([#9653](https://github.com/marmelab/react-admin/pull/9653)) ([djhi](https://github.com/djhi))
+* [Doc] Fix code example in the Usage section of `<SaveButton>` is broken ([#9651](https://github.com/marmelab/react-admin/pull/9651)) ([slax57](https://github.com/slax57))
+
 ## v4.16.9
 
 * Fix `<FieldToggle>` cannot be styled using the application theme ([#9634](https://github.com/marmelab/react-admin/pull/9634)) ([megantaylor](https://github.com/megantaylor))
