@@ -1,3 +1,4 @@
+import * as React from 'react';
 import { screen, render, waitFor, fireEvent } from '@testing-library/react';
 import expect from 'expect';
 import { CoreAdminContext, MutationMode, testDataProvider } from 'ra-core';
