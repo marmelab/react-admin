@@ -1,26 +1,21 @@
 import * as React from 'react';
 import { screen, render, waitFor, fireEvent } from '@testing-library/react';
 import expect from 'expect';
-import { CoreAdminContext, MutationMode, testDataProvider } from 'ra-core';
+import {
+    CoreAdminContext,
+    ListContextProvider,
+    MutationMode,
+    testDataProvider
+} from 'ra-core';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import { BulkUpdateWithConfirmButton } from './BulkUpdateWithConfirmButton';
-import { Toolbar, SimpleForm } from '../form';
-import { Edit } from '../detail';
-import { TextInput } from '../input';
-import { Notification } from '../layout';
+import { Datagrid } from '../list';
+import { TextField } from '../field';
 
 const theme = createTheme();
 
 describe('<BulkUpdateWithConfirmButton />', () => {
-    const defaultEditProps = {
-        id: '123',
-        resource: 'posts',
-        location: {},
-        match: {},
-        mutationMode: 'pessimistic' as MutationMode,
-    };
-
     it('should close the confirmation dialog after confirm', async () => {
         const record = { id: 123, title: 'lorem' };
         const dataProvider = testDataProvider({
@@ -30,7 +25,7 @@ describe('<BulkUpdateWithConfirmButton />', () => {
                 return p.ids;
             },
         });
-        const ActionButtons = props => (
+        const ActionButtons = () => (
             <>
                 <BulkUpdateWithConfirmButton
                     data={{ views: 'foobar' }}
@@ -41,9 +36,7 @@ describe('<BulkUpdateWithConfirmButton />', () => {
         render(
             <ThemeProvider theme={theme}>
                 <CoreAdminContext dataProvider={dataProvider}>
-                    <ListContextProvider
-                        value={{ selectedIds: [123] }}
-                    >
+                    <ListContextProvider value={{ selectedIds: [123] }}>
                         <Datagrid bulkActionButtons={<ActionButtons />}>
                             <TextField source="title" />
                         </Datagrid>
