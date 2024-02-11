@@ -4,8 +4,7 @@ import expect from 'expect';
 import {
     CoreAdminContext,
     ListContextProvider,
-    MutationMode,
-    testDataProvider
+    testDataProvider,
 } from 'ra-core';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
@@ -20,7 +19,8 @@ describe('<BulkUpdateWithConfirmButton />', () => {
         const record = { id: 123, title: 'lorem' };
         const dataProvider = testDataProvider({
             getMany: () => Promise.resolve({ data: [record], total: 1 }),
-            updateMany: (p) => {
+            getOne: () => Promise.resolve({ data: record }),
+            updateMany: p => {
                 record.title = p.data.title;
                 return p.ids;
             },
@@ -45,8 +45,10 @@ describe('<BulkUpdateWithConfirmButton />', () => {
             </ThemeProvider>
         );
         expect(await screen.findByText('lorem')).toBeInTheDocument();
-        const checkContainer = screen.getByRole("columnheader", {"name": "Select all"});
-        const check = within(checkContainer).getByRole("checkbox");
+        const checkContainer = screen.getByRole('columnheader', {
+            name: 'Select all'
+        });
+        const check = within(checkContainer).getByRole('checkbox');
         fireEvent.click(check);
         expect(check).toBeChecked();
 
