@@ -4,7 +4,7 @@ import expect from 'expect';
 import { CoreAdminContext, MutationMode, testDataProvider } from 'ra-core';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-import { UpdateWithConfirmButton } from './UpdateWithConfirmButton';
+import { BulkUpdateWithConfirmButton } from './BulkUpdateWithConfirmButton';
 import { Toolbar, SimpleForm } from '../form';
 import { Edit } from '../detail';
 import { TextInput } from '../input';
