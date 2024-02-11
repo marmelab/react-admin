@@ -58,8 +58,8 @@ describe('<FilterForm />', () => {
 
     it('should retain key values in the form inputs', () => {
         // As key is not rendered, we just test that the React warning doesn't occur.
-        const origWarn = console.warn;
-        console.warn = message => {
+        const origError = console.error;
+        console.error = message => {
             throw new Error(message);
         };
 
@@ -85,7 +85,7 @@ describe('<FilterForm />', () => {
                 </AdminContext>
             );
         }).not.toThrow();
-        console.warn = origWarn;
+        console.error = origError;
     });
 
     it('should change the filter when the user updates an input', async () => {
