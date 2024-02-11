@@ -20,6 +20,7 @@ describe('<BulkUpdateWithConfirmButton />', () => {
         const record = { id: 123, title: 'lorem' };
         const dataProvider = testDataProvider({
             getList: () => Promise.resolve({ data: [record], total: 1 }),
+            getMany: () => Promise.resolve({ data: [record] }),
             getOne: () => Promise.resolve({ data: record }),
             updateMany: p => {
                 record.title = p.data.title;
