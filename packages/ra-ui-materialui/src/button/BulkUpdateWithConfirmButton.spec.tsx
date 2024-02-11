@@ -4,6 +4,7 @@ import expect from 'expect';
 import {
     CoreAdminContext,
     ListContextProvider,
+    ResourceContextProvider,
     testDataProvider,
 } from 'ra-core';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -36,17 +37,19 @@ describe('<BulkUpdateWithConfirmButton />', () => {
         render(
             <ThemeProvider theme={theme}>
                 <CoreAdminContext dataProvider={dataProvider}>
-                    <ListContextProvider value={{ selectedIds: [123] }}>
-                        <Datagrid bulkActionButtons={<ActionButtons />}>
-                            <TextField source="title" />
-                        </Datagrid>
-                    </ListContextProvider>
+                    <ResourceContextProvider value="posts">
+                        <ListContextProvider value={{ selectedIds: [123] }}>
+                            <Datagrid bulkActionButtons={<ActionButtons />}>
+                                <TextField source="title" />
+                            </Datagrid>
+                        </ListContextProvider>
+                    </ResourceContextProvider>
                 </CoreAdminContext>
             </ThemeProvider>
         );
         expect(await screen.findByText('lorem')).toBeInTheDocument();
         const checkContainer = screen.getByRole('columnheader', {
-            name: 'Select all'
+            name: 'Select all',
         });
         const check = within(checkContainer).getByRole('checkbox');
         fireEvent.click(check);
