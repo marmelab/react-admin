@@ -142,7 +142,7 @@ export const FilterFormBase = (props: FilterFormBaseProps) => {
             >
                 {getShownFilters().map((filterElement: JSX.Element) => (
                     <FilterFormInput
-                        key={filterElement.key || filterElement.props.source}
+                        key={filterElement.props.source}  // filterElement.key || 
                         filterElement={filterElement}
                         handleHide={handleHide}
                         resource={resource}
