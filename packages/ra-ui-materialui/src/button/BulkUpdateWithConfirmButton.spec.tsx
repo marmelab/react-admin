@@ -9,7 +9,6 @@ import { Toolbar, SimpleForm } from '../form';
 import { Edit } from '../detail';
 import { TextInput } from '../input';
 import { Notification } from '../layout';
-import { MutationOptions } from './UpdateButton.stories';
 
 const theme = createTheme();
 
@@ -54,12 +53,19 @@ describe('<BulkUpdateWithConfirmButton />', () => {
             </ThemeProvider>
         );
         expect(await screen.findByText('lorem')).toBeInTheDocument();
+        const checkContainer = screen.getByRole("columnheader", {"name": "Select all"});
+        const check = within(checkContainer).getByRole("checkbox");
+        fireEvent.click(check);
+        expect(check).toBeChecked();
+
         fireEvent.click(screen.getByLabelText('ra.action.update'));
         expect(await screen.findByText('Update 1 posts')).toBeInTheDocument();
         fireEvent.click(screen.getByText('ra.action.confirm'));
 
         await waitFor(() => {
-            expect(screen.queryByText('Update 1 posts')).not.toBeInTheDocument();
+            expect(
+                screen.queryByText('Update 1 posts')
+            ).not.toBeInTheDocument();
         });
         expect(screen.getByText('foobar')).toBeInTheDocument();
     });
