@@ -24,32 +24,30 @@ describe('<BulkUpdateWithConfirmButton />', () => {
     it('should close the confirmation dialog after confirm', async () => {
         const record = { id: 123, title: 'lorem' };
         const dataProvider = testDataProvider({
-            // @ts-ignore
-            getOne: () => Promise.resolve({ data: record, }),
+            getMany: () => Promise.resolve({ data: [record], total: 1 }),
             updateMany: (p) => {
                 record.title = p.data.title;
                 return p.ids;
             },
         });
-        const EditToolbar = props => (
-            <Toolbar {...props}>
+        const ActionButtons = props => (
+            <>
                 <BulkUpdateWithConfirmButton
                     data={{ views: 'foobar' }}
                     mutationMode="pessimistic"
                 />
-            </Toolbar>
+            </>
         );
         render(
             <ThemeProvider theme={theme}>
                 <CoreAdminContext dataProvider={dataProvider}>
-                    <>
-                        <Edit {...defaultEditProps}>
-                            <SimpleForm toolbar={<EditToolbar />}>
-                                <TextInput source="title" />
-                            </SimpleForm>
-                        </Edit>
-                        <Notification />
-                    </>
+                    <ListContextProvider
+                        value={{ selectedIds: [123] }}
+                    >
+                        <Datagrid bulkActionButtons={<ActionButtons />}>
+                            <TextField source="title" />
+                        </Datagrid>
+                    </ListContextProvider>
                 </CoreAdminContext>
             </ThemeProvider>
         );
