@@ -22,13 +22,14 @@ describe('<BulkUpdateWithConfirmButton />', () => {
     };
 
     it('should close the confirmation dialog after confirm', async () => {
+        const record = { id: 123, title: 'lorem' };
         const dataProvider = testDataProvider({
             // @ts-ignore
-            getOne: () =>
-                Promise.resolve({
-                    data: { id: 123, title: 'lorem' },
-                }),
-            update: jest.fn().mockResolvedValueOnce({ data: { id: 123 } }),
+            getOne: () => Promise.resolve({ data: record, }),
+            updateMany: (p) => {
+                record.title = p.data.title;
+                return p.ids;
+            },
         });
         const EditToolbar = props => (
             <Toolbar {...props}>
