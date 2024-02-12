@@ -83,6 +83,7 @@ export const ArrayInput = (props: ArrayInputProps) => {
         validate,
         variant,
         disabled,
+        readOnly,
         margin = 'dense',
         ...rest
     } = props;
@@ -185,7 +186,8 @@ export const ArrayInput = (props: ArrayInputProps) => {
                     source,
                     variant,
                     margin,
-                    disabled,
+                    disabled: disabled || readOnly,
+                    readOnly: readOnly,
                 })}
             </ArrayInputContext.Provider>
             {renderHelperText ? (

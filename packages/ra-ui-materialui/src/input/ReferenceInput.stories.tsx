@@ -125,6 +125,33 @@ export const ReadOnly = ({ dataProvider = dataProviderWithAuthors }) => (
     </Admin>
 );
 
+const BookEditDisabled = () => (
+    <Edit
+        mutationMode="pessimistic"
+        mutationOptions={{
+            onSuccess: data => {
+                console.log(data);
+            },
+        }}
+    >
+        <SimpleForm>
+            <ReferenceInput reference="authors" source="author" disabled />
+        </SimpleForm>
+    </Edit>
+);
+
+export const Disabled = ({ dataProvider = dataProviderWithAuthors }) => (
+    <Admin dataProvider={dataProvider} history={history}>
+        <Resource
+            name="authors"
+            recordRepresentation={record =>
+                `${record.first_name} ${record.last_name}`
+            }
+        />
+        <Resource name="books" edit={BookEditDisabled} />
+    </Admin>
+);
+
 const tags = [
     { id: 5, name: 'lorem' },
     { id: 6, name: 'ipsum' },

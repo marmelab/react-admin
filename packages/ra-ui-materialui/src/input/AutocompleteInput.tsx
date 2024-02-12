@@ -174,6 +174,8 @@ export const AutocompleteInput = <
         validate,
         variant,
         onInputChange,
+        disabled,
+        readOnly,
         ...rest
     } = props;
 
@@ -562,6 +564,7 @@ If you provided a React element for the optionText prop, you must also provide t
                 filterSelectedOptions
                 renderInput={params => {
                     const mergedTextFieldProps = {
+                        readOnly,
                         ...params.InputProps,
                         ...TextFieldProps?.InputProps,
                     };
@@ -600,6 +603,7 @@ If you provided a React element for the optionText prop, you must also provide t
                             variant={variant}
                             className={AutocompleteInputClasses.textField}
                             {...params}
+                            disabled={disabled || readOnly}
                             InputProps={mergedTextFieldProps}
                             size={size}
                         />
