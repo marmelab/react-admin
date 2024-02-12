@@ -22,7 +22,14 @@ import {
 export const TranslatableInputsTabContent = (
     props: TranslatableInputsTabContentProps
 ): ReactElement => {
-    const { children, groupKey = '', locale, ...other } = props;
+    const {
+        children,
+        groupKey = '',
+        locale,
+        disabled,
+        readOnly,
+        ...other
+    } = props;
     const { selectedLocale, getLabel, getSource } = useTranslatableContext();
 
     return (
@@ -46,6 +53,8 @@ export const TranslatableInputsTabContent = (
                                   child.props.label
                               ),
                               source: getSource(child.props.source, locale),
+                              disabled: disabled || readOnly,
+                              readOnly: readOnly,
                           })
                         : null
                 )}
@@ -62,6 +71,8 @@ export type TranslatableInputsTabContentProps<
     locale: string;
     record?: RecordType;
     resource?: string;
+    disabled?: boolean;
+    readOnly?: boolean;
 };
 
 const PREFIX = 'RaTranslatableInputsTabContent';

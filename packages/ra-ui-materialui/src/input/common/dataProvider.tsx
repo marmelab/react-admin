@@ -1,85 +1,234 @@
 import fakeRestDataProvider from 'ra-data-fakerest';
 
-const data = {
+export const data = {
     books: [
         {
             id: 1,
-            title: 'War and Peace',
-            author: 'Leo Tolstoy',
+            title: {
+                en: 'War and Peace',
+                fr: 'Guerre et Paix',
+            },
+            authors: [
+                {
+                    name: 'Leo Tolstoy',
+                    role: 'head_writer',
+                },
+                {
+                    name: 'Alexander Pushkin',
+                    role: 'co_writer',
+                },
+            ],
+            author_gender: 'M',
             year: 1869,
+            time: '2024-02-12T13:45:29.170Z',
+            genre: [1, 2],
         },
         {
             id: 2,
-            title: 'Pride and Predjudice',
-            author: 'Jane Austen',
+            title: {
+                en: 'Pride and Predjudice',
+                fr: 'Orgueil et préjugés',
+            },
+            authors: [
+                {
+                    name: 'Jane Austen',
+                    role: 'head_writer',
+                },
+                {
+                    name: 'Alexander Pushkin',
+                    role: 'co_writer',
+                },
+            ],
+            author_gender: 'F',
             year: 1813,
+            time: '2024-02-12T13:45:29.170Z',
+            genre: [3, 4],
         },
         {
             id: 3,
-            title: 'The Picture of Dorian Gray',
-            author: 'Oscar Wilde',
+            title: {
+                en: 'The Picture of Dorian Gray',
+                fr: 'La photo de Dorian Gray',
+            },
+            authors: [
+                {
+                    name: 'Oscar Wilde',
+                    role: 'head_writer',
+                },
+                {
+                    name: 'Alexander Pushkin',
+                    role: 'co_writer',
+                },
+            ],
+            author_gender: 'M',
             year: 1890,
+            time: '2024-02-12T13:45:29.170Z',
+            genre: [5, 6],
         },
         {
             id: 4,
-            title: 'Le Petit Prince',
-            author: 'Antoine de Saint-Exupéry',
+            title: {
+                en: 'The little Prince',
+                fr: 'Le Petit Prince',
+            },
+            authors: [
+                {
+                    name: 'Antoine de Saint-Exupéry',
+                    role: 'head_writer',
+                },
+                {
+                    name: 'Alexander Pushkin',
+                    role: 'co_writer',
+                },
+            ],
+            author_gender: 'M',
             year: 1943,
+            time: '2024-02-12T13:45:29.170Z',
+            genre: [7, 8],
         },
         {
             id: 5,
-            title: "Alice's Adventures in Wonderland",
-            author: 'Lewis Carroll',
+            title: {
+                en: "Alice's Adventures in Wonderland",
+                fr: "Les aventures d'Alice au Pays des Merveilles",
+            },
+            authors: [
+                {
+                    name: 'Lewis Carroll',
+                    role: 'head_writer',
+                },
+                {
+                    name: 'Alexander Pushkin',
+                    role: 'co_writer',
+                },
+            ],
+            author_gender: 'M',
             year: 1865,
+            time: '2024-02-12T13:45:29.170Z',
+            genre: [8, 9],
         },
         {
             id: 6,
-            title: 'Madame Bovary',
-            author: 'Gustave Flaubert',
+            title: {
+                en: 'Madame Bovary',
+                fr: 'Madame Bovary',
+            },
+            authors: [
+                {
+                    name: 'Gustave Flaubert',
+                    role: 'head_writer',
+                },
+                {
+                    name: 'Alexander Pushkin',
+                    role: 'co_writer',
+                },
+            ],
+            author_gender: 'M',
             year: 1856,
+            time: '2024-02-12T13:45:29.170Z',
+            genre: [10, 11],
         },
         {
             id: 7,
-            title: 'The Lord of the Rings',
-            author: 'J. R. R. Tolkien',
+            title: {
+                en: 'The Lord of the Rings',
+                fr: 'Le Seigneur des Anneaux',
+            },
+            authors: [
+                {
+                    name: 'J. R. R. Tolkien',
+                    role: 'head_writer',
+                },
+                {
+                    name: 'Alexander Pushkin',
+                    role: 'co_writer',
+                },
+            ],
+            author_gender: 'F',
             year: 1954,
+            time: '2024-02-12T13:45:29.170Z',
+            genre: [7, 8],
         },
         {
             id: 8,
-            title: "Harry Potter and the Philosopher's Stone",
-            author: 'J. K. Rowling',
+            title: {
+                en: "Harry Potter and the Philosopher's Stone",
+                fr: 'Harry Potter et la pierre philosophale',
+            },
+            authors: [
+                {
+                    name: 'J. K. Rowling',
+                    role: 'head_writer',
+                },
+                {
+                    name: 'Alexander Pushkin',
+                    role: 'co_writer',
+                },
+            ],
+            author_gender: 'F',
             year: 1997,
+            time: '2024-02-12T13:45:29.170Z',
+            genre: [7, 8],
         },
         {
             id: 9,
-            title: 'The Alchemist',
-            author: 'Paulo Coelho',
+            title: {
+                en: 'The Alchemist',
+                fr: "L'alchimiste",
+            },
+            authors: [
+                {
+                    name: 'Paulo Coelho',
+                    role: 'head_writer',
+                },
+                {
+                    name: 'Alexander Pushkin',
+                    role: 'co_writer',
+                },
+            ],
+            author_gender: 'M',
             year: 1988,
+            time: '2024-02-12T13:45:29.170Z',
+            genre: [12, 13],
         },
         {
             id: 10,
-            title: 'A Catcher in the Rye',
-            author: 'J. D. Salinger',
+            title: {
+                en: 'A Catcher in the Rye',
+                fr: 'Un receveur dans le seigle',
+            },
+            authors: [
+                {
+                    name: 'J. D. Salinger',
+                    role: 'head_writer',
+                },
+                {
+                    name: 'Alexander Pushkin',
+                    role: 'co_writer',
+                },
+            ],
+            author_gender: 'M',
             year: 1951,
+            time: '2024-02-12T13:45:29.170Z',
+            genre: [14, 15],
         },
-        {
-            id: 11,
-            title: 'Ulysses',
-            author: 'James Joyce',
-            year: 1922,
-        },
-        {
-            id: 12,
-            title: 'One Hundred Years of Solitude',
-            author: 'Gabriel García Márquez',
-            year: 1967,
-        },
-        {
-            id: 13,
-            title: 'Snow Country',
-            author: 'Yasunari Kawabata',
-            year: 1956,
-        },
+    ],
+    genres: [
+        { id: 1, name: 'Historical Fiction' },
+        { id: 2, name: 'War' },
+        { id: 3, name: 'Classic' },
+        { id: 4, name: 'Romance' },
+        { id: 5, name: 'Gothic' },
+        { id: 6, name: 'Philosophical' },
+        { id: 7, name: 'Fable' },
+        { id: 8, name: 'Fantasy' },
+        { id: 9, name: 'Adventure' },
+        { id: 10, name: 'Literary Realism' },
+        { id: 11, name: 'Tragedy' },
+        { id: 12, name: 'Philosophical' },
+        { id: 13, name: 'Adventure' },
+        { id: 14, name: 'Coming-of-age' },
+        { id: 15, name: 'Literary Fiction' },
     ],
     authors: [],
 };

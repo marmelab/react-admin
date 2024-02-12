@@ -8,6 +8,12 @@ import { SimpleFormIterator } from './SimpleFormIterator';
 import { TextInput } from '../TextInput';
 import { AdminContext } from '../../AdminContext';
 import { defaultTheme } from '../../theme/defaultTheme';
+import { dataProvider as commonDataProvider } from '../common/dataProvider';
+import { history } from '../common/history';
+import { Resource } from 'ra-core';
+import { Admin } from 'react-admin';
+import { BooksCreate } from '../common/BooksCreate';
+import { BooksList } from '../common/BooksList';
 
 export default { title: 'ra-ui-materialui/input/SimpleFormIterator' };
 
@@ -245,3 +251,35 @@ export const Theming = () => (
         </Edit>
     </AdminContext>
 );
+
+const BooksEdit = () => (
+    <Edit>
+        <SimpleForm>
+            <TextInput source="title.en" label="Title" />
+            <TextInput source="author" />
+            <ArrayInput source="authors">
+                <SimpleFormIterator inline readOnly>
+                    <TextInput source="name" />
+                    <TextInput source="role" />
+                </SimpleFormIterator>
+            </ArrayInput>
+        </SimpleForm>
+    </Edit>
+);
+
+export const FullApp = () => {
+    React.useEffect(() => {
+        history.replace('/books/5/edit');
+    }, []);
+
+    return (
+        <Admin dataProvider={commonDataProvider} history={history}>
+            <Resource
+                name="books"
+                list={BooksList}
+                edit={BooksEdit}
+                create={BooksCreate}
+            />
+        </Admin>
+    );
+};

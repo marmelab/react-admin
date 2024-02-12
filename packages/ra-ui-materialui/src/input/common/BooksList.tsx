@@ -1,13 +1,13 @@
 import React from 'react';
-import { Datagrid, List, NumberField, TextField } from './../..';
+import { Datagrid, DateField, List, NumberField, TextField } from './../..';
 
 export const BooksList = () => (
     <List>
-        <Datagrid>
+        <Datagrid rowClick="edit">
             <NumberField source="id" />
-            <TextField source="title" />
+            <TextField source="title.en" label="Title" />
             <TextField source="author" />
-            <NumberField source="year" />
+            <DateField source="year" />
         </Datagrid>
     </List>
 );

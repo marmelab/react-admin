@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { SxProps, styled } from '@mui/material/styles';
-import { StackProps } from '@mui/material';
+import { Box, StackProps } from '@mui/material';
 import { ReactElement, ReactNode } from 'react';
 import {
     TranslatableContextProvider,
@@ -77,6 +77,8 @@ export const TranslatableInputs = (
         children,
         margin,
         sx,
+        disabled,
+        readOnly,
         StackProps = {},
     } = props;
     const context = useTranslatable({ defaultLocale, locales });
@@ -96,6 +98,8 @@ export const TranslatableInputs = (
                         locale={locale}
                         groupKey={groupKey}
                         margin={margin}
+                        disabled={disabled}
+                        readOnly={readOnly}
                         {...StackProps}
                     >
                         {children}
@@ -112,6 +116,8 @@ export interface TranslatableInputsProps extends UseTranslatableOptions {
     children: ReactNode;
     fullWidth?: boolean;
     groupKey?: string;
+    disabled?: boolean;
+    readOnly?: boolean;
     margin?: 'none' | 'normal' | 'dense';
     sx?: SxProps;
     StackProps?: StackProps;
@@ -123,7 +129,7 @@ export const TranslatableInputsClasses = {
     root: `${PREFIX}-root`,
     fullWidth: `${PREFIX}-fullWidth`,
 };
-const Root = styled('div', {
+const Root = styled(Box, {
     name: PREFIX,
     overridesResolver: (props, styles) => styles.root,
 })(({ theme }) => ({

@@ -18,8 +18,13 @@ import { ReferenceArrayInput } from './ReferenceArrayInput';
 import { useCreateSuggestionContext } from './useSupportCreateSuggestion';
 import { TextInput } from './TextInput';
 import { ArrayInput, SimpleFormIterator } from './ArrayInput';
-import { FormDataConsumer } from 'ra-core';
+import { FormDataConsumer, Resource } from 'ra-core';
 import { useWatch } from 'react-hook-form';
+import { data, dataProvider } from './common/dataProvider';
+import { BooksList } from './common/BooksList';
+import { BooksCreate } from './common/BooksCreate';
+import { Admin } from 'react-admin';
+import { history } from './common/history';
 
 export default { title: 'ra-ui-materialui/input/SelectArrayInput' };
 
@@ -76,6 +81,54 @@ export const Basic = () => (
                         { id: 'u003', name: 'Reviewer' },
                     ]}
                     sx={{ width: 300 }}
+                />
+            </SimpleForm>
+        </Create>
+    </AdminContext>
+);
+
+export const Disabled = () => (
+    <AdminContext i18nProvider={i18nProvider}>
+        <Create
+            resource="users"
+            record={{ roles: ['u001', 'u003'] }}
+            sx={{ width: 600 }}
+        >
+            <SimpleForm>
+                <SelectArrayInput
+                    source="roles"
+                    choices={[
+                        { id: 'admin', name: 'Admin' },
+                        { id: 'u001', name: 'Editor' },
+                        { id: 'u002', name: 'Moderator' },
+                        { id: 'u003', name: 'Reviewer' },
+                    ]}
+                    sx={{ width: 300 }}
+                    disabled
+                />
+                <SelectArrayInput
+                    source="roles"
+                    variant="outlined"
+                    choices={[
+                        { id: 'admin', name: 'Admin' },
+                        { id: 'u001', name: 'Editor' },
+                        { id: 'u002', name: 'Moderator' },
+                        { id: 'u003', name: 'Reviewer' },
+                    ]}
+                    sx={{ width: 300 }}
+                    disabled
+                />
+                <SelectArrayInput
+                    source="roles"
+                    variant="standard"
+                    choices={[
+                        { id: 'admin', name: 'Admin' },
+                        { id: 'u001', name: 'Editor' },
+                        { id: 'u002', name: 'Moderator' },
+                        { id: 'u003', name: 'Reviewer' },
+                    ]}
+                    sx={{ width: 300 }}
+                    disabled
                 />
             </SimpleForm>
         </Create>
@@ -397,5 +450,32 @@ export const TranslateChoice = () => {
                 </SimpleForm>
             </Edit>
         </AdminContext>
+    );
+};
+
+const BooksEdit = () => (
+    <Edit>
+        <SimpleForm>
+            <TextInput source="title.en" label="Title" />
+            <TextInput source="author" />
+            <SelectArrayInput source="genre" choices={data.genres} readOnly />
+        </SimpleForm>
+    </Edit>
+);
+
+export const FullApp = () => {
+    React.useEffect(() => {
+        history.replace('/books/5/edit');
+    }, []);
+
+    return (
+        <Admin dataProvider={dataProvider} history={history}>
+            <Resource
+                name="books"
+                list={BooksList}
+                edit={BooksEdit}
+                create={BooksCreate}
+            />
+        </Admin>
     );
 };

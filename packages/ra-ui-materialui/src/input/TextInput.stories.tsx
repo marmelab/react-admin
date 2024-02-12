@@ -378,7 +378,7 @@ export const Parse = ({ onSuccess = console.log }) => (
 const BooksEdit = () => (
     <Edit>
         <SimpleForm>
-            <TextInput source="title" readOnly />
+            <TextInput source="title.en" label="Title" readOnly />
             <TextInput source="author" />
             <NumberInput source="year" />
         </SimpleForm>

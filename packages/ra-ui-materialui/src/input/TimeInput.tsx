@@ -55,6 +55,8 @@ export const TimeInput = ({
     onChange,
     source,
     resource,
+    disabled,
+    readOnly,
     parse = parseTime,
     validate,
     variant,
@@ -87,6 +89,7 @@ export const TimeInput = ({
             size="small"
             variant={variant}
             margin={margin}
+            disabled={disabled || readOnly}
             error={(isTouched || isSubmitted) && invalid}
             helperText={
                 renderHelperText ? (

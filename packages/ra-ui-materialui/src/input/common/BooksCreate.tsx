@@ -1,14 +1,24 @@
 import React from 'react';
-import { NumberInput, TextInput } from './..';
-import { Create, SimpleForm } from './../..';
+import {
+    DateInput,
+    NumberInput,
+    TextInput,
+    TimeInput,
+    Create,
+    SimpleForm,
+    TranslatableInputs,
+} from './../..';
 
 export const BooksCreate = () => (
     <Create>
         <SimpleForm>
             <NumberInput source="id" />
-            <TextInput source="title" />
+            <TranslatableInputs locales={['en', 'fr']}>
+                <TextInput source="title" />
+            </TranslatableInputs>
             <TextInput source="author" />
-            <NumberInput source="year" />
+            <DateInput source="year" />
+            <TimeInput source="time" />
         </SimpleForm>
     </Create>
 );
