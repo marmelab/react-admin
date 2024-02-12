@@ -121,6 +121,7 @@ export default {
             average_note: 3,
             commentable: true,
             published_at: new Date('2012-08-05'),
+            tags: [],
             category: 'tech',
             notifications: [12, 31, 42],
         },
