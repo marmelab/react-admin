@@ -1,10 +1,5 @@
 import React from 'react';
-import {
-    Datagrid,
-    List,
-    NumberField,
-    TextField,
-} from '../ra-ui-materialui/src';
+import { Datagrid, List, NumberField, TextField } from '..';
 
 export const BooksList = () => (
     <List>
