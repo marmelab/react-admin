@@ -436,43 +436,6 @@ const PostEdit = () => (
 );
 ```
 
-## DataProvider query functions are provided with a new `signal` parameter
-
-DataProvider query functions (`getOne`, `getList`, `getMany` and `getManyReference`) are now provided with an additional `signal` parameter. This parameter is an [AbortSignal](https://developer.mozilla.org/en-US/docs/Web/API/AbortSignal) that can be used to abort the request when the query is canceled (e.g. when it becomes out-of-date or inactive).
-
-The following dataProviders, provided by react-admin, have already been updated to support this new parameter:
-
-- `ra-data-json-server`
-- `ra-data-simple-rest`
-- `ra-data-graphql`
-
-This feature is optional, so you can still use any other dataProvider, even though it doesn't yet support the `signal` parameter.
-
-If you wish to update your own dataProvider to support this new parameter, you can take inspiration from how we updated the `ra-data-simple-rest` dataProvider:
-
-```diff
-// In packages/ra-data-simple-rest/src/index.ts
-import { fetchUtils, DataProvider } from 'react-admin';
-
-export default (
-    apiUrl: string,
-    httpClient = fetchUtils.fetchJson,
-    countHeader: string = 'Content-Range'
-): DataProvider => ({
-    getOne: (resource, params) =>
--       httpClient(`${apiUrl}/${resource}/${params.id}`).then(({ json }) => ({
-+       httpClient(`${apiUrl}/${resource}/${params.id}`, {
-+           signal: params?.signal,
-+       }).then(({ json }) => ({
-            data: json,
-        })),
-
-    /* ... other dataProvider methods ... */
-});
-```
-
-You can find more example implementations in the [Query Cancellation guide](https://tanstack.com/query/latest/docs/framework/react/guides/query-cancellation).
-
 ## Upgrading to v4
 
 If you are on react-admin v3, follow the [Upgrading to v4](https://marmelab.com/react-admin/doc/4.16/Upgrade.html) guide before upgrading to v5.
