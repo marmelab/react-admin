@@ -1,7 +1,9 @@
 import * as React from 'react';
 import { required } from 'ra-core';
 import { useFormState, useFormContext } from 'react-hook-form';
+import fakeRestProvider from 'ra-data-fakerest';
 
+import { Resource } from '../../../ra-core/src/core/Resource';
 import { TextInput } from './TextInput';
 import { AdminContext } from '../AdminContext';
 import { Create } from '../detail';
@@ -9,6 +11,10 @@ import { Edit } from '../detail';
 import { SimpleForm, Toolbar } from '../form';
 import { SaveButton } from '../button';
 import { FormInspector } from './common';
+import { createHashHistory } from 'history';
+import { useEffect } from 'react';
+import { Datagrid, List } from '../list';
+import { TextField } from '../field';
 
 export default { title: 'ra-ui-materialui/input/TextInput' };
 
@@ -27,7 +33,7 @@ export const Basic = () => (
     </AdminContext>
 );
 
-export const readOnly = () => (
+export const disabled = () => (
     <AdminContext>
         <Create
             resource="posts"
@@ -35,12 +41,86 @@ export const readOnly = () => (
             sx={{ width: 600 }}
         >
             <SimpleForm>
-                <TextInput source="title" readOnly />
+                <TextInput source="title" disabled />
                 <FormInspector />
             </SimpleForm>
         </Create>
     </AdminContext>
 );
+
+const data = {
+    books: [
+        { id: 1, title: 'War and Peace' },
+        { id: 2, title: 'The Little Prince' },
+        { id: 3, title: "Swann's Way" },
+        { id: 4, title: 'A Tale of Two Cities' },
+        { id: 5, title: 'The Lord of the Rings' },
+        { id: 6, title: 'And Then There Were None' },
+        { id: 7, title: 'Dream of the Red Chamber' },
+        { id: 8, title: 'The Hobbit' },
+        { id: 9, title: 'She: A History of Adventure' },
+        { id: 10, title: 'The Lion, the Witch and the Wardrobe' },
+        { id: 11, title: 'The Chronicles of Narnia' },
+        { id: 12, title: 'Pride and Prejudice' },
+        { id: 13, title: 'Ulysses' },
+        { id: 14, title: 'The Catcher in the Rye' },
+        { id: 15, title: 'The Little Mermaid' },
+        { id: 16, title: 'The Secret Garden' },
+        { id: 17, title: 'The Wind in the Willows' },
+        { id: 18, title: 'The Wizard of Oz' },
+        { id: 19, title: 'Madam Bovary' },
+        { id: 20, title: 'The Little House' },
+        { id: 21, title: 'The Phantom of the Opera' },
+        { id: 22, title: 'The Adventures of Tom Sawyer' },
+        { id: 23, title: 'The Adventures of Huckleberry Finn' },
+        { id: 24, title: 'The Time Machine' },
+        { id: 25, title: 'The War of the Worlds' },
+    ],
+};
+
+const dataProvider = fakeRestProvider(data);
+
+export const ReadOnly = () => {
+    const history = createHashHistory();
+    useEffect(() => {
+        // history.replace('/books/create');
+    }, [history]);
+
+    return (
+        <AdminContext dataProvider={dataProvider} history={history}>
+            <Resource
+                name="customers"
+                list={CustomerList}
+                create={CustomerCreate}
+            />
+        </AdminContext>
+    );
+};
+
+export const CustomerList = () => (
+    <List>
+        <Datagrid>
+            <TextField source="id" />
+            <TextField source="title" />
+        </Datagrid>
+    </List>
+);
+
+const CustomerCreate = () => {
+    return (
+        <Create
+            // resource="books"
+            // record={{ id: 123, title: 'Lorem ipsum' }}
+            sx={{ width: 600 }}
+        >
+            <SimpleForm>
+                <TextInput source="id" />
+                <TextInput source="title" disabled readOnly />
+                <FormInspector />
+            </SimpleForm>
+        </Create>
+    );
+};
 
 export const DefaultValue = () => (
     <AdminContext>

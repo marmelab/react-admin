@@ -140,7 +140,7 @@ const postFiltersReadOnly = [<SearchInput source="q" alwaysOn readOnly />];
 
 const BookListReadOnly = () => {
     return (
-        <List filters={postFilters}>
+        <List filters={postFiltersReadOnly}>
             <Datagrid>
                 <TextField source="id" />
                 <TextField source="title" />
