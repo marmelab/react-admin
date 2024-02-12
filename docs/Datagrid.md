@@ -35,37 +35,37 @@ export const PostList = () => (
 
 ![The `<Datagrid>` component](./img/tutorial_post_list_less_columns.png)
 
-You can find more advanced examples of `<Datagrid>` usage in the [demos](./Demos.md). 
+You can find more advanced examples of `<Datagrid>` usage in the [demos](./Demos.md).
 
 The `<Datagrid>` is an **iterator** component: it gets an array of records from the `ListContext`, and iterates to display each record in a row. Other examples of iterator component are [`<SimpleList>`](./SimpleList.md) and [`<SingleFieldList>`](./SingleFieldList.md).
 
 **Tip**: If you need more Datagrid features, check out these two alternative components:
 
 - [`<EditableDatagrid>`](./EditableDatagrid.md)<img class="icon" src="./img/premium.svg" /> lets users edit the content right in the datagrid
-- [`<DatagridAG>`](./DatagridAG.md)<img class="icon" src="./img/premium.svg" /> adds suport for column reordering, aggregation, pivoting, row grouping, infinite scroll, etc. 
+- [`<DatagridAG>`](./DatagridAG.md)<img class="icon" src="./img/premium.svg" /> adds suport for column reordering, aggregation, pivoting, row grouping, infinite scroll, etc.
 
 Both are [Enterprise Edition](https://marmelab.com/ra-enterprise) components.
 
 ## Props
 
-| Prop | Required | Type | Default | Description |
-| --- | --- | --- | --- | --- |
-| `children` | Required | Element | n/a | The list of `<Field>` components to render as columns. |
-| `body` | Optional | Element | `<Datagrid Body>` | The component used to render the body of the table. |
-| `bulkActionButtons` | Optional | Element | `<BulkDelete Button>` | The component used to render the bulk action buttons. |
-| `empty` | Optional | Element | `<Empty>` | The component used to render the empty table. |
-| `expand` | Optional | Element |  | The component used to render the expand panel for each row. |
-| `expandSingle` | Optional | Boolean | `false` | Whether to allow only one expanded row at a time. |
-| `header` | Optional | Element | `<Datagrid Header>` | The component used to render the table header. |
-| `hover` | Optional | Boolean | `true` | Whether to highlight the row under the mouse. |
-| `isRowExpandable` | Optional | Function | `() => true` | A function that returns whether a row is expandable. |
-| `isRowSelectable` | Optional | Function | `() => true` | A function that returns whether a row is selectable. |
-| `optimized` | Optional | Boolean | `false` | Whether to optimize the rendering of the table. |
-| `rowClick` | Optional | mixed | | The action to trigger when the user clicks on a row.  |
-| `rowStyle` | Optional | Function | | A function that returns the style to apply to a row. |
-| `rowSx` | Optional | Function | | A function that returns the sx prop to apply to a row. |
-| `size` | Optional | `'small'` or `'medium'` | `'small'` | The size of the table. |
-| `sx` | Optional | Object | | The sx prop passed down to the Material UI `<Table>` element. |
+| Prop                | Required | Type                    | Default               | Description                                                   |
+| ------------------- | -------- | ----------------------- | --------------------- | ------------------------------------------------------------- |
+| `children`          | Required | Element                 | n/a                   | The list of `<Field>` components to render as columns.        |
+| `body`              | Optional | Element                 | `<Datagrid Body>`     | The component used to render the body of the table.           |
+| `bulkActionButtons` | Optional | Element                 | `<BulkDelete Button>` | The component used to render the bulk action buttons.         |
+| `empty`             | Optional | Element                 | `<Empty>`             | The component used to render the empty table.                 |
+| `expand`            | Optional | Element                 |                       | The component used to render the expand panel for each row.   |
+| `expandSingle`      | Optional | Boolean                 | `false`               | Whether to allow only one expanded row at a time.             |
+| `header`            | Optional | Element                 | `<Datagrid Header>`   | The component used to render the table header.                |
+| `hover`             | Optional | Boolean                 | `true`                | Whether to highlight the row under the mouse.                 |
+| `isRowExpandable`   | Optional | Function                | `() => true`          | A function that returns whether a row is expandable.          |
+| `isRowSelectable`   | Optional | Function                | `() => true`          | A function that returns whether a row is selectable.          |
+| `optimized`         | Optional | Boolean                 | `false`               | Whether to optimize the rendering of the table.               |
+| `rowClick`          | Optional | mixed                   |                       | The action to trigger when the user clicks on a row.          |
+| `rowStyle`          | Optional | Function                |                       | A function that returns the style to apply to a row.          |
+| `rowSx`             | Optional | Function                |                       | A function that returns the sx prop to apply to a row.        |
+| `size`              | Optional | `'small'` or `'medium'` | `'small'`             | The size of the table.                                        |
+| `sx`                | Optional | Object                  |                       | The sx prop passed down to the Material UI `<Table>` element. |
 
 Additional props are passed down to [the Material UI `<Table>` element](https://mui.com/material-ui/api/table/).
 
@@ -379,7 +379,7 @@ const CustomResetViewsButton = () => {
 
 `<Datagrid>` accepts a list of Field components as children. It inspects each child's `source` and/or `label` props to determine the name of the column.
 
-What's a Field component? Simply a component that reads the record (via `useRecordContext`) and renders a value. React-admin includes many Field components that you can use as children of `<Datagrid>` (`<TextField>`, `<NumberField>`, `<DateField>`, `<ReferenceField>`, and many more). Check [the Fields documentation](./Fields.md) for more information. 
+What's a Field component? Simply a component that reads the record (via `useRecordContext`) and renders a value. React-admin includes many Field components that you can use as children of `<Datagrid>` (`<TextField>`, `<NumberField>`, `<DateField>`, `<ReferenceField>`, and many more). Check [the Fields documentation](./Fields.md) for more information.
 
 You can even create your own field components.
 
@@ -404,7 +404,7 @@ export const UserList = () => (
 );
 ```
 
-`<Datagrid>` also inspects its children for `headerClassName` and `cellClassName` props, and gives the class names to the headers and the cells of that column. 
+`<Datagrid>` also inspects its children for `headerClassName` and `cellClassName` props, and gives the class names to the headers and the cells of that column.
 
 Finally, `<Datagrid>` inspects children for props that indicate how it should be sorted (see [the Customizing The Sort Order For Columns section](#customizing-column-sort)) below.
 
@@ -437,7 +437,7 @@ const PostList = () => (
 </video>
 
 
-To show more data from the resource without adding too many columns, you can show data in an expandable panel below the row on demand, using the `expand` prop. 
+To show more data from the resource without adding too many columns, you can show data in an expandable panel below the row on demand, using the `expand` prop.
 
 For instance, this code shows the `body` of a post in an expandable panel:
 
@@ -605,9 +605,9 @@ const PostPanel = () => {
 
 const PostList = () => (
     <List>
-        <Datagrid 
+        <Datagrid
             expand={<PostPanel />}
-            isRowExpandable={row => row.has_detail}    
+            isRowExpandable={row => row.has_detail}
         >
             <TextField source="id" />
             <TextField source="title" />
@@ -643,7 +643,7 @@ export const PostList = () => (
 When displaying large pages of data, you might experience some performance issues.
 This is mostly due to the fact that we iterate over the `<Datagrid>` children and clone them.
 
-In such cases, you can opt-in for an optimized version of the `<Datagrid>` by setting its `optimized` prop to `true`. 
+In such cases, you can opt-in for an optimized version of the `<Datagrid>` by setting its `optimized` prop to `true`.
 Be aware that you can't have dynamic children, such as those displayed or hidden by checking permissions, when using this mode.
 
 ```tsx
@@ -699,7 +699,7 @@ import { Identifier, RaRecord } from 'react-admin';
 import fetchUserRights from './fetchUserRights';
 
 const getPermissions = useGetPermissions();
-const postRowClick = (id: Identifier, resource: string, record: RaRecord) => 
+const postRowClick = (id: Identifier, resource: string, record: RaRecord) =>
     useGetPermissions()
     .then(permissions => permissions === 'admin' ? 'edit' : 'show');
 ```
@@ -708,7 +708,7 @@ const postRowClick = (id: Identifier, resource: string, record: RaRecord) =>
 
 *Deprecated - use [`rowSx`](#rowsx) instead.*
 
-You can customize the `<Datagrid>` row style (applied to the `<tr>` element) based on the record, thanks to the `rowStyle` prop, which expects a function. React-admin calls this function for each row, passing the current record and index as arguments. The function should return a style object, which react-admin uses as a `<tr style>` prop. 
+You can customize the `<Datagrid>` row style (applied to the `<tr>` element) based on the record, thanks to the `rowStyle` prop, which expects a function. React-admin calls this function for each row, passing the current record and index as arguments. The function should return a style object, which react-admin uses as a `<tr style>` prop.
 
 For instance, this allows to apply a custom background to the entire row if one value of the record - like its number of views - passes a certain threshold.
 
@@ -729,7 +729,7 @@ export const PostList = () => (
 
 ## `rowSx`
 
-You can customize the styles of rows and cells in `<Datagrid>` (applied to the `<DatagridRow>` element) based on the record, thanks to the `rowSx` prop, which expects a function. React-admin calls this function for each row, passing the current record and index as arguments. The function should return a Material UI [`sx`](https://mui.com/system/getting-started/the-sx-prop/), which react-admin uses as a `<TableRow sx>` prop. 
+You can customize the styles of rows and cells in `<Datagrid>` (applied to the `<DatagridRow>` element) based on the record, thanks to the `rowSx` prop, which expects a function. React-admin calls this function for each row, passing the current record and index as arguments. The function should return a Material UI [`sx`](https://mui.com/system/getting-started/the-sx-prop/), which react-admin uses as a `<TableRow sx>` prop.
 
 For instance, this allows to apply a custom background to the entire row if one value of the record - like its number of views - passes a certain threshold.
 
@@ -762,7 +762,7 @@ export const PostList = () => (
 );
 ```
 
-**Tip**: `size` is actually a prop of the Material UI `<Table>` component. Just like all additional `<Datagrid>` props, it is passed down to the `<Table>` component. 
+**Tip**: `size` is actually a prop of the Material UI `<Table>` component. Just like all additional `<Datagrid>` props, it is passed down to the `<Table>` component.
 
 ## `sx`: CSS API
 
@@ -827,7 +827,7 @@ const PostList = () => (
   Your browser does not support the video tag.
 </video>
 
-You don't need to do anything for this to work, as it's enabled by default. 
+You don't need to do anything for this to work, as it's enabled by default.
 
 ## Configurable
 
@@ -896,6 +896,27 @@ const PostList = () => (
 );
 ```
 
+If you include a [`<SelectColumnsButton>`](./SelectColumnsButton.md) in a page that has more than one `<DatagridConfigurable>`, you have to link the two components by giving them the same preferenceKey:
+
+```tsx
+const PostListActions = () => (
+    <TopToolbar>
+        <SelectColumnsButton preferenceKey="posts.datagrid" />
+    </TopToolbar>
+);
+
+const PostList = () => (
+    <List actions={<PostListActions />}>
+        <DatagridConfigurable preferenceKey="posts.datagrid">
+            <TextField source="id" />
+            <TextField source="title" />
+            <TextField source="author" />
+            <TextField source="year" />
+        </DatagridConfigurable>
+    </List>
+);
+```
+
 The inspector uses the field `source` (or `label` when it's a string) to display the column name. If you use non-field children (e.g. action buttons), then it's your responsibility to wrap them in a component with a `label` prop, that will be used by the inspector. You can use a [`<WrapperField>`](./WrapperField.md) for that purpose:
 
 ```tsx
@@ -940,7 +961,7 @@ The separation between list pages and edit pages is not always relevant. Sometim
   Your browser does not support the video tag.
 </video>
 
-`<EditableDatagrid>` is a drop-in replacement for `<Datagrid>`. It expects 2 additional props: `createForm` and `editForm`, the components to be displayed when a user creates or edits a row. The `<RowForm>` component allows to create such forms using react-admin Input components. 
+`<EditableDatagrid>` is a drop-in replacement for `<Datagrid>`. It expects 2 additional props: `createForm` and `editForm`, the components to be displayed when a user creates or edits a row. The `<RowForm>` component allows to create such forms using react-admin Input components.
 
 ```tsx
 import {
@@ -1075,7 +1096,7 @@ Note how the `permissions` prop is passed down to the custom `filters` component
 
 It's up to your `authProvider` to return whatever you need to check roles and permissions inside your component. Check [the authProvider documentation](./Authentication.md) for more information.
 
-**Tip**: The [ra-rbac module](./AuthRBAC.md#datagrid) provides a wrapper for the `<Datagrid>` with built-in permission check for columns. 
+**Tip**: The [ra-rbac module](./AuthRBAC.md#datagrid) provides a wrapper for the `<Datagrid>` with built-in permission check for columns.
 
 ## Standalone Usage
 
@@ -1195,7 +1216,7 @@ const PostList = () => (
 
 ## Showing / Hiding Columns
 
-The [`<SelectColumnsButton>`](./SelectColumnsButton.md) component lets users hide, show, and reorder datagrid columns. 
+The [`<SelectColumnsButton>`](./SelectColumnsButton.md) component lets users hide, show, and reorder datagrid columns.
 
 <video controls autoplay playsinline muted loop>
   <source src="./img/SelectColumnsButton.webm" type="video/webm"/>
@@ -1237,7 +1258,7 @@ const PostList = () => (
 );
 ```
 
-`<SelectColumnsButton>` must be used in conjunction with `<DatagridConfigurable>`, the configurable version of `<Datagrid>`, described in the next section.
+[`<SelectColumnsButton>`](./SelectColumnsButton.md) must be used in conjunction with `<DatagridConfigurable>`, the configurable version of `<Datagrid>`, described in the next section.
 
 **Tip**: For even more column customization (resizable columns, column grouping, etc.), check out the [`<DatagridAG>`](./DatagridAG.md) component.
 
