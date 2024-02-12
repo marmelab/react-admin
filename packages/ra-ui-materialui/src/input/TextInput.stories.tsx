@@ -388,7 +388,7 @@ const BooksEdit = () => (
 export const FullApp = () => {
     React.useEffect(() => {
         history.replace('/books/5/edit');
-    }, [history]);
+    }, []);
 
     return (
         <Admin dataProvider={dataProvider} history={history}>
