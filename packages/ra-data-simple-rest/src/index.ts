@@ -58,8 +58,9 @@ export default (
                       headers: new Headers({
                           Range: `${resource}=${rangeStart}-${rangeEnd}`,
                       }),
+                      signal: params?.signal,
                   }
-                : {};
+                : { signal: params?.signal };
 
         return httpClient(url, options).then(({ headers, json }) => {
             if (!headers.has(countHeader)) {
@@ -81,7 +82,9 @@ export default (
     },
 
     getOne: (resource, params) =>
-        httpClient(`${apiUrl}/${resource}/${params.id}`).then(({ json }) => ({
+        httpClient(`${apiUrl}/${resource}/${params.id}`, {
+            signal: params?.signal,
+        }).then(({ json }) => ({
             data: json,
         })),
 
@@ -90,7 +93,9 @@ export default (
             filter: JSON.stringify({ id: params.ids }),
         };
         const url = `${apiUrl}/${resource}?${stringify(query)}`;
-        return httpClient(url).then(({ json }) => ({ data: json }));
+        return httpClient(url, { signal: params?.signal }).then(({ json }) => ({
+            data: json,
+        }));
     },
 
     getManyReference: (resource, params) => {
@@ -116,8 +121,9 @@ export default (
                       headers: new Headers({
                           Range: `${resource}=${rangeStart}-${rangeEnd}`,
                       }),
+                      signal: params?.signal,
                   }
-                : {};
+                : { signal: params?.signal };
 
         return httpClient(url, options).then(({ headers, json }) => {
             if (!headers.has(countHeader)) {

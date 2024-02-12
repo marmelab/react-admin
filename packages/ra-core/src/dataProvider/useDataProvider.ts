@@ -111,7 +111,11 @@ export const useDataProvider = <
                                 return response;
                             })
                             .catch(error => {
-                                if (process.env.NODE_ENV !== 'production') {
+                                if (
+                                    process.env.NODE_ENV !== 'production' &&
+                                    // do not log AbortErrors
+                                    !isAbortError(error)
+                                ) {
                                     console.error(error);
                                 }
                                 return logoutIfAccessDenied(error).then(
@@ -143,3 +147,7 @@ export const useDataProvider = <
 
     return dataProviderProxy;
 };
+
+const isAbortError = error =>
+    error instanceof DOMException &&
+    (error as DOMException).name === 'AbortError';

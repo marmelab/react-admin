@@ -269,7 +269,6 @@ const App = () => (
     </Admin>
 );
 ```
-```
 
 ## Removed deprecated hooks
 

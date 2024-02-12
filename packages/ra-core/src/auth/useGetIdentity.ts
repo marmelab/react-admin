@@ -54,11 +54,11 @@ export const useGetIdentity = <ErrorType extends Error = Error>(
 
     const result = useQuery({
         queryKey: ['auth', 'getIdentity'],
-        queryFn: async () => {
+        queryFn: async ({ signal }) => {
             if (!authProvider) return Promise.resolve(defaultIdentity);
             if (typeof authProvider.getIdentity !== 'function') return null;
 
-            const identity = await authProvider.getIdentity();
+            const identity = await authProvider.getIdentity({ signal });
             return identity ?? null;
         },
         ...queryOptions,

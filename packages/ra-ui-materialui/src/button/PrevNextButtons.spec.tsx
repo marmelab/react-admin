@@ -145,6 +145,7 @@ describe('<PrevNextButtons />', () => {
                 sort: { field: 'id', order: 'ASC' },
                 filter: {},
                 meta: undefined,
+                signal: expect.anything(),
             });
         });
     });

@@ -46,24 +46,28 @@ export default (apiUrl, httpClient = fetchUtils.fetchJson): DataProvider => ({
         };
         const url = `${apiUrl}/${resource}?${stringify(query)}`;
 
-        return httpClient(url).then(({ headers, json }) => {
-            if (!headers.has('x-total-count')) {
-                throw new Error(
-                    'The X-Total-Count header is missing in the HTTP Response. The jsonServer Data Provider expects responses for lists of resources to contain this header with the total number of results to build the pagination. If you are using CORS, did you declare X-Total-Count in the Access-Control-Expose-Headers header?'
-                );
+        return httpClient(url, { signal: params?.signal }).then(
+            ({ headers, json }) => {
+                if (!headers.has('x-total-count')) {
+                    throw new Error(
+                        'The X-Total-Count header is missing in the HTTP Response. The jsonServer Data Provider expects responses for lists of resources to contain this header with the total number of results to build the pagination. If you are using CORS, did you declare X-Total-Count in the Access-Control-Expose-Headers header?'
+                    );
+                }
+                return {
+                    data: json,
+                    total: parseInt(
+                        headers.get('x-total-count').split('/').pop(),
+                        10
+                    ),
+                };
             }
-            return {
-                data: json,
-                total: parseInt(
-                    headers.get('x-total-count').split('/').pop(),
-                    10
-                ),
-            };
-        });
+        );
     },
 
     getOne: (resource, params) =>
-        httpClient(`${apiUrl}/${resource}/${params.id}`).then(({ json }) => ({
+        httpClient(`${apiUrl}/${resource}/${params.id}`, {
+            signal: params?.signal,
+        }).then(({ json }) => ({
             data: json,
         })),
 
@@ -72,7 +76,9 @@ export default (apiUrl, httpClient = fetchUtils.fetchJson): DataProvider => ({
             id: params.ids,
         };
         const url = `${apiUrl}/${resource}?${stringify(query)}`;
-        return httpClient(url).then(({ json }) => ({ data: json }));
+        return httpClient(url, { signal: params?.signal }).then(({ json }) => ({
+            data: json,
+        }));
     },
 
     getManyReference: (resource, params) => {
@@ -88,20 +94,22 @@ export default (apiUrl, httpClient = fetchUtils.fetchJson): DataProvider => ({
         };
         const url = `${apiUrl}/${resource}?${stringify(query)}`;
 
-        return httpClient(url).then(({ headers, json }) => {
-            if (!headers.has('x-total-count')) {
-                throw new Error(
-                    'The X-Total-Count header is missing in the HTTP Response. The jsonServer Data Provider expects responses for lists of resources to contain this header with the total number of results to build the pagination. If you are using CORS, did you declare X-Total-Count in the Access-Control-Expose-Headers header?'
-                );
+        return httpClient(url, { signal: params?.signal }).then(
+            ({ headers, json }) => {
+                if (!headers.has('x-total-count')) {
+                    throw new Error(
+                        'The X-Total-Count header is missing in the HTTP Response. The jsonServer Data Provider expects responses for lists of resources to contain this header with the total number of results to build the pagination. If you are using CORS, did you declare X-Total-Count in the Access-Control-Expose-Headers header?'
+                    );
+                }
+                return {
+                    data: json,
+                    total: parseInt(
+                        headers.get('x-total-count').split('/').pop(),
+                        10
+                    ),
+                };
             }
-            return {
-                data: json,
-                total: parseInt(
-                    headers.get('x-total-count').split('/').pop(),
-                    10
-                ),
-            };
-        });
+        );
     },
 
     update: (resource, params) =>

@@ -4,12 +4,14 @@ import { render, waitFor } from '@testing-library/react';
 import { QueryClient } from '@tanstack/react-query';
 
 import { CoreAdminContext } from '../core';
-import { useGetList } from './useGetList';
-import { PaginationPayload, SortPayload } from '../types';
+import { Identifier, PaginationPayload, SortPayload } from '../types';
 import { testDataProvider } from './testDataProvider';
+import { useGetManyReference } from './useGetManyReference';
 
-const UseGetList = ({
+const UseGetManyReference = ({
     resource = 'posts',
+    target = 'comments',
+    id = 1,
     pagination = { page: 1, perPage: 10 },
     sort = { field: 'id', order: 'DESC' } as const,
     filter = {},
@@ -18,6 +20,8 @@ const UseGetList = ({
     callback = null,
 }: {
     resource?: string;
+    target?: string;
+    id?: Identifier;
     pagination?: PaginationPayload;
     sort?: SortPayload;
     filter?: any;
@@ -25,20 +29,20 @@ const UseGetList = ({
     meta?: any;
     callback?: any;
 }) => {
-    const hookValue = useGetList(
+    const hookValue = useGetManyReference(
         resource,
-        { pagination, sort, filter, meta },
+        { target, id, pagination, sort, filter, meta },
         options
     );
     if (callback) callback(hookValue);
     return <div>hello</div>;
 };
 
-describe('useGetList', () => {
-    it('should call dataProvider.getList() on mount', async () => {
+describe('useGetManyReference', () => {
+    it('should call dataProvider.getManyReference() on mount', async () => {
         const dataProvider = testDataProvider({
             // @ts-ignore
-            getList: jest.fn(() =>
+            getManyReference: jest.fn(() =>
                 Promise.resolve({
                     data: [{ id: 1, title: 'foo' }],
                     total: 1,
@@ -47,14 +51,16 @@ describe('useGetList', () => {
         });
         render(
             <CoreAdminContext dataProvider={dataProvider}>
-                <UseGetList pagination={{ page: 1, perPage: 20 }} />
+                <UseGetManyReference />
             </CoreAdminContext>
         );
         await waitFor(() => {
-            expect(dataProvider.getList).toBeCalledTimes(1);
-            expect(dataProvider.getList).toBeCalledWith('posts', {
+            expect(dataProvider.getManyReference).toBeCalledTimes(1);
+            expect(dataProvider.getManyReference).toBeCalledWith('posts', {
+                target: 'comments',
+                id: 1,
                 filter: {},
-                pagination: { page: 1, perPage: 20 },
+                pagination: { page: 1, perPage: 10 },
                 sort: { field: 'id', order: 'DESC' },
                 signal: expect.anything(),
             });
@@ -64,72 +70,71 @@ describe('useGetList', () => {
     it('should not call the dataProvider on update', async () => {
         const dataProvider = testDataProvider({
             // @ts-ignore
-            getList: jest.fn(() =>
+            getManyReference: jest.fn(() =>
                 Promise.resolve({ data: [{ id: 1, title: 'foo' }], total: 1 })
             ),
         });
         const { rerender } = render(
             <CoreAdminContext dataProvider={dataProvider}>
-                <UseGetList />
+                <UseGetManyReference />
             </CoreAdminContext>
         );
         await waitFor(() => {
-            expect(dataProvider.getList).toBeCalledTimes(1);
+            expect(dataProvider.getManyReference).toBeCalledTimes(1);
         });
         rerender(
             <CoreAdminContext dataProvider={dataProvider}>
-                <UseGetList />
+                <UseGetManyReference />
             </CoreAdminContext>
         );
         await waitFor(() => {
-            expect(dataProvider.getList).toBeCalledTimes(1);
+            expect(dataProvider.getManyReference).toBeCalledTimes(1);
         });
     });
 
     it('should call the dataProvider on update when the resource changes', async () => {
         const dataProvider = testDataProvider({
             // @ts-ignore
-            getList: jest.fn(() =>
+            getManyReference: jest.fn(() =>
                 Promise.resolve({ data: [{ id: 1, title: 'foo' }], total: 1 })
             ),
         });
         const { rerender } = render(
             <CoreAdminContext dataProvider={dataProvider}>
-                <UseGetList />
+                <UseGetManyReference />
             </CoreAdminContext>
         );
         await waitFor(() => {
-            expect(dataProvider.getList).toBeCalledTimes(1);
+            expect(dataProvider.getManyReference).toBeCalledTimes(1);
         });
         rerender(
             <CoreAdminContext dataProvider={dataProvider}>
-                <UseGetList resource="comments" />
+                <UseGetManyReference resource="comments" />
             </CoreAdminContext>
         );
         await waitFor(() => {
-            expect(dataProvider.getList).toBeCalledTimes(2);
+            expect(dataProvider.getManyReference).toBeCalledTimes(2);
         });
     });
 
     it('should accept a meta parameter', async () => {
         const dataProvider = testDataProvider({
             // @ts-ignore
-            getList: jest.fn(() =>
+            getManyReference: jest.fn(() =>
                 Promise.resolve({ data: [{ id: 1, title: 'foo' }], total: 1 })
             ),
         });
         render(
             <CoreAdminContext dataProvider={dataProvider}>
-                <UseGetList
-                    pagination={{ page: 1, perPage: 20 }}
-                    meta={{ hello: 'world' }}
-                />
+                <UseGetManyReference meta={{ hello: 'world' }} />
             </CoreAdminContext>
         );
         await waitFor(() => {
-            expect(dataProvider.getList).toBeCalledWith('posts', {
+            expect(dataProvider.getManyReference).toBeCalledWith('posts', {
+                target: 'comments',
+                id: 1,
                 filter: {},
-                pagination: { page: 1, perPage: 20 },
+                pagination: { page: 1, perPage: 10 },
                 sort: { field: 'id', order: 'DESC' },
                 meta: { hello: 'world' },
                 signal: expect.anything(),
@@ -143,8 +148,10 @@ describe('useGetList', () => {
         queryClient.setQueryData(
             [
                 'posts',
-                'getList',
+                'getManyReference',
                 {
+                    target: 'comments',
+                    id: 1,
                     pagination: { page: 1, perPage: 10 },
                     sort: { field: 'id', order: 'DESC' },
                     filter: {},
@@ -157,7 +164,7 @@ describe('useGetList', () => {
         );
         const dataProvider = testDataProvider({
             // @ts-ignore
-            getList: jest.fn(() =>
+            getManyReference: jest.fn(() =>
                 Promise.resolve({ data: [{ id: 1, title: 'live' }], total: 1 })
             ),
         });
@@ -166,7 +173,7 @@ describe('useGetList', () => {
                 queryClient={queryClient}
                 dataProvider={dataProvider}
             >
-                <UseGetList callback={callback} />
+                <UseGetManyReference callback={callback} />
             </CoreAdminContext>
         );
         await waitFor(() => {
@@ -185,7 +192,7 @@ describe('useGetList', () => {
         const callback = jest.fn();
         const dataProvider = testDataProvider({
             // @ts-ignore
-            getList: jest.fn(() =>
+            getManyReference: jest.fn(() =>
                 Promise.resolve({
                     data: [
                         { id: 1, title: 'foo' },
@@ -197,7 +204,7 @@ describe('useGetList', () => {
         });
         render(
             <CoreAdminContext dataProvider={dataProvider}>
-                <UseGetList callback={callback} />
+                <UseGetManyReference callback={callback} />
             </CoreAdminContext>
         );
         await waitFor(() => {
@@ -217,11 +224,16 @@ describe('useGetList', () => {
         const callback = jest.fn();
         const dataProvider = testDataProvider({
             // @ts-ignore
-            getList: jest.fn(() => Promise.reject(new Error('failed'))),
+            getManyReference: jest.fn(() =>
+                Promise.reject(new Error('failed'))
+            ),
         });
         render(
             <CoreAdminContext dataProvider={dataProvider}>
-                <UseGetList options={{ retry: false }} callback={callback} />
+                <UseGetManyReference
+                    options={{ retry: false }}
+                    callback={callback}
+                />
             </CoreAdminContext>
         );
         await waitFor(() => {
@@ -241,7 +253,7 @@ describe('useGetList', () => {
         const onSuccess2 = jest.fn();
         const dataProvider = testDataProvider({
             // @ts-ignore
-            getList: jest
+            getManyReference: jest
                 .fn()
                 .mockReturnValueOnce(
                     Promise.resolve({
@@ -264,8 +276,8 @@ describe('useGetList', () => {
         });
         render(
             <CoreAdminContext dataProvider={dataProvider}>
-                <UseGetList options={{ onSuccess: onSuccess1 }} />
-                <UseGetList
+                <UseGetManyReference options={{ onSuccess: onSuccess1 }} />
+                <UseGetManyReference
                     resource="comments"
                     options={{ onSuccess: onSuccess2 }}
                 />
@@ -296,11 +308,13 @@ describe('useGetList', () => {
         const onError = jest.fn();
         const dataProvider = testDataProvider({
             // @ts-ignore
-            getList: jest.fn(() => Promise.reject(new Error('failed'))),
+            getManyReference: jest.fn(() =>
+                Promise.reject(new Error('failed'))
+            ),
         });
         render(
             <CoreAdminContext dataProvider={dataProvider}>
-                <UseGetList options={{ onError, retry: false }} />
+                <UseGetManyReference options={{ onError, retry: false }} />
             </CoreAdminContext>
         );
         await waitFor(() => {
@@ -314,7 +328,7 @@ describe('useGetList', () => {
         const queryClient = new QueryClient();
         const dataProvider = testDataProvider({
             // @ts-ignore
-            getList: jest.fn(() =>
+            getManyReference: jest.fn(() =>
                 Promise.resolve({ data: [{ id: 1, title: 'live' }], total: 1 })
             ),
         });
@@ -323,7 +337,7 @@ describe('useGetList', () => {
                 queryClient={queryClient}
                 dataProvider={dataProvider}
             >
-                <UseGetList callback={callback} />
+                <UseGetManyReference callback={callback} />
             </CoreAdminContext>
         );
         await waitFor(() => {
@@ -342,7 +356,7 @@ describe('useGetList', () => {
         const queryClient = new QueryClient();
         const dataProvider = testDataProvider({
             // @ts-ignore
-            getList: jest.fn(() =>
+            getManyReference: jest.fn(() =>
                 Promise.resolve({ data: [{ id: 1, title: 'live' }], total: 1 })
             ),
         });
@@ -351,7 +365,10 @@ describe('useGetList', () => {
                 queryClient={queryClient}
                 dataProvider={dataProvider}
             >
-                <UseGetList callback={callback} options={{ onSuccess }} />
+                <UseGetManyReference
+                    callback={callback}
+                    options={{ onSuccess }}
+                />
             </CoreAdminContext>
         );
         await waitFor(() => {
@@ -369,48 +386,10 @@ describe('useGetList', () => {
         ).toEqual({ id: 1, title: 'live' });
     });
 
-    it('should not pre-populate getOne Query Cache if more than 100 results', async () => {
-        const callback: any = jest.fn();
-        const queryClient = new QueryClient();
-        const dataProvider = testDataProvider({
-            // @ts-ignore
-            getList: jest.fn(() =>
-                Promise.resolve({
-                    data: Array.from(Array(101).keys()).map(index => ({
-                        id: index + 1,
-                        title: `item ${index + 1}`,
-                    })),
-                    total: 101,
-                })
-            ),
-        });
-        render(
-            <CoreAdminContext
-                queryClient={queryClient}
-                dataProvider={dataProvider}
-            >
-                <UseGetList callback={callback} />
-            </CoreAdminContext>
-        );
-        await waitFor(() => {
-            expect(callback).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    data: expect.arrayContaining([
-                        { id: 1, title: 'item 1' },
-                        { id: 101, title: 'item 101' },
-                    ]),
-                })
-            );
-        });
-        expect(
-            queryClient.getQueryData(['posts', 'getOne', { id: '1' }])
-        ).toBeUndefined();
-    });
-
     it('should abort the request if the query is canceled', async () => {
         const abort = jest.fn();
         const dataProvider = testDataProvider({
-            getList: jest.fn(
+            getManyReference: jest.fn(
                 (_resource, { signal }) =>
                     new Promise(() => {
                         signal.addEventListener('abort', () => {
@@ -425,14 +404,14 @@ describe('useGetList', () => {
                 dataProvider={dataProvider}
                 queryClient={queryClient}
             >
-                <UseGetList resource="posts" />
+                <UseGetManyReference />
             </CoreAdminContext>
         );
         await waitFor(() => {
-            expect(dataProvider.getList).toHaveBeenCalled();
+            expect(dataProvider.getManyReference).toHaveBeenCalled();
         });
         queryClient.cancelQueries({
-            queryKey: ['posts', 'getList'],
+            queryKey: ['posts', 'getManyReference'],
         });
         await waitFor(() => {
             expect(abort).toHaveBeenCalled();

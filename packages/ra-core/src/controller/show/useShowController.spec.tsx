@@ -64,7 +64,10 @@ describe('useShowController', () => {
             </CoreAdminContext>
         );
         await waitFor(() => {
-            expect(getOne).toHaveBeenCalledWith('posts', { id: 'test?' });
+            expect(getOne).toHaveBeenCalledWith('posts', {
+                id: 'test?',
+                signal: expect.anything(),
+            });
         });
         await waitFor(() => {
             expect(screen.queryAllByText('hello')).toHaveLength(1);
@@ -100,7 +103,10 @@ describe('useShowController', () => {
             </CoreAdminContext>
         );
         await waitFor(() => {
-            expect(getOne).toHaveBeenCalledWith('posts', { id: 0 });
+            expect(getOne).toHaveBeenCalledWith('posts', {
+                id: 0,
+                signal: expect.anything(),
+            });
         });
         await waitFor(() => {
             expect(screen.queryAllByText('hello')).toHaveLength(1);
@@ -177,6 +183,7 @@ describe('useShowController', () => {
             expect(getOne).toHaveBeenCalledWith('posts', {
                 id: '1',
                 meta: { foo: 'bar' },
+                signal: expect.anything(),
             });
         });
     });

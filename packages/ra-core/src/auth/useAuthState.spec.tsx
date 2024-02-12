@@ -4,6 +4,7 @@ import { waitFor, render, screen } from '@testing-library/react';
 import { CoreAdminContext } from '../core/CoreAdminContext';
 
 import useAuthState from './useAuthState';
+import { QueryClient } from '@tanstack/react-query';
 
 const UseAuth = (authParams: any) => {
     const state = useAuthState(authParams);
@@ -45,5 +46,37 @@ describe('useAuthState', () => {
             expect(screen.queryByText('LOADING')).toBeNull();
         });
         screen.getByText('AUTHENTICATED: false');
+    });
+
+    it('should abort the request if the query is canceled', async () => {
+        const abort = jest.fn();
+        const authProvider = {
+            checkAuth: jest.fn(
+                ({ signal }) =>
+                    new Promise(() => {
+                        signal.addEventListener('abort', () => {
+                            abort(signal.reason);
+                        });
+                    })
+            ) as any,
+        } as any;
+        const queryClient = new QueryClient();
+        render(
+            <CoreAdminContext
+                authProvider={authProvider}
+                queryClient={queryClient}
+            >
+                <UseAuth />
+            </CoreAdminContext>
+        );
+        await waitFor(() => {
+            expect(authProvider.checkAuth).toHaveBeenCalled();
+        });
+        queryClient.cancelQueries({
+            queryKey: ['auth', 'checkAuth'],
+        });
+        await waitFor(() => {
+            expect(abort).toHaveBeenCalled();
+        });
     });
 });

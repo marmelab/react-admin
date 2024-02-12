@@ -74,6 +74,7 @@ describe('useListController', () => {
                     pagination: { page: 1, perPage: 10 },
                     sort: { field: 'id', order: 'ASC' },
                     meta: { foo: 'bar' },
+                    signal: expect.anything(),
                 });
             });
         });

@@ -306,6 +306,7 @@ describe('Edit Page', () => {
     it('should refresh the list when the update fails', () => {
         ListPagePosts.navigate();
         ListPagePosts.nextPage(); // Ensure the record is visible in the table
+        cy.contains('Sed quo et et fugiat modi'); // wait for data
 
         EditPostPage.navigate();
         EditPostPage.setInputValue('input', 'title', 'f00bar');

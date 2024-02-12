@@ -56,4 +56,45 @@ describe('useGetIdentity', () => {
         expect(screen.queryByText(/Error/)).toBeNull();
         expect(screen.queryByText('null')).not.toBeNull();
     });
+
+    it('should abort the request if the query is canceled', async () => {
+        const abort = jest.fn();
+        const authProvider = {
+            getIdentity: jest.fn(
+                ({ signal }) =>
+                    new Promise(() => {
+                        signal.addEventListener('abort', () => {
+                            abort(signal.reason);
+                        });
+                    })
+            ) as any,
+        } as any;
+        const queryClient = new QueryClient();
+        const Identity = () => {
+            const { data, error, isPending } = useGetIdentity({ retry: false });
+            return isPending ? (
+                <>Loading</>
+            ) : error ? (
+                <>{`Error: ${error.message}`}</>
+            ) : (
+                <>{String(data)}</>
+            );
+        };
+        render(
+            <QueryClientProvider client={queryClient}>
+                <AuthContext.Provider value={authProvider}>
+                    <Identity />
+                </AuthContext.Provider>
+            </QueryClientProvider>
+        );
+        await waitFor(() => {
+            expect(authProvider.getIdentity).toHaveBeenCalled();
+        });
+        queryClient.cancelQueries({
+            queryKey: ['auth', 'getIdentity'],
+        });
+        await waitFor(() => {
+            expect(abort).toHaveBeenCalled();
+        });
+    });
 });

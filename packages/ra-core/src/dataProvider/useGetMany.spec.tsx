@@ -6,6 +6,7 @@ import { CoreAdminContext } from '../core';
 import { useGetMany } from './useGetMany';
 import { testDataProvider } from '../dataProvider';
 import { useState } from 'react';
+import { QueryClient } from '@tanstack/react-query';
 
 const UseGetMany = ({
     resource,
@@ -70,6 +71,7 @@ describe('useGetMany', () => {
             expect(dataProvider.getMany).toHaveBeenCalledTimes(1);
             expect(dataProvider.getMany).toHaveBeenCalledWith('posts', {
                 ids: [1],
+                signal: expect.anything(),
             });
         });
     });
@@ -169,6 +171,7 @@ describe('useGetMany', () => {
             expect(dataProvider.getMany).toHaveBeenCalledWith('posts', {
                 ids: [1],
                 meta: { hello: 'world' },
+                signal: expect.anything(),
             });
         });
     });
@@ -361,5 +364,37 @@ describe('useGetMany', () => {
                 isLoading: false,
             })
         );
+    });
+
+    it('should abort the request if the query is canceled', async () => {
+        const abort = jest.fn();
+        const dataProvider = testDataProvider({
+            getMany: jest.fn(
+                (_resource, { signal }) =>
+                    new Promise(() => {
+                        signal.addEventListener('abort', () => {
+                            abort(signal.reason);
+                        });
+                    })
+            ) as any,
+        });
+        const queryClient = new QueryClient();
+        render(
+            <CoreAdminContext
+                dataProvider={dataProvider}
+                queryClient={queryClient}
+            >
+                <UseGetMany resource="posts" ids={[1]} />
+            </CoreAdminContext>
+        );
+        await waitFor(() => {
+            expect(dataProvider.getMany).toHaveBeenCalled();
+        });
+        queryClient.cancelQueries({
+            queryKey: ['posts', 'getMany', { ids: ['1'] }],
+        });
+        await waitFor(() => {
+            expect(abort).toHaveBeenCalled();
+        });
     });
 });
