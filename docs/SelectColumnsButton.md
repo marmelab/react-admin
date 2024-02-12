@@ -67,13 +67,13 @@ If you include `<SelectColumnsButton>` in a page that has more than one `<Datagr
 ```jsx
 const BookListActions = () => (
     <TopToolbar>
-        <SelectColumnsButton preferenceKey="postList1" />
+        <SelectColumnsButton preferenceKey="books.datagrid" />
     </TopToolbar>
 );
 
 const BookList = () => (
     <List actions={<BookListActions />}>
-        <DatagridConfigurable preferenceKey="postList1">
+        <DatagridConfigurable preferenceKey="books.datagrid">
             <TextField source="id" />
             <TextField source="title" />
             <TextField source="author" />
