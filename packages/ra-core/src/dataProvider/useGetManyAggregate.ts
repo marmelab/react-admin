@@ -274,7 +274,9 @@ const callGetManyQueries = batch((calls: GetManyCallArgs[]) => {
         }
 
         const callThatHasAllAggregatedIds = callsForResource.find(
-            ({ ids }) => JSON.stringify(ids) === JSON.stringify(aggregatedIds)
+            ({ ids, signal }) =>
+                JSON.stringify(ids) === JSON.stringify(aggregatedIds) &&
+                !signal.aborted
         );
         if (callThatHasAllAggregatedIds) {
             // There is only one call (no aggregation), or one of the calls has the same ids as the sum of all calls.

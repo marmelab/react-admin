@@ -375,12 +375,83 @@ describe('useGetManyAggregate', () => {
         );
     });
 
-    it('should abort the request if the query is canceled', async () => {
+    it.each([
+        // case when we have only one query
+        { queries: [{ ids: ['1'] }], expectedQueryKeyParams: { ids: ['1'] } },
+        // case when we have multiple queries on the same id (deduplication)
+        {
+            queries: [{ ids: ['1'] }, { ids: ['1'] }],
+            expectedQueryKeyParams: { ids: ['1'] },
+        },
+        // case when we have multiple queries on different ids (aggregation)
+        {
+            queries: [{ ids: ['1'] }, { ids: ['2'] }],
+            expectedQueryKeyParams: { ids: ['1', '2'] },
+        },
+        // case when we have multiple queries on different ids, including a call with all ids
+        // (no manual aggregation needed)
+        {
+            queries: [{ ids: ['1'] }, { ids: ['2'] }, { ids: ['1', '2'] }],
+            expectedQueryKeyParams: { ids: ['1', '2'] },
+        },
+    ])(
+        'should abort the request if the query is canceled',
+        async ({ queries, expectedQueryKeyParams }) => {
+            const abort = jest.fn();
+            const dataProvider = testDataProvider({
+                getMany: jest.fn(
+                    (_resource, { signal }) =>
+                        new Promise(() => {
+                            signal.addEventListener('abort', () => {
+                                abort(signal.reason);
+                            });
+                        })
+                ) as any,
+            });
+            const queryClient = new QueryClient();
+            render(
+                <CoreAdminContext
+                    dataProvider={dataProvider}
+                    queryClient={queryClient}
+                >
+                    {queries.map((query, index) => (
+                        <UseGetManyAggregate
+                            key={index}
+                            resource="posts"
+                            {...query}
+                        />
+                    ))}
+                </CoreAdminContext>
+            );
+            await waitFor(() => {
+                expect(dataProvider.getMany).toHaveBeenCalled();
+            });
+            expect(dataProvider.getMany).toHaveBeenCalledTimes(1);
+            expect(dataProvider.getMany).toHaveBeenCalledWith(
+                'posts',
+                expect.objectContaining(expectedQueryKeyParams)
+            );
+            queryClient.cancelQueries({
+                queryKey: ['posts', 'getMany', expectedQueryKeyParams],
+            });
+            await waitFor(() => {
+                expect(abort).toHaveBeenCalled();
+            });
+        }
+    );
+
+    it('should only call a query that is not yet aborted and then abort it successfully', async () => {
         const abort = jest.fn();
+        const reject = jest.fn();
         const dataProvider = testDataProvider({
             getMany: jest.fn(
                 (_resource, { signal }) =>
                     new Promise(() => {
+                        if (signal.aborted) {
+                            reject(
+                                'Test failure: called a query which already received an abort signal'
+                            );
+                        }
                         signal.addEventListener('abort', () => {
                             abort(signal.reason);
                         });
@@ -388,17 +459,35 @@ describe('useGetManyAggregate', () => {
             ) as any,
         });
         const queryClient = new QueryClient();
-        render(
+        const { rerender } = render(
             <CoreAdminContext
                 dataProvider={dataProvider}
                 queryClient={queryClient}
             >
-                <UseGetManyAggregate resource="posts" ids={[1]} />
+                <UseGetManyAggregate resource="posts" ids={['1']} />
+            </CoreAdminContext>
+        );
+        queryClient.cancelQueries({
+            queryKey: ['posts', 'getMany', { ids: ['1'] }],
+        });
+        rerender(
+            <CoreAdminContext
+                dataProvider={dataProvider}
+                queryClient={queryClient}
+            >
+                <UseGetManyAggregate resource="posts" ids={['1']} />
+                <UseGetManyAggregate resource="posts" ids={['1']} />
             </CoreAdminContext>
         );
         await waitFor(() => {
             expect(dataProvider.getMany).toHaveBeenCalled();
         });
+        expect(dataProvider.getMany).toHaveBeenCalledTimes(1);
+        expect(dataProvider.getMany).toHaveBeenCalledWith(
+            'posts',
+            expect.objectContaining({ ids: ['1'] })
+        );
+        expect(reject).not.toHaveBeenCalled();
         queryClient.cancelQueries({
             queryKey: ['posts', 'getMany', { ids: ['1'] }],
         });
