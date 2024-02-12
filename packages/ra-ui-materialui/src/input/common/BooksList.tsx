@@ -1,5 +1,5 @@
 import React from 'react';
-import { Datagrid, List, NumberField, TextField } from '..';
+import { Datagrid, List, NumberField, TextField } from './../..';
 
 export const BooksList = () => (
     <List>

@@ -1,5 +1,6 @@
 import React from 'react';
-import { Create, NumberInput, SimpleForm, TextInput } from '..';
+import { NumberInput, TextInput } from './..';
+import { Create, SimpleForm } from './../..';
 
 export const BooksCreate = () => (
     <Create>

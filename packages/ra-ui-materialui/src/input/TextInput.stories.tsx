@@ -11,10 +11,10 @@ import { SaveButton } from '../button';
 import { FormInspector } from './common';
 import { Admin } from '../../../react-admin/src/Admin';
 import { Resource } from '../../../ra-core/src/core/Resource';
-import { dataProvider } from '../common/dataProvider';
-import { history } from '../common/history';
-import { BooksList } from '../common/BooksList';
-import { BooksCreate } from '../common/BooksCreate';
+import { dataProvider } from './common/dataProvider';
+import { history } from './common/history';
+import { BooksList } from './common/BooksList';
+import { BooksCreate } from './common/BooksCreate';
 import { NumberInput } from './NumberInput';
 
 export default { title: 'ra-ui-materialui/input/TextInput' };

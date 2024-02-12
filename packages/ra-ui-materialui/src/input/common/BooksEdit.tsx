@@ -1,5 +1,6 @@
 import React from 'react';
-import { Edit, NumberInput, SimpleForm, TextInput } from '..';
+import { NumberInput, TextInput } from './..';
+import { Edit, SimpleForm } from './../..';
 
 export const BooksEdit = () => (
     <Edit>
