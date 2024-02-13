@@ -91,7 +91,7 @@ export const EventEdit = () => (
 | `parse`      | -        | Function          | `value => value === '' ? null : value` | Callback taking the input value, and returning the value you want stored in the form state.                                                                                                  |
 | `validate`   | -        | Function or Array | -                                      | Validation rules for the input. See the [Validation Documentation](https://marmelab.com/react-admin/Validation.html#per-input-validation-built-in-field-validators) for details.             |
 
-Except for the `format` prop (renamed `mask`), `<TimeInput> accepts the same props as the [MUI X Date/Time pickers](https://mui.com/x/api/date-pickers/). They also accept the common input props.
+Except for the `format` prop (renamed `mask`), `<TimeInput>` accepts the same props as the [MUI X Date/Time pickers](https://mui.com/x/api/date-pickers/). They also accept the common input props.
 
 ### Providing your own `LocalizationProvider`
 
