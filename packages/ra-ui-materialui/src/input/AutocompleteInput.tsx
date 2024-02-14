@@ -562,6 +562,7 @@ If you provided a React element for the optionText prop, you must also provide t
                 id={id}
                 isOptionEqualToValue={isOptionEqualToValue}
                 filterSelectedOptions
+                disabled={disabled || readOnly}
                 renderInput={params => {
                     const mergedTextFieldProps = {
                         readOnly,
@@ -603,7 +604,6 @@ If you provided a React element for the optionText prop, you must also provide t
                             variant={variant}
                             className={AutocompleteInputClasses.textField}
                             {...params}
-                            disabled={disabled || readOnly}
                             InputProps={mergedTextFieldProps}
                             size={size}
                         />
