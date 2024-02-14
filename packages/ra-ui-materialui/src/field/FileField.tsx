@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import Typography from '@mui/material/Typography';
 import { useFieldValue, useTranslate } from 'ra-core';
+import { Call, Objects } from 'hotscript';
 
 import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
 import { FieldProps, fieldPropTypes } from './types';
@@ -111,13 +112,16 @@ export interface FileFieldProps<
     RecordType extends Record<string, any> = Record<string, any>
 > extends FieldProps<RecordType> {
     src?: string;
-    title?: string;
+    title?: Call<Objects.AllPaths, RecordType> extends never
+        ? AnyString
+        : Call<Objects.AllPaths, RecordType>;
     target?: string;
     download?: boolean | string;
     ping?: string;
     rel?: string;
     sx?: SxProps;
 }
+type AnyString = string & {};
 
 FileField.propTypes = {
     ...fieldPropTypes,

@@ -11,14 +11,27 @@ A hook that gets the value of a field of the current record. It gets the current
 
 Here is an example `TextField` component:
 
-```jsx
+```tsx
+// In TextField.tsx
 import * as React from 'react';
-+import { useFieldValue } from 'react-admin';
++import { useFieldValue, type FieldProps } from 'react-admin';
 
-const TextField = (props) => {
+export const TextField = (props: FieldProps) => {
     const value = useFieldValue(props);
-    return record ? <span>{value}</span> : null;
+    return <span>{value}</span>;
 }
+
+// In PostShow.tsx
+import { Show, SimpleShowLayout } from 'react-admin';
+import { TextField } from './TextField.tsx';
+
+export const PostShow = () => (
+    <Show>
+        <SimpleShowLayout>
+            <TextField source="author.name" label="Author" />
+        </SimpleShowLayout>
+    </Show>
+);
 ```
 
 ## Params
@@ -27,6 +40,44 @@ const TextField = (props) => {
 
 The name of the property on the record object that contains the value to display. Can be a deep path.
 
+```tsx
+import * as React from 'react';
++import { useFieldValue } from 'react-admin';
+
+export const CustomerCard = () => {
+    const firstName = useFieldValue({ source: 'firstName' });
+    const lastName = useFieldValue({ source: 'lastName' });
+    return <span>{lastName} {firstName}</span>;
+}
+```
+
 ### `record`
 
 The record from which to read the value. Read from the `RecordContext` by default.
+
+
+```tsx
+import * as React from 'react';
++import { useFieldValue, useGetOne } from 'react-admin';
+
+export const CustomerCard = ({ id }: { id: string }) => {
+    const { data } = useGetOne('customer', { id });
+    const firstName = useFieldValue({ source: 'firstName', record: data });
+    const lastName = useFieldValue({ source: 'lastName', record: data });
+    return <span>{lastName} {firstName}</span>;
+}
+```
+
+### `defaultValue`
+
+The value to return when the record does not have a value for the specified `source`.
+
+```tsx
+import * as React from 'react';
++import { useFieldValue } from 'react-admin';
+
+export const CustomerStatus = () => {
+    const status = useFieldValue({ source: 'status', defaultValue: 'active' });
+    return <span>{status}</span>;
+}
+```

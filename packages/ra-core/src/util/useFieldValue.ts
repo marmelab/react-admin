@@ -1,5 +1,5 @@
 import get from 'lodash/get';
-import { RaRecord } from '../types';
+import { Call, Objects } from 'hotscript';
 import { useRecordContext } from '../controller';
 import { useSourceContext } from '../core';
 
@@ -8,6 +8,7 @@ import { useSourceContext } from '../core';
  * @param params The hook parameters
  * @param params.source The field source
  * @param params.record The record to use. Uses the record from the RecordContext if not provided
+ * @param params.defaultValue The value to return when the field value is empty
  * @returns The field value
  *
  * @example
@@ -16,17 +17,31 @@ import { useSourceContext } from '../core';
  *   return <span>{value}</span>;
  * }
  */
-export const useFieldValue = <RecordType = RaRecord>(
+export const useFieldValue = <
+    RecordType extends Record<string, any> = Record<string, any>
+>(
     params: UseFieldValueOptions<RecordType>
 ) => {
-    const { source } = params;
+    const { defaultValue, source } = params;
     const sourceContext = useSourceContext();
     const record = useRecordContext<RecordType>(params);
 
-    return get(record, sourceContext?.getSource(source) ?? source);
+    return get(
+        record,
+        sourceContext?.getSource(source) ?? source,
+        defaultValue
+    );
 };
 
-export interface UseFieldValueOptions<RecordType = RaRecord> {
-    source?: string;
+export interface UseFieldValueOptions<
+    RecordType extends Record<string, any> = Record<string, any>
+> {
+    // FIXME: Find a way to throw a type error when defaultValue is not of RecordType[Source] type
+    defaultValue?: any;
+    source?: Call<Objects.AllPaths, RecordType> extends never
+        ? AnyString
+        : Call<Objects.AllPaths, RecordType>;
     record?: RecordType;
 }
+
+type AnyString = string & {};

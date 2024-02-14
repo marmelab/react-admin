@@ -512,11 +512,13 @@ const TextField = (props) => {
 -    const record = useRecordContext();
 +   const value = useFieldValue(props);
 -   return record ? <span>{record[source]}</span> : null;
-+   return record ? <span>{value}</span> : null;
++   return <span>{value}</span> : null;
 }
 
 export default TextField;
 ```
+
+**Tip**: Note that when using `useFieldValue`, you don't need to check that `record` is defined.
 
 ## Hiding A Field Based On The Value Of Another
 
