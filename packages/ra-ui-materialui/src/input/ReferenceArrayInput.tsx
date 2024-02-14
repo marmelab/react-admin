@@ -102,8 +102,8 @@ export const ReferenceArrayInput = (props: ReferenceArrayInputProps) => {
         <ResourceContextProvider value={reference}>
             <ChoicesContextProvider value={controllerProps}>
                 {React.cloneElement(children, {
-                    disabled: disabled || readOnly,
-                    readOnly,
+                    disabled: children.props.disabled || disabled || readOnly,
+                    readOnly: children.props.readOnly || readOnly,
                 })}
             </ChoicesContextProvider>
         </ResourceContextProvider>
