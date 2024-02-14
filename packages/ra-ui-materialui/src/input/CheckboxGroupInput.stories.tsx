@@ -3,7 +3,12 @@ import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
 import { Typography } from '@mui/material';
 import { FavoriteBorder, Favorite } from '@mui/icons-material';
-import { required, testDataProvider, useRecordContext } from 'ra-core';
+import {
+    Resource,
+    required,
+    testDataProvider,
+    useRecordContext,
+} from 'ra-core';
 import { useFormContext } from 'react-hook-form';
 
 import { AdminContext } from '../AdminContext';
@@ -12,6 +17,14 @@ import { SimpleForm } from '../form';
 import { CheckboxGroupInput } from './CheckboxGroupInput';
 import { ReferenceArrayInput } from './ReferenceArrayInput';
 import { TextInput } from './TextInput';
+import {
+    dataProvider as commonDataProvider,
+    data,
+} from './common/dataProvider';
+import { history } from './common/history';
+import { Admin } from 'react-admin';
+import { BooksCreate } from './common/BooksCreate';
+import { BooksList } from './common/BooksList';
 
 export default { title: 'ra-ui-materialui/input/CheckboxGroupInput' };
 
@@ -336,3 +349,29 @@ export const SetFocus = () => (
         </Create>
     </AdminContext>
 );
+
+const BooksEdit = () => (
+    <Edit>
+        <SimpleForm>
+            <TextInput source="title.en" label="Title" />
+            <CheckboxGroupInput source="genre" choices={data.genres} readOnly />
+        </SimpleForm>
+    </Edit>
+);
+
+export const FullApp = () => {
+    React.useEffect(() => {
+        history.replace('/books/5/edit');
+    }, []);
+
+    return (
+        <Admin dataProvider={commonDataProvider} history={history}>
+            <Resource
+                name="books"
+                list={BooksList}
+                edit={BooksEdit}
+                create={BooksCreate}
+            />
+        </Admin>
+    );
+};

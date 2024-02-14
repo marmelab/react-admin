@@ -22,6 +22,7 @@ export const data = {
             year: 1869,
             time: '2024-02-12T13:45:29.170Z',
             genre: [1, 2],
+            published: true,
         },
         {
             id: 2,
@@ -43,6 +44,7 @@ export const data = {
             year: 1813,
             time: '2024-02-12T13:45:29.170Z',
             genre: [3, 4],
+            published: true,
         },
         {
             id: 3,
@@ -64,6 +66,7 @@ export const data = {
             year: 1890,
             time: '2024-02-12T13:45:29.170Z',
             genre: [5, 6],
+            published: true,
         },
         {
             id: 4,
@@ -85,6 +88,7 @@ export const data = {
             year: 1943,
             time: '2024-02-12T13:45:29.170Z',
             genre: [7, 8],
+            published: true,
         },
         {
             id: 5,
@@ -106,6 +110,7 @@ export const data = {
             year: 1865,
             time: '2024-02-12T13:45:29.170Z',
             genre: [8, 9],
+            published: true,
         },
         {
             id: 6,
@@ -127,6 +132,7 @@ export const data = {
             year: 1856,
             time: '2024-02-12T13:45:29.170Z',
             genre: [10, 11],
+            published: true,
         },
         {
             id: 7,
@@ -148,6 +154,7 @@ export const data = {
             year: 1954,
             time: '2024-02-12T13:45:29.170Z',
             genre: [7, 8],
+            published: true,
         },
         {
             id: 8,
@@ -169,6 +176,7 @@ export const data = {
             year: 1997,
             time: '2024-02-12T13:45:29.170Z',
             genre: [7, 8],
+            published: true,
         },
         {
             id: 9,
@@ -190,6 +198,7 @@ export const data = {
             year: 1988,
             time: '2024-02-12T13:45:29.170Z',
             genre: [12, 13],
+            published: true,
         },
         {
             id: 10,
@@ -211,6 +220,7 @@ export const data = {
             year: 1951,
             time: '2024-02-12T13:45:29.170Z',
             genre: [14, 15],
+            published: true,
         },
     ],
     genres: [

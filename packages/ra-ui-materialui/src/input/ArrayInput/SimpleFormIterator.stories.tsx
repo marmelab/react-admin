@@ -52,21 +52,6 @@ export const Basic = () => (
     </AdminContext>
 );
 
-export const ReadOnly = () => (
-    <AdminContext dataProvider={dataProvider}>
-        <Edit resource="books" id="1">
-            <SimpleForm>
-                <ArrayInput source="authors">
-                    <SimpleFormIterator readOnly>
-                        <TextInput source="name" />
-                        <TextInput source="role" />
-                    </SimpleFormIterator>
-                </ArrayInput>
-            </SimpleForm>
-        </Edit>
-    </AdminContext>
-);
-
 export const AddButton = () => (
     <AdminContext dataProvider={dataProvider}>
         <Edit resource="books" id="1">
@@ -120,6 +105,36 @@ export const Inline = () => (
             <SimpleForm>
                 <ArrayInput source="authors">
                     <SimpleFormIterator inline>
+                        <TextInput source="name" />
+                        <TextInput source="role" />
+                    </SimpleFormIterator>
+                </ArrayInput>
+            </SimpleForm>
+        </Edit>
+    </AdminContext>
+);
+
+export const ReadOnly = () => (
+    <AdminContext dataProvider={dataProvider}>
+        <Edit resource="books" id="1">
+            <SimpleForm>
+                <ArrayInput source="authors">
+                    <SimpleFormIterator readOnly>
+                        <TextInput source="name" />
+                        <TextInput source="role" />
+                    </SimpleFormIterator>
+                </ArrayInput>
+            </SimpleForm>
+        </Edit>
+    </AdminContext>
+);
+
+export const Disabled = () => (
+    <AdminContext dataProvider={dataProvider}>
+        <Edit resource="books" id="1">
+            <SimpleForm>
+                <ArrayInput source="authors">
+                    <SimpleFormIterator disabled>
                         <TextInput source="name" />
                         <TextInput source="role" />
                     </SimpleFormIterator>
@@ -256,7 +271,6 @@ const BooksEdit = () => (
     <Edit>
         <SimpleForm>
             <TextInput source="title.en" label="Title" />
-            <TextInput source="author" />
             <ArrayInput source="authors">
                 <SimpleFormIterator inline readOnly>
                     <TextInput source="name" />

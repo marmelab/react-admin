@@ -5,10 +5,16 @@ import { useFormContext } from 'react-hook-form';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 
 import { AdminContext } from '../AdminContext';
-import { Create } from '../detail';
+import { Create, Edit } from '../detail';
 import { SimpleForm } from '../form';
 import { BooleanInput } from './BooleanInput';
 import { TextInput } from './TextInput';
+import { Resource } from 'ra-core';
+import { Admin } from 'react-admin';
+import { BooksCreate } from './common/BooksCreate';
+import { BooksList } from './common/BooksList';
+import { history } from './common/history';
+import { dataProvider } from './common/dataProvider';
 
 export default { title: 'ra-ui-materialui/input/BooleanInput' };
 
@@ -64,3 +70,29 @@ export const SetFocus = () => (
         </Create>
     </AdminContext>
 );
+
+const BooksEdit = () => (
+    <Edit>
+        <SimpleForm>
+            <TextInput source="title.en" label="Title" />
+            <BooleanInput source="published" readOnly />
+        </SimpleForm>
+    </Edit>
+);
+
+export const FullApp = () => {
+    React.useEffect(() => {
+        history.replace('/books/5/edit');
+    }, []);
+
+    return (
+        <Admin dataProvider={dataProvider} history={history}>
+            <Resource
+                name="books"
+                list={BooksList}
+                edit={BooksEdit}
+                create={BooksCreate}
+            />
+        </Admin>
+    );
+};

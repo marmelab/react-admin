@@ -21,6 +21,8 @@ export const NullableBooleanInput = (props: NullableBooleanInputProps) => {
         onChange,
         parse = getBooleanFromString,
         resource,
+        disabled,
+        readOnly,
         source,
         validate,
         variant,
@@ -62,6 +64,8 @@ export const NullableBooleanInput = (props: NullableBooleanInputProps) => {
                 className
             )}
             select
+            disabled={disabled || readOnly}
+            readOnly={readOnly}
             margin={margin}
             label={
                 <FieldTitle

@@ -107,6 +107,8 @@ export const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = pr
         source: sourceProp,
         translateChoice,
         validate,
+        disabled,
+        readOnly,
         ...rest
     } = props;
 
@@ -238,6 +240,8 @@ export const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = pr
                         value={value}
                         labelPlacement={labelPlacement}
                         inputRef={index === 0 ? ref : undefined}
+                        disabled={disabled || readOnly}
+                        readOnly={readOnly}
                         {...sanitizeRestProps(rest)}
                     />
                 ))}
