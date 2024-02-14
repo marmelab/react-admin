@@ -48,6 +48,8 @@ export const FileInput = (props: FileInputProps) => {
         source,
         validate,
         validateFileRemoval,
+        disabled,
+        readOnly,
         ...rest
     } = props;
     const { onDrop: onDropProp } = options;
@@ -147,6 +149,7 @@ export const FileInput = (props: FileInputProps) => {
         maxSize,
         minSize,
         multiple,
+        disabled: disabled || readOnly,
         ...options,
         onDrop,
     });
@@ -163,6 +166,7 @@ export const FileInput = (props: FileInputProps) => {
             resource={resource}
             isRequired={isRequired}
             color={(isTouched || isSubmitted) && invalid ? 'error' : undefined}
+            sx={{ cursor: disabled || readOnly ? 'default' : 'pointer' }}
             {...sanitizeInputRestProps(rest)}
         >
             <>
@@ -261,7 +265,6 @@ const StyledLabeled = styled(Labeled, {
         background: theme.palette.background.default,
         borderRadius: theme.shape.borderRadius,
         fontFamily: theme.typography.fontFamily,
-        cursor: 'pointer',
         padding: theme.spacing(1),
         textAlign: 'center',
         color: theme.palette.getContrastText(theme.palette.background.default),

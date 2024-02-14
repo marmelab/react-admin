@@ -68,7 +68,7 @@ export const FullWidth = () => (
 
 export const Disabled = () => (
     <Wrapper>
-        <ImageInput source="attachment" options={{ disabled: true }}>
+        <ImageInput source="attachment" disabled>
             <ImageField source="src" title="title" />
         </ImageInput>
         <FormInspector name="attachment" />

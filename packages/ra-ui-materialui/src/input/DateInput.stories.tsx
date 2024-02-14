@@ -1,13 +1,19 @@
 import * as React from 'react';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
-import { minValue } from 'ra-core';
+import { Resource, minValue } from 'ra-core';
 
 import { AdminContext } from '../AdminContext';
-import { Create } from '../detail';
+import { Create, Edit } from '../detail';
 import { SimpleForm } from '../form';
 import { DateInput } from './DateInput';
 import { FormInspector } from './common';
+import { history } from './common/history';
+import { Admin } from 'react-admin';
+import { TextInput } from './TextInput';
+import { BooksCreate } from './common/BooksCreate';
+import { BooksList } from './common/BooksList';
+import { dataProvider } from './common/dataProvider';
 
 export default { title: 'ra-ui-materialui/input/DateInput' };
 
@@ -53,3 +59,29 @@ const Wrapper = ({ children }) => (
         </Create>
     </AdminContext>
 );
+
+const BooksEdit = () => (
+    <Edit>
+        <SimpleForm>
+            <TextInput source="title.en" label="Title" />
+            <DateInput source="time" readOnly />
+        </SimpleForm>
+    </Edit>
+);
+
+export const FullApp = () => {
+    React.useEffect(() => {
+        history.replace('/books/5/edit');
+    }, []);
+
+    return (
+        <Admin dataProvider={dataProvider} history={history}>
+            <Resource
+                name="books"
+                list={BooksList}
+                edit={BooksEdit}
+                create={BooksCreate}
+            />
+        </Admin>
+    );
+};

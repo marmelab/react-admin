@@ -6,6 +6,9 @@ export const ImageInput = (props: ImageInputProps) => (
     <StyledFileInput
         labelMultiple="ra.input.image.upload_several"
         labelSingle="ra.input.image.upload_single"
+        sx={{
+            cursor: props.disabled || props.readOnly ? 'default' : 'pointer',
+        }}
         {...props}
     />
 );
@@ -24,7 +27,6 @@ const StyledFileInput = styled(FileInput, {
         background: theme.palette.background.default,
         borderRadius: theme.shape.borderRadius,
         fontFamily: theme.typography.fontFamily,
-        cursor: 'pointer',
         padding: theme.spacing(1),
         textAlign: 'center',
         color: theme.palette.getContrastText(theme.palette.background.default),
