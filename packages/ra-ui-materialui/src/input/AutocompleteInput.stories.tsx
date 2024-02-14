@@ -110,7 +110,6 @@ export const Basic = ({ onSuccess = console.log }) => (
 
 export const ReadOnly = ({ onSuccess = console.log }) => (
     <Wrapper onSuccess={onSuccess}>
-        <AutocompleteInput source="author" choices={defaultChoices} fullWidth />
         <AutocompleteInput
             source="author"
             choices={defaultChoices}

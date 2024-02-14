@@ -166,7 +166,10 @@ export const FileInput = (props: FileInputProps) => {
             resource={resource}
             isRequired={isRequired}
             color={(isTouched || isSubmitted) && invalid ? 'error' : undefined}
-            sx={{ cursor: disabled || readOnly ? 'default' : 'pointer' }}
+            sx={{
+                cursor: disabled || readOnly ? 'default' : 'pointer',
+                ...rest.sx,
+            }}
             {...sanitizeInputRestProps(rest)}
         >
             <>
@@ -174,6 +177,16 @@ export const FileInput = (props: FileInputProps) => {
                     {...getRootProps({
                         className: FileInputClasses.dropZone,
                         'data-testid': 'dropzone',
+                        style: {
+                            color:
+                                disabled || readOnly
+                                    ? 'rgba(0, 0, 0, 0.38)'
+                                    : inputPropsOptions?.color || 'black',
+                            backgroundColor:
+                                disabled || readOnly
+                                    ? 'rgba(0, 0, 0, 0.12)'
+                                    : inputPropsOptions?.backgroundColor,
+                        },
                     })}
                 >
                     <input
