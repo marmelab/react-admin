@@ -134,7 +134,7 @@ export const Disabled = () => (
         <Edit resource="books" id="1">
             <SimpleForm>
                 <ArrayInput source="authors">
-                    <SimpleFormIterator disabled>
+                    <SimpleFormIterator disabled={true}>
                         <TextInput source="name" />
                         <TextInput source="role" />
                     </SimpleFormIterator>

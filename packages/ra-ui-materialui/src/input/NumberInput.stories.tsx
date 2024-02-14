@@ -1,13 +1,18 @@
 import * as React from 'react';
-import { required } from 'ra-core';
+import { Resource, required } from 'ra-core';
 import { useFormState, useFormContext } from 'react-hook-form';
 
 import { NumberInput } from './NumberInput';
 import { AdminContext } from '../AdminContext';
-import { Create } from '../detail';
+import { Create, Edit } from '../detail';
 import { SimpleForm } from '../form';
 import { FormInspector } from './common';
 import { TextInput } from './TextInput';
+import { Admin } from 'react-admin';
+import { BooksCreate } from './common/BooksCreate';
+import { BooksList } from './common/BooksList';
+import { dataProvider } from './common/dataProvider';
+import { history } from './common/history';
 
 export default { title: 'ra-ui-materialui/input/NumberInput' };
 
@@ -35,6 +40,21 @@ export const ReadOnly = () => (
         >
             <SimpleForm>
                 <NumberInput source="views" readOnly />
+                <FormInspector name="views" />
+            </SimpleForm>
+        </Create>
+    </AdminContext>
+);
+
+export const Disabled = () => (
+    <AdminContext>
+        <Create
+            resource="posts"
+            record={{ id: 123, views: 23 }}
+            sx={{ width: 600 }}
+        >
+            <SimpleForm>
+                <NumberInput source="views" disabled />
                 <FormInspector name="views" />
             </SimpleForm>
         </Create>
@@ -362,3 +382,29 @@ export const SetFocus = () => (
         </Create>
     </AdminContext>
 );
+
+const BooksEdit = () => (
+    <Edit>
+        <SimpleForm>
+            <TextInput source="title.en" label="Title" />
+            <NumberInput source="year" readOnly />
+        </SimpleForm>
+    </Edit>
+);
+
+export const FullApp = () => {
+    React.useEffect(() => {
+        history.replace('/books/5/edit');
+    }, []);
+
+    return (
+        <Admin dataProvider={dataProvider} history={history}>
+            <Resource
+                name="books"
+                list={BooksList}
+                edit={BooksEdit}
+                create={BooksCreate}
+            />
+        </Admin>
+    );
+};

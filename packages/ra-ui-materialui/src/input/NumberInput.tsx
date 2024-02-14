@@ -38,6 +38,8 @@ export const NumberInput = ({
     validate,
     variant,
     inputProps: overrideInputProps,
+    disabled,
+    readOnly,
     ...rest
 }: NumberInputProps) => {
     const {
@@ -137,6 +139,8 @@ export const NumberInput = ({
             size="small"
             variant={variant}
             error={(isTouched || isSubmitted) && invalid}
+            disabled={disabled || readOnly}
+            readOnly={readOnly}
             helperText={
                 renderHelperText ? (
                     <InputHelperText
@@ -155,7 +159,7 @@ export const NumberInput = ({
                 />
             }
             margin={margin}
-            inputProps={inputProps}
+            inputProps={{ ...inputProps, readOnly }}
             {...sanitizeInputRestProps(rest)}
         />
     );

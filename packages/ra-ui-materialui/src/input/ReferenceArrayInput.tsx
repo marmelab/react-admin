@@ -79,7 +79,9 @@ import { AutocompleteArrayInput } from './AutocompleteArrayInput';
  */
 export const ReferenceArrayInput = (props: ReferenceArrayInputProps) => {
     const {
-        children = defaultChildren,
+        readOnly,
+        disabled,
+        children = defaultChildren(readOnly, disabled),
         reference,
         sort,
         filter = defaultFilter,
@@ -99,7 +101,10 @@ export const ReferenceArrayInput = (props: ReferenceArrayInputProps) => {
     return (
         <ResourceContextProvider value={reference}>
             <ChoicesContextProvider value={controllerProps}>
-                {children}
+                {React.cloneElement(children, {
+                    disabled: disabled || readOnly,
+                    readOnly,
+                })}
             </ChoicesContextProvider>
         </ResourceContextProvider>
     );
@@ -120,7 +125,12 @@ ReferenceArrayInput.propTypes = {
     source: PropTypes.string,
 };
 
-const defaultChildren = <AutocompleteArrayInput />;
+const defaultChildren = (readOnly, disabled) => (
+    <AutocompleteArrayInput
+        readOnly={readOnly}
+        disabled={disabled || readOnly}
+    />
+);
 const defaultFilter = {};
 
 export interface ReferenceArrayInputProps

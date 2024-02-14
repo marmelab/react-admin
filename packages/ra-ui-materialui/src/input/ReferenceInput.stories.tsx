@@ -152,6 +152,35 @@ export const Disabled = ({ dataProvider = dataProviderWithAuthors }) => (
     </Admin>
 );
 
+const BookEditDisabledChild = () => (
+    <Edit
+        mutationMode="pessimistic"
+        mutationOptions={{
+            onSuccess: data => {
+                console.log(data);
+            },
+        }}
+    >
+        <SimpleForm>
+            <ReferenceInput reference="authors" source="author" disabled>
+                <SelectInput />
+            </ReferenceInput>
+        </SimpleForm>
+    </Edit>
+);
+
+export const DisabledChild = ({ dataProvider = dataProviderWithAuthors }) => (
+    <Admin dataProvider={dataProvider} history={history}>
+        <Resource
+            name="authors"
+            recordRepresentation={record =>
+                `${record.first_name} ${record.last_name}`
+            }
+        />
+        <Resource name="books" edit={BookEditDisabledChild} />
+    </Admin>
+);
+
 const tags = [
     { id: 5, name: 'lorem' },
     { id: 6, name: 'ipsum' },

@@ -9,7 +9,16 @@ import { RadioButtonGroupInput } from './RadioButtonGroupInput';
 import { FormInspector } from './common';
 import { ReferenceInput } from './ReferenceInput';
 import { ReferenceArrayInput } from './ReferenceArrayInput';
-import { testDataProvider } from 'ra-core';
+import { Resource, testDataProvider } from 'ra-core';
+import {
+    data,
+    dataProvider as commonDataProvider,
+} from './common/dataProvider';
+import { history } from './common/history';
+import { Admin } from 'react-admin';
+import { TextInput } from './TextInput';
+import { BooksCreate } from './common/BooksCreate';
+import { BooksList } from './common/BooksList';
 
 export default { title: 'ra-ui-materialui/input/RadioButtonGroupInput' };
 
@@ -28,6 +37,12 @@ export const Basic = () => (
 export const ReadOnly = () => (
     <Wrapper>
         <RadioButtonGroupInput source="category" choices={choices} readOnly />
+    </Wrapper>
+);
+
+export const Disabled = () => (
+    <Wrapper>
+        <RadioButtonGroupInput source="category" choices={choices} disabled />
     </Wrapper>
 );
 
@@ -232,5 +247,39 @@ export const TranslateChoice = () => {
                 </SimpleForm>
             </Edit>
         </AdminContext>
+    );
+};
+
+const BooksEdit = () => (
+    <Edit>
+        <SimpleForm>
+            <TextInput source="title.en" label="Title" />
+            <RadioButtonGroupInput
+                source="author_gender"
+                choices={[
+                    { id: 'M', name: 'Man' },
+                    { id: 'W', name: 'Woman' },
+                    { id: 'O', name: 'Other' },
+                ]}
+                readOnly
+            />
+        </SimpleForm>
+    </Edit>
+);
+
+export const FullApp = () => {
+    React.useEffect(() => {
+        history.replace('/books/5/edit');
+    }, []);
+
+    return (
+        <Admin dataProvider={commonDataProvider} history={history}>
+            <Resource
+                name="books"
+                list={BooksList}
+                edit={BooksEdit}
+                create={BooksCreate}
+            />
+        </Admin>
     );
 };
