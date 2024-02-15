@@ -93,6 +93,7 @@ export const ReferenceOneField = <
                 reference={reference}
                 refetch={refetch}
                 error={error}
+                source={source}
             >
                 {children}
             </ReferenceFieldView>

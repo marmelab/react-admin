@@ -38,7 +38,7 @@ export interface UseFieldValueOptions<
 > {
     // FIXME: Find a way to throw a type error when defaultValue is not of RecordType[Source] type
     defaultValue?: any;
-    source?: Call<Objects.AllPaths, RecordType> extends never
+    source: Call<Objects.AllPaths, RecordType> extends never
         ? AnyString
         : Call<Objects.AllPaths, RecordType>;
     record?: RecordType;
