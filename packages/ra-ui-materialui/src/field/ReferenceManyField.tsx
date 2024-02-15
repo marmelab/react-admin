@@ -106,7 +106,7 @@ export const ReferenceManyField = <
 
 export interface ReferenceManyFieldProps<
     RecordType extends Record<string, any> = Record<string, any>
-> extends FieldProps<RecordType> {
+> extends Omit<FieldProps<RecordType>, 'source'> {
     children: ReactNode;
     filter?: FilterPayload;
     page?: number;
@@ -114,6 +114,7 @@ export interface ReferenceManyFieldProps<
     perPage?: number;
     reference: string;
     sort?: SortPayload;
+    source?: string;
     target: string;
 }
 
