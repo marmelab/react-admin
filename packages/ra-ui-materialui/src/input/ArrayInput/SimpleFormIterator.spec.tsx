@@ -147,7 +147,23 @@ describe('<SimpleFormIterator />', () => {
         render(
             <Wrapper>
                 <SimpleForm>
-                    <ArrayInput source="emails" disabled>
+                    <ArrayInput source="emails" disabled readOnly={false}>
+                        <SimpleFormIterator>
+                            <TextInput source="email" />
+                        </SimpleFormIterator>
+                    </ArrayInput>
+                </SimpleForm>
+            </Wrapper>
+        );
+
+        expect(screen.queryAllByLabelText('ra.action.add').length).toBe(0);
+    });
+
+    it('should not display add button if readOnly is truthy', () => {
+        render(
+            <Wrapper>
+                <SimpleForm>
+                    <ArrayInput source="emails" readOnly>
                         <SimpleFormIterator>
                             <TextInput source="email" />
                         </SimpleFormIterator>
