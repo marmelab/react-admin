@@ -193,10 +193,8 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
                         </SimpleFormIteratorItem>
                     ))}
                 </ul>
-                {!disabled &&
-                    !readOnly &&
-                    !disableAdd &&
-                    (disableClear || disableRemove) && (
+                {(!disabled || !readOnly) &&
+                    !(disableAdd && (disableClear || disableRemove)) && (
                         <div className={SimpleFormIteratorClasses.buttons}>
                             {!disableAdd && (
                                 <div className={SimpleFormIteratorClasses.add}>
