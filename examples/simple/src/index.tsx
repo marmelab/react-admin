@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Admin, Resource, CustomRoutes } from 'react-admin';
 import { createRoot } from 'react-dom/client';
-import { Route, RouterProvider, createHashRouter } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 
 import authProvider from './authProvider';
 import comments from './comments';
@@ -15,7 +15,7 @@ import users from './users';
 import tags from './tags';
 import { queryClient } from './queryClient';
 
-const Root = () => (
+const App = () => (
     <Admin
         authProvider={authProvider}
         dataProvider={dataProvider}
@@ -63,13 +63,11 @@ const Root = () => (
     </Admin>
 );
 
-const router = createHashRouter([{ path: '*', Component: Root }]);
-
 const container = document.getElementById('root');
 const root = createRoot(container);
 
 root.render(
     <React.StrictMode>
-        <RouterProvider router={router} />
+        <App />
     </React.StrictMode>
 );

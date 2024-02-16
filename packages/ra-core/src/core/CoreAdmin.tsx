@@ -91,7 +91,6 @@ export const CoreAdmin = (props: CoreAdminProps) => {
         dashboard,
         dataProvider,
         disableTelemetry,
-        history,
         i18nProvider,
         queryClient,
         layout,
@@ -109,7 +108,6 @@ export const CoreAdmin = (props: CoreAdminProps) => {
             dataProvider={dataProvider}
             i18nProvider={i18nProvider}
             queryClient={queryClient}
-            history={history}
             store={store}
         >
             <CoreAdminUI
