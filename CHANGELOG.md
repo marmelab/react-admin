@@ -1,5 +1,14 @@
 # Changelog
 
+## v4.16.11
+
+* Fix `<FilterForm>` ignores `key` prop on children ([#9588](https://github.com/marmelab/react-admin/pull/9588)) ([Dreamsorcerer](https://github.com/Dreamsorcerer))
+* [Demo] Fix missing tags field in simple example fake dataset raises a warning ([#9660](https://github.com/marmelab/react-admin/pull/9660)) ([slax57](https://github.com/slax57))
+* [chore] Remove unused dependency on wait-on ([#9663](https://github.com/marmelab/react-admin/pull/9663)) ([slax57](https://github.com/slax57))
+* [Doc] Add video tutorial to the Datagrid doc ([#9666](https://github.com/marmelab/react-admin/pull/9666)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Update Datagrid documentation regarding preferenceKey ([#9649](https://github.com/marmelab/react-admin/pull/9649)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Doc] Fix typo in Caching documentation ([#9667](https://github.com/marmelab/react-admin/pull/9667)) ([n-kulic](https://github.com/n-kulic))
+
 ## v4.16.10
 
 * Fix DeleteWithConfirmButton raises an error when the record is not loaded ([#9636](https://github.com/marmelab/react-admin/pull/9636)) ([fzaninotto](https://github.com/fzaninotto))
