@@ -396,7 +396,7 @@ Most admins need to display a list of records, letting users sort, filter, and p
 The basic [`<Datagrid>` component](./Datagrid.md) displays a list of records in a table, with a row for each record and a column for each field. It alsosupports an expand panel, a row selection checkbox, and a bulk action toolbar.
 
 <video controls autoplay playsinline muted loop>
-  <source src="./img/Datagrid.mp4" type="video/mp4"/>
+  <source src="./img/datagrid.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
