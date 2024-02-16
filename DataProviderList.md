@@ -13,7 +13,10 @@ If you can't find a Data Provider for your backend below, no worries! [Writing a
 * ![AppWrite Logo](./img/backend-logos/appwrite.svg "AppWrite Logo")**[AppWrite](https://appwrite.io/)**: [g33kdev/ra-appwrite](https://github.com/g33kdev/ra-appwrite)
 * ![AWS Amplify Logo](./img/backend-logos/amplify.svg "AWS Amplify Logo")**[AWS Amplify](https://docs.amplify.aws)**: [MrHertal/react-admin-amplify](https://github.com/MrHertal/react-admin-amplify)
 * ![blitz Logo](./img/backend-logos/blitz.svg "blitz Logo")**[Blitz-js](https://blitzjs.com/docs)**: [theapexlab/ra-data-blitz](https://github.com/theapexlab/ra-data-blitz)
-* ![marmelab Logo](./img/backend-logos/marmelab.png "marmelab Logo")**[Configurable Identity Property REST Client](https://github.com/zachrybaker/ra-data-rest-client)**: [zachrybaker/ra-data-rest-client](https://github.com/zachrybaker/ra-data-rest-client)
+* <div class="flex">
+    <span class="avatar">R</span>
+    <b><a href="https://github.com/zachrybaker/ra-data-rest-client">Configurable Identity Property REST Client</a></b>: <a href="https://github.com/zachrybaker/ra-data-rest-client">zachrybaker/ra-data-rest-client</a>
+  </div>
 * ![corebos Logo](./img/backend-logos/corebos.png "corebos Logo")**[coreBOS](https://corebos.com/)**: [React-Admin coreBOS Integration](https://github.com/coreBOS/reactadminportal)
 * ![directus Logo](./img/backend-logos/directus.svg "directus Logo")**[Directus](https://directus.io/)**: [marmelab/ra-directus](https://github.com/marmelab/ra-directus/blob/main/packages/ra-directus/Readme.md)
 * ![django Logo](./img/backend-logos/django.png "django Logo")**[Django Rest Framework](https://www.django-rest-framework.org/)**: [bmihelac/ra-data-django-rest-framework](https://github.com/bmihelac/ra-data-django-rest-framework)
@@ -41,7 +44,7 @@ If you can't find a Data Provider for your backend below, no worries! [Writing a
     <span class="avatar">J</span>
     <b><a href="https://tools.ietf.org/html/draft-kelly-json-hal-08">JSON HAL</a></b>: <a href="https://www.npmjs.com/package/ra-data-json-hal">ra-data-json-hal</a>
   </div>
-* ![jsonServer Logo](./img/backend-logos/github.svg "jsonServer Logo")**[JSON server](https://github.com/typicode/json-server)**: [marmelab/ra-data-json-server](https://github.com/marmelab/react-admin/tree/master/packages/ra-data-json-server)
+* ![marmelab Logo](./img/backend-logos/marmelab.png "marmelab Logo")**[JSON server](https://github.com/typicode/json-server)**: [marmelab/ra-data-json-server](https://github.com/marmelab/react-admin/tree/master/packages/ra-data-json-server)
 * ![linuxForHealth Logo](./img/backend-logos/github.svg "linuxForHealth Logo")**[LinuxForHealth FHIR](https://github.com/LinuxForHealth/FHIR)**: [tum-mri-aiim/ra-data-fhir](https://gitlab.com/mri-tum/aiim/libs/ra-data-fhir)
 * ![localStorage Logo](./img/backend-logos/js.png "localStorage Logo")**[LocalStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage)**: [marmelab/ra-data-localstorage](https://github.com/marmelab/react-admin/tree/master/packages/ra-data-localstorage)
 * ![localStorage Logo](./img/backend-logos/js.png "localStorage Logo")**[LocalStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage)** (via [LocalForage](https://github.com/localForage/localForage)): [marmelab/ra-data-localforage](https://github.com/marmelab/react-admin/tree/master/packages/ra-data-localforage)
@@ -63,10 +66,7 @@ If you can't find a Data Provider for your backend below, no worries! [Writing a
 * ![restHapi Logo](./img/backend-logos/github.svg "restHapi Logo")**[REST-HAPI](https://github.com/JKHeadley/rest-hapi)**: [ra-data-rest-hapi](https://github.com/mkg20001/ra-data-rest-hapi)
 * ![sails Logo](./img/backend-logos/sails.svg "sails Logo")**[Sails.js](https://sailsjs.com/)**: [mpampin/ra-data-json-sails](https://github.com/mpampin/ra-data-json-sails)
 * ![sqlite Logo](./img/backend-logos/sqlite.png "sqlite Logo")**[SQLite](https://www.sqlite.org/index.html)**: [marmelab/ra-sqlite-dataprovider](https://github.com/marmelab/ra-sqlite-dataprovider)
-* <div class="flex">
-    <span class="avatar">R</span>
-    <b><a href="https://en.wikipedia.org/wiki/Representational_state_transfer">REST</a></b>: <a href="https://github.com/marmelab/react-admin/tree/master/packages/ra-data-simple-rest">marmelab/ra-data-simple-rest</a>
-  </div>
+* ![marmelab Logo](./img/backend-logos/marmelab.png "marmelab Logo")**[REST](https://en.wikipedia.org/wiki/Representational_state_transfer)**: [marmelab/ra-data-simple-rest](https://github.com/marmelab/react-admin/tree/master/packages/ra-data-simple-rest)
 * ![spring Logo](./img/backend-logos/spring.svg "spring Logo")**[Spring Boot](https://spring.io/projects/spring-boot)**: [vishpat/ra-data-springboot-rest](https://github.com/vishpat/ra-data-springboot-rest)
 * ![strapi Logo](./img/backend-logos/strapi.png "strapi Logo")**[Strapi v3/v4](https://strapi.io/)**: [nazirov91/ra-strapi-rest](https://github.com/nazirov91/ra-strapi-rest)
 * ![strapi Logo](./img/backend-logos/strapi.png "strapi Logo")**[Strapi v4](https://strapi.io/)**: [garridorafa/ra-strapi-v4-rest](https://github.com/garridorafa/ra-strapi-v4-rest)
