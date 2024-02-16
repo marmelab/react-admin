@@ -56,6 +56,38 @@ describe('<FilterForm />', () => {
         expect(screen.queryAllByLabelText('Name')).toHaveLength(1);
     });
 
+    it('should retain key values in the form inputs', () => {
+        // As key is not rendered, we just test that the React warning doesn't occur.
+        const origError = console.error;
+        console.error = message => {
+            throw new Error(message);
+        };
+
+        const setFilters = jest.fn();
+        const filters = [
+            <TextInput source="title" label="Title" key="custom-key" />,
+            <TextInput source="title" label="Title2" key="another-key" />,
+        ];
+        const displayedFilters = {
+            title: true,
+            title2: true,
+        };
+
+        expect(() => {
+            render(
+                <AdminContext>
+                    <FilterForm
+                        {...defaultProps}
+                        setFilters={setFilters}
+                        filters={filters}
+                        displayedFilters={displayedFilters}
+                    />
+                </AdminContext>
+            );
+        }).not.toThrow();
+        console.error = origError;
+    });
+
     it('should change the filter when the user updates an input', async () => {
         const filters = [<TextInput source="title" label="Title" />];
         const displayedFilters = {
