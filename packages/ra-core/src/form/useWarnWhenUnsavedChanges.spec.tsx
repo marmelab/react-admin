@@ -3,11 +3,12 @@ import expect from 'expect';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { useForm, useFormContext, FormProvider } from 'react-hook-form';
 import {
-    MemoryRouter,
+    RouterProvider,
     Route,
     Routes,
     useNavigate,
     useParams,
+    createMemoryRouter,
 } from 'react-router-dom';
 
 import { useWarnWhenUnsavedChanges } from './useWarnWhenUnsavedChanges';
@@ -60,7 +61,7 @@ const FormUnderTest = () => {
     const save = () =>
         new Promise(resolve => {
             setTimeout(() => navigate('/submitted'), 100);
-            resolve();
+            resolve(null);
         });
     const onSubmit = () => {
         save();
@@ -72,17 +73,22 @@ const FormUnderTest = () => {
     );
 };
 
-const App = ({ initialEntries = ['/form'] }) => (
-    <MemoryRouter initialEntries={initialEntries} initialIndex={0}>
-        <Routes>
-            <Route path="/form" element={<FormUnderTest />} />
-            <Route path="/form/show" element={<span>Show</span>} />
-            <Route path="/form/:part" element={<FormUnderTest />} />
-            <Route path="/submitted" element={<span>Submitted</span>} />
-            <Route path="/somewhere" element={<span>Somewhere</span>} />
-        </Routes>
-    </MemoryRouter>
+const Root = () => (
+    <Routes>
+        <Route path="/form" element={<FormUnderTest />} />
+        <Route path="/form/show" element={<span>Show</span>} />
+        <Route path="/form/:part" element={<FormUnderTest />} />
+        <Route path="/submitted" element={<span>Submitted</span>} />
+        <Route path="/somewhere" element={<span>Somewhere</span>} />
+    </Routes>
 );
+
+const App = ({ initialEntries = ['/form'] }) => {
+    const router = createMemoryRouter([{ path: '*', Component: Root }], {
+        initialEntries,
+    });
+    return <RouterProvider router={router} />;
+};
 
 describe('useWarnWhenUnsavedChanges', () => {
     let originalConsoleError;
