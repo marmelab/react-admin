@@ -14,17 +14,18 @@ export const useWarnWhenUnsavedChanges = (
     control?: Control
 ) => {
     const translate = useTranslate();
-    const { isSubmitSuccessful, isSubmitting, dirtyFields } = useFormState(
+    const { isSubmitSuccessful, dirtyFields } = useFormState(
         control ? { control } : undefined
     );
     const isDirty = Object.keys(dirtyFields).length > 0;
     const [shouldNotify, setShouldNotify] = useState(false);
 
-    const blocker = useBlocker(({ currentLocation, nextLocation }) => {
-        if (!enable || !isDirty) return false;
-        if (isSubmitting) return false;
-        if (isSubmitSuccessful) return false;
+    const shouldNotBlock = !enable || !isDirty || isSubmitSuccessful;
 
+    const blocker = useBlocker(({ currentLocation, nextLocation }) => {
+        if (shouldNotBlock) return false;
+
+        // Also check if the new location is inside the form
         const initialLocation = formRootPathname || currentLocation.pathname;
         const newLocationIsInsideCurrentLocation = nextLocation.pathname.startsWith(
             initialLocation
@@ -59,4 +60,25 @@ export const useWarnWhenUnsavedChanges = (
         setShouldNotify(false);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [shouldNotify]);
+
+    // This effect handles document navigation, e.g. closing the tab
+    useEffect(() => {
+        const beforeunload = (e: BeforeUnloadEvent) => {
+            // Invoking event.preventDefault() will trigger a warning dialog when the user closes or navigates the tab
+            // https://developer.mozilla.org/en-US/docs/Web/API/Window/beforeunload_event#examples
+            e.preventDefault();
+            // Included for legacy support, e.g. Chrome/Edge < 119
+            e.returnValue = true;
+        };
+
+        if (!shouldNotBlock) {
+            window.addEventListener('beforeunload', beforeunload);
+        }
+
+        return () => {
+            if (!shouldNotBlock) {
+                window.removeEventListener('beforeunload', beforeunload);
+            }
+        };
+    }, [shouldNotBlock]);
 };
