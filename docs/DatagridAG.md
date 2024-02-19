@@ -23,6 +23,7 @@ This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" s
 -   Cell expressions
 -   Row animation
 -   Advanced filtering
+-   Multi-column sorting
 -   Keyboard navigation
 -   Row dragging
 -   Themes
