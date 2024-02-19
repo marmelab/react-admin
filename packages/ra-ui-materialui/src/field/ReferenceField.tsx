@@ -5,19 +5,15 @@ import { Typography, SxProps } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import ErrorIcon from '@mui/icons-material/Error';
 import {
-    useReference,
-    UseReferenceResult,
     LinkToType,
     ResourceContextProvider,
     RecordContextProvider,
-    useRecordContext,
-    useCreatePath,
-    Identifier,
     useGetRecordRepresentation,
-    useResourceDefinition,
     useTranslate,
     RaRecord,
     useFieldValue,
+    useReferenceFieldController,
+    UseReferenceFieldControllerResult,
 } from 'ra-core';
 import { UseQueryOptions } from '@tanstack/react-query';
 
@@ -63,11 +59,14 @@ export const ReferenceField = <
 >(
     props: ReferenceFieldProps<RecordType, ReferenceRecordType>
 ) => {
-    const { source, emptyText, link = 'edit', ...rest } = props;
-    const record = useRecordContext<RecordType>(props);
+    const { source, emptyText, link: _link = 'edit', ...rest } = props;
+    const translate = useTranslate();
     const id = useFieldValue(props);
 
-    const translate = useTranslate();
+    const controllerProps = useReferenceFieldController<
+        RecordType,
+        ReferenceRecordType
+    >(props);
 
     return id == null ? (
         emptyText ? (
@@ -78,10 +77,8 @@ export const ReferenceField = <
     ) : (
         <NonEmptyReferenceField<RecordType, ReferenceRecordType>
             {...rest}
-            link={link}
+            {...controllerProps}
             emptyText={emptyText}
-            record={record}
-            id={id as Identifier}
         />
     );
 };
@@ -131,25 +128,21 @@ export const NonEmptyReferenceField = <
     ReferenceRecordType extends RaRecord = RaRecord
 >({
     children,
-    id,
     reference,
     queryOptions,
     link,
     ...props
-}: Omit<ReferenceFieldProps<RecordType, ReferenceRecordType>, 'source'> & {
-    id: Identifier;
-}) => {
+}: Omit<
+    ReferenceFieldProps<RecordType, ReferenceRecordType>,
+    'source' | 'link'
+> &
+    UseReferenceFieldControllerResult) => {
     return (
         <ResourceContextProvider value={reference}>
             {/* @ts-ignore */}
             <PureReferenceFieldView<RecordType, ReferenceRecordType>
                 reference={reference}
                 {...props}
-                {...useReference<ReferenceRecordType>({
-                    reference,
-                    id,
-                    options: queryOptions,
-                })}
                 resourceLinkPath={link}
             >
                 {children}
@@ -179,8 +172,6 @@ export const ReferenceFieldView = <
     } = props;
     const getRecordRepresentation = useGetRecordRepresentation(reference);
     const translate = useTranslate();
-    const createPath = useCreatePath();
-    const resourceDefinition = useResourceDefinition({ resource: reference });
 
     if (error) {
         return (
@@ -203,32 +194,18 @@ export const ReferenceFieldView = <
         ) : null;
     }
 
-    const link =
-        resourceLinkPath === false ||
-        (resourceLinkPath === 'edit' && !resourceDefinition.hasEdit) ||
-        (resourceLinkPath === 'show' && !resourceDefinition.hasShow)
-            ? false
-            : createPath({
-                  resource: reference,
-                  id: referenceRecord.id,
-                  type:
-                      typeof resourceLinkPath === 'function'
-                          ? resourceLinkPath(referenceRecord, reference)
-                          : resourceLinkPath,
-              });
-
     let child = children || (
         <Typography component="span" variant="body2">
             {getRecordRepresentation(referenceRecord)}
         </Typography>
     );
 
-    if (link) {
+    if (resourceLinkPath) {
         return (
             <Root className={className} sx={sx}>
                 <RecordContextProvider value={referenceRecord}>
                     <Link
-                        to={link}
+                        to={resourceLinkPath}
                         className={ReferenceFieldClasses.link}
                         onClick={stopPropagation}
                         state={{ _scrollToTop: true }}
@@ -271,12 +248,14 @@ export interface ReferenceFieldViewProps<
     RecordType extends Record<string, any> = Record<string, any>,
     ReferenceRecordType extends RaRecord = RaRecord
 > extends FieldProps<RecordType>,
-        UseReferenceResult {
+        Omit<UseReferenceFieldControllerResult<ReferenceRecordType>, 'link'> {
     children?: ReactNode;
     reference: string;
     resource?: string;
     translateChoice?: Function | boolean;
-    resourceLinkPath?: LinkToType<ReferenceRecordType>;
+    resourceLinkPath?: UseReferenceFieldControllerResult<
+        ReferenceRecordType
+    >['link'];
     sx?: SxProps;
 }
 

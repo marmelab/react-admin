@@ -1,8 +1,12 @@
-import React, { ReactNode } from 'react';
+import React, { Children, ReactNode } from 'react';
 import PropTypes from 'prop-types';
-import { ReferenceInputBase, ReferenceInputBaseProps } from 'ra-core';
 
-import { AutocompleteInput } from './AutocompleteInput';
+import { ResourceContextProvider } from '../../core';
+import { ChoicesContextProvider, InputProps } from '../../form';
+import {
+    UseReferenceInputControllerParams,
+    useReferenceInputController,
+} from './useReferenceInputController';
 
 /**
  * An Input component for choosing a reference record. Useful for foreign keys.
@@ -15,22 +19,13 @@ import { AutocompleteInput } from './AutocompleteInput';
  * selector is displayed (e.g. using `<SelectInput>` or `<RadioButtonGroupInput>`
  * instead of `<AutocompleteInput>`).
  *
- * @example // default selector: AutocompleteInput
- * export const CommentEdit = () => (
- *     <Edit>
- *         <SimpleForm>
- *             <ReferenceInput label="Post" source="post_id" reference="posts" />
- *         </SimpleForm>
- *     </Edit>
- * );
- *
  * @example // using a SelectInput as selector
- * export const CommentEdit = () => (
- *     <Edit>
+ * export const CommentEdit = (props) => (
+ *     <Edit {...props}>
  *         <SimpleForm>
- *             <ReferenceInput label="Post" source="post_id" reference="posts">
+ *             <ReferenceInputBase label="Post" source="post_id" reference="posts">
  *                 <SelectInput optionText="title" />
- *             </ReferenceInput>
+ *             </ReferenceInputBase>
  *         </SimpleForm>
  *     </Edit>
  * );
@@ -39,44 +34,63 @@ import { AutocompleteInput } from './AutocompleteInput';
  * by setting the `perPage` prop.
  *
  * @example
- * <ReferenceInput source="post_id" reference="posts" perPage={100}/>
+ * <ReferenceInputBase source="post_id" reference="posts" perPage={100}/>
  *
  * By default, orders the possible values by id desc. You can change this order
  * by setting the `sort` prop (an object with `field` and `order` properties).
  *
  * @example
- * <ReferenceInput
+ * <ReferenceInputBase
  *      source="post_id"
  *      reference="posts"
  *      sort={{ field: 'title', order: 'ASC' }}
- * />
+ * >
+ *     <SelectInput optionText="title" />
+ * </ReferenceInputBase>
  *
  * Also, you can filter the query used to populate the possible values. Use the
  * `filter` prop for that.
  *
  * @example
- * <ReferenceInput
+ * <ReferenceInputBase
  *      source="post_id"
  *      reference="posts"
  *      filter={{ is_published: true }}
- * />
+ * >
+ *      <SelectInput optionText="title" />
+ * </ReferenceInputBase>
  *
- * The enclosed component may filter results. ReferenceInput create a ChoicesContext which provides
+ * The enclosed component may filter results. ReferenceInputBase create a ChoicesContext which provides
  * a `setFilters` function. You can call this function to filter the results.
  */
-export const ReferenceInput = (props: ReferenceInputProps) => {
-    const { children = defaultChildren, ...rest } = props;
+export const ReferenceInputBase = (props: ReferenceInputBaseProps) => {
+    const {
+        children,
+        reference,
+        sort = { field: 'id', order: 'DESC' },
+        filter = {},
+    } = props;
 
-    if (props.validate) {
-        throw new Error(
-            '<ReferenceInput> does not accept a validate prop. Set the validate prop on the child instead.'
-        );
+    const controllerProps = useReferenceInputController({
+        ...props,
+        sort,
+        filter,
+    });
+
+    if (Children.count(children) !== 1) {
+        throw new Error('<ReferenceInputBase> only accepts a single child');
     }
 
-    return <ReferenceInputBase {...rest}>{children}</ReferenceInputBase>;
+    return (
+        <ResourceContextProvider value={reference}>
+            <ChoicesContextProvider value={controllerProps}>
+                {children}
+            </ChoicesContextProvider>
+        </ResourceContextProvider>
+    );
 };
 
-ReferenceInput.propTypes = {
+ReferenceInputBase.propTypes = {
     children: PropTypes.element,
     filter: PropTypes.object,
     label: PropTypes.string,
@@ -92,15 +106,9 @@ ReferenceInput.propTypes = {
     source: PropTypes.string,
 };
 
-const defaultChildren = <AutocompleteInput />;
-
-export interface ReferenceInputProps
-    extends Omit<ReferenceInputBaseProps, 'children' | 'label'> {
-    children?: ReactNode;
+export interface ReferenceInputBaseProps
+    extends InputProps,
+        UseReferenceInputControllerParams {
+    children: ReactNode;
     label?: string;
-    /**
-     * Call validate on the child component instead
-     */
-    validate?: never;
-    [key: string]: any;
 }
