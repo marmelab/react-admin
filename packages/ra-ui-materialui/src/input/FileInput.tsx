@@ -22,6 +22,7 @@ import { Labeled } from '../Labeled';
 import { FileInputPreview } from './FileInputPreview';
 import { sanitizeInputRestProps } from './sanitizeInputRestProps';
 import { InputHelperText } from './InputHelperText';
+import { useTheme } from '@mui/material/styles';
 import { SxProps } from '@mui/system';
 import { SvgIconProps } from '@mui/material';
 
@@ -157,6 +158,8 @@ export const FileInput = (props: FileInputProps) => {
     const renderHelperText =
         helperText !== false || ((isTouched || isSubmitted) && invalid);
 
+    const theme = useTheme();
+
     return (
         <StyledLabeled
             htmlFor={id}
@@ -180,11 +183,12 @@ export const FileInput = (props: FileInputProps) => {
                         style: {
                             color:
                                 disabled || readOnly
-                                    ? 'rgba(0, 0, 0, 0.38)'
-                                    : inputPropsOptions?.color || 'black',
+                                    ? theme.palette.text.disabled
+                                    : inputPropsOptions?.color ||
+                                      theme.palette.text.primary,
                             backgroundColor:
                                 disabled || readOnly
-                                    ? 'rgba(0, 0, 0, 0.12)'
+                                    ? theme.palette.action.disabledBackground
                                     : inputPropsOptions?.backgroundColor,
                         },
                     })}

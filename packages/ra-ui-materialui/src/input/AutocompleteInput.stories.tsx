@@ -119,6 +119,17 @@ export const ReadOnly = ({ onSuccess = console.log }) => (
     </Wrapper>
 );
 
+export const Disabled = ({ onSuccess = console.log }) => (
+    <Wrapper onSuccess={onSuccess}>
+        <AutocompleteInput
+            source="author"
+            choices={defaultChoices}
+            fullWidth
+            disabled
+        />
+    </Wrapper>
+);
+
 export const Required = () => (
     <Wrapper>
         <AutocompleteInput

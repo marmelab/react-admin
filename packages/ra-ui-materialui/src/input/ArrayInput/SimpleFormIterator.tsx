@@ -174,8 +174,8 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
                         <SimpleFormIteratorItem
                             key={member.id}
                             disabled={disabled || readOnly}
-                            disableRemove={disabled || disableRemove}
-                            disableReordering={disabled || disableReordering}
+                            disableRemove={disableRemove}
+                            disableReordering={disableReordering}
                             fields={fields}
                             getItemLabel={getItemLabel}
                             index={index}

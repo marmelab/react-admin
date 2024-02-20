@@ -134,7 +134,7 @@ export const Disabled = () => (
         <Edit resource="books" id="1">
             <SimpleForm>
                 <ArrayInput source="authors">
-                    <SimpleFormIterator disabled={true}>
+                    <SimpleFormIterator disabled>
                         <TextInput source="name" />
                         <TextInput source="role" />
                     </SimpleFormIterator>
@@ -280,20 +280,3 @@ const BooksEdit = () => (
         </SimpleForm>
     </Edit>
 );
-
-export const FullApp = () => {
-    React.useEffect(() => {
-        history.replace('/books/5/edit');
-    }, []);
-
-    return (
-        <Admin dataProvider={commonDataProvider} history={history}>
-            <Resource
-                name="books"
-                list={BooksList}
-                edit={BooksEdit}
-                create={BooksCreate}
-            />
-        </Admin>
-    );
-};

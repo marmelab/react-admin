@@ -57,7 +57,7 @@ const BooksEdit = () => (
     <Edit>
         <SimpleForm>
             <TextInput source="title.en" label="Title" />
-            <PasswordInput source="title.fr" label="Title" readOnly />
+            <PasswordInput source="title.fr" label="Title" />
         </SimpleForm>
     </Edit>
 );
