@@ -34,12 +34,6 @@ export const Basic = () => (
     </Wrapper>
 );
 
-export const ReadOnly = () => (
-    <Wrapper>
-        <RadioButtonGroupInput source="category" choices={choices} readOnly />
-    </Wrapper>
-);
-
 export const Disabled = () => (
     <Wrapper>
         <RadioButtonGroupInput source="category" choices={choices} disabled />
@@ -261,7 +255,6 @@ const BooksEdit = () => (
                     { id: 'W', name: 'Woman' },
                     { id: 'O', name: 'Other' },
                 ]}
-                readOnly
             />
         </SimpleForm>
     </Edit>

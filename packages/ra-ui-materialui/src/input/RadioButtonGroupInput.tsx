@@ -102,7 +102,6 @@ export const RadioButtonGroupInput = (props: RadioButtonGroupInputProps) => {
         translateChoice,
         validate,
         disabled,
-        readOnly,
         ...rest
     } = props;
 
@@ -173,8 +172,7 @@ export const RadioButtonGroupInput = (props: RadioButtonGroupInputProps) => {
             className={clsx('ra-input', `ra-input-${source}`, className)}
             margin={margin}
             error={fetchError || ((isTouched || isSubmitted) && invalid)}
-            disabled={disabled || readOnly}
-            readOnly={readOnly}
+            disabled={disabled}
             {...sanitizeRestProps(rest)}
         >
             <FormLabel
@@ -273,7 +271,10 @@ const sanitizeRestProps = ({
     ...rest
 }: any) => sanitizeInputRestProps(rest);
 
-export type RadioButtonGroupInputProps = Omit<CommonInputProps, 'source'> &
+export type RadioButtonGroupInputProps = Omit<
+    CommonInputProps,
+    'source' | 'readOnly'
+> &
     ChoicesProps &
     FormControlProps &
     RadioGroupProps & {
