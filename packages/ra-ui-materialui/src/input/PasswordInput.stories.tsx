@@ -19,24 +19,24 @@ export default { title: 'ra-ui-materialui/input/PasswordInput' };
 
 export const Basic = () => (
     <Wrapper>
-        <PasswordInput source="published" />
+        <PasswordInput source="password" />
     </Wrapper>
 );
 
 export const FullWidth = () => (
     <Wrapper>
-        <PasswordInput source="published" fullWidth />
+        <PasswordInput source="password" fullWidth />
     </Wrapper>
 );
 
 export const Disabled = () => (
     <Wrapper>
-        <PasswordInput source="published" disabled />
+        <PasswordInput source="password" disabled />
     </Wrapper>
 );
 export const ReadOnly = () => (
     <Wrapper>
-        <PasswordInput source="published" readOnly />
+        <PasswordInput source="password" readOnly />
     </Wrapper>
 );
 
@@ -47,7 +47,7 @@ const Wrapper = ({ children }) => (
         <Create resource="posts">
             <SimpleForm>
                 {children}
-                <FormInspector name="published" />
+                <FormInspector name="password" />
             </SimpleForm>
         </Create>
     </AdminContext>

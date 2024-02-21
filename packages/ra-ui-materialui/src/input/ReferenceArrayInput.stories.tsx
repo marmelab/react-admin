@@ -134,7 +134,7 @@ export const WithAutocompleteInput = () => (
     </AdminContext>
 );
 
-export const DisabledChild = () => (
+export const DisabledWithExplicitChild = () => (
     <Admin dataProvider={dataProvider} history={history}>
         <Resource name="tags" recordRepresentation={'name'} />
         <Resource

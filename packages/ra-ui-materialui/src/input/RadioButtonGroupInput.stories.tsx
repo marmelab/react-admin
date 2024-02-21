@@ -10,10 +10,7 @@ import { FormInspector } from './common';
 import { ReferenceInput } from './ReferenceInput';
 import { ReferenceArrayInput } from './ReferenceArrayInput';
 import { Resource, testDataProvider } from 'ra-core';
-import {
-    data,
-    dataProvider as commonDataProvider,
-} from './common/dataProvider';
+import { dataProvider as commonDataProvider } from './common/dataProvider';
 import { history } from './common/history';
 import { Admin } from 'react-admin';
 import { TextInput } from './TextInput';

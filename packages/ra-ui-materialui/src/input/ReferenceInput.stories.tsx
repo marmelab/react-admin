@@ -169,7 +169,9 @@ const BookEditDisabledChild = () => (
     </Edit>
 );
 
-export const DisabledChild = ({ dataProvider = dataProviderWithAuthors }) => (
+export const DisabledWithExplicitChild = ({
+    dataProvider = dataProviderWithAuthors,
+}) => (
     <Admin dataProvider={dataProvider} history={history}>
         <Resource
             name="authors"

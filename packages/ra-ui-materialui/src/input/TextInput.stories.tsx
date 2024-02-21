@@ -34,7 +34,7 @@ export const Basic = () => (
     </AdminContext>
 );
 
-export const disabled = () => (
+export const Disabled = () => (
     <AdminContext>
         <Create
             resource="posts"

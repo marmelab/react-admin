@@ -186,7 +186,7 @@ export const ArrayInput = (props: ArrayInputProps) => {
                     source,
                     variant,
                     margin,
-                    disabled: children.props.disabled || disabled || readOnly,
+                    disabled: children.props.disabled || disabled,
                     readOnly: children.props.readOnly || readOnly,
                 })}
             </ArrayInputContext.Provider>
