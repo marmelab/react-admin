@@ -42,9 +42,8 @@ const InternalRouter = ({
     children: ReactNode;
     basename?: string;
 }) => {
-    const router = createHashRouter(
-        [{ path: '*', Component: () => <>{children}</> }],
-        { basename }
-    );
+    const router = createHashRouter([{ path: '*', element: <>{children}</> }], {
+        basename,
+    });
     return <RouterProvider router={router} />;
 };
