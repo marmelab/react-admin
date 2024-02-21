@@ -107,12 +107,12 @@ const PostEdit = () => {
             title={<PostTitle />}
             actions={<EditActions />}
             mutationMode="pessimistic"
-            redirect={false}
-            mutationOptions={{
-                onSuccess: () => {
-                    console.log('success!');
-                },
-            }}
+            redirect="show"
+            // mutationOptions={{
+            //     onSuccess: () => {
+            //         console.log('success!');
+            //     },
+            // }}
         >
             <TabbedForm
                 defaultValues={{ average_note: 0 }}
