@@ -16,7 +16,7 @@ title: "The BooleanInput Component"
 
 **Tip**: This input doesn't let users set a `null` value - only `true` or `false`. Use the [`<NullableBooleanInput />`](./NullableBooleanInput.md) component if you have to handle non-required booleans.
 
-## Usage 
+## Usage
 
 ```jsx
 import { BooleanInput } from 'react-admin';
@@ -30,7 +30,7 @@ import { BooleanInput } from 'react-admin';
 |-----------|----------|----------|---------|----------------------------------------------------------------------------|
 | `options` | Optional | `Object` | `{}`    | Options object to pass to the underlying material-ui `<Switch>` component. |
 
-`<BooleanInput>` also accepts the [common input props](./Inputs.md#common-input-props).
+`<BooleanInput>` also accepts the [common input props](./Inputs.md#common-input-props) (except `readOnly`).
 
 ## `options`
 

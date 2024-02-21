@@ -14,7 +14,7 @@ If you want to let the user choose multiple values among a list of possible valu
 </video>
 
 
-This input allows editing values that are arrays of scalar values, e.g. `[123, 456]`. 
+This input allows editing values that are arrays of scalar values, e.g. `[123, 456]`.
 
 **Tip**: React-admin includes other components allowing the edition of such values:
 
@@ -65,7 +65,7 @@ The form value for the source must be an array of the selected values, e.g.
 | `row`             | Optional | `boolean`                  | `true`  | Display group of elements in a compact row.                       |
 | `translateChoice` | Optional | `boolean`                  | `true`  | Whether the choices should be translated                          |
 
-`<CheckboxGroupInput>` also accepts the [common input props](./Inputs.md#common-input-props).
+`<CheckboxGroupInput>` also accepts the [common input props](./Inputs.md#common-input-props) (except `readOnly`).
 
 ## `choices`
 

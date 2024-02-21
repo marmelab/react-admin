@@ -24,12 +24,6 @@ export const Disabled = () => (
     </Wrapper>
 );
 
-export const ReadOnly = () => (
-    <Wrapper>
-        <BooleanInput source="published" readOnly />
-    </Wrapper>
-);
-
 export const CustomIcon = () => (
     <Wrapper>
         <BooleanInput source="published" checkedIcon={<FavoriteIcon />} />

@@ -14,7 +14,7 @@ If you want to let the user choose a value among a list of possible values that 
 </video>
 
 
-This input allows editing record fields that are scalar values, e.g. `123`, `'admin'`, etc. 
+This input allows editing record fields that are scalar values, e.g. `123`, `'admin'`, etc.
 
 ## Usage
 
@@ -63,7 +63,7 @@ The form value for the source must be the selected value, e.g.
 | `row`             | Optional | `boolean`                  | `true`  | Display options in a compact row.                                                                                                      |
 | `translateChoice` | Optional | `boolean`                  | `true`  | Whether the choices should be translated                                                                                               |
 
-`<RadioButtonGroupInput>` also accepts the [common input props](./Inputs.md#common-input-props).
+`<RadioButtonGroupInput>` also accepts the [common input props](./Inputs.md#common-input-props) (except `readOnly`).
 
 ## `choices`
 
@@ -137,7 +137,7 @@ const UserCountry = () => {
     const { data, isLoading } = useGetList('countries');
     // data is an array of { id: 123, code: 'FR', name: 'France' }
     return (
-        <RadioButtonGroupInput 
+        <RadioButtonGroupInput
             source="country"
             choices={data}
             optionText="name"
@@ -291,7 +291,7 @@ const CountryInput = () => {
     const { data, isLoading } = useGetList('countries');
     // data is an array of { id: 123, code: 'FR', name: 'France' }
     return (
-        <RadioButtonGroupInput 
+        <RadioButtonGroupInput
             source="country"
             choices={data}
             optionText="name"
@@ -304,11 +304,11 @@ const CountryInput = () => {
 
 The `isLoading` prop is used to display a loading indicator while the data is being fetched.
 
-However, most of the time, if you need to populate a `<RadioButtonGroupInput>` with choices fetched from another resource, it's because you are trying to set a foreign key. In that case, you should use [`<ReferenceInput>`](./ReferenceInput.md) to fetch the choices instead (see next section). 
+However, most of the time, if you need to populate a `<RadioButtonGroupInput>` with choices fetched from another resource, it's because you are trying to set a foreign key. In that case, you should use [`<ReferenceInput>`](./ReferenceInput.md) to fetch the choices instead (see next section).
 
 ## Selecting a Foreign Key
 
-If you use `<RadioButtonGroupInput>` to set a foreign key for a many-to-one or a one-to-one relationship, you'll have to [fetch choices](#fetching-choices), as explained in the previous section. You'll also have to fetch the record corresponding to the current value of the foreign key, as it may not be in the list of choices. 
+If you use `<RadioButtonGroupInput>` to set a foreign key for a many-to-one or a one-to-one relationship, you'll have to [fetch choices](#fetching-choices), as explained in the previous section. You'll also have to fetch the record corresponding to the current value of the foreign key, as it may not be in the list of choices.
 
 For example, if a `contact` has one `company` via the `company_id` foreign key, a contact form can let users select a company as follows:
 
@@ -331,7 +331,7 @@ const CompanyInput = () => {
             : [...choices, currentCompany]
         : [];
     return (
-        <RadioButtonGroupInput 
+        <RadioButtonGroupInput
             label="Company"
             source="company_id"
             choices={choicesWithCurrentCompany}
@@ -349,7 +349,7 @@ import { ReferenceInput, RadioButtonGroupInput } from 'react-admin';
 
 const CompanyInput = () => (
     <ReferenceInput reference="companies" source="company_id">
-        <RadioButtonGroupInput 
+        <RadioButtonGroupInput
             label="Company"
             source="company_id"
             optionText="name"
@@ -359,7 +359,7 @@ const CompanyInput = () => (
 ```
 
 `<ReferenceInput>` is a headless component that:
- 
+
  - fetches a list of records with `dataProvider.getList()` and `dataProvider.getOne()`, using the `reference` prop for the resource,
  - puts the result of the fetch in the `ChoiceContext` as the `choices` prop, as well as the `isLoading` state,
  - and renders its child component
@@ -369,8 +369,8 @@ When rendered as a child of `<ReferenceInput>`, `<RadioButtonGroupInput>` reads 
 In fact, you can simplify the code even further:
 
 - `<ReferenceInput>` puts all its props inside the `ChoiceContext`, including `source`, so `<RadioButtonGroupInput>` doesn't need to repeat it.
-- You can also put the `label` prop on the `<ReferenceInput>` rather than `<RadioButtonGroupInput>` so that it looks just like [`<ReferenceField>`](./ReferenceField.md) (for easier memorization). 
-- `<RadioButtonGroupInput>` uses the [`recordRepresentation`](./Resource.md#recordrepresentation) to determine how to represent the related choices. In the example above, the `companies` resource uses `name` as its `recordRepresentation`, so `<RadioButtonGroupInput>` will default to `optionText="name"`. 
+- You can also put the `label` prop on the `<ReferenceInput>` rather than `<RadioButtonGroupInput>` so that it looks just like [`<ReferenceField>`](./ReferenceField.md) (for easier memorization).
+- `<RadioButtonGroupInput>` uses the [`recordRepresentation`](./Resource.md#recordrepresentation) to determine how to represent the related choices. In the example above, the `companies` resource uses `name` as its `recordRepresentation`, so `<RadioButtonGroupInput>` will default to `optionText="name"`.
 
 The code for the `<CompanyInput>` component can be reduced to:
 
