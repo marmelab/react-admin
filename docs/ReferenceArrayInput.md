@@ -16,7 +16,7 @@ Use `<ReferenceArrayInput>` to edit an array of reference values, i.e. to let us
 
 ## Usage
 
-For instance, a post record has a `tag_ids` field, which is an array of foreign keys to tags record. 
+For instance, a post record has a `tag_ids` field, which is an array of foreign keys to tags record.
 
 ```
 ┌──────────────┐       ┌────────────┐
@@ -26,7 +26,7 @@ For instance, a post record has a `tag_ids` field, which is an array of foreign 
 │ title        │   │   │ name       │
 │ body         │   │   └────────────┘
 │ tag_ids      │───┘
-└──────────────┘             
+└──────────────┘
 ```
 
 To make the `tag_ids` for a `post` editable, use the following:
@@ -61,7 +61,7 @@ Then `<ReferenceArrayInput>` will issue the following queries:
 
 ```js
 dataProvider.getMany('tags', { ids: [1, 23, 4] });
-dataProvider.getList('tags', { 
+dataProvider.getList('tags', {
     filter: {},
     sort: { field: 'id', order: 'DESC' },
     pagination: { page: 1, perPage: 25 }
@@ -71,7 +71,7 @@ dataProvider.getList('tags', {
 `<ReferenceArrayInput>` renders an [`<AutocompleteArrayInput>`](./AutocompleteArrayInput.md) to let the user select the related record. Users can narrow down the choices by typing a search term in the input. This modifies the query sent to the `dataProvider` as follows:
 
 ```js
-dataProvider.getList('tags', { 
+dataProvider.getList('tags', {
     filter: { q: ['search term'] },
     sort: { field: 'id', order: 'DESC' },
     pagination: { page: 1, perPage: 25 }
@@ -108,6 +108,8 @@ See the [`children`](#children) section for more details.
 | `perPage`          | Optional | `number`                                    | 25                                 | Number of suggestions to show                                                                                       |
 | `queryOptions`     | Optional | [`UseQueryOptions`](https://tanstack.com/query/v3/docs/react/reference/useQuery) | `{}` | `react-query` client options     |
 | `sort`             | Optional | `{ field: String, order: 'ASC' or 'DESC' }` | `{ field: 'id', order: 'DESC' }`   | How to order the list of suggestions                                                                                |
+| `readOnly`         | Optional | `boolean`                                   | `false`                        | If true, the default input is in read-only mode.                                                                                                                                     |
+| `disabled`         | Optional | `boolean`                                   | `false`                        | If true, the default input is disabled.                                                                                                                                     |
 
 **Note**: `<ReferenceArrayInput>` doesn't accept the [common input props](./Inputs.md#common-input-props) ; it is the responsability of children to apply them.
 
@@ -218,7 +220,7 @@ const filters = [
 
 ## `parse`
 
-By default, children of `<ReferenceArrayInput>` transform the empty form value (an empty string) into `null` before passing it to the `dataProvider`. 
+By default, children of `<ReferenceArrayInput>` transform the empty form value (an empty string) into `null` before passing it to the `dataProvider`.
 
 If you want to change this behavior, you have to pass a custom `parse` prop to the `<ReferenceArrayInput>` *child component*, because  **`<ReferenceArrayInput>` doesn't have a `parse` prop**. It is the responsibility of the child component to parse the input value.
 
@@ -260,7 +262,7 @@ For instance, to pass [a custom `meta`](./Actions.md#meta-parameter):
 
 {% raw %}
 ```jsx
-<ReferenceArrayInput 
+<ReferenceArrayInput
     source="tag_ids"
     reference="tags"
     queryOptions={{ meta: { foo: 'bar' } }}
@@ -294,13 +296,13 @@ You can override this default by specifying the `optionText` prop in the child c
 
 ## `sort`
 
-By default, `<ReferenceArrayInput>` orders the possible values by `id` desc. 
+By default, `<ReferenceArrayInput>` orders the possible values by `id` desc.
 
 You can change this order by setting the `sort` prop (an object with `field` and `order` properties).
 
 {% raw %}
 ```jsx
-<ReferenceArrayInput 
+<ReferenceArrayInput
     source="tag_ids"
     reference="tags"
     sort={{ field: 'name', order: 'ASC' }}
@@ -327,6 +329,76 @@ Then to display a selector for the post tags, you should call `<ReferenceArrayIn
 ```jsx
 <ReferenceArrayInput source="tags_ids" reference="tags" />
 ```
+
+## `readOnly`
+
+If `true`, the default input is in read-only mode and the user can't change the value.
+
+{% raw %}
+
+```jsx
+<ReferenceArrayInput
+    source="tags_ids"
+    reference="tags"
+    readOnly
+/>
+```
+
+{% endraw %}
+
+**Warning**: The `readOnly` prop refer to the default [`<AutocompleteArrayInput>`](./AutocompleteArrayInput.md) child. If you defined `children` you have to specify the `readOnly` prop on each input:
+
+{% raw %}
+
+```jsx
+<ReferenceArrayInput source="tags_ids" reference="tags">
+    <SelectArrayInput readOnly />
+</ReferenceArrayInput>
+```
+
+{% endraw %}
+
+## `disabled`
+
+If `true`, the default input is disabled and the user can't change the value.
+
+{% raw %}
+
+```jsx
+<ReferenceArrayInput
+    source="tags_ids"
+    reference="tags"
+    disabled
+/>
+```
+
+{% endraw %}
+
+**Tip**: The form framework used by react-admin, react-hook-form, [considers](https://github.com/react-hook-form/react-hook-form/pull/10805) that a `disabled` input shouldn't submit any value. So react-hook-form sets the value of all `disabled` inputs to `undefined`. As a consequence, a form with a `disabled` input is always considered `dirty` (i.e. react-hook-form considers that the form values and the initial record values are different), and it triggers [the `warnWhenUnsavedChanges` feature](./EditTutorial.md#warning-about-unsaved-changes) when leaving the form, even though the user changed nothing. The workaround is to set the `disabled` prop on the underlying input component, as follows:
+
+{% raw %}
+
+```jsx
+<ReferenceArrayInput
+    source="tags_ids"
+    reference="tags"
+    disabled
+/>
+```
+
+{% endraw %}
+
+**Warning**: The `disabled` prop refer to the default [`<AutocompleteArrayInput>`](./AutocompleteArrayInput.md) child. If you defined `children` you have to specify the `disabled` prop on each input:
+
+{% raw %}
+
+```jsx
+<ReferenceArrayInput source="tags_ids" reference="tags">
+    <SelectArrayInput disabled />
+</ReferenceArrayInput>
+```
+
+{% endraw %}
 
 ## Customizing The Filter Query
 

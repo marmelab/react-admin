@@ -46,12 +46,14 @@ You may have inputs which are translated in multiple languages and want users to
 | Prop   | Required | Type     | Default | Description   |
 | ------ | -------- | -------- | ------- | ------------- |
 | `locales` | Required | `Array` | - | An array of locales. |
-| `defaultLocale` | Optional | `string` | `en` | The default locale to display |
-| `fullWidth` | Optional | `boolean` | `false` | If `true`, the inputs will expand to fill the form width |
-| `groupKey` | Optional | `string` | - | A unique key for accessibility purpose |
-| `selector`| Optional | `ReactNode` | - | A selector to choose the locale to display |
-| `StackProps`| Optional | `object` | - | Props passed to the rendered MUI Stack |
-| `sx`| Optional | `SxProps` | - | Material UI shortcut for defining custom styles |
+| `defaultLocale` | Optional | `string` | `en` | The default locale to display. |
+| `fullWidth` | Optional | `boolean` | `false` | If `true`, the inputs will expand to fill the form width. |
+| `groupKey` | Optional | `string` | - | A unique key for accessibility purpose. |
+| `selector`| Optional | `ReactNode` | - | A selector to choose the locale to display. |
+| `StackProps`| Optional | `object` | - | Props passed to the rendered MUI Stack. |
+| `readOnly`| Optional | `boolean` | `false` | If true, the input is in read-only mode. |
+| `disabled`| Optional | `boolean` | `false` | If true, the input is disabled. |
+| `sx`| Optional | `SxProps` | - | Material UI shortcut for defining custom styles. |
 
 ## `defaultLocale`
 
@@ -169,6 +171,58 @@ For instance, you can use `direction: 'row'` to display the inputs side by side 
 {% endraw %}
 
 ![TranslatableInputs with direction row](./img/TranslatableInputs-row.png)
+
+## `readOnly`
+
+If `true`, the input is in read-only mode and the user can't change the value.
+
+{% raw %}
+
+```jsx
+<TranslatableInputs
+    locales={['en', 'fr']}
+    readOnly
+>
+    <TextInput source="title" />
+    <TextInput source="description" />
+</TranslatableInputs>
+```
+
+{% endraw %}
+
+## `disabled`
+
+If `true`, the input is disabled and the user can't change the value.
+
+{% raw %}
+
+```jsx
+<TranslatableInputs
+    locales={['en', 'fr']}
+    disabled
+>
+    <TextInput source="title" />
+    <TextInput source="description" />
+</TranslatableInputs>
+```
+
+{% endraw %}
+
+**Tip**: The form framework used by react-admin, react-hook-form, [considers](https://github.com/react-hook-form/react-hook-form/pull/10805) that a `disabled` input shouldn't submit any value. So react-hook-form sets the value of all `disabled` inputs to `undefined`. As a consequence, a form with a `disabled` input is always considered `dirty` (i.e. react-hook-form considers that the form values and the initial record values are different), and it triggers [the `warnWhenUnsavedChanges` feature](./EditTutorial.md#warning-about-unsaved-changes) when leaving the form, even though the user changed nothing. The workaround is to set the `disabled` prop on the underlying input component, as follows:
+
+{% raw %}
+
+```jsx
+<TranslatableInputs
+    locales={['en', 'fr']}
+    InputProps={{ disabled: true }}
+>
+    <TextInput source="title" />
+    <TextInput source="description" />
+</TranslatableInputs>
+```
+
+{% endraw %}
 
 ## `sx`
 

@@ -162,8 +162,8 @@ const BookEditDisabledChild = () => (
         }}
     >
         <SimpleForm>
-            <ReferenceInput reference="authors" source="author" disabled>
-                <SelectInput />
+            <ReferenceInput reference="authors" source="author">
+                <SelectInput disabled />
             </ReferenceInput>
         </SimpleForm>
     </Edit>

@@ -150,9 +150,11 @@ export const DisabledWithExplicitChild = () => (
                             reference="tags"
                             resource="posts"
                             source="tags_ids"
-                            disabled
                         >
-                            <AutocompleteArrayInput optionText="name" />
+                            <AutocompleteArrayInput
+                                optionText="name"
+                                disabled
+                            />
                         </ReferenceArrayInput>
                     </SimpleForm>
                 </Create>

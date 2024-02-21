@@ -18,10 +18,10 @@ This component provides a UI for editing arrays of objects, one row per object.
 
 ## Usage
 
-`<SimpleFormIterator>` requires no prop by default. It expects an array of inputs as children. It renders these inputs once per row and takes care of setting a different source for each row. 
+`<SimpleFormIterator>` requires no prop by default. It expects an array of inputs as children. It renders these inputs once per row and takes care of setting a different source for each row.
 
 ```jsx
-import { 
+import {
     Edit,
     SimpleForm,
     TextInput,
@@ -86,11 +86,13 @@ const OrderEdit = () => (
 | `inline` | Optional | `boolean` | `false` | When true, inputs are put on the same line |
 | `removeButton` | Optional | `ReactElement` | - | Component to render for the remove button |
 | `reOrderButtons` | Optional | `ReactElement` | - | Component to render for the up / down button |
+| `readOnly` | Optional | `boolean` | `false` | If true, all inputs are in read-only mode. |
+| `disabled` | Optional | `boolean` | `false` | If true, all inputs are disabled. |
 | `sx` | Optional | `SxProps` | - | Material UI shortcut for defining custom styles |
 
 ## `addButton`
 
-This prop lets you pass a custom element to replace the default Add button. 
+This prop lets you pass a custom element to replace the default Add button.
 
 ```jsx
 <SimpleFormIterator addButton={<Button>Add</Button>}>
@@ -102,7 +104,7 @@ This prop lets you pass a custom element to replace the default Add button.
 
 ## `children`
 
-A list of Input elements, that will be rendered on each row. 
+A list of Input elements, that will be rendered on each row.
 
 ```jsx
 <SimpleFormIterator>
@@ -174,11 +176,11 @@ import { ArrayInput, SimpleFormIterator, DateInput, TextField, FormDataConsumer,
 </ArrayInput>
 ```
 
-**Caution**: `<SimpleFormIterator>` **clones** its children several times, as it needs to override their actual source for each record. If you use a custom Input element, make sure they accept a custom `source` prop. 
+**Caution**: `<SimpleFormIterator>` **clones** its children several times, as it needs to override their actual source for each record. If you use a custom Input element, make sure they accept a custom `source` prop.
 
 ## `className`
 
-CSS classes passed to the root component. 
+CSS classes passed to the root component.
 
 ```jsx
 <SimpleFormIterator className="dummy">
@@ -237,7 +239,7 @@ When true, the up and down buttons aren't rendered, so the user cannot reorder r
     <NumberInput source="price" />
     <NumberInput source="quantity" />
 </SimpleFormIterator>
-``` 
+```
 
 ## `fullWidth`
 
@@ -273,7 +275,7 @@ This differs with the default behavior, where the row actions appear after the i
 
 ## `inline`
 
-When true, inputs are put on the same line. Use this option to make the lines more compact, especially when the children are narrow inputs. 
+When true, inputs are put on the same line. Use this option to make the lines more compact, especially when the children are narrow inputs.
 
 ```jsx
 <SimpleFormIterator inline>
@@ -299,7 +301,7 @@ Without this prop, `<SimpleFormIterator>` will render one input per line.
 
 ## `removeButton`
 
-This prop lets you pass a custom element to replace the default Remove button. 
+This prop lets you pass a custom element to replace the default Remove button.
 
 ```jsx
 <SimpleFormIterator removeButton={<Button>Remove</Button>}>
@@ -353,6 +355,38 @@ const OrderEdit = () => (
     </Edit>
 );
 ```
+
+## `readOnly`
+
+If `true`, all children inputs are in read-only mode and the user can't change the value.
+
+{% raw %}
+
+```jsx
+<SimpleFormIterator readOnly>
+    <TextInput source="name" />
+    <NumberInput source="price" />
+    <NumberInput source="quantity" />
+</SimpleFormIterator>
+```
+
+{% endraw %}
+
+## `disabled`
+
+If `true`, all children inputs are disabled and the user can't change the value.
+
+{% raw %}
+
+```jsx
+<SimpleFormIterator disabled>
+    <TextInput source="name" />
+    <NumberInput source="price" />
+    <NumberInput source="quantity" />
+</SimpleFormIterator>
+```
+
+{% endraw %}
 
 ## `sx`
 

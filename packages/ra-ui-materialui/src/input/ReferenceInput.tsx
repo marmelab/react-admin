@@ -93,10 +93,7 @@ export const ReferenceInput = (props: ReferenceInputProps) => {
     return (
         <ResourceContextProvider value={reference}>
             <ChoicesContextProvider value={controllerProps}>
-                {React.cloneElement(children, {
-                    disabled: children.props.disabled || disabled || readOnly,
-                    readOnly: children.props.readOnly || readOnly,
-                })}
+                {children}
             </ChoicesContextProvider>
         </ResourceContextProvider>
     );
