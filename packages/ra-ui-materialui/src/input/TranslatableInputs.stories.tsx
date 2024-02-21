@@ -3,17 +3,11 @@ import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
 
 import { AdminContext } from '../AdminContext';
-import { Create, Edit } from '../detail';
+import { Create } from '../detail';
 import { SimpleForm } from '../form';
 import { TranslatableInputs } from './TranslatableInputs';
 import { FormInspector } from './common';
 import { TextInput } from './TextInput';
-import { Resource } from 'ra-core';
-import Admin from '../../../react-admin/src/Admin';
-import { BooksCreate } from './common/BooksCreate';
-import { BooksList } from './common/BooksList';
-import { dataProvider } from './common/dataProvider';
-import { history } from './common/history';
 
 export default { title: 'ra-ui-materialui/input/TranslatableInputs' };
 
@@ -87,41 +81,17 @@ export const Sx = () => (
 
 const i18nProvider = polyglotI18nProvider(() => englishMessages);
 
-const Wrapper = ({ children }) => (
+const Wrapper = ({ children, onSuccess = console.log }) => (
     <AdminContext i18nProvider={i18nProvider}>
-        <Create resource="posts">
-            <SimpleForm>
+        <Create resource="posts" mutationOptions={{ onSuccess }}>
+            <SimpleForm
+                onSubmit={data => {
+                    console.log(data);
+                }}
+            >
                 {children}
                 <FormInspector name="title" />
             </SimpleForm>
         </Create>
     </AdminContext>
 );
-
-const BooksEdit = () => (
-    <Edit>
-        <SimpleForm>
-            <TranslatableInputs locales={['en', 'fr']} readOnly>
-                <TextInput source="title" label="Title" />
-            </TranslatableInputs>
-            <TextInput source="author" />
-        </SimpleForm>
-    </Edit>
-);
-
-export const FullApp = () => {
-    React.useEffect(() => {
-        history.replace('/books/5/edit');
-    }, []);
-
-    return (
-        <Admin dataProvider={dataProvider} history={history}>
-            <Resource
-                name="books"
-                list={BooksList}
-                edit={BooksEdit}
-                create={BooksCreate}
-            />
-        </Admin>
-    );
-};

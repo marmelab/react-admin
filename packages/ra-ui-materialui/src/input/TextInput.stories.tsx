@@ -9,13 +9,6 @@ import { Edit } from '../detail';
 import { SimpleForm, Toolbar } from '../form';
 import { SaveButton } from '../button';
 import { FormInspector } from './common';
-import { Admin } from '../../../react-admin/src/Admin';
-import { Resource } from '../../../ra-core/src/core/Resource';
-import { dataProvider } from './common/dataProvider';
-import { history } from './common/history';
-import { BooksList } from './common/BooksList';
-import { BooksCreate } from './common/BooksCreate';
-import { NumberInput } from './NumberInput';
 
 export default { title: 'ra-ui-materialui/input/TextInput' };
 
@@ -374,30 +367,3 @@ export const Parse = ({ onSuccess = console.log }) => (
         </Create>
     </AdminContext>
 );
-
-const BooksEdit = () => (
-    <Edit>
-        <SimpleForm>
-            <TextInput source="title.en" label="Title" readOnly />
-            <TextInput source="author" />
-            <NumberInput source="year" />
-        </SimpleForm>
-    </Edit>
-);
-
-export const FullApp = () => {
-    React.useEffect(() => {
-        history.replace('/books/5/edit');
-    }, []);
-
-    return (
-        <Admin dataProvider={dataProvider} history={history}>
-            <Resource
-                name="books"
-                list={BooksList}
-                edit={BooksEdit}
-                create={BooksCreate}
-            />
-        </Admin>
-    );
-};

@@ -13,9 +13,6 @@ import { ReferenceInput } from './ReferenceInput';
 import { SaveButton } from '../button/SaveButton';
 import { Toolbar } from '../form/Toolbar';
 import { FormInspector } from './common';
-import { dataProvider } from './common/dataProvider';
-import { BooksList } from './common/BooksList';
-import { BooksCreate } from './common/BooksCreate';
 
 export default { title: 'ra-ui-materialui/input/SelectInput' };
 
@@ -509,40 +506,5 @@ export const TranslateChoice = () => {
                 </SimpleForm>
             </Edit>
         </AdminContext>
-    );
-};
-
-const BooksEdit = () => (
-    <Edit>
-        <SimpleForm>
-            <TextInput source="title.en" label="Title" />
-            <TextInput source="author" />
-            <SelectInput
-                source="author_gender"
-                choices={[
-                    { id: 'M', name: 'Man' },
-                    { id: 'F', name: 'Woman' },
-                    { id: 'X', name: 'Other' },
-                ]}
-                readOnly
-            />
-        </SimpleForm>
-    </Edit>
-);
-
-export const FullApp = () => {
-    React.useEffect(() => {
-        history.replace('/books/5/edit');
-    }, []);
-
-    return (
-        <Admin dataProvider={dataProvider} history={history}>
-            <Resource
-                name="books"
-                list={BooksList}
-                edit={BooksEdit}
-                create={BooksCreate}
-            />
-        </Admin>
     );
 };

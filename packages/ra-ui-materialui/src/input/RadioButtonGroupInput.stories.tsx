@@ -9,13 +9,7 @@ import { RadioButtonGroupInput } from './RadioButtonGroupInput';
 import { FormInspector } from './common';
 import { ReferenceInput } from './ReferenceInput';
 import { ReferenceArrayInput } from './ReferenceArrayInput';
-import { Resource, testDataProvider } from 'ra-core';
-import { dataProvider as commonDataProvider } from './common/dataProvider';
-import { history } from './common/history';
-import { Admin } from 'react-admin';
-import { TextInput } from './TextInput';
-import { BooksCreate } from './common/BooksCreate';
-import { BooksList } from './common/BooksList';
+import { testDataProvider } from 'ra-core';
 
 export default { title: 'ra-ui-materialui/input/RadioButtonGroupInput' };
 
@@ -147,9 +141,9 @@ export const Id = () => (
 );
 const i18nProvider = polyglotI18nProvider(() => englishMessages);
 
-const Wrapper = ({ children }) => (
+const Wrapper = ({ children, onSuccess = console.log }) => (
     <AdminContext i18nProvider={i18nProvider}>
-        <Create resource="posts">
+        <Create resource="posts" mutationOptions={{ onSuccess }}>
             <SimpleForm>
                 {children}
                 <FormInspector name="gender" />
@@ -238,38 +232,5 @@ export const TranslateChoice = () => {
                 </SimpleForm>
             </Edit>
         </AdminContext>
-    );
-};
-
-const BooksEdit = () => (
-    <Edit>
-        <SimpleForm>
-            <TextInput source="title.en" label="Title" />
-            <RadioButtonGroupInput
-                source="author_gender"
-                choices={[
-                    { id: 'M', name: 'Man' },
-                    { id: 'W', name: 'Woman' },
-                    { id: 'O', name: 'Other' },
-                ]}
-            />
-        </SimpleForm>
-    </Edit>
-);
-
-export const FullApp = () => {
-    React.useEffect(() => {
-        history.replace('/books/5/edit');
-    }, []);
-
-    return (
-        <Admin dataProvider={commonDataProvider} history={history}>
-            <Resource
-                name="books"
-                list={BooksList}
-                edit={BooksEdit}
-                create={BooksCreate}
-            />
-        </Admin>
     );
 };
