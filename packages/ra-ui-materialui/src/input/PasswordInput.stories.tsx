@@ -24,12 +24,14 @@ export const FullWidth = () => (
 
 export const Disabled = () => (
     <Wrapper>
-        <PasswordInput source="password" disabled />
+        <PasswordInput source="password" defaultValue="password" disabled />
+        <PasswordInput source="confirmedPassword" disabled />
     </Wrapper>
 );
 export const ReadOnly = () => (
     <Wrapper>
-        <PasswordInput source="password" readOnly />
+        <PasswordInput source="password" defaultValue="password" readOnly />
+        <PasswordInput source="confirmedPassword" readOnly />
     </Wrapper>
 );
 

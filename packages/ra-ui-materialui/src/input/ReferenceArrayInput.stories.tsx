@@ -88,6 +88,12 @@ export const ReadOnly = () => (
                             source="tags_ids"
                             readOnly
                         />
+                        <ReferenceArrayInput
+                            reference="authors"
+                            resource="name"
+                            source="authors_ids"
+                            disabled
+                        />
                     </SimpleForm>
                 </Create>
             )}
@@ -111,6 +117,12 @@ export const Disabled = () => (
                             reference="tags"
                             resource="posts"
                             source="tags_ids"
+                            disabled
+                        />
+                        <ReferenceArrayInput
+                            reference="authors"
+                            resource="name"
+                            source="authors_ids"
                             disabled
                         />
                     </SimpleForm>

@@ -70,6 +70,11 @@ export const ReadOnly = () => (
                     ]}
                     readOnly
                 />
+                <AutocompleteArrayInput
+                    source="authors"
+                    choices={[]}
+                    readOnly
+                />
             </SimpleForm>
         </Create>
     </AdminContext>
@@ -91,6 +96,11 @@ export const Disabled = () => (
                         { id: 'u002', name: 'Moderator' },
                         { id: 'u003', name: 'Reviewer' },
                     ]}
+                    disabled
+                />
+                <AutocompleteArrayInput
+                    source="authors"
+                    choices={[]}
                     disabled
                 />
             </SimpleForm>

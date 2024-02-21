@@ -75,6 +75,15 @@ export const Disabled = () => (
             ]}
             disabled
         />
+        <SelectInput
+            source="city"
+            choices={[
+                { id: 'P', name: 'Paris ' },
+                { id: 'L', name: 'London' },
+            ]}
+            defaultValue="P"
+            disabled
+        />
     </Wrapper>
 );
 
@@ -86,6 +95,15 @@ export const ReadOnly = () => (
                 { id: 'M', name: 'Male ' },
                 { id: 'F', name: 'Female' },
             ]}
+            readOnly
+        />
+        <SelectInput
+            source="city"
+            choices={[
+                { id: 'P', name: 'Paris ' },
+                { id: 'L', name: 'London' },
+            ]}
+            defaultValue="P"
             readOnly
         />
     </Wrapper>

@@ -109,6 +109,7 @@ const BookEditReadOnly = () => (
     >
         <SimpleForm>
             <ReferenceInput reference="authors" source="author" readOnly />
+            <ReferenceInput reference="authors" source="surname" readOnly />
         </SimpleForm>
     </Edit>
 );
@@ -136,6 +137,7 @@ const BookEditDisabled = () => (
     >
         <SimpleForm>
             <ReferenceInput reference="authors" source="author" disabled />
+            <ReferenceInput reference="authors" source="surname" readOnly />
         </SimpleForm>
     </Edit>
 );

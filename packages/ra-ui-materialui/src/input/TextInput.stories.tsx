@@ -36,6 +36,7 @@ export const Disabled = () => (
         >
             <SimpleForm>
                 <TextInput source="title" disabled />
+                <TextInput source="name" disabled />
                 <FormInspector />
             </SimpleForm>
         </Create>
@@ -51,6 +52,7 @@ export const ReadOnly = () => (
         >
             <SimpleForm>
                 <TextInput source="title" readOnly />
+                <TextInput source="name" readOnly />
                 <FormInspector />
             </SimpleForm>
         </Create>

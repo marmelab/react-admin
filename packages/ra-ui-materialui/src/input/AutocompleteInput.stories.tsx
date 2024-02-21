@@ -116,6 +116,12 @@ export const ReadOnly = ({ onSuccess = console.log }) => (
             fullWidth
             readOnly
         />
+        <AutocompleteInput
+            source="genre"
+            choices={defaultChoices}
+            fullWidth
+            readOnly
+        />
     </Wrapper>
 );
 
@@ -123,6 +129,12 @@ export const Disabled = ({ onSuccess = console.log }) => (
     <Wrapper onSuccess={onSuccess}>
         <AutocompleteInput
             source="author"
+            choices={defaultChoices}
+            fullWidth
+            disabled
+        />
+        <AutocompleteInput
+            source="genre"
             choices={defaultChoices}
             fullWidth
             disabled

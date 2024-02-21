@@ -91,6 +91,7 @@ export const Disabled = () => (
                                 <SimpleFormIterator>
                                     <TextInput source="name" />
                                     <TextInput source="role" />
+                                    <TextInput source="surname" />
                                 </SimpleFormIterator>
                             </ArrayInput>
                         </SimpleForm>
@@ -121,6 +122,7 @@ export const ReadOnly = () => (
                                 <SimpleFormIterator>
                                     <TextInput source="name" />
                                     <TextInput source="role" />
+                                    <TextInput source="surname" />
                                 </SimpleFormIterator>
                             </ArrayInput>
                         </SimpleForm>

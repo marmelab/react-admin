@@ -36,7 +36,9 @@ export const ReadOnly = (onSuccess = console.log) => (
         >
             <SimpleForm>
                 <NumberInput source="views" readOnly />
+                <NumberInput source="price" readOnly />
                 <FormInspector name="views" />
+                <FormInspector name="price" />
             </SimpleForm>
         </Create>
     </AdminContext>
@@ -52,7 +54,9 @@ export const Disabled = (onSuccess = console.log) => (
         >
             <SimpleForm>
                 <NumberInput source="views" disabled />
+                <NumberInput source="price" disabled />
                 <FormInspector name="views" />
+                <FormInspector name="price" />
             </SimpleForm>
         </Create>
     </AdminContext>

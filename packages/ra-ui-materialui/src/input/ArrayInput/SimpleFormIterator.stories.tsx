@@ -8,12 +8,6 @@ import { SimpleFormIterator } from './SimpleFormIterator';
 import { TextInput } from '../TextInput';
 import { AdminContext } from '../../AdminContext';
 import { defaultTheme } from '../../theme/defaultTheme';
-import { dataProvider as commonDataProvider } from '../common/dataProvider';
-import { history } from '../common/history';
-import { Resource } from 'ra-core';
-import { Admin } from 'react-admin';
-import { BooksCreate } from '../common/BooksCreate';
-import { BooksList } from '../common/BooksList';
 
 export default { title: 'ra-ui-materialui/input/SimpleFormIterator' };
 
@@ -122,6 +116,7 @@ export const ReadOnly = () => (
                     <SimpleFormIterator readOnly>
                         <TextInput source="name" />
                         <TextInput source="role" />
+                        <TextInput source="surname" />
                     </SimpleFormIterator>
                 </ArrayInput>
             </SimpleForm>
@@ -137,6 +132,7 @@ export const Disabled = () => (
                     <SimpleFormIterator disabled>
                         <TextInput source="name" />
                         <TextInput source="role" />
+                        <TextInput source="surname" />
                     </SimpleFormIterator>
                 </ArrayInput>
             </SimpleForm>
