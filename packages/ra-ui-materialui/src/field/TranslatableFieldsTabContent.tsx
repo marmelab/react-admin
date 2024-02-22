@@ -37,11 +37,10 @@ export const TranslatableFieldsTabContent = (
                 parentSourceContext
                     ? parentSourceContext.getSource(`${source}.${locale}`)
                     : `${source}.${locale}`,
-            getLabel: (source: string) => {
-                return parentSourceContext
+            getLabel: (source: string) =>
+                parentSourceContext
                     ? parentSourceContext.getLabel(source)
-                    : getResourceFieldLabelKey(resource, source);
-            },
+                    : getResourceFieldLabelKey(resource, source),
         }),
         [locale, parentSourceContext, resource]
     );
@@ -68,10 +67,8 @@ export const TranslatableFieldsTabContent = (
                                     {addLabel ? (
                                         <Labeled
                                             resource={resource}
-                                            label={field.props.source}
-                                            source={sourceContext.getSource(
-                                                field.props.source
-                                            )}
+                                            label={field.props.label}
+                                            source={field.props.source}
                                         >
                                             {field}
                                         </Labeled>
