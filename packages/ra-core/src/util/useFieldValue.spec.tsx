@@ -15,6 +15,22 @@ describe('useFieldValue', () => {
         await screen.findByText('None');
     });
 
+    it('should return the provided defaultValue if no record is available', async () => {
+        render(<Component source="name" defaultValue="Molly Millions" />);
+
+        await screen.findByText('Molly Millions');
+    });
+
+    it('should return the provided defaultValue if the record does not have a value for the source', async () => {
+        render(
+            <RecordContextProvider value={{ id: 123 }}>
+                <Component source="name" defaultValue="Peter Riviera" />
+            </RecordContextProvider>
+        );
+
+        await screen.findByText('Peter Riviera');
+    });
+
     it('should return the field value from the record in RecordContext', async () => {
         render(
             <RecordContextProvider value={{ name: 'John Wick' }}>
