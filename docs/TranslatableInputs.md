@@ -176,8 +176,6 @@ For instance, you can use `direction: 'row'` to display the inputs side by side 
 
 If `true`, the input is in read-only mode and the user can't change the value.
 
-{% raw %}
-
 ```jsx
 <TranslatableInputs
     locales={['en', 'fr']}
@@ -188,13 +186,9 @@ If `true`, the input is in read-only mode and the user can't change the value.
 </TranslatableInputs>
 ```
 
-{% endraw %}
-
 ## `disabled`
 
 If `true`, the input is disabled and the user can't change the value.
-
-{% raw %}
 
 ```jsx
 <TranslatableInputs
@@ -206,11 +200,7 @@ If `true`, the input is disabled and the user can't change the value.
 </TranslatableInputs>
 ```
 
-{% endraw %}
-
 **Tip**: The form framework used by react-admin, react-hook-form, [considers](https://github.com/react-hook-form/react-hook-form/pull/10805) that a `disabled` input shouldn't submit any value. So react-hook-form sets the value of all `disabled` inputs to `undefined`. As a consequence, a form with a `disabled` input is always considered `dirty` (i.e. react-hook-form considers that the form values and the initial record values are different), and it triggers [the `warnWhenUnsavedChanges` feature](./EditTutorial.md#warning-about-unsaved-changes) when leaving the form, even though the user changed nothing. The workaround is to set the `disabled` prop on the underlying input component, as follows:
-
-{% raw %}
 
 ```jsx
 <TranslatableInputs
@@ -221,8 +211,6 @@ If `true`, the input is disabled and the user can't change the value.
     <TextInput source="description" />
 </TranslatableInputs>
 ```
-
-{% endraw %}
 
 ## `sx`
 

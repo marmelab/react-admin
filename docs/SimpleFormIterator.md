@@ -360,8 +360,6 @@ const OrderEdit = () => (
 
 If `true`, all children inputs are in read-only mode and the user can't change the value.
 
-{% raw %}
-
 ```jsx
 <SimpleFormIterator readOnly>
     <TextInput source="name" />
@@ -370,13 +368,9 @@ If `true`, all children inputs are in read-only mode and the user can't change t
 </SimpleFormIterator>
 ```
 
-{% endraw %}
-
 ## `disabled`
 
 If `true`, all children inputs are disabled and the user can't change the value.
-
-{% raw %}
 
 ```jsx
 <SimpleFormIterator disabled>
@@ -385,8 +379,6 @@ If `true`, all children inputs are disabled and the user can't change the value.
     <NumberInput source="quantity" />
 </SimpleFormIterator>
 ```
-
-{% endraw %}
 
 ## `sx`
 

@@ -334,8 +334,6 @@ Then to display a selector for the post tags, you should call `<ReferenceArrayIn
 
 If `true`, the default input is in read-only mode and the user can't change the value.
 
-{% raw %}
-
 ```jsx
 <ReferenceArrayInput
     source="tags_ids"
@@ -344,11 +342,7 @@ If `true`, the default input is in read-only mode and the user can't change the 
 />
 ```
 
-{% endraw %}
-
 **Warning**: The `readOnly` prop refer to the default [`<AutocompleteArrayInput>`](./AutocompleteArrayInput.md) child. If you defined `children` you have to specify the `readOnly` prop on each input:
-
-{% raw %}
 
 ```jsx
 <ReferenceArrayInput source="tags_ids" reference="tags">
@@ -356,14 +350,10 @@ If `true`, the default input is in read-only mode and the user can't change the 
 </ReferenceArrayInput>
 ```
 
-{% endraw %}
-
 ## `disabled`
 
 If `true`, the default input is disabled and the user can't change the value.
 
-{% raw %}
-
 ```jsx
 <ReferenceArrayInput
     source="tags_ids"
@@ -371,13 +361,9 @@ If `true`, the default input is disabled and the user can't change the value.
     disabled
 />
 ```
-
-{% endraw %}
 
 **Tip**: The form framework used by react-admin, react-hook-form, [considers](https://github.com/react-hook-form/react-hook-form/pull/10805) that a `disabled` input shouldn't submit any value. So react-hook-form sets the value of all `disabled` inputs to `undefined`. As a consequence, a form with a `disabled` input is always considered `dirty` (i.e. react-hook-form considers that the form values and the initial record values are different), and it triggers [the `warnWhenUnsavedChanges` feature](./EditTutorial.md#warning-about-unsaved-changes) when leaving the form, even though the user changed nothing. The workaround is to set the `disabled` prop on the underlying input component, as follows:
 
-{% raw %}
-
 ```jsx
 <ReferenceArrayInput
     source="tags_ids"
@@ -386,19 +372,13 @@ If `true`, the default input is disabled and the user can't change the value.
 />
 ```
 
-{% endraw %}
-
 **Warning**: The `disabled` prop refer to the default [`<AutocompleteArrayInput>`](./AutocompleteArrayInput.md) child. If you defined `children` you have to specify the `disabled` prop on each input:
-
-{% raw %}
 
 ```jsx
 <ReferenceArrayInput source="tags_ids" reference="tags">
     <SelectArrayInput disabled />
 </ReferenceArrayInput>
 ```
-
-{% endraw %}
 
 ## Customizing The Filter Query
 
