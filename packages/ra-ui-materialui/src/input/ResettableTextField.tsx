@@ -186,6 +186,8 @@ const handleMouseDownClearButton = event => {
 
 ResettableTextField.propTypes = {
     clearAlwaysVisible: PropTypes.bool,
+    readOnly: PropTypes.bool,
+    disabled: PropTypes.bool,
     InputProps: PropTypes.object,
     onBlur: PropTypes.func,
     onChange: PropTypes.func.isRequired,
