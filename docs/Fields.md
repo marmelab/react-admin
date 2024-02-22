@@ -511,7 +511,7 @@ import * as React from 'react';
 const TextField = (props) => {
 -    const record = useRecordContext();
 +   const value = useFieldValue(props);
--   return record ? <span>{record[source]}</span> : null;
+-   return record ? <span>{record[props.source]}</span> : null;
 +   return <span>{value}</span> : null;
 }
 
