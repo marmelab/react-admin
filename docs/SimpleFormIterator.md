@@ -358,7 +358,7 @@ const OrderEdit = () => (
 
 ## `readOnly`
 
-If `true`, all children inputs are in read-only mode and the user can't change the value.
+The `readOnly` prop set to true makes the children input not mutable, meaning the user can not edit them.
 
 ```jsx
 <SimpleFormIterator readOnly>
@@ -370,7 +370,7 @@ If `true`, all children inputs are in read-only mode and the user can't change t
 
 ## `disabled`
 
-If `true`, all children inputs are disabled and the user can't change the value.
+The `disabled` prop set to true makes the children input not mutable, focusable, or even submitted with the form.
 
 ```jsx
 <SimpleFormIterator disabled>

@@ -331,7 +331,7 @@ Then to display a selector for the contact company, you should call `<ReferenceI
 
 ## `readOnly`
 
-If `true`, the default input is in read-only mode and the user can't change the value.
+The `readOnly` prop set to true makes the element not mutable, meaning the user can not edit the control.
 
 ```jsx
 <ReferenceInput
@@ -341,7 +341,7 @@ If `true`, the default input is in read-only mode and the user can't change the 
 />
 ```
 
-**Warning**: The `readOnly` prop refer to the default [`<AutocompleteInput>`](./AutocompleteInput.md) child. If you defined `children` you have to specify the `readOnly` prop on each input:
+**Warning**: The `readOnly` prop refers to the default [`<AutocompleteInput>`](./AutocompleteInput.md) child. If you pass a child component, you'll have to specify the `readOnly` prop on each input:
 
 ```jsx
 <ReferenceInput source="company" reference="companies">
@@ -351,7 +351,7 @@ If `true`, the default input is in read-only mode and the user can't change the 
 
 ## `disabled`
 
-If `true`, the default input is disabled and the user can't change the value.
+The `disabled` prop set to true makes the default input element not mutable, focusable, or even submitted with the form.
 
 ```jsx
 <ReferenceInput
@@ -361,7 +361,7 @@ If `true`, the default input is disabled and the user can't change the value.
 />
 ```
 
-**Tip**: The form framework used by react-admin, react-hook-form, [considers](https://github.com/react-hook-form/react-hook-form/pull/10805) that a `disabled` input shouldn't submit any value. So react-hook-form sets the value of all `disabled` inputs to `undefined`. As a consequence, a form with a `disabled` input is always considered `dirty` (i.e. react-hook-form considers that the form values and the initial record values are different), and it triggers [the `warnWhenUnsavedChanges` feature](./EditTutorial.md#warning-about-unsaved-changes) when leaving the form, even though the user changed nothing. The workaround is to set the `disabled` prop on the underlying input component, as follows:
+**Tip:** Note that `disabled` inputs are **not** included in the form values, and hence may trigger `warnWhenUnsavedChanges` if the input previously had a value in the record. To include the input in the form values, you can use `readOnly` instead of `disabled`.
 
 ```jsx
 <ReferenceInput
@@ -371,7 +371,7 @@ If `true`, the default input is disabled and the user can't change the value.
 />
 ```
 
-**Warning**: The `disabled` prop refer to the default [`<AutocompleteInput>`](./AutocompleteInput.md) child. If you defined `children` you have to specify the `disabled` prop on each input:
+**Warning**: The `disabled` prop refers to the default [`<AutocompleteInput>`](./AutocompleteInput.md) child. If you pass a child component, you'll have to specify the `disabled` prop on each input:
 
 ```jsx
 <ReferenceInput source="company" reference="companies">
