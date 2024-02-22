@@ -26,7 +26,7 @@ export const Basic = () => (
     </AdminContext>
 );
 
-export const ReadOnly = (onSuccess = console.log) => (
+export const ReadOnly = ({ onSuccess = console.log }) => (
     <AdminContext>
         <Create
             resource="posts"
