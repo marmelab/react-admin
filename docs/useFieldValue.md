@@ -14,7 +14,7 @@ Here is an example `TextField` component:
 ```tsx
 // In TextField.tsx
 import * as React from 'react';
-+import { useFieldValue, type FieldProps } from 'react-admin';
+import { useFieldValue, type FieldProps } from 'react-admin';
 
 export const TextField = (props: FieldProps) => {
     const value = useFieldValue(props);
@@ -58,7 +58,7 @@ The record from which to read the value. Read from the `RecordContext` by defaul
 
 ```tsx
 import * as React from 'react';
-+import { useFieldValue, useGetOne } from 'react-admin';
+import { useFieldValue, useGetOne } from 'react-admin';
 
 export const CustomerCard = ({ id }: { id: string }) => {
     const { data } = useGetOne('customer', { id });
@@ -74,7 +74,7 @@ The value to return when the record does not have a value for the specified `sou
 
 ```tsx
 import * as React from 'react';
-+import { useFieldValue } from 'react-admin';
+import { useFieldValue } from 'react-admin';
 
 export const CustomerStatus = () => {
     const status = useFieldValue({ source: 'status', defaultValue: 'active' });
