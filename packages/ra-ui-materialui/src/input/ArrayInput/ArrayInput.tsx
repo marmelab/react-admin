@@ -128,7 +128,12 @@ export const ArrayInput = (props: ArrayInputProps) => {
         formGroups.registerField(source, formGroupName);
 
         return () => {
-            unregister(source, { keepValue: true });
+            unregister(source, {
+                keepValue: true,
+                keepError: true,
+                keepDirty: true,
+                keepTouched: true,
+            });
             formGroups.unregisterField(source, formGroupName);
         };
     }, [register, unregister, source, formGroups, formGroupName]);
