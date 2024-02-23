@@ -86,7 +86,7 @@ export const Error = (
                                 <ul>
                                     <li>
                                         Check the{' '}
-                                        <a href="https://marmelab.com/react-admin/Readme.html">
+                                        <a href="https://marmelab.com/react-admin/documentation.html">
                                             react-admin documentation
                                         </a>
                                     </li>

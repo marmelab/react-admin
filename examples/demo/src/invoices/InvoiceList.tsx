@@ -1,12 +1,17 @@
 import * as React from 'react';
 import {
     List,
-    Datagrid,
+    DatagridConfigurable,
     TextField,
     DateField,
     ReferenceField,
     NumberField,
     DateInput,
+    TopToolbar,
+    ExportButton,
+    SelectColumnsButton,
+    ReferenceInput,
+    FilterButton,
 } from 'react-admin';
 
 import FullNameField from '../visitors/FullNameField';
@@ -16,15 +21,26 @@ import InvoiceShow from './InvoiceShow';
 const listFilters = [
     <DateInput source="date_gte" alwaysOn />,
     <DateInput source="date_lte" alwaysOn />,
+    <ReferenceInput source="customer_id" reference="customers" />,
+    <ReferenceInput source="command_id" reference="commands" />,
 ];
+
+const ListActions = () => (
+    <TopToolbar>
+        <FilterButton />
+        <SelectColumnsButton />
+        <ExportButton />
+    </TopToolbar>
+);
 
 const InvoiceList = () => (
     <List
         filters={listFilters}
         perPage={25}
         sort={{ field: 'date', order: 'DESC' }}
+        actions={<ListActions />}
     >
-        <Datagrid
+        <DatagridConfigurable
             rowClick="expand"
             expand={<InvoiceShow />}
             sx={{
@@ -62,7 +78,7 @@ const InvoiceList = () => (
             <NumberField source="delivery_fees" />
             <NumberField source="taxes" />
             <NumberField source="total" />
-        </Datagrid>
+        </DatagridConfigurable>
     </List>
 );
 

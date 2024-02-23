@@ -8,7 +8,6 @@ import {
 } from 'ra-core';
 import { ThemeProvider, createTheme } from '@mui/material';
 import { Datagrid } from './Datagrid';
-import { TextField } from '../../field/TextField';
 
 const TitleField = (): JSX.Element => {
     const record = useRecordContext();
@@ -274,7 +273,7 @@ describe('<Datagrid />', () => {
         render(
             <Wrapper listContext={{ ...contextValue, data: [], total: 0 }}>
                 <Datagrid>
-                    <TextField source="id" />
+                    <TitleField />
                 </Datagrid>
             </Wrapper>
         );

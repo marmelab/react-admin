@@ -288,7 +288,7 @@ And see [the Material UI system documentation](https://mui.com/system/the-sx-pro
 
 This prop defines the text alignment of the field when rendered inside a `<Datagrid>` cell. By default, datagrid values are left-aligned ; for numeric values, it's often better to right-align them. Set `textAlign` to `right` for that.
 
-[`<NumberField>`](./NumberField.md) already uses `textAlign="right"`. Set the default value for this prop if you create a custom numeric field. 
+[`<NumberField>`](./NumberField.md) already uses `textAlign="right"`. Set the default value for this prop if you create a custom numeric field.
 
 ```jsx
 const BasketTotal = () => {

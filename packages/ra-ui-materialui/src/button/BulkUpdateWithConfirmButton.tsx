@@ -8,7 +8,6 @@ import {
     useListContext,
     useTranslate,
     useUpdateMany,
-    useRefresh,
     useNotify,
     useUnselectAll,
     useResourceContext,
@@ -26,7 +25,6 @@ export const BulkUpdateWithConfirmButton = (
     props: BulkUpdateWithConfirmButtonProps
 ) => {
     const notify = useNotify();
-    const refresh = useRefresh();
     const translate = useTranslate();
     const resource = useResourceContext(props);
     const unselectAll = useUnselectAll(resource);
@@ -42,7 +40,6 @@ export const BulkUpdateWithConfirmButton = (
         mutationMode = 'pessimistic',
         onClick,
         onSuccess = () => {
-            refresh();
             notify('ra.notification.updated', {
                 type: 'info',
                 messageArgs: { smart_count: selectedIds.length },

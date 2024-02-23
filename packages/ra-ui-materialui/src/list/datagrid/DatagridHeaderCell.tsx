@@ -10,6 +10,7 @@ import {
     useTranslate,
     SortPayload,
     useResourceContext,
+    useTranslateLabel,
 } from 'ra-core';
 
 export const DatagridHeaderCell = (
@@ -19,6 +20,16 @@ export const DatagridHeaderCell = (
     const resource = useResourceContext(props);
 
     const translate = useTranslate();
+    const translateLabel = useTranslateLabel();
+    const sortLabel = translate('ra.sort.sort_by', {
+        field: translateLabel({
+            label: field.props.label,
+            resource,
+            source: field.props.source,
+        }),
+        order: translate(`ra.sort.${sort.order === 'ASC' ? 'DESC' : 'ASC'}`),
+        _: translate('ra.action.sort'),
+    });
 
     return (
         <StyledTableCell
@@ -31,7 +42,7 @@ export const DatagridHeaderCell = (
             field.props.sortable !== false &&
             (field.props.sortBy || field.props.source) ? (
                 <Tooltip
-                    title={translate('ra.action.sort')}
+                    title={sortLabel}
                     placement={
                         field.props.textAlign === 'right'
                             ? 'bottom-end'

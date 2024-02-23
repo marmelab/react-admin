@@ -186,9 +186,9 @@ export const FilterListItem = memo((props: FilterListItemProps) => {
                 )}
                 <ListItemText
                     primary={
-                        isElement(label)
-                            ? label
-                            : translate(label, { _: label })
+                        typeof label === 'string' && !isElement(label)
+                            ? translate(label, { _: label })
+                            : label
                     }
                     className={FilterListItemClasses.listItemText}
                     data-selected={isSelected ? 'true' : 'false'}

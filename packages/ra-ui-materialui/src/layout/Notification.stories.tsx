@@ -76,6 +76,20 @@ export const AutoHideDuration = () => (
     </Wrapper>
 );
 
+const NoAutoHideNotification = () => {
+    const notify = useNotify();
+    React.useEffect(() => {
+        notify('hello, world', { autoHideDuration: null });
+    }, [notify]);
+    return null;
+};
+
+export const NoAutoHide = () => (
+    <Wrapper>
+        <NoAutoHideNotification />
+    </Wrapper>
+);
+
 const UndoableNotification = () => {
     const notify = useNotify();
     React.useEffect(() => {

@@ -67,6 +67,7 @@ export const ReferenceManyField = <
 ) => {
     const {
         children,
+        debounce,
         filter = defaultFilter,
         page = 1,
         pagination = null,
@@ -83,6 +84,7 @@ export const ReferenceManyField = <
         RecordType,
         ReferenceRecordType
     >({
+        debounce,
         filter,
         page,
         perPage,
@@ -108,6 +110,7 @@ export interface ReferenceManyFieldProps<
     RecordType extends Record<string, any> = Record<string, any>
 > extends FieldProps<RecordType> {
     children: ReactNode;
+    debounce?: number;
     filter?: FilterPayload;
     page?: number;
     pagination?: ReactElement;

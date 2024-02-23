@@ -62,13 +62,23 @@ describe('flattenObject', () => {
 });
 
 describe('createHeadersFromOptions', () => {
-    it('should add a Content-Type header for POST requests', () => {
-        const options = {
+    it('should add a Content-Type header for POST requests if there is a body', () => {
+        const optionsWithBody = {
+            method: 'POST',
+            body: JSON.stringify(null),
+        };
+
+        const headers = createHeadersFromOptions(optionsWithBody);
+        expect(headers.get('Content-Type')).toStrictEqual('application/json');
+    });
+
+    it('should not add a Content-Type header for POST requests with no body', () => {
+        const optionsWithoutBody = {
             method: 'POST',
         };
 
-        const headers = createHeadersFromOptions(options);
-        expect(headers.get('Content-Type')).toStrictEqual('application/json');
+        const headersWithoutBody = createHeadersFromOptions(optionsWithoutBody);
+        expect(headersWithoutBody.get('Content-Type')).toBeNull();
     });
 
     it('should not add a Content-Type header for GET requests', () => {
@@ -84,5 +94,42 @@ describe('createHeadersFromOptions', () => {
             optionsWithoutMethod
         );
         expect(headersWithoutMethod.get('Content-Type')).toBeNull();
+    });
+
+    it('should not add a Content-Type header for DELETE requests with no body', () => {
+        const optionsWithDelete = {
+            method: 'DELETE',
+        };
+
+        const headersWithDelete = createHeadersFromOptions(optionsWithDelete);
+        expect(headersWithDelete.get('Content-Type')).toBeNull();
+        const optionsWithDeleteAndBody = {
+            method: 'DELETE',
+            body: JSON.stringify(null),
+        };
+
+        const headersWithDeleteAndBody = createHeadersFromOptions(
+            optionsWithDeleteAndBody
+        );
+        expect(headersWithDeleteAndBody.get('Content-Type')).toStrictEqual(
+            'application/json'
+        );
+    });
+
+    it('should not add a Content-Type header if there already is a Content-Type header', () => {
+        const optionsWithContentType = {
+            headers: new Headers({
+                'Content-Type': 'not undefined',
+            }) as Headers,
+            method: 'POST',
+            body: 'not undefined either',
+        };
+
+        const headersWithContentType = createHeadersFromOptions(
+            optionsWithContentType
+        );
+        expect(headersWithContentType.get('Content-Type')).toStrictEqual(
+            'not undefined'
+        );
     });
 });

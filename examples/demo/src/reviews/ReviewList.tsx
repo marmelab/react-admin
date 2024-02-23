@@ -1,6 +1,13 @@
 import * as React from 'react';
 import { useCallback } from 'react';
-import { List } from 'react-admin';
+import {
+    CreateButton,
+    ExportButton,
+    FilterButton,
+    List,
+    SelectColumnsButton,
+    TopToolbar,
+} from 'react-admin';
 import { matchPath, useLocation, useNavigate } from 'react-router-dom';
 import { Box, Drawer, useMediaQuery, Theme } from '@mui/material';
 
@@ -8,6 +15,15 @@ import ReviewListMobile from './ReviewListMobile';
 import ReviewListDesktop from './ReviewListDesktop';
 import reviewFilters from './reviewFilters';
 import ReviewEdit from './ReviewEdit';
+
+const ReviewListActions = () => (
+    <TopToolbar>
+        <FilterButton />
+        <CreateButton />
+        <SelectColumnsButton />
+        <ExportButton />
+    </TopToolbar>
+);
 
 const ReviewList = () => {
     const isXSmall = useMediaQuery<Theme>(theme =>
@@ -36,6 +52,7 @@ const ReviewList = () => {
                 filters={reviewFilters}
                 perPage={25}
                 sort={{ field: 'date', order: 'DESC' }}
+                actions={<ReviewListActions />}
             >
                 {isXSmall ? (
                     <ReviewListMobile />

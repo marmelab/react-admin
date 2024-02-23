@@ -1,10 +1,10 @@
 import * as React from 'react';
 import {
-    Identifier,
-    Datagrid,
-    DateField,
-    TextField,
     BulkDeleteButton,
+    DatagridConfigurable,
+    DateField,
+    Identifier,
+    TextField,
 } from 'react-admin';
 
 import ProductReferenceField from '../products/ProductReferenceField';
@@ -28,10 +28,9 @@ const ReviewsBulkActionButtons = () => (
 );
 
 const ReviewListDesktop = ({ selectedRow }: ReviewListDesktopProps) => (
-    <Datagrid
+    <DatagridConfigurable
         rowClick="edit"
         rowSx={rowSx(selectedRow)}
-        optimized
         bulkActionButtons={<ReviewsBulkActionButtons />}
         sx={{
             '& .RaDatagrid-thead': {
@@ -49,11 +48,11 @@ const ReviewListDesktop = ({ selectedRow }: ReviewListDesktopProps) => (
     >
         <DateField source="date" />
         <CustomerReferenceField link={false} />
-        <ProductReferenceField link={false} />
+        <ProductReferenceField source="product_id" link={false} />
         <StarRatingField size="small" />
         <TextField source="comment" />
         <TextField source="status" />
-    </Datagrid>
+    </DatagridConfigurable>
 );
 
 export default ReviewListDesktop;

@@ -105,21 +105,21 @@ const MyList = () => {
 };
 ```
 
-## Input Format
+## Parameters
 
-`useListController` expects one object as parameter. All keys are optional.
+`useListController` expects an object as parameter. All keys are optional.
 
-* [`debounce`](./List.md#debounce): debounce time in ms for the setFilters callbacks
-* [`disableAuthentication`](./List.md#disableauthentication): set to true to allow anonymous access to the list
-* [`disableSyncWithLocation`](./List.md#disablesyncwithlocation): set to true to have more than one list per page
-* [`exporter`](./List.md#exporter): exporter function
-* [`filter`](./List.md#filter-permanent-filter): permanent filter, forced over the user filter
-* [`filterDefaultValues`](./List.md#filterdefaultvalues): default values for the filter form
-* [`perPage`](./List.md#perpage): number of results per page
-* [`queryOptions`](./List.md#queryoptions): react-query options for the useQuery call
-* [`resource`](./List.md#resource): resource name, e.g. 'posts' ; defaults to the current resource context
-* [`sort`](./List.md#sort), current sort value, e.g. `{ field: 'published_at', order: 'DESC' }`
-* [`storeKey`](#storekey): key used to differentiate the list from another sharing the same resource, in store managed states
+* [`debounce`](./List.md#debounce): Debounce time in ms for the setFilters callbacks
+* [`disableAuthentication`](./List.md#disableauthentication): Set to true to allow anonymous access to the list
+* [`disableSyncWithLocation`](./List.md#disablesyncwithlocation): Set to true to have more than one list per page
+* [`exporter`](./List.md#exporter): Exporter function
+* [`filter`](./List.md#filter-permanent-filter): Permanent filter, forced over the user filter
+* [`filterDefaultValues`](./List.md#filterdefaultvalues): Default values for the filter form
+* [`perPage`](./List.md#perpage): Number of results per page
+* [`queryOptions`](./List.md#queryoptions): React-query options for the useQuery call
+* [`resource`](./List.md#resource): Resource name, e.g. 'posts' ; defaults to the current resource context
+* [`sort`](./List.md#sort): Current sort value, e.g. `{ field: 'published_at', order: 'DESC' }`
+* [`storeKey`](#storekey): Key used to differentiate the list from another sharing the same resource, in store managed states
 
 Here are their default values:
 
@@ -217,40 +217,102 @@ You can disable this feature by setting the `storeKey` prop to `false`. When dis
 
 ## Return Value
 
-The return value of `useListController` has the following shape:
+`useListController` returns an object with the following keys: 
 
-```js
+```jsx
 const {
-    // fetched data
-    data, // an array of the list records, e.g. [{ id: 123, title: 'hello world' }, { ... }]
-    total, // the total number of results for the current filters, excluding pagination. Useful to build the pagination controls, e.g. 23      
-    isFetching, // boolean that is true while the data is being fetched, and false once the data is fetched
-    isLoading, // boolean that is true until the data is fetched for the first time
-    isPending, // boolean that is true until the data is available for the first time
-    // pagination
-    page, // the current page. Starts at 1
-    perPage, // the number of results per page. Defaults to 25
-    setPage, // a callback to change the page, e.g. setPage(3)
-    setPerPage, // a callback to change the number of results per page, e.g. setPerPage(25)
-    hasPreviousPage, // boolean, true if the current page is not the first one
-    hasNextPage, // boolean, true if the current page is not the last one
-    // sorting
-    sort, // a sort object { field, order }, e.g. { field: 'date', order: 'DESC' }
-    setSort, // a callback to change the sort, e.g. setSort({ field: 'name', order: 'ASC' })
-    // filtering
-    filterValues, // a dictionary of filter values, e.g. { title: 'lorem', nationality: 'fr' }
-    displayedFilters, // a dictionary of the displayed filters, e.g. { title: true, nationality: true }
-    setFilters, // a callback to update the filters, e.g. setFilters(filters, displayedFilters)
-    showFilter, // a callback to show one of the filters, e.g. showFilter('title', defaultValue)
-    hideFilter, // a callback to hide one of the filters, e.g. hideFilter('title')
-    // record selection
-    selectedIds, // an array listing the ids of the selected rows, e.g. [123, 456]
-    onSelect, // callback to change the list of selected rows, e.g. onSelect([456, 789])
-    onToggleItem, // callback to toggle the selection of a given record based on its id, e.g. onToggleItem(456)
-    onUnselectItems, // callback to clear the selection, e.g. onUnselectItems();
-    // misc
-    defaultTitle, // the translated title based on the resource, e.g. 'Posts'
-    resource, // the resource name, deduced from the location. e.g. 'posts'
-    refetch, // callback for fetching the list data again
-} = listContext;
+    // Data
+    data, // Array of the list records, e.g. [{ id: 123, title: 'hello world' }, { ... }
+    total, // Total number of results for the current filters, excluding pagination. Useful to build the pagination controls, e.g. 23      
+    isFetching, // Boolean, true while the data is being fetched, false once the data is fetched
+    isPending, // Boolean, true until the data is available for the first time
+    // Pagination
+    page, // Current page. Starts at 1
+    perPage, // Number of results per page. Defaults to 25
+    setPage, // Callback to change the page, e.g. setPage(3)
+    setPerPage, // Callback to change the number of results per page, e.g. setPerPage(25)
+    hasPreviousPage, // Boolean, true if the current page is not the first one
+    hasNextPage, // Boolean, true if the current page is not the last one
+    // Sorting
+    sort, // Sort object { field, order }, e.g. { field: 'date', order: 'DESC' }
+    setSort, // Callback to change the sort, e.g. setSort({ field: 'name', order: 'ASC' })
+    // Filtering
+    filterValues, // Dictionary of filter values, e.g. { title: 'lorem', nationality: 'fr' }
+    displayedFilters, // Dictionary of displayed filters, e.g. { title: true, nationality: true }
+    setFilters, // Callback to update the filters, e.g. setFilters(filters, displayedFilters)
+    showFilter, // Callback to show one of the filters, e.g. showFilter('title', defaultValue)
+    hideFilter, // Callback to hide one of the filters, e.g. hideFilter('title')
+    // Record selection
+    selectedIds, // Array listing the ids of the selected records, e.g. [123, 456]
+    onSelect, // Callback to change the list of selected records, e.g. onSelect([456, 789])
+    onToggleItem, // Callback to toggle the record selection for a given id, e.g. onToggleItem(456)
+    onUnselectItems, // Callback to clear the record selection, e.g. onUnselectItems();
+    // Misc
+    defaultTitle, // Translated title based on the resource, e.g. 'Posts'
+    resource, // Resource name, deduced from the location. e.g. 'posts'
+    refetch, // Callback for fetching the list data again
+} = useListController();
+```
+
+## Using `setFilters` to Update Filters
+
+The `setFilters` method is used to update the filters. It takes three arguments:
+
+- `filters`: an object containing the new filter values
+- `displayedFilters`: an object containing the new displayed filters
+- `debounced`: set to false to disable the debounce (true by default)
+
+You can use it to update the list filters:
+
+```jsx
+import { useState } from 'react';
+import { useListController } from 'react-admin';
+
+const OfficeList = () => {
+    const { filterValues, setFilters, data, isLoading } = useListController({ resource: 'offices' });
+    const [formValues, setFormValues] = useState(filterValues);
+
+    const handleChange = (event) => {
+        setFormValues(formValues => ({
+            ...formValues,
+            [event.target.name]: event.target.value
+        }));
+    };
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        // The 3rd parameter disables the debounce ⤵
+        setFilters(filterFormValues, undefined, false);
+    };
+
+    if (isLoading) return <div>Loading...</div>;
+
+    return (
+        <>
+            <form onSubmit={handleSubmit}>
+                <input name="country" value={formValues.country} onChange={handleChange} />
+                <input name="city" value={formValues.city} onChange={handleChange} />
+                <input name="zipcode" value={formValues.zipcode} onChange={handleChange} />
+                <input type="submit">Filter</input>
+            </form>
+            <ul>
+                {data.map(record => (
+                    <li key={record.id}>{record.name}</li>
+                ))}
+            </ul>
+        </>
+    );
+};
+```
+
+Beware that `setFilters` is debounced by default, to avoid making too many requests to the server when using search-as-you-type inputs. In the example above, this is not necessary. That's why you should set the third argument to `setFilters` is set to `false` to disable the debounce.
+
+Disabling the debounce with the third parameter is also necessary when you use `setFilters` and other list controller methods (like `setSort`) in a single function. Otherwise, the `setFilters` call would override the other changes.
+
+```jsx
+const changeListParams = () => {
+    setSort({ field: 'name', order: 'ASC' });
+    // The 3rd parameter disables the debounce     ⤵
+    setFilters({ is_published: true }, undefined, false);
+};
 ```

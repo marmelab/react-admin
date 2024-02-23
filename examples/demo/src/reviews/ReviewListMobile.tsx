@@ -1,5 +1,4 @@
 import * as React from 'react';
-import PropTypes from 'prop-types';
 import { List } from '@mui/material';
 import { RecordContextProvider, useListContext } from 'react-admin';
 
@@ -20,19 +19,6 @@ const ReviewListMobile = () => {
             ))}
         </List>
     );
-};
-
-ReviewListMobile.propTypes = {
-    data: PropTypes.any,
-    hasBulkActions: PropTypes.bool.isRequired,
-    ids: PropTypes.array,
-    onToggleItem: PropTypes.func,
-    selectedIds: PropTypes.arrayOf(PropTypes.any).isRequired,
-};
-
-ReviewListMobile.defaultProps = {
-    hasBulkActions: false,
-    selectedIds: [],
 };
 
 export default ReviewListMobile;

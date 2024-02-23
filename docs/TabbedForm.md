@@ -13,7 +13,6 @@ title: "TabbedForm"
   Your browser does not support the video tag.
 </video>
 
-
 ## Usage
 
 `<TabbedForm>` reads the `record` from the `RecordContext`, uses it to initialize the defaultValues of a `<Form>`, renders its children in a Material UI `<Stack>`, and renders a toolbar with a `<SaveButton>` that calls the `save` callback prepared by the edit or the create controller when pressed.
@@ -584,7 +583,7 @@ const PostEdit = () => (
 
 ![complex form layout](./img/TabbedForm-layout.png)
 
-By default, `<TabbedForm.Tab>` renders one child per row. But a given child can be a layout element (e.g. `<Grid>`, `<Stack>`, `<Box>`) and contain several input elements. This lets you build form layouts of any complexity:
+By default, `<TabbedForm.Tab>` renders one child per row. But a given child can be [a layout element](./BoxStackGrid.md) (e.g. `<Grid>`, `<Stack>`, `<Box>`) and contain several input elements. This lets you build form layouts of any complexity:
 
 {% raw %}
 ```jsx
@@ -756,34 +755,6 @@ const ProductEdit = () => (
 
 **Tip**: In this example, both the `<ReviewsFormTab>` and the `<ReferenceManyField>` issue a `dataProvider.getManyReference()` call to fetch the related reviews. Thanks to react-query's query deduplication logic, the dataProvider only receives one request to fetch the reviews.
 
-## Displaying a Tab Based On Permissions
-
-You can leverage [the `usePermissions` hook](./usePermissions.md) to display a tab only if the user has the required permissions.
-
-{% raw %}
-```jsx
-import { usePermissions, Edit, TabbedForm, FormTab } from 'react-admin';
-
-const UserEdit = () => {
-    const { permissions } = usePermissions();
-    return (
-        <Edit>
-            <TabbedForm>
-                <TabbedForm.Tab label="summary">
-                    ...
-                </TabbedForm.Tab>
-                {permissions === 'admin' &&
-                    <TabbedForm.Tab label="Security">
-                        ...
-                    </TabbedForm.Tab>
-                }
-            </TabbedForm>
-        </Edit>
-    );
-};
-```
-{% endraw %}
-
 ## AutoSave
 
 In forms where users may spend a lot of time, it's a good idea to save the form automatically after a few seconds of inactivity. You can auto save the form content by using [the `<AutoSave>` component](./AutoSave.md).
@@ -821,6 +792,34 @@ Note that you **must** set the `<TabbedForm resetOptions>` prop to `{ keepDirtyV
 If you're using it in an `<Edit>` page, you must also use a `pessimistic` or `optimistic` [`mutationMode`](https://marmelab.com/react-admin/Edit.html#mutationmode) - `<AutoSave>` doesn't work with the default `mutationMode="undoable"`.
 
 Check [the `<AutoSave>` component](./AutoSave.md) documentation for more details.
+
+## Displaying a Tab Based On Permissions
+
+You can leverage [the `usePermissions` hook](./usePermissions.md) to display a tab only if the user has the required permissions.
+
+{% raw %}
+```jsx
+import { usePermissions, Edit, TabbedForm, FormTab } from 'react-admin';
+
+const UserEdit = () => {
+    const { permissions } = usePermissions();
+    return (
+        <Edit>
+            <TabbedForm>
+                <TabbedForm.Tab label="summary">
+                    ...
+                </TabbedForm.Tab>
+                {permissions === 'admin' &&
+                    <TabbedForm.Tab label="Security">
+                        ...
+                    </TabbedForm.Tab>
+                }
+            </TabbedForm>
+        </Edit>
+    );
+};
+```
+{% endraw %}
 
 ## Role-Based Access Control (RBAC)
 
@@ -876,6 +875,41 @@ const ProductEdit = () => (
 {% endraw %}
 
 Check [the RBAC `<TabbedForm>` component](./AuthRBAC.md#tabbedform) documentation for more details.
+
+## Versioning
+
+By default, `<TabbedForm>` updates the current record (via `dataProvider.update()`), so the previous version of the record is lost. If you want to keep track of the previous versions of the record, you can use the [`<TabbedFormWithRevision>`](https://marmelab.com/ra-enterprise/modules/ra-history#tabbedformwithrevision) component instead.
+
+<video controls autoplay playsinline muted loop>
+  <source src="./img/TabbedFormWithRevision.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
+`<TabbedFormWithRevision>` adds a new "Revisions" tab listing the past revisions. There, users can browse past revisions, compare two revisions, and restore a past revision. 
+
+And when users submit the form, they see a dialog asking them for the reason of the change. After submitting this dialog, react-admin updates the main record and **creates a new revision**. A revision represents the state of the record at a given point in time. It is immutable. A revision also records the date, author, and reason of the change.
+
+`<TabbedFormWithRevision>` is a drop-in replacement for `<TabbedForm>`. It accepts the same props, and renders tabs the same way.
+
+```tsx
+import { Edit } from "react-admin";
+import { TabbedFormWithRevision } from "@react-admin/ra-history";
+
+const ProductEdit = () => (
+  <Edit>
+    <TabbedFormWithRevision>
+        <TabbedFormWithRevision.Tab label="Summary">
+            {/* ... */}
+        </TabbedFormWithRevision.Tab>
+        <TabbedFormWithRevision.Tab label="Preview">
+            {/* ... */}
+        </TabbedFormWithRevision.Tab>
+    </TabbedFormWithRevision>
+  </Edit>
+);
+```
+
+Check the [`<TabbedFormWithRevision>`](https://marmelab.com/ra-enterprise/modules/ra-history#tabbedformwithrevision) documentation for more details.
 
 ## Linking Two Inputs
 

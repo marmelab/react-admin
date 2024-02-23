@@ -8,7 +8,9 @@ import {
     useListContext,
     useResourceContext,
     RaRecord,
+    usePrevious,
 } from 'ra-core';
+import { useLocation } from 'react-router';
 
 import { ListProps } from './List';
 import { ListView, ListViewProps } from './ListView';
@@ -50,6 +52,14 @@ export const ListGuesser = <RecordType extends RaRecord = any>(
         sort,
         ...rest
     } = props;
+    // force a rerender of this component when any list parameter changes
+    // otherwise the ListBase won't be rerendered when the sort changes
+    // and the following check won't be performed
+    useLocation();
+    // keep previous data, unless the resource changes
+    const resourceFromContext = useResourceContext(props);
+    const previousResource = usePrevious(resourceFromContext);
+    const keepPreviousData = previousResource === resourceFromContext;
     return (
         <ListBase<RecordType>
             debounce={debounce}
@@ -59,7 +69,10 @@ export const ListGuesser = <RecordType extends RaRecord = any>(
             filter={filter}
             filterDefaultValues={filterDefaultValues}
             perPage={perPage}
-            queryOptions={{ placeholderData: null }}
+            queryOptions={{
+                placeholderData: previousData =>
+                    keepPreviousData ? previousData : null,
+            }}
             resource={resource}
             sort={sort}
         >

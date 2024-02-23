@@ -45,18 +45,19 @@ export const BookEdit = () => {
 
 **Tip**: If you just use the return value of `useEditController` to put it in an `EditContext`, use [the `<EditBase>` component](./EditBase.md) instead for simpler markup.
 
-## Input Format
 
-`useEditController` accepts an options argument, with the following fields, all optional:
+## Parameters
 
-* [`disableAuthentication`](./Edit.md#disableauthentication): disable the authentication check
-* [`id`](./Edit.md#id): the id of the record to edit
-* [`mutationMode`](./Edit.md#mutationmode): switch to optimistic or pessimistic mutations (undoable by default)
-* [`mutationOptions`](./Edit.md#mutationoptions): options for the `dataProvider.update()` call
-* [`queryOptions`](./Edit.md#queryoptions): options for the `dataProvider.getOne()` call
-* [`redirect`](./Edit.md#redirect): change the redirect location after successful creation
-* [`resource`](./Edit.md#resource): override the name of the resource to create
-* [`transform`](./Edit.md#transform): transform the form data before calling `dataProvider.update()`
+`useEditController` accepts an object with the following keys, all optional:
+
+* [`disableAuthentication`](./Edit.md#disableauthentication): Disable the authentication check
+* [`id`](./Edit.md#id): The id of the record to edit
+* [`mutationMode`](./Edit.md#mutationmode): Switch to optimistic or pessimistic mutations (undoable by default)
+* [`mutationOptions`](./Edit.md#mutationoptions): Options for the `dataProvider.update()` call
+* [`queryOptions`](./Edit.md#queryoptions): Options for the `dataProvider.getOne()` call
+* [`redirect`](./Edit.md#redirect): Change the redirect location after successful creation
+* [`resource`](./Edit.md#resource): Override the name of the resource to create
+* [`transform`](./Edit.md#transform): Transform the form data before calling `dataProvider.update()`
 
 These fields are documented in [the `<Edit>` component](./Edit.md) documentation.
 
@@ -66,16 +67,17 @@ These fields are documented in [the `<Edit>` component](./Edit.md) documentation
 
 ```jsx
 const {
-    defaultTitle, // the translated title based on the resource, e.g. 'Post #123'
-    error,  // error returned by dataProvider when it failed to fetch the record. Useful if you want to adapt the view instead of just showing a notification using the `onError` side effect.
-    isFetching, // boolean that is true while the record is being fetched, and false once the record is fetched
-    isPending, // boolean that is true until the record is available for the first time
-    mutationMode, // mutation mode argument passed as parameter, or 'undoable' if not defined
-    record, // record fetched via dataProvider.getOne() based on the id from the location
-    redirect, // the default redirection route. Defaults to 'list'
-    refetch, // a function that allows you to refetch the record 
-    resource, // the resource name, deduced from the location. e.g. 'posts'
-    save, // the update callback, to be passed to the underlying form as submit handler
-    saving, // boolean that becomes true when the dataProvider is called to update the record
+    defaultTitle, // Translated title based on the resource, e.g. 'Post #123'
+    error, // Error returned by dataProvider when it failed to fetch the record. Useful if you want to adapt the view instead of just showing a notification using the onError side effect.
+    isFetching, // Boolean, true while the record is being fetched, false once done fetching
+    isPending, // Boolean, true until the record is available for the first time
+    mutationMode, // Mutation mode argument passed as parameter, or 'undoable' if not defined
+    record, // Either the record fetched via dataProvider.getOne() based on the id from the location, a cached version of the record (see also the Caching documentation page) or undefined 
+    redirect, // Default redirection route. Defaults to 'list'
+    refetch, // Function that allows you to refetch the record 
+    resource, // Resource name deduced from the location. e.g. 'posts'
+    save, // Update callback to be passed to the underlying form as submit handler
+    saving, // Boolean, true when dataProvider is called to update the record
 } = useEditController();
 ```
+
