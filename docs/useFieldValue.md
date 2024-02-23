@@ -42,7 +42,7 @@ The name of the property on the record object that contains the value to display
 
 ```tsx
 import * as React from 'react';
-+import { useFieldValue } from 'react-admin';
+import { useFieldValue } from 'react-admin';
 
 export const CustomerCard = () => {
     const firstName = useFieldValue({ source: 'firstName' });
