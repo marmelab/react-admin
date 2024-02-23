@@ -85,8 +85,7 @@ const TabbedDatagrid = () => {
             setFilters &&
                 setFilters(
                     { ...filterValues, status: value },
-                    displayedFilters,
-                    false // no debounce, we want the filter to fire immediately
+                    displayedFilters
                 );
         },
         [displayedFilters, filterValues, setFilters]

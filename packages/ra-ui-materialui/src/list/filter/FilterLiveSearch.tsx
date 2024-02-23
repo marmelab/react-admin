@@ -36,10 +36,14 @@ export const FilterLiveSearch = memo((props: FilterLiveSearchProps) => {
 
     const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
         if (event.target) {
-            setFilters({ ...filterValues, [source]: event.target.value }, null);
+            setFilters(
+                { ...filterValues, [source]: event.target.value },
+                null,
+                true
+            );
         } else {
             const { [source]: _, ...filters } = filterValues;
-            setFilters(filters, null, false);
+            setFilters(filters, null);
         }
     };
 

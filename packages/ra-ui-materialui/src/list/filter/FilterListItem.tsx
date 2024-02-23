@@ -164,7 +164,7 @@ export const FilterListItem = memo((props: FilterListItemProps) => {
     const isSelected = getIsSelected(value, filterValues);
 
     const handleClick = () =>
-        setFilters(toggleFilter(value, filterValues), null, false);
+        setFilters(toggleFilter(value, filterValues), null);
 
     return (
         <StyledListItem

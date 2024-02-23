@@ -212,7 +212,7 @@ export const FilterButton = (props: FilterButtonProps): JSX.Element => {
                 {hasFilterValues && (
                     <MenuItem
                         onClick={() => {
-                            setFilters({}, {}, false);
+                            setFilters({}, {});
                             setOpen(false);
                         }}
                     >

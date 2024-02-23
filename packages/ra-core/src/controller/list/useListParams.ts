@@ -224,7 +224,7 @@ export const useListParams = ({
     }, debounce);
 
     const setFilters = useCallback(
-        (filter, displayedFilters, debounce = true) =>
+        (filter, displayedFilters, debounce = false) =>
             debounce
                 ? debouncedSetFilters(filter, displayedFilters)
                 : changeParams({
