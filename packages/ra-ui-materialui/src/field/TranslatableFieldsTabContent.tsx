@@ -72,8 +72,6 @@ export const TranslatableFieldsTabContent = (
                                         >
                                             {field}
                                         </Labeled>
-                                    ) : typeof field === 'string' ? (
-                                        field
                                     ) : (
                                         field
                                     )}
