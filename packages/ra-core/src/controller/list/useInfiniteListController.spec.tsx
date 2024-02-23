@@ -9,7 +9,6 @@ import {
 } from '@testing-library/react';
 // TODO: we shouldn't import mui components in ra-core
 import { TextField } from '@mui/material';
-import { createMemoryHistory } from 'history';
 
 import { testDataProvider } from '../../dataProvider';
 import { memoryStore } from '../../store';
@@ -23,6 +22,7 @@ import {
     sanitizeListRestProps,
 } from './useListController';
 import { CoreAdminContext } from '../../core';
+import { TestMemoryRouter } from '../../routing';
 
 const InfiniteListController = ({
     children,
@@ -180,23 +180,23 @@ describe('useInfiniteListController', () => {
                 children: childFunction,
             };
 
-            const history = createMemoryHistory({
-                initialEntries: [
-                    `/posts?filter=${JSON.stringify({
-                        q: 'hello',
-                    })}&displayedFilters=${JSON.stringify({ q: true })}`,
-                ],
-            });
             const store = memoryStore();
             const storeSpy = jest.spyOn(store, 'setItem');
             render(
-                <CoreAdminContext
-                    dataProvider={testDataProvider()}
-                    history={history}
-                    store={store}
+                <TestMemoryRouter
+                    initialEntries={[
+                        `/posts?filter=${JSON.stringify({
+                            q: 'hello',
+                        })}&displayedFilters=${JSON.stringify({ q: true })}`,
+                    ]}
                 >
-                    <InfiniteListController {...props} />
-                </CoreAdminContext>
+                    <CoreAdminContext
+                        dataProvider={testDataProvider()}
+                        store={store}
+                    >
+                        <InfiniteListController {...props} />
+                    </CoreAdminContext>
+                </TestMemoryRouter>
             );
             expect(storeSpy).toHaveBeenCalledTimes(1);
 
@@ -204,7 +204,7 @@ describe('useInfiniteListController', () => {
             // FIXME: For some reason, triggering the change event with an empty string
             // does not call the event handler on childFunction
             fireEvent.change(searchInput, { target: { value: '' } });
-            await new Promise(resolve => setTimeout(resolve, 210));
+            await new Promise(resolve => setTimeout(resolve, 410));
 
             expect(storeSpy).toHaveBeenCalledTimes(2);
 
@@ -231,14 +231,16 @@ describe('useInfiniteListController', () => {
                     Promise.resolve({ data: [], total: 0 })
                 );
             const dataProvider = testDataProvider({ getList });
-            const history = createMemoryHistory({
-                initialEntries: [`/posts`],
-            });
 
             const { rerender } = render(
-                <CoreAdminContext dataProvider={dataProvider} history={history}>
-                    <InfiniteListController {...props} filter={{ foo: 1 }} />
-                </CoreAdminContext>
+                <TestMemoryRouter initialEntries={[`/posts`]}>
+                    <CoreAdminContext dataProvider={dataProvider}>
+                        <InfiniteListController
+                            {...props}
+                            filter={{ foo: 1 }}
+                        />
+                    </CoreAdminContext>
+                </TestMemoryRouter>
             );
 
             // Check that the permanent filter was used in the query
@@ -258,9 +260,14 @@ describe('useInfiniteListController', () => {
             );
 
             rerender(
-                <CoreAdminContext dataProvider={dataProvider} history={history}>
-                    <InfiniteListController {...props} filter={{ foo: 2 }} />
-                </CoreAdminContext>
+                <TestMemoryRouter initialEntries={[`/posts`]}>
+                    <CoreAdminContext dataProvider={dataProvider}>
+                        <InfiniteListController
+                            {...props}
+                            filter={{ foo: 2 }}
+                        />
+                    </CoreAdminContext>
+                </TestMemoryRouter>
             );
 
             // Check that the permanent filter was used in the query

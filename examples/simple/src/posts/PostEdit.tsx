@@ -106,8 +106,8 @@ const PostEdit = () => {
         <Edit
             title={<PostTitle />}
             actions={<EditActions />}
-            mutationMode="pessimistic"
-            redirect="show"
+            mutationMode="undoable"
+            redirect="list"
             // mutationOptions={{
             //     onSuccess: () => {
             //         console.log('success!');

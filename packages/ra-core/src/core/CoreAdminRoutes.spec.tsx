@@ -1,8 +1,7 @@
 import * as React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import expect from 'expect';
-import { MemoryRouter, Route } from 'react-router-dom';
-import { createMemoryHistory } from 'history';
+import { MemoryRouter, NavigateFunction, Route } from 'react-router-dom';
 
 import { CoreAdminContext } from './CoreAdminContext';
 import { CoreAdminRoutes } from './CoreAdminRoutes';
@@ -10,6 +9,7 @@ import { Resource } from './Resource';
 import { CustomRoutes } from './CustomRoutes';
 import { CoreLayoutProps } from '../types';
 import { testDataProvider } from '../dataProvider';
+import { TestMemoryRouter } from '../routing';
 
 const Layout = ({ children }: CoreLayoutProps) => <div>Layout {children}</div>;
 const CatchAll = () => <div />;
@@ -22,43 +22,46 @@ describe('<CoreAdminRoutes>', () => {
 
     describe('With resources as regular children', () => {
         it('should render resources and custom routes with and without layout', async () => {
-            const history = createMemoryHistory();
+            let navigate: NavigateFunction | null = null;
             render(
-                <CoreAdminContext
-                    dataProvider={testDataProvider()}
-                    history={history}
+                <TestMemoryRouter
+                    navigateCallback={n => {
+                        navigate = n;
+                    }}
                 >
-                    <CoreAdminRoutes
-                        layout={Layout}
-                        catchAll={CatchAll}
-                        loading={Loading}
-                    >
-                        <CustomRoutes noLayout>
-                            <Route path="/foo" element={<div>Foo</div>} />
-                        </CustomRoutes>
-                        <CustomRoutes>
-                            <Route path="/bar" element={<div>Bar</div>} />
-                        </CustomRoutes>
-                        <Resource
-                            name="posts"
-                            list={() => <span>PostList</span>}
-                        />
-                        <Resource
-                            name="comments"
-                            list={() => <span>CommentList</span>}
-                        />
-                    </CoreAdminRoutes>
-                </CoreAdminContext>
+                    <CoreAdminContext dataProvider={testDataProvider()}>
+                        <CoreAdminRoutes
+                            layout={Layout}
+                            catchAll={CatchAll}
+                            loading={Loading}
+                        >
+                            <CustomRoutes noLayout>
+                                <Route path="/foo" element={<div>Foo</div>} />
+                            </CustomRoutes>
+                            <CustomRoutes>
+                                <Route path="/bar" element={<div>Bar</div>} />
+                            </CustomRoutes>
+                            <Resource
+                                name="posts"
+                                list={() => <span>PostList</span>}
+                            />
+                            <Resource
+                                name="comments"
+                                list={() => <span>CommentList</span>}
+                            />
+                        </CoreAdminRoutes>
+                    </CoreAdminContext>
+                </TestMemoryRouter>
             );
             await screen.findByText('Layout');
-            history.push('/posts');
+            navigate('/posts');
             await screen.findByText('PostList');
-            history.push('/comments');
+            navigate('/comments');
             await screen.findByText('CommentList');
-            history.push('/foo');
+            navigate('/foo');
             await screen.findByText('Foo');
             expect(screen.queryByText('Layout')).toBeNull();
-            history.push('/bar');
+            navigate('/bar');
             await screen.findByText('Layout');
             await screen.findByText('Bar');
         });
@@ -66,99 +69,105 @@ describe('<CoreAdminRoutes>', () => {
 
     describe('With children returned from a function as children', () => {
         it('should render resources and custom routes with and without layout', async () => {
-            const history = createMemoryHistory();
+            let navigate: NavigateFunction | null = null;
             render(
-                <CoreAdminContext
-                    dataProvider={testDataProvider()}
-                    history={history}
+                <TestMemoryRouter
+                    navigateCallback={n => {
+                        navigate = n;
+                    }}
                 >
-                    <CoreAdminRoutes
-                        layout={Layout}
-                        catchAll={CatchAll}
-                        loading={Loading}
-                    >
-                        <CustomRoutes noLayout>
-                            <Route path="/foo" element={<div>Foo</div>} />
-                        </CustomRoutes>
-                        {() => (
-                            <>
-                                <CustomRoutes>
-                                    <Route
-                                        path="/bar"
-                                        element={<div>Bar</div>}
+                    <CoreAdminContext dataProvider={testDataProvider()}>
+                        <CoreAdminRoutes
+                            layout={Layout}
+                            catchAll={CatchAll}
+                            loading={Loading}
+                        >
+                            <CustomRoutes noLayout>
+                                <Route path="/foo" element={<div>Foo</div>} />
+                            </CustomRoutes>
+                            {() => (
+                                <>
+                                    <CustomRoutes>
+                                        <Route
+                                            path="/bar"
+                                            element={<div>Bar</div>}
+                                        />
+                                    </CustomRoutes>
+                                    <Resource
+                                        name="posts"
+                                        list={() => <span>PostList</span>}
                                     />
-                                </CustomRoutes>
-                                <Resource
-                                    name="posts"
-                                    list={() => <span>PostList</span>}
-                                />
-                                <Resource
-                                    name="comments"
-                                    list={() => <span>CommentList</span>}
-                                />
-                            </>
-                        )}
-                    </CoreAdminRoutes>
-                </CoreAdminContext>
+                                    <Resource
+                                        name="comments"
+                                        list={() => <span>CommentList</span>}
+                                    />
+                                </>
+                            )}
+                        </CoreAdminRoutes>
+                    </CoreAdminContext>
+                </TestMemoryRouter>
             );
-            history.push('/foo');
+            navigate('/foo');
             await screen.findByText('Foo');
             expect(screen.queryByText('Layout')).toBeNull();
-            history.push('/bar');
+            navigate('/bar');
             await screen.findByText('Bar');
             await screen.findByText('Layout');
             await screen.findByText('Bar');
-            history.push('/posts');
+            navigate('/posts');
             await screen.findByText('PostList');
-            history.push('/comments');
+            navigate('/comments');
             await screen.findByText('CommentList');
         });
 
         it('should render resources and custom routes with and without layout even without an authProvider', async () => {
-            const history = createMemoryHistory();
+            let navigate: NavigateFunction | null = null;
             render(
-                <CoreAdminContext
-                    dataProvider={testDataProvider()}
-                    history={history}
+                <TestMemoryRouter
+                    navigateCallback={n => {
+                        navigate = n;
+                    }}
                 >
-                    <CoreAdminRoutes
-                        layout={Layout}
-                        catchAll={CatchAll}
-                        loading={Loading}
-                    >
-                        <CustomRoutes noLayout>
-                            <Route path="/foo" element={<div>Foo</div>} />
-                        </CustomRoutes>
-                        {() => (
-                            <>
-                                <CustomRoutes>
-                                    <Route
-                                        path="/bar"
-                                        element={<div>Bar</div>}
+                    <CoreAdminContext dataProvider={testDataProvider()}>
+                        <CoreAdminRoutes
+                            layout={Layout}
+                            catchAll={CatchAll}
+                            loading={Loading}
+                        >
+                            <CustomRoutes noLayout>
+                                <Route path="/foo" element={<div>Foo</div>} />
+                            </CustomRoutes>
+                            {() => (
+                                <>
+                                    <CustomRoutes>
+                                        <Route
+                                            path="/bar"
+                                            element={<div>Bar</div>}
+                                        />
+                                    </CustomRoutes>
+                                    <Resource
+                                        name="posts"
+                                        list={() => <span>PostList</span>}
                                     />
-                                </CustomRoutes>
-                                <Resource
-                                    name="posts"
-                                    list={() => <span>PostList</span>}
-                                />
-                                <Resource
-                                    name="comments"
-                                    list={() => <span>CommentList</span>}
-                                />
-                            </>
-                        )}
-                    </CoreAdminRoutes>
-                </CoreAdminContext>
+                                    <Resource
+                                        name="comments"
+                                        list={() => <span>CommentList</span>}
+                                    />
+                                </>
+                            )}
+                        </CoreAdminRoutes>
+                    </CoreAdminContext>
+                </TestMemoryRouter>
             );
-            history.push('/foo');
+            navigate('/foo');
             await screen.findByText('Foo');
             expect(screen.queryByText('Layout')).toBeNull();
-            history.push('/bar');
+            navigate('/bar');
             await screen.findByText('Bar');
             expect(screen.queryByText('Layout')).not.toBeNull();
-            history.push('/posts');
+            navigate('/posts');
             await screen.findByText('PostList');
-            history.push('/comments');
+            navigate('/comments');
             await screen.findByText('CommentList');
         });
 
@@ -173,30 +182,35 @@ describe('<CoreAdminRoutes>', () => {
             };
             const Custom = () => <>Custom</>;
 
-            const history = createMemoryHistory();
+            let navigate: NavigateFunction | null = null;
             render(
-                <CoreAdminContext
-                    authProvider={authProvider}
-                    dataProvider={testDataProvider()}
-                    history={history}
+                <TestMemoryRouter
+                    navigateCallback={n => {
+                        navigate = n;
+                    }}
                 >
-                    <CoreAdminRoutes
-                        layout={Layout}
-                        loading={Loading}
-                        catchAll={CatchAll}
+                    <CoreAdminContext
+                        authProvider={authProvider}
+                        dataProvider={testDataProvider()}
                     >
-                        <CustomRoutes noLayout>
-                            <Route path="/foo" element={<Custom />} />
-                        </CustomRoutes>
-                        {() => new Promise(() => null)}
-                    </CoreAdminRoutes>
-                </CoreAdminContext>
+                        <CoreAdminRoutes
+                            layout={Layout}
+                            loading={Loading}
+                            catchAll={CatchAll}
+                        >
+                            <CustomRoutes noLayout>
+                                <Route path="/foo" element={<Custom />} />
+                            </CustomRoutes>
+                            {() => new Promise(() => null)}
+                        </CoreAdminRoutes>
+                    </CoreAdminContext>
+                </TestMemoryRouter>
             );
             // Timeout needed because we wait for a second before displaying the loading screen
             jest.advanceTimersByTime(1010);
-            history.push('/posts');
+            navigate('/posts');
             await screen.findByText('Loading');
-            history.push('/foo');
+            navigate('/foo');
             await screen.findByText('Custom');
             expect(screen.queryByText('Loading')).toBeNull();
             jest.useRealTimers();
@@ -285,25 +299,28 @@ describe('<CoreAdminRoutes>', () => {
                 getPermissions: jest.fn().mockResolvedValue(''),
             };
 
-            const history = createMemoryHistory();
             render(
-                <CoreAdminContext
-                    authProvider={authProvider}
-                    dataProvider={testDataProvider()}
-                    history={history}
-                >
-                    <CoreAdminRoutes
-                        layout={Layout}
-                        loading={Loading}
-                        catchAll={CatchAll}
-                        requireAuth
+                <TestMemoryRouter>
+                    <CoreAdminContext
+                        authProvider={authProvider}
+                        dataProvider={testDataProvider()}
                     >
-                        <CustomRoutes noLayout>
-                            <Route path="/login" element={<i>Login</i>} />
-                        </CustomRoutes>
-                        <Resource name="posts" list={() => <i>PostList</i>} />
-                    </CoreAdminRoutes>
-                </CoreAdminContext>
+                        <CoreAdminRoutes
+                            layout={Layout}
+                            loading={Loading}
+                            catchAll={CatchAll}
+                            requireAuth
+                        >
+                            <CustomRoutes noLayout>
+                                <Route path="/login" element={<i>Login</i>} />
+                            </CustomRoutes>
+                            <Resource
+                                name="posts"
+                                list={() => <i>PostList</i>}
+                            />
+                        </CoreAdminRoutes>
+                    </CoreAdminContext>
+                </TestMemoryRouter>
             );
             expect(screen.queryByText('PostList')).toBeNull();
             expect(screen.queryByText('Loading')).not.toBeNull();
@@ -321,29 +338,37 @@ describe('<CoreAdminRoutes>', () => {
                 getPermissions: jest.fn().mockResolvedValue(''),
             };
 
-            const history = createMemoryHistory();
+            let navigate: NavigateFunction | null = null;
             render(
-                <CoreAdminContext
-                    authProvider={authProvider}
-                    dataProvider={testDataProvider()}
-                    history={history}
+                <TestMemoryRouter
+                    navigateCallback={n => {
+                        navigate = n;
+                    }}
                 >
-                    <CoreAdminRoutes
-                        layout={Layout}
-                        loading={Loading}
-                        catchAll={CatchAll}
+                    <CoreAdminContext
+                        authProvider={authProvider}
+                        dataProvider={testDataProvider()}
                     >
-                        <CustomRoutes noLayout>
-                            <Route path="/custom" element={<i>Custom</i>} />
-                            <Route path="/login" element={<i>Login</i>} />
-                        </CustomRoutes>
-                        <Resource name="posts" list={() => <i>PostList</i>} />
-                    </CoreAdminRoutes>
-                </CoreAdminContext>
+                        <CoreAdminRoutes
+                            layout={Layout}
+                            loading={Loading}
+                            catchAll={CatchAll}
+                        >
+                            <CustomRoutes noLayout>
+                                <Route path="/custom" element={<i>Custom</i>} />
+                                <Route path="/login" element={<i>Login</i>} />
+                            </CustomRoutes>
+                            <Resource
+                                name="posts"
+                                list={() => <i>PostList</i>}
+                            />
+                        </CoreAdminRoutes>
+                    </CoreAdminContext>
+                </TestMemoryRouter>
             );
             expect(screen.queryByText('PostList')).not.toBeNull();
             expect(screen.queryByText('Loading')).toBeNull();
-            history.push('/custom');
+            navigate('/custom');
             await new Promise(resolve => setTimeout(resolve, 1100));
             await waitFor(() =>
                 expect(screen.queryByText('Custom')).not.toBeNull()
