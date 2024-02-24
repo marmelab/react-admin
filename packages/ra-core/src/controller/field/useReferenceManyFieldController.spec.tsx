@@ -320,6 +320,7 @@ describe('useReferenceManyFieldController', () => {
             pagination: { page: 1, perPage: 25 },
             sort: { field: 'id', order: 'DESC' },
             meta: undefined,
+            signal: expect.anything(),
         });
     });
 });
