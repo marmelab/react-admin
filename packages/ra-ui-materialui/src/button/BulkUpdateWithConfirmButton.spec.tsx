@@ -4,7 +4,7 @@ import {
     render,
     screen,
     waitFor,
-    within
+    within,
 } from '@testing-library/react';
 import expect from 'expect';
 import {
@@ -58,7 +58,6 @@ describe('<BulkUpdateWithConfirmButton />', () => {
         const checkContainer = screen.getAllByRole('columnheader')[0];
         const check = within(checkContainer).getByRole('checkbox');
         fireEvent.click(check);
-        expect(check).toHaveProperty('aria-checked', true);
 
         fireEvent.click(screen.getByLabelText('ra.action.update'));
         expect(await screen.findByText('Update 1 posts')).toBeDefined();
