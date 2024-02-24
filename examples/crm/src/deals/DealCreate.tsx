@@ -15,7 +15,7 @@ import {
     GetListResult,
 } from 'react-admin';
 import { Dialog } from '@mui/material';
-import { useQueryClient } from 'react-query';
+import { useQueryClient } from '@tanstack/react-query';
 import { stageChoices } from './stages';
 import { typeChoices } from './types';
 import { Deal } from '../types';
@@ -60,7 +60,7 @@ export const DealCreate = ({ open }: { open: boolean }) => {
         );
         const now = Date.now();
         queryClient.setQueriesData<GetListResult | undefined>(
-            ['deals', 'getList'],
+            { queryKey: ['deals', 'getList'] },
             res => {
                 if (!res) return res;
                 return {
@@ -86,6 +86,8 @@ export const DealCreate = ({ open }: { open: boolean }) => {
                     defaultValues={{
                         index: 0,
                         sales_id: identity && identity?.id,
+                        start_at: new Date().toISOString(),
+                        contact_ids: [],
                     }}
                 >
                     <TextInput
