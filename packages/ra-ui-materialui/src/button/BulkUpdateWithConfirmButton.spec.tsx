@@ -49,7 +49,7 @@ describe('<BulkUpdateWithConfirmButton />', () => {
             </ThemeProvider>
         );
         expect(await screen.findByText('lorem')).toBeDefined();
-        const checkContainer = screen.getByRole('columnheader', {
+        const checkContainer = await screen.findByRole('columnheader', {
             name: 'Select all',
         });
         const check = within(checkContainer).getByRole('checkbox');
