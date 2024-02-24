@@ -77,8 +77,9 @@ export const ReferenceManyField = <
         sort = defaultSort,
         source = 'id',
         target,
+        queryOptions,
     } = props;
-    const record = useRecordContext(props);
+    const record = useRecordContext<RecordType>(props);
 
     const controllerProps = useReferenceManyFieldController<
         RecordType,
@@ -94,6 +95,7 @@ export const ReferenceManyField = <
         sort,
         source,
         target,
+        queryOptions,
     });
 
     return (
@@ -118,6 +120,7 @@ export interface ReferenceManyFieldProps<
     reference: string;
     sort?: SortPayload;
     target: string;
+    queryOptions?: { meta?: any };
 }
 
 ReferenceManyField.propTypes = {

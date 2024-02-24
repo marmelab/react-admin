@@ -26,6 +26,7 @@ export interface UseReferenceManyFieldControllerParams<
     sort?: SortPayload;
     source?: string;
     target: string;
+    queryOptions?: { meta?: any };
 }
 
 const defaultFilter = {};
@@ -72,8 +73,10 @@ export const useReferenceManyFieldController = <
         page: initialPage,
         perPage: initialPerPage,
         sort: initialSort = { field: 'id', order: 'DESC' },
+        queryOptions = {},
     } = props;
     const notify = useNotify();
+    const { meta } = queryOptions;
     const resource = useResourceContext(props);
 
     // pagination logic
@@ -178,6 +181,7 @@ export const useReferenceManyFieldController = <
             pagination: { page, perPage },
             sort,
             filter: filterValues,
+            meta,
         },
         {
             enabled: get(record, source) != null,
