@@ -3,7 +3,7 @@ import { screen, render, waitFor, fireEvent } from '@testing-library/react';
 import expect from 'expect';
 import {
     CoreAdminContext,
-    ListContextProvider,
+    ListBase,
     ResourceContextProvider,
     testDataProvider,
 } from 'ra-core';
