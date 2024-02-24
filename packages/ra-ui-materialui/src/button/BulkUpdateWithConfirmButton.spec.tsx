@@ -49,7 +49,7 @@ describe('<BulkUpdateWithConfirmButton />', () => {
             </ThemeProvider>
         );
         expect(await screen.findByText('lorem')).toBeDefined();
-        const checkContainer = screen.getByAllRole('columnheader')[0];
+        const checkContainer = screen.getAllByRole('columnheader')[0];
         const check = within(checkContainer).getByRole('checkbox');
         fireEvent.click(check);
         expect(check).toBeChecked();
