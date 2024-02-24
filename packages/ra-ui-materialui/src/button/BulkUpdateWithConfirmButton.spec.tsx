@@ -39,11 +39,11 @@ describe('<BulkUpdateWithConfirmButton />', () => {
             <ThemeProvider theme={theme}>
                 <CoreAdminContext dataProvider={dataProvider}>
                     <ResourceContextProvider value="posts">
-                        <ListContextProvider value={{ selectedIds: [123] }}>
+                        <ListBase value={{ selectedIds: [123] }}>
                             <Datagrid bulkActionButtons={<ActionButtons />}>
                                 <TextField source="title" />
                             </Datagrid>
-                        </ListContextProvider>
+                        </ListBase>
                     </ResourceContextProvider>
                 </CoreAdminContext>
             </ThemeProvider>
