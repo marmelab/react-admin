@@ -3,7 +3,7 @@ import { screen, render, waitFor, fireEvent } from '@testing-library/react';
 import expect from 'expect';
 import {
     CoreAdminContext,
-    List,
+    ListBase,
     ResourceContextProvider,
     testDataProvider,
 } from 'ra-core';
@@ -39,19 +39,17 @@ describe('<BulkUpdateWithConfirmButton />', () => {
             <ThemeProvider theme={theme}>
                 <CoreAdminContext dataProvider={dataProvider}>
                     <ResourceContextProvider value="posts">
-                        <List value={{ selectedIds: [123] }}>
+                        <ListBase value={{ selectedIds: [123] }}>
                             <Datagrid bulkActionButtons={<ActionButtons />}>
                                 <TextField source="title" />
                             </Datagrid>
-                        </List>
+                        </ListBase>
                     </ResourceContextProvider>
                 </CoreAdminContext>
             </ThemeProvider>
         );
         expect(await screen.findByText('lorem')).toBeDefined();
-        const checkContainer = screen.getByRole('columnheader', {
-            name: 'Select all',
-        });
+        const checkContainer = screen.getByAllRole('columnheader')[0];
         const check = within(checkContainer).getByRole('checkbox');
         fireEvent.click(check);
         expect(check).toBeChecked();
