@@ -57,15 +57,15 @@ describe('<BulkUpdateWithConfirmButton />', () => {
         expect(await screen.findByText('lorem')).toBeDefined();
         const checkContainer = screen.getAllByRole('columnheader')[0];
         const check = within(checkContainer).getByRole('checkbox');
-        //fireEvent.click(check);
+        fireEvent.click(check);
 
         fireEvent.click(screen.getByLabelText('ra.action.update'));
         screen.debug(undefined, Infinity);
-        expect(await screen.findByText('Update 1 posts')).toBeDefined();
+        expect(await screen.findByText('ra.message.bulk_update_title')).toBeDefined();
         fireEvent.click(screen.getByText('ra.action.confirm'));
 
         await waitFor(() => {
-            expect(screen.queryByText('Update 1 posts')).toBeNull();
+            expect(screen.queryByText('ra.message.bulk_update_title')).toBeNull();
         });
         expect(screen.getByText('foobar')).toBeDefined();
     });
