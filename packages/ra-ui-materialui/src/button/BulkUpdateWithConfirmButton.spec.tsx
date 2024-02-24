@@ -48,7 +48,7 @@ describe('<BulkUpdateWithConfirmButton />', () => {
                 </CoreAdminContext>
             </ThemeProvider>
         );
-        expect(await screen.findByText('lorem')).toBeInTheDocument();
+        expect(await screen.findByText('lorem')).toBeDefined();
         const checkContainer = screen.getByRole('columnheader', {
             name: 'Select all',
         });
@@ -57,14 +57,12 @@ describe('<BulkUpdateWithConfirmButton />', () => {
         expect(check).toBeChecked();
 
         fireEvent.click(screen.getByLabelText('ra.action.update'));
-        expect(await screen.findByText('Update 1 posts')).toBeInTheDocument();
+        expect(await screen.findByText('Update 1 posts')).toBeDefined();
         fireEvent.click(screen.getByText('ra.action.confirm'));
 
         await waitFor(() => {
-            expect(
-                screen.queryByText('Update 1 posts')
-            ).not.toBeInTheDocument();
+            expect(screen.queryByText('Update 1 posts')).toBeNull();
         });
-        expect(screen.getByText('foobar')).toBeInTheDocument();
+        expect(screen.getByText('foobar')).toBeDefined();
     });
 });
