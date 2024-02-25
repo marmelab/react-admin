@@ -111,7 +111,8 @@ describe('<FilterForm />', () => {
         await waitFor(() => {
             expect(setFilters).toHaveBeenCalledWith(
                 { title: 'foo' },
-                { title: true }
+                { title: true },
+                true
             );
         });
     });
