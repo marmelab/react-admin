@@ -50,8 +50,9 @@ const PostShow = () => (
 ```jsx
 const {
     defaultTitle, // Translated title based on the resource, e.g. 'Post #123'
+    isPending, // Boolean, true until the record is available
     isFetching, // Boolean, true while the record is being fetched, and false once done fetching
-    isPending, // Boolean, true until the record is available for the first time
+    isLoading, // Boolean, true until the record is fetched for the first time
     record, // Either the record fetched via dataProvider.getOne() based on the id from the location, a cached version of the record (see also the Caching documentation page) or undefined 
     refetch, // Callback to refetch the record via dataProvider.getOne()
     resource, // The resource name, deduced from the location. e.g. 'posts'
