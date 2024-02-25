@@ -436,6 +436,30 @@ const PostEdit = () => (
 );
 ```
 
+## `setFilters` Is No Longer Debounced By Default
+
+If you're using the `useListContext` hook to filter a list, you might have used the `setFilters` function to update the filters. In react-admin v5, the `setFilters` function is no longer debounced by default. If you want to debounce the filters, you'll have to pass `true` as the third argument:
+
+```diff
+import { useListContext } from 'react-admin';
+
+const MyFilter = () => {
+    const { filterValues, setFilters } = useListContext();
+    const handleChange = (event) => {
+-       setFilters({ ...filterValues, [event.target.name]: event.target.value });
++       setFilters({ ...filterValues, [event.target.name]: event.target.value }, undefined, true);
+    };
+
+    return (
+        <form>
+            <input name="country" value={filterValues.country} onChange={handleChange} />
+            <input name="city" value={filterValues.city} onChange={handleChange} />
+            <input name="zipcode" value={filterValues.zipcode} onChange={handleChange} />
+        </form>
+    );
+};
+```
+
 ## Upgrading to v4
 
 If you are on react-admin v3, follow the [Upgrading to v4](https://marmelab.com/react-admin/doc/4.16/Upgrade.html) guide before upgrading to v5.
