@@ -31,6 +31,14 @@ describe('<FilterForm />', () => {
         displayedFilters: {},
     };
 
+    beforeAll(() => {
+        window.scrollTo = jest.fn();
+    });
+
+    afterAll(() => {
+        jest.clearAllMocks();
+    });
+
     it('should display correctly passed filters', () => {
         const setFilters = jest.fn();
         const filters = [

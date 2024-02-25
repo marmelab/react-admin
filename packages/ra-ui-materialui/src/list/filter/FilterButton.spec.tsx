@@ -25,6 +25,14 @@ describe('<FilterButton />', () => {
         filterValues: {},
     };
 
+    beforeAll(() => {
+        window.scrollTo = jest.fn();
+    });
+
+    afterAll(() => {
+        jest.clearAllMocks();
+    });
+
     describe('filter selection menu', () => {
         it('should display only hidden filters', () => {
             const hiddenFilter = (
