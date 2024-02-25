@@ -37,7 +37,10 @@ yarn add react-admin
 
 ## Documentation
 
-Read the [Tutorial](https://marmelab.com/react-admin/Tutorial.html) for a 30 minutes introduction. After that, head to the [Documentation](https://marmelab.com/react-admin/documentation.html), or checkout the source code of the examples ([e-commerce](https://github.com/marmelab/react-admin/tree/master/examples/demo), [CRM](https://github.com/marmelab/react-admin/tree/master/examples/crm), [blog](https://github.com/marmelab/react-admin/tree/master/examples/simple), [media player](https://github.com/navidrome/navidrome/tree/master/ui)).
+* Read the [Tutorial](https://marmelab.com/react-admin/Tutorial.html) for a 30 minutes introduction
+* Watch the [YouTube video tutorials](https://www.youtube.com/@react-admin)
+* Head to the [Documentation](https://marmelab.com/react-admin/documentation.html) for a complete API reference
+* Checkout the source code of the examples ([e-commerce](https://github.com/marmelab/react-admin/tree/master/examples/demo), [CRM](https://github.com/marmelab/react-admin/tree/master/examples/crm), [blog](https://github.com/marmelab/react-admin/tree/master/examples/simple), [media player](https://github.com/navidrome/navidrome/tree/master/ui))
 
 ## At a Glance
 

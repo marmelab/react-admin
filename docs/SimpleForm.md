@@ -696,6 +696,67 @@ const ProductEdit = () => (
 
 Check [the RBAC `<SimpleForm>` component](./AuthRBAC.md#simpleform) documentation for more details.
 
+## Versioning
+
+By default, `<SimpleForm>` updates the current record (via `dataProvider.update()`), so the previous version of the record is lost. If you want to keep the previous version, you can use the [`<SimpleFormWithRevision>`](https://marmelab.com/ra-enterprise/modules/ra-history#simpleformwithrevision) component instead:
+
+```diff
+// in src/posts/PostCreate.js
+-import { Create, SimpleForm, TextInput, RichTextInput, NumberInput } from 'react-admin';
++import { Create, TextInput, RichTextInput, NumberInput } from 'react-admin';
++import { SimpleFormWithRevision } from "@react-admin/ra-history";
+
+export const PostCreate = () => (
+    <Create>
+-       <SimpleForm>
++       <SimpleFormWithRevision>
+            <TextInput source="title" />
+            <TextInput source="teaser" />
+            <TextInput multiline source="body" />
+-       </SimpleForm>
++       </SimpleFormWithRevision>
+    </Create>
+);
+```
+
+This won't change the look and feel of the form. But when the user submits the form, they will see a dialog asking them for the reason of the change.
+
+![SimpleFormWithRevision](https://marmelab.com/ra-enterprise/modules/assets/ra-history/latest/SimpleFormWithRevision.png)
+
+After submitting this dialog, react-admin will update the main record and **create a new revision**. A revision represents the state of the record at a given point in time. It is immutable. A revision also records the date, author, and reason of the change. Past revisions can be accessed via the [`<RevisionsButton>`](https://marmelab.com/ra-enterprise/modules/ra-history#revisionsbutton) component.
+
+<video controls autoplay playsinline muted loop>
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/RevisionsButton.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
+```jsx
+// in src/posts/PostEdit.js
+import { Edit, TextInput, TopToolbar } from "react-admin";
+import {
+  SimpleFormWithRevision,
+  RevisionsButton,
+} from "@react-admin/ra-history";
+
+const PostEditActions = () => (
+  <TopToolbar>
+    <RevisionsButton />
+  </TopToolbar>
+);
+
+export const PostEdit = () => (
+  <Edit actions={<PostEditActions />}>
+    <SimpleFormWithRevision>
+      <TextInput source="title" />
+      <TextInput source="teaser" />
+      <TextInput multiline source="body" />
+    </SimpleFormWithRevision>
+  </Edit>
+);
+```
+
+Check the [`<SimpleFormWithRevision>`](https://marmelab.com/ra-enterprise/modules/ra-history#simpleformwithrevision) and [`<RevisionsButton>`](https://marmelab.com/ra-enterprise/modules/ra-history#revisionsbutton) documentation for more details.
+
 ## Linking Two Inputs
 
 Edition forms often contain linked inputs, e.g. country and city (the choices of the latter depending on the value of the former).

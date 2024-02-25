@@ -124,6 +124,7 @@ export const DatagridHeader = (props: DatagridHeaderProps) => {
                                 )
                             }
                             onChange={handleSelectAll}
+                            onClick={e => e.stopPropagation()}
                         />
                     </TableCell>
                 )}

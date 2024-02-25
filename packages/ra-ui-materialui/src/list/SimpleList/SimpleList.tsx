@@ -163,7 +163,8 @@ export const SimpleList = <RecordType extends RaRecord = any>(
                                                   })
                                                 : isElement(primaryText)
                                                 ? primaryText
-                                                : primaryText(record, record.id)
+                                                : // @ts-ignore
+                                                  primaryText(record, record.id)
                                             : getRecordRepresentation(record)}
 
                                         {!!tertiaryText &&
@@ -188,7 +189,8 @@ export const SimpleList = <RecordType extends RaRecord = any>(
                                                               tertiaryText
                                                           )
                                                         ? tertiaryText
-                                                        : tertiaryText(
+                                                        : // @ts-ignore
+                                                          tertiaryText(
                                                               record,
                                                               record.id
                                                           )}
@@ -205,7 +207,8 @@ export const SimpleList = <RecordType extends RaRecord = any>(
                                           })
                                         : isElement(secondaryText)
                                         ? secondaryText
-                                        : secondaryText(record, record.id))
+                                        : // @ts-ignore
+                                          secondaryText(record, record.id))
                                 }
                             />
                             {(rightAvatar || rightIcon) && (

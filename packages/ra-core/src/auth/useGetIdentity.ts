@@ -9,9 +9,8 @@ import useAuthProvider from './useAuthProvider';
 import { UserIdentity } from '../types';
 import { useEvent } from '../util';
 
-const defaultIdentity = {
+const defaultIdentity: UserIdentity = {
     id: '',
-    fullName: null,
 };
 const defaultQueryParams = {
     staleTime: 5 * 60 * 1000,
@@ -59,7 +58,7 @@ export const useGetIdentity = <ErrorType extends Error = Error>(
             if (typeof authProvider.getIdentity !== 'function') return null;
 
             const identity = await authProvider.getIdentity({ signal });
-            return identity ?? null;
+            return identity ?? defaultIdentity;
         },
         ...queryOptions,
     });

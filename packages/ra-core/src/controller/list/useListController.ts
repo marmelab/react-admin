@@ -437,6 +437,8 @@ export const injectedProps = [
     'error',
     'exporter',
     'filterValues',
+    'hasNextPage',
+    'hasPreviousPage',
     'hideFilter',
     'isFetching',
     'isLoading',

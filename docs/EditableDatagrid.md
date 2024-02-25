@@ -124,6 +124,12 @@ const RowAction = () => (
 );
 ```
 
+<video controls autoplay playsinline muted loop>
+  <source src="./img/editableDatagrid-actions.webm" type="video/webm"/>
+  <source src="./img/editableDatagrid-actions.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
 ## `createForm`
 
 The component displayed as the first row when a user clicks on the Create button. It's usually a form built with [`<RowForm>`](#rowform), with the same number of children as the `<EditableDatagrid>` has children.
@@ -131,7 +137,7 @@ The component displayed as the first row when a user clicks on the Create button
 ```tsx
 export const ArtistList = () => (
     <List hasCreate empty={false}>
-        <EditableDatagrid 
+        <EditableDatagrid
             editForm={<ArtistForm />}
             createForm={<ArtistForm />}
         >
@@ -205,6 +211,12 @@ Use the `mutationMode` prop to specify the [mutation mode](./Edit.html#mutationm
 </EditableDatagrid>
 ```
 
+<video controls autoplay playsinline muted loop>
+  <source src="./img/editableDatagrid-mutationMode.webm" type="video/webm"/>
+  <source src="./img/editableDatagrid-mutationMode.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
 ## `noDelete`
 
 You can disable the delete button by setting the `noDelete` prop to `true`:
@@ -214,6 +226,7 @@ You can disable the delete button by setting the `noDelete` prop to `true`:
     {/*...*/}
 </EditableDatagrid>
 ```
+![EditableDatagrid noDelete](./img/editableDatagrid-noDelete.png)
 
 ## `<RowForm>`
 
@@ -319,6 +332,12 @@ Feel free to visit the [dedicated stories](https://react-admin.github.io/ra-ente
 
 ## Using Inside a `<ReferenceManyField>`
 
+<video controls autoplay playsinline muted loop>
+  <source src="./img/editableDatagrid-referenceManyField.webm" type="video/webm"/>
+  <source src="./img/editableDatagrid-referenceManyField.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
 You can use `<EditableDatagrid>` inside a `<ReferenceManyField>`. The only difference with its usage in a `<List>` is that you have to initialize the foreign key in the creation form using the `defaultValues` prop:
 
 {% raw %}
@@ -383,6 +402,12 @@ In these examples, the same form component is used in `createForm` and `editForm
 **Tip**: To edit a one-to-many relationship, you can also use [the `<ReferenceManyInput>` component](./ReferenceManyInput.md).
 
 ## Providing Custom Side Effects
+
+<video controls autoplay playsinline muted loop>
+  <source src="./img/editableDatagrid-custom_side_effect.webm" type="video/webm"/>
+  <source src="./img/editableDatagrid-custom_side_effect.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
 
 You can provide your own side effects in response to successful or failed save and delete actions, by passing functions to the `onSuccess` or `onError` inside the `mutationOptions` prop:
 

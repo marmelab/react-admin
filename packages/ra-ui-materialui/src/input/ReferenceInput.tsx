@@ -84,6 +84,11 @@ export const ReferenceInput = (props: ReferenceInputProps) => {
         filter,
     });
 
+    if (props.validate) {
+        throw new Error(
+            '<ReferenceInput> does not accept a validate prop. Set the validate prop on the child instead.'
+        );
+    }
     if (Children.count(children) !== 1) {
         throw new Error('<ReferenceInput> only accepts a single child');
     }

@@ -14,16 +14,29 @@ This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" s
   Your browser does not support the video tag.
 </video>
 
-Here is a (non-exhaustive) list of [features](https://www.ag-grid.com/react-data-grid/) that `<DatagridAG>` offers:
+`<DatagridAG>` supports all the `<Datagrid>` features, plus some exclusive [ag-grid features](https://www.ag-grid.com/react-data-grid/):
 
 -   In place editing of cells or rows
--   Advanced filtering
+-   DOM virtualization
 -   Columns resizing and reordering
--   Automatic page size
--   Automatic column size
+-   Column & Row pinning
+-   Cell expressions
+-   Row animation
+-   Advanced filtering
+-   Multi-column sorting
+-   Keyboard navigation
+-   Row dragging
 -   Themes
--   Row selection and bulk actions
+-   Flashing Cells
+-   Tooltips
+
+The `<DatagridAG>` component provides a smooth integration of ag-grid with react-admin, offering the following features out of the box:
+
+-   Data read from `ListContext`
+-   Loading state
 -   Compatibility with React Admin fields
+-   Persistence of the columns order and size
+-   Bulk Actions
 
 Additionally, `<DatagridAG>` is compatible with the [Enterprise version of ag-grid](https://www.ag-grid.com/react-data-grid/licensing/), which offers even more features:
 
@@ -35,6 +48,7 @@ Additionally, `<DatagridAG>` is compatible with the [Enterprise version of ag-gr
 -   Master Detail views
 -   Range Selection
 -   Excel Export
+-   Context Menu
 -   And more...
 
 <video controls autoplay playsinline muted loop>
@@ -57,11 +71,11 @@ yarn add @react-admin/ra-datagrid-ag
 Then, use `<DatagridAG>` as a child of a react-admin `<List>`, `<ReferenceManyField>`, or any other component that creates a `ListContext`.
 
 ```tsx
-import 'ag-grid-community/styles/ag-grid.css';
-import 'ag-grid-community/styles/ag-theme-alpine.css';
 import React from 'react';
 import { List } from 'react-admin';
 import { DatagridAG } from '@react-admin/ra-datagrid-ag';
+import 'ag-grid-community/styles/ag-grid.css';
+import 'ag-grid-community/styles/ag-theme-alpine.css';
 
 export const PostList = () => {
     const columnDefs = [
@@ -81,14 +95,12 @@ export const PostList = () => {
 
 Here are the important things to note:
 
--   You need to import the ag-grid stylesheets `ag-grid.css` and `ag-theme-alpine.css`.
+-   You need to import the ag-grid stylesheets (`ag-grid.css` and `ag-theme-alpine.css`).
 -   To benefit from ag-grid's filtering and sorting features (as well as some Enterprise features like grouping), you need to load the entire list of records client-side. To do so, you must set `<List perPage>` to a high number (e.g. 10,000).
 -   As the pagination is handled by ag-grid, you can disable react-admin's pagination with `<List pagination={false}>`.
 -   The columns are defined using the `columnDefs` prop. See [the dedicated doc section](#columndefs) for more information.
 
 `<DatagridAG>` doesn't currently support the [server-side row model](https://www.ag-grid.com/react-data-grid/row-models/), so you have to load all data client-side. The client-side performance isn't affected by a large number of records, as ag-grid uses [DOM virtualization](https://www.ag-grid.com/react-data-grid/dom-virtualisation/). `<DatagridAG>` has been tested with 10,000 records without any performance issue.
-
-> **Note:** To mitigate an [issue](https://github.com/ag-grid/ag-grid/issues/7241) preventing tree shaking with some bundlers, `<DatagridAG>` uses React's [lazy loading](https://react.dev/reference/react/lazy#suspense-for-code-splitting) by default. This feature relies on [dynamic `import()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/import), which might require support from your bundler or framework.
 
 ## Props
 
@@ -99,7 +111,7 @@ Here are the important things to note:
 | `cellRenderer`      | Optional | String, Function or Element |                              | Allows to use a custom component to render the cell content                                  |
 | `defaultColDef`     | Optional | Object                      |                              | The default column definition (applied to all columns)                                       |
 | `mutationOptions`   | Optional | Object                      |                              | The mutation options                                                                         |
-| `preferenceKey`     | Optional | String or `false`           | `${resource}.ag-grid.params` | The key used to persist columns order and sizing in the Store. `false` disables persistence. |
+| `preferenceKey` | Optional | String or `false` | `${resource}.ag-grid.params` | The key used to persist [`gridState`](https://www.ag-grid.com/react-data-grid/grid-state/) in the Store. `false` disables persistence. |
 | `sx`                | Optional | Object                      |                              | The sx prop passed down to the wrapping `<div>` element                                      |
 | `theme`             | Optional | String                      | `'ag-theme-alpine'`          | The name of the ag-grid theme                                                                |
 | `pagination`        | Optional | Boolean                     | `true`                       | Enable or disable pagination                                                                 |
@@ -451,9 +463,9 @@ const CarList = () => {
   Your browser does not support the video tag.
 </video>
 
-### `preferenceKey`
+## `preferenceKey`
 
-`<DatagridAG>` will store the order and size of columns in the [Store](./Store.md), under the key `${resource}.ag-grid.params`.
+`<DatagridAG>` will store the [`gridState`](https://www.ag-grid.com/react-data-grid/grid-state/) in the [Store](https://marmelab.com/react-admin/Store.html), under the key `${resource}.ag-grid.params.grid`. This `gridState` persisted in the store is applied once when the grid is created, it means that users will find the grid as they left it previously.
 
 If you wish to change the key used to store the columns order and size, you can pass a `preferenceKey` prop to `<DatagridAG>`.
 
@@ -471,7 +483,7 @@ If, instead, you want to disable the persistence of the columns order and size, 
 </List>
 ```
 
-**Note:** Saving the columns size in the Store is disabled when using the [`flex` config](https://www.ag-grid.com/react-data-grid/column-sizing/#column-flex).
+**Tip:** If you update the `columnDefs` prop, make sure to clear or [invalidate](Store.md#store-invalidation) the React-admin store in order to view your changes.
 
 ## `sx`
 
@@ -539,9 +551,9 @@ export const PostList = () => {
 
 ## Accessing The Grid And Column APIs
 
-You can access the grid's `api` and `columnApi` by passing a `ref` to `<DatagridAG>`.
+You can access the grid's `api` by passing a `ref` to `<DatagridAG>`.
 
-In this example, we use the `columnApi` to automatically resize all columns to fit their content on first render:
+In this example, we use the `api` to automatically resize all columns to fit their content on first render:
 
 ```tsx
 import 'ag-grid-community/styles/ag-grid.css';
@@ -559,7 +571,7 @@ export const PostList = () => {
     ];
     const gridRef = React.useRef<AgGridReact>(null);
     const onFirstDataRendered = React.useCallback(() => {
-        gridRef.current.columnApi.autoSizeAllColumns();
+        gridRef.current.api.autoSizeAllColumns();
     }, []);
     return (
         <List perPage={10000} pagination={false}>
@@ -607,7 +619,7 @@ export const PostList = () => {
 
 ![DatagridAG flex](https://marmelab.com/ra-enterprise/modules/assets/DatagridAG-flex.png)
 
-Alternatively, you can use the grid's `columnApi` to call `autoSizeAllColumns` to automatically resize all columns to fit their content:
+Alternatively, you can use the grid's `api` to call `autoSizeAllColumns` to automatically resize all columns to fit their content:
 
 ```tsx
 import 'ag-grid-community/styles/ag-grid.css';
@@ -625,7 +637,7 @@ export const PostList = () => {
     ];
     const gridRef = React.useRef<AgGridReact>(null);
     const onFirstDataRendered = React.useCallback(() => {
-        gridRef.current.columnApi.autoSizeAllColumns();
+        gridRef.current.api.autoSizeAllColumns();
     }, []);
     return (
         <List perPage={10000} pagination={false}>
@@ -931,7 +943,7 @@ const OlympicWinnersList = () => {
     ];
     const gridRef = React.useRef<AgGridReact>(null);
     const onFirstDataRendered = React.useCallback(() => {
-        gridRef.current.columnApi.autoSizeAllColumns();
+        gridRef.current.api.autoSizeAllColumns();
     }, []);
     const defaultColDef = {
         enableRowGroup: true,

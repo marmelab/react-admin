@@ -17,7 +17,7 @@ Here is an overview of the result:
 
 ## Setting Up
 
-React-admin uses React. We'll use [create-react-admin](./CreateReactAdmin.md) to bootstrap a new admin:
+React-admin uses React. We'll use [create-react-admin](./CreateReactAdmin.md) to bootstrap a new web application:
 
 ```sh
 npm init react-admin test-admin
@@ -38,7 +38,7 @@ You should be up and running with an empty React admin application on port 5173:
 
 [![Empty Admin](./img/tutorial_empty.png)](./img/tutorial_empty.png)
 
-**Tip**: Although this tutorial uses [Vite](https://vitejs.dev/) with [TypeScript](https://www.typescriptlang.org/), you can use react-admin with JavaScript if you prefer. Also, you can use [Next.js](./NextJs.md), [Remix](./Remix.md), [create-react-app](./CreateReactApp.md), or any other React framework to create your admin app. React-admin is framework-agnostic.
+**Tip**: The `create-react-admin` script creates a single-page application powered by [Vite](https://vitejs.dev/) and [TypeScript](https://www.typescriptlang.org/). You can also use react-admin with JavaScript if you prefer. Additionally, you can use [Next.js](./NextJs.md), [Remix](./Remix.md), or any other React framework to create your react-admin app. React-admin is framework-agnostic.
 
 Let's take a look at the generated code. The main entry point is `index.tsx`, which renders the `App` component in the DOM:
 
@@ -367,7 +367,7 @@ For instance, the `website` field looks like a URL. Instead of displaying it as 
 
 This reflects the early stages of development with react-admin: let the guesser component bootstrap a basic page, then tweak the generated code to better match your business logic.
 
-## Writing A Custom Field 
+## Writing A Custom Field
 
 In react-admin, fields are just React components. When rendered, they grab the `record` fetched from the API (e.g. `{ "id": 2, "name": "Ervin Howell", "website": "anastasia.net", ... }`) using a custom hook, and use the `source` field (e.g. `website`) to get the value they should display (e.g. "anastasia.net").
 
@@ -380,7 +380,7 @@ import { useRecordContext } from "react-admin";
 const MyUrlField = ({ source }: { source: string }) => {
     const record = useRecordContext();
     if (!record) return null;
-    return <a href={record[source]}>{record[source]}</a>;
+    return <a href={`http://${record[source]}`}>{record[source]}</a>;
 };
 
 export default MyUrlField;

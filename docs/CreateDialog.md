@@ -68,7 +68,6 @@ In the related `<Resource>`, you don't need to declare a `create` component as t
 
 **Note**: You can't use the `<CreateDialog>` and have a standard `<Edit>` specified on your `<Resource>`, because the `<Routes>` declarations would conflict. If you need this, use the [`<CreateInDialogButton>`](./CreateInDialogButton.md) instead.
 
-
 ## Props
 
 `<CreateDialog>` accepts the following props:

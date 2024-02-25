@@ -35,8 +35,8 @@ const DealList = () => {
                 component="div"
             >
                 <DealListContent />
+                <DealCreate open={!!matchCreate} />
             </List>
-            <DealCreate open={!!matchCreate} />
             <DealShow open={!!matchShow} id={matchShow?.params.id} />
         </>
     );
@@ -44,7 +44,7 @@ const DealList = () => {
 
 const dealFilters = [
     <SearchInput source="q" alwaysOn />,
-    <OnlyMineInput alwaysOn />,
+    <OnlyMineInput source="sales_id" alwaysOn />,
     <SelectInput source="type" choices={typeChoices} />,
 ];
 

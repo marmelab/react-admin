@@ -40,6 +40,8 @@ const CommentCreate = () => (
 );
 ```
 
+## Props
+
 `<Toolbar>` accepts the following props:
 
 - [`children`](#children)
