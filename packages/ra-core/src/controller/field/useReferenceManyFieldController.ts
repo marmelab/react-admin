@@ -143,7 +143,7 @@ export const useReferenceManyFieldController = <
     );
 
     const setFilters = useCallback(
-        (filters, displayedFilters, debounce = true) => {
+        (filters, displayedFilters, debounce = false) => {
             if (debounce) {
                 debouncedSetFilters(filters, displayedFilters);
             } else {

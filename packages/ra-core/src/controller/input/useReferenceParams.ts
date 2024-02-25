@@ -146,7 +146,7 @@ export const useReferenceParams = ({
     }, []);
 
     const setFilters = useCallback(
-        (filter, displayedFilters, debounce = true) => {
+        (filter, displayedFilters, debounce = false) => {
             debounce
                 ? debouncedSetFilters.current(filter, displayedFilters)
                 : changeParams({
