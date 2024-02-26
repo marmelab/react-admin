@@ -282,7 +282,7 @@ const OfficeList = () => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        setFilters(filterFormValues, undefined);
+        setFilters(filterFormValues);
     };
 
     if (isLoading) return <div>Loading...</div>;

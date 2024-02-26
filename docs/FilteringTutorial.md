@@ -543,7 +543,7 @@ const PostFilterForm = () => {
 
     const onSubmit = (values) => {
         if (Object.keys(values).length > 0) {
-            setFilters(values, undefined);
+            setFilters(values);
         } else {
             hideFilter("main");
         }

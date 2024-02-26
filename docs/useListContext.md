@@ -142,7 +142,7 @@ const CustomFilter = () => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        setFilters(filterFormValues, undefined);
+        setFilters(filterFormValues);
     };
 
     return (
