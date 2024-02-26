@@ -262,17 +262,3 @@ export const Theming = () => (
         </Edit>
     </AdminContext>
 );
-
-const BooksEdit = () => (
-    <Edit>
-        <SimpleForm>
-            <TextInput source="title.en" label="Title" />
-            <ArrayInput source="authors">
-                <SimpleFormIterator inline readOnly>
-                    <TextInput source="name" />
-                    <TextInput source="role" />
-                </SimpleFormIterator>
-            </ArrayInput>
-        </SimpleForm>
-    </Edit>
-);

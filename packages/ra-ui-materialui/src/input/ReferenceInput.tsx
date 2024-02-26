@@ -116,7 +116,7 @@ ReferenceInput.propTypes = {
 };
 
 const defaultChildren = (readOnly, disabled) => (
-    <AutocompleteInput readOnly={readOnly} disabled={disabled || readOnly} />
+    <AutocompleteInput readOnly={readOnly} disabled={disabled} />
 );
 
 export interface ReferenceInputProps

@@ -167,13 +167,11 @@ If `true`, the input is disabled and the user can't change the value.
 <TextInput source="title" disabled />
 ```
 
-**Tip**: The form framework used by react-admin, react-hook-form, [considers](https://github.com/react-hook-form/react-hook-form/pull/10805) that a `disabled` input shouldn't submit any value. So react-hook-form sets the value of all `disabled` inputs to `undefined`. As a consequence, a form with a `disabled` input is always considered `dirty` (i.e. react-hook-form considers that the form values and the initial record values are different), and it triggers [the `warnWhenUnsavedChanges` feature](./EditTutorial.md#warning-about-unsaved-changes) when leaving the form, even though the user changed nothing. The workaround is to set the `disabled` prop on the underlying input component, as follows:
+**Tip:** Note that `disabled` inputs are **not** included in the form values, and hence may trigger `warnWhenUnsavedChanges` if the input previously had a value in the record. To include the input in the form values, you can use `readOnly` instead of `disabled`. The workaround is to set the `disabled` prop on the underlying input component, as follows:
 
-{% raw %}
 ```jsx
 <TextInput source="title" InputProps={{ disabled: true }} />
 ```
-{% endraw %}
 
 ## `format`
 

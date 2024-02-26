@@ -123,10 +123,7 @@ ReferenceArrayInput.propTypes = {
 };
 
 const defaultChildren = (readOnly, disabled) => (
-    <AutocompleteArrayInput
-        readOnly={readOnly}
-        disabled={disabled || readOnly}
-    />
+    <AutocompleteArrayInput readOnly={readOnly} disabled={disabled} />
 );
 const defaultFilter = {};
 

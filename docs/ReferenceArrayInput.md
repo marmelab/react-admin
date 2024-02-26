@@ -342,7 +342,7 @@ The `readOnly` prop set to true makes the element not mutable, meaning the user 
 />
 ```
 
-**Warning**: The `readOnly` prop refers to the default [`<AutocompleteArrayInput>`](./AutocompleteArrayInput.md) child. If you pass a child component, you'll have to specify the `readOnly` prop on each input:
+**Warning**: The `readOnly` prop is forwarded to the default [`<AutocompleteArrayInput>`](./AutocompleteArrayInput.md) child. If you pass a custom child component, you'll have to specify the `readOnly` prop on it instead:
 
 ```jsx
 <ReferenceArrayInput source="tags_ids" reference="tags">
@@ -364,7 +364,7 @@ The `disabled` prop set to true makes the element not mutable, focusable, or eve
 
 **Tip:** Note that `disabled` inputs are **not** included in the form values, and hence may trigger `warnWhenUnsavedChanges` if the input previously had a value in the record. To include the input in the form values, you can use `readOnly` instead of `disabled`.
 
-**Warning**: The `disabled` prop refers to the default [`<AutocompleteArrayInput>`](./AutocompleteArrayInput.md) child. If you pass a child component, you'll have to specify the `disabled` prop on each input:
+**Warning**: The `disabled` prop is forwarded to the default [`<AutocompleteArrayInput>`](./AutocompleteArrayInput.md) child. If you pass a custom child component, you'll have to specify the `disabled` prop on it instead:
 
 ```jsx
 <ReferenceArrayInput source="tags_ids" reference="tags">

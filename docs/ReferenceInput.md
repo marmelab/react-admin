@@ -341,7 +341,7 @@ The `readOnly` prop set to true makes the element not mutable, meaning the user 
 />
 ```
 
-**Warning**: The `readOnly` prop refers to the default [`<AutocompleteInput>`](./AutocompleteInput.md) child. If you pass a child component, you'll have to specify the `readOnly` prop on each input:
+**Warning**: The `readOnly` prop is forwarded to the default [`<AutocompleteInput>`](./AutocompleteInput.md) child. If you pass a custom child component, you'll have to specify the `readOnly` prop on it instead:
 
 ```jsx
 <ReferenceInput source="company" reference="companies">
@@ -371,7 +371,7 @@ The `disabled` prop set to true makes the default input element not mutable, foc
 />
 ```
 
-**Warning**: The `disabled` prop refers to the default [`<AutocompleteInput>`](./AutocompleteInput.md) child. If you pass a child component, you'll have to specify the `disabled` prop on each input:
+**Warning**: The `disabled` prop is forwarded to the default [`<AutocompleteInput>`](./AutocompleteInput.md) child. If you pass a custom child component, you'll have to specify the `disabled` prop on it instead:
 
 ```jsx
 <ReferenceInput source="company" reference="companies">

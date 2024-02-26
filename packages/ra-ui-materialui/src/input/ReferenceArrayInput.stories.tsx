@@ -92,7 +92,7 @@ export const ReadOnly = () => (
                             reference="authors"
                             resource="name"
                             source="authors_ids"
-                            disabled
+                            readOnly
                         />
                     </SimpleForm>
                 </Create>

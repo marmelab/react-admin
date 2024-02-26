@@ -111,6 +111,8 @@ BooleanInput.propTypes = {
     ...InputPropTypes,
     // @ts-ignore
     options: PropTypes.shape(Switch.propTypes),
+    disabled: PropTypes.bool,
+    readOnly: PropTypes.bool,
 };
 
 export type BooleanInputProps = Omit<CommonInputProps, 'readOnly'> &
