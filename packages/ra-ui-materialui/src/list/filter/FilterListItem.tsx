@@ -163,8 +163,7 @@ export const FilterListItem = memo((props: FilterListItemProps) => {
     // We can't wrap this function with useEvent as it is called in the render phase
     const isSelected = getIsSelected(value, filterValues);
 
-    const handleClick = () =>
-        setFilters(toggleFilter(value, filterValues), null);
+    const handleClick = () => setFilters(toggleFilter(value, filterValues));
 
     return (
         <StyledListItem

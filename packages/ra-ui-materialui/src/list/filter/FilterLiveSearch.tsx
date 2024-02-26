@@ -43,7 +43,7 @@ export const FilterLiveSearch = memo((props: FilterLiveSearchProps) => {
             );
         } else {
             const { [source]: _, ...filters } = filterValues;
-            setFilters(filters, null);
+            setFilters(filters);
         }
     };
 

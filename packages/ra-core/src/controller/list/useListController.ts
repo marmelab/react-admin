@@ -417,7 +417,7 @@ export interface ListControllerResult<RecordType extends RaRecord = any> {
     selectedIds: RecordType['id'][];
     setFilters: (
         filters: any,
-        displayedFilters: any,
+        displayedFilters?: any,
         debounce?: boolean
     ) => void;
     setPage: (page: number) => void;

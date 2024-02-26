@@ -75,7 +75,7 @@ const BookListView = () => {
         });
     };
     const toggleFilter = () => {
-        setFilters(filterValues.q ? {} : { q: 'The ' }, null);
+        setFilters(filterValues.q ? {} : { q: 'The ' });
     };
 
     return (
