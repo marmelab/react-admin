@@ -10,6 +10,7 @@ import { getMutationMode } from './getMutationMode';
 export * from './getFieldLabelTranslationArgs';
 export * from './mergeRefs';
 export * from './useEvent';
+export * from './useFieldValue';
 
 export {
     escapePath,

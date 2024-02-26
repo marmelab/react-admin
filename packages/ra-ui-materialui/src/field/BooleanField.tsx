@@ -2,11 +2,10 @@ import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import { SvgIconComponent } from '@mui/icons-material';
 import PropTypes from 'prop-types';
-import get from 'lodash/get';
 import DoneIcon from '@mui/icons-material/Done';
 import ClearIcon from '@mui/icons-material/Clear';
 import { Tooltip, Typography, TypographyProps } from '@mui/material';
-import { useTranslate, useRecordContext } from 'ra-core';
+import { useTranslate, useFieldValue } from 'ra-core';
 import { genericMemo } from './genericMemo';
 import { FieldProps, fieldPropTypes } from './types';
 import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
@@ -19,7 +18,6 @@ const BooleanFieldImpl = <
     const {
         className,
         emptyText,
-        source,
         valueLabelTrue,
         valueLabelFalse,
         TrueIcon = DoneIcon,
@@ -27,10 +25,8 @@ const BooleanFieldImpl = <
         looseValue = false,
         ...rest
     } = props;
-    const record = useRecordContext<RecordType>(props);
     const translate = useTranslate();
-
-    const value = get(record, source);
+    const value = useFieldValue(props);
     const isTruthyValue = value === true || (looseValue && value);
     let ariaLabel = value ? valueLabelTrue : valueLabelFalse;
 

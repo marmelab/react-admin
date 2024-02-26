@@ -7,6 +7,7 @@ import {
     UseTranslatableOptions,
     RaRecord,
     useRecordContext,
+    useResourceContext,
 } from 'ra-core';
 import { TranslatableFieldsTabs } from './TranslatableFieldsTabs';
 import { TranslatableFieldsTabContent } from './TranslatableFieldsTabContent';
@@ -74,10 +75,10 @@ export const TranslatableFields = (
         groupKey = '',
         selector = <TranslatableFieldsTabs groupKey={groupKey} />,
         children,
-        resource,
         className,
     } = props;
     const record = useRecordContext(props);
+    const resource = useResourceContext(props);
     const context = useTranslatable({ defaultLocale, locales });
 
     return (

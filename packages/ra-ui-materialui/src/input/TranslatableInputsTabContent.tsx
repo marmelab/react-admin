@@ -26,7 +26,10 @@ export const TranslatableInputsTabContent = (
     const parentSourceContext = useSourceContext();
     const sourceContext = useMemo(
         () => ({
-            getSource: (source: string) => `${source}.${locale}`,
+            getSource: (source: string) =>
+                parentSourceContext
+                    ? parentSourceContext.getSource(`${source}.${locale}`)
+                    : `${source}.${locale}`,
             getLabel: (source: string) => {
                 return parentSourceContext
                     ? parentSourceContext.getLabel(source)

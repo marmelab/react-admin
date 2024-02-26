@@ -100,9 +100,10 @@ export const ReferenceManyCount = <RecordType extends RaRecord = RaRecord>(
 };
 
 export interface ReferenceManyCountProps<RecordType extends RaRecord = RaRecord>
-    extends FieldProps<RecordType>,
+    extends Omit<FieldProps<RecordType>, 'source'>,
         Omit<TypographyProps, 'textAlign'> {
     reference: string;
+    source?: string;
     target: string;
     sort?: SortPayload;
     filter?: any;
