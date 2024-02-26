@@ -6,7 +6,7 @@ import {
     waitFor,
 } from '@testing-library/react';
 import expect from 'expect';
-import { TestMemoryRouter } from 'react-admin';
+import { createMemoryHistory } from 'history';
 import * as React from 'react';
 import { MemoryRouter, Route, Routes } from 'react-router';
 
@@ -66,24 +66,25 @@ describe('useEditController', () => {
                 Promise.resolve({ data: { id: 'test?', title: 'hello' } })
             );
         const dataProvider = ({ getOne } as unknown) as DataProvider;
+        const history = createMemoryHistory({
+            initialEntries: ['/posts/test%3F'],
+        });
 
         render(
-            <TestMemoryRouter initialEntries={['/posts/test%3F']}>
-                <CoreAdminContext dataProvider={dataProvider}>
-                    <Routes>
-                        <Route
-                            path="/posts/:id"
-                            element={
-                                <EditController resource="posts">
-                                    {({ record }) => (
-                                        <div>{record && record.title}</div>
-                                    )}
-                                </EditController>
-                            }
-                        />
-                    </Routes>
-                </CoreAdminContext>
-            </TestMemoryRouter>
+            <CoreAdminContext dataProvider={dataProvider} history={history}>
+                <Routes>
+                    <Route
+                        path="/posts/:id"
+                        element={
+                            <EditController resource="posts">
+                                {({ record }) => (
+                                    <div>{record && record.title}</div>
+                                )}
+                            </EditController>
+                        }
+                    />
+                </Routes>
+            </CoreAdminContext>
         );
         await waitFor(() => {
             expect(getOne).toHaveBeenCalledWith('posts', { id: 'test?' });
@@ -100,24 +101,25 @@ describe('useEditController', () => {
                 Promise.resolve({ data: { id: 0, title: 'hello' } })
             );
         const dataProvider = ({ getOne } as unknown) as DataProvider;
+        const history = createMemoryHistory({
+            initialEntries: ['/posts/test%3F'],
+        });
 
         render(
-            <TestMemoryRouter initialEntries={['/posts/test%3F']}>
-                <CoreAdminContext dataProvider={dataProvider}>
-                    <Routes>
-                        <Route
-                            path="/posts/:id"
-                            element={
-                                <EditController id={0} resource="posts">
-                                    {({ record }) => (
-                                        <div>{record && record.title}</div>
-                                    )}
-                                </EditController>
-                            }
-                        />
-                    </Routes>
-                </CoreAdminContext>
-            </TestMemoryRouter>
+            <CoreAdminContext dataProvider={dataProvider} history={history}>
+                <Routes>
+                    <Route
+                        path="/posts/:id"
+                        element={
+                            <EditController id={0} resource="posts">
+                                {({ record }) => (
+                                    <div>{record && record.title}</div>
+                                )}
+                            </EditController>
+                        }
+                    />
+                </Routes>
+            </CoreAdminContext>
         );
         await waitFor(() => {
             expect(getOne).toHaveBeenCalledWith('posts', { id: 0 });
