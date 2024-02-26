@@ -600,6 +600,7 @@ If you provided a React element for the optionText prop, you must also provide t
                             variant={variant}
                             className={AutocompleteInputClasses.textField}
                             {...params}
+                            {...TextFieldProps}
                             InputProps={mergedTextFieldProps}
                             size={size}
                         />
