@@ -1,10 +1,9 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
-import get from 'lodash/get';
 import Chip, { ChipProps } from '@mui/material/Chip';
 import Typography from '@mui/material/Typography';
 import clsx from 'clsx';
-import { useRecordContext, useTranslate } from 'ra-core';
+import { useFieldValue, useTranslate } from 'ra-core';
 
 import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
 import { FieldProps, fieldPropTypes } from './types';
@@ -15,9 +14,8 @@ const ChipFieldImpl = <
 >(
     props: ChipFieldProps<RecordType>
 ) => {
-    const { className, source, emptyText, ...rest } = props;
-    const record = useRecordContext<RecordType>(props);
-    const value = get(record, source);
+    const { className, emptyText, ...rest } = props;
+    const value = useFieldValue(props);
     const translate = useTranslate();
 
     if (value == null && emptyText) {

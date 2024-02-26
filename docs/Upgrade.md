@@ -460,6 +460,28 @@ const MyFilter = () => {
 };
 ```
 
+## Fields Components Requires The `source` Prop
+
+The `FieldProps` interface now requires the `source` prop to be defined. As a consequence, all the default fields components also require the `source` prop to be defined.
+This impacts custom fields that typed their props with the `FieldProps` interface. If your custom field is not meant to be used in a `<Datagrid>`, you may declare the `source` prop optional:
+
+```diff
+import { FieldProps, useRecordContext } from 'react-admin';
+
+-const AvatarField = (props: FieldProps) => {
++const AvatarField = (props: Omit<FieldProps, 'source'>) => {
+    const record = useRecordContext();
+    if (!record) return null;
+    return (
+        <Avatar
+            src={record.avatar}
+            alt={`${record.first_name} ${record.last_name}`}
+            {...props}
+        />
+    );
+}
+```
+
 ## Upgrading to v4
 
 If you are on react-admin v3, follow the [Upgrading to v4](https://marmelab.com/react-admin/doc/4.16/Upgrade.html) guide before upgrading to v5.

@@ -1,8 +1,7 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import get from 'lodash/get';
 import { Typography, TypographyProps } from '@mui/material';
-import { useRecordContext, useTranslate } from 'ra-core';
+import { useFieldValue, useTranslate } from 'ra-core';
 
 import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
 import { FieldProps, fieldPropTypes } from './types';
@@ -44,7 +43,6 @@ const DateFieldImpl = <
         options,
         showTime = false,
         showDate = true,
-        source,
         transform = defaultTransform,
         ...rest
     } = props;
@@ -56,12 +54,7 @@ const DateFieldImpl = <
         );
     }
 
-    const record = useRecordContext<RecordType>(props);
-    if (!record) {
-        return null;
-    }
-
-    const value = get(record, source) as any;
+    const value = useFieldValue(props);
     if (value == null || value === '') {
         return emptyText ? (
             <Typography

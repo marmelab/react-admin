@@ -1,13 +1,14 @@
 import {
     RecordContextProvider,
     Resource,
+    ResourceContextProvider,
     useTranslatableContext,
 } from 'ra-core';
 import fakeRestDataProvider from 'ra-data-fakerest';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
 import * as React from 'react';
-import { AdminContext } from '../AdminContext';
+import { AdminContext, AdminContextProps } from '../AdminContext';
 import { AdminUI } from '../AdminUI';
 import { Show, SimpleShowLayout } from '../detail';
 import { TextField } from './TextField';
@@ -43,15 +44,29 @@ const defaultData = [
 ];
 const i18nProvider = polyglotI18nProvider(() => englishMessages);
 
-const Wrapper = ({ children }) => (
-    <AdminContext i18nProvider={i18nProvider} defaultTheme="light">
-        <RecordContextProvider value={defaultData[0]}>
-            <SimpleShowLayout>{children}</SimpleShowLayout>
-        </RecordContextProvider>
+const Wrapper = ({
+    children,
+    ...props
+}: Omit<AdminContextProps, 'children'> & { children: React.ReactNode }) => (
+    <AdminContext defaultTheme="light" {...props}>
+        <ResourceContextProvider value="ngos">
+            <RecordContextProvider value={defaultData[0]}>
+                <SimpleShowLayout>{children}</SimpleShowLayout>
+            </RecordContextProvider>
+        </ResourceContextProvider>
     </AdminContext>
 );
 
 export const Basic = () => (
+    <Wrapper i18nProvider={i18nProvider}>
+        <TranslatableFields locales={['en', 'fr']}>
+            <TextField source="title" />,
+            <TextField source="description" />,
+        </TranslatableFields>
+    </Wrapper>
+);
+
+export const WithoutI18nProvider = () => (
     <Wrapper>
         <TranslatableFields locales={['en', 'fr']}>
             <TextField source="title" />,
@@ -61,7 +76,7 @@ export const Basic = () => (
 );
 
 export const SingleField = () => (
-    <Wrapper>
+    <Wrapper i18nProvider={i18nProvider}>
         <TranslatableFields locales={['en', 'fr']}>
             <TextField source="title" />
         </TranslatableFields>
@@ -95,7 +110,7 @@ const Selector = () => {
 };
 
 export const CustomSelector = () => (
-    <Wrapper>
+    <Wrapper i18nProvider={i18nProvider}>
         <TranslatableFields locales={['en', 'fr']} selector={<Selector />}>
             <TextField source="title" />
             <TextField source="description" />
@@ -104,9 +119,18 @@ export const CustomSelector = () => (
 );
 
 export const NestedFields = () => (
-    <Wrapper>
+    <Wrapper i18nProvider={i18nProvider}>
         <TranslatableFields locales={['en', 'fr']}>
             <TextField source="internal_organizations.OCP" />
+        </TranslatableFields>
+    </Wrapper>
+);
+
+export const WithLabels = () => (
+    <Wrapper i18nProvider={i18nProvider}>
+        <TranslatableFields locales={['en', 'fr']}>
+            <TextField source="title" label="My Title" />,
+            <TextField source="description" label="My Desc" />,
         </TranslatableFields>
     </Wrapper>
 );

@@ -1,12 +1,6 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import get from 'lodash/get';
-import {
-    ChoicesProps,
-    useChoices,
-    useRecordContext,
-    useTranslate,
-} from 'ra-core';
+import { ChoicesProps, useChoices, useFieldValue, useTranslate } from 'ra-core';
 import { Typography, TypographyProps } from '@mui/material';
 
 import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
@@ -83,15 +77,14 @@ const SelectFieldImpl = <
     const {
         className,
         emptyText,
-        source,
         choices,
         optionValue = 'id',
         optionText = 'name',
         translateChoice = true,
         ...rest
     } = props;
-    const record = useRecordContext(props);
-    const value = get(record, source);
+    const value = useFieldValue(props);
+
     const { getChoiceText, getChoiceValue } = useChoices({
         optionText,
         optionValue,

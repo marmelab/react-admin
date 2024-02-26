@@ -3,7 +3,8 @@ import { styled } from '@mui/material/styles';
 import { Box, Typography } from '@mui/material';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
-import { useRecordContext, useTranslate } from 'ra-core';
+import { useFieldValue, useTranslate } from 'ra-core';
+import { Call, Objects } from 'hotscript';
 
 import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
 import { FieldProps, fieldPropTypes } from './types';
@@ -14,9 +15,13 @@ export const ImageField = <
 >(
     props: ImageFieldProps<RecordType>
 ) => {
-    const { className, emptyText, source, src, title, ...rest } = props;
-    const record = useRecordContext(props);
-    const sourceValue = get(record, source);
+    const { className, emptyText, src, title, ...rest } = props;
+    const sourceValue = useFieldValue(props);
+    const titleValue =
+        useFieldValue({
+            ...props,
+            source: title,
+        })?.toString() ?? title;
     const translate = useTranslate();
 
     if (!sourceValue) {
@@ -61,8 +66,6 @@ export const ImageField = <
             </Root>
         );
     }
-
-    const titleValue = get(record, title)?.toString() || title;
 
     return (
         <Root className={className} {...sanitizeFieldRestProps(rest)}>
@@ -112,6 +115,10 @@ export interface ImageFieldProps<
     RecordType extends Record<string, any> = Record<string, any>
 > extends FieldProps<RecordType> {
     src?: string;
-    title?: string;
+    title?: Call<Objects.AllPaths, RecordType> extends never
+        ? AnyString
+        : Call<Objects.AllPaths, RecordType>;
     sx?: SxProps;
 }
+
+type AnyString = string & {};

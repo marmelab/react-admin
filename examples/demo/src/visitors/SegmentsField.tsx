@@ -9,7 +9,7 @@ const segmentsById = segments.reduce((acc, segment) => {
     return acc;
 }, {} as { [key: string]: any });
 
-const SegmentsField = (_: FieldProps) => {
+const SegmentsField = (_: Omit<FieldProps, 'source'> & { source?: string }) => {
     const translate = useTranslate();
     const record = useRecordContext<Customer>();
     if (!record || !record.groups) {

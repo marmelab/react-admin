@@ -48,7 +48,8 @@ FunctionField.propTypes = {
 
 export interface FunctionFieldProps<
     RecordType extends Record<string, any> = any
-> extends FieldProps<RecordType>,
+> extends Omit<FieldProps<RecordType>, 'source'>,
         Omit<TypographyProps, 'textAlign'> {
+    source?: string;
     render: (record: RecordType, source?: string) => ReactNode;
 }

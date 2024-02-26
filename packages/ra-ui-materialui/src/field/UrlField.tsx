@@ -1,9 +1,8 @@
 import * as React from 'react';
 import { AnchorHTMLAttributes } from 'react';
-import get from 'lodash/get';
 import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
 import { Typography, Link } from '@mui/material';
-import { useRecordContext, useTranslate } from 'ra-core';
+import { useFieldValue, useTranslate } from 'ra-core';
 import { FieldProps, fieldPropTypes } from './types';
 import { genericMemo } from './genericMemo';
 
@@ -12,9 +11,8 @@ const UrlFieldImpl = <
 >(
     props: UrlFieldProps<RecordType>
 ) => {
-    const { className, emptyText, source, ...rest } = props;
-    const record = useRecordContext(props);
-    const value = get(record, source);
+    const { className, emptyText, ...rest } = props;
+    const value = useFieldValue(props);
     const translate = useTranslate();
 
     if (value == null) {

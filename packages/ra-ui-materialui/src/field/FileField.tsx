@@ -3,7 +3,8 @@ import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import Typography from '@mui/material/Typography';
-import { useRecordContext, useTranslate } from 'ra-core';
+import { useFieldValue, useTranslate } from 'ra-core';
+import { Call, Objects } from 'hotscript';
 
 import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
 import { FieldProps, fieldPropTypes } from './types';
@@ -31,7 +32,6 @@ export const FileField = <
     const {
         className,
         emptyText,
-        source,
         title,
         src,
         target,
@@ -40,8 +40,12 @@ export const FileField = <
         rel,
         ...rest
     } = props;
-    const record = useRecordContext(props);
-    const sourceValue = get(record, source);
+    const sourceValue = useFieldValue(props);
+    const titleValue =
+        useFieldValue({
+            ...props,
+            source: title,
+        })?.toString() ?? title;
     const translate = useTranslate();
 
     if (!sourceValue) {
@@ -87,8 +91,6 @@ export const FileField = <
         );
     }
 
-    const titleValue = get(record, title)?.toString() || title;
-
     return (
         <Root className={className} {...sanitizeFieldRestProps(rest)}>
             <Link
@@ -110,13 +112,16 @@ export interface FileFieldProps<
     RecordType extends Record<string, any> = Record<string, any>
 > extends FieldProps<RecordType> {
     src?: string;
-    title?: string;
+    title?: Call<Objects.AllPaths, RecordType> extends never
+        ? AnyString
+        : Call<Objects.AllPaths, RecordType>;
     target?: string;
     download?: boolean | string;
     ping?: string;
     rel?: string;
     sx?: SxProps;
 }
+type AnyString = string & {};
 
 FileField.propTypes = {
     ...fieldPropTypes,
