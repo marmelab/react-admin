@@ -47,6 +47,8 @@ const BrowserBar = () => {
     const location = useLocation();
     const navigate = useNavigate();
 
+    const fullLocation = `${location.pathname}${location.search}`;
+
     const handleSubmit = event => {
         event.preventDefault();
         const newLocation = event.target.elements.location.value.replace(
@@ -89,8 +91,8 @@ const BrowserBar = () => {
                 <input
                     name="location"
                     type="text"
-                    key={location.pathname}
-                    defaultValue={`http://localhost:3000${location.pathname}`}
+                    key={fullLocation}
+                    defaultValue={`http://localhost:3000${fullLocation}`}
                 />
             </form>
         </div>
