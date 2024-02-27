@@ -10,7 +10,6 @@ import { useStore } from '../../store/useStore';
 import { useListParams, getQuery, getNumberOrDefault } from './useListParams';
 import { SORT_DESC, SORT_ASC } from './queryReducer';
 import { TestMemoryRouter } from '../../routing';
-import { Location } from 'react-router';
 
 describe('useListParams', () => {
     describe('getQuery', () => {
@@ -407,19 +406,16 @@ describe('useListParams', () => {
             await waitFor(() => {
                 expect(location).toEqual(
                     expect.objectContaining({
-                        hash: '',
                         pathname: '/',
                         search:
                             '?' +
                             stringify({
-                                displayedFilters: JSON.stringify({}),
                                 filter: JSON.stringify({}),
                                 sort: 'id',
                                 order: 'ASC',
                                 page: 10,
                                 perPage: 10,
                             }),
-                        state: { _scrollToTop: false },
                     })
                 );
             });
@@ -451,7 +447,7 @@ describe('useListParams', () => {
                     }}
                 >
                     <CoreAdminContext dataProvider={testDataProvider()}>
-                        <Component />
+                        <Component disableSyncWithLocation />
                         <StoreReader />
                     </CoreAdminContext>
                 </TestMemoryRouter>
@@ -463,19 +459,16 @@ describe('useListParams', () => {
 
             expect(location).not.toEqual(
                 expect.objectContaining({
-                    hash: '',
                     pathname: '/',
                     search:
                         '?' +
                         stringify({
-                            displayedFilters: JSON.stringify({}),
                             filter: JSON.stringify({}),
                             sort: 'id',
                             order: 'ASC',
                             page: 10,
                             perPage: 10,
                         }),
-                    state: { _scrollToTop: false },
                 })
             );
             expect(storeValue).toBeUndefined();

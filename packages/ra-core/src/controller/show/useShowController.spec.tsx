@@ -43,7 +43,7 @@ describe('useShowController', () => {
             );
         const dataProvider = ({ getOne } as unknown) as DataProvider;
         render(
-            <TestMemoryRouter>
+            <TestMemoryRouter initialEntries={['/posts/test%3F']}>
                 <CoreAdminContext dataProvider={dataProvider}>
                     <Routes>
                         <Route
@@ -76,7 +76,7 @@ describe('useShowController', () => {
             );
         const dataProvider = ({ getOne } as unknown) as DataProvider;
         render(
-            <TestMemoryRouter>
+            <TestMemoryRouter initialEntries={['/posts/test%3F']}>
                 <CoreAdminContext dataProvider={dataProvider}>
                     <Routes>
                         <Route
@@ -109,7 +109,7 @@ describe('useShowController', () => {
         const onError = jest.fn();
         const dataProvider = ({ getOne } as unknown) as DataProvider;
         render(
-            <TestMemoryRouter>
+            <TestMemoryRouter initialEntries={['/posts/1']}>
                 <CoreAdminContext dataProvider={dataProvider}>
                     <Routes>
                         <Route
@@ -143,7 +143,7 @@ describe('useShowController', () => {
 
         const dataProvider = ({ getOne } as unknown) as DataProvider;
         render(
-            <TestMemoryRouter>
+            <TestMemoryRouter initialEntries={['/posts/1']}>
                 <CoreAdminContext dataProvider={dataProvider}>
                     <Routes>
                         <Route
