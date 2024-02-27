@@ -2,9 +2,8 @@ import * as React from 'react';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
 import frenchMessages from 'ra-language-french';
-import { useTranslate, Resource } from 'ra-core';
+import { useTranslate, Resource, TestMemoryRouter } from 'ra-core';
 import fakeRestDataProvider from 'ra-data-fakerest';
-import { createMemoryHistory } from 'history';
 import { Typography } from '@mui/material';
 import LanguageIcon from '@mui/icons-material/Language';
 
@@ -141,8 +140,6 @@ const dataProvider = fakeRestDataProvider({
     authors: [],
 });
 
-const history = createMemoryHistory({ initialEntries: ['/books'] });
-
 const BookList = () => {
     return (
         <List>
@@ -172,13 +169,11 @@ const MyLayout = ({ children }) => (
 );
 
 export const FullApp = () => (
-    <AdminContext
-        dataProvider={dataProvider}
-        i18nProvider={i18nProvider}
-        history={history}
-    >
-        <AdminUI layout={MyLayout}>
-            <Resource name="books" list={BookList} />
-        </AdminUI>
-    </AdminContext>
+    <TestMemoryRouter initialEntries={['/books']}>
+        <AdminContext dataProvider={dataProvider} i18nProvider={i18nProvider}>
+            <AdminUI layout={MyLayout}>
+                <Resource name="books" list={BookList} />
+            </AdminUI>
+        </AdminContext>
+    </TestMemoryRouter>
 );

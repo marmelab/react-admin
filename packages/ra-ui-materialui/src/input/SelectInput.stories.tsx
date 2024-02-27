@@ -1,7 +1,6 @@
 import * as React from 'react';
-import { createMemoryHistory } from 'history';
 import { Admin, AdminContext } from 'react-admin';
-import { Resource, required, useGetList } from 'ra-core';
+import { Resource, required, useGetList, TestMemoryRouter } from 'ra-core';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
 
@@ -254,8 +253,6 @@ const dataProviderWithAuthors = {
     },
 } as any;
 
-const history = createMemoryHistory({ initialEntries: ['/books/1'] });
-
 export const FetchChoices = () => {
     const BookAuthorsInput = () => {
         const { data, isPending } = useGetList('authors');
@@ -271,7 +268,40 @@ export const FetchChoices = () => {
         );
     };
     return (
-        <Admin dataProvider={dataProviderWithAuthors} history={history}>
+        <TestMemoryRouter initialEntries={['/books/1']}>
+            <Admin dataProvider={dataProviderWithAuthors}>
+                <Resource
+                    name="authors"
+                    recordRepresentation={record =>
+                        `${record.first_name} ${record.last_name}`
+                    }
+                />
+                <Resource
+                    name="books"
+                    edit={() => (
+                        <Edit
+                            mutationMode="pessimistic"
+                            mutationOptions={{
+                                onSuccess: data => {
+                                    console.log(data);
+                                },
+                            }}
+                        >
+                            <SimpleForm>
+                                <BookAuthorsInput />
+                                <FormInspector name="author" />
+                            </SimpleForm>
+                        </Edit>
+                    )}
+                />
+            </Admin>
+        </TestMemoryRouter>
+    );
+};
+
+export const InsideReferenceInput = () => (
+    <TestMemoryRouter initialEntries={['/books/1']}>
+        <Admin dataProvider={dataProviderWithAuthors}>
             <Resource
                 name="authors"
                 recordRepresentation={record =>
@@ -290,129 +320,102 @@ export const FetchChoices = () => {
                         }}
                     >
                         <SimpleForm>
-                            <BookAuthorsInput />
+                            <ReferenceInput reference="authors" source="author">
+                                <SelectInput />
+                            </ReferenceInput>
                             <FormInspector name="author" />
                         </SimpleForm>
                     </Edit>
                 )}
             />
         </Admin>
-    );
-};
-
-export const InsideReferenceInput = () => (
-    <Admin dataProvider={dataProviderWithAuthors} history={history}>
-        <Resource
-            name="authors"
-            recordRepresentation={record =>
-                `${record.first_name} ${record.last_name}`
-            }
-        />
-        <Resource
-            name="books"
-            edit={() => (
-                <Edit
-                    mutationMode="pessimistic"
-                    mutationOptions={{
-                        onSuccess: data => {
-                            console.log(data);
-                        },
-                    }}
-                >
-                    <SimpleForm>
-                        <ReferenceInput reference="authors" source="author">
-                            <SelectInput />
-                        </ReferenceInput>
-                        <FormInspector name="author" />
-                    </SimpleForm>
-                </Edit>
-            )}
-        />
-    </Admin>
+    </TestMemoryRouter>
 );
 
 export const InsideReferenceInputDefaultValue = ({
     onSuccess = console.log,
 }) => (
-    <Admin
-        dataProvider={{
-            ...dataProviderWithAuthors,
-            getOne: () =>
-                Promise.resolve({
-                    data: {
-                        id: 1,
-                        title: 'War and Peace',
-                        // trigger default value
-                        author: undefined,
-                        summary:
-                            "War and Peace broadly focuses on Napoleon's invasion of Russia, and the impact it had on Tsarist society. The book explores themes such as revolution, revolution and empire, the growth and decline of various states and the impact it had on their economies, culture, and society.",
-                        year: 1869,
-                    },
-                }),
-        }}
-        history={history}
-    >
-        <Resource
-            name="authors"
-            recordRepresentation={record =>
-                `${record.first_name} ${record.last_name}`
-            }
-        />
-        <Resource
-            name="books"
-            edit={() => (
-                <Edit
-                    mutationMode="pessimistic"
-                    mutationOptions={{ onSuccess }}
-                >
-                    <SimpleForm>
-                        <TextInput source="title" />
-                        <ReferenceInput reference="authors" source="author">
-                            <SelectInput />
-                        </ReferenceInput>
-                        <FormInspector name="author" />
-                    </SimpleForm>
-                </Edit>
-            )}
-        />
-    </Admin>
+    <TestMemoryRouter initialEntries={['/books/1']}>
+        <Admin
+            dataProvider={{
+                ...dataProviderWithAuthors,
+                getOne: () =>
+                    Promise.resolve({
+                        data: {
+                            id: 1,
+                            title: 'War and Peace',
+                            // trigger default value
+                            author: undefined,
+                            summary:
+                                "War and Peace broadly focuses on Napoleon's invasion of Russia, and the impact it had on Tsarist society. The book explores themes such as revolution, revolution and empire, the growth and decline of various states and the impact it had on their economies, culture, and society.",
+                            year: 1869,
+                        },
+                    }),
+            }}
+        >
+            <Resource
+                name="authors"
+                recordRepresentation={record =>
+                    `${record.first_name} ${record.last_name}`
+                }
+            />
+            <Resource
+                name="books"
+                edit={() => (
+                    <Edit
+                        mutationMode="pessimistic"
+                        mutationOptions={{ onSuccess }}
+                    >
+                        <SimpleForm>
+                            <TextInput source="title" />
+                            <ReferenceInput reference="authors" source="author">
+                                <SelectInput />
+                            </ReferenceInput>
+                            <FormInspector name="author" />
+                        </SimpleForm>
+                    </Edit>
+                )}
+            />
+        </Admin>
+    </TestMemoryRouter>
 );
 
 export const InsideReferenceInputWithError = () => (
-    <Admin
-        dataProvider={{
-            ...dataProviderWithAuthors,
-            getList: () => Promise.reject('error'),
-        }}
-        history={history}
-    >
-        <Resource
-            name="authors"
-            recordRepresentation={record =>
-                `${record.first_name} ${record.last_name}`
-            }
-        />
-        <Resource
-            name="books"
-            edit={() => (
-                <Edit
-                    mutationMode="pessimistic"
-                    mutationOptions={{
-                        onSuccess: data => {
-                            console.log(data);
-                        },
-                    }}
-                >
-                    <SimpleForm>
-                        <ReferenceInput reference="authors" source="author">
-                            <SelectInput />
-                        </ReferenceInput>
-                        <FormInspector name="author" />
-                    </SimpleForm>
-                </Edit>
-            )}
-        />
-    </Admin>
+    <TestMemoryRouter initialEntries={['/books/1']}>
+        <Admin
+            dataProvider={{
+                ...dataProviderWithAuthors,
+                getList: () => Promise.reject('error'),
+            }}
+        >
+            <Resource
+                name="authors"
+                recordRepresentation={record =>
+                    `${record.first_name} ${record.last_name}`
+                }
+            />
+            <Resource
+                name="books"
+                edit={() => (
+                    <Edit
+                        mutationMode="pessimistic"
+                        mutationOptions={{
+                            onSuccess: data => {
+                                console.log(data);
+                            },
+                        }}
+                    >
+                        <SimpleForm>
+                            <ReferenceInput reference="authors" source="author">
+                                <SelectInput />
+                            </ReferenceInput>
+                            <FormInspector name="author" />
+                        </SimpleForm>
+                    </Edit>
+                )}
+            />
+        </Admin>
+    </TestMemoryRouter>
 );
 
 export const TranslateChoice = () => {

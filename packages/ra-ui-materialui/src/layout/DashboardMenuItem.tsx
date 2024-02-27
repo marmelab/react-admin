@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import DashboardIcon from '@mui/icons-material/Dashboard';
+import { To } from 'react-router';
 import { useBasename } from 'ra-core';
 
 import { MenuItemLink, MenuItemLinkProps } from './MenuItemLink';
-import { To } from 'history';
 
 export const DashboardMenuItem = (props: DashboardMenuItemProps) => {
     const basename = useBasename();

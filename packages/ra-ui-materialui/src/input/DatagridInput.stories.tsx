@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { Admin } from 'react-admin';
-import { Resource } from 'ra-core';
-import { createMemoryHistory } from 'history';
+import { Resource, TestMemoryRouter } from 'ra-core';
 
 import { Edit } from '../detail';
 import { SimpleForm } from '../form';
@@ -25,8 +24,6 @@ const dataProvider = {
         }),
     update: (_resource, params) => Promise.resolve(params),
 } as any;
-
-const history = createMemoryHistory({ initialEntries: ['/books/1'] });
 
 const BookEdit = () => {
     const choices = [
@@ -60,9 +57,11 @@ const BookEdit = () => {
 };
 
 export const Basic = () => (
-    <Admin dataProvider={dataProvider} history={history}>
-        <Resource name="books" edit={BookEdit} />
-    </Admin>
+    <TestMemoryRouter initialEntries={['/books/1']}>
+        <Admin dataProvider={dataProvider}>
+            <Resource name="books" edit={BookEdit} />
+        </Admin>
+    </TestMemoryRouter>
 );
 
 const authors = [
@@ -151,8 +150,10 @@ const BookEditWithReference = () => (
 );
 
 export const InsideReferenceInput = () => (
-    <Admin dataProvider={dataProviderWithAuthors} history={history}>
-        <Resource name="authors" />
-        <Resource name="books" edit={BookEditWithReference} />
-    </Admin>
+    <TestMemoryRouter initialEntries={['/books/1']}>
+        <Admin dataProvider={dataProviderWithAuthors}>
+            <Resource name="authors" />
+            <Resource name="books" edit={BookEditWithReference} />
+        </Admin>
+    </TestMemoryRouter>
 );

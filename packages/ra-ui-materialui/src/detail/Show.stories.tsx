@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { Admin } from 'react-admin';
-import { Resource, useRecordContext } from 'ra-core';
-import { createMemoryHistory } from 'history';
+import { Resource, useRecordContext, TestMemoryRouter } from 'ra-core';
 import { Box, Card, Stack } from '@mui/material';
 import { TextField } from '../field';
 import { Labeled } from '../Labeled';
@@ -26,8 +25,6 @@ const dataProvider = {
         }),
 } as any;
 
-const history = createMemoryHistory({ initialEntries: ['/books/1/show'] });
-
 const BookTitle = () => {
     const record = useRecordContext();
     return record ? <span>{record.title}</span> : null;
@@ -40,9 +37,11 @@ const PostShowBasic = () => (
 );
 
 export const Basic = () => (
-    <Admin dataProvider={dataProvider} history={history}>
-        <Resource name="books" show={PostShowBasic} />
-    </Admin>
+    <TestMemoryRouter initialEntries={['/books/1/show']}>
+        <Admin dataProvider={dataProvider}>
+            <Resource name="books" show={PostShowBasic} />
+        </Admin>
+    </TestMemoryRouter>
 );
 
 const PostShowWithFields = () => (
@@ -65,9 +64,11 @@ const PostShowWithFields = () => (
 );
 
 export const WithFields = () => (
-    <Admin dataProvider={dataProvider} history={history}>
-        <Resource name="books" show={PostShowWithFields} />
-    </Admin>
+    <TestMemoryRouter initialEntries={['/books/1/show']}>
+        <Admin dataProvider={dataProvider}>
+            <Resource name="books" show={PostShowWithFields} />
+        </Admin>
+    </TestMemoryRouter>
 );
 
 const PostShowWithCustomActions = () => (
@@ -83,9 +84,11 @@ const PostShowWithCustomActions = () => (
 );
 
 export const Actions = () => (
-    <Admin dataProvider={dataProvider} history={history}>
-        <Resource name="books" show={PostShowWithCustomActions} />
-    </Admin>
+    <TestMemoryRouter initialEntries={['/books/1/show']}>
+        <Admin dataProvider={dataProvider}>
+            <Resource name="books" show={PostShowWithCustomActions} />
+        </Admin>
+    </TestMemoryRouter>
 );
 
 const PostShowWithTitle = () => (
@@ -95,9 +98,11 @@ const PostShowWithTitle = () => (
 );
 
 export const Title = () => (
-    <Admin dataProvider={dataProvider} history={history}>
-        <Resource name="books" show={PostShowWithTitle} />
-    </Admin>
+    <TestMemoryRouter initialEntries={['/books/1/show']}>
+        <Admin dataProvider={dataProvider}>
+            <Resource name="books" show={PostShowWithTitle} />
+        </Admin>
+    </TestMemoryRouter>
 );
 
 const AsideComponent = () => <Card sx={{ padding: 2 }}>Aside</Card>;
@@ -109,9 +114,11 @@ const PostShowWithAside = () => (
 );
 
 export const Aside = () => (
-    <Admin dataProvider={dataProvider} history={history}>
-        <Resource name="books" show={PostShowWithAside} />
-    </Admin>
+    <TestMemoryRouter initialEntries={['/books/1/show']}>
+        <Admin dataProvider={dataProvider}>
+            <Resource name="books" show={PostShowWithAside} />
+        </Admin>
+    </TestMemoryRouter>
 );
 
 const CustomWrapper = ({ children }) => (
@@ -130,9 +137,11 @@ const PostShowWithComponent = () => (
 );
 
 export const Component = () => (
-    <Admin dataProvider={dataProvider} history={history}>
-        <Resource name="books" show={PostShowWithComponent} />
-    </Admin>
+    <TestMemoryRouter initialEntries={['/books/1/show']}>
+        <Admin dataProvider={dataProvider}>
+            <Resource name="books" show={PostShowWithComponent} />
+        </Admin>
+    </TestMemoryRouter>
 );
 
 const PostShowWithStyles = () => (
@@ -147,9 +156,11 @@ const PostShowWithStyles = () => (
 );
 
 export const SX = () => (
-    <Admin dataProvider={dataProvider} history={history}>
-        <Resource name="books" show={PostShowWithStyles} />
-    </Admin>
+    <TestMemoryRouter initialEntries={['/books/1/show']}>
+        <Admin dataProvider={dataProvider}>
+            <Resource name="books" show={PostShowWithStyles} />
+        </Admin>
+    </TestMemoryRouter>
 );
 
 const DefaultPostShow = () => (
@@ -177,13 +188,21 @@ const PostShowWithMeta = () => (
 );
 
 export const Meta = () => (
-    <Admin dataProvider={dataProviderWithLog} history={history}>
-        <Resource name="books" show={PostShowWithMeta} />
-    </Admin>
+    <TestMemoryRouter initialEntries={['/books/1/show']}>
+        <Admin dataProvider={dataProviderWithLog}>
+            <Resource name="books" show={PostShowWithMeta} />
+        </Admin>
+    </TestMemoryRouter>
 );
 
 export const Default = () => (
-    <Admin dataProvider={dataProvider} history={history}>
-        <Resource name="books" show={DefaultPostShow} edit={() => <span />} />
-    </Admin>
+    <TestMemoryRouter initialEntries={['/books/1/show']}>
+        <Admin dataProvider={dataProvider}>
+            <Resource
+                name="books"
+                show={DefaultPostShow}
+                edit={() => <span />}
+            />
+        </Admin>
+    </TestMemoryRouter>
 );

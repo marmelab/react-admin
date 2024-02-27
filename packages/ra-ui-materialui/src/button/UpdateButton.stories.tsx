@@ -2,9 +2,13 @@ import * as React from 'react';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
 import frenchMessages from 'ra-language-french';
-import { Resource, useNotify, withLifecycleCallbacks } from 'ra-core';
+import {
+    Resource,
+    useNotify,
+    withLifecycleCallbacks,
+    TestMemoryRouter,
+} from 'ra-core';
 import fakeRestDataProvider from 'ra-data-fakerest';
-import { createMemoryHistory } from 'history';
 
 import { UpdateButton } from './UpdateButton';
 import { AdminContext } from '../AdminContext';
@@ -99,15 +103,16 @@ export const InsideAList = () => (
 );
 
 export const Undoable = () => (
-    <AdminContext
-        dataProvider={getDataProvider()}
-        i18nProvider={i18nProvider}
-        history={createMemoryHistory({ initialEntries: ['/posts/1/show'] })}
-    >
-        <AdminUI>
-            <Resource name="posts" show={<PostShow />} />
-        </AdminUI>
-    </AdminContext>
+    <TestMemoryRouter initialEntries={['/posts/1/show']}>
+        <AdminContext
+            dataProvider={getDataProvider()}
+            i18nProvider={i18nProvider}
+        >
+            <AdminUI>
+                <Resource name="posts" show={<PostShow />} />
+            </AdminUI>
+        </AdminContext>
+    </TestMemoryRouter>
 );
 
 const PostShowPessimistic = () => (
@@ -132,15 +137,16 @@ const PostShowPessimistic = () => (
 );
 
 export const Pessimistic = () => (
-    <AdminContext
-        dataProvider={getDataProvider()}
-        i18nProvider={i18nProvider}
-        history={createMemoryHistory({ initialEntries: ['/posts/1/show'] })}
-    >
-        <AdminUI>
-            <Resource name="posts" show={<PostShowPessimistic />} />
-        </AdminUI>
-    </AdminContext>
+    <TestMemoryRouter initialEntries={['/posts/1/show']}>
+        <AdminContext
+            dataProvider={getDataProvider()}
+            i18nProvider={i18nProvider}
+        >
+            <AdminUI>
+                <Resource name="posts" show={<PostShowPessimistic />} />
+            </AdminUI>
+        </AdminContext>
+    </TestMemoryRouter>
 );
 
 const PostShowOptimistic = () => (
@@ -165,15 +171,16 @@ const PostShowOptimistic = () => (
 );
 
 export const Optimistic = () => (
-    <AdminContext
-        dataProvider={getDataProvider()}
-        i18nProvider={i18nProvider}
-        history={createMemoryHistory({ initialEntries: ['/posts/1/show'] })}
-    >
-        <AdminUI>
-            <Resource name="posts" show={<PostShowOptimistic />} />
-        </AdminUI>
-    </AdminContext>
+    <TestMemoryRouter initialEntries={['/posts/1/show']}>
+        <AdminContext
+            dataProvider={getDataProvider()}
+            i18nProvider={i18nProvider}
+        >
+            <AdminUI>
+                <Resource name="posts" show={<PostShowOptimistic />} />
+            </AdminUI>
+        </AdminContext>
+    </TestMemoryRouter>
 );
 
 const PostShowMutationOptions = () => {
@@ -206,15 +213,16 @@ const PostShowMutationOptions = () => {
 };
 
 export const MutationOptions = () => (
-    <AdminContext
-        dataProvider={getDataProvider()}
-        i18nProvider={i18nProvider}
-        history={createMemoryHistory({ initialEntries: ['/posts/1/show'] })}
-    >
-        <AdminUI>
-            <Resource name="posts" show={<PostShowMutationOptions />} />
-        </AdminUI>
-    </AdminContext>
+    <TestMemoryRouter initialEntries={['/posts/1/show']}>
+        <AdminContext
+            dataProvider={getDataProvider()}
+            i18nProvider={i18nProvider}
+        >
+            <AdminUI>
+                <Resource name="posts" show={<PostShowMutationOptions />} />
+            </AdminUI>
+        </AdminContext>
+    </TestMemoryRouter>
 );
 
 const PostShowSx = () => (
@@ -239,15 +247,16 @@ const PostShowSx = () => (
 );
 
 export const Sx = () => (
-    <AdminContext
-        dataProvider={getDataProvider()}
-        i18nProvider={i18nProvider}
-        history={createMemoryHistory({ initialEntries: ['/posts/1/show'] })}
-    >
-        <AdminUI>
-            <Resource name="posts" show={<PostShowSx />} />
-        </AdminUI>
-    </AdminContext>
+    <TestMemoryRouter initialEntries={['/posts/1/show']}>
+        <AdminContext
+            dataProvider={getDataProvider()}
+            i18nProvider={i18nProvider}
+        >
+            <AdminUI>
+                <Resource name="posts" show={<PostShowSx />} />
+            </AdminUI>
+        </AdminContext>
+    </TestMemoryRouter>
 );
 
 const PostShowSideEffects = () => {
@@ -280,13 +289,14 @@ const PostShowSideEffects = () => {
 };
 
 export const SideEffects = () => (
-    <AdminContext
-        dataProvider={getDataProvider()}
-        i18nProvider={i18nProvider}
-        history={createMemoryHistory({ initialEntries: ['/posts/1/show'] })}
-    >
-        <AdminUI>
-            <Resource name="posts" show={<PostShowSideEffects />} />
-        </AdminUI>
-    </AdminContext>
+    <TestMemoryRouter initialEntries={['/posts/1/show']}>
+        <AdminContext
+            dataProvider={getDataProvider()}
+            i18nProvider={i18nProvider}
+        >
+            <AdminUI>
+                <Resource name="posts" show={<PostShowSideEffects />} />
+            </AdminUI>
+        </AdminContext>
+    </TestMemoryRouter>
 );

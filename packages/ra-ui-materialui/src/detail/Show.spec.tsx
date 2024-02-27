@@ -1,15 +1,17 @@
 import * as React from 'react';
 import expect from 'expect';
+
 import {
     CoreAdminContext,
     ResourceContextProvider,
     useRecordContext,
     useShowContext,
     ResourceDefinitionContextProvider,
+    TestMemoryRouter,
 } from 'ra-core';
+
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
-import { createMemoryHistory } from 'history';
 import { Route, Routes } from 'react-router-dom';
 import { render, screen, waitFor } from '@testing-library/react';
 
@@ -37,24 +39,23 @@ describe('<Show />', () => {
             const record = useRecordContext();
             return record ? <span>{record.name}</span> : null;
         };
-        const history = createMemoryHistory({
-            initialEntries: ['/books/123/show'],
-        });
         render(
-            <CoreAdminContext dataProvider={dataProvider} history={history}>
-                <Routes>
-                    <Route
-                        path="/books/:id/show"
-                        element={
-                            <ResourceContextProvider value="books">
-                                <Show>
-                                    <BookName />
-                                </Show>
-                            </ResourceContextProvider>
-                        }
-                    />
-                </Routes>
-            </CoreAdminContext>
+            <TestMemoryRouter initialEntries={['/books/123/show']}>
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <Routes>
+                        <Route
+                            path="/books/:id/show"
+                            element={
+                                <ResourceContextProvider value="books">
+                                    <Show>
+                                        <BookName />
+                                    </Show>
+                                </ResourceContextProvider>
+                            }
+                        />
+                    </Routes>
+                </CoreAdminContext>
+            </TestMemoryRouter>
         );
         expect(screen.queryByText('War and Peace')).toBeNull(); // while loading
         await waitFor(() => {

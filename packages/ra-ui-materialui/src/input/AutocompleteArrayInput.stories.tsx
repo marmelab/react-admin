@@ -1,9 +1,14 @@
 import * as React from 'react';
 import { Admin } from 'react-admin';
-import { Resource, required, useCreate, useRecordContext } from 'ra-core';
+import {
+    Resource,
+    required,
+    useCreate,
+    useRecordContext,
+    TestMemoryRouter,
+} from 'ra-core';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
-import { createMemoryHistory } from 'history';
 import {
     Dialog,
     DialogContent,
@@ -138,8 +143,6 @@ const dataProvider = {
     update: (_resource, params) => Promise.resolve(params),
 } as any;
 
-const history = createMemoryHistory({ initialEntries: ['/books/1'] });
-
 const BookEdit = () => {
     const choices = [
         { id: 1, name: 'Leo Tolstoy' },
@@ -170,9 +173,11 @@ const BookEdit = () => {
 };
 
 export const InEdit = () => (
-    <Admin dataProvider={dataProvider} history={history}>
-        <Resource name="books" edit={BookEdit} />
-    </Admin>
+    <TestMemoryRouter initialEntries={['/books/1']}>
+        <Admin dataProvider={dataProvider}>
+            <Resource name="books" edit={BookEdit} />
+        </Admin>
+    </TestMemoryRouter>
 );
 
 const BookEditCustomText = () => {
@@ -205,9 +210,11 @@ const BookEditCustomText = () => {
 };
 
 export const CustomText = () => (
-    <Admin dataProvider={dataProvider} history={history}>
-        <Resource name="books" edit={BookEditCustomText} />
-    </Admin>
+    <TestMemoryRouter initialEntries={['/books/1']}>
+        <Admin dataProvider={dataProvider}>
+            <Resource name="books" edit={BookEditCustomText} />
+        </Admin>
+    </TestMemoryRouter>
 );
 
 const BookEditCustomTextFunction = () => {
@@ -240,9 +247,11 @@ const BookEditCustomTextFunction = () => {
 };
 
 export const CustomTextFunction = () => (
-    <Admin dataProvider={dataProvider} history={history}>
-        <Resource name="books" edit={BookEditCustomTextFunction} />
-    </Admin>
+    <TestMemoryRouter initialEntries={['/books/1']}>
+        <Admin dataProvider={dataProvider}>
+            <Resource name="books" edit={BookEditCustomTextFunction} />
+        </Admin>
+    </TestMemoryRouter>
 );
 
 const CustomOption = () => {
@@ -298,9 +307,11 @@ const BookEditCustomOptions = () => {
 };
 
 export const CustomOptions = () => (
-    <Admin dataProvider={dataProvider} history={history}>
-        <Resource name="books" edit={BookEditCustomOptions} />
-    </Admin>
+    <TestMemoryRouter initialEntries={['/books/1']}>
+        <Admin dataProvider={dataProvider}>
+            <Resource name="books" edit={BookEditCustomOptions} />
+        </Admin>
+    </TestMemoryRouter>
 );
 
 const choicesForCreationSupport = [
@@ -345,9 +356,11 @@ const BookEditWithCreationSupport = () => (
 );
 
 export const CreationSupport = () => (
-    <Admin dataProvider={dataProvider} history={history}>
-        <Resource name="books" edit={BookEditWithCreationSupport} />
-    </Admin>
+    <TestMemoryRouter initialEntries={['/books/1']}>
+        <Admin dataProvider={dataProvider}>
+            <Resource name="books" edit={BookEditWithCreationSupport} />
+        </Admin>
+    </TestMemoryRouter>
 );
 
 const authors = [
@@ -434,10 +447,12 @@ const BookEditWithReference = () => (
 );
 
 export const InsideReferenceArrayInput = () => (
-    <Admin dataProvider={dataProviderWithAuthors} history={history}>
-        <Resource name="authors" />
-        <Resource name="books" edit={BookEditWithReference} />
-    </Admin>
+    <TestMemoryRouter initialEntries={['/books/1']}>
+        <Admin dataProvider={dataProviderWithAuthors}>
+            <Resource name="authors" />
+            <Resource name="books" edit={BookEditWithReference} />
+        </Admin>
+    </TestMemoryRouter>
 );
 
 const LanguageChangingAuthorInput = ({ onChange }) => {
@@ -464,34 +479,33 @@ const LanguageChangingAuthorInput = ({ onChange }) => {
 export const InsideReferenceArrayInputOnChange = ({
     onChange = (value, records) => console.log({ value, records }),
 }: Pick<AutocompleteArrayInputProps, 'onChange'>) => (
-    <Admin
-        dataProvider={dataProviderWithAuthors}
-        history={createMemoryHistory({ initialEntries: ['/books/create'] })}
-    >
-        <Resource name="authors" />
-        <Resource
-            name="books"
-            create={() => (
-                <Create
-                    mutationOptions={{
-                        onSuccess: data => {
-                            console.log(data);
-                        },
-                    }}
-                    redirect={false}
-                >
-                    <SimpleForm>
-                        <LanguageChangingAuthorInput onChange={onChange} />
-                        <ArrayInput source="language" label="Languages">
-                            <SimpleFormIterator>
-                                <TextInput source="." label="Language" />
-                            </SimpleFormIterator>
-                        </ArrayInput>
-                    </SimpleForm>
-                </Create>
-            )}
-        />
-    </Admin>
+    <TestMemoryRouter initialEntries={['/books/create']}>
+        <Admin dataProvider={dataProviderWithAuthors}>
+            <Resource name="authors" />
+            <Resource
+                name="books"
+                create={() => (
+                    <Create
+                        mutationOptions={{
+                            onSuccess: data => {
+                                console.log(data);
+                            },
+                        }}
+                        redirect={false}
+                    >
+                        <SimpleForm>
+                            <LanguageChangingAuthorInput onChange={onChange} />
+                            <ArrayInput source="language" label="Languages">
+                                <SimpleFormIterator>
+                                    <TextInput source="." label="Language" />
+                                </SimpleFormIterator>
+                            </ArrayInput>
+                        </SimpleForm>
+                    </Create>
+                )}
+            />
+        </Admin>
+    </TestMemoryRouter>
 );
 
 const CreateAuthor = () => {
@@ -572,8 +586,13 @@ const BookEditWithReferenceAndCreationSupport = () => (
 );
 
 export const InsideReferenceArrayInputWithCreationSupport = () => (
-    <Admin dataProvider={dataProviderWithAuthors} history={history}>
-        <Resource name="authors" />
-        <Resource name="books" edit={BookEditWithReferenceAndCreationSupport} />
-    </Admin>
+    <TestMemoryRouter initialEntries={['/books/1']}>
+        <Admin dataProvider={dataProviderWithAuthors}>
+            <Resource name="authors" />
+            <Resource
+                name="books"
+                edit={BookEditWithReferenceAndCreationSupport}
+            />
+        </Admin>
+    </TestMemoryRouter>
 );

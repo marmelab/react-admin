@@ -6,12 +6,15 @@ import {
     waitFor,
 } from '@testing-library/react';
 import { useLocation } from 'react-router-dom';
-import { ResourceDefinitionContextProvider, useRecordContext } from 'ra-core';
+import {
+    ResourceDefinitionContextProvider,
+    useRecordContext,
+    TestMemoryRouter,
+} from 'ra-core';
 
 import { AdminContext } from '../../AdminContext';
 import DatagridRow from './DatagridRow';
 import DatagridContextProvider from './DatagridContextProvider';
-import { createMemoryHistory } from 'history';
 
 const TitleField = (): JSX.Element => {
     const record = useRecordContext();
@@ -24,13 +27,14 @@ const ExpandPanel = () => <span>expanded</span>;
 const render = element =>
     baseRender(element, {
         wrapper: ({ children }) => {
-            const history = createMemoryHistory();
             return (
-                <AdminContext history={history}>
-                    <table>
-                        <tbody>{children}</tbody>
-                    </table>
-                </AdminContext>
+                <TestMemoryRouter>
+                    <AdminContext>
+                        <table>
+                            <tbody>{children}</tbody>
+                        </table>
+                    </AdminContext>
+                </TestMemoryRouter>
             );
         },
     });
