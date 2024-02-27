@@ -3,12 +3,12 @@ import { useEffect } from 'react';
 import expect from 'expect';
 import { render, screen, waitFor } from '@testing-library/react';
 import { Routes, Route, useLocation } from 'react-router-dom';
-import { createMemoryHistory } from 'history';
-
 import { CoreAdminContext } from '../core';
+
 import { RedirectionSideEffect, useRedirect } from './useRedirect';
 import { testDataProvider } from '../dataProvider';
 import { Identifier, RaRecord } from '../types';
+import { TestMemoryRouter } from '.';
 
 const Redirect = ({
     redirectTo,
@@ -48,18 +48,17 @@ const Component = () => {
 describe('useRedirect', () => {
     it('should redirect to the path with query string', async () => {
         render(
-            <CoreAdminContext
-                dataProvider={testDataProvider()}
-                history={createMemoryHistory()}
-            >
-                <Routes>
-                    <Route
-                        path="/"
-                        element={<Redirect redirectTo="/foo?bar=baz" />}
-                    />
-                    <Route path="foo" element={<Component />} />
-                </Routes>
-            </CoreAdminContext>
+            <TestMemoryRouter>
+                <CoreAdminContext dataProvider={testDataProvider()}>
+                    <Routes>
+                        <Route
+                            path="/"
+                            element={<Redirect redirectTo="/foo?bar=baz" />}
+                        />
+                        <Route path="foo" element={<Component />} />
+                    </Routes>
+                </CoreAdminContext>
+            </TestMemoryRouter>
         );
         await waitFor(() => {
             expect(screen.queryByDisplayValue('?bar=baz')).not.toBeNull();
@@ -67,23 +66,22 @@ describe('useRedirect', () => {
     });
     it('should redirect to the path with state', async () => {
         render(
-            <CoreAdminContext
-                dataProvider={testDataProvider()}
-                history={createMemoryHistory()}
-            >
-                <Routes>
-                    <Route
-                        path="/"
-                        element={
-                            <Redirect
-                                redirectTo="/foo"
-                                state={{ bar: 'baz' }}
-                            />
-                        }
-                    />
-                    <Route path="/foo" element={<Component />} />
-                </Routes>
-            </CoreAdminContext>
+            <TestMemoryRouter>
+                <CoreAdminContext dataProvider={testDataProvider()}>
+                    <Routes>
+                        <Route
+                            path="/"
+                            element={
+                                <Redirect
+                                    redirectTo="/foo"
+                                    state={{ bar: 'baz' }}
+                                />
+                            }
+                        />
+                        <Route path="/foo" element={<Component />} />
+                    </Routes>
+                </CoreAdminContext>
+            </TestMemoryRouter>
         );
         await waitFor(() => {
             expect(
@@ -101,12 +99,11 @@ describe('useRedirect', () => {
         // @ts-ignore
         window.location = { href: '' };
         render(
-            <CoreAdminContext
-                dataProvider={testDataProvider()}
-                history={createMemoryHistory()}
-            >
-                <Redirect redirectTo="https://google.com" />
-            </CoreAdminContext>
+            <TestMemoryRouter>
+                <CoreAdminContext dataProvider={testDataProvider()}>
+                    <Redirect redirectTo="https://google.com" />
+                </CoreAdminContext>
+            </TestMemoryRouter>
         );
         expect(window.location.href).toBe('https://google.com');
         window.location = oldLocation;

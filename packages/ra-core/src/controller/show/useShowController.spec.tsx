@@ -2,11 +2,11 @@ import * as React from 'react';
 import expect from 'expect';
 import { render, screen, waitFor } from '@testing-library/react';
 import { Route, Routes } from 'react-router';
-import { createMemoryHistory } from 'history';
-
 import { ShowController } from './ShowController';
+
 import { CoreAdminContext } from '../../core';
 import { DataProvider } from '../../types';
+import { TestMemoryRouter } from '../../routing';
 
 describe('useShowController', () => {
     const defaultProps = {
@@ -43,25 +43,22 @@ describe('useShowController', () => {
             );
         const dataProvider = ({ getOne } as unknown) as DataProvider;
         render(
-            <CoreAdminContext
-                dataProvider={dataProvider}
-                history={createMemoryHistory({
-                    initialEntries: ['/posts/test%3F'],
-                })}
-            >
-                <Routes>
-                    <Route
-                        path="posts/:id"
-                        element={
-                            <ShowController resource="posts">
-                                {({ record }) => (
-                                    <div>{record && record.title}</div>
-                                )}
-                            </ShowController>
-                        }
-                    />
-                </Routes>
-            </CoreAdminContext>
+            <TestMemoryRouter>
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <Routes>
+                        <Route
+                            path="posts/:id"
+                            element={
+                                <ShowController resource="posts">
+                                    {({ record }) => (
+                                        <div>{record && record.title}</div>
+                                    )}
+                                </ShowController>
+                            }
+                        />
+                    </Routes>
+                </CoreAdminContext>
+            </TestMemoryRouter>
         );
         await waitFor(() => {
             expect(getOne).toHaveBeenCalledWith('posts', { id: 'test?' });
@@ -79,25 +76,22 @@ describe('useShowController', () => {
             );
         const dataProvider = ({ getOne } as unknown) as DataProvider;
         render(
-            <CoreAdminContext
-                dataProvider={dataProvider}
-                history={createMemoryHistory({
-                    initialEntries: ['/posts/test%3F'],
-                })}
-            >
-                <Routes>
-                    <Route
-                        path="posts/:id"
-                        element={
-                            <ShowController id={0} resource="posts">
-                                {({ record }) => (
-                                    <div>{record && record.title}</div>
-                                )}
-                            </ShowController>
-                        }
-                    />
-                </Routes>
-            </CoreAdminContext>
+            <TestMemoryRouter>
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <Routes>
+                        <Route
+                            path="posts/:id"
+                            element={
+                                <ShowController id={0} resource="posts">
+                                    {({ record }) => (
+                                        <div>{record && record.title}</div>
+                                    )}
+                                </ShowController>
+                            }
+                        />
+                    </Routes>
+                </CoreAdminContext>
+            </TestMemoryRouter>
         );
         await waitFor(() => {
             expect(getOne).toHaveBeenCalledWith('posts', { id: 0 });
@@ -115,26 +109,23 @@ describe('useShowController', () => {
         const onError = jest.fn();
         const dataProvider = ({ getOne } as unknown) as DataProvider;
         render(
-            <CoreAdminContext
-                dataProvider={dataProvider}
-                history={createMemoryHistory({
-                    initialEntries: ['/posts/1'],
-                })}
-            >
-                <Routes>
-                    <Route
-                        path="posts/:id"
-                        element={
-                            <ShowController
-                                resource="posts"
-                                queryOptions={{ onError }}
-                            >
-                                {() => <div />}
-                            </ShowController>
-                        }
-                    />
-                </Routes>
-            </CoreAdminContext>
+            <TestMemoryRouter>
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <Routes>
+                        <Route
+                            path="posts/:id"
+                            element={
+                                <ShowController
+                                    resource="posts"
+                                    queryOptions={{ onError }}
+                                >
+                                    {() => <div />}
+                                </ShowController>
+                            }
+                        />
+                    </Routes>
+                </CoreAdminContext>
+            </TestMemoryRouter>
         );
         await waitFor(() => {
             expect(getOne).toHaveBeenCalled();
@@ -152,26 +143,23 @@ describe('useShowController', () => {
 
         const dataProvider = ({ getOne } as unknown) as DataProvider;
         render(
-            <CoreAdminContext
-                dataProvider={dataProvider}
-                history={createMemoryHistory({
-                    initialEntries: ['/posts/1'],
-                })}
-            >
-                <Routes>
-                    <Route
-                        path="posts/:id"
-                        element={
-                            <ShowController
-                                resource="posts"
-                                queryOptions={{ meta: { foo: 'bar' } }}
-                            >
-                                {() => <div />}
-                            </ShowController>
-                        }
-                    />
-                </Routes>
-            </CoreAdminContext>
+            <TestMemoryRouter>
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <Routes>
+                        <Route
+                            path="posts/:id"
+                            element={
+                                <ShowController
+                                    resource="posts"
+                                    queryOptions={{ meta: { foo: 'bar' } }}
+                                >
+                                    {() => <div />}
+                                </ShowController>
+                            }
+                        />
+                    </Routes>
+                </CoreAdminContext>
+            </TestMemoryRouter>
         );
         await waitFor(() => {
             expect(getOne).toHaveBeenCalledWith('posts', {

@@ -2,15 +2,15 @@ import * as React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import expect from 'expect';
 import { Route } from 'react-router-dom';
-import { createMemoryHistory } from 'history';
-
 import { useResourceDefinitions } from './useResourceDefinitions';
+
 import { CoreAdminContext } from './CoreAdminContext';
 import { CoreAdminRoutes } from './CoreAdminRoutes';
 import { Resource } from './Resource';
 import { CustomRoutes } from './CustomRoutes';
 import { CoreLayoutProps } from '../types';
 import { AuthProvider, ResourceProps } from '..';
+import { TestMemoryRouter } from '../routing';
 
 const ResourceDefinitionsTestComponent = () => {
     const definitions = useResourceDefinitions();
@@ -37,55 +37,60 @@ const Loading = () => <>Loading</>;
 const Ready = () => <>Ready</>;
 
 const TestedComponent = ({ role }) => {
-    const history = createMemoryHistory();
-
     return (
-        <CoreAdminContext history={history}>
-            <CoreAdminRoutes
-                layout={MyLayout}
-                catchAll={CatchAll}
-                loading={Loading}
-            >
-                <Resource name="posts" />
-                <Resource name="comments" />
-                {() =>
-                    role === 'admin'
-                        ? [<Resource name="user" />, <Resource name="admin" />]
-                        : role === 'user'
-                        ? [<Resource name="user" />]
-                        : []
-                }
-            </CoreAdminRoutes>
-        </CoreAdminContext>
+        <TestMemoryRouter>
+            <CoreAdminContext>
+                <CoreAdminRoutes
+                    layout={MyLayout}
+                    catchAll={CatchAll}
+                    loading={Loading}
+                >
+                    <Resource name="posts" />
+                    <Resource name="comments" />
+                    {() =>
+                        role === 'admin'
+                            ? [
+                                  <Resource name="user" />,
+                                  <Resource name="admin" />,
+                              ]
+                            : role === 'user'
+                            ? [<Resource name="user" />]
+                            : []
+                    }
+                </CoreAdminRoutes>
+            </CoreAdminContext>
+        </TestMemoryRouter>
     );
 };
 
 const TestedComponentReturningNull = ({ role }) => {
-    const history = createMemoryHistory();
-
     return (
-        <CoreAdminContext history={history}>
-            <CoreAdminRoutes
-                layout={MyLayout}
-                catchAll={CatchAll}
-                loading={Loading}
-            >
-                <Resource name="posts" />
-                <Resource name="comments" />
-                {() =>
-                    role === 'admin'
-                        ? [<Resource name="user" />, <Resource name="admin" />]
-                        : role === 'user'
-                        ? [<Resource name="user" />]
-                        : null
-                }
-            </CoreAdminRoutes>
-        </CoreAdminContext>
+        <TestMemoryRouter>
+            <CoreAdminContext>
+                <CoreAdminRoutes
+                    layout={MyLayout}
+                    catchAll={CatchAll}
+                    loading={Loading}
+                >
+                    <Resource name="posts" />
+                    <Resource name="comments" />
+                    {() =>
+                        role === 'admin'
+                            ? [
+                                  <Resource name="user" />,
+                                  <Resource name="admin" />,
+                              ]
+                            : role === 'user'
+                            ? [<Resource name="user" />]
+                            : null
+                    }
+                </CoreAdminRoutes>
+            </CoreAdminContext>
+        </TestMemoryRouter>
     );
 };
 
 const TestedComponentWithAuthProvider = ({ callback }) => {
-    const history = createMemoryHistory();
     const authProvider = {
         login: () => Promise.resolve(),
         logout: () => Promise.resolve(),
@@ -95,17 +100,19 @@ const TestedComponentWithAuthProvider = ({ callback }) => {
     };
 
     return (
-        <CoreAdminContext history={history} authProvider={authProvider}>
-            <CoreAdminRoutes
-                layout={MyLayout}
-                catchAll={CatchAll}
-                loading={Loading}
-            >
-                <Resource name="posts" />
-                <Resource name="comments" />
-                {callback}
-            </CoreAdminRoutes>
-        </CoreAdminContext>
+        <TestMemoryRouter>
+            <CoreAdminContext authProvider={authProvider}>
+                <CoreAdminRoutes
+                    layout={MyLayout}
+                    catchAll={CatchAll}
+                    loading={Loading}
+                >
+                    <Resource name="posts" />
+                    <Resource name="comments" />
+                    {callback}
+                </CoreAdminRoutes>
+            </CoreAdminContext>
+        </TestMemoryRouter>
     );
 };
 
@@ -127,7 +134,6 @@ ResourceWithPermissions.registerResource = (
 });
 
 const TestedComponentWithPermissions = () => {
-    const history = createMemoryHistory();
     const authProvider: AuthProvider = {
         login: () => Promise.resolve(),
         logout: () => Promise.resolve(),
@@ -157,39 +163,41 @@ const TestedComponentWithPermissions = () => {
     };
 
     return (
-        <CoreAdminContext authProvider={authProvider} history={history}>
-            <CoreAdminRoutes
-                layout={MyLayout}
-                catchAll={CatchAll}
-                loading={Loading}
-            >
-                <ResourceWithPermissions
-                    name="posts"
-                    list={<div />}
-                    create={<div />}
-                    edit={<div />}
-                    show={<div />}
-                />
-                <ResourceWithPermissions
-                    name="comments"
-                    list={<div />}
-                    create={<div />}
-                    edit={<div />}
-                    show={<div />}
-                />
-                <ResourceWithPermissions
-                    name="users"
-                    list={<div />}
-                    create={<div />}
-                    edit={<div />}
-                    show={<div />}
-                />
-            </CoreAdminRoutes>
-        </CoreAdminContext>
+        <TestMemoryRouter>
+            <CoreAdminContext authProvider={authProvider}>
+                <CoreAdminRoutes
+                    layout={MyLayout}
+                    catchAll={CatchAll}
+                    loading={Loading}
+                >
+                    <ResourceWithPermissions
+                        name="posts"
+                        list={<div />}
+                        create={<div />}
+                        edit={<div />}
+                        show={<div />}
+                    />
+                    <ResourceWithPermissions
+                        name="comments"
+                        list={<div />}
+                        create={<div />}
+                        edit={<div />}
+                        show={<div />}
+                    />
+                    <ResourceWithPermissions
+                        name="users"
+                        list={<div />}
+                        create={<div />}
+                        edit={<div />}
+                        show={<div />}
+                    />
+                </CoreAdminRoutes>
+            </CoreAdminContext>
+        </TestMemoryRouter>
     );
 };
 
-const TestedComponentWithOnlyLazyCustomRoutes = ({ history }) => {
+const TestedComponentWithOnlyLazyCustomRoutes = ({ navigateCallback }) => {
     const [
         lazyRoutes,
         setLazyRoutes,
@@ -209,40 +217,42 @@ const TestedComponentWithOnlyLazyCustomRoutes = ({ history }) => {
     }, [setLazyRoutes]);
 
     return (
-        <CoreAdminContext history={history}>
-            <CoreAdminRoutes
-                layout={MyLayout}
-                catchAll={CatchAll}
-                loading={Loading}
-                ready={Ready}
-            >
-                {lazyRoutes}
-            </CoreAdminRoutes>
-        </CoreAdminContext>
+        <TestMemoryRouter navigateCallback={navigateCallback}>
+            <CoreAdminContext>
+                <CoreAdminRoutes
+                    layout={MyLayout}
+                    catchAll={CatchAll}
+                    loading={Loading}
+                    ready={Ready}
+                >
+                    {lazyRoutes}
+                </CoreAdminRoutes>
+            </CoreAdminContext>
+        </TestMemoryRouter>
     );
 };
 
 const TestedComponentWithForcedRoutes = () => {
-    const history = createMemoryHistory();
-
     return (
-        <CoreAdminContext history={history}>
-            <CoreAdminRoutes
-                layout={MyLayout}
-                catchAll={CatchAll}
-                loading={Loading}
-            >
-                <Resource
-                    name="posts"
-                    list={<div />}
-                    hasCreate
-                    hasEdit
-                    hasShow
-                />
-                <Resource name="comments" list={<div />} />
-                {() => [<Resource name="user" list={<div />} hasEdit />]}
-            </CoreAdminRoutes>
-        </CoreAdminContext>
+        <TestMemoryRouter>
+            <CoreAdminContext>
+                <CoreAdminRoutes
+                    layout={MyLayout}
+                    catchAll={CatchAll}
+                    loading={Loading}
+                >
+                    <Resource
+                        name="posts"
+                        list={<div />}
+                        hasCreate
+                        hasEdit
+                        hasShow
+                    />
+                    <Resource name="comments" list={<div />} />
+                    {() => [<Resource name="user" list={<div />} hasEdit />]}
+                </CoreAdminRoutes>
+            </CoreAdminContext>
+        </TestMemoryRouter>
     );
 };
 
@@ -367,13 +377,19 @@ describe('useConfigureAdminRouterFromChildren', () => {
         ).toBeNull();
     });
     it('should allow dynamically loaded custom routes without any resources', async () => {
-        const history = createMemoryHistory();
-        render(<TestedComponentWithOnlyLazyCustomRoutes history={history} />);
+        let navigate;
+        render(
+            <TestedComponentWithOnlyLazyCustomRoutes
+                navigateCallback={n => {
+                    navigate = n;
+                }}
+            />
+        );
         expect(screen.queryByText('Ready')).not.toBeNull();
 
         await new Promise(resolve => setTimeout(resolve, 1010));
         expect(screen.queryByText('Ready')).toBeNull();
-        history.push('/foo');
+        navigate('/foo');
         await screen.findByText('Foo');
     });
     it('should support forcing hasEdit hasCreate or hasShow', async () => {

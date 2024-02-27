@@ -9,9 +9,8 @@ import {
 } from '@testing-library/react';
 // TODO: we shouldn't import mui components in ra-core
 import { TextField } from '@mui/material';
-import { createMemoryHistory } from 'history';
-
 import { testDataProvider } from '../../dataProvider';
+
 import { memoryStore } from '../../store';
 import { ListController } from './ListController';
 import {
@@ -19,6 +18,7 @@ import {
     sanitizeListRestProps,
 } from './useListController';
 import { CoreAdminContext } from '../../core';
+import { TestMemoryRouter } from '../../routing';
 
 describe('useListController', () => {
     const defaultProps = {
@@ -164,23 +164,23 @@ describe('useListController', () => {
                 children: childFunction,
             };
 
-            const history = createMemoryHistory({
-                initialEntries: [
-                    `/posts?filter=${JSON.stringify({
-                        q: 'hello',
-                    })}&displayedFilters=${JSON.stringify({ q: true })}`,
-                ],
-            });
             const store = memoryStore();
             const storeSpy = jest.spyOn(store, 'setItem');
             render(
-                <CoreAdminContext
-                    dataProvider={testDataProvider()}
-                    history={history}
-                    store={store}
+                <TestMemoryRouter
+                    initialEntries={[
+                        `/posts?filter=${JSON.stringify({
+                            q: 'hello',
+                        })}&displayedFilters=${JSON.stringify({ q: true })}`,
+                    ]}
                 >
-                    <ListController {...props} />
-                </CoreAdminContext>
+                    <CoreAdminContext
+                        dataProvider={testDataProvider()}
+                        store={store}
+                    >
+                        <ListController {...props} />
+                    </CoreAdminContext>
+                </TestMemoryRouter>
             );
             expect(storeSpy).toHaveBeenCalledTimes(1);
 
@@ -215,14 +215,13 @@ describe('useListController', () => {
                     Promise.resolve({ data: [], total: 0 })
                 );
             const dataProvider = testDataProvider({ getList });
-            const history = createMemoryHistory({
-                initialEntries: [`/posts`],
-            });
 
             const { rerender } = render(
-                <CoreAdminContext dataProvider={dataProvider} history={history}>
-                    <ListController {...props} filter={{ foo: 1 }} />
-                </CoreAdminContext>
+                <TestMemoryRouter initialEntries={[`/posts`]}>
+                    <CoreAdminContext dataProvider={dataProvider}>
+                        <ListController {...props} filter={{ foo: 1 }} />
+                    </CoreAdminContext>
+                </TestMemoryRouter>
             );
 
             // Check that the permanent filter was used in the query
@@ -242,9 +241,11 @@ describe('useListController', () => {
             );
 
             rerender(
-                <CoreAdminContext dataProvider={dataProvider} history={history}>
-                    <ListController {...props} filter={{ foo: 2 }} />
-                </CoreAdminContext>
+                <TestMemoryRouter initialEntries={[`/posts`]}>
+                    <CoreAdminContext dataProvider={dataProvider}>
+                        <ListController {...props} filter={{ foo: 2 }} />
+                    </CoreAdminContext>
+                </TestMemoryRouter>
             );
 
             // Check that the permanent filter was used in the query

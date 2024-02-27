@@ -124,11 +124,9 @@ const NoStorePosts = (
     <OrderedPostList storeKey={false} sort={{ field: 'votes', order: 'ASC' }} />
 );
 
-export const ListsUsingSameResource = (argsOrProps, context) => {
-    const history = context?.history || argsOrProps.history;
+export const ListsUsingSameResource = () => {
     return (
         <CoreAdminContext
-            history={history}
             store={localStorageStore()}
             dataProvider={dataProvider}
         >
@@ -160,11 +158,9 @@ const NoStoreLayout = (props: CoreLayoutProps) => {
         </div>
     );
 };
-export const ListsWithoutStore = (argsOrProps, context) => {
-    const history = context?.history || argsOrProps.history;
+export const ListsWithoutStore = () => {
     return (
         <CoreAdminContext
-            history={history}
             store={localStorageStore()}
             dataProvider={dataProvider}
         >
