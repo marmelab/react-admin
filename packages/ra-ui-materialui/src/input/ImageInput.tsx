@@ -6,9 +6,6 @@ export const ImageInput = (props: ImageInputProps) => (
     <StyledFileInput
         labelMultiple="ra.input.image.upload_several"
         labelSingle="ra.input.image.upload_single"
-        sx={{
-            cursor: props.disabled || props.readOnly ? 'default' : 'pointer',
-        }}
         {...props}
     />
 );
