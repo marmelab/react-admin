@@ -95,11 +95,20 @@ const PostList = () => (
 );
 
 export const InsideAList = () => (
-    <AdminContext dataProvider={getDataProvider()} i18nProvider={i18nProvider}>
-        <AdminUI>
-            <Resource name="posts" list={<PostList />} show={<PostShow />} />
-        </AdminUI>
-    </AdminContext>
+    <TestMemoryRouter>
+        <AdminContext
+            dataProvider={getDataProvider()}
+            i18nProvider={i18nProvider}
+        >
+            <AdminUI>
+                <Resource
+                    name="posts"
+                    list={<PostList />}
+                    show={<PostShow />}
+                />
+            </AdminUI>
+        </AdminContext>
+    </TestMemoryRouter>
 );
 
 export const Undoable = () => (

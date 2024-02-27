@@ -4,6 +4,7 @@ import {
     required,
     useGetManyReference,
     useRecordContext,
+    TestMemoryRouter,
 } from 'ra-core';
 import {
     AdminContext,
@@ -15,7 +16,7 @@ import {
 } from 'ra-ui-materialui';
 import { useWatch } from 'react-hook-form';
 import fakeRestDataProvider from 'ra-data-fakerest';
-import { MemoryRouter, Routes, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import Mention from '@tiptap/extension-mention';
 import { ReactRenderer } from '@tiptap/react';
 import tippy, { Instance as TippyInstance } from 'tippy.js';
@@ -216,7 +217,7 @@ const MyRichTextInput = (props: RichTextInputProps) => {
 };
 
 export const CustomOptions = () => (
-    <MemoryRouter initialEntries={['/posts/1']}>
+    <TestMemoryRouter initialEntries={['/posts/1']}>
         <AdminContext dataProvider={dataProvider}>
             <Routes>
                 <Route
@@ -238,7 +239,7 @@ export const CustomOptions = () => (
                 />
             </Routes>
         </AdminContext>
-    </MemoryRouter>
+    </TestMemoryRouter>
 );
 
 const MentionList = React.forwardRef<

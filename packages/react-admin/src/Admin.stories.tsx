@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { MemoryRouter, Routes, Route, Link } from 'react-router-dom';
+import { Routes, Route, Link } from 'react-router-dom';
 
 import { Admin } from './Admin';
-import { Resource, testDataProvider } from 'ra-core';
+import { Resource, testDataProvider, TestMemoryRouter } from 'ra-core';
 
 export default {
     title: 'react-admin/Admin',
@@ -19,16 +19,16 @@ export const Basic = () => (
 );
 
 export const InsideRouter = () => (
-    <MemoryRouter>
+    <TestMemoryRouter>
         <Admin dataProvider={testDataProvider()}>
             <Resource name="posts" list={PostList} />
             <Resource name="comments" list={CommentList} />
         </Admin>
-    </MemoryRouter>
+    </TestMemoryRouter>
 );
 
 export const SubPath = () => (
-    <MemoryRouter>
+    <TestMemoryRouter>
         <Routes>
             <Route
                 path="/"
@@ -51,5 +51,5 @@ export const SubPath = () => (
                 }
             />
         </Routes>
-    </MemoryRouter>
+    </TestMemoryRouter>
 );

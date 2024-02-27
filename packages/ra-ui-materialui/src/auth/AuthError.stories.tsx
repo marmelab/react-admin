@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { I18nContextProvider } from 'ra-core';
+import { I18nContextProvider, TestMemoryRouter } from 'ra-core';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
 import { AuthError } from './AuthError';
@@ -9,13 +9,15 @@ import { createTheme, ThemeProvider } from '@mui/material';
 export default { title: 'ra-ui-materialui/auth/AuthError' };
 
 const Wrapper = ({ children }) => (
-    <ThemeProvider theme={createTheme(defaultTheme)}>
-        <I18nContextProvider
-            value={polyglotI18nProvider(() => englishMessages)}
-        >
-            {children}
-        </I18nContextProvider>
-    </ThemeProvider>
+    <TestMemoryRouter>
+        <ThemeProvider theme={createTheme(defaultTheme)}>
+            <I18nContextProvider
+                value={polyglotI18nProvider(() => englishMessages)}
+            >
+                {children}
+            </I18nContextProvider>
+        </ThemeProvider>
+    </TestMemoryRouter>
 );
 
 export const Default = () => (
