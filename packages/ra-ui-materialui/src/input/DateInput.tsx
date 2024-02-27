@@ -71,7 +71,6 @@ export const DateInput = ({
             {...field}
             className={clsx('ra-input', `ra-input-${source}`, className)}
             type="date"
-            size="small"
             variant={variant}
             margin={margin}
             error={(isTouched || isSubmitted) && invalid}

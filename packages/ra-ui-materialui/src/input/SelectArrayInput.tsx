@@ -110,7 +110,7 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
         optionValue = 'id',
         parse,
         resource: resourceProp,
-        size = 'small',
+        size,
         source: sourceProp,
         translateChoice,
         validate,
@@ -257,8 +257,8 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
     const finalValue = Array.isArray(field.value ?? [])
         ? field.value
         : field.value
-        ? [field.value]
-        : [];
+          ? [field.value]
+          : [];
 
     const outlinedInputProps =
         variant === 'outlined'
@@ -453,7 +453,6 @@ const StyledFormControl = styled(FormControl, {
     name: PREFIX,
     overridesResolver: (props, styles) => styles.root,
 })(({ theme }) => ({
-    minWidth: theme.spacing(20),
     [theme.breakpoints.down('sm')]: {
         width: '100%',
     },

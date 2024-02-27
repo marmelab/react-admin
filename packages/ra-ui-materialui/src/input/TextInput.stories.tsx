@@ -12,7 +12,7 @@ import { FormInspector } from './common';
 
 export default { title: 'ra-ui-materialui/input/TextInput' };
 
-export const Wrapper = ({ children }) => (
+const Wrapper = ({ children }) => (
     <AdminContext defaultTheme="light">
         <Create
             resource="posts"
@@ -158,13 +158,8 @@ export const ExtraProps = () => (
 );
 
 const FormStateInspector = () => {
-    const {
-        touchedFields,
-        isDirty,
-        dirtyFields,
-        isValid,
-        errors,
-    } = useFormState();
+    const { touchedFields, isDirty, dirtyFields, isValid, errors } =
+        useFormState();
     return (
         <div>
             form state:&nbsp;

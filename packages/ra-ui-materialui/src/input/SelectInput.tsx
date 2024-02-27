@@ -210,9 +210,10 @@ export const SelectInput = (props: SelectInputProps) => {
             : emptyText;
     }, [emptyText, translate]);
 
-    const renderMenuItemOption = useCallback(choice => getChoiceText(choice), [
-        getChoiceText,
-    ]);
+    const renderMenuItemOption = useCallback(
+        choice => getChoiceText(choice),
+        [getChoiceText]
+    );
 
     const handleChange = useCallback(
         async (eventOrChoice: ChangeEvent<HTMLInputElement> | RaRecord) => {
@@ -417,9 +418,8 @@ const PREFIX = 'RaSelectInput';
 const StyledResettableTextField = styled(ResettableTextField, {
     name: PREFIX,
     overridesResolver: (props, styles) => styles.root,
-})(({ theme }) => ({
+})(() => ({
     ...ResettableTextFieldStyles,
-    minWidth: theme.spacing(20),
     '& .MuiFilledInput-root': { paddingRight: 0 },
 }));
 

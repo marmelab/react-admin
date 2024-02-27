@@ -34,8 +34,6 @@ import {
     usePermissions,
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
 import {
-    Box,
-    BoxProps,
     Button,
     Dialog,
     DialogActions,
@@ -89,12 +87,6 @@ const EditActions = ({ hasShow }: EditActionsProps) => (
     </TopToolbar>
 );
 
-const SanitizedBox = ({
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    fullWidth,
-    ...props
-}: BoxProps & { fullWidth?: boolean }) => <Box {...props} />;
-
 const categories = [
     { name: 'Tech', id: 'tech' },
     { name: 'Lifestyle', id: 'lifestyle' },
@@ -109,23 +101,17 @@ const PostEdit = () => {
                 warnWhenUnsavedChanges
             >
                 <TabbedForm.Tab label="post.form.summary">
-                    <SanitizedBox
-                        display="flex"
-                        flexDirection="column"
-                        width="100%"
-                        justifyContent="space-between"
+                    <TextInput
+                        InputProps={{ disabled: true }}
+                        source="id"
                         fullWidth
-                    >
-                        <TextInput
-                            InputProps={{ disabled: true }}
-                            source="id"
-                        />
-                        <TextInput
-                            source="title"
-                            validate={required()}
-                            resettable
-                        />
-                    </SanitizedBox>
+                    />
+                    <TextInput
+                        source="title"
+                        validate={required()}
+                        resettable
+                        fullWidth
+                    />
                     <TextInput
                         multiline
                         fullWidth

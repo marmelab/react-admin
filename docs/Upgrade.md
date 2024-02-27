@@ -341,6 +341,45 @@ const CompanyField = () => (
 ```
 {% endraw %}
 
+## Inputs Have A Minimum Width
+
+Inputs have a consistent minimum width in each theme, so forms show better alignment and are easier to read. This may break your layout if you relied on the previous input widths. If you used any of the default themes and you want to remove the minimum input width, you must set a custom theme in your admin as follows:
+
+```diff
+-import { Admin } from 'react-admin';
++import { Admin, defaultTheme } from 'react-admin';
++import { deepmerge } from '@mui/utils';
+import { dataProvider } from './dataProvider';
+
++const theme = deepmerge(defaultTheme, { components: { MuiFormControl: { variants: [] } } })
+
+const MyApp = () => (
+-   <Admin dataProvider={dataProvider}>
++   <Admin dataProvider={dataProvider} theme={theme}>
+        ...
+    </Admin>
+);
+```
+
+If you used a custom theme, you must set the minimum input width because individual input components no longer define their width:
+
+```diff
+const myTheme = {
+    // ...
+    components: {
+        // ...
++       MuiFormControl: {
++           variants: [
++               {
++                   props: {},
++                   style: () => ({ minWidth: 210 }),
++               },
++           ],
++       },
+    },
+};
+``` 
+
 ## `useTheme` no longer accepts a theme object as an optional argument
 
 The useTheme hook no longer accepts a `RaTheme` object as an argument to return a `RaTheme` object; instead, it now only takes an optional default value for the theme **preference** (`ThemeType`, like `"light"` and `"dark"`), and returns the current theme **preference** (`ThemeType`, like `"light"` and `"dark"`) and a setter for the **preference**.

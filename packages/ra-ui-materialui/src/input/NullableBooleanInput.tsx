@@ -53,7 +53,6 @@ export const NullableBooleanInput = (props: NullableBooleanInputProps) => {
     return (
         <StyledTextField
             id={id}
-            size="small"
             {...field}
             className={clsx(
                 'ra-input',

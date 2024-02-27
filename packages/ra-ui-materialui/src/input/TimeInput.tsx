@@ -84,7 +84,6 @@ export const TimeInput = ({
             {...field}
             className={clsx('ra-input', `ra-input-${source}`, className)}
             type="time"
-            size="small"
             variant={variant}
             margin={margin}
             error={(isTouched || isSubmitted) && invalid}
@@ -120,7 +119,10 @@ TimeInput.propTypes = {
 export type TimeInputProps = CommonInputProps &
     Omit<TextFieldProps, 'helperText' | 'label'>;
 
-const leftPad = (nb = 2) => value => ('0'.repeat(nb) + value).slice(-nb);
+const leftPad =
+    (nb = 2) =>
+    value =>
+        ('0'.repeat(nb) + value).slice(-nb);
 const leftPad2 = leftPad(2);
 
 /**

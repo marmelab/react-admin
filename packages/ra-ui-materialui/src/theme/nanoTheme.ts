@@ -70,6 +70,12 @@ const componentsOverrides = (theme: Theme) => ({
             margin: 'dense' as const,
             size: 'small' as const,
         },
+        variants: [
+            {
+                props: {},
+                style: () => ({ minWidth: 160 }),
+            },
+        ],
     },
     MuiFormHelperText: {
         defaultProps: {

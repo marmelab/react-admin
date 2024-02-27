@@ -19,7 +19,6 @@ export const PasswordInput = (props: PasswordInputProps) => {
     return (
         <TextInput
             type={visible ? 'text' : 'password'}
-            size="small"
             InputProps={{
                 endAdornment: (
                     <InputAdornment position="end">
@@ -30,7 +29,8 @@ export const PasswordInput = (props: PasswordInputProps) => {
                                     : 'ra.input.password.toggle_hidden'
                             )}
                             onClick={handleClick}
-                            size="large"
+                            size="small"
+                            edge="end"
                         >
                             {visible ? <Visibility /> : <VisibilityOff />}
                         </IconButton>

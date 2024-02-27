@@ -59,7 +59,6 @@ export const DateTimeInput = ({
             {...field}
             className={clsx('ra-input', `ra-input-${source}`, className)}
             type="datetime-local"
-            size="small"
             variant={variant}
             margin={margin}
             error={(isTouched || isSubmitted) && invalid}
@@ -99,7 +98,10 @@ DateTimeInput.propTypes = {
 export type DateTimeInputProps = CommonInputProps &
     Omit<TextFieldProps, 'helperText' | 'label'>;
 
-const leftPad = (nb = 2) => value => ('0'.repeat(nb) + value).slice(-nb);
+const leftPad =
+    (nb = 2) =>
+    value =>
+        ('0'.repeat(nb) + value).slice(-nb);
 const leftPad4 = leftPad(4);
 const leftPad2 = leftPad(2);
 

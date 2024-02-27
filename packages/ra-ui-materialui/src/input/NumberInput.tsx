@@ -97,8 +97,8 @@ export const NumberInput = ({
                     ? parse(target.valueAsNumber)
                     : target.valueAsNumber
                 : parse
-                ? parse(target.value)
-                : convertStringToNumber(target.value);
+                  ? parse(target.value)
+                  : convertStringToNumber(target.value);
         field.onChange(newValue);
     };
 
@@ -134,7 +134,6 @@ export const NumberInput = ({
             onBlur={handleBlur}
             className={clsx('ra-input', `ra-input-${source}`, className)}
             type="number"
-            size="small"
             variant={variant}
             error={(isTouched || isSubmitted) && invalid}
             helperText={

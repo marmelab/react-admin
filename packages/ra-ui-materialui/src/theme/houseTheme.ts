@@ -30,6 +30,12 @@ const componentsOverrides = (theme: Theme) => ({
         defaultProps: {
             margin: 'dense' as const,
         },
+        variants: [
+            {
+                props: {},
+                style: () => ({ minWidth: 220 }),
+            },
+        ],
     },
     MuiOutlinedInput: {
         styleOverrides: {

@@ -130,7 +130,9 @@ const Root = styled('div', {
     flexGrow: 1,
     marginTop: theme.spacing(1),
     marginBottom: theme.spacing(0.5),
-
+    [theme.breakpoints.down('sm')]: {
+        width: '100%',
+    },
     [`&.${TranslatableInputsClasses.fullWidth}`]: {
         width: '100%',
     },
