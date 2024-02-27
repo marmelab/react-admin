@@ -16,13 +16,6 @@ import { useLocation, useNavigate } from 'react-router-dom';
  *         initialEntries: ['/authenticated'],
  *     },
  * };
- *
- * const MyStory = (args, context) => (
- *     // Don't forget to pass the history to the Admin component so that
- *     // user changes from the fake browser address bar can impact the application
- *     <Admin history={context.history}>
- *     </Admin>
- * );
  */
 export const FakeBrowserDecorator = (Story, context) => {
     return (
