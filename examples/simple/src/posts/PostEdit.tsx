@@ -103,17 +103,7 @@ const categories = [
 const PostEdit = () => {
     const { permissions } = usePermissions();
     return (
-        <Edit
-            title={<PostTitle />}
-            actions={<EditActions />}
-            mutationMode="undoable"
-            redirect="list"
-            // mutationOptions={{
-            //     onSuccess: () => {
-            //         console.log('success!');
-            //     },
-            // }}
-        >
+        <Edit title={<PostTitle />} actions={<EditActions />}>
             <TabbedForm
                 defaultValues={{ average_note: 0 }}
                 warnWhenUnsavedChanges
