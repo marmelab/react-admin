@@ -53,6 +53,7 @@ export const useWarnWhenUnsavedChanges = (
 
             setShouldNotify(true);
         }
+        // This effect should only run when the blocker state changes, not when shouldNotBlock changes.
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [blocker.state]);
 
