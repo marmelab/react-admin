@@ -263,10 +263,10 @@ However, these commands are run automatically at each commit so you shouldn't ha
 
 ### Documentation
 
-If you want to contribute to the documentation, install [jekyll](https://jekyllrb.com/docs/home/), then call
+If you want to contribute to the documentation, just call:
 
 ```sh
-make doc
+make docker-doc
 ```
 
 And then browse to [http://localhost:4000/](http://localhost:4000/)
