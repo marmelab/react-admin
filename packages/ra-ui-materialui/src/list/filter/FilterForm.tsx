@@ -75,9 +75,9 @@ export const FilterForm = (props: FilterFormProps) => {
                 if (get(values, name) === '') {
                     const newValues = cloneDeep(values);
                     unset(newValues, name);
-                    setFilters(newValues, displayedFilters);
+                    setFilters(newValues, displayedFilters, true);
                 } else {
-                    setFilters(values, displayedFilters);
+                    setFilters(values, displayedFilters, true);
                 }
             }
         });
@@ -152,7 +152,7 @@ export const FilterFormBase = (props: FilterFormBaseProps) => {
             >
                 {getShownFilters().map((filterElement: JSX.Element) => (
                     <FilterFormInput
-                        key={filterElement.props.source}
+                        key={filterElement.key || filterElement.props.source}
                         filterElement={filterElement}
                         handleHide={handleHide}
                         resource={resource}

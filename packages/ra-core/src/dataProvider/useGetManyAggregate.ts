@@ -110,7 +110,7 @@ export const useGetManyAggregate = <RecordType extends RaRecord = any>(
                 meta,
             },
         ],
-        queryFn: () =>
+        queryFn: ({ signal }) =>
             new Promise((resolve, reject) => {
                 if (!ids || ids.length === 0) {
                     // no need to call the dataProvider
@@ -125,6 +125,7 @@ export const useGetManyAggregate = <RecordType extends RaRecord = any>(
                     reject,
                     dataProvider,
                     queryClient,
+                    signal,
                 });
             }),
         placeholderData,
@@ -214,6 +215,7 @@ interface GetManyCallArgs {
     reject: (error?: any) => void;
     dataProvider: DataProvider;
     queryClient: QueryClient;
+    signal: AbortSignal;
 }
 
 /**
@@ -272,7 +274,9 @@ const callGetManyQueries = batch((calls: GetManyCallArgs[]) => {
         }
 
         const callThatHasAllAggregatedIds = callsForResource.find(
-            ({ ids }) => JSON.stringify(ids) === JSON.stringify(aggregatedIds)
+            ({ ids, signal }) =>
+                JSON.stringify(ids) === JSON.stringify(aggregatedIds) &&
+                !signal.aborted
         );
         if (callThatHasAllAggregatedIds) {
             // There is only one call (no aggregation), or one of the calls has the same ids as the sum of all calls.
@@ -283,10 +287,11 @@ const callGetManyQueries = batch((calls: GetManyCallArgs[]) => {
                 resource,
                 ids,
                 meta,
+                signal,
             } = callThatHasAllAggregatedIds;
 
             dataProvider
-                .getMany<any>(resource, { ids, meta })
+                .getMany<any>(resource, { ids, meta, signal })
                 .then(({ data }) => data)
                 .then(
                     data => {
@@ -325,11 +330,12 @@ const callGetManyQueries = batch((calls: GetManyCallArgs[]) => {
                         meta: uniqueMeta,
                     },
                 ],
-                queryFn: () =>
+                queryFn: ({ signal }) =>
                     dataProvider
                         .getMany<any>(resource, {
                             ids: aggregatedIds,
                             meta: uniqueMeta,
+                            signal,
                         })
                         .then(({ data }) => data),
             })

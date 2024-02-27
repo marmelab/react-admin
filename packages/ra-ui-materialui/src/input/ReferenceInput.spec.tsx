@@ -133,6 +133,7 @@ describe('<ReferenceInput />', () => {
                 pagination: { page: 1, perPage: 25 },
                 sort: { field: 'id', order: 'DESC' },
                 meta: { foo: 'bar' },
+                signal: expect.anything(),
             });
         });
     });
@@ -156,6 +157,7 @@ describe('<ReferenceInput />', () => {
             expect(getMany).toHaveBeenCalledWith('posts', {
                 ids: [23],
                 meta: { foo: 'bar' },
+                signal: expect.anything(),
             });
         });
     });
@@ -253,5 +255,24 @@ describe('<ReferenceInput />', () => {
         });
         screen.getByLabelText('Save').click();
         await screen.findByText('Proust', undefined, { timeout: 5000 });
+    });
+
+    it('should throw an error when using the validate prop', () => {
+        jest.spyOn(console, 'error').mockImplementation(jest.fn());
+        const dataProvider = testDataProvider({
+            getList: async () => ({ data: [], total: 25 }),
+        });
+        expect(() =>
+            render(
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <Form>
+                        <ReferenceInput
+                            {...defaultProps}
+                            validate={() => undefined}
+                        />
+                    </Form>
+                </CoreAdminContext>
+            )
+        ).toThrowError();
     });
 });

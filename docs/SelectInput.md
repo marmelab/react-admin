@@ -304,6 +304,8 @@ const UserCountry = () => {
 
 Use the `onCreate` prop to allow users to create new options on-the-fly. Its value must be a function. This lets you render a `prompt` to ask users about the new value. You can return either the new choice directly or a Promise resolving to the new choice.
 
+<iframe src="https://www.youtube-nocookie.com/embed/CIUp5MF6A1M" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;"></iframe>
+
 {% raw %}
 ```js
 import { SelectInput, Create, SimpleForm, TextInput } from 'react-admin';
@@ -587,6 +589,8 @@ This is the recommended approach for using `<SelectInput>` to select a foreign k
 ## Creating New Choices
 
 The `<SelectInput>` can allow users to create a new choice if either the `create` or `onCreate` prop is provided.
+
+<iframe src="https://www.youtube-nocookie.com/embed/CIUp5MF6A1M" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;"></iframe>
 
 Use the `onCreate` prop when you only require users to provide a simple string and a `prompt` is enough. You can return either the new choice directly or a Promise resolving to the new choice.
 

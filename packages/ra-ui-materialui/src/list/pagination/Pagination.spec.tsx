@@ -6,6 +6,7 @@ import { ListPaginationContext } from 'ra-core';
 
 import { Pagination } from './Pagination';
 import { DeviceTestWrapper } from '../../layout';
+import { RowsPerPageOptions } from './Pagination.stories';
 
 const theme = createTheme();
 
@@ -271,5 +272,12 @@ describe('<Pagination />', () => {
         ) as HTMLButtonElement;
         expect(prevButton).not.toBeNull();
         expect(prevButton.disabled).toBe(true);
+    });
+
+    describe('rowsPerPageOptions', () => {
+        it('should accept an array of options with label and value', () => {
+            render(<RowsPerPageOptions />);
+            expect(screen.getByText('ten')).not.toBeNull();
+        });
     });
 });

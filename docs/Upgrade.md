@@ -269,7 +269,6 @@ const App = () => (
     </Admin>
 );
 ```
-```
 
 ## Removed deprecated hooks
 
@@ -435,6 +434,52 @@ const PostEdit = () => (
         </SimpleForm>
     </Edit>
 );
+```
+
+## `setFilters` Is No Longer Debounced By Default
+
+If you're using the `useListContext` hook to filter a list, you might have used the `setFilters` function to update the filters. In react-admin v5, the `setFilters` function is no longer debounced by default. If you want to debounce the filters, you'll have to pass `true` as the third argument:
+
+```diff
+import { useListContext } from 'react-admin';
+
+const MyFilter = () => {
+    const { filterValues, setFilters } = useListContext();
+    const handleChange = (event) => {
+-       setFilters({ ...filterValues, [event.target.name]: event.target.value });
++       setFilters({ ...filterValues, [event.target.name]: event.target.value }, undefined, true);
+    };
+
+    return (
+        <form>
+            <input name="country" value={filterValues.country} onChange={handleChange} />
+            <input name="city" value={filterValues.city} onChange={handleChange} />
+            <input name="zipcode" value={filterValues.zipcode} onChange={handleChange} />
+        </form>
+    );
+};
+```
+
+## Fields Components Requires The `source` Prop
+
+The `FieldProps` interface now requires the `source` prop to be defined. As a consequence, all the default fields components also require the `source` prop to be defined.
+This impacts custom fields that typed their props with the `FieldProps` interface. If your custom field is not meant to be used in a `<Datagrid>`, you may declare the `source` prop optional:
+
+```diff
+import { FieldProps, useRecordContext } from 'react-admin';
+
+-const AvatarField = (props: FieldProps) => {
++const AvatarField = (props: Omit<FieldProps, 'source'>) => {
+    const record = useRecordContext();
+    if (!record) return null;
+    return (
+        <Avatar
+            src={record.avatar}
+            alt={`${record.first_name} ${record.last_name}`}
+            {...props}
+        />
+    );
+}
 ```
 
 ## Upgrading to v4

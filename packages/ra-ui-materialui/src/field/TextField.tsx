@@ -1,8 +1,7 @@
 import * as React from 'react';
 import { ElementType } from 'react';
-import get from 'lodash/get';
 import Typography, { TypographyProps } from '@mui/material/Typography';
-import { useRecordContext, useTranslate } from 'ra-core';
+import { useFieldValue, useTranslate } from 'ra-core';
 
 import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
 import { FieldProps, fieldPropTypes } from './types';
@@ -13,10 +12,9 @@ const TextFieldImpl = <
 >(
     props: TextFieldProps<RecordType>
 ) => {
-    const { className, source, emptyText, ...rest } = props;
-    const record = useRecordContext(props);
-    const value = get(record, source)?.toString();
+    const { className, emptyText, ...rest } = props;
     const translate = useTranslate();
+    const value = useFieldValue(props);
 
     return (
         <Typography

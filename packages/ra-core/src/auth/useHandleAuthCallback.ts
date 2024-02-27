@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useQuery, UseQueryOptions } from '@tanstack/react-query';
 import { useLocation } from 'react-router';
 import { useRedirect } from '../routing';
-import { AuthProvider, AuthRedirectResult } from '../types';
+import { AuthRedirectResult, AuthProvider } from '../types';
 import useAuthProvider from './useAuthProvider';
 import { useEvent } from '../util';
 
@@ -27,8 +27,12 @@ export const useHandleAuthCallback = (
 
     const queryResult = useQuery({
         queryKey: ['auth', 'handleCallback'],
-        queryFn: () =>
-            authProvider.handleCallback().then(result => result ?? null),
+        queryFn: ({ signal }) =>
+            authProvider && typeof authProvider.handleCallback === 'function'
+                ? authProvider
+                      .handleCallback({ signal })
+                      .then(result => result ?? null)
+                : Promise.resolve(),
         retry: false,
         ...queryOptions,
     });

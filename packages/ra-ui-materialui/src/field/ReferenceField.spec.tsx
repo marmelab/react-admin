@@ -652,6 +652,7 @@ describe('<ReferenceField />', () => {
             expect(dataProvider.getMany).toHaveBeenCalledWith('posts', {
                 ids: [123],
                 meta: { foo: 'bar' },
+                signal: expect.anything(),
             });
         });
     });

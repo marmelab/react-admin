@@ -56,41 +56,41 @@ export const PostList = () => (
 
 ## Return Value
 
-The `useListContext` hook returns an object with the following keys:
+`useListContext` returns an object with the following keys:
 
 ```jsx
 const {
-    // fetched data
-    data, // an array of the list records, e.g. [{ id: 123, title: 'hello world' }, { ... }]
-    total, // the total number of results for the current filters, excluding pagination. Useful to build the pagination controls, e.g. 23      
-    isFetching, // boolean that is true while the data is being fetched, and false once the data is fetched
-    isLoading, // boolean that is true until the data is fetched for the first time
-    isPending, // boolean that is true until the data is available for the first time
-    // pagination
-    page, // the current page. Starts at 1
-    perPage, // the number of results per page. Defaults to 25
-    setPage, // a callback to change the page, e.g. setPage(3)
-    setPerPage, // a callback to change the number of results per page, e.g. setPerPage(25)
-    hasPreviousPage, // boolean, true if the current page is not the first one
-    hasNextPage, // boolean, true if the current page is not the last one
-    // sorting
-    sort, // a sort object { field, order }, e.g. { field: 'date', order: 'DESC' }
-    setSort, // a callback to change the sort, e.g. setSort({ field: 'name', order: 'ASC' })
-    // filtering
-    filterValues, // a dictionary of filter values, e.g. { title: 'lorem', nationality: 'fr' }
-    displayedFilters, // a dictionary of the displayed filters, e.g. { title: true, nationality: true }
-    setFilters, // a callback to update the filters, e.g. setFilters(filters, displayedFilters)
-    showFilter, // a callback to show one of the filters, e.g. showFilter('title', defaultValue)
-    hideFilter, // a callback to hide one of the filters, e.g. hideFilter('title')
-    // record selection
-    selectedIds, // an array listing the ids of the selected rows, e.g. [123, 456]
-    onSelect, // callback to change the list of selected rows, e.g. onSelect([456, 789])
-    onToggleItem, // callback to toggle the selection of a given record based on its id, e.g. onToggleItem(456)
-    onUnselectItems, // callback to clear the selection, e.g. onUnselectItems();
-    // misc
-    defaultTitle, // the translated title based on the resource, e.g. 'Posts'
-    resource, // the resource name, deduced from the location. e.g. 'posts'
-    refetch, // callback for fetching the list data again
+    // Data
+    data, // Array of the list records, e.g. [{ id: 123, title: 'hello world' }, { ... }
+    total, // Total number of results for the current filters, excluding pagination. Useful to build the pagination controls, e.g. 23      
+    isPending, // Boolean, true until the data is available
+    isFetching, // Boolean, true while the data is being fetched, false once the data is fetched
+    isLoading, // Boolean, true until the data is fetched for the first time
+    // Pagination
+    page, // Current page. Starts at 1
+    perPage, // Number of results per page. Defaults to 25
+    setPage, // Callback to change the page, e.g. setPage(3)
+    setPerPage, // Callback to change the number of results per page, e.g. setPerPage(25)
+    hasPreviousPage, // Boolean, true if the current page is not the first one
+    hasNextPage, // Boolean, true if the current page is not the last one
+    // Sorting
+    sort, // Sort object { field, order }, e.g. { field: 'date', order: 'DESC' }
+    setSort, // Callback to change the sort, e.g. setSort({ field: 'name', order: 'ASC' })
+    // Filtering
+    filterValues, // Dictionary of filter values, e.g. { title: 'lorem', nationality: 'fr' }
+    displayedFilters, // Dictionary of displayed filters, e.g. { title: true, nationality: true }
+    setFilters, // Callback to update the filters, e.g. setFilters(filters, displayedFilters)
+    showFilter, // Callback to show one of the filters, e.g. showFilter('title', defaultValue)
+    hideFilter, // Callback to hide one of the filters, e.g. hideFilter('title')
+    // Record selection
+    selectedIds, // Array listing the ids of the selected records, e.g. [123, 456]
+    onSelect, // Callback to change the list of selected records, e.g. onSelect([456, 789])
+    onToggleItem, // Callback to toggle the record selection for a given id, e.g. onToggleItem(456)
+    onUnselectItems, // Callback to clear the record selection, e.g. onUnselectItems();
+    // Misc
+    defaultTitle, // Translated title based on the resource, e.g. 'Posts'
+    resource, // Resource name, deduced from the location. e.g. 'posts'
+    refetch, // Callback for fetching the list data again
 } = useListContext();
 ```
 
@@ -113,6 +113,47 @@ export const Aside = () => (
             </div>
     )} />
 );
+```
+
+## Using `setFilters` to Update Filters
+
+The `setFilters` method is used to update the filters. It takes three arguments:
+
+- `filters`: an object containing the new filter values
+- `displayedFilters`: an object containing the new displayed filters
+- `debounced`: set to true to debounce the call to setFilters (false by default)
+
+You can use it to update the filters in a custom filter component:
+
+```jsx
+import { useState } from 'react';
+import { useListContext } from 'react-admin';
+
+const CustomFilter = () => {
+    const { filterValues, setFilters } = useListContext();
+    const [formValues, setFormValues] = useState(filterValues);
+
+    const handleChange = (event) => {
+        setFormValues(formValues => ({
+            ...formValues,
+            [event.target.name]: event.target.value
+        }));
+    };
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        setFilters(filterFormValues);
+    };
+
+    return (
+        <form onSubmit={handleSubmit}>
+            <input name="country" value={formValues.country} onChange={handleChange} />
+            <input name="city" value={formValues.city} onChange={handleChange} />
+            <input name="zipcode" value={formValues.zipcode} onChange={handleChange} />
+            <input type="submit">Filter</input>
+        </form>
+    );
+};
 ```
 
 ## TypeScript

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import expect from 'expect';
 
 import { testDataProvider } from '../../dataProvider/testDataProvider';
@@ -19,7 +19,7 @@ const ReferenceManyFieldController = props => {
 describe('useReferenceManyFieldController', () => {
     it('should set isLoading to true when related records are not yet fetched', async () => {
         const ComponentToTest = ({ isLoading }: { isLoading?: boolean }) => {
-            return <div>isLoading: {isLoading.toString()}</div>;
+            return <div>isLoading: {isLoading?.toString()}</div>;
         };
         const dataProvider = testDataProvider({
             getManyReference: () => Promise.resolve({ data: [], total: 0 }),
@@ -47,7 +47,7 @@ describe('useReferenceManyFieldController', () => {
 
     it('should set isLoading to false when related records have been fetched and there are results', async () => {
         const ComponentToTest = ({ isLoading }: { isLoading?: boolean }) => {
-            return <div>isLoading: {isLoading.toString()}</div>;
+            return <div>isLoading: {isLoading?.toString()}</div>;
         };
         const dataProvider = testDataProvider({
             getManyReference: () =>
@@ -110,6 +110,7 @@ describe('useReferenceManyFieldController', () => {
                     pagination: { page: 1, perPage: 25 },
                     sort: { field: 'id', order: 'DESC' },
                     filter: {},
+                    signal: expect.anything(),
                 }
             );
         });
@@ -230,6 +231,7 @@ describe('useReferenceManyFieldController', () => {
                     pagination: { page: 1, perPage: 25 },
                     sort: { field: 'id', order: 'DESC' },
                     filter: {},
+                    signal: expect.anything(),
                 }
             );
         });
@@ -269,8 +271,56 @@ describe('useReferenceManyFieldController', () => {
                     pagination: { page: 1, perPage: 25 },
                     sort: { field: 'id', order: 'ASC' },
                     filter: {},
+                    signal: expect.anything(),
                 }
             );
+        });
+    });
+
+    it('should take only last change in case of a burst of setFilters calls (case of inputs being currently edited)', async () => {
+        let childFunction = ({ setFilters, filterValues }) => (
+            <input
+                aria-label="search"
+                type="text"
+                value={filterValues.q || ''}
+                onChange={event => {
+                    setFilters({ q: event.target.value }, undefined, true);
+                }}
+            />
+        );
+        const dataProvider = testDataProvider();
+        const getManyReference = jest.spyOn(dataProvider, 'getManyReference');
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
+                <ReferenceManyFieldController
+                    resource="authors"
+                    source="id"
+                    record={{ id: 123, name: 'James Joyce' }}
+                    reference="books"
+                    target="author_id"
+                >
+                    {childFunction}
+                </ReferenceManyFieldController>
+            </CoreAdminContext>
+        );
+        const searchInput = screen.getByLabelText('search');
+
+        fireEvent.change(searchInput, { target: { value: 'hel' } });
+        fireEvent.change(searchInput, { target: { value: 'hell' } });
+        fireEvent.change(searchInput, { target: { value: 'hello' } });
+
+        await waitFor(() => new Promise(resolve => setTimeout(resolve, 600)));
+
+        // Called twice: on load and on filter changes
+        expect(getManyReference).toHaveBeenCalledTimes(2);
+        expect(getManyReference).toHaveBeenCalledWith('books', {
+            target: 'author_id',
+            id: 123,
+            filter: { q: 'hello' },
+            pagination: { page: 1, perPage: 25 },
+            sort: { field: 'id', order: 'DESC' },
+            meta: undefined,
+            signal: expect.anything(),
         });
     });
 });

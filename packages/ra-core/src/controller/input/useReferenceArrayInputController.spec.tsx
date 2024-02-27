@@ -198,6 +198,7 @@ describe('useReferenceArrayInputController', () => {
             },
             filter: {},
             meta: undefined,
+            signal: expect.anything(),
         });
     });
 
@@ -232,6 +233,7 @@ describe('useReferenceArrayInputController', () => {
             },
             filter: {},
             meta: { value: 'a' },
+            signal: expect.anything(),
         });
     });
 
@@ -268,6 +270,7 @@ describe('useReferenceArrayInputController', () => {
             },
             filter: { permanentFilter: 'foo' },
             meta: undefined,
+            signal: expect.anything(),
         });
     });
 
@@ -305,6 +308,7 @@ describe('useReferenceArrayInputController', () => {
                     order: 'DESC',
                 },
                 filter: { q: 'bar' },
+                signal: expect.anything(),
             });
         });
     });
@@ -331,6 +335,7 @@ describe('useReferenceArrayInputController', () => {
         await waitFor(() => {
             expect(dataProvider.getMany).toHaveBeenCalledWith('tags', {
                 ids: [5, 6],
+                signal: expect.anything(),
             });
         });
     });
@@ -361,6 +366,7 @@ describe('useReferenceArrayInputController', () => {
             expect(dataProvider.getMany).toHaveBeenCalledWith('tags', {
                 ids: [5, 6],
                 meta: { value: 'a' },
+                signal: expect.anything(),
             });
         });
     });
@@ -511,6 +517,7 @@ describe('useReferenceArrayInputController', () => {
         await waitFor(() => {
             expect(dataProvider.getMany).toHaveBeenCalledWith('tags', {
                 ids: [5],
+                signal: expect.anything(),
             });
         });
         rerender(
@@ -525,6 +532,7 @@ describe('useReferenceArrayInputController', () => {
         await waitFor(() => {
             expect(dataProvider.getMany).toHaveBeenCalledWith('tags', {
                 ids: [5, 6],
+                signal: expect.anything(),
             });
         });
     });
@@ -589,6 +597,7 @@ describe('useReferenceArrayInputController', () => {
                 },
                 filter: {},
                 meta: undefined,
+                signal: expect.anything(),
             });
         });
 
@@ -605,6 +614,7 @@ describe('useReferenceArrayInputController', () => {
                 },
                 filter: {},
                 meta: undefined,
+                signal: expect.anything(),
             });
         });
 
@@ -621,6 +631,7 @@ describe('useReferenceArrayInputController', () => {
                 },
                 filter: {},
                 meta: undefined,
+                signal: expect.anything(),
             });
         });
     });
@@ -690,6 +701,7 @@ describe('useReferenceArrayInputController', () => {
                     order: 'DESC',
                 },
                 filter: { q: 'hello world' },
+                signal: expect.anything(),
             });
             expect(enableGetChoices).toHaveBeenCalledWith({ q: 'hello world' });
         });
@@ -721,6 +733,7 @@ describe('useReferenceArrayInputController', () => {
             await waitFor(() => {
                 expect(dataProvider.getMany).toHaveBeenCalledWith('tags', {
                     ids: [5, 6],
+                    signal: expect.anything(),
                 });
             });
         });

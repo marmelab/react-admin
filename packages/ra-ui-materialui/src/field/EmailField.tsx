@@ -1,8 +1,7 @@
 import * as React from 'react';
-import get from 'lodash/get';
 import Typography from '@mui/material/Typography';
 import { Link, LinkProps } from '@mui/material';
-import { useRecordContext, useTranslate } from 'ra-core';
+import { useFieldValue, useTranslate } from 'ra-core';
 
 import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
 import { FieldProps, fieldPropTypes } from './types';
@@ -13,9 +12,8 @@ const EmailFieldImpl = <
 >(
     props: EmailFieldProps<RecordType>
 ) => {
-    const { className, source, emptyText, ...rest } = props;
-    const record = useRecordContext(props);
-    const value = get(record, source);
+    const { className, emptyText, ...rest } = props;
+    const value = useFieldValue(props);
     const translate = useTranslate();
 
     if (value == null) {

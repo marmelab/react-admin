@@ -133,9 +133,53 @@ describe('useUpdateMany', () => {
             } as any;
             let localUpdateMany;
             const Dummy = () => {
-                const [updateMany] = useUpdateMany('foo', {
+                const [updateMany] = useUpdateMany();
+                localUpdateMany = updateMany;
+                return <span />;
+            };
+            render(
+                <CoreAdminContext
+                    dataProvider={dataProvider}
+                    queryClient={queryClient}
+                >
+                    <Dummy />
+                </CoreAdminContext>
+            );
+            localUpdateMany('foo', { ids: [1, 2], data: { bar: 'baz' } });
+            await waitFor(() => {
+                expect(dataProvider.updateMany).toHaveBeenCalledWith('foo', {
                     ids: [1, 2],
                     data: { bar: 'baz' },
+                });
+            });
+            await waitFor(() => {
+                expect(queryClient.getQueryData(['foo', 'getList'])).toEqual({
+                    data: [
+                        { id: 1, bar: 'baz' },
+                        { id: 2, bar: 'baz' },
+                    ],
+                    total: 2,
+                });
+            });
+        });
+        it('updates getList query cache when dataProvider promise resolves in optimistic mode', async () => {
+            const queryClient = new QueryClient();
+            queryClient.setQueryData(['foo', 'getList'], {
+                data: [
+                    { id: 1, bar: 'bar' },
+                    { id: 2, bar: 'bar' },
+                ],
+                total: 2,
+            });
+            const dataProvider = {
+                updateMany: jest.fn(() =>
+                    Promise.resolve({ data: [1, 2] } as any)
+                ),
+            } as any;
+            let localUpdateMany;
+            const Dummy = () => {
+                const [updateMany] = useUpdateMany(undefined, undefined, {
+                    mutationMode: 'optimistic',
                 });
                 localUpdateMany = updateMany;
                 return <span />;
@@ -165,6 +209,107 @@ describe('useUpdateMany', () => {
                 });
             });
         });
+        it('updates getList query cache when dataProvider promise resolves and using no call-time params', async () => {
+            const queryClient = new QueryClient();
+            queryClient.setQueryData(['foo', 'getList'], {
+                data: [
+                    { id: 1, bar: 'bar' },
+                    { id: 2, bar: 'bar' },
+                ],
+                total: 2,
+            });
+            const dataProvider = {
+                updateMany: jest.fn(() =>
+                    Promise.resolve({ data: [1, 2] } as any)
+                ),
+            } as any;
+            let localUpdateMany;
+            const Dummy = () => {
+                const [updateMany] = useUpdateMany('foo', {
+                    ids: [1, 2],
+                    data: { bar: 'baz' },
+                });
+                localUpdateMany = updateMany;
+                return <span />;
+            };
+            render(
+                <CoreAdminContext
+                    dataProvider={dataProvider}
+                    queryClient={queryClient}
+                >
+                    <Dummy />
+                </CoreAdminContext>
+            );
+            localUpdateMany();
+            await waitFor(() => {
+                expect(dataProvider.updateMany).toHaveBeenCalledWith('foo', {
+                    ids: [1, 2],
+                    data: { bar: 'baz' },
+                });
+            });
+            await waitFor(() => {
+                expect(queryClient.getQueryData(['foo', 'getList'])).toEqual({
+                    data: [
+                        { id: 1, bar: 'baz' },
+                        { id: 2, bar: 'baz' },
+                    ],
+                    total: 2,
+                });
+            });
+        });
+        it('updates getList query cache when dataProvider promise resolves in optimistic mode with no call-time params', async () => {
+            const queryClient = new QueryClient();
+            queryClient.setQueryData(['foo', 'getList'], {
+                data: [
+                    { id: 1, bar: 'bar' },
+                    { id: 2, bar: 'bar' },
+                ],
+                total: 2,
+            });
+            const dataProvider = {
+                updateMany: jest.fn(() =>
+                    Promise.resolve({ data: [1, 2] } as any)
+                ),
+            } as any;
+            let localUpdateMany;
+            const Dummy = () => {
+                const [updateMany] = useUpdateMany(
+                    'foo',
+                    {
+                        ids: [1, 2],
+                        data: { bar: 'baz' },
+                    },
+                    { mutationMode: 'optimistic' }
+                );
+                localUpdateMany = updateMany;
+                return <span />;
+            };
+            render(
+                <CoreAdminContext
+                    dataProvider={dataProvider}
+                    queryClient={queryClient}
+                >
+                    <Dummy />
+                </CoreAdminContext>
+            );
+            localUpdateMany();
+            await waitFor(() => {
+                expect(dataProvider.updateMany).toHaveBeenCalledWith('foo', {
+                    ids: [1, 2],
+                    data: { bar: 'baz' },
+                });
+            });
+            await waitFor(() => {
+                expect(queryClient.getQueryData(['foo', 'getList'])).toEqual({
+                    data: [
+                        { id: 1, bar: 'baz' },
+                        { id: 2, bar: 'baz' },
+                    ],
+                    total: 2,
+                });
+            });
+        });
+
         it('updates getList query cache with pageInfo when dataProvider promise resolves', async () => {
             const queryClient = new QueryClient();
             queryClient.setQueryData(['foo', 'getList'], {

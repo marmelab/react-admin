@@ -417,6 +417,7 @@ It brings several benefits to [manual data fetching](#getting-the-dataprovider-i
 2. It reduces the boilerplate code since you don't need to use `useState`, `useEffect` or `useCallback`.
 3. It supports a vast array of options
 4. It displays stale data while fetching up-to-date data, leading to a snappier UI
+5. It cancels the queries automatically when they become out-of-date or inactive
 
 See [Why You Need React Query](https://tkdodo.eu/blog/why-you-want-react-query) for more details.
 
@@ -438,7 +439,7 @@ const UserProfile = ({ userId }) => {
     const dataProvider = useDataProvider();
     const { data, isPending, error } = useQuery({
         queryKey: ['users', 'getOne', { id: userId }], 
-        queryFn: () => dataProvider.getOne('users', { id: userId })
+        queryFn: ({ signal }) => dataProvider.getOne('users', { id: userId, signal })
     });
 
     if (isPending) return <Loading />;
@@ -453,6 +454,8 @@ const UserProfile = ({ userId }) => {
     )
 };
 ```
+
+**Tip:** You may have noticed that we forward the `signal` parameter from the `queryFn` call to the dataProvider function call -- in this case `getOne`. This is needed to support automatic [Query Cancellation](https://tanstack.com/query/latest/docs/framework/react/guides/query-cancellation). You can learn more about this parameter in the section dedicated to [the `signal` parameter](./DataProviderWriting.md#the-signal-parameter).
 
 To illustrate the usage of `useMutation`, here is an implementation of an "Approve" button for a comment:
 

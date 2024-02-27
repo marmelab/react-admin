@@ -23,7 +23,7 @@ npx create-next-app@latest
 ```
 
 A prompt will asks you some questions, feel free to choose answers according to your needs. 
-This tutorial assumes you're using an `src` folder, so answer 'Yes' to the 5th question. As for the App Router, you can choose to use it or not, this tutorial will explain how to use both.
+This tutorial assumes you're using a `src` folder, so answer `Yes` to the 5th question. As for the App Router, you can choose to use it or not, this tutorial will explain how to use both. (For new applications, Next.js recommends using the App Router).
 
 ![Install Next.js with command line](./img/install-next-js-command-line.png)
 
@@ -39,16 +39,18 @@ Add the `react-admin` npm package, as well as a data provider package. In this e
 
 ```bash
 cd next-admin
-yarn add react-admin ra-data-json-server
+npm install react-admin ra-data-json-server
 ```
+
+**Tips**: If you prefer yarn, you could create the project with `npx create-next-app@latest --use-yarn` and add the dependencies with `yarn add react-admin ra-data-json-server`.
 
 ## Creating The Admin App Component
 
-Next, create a `components` directory inside `src`, and an admin App component in `src/components/AdminApp.jsx`:
+Next, create a `components` directory inside `src`, and an admin App component in `src/components/AdminApp.tsx`:
 
 ```jsx
-// in src/components/AdminApp.jsx
-"use client"; // only needed if you choose App Router
+// in src/components/AdminApp.tsx
+"use client"; // remove this line if you choose Pages Router
 import { Admin, Resource, ListGuesser, EditGuesser } from "react-admin";
 import jsonServerProvider from "ra-data-json-server";
 
@@ -76,8 +78,6 @@ export default AdminApp;
 ```
 
 This is a minimal configuration to render CRUD pages for users, posts and comments. React-admin will guess the fields to display in the list and edition pages based on the API response. 
-
-**Tips**: If you choose App Router, do not forget to add [the `"use client"` directive](https://nextjs.org/docs/getting-started/react-essentials#the-use-client-directive).
 
 ## Exposing The Admin App Component
 
@@ -157,16 +157,92 @@ SUPABASE_URL="https://MY_INSTANCE.supabase.co"
 SUPABASE_SERVICE_ROLE="MY_SERVICE_ROLE_KEY"
 ```
 
-**Tip**: This example uses the **service role key** here and not the anonymous role. This allows mutations without dealing with authorization. **You shouldn't do this in production**, but use the [Supabase authorization](https://supabase.com/docs/guides/auth) feature instead.
+**Tip**: This example uses the **service role key** here and not the anonymous role. This allows mutations without dealing with authorization (You may have to modify the safety policies). **You shouldn't do this in production**, but use the [Supabase authorization](https://supabase.com/docs/guides/auth) feature instead.
 
 Create [a "catch-all" API route](https://nextjs.org/docs/app/building-your-application/routing/dynamic-routes#catch-all-segmentss) in the Next.js app by adding a new file at the following location:
 
-- App Router: `src/app/api/admin/[...slug]/page.ts`
+- App Router: `src/app/api/admin/[...slug]/route.ts`
 - Pages Router: `src/pages/api/admin/[[...slug]].ts`
- 
+
+/!\ The file name is important: it must be `route.ts` in the App Router and `[[...slug]].ts` in the Pages Router.
+
+From this point on, the logic for handling is different depending on the router.
+
+### App Router
+
+```tsx
+// in src/app/api/admin/[...slug]/route.ts
+
+export const dynamic = 'force-dynamic'; // defaults to auto
+export async function GET(request: Request) {
+    return handler(request);
+}
+
+export async function POST(request: Request) {
+    return handler(request);
+}
+
+export async function PUT(request: Request) {
+    return handler(request);
+}
+
+export async function PATCH(request: Request) {
+    return handler(request);
+}
+
+export async function DELETE(request: Request) {
+    return handler(request);
+}
+
+async function handler(request: Request) {
+    // get part after /api/admin/ in string url
+    const requestUrl = request.url.split('/api/admin')[1];
+
+    // build the CRUD request based on the incoming request
+    const url = `${process.env.SUPABASE_URL}/rest/v1/${requestUrl}`;
+
+    const options: RequestInit = {
+        method: request.method,
+        headers: {
+            prefer: (request.headers.get('prefer') as string) ?? '',
+            accept: request.headers.get('accept') ?? 'application/json',
+            ['content-type']:
+                request.headers.get('content-type') ?? 'application/json',
+            // supabase authentication
+            apiKey: process.env.SUPABASE_SERVICE_ROLE ?? '',
+        },
+    };
+
+    if (request.body) {
+        const body = await request.json();
+        options.body = JSON.stringify(body);
+    }
+
+    // call the CRUD API
+    const response = await fetch(url, options);
+
+    const contentRange = response.headers.get('content-range');
+
+    const headers = new Headers();
+    if (contentRange) {
+        headers.set('Content-Range', contentRange);
+    }
+    const data = await response.text();
+    return new Response(data, {
+        status: 200,
+        headers,
+    });
+}
+```
+
+For more information about routes handler with the App Router, see [the official documentation](https://nextjs.org/docs/app/building-your-application/routing/route-handlers).
+
+### Pages Router
+
 This API route redirects all calls from the react-admin app to the Supabase CRUD API:
 
 ```tsx
+// in src/pages/api/admin/[[...slug]].ts
 import { NextApiRequest, NextApiResponse } from "next";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -198,21 +274,39 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 }
 ```
 
+For more information about routes handler with the Pages Router, see [the official documentation](https://nextjs.org/docs/pages/building-your-application/routing/api-routes#optional-catch-all-api-routes).
+
 **Tip**: Some of this code is really PostgREST-specific. The `prefer` header is required to let PostgREST return one record instead of an array containing one record in response to `getOne` requests. The `Content-Range` header is returned by PostgREST and must be passed down to the client. A proxy for another CRUD API will require different parameters.
+
+### Data Provider
 
 Finally, update the react-admin data provider to use the Supabase adapter instead of the JSON Server one. As Supabase provides a PostgREST endpoint, we'll use [`ra-data-postgrest`](https://github.com/raphiniert-com/ra-data-postgrest):
 
 ```sh
+npm install @raphiniert/ra-data-postgrest
+# or
 yarn add @raphiniert/ra-data-postgrest
 ```
 
 ```jsx
-// in src/components/AdminApp.jsx
+// in src/components/AdminApp.tsx
 import * as React from "react";
-import { Admin, Resource, ListGuesser, EditGuesser } from 'react-admin';
-import postgrestRestProvider from "@raphiniert/ra-data-postgrest";
+import { Admin, Resource, ListGuesser, EditGuesser, fetchUtils } from 'react-admin';
+import postgrestRestProvider, {
+    IDataProviderConfig,
+    defaultPrimaryKeys,
+    defaultSchema,
+} from '@raphiniert/ra-data-postgrest';
 
-const dataProvider = postgrestRestProvider("/api/admin");
+const config: IDataProviderConfig = {
+    apiUrl: '/api/admin',
+    httpClient: fetchUtils.fetchJson,
+    defaultListOp: 'eq',
+    primaryKeys: defaultPrimaryKeys,
+    schema: defaultSchema,
+};
+
+const dataProvider = postgrestRestProvider(config);
 
 const AdminApp = () => (
   <Admin dataProvider={dataProvider}>

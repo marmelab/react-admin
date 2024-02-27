@@ -1,8 +1,7 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import get from 'lodash/get';
 import Typography, { TypographyProps } from '@mui/material/Typography';
-import { useRecordContext, useTranslate } from 'ra-core';
+import { useFieldValue, useTranslate } from 'ra-core';
 import purify from 'dompurify';
 
 import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
@@ -32,13 +31,11 @@ const RichTextFieldImpl = <
     const {
         className,
         emptyText,
-        source,
         stripTags = false,
         purifyOptions,
         ...rest
     } = props;
-    const record = useRecordContext(props);
-    const value = get(record, source)?.toString();
+    const value = useFieldValue(props);
     const translate = useTranslate();
 
     return (

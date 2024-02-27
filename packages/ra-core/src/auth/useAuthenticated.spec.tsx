@@ -41,7 +41,9 @@ describe('useAuthenticated', () => {
             </CoreAdminContext>
         );
         expect(authProvider.checkAuth).toBeCalledTimes(1);
-        expect(authProvider.checkAuth.mock.calls[0][0]).toEqual({});
+        expect(authProvider.checkAuth.mock.calls[0][0]).toEqual({
+            signal: expect.anything(),
+        });
         expect(reset).toHaveBeenCalledTimes(0);
     });
 
@@ -66,7 +68,10 @@ describe('useAuthenticated', () => {
         const { rerender } = render(<FooWrapper />);
         rerender(<FooWrapper foo="bar" />);
         expect(authProvider.checkAuth).toBeCalledTimes(2);
-        expect(authProvider.checkAuth.mock.calls[1][0]).toEqual({ foo: 'bar' });
+        expect(authProvider.checkAuth.mock.calls[1][0]).toEqual({
+            foo: 'bar',
+            signal: expect.anything(),
+        });
         expect(reset).toHaveBeenCalledTimes(0);
     });
 
@@ -142,7 +147,9 @@ describe('useAuthenticated', () => {
         await waitFor(() => {
             expect(authProvider.checkAuth).toHaveBeenCalledTimes(1);
         });
-        expect(authProvider.checkAuth.mock.calls[0][0]).toEqual({});
+        expect(authProvider.checkAuth.mock.calls[0][0]).toEqual({
+            signal: expect.anything(),
+        });
         await waitFor(
             () => {
                 expect(authProvider.logout).toHaveBeenCalledTimes(1);

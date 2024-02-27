@@ -1,13 +1,15 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
+import { Children, isValidElement, ReactElement, ReactNode } from 'react';
 import {
-    Children,
-    cloneElement,
-    isValidElement,
-    ReactElement,
-    ReactNode,
-} from 'react';
-import { useTranslatableContext, RaRecord } from 'ra-core';
+    useTranslatableContext,
+    RaRecord,
+    SourceContextProvider,
+    useSourceContext,
+    getResourceFieldLabelKey,
+    RecordContextProvider,
+    ResourceContextProvider,
+} from 'ra-core';
 import { Labeled } from '../Labeled';
 
 /**
@@ -26,8 +28,22 @@ export const TranslatableFieldsTabContent = (
         className,
         ...other
     } = props;
-    const { selectedLocale, getLabel, getSource } = useTranslatableContext();
+    const { selectedLocale } = useTranslatableContext();
 
+    const parentSourceContext = useSourceContext();
+    const sourceContext = React.useMemo(
+        () => ({
+            getSource: (source: string) =>
+                parentSourceContext
+                    ? parentSourceContext.getSource(`${source}.${locale}`)
+                    : `${source}.${locale}`,
+            getLabel: (source: string) =>
+                parentSourceContext
+                    ? parentSourceContext.getLabel(source)
+                    : getResourceFieldLabelKey(resource, source),
+        }),
+        [locale, parentSourceContext, resource]
+    );
     const addLabel = Children.count(children) > 1;
 
     return (
@@ -41,34 +57,28 @@ export const TranslatableFieldsTabContent = (
         >
             {Children.map(children, field =>
                 field && isValidElement<any>(field) ? (
-                    <div key={field.props.source}>
-                        {addLabel ? (
-                            <Labeled
-                                resource={resource}
-                                label={field.props.label}
-                                source={field.props.source}
-                            >
-                                {cloneElement(field, {
-                                    ...field.props,
-                                    label: getLabel(field.props.source),
-                                    record,
-                                    source: getSource(
-                                        field.props.source,
-                                        locale
-                                    ),
-                                })}
-                            </Labeled>
-                        ) : typeof field === 'string' ? (
-                            field
-                        ) : (
-                            cloneElement(field, {
-                                ...field.props,
-                                label: getLabel(field.props.source),
-                                record,
-                                source: getSource(field.props.source, locale),
-                            })
-                        )}
-                    </div>
+                    <ResourceContextProvider
+                        value={resource}
+                        key={field.props.source}
+                    >
+                        <RecordContextProvider value={record}>
+                            <SourceContextProvider value={sourceContext}>
+                                <div>
+                                    {addLabel ? (
+                                        <Labeled
+                                            resource={resource}
+                                            label={field.props.label}
+                                            source={field.props.source}
+                                        >
+                                            {field}
+                                        </Labeled>
+                                    ) : (
+                                        field
+                                    )}
+                                </div>
+                            </SourceContextProvider>
+                        </RecordContextProvider>
+                    </ResourceContextProvider>
                 ) : null
             )}
         </Root>

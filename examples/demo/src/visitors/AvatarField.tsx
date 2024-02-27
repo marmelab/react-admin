@@ -3,7 +3,7 @@ import { Avatar, SxProps } from '@mui/material';
 import { FieldProps, useRecordContext } from 'react-admin';
 import { Customer } from '../types';
 
-interface Props extends FieldProps<Customer> {
+interface Props extends Omit<FieldProps<Customer>, 'source'> {
     sx?: SxProps;
     size?: string;
 }

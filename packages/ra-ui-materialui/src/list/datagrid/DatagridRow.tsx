@@ -221,17 +221,20 @@ const DatagridRow: FC<DatagridRowProps> = React.forwardRef((props, ref) => {
                 >
                     <TableCell colSpan={nbColumns}>
                         {isElement(expand)
-                            ? cloneElement(expand, {
+                            ? cloneElement(expand as React.ReactElement<any>, {
                                   // @ts-ignore
                                   record,
                                   resource,
                                   id: String(id),
                               })
-                            : createElement(expand, {
-                                  record,
-                                  resource,
-                                  id: String(id),
-                              })}
+                            : createElement(
+                                  expand as React.FunctionComponent<any>,
+                                  {
+                                      record,
+                                      resource,
+                                      id: String(id),
+                                  }
+                              )}
                     </TableCell>
                 </TableRow>
             )}

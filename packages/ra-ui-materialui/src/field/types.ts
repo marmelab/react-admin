@@ -58,7 +58,7 @@ export interface FieldProps<
      *     </List>
      * );
      */
-    source?: Call<Objects.AllPaths, RecordType> extends never
+    source: Call<Objects.AllPaths, RecordType> extends never
         ? AnyString
         : Call<Objects.AllPaths, RecordType>;
 

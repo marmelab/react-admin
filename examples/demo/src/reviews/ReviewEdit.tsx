@@ -45,7 +45,7 @@ const ReviewEdit = ({ id, onCancel }: Props) => {
                             </Labeled>
                         </Grid>
                         <Grid item xs={6}>
-                            <Labeled>
+                            <Labeled label="resources.reviews.fields.product_id">
                                 <ProductReferenceField />
                             </Labeled>
                         </Grid>

@@ -186,7 +186,8 @@ export const usePrevNextController = <RecordType extends RaRecord = any>(
     // without displaying the list first
     const { data, error, isFetching, isLoading, isPending } = useQuery({
         queryKey: [resource, 'getList', params],
-        queryFn: () => dataProvider.getList(resource, params),
+        queryFn: ({ signal }) =>
+            dataProvider.getList(resource, { ...params, signal }),
         enabled: !canUseCacheData,
         ...otherQueryOptions,
     });

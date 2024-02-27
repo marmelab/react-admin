@@ -288,7 +288,7 @@ And see [the Material UI system documentation](https://mui.com/system/the-sx-pro
 
 This prop defines the text alignment of the field when rendered inside a `<Datagrid>` cell. By default, datagrid values are left-aligned ; for numeric values, it's often better to right-align them. Set `textAlign` to `right` for that.
 
-[`<NumberField>`](./NumberField.md) already uses `textAlign="right"`. Set the default value for this prop if you create a custom numeric field. 
+[`<NumberField>`](./NumberField.md) already uses `textAlign="right"`. Set the default value for this prop if you create a custom numeric field.
 
 ```jsx
 const BasketTotal = () => {
@@ -501,21 +501,24 @@ export const UserList = () => (
 
 **Tip**: In such custom fields, the `source` is optional. React-admin uses it to determine which column to use for sorting when the column header is clicked. In case you use the `source` property for additional purposes, the sorting can be overridden by the `sortBy` property on any `Field` component.
 
-If you build a reusable field accepting a `source` props, you will probably want to support deep field sources (e.g. source values like `author.name`). Use [lodash/get](https://www.npmjs.com/package/lodash.get) to replace the simple object lookup. For instance, for a Text field:
+If you build a reusable field accepting a `source` props, you will probably want to support deep field sources (e.g. source values like `author.name`). Use the [`useFieldValue` hook](/useFieldValue.md) to replace the simple object lookup. For instance, for a Text field:
 
 ```diff
 import * as React from 'react';
-+import get from 'lodash/get';
-import { useRecordContext } from 'react-admin';
+-import { useRecordContext } from 'react-admin';
++import { useFieldValue } from 'react-admin';
 
-const TextField = ({ source }) => {
-    const record = useRecordContext();
--   return record ? <span>{record[source]}</span> : null;
-+   return record ? <span>{get(record, source)}</span> : null;
+const TextField = (props) => {
+-    const record = useRecordContext();
++   const value = useFieldValue(props);
+-   return record ? <span>{record[props.source]}</span> : null;
++   return <span>{value}</span> : null;
 }
 
 export default TextField;
 ```
+
+**Tip**: Note that when using `useFieldValue`, you don't need to check that `record` is defined.
 
 ## Hiding A Field Based On The Value Of Another
 

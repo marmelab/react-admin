@@ -144,7 +144,7 @@ export const useList = <RecordType extends RaRecord = any>(
         [setDisplayedFilters, setFilterValues]
     );
     const setFilters = useCallback(
-        (filters, displayedFilters) => {
+        (filters, displayedFilters = undefined) => {
             setFilterValues(removeEmpty(filters));
             if (displayedFilters) {
                 setDisplayedFilters(displayedFilters);

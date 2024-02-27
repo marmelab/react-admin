@@ -21,7 +21,7 @@ This accelerates the rendering of pages visited multiple times. For instance, if
 6. Call `dataProvider.getOne('posts', { id: 123 })`, and store the result in local cache
 7. If there is a difference with the previous post, re-render the detail with the data from the dataProvider
 
-In addition, as react-admin knows the *vocabulary* of your data provider, it can reuse data from one call to optimize another. This is called **"optimistic rendering"**, and it is also enabled by default. The optimistic rendering uses the semantics of the `dataProvider` verb. That means that requests for a list (`getList`) also populate the cache for individual records (`getOne`, `getMany`). That also means that write requests (`create`, `udpate`, `updateMany`, `delete`, `deleteMany`) invalidate the list cache - because after an update, for instance, the ordering of items can be changed.
+In addition, as react-admin knows the *vocabulary* of your data provider, it can reuse data from one call to optimize another. This is called **"optimistic rendering"**, and it is also enabled by default. The optimistic rendering uses the semantics of the `dataProvider` verb. That means that requests for a list (`getList`) also populate the cache for individual records (`getOne`, `getMany`). That also means that write requests (`create`, `update`, `updateMany`, `delete`, `deleteMany`) invalidate the list cache - because after an update, for instance, the ordering of items can be changed.
 
 For instance, if the end user displays a list of posts, then clicks on a post in the list to display the list details, here is what react-admin does:
 

@@ -62,11 +62,13 @@ export type AuthProvider = {
         params: any
     ) => Promise<{ redirectTo?: string | boolean } | void | any>;
     logout: (params: any) => Promise<void | false | string>;
-    checkAuth: (params: any) => Promise<void>;
+    checkAuth: (params: any & QueryFunctionContext) => Promise<void>;
     checkError: (error: any) => Promise<void>;
-    getIdentity?: () => Promise<UserIdentity>;
-    getPermissions: (params: any) => Promise<any>;
-    handleCallback?: () => Promise<AuthRedirectResult | void | any>;
+    getIdentity?: (params?: QueryFunctionContext) => Promise<UserIdentity>;
+    getPermissions: (params: any & QueryFunctionContext) => Promise<any>;
+    handleCallback?: (
+        params?: QueryFunctionContext
+    ) => Promise<AuthRedirectResult | void | any>;
     [key: string]: any;
 };
 
@@ -87,22 +89,22 @@ export type LegacyAuthProvider = (
 export type DataProvider<ResourceType extends string = string> = {
     getList: <RecordType extends RaRecord = any>(
         resource: ResourceType,
-        params: GetListParams
+        params: GetListParams & QueryFunctionContext
     ) => Promise<GetListResult<RecordType>>;
 
     getOne: <RecordType extends RaRecord = any>(
         resource: ResourceType,
-        params: GetOneParams<RecordType>
+        params: GetOneParams<RecordType> & QueryFunctionContext
     ) => Promise<GetOneResult<RecordType>>;
 
     getMany: <RecordType extends RaRecord = any>(
         resource: ResourceType,
-        params: GetManyParams
+        params: GetManyParams & QueryFunctionContext
     ) => Promise<GetManyResult<RecordType>>;
 
     getManyReference: <RecordType extends RaRecord = any>(
         resource: ResourceType,
-        params: GetManyReferenceParams
+        params: GetManyReferenceParams & QueryFunctionContext
     ) => Promise<GetManyReferenceResult<RecordType>>;
 
     update: <RecordType extends RaRecord = any>(
@@ -135,6 +137,10 @@ export type DataProvider<ResourceType extends string = string> = {
 
     [key: string]: any;
 };
+
+export interface QueryFunctionContext {
+    signal?: AbortSignal;
+}
 
 export interface GetListParams {
     pagination: PaginationPayload;

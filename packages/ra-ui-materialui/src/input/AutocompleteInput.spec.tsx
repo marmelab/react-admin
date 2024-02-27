@@ -17,14 +17,14 @@ import {
     InsideReferenceInput,
     InsideReferenceInputDefaultValue,
     InsideReferenceInputWithCustomizedItemRendering,
-    Nullable,
+    Basic,
     NullishValuesSupport,
     VeryLargeOptionsNumber,
     TranslateChoice,
     OnChange,
     InsideReferenceInputOnChange,
+    WithInputProps,
 } from './AutocompleteInput.stories';
-import { act } from '@testing-library/react-hooks';
 import { ReferenceArrayInput } from './ReferenceArrayInput';
 import { AutocompleteArrayInput } from './AutocompleteArrayInput';
 
@@ -1247,7 +1247,7 @@ describe('<AutocompleteInput />', () => {
 
     it('should return null when no choice is selected', async () => {
         const onSuccess = jest.fn();
-        render(<Nullable onSuccess={onSuccess} />);
+        render(<Basic onSuccess={onSuccess} />);
         const clearBtn = await screen.findByLabelText('Clear value');
         fireEvent.click(clearBtn);
         screen.getByText('Save').click();
@@ -1579,5 +1579,16 @@ describe('<AutocompleteInput />', () => {
         ) as HTMLInputElement;
         fireEvent.change(input, { target: { value: 'newValue' } });
         await waitFor(() => expect(onInputChange).toHaveBeenCalled());
+    });
+
+    describe('InputProps', () => {
+        it('should pass InputProps to the input', async () => {
+            render(<WithInputProps />);
+            const input = await screen.findByRole('combobox');
+            screen.getByTestId('AttributionIcon');
+            screen.getByTestId('ExpandCircleDownIcon');
+            fireEvent.click(input);
+            screen.getByText('Victor Hugo');
+        });
     });
 });

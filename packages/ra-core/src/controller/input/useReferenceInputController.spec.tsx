@@ -73,6 +73,7 @@ describe('useReferenceInputController', () => {
                 field: 'id',
                 order: 'ASC',
             },
+            signal: expect.anything(),
         });
     });
 
@@ -106,6 +107,7 @@ describe('useReferenceInputController', () => {
                     field: 'title',
                     order: 'ASC',
                 },
+                signal: expect.anything(),
             });
         });
     });
@@ -125,7 +127,10 @@ describe('useReferenceInputController', () => {
         await waitFor(() => {
             expect(dataProvider.getList).toBeCalledTimes(1);
             expect(dataProvider.getMany).toBeCalledTimes(1);
-            expect(dataProvider.getMany).toBeCalledWith('posts', { ids: [1] });
+            expect(dataProvider.getMany).toBeCalledWith('posts', {
+                ids: [1],
+                signal: expect.anything(),
+            });
         });
     });
 
@@ -242,6 +247,7 @@ describe('useReferenceInputController', () => {
                 field: 'title',
                 order: 'ASC',
             },
+            signal: expect.anything(),
         });
 
         fireEvent.click(screen.getByLabelText('Change sort'));
@@ -259,6 +265,7 @@ describe('useReferenceInputController', () => {
                 field: 'body',
                 order: 'DESC',
             },
+            signal: expect.anything(),
         });
     });
 

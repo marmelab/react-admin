@@ -83,7 +83,9 @@ describe('<Authenticated>', () => {
         );
 
         await waitFor(() => {
-            expect(authProvider.checkAuth.mock.calls[0][0]).toEqual({});
+            expect(authProvider.checkAuth.mock.calls[0][0]).toEqual({
+                signal: expect.anything(),
+            });
             expect(authProvider.logout.mock.calls[0][0]).toEqual({});
             expect(reset).toHaveBeenCalledTimes(1);
             expect(notificationsSpy).toEqual([

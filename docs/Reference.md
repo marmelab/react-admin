@@ -69,6 +69,7 @@ title: "Index"
 * [`<Empty>`](./List.md#empty)
 
 **- F -**
+* [`<FieldDiff>`](https://marmelab.com/ra-enterprise/modules/ra-history#fielddiff)<img class="icon" src="./img/premium.svg" />
 * [`<FileField>`](./FileField.md)
 * [`<FileInput>`](./FileInput.md)
 * [`<Filter>`](./List.md#filters-filter-inputs)
@@ -140,6 +141,8 @@ title: "Index"
 * [`<ReferenceOneField>`](./ReferenceOneField.md)
 * [`<ReferenceOneInput>`](./ReferenceOneInput.md)
 * [`<Resource>`](./Resource.md)
+* [`<RevisionsButton>`](./RevisionsButton.md)<img class="icon" src="./img/premium.svg" />
+* [`<RevisionListWithDetailsInDialog>`](https://marmelab.com/ra-enterprise/modules/ra-history#revisionlistwithdetailsindialog)<img class="icon" src="./img/premium.svg" />
 * [`<RichTextField>`](./RichTextField.md)
 * [`<RichTextInput>`](./RichTextInput.md)
 * [`<RowForm>`](https://marmelab.com/ra-enterprise/modules/ra-editable-datagrid#rowform)<img class="icon" src="./img/premium.svg" />
@@ -164,9 +167,11 @@ title: "Index"
 * [`<SidebarOpenPreferenceSync>`](https://marmelab.com/ra-enterprise/modules/ra-preferences#sidebaropenpreferencesync-store-the-sidebar-openclose-state-in-preferences)<img class="icon" src="./img/premium.svg" />
 * [`<SimpleForm>`](./SimpleForm.md)
 * [`<SimpleFormIterator>`](./SimpleFormIterator.md)
+* [`<SimpleFormWithRevision>`](./SimpleForm.md#versioning)<img class="icon" src="./img/premium.svg" />
 * [`<SimpleList>`](./SimpleList.md)
 * [`<SimpleShowLayout>`](./SimpleShowLayout.md)
 * [`<SingleFieldList>`](./SingleFieldList.md)
+* [`<SmartFieldDiff>`](https://marmelab.com/ra-enterprise/modules/ra-history#smartfielddiff)<img class="icon" src="./img/premium.svg" />
 * [`<SmartRichTextInput>`](./SmartRichTextInput.md)<img class="icon" src="./img/premium.svg" />
 * [`<SolarLayout>`](./SolarLayout.md)<img class="icon" src="./img/premium.svg" />
 * [`<SolarMenu>`](./SolarLayout.md#solarmenu)<img class="icon" src="./img/premium.svg" />
@@ -177,6 +182,7 @@ title: "Index"
 **- T -**
 * `<Tab>`
 * [`<TabbedForm>`](./TabbedForm.md)
+* [`<TabbedFormWithRevision>`](./TabbedForm.md#versioning)<img class="icon" src="./img/premium.svg" />
 * [`<TabbedShowLayout>`](./TabbedShowLayout.md)
 * [`<TextField>`](./TextField.md)
 * [`<TextInput>`](./TextInput.md)
@@ -236,6 +242,9 @@ title: "Index"
 * [`useEditContext`](./useEditContext.md)
 * [`useEditController`](./useEditController.md)
 
+**- F -**
+* [`useFieldValue`](./useFieldValue.md)
+
 **- G -**
 * [`useGetIdentity`](./useGetIdentity.md)
 * [`useGetList`](./useGetList.md)
@@ -276,7 +285,7 @@ title: "Index"
 
 **- P -**
 * [`usePermissions`](./usePermissions.md)
-* [`usePreferences`](https://marmelab.com/ra-enterprise/modules/ra-preferences#usepreferences-reading-and-writing-user-preferences)<img class="icon" src="./img/premium.svg" />
+* [`usePreference`](./Configurable.md#usage)
 * [`usePublish`](./usePublish.md)<img class="icon" src="./img/premium.svg" />
 
 **- R -**

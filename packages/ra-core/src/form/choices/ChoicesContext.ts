@@ -31,7 +31,7 @@ export type ChoicesContextValue<RecordType extends RaRecord = any> = {
     selectedChoices: RecordType[];
     setFilters: (
         filters: any,
-        displayedFilters: any,
+        displayedFilters?: any,
         debounce?: boolean
     ) => void;
     setPage: (page: number) => void;

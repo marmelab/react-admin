@@ -101,7 +101,7 @@ export const useInfiniteGetList = <RecordType extends RaRecord = any>(
             'getInfiniteList',
             { pagination, sort, filter, meta },
         ],
-        queryFn: ({ pageParam = pagination.page }) =>
+        queryFn: ({ pageParam = pagination.page, signal }) =>
             dataProvider
                 .getList<RecordType>(resource, {
                     pagination: {
@@ -111,6 +111,7 @@ export const useInfiniteGetList = <RecordType extends RaRecord = any>(
                     sort,
                     filter,
                     meta,
+                    signal,
                 })
                 .then(({ data, pageInfo, total }) => ({
                     data,

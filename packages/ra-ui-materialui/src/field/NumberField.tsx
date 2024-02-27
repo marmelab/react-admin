@@ -1,8 +1,7 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import get from 'lodash/get';
 import Typography, { TypographyProps } from '@mui/material/Typography';
-import { useRecordContext, useTranslate } from 'ra-core';
+import { useFieldValue, useTranslate } from 'ra-core';
 
 import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
 import { FieldProps, fieldPropTypes } from './types';
@@ -51,13 +50,8 @@ const NumberFieldImpl = <
         transform = defaultTransform,
         ...rest
     } = props;
-    const record = useRecordContext<RecordType>(props);
     const translate = useTranslate();
-
-    if (!record) {
-        return null;
-    }
-    let value: any = get(record, source);
+    let value = useFieldValue(props);
 
     if (value == null) {
         return emptyText ? (

@@ -12,6 +12,7 @@ import {
     ReferenceArrayField,
     TextField,
     UrlField,
+    ArrayFieldProps,
 } from '../field';
 
 export const listFieldTypes = {
@@ -25,15 +26,22 @@ ${children.map(child => `            ${child.getRepresentation()}`).join('\n')}
     },
     array: {
         // eslint-disable-next-line react/display-name
-        component: ({ children, ...props }) => (
-            <ArrayField {...props}>
-                <SingleFieldList>
-                    <ChipField
-                        source={children.length > 0 && children[0].props.source}
-                    />
-                </SingleFieldList>
-            </ArrayField>
-        ),
+        component: ({ children, ...props }: ArrayFieldProps) => {
+            const childrenArray = React.Children.toArray(children);
+            return (
+                <ArrayField {...props}>
+                    <SingleFieldList>
+                        <ChipField
+                            source={
+                                childrenArray.length > 0 &&
+                                React.isValidElement(childrenArray[0]) &&
+                                childrenArray[0].props.source
+                            }
+                        />
+                    </SingleFieldList>
+                </ArrayField>
+            );
+        },
         representation: (props, children) =>
             `<ArrayField source="${
                 props.source

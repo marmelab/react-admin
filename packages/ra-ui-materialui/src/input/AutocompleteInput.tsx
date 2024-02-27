@@ -345,7 +345,7 @@ If you provided a React element for the optionText prop, you must also provide t
                 return;
             }
 
-            setFilters(filterToQuery(filter), undefined, true);
+            setFilters(filterToQuery(filter));
         }, debounceDelay),
         [debounceDelay, setFilters, setFilter]
     );
@@ -562,42 +562,51 @@ If you provided a React element for the optionText prop, you must also provide t
                 id={id}
                 isOptionEqualToValue={isOptionEqualToValue}
                 filterSelectedOptions
-                renderInput={params => (
-                    <TextField
-                        name={field.name}
-                        label={
-                            <FieldTitle
-                                label={label}
-                                source={source}
-                                resource={resourceProp}
-                                isRequired={isRequired}
-                            />
-                        }
-                        error={
-                            !!fetchError ||
-                            ((isTouched || isSubmitted) && invalid)
-                        }
-                        helperText={
-                            renderHelperText ? (
-                                <InputHelperText
-                                    touched={
-                                        isTouched || isSubmitted || fetchError
-                                    }
-                                    error={
-                                        error?.message || fetchError?.message
-                                    }
-                                    helperText={helperText}
+                renderInput={params => {
+                    const mergedTextFieldProps = {
+                        ...params.InputProps,
+                        ...TextFieldProps?.InputProps,
+                    };
+                    return (
+                        <TextField
+                            name={field.name}
+                            label={
+                                <FieldTitle
+                                    label={label}
+                                    source={source}
+                                    resource={resourceProp}
+                                    isRequired={isRequired}
                                 />
-                            ) : null
-                        }
-                        margin={margin}
-                        variant={variant}
-                        className={AutocompleteInputClasses.textField}
-                        {...TextFieldProps}
-                        {...params}
-                        size={size}
-                    />
-                )}
+                            }
+                            error={
+                                !!fetchError ||
+                                ((isTouched || isSubmitted) && invalid)
+                            }
+                            helperText={
+                                renderHelperText ? (
+                                    <InputHelperText
+                                        touched={
+                                            isTouched ||
+                                            isSubmitted ||
+                                            fetchError
+                                        }
+                                        error={
+                                            error?.message ||
+                                            fetchError?.message
+                                        }
+                                        helperText={helperText}
+                                    />
+                                ) : null
+                            }
+                            margin={margin}
+                            variant={variant}
+                            className={AutocompleteInputClasses.textField}
+                            {...params}
+                            InputProps={mergedTextFieldProps}
+                            size={size}
+                        />
+                    );
+                }}
                 multiple={multiple}
                 renderTags={(value, getTagProps) =>
                     value.map((option, index) => (
