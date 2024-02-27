@@ -345,7 +345,7 @@ If you provided a React element for the optionText prop, you must also provide t
                 return;
             }
 
-            setFilters(filterToQuery(filter), undefined, true);
+            setFilters(filterToQuery(filter));
         }, debounceDelay),
         [debounceDelay, setFilters, setFilter]
     );

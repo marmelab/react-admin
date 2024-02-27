@@ -87,7 +87,7 @@ const BookListView = () => {
             // the last parameter is debounce false
             // without it, the filter change overrides any other list param change
             // see https://github.com/marmelab/react-admin/issues/4189
-            setFilters(value.filterValues, null, false);
+            setFilters(value.filterValues, undefined, false);
         }
         if (value.page !== page) {
             setPage(value.page);

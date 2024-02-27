@@ -436,6 +436,30 @@ const PostEdit = () => (
 );
 ```
 
+## `setFilters` Is No Longer Debounced By Default
+
+If you're using the `useListContext` hook to filter a list, you might have used the `setFilters` function to update the filters. In react-admin v5, the `setFilters` function is no longer debounced by default. If you want to debounce the filters, you'll have to pass `true` as the third argument:
+
+```diff
+import { useListContext } from 'react-admin';
+
+const MyFilter = () => {
+    const { filterValues, setFilters } = useListContext();
+    const handleChange = (event) => {
+-       setFilters({ ...filterValues, [event.target.name]: event.target.value });
++       setFilters({ ...filterValues, [event.target.name]: event.target.value }, undefined, true);
+    };
+
+    return (
+        <form>
+            <input name="country" value={filterValues.country} onChange={handleChange} />
+            <input name="city" value={filterValues.city} onChange={handleChange} />
+            <input name="zipcode" value={filterValues.zipcode} onChange={handleChange} />
+        </form>
+    );
+};
+```
+
 ## Fields Components Requires The `source` Prop
 
 The `FieldProps` interface now requires the `source` prop to be defined. As a consequence, all the default fields components also require the `source` prop to be defined.

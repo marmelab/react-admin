@@ -224,7 +224,7 @@ export const useListParams = ({
     }, debounce);
 
     const setFilters = useCallback(
-        (filter, displayedFilters, debounce = true) =>
+        (filter, displayedFilters = undefined, debounce = false) =>
             debounce
                 ? debouncedSetFilters(filter, displayedFilters)
                 : changeParams({
@@ -409,7 +409,11 @@ interface Modifiers {
     setPage: (page: number) => void;
     setPerPage: (pageSize: number) => void;
     setSort: (sort: SortPayload) => void;
-    setFilters: (filters: any, displayedFilters: any) => void;
+    setFilters: (
+        filters: any,
+        displayedFilters?: any,
+        debounce?: boolean
+    ) => void;
     hideFilter: (filterName: string) => void;
     showFilter: (filterName: string, defaultValue: any) => void;
 }

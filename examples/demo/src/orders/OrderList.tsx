@@ -23,7 +23,6 @@ import {
 } from 'react-admin';
 import { useMediaQuery, Divider, Tabs, Tab, Theme } from '@mui/material';
 
-import NbItemsField from './NbItemsField';
 import CustomerReferenceField from '../visitors/CustomerReferenceField';
 import AddressField from '../visitors/AddressField';
 import MobileGrid from './MobileGrid';
@@ -85,8 +84,7 @@ const TabbedDatagrid = () => {
             setFilters &&
                 setFilters(
                     { ...filterValues, status: value },
-                    displayedFilters,
-                    false // no debounce, we want the filter to fire immediately
+                    displayedFilters
                 );
         },
         [displayedFilters, filterValues, setFilters]
@@ -142,9 +140,9 @@ const TabbedDatagrid = () => {
                             >
                                 <AddressField />
                             </ReferenceField>
-                            <NbItemsField
+                            <NumberField
+                                source="basket.length"
                                 label="resources.commands.fields.nb_items"
-                                textAlign="right"
                             />
                             <NumberField
                                 source="total_ex_taxes"
@@ -193,9 +191,9 @@ const TabbedDatagrid = () => {
                             >
                                 <AddressField />
                             </ReferenceField>
-                            <NbItemsField
+                            <NumberField
+                                source="basket.length"
                                 label="resources.commands.fields.nb_items"
-                                textAlign="right"
                             />
                             <NumberField
                                 source="total_ex_taxes"
@@ -248,9 +246,9 @@ const TabbedDatagrid = () => {
                             >
                                 <AddressField />
                             </ReferenceField>
-                            <NbItemsField
+                            <NumberField
+                                source="basket.length"
                                 label="resources.commands.fields.nb_items"
-                                textAlign="right"
                             />
                             <NumberField
                                 source="total_ex_taxes"

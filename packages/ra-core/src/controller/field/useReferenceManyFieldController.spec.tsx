@@ -284,7 +284,7 @@ describe('useReferenceManyFieldController', () => {
                 type="text"
                 value={filterValues.q || ''}
                 onChange={event => {
-                    setFilters({ q: event.target.value });
+                    setFilters({ q: event.target.value }, undefined, true);
                 }}
             />
         );
