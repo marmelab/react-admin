@@ -40,7 +40,6 @@
         "@emotion/styled": "^11.3.0",
         "@mui/icons-material": "^5.0.1",
         "@mui/material": "^5.0.1",
-        "history": "^5.1.0",
         "ra-core": "^4.16.2",
         "ra-i18n-polyglot": "^4.16.2",
         "ra-language-english": "^4.16.2",
