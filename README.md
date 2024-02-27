@@ -194,12 +194,6 @@ For all Pull requests, you must follow the coding style of the existing files (b
 
 Clone this repository and run `make install` to grab the dependencies, then `make build` to compile the sources from TypeScript to JS.
 
-### Online one-click Setup
-
-You can use Gitpod (an open source, online VS Code-like IDE) for working on issues and making PRs. With a single click it will launch a workspace and automatically clone the repo, run `make install` and `make run` so that you can start straight away.
-
-[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/from-referrer/)
-
 ### Testing Your Changes In The Example Apps
 
 When developing, most of the time we use the **simple example** to do visual check. It's the same application that we use in Stackblitz to reproduce errors (see https://stackblitz.com/github/marmelab/react-admin/tree/master/examples/simple). The source is located under `examples/simple/`. Call `make run` to launch that example on port 8080 (http://localhost:8080). This command includes a `watch` on the react-admin source, so any of the changes you make to the react-admin packages triggers a live update of the simple example in your browser. 
