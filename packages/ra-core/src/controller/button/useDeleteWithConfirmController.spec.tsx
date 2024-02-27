@@ -1,6 +1,6 @@
 import React from 'react';
 import expect from 'expect';
-import { MemoryRouter, Route, Routes } from 'react-router';
+import { Route, Routes } from 'react-router';
 import { fireEvent, screen, render, waitFor } from '@testing-library/react';
 
 import { testDataProvider } from '../../dataProvider';
@@ -8,6 +8,8 @@ import { CoreAdminContext } from '../../core';
 import useDeleteWithConfirmController, {
     UseDeleteWithConfirmControllerParams,
 } from './useDeleteWithConfirmController';
+
+import { TestMemoryRouter } from '../../routing';
 
 describe('useDeleteWithConfirmController', () => {
     it('should call the dataProvider.delete() function with the meta param', async () => {
@@ -30,13 +32,13 @@ describe('useDeleteWithConfirmController', () => {
         };
 
         render(
-            <MemoryRouter>
+            <TestMemoryRouter>
                 <CoreAdminContext dataProvider={dataProvider}>
                     <Routes>
                         <Route path="/" element={<MockComponent />} />
                     </Routes>
                 </CoreAdminContext>
-            </MemoryRouter>
+            </TestMemoryRouter>
         );
 
         const button = await screen.findByText('Delete');

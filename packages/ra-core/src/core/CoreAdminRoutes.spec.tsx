@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import expect from 'expect';
-import { MemoryRouter, NavigateFunction, Route } from 'react-router-dom';
+import { NavigateFunction, Route } from 'react-router-dom';
 
 import { CoreAdminContext } from './CoreAdminContext';
 import { CoreAdminRoutes } from './CoreAdminRoutes';
@@ -228,7 +228,7 @@ describe('<CoreAdminRoutes>', () => {
             };
 
             render(
-                <MemoryRouter>
+                <TestMemoryRouter>
                     <CoreAdminContext
                         authProvider={authProvider}
                         dataProvider={testDataProvider()}
@@ -245,7 +245,7 @@ describe('<CoreAdminRoutes>', () => {
                             />
                         </CoreAdminRoutes>
                     </CoreAdminContext>
-                </MemoryRouter>
+                </TestMemoryRouter>
             );
             expect(screen.queryByText('PostList')).not.toBeNull();
             expect(screen.queryByText('Loading')).toBeNull();
@@ -262,7 +262,7 @@ describe('<CoreAdminRoutes>', () => {
             };
 
             render(
-                <MemoryRouter>
+                <TestMemoryRouter>
                     <CoreAdminContext
                         authProvider={authProvider}
                         dataProvider={testDataProvider()}
@@ -279,7 +279,7 @@ describe('<CoreAdminRoutes>', () => {
                             />
                         </CoreAdminRoutes>
                     </CoreAdminContext>
-                </MemoryRouter>
+                </TestMemoryRouter>
             );
             expect(screen.queryByText('PostList')).toBeNull();
             expect(screen.queryByText('Loading')).not.toBeNull();

@@ -1,12 +1,14 @@
 import * as React from 'react';
 import expect from 'expect';
 import { render, screen, waitFor } from '@testing-library/react';
-import { MemoryRouter, Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 
 import { useHandleAuthCallback } from './useHandleAuthCallback';
 import AuthContext from './AuthContext';
 import { AuthProvider } from '../types';
+
+import { TestMemoryRouter } from '../routing';
 
 const TestComponent = ({ customError }: { customError?: boolean }) => {
     const [error, setError] = React.useState<string>();
@@ -45,7 +47,7 @@ describe('useHandleAuthCallback', () => {
 
     it('should redirect to the home route by default when the callback was successfully handled', async () => {
         render(
-            <MemoryRouter initialEntries={['/auth-callback']}>
+            <TestMemoryRouter initialEntries={['/auth-callback']}>
                 <AuthContext.Provider value={authProvider}>
                     <QueryClientProvider client={new QueryClient()}>
                         <Routes>
@@ -58,14 +60,14 @@ describe('useHandleAuthCallback', () => {
                         </Routes>
                     </QueryClientProvider>
                 </AuthContext.Provider>
-            </MemoryRouter>
+            </TestMemoryRouter>
         );
         await screen.findByText('Home');
     });
 
     it('should redirect to the provided route when the callback was successfully handled', async () => {
         render(
-            <MemoryRouter initialEntries={['/auth-callback']}>
+            <TestMemoryRouter initialEntries={['/auth-callback']}>
                 <AuthContext.Provider
                     value={{
                         ...authProvider,
@@ -85,14 +87,14 @@ describe('useHandleAuthCallback', () => {
                         </Routes>
                     </QueryClientProvider>
                 </AuthContext.Provider>
-            </MemoryRouter>
+            </TestMemoryRouter>
         );
         await screen.findByText('Test');
     });
 
     it('should use custom useQuery options such as onError', async () => {
         render(
-            <MemoryRouter initialEntries={['/auth-callback']}>
+            <TestMemoryRouter initialEntries={['/auth-callback']}>
                 <AuthContext.Provider
                     value={{
                         ...authProvider,
@@ -110,7 +112,7 @@ describe('useHandleAuthCallback', () => {
                         </Routes>
                     </QueryClientProvider>
                 </AuthContext.Provider>
-            </MemoryRouter>
+            </TestMemoryRouter>
         );
         await waitFor(() => {
             screen.getByText('Custom Error');
