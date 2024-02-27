@@ -158,8 +158,13 @@ export const ExtraProps = () => (
 );
 
 const FormStateInspector = () => {
-    const { touchedFields, isDirty, dirtyFields, isValid, errors } =
-        useFormState();
+    const {
+        touchedFields,
+        isDirty,
+        dirtyFields,
+        isValid,
+        errors,
+    } = useFormState();
     return (
         <div>
             form state:&nbsp;

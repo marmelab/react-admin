@@ -257,8 +257,8 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
     const finalValue = Array.isArray(field.value ?? [])
         ? field.value
         : field.value
-          ? [field.value]
-          : [];
+        ? [field.value]
+        : [];
 
     const outlinedInputProps =
         variant === 'outlined'
