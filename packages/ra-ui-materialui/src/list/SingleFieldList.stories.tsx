@@ -4,8 +4,8 @@ import {
     ResourceContextProvider,
     ResourceDefinitionContextProvider,
     useList,
+    TestMemoryRouter,
 } from 'ra-core';
-import { MemoryRouter } from 'react-router-dom';
 import { Typography, Divider as MuiDivider } from '@mui/material';
 
 import { SingleFieldList } from './SingleFieldList';
@@ -35,7 +35,7 @@ const Wrapper = ({
         data,
     });
     return (
-        <MemoryRouter>
+        <TestMemoryRouter>
             <ResourceDefinitionContextProvider
                 definitions={{
                     books: {
@@ -54,7 +54,7 @@ const Wrapper = ({
                     </ListContextProvider>
                 </ResourceContextProvider>
             </ResourceDefinitionContextProvider>
-        </MemoryRouter>
+        </TestMemoryRouter>
     );
 };
 const Title = ({ children }) => (

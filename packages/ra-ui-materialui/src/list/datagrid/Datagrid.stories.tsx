@@ -9,13 +9,13 @@ import {
     useRecordSelection,
     useGetList,
     useList,
+    TestMemoryRouter,
 } from 'ra-core';
 import fakeRestDataProvider from 'ra-data-fakerest';
 import defaultMessages from 'ra-language-english';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 
 import { Box, styled } from '@mui/material';
-import { MemoryRouter } from 'react-router-dom';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import { TextField } from '../../field';
@@ -432,7 +432,7 @@ export const StyledComponent = () => (
 );
 
 export const ErrorInFetch = () => (
-    <MemoryRouter>
+    <TestMemoryRouter>
         <ListContextProvider
             value={
                 {
@@ -447,7 +447,7 @@ export const ErrorInFetch = () => (
                 <TextField source="year" />
             </Datagrid>
         </ListContextProvider>
-    </MemoryRouter>
+    </TestMemoryRouter>
 );
 
 export const RowClickFalse = () => (

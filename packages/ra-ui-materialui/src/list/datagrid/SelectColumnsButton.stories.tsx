@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { MemoryRouter } from 'react-router-dom';
-import { PreferencesEditorContextProvider } from 'ra-core';
+import { PreferencesEditorContextProvider, TestMemoryRouter } from 'ra-core';
 import { Box } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
@@ -45,7 +44,7 @@ const theme = createTheme();
 export const Basic = () => (
     <ThemeProvider theme={theme}>
         <PreferencesEditorContextProvider>
-            <MemoryRouter>
+            <TestMemoryRouter>
                 <Box p={2}>
                     <Box textAlign="right">
                         <SelectColumnsButton resource="books" />
@@ -62,7 +61,7 @@ export const Basic = () => (
                         <TextField source="year" />
                     </DatagridConfigurable>
                 </Box>
-            </MemoryRouter>
+            </TestMemoryRouter>
         </PreferencesEditorContextProvider>
     </ThemeProvider>
 );
@@ -70,7 +69,7 @@ export const Basic = () => (
 export const WithPreferenceKey = () => (
     <ThemeProvider theme={theme}>
         <PreferencesEditorContextProvider>
-            <MemoryRouter>
+            <TestMemoryRouter>
                 <Box p={2}>
                     <Box textAlign="right">
                         <SelectColumnsButton preferenceKey="just-a-key.to_test_with" />
@@ -87,7 +86,7 @@ export const WithPreferenceKey = () => (
                         <TextField source="year" />
                     </DatagridConfigurable>
                 </Box>
-            </MemoryRouter>
+            </TestMemoryRouter>
         </PreferencesEditorContextProvider>
     </ThemeProvider>
 );

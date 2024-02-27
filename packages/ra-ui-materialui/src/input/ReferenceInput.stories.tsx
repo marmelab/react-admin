@@ -12,7 +12,6 @@ import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
 import fakeRestDataProvider from 'ra-data-fakerest';
 import { Stack, Divider, Typography, Button } from '@mui/material';
-import { MemoryRouter } from 'react-router-dom';
 
 import { Edit } from '../detail';
 import { SimpleForm } from '../form';
@@ -553,7 +552,7 @@ const BookEditQueryOptions = () => {
 };
 
 export const QueryOptions = () => (
-    <MemoryRouter initialEntries={['/books/1']}>
+    <TestMemoryRouter initialEntries={['/books/1']}>
         <Admin
             dataProvider={fakeRestDataProvider(
                 {
@@ -612,5 +611,5 @@ export const QueryOptions = () => (
             />
             <Resource name="books" edit={BookEditQueryOptions} />
         </Admin>
-    </MemoryRouter>
+    </TestMemoryRouter>
 );
