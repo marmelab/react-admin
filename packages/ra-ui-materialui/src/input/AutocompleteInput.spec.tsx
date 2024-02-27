@@ -415,7 +415,7 @@ describe('<AutocompleteInput />', () => {
             expect(screen.queryByLabelText('bar')).not.toBeNull();
         });
 
-        it('should throw an error if no inputText was provided when the optionText returns an element', () => {
+        it('should throw an error if no inputText was provided when the optionText returns an element', async () => {
             const mock = jest
                 .spyOn(console, 'error')
                 .mockImplementation(() => {});
@@ -424,29 +424,25 @@ describe('<AutocompleteInput />', () => {
                 return <div {...props} aria-label={record && record.name} />;
             };
 
-            const t = () => {
-                act(() => {
-                    render(
-                        <AdminContext dataProvider={testDataProvider()}>
-                            <SimpleForm
-                                onSubmit={jest.fn()}
-                                defaultValues={{ role: 2 }}
-                            >
-                                <AutocompleteInput
-                                    {...defaultProps}
-                                    optionText={() => <SuggestionItem />}
-                                    matchSuggestion={() => true}
-                                    choices={[
-                                        { id: 1, name: 'bar' },
-                                        { id: 2, name: 'foo' },
-                                    ]}
-                                />
-                            </SimpleForm>
-                        </AdminContext>
-                    );
-                });
-            };
-            expect(t).toThrow(
+            render(
+                <AdminContext dataProvider={testDataProvider()}>
+                    <SimpleForm
+                        onSubmit={jest.fn()}
+                        defaultValues={{ role: 2 }}
+                    >
+                        <AutocompleteInput
+                            {...defaultProps}
+                            optionText={() => <SuggestionItem />}
+                            matchSuggestion={() => true}
+                            choices={[
+                                { id: 1, name: 'bar' },
+                                { id: 2, name: 'foo' },
+                            ]}
+                        />
+                    </SimpleForm>
+                </AdminContext>
+            );
+            await screen.findByText(
                 'When optionText returns a React element, you must also provide the inputText prop'
             );
             mock.mockRestore();

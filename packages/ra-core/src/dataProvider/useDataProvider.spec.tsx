@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
-import { render, act } from '@testing-library/react';
+import { render, act, screen } from '@testing-library/react';
 import expect from 'expect';
 
 import { useDataProvider } from './useDataProvider';
@@ -102,16 +102,13 @@ describe('useDataProvider', () => {
             throw new Error('foo');
         });
         const dataProvider = { getOne };
-        const r = () =>
-            render(
-                <CoreAdminContext dataProvider={dataProvider}>
-                    <UseGetOne />
-                </CoreAdminContext>
-            );
-        expect(r).toThrow(
-            new Error(
-                'The dataProvider threw an error. It should return a rejected Promise instead.'
-            )
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
+                <UseGetOne />
+            </CoreAdminContext>
+        );
+        await screen.findByText(
+            'The dataProvider threw an error. It should return a rejected Promise instead.'
         );
         c.mockRestore();
     });
