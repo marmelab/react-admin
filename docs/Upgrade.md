@@ -343,7 +343,25 @@ const CompanyField = () => (
 
 ## Inputs Have A Minimum Width
 
-Inputs have a consistent minimum width in each theme, so forms show better alignment and are easier to read. This may break your layout if you relied on the previous input widths. If you used any of the default themes and you want to remove the minimum input width, you must set a custom theme in your admin as follows:
+Inputs have a consistent minimum width in each theme, so forms show better alignment and are easier to read. This may break your layout if you relied on the previous input widths. 
+
+If you constrained some inputs to a small width using the `width` sx prop, you will need to unset the `minWidth` sx prop as well:
+
+```diff
+import { TextInput } from 'react-admin';
+
+const MyComponent = () => (
+    <TextInput
+        source="title"
+        sx={{
+            width: 100,
++           minWidth: unset,
+        }}
+    />
+);
+```
+
+If you used any of the default themes and you want to remove the minimum input width, you must set a custom theme in your admin as follows:
 
 ```diff
 -import { Admin } from 'react-admin';

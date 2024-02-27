@@ -323,6 +323,20 @@ Each individual input supports an `sx` prop to pass custom styles to the underly
 ```
 {% endraw %}
 
+Most inputs have a minimum width defined by the theme. If you want to set the width of a given input to a value smaller than the theme's minimum width, use the `sx` prop to unset the `minWidth` CSS property.
+
+{% raw %}
+```tsx
+<TextInput
+    source="title"
+    sx={{
+        width: 100,
+        minWidth: 'unset',
+    }}
+/>
+```
+{% endraw %}
+
 Refer to the documentation of each input component to see what inner classes you can override.
 
 ## `validate`
