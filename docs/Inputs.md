@@ -153,7 +153,7 @@ export const PostCreate = () => (
 
 ## `readOnly`
 
-If `true`, the input is in read-only mode and the user can't change the value.
+The `readOnly` prop set to true makes the element not mutable, meaning the user can not edit the control.
 
 ```tsx
 <TextInput source="title" readOnly />
@@ -161,17 +161,15 @@ If `true`, the input is in read-only mode and the user can't change the value.
 
 ## `disabled`
 
-If `true`, the input is disabled and the user can't change the value.
+The `disabled` prop set to true makes the element not mutable, focusable, or even submitted with the form.
 
 ```tsx
 <TextInput source="title" disabled />
 ```
 
-**Tip:** Note that `disabled` inputs are **not** included in the form values, and hence may trigger `warnWhenUnsavedChanges` if the input previously had a value in the record. To include the input in the form values, you can use `readOnly` instead of `disabled`. The workaround is to set the `disabled` prop on the underlying input component, as follows:
+**Warning:** Note that `disabled` inputs are **not** included in the form values, and hence may trigger `warnWhenUnsavedChanges` if the input previously had a value in the record.
 
-```jsx
-<TextInput source="title" InputProps={{ disabled: true }} />
-```
+**Tip:** To include the input in the form values, you can use `readOnly` instead of `disabled`.
 
 ## `format`
 
