@@ -30,7 +30,7 @@ import { BooleanInput } from 'react-admin';
 |-----------|----------|----------|---------|----------------------------------------------------------------------------|
 | `options` | Optional | `Object` | `{}`    | Options object to pass to the underlying material-ui `<Switch>` component. |
 
-`<BooleanInput>` also accepts the [common input props](./Inputs.md#common-input-props) (except `readOnly`).
+`<BooleanInput>` also accepts the [common input props](./Inputs.md#common-input-props).
 
 ## `options`
 

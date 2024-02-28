@@ -65,7 +65,7 @@ The form value for the source must be an array of the selected values, e.g.
 | `row`             | Optional | `boolean`                  | `true`  | Display group of elements in a compact row.                       |
 | `translateChoice` | Optional | `boolean`                  | `true`  | Whether the choices should be translated                          |
 
-`<CheckboxGroupInput>` also accepts the [common input props](./Inputs.md#common-input-props) (except `readOnly`).
+`<CheckboxGroupInput>` also accepts the [common input props](./Inputs.md#common-input-props).
 
 ## `choices`
 

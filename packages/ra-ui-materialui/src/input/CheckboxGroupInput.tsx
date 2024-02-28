@@ -108,6 +108,7 @@ export const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = pr
         translateChoice,
         validate,
         disabled,
+        readOnly,
         ...rest
     } = props;
 
@@ -239,7 +240,8 @@ export const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = pr
                         value={value}
                         labelPlacement={labelPlacement}
                         inputRef={index === 0 ? ref : undefined}
-                        disabled={disabled}
+                        disabled={disabled || readOnly}
+                        readOnly={readOnly}
                         {...sanitizeRestProps(rest)}
                     />
                 ))}
@@ -282,15 +284,14 @@ CheckboxGroupInput.propTypes = {
         PropTypes.element,
     ]),
     optionValue: PropTypes.string,
+    disabled: PropTypes.bool,
+    readOnly: PropTypes.bool,
     row: PropTypes.bool,
     resource: PropTypes.string,
     translateChoice: PropTypes.bool,
 };
 
-export type CheckboxGroupInputProps = Omit<
-    CommonInputProps,
-    'source' | 'readOnly'
-> &
+export type CheckboxGroupInputProps = Omit<CommonInputProps, 'source'> &
     ChoicesProps &
     CheckboxProps &
     FormControlProps & {

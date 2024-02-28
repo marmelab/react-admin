@@ -63,7 +63,7 @@ The form value for the source must be the selected value, e.g.
 | `row`             | Optional | `boolean`                  | `true`  | Display options in a compact row.                                                                                                      |
 | `translateChoice` | Optional | `boolean`                  | `true`  | Whether the choices should be translated                                                                                               |
 
-`<RadioButtonGroupInput>` also accepts the [common input props](./Inputs.md#common-input-props) (except `readOnly`).
+`<RadioButtonGroupInput>` also accepts the [common input props](./Inputs.md#common-input-props).
 
 ## `choices`
 

@@ -25,6 +25,7 @@ export const BooleanInput = (props: BooleanInputProps) => {
         onBlur,
         onChange,
         onFocus,
+        readOnly,
         disabled,
         parse,
         resource,
@@ -82,7 +83,8 @@ export const BooleanInput = (props: BooleanInputProps) => {
                         checked={Boolean(field.value)}
                         {...sanitizeInputRestProps(rest)}
                         {...options}
-                        disabled={disabled}
+                        disabled={disabled || readOnly}
+                        readOnly={readOnly}
                     />
                 }
                 label={
@@ -112,10 +114,11 @@ BooleanInput.propTypes = {
     // @ts-ignore
     options: PropTypes.shape(Switch.propTypes),
     disabled: PropTypes.bool,
+    readOnly: PropTypes.bool,
 };
 
-export type BooleanInputProps = Omit<CommonInputProps, 'readOnly'> &
-    Omit<SwitchProps, 'readOnly'> &
+export type BooleanInputProps = CommonInputProps &
+    SwitchProps &
     Omit<FormGroupProps, 'defaultValue' | 'onChange' | 'onBlur' | 'onFocus'> & {
         options?: SwitchProps;
     };
