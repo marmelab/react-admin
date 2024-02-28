@@ -26,11 +26,12 @@ export const combineDataProviders = (
 ): DataProvider =>
     new Proxy(defaultDataProvider, {
         get: (target, name) => {
-            return (resource, params) => {
+            // Using rest parameters to support custom dataProvider methods with any number of parameters
+            return (resource, ...params) => {
                 if (typeof name === 'symbol' || name === 'then') {
                     return;
                 }
-                return dataProviderMatcher(resource)[name](resource, params);
+                return dataProviderMatcher(resource)[name](resource, ...params);
             };
         },
     });
