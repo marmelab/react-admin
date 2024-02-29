@@ -51,6 +51,8 @@ export const BooleanInput = (props: BooleanInputProps) => {
         onChange,
         type: 'checkbox',
         validate,
+        disabled,
+        readOnly,
         ...rest,
     });
 
