@@ -233,6 +233,8 @@ This delay can be customized by setting the `debounce` prop.
 </ReferenceInput>
 ```
 
+**Tip**: [The `signal` Parameter section](./DataProviders.md#the-signal-parameter) explains how to use the [AbortSignal](https://developer.mozilla.org/en-US/docs/Web/API/AbortSignal) interface to abort the last API call and avoid parallel requests.
+
 ## `emptyText`
 
 If the input isn't required (using `validate={required()}`), and you need a choice to represent the empty value, set `emptyText` prop and a choice will be added at the top, with its value as label.
