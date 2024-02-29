@@ -141,6 +141,8 @@ export const RadioButtonGroupInput = (props: RadioButtonGroupInputProps) => {
         resource,
         source,
         validate,
+        disabled,
+        readOnly,
         ...rest,
     });
 
