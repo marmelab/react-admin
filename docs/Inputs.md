@@ -13,9 +13,9 @@ Input components are usually wrappers around Material UI form components, bound 
 
 ## Usage
 
-Input components must be used inside a Form element (e.g. [`<Form>`](./Form.md), [`<SimpleForm>`](./SimpleForm.md), [`<TabbedForm>`](./TabbedForm.md)). These components create a [`react-hook-form`](https://react-hook-form.com/) form and context.
+Input components must be used inside a Form element (e.g. [`<Form>`](./Form.md), [`<SimpleForm>`](./SimpleForm.md), [`<TabbedForm>`](./TabbedForm.md)). These components create a [`react-hook-form`](https://react-hook-form.com/) form and context. 
 
-Input components require a `source` prop.
+Input components require a `source` prop. 
 
 ```tsx
 import { Edit, SimpleForm, ReferenceInput, SelectInput, TextInput, required } from 'react-admin';
@@ -159,6 +159,8 @@ The `readOnly` prop set to true makes the element not mutable, meaning the user 
 <TextInput source="title" readOnly />
 ```
 
+Contrary to disabled controls, read-only controls are still focusable and are submitted with the form.
+
 ## `disabled`
 
 The `disabled` prop set to true makes the element not mutable, focusable, or even submitted with the form.
@@ -166,6 +168,8 @@ The `disabled` prop set to true makes the element not mutable, focusable, or eve
 ```tsx
 <TextInput source="title" disabled />
 ```
+
+Contrary to read-only controls, disabled controls can not receive focus and are not submitted with the form.
 
 **Warning:** Note that `disabled` inputs are **not** included in the form values, and hence may trigger `warnWhenUnsavedChanges` if the input previously had a value in the record.
 
@@ -181,7 +185,7 @@ form state value --> format --> form input value (string)
 
 ```tsx
 {/* Unit Price is stored in cents, i.e. 123 means 1.23 */}
-<NumberInput
+<NumberInput 
     source="unit_price"
     format={v => String(v * 100)}
     parse={v => parseFloat(v) / 100}
@@ -263,7 +267,7 @@ form input value (string) ---> parse ---> form state value
 
 ```tsx
 {/* Unit Price is stored in cents, i.e. 123 means 1.23 */}
-<NumberInput
+<NumberInput 
     source="unit_price"
     format={v => String(v * 100)}
     parse={v => parseFloat(v) / 100}
@@ -445,7 +449,7 @@ const dateParser = value => {
 <DateInput source="isodate" format={dateFormatter} parse={dateParser} defaultValue={new Date()} />
 ```
 
-**Tip:** A common usage for this feature is to deal with empty values. Indeed, HTML form inputs always return strings, even for numbers and booleans, however most backends expect a value like `null`. This is why, by default, all react-admin inputs will store the value `null` when the HTML input value is `''`.
+**Tip:** A common usage for this feature is to deal with empty values. Indeed, HTML form inputs always return strings, even for numbers and booleans, however most backends expect a value like `null`. This is why, by default, all react-admin inputs will store the value `null` when the HTML input value is `''`. 
 
 **Tip**: If you need to do this globally, including for custom input components that do not use [the `useInput` hook](#the-useinput-hook), have a look at [the `sanitizeEmptyValues` prop of the `<Form>` component](./Form.md#sanitizeemptyvalues).
 
@@ -724,7 +728,7 @@ import { useController } from 'react-hook-form';
 const LatLngInput = () => {
     const input1 = useController({ name: 'position.lat', defaultValue: '' });
     const input2 = useController({ name: 'position.lng', defaultValue: '' });
-
+    
     return (
         <span>
             <input {...input1.field} type="number" placeholder="latitude" />
@@ -748,7 +752,7 @@ import { Labeled } from 'react-admin';
 const LatLngInput = () => {
     const input1 = useController({ name: 'lat', defaultValue: '' });
     const input2 = useController({ name: 'lng', defaultValue: '' });
-
+    
     return (
         <Labeled label="position">
             <span>
@@ -946,7 +950,7 @@ const PersonEdit = () => (
 
 ```ts
 const { isDirty } = useFormState(); // ✅
-const formState = useFormState(); // ❌ should deconstruct the formState
+const formState = useFormState(); // ❌ should deconstruct the formState      
 ```
 
 ## i18n
