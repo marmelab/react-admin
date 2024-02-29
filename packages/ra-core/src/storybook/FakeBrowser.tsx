@@ -47,7 +47,7 @@ const BrowserBar = () => {
     const location = useLocation();
     const navigate = useNavigate();
 
-    const fullLocation = `${location.pathname}${location.search}`;
+    const fullLocation = `${location.pathname}${location.search}${location.hash}`;
 
     const handleSubmit = event => {
         event.preventDefault();

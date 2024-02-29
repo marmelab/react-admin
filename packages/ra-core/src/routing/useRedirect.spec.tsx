@@ -8,7 +8,7 @@ import { CoreAdminContext } from '../core';
 import { RedirectionSideEffect, useRedirect } from './useRedirect';
 import { testDataProvider } from '../dataProvider';
 import { Identifier, RaRecord } from '../types';
-import { TestMemoryRouter } from '.';
+import { TestMemoryRouter } from './TestMemoryRouter';
 
 const Redirect = ({
     redirectTo,
