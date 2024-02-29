@@ -48,6 +48,8 @@ export const DateTimeInput = ({
         resource,
         source,
         validate,
+        disabled,
+        readOnly,
         ...rest,
     });
 
