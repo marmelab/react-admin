@@ -109,8 +109,6 @@ See the [`children`](#children) section for more details.
 | `perPage`          | Optional | `number`                                    | 25                               | Number of suggestions to show                                                                  |
 | `queryOptions`     | Optional | [`UseQueryOptions`](https://tanstack.com/query/v3/docs/react/reference/useQuery)                       | `{}`                             | `react-query` client options                                                                   |
 | `sort`             | Optional | `{ field: String, order: 'ASC' or 'DESC' }` | `{ field:'id', order:'DESC' }` | How to order the list of suggestions                                                           |
-| `readOnly`         | Optional | `boolean`                                   | `false`                        | If true, the default input is in read-only mode.                                                                                                                                     |
-| `disabled`         | Optional | `boolean`                                   | `false`                        | If true, the default input is disabled.                                                                                                                                     |
 
 **Note**: `<ReferenceInput>` doesn't accept the [common input props](./Inputs.md#common-input-props) (like `label`) ; it is the responsibility of the child component to apply them.
 
@@ -327,56 +325,6 @@ Then to display a selector for the contact company, you should call `<ReferenceI
 
 ```jsx
 <ReferenceInput source="company_id" reference="companies" />
-```
-
-## `readOnly`
-
-The `readOnly` prop set to true makes the element not mutable, meaning the user can not edit the control.
-
-```jsx
-<ReferenceInput
-    source="company"
-    reference="companies"
-    readOnly
-/>
-```
-
-**Warning**: The `readOnly` prop is forwarded to the default [`<AutocompleteInput>`](./AutocompleteInput.md) child. If you pass a custom child component, you'll have to specify the `readOnly` prop on it instead:
-
-```jsx
-<ReferenceInput source="company" reference="companies">
-    <SelectInput readOnly />
-</ReferenceInput>
-```
-
-## `disabled`
-
-The `disabled` prop set to true makes the default input element not mutable, focusable, or even submitted with the form.
-
-```jsx
-<ReferenceInput
-    source="company"
-    reference="companies"
-    disabled
-/>
-```
-
-**Tip:** Note that `disabled` inputs are **not** included in the form values, and hence may trigger `warnWhenUnsavedChanges` if the input previously had a value in the record. To include the input in the form values, you can use `readOnly` instead of `disabled`.
-
-```jsx
-<ReferenceInput
-    source="company"
-    reference="companies"
-    disabled
-/>
-```
-
-**Warning**: The `disabled` prop is forwarded to the default [`<AutocompleteInput>`](./AutocompleteInput.md) child. If you pass a custom child component, you'll have to specify the `disabled` prop on it instead:
-
-```jsx
-<ReferenceInput source="company" reference="companies">
-    <SelectInput disabled />
-</ReferenceInput>
 ```
 
 ## Customizing The Filter Query
