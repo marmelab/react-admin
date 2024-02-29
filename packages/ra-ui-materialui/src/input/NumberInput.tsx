@@ -54,6 +54,8 @@ export const NumberInput = ({
         resource,
         source,
         validate,
+        disabled,
+        readOnly,
         ...rest,
     });
     const { onBlur: onBlurFromField } = field;
