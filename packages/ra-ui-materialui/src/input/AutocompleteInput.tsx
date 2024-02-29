@@ -219,6 +219,8 @@ export const AutocompleteInput = <
         resource,
         source,
         validate,
+        disabled,
+        readOnly,
         ...rest,
     });
 
