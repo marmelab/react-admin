@@ -71,6 +71,8 @@ export const TimeInput = ({
         resource,
         source,
         validate,
+        readOnly,
+        disabled,
         ...rest,
     });
 
