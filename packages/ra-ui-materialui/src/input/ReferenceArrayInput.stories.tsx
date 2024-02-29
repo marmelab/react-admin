@@ -70,68 +70,6 @@ export const Basic = () => (
     </Admin>
 );
 
-export const ReadOnly = () => (
-    <Admin dataProvider={dataProvider} history={history}>
-        <Resource name="tags" recordRepresentation={'name'} />
-        <Resource
-            name="posts"
-            create={() => (
-                <Create
-                    resource="posts"
-                    record={{ tags_ids: [1, 3] }}
-                    sx={{ width: 600 }}
-                >
-                    <SimpleForm>
-                        <ReferenceArrayInput
-                            reference="tags"
-                            resource="posts"
-                            source="tags_ids"
-                            readOnly
-                        />
-                        <ReferenceArrayInput
-                            reference="authors"
-                            resource="name"
-                            source="authors_ids"
-                            readOnly
-                        />
-                    </SimpleForm>
-                </Create>
-            )}
-        />
-    </Admin>
-);
-
-export const Disabled = () => (
-    <Admin dataProvider={dataProvider} history={history}>
-        <Resource name="tags" recordRepresentation={'name'} />
-        <Resource
-            name="posts"
-            create={() => (
-                <Create
-                    resource="posts"
-                    record={{ tags_ids: [1, 3] }}
-                    sx={{ width: 600 }}
-                >
-                    <SimpleForm>
-                        <ReferenceArrayInput
-                            reference="tags"
-                            resource="posts"
-                            source="tags_ids"
-                            disabled
-                        />
-                        <ReferenceArrayInput
-                            reference="authors"
-                            resource="name"
-                            source="authors_ids"
-                            disabled
-                        />
-                    </SimpleForm>
-                </Create>
-            )}
-        />
-    </Admin>
-);
-
 export const WithAutocompleteInput = () => (
     <AdminContext dataProvider={dataProvider} i18nProvider={i18nProvider}>
         <Form onSubmit={() => {}} defaultValues={{ tag_ids: [1, 3] }}>
@@ -144,35 +82,6 @@ export const WithAutocompleteInput = () => (
             </ReferenceArrayInput>
         </Form>
     </AdminContext>
-);
-
-export const DisabledWithExplicitChild = () => (
-    <Admin dataProvider={dataProvider} history={history}>
-        <Resource name="tags" recordRepresentation={'name'} />
-        <Resource
-            name="posts"
-            create={() => (
-                <Create
-                    resource="posts"
-                    record={{ tags_ids: [1, 3] }}
-                    sx={{ width: 600 }}
-                >
-                    <SimpleForm>
-                        <ReferenceArrayInput
-                            reference="tags"
-                            resource="posts"
-                            source="tags_ids"
-                        >
-                            <AutocompleteArrayInput
-                                optionText="name"
-                                disabled
-                            />
-                        </ReferenceArrayInput>
-                    </SimpleForm>
-                </Create>
-            )}
-        />
-    </Admin>
 );
 
 export const ErrorAutocomplete = () => (

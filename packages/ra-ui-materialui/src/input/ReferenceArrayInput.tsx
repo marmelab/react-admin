@@ -79,9 +79,7 @@ import { AutocompleteArrayInput } from './AutocompleteArrayInput';
  */
 export const ReferenceArrayInput = (props: ReferenceArrayInputProps) => {
     const {
-        readOnly,
-        disabled,
-        children = defaultChildren(readOnly, disabled),
+        children = defaultChildren,
         reference,
         sort,
         filter = defaultFilter,
@@ -122,9 +120,7 @@ ReferenceArrayInput.propTypes = {
     source: PropTypes.string,
 };
 
-const defaultChildren = (readOnly, disabled) => (
-    <AutocompleteArrayInput readOnly={readOnly} disabled={disabled} />
-);
+const defaultChildren = <AutocompleteArrayInput />;
 const defaultFilter = {};
 
 export interface ReferenceArrayInputProps

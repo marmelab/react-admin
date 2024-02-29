@@ -108,8 +108,6 @@ See the [`children`](#children) section for more details.
 | `perPage`          | Optional | `number`                                    | 25                                 | Number of suggestions to show                                                                                       |
 | `queryOptions`     | Optional | [`UseQueryOptions`](https://tanstack.com/query/v3/docs/react/reference/useQuery) | `{}` | `react-query` client options     |
 | `sort`             | Optional | `{ field: String, order: 'ASC' or 'DESC' }` | `{ field: 'id', order: 'DESC' }`   | How to order the list of suggestions                                                                                |
-| `readOnly`         | Optional | `boolean`                                   | `false`                        | If true, the default input is in read-only mode.                                                                                                                                     |
-| `disabled`         | Optional | `boolean`                                   | `false`                        | If true, the default input is disabled.                                                                                                                                     |
 
 **Note**: `<ReferenceArrayInput>` doesn't accept the [common input props](./Inputs.md#common-input-props) ; it is the responsability of children to apply them.
 
@@ -328,48 +326,6 @@ Then to display a selector for the post tags, you should call `<ReferenceArrayIn
 
 ```jsx
 <ReferenceArrayInput source="tags_ids" reference="tags" />
-```
-
-## `readOnly`
-
-The `readOnly` prop set to true makes the element not mutable, meaning the user can not edit the control.
-
-```jsx
-<ReferenceArrayInput
-    source="tags_ids"
-    reference="tags"
-    readOnly
-/>
-```
-
-**Warning**: The `readOnly` prop is forwarded to the default [`<AutocompleteArrayInput>`](./AutocompleteArrayInput.md) child. If you pass a custom child component, you'll have to specify the `readOnly` prop on it instead:
-
-```jsx
-<ReferenceArrayInput source="tags_ids" reference="tags">
-    <SelectArrayInput readOnly />
-</ReferenceArrayInput>
-```
-
-## `disabled`
-
-The `disabled` prop set to true makes the element not mutable, focusable, or even submitted with the form.
-
-```jsx
-<ReferenceArrayInput
-    source="tags_ids"
-    reference="tags"
-    disabled
-/>
-```
-
-**Tip:** Note that `disabled` inputs are **not** included in the form values, and hence may trigger `warnWhenUnsavedChanges` if the input previously had a value in the record. To include the input in the form values, you can use `readOnly` instead of `disabled`.
-
-**Warning**: The `disabled` prop is forwarded to the default [`<AutocompleteArrayInput>`](./AutocompleteArrayInput.md) child. If you pass a custom child component, you'll have to specify the `disabled` prop on it instead:
-
-```jsx
-<ReferenceArrayInput source="tags_ids" reference="tags">
-    <SelectArrayInput disabled />
-</ReferenceArrayInput>
 ```
 
 ## Customizing The Filter Query
