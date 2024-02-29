@@ -69,8 +69,7 @@ export const useWarnWhenUnsavedChanges = (
             }
         }
         setShouldNotify(false);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [shouldNotify]);
+    }, [blocker, shouldNotify, translate]);
 
     // This effect handles document navigation, e.g. closing the tab
     useEffect(() => {
