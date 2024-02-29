@@ -125,5 +125,9 @@ export interface ReferenceInputProps
         UseReferenceInputControllerParams {
     children?: ReactElement;
     label?: string;
+    /**
+     * Call validate on the child component instead
+     */
+    validate?: never;
     [key: string]: any;
 }
