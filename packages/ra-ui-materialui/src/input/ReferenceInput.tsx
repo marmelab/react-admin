@@ -1,4 +1,4 @@
-import React, { Children, ReactElement } from 'react';
+import React, { ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import {
     ChoicesContextProvider,
