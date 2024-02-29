@@ -48,6 +48,8 @@ export const NullableBooleanInput = (props: NullableBooleanInputProps) => {
         resource,
         source,
         validate,
+        disabled,
+        readOnly,
         ...rest,
     });
     const renderHelperText =
