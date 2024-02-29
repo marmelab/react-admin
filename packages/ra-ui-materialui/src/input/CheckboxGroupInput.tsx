@@ -153,6 +153,8 @@ export const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = pr
         validate,
         onChange,
         onBlur,
+        disabled,
+        readOnly,
         ...rest,
     });
 
