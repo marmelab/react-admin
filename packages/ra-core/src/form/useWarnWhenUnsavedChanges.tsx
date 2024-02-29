@@ -82,14 +82,14 @@ export const useWarnWhenUnsavedChanges = (
             e.returnValue = true;
         };
 
-        if (!shouldNotBlock) {
-            window.addEventListener('beforeunload', beforeunload);
+        if (shouldNotBlock) {
+            return;
         }
 
+        window.addEventListener('beforeunload', beforeunload);
+
         return () => {
-            if (!shouldNotBlock) {
-                window.removeEventListener('beforeunload', beforeunload);
-            }
+            window.removeEventListener('beforeunload', beforeunload);
         };
     }, [shouldNotBlock]);
 };

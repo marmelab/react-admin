@@ -1,9 +1,8 @@
 import * as React from 'react';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
-import { Resource } from 'ra-core';
+import { Resource, TestMemoryRouter } from 'ra-core';
 import fakeRestDataProvider from 'ra-data-fakerest';
-import { MemoryRouter } from 'react-router';
 
 import { BulkUpdateButton } from './BulkUpdateButton';
 import { AdminContext } from '../AdminContext';
@@ -91,7 +90,7 @@ const dataProvider = fakeRestDataProvider({
 });
 
 const Wrapper = ({ bulkActionButtons }) => (
-    <MemoryRouter initialEntries={['/books']}>
+    <TestMemoryRouter initialEntries={['/books']}>
         <AdminContext dataProvider={dataProvider} i18nProvider={i18nProvider}>
             <AdminUI>
                 <Resource
@@ -109,7 +108,7 @@ const Wrapper = ({ bulkActionButtons }) => (
                 />
             </AdminUI>
         </AdminContext>
-    </MemoryRouter>
+    </TestMemoryRouter>
 );
 
 export const Basic = () => (

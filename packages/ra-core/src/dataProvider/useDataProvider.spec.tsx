@@ -96,7 +96,7 @@ describe('useDataProvider', () => {
         expect(queryByTestId('error').textContent).toBe('foo');
     });
 
-    it('should throw a meaningful error when the dataProvider throws a sync error', async () => {
+    it('should display a meaningful error when the dataProvider throws a sync error', async () => {
         const c = jest.spyOn(console, 'error').mockImplementation(() => {});
         const getOne = jest.fn(() => {
             throw new Error('foo');

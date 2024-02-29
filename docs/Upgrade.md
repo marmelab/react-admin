@@ -525,8 +525,8 @@ root.render(
 
 Due to the new implementation using `useBlocker`, you may also notice the following minor changes:
 
-- `useWarnWhenUnsavedChanges` no longer waits until the submission is complete before redirecting. Instead, it blocks navigation and opens the confirmation dialog if the form is currently submitting. While the dialog is open, submission continues in the background.
-- Implementing blocking when closing the browser tab now requires listening to the `'beforeunload'` event. [Modern browsers no longer allow to customize the message](https://stackoverflow.com/questions/38879742/is-it-possible-to-display-a-custom-message-in-the-beforeunload-popup) displayed in the confirmation dialog, so users will see the default message from the browser in that case.
+- `useWarnWhenUnsavedChanges` will also open a confirmation dialog (and block the navigation) if a navigation is fired when the form is currently submitting (submission will continue in the background).
+- [Due to browser constraints](https://stackoverflow.com/questions/38879742/is-it-possible-to-display-a-custom-message-in-the-beforeunload-popup), the message displayed in the confirmation dialog when closing the browser's tab cannot be customized (it is managed by the browser).
 
 ## `<Admin history>` Prop Was Removed
 
@@ -548,7 +548,8 @@ describe('my test suite', () => {
 -       const history = createMemoryHistory({ initialEntries: ['/'] });
         render(
 +           <TestMemoryRouter initialEntries={['/']}>
-              <CoreAdminContext history={history}>
+-             <CoreAdminContext history={history}>
++             <CoreAdminContext>
                 <div>My Component</div>
               </CoreAdminContext>
 +           </TestMemoryRouter>
@@ -583,6 +584,38 @@ npx jscodeshift ./path/to/src/ \
     --extensions=ts,tsx \
     --parser=tsx \
     --transform=./node_modules/ra-core/codemods/replace-Admin-history.ts
+```
+
+## `<HistoryRouter>` Was Removed
+
+Along with the removal of the `<Admin history>` prop, we also removed the (undocumented) `<HistoryRouter>` component.
+
+Just like for `<Admin history>`, the most common use-case for this component was inside unit tests (and stories), to control the `initialEntries`.
+
+Here too, you can use `TestMemoryHistory` as a replacement:
+
+```diff
+import { render, screen } from '@testing-library/react';
+-import { createMemoryHistory } from 'history';
+-import { CoreAdminContext, HistoryRouter } from 'react-admin';
++import { CoreAdminContext, TestMemoryRouter } from 'react-admin';
+import * as React from 'react';
+
+describe('my test suite', () => {
+    it('my test', async () => {
+-       const history = createMemoryHistory({ initialEntries: ['/'] });
+        render(
+-           <HistoryRouter history={history}>            
++           <TestMemoryRouter initialEntries={['/']}>
+              <CoreAdminContext>
+                <div>My Component</div>
+              </CoreAdminContext>
+-           </HistoryRouter>
++           </TestMemoryRouter>
+        );
+        await screen.findByText('My Component');
+    });
+});
 ```
 
 ## Upgrading to v4

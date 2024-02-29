@@ -4,7 +4,7 @@ import { render, screen } from '@testing-library/react';
 import { CreatePathType, useCreatePath } from './useCreatePath';
 import { AtRoot, SubPath } from './useCreatePath.stories';
 import { Identifier } from '../types';
-import { TestMemoryRouter } from '.';
+import { TestMemoryRouter } from './TestMemoryRouter';
 
 describe('useCreatePath', () => {
     beforeEach(() => {
