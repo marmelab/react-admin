@@ -83,13 +83,12 @@ export const Basic = () => (
     </AdminContext>
 );
 
-export const Disabled = (onSuccess = console.log) => (
+export const Disabled = () => (
     <AdminContext i18nProvider={i18nProvider}>
         <Create
             resource="users"
             record={{ roles: ['u001', 'u003'] }}
             sx={{ width: 800 }}
-            mutationOptions={{ onSuccess }}
         >
             <SimpleForm>
                 <Stack direction="row">
@@ -155,13 +154,12 @@ export const Disabled = (onSuccess = console.log) => (
     </AdminContext>
 );
 
-export const ReadOnly = (onSuccess = console.log) => (
+export const ReadOnly = () => (
     <AdminContext i18nProvider={i18nProvider}>
         <Create
             resource="users"
             record={{ roles: ['u001', 'u003'] }}
             sx={{ width: 800 }}
-            mutationOptions={{ onSuccess }}
         >
             <SimpleForm>
                 <Stack direction="row">

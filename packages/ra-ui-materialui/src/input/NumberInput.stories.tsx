@@ -26,13 +26,12 @@ export const Basic = () => (
     </AdminContext>
 );
 
-export const ReadOnly = ({ onSuccess = console.log }) => (
+export const ReadOnly = () => (
     <AdminContext>
         <Create
             resource="posts"
             record={{ id: 123, views: 23 }}
             sx={{ width: 600 }}
-            mutationOptions={{ onSuccess }}
         >
             <SimpleForm>
                 <NumberInput source="views" readOnly />
@@ -44,13 +43,12 @@ export const ReadOnly = ({ onSuccess = console.log }) => (
     </AdminContext>
 );
 
-export const Disabled = (onSuccess = console.log) => (
+export const Disabled = () => (
     <AdminContext>
         <Create
             resource="posts"
             record={{ id: 123, views: 23 }}
             sx={{ width: 600 }}
-            mutationOptions={{ onSuccess }}
         >
             <SimpleForm>
                 <NumberInput source="views" disabled />

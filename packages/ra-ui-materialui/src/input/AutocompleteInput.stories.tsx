@@ -108,8 +108,8 @@ export const Basic = ({ onSuccess = console.log }) => (
     </Wrapper>
 );
 
-export const ReadOnly = ({ onSuccess = console.log }) => (
-    <Wrapper onSuccess={onSuccess}>
+export const ReadOnly = () => (
+    <Wrapper>
         <AutocompleteInput
             source="author"
             choices={defaultChoices}
@@ -125,8 +125,8 @@ export const ReadOnly = ({ onSuccess = console.log }) => (
     </Wrapper>
 );
 
-export const Disabled = ({ onSuccess = console.log }) => (
-    <Wrapper onSuccess={onSuccess}>
+export const Disabled = () => (
+    <Wrapper>
         <AutocompleteInput
             source="author"
             choices={defaultChoices}
