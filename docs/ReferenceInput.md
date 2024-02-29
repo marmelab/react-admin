@@ -5,7 +5,7 @@ title: "The ReferenceInput Component"
 
 # `<ReferenceInput>`
 
-Use `<ReferenceInput>` for foreign-key values, for instance, to edit the `company_id` of a `contact` resource.
+Use `<ReferenceInput>` for foreign-key values, for instance, to edit the `company_id` of a `contact` resource. 
 
 <video controls autoplay playsinline muted loop>
   <source src="./img/reference-input.webm" type="video/webm"/>
@@ -16,7 +16,7 @@ Use `<ReferenceInput>` for foreign-key values, for instance, to edit the `compan
 
 ## Usage
 
-For instance, a contact record has a `company_id` field, which is a foreign key to a company record.
+For instance, a contact record has a `company_id` field, which is a foreign key to a company record. 
 
 ```
 ┌──────────────┐       ┌────────────┐
@@ -26,7 +26,7 @@ For instance, a contact record has a `company_id` field, which is a foreign key 
 │ first_name   │   │   │ name       │
 │ last_name    │   │   │ address    │
 │ company_id   │───┘   └────────────┘
-└──────────────┘
+└──────────────┘             
 ```
 
 To make the `company_id` for a `contact` editable, use the following syntax:
@@ -62,7 +62,7 @@ Then `<ReferenceInput>` will issue the following queries:
 
 ```js
 dataProvider.getMany('companies', { ids: [456] });
-dataProvider.getList('companies', {
+dataProvider.getList('companies', { 
     filter: {},
     sort: { field: 'id', order: 'DESC' },
     pagination: { page: 1, perPage: 25 }
@@ -72,7 +72,7 @@ dataProvider.getList('companies', {
 `<ReferenceInput>` renders an [`<AutocompleteInput>`](./AutocompleteInput.md) to let the user select the related record. Users can narrow down the choices by typing a search term in the input. This modifies the query sent to the `dataProvider` as follows:
 
 ```js
-dataProvider.getList('companies', {
+dataProvider.getList('companies', { 
     filter: { q: ['search term'] },
     sort: { field: 'id', order: 'DESC' },
     pagination: { page: 1, perPage: 25 }
@@ -168,7 +168,7 @@ You can filter the query used to populate the possible values. Use the `filter` 
 
 ## `format`
 
-By default, children of `<ReferenceInput>` transform `null` values from the `dataProvider` into empty strings.
+By default, children of `<ReferenceInput>` transform `null` values from the `dataProvider` into empty strings. 
 
 If you want to change this behavior, you have to pass a custom `format` prop to the `<ReferenceInput>` *child component*, because  **`<ReferenceInput>` doesn't have a `format` prop**. It is the responsibility of the child component to format the input value.
 
@@ -216,7 +216,7 @@ const filters = [
 
 ## `parse`
 
-By default, children of `<ReferenceInput>` transform the empty form value (an empty string) into `null` before passing it to the `dataProvider`.
+By default, children of `<ReferenceInput>` transform the empty form value (an empty string) into `null` before passing it to the `dataProvider`. 
 
 If you want to change this behavior, you have to pass a custom `parse` prop to the `<ReferenceInput>` *child component*, because  **`<ReferenceInput>` doesn't have a `parse` prop**. It is the responsibility of the child component to parse the input value.
 
@@ -282,7 +282,7 @@ For instance, to pass [a custom `meta`](./Actions.md#meta-parameter):
 
 {% raw %}
 ```jsx
-<ReferenceInput
+<ReferenceInput 
     source="company_id"
     reference="companies"
     queryOptions={{ meta: { foo: 'bar' } }}
@@ -292,7 +292,7 @@ For instance, to pass [a custom `meta`](./Actions.md#meta-parameter):
 
 ## `sort`
 
-By default, `<ReferenceInput>` orders the possible values by `id` desc.
+By default, `<ReferenceInput>` orders the possible values by `id` desc. 
 
 You can change this order by setting the `sort` prop (an object with `field` and `order` properties).
 
@@ -372,7 +372,7 @@ const ProductEdit = () => (
 ```
 
 
-## Performance
+## Performance 
 
 Why does `<ReferenceInput>` use the `dataProvider.getMany()` method with a single value `[id]` instead of `dataProvider.getOne()` to fetch the record for the current value?
 

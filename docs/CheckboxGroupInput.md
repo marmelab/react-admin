@@ -14,7 +14,7 @@ If you want to let the user choose multiple values among a list of possible valu
 </video>
 
 
-This input allows editing values that are arrays of scalar values, e.g. `[123, 456]`.
+This input allows editing values that are arrays of scalar values, e.g. `[123, 456]`. 
 
 **Tip**: React-admin includes other components allowing the edition of such values:
 

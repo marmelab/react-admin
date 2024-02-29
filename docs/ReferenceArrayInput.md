@@ -16,7 +16,7 @@ Use `<ReferenceArrayInput>` to edit an array of reference values, i.e. to let us
 
 ## Usage
 
-For instance, a post record has a `tag_ids` field, which is an array of foreign keys to tags record.
+For instance, a post record has a `tag_ids` field, which is an array of foreign keys to tags record. 
 
 ```
 ┌──────────────┐       ┌────────────┐
@@ -26,7 +26,7 @@ For instance, a post record has a `tag_ids` field, which is an array of foreign 
 │ title        │   │   │ name       │
 │ body         │   │   └────────────┘
 │ tag_ids      │───┘
-└──────────────┘
+└──────────────┘             
 ```
 
 To make the `tag_ids` for a `post` editable, use the following:
@@ -61,7 +61,7 @@ Then `<ReferenceArrayInput>` will issue the following queries:
 
 ```js
 dataProvider.getMany('tags', { ids: [1, 23, 4] });
-dataProvider.getList('tags', {
+dataProvider.getList('tags', { 
     filter: {},
     sort: { field: 'id', order: 'DESC' },
     pagination: { page: 1, perPage: 25 }
@@ -71,7 +71,7 @@ dataProvider.getList('tags', {
 `<ReferenceArrayInput>` renders an [`<AutocompleteArrayInput>`](./AutocompleteArrayInput.md) to let the user select the related record. Users can narrow down the choices by typing a search term in the input. This modifies the query sent to the `dataProvider` as follows:
 
 ```js
-dataProvider.getList('tags', {
+dataProvider.getList('tags', { 
     filter: { q: ['search term'] },
     sort: { field: 'id', order: 'DESC' },
     pagination: { page: 1, perPage: 25 }
@@ -218,7 +218,7 @@ const filters = [
 
 ## `parse`
 
-By default, children of `<ReferenceArrayInput>` transform the empty form value (an empty string) into `null` before passing it to the `dataProvider`.
+By default, children of `<ReferenceArrayInput>` transform the empty form value (an empty string) into `null` before passing it to the `dataProvider`. 
 
 If you want to change this behavior, you have to pass a custom `parse` prop to the `<ReferenceArrayInput>` *child component*, because  **`<ReferenceArrayInput>` doesn't have a `parse` prop**. It is the responsibility of the child component to parse the input value.
 
@@ -260,7 +260,7 @@ For instance, to pass [a custom `meta`](./Actions.md#meta-parameter):
 
 {% raw %}
 ```jsx
-<ReferenceArrayInput
+<ReferenceArrayInput 
     source="tag_ids"
     reference="tags"
     queryOptions={{ meta: { foo: 'bar' } }}
@@ -294,13 +294,13 @@ You can override this default by specifying the `optionText` prop in the child c
 
 ## `sort`
 
-By default, `<ReferenceArrayInput>` orders the possible values by `id` desc.
+By default, `<ReferenceArrayInput>` orders the possible values by `id` desc. 
 
 You can change this order by setting the `sort` prop (an object with `field` and `order` properties).
 
 {% raw %}
 ```jsx
-<ReferenceArrayInput
+<ReferenceArrayInput 
     source="tag_ids"
     reference="tags"
     sort={{ field: 'name', order: 'ASC' }}

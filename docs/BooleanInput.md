@@ -16,7 +16,7 @@ title: "The BooleanInput Component"
 
 **Tip**: This input doesn't let users set a `null` value - only `true` or `false`. Use the [`<NullableBooleanInput />`](./NullableBooleanInput.md) component if you have to handle non-required booleans.
 
-## Usage
+## Usage 
 
 ```jsx
 import { BooleanInput } from 'react-admin';
