@@ -59,6 +59,8 @@ export const DateInput = ({
         resource,
         source,
         validate,
+        disabled,
+        readOnly,
         ...rest,
     });
 
