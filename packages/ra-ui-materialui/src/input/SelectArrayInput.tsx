@@ -157,6 +157,8 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
         resource,
         source,
         validate,
+        disabled,
+        readOnly,
         ...rest,
     });
 
