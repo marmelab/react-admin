@@ -20,24 +20,6 @@ export const Basic = () => (
     </Wrapper>
 );
 
-export const Disabled = () => (
-    <Wrapper>
-        <TranslatableInputs locales={['en', 'fr']} disabled>
-            <TextInput source="title" />
-            <TextInput source="description" />
-        </TranslatableInputs>
-    </Wrapper>
-);
-
-export const ReadOnly = () => (
-    <Wrapper>
-        <TranslatableInputs locales={['en', 'fr']} readOnly>
-            <TextInput source="title" />
-            <TextInput source="description" />
-        </TranslatableInputs>
-    </Wrapper>
-);
-
 export const FullWidth = () => (
     <Wrapper>
         <TranslatableInputs locales={['en', 'fr']} fullWidth>
@@ -81,14 +63,10 @@ export const Sx = () => (
 
 const i18nProvider = polyglotI18nProvider(() => englishMessages);
 
-const Wrapper = ({ children, onSuccess = console.log }) => (
+const Wrapper = ({ children }) => (
     <AdminContext i18nProvider={i18nProvider}>
-        <Create resource="posts" mutationOptions={{ onSuccess }}>
-            <SimpleForm
-                onSubmit={data => {
-                    console.log(data);
-                }}
-            >
+        <Create resource="posts">
+            <SimpleForm>
                 {children}
                 <FormInspector name="title" />
             </SimpleForm>
