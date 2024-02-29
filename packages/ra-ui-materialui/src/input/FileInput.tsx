@@ -95,6 +95,8 @@ export const FileInput = (props: FileInputProps) => {
         parse: parse || transformFiles,
         source,
         validate,
+        disabled,
+        readOnly,
         ...rest,
     });
     const { isTouched, error, invalid } = fieldState;
