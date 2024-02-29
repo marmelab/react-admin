@@ -5,7 +5,8 @@
     "files": [
         "*.md",
         "dist",
-        "src"
+        "src",
+        "codemods"
     ],
     "main": "dist/cjs/index.js",
     "module": "dist/esm/index.js",
@@ -30,18 +31,19 @@
         "@testing-library/react": "^14.1.2",
         "@testing-library/react-hooks": "^8.0.1",
         "@types/jest": "^29.5.2",
+        "@types/jscodeshift": "^0.11.11",
         "@types/node": "^20.10.7",
         "@types/node-polyglot": "^0.4.31",
         "@types/react": "^18.2.37",
         "cross-env": "^5.2.0",
         "expect": "^27.4.6",
-        "history": "^5.1.0",
         "ignore-styles": "~5.0.1",
+        "jscodeshift": "^0.15.2",
         "react": "^18.0.0",
         "react-dom": "^18.2.0",
         "react-hook-form": "^7.43.9",
-        "react-router": "^6.1.0",
-        "react-router-dom": "^6.1.0",
+        "react-router": "^6.22.0",
+        "react-router-dom": "^6.22.0",
         "react-test-renderer": "^18.2.0",
         "recharts": "^2.1.15",
         "rimraf": "^3.0.2",
@@ -50,12 +52,11 @@
         "zod": "^3.22.1"
     },
     "peerDependencies": {
-        "history": "^5.1.0",
         "react": "^16.9.0 || ^17.0.0 || ^18.0.0",
         "react-dom": "^16.9.0 || ^17.0.0 || ^18.0.0",
         "react-hook-form": "^7.43.9",
-        "react-router": "^6.1.0",
-        "react-router-dom": "^6.1.0"
+        "react-router": "^6.22.0",
+        "react-router-dom": "^6.22.0"
     },
     "dependencies": {
         "@tanstack/react-query": "^5.8.4",

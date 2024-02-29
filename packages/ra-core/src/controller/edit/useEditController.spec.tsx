@@ -6,9 +6,8 @@ import {
     waitFor,
 } from '@testing-library/react';
 import expect from 'expect';
-import { createMemoryHistory } from 'history';
 import * as React from 'react';
-import { MemoryRouter, Route, Routes } from 'react-router';
+import { Route, Routes } from 'react-router';
 
 import {
     EditContextProvider,
@@ -23,6 +22,7 @@ import { useNotificationContext } from '../../notification';
 import { DataProvider } from '../../types';
 import { Middleware, useRegisterMutationMiddleware } from '../saveContext';
 import { EditController } from './EditController';
+import { TestMemoryRouter } from '../../routing';
 
 describe('useEditController', () => {
     const defaultProps = {
@@ -57,25 +57,24 @@ describe('useEditController', () => {
                 Promise.resolve({ data: { id: 'test?', title: 'hello' } })
             );
         const dataProvider = ({ getOne } as unknown) as DataProvider;
-        const history = createMemoryHistory({
-            initialEntries: ['/posts/test%3F'],
-        });
 
         render(
-            <CoreAdminContext dataProvider={dataProvider} history={history}>
-                <Routes>
-                    <Route
-                        path="/posts/:id"
-                        element={
-                            <EditController resource="posts">
-                                {({ record }) => (
-                                    <div>{record && record.title}</div>
-                                )}
-                            </EditController>
-                        }
-                    />
-                </Routes>
-            </CoreAdminContext>
+            <TestMemoryRouter initialEntries={['/posts/test%3F']}>
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <Routes>
+                        <Route
+                            path="/posts/:id"
+                            element={
+                                <EditController resource="posts">
+                                    {({ record }) => (
+                                        <div>{record && record.title}</div>
+                                    )}
+                                </EditController>
+                            }
+                        />
+                    </Routes>
+                </CoreAdminContext>
+            </TestMemoryRouter>
         );
         await waitFor(() => {
             expect(getOne).toHaveBeenCalledWith('posts', {
@@ -95,25 +94,24 @@ describe('useEditController', () => {
                 Promise.resolve({ data: { id: 0, title: 'hello' } })
             );
         const dataProvider = ({ getOne } as unknown) as DataProvider;
-        const history = createMemoryHistory({
-            initialEntries: ['/posts/test%3F'],
-        });
 
         render(
-            <CoreAdminContext dataProvider={dataProvider} history={history}>
-                <Routes>
-                    <Route
-                        path="/posts/:id"
-                        element={
-                            <EditController id={0} resource="posts">
-                                {({ record }) => (
-                                    <div>{record && record.title}</div>
-                                )}
-                            </EditController>
-                        }
-                    />
-                </Routes>
-            </CoreAdminContext>
+            <TestMemoryRouter initialEntries={['/posts/test%3F']}>
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <Routes>
+                        <Route
+                            path="/posts/:id"
+                            element={
+                                <EditController id={0} resource="posts">
+                                    {({ record }) => (
+                                        <div>{record && record.title}</div>
+                                    )}
+                                </EditController>
+                            }
+                        />
+                    </Routes>
+                </CoreAdminContext>
+            </TestMemoryRouter>
         );
         await waitFor(() => {
             expect(getOne).toHaveBeenCalledWith('posts', {
@@ -1035,14 +1033,14 @@ describe('useEditController', () => {
         };
         const ShowView = () => <div>Show</div>;
         render(
-            <MemoryRouter initialEntries={['/posts/123']}>
+            <TestMemoryRouter initialEntries={['/posts/123']}>
                 <CoreAdminContext dataProvider={dataProvider}>
                     <Routes>
                         <Route path="/posts/123" element={<EditView />} />
                         <Route path="/posts/123/show" element={<ShowView />} />
                     </Routes>
                 </CoreAdminContext>
-            </MemoryRouter>
+            </TestMemoryRouter>
         );
         await screen.findByText('Edit');
         fireEvent.change(await screen.findByLabelText('foo'), {

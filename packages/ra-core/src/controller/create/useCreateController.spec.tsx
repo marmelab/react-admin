@@ -7,7 +7,7 @@ import {
 } from '@testing-library/react';
 import expect from 'expect';
 import React from 'react';
-import { Location, MemoryRouter, Route, Routes } from 'react-router-dom';
+import { Location, Route, Routes } from 'react-router-dom';
 
 import {
     CreateContextProvider,
@@ -27,6 +27,8 @@ import {
 } from '../saveContext';
 import { CreateController } from './CreateController';
 import { getRecordFromLocation } from './useCreateController';
+
+import { TestMemoryRouter } from '../../routing';
 
 describe('useCreateController', () => {
     describe('getRecordFromLocation', () => {
@@ -617,14 +619,14 @@ describe('useCreateController', () => {
         };
         const ShowView = () => <div>Show</div>;
         render(
-            <MemoryRouter initialEntries={['/posts/create']}>
+            <TestMemoryRouter initialEntries={['/posts/create']}>
                 <CoreAdminContext dataProvider={dataProvider}>
                     <Routes>
                         <Route path="/posts/create" element={<CreateView />} />
                         <Route path="/posts/123/show" element={<ShowView />} />
                     </Routes>
                 </CoreAdminContext>
-            </MemoryRouter>
+            </TestMemoryRouter>
         );
         await screen.findByText('Create');
         fireEvent.change(screen.getByLabelText('foo'), {

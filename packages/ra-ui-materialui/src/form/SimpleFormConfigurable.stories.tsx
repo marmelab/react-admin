@@ -1,6 +1,9 @@
 import * as React from 'react';
-import { MemoryRouter } from 'react-router-dom';
-import { PreferencesEditorContextProvider, I18nContextProvider } from 'ra-core';
+import {
+    PreferencesEditorContextProvider,
+    I18nContextProvider,
+    TestMemoryRouter,
+} from 'ra-core';
 import { ThemeProvider, createTheme, Box, Paper } from '@mui/material';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
@@ -24,13 +27,13 @@ const Wrapper = ({ children }) => (
     <QueryClientProvider client={new QueryClient()}>
         <ThemeProvider theme={createTheme(defaultTheme)}>
             <PreferencesEditorContextProvider>
-                <MemoryRouter>
+                <TestMemoryRouter>
                     <Inspector />
                     <Box display="flex" justifyContent="flex-end">
                         <InspectorButton />
                     </Box>
                     <Paper sx={{ width: 600, m: 2 }}>{children}</Paper>
-                </MemoryRouter>
+                </TestMemoryRouter>
             </PreferencesEditorContextProvider>
         </ThemeProvider>
     </QueryClientProvider>

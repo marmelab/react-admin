@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { render, screen } from '@testing-library/react';
-import { createMemoryHistory } from 'history';
-
 import { CoreAdminContext } from './CoreAdminContext';
+
 import { Resource } from './Resource';
 import { Route } from 'react-router';
+import { TestMemoryRouter } from '../routing';
 
 const PostList = () => <div>PostList</div>;
 const PostEdit = () => <div>PostEdit</div>;
@@ -27,23 +27,29 @@ const resource = {
 
 describe('<Resource>', () => {
     it('renders resource routes by default', async () => {
-        const history = createMemoryHistory();
+        let navigate;
         render(
-            <CoreAdminContext history={history}>
-                <Resource {...resource} />
-            </CoreAdminContext>
+            <TestMemoryRouter
+                navigateCallback={n => {
+                    navigate = n;
+                }}
+            >
+                <CoreAdminContext>
+                    <Resource {...resource} />
+                </CoreAdminContext>
+            </TestMemoryRouter>
         );
         // Resource does not declare a route matching its name, it only renders its child routes
         // so we don't need to navigate to a path matching its name
-        history.push('/');
+        navigate('/');
         await screen.findByText('PostList');
-        history.push('/123');
+        navigate('/123');
         await screen.findByText('PostEdit');
-        history.push('/123/show');
+        navigate('/123/show');
         await screen.findByText('PostShow');
-        history.push('/create');
+        navigate('/create');
         await screen.findByText('PostCreate');
-        history.push('/customroute');
+        navigate('/customroute');
         await screen.findByText('PostCustomRoute');
     });
 });

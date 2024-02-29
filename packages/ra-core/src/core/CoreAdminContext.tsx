@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { useMemo } from 'react';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
-import { History } from 'history';
 
 import { AdminRouter } from '../routing';
 import { AuthContext, convertLegacyAuthProvider } from '../auth';
@@ -142,12 +141,6 @@ export interface CoreAdminContextProps {
     queryClient?: QueryClient;
 
     /**
-     * @deprecated Wrap your Admin inside a Router to change the routing strategy
-     * @see https://marmelab.com/react-admin/Admin.html#using-a-custom-router
-     */
-    history?: History;
-
-    /**
      * The internationalization provider for translations
      *
      * @see https://marmelab.com/react-admin/Translation.html
@@ -180,7 +173,6 @@ export const CoreAdminContext = (props: CoreAdminContextProps) => {
         i18nProvider,
         store = defaultStore,
         children,
-        history,
         queryClient,
     } = props;
 
@@ -215,7 +207,7 @@ React-admin requires a valid dataProvider function to work.`);
                 <StoreContextProvider value={store}>
                     <PreferencesEditorContextProvider>
                         <QueryClientProvider client={finalQueryClient}>
-                            <AdminRouter history={history} basename={basename}>
+                            <AdminRouter basename={basename}>
                                 <I18nContextProvider value={i18nProvider}>
                                     <NotificationContextProvider>
                                         <ResourceDefinitionContextProvider>

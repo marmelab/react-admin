@@ -1,5 +1,11 @@
 import * as React from 'react';
-import { Resource, CustomRoutes, testDataProvider, memoryStore } from 'ra-core';
+import {
+    Resource,
+    CustomRoutes,
+    testDataProvider,
+    memoryStore,
+    TestMemoryRouter,
+} from 'ra-core';
 import { Admin, useSidebarState } from 'react-admin';
 import {
     Typography,
@@ -21,7 +27,7 @@ import {
     ExpandMore,
     QrCode,
 } from '@mui/icons-material';
-import { MemoryRouter, Route } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 
 import { Layout, Menu, Title } from '.';
 
@@ -112,7 +118,7 @@ export const Custom = () => {
     );
 
     return (
-        <MemoryRouter initialEntries={['/']}>
+        <TestMemoryRouter initialEntries={['/']}>
             <Admin dataProvider={testDataProvider()} layout={CustomLayout}>
                 <CustomRoutes>
                     <Route path="/" element={<Page title="Dashboard" />} />
@@ -127,7 +133,7 @@ export const Custom = () => {
                     />
                 </CustomRoutes>
             </Admin>
-        </MemoryRouter>
+        </TestMemoryRouter>
     );
 };
 
@@ -203,7 +209,7 @@ export const MenuItemChild = () => {
     );
 
     return (
-        <MemoryRouter initialEntries={['/']}>
+        <TestMemoryRouter initialEntries={['/']}>
             <Admin dataProvider={testDataProvider()} layout={CustomLayout}>
                 <CustomRoutes>
                     <Route path="/" element={<Page title="Dashboard" />} />
@@ -218,6 +224,6 @@ export const MenuItemChild = () => {
                     />
                 </CustomRoutes>
             </Admin>
-        </MemoryRouter>
+        </TestMemoryRouter>
     );
 };

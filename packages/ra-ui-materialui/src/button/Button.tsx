@@ -8,10 +8,9 @@ import {
     Theme,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import { To } from 'history';
 import PropTypes from 'prop-types';
 import { useTranslate } from 'ra-core';
-import { Path } from 'react-router';
+import { Path, To } from 'react-router';
 
 /**
  * A generic Button with side icon. Only the icon is displayed on small screens.

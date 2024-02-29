@@ -13,8 +13,7 @@ import {
 } from '@mui/material';
 import SettingsIcon from '@mui/icons-material/Settings';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
-import { MemoryRouter } from 'react-router';
-import { I18nContextProvider, AuthContext } from 'ra-core';
+import { I18nContextProvider, AuthContext, TestMemoryRouter } from 'ra-core';
 
 import { AppBar } from './AppBar';
 import { Title } from './Title';
@@ -48,7 +47,7 @@ const Content = () => (
 );
 
 const Wrapper = ({ children, theme = createTheme(defaultTheme) }) => (
-    <MemoryRouter>
+    <TestMemoryRouter>
         <QueryClientProvider client={new QueryClient()}>
             <MuiThemeProvider theme={theme}>
                 <AuthContext.Provider value={undefined as any}>
@@ -57,7 +56,7 @@ const Wrapper = ({ children, theme = createTheme(defaultTheme) }) => (
                 <Content />
             </MuiThemeProvider>
         </QueryClientProvider>
-    </MemoryRouter>
+    </TestMemoryRouter>
 );
 
 export const Basic = () => (

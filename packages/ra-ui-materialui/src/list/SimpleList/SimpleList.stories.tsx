@@ -1,7 +1,6 @@
 import * as React from 'react';
-import { MemoryRouter } from 'react-router-dom';
 import fakeRestDataProvider from 'ra-data-fakerest';
-import { Resource, ListContextProvider } from 'ra-core';
+import { Resource, ListContextProvider, TestMemoryRouter } from 'ra-core';
 import defaultMessages from 'ra-language-english';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 
@@ -97,14 +96,14 @@ const data = {
 };
 
 export const Basic = () => (
-    <MemoryRouter>
+    <TestMemoryRouter>
         <SimpleList
             data={data.books}
             primaryText={record => record.title}
             secondaryText={record => record.author}
             tertiaryText={record => record.year}
         />
-    </MemoryRouter>
+    </TestMemoryRouter>
 );
 
 const dataProvider = fakeRestDataProvider(data);
@@ -152,7 +151,7 @@ export const NoPrimaryText = () => (
 );
 
 export const ErrorInFetch = () => (
-    <MemoryRouter>
+    <TestMemoryRouter>
         <ListContextProvider
             value={
                 {
@@ -166,7 +165,7 @@ export const ErrorInFetch = () => (
                 tertiaryText={record => record.year}
             />
         </ListContextProvider>
-    </MemoryRouter>
+    </TestMemoryRouter>
 );
 
 export const FullAppInError = () => (

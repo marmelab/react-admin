@@ -482,6 +482,142 @@ import { FieldProps, useRecordContext } from 'react-admin';
 }
 ```
 
+## `useWarnWhenUnsavedChanges` Requires A Data Router
+
+The `useWarnWhenUnsavedChanges` hook was reimplemented using [`useBlocker`](https://reactrouter.com/en/main/hooks/use-blocker) from `react-router`. As a consequence, it now requires a [data router](https://reactrouter.com/en/main/routers/picking-a-router) to be used.
+
+The `<Admin>` component has been updated to use [`createHashRouter`](https://reactrouter.com/en/main/routers/create-hash-router) internally by default, which is a data router. So you don't need to change anything if you are using `react-admin`'s internal router.
+
+If you are using an external router, you will need to migrate it to a data router to be able to use the `warnWhenUnsavedChanges` feature.
+
+```diff
+import * as React from 'react';
+import { Admin, Resource } from 'react-admin';
+import { createRoot } from 'react-dom/client';
+-import { BrowserRouter } from 'react-router-dom';
++import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+
+import dataProvider from './dataProvider';
+import posts from './posts';
+
+const App = () => (
+-    <BrowserRouter>
+        <Admin dataProvider={dataProvider}>
+            <Resource name="posts" {...posts} />
+        </Admin>
+-    </BrowserRouter>
+);
+
++const router = createBrowserRouter([{ path: '*', element: <App /> }]);
+
+const container = document.getElementById('root');
+const root = createRoot(container);
+
+root.render(
+    <React.StrictMode>
+-        <App />
++        <RouterProvider router={router} />
+    </React.StrictMode>
+);
+```
+
+### Minor Changes
+
+Due to the new implementation using `useBlocker`, you may also notice the following minor changes:
+
+- `useWarnWhenUnsavedChanges` will also open a confirmation dialog (and block the navigation) if a navigation is fired when the form is currently submitting (submission will continue in the background).
+- [Due to browser constraints](https://stackoverflow.com/questions/38879742/is-it-possible-to-display-a-custom-message-in-the-beforeunload-popup), the message displayed in the confirmation dialog when closing the browser's tab cannot be customized (it is managed by the browser).
+
+## `<Admin history>` Prop Was Removed
+
+The `<Admin history>` prop was deprecated since version 4. It is no longer supported.
+
+The most common use-case for this prop was inside unit tests (and stories), to pass a `MemoryRouter` and control the `initialEntries`.
+
+To that purpose, `react-admin` now exports a `TestMemoryHistory` component that you can use in your tests:
+
+```diff
+import { render, screen } from '@testing-library/react';
+-import { createMemoryHistory } from 'history';
+-import { CoreAdminContext } from 'react-admin';
++import { CoreAdminContext, TestMemoryRouter } from 'react-admin';
+import * as React from 'react';
+
+describe('my test suite', () => {
+    it('my test', async () => {
+-       const history = createMemoryHistory({ initialEntries: ['/'] });
+        render(
++           <TestMemoryRouter initialEntries={['/']}>
+-             <CoreAdminContext history={history}>
++             <CoreAdminContext>
+                <div>My Component</div>
+              </CoreAdminContext>
++           </TestMemoryRouter>
+        );
+        await screen.findByText('My Component');
+    });
+});
+```
+
+### Codemod
+
+To help you migrate your tests, we've created a codemod that will replace the `<Admin history>` prop with the `<TestMemoryRouter>` component.
+
+> **DISCLAIMER**
+>
+> This codemod was used to migrate the react-admin test suite, but it was never designed to cover all cases, and was not tested against other code bases. You can try using it as basis to see if it helps migrating your code base, but please review the generated changes thoroughly!
+>
+> Applying the codemod might break your code formatting, so please don't forget to run `prettier` and/or `eslint` after you've applied the codemod!
+
+For `.js` or `.jsx` files:
+
+```sh
+npx jscodeshift ./path/to/src/ \
+    --extensions=js,jsx \
+    --transform=./node_modules/ra-core/codemods/replace-Admin-history.ts
+```
+
+For `.ts` or `.tsx` files:
+
+```sh
+npx jscodeshift ./path/to/src/ \
+    --extensions=ts,tsx \
+    --parser=tsx \
+    --transform=./node_modules/ra-core/codemods/replace-Admin-history.ts
+```
+
+## `<HistoryRouter>` Was Removed
+
+Along with the removal of the `<Admin history>` prop, we also removed the (undocumented) `<HistoryRouter>` component.
+
+Just like for `<Admin history>`, the most common use-case for this component was inside unit tests (and stories), to control the `initialEntries`.
+
+Here too, you can use `TestMemoryHistory` as a replacement:
+
+```diff
+import { render, screen } from '@testing-library/react';
+-import { createMemoryHistory } from 'history';
+-import { CoreAdminContext, HistoryRouter } from 'react-admin';
++import { CoreAdminContext, TestMemoryRouter } from 'react-admin';
+import * as React from 'react';
+
+describe('my test suite', () => {
+    it('my test', async () => {
+-       const history = createMemoryHistory({ initialEntries: ['/'] });
+        render(
+-           <HistoryRouter history={history}>            
++           <TestMemoryRouter initialEntries={['/']}>
+              <CoreAdminContext>
+                <div>My Component</div>
+              </CoreAdminContext>
+-           </HistoryRouter>
++           </TestMemoryRouter>
+        );
+        await screen.findByText('My Component');
+    });
+});
+```
+
 ## Upgrading to v4
 
 If you are on react-admin v3, follow the [Upgrading to v4](https://marmelab.com/react-admin/doc/4.16/Upgrade.html) guide before upgrading to v5.

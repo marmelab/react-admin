@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { MemoryRouter } from 'react-router-dom';
+import { TestMemoryRouter } from 'ra-core';
 
 import { TitlePortal } from './TitlePortal';
 import { Title } from './Title';
@@ -9,22 +9,22 @@ export default {
 };
 
 export const Basic = () => (
-    <MemoryRouter>
+    <TestMemoryRouter>
         <TitlePortal />
         <Title title="Hello, world" />
-    </MemoryRouter>
+    </TestMemoryRouter>
 );
 
 export const Props = () => (
-    <MemoryRouter>
+    <TestMemoryRouter>
         <TitlePortal variant="body1" />
         <Title title="Hello, world" />
-    </MemoryRouter>
+    </TestMemoryRouter>
 );
 
 export const Sx = () => (
-    <MemoryRouter>
+    <TestMemoryRouter>
         <TitlePortal sx={{ color: 'primary.main' }} />
         <Title title="Hello, world" />
-    </MemoryRouter>
+    </TestMemoryRouter>
 );

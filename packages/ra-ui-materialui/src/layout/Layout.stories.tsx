@@ -16,10 +16,10 @@ import {
     PreferencesEditorContextProvider,
     StoreContextProvider,
     memoryStore,
+    TestMemoryRouter,
 } from 'ra-core';
 import * as React from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { MemoryRouter } from 'react-router';
 
 import { defaultTheme } from '../theme/defaultTheme';
 import { Layout } from './Layout';
@@ -52,7 +52,7 @@ const Wrapper = ({
     theme = createTheme(defaultTheme),
     layout: LayoutComponent = Layout,
 }) => (
-    <MemoryRouter>
+    <TestMemoryRouter>
         <QueryClientProvider client={new QueryClient()}>
             <ThemeProvider theme={theme}>
                 <StoreContextProvider value={memoryStore()}>
@@ -67,7 +67,7 @@ const Wrapper = ({
                 </StoreContextProvider>
             </ThemeProvider>
         </QueryClientProvider>
-    </MemoryRouter>
+    </TestMemoryRouter>
 );
 
 const Menu = () => (

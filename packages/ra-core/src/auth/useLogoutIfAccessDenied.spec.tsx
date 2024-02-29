@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useEffect } from 'react';
 import expect from 'expect';
 import { render, screen, waitFor } from '@testing-library/react';
-import { MemoryRouter, Routes, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 
 import useLogoutIfAccessDenied from './useLogoutIfAccessDenied';
 import AuthContext from './AuthContext';
@@ -10,6 +10,8 @@ import useLogout from './useLogout';
 import { useNotify } from '../notification/useNotify';
 import { AuthProvider } from '../types';
 import { useSafeSetState } from '../util';
+
+import { TestMemoryRouter } from '../routing';
 
 let loggedIn = true;
 
@@ -65,11 +67,11 @@ const notify = jest.fn();
 useNotify.mockImplementation(() => notify);
 
 const TestWrapper = ({ children }) => (
-    <MemoryRouter>
+    <TestMemoryRouter>
         <AuthContext.Provider value={authProvider}>
             <Routes>{children}</Routes>
         </AuthContext.Provider>
-    </MemoryRouter>
+    </TestMemoryRouter>
 );
 
 describe('useLogoutIfAccessDenied', () => {
@@ -144,7 +146,7 @@ describe('useLogoutIfAccessDenied', () => {
                 }),
         };
         render(
-            <MemoryRouter>
+            <TestMemoryRouter>
                 <AuthContext.Provider value={delayedAuthProvider}>
                     <Routes>
                         <Route
@@ -158,7 +160,7 @@ describe('useLogoutIfAccessDenied', () => {
                         />
                     </Routes>
                 </AuthContext.Provider>
-            </MemoryRouter>
+            </TestMemoryRouter>
         );
         await waitFor(() => {
             expect(authProvider.logout).toHaveBeenCalledTimes(2); /// two logouts, but only one notification
@@ -191,7 +193,7 @@ describe('useLogoutIfAccessDenied', () => {
 
     it('should logout without showing a notification if authProvider returns error with message false', async () => {
         render(
-            <MemoryRouter>
+            <TestMemoryRouter>
                 <AuthContext.Provider
                     value={{
                         ...authProvider,
@@ -211,7 +213,7 @@ describe('useLogoutIfAccessDenied', () => {
                         />
                     </Routes>
                 </AuthContext.Provider>
-            </MemoryRouter>
+            </TestMemoryRouter>
         );
         await waitFor(() => {
             expect(authProvider.logout).toHaveBeenCalledTimes(1);
@@ -240,7 +242,7 @@ describe('useLogoutIfAccessDenied', () => {
 
     it('should not logout the user if logoutUser is set to false', async () => {
         render(
-            <MemoryRouter>
+            <TestMemoryRouter>
                 <AuthContext.Provider
                     value={{
                         ...authProvider,
@@ -267,7 +269,7 @@ describe('useLogoutIfAccessDenied', () => {
                         />
                     </Routes>
                 </AuthContext.Provider>
-            </MemoryRouter>
+            </TestMemoryRouter>
         );
         await waitFor(() => {
             expect(authProvider.logout).toHaveBeenCalledTimes(0);

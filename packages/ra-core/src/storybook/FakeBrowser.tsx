@@ -1,12 +1,7 @@
 import * as React from 'react';
-import { ReactNode, useEffect, useState } from 'react';
-import {
-    createMemoryHistory,
-    History,
-    Location,
-    createPath,
-    parsePath,
-} from 'history';
+import { ReactNode } from 'react';
+import { TestMemoryRouter } from '../routing';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 /**
  * This is a storybook decorator that wrap the story inside a fake browser.
@@ -21,33 +16,18 @@ import {
  *         initialEntries: ['/authenticated'],
  *     },
  * };
- *
- * const MyStory = (args, context) => (
- *     // Don't forget to pass the history to the Admin component so that
- *     // user changes from the fake browser address bar can impact the application
- *     <Admin history={context.history}>
- *     </Admin>
- * );
  */
 export const FakeBrowserDecorator = (Story, context) => {
-    const history = createMemoryHistory({
-        initialEntries: context.parameters.initialEntries,
-    });
-
     return (
-        <Browser history={history}>
-            <Story history={history} />
-        </Browser>
+        <TestMemoryRouter initialEntries={context.parameters.initialEntries}>
+            <Browser>
+                <Story />
+            </Browser>
+        </TestMemoryRouter>
     );
 };
 
-const Browser = ({
-    children,
-    history,
-}: {
-    children: ReactNode;
-    history: History;
-}) => {
+const Browser = ({ children }: { children: ReactNode }) => {
     return (
         <>
             <style
@@ -56,33 +36,26 @@ const Browser = ({
                 }}
             />
             <div className="browser">
-                <BrowserBar history={history} />
+                <BrowserBar />
                 <div className="browser-container">{children}</div>
             </div>
         </>
     );
 };
 
-const BrowserBar = ({ history }: { history: History }) => {
-    const [location, setLocation] = useState<Location>(history.location);
+const BrowserBar = () => {
+    const location = useLocation();
+    const navigate = useNavigate();
 
-    useEffect(() => {
-        const unsubscribe = history.listen(update => {
-            setLocation(update.location);
-        });
-
-        return unsubscribe;
-    }, [history]);
+    const fullLocation = `${location.pathname}${location.search}${location.hash}`;
 
     const handleSubmit = event => {
         event.preventDefault();
-        const newLocation = parsePath(
-            event.target.elements.location.value.replace(
-                'http://localhost:3000',
-                ''
-            )
+        const newLocation = event.target.elements.location.value.replace(
+            'http://localhost:3000',
+            ''
         );
-        history.push(newLocation);
+        navigate(newLocation);
     };
 
     return (
@@ -91,7 +64,7 @@ const BrowserBar = ({ history }: { history: History }) => {
                 <button
                     aria-label="Back"
                     onClick={() => {
-                        history.back();
+                        navigate(-1);
                     }}
                 >
                     <BackwardIcon />
@@ -101,7 +74,7 @@ const BrowserBar = ({ history }: { history: History }) => {
                 <button
                     aria-label="Forward"
                     onClick={() => {
-                        history.forward();
+                        navigate(1);
                     }}
                 >
                     <ForwardIcon />
@@ -118,10 +91,8 @@ const BrowserBar = ({ history }: { history: History }) => {
                 <input
                     name="location"
                     type="text"
-                    key={createPath(location)}
-                    defaultValue={`http://localhost:3000${createPath(
-                        location
-                    )}`}
+                    key={fullLocation}
+                    defaultValue={`http://localhost:3000${fullLocation}`}
                 />
             </form>
         </div>

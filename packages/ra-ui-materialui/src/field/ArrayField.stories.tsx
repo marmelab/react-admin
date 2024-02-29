@@ -1,10 +1,10 @@
 import * as React from 'react';
-import { MemoryRouter } from 'react-router';
 import {
     I18nContextProvider,
     RecordContextProvider,
     useListContext,
     useRecordContext,
+    TestMemoryRouter,
 } from 'ra-core';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
@@ -28,20 +28,20 @@ let books = [
 ];
 
 export const Basic = () => (
-    <MemoryRouter>
+    <TestMemoryRouter>
         <ArrayField record={{ id: 123, books }} source="books">
             <SingleFieldList linkType={false}>
                 <ChipField source="title" />
             </SingleFieldList>
         </ArrayField>
-    </MemoryRouter>
+    </TestMemoryRouter>
 );
 
 const i18nProvider = polyglotI18nProvider(() => englishMessages);
 
 export const PerPage = () => (
     <ThemeProvider theme={createTheme()}>
-        <MemoryRouter>
+        <TestMemoryRouter>
             <I18nContextProvider value={i18nProvider}>
                 <ArrayField
                     record={{ id: 123, books }}
@@ -54,12 +54,12 @@ export const PerPage = () => (
                     <Pagination />
                 </ArrayField>
             </I18nContextProvider>
-        </MemoryRouter>
+        </TestMemoryRouter>
     </ThemeProvider>
 );
 
 export const Sort = () => (
-    <MemoryRouter>
+    <TestMemoryRouter>
         <ArrayField
             record={{ id: 123, books }}
             source="books"
@@ -69,11 +69,11 @@ export const Sort = () => (
                 <ChipField source="title" />
             </SingleFieldList>
         </ArrayField>
-    </MemoryRouter>
+    </TestMemoryRouter>
 );
 
 export const Filter = () => (
-    <MemoryRouter>
+    <TestMemoryRouter>
         <ArrayField
             record={{ id: 123, books }}
             source="books"
@@ -83,7 +83,7 @@ export const Filter = () => (
                 <ChipField source="title" />
             </SingleFieldList>
         </ArrayField>
-    </MemoryRouter>
+    </TestMemoryRouter>
 );
 
 const SortButton = () => {
@@ -120,18 +120,18 @@ const SelectedChip = () => {
 };
 
 export const ListContext = () => (
-    <MemoryRouter>
+    <TestMemoryRouter>
         <ArrayField record={{ id: 123, books }} source="books">
             <SingleFieldList sx={{ p: 2 }} linkType={false}>
                 <SelectedChip />
             </SingleFieldList>
             <SortButton /> <FilterButton />
         </ArrayField>
-    </MemoryRouter>
+    </TestMemoryRouter>
 );
 
 export const InShowLayout = () => (
-    <MemoryRouter>
+    <TestMemoryRouter>
         <RecordContextProvider
             value={{
                 id: 123,
@@ -169,5 +169,5 @@ export const InShowLayout = () => (
                 </SimpleShowLayout>
             </Card>
         </RecordContextProvider>
-    </MemoryRouter>
+    </TestMemoryRouter>
 );

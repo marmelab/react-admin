@@ -4,9 +4,9 @@ import {
     required,
     ResourceContextProvider,
     testDataProvider,
+    TestMemoryRouter,
 } from 'ra-core';
 import { Stack, ThemeProvider, createTheme } from '@mui/material';
-import { MemoryRouter } from 'react-router-dom';
 
 import { AdminContext } from '../AdminContext';
 import { Edit } from '../detail';
@@ -175,7 +175,7 @@ export const InputBasedValidation = () => (
 export const Controlled = () => {
     const [record, setRecord] = React.useState({} as any);
     return (
-        <MemoryRouter>
+        <TestMemoryRouter>
             <ThemeProvider theme={createTheme()}>
                 <SimpleForm
                     resource="books"
@@ -187,6 +187,6 @@ export const Controlled = () => {
                 </SimpleForm>
                 <div>Record values: {JSON.stringify(record)}</div>
             </ThemeProvider>
-        </MemoryRouter>
+        </TestMemoryRouter>
     );
 };

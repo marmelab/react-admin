@@ -1,8 +1,12 @@
 import * as React from 'react';
 import expect from 'expect';
 import { render, fireEvent, screen, waitFor } from '@testing-library/react';
-import { CoreAdminContext, testDataProvider, useListContext } from 'ra-core';
-import { createMemoryHistory } from 'history';
+import {
+    CoreAdminContext,
+    testDataProvider,
+    useListContext,
+    TestMemoryRouter,
+} from 'ra-core';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import { defaultTheme } from '../theme/defaultTheme';
@@ -191,17 +195,16 @@ describe('<List />', () => {
                 Promise.resolve({ data: [{ id: 0 }], total: 1 })
             ),
         } as any;
-        const history = createMemoryHistory({
-            initialEntries: [`/posts`],
-        });
         render(
-            <CoreAdminContext dataProvider={dataProvider} history={history}>
-                <ThemeProvider theme={theme}>
-                    <List filters={<DummyFilters />} resource="posts">
-                        <Dummy />
-                    </List>
-                </ThemeProvider>
-            </CoreAdminContext>
+            <TestMemoryRouter initialEntries={[`/posts`]}>
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <ThemeProvider theme={theme}>
+                        <List filters={<DummyFilters />} resource="posts">
+                            <Dummy />
+                        </List>
+                    </ThemeProvider>
+                </CoreAdminContext>
+            </TestMemoryRouter>
         );
         await waitFor(() => new Promise(resolve => setTimeout(resolve, 0)));
         expect(
@@ -227,17 +230,16 @@ describe('<List />', () => {
                 Promise.resolve({ data: [{ id: 0 }], total: 1 })
             ),
         } as any;
-        const history = createMemoryHistory({
-            initialEntries: [`/posts`],
-        });
         render(
-            <CoreAdminContext dataProvider={dataProvider} history={history}>
-                <ThemeProvider theme={theme}>
-                    <List filters={dummyFilters} resource="posts">
-                        <Dummy />
-                    </List>
-                </ThemeProvider>
-            </CoreAdminContext>
+            <TestMemoryRouter initialEntries={[`/posts`]}>
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <ThemeProvider theme={theme}>
+                        <List filters={dummyFilters} resource="posts">
+                            <Dummy />
+                        </List>
+                    </ThemeProvider>
+                </CoreAdminContext>
+            </TestMemoryRouter>
         );
         await waitFor(() => new Promise(resolve => setTimeout(resolve, 0)));
         expect(

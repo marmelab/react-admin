@@ -6,9 +6,9 @@ import {
     Resource,
     useListContext,
     useInfinitePaginationContext,
+    TestMemoryRouter,
 } from 'ra-core';
 import { Box, Button, Card, Typography } from '@mui/material';
-import { MemoryRouter } from 'react-router-dom';
 
 import { InfiniteList } from './InfiniteList';
 import { SimpleList } from './SimpleList';
@@ -102,14 +102,14 @@ const dataProvider = new Proxy(baseDataProvider, {
 });
 
 const Admin = ({ children, dataProvider, layout }: any) => (
-    <MemoryRouter>
+    <TestMemoryRouter>
         <AdminContext
             dataProvider={dataProvider}
             i18nProvider={polyglotI18nProvider(() => defaultMessages, 'en')}
         >
             <AdminUI layout={layout}>{children}</AdminUI>
         </AdminContext>
-    </MemoryRouter>
+    </TestMemoryRouter>
 );
 
 const bookFilters = [<SearchInput source="q" alwaysOn />];

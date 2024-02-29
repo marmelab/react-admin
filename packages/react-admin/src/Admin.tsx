@@ -102,7 +102,6 @@ export const Admin = (props: AdminProps) => {
         dashboard,
         dataProvider,
         disableTelemetry,
-        history,
         i18nProvider = defaultI18nProvider,
         layout,
         loading,
@@ -133,7 +132,6 @@ export const Admin = (props: AdminProps) => {
             dataProvider={dataProvider}
             i18nProvider={i18nProvider}
             store={store}
-            history={history}
             queryClient={queryClient}
             theme={theme}
             lightTheme={lightTheme}

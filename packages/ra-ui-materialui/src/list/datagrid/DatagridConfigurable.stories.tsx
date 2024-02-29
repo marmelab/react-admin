@@ -1,8 +1,11 @@
 import * as React from 'react';
-import { MemoryRouter } from 'react-router-dom';
-import { PreferencesEditorContextProvider } from 'ra-core';
 import { Box } from '@mui/material';
-import { memoryStore, StoreContextProvider } from 'ra-core';
+import {
+    memoryStore,
+    StoreContextProvider,
+    PreferencesEditorContextProvider,
+    TestMemoryRouter,
+} from 'ra-core';
 
 import { DatagridConfigurable } from './DatagridConfigurable';
 import { Inspector, InspectorButton } from '../../preferences';
@@ -48,13 +51,13 @@ const Wrapper = ({ children }) => (
     <StoreContextProvider value={memoryStore()}>
         <ThemeProvider theme={theme}>
             <PreferencesEditorContextProvider>
-                <MemoryRouter>
+                <TestMemoryRouter>
                     <Inspector />
                     <Box display="flex" justifyContent="flex-end">
                         <InspectorButton />
                     </Box>
                     <Box p={2}>{children}</Box>
-                </MemoryRouter>
+                </TestMemoryRouter>
             </PreferencesEditorContextProvider>
         </ThemeProvider>
     </StoreContextProvider>

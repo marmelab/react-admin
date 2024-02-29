@@ -1,6 +1,10 @@
 import * as React from 'react';
-import { createMemoryHistory } from 'history';
-import { DataProvider, Form, testDataProvider } from 'ra-core';
+import {
+    DataProvider,
+    Form,
+    testDataProvider,
+    TestMemoryRouter,
+} from 'ra-core';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
 import { Admin, Resource } from 'react-admin';
@@ -44,30 +48,30 @@ const dataProvider = testDataProvider({
 
 const i18nProvider = polyglotI18nProvider(() => englishMessages);
 
-const history = createMemoryHistory({ initialEntries: ['/posts/create'] });
-
 export const Basic = () => (
-    <Admin dataProvider={dataProvider} history={history}>
-        <Resource name="tags" recordRepresentation={'name'} />
-        <Resource
-            name="posts"
-            create={() => (
-                <Create
-                    resource="posts"
-                    record={{ tags_ids: [1, 3] }}
-                    sx={{ width: 600 }}
-                >
-                    <SimpleForm>
-                        <ReferenceArrayInput
-                            reference="tags"
-                            resource="posts"
-                            source="tags_ids"
-                        />
-                    </SimpleForm>
-                </Create>
-            )}
-        />
-    </Admin>
+    <TestMemoryRouter initialEntries={['/posts/create']}>
+        <Admin dataProvider={dataProvider}>
+            <Resource name="tags" recordRepresentation={'name'} />
+            <Resource
+                name="posts"
+                create={() => (
+                    <Create
+                        resource="posts"
+                        record={{ tags_ids: [1, 3] }}
+                        sx={{ width: 600 }}
+                    >
+                        <SimpleForm>
+                            <ReferenceArrayInput
+                                reference="tags"
+                                resource="posts"
+                                source="tags_ids"
+                            />
+                        </SimpleForm>
+                    </Create>
+                )}
+            />
+        </Admin>
+    </TestMemoryRouter>
 );
 
 export const WithAutocompleteInput = () => (

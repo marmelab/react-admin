@@ -1,6 +1,9 @@
 import * as React from 'react';
-import { MemoryRouter } from 'react-router-dom';
-import { PreferencesEditorContextProvider, I18nContextProvider } from 'ra-core';
+import {
+    PreferencesEditorContextProvider,
+    I18nContextProvider,
+    TestMemoryRouter,
+} from 'ra-core';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import en from 'ra-language-english';
 import fr from 'ra-language-french';
@@ -45,7 +48,7 @@ const i18nProvider = polyglotI18nProvider(locale => translations[locale], 'en');
 export const Basic = () => (
     <I18nContextProvider value={i18nProvider}>
         <PreferencesEditorContextProvider>
-            <MemoryRouter>
+            <TestMemoryRouter>
                 <Inspector />
                 <Box display="flex" justifyContent="flex-end">
                     <LocalesMenuButton
@@ -65,7 +68,7 @@ export const Basic = () => (
                         tertiaryText={record => record.year}
                     />
                 </Box>
-            </MemoryRouter>
+            </TestMemoryRouter>
         </PreferencesEditorContextProvider>
     </I18nContextProvider>
 );

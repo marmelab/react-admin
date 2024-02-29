@@ -7,3 +7,4 @@ export * from './useCreatePath';
 export * from './useRedirect';
 export * from './useScrollToTop';
 export * from './types';
+export * from './TestMemoryRouter';

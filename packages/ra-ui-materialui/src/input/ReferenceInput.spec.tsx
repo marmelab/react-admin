@@ -257,22 +257,23 @@ describe('<ReferenceInput />', () => {
         await screen.findByText('Proust', undefined, { timeout: 5000 });
     });
 
-    it('should throw an error when using the validate prop', () => {
+    it('should throw an error when using the validate prop', async () => {
         jest.spyOn(console, 'error').mockImplementation(jest.fn());
         const dataProvider = testDataProvider({
             getList: async () => ({ data: [], total: 25 }),
         });
-        expect(() =>
-            render(
-                <CoreAdminContext dataProvider={dataProvider}>
-                    <Form>
-                        <ReferenceInput
-                            {...defaultProps}
-                            validate={() => undefined}
-                        />
-                    </Form>
-                </CoreAdminContext>
-            )
-        ).toThrowError();
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
+                <Form>
+                    <ReferenceInput
+                        {...defaultProps}
+                        validate={() => undefined}
+                    />
+                </Form>
+            </CoreAdminContext>
+        );
+        await screen.findByText(
+            '<ReferenceInput> does not accept a validate prop. Set the validate prop on the child instead.'
+        );
     });
 });

@@ -19,7 +19,7 @@ import DateRangeIcon from '@mui/icons-material/DateRange';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
 import frenchMessages from 'ra-language-french';
-import { createMemoryHistory } from 'history';
+import { TestMemoryRouter } from 'ra-core';
 
 import { SavedQueriesList } from './SavedQueriesList';
 import fakeRestProvider from 'ra-data-fakerest';
@@ -150,9 +150,11 @@ const SongList = () => (
 );
 
 export const Basic = () => (
-    <Admin history={createMemoryHistory()} dataProvider={dataProvider}>
-        <Resource name="songs" list={SongList} />
-    </Admin>
+    <TestMemoryRouter>
+        <Admin dataProvider={dataProvider}>
+            <Resource name="songs" list={SongList} />
+        </Admin>
+    </TestMemoryRouter>
 );
 
 /****************** With Theme and Locale Switcher ********************/
@@ -187,14 +189,15 @@ const i18nProvider = polyglotI18nProvider(
 );
 
 export const WithThemeAndLocale = () => (
-    <Admin
-        store={memoryStore()}
-        history={createMemoryHistory()}
-        i18nProvider={i18nProvider}
-        dataProvider={dataProvider}
-    >
-        <Resource name="songs" list={SongList} />
-    </Admin>
+    <TestMemoryRouter>
+        <Admin
+            store={memoryStore()}
+            i18nProvider={i18nProvider}
+            dataProvider={dataProvider}
+        >
+            <Resource name="songs" list={SongList} />
+        </Admin>
+    </TestMemoryRouter>
 );
 
 const dataProvider = fakeRestProvider(

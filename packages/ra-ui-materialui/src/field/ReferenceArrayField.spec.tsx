@@ -1,13 +1,13 @@
 import * as React from 'react';
 import expect from 'expect';
 import { render, screen, act, waitFor } from '@testing-library/react';
-import { MemoryRouter } from 'react-router-dom';
 import {
     ListContextProvider,
     CoreAdminContext,
     RecordContextProvider,
     useRecordContext,
     useListContext,
+    TestMemoryRouter,
 } from 'ra-core';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
@@ -56,7 +56,7 @@ describe('<ReferenceArrayField />', () => {
             { id: 2, title: 'world' },
         ];
         const { queryAllByRole, container, getByText } = render(
-            <MemoryRouter>
+            <TestMemoryRouter>
                 <ThemeProvider theme={theme}>
                     <ListContextProvider
                         value={{
@@ -76,7 +76,7 @@ describe('<ReferenceArrayField />', () => {
                         </ReferenceArrayFieldView>
                     </ListContextProvider>
                 </ThemeProvider>
-            </MemoryRouter>
+            </TestMemoryRouter>
         );
         expect(queryAllByRole('progressbar')).toHaveLength(0);
         expect(container.firstChild?.textContent).not.toBeUndefined();
@@ -116,7 +116,7 @@ describe('<ReferenceArrayField />', () => {
             { id: 'abc-2', title: 'world' },
         ];
         const { queryAllByRole, container, getByText } = render(
-            <MemoryRouter>
+            <TestMemoryRouter>
                 <ThemeProvider theme={theme}>
                     <ListContextProvider
                         value={{
@@ -136,7 +136,7 @@ describe('<ReferenceArrayField />', () => {
                         </ReferenceArrayFieldView>
                     </ListContextProvider>
                 </ThemeProvider>
-            </MemoryRouter>
+            </TestMemoryRouter>
         );
         expect(queryAllByRole('progressbar')).toHaveLength(0);
         expect(container.firstChild?.textContent).not.toBeUndefined();
@@ -150,7 +150,7 @@ describe('<ReferenceArrayField />', () => {
             { id: 2, title: 'world' },
         ];
         const { queryAllByRole, container, getByText } = render(
-            <MemoryRouter>
+            <TestMemoryRouter>
                 <ThemeProvider theme={theme}>
                     <ListContextProvider
                         value={{
@@ -171,7 +171,7 @@ describe('<ReferenceArrayField />', () => {
                         </ReferenceArrayFieldView>
                     </ListContextProvider>
                 </ThemeProvider>
-            </MemoryRouter>
+            </TestMemoryRouter>
         );
         expect(queryAllByRole('progressbar')).toHaveLength(0);
         expect(container.firstChild.textContent).not.toBeUndefined();
@@ -185,7 +185,7 @@ describe('<ReferenceArrayField />', () => {
             { id: 2, title: 'world' },
         ];
         const { container } = render(
-            <MemoryRouter>
+            <TestMemoryRouter>
                 <ThemeProvider theme={theme}>
                     <ListContextProvider
                         value={{
@@ -207,7 +207,7 @@ describe('<ReferenceArrayField />', () => {
                         </ReferenceArrayFieldView>
                     </ListContextProvider>
                 </ThemeProvider>
-            </MemoryRouter>
+            </TestMemoryRouter>
         );
         expect(container.getElementsByClassName('myClass')).toHaveLength(1);
     });

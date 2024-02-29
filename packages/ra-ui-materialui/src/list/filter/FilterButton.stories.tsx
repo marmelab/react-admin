@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ListBase, memoryStore } from 'ra-core';
+import { ListBase, memoryStore, TestMemoryRouter } from 'ra-core';
 import {
     Admin,
     Resource,
@@ -19,7 +19,6 @@ import {
     AutocompleteArrayInput,
     SimpleFormIterator,
 } from '../../input';
-import { MemoryRouter } from 'react-router';
 
 export default {
     title: 'ra-ui-materialui/list/filter/FilterButton',
@@ -202,7 +201,7 @@ export const Basic = (args: { disableSaveQuery?: boolean }) => {
         <TextInput label="Nested" source="nested.foo" defaultValue="bar" />,
     ];
     return (
-        <MemoryRouter>
+        <TestMemoryRouter>
             <Admin
                 dataProvider={fakerestDataProvider(data)}
                 store={memoryStore()}
@@ -212,7 +211,7 @@ export const Basic = (args: { disableSaveQuery?: boolean }) => {
                     list={<PostList postFilters={postFilters} args={args} />}
                 />
             </Admin>
-        </MemoryRouter>
+        </TestMemoryRouter>
     );
 };
 
@@ -225,7 +224,7 @@ export const WithArrayInput = (args: { disableSaveQuery?: boolean }) => {
         </ArrayInput>,
     ];
     return (
-        <MemoryRouter>
+        <TestMemoryRouter>
             <Admin
                 dataProvider={fakerestDataProvider(
                     data,
@@ -238,7 +237,7 @@ export const WithArrayInput = (args: { disableSaveQuery?: boolean }) => {
                     list={<PostList postFilters={postFilters} args={args} />}
                 />
             </Admin>
-        </MemoryRouter>
+        </TestMemoryRouter>
     );
 };
 
@@ -247,7 +246,7 @@ export const DisabledFilters = (args: { disableSaveQuery?: boolean }) => {
         <TextInput label="Title" source="title" disabled={true} />,
     ];
     return (
-        <MemoryRouter>
+        <TestMemoryRouter>
             <Admin
                 dataProvider={fakerestDataProvider(data)}
                 store={memoryStore()}
@@ -257,7 +256,7 @@ export const DisabledFilters = (args: { disableSaveQuery?: boolean }) => {
                     list={<PostList postFilters={postFilters} args={args} />}
                 />
             </Admin>
-        </MemoryRouter>
+        </TestMemoryRouter>
     );
 };
 
@@ -283,7 +282,7 @@ export const WithSearchInput = (args: {
         />,
     ];
     return (
-        <MemoryRouter>
+        <TestMemoryRouter>
             <Admin
                 dataProvider={fakerestDataProvider(data)}
                 store={memoryStore()}
@@ -293,7 +292,7 @@ export const WithSearchInput = (args: {
                     list={<PostList postFilters={postFilters} args={args} />}
                 />
             </Admin>
-        </MemoryRouter>
+        </TestMemoryRouter>
     );
 };
 
@@ -353,7 +352,7 @@ export const WithAutoCompleteArrayInput = (args: {
         />,
     ];
     return (
-        <MemoryRouter>
+        <TestMemoryRouter>
             <Admin
                 dataProvider={withNestedFiltersSupportDataProvider()}
                 dashboard={Dashboard}
@@ -369,6 +368,6 @@ export const WithAutoCompleteArrayInput = (args: {
                     }
                 />
             </Admin>
-        </MemoryRouter>
+        </TestMemoryRouter>
     );
 };

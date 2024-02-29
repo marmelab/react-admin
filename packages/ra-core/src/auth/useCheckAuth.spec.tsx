@@ -2,14 +2,13 @@ import * as React from 'react';
 import { useState, useEffect } from 'react';
 import expect from 'expect';
 import { screen, render, waitFor } from '@testing-library/react';
-import { unstable_HistoryRouter as HistoryRouter } from 'react-router-dom';
+import { Location } from 'react-router-dom';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
-import { createMemoryHistory } from 'history';
 
 import { useCheckAuth } from './useCheckAuth';
 import AuthContext from './AuthContext';
 
-import { BasenameContextProvider } from '../routing';
+import { BasenameContextProvider, TestMemoryRouter } from '../routing';
 import { useNotify } from '../notification/useNotify';
 import { AuthProvider } from '../types';
 
@@ -62,45 +61,60 @@ describe('useCheckAuth', () => {
     });
 
     it('should not logout if user is authenticated', async () => {
-        const history = createMemoryHistory({ initialEntries: ['/'] });
+        let location: Location;
         render(
-            <HistoryRouter history={history}>
+            <TestMemoryRouter
+                initialEntries={['/']}
+                locationCallback={l => {
+                    location = l;
+                }}
+            >
                 <AuthContext.Provider value={authProvider}>
                     <QueryClientProvider client={queryClient}>
                         <TestComponent params={{ token: true }} />
                     </QueryClientProvider>
                 </AuthContext.Provider>
-            </HistoryRouter>
+            </TestMemoryRouter>
         );
         await waitFor(() => {
             expect(notify).toHaveBeenCalledTimes(0);
             expect(screen.queryByText('authenticated')).not.toBeNull();
-            expect(history.location.pathname).toBe('/');
+            expect(location.pathname).toBe('/');
         });
     });
 
     it('should logout if user is not authenticated', async () => {
-        const history = createMemoryHistory({ initialEntries: ['/'] });
+        let location: Location;
         render(
-            <HistoryRouter history={history}>
+            <TestMemoryRouter
+                initialEntries={['/']}
+                locationCallback={l => {
+                    location = l;
+                }}
+            >
                 <AuthContext.Provider value={authProvider}>
                     <QueryClientProvider client={queryClient}>
                         <TestComponent params={{ token: false }} />
                     </QueryClientProvider>
                 </AuthContext.Provider>
-            </HistoryRouter>
+            </TestMemoryRouter>
         );
         await waitFor(() => {
             expect(notify).toHaveBeenCalledTimes(1);
             expect(screen.queryByText('authenticated')).toBeNull();
-            expect(history.location.pathname).toBe('/login');
+            expect(location.pathname).toBe('/login');
         });
     });
 
     it('should not logout if has no credentials and passed logoutOnFailure as false', async () => {
-        const history = createMemoryHistory({ initialEntries: ['/'] });
+        let location: Location;
         render(
-            <HistoryRouter history={history}>
+            <TestMemoryRouter
+                initialEntries={['/']}
+                locationCallback={l => {
+                    location = l;
+                }}
+            >
                 <AuthContext.Provider value={authProvider}>
                     <QueryClientProvider client={queryClient}>
                         <TestComponent
@@ -109,19 +123,24 @@ describe('useCheckAuth', () => {
                         />
                     </QueryClientProvider>
                 </AuthContext.Provider>
-            </HistoryRouter>
+            </TestMemoryRouter>
         );
         await waitFor(() => {
             expect(notify).toHaveBeenCalledTimes(0);
             expect(screen.queryByText('not authenticated')).not.toBeNull();
-            expect(history.location.pathname).toBe('/');
+            expect(location.pathname).toBe('/');
         });
     });
 
     it('should logout without showing a notification when disableNotification is true', async () => {
-        const history = createMemoryHistory({ initialEntries: ['/'] });
+        let location: Location;
         render(
-            <HistoryRouter history={history}>
+            <TestMemoryRouter
+                initialEntries={['/']}
+                locationCallback={l => {
+                    location = l;
+                }}
+            >
                 <AuthContext.Provider value={authProvider}>
                     <QueryClientProvider client={queryClient}>
                         <TestComponent
@@ -130,19 +149,24 @@ describe('useCheckAuth', () => {
                         />
                     </QueryClientProvider>
                 </AuthContext.Provider>
-            </HistoryRouter>
+            </TestMemoryRouter>
         );
         await waitFor(() => {
             expect(notify).toHaveBeenCalledTimes(0);
             expect(screen.queryByText('authenticated')).toBeNull();
-            expect(history.location.pathname).toBe('/login');
+            expect(location.pathname).toBe('/login');
         });
     });
 
     it('should logout without showing a notification when authProvider returns error with message false', async () => {
-        const history = createMemoryHistory({ initialEntries: ['/'] });
+        let location: Location;
         render(
-            <HistoryRouter history={history}>
+            <TestMemoryRouter
+                initialEntries={['/']}
+                locationCallback={l => {
+                    location = l;
+                }}
+            >
                 <AuthContext.Provider
                     value={{
                         ...authProvider,
@@ -153,19 +177,24 @@ describe('useCheckAuth', () => {
                         <TestComponent />
                     </QueryClientProvider>
                 </AuthContext.Provider>
-            </HistoryRouter>
+            </TestMemoryRouter>
         );
         await waitFor(() => {
             expect(notify).toHaveBeenCalledTimes(0);
             expect(screen.queryByText('authenticated')).toBeNull();
-            expect(history.location.pathname).toBe('/login');
+            expect(location.pathname).toBe('/login');
         });
     });
 
     it('should take basename into account when redirecting to login', async () => {
-        const history = createMemoryHistory({ initialEntries: ['/foo'] });
+        let location: Location;
         render(
-            <HistoryRouter history={history}>
+            <TestMemoryRouter
+                initialEntries={['/foo']}
+                locationCallback={l => {
+                    location = l;
+                }}
+            >
                 <BasenameContextProvider basename="/foo">
                     <AuthContext.Provider value={authProvider}>
                         <QueryClientProvider client={queryClient}>
@@ -173,12 +202,12 @@ describe('useCheckAuth', () => {
                         </QueryClientProvider>
                     </AuthContext.Provider>
                 </BasenameContextProvider>
-            </HistoryRouter>
+            </TestMemoryRouter>
         );
         await waitFor(() => {
             expect(notify).toHaveBeenCalledTimes(1);
             expect(screen.queryByText('authenticated')).toBeNull();
-            expect(history.location.pathname).toBe('/foo/login');
+            expect(location.pathname).toBe('/foo/login');
         });
     });
 });

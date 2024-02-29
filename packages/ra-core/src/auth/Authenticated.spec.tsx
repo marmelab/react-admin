@@ -1,13 +1,13 @@
 import * as React from 'react';
 import expect from 'expect';
 import { render, screen, waitFor } from '@testing-library/react';
-import { createMemoryHistory } from 'history';
 import { Routes, Route, useLocation } from 'react-router-dom';
 
 import { memoryStore } from '../store';
 import { CoreAdminContext } from '../core';
 import { useNotificationContext } from '../notification';
 import { Authenticated } from './Authenticated';
+import { TestMemoryRouter } from '../routing';
 
 describe('<Authenticated>', () => {
     const Foo = () => <div>Foo</div>;
@@ -44,7 +44,6 @@ describe('<Authenticated>', () => {
         };
         const store = memoryStore();
         const reset = jest.spyOn(store, 'reset');
-        const history = createMemoryHistory();
 
         const Login = () => {
             const location = useLocation();
@@ -65,25 +64,24 @@ describe('<Authenticated>', () => {
         };
 
         render(
-            <CoreAdminContext
-                authProvider={authProvider}
-                store={store}
-                history={history}
-            >
-                <Notification />
-                <Routes>
-                    <Route
-                        path="/"
-                        element={
-                            <Authenticated>
-                                <Foo />
-                            </Authenticated>
-                        }
-                    />
-                    <Route path="/login" element={<Login />} />
-                </Routes>
-            </CoreAdminContext>
+            <TestMemoryRouter>
+                <CoreAdminContext authProvider={authProvider} store={store}>
+                    <Notification />
+                    <Routes>
+                        <Route
+                            path="/"
+                            element={
+                                <Authenticated>
+                                    <Foo />
+                                </Authenticated>
+                            }
+                        />
+                        <Route path="/login" element={<Login />} />
+                    </Routes>
+                </CoreAdminContext>
+            </TestMemoryRouter>
         );
+
         await waitFor(() => {
             expect(authProvider.checkAuth.mock.calls[0][0]).toEqual({
                 signal: expect.anything(),

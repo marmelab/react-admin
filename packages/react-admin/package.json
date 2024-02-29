@@ -40,14 +40,13 @@
         "@emotion/styled": "^11.3.0",
         "@mui/icons-material": "^5.0.1",
         "@mui/material": "^5.0.1",
-        "history": "^5.1.0",
         "ra-core": "^4.16.11",
         "ra-i18n-polyglot": "^4.16.11",
         "ra-language-english": "^4.16.11",
         "ra-ui-materialui": "^4.16.11",
         "react-hook-form": "^7.43.9",
-        "react-router": "^6.1.0",
-        "react-router-dom": "^6.1.0"
+        "react-router": "^6.22.0",
+        "react-router-dom": "^6.22.0"
     },
     "gitHead": "b227592132da6ae5f01438fa8269e04596cdfdd8"
 }

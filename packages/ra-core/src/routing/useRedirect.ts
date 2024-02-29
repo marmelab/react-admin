@@ -1,8 +1,7 @@
 import { useCallback } from 'react';
 import { useNavigate, To } from 'react-router-dom';
-import { parsePath } from 'history';
-
 import { Identifier, RaRecord } from '../types';
+
 import { useBasename } from './useBasename';
 import { CreatePathType, useCreatePath } from './useCreatePath';
 
@@ -56,14 +55,9 @@ export const useRedirect = () => {
                               pathname: `${basename}/${target.pathname}`,
                               ...target,
                           };
-                navigate(
-                    typeof absoluteTarget === 'string'
-                        ? parsePath(absoluteTarget)
-                        : absoluteTarget,
-                    {
-                        state: { _scrollToTop: true, ...state },
-                    }
-                );
+                navigate(absoluteTarget, {
+                    state: { _scrollToTop: true, ...state },
+                });
                 return;
             } else if (
                 typeof redirectTo === 'string' &&
