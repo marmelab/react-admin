@@ -170,46 +170,6 @@ For instance, you can use `direction: 'row'` to display the inputs side by side 
 
 ![TranslatableInputs with direction row](./img/TranslatableInputs-row.png)
 
-## `readOnly`
-
-The `readOnly` prop set to true makes the element not mutable, meaning the user can not edit the control.
-
-```jsx
-<TranslatableInputs
-    locales={['en', 'fr']}
-    readOnly
->
-    <TextInput source="title" />
-    <TextInput source="description" />
-</TranslatableInputs>
-```
-
-## `disabled`
-
-The `disabled` prop set to true makes the element not mutable, focusable, or even submitted with the form.
-
-```jsx
-<TranslatableInputs
-    locales={['en', 'fr']}
-    disabled
->
-    <TextInput source="title" />
-    <TextInput source="description" />
-</TranslatableInputs>
-```
-
-**Tip:** Note that `disabled` inputs are **not** included in the form values, and hence may trigger `warnWhenUnsavedChanges` if the input previously had a value in the record. To include the input in the form values, you can use `readOnly` instead of `disabled`.
-
-```jsx
-<TranslatableInputs
-    locales={['en', 'fr']}
-    InputProps={{ disabled: true }}
->
-    <TextInput source="title" />
-    <TextInput source="description" />
-</TranslatableInputs>
-```
-
 ## `sx`
 
 Use the `sx` prop to pass additional styles to the component:
