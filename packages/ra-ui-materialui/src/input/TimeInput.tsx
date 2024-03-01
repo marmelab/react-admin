@@ -92,6 +92,7 @@ export const TimeInput = ({
             variant={variant}
             margin={margin}
             disabled={disabled || readOnly}
+            readOnly={readOnly}
             error={(isTouched || isSubmitted) && invalid}
             helperText={
                 renderHelperText ? (
