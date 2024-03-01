@@ -147,9 +147,9 @@ export const Id = () => (
 );
 const i18nProvider = polyglotI18nProvider(() => englishMessages);
 
-const Wrapper = ({ children, onSuccess = console.log }) => (
+const Wrapper = ({ children }) => (
     <AdminContext i18nProvider={i18nProvider}>
-        <Create resource="posts" mutationOptions={{ onSuccess }}>
+        <Create resource="posts">
             <SimpleForm>
                 {children}
                 <FormInspector name="gender" />
