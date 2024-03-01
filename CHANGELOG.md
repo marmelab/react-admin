@@ -1,5 +1,16 @@
 # Changelog
 
+## v4.16.12
+
+* Fix support for readOnly on all RA Inputs ([#9656](https://github.com/marmelab/react-admin/pull/9656)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* Fix AutocompleteInput ignores TextFieldProps ([#9681](https://github.com/marmelab/react-admin/pull/9681)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<ArrayInput>` should keep error state on children after unmount ([#9677](https://github.com/marmelab/react-admin/pull/9677)) ([sweco-sedalh](https://github.com/sweco-sedalh))
+* Fix `<SortButton>` should use the provided `resource` prop to build its label ([#9694](https://github.com/marmelab/react-admin/pull/9694)) ([slax57](https://github.com/slax57))
+* Fix `<ReferenceInput>` throws a recoverable error in production ([#9690](https://github.com/marmelab/react-admin/pull/9690)) ([fzaninotto](https://github.com/fzaninotto))
+* [chore] Fix vulnerable dev dependency ip ([#9673](https://github.com/marmelab/react-admin/pull/9673)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Mention the Multi-column sorting feature of `<DatagridAG>` ([#9674](https://github.com/marmelab/react-admin/pull/9674)) ([slax57](https://github.com/slax57))
+* [Doc] Fix typo in example showing custom CSV export ([#9671](https://github.com/marmelab/react-admin/pull/9671)) ([kav](https://github.com/kav))
+
 ## v4.16.11
 
 * Fix `<FilterForm>` ignores `key` prop on children ([#9588](https://github.com/marmelab/react-admin/pull/9588)) ([Dreamsorcerer](https://github.com/Dreamsorcerer))
