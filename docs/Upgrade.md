@@ -490,7 +490,7 @@ The `<Admin>` component has been updated to use [`createHashRouter`](https://rea
 
 ### Breaking Change
 
-If you are using an external router, you will need to migrate it to a data router.
+If you are using an external router, you will need to [migrate it to a data router](https://reactrouter.com/en/main/upgrading/v6-data).
 
 For instance, if you were using `react-router`'s `BrowserRouter`, you will need to migrate to `createBrowserRouter` and wrap your app in a `RouterProvider`:
 
@@ -524,6 +524,8 @@ root.render(
     </React.StrictMode>
 );
 ```
+
+**Tip:** Check out the [Migrating to RouterProvider](https://reactrouter.com/en/main/upgrading/v6-data) documentation to learn more about the migration steps and impacts.
 
 ### Minor Changes
 
