@@ -488,7 +488,11 @@ The `useWarnWhenUnsavedChanges` hook was reimplemented using [`useBlocker`](http
 
 The `<Admin>` component has been updated to use [`createHashRouter`](https://reactrouter.com/en/main/routers/create-hash-router) internally by default, which is a data router. So you don't need to change anything if you are using `react-admin`'s internal router.
 
-If you are using an external router, you will need to migrate it to a data router to be able to use the `warnWhenUnsavedChanges` feature.
+### Breaking Change
+
+If you are using an external router, you will need to migrate it to a data router.
+
+For instance, if you were using `react-router`'s `BrowserRouter`, you will need to migrate to `createBrowserRouter` and wrap your app in a `RouterProvider`:
 
 ```diff
 import * as React from 'react';
