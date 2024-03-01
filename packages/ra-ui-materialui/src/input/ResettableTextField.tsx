@@ -23,6 +23,7 @@ export const ResettableTextField = forwardRef(
             value,
             resettable,
             disabled,
+            readOnly,
             variant,
             margin,
             className,
@@ -136,7 +137,7 @@ export const ResettableTextField = forwardRef(
                             title={translate('ra.action.clear_input_value')}
                             onClick={handleClickClearButton}
                             onMouseDown={handleMouseDownClearButton}
-                            disabled={disabled}
+                            disabled={disabled || readOnly}
                             size="large"
                         >
                             <ClearIcon
@@ -155,6 +156,7 @@ export const ResettableTextField = forwardRef(
             <StyledTextField
                 value={value}
                 InputProps={{
+                    readOnly: readOnly,
                     classes:
                         props.select && variant === 'filled'
                             ? { adornedEnd: inputAdornedEnd }
@@ -162,7 +164,7 @@ export const ResettableTextField = forwardRef(
                     endAdornment: getEndAdornment(),
                     ...InputPropsWithoutEndAdornment,
                 }}
-                disabled={disabled}
+                disabled={disabled || readOnly}
                 variant={variant}
                 margin={margin}
                 className={className}
@@ -184,6 +186,7 @@ const handleMouseDownClearButton = event => {
 
 ResettableTextField.propTypes = {
     clearAlwaysVisible: PropTypes.bool,
+    readOnly: PropTypes.bool,
     disabled: PropTypes.bool,
     InputProps: PropTypes.object,
     onBlur: PropTypes.func,
@@ -196,6 +199,7 @@ ResettableTextField.propTypes = {
 interface Props {
     clearAlwaysVisible?: boolean;
     resettable?: boolean;
+    readOnly?: boolean;
 }
 
 export type ResettableTextFieldProps = Props &

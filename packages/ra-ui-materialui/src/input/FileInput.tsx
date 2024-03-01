@@ -22,6 +22,7 @@ import { Labeled } from '../Labeled';
 import { FileInputPreview } from './FileInputPreview';
 import { sanitizeInputRestProps } from './sanitizeInputRestProps';
 import { InputHelperText } from './InputHelperText';
+import { useTheme } from '@mui/material/styles';
 import { SxProps } from '@mui/system';
 import { SvgIconProps } from '@mui/material';
 
@@ -48,6 +49,8 @@ export const FileInput = (props: FileInputProps) => {
         source,
         validate,
         validateFileRemoval,
+        disabled,
+        readOnly,
         ...rest
     } = props;
     const { onDrop: onDropProp } = options;
@@ -92,6 +95,8 @@ export const FileInput = (props: FileInputProps) => {
         parse: parse || transformFiles,
         source,
         validate,
+        disabled,
+        readOnly,
         ...rest,
     });
     const { isTouched, error, invalid } = fieldState;
@@ -147,12 +152,15 @@ export const FileInput = (props: FileInputProps) => {
         maxSize,
         minSize,
         multiple,
+        disabled: disabled || readOnly,
         ...options,
         onDrop,
     });
 
     const renderHelperText =
         helperText !== false || ((isTouched || isSubmitted) && invalid);
+
+    const theme = useTheme();
 
     return (
         <StyledLabeled
@@ -163,6 +171,10 @@ export const FileInput = (props: FileInputProps) => {
             resource={resource}
             isRequired={isRequired}
             color={(isTouched || isSubmitted) && invalid ? 'error' : undefined}
+            sx={{
+                cursor: disabled || readOnly ? 'default' : 'pointer',
+                ...rest.sx,
+            }}
             {...sanitizeInputRestProps(rest)}
         >
             <>
@@ -170,6 +182,17 @@ export const FileInput = (props: FileInputProps) => {
                     {...getRootProps({
                         className: FileInputClasses.dropZone,
                         'data-testid': 'dropzone',
+                        style: {
+                            color:
+                                disabled || readOnly
+                                    ? theme.palette.text.disabled
+                                    : inputPropsOptions?.color ||
+                                      theme.palette.text.primary,
+                            backgroundColor:
+                                disabled || readOnly
+                                    ? theme.palette.action.disabledBackground
+                                    : inputPropsOptions?.backgroundColor,
+                        },
                     })}
                 >
                     <input
@@ -261,7 +284,6 @@ const StyledLabeled = styled(Labeled, {
         background: theme.palette.background.default,
         borderRadius: theme.shape.borderRadius,
         fontFamily: theme.typography.fontFamily,
-        cursor: 'pointer',
         padding: theme.spacing(1),
         textAlign: 'center',
         color: theme.palette.getContrastText(theme.palette.background.default),

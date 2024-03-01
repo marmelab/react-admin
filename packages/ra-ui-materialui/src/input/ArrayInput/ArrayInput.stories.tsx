@@ -91,6 +91,38 @@ export const Disabled = () => (
                                 <SimpleFormIterator>
                                     <TextInput source="name" />
                                     <TextInput source="role" />
+                                    <TextInput source="surname" />
+                                </SimpleFormIterator>
+                            </ArrayInput>
+                        </SimpleForm>
+                    </Edit>
+                );
+            }}
+        />
+    </Admin>
+);
+
+export const ReadOnly = () => (
+    <Admin dataProvider={dataProvider} history={history}>
+        <Resource
+            name="books"
+            edit={() => {
+                return (
+                    <Edit
+                        mutationMode="pessimistic"
+                        mutationOptions={{
+                            onSuccess: data => {
+                                console.log(data);
+                            },
+                        }}
+                    >
+                        <SimpleForm>
+                            <TextInput source="title" />
+                            <ArrayInput source="authors" readOnly>
+                                <SimpleFormIterator>
+                                    <TextInput source="name" />
+                                    <TextInput source="role" />
+                                    <TextInput source="surname" />
                                 </SimpleFormIterator>
                             </ArrayInput>
                         </SimpleForm>
@@ -408,8 +440,8 @@ const BookEditGlobalValidation = () => {
             }}
         >
             <SimpleForm validate={globalValidator}>
-                {/* 
-                  We still need `validate={required()}` to indicate fields are required 
+                {/*
+                  We still need `validate={required()}` to indicate fields are required
                   with a '*' symbol after the label, but the real validation happens in `globalValidator`
                 */}
                 <ArrayInput source="authors" fullWidth validate={required()}>
@@ -438,8 +470,8 @@ const CreateGlobalValidationInFormTab = () => {
             }}
         >
             <TabbedForm validate={globalValidator}>
-                {/* 
-                  We still need `validate={required()}` to indicate fields are required 
+                {/*
+                  We still need `validate={required()}` to indicate fields are required
                   with a '*' symbol after the label, but the real validation happens in `globalValidator`
                 */}
                 <TabbedForm.Tab label="Main">

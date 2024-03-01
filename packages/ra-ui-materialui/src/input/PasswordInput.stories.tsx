@@ -5,28 +5,33 @@ import englishMessages from 'ra-language-english';
 import { AdminContext } from '../AdminContext';
 import { Create } from '../detail';
 import { SimpleForm } from '../form';
-import { NullableBooleanInput } from './NullableBooleanInput';
 import { FormInspector } from './common';
+import { PasswordInput } from './PasswordInput';
 
-export default { title: 'ra-ui-materialui/input/NullableBooleanInput' };
+export default { title: 'ra-ui-materialui/input/PasswordInput' };
 
 export const Basic = () => (
     <Wrapper>
-        <NullableBooleanInput source="published" />
+        <PasswordInput source="password" />
+    </Wrapper>
+);
+
+export const FullWidth = () => (
+    <Wrapper>
+        <PasswordInput source="password" fullWidth />
     </Wrapper>
 );
 
 export const Disabled = () => (
     <Wrapper>
-        <NullableBooleanInput source="announced" defaultValue={true} disabled />
-        <NullableBooleanInput source="published" disabled />
+        <PasswordInput source="password" defaultValue="password" disabled />
+        <PasswordInput source="confirmedPassword" disabled />
     </Wrapper>
 );
-
 export const ReadOnly = () => (
     <Wrapper>
-        <NullableBooleanInput source="announced" defaultValue={true} readOnly />
-        <NullableBooleanInput source="published" readOnly />
+        <PasswordInput source="password" defaultValue="password" readOnly />
+        <PasswordInput source="confirmedPassword" readOnly />
     </Wrapper>
 );
 
@@ -37,7 +42,7 @@ const Wrapper = ({ children }) => (
         <Create resource="posts">
             <SimpleForm>
                 {children}
-                <FormInspector name="published" />
+                <FormInspector name="password" />
             </SimpleForm>
         </Create>
     </AdminContext>

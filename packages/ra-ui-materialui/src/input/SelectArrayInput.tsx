@@ -114,6 +114,8 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
         translateChoice,
         validate,
         variant,
+        disabled,
+        readOnly,
         ...rest
     } = props;
 
@@ -155,6 +157,8 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
         resource,
         source,
         validate,
+        disabled,
+        readOnly,
         ...rest,
     });
 
@@ -338,6 +342,8 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
                                 ))}
                         </div>
                     )}
+                    disabled={disabled || readOnly}
+                    readOnly={readOnly}
                     data-testid="selectArray"
                     size={size}
                     {...field}

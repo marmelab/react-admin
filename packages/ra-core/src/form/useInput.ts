@@ -148,6 +148,8 @@ export type InputProps<ValueType = any> = Omit<
         resource?: string;
         source: string;
         validate?: Validator | Validator[];
+        readOnly?: boolean;
+        disabled?: boolean;
     };
 
 export type UseInputValue = {

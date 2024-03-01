@@ -48,6 +48,7 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
         className,
         resource,
         source,
+        readOnly,
         disabled,
         disableAdd = false,
         disableClear,
@@ -164,7 +165,7 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
                 className={clsx(
                     className,
                     fullWidth && 'fullwidth',
-                    disabled && 'disabled'
+                    (disabled || readOnly) && 'disabled'
                 )}
                 sx={sx}
             >
@@ -172,7 +173,7 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
                     {fields.map((member, index) => (
                         <SimpleFormIteratorItem
                             key={member.id}
-                            disabled={disabled}
+                            disabled={disabled || readOnly}
                             disableRemove={disableRemove}
                             disableReordering={disableReordering}
                             fields={fields}
@@ -192,41 +193,52 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
                         </SimpleFormIteratorItem>
                     ))}
                 </ul>
-                {!disabled && !(disableAdd && (disableClear || disableRemove)) && (
-                    <div className={SimpleFormIteratorClasses.buttons}>
-                        {!disableAdd && (
-                            <div className={SimpleFormIteratorClasses.add}>
-                                {cloneElement(addButton, {
-                                    className: clsx(
-                                        'button-add',
-                                        `button-add-${source}`
-                                    ),
-                                    onClick: handleAddButtonClick(
-                                        addButton.props.onClick
-                                    ),
-                                })}
-                            </div>
-                        )}
-                        {fields.length > 0 && !disableClear && !disableRemove && (
-                            <div className={SimpleFormIteratorClasses.clear}>
-                                <Confirm
-                                    isOpen={confirmIsOpen}
-                                    title={translate(
-                                        'ra.action.clear_array_input'
-                                    )}
-                                    content={translate(
-                                        'ra.message.clear_array_input'
-                                    )}
-                                    onConfirm={handleArrayClear}
-                                    onClose={() => setConfirmIsOpen(false)}
-                                />
-                                <ClearArrayButton
-                                    onClick={() => setConfirmIsOpen(true)}
-                                />
-                            </div>
-                        )}
-                    </div>
-                )}
+                {!(disabled || readOnly) &&
+                    !(disableAdd && (disableClear || disableRemove)) && (
+                        <div className={SimpleFormIteratorClasses.buttons}>
+                            {!disableAdd && (
+                                <div className={SimpleFormIteratorClasses.add}>
+                                    {cloneElement(addButton, {
+                                        className: clsx(
+                                            'button-add',
+                                            `button-add-${source}`
+                                        ),
+                                        onClick: handleAddButtonClick(
+                                            addButton.props.onClick
+                                        ),
+                                    })}
+                                </div>
+                            )}
+                            {fields.length > 0 &&
+                                !disableClear &&
+                                !disableRemove && (
+                                    <div
+                                        className={
+                                            SimpleFormIteratorClasses.clear
+                                        }
+                                    >
+                                        <Confirm
+                                            isOpen={confirmIsOpen}
+                                            title={translate(
+                                                'ra.action.clear_array_input'
+                                            )}
+                                            content={translate(
+                                                'ra.message.clear_array_input'
+                                            )}
+                                            onConfirm={handleArrayClear}
+                                            onClose={() =>
+                                                setConfirmIsOpen(false)
+                                            }
+                                        />
+                                        <ClearArrayButton
+                                            onClick={() =>
+                                                setConfirmIsOpen(true)
+                                            }
+                                        />
+                                    </div>
+                                )}
+                        </div>
+                    )}
             </Root>
         </SimpleFormIteratorContext.Provider>
     ) : null;
@@ -247,6 +259,8 @@ SimpleFormIterator.propTypes = {
     source: PropTypes.string,
     resource: PropTypes.string,
     translate: PropTypes.func,
+    readOnly: PropTypes.bool,
+    disabled: PropTypes.bool,
     disableAdd: PropTypes.bool,
     disableRemove: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
     TransitionProps: PropTypes.shape({}),
@@ -258,6 +272,7 @@ export interface SimpleFormIteratorProps extends Partial<UseFieldArrayReturn> {
     addButton?: ReactElement;
     children?: ReactNode;
     className?: string;
+    readOnly?: boolean;
     disabled?: boolean;
     disableAdd?: boolean;
     disableClear?: boolean;

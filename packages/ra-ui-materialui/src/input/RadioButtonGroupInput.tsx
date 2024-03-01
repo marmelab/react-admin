@@ -101,6 +101,8 @@ export const RadioButtonGroupInput = (props: RadioButtonGroupInputProps) => {
         source: sourceProp,
         translateChoice,
         validate,
+        disabled,
+        readOnly,
         ...rest
     } = props;
 
@@ -139,6 +141,8 @@ export const RadioButtonGroupInput = (props: RadioButtonGroupInputProps) => {
         resource,
         source,
         validate,
+        disabled,
+        readOnly,
         ...rest,
     });
 
@@ -171,6 +175,8 @@ export const RadioButtonGroupInput = (props: RadioButtonGroupInputProps) => {
             className={clsx('ra-input', `ra-input-${source}`, className)}
             margin={margin}
             error={fetchError || ((isTouched || isSubmitted) && invalid)}
+            disabled={disabled || readOnly}
+            readOnly={readOnly}
             {...sanitizeRestProps(rest)}
         >
             <FormLabel
@@ -230,6 +236,8 @@ RadioButtonGroupInput.propTypes = {
         PropTypes.element,
     ]),
     optionValue: PropTypes.string,
+    disabled: PropTypes.bool,
+    readOnly: PropTypes.bool,
     resource: PropTypes.string,
     source: PropTypes.string,
     translateChoice: PropTypes.bool,

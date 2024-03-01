@@ -26,6 +26,40 @@ export const Basic = () => (
     </AdminContext>
 );
 
+export const ReadOnly = () => (
+    <AdminContext>
+        <Create
+            resource="posts"
+            record={{ id: 123, views: 23 }}
+            sx={{ width: 600 }}
+        >
+            <SimpleForm>
+                <NumberInput source="views" readOnly />
+                <NumberInput source="price" readOnly />
+                <FormInspector name="views" />
+                <FormInspector name="price" />
+            </SimpleForm>
+        </Create>
+    </AdminContext>
+);
+
+export const Disabled = () => (
+    <AdminContext>
+        <Create
+            resource="posts"
+            record={{ id: 123, views: 23 }}
+            sx={{ width: 600 }}
+        >
+            <SimpleForm>
+                <NumberInput source="views" disabled />
+                <NumberInput source="price" disabled />
+                <FormInspector name="views" />
+                <FormInspector name="price" />
+            </SimpleForm>
+        </Create>
+    </AdminContext>
+);
+
 export const Float = () => (
     <AdminContext>
         <Create

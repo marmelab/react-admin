@@ -21,6 +21,8 @@ export const NullableBooleanInput = (props: NullableBooleanInputProps) => {
         onChange,
         parse = getBooleanFromString,
         resource,
+        disabled,
+        readOnly,
         source,
         validate,
         variant,
@@ -46,6 +48,8 @@ export const NullableBooleanInput = (props: NullableBooleanInputProps) => {
         resource,
         source,
         validate,
+        disabled,
+        readOnly,
         ...rest,
     });
     const renderHelperText =
@@ -62,6 +66,8 @@ export const NullableBooleanInput = (props: NullableBooleanInputProps) => {
                 className
             )}
             select
+            disabled={disabled || readOnly}
+            readOnly={readOnly}
             margin={margin}
             label={
                 <FieldTitle
@@ -98,6 +104,8 @@ NullableBooleanInput.propTypes = {
         PropTypes.element,
     ]),
     options: PropTypes.object,
+    disabled: PropTypes.bool,
+    readOnly: PropTypes.bool,
     resource: PropTypes.string,
     source: PropTypes.string,
     nullLabel: PropTypes.string,
@@ -138,7 +146,7 @@ const getStringFromBoolean = (value?: boolean | null): string => {
 };
 
 export type NullableBooleanInputProps = CommonInputProps &
-    Omit<TextFieldProps, 'label' | 'helperText'> & {
+    Omit<TextFieldProps, 'label' | 'helperText' | 'readOnly'> & {
         nullLabel?: string;
         falseLabel?: string;
         trueLabel?: string;
