@@ -482,15 +482,9 @@ import { FieldProps, useRecordContext } from 'react-admin';
 }
 ```
 
-## `useWarnWhenUnsavedChanges` Requires A Data Router
+## Custom Routers Must Be Upgraded To Data Routers
 
-The `useWarnWhenUnsavedChanges` hook was reimplemented using [`useBlocker`](https://reactrouter.com/en/main/hooks/use-blocker) from `react-router`. As a consequence, it now requires a [data router](https://reactrouter.com/en/main/routers/picking-a-router) to be used.
-
-The `<Admin>` component has been updated to use [`createHashRouter`](https://reactrouter.com/en/main/routers/create-hash-router) internally by default, which is a data router. So you don't need to change anything if you are using `react-admin`'s internal router.
-
-### Breaking Change
-
-If you are using an external router, you will need to [migrate it to a data router](https://reactrouter.com/en/main/upgrading/v6-data).
+If you are using a [custom router](./Routing.md#using-a-custom-router), or if your React Admin app is embedded in another app with its own router, you will need to [migrate to a data router](https://reactrouter.com/en/main/upgrading/v6-data). This is because React Admin now uses `react-router`'s data router.
 
 For instance, if you were using `react-router`'s `BrowserRouter`, you will need to migrate to `createBrowserRouter` and wrap your app in a `RouterProvider`:
 
@@ -527,12 +521,14 @@ root.render(
 
 **Tip:** Check out the [Migrating to RouterProvider](https://reactrouter.com/en/main/upgrading/v6-data) documentation to learn more about the migration steps and impacts.
 
-### Minor Changes
+## `warnWhenUnsavedChanges` Is More Restrictive
 
-Due to the new implementation using `useBlocker`, you may also notice the following minor changes:
+Due to the migration to `react-router`'s data router, you will notice that the `useWarnWhenUnsavedChanges` hook is a little more restrictive than before. Here are the main changes:
 
 - `useWarnWhenUnsavedChanges` will also open a confirmation dialog (and block the navigation) if a navigation is fired when the form is currently submitting (submission will continue in the background).
 - [Due to browser constraints](https://stackoverflow.com/questions/38879742/is-it-possible-to-display-a-custom-message-in-the-beforeunload-popup), the message displayed in the confirmation dialog when closing the browser's tab cannot be customized (it is managed by the browser).
+
+This behavior is a little more restrictive, but it allows to prevent unwanted data loss in most situations. No changes are required in the code.
 
 ## `<Admin history>` Prop Was Removed
 
