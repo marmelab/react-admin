@@ -173,7 +173,9 @@ describe('<ReferenceInputBase />', () => {
         jest.spyOn(console, 'error').mockImplementationOnce(() => {});
         render(<SelfReference />);
         fireEvent.click(await screen.findByLabelText('Self reference'));
-        expect(await screen.findAllByRole('option')).toHaveLength(5);
+        await waitFor(() => {
+            expect(screen.getAllByRole('option')).toHaveLength(5);
+        });
         const titleInput = await screen.findByDisplayValue('War and Peace');
         fireEvent.change(titleInput, {
             target: { value: 'War and Peace 2' },
