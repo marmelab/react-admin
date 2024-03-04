@@ -181,9 +181,11 @@ An object containing options to apply to the search:
 -   `targets`: `string[]`: an array of the indices on which to perform the search. Defaults to an empty array.
 -   `{any}`: `{any}`: any custom option to pass to the search engine.
 
+{% raw %}
 ```tsx
 <SearchWithResult options={{ foo: 'bar' }} />
 ```
+{% endraw %}
 
 ## `wait`
 
