@@ -1,7 +1,7 @@
 import * as React from 'react';
 import expect from 'expect';
 import { render, screen, waitFor, fireEvent } from '@testing-library/react';
-import { QueryClient } from 'react-query';
+import { QueryClient } from '@tanstack/react-query';
 import { CoreAdminContext } from '../../core';
 import {
     ChoicesProps,
@@ -127,6 +127,7 @@ describe('<ReferenceInputBase />', () => {
                 pagination: { page: 1, perPage: 25 },
                 sort: { field: 'id', order: 'DESC' },
                 meta: { foo: 'bar' },
+                signal: expect.any(AbortSignal),
             });
         });
     });
@@ -152,6 +153,7 @@ describe('<ReferenceInputBase />', () => {
             expect(getMany).toHaveBeenCalledWith('posts', {
                 ids: [23],
                 meta: { foo: 'bar' },
+                signal: expect.any(AbortSignal),
             });
         });
     });

@@ -1,10 +1,9 @@
 import * as React from 'react';
-import { createMemoryHistory } from 'history';
-import { QueryClient } from 'react-query';
+import { QueryClient } from '@tanstack/react-query';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
 import fakeRestDataProvider from 'ra-data-fakerest';
-import { MemoryRouter } from 'react-router-dom';
+import { TestMemoryRouter } from '../../routing';
 
 import { EditBase } from '../edit';
 import {
@@ -186,18 +185,18 @@ const BookEdit = () => (
     </EditBase>
 );
 
-const history = createMemoryHistory({ initialEntries: ['/books/1'] });
-
 export const Basic = ({ dataProvider = dataProviderWithAuthors }) => (
-    <CoreAdmin dataProvider={dataProvider} history={history}>
-        <Resource
-            name="authors"
-            recordRepresentation={record =>
-                `${record.first_name} ${record.last_name}`
-            }
-        />
-        <Resource name="books" edit={BookEdit} />
-    </CoreAdmin>
+    <TestMemoryRouter initialEntries={['/books/1']}>
+        <CoreAdmin dataProvider={dataProvider}>
+            <Resource
+                name="authors"
+                recordRepresentation={record =>
+                    `${record.first_name} ${record.last_name}`
+                }
+            />
+            <Resource name="books" edit={BookEdit} />
+        </CoreAdmin>
+    </TestMemoryRouter>
 );
 
 const tags = [
@@ -262,50 +261,56 @@ const book = {
 };
 
 export const Error = () => (
-    <CoreAdmin
-        dataProvider={
-            {
-                getOne: () => Promise.resolve({ data: book }),
-                getMany: (_resource, params) =>
-                    Promise.resolve({
-                        data: authors.filter(author =>
-                            params.ids.includes(author.id)
-                        ),
-                    }),
-                getList: (_resource, params) => {
-                    console.log('getList', _resource, params);
-                    return params.filter.q === 'lorem'
-                        ? Promise.reject({ message: 'An error occured' })
-                        : Promise.resolve({
-                              data: authors,
-                              total: authors.length,
-                          });
-                },
-            } as any
-        }
-        history={history}
-        queryClient={
-            new QueryClient({ defaultOptions: { queries: { retry: false } } })
-        }
-    >
-        <Resource
-            name="authors"
-            recordRepresentation={r => `${r.first_name} ${r.last_name}`}
-        />
-        <Resource
-            name="books"
-            edit={() => (
-                <EditBase mutationMode="pessimistic">
-                    <Form>
-                        <ReferenceInputBase reference="authors" source="author">
-                            <AutocompleteInput optionText="last_name" />
-                        </ReferenceInputBase>
-                        <button type="submit">Save</button>
-                    </Form>
-                </EditBase>
-            )}
-        />
-    </CoreAdmin>
+    <TestMemoryRouter initialEntries={['/books/1']}>
+        <CoreAdmin
+            dataProvider={
+                {
+                    getOne: () => Promise.resolve({ data: book }),
+                    getMany: (_resource, params) =>
+                        Promise.resolve({
+                            data: authors.filter(author =>
+                                params.ids.includes(author.id)
+                            ),
+                        }),
+                    getList: (_resource, params) => {
+                        console.log('getList', _resource, params);
+                        return params.filter.q === 'lorem'
+                            ? Promise.reject({ message: 'An error occured' })
+                            : Promise.resolve({
+                                  data: authors,
+                                  total: authors.length,
+                              });
+                    },
+                } as any
+            }
+            queryClient={
+                new QueryClient({
+                    defaultOptions: { queries: { retry: false } },
+                })
+            }
+        >
+            <Resource
+                name="authors"
+                recordRepresentation={r => `${r.first_name} ${r.last_name}`}
+            />
+            <Resource
+                name="books"
+                edit={() => (
+                    <EditBase mutationMode="pessimistic">
+                        <Form>
+                            <ReferenceInputBase
+                                reference="authors"
+                                source="author"
+                            >
+                                <AutocompleteInput optionText="last_name" />
+                            </ReferenceInputBase>
+                            <button type="submit">Save</button>
+                        </Form>
+                    </EditBase>
+                )}
+            />
+        </CoreAdmin>
+    </TestMemoryRouter>
 );
 
 const AuthorList = () => (
@@ -357,16 +362,18 @@ const BookEditWithSelfReference = () => {
 };
 
 export const SelfReference = ({ dataProvider = dataProviderWithAuthors }) => (
-    <CoreAdmin dataProvider={dataProvider} history={history}>
-        <Resource
-            name="authors"
-            recordRepresentation={record =>
-                `${record.first_name} ${record.last_name}`
-            }
-            list={AuthorList}
-        />
-        <Resource name="books" edit={BookEditWithSelfReference} />
-    </CoreAdmin>
+    <TestMemoryRouter initialEntries={['/books/1']}>
+        <CoreAdmin dataProvider={dataProvider}>
+            <Resource
+                name="authors"
+                recordRepresentation={record =>
+                    `${record.first_name} ${record.last_name}`
+                }
+                list={AuthorList}
+            />
+            <Resource name="books" edit={BookEditWithSelfReference} />
+        </CoreAdmin>
+    </TestMemoryRouter>
 );
 
 const BookEditQueryOptions = () => {
@@ -392,7 +399,7 @@ const BookEditQueryOptions = () => {
 };
 
 export const QueryOptions = () => (
-    <MemoryRouter initialEntries={['/books/1']}>
+    <TestMemoryRouter initialEntries={['/books/1']}>
         <CoreAdmin
             dataProvider={fakeRestDataProvider(
                 {
@@ -451,5 +458,5 @@ export const QueryOptions = () => (
             />
             <Resource name="books" edit={BookEditQueryOptions} />
         </CoreAdmin>
-    </MemoryRouter>
+    </TestMemoryRouter>
 );
