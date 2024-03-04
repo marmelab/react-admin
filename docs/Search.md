@@ -232,6 +232,10 @@ An object containing options to apply to the search:
 -   `targets`:`string[]`: an array of the indices on which to perform the search. Defaults to an empty array.
 -   `{any}`:`{any}`: any custom option to pass to the search engine.
 
+```tsx
+<Search options={{ foo: 'bar' }} />
+```
+
 ## `wait`
 
 The number of milliseconds to wait before processing the search request, immediately after the user enters their last character.
