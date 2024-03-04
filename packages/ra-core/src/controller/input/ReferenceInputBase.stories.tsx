@@ -132,7 +132,7 @@ const SelectInput = (
         Partial<Pick<InputProps, 'source'>> &
         ChoicesProps & { source?: string }
 ) => {
-    const { allChoices, error, source } = useChoicesContext(props);
+    const { allChoices, error, isLoading, source } = useChoicesContext(props);
     const { getChoiceValue, getChoiceText } = useChoices(props);
     const { field } = useInput({ ...props, source });
 
@@ -143,6 +143,7 @@ const SelectInput = (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
             <label htmlFor={field.name}>{props.label || field.name}</label>
             <select id={field.name} {...field}>
+                {isLoading && <option value="">Loading...</option>}
                 {allChoices.map(choice => (
                     <option
                         key={getChoiceValue(choice)}
@@ -188,12 +189,7 @@ const BookEdit = () => (
 export const Basic = ({ dataProvider = dataProviderWithAuthors }) => (
     <TestMemoryRouter initialEntries={['/books/1']}>
         <CoreAdmin dataProvider={dataProvider}>
-            <Resource
-                name="authors"
-                recordRepresentation={record =>
-                    `${record.first_name} ${record.last_name}`
-                }
-            />
+            <Resource name="authors" />
             <Resource name="books" edit={BookEdit} />
         </CoreAdmin>
     </TestMemoryRouter>
@@ -273,7 +269,6 @@ export const Error = () => (
                             ),
                         }),
                     getList: (_resource, params) => {
-                        console.log('getList', _resource, params);
                         return params.filter.q === 'lorem'
                             ? Promise.reject({ message: 'An error occured' })
                             : Promise.resolve({
@@ -290,14 +285,14 @@ export const Error = () => (
             }
         >
             <Resource
-                name="authors"
-                recordRepresentation={r => `${r.first_name} ${r.last_name}`}
-            />
-            <Resource
                 name="books"
                 edit={() => (
                     <EditBase mutationMode="pessimistic">
                         <Form>
+                            <>
+                                <p>Enter "lorem" to trigger the error</p>
+                            </>
+
                             <ReferenceInputBase
                                 reference="authors"
                                 source="author"
@@ -333,6 +328,7 @@ const Datagrid = () => {
         </ul>
     );
 };
+
 const BookEditWithSelfReference = () => {
     const redirect = useRedirect();
     return (
@@ -364,13 +360,7 @@ const BookEditWithSelfReference = () => {
 export const SelfReference = ({ dataProvider = dataProviderWithAuthors }) => (
     <TestMemoryRouter initialEntries={['/books/1']}>
         <CoreAdmin dataProvider={dataProvider}>
-            <Resource
-                name="authors"
-                recordRepresentation={record =>
-                    `${record.first_name} ${record.last_name}`
-                }
-                list={AuthorList}
-            />
+            <Resource name="authors" list={AuthorList} />
             <Resource name="books" edit={BookEditWithSelfReference} />
         </CoreAdmin>
     </TestMemoryRouter>
@@ -449,13 +439,7 @@ export const QueryOptions = () => (
                 process.env.NODE_ENV === 'development'
             )}
         >
-            <Resource
-                name="authors"
-                recordRepresentation={record =>
-                    `${record.first_name} ${record.last_name}`
-                }
-                list={AuthorList}
-            />
+            <Resource name="authors" list={AuthorList} />
             <Resource name="books" edit={BookEditQueryOptions} />
         </CoreAdmin>
     </TestMemoryRouter>
