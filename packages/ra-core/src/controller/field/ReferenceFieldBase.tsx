@@ -51,7 +51,6 @@ export const ReferenceFieldBase = <
         ReferenceRecordType
     >(props);
 
-    console.log({ controllerProps });
     return (
         <ResourceContextProvider value={props.reference}>
             <ReferenceFieldContextProvider value={controllerProps}>
@@ -69,7 +68,6 @@ export interface ReferenceFieldBaseProps<
     children?: ReactNode;
     className?: string;
     error?: ReactNode;
-    label?: string;
     queryOptions?: UseQueryOptions<ReferenceRecordType[], Error> & {
         meta?: any;
     };
