@@ -26,7 +26,6 @@ export const useFieldValue = <
     const sourceContext = useSourceContext();
     const record = useRecordContext<RecordType>(params);
 
-    console.log({ record });
     return get(
         record,
         sourceContext?.getSource(source) ?? source,
