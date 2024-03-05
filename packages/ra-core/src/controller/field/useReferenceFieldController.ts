@@ -19,7 +19,10 @@ export const useReferenceFieldController = <
     const referenceRecordQuery = useReference<ReferenceRecordType>({
         reference,
         id,
-        options: { ...queryOptions, enabled: id != null },
+        options: {
+            ...queryOptions,
+            enabled: queryOptions?.enabled ?? id != null,
+        },
     });
 
     const createPath = useCreatePath();
@@ -57,9 +60,11 @@ export interface UseReferenceFieldControllerOptions<
     ReferenceRecordType extends RaRecord = RaRecord
 > {
     source: string;
-    queryOptions?: UseQueryOptions<ReferenceRecordType[], Error> & {
-        meta?: any;
-    };
+    queryOptions?: Partial<
+        UseQueryOptions<ReferenceRecordType[], Error> & {
+            meta?: any;
+        }
+    >;
     reference: string;
     link?: LinkToType<ReferenceRecordType>;
 }

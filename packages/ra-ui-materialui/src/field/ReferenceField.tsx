@@ -94,9 +94,11 @@ export interface ReferenceFieldProps<
 > extends Omit<FieldProps<RecordType>, 'source'>,
         Required<Pick<FieldProps<RecordType>, 'source'>> {
     children?: ReactNode;
-    queryOptions?: UseQueryOptions<ReferenceRecordType[], Error> & {
-        meta?: any;
-    };
+    queryOptions?: Partial<
+        UseQueryOptions<ReferenceRecordType[], Error> & {
+            meta?: any;
+        }
+    >;
     reference: string;
     translateChoice?: Function | boolean;
     link?: LinkToType<ReferenceRecordType>;

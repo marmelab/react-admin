@@ -68,9 +68,11 @@ export interface ReferenceFieldBaseProps<
     children?: ReactNode;
     className?: string;
     error?: ReactNode;
-    queryOptions?: UseQueryOptions<ReferenceRecordType[], Error> & {
-        meta?: any;
-    };
+    queryOptions?: Partial<
+        UseQueryOptions<ReferenceRecordType[], Error> & {
+            meta?: any;
+        }
+    >;
     reference: string;
     source: string;
 }
