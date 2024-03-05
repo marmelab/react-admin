@@ -95,9 +95,8 @@ ReferenceInput.propTypes = {
 const defaultChildren = <AutocompleteInput />;
 
 export interface ReferenceInputProps
-    extends Omit<ReferenceInputBaseProps, 'children' | 'label'> {
+    extends Omit<ReferenceInputBaseProps, 'children'> {
     children?: ReactNode;
-    label?: string;
     /**
      * Call validate on the child component instead
      */

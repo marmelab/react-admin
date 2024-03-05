@@ -12,12 +12,14 @@ import {
  * An Input component for choosing a reference record. Useful for foreign keys.
  *
  * This component fetches the possible values in the reference resource
- * (using `dataProvider.getList()`), then renders an `<AutocompleteInput>`,
+ * (using `dataProvider.getList()`), and renders the child you passed
  * to which it passes the possible choices via a `ChoicesContext`.
  *
- * You can pass a child select component to customize the way the reference
+ * You must pass a child selection component to customize the way the reference
  * selector is displayed (e.g. using `<SelectInput>` or `<RadioButtonGroupInput>`
- * instead of `<AutocompleteInput>`).
+ * instead of `<AutocompleteInput>` ).
+ *
+ * Note that the child component should handle the error and loading cases as this base component does not.
  *
  * @example // using a SelectInput as selector
  * export const CommentEdit = (props) => (

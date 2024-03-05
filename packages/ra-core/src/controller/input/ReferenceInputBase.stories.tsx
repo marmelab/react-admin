@@ -245,7 +245,6 @@ export const Loading = () => (
                 >
                     <SelectInput optionText="name" />
                 </ReferenceInputBase>
-                <TextInput source="foo" />
             </div>
         </Form>
     </CoreAdminContext>
