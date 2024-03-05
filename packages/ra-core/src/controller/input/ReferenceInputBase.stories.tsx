@@ -18,6 +18,7 @@ import { ReferenceInputBase } from './ReferenceInputBase';
 import {
     CoreAdmin,
     CoreAdminContext,
+    DataProvider,
     ListBase,
     Resource,
     testDataProvider,
@@ -95,10 +96,13 @@ const AutocompleteInput = (
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
-            <label htmlFor={field.name}>{props.label || field.name}</label>
+            <label htmlFor={`${source}-search`}>
+                {props.label || field.name}
+            </label>
             <input type="hidden" id={field.name} {...field} />
             <input
                 id={`${source}-search`}
+                name={`${source}-search`}
                 list={`${source}-choices`}
                 onChange={e => {
                     const choice = allChoices.find(
@@ -441,6 +445,82 @@ export const QueryOptions = () => (
         >
             <Resource name="authors" list={AuthorList} />
             <Resource name="books" edit={BookEditQueryOptions} />
+        </CoreAdmin>
+    </TestMemoryRouter>
+);
+
+const BookEditMeta = () => {
+    return (
+        <EditBase mutationMode="pessimistic">
+            <Form>
+                <TextInput source="title" />
+                <ReferenceInputBase
+                    reference="authors"
+                    source="author"
+                    queryOptions={{ meta: { test: true } }}
+                >
+                    <SelectInput optionText="last_name" />
+                </ReferenceInputBase>
+                <button type="submit">Save</button>
+            </Form>
+        </EditBase>
+    );
+};
+
+export const Meta = ({
+    dataProvider = fakeRestDataProvider(
+        {
+            books: [
+                {
+                    id: 1,
+                    title: 'War and Peace',
+                    author: 1,
+                    summary:
+                        "War and Peace broadly focuses on Napoleon's invasion of Russia, and the impact it had on Tsarist society. The book explores themes such as revolution, revolution and empire, the growth and decline of various states and the impact it had on their economies, culture, and society.",
+                    year: 1869,
+                },
+            ],
+            authors: [
+                {
+                    id: 1,
+                    first_name: 'Leo',
+                    last_name: 'Tolstoy',
+                    language: 'Russian',
+                },
+                {
+                    id: 2,
+                    first_name: 'Victor',
+                    last_name: 'Hugo',
+                    language: 'French',
+                },
+                {
+                    id: 3,
+                    first_name: 'William',
+                    last_name: 'Shakespeare',
+                    language: 'English',
+                },
+                {
+                    id: 4,
+                    first_name: 'Charles',
+                    last_name: 'Baudelaire',
+                    language: 'French',
+                },
+                {
+                    id: 5,
+                    first_name: 'Marcel',
+                    last_name: 'Proust',
+                    language: 'French',
+                },
+            ],
+        },
+        process.env.NODE_ENV === 'development'
+    ),
+}: {
+    dataProvider: DataProvider;
+}) => (
+    <TestMemoryRouter initialEntries={['/books/1']}>
+        <CoreAdmin dataProvider={dataProvider}>
+            <Resource name="books" edit={BookEditMeta} />
         </CoreAdmin>
     </TestMemoryRouter>
 );

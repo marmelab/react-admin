@@ -13,7 +13,11 @@ import {
 } from '../../form';
 import { testDataProvider } from '../../dataProvider';
 import { ReferenceInputBase } from './ReferenceInputBase';
-import { SelfReference, QueryOptions } from './ReferenceInputBase.stories';
+import {
+    SelfReference,
+    QueryOptions,
+    Meta,
+} from './ReferenceInputBase.stories';
 
 describe('<ReferenceInputBase />', () => {
     const defaultProps = {
@@ -109,24 +113,13 @@ describe('<ReferenceInputBase />', () => {
                 Promise.resolve({ data: [], total: 25 })
             );
         const dataProvider = testDataProvider({ getList });
-        render(
-            <CoreAdminContext dataProvider={dataProvider}>
-                <Form>
-                    <ReferenceInputBase
-                        {...defaultProps}
-                        queryOptions={{ meta: { foo: 'bar' } }}
-                    >
-                        <AutocompleteInput />
-                    </ReferenceInputBase>
-                </Form>
-            </CoreAdminContext>
-        );
+        render(<Meta dataProvider={dataProvider} />);
         await waitFor(() => {
-            expect(getList).toHaveBeenCalledWith('posts', {
+            expect(getList).toHaveBeenCalledWith('authors', {
                 filter: {},
                 pagination: { page: 1, perPage: 25 },
                 sort: { field: 'id', order: 'DESC' },
-                meta: { foo: 'bar' },
+                meta: { test: true },
                 signal: expect.any(AbortSignal),
             });
         });
