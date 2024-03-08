@@ -118,7 +118,7 @@ export const SimpleFormIteratorItem = React.forwardRef(
                             direction={
                                 inline ? { xs: 'column', sm: 'row' } : 'column'
                             }
-                            gap={inline ? 1 : 0}
+                            gap={inline ? 2 : 0}
                         >
                             {children}
                         </Stack>

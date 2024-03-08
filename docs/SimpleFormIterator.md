@@ -68,7 +68,7 @@ const OrderEdit = () => (
 );
 ```
 
-![Simple form iterator block](./img/array-input-block.png)
+![Simple form iterator block](./img/array-input-block.webp)
 
 ## Props
 
@@ -81,7 +81,7 @@ const OrderEdit = () => (
 | `disableClear` | Optional | `boolean` | `false` | When true, the user cannot clear the array |
 | `disableRemove` | Optional | `boolean` | `false` | When true, the user cannot remove rows |
 | `disableReordering` | Optional | `boolean` | `false` | When true, the user cannot reorder rows |
-| `fullWidth` | Optional | `boolean` | `false` | Set to true to push the actions to the right |
+| `fullWidth` | Optional | `boolean` | `true` | Set to false to glue the actions to last input |
 | `getItemLabel` | Optional | `function` | `x => x` | Callback to render the label displayed in each row |
 | `inline` | Optional | `boolean` | `false` | When true, inputs are put on the same line |
 | `removeButton` | Optional | `ReactElement` | - | Component to render for the remove button |
@@ -233,19 +233,19 @@ When true, the up and down buttons aren't rendered, so the user cannot reorder r
 
 ## `fullWidth`
 
-When true, the row actions appear at the end of the row.
+By default, the row actions appear at the end of the row.
+
+![SimpleFormIterator full width](./img/simple-form-iterator-fullWidth.png)
+
+If your form is narrow, you can set the `fullWidth` prop to `false` to make the row actions appear at the end of the form.
 
 ```jsx
-<SimpleFormIterator fullWidth>
+<SimpleFormIterator fullWidth={false}>
     <TextInput source="name" />
     <NumberInput source="price" />
     <NumberInput source="quantity" />
 </SimpleFormIterator>
 ```
-
-![SimpleFormIterator full width](./img/simple-form-iterator-fullWidth.png)
-
-This differs with the default behavior, where the row actions appear after the inputs.
 
 ![SimpleFormIterator default width](./img/simple-form-iterator-fullWidth-false.png)
 
@@ -275,7 +275,7 @@ When true, inputs are put on the same line. Use this option to make the lines mo
 </SimpleFormIterator>
 ```
 
-![Inline form iterator](./img/simple-form-iterator-inline.png)
+![Inline form iterator](./img/simple-form-iterator-inline.webp)
 
 Without this prop, `<SimpleFormIterator>` will render one input per line.
 
@@ -287,7 +287,7 @@ Without this prop, `<SimpleFormIterator>` will render one input per line.
 </SimpleFormIterator>
 ```
 
-![Not Inline form iterator](./img/simple-form-iterator-not-inline.png)
+![Not Inline form iterator](./img/simple-form-iterator-not-inline.webp)
 
 ## `removeButton`
 

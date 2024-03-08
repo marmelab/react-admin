@@ -292,12 +292,8 @@ export const Realistic = () => (
                             },
                         }}
                     >
-                        <SimpleForm>
-                            <TextInput
-                                source="customer"
-                                helperText={false}
-                                sx={{ width: 250 }}
-                            />
+                        <SimpleForm sx={{ maxWidth: 600 }}>
+                            <TextInput source="customer" helperText={false} />
                             <DateInput source="date" helperText={false} />
                             <ArrayInput source="items">
                                 <SimpleFormIterator inline>
