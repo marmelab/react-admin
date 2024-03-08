@@ -7,7 +7,7 @@ import {
     ReactNode,
     useMemo,
 } from 'react';
-import { Typography } from '@mui/material';
+import { Typography, Stack } from '@mui/material';
 import clsx from 'clsx';
 import {
     getResourceFieldLabelKey,
@@ -34,7 +34,7 @@ export const SimpleFormIteratorItem = React.forwardRef(
             disableRemove,
             getItemLabel,
             index,
-            inline = false,
+            inline,
             member,
             record,
             removeButton,
@@ -112,16 +112,17 @@ export const SimpleFormIteratorItem = React.forwardRef(
                             {label}
                         </Typography>
                     )}
-                    <section
-                        className={clsx(
-                            SimpleFormIteratorClasses.form,
-                            inline && SimpleFormIteratorClasses.inline
-                        )}
-                    >
-                        <SourceContextProvider value={sourceContext}>
+                    <SourceContextProvider value={sourceContext}>
+                        <Stack
+                            className={clsx(SimpleFormIteratorClasses.form)}
+                            direction={
+                                inline ? { xs: 'column', sm: 'row' } : 'column'
+                            }
+                            gap={inline ? 1 : 0}
+                        >
                             {children}
-                        </SourceContextProvider>
-                    </section>
+                        </Stack>
+                    </SourceContextProvider>
                     {!disabled && (
                         <span className={SimpleFormIteratorClasses.action}>
                             {!disableReordering &&

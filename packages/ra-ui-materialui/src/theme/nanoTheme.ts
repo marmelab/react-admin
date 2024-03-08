@@ -309,6 +309,11 @@ const componentsOverrides = (theme: Theme) => ({
             },
         },
     },
+    RaSimpleFormIterator: {
+        defaultProps: {
+            fullWidth: true,
+        },
+    },
 });
 
 const alert = {

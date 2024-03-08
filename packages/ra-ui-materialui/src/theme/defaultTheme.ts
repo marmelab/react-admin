@@ -49,6 +49,11 @@ const defaultThemeInvariants = {
                 fullWidth: true,
             },
         },
+        RaSimpleFormIterator: {
+            defaultProps: {
+                fullWidth: true,
+            },
+        },
     },
 };
 

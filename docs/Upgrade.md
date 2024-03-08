@@ -319,6 +319,7 @@ import { dataProvider } from './dataProvider';
 +       MuiFormControl: { defaultProps: { fullWidth: undefined } },
 +       MuiTextField: { defaultProps: { fullWidth: undefined } },
 +       MuiAutocomplete: { defaultProps: { fullWidth: undefined } },
++       RaSimpleFormIterator: { defaultProps: { fullWidth: undefined } },
 +   }
 *});
 
@@ -340,6 +341,7 @@ const myTheme = {
 +       MuiFormControl: { defaultProps: { fullWidth: undefined } },
 +       MuiTextField: { defaultProps: { fullWidth: undefined } },
 +       MuiAutocomplete: { defaultProps: { fullWidth: undefined } },
++       RaSimpleFormIterator: { defaultProps: { fullWidth: undefined } },
     },
 };
 ```

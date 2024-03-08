@@ -358,18 +358,28 @@ export const NestedInline = () => (
                             <TextInput source="customer" helperText={false} />
                             <DateInput source="date" helperText={false} />
                             <ArrayInput source="items">
-                                <SimpleFormIterator inline fullWidth>
+                                <SimpleFormIterator
+                                    inline
+                                    sx={{
+                                        '& .MuiStack-root': {
+                                            flexWrap: 'wrap',
+                                        },
+                                    }}
+                                >
                                     <TextInput
                                         source="name"
                                         helperText={false}
+                                        sx={{ width: 200 }}
                                     />
                                     <NumberInput
                                         source="price"
                                         helperText={false}
+                                        sx={{ width: 100 }}
                                     />
                                     <NumberInput
                                         source="quantity"
                                         helperText={false}
+                                        sx={{ width: 100 }}
                                     />
                                     <ArrayInput source="extras">
                                         <SimpleFormIterator
@@ -379,14 +389,17 @@ export const NestedInline = () => (
                                             <TextInput
                                                 source="type"
                                                 helperText={false}
+                                                sx={{ width: 100 }}
                                             />
                                             <NumberInput
                                                 source="price"
                                                 helperText={false}
+                                                sx={{ width: 100 }}
                                             />
                                             <TextInput
                                                 source="content"
                                                 helperText={false}
+                                                sx={{ width: 200 }}
                                             />
                                         </SimpleFormIterator>
                                     </ArrayInput>
