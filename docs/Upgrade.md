@@ -304,9 +304,11 @@ If you don't need the dark mode feature, you'll have to explicitly disable it:
 
 ## Inputs Have Full Width By Default
 
-In the default theme, inputs now have full width by default. If this breaks your layout, you can revert to the previous behavior by unsetting the `fullWidth` default prop in the application theme.
+In the default theme, all inputs now have full width. This makes forms better looking by default, and facilitates custom form layouts as you can nest inputs under `<Grid>`.
 
-If you didn't use a custom theme, you create one based on the default theme:
+If this breaks your existing form layouts, you can revert to the previous style by resetting the `fullWidth` default prop in the application theme. To do so:
+
+- If you didn't use a custom theme, create one based on the default theme:
 
 ```diff
 -import { Admin } from 'react-admin';
@@ -331,7 +333,7 @@ const MyApp = () => (
 );
 ```
 
-If you used a custom theme, you must update it to include the following lines:
+- If you used a custom theme, update it to include the following lines:
 
 ```diff
 const myTheme = {
