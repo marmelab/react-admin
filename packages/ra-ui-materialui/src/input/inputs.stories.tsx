@@ -138,7 +138,7 @@ const AllInputsBase = () => {
                 resource="posts"
                 record={{ id: 1, title: 'Lorem Ipsum', updated_at: new Date() }}
             >
-                <SimpleForm sx={{ maxWidth: { md: undefined, lg: '50em' } }}>
+                <SimpleForm sx={{ maxWidth: { lg: '50em' } }}>
                     <TextInput source="title" helperText="TextInput" />
                     <NumberInput
                         source="average_note"

@@ -202,7 +202,77 @@ By default, all inputs expand to fill the form width. Set the `fullWidth` prop t
 <TextInput source="teaser" multiline />
 ```
 
-Note that the best way to layout inputs is to use the [Grid component](./BoxStackGrid.md#grid) to create a responsive layout, while still allowing inputs to expand to fill the available space.
+Note that the best way to layout inputs is to use the [Grid component](./BoxStackGrid.md#grid) to create a responsive layout, while still allowing inputs to expand to fill the available space. For example, to produce the following layout:
+
+![input full width](./img/input-grid.webp)
+
+{% raw %}
+```jsx
+import { Grid, InputAdornment } from '@mui/material';
+import {
+    NumberInput,
+    ReferenceInput,
+    required,
+    SelectInput,
+    TextInput,
+} from 'react-admin';
+
+export const ProductEditDetails = () => (
+    <Grid container columnSpacing={2}>
+        <Grid item xs={12} sm={8}>
+            <TextInput source="reference" validate={req} />
+        </Grid>
+        <Grid item xs={12} sm={4}>
+            <ReferenceInput source="category_id" reference="categories">
+                <SelectInput optionText="name" validate={req} />
+            </ReferenceInput>
+        </Grid>
+        <Grid item xs={12} sm={4}>
+            <NumberInput
+                source="width"
+                InputProps={{
+                    endAdornment: (
+                        <InputAdornment position="start">cm</InputAdornment>
+                    ),
+                }}
+                validate={req}
+            />
+        </Grid>
+        <Grid item xs={12} sm={4}>
+            <NumberInput
+                source="height"
+                InputProps={{
+                    endAdornment: (
+                        <InputAdornment position="start">cm</InputAdornment>
+                    ),
+                }}
+                validate={req}
+            />
+        </Grid>
+        <Grid item xs={0} sm={4}></Grid>
+        <Grid item xs={12} sm={4}>
+            <NumberInput
+                source="price"
+                InputProps={{
+                    startAdornment: (
+                        <InputAdornment position="start">€</InputAdornment>
+                    ),
+                }}
+                validate={req}
+            />
+        </Grid>
+        <Grid item xs={12} sm={4}>
+            <NumberInput source="stock" validate={req} />
+        </Grid>
+        <Grid item xs={12} sm={4}>
+            <NumberInput source="sales" validate={req} />
+        </Grid>
+    </Grid>
+);
+
+const req = [required()];
+```
+{% endraw %}
 
 Also, if you want to prevent the input from expanding in the entire app, you set the following fields in a [custom application theme](./AppTheme.md):
 

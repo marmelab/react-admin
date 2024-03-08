@@ -7,7 +7,7 @@ title: "SimpleForm"
 
 The `<SimpleForm>` creates a `<form>` to edit a record, and renders its children (usually Input components) in a simple layout, one child per row.
 
-![simple form](./img/simple-form.png)
+![simple form](./img/simple-form.webp)
 
 ## Usage
 
@@ -217,7 +217,7 @@ The most common usage is to limit the width of the form, to avoid long inputs on
 ```jsx
 export const PostCreate = () => (
     <Create>
-        <SimpleForm sx={{ maxWidth: 600 }}>
+        <SimpleForm sx={{ maxWidth: { lg: 600 } }}>
             <TextInput source="title" />
             <RichTextInput source="body" />
             <NumberInput source="nb_views" />
@@ -434,7 +434,7 @@ By default, `<SimpleForm>` renders one child per row. But a given child can be a
 ```jsx
 const UserCreate = () => (
     <Create>
-        <SimpleForm sx={{ maxWidth: 500 }}>
+        <SimpleForm sx={{ maxWidth: { lg: '500' } }}>
             <Typography variant="h6" gutterBottom>
                 Identity
             </Typography>
