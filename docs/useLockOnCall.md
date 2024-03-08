@@ -51,9 +51,9 @@ const PostAside = () => {
 const PostEdit = () => (
     <Edit aside={<PostAside />}>
         <SimpleForm>
-            <TextInput source="title" fullWidth />
-            <TextInput source="headline" fullWidth multiline />
-            <TextInput source="author" fullWidth />
+            <TextInput source="title" />
+            <TextInput source="headline" multiline />
+            <TextInput source="author" />
         </SimpleForm>
     </Edit>
 );

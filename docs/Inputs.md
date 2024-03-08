@@ -45,7 +45,7 @@ All input components accept the following props:
 | `defaultValue`  | Optional | `any`                     | -       | Default value of the input.                                                                                                                                         |
 | `disabled`      | Optional | `boolean`                 | -       | If true, the input is disabled.                                                                                                                                     |
 | `format`        | Optional | `Function`                | `value => value == null ? '' : value` | Callback taking the value from the form state, and returning the input value.                                                                                       |
-| `fullWidth`     | Optional | `boolean`                 | `false` | If `true`, the input will expand to fill the form width                                                                                                             |
+| `fullWidth`     | Optional | `boolean`                 | `true`  | If `false`, the input will not expand to fill the form width                                                                                                             |
 | `helperText`    | Optional | `string`                  | -       | Text to be displayed under the input (cannot be used inside a filter)                                                                                                          |
 | `label`         | Optional | `string`                  | -       | Input label. In i18n apps, the label is passed to the `translate` function. When omitted, the `source` property is humanized and used as a label. Set `label={false}` to hide the label. |
 | `parse`         | Optional | `Function`                | `value => value === '' ? null : value` | Callback taking the input value, and returning the value you want stored in the form state.                                                                         |
@@ -469,8 +469,8 @@ By default, react-admin will add an asterisk to the input label if the Input com
 ```tsx
 import { TextInput, required } from 'react-admin';
 
-<TextInput source="title" validate={required()} />
-<TextInput source="teaser" multiline fullWidth validate={required()} />
+<TextInput source="title" validate={required()} fullWidth={false} />
+<TextInput source="teaser" validate={required()} multiline />
 ```
 
 ## Linking Two Inputs

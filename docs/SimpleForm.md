@@ -440,38 +440,29 @@ const UserCreate = () => (
             </Typography>
             <Box display={{ xs: 'block', sm: 'flex', width: '100%' }}>
                 <Box flex={1} mr={{ xs: 0, sm: '0.5em' }}>
-                    <TextInput source="first_name" isRequired fullWidth />
+                    <TextInput source="first_name" isRequired />
                 </Box>
                 <Box flex={1} ml={{ xs: 0, sm: '0.5em' }}>
-                    <TextInput source="last_name" isRequired fullWidth />
+                    <TextInput source="last_name" isRequired />
                 </Box>
             </Box>
-            <TextInput type="email" source="email" isRequired fullWidth />
+            <TextInput type="email" source="email" isRequired />
             <DateInput source="birthday" />
             <Separator />
             
             <Typography variant="h6" gutterBottom>
                 Address
             </Typography>
-            <TextInput
-                source="address"
-                multiline
-                fullWidth
-                helperText={false}
-            />
+            <TextInput source="address" multiline helperText={false} />
             <Box display={{ xs: 'block', sm: 'flex' }}>
                 <Box flex={2} mr={{ xs: 0, sm: '0.5em' }}>
-                    <TextInput source="city" fullWidth helperText={false} />
+                    <TextInput source="city" helperText={false} />
                 </Box>
                 <Box flex={1} mr={{ xs: 0, sm: '0.5em' }}>
-                    <TextInput
-                        source="stateAbbr"
-                        fullWidth
-                        helperText={false}
-                    />
+                    <TextInput source="stateAbbr" helperText={false} />
                 </Box>
                 <Box flex={2}>
-                    <TextInput source="zipcode" fullWidth helperText={false} />
+                    <TextInput source="zipcode" helperText={false} />
                 </Box>
             </Box>
             <Separator />
@@ -481,10 +472,10 @@ const UserCreate = () => (
             </Typography>
             <Box display={{ xs: 'block', sm: 'flex' }}>
                 <Box flex={1} mr={{ xs: 0, sm: '0.5em' }}>
-                    <PasswordInput source="password" fullWidth />
+                    <PasswordInput source="password" />
                 </Box>
                 <Box flex={1} ml={{ xs: 0, sm: '0.5em' }}>
-                    <PasswordInput source="confirm_password" fullWidth />
+                    <PasswordInput source="confirm_password" />
                 </Box>
             </Box>
         </SimpleForm>
@@ -813,13 +804,13 @@ export const PostCreate = () => (
         <Form>
             <Grid container>
                 <Grid item xs={6}>
-                    <TextInput source="title" fullWidth />
+                    <TextInput source="title" />
                 </Grid>
                 <Grid item xs={6}>
-                    <TextInput source="author" fullWidth />
+                    <TextInput source="author" />
                 </Grid>
                 <Grid item xs={12}>
-                    <RichTextInput source="body" fullWidth />
+                    <RichTextInput source="body" />
                 </Grid>
                 <Grid item xs={12}>
                     <SaveButton />

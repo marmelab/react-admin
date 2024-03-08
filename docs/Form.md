@@ -24,13 +24,13 @@ export const PostCreate = () => (
         <Form>
             <Grid container>
                 <Grid item xs={6}>
-                    <TextInput source="title" fullWidth />
+                    <TextInput source="title" />
                 </Grid>
                 <Grid item xs={6}>
-                    <TextInput source="author" fullWidth />
+                    <TextInput source="author" />
                 </Grid>
                 <Grid item xs={12}>
-                    <RichTextInput source="body" fullWidth />
+                    <RichTextInput source="body" />
                 </Grid>
                 <Grid item xs={12}>
                     <SaveButton />

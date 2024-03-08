@@ -304,7 +304,6 @@ const LanguageChangingAuthorInput = () => {
     return (
         <ReferenceArrayInput reference="authors" source="author">
             <AutocompleteArrayInput
-                fullWidth
                 optionText="name"
                 onChange={handleChange}
                 label="Authors"

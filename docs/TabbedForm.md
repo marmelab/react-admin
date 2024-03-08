@@ -609,11 +609,11 @@ const ProductEdit = () => (
 const ProductEditDetails = () => (
     <Grid container columnSpacing={2}>
         <Grid item xs={12} sm={8}>
-            <TextInput source="reference" fullWidth validate={req} />
+            <TextInput source="reference" validate={req} />
         </Grid>
         <Grid item xs={12} sm={4}>
             <ReferenceInput source="category_id" reference="categories">
-                <SelectInput source="name" validate={req} fullWidth />
+                <SelectInput source="name" validate={req} />
             </ReferenceInput>
         </Grid>
         <Grid item xs={12} sm={4}>
@@ -625,7 +625,6 @@ const ProductEditDetails = () => (
                     ),
                 }}
                 validate={req}
-                fullWidth
             />
         </Grid>
         <Grid item xs={12} sm={4}>
@@ -637,7 +636,6 @@ const ProductEditDetails = () => (
                     ),
                 }}
                 validate={req}
-                fullWidth
             />
         </Grid>
         <Grid item xs={0} sm={4}></Grid>
@@ -650,14 +648,13 @@ const ProductEditDetails = () => (
                     ),
                 }}
                 validate={req}
-                fullWidth
             />
         </Grid>
         <Grid item xs={12} sm={4}>
-            <NumberInput source="stock" validate={req} fullWidth />
+            <NumberInput source="stock" validate={req} />
         </Grid>
         <Grid item xs={12} sm={4}>
-            <NumberInput source="sales" validate={req} fullWidth />
+            <NumberInput source="sales" validate={req} />
         </Grid>
     </Grid>
 );
