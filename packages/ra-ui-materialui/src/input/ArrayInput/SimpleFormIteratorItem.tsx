@@ -83,8 +83,14 @@ export const SimpleFormIteratorItem = React.forwardRef(
         const parentSourceContext = useSourceContext();
         const sourceContext = useMemo(
             () => ({
-                getSource: (source: string) =>
-                    source ? `${member}.${source}` : member,
+                getSource: (source: string) => {
+                    if (parentSourceContext) {
+                        return parentSourceContext.getSource(
+                            source ? `${member}.${source}` : member
+                        );
+                    }
+                    return source ? `${member}.${source}` : member;
+                },
                 getLabel: (source: string) => {
                     // remove digits, e.g. 'book.authors.2.categories.3.identifier.name' => 'book.authors.categories.identifier.name'
                     const sanitizedMember = member.replace(/\.\d+/g, '');
