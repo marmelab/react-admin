@@ -22,6 +22,11 @@ const componentsOverrides = (theme: Theme) => {
                 },
             },
         },
+        MuiAutocomplete: {
+            defaultProps: {
+                fullWidth: true,
+            },
+        },
         MuiButton: {
             defaultProps: {
                 variant: 'outlined' as const,
@@ -37,6 +42,7 @@ const componentsOverrides = (theme: Theme) => {
                 variant: 'outlined' as const,
                 margin: 'dense' as const,
                 size: 'small' as const,
+                fullWidth: true,
             },
         },
         MuiPaper: {
@@ -74,6 +80,7 @@ const componentsOverrides = (theme: Theme) => {
                 variant: 'outlined' as const,
                 margin: 'dense' as const,
                 size: 'small' as const,
+                fullWidth: true,
             },
         },
         RaDatagrid: {

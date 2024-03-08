@@ -8,7 +8,7 @@ import { sizes } from './sizes';
 
 export const CompanyForm = () => (
     <>
-        <TextInput source="name" validate={required()} fullWidth />
+        <TextInput source="name" validate={required()} />
         <Stack direction="row">
             <SelectInput
                 source="sector"
@@ -23,23 +23,23 @@ export const CompanyForm = () => (
         </Stack>
         <Divider sx={{ mb: 2, width: '100%' }} />
 
-        <TextInput source="address" fullWidth helperText={false} />
+        <TextInput source="address" helperText={false} />
         <Grid container spacing={2}>
             <Grid item xs={12} sm={4}>
-                <TextInput fullWidth source="city" />
+                <TextInput source="city" />
             </Grid>
             <Grid item xs={12} sm={4}>
-                <TextInput fullWidth source="zipcode" />
+                <TextInput source="zipcode" />
             </Grid>
             <Grid item xs={12} sm={4}>
-                <TextInput fullWidth source="stateAbbr" />
+                <TextInput source="stateAbbr" />
             </Grid>
         </Grid>
         <Divider sx={{ mb: 2, width: '100%' }} />
 
-        <TextInput source="website" fullWidth helperText={false} />
-        <TextInput source="linkedIn" fullWidth helperText={false} />
-        <TextInput source="logo" fullWidth />
+        <TextInput source="website" helperText={false} />
+        <TextInput source="linkedIn" helperText={false} />
+        <TextInput source="logo" />
         <Divider sx={{ mb: 2, width: '100%' }} />
 
         <Stack direction="row">

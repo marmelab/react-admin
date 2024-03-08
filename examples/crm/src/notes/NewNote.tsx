@@ -73,7 +73,6 @@ export const NewNote = ({
                     label="Add a note"
                     variant="filled"
                     size="small"
-                    fullWidth
                     multiline
                     value={text}
                     onChange={(event: React.ChangeEvent<HTMLInputElement>) =>

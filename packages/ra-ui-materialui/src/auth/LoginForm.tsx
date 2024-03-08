@@ -62,7 +62,6 @@ export const LoginForm = (props: LoginFormProps) => {
                     label={translate('ra.auth.username')}
                     autoComplete="username"
                     validate={required()}
-                    fullWidth
                 />
                 <TextInput
                     source="password"
@@ -70,7 +69,6 @@ export const LoginForm = (props: LoginFormProps) => {
                     type="password"
                     autoComplete="current-password"
                     validate={required()}
-                    fullWidth
                 />
 
                 <Button

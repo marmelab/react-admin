@@ -103,7 +103,6 @@ const Login = () => {
                                 label={translate('ra.auth.username')}
                                 disabled={loading}
                                 validate={required()}
-                                fullWidth
                             />
                         </Box>
                         <Box sx={{ marginTop: '1em' }}>
@@ -113,7 +112,6 @@ const Login = () => {
                                 type="password"
                                 disabled={loading}
                                 validate={required()}
-                                fullWidth
                             />
                         </Box>
                     </Box>

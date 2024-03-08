@@ -59,7 +59,7 @@ export const Multiple = () => (
 
 export const FullWidth = () => (
     <Wrapper>
-        <ImageInput source="attachment" fullWidth>
+        <ImageInput source="attachment" fullWidth={false}>
             <ImageField source="src" title="title" />
         </ImageInput>
         <FormInspector name="attachment" />

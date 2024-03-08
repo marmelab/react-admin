@@ -97,7 +97,7 @@ export const Variant = () => (
 
 export const FullWidth = () => (
     <Wrapper>
-        <FilterLiveSearch source="q" fullWidth />
+        <FilterLiveSearch source="q" fullWidth={false} />
         <CountryList />
     </Wrapper>
 );

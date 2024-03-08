@@ -40,8 +40,8 @@ const ProductEdit = () => (
                 sx={{ maxWidth: '40em' }}
             >
                 <Poster />
-                <TextInput source="image" fullWidth validate={req} />
-                <TextInput source="thumbnail" fullWidth validate={req} />
+                <TextInput source="image" validate={req} />
+                <TextInput source="thumbnail" validate={req} />
             </TabbedForm.Tab>
             <TabbedForm.Tab
                 label="resources.products.tabs.details"

@@ -200,9 +200,8 @@ export const DifferentIdTypes = () => {
         <AdminContext dataProvider={dataProvider} defaultTheme="light">
             <Edit resource="bands" id={1} sx={{ width: 600 }}>
                 <SimpleForm>
-                    <TextInput source="name" fullWidth />
+                    <TextInput source="name" />
                     <SelectArrayInput
-                        fullWidth
                         source="members"
                         choices={fakeData.artists}
                     ></SelectArrayInput>
@@ -226,28 +225,24 @@ export const DifferentSizes = () => {
         <AdminContext dataProvider={dataProvider} defaultTheme="light">
             <Edit resource="bands" id={1} sx={{ width: 600 }}>
                 <SimpleForm>
-                    <TextInput source="name" fullWidth />
+                    <TextInput source="name" />
                     <SelectArrayInput
-                        fullWidth
                         source="members"
                         choices={fakeData.artists}
                         size="small"
                     />
                     <SelectArrayInput
-                        fullWidth
                         source="members"
                         choices={fakeData.artists}
                         size="medium"
                     />
                     <SelectArrayInput
-                        fullWidth
                         source="members"
                         choices={fakeData.artists}
                         size="small"
                         variant="outlined"
                     />
                     <SelectArrayInput
-                        fullWidth
                         source="members"
                         choices={fakeData.artists}
                         size="medium"

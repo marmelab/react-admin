@@ -193,13 +193,29 @@ const defaultFormat = (value: any) => value == null ? '' : value;
 
 ## `fullWidth`
 
-If `true`, the input will expand to fill the form width.
+By default, all inputs expand to fill the form width. Set the `fullWidth` prop to `false` to prevent the input from expanding.
 
 ![input full width](./img/input-full-width.png)
 
 ```tsx
-<TextInput source="title" />
-<TextInput source="teaser" fullWidth multiline />
+<TextInput source="title" fullWidth={false}  />
+<TextInput source="teaser" multiline />
+```
+
+Note that the best way to layout inputs is to use the [Grid component](./BoxStackGrid.md#grid) to create a responsive layout, while still allowing inputs to expand to fill the available space.
+
+Also, if you want to prevent the input from expanding in the entire app, you set the following fields in a [custom application theme](./AppTheme.md):
+
+```diff
+const myTheme = {
+    // ...
+    components: {
+        // ...
++       MuiFormControl: { defaultProps: { fullWidth: undefined } },
++       MuiTextField: { defaultProps: { fullWidth: undefined } },
++       MuiAutocomplete: { defaultProps: { fullWidth: undefined } },
+    },
+};
 ```
 
 ## `helperText`

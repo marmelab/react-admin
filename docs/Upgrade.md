@@ -302,6 +302,48 @@ If you don't need the dark mode feature, you'll have to explicitly disable it:
 </Admin>
 ```
 
+## Inputs Have Full Width By Default
+
+In the default theme, inputs now have full width by default. If this breaks your layout, you can revert to the previous behavior by unsetting the `fullWidth` default prop in the application theme.
+
+If you didn't use a custom theme, you create one based on the default theme:
+
+```diff
+-import { Admin } from 'react-admin';
++import { Admin, defaultTheme } from 'react-admin';
++import { deepmerge } from '@mui/utils';
+import { dataProvider } from './dataProvider';
+
++const theme = deepmerge(defaultTheme, {
++   components: { 
++       MuiFormControl: { defaultProps: { fullWidth: undefined } },
++       MuiTextField: { defaultProps: { fullWidth: undefined } },
++       MuiAutocomplete: { defaultProps: { fullWidth: undefined } },
++   }
+*});
+
+const MyApp = () => (
+-   <Admin dataProvider={dataProvider}>
++   <Admin dataProvider={dataProvider} theme={theme}>
+        ...
+    </Admin>
+);
+```
+
+If you used a custom theme, you must update it to include the following lines:
+
+```diff
+const myTheme = {
+    // ...
+    components: {
+        // ...
++       MuiFormControl: { defaultProps: { fullWidth: undefined } },
++       MuiTextField: { defaultProps: { fullWidth: undefined } },
++       MuiAutocomplete: { defaultProps: { fullWidth: undefined } },
+    },
+};
+```
+
 ## Links are now underlined by default
 
 In the default theme, links are now underlined by default.

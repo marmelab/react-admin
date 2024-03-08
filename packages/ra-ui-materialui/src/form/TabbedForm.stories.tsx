@@ -42,7 +42,7 @@ export const Basic = () => (
     <Wrapper>
         <TabbedForm>
             <TabbedForm.Tab label="main">
-                <TextInput source="title" fullWidth />
+                <TextInput source="title" />
                 <TextInput source="author" />
                 <NumberInput source="year" />
             </TabbedForm.Tab>
@@ -54,12 +54,12 @@ export const MultipleTabs = () => (
     <Wrapper>
         <TabbedForm>
             <TabbedForm.Tab label="main">
-                <TextInput source="title" fullWidth />
+                <TextInput source="title" />
                 <TextInput source="author" />
                 <NumberInput source="year" />
             </TabbedForm.Tab>
             <TabbedForm.Tab label="details">
-                <TextInput multiline source="bio" fullWidth />
+                <TextInput multiline source="bio" />
             </TabbedForm.Tab>
         </TabbedForm>
     </Wrapper>
@@ -69,7 +69,7 @@ export const CustomLayout = () => (
     <Wrapper>
         <TabbedForm>
             <TabbedForm.Tab label="main">
-                <TextInput source="title" fullWidth />
+                <TextInput source="title" />
                 <Stack direction="row" gap={1} width="100%">
                     <TextInput source="author" sx={{ width: '50%' }} />
                     <NumberInput source="year" sx={{ width: '50%' }} />
@@ -83,7 +83,7 @@ export const NoToolbar = () => (
     <Wrapper>
         <TabbedForm toolbar={false}>
             <TabbedForm.Tab label="main">
-                <TextInput source="title" fullWidth />
+                <TextInput source="title" />
                 <TextInput source="author" sx={{ width: '50%' }} />
                 <NumberInput source="year" sx={{ width: '50%' }} />
             </TabbedForm.Tab>
@@ -95,12 +95,12 @@ export const Count = () => (
     <Wrapper>
         <TabbedForm>
             <TabbedForm.Tab label="main">
-                <TextInput source="title" fullWidth />
+                <TextInput source="title" />
                 <TextInput source="author" />
                 <NumberInput source="year" />
             </TabbedForm.Tab>
             <TabbedForm.Tab label="comments" count={3}>
-                <TextInput multiline source="bio" fullWidth />
+                <TextInput multiline source="bio" />
             </TabbedForm.Tab>
         </TabbedForm>
     </Wrapper>

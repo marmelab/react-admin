@@ -89,7 +89,7 @@ export const Multiple = () => (
 
 export const FullWidth = () => (
     <Wrapper>
-        <FileInput source="attachment" fullWidth>
+        <FileInput source="attachment" fullWidth={false}>
             <FileField source="src" title="title" />
         </FileInput>
         <FormInspector name="attachment" />

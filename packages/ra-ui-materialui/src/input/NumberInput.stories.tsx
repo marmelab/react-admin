@@ -82,7 +82,11 @@ export const Label = () => (
 export const FullWidth = () => (
     <Wrapper>
         <NumberInput source="views" label="default" />
-        <NumberInput source="views" label="Full Width" fullWidth />
+        <NumberInput
+            source="views"
+            label="Full Width False"
+            fullWidth={false}
+        />
     </Wrapper>
 );
 

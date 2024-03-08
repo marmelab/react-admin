@@ -18,7 +18,7 @@ export const Basic = () => (
 
 export const FullWidth = () => (
     <Wrapper>
-        <TimeInput source="published" fullWidth />
+        <TimeInput source="published" fullWidth={false} />
     </Wrapper>
 );
 

@@ -19,7 +19,7 @@ export const Basic = () => (
 
 export const FullWidth = () => (
     <Wrapper>
-        <DateInput source="published" fullWidth />
+        <DateInput source="published" fullWidth={false} />
     </Wrapper>
 );
 

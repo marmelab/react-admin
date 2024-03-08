@@ -165,7 +165,6 @@ const BookEdit = () => {
                     source="author"
                     choices={choices}
                     validate={required()}
-                    fullWidth
                 />
             </SimpleForm>
         </Edit>
@@ -202,7 +201,6 @@ const BookEditCustomText = () => {
                     source="author"
                     optionText="fullName"
                     choices={choices}
-                    fullWidth
                 />
             </SimpleForm>
         </Edit>
@@ -239,7 +237,6 @@ const BookEditCustomTextFunction = () => {
                     source="author"
                     optionText={choice => choice?.fullName}
                     choices={choices}
-                    fullWidth
                 />
             </SimpleForm>
         </Edit>
@@ -299,7 +296,6 @@ const BookEditCustomOptions = () => {
                         );
                     }}
                     choices={choices}
-                    fullWidth
                 />
             </SimpleForm>
         </Edit>
@@ -349,7 +345,6 @@ const BookEditWithCreationSupport = () => (
                         return newAuthor;
                     }
                 }}
-                fullWidth
             />
         </SimpleForm>
     </Edit>
@@ -440,7 +435,7 @@ const BookEditWithReference = () => (
     >
         <SimpleForm>
             <ReferenceArrayInput reference="authors" source="author">
-                <AutocompleteArrayInput fullWidth optionText="name" />
+                <AutocompleteArrayInput optionText="name" />
             </ReferenceArrayInput>
         </SimpleForm>
     </Edit>
@@ -467,7 +462,6 @@ const LanguageChangingAuthorInput = ({ onChange }) => {
     return (
         <ReferenceArrayInput reference="authors" source="author">
             <AutocompleteArrayInput
-                fullWidth
                 optionText="name"
                 onChange={handleChange}
                 label="Authors"
@@ -577,7 +571,6 @@ const BookEditWithReferenceAndCreationSupport = () => (
             <ReferenceArrayInput reference="authors" source="author">
                 <AutocompleteArrayInput
                     create={<CreateAuthor />}
-                    fullWidth
                     optionText="name"
                 />
             </ReferenceArrayInput>

@@ -26,9 +26,15 @@ const componentsOverrides = (theme: Theme) => ({
             },
         },
     },
+    MuiAutocomplete: {
+        defaultProps: {
+            fullWidth: true,
+        },
+    },
     MuiFormControl: {
         defaultProps: {
             margin: 'dense' as const,
+            fullWidth: true,
         },
     },
     MuiOutlinedInput: {
@@ -105,6 +111,7 @@ const componentsOverrides = (theme: Theme) => ({
     MuiTextField: {
         defaultProps: {
             variant: 'outlined' as const,
+            fullWidth: true,
         },
     },
     RaAppBar: {

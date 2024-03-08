@@ -186,7 +186,6 @@ export const TagsListEdit = () => {
                         <TextField
                             autoFocus
                             label="Tag name"
-                            fullWidth
                             value={newTagName}
                             onChange={handleNewTagNameChange}
                             sx={{ mt: 1 }}
