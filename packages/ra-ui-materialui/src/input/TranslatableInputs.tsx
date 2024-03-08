@@ -70,7 +70,7 @@ export const TranslatableInputs = (
     const {
         className,
         defaultLocale,
-        fullWidth,
+        fullWidth = true,
         locales,
         groupKey = '',
         selector = <TranslatableInputsTabs groupKey={groupKey} />,

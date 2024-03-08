@@ -22,7 +22,7 @@ export const Basic = () => (
 
 export const FullWidth = () => (
     <Wrapper>
-        <TranslatableInputs locales={['en', 'fr']} fullWidth>
+        <TranslatableInputs locales={['en', 'fr']} fullWidth={false}>
             <TextInput source="title" />
             <TextInput source="description" />
         </TranslatableInputs>
