@@ -36,11 +36,11 @@ yarn add @react-admin/ra-editable-datagrid
 Then, replace `<Datagrid>` with `<EditableDatagrid>` in a react-admin `<List>`, `<ReferenceManyField>`, or any other component that creates a `ListContext`. In addition, pass a form component to be displayed when the user switches to edit or create mode.
 
 ```tsx
-import { List, TextField, TextInput, DateField, DateInput, SelectField, SelectInput, required } from 'react-admin';
+import { List, ListActions,TextField, TextInput, DateField, DateInput, SelectField, SelectInput, required } from 'react-admin';
 import { EditableDatagrid, RowForm } from '@react-admin/ra-editable-datagrid';
 
 export const ArtistList = () => (
-    <List hasCreate empty={false}>
+    <List actions={<ListActions hasCreate />} empty={false}>
         <EditableDatagrid
             createForm={<ArtistForm />}
             editForm={<ArtistForm />}
@@ -136,7 +136,7 @@ The component displayed as the first row when a user clicks on the Create button
 
 ```tsx
 export const ArtistList = () => (
-    <List hasCreate empty={false}>
+    <List actions={<ListActions hasCreate />} empty={false}>
         <EditableDatagrid
             editForm={<ArtistForm />}
             createForm={<ArtistForm />}
@@ -161,7 +161,7 @@ const ArtistForm = () => (
 
 **Tip**: It's a good idea to reuse the same form component for `createForm` and `editForm`, as in the example above.
 
-Since the creation form is embedded in the List view, you shouldn't set the `<Resource create>` prop. But react-admin's `<List>` only displays a Create button if the current `Resource` has a `create` page. That's why you must force the [`<List hasCreate>`](./List.md#hascreate) prop to `true`, as in the example above, to have the Create button show up with `<EditableDatagrid>`.
+Since the creation form is embedded in the List view, you shouldn't set the `<Resource create>` prop. But react-admin's `<List>` only displays a Create button if the current `Resource` has a `create` page. That's why you must force the [`<List actions>`](./List.md#actions) value, as in the example above, to have the Create button show up with `<EditableDatagrid>`.
 
 Also, when the list is empty, the `<List>` component normally doesn't render its children (it renders an `empty` component instead). To bypass this system and see the empty editable datagrid with a create button instead, you need to force the `<List empty={false}>` prop, as in the example above.
 
@@ -233,11 +233,11 @@ You can disable the delete button by setting the `noDelete` prop to `true`:
 `<RowForm>` renders a form in a table row, with one table cell per child. It is designed to be used as [`editForm`](#editform) and [`createForm`](#createform) element.
 
 ```tsx
-import { List, TextField, TextInput } from 'react-admin';
+import { List, ListActions, TextField, TextInput } from 'react-admin';
 import { EditableDatagrid, RowForm } from '@react-admin/ra-editable-datagrid';
 
 export const ArtistList = () => (
-    <List hasCreate empty={false}>
+    <List actions={<ListActions hasCreate />} empty={false}>
         <EditableDatagrid
             createForm={<ArtistForm />}
             editForm={<ArtistForm />}
@@ -299,7 +299,7 @@ For instance, the following example displays a custom message when the list is e
 ```tsx
 import React from 'react';
 import { Typography, Box } from '@mui/material';
-import { CreateButton, List } from 'react-admin';
+import { CreateButton, List, ListActions } from 'react-admin';
 import {
     EditableDatagrid,
     useEditableDatagridContext,
@@ -320,7 +320,7 @@ const MyCreateButton = () => {
 };
 
 export const BookList = () => (
-    <List hasCreate empty={false}>
+    <List actions={<ListActions hasCreate />} empty={false}>
         <EditableDatagrid empty={<MyCreateButton />}>
            {/*...*/}
         </EditableDatagrid>
@@ -512,6 +512,7 @@ import {
     SelectField,
     required,
     List,
+    ListActions,
 } from 'react-admin';
 import {
     EditableDatagrid,
@@ -541,7 +542,11 @@ const ArtistForm = ({ meta }) => (
 const ArtistListWithMeta = () => {
     const meta = { foo: 'bar' };
     return (
-        <List hasCreate sort={{ field: 'id', order: 'DESC' }} empty={false}>
+        <List
+            actions={<ListActions hasCreate />}
+            sort={{ field: 'id', order: 'DESC' }}
+            empty={false}
+        >
             <EditableDatagrid
                 createForm={<ArtistForm meta={meta} />}
                 editForm={<ArtistForm meta={meta} />}
@@ -605,7 +610,7 @@ const ArtistForm = ({ meta }) => (
 );
 
 const ArtistList = () => (
-    <List hasCreate empty={false}>
+    <List actions={<ListActions hasCreate />} empty={false}>
 -        <EditableDatagrid
 +        <EditableDatagridConfigurable
             mutationMode="undoable"

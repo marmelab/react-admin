@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
-import { cloneElement, ReactElement, ReactNode, ElementType } from 'react';
+import { ReactElement, ReactNode, ElementType } from 'react';
 import PropTypes from 'prop-types';
 import { SxProps } from '@mui/system';
 import Card from '@mui/material/Card';
@@ -26,9 +26,7 @@ export const ListView = <RecordType extends RaRecord = any>(
         actions = defaultActions,
         aside,
         filters,
-        bulkActionButtons,
         emptyWhileLoading,
-        hasCreate,
         pagination = defaultPagination,
         children,
         className,
@@ -57,19 +55,9 @@ export const ListView = <RecordType extends RaRecord = any>(
                     className={ListClasses.actions}
                     filters={filters}
                     actions={actions}
-                    hasCreate={hasCreate}
                 />
             )}
-            <Content className={ListClasses.content}>
-                {bulkActionButtons &&
-                children &&
-                React.isValidElement<any>(children)
-                    ? // FIXME remove in 5.0
-                      cloneElement(children, {
-                          bulkActionButtons,
-                      })
-                    : children}
-            </Content>
+            <Content className={ListClasses.content}>{children}</Content>
             {error ? (
                 <Error error={error} resetErrorBoundary={null} />
             ) : (
@@ -79,8 +67,7 @@ export const ListView = <RecordType extends RaRecord = any>(
     );
 
     const renderEmpty = () =>
-        empty !== false &&
-        cloneElement(empty, { className: ListClasses.noResults, hasCreate });
+        empty !== false && <div className={ListClasses.noResults}>{empty}</div>;
 
     const shouldRenderEmptyPage =
         !isPending &&
@@ -112,7 +99,6 @@ ListView.propTypes = {
         PropTypes.element,
         PropTypes.arrayOf(PropTypes.element),
     ]),
-    hasCreate: PropTypes.bool,
     pagination: PropTypes.oneOfType([PropTypes.element, PropTypes.bool]),
     title: TitlePropType,
 };
@@ -180,11 +166,6 @@ export interface ListViewProps {
      * );
      */
     aside?: ReactElement;
-
-    /**
-     * @deprecated pass the bulkActionButtons prop to the List child (Datagrid or SimpleList) instead
-     */
-    bulkActionButtons?: ReactElement | false;
 
     /**
      * A class name to apply to the root div element
@@ -292,21 +273,6 @@ export interface ListViewProps {
      * );
      */
     filters?: ReactElement | ReactElement[];
-
-    /**
-     * Set to true to force a Create button in the toolbar, even if there is no create view declared in Resource
-     *
-     * @see https://marmelab.com/react-admin/List.html#hascreate
-     * @example
-     * import { List } from 'react-admin';
-     *
-     * export const PostList = () => (
-     *     <List hasCreate={false}>
-     *         ...
-     *     </List>
-     * );
-     */
-    hasCreate?: boolean;
 
     /**
      * The pagination component to display. defaults to <Pagination />

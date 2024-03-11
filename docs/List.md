@@ -67,7 +67,6 @@ You can find more advanced examples of `<List>` usage in the [demos](./Demos.md)
 | `filters`                 | Optional | `ReactElement` | -              | The filters to display in the toolbar.                                                       |
 | `filter`                  | Optional | `object`       | -              | The permanent filter values.                                                                 |
 | `filter DefaultValues`    | Optional | `object`       | -              | The default filter values.                                                                   |
-| `hasCreate`               | Optional | `boolean`      | `false`        | Set to `true` to show the create button.                                                     |
 | `pagination`              | Optional | `ReactElement` | `<Pagination>` | The pagination component to use.                                                             |
 | `perPage`                 | Optional | `number`       | `10`           | The number of records to fetch per page.                                                     |
 | `queryOptions`            | Optional | `object`       | -              | The options to pass to the `useQuery` hook.                                                  |
@@ -84,12 +83,26 @@ Additional props are passed down to the root component (a MUI `<Card>` by defaul
 By default, the `<List>` view displays a toolbar on top of the list. It contains:
 
 - A `<FilterButton>` to display the filter form if you set [the `filters` prop](#filters-filter-inputs)
-- A `<CreateButton>` if the resource has a creation view, or if you set [the `hasCreate` prop](#hascreate)
+- A `<CreateButton>` if the resource has a creation view
 - An `<ExportButton>`
 
 ![Actions Toolbar](./img/actions-toolbar.png)
 
-You can replace this toolbar  by your own using the `actions` prop. For instance, to add a [`<SelectColumnsButton>`](./SelectColumnsButton.md) to let the user choose which columns to display in the list:
+The `actions` prop allows you to replace the default toolbar by your own.
+
+For instance, you can force the toolbar to display a Create button, even if the resource has no creation view, by passing a custom `<ListActions>` component:
+
+```jsx
+import { List, ListActions } from 'react-admin';
+
+export const PostList = () => (
+    <List actions={<ListActions hasCreate />}>
+        ...
+    </List>
+);
+```
+
+You can also add custom actions, e.g. a [`<SelectColumnsButton>`](./SelectColumnsButton.md) to let the user choose which columns to display in the list:
 
 ```jsx
 import {
@@ -716,18 +729,6 @@ export const PostList = () => (
 
 ```js
 const filterSentToDataProvider = { ...filterDefaultValues, ...filterChosenByUser, ...filter };
-```
-
-## `hasCreate`
-
-The List page shows a Create button if the resource has a create view, or if the `hasCreate` prop is set to true. Using this prop lets you force the display of the create button, or hide it.
-
-```jsx
-export const PostList = () => (
-    <List hasCreate={false}>
-        ...
-    </List>
-);
 ```
 
 ## `pagination`

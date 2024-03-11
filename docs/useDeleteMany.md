@@ -33,9 +33,10 @@ So, should you pass the parameters when calling the hook, or when executing the 
 
 ```jsx
 // set params when calling the hook
-import { useDeleteMany } from 'react-admin';
+import { useListContext, useDeleteMany } from 'react-admin';
 
-const BulkDeletePostsButton = ({ selectedIds }) => {
+const BulkDeletePostsButton = () => {
+    const { selectedIds } = useListContext();
     const [deleteMany, { isPending, error }] = useDeleteMany(
         'posts',
         { ids: selectedIds }
@@ -48,9 +49,10 @@ const BulkDeletePostsButton = ({ selectedIds }) => {
 };
 
 // set params when calling the deleteMany callback
-import { useDeleteMany } from 'react-admin';
+import { useListContext, useDeleteMany } from 'react-admin';
 
-const BulkDeletePostsButton = ({ selectedIds }) => {
+const BulkDeletePostsButton = () => {
+    const { selectedIds } = useListContext();
     const [deleteMany, { isPending, error }] = useDeleteMany();
     const handleClick = () => {
         deleteMany(

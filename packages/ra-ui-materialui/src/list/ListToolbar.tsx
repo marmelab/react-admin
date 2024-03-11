@@ -17,11 +17,7 @@ export const ListToolbar: FC<ListToolbarProps> = memo(props => {
             <Root className={className}>
                 <FilterForm />
                 <span />
-                {actions &&
-                    React.cloneElement(actions, {
-                        ...rest,
-                        ...actions.props,
-                    })}
+                {actions}
             </Root>
         </FilterContext.Provider>
     ) : (

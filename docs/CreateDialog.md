@@ -31,6 +31,7 @@ Then, add the `<CreateDialog>` component as a sibling to a `<List>` component.
 ```jsx
 import {
     List,
+    ListActions,
     Datagrid,
     SimpleForm,
     TextInput,
@@ -42,7 +43,7 @@ import { CreateDialog } from '@react-admin/ra-form-layout';
 
 const CustomerList = () => (
     <>
-        <List hasCreate>
+        <List actions={<ListActions hasCreate />}>
             <Datagrid>
                 ...
             </Datagrid>
@@ -58,7 +59,7 @@ const CustomerList = () => (
 );
 ```
 
-**Tip**: In the example above, notice the `<List hasCreate>` prop. It is necessary in order to display the "Create" button, because react-admin has no way of knowing that creation form for the "customer" resource exists.
+**Tip**: In the example above, notice the `<List actions>` prop. It is necessary in order to display the "Create" button, because react-admin has no way of knowing that creation form for the "customer" resource exists.
 
 In the related `<Resource>`, you don't need to declare a `create` component as the creation UI is part of the `list` component:
 

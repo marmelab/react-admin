@@ -129,7 +129,6 @@ InfiniteList.propTypes = {
     title: TitlePropType,
     // the props managed by react-admin
     disableSyncWithLocation: PropTypes.bool,
-    hasCreate: PropTypes.bool,
     hasEdit: PropTypes.bool,
     hasList: PropTypes.bool,
     hasShow: PropTypes.bool,

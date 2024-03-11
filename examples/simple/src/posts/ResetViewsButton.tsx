@@ -1,9 +1,16 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import { useUpdateMany, useNotify, useUnselectAll, Button } from 'react-admin';
+import {
+    useUpdateMany,
+    useNotify,
+    useUnselectAll,
+    Button,
+    useListContext,
+} from 'react-admin';
 
-const ResetViewsButton = ({ resource, selectedIds }) => {
+const ResetViewsButton = () => {
+    const { resource, selectedIds } = useListContext();
     const notify = useNotify();
     const unselectAll = useUnselectAll(resource);
     const [updateMany, { isPending }] = useUpdateMany(

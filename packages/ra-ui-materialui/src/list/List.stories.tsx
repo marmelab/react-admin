@@ -10,6 +10,7 @@ import fakeRestDataProvider from 'ra-data-fakerest';
 import { Box, Card, Stack, Typography, Button } from '@mui/material';
 
 import { List } from './List';
+import { ListActions } from './ListActions';
 import { Datagrid } from './datagrid';
 import { TextField } from '../field';
 import { SearchInput, TextInput } from '../input';
@@ -209,16 +210,17 @@ export const Title = () => (
     </TestMemoryRouter>
 );
 
-const BookListWithCreate = () => (
-    <List hasCreate={true}>
-        <BookList />
-    </List>
-);
-
 export const HasCreate = () => (
     <TestMemoryRouter initialEntries={['/books']}>
         <Admin dataProvider={dataProvider}>
-            <Resource name="books" list={BookListWithCreate} />
+            <Resource
+                name="books"
+                list={() => (
+                    <List actions={<ListActions hasCreate />}>
+                        <BookList />
+                    </List>
+                )}
+            />
         </Admin>
     </TestMemoryRouter>
 );
