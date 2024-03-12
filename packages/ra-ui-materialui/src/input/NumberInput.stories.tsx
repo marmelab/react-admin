@@ -79,7 +79,7 @@ export const Label = () => (
     </Wrapper>
 );
 
-export const FullWidth = () => (
+export const NonFullWidth = () => (
     <Wrapper>
         <NumberInput source="views" label="default" />
         <NumberInput

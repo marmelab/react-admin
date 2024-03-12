@@ -20,7 +20,7 @@ export const Basic = () => (
     </Wrapper>
 );
 
-export const FullWidth = () => (
+export const NonFullWidth = () => (
     <Wrapper>
         <TranslatableInputs locales={['en', 'fr']} fullWidth={false}>
             <TextInput source="title" />

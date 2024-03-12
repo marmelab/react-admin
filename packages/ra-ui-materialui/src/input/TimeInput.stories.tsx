@@ -16,7 +16,7 @@ export const Basic = () => (
     </Wrapper>
 );
 
-export const FullWidth = () => (
+export const NonFullWidth = () => (
     <Wrapper>
         <TimeInput source="published" fullWidth={false} />
     </Wrapper>
