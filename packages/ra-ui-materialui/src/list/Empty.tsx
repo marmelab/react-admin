@@ -55,6 +55,7 @@ export const Empty = (props: EmptyProps) => {
 
 export interface EmptyProps {
     resource?: string;
+    hasCreate?: boolean;
     className?: string;
 }
 
