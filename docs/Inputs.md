@@ -202,6 +202,23 @@ By default, all inputs expand to fill the form width. Set the `fullWidth` prop t
 <TextInput source="teaser" multiline />
 ```
 
+A good way to avoid too wide inputs on desktop is to limit the width of the form itself. You can do this by setting the `sx` prop on the `<SimpleForm>` component:
+
+{% raw %}
+```tsx
+import { Edit, SimpleForm, TextInput } from 'react-admin';
+
+const PostEdit = () => (
+    <Edit>
+        <SimpleForm sx={{ maxWidth: { lg: '600' } }}>
+            <TextInput source="title" />
+            <TextInput source="teaser" multiline />
+        </SimpleForm>
+    </Edit>
+);
+```
+{% endraw %}
+
 Note that the best way to layout inputs is to use the [Grid component](./BoxStackGrid.md#grid) to create a responsive layout, while still allowing inputs to expand to fill the available space. For example, to produce the following layout:
 
 ![input full width](./img/input-grid.webp)
@@ -274,7 +291,7 @@ const req = [required()];
 ```
 {% endraw %}
 
-Also, if you want to prevent the input from expanding in the entire app, you set the following fields in a [custom application theme](./AppTheme.md):
+Also, if you want to prevent the input from expanding in the entire app, you can set the following fields in a [custom application theme](./AppTheme.md):
 
 ```diff
 const myTheme = {
@@ -284,6 +301,7 @@ const myTheme = {
 +       MuiFormControl: { defaultProps: { fullWidth: undefined } },
 +       MuiTextField: { defaultProps: { fullWidth: undefined } },
 +       MuiAutocomplete: { defaultProps: { fullWidth: undefined } },
++       RaSimpleFormIterator: { defaultProps: { fullWidth: undefined } },
     },
 };
 ```
