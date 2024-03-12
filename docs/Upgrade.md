@@ -345,6 +345,7 @@ const myTheme = {
 +       MuiTextField: { defaultProps: { fullWidth: undefined } },
 +       MuiAutocomplete: { defaultProps: { fullWidth: undefined } },
 +       RaSimpleFormIterator: { defaultProps: { fullWidth: undefined } },
++       RaTranslatableInputs: { defaultProps: { fullWidth: undefined } },
     },
 };
 ```
