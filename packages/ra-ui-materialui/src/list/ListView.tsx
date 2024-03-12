@@ -358,5 +358,7 @@ const Root = styled('div', {
 
     [`& .${ListClasses.actions}`]: {},
 
-    [`& .${ListClasses.noResults}`]: {},
+    [`& .${ListClasses.noResults}`]: {
+        flex: 1,
+    },
 }));
