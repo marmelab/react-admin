@@ -66,6 +66,8 @@ export const PostListToolbar = () => (
 );
 ```
 
+You must also update your data provider to support filters with operators. See the [data provider configuration](#data-provider-configuration) section below. 
+
 ## Filters Configuration
 
 Define the filter configuration in the `<StackedFilters config>` prop. The value must be an object defining the operators and UI for each field that can be used as a filter.
@@ -144,6 +146,61 @@ const postListFilters: FiltersConfig = {
     published: booleanFilter(),
 };
 ```
+
+## Data Provider Configuration
+
+In react-admin, `dataProvider.getList()` accepts a `filter` parameter to filter the records. There is no notion of *operators* in this parameter, as the expected format is an object like `{ field: value }`. As `StackedFilters` needs operators, it uses a convention to concatenate the field name and the operator with an underscore.
+
+For instance, if the Post resource has a `title` field, and you configure `<StackedFilters>` to allow filtering on this field as a text field, the `dataProvider.getList()` may receive the following `filter` parameter:
+
+- title_eq
+- title_neq
+- title_q
+
+The actual suffixes depend on the type of filter configured in `<StackedFilter>` (see [filters configuration builders](#filter-configuration-builders) above). Here is an typical call to `dataProvider.getList()` with a posts list using `<StackedFilters>`:
+
+```jsx
+const { data } = useGetList('posts', {
+    filter: {
+        title_q: 'lorem',
+        date_gte: '2021-01-01',
+        views_eq: 0,
+        tags_inc_any: [1, 2],
+    },
+    pagination: { page: 1, perPage: 10 },
+    sort: { field: 'title', order: 'ASC' },
+});
+```
+
+It's up to you the data provider to convert the `filter` parameter into a query that your API understands. 
+
+For instance, if your API expects filters as an array of criteria objects (`[{ field, operator, value }]`), `dataProvider.getList()` should convert the `filter` parameter as follows:
+
+```jsx
+const dataProvider = {
+    // ...
+    getList: async (resource, params) => {
+        const { filter } = params;
+        const filterFields = Object.keys(filter);
+        const criteria = [];
+        // eq operator
+        filterFields.filter(field => field.endsWith('_eq')).forEach(field => {
+            criteria.push({ field: field.replace('_eq', ''), operator: 'eq', value: filter[field] });
+        });
+        // neq operator
+        filterFields.filter(field => field.endsWith('_neq')).forEach(field => {
+            criteria.push({ field: field.replace('_neq', ''), operator: 'neq', value: filter[field] });
+        });
+        // q operator
+        filterFields.filter(field => field.endsWith('_q')).forEach(field => {
+            criteria.push({ field: field.replace('_q', ''), operator: 'q', value: filter[field] });
+        });
+        // ...
+    },
+}
+```
+
+Few of the [existing data providers](./DataProviderList.md) implement this convention. this means you'll probably have to adapt your data provider to support the operators used by `<StackedFilters>`.
 
 ## Props
 
