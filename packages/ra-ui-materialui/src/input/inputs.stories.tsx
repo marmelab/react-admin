@@ -65,6 +65,9 @@ const themes = [
                 RaSimpleFormIterator: {
                     defaultProps: { fullWidth: undefined },
                 },
+                RaTranslatableInputs: {
+                    defaultProps: { fullWidth: undefined },
+                },
             },
         }),
         dark: deepmerge(defaultDarkTheme, {
@@ -73,6 +76,9 @@ const themes = [
                 MuiTextField: { defaultProps: { fullWidth: undefined } },
                 MuiAutocomplete: { defaultProps: { fullWidth: undefined } },
                 RaSimpleFormIterator: {
+                    defaultProps: { fullWidth: undefined },
+                },
+                RaTranslatableInputs: {
                     defaultProps: { fullWidth: undefined },
                 },
             },

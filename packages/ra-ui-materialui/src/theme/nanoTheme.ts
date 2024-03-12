@@ -314,6 +314,11 @@ const componentsOverrides = (theme: Theme) => ({
             fullWidth: true,
         },
     },
+    RaTranslatableInputs: {
+        defaultProps: {
+            fullWidth: true,
+        },
+    },
 });
 
 const alert = {

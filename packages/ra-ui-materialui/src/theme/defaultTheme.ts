@@ -54,6 +54,11 @@ const defaultThemeInvariants = {
                 fullWidth: true,
             },
         },
+        RaTranslatableInputs: {
+            defaultProps: {
+                fullWidth: true,
+            },
+        },
     },
 };
 
