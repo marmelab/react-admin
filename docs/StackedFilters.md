@@ -172,7 +172,7 @@ const { data } = useGetList('posts', {
 });
 ```
 
-It's up to you the data provider to convert the `filter` parameter into a query that your API understands. 
+It's up to your data provider to convert the `filter` parameter into a query that your API understands. 
 
 For instance, if your API expects filters as an array of criteria objects (`[{ field, operator, value }]`), `dataProvider.getList()` should convert the `filter` parameter as follows:
 
