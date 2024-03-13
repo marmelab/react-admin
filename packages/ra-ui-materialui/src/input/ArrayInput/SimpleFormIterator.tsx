@@ -11,7 +11,7 @@ import {
     useRef,
     useState,
 } from 'react';
-import { styled, SxProps } from '@mui/material';
+import { styled, SxProps, useThemeProps } from '@mui/material';
 import clsx from 'clsx';
 import get from 'lodash/get';
 import PropTypes from 'prop-types';
@@ -39,7 +39,11 @@ import { ReOrderButtons as DefaultReOrderButtons } from './ReOrderButtons';
 import { ClearArrayButton } from './ClearArrayButton';
 import { Confirm } from '../../layout';
 
-export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
+export const SimpleFormIterator = (inProps: SimpleFormIteratorProps) => {
+    const props = useThemeProps({
+        props: inProps,
+        name: 'RaSimpleFormIterator',
+    });
     const {
         addButton = <DefaultAddItemButton />,
         removeButton = <DefaultRemoveItemButton />,
@@ -305,18 +309,13 @@ const Root = styled('div', {
         marginTop: theme.spacing(1),
         [theme.breakpoints.down('md')]: { display: 'none' },
     },
-    [`& .${SimpleFormIteratorClasses.form}`]: {
-        alignItems: 'flex-start',
-        display: 'flex',
-        flexDirection: 'column',
-    },
+    [`& .${SimpleFormIteratorClasses.form}`]: {},
     [`&.fullwidth > ul > li > .${SimpleFormIteratorClasses.form}`]: {
         flex: 2,
     },
     [`& .${SimpleFormIteratorClasses.inline}`]: {
         flexDirection: 'row',
         columnGap: '1em',
-        flexWrap: 'wrap',
     },
     [`& .${SimpleFormIteratorClasses.action}`]: {
         marginTop: theme.spacing(0.5),

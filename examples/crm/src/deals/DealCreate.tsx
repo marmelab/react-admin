@@ -93,35 +93,23 @@ export const DealCreate = ({ open }: { open: boolean }) => {
                     <TextInput
                         source="name"
                         label="Deal name"
-                        fullWidth
                         validate={validateRequired}
                     />
-                    <TextInput
-                        source="description"
-                        multiline
-                        rows={3}
-                        fullWidth
-                    />
+                    <TextInput source="description" multiline rows={3} />
                     <ReferenceInput source="company_id" reference="companies">
                         <AutocompleteInput
                             optionText="name"
-                            fullWidth
                             validate={validateRequired}
                         />
                     </ReferenceInput>
                     <SelectInput
                         source="stage"
                         choices={stageChoices}
-                        fullWidth
                         validate={validateRequired}
                         defaultValue="opportunity"
                     />
-                    <SelectInput
-                        source="type"
-                        choices={typeChoices}
-                        fullWidth
-                    />
-                    <NumberInput source="amount" fullWidth defaultValue={0} />
+                    <SelectInput source="type" choices={typeChoices} />
+                    <NumberInput source="amount" defaultValue={0} />
                 </SimpleForm>
             </Create>
         </Dialog>

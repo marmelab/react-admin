@@ -68,9 +68,9 @@ export const GetItemLabel = () => (
     </Wrapper>
 );
 
-export const FullWidth = () => (
+export const NonFullWidth = () => (
     <Wrapper>
-        <SimpleFormIterator fullWidth>
+        <SimpleFormIterator fullWidth={false}>
             <TextInput source="name" />
             <TextInput source="role" />
         </SimpleFormIterator>

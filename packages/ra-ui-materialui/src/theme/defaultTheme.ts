@@ -13,6 +13,9 @@ const defaultThemeInvariants = {
     },
     components: {
         MuiAutocomplete: {
+            defaultProps: {
+                fullWidth: true,
+            },
             variants: [
                 {
                     props: {},
@@ -27,6 +30,7 @@ const defaultThemeInvariants = {
                 variant: 'filled' as const,
                 margin: 'dense' as const,
                 size: 'small' as const,
+                fullWidth: true,
             },
             variants: [
                 {
@@ -42,6 +46,17 @@ const defaultThemeInvariants = {
                 variant: 'filled' as const,
                 margin: 'dense' as const,
                 size: 'small' as const,
+                fullWidth: true,
+            },
+        },
+        RaSimpleFormIterator: {
+            defaultProps: {
+                fullWidth: true,
+            },
+        },
+        RaTranslatableInputs: {
+            defaultProps: {
+                fullWidth: true,
             },
         },
     },

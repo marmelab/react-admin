@@ -19,25 +19,15 @@ export const FieldConfigurationFormSection = props => {
             <TextInput
                 source={`${sourcePrefix}.props.source`}
                 label="Source"
-                fullWidth
                 disabled
             />
             <TextInput
                 source={`${sourcePrefix}.props.label`}
                 label="Label"
-                fullWidth
                 defaultValue={translateLabel(labelArgs)}
             />
-            <FieldTypeInput
-                source={`${sourcePrefix}.type`}
-                label="Type"
-                fullWidth
-            />
-            <FieldViewsInput
-                source={`${sourcePrefix}.views`}
-                label="Views"
-                fullWidth
-            />
+            <FieldTypeInput source={`${sourcePrefix}.type`} label="Type" />
+            <FieldViewsInput source={`${sourcePrefix}.views`} label="Views" />
             <ConfigurationInputsFromFieldDefinition
                 definition={field}
                 sourcePrefix={sourcePrefix}

@@ -98,7 +98,9 @@ describe('<ArrayInput />', () => {
             </AdminContext>
         );
         await waitFor(() => {
-            expect(baseElement.querySelectorAll('section')).toHaveLength(3);
+            expect(
+                baseElement.querySelectorAll('.RaSimpleFormIterator-line')
+            ).toHaveLength(3);
         });
     });
 

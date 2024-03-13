@@ -67,10 +67,10 @@ export const Label = () => (
     </Wrapper>
 );
 
-export const FullWidth = () => (
+export const NonFullWidth = () => (
     <Wrapper>
         <TextInput source="title" label="default" />
-        <TextInput source="title" label="Full Width" fullWidth />
+        <TextInput source="title" label="Full Width False" fullWidth={false} />
     </Wrapper>
 );
 

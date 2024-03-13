@@ -87,15 +87,6 @@ export const Multiple = () => (
     </Wrapper>
 );
 
-export const FullWidth = () => (
-    <Wrapper>
-        <FileInput source="attachment" fullWidth>
-            <FileField source="src" title="title" />
-        </FileInput>
-        <FormInspector name="attachment" />
-    </Wrapper>
-);
-
 export const Disabled = () => (
     <Wrapper>
         <FileInput source="attachment" options={{ disabled: true }}>

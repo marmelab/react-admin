@@ -121,6 +121,7 @@ const OrderForm = () => {
                                                     disabled: true,
                                                 },
                                             ]}
+                                            sx={{ width: '80%' }}
                                         />
                                     </Grid>
                                     <Grid item xs={12} sm={12} md={6}>

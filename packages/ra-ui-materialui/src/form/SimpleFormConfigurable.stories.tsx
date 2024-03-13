@@ -42,7 +42,7 @@ const Wrapper = ({ children }) => (
 export const Basic = () => (
     <Wrapper>
         <SimpleFormConfigurable record={data} resource="books">
-            <TextInput source="title" fullWidth />
+            <TextInput source="title" />
             <TextInput source="author" />
             <NumberInput source="year" />
         </SimpleFormConfigurable>
@@ -56,7 +56,7 @@ export const Omit = () => (
             resource="books2"
             omit={['author']}
         >
-            <TextInput source="title" fullWidth />
+            <TextInput source="title" />
             <TextInput source="author" />
             <NumberInput source="year" />
         </SimpleFormConfigurable>
@@ -70,7 +70,7 @@ export const PreferenceKey = () => (
             resource="books3"
             preferenceKey="pref1"
         >
-            <TextInput source="title" fullWidth />
+            <TextInput source="title" />
             <TextInput source="author" />
             <NumberInput source="year" />
         </SimpleFormConfigurable>
@@ -79,7 +79,7 @@ export const PreferenceKey = () => (
             resource="books3"
             preferenceKey="pref2"
         >
-            <TextInput source="title" fullWidth />
+            <TextInput source="title" />
             <TextInput source="author" />
             <NumberInput source="year" />
         </SimpleFormConfigurable>
@@ -93,7 +93,7 @@ export const I18N = () => (
     <I18nContextProvider value={i18nProvider}>
         <Wrapper>
             <SimpleFormConfigurable record={data} resource="books">
-                <TextInput source="title" fullWidth />
+                <TextInput source="title" />
                 <TextInput source="author" />
                 <NumberInput source="year" />
             </SimpleFormConfigurable>

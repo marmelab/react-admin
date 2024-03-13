@@ -79,10 +79,14 @@ export const Label = () => (
     </Wrapper>
 );
 
-export const FullWidth = () => (
+export const NonFullWidth = () => (
     <Wrapper>
         <NumberInput source="views" label="default" />
-        <NumberInput source="views" label="Full Width" fullWidth />
+        <NumberInput
+            source="views"
+            label="Full Width False"
+            fullWidth={false}
+        />
     </Wrapper>
 );
 

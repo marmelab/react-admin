@@ -7,7 +7,7 @@ import {
     ReactNode,
     useMemo,
 } from 'react';
-import { Typography } from '@mui/material';
+import { Typography, Stack } from '@mui/material';
 import clsx from 'clsx';
 import {
     getResourceFieldLabelKey,
@@ -34,7 +34,7 @@ export const SimpleFormIteratorItem = React.forwardRef(
             disableRemove,
             getItemLabel,
             index,
-            inline = false,
+            inline,
             member,
             record,
             removeButton,
@@ -83,8 +83,14 @@ export const SimpleFormIteratorItem = React.forwardRef(
         const parentSourceContext = useSourceContext();
         const sourceContext = useMemo(
             () => ({
-                getSource: (source: string) =>
-                    source ? `${member}.${source}` : member,
+                getSource: (source: string) => {
+                    if (parentSourceContext) {
+                        return parentSourceContext.getSource(
+                            source ? `${member}.${source}` : member
+                        );
+                    }
+                    return source ? `${member}.${source}` : member;
+                },
                 getLabel: (source: string) => {
                     // remove digits, e.g. 'book.authors.2.categories.3.identifier.name' => 'book.authors.categories.identifier.name'
                     const sanitizedMember = member.replace(/\.\d+/g, '');
@@ -112,16 +118,17 @@ export const SimpleFormIteratorItem = React.forwardRef(
                             {label}
                         </Typography>
                     )}
-                    <section
-                        className={clsx(
-                            SimpleFormIteratorClasses.form,
-                            inline && SimpleFormIteratorClasses.inline
-                        )}
-                    >
-                        <SourceContextProvider value={sourceContext}>
+                    <SourceContextProvider value={sourceContext}>
+                        <Stack
+                            className={clsx(SimpleFormIteratorClasses.form)}
+                            direction={
+                                inline ? { xs: 'column', sm: 'row' } : 'column'
+                            }
+                            gap={inline ? 2 : 0}
+                        >
                             {children}
-                        </SourceContextProvider>
-                    </section>
+                        </Stack>
+                    </SourceContextProvider>
                     {!disabled && (
                         <span className={SimpleFormIteratorClasses.action}>
                             {!disableReordering &&

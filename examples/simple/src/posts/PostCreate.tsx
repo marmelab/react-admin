@@ -108,6 +108,7 @@ const PostCreate = () => {
             <SimpleFormConfigurable
                 toolbar={<PostCreateToolbar />}
                 defaultValues={defaultValues}
+                sx={{ maxWidth: { md: 'auto', lg: '30em' } }}
             >
                 <FileInput
                     source="pdffile"
@@ -123,7 +124,6 @@ const PostCreate = () => {
                 />
                 <TextInput
                     source="teaser"
-                    fullWidth
                     multiline
                     validate={required('Required field')}
                 />

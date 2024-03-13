@@ -19,6 +19,9 @@ const componentsOverrides = (theme: Theme) => ({
         },
     },
     MuiAutocomplete: {
+        defaultProps: {
+            fullWidth: true,
+        },
         variants: [
             {
                 props: {},
@@ -69,6 +72,7 @@ const componentsOverrides = (theme: Theme) => ({
             variant: 'standard' as const,
             margin: 'dense' as const,
             size: 'small' as const,
+            fullWidth: true,
         },
     },
     MuiFormHelperText: {
@@ -220,6 +224,7 @@ const componentsOverrides = (theme: Theme) => ({
             variant: 'standard' as const,
             margin: 'dense' as const,
             size: 'small' as const,
+            fullWidth: true,
         },
         variants: [
             {
@@ -302,6 +307,16 @@ const componentsOverrides = (theme: Theme) => ({
                     },
                 },
             },
+        },
+    },
+    RaSimpleFormIterator: {
+        defaultProps: {
+            fullWidth: true,
+        },
+    },
+    RaTranslatableInputs: {
+        defaultProps: {
+            fullWidth: true,
         },
     },
 });

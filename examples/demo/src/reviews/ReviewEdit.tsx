@@ -60,12 +60,7 @@ const ReviewEdit = ({ id, onCancel }: Props) => {
                             </Labeled>
                         </Grid>
                     </Grid>
-                    <TextInput
-                        source="comment"
-                        maxRows={15}
-                        multiline
-                        fullWidth
-                    />
+                    <TextInput source="comment" maxRows={15} multiline />
                 </SimpleForm>
             </Box>
         </EditBase>

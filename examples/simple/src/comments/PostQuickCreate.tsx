@@ -64,7 +64,6 @@ const PostQuickCreate = props => {
                         defaultValue=""
                         source="teaser"
                         validate={required()}
-                        fullWidth={true}
                         multiline={true}
                     />
                 </DialogContent>

@@ -57,15 +57,6 @@ export const Multiple = () => (
     </Wrapper>
 );
 
-export const FullWidth = () => (
-    <Wrapper>
-        <ImageInput source="attachment" fullWidth>
-            <ImageField source="src" title="title" />
-        </ImageInput>
-        <FormInspector name="attachment" />
-    </Wrapper>
-);
-
 export const Disabled = () => (
     <Wrapper>
         <ImageInput source="attachment" options={{ disabled: true }}>

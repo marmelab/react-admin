@@ -45,7 +45,7 @@ All input components accept the following props:
 | `defaultValue`  | Optional | `any`                     | -       | Default value of the input.                                                                                                                                         |
 | `disabled`      | Optional | `boolean`                 | -       | If true, the input is disabled.                                                                                                                                     |
 | `format`        | Optional | `Function`                | `value => value == null ? '' : value` | Callback taking the value from the form state, and returning the input value.                                                                                       |
-| `fullWidth`     | Optional | `boolean`                 | `false` | If `true`, the input will expand to fill the form width                                                                                                             |
+| `fullWidth`     | Optional | `boolean`                 | `true`  | If `false`, the input will not expand to fill the form width                                                                                                             |
 | `helperText`    | Optional | `string`                  | -       | Text to be displayed under the input (cannot be used inside a filter)                                                                                                          |
 | `label`         | Optional | `string`                  | -       | Input label. In i18n apps, the label is passed to the `translate` function. When omitted, the `source` property is humanized and used as a label. Set `label={false}` to hide the label. |
 | `parse`         | Optional | `Function`                | `value => value === '' ? null : value` | Callback taking the input value, and returning the value you want stored in the form state.                                                                         |
@@ -193,13 +193,117 @@ const defaultFormat = (value: any) => value == null ? '' : value;
 
 ## `fullWidth`
 
-If `true`, the input will expand to fill the form width.
+By default, all inputs expand to fill the form width. Set the `fullWidth` prop to `false` to prevent the input from expanding.
 
 ![input full width](./img/input-full-width.png)
 
 ```tsx
-<TextInput source="title" />
-<TextInput source="teaser" fullWidth multiline />
+<TextInput source="title" fullWidth={false}  />
+<TextInput source="teaser" multiline />
+```
+
+A good way to avoid too wide inputs on desktop is to limit the width of the form itself. You can do this by setting the `sx` prop on the `<SimpleForm>` component:
+
+{% raw %}
+```tsx
+import { Edit, SimpleForm, TextInput } from 'react-admin';
+
+const PostEdit = () => (
+    <Edit>
+        <SimpleForm sx={{ maxWidth: { lg: '600' } }}>
+            <TextInput source="title" />
+            <TextInput source="teaser" multiline />
+        </SimpleForm>
+    </Edit>
+);
+```
+{% endraw %}
+
+Note that the best way to layout inputs is to use the [Grid component](./BoxStackGrid.md#grid) to create a responsive layout, while still allowing inputs to expand to fill the available space. For example, to produce the following layout:
+
+![input full width](./img/input-grid.webp)
+
+{% raw %}
+```jsx
+import { Grid, InputAdornment } from '@mui/material';
+import {
+    NumberInput,
+    ReferenceInput,
+    required,
+    SelectInput,
+    TextInput,
+} from 'react-admin';
+
+export const ProductEditDetails = () => (
+    <Grid container columnSpacing={2}>
+        <Grid item xs={12} sm={8}>
+            <TextInput source="reference" validate={req} />
+        </Grid>
+        <Grid item xs={12} sm={4}>
+            <ReferenceInput source="category_id" reference="categories">
+                <SelectInput optionText="name" validate={req} />
+            </ReferenceInput>
+        </Grid>
+        <Grid item xs={12} sm={4}>
+            <NumberInput
+                source="width"
+                InputProps={{
+                    endAdornment: (
+                        <InputAdornment position="start">cm</InputAdornment>
+                    ),
+                }}
+                validate={req}
+            />
+        </Grid>
+        <Grid item xs={12} sm={4}>
+            <NumberInput
+                source="height"
+                InputProps={{
+                    endAdornment: (
+                        <InputAdornment position="start">cm</InputAdornment>
+                    ),
+                }}
+                validate={req}
+            />
+        </Grid>
+        <Grid item xs={0} sm={4}></Grid>
+        <Grid item xs={12} sm={4}>
+            <NumberInput
+                source="price"
+                InputProps={{
+                    startAdornment: (
+                        <InputAdornment position="start">€</InputAdornment>
+                    ),
+                }}
+                validate={req}
+            />
+        </Grid>
+        <Grid item xs={12} sm={4}>
+            <NumberInput source="stock" validate={req} />
+        </Grid>
+        <Grid item xs={12} sm={4}>
+            <NumberInput source="sales" validate={req} />
+        </Grid>
+    </Grid>
+);
+
+const req = [required()];
+```
+{% endraw %}
+
+Also, if you want to prevent the input from expanding in the entire app, you can set the following fields in a [custom application theme](./AppTheme.md):
+
+```diff
+const myTheme = {
+    // ...
+    components: {
+        // ...
++       MuiFormControl: { defaultProps: { fullWidth: undefined } },
++       MuiTextField: { defaultProps: { fullWidth: undefined } },
++       MuiAutocomplete: { defaultProps: { fullWidth: undefined } },
++       RaSimpleFormIterator: { defaultProps: { fullWidth: undefined } },
+    },
+};
 ```
 
 ## `helperText`
@@ -453,8 +557,8 @@ By default, react-admin will add an asterisk to the input label if the Input com
 ```tsx
 import { TextInput, required } from 'react-admin';
 
-<TextInput source="title" validate={required()} />
-<TextInput source="teaser" multiline fullWidth validate={required()} />
+<TextInput source="title" validate={required()} fullWidth={false} />
+<TextInput source="teaser" validate={required()} multiline />
 ```
 
 ## Linking Two Inputs

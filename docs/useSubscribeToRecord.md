@@ -89,8 +89,8 @@ const PostEdit = () => (
     <Edit>
         <SimpleForm>
             <TextInput source="id" disabled />
-            <TextInput source="title" fullWidth />
-            <TextInput source="body" fullWidth multiline />
+            <TextInput source="title" />
+            <TextInput source="body" multiline />
             <WarnWhenUpdatedBySomeoneElse />
         </SimpleForm>
     </Edit>

@@ -302,6 +302,54 @@ If you don't need the dark mode feature, you'll have to explicitly disable it:
 </Admin>
 ```
 
+## Inputs Have Full Width By Default
+
+In the default theme, all inputs now have full width. This makes forms better looking by default, and facilitates custom form layouts as you can nest inputs under `<Grid>`.
+
+If this breaks your existing form layouts, you can revert to the previous style by resetting the `fullWidth` default prop in the application theme. To do so:
+
+- If you didn't use a custom theme, create one based on the default theme:
+
+```diff
+-import { Admin } from 'react-admin';
++import { Admin, defaultTheme } from 'react-admin';
++import { deepmerge } from '@mui/utils';
+import { dataProvider } from './dataProvider';
+
++const theme = deepmerge(defaultTheme, {
++   components: { 
++       MuiFormControl: { defaultProps: { fullWidth: undefined } },
++       MuiTextField: { defaultProps: { fullWidth: undefined } },
++       MuiAutocomplete: { defaultProps: { fullWidth: undefined } },
++       RaSimpleFormIterator: { defaultProps: { fullWidth: undefined } },
++       RaTranslatableInputs: { defaultProps: { fullWidth: undefined } },
++   }
++});
+
+const MyApp = () => (
+-   <Admin dataProvider={dataProvider}>
++   <Admin dataProvider={dataProvider} theme={theme}>
+        ...
+    </Admin>
+);
+```
+
+- If you used a custom theme, update it to include the following lines:
+
+```diff
+const myTheme = {
+    // ...
+    components: {
+        // ...
++       MuiFormControl: { defaultProps: { fullWidth: undefined } },
++       MuiTextField: { defaultProps: { fullWidth: undefined } },
++       MuiAutocomplete: { defaultProps: { fullWidth: undefined } },
++       RaSimpleFormIterator: { defaultProps: { fullWidth: undefined } },
++       RaTranslatableInputs: { defaultProps: { fullWidth: undefined } },
+    },
+};
+```
+
 ## Links are now underlined by default
 
 In the default theme, links are now underlined by default.

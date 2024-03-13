@@ -106,7 +106,7 @@ const defaultChoices = [
 
 export const Basic = ({ onSuccess = console.log }) => (
     <Wrapper onSuccess={onSuccess}>
-        <AutocompleteInput source="author" choices={defaultChoices} fullWidth />
+        <AutocompleteInput source="author" choices={defaultChoices} />
     </Wrapper>
 );
 
@@ -115,7 +115,6 @@ export const Required = () => (
         <AutocompleteInput
             source="author"
             choices={defaultChoices}
-            fullWidth
             validate={required()}
         />
     </Wrapper>
@@ -134,7 +133,6 @@ export const OnChange = ({
         <AutocompleteInput
             source="author"
             choices={defaultChoices}
-            fullWidth
             onChange={onChange}
         />
     </Wrapper>
@@ -152,7 +150,6 @@ export const OptionTextString = () => (
                 { id: 4, fullName: 'Charles Baudelaire' },
                 { id: 5, fullName: 'Marcel Proust' },
             ]}
-            fullWidth
         />
     </Wrapper>
 );
@@ -169,7 +166,6 @@ export const OptionTextFunction = () => (
                 { id: 4, fullName: 'Charles Baudelaire' },
                 { id: 5, fullName: 'Marcel Proust' },
             ]}
-            fullWidth
         />
     </Wrapper>
 );
@@ -186,7 +182,6 @@ const CustomOption = props => {
 export const OptionTextElement = () => (
     <Wrapper>
         <AutocompleteInput
-            fullWidth
             source="author"
             optionText={<CustomOption />}
             inputText={record => record.fullName}
@@ -236,7 +231,6 @@ export const OnCreate = () => (
                     return newAuthor;
                 }
             }}
-            fullWidth
             TextFieldProps={{
                 placeholder: 'Start typing to create a new item',
             }}
@@ -439,10 +433,7 @@ export const InsideReferenceInput = () => (
                     >
                         <SimpleForm>
                             <ReferenceInput reference="authors" source="author">
-                                <AutocompleteInput
-                                    fullWidth
-                                    optionText="name"
-                                />
+                                <AutocompleteInput optionText="name" />
                             </ReferenceInput>
                         </SimpleForm>
                     </Edit>
@@ -460,11 +451,7 @@ const LanguageChangingAuthorInput = ({ onChange }) => {
     };
     return (
         <ReferenceInput reference="authors" source="author">
-            <AutocompleteInput
-                fullWidth
-                optionText="name"
-                onChange={handleChange}
-            />
+            <AutocompleteInput optionText="name" onChange={handleChange} />
         </ReferenceInput>
     );
 };
@@ -529,10 +516,7 @@ export const InsideReferenceInputDefaultValue = ({
                         <SimpleForm>
                             <TextInput source="title" />
                             <ReferenceInput reference="authors" source="author">
-                                <AutocompleteInput
-                                    fullWidth
-                                    optionText="name"
-                                />
+                                <AutocompleteInput optionText="name" />
                             </ReferenceInput>
                         </SimpleForm>
                     </Edit>
@@ -564,10 +548,7 @@ export const InsideReferenceInputWithError = () => (
                     >
                         <SimpleForm>
                             <ReferenceInput reference="authors" source="author">
-                                <AutocompleteInput
-                                    fullWidth
-                                    optionText="name"
-                                />
+                                <AutocompleteInput optionText="name" />
                             </ReferenceInput>
                         </SimpleForm>
                     </Edit>
@@ -647,7 +628,6 @@ const BookEditWithReferenceAndCreationSupport = () => (
                 <AutocompleteInput
                     create={<CreateAuthor />}
                     optionText="name"
-                    fullWidth
                 />
             </ReferenceInput>
         </SimpleForm>
@@ -692,7 +672,6 @@ export const InsideReferenceInputWithCustomizedItemRendering = (
                         <SimpleForm>
                             <ReferenceInput reference="authors" source="author">
                                 <AutocompleteInput
-                                    fullWidth
                                     optionText={<BookOptionText />}
                                     inputText={book =>
                                         `${book.name} - ${book.language}`
@@ -722,7 +701,6 @@ export const CustomizedItemRendering = () => {
         <AdminContext dataProvider={dataProviderWithAuthors}>
             <SimpleForm onSubmit={() => {}} defaultValues={{ role: 2 }}>
                 <AutocompleteInput
-                    fullWidth
                     source="role"
                     resource="users"
                     optionText={<OptionItem />}
@@ -756,11 +734,7 @@ const DalmatianEdit = () => {
                 <Typography aria-label="count" variant="body2">
                     choices: {dalmatians.length}
                 </Typography>
-                <AutocompleteInput
-                    source="dalmatians"
-                    choices={dalmatians}
-                    fullWidth
-                />
+                <AutocompleteInput source="dalmatians" choices={dalmatians} />
             </SimpleForm>
         </Edit>
     );
@@ -783,7 +757,6 @@ export const EmptyText = () => (
             source="author"
             choices={defaultChoices}
             emptyValue="no-author"
-            fullWidth
         />
         <AutocompleteInput
             label="emptyValue set to 'none'"
@@ -791,14 +764,12 @@ export const EmptyText = () => (
             choices={defaultChoices}
             emptyValue="none"
             emptyText="- No author - "
-            fullWidth
         />
         <AutocompleteInput
             label="emptyValue set to ''"
             source="authorEmpty"
             choices={defaultChoices}
             emptyText="- No author - "
-            fullWidth
         />
         <AutocompleteInput
             label="emptyValue set to 0"
@@ -806,7 +777,6 @@ export const EmptyText = () => (
             choices={defaultChoices}
             emptyValue={0}
             emptyText="- No author - "
-            fullWidth
         />
     </Wrapper>
 );
@@ -848,7 +818,6 @@ const FanList = () => {
                                 <AutocompleteInput
                                     id={`prefers_${fan.id}`}
                                     label={`prefers_${fan.id}`}
-                                    fullWidth
                                     source="prefers"
                                     optionText={option => option.id}
                                     choices={nullishValuesFakeData.artists}
@@ -965,10 +934,7 @@ export const DifferentShapeInGetMany = () => (
                     >
                         <SimpleForm>
                             <ReferenceInput reference="authors" source="author">
-                                <AutocompleteInput
-                                    fullWidth
-                                    optionText="name"
-                                />
+                                <AutocompleteInput optionText="name" />
                             </ReferenceInput>
                         </SimpleForm>
                     </Edit>
@@ -1066,7 +1032,6 @@ export const WithInputProps = () => (
     <Wrapper>
         <AutocompleteInput
             source="author"
-            fullWidth
             choices={defaultChoices}
             TextFieldProps={{
                 InputProps: {

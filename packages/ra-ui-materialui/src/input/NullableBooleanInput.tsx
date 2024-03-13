@@ -114,10 +114,8 @@ export const NullableBooleanInputClasses = {
 const StyledTextField = styled(TextField, {
     name: PREFIX,
     overridesResolver: (props, styles) => styles.root,
-})(({ theme, fullWidth }) => ({
-    [`&.${NullableBooleanInputClasses.input}`]: {
-        width: fullWidth ? '100%' : theme.spacing(16),
-    },
+})(({ theme }) => ({
+    minWidth: theme.spacing(20),
     [theme.breakpoints.down('sm')]: {
         [`&.${NullableBooleanInputClasses.input}`]: {
             width: '100%',

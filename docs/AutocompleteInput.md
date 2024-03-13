@@ -342,11 +342,7 @@ const LanguageChangingAuthorInput = () => {
     };
     return (
         <ReferenceInput reference="authors" source="author">
-            <AutocompleteInput
-                fullWidth
-                optionText="name"
-                onChange={handleChange}
-            />
+            <AutocompleteInput optionText="name" onChange={handleChange} />
         </ReferenceInput>
     );
 };
