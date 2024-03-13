@@ -79,9 +79,7 @@ export const useSupportCreateSuggestion = (
                 };
             }
             return set(
-                {
-                    id: createValue,
-                },
+                { id: createValue },
                 optionText,
                 filter && createItemLabel
                     ? translate(createItemLabel, {

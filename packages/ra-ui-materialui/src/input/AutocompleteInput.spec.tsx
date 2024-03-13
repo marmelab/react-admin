@@ -1056,198 +1056,341 @@ describe('<AutocompleteInput />', () => {
         });
     });
 
-    it('should support creation of a new choice through the onCreate event', async () => {
-        const choices = [
-            { id: 'ang', name: 'Angular' },
-            { id: 'rea', name: 'React' },
-        ];
-        const handleCreate = filter => {
-            const newChoice = {
-                id: 'js_fatigue',
-                name: filter,
-            };
-            choices.push(newChoice);
-            return newChoice;
-        };
-
-        const { rerender } = render(
-            <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm
-                    mode="onBlur"
-                    onSubmit={jest.fn()}
-                    defaultValues={{ language: 'ang' }}
-                >
-                    <AutocompleteInput
-                        source="language"
-                        resource="posts"
-                        choices={choices}
-                        onCreate={handleCreate}
-                    />
-                </SimpleForm>
-            </AdminContext>
-        );
-
-        const input = screen.getByLabelText(
-            'resources.posts.fields.language'
-        ) as HTMLInputElement;
-        input.focus();
-        fireEvent.change(input, { target: { value: 'New Kid On The Block' } });
-        fireEvent.click(screen.getByText('ra.action.create_item'));
-        await new Promise(resolve => setTimeout(resolve));
-        rerender(
-            <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm
-                    mode="onBlur"
-                    onSubmit={jest.fn()}
-                    defaultValues={{ language: 'ang' }}
-                >
-                    <AutocompleteInput
-                        source="language"
-                        resource="posts"
-                        choices={choices}
-                        onCreate={handleCreate}
-                    />
-                </SimpleForm>
-            </AdminContext>
-        );
-        expect(
-            screen.queryByDisplayValue('New Kid On The Block')
-        ).not.toBeNull();
-        fireEvent.click(screen.getByLabelText('ra.action.clear_input_value'));
-        fireEvent.blur(input);
-        fireEvent.focus(input);
-        expect(screen.queryByText('New Kid On The Block')).not.toBeNull();
-    });
-
-    it('should support creation of a new choice through the onCreate event with a promise', async () => {
-        const choices = [
-            { id: 'ang', name: 'Angular' },
-            { id: 'rea', name: 'React' },
-        ];
-        const handleCreate = filter => {
-            return new Promise(resolve => {
+    describe('onCreate', () => {
+        it('should include an option with the createLabel when the input is empty', async () => {
+            const choices = [
+                { id: 'ang', name: 'Angular' },
+                { id: 'rea', name: 'React' },
+            ];
+            const handleCreate = filter => {
                 const newChoice = {
                     id: 'js_fatigue',
                     name: filter,
                 };
                 choices.push(newChoice);
-                setTimeout(() => resolve(newChoice), 100);
-            });
-        };
-
-        const { rerender } = render(
-            <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm
-                    mode="onBlur"
-                    onSubmit={jest.fn()}
-                    defaultValues={{ language: 'ang' }}
-                >
-                    <AutocompleteInput
-                        source="language"
-                        resource="posts"
-                        choices={choices}
-                        onCreate={handleCreate}
-                    />
-                </SimpleForm>
-            </AdminContext>
-        );
-
-        const input = screen.getByLabelText(
-            'resources.posts.fields.language'
-        ) as HTMLInputElement;
-        input.focus();
-        fireEvent.change(input, { target: { value: 'New Kid On The Block' } });
-        fireEvent.click(screen.getByText('ra.action.create_item'));
-        await new Promise(resolve => setTimeout(resolve, 100));
-        rerender(
-            <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm
-                    mode="onBlur"
-                    onSubmit={jest.fn()}
-                    defaultValues={{ language: 'ang' }}
-                >
-                    <AutocompleteInput
-                        source="language"
-                        resource="posts"
-                        choices={choices}
-                        onCreate={handleCreate}
-                    />
-                </SimpleForm>
-            </AdminContext>
-        );
-        expect(
-            screen.queryByDisplayValue('New Kid On The Block')
-        ).not.toBeNull();
-        fireEvent.click(screen.getByLabelText('ra.action.clear_input_value'));
-        fireEvent.blur(input);
-        fireEvent.focus(input);
-        expect(screen.queryByText('New Kid On The Block')).not.toBeNull();
-    });
-
-    it('should support creation of a new choice through the create element', async () => {
-        const choices = [
-            { id: 'ang', name: 'Angular' },
-            { id: 'rea', name: 'React' },
-        ];
-        const newChoice = { id: 'js_fatigue', name: 'New Kid On The Block' };
-
-        const Create = () => {
-            const context = useCreateSuggestionContext();
-            const handleClick = () => {
-                choices.push(newChoice);
-                context.onCreate(newChoice);
+                return newChoice;
             };
 
-            return <button onClick={handleClick}>Get the kid</button>;
-        };
+            render(
+                <AdminContext dataProvider={testDataProvider()}>
+                    <SimpleForm
+                        mode="onBlur"
+                        onSubmit={jest.fn()}
+                        defaultValues={{ language: 'ang' }}
+                    >
+                        <AutocompleteInput
+                            source="language"
+                            resource="posts"
+                            choices={choices}
+                            onCreate={handleCreate}
+                        />
+                    </SimpleForm>
+                </AdminContext>
+            );
 
-        const { rerender } = render(
-            <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm
-                    mode="onBlur"
-                    onSubmit={jest.fn()}
-                    defaultValues={{ language: 'ang' }}
-                >
-                    <AutocompleteInput
-                        source="language"
-                        resource="posts"
-                        choices={choices}
-                        create={<Create />}
-                    />
-                </SimpleForm>
-            </AdminContext>
-        );
+            const input = screen.getByLabelText(
+                'resources.posts.fields.language'
+            ) as HTMLInputElement;
+            input.focus();
+            fireEvent.change(input, {
+                target: { value: '' },
+            });
 
-        const input = screen.getByLabelText(
-            'resources.posts.fields.language'
-        ) as HTMLInputElement;
-        fireEvent.change(input, { target: { value: 'New Kid On The Block' } });
-        fireEvent.click(screen.getByText('ra.action.create_item'));
-        fireEvent.click(screen.getByText('Get the kid'));
-        await new Promise(resolve => setTimeout(resolve));
-        rerender(
-            <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm
-                    mode="onBlur"
-                    onSubmit={jest.fn()}
-                    defaultValues={{ language: 'ang' }}
-                >
-                    <AutocompleteInput
-                        source="language"
-                        resource="posts"
-                        choices={choices}
-                        create={<Create />}
-                    />
-                </SimpleForm>
-            </AdminContext>
-        );
-        expect(
-            screen.queryByDisplayValue('New Kid On The Block')
-        ).not.toBeNull();
-        fireEvent.click(screen.getByLabelText('ra.action.clear_input_value'));
-        fireEvent.blur(input);
-        fireEvent.focus(input);
-        expect(screen.queryByText('New Kid On The Block')).not.toBeNull();
+            expect(screen.queryByText('ra.action.create')).not.toBeNull();
+            expect(screen.queryByText('ra.action.create_item')).toBeNull();
+        });
+        it('should include an option with the createItemLabel when the input not empty', async () => {
+            const choices = [
+                { id: 'ang', name: 'Angular' },
+                { id: 'rea', name: 'React' },
+            ];
+            const handleCreate = filter => {
+                const newChoice = {
+                    id: 'js_fatigue',
+                    name: filter,
+                };
+                choices.push(newChoice);
+                return newChoice;
+            };
+
+            render(
+                <AdminContext dataProvider={testDataProvider()}>
+                    <SimpleForm
+                        mode="onBlur"
+                        onSubmit={jest.fn()}
+                        defaultValues={{ language: 'ang' }}
+                    >
+                        <AutocompleteInput
+                            source="language"
+                            resource="posts"
+                            choices={choices}
+                            onCreate={handleCreate}
+                        />
+                    </SimpleForm>
+                </AdminContext>
+            );
+
+            const input = screen.getByLabelText(
+                'resources.posts.fields.language'
+            ) as HTMLInputElement;
+            input.focus();
+            fireEvent.change(input, {
+                target: { value: 'foo' },
+            });
+
+            expect(screen.queryByText('ra.action.create')).toBeNull();
+            expect(screen.queryByText('ra.action.create_item')).not.toBeNull();
+        });
+        it('should not include a create option when the input matches an option', async () => {
+            const choices = [
+                { id: 'ang', name: 'Angular' },
+                { id: 'rea', name: 'React' },
+            ];
+            const handleCreate = filter => {
+                const newChoice = {
+                    id: 'js_fatigue',
+                    name: filter,
+                };
+                choices.push(newChoice);
+                return newChoice;
+            };
+
+            render(
+                <AdminContext dataProvider={testDataProvider()}>
+                    <SimpleForm
+                        mode="onBlur"
+                        onSubmit={jest.fn()}
+                        defaultValues={{ language: 'ang' }}
+                    >
+                        <AutocompleteInput
+                            source="language"
+                            resource="posts"
+                            choices={choices}
+                            onCreate={handleCreate}
+                        />
+                    </SimpleForm>
+                </AdminContext>
+            );
+
+            const input = screen.getByLabelText(
+                'resources.posts.fields.language'
+            ) as HTMLInputElement;
+            input.focus();
+            fireEvent.change(input, {
+                target: { value: 'React' },
+            });
+            expect(screen.queryByText('ra.action.create')).toBeNull();
+            expect(screen.queryByText('ra.action.create_item')).toBeNull();
+        });
+        it('should allow the creation of a new choice', async () => {
+            const choices = [
+                { id: 'ang', name: 'Angular' },
+                { id: 'rea', name: 'React' },
+            ];
+            const handleCreate = filter => {
+                const newChoice = {
+                    id: 'js_fatigue',
+                    name: filter,
+                };
+                choices.push(newChoice);
+                return newChoice;
+            };
+
+            const { rerender } = render(
+                <AdminContext dataProvider={testDataProvider()}>
+                    <SimpleForm
+                        mode="onBlur"
+                        onSubmit={jest.fn()}
+                        defaultValues={{ language: 'ang' }}
+                    >
+                        <AutocompleteInput
+                            source="language"
+                            resource="posts"
+                            choices={choices}
+                            onCreate={handleCreate}
+                        />
+                    </SimpleForm>
+                </AdminContext>
+            );
+
+            const input = screen.getByLabelText(
+                'resources.posts.fields.language'
+            ) as HTMLInputElement;
+            input.focus();
+            fireEvent.change(input, {
+                target: { value: 'New Kid On The Block' },
+            });
+            fireEvent.click(screen.getByText('ra.action.create_item'));
+            await new Promise(resolve => setTimeout(resolve));
+            rerender(
+                <AdminContext dataProvider={testDataProvider()}>
+                    <SimpleForm
+                        mode="onBlur"
+                        onSubmit={jest.fn()}
+                        defaultValues={{ language: 'ang' }}
+                    >
+                        <AutocompleteInput
+                            source="language"
+                            resource="posts"
+                            choices={choices}
+                            onCreate={handleCreate}
+                        />
+                    </SimpleForm>
+                </AdminContext>
+            );
+            expect(
+                screen.queryByDisplayValue('New Kid On The Block')
+            ).not.toBeNull();
+            fireEvent.click(
+                screen.getByLabelText('ra.action.clear_input_value')
+            );
+            fireEvent.blur(input);
+            fireEvent.focus(input);
+            expect(screen.queryByText('New Kid On The Block')).not.toBeNull();
+        });
+
+        it('should allow the creation of a new choice with a promise', async () => {
+            const choices = [
+                { id: 'ang', name: 'Angular' },
+                { id: 'rea', name: 'React' },
+            ];
+            const handleCreate = filter => {
+                return new Promise(resolve => {
+                    const newChoice = {
+                        id: 'js_fatigue',
+                        name: filter,
+                    };
+                    choices.push(newChoice);
+                    setTimeout(() => resolve(newChoice), 100);
+                });
+            };
+
+            const { rerender } = render(
+                <AdminContext dataProvider={testDataProvider()}>
+                    <SimpleForm
+                        mode="onBlur"
+                        onSubmit={jest.fn()}
+                        defaultValues={{ language: 'ang' }}
+                    >
+                        <AutocompleteInput
+                            source="language"
+                            resource="posts"
+                            choices={choices}
+                            onCreate={handleCreate}
+                        />
+                    </SimpleForm>
+                </AdminContext>
+            );
+
+            const input = screen.getByLabelText(
+                'resources.posts.fields.language'
+            ) as HTMLInputElement;
+            input.focus();
+            fireEvent.change(input, {
+                target: { value: 'New Kid On The Block' },
+            });
+            fireEvent.click(screen.getByText('ra.action.create_item'));
+            await new Promise(resolve => setTimeout(resolve, 100));
+            rerender(
+                <AdminContext dataProvider={testDataProvider()}>
+                    <SimpleForm
+                        mode="onBlur"
+                        onSubmit={jest.fn()}
+                        defaultValues={{ language: 'ang' }}
+                    >
+                        <AutocompleteInput
+                            source="language"
+                            resource="posts"
+                            choices={choices}
+                            onCreate={handleCreate}
+                        />
+                    </SimpleForm>
+                </AdminContext>
+            );
+            expect(
+                screen.queryByDisplayValue('New Kid On The Block')
+            ).not.toBeNull();
+            fireEvent.click(
+                screen.getByLabelText('ra.action.clear_input_value')
+            );
+            fireEvent.blur(input);
+            fireEvent.focus(input);
+            expect(screen.queryByText('New Kid On The Block')).not.toBeNull();
+        });
+    });
+    describe('create', () => {
+        it('should allow the creation of a new choice', async () => {
+            const choices = [
+                { id: 'ang', name: 'Angular' },
+                { id: 'rea', name: 'React' },
+            ];
+            const newChoice = {
+                id: 'js_fatigue',
+                name: 'New Kid On The Block',
+            };
+
+            const Create = () => {
+                const context = useCreateSuggestionContext();
+                const handleClick = () => {
+                    choices.push(newChoice);
+                    context.onCreate(newChoice);
+                };
+
+                return <button onClick={handleClick}>Get the kid</button>;
+            };
+
+            const { rerender } = render(
+                <AdminContext dataProvider={testDataProvider()}>
+                    <SimpleForm
+                        mode="onBlur"
+                        onSubmit={jest.fn()}
+                        defaultValues={{ language: 'ang' }}
+                    >
+                        <AutocompleteInput
+                            source="language"
+                            resource="posts"
+                            choices={choices}
+                            create={<Create />}
+                        />
+                    </SimpleForm>
+                </AdminContext>
+            );
+
+            const input = screen.getByLabelText(
+                'resources.posts.fields.language'
+            ) as HTMLInputElement;
+            fireEvent.change(input, {
+                target: { value: 'New Kid On The Block' },
+            });
+            fireEvent.click(screen.getByText('ra.action.create_item'));
+            fireEvent.click(screen.getByText('Get the kid'));
+            await new Promise(resolve => setTimeout(resolve));
+            rerender(
+                <AdminContext dataProvider={testDataProvider()}>
+                    <SimpleForm
+                        mode="onBlur"
+                        onSubmit={jest.fn()}
+                        defaultValues={{ language: 'ang' }}
+                    >
+                        <AutocompleteInput
+                            source="language"
+                            resource="posts"
+                            choices={choices}
+                            create={<Create />}
+                        />
+                    </SimpleForm>
+                </AdminContext>
+            );
+            expect(
+                screen.queryByDisplayValue('New Kid On The Block')
+            ).not.toBeNull();
+            fireEvent.click(
+                screen.getByLabelText('ra.action.clear_input_value')
+            );
+            fireEvent.blur(input);
+            fireEvent.focus(input);
+            expect(screen.queryByText('New Kid On The Block')).not.toBeNull();
+        });
     });
 
     it('should return null when no choice is selected', async () => {
