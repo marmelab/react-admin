@@ -449,6 +449,22 @@ We've changed the implementation of `<SimpleFormIterator>`, the companion child 
 </ArrayInput>
 ```
 
+## `<Datagrid expand>` Components No Longer Receive Any Props
+
+An undocumented features allowed datagrid expand panels to read the current resource, record, and id from their props. This is no longer the case in v5, as expand panels are now rendered without props by `<Datagrid>`. 
+
+If you used these props in your expand components, you'll have to use the `useRecordContext` hook instead:
+
+```diff
+-const PostExpandPanel = ({ record, resource, id }) => {
++const PostExpandPanel = () => {
++   const record = useRecordContext();
++   const resource = useResourceContext();
++   const id = record?.id;
+    // ...
+}
+```
+
 ## `<FormDataConsumer>` no longer passes a `getSource` function
 
 When using `<FormDataConsumer>` inside an `<ArrayInput>`, the child function no longer receives a `getSource` callback. We've made all Input components able to work seamlessly inside an `<ArrayInput>`, so it's no longer necessary to transform their source with `getSource`:
