@@ -110,6 +110,40 @@ export const Basic = ({ onSuccess = console.log }) => (
     </Wrapper>
 );
 
+export const ReadOnly = () => (
+    <Wrapper>
+        <AutocompleteInput
+            source="author"
+            choices={defaultChoices}
+            fullWidth
+            readOnly
+        />
+        <AutocompleteInput
+            source="genre"
+            choices={defaultChoices}
+            fullWidth
+            readOnly
+        />
+    </Wrapper>
+);
+
+export const Disabled = () => (
+    <Wrapper>
+        <AutocompleteInput
+            source="author"
+            choices={defaultChoices}
+            fullWidth
+            disabled
+        />
+        <AutocompleteInput
+            source="genre"
+            choices={defaultChoices}
+            fullWidth
+            disabled
+        />
+    </Wrapper>
+);
+
 export const Required = () => (
     <Wrapper>
         <AutocompleteInput

@@ -5,44 +5,44 @@ import englishMessages from 'ra-language-english';
 import { AdminContext } from '../AdminContext';
 import { Create } from '../detail';
 import { SimpleForm } from '../form';
-import { TimeInput } from './TimeInput';
 import { FormInspector } from './common';
+import { PasswordInput } from './PasswordInput';
 
-export default { title: 'ra-ui-materialui/input/TimeInput' };
+export default { title: 'ra-ui-materialui/input/PasswordInput' };
 
 export const Basic = () => (
     <Wrapper>
-        <TimeInput source="published" />
+        <PasswordInput source="password" />
     </Wrapper>
 );
 
-export const NonFullWidth = () => (
+export const FullWidth = () => (
     <Wrapper>
-        <TimeInput source="published" fullWidth={false} />
+        <PasswordInput source="password" fullWidth />
     </Wrapper>
 );
 
 export const Disabled = () => (
     <Wrapper>
-        <TimeInput source="published" disabled />
-        <TimeInput source="announcement" defaultValue="12:12" disabled />
+        <PasswordInput source="password" defaultValue="password" disabled />
+        <PasswordInput source="confirmedPassword" disabled />
     </Wrapper>
 );
 export const ReadOnly = () => (
     <Wrapper>
-        <TimeInput source="published" readOnly />
-        <TimeInput source="announcement" defaultValue="12:12" readOnly />
+        <PasswordInput source="password" defaultValue="password" readOnly />
+        <PasswordInput source="confirmedPassword" readOnly />
     </Wrapper>
 );
 
 const i18nProvider = polyglotI18nProvider(() => englishMessages);
 
 const Wrapper = ({ children }) => (
-    <AdminContext i18nProvider={i18nProvider} defaultTheme="light">
+    <AdminContext i18nProvider={i18nProvider}>
         <Create resource="posts">
             <SimpleForm>
                 {children}
-                <FormInspector name="published" />
+                <FormInspector name="password" />
             </SimpleForm>
         </Create>
     </AdminContext>

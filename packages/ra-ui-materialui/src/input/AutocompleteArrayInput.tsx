@@ -81,7 +81,7 @@ export const AutocompleteArrayInput = <
     <AutocompleteInput<OptionType, true, DisableClearable, SupportCreate>
         {...props}
         multiple
-        defaultValue={defaultValue ?? []}
+        defaultValue={defaultValue ?? (props.disabled ? undefined : [])}
     />
 );
 

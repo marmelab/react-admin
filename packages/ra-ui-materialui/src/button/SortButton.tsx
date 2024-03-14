@@ -53,8 +53,14 @@ const SortButton = (props: SortButtonProps) => {
         icon = defaultIcon,
         sx,
         className,
+        resource: resourceProp,
     } = props;
-    const { resource, sort, setSort } = useListSortContext();
+    const {
+        resource: resourceFromContext,
+        sort,
+        setSort,
+    } = useListSortContext();
+    const resource = resourceProp || resourceFromContext;
     const translate = useTranslate();
     const translateLabel = useTranslateLabel();
     const isXSmall = useMediaQuery((theme: Theme) =>

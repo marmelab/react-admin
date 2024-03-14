@@ -833,7 +833,7 @@ describe('<AutocompleteArrayInput />', () => {
                 selector: 'input',
             })
         );
-        expect(screen.queryAllByRole('option')).toHaveLength(2);
+        expect(screen.queryAllByRole('option')).toHaveLength(3);
         expect(screen.getByText('Technical')).not.toBeNull();
         expect(screen.getByText('Programming')).not.toBeNull();
     });

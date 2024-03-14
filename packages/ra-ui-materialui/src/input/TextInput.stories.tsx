@@ -31,6 +31,38 @@ export const Basic = () => (
     </Wrapper>
 );
 
+export const Disabled = () => (
+    <AdminContext>
+        <Create
+            resource="posts"
+            record={{ id: 123, title: 'Lorem ipsum' }}
+            sx={{ width: 600 }}
+        >
+            <SimpleForm>
+                <TextInput source="title" disabled />
+                <TextInput source="name" disabled />
+                <FormInspector />
+            </SimpleForm>
+        </Create>
+    </AdminContext>
+);
+
+export const ReadOnly = () => (
+    <AdminContext>
+        <Create
+            resource="posts"
+            record={{ id: 123, title: 'Lorem ipsum' }}
+            sx={{ width: 600 }}
+        >
+            <SimpleForm>
+                <TextInput source="title" readOnly />
+                <TextInput source="name" readOnly />
+                <FormInspector />
+            </SimpleForm>
+        </Create>
+    </AdminContext>
+);
+
 export const DefaultValue = () => (
     <Wrapper>
         <TextInput source="title" defaultValue="hello" />

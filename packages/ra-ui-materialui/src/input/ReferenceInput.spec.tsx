@@ -262,18 +262,17 @@ describe('<ReferenceInput />', () => {
         const dataProvider = testDataProvider({
             getList: async () => ({ data: [], total: 25 }),
         });
-        render(
-            <CoreAdminContext dataProvider={dataProvider}>
-                <Form>
-                    <ReferenceInput
-                        {...defaultProps}
-                        validate={() => undefined}
-                    />
-                </Form>
-            </CoreAdminContext>
-        );
-        await screen.findByText(
-            '<ReferenceInput> does not accept a validate prop. Set the validate prop on the child instead.'
-        );
+        expect(() =>
+            render(
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <Form>
+                        <ReferenceInput
+                            {...defaultProps}
+                            validate={() => undefined}
+                        />
+                    </Form>
+                </CoreAdminContext>
+            )
+        ).toThrowError();
     });
 });

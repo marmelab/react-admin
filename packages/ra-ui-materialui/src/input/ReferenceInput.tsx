@@ -1,4 +1,4 @@
-import React, { Children, ReactElement } from 'react';
+import React, { ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import {
     ChoicesContextProvider,
@@ -84,7 +84,7 @@ export const ReferenceInput = (props: ReferenceInputProps) => {
         filter,
     });
 
-    if (props.validate) {
+    if (props.validate && process.env.NODE_ENV !== 'production') {
         throw new Error(
             '<ReferenceInput> does not accept a validate prop. Set the validate prop on the child instead.'
         );

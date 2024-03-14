@@ -547,6 +547,10 @@ ul.sidenav code {
     transition: box-shadow 0.2s ease-in-out, border-color 0.2s ease-in-out;
 }
 
+.docBlock code {
+    font-size: 0.85em;
+}
+
 .docBlocks a:hover {
     border: #c0c0c0 1px solid;
     box-shadow: 0 2px 3px 1px rgba(0, 0, 0, 0.1);

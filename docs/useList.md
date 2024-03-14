@@ -288,8 +288,8 @@ const {
     onToggleItem, // Callback to toggle the record selection for a given id, e.g. onToggleItem(456)
     onUnselectItems, // Callback to clear the record selection, e.g. onUnselectItems();
     // Misc
-    defaultTitle, // Empty string
-    resource, // undefined
+    defaultTitle, // Translated title based on the resource, e.g. 'Posts'
+    resource, // Resource name, deduced from the location. e.g. 'posts'
     refetch, // Callback that throws an error, as refetch doesn't make sense for local data
 } = useList();
 ```

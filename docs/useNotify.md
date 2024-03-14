@@ -149,6 +149,7 @@ notify('This is an error', { type: 'error' });
 
 When using `useNotify` as a side effect for an `undoable` mutation, you MUST set the `undoable` option to `true`, otherwise the "undo" button will not appear, and the actual update will never occur.
 
+{% raw %}
 ```jsx
 import * as React from 'react';
 import { useNotify, Edit, SimpleForm } from 'react-admin';
@@ -169,6 +170,7 @@ const PostEdit = () => {
     );
 }
 ```
+{% endraw %}
 
 ## Custom Notification Content
 
