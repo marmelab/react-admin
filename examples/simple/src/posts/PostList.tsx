@@ -30,6 +30,7 @@ import {
     TextField,
     TextInput,
     TopToolbar,
+    useRecordContext,
     useTranslate,
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
 
@@ -147,9 +148,10 @@ const rowClick = (_id, _resource, record) => {
     return 'show';
 };
 
-const PostPanel = ({ record }) => (
-    <div dangerouslySetInnerHTML={{ __html: record.body }} />
-);
+const PostPanel = () => {
+    const record = useRecordContext();
+    return <div dangerouslySetInnerHTML={{ __html: record?.body }} />;
+};
 
 const tagSort = { field: 'name.en', order: 'ASC' } as const;
 
