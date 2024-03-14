@@ -1,11 +1,15 @@
 import * as React from 'react';
-import { ReactNode } from 'react';
+import { ReactNode, useContext } from 'react';
 import {
     FormProvider,
     FieldValues,
     UseFormProps,
     SubmitHandler,
 } from 'react-hook-form';
+import {
+    UNSAFE_DataRouterContext,
+    UNSAFE_DataRouterStateContext,
+} from 'react-router';
 
 import { FormGroupsProvider } from './FormGroupsProvider';
 import { RaRecord } from '../types';
@@ -14,8 +18,13 @@ import {
     OptionalRecordContextProvider,
     SaveHandler,
 } from '../controller';
-import { SourceContextProvider, SourceContextValue, useResourceContext } from '../core';
+import {
+    SourceContextProvider,
+    SourceContextValue,
+    useResourceContext,
+} from '../core';
 import { ValidateForm } from './getSimpleValidationResolver';
+import { WarnWhenUnsavedChanges } from './WarnWhenUnsavedChanges';
 import { useAugmentedForm } from './useAugmentedForm';
 
 /**
@@ -45,17 +54,40 @@ import { useAugmentedForm } from './useAugmentedForm';
  *
  * @link https://react-hook-form.com/docs/useformcontext
  */
-// TODO: remove after upgrading prettier
-// eslint-disable-next-line prettier/prettier
-export const Form = <RecordType = any>(props: FormProps<RecordType>) => {
-    const { children, id, className, noValidate = false } = props;
+export function Form<RecordType = any>(props: FormProps<RecordType>) {
+    const {
+        children,
+        id,
+        className,
+        noValidate = false,
+        formRootPathname,
+        warnWhenUnsavedChanges,
+        WarnWhenUnsavedChangesComponent = WarnWhenUnsavedChanges,
+    } = props;
     const record = useRecordContext(props);
     const resource = useResourceContext(props);
     const { form, formHandleSubmit } = useAugmentedForm(props);
-    const sourceContext = React.useMemo<SourceContextValue>(() => ({
-        getSource: (source: string) => source,
-        getLabel: (source: string) => `resources.${resource}.fields.${source}`,
-    }), [resource]);
+    const sourceContext = React.useMemo<SourceContextValue>(
+        () => ({
+            getSource: (source: string) => source,
+            getLabel: (source: string) =>
+                `resources.${resource}.fields.${source}`,
+        }),
+        [resource]
+    );
+    const dataRouterContext = useContext(UNSAFE_DataRouterContext);
+    const dataRouterStateContext = useContext(UNSAFE_DataRouterStateContext);
+    if (
+        warnWhenUnsavedChanges &&
+        (!dataRouterContext || !dataRouterStateContext) &&
+        process.env.NODE_ENV === 'development'
+    ) {
+        console.error(
+            'Cannot use the warnWhenUnsavedChanges feature outside of a DataRouter. ' +
+                'The warnWhenUnsavedChanges feature is disabled. ' +
+                'Remove the warnWhenUnsavedChanges prop or convert your custom router to a Data Router.'
+        );
+    }
 
     return (
         <OptionalRecordContextProvider value={record}>
@@ -70,17 +102,31 @@ export const Form = <RecordType = any>(props: FormProps<RecordType>) => {
                         >
                             {children}
                         </form>
+                        {warnWhenUnsavedChanges &&
+                            dataRouterContext &&
+                            dataRouterStateContext && (
+                                <WarnWhenUnsavedChangesComponent
+                                    enable
+                                    formRootPathName={formRootPathname}
+                                    formControl={form.control}
+                                />
+                            )}
                     </FormGroupsProvider>
                 </FormProvider>
             </SourceContextProvider>
         </OptionalRecordContextProvider>
     );
-};
+}
 
 export type FormProps<RecordType = any> = FormOwnProps<RecordType> &
     Omit<UseFormProps, 'onSubmit'> & {
         validate?: ValidateForm;
         noValidate?: boolean;
+        WarnWhenUnsavedChangesComponent?: React.ComponentType<{
+            enable?: boolean;
+            formRootPathName?: string;
+            formControl?: any;
+        }>;
     };
 
 export interface FormOwnProps<RecordType = any> {
