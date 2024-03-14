@@ -13,23 +13,23 @@ import { MutationMode } from 'ra-core';
 /**
  * Updates the selected rows.
  *
- * To be used inside the <List bulkActionButtons> prop (where it's enabled by default).
+ * To be used inside the <Datagrid bulkActionButtons> prop (where it's enabled by default).
  *
  * @example // basic usage
- * import * as React from 'react';
- * import { Fragment } from 'react';
- * import { BulkUpdateButton, BulkExportButton } from 'react-admin';
+ * import { BulkUpdateButton, BulkExportButton, List, Datagrid } from 'react-admin';
  *
  * const PostBulkActionButtons = () => (
- *     <Fragment>
+ *     <>
  *         <BulkExportButton />
  *         <BulkUpdateButton label="Reset Views" data={{ views: 0 }} />
- *     </Fragment>
+ *     </>
  * );
  *
  * export const PostList = () => (
- *     <List bulkActionButtons={<PostBulkActionButtons />}>
- *         ...
+ *     <List>
+ *        <Datagrid bulkActionButtons={<PostBulkActionButtons />}>
+ *          ...
+ *        </Datagrid>
  *     </List>
  * );
  */

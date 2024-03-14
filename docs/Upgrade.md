@@ -276,6 +276,22 @@ The following deprecated hooks have been removed
 
 - `usePermissionsOptimized`. Use `usePermissions` instead.
 
+## `<List hasCreate>` Is No Longer Supported
+
+To force a List view to display a Create button even though the corresponding resource doesn't have a `create` component, pass a custom actions component to the List component:
+
+```diff
+-import { List } from 'react-admin';
++import { List, ListActions } from 'react-admin';
+
+const PostList = () => (
+-   <List hasCreate>
++   <List actions={<ListActions hasCreate />}>
+        ...
+    </List>
+);
+```
+
 ## `<Datagrid rowClick>` is no longer `false` by default
 
 `<Datagrid>` will now make the rows clickable as soon as a Show or Edit view is declared on the resource (using the [resource definition](https://marmelab.com/react-admin/Resource.html)).
@@ -287,6 +303,57 @@ If you previously relied on the fact that the rows were not clickable by default
 +<Datagrid rowClick={false}>
    ...
 </Datagrid>
+```
+
+## Updates to `bulkActionButtons` Syntax
+
+The `bulkActionButtons` prop has been moved from the `<List>` component to the `<Datagrid>` component. 
+
+```diff
+const PostList = () => (
+-   <List bulkActionButtons={<BulkActionButtons />}>
++   <List>
+-      <Datagrid>
++      <Datagrid bulkActionButtons={<BulkActionButtons />}>
+           ...
+       </Datagrid>
+   </List>
+);
+```
+
+Besides, the buttons passed as `bulkActionButtons` no longer receive any prop. If you need the current filter values or the selected ids, you'll have to use the `useListContext` hook:
+
+```diff
+-const BulkResetViewsButton = ({ resource, selectedIds }) => {
++const BulkResetViewsButton = () => {
++   const { resource, selectedIds } = useListContext();
+    const notify = useNotify();
+    const unselectAll = useUnselectAll(resource);
+    const [updateMany, { isPending }] = useUpdateMany();
+
+    const handleClick = () => {
+        updateMany(
+            resource,
+            { ids: selectedIds, data: { views: 0 } },
+            {
+                onSuccess: () => {
+                    notify('Views reset');
+                    unselectAll();
+                },
+                onError: () => notify('Views not reset', { type: 'error' }),
+            }
+        );
+    }
+    return (
+        <Button
+            label="Reset views"
+            disabled={isPending}
+            onClick={() => updateMany()}
+        >
+            <VisibilityOff />
+        </Button>
+    );
+};
 ```
 
 ## Dark Theme Is Available By Default

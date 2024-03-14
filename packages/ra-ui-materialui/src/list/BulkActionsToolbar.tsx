@@ -1,11 +1,5 @@
 import * as React from 'react';
-import {
-    Children,
-    ReactNode,
-    cloneElement,
-    isValidElement,
-    useCallback,
-} from 'react';
+import { ReactNode, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { styled } from '@mui/material/styles';
 import clsx from 'clsx';
@@ -30,12 +24,7 @@ export const BulkActionsToolbar = (props: BulkActionsToolbarProps) => {
         className,
         ...rest
     } = props;
-    const {
-        filterValues,
-        resource,
-        selectedIds = [],
-        onUnselectItems,
-    } = useListContext(props);
+    const { selectedIds = [], onUnselectItems } = useListContext(props);
 
     const translate = useTranslate();
 
@@ -71,15 +60,7 @@ export const BulkActionsToolbar = (props: BulkActionsToolbarProps) => {
                     </Typography>
                 </div>
                 <TopToolbar className={BulkActionsToolbarClasses.topToolbar}>
-                    {Children.map(children, child =>
-                        isValidElement<any>(child)
-                            ? cloneElement(child, {
-                                  filterValues,
-                                  resource,
-                                  selectedIds,
-                              })
-                            : null
-                    )}
+                    {children}
                 </TopToolbar>
             </Toolbar>
         </Root>

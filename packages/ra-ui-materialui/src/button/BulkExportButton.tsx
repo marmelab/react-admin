@@ -16,23 +16,23 @@ import { Button, ButtonProps } from './Button';
 /**
  * Export the selected rows
  *
- * To be used inside the <List bulkActionButtons> prop.
+ * To be used inside the <Datagrid bulkActionButtons> prop.
  *
  * @example // basic usage
- * import * as React from 'react';
- * import { Fragment } from 'react';
- * import { BulkDeleteButton, BulkExportButton } from 'react-admin';
+ * import { BulkDeleteButton, BulkExportButton, List, Datagrid } from 'react-admin';
  *
  * const PostBulkActionButtons = () => (
- *     <Fragment>
+ *     <>
  *         <BulkExportButton />
  *         <BulkDeleteButton />
- *     </Fragment>
+ *     </>
  * );
  *
  * export const PostList = () => (
- *     <List bulkActionButtons={<PostBulkActionButtons />}>
- *         ...
+ *     <List>
+ *        <Datagrid bulkActionButtons={<PostBulkActionButtons />}>
+ *          ...
+ *       </Datagrid>
  *     </List>
  * );
  */

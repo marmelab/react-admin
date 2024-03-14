@@ -965,6 +965,7 @@ The separation between list pages and edit pages is not always relevant. Sometim
 ```tsx
 import {
     List,
+    ListActions,
     TextField,
     TextInput,
     DateField,
@@ -982,7 +983,7 @@ const professionChoices = [
 ];
 
 const ArtistList = () => (
-    <List hasCreate empty={false}>
+    <List actions={<ListActions hasCreate />} empty={false}>
         <EditableDatagrid
             mutationMode="undoable"
             createForm={<ArtistForm />}
