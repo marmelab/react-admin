@@ -27,7 +27,8 @@ export const useScrollToTop = () => {
     useEffect(() => {
         if (
             (location.state as any)?._scrollToTop &&
-            typeof window != 'undefined'
+            typeof window != 'undefined' &&
+            typeof window.scrollTo === 'function'
         ) {
             window.scrollTo(0, 0);
         }
