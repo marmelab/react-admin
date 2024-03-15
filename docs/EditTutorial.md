@@ -683,7 +683,7 @@ const Form = ({ onSubmit }) => {
 
 **Tip**: You can customize the message displayed in the confirm dialog by setting the `ra.message.unsaved_changes` message in your i18nProvider.
 
-**Note**: Due to limitations in react-router, this feature only works if you use the default router provided by react-admin, or if you use a Data Router.
+**Note**: Due to limitations in react-router, this feature only works if you use the default router provided by react-admin, or if you use a [Data Router](https://reactrouter.com/en/6.22.3/routers/picking-a-router).
 
 ## Submit On Enter
 

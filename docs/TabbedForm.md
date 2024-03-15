@@ -500,7 +500,7 @@ export const TagEdit = () => (
 );
 ```
 
-**Note**: Due to limitations in react-router, this feature only works if you use the default router provided by react-admin, or if you use a Data Router.
+**Note**: Due to limitations in react-router, this feature only works if you use the default router provided by react-admin, or if you use a [Data Router](https://reactrouter.com/en/6.22.3/routers/picking-a-router).
 
 ## `<TabbedForm.Tab>`
 
