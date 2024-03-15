@@ -613,16 +613,53 @@ import { FieldProps, useRecordContext } from 'react-admin';
 }
 ```
 
-## `warnWhenUnsavedChanges` Is More Restrictive
+## `warnWhenUnsavedChanges` Changes
 
-Due to the migration to `react-router`'s data router, you will notice that the `warnWhenUnsavedChanges` feature is a little more restrictive than before. Here are the main changes:
+The `warnWhenUnsavedChanges` feature is a little more restrictive than before:
 
-- `warnWhenUnsavedChanges` will also open a confirmation dialog (and block the navigation) if a navigation is fired when the form is currently submitting (submission will continue in the background).
+- It will open a confirmation dialog (and block the navigation) if a navigation is fired when the form is currently submitting (submission will continue in the background).
 - [Due to browser constraints](https://stackoverflow.com/questions/38879742/is-it-possible-to-display-a-custom-message-in-the-beforeunload-popup), the message displayed in the confirmation dialog when closing the browser's tab cannot be customized (it is managed by the browser).
 
-This behavior allows to prevent unwanted data loss in more situations than before.
+This behavior allows to prevent unwanted data loss in more situations. No changes are required in the code.
 
-No changes are required in the code.
+The `warnWhenUnsavedChanges` requires a Data Router (a new type of router from react-router) to work. React-admin uses such a data router by default, so the feature works out of the box in v5. 
+
+However, if you use a [custom router](./Routing.md#using-a-custom-router) and the `warnWhenUnsavedChanges` prop, the "warn when unsaved change"s feature will be disabled.
+
+To re-enable it, you'll have to migrate your custom router to use the data router. For instance, if you were using `react-router`'s `BrowserRouter`, you will need to migrate to `createBrowserRouter` and wrap your app in a `RouterProvider`:
+
+```diff
+import * as React from 'react';
+import { Admin, Resource } from 'react-admin';
+import { createRoot } from 'react-dom/client';
+-import { BrowserRouter } from 'react-router-dom';
++import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+
+import dataProvider from './dataProvider';
+import posts from './posts';
+
+const App = () => (
+-    <BrowserRouter>
+        <Admin dataProvider={dataProvider}>
+            <Resource name="posts" {...posts} />
+        </Admin>
+-    </BrowserRouter>
+);
+
++const router = createBrowserRouter([{ path: '*', element: <App /> }]);
+
+const container = document.getElementById('root');
+const root = createRoot(container);
+
+root.render(
+    <React.StrictMode>
+-        <App />
++        <RouterProvider router={router} />
+    </React.StrictMode>
+);
+```
+
+**Tip:** Check out the [Migrating to RouterProvider](https://reactrouter.com/en/main/upgrading/v6-data) documentation to learn more about the migration steps and impacts.
 
 ## `<Admin history>` Prop Was Removed
 
