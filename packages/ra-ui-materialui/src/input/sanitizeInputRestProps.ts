@@ -6,7 +6,6 @@ export const sanitizeInputRestProps = ({
     component,
     data,
     defaultValue,
-    error,
     format,
     formatOnBlur,
     formClassName,
