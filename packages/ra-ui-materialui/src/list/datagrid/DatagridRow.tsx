@@ -220,7 +220,7 @@ const DatagridRow: FC<DatagridRowProps> = React.forwardRef((props, ref) => {
                     className={DatagridClasses.expandedPanel}
                 >
                     <TableCell colSpan={nbColumns}>
-                        {isElement(expand)
+                        {isValidElement(expand)
                             ? expand
                             : createElement(
                                   expand as React.FunctionComponent<any>
