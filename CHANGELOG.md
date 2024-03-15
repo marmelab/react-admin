@@ -1,5 +1,20 @@
 # Changelog
 
+## v4.16.13
+
+* Fix `<AutocompleteInput createLabel>` ([#9712](https://github.com/marmelab/react-admin/pull/9712)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<AutocompleteArrayInput>` triggers an infinite loop when disabled ([#9717](https://github.com/marmelab/react-admin/pull/9717)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<Autocomplete>` loses focus on select ([#9718](https://github.com/marmelab/react-admin/pull/9718)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix upgrade guide suggest using `defaultProps` override in theme for react-admin components ([#9713](https://github.com/marmelab/react-admin/pull/9713)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix `readOnly` doc mentions focusable inputs ([#9711](https://github.com/marmelab/react-admin/pull/9711)) ([adguernier](https://github.com/adguernier))
+* [Doc] Fix `<Layout>` doc links to wrong anchor ([#9716](https://github.com/marmelab/react-admin/pull/9716)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Doc] Fix not parsed `mutationOptions` value in `useNotify`/`undoable` ([#9697](https://github.com/marmelab/react-admin/pull/9697)) ([ValentinnDimitroff](https://github.com/ValentinnDimitroff))
+* [Doc] Add mention to `<AccordionFormPanel>` and `<AccordionSection>` about `label` accepting an element ([#9699](https://github.com/marmelab/react-admin/pull/9699)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Doc] Add mention in `<ReferenceManyToManyInput>` about filter usage ([#9720](https://github.com/marmelab/react-admin/pull/9720)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Doc] Add mention in `<StackedFilters>` to include advice on data provider configuration ([#9709](https://github.com/marmelab/react-admin/pull/9709)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Add example for `<Search>` and `<SearchWithResult>` `options` prop ([#9700](https://github.com/marmelab/react-admin/pull/9700)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Doc] Add Reference Fields video to the relevant chapters ([#9702](https://github.com/marmelab/react-admin/pull/9702)) ([fzaninotto](https://github.com/fzaninotto))
+
 ## v4.16.12
 
 * Fix support for readOnly on all RA Inputs ([#9656](https://github.com/marmelab/react-admin/pull/9656)) ([erwanMarmelab](https://github.com/erwanMarmelab))
