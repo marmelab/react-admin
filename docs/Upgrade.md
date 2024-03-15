@@ -622,7 +622,7 @@ The `warnWhenUnsavedChanges` feature is a little more restrictive than before:
 
 This behavior allows to prevent unwanted data loss in more situations. No changes are required in the code.
 
-The `warnWhenUnsavedChanges` requires a Data Router (a new type of router from react-router) to work. React-admin uses such a data router by default, so the feature works out of the box in v5. 
+However, the `warnWhenUnsavedChanges` now requires a [Data Router](https://reactrouter.com/en/6.22.3/routers/picking-a-router) (a new type of router from react-router) to work. React-admin uses such a data router by default, so the feature works out of the box in v5. 
 
 However, if you use a [custom router](./Routing.md#using-a-custom-router) and the `warnWhenUnsavedChanges` prop, the "warn when unsaved changes" feature will be disabled.
 
