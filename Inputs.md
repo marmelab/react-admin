@@ -159,7 +159,7 @@ The `readOnly` prop set to true makes the element not mutable, meaning the user 
 <TextInput source="title" readOnly />
 ```
 
-Contrary to disabled controls, read-only controls are still focusable and are submitted with the form.
+Contrary to disabled controls, read-only controls are submitted with the form.
 
 ## `disabled`
 
@@ -169,7 +169,7 @@ The `disabled` prop set to true makes the element not mutable, focusable, or eve
 <TextInput source="title" disabled />
 ```
 
-Contrary to read-only controls, disabled controls can not receive focus and are not submitted with the form.
+Contrary to read-only controls, disabled controls are not submitted with the form.
 
 **Warning:** Note that `disabled` inputs are **not** included in the form values, and hence may trigger `warnWhenUnsavedChanges` if the input previously had a value in the record.
 

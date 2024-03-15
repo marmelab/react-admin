@@ -291,4 +291,3 @@ The `<ReferenceArrayField>` component accepts the usual `className` prop. You ca
 
 To override the style of all instances of `<ReferenceArrayField>` using the [application-wide style overrides](./AppTheme.md#theming-individual-components), use the `RaReferenceArrayField` key.
 
-

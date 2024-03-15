@@ -368,7 +368,7 @@ The `readOnly` prop set to true makes the children input not mutable, meaning th
 </SimpleFormIterator>
 ```
 
-Contrary to disabled controls, read-only controls are still focusable and are submitted with the form.
+Contrary to disabled controls, read-only controls are submitted with the form.
 
 ## `disabled`
 
@@ -382,7 +382,7 @@ The `disabled` prop set to true makes the children input not mutable, focusable,
 </SimpleFormIterator>
 ```
 
-Contrary to read-only controls, disabled controls can not receive focus and are not submitted with the form.
+Contrary to read-only controls, disabled controls are not submitted with the form.
 
 ## `sx`
 

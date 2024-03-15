@@ -308,4 +308,3 @@ You can prevent `<ReferenceField>` from adding a link to its children by setting
 // No link
 <ReferenceField source="user_id" reference="users" link={false} />
 ```
-

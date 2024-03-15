@@ -412,4 +412,3 @@ const BookShow = () => (
 **Tip**: As with `<ReferenceField>`, you can call `<ReferenceOneField>` as many times as you need in the same component, react-admin will only make one call to `dataProvider.getManyReference()`.
 
 For the inverse relationships (the author linked to a biography), you can use a `<ReferenceField>`.
-

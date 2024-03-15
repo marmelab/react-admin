@@ -1716,7 +1716,9 @@ const MyForm = () => (
 
 ### `<SimpleForm>` and `<TabbedForm>` No Longer Accept `margin` and `variant`
 
-Just like Material UI, we don't provide a way to specify those props at the form level. Instead, you can either set those props on the inputs or leverage the Material UI [component overrides through theme](https://mui.com/material-ui/customization/theme-components/) if you need to change them globally:
+Just like Material UI, we don't provide a way to specify those props at the form level. 
+
+Instead, you can set those props on the inputs:
 
 ```diff
 const PostCreate = () => (
@@ -1730,9 +1732,8 @@ const PostCreate = () => (
 )
 ```
 
-You have several options when leveraging the [theme component overrides](https://mui.com/material-ui/customization/theme-components/):
+Alternatively, you can leverage the Material UI [component overrides through theme](https://mui.com/material-ui/customization/theme-components/) if you need to change them globally. This works for MUI components such as the `TextField`:
 
-- Provide your own default props for Material UI components such as the `TextField`:
 ```js
 const myTheme = {
     components: {
@@ -1747,20 +1748,7 @@ const myTheme = {
 }
 ```
 
-- Provide your own default props for react-admin components such as the `TextInput`:
-```js
-const myTheme = {
-    components: {
-        // Name of the component
-        RaTextInput: {
-            defaultProps: {
-                margin: 'normal',
-                variant: 'outlined',
-            },
-        },
-    },
-}
-```
+Note that react-admin components (like `<TextInput`>) don't support these default props overrides. 
 
 ### No More Props Injection In `<SimpleForm>`, `<TabbedForm>` and `<FilterForm>`
 
