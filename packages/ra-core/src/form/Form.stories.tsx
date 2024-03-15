@@ -8,6 +8,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
+import { Route, Routes, useNavigate, Link, HashRouter } from 'react-router-dom';
 
 import { CoreAdminContext } from '../core';
 import { Form } from './Form';
@@ -290,3 +291,49 @@ export const ZodResolver = ({
         </CoreAdminContext>
     );
 };
+
+const FormUnderTest = () => {
+    const navigate = useNavigate();
+    return (
+        <>
+            <Form
+                record={{ title: 'lorem', body: 'ipsum' }}
+                onSubmit={() => setTimeout(() => navigate('/'), 0)}
+                warnWhenUnsavedChanges
+            >
+                <Input source="title" />
+                <Input source="body" />
+                <button type="submit">Submit</button>
+            </Form>
+            <Link to="/">Leave the form</Link>
+        </>
+    );
+};
+
+export const WarnWhenUnsavedChanges = ({
+    i18nProvider = defaultI18nProvider,
+}: {
+    i18nProvider?: I18nProvider;
+}) => (
+    <CoreAdminContext i18nProvider={i18nProvider}>
+        <Routes>
+            <Route path="/" element={<Link to="/form">Go to form</Link>} />
+            <Route path="/form" element={<FormUnderTest />} />
+        </Routes>
+    </CoreAdminContext>
+);
+
+export const InNonDataRouter = ({
+    i18nProvider = defaultI18nProvider,
+}: {
+    i18nProvider?: I18nProvider;
+}) => (
+    <HashRouter>
+        <CoreAdminContext i18nProvider={i18nProvider}>
+            <Routes>
+                <Route path="/" element={<Link to="/form">Go to form</Link>} />
+                <Route path="/form" element={<FormUnderTest />} />
+            </Routes>
+        </CoreAdminContext>
+    </HashRouter>
+);

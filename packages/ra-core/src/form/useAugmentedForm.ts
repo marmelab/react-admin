@@ -16,7 +16,6 @@ import {
 } from './getSimpleValidationResolver';
 import { setSubmissionErrors } from './setSubmissionErrors';
 import { useNotifyIsFormInvalid } from './useNotifyIsFormInvalid';
-import { useWarnWhenUnsavedChanges } from './useWarnWhenUnsavedChanges';
 import { sanitizeEmptyValues as sanitizeValues } from './sanitizeEmptyValues';
 
 /**
@@ -41,7 +40,6 @@ export const useAugmentedForm = <RecordType = any>(
         reValidateMode = 'onChange',
         onSubmit,
         sanitizeEmptyValues,
-        warnWhenUnsavedChanges,
         validate,
         disableInvalidFormNotification,
         ...rest
@@ -82,13 +80,6 @@ export const useAugmentedForm = <RecordType = any>(
 
     // notify on invalid form
     useNotifyIsFormInvalid(form.control, !disableInvalidFormNotification);
-
-    // warn when unsaved change
-    useWarnWhenUnsavedChanges(
-        Boolean(warnWhenUnsavedChanges),
-        formRootPathname,
-        form.control
-    );
 
     // submit callbacks
     const handleSubmit = useCallback(
@@ -141,7 +132,6 @@ export interface UseFormOwnProps<RecordType = any> {
     formRootPathname?: string;
     record?: Partial<RaRecord>;
     onSubmit?: SubmitHandler<FieldValues> | SaveHandler<RecordType>;
-    warnWhenUnsavedChanges?: boolean;
     sanitizeEmptyValues?: boolean;
     disableInvalidFormNotification?: boolean;
 }

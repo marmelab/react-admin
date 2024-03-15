@@ -613,11 +613,20 @@ import { FieldProps, useRecordContext } from 'react-admin';
 }
 ```
 
-## Custom Routers Must Be Upgraded To Data Routers
+## `warnWhenUnsavedChanges` Changes
 
-If you are using a [custom router](./Routing.md#using-a-custom-router), or if your React Admin app is embedded in another app with its own router, you will need to [migrate to a data router](https://reactrouter.com/en/main/upgrading/v6-data). This is because React Admin now uses `react-router`'s data router.
+The `warnWhenUnsavedChanges` feature is a little more restrictive than before:
 
-For instance, if you were using `react-router`'s `BrowserRouter`, you will need to migrate to `createBrowserRouter` and wrap your app in a `RouterProvider`:
+- It will open a confirmation dialog (and block the navigation) if a navigation is fired when the form is currently submitting (submission will continue in the background).
+- [Due to browser constraints](https://stackoverflow.com/questions/38879742/is-it-possible-to-display-a-custom-message-in-the-beforeunload-popup), the message displayed in the confirmation dialog when closing the browser's tab cannot be customized (it is managed by the browser).
+
+This behavior allows to prevent unwanted data loss in more situations. No changes are required in the code.
+
+However, the `warnWhenUnsavedChanges` now requires a [Data Router](https://reactrouter.com/en/6.22.3/routers/picking-a-router) (a new type of router from react-router) to work. React-admin uses such a data router by default, so the feature works out of the box in v5. 
+
+However, if you use a [custom router](./Routing.md#using-a-custom-router) and the `warnWhenUnsavedChanges` prop, the "warn when unsaved changes" feature will be disabled.
+
+To re-enable it, you'll have to migrate your custom router to use the data router. For instance, if you were using `react-router`'s `BrowserRouter`, you will need to migrate to `createBrowserRouter` and wrap your app in a `RouterProvider`:
 
 ```diff
 import * as React from 'react';
@@ -651,15 +660,6 @@ root.render(
 ```
 
 **Tip:** Check out the [Migrating to RouterProvider](https://reactrouter.com/en/main/upgrading/v6-data) documentation to learn more about the migration steps and impacts.
-
-## `warnWhenUnsavedChanges` Is More Restrictive
-
-Due to the migration to `react-router`'s data router, you will notice that the `useWarnWhenUnsavedChanges` hook is a little more restrictive than before. Here are the main changes:
-
-- `useWarnWhenUnsavedChanges` will also open a confirmation dialog (and block the navigation) if a navigation is fired when the form is currently submitting (submission will continue in the background).
-- [Due to browser constraints](https://stackoverflow.com/questions/38879742/is-it-possible-to-display-a-custom-message-in-the-beforeunload-popup), the message displayed in the confirmation dialog when closing the browser's tab cannot be customized (it is managed by the browser).
-
-This behavior is a little more restrictive, but it allows to prevent unwanted data loss in most situations. No changes are required in the code.
 
 ## `<Admin history>` Prop Was Removed
 
