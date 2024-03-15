@@ -1109,7 +1109,9 @@ describe('<AutocompleteArrayInput />', () => {
             );
         });
         expect(screen.getByDisplayValue('Russian')).not.toBeNull();
-        screen.getAllByRole('combobox')[0].focus();
+        fireEvent.keyDown(screen.getAllByRole('textbox')[0], {
+            key: 'ArrowDown',
+        });
         fireEvent.click(await screen.findByText('Victor Hugo'));
         await waitFor(() => {
             expect(onChange).toHaveBeenCalledWith(
