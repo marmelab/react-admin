@@ -50,13 +50,18 @@ export const DefaultValue = () => (
 
 export const HelperText = () => (
     <Wrapper>
-        <TextInput source="title" />
-        <TextInput source="title" helperText={false} />
-        <TextInput
-            source="title"
-            helperText="Number of times the post was read"
-        />
-    </Wrapper>
+                <TextInput source="title" />
+                <TextInput source="title" helperText={false} />
+                <TextInput
+                    source="title"
+                    helperText="Number of times the post was read"
+                />
+                <TextInput
+                    source="title"
+                    helperText="Number of times the post was read"
+                    error={true}
+                />
+            </Wrapper>
 );
 
 export const Label = () => (

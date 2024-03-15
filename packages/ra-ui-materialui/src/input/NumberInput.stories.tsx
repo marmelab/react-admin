@@ -62,13 +62,18 @@ export const DefaultValue = () => (
 
 export const HelperText = () => (
     <Wrapper>
-        <NumberInput source="views" />
-        <NumberInput source="views" helperText={false} />
-        <NumberInput
-            source="views"
-            helperText="Number of times the post was read"
-        />
-    </Wrapper>
+                <NumberInput source="views" />
+                <NumberInput source="views" helperText={false} />
+                <NumberInput
+                    source="views"
+                    helperText="Number of times the post was read"
+                />
+                <NumberInput
+                    source="views"
+                    helperText="Number of times the post was read"
+                    error={true}
+                />
+            </Wrapper>
 );
 
 export const Label = () => (

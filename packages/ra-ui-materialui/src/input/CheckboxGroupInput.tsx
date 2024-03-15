@@ -269,6 +269,7 @@ const sanitizeRestProps = ({
     setSort,
     loaded,
     touched,
+    error,
     ...rest
 }: any) => sanitizeInputRestProps(rest);
 
