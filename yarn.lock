@@ -12551,12 +12551,12 @@ __metadata:
   linkType: hard
 
 "follow-redirects@npm:^1.15.0":
-  version: 1.15.2
-  resolution: "follow-redirects@npm:1.15.2"
+  version: 1.15.6
+  resolution: "follow-redirects@npm:1.15.6"
   peerDependenciesMeta:
     debug:
       optional: true
-  checksum: da5932b70e63944d38eecaa16954bac4347036f08303c913d166eda74809d8797d38386e3a0eb1d2fe37d2aaff2764cce8e9dbd99459d860cf2cdfa237923b5f
+  checksum: 9ff767f0d7be6aa6870c82ac79cf0368cd73e01bbc00e9eb1c2a16fbb198ec105e3c9b6628bb98e9f3ac66fe29a957b9645bcb9a490bb7aa0d35f908b6b85071
   languageName: node
   linkType: hard
 
@@ -18961,7 +18961,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"ra-input-rich-text@npm:^4.12.0, ra-input-rich-text@npm:^4.16.12, ra-input-rich-text@workspace:packages/ra-input-rich-text":
+"ra-input-rich-text@npm:^4.12.0, ra-input-rich-text@npm:^4.16.13, ra-input-rich-text@workspace:packages/ra-input-rich-text":
   version: 0.0.0-use.local
   resolution: "ra-input-rich-text@workspace:packages/ra-input-rich-text"
   dependencies:
@@ -18986,7 +18986,7 @@ __metadata:
     data-generator-retail: "npm:^4.16.12"
     ra-core: "npm:^4.16.12"
     ra-data-fakerest: "npm:^4.16.12"
-    ra-ui-materialui: "npm:^4.16.12"
+    ra-ui-materialui: "npm:^4.16.13"
     react: "npm:^18.0.0"
     react-dom: "npm:^18.2.0"
     react-hook-form: "npm:^7.43.9"
@@ -19039,7 +19039,7 @@ __metadata:
     prop-types: "npm:^15.8.1"
     ra-data-local-storage: "npm:^4.16.12"
     react: "npm:^18.0.0"
-    react-admin: "npm:^4.16.12"
+    react-admin: "npm:^4.16.13"
     react-dom: "npm:^18.2.0"
     react-dropzone: "npm:^12.0.4"
     react-router: "npm:^6.22.0"
@@ -19054,7 +19054,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"ra-ui-materialui@npm:^4.16.12, ra-ui-materialui@workspace:packages/ra-ui-materialui":
+"ra-ui-materialui@npm:^4.16.13, ra-ui-materialui@workspace:packages/ra-ui-materialui":
   version: 0.0.0-use.local
   resolution: "ra-ui-materialui@workspace:packages/ra-ui-materialui"
   dependencies:
@@ -19259,7 +19259,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"react-admin@npm:^4.12.0, react-admin@npm:^4.16.12, react-admin@workspace:packages/react-admin":
+"react-admin@npm:^4.12.0, react-admin@npm:^4.16.13, react-admin@workspace:packages/react-admin":
   version: 0.0.0-use.local
   resolution: "react-admin@workspace:packages/react-admin"
   dependencies:
@@ -19272,7 +19272,7 @@ __metadata:
     ra-core: "npm:^4.16.12"
     ra-i18n-polyglot: "npm:^4.16.12"
     ra-language-english: "npm:^4.16.12"
-    ra-ui-materialui: "npm:^4.16.12"
+    ra-ui-materialui: "npm:^4.16.13"
     react-hook-form: "npm:^7.43.9"
     react-router: "npm:^6.22.0"
     react-router-dom: "npm:^6.22.0"
@@ -20797,11 +20797,11 @@ __metadata:
     prop-types: "npm:^15.8.1"
     ra-data-fakerest: "npm:^4.16.12"
     ra-i18n-polyglot: "npm:^4.16.12"
-    ra-input-rich-text: "npm:^4.16.12"
+    ra-input-rich-text: "npm:^4.16.13"
     ra-language-english: "npm:^4.16.12"
     ra-language-french: "npm:^4.16.12"
     react: "npm:^18.0.0"
-    react-admin: "npm:^4.16.12"
+    react-admin: "npm:^4.16.13"
     react-dom: "npm:^18.2.0"
     react-hook-form: "npm:^7.43.9"
     react-router: "npm:^6.22.0"

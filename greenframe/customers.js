@@ -1,5 +1,5 @@
 // eslint-disable-next-line no-unused-expressions
-async page => {
+const customersScenario = async page => {
     const raNotificationAutoHideDuration = 4000;
     const isRaSettled = () => !document.querySelector('.app-loader');
     const waitForRaSettled = async () =>
@@ -64,3 +64,5 @@ async page => {
     await page.getByRole('link').first().click();
     await waitForRaSettled();
 };
+
+module.exports = customersScenario;

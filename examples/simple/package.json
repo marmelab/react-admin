@@ -1,6 +1,6 @@
 {
     "name": "simple",
-    "version": "4.16.12",
+    "version": "4.16.13",
     "private": true,
     "type": "module",
     "scripts": {
@@ -21,11 +21,11 @@
         "prop-types": "^15.8.1",
         "ra-data-fakerest": "^4.16.12",
         "ra-i18n-polyglot": "^4.16.12",
-        "ra-input-rich-text": "^4.16.12",
+        "ra-input-rich-text": "^4.16.13",
         "ra-language-english": "^4.16.12",
         "ra-language-french": "^4.16.12",
         "react": "^18.0.0",
-        "react-admin": "^4.16.12",
+        "react-admin": "^4.16.13",
         "react-dom": "^18.2.0",
         "react-hook-form": "^7.43.9",
         "react-router": "^6.22.0",

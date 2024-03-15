@@ -1,5 +1,5 @@
 // eslint-disable-next-line no-unused-expressions
-async page => {
+const catalogScenario = async page => {
     const raNotificationAutoHideDuration = 4000;
     const isRaSettled = () => !document.querySelector('.app-loader');
     const waitForRaSettled = async () =>
@@ -59,3 +59,5 @@ async page => {
     await waitForRaSettled();
     await page.getByText('Rating');
 };
+
+module.exports = catalogScenario;
