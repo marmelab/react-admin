@@ -98,6 +98,7 @@ Here are a few examples of permissions:
 
 - `{ action: "*", resource: "*" }`: allow everything
 - `{ action: "read", resource: "*" }`: allow read actions on all resources
+- `{ action: "read", resource: ["companies", "people"] }`: allow read actions on a subset of resources
 - `{ action: ["read", "create", "edit", "export"], resource: "companies" }`: allow all actions except delete on companies
 - `{ action: ["write"], resource: "game.score", record: { "id": "123" } }`: allow to change the score on a particular game
 
