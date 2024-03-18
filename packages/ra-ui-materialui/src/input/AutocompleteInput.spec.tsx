@@ -1565,6 +1565,30 @@ describe('<AutocompleteInput />', () => {
         });
     });
 
+    it('should pass the event object to the onBlur callback', async () => {
+        const onBlur = jest.fn();
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm onSubmit={jest.fn()}>
+                    <AutocompleteInput
+                        {...defaultProps}
+                        choices={[{ id: 0, name: 'foo' }]}
+                        onBlur={onBlur}
+                    />
+                </SimpleForm>
+            </AdminContext>
+        );
+        const input = screen.getByLabelText(
+            'resources.users.fields.role'
+        ) as HTMLInputElement;
+
+        fireEvent.blur(input);
+
+        expect(onBlur).toHaveBeenCalledWith(
+            expect.objectContaining({ type: 'blur' })
+        );
+    });
+
     describe('Inside <ReferenceInput>', () => {
         it('should work inside a ReferenceInput field', async () => {
             render(<InsideReferenceInput />);
