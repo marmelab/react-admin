@@ -438,24 +438,27 @@ If you provided a React element for the optionText prop, you must also provide t
         ]
     );
 
-    const finalOnBlur = useCallback((): void => {
-        if (clearOnBlur && !multiple) {
-            const optionLabel = getOptionLabel(selectedChoice);
-            if (!isEqual(optionLabel, filterValue)) {
-                setFilterValue(optionLabel);
-                debouncedSetFilter('');
+    const finalOnBlur = useCallback(
+        (event): void => {
+            if (clearOnBlur && !multiple) {
+                const optionLabel = getOptionLabel(selectedChoice);
+                if (!isEqual(optionLabel, filterValue)) {
+                    setFilterValue(optionLabel);
+                    debouncedSetFilter('');
+                }
             }
-        }
-        field.onBlur();
-    }, [
-        clearOnBlur,
-        field,
-        getOptionLabel,
-        selectedChoice,
-        filterValue,
-        debouncedSetFilter,
-        multiple,
-    ]);
+            field.onBlur(event);
+        },
+        [
+            clearOnBlur,
+            field,
+            getOptionLabel,
+            selectedChoice,
+            filterValue,
+            debouncedSetFilter,
+            multiple,
+        ]
+    );
 
     useEffect(() => {
         if (!multiple) {
