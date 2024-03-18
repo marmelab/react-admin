@@ -168,7 +168,9 @@ export type InputProps<ValueType = any> = Omit<
 export type UseInputValue = {
     id: string;
     isRequired: boolean;
-    field: ControllerRenderProps;
+    field: Omit<ControllerRenderProps, 'onBlur'> & {
+        onBlur: (...event: any[]) => void;
+    };
     formState: UseFormStateReturn<Record<string, string>>;
     fieldState: ControllerFieldState;
 };
