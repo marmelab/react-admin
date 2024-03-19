@@ -23,22 +23,26 @@ describe('<RichTextInput />', () => {
             );
         });
     });
-    it("should update its content with the ref editor's commands", async () => {
-        const record = { id: 123, body: '<h1>Hello world!</h1>' };
-        const { container } = render(<Ref record={record} />);
+    describe('ref', () => {
+        it("should update its content with the ref editor's commands", async () => {
+            const record = { id: 123, body: '<h1>Hello world!</h1>' };
+            const { container } = render(<Ref record={record} />);
 
-        await waitFor(() => {
-            expect(container.querySelector('#body')?.innerHTML).toEqual(
-                '<h1>Hello world!</h1>'
+            await waitFor(() => {
+                expect(container.querySelector('#body')?.innerHTML).toEqual(
+                    '<h1>Hello world!</h1>'
+                );
+            });
+
+            fireEvent.click(
+                screen.getByRole('button', { name: 'Use template' })
             );
-        });
 
-        fireEvent.click(screen.getByRole('button', { name: 'Use template' }));
-
-        await waitFor(() => {
-            expect(container.querySelector('#body')?.innerHTML).toEqual(
-                '<h3>Here is my template</h3>'
-            );
+            await waitFor(() => {
+                expect(container.querySelector('#body')?.innerHTML).toEqual(
+                    '<h3>Here is my template</h3>'
+                );
+            });
         });
     });
 });
