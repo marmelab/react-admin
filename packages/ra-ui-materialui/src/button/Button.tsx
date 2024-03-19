@@ -7,7 +7,7 @@ import {
     useMediaQuery,
     Theme,
 } from '@mui/material';
-import { styled } from '@mui/material/styles';
+import { styled, useThemeProps } from '@mui/material/styles';
 import PropTypes from 'prop-types';
 import { useTranslate } from 'ra-core';
 import { Path, To } from 'react-router';
@@ -26,8 +26,9 @@ import { Path, To } from 'react-router';
  *
  */
 export const Button = <RootComponent extends React.ElementType = 'button'>(
-    props: ButtonProps<RootComponent>
+    inProps: ButtonProps<RootComponent>
 ) => {
+    const props = useThemeProps({ props: inProps, name: 'RaButton' });
     const {
         alignIcon = 'left',
         children,
@@ -39,6 +40,7 @@ export const Button = <RootComponent extends React.ElementType = 'button'>(
         to: locationDescriptor,
         ...rest
     } = props;
+
     const translate = useTranslate();
     const translatedLabel = label ? translate(label, { _: label }) : undefined;
     const linkParams = getLinkParams(locationDescriptor);
