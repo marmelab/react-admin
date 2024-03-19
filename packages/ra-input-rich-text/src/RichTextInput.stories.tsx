@@ -222,9 +222,12 @@ export const Reference = (props: Partial<SimpleFormProps>) => {
             <Button
                 onClick={() => {
                     myRef.current.commands.focus();
+                    myRef.current.commands.setContent(
+                        '<h3>Here is a my template</h3>'
+                    );
                 }}
             >
-                Edit
+                Use template
             </Button>
         </Toolbar>
     );
