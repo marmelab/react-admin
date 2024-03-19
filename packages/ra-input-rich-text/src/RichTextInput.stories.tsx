@@ -214,14 +214,14 @@ export const Toolbar = (props: Partial<SimpleFormProps>) => (
 
 export const Ref = (props: Partial<SimpleFormProps>) => {
     // eslint-disable-next-line react-hooks/rules-of-hooks
-    const myRef = React.useRef<Editor>(null);
+    const editorRef = React.useRef<Editor>(null);
 
     const EditorToolbar = () => (
         <RAToolbar>
             <SaveButton />
             <Button
                 onClick={() => {
-                    myRef.current.commands.setContent(
+                    editorRef.current.commands.setContent(
                         '<h3>Here is my template</h3>'
                     );
                 }}
@@ -239,7 +239,7 @@ export const Ref = (props: Partial<SimpleFormProps>) => {
                 onSubmit={() => {}}
                 {...props}
             >
-                <RichTextInput source="body" ref={myRef} />
+                <RichTextInput source="body" ref={editorRef} />
                 <FormInspector />
             </SimpleForm>
         </AdminContext>

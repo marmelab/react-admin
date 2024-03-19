@@ -183,7 +183,7 @@ import { Buuton } from 'ra-ui-materialui';
 import { Editor } from '@tiptap/react';
 
 export const PostEdit = () => {
-    const myRef = React.useRef<Editor>(null);
+    const editorRef = React.useRef<Editor>(null);
 
     return (
         <Edit>
@@ -192,7 +192,7 @@ export const PostEdit = () => {
                     <Toolbar>
                         <SaveButton />
                         <Button
-                            onClick={() => myRef.current.commands.setContent('<h3>Here is my template</h3>')}
+                            onClick={() => editorRef.current.commands.setContent('<h3>Here is my template</h3>')}
                         >
                             Use template
                         </Button>
@@ -200,7 +200,7 @@ export const PostEdit = () => {
                 }
             >
                 <TextInput source="title" />
-                <RichTextInput source="body" ref={myRef} />
+                <RichTextInput source="body" ref={editorRef} />
             </SimpleForm>
         </Edit>
     )
