@@ -1,5 +1,11 @@
 import * as React from 'react';
-import { ReactElement, ReactNode, forwardRef, useEffect } from 'react';
+import {
+    ReactElement,
+    ReactNode,
+    forwardRef,
+    useEffect,
+    useImperativeHandle,
+} from 'react';
 import { FormHelperText } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { Color } from '@tiptap/extension-color';
@@ -116,9 +122,7 @@ export const RichTextInput = forwardRef(
 
         const { error, invalid, isTouched } = fieldState;
 
-        if (ref) {
-            ref.current = editor;
-        }
+        useImperativeHandle(ref, () => editor);
 
         useEffect(() => {
             if (!editor) return;
