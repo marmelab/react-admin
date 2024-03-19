@@ -173,11 +173,11 @@ const MyRichTextInput = ({ size, ...props }) => (
 
 ## Reference the editor
 
-You might need access to the editor to use [the dedicated API](https://tiptap.dev/docs/editor/api/editor). To do it, you can pass a `ref` to the `onCreate` function in the `editorOptions` prop of your `<RichTextInput>` component:
+You might need access to the editor to use [the dedicated API](https://tiptap.dev/docs/editor/api/editor). To do it, you can assign a `ref` in the `onCreate` function in the `editorOptions` prop of your `<RichTextInput>` component which returns the editor:
 
 ```tsx
 import { Edit, SaveButton, SimpleForm, TextInput, Toolbar } from 'react-admin';
-import { RichTextInput } from 'ra-input-rich-text';
+import { DefaultEditorOptions, RichTextInput } from 'ra-input-rich-text';
 import { Buuton } from 'ra-ui-materialui';
 import { Editor } from '@tiptap/react';
 
