@@ -12,7 +12,7 @@ import {
     SimpleForm,
     SimpleFormProps,
     TopToolbar,
-    Toolbar,
+    Toolbar as RAToolbar,
     SaveButton,
 } from 'ra-ui-materialui';
 import { useWatch } from 'react-hook-form';
@@ -199,7 +199,7 @@ const MyRichTextInputToolbar = ({ ...props }) => {
     );
 };
 
-export const EditedToolbar = (props: Partial<SimpleFormProps>) => (
+export const Toolbar = (props: Partial<SimpleFormProps>) => (
     <AdminContext i18nProvider={i18nProvider}>
         <SimpleForm
             defaultValues={{ body: 'Hello World' }}
@@ -212,12 +212,12 @@ export const EditedToolbar = (props: Partial<SimpleFormProps>) => (
     </AdminContext>
 );
 
-export const Reference = (props: Partial<SimpleFormProps>) => {
+export const Ref = (props: Partial<SimpleFormProps>) => {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const myRef = React.useRef<Editor>(null);
 
     const EditorToolbar = () => (
-        <Toolbar>
+        <RAToolbar>
             <SaveButton />
             <Button
                 onClick={() => {
@@ -228,7 +228,7 @@ export const Reference = (props: Partial<SimpleFormProps>) => {
             >
                 Use template
             </Button>
-        </Toolbar>
+        </RAToolbar>
     );
 
     return (
