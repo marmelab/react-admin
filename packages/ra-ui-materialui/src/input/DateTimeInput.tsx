@@ -30,6 +30,7 @@ export const DateTimeInput = ({
     margin,
     onBlur,
     onChange,
+    onFocus,
     source,
     resource,
     parse = parseDateTime,
@@ -39,12 +40,15 @@ export const DateTimeInput = ({
     readOnly,
     ...rest
 }: DateTimeInputProps) => {
-    const { field, fieldState, formState, id, isRequired } = useInput({
+    const {
+        field,
+        fieldState: { error, invalid, isTouched },
+        formState: { isSubmitted },
+        id,
+        isRequired,
+    } = useInput({
         defaultValue,
-        format,
-        parse,
         onBlur,
-        onChange,
         resource,
         source,
         validate,
@@ -52,17 +56,86 @@ export const DateTimeInput = ({
         readOnly,
         ...rest,
     });
+    const [renderCount, setRenderCount] = React.useState(1);
 
-    const { error, invalid, isTouched } = fieldState;
-    const { isSubmitted } = formState;
+    const initialDefaultValueRef = React.useRef(field.value);
+
+    React.useEffect(() => {
+        const initialDateValue =
+            new Date(initialDefaultValueRef.current).getTime() || null;
+
+        const fieldDateValue = new Date(field.value).getTime() || null;
+
+        if (initialDateValue !== fieldDateValue) {
+            setRenderCount(r => r + 1);
+            parse
+                ? field.onChange(parse(field.value))
+                : field.onChange(field.value);
+            initialDefaultValueRef.current = field.value;
+        }
+    }, [setRenderCount, parse, field]);
+
+    const { onBlur: onBlurFromField } = field;
+    const hasFocus = React.useRef(false);
+
+    // update the input text when the user types in the input
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        if (onChange) {
+            onChange(event);
+        }
+        if (
+            typeof event.target === 'undefined' ||
+            typeof event.target.value === 'undefined'
+        ) {
+            return;
+        }
+        const target = event.target;
+
+        const newValue =
+            target.valueAsDate !== undefined &&
+            target.valueAsDate !== null &&
+            !isNaN(new Date(target.valueAsDate).getTime())
+                ? parse
+                    ? parse(target.valueAsDate)
+                    : target.valueAsDate
+                : parse
+                ? parse(target.value)
+                : formatDateTime(target.value);
+
+        field.onChange(newValue);
+    };
+
+    const handleFocus = (event: React.FocusEvent<HTMLInputElement>) => {
+        if (onFocus) {
+            onFocus(event);
+        }
+        hasFocus.current = true;
+    };
+
+    const handleBlur = () => {
+        if (onBlurFromField) {
+            onBlurFromField();
+        }
+        hasFocus.current = false;
+    };
+
     const renderHelperText =
         helperText !== false || ((isTouched || isSubmitted) && invalid);
+
+    const { ref, name } = field;
+
     return (
         <TextField
             id={id}
-            {...field}
-            className={clsx('ra-input', `ra-input-${source}`, className)}
+            inputRef={ref}
+            name={name}
+            defaultValue={format(initialDefaultValueRef.current)}
+            key={renderCount}
             type="datetime-local"
+            onChange={handleChange}
+            onFocus={handleFocus}
+            onBlur={handleBlur}
+            className={clsx('ra-input', `ra-input-${source}`, className)}
             size="small"
             variant={variant}
             margin={margin}
