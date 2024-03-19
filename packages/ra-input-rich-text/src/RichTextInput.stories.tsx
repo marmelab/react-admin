@@ -36,6 +36,7 @@ import {
     Paper,
 } from '@mui/material';
 import { FormatButtons } from './buttons';
+import { Transaction } from '@tiptap/pm/state';
 
 export default { title: 'ra-input-rich-text/RichTextInput' };
 
@@ -212,7 +213,7 @@ export const Toolbar = (props: Partial<SimpleFormProps>) => (
     </AdminContext>
 );
 
-export const Ref = (props: Partial<SimpleFormProps>) => {
+export const EditorReference = (props: Partial<SimpleFormProps>) => {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const editorRef = React.useRef<Editor>(null);
 
@@ -239,7 +240,15 @@ export const Ref = (props: Partial<SimpleFormProps>) => {
                 onSubmit={() => {}}
                 {...props}
             >
-                <RichTextInput source="body" ref={editorRef} />
+                <RichTextInput
+                    source="body"
+                    editorOptions={{
+                        ...DefaultEditorOptions,
+                        onCreate: ({ editor }: { editor: Editor }) => {
+                            editorRef.current = editor;
+                        },
+                    }}
+                />
                 <FormInspector />
             </SimpleForm>
         </AdminContext>

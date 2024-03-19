@@ -1,11 +1,5 @@
 import * as React from 'react';
-import {
-    ReactElement,
-    ReactNode,
-    forwardRef,
-    useEffect,
-    useImperativeHandle,
-} from 'react';
+import { ReactElement, ReactNode, useEffect } from 'react';
 import { FormHelperText } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { Color } from '@tiptap/extension-color';
@@ -79,121 +73,117 @@ import { TiptapEditorProvider } from './TiptapEditorProvider';
  *     />
  * );
  */
-export const RichTextInput = forwardRef(
-    (props: RichTextInputProps, ref?: React.MutableRefObject<Editor>) => {
-        const {
-            className,
-            defaultValue = '',
-            disabled = false,
-            editorOptions = DefaultEditorOptions,
-            fullWidth,
-            helperText,
-            label,
-            readOnly = false,
-            source,
-            sx,
-            toolbar,
-        } = props;
+export const RichTextInput = (props: RichTextInputProps) => {
+    const {
+        className,
+        defaultValue = '',
+        disabled = false,
+        editorOptions = DefaultEditorOptions,
+        fullWidth,
+        helperText,
+        label,
+        readOnly = false,
+        source,
+        sx,
+        toolbar,
+    } = props;
 
-        const resource = useResourceContext(props);
-        const {
-            id,
-            field,
-            isRequired,
-            fieldState,
-            formState: { isSubmitted },
-        } = useInput({ ...props, source, defaultValue });
+    const resource = useResourceContext(props);
+    const {
+        id,
+        field,
+        isRequired,
+        fieldState,
+        formState: { isSubmitted },
+    } = useInput({ ...props, source, defaultValue });
 
-        const editor = useEditor(
-            {
-                ...editorOptions,
-                editable: !disabled && !readOnly,
-                content: field.value,
-                editorProps: {
-                    ...editorOptions?.editorProps,
-                    attributes: {
-                        ...editorOptions?.editorProps?.attributes,
-                        id,
-                    },
+    const editor = useEditor(
+        {
+            ...editorOptions,
+            editable: !disabled && !readOnly,
+            content: field.value,
+            editorProps: {
+                ...editorOptions?.editorProps,
+                attributes: {
+                    ...editorOptions?.editorProps?.attributes,
+                    id,
                 },
             },
-            [disabled, editorOptions, readOnly, id]
-        );
+        },
+        [disabled, editorOptions, readOnly, id]
+    );
 
-        const { error, invalid, isTouched } = fieldState;
+    const { error, invalid, isTouched } = fieldState;
 
-        useImperativeHandle(ref, () => editor);
+    useEffect(() => {
+        if (!editor) return;
 
-        useEffect(() => {
-            if (!editor) return;
+        const { from, to } = editor.state.selection;
 
-            const { from, to } = editor.state.selection;
+        editor.commands.setContent(field.value, false, {
+            preserveWhitespace: true,
+        });
+        editor.commands.setTextSelection({ from, to });
+    }, [editor, field.value]);
 
-            editor.commands.setContent(field.value, false, {
-                preserveWhitespace: true,
-            });
-            editor.commands.setTextSelection({ from, to });
-        }, [editor, field.value]);
+    useEffect(() => {
+        if (!editor) {
+            return;
+        }
 
-        useEffect(() => {
-            if (!editor) {
+        const handleEditorUpdate = () => {
+            if (editor.isEmpty) {
+                field.onChange('');
+                field.onBlur();
                 return;
             }
 
-            const handleEditorUpdate = () => {
-                if (editor.isEmpty) {
-                    field.onChange('');
-                    field.onBlur();
-                    return;
-                }
+            const html = editor.getHTML();
+            field.onChange(html);
+            field.onBlur();
+        };
 
-                const html = editor.getHTML();
-                field.onChange(html);
-                field.onBlur();
-            };
+        editor.on('update', handleEditorUpdate);
+        editor.on('blur', field.onBlur);
+        return () => {
+            editor.off('update', handleEditorUpdate);
+            editor.off('blur', field.onBlur);
+        };
+    }, [editor, field]);
 
-            editor.on('update', handleEditorUpdate);
-            editor.on('blur', field.onBlur);
-            return () => {
-                editor.off('update', handleEditorUpdate);
-                editor.off('blur', field.onBlur);
-            };
-        }, [editor, field]);
-
-        return (
-            <Root
-                className={clsx(
-                    'ra-input',
-                    `ra-input-${source}`,
-                    className,
-                    fullWidth ? 'fullWidth' : ''
-                )}
-                sx={sx}
+    return (
+        <Root
+            className={clsx(
+                'ra-input',
+                `ra-input-${source}`,
+                className,
+                fullWidth ? 'fullWidth' : ''
+            )}
+            sx={sx}
+        >
+            <Labeled
+                isRequired={isRequired}
+                label={label}
+                id={`${id}-label`}
+                color={fieldState?.invalid ? 'error' : undefined}
+                source={source}
+                resource={resource}
+                fullWidth={fullWidth}
             >
-                <Labeled
-                    isRequired={isRequired}
-                    label={label}
-                    id={`${id}-label`}
-                    color={fieldState?.invalid ? 'error' : undefined}
-                    source={source}
-                    resource={resource}
-                    fullWidth={fullWidth}
-                >
-                    <RichTextInputContent
-                        editor={editor}
-                        error={error}
-                        helperText={helperText}
-                        id={id}
-                        isTouched={isTouched}
-                        isSubmitted={isSubmitted}
-                        invalid={invalid}
-                        toolbar={toolbar || <RichTextInputToolbar />}
-                    />
-                </Labeled>
-            </Root>
-        );
-    }
-);
+                <RichTextInputContent
+                    editor={editor}
+                    error={error}
+                    helperText={helperText}
+                    id={id}
+                    isTouched={isTouched}
+                    isSubmitted={isSubmitted}
+                    invalid={invalid}
+                    toolbar={toolbar || <RichTextInputToolbar />}
+                />
+            </Labeled>
+        </Root>
+    );
+};
 
 export const DefaultEditorOptions: Partial<EditorOptions> = {
     extensions: [
@@ -218,7 +208,6 @@ export type RichTextInputProps = CommonInputProps &
         readOnly?: boolean;
         editorOptions?: Partial<EditorOptions>;
         toolbar?: ReactNode;
-        ref?: React.MutableRefObject<Editor>;
         sx?: typeof Root['defaultProps']['sx'];
     };
 

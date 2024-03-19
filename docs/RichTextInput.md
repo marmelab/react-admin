@@ -45,7 +45,6 @@ export const PostEdit = () => (
 | ------ | -------- | -------- | ------- | ----------- |
 | `editorOptions` | Optional | `Object` | - | Options object to pass to the underlying TipTap editor. |
 | `toolbar` | Optional| `ReactNode` | - | The toolbar to use. If not set, the default toolbar is used. |
-| `ref` | Optional| `MutableRefObject<Editor>` | - | To reference the editor object  |
 
 `<RichTextInput>` also accepts the [common input props](./Inputs.md#common-input-props).
 
@@ -172,9 +171,9 @@ const MyRichTextInput = ({ size, ...props }) => (
 );
 ```
 
-## `ref`
+## Reference the editor
 
-You might need access to the editor to use [the dedicated API](https://tiptap.dev/docs/editor/api/editor). To do it, you can pass a `ref` to your `<RichTextInput>` component and use it:
+You might need access to the editor to use [the dedicated API](https://tiptap.dev/docs/editor/api/editor). To do it, you can pass a `ref` to the `onCreate` function in the `editorOptions` prop of your `<RichTextInput>` component:
 
 ```tsx
 import { Edit, SaveButton, SimpleForm, TextInput, Toolbar } from 'react-admin';
@@ -200,7 +199,15 @@ export const PostEdit = () => {
                 }
             >
                 <TextInput source="title" />
-                <RichTextInput source="body" ref={editorRef} />
+                <RichTextInput 
+                    source="body" 
+                    editorOptions={{
+                        ...DefaultEditorOptions,
+                        onCreate: ({ editor }: { editor: Editor }) => {
+                            editorRef.current = editor;
+                        },
+                    }}
+                />
             </SimpleForm>
         </Edit>
     )
