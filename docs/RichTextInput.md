@@ -44,7 +44,8 @@ export const PostEdit = () => (
 | Prop   | Required | Type     | Default | Description |
 | ------ | -------- | -------- | ------- | ----------- |
 | `editorOptions` | Optional | `Object` | - | Options object to pass to the underlying TipTap editor. |
-| `toolbar` | Optional| ReactNode | - | The toolbar to use. If not set, the default toolbar is used. |
+| `toolbar` | Optional| `ReactNode` | - | The toolbar to use. If not set, the default toolbar is used. |
+| `ref` | Optional| `MutableRefObject<Editor>` | - | To reference the editor object  |
 
 `<RichTextInput>` also accepts the [common input props](./Inputs.md#common-input-props).
 
@@ -169,6 +170,41 @@ const MyRichTextInput = ({ size, ...props }) => (
 		{...props}
 	/>
 );
+```
+
+## `ref`
+
+You might need access to the editor to use [the dedicated API](https://tiptap.dev/docs/editor/api/editor). To do it, you can pass a `ref` to your `<RichTextInput>` component and use it:
+
+```tsx
+import { Edit, SaveButton, SimpleForm, TextInput, Toolbar } from 'react-admin';
+import { RichTextInput } from 'ra-input-rich-text';
+import { Buuton } from 'ra-ui-materialui';
+import { Editor } from '@tiptap/react';
+
+export const PostEdit = () => {
+    const myRef = React.useRef<Editor>(null);
+
+    return (
+        <Edit>
+            <SimpleForm
+                toolbar={
+                    <Toolbar>
+                        <SaveButton />
+                        <Button
+                            onClick={() => myRef.current.commands.setContent('<h3>Here is my template</h3>')}
+                        >
+                            Use template
+                        </Button>
+                    </Toolbar>
+                }
+            >
+                <TextInput source="title" />
+                <RichTextInput source="body" ref={myRef} />
+            </SimpleForm>
+        </Edit>
+    )
+};
 ```
 
 ## AI Writing Assistant
