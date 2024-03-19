@@ -26,21 +26,10 @@ const tags = [
     { id: 4, name: 'Photography' },
 ];
 
-const dataProvider = testDataProvider({
-    // @ts-ignore
-    getList: () =>
-        Promise.resolve({
-            data: tags,
-            total: tags.length,
-        }),
-    // @ts-ignore
-    getMany: (resource, params) => {
-        console.log('getMany', resource, params);
-        return Promise.resolve({
-            data: params.ids.map(id => tags.find(tag => tag.id === id)),
-        });
-    },
-});
+const dataProvider = fakeRestProvider(
+    { tags },
+    process.env.NODE_ENV === 'development'
+);
 
 const i18nProvider = polyglotI18nProvider(() => englishMessages);
 
@@ -83,6 +72,32 @@ export const WithAutocompleteInput = () => (
         </Form>
     </AdminContext>
 );
+
+export const SmallPageSize = ({ perPage = 2 }) => (
+    <Admin dataProvider={dataProvider} history={history}>
+        <Resource name="tags" recordRepresentation={'name'} />
+        <Resource
+            name="posts"
+            create={() => (
+                <Create
+                    resource="posts"
+                    record={{ tags_ids: [1, 3] }}
+                    sx={{ width: 600 }}
+                >
+                    <SimpleForm>
+                        <ReferenceArrayInput
+                            reference="tags"
+                            resource="posts"
+                            source="tags_ids"
+                            perPage={perPage}
+                        />
+                    </SimpleForm>
+                </Create>
+            )}
+        />
+    </Admin>
+);
+SmallPageSize.args = { perPage: 2 };
 
 export const ErrorAutocomplete = () => (
     <AdminContext
