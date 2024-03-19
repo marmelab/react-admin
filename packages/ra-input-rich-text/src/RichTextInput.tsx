@@ -74,7 +74,7 @@ import { TiptapEditorProvider } from './TiptapEditorProvider';
  * );
  */
 export const RichTextInput = forwardRef(
-    (props: RichTextInputProps, ref: React.MutableRefObject<Editor>) => {
+    (props: RichTextInputProps, ref?: React.MutableRefObject<Editor>) => {
         const {
             className,
             defaultValue = '',
@@ -214,6 +214,7 @@ export type RichTextInputProps = CommonInputProps &
         readOnly?: boolean;
         editorOptions?: Partial<EditorOptions>;
         toolbar?: ReactNode;
+        ref?: React.MutableRefObject<Editor>;
         sx?: typeof Root['defaultProps']['sx'];
     };
 
