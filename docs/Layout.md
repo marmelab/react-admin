@@ -411,7 +411,7 @@ A custom layout is also the ideal place to add debug tools, e.g. [react-query de
 ```jsx
 // in src/MyLayout.js
 import { Layout } from 'react-admin';
-import { ReactQueryDevtools } from 'react-query/devtools'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 
 export const MyLayout = ({ children }) => (
     <Layout>
