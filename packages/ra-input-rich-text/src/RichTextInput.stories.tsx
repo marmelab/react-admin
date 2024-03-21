@@ -36,7 +36,6 @@ import {
     Paper,
 } from '@mui/material';
 import { FormatButtons } from './buttons';
-import { Transaction } from '@tiptap/pm/state';
 
 export default { title: 'ra-input-rich-text/RichTextInput' };
 
