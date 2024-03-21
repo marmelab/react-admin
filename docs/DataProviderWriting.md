@@ -150,7 +150,7 @@ dataProvider.getMany('posts', { ids: [123, 124, 125] })
 
 ## `getManyReference`
 
-React-admin calls `dataProvider.getManyReference()` to fetch several records related to another one.
+React-admin calls `dataProvider.getManyReference()` to fetch the records related to another record. Although similar to `getList`, this method is designed for relationships. It is necessary because some APIs require a different query to fetch related records (e.g. `GET /posts/123/comments` to fetch comments related to post 123).
 
 **Interface**
 
@@ -424,6 +424,24 @@ export default {
     // ...
 };
 ```
+
+## Testing Data Provider Methods
+
+A good way to test your data provider is to build a react-admin app with components that depend on it. Here is a list of components calling the data provider methods:
+
+| Method             | Components |
+| ------------------ | --------- |
+| `getList`          | [`<List>`](./List.md), [`<ListGuesser>`](./ListGuesser.md), [`<ListBase>`](./ListBase.md), [`<InfiniteList>`](./InfiniteList.md), [`<Count>`](./Count.md), [`<Calendar>`](./Calendar.md), [`<ReferenceInput>`](./ReferenceInput.md), [`<ReferenceArrayInput>`](./ReferenceArrayInput.md), [`<ExportButton>`](./Buttons.md#exportbutton), [`<PrevNextButtons>`](./PrevNextButtons.md) |
+| `getOne`           | [`<Show>`](./Show.md), [`<ShowGuesser>`](./ShowGuesser.md), [`<ShowBase>`](./ShowBase.md), [`<Edit>`](./Edit.md), [`<EditGuesser>`](./EditGuesser.md), [`<EditBase>`](./EditBase.md) |
+| `getMany`          | [`<ReferenceField>`](./ReferenceField.md), [`<ReferenceArrayField>`](./ReferenceArrayField.md), [`<ReferenceInput>`](./ReferenceInput.md), [`<ReferenceArrayInput>`](./ReferenceArrayInput.md) |
+| `getManyReference` | [`<ReferenceManyField>`](./ReferenceManyField.md), [`<ReferenceOneField>`](./ReferenceOneField.md), [`<ReferenceManyInput>`](./ReferenceManyInput.md), [`<ReferenceOneInput>`](./ReferenceOneInput.md) |
+| `create`           | [`<Create>`](./Create.md), [`<CreateBase>`](./CreateBase.md), [`<EditableDatagrid>`](./EditableDatagrid.md), [`<CreateInDialogButton>`](./CreateInDialogButton.md) |
+| `update`           | [`<Edit>`](./Edit.md), [`<EditGuesser>`](./EditGuesser.md), [`<EditBase>`](./EditBase.md), [`<EditableDatagrid>`](./EditableDatagrid.md), [`<EditInDialogButton>`](./EditInDialogButton.md), [`<UpdateButton>`](./UpdateButton.md) |
+| `updateMany`       | [`<BulkUpdateButton>`](./BulkUpdateButton.md) |
+| `delete`           | [`<DeleteButton>`](./DeleteButton.md), [`<EditableDatagrid>`](./EditableDatagrid.md) |
+| `deleteMany`       | [`<BulkDeleteButton>`](./BulkDeleteButton.md) |
+
+A simple react-admin app with one `<Resource>` using [guessers](./Features.md#guessers--scaffolding) for the `list`, `edit`, and `show` pages is a good start.
 
 ## The `meta` Parameter
 
