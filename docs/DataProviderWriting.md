@@ -425,6 +425,12 @@ export default {
 };
 ```
 
+## Handling Authentication
+
+Your API probably requires some form of authentication (e.g. a token in the `Authorization` header). It's the responsibility of [the `authProvider`](./Authentication.md) to log the user in and obtain the authentication data. React-admin doesn't provide any particular way of communicating this authentication data to the Data Provider. Most of the time, storing the authentication data in the  `localStorage` is the best choice - and allows uses to open multiple tabs without having to log in again.
+
+Check the [Handling Authentication](./DataProviders.md#handling-authentication) section in the Data Providers introduction for an example of such a setup.
+
 ## Testing Data Provider Methods
 
 A good way to test your data provider is to build a react-admin app with components that depend on it. Here is a list of components calling the data provider methods:
@@ -482,6 +488,44 @@ const { data } = dataProvider.getOne('posts', { id: 123 })
 ```
 
 This will cause the Edit view to blink on load. If you have this problem, modify your Data Provider to return the same shape for all methods. 
+
+## `fetchJson`: Built-In HTTP Client
+
+Although your Data Provider can use any HTTP client (`fetch`, `axios`, etc.), react-admin suggests using a helper function called `fetchJson` that it provides.
+
+`fetchJson` is a wrapper around the `fetch` API that automatically handles JSON deserialization, rejects when the HTTP response isn't 2XX or 3XX, and throws a particular type of error that allows the UI to display a meaningful notification. `fetchJson` also lets you add an `Authorization` header if you pass a `user` option.
+
+Here is how you can use it in your Data Provider:
+
+```diff
++import { fetchUtils } from 'react-admin';
+
++const fetchJson = (url, options = {}) => {
++   options.user = {
++       authenticated: true,
++       // use the authentication token from local storage (given the authProvider added it there)
++       token: localStorage.getItem('token')
++   };
++   return fetchUtils.fetchJson(url, options);
++};
+// ...
+
+const dataProvider = {
+    getList: (resource, params) => {
+        const { page, perPage } = params.pagination;
+        const { field, order } = params.sort;
+        const query = {
+            sort: JSON.stringify([field, order]),
+            range: JSON.stringify([(page - 1) * perPage, page * perPage - 1]),
+            filter: JSON.stringify(params.filter),
+        };
+        const url = `${apiUrl}/${resource}?${stringify(query)}`;
+-       return fetch(url, { method: 'GET' });
++       return fetchJson(url, { method: 'GET' });
+    },
+    // ...
+};
+```
 
 ## Example REST Implementation
 
