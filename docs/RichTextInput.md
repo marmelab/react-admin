@@ -175,14 +175,16 @@ const MyRichTextInput = ({ size, ...props }) => (
 
 You might need access to the editor to use [the dedicated API](https://tiptap.dev/docs/editor/api/editor). To do it, you can assign a `ref` in the `onCreate` function in the `editorOptions` prop of your `<RichTextInput>` component which returns the editor:
 
+{% raw %}
 ```tsx
+import React from 'react';
 import { Edit, SaveButton, SimpleForm, TextInput, Toolbar } from 'react-admin';
 import { DefaultEditorOptions, RichTextInput } from 'ra-input-rich-text';
-import { Buuton } from 'ra-ui-materialui';
+import { Button } from 'ra-ui-materialui';
 import { Editor } from '@tiptap/react';
 
 export const PostEdit = () => {
-    const editorRef = React.useRef<Editor>(null);
+    const editorRef = React.useRef<Editor | null>(null);
 
     return (
         <Edit>
@@ -191,16 +193,22 @@ export const PostEdit = () => {
                     <Toolbar>
                         <SaveButton />
                         <Button
-                            onClick={() => editorRef.current.commands.setContent('<h3>Here is my template</h3>')}
+                            onClick={() =>
+                                editorRef.current
+                                    ? editorRef.current.commands.setContent(
+                                          '<h3>Here is my template</h3>'
+                                      )
+                                    : null
+                            }
                         >
-                            Use template
+                            <>Use template</>
                         </Button>
                     </Toolbar>
                 }
             >
                 <TextInput source="title" />
-                <RichTextInput 
-                    source="body" 
+                <RichTextInput
+                    source="body"
                     editorOptions={{
                         ...DefaultEditorOptions,
                         onCreate: ({ editor }: { editor: Editor }) => {
@@ -210,9 +218,10 @@ export const PostEdit = () => {
                 />
             </SimpleForm>
         </Edit>
-    )
+    );
 };
 ```
+{% endraw %}  
 
 ## AI Writing Assistant
 
