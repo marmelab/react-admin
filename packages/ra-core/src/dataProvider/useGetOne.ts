@@ -109,7 +109,7 @@ export type UseGetOneOptions<RecordType extends RaRecord = any> = Omit<
     onError?: (error: Error) => void;
     onSettled?: (
         data?: GetOneResult<RecordType>['data'],
-        error?: Error
+        error?: Error | null
     ) => void;
 };
 

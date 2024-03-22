@@ -106,7 +106,7 @@ export const useUpdate = <RecordType extends RaRecord = any, ErrorType = Error>(
         const updatedAt = mode.current === 'undoable' ? now + 5 * 1000 : now;
 
         const updateColl = (old: RecordType[]) => {
-            if (!old) return;
+            if (!old) return old;
             const index = old.findIndex(
                 // eslint-disable-next-line eqeqeq
                 record => record.id == id
@@ -116,7 +116,7 @@ export const useUpdate = <RecordType extends RaRecord = any, ErrorType = Error>(
             }
             return [
                 ...old.slice(0, index),
-                { ...old[index], ...data },
+                { ...old[index], ...data } as RecordType,
                 ...old.slice(index + 1),
             ];
         };
@@ -181,15 +181,29 @@ export const useUpdate = <RecordType extends RaRecord = any, ErrorType = Error>(
             data: callTimeData = paramsRef.current.data,
             meta: callTimeMeta = paramsRef.current.meta,
             previousData: callTimePreviousData = paramsRef.current.previousData,
-        } = {}) =>
-            dataProvider
+        } = {}) => {
+            if (!callTimeResource) {
+                throw new Error(
+                    'useUpdate mutation requires a non-empty resource'
+                );
+            }
+            if (!callTimeId) {
+                throw new Error('useUpdate mutation requires a non-empty id');
+            }
+            if (!callTimeData) {
+                throw new Error(
+                    'useUpdate mutation requires a non-empty data object'
+                );
+            }
+            return dataProvider
                 .update<RecordType>(callTimeResource, {
                     id: callTimeId,
                     data: callTimeData,
                     previousData: callTimePreviousData,
                     meta: callTimeMeta,
                 })
-                .then(({ data }) => data),
+                .then(({ data }) => data);
+        },
         ...mutationOptions,
         onMutate: async (
             variables: Partial<UseUpdateMutateParams<RecordType>>
@@ -270,7 +284,7 @@ export const useUpdate = <RecordType extends RaRecord = any, ErrorType = Error>(
     });
 
     const update = async (
-        callTimeResource: string = resource,
+        callTimeResource: string | undefined = resource,
         callTimeParams: Partial<UpdateParams<RecordType>> = {},
         callTimeOptions: MutateOptions<
             RecordType,
@@ -380,27 +394,24 @@ export const useUpdate = <RecordType extends RaRecord = any, ErrorType = Error>(
         });
 
         // run the success callbacks during the next tick
-        if (otherCallTimeOptions.onSuccess) {
-            setTimeout(
-                () =>
-                    otherCallTimeOptions.onSuccess(
-                        { ...previousRecord, ...callTimeData },
-                        { resource: callTimeResource, ...callTimeParams },
-                        { snapshot: snapshot.current }
-                    ),
-                0
-            );
-        } else if (mutationOptions.onSuccess && !hasCallTimeOnSuccess.current) {
-            setTimeout(
-                () =>
-                    mutationOptions.onSuccess(
-                        { ...previousRecord, ...callTimeData },
-                        { resource: callTimeResource, ...callTimeParams },
-                        { snapshot: snapshot.current }
-                    ),
-                0
-            );
-        }
+        setTimeout(() => {
+            if (otherCallTimeOptions.onSuccess) {
+                otherCallTimeOptions.onSuccess(
+                    { ...previousRecord, ...callTimeData } as RecordType,
+                    { resource: callTimeResource, ...callTimeParams },
+                    { snapshot: snapshot.current }
+                );
+            } else if (
+                mutationOptions.onSuccess &&
+                !hasCallTimeOnSuccess.current
+            ) {
+                mutationOptions.onSuccess(
+                    { ...previousRecord, ...callTimeData } as RecordType,
+                    { resource: callTimeResource, ...callTimeParams },
+                    { snapshot: snapshot.current }
+                );
+            }
+        }, 0);
 
         if (mode.current === 'optimistic') {
             // call the mutate method without success side effects

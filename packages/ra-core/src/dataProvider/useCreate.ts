@@ -96,13 +96,24 @@ export const useCreate = <
             resource: callTimeResource = resource,
             data: callTimeData = paramsRef.current.data,
             meta: callTimeMeta = paramsRef.current.meta,
-        } = {}) =>
-            dataProvider
+        } = {}) => {
+            if (!callTimeResource) {
+                throw new Error(
+                    'useCreate mutation requires a non-empty resource'
+                );
+            }
+            if (!callTimeData) {
+                throw new Error(
+                    'useCreate mutation requires a non-empty data object'
+                );
+            }
+            return dataProvider
                 .create<RecordType, ResultRecordType>(callTimeResource, {
                     data: callTimeData,
                     meta: callTimeMeta,
                 })
-                .then(({ data }) => data),
+                .then(({ data }) => data);
+        },
         ...options,
         onError: (error, variables, context) => {
             if (options.onError && !hasCallTimeOnError.current) {
@@ -144,7 +155,7 @@ export const useCreate = <
     });
 
     const create = (
-        callTimeResource: string = resource,
+        callTimeResource: string | undefined = resource,
         callTimeParams: Partial<CreateParams<Partial<RecordType>>> = {},
         callTimeOptions: MutateOptions<
             ResultRecordType,
@@ -168,7 +179,7 @@ export const useCreate = <
                 otherCallTimeOptions
             );
         }
-        mutation.mutate(
+        return mutation.mutate(
             { resource: callTimeResource, ...callTimeParams },
             otherCallTimeOptions
         );
@@ -220,7 +231,7 @@ export type CreateMutationFunction<
         Partial<UseCreateMutateParams<RecordType>>,
         unknown
     > & { returnPromise?: TReturnPromise }
-) => Promise<TReturnPromise extends true ? ResultRecordType : void>;
+) => TReturnPromise extends true ? Promise<ResultRecordType> : void;
 
 export type UseCreateResult<
     RecordType extends Omit<RaRecord, 'id'> = any,

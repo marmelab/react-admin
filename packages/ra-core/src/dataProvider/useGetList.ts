@@ -177,7 +177,10 @@ export type UseGetListOptions<RecordType extends RaRecord = any> = Omit<
 > & {
     onSuccess?: (value: GetListResult<RecordType>) => void;
     onError?: (error: Error) => void;
-    onSettled?: (data?: GetListResult<RecordType>, error?: Error) => void;
+    onSettled?: (
+        data?: GetListResult<RecordType>,
+        error?: Error | null
+    ) => void;
 };
 
 export type UseGetListHookValue<

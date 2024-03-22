@@ -10,17 +10,7 @@ import {
     UPDATE_MANY,
 } from './dataFetchActions';
 import { LegacyDataProvider, DataProvider } from '../types';
-
-const defaultDataProvider = () => Promise.resolve();
-defaultDataProvider.create = () => Promise.resolve(null);
-defaultDataProvider.delete = () => Promise.resolve(null);
-defaultDataProvider.deleteMany = () => Promise.resolve(null);
-defaultDataProvider.getList = () => Promise.resolve(null);
-defaultDataProvider.getMany = () => Promise.resolve(null);
-defaultDataProvider.getManyReference = () => Promise.resolve(null);
-defaultDataProvider.getOne = () => Promise.resolve(null);
-defaultDataProvider.update = () => Promise.resolve(null);
-defaultDataProvider.updateMany = () => Promise.resolve(null);
+import { defaultDataProvider } from './defaultDataProvider';
 
 const fetchMap = {
     create: CREATE,
@@ -35,7 +25,7 @@ const fetchMap = {
 };
 
 interface ConvertedDataProvider extends DataProvider {
-    (type: string, resource: string, params: any): Promise<any>;
+    [key: string]: (...params: any) => Promise<any>;
 }
 /**
  * Turn a function-based dataProvider to an object-based one

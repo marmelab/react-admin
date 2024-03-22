@@ -235,7 +235,7 @@ export type UseInfiniteGetListOptions<RecordType extends RaRecord = any> = Omit<
     onError?: (error: Error) => void;
     onSettled?: (
         data?: InfiniteData<GetInfiniteListResult<RecordType>>,
-        error?: Error
+        error?: Error | null
     ) => void;
 };
 

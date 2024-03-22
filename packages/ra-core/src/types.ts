@@ -143,9 +143,9 @@ export interface QueryFunctionContext {
 }
 
 export interface GetListParams {
-    pagination: PaginationPayload;
-    sort: SortPayload;
-    filter: any;
+    pagination?: PaginationPayload;
+    sort?: SortPayload;
+    filter?: any;
     meta?: any;
 }
 export interface GetListResult<RecordType extends RaRecord = any> {
@@ -159,7 +159,7 @@ export interface GetListResult<RecordType extends RaRecord = any> {
 
 export interface GetInfiniteListResult<RecordType extends RaRecord = any>
     extends GetListResult<RecordType> {
-    pageParam?: number;
+    pageParam: number;
 }
 export interface GetOneParams<RecordType extends RaRecord = any> {
     id: RecordType['id'];

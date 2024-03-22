@@ -364,5 +364,5 @@ export type UseGetManyAggregateOptions<RecordType extends RaRecord> = Omit<
 > & {
     onSuccess?: (data: RecordType[]) => void;
     onError?: (error: Error) => void;
-    onSettled?: (data?: RecordType[], error?: Error) => void;
+    onSettled?: (data?: RecordType[], error?: Error | null) => void;
 };

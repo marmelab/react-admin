@@ -115,7 +115,7 @@ export const useUpdateMany = <
             mode.current === 'undoable' ? Date.now() + 1000 * 5 : Date.now();
 
         const updateColl = (old: RecordType[]) => {
-            if (!old) return;
+            if (!old) return old;
             let newCollection = [...old];
             ids.forEach(id => {
                 // eslint-disable-next-line eqeqeq
@@ -193,14 +193,30 @@ export const useUpdateMany = <
             ids: callTimeIds = paramsRef.current.ids,
             data: callTimeData = paramsRef.current.data,
             meta: callTimeMeta = paramsRef.current.meta,
-        } = {}) =>
-            dataProvider
-                .updateMany(callTimeResource, {
+        } = {}) => {
+            if (!callTimeResource) {
+                throw new Error(
+                    'useUpdateMany mutation requires a non-empty resource'
+                );
+            }
+            if (!callTimeIds) {
+                throw new Error(
+                    'useUpdateMany mutation requires an array of ids'
+                );
+            }
+            if (!callTimeData) {
+                throw new Error(
+                    'useUpdateMany mutation requires a non-empty data object'
+                );
+            }
+            return dataProvider
+                .updateMany<RecordType>(callTimeResource, {
                     ids: callTimeIds,
                     data: callTimeData,
                     meta: callTimeMeta,
                 })
-                .then(({ data }) => data),
+                .then(({ data }) => data || []);
+        },
         ...mutationOptions,
         onMutate: async (
             variables: Partial<UseUpdateManyMutateParams<RecordType>>
@@ -248,6 +264,16 @@ export const useUpdateMany = <
                     data: callTimeData = data,
                     meta: callTimeMeta = meta,
                 } = variables;
+                if (!callTimeResource) {
+                    throw new Error(
+                        'useUpdateMany mutation requires a non-empty resource'
+                    );
+                }
+                if (!callTimeIds) {
+                    throw new Error(
+                        'useUpdateMany mutation requires an array of ids'
+                    );
+                }
                 updateCache({
                     resource: callTimeResource,
                     ids: callTimeIds,
@@ -292,7 +318,7 @@ export const useUpdateMany = <
     });
 
     const updateMany = async (
-        callTimeResource: string = resource,
+        callTimeResource: string | undefined = resource,
         callTimeParams: Partial<UpdateManyParams<RecordType>> = {},
         callTimeOptions: MutateOptions<
             Array<RecordType['id']>,
@@ -301,6 +327,11 @@ export const useUpdateMany = <
             unknown
         > & { mutationMode?: MutationMode; returnPromise?: boolean } = {}
     ) => {
+        if (!callTimeResource) {
+            throw new Error(
+                'useUpdateMany mutation requires a non-empty resource'
+            );
+        }
         const {
             mutationMode,
             returnPromise = mutationOptions.returnPromise,
@@ -344,6 +375,9 @@ export const useUpdateMany = <
             data: callTimeData = data,
             meta: callTimeMeta = meta,
         } = callTimeParams;
+        if (!callTimeIds) {
+            throw new Error('useUpdateMany mutation requires an array of ids');
+        }
 
         // optimistic update as documented in https://react-query-v5.tanstack.com/guides/optimistic-updates
         // except we do it in a mutate wrapper instead of the onMutate callback
@@ -393,27 +427,21 @@ export const useUpdateMany = <
         });
 
         // run the success callbacks during the next tick
-        if (otherCallTimeOptions.onSuccess) {
-            setTimeout(
-                () =>
-                    otherCallTimeOptions.onSuccess(
-                        callTimeIds,
-                        { resource: callTimeResource, ...callTimeParams },
-                        { snapshot: snapshot.current }
-                    ),
-                0
-            );
-        } else if (mutationOptions.onSuccess) {
-            setTimeout(
-                () =>
-                    mutationOptions.onSuccess(
-                        callTimeIds,
-                        { resource: callTimeResource, ...callTimeParams },
-                        { snapshot: snapshot.current }
-                    ),
-                0
-            );
-        }
+        setTimeout(() => {
+            if (otherCallTimeOptions.onSuccess) {
+                otherCallTimeOptions.onSuccess(
+                    callTimeIds,
+                    { resource: callTimeResource, ...callTimeParams },
+                    { snapshot: snapshot.current }
+                );
+            } else if (mutationOptions.onSuccess) {
+                mutationOptions.onSuccess(
+                    callTimeIds,
+                    { resource: callTimeResource, ...callTimeParams },
+                    { snapshot: snapshot.current }
+                );
+            }
+        }, 0);
 
         if (mode.current === 'optimistic') {
             // call the mutate method without success side effects

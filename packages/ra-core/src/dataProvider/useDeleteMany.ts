@@ -105,7 +105,7 @@ export const useDeleteMany = <
         const updatedAt = mode.current === 'undoable' ? now + 5 * 1000 : now;
 
         const updateColl = (old: RecordType[]) => {
-            if (!old) return;
+            if (!old) return old;
             let newCollection = [...old];
             ids.forEach(id => {
                 const index = newCollection.findIndex(
@@ -189,14 +189,26 @@ export const useDeleteMany = <
                 if (!res || !res.data) return res;
                 const newCollection = updateColl(res.data);
                 const recordWasFound = newCollection.length < res.data.length;
-                return recordWasFound
-                    ? {
-                          data: newCollection,
-                          total:
-                              res.total -
-                              (res.data.length - newCollection.length),
-                      }
-                    : res;
+                if (!recordWasFound) {
+                    return res;
+                }
+                if (res.total) {
+                    return {
+                        data: newCollection,
+                        total:
+                            res.total -
+                            (res.data.length - newCollection.length),
+                    };
+                }
+                if (res.pageInfo) {
+                    return {
+                        data: newCollection,
+                        pageInfo: res.pageInfo,
+                    };
+                }
+                throw new Error(
+                    'Found getList result in cache without total or pageInfo'
+                );
             },
             { updatedAt }
         );
@@ -211,13 +223,27 @@ export const useDeleteMany = <
             resource: callTimeResource = resource,
             ids: callTimeIds = paramsRef.current.ids,
             meta: callTimeMeta = paramsRef.current.meta,
-        } = {}) =>
-            dataProvider
+        } = {}) => {
+            if (!callTimeResource) {
+                throw new Error(
+                    'useDeleteMany mutation requires a non-empty resource'
+                );
+            }
+            if (!callTimeIds) {
+                throw new Error(
+                    'useDeleteMany mutation requires an array of ids'
+                );
+            }
+            if (callTimeIds.length === 0) {
+                return Promise.resolve([]);
+            }
+            return dataProvider
                 .deleteMany<RecordType>(callTimeResource, {
                     ids: callTimeIds,
                     meta: callTimeMeta,
                 })
-                .then(({ data }) => data),
+                .then(({ data }) => data || []);
+        },
         ...mutationOptions,
         onMutate: async (
             variables: Partial<UseDeleteManyMutateParams<RecordType>>
@@ -302,7 +328,7 @@ export const useDeleteMany = <
     });
 
     const mutate = async (
-        callTimeResource: string = resource,
+        callTimeResource: string | undefined = resource,
         callTimeParams: Partial<DeleteManyParams<RecordType>> = {},
         callTimeOptions: MutateOptions<
             RecordType['id'][],
@@ -336,6 +362,9 @@ export const useDeleteMany = <
         }
 
         const { ids: callTimeIds = ids } = callTimeParams;
+        if (!callTimeIds) {
+            throw new Error('useDeleteMany mutation requires an array of ids');
+        }
 
         // optimistic update as documented in https://react-query-v5.tanstack.com/guides/optimistic-updates
         // except we do it in a mutate wrapper instead of the onMutate callback
@@ -381,27 +410,21 @@ export const useDeleteMany = <
         });
 
         // run the success callbacks during the next tick
-        if (otherCallTimeOptions.onSuccess) {
-            setTimeout(
-                () =>
-                    otherCallTimeOptions.onSuccess(
-                        callTimeIds,
-                        { resource: callTimeResource, ...callTimeParams },
-                        { snapshot: snapshot.current }
-                    ),
-                0
-            );
-        } else if (mutationOptions.onSuccess) {
-            setTimeout(
-                () =>
-                    mutationOptions.onSuccess(
-                        callTimeIds,
-                        { resource: callTimeResource, ...callTimeParams },
-                        { snapshot: snapshot.current }
-                    ),
-                0
-            );
-        }
+        setTimeout(() => {
+            if (otherCallTimeOptions.onSuccess) {
+                otherCallTimeOptions.onSuccess(
+                    callTimeIds,
+                    { resource: callTimeResource, ...callTimeParams },
+                    { snapshot: snapshot.current }
+                );
+            } else if (mutationOptions.onSuccess) {
+                mutationOptions.onSuccess(
+                    callTimeIds,
+                    { resource: callTimeResource, ...callTimeParams },
+                    { snapshot: snapshot.current }
+                );
+            }
+        }, 0);
 
         if (mode.current === 'optimistic') {
             // call the mutate method without success side effects
