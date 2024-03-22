@@ -228,7 +228,7 @@ export const CoreAdminUI = (props: CoreAdminUIProps) => {
         loginPage: LoginPage = false,
         authCallbackPage: LoginCallbackPage = false,
         ready = Ready,
-        title,
+        title = 'React Admin',
         requireAuth = false,
     } = props;
 

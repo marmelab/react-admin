@@ -32,6 +32,11 @@ export const useResourceDefinition = <
     props?: UseResourceDefinitionOptions
 ): ResourceDefinition<OptionsType> => {
     const resource = useResourceContext(props);
+    if (!resource) {
+        throw new Error(
+            'useResourceDefinition: missing resource prop or context'
+        );
+    }
     const resourceDefinitions = useResourceDefinitions();
     const { hasCreate, hasEdit, hasList, hasShow, recordRepresentation } =
         props || {};

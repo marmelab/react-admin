@@ -20,17 +20,19 @@ export const testI18nProvider = ({
 }: {
     translate?: I18nProvider['translate'];
     messages?: Record<string, string | ((options?: any) => string)>;
-}): I18nProvider => ({
-    translate: messages
-        ? (key, options) => {
-              const message = lodashGet(messages, key);
-              return message
-                  ? typeof message === 'function'
-                      ? message(options)
-                      : message
-                  : options?._ || key;
-          }
-        : translate,
-    changeLocale: () => Promise.resolve(),
-    getLocale: () => 'en',
-});
+}): I18nProvider => {
+    return {
+        translate: messages
+            ? (key, options) => {
+                  const message = lodashGet(messages, key);
+                  return message
+                      ? typeof message === 'function'
+                          ? message(options)
+                          : message
+                      : options?._ || key;
+              }
+            : translate || (key => key),
+        changeLocale: () => Promise.resolve(),
+        getLocale: () => 'en',
+    };
+};
