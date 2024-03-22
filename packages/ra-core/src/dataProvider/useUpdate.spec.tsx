@@ -189,7 +189,7 @@ describe('useUpdate', () => {
     describe('mutationMode', () => {
         it('when pessimistic, displays result and success side effects when dataProvider promise resolves', async () => {
             jest.spyOn(console, 'log').mockImplementation(() => {});
-            render(<SuccessCasePessimistic />);
+            render(<SuccessCasePessimistic timeout={10} />);
             screen.getByText('Update title').click();
             await waitFor(() => {
                 expect(screen.queryByText('success')).toBeNull();
@@ -205,7 +205,7 @@ describe('useUpdate', () => {
         it('when pessimistic, displays error and error side effects when dataProvider promise rejects', async () => {
             jest.spyOn(console, 'log').mockImplementation(() => {});
             jest.spyOn(console, 'error').mockImplementation(() => {});
-            render(<ErrorCasePessimistic />);
+            render(<ErrorCasePessimistic timeout={10} />);
             screen.getByText('Update title').click();
             await waitFor(() => {
                 expect(screen.queryByText('success')).toBeNull();
@@ -224,7 +224,7 @@ describe('useUpdate', () => {
         });
         it('when optimistic, displays result and success side effects right away', async () => {
             jest.spyOn(console, 'log').mockImplementation(() => {});
-            render(<SuccessCaseOptimistic />);
+            render(<SuccessCaseOptimistic timeout={10} />);
             screen.getByText('Update title').click();
             await waitFor(() => {
                 expect(screen.queryByText('success')).not.toBeNull();
@@ -240,7 +240,7 @@ describe('useUpdate', () => {
         it('when optimistic, displays error and error side effects when dataProvider promise rejects', async () => {
             jest.spyOn(console, 'log').mockImplementation(() => {});
             jest.spyOn(console, 'error').mockImplementation(() => {});
-            render(<ErrorCaseOptimistic />);
+            render(<ErrorCaseOptimistic timeout={10} />);
             screen.getByText('Update title').click();
             await waitFor(() => {
                 expect(screen.queryByText('success')).not.toBeNull();
@@ -259,7 +259,7 @@ describe('useUpdate', () => {
         });
         it('when undoable, displays result and success side effects right away and fetched on confirm', async () => {
             jest.spyOn(console, 'log').mockImplementation(() => {});
-            render(<SuccessCaseUndoable />);
+            render(<SuccessCaseUndoable timeout={10} />);
             act(() => {
                 screen.getByText('Update title').click();
             });
@@ -287,7 +287,7 @@ describe('useUpdate', () => {
         });
         it('when undoable, displays result and success side effects right away and reverts on cancel', async () => {
             jest.spyOn(console, 'log').mockImplementation(() => {});
-            render(<SuccessCaseUndoable />);
+            render(<SuccessCaseUndoable timeout={10} />);
             await screen.findByText('Hello');
             act(() => {
                 screen.getByText('Update title').click();
