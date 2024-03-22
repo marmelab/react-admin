@@ -22,7 +22,10 @@ export const useRecordSelection = <RecordType extends RaRecord = any>(
     }
 ] => {
     const storeKey = `${resource}.selectedIds`;
-    const [ids, setIds] = useStore(storeKey, defaultSelection);
+    const [ids, setIds] = useStore<RecordType['id'][]>(
+        storeKey,
+        defaultSelection
+    );
     const reset = useRemoveFromStore(storeKey);
 
     const selectionModifiers = useMemo(

@@ -104,14 +104,14 @@ export interface UseGetIdentityOptions<ErrorType extends Error = Error>
     > {
     onSuccess?: (data: UserIdentity) => void;
     onError?: (err: Error) => void;
-    onSettled?: (data?: UserIdentity, error?: Error) => void;
+    onSettled?: (data?: UserIdentity, error?: Error | null) => void;
 }
 
 export type UseGetIdentityResult<ErrorType = Error> = QueryObserverResult<
     UserIdentity,
     ErrorType
 > & {
-    identity: UserIdentity | null;
+    identity: UserIdentity | undefined;
 };
 
 export default useGetIdentity;
