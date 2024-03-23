@@ -288,8 +288,11 @@ describe('useReferenceManyFieldController', () => {
                 }}
             />
         );
-        const dataProvider = testDataProvider();
-        const getManyReference = jest.spyOn(dataProvider, 'getManyReference');
+        const dataProvider = testDataProvider({
+            getManyReference: jest
+                .fn()
+                .mockResolvedValue({ data: [], total: 0 }),
+        });
         render(
             <CoreAdminContext dataProvider={dataProvider}>
                 <ReferenceManyFieldController
@@ -312,8 +315,8 @@ describe('useReferenceManyFieldController', () => {
         await waitFor(() => new Promise(resolve => setTimeout(resolve, 600)));
 
         // Called twice: on load and on filter changes
-        expect(getManyReference).toHaveBeenCalledTimes(2);
-        expect(getManyReference).toHaveBeenCalledWith('books', {
+        expect(dataProvider.getManyReference).toHaveBeenCalledTimes(2);
+        expect(dataProvider.getManyReference).toHaveBeenCalledWith('books', {
             target: 'author_id',
             id: 123,
             filter: { q: 'hello' },
