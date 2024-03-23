@@ -98,7 +98,9 @@ describe('useInfiniteListController', () => {
 
         it('should reset page when enabled is set to false', async () => {
             const children = jest.fn().mockReturnValue(<span>children</span>);
-            const dataProvider = testDataProvider();
+            const dataProvider = testDataProvider({
+                getList: () => Promise.resolve({ data: [], total: 0 }),
+            });
             const props = { ...defaultProps, children };
             render(
                 <CoreAdminContext dataProvider={dataProvider}>
@@ -150,7 +152,9 @@ describe('useInfiniteListController', () => {
 
             render(
                 <CoreAdminContext
-                    dataProvider={testDataProvider()}
+                    dataProvider={testDataProvider({
+                        getList: () => Promise.resolve({ data: [], total: 0 }),
+                    })}
                     store={store}
                 >
                     <InfiniteListController {...props} />
@@ -192,7 +196,10 @@ describe('useInfiniteListController', () => {
                     ]}
                 >
                     <CoreAdminContext
-                        dataProvider={testDataProvider()}
+                        dataProvider={testDataProvider({
+                            getList: () =>
+                                Promise.resolve({ data: [], total: 0 }),
+                        })}
                         store={store}
                     >
                         <InfiniteListController {...props} />
@@ -311,7 +318,11 @@ describe('useInfiniteListController', () => {
             };
 
             render(
-                <CoreAdminContext>
+                <CoreAdminContext
+                    dataProvider={testDataProvider({
+                        getList: () => Promise.resolve({ data: [], total: 0 }),
+                    })}
+                >
                     <InfiniteListController {...props} />
                 </CoreAdminContext>
             );
@@ -333,7 +344,11 @@ describe('useInfiniteListController', () => {
 
         it('should support to sync calls', async () => {
             render(
-                <CoreAdminContext>
+                <CoreAdminContext
+                    dataProvider={testDataProvider({
+                        getList: () => Promise.resolve({ data: [], total: 0 }),
+                    })}
+                >
                     <InfiniteListController {...defaultProps}>
                         {({ displayedFilters, showFilter }) => (
                             <>
