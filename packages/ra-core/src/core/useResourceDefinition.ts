@@ -30,13 +30,8 @@ export const useResourceDefinition = <
     OptionsType extends ResourceOptions = any
 >(
     props?: UseResourceDefinitionOptions
-): ResourceDefinition<OptionsType> => {
+): Omit<ResourceDefinition<OptionsType>, 'name'> => {
     const resource = useResourceContext(props);
-    if (!resource) {
-        throw new Error(
-            'useResourceDefinition: missing resource prop or context'
-        );
-    }
     const resourceDefinitions = useResourceDefinitions();
     const { hasCreate, hasEdit, hasList, hasShow, recordRepresentation } =
         props || {};
@@ -51,7 +46,7 @@ export const useResourceDefinition = <
                 hasShow,
                 recordRepresentation,
             },
-            resourceDefinitions[resource]
+            resource ? resourceDefinitions[resource] : {}
         );
     }, [
         resource,

@@ -75,6 +75,7 @@ export const WithPreferenceKey = () => (
                         <SelectColumnsButton preferenceKey="just-a-key.to_test_with" />
                     </Box>
                     <DatagridConfigurable
+                        resource="books"
                         preferenceKey="just-a-key.to_test_with"
                         data={data}
                         sort={{ field: 'title', order: 'ASC' }}
