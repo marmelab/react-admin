@@ -81,7 +81,9 @@ describe('useListController', () => {
 
         it('should reset page when enabled is set to false', async () => {
             const children = jest.fn().mockReturnValue(<span>children</span>);
-            const dataProvider = testDataProvider();
+            const dataProvider = testDataProvider({
+                getList: () => Promise.resolve({ data: [], total: 0 }),
+            });
             const props = { ...defaultProps, children };
             render(
                 <CoreAdminContext dataProvider={dataProvider}>
@@ -134,7 +136,9 @@ describe('useListController', () => {
 
             render(
                 <CoreAdminContext
-                    dataProvider={testDataProvider()}
+                    dataProvider={testDataProvider({
+                        getList: () => Promise.resolve({ data: [], total: 0 }),
+                    })}
                     store={store}
                 >
                     <ListController {...props} />
@@ -176,7 +180,10 @@ describe('useListController', () => {
                     ]}
                 >
                     <CoreAdminContext
-                        dataProvider={testDataProvider()}
+                        dataProvider={testDataProvider({
+                            getList: () =>
+                                Promise.resolve({ data: [], total: 0 }),
+                        })}
                         store={store}
                     >
                         <ListController {...props} />
@@ -289,7 +296,11 @@ describe('useListController', () => {
             };
 
             render(
-                <CoreAdminContext>
+                <CoreAdminContext
+                    dataProvider={testDataProvider({
+                        getList: () => Promise.resolve({ data: [], total: 0 }),
+                    })}
+                >
                     <ListController {...props} />
                 </CoreAdminContext>
             );
@@ -311,7 +322,11 @@ describe('useListController', () => {
 
         it('should support to sync calls', async () => {
             render(
-                <CoreAdminContext>
+                <CoreAdminContext
+                    dataProvider={testDataProvider({
+                        getList: () => Promise.resolve({ data: [], total: 0 }),
+                    })}
+                >
                     <ListController {...defaultProps}>
                         {({ displayedFilters, showFilter }) => (
                             <>

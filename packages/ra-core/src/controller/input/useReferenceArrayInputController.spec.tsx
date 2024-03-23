@@ -41,7 +41,14 @@ describe('useReferenceArrayInputController', () => {
                 <div>{isLoading.toString()}</div>
             ));
             render(
-                <CoreAdminContext dataProvider={testDataProvider()}>
+                <CoreAdminContext
+                    dataProvider={testDataProvider({
+                        getMany: jest.fn().mockResolvedValue({ data: [] }),
+                        getList: jest
+                            .fn()
+                            .mockResolvedValue({ data: [], total: 0 }),
+                    })}
+                >
                     <Form
                         defaultValues={{ tag_ids: [1, 2] }}
                         onSubmit={jest.fn()}
