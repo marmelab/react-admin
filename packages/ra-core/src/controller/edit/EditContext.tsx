@@ -20,9 +20,11 @@ import { EditControllerResult } from './useEditController';
  * };
  */
 export const EditContext = createContext<EditControllerResult>({
+    record: null,
     isFetching: false,
     isLoading: false,
     isPending: false,
+    error: null,
     redirect: false,
     refetch: () => Promise.reject('not implemented'),
     resource: '',

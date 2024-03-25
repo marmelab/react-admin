@@ -20,6 +20,8 @@ import { ShowControllerResult } from './useShowController';
  * };
  */
 export const ShowContext = createContext<ShowControllerResult>({
+    record: null,
+    error: null,
     isFetching: false,
     isLoading: false,
     isPending: false,

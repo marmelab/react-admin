@@ -116,6 +116,7 @@ export const useShowController = <RecordType extends RaRecord = any>(
                 : '',
     });
 
+    // @ts-ignore FIXME cannot find another way to fix this error: "Types of property 'isPending' are incompatible: Type 'boolean' is not assignable to type 'false'."
     return {
         defaultTitle,
         error,
@@ -135,16 +136,46 @@ export interface ShowControllerProps<RecordType extends RaRecord = any> {
     resource?: string;
 }
 
-export interface ShowControllerResult<RecordType extends RaRecord = any> {
+export interface ShowControllerBaseResult<RecordType extends RaRecord = any> {
     defaultTitle?: string;
-    // Necessary for actions (EditActions) which expect a data prop containing the record
-    // @deprecated - to be removed in 4.0d
-    data?: RecordType;
-    error?: any;
     isFetching: boolean;
     isLoading: boolean;
-    isPending: boolean;
     resource: string;
     record?: RecordType;
     refetch: UseGetOneHookValue<RecordType>['refetch'];
 }
+
+interface ShowControllerLoadingResult<RecordType extends RaRecord = any>
+    extends ShowControllerBaseResult<RecordType> {
+    record: undefined;
+    error: null;
+    isPending: true;
+}
+interface ShowControllerLoadingErrorResult<
+    RecordType extends RaRecord = any,
+    TError = Error
+> extends ShowControllerBaseResult<RecordType> {
+    record: undefined;
+    error: TError;
+    isPending: false;
+}
+interface ShowControllerRefetchErrorResult<
+    RecordType extends RaRecord = any,
+    TError = Error
+> extends ShowControllerBaseResult<RecordType> {
+    record: RecordType;
+    error: TError;
+    isPending: false;
+}
+interface ShowControllerSuccessResult<RecordType extends RaRecord = any>
+    extends ShowControllerBaseResult<RecordType> {
+    record: RecordType;
+    error: null;
+    isPending: false;
+}
+
+export type ShowControllerResult<RecordType extends RaRecord = any> =
+    | ShowControllerLoadingResult<RecordType>
+    | ShowControllerLoadingErrorResult<RecordType>
+    | ShowControllerRefetchErrorResult<RecordType>
+    | ShowControllerSuccessResult<RecordType>;

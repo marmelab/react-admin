@@ -240,6 +240,7 @@ export const useEditController = <
         ]
     );
 
+    // @ts-ignore FIXME cannot find another way to fix this error: "Types of property 'isPending' are incompatible: Type 'boolean' is not assignable to type 'false'."
     return {
         defaultTitle,
         error,
@@ -258,6 +259,8 @@ export const useEditController = <
     };
 };
 
+const DefaultRedirect = 'list';
+
 export interface EditControllerProps<
     RecordType extends RaRecord = any,
     ErrorType = Error
@@ -273,20 +276,47 @@ export interface EditControllerProps<
     [key: string]: any;
 }
 
-export interface EditControllerResult<RecordType extends RaRecord = any>
+export interface EditControllerBaseResult<RecordType extends RaRecord = any>
     extends SaveContextValue<RecordType> {
-    // Necessary for actions (EditActions) which expect a data prop containing the record
-    // @deprecated - to be removed in 4.0d
-    data?: RecordType;
-    error?: any;
     defaultTitle?: string;
     isFetching: boolean;
     isLoading: boolean;
-    isPending: boolean;
-    record?: RecordType;
     refetch: UseGetOneHookValue<RecordType>['refetch'];
     redirect: RedirectionSideEffect;
     resource: string;
 }
 
-const DefaultRedirect = 'list';
+interface EditControllerLoadingResult<RecordType extends RaRecord = any>
+    extends EditControllerBaseResult<RecordType> {
+    record: undefined;
+    error: null;
+    isPending: true;
+}
+interface EditControllerLoadingErrorResult<
+    RecordType extends RaRecord = any,
+    TError = Error
+> extends EditControllerBaseResult<RecordType> {
+    record: undefined;
+    error: TError;
+    isPending: false;
+}
+interface EditControllerRefetchErrorResult<
+    RecordType extends RaRecord = any,
+    TError = Error
+> extends EditControllerBaseResult<RecordType> {
+    record: RecordType;
+    error: TError;
+    isPending: false;
+}
+interface EditControllerSuccessResult<RecordType extends RaRecord = any>
+    extends EditControllerBaseResult<RecordType> {
+    record: RecordType;
+    error: null;
+    isPending: false;
+}
+
+export type EditControllerResult<RecordType extends RaRecord = any> =
+    | EditControllerLoadingResult<RecordType>
+    | EditControllerLoadingErrorResult<RecordType>
+    | EditControllerRefetchErrorResult<RecordType>
+    | EditControllerSuccessResult<RecordType>;
