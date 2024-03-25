@@ -111,8 +111,8 @@ export const ContactAside = ({ link = 'edit' }: { link?: 'edit' | 'show' }) => {
 };
 
 const TasksIterator = () => {
-    const { data, isLoading } = useListContext();
-    if (isLoading || data.length === 0) return null;
+    const { data, error, isPending } = useListContext();
+    if (isPending || error || data.length === 0) return null;
     return (
         <Box>
             <Typography variant="subtitle2">Tasks</Typography>
