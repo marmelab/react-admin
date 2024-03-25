@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { UseQueryOptions } from '@tanstack/react-query';
 import { Typography } from '@mui/material';
@@ -11,6 +11,8 @@ import {
     useTranslate,
     SortPayload,
     RaRecord,
+    ReferenceFieldContextProvider,
+    UseReferenceFieldControllerResult,
 } from 'ra-core';
 
 import { fieldPropTypes, FieldProps } from './types';
@@ -47,36 +49,40 @@ export const ReferenceOneField = <
     const createPath = useCreatePath();
     const translate = useTranslate();
 
-    const {
-        isFetching,
-        isLoading,
-        isPending,
-        referenceRecord,
-        error,
-        refetch,
-    } = useReferenceOneFieldController<ReferenceRecordType>({
-        record,
-        reference,
-        source,
-        target,
-        sort,
-        filter,
-        queryOptions,
-    });
+    const controllerProps = useReferenceOneFieldController<ReferenceRecordType>(
+        {
+            record,
+            reference,
+            source,
+            target,
+            sort,
+            filter,
+            queryOptions,
+        }
+    );
 
     const resourceLinkPath =
         link === false
             ? false
             : createPath({
                   resource: reference,
-                  id: referenceRecord?.id,
+                  id: controllerProps.referenceRecord?.id,
                   type:
                       typeof link === 'function'
                           ? link(record, reference)
                           : link,
               });
 
-    return !record || (!isPending && referenceRecord == null) ? (
+    const context = useMemo<UseReferenceFieldControllerResult>(
+        () => ({
+            ...controllerProps,
+            link: resourceLinkPath,
+        }),
+        [controllerProps, resourceLinkPath]
+    );
+    return !record ||
+        (!controllerProps.isPending &&
+            controllerProps.referenceRecord == null) ? (
         emptyText ? (
             <Typography component="span" variant="body2">
                 {emptyText && translate(emptyText, { _: emptyText })}
@@ -84,19 +90,11 @@ export const ReferenceOneField = <
         ) : null
     ) : (
         <ResourceContextProvider value={reference}>
-            <ReferenceFieldView
-                isLoading={isLoading}
-                isPending={isPending}
-                isFetching={isFetching}
-                referenceRecord={referenceRecord}
-                resourceLinkPath={resourceLinkPath}
-                reference={reference}
-                refetch={refetch}
-                error={error}
-                source={source}
-            >
-                {children}
-            </ReferenceFieldView>
+            <ReferenceFieldContextProvider value={context}>
+                <ReferenceFieldView reference={reference} source={source}>
+                    {children}
+                </ReferenceFieldView>
+            </ReferenceFieldContextProvider>
         </ResourceContextProvider>
     );
 };

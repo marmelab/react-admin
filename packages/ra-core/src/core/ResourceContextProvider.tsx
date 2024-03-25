@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ReactElement } from 'react';
+import { ReactNode } from 'react';
 import { ResourceContext, ResourceContextValue } from './ResourceContext';
 
 /**
@@ -25,7 +25,7 @@ export const ResourceContextProvider = ({
     children,
     value,
 }: {
-    children: ReactElement;
+    children: ReactNode;
     value?: ResourceContextValue;
 }) =>
     value ? (
