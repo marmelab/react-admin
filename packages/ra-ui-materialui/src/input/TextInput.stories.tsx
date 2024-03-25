@@ -102,6 +102,11 @@ export const HelperText = () => (
                     source="title"
                     helperText="Number of times the post was read"
                 />
+                <TextInput
+                    source="title"
+                    helperText="Number of times the post was read"
+                    error={true}
+                />
             </SimpleForm>
         </Create>
     </AdminContext>

@@ -120,6 +120,11 @@ export const HelperText = () => (
                     source="views"
                     helperText="Number of times the post was read"
                 />
+                <NumberInput
+                    source="views"
+                    helperText="Number of times the post was read"
+                    error={true}
+                />
             </SimpleForm>
         </Create>
     </AdminContext>
