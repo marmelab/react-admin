@@ -150,7 +150,7 @@ dataProvider.getMany('posts', { ids: [123, 124, 125] })
 
 ## `getManyReference`
 
-React-admin calls `dataProvider.getManyReference()` to fetch several records related to another one.
+React-admin calls `dataProvider.getManyReference()` to fetch the records related to another record. Although similar to `getList`, this method is designed for relationships. It is necessary because some APIs require a different query to fetch related records (e.g. `GET /posts/123/comments` to fetch comments related to post 123).
 
 **Interface**
 
@@ -425,6 +425,30 @@ export default {
 };
 ```
 
+## Handling Authentication
+
+Your API probably requires some form of authentication (e.g. a token in the `Authorization` header). It's the responsibility of [the `authProvider`](./Authentication.md) to log the user in and obtain the authentication data. React-admin doesn't provide any particular way of communicating this authentication data to the Data Provider. Most of the time, storing the authentication data in the  `localStorage` is the best choice - and allows uses to open multiple tabs without having to log in again.
+
+Check the [Handling Authentication](./DataProviders.md#handling-authentication) section in the Data Providers introduction for an example of such a setup.
+
+## Testing Data Provider Methods
+
+A good way to test your data provider is to build a react-admin app with components that depend on it. Here is a list of components calling the data provider methods:
+
+| Method             | Components |
+| ------------------ | --------- |
+| `getList`          | [`<List>`](./List.md), [`<ListGuesser>`](./ListGuesser.md), [`<ListBase>`](./ListBase.md), [`<InfiniteList>`](./InfiniteList.md), [`<Count>`](./Count.md), [`<Calendar>`](./Calendar.md), [`<ReferenceInput>`](./ReferenceInput.md), [`<ReferenceArrayInput>`](./ReferenceArrayInput.md), [`<ExportButton>`](./Buttons.md#exportbutton), [`<PrevNextButtons>`](./PrevNextButtons.md) |
+| `getOne`           | [`<Show>`](./Show.md), [`<ShowGuesser>`](./ShowGuesser.md), [`<ShowBase>`](./ShowBase.md), [`<Edit>`](./Edit.md), [`<EditGuesser>`](./EditGuesser.md), [`<EditBase>`](./EditBase.md) |
+| `getMany`          | [`<ReferenceField>`](./ReferenceField.md), [`<ReferenceArrayField>`](./ReferenceArrayField.md), [`<ReferenceInput>`](./ReferenceInput.md), [`<ReferenceArrayInput>`](./ReferenceArrayInput.md) |
+| `getManyReference` | [`<ReferenceManyField>`](./ReferenceManyField.md), [`<ReferenceOneField>`](./ReferenceOneField.md), [`<ReferenceManyInput>`](./ReferenceManyInput.md), [`<ReferenceOneInput>`](./ReferenceOneInput.md) |
+| `create`           | [`<Create>`](./Create.md), [`<CreateBase>`](./CreateBase.md), [`<EditableDatagrid>`](./EditableDatagrid.md), [`<CreateInDialogButton>`](./CreateInDialogButton.md) |
+| `update`           | [`<Edit>`](./Edit.md), [`<EditGuesser>`](./EditGuesser.md), [`<EditBase>`](./EditBase.md), [`<EditableDatagrid>`](./EditableDatagrid.md), [`<EditInDialogButton>`](./EditInDialogButton.md), [`<UpdateButton>`](./UpdateButton.md) |
+| `updateMany`       | [`<BulkUpdateButton>`](./BulkUpdateButton.md) |
+| `delete`           | [`<DeleteButton>`](./DeleteButton.md), [`<EditableDatagrid>`](./EditableDatagrid.md) |
+| `deleteMany`       | [`<BulkDeleteButton>`](./BulkDeleteButton.md) |
+
+A simple react-admin app with one `<Resource>` using [guessers](./Features.md#guessers--scaffolding) for the `list`, `edit`, and `show` pages is a good start.
+
 ## The `meta` Parameter
 
 All data provider methods accept a `meta` parameter. React-admin core components never set this `meta` when calling the data provider. It's designed to let you pass additional parameters to your data provider.
@@ -464,6 +488,44 @@ const { data } = dataProvider.getOne('posts', { id: 123 })
 ```
 
 This will cause the Edit view to blink on load. If you have this problem, modify your Data Provider to return the same shape for all methods. 
+
+## `fetchJson`: Built-In HTTP Client
+
+Although your Data Provider can use any HTTP client (`fetch`, `axios`, etc.), react-admin suggests using a helper function called `fetchJson` that it provides.
+
+`fetchJson` is a wrapper around the `fetch` API that automatically handles JSON deserialization, rejects when the HTTP response isn't 2XX or 3XX, and throws a particular type of error that allows the UI to display a meaningful notification. `fetchJson` also lets you add an `Authorization` header if you pass a `user` option.
+
+Here is how you can use it in your Data Provider:
+
+```diff
++import { fetchUtils } from 'react-admin';
+
++const fetchJson = (url, options = {}) => {
++   options.user = {
++       authenticated: true,
++       // use the authentication token from local storage (given the authProvider added it there)
++       token: localStorage.getItem('token')
++   };
++   return fetchUtils.fetchJson(url, options);
++};
+// ...
+
+const dataProvider = {
+    getList: (resource, params) => {
+        const { page, perPage } = params.pagination;
+        const { field, order } = params.sort;
+        const query = {
+            sort: JSON.stringify([field, order]),
+            range: JSON.stringify([(page - 1) * perPage, page * perPage - 1]),
+            filter: JSON.stringify(params.filter),
+        };
+        const url = `${apiUrl}/${resource}?${stringify(query)}`;
+-       return fetch(url, { method: 'GET' });
++       return fetchJson(url, { method: 'GET' });
+    },
+    // ...
+};
+```
 
 ## Example REST Implementation
 
