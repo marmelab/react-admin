@@ -1,14 +1,16 @@
 import * as React from 'react';
+import { ReactNode } from 'react';
 import { createTheme, ThemeProvider, Stack } from '@mui/material';
 import type { PaletteColor } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
+
 import { Button } from './Button';
-import { ReactNode } from 'react';
+import { defaultTheme } from '../theme/defaultTheme';
 
 export default { title: 'ra-ui-materialui/button/Button' };
 
 export const Basic = () => (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider theme={createTheme(defaultTheme)}>
         <UIWrapper>
             <Button label="default" />
             <Button label="outlined" variant="outlined" />
@@ -24,7 +26,7 @@ export const Basic = () => (
 );
 
 export const WithIcon = () => (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider theme={createTheme(defaultTheme)}>
         <UIWrapper>
             <Button label="button">
                 <AddIcon />
@@ -35,6 +37,29 @@ export const WithIcon = () => (
             <Button label="button" variant="contained">
                 <AddIcon />
             </Button>
+        </UIWrapper>
+    </ThemeProvider>
+);
+
+export const WithThemeProps = () => (
+    <ThemeProvider
+        theme={createTheme({
+            ...defaultTheme,
+            components: {
+                // @ts-ignore
+                RaButton: {
+                    defaultProps: {
+                        size: 'normal',
+                        color: 'secondary',
+                    },
+                },
+            },
+        })}
+    >
+        <UIWrapper>
+            <Button label="button" />
+            <Button label="button" variant="outlined" />
+            <Button label="button" variant="contained" />
         </UIWrapper>
     </ThemeProvider>
 );
