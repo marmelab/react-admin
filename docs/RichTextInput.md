@@ -44,7 +44,7 @@ export const PostEdit = () => (
 | Prop   | Required | Type     | Default | Description |
 | ------ | -------- | -------- | ------- | ----------- |
 | `editorOptions` | Optional | `Object` | - | Options object to pass to the underlying TipTap editor. |
-| `toolbar` | Optional| ReactNode | - | The toolbar to use. If not set, the default toolbar is used. |
+| `toolbar` | Optional| `ReactNode` | - | The toolbar to use. If not set, the default toolbar is used. |
 
 `<RichTextInput>` also accepts the [common input props](./Inputs.md#common-input-props).
 
@@ -170,6 +170,65 @@ const MyRichTextInput = ({ size, ...props }) => (
 	/>
 );
 ```
+
+## Calling The `editor` Object
+
+You may want to access the TipTp `editor` object to tweak extensions, input rules, etc. (see [the TipTap editor documentation](https://tiptap.dev/docs/editor/api/editor) for details). To do so, you can assign a `ref` in the `onCreate` function in the `editorOptions` prop of your `<RichTextInput>` component, as follows:
+
+{% raw %}
+```tsx
+import React from 'react';
+import { Edit, SaveButton, SimpleForm, TextInput, Toolbar } from 'react-admin';
+import { DefaultEditorOptions, RichTextInput } from 'ra-input-rich-text';
+import { Button } from 'ra-ui-materialui';
+import { Editor } from '@tiptap/react';
+
+export const PostEdit = () => {
+    const editorRef = React.useRef<Editor | null>(null);
+
+    return (
+        <Edit>
+            <SimpleForm
+                toolbar={<MyToolbar editorRef={editorRef} />}
+            >
+                <TextInput source="title" />
+                <RichTextInput
+                    source="body"
+                    editorOptions={{
+                        ...DefaultEditorOptions,
+                        onCreate: ({ editor }: { editor: Editor }) => {
+                            editorRef.current = editor;
+                        },
+                    }}
+                />
+            </SimpleForm>
+        </Edit>
+    );
+};
+```
+{% endraw %}
+
+With this ref, you can now call the `editor` methods, for instance to set the `<RichTextInput>` content when the user clicks a button:
+
+{% raw %}
+```jsx
+const MyToolbar = ({ editorRef }) => (
+    <Toolbar>
+        <SaveButton />
+        <Button
+            onClick={() => {
+                if (!editorRef.current) return;
+                editorRef.current.commands.setContent(
+                    '<h3>Template content</h3>'
+                )
+            }}
+        >
+            Use template
+        </Button>
+    </Toolbar>
+);
+```
+{% endraw %}
 
 ## AI Writing Assistant
 

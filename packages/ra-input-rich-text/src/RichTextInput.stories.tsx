@@ -12,12 +12,14 @@ import {
     SimpleForm,
     SimpleFormProps,
     TopToolbar,
+    Toolbar as RAToolbar,
+    SaveButton,
 } from 'ra-ui-materialui';
 import { useWatch } from 'react-hook-form';
 import fakeRestDataProvider from 'ra-data-fakerest';
 import { MemoryRouter, Routes, Route } from 'react-router-dom';
 import Mention from '@tiptap/extension-mention';
-import { ReactRenderer } from '@tiptap/react';
+import { Editor, ReactRenderer } from '@tiptap/react';
 import tippy, { Instance as TippyInstance } from 'tippy.js';
 import {
     DefaultEditorOptions,
@@ -26,12 +28,14 @@ import {
 } from './RichTextInput';
 import { RichTextInputToolbar } from './RichTextInputToolbar';
 import {
+    Button,
     List,
     ListItem,
     ListItemButton,
     ListItemText,
     Paper,
 } from '@mui/material';
+import { FormatButtons } from './buttons';
 
 export default { title: 'ra-input-rich-text/RichTextInput' };
 
@@ -186,6 +190,69 @@ export const Validation = (props: Partial<SimpleFormProps>) => (
         </SimpleForm>
     </AdminContext>
 );
+
+const MyRichTextInputToolbar = ({ ...props }) => {
+    return (
+        <RichTextInputToolbar {...props}>
+            <FormatButtons />
+        </RichTextInputToolbar>
+    );
+};
+
+export const Toolbar = (props: Partial<SimpleFormProps>) => (
+    <AdminContext i18nProvider={i18nProvider}>
+        <SimpleForm
+            defaultValues={{ body: 'Hello World' }}
+            onSubmit={() => {}}
+            {...props}
+        >
+            <RichTextInput source="body" toolbar={<MyRichTextInputToolbar />} />
+            <FormInspector />
+        </SimpleForm>
+    </AdminContext>
+);
+
+export const EditorReference = (props: Partial<SimpleFormProps>) => {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const editorRef = React.useRef<Editor>(null);
+
+    const EditorToolbar = () => (
+        <RAToolbar>
+            <SaveButton />
+            <Button
+                onClick={() => {
+                    editorRef.current.commands.setContent(
+                        '<h3>Here is my template</h3>'
+                    );
+                }}
+            >
+                Use template
+            </Button>
+        </RAToolbar>
+    );
+
+    return (
+        <AdminContext i18nProvider={i18nProvider}>
+            <SimpleForm
+                defaultValues={{ body: 'Hello World' }}
+                toolbar={<EditorToolbar />}
+                onSubmit={() => {}}
+                {...props}
+            >
+                <RichTextInput
+                    source="body"
+                    editorOptions={{
+                        ...DefaultEditorOptions,
+                        onCreate: ({ editor }: { editor: Editor }) => {
+                            editorRef.current = editor;
+                        },
+                    }}
+                />
+                <FormInspector />
+            </SimpleForm>
+        </AdminContext>
+    );
+};
 
 const dataProvider = fakeRestDataProvider({
     posts: [
