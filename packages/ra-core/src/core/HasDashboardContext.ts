@@ -1,6 +1,6 @@
 import { createContext, useContext } from 'react';
 
-export const HasDashboardContext = createContext<boolean>(undefined);
+export const HasDashboardContext = createContext<boolean>(false);
 
 export const HasDashboardContextProvider = HasDashboardContext.Provider;
 

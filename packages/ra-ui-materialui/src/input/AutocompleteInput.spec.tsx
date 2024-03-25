@@ -3,6 +3,7 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {
     FormDataConsumer,
+    ResourceContextProvider,
     required,
     testDataProvider,
     useRecordContext,
@@ -1438,37 +1439,39 @@ describe('<AutocompleteInput />', () => {
     it("should allow to edit the input if it's inside a FormDataConsumer", async () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm
-                    mode="onBlur"
-                    resource="posts"
-                    onSubmit={jest.fn()}
-                    defaultValues={{ role: 2 }}
-                >
-                    <FormDataConsumer>
-                        {() => {
-                            return (
-                                <AutocompleteInput
-                                    label="Id"
-                                    choices={[
-                                        {
-                                            name: 'General Practitioner',
-                                            id: 'GeneralPractitioner',
-                                        },
-                                        {
-                                            name: 'Physiotherapist',
-                                            id: 'Physiotherapist',
-                                        },
-                                        {
-                                            name: 'Clinical Pharmacist',
-                                            id: 'ClinicalPharmacist',
-                                        },
-                                    ]}
-                                    source="id"
-                                />
-                            );
-                        }}
-                    </FormDataConsumer>
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm
+                        mode="onBlur"
+                        resource="posts"
+                        onSubmit={jest.fn()}
+                        defaultValues={{ role: 2 }}
+                    >
+                        <FormDataConsumer>
+                            {() => {
+                                return (
+                                    <AutocompleteInput
+                                        label="Id"
+                                        choices={[
+                                            {
+                                                name: 'General Practitioner',
+                                                id: 'GeneralPractitioner',
+                                            },
+                                            {
+                                                name: 'Physiotherapist',
+                                                id: 'Physiotherapist',
+                                            },
+                                            {
+                                                name: 'Clinical Pharmacist',
+                                                id: 'ClinicalPharmacist',
+                                            },
+                                        ]}
+                                        source="id"
+                                    />
+                                );
+                            }}
+                        </FormDataConsumer>
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
         const input = screen.getByLabelText('Id', {

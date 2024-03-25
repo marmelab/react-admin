@@ -56,7 +56,10 @@ export const getFieldLabelTranslationArgs = (
     }
 
     return [
-        getResourceFieldLabelKey(resourceFromContext, sourceWithoutDigits),
+        getResourceFieldLabelKey(
+            resourceFromContext || 'undefined',
+            sourceWithoutDigits
+        ),
         { _: defaultLabelTranslation },
     ];
 };

@@ -166,7 +166,7 @@ export type UseGetManyOptions<RecordType extends RaRecord = any> = Omit<
 > & {
     onSuccess?: (data: RecordType[]) => void;
     onError?: (error: Error) => void;
-    onSettled?: (data?: RecordType[], error?: Error) => void;
+    onSettled?: (data?: RecordType[], error?: Error | null) => void;
 };
 
 export type UseGetManyHookValue<

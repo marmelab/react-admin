@@ -8,7 +8,7 @@ import { useGetOne } from './useGetOne';
 
 export default { title: 'ra-core/dataProvider/useUpdate/optimistic' };
 
-export const SuccessCase = () => {
+export const SuccessCase = ({ timeout = 1000 }) => {
     const posts = [{ id: 1, title: 'Hello', author: 'John Doe' }];
     const dataProvider = {
         getOne: (resource, params) => {
@@ -26,7 +26,7 @@ export const SuccessCase = () => {
                         post.title = params.data.title;
                     }
                     resolve({ data: post });
-                }, 1000);
+                }, timeout);
             });
         },
     } as any;
@@ -79,7 +79,7 @@ const SuccessCore = () => {
     );
 };
 
-export const ErrorCase = () => {
+export const ErrorCase = ({ timeout = 1000 }) => {
     const posts = [{ id: 1, title: 'Hello', author: 'John Doe' }];
     const dataProvider = {
         getOne: (resource, params) => {
@@ -93,7 +93,7 @@ export const ErrorCase = () => {
             return new Promise((resolve, reject) => {
                 setTimeout(() => {
                     reject(new Error('something went wrong'));
-                }, 1000);
+                }, timeout);
             });
         },
     } as any;

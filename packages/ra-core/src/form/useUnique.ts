@@ -55,6 +55,9 @@ export const useUnique = (options?: UseUniqueOptions) => {
     const dataProvider = useDataProvider();
     const translateLabel = useTranslateLabel();
     const resource = useResourceContext(options);
+    if (!resource) {
+        throw new Error('useUnique: missing resource prop or context');
+    }
     const translate = useTranslate();
     const record = useRecordContext();
 

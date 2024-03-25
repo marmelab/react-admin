@@ -38,7 +38,11 @@ describe('<useReferenceArrayFieldController />', () => {
     it('should set the isLoading prop to true when related records are not yet fetched', () => {
         const children = jest.fn().mockReturnValue('child');
         render(
-            <CoreAdminContext dataProvider={testDataProvider()}>
+            <CoreAdminContext
+                dataProvider={testDataProvider({
+                    getMany: () => new Promise(() => {}),
+                })}
+            >
                 <ReferenceArrayFieldController
                     resource="foo"
                     reference="bar"

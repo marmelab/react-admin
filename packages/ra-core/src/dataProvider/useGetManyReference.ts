@@ -172,7 +172,7 @@ export type UseGetManyReferenceHookOptions<
     onError?: (error: Error) => void;
     onSettled?: (
         data?: GetManyReferenceResult<RecordType>,
-        error?: Error
+        error?: Error | null
     ) => void;
 };
 

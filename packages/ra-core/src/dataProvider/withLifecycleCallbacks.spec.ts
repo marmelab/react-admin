@@ -9,9 +9,12 @@ describe('withLifecycleCallbacks', () => {
             resource: 'posts',
             beforeGetOne: jest.fn(params => Promise.resolve(params)),
         };
-        const dataProvider = withLifecycleCallbacks(testDataProvider(), [
-            resourceCallback,
-        ]);
+        const dataProvider = withLifecycleCallbacks(
+            testDataProvider({
+                getOne: async () => ({ data: { id: 123 } }),
+            }),
+            [resourceCallback]
+        );
         dataProvider.getOne('posts', { id: 1 });
         expect(resourceCallback.beforeGetOne).toHaveBeenCalled();
     });
@@ -20,9 +23,12 @@ describe('withLifecycleCallbacks', () => {
             resource: 'posts',
             beforeGetOne: jest.fn(params => Promise.resolve(params)),
         };
-        const dataProvider = withLifecycleCallbacks(testDataProvider(), [
-            resourceCallback,
-        ]);
+        const dataProvider = withLifecycleCallbacks(
+            testDataProvider({
+                getOne: async () => ({ data: { id: 123 } }),
+            }),
+            [resourceCallback]
+        );
         dataProvider.getOne('comments', { id: 1 });
         expect(resourceCallback.beforeGetOne).not.toHaveBeenCalled();
     });
@@ -32,9 +38,13 @@ describe('withLifecycleCallbacks', () => {
             beforeGetOne: jest.fn(params => Promise.resolve(params)),
             beforeGetMany: jest.fn(params => Promise.resolve(params)),
         };
-        const dataProvider = withLifecycleCallbacks(testDataProvider(), [
-            resourceCallback,
-        ]);
+        const dataProvider = withLifecycleCallbacks(
+            testDataProvider({
+                getOne: async () => ({ data: { id: 123 } }),
+                getMany: async () => ({ data: [{ id: 123 }, { id: 456 }] }),
+            }),
+            [resourceCallback]
+        );
 
         dataProvider.getOne('posts', { id: 1 });
         expect(resourceCallback.beforeGetOne).toHaveBeenCalled();

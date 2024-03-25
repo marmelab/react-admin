@@ -105,7 +105,7 @@ export const useDelete = <
         const updatedAt = mode.current === 'undoable' ? now + 5 * 1000 : now;
 
         const updateColl = (old: RecordType[]) => {
-            if (!old) return;
+            if (!old) return old;
             const index = old.findIndex(
                 // eslint-disable-next-line eqeqeq
                 record => record.id == id
@@ -180,7 +180,7 @@ export const useDelete = <
                 return recordWasFound
                     ? {
                           data: newCollection,
-                          total: res.total - 1,
+                          total: res.total! - 1,
                       }
                     : res;
             },
@@ -198,14 +198,23 @@ export const useDelete = <
             id: callTimeId = paramsRef.current.id,
             previousData: callTimePreviousData = paramsRef.current.previousData,
             meta: callTimeMeta = paramsRef.current.meta,
-        } = {}) =>
-            dataProvider
+        } = {}) => {
+            if (!callTimeResource) {
+                throw new Error(
+                    'useDelete mutation requires a non-empty resource'
+                );
+            }
+            if (!callTimeId) {
+                throw new Error('useDelete mutation requires a non-empty id');
+            }
+            return dataProvider
                 .delete<RecordType>(callTimeResource, {
                     id: callTimeId,
                     previousData: callTimePreviousData,
                     meta: callTimeMeta,
                 })
-                .then(({ data }) => data),
+                .then(({ data }) => data);
+        },
         ...mutationOptions,
         onMutate: async (
             variables: Partial<UseDeleteMutateParams<RecordType>>
@@ -290,14 +299,21 @@ export const useDelete = <
     });
 
     const mutate = async (
-        callTimeResource: string = resource,
+        callTimeResource: string | undefined = resource,
         callTimeParams: Partial<DeleteParams<RecordType>> = {},
         callTimeOptions: MutateOptions<
             RecordType,
             MutationError,
             Partial<UseDeleteMutateParams<RecordType>>,
             unknown
-        > & { mutationMode?: MutationMode } = {}
+        > & {
+            mutationMode?: MutationMode;
+            onSuccess?: (
+                data: RecordType | undefined,
+                variables: Partial<UseDeleteMutateParams<RecordType>>,
+                context: unknown
+            ) => void;
+        } = {}
     ) => {
         const { mutationMode, ...otherCallTimeOptions } = callTimeOptions;
         hasCallTimeOnError.current = !!callTimeOptions.onError;
@@ -369,27 +385,21 @@ export const useDelete = <
         });
 
         // run the success callbacks during the next tick
-        if (callTimeOptions.onSuccess) {
-            setTimeout(
-                () =>
-                    callTimeOptions.onSuccess(
-                        callTimePreviousData,
-                        { resource: callTimeResource, ...callTimeParams },
-                        { snapshot: snapshot.current }
-                    ),
-                0
-            );
-        } else if (mutationOptions.onSuccess) {
-            setTimeout(
-                () =>
-                    mutationOptions.onSuccess(
-                        callTimePreviousData,
-                        { resource: callTimeResource, ...callTimeParams },
-                        { snapshot: snapshot.current }
-                    ),
-                0
-            );
-        }
+        setTimeout(() => {
+            if (callTimeOptions.onSuccess) {
+                callTimeOptions.onSuccess(
+                    callTimePreviousData,
+                    { resource: callTimeResource, ...callTimeParams },
+                    { snapshot: snapshot.current }
+                );
+            } else if (mutationOptions.onSuccess) {
+                mutationOptions.onSuccess(
+                    callTimePreviousData,
+                    { resource: callTimeResource, ...callTimeParams },
+                    { snapshot: snapshot.current }
+                );
+            }
+        }, 0);
 
         if (mode.current === 'optimistic') {
             // call the mutate method without success side effects
@@ -450,7 +460,14 @@ export type UseDeleteOptions<
     RecordType,
     MutationError,
     Partial<UseDeleteMutateParams<RecordType>>
-> & { mutationMode?: MutationMode };
+> & {
+    mutationMode?: MutationMode;
+    onSuccess?: (
+        data: RecordType | undefined,
+        variables: Partial<UseDeleteMutateParams<RecordType>>,
+        context: unknown
+    ) => void;
+};
 
 export type UseDeleteResult<
     RecordType extends RaRecord = any,
@@ -464,7 +481,9 @@ export type UseDeleteResult<
             MutationError,
             Partial<UseDeleteMutateParams<RecordType>>,
             unknown
-        > & { mutationMode?: MutationMode }
+        > & {
+            mutationMode?: MutationMode;
+        }
     ) => Promise<void>,
     UseMutationResult<
         RecordType,

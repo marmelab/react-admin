@@ -25,6 +25,7 @@ describe('<ListGuesser />', () => {
                     ],
                     total: 1,
                 }),
+            getMany: () => Promise.resolve({ data: [], total: 0 }),
         });
         render(
             <ThemeProvider theme={{}}>

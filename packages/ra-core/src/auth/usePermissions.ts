@@ -115,14 +115,14 @@ export interface UsePermissionsOptions<PermissionsType = any, ErrorType = Error>
     > {
     onSuccess?: (data: PermissionsType) => void;
     onError?: (err: ErrorType) => void;
-    onSettled?: (data?: PermissionsType, error?: ErrorType) => void;
+    onSettled?: (data?: PermissionsType, error?: ErrorType | null) => void;
 }
 
 export type UsePermissionsResult<
     PermissionsType = any,
     ErrorType = Error
 > = QueryObserverResult<PermissionsType, ErrorType> & {
-    permissions: PermissionsType | null;
+    permissions: PermissionsType | undefined;
 };
 
 const noop = () => {};

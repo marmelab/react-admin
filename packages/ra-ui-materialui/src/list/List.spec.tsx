@@ -20,7 +20,11 @@ describe('<List />', () => {
     it('should render a list page', () => {
         const Datagrid = () => <div>datagrid</div>;
         const { container } = render(
-            <CoreAdminContext dataProvider={testDataProvider()}>
+            <CoreAdminContext
+                dataProvider={testDataProvider({
+                    getList: () => Promise.resolve({ data: [], total: 0 }),
+                })}
+            >
                 <ThemeProvider theme={theme}>
                     <List resource="posts">
                         <Datagrid />
@@ -36,7 +40,11 @@ describe('<List />', () => {
         const Pagination = () => <div>pagination</div>;
         const Datagrid = () => <div>datagrid</div>;
         render(
-            <CoreAdminContext dataProvider={testDataProvider()}>
+            <CoreAdminContext
+                dataProvider={testDataProvider({
+                    getList: () => Promise.resolve({ data: [], total: 0 }),
+                })}
+            >
                 <ThemeProvider theme={theme}>
                     <List
                         filters={<Filters />}
@@ -58,7 +66,11 @@ describe('<List />', () => {
         const Filter = () => <div>filter</div>;
         const Datagrid = () => <div>datagrid</div>;
         render(
-            <CoreAdminContext dataProvider={testDataProvider()}>
+            <CoreAdminContext
+                dataProvider={testDataProvider({
+                    getList: () => Promise.resolve({ data: [], total: 0 }),
+                })}
+            >
                 <ThemeProvider theme={theme}>
                     <List resource="posts">
                         <Filter />
@@ -75,7 +87,11 @@ describe('<List />', () => {
         const Dummy = () => <div />;
         const Aside = () => <div id="aside">Hello</div>;
         render(
-            <CoreAdminContext dataProvider={testDataProvider()}>
+            <CoreAdminContext
+                dataProvider={testDataProvider({
+                    getList: () => Promise.resolve({ data: [], total: 0 }),
+                })}
+            >
                 <ThemeProvider theme={theme}>
                     <List resource="posts" aside={<Aside />}>
                         <Dummy />

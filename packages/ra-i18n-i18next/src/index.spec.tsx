@@ -8,6 +8,12 @@ import {
 } from './index.stories';
 
 describe('i18next i18nProvider', () => {
+    beforeAll(() => {
+        window.scrollTo = jest.fn();
+    });
+    afterAll(() => {
+        jest.clearAllMocks();
+    });
     test('should work with no configuration except the messages', async () => {
         render(<Basic />);
 

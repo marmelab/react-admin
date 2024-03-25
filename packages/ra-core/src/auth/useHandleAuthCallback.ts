@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useQuery, UseQueryOptions } from '@tanstack/react-query';
 import { useLocation } from 'react-router';
 import { useRedirect } from '../routing';
-import { AuthRedirectResult, AuthProvider } from '../types';
+import { AuthRedirectResult } from '../types';
 import useAuthProvider from './useAuthProvider';
 import { useEvent } from '../util';
 
@@ -90,14 +90,14 @@ export const useHandleAuthCallback = (
 export const PreviousLocationStorageKey = '@react-admin/nextPathname';
 
 export type UseHandleAuthCallbackOptions = Omit<
-    UseQueryOptions<ReturnType<AuthProvider['handleCallback']>>,
+    UseQueryOptions<AuthRedirectResult | void>,
     'queryKey' | 'queryFn'
 > & {
-    onSuccess?: (data: ReturnType<AuthProvider['handleCallback']>) => void;
+    onSuccess?: (data: AuthRedirectResult | void) => void;
     onError?: (err: Error) => void;
     onSettled?: (
-        data?: ReturnType<AuthProvider['handleCallback']>,
-        error?: Error
+        data?: AuthRedirectResult | void,
+        error?: Error | null
     ) => void;
 };
 

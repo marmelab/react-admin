@@ -30,7 +30,7 @@ export const useResourceDefinition = <
     OptionsType extends ResourceOptions = any
 >(
     props?: UseResourceDefinitionOptions
-): ResourceDefinition<OptionsType> => {
+): Omit<ResourceDefinition<OptionsType>, 'name'> => {
     const resource = useResourceContext(props);
     const resourceDefinitions = useResourceDefinitions();
     const { hasCreate, hasEdit, hasList, hasShow, recordRepresentation } =
@@ -46,7 +46,7 @@ export const useResourceDefinition = <
                 hasShow,
                 recordRepresentation,
             },
-            resourceDefinitions[resource]
+            resource ? resourceDefinitions[resource] : {}
         );
     }, [
         resource,

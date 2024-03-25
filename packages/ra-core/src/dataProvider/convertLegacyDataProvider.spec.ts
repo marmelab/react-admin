@@ -6,7 +6,7 @@ describe('convertLegacyDataProvider', () => {
     it('should return a function allowing old style calls', () => {
         const legacyProvider = jest.fn();
         const convertedProvider = convertLegacyDataProvider(legacyProvider);
-        convertedProvider('GET_LIST', 'posts', { filter: { foo: 'bar' } });
+        convertedProvider.getList('posts', { filter: { foo: 'bar' } });
         expect(legacyProvider).toHaveBeenCalledWith('GET_LIST', 'posts', {
             filter: { foo: 'bar' },
         });
