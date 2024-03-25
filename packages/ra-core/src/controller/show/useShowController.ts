@@ -55,13 +55,23 @@ export const useShowController = <RecordType extends RaRecord = any>(
     const { disableAuthentication, id: propsId, queryOptions = {} } = props;
     useAuthenticated({ enabled: !disableAuthentication });
     const resource = useResourceContext(props);
+    if (!resource) {
+        throw new Error(
+            `useShowController requires a non-empty resource prop or context`
+        );
+    }
     const getRecordRepresentation = useGetRecordRepresentation(resource);
     const translate = useTranslate();
     const notify = useNotify();
     const redirect = useRedirect();
     const refresh = useRefresh();
     const { id: routeId } = useParams<'id'>();
-    const id = propsId != null ? propsId : decodeURIComponent(routeId);
+    if (!routeId && !propsId) {
+        throw new Error(
+            'useShowController requires an id prop or a route with an /:id? parameter.'
+        );
+    }
+    const id = propsId != null ? propsId : decodeURIComponent(routeId!);
     const { meta, ...otherQueryOptions } = queryOptions;
 
     const {
@@ -126,7 +136,7 @@ export interface ShowControllerProps<RecordType extends RaRecord = any> {
 }
 
 export interface ShowControllerResult<RecordType extends RaRecord = any> {
-    defaultTitle: string;
+    defaultTitle?: string;
     // Necessary for actions (EditActions) which expect a data prop containing the record
     // @deprecated - to be removed in 4.0d
     data?: RecordType;

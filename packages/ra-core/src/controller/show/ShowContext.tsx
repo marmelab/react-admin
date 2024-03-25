@@ -20,13 +20,11 @@ import { ShowControllerResult } from './useShowController';
  * };
  */
 export const ShowContext = createContext<ShowControllerResult>({
-    record: null,
-    defaultTitle: null,
-    isFetching: null,
-    isLoading: null,
-    isPending: null,
-    refetch: null,
-    resource: null,
+    isFetching: false,
+    isLoading: false,
+    isPending: false,
+    refetch: () => Promise.reject('not implemented'),
+    resource: '',
 });
 
 ShowContext.displayName = 'ShowContext';

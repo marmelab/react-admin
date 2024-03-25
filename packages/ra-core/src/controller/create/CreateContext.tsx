@@ -20,17 +20,12 @@ import { CreateControllerResult } from './useCreateController';
  * };
  */
 export const CreateContext = createContext<CreateControllerResult>({
-    record: null,
-    defaultTitle: null,
-    isFetching: null,
-    isLoading: null,
-    isPending: null,
-    redirect: null,
-    resource: null,
-    save: null,
-    saving: null,
-    registerMutationMiddleware: null,
-    unregisterMutationMiddleware: null,
+    isFetching: false,
+    isLoading: false,
+    isPending: false,
+    redirect: false,
+    resource: '',
+    saving: false,
 });
 
 CreateContext.displayName = 'CreateContext';

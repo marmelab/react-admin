@@ -53,12 +53,12 @@ export const useListController = <RecordType extends RaRecord = any>(
 
     if (!resource) {
         throw new Error(
-            `<List> was called outside of a ResourceContext and without a resource prop. You must set the resource prop.`
+            `useListController requires a non-empty resource prop or context`
         );
     }
     if (filter && isValidElement(filter)) {
         throw new Error(
-            '<List> received a React element as `filter` props. If you intended to set the list filter elements, use the `filters` (with an s) prop instead. The `filter` prop is internal and should not be set by the developer.'
+            'useListController received a React element as `filter` props. If you intended to set the list filter elements, use the `filters` (with an s) prop instead. The `filter` prop is internal and should not be set by the developer.'
         );
     }
 
@@ -396,7 +396,7 @@ const defaultSort = {
 
 export interface ListControllerResult<RecordType extends RaRecord = any> {
     sort: SortPayload;
-    data: RecordType[];
+    data?: RecordType[];
     defaultTitle?: string;
     displayedFilters: any;
     error?: any;
@@ -424,9 +424,9 @@ export interface ListControllerResult<RecordType extends RaRecord = any> {
     setPerPage: (page: number) => void;
     setSort: (sort: SortPayload) => void;
     showFilter: (filterName: string, defaultValue: any) => void;
-    total: number;
-    hasNextPage: boolean;
-    hasPreviousPage: boolean;
+    total?: number;
+    hasNextPage?: boolean;
+    hasPreviousPage?: boolean;
 }
 
 export const injectedProps = [

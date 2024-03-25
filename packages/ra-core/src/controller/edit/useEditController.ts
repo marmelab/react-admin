@@ -65,13 +65,23 @@ export const useEditController = <
     } = props;
     useAuthenticated({ enabled: !disableAuthentication });
     const resource = useResourceContext(props);
+    if (!resource) {
+        throw new Error(
+            'useEditController requires a non-empty resource prop or context'
+        );
+    }
     const getRecordRepresentation = useGetRecordRepresentation(resource);
     const translate = useTranslate();
     const notify = useNotify();
     const redirect = useRedirect();
     const refresh = useRefresh();
     const { id: routeId } = useParams<'id'>();
-    const id = propsId != null ? propsId : decodeURIComponent(routeId);
+    if (!routeId && !propsId) {
+        throw new Error(
+            'useEditController requires an id prop or a route with an /:id? parameter.'
+        );
+    }
+    const id = propsId ?? decodeURIComponent(routeId!);
     const { meta: queryMeta, ...otherQueryOptions } = queryOptions;
     const {
         meta: mutationMeta,
@@ -160,8 +170,12 @@ export const useEditController = <
                             _:
                                 typeof error === 'string'
                                     ? error
-                                    : error && (error as Error).message
-                                    ? (error as Error).message
+                                    : error instanceof Error ||
+                                      (typeof error === 'object' &&
+                                          error !== null &&
+                                          error.hasOwnProperty('message'))
+                                    ? // @ts-ignore
+                                      error.message
                                     : undefined,
                         },
                     }
@@ -265,7 +279,7 @@ export interface EditControllerResult<RecordType extends RaRecord = any>
     // @deprecated - to be removed in 4.0d
     data?: RecordType;
     error?: any;
-    defaultTitle: string;
+    defaultTitle?: string;
     isFetching: boolean;
     isLoading: boolean;
     isPending: boolean;

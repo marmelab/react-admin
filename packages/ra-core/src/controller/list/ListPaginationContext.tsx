@@ -42,16 +42,19 @@ import { ListControllerResult } from './useListController';
  * };
  */
 export const ListPaginationContext = createContext<ListPaginationContextValue>({
-    isLoading: null,
-    isPending: null,
-    page: null,
-    perPage: null,
-    setPage: null,
-    setPerPage: null,
-    hasPreviousPage: null,
-    hasNextPage: null,
-    total: undefined,
-    resource: null,
+    isLoading: false,
+    isPending: false,
+    page: 1,
+    perPage: 25,
+    setPage: () => {
+        throw new Error('not implemented');
+    },
+    setPerPage: () => {
+        throw new Error('not implemented');
+    },
+    hasPreviousPage: false,
+    hasNextPage: false,
+    resource: '',
 });
 
 ListPaginationContext.displayName = 'ListPaginationContext';

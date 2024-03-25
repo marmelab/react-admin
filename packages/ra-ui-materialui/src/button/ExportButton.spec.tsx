@@ -32,7 +32,10 @@ describe('<ExportButton />', () => {
 
         await waitFor(() => {
             expect(dataProvider.getList).toHaveBeenCalledWith('test', {
-                sort: null,
+                sort: {
+                    field: 'id',
+                    order: 'ASC',
+                },
                 filter: { filters: 'override' },
                 pagination: { page: 1, perPage: 1000 },
                 meta: { pass: 'meta' },

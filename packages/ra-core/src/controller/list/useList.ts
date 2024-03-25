@@ -105,7 +105,9 @@ export const useList = <RecordType extends RaRecord = any>(
     );
 
     // selection logic
-    const [selectedIds, selectionModifiers] = useRecordSelection(resource);
+    const [selectedIds, selectionModifiers] = useRecordSelection(
+        resource || '' // FIXME use false as default value when https://github.com/marmelab/react-admin/pull/9742 is merged
+    );
 
     // filter logic
     const filterRef = useRef(filter);
@@ -275,7 +277,7 @@ export const useList = <RecordType extends RaRecord = any>(
         onUnselectItems: selectionModifiers.clearSelection,
         page,
         perPage,
-        resource: undefined,
+        resource: '',
         refetch,
         selectedIds,
         setFilters,

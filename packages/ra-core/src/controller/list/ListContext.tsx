@@ -1,5 +1,7 @@
 import { createContext } from 'react';
 import { ListControllerResult } from './useListController';
+import { th } from 'date-fns/locale';
+import { SORT_ASC } from './queryReducer';
 
 /**
  * Context to store the result of the useListController() hook.
@@ -53,32 +55,50 @@ import { ListControllerResult } from './useListController';
  * };
  */
 export const ListContext = createContext<ListControllerResult>({
-    sort: null,
-    data: null,
-    defaultTitle: null,
+    sort: {
+        field: 'id',
+        order: SORT_ASC,
+    },
     displayedFilters: null,
-    exporter: null,
     filterValues: null,
-    hasNextPage: null,
-    hasPreviousPage: null,
-    hideFilter: null,
-    isFetching: null,
-    isLoading: null,
-    isPending: null,
-    onSelect: null,
-    onToggleItem: null,
-    onUnselectItems: null,
-    page: null,
-    perPage: null,
-    refetch: null,
-    resource: null,
-    selectedIds: undefined,
-    setFilters: null,
-    setPage: null,
-    setPerPage: null,
-    setSort: null,
-    showFilter: null,
-    total: null,
+    hasNextPage: false,
+    hasPreviousPage: false,
+    hideFilter: () => {
+        throw new Error('not implemented');
+    },
+    isFetching: false,
+    isLoading: false,
+    isPending: false,
+    onSelect: () => {
+        throw new Error('not implemented');
+    },
+    onToggleItem: () => {
+        throw new Error('not implemented');
+    },
+    onUnselectItems: () => {
+        throw new Error('not implemented');
+    },
+    page: 1,
+    perPage: 25,
+    refetch: () => Promise.reject('not implemented'),
+    resource: '',
+    selectedIds: [],
+    setFilters: () => {
+        throw new Error('not implemented');
+    },
+    setPage: () => {
+        throw new Error('not implemented');
+    },
+    setPerPage: () => {
+        throw new Error('not implemented');
+    },
+    setSort: () => {
+        throw new Error('not implemented');
+    },
+    showFilter: () => {
+        throw new Error('not implemented');
+    },
+    total: undefined,
 });
 
 ListContext.displayName = 'ListContext';

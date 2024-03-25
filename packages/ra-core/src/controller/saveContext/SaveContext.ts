@@ -33,4 +33,4 @@ export type SaveHandlerCallbacks = {
     transform?: TransformData;
     meta?: any;
 };
-export const SaveContext = createContext<SaveContextValue>(undefined);
+export const SaveContext = createContext<SaveContextValue>({});
