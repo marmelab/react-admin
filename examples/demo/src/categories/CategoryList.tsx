@@ -31,8 +31,11 @@ const CategoryList = () => (
 );
 
 const CategoryGrid = () => {
-    const { data, isPending } = useListContext<Category>();
+    const { data, error, isPending } = useListContext<Category>();
     if (isPending) {
+        return null;
+    }
+    if (error) {
         return null;
     }
     return (

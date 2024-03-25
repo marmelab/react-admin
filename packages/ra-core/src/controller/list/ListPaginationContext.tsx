@@ -44,6 +44,7 @@ import { ListControllerResult } from './useListController';
 export const ListPaginationContext = createContext<ListPaginationContextValue>({
     isLoading: false,
     isPending: false,
+    total: 0,
     page: 1,
     perPage: 25,
     setPage: () => {

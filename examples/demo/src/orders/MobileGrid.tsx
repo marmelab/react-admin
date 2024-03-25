@@ -16,9 +16,9 @@ import CustomerReferenceField from '../visitors/CustomerReferenceField';
 import { Order } from '../types';
 
 const MobileGrid = () => {
-    const { data, isPending } = useListContext<Order>();
+    const { data, error, isPending } = useListContext<Order>();
     const translate = useTranslate();
-    if (isPending || data.length === 0) {
+    if (isPending || (data && data.length === 0) || error) {
         return null;
     }
     return (

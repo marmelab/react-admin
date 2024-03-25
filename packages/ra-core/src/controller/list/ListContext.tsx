@@ -55,6 +55,9 @@ import { SORT_ASC } from './queryReducer';
  * };
  */
 export const ListContext = createContext<ListControllerResult>({
+    data: [],
+    total: 0,
+    error: null,
     sort: {
         field: 'id',
         order: SORT_ASC,
@@ -98,7 +101,6 @@ export const ListContext = createContext<ListControllerResult>({
     showFilter: () => {
         throw new Error('not implemented');
     },
-    total: undefined,
 });
 
 ListContext.displayName = 'ListContext';

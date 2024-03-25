@@ -147,6 +147,7 @@ export const useListController = <RecordType extends RaRecord = any>(
         name: getResourceLabel(resource, 2),
     });
 
+    // @ts-ignore FIXME cannot find another way to fix this error: "Types of property 'isPending' are incompatible: Type 'boolean' is not assignable to type 'false'.""
     return {
         sort: currentSort,
         data,
@@ -394,41 +395,6 @@ const defaultSort = {
     order: SORT_ASC,
 } as const;
 
-export interface ListControllerResult<RecordType extends RaRecord = any> {
-    sort: SortPayload;
-    data?: RecordType[];
-    defaultTitle?: string;
-    displayedFilters: any;
-    error?: any;
-    exporter?: Exporter | false;
-    filter?: FilterPayload;
-    filterValues: any;
-    hideFilter: (filterName: string) => void;
-    isFetching: boolean;
-    isLoading: boolean;
-    isPending: boolean;
-    onSelect: (ids: RecordType['id'][]) => void;
-    onToggleItem: (id: RecordType['id']) => void;
-    onUnselectItems: () => void;
-    page: number;
-    perPage: number;
-    refetch: (() => void) | UseGetListHookValue<RecordType>['refetch'];
-    resource: string;
-    selectedIds: RecordType['id'][];
-    setFilters: (
-        filters: any,
-        displayedFilters?: any,
-        debounce?: boolean
-    ) => void;
-    setPage: (page: number) => void;
-    setPerPage: (page: number) => void;
-    setSort: (sort: SortPayload) => void;
-    showFilter: (filterName: string, defaultValue: any) => void;
-    total?: number;
-    hasNextPage?: boolean;
-    hasPreviousPage?: boolean;
-}
-
 export const injectedProps = [
     'sort',
     'data',
@@ -478,3 +444,73 @@ export const sanitizeListRestProps = props =>
     Object.keys(props)
         .filter(propName => !injectedProps.includes(propName))
         .reduce((acc, key) => ({ ...acc, [key]: props[key] }), {});
+
+interface ListControllerBaseResult<RecordType extends RaRecord = any> {
+    sort: SortPayload;
+    defaultTitle?: string;
+    displayedFilters: any;
+    exporter?: Exporter | false;
+    filter?: FilterPayload;
+    filterValues: any;
+    hideFilter: (filterName: string) => void;
+    onSelect: (ids: RecordType['id'][]) => void;
+    onToggleItem: (id: RecordType['id']) => void;
+    onUnselectItems: () => void;
+    page: number;
+    perPage: number;
+    refetch: (() => void) | UseGetListHookValue<RecordType>['refetch'];
+    resource: string;
+    selectedIds: RecordType['id'][];
+    setFilters: (
+        filters: any,
+        displayedFilters?: any,
+        debounce?: boolean
+    ) => void;
+    setPage: (page: number) => void;
+    setPerPage: (page: number) => void;
+    setSort: (sort: SortPayload) => void;
+    showFilter: (filterName: string, defaultValue: any) => void;
+    hasNextPage?: boolean;
+    hasPreviousPage?: boolean;
+    isFetching?: boolean;
+    isLoading?: boolean;
+}
+
+interface ListControllerLoadingResult<RecordType extends RaRecord = any>
+    extends ListControllerBaseResult<RecordType> {
+    data: undefined;
+    total: undefined;
+    error: null;
+    isPending: true;
+}
+interface ListControllerLoadingErrorResult<
+    RecordType extends RaRecord = any,
+    TError = Error
+> extends ListControllerBaseResult<RecordType> {
+    data: undefined;
+    total: undefined;
+    error: TError;
+    isPending: false;
+}
+interface ListControllerRefetchErrorResult<
+    RecordType extends RaRecord = any,
+    TError = Error
+> extends ListControllerBaseResult<RecordType> {
+    data: RecordType[];
+    total: number;
+    error: TError;
+    isPending: false;
+}
+interface ListControllerSuccessResult<RecordType extends RaRecord = any>
+    extends ListControllerBaseResult<RecordType> {
+    data: RecordType[];
+    total: number;
+    error: null;
+    isPending: false;
+}
+
+export type ListControllerResult<RecordType extends RaRecord = any> =
+    | ListControllerLoadingResult<RecordType>
+    | ListControllerLoadingErrorResult<RecordType>
+    | ListControllerRefetchErrorResult<RecordType>
+    | ListControllerSuccessResult<RecordType>;
