@@ -171,9 +171,9 @@ const MyRichTextInput = ({ size, ...props }) => (
 );
 ```
 
-## Reference the editor
+## Calling The `editor` Object
 
-You might need access to the editor to use [the dedicated API](https://tiptap.dev/docs/editor/api/editor). To do it, you can assign a `ref` in the `onCreate` function in the `editorOptions` prop of your `<RichTextInput>` component which returns the editor:
+You may want to access the TipTp `editor` object to tweak extensions, input rules, etc. (see [the TipTap editor documentation](https://tiptap.dev/docs/editor/api/editor) for details). To do so, you can assign a `ref` in the `onCreate` function in the `editorOptions` prop of your `<RichTextInput>` component, as follows:
 
 {% raw %}
 ```tsx
@@ -189,22 +189,7 @@ export const PostEdit = () => {
     return (
         <Edit>
             <SimpleForm
-                toolbar={
-                    <Toolbar>
-                        <SaveButton />
-                        <Button
-                            onClick={() =>
-                                editorRef.current
-                                    ? editorRef.current.commands.setContent(
-                                          '<h3>Here is my template</h3>'
-                                      )
-                                    : null
-                            }
-                        >
-                            <>Use template</>
-                        </Button>
-                    </Toolbar>
-                }
+                toolbar={<MyToolbar editorRef={editorRef} />}
             >
                 <TextInput source="title" />
                 <RichTextInput
@@ -221,7 +206,29 @@ export const PostEdit = () => {
     );
 };
 ```
-{% endraw %}  
+{% endraw %}
+
+With this ref, you can now call the `editor` methods, for instance to set the `<RichTextInput>` content when the user clicks a button:
+
+{% raw %}
+```jsx
+const MyToolbar = ({ editorRef }) => (
+    <Toolbar>
+        <SaveButton />
+        <Button
+            onClick={() => {
+                if (!editorRef.current) return;
+                editorRef.current.commands.setContent(
+                    '<h3>Template content</h3>'
+                )
+            }}
+        >
+            Use template
+        </Button>
+    </Toolbar>
+);
+```
+{% endraw %}
 
 ## AI Writing Assistant
 
