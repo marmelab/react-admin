@@ -87,8 +87,7 @@ const DealShowContent = () => {
                                 Start
                             </Typography>
                             <Typography variant="subtitle1">
-                                {record.start_at &&
-                                    format(new Date(record.start_at), 'PP')}
+                                {format(new Date(record.start_at), 'PP')}
                             </Typography>
                         </Box>
 
