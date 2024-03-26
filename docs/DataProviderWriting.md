@@ -7,6 +7,9 @@ title: "Writing A Data Provider"
 
 APIs are so diverse that quite often, none of [the available Data Providers](./DataProviderList.md) suit you API. In such cases, you'll have to write your own Data Provider. Don't worry, it usually takes only a couple of hours. 
 
+<iframe src="https://www.youtube-nocookie.com/embed/sciDJAUEu_M" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;"></iframe>
+
+
 The methods of a Data Provider receive a request, and return a promise for a response. Both the request and the response format are standardized.
 
 ## Data Provider Methods
