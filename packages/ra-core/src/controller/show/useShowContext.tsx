@@ -24,10 +24,8 @@ import { ShowControllerResult } from './useShowController';
  */
 export const useShowContext = <RecordType extends RaRecord = any>(
     props?: any
-): Partial<ShowControllerResult<RecordType>> => {
-    // Can't find a way to specify the RecordType when ShowContext is declared
+): ShowControllerResult<RecordType> => {
     const context = useContext(ShowContext);
-
     // Props take precedence over the context
     return useMemo(
         () =>

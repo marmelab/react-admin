@@ -92,7 +92,7 @@ import { RaRecord } from '../../types';
  */
 export const useListContext = <RecordType extends RaRecord = any>(
     props?: any
-): Partial<ListControllerResult<RecordType>> => {
+): ListControllerResult<RecordType> => {
     const context = useContext(ListContext);
     // Props take precedence over the context
     return useMemo(

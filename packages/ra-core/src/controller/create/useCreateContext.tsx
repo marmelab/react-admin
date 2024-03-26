@@ -24,7 +24,7 @@ import { CreateControllerResult } from './useCreateController';
  */
 export const useCreateContext = <RecordType extends RaRecord = RaRecord>(
     props?: any
-): Partial<CreateControllerResult<RecordType>> => {
+): CreateControllerResult<RecordType> => {
     const context = useContext(CreateContext);
     // Props take precedence over the context
     return useMemo(
