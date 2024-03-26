@@ -23,18 +23,17 @@ import { ShowControllerResult } from './useShowController';
  *
  */
 export const useShowContext = <RecordType extends RaRecord = any>(
-    props?: Partial<ShowControllerResult<RecordType>>
-): ShowControllerResult<RecordType> => {
+    props?: any
+): Partial<ShowControllerResult<RecordType>> => {
     // Can't find a way to specify the RecordType when ShowContext is declared
-    // @ts-ignore
-    const context = useContext<ShowControllerResult<RecordType>>(ShowContext);
+    const context = useContext(ShowContext);
 
     // Props take precedence over the context
     return useMemo(
         () =>
             defaults(
                 {},
-                props != null ? extractShowContextProps(props) : {},
+                props != null ? extractShowContextProps<RecordType>(props) : {},
                 context
             ),
         [context, props]
@@ -48,19 +47,15 @@ export const useShowContext = <RecordType extends RaRecord = any>(
  *
  * @returns {ShowControllerResult} show controller props
  */
-const extractShowContextProps = ({
+const extractShowContextProps = <RecordType extends RaRecord = any>({
     record,
-    data,
     defaultTitle,
     isFetching,
     isLoading,
     isPending,
     resource,
-}: any) => ({
-    // Necessary for actions (EditActions) which expect a data prop containing the record
-    // @deprecated - to be removed in 4.0d
-    record: record || data,
-    data: record || data,
+}: Partial<ShowControllerResult<RecordType>>) => ({
+    record,
     defaultTitle,
     isFetching,
     isLoading,

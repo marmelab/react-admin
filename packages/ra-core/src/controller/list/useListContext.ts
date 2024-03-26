@@ -92,15 +92,14 @@ import { RaRecord } from '../../types';
  */
 export const useListContext = <RecordType extends RaRecord = any>(
     props?: any
-): ListControllerResult<RecordType> => {
+): Partial<ListControllerResult<RecordType>> => {
     const context = useContext(ListContext);
     // Props take precedence over the context
-    // @ts-ignore
     return useMemo(
         () =>
             defaults(
                 {},
-                props != null ? extractListContextProps(props) : {},
+                props != null ? extractListContextProps<RecordType>(props) : {},
                 context
             ),
         [context, props]
@@ -114,7 +113,7 @@ export const useListContext = <RecordType extends RaRecord = any>(
  *
  * @returns {ListControllerResult} List controller props
  */
-const extractListContextProps = ({
+const extractListContextProps = <RecordType extends RaRecord = any>({
     sort,
     data,
     defaultTitle,
@@ -140,7 +139,7 @@ const extractListContextProps = ({
     setSort,
     showFilter,
     total,
-}) => ({
+}: Partial<ListControllerResult<RecordType>> & Record<string, any>) => ({
     sort,
     data,
     defaultTitle,

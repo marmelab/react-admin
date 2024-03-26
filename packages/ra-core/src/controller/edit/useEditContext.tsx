@@ -23,18 +23,17 @@ import { EditControllerResult } from './useEditController';
  *
  */
 export const useEditContext = <RecordType extends RaRecord = any>(
-    props?: Partial<EditControllerResult<RecordType>>
-): EditControllerResult<RecordType> => {
+    props?: any
+): Partial<EditControllerResult<RecordType>> => {
     // Can't find a way to specify the RecordType when EditContext is declared
-    // @ts-ignore
-    const context = useContext<EditControllerResult<RecordType>>(EditContext);
+    const context = useContext(EditContext);
 
     // Props take precedence over the context
     return useMemo(
         () =>
             defaults(
                 {},
-                props != null ? extractEditContextProps(props) : {},
+                props != null ? extractEditContextProps<RecordType>(props) : {},
                 context
             ),
         [context, props]
@@ -48,7 +47,7 @@ export const useEditContext = <RecordType extends RaRecord = any>(
  *
  * @returns {EditControllerResult} edit controller props
  */
-const extractEditContextProps = ({
+const extractEditContextProps = <RecordType extends RaRecord = any>({
     data,
     record,
     defaultTitle,
@@ -60,7 +59,7 @@ const extractEditContextProps = ({
     resource,
     save,
     saving,
-}: any) => ({
+}: Partial<EditControllerResult<RecordType>> & Record<string, any>) => ({
     // Necessary for actions (EditActions) which expect a data prop containing the record
     // @deprecated - to be removed in 4.0d
     data: record || data,

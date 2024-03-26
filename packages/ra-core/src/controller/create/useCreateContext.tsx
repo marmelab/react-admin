@@ -23,19 +23,17 @@ import { CreateControllerResult } from './useCreateController';
  *
  */
 export const useCreateContext = <RecordType extends RaRecord = RaRecord>(
-    props?: Partial<CreateControllerResult<RecordType>>
-): CreateControllerResult<RecordType> => {
-    const context = useContext<CreateControllerResult<RecordType>>(
-        // Can't find a way to specify the RecordType when CreateContext is declared
-        // @ts-ignore
-        CreateContext
-    );
+    props?: any
+): Partial<CreateControllerResult<RecordType>> => {
+    const context = useContext(CreateContext);
     // Props take precedence over the context
     return useMemo(
         () =>
             defaults(
                 {},
-                props != null ? extractCreateContextProps(props) : {},
+                props != null
+                    ? extractCreateContextProps<RecordType>(props)
+                    : {},
                 context
             ),
         [context, props]
@@ -49,7 +47,7 @@ export const useCreateContext = <RecordType extends RaRecord = RaRecord>(
  *
  * @returns {CreateControllerResult} create controller props
  */
-const extractCreateContextProps = ({
+const extractCreateContextProps = <RecordType extends RaRecord = any>({
     record,
     defaultTitle,
     isFetching,
@@ -59,7 +57,7 @@ const extractCreateContextProps = ({
     resource,
     save,
     saving,
-}: any) => ({
+}: Partial<CreateControllerResult<RecordType>>) => ({
     record,
     defaultTitle,
     isFetching,
