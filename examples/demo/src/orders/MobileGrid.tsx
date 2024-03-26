@@ -18,7 +18,7 @@ import { Order } from '../types';
 const MobileGrid = () => {
     const { data, error, isPending } = useListContext<Order>();
     const translate = useTranslate();
-    if (isPending || (data && data.length === 0) || error) {
+    if (isPending || error || data.length === 0) {
         return null;
     }
     return (

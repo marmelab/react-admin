@@ -26,7 +26,7 @@ export const WithListContext = <RecordType extends RaRecord>({
 
 export interface WithListContextProps<RecordType extends RaRecord> {
     render: (
-        context: Partial<ListControllerResult<RecordType>>
+        context: ListControllerResult<RecordType>
     ) => ReactElement | false | null;
     label?: string;
 }

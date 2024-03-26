@@ -19,7 +19,7 @@ const MobileGrid = () => {
     const translate = useTranslate();
     const { data, error, isPending } = useListContext<Customer>();
 
-    if (isPending || error || (data && data.length === 0)) {
+    if (isPending || error || data.length === 0) {
         return null;
     }
 
