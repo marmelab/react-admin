@@ -167,7 +167,6 @@ export const useInfiniteListController = <RecordType extends RaRecord = any>(
         [data]
     );
 
-    // @ts-ignore FIXME cannot find another way to fix this error: "Types of property 'isPending' are incompatible: Type 'boolean' is not assignable to type 'false'.""
     return {
         sort: currentSort,
         data: unwrappedData,
@@ -201,7 +200,7 @@ export const useInfiniteListController = <RecordType extends RaRecord = any>(
         isFetchingNextPage,
         fetchPreviousPage,
         isFetchingPreviousPage,
-    };
+    } as InfiniteListControllerResult<RecordType>;
 };
 
 export interface InfiniteListControllerProps<

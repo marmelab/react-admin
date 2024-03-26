@@ -203,7 +203,6 @@ export const useReferenceManyFieldController = <
         }
     );
 
-    // @ts-ignore FIXME cannot find another way to fix this error: "Types of property 'isPending' are incompatible: Type 'boolean' is not assignable to type 'false'.""
     return {
         sort,
         data,
@@ -235,5 +234,5 @@ export const useReferenceManyFieldController = <
         setSort,
         showFilter,
         total,
-    };
+    } as ListControllerResult<ReferenceRecordType>;
 };

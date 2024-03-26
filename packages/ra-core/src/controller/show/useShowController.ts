@@ -116,7 +116,6 @@ export const useShowController = <RecordType extends RaRecord = any>(
                 : '',
     });
 
-    // @ts-ignore FIXME cannot find another way to fix this error: "Types of property 'isPending' are incompatible: Type 'boolean' is not assignable to type 'false'."
     return {
         defaultTitle,
         error,
@@ -126,7 +125,7 @@ export const useShowController = <RecordType extends RaRecord = any>(
         record,
         refetch,
         resource,
-    };
+    } as ShowControllerResult<RecordType>;
 };
 
 export interface ShowControllerProps<RecordType extends RaRecord = any> {

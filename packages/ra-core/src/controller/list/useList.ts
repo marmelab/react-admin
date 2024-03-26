@@ -256,7 +256,6 @@ export const useList = <RecordType extends RaRecord = any>(
         }
     }, [isPending, pendingState, setPendingState]);
 
-    // @ts-ignore FIXME cannot find another way to fox this error: "Types of property 'isPending' are incompatible: Type 'boolean' is not assignable to type 'false'.""
     return {
         sort,
         data: finalItems?.data,
@@ -287,7 +286,7 @@ export const useList = <RecordType extends RaRecord = any>(
         setSort,
         showFilter,
         total: finalItems?.total,
-    };
+    } as UseListValue<RecordType>;
 };
 
 export interface UseListOptions<RecordType extends RaRecord = any> {

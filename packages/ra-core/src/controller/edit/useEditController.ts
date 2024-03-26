@@ -240,7 +240,6 @@ export const useEditController = <
         ]
     );
 
-    // @ts-ignore FIXME cannot find another way to fix this error: "Types of property 'isPending' are incompatible: Type 'boolean' is not assignable to type 'false'."
     return {
         defaultTitle,
         error,
@@ -256,7 +255,7 @@ export const useEditController = <
         save,
         saving,
         unregisterMutationMiddleware,
-    };
+    } as EditControllerResult<RecordType>;
 };
 
 const DefaultRedirect = 'list';

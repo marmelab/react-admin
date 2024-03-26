@@ -147,7 +147,6 @@ export const useListController = <RecordType extends RaRecord = any>(
         name: getResourceLabel(resource, 2),
     });
 
-    // @ts-ignore FIXME cannot find another way to fix this error: "Types of property 'isPending' are incompatible: Type 'boolean' is not assignable to type 'false'."
     return {
         sort: currentSort,
         data,
@@ -181,7 +180,7 @@ export const useListController = <RecordType extends RaRecord = any>(
             ? query.page * query.perPage < total
             : undefined,
         hasPreviousPage: pageInfo ? pageInfo.hasPreviousPage : query.page > 1,
-    };
+    } as ListControllerResult<RecordType>;
 };
 
 export interface ListControllerProps<RecordType extends RaRecord = any> {
