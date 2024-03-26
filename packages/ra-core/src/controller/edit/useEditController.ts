@@ -285,13 +285,13 @@ export interface EditControllerBaseResult<RecordType extends RaRecord = any>
     resource: string;
 }
 
-interface EditControllerLoadingResult<RecordType extends RaRecord = any>
+export interface EditControllerLoadingResult<RecordType extends RaRecord = any>
     extends EditControllerBaseResult<RecordType> {
     record: undefined;
     error: null;
     isPending: true;
 }
-interface EditControllerLoadingErrorResult<
+export interface EditControllerLoadingErrorResult<
     RecordType extends RaRecord = any,
     TError = Error
 > extends EditControllerBaseResult<RecordType> {
@@ -299,7 +299,7 @@ interface EditControllerLoadingErrorResult<
     error: TError;
     isPending: false;
 }
-interface EditControllerRefetchErrorResult<
+export interface EditControllerRefetchErrorResult<
     RecordType extends RaRecord = any,
     TError = Error
 > extends EditControllerBaseResult<RecordType> {
@@ -307,7 +307,7 @@ interface EditControllerRefetchErrorResult<
     error: TError;
     isPending: false;
 }
-interface EditControllerSuccessResult<RecordType extends RaRecord = any>
+export interface EditControllerSuccessResult<RecordType extends RaRecord = any>
     extends EditControllerBaseResult<RecordType> {
     record: RecordType;
     error: null;

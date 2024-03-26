@@ -144,13 +144,13 @@ export interface ShowControllerBaseResult<RecordType extends RaRecord = any> {
     refetch: UseGetOneHookValue<RecordType>['refetch'];
 }
 
-interface ShowControllerLoadingResult<RecordType extends RaRecord = any>
+export interface ShowControllerLoadingResult<RecordType extends RaRecord = any>
     extends ShowControllerBaseResult<RecordType> {
     record: undefined;
     error: null;
     isPending: true;
 }
-interface ShowControllerLoadingErrorResult<
+export interface ShowControllerLoadingErrorResult<
     RecordType extends RaRecord = any,
     TError = Error
 > extends ShowControllerBaseResult<RecordType> {
@@ -158,7 +158,7 @@ interface ShowControllerLoadingErrorResult<
     error: TError;
     isPending: false;
 }
-interface ShowControllerRefetchErrorResult<
+export interface ShowControllerRefetchErrorResult<
     RecordType extends RaRecord = any,
     TError = Error
 > extends ShowControllerBaseResult<RecordType> {
@@ -166,7 +166,7 @@ interface ShowControllerRefetchErrorResult<
     error: TError;
     isPending: false;
 }
-interface ShowControllerSuccessResult<RecordType extends RaRecord = any>
+export interface ShowControllerSuccessResult<RecordType extends RaRecord = any>
     extends ShowControllerBaseResult<RecordType> {
     record: RecordType;
     error: null;

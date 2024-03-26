@@ -444,7 +444,7 @@ export const sanitizeListRestProps = props =>
         .filter(propName => !injectedProps.includes(propName))
         .reduce((acc, key) => ({ ...acc, [key]: props[key] }), {});
 
-interface ListControllerBaseResult<RecordType extends RaRecord = any> {
+export interface ListControllerBaseResult<RecordType extends RaRecord = any> {
     sort: SortPayload;
     defaultTitle?: string;
     displayedFilters: any;
@@ -475,14 +475,14 @@ interface ListControllerBaseResult<RecordType extends RaRecord = any> {
     isLoading?: boolean;
 }
 
-interface ListControllerLoadingResult<RecordType extends RaRecord = any>
+export interface ListControllerLoadingResult<RecordType extends RaRecord = any>
     extends ListControllerBaseResult<RecordType> {
     data: undefined;
     total: undefined;
     error: null;
     isPending: true;
 }
-interface ListControllerLoadingErrorResult<
+export interface ListControllerLoadingErrorResult<
     RecordType extends RaRecord = any,
     TError = Error
 > extends ListControllerBaseResult<RecordType> {
@@ -491,7 +491,7 @@ interface ListControllerLoadingErrorResult<
     error: TError;
     isPending: false;
 }
-interface ListControllerRefetchErrorResult<
+export interface ListControllerRefetchErrorResult<
     RecordType extends RaRecord = any,
     TError = Error
 > extends ListControllerBaseResult<RecordType> {
@@ -500,7 +500,7 @@ interface ListControllerRefetchErrorResult<
     error: TError;
     isPending: false;
 }
-interface ListControllerSuccessResult<RecordType extends RaRecord = any>
+export interface ListControllerSuccessResult<RecordType extends RaRecord = any>
     extends ListControllerBaseResult<RecordType> {
     data: RecordType[];
     total: number;
