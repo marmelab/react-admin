@@ -1,7 +1,6 @@
 import { createContext, useMemo } from 'react';
 import pick from 'lodash/pick';
 import { ListControllerResult } from './useListController';
-import { SORT_ASC } from './queryReducer';
 
 /**
  * Context to store the sort part of the useListController() result.
@@ -35,16 +34,9 @@ import { SORT_ASC } from './queryReducer';
  *     );
  * };
  */
-export const ListSortContext = createContext<ListSortContextValue>({
-    sort: {
-        field: 'id',
-        order: SORT_ASC,
-    },
-    setSort: () => {
-        throw new Error('not implemented');
-    },
-    resource: '',
-});
+export const ListSortContext = createContext<ListSortContextValue | undefined>(
+    undefined
+);
 
 export type ListSortContextValue = Pick<
     ListControllerResult,

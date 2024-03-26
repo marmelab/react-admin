@@ -19,13 +19,6 @@ import { CreateControllerResult } from './useCreateController';
  *     );
  * };
  */
-export const CreateContext = createContext<CreateControllerResult>({
-    isFetching: false,
-    isLoading: false,
-    isPending: false,
-    redirect: false,
-    resource: '',
-    saving: false,
-});
+export const CreateContext = createContext<CreateControllerResult | null>(null);
 
 CreateContext.displayName = 'CreateContext';

@@ -1,4 +1,5 @@
-import { useContext } from 'react';
+import { useContext, useMemo } from 'react';
+import defaults from 'lodash/defaults';
 
 import { ListSortContext, ListSortContextValue } from './ListSortContext';
 
@@ -19,23 +20,19 @@ import { ListSortContext, ListSortContextValue } from './ListSortContext';
  */
 export const useListSortContext = (props?: any): ListSortContextValue => {
     const context = useContext(ListSortContext);
-    if (!context.setSort) {
-        /**
-         * The element isn't inside a <ListSortContext.Provider>
-         *
-         * This may only happen when using Datagrid / SimpleList / SingleFieldList components
-         * outside of a List / ReferenceManyField / ReferenceArrayField -
-         * which isn't documented but tolerated.
-         * To avoid breakage in that case, fallback to props
-         *
-         * @deprecated - to be removed in 4.0
-         */
-        if (process.env.NODE_ENV !== 'production') {
-            console.log(
-                "List components must be used inside a <ListContextProvider>. Relying on props rather than context to get List data and callbacks is deprecated and won't be supported in the next major version of react-admin."
-            );
-        }
-        return props;
-    }
-    return context;
+    return useMemo(
+        () =>
+            defaults(
+                {},
+                props != null ? extractListPaginationContextProps(props) : {},
+                context
+            ),
+        [context, props]
+    );
 };
+
+const extractListPaginationContextProps = ({ sort, setSort, resource }) => ({
+    sort,
+    setSort,
+    resource,
+});

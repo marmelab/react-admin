@@ -1,12 +1,12 @@
-import { useContext } from 'react';
+import { useContext, useMemo } from 'react';
+import defaults from 'lodash/defaults';
 
 import { ListFilterContext, ListFilterContextValue } from './ListFilterContext';
 
 /**
- * Hook to read the list controller props from the ListContext.
+ * Hook to read the list props from the ListFilterContext.
  *
- * Must be used within a <ListContextProvider> (e.g. as a descendent of <List>
- * or <ListBase>).
+ * Must be used within a <ListFilterContextProvider>.
  *
  * @typedef {Object} ListFilterContextValue
  * @prop {Object}   filterValues a dictionary of filter values, e.g. { title: 'lorem', nationality: 'fr' }
@@ -22,23 +22,29 @@ import { ListFilterContext, ListFilterContextValue } from './ListFilterContext';
  */
 export const useListFilterContext = (props?: any): ListFilterContextValue => {
     const context = useContext(ListFilterContext);
-    if (!context.hideFilter) {
-        /**
-         * The element isn't inside a <ListFilterContext.Provider>
-         *
-         * This may only happen when using Datagrid / SimpleList / SingleFieldList components
-         * outside of a List / ReferenceManyField / ReferenceArrayField -
-         * which isn't documented but tolerated.
-         * To avoid breakage in that case, fallback to props
-         *
-         * @deprecated - to be removed in 4.0
-         */
-        if (process.env.NODE_ENV !== 'production') {
-            console.log(
-                "List components must be used inside a <ListContextProvider>. Relying on props rather than context to get List data and callbacks is deprecated and won't be supported in the next major version of react-admin."
-            );
-        }
-        return props;
-    }
-    return context;
+    return useMemo(
+        () =>
+            defaults(
+                {},
+                props != null ? extractListPaginationContextProps(props) : {},
+                context
+            ),
+        [context, props]
+    );
 };
+
+const extractListPaginationContextProps = ({
+    displayedFilters,
+    filterValues,
+    hideFilter,
+    setFilters,
+    showFilter,
+    resource,
+}) => ({
+    displayedFilters,
+    filterValues,
+    hideFilter,
+    setFilters,
+    showFilter,
+    resource,
+});

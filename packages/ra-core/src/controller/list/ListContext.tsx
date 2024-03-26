@@ -1,7 +1,5 @@
 import { createContext } from 'react';
 import { ListControllerResult } from './useListController';
-import { th } from 'date-fns/locale';
-import { SORT_ASC } from './queryReducer';
 
 /**
  * Context to store the result of the useListController() hook.
@@ -54,53 +52,6 @@ import { SORT_ASC } from './queryReducer';
  *     );
  * };
  */
-export const ListContext = createContext<ListControllerResult>({
-    data: [],
-    total: 0,
-    error: null,
-    sort: {
-        field: 'id',
-        order: SORT_ASC,
-    },
-    displayedFilters: null,
-    filterValues: null,
-    hasNextPage: false,
-    hasPreviousPage: false,
-    hideFilter: () => {
-        throw new Error('not implemented');
-    },
-    isFetching: false,
-    isLoading: false,
-    isPending: false,
-    onSelect: () => {
-        throw new Error('not implemented');
-    },
-    onToggleItem: () => {
-        throw new Error('not implemented');
-    },
-    onUnselectItems: () => {
-        throw new Error('not implemented');
-    },
-    page: 1,
-    perPage: 25,
-    refetch: () => Promise.reject('not implemented'),
-    resource: '',
-    selectedIds: [],
-    setFilters: () => {
-        throw new Error('not implemented');
-    },
-    setPage: () => {
-        throw new Error('not implemented');
-    },
-    setPerPage: () => {
-        throw new Error('not implemented');
-    },
-    setSort: () => {
-        throw new Error('not implemented');
-    },
-    showFilter: () => {
-        throw new Error('not implemented');
-    },
-});
+export const ListContext = createContext<ListControllerResult | null>(null);
 
 ListContext.displayName = 'ListContext';

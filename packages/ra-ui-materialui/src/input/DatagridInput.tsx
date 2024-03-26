@@ -104,7 +104,7 @@ export const DatagridInput = (props: DatagridInputProps) => {
         () => ({
             ...choicesContext,
             data: availableChoices,
-            total: availableChoices.length,
+            total: availableChoices?.length,
             error: null,
             onSelect,
             onToggleItem,
