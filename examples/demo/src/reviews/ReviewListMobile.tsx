@@ -6,8 +6,8 @@ import { ReviewItem } from './ReviewItem';
 import { Review } from './../types';
 
 const ReviewListMobile = () => {
-    const { data, isPending, total } = useListContext<Review>();
-    if (isPending || Number(total) === 0) {
+    const { data, error, isPending, total } = useListContext<Review>();
+    if (isPending || error || Number(total) === 0) {
         return null;
     }
     return (

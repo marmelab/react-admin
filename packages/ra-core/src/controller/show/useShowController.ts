@@ -55,13 +55,23 @@ export const useShowController = <RecordType extends RaRecord = any>(
     const { disableAuthentication, id: propsId, queryOptions = {} } = props;
     useAuthenticated({ enabled: !disableAuthentication });
     const resource = useResourceContext(props);
+    if (!resource) {
+        throw new Error(
+            `useShowController requires a non-empty resource prop or context`
+        );
+    }
     const getRecordRepresentation = useGetRecordRepresentation(resource);
     const translate = useTranslate();
     const notify = useNotify();
     const redirect = useRedirect();
     const refresh = useRefresh();
     const { id: routeId } = useParams<'id'>();
-    const id = propsId != null ? propsId : decodeURIComponent(routeId);
+    if (!routeId && !propsId) {
+        throw new Error(
+            'useShowController requires an id prop or a route with an /:id? parameter.'
+        );
+    }
+    const id = propsId != null ? propsId : decodeURIComponent(routeId!);
     const { meta, ...otherQueryOptions } = queryOptions;
 
     const {
@@ -115,7 +125,7 @@ export const useShowController = <RecordType extends RaRecord = any>(
         record,
         refetch,
         resource,
-    };
+    } as ShowControllerResult<RecordType>;
 };
 
 export interface ShowControllerProps<RecordType extends RaRecord = any> {
@@ -125,16 +135,46 @@ export interface ShowControllerProps<RecordType extends RaRecord = any> {
     resource?: string;
 }
 
-export interface ShowControllerResult<RecordType extends RaRecord = any> {
-    defaultTitle: string;
-    // Necessary for actions (EditActions) which expect a data prop containing the record
-    // @deprecated - to be removed in 4.0d
-    data?: RecordType;
-    error?: any;
+export interface ShowControllerBaseResult<RecordType extends RaRecord = any> {
+    defaultTitle?: string;
     isFetching: boolean;
     isLoading: boolean;
-    isPending: boolean;
     resource: string;
     record?: RecordType;
     refetch: UseGetOneHookValue<RecordType>['refetch'];
 }
+
+export interface ShowControllerLoadingResult<RecordType extends RaRecord = any>
+    extends ShowControllerBaseResult<RecordType> {
+    record: undefined;
+    error: null;
+    isPending: true;
+}
+export interface ShowControllerLoadingErrorResult<
+    RecordType extends RaRecord = any,
+    TError = Error
+> extends ShowControllerBaseResult<RecordType> {
+    record: undefined;
+    error: TError;
+    isPending: false;
+}
+export interface ShowControllerRefetchErrorResult<
+    RecordType extends RaRecord = any,
+    TError = Error
+> extends ShowControllerBaseResult<RecordType> {
+    record: RecordType;
+    error: TError;
+    isPending: false;
+}
+export interface ShowControllerSuccessResult<RecordType extends RaRecord = any>
+    extends ShowControllerBaseResult<RecordType> {
+    record: RecordType;
+    error: null;
+    isPending: false;
+}
+
+export type ShowControllerResult<RecordType extends RaRecord = any> =
+    | ShowControllerLoadingResult<RecordType>
+    | ShowControllerLoadingErrorResult<RecordType>
+    | ShowControllerRefetchErrorResult<RecordType>
+    | ShowControllerSuccessResult<RecordType>;

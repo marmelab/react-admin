@@ -65,13 +65,23 @@ export const useEditController = <
     } = props;
     useAuthenticated({ enabled: !disableAuthentication });
     const resource = useResourceContext(props);
+    if (!resource) {
+        throw new Error(
+            'useEditController requires a non-empty resource prop or context'
+        );
+    }
     const getRecordRepresentation = useGetRecordRepresentation(resource);
     const translate = useTranslate();
     const notify = useNotify();
     const redirect = useRedirect();
     const refresh = useRefresh();
     const { id: routeId } = useParams<'id'>();
-    const id = propsId != null ? propsId : decodeURIComponent(routeId);
+    if (!routeId && !propsId) {
+        throw new Error(
+            'useEditController requires an id prop or a route with an /:id? parameter.'
+        );
+    }
+    const id = propsId ?? decodeURIComponent(routeId!);
     const { meta: queryMeta, ...otherQueryOptions } = queryOptions;
     const {
         meta: mutationMeta,
@@ -160,8 +170,12 @@ export const useEditController = <
                             _:
                                 typeof error === 'string'
                                     ? error
-                                    : error && (error as Error).message
-                                    ? (error as Error).message
+                                    : error instanceof Error ||
+                                      (typeof error === 'object' &&
+                                          error !== null &&
+                                          error.hasOwnProperty('message'))
+                                    ? // @ts-ignore
+                                      error.message
                                     : undefined,
                         },
                     }
@@ -241,8 +255,10 @@ export const useEditController = <
         save,
         saving,
         unregisterMutationMiddleware,
-    };
+    } as EditControllerResult<RecordType>;
 };
+
+const DefaultRedirect = 'list';
 
 export interface EditControllerProps<
     RecordType extends RaRecord = any,
@@ -259,20 +275,47 @@ export interface EditControllerProps<
     [key: string]: any;
 }
 
-export interface EditControllerResult<RecordType extends RaRecord = any>
+export interface EditControllerBaseResult<RecordType extends RaRecord = any>
     extends SaveContextValue<RecordType> {
-    // Necessary for actions (EditActions) which expect a data prop containing the record
-    // @deprecated - to be removed in 4.0d
-    data?: RecordType;
-    error?: any;
-    defaultTitle: string;
+    defaultTitle?: string;
     isFetching: boolean;
     isLoading: boolean;
-    isPending: boolean;
-    record?: RecordType;
     refetch: UseGetOneHookValue<RecordType>['refetch'];
     redirect: RedirectionSideEffect;
     resource: string;
 }
 
-const DefaultRedirect = 'list';
+export interface EditControllerLoadingResult<RecordType extends RaRecord = any>
+    extends EditControllerBaseResult<RecordType> {
+    record: undefined;
+    error: null;
+    isPending: true;
+}
+export interface EditControllerLoadingErrorResult<
+    RecordType extends RaRecord = any,
+    TError = Error
+> extends EditControllerBaseResult<RecordType> {
+    record: undefined;
+    error: TError;
+    isPending: false;
+}
+export interface EditControllerRefetchErrorResult<
+    RecordType extends RaRecord = any,
+    TError = Error
+> extends EditControllerBaseResult<RecordType> {
+    record: RecordType;
+    error: TError;
+    isPending: false;
+}
+export interface EditControllerSuccessResult<RecordType extends RaRecord = any>
+    extends EditControllerBaseResult<RecordType> {
+    record: RecordType;
+    error: null;
+    isPending: false;
+}
+
+export type EditControllerResult<RecordType extends RaRecord = any> =
+    | EditControllerLoadingResult<RecordType>
+    | EditControllerLoadingErrorResult<RecordType>
+    | EditControllerRefetchErrorResult<RecordType>
+    | EditControllerSuccessResult<RecordType>;

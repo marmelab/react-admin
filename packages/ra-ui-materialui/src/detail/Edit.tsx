@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { ReactNode } from 'react';
 import PropTypes from 'prop-types';
 import { useCheckMinimumRequiredProps, RaRecord } from 'ra-core';
 import { EditProps } from '../types';
@@ -52,7 +51,7 @@ import { EditBase } from 'ra-core';
  * export default App;
  */
 export const Edit = <RecordType extends RaRecord = any>(
-    props: EditProps<RecordType> & { children: ReactNode }
+    props: EditProps<RecordType>
 ) => {
     useCheckMinimumRequiredProps('Edit', ['children'], props);
     const {

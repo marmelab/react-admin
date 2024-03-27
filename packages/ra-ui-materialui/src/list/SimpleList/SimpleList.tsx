@@ -22,7 +22,7 @@ import {
     RaRecord,
     RecordContextProvider,
     sanitizeListRestProps,
-    useListContext,
+    useListContextWithProps,
     useResourceContext,
     useGetRecordRepresentation,
     useCreatePath,
@@ -86,7 +86,9 @@ export const SimpleList = <RecordType extends RaRecord = any>(
         rowStyle,
         ...rest
     } = props;
-    const { data, isPending, total } = useListContext<RecordType>(props);
+    const { data, isPending, total } = useListContextWithProps<RecordType>(
+        props
+    );
     const resource = useResourceContext(props);
     const getRecordRepresentation = useGetRecordRepresentation(resource);
     const translate = useTranslate();

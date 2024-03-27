@@ -63,6 +63,11 @@ export const useCreateController = <
 
     useAuthenticated({ enabled: !disableAuthentication });
     const resource = useResourceContext(props);
+    if (!resource) {
+        throw new Error(
+            'useCreateController requires a non-empty resource prop or context'
+        );
+    }
     const { hasEdit, hasShow } = useResourceDefinition(props);
     const finalRedirectTo =
         redirectTo ?? getDefaultRedirectRoute(hasShow, hasEdit);
@@ -113,8 +118,12 @@ export const useCreateController = <
                         _:
                             typeof error === 'string'
                                 ? error
-                                : error && (error as Error).message
-                                ? (error as Error).message
+                                : error instanceof Error ||
+                                  (typeof error === 'object' &&
+                                      error !== null &&
+                                      error.hasOwnProperty('message'))
+                                ? // @ts-ignore
+                                  error.message
                                 : undefined,
                     },
                 }
@@ -148,8 +157,14 @@ export const useCreateController = <
                         callTimeOptions
                     );
                 } catch (error) {
-                    if ((error as HttpError).body?.errors != null) {
-                        return (error as HttpError).body.errors;
+                    if (
+                        (error instanceof HttpError ||
+                            (typeof error === 'object' &&
+                                error !== null &&
+                                error.hasOwnProperty('body'))) &&
+                        error.body?.errors != null
+                    ) {
+                        return error.body.errors;
                     }
                 }
             }),
@@ -201,7 +216,7 @@ export interface CreateControllerResult<
     // Necessary for actions (EditActions) which expect a data prop containing the record
     // @deprecated - to be removed in 4.0d
     data?: RecordType;
-    defaultTitle: string;
+    defaultTitle?: string;
     isFetching: boolean;
     isPending: boolean;
     isLoading: boolean;

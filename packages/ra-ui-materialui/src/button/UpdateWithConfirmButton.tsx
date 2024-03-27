@@ -142,7 +142,6 @@ export const UpdateWithConfirmButton = (
 };
 
 const sanitizeRestProps = ({
-    filterValues,
     label,
     ...rest
 }: Omit<

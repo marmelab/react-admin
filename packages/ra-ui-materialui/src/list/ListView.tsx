@@ -42,7 +42,7 @@ export const ListView = <RecordType extends RaRecord = any>(
         isPending,
         filterValues,
         resource,
-    } = useListContext<RecordType>(props);
+    } = useListContext<RecordType>();
 
     if (!children || (!data && isPending && emptyWhileLoading)) {
         return null;

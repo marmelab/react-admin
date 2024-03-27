@@ -37,7 +37,7 @@ export const BulkDeleteWithConfirmButton = (
         ...rest
     } = props;
     const { meta: mutationMeta, ...otherMutationOptions } = mutationOptions;
-    const { selectedIds, onUnselectItems } = useListContext(props);
+    const { selectedIds, onUnselectItems } = useListContext();
     const [isOpen, setOpen] = useSafeSetState(false);
     const notify = useNotify();
     const resource = useResourceContext(props);
@@ -138,9 +138,7 @@ export const BulkDeleteWithConfirmButton = (
 
 const sanitizeRestProps = ({
     classes,
-    filterValues,
     label,
-    selectedIds,
     ...rest
 }: Omit<
     BulkDeleteWithConfirmButtonProps,

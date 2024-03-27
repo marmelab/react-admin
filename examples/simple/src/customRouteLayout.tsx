@@ -30,6 +30,8 @@ const CustomRouteLayout = ({ title = 'Posts' }) => {
                 isPending={isPending}
                 total={total}
                 rowClick="edit"
+                bulkActionButtons={false}
+                resource="posts"
             >
                 <TextField source="id" sortable={false} />
                 <TextField source="title" sortable={false} />

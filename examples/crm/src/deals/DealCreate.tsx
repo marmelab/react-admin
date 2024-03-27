@@ -34,6 +34,10 @@ export const DealCreate = ({ open }: { open: boolean }) => {
     const queryClient = useQueryClient();
 
     const onSuccess = async (deal: Deal) => {
+        if (!allDeals) {
+            redirect('/deals');
+            return;
+        }
         // increase the index of all deals in the same stage as the new deal
         // first, get the list of deals in the same stage
         const deals = allDeals.filter(

@@ -13,7 +13,6 @@ import {
     useListPaginationContext,
     sanitizeListRestProps,
     ComponentPropType,
-    ListPaginationContextValue,
 } from 'ra-core';
 
 import { PaginationActions, PaginationActionsProps } from './PaginationActions';
@@ -33,7 +32,7 @@ export const Pagination: FC<PaginationProps> = memo(props => {
         total,
         setPage,
         setPerPage,
-    } = useListPaginationContext(props);
+    } = useListPaginationContext();
     const translate = useTranslate();
     const isSmall = useMediaQuery((theme: Theme) =>
         theme.breakpoints.down('md')
@@ -164,9 +163,7 @@ Pagination.propTypes = {
 const DefaultRowsPerPageOptions = [5, 10, 25, 50];
 const emptyArray = [];
 
-export interface PaginationProps
-    extends TablePaginationBaseProps,
-        Partial<ListPaginationContextValue> {
+export interface PaginationProps extends TablePaginationBaseProps {
     rowsPerPageOptions?: Array<number | { label: string; value: number }>;
     actions?: FC<PaginationActionsProps>;
     limit?: ReactElement;

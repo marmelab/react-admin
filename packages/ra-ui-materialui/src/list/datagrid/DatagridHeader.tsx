@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Children, isValidElement, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import {
-    useListContext,
+    useListContextWithProps,
     useResourceContext,
     Identifier,
     RaRecord,
@@ -32,9 +32,13 @@ export const DatagridHeader = (props: DatagridHeaderProps) => {
     } = props;
     const resource = useResourceContext(props);
     const translate = useTranslate();
-    const { sort, data, onSelect, selectedIds, setSort } = useListContext(
-        props
-    );
+    const {
+        sort,
+        data,
+        onSelect,
+        selectedIds,
+        setSort,
+    } = useListContextWithProps(props);
     const { expandSingle } = useDatagridContext();
 
     const updateSortCallback = useCallback(

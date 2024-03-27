@@ -97,9 +97,7 @@ export const UpdateWithUndoButton = (props: UpdateWithUndoButtonProps) => {
 const defaultIcon = <ActionUpdate />;
 
 const sanitizeRestProps = ({
-    filterValues,
     label,
-    selectedIds,
     ...rest
 }: Omit<UpdateWithUndoButtonProps, 'resource' | 'icon' | 'data'>) => rest;
 

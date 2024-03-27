@@ -156,14 +156,13 @@ export const ReferenceManyFieldView: FC<ReferenceManyFieldViewProps> = props => 
     );
 };
 
-export interface ReferenceManyFieldViewProps
-    extends Omit<
-            ReferenceManyFieldProps,
-            'resource' | 'page' | 'perPage' | 'sort'
-        >,
-        ListControllerResult {
-    children: ReactElement;
-}
+export type ReferenceManyFieldViewProps = Omit<
+    ReferenceManyFieldProps,
+    'resource' | 'page' | 'perPage' | 'sort'
+> &
+    ListControllerResult & {
+        children: ReactElement;
+    };
 
 ReferenceManyFieldView.propTypes = {
     children: PropTypes.element,

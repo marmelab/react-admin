@@ -5,7 +5,6 @@ import {
     TextInput,
     SimpleForm,
     DateField,
-    EditProps,
     Labeled,
 } from 'react-admin';
 import { Box, Grid, Stack, IconButton, Typography } from '@mui/material';
@@ -17,11 +16,12 @@ import StarRatingField from './StarRatingField';
 import ReviewEditToolbar from './ReviewEditToolbar';
 import { Review } from '../types';
 
-interface Props extends EditProps<Review> {
+interface ReviewEditProps {
+    id: Review['id'];
     onCancel: () => void;
 }
 
-const ReviewEdit = ({ id, onCancel }: Props) => {
+const ReviewEdit = ({ id, onCancel }: ReviewEditProps) => {
     const translate = useTranslate();
     return (
         <EditBase id={id}>

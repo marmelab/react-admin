@@ -1,9 +1,8 @@
 import * as React from 'react';
-import { ReactNode } from 'react';
 import PropTypes from 'prop-types';
 import { Card } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import { RaRecord, CreateControllerProps, useCreateContext } from 'ra-core';
+import { useCreateContext } from 'ra-core';
 import clsx from 'clsx';
 
 import { CreateProps } from '../types';
@@ -20,7 +19,7 @@ export const CreateView = (props: CreateViewProps) => {
         ...rest
     } = props;
 
-    const { resource, defaultTitle } = useCreateContext(props);
+    const { resource, defaultTitle } = useCreateContext();
 
     return (
         <Root
@@ -45,11 +44,7 @@ export const CreateView = (props: CreateViewProps) => {
     );
 };
 
-interface CreateViewProps<RecordType extends RaRecord = any>
-    extends CreateProps<RecordType>,
-        Omit<CreateControllerProps<RecordType>, 'resource'> {
-    children: ReactNode;
-}
+export type CreateViewProps = CreateProps;
 
 CreateView.propTypes = {
     actions: PropTypes.oneOfType([PropTypes.element, PropTypes.bool]),

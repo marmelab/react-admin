@@ -2,9 +2,11 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import expect from 'expect';
 import {
     ListContext,
+    ListContextProvider,
     minLength,
     ResourceContextProvider,
     testDataProvider,
+    ListControllerResult,
 } from 'ra-core';
 import * as React from 'react';
 
@@ -23,13 +25,12 @@ import {
 } from './FilterForm';
 
 describe('<FilterForm />', () => {
-    const defaultProps = {
+    const defaultListContext = ({
         resource: 'post',
-        filters: [],
-        setFilters: () => {},
+        showFilter: () => {},
         hideFilter: () => {},
         displayedFilters: {},
-    };
+    } as unknown) as ListControllerResult;
 
     beforeAll(() => {
         window.scrollTo = jest.fn();
@@ -52,12 +53,15 @@ describe('<FilterForm />', () => {
 
         render(
             <AdminContext>
-                <FilterForm
-                    {...defaultProps}
-                    setFilters={setFilters}
-                    filters={filters}
-                    displayedFilters={displayedFilters}
-                />
+                <ListContextProvider
+                    value={{
+                        ...defaultListContext,
+                        setFilters,
+                        displayedFilters,
+                    }}
+                >
+                    <FilterForm filters={filters} />
+                </ListContextProvider>
             </AdminContext>
         );
         expect(screen.queryAllByLabelText('Title')).toHaveLength(1);
@@ -84,12 +88,15 @@ describe('<FilterForm />', () => {
         expect(() => {
             render(
                 <AdminContext>
-                    <FilterForm
-                        {...defaultProps}
-                        setFilters={setFilters}
-                        filters={filters}
-                        displayedFilters={displayedFilters}
-                    />
+                    <ListContextProvider
+                        value={{
+                            ...defaultListContext,
+                            setFilters,
+                            displayedFilters,
+                        }}
+                    >
+                        <FilterForm filters={filters} />
+                    </ListContextProvider>
                 </AdminContext>
             );
         }).not.toThrow();
@@ -105,12 +112,15 @@ describe('<FilterForm />', () => {
 
         render(
             <AdminContext>
-                <FilterForm
-                    {...defaultProps}
-                    filters={filters}
-                    displayedFilters={displayedFilters}
-                    setFilters={setFilters}
-                />
+                <ListContextProvider
+                    value={{
+                        ...defaultListContext,
+                        setFilters,
+                        displayedFilters,
+                    }}
+                >
+                    <FilterForm filters={filters} />
+                </ListContextProvider>
             </AdminContext>
         );
         fireEvent.change(screen.queryByLabelText('Title') as Element, {
@@ -140,12 +150,15 @@ describe('<FilterForm />', () => {
 
         render(
             <AdminContext>
-                <FilterForm
-                    {...defaultProps}
-                    filters={filters}
-                    displayedFilters={displayedFilters}
-                    setFilters={setFilters}
-                />
+                <ListContextProvider
+                    value={{
+                        ...defaultListContext,
+                        setFilters,
+                        displayedFilters,
+                    }}
+                >
+                    <FilterForm filters={filters} />
+                </ListContextProvider>
             </AdminContext>
         );
         fireEvent.change(screen.queryByLabelText('Title') as HTMLElement, {
@@ -202,12 +215,15 @@ describe('<FilterForm />', () => {
 
         render(
             <AdminContext>
-                <FilterForm
-                    {...defaultProps}
-                    filters={filters}
-                    displayedFilters={displayedFilters}
-                    setFilters={setFilters}
-                />
+                <ListContextProvider
+                    value={{
+                        ...defaultListContext,
+                        setFilters,
+                        displayedFilters,
+                    }}
+                >
+                    <FilterForm filters={filters} />
+                </ListContextProvider>
             </AdminContext>
         );
         fireEvent.change(screen.queryByLabelText('Title') as Element, {

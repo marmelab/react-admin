@@ -1,11 +1,9 @@
 import * as React from 'react';
-import { ReactNode } from 'react';
 import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
 import { Card, CardContent } from '@mui/material';
 import clsx from 'clsx';
 import {
-    EditControllerProps,
     ComponentPropType,
     useEditContext,
     useResourceDefinition,
@@ -28,7 +26,7 @@ export const EditView = (props: EditViewProps) => {
     } = props;
 
     const { hasShow } = useResourceDefinition();
-    const { resource, defaultTitle, record } = useEditContext(props);
+    const { resource, defaultTitle, record } = useEditContext();
 
     const finalActions =
         typeof actions === 'undefined' && hasShow ? (
@@ -64,11 +62,7 @@ export const EditView = (props: EditViewProps) => {
     );
 };
 
-interface EditViewProps
-    extends EditProps,
-        Omit<EditControllerProps, 'resource'> {
-    children: ReactNode;
-}
+export type EditViewProps = EditProps;
 
 EditView.propTypes = {
     actions: PropTypes.oneOfType([PropTypes.element, PropTypes.bool]),

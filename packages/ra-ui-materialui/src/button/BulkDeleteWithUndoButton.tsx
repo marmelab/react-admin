@@ -29,7 +29,7 @@ export const BulkDeleteWithUndoButton = (
         ...rest
     } = props;
     const { meta: mutationMeta, ...otherMutationOptions } = mutationOptions;
-    const { selectedIds, onUnselectItems } = useListContext(props);
+    const { selectedIds, onUnselectItems } = useListContext();
 
     const notify = useNotify();
     const resource = useResourceContext(props);
@@ -93,9 +93,7 @@ const defaultIcon = <ActionDelete />;
 
 const sanitizeRestProps = ({
     classes,
-    filterValues,
     label,
-    selectedIds,
     ...rest
 }: Omit<BulkDeleteWithUndoButtonProps, 'resource' | 'icon'>) => rest;
 

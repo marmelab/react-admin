@@ -19,20 +19,6 @@ import { EditControllerResult } from './useEditController';
  *     );
  * };
  */
-export const EditContext = createContext<EditControllerResult>({
-    record: null,
-    defaultTitle: null,
-    isFetching: null,
-    isLoading: null,
-    isPending: null,
-    mutationMode: null,
-    redirect: null,
-    refetch: null,
-    resource: null,
-    save: null,
-    saving: null,
-    registerMutationMiddleware: null,
-    unregisterMutationMiddleware: null,
-});
+export const EditContext = createContext<EditControllerResult | null>(null);
 
 EditContext.displayName = 'EditContext';

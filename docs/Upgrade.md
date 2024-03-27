@@ -270,6 +270,26 @@ const App = () => (
 );
 ```
 
+## Custom Edit or Show Actions No Longer Receive Any Props
+
+React-admin used to inject the `record` and `resource` props to custom edit or show actions. These props are no longer injected in v5. If you need them, you'll have to use the `useRecordContext` and `useResourceContext` hooks instead. But if you use the standard react-admin buttons like `<ShowButton>`, which already uses these hooks, you don't need inject anything.
+
+```diff
+-const MyEditActions = ({ data }) => (
++const MyEditActions = () => (
+    <TopToolbar>
+-       <ShowButton record={data} />
++       <ShowButton />
+    </TopToolbar>
+);
+
+const PostEdit = () => (
+    <Edit actions={<MyEditActions />} {...props}>
+        ...
+    </Edit>
+);
+```
+
 ## Removed deprecated hooks
 
 The following deprecated hooks have been removed
@@ -750,6 +770,120 @@ describe('my test suite', () => {
     });
 });
 ```
+
+## TypeScript: Page Contexts Are Now Types Instead of Interfaces
+
+The return type of page controllers is now a type. If you were using an interface extending one of:
+
+- `ListControllerResult`,
+- `InfiniteListControllerResult`,
+- `EditControllerResult`,
+- `ShowControllerResult`, or
+- `CreateControllerResult`,
+
+you'll have to change it to a type:
+
+```diff
+import { ListControllerResult } from 'react-admin';
+
+-interface MyListControllerResult extends ListControllerResult {
++type MyListControllerResult = ListControllerResult & {
+    customProp: string;
+};
+```
+
+## TypeScript: Stronger Types For Page Contexts
+
+The return type of page context hooks is now smarter. This concerns the following hooks:
+
+- `useListContext`,
+- `useEditContext`,
+- `useShowContext`, and
+- `useCreateContext`
+
+Depending on the fetch status of the data, the type of the `data`, `error`, and `isPending` properties will be more precise:
+
+- Loading: `{ data: undefined, error: undefined, isPending: true }`
+- Success: `{ data: <Data>, error: undefined, isPending: false }`
+- Error: `{ data: undefined, error: <Error>, isPending: false }`
+- Error After Refetch: `{ data: <Data>, error: <Error>, isPending: false }`
+
+This means that TypeScript may complain if you use the `data` property without checking if it's defined first. You'll have to update your code to handle the different states:
+
+```diff
+const MyCustomList = () => {
+    const { data, error, isPending } = useListContext();
+    if (isPending) return <Loading />;
++   if (error) return <Error />;
+    return (
+        <ul>
+            {data.map(record => (
+                <li key={record.id}>{record.name}</li>
+            ))}
+        </ul>
+    );
+};
+```
+
+Besides, these hooks will now throw an error when called outside of a page context. This means that you can't use them in a custom component that is not a child of a `<List>`, `<ListBase>`, `<Edit>`, `<EditBase>`, `<Show>`, `<ShowBase>`, `<Create>`, or `<CreateBase>` component.
+
+## TypeScript: `EditProps` and `CreateProps` now expect a `children` prop
+
+`EditProps` and `CreateProps` now expect a `children` prop, just like `ListProps` and `ShowProps`. If you were using these types in your custom components, you'll have to update them:
+
+```diff
+-const ReviewEdit = ({ id }: EditProps) => (
++const ReviewEdit = ({ id }: Omit<EditProps, 'children'>) => (
+   <Edit id={id}>
+        <SimpleForm>
+            ...
+```
+
+## List Components Can No Longer Be Used In Standalone
+
+An undocumented feature allowed some components designed for list pages to be used outside of a list page, by relying on their props instead of the `ListContext`. This feature was removed in v5.
+
+This concerns the following components:
+
+- `<BulkActionsToolbar>`
+- `<BulkDeleteWithConfirmButton>`
+- `<BulkDeleteWithUndoButton>`
+- `<BulkExportButton>`
+- `<BulkUpdateWithConfirmButton>`
+- `<BulkUpdateWithUndoButton>`
+- `<EditActions>`
+- `<ExportButton>`
+- `<FilterButton>`
+- `<FilterForm>`
+- `<ListActions>`
+- `<Pagination>`
+- `<UpdateWithConfirmButton>`
+- `<UpdateWithUndoButton>`
+
+To continue using these components, you'll have to wrap them in a `<ListContextProvider>` component:
+
+```diff
+const MyPagination = ({
+    page,
+    perPage,
+    total,
+    setPage,
+    setPerPage,
+}) => {
+    return (
+-       <Pagination page={page} perPage={perPage} total={total} setPage={setPage} setPerPage={setPerPage} />
++       <ListContextProvider value={{ page, perPage, total, setPage, setPerPage }}>
++           <Pagination />
++       </ListContextProvider>
+    );
+};
+```
+
+The following components are not affected and can still be used in standalone mode:
+
+- `<Datagrid>`
+- `<SimpleList>`
+- `<SingleFieldList>`
 
 ## Upgrading to v4
 

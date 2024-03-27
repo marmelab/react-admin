@@ -29,7 +29,7 @@ export const BulkUpdateWithConfirmButton = (
     const resource = useResourceContext(props);
     const unselectAll = useUnselectAll(resource);
     const [isOpen, setOpen] = useState(false);
-    const { selectedIds } = useListContext(props);
+    const { selectedIds } = useListContext();
 
     const {
         confirmTitle = 'ra.message.bulk_update_title',
@@ -138,7 +138,6 @@ export const BulkUpdateWithConfirmButton = (
 };
 
 const sanitizeRestProps = ({
-    filterValues,
     label,
     onSuccess,
     onError,
