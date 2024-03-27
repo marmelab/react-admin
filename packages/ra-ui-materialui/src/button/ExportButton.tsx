@@ -8,7 +8,6 @@ import {
     useNotify,
     useListContext,
     Exporter,
-    useResourceContext,
 } from 'ra-core';
 import { Button, ButtonProps } from './Button';
 
