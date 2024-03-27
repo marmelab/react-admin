@@ -17,6 +17,7 @@ export interface EditProps<
 > {
     actions?: ReactElement | false;
     aside?: ReactElement;
+    children: ReactNode;
     className?: string;
     component?: ElementType;
     disableAuthentication?: boolean;
@@ -42,6 +43,7 @@ export interface CreateProps<
 > {
     actions?: ReactElement | false;
     aside?: ReactElement;
+    children: ReactNode;
     className?: string;
     component?: ElementType;
     disableAuthentication?: boolean;

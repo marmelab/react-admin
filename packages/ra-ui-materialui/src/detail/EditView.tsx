@@ -28,7 +28,7 @@ export const EditView = (props: EditViewProps) => {
     } = props;
 
     const { hasShow } = useResourceDefinition();
-    const { resource, defaultTitle, record } = useEditContext(props);
+    const { resource, defaultTitle, record } = useEditContext();
 
     const finalActions =
         typeof actions === 'undefined' && hasShow ? (
@@ -64,11 +64,7 @@ export const EditView = (props: EditViewProps) => {
     );
 };
 
-interface EditViewProps
-    extends EditProps,
-        Omit<EditControllerProps, 'resource'> {
-    children: ReactNode;
-}
+export type EditViewProps = EditProps;
 
 EditView.propTypes = {
     actions: PropTypes.oneOfType([PropTypes.element, PropTypes.bool]),

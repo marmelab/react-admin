@@ -54,9 +54,7 @@ export const Create = <
     RecordType extends Omit<RaRecord, 'id'> = any,
     ResultRecordType extends RaRecord = RecordType & { id: Identifier }
 >(
-    props: CreateProps<RecordType, Error, ResultRecordType> & {
-        children: ReactNode;
-    }
+    props: CreateProps<RecordType, Error, ResultRecordType>
 ): ReactElement => {
     useCheckMinimumRequiredProps('Create', ['children'], props);
     const {

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 
-import { RaRecord, useEditContext, useResourceDefinition } from 'ra-core';
+import { RaRecord, useResourceDefinition } from 'ra-core';
 import { ShowButton } from '../button';
 import TopToolbar from '../layout/TopToolbar';
 
@@ -31,12 +31,11 @@ import TopToolbar from '../layout/TopToolbar';
  *     );
  */
 export const EditActions = ({ className, ...rest }: EditActionsProps) => {
-    const { record } = useEditContext(rest);
     const { hasShow } = useResourceDefinition(rest);
 
     return (
         <TopToolbar className={className} {...sanitizeRestProps(rest)}>
-            {hasShow && <ShowButton record={record} />}
+            {hasShow && <ShowButton />}
         </TopToolbar>
     );
 };
@@ -53,7 +52,6 @@ const sanitizeRestProps = ({
 
 export interface EditActionsProps {
     className?: string;
-    data?: RaRecord;
     hasCreate?: boolean;
     hasEdit?: boolean;
     hasList?: boolean;
@@ -63,7 +61,6 @@ export interface EditActionsProps {
 
 EditActions.propTypes = {
     className: PropTypes.string,
-    data: PropTypes.object,
     hasCreate: PropTypes.bool,
     hasEdit: PropTypes.bool,
     hasShow: PropTypes.bool,

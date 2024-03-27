@@ -23,7 +23,7 @@ export const ShowView = (props: ShowViewProps) => {
         ...rest
     } = props;
 
-    const { resource, defaultTitle, record } = useShowContext(props);
+    const { resource, defaultTitle, record } = useShowContext();
     const { hasEdit } = useResourceDefinition(props);
 
     const finalActions =

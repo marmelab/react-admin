@@ -52,7 +52,7 @@ import { EditBase } from 'ra-core';
  * export default App;
  */
 export const Edit = <RecordType extends RaRecord = any>(
-    props: EditProps<RecordType> & { children: ReactNode }
+    props: EditProps<RecordType>
 ) => {
     useCheckMinimumRequiredProps('Edit', ['children'], props);
     const {
