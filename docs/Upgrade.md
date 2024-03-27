@@ -827,6 +827,18 @@ const MyCustomList = () => {
 
 Besides, these hooks will now throw an error when called outside of a page context. This means that you can't use them in a custom component that is not a child of a `<List>`, `<ListBase>`, `<Edit>`, `<EditBase>`, `<Show>`, `<ShowBase>`, `<Create>`, or `<CreateBase>` component.
 
+## TypeScript: `EditProps` and `CreateProps` now expect a `children` prop
+
+`EditProps` and `CreateProps` now expect a `children` prop, just like `ListProps` and `ShowProps`. If you were using these types in your custom components, you'll have to update them:
+
+```diff
+-const ReviewEdit = ({ id }: EditProps) => (
++const ReviewEdit = ({ id }: Omit<EditProps, 'children'>) => (
+   <Edit id={id}>
+        <SimpleForm>
+            ...
+```
+
 ## List Components Can No Longer Be Used In Standalone
 
 An undocumented feature allowed some components designed for list pages to be used outside of a list page, by relying on their props instead of the `ListContext`. This feature was removed in v5.
