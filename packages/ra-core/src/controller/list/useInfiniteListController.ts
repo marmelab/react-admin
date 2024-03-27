@@ -85,7 +85,7 @@ export const useInfiniteListController = <RecordType extends RaRecord = any>(
         storeKey,
     });
 
-    const [selectedIds, selectionModifiers] = useRecordSelection(resource);
+    const [selectedIds, selectionModifiers] = useRecordSelection({ resource });
 
     const {
         data,
