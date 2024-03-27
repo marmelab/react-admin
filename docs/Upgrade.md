@@ -270,6 +270,26 @@ const App = () => (
 );
 ```
 
+## Custom Edit or Show Actions No Longer Receive Any Props
+
+React-admin used to inject the `record` and `resource` props to custom edit or show actions. These props are no longer injected in v5. If you need them, you'll have to use the `useRecordContext` and `useResourceContext` hooks instead. But if you use the standard react-admin buttons like `<ShowButton>`, which already uses these hooks, you don't need inject anything.
+
+```diff
+-const MyEditActions = ({ data }) => (
++const MyEditActions = () => (
+    <TopToolbar>
+-       <ShowButton record={data} />
++       <ShowButton />
+    </TopToolbar>
+);
+
+const PostEdit = () => (
+    <Edit actions={<MyEditActions />} {...props}>
+        ...
+    </Edit>
+);
+```
+
 ## Removed deprecated hooks
 
 The following deprecated hooks have been removed
