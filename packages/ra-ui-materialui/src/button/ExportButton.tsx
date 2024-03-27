@@ -25,11 +25,11 @@ export const ExportButton = (props: ExportButtonProps) => {
     const {
         filter,
         filterValues,
+        resource,
         sort,
         exporter: exporterFromContext,
         total,
     } = useListContext();
-    const resource = useResourceContext(props);
     const exporter = customExporter || exporterFromContext;
     const dataProvider = useDataProvider();
     const notify = useNotify();
