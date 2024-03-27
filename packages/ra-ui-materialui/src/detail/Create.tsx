@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ReactElement, ReactNode } from 'react';
+import { ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import { Identifier, RaRecord, useCheckMinimumRequiredProps } from 'ra-core';
 

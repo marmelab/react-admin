@@ -10,7 +10,6 @@ import PropTypes from 'prop-types';
 import { styled } from '@mui/material/styles';
 import {
     FormGroupsProvider,
-    ListFilterContextValue,
     SourceContextProvider,
     SourceContextValue,
     useListContext,
@@ -34,9 +33,7 @@ import { FilterContext } from '../FilterContext';
 export const FilterForm = (props: FilterFormProps) => {
     const { defaultValues, filters: filtersProps, ...rest } = props;
 
-    const { setFilters, displayedFilters, filterValues } = useListContext(
-        props
-    );
+    const { setFilters, displayedFilters, filterValues } = useListContext();
     const filters = useContext(FilterContext) || filtersProps;
 
     const mergedInitialValuesWithDefaultValues = mergeInitialValuesWithDefaultValues(
@@ -105,7 +102,7 @@ export const FilterFormBase = (props: FilterFormBaseProps) => {
     const { className, filters, ...rest } = props;
     const resource = useResourceContext(props);
     const form = useFormContext();
-    const { displayedFilters = {}, hideFilter } = useListContext(props);
+    const { displayedFilters = {}, hideFilter } = useListContext();
 
     useEffect(() => {
         filters.forEach((filter: JSX.Element) => {
@@ -180,11 +177,7 @@ FilterFormBase.propTypes = {
 };
 
 const sanitizeRestProps = ({
-    displayedFilters,
-    filterValues,
     hasCreate,
-    hideFilter,
-    setFilters,
     resource,
     ...props
 }: Partial<FilterFormBaseProps> & { hasCreate?: boolean }) => props;
@@ -192,12 +185,11 @@ const sanitizeRestProps = ({
 export type FilterFormBaseProps = Omit<
     HtmlHTMLAttributes<HTMLFormElement>,
     'children'
-> &
-    Partial<ListFilterContextValue> & {
-        className?: string;
-        resource?: string;
-        filters?: ReactNode[];
-    };
+> & {
+    className?: string;
+    resource?: string;
+    filters?: ReactNode[];
+};
 
 export const mergeInitialValuesWithDefaultValues = (
     initialValues,

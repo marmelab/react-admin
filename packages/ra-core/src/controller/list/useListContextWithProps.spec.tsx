@@ -3,17 +3,14 @@ import expect from 'expect';
 import { render } from '@testing-library/react';
 
 import { ListContext } from './ListContext';
-import { useListContext } from './useListContext';
+import { useListContextWithProps } from './useListContextWithProps';
 
-describe('useListContext', () => {
-    const NaiveList = () => {
-        const { isPending, error, data } = useListContext();
-        if (isPending || error) {
-            return null;
-        }
+describe('useListContextWithProps', () => {
+    const NaiveList = props => {
+        const { data } = useListContextWithProps(props);
         return (
             <ul>
-                {data.map(record => (
+                {data?.map(record => (
                     <li key={record.id}>{record.title}</li>
                 ))}
             </ul>
@@ -35,10 +32,11 @@ describe('useListContext', () => {
         expect(getByText('hello')).not.toBeNull();
     });
 
-    it('should throw when called outside of a ListContextProvider', () => {
-        jest.spyOn(console, 'error').mockImplementation(() => {});
-        expect(() => render(<NaiveList />)).toThrow(
-            'useListContext must be used inside a ListContextProvider'
+    it('should return injected props if the context was not set', () => {
+        jest.spyOn(console, 'log').mockImplementationOnce(() => {});
+        const { getByText } = render(
+            <NaiveList resource="foo" data={[{ id: 1, title: 'hello' }]} />
         );
+        expect(getByText('hello')).not.toBeNull();
     });
 });

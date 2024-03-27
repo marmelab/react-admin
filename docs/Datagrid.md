@@ -1128,7 +1128,7 @@ const MyCustomList = () => {
 };
 ```
 
-This list has no filtering, sorting, or row selection - it's static. If you want to allow users to interact with this list, you should pass more props to the `<Datagrid>` component, but the logic isn't trivial. Fortunately, react-admin provides [the `useList` hook](./useList.md) to build callbacks to manipulate local data. You just have to put the result in a `ListContext` to have an interactive `<Datagrid>`:
+This list has no filtering, sorting, or row selection - it's static. If you want to allow users to interact with the `<Datagrid>`, use [the `useList` hook](./useList.md) to build callbacks to manipulate local data. You will have to put the result in a `<ListContextProvider>` parent component:
 
 ```tsx
 import {

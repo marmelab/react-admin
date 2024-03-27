@@ -77,8 +77,4 @@ export interface ShowProps<RecordType extends RaRecord = any> {
     sx?: SxProps;
 }
 
-export interface BulkActionProps {
-    filterValues?: any;
-    resource?: string;
-    selectedIds?: Identifier[];
-}
+export interface BulkActionProps {}

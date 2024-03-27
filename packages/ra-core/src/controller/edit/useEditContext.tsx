@@ -1,5 +1,4 @@
-import { useContext, useMemo } from 'react';
-import defaults from 'lodash/defaults';
+import { useContext } from 'react';
 
 import { RaRecord } from '../../types';
 import { EditContext } from './EditContext';

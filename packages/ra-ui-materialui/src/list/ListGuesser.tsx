@@ -84,7 +84,7 @@ export const ListGuesser = <RecordType extends RaRecord = any>(
 const ListViewGuesser = (
     props: Omit<ListViewProps, 'children'> & { enableLog?: boolean }
 ) => {
-    const { data } = useListContext(props);
+    const { data } = useListContext();
     const resource = useResourceContext();
     const [child, setChild] = useState(null);
     const {

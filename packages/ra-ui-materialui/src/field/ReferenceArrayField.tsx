@@ -151,7 +151,7 @@ export interface ReferenceArrayFieldViewProps
 
 export const ReferenceArrayFieldView: FC<ReferenceArrayFieldViewProps> = props => {
     const { children, pagination, className, sx } = props;
-    const { isPending, total } = useListContext(props);
+    const { isPending, total } = useListContext();
 
     return (
         <Root className={className} sx={sx}>

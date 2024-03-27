@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { ReactNode } from 'react';
 import PropTypes from 'prop-types';
 import { useCheckMinimumRequiredProps, RaRecord } from 'ra-core';
 import { EditProps } from '../types';
