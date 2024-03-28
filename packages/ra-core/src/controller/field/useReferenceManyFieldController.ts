@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef } from 'react';
-import { UseQueryOptions } from 'react-query';
+import { UseQueryOptions } from '@tanstack/react-query';
 import get from 'lodash/get';
 import isEqual from 'lodash/isEqual';
 import lodashDebounce from 'lodash/debounce';
@@ -59,7 +59,7 @@ const defaultFilter = {};
  * @param {string} props.resource The current resource name
  * @param {Object} props.sort the sort to apply to the referenced records
  * @param {string} props.source The key of the linked resource identifier
- * @param {string} props.queryOptions `react-query` options`
+ * @param {UseQuery Options} props.queryOptions `react-query` options`
  *
  * @returns {ListControllerResult} The reference many props
  */
@@ -82,7 +82,10 @@ export const useReferenceManyFieldController = <
         page: initialPage,
         perPage: initialPerPage,
         sort: initialSort = { field: 'id', order: 'DESC' },
-        queryOptions = {},
+        queryOptions = {} as UseQueryOptions<
+            { data: ReferenceRecordType[]; total: number },
+            Error
+        >,
     } = props;
     const notify = useNotify();
     const resource = useResourceContext(props);

@@ -10,7 +10,7 @@ import {
     useRecordContext,
     RaRecord,
 } from 'ra-core';
-import { UseQueryOptions } from 'react-query';
+import { UseQueryOptions } from '@tanstack/react-query';
 
 import { fieldPropTypes, FieldProps } from './types';
 
