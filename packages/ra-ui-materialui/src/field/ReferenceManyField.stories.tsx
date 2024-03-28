@@ -101,3 +101,19 @@ export const WithFilter = () => (
         </ReferenceManyField>
     </Wrapper>
 );
+
+export const WithMeta = () => (
+    <Wrapper>
+        <ReferenceManyField
+            reference="books"
+            target="author_id"
+            queryOptions={{
+                meta: { foo: 'bar' },
+            }}
+        >
+            <Datagrid>
+                <TextField source="title" />
+            </Datagrid>
+        </ReferenceManyField>
+    </Wrapper>
+);
