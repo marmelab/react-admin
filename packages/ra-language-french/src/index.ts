@@ -192,6 +192,12 @@ const frenchMessages: TranslationMessages = {
                 'Etes-vous sûr(e) de vouloir supprimer cette requête de votre liste de requêtes ?',
             help: 'Filtrez la liste et ajoutez cette requête à votre liste',
         },
+        rowCount: {
+            per_page_5: '5 par page',
+            per_page_10: '10 par page',
+            per_page_25: '25 par page',
+            per_page_50: '50 par page',
+        },
         configurable: {
             customize: 'Personnaliser',
             configureMode: 'Configurer cette page',

@@ -181,6 +181,12 @@ export interface TranslationMessages extends StringMap {
             remove_message: string;
             help: string;
         };
+        rowCount: {
+            per_page_5: string;
+            per_page_10: string;
+            per_page_25: string;
+            per_page_50: string;
+        };
         configurable?: {
             customize: string;
             configureMode: string;
