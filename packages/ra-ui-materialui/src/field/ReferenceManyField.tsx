@@ -10,6 +10,7 @@ import {
     useRecordContext,
     RaRecord,
 } from 'ra-core';
+import { UseQueryOptions } from 'react-query';
 
 import { fieldPropTypes, FieldProps } from './types';
 
@@ -63,7 +64,7 @@ export const ReferenceManyField = <
     RecordType extends RaRecord = RaRecord,
     ReferenceRecordType extends RaRecord = RaRecord
 >(
-    props: ReferenceManyFieldProps<RecordType>
+    props: ReferenceManyFieldProps<RecordType, ReferenceRecordType>
 ) => {
     const {
         children,
@@ -77,6 +78,7 @@ export const ReferenceManyField = <
         sort = defaultSort,
         source = 'id',
         target,
+        queryOptions,
     } = props;
     const record = useRecordContext(props);
 
@@ -94,6 +96,7 @@ export const ReferenceManyField = <
         sort,
         source,
         target,
+        queryOptions,
     });
 
     return (
@@ -107,7 +110,8 @@ export const ReferenceManyField = <
 };
 
 export interface ReferenceManyFieldProps<
-    RecordType extends Record<string, any> = Record<string, any>
+    RecordType extends Record<string, any> = Record<string, any>,
+    ReferenceRecordType extends Record<string, any> = Record<string, any>
 > extends FieldProps<RecordType> {
     children: ReactNode;
     debounce?: number;
@@ -118,6 +122,10 @@ export interface ReferenceManyFieldProps<
     reference: string;
     sort?: SortPayload;
     target: string;
+    queryOptions?: UseQueryOptions<
+        { data: ReferenceRecordType[]; total: number },
+        Error
+    >;
 }
 
 ReferenceManyField.propTypes = {
