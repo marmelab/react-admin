@@ -1,5 +1,15 @@
 # Changelog
 
+## v4.16.14
+
+* Fix `<FilterButton>` does not support the variant prop ([#9751](https://github.com/marmelab/react-admin/9751)) by ([adguernier](https://github.com/marmelab/adguernier))
+* [Demo] Fix error when viewing newly created deals in CRM demo ([#9733](https://github.com/marmelab/react-admin/9733)) by ([erwanMarmelab](https://github.com/marmelab/erwanMarmelab))
+* Bump express from 4.17.3 to 4.19.2 ([#9747](https://github.com/marmelab/react-admin/9747)) by ([dependabot](https://github.com/marmelab/dependabot))
+* Bump webpack-dev-middleware from 6.1.1 to 6.1.2 ([#9739](https://github.com/marmelab/react-admin/9739)) by ([dependabot](https://github.com/marmelab/dependabot))
+* [Doc] Update `<RichTextInput>` to explain how to access the editor object ([#9731](https://github.com/marmelab/react-admin/9731)) by ([erwanMarmelab](https://github.com/marmelab/erwanMarmelab))
+* [Doc] Update "Writing a Data Provider" chapter to include test advice ([#9738](https://github.com/marmelab/react-admin/9738)) by ([fzaninotto](https://github.com/marmelab/fzaninotto))
+* [Doc] Update RBAC to mention ability to define permissions on an array of resources ([#9729](https://github.com/marmelab/react-admin/9729)) by ([erwanMarmelab](https://github.com/marmelab/erwanMarmelab))
+
 ## v4.16.13
 
 * Fix `<AutocompleteInput createLabel>` ([#9712](https://github.com/marmelab/react-admin/pull/9712)) ([fzaninotto](https://github.com/fzaninotto))
