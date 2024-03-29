@@ -372,3 +372,45 @@ export const WithAutoCompleteArrayInput = (args: {
         </MemoryRouter>
     );
 };
+
+export const WithMuiButtonProps = () => {
+    const postFilters: React.ReactElement[] = [
+        <TextInput
+            label="Title"
+            source="title"
+            defaultValue="Accusantium qui nihil voluptatum quia voluptas maxime ab similique"
+        />,
+    ];
+    return (
+        <MemoryRouter>
+            <Admin
+                dataProvider={fakerestDataProvider(data)}
+                store={memoryStore()}
+            >
+                <Resource
+                    name="posts"
+                    list={
+                        <ListBase>
+                            <TopToolbar>
+                                <>
+                                    <FilterForm filters={postFilters} />
+                                    <FilterButton
+                                        filters={postFilters}
+                                        variant="outlined"
+                                        size="small"
+                                    />
+                                </>
+                            </TopToolbar>
+                            <Datagrid>
+                                <TextField source="id" />
+                                <TextField source="title" />
+                                <TextField source="body" />
+                            </Datagrid>
+                            <Pagination />
+                        </ListBase>
+                    }
+                />
+            </Admin>
+        </MemoryRouter>
+    );
+};
