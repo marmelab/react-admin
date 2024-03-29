@@ -184,7 +184,6 @@ const PostList = (props: {
     args: { disableSaveQuery?: boolean };
     buttonProps?: FilterButtonProps;
 }) => {
-    console.log('buttonPropssss', { ...props.buttonProps });
     return (
         <ListBase>
             <ListToolbar
@@ -384,7 +383,7 @@ export const WithAutoCompleteArrayInput = (args: {
     );
 };
 
-export const WithButtonVariant = () => {
+export const Variant = () => {
     const postFilters: React.ReactElement[] = [
         <TextInput
             label="Title"
@@ -415,7 +414,7 @@ export const WithButtonVariant = () => {
     );
 };
 
-export const WithButtonSize = () => {
+export const Size = () => {
     const postFilters: React.ReactElement[] = [
         <TextInput
             label="Title"
