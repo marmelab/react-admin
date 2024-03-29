@@ -1,6 +1,6 @@
 {
     "name": "simple",
-    "version": "4.16.13",
+    "version": "4.16.14",
     "private": true,
     "scripts": {
         "dev": "vite",
@@ -19,11 +19,11 @@
         "proxy-polyfill": "^0.3.0",
         "ra-data-fakerest": "^4.16.12",
         "ra-i18n-polyglot": "^4.16.12",
-        "ra-input-rich-text": "^4.16.13",
+        "ra-input-rich-text": "^4.16.14",
         "ra-language-english": "^4.16.12",
         "ra-language-french": "^4.16.12",
         "react": "^17.0.0",
-        "react-admin": "^4.16.13",
+        "react-admin": "^4.16.14",
         "react-dom": "^17.0.0",
         "react-hook-form": "^7.43.9",
         "react-query": "^3.32.1",
