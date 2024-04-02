@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef } from 'react';
+import { UseQueryOptions } from '@tanstack/react-query';
 import get from 'lodash/get';
 import isEqual from 'lodash/isEqual';
 import lodashDebounce from 'lodash/debounce';
@@ -14,7 +15,8 @@ import useSortState from '../useSortState';
 import { useResourceContext } from '../../core';
 
 export interface UseReferenceManyFieldControllerParams<
-    RecordType extends RaRecord = RaRecord
+    RecordType extends RaRecord = RaRecord,
+    ReferenceRecordType extends RaRecord = RaRecord
 > {
     debounce?: number;
     filter?: any;
@@ -26,6 +28,10 @@ export interface UseReferenceManyFieldControllerParams<
     sort?: SortPayload;
     source?: string;
     target: string;
+    queryOptions?: UseQueryOptions<
+        { data: ReferenceRecordType[]; total: number },
+        Error
+    >;
 }
 
 const defaultFilter = {};
@@ -53,6 +59,7 @@ const defaultFilter = {};
  * @param {string} props.resource The current resource name
  * @param {Object} props.sort the sort to apply to the referenced records
  * @param {string} props.source The key of the linked resource identifier
+ * @param {UseQuery Options} props.queryOptions `react-query` options`
  *
  * @returns {ListControllerResult} The reference many props
  */
@@ -60,7 +67,10 @@ export const useReferenceManyFieldController = <
     RecordType extends RaRecord = RaRecord,
     ReferenceRecordType extends RaRecord = RaRecord
 >(
-    props: UseReferenceManyFieldControllerParams<RecordType>
+    props: UseReferenceManyFieldControllerParams<
+        RecordType,
+        ReferenceRecordType
+    >
 ): ListControllerResult<ReferenceRecordType> => {
     const {
         debounce = 500,
@@ -72,9 +82,14 @@ export const useReferenceManyFieldController = <
         page: initialPage,
         perPage: initialPerPage,
         sort: initialSort = { field: 'id', order: 'DESC' },
+        queryOptions = {} as UseQueryOptions<
+            { data: ReferenceRecordType[]; total: number },
+            Error
+        >,
     } = props;
     const notify = useNotify();
     const resource = useResourceContext(props);
+    const { meta, ...otherQueryOptions } = queryOptions;
 
     // pagination logic
     const { page, setPage, perPage, setPerPage } = usePaginationState({
@@ -179,6 +194,7 @@ export const useReferenceManyFieldController = <
             pagination: { page, perPage },
             sort,
             filter: filterValues,
+            meta,
         },
         {
             enabled: get(record, source) != null,
@@ -200,6 +216,7 @@ export const useReferenceManyFieldController = <
                         },
                     }
                 ),
+            ...otherQueryOptions,
         }
     );
 
