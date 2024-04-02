@@ -28,16 +28,14 @@ import { useDataProvider } from './useDataProvider';
  *
  * @param {string} resource The resource name, e.g. 'posts'
  * @param {Params} params The getManyReference parameters { target, id, pagination, sort, filter, meta }
+ * @param {string} params.target The target resource key, e.g. 'post_id'
+ * @param {string} params.id The identifier of the record to look for in target, e.g. '123'
+ * @param {Object} params.pagination The request pagination { page, perPage }, e.g. { page: 1, perPage: 10 }
+ * @param {Object} params.sort The request sort { field, order }, e.g. { field: 'id', order: 'DESC' }
+ * @param {Object} params.filter The request filters, e.g. { title: 'hello, world' }
+ * @param {Object} params.meta Optional meta parameters
  * @param {Object} options Options object to pass to the queryClient.
  * May include side effects to be executed upon success or failure, e.g. { onSuccess: () => { refresh(); } }
- *
- * @typedef Params
- * @prop params.target The target resource key, e.g. 'post_id'
- * @prop params.id The identifier of the record to look for in target, e.g. '123'
- * @prop params.pagination The request pagination { page, perPage }, e.g. { page: 1, perPage: 10 }
- * @prop params.sort The request sort { field, order }, e.g. { field: 'id', order: 'DESC' }
- * @prop params.filter The request filters, e.g. { title: 'hello, world' }
- * @prop params.meta Optional meta parameters
  *
  * @returns The current request state. Destructure as { data, total, error, isLoading, refetch }.
  *
