@@ -11,7 +11,9 @@ import { useRecordSelection } from './useRecordSelection';
  * unselectAll();
  */
 export const useUnselectAll = (resource: string) => {
-    const [, { clearSelection }] = useRecordSelection(resource);
+    const [, { clearSelection }] = useRecordSelection({
+        resource,
+    });
     return useCallback(() => {
         clearSelection();
     }, [clearSelection]);

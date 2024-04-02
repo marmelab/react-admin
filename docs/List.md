@@ -72,7 +72,7 @@ You can find more advanced examples of `<List>` usage in the [demos](./Demos.md)
 | `queryOptions`            | Optional | `object`       | -              | The options to pass to the `useQuery` hook.                                                  |
 | `resource`                | Optional | `string`       | -              | The resource name, e.g. `posts`.                                                             |
 | `sort`                    | Optional | `object`       | -              | The initial sort parameters.                                                                 |
-| `storeKey`                | Optional | `string | false` | -            | The key to use to store the current filter & sort. Pass `false` to disable                                         |
+| `storeKey`                | Optional | `string \| false` | -           | The key to use to store the current filter & sort. Pass `false` to disable store syncronization |
 | `title`                   | Optional | `string`       | -              | The title to display in the App Bar.                                                         |
 | `sx`                      | Optional | `object`       | -              | The CSS styles to apply to the component.                                                    |
 
@@ -443,9 +443,9 @@ const Dashboard = () => (
 ```
 {% endraw %}
 
-**Tip**: As `disableSyncWithLocation` also disables the persistence of the list parameters in the Store, the `storeKey` prop is ignored when `disableSyncWithLocation` is set to `true`.
+**Tip**: As `disableSyncWithLocation` also disables the persistence of the list parameters in the Store, any custom string specified in the `storeKey` prop is ignored when `disableSyncWithLocation` is set to `true`.
 
-Please note that the selection state is not synced in the URL but in a global store using the resource as key. Thus, all lists in the page using the same resource will share the same selection state. This is a design choice because if row selection is not tied to a resource, then when a user deletes a record it may remain selected without any ability to unselect it. If you want the selection state to be local, you will have to implement your own `useListController` hook and pass a custom key to the `useRecordSelection` hook. You will then need to implement your own `DeleteButton` and `BulkDeleteButton` to manually unselect rows when deleting records.
+Please note that the selection state is not synced in the URL but in a global store using the resource as key. Thus, all lists in the page using the same resource will share the same synced selection state. This is a design choice because if row selection is not tied to a resource, then when a user deletes a record it may remain selected without any ability to unselect it. If you want to allow custom `storeKey`'s for managing selection state, you will have to implement your own `useListController` hook and pass a custom key to the `useRecordSelection` hook. You will then need to implement your own `DeleteButton` and `BulkDeleteButton` to manually unselect rows when deleting records. You can still opt out of all store interactions including selection if you set it to `false`.
 
 ## `empty`
 
@@ -866,7 +866,7 @@ For more details on list sort, see the [Sorting The List](./ListTutorial.md#sort
 
 By default, react-admin stores the list parameters (sort, pagination, filters) in localStorage so that  users can come back to the list and find it in the same state as when they left it. React-admin uses the current resource as the identifier to store the list parameters (under the key `${resource}.listParams`).
 
-If you want to display multiple lists of the same resource and keep distinct store states for each of them (filters, sorting and pagination), you must give each list a unique `storeKey` property. You can also disable the persistence of list parameters in the store by setting the `storeKey` prop to `false`.
+If you want to display multiple lists of the same resource and keep distinct store states for each of them (filters, sorting and pagination), you must give each list a unique `storeKey` property. You can also disable the persistence of list parameters and selection in the store by setting the `storeKey` prop to `false`.
 
 In the example below, both lists `NewerBooks` and `OlderBooks` use the same resource ('books'), but their list parameters are stored separately (under the store keys `'newerBooks'` and `'olderBooks'` respectively). This allows to use both components in the same app, each having its own state (filters, sorting and pagination).
 
@@ -928,7 +928,7 @@ const Admin = () => {
 
 **Tip:** The `storeKey` is actually passed to the underlying `useListController` hook, which you can use directly for more complex scenarios. See the [`useListController` doc](./useListController.md#storekey) for more info.
 
-**Note:** *Selection state* will remain linked to a resource-based key regardless of the `storeKey`. This is a design choice because if row selection is not tied to a resource, then when a user deletes a record it may remain selected without any ability to unselect it. If you want the selection state to be local, you will have to implement your own `useListController` hook and pass a custom key to the `useRecordSelection` hook. You will then need to implement your own `DeleteButton` and `BulkDeleteButton` to manually unselect rows when deleting records.
+**Note:** *Selection state* will remain linked to a resource-based key regardless of the specified `storeKey` string. This is a design choice because if row selection is not tied to a resource, then when a user deletes a record it may remain selected without any ability to unselect it. If you want to allow custom `storeKey`'s for managing selection state, you will have to implement your own `useListController` hook and pass a custom key to the `useRecordSelection` hook. You will then need to implement your own `DeleteButton` and `BulkDeleteButton` to manually unselect rows when deleting records. You can still opt out of all store interactions including selection if you set it to `false`.
 
 ## `title`
 

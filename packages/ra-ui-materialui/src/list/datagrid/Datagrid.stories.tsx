@@ -59,7 +59,9 @@ const data = [
 const theme = createTheme();
 
 const SubWrapper = ({ children }) => {
-    const [selectedIds, selectionModifiers] = useRecordSelection('books');
+    const [selectedIds, selectionModifiers] = useRecordSelection({
+        resource: 'books',
+    });
     return (
         <ThemeProvider theme={theme}>
             <ResourceContextProvider value="books">

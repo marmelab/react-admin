@@ -105,7 +105,7 @@ export const useList = <RecordType extends RaRecord = any>(
     );
 
     // selection logic
-    const [selectedIds, selectionModifiers] = useRecordSelection(resource);
+    const [selectedIds, selectionModifiers] = useRecordSelection({ resource });
 
     // filter logic
     const filterRef = useRef(filter);
