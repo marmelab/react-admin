@@ -15,7 +15,7 @@ import { EditControllerResult } from './useEditController';
  *
  * The given props will take precedence over context values.
  *
- * @typedef {Object} EditControllerProps
+ * @param {Object} EditControllerProps
  *
  * @returns {EditControllerResult} edit controller props
  *

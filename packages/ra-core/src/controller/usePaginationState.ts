@@ -2,13 +2,13 @@ import { useEffect, useReducer, useCallback, useRef } from 'react';
 import { PaginationPayload } from '../types';
 
 /**
- * @typedef PaginationProps
+ * @param PaginationProps
  * @type {Object}
- * @property {number} page: The page number.
- * @property {number} perPage: The number of item per page.
- * @property {Function} setPage: Set the page number
- * @property {Function} setPerPage: Set the per page number
- * @property {Function} setPagination: Set page and perPage pagination numbers
+ * @param {number} page: The page number.
+ * @param {number} perPage: The number of item per page.
+ * @param {Function} setPage: Set the page number
+ * @param {Function} setPerPage: Set the per page number
+ * @param {Function} setPagination: Set page and perPage pagination numbers
  */
 export interface PaginationHookResult {
     page: number;

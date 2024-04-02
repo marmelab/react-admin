@@ -16,12 +16,10 @@ import { useTimeout } from 'ra-core';
  * @see ReferenceField
  * @see ReferenceInput
  *
- * @typedef {Object} Props the props you can use
- * @prop {Object} classes CSS class names
- * @prop {string} className CSS class applied to the LinearProgress component
- * @prop {integer} timeout Milliseconds to wait before showing the progress bar. One second by default
- *
- * @param {Props} props
+ * @param {Object} Props the props you can use
+ * @param {Object} classes CSS class names
+ * @param {string} className CSS class applied to the LinearProgress component
+ * @param {integer} timeout Milliseconds to wait before showing the progress bar. One second by default
  */
 export const LinearProgress = ({
     timeout = 1000,

@@ -70,14 +70,14 @@ export const defaultSort = { field: '', order: 'ASC' } as const;
  */
 
 /**
- * @typedef SortProps
+ * @param SortProps
  * @type {Object}
- * @property {Object} sort: the sort object.
- * @property {string} sort.field: the sort object.
- * @property {'ASC' | 'DESC'} sort.order: the sort object.
- * @property {setSort} setSort
- * @property {setSortField} setSortField
- * @property {setSortOrder} setSortOrder
+ * @param {Object} sort: the sort object.
+ * @param {string} sort.field: the sort object.
+ * @param {'ASC' | 'DESC'} sort.order: the sort object.
+ * @param {setSort} setSort
+ * @param {setSortField} setSortField
+ * @param {setSortOrder} setSortOrder
  */
 
 /**

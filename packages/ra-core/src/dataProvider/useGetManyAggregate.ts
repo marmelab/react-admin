@@ -36,14 +36,12 @@ import { useDataProvider } from './useDataProvider';
  *
  * @param resource The resource name, e.g. 'posts'
  * @param {Params} params The getMany parameters { ids, meta }
+ * @param {string} params.ids The ids to get, e.g. [123, 456, 789]
+ * @param {Object} params.meta Optional meta parameters
  * @param {Object} options Options object to pass to the dataProvider.
  * @param {boolean} options.enabled Flag to conditionally run the query. If it's false, the query will not run
  * @param {Function} options.onSuccess Side effect function to be executed upon success, e.g. { onSuccess: { refresh: true } }
  * @param {Function} options.onError Side effect function to be executed upon failure, e.g. { onError: error => notify(error.message) }
- *
- * @typedef Params
- * @prop params.ids The ids to get, e.g. [123, 456, 789]
- * @prop params.meta Optional meta parameters
 
  * @returns The current request state. Destructure as { data, error, isLoading, isFetching, refetch }.
  *

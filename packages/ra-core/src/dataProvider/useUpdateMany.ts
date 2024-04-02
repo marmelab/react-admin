@@ -26,14 +26,12 @@ import { Identifier } from '..';
  *
  * @param {string} resource
  * @param {Params} params The updateMany parameters { ids, data, meta }
+ * @param {string} params.ids The resource identifiers, e.g. [123, 456]
+ * @param {Object} params.data The updates to merge into the record, e.g. { views: 10 }
+ * @param {Object} params.meta Optional meta parameters
  * @param {Object} options Options object to pass to the queryClient.
  * May include side effects to be executed upon success or failure, e.g. { onSuccess: () => { refresh(); } }
  * May include a mutation mode (optimistic/pessimistic/undoable), e.g. { mutationMode: 'undoable' }
- *
- * @typedef Params
- * @prop params.ids The resource identifiers, e.g. [123, 456]
- * @prop params.data The updates to merge into the record, e.g. { views: 10 }
- * @prop params.meta Optional meta parameters
  *
  * @returns The current mutation state. Destructure as [updateMany, { data, error, isLoading }].
  *

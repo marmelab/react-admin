@@ -25,15 +25,13 @@ import { useEvent } from '../util';
  *
  * @param {string} resource
  * @param {Params} params The update parameters { id, data, previousData, meta }
+ * @param {string} params.id The resource identifier, e.g. 123
+ * @param {Object} params.data The updates to merge into the record, e.g. { views: 10 }
+ * @param {Object} params.previousData The record before the update is applied
+ * @param {Object} params.meta Optional meta data
  * @param {Object} options Options object to pass to the queryClient.
  * May include side effects to be executed upon success or failure, e.g. { onSuccess: () => { refresh(); } }
  * May include a mutation mode (optimistic/pessimistic/undoable), e.g. { mutationMode: 'undoable' }
- *
- * @typedef Params
- * @prop params.id The resource identifier, e.g. 123
- * @prop params.data The updates to merge into the record, e.g. { views: 10 }
- * @prop params.previousData The record before the update is applied
- * @prop params.meta Optional meta data
  *
  * @returns The current mutation state. Destructure as [update, { data, error, isLoading }].
  *

@@ -15,7 +15,7 @@ import { ShowControllerResult } from './useShowController';
  *
  * The given props will take precedence over context values.
  *
- * @typedef {Object} ShowControllerResult
+ * @param {Object} ShowControllerResult
  *
  * @returns {ShowControllerResult} create controller props
  *

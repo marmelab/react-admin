@@ -8,15 +8,12 @@ import { ListControllerResult } from './useListController';
  * Use the useListSortContext() hook to read the context. That's what many
  * List components do in react-admin (e.g. <SortButton>).
  *
- * @typedef {Object} ListSortContextValue
- * @prop {Object}   sort a sort object { field, order }, e.g. { field: 'date', order: 'DESC' }
- * @prop {Function} setSort a callback to change the sort, e.g. setSort({ field: 'name', order: 'ASC' })
- * @prop {string}   resource the resource name, deduced from the location. e.g. 'posts'
- *
- * @typedef Props
- * @prop {ListSortContextValue} value
- *
- * @param {Props}
+ * @param {Props}    Props
+ * @param {Object}   ListSortContextValue
+ * @param {Object}   sort a sort object { field, order }, e.g. { field: 'date', order: 'DESC' }
+ * @param {Function} setSort a callback to change the sort, e.g. setSort({ field: 'name', order: 'ASC' })
+ * @param {string}   resource the resource name, deduced from the location. e.g. 'posts'
+ * @param {ListSortContextValue} value
  *
  * @see useListController
  * @see useListSortContext

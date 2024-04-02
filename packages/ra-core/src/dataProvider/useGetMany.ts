@@ -24,12 +24,10 @@ import { useDataProvider } from './useDataProvider';
  *
  * @param {string} resource The resource name, e.g. 'posts'
  * @param {Params} params The getMany parameters { ids, meta }
+ * @param {string} params.ids The ids to get, e.g. [123, 456, 789]
+ * @param {Object} params.meta Optional meta parameters
  * @param {Object} options Options object to pass to the queryClient.
  * May include side effects to be executed upon success or failure, e.g. { onSuccess: () => { refresh(); } }
- *
- * @typedef Params
- * @prop params.ids The ids to get, e.g. [123, 456, 789]
- * @prop params.meta Optional meta parameters
  *
  * @returns The current request state. Destructure as { data, error, isLoading, refetch }.
  *

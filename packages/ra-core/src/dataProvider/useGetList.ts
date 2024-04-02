@@ -26,14 +26,12 @@ const MAX_DATA_LENGTH_TO_CACHE = 100;
  *
  * @param {string} resource The resource name, e.g. 'posts'
  * @param {Params} params The getList parameters { pagination, sort, filter, meta }
+ * @param {Object} params.pagination The request pagination { page, perPage }, e.g. { page: 1, perPage: 10 }
+ * @param {Object} params.sort The request sort { field, order }, e.g. { field: 'id', order: 'DESC' }
+ * @param {Object} params.filter The request filters, e.g. { title: 'hello, world' }
+ * @param {Object} params.meta Optional meta parameters
  * @param {Object} options Options object to pass to the queryClient.
  * May include side effects to be executed upon success or failure, e.g. { onSuccess: () => { refresh(); } }
- *
- * @typedef Params
- * @prop params.pagination The request pagination { page, perPage }, e.g. { page: 1, perPage: 10 }
- * @prop params.sort The request sort { field, order }, e.g. { field: 'id', order: 'DESC' }
- * @prop params.filter The request filters, e.g. { title: 'hello, world' }
- * @prop params.meta Optional meta parameters
  *
  * @returns The current request state. Destructure as { data, total, error, isLoading, refetch }.
  *

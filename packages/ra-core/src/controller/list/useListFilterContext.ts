@@ -8,13 +8,13 @@ import { ListFilterContext, ListFilterContextValue } from './ListFilterContext';
  * Must be used within a <ListContextProvider> (e.g. as a descendent of <List>
  * or <ListBase>).
  *
- * @typedef {Object} ListFilterContextValue
- * @prop {Object}   filterValues a dictionary of filter values, e.g. { title: 'lorem', nationality: 'fr' }
- * @prop {Function} setFilters a callback to update the filters, e.g. setFilters(filters, displayedFilters)
- * @prop {Object}   displayedFilters a dictionary of the displayed filters, e.g. { title: true, nationality: true }
- * @prop {Function} showFilter a callback to show one of the filters, e.g. showFilter('title', defaultValue)
- * @prop {Function} hideFilter a callback to hide one of the filters, e.g. hideFilter('title')
- * @prop {string}   resource the resource name, deduced from the location. e.g. 'posts'
+ * @param {Object}   ListFilterContextValue
+ * @param {Object}   filterValues a dictionary of filter values, e.g. { title: 'lorem', nationality: 'fr' }
+ * @param {Function} setFilters a callback to update the filters, e.g. setFilters(filters, displayedFilters)
+ * @param {Object}   displayedFilters a dictionary of the displayed filters, e.g. { title: true, nationality: true }
+ * @param {Function} showFilter a callback to show one of the filters, e.g. showFilter('title', defaultValue)
+ * @param {Function} hideFilter a callback to hide one of the filters, e.g. hideFilter('title')
+ * @param {string}   resource the resource name, deduced from the location. e.g. 'posts'
  *
  * @returns {ListFilterContextValue} list controller props
  *

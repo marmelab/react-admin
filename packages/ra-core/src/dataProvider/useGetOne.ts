@@ -17,15 +17,11 @@ import { useDataProvider } from './useDataProvider';
  *
  * @param resource The resource name, e.g. 'posts'
  * @param {Params} params The getOne parameters { id, meta }, e.g. { id: 123 }
+ * @param {string} params.id a resource identifier, e.g. 123
  * @param {Options} options Options object to pass to the react-query queryClient.
- *
- * @typedef Params
- * @prop id a resource identifier, e.g. 123
- *
- * @typedef Options
- * @prop enabled Flag to conditionally run the query. If it's false, the query will not run
- * @prop onSuccess Side effect function to be executed upon success, e.g. { onSuccess: { refresh: true } }
- * @prop onError Side effect function to be executed upon failure, e.g. { onError: error => notify(error.message) }
+ * @param {boolean} enabled Flag to conditionally run the query. If it's false, the query will not run
+ * @param {Function} onSuccess Side effect function to be executed upon success, e.g. { onSuccess: { refresh: true } }
+ * @param {Function} onError Side effect function to be executed upon failure, e.g. { onError: error => notify(error.message) }
  *
  * @returns The current request state. Destructure as { data, error, isLoading, refetch }.
  *

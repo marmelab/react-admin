@@ -25,13 +25,11 @@ import { useEvent } from '../util';
  *
  * @param {string} resource
  * @param {Params} params The delete parameters { id, previousData }
+ * @param {string} params.id The resource identifier, e.g. 123
+ * @param {Object} params.previousData The record before the update is applied
  * @param {Object} options Options object to pass to the queryClient.
  * May include side effects to be executed upon success or failure, e.g. { onSuccess: () => { refresh(); } }
  * May include a mutation mode (optimistic/pessimistic/undoable), e.g. { mutationMode: 'undoable' }
- *
- * @typedef Params
- * @prop params.id The resource identifier, e.g. 123
- * @prop params.previousData The record before the update is applied
  *
  * @returns The current mutation state. Destructure as [deleteOne, { data, error, isLoading }].
  *

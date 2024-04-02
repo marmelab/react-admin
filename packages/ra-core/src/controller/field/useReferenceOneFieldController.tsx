@@ -35,13 +35,13 @@ export interface UseReferenceOneFieldControllerParams<
  *     target: 'author_id',
  * });
  *
- * @typedef {Object} UseReferenceOneFieldControllerParams
- * @prop {Object} props.record The current resource record
- * @prop {string} props.reference The linked resource name
- * @prop {string} props.target The target resource key
- * @prop {string} props.source The key current record identifier ('id' by default)
- * @prop {Object} props.sort The sort to apply to the referenced records
- * @prop {Object} props.filter The filter to apply to the referenced records
+ * @param {Object} UseReferenceOneFieldControllerParams
+ * @param {Object} props.record The current resource record
+ * @param {string} props.reference The linked resource name
+ * @param {string} props.target The target resource key
+ * @param {string} props.source The key current record identifier ('id' by default)
+ * @param {Object} props.sort The sort to apply to the referenced records
+ * @param {Object} props.filter The filter to apply to the referenced records
  * @returns {UseReferenceResult} The request state. Destructure as { referenceRecord, isLoading, error }.
  */
 export const useReferenceOneFieldController = <

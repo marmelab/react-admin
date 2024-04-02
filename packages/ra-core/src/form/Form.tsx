@@ -32,10 +32,10 @@ import { useAugmentedForm } from './useAugmentedForm';
  *    </Form>
  * );
  *
- * @typedef {Object} Props the props you can use
- * @prop {Object} defaultValues
- * @prop {Function} validate
- * @prop {Function} save
+ * @param {Object} Props the props you can use
+ * @param {Object} defaultValues
+ * @param {Function} validate
+ * @param {Function} save
  *
  * @see useForm
  * @see FormGroupContext

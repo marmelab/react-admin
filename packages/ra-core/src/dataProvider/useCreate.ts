@@ -16,11 +16,9 @@ import { useEvent } from '../util';
  *
  * @param {string} resource
  * @param {Params} params The create parameters { data }
+ * @param {Object} params.data The record to create, e.g. { title: 'hello, world' }
  * @param {Object} options Options object to pass to the queryClient.
  * May include side effects to be executed upon success or failure, e.g. { onSuccess: () => { refresh(); } }
- *
- * @typedef Params
- * @prop params.data The record to create, e.g. { title: 'hello, world' }
  *
  * @returns The current mutation state. Destructure as [create, { data, error, isLoading }].
  *

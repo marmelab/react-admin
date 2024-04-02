@@ -15,7 +15,7 @@ import { CreateControllerResult } from './useCreateController';
  *
  * The given props will take precedence over context values.
  *
- * @typedef {Object} CreateControllerProps
+ * @param {Object} CreateControllerProps
  *
  * @returns {CreateControllerResult} create controller props
  *

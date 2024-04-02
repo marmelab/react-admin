@@ -29,13 +29,11 @@ import { Toolbar } from './Toolbar';
  *     </Create>
  * );
  *
- * @typedef {Object} Props the props you can use (other props are injected by Create or Edit)
- * @prop {ReactElement[]} children Input elements
- * @prop {Object} defaultValues
- * @prop {Function} validate
- * @prop {ReactElement} toolbar The element displayed at the bottom of the form, containing the SaveButton
- *
- * @param {Props} props
+ * @param {Object} Props the props you can use (other props are injected by Create or Edit)
+ * @param {ReactElement[]} children Input elements
+ * @param {Object} defaultValues
+ * @param {Function} validate
+ * @param {ReactElement} toolbar The element displayed at the bottom of the form, containing the SaveButton
  */
 export const SimpleForm = (props: SimpleFormProps) => {
     const {

@@ -20,10 +20,10 @@ import { useTranslate, useBasename } from 'ra-core';
  * Displays a menu item with a label and an icon - or only the icon with a tooltip when the sidebar is minimized.
  * It also handles the automatic closing of the menu on tap on mobile.
  *
- * @typedef {Object} Props the props you can use
- * @prop {string|Location} to The menu item's target. It is passed to a React Router NavLink component.
- * @prop {string|ReactNode} primaryText The menu content, displayed when the menu isn't minimized. |
- * @prop {ReactNode} leftIcon The menu icon
+ * @param {Object} Props the props you can use
+ * @param {string|Location} to The menu item's target. It is passed to a React Router NavLink component.
+ * @param {string|ReactNode} primaryText The menu content, displayed when the menu isn't minimized. |
+ * @param {ReactNode} leftIcon The menu icon
  *
  * Additional props are passed down to the underling Material UI <MenuItem> component
  * @see https://material-ui.com/api/menu-item/#menuitem-api

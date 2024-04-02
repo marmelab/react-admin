@@ -12,9 +12,9 @@ interface UseFilterStateOptions {
 }
 
 /**
- * @typedef UseFilterStateProps
- * @property {Object} filter: The filter object.
- * @property {setFilter} setFilter: Update the filter with the given string
+ * @param {Object} UseFilterStateProps
+ * @param {Object} filter: The filter object.
+ * @param {setFilter} setFilter: Update the filter with the given string
  */
 interface UseFilterStateProps {
     filter: FilterPayload;

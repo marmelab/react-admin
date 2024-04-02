@@ -26,30 +26,29 @@ import {
  *
  * @param {DataProvider} dataProvider The dataProvider to wrap
  * @param {ResourceCallbacks[]} handlers An array of ResourceCallbacks
- *
- * @typedef {Object} ResourceCallbacks
- * @property {string} resource The resource name
- * @property {AfterCreate} [afterCreate] A callback executed after create
- * @property {AfterDelete} [afterDelete] A callback executed after delete
- * @property {AfterDeleteMany} [afterDeleteMany] A callback executed after deleteMany
- * @property {AfterGetList} [afterGetList] A callback executed after getList
- * @property {AfterGetMany} [afterGetMany] A callback executed after getMany
- * @property {AfterGetManyReference} [afterGetManyReference] A callback executed after getManyReference
- * @property {AfterGetOne} [afterGetOne] A callback executed after getOne
- * @property {AfterRead} [afterRead] A callback executed after read (getList, getMany, getManyReference, getOne)
- * @property {AfterSave} [afterSave] A callback executed after save (create, update, updateMany)
- * @property {AfterUpdate} [afterUpdate] A callback executed after update
- * @property {AfterUpdateMany} [afterUpdateMany] A callback executed after updateMany
- * @property {BeforeCreate} [beforeCreate] A callback executed before create
- * @property {BeforeDelete} [beforeDelete] A callback executed before delete
- * @property {BeforeDeleteMany} [beforeDeleteMany] A callback executed before deleteMany
- * @property {BeforeGetList} [beforeGetList] A callback executed before getList
- * @property {BeforeGetMany} [beforeGetMany] A callback executed before getMany
- * @property {BeforeGetManyReference} [beforeGetManyReference] A callback executed before getManyReference
- * @property {BeforeGetOne} [beforeGetOne] A callback executed before getOne
- * @property {BeforeSave} [beforeSave] A callback executed before save (create, update, updateMany)
- * @property {BeforeUpdate} [beforeUpdate] A callback executed before update
- * @property {BeforeUpdateMany} [beforeUpdateMany] A callback executed before updateMany
+ * @param {Object} ResourceCallbacks
+ * @param {string} resource The resource name
+ * @param {AfterCreate} [afterCreate] A callback executed after create
+ * @param {AfterDelete} [afterDelete] A callback executed after delete
+ * @param {AfterDeleteMany} [afterDeleteMany] A callback executed after deleteMany
+ * @param {AfterGetList} [afterGetList] A callback executed after getList
+ * @param {AfterGetMany} [afterGetMany] A callback executed after getMany
+ * @param {AfterGetManyReference} [afterGetManyReference] A callback executed after getManyReference
+ * @param {AfterGetOne} [afterGetOne] A callback executed after getOne
+ * @param {AfterRead} [afterRead] A callback executed after read (getList, getMany, getManyReference, getOne)
+ * @param {AfterSave} [afterSave] A callback executed after save (create, update, updateMany)
+ * @param {AfterUpdate} [afterUpdate] A callback executed after update
+ * @param {AfterUpdateMany} [afterUpdateMany] A callback executed after updateMany
+ * @param {BeforeCreate} [beforeCreate] A callback executed before create
+ * @param {BeforeDelete} [beforeDelete] A callback executed before delete
+ * @param {BeforeDeleteMany} [beforeDeleteMany] A callback executed before deleteMany
+ * @param {BeforeGetList} [beforeGetList] A callback executed before getList
+ * @param {BeforeGetMany} [beforeGetMany] A callback executed before getMany
+ * @param {BeforeGetManyReference} [beforeGetManyReference] A callback executed before getManyReference
+ * @param {BeforeGetOne} [beforeGetOne] A callback executed before getOne
+ * @param {BeforeSave} [beforeSave] A callback executed before save (create, update, updateMany)
+ * @param {BeforeUpdate} [beforeUpdate] A callback executed before update
+ * @param {BeforeUpdateMany} [beforeUpdateMany] A callback executed before updateMany
  *
  * Warnings:
  * - As queries issued in the callbacks are not done through react-query,
