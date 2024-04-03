@@ -75,7 +75,10 @@ export const useListController = <RecordType extends RaRecord = any>(
         storeKey,
     });
 
-    const [selectedIds, selectionModifiers] = useRecordSelection(resource);
+    const [selectedIds, selectionModifiers] = useRecordSelection({
+        resource,
+        disableSyncWithStore: storeKey === false,
+    });
 
     const {
         data,

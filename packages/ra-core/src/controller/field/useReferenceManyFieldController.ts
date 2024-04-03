@@ -108,9 +108,9 @@ export const useReferenceManyFieldController = <
     );
 
     // selection logic
-    const [selectedIds, selectionModifiers] = useRecordSelection(
-        `${resource}.${record?.id}.${reference}`
-    );
+    const [selectedIds, selectionModifiers] = useRecordSelection({
+        resource: `${resource}.${record?.id}.${reference}`,
+    });
 
     // filter logic
     const filterRef = useRef(filter);
