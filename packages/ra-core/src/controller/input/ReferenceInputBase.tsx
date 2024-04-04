@@ -1,4 +1,4 @@
-import React, { Children, ReactNode } from 'react';
+import React, { ReactNode } from 'react';
 import PropTypes from 'prop-types';
 
 import { ResourceContextProvider } from '../../core';
@@ -22,8 +22,8 @@ import {
  * Note that the child component should handle the error and loading cases as this base component does not.
  *
  * @example // using a SelectInput as selector
- * export const CommentEdit = (props) => (
- *     <Edit {...props}>
+ * export const CommentEdit = () => (
+ *     <Edit>
  *         <SimpleForm>
  *             <ReferenceInputBase label="Post" source="post_id" reference="posts">
  *                 <SelectInput optionText="title" />
@@ -79,10 +79,6 @@ export const ReferenceInputBase = (props: ReferenceInputBaseProps) => {
         filter,
     });
 
-    if (Children.count(children) !== 1) {
-        throw new Error('<ReferenceInputBase> only accepts a single child');
-    }
-
     return (
         <ResourceContextProvider value={reference}>
             <ChoicesContextProvider value={controllerProps}>
@@ -95,7 +91,6 @@ export const ReferenceInputBase = (props: ReferenceInputBaseProps) => {
 ReferenceInputBase.propTypes = {
     children: PropTypes.element,
     filter: PropTypes.object,
-    label: PropTypes.string,
     page: PropTypes.number,
     perPage: PropTypes.number,
     record: PropTypes.object,
@@ -111,6 +106,5 @@ ReferenceInputBase.propTypes = {
 export interface ReferenceInputBaseProps
     extends InputProps,
         UseReferenceInputControllerParams {
-    children: ReactNode;
-    label?: string;
+    children?: ReactNode;
 }

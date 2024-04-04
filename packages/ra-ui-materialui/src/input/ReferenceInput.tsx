@@ -79,7 +79,6 @@ export const ReferenceInput = (props: ReferenceInputProps) => {
 ReferenceInput.propTypes = {
     children: PropTypes.element,
     filter: PropTypes.object,
-    label: PropTypes.string,
     page: PropTypes.number,
     perPage: PropTypes.number,
     record: PropTypes.object,

@@ -35,6 +35,10 @@ describe('<ReferenceInputBase />', () => {
             .mockImplementationOnce(() => {})
             .mockImplementationOnce(() => {});
 
+        /**
+         * For some reason, we cannot use the Error story for the test. Although it behaves correctly in storybook,
+         * it does not render the error message in the test.
+         */
         render(
             <CoreAdminContext
                 queryClient={

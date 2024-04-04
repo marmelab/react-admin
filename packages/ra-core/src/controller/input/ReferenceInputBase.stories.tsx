@@ -313,11 +313,11 @@ export const Error = () => (
 
 const AuthorList = () => (
     <ListBase>
-        <Datagrid />
+        <ListView />
     </ListBase>
 );
 
-const Datagrid = () => {
+const ListView = () => {
     const context = useListContext();
 
     return (
