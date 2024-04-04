@@ -52,13 +52,11 @@ export const useGetIdentity = (
                 authProvider &&
                 typeof authProvider.getIdentity === 'function'
             ) {
-                const identity = await authProvider.getIdentity();
-                return identity || defaultIdentity;
+                return authProvider.getIdentity();
             } else {
                 return defaultIdentity;
             }
         },
-
         {
             enabled: typeof authProvider?.getIdentity === 'function',
             ...queryParams,
