@@ -145,7 +145,9 @@ export const ReferenceFieldView = <
     }
     if (!referenceRecord) {
         return emptyText ? (
-            <>{emptyText && translate(emptyText, { _: emptyText })}</>
+            <Typography component="span" variant="body2">
+                {emptyText && translate(emptyText, { _: emptyText })}
+            </Typography>
         ) : null;
     }
 
