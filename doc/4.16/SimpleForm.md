@@ -759,6 +759,8 @@ Check the [`<SimpleFormWithRevision>`](https://marmelab.com/ra-enterprise/module
 
 ## Linking Two Inputs
 
+<iframe src="https://www.youtube-nocookie.com/embed/YkqjydtmfcU" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;"></iframe>
+
 Edition forms often contain linked inputs, e.g. country and city (the choices of the latter depending on the value of the former).
 
 React-admin relies on [react-hook-form](https://react-hook-form.com/) for form handling. You can grab the current form values using react-hook-form's [useWatch](https://react-hook-form.com/docs/usewatch) hook.
