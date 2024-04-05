@@ -14,6 +14,11 @@ export const useReferenceFieldController = <
     options: UseReferenceFieldControllerOptions<ReferenceRecordType>
 ): UseReferenceFieldControllerResult<ReferenceRecordType> => {
     const { source, link = 'edit', reference, queryOptions } = options;
+    if (!reference) {
+        throw new Error(
+            'useReferenceFieldController: missing reference prop. You must provide a reference, e.g. reference="posts".'
+        );
+    }
     const record = useRecordContext<RecordType>(options);
     const id = get(record, source);
     const referenceRecordQuery = useReference<ReferenceRecordType>({
@@ -21,7 +26,7 @@ export const useReferenceFieldController = <
         id,
         options: {
             ...queryOptions,
-            enabled: queryOptions?.enabled ?? id != null,
+            enabled: queryOptions?.enabled && id != null,
         },
     });
 
