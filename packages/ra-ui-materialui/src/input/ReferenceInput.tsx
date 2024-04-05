@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { ReferenceInputBase, ReferenceInputBaseProps } from 'ra-core';
 
@@ -93,9 +93,7 @@ ReferenceInput.propTypes = {
 
 const defaultChildren = <AutocompleteInput />;
 
-export interface ReferenceInputProps
-    extends Omit<ReferenceInputBaseProps, 'children'> {
-    children?: ReactNode;
+export interface ReferenceInputProps extends ReferenceInputBaseProps {
     /**
      * Call validate on the child component instead
      */
