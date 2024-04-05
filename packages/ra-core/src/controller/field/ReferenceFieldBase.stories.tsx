@@ -264,13 +264,9 @@ export const QueryOptions = () => (
 );
 
 const BookShowMeta = () => {
-    const [enabled, setEnabled] = React.useState(false);
     return (
         <ShowBase>
             <>
-                <button onClick={() => setEnabled(!enabled)}>
-                    Enable the query
-                </button>
                 <TextField source="title" />
                 <ReferenceFieldBase
                     reference="authors"
@@ -281,7 +277,6 @@ const BookShowMeta = () => {
                         <TextField source="last_name" />
                     </MyReferenceField>
                 </ReferenceFieldBase>
-                <button type="submit">Save</button>
             </>
         </ShowBase>
     );
