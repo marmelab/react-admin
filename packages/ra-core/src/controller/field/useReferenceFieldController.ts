@@ -26,7 +26,10 @@ export const useReferenceFieldController = <
         id,
         options: {
             ...queryOptions,
-            enabled: queryOptions?.enabled === true && id != null,
+            enabled:
+                (queryOptions?.enabled == null ||
+                    queryOptions?.enabled === true) &&
+                id != null,
         },
     });
 
