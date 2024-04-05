@@ -39,17 +39,15 @@ import { RecordContextProvider } from '../record';
  * backward-compatibility is still kept
  */
 export const ReferenceFieldBase = <
-    RecordType extends Record<string, any> = Record<string, any>,
     ReferenceRecordType extends RaRecord = RaRecord
 >(
     props: ReferenceFieldBaseProps<ReferenceRecordType>
 ) => {
     const { children } = props;
 
-    const controllerProps = useReferenceFieldController<
-        RecordType,
-        ReferenceRecordType
-    >(props);
+    const controllerProps = useReferenceFieldController<ReferenceRecordType>(
+        props
+    );
 
     return (
         <ResourceContextProvider value={props.reference}>

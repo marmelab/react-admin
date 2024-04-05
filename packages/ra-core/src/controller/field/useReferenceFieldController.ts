@@ -1,26 +1,23 @@
 import { useMemo } from 'react';
 import { UseQueryOptions } from '@tanstack/react-query';
-import get from 'lodash/get';
 import { RaRecord } from '../../types';
-import { useRecordContext } from '../record';
 import { LinkToType, useCreatePath } from '../../routing';
 import { UseReferenceResult, useReference } from '../useReference';
 import { useResourceDefinition } from '../../core';
+import { useFieldValue } from '../../util';
 
 export const useReferenceFieldController = <
-    RecordType extends Record<string, any> = Record<string, any>,
     ReferenceRecordType extends RaRecord = RaRecord
 >(
     options: UseReferenceFieldControllerOptions<ReferenceRecordType>
 ): UseReferenceFieldControllerResult<ReferenceRecordType> => {
-    const { source, link = 'edit', reference, queryOptions } = options;
+    const { link = 'edit', reference, queryOptions } = options;
     if (!reference) {
         throw new Error(
             'useReferenceFieldController: missing reference prop. You must provide a reference, e.g. reference="posts".'
         );
     }
-    const record = useRecordContext<RecordType>(options);
-    const id = get(record, source);
+    const id = useFieldValue(options);
     const referenceRecordQuery = useReference<ReferenceRecordType>({
         reference,
         id,

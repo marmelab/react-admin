@@ -12,6 +12,7 @@ import {
     RaRecord,
     ReferenceFieldBase,
     useReferenceFieldContext,
+    useFieldValue,
 } from 'ra-core';
 import { UseQueryOptions } from '@tanstack/react-query';
 
@@ -57,11 +58,22 @@ export const ReferenceField = <
 >(
     props: ReferenceFieldProps<RecordType, ReferenceRecordType>
 ) => {
-    const { link, ...rest } = props;
+    const { emptyText } = props;
+    const translate = useTranslate();
+    const id = useFieldValue(props);
+
+    if (id == null) {
+        return emptyText ? (
+            <Typography component="span" variant="body2">
+                {emptyText && translate(emptyText, { _: emptyText })}
+            </Typography>
+        ) : null;
+    }
+
     return (
-        <ReferenceFieldBase {...props}>
+        <ReferenceFieldBase<ReferenceRecordType> {...props}>
             <PureReferenceFieldView<RecordType, ReferenceRecordType>
-                {...rest}
+                {...props}
             />
         </ReferenceFieldBase>
     );
