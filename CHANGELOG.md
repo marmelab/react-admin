@@ -1,5 +1,10 @@
 # Changelog
 
+## v4.16.15
+
+* Fix `useGetIdentity` regression ([#9756](https://github.com/marmelab/react-admin/pull/9756)) ([djhi](https://github.com/djhi))
+* Bump vite from 3.2.8 to 3.2.10 ([#9755](https://github.com/marmelab/react-admin/pull/9755)) ([dependabot[bot]](https://github.com/apps/dependabot))
+
 ## v4.16.14
 
 * Fix `<FilterButton>` does not support the variant prop ([#9751](https://github.com/marmelab/react-admin/9751)) by ([adguernier](https://github.com/marmelab/adguernier))
