@@ -110,7 +110,15 @@ export const Loading = () => (
     </Wrapper>
 );
 
-export const Empty = () => (
+export const NoReferenceId = () => (
+    <Wrapper record={{ id: 1, title: 'War and Peace' }}>
+        <ReferenceField source="detail_id" reference="book_details">
+            <TextField source="ISBN" />
+        </ReferenceField>
+    </Wrapper>
+);
+
+export const EmptyText = () => (
     <Wrapper record={{ id: 1, title: 'War and Peace' }}>
         <ReferenceField
             source="detail_id"
