@@ -42,6 +42,7 @@ export const NumberInput = ({
     readOnly,
     ...rest
 }: NumberInputProps) => {
+    const inputRef = React.useRef<HTMLInputElement>(null);
     const {
         field,
         fieldState: { error, invalid, isTouched },
@@ -58,7 +59,11 @@ export const NumberInput = ({
         readOnly,
         ...rest,
     });
-    const { onBlur: onBlurFromField } = field;
+    const {
+        ref: refFromField,
+        onBlur: onBlurFromField,
+        ...otherFieldProps
+    } = field;
 
     const inputProps = { ...overrideInputProps, step, min, max };
 
@@ -113,7 +118,10 @@ export const NumberInput = ({
         hasFocus.current = true;
     };
 
-    const handleBlur = () => {
+    const handleBlur = (event: React.FocusEvent<HTMLInputElement>) => {
+        if (!event.currentTarget.value && inputRef.current) {
+            inputRef.current.value = '';
+        }
         if (onBlurFromField) {
             onBlurFromField();
         }
@@ -125,21 +133,23 @@ export const NumberInput = ({
     const renderHelperText =
         helperText !== false || ((isTouched || isSubmitted) && invalid);
 
-    const { ref, ...fieldWithoutRef } = field;
+    const setInputRefs = (instance: HTMLInputElement): void => {
+        refFromField(instance);
+        inputRef.current = instance;
+    };
+
     return (
         <TextField
             id={id}
-            {...fieldWithoutRef}
-            inputRef={ref}
+            {...otherFieldProps}
+            inputRef={setInputRefs}
             // use the locally controlled state instead of the react-hook-form field state
             value={value}
             onChange={handleChange}
             onFocus={handleFocus}
             onBlur={handleBlur}
             className={clsx('ra-input', `ra-input-${source}`, className)}
-            type="text"
-            inputmode="numeric"
-            pattern="[0-9]*"
+            type="number"
             size="small"
             variant={variant}
             error={(isTouched || isSubmitted) && invalid}
