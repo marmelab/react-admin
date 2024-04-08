@@ -129,7 +129,7 @@ export const usePrevNextController = <RecordType extends RaRecord = any>(
         );
     }
 
-    const [storedParams] = useStore<Partial<ListParams>>(
+    const [storedParams] = useStore<ListParams>(
         storeKey || `${resource}.listParams`,
         {
             filter: filterDefaultValues,
@@ -137,6 +137,7 @@ export const usePrevNextController = <RecordType extends RaRecord = any>(
             sort: initialSort.field,
             page: 1,
             perPage: 10,
+            displayedFilters: {},
         }
     );
 
@@ -172,8 +173,10 @@ export const usePrevNextController = <RecordType extends RaRecord = any>(
     const isRecordIndexFirstInNonFirstPage =
         recordIndexInQueryData === 0 && storedParams.page > 1;
     const isRecordIndexLastInNonLastPage =
-        recordIndexInQueryData === queryData?.data?.length - 1 &&
-        storedParams.page < queryData?.total / storedParams.perPage;
+        queryData?.data && queryData?.total
+            ? recordIndexInQueryData === queryData?.data?.length - 1 &&
+              storedParams.page < queryData?.total / storedParams.perPage
+            : undefined;
     const canUseCacheData =
         record &&
         queryData?.data &&
