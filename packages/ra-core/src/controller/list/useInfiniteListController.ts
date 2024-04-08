@@ -200,7 +200,7 @@ export const useInfiniteListController = <RecordType extends RaRecord = any>(
         isFetchingNextPage,
         fetchPreviousPage,
         isFetchingPreviousPage,
-    };
+    } as InfiniteListControllerResult<RecordType>;
 };
 
 export interface InfiniteListControllerProps<
@@ -222,8 +222,9 @@ export interface InfiniteListControllerProps<
     storeKey?: string | false;
 }
 
-export interface InfiniteListControllerResult<RecordType extends RaRecord = any>
-    extends ListControllerResult<RecordType> {
+export type InfiniteListControllerResult<
+    RecordType extends RaRecord = any
+> = ListControllerResult<RecordType> & {
     fetchNextPage: InfiniteQueryObserverBaseResult<
         InfiniteData<GetInfiniteListResult<RecordType>>
     >['fetchNextPage'];
@@ -236,4 +237,4 @@ export interface InfiniteListControllerResult<RecordType extends RaRecord = any>
     isFetchingPreviousPage: InfiniteQueryObserverBaseResult<
         InfiniteData<GetInfiniteListResult<RecordType>>
     >['isFetchingPreviousPage'];
-}
+};

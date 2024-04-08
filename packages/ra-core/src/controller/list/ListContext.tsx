@@ -52,33 +52,6 @@ import { ListControllerResult } from './useListController';
  *     );
  * };
  */
-export const ListContext = createContext<ListControllerResult>({
-    sort: null,
-    data: null,
-    defaultTitle: null,
-    displayedFilters: null,
-    exporter: null,
-    filterValues: null,
-    hasNextPage: null,
-    hasPreviousPage: null,
-    hideFilter: null,
-    isFetching: null,
-    isLoading: null,
-    isPending: null,
-    onSelect: null,
-    onToggleItem: null,
-    onUnselectItems: null,
-    page: null,
-    perPage: null,
-    refetch: null,
-    resource: null,
-    selectedIds: undefined,
-    setFilters: null,
-    setPage: null,
-    setPerPage: null,
-    setSort: null,
-    showFilter: null,
-    total: null,
-});
+export const ListContext = createContext<ListControllerResult | null>(null);
 
 ListContext.displayName = 'ListContext';

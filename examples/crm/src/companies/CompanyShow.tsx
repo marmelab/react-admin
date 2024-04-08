@@ -146,8 +146,8 @@ const TabPanel = (props: TabPanelProps) => {
 };
 
 const ContactsIterator = () => {
-    const { data: contacts, isPending } = useListContext<Contact>();
-    if (isPending) return null;
+    const { data: contacts, error, isPending } = useListContext<Contact>();
+    if (isPending || error) return null;
 
     const now = Date.now();
     return (
@@ -214,8 +214,8 @@ const CreateRelatedContactButton = () => {
 };
 
 const DealsIterator = () => {
-    const { data: deals, isPending } = useListContext<Deal>();
-    if (isPending) return null;
+    const { data: deals, error, isPending } = useListContext<Deal>();
+    if (isPending || error) return null;
 
     const now = Date.now();
     return (

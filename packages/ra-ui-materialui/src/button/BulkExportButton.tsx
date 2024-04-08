@@ -6,9 +6,9 @@ import {
     fetchRelatedRecords,
     useDataProvider,
     useNotify,
-    Identifier,
     Exporter,
     useListContext,
+    useResourceContext,
 } from 'ra-core';
 
 import { Button, ButtonProps } from './Button';
@@ -45,11 +45,8 @@ export const BulkExportButton = (props: BulkExportButtonProps) => {
         meta,
         ...rest
     } = props;
-    const {
-        exporter: exporterFromContext,
-        resource,
-        selectedIds,
-    } = useListContext(props);
+    const resource = useResourceContext(props);
+    const { exporter: exporterFromContext, selectedIds } = useListContext();
     const exporter = customExporter || exporterFromContext;
     const dataProvider = useDataProvider();
     const notify = useNotify();
@@ -93,19 +90,15 @@ export const BulkExportButton = (props: BulkExportButtonProps) => {
 const defaultIcon = <DownloadIcon />;
 
 const sanitizeRestProps = ({
-    filterValues,
-    selectedIds,
     resource,
     ...rest
 }: Omit<BulkExportButtonProps, 'exporter' | 'label' | 'meta'>) => rest;
 
 interface Props {
     exporter?: Exporter;
-    filterValues?: any;
     icon?: JSX.Element;
     label?: string;
     onClick?: (e: Event) => void;
-    selectedIds?: Identifier[];
     resource?: string;
     meta?: any;
 }

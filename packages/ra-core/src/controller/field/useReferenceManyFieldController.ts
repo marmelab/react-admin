@@ -251,5 +251,5 @@ export const useReferenceManyFieldController = <
         setSort,
         showFilter,
         total,
-    };
+    } as ListControllerResult<ReferenceRecordType>;
 };

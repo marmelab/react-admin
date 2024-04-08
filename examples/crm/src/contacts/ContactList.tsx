@@ -38,12 +38,16 @@ import { Contact } from '../types';
 const ContactListContent = () => {
     const {
         data: contacts,
+        error,
         isPending,
         onToggleItem,
         selectedIds,
     } = useListContext<Contact>();
     if (isPending) {
         return <SimpleListLoading hasLeftAvatarOrIcon hasSecondaryText />;
+    }
+    if (error) {
+        return null;
     }
     const now = Date.now();
 

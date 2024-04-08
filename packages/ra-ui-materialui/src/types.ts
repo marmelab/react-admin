@@ -17,6 +17,7 @@ export interface EditProps<
 > {
     actions?: ReactElement | false;
     aside?: ReactElement;
+    children: ReactNode;
     className?: string;
     component?: ElementType;
     disableAuthentication?: boolean;
@@ -42,6 +43,7 @@ export interface CreateProps<
 > {
     actions?: ReactElement | false;
     aside?: ReactElement;
+    children: ReactNode;
     className?: string;
     component?: ElementType;
     disableAuthentication?: boolean;
@@ -75,8 +77,4 @@ export interface ShowProps<RecordType extends RaRecord = any> {
     sx?: SxProps;
 }
 
-export interface BulkActionProps {
-    filterValues?: any;
-    resource?: string;
-    selectedIds?: Identifier[];
-}
+export interface BulkActionProps {}

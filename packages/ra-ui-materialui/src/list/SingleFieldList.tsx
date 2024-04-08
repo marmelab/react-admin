@@ -3,7 +3,7 @@ import { Chip, Stack, StackProps, styled } from '@mui/material';
 import PropTypes from 'prop-types';
 import {
     sanitizeListRestProps,
-    useListContext,
+    useListContextWithProps,
     useResourceContext,
     RaRecord,
     RecordContextProvider,
@@ -59,7 +59,7 @@ export const SingleFieldList = (props: SingleFieldListProps) => {
         direction = 'row',
         ...rest
     } = props;
-    const { data, total, isPending } = useListContext(props);
+    const { data, total, isPending } = useListContextWithProps(props);
     const resource = useResourceContext(props);
     const createPath = useCreatePath();
 

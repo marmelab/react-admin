@@ -14,7 +14,7 @@ import {
 import PropTypes from 'prop-types';
 import {
     sanitizeListRestProps,
-    useListContext,
+    useListContextWithProps,
     Identifier,
     RaRecord,
     SortPayload,
@@ -146,7 +146,7 @@ export const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
         selectedIds,
         setSort,
         total,
-    } = useListContext(props);
+    } = useListContextWithProps(props);
 
     const hasBulkActions = !!bulkActionButtons !== false;
 
@@ -234,7 +234,7 @@ export const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
                 className={clsx(DatagridClasses.root, className)}
             >
                 {bulkActionButtons !== false ? (
-                    <BulkActionsToolbar selectedIds={selectedIds}>
+                    <BulkActionsToolbar>
                         {isValidElement(bulkActionButtons)
                             ? bulkActionButtons
                             : defaultBulkActionButtons}

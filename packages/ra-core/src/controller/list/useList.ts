@@ -105,7 +105,13 @@ export const useList = <RecordType extends RaRecord = any>(
     );
 
     // selection logic
-    const [selectedIds, selectionModifiers] = useRecordSelection({ resource });
+    const [selectedIds, selectionModifiers] = useRecordSelection(
+        resource
+            ? {
+                  resource,
+              }
+            : { disableSyncWithStore: true }
+    );
 
     // filter logic
     const filterRef = useRef(filter);
@@ -275,7 +281,7 @@ export const useList = <RecordType extends RaRecord = any>(
         onUnselectItems: selectionModifiers.clearSelection,
         page,
         perPage,
-        resource: undefined,
+        resource: '',
         refetch,
         selectedIds,
         setFilters,
@@ -284,7 +290,7 @@ export const useList = <RecordType extends RaRecord = any>(
         setSort,
         showFilter,
         total: finalItems?.total,
-    };
+    } as UseListValue<RecordType>;
 };
 
 export interface UseListOptions<RecordType extends RaRecord = any> {

@@ -7,10 +7,7 @@ import {
     useDataProvider,
     useNotify,
     useListContext,
-    SortPayload,
     Exporter,
-    FilterPayload,
-    useResourceContext,
 } from 'ra-core';
 import { Button, ButtonProps } from './Button';
 
@@ -27,11 +24,11 @@ export const ExportButton = (props: ExportButtonProps) => {
     const {
         filter,
         filterValues,
+        resource,
         sort,
         exporter: exporterFromContext,
         total,
-    } = useListContext(props);
-    const resource = useResourceContext(props);
+    } = useListContext();
     const exporter = customExporter || exporterFromContext;
     const dataProvider = useDataProvider();
     const notify = useNotify();
@@ -93,7 +90,6 @@ export const ExportButton = (props: ExportButtonProps) => {
 const defaultIcon = <DownloadIcon />;
 
 const sanitizeRestProps = ({
-    filterValues,
     resource,
     ...rest
 }: Omit<
@@ -103,13 +99,11 @@ const sanitizeRestProps = ({
 
 interface Props {
     exporter?: Exporter;
-    filterValues?: FilterPayload;
     icon?: JSX.Element;
     label?: string;
     maxResults?: number;
     onClick?: (e: Event) => void;
     resource?: string;
-    sort?: SortPayload;
     meta?: any;
 }
 

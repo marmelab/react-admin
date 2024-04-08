@@ -5,7 +5,7 @@ import { ChoicesContext, ChoicesContextValue } from './ChoicesContext';
 
 export const useChoicesContext = <ChoicesType extends RaRecord = RaRecord>(
     options: Partial<ChoicesContextValue> & { choices?: ChoicesType[] } = {}
-): ChoicesContextValue => {
+): ChoicesContextValue<ChoicesType> => {
     const context = useContext(ChoicesContext) as ChoicesContextValue<
         ChoicesType
     >;

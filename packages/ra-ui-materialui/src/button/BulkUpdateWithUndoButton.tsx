@@ -22,7 +22,7 @@ import { BulkActionProps } from '../types';
 export const BulkUpdateWithUndoButton = (
     props: BulkUpdateWithUndoButtonProps
 ) => {
-    const { selectedIds } = useListContext(props);
+    const { selectedIds } = useListContext();
 
     const notify = useNotify();
     const resource = useResourceContext(props);
@@ -99,9 +99,7 @@ export const BulkUpdateWithUndoButton = (
 const defaultIcon = <ActionUpdate />;
 
 const sanitizeRestProps = ({
-    filterValues,
     label,
-    selectedIds,
     onSuccess,
     onError,
     ...rest

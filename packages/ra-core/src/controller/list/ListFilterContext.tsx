@@ -37,14 +37,9 @@ import { ListControllerResult } from './useListController';
  *     );
  * };
  */
-export const ListFilterContext = createContext<ListFilterContextValue>({
-    displayedFilters: null,
-    filterValues: null,
-    hideFilter: null,
-    setFilters: null,
-    showFilter: null,
-    resource: null,
-});
+export const ListFilterContext = createContext<
+    ListFilterContextValue | undefined
+>(undefined);
 
 export type ListFilterContextValue = Pick<
     ListControllerResult,

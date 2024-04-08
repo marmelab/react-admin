@@ -10,6 +10,7 @@ import {
     useGetList,
     useList,
     TestMemoryRouter,
+    SortPayload,
 } from 'ra-core';
 import fakeRestDataProvider from 'ra-data-fakerest';
 import defaultMessages from 'ra-language-english';
@@ -328,7 +329,7 @@ export const ColumnStyles = () => (
     </Wrapper>
 );
 
-const sort = { field: 'id', order: 'DESC' };
+const sort = { field: 'id', order: 'DESC' } as SortPayload;
 
 const MyCustomList = () => {
     const { data, total, isLoading } = useGetList('books', {

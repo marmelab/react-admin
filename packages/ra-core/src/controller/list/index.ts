@@ -13,6 +13,7 @@ export * from './useInfiniteListController';
 export * from './useInfinitePaginationContext';
 export * from './useList';
 export * from './useListContext';
+export * from './useListContextWithProps';
 export * from './useListController';
 export * from './useListFilterContext';
 export * from './useListPaginationContext';

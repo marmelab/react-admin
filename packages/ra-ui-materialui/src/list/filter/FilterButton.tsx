@@ -42,7 +42,7 @@ export const FilterButton = (props: FilterButtonProps): JSX.Element => {
         setFilters,
         showFilter,
         sort,
-    } = useListContext(props);
+    } = useListContext();
     const hasFilterValues = !isEqual(filterValues, {});
     const validSavedQueries = extractValidSavedQueries(savedQueries);
     const hasSavedCurrentQuery = validSavedQueries.some(savedQuery =>
@@ -248,22 +248,17 @@ const sanitizeRestProps = ({
 /* eslint-enable @typescript-eslint/no-unused-vars */
 
 FilterButton.propTypes = {
-    resource: PropTypes.string,
-    filters: PropTypes.arrayOf(PropTypes.node),
-    displayedFilters: PropTypes.object,
-    filterValues: PropTypes.object,
-    showFilter: PropTypes.func,
     className: PropTypes.string,
+    disableSaveQuery: PropTypes.bool,
+    filters: PropTypes.arrayOf(PropTypes.node),
+    resource: PropTypes.string,
 };
 
 export interface FilterButtonProps extends HtmlHTMLAttributes<HTMLDivElement> {
     className?: string;
-    resource?: string;
-    filterValues?: any;
-    showFilter?: (filterName: string, defaultValue: any) => void;
-    displayedFilters?: any;
-    filters?: ReactNode[];
     disableSaveQuery?: boolean;
+    filters?: ReactNode[];
+    resource?: string;
 }
 
 const PREFIX = 'RaFilterButton';
