@@ -202,7 +202,7 @@ const CreateRelatedContactButton = () => {
         <Button
             component={RouterLink}
             to="/contacts/create"
-            state={{ record: { company_id: company.id } }}
+            state={company ? { record: { company_id: company.id } } : undefined}
             color="primary"
             variant="contained"
             size="small"

@@ -7,7 +7,7 @@ const CreateRelatedReviewButton = () => {
     return (
         <CreateButton
             resource="reviews"
-            state={{ record: { product_id: record.id } }}
+            state={record ? { record: { product_id: record.id } } : undefined}
         />
     );
 };
