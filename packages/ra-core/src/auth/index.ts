@@ -1,4 +1,3 @@
-import AuthContext from './AuthContext';
 import useAuthProvider from './useAuthProvider';
 import useAuthState from './useAuthState';
 import usePermissions from './usePermissions';
@@ -10,6 +9,7 @@ import useLogoutIfAccessDenied from './useLogoutIfAccessDenied';
 import convertLegacyAuthProvider from './convertLegacyAuthProvider';
 
 export * from './Authenticated';
+export * from './AuthContext';
 export * from './types';
 export * from './useAuthenticated';
 export * from './useCheckAuth';
@@ -19,7 +19,6 @@ export * from './addRefreshAuthToAuthProvider';
 export * from './addRefreshAuthToDataProvider';
 
 export {
-    AuthContext,
     useAuthProvider,
     convertLegacyAuthProvider,
     // low-level hooks for calling a particular verb on the authProvider
