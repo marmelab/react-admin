@@ -173,7 +173,7 @@ const MyRichTextInput = ({ size, ...props }) => (
 
 ## Calling The `editor` Object
 
-You may want to access the TipTp `editor` object to tweak extensions, input rules, etc. (see [the TipTap editor documentation](https://tiptap.dev/docs/editor/api/editor) for details). To do so, you can assign a `ref` in the `onCreate` function in the `editorOptions` prop of your `<RichTextInput>` component, as follows:
+You may want to access the TipTap `editor` object to tweak extensions, input rules, etc. (see [the TipTap editor documentation](https://tiptap.dev/docs/editor/api/editor) for details). To do so, you can assign a `ref` in the `onCreate` function in the `editorOptions` prop of your `<RichTextInput>` component, as follows:
 
 {% raw %}
 ```tsx
