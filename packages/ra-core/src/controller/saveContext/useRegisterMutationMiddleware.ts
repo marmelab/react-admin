@@ -17,6 +17,9 @@ export const useRegisterMutationMiddleware = <
     } = useSaveContext();
 
     useEffect(() => {
+        if (!registerMutationMiddleware || !unregisterMutationMiddleware) {
+            return;
+        }
         registerMutationMiddleware(callback);
         return () => {
             unregisterMutationMiddleware(callback);

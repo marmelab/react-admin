@@ -157,6 +157,11 @@ export const useListParams = ({
                 tempParams.current = queryReducer(query, action);
                 // schedule side effects for next tick
                 setTimeout(() => {
+                    if (!tempParams.current) {
+                        throw new Error(
+                            'Race condition in changeParams detected'
+                        );
+                    }
                     if (disableSyncWithLocation) {
                         setLocalParams(tempParams.current);
                     } else {
@@ -262,10 +267,10 @@ export const useListParams = ({
 
     return [
         {
-            displayedFilters: displayedFilterValues,
             filterValues,
             requestSignature,
             ...query,
+            displayedFilters: displayedFilterValues,
         },
         {
             changeParams,
@@ -375,6 +380,9 @@ export const getNumberOrDefault = (
     possibleNumber: string | number | undefined,
     defaultValue: number
 ) => {
+    if (typeof possibleNumber === 'undefined') {
+        return defaultValue;
+    }
     const parsedNumber =
         typeof possibleNumber === 'string'
             ? parseInt(possibleNumber, 10)
