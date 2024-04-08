@@ -59,11 +59,7 @@ const useDeleteWithUndoController = <RecordType extends RaRecord = any>(
     const redirect = useRedirect();
     const [deleteOne, { isPending }] = useDelete<RecordType>(
         resource,
-        {
-            id: record.id,
-            previousData: record,
-            meta: mutationMeta,
-        },
+        undefined,
         {
             onSuccess: () => {
                 notify('ra.notification.deleted', {
@@ -71,7 +67,7 @@ const useDeleteWithUndoController = <RecordType extends RaRecord = any>(
                     messageArgs: { smart_count: 1 },
                     undoable: true,
                 });
-                unselect([record.id]);
+                record && unselect([record.id]);
                 redirect(redirectTo, resource);
             },
             onError: (error: Error) => {
@@ -98,6 +94,11 @@ const useDeleteWithUndoController = <RecordType extends RaRecord = any>(
     const handleDelete = useCallback(
         event => {
             event.stopPropagation();
+            if (!record) {
+                throw new Error(
+                    'The record cannot be deleted because no record has been passed'
+                );
+            }
             deleteOne(
                 resource,
                 {

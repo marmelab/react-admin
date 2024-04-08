@@ -68,7 +68,7 @@ const useDeleteWithConfirmController = <RecordType extends RaRecord = any>(
 ): UseDeleteWithConfirmControllerReturn => {
     const {
         record,
-        redirect: redirectTo,
+        redirect: redirectTo = 'list',
         mutationMode,
         onClick,
         mutationOptions = {},
@@ -81,11 +81,7 @@ const useDeleteWithConfirmController = <RecordType extends RaRecord = any>(
     const redirect = useRedirect();
     const [deleteOne, { isPending }] = useDelete<RecordType>(
         resource,
-        {
-            id: record.id,
-            previousData: record,
-            meta: mutationMeta,
-        },
+        undefined,
         {
             onSuccess: () => {
                 setOpen(false);
@@ -94,7 +90,7 @@ const useDeleteWithConfirmController = <RecordType extends RaRecord = any>(
                     messageArgs: { smart_count: 1 },
                     undoable: mutationMode === 'undoable',
                 });
-                unselect([record.id]);
+                record && unselect([record.id]);
                 redirect(redirectTo, resource);
             },
             onError: (error: Error) => {
@@ -133,6 +129,11 @@ const useDeleteWithConfirmController = <RecordType extends RaRecord = any>(
     const handleDelete = useCallback(
         event => {
             event.stopPropagation();
+            if (!record) {
+                throw new Error(
+                    'The record cannot be deleted because no record has been passed'
+                );
+            }
             deleteOne(
                 resource,
                 {
