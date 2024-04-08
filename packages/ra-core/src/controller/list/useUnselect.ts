@@ -12,7 +12,7 @@ import { Identifier } from '../../types';
  * unselect([123, 456]);
  */
 export const useUnselect = (resource: string) => {
-    const [, { unselect }] = useRecordSelection(resource);
+    const [, { unselect }] = useRecordSelection({ resource });
     return useCallback(
         (ids: Identifier[]) => {
             unselect(ids);

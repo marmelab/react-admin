@@ -1,17 +1,30 @@
-import { useMemo } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 
 import { useStore, useRemoveFromStore } from '../../store';
 import { RaRecord } from '../../types';
 
+type UseRecordSelectionWithResourceArgs = {
+    resource: string;
+    disableSyncWithStore?: false;
+};
+type UseRecordSelectionWithNoStoreArgs = {
+    resource?: string;
+    disableSyncWithStore: true;
+};
+type UseRecordSelectionArgs =
+    | UseRecordSelectionWithResourceArgs
+    | UseRecordSelectionWithNoStoreArgs;
+
 /**
  * Get the list of selected items for a resource, and callbacks to change the selection
  *
- * @param resource The resource name, e.g. 'posts'
+ * @param args.resource The resource name, e.g. 'posts'
+ * @param args.disableSyncWithStore Controls the selection syncronization with the store
  *
  * @returns {Object} Destructure as [selectedIds, { select, toggle, clearSelection }].
  */
 export const useRecordSelection = <RecordType extends RaRecord = any>(
-    resource: string
+    args: UseRecordSelectionArgs
 ): [
     RecordType['id'][],
     {
@@ -21,12 +34,26 @@ export const useRecordSelection = <RecordType extends RaRecord = any>(
         clearSelection: () => void;
     }
 ] => {
+    const { resource = '', disableSyncWithStore = false } = args;
+
     const storeKey = `${resource}.selectedIds`;
-    const [ids, setIds] = useStore<RecordType['id'][]>(
-        storeKey,
-        defaultSelection
-    );
-    const reset = useRemoveFromStore(storeKey);
+
+    const [localIds, setLocalIds] = useState(defaultSelection);
+    // As we can't conditionally call a hook, if the storeKey is false,
+    // we'll ignore the params variable later on and won't call setParams either.
+    const [storeIds, setStoreIds] = useStore(storeKey, defaultSelection);
+    const resetStore = useRemoveFromStore(storeKey);
+
+    const ids = disableSyncWithStore ? localIds : storeIds;
+    const setIds = disableSyncWithStore ? setLocalIds : setStoreIds;
+
+    const reset = useCallback(() => {
+        if (disableSyncWithStore) {
+            setLocalIds(defaultSelection);
+        } else {
+            resetStore();
+        }
+    }, [disableSyncWithStore, resetStore]);
 
     const selectionModifiers = useMemo(
         () => ({
