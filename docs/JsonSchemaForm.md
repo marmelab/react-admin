@@ -102,15 +102,15 @@ For `string` fields:
 -   `password`
 -   `color`
 
-The built-in string `field` also supports the JSON Schema `format` property, and will render an appropriate widget accordingly:
+The built-in `string` field also supports the `format` property, and will render an appropriate widget depending on its value:
 
--   `email`: An `input[type=email]` element is used;
--   `uri`: An `input[type=url]` element is used;
--   `data-url`: By default, an `input[type=file]` element is used; in case the string is part of an array, multiple files will be handled automatically .
--   `date`: By default, `an input[type=date]` element is used;
--   `date`-time: By default, an `input[type=datetime-local]` element is used.
+-   `email`: renders an `input[type=email]` element;
+-   `uri`: renders an `input[type=url]` element;
+-   `data-url`: Renders an `input[type=file]` element (if the string is part of an array, multiple files will be handled automatically);
+-   `date`: Renders an `input[type=date]` element;
+-   `date-time`: Renders an `input[type=datetime-local]` element.
 
-For `number` and `integer` fields:
+For `number` and `integer` fields, you can also specify the `format` to render an alternative widget:
 
 -   `text` (default)
 -   `updown`
