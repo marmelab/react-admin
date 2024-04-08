@@ -78,7 +78,7 @@ export const useReferenceManyFieldController = <
         record,
         target,
         filter = defaultFilter,
-        source,
+        source = 'id',
         page: initialPage,
         perPage: initialPerPage,
         sort: initialSort = { field: 'id', order: 'DESC' },
@@ -223,7 +223,7 @@ export const useReferenceManyFieldController = <
     return {
         sort,
         data,
-        defaultTitle: null,
+        defaultTitle: undefined,
         displayedFilters,
         error,
         filterValues,
