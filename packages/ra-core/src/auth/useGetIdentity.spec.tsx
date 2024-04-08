@@ -4,7 +4,7 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { Basic, ErrorCase, ResetIdentity } from './useGetIdentity.stories';
 import useGetIdentity from './useGetIdentity';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import AuthContext from './AuthContext';
+import { AuthContext } from './AuthContext';
 
 describe('useGetIdentity', () => {
     it('should return the identity', async () => {

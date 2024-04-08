@@ -6,7 +6,7 @@ import { Location } from 'react-router-dom';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 
 import { useCheckAuth } from './useCheckAuth';
-import AuthContext from './AuthContext';
+import { AuthContext } from './AuthContext';
 
 import { BasenameContextProvider, TestMemoryRouter } from '../routing';
 import { useNotify } from '../notification/useNotify';

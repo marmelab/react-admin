@@ -5,7 +5,7 @@ import { Route, Routes } from 'react-router-dom';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 
 import { useHandleAuthCallback } from './useHandleAuthCallback';
-import AuthContext from './AuthContext';
+import { AuthContext } from './AuthContext';
 import { AuthProvider } from '../types';
 
 import { TestMemoryRouter } from '../routing';
