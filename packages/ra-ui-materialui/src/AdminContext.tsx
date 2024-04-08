@@ -25,10 +25,10 @@ export const AdminContext = (props: AdminContextProps) => {
                     lightTheme: theme || lightTheme,
                     darkTheme:
                         theme && !darkTheme
-                            ? null
+                            ? undefined
                             : !darkTheme && darkTheme !== null
                             ? defaultDarkTheme
-                            : darkTheme,
+                            : darkTheme ?? undefined,
                     defaultTheme,
                 }}
             >

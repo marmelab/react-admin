@@ -1,6 +1,7 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import { RaRecord, useResourceDefinition, useRecordContext } from 'ra-core';
+import { useResourceDefinition, useRecordContext } from 'ra-core';
+import { ToolbarProps } from '@mui/material';
 
 import { EditButton } from '../button';
 import TopToolbar from '../layout/TopToolbar';
@@ -31,21 +32,29 @@ import TopToolbar from '../layout/TopToolbar';
  *     );
  */
 export const ShowActions = (props: ShowActionsProps) => {
-    const record = useRecordContext(props);
-    const { hasEdit } = useResourceDefinition();
-    if (!hasEdit) {
-        return null;
-    }
+    const { hasEdit } = useResourceDefinition(props);
     return (
-        <TopToolbar className={props.className}>
-            <EditButton record={record} />
+        <TopToolbar {...sanitizeRestProps(props)}>
+            {hasEdit && <EditButton />}
         </TopToolbar>
     );
 };
 
-export interface ShowActionsProps {
-    className?: string;
-    record?: RaRecord;
+const sanitizeRestProps = ({
+    hasCreate,
+    hasEdit,
+    hasShow,
+    hasList,
+    resource,
+    ...rest
+}: ShowActionsProps) => rest;
+
+export interface ShowActionsProps extends ToolbarProps {
+    hasCreate?: boolean;
+    hasEdit?: boolean;
+    hasList?: boolean;
+    hasShow?: boolean;
+    resource?: string;
 }
 
 ShowActions.propTypes = {

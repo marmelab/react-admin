@@ -1,9 +1,10 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
+import { ToolbarProps } from '@mui/material';
+import { useResourceDefinition } from 'ra-core';
 
 import TopToolbar from '../layout/TopToolbar';
 import { ListButton } from '../button';
-import { useResourceDefinition } from 'ra-core';
 
 /**
  * Action Toolbar for the Create view
@@ -30,26 +31,25 @@ import { useResourceDefinition } from 'ra-core';
  *         </Create>
  *     );
  */
-export const CreateActions = ({ className, ...rest }: CreateActionsProps) => {
-    const { hasList } = useResourceDefinition(rest);
+export const CreateActions = (props: CreateActionsProps) => {
+    const { hasList } = useResourceDefinition(props);
     return (
-        <TopToolbar className={className} {...sanitizeRestProps(rest)}>
+        <TopToolbar {...sanitizeRestProps(props)}>
             {hasList && <ListButton />}
         </TopToolbar>
     );
 };
 
-/* eslint-disable @typescript-eslint/no-unused-vars */
 const sanitizeRestProps = ({
-    className = null,
-    hasList = null,
-    resource = null,
+    hasCreate,
+    hasEdit,
+    hasList,
+    hasShow,
+    resource,
     ...rest
-}) => rest;
-/* eslint-enable @typescript-eslint/no-unused-vars */
+}: Omit<CreateActionsProps, 'className'>) => rest;
 
-export interface CreateActionsProps {
-    className?: string;
+export interface CreateActionsProps extends ToolbarProps {
     hasCreate?: boolean;
     hasEdit?: boolean;
     hasList?: boolean;

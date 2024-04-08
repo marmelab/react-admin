@@ -66,6 +66,11 @@ export const UpdateWithUndoButton = (props: UpdateWithUndoButtonProps) => {
     } = mutationOptions;
 
     const handleClick = e => {
+        if (!record) {
+            throw new Error(
+                'The UpdateWithUndoButton must be used inside a RecordContext.Provider or must be passed a record prop.'
+            );
+        }
         updateMany(
             resource,
             { id: record.id, data, meta: mutationMeta, previousData: record },

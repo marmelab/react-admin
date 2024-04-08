@@ -19,6 +19,7 @@ export const ShowView = (props: ShowViewProps) => {
         className,
         component: Content = Card,
         emptyWhileLoading = false,
+        hasEdit: hasEditFromProps,
         title,
         ...rest
     } = props;
@@ -55,7 +56,10 @@ export const ShowView = (props: ShowViewProps) => {
     );
 };
 
-export type ShowViewProps = ShowProps;
+export type ShowViewProps = Omit<
+    ShowProps,
+    'id' | 'disableAuthentication' | 'queryOptions' | 'resource'
+>;
 
 ShowView.propTypes = {
     actions: PropTypes.oneOfType([PropTypes.element, PropTypes.bool]),

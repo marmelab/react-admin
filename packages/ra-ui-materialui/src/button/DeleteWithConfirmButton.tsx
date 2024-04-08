@@ -79,7 +79,9 @@ export const DeleteWithConfirmButton = <RecordType extends RaRecord = any>(
                         _: inflection.humanize(
                             translate(`resources.${resource}.name`, {
                                 smart_count: 1,
-                                _: inflection.singularize(resource),
+                                _: resource
+                                    ? inflection.singularize(resource)
+                                    : undefined,
                             }),
                             true
                         ),
