@@ -1,12 +1,6 @@
-import React, { Children, ReactElement } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import {
-    ChoicesContextProvider,
-    useReferenceInputController,
-    InputProps,
-    ResourceContextProvider,
-    UseReferenceInputControllerParams,
-} from 'ra-core';
+import { ReferenceInputBase, ReferenceInputBaseProps } from 'ra-core';
 
 import { AutocompleteInput } from './AutocompleteInput';
 
@@ -71,41 +65,20 @@ import { AutocompleteInput } from './AutocompleteInput';
  * a `setFilters` function. You can call this function to filter the results.
  */
 export const ReferenceInput = (props: ReferenceInputProps) => {
-    const {
-        children = defaultChildren,
-        reference,
-        sort = { field: 'id', order: 'DESC' },
-        filter = {},
-    } = props;
-
-    const controllerProps = useReferenceInputController({
-        ...props,
-        sort,
-        filter,
-    });
+    const { children = defaultChildren, ...rest } = props;
 
     if (props.validate) {
         throw new Error(
             '<ReferenceInput> does not accept a validate prop. Set the validate prop on the child instead.'
         );
     }
-    if (Children.count(children) !== 1) {
-        throw new Error('<ReferenceInput> only accepts a single child');
-    }
 
-    return (
-        <ResourceContextProvider value={reference}>
-            <ChoicesContextProvider value={controllerProps}>
-                {children}
-            </ChoicesContextProvider>
-        </ResourceContextProvider>
-    );
+    return <ReferenceInputBase {...rest}>{children}</ReferenceInputBase>;
 };
 
 ReferenceInput.propTypes = {
     children: PropTypes.element,
     filter: PropTypes.object,
-    label: PropTypes.string,
     page: PropTypes.number,
     perPage: PropTypes.number,
     record: PropTypes.object,
@@ -120,11 +93,7 @@ ReferenceInput.propTypes = {
 
 const defaultChildren = <AutocompleteInput />;
 
-export interface ReferenceInputProps
-    extends InputProps,
-        UseReferenceInputControllerParams {
-    children?: ReactElement;
-    label?: string;
+export interface ReferenceInputProps extends ReferenceInputBaseProps {
     /**
      * Call validate on the child component instead
      */
