@@ -63,9 +63,9 @@ export const useWarnWhenUnsavedChanges = (
                 translate('ra.message.unsaved_changes')
             );
             if (shouldProceed) {
-                blocker.proceed();
+                blocker.proceed && blocker.proceed();
             } else {
-                blocker.reset();
+                blocker.reset && blocker.reset();
             }
         }
         setShouldNotify(false);

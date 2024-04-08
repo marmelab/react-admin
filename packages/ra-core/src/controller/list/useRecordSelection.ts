@@ -11,9 +11,20 @@ type UseRecordSelectionWithNoStoreArgs = {
     resource?: string;
     disableSyncWithStore: true;
 };
-type UseRecordSelectionArgs =
+
+export type UseRecordSelectionArgs =
     | UseRecordSelectionWithResourceArgs
     | UseRecordSelectionWithNoStoreArgs;
+
+export type UseRecordSelectionResult<RecordType extends RaRecord = any> = [
+    RecordType['id'][],
+    {
+        select: (ids: RecordType['id'][]) => void;
+        unselect: (ids: RecordType['id'][]) => void;
+        toggle: (id: RecordType['id']) => void;
+        clearSelection: () => void;
+    }
+];
 
 /**
  * Get the list of selected items for a resource, and callbacks to change the selection
@@ -25,23 +36,20 @@ type UseRecordSelectionArgs =
  */
 export const useRecordSelection = <RecordType extends RaRecord = any>(
     args: UseRecordSelectionArgs
-): [
-    RecordType['id'][],
-    {
-        select: (ids: RecordType['id'][]) => void;
-        unselect: (ids: RecordType['id'][]) => void;
-        toggle: (id: RecordType['id']) => void;
-        clearSelection: () => void;
-    }
-] => {
+): UseRecordSelectionResult<RecordType> => {
     const { resource = '', disableSyncWithStore = false } = args;
 
     const storeKey = `${resource}.selectedIds`;
 
-    const [localIds, setLocalIds] = useState(defaultSelection);
+    const [localIds, setLocalIds] = useState<RecordType['id'][]>(
+        defaultSelection
+    );
     // As we can't conditionally call a hook, if the storeKey is false,
     // we'll ignore the params variable later on and won't call setParams either.
-    const [storeIds, setStoreIds] = useStore(storeKey, defaultSelection);
+    const [storeIds, setStoreIds] = useStore<RecordType['id'][]>(
+        storeKey,
+        defaultSelection
+    );
     const resetStore = useRemoveFromStore(storeKey);
 
     const ids = disableSyncWithStore ? localIds : storeIds;

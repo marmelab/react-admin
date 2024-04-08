@@ -67,7 +67,8 @@ export const FormDataConsumerView = <
     const { children, formData, source } = props;
     let ret;
 
-    const finalSource = useWrappedSource(source);
+    const finalSource = useWrappedSource(source || '');
+
     // Passes an empty string here as we don't have the children sources and we just want to know if we are in an iterator
     const matches = ArraySourceRegex.exec(finalSource);
 
