@@ -14,8 +14,8 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { ReferenceField } from './ReferenceField';
 import {
     Children,
-    EmptyWithTranslate,
-    MissingReference,
+    MissingReferenceIdEmptyTextTranslation,
+    MissingReferenceEmptyText,
     SXLink,
     SXNoLink,
 } from './ReferenceField.stories';
@@ -299,7 +299,7 @@ describe('<ReferenceField />', () => {
     });
 
     it('should display the emptyText if there is no reference', async () => {
-        render(<MissingReference />);
+        render(<MissingReferenceEmptyText />);
         await screen.findByText('no detail');
     });
 
@@ -622,7 +622,7 @@ describe('<ReferenceField />', () => {
     });
 
     it('should translate emptyText', () => {
-        render(<EmptyWithTranslate />);
+        render(<MissingReferenceIdEmptyTextTranslation />);
 
         expect(screen.findByText('Not found')).not.toBeNull();
     });

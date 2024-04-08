@@ -110,7 +110,15 @@ export const Loading = () => (
     </Wrapper>
 );
 
-export const Empty = () => (
+export const MissingReferenceId = () => (
+    <Wrapper record={{ id: 1, title: 'War and Peace' }}>
+        <ReferenceField source="detail_id" reference="book_details">
+            <TextField source="ISBN" />
+        </ReferenceField>
+    </Wrapper>
+);
+
+export const MissingReferenceIdEmptyText = () => (
     <Wrapper record={{ id: 1, title: 'War and Peace' }}>
         <ReferenceField
             source="detail_id"
@@ -122,7 +130,7 @@ export const Empty = () => (
     </Wrapper>
 );
 
-export const EmptyWithTranslate = () => (
+export const MissingReferenceIdEmptyTextTranslation = () => (
     <Wrapper record={{ id: 1, title: 'War and Peace' }}>
         <I18nContextProvider value={i18nProvider}>
             <ReferenceField
@@ -144,6 +152,14 @@ const missingReferenceDataProvider = {
 } as any;
 
 export const MissingReference = () => (
+    <Wrapper dataProvider={missingReferenceDataProvider}>
+        <ReferenceField source="detail_id" reference="book_details">
+            <TextField source="ISBN" />
+        </ReferenceField>
+    </Wrapper>
+);
+
+export const MissingReferenceEmptyText = () => (
     <Wrapper dataProvider={missingReferenceDataProvider}>
         <ReferenceField
             source="detail_id"
