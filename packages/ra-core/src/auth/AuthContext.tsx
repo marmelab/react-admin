@@ -4,7 +4,7 @@ import { AuthProvider, UserIdentity } from '../types';
 
 const defaultIdentity: UserIdentity = { id: '' };
 
-const defaultProvider: AuthProvider = {
+export const defaultAuthProvider: AuthProvider = {
     login: () => Promise.resolve(),
     logout: () => Promise.resolve(),
     checkAuth: () => Promise.resolve(),
@@ -13,8 +13,6 @@ const defaultProvider: AuthProvider = {
     getIdentity: () => Promise.resolve(defaultIdentity),
 };
 
-const AuthContext = createContext<AuthProvider>(defaultProvider);
+export const AuthContext = createContext<AuthProvider>(defaultAuthProvider);
 
 AuthContext.displayName = 'AuthContext';
-
-export default AuthContext;

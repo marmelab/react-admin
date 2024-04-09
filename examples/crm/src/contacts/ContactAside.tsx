@@ -48,7 +48,11 @@ export const ContactAside = ({ link = 'edit' }: { link?: 'edit' | 'show' }) => {
                 </Typography>
             </Box>
             <Typography variant="body2" mb={3}>
-                {record.gender === 'male' ? 'He/Him' : 'She/Her'}
+                {record
+                    ? record.gender === 'male'
+                        ? 'He/Him'
+                        : 'She/Her'
+                    : ''}
             </Typography>
             <Typography variant="subtitle2">Background</Typography>
             <Divider />

@@ -48,6 +48,11 @@ export const CoreAdminRoutes = (props: CoreAdminRoutesProps) => {
     }, [checkAuth, requireAuth]);
 
     if (status === 'empty') {
+        if (!Ready) {
+            throw new Error(
+                'The admin is empty. Please provide an empty component, or pass Resource or CustomRoutes as children.'
+            );
+        }
         return <Ready />;
     }
 

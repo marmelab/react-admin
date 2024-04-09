@@ -170,7 +170,7 @@ describe('useReferenceInputController', () => {
         );
 
         await waitFor(() => {
-            expect(children.mock.calls.length).toBeGreaterThanOrEqual(4);
+            expect(children.mock.calls.length).toBeGreaterThanOrEqual(3);
         });
         expect(children).toHaveBeenCalledWith(
             expect.objectContaining({

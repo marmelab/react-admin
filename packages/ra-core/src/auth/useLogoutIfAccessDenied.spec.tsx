@@ -5,7 +5,7 @@ import { render, screen, waitFor } from '@testing-library/react';
 import { Routes, Route } from 'react-router-dom';
 
 import useLogoutIfAccessDenied from './useLogoutIfAccessDenied';
-import AuthContext from './AuthContext';
+import { AuthContext } from './AuthContext';
 import useLogout from './useLogout';
 import { useNotify } from '../notification/useNotify';
 import { AuthProvider } from '../types';

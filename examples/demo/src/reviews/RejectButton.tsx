@@ -22,7 +22,7 @@ const RejectButton = () => {
 
     const [reject, { isPending }] = useUpdate(
         'reviews',
-        { id: record.id, data: { status: 'rejected' }, previousData: record },
+        { id: record?.id, data: { status: 'rejected' }, previousData: record },
         {
             mutationMode: 'undoable',
             onSuccess: () => {

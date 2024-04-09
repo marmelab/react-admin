@@ -132,13 +132,15 @@ export const useReferenceInputController = <RecordType extends RaRecord = any>(
     // We need to delay the update of the referenceRecord and the finalData
     // to the next React state update, because otherwise it can raise a warning
     // with AutocompleteInput saying the current value is not in the list of choices
-    const [referenceRecord, setReferenceRecord] = useState(null);
+    const [referenceRecord, setReferenceRecord] = useState<
+        RecordType | undefined
+    >(undefined);
     useEffect(() => {
         setReferenceRecord(currentReferenceRecord);
     }, [currentReferenceRecord]);
 
     // add current value to possible sources
-    let finalData: RecordType[], finalTotal: number;
+    let finalData: RecordType[], finalTotal: number | undefined;
     if (
         !referenceRecord ||
         possibleValuesData.find(record => record.id === referenceRecord.id)
@@ -166,7 +168,7 @@ export const useReferenceInputController = <RecordType extends RaRecord = any>(
         sort: currentSort,
         allChoices: finalData,
         availableChoices: possibleValuesData,
-        selectedChoices: [referenceRecord],
+        selectedChoices: referenceRecord ? [referenceRecord] : [],
         displayedFilters: params.displayedFilters,
         error: errorReference || errorPossibleValues,
         filter: params.filter,

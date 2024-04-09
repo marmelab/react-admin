@@ -43,14 +43,16 @@ export const TagsListEdit = () => {
     );
     const { data: tags, isPending: isPendingRecordTags } = useGetMany<Tag>(
         'tags',
-        { ids: record.tags },
+        { ids: record?.tags },
         { enabled: record && record.tags && record.tags.length > 0 }
     );
     const [update] = useUpdate<Contact>();
     const [create] = useCreate<Tag>();
 
     const unselectedTags =
-        allTags && allTags.filter(tag => !record.tags.includes(tag.id));
+        allTags &&
+        record &&
+        allTags.filter(tag => !record.tags.includes(tag.id));
 
     const handleOpen = (event: React.MouseEvent<HTMLDivElement>) => {
         setAnchorEl(event.currentTarget);
@@ -61,6 +63,9 @@ export const TagsListEdit = () => {
     };
 
     const handleDeleteTag = (id: Identifier) => {
+        if (!record) {
+            throw new Error('No contact record found');
+        }
         const tags = record.tags.filter(tagId => tagId !== id);
         update('contacts', {
             id: record.id,
@@ -70,6 +75,9 @@ export const TagsListEdit = () => {
     };
 
     const handleAddTag = (id: Identifier) => {
+        if (!record) {
+            throw new Error('No contact record found');
+        }
         const tags = [...record.tags, id];
         update('contacts', {
             id: record.id,
@@ -93,6 +101,9 @@ export const TagsListEdit = () => {
 
     const handleCreateTag = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+        if (!record) {
+            throw new Error('No contact record found');
+        }
         setDisabled(true);
         create(
             'tags',

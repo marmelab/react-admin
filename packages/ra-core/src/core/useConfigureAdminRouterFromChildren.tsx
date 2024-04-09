@@ -91,6 +91,9 @@ const useRoutesAndResourcesFromChildren = (
             ...routesAndResources,
         })
     );
+    if (!status) {
+        throw new Error('Status should be defined');
+    }
 
     useEffect(() => {
         const resolveChildFunction = async (
@@ -196,7 +199,7 @@ const useRoutesAndResourcesState = (
  * @param permissions: The permissions
  */
 const useRegisterResources = (
-    resources: (ReactElement<ResourceProps> & ResourceWithRegisterFunction)[],
+    resources: (ReactElement & ResourceWithRegisterFunction)[],
     permissions: any
 ) => {
     const { register, unregister } = useResourceDefinitionContext();
@@ -246,10 +249,10 @@ const getStatus = ({
     customRoutesWithoutLayout,
 }: {
     children: AdminChildren;
-    resources: ReactElement<ResourceProps>[];
-    customRoutesWithLayout: ReactElement<CustomRoutesProps>[];
-    customRoutesWithoutLayout: ReactElement<CustomRoutesProps>[];
-}) => {
+    resources: ReactNode[];
+    customRoutesWithLayout: ReactNode[];
+    customRoutesWithoutLayout: ReactNode[];
+}): AdminRouterStatus => {
     return getSingleChildFunction(children)
         ? 'loading'
         : resources.length > 0 ||
@@ -295,9 +298,9 @@ const getSingleChildFunction = (
 const getRoutesAndResourceFromNodes = (
     children: AdminChildren
 ): RoutesAndResources => {
-    const customRoutesWithLayout = [];
-    const customRoutesWithoutLayout = [];
-    const resources = [];
+    const customRoutesWithLayout: ReactNode[] = [];
+    const customRoutesWithoutLayout: ReactNode[] = [];
+    const resources: (ReactElement & ResourceWithRegisterFunction)[] = [];
 
     if (typeof children === 'function') {
         return {
@@ -339,7 +342,9 @@ const getRoutesAndResourceFromNodes = (
                 customRoutesWithLayout.push(customRoutesElement.props.children);
             }
         } else if ((element.type as any).raName === 'Resource') {
-            resources.push(element as ReactElement<ResourceProps>);
+            resources.push(
+                element as ReactElement & ResourceWithRegisterFunction
+            );
         }
     });
 
@@ -351,9 +356,9 @@ const getRoutesAndResourceFromNodes = (
 };
 
 type RoutesAndResources = {
-    customRoutesWithLayout: ReactElement<CustomRoutesProps>[];
-    customRoutesWithoutLayout: ReactElement<CustomRoutesProps>[];
-    resources: (ReactElement<ResourceProps> & ResourceWithRegisterFunction)[];
+    customRoutesWithLayout: ReactNode[];
+    customRoutesWithoutLayout: ReactNode[];
+    resources: (ReactElement & ResourceWithRegisterFunction)[];
 };
 
 type ResourceWithRegisterFunction = {

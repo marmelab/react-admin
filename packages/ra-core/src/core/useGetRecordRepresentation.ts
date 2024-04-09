@@ -16,7 +16,7 @@ import { useResourceDefinition } from './useResourceDefinition';
  * getRecordRepresentation({ id: 1, title: 'Hello' }); // => "Hello"
  */
 export const useGetRecordRepresentation = (
-    resource: string
+    resource?: string
 ): ((record: any) => ReactNode) => {
     const { recordRepresentation } = useResourceDefinition({ resource });
     return useCallback(

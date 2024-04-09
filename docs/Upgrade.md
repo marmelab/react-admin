@@ -771,6 +771,27 @@ describe('my test suite', () => {
 });
 ```
 
+## TypeScript: `useRecordContext` Returns `undefined` When No Record Is Available
+
+The `useRecordContext` hook reads the current record from the `RecordContext`. This context may be empty (e.g. while the record is being fetched). The return type for `useRecordContext` has been modified to `Record | undefined` instead of `Record` to denote this possibility.
+
+As a consequence, the TypeScript compilation of your project may fail if you don't check the existence of the record before reading it.
+
+To fix this error, your code should handle the case where `useRecordContext` returns `undefined`:
+
+```diff
+const MyComponent = () => {
+    const record = useRecordContext();
++   if (!record) return null;
+    return (
+        <div>
+            <h1>{record.title}</h1>
+            <p>{record.body}</p>
+        </div>
+    );
+};
+```
+
 ## TypeScript: Page Contexts Are Now Types Instead of Interfaces
 
 The return type of page controllers is now a type. If you were using an interface extending one of:

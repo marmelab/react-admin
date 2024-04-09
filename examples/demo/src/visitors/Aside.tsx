@@ -51,16 +51,18 @@ const EventList = () => {
         {
             pagination: { page: 1, perPage: 100 },
             sort: { field: 'date', order: 'DESC' },
-            filter: { customer_id: record.id },
-        }
+            filter: { customer_id: record?.id },
+        },
+        { enabled: !!record?.id }
     );
     const { data: reviews, total: totalReviews } = useGetList<ReviewRecord>(
         'reviews',
         {
             pagination: { page: 1, perPage: 100 },
             sort: { field: 'date', order: 'DESC' },
-            filter: { customer_id: record.id },
-        }
+            filter: { customer_id: record?.id },
+        },
+        { enabled: !!record?.id }
     );
     const events = mixOrdersAndReviews(orders, reviews);
 
@@ -87,7 +89,7 @@ const EventList = () => {
                             </Box>
                         </Grid>
                         <Grid item xs={6} display="flex" gap={1}>
-                            {totalOrders! > 0 && (
+                            {totalOrders! > 0 && record && (
                                 <>
                                     <order.icon
                                         fontSize="small"
@@ -108,9 +110,7 @@ const EventList = () => {
                                     >
                                         {translate(
                                             'resources.commands.amount',
-                                            {
-                                                smart_count: totalOrders,
-                                            }
+                                            { smart_count: totalOrders }
                                         )}
                                     </Link>
                                 </>
@@ -128,7 +128,7 @@ const EventList = () => {
                             </Box>
                         </Grid>
                         <Grid item xs={6} display="flex" gap={1}>
-                            {totalReviews! > 0 && (
+                            {totalReviews! > 0 && record && (
                                 <>
                                     <review.icon
                                         fontSize="small"

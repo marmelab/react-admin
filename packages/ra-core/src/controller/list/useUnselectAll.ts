@@ -10,10 +10,10 @@ import { useRecordSelection } from './useRecordSelection';
  * const unselectAll = useUnselectAll('posts');
  * unselectAll();
  */
-export const useUnselectAll = (resource: string) => {
-    const [, { clearSelection }] = useRecordSelection({
-        resource,
-    });
+export const useUnselectAll = (resource?: string) => {
+    const [, { clearSelection }] = useRecordSelection(
+        resource ? { resource } : { disableSyncWithStore: true }
+    );
     return useCallback(() => {
         clearSelection();
     }, [clearSelection]);

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 import { useGetIdentity } from './useGetIdentity';
-import AuthContext from './AuthContext';
+import { AuthContext } from './AuthContext';
 
 export default {
     title: 'ra-core/auth/useGetIdentity',

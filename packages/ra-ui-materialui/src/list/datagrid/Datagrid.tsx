@@ -16,6 +16,7 @@ import {
     sanitizeListRestProps,
     useListContextWithProps,
     Identifier,
+    OptionalResourceContextProvider,
     RaRecord,
     SortPayload,
 } from 'ra-core';
@@ -229,60 +230,62 @@ export const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
      */
     return (
         <DatagridContextProvider value={contextValue}>
-            <DatagridRoot
-                sx={sx}
-                className={clsx(DatagridClasses.root, className)}
-            >
-                {bulkActionButtons !== false ? (
-                    <BulkActionsToolbar>
-                        {isValidElement(bulkActionButtons)
-                            ? bulkActionButtons
-                            : defaultBulkActionButtons}
-                    </BulkActionsToolbar>
-                ) : null}
-                <div className={DatagridClasses.tableWrapper}>
-                    <Table
-                        ref={ref}
-                        className={DatagridClasses.table}
-                        size={size}
-                        {...sanitizeRestProps(rest)}
-                    >
-                        {createOrCloneElement(
-                            header,
-                            {
-                                children,
-                                sort,
-                                data,
-                                hasExpand: !!expand,
-                                hasBulkActions,
-                                isRowSelectable,
-                                onSelect,
-                                resource,
-                                selectedIds,
-                                setSort,
-                            },
-                            children
-                        )}
-                        {createOrCloneElement(
-                            body,
-                            {
-                                expand,
-                                rowClick,
-                                data,
-                                hasBulkActions,
-                                hover,
-                                onToggleItem: handleToggleItem,
-                                resource,
-                                rowSx,
-                                rowStyle,
-                                selectedIds,
-                                isRowSelectable,
-                            },
-                            children
-                        )}
-                    </Table>
-                </div>
-            </DatagridRoot>
+            <OptionalResourceContextProvider value={resource}>
+                <DatagridRoot
+                    sx={sx}
+                    className={clsx(DatagridClasses.root, className)}
+                >
+                    {bulkActionButtons !== false ? (
+                        <BulkActionsToolbar>
+                            {isValidElement(bulkActionButtons)
+                                ? bulkActionButtons
+                                : defaultBulkActionButtons}
+                        </BulkActionsToolbar>
+                    ) : null}
+                    <div className={DatagridClasses.tableWrapper}>
+                        <Table
+                            ref={ref}
+                            className={DatagridClasses.table}
+                            size={size}
+                            {...sanitizeRestProps(rest)}
+                        >
+                            {createOrCloneElement(
+                                header,
+                                {
+                                    children,
+                                    sort,
+                                    data,
+                                    hasExpand: !!expand,
+                                    hasBulkActions,
+                                    isRowSelectable,
+                                    onSelect,
+                                    resource,
+                                    selectedIds,
+                                    setSort,
+                                },
+                                children
+                            )}
+                            {createOrCloneElement(
+                                body,
+                                {
+                                    expand,
+                                    rowClick,
+                                    data,
+                                    hasBulkActions,
+                                    hover,
+                                    onToggleItem: handleToggleItem,
+                                    resource,
+                                    rowSx,
+                                    rowStyle,
+                                    selectedIds,
+                                    isRowSelectable,
+                                },
+                                children
+                            )}
+                        </Table>
+                    </div>
+                </DatagridRoot>
+            </OptionalResourceContextProvider>
         </DatagridContextProvider>
     );
 });

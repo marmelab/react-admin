@@ -70,7 +70,7 @@ describe('<ReferenceArrayField />', () => {
                             record={{ id: 123, barIds: [1, 2] }}
                             reference="bar"
                         >
-                            <SingleFieldList>
+                            <SingleFieldList linkType={false}>
                                 <TextField source="title" />
                             </SingleFieldList>
                         </ReferenceArrayFieldView>
@@ -99,7 +99,7 @@ describe('<ReferenceArrayField />', () => {
                         record={{ id: 123, barIds: [1, 2] }}
                         reference="bar"
                     >
-                        <SingleFieldList>
+                        <SingleFieldList linkType={false}>
                             <TextField source="title" />
                         </SingleFieldList>
                     </ReferenceArrayFieldView>
@@ -130,7 +130,7 @@ describe('<ReferenceArrayField />', () => {
                             reference="bar"
                             source="barIds"
                         >
-                            <SingleFieldList>
+                            <SingleFieldList linkType={false}>
                                 <TextField source="title" />
                             </SingleFieldList>
                         </ReferenceArrayFieldView>
@@ -165,7 +165,7 @@ describe('<ReferenceArrayField />', () => {
                             reference="bar"
                             source="barIds"
                         >
-                            <SingleFieldList>
+                            <SingleFieldList linkType={false}>
                                 <TextField source="title" />
                             </SingleFieldList>
                         </ReferenceArrayFieldView>
@@ -201,7 +201,7 @@ describe('<ReferenceArrayField />', () => {
                             reference="bar"
                             source="barIds"
                         >
-                            <SingleFieldList>
+                            <SingleFieldList linkType={false}>
                                 <TextField source="title" />
                             </SingleFieldList>
                         </ReferenceArrayFieldView>
