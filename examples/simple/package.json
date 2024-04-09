@@ -12,8 +12,8 @@
     "dependencies": {
         "@emotion/react": "^11.7.1",
         "@emotion/styled": "^11.6.0",
-        "@mui/icons-material": "^5.14.18",
-        "@mui/material": "^5.14.18",
+        "@mui/icons-material": "^5.15.15",
+        "@mui/material": "^5.15.15",
         "@tanstack/react-query": "^5.8.4",
         "@tanstack/react-query-devtools": "^5.8.4",
         "jsonexport": "^3.2.0",

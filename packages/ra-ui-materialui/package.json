@@ -26,8 +26,8 @@
         "watch": "tsc --outDir dist/esm --module es2015 --watch"
     },
     "devDependencies": {
-        "@mui/icons-material": "^5.14.18",
-        "@mui/material": "^5.14.18",
+        "@mui/icons-material": "^5.15.15",
+        "@mui/material": "^5.15.15",
         "@testing-library/react": "^14.1.2",
         "@types/dompurify": "^3.0.2",
         "@types/react": "^18.2.37",
