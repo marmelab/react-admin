@@ -102,6 +102,7 @@ export const NewNote = ({
                                     type="datetime-local"
                                     variant="filled"
                                     size="small"
+                                    margin="none"
                                     value={date}
                                     onChange={(
                                         event: React.ChangeEvent<
