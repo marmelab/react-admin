@@ -1,6 +1,6 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import { useResourceDefinition, useRecordContext } from 'ra-core';
+import { useResourceDefinition } from 'ra-core';
 import { ToolbarProps } from '@mui/material';
 
 import { EditButton } from '../button';
