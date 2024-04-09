@@ -17,28 +17,32 @@ export const DatagridHeaderCell = (
     props: DatagridHeaderCellProps
 ): JSX.Element => {
     const { className, field, sort, updateSort, isSorting, ...rest } = props;
-    const resource = useResourceContext(props);
+    const resource = useResourceContext();
 
     const translate = useTranslate();
     const translateLabel = useTranslateLabel();
     const sortLabel = translate('ra.sort.sort_by', {
-        field: translateLabel({
-            label: field.props.label,
-            resource,
-            source: field.props.source,
-        }),
-        order: translate(`ra.sort.${sort.order === 'ASC' ? 'DESC' : 'ASC'}`),
+        field: field
+            ? translateLabel({
+                  label: field.props.label,
+                  resource,
+                  source: field.props.source,
+              })
+            : undefined,
+        order: translate(`ra.sort.${sort?.order === 'ASC' ? 'DESC' : 'ASC'}`),
         _: translate('ra.action.sort'),
     });
 
     return (
         <StyledTableCell
-            className={clsx(className, field.props.headerClassName)}
-            align={field.props.textAlign}
+            className={clsx(className, field?.props.headerClassName)}
+            align={field?.props.textAlign}
             variant="head"
             {...rest}
         >
             {updateSort &&
+            sort &&
+            field &&
             field.props.sortable !== false &&
             (field.props.sortBy || field.props.source) ? (
                 <Tooltip
@@ -70,8 +74,8 @@ export const DatagridHeaderCell = (
                 </Tooltip>
             ) : (
                 <FieldTitle
-                    label={field.props.label}
-                    source={field.props.source}
+                    label={field?.props.label}
+                    source={field?.props.source}
                     resource={resource}
                 />
             )}
@@ -87,17 +91,15 @@ DatagridHeaderCell.propTypes = {
         order: PropTypes.oneOf(['ASC', 'DESC'] as const),
     }).isRequired,
     isSorting: PropTypes.bool,
-    resource: PropTypes.string,
     updateSort: PropTypes.func,
 };
 
 export interface DatagridHeaderCellProps
-    extends Omit<TableCellProps, 'classes'> {
+    extends Omit<TableCellProps, 'classes' | 'resource'> {
     className?: string;
     field?: JSX.Element;
     isSorting?: boolean;
-    resource: string;
-    sort: SortPayload;
+    sort?: SortPayload;
     updateSort?: (event: any) => void;
 }
 
@@ -105,10 +107,9 @@ export default memo(
     DatagridHeaderCell,
     (props, nextProps) =>
         props.updateSort === nextProps.updateSort &&
-        props.sort.field === nextProps.sort.field &&
-        props.sort.order === nextProps.sort.order &&
-        props.isSorting === nextProps.isSorting &&
-        props.resource === nextProps.resource
+        props.sort?.field === nextProps.sort?.field &&
+        props.sort?.order === nextProps.sort?.order &&
+        props.isSorting === nextProps.isSorting
 );
 
 const PREFIX = 'RaDatagridHeaderCell';
