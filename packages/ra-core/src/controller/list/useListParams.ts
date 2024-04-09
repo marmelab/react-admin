@@ -158,9 +158,8 @@ export const useListParams = ({
                 // schedule side effects for next tick
                 setTimeout(() => {
                     if (!tempParams.current) {
-                        throw new Error(
-                            'Race condition in changeParams detected'
-                        );
+                        // the side effects were already processed by another changeParams
+                        return;
                     }
                     if (disableSyncWithLocation) {
                         setLocalParams(tempParams.current);
