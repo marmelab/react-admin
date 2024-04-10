@@ -40,7 +40,7 @@ describe('useGetIdentity', () => {
             ) : error ? (
                 <>{`Error: ${error.message}`}</>
             ) : (
-                <>{String(data)}</>
+                <>{JSON.stringify(data)}</>
             );
         };
         render(
@@ -54,7 +54,7 @@ describe('useGetIdentity', () => {
             expect(screen.queryByText('Loading')).toBeNull();
         });
         expect(screen.queryByText(/Error/)).toBeNull();
-        expect(screen.queryByText('null')).not.toBeNull();
+        expect(screen.queryByText('{"id":""}')).not.toBeNull();
     });
 
     it('should abort the request if the query is canceled', async () => {
