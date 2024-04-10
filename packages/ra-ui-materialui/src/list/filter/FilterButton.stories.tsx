@@ -12,6 +12,7 @@ import {
     TextInput,
     TopToolbar,
     SearchInput,
+    FilterButtonProps,
 } from 'react-admin';
 import fakerestDataProvider from 'ra-data-fakerest';
 import {
@@ -161,6 +162,7 @@ const data = {
 const ListToolbar = (props: {
     postFilters: React.ReactElement[];
     args: { disableSaveQuery?: boolean };
+    buttonProps?: FilterButtonProps;
 }) => {
     return (
         <TopToolbar>
@@ -169,6 +171,7 @@ const ListToolbar = (props: {
                 <FilterButton
                     filters={props.postFilters}
                     disableSaveQuery={props.args.disableSaveQuery}
+                    {...props.buttonProps}
                 />
                 <CreateButton />
             </div>
@@ -178,17 +181,24 @@ const ListToolbar = (props: {
 const PostList = (props: {
     postFilters: React.ReactElement[];
     args: { disableSaveQuery?: boolean };
-}) => (
-    <ListBase>
-        <ListToolbar postFilters={props.postFilters} args={props.args} />
-        <Datagrid>
-            <TextField source="id" />
-            <TextField source="title" />
-            <TextField source="body" />
-        </Datagrid>
-        <Pagination />
-    </ListBase>
-);
+    buttonProps?: FilterButtonProps;
+}) => {
+    return (
+        <ListBase>
+            <ListToolbar
+                postFilters={props.postFilters}
+                args={props.args}
+                buttonProps={props.buttonProps}
+            />
+            <Datagrid>
+                <TextField source="id" />
+                <TextField source="title" />
+                <TextField source="body" />
+            </Datagrid>
+            <Pagination />
+        </ListBase>
+    );
+};
 
 export const Basic = (args: { disableSaveQuery?: boolean }) => {
     const postFilters: React.ReactElement[] = [
@@ -364,6 +374,68 @@ export const WithAutoCompleteArrayInput = (args: {
                         <PostList
                             postFilters={postFilters}
                             args={{ disableSaveQuery: args.disableSaveQuery }}
+                        />
+                    }
+                />
+            </Admin>
+        </TestMemoryRouter>
+    );
+};
+
+export const Variant = () => {
+    const postFilters: React.ReactElement[] = [
+        <TextInput
+            label="Title"
+            source="title"
+            defaultValue="Accusantium qui nihil voluptatum quia voluptas maxime ab similique"
+        />,
+    ];
+    return (
+        <TestMemoryRouter>
+            <Admin
+                dataProvider={fakerestDataProvider(data)}
+                store={memoryStore()}
+            >
+                <Resource
+                    name="posts"
+                    list={
+                        <PostList
+                            postFilters={postFilters}
+                            args={{}}
+                            buttonProps={{
+                                variant: 'outlined',
+                            }}
+                        />
+                    }
+                />
+            </Admin>
+        </TestMemoryRouter>
+    );
+};
+
+export const Size = () => {
+    const postFilters: React.ReactElement[] = [
+        <TextInput
+            label="Title"
+            source="title"
+            defaultValue="Accusantium qui nihil voluptatum quia voluptas maxime ab similique"
+        />,
+    ];
+    return (
+        <TestMemoryRouter>
+            <Admin
+                dataProvider={fakerestDataProvider(data)}
+                store={memoryStore()}
+            >
+                <Resource
+                    name="posts"
+                    list={
+                        <PostList
+                            postFilters={postFilters}
+                            args={{}}
+                            buttonProps={{
+                                size: 'large',
+                            }}
                         />
                     }
                 />

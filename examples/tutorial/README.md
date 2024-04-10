@@ -13,3 +13,5 @@ make build
 
 make run-tutorial
 ```
+
+Use any login/password combination to log in.
