@@ -121,6 +121,20 @@ export const Aside = () => (
     </TestMemoryRouter>
 );
 
+const PostShowWithCustomTitle = () => (
+    <Show title={book => `book_${book?.id}_test`}>
+        <BookTitle />
+    </Show>
+);
+
+export const CustomTitle = () => (
+    <TestMemoryRouter initialEntries={['/books/1/show']}>
+        <Admin dataProvider={dataProvider}>
+            <Resource name="books" show={PostShowWithCustomTitle} />
+        </Admin>
+    </TestMemoryRouter>
+);
+
 const CustomWrapper = ({ children }) => (
     <Box
         sx={{ padding: 2, width: 200, border: 'solid 1px black' }}

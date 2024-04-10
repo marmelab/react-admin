@@ -16,7 +16,13 @@ import { Route, Routes } from 'react-router-dom';
 import { render, screen, waitFor } from '@testing-library/react';
 
 import { AdminContext } from '../AdminContext';
-import { Default, Actions, Basic, Component } from './Show.stories';
+import {
+    Default,
+    Actions,
+    Basic,
+    Component,
+    CustomTitle,
+} from './Show.stories';
 import { Show } from './Show';
 
 describe('<Show />', () => {
@@ -124,6 +130,11 @@ describe('<Show />', () => {
     it('should allow to override the root component', () => {
         render(<Component />);
         expect(screen.getByTestId('custom-component')).toBeDefined();
+    });
+
+    it('should display a custom title', async () => {
+        render(<CustomTitle />);
+        await screen.findByText('book_1_test');
     });
 
     describe('defaultTitle', () => {
