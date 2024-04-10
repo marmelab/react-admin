@@ -11,7 +11,9 @@ import { Title } from '../layout';
 
 const defaultActions = <ShowActions />;
 
-export const ShowView = <RecordType extends RaRecord = any>(props: ShowViewProps<RecordType>) => {
+export const ShowView = <RecordType extends RaRecord = any>(
+    props: ShowViewProps<RecordType>
+) => {
     const {
         actions,
         aside,
@@ -34,17 +36,15 @@ export const ShowView = <RecordType extends RaRecord = any>(props: ShowViewProps
     }
     let titleComponent = null;
     if (title !== false) {
-      const newTitle = (typeof (title) === 'function')
-        ? title(record)
-        : title;
-    
-      titleComponent = (
-        <Title
-          title={newTitle}
-          defaultTitle={defaultTitle}
-          preferenceKey={`${resource}.show.title`}
-        />
-      );
+        const newTitle = typeof title === 'function' ? title(record) : title;
+
+        titleComponent = (
+            <Title
+                title={newTitle}
+                defaultTitle={defaultTitle}
+                preferenceKey={`${resource}.show.title`}
+            />
+        );
     }
     return (
         <Root
@@ -65,7 +65,9 @@ export const ShowView = <RecordType extends RaRecord = any>(props: ShowViewProps
     );
 };
 
-export type ShowViewProps<RecordType extends RaRecord = any> = ShowProps<RecordType>;
+export type ShowViewProps<RecordType extends RaRecord = any> = ShowProps<
+    RecordType
+>;
 
 ShowView.propTypes = {
     actions: PropTypes.oneOfType([PropTypes.element, PropTypes.bool]),
