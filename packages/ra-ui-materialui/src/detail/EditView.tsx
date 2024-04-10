@@ -41,27 +41,22 @@ export const EditView = (props: EditViewProps) => {
     }
     let titleComponent = null;
     if (title !== false) {
-      const newTitle = (typeof (title) === 'function')
-        ? title(record)
-        : title;
-    
-      titleComponent = (
-        <Title
-          title={newTitle}
-          defaultTitle={defaultTitle}
-          preferenceKey={`${resource}.show.title`}
-        />
-      );
+        const newTitle = typeof title === 'function' ? title(record) : title;
+
+        titleComponent = (
+            <Title
+                title={newTitle}
+                defaultTitle={defaultTitle}
+                preferenceKey={`${resource}.show.title`}
+            />
+        );
+    }
     return (
         <Root
             className={clsx('edit-page', className)}
             {...sanitizeRestProps(rest)}
         >
-            <Title
-                title={title}
-                defaultTitle={defaultTitle}
-                preferenceKey={`${resource}.edit.title`}
-            />
+            {titleComponent}
             {finalActions}
             <div
                 className={clsx(EditClasses.main, {

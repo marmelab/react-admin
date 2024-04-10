@@ -31,7 +31,11 @@ export interface EditProps<
     redirect?: RedirectionSideEffect;
     resource?: string;
     transform?: TransformData;
-    title?: string | ReactElement | false | ((arg0: RecordType | undefined) => string);
+    title?:
+        | string
+        | ReactElement
+        | false
+        | ((arg0: RecordType | undefined) => string);
     sx?: SxProps;
 }
 
@@ -71,7 +75,11 @@ export interface ShowProps<RecordType extends RaRecord = any> {
     id?: Identifier;
     queryOptions?: UseQueryOptions<RecordType> & { meta?: any };
     resource?: string;
-    title?: string | ReactElement | false | ((arg0: RecordType | undefined) => string);
+    title?:
+        | string
+        | ReactElement
+        | false
+        | ((arg0: RecordType | undefined) => string);
     sx?: SxProps;
 }
 
