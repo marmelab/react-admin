@@ -35,7 +35,6 @@ export default App;
 
 In most apps, you need to pass more props to `<Admin>`. Here is a more complete example taken from [the e-commerce demo](https://marmelab.com/react-admin-demo/):
 
-{% raw %}
 ```tsx
 // in src/App.js
 import { Admin, Resource, CustomRoutes } from 'react-admin';
@@ -78,7 +77,6 @@ const App = () => (
     </Admin>
 );
 ```
-{% endraw %}
 
 To make the main app component more concise, a good practice is to move the resources props to separate files. For instance, the previous example can be rewritten as:
 

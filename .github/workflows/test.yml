@@ -2,14 +2,10 @@ name: "Test - action"
 
 on: 
   push:
-    paths-ignore:
-      - 'docs/**'
     branches:
       - master
       - next
   pull_request:
-    paths-ignore:
-      - 'docs/**'
 
 jobs:
   typecheck:
@@ -28,6 +24,14 @@ jobs:
       run: make lint        
     - name: Build
       run: make build
+
+  doc-check:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2  
+    - name: Jekyll build
+      run: docker run -v="${PWD}/docs:/site" bretfisher/jekyll build
 
   unit-test:
     runs-on: ubuntu-latest
