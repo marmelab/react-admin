@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Card } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import clsx from 'clsx';
-import { useShowContext, useResourceDefinition } from 'ra-core';
+import { useShowContext, useResourceDefinition, RaRecord } from 'ra-core';
 
 import { ShowProps } from '../types';
 import { ShowActions } from './ShowActions';
@@ -11,7 +11,7 @@ import { Title } from '../layout';
 
 const defaultActions = <ShowActions />;
 
-export const ShowView = (props: ShowViewProps) => {
+export const ShowView = <RecordType extends RaRecord = any>(props: ShowViewProps<RecordType>) => {
     const {
         actions,
         aside,
@@ -32,16 +32,26 @@ export const ShowView = (props: ShowViewProps) => {
     if (!children || (!record && emptyWhileLoading)) {
         return null;
     }
+    let titleComponent = null;
+    if (title !== false) {
+      const newTitle = (typeof (title) === 'function')
+        ? title(record)
+        : title;
+    
+      titleComponent = (
+        <Title
+          title={newTitle}
+          defaultTitle={defaultTitle}
+          preferenceKey={`${resource}.show.title`}
+        />
+      );
+    }
     return (
         <Root
             className={clsx('show-page', className)}
             {...sanitizeRestProps(rest)}
         >
-            <Title
-                title={title}
-                defaultTitle={defaultTitle}
-                preferenceKey={`${resource}.show.title`}
-            />
+            {titleComponent}
             {finalActions !== false && finalActions}
             <div
                 className={clsx(ShowClasses.main, {
@@ -55,7 +65,7 @@ export const ShowView = (props: ShowViewProps) => {
     );
 };
 
-export type ShowViewProps = ShowProps;
+export type ShowViewProps<RecordType extends RaRecord = any> = ShowProps<RecordType>;
 
 ShowView.propTypes = {
     actions: PropTypes.oneOfType([PropTypes.element, PropTypes.bool]),
