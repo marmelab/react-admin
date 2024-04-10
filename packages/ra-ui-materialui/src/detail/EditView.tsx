@@ -39,6 +39,19 @@ export const EditView = (props: EditViewProps) => {
     if (!children) {
         return null;
     }
+    let titleComponent = null;
+    if (title !== false) {
+      const newTitle = (typeof (title) === 'function')
+        ? title(record)
+        : title;
+    
+      titleComponent = (
+        <Title
+          title={newTitle}
+          defaultTitle={defaultTitle}
+          preferenceKey={`${resource}.show.title`}
+        />
+      );
     return (
         <Root
             className={clsx('edit-page', className)}
