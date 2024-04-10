@@ -72,25 +72,9 @@ Make sure you [enable auth features](https://marmelab.com/react-admin/Authentica
 
 **Tip**: ra-rbac is part of the [React-Admin Enterprise Edition](https://marmelab.com/ra-enterprise/), and hosted in a private npm registry. You need to subscribe to one of the Enterprise Edition plans to access this package.
 
-## Concepts
+## Vocabulary
 
-### Pessimistic Strategy
-
-React-admin treats permissions in an optimistic way: While it fetches permissions from the authProvider, react-admin renders all components. If the authProvider returns a limited set of permissions, users may briefly see content they don't have access to.
-
-Ra-rbac takes the opposite strategy: while permissions are loading, react-admin doesn't render the components that require permissions, assuming that these components are restricted by default.
-
-It's only when ra-rbac is sure that the user has the right permissions that it renders the content.
-
-### Principle Of Least Privilege
-
-A user with no permissions has access to nothing. By default, any restricted action is accessible to nobody. This is also called an "implicit deny".
-
-To put it otherwise, only users with the right permissions can execute an action on a resource and a record.
-
-Permissions are additive, each permission granting access to a subset of the application.
-
-### Roles And Permissions
+### Permission
 
 A *permission* is an object that represents a subset of the application. It is defined by a `resource` (usually a noun) and an `action` (usually a verb), with sometimes an additional `record`.
 
@@ -100,11 +84,15 @@ Here are a few examples of permissions:
 - `{ action: "read", resource: "*" }`: allow read actions on all resources
 - `{ action: "read", resource: ["companies", "people"] }`: allow read actions on a subset of resources
 - `{ action: ["read", "create", "edit", "export"], resource: "companies" }`: allow all actions except delete on companies
-- `{ action: ["write"], resource: "game.score", record: { "id": "123" } }`: allow to change the score on a particular game
+- `{ action: ["write"], resource: "game.score", record: { "id": "123" } }`: allow write action on the score of the game with id 123
 
 **Tip**: When the `record` field is omitted, the permission is valid for all records.
 
+### Role
+
 A *role* is a string that represents a responsibility. Examples of roles include "admin", "reader", "moderator", and "guest". A user can have one or more roles.
+
+### Role Definition
 
 A *role definition* is an array of permissions. It lists the operations that a user with that role can perform.
 
@@ -147,6 +135,52 @@ const corrector123Role = [
 **Tip**: The _order_ of permissions isn't significant. As soon as at least one permission grants access to an action on a resource, ra-rbac grant access to it - unless there is an [explicit deny](#explicit-deny).
 
 The RBAC system relies on *permissions* only. It's the `authProvider`'s responsibility to map roles to permissions. See the [`authProvider` Methods](#authprovider-methods) section for details.
+
+### Action
+
+An _action_ is a string, usually a verb, that represents an operation. Examples of actions include "read", "create", "edit", "delete", or "export".
+
+Ra-rbac defines its own actions that you can use with ra-rbac components, but you can also define your own actions, and implement them in your own components using [`useCanAccess`](./useCanAccess.md), [`canAccess`](./canAccess.md) or [`<IfCanAccess>`](./IfCanAccess.md).
+
+Ra-rbac's built-in actions operate at different levels:
+
+- **Page:** controls visibility of a page like the Edit page
+- **Field:** controls visibility of a specific field, for example in a form
+- **Action:** controls permission to perform global actions, like exporting data 
+
+Here are all the actions supported by ra-rbac:
+
+| Action   | Level  | Description                      | Used In                                                                                                         |
+| -------- | ------ | -------------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| `list`   | Page   | Allow to access the List page    | [`<Resource>`](#resource), [`<Menu>`](#menu)                                                                    |
+| `show`   | Page   | Allow to access the Show page    | [`<Resource>`](#resource), [`<Datagrid>`](#datagrid), [`<Edit>`](#edit), [`<Show>`](#show)                      |
+| `create` | Page   | Allow to access the Create page  | [`<Resource>`](#resource), [`<List>`](#list)                                                                    |
+| `edit`   | Page   | Allow to access the Edit page    | [`<Resource>`](#resource), [`<Datagrid>`](#datagrid), [`<Edit>`](#edit), [`<Show>`](#show)                      |
+| `export` | Action | Allow to export data             | [`<List>`](#list)                                                                                               |
+| `delete` | Action | Allow to delete data             | [`<Datagrid>`](#datagrid), [`<SimpleForm>`](#simpleform), [`<TabbedForm>`](#tabform)                            |
+| `clone`  | Action | Allow to clone a record          | [`<Edit>`](#edit)                                                                                               |
+| `read`   | Field  | Allow to view a field (or a tab) | [`<Datagrid>`](#datagrid), [`<SimpleShowLayout>`](#simpleshowlayout), [`<TabbedShowLayout>`](#tabbedshowlayout) |
+| `write`  | Field  | Allow to edit a field (or a tab) | [`<SimpleForm>`](#simpleform), [`<TabbedForm>`](#tabbedform)                                                    |
+
+**Tip:** Be sure not to confuse "show" and "read", or "edit" and "write", as they are not the same. The first operate at the page level, the second at the field level. A good mnemonic is to realize "show" and "edit" are named the same as the react-admin page they allow to control: the Show and Edit pages.
+
+## Concepts
+
+### Pessimistic Strategy
+
+React-admin treats permissions in an optimistic way: While it fetches permissions from the authProvider, react-admin renders all components. If the authProvider returns a limited set of permissions, users may briefly see content they don't have access to.
+
+Ra-rbac takes the opposite strategy: while permissions are loading, react-admin doesn't render the components that require permissions, assuming that these components are restricted by default.
+
+It's only when ra-rbac is sure that the user has the right permissions that it renders the content.
+
+### Principle Of Least Privilege
+
+A user with no permissions has access to nothing. By default, any restricted action is accessible to nobody. This is also called an "implicit deny".
+
+To put it otherwise, only users with the right permissions can execute an action on a resource and a record.
+
+Permissions are additive, each permission granting access to a subset of the application.
 
 ### Record-Level Permissions
 
