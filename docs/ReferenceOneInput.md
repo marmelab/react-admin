@@ -282,7 +282,7 @@ export const CustomInputs = () => (
 ```
 {% endraw %}
 
-![ReferenceOneInput with custom inputs](https://react-admin-ee.marmelab.com/modules/assets/ra-relationships/latest/reference-one-input-custom-inputs.png)
+![ReferenceOneInput with custom inputs](https://react-admin-ee.marmelab.com/assets/ra-relationships/latest/reference-one-input-custom-inputs.png)
 
 ## Limitations
 

@@ -21,7 +21,7 @@ If you have a JSON Schema description of your form based on [react-jsonschema-fo
 
 For instance, to generate the following form:
 
-![JsonSchemaForm](https://react-admin-ee.marmelab.com/modules/assets/jsonschemaform.webp)
+![JsonSchemaForm](https://react-admin-ee.marmelab.com/assets/jsonschemaform.webp)
 
 Configure the `<Edit>` view with a `<JsonSchemaForm>` child as follows:
 

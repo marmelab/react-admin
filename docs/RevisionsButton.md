@@ -8,7 +8,7 @@ title: "The RevisionsButton Component"
 This button opens a menu with the list of revisions of the current record. When users select a revision, it opens a diff view, allowing them to see the changes between the current version and the selected revision. The user can then revert to the selected revision by clicking on the "Revert" button.
 
 <video controls autoplay playsinline muted loop>
-  <source src="https://react-admin-ee.marmelab.com/modules/assets/RevisionsButton.mp4" type="video/mp4"/>
+  <source src="https://react-admin-ee.marmelab.com/assets/RevisionsButton.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
@@ -172,7 +172,7 @@ const ProductEditActions = () => (
 By default, the `<RevisionsButton>` component only shows the list of revisions when the user clicks on the button. If you want to always show the list of revisions, you can use the [`<RevisionListWithDetailsInDialog>`](https://react-admin-ee.marmelab.com/documentation/ra-history#revisionlistwithdetailsindialog) component instead. 
 
 <video controls autoplay playsinline muted loop>
-  <source src="https://react-admin-ee.marmelab.com/modules/assets/RevisionListWithDetailsInDialog.mp4" type="video/mp4"/>
+  <source src="https://react-admin-ee.marmelab.com/assets/RevisionListWithDetailsInDialog.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 

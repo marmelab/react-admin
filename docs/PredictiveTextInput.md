@@ -408,8 +408,8 @@ const getParamsForPrompt = (prompt) => {
 
 If you want AI completions combined with a WYSIWYG editor for rich text, use [`<SmartRichTextInput>`](./SmartRichTextInput.md) instead of `<PredictiveTextInput>`.
 
-<video controls playsinline muted loop poster="https://react-admin-ee.marmelab.com/modules/assets/SmartRichTextInput.png" >
-  <source src="https://react-admin-ee.marmelab.com/modules/assets/SmartRichTextInput.mp4" type="video/mp4" />
+<video controls playsinline muted loop poster="https://react-admin-ee.marmelab.com/assets/SmartRichTextInput.png" >
+  <source src="https://react-admin-ee.marmelab.com/assets/SmartRichTextInput.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
 

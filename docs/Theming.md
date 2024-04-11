@@ -155,7 +155,7 @@ React-admin provides 3 built-in layout components, and you can easily create you
 
 For instance, you can replace the default `<Layout>`, which uses a sidebar for navigation, with a [`<ContainerLayout>`](./ContainerLayout.md), which uses a top bar instead.
 
-![Container layout](https://react-admin-ee.marmelab.com/modules/assets/ra-navigation/latest/container-layout.png)
+![Container layout](https://react-admin-ee.marmelab.com/assets/ra-navigation/latest/container-layout.png)
 
 ```jsx
 import { Admin, Resource } from 'react-admin';

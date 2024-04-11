@@ -8,8 +8,8 @@ title: "The Calendar Component"
 This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" /> component, part of [the `ra-calendar` module](https://react-admin-ee.marmelab.com/documentation/ra-calendar), renders a list of events as a calendar. 
 
 <video controls autoplay playsinline muted loop>
-  <source src="https://react-admin-ee.marmelab.com/modules/assets/ra-calendar.webm" type="video/webm" />
-  <source src="https://react-admin-ee.marmelab.com/modules/assets/ra-calendar.mp4" type="video/mp4" />
+  <source src="https://react-admin-ee.marmelab.com/assets/ra-calendar.webm" type="video/webm" />
+  <source src="https://react-admin-ee.marmelab.com/assets/ra-calendar.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
 

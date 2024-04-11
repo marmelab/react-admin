@@ -403,15 +403,15 @@ The basic [`<Datagrid>` component](./Datagrid.md) displays a list of records in 
 The [`<EditableDatagrid>` component](./EditableDatagrid.md) lets users edit records in place, without having to navigate to an edit form. It's a great way to speed up data entry.
 
 <video controls autoplay playsinline muted loop>
-  <source src="https://react-admin-ee.marmelab.com/modules/assets/ra-editable-datagrid-overview.webm" type="video/webm" />
-  <source src="https://react-admin-ee.marmelab.com/modules/assets/ra-editable-datagrid-overview.mp4" type="video/mp4" />
+  <source src="https://react-admin-ee.marmelab.com/assets/ra-editable-datagrid-overview.webm" type="video/webm" />
+  <source src="https://react-admin-ee.marmelab.com/assets/ra-editable-datagrid-overview.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
 
 Finally, the [`<DatagridAG>` component](./DatagridAG.md) integrates the powerful [AG Grid](https://www.ag-grid.com/) library to provide a rich set of features, such as cell editing, aggregation, row grouping, master detail, clipboard, pivoting, column filtering, export to excel, context menu, tree data, charting, and more.
 
 <video controls autoplay playsinline muted loop>
-  <source src="https://react-admin-ee.marmelab.com/modules/assets/DatagridAG-enterprise.mp4" type="video/mp4"/>
+  <source src="https://react-admin-ee.marmelab.com/assets/DatagridAG-enterprise.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
@@ -444,16 +444,16 @@ In most admin and B2B apps, the most common task is to look for a record. React-
 </tr>
 <tr style="border:none;background-color:#fff;">
     <td style="width:50%;border:none;text-align:center">
-        <a title="Stacked Filters" href="https://react-admin-ee.marmelab.com/modules/assets/ra-form-layout/latest/stackedfilters-overview.webm">
+        <a title="Stacked Filters" href="https://react-admin-ee.marmelab.com/assets/ra-form-layout/latest/stackedfilters-overview.webm">
             <video controls autoplay playsinline muted loop width="90%" style="margin:1rem;box-shadow:0px 4px 4px 0px rgb(0 0 0 / 24%);">
-                <source src="https://react-admin-ee.marmelab.com/modules/assets/ra-form-layout/latest/stackedfilters-overview.webm" type="video/mp4" />
+                <source src="https://react-admin-ee.marmelab.com/assets/ra-form-layout/latest/stackedfilters-overview.webm" type="video/mp4" />
                     Your browser does not support the video tag.
             </video>
         </a>
         <a href="./FilteringTutorial.html#the-stackedfilters-component" style="display: block;transform: translateY(-10px);"><code>&lt;StackedFilters&gt;</code> Dialog</a>
     </td>
     <td style="width:50%;border:none;text-align:center;vertical-align:top;">
-        <a title="<Search> input" href="https://react-admin-ee.marmelab.com/modules/assets/ra-search-overview.gif"><img src="https://react-admin-ee.marmelab.com/modules/assets/ra-search-overview.gif" /></a>
+        <a title="<Search> input" href="https://react-admin-ee.marmelab.com/assets/ra-search-overview.gif"><img src="https://react-admin-ee.marmelab.com/assets/ra-search-overview.gif" /></a>
         <a href="./FilteringTutorial.html#global-search" style="display: block;transform: translateY(-10px);">Global <code>&lt;Search&gt;</code></a>
     </td>
 </tr>
@@ -796,7 +796,7 @@ const CustomerEdit = () => (
 ```
 {% endraw %}
 
-![JsonSchemaForm](https://react-admin-ee.marmelab.com/modules/assets/jsonschemaform.webp)
+![JsonSchemaForm](https://react-admin-ee.marmelab.com/assets/jsonschemaform.webp)
 
 And if you want something super custom that react-admin doesn't support out of the box, you can always use [react-hook-form](https://react-hook-form.com/) directly.
 
@@ -833,8 +833,8 @@ const PersonEdit = () => (
 
 You can also use the [`<SmartRichTextInput>`](./SmartRichTextInput.md) component, which lets users edit HTML documents in WYSIWYG with superpowers:
 
-<video controls playsinline muted loop poster="https://react-admin-ee.marmelab.com/modules/assets/SmartRichTextInput.png" >
-  <source src="https://react-admin-ee.marmelab.com/modules/assets/SmartRichTextInput.mp4" type="video/mp4" />
+<video controls playsinline muted loop poster="https://react-admin-ee.marmelab.com/assets/SmartRichTextInput.png" >
+  <source src="https://react-admin-ee.marmelab.com/assets/SmartRichTextInput.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
 
@@ -943,7 +943,7 @@ To learn more about authentication, roles, and permissions, check out the follow
 React-admin lets users **track the changes** made to any record. They can see the **history of revisions**, **compare differences** between any two versions, and **revert to a previous state** if needed.
 
 <video controls autoplay playsinline muted loop>
-  <source src="https://react-admin-ee.marmelab.com/modules/assets/ra-history.mp4" type="video/mp4"/>
+  <source src="https://react-admin-ee.marmelab.com/assets/ra-history.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
@@ -968,8 +968,8 @@ These features are available through the following components:
 Most admin and B2B apps require that user actions are recorded for audit purposes. React-admin provides templates for displaying such audit logs, and helpers to automatically **record user actions**.
 
 <video controls autoplay playsinline muted loop>
-  <source src="https://react-admin-ee.marmelab.com/modules/assets/ra-audit-log/latest/ra-audit-log.webm" type="video/webm" />
-  <source src="https://react-admin-ee.marmelab.com/modules/assets/ra-audit-log/latest/ra-audit-log.mp4" type="video/mp4" />
+  <source src="https://react-admin-ee.marmelab.com/assets/ra-audit-log/latest/ra-audit-log.webm" type="video/webm" />
+  <source src="https://react-admin-ee.marmelab.com/assets/ra-audit-log/latest/ra-audit-log.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
 
@@ -1020,8 +1020,8 @@ const dataProvider = addEventsForMutations(
 If your app needs to display **events**, **appointments**, **time intervals**, or any other kind of time-based data, you can use the [`<Calendar>`](./Calendar.md) component.
 
 <video controls autoplay playsinline muted loop>
-  <source src="https://react-admin-ee.marmelab.com/modules/assets/ra-calendar.webm" type="video/webm" />
-  <source src="https://react-admin-ee.marmelab.com/modules/assets/ra-calendar.mp4" type="video/mp4" />
+  <source src="https://react-admin-ee.marmelab.com/assets/ra-calendar.webm" type="video/webm" />
+  <source src="https://react-admin-ee.marmelab.com/assets/ra-calendar.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
 
@@ -1110,8 +1110,8 @@ Check out the following components for displaying hierarchical data:
 A UI kit like Material UI provides basic building blocks like a button, a form, a table, etc. React-admin goes one level higher and provides a set of **[application components](./Reference.md#components)** specifically designed for building admin and B2B *applications*.
 
 <video controls autoplay playsinline muted loop>
-  <source src="https://react-admin-ee.marmelab.com/modules/assets/ra-editable-datagrid/latest/ra-editable-datagrid-overview.webm" type="video/webm" />
-  <source src="https://react-admin-ee.marmelab.com/modules/assets/ra-editable-datagrid/latest/ra-editable-datagrid-overview.mp4" type="video/mp4" />
+  <source src="https://react-admin-ee.marmelab.com/assets/ra-editable-datagrid/latest/ra-editable-datagrid-overview.webm" type="video/webm" />
+  <source src="https://react-admin-ee.marmelab.com/assets/ra-editable-datagrid/latest/ra-editable-datagrid-overview.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
 

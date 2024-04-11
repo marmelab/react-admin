@@ -721,12 +721,12 @@ export const PostCreate = () => (
 
 This won't change the look and feel of the form. But when the user submits the form, they will see a dialog asking them for the reason of the change.
 
-![SimpleFormWithRevision](https://react-admin-ee.marmelab.com/modules/assets/ra-history/latest/SimpleFormWithRevision.png)
+![SimpleFormWithRevision](https://react-admin-ee.marmelab.com/assets/ra-history/latest/SimpleFormWithRevision.png)
 
 After submitting this dialog, react-admin will update the main record and **create a new revision**. A revision represents the state of the record at a given point in time. It is immutable. A revision also records the date, author, and reason of the change. Past revisions can be accessed via the [`<RevisionsButton>`](https://react-admin-ee.marmelab.com/documentation/ra-history#revisionsbutton) component.
 
 <video controls autoplay playsinline muted loop>
-  <source src="https://react-admin-ee.marmelab.com/modules/assets/RevisionsButton.mp4" type="video/mp4"/>
+  <source src="https://react-admin-ee.marmelab.com/assets/RevisionsButton.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 

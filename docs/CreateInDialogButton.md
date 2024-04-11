@@ -8,8 +8,8 @@ title: "CreateInDialogButton"
 This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" /> component offers a way to open a `<Create>` view inside a dialog, hence allowing to create a new record without leaving the current view.
 
 <video controls autoplay playsinline muted loop>
-  <source src="https://react-admin-ee.marmelab.com/modules/assets/ra-form-layout/latest/CreateInDialogButton.webm" type="video/webm" />
-  <source src="https://react-admin-ee.marmelab.com/modules/assets/ra-form-layout/latest/CreateInDialogButton.mp4" type="video/mp4" />
+  <source src="https://react-admin-ee.marmelab.com/assets/ra-form-layout/latest/CreateInDialogButton.webm" type="video/webm" />
+  <source src="https://react-admin-ee.marmelab.com/assets/ra-form-layout/latest/CreateInDialogButton.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
 

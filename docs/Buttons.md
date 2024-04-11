@@ -821,14 +821,14 @@ See [The Menu documentation](./Menu.md) for more details.
 **Tip**: If you need a multi-level menu, or a Mega Menu opening panels with custom content, check out [the `ra-navigation`<img class="icon" src="./img/premium.svg" /> module](https://react-admin-ee.marmelab.com/documentation/ra-navigation) (part of the [Enterprise Edition](https://react-admin-ee.marmelab.com))
 
 <video controls autoplay playsinline muted loop>
-  <source src="https://react-admin-ee.marmelab.com/modules/assets/ra-multilevelmenu-item.webm" type="video/webm" />
-  <source src="https://react-admin-ee.marmelab.com/modules/assets/ra-multilevelmenu-item.mp4" type="video/mp4" />
+  <source src="https://react-admin-ee.marmelab.com/assets/ra-multilevelmenu-item.webm" type="video/webm" />
+  <source src="https://react-admin-ee.marmelab.com/assets/ra-multilevelmenu-item.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
 
 <video controls autoplay playsinline muted loop>
-  <source src="https://react-admin-ee.marmelab.com/modules/assets/ra-multilevelmenu-categories.webm" type="video/webm" />
-  <source src="https://react-admin-ee.marmelab.com/modules/assets/ra-multilevelmenu-categories.mp4" type="video/mp4" />
+  <source src="https://react-admin-ee.marmelab.com/assets/ra-multilevelmenu-categories.webm" type="video/webm" />
+  <source src="https://react-admin-ee.marmelab.com/assets/ra-multilevelmenu-categories.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
 

@@ -8,8 +8,8 @@ title: "CreateDialog"
 This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" /> component offers a replacement to [the `<Create>` component](./Create.md) allowing users to create records without leaving the context of the list page.
 
 <video controls autoplay playsinline muted loop>
-  <source src="https://react-admin-ee.marmelab.com/modules/assets/create-dialog.webm" type="video/webm" />
-  <source src="https://react-admin-ee.marmelab.com/modules/assets/create-dialog.mp4" type="video/mp4" />
+  <source src="https://react-admin-ee.marmelab.com/assets/create-dialog.webm" type="video/webm" />
+  <source src="https://react-admin-ee.marmelab.com/assets/create-dialog.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
 
@@ -248,8 +248,8 @@ This may not be what you want if you need to display the creation dialog in anot
 In that case, use [the `<CreateInDialogButton>` component](./CreateInDialogButton.md), which doesn't create a route, but renders the dialog when the user clicks on it.
 
 <video controls autoplay playsinline muted loop>
-  <source src="https://react-admin-ee.marmelab.com/modules/assets/ra-form-layout/latest/CreateInDialogButton.webm" type="video/webm" />
-  <source src="https://react-admin-ee.marmelab.com/modules/assets/ra-form-layout/latest/CreateInDialogButton.mp4" type="video/mp4" />
+  <source src="https://react-admin-ee.marmelab.com/assets/ra-form-layout/latest/CreateInDialogButton.webm" type="video/webm" />
+  <source src="https://react-admin-ee.marmelab.com/assets/ra-form-layout/latest/CreateInDialogButton.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
 
