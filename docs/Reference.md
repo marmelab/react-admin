@@ -293,7 +293,6 @@ title: "Index"
 * [`useRegisterMutationMiddleware`](./useRegisterMutationMiddleware.md)
 * [`useRemoveFromStore`](./useRemoveFromStore.md)
 * [`useResetStore`](./useResetStore.md)
-* [`useResourceAppLocation`](https://react-admin-ee.marmelab.com/documentation/ra-navigation#useresourceapplocation-access-current-resource-app-location)<img class="icon" src="./img/premium.svg" />
 
 **- S -**
 * [`useSaveContext`](./useSaveContext.md)
