@@ -7,17 +7,36 @@ title: "The NumberField Component"
 
 Displays a number formatted according to the browser locale, right aligned. Ideal for floats, currencies, percentages, units, etc.
 
-![NumberField](./img/number-field.webp)`
+<iframe src="https://www.youtube-nocookie.com/embed/StCR3gB7nKU" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;"></iframe>
 
 ## Usage
 
-```jsx
-import { NumberField }  from 'react-admin';
+Use `<NumberField>` to display a number in a read-only way. It reads the value from the record context and formats it according to the browser locale.
 
+```js
 <NumberField source="views" />
 // renders the record { id: 1234, views: 2108 } as
 <span>2 108</span>
 ```
+
+
+When used in a `<Datagrid>` component, `<NumberField>` displays the value in a right-aligned column.
+
+```jsx
+import { List, Datagrid, NumberField }  from 'react-admin';
+
+const PostList = () => (
+    <List>
+        <Datagrid>
+            {/* ... */}
+            <NumberField source="views" />
+            {/* ... */}
+        </Datagrid>
+    </List>
+);
+```
+
+![NumberField](./img/number-field.webp)`
 
 `<NumberField>` works for values that are numbers (e.g. `2108`) or strings that convert to numbers (e.g. `'2108'`).
 

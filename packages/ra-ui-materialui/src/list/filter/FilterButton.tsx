@@ -8,7 +8,12 @@ import {
     useContext,
 } from 'react';
 import PropTypes from 'prop-types';
-import { Menu, MenuItem, styled } from '@mui/material';
+import {
+    Menu,
+    MenuItem,
+    styled,
+    ButtonProps as MuiButtonProps,
+} from '@mui/material';
 import ContentFilter from '@mui/icons-material/FilterList';
 import lodashGet from 'lodash/get';
 import isEqual from 'lodash/isEqual';
@@ -28,6 +33,8 @@ export const FilterButton = (props: FilterButtonProps): JSX.Element => {
         filters: filtersProp,
         className,
         disableSaveQuery,
+        size,
+        variant,
         ...rest
     } = props;
     const filters = useContext(FilterContext) || filtersProp;
@@ -141,6 +148,8 @@ export const FilterButton = (props: FilterButtonProps): JSX.Element => {
                 label="ra.action.add_filter"
                 aria-haspopup="true"
                 onClick={handleClickButton}
+                variant={variant}
+                size={size}
             >
                 <ContentFilter />
             </Button>
@@ -254,7 +263,9 @@ FilterButton.propTypes = {
     resource: PropTypes.string,
 };
 
-export interface FilterButtonProps extends HtmlHTMLAttributes<HTMLDivElement> {
+export interface FilterButtonProps
+    extends HtmlHTMLAttributes<HTMLDivElement>,
+        Pick<MuiButtonProps, 'variant' | 'size'> {
     className?: string;
     disableSaveQuery?: boolean;
     filters?: ReactNode[];

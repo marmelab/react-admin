@@ -10,7 +10,7 @@ import {
 } from './UpdateWithUndoButton';
 
 /**
- * Updates the selected rows.
+ * Updates the current record.
  *
  * To be used inside the <Edit actions> prop or <Show actions> prop.
  *

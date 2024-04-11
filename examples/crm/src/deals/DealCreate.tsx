@@ -13,6 +13,7 @@ import {
     useGetIdentity,
     useListContext,
     GetListResult,
+    DateInput,
 } from 'react-admin';
 import { Dialog } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
@@ -106,6 +107,11 @@ export const DealCreate = ({ open }: { open: boolean }) => {
                             validate={validateRequired}
                         />
                     </ReferenceInput>
+                    <DateInput
+                        source="start_at"
+                        defaultValue={new Date()}
+                        fullWidth
+                    />
                     <SelectInput
                         source="stage"
                         choices={stageChoices}

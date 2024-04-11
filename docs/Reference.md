@@ -63,7 +63,7 @@ title: "Index"
 * [`<EditableDatagrid>`](./EditableDatagrid.md)<img class="icon" src="./img/premium.svg" />
 * [`<EditGuesser>`](./EditGuesser.md)
 * [`<EditButton>`](./Buttons.md#editbutton)
-* [`<EditDialog>`](./EditDialog)<img class="icon" src="./img/premium.svg" />
+* [`<EditDialog>`](./EditDialog.md)<img class="icon" src="./img/premium.svg" />
 * [`<EditInDialogButton>`](./EditInDialogButton.md)<img class="icon" src="./img/premium.svg" />
 * [`<EmailField>`](./EmailField.md)
 * [`<Empty>`](./List.md#empty)
