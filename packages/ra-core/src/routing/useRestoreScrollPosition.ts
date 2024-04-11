@@ -22,7 +22,6 @@ export const useRestoreScrollPosition = (key: string, debounceMs = 250) => {
 
     useEffect(() => {
         if (position != null && location.state?._scrollToTop !== true) {
-            console.log('Restoring scroll position', position);
             window.scrollTo(0, position);
         }
         // We only want to run this effect on mount
