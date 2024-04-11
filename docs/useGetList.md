@@ -107,14 +107,14 @@ import {
 } from 'react-admin';
 
 const LatestNews = () => {
-    const { data, isLoading, error } = useGetList(
+    const { data, isPending, error } = useGetList(
         'posts',
         { pagination: { page: 1, perPage: 100 } },
     );
     if (error) { return <p>ERROR</p>; }
     const listContext = useList({ 
         data,
-        isLoading,
+        isPending,
         perPage: 10,
         sort: { field: 'published_at', order: 'DESC' }
     });
@@ -200,11 +200,11 @@ import { useGetList } from 'react-admin';
 
 const PostComments = () => {
     const record = useRecordContext();
-    const { data, isLoading, error } = useGetList(
+    const { data, isPending, error } = useGetList(
         'comments',
         { filter: { post_id: record.id } }
     );
-    if (isLoading) { return <Loading />; }
+    if (isPending) { return <Loading />; }
     if (error) { return <p>ERROR</p>; }
     const listContext = useList({ data });
     return (
