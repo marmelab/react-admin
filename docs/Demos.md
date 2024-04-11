@@ -137,7 +137,7 @@ If you want to see what react-admin is capable of, or if you want to learn from 
         </div>
         <div class="card-footer">
             <div class="links-container">
-                <p><b><a href="https://react-admin-ee.marmelab.com-demo/" class="demo link">Demo</a></b></p>
+                <p><b><a href="https://marmelab.com/ra-enterprise-demo/" class="demo link">Demo</a></b></p>
                 <p><b><a href="https://github.com/marmelab/ra-enterprise-demo" class="source-code link">Source code</a></b></p>
             </div>
         </div>
@@ -249,7 +249,7 @@ Based on the E-commerce demo and upgraded with some React Admin Enterprise featu
 <div style="padding:56.93% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/884005183?h=7f12a85dcf&title=0&byline=0&portrait=0" style="position:absolute;top:0;left:0;width:100%;height:100%;" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe></div>
 <br>
 
-* Demo: [https://react-admin-ee.marmelab.com-demo/](https://react-admin-ee.marmelab.com-demo/)
+* Demo: [https://marmelab.com/ra-enterprise-demo/](https://marmelab.com/ra-enterprise-demo/)
 * Source code: [https://github.com/marmelab/ra-enterprise-demo](https://github.com/marmelab/ra-enterprise-demo)
 
 The source shows how to implement the following features:

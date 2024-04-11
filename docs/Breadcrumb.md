@@ -13,7 +13,7 @@ This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" 
   Your browser does not support the video tag.
 </video>
 
-Test it live on [the Enterprise Edition demo](https://react-admin-ee.marmelab.com-demo/#/).
+Test it live on [the Enterprise Edition demo](https://marmelab.com/ra-enterprise-demo/#/).
 
 The breadcrumb path can complement and/or replace navigation menus, back buttons, page titles, and site maps. It's a small but effective navigation control.
 

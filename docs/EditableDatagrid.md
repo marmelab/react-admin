@@ -17,7 +17,7 @@ The default react-admin user experience consists of three pages: List, Edit, and
 
 With `<EditableDatagrid>`, when users click on a row in the datagrid, the row content is replaced by the edition form. They can also create new records by clicking on the Create button, which inserts an empty editable row as the first line of the list. Finally, they can delete a record by clicking on the Delete button on each row.
 
-You can test it live in [the Enterprise Edition Storybook](https://react-admin.github.io/ra-enterprise/?path=/story/ra-editable-datagrid-editabledatagrid--undoable) and [the e-commerce demo](https://react-admin-ee.marmelab.com-demo/#/tours/ra-editable-datagrid).
+You can test it live in [the Enterprise Edition Storybook](https://react-admin.github.io/ra-enterprise/?path=/story/ra-editable-datagrid-editabledatagrid--undoable) and [the e-commerce demo](https://marmelab.com/ra-enterprise-demo/#/tours/ra-editable-datagrid).
 
 `<EditableDatagrid>` allows you to use any [Input component](./Inputs.md) to edit the record - including Reference Inputs for foreign keys.
 
