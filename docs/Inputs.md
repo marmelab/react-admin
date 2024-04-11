@@ -1007,6 +1007,7 @@ You can find components for react-admin in third-party repositories.
 - [MrHertal/react-admin-json-view](https://github.com/MrHertal/react-admin-json-view): JSON field and input for react-admin.
 - [@bb-tech/ra-components](https://github.com/bigbasket/ra-components): `JsonInput` which allows only valid JSON as input, `JsonField` to view JSON properly on show card and `TrimField` to trim the fields while showing in `Datagrid` in `List` component.
 - [@react-page/react-admin](https://react-page.github.io/docs/#/integration-react-admin): ReactPage is a rich content editor and comes with a ready-to-use React-admin input component. [check out the demo](https://react-page.github.io/examples/reactadmin)
+- [Gist quentin-decre/ed6ed417637edf7c4e4570b3f6954321](https://gist.github.com/quentin-decre/ed6ed417637edf7c4e4570b3f6954321): Google Maps Places API integration to your DataProvider to easily have locations autocomplete input using ReferenceInput and AutocompleteInput.
 
 - **DEPRECATED V3** [LoicMahieu/aor-tinymce-input](https://github.com/LoicMahieu/aor-tinymce-input): a TinyMCE component, useful for editing HTML
 
