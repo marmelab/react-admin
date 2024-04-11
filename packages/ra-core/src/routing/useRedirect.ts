@@ -71,7 +71,7 @@ export const useRedirect = () => {
             } else {
                 // redirection to an internal link
                 navigate(createPath({ resource, id, type: redirectTo }), {
-                    state: { _scrollToTop: true, ...state },
+                    state: { _scrollToTop: redirectTo !== 'list', ...state },
                 });
                 return;
             }

@@ -84,7 +84,7 @@ export const List = <RecordType extends RaRecord = any>({
         sort={sort}
         storeKey={storeKey}
     >
-        <ListView<RecordType> {...rest} />
+        <ListView<RecordType> storeKey={storeKey} {...rest} />
     </ListBase>
 );
 
