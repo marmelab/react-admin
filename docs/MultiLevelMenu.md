@@ -5,15 +5,15 @@ title: "The MultiLevelMenu Component"
 
 # `<MultiLevelMenu>`
 
-This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> component adds support for nested sub menus in the left navigation bar.
+This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" /> component adds support for nested sub menus in the left navigation bar.
 
 ![MultiLevelMenu](./img/multilevelmenu.png)
 
 When a React-admin application grows significantly, the default menu might not be the best solution. The `<MultiLevelMenu>` can help unclutter the navigation: it renders a menu with an infinite number of levels and sub-menus. Menu Items that are not at the top level are rendered inside a collapsible panel.
 
 <video controls autoplay playsinline muted loop>
-  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-multilevelmenu-item.webm" type="video/webm" />
-  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-multilevelmenu-item.mp4" type="video/mp4" />
+  <source src="https://react-admin-ee.marmelab.com/modules/assets/ra-multilevelmenu-item.webm" type="video/webm" />
+  <source src="https://react-admin-ee.marmelab.com/modules/assets/ra-multilevelmenu-item.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
 
@@ -93,7 +93,7 @@ And then use this `AppLocation` as `name` for `<MultiLevelMenu.Item>`:
 >
 ```
 
-Check [the ra-navigation documentation](https://marmelab.com/ra-enterprise/modules/ra-navigation) to learn more about App Location.
+Check [the ra-navigation documentation](https://react-admin-ee.marmelab.com/modules/ra-navigation) to learn more about App Location.
 
 Finally, pass this custom layout to the `<Admin>` component
 

@@ -5,12 +5,12 @@ title: "The DatagridAG Component"
 
 # `<DatagridAG>`
 
-This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> component is an alternative datagrid component with advanced features, based on [ag-grid](https://www.ag-grid.com/).
+This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" /> component is an alternative datagrid component with advanced features, based on [ag-grid](https://www.ag-grid.com/).
 
 > **Note:** This component is still in **alpha** stage. Major changes may still be introduced in the future.
 
 <video controls autoplay playsinline muted loop>
-  <source src="https://marmelab.com/ra-enterprise/modules/assets/DatagridAG.mp4" type="video/mp4"/>
+  <source src="https://react-admin-ee.marmelab.com/modules/assets/DatagridAG.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
@@ -52,7 +52,7 @@ Additionally, `<DatagridAG>` is compatible with the [Enterprise version of ag-gr
 -   And more...
 
 <video controls autoplay playsinline muted loop>
-  <source src="https://marmelab.com/ra-enterprise/modules/assets/DatagridAG-enterprise.mp4" type="video/mp4"/>
+  <source src="https://react-admin-ee.marmelab.com/modules/assets/DatagridAG-enterprise.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
@@ -66,7 +66,7 @@ npm install --save @react-admin/ra-datagrid-ag
 yarn add @react-admin/ra-datagrid-ag
 ```
 
-**Tip**: `ra-datagrid-ag` is hosted in a private npm registry. You need to subscribe to one of the [Enterprise Edition](https://marmelab.com/ra-enterprise/) plans to access this package.
+**Tip**: `ra-datagrid-ag` is hosted in a private npm registry. You need to subscribe to one of the [Enterprise Edition](https://react-admin-ee.marmelab.com/) plans to access this package.
 
 Then, use `<DatagridAG>` as a child of a react-admin `<List>`, `<ReferenceManyField>`, or any other component that creates a `ListContext`.
 
@@ -91,7 +91,7 @@ export const PostList = () => {
 };
 ```
 
-![DatagridAG PostList](https://marmelab.com/ra-enterprise/modules/assets/DatagridAG-PostList.png)
+![DatagridAG PostList](https://react-admin-ee.marmelab.com/modules/assets/DatagridAG-PostList.png)
 
 Here are the important things to note:
 
@@ -190,7 +190,7 @@ export const PostList = () => {
 };
 ```
 
-![DatagridAG custom columnDefs](https://marmelab.com/ra-enterprise/modules/assets/DatagridAG-select-rows.png)
+![DatagridAG custom columnDefs](https://react-admin-ee.marmelab.com/modules/assets/DatagridAG-select-rows.png)
 
 Have a look at [the ag-grid documentation](https://www.ag-grid.com/react-data-grid/column-properties/) for the exhaustive list of column properties.
 
@@ -224,7 +224,7 @@ export const PostList = () => {
 };
 ```
 
-![DatagridAG defaultColDef](https://marmelab.com/ra-enterprise/modules/assets/DatagridAG-PostList.png)
+![DatagridAG defaultColDef](https://react-admin-ee.marmelab.com/modules/assets/DatagridAG-PostList.png)
 
 ## `cellRenderer`
 
@@ -268,7 +268,7 @@ export const CommentList = () => {
 };
 ```
 
-![DatagridAG RA Fields](https://marmelab.com/ra-enterprise/modules/assets/DatagridAG-ra-fields.png)
+![DatagridAG RA Fields](https://react-admin-ee.marmelab.com/modules/assets/DatagridAG-ra-fields.png)
 
 **Note:** You still need to pass the `source` prop to the field.
 
@@ -419,7 +419,7 @@ export const PostList = () => {
 };
 ```
 
-![DatagridAG Dark](https://marmelab.com/ra-enterprise/modules/assets/DatagridAG-dark.png)
+![DatagridAG Dark](https://react-admin-ee.marmelab.com/modules/assets/DatagridAG-dark.png)
 
 **Tip:** Remember to import the corresponding stylesheet (e.g. `ag-theme-balham[.min].css` for `ag-theme-balham`).
 
@@ -458,8 +458,8 @@ const CarList = () => {
 ```
 
 <video controls autoplay playsinline muted loop>
-  <source src="https://marmelab.com/ra-enterprise/modules/assets/DatagridAG-without-pagination.mp4" type="video/mp4"/>
-  <source src="https://marmelab.com/ra-enterprise/modules/assets/DatagridAG-without-pagination.webm" type="video/webm"/>
+  <source src="https://react-admin-ee.marmelab.com/modules/assets/DatagridAG-without-pagination.mp4" type="video/mp4"/>
+  <source src="https://react-admin-ee.marmelab.com/modules/assets/DatagridAG-without-pagination.webm" type="video/webm"/>
   Your browser does not support the video tag.
 </video>
 
@@ -517,7 +517,7 @@ export const PostList = () => {
 
 {% endraw %}
 
-![DatagridAG sx](https://marmelab.com/ra-enterprise/modules/assets/DatagridAG-sx.png)
+![DatagridAG sx](https://react-admin-ee.marmelab.com/modules/assets/DatagridAG-sx.png)
 
 It can also be helpful to change the default grid's height (`calc(100vh - 96px - ${theme.spacing(1)})`):
 
@@ -547,7 +547,7 @@ export const PostList = () => {
 
 {% endraw %}
 
-![DatagridAG sx height](https://marmelab.com/ra-enterprise/modules/assets/DatagridAG-sx-height.png)
+![DatagridAG sx height](https://react-admin-ee.marmelab.com/modules/assets/DatagridAG-sx-height.png)
 
 ## Accessing The Grid And Column APIs
 
@@ -617,7 +617,7 @@ export const PostList = () => {
 };
 ```
 
-![DatagridAG flex](https://marmelab.com/ra-enterprise/modules/assets/DatagridAG-flex.png)
+![DatagridAG flex](https://react-admin-ee.marmelab.com/modules/assets/DatagridAG-flex.png)
 
 Alternatively, you can use the grid's `api` to call `autoSizeAllColumns` to automatically resize all columns to fit their content:
 
@@ -651,7 +651,7 @@ export const PostList = () => {
 };
 ```
 
-![DatagridAG auto size](https://marmelab.com/ra-enterprise/modules/assets/DatagridAG-auto-size.png)
+![DatagridAG auto size](https://react-admin-ee.marmelab.com/modules/assets/DatagridAG-auto-size.png)
 
 Check out the [Column Sizing](https://www.ag-grid.com/react-data-grid/column-sizing/) documentation for more information and more alternatives.
 
@@ -701,7 +701,7 @@ export const PostList = () => {
 };
 ```
 
-![DatagridAG selected rows](https://marmelab.com/ra-enterprise/modules/assets/DatagridAG-selected-rows.png)
+![DatagridAG selected rows](https://react-admin-ee.marmelab.com/modules/assets/DatagridAG-selected-rows.png)
 
 Just like with `<Datagrid>`, you can customize the bulk actions by passing a [`bulkActionButtons`](./Datagrid.md#bulkactionbuttons) prop to `<DatagridAG>`.
 
@@ -748,8 +748,8 @@ export const PostList = () => {
 By default, `<DatagridAG>` renders pagination controls at the bottom of the list. You can disable these controls to switch to an infinite pagination mode, where the grid shows the next rows on scroll. Thanks to [ag-grid's DOM virtualization](https://www.ag-grid.com/react-data-grid/dom-virtualisation/), this mode causes no performance problem.
 
 <video controls autoplay playsinline muted loop>
-  <source src="https://marmelab.com/ra-enterprise/modules/assets/DatagridAG-without-pagination.mp4" type="video/mp4"/>
-  <source src="https://marmelab.com/ra-enterprise/modules/assets/DatagridAG-without-pagination.webm" type="video/webm"/>
+  <source src="https://react-admin-ee.marmelab.com/modules/assets/DatagridAG-without-pagination.mp4" type="video/mp4"/>
+  <source src="https://react-admin-ee.marmelab.com/modules/assets/DatagridAG-without-pagination.webm" type="video/webm"/>
   Your browser does not support the video tag.
 </video>
 
@@ -785,7 +785,7 @@ const CarList = () => {
 
 If you have subscribed to the [Enterprise version of ag-grid](https://www.ag-grid.com/react-data-grid/licensing/), you can also add a [Status Bar](https://www.ag-grid.com/react-data-grid/status-bar/) to show the total number of rows.
 
-![DatagridAG with status bar](https://marmelab.com/ra-enterprise/modules/assets/DatagridAG-status-bar.png)
+![DatagridAG with status bar](https://react-admin-ee.marmelab.com/modules/assets/DatagridAG-status-bar.png)
 
 ```tsx
 import 'ag-grid-community/styles/ag-grid.css';
@@ -825,7 +825,7 @@ const CarList = () => {
 
 By default, editing is enabled on cells, which means you can edit a cell by double-clicking on it, and it will trigger a call to the dataProvider's `update` function.
 
-![DatagridAG edit cell](https://marmelab.com/ra-enterprise/modules/assets/DatagridAG-edit-cell.png)
+![DatagridAG edit cell](https://react-admin-ee.marmelab.com/modules/assets/DatagridAG-edit-cell.png)
 
 However, if you'd like to update the full row at once instead, you can enable full row editing by passing `editType="fullRow"` to `<DatagridAG>`:
 
@@ -848,7 +848,7 @@ export const PostList = () => {
 };
 ```
 
-![DatagridAG edit row](https://marmelab.com/ra-enterprise/modules/assets/DatagridAG-edit-row.png)
+![DatagridAG edit row](https://react-admin-ee.marmelab.com/modules/assets/DatagridAG-edit-row.png)
 
 ## Disabling Cell Edition
 
@@ -964,6 +964,6 @@ const OlympicWinnersList = () => {
 ```
 
 <video controls autoplay playsinline muted loop>
-  <source src="https://marmelab.com/ra-enterprise/modules/assets/DatagridAG-enterprise.mp4" type="video/mp4"/>
+  <source src="https://react-admin-ee.marmelab.com/modules/assets/DatagridAG-enterprise.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>

@@ -226,7 +226,7 @@ export const BookEdit = () => {
 };
 ```
 
-React-admin proposes alternative form layouts ([`<TabbedForm>`](./TabbedForm.md), [`<AccordionForm>`](./AccordionForm.md), [`<WizardForm>`](./WizardForm.md), [`<CreateDialog>, <EditDialog> & <ShowDialog>`](https://marmelab.com/ra-enterprise/modules/ra-form-layout#createdialog-editdialog--showdialog) as well as a headless [`<Form>`](./Form.md) component.
+React-admin proposes alternative form layouts ([`<TabbedForm>`](./TabbedForm.md), [`<AccordionForm>`](./AccordionForm.md), [`<WizardForm>`](./WizardForm.md), [`<CreateDialog>, <EditDialog> & <ShowDialog>`](https://react-admin-ee.marmelab.com/modules/ra-form-layout#createdialog-editdialog--showdialog) as well as a headless [`<Form>`](./Form.md) component.
 
 ### Using Input Components
 
@@ -949,8 +949,8 @@ Users often need to edit data from several resources in the same form. React-adm
 - [`<ReferenceManyToManyInput>`](./ReferenceManyToManyInput.md) lets users edit a list of related records via an associative table
 
 <video controls autoplay playsinline muted loop>
-  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-form-layout/latest/InDialogButtons.webm" type="video/webm" />
-  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-form-layout/latest/InDialogButtons.mp4" type="video/mp4" />
+  <source src="https://react-admin-ee.marmelab.com/modules/assets/ra-form-layout/latest/InDialogButtons.webm" type="video/webm" />
+  <source src="https://react-admin-ee.marmelab.com/modules/assets/ra-form-layout/latest/InDialogButtons.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
 

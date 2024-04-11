@@ -878,7 +878,7 @@ Check [the RBAC `<TabbedForm>` component](./AuthRBAC.md#tabbedform) documentatio
 
 ## Versioning
 
-By default, `<TabbedForm>` updates the current record (via `dataProvider.update()`), so the previous version of the record is lost. If you want to keep track of the previous versions of the record, you can use the [`<TabbedFormWithRevision>`](https://marmelab.com/ra-enterprise/modules/ra-history#tabbedformwithrevision) component instead.
+By default, `<TabbedForm>` updates the current record (via `dataProvider.update()`), so the previous version of the record is lost. If you want to keep track of the previous versions of the record, you can use the [`<TabbedFormWithRevision>`](https://react-admin-ee.marmelab.com/modules/ra-history#tabbedformwithrevision) component instead.
 
 <video controls autoplay playsinline muted loop>
   <source src="./img/TabbedFormWithRevision.mp4" type="video/mp4"/>
@@ -909,7 +909,7 @@ const ProductEdit = () => (
 );
 ```
 
-Check the [`<TabbedFormWithRevision>`](https://marmelab.com/ra-enterprise/modules/ra-history#tabbedformwithrevision) documentation for more details.
+Check the [`<TabbedFormWithRevision>`](https://react-admin-ee.marmelab.com/modules/ra-history#tabbedformwithrevision) documentation for more details.
 
 ## Linking Two Inputs
 

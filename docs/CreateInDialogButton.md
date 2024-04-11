@@ -5,11 +5,11 @@ title: "CreateInDialogButton"
 
 # `<CreateInDialogButton>`
 
-This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> component offers a way to open a `<Create>` view inside a dialog, hence allowing to create a new record without leaving the current view.
+This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" /> component offers a way to open a `<Create>` view inside a dialog, hence allowing to create a new record without leaving the current view.
 
 <video controls autoplay playsinline muted loop>
-  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-form-layout/latest/CreateInDialogButton.webm" type="video/webm" />
-  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-form-layout/latest/CreateInDialogButton.mp4" type="video/mp4" />
+  <source src="https://react-admin-ee.marmelab.com/modules/assets/ra-form-layout/latest/CreateInDialogButton.webm" type="video/webm" />
+  <source src="https://react-admin-ee.marmelab.com/modules/assets/ra-form-layout/latest/CreateInDialogButton.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
 
@@ -27,7 +27,7 @@ npm install --save @react-admin/ra-form-layout
 yarn add @react-admin/ra-form-layout
 ```
 
-**Tip**: [`ra-form-layout`](https://marmelab.com/ra-enterprise/modules/ra-form-layout#createindialogbutton-editindialogbutton-and-EditInDialogButton) is hosted in a private npm registry. You need to subscribe to one of the [Enterprise Edition](https://marmelab.com/ra-enterprise/) plans to access this package.
+**Tip**: [`ra-form-layout`](https://react-admin-ee.marmelab.com/modules/ra-form-layout#createindialogbutton-editindialogbutton-and-EditInDialogButton) is hosted in a private npm registry. You need to subscribe to one of the [Enterprise Edition](https://react-admin-ee.marmelab.com/) plans to access this package.
 
 Then, put `<CreateInDialogButton>` wherever you would put a `<CreateButton>`, and use the same children as you would for a `<Create>` component (e.g. a `<SimpleForm>`): 
 

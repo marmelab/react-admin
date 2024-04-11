@@ -5,15 +5,15 @@ title: "The Breadcrumb Component"
 
 # `<Breadcrumb>`
 
-This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> component renders a breadcrumb path that automatically adapts to the page location. It helps users navigate large web applications.
+This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" /> component renders a breadcrumb path that automatically adapts to the page location. It helps users navigate large web applications.
 
 <video controls autoplay playsinline muted loop width="100%">
-  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-navigation/latest/breadcumb-nested-resource.webm" type="video/webm" />
-  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-navigation/latest/breadcumb-nested-resource.mp4" type="video/mp4" />
+  <source src="https://react-admin-ee.marmelab.com/modules/assets/ra-navigation/latest/breadcumb-nested-resource.webm" type="video/webm" />
+  <source src="https://react-admin-ee.marmelab.com/modules/assets/ra-navigation/latest/breadcumb-nested-resource.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
 
-Test it live on [the Enterprise Edition demo](https://marmelab.com/ra-enterprise-demo/#/).
+Test it live on [the Enterprise Edition demo](https://react-admin-ee.marmelab.com-demo/#/).
 
 The breadcrumb path can complement and/or replace navigation menus, back buttons, page titles, and site maps. It's a small but effective navigation control.
 
@@ -303,7 +303,7 @@ const MyBreadcrumb = () => (
 
 The `<Breadcrumb.Item>` component is responsible for rendering individual breadcrumb items. It displays the item when the app's location matches the specified `name`. You can nest this component to create breadcrumb paths of varying depths.
 
-![A breadcrumb item](https://marmelab.com/ra-enterprise/modules/assets/breadcrumbItem.png)
+![A breadcrumb item](https://react-admin-ee.marmelab.com/modules/assets/breadcrumbItem.png)
 
 It requires the following props:
 

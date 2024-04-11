@@ -5,7 +5,7 @@ title: "EditLive"
 
 # `<EditLive>`
 
-`<EditLive>` is an [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> component that renders an Edit view. It displays a warning when the record is updated by another user and offers to refresh the page. Also, it displays a warning when the record is deleted by another user.
+`<EditLive>` is an [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" /> component that renders an Edit view. It displays a warning when the record is updated by another user and offers to refresh the page. Also, it displays a warning when the record is deleted by another user.
 
 ![EditLive](./img/EditLive.png)
 

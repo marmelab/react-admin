@@ -55,9 +55,9 @@ If you're stuck with a problem in your react-admin code, you can get help from v
 
 ### Paid Support
 
-Get **support by the core team** in less than 24h on weekdays by subscribing to the [Enterprise Edition](https://marmelab.com/ra-enterprise) of react-admin. There are more than 200 pages of documentation, this team knows them all. And they also know the codebase, so they can help you with tricky problems.
+Get **support by the core team** in less than 24h on weekdays by subscribing to the [Enterprise Edition](https://react-admin-ee.marmelab.com) of react-admin. There are more than 200 pages of documentation, this team knows them all. And they also know the codebase, so they can help you with tricky problems.
 
-This subscription also gives you access to the [Private modules](https://marmelab.com/ra-enterprise/#private-modules)<img class="premium" src="./img/premium.svg" style="width: 15px;margin: 0 0px;box-shadow: none;vertical-align:middle"/>, and helps us keep react-admin free and open-source. Plus it's cheap, so don't stay stuck on a problem for too long!
+This subscription also gives you access to the [Private modules](https://react-admin-ee.marmelab.com/#private-modules)<img class="premium" src="./img/premium.svg" style="width: 15px;margin: 0 0px;box-shadow: none;vertical-align:middle"/>, and helps us keep react-admin free and open-source. Plus it's cheap, so don't stay stuck on a problem for too long!
 
 ### StackOverflow
 

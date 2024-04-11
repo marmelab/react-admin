@@ -306,7 +306,7 @@ export const PostList = () => (
 
 ### `<BulkUpdateFormButton>`
 
-This component, part of the [enterprise edition](https://marmelab.com/ra-enterprise/modules/ra-form-layout)<img class="icon" src="./img/premium.svg" />, lets users edit multiple records at once. To be used inside [the `<Datagrid bulkActionButtons>` prop](./Datagrid.md#bulkactionbuttons).
+This component, part of the [enterprise edition](https://react-admin-ee.marmelab.com/modules/ra-form-layout)<img class="icon" src="./img/premium.svg" />, lets users edit multiple records at once. To be used inside [the `<Datagrid bulkActionButtons>` prop](./Datagrid.md#bulkactionbuttons).
 
 The button opens a dialog containing the form passed as children. When the form is submitted, it will call the dataProvider's `updateMany` method with the ids of the selected records.
 
@@ -818,17 +818,17 @@ const App = () => (
 
 See [The Menu documentation](./Menu.md) for more details.
 
-**Tip**: If you need a multi-level menu, or a Mega Menu opening panels with custom content, check out [the `ra-navigation`<img class="icon" src="./img/premium.svg" /> module](https://marmelab.com/ra-enterprise/modules/ra-navigation) (part of the [Enterprise Edition](https://marmelab.com/ra-enterprise))
+**Tip**: If you need a multi-level menu, or a Mega Menu opening panels with custom content, check out [the `ra-navigation`<img class="icon" src="./img/premium.svg" /> module](https://react-admin-ee.marmelab.com/modules/ra-navigation) (part of the [Enterprise Edition](https://react-admin-ee.marmelab.com))
 
 <video controls autoplay playsinline muted loop>
-  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-multilevelmenu-item.webm" type="video/webm" />
-  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-multilevelmenu-item.mp4" type="video/mp4" />
+  <source src="https://react-admin-ee.marmelab.com/modules/assets/ra-multilevelmenu-item.webm" type="video/webm" />
+  <source src="https://react-admin-ee.marmelab.com/modules/assets/ra-multilevelmenu-item.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
 
 <video controls autoplay playsinline muted loop>
-  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-multilevelmenu-categories.webm" type="video/webm" />
-  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-multilevelmenu-categories.mp4" type="video/mp4" />
+  <source src="https://react-admin-ee.marmelab.com/modules/assets/ra-multilevelmenu-categories.webm" type="video/webm" />
+  <source src="https://react-admin-ee.marmelab.com/modules/assets/ra-multilevelmenu-categories.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
 

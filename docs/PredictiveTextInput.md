@@ -5,7 +5,7 @@ title: "The PredictiveTextInput component"
 
 # `<PredictiveTextInput>`
 
-This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> component offers an alternative to [`<TextInput>`](./TextInput.md) that suggests completion for the input value. Users can accept the completion by pressing the `Tab` key. It's like Intellisense or Copilot for your forms.
+This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" /> component offers an alternative to [`<TextInput>`](./TextInput.md) that suggests completion for the input value. Users can accept the completion by pressing the `Tab` key. It's like Intellisense or Copilot for your forms.
 
 <video controls autoplay playsinline muted loop>
   <source src="./img/PredictiveTextInput.mp4" type="video/mp4"/>
@@ -408,8 +408,8 @@ const getParamsForPrompt = (prompt) => {
 
 If you want AI completions combined with a WYSIWYG editor for rich text, use [`<SmartRichTextInput>`](./SmartRichTextInput.md) instead of `<PredictiveTextInput>`.
 
-<video controls playsinline muted loop poster="https://marmelab.com/ra-enterprise/modules/assets/SmartRichTextInput.png" >
-  <source src="https://marmelab.com/ra-enterprise/modules/assets/SmartRichTextInput.mp4" type="video/mp4" />
+<video controls playsinline muted loop poster="https://react-admin-ee.marmelab.com/modules/assets/SmartRichTextInput.png" >
+  <source src="https://react-admin-ee.marmelab.com/modules/assets/SmartRichTextInput.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
 
