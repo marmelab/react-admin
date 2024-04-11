@@ -19,7 +19,7 @@ On mobile, it shows the AppBar to allow opening the navigation menu:
   Your browser does not support the video tag.
 </video>
 
-`<SolarLayout>` is part of the [ra-navigation](https://react-admin-ee.marmelab.com/modules/ra-navigation#solarlayout) package.
+`<SolarLayout>` is part of the [ra-navigation](https://react-admin-ee.marmelab.com/documentation/ra-navigation#solarlayout) package.
 
 ## Usage
 
@@ -865,7 +865,7 @@ export const App = () => (
 
 ## Use It With `<SearchWithResult>`
 
-The `<SearchWithResult>` component works perfectly when used inside the [`<SolarLayout>`](https://react-admin-ee.marmelab.com/modules/ra-navigation#solarlayout) menu.
+The `<SearchWithResult>` component works perfectly when used inside the [`<SolarLayout>`](https://react-admin-ee.marmelab.com/documentation/ra-navigation#solarlayout) menu.
 
 <video controls autoplay playsinline muted loop>
   <source src="https://react-admin-ee.marmelab.com/modules/assets/ra-search-with-result-solar-layout-overview.mp4" type="video/mp4"/>

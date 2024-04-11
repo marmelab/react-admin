@@ -91,7 +91,7 @@ const GrantAdminPermissionsButton = () => {
 
 ## RBAC
 
-When using [the ra-rbac module](https://react-admin-ee.marmelab.com/modules/ra-rbac)<img class="icon" src="./img/premium.svg" />, the `usePermissions` hook returns an array of permissions.
+When using [the ra-rbac module](https://react-admin-ee.marmelab.com/documentation/ra-rbac)<img class="icon" src="./img/premium.svg" />, the `usePermissions` hook returns an array of permissions.
 
 ```jsx
 import { usePermissions } from "@react-admin/ra-rbac";

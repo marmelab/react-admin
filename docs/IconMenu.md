@@ -56,7 +56,7 @@ export const MyLayout = (props) => (
 );
 ```
 
-`<AppLocationContext>` is necessary because `ra-navigation` doesn't use the URL to detect the current location. Instead, page components *declare* their location using a custom hook (`useDefineAppLocation()`). This allows complex site maps, with multiple levels of nesting. Check [the ra-navigation documentation](https://react-admin-ee.marmelab.com/modules/ra-navigation) to learn more about App Location.
+`<AppLocationContext>` is necessary because `ra-navigation` doesn't use the URL to detect the current location. Instead, page components *declare* their location using a custom hook (`useDefineAppLocation()`). This allows complex site maps, with multiple levels of nesting. Check [the ra-navigation documentation](https://react-admin-ee.marmelab.com/documentation/ra-navigation) to learn more about App Location.
 
 Finally, pass this custom layout to the `<Admin>` component. You should apply the theme provided by ra-navigation:
 

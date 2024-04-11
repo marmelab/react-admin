@@ -68,7 +68,7 @@ const App = () => (
 );
 ```
 
-Check [the `ra-tree` documentation](https://react-admin-ee.marmelab.com/modules/ra-tree#treewithdetails-component) for more details.
+Check [the `ra-tree` documentation](https://react-admin-ee.marmelab.com/documentation/ra-tree#treewithdetails-component) for more details.
 
 ## Selecting a Node
 

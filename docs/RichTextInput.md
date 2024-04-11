@@ -255,7 +255,7 @@ export const PostEdit = () => (
 );
 ```
 
-`<SmartRichTextInput>` is available as part of the [ra-ai](https://react-admin-ee.marmelab.com/modules/ra-ai) enterprise package.
+`<SmartRichTextInput>` is available as part of the [ra-ai](https://react-admin-ee.marmelab.com/documentation/ra-ai) enterprise package.
 
 ## Lazy Loading
 

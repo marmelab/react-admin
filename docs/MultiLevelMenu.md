@@ -93,7 +93,7 @@ And then use this `AppLocation` as `name` for `<MultiLevelMenu.Item>`:
 >
 ```
 
-Check [the ra-navigation documentation](https://react-admin-ee.marmelab.com/modules/ra-navigation) to learn more about App Location.
+Check [the ra-navigation documentation](https://react-admin-ee.marmelab.com/documentation/ra-navigation) to learn more about App Location.
 
 Finally, pass this custom layout to the `<Admin>` component
 

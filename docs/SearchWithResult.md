@@ -5,14 +5,14 @@ title: "The SearchWithResult Component"
 
 # `<SearchWithResult>`
 
-This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" /> component, part of [`ra-search`](https://react-admin-ee.marmelab.com/modules/ra-search), renders a search input and the search results directly below the input. It's ideal for dashboards or menu panels.
+This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" /> component, part of [`ra-search`](https://react-admin-ee.marmelab.com/documentation/ra-search), renders a search input and the search results directly below the input. It's ideal for dashboards or menu panels.
 
 <video controls autoplay playsinline muted loop>
   <source src="https://react-admin-ee.marmelab.com/modules/assets/ra-search-with-result-overview.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
-It relies on the `dataProvider` to provide a `search()` method, so you can use it with any search engine (Lucene, ElasticSearch, Solr, Algolia, Google Cloud Search, and many others). And if you don't have a search engine, no problem! `<SearchWithResult>` can also do the search across several resources [via parallel `dataProvider.getList()` queries](https://react-admin-ee.marmelab.com/modules/ra-search#addsearchmethod-helper).
+It relies on the `dataProvider` to provide a `search()` method, so you can use it with any search engine (Lucene, ElasticSearch, Solr, Algolia, Google Cloud Search, and many others). And if you don't have a search engine, no problem! `<SearchWithResult>` can also do the search across several resources [via parallel `dataProvider.getList()` queries](https://react-admin-ee.marmelab.com/documentation/ra-search#addsearchmethod-helper).
 
 By default, `<SearchWithResult>` will group the search results by target, and show their `content.label` and `content.description`.
 
@@ -98,7 +98,7 @@ export const App = () => (
 );
 ```
 
-Check [the `ra-search` documentation](https://react-admin-ee.marmelab.com/modules/ra-search) to learn more about the input and output format of `dataProvider.search()`, as well as the possibilities to customize the `addSearchMethod`.
+Check [the `ra-search` documentation](https://react-admin-ee.marmelab.com/documentation/ra-search) to learn more about the input and output format of `dataProvider.search()`, as well as the possibilities to customize the `addSearchMethod`.
 
 ## Props
 
@@ -351,7 +351,7 @@ export const App = () => (
 
 ## Use It With SolarLayout
 
-The `<SearchWithResult>` component works perfectly when used inside the [`<SolarLayout>`](https://react-admin-ee.marmelab.com/modules/ra-navigation#solarlayout) menu.
+The `<SearchWithResult>` component works perfectly when used inside the [`<SolarLayout>`](https://react-admin-ee.marmelab.com/documentation/ra-navigation#solarlayout) menu.
 
 <video controls autoplay playsinline muted loop>
   <source src="https://react-admin-ee.marmelab.com/modules/assets/ra-search-with-result-solar-layout-overview.mp4" type="video/mp4"/>

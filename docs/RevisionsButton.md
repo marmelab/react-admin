@@ -12,7 +12,7 @@ This button opens a menu with the list of revisions of the current record. When 
   Your browser does not support the video tag.
 </video>
 
-`<RevisionsButton>` is an [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" /> component, part of [`ra-history`](https://react-admin-ee.marmelab.com/modules/ra-history).
+`<RevisionsButton>` is an [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" /> component, part of [`ra-history`](https://react-admin-ee.marmelab.com/documentation/ra-history).
 
 ## Usage
 
@@ -83,8 +83,8 @@ The detail view of a revision includes a diff view to compare the current versio
 
 This element can grab the current record using `useRecordContext`, and the record from the revision selected by the user using `useReferenceRecordContext`. But instead of doing the diff by hand, you can use the two field diff components provided by `ra-history`:
 
--   [`<FieldDiff>`](https://react-admin-ee.marmelab.com/modules/ra-history#fielddiff) displays the diff of a given field. It accepts a react-admin Field component as child.
--   [`<SmartFieldDiff>`](https://react-admin-ee.marmelab.com/modules/ra-history#smartfielddiff) displays the diff of a string field, and uses a word-by-word diffing algorithm to highlight the changes.
+-   [`<FieldDiff>`](https://react-admin-ee.marmelab.com/documentation/ra-history#fielddiff) displays the diff of a given field. It accepts a react-admin Field component as child.
+-   [`<SmartFieldDiff>`](https://react-admin-ee.marmelab.com/documentation/ra-history#smartfielddiff) displays the diff of a string field, and uses a word-by-word diffing algorithm to highlight the changes.
 
 So a custom diff view is usually a layout component with `<FieldDiff>` and `<SmartFieldDiff>` components as children:
 
@@ -169,7 +169,7 @@ const ProductEditActions = () => (
 
 ## Showing the List of Revisions
 
-By default, the `<RevisionsButton>` component only shows the list of revisions when the user clicks on the button. If you want to always show the list of revisions, you can use the [`<RevisionListWithDetailsInDialog>`](https://react-admin-ee.marmelab.com/modules/ra-history#revisionlistwithdetailsindialog) component instead. 
+By default, the `<RevisionsButton>` component only shows the list of revisions when the user clicks on the button. If you want to always show the list of revisions, you can use the [`<RevisionListWithDetailsInDialog>`](https://react-admin-ee.marmelab.com/documentation/ra-history#revisionlistwithdetailsindialog) component instead. 
 
 <video controls autoplay playsinline muted loop>
   <source src="https://react-admin-ee.marmelab.com/modules/assets/RevisionListWithDetailsInDialog.mp4" type="video/mp4"/>
@@ -203,4 +203,4 @@ export const ProductEdit = () => (
 );
 ```
 
-Check the [`<RevisionListWithDetailsInDialog>`](https://react-admin-ee.marmelab.com/modules/ra-history#revisionlistwithdetailsindialog) documentation for more details.
+Check the [`<RevisionListWithDetailsInDialog>`](https://react-admin-ee.marmelab.com/documentation/ra-history#revisionlistwithdetailsindialog) documentation for more details.

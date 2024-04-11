@@ -57,7 +57,7 @@ The form value for the source must be an array of the selected values, e.g.
 }
 ```
 
-Check [the `ra-relationships` documentation](https://react-admin-ee.marmelab.com/modules/ra-relationships) for more details.
+Check [the `ra-relationships` documentation](https://react-admin-ee.marmelab.com/documentation/ra-relationships) for more details.
 
 ## Props
 

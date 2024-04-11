@@ -956,12 +956,12 @@ In detail, revision tracking lets you:
 
 These features are available through the following components:
 
-- [`<SimpleFormWithRevision>`](https://react-admin-ee.marmelab.com/modules/ra-history#simpleformwithrevision)
-- [`<TabbedFormWithRevision>`](https://react-admin-ee.marmelab.com/modules/ra-history#tabbedformwithrevision)
+- [`<SimpleFormWithRevision>`](https://react-admin-ee.marmelab.com/documentation/ra-history#simpleformwithrevision)
+- [`<TabbedFormWithRevision>`](https://react-admin-ee.marmelab.com/documentation/ra-history#tabbedformwithrevision)
 - [`<RevisionsButton>`](./RevisionsButton.md)
-- [`<RevisionListWithDetailsInDialog>`](https://react-admin-ee.marmelab.com/modules/ra-history#revisionlistwithdetailsindialog)
-- [`<FieldDiff>`](https://react-admin-ee.marmelab.com/modules/ra-history#fielddiff)
-- [`<SmartFieldDiff>`](https://react-admin-ee.marmelab.com/modules/ra-history#smartfielddiff)
+- [`<RevisionListWithDetailsInDialog>`](https://react-admin-ee.marmelab.com/documentation/ra-history#revisionlistwithdetailsindialog)
+- [`<FieldDiff>`](https://react-admin-ee.marmelab.com/documentation/ra-history#fielddiff)
+- [`<SmartFieldDiff>`](https://react-admin-ee.marmelab.com/documentation/ra-history#smartfielddiff)
 
 ## Audit Log
 
@@ -998,11 +998,11 @@ The Audit Log features let you:
 
 These features are available through the following components:
 
-- [`<Timeline>`](https://react-admin-ee.marmelab.com/modules/ra-audit-log#timeline) shows a list of all recent changes in the admin. It's a great component for dashboards.
-- [`<RecordTimeline>`](https://react-admin-ee.marmelab.com/modules/ra-audit-log#recordtimeline) shows a list of all recent changes for a given record, usually embedded in a `<Show>` or `<Edit>` view.
-- [`<EventList>`](https://react-admin-ee.marmelab.com/modules/ra-audit-log#eventlist) is a ready-to-use List component for navigating in your admin history, complete with filters and pagination.
+- [`<Timeline>`](https://react-admin-ee.marmelab.com/documentation/ra-audit-log#timeline) shows a list of all recent changes in the admin. It's a great component for dashboards.
+- [`<RecordTimeline>`](https://react-admin-ee.marmelab.com/documentation/ra-audit-log#recordtimeline) shows a list of all recent changes for a given record, usually embedded in a `<Show>` or `<Edit>` view.
+- [`<EventList>`](https://react-admin-ee.marmelab.com/documentation/ra-audit-log#eventlist) is a ready-to-use List component for navigating in your admin history, complete with filters and pagination.
 
-And you can use [the `addEventsForMutations` helper](https://react-admin-ee.marmelab.com/modules/ra-audit-log#client-side-tracking) to record user actions:
+And you can use [the `addEventsForMutations` helper](https://react-admin-ee.marmelab.com/documentation/ra-audit-log#client-side-tracking) to record user actions:
 
 ```jsx
 import { addEventsForMutations } from "@react-admin/ra-audit-log";
@@ -1057,7 +1057,7 @@ The user interface offers everything you expect:
 
 Check the following components for more details:
 
-- [`<CompleteCalendar>`](https://react-admin-ee.marmelab.com/modules/ra-calendar#completecalendar)
+- [`<CompleteCalendar>`](https://react-admin-ee.marmelab.com/documentation/ra-calendar#completecalendar)
 - [`<Calendar>`](./Calendar.md)
 
 ## Tree View
@@ -1103,7 +1103,7 @@ Check out the following components for displaying hierarchical data:
 
 - [`<TreeWithDetails>`](./TreeWithDetails.md): A list view for tree structures, with a details panel.
 - [`<TreeInput>`](./TreeInput.md): An input component for tree structures.
-- [`<Tree>`](https://react-admin-ee.marmelab.com/modules/ra-tree#tree-component): A list view for tree structures, with a Material UI skin.
+- [`<Tree>`](https://react-admin-ee.marmelab.com/documentation/ra-tree#tree-component): A list view for tree structures, with a Material UI skin.
 
 ## Application Building Blocks
 
@@ -1121,13 +1121,13 @@ These building blocks include:
 - A smart location framework, simplifying the management of [breadcrumbs](./Breadcrumb.md) and [hierarchical menus](./MultiLevelMenu.md)
 - [Import](https://github.com/benwinding/react-admin-import-csv) / [export](./Buttons.md#exportbutton) buttons
 - An [editable datagrid](./EditableDatagrid.md)
-- A [guided tour system](https://react-admin-ee.marmelab.com/modules/ra-tour)
+- A [guided tour system](https://react-admin-ee.marmelab.com/documentation/ra-tour)
 - A [user menu](./Menu.md)
 - A [rich text editor](./RichTextInput.md),
 - A [markdown editor](./MarkdownInput.md)
 - A [clone button](./Buttons.md#clonebutton)
 - Various navigation menus ([simple](./Menu.md), [hierarchical](./MultiLevelMenu.md), [horizontal](./HorizontalMenu.md), etc.)
-- Various [page](./ContainerLayout.md) and [form](https://react-admin-ee.marmelab.com/modules/ra-form-layout) layouts
+- Various [page](./ContainerLayout.md) and [form](https://react-admin-ee.marmelab.com/documentation/ra-form-layout) layouts
 - ...and many more.
 
 And if you want to create your building blocks, you can use any of the [75+ hooks](./Reference.md#hooks) that carry **headless, reusable logic**. To name a few of them:

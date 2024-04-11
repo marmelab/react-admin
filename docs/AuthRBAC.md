@@ -5,7 +5,7 @@ title: "RBAC"
 
 # Role-Based Access Control (RBAC)
 
-React-admin Enterprise Edition contains [the ra-rbac module](https://react-admin-ee.marmelab.com/modules/ra-rbac)<img class="icon" src="./img/premium.svg" />, which adds fine-grained permissions to your admin. This module extends the `authProvider` and adds replacement for many react-admin components that use these permissions.
+React-admin Enterprise Edition contains [the ra-rbac module](https://react-admin-ee.marmelab.com/documentation/ra-rbac)<img class="icon" src="./img/premium.svg" />, which adds fine-grained permissions to your admin. This module extends the `authProvider` and adds replacement for many react-admin components that use these permissions.
 
 <video controls="controls" style="max-width: 96%">
     <source src="./img/ra-rbac.mp4" type="video/mp4" />

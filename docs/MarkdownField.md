@@ -38,4 +38,4 @@ const PostShow = () => (
 );
 ```
 
-Check [the `ra-markdown` documentation](https://react-admin-ee.marmelab.com/modules/ra-markdown) for more details.
+Check [the `ra-markdown` documentation](https://react-admin-ee.marmelab.com/documentation/ra-markdown) for more details.
