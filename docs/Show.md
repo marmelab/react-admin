@@ -71,7 +71,9 @@ That's enough to display the post show view above.
 | `queryOptions`   | Optional | `object`          |         | The options to pass to the `useQuery` hook
 | `resource`       | Optional | `string`          |         | The resource name, e.g. `posts`
 | `sx`             | Optional | `object`          |         | Override or extend the styles applied to the component
-| `title`          | Optional | `string | ReactElement` |   | The title to display in the App Bar
+| `title`          | Optional | *titleType        |         | The title to display in the App Bar see [Edit](./Edit.md#title)
+
+*`titleType = string | ReactElement | false | (arg0?: RaRecord) => string`
 
 ## `actions`
 
