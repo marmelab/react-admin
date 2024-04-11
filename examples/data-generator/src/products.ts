@@ -1,6 +1,7 @@
 import { random, lorem } from 'faker/locale/en';
 
 import { randomFloat, weightedBoolean } from './utils';
+import type { Db } from './types';
 
 const productReferences = {
     animals: [
@@ -162,7 +163,9 @@ const productReferences = {
     ],
 };
 
-export default db => {
+export const generateProducts = <Serialized extends boolean = false>(
+    db: Db<Serialized>
+): Product[] => {
     let id = 0;
 
     return db.categories.reduce(
@@ -204,4 +207,18 @@ export default db => {
         ],
         []
     );
+};
+
+export type Product = {
+    id: number;
+    category_id: number;
+    reference: string;
+    width: number;
+    height: number;
+    price: number;
+    thumbnail: string;
+    image: string;
+    description: string;
+    stock: number;
+    sales: number;
 };

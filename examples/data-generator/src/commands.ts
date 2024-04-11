@@ -7,8 +7,12 @@ import {
     weightedArrayElement,
     weightedBoolean,
 } from './utils';
+import type { Db } from './types';
 
-export default (db, { serializeDate }) => {
+export const generateCommands = <Serialized extends boolean = false>(
+    db: Db<Serialized>,
+    { serializeDate }: { serializeDate: Serialized }
+): Command<Serialized>[] => {
     const today = new Date();
     const aMonthAgo = subDays(today, 30);
     const realCustomers = db.customers.filter(customer => customer.has_ordered);
@@ -38,7 +42,7 @@ export default (db, { serializeDate }) => {
         const taxes = parseFloat(
             ((total_ex_taxes + delivery_fees) * tax_rate).toFixed(2)
         );
-        const customer = random.arrayElement<any>(realCustomers);
+        const customer = random.arrayElement(realCustomers);
         const date = randomDate(customer.first_seen, customer.last_seen);
 
         const status =
@@ -60,6 +64,26 @@ export default (db, { serializeDate }) => {
             ),
             status: status,
             returned: status === 'delivered' ? weightedBoolean(10) : false,
-        };
+        } as Command<Serialized>;
     });
+};
+
+export type Command<Serialized extends boolean = false> = {
+    id: number;
+    reference: string;
+    date: Serialized extends true ? string : Date;
+    customer_id: number;
+    basket: BasketItem[];
+    total_ex_taxes: number;
+    delivery_fees: number;
+    tax_rate: number;
+    taxes: number;
+    total: number;
+    status: 'ordered' | 'delivered' | 'cancelled';
+    returned: boolean;
+};
+
+export type BasketItem = {
+    product_id: number;
+    quantity: number;
 };

@@ -1,6 +1,9 @@
+import { Db } from './types';
 import { weightedBoolean } from './utils';
 
-export default function (db) {
+export default function <Serialized extends boolean = false>(
+    db: Db<Serialized>
+) {
     // set latest purchase date
     db.commands.forEach(command => {
         let customer = db.customers[command.customer_id];
@@ -100,3 +103,21 @@ export default function (db) {
         },
     ];
 }
+
+export type Settings = {
+    id: number;
+    configuration: {
+        url: string;
+        mail: {
+            sender: string;
+            transport: {
+                service: string;
+                auth: {
+                    user: string;
+                    pass: string;
+                };
+            };
+        };
+        file_type_whiltelist: string[];
+    };
+}[];

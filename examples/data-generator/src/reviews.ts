@@ -2,8 +2,12 @@ import { random, lorem } from 'faker/locale/en';
 import { subDays, isAfter } from 'date-fns';
 
 import { randomDate, weightedArrayElement, weightedBoolean } from './utils';
+import type { Db } from './types';
 
-export default (db, { serializeDate }) => {
+export const generateReviews = <Serialized extends boolean = false>(
+    db: Db<Serialized>,
+    { serializeDate }: { serializeDate: Serialized }
+): Review<Serialized>[] => {
     const today = new Date();
     const aMonthAgo = subDays(today, 30);
 
@@ -51,4 +55,15 @@ export default (db, { serializeDate }) => {
             ],
             []
         );
+};
+
+export type Review<Serialized extends boolean = false> = {
+    id: number;
+    date: Serialized extends true ? string : Date;
+    status: 'accepted' | 'rejected' | 'pending';
+    command_id: number;
+    product_id: number;
+    customer_id: number;
+    rating: number;
+    comment: string;
 };
