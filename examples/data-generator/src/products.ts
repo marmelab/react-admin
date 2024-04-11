@@ -163,9 +163,7 @@ const productReferences = {
     ],
 };
 
-export const generateProducts = <Serialized extends boolean = false>(
-    db: Db<Serialized>
-): Product[] => {
+export const generateProducts = (db: Db): Product[] => {
     let id = 0;
 
     return db.categories.reduce(

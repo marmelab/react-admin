@@ -7,16 +7,14 @@ import { generateReviews, Review } from './reviews';
 import finalize from './finalize';
 import { Db } from './types';
 
-const generateData = <Serialized extends boolean = false>(options?: {
-    serializeDate: Serialized;
-}): Db<Serialized> => {
-    const db = {} as Db<Serialized>;
-    db.customers = generateCustomers<Serialized>(db, options);
+const generateData = (): Db => {
+    const db = {} as Db;
+    db.customers = generateCustomers();
     db.categories = generateCategories();
     db.products = generateProducts(db);
-    db.commands = generateCommands<Serialized>(db, options);
+    db.commands = generateCommands(db);
     db.invoices = generateInvoices(db);
-    db.reviews = generateReviews(db, options);
+    db.reviews = generateReviews(db);
     finalize(db);
 
     return db;

@@ -1,6 +1,6 @@
 import faker from 'faker/locale/en';
 
-export const weightedArrayElement = (values, weights) =>
+export const weightedArrayElement = <T>(values: T[], weights): T =>
     faker.random.arrayElement(
         values.reduce(
             (acc, value, index) =>

@@ -3,7 +3,7 @@ import generateData from 'data-generator-retail';
 import fetchMock from 'fetch-mock';
 
 export default () => {
-    const data = generateData({ serializeDate: false });
+    const data = generateData();
     const restServer = JsonGraphqlServer({ data });
     const handler = restServer.getHandler();
     const handlerWithLogs = (url: string, opts: any) =>

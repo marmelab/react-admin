@@ -164,7 +164,7 @@ const EventList = () => {
 
 interface AsideEvent {
     type: string;
-    date: Date;
+    date: string;
     data: OrderRecord | ReviewRecord;
 }
 

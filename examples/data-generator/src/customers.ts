@@ -1,12 +1,8 @@
 import { date, name, internet, address } from 'faker/locale/en';
 
 import { randomDate, weightedBoolean } from './utils';
-import type { Db } from './types';
 
-export const generateCustomers = <Serialized extends boolean = false>(
-    db: Db<Serialized>,
-    { serializeDate }: { serializeDate: Serialized }
-): Customer<Serialized>[] => {
+export const generateCustomers = (): Customer[] => {
     // This is the total number of people pictures available. We only use those pictures for actual customers
     const maxCustomers = 223;
     let numberOfCustomers = 0;
@@ -40,25 +36,20 @@ export const generateCustomers = <Serialized extends boolean = false>(
             city: has_ordered ? address.city() : null,
             stateAbbr: has_ordered ? address.stateAbbr() : null,
             avatar,
-            birthday:
-                birthday != null
-                    ? serializeDate
-                        ? birthday.toISOString()
-                        : birthday
-                    : null,
-            first_seen: serializeDate ? first_seen.toISOString() : first_seen,
-            last_seen: serializeDate ? last_seen.toISOString() : last_seen,
+            birthday: birthday ? birthday.toISOString() : null,
+            first_seen: first_seen.toISOString(),
+            last_seen: last_seen.toISOString(),
             has_ordered: has_ordered,
             latest_purchase: null, // finalize
             has_newsletter: has_ordered ? weightedBoolean(30) : true,
             groups: [], // finalize
             nb_commands: 0,
             total_spent: 0,
-        } as Customer<Serialized>;
+        };
     });
 };
 
-export type Customer<Serialized extends boolean = false> = {
+export type Customer = {
     id: number;
     first_name: string;
     last_name: string;
@@ -68,11 +59,11 @@ export type Customer<Serialized extends boolean = false> = {
     city: string;
     stateAbbr: string;
     avatar: string;
-    birthday: (Serialized extends true ? string : Date) | null;
-    first_seen: Serialized extends true ? string : Date;
-    last_seen: Serialized extends true ? string : Date;
+    birthday: string | null;
+    first_seen: string;
+    last_seen: string;
     has_ordered: boolean;
-    latest_purchase: Serialized extends true ? string : Date;
+    latest_purchase: string;
     has_newsletter: boolean;
     groups: string[];
     nb_commands: number;

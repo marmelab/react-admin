@@ -1,9 +1,7 @@
 import { Db } from './types';
 import { weightedBoolean } from './utils';
 
-export default function <Serialized extends boolean = false>(
-    db: Db<Serialized>
-) {
+export default function (db: Db) {
     // set latest purchase date
     db.commands.forEach(command => {
         let customer = db.customers[command.customer_id];

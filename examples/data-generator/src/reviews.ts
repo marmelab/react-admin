@@ -4,10 +4,7 @@ import { subDays, isAfter } from 'date-fns';
 import { randomDate, weightedArrayElement, weightedBoolean } from './utils';
 import type { Db } from './types';
 
-export const generateReviews = <Serialized extends boolean = false>(
-    db: Db<Serialized>,
-    { serializeDate }: { serializeDate: Serialized }
-): Review<Serialized>[] => {
+export const generateReviews = (db: Db): Review[] => {
     const today = new Date();
     const aMonthAgo = subDays(today, 30);
 
@@ -38,7 +35,7 @@ export const generateReviews = <Serialized extends boolean = false>(
 
                         return {
                             id: id++,
-                            date: serializeDate ? date.toISOString() : date,
+                            date: date.toISOString(),
                             status: status,
                             command_id: command.id,
                             product_id: product.product_id,
@@ -57,9 +54,9 @@ export const generateReviews = <Serialized extends boolean = false>(
         );
 };
 
-export type Review<Serialized extends boolean = false> = {
+export type Review = {
     id: number;
-    date: Serialized extends true ? string : Date;
+    date: string;
     status: 'accepted' | 'rejected' | 'pending';
     command_id: number;
     product_id: number;

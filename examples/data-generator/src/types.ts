@@ -6,12 +6,12 @@ import type { Invoice } from './invoices';
 import type { Review } from './reviews';
 import { Settings } from './finalize';
 
-export interface Db<Serialized extends boolean = false> {
-    customers: Customer<Serialized>[];
+export interface Db {
+    customers: Customer[];
     categories: Category[];
     products: Product[];
-    commands: Command<Serialized>[];
-    invoices: Invoice<Serialized>[];
-    reviews: Review<Serialized>[];
+    commands: Command[];
+    invoices: Invoice[];
+    reviews: Review[];
     settings: Settings;
 }

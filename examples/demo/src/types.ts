@@ -4,10 +4,10 @@ export type ThemeName = 'light' | 'dark';
 
 export type Category = DataGenerator.Category;
 export type Product = DataGenerator.Product;
-export type Customer = DataGenerator.Customer<false>;
-export type Order = DataGenerator.Command<false>;
-export type Invoice = DataGenerator.Invoice<false>;
-export type Review = DataGenerator.Review<false>;
+export type Customer = DataGenerator.Customer;
+export type Order = DataGenerator.Command;
+export type Invoice = DataGenerator.Invoice;
+export type Review = DataGenerator.Review;
 export type BasketItem = DataGenerator.BasketItem;
 
 declare global {

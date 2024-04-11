@@ -9,10 +9,7 @@ import {
 } from './utils';
 import type { Db } from './types';
 
-export const generateCommands = <Serialized extends boolean = false>(
-    db: Db<Serialized>,
-    { serializeDate }: { serializeDate: Serialized }
-): Command<Serialized>[] => {
+export const generateCommands = (db: Db): Command[] => {
     const today = new Date();
     const aMonthAgo = subDays(today, 30);
     const realCustomers = db.customers.filter(customer => customer.has_ordered);
@@ -45,14 +42,14 @@ export const generateCommands = <Serialized extends boolean = false>(
         const customer = random.arrayElement(realCustomers);
         const date = randomDate(customer.first_seen, customer.last_seen);
 
-        const status =
+        const status: CommandStatus =
             isAfter(date, aMonthAgo) && random.boolean()
                 ? 'ordered'
                 : weightedArrayElement(['delivered', 'cancelled'], [10, 1]);
         return {
             id,
             reference: random.alphaNumeric(6).toUpperCase(),
-            date: serializeDate ? date.toISOString() : date,
+            date: date.toISOString(),
             customer_id: customer.id,
             basket: basket,
             total_ex_taxes: total_ex_taxes,
@@ -62,16 +59,16 @@ export const generateCommands = <Serialized extends boolean = false>(
             total: parseFloat(
                 (total_ex_taxes + delivery_fees + taxes).toFixed(2)
             ),
-            status: status,
+            status,
             returned: status === 'delivered' ? weightedBoolean(10) : false,
-        } as Command<Serialized>;
+        };
     });
 };
 
-export type Command<Serialized extends boolean = false> = {
+export type Command = {
     id: number;
     reference: string;
-    date: Serialized extends true ? string : Date;
+    date: string;
     customer_id: number;
     basket: BasketItem[];
     total_ex_taxes: number;
@@ -79,10 +76,11 @@ export type Command<Serialized extends boolean = false> = {
     tax_rate: number;
     taxes: number;
     total: number;
-    status: 'ordered' | 'delivered' | 'cancelled';
+    status: CommandStatus;
     returned: boolean;
 };
 
+export type CommandStatus = 'ordered' | 'delivered' | 'cancelled';
 export type BasketItem = {
     product_id: number;
     quantity: number;
