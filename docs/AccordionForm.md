@@ -78,7 +78,7 @@ You can also use the `<AccordionSection>` component as a child of `<SimpleForm>`
   Your browser does not support the video tag.
 </video>
 
-Check [the `ra-form-layout` documentation](https://react-admin-ee.marmelab.com/documentation/ra-form-layout##accordionform) for more details.
+Check [the `ra-form-layout` documentation](https://react-admin-ee.marmelab.com/documentation/ra-form-layout#accordionform) for more details.
 
 ## Props
 

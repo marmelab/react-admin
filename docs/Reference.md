@@ -220,7 +220,7 @@ title: "Index"
 
 **- A -**
 * [`useAppLocationState`](https://react-admin-ee.marmelab.com/documentation/ra-navigation#useapplocationstate-retrieve-and-define-app-location)<img class="icon" src="./img/premium.svg" />
-* [`useAppLocationMatcher`](https://react-admin-ee.marmelab.com/documentation/ra-navigation#useapplocationmatcher-apply-a-matching-on-the-current-app-location)<img class="icon" src="./img/premium.svg" />
+* [`useAppLocationMatcher`](https://react-admin-ee.marmelab.com/documentation/ra-navigation#useapplocationmatcher)<img class="icon" src="./img/premium.svg" />
 * [`useAuthenticated`](./useAuthenticated.md)
 * [`useAuthProvider`](./useAuthProvider.md)
 * [`useAuthState`](./useAuthState.md)
@@ -297,7 +297,7 @@ title: "Index"
 
 **- S -**
 * [`useSaveContext`](./useSaveContext.md)
-* [`useSearch`](https://react-admin-ee.marmelab.com/documentation/ra-search#the-usesearch-hook)<img class="icon" src="./img/premium.svg" />
+* [`useSearch`](https://react-admin-ee.marmelab.com/documentation/ra-search#usesearch)<img class="icon" src="./img/premium.svg" />
 * [`useShowContext`](./useShowContext.md)
 * [`useShowController`](./useShowController.md#useshowcontroller)
 * [`useStore`](./useStore.md)
