@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { useStore } from '../store';
 import { debounce } from 'lodash';
+import { useLocation } from 'react-router';
 
 /**
  * A hook that tracks the scroll position and restores it when the component mounts.
@@ -17,9 +18,11 @@ import { debounce } from 'lodash';
  */
 export const useRestoreScrollPosition = (key: string, debounceMs = 250) => {
     const position = useTrackScrollPosition(key, debounceMs);
+    const location = useLocation();
 
     useEffect(() => {
-        if (position != null) {
+        if (position != null && location.state?._scrollToTop !== true) {
+            console.log('Restoring scroll position', position);
             window.scrollTo(0, position);
         }
         // We only want to run this effect on mount
