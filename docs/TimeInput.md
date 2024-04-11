@@ -56,7 +56,7 @@ import { TimeInput } from 'react-admin';
 
 ## Material UI
 
-[React-admin Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> proposes an alternative `<TimeInput>` styled with Material UI. 
+[React-admin Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" /> proposes an alternative `<TimeInput>` styled with Material UI. 
 
 ![TimeInput with Material UI](./img/TimeInput-MUI.png)
 

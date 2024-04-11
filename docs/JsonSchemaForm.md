@@ -5,7 +5,7 @@ title: "JsonSchemaForm"
 
 # `<JsonSchemaForm>`
 
-This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> component allows to render a form from a JSON Schema description based on [react-jsonschema-form](https://github.com/rjsf-team/react-jsonschema-form).
+This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" /> component allows to render a form from a JSON Schema description based on [react-jsonschema-form](https://github.com/rjsf-team/react-jsonschema-form).
 
 ## Usage
 
@@ -21,7 +21,7 @@ If you have a JSON Schema description of your form based on [react-jsonschema-fo
 
 For instance, to generate the following form:
 
-![JsonSchemaForm](https://marmelab.com/ra-enterprise/modules/assets/jsonschemaform.webp)
+![JsonSchemaForm](https://react-admin-ee.marmelab.com/assets/jsonschemaform.webp)
 
 Configure the `<Edit>` view with a `<JsonSchemaForm>` child as follows:
 

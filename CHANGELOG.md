@@ -669,7 +669,7 @@ Note: This release wasn't published to npm, use version 4.10.1 or higher.
 
 We released [`ra-directus`](https://github.com/marmelab/ra-directus/) that contains a `DataProvider` and an `AuthProvider` to work with [Directus](https://directus.io/).
 
-We also released new landing pages for both [React-admin](https://marmelab.com/react-admin/) and the [Enterprise Edition](https://marmelab.com/ra-enterprise/). Check them out!
+We also released new landing pages for both [React-admin](https://marmelab.com/react-admin/) and the [Enterprise Edition](https://react-admin-ee.marmelab.com/). Check them out!
 
 ## v4.8.4
 

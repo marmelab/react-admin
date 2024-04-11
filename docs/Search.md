@@ -5,17 +5,17 @@ title: "The Search Component"
 
 # `<Search>`
 
-This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> component, part of [`ra-search`](https://marmelab.com/ra-enterprise/modules/ra-search), lets user do a site-wide search via a smart Omnibox.
+This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" /> component, part of [`ra-search`](https://react-admin-ee.marmelab.com/documentation/ra-search), lets user do a site-wide search via a smart Omnibox.
 
 <video controls autoplay playsinline muted loop>
-  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-search-demo.webm" type="video/webm" />
-  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-search-demo.mp4" type="video/mp4" />
+  <source src="https://react-admin-ee.marmelab.com/assets/ra-search-demo.webm" type="video/webm" />
+  <source src="https://react-admin-ee.marmelab.com/assets/ra-search-demo.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
 
 `<Search>` renders a global search input. It's designed to be integrated into the top `<AppBar>`.
 
-It relies on the `dataProvider` to provide a `search()` method, so you can use it with any search engine (Lucene, ElasticSearch, Solr, Algolia, Google Cloud Search, and many others). And if you don't have a search engine, no problem! `<Search>` can also do the search across several resources [via parallel `dataProvider.getList()` queries](https://marmelab.com/ra-enterprise/modules/ra-search#addsearchmethod-helper).
+It relies on the `dataProvider` to provide a `search()` method, so you can use it with any search engine (Lucene, ElasticSearch, Solr, Algolia, Google Cloud Search, and many others). And if you don't have a search engine, no problem! `<Search>` can also do the search across several resources [via parallel `dataProvider.getList()` queries](https://react-admin-ee.marmelab.com/documentation/ra-search#addsearchmethod-helper).
 
 ## Usage
 
@@ -27,7 +27,7 @@ The `<Search>` component is part of the `@react-admin/ra-search` package. To ins
 yarn add '@react-admin/ra-search'
 ```
 
-This requires a valid subscription to [React-admin Enterprise Edition](https://marmelab.com/ra-enterprise).
+This requires a valid subscription to [React-admin Enterprise Edition](https://react-admin-ee.marmelab.com).
 
 ### Implement `dataProvider.search()`
 
@@ -76,7 +76,7 @@ export const dataProvider = addSearchMethod(baseDataProvider, [
 ]);
 ```
 
-Check [the `ra-search` documentation](https://marmelab.com/ra-enterprise/modules/ra-search) to learn more about the input and output format of `dataProvider.search()`, as well as the possibilities to customize the `addSearchMethod`.
+Check [the `ra-search` documentation](https://react-admin-ee.marmelab.com/documentation/ra-search) to learn more about the input and output format of `dataProvider.search()`, as well as the possibilities to customize the `addSearchMethod`.
 
 ### Option 1: With `<Layout>`
 

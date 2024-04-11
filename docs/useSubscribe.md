@@ -5,7 +5,7 @@ title: "useSubscribe"
 
 # `useSubscribe`
 
-This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> hook subscribes to the events from a topic on mount (and unsubscribe on unmount).
+This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" /> hook subscribes to the events from a topic on mount (and unsubscribe on unmount).
 
 <video controls autoplay playsinline muted loop>
   <source src="./img/useSubscribe.webm" type="video/webm"/>

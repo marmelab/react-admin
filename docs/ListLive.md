@@ -5,7 +5,7 @@ title: "ListLive"
 
 # `<ListLive>`
 
-`<ListLive>` is an [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> component that fetches a list of records, and refreshes the page when a record is created, updated, or deleted.
+`<ListLive>` is an [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" /> component that fetches a list of records, and refreshes the page when a record is created, updated, or deleted.
 
 ![ListLive](./img/ListLive.png)
 
