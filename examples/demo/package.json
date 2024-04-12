@@ -37,7 +37,7 @@
         "recharts": "^2.1.15"
     },
     "scripts": {
-        "dev": "vite --force",
+        "dev": "vite",
         "build": "tsc && vite build",
         "preview": "vite preview"
     },
