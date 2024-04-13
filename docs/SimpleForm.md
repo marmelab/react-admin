@@ -16,7 +16,8 @@ The `<SimpleForm>` creates a `<form>` to edit a record, and renders its children
 `<SimpleForm>` is often used as child of `<Create>` or `<Edit>`. It accepts Input and Field components as children. It relies on [react-hook-form](https://react-hook-form.com/) for form handling. It requires no prop by default.
 
 ```jsx
-import { Create, SimpleForm, TextInput, RichTextInput, NumberInput } from 'react-admin';
+import { Create, SimpleForm, TextInput, NumberInput } from 'react-admin';
+import RichTextInput from 'ra-input-rich-text';
 
 export const PostCreate = () => (
     <Create>
