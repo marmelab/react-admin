@@ -5,12 +5,7 @@ import PropTypes from 'prop-types';
 import { SxProps } from '@mui/system';
 import Card from '@mui/material/Card';
 import clsx from 'clsx';
-import {
-    ComponentPropType,
-    useListContext,
-    useRestoreScrollPosition,
-    RaRecord,
-} from 'ra-core';
+import { ComponentPropType, useListContext, RaRecord } from 'ra-core';
 
 import { Title, TitlePropType } from '../layout/Title';
 import { ListToolbar } from './ListToolbar';
@@ -49,11 +44,6 @@ export const ListView = <RecordType extends RaRecord = any>(
         filterValues,
         resource,
     } = useListContext<RecordType>();
-    useRestoreScrollPosition(
-        storeKey
-            ? `${storeKey}/listScrollPosition`
-            : `${resource}/listScrollPosition`
-    );
 
     if (!children || (!data && isPending && emptyWhileLoading)) {
         return null;

@@ -5,6 +5,7 @@ import { isValidElementType } from 'react-is';
 
 import { ResourceProps } from '../types';
 import { ResourceContextProvider } from './ResourceContextProvider';
+import { RestoreScrollPosition } from '../routing/RestoreScrollPosition';
 
 export const Resource = (props: ResourceProps) => {
     const { create, edit, list, name, show } = props;
@@ -17,7 +18,18 @@ export const Resource = (props: ResourceProps) => {
                 )}
                 {show && <Route path=":id/show/*" element={getElement(show)} />}
                 {edit && <Route path=":id/*" element={getElement(edit)} />}
-                {list && <Route path="/*" element={getElement(list)} />}
+                {list && (
+                    <Route
+                        path="/*"
+                        element={
+                            <RestoreScrollPosition
+                                storeKey={`${name}.list.scrollPosition`}
+                            >
+                                {getElement(list)}
+                            </RestoreScrollPosition>
+                        }
+                    />
+                )}
                 {props.children}
             </Routes>
         </ResourceContextProvider>

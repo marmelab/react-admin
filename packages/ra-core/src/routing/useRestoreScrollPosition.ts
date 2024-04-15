@@ -5,23 +5,30 @@ import { useLocation } from 'react-router';
 
 /**
  * A hook that tracks the scroll position and restores it when the component mounts.
- * @param key The key under which to store the scroll position in the store
+ * @param storeKey The key under which to store the scroll position in the store
  * @param debounceMs The debounce time in milliseconds
  *
  * @example
  * import { ListBase, useRestoreScrollPosition } from 'ra-core';
  *
  * const MyCustomList = (props) => {
- *    useRestoreScrollPosition('my-list');
+ *   useRestoreScrollPosition('my-list');
  *   return <ListBase {...props} />;
  * };
  */
-export const useRestoreScrollPosition = (key: string, debounceMs = 250) => {
-    const position = useTrackScrollPosition(key, debounceMs);
+export const useRestoreScrollPosition = (
+    storeKey: string,
+    debounceMs = 250
+) => {
+    const [position, setPosition] = useTrackScrollPosition(
+        storeKey,
+        debounceMs
+    );
     const location = useLocation();
 
     useEffect(() => {
         if (position != null && location.state?._scrollToTop !== true) {
+            setPosition(undefined);
             window.scrollTo(0, position);
         }
         // We only want to run this effect on mount
@@ -29,8 +36,21 @@ export const useRestoreScrollPosition = (key: string, debounceMs = 250) => {
     }, []);
 };
 
-export const useTrackScrollPosition = (key: string, debounceMs = 250) => {
-    const [position, setPosition] = useStore(key);
+/**
+ * A hook that tracks the scroll position and stores it.
+ * @param storeKey The key under which to store the scroll position in the store
+ * @param debounceMs The debounce time in milliseconds
+ *
+ * @example
+ * import { ListBase, useTrackScrollPosition } from 'ra-core';
+ *
+ * const MyCustomList = (props) => {
+ *   useTrackScrollPosition('my-list');
+ *   return <ListBase {...props} />;
+ * };
+ */
+export const useTrackScrollPosition = (storeKey: string, debounceMs = 250) => {
+    const [position, setPosition] = useStore(storeKey);
 
     useEffect(() => {
         if (typeof window === 'undefined') {
@@ -47,5 +67,5 @@ export const useTrackScrollPosition = (key: string, debounceMs = 250) => {
         };
     }, [debounceMs, setPosition]);
 
-    return position;
+    return [position, setPosition];
 };
