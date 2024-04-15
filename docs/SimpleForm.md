@@ -17,7 +17,7 @@ The `<SimpleForm>` creates a `<form>` to edit a record, and renders its children
 
 ```jsx
 import { Create, SimpleForm, TextInput, NumberInput } from 'react-admin';
-import RichTextInput from 'ra-input-rich-text';
+import { RichTextInput } from 'ra-input-rich-text';
 
 export const PostCreate = () => (
     <Create>
