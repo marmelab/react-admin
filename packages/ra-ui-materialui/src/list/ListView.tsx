@@ -33,7 +33,6 @@ export const ListView = <RecordType extends RaRecord = any>(
         component: Content = DefaultComponent,
         title,
         empty = defaultEmpty,
-        storeKey,
         ...rest
     } = props;
     const {
@@ -306,23 +305,6 @@ export interface ListViewProps {
      * );
      */
     title?: string | ReactElement;
-
-    /**
-     * The key to use to store the current filter & sort. Pass false to disable.
-     *
-     * @see https://marmelab.com/react-admin/List.html#storekey
-     * @example
-     * const NewerBooks = () => (
-     *     <List
-     *         resource="books"
-     *         storeKey="newerBooks"
-     *         sort={{ field: 'year', order: 'DESC' }}
-     *     >
-     *         ...
-     *     </List>
-     * );
-     */
-    storeKey?: string | false;
 
     /**
      * The CSS styles to apply to the component.
