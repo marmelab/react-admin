@@ -161,13 +161,14 @@ export const App = () => (
 
 The `<Search>` component accepts the following props:
 
-| Prop          | Required | Type      | Default                | Description                                                                                        |
-| ------------- | -------- | --------- | ---------------------- | -------------------------------------------------------------------------------------------------- |
-| `children`    | Optional | `Element` | `<SearchResultsPanel>` | A component that will display the results.                                                         |
-| `color`       | Optional | `string`  | `light`                | The color mode for the input, applying light or dark backgrounds. Accept either `light` or `dark`. |
-| `historySize` | Optional | `number`  | 5                      | The number of past queries to keep in history.                                                     |
-| `options`     | Optional | `Object`  | -                      | An object containing options to apply to the search.                                               |
-| `wait`        | Optional | `number`  | 500                    | The delay of debounce for the search to launch after typing in ms.                                 |
+| Prop           | Required | Type                                                                              | Default                | Description                                                                                        |
+| -------------- | -------- | --------------------------------------------------------------------------------- | ---------------------- | -------------------------------------------------------------------------------------------------- |
+| `children`     | Optional | `Element`                                                                         | `<SearchResultsPanel>` | A component that will display the results.                                                         |
+| `color`        | Optional | `string`                                                                          | `light`                | The color mode for the input, applying light or dark backgrounds. Accept either `light` or `dark`. |
+| `historySize`  | Optional | `number`                                                                          | 5                      | The number of past queries to keep in history.                                                     |
+| `options`      | Optional | `Object`                                                                          | -                      | An object containing options to apply to the search.                                               |
+| `queryOptions` | Optional | [`UseQuery Options`](https://tanstack.com/query/v3/docs/react/reference/useQuery) | -                      | `react-query` options for the search query                                                         |
+| `wait`         | Optional | `number`                                                                          | 500                    | The delay of debounce for the search to launch after typing in ms.                                 |
 
 Additional props are passed down to the Material UI [`<TextField>`](https://mui.com/material-ui/react-text-field/) component.
 
@@ -235,6 +236,18 @@ An object containing options to apply to the search:
 {% raw %}
 ```tsx
 <Search options={{ foo: 'bar' }} />
+```
+{% endraw %}
+
+## `queryOptions`
+
+`<Search>` accepts a [`queryOptions` prop](https://tanstack.com/query/v3/docs/framework/react/reference/useQuery) to pass options to the react-query client.
+This can be useful e.g. to override the default side effects such as `onSuccess` or `onError`.
+
+
+{% raw %}
+```tsx
+<Search queryOptions={{ onSuccess: data => console.log(data) }} />
 ```
 {% endraw %}
 
