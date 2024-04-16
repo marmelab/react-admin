@@ -9,11 +9,17 @@ import { useLocation } from 'react-router';
  * @param debounceMs The debounce time in milliseconds
  *
  * @example
- * import { ListBase, useRestoreScrollPosition } from 'ra-core';
+ * import { useRestoreScrollPosition } from 'ra-core';
  *
- * const MyCustomList = (props) => {
+ * const MyCustomPage = () => {
  *   useRestoreScrollPosition('my-list');
- *   return <ListBase {...props} />;
+ *
+ *   return (
+ *     <div>
+ *       <h1>My Custom Page</h1>
+ *       <VeryLongContent />
+ *     </div>
+ *   );
  * };
  */
 export const useRestoreScrollPosition = (
@@ -42,11 +48,17 @@ export const useRestoreScrollPosition = (
  * @param debounceMs The debounce time in milliseconds
  *
  * @example
- * import { ListBase, useTrackScrollPosition } from 'ra-core';
+ * import { useTrackScrollPosition } from 'ra-core';
  *
- * const MyCustomList = (props) => {
+ * const MyCustomPage = () => {
  *   useTrackScrollPosition('my-list');
- *   return <ListBase {...props} />;
+ *
+ *   return (
+ *     <div>
+ *       <h1>My Custom Page</h1>
+ *       <VeryLongContent />
+ *     </div>
+ *   );
  * };
  */
 export const useTrackScrollPosition = (storeKey: string, debounceMs = 250) => {

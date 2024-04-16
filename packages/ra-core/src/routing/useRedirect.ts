@@ -72,6 +72,8 @@ export const useRedirect = () => {
                 // redirection to an internal link
                 navigate(createPath({ resource, id, type: redirectTo }), {
                     state:
+                        // We want to restore the scroll position only if we are navigating to a list
+                        // This is done with <RestoreScrollPosition> in <Resource>
                         redirectTo === 'list'
                             ? state
                             : { _scrollToTop: true, ...state },
