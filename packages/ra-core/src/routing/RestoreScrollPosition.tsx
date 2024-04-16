@@ -8,11 +8,14 @@ import { useRestoreScrollPosition } from './useRestoreScrollPosition';
  * @param debounceMs The debounce time in milliseconds
  *
  * @example
- * import { ListBase, RestoreScrollPosition } from 'ra-core';
+ * import { RestoreScrollPosition } from 'ra-core';
  *
- * const MyCustomList = (props) => (
+ * const MyCustomPage = () => {
  *   <RestoreScrollPosition key="my-list>
- *     <ListBase {...props} />
+ *     <div>
+ *       <h1>My Custom Page</h1>
+ *       <VeryLongContent />
+ *     </div>
  *   </RestoreScrollPosition>
  * };
  */
