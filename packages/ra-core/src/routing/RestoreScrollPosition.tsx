@@ -11,7 +11,7 @@ import { useRestoreScrollPosition } from './useRestoreScrollPosition';
  * import { RestoreScrollPosition } from 'ra-core';
  *
  * const MyCustomPage = () => {
- *   <RestoreScrollPosition key="my-list>
+ *   <RestoreScrollPosition key="my-list">
  *     <div>
  *       <h1>My Custom Page</h1>
  *       <VeryLongContent />
