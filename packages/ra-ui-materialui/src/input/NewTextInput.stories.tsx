@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { FormGroupContextProvider, required, useFormGroup } from 'ra-core';
+import { required, FormGroupContextProvider, useFormGroup } from 'ra-core';
 import { useFormState, useFormContext } from 'react-hook-form';
 import { Button } from '@mui/material';
 
-import { TextInput } from './TextInput';
+import { NewTextInput } from './NewTextInput';
 import { AdminContext } from '../AdminContext';
 import { Create } from '../detail';
 import { Edit } from '../detail';
@@ -11,7 +11,7 @@ import { SimpleForm, Toolbar } from '../form';
 import { SaveButton } from '../button';
 import { FormInspector } from './common';
 
-export default { title: 'ra-ui-materialui/input/TextInput' };
+export default { title: 'ra-ui-materialui/input/NewTextInput' };
 
 const Wrapper = ({ children }) => (
     <AdminContext defaultTheme="light">
@@ -27,21 +27,25 @@ const Wrapper = ({ children }) => (
 
 export const Basic = () => (
     <Wrapper>
-        <TextInput source="title" />
+        <NewTextInput source="title" />
         <FormInspector />
     </Wrapper>
 );
 
 export const DefaultValue = () => (
     <Wrapper>
-        <TextInput source="title" defaultValue="hello" />
-        <TextInput source="title1" label="Default john" defaultValue="john" />
-        <TextInput
+        <NewTextInput source="title" defaultValue="hello" />
+        <NewTextInput
+            source="title1"
+            label="Default john"
+            defaultValue="john"
+        />
+        <NewTextInput
             source="title2"
             label="Default empty string"
             defaultValue=""
         />
-        <TextInput source="title3" label="Default undefined" />
+        <NewTextInput source="title3" label="Default undefined" />
         <FormInspector name="title" />
         <FormInspector name="title1" />
         <FormInspector name="title2" />
@@ -51,9 +55,9 @@ export const DefaultValue = () => (
 
 export const HelperText = () => (
     <Wrapper>
-        <TextInput source="title" />
-        <TextInput source="title" helperText={false} />
-        <TextInput
+        <NewTextInput source="title" />
+        <NewTextInput source="title" helperText={false} />
+        <NewTextInput
             source="title"
             helperText="Number of times the post was read"
         />
@@ -62,32 +66,36 @@ export const HelperText = () => (
 
 export const Label = () => (
     <Wrapper>
-        <TextInput source="title" />
-        <TextInput source="title" label={false} />
-        <TextInput source="title" label="label of title" />
+        <NewTextInput source="title" />
+        <NewTextInput source="title" label={false} />
+        <NewTextInput source="title" label="label of title" />
     </Wrapper>
 );
 
 export const NonFullWidth = () => (
     <Wrapper>
-        <TextInput source="title" label="default" />
-        <TextInput source="title" label="Full Width False" fullWidth={false} />
+        <NewTextInput source="title" label="default" />
+        <NewTextInput
+            source="title"
+            label="Full Width False"
+            fullWidth={false}
+        />
     </Wrapper>
 );
 
 export const Margin = () => (
     <Wrapper>
-        <TextInput source="title" label="default (dense)" />
-        <TextInput source="title" label="none" margin="none" />
-        <TextInput source="title" label="normal" margin="normal" />
+        <NewTextInput source="title" label="default (dense)" />
+        <NewTextInput source="title" label="none" margin="none" />
+        <NewTextInput source="title" label="normal" margin="normal" />
     </Wrapper>
 );
 
 export const Variant = () => (
     <Wrapper>
-        <TextInput source="title" label="default (filled)" />
-        <TextInput source="title" label="outlined" variant="outlined" />
-        <TextInput source="title" label="standard" variant="standard" />
+        <NewTextInput source="title" label="default (filled)" />
+        <NewTextInput source="title" label="outlined" variant="outlined" />
+        <NewTextInput source="title" label="standard" variant="standard" />
     </Wrapper>
 );
 
@@ -99,10 +107,10 @@ export const Required = () => (
             sx={{ width: 600 }}
         >
             <SimpleForm mode="onBlur">
-                <TextInput source="title" />
-                <TextInput source="title" required />
-                <TextInput source="title" validate={required()} />
-                <TextInput source="title" validate={[required()]} />
+                <NewTextInput source="title" />
+                <NewTextInput source="title" required />
+                <NewTextInput source="title" validate={required()} />
+                <NewTextInput source="title" validate={[required()]} />
             </SimpleForm>
         </Create>
     </AdminContext>
@@ -126,7 +134,7 @@ export const Error = () => (
                     },
                 })}
             >
-                <TextInput source="title" />
+                <NewTextInput source="title" />
             </SimpleForm>
         </Create>
     </AdminContext>
@@ -134,7 +142,7 @@ export const Error = () => (
 
 export const Sx = () => (
     <Wrapper>
-        <TextInput
+        <NewTextInput
             source="title"
             sx={{
                 border: 'solid 1px red',
@@ -149,7 +157,7 @@ export const ExtraProps = () => (
     <AdminContext defaultTheme="light">
         <Create resource="posts" sx={{ width: 600 }}>
             <SimpleForm>
-                <TextInput
+                <NewTextInput
                     source="username"
                     inputProps={{ autocomplete: 'off' }}
                 />
@@ -198,7 +206,7 @@ const FieldStateInspector = ({ name = 'title' }) => {
 
 export const FieldState = () => (
     <Wrapper>
-        <TextInput source="title" />
+        <NewTextInput source="title" />
         <FormStateInspector />
         <FieldStateInspector />
     </Wrapper>
@@ -227,7 +235,7 @@ export const ValueUndefined = ({ onSuccess = console.log }) => (
             mutationOptions={{ onSuccess }}
         >
             <SimpleForm toolbar={AlwaysOnToolbar}>
-                <TextInput source="title" />
+                <NewTextInput source="title" />
                 <FormInspector />
             </SimpleForm>
         </Edit>
@@ -252,7 +260,7 @@ export const ValueNull = ({ onSuccess = console.log }) => (
             mutationOptions={{ onSuccess }}
         >
             <SimpleForm toolbar={AlwaysOnToolbar}>
-                <TextInput source="title" />
+                <NewTextInput source="title" />
                 <FormInspector />
             </SimpleForm>
         </Edit>
@@ -268,7 +276,7 @@ export const Parse = ({ onSuccess = console.log }) => (
             mutationOptions={{ onSuccess }}
         >
             <SimpleForm>
-                <TextInput
+                <NewTextInput
                     source="title"
                     parse={v => (v === 'foo' ? 'bar' : v)}
                 />
@@ -288,8 +296,8 @@ export const SimpleCreateOnSubmit = () => (
     <AdminContext defaultTheme="light">
         <Create resource="posts" sx={{ width: 600 }}>
             <SimpleForm mode="onSubmit" toolbar={<FormDebugToolbar />}>
-                <TextInput source="title" validate={required()} />
-                <TextInput source="author" validate={required()} />
+                <NewTextInput source="title" validate={required()} />
+                <NewTextInput source="author" validate={required()} />
             </SimpleForm>
         </Create>
     </AdminContext>
@@ -299,8 +307,8 @@ export const SimpleCreateOnChange = () => (
     <AdminContext defaultTheme="light">
         <Create resource="posts" sx={{ width: 600 }}>
             <SimpleForm mode="onChange" toolbar={<FormDebugToolbar />}>
-                <TextInput source="title" validate={required()} />
-                <TextInput source="author" validate={required()} />
+                <NewTextInput source="title" validate={required()} />
+                <NewTextInput source="author" validate={required()} />
             </SimpleForm>
         </Create>
     </AdminContext>
@@ -325,8 +333,8 @@ export const SimpleEditOnSubmit = () => (
     >
         <Edit resource="posts" id={123} sx={{ width: 600 }}>
             <SimpleForm mode="onSubmit" toolbar={<FormDebugToolbar />}>
-                <TextInput source="title" validate={required()} />
-                <TextInput source="author" validate={required()} />
+                <NewTextInput source="title" validate={required()} />
+                <NewTextInput source="author" validate={required()} />
             </SimpleForm>
         </Edit>
     </AdminContext>
@@ -351,8 +359,8 @@ export const SimpleEditOnChange = () => (
     >
         <Edit resource="posts" id={123} sx={{ width: 600 }}>
             <SimpleForm mode="onChange" toolbar={<FormDebugToolbar />}>
-                <TextInput source="title" validate={required()} />
-                <TextInput source="author" validate={required()} />
+                <NewTextInput source="title" validate={required()} />
+                <NewTextInput source="author" validate={required()} />
             </SimpleForm>
         </Edit>
     </AdminContext>
@@ -377,8 +385,8 @@ export const CreateGlobalValidationOnSubmit = () => (
                 validate={postValidate}
                 toolbar={<FormDebugToolbar />}
             >
-                <TextInput source="title" isRequired />
-                <TextInput source="author" isRequired />
+                <NewTextInput source="title" isRequired />
+                <NewTextInput source="author" isRequired />
             </SimpleForm>
         </Create>
     </AdminContext>
@@ -392,8 +400,8 @@ export const CreateGlobalValidationOnChange = () => (
                 validate={postValidate}
                 toolbar={<FormDebugToolbar />}
             >
-                <TextInput source="title" isRequired />
-                <TextInput source="author" isRequired />
+                <NewTextInput source="title" isRequired />
+                <NewTextInput source="author" isRequired />
             </SimpleForm>
         </Create>
     </AdminContext>
@@ -415,8 +423,8 @@ export const CreateGlobalValidationDependentOnSubmit = () => (
                 validate={postValidateDependent}
                 toolbar={<FormDebugToolbar />}
             >
-                <TextInput source="title" />
-                <TextInput source="author" />
+                <NewTextInput source="title" />
+                <NewTextInput source="author" />
             </SimpleForm>
         </Create>
     </AdminContext>
@@ -430,8 +438,8 @@ export const CreateGlobalValidationDependentOnChange = () => (
                 validate={postValidateDependent}
                 toolbar={<FormDebugToolbar />}
             >
-                <TextInput source="title" />
-                <TextInput source="author" />
+                <NewTextInput source="title" />
+                <NewTextInput source="author" />
             </SimpleForm>
         </Create>
     </AdminContext>
@@ -456,8 +464,8 @@ export const InvalidEditOnSubmit = () => (
     >
         <Edit resource="posts" id={123} sx={{ width: 600 }}>
             <SimpleForm mode="onSubmit" toolbar={<FormDebugToolbar />}>
-                <TextInput source="title" validate={required()} />
-                <TextInput source="author" validate={required()} />
+                <NewTextInput source="title" validate={required()} />
+                <NewTextInput source="author" validate={required()} />
             </SimpleForm>
         </Edit>
     </AdminContext>
@@ -482,8 +490,8 @@ export const InvalidEditOnChange = () => (
     >
         <Edit resource="posts" id={123} sx={{ width: 600 }}>
             <SimpleForm mode="onChange" toolbar={<FormDebugToolbar />}>
-                <TextInput source="title" validate={required()} />
-                <TextInput source="author" validate={required()} />
+                <NewTextInput source="title" validate={required()} />
+                <NewTextInput source="author" validate={required()} />
             </SimpleForm>
         </Edit>
     </AdminContext>
@@ -517,9 +525,9 @@ export const ManualError = () => (
         <Create resource="posts" sx={{ width: 600 }}>
             <SimpleForm mode="onSubmit" toolbar={<FormDebugToolbar />}>
                 <TriggerErrorButton source="title" />
-                <TextInput source="title" />
+                <NewTextInput source="title" />
                 <TriggerErrorButton source="author" />
-                <TextInput source="author" />
+                <NewTextInput source="author" />
             </SimpleForm>
         </Create>
     </AdminContext>
@@ -614,12 +622,18 @@ export const WizardForm = () => {
                 >
                     <FormGroupContextProvider name="step-1">
                         {step === 1 ? (
-                            <TextInput source="title" validate={required()} />
+                            <NewTextInput
+                                source="title"
+                                validate={required()}
+                            />
                         ) : null}
                     </FormGroupContextProvider>
                     <FormGroupContextProvider name="step-2">
                         {step === 2 ? (
-                            <TextInput source="author" validate={required()} />
+                            <NewTextInput
+                                source="author"
+                                validate={required()}
+                            />
                         ) : null}
                     </FormGroupContextProvider>
                 </SimpleForm>
