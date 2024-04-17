@@ -5,7 +5,7 @@ title: "useSubscribeToRecordList"
 
 # `useSubscribeToRecordList`
 
-This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> hook is a  specialized version of [`useSubscribe`](./useSubscribe.md) that subscribes to events concerning a list of records.
+This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" /> hook is a  specialized version of [`useSubscribe`](./useSubscribe.md) that subscribes to events concerning a list of records.
 
 <video controls autoplay playsinline muted loop>
   <source src="./img/useSubscribeToRecordList.webm" type="video/webm"/>

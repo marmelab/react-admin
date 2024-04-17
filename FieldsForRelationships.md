@@ -304,7 +304,7 @@ Just like for `<ReferenceField>`, `<ReferenceArrayField>` aggregates and dedupli
 
 ## `<ReferenceManyToManyField>`
 
-This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> field displays a many-to-many relationship implemented with two one-to-many relationships and a join table. 
+This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" /> field displays a many-to-many relationship implemented with two one-to-many relationships and a join table. 
 
 ```
 ┌──────────────────┐       ┌──────────────┐      ┌───────────────┐

@@ -5,7 +5,7 @@ title: "The ReferenceNodeInput Component"
 
 # `<ReferenceNodeInput>` Component
 
-This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> component allows users to select one or several nodes from a tree of a reference resource. For instance, this is useful to select a category for a product.
+This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" /> component allows users to select one or several nodes from a tree of a reference resource. For instance, this is useful to select a category for a product.
 
 <video controls autoplay playsinline muted loop>
   <source src="./img/ReferenceNodeInput-TreeInput-basic.webm" type="video/webm"/>

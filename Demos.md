@@ -317,7 +317,7 @@ The source shows how to implement the following features:
 
 Writer's Delight lets you write notes, essays, and stories with an AI assistant. Built by the core team.
 
-[<img src="https://github.com/marmelab/writers-delight/raw/main/public/writers-delight.png" class="no-shadow" alt="Writer's Delight" />](https://marmelab.com/writers-delight/)
+<iframe src="https://www.youtube-nocookie.com/embed/XytdFN1Oqg8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;"></iframe>
 
 * Demo: [https://marmelab.com/writers-delight/](https://marmelab.com/writers-delight/)
 * Source code: [https://github.com/marmelab/writers-delight/](https://github.com/marmelab/writers-delight/)

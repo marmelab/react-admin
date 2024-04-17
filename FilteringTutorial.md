@@ -34,16 +34,16 @@ One of the most important features of the List page is the ability to filter the
 </tr>
 <tr style="border:none;background-color:#fff;">
     <td style="width:50%;border:none;text-align:center">
-        <a title="Stacked Filters" href="https://marmelab.com/ra-enterprise/modules/assets/ra-form-layout/latest/stackedfilters-overview.webm">
+        <a title="Stacked Filters" href="https://react-admin-ee.marmelab.com/assets/ra-form-layout/latest/stackedfilters-overview.webm">
             <video controls autoplay playsinline muted loop width="90%" style="margin:1rem;box-shadow:0px 4px 4px 0px rgb(0 0 0 / 24%);">
-                <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-form-layout/latest/stackedfilters-overview.webm" type="video/mp4" />
+                <source src="https://react-admin-ee.marmelab.com/assets/ra-form-layout/latest/stackedfilters-overview.webm" type="video/mp4" />
                     Your browser does not support the video tag.
             </video>
         </a>
         <a href="#the-stackedfilters-component" style="display: block;transform: translateY(-10px);">The <code>&lt;StackedFilters&gt;</code> Dialog</a>
     </td>
     <td style="width:50%;border:none;text-align:center;vertical-align:top;">
-        <a title="<Search> input" href="https://marmelab.com/ra-enterprise/modules/assets/ra-search-overview.gif"><img src="https://marmelab.com/ra-enterprise/modules/assets/ra-search-overview.gif" /></a>
+        <a title="<Search> input" href="https://react-admin-ee.marmelab.com/assets/ra-search-overview.gif"><img src="https://react-admin-ee.marmelab.com/assets/ra-search-overview.gif" /></a>
         <a href="#global-search" style="display: block;transform: translateY(-10px);">The Global <code>&lt;Search&gt;</code></a>
     </td>
 </tr>
@@ -221,11 +221,11 @@ Finally, a filter sidebar is the ideal place to display the user's favorite filt
 ## The `<StackedFilters>` Component
 
 <video controls autoplay playsinline muted loop width="100%">
-    <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-form-layout/latest/stackedfilters-overview.webm" type="video/mp4" />
+    <source src="https://react-admin-ee.marmelab.com/assets/ra-form-layout/latest/stackedfilters-overview.webm" type="video/mp4" />
         Your browser does not support the video tag.
 </video>
 
-Another alternative filter UI is the Stacked Filters dialog, an [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> exclusive. It lets users build complex filters by combining a field, an operator, and a value. It's more powerful than the Filter Button/Form Combo, but requires more setup on the data provider.
+Another alternative filter UI is the Stacked Filters dialog, an [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" /> exclusive. It lets users build complex filters by combining a field, an operator, and a value. It's more powerful than the Filter Button/Form Combo, but requires more setup on the data provider.
 
 Here is an example StackedFilters configuration:
 
@@ -280,20 +280,20 @@ Check the [`<StackedFilters>` documentation](./StackedFilters.md) for more infor
 ## Global Search
 
 <video controls autoplay playsinline muted loop>
-  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-search-overview.webm" type="video/webm" />
-  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-search-overview.mp4" type="video/mp4" />
+  <source src="https://react-admin-ee.marmelab.com/assets/ra-search-overview.webm" type="video/webm" />
+  <source src="https://react-admin-ee.marmelab.com/assets/ra-search-overview.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
 
 Although list filters allow to make precise queries using per-field criteria, users often prefer simpler interfaces like full-text search. After all, that's what they use every day on search engines, email clients, and in their file explorer.
 
-If you want to display a full-text search allowing to look for any record in the admin using a single form input, check out [the `<Search>` component](./Search.md), an [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> exclusive.
+If you want to display a full-text search allowing to look for any record in the admin using a single form input, check out [the `<Search>` component](./Search.md), an [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" /> exclusive.
 
 `<Search>` can plug to any existing search engine (ElasticSearch, Lucene, or custom search engine), and lets you customize the search results to provide quick navigation to related items, turning the search engine into an "Omnibox":
 
 <video controls autoplay playsinline muted loop>
-  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-search-demo.webm" type="video/webm" />
-  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-search-demo.mp4" type="video/mp4" />
+  <source src="https://react-admin-ee.marmelab.com/assets/ra-search-demo.webm" type="video/webm" />
+  <source src="https://react-admin-ee.marmelab.com/assets/ra-search-demo.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
 

@@ -5,11 +5,11 @@ title: "WizardForm"
 
 # `<WizardForm>`
 
-This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> component offers an alternative layout for large Create forms, allowing users to enter data step-by-step.
+This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" /> component offers an alternative layout for large Create forms, allowing users to enter data step-by-step.
 
 <video controls autoplay playsinline muted loop>
-  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-wizard-form-overview.webm" type="video/webm" />
-  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-wizard-form-overview.mp4" type="video/mp4" />
+  <source src="https://react-admin-ee.marmelab.com/assets/ra-wizard-form-overview.webm" type="video/webm" />
+  <source src="https://react-admin-ee.marmelab.com/assets/ra-wizard-form-overview.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
 
