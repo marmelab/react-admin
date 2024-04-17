@@ -10,6 +10,8 @@ import { Edit } from '../detail';
 import { SimpleForm, Toolbar } from '../form';
 import { SaveButton } from '../button';
 import { FormInspector } from './common';
+import { Datagrid, List } from '../list';
+import { TextField } from '../field';
 
 export default { title: 'ra-ui-materialui/input/NewTextInput' };
 
@@ -641,3 +643,36 @@ export const WizardForm = () => {
         </AdminContext>
     );
 };
+
+const postFilters = [
+    <NewTextInput source="title" validate={required()} />,
+    <NewTextInput source="author" validate={required()} />,
+];
+
+export const FilterForm = () => (
+    <AdminContext
+        defaultTheme="light"
+        dataProvider={
+            {
+                getList: () =>
+                    Promise.resolve({
+                        data: [
+                            {
+                                id: 123,
+                                title: 'Lorem ipsum',
+                                author: 'John Doe',
+                            },
+                        ],
+                        total: 1,
+                    }),
+            } as any
+        }
+    >
+        <List resource="posts" sx={{ width: 600 }} filters={postFilters}>
+            <Datagrid>
+                <TextField source="title" />
+                <TextField source="author" />
+            </Datagrid>
+        </List>
+    </AdminContext>
+);
