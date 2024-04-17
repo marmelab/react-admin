@@ -33,8 +33,8 @@ React-admin now uses `react-query` v5 instead of v3. The library name has change
 
 If you used `react-query` directly in your code, you'll have to update it, following their migration guides:
 
-- [From react-query v3 to @transtack/query v4](https://tanstack.com/query/v5/docs/react/guides/migrating-to-react-query-4)
-- [From @transtack/query v4 to @transtack/query v5](https://tanstack.com/query/v5/docs/react/guides/migrating-to-v5).
+- [From react-query v3 to @tanstack/react-query v4](https://tanstack.com/query/v5/docs/react/guides/migrating-to-react-query-4)
+- [From @tanstack/react-query v4 to @tanstack/react-query v5](https://tanstack.com/query/v5/docs/react/guides/migrating-to-v5).
 
 Here is a focus of the most important changes.
 
