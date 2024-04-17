@@ -47,7 +47,7 @@ const sanitizeRestProps = ({
     hasShow,
     resource,
     ...rest
-}: Omit<CreateActionsProps, 'className'>) => rest;
+}: CreateActionsProps) => rest;
 
 export interface CreateActionsProps extends ToolbarProps {
     hasCreate?: boolean;
