@@ -916,6 +916,12 @@ But this should help with some advanced cases, for instance if some validation e
 
 It will also improve the user experience, as the form `isValid` state will be consistent with error messages displayed on inputs, regardless of whether they have been touched or not.
 
+## `<InputHelperText touched>` Prop Was Removed
+
+The `<InputHelperText>` component no longer accepts a `touched` prop. This prop was used to display validation errors only if the input was touched. This behavior is now handled by `react-hook-form`.
+
+If you were using this prop, you can safely remove it.
+
 ## Upgrading to v4
 
 If you are on react-admin v3, follow the [Upgrading to v4](https://marmelab.com/react-admin/doc/4.16/Upgrade.html) guide before upgrading to v5.
