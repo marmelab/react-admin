@@ -1,4 +1,6 @@
-export default db => {
+import type { Db } from './types';
+
+export const generateInvoices = (db: Db): Invoice[] => {
     let id = 0;
 
     return (
@@ -18,4 +20,16 @@ export default db => {
                 total: command.total,
             }))
     );
+};
+
+export type Invoice = {
+    id: number;
+    date: string;
+    command_id: number;
+    customer_id: number;
+    total_ex_taxes: number;
+    delivery_fees: number;
+    tax_rate: number;
+    taxes: number;
+    total: number;
 };

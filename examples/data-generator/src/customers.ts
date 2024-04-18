@@ -2,7 +2,7 @@ import { date, name, internet, address } from 'faker/locale/en';
 
 import { randomDate, weightedBoolean } from './utils';
 
-export default (db, { serializeDate }) => {
+export const generateCustomers = (): Customer[] => {
     // This is the total number of people pictures available. We only use those pictures for actual customers
     const maxCustomers = 223;
     let numberOfCustomers = 0;
@@ -36,10 +36,9 @@ export default (db, { serializeDate }) => {
             city: has_ordered ? address.city() : null,
             stateAbbr: has_ordered ? address.stateAbbr() : null,
             avatar,
-            birthday:
-                serializeDate && birthday ? birthday.toISOString() : birthday,
-            first_seen: serializeDate ? first_seen.toISOString() : first_seen,
-            last_seen: serializeDate ? last_seen.toISOString() : last_seen,
+            birthday: birthday ? birthday.toISOString() : null,
+            first_seen: first_seen.toISOString(),
+            last_seen: last_seen.toISOString(),
             has_ordered: has_ordered,
             latest_purchase: null, // finalize
             has_newsletter: has_ordered ? weightedBoolean(30) : true,
@@ -48,4 +47,25 @@ export default (db, { serializeDate }) => {
             total_spent: 0,
         };
     });
+};
+
+export type Customer = {
+    id: number;
+    first_name: string;
+    last_name: string;
+    email: string;
+    address: string;
+    zipcode: string;
+    city: string;
+    stateAbbr: string;
+    avatar: string;
+    birthday: string | null;
+    first_seen: string;
+    last_seen: string;
+    has_ordered: boolean;
+    latest_purchase: string;
+    has_newsletter: boolean;
+    groups: string[];
+    nb_commands: number;
+    total_spent: number;
 };

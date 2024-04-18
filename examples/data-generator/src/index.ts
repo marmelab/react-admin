@@ -1,31 +1,34 @@
-import { RaRecord } from 'ra-core';
-
-import generateCustomers from './customers';
-import generateCategories from './categories';
-import generateProducts from './products';
-import generateCommands from './commands';
-import generateInvoices from './invoices';
-import generateReviews from './reviews';
+import { generateCustomers, Customer } from './customers';
+import { generateCategories, Category } from './categories';
+import { generateProducts, Product } from './products';
+import { generateCommands, Command, BasketItem } from './commands';
+import { generateInvoices, Invoice } from './invoices';
+import { generateReviews, Review } from './reviews';
 import finalize from './finalize';
+import { Db } from './types';
 
-export interface Db {
-    customers: RaRecord[];
-    categories: RaRecord[];
-    products: RaRecord[];
-    commands: RaRecord[];
-    invoices: RaRecord[];
-    reviews: RaRecord[];
-}
-
-export default (options = { serializeDate: true }): Db => {
+const generateData = (): Db => {
     const db = {} as Db;
-    db.customers = generateCustomers(db, options);
+    db.customers = generateCustomers();
     db.categories = generateCategories();
     db.products = generateProducts(db);
-    db.commands = generateCommands(db, options);
+    db.commands = generateCommands(db);
     db.invoices = generateInvoices(db);
-    db.reviews = generateReviews(db, options);
+    db.reviews = generateReviews(db);
     finalize(db);
 
     return db;
+};
+
+export default generateData;
+
+export type {
+    BasketItem,
+    Category,
+    Command,
+    Customer,
+    Db,
+    Invoice,
+    Product,
+    Review,
 };

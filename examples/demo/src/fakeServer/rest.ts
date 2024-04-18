@@ -3,7 +3,7 @@ import fetchMock from 'fetch-mock';
 import generateData from 'data-generator-retail';
 
 export default () => {
-    const data = generateData({ serializeDate: true });
+    const data = generateData();
     const restServer = new FakeRest.FetchServer('http://localhost:4000');
     if (window) {
         window.restServer = restServer; // give way to update data in the console

@@ -7,8 +7,9 @@ import {
     weightedArrayElement,
     weightedBoolean,
 } from './utils';
+import type { Db } from './types';
 
-export default (db, { serializeDate }) => {
+export const generateCommands = (db: Db): Command[] => {
     const today = new Date();
     const aMonthAgo = subDays(today, 30);
     const realCustomers = db.customers.filter(customer => customer.has_ordered);
@@ -38,17 +39,17 @@ export default (db, { serializeDate }) => {
         const taxes = parseFloat(
             ((total_ex_taxes + delivery_fees) * tax_rate).toFixed(2)
         );
-        const customer = random.arrayElement<any>(realCustomers);
+        const customer = random.arrayElement(realCustomers);
         const date = randomDate(customer.first_seen, customer.last_seen);
 
-        const status =
+        const status: CommandStatus =
             isAfter(date, aMonthAgo) && random.boolean()
                 ? 'ordered'
                 : weightedArrayElement(['delivered', 'cancelled'], [10, 1]);
         return {
             id,
             reference: random.alphaNumeric(6).toUpperCase(),
-            date: serializeDate ? date.toISOString() : date,
+            date: date.toISOString(),
             customer_id: customer.id,
             basket: basket,
             total_ex_taxes: total_ex_taxes,
@@ -58,8 +59,29 @@ export default (db, { serializeDate }) => {
             total: parseFloat(
                 (total_ex_taxes + delivery_fees + taxes).toFixed(2)
             ),
-            status: status,
+            status,
             returned: status === 'delivered' ? weightedBoolean(10) : false,
         };
     });
+};
+
+export type Command = {
+    id: number;
+    reference: string;
+    date: string;
+    customer_id: number;
+    basket: BasketItem[];
+    total_ex_taxes: number;
+    delivery_fees: number;
+    tax_rate: number;
+    taxes: number;
+    total: number;
+    status: CommandStatus;
+    returned: boolean;
+};
+
+export type CommandStatus = 'ordered' | 'delivered' | 'cancelled';
+export type BasketItem = {
+    product_id: number;
+    quantity: number;
 };

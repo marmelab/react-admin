@@ -12,12 +12,12 @@ import {
     List,
     NullableBooleanInput,
     NumberField,
+    NumberInput,
     ReferenceField,
     ReferenceInput,
     SearchInput,
     SelectColumnsButton,
     TextField,
-    TextInput,
     TopToolbar,
     useListContext,
 } from 'react-admin';
@@ -60,9 +60,9 @@ const orderFilters = [
             sx={{ minWidth: 200 }}
         />
     </ReferenceInput>,
-    <DateInput source="date_gte" />,
-    <DateInput source="date_lte" />,
-    <TextInput source="total_gte" />,
+    <DateInput source="date_gte" parse={d => new Date(d).toISOString()} />,
+    <DateInput source="date_lte" parse={d => new Date(d).toISOString()} />,
+    <NumberInput source="total_gte" />,
     <NullableBooleanInput source="returned" />,
 ];
 
