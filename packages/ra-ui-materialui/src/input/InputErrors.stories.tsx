@@ -1,291 +1,18 @@
 import * as React from 'react';
-import { required, FormGroupContextProvider, useFormGroup } from 'ra-core';
-import { useFormState, useFormContext } from 'react-hook-form';
+import { FormGroupContextProvider, required, useFormGroup } from 'ra-core';
+import { useFormContext } from 'react-hook-form';
 import { Button } from '@mui/material';
 
-import { NewTextInput } from './NewTextInput';
+import { TextInput } from './TextInput';
 import { AdminContext } from '../AdminContext';
 import { Create } from '../detail';
 import { Edit } from '../detail';
-import { SimpleForm, Toolbar } from '../form';
+import { SimpleForm, TabbedForm, Toolbar } from '../form';
 import { SaveButton } from '../button';
-import { FormInspector } from './common';
 import { Datagrid, List } from '../list';
 import { TextField } from '../field';
 
-export default { title: 'ra-ui-materialui/input/NewTextInput' };
-
-const Wrapper = ({ children }) => (
-    <AdminContext defaultTheme="light">
-        <Create
-            resource="posts"
-            record={{ id: 123, title: 'Lorem ipsum' }}
-            sx={{ width: 600 }}
-        >
-            <SimpleForm>{children}</SimpleForm>
-        </Create>
-    </AdminContext>
-);
-
-export const Basic = () => (
-    <Wrapper>
-        <NewTextInput source="title" />
-        <FormInspector />
-    </Wrapper>
-);
-
-export const DefaultValue = () => (
-    <Wrapper>
-        <NewTextInput source="title" defaultValue="hello" />
-        <NewTextInput
-            source="title1"
-            label="Default john"
-            defaultValue="john"
-        />
-        <NewTextInput
-            source="title2"
-            label="Default empty string"
-            defaultValue=""
-        />
-        <NewTextInput source="title3" label="Default undefined" />
-        <FormInspector name="title" />
-        <FormInspector name="title1" />
-        <FormInspector name="title2" />
-        <FormInspector name="title3" />
-    </Wrapper>
-);
-
-export const HelperText = () => (
-    <Wrapper>
-        <NewTextInput source="title" />
-        <NewTextInput source="title" helperText={false} />
-        <NewTextInput
-            source="title"
-            helperText="Number of times the post was read"
-        />
-    </Wrapper>
-);
-
-export const Label = () => (
-    <Wrapper>
-        <NewTextInput source="title" />
-        <NewTextInput source="title" label={false} />
-        <NewTextInput source="title" label="label of title" />
-    </Wrapper>
-);
-
-export const NonFullWidth = () => (
-    <Wrapper>
-        <NewTextInput source="title" label="default" />
-        <NewTextInput
-            source="title"
-            label="Full Width False"
-            fullWidth={false}
-        />
-    </Wrapper>
-);
-
-export const Margin = () => (
-    <Wrapper>
-        <NewTextInput source="title" label="default (dense)" />
-        <NewTextInput source="title" label="none" margin="none" />
-        <NewTextInput source="title" label="normal" margin="normal" />
-    </Wrapper>
-);
-
-export const Variant = () => (
-    <Wrapper>
-        <NewTextInput source="title" label="default (filled)" />
-        <NewTextInput source="title" label="outlined" variant="outlined" />
-        <NewTextInput source="title" label="standard" variant="standard" />
-    </Wrapper>
-);
-
-export const Required = () => (
-    <AdminContext defaultTheme="light">
-        <Create
-            resource="posts"
-            record={{ id: 123, title: 'Lorem ipsum' }}
-            sx={{ width: 600 }}
-        >
-            <SimpleForm mode="onBlur">
-                <NewTextInput source="title" />
-                <NewTextInput source="title" required />
-                <NewTextInput source="title" validate={required()} />
-                <NewTextInput source="title" validate={[required()]} />
-            </SimpleForm>
-        </Create>
-    </AdminContext>
-);
-
-export const Error = () => (
-    <AdminContext defaultTheme="light">
-        <Create
-            resource="posts"
-            record={{ id: 123, title: 'Lorem ipsum' }}
-            sx={{ width: 600 }}
-        >
-            <SimpleForm
-                resolver={() => ({
-                    values: {},
-                    errors: {
-                        title: {
-                            type: 'custom',
-                            message: 'Special error message',
-                        },
-                    },
-                })}
-            >
-                <NewTextInput source="title" />
-            </SimpleForm>
-        </Create>
-    </AdminContext>
-);
-
-export const Sx = () => (
-    <Wrapper>
-        <NewTextInput
-            source="title"
-            sx={{
-                border: 'solid 1px red',
-                borderRadius: '5px',
-                '& .MuiInputLabel-root': { fontWeight: 'bold' },
-            }}
-        />
-    </Wrapper>
-);
-
-export const ExtraProps = () => (
-    <AdminContext defaultTheme="light">
-        <Create resource="posts" sx={{ width: 600 }}>
-            <SimpleForm>
-                <NewTextInput
-                    source="username"
-                    inputProps={{ autocomplete: 'off' }}
-                />
-            </SimpleForm>
-        </Create>
-    </AdminContext>
-);
-
-const FormStateInspector = () => {
-    const {
-        touchedFields,
-        isDirty,
-        dirtyFields,
-        isValid,
-        errors,
-    } = useFormState();
-    return (
-        <div>
-            form state:&nbsp;
-            <code style={{ backgroundColor: 'lightgrey' }}>
-                {JSON.stringify({
-                    touchedFields,
-                    isDirty,
-                    dirtyFields,
-                    isValid,
-                    errors,
-                })}
-            </code>
-        </div>
-    );
-};
-
-const FieldStateInspector = ({ name = 'title' }) => {
-    const formContext = useFormContext();
-    return (
-        <div>
-            {name}:
-            <code style={{ backgroundColor: 'lightgrey' }}>
-                {JSON.stringify(
-                    formContext.getFieldState(name, formContext.formState)
-                )}
-            </code>
-        </div>
-    );
-};
-
-export const FieldState = () => (
-    <Wrapper>
-        <NewTextInput source="title" />
-        <FormStateInspector />
-        <FieldStateInspector />
-    </Wrapper>
-);
-
-const AlwaysOnToolbar = (
-    <Toolbar>
-        <SaveButton alwaysEnable />
-    </Toolbar>
-);
-
-export const ValueUndefined = ({ onSuccess = console.log }) => (
-    <AdminContext
-        dataProvider={
-            {
-                getOne: () => Promise.resolve({ data: { id: 123 } }),
-                update: (resource, { data }) => Promise.resolve({ data }),
-            } as any
-        }
-        defaultTheme="light"
-    >
-        <Edit
-            resource="posts"
-            id="123"
-            sx={{ width: 600 }}
-            mutationOptions={{ onSuccess }}
-        >
-            <SimpleForm toolbar={AlwaysOnToolbar}>
-                <NewTextInput source="title" />
-                <FormInspector />
-            </SimpleForm>
-        </Edit>
-    </AdminContext>
-);
-
-export const ValueNull = ({ onSuccess = console.log }) => (
-    <AdminContext
-        dataProvider={
-            {
-                getOne: () =>
-                    Promise.resolve({ data: { id: 123, title: null } }),
-                update: (resource, { data }) => Promise.resolve({ data }),
-            } as any
-        }
-        defaultTheme="light"
-    >
-        <Edit
-            resource="posts"
-            id="123"
-            sx={{ width: 600 }}
-            mutationOptions={{ onSuccess }}
-        >
-            <SimpleForm toolbar={AlwaysOnToolbar}>
-                <NewTextInput source="title" />
-                <FormInspector />
-            </SimpleForm>
-        </Edit>
-    </AdminContext>
-);
-
-export const Parse = ({ onSuccess = console.log }) => (
-    <AdminContext defaultTheme="light">
-        <Create
-            resource="posts"
-            record={{ id: 123, title: 'Lorem ipsum' }}
-            sx={{ width: 600 }}
-            mutationOptions={{ onSuccess }}
-        >
-            <SimpleForm>
-                <NewTextInput
-                    source="title"
-                    parse={v => (v === 'foo' ? 'bar' : v)}
-                />
-            </SimpleForm>
-        </Create>
-    </AdminContext>
-);
+export default { title: 'ra-ui-materialui/input/InputErrors' };
 
 const FormDebugToolbar = () => (
     <Toolbar>
@@ -298,8 +25,8 @@ export const SimpleCreateOnSubmit = () => (
     <AdminContext defaultTheme="light">
         <Create resource="posts" sx={{ width: 600 }}>
             <SimpleForm mode="onSubmit" toolbar={<FormDebugToolbar />}>
-                <NewTextInput source="title" validate={required()} />
-                <NewTextInput source="author" validate={required()} />
+                <TextInput source="title" validate={required()} />
+                <TextInput source="author" validate={required()} />
             </SimpleForm>
         </Create>
     </AdminContext>
@@ -309,8 +36,8 @@ export const SimpleCreateOnChange = () => (
     <AdminContext defaultTheme="light">
         <Create resource="posts" sx={{ width: 600 }}>
             <SimpleForm mode="onChange" toolbar={<FormDebugToolbar />}>
-                <NewTextInput source="title" validate={required()} />
-                <NewTextInput source="author" validate={required()} />
+                <TextInput source="title" validate={required()} />
+                <TextInput source="author" validate={required()} />
             </SimpleForm>
         </Create>
     </AdminContext>
@@ -335,8 +62,8 @@ export const SimpleEditOnSubmit = () => (
     >
         <Edit resource="posts" id={123} sx={{ width: 600 }}>
             <SimpleForm mode="onSubmit" toolbar={<FormDebugToolbar />}>
-                <NewTextInput source="title" validate={required()} />
-                <NewTextInput source="author" validate={required()} />
+                <TextInput source="title" validate={required()} />
+                <TextInput source="author" validate={required()} />
             </SimpleForm>
         </Edit>
     </AdminContext>
@@ -361,8 +88,8 @@ export const SimpleEditOnChange = () => (
     >
         <Edit resource="posts" id={123} sx={{ width: 600 }}>
             <SimpleForm mode="onChange" toolbar={<FormDebugToolbar />}>
-                <NewTextInput source="title" validate={required()} />
-                <NewTextInput source="author" validate={required()} />
+                <TextInput source="title" validate={required()} />
+                <TextInput source="author" validate={required()} />
             </SimpleForm>
         </Edit>
     </AdminContext>
@@ -387,8 +114,8 @@ export const CreateGlobalValidationOnSubmit = () => (
                 validate={postValidate}
                 toolbar={<FormDebugToolbar />}
             >
-                <NewTextInput source="title" isRequired />
-                <NewTextInput source="author" isRequired />
+                <TextInput source="title" isRequired />
+                <TextInput source="author" isRequired />
             </SimpleForm>
         </Create>
     </AdminContext>
@@ -402,8 +129,8 @@ export const CreateGlobalValidationOnChange = () => (
                 validate={postValidate}
                 toolbar={<FormDebugToolbar />}
             >
-                <NewTextInput source="title" isRequired />
-                <NewTextInput source="author" isRequired />
+                <TextInput source="title" isRequired />
+                <TextInput source="author" isRequired />
             </SimpleForm>
         </Create>
     </AdminContext>
@@ -425,8 +152,8 @@ export const CreateGlobalValidationDependentOnSubmit = () => (
                 validate={postValidateDependent}
                 toolbar={<FormDebugToolbar />}
             >
-                <NewTextInput source="title" />
-                <NewTextInput source="author" />
+                <TextInput source="title" />
+                <TextInput source="author" />
             </SimpleForm>
         </Create>
     </AdminContext>
@@ -440,8 +167,8 @@ export const CreateGlobalValidationDependentOnChange = () => (
                 validate={postValidateDependent}
                 toolbar={<FormDebugToolbar />}
             >
-                <NewTextInput source="title" />
-                <NewTextInput source="author" />
+                <TextInput source="title" />
+                <TextInput source="author" />
             </SimpleForm>
         </Create>
     </AdminContext>
@@ -466,8 +193,8 @@ export const InvalidEditOnSubmit = () => (
     >
         <Edit resource="posts" id={123} sx={{ width: 600 }}>
             <SimpleForm mode="onSubmit" toolbar={<FormDebugToolbar />}>
-                <NewTextInput source="title" validate={required()} />
-                <NewTextInput source="author" validate={required()} />
+                <TextInput source="title" validate={required()} />
+                <TextInput source="author" validate={required()} />
             </SimpleForm>
         </Edit>
     </AdminContext>
@@ -492,8 +219,8 @@ export const InvalidEditOnChange = () => (
     >
         <Edit resource="posts" id={123} sx={{ width: 600 }}>
             <SimpleForm mode="onChange" toolbar={<FormDebugToolbar />}>
-                <NewTextInput source="title" validate={required()} />
-                <NewTextInput source="author" validate={required()} />
+                <TextInput source="title" validate={required()} />
+                <TextInput source="author" validate={required()} />
             </SimpleForm>
         </Edit>
     </AdminContext>
@@ -527,9 +254,9 @@ export const ManualError = () => (
         <Create resource="posts" sx={{ width: 600 }}>
             <SimpleForm mode="onSubmit" toolbar={<FormDebugToolbar />}>
                 <TriggerErrorButton source="title" />
-                <NewTextInput source="title" />
+                <TextInput source="title" />
                 <TriggerErrorButton source="author" />
-                <NewTextInput source="author" />
+                <TextInput source="author" />
             </SimpleForm>
         </Create>
     </AdminContext>
@@ -584,7 +311,7 @@ const WizardToolbar = ({ step, goNext, goPrev }: any) => {
     );
 };
 
-export const WizardForm = () => {
+export const InWizardForm = () => {
     const [step, setStep] = React.useState(1);
     const goNext = (event: any) => {
         event.preventDefault();
@@ -624,18 +351,12 @@ export const WizardForm = () => {
                 >
                     <FormGroupContextProvider name="step-1">
                         {step === 1 ? (
-                            <NewTextInput
-                                source="title"
-                                validate={required()}
-                            />
+                            <TextInput source="title" validate={required()} />
                         ) : null}
                     </FormGroupContextProvider>
                     <FormGroupContextProvider name="step-2">
                         {step === 2 ? (
-                            <NewTextInput
-                                source="author"
-                                validate={required()}
-                            />
+                            <TextInput source="author" validate={required()} />
                         ) : null}
                     </FormGroupContextProvider>
                 </SimpleForm>
@@ -644,9 +365,39 @@ export const WizardForm = () => {
     );
 };
 
+export const InTabbedForm = () => (
+    <AdminContext
+        defaultTheme="light"
+        dataProvider={
+            {
+                getOne: () =>
+                    Promise.resolve({
+                        data: {
+                            id: 123,
+                            title: '',
+                            author: '',
+                        },
+                    }),
+                update: (resource, { data }) => Promise.resolve({ data }),
+            } as any
+        }
+    >
+        <Edit resource="posts" id={123} sx={{ width: 600 }}>
+            <TabbedForm toolbar={<FormDebugToolbar />}>
+                <TabbedForm.Tab label="step-1">
+                    <TextInput source="title" validate={required()} />
+                </TabbedForm.Tab>
+                <TabbedForm.Tab label="step-2">
+                    <TextInput source="author" validate={required()} />
+                </TabbedForm.Tab>
+            </TabbedForm>
+        </Edit>
+    </AdminContext>
+);
+
 const postFilters = [
-    <NewTextInput source="title" validate={required()} />,
-    <NewTextInput source="author" validate={required()} />,
+    <TextInput source="title" validate={required()} />,
+    <TextInput source="author" validate={required()} />,
 ];
 
 export const FilterForm = () => (
@@ -674,5 +425,43 @@ export const FilterForm = () => (
                 <TextField source="author" />
             </Datagrid>
         </List>
+    </AdminContext>
+);
+
+export const HelperTextCustom = () => (
+    <AdminContext defaultTheme="light">
+        <Create resource="posts" sx={{ width: 600 }}>
+            <SimpleForm mode="onSubmit" toolbar={<FormDebugToolbar />}>
+                <TextInput
+                    source="title"
+                    validate={required()}
+                    helperText="Please fill in a title"
+                />
+                <TextInput
+                    source="author"
+                    validate={required()}
+                    helperText="Please fill in an author"
+                />
+            </SimpleForm>
+        </Create>
+    </AdminContext>
+);
+
+export const HelperTextFalse = () => (
+    <AdminContext defaultTheme="light">
+        <Create resource="posts" sx={{ width: 600 }}>
+            <SimpleForm mode="onSubmit" toolbar={<FormDebugToolbar />}>
+                <TextInput
+                    source="title"
+                    validate={required()}
+                    helperText={false}
+                />
+                <TextInput
+                    source="author"
+                    validate={required()}
+                    helperText={false}
+                />
+            </SimpleForm>
+        </Create>
     </AdminContext>
 );

@@ -3,7 +3,7 @@ import { isValidElement, ReactElement } from 'react';
 import { useTranslate, ValidationError, ValidationErrorMessage } from 'ra-core';
 
 export const InputHelperText = (props: InputHelperTextProps) => {
-    const { helperText, touched, error } = props;
+    const { helperText, touched = true, error } = props;
     const translate = useTranslate();
 
     if (touched && error) {
@@ -35,5 +35,5 @@ const defaultInnerHTML = { __html: '&#8203;' };
 export interface InputHelperTextProps {
     helperText?: string | ReactElement | boolean;
     error?: ValidationErrorMessage;
-    touched: boolean;
+    touched?: boolean;
 }
