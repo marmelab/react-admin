@@ -1,7 +1,6 @@
 import * as React from 'react';
-import { FormGroupContextProvider, required, useFormGroup } from 'ra-core';
+import { required } from 'ra-core';
 import { useFormContext } from 'react-hook-form';
-import { Button } from '@mui/material';
 
 import { TextInput } from './TextInput';
 import { AdminContext } from '../AdminContext';
