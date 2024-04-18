@@ -70,6 +70,7 @@ export interface ShowProps<RecordType extends RaRecord = any> {
     component?: ElementType;
     disableAuthentication?: boolean;
     emptyWhileLoading?: boolean;
+    hasEdit?: boolean;
     id?: Identifier;
     queryOptions?: UseQueryOptions<RecordType> & { meta?: any };
     resource?: string;

@@ -120,10 +120,12 @@ export const BulkDeleteWithConfirmButton = (
                         _: inflection.humanize(
                             translate(`resources.${resource}.name`, {
                                 smart_count: selectedIds.length,
-                                _: inflection.inflect(
-                                    resource,
-                                    selectedIds.length
-                                ),
+                                _: resource
+                                    ? inflection.inflect(
+                                          resource,
+                                          selectedIds.length
+                                      )
+                                    : undefined,
                             }),
                             true
                         ),

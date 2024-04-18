@@ -1,7 +1,8 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
-
 import { useResourceDefinition } from 'ra-core';
+
+import { ToolbarProps } from '@mui/material';
 import { ShowButton } from '../button';
 import TopToolbar from '../layout/TopToolbar';
 
@@ -30,28 +31,25 @@ import TopToolbar from '../layout/TopToolbar';
  *         </Edit>
  *     );
  */
-export const EditActions = ({ className, ...rest }: EditActionsProps) => {
-    const { hasShow } = useResourceDefinition(rest);
-
+export const EditActions = (props: EditActionsProps) => {
+    const { hasShow } = useResourceDefinition(props);
     return (
-        <TopToolbar className={className} {...sanitizeRestProps(rest)}>
+        <TopToolbar {...sanitizeRestProps(props)}>
             {hasShow && <ShowButton />}
         </TopToolbar>
     );
 };
 
-/* eslint-disable @typescript-eslint/no-unused-vars */
 const sanitizeRestProps = ({
-    hasCreate = null,
-    hasEdit = null,
-    hasShow = null,
-    hasList = null,
+    hasCreate,
+    hasEdit,
+    hasShow,
+    hasList,
+    resource,
     ...rest
-}) => rest;
-/* eslint-enable @typescript-eslint/no-unused-vars */
+}: EditActionsProps) => rest;
 
-export interface EditActionsProps {
-    className?: string;
+export interface EditActionsProps extends ToolbarProps {
     hasCreate?: boolean;
     hasEdit?: boolean;
     hasList?: boolean;

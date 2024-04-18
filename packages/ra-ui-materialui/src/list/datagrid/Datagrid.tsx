@@ -167,6 +167,7 @@ export const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
     // we manage row selection at the datagrid level to allow shift+click to select an array of rows
     const handleToggleItem = useCallback(
         (id, event) => {
+            if (!data) return;
             const ids = data.map(record => record.id);
             const lastSelectedIndex = ids.indexOf(lastSelected.current);
             lastSelected.current = event.target.checked ? id : null;
@@ -182,7 +183,7 @@ export const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
                     ? union(selectedIds, idsBetweenSelections)
                     : difference(selectedIds, idsBetweenSelections);
 
-                onSelect(
+                onSelect?.(
                     isRowSelectable
                         ? newSelectedIds.filter((id: Identifier) =>
                               isRowSelectable(
@@ -192,7 +193,7 @@ export const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
                         : newSelectedIds
                 );
             } else {
-                onToggleItem(id);
+                onToggleItem?.(id);
             }
         },
         [data, isRowSelectable, onSelect, onToggleItem, selectedIds]
@@ -259,7 +260,6 @@ export const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
                                     hasBulkActions,
                                     isRowSelectable,
                                     onSelect,
-                                    resource,
                                     selectedIds,
                                     setSort,
                                 },

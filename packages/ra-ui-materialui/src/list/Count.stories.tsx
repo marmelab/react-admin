@@ -1,6 +1,10 @@
 import * as React from 'react';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
-import { DataProviderContext, TestMemoryRouter } from 'ra-core';
+import {
+    DataProviderContext,
+    ResourceContextProvider,
+    TestMemoryRouter,
+} from 'ra-core';
 
 import { Count } from './Count';
 
@@ -31,7 +35,9 @@ export const Wrapper = ({ dataProvider, children }) => (
                     })
                 }
             >
-                {children}
+                <ResourceContextProvider value="posts">
+                    {children}
+                </ResourceContextProvider>
             </QueryClientProvider>
         </DataProviderContext.Provider>
     </TestMemoryRouter>

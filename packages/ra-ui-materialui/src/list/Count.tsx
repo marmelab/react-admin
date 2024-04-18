@@ -40,6 +40,11 @@ export const Count = (props: CountProps) => {
         ...rest
     } = props;
     const resource = useResourceContext(props);
+    if (!resource) {
+        throw new Error(
+            'The Count component must be used inside a ResourceContext or must be passed a resource prop.'
+        );
+    }
     const oneSecondHasPassed = useTimeout(timeout);
     const createPath = useCreatePath();
 

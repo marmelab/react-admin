@@ -52,7 +52,7 @@ export const BulkExportButton = (props: BulkExportButtonProps) => {
     const notify = useNotify();
     const handleClick = useCallback(
         event => {
-            exporter &&
+            if (exporter && resource) {
                 dataProvider
                     .getMany(resource, { ids: selectedIds, meta })
                     .then(({ data }) =>
@@ -69,6 +69,7 @@ export const BulkExportButton = (props: BulkExportButtonProps) => {
                             type: 'error',
                         });
                     });
+            }
             if (typeof onClick === 'function') {
                 onClick(event);
             }

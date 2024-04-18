@@ -128,7 +128,9 @@ export const UpdateWithConfirmButton = (
                         _: inflection.humanize(
                             translate(`resources.${resource}.name`, {
                                 smart_count: 1,
-                                _: inflection.inflect(resource, 1),
+                                _: resource
+                                    ? inflection.inflect(resource, 1)
+                                    : undefined,
                             }),
                             true
                         ),

@@ -9,9 +9,11 @@ import {
     useResourceDefinition,
 } from 'ra-core';
 
-import { EditActions as DefaultActions } from './EditActions';
+import { EditActions } from './EditActions';
 import { Title } from '../layout';
 import { EditProps } from '../types';
+
+const defaultActions = <EditActions />;
 
 export const EditView = (props: EditViewProps) => {
     const {
@@ -21,7 +23,6 @@ export const EditView = (props: EditViewProps) => {
         className,
         component: Content = Card,
         title,
-        mutationMode,
         ...rest
     } = props;
 
@@ -29,11 +30,7 @@ export const EditView = (props: EditViewProps) => {
     const { resource, defaultTitle, record } = useEditContext();
 
     const finalActions =
-        typeof actions === 'undefined' && hasShow ? (
-            <DefaultActions />
-        ) : (
-            actions
-        );
+        typeof actions === 'undefined' && hasShow ? defaultActions : actions;
     if (!children) {
         return null;
     }
@@ -62,7 +59,17 @@ export const EditView = (props: EditViewProps) => {
     );
 };
 
-export type EditViewProps = EditProps;
+export type EditViewProps = Omit<
+    EditProps,
+    | 'resource'
+    | 'id'
+    | 'mutationMode'
+    | 'mutationOptions'
+    | 'queryOptions'
+    | 'redirect'
+    | 'transform'
+    | 'disableAuthentication'
+>;
 
 EditView.propTypes = {
     actions: PropTypes.oneOfType([PropTypes.element, PropTypes.bool]),
@@ -72,15 +79,7 @@ EditView.propTypes = {
     defaultTitle: PropTypes.any,
     hasList: PropTypes.bool,
     hasShow: PropTypes.bool,
-    mutationMode: PropTypes.oneOf(['pessimistic', 'optimistic', 'undoable']),
-    mutationOptions: PropTypes.object,
     record: PropTypes.object,
-    redirect: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.bool,
-        PropTypes.func,
-    ]),
-    resource: PropTypes.string,
     save: PropTypes.func,
     title: PropTypes.node,
 };

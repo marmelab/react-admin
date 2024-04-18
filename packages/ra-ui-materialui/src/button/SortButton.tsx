@@ -73,6 +73,11 @@ const SortButton = (props: SortButtonProps) => {
         event: React.MouseEvent<HTMLLIElement, MouseEvent>
     ) => {
         const field = event.currentTarget.dataset.sort;
+        if (!field) {
+            throw new Error(
+                '<SortButton> MenuItems should have a data-sort attribute'
+            );
+        }
         setSort({
             field,
             order: field === sort.field ? inverseOrder(sort.order) : 'ASC',
