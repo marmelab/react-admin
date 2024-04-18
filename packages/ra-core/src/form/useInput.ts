@@ -132,7 +132,7 @@ export const useInput = <ValueType = any>(
     };
 
     return {
-        id: id || finalSource,
+        id: id || `use-input-${finalSource}`,
         field,
         fieldState,
         formState,
