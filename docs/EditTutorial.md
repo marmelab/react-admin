@@ -890,7 +890,7 @@ const AccordionSectionTitle = ({ children, name }) => {
 
     return (
         <Typography color={
-              !formGroupState.isValid && formGroupState.isDirty
+              !formGroupState.isValid
                 ? 'error'
                 : 'inherit'
           }
