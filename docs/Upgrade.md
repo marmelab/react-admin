@@ -906,6 +906,16 @@ The following components are not affected and can still be used in standalone mo
 - `<SimpleList>`
 - `<SingleFieldList>`
 
+## Inputs No Longer Require To Be Touched To Display A Validation Error
+
+In previous versions, validation errors were only displayed after the input was touched or the form was submitted. In v5, validation errors are fully entrusted to the form library (`react-hook-form`), which is responsible to decide when to display them.
+
+For most use-cases this will have no impact, because `react-hook-form` works the same way (it will wait for an input to be touched before triggering its validation).
+
+But this should help with some advanced cases, for instance if some validation errors need to be displayed on untouched fields.
+
+It will also improve the user experience, as the form `isValid` state will be consistent with error messages displayed on inputs, regardless of whether they have been touched or not.
+
 ## Upgrading to v4
 
 If you are on react-admin v3, follow the [Upgrading to v4](https://marmelab.com/react-admin/doc/4.16/Upgrade.html) guide before upgrading to v5.
