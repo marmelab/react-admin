@@ -910,6 +910,8 @@ The following components are not affected and can still be used in standalone mo
 
 In previous versions, validation errors were only displayed after the input was touched or the form was submitted. In v5, validation errors are fully entrusted to the form library (`react-hook-form`), which is responsible to decide when to display them.
 
+**Tip:** You can use the [`mode`](https://react-hook-form.com/docs/useform#mode) prop to configure the validation strategy to your needs (`onSubmit`, `onBlur`, `onChange`, or `onTouched`).
+
 For most use-cases this will have no impact, because `react-hook-form` works the same way (it will wait for an input to be touched before triggering its validation).
 
 But this should help with some advanced cases, for instance if some validation errors need to be displayed on untouched fields.
