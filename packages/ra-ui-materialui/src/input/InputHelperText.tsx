@@ -3,10 +3,10 @@ import { isValidElement, ReactElement } from 'react';
 import { useTranslate, ValidationError, ValidationErrorMessage } from 'ra-core';
 
 export const InputHelperText = (props: InputHelperTextProps) => {
-    const { helperText, touched = true, error } = props;
+    const { helperText, error } = props;
     const translate = useTranslate();
 
-    if (touched && error) {
+    if (error) {
         return <ValidationError error={error} />;
     }
 
@@ -35,5 +35,4 @@ const defaultInnerHTML = { __html: '&#8203;' };
 export interface InputHelperTextProps {
     helperText?: string | ReactElement | boolean;
     error?: ValidationErrorMessage;
-    touched?: boolean;
 }
