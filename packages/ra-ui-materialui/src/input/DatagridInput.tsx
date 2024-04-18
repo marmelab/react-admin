@@ -150,11 +150,6 @@ export const DatagridInput = (props: DatagridInputProps) => {
                     </>
                 )}
                 <InputHelperText
-                    touched={
-                        fieldState.isTouched ||
-                        formState.isSubmitted ||
-                        fetchError
-                    }
                     error={fieldState.error?.message || fetchError?.message}
                 />
             </ListContextProvider>

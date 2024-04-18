@@ -998,11 +998,7 @@ import { Select, MenuItem } from "@mui/material";
 import { InputProps, useInput } from "react-admin";
 
 const SexInput = (props: InputProps) => {
-    const {
-        field,
-        fieldState: { isTouched, invalid, error },
-        formState: { isSubmitted },
-    } = useInput(props);
+    const { field } = useInput(props);
 
     return (
         <Select label="Sex" {...field}>

@@ -41,8 +41,7 @@ export const TextInput = (props: TextInputProps) => {
     } = props;
     const {
         field,
-        fieldState: { error, invalid, isTouched },
-        formState: { isSubmitted },
+        fieldState: { error, invalid },
         id,
         isRequired,
     } = useInput({
