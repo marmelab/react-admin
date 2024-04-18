@@ -61,13 +61,7 @@ const orderFilters = [
         />
     </ReferenceInput>,
     <DateInput source="date_gte" parse={d => new Date(d).toISOString()} />,
-    <DateInput
-        source="date_lte"
-        parse={d => {
-            console.log(d, new Date(d).toISOString());
-            return new Date(d).toISOString();
-        }}
-    />,
+    <DateInput source="date_lte" parse={d => new Date(d).toISOString()} />,
     <NumberInput source="total_gte" />,
     <NullableBooleanInput source="returned" />,
 ];
