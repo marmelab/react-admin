@@ -27,17 +27,11 @@ run-tutorial: ## run the tutorial example
 run-demo: ## run the ecommerce example
 	@yarn run-demo
 
-run-demo-watch: ## run the ecommerce example and watch changes in ra dependencies
-	@yarn run-demo-watch
-
 build-demo: ## compile the ecommerce example to static js
 	@yarn build-demo
 
 run-graphql-demo: ## run the ecommerce example with a graphql backend
 	@yarn run-graphql-demo
-
-run-graphql-demo-watch: ## run the ecommerce example with a graphql backend and watch changes in ra dependencies
-	@yarn run-graphql-demo-watch
 
 run-crm: ## run the crm example
 	@yarn run-crm
