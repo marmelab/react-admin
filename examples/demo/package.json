@@ -18,7 +18,7 @@
         "graphql": "^15.6.0",
         "graphql-tag": "^2.12.6",
         "inflection": "~1.12.0",
-        "json-graphql-server": "~2.3.0",
+        "json-graphql-server": "~3.0.1",
         "prop-types": "^15.8.1",
         "query-string": "^7.1.1",
         "ra-data-fakerest": "^5.0.0-alpha.0",
