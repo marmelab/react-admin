@@ -264,8 +264,6 @@ const RichTextInputContent = ({
     error,
     helperText,
     id,
-    isTouched,
-    isSubmitted,
     invalid,
     toolbar,
 }: RichTextInputContentProps) => (
@@ -279,18 +277,10 @@ const RichTextInputContent = ({
             />
         </TiptapEditorProvider>
         <FormHelperText
-            className={
-                (isTouched || isSubmitted) && invalid
-                    ? 'ra-rich-text-input-error'
-                    : ''
-            }
-            error={(isTouched || isSubmitted) && invalid}
+            className={invalid ? 'ra-rich-text-input-error' : ''}
+            error={invalid}
         >
-            <InputHelperText
-                touched={isTouched || isSubmitted}
-                error={error?.message}
-                helperText={helperText}
-            />
+            <InputHelperText error={error?.message} helperText={helperText} />
         </FormHelperText>
     </>
 );

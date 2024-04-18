@@ -38,8 +38,7 @@ export const BooleanInput = (props: BooleanInputProps) => {
         id,
         field,
         isRequired,
-        fieldState: { error, invalid, isTouched },
-        formState: { isSubmitted },
+        fieldState: { error, invalid },
     } = useInput({
         defaultValue,
         format,
@@ -62,8 +61,7 @@ export const BooleanInput = (props: BooleanInputProps) => {
         [field]
     );
 
-    const renderHelperText =
-        helperText !== false || ((isTouched || isSubmitted) && invalid);
+    const renderHelperText = helperText !== false || invalid;
 
     return (
         <FormGroup
@@ -95,9 +93,8 @@ export const BooleanInput = (props: BooleanInputProps) => {
                 }
             />
             {renderHelperText ? (
-                <FormHelperText error={(isTouched || isSubmitted) && invalid}>
+                <FormHelperText error={invalid}>
                     <InputHelperText
-                        touched={isTouched || isSubmitted}
                         error={error?.message}
                         helperText={helperText}
                     />

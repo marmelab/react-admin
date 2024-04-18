@@ -37,7 +37,7 @@ export const DateTimeInput = ({
     variant,
     ...rest
 }: DateTimeInputProps) => {
-    const { field, fieldState, formState, id, isRequired } = useInput({
+    const { field, fieldState, id, isRequired } = useInput({
         defaultValue,
         format,
         parse,
@@ -49,10 +49,8 @@ export const DateTimeInput = ({
         ...rest,
     });
 
-    const { error, invalid, isTouched } = fieldState;
-    const { isSubmitted } = formState;
-    const renderHelperText =
-        helperText !== false || ((isTouched || isSubmitted) && invalid);
+    const { error, invalid } = fieldState;
+    const renderHelperText = helperText !== false || invalid;
     return (
         <TextField
             id={id}
@@ -62,11 +60,10 @@ export const DateTimeInput = ({
             size="small"
             variant={variant}
             margin={margin}
-            error={(isTouched || isSubmitted) && invalid}
+            error={invalid}
             helperText={
                 renderHelperText ? (
                     <InputHelperText
-                        touched={isTouched || isSubmitted}
                         error={error?.message}
                         helperText={helperText}
                     />

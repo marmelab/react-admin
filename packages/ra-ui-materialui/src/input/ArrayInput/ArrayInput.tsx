@@ -123,8 +123,6 @@ export const ArrayInput = (props: ArrayInputProps) => {
         },
     });
 
-    const { isSubmitted } = formState;
-
     // We need to register the array itself as a field to enable validation at its level
     useEffect(() => {
         register(finalSource);
@@ -142,7 +140,7 @@ export const ArrayInput = (props: ArrayInputProps) => {
         fieldArrayInputControl: fieldProps,
     });
 
-    const { isDirty, error } = getFieldState(finalSource, formState);
+    const { error } = getFieldState(finalSource, formState);
 
     if (isPending) {
         return (
@@ -151,8 +149,7 @@ export const ArrayInput = (props: ArrayInputProps) => {
             </Labeled>
         );
     }
-    const renderHelperText =
-        helperText !== false || ((isDirty || isSubmitted) && !!error);
+    const renderHelperText = helperText !== false || !!error;
 
     return (
         <Root
@@ -164,14 +161,14 @@ export const ArrayInput = (props: ArrayInputProps) => {
                 ArrayInputClasses.root,
                 className
             )}
-            error={(isDirty || isSubmitted) && !!error}
+            error={!!error}
             {...sanitizeInputRestProps(rest)}
         >
             <InputLabel
                 htmlFor={finalSource}
                 className={ArrayInputClasses.label}
                 shrink
-                error={(isDirty || isSubmitted) && !!error}
+                error={!!error}
             >
                 <FieldTitle
                     label={label}
@@ -192,9 +189,8 @@ export const ArrayInput = (props: ArrayInputProps) => {
                 })}
             </ArrayInputContext.Provider>
             {renderHelperText ? (
-                <FormHelperText error={(isDirty || isSubmitted) && !!error}>
+                <FormHelperText error={!!error}>
                     <InputHelperText
-                        touched={isDirty || isSubmitted}
                         // root property is applicable to built-in validation only,
                         // Resolvers are yet to support useFieldArray root level validation.
                         // Reference: https://react-hook-form.com/docs/usefieldarray

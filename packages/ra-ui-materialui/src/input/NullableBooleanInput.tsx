@@ -34,8 +34,7 @@ export const NullableBooleanInput = (props: NullableBooleanInputProps) => {
 
     const {
         field,
-        fieldState: { error, invalid, isTouched },
-        formState: { isSubmitted },
+        fieldState: { error, invalid },
         id,
         isRequired,
     } = useInput({
@@ -48,8 +47,7 @@ export const NullableBooleanInput = (props: NullableBooleanInputProps) => {
         validate,
         ...rest,
     });
-    const renderHelperText =
-        helperText !== false || ((isTouched || isSubmitted) && invalid);
+    const renderHelperText = helperText !== false || invalid;
     return (
         <StyledTextField
             id={id}
@@ -71,11 +69,10 @@ export const NullableBooleanInput = (props: NullableBooleanInputProps) => {
                     isRequired={isRequired}
                 />
             }
-            error={(isTouched || isSubmitted) && invalid}
+            error={invalid}
             helperText={
                 renderHelperText ? (
                     <InputHelperText
-                        touched={isTouched || isSubmitted}
                         error={error?.message}
                         helperText={helperText}
                     />

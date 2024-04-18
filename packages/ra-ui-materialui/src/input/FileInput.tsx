@@ -85,7 +85,6 @@ export const FileInput = (props: FileInputProps) => {
         id,
         field: { onChange, onBlur, value },
         fieldState,
-        formState: { isSubmitted },
         isRequired,
     } = useInput({
         format: format || transformFiles,
@@ -94,7 +93,7 @@ export const FileInput = (props: FileInputProps) => {
         validate,
         ...rest,
     });
-    const { isTouched, error, invalid } = fieldState;
+    const { error, invalid } = fieldState;
     const files = value ? (Array.isArray(value) ? value : [value]) : [];
 
     const onDrop = (newFiles, rejectedFiles, event) => {
@@ -151,8 +150,7 @@ export const FileInput = (props: FileInputProps) => {
         onDrop,
     });
 
-    const renderHelperText =
-        helperText !== false || ((isTouched || isSubmitted) && invalid);
+    const renderHelperText = helperText !== false || invalid;
 
     return (
         <StyledLabeled
@@ -162,7 +160,7 @@ export const FileInput = (props: FileInputProps) => {
             source={source}
             resource={resource}
             isRequired={isRequired}
-            color={(isTouched || isSubmitted) && invalid ? 'error' : undefined}
+            color={invalid ? 'error' : undefined}
             {...sanitizeInputRestProps(rest)}
         >
             <>
@@ -188,11 +186,8 @@ export const FileInput = (props: FileInputProps) => {
                     )}
                 </div>
                 {renderHelperText ? (
-                    <FormHelperText
-                        error={(isTouched || isSubmitted) && invalid}
-                    >
+                    <FormHelperText error={invalid}>
                         <InputHelperText
-                            touched={isTouched || isSubmitted}
                             error={error?.message}
                             helperText={helperText}
                         />

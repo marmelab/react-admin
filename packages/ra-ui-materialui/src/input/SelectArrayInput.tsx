@@ -146,8 +146,7 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
     const {
         field,
         isRequired,
-        fieldState: { error, invalid, isTouched },
-        formState: { isSubmitted },
+        fieldState: { error, invalid },
         id,
     } = useInput({
         format,
@@ -278,17 +277,14 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
                   ),
               }
             : {};
-    const renderHelperText =
-        !!fetchError ||
-        helperText !== false ||
-        ((isTouched || isSubmitted) && invalid);
+    const renderHelperText = !!fetchError || helperText !== false || invalid;
 
     return (
         <>
             <StyledFormControl
                 margin={margin}
                 className={clsx('ra-input', `ra-input-${source}`, className)}
-                error={fetchError || ((isTouched || isSubmitted) && invalid)}
+                error={fetchError || invalid}
                 variant={variant}
                 {...sanitizeRestProps(rest)}
             >
@@ -317,9 +313,7 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
                         />
                     }
                     multiple
-                    error={
-                        !!fetchError || ((isTouched || isSubmitted) && invalid)
-                    }
+                    error={!!fetchError || invalid}
                     renderValue={(selected: any[]) => (
                         <div className={SelectArrayInputClasses.chips}>
                             {(Array.isArray(selected) ? selected : [])
@@ -351,11 +345,8 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
                     {finalChoices.map(renderMenuItem)}
                 </Select>
                 {renderHelperText ? (
-                    <FormHelperText
-                        error={fetchError || (isTouched && !!error)}
-                    >
+                    <FormHelperText error={fetchError || !!error}>
                         <InputHelperText
-                            touched={isTouched || isSubmitted || fetchError}
                             error={error?.message || fetchError?.message}
                             helperText={helperText}
                         />

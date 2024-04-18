@@ -4,40 +4,34 @@ import { render } from '@testing-library/react';
 import { InputHelperText } from './InputHelperText';
 
 describe('InputHelperText', () => {
-    it('does render empty string when the input has not been touched yet and has no helper text', () => {
-        const { container } = render(
-            <InputHelperText touched={false} error="Crap!" />
-        );
-        expect(container.innerHTML).toBe('<span>​</span>');
-    });
-
     it('renders the helperText when there is no error', () => {
         const { getByText } = render(
-            <InputHelperText helperText="Please help!" touched />
+            <InputHelperText helperText="Please help!" />
         );
 
         expect(getByText('Please help!')).not.toBeNull();
     });
 
-    it('renders the helperText when there is an error but the input has not been touched yet', () => {
+    it('renders the error instead of the helperText when there is an error', () => {
         const { getByText, queryByText } = render(
-            <InputHelperText
-                helperText="Please help!"
-                touched={false}
-                error="Crap!"
-            />
-        );
-
-        expect(getByText('Please help!')).not.toBeNull();
-        expect(queryByText('Crap!')).toBeNull();
-    });
-
-    it('renders the error instead of the helperText when there is an error and the input was touched', () => {
-        const { getByText, queryByText } = render(
-            <InputHelperText helperText="Please help!" touched error="Crap!" />
+            <InputHelperText helperText="Please help!" error="Crap!" />
         );
 
         expect(queryByText('Please help!')).toBeNull();
+        expect(getByText('Crap!')).not.toBeNull();
+    });
+
+    it('renders an empty string when there is no error and helperText is false', () => {
+        const { container } = render(<InputHelperText helperText={false} />);
+
+        expect(container.innerHTML).toBe('');
+    });
+
+    it('renders the error when there is an error and helperText is false', () => {
+        const { getByText } = render(
+            <InputHelperText helperText={false} error="Crap!" />
+        );
+
         expect(getByText('Crap!')).not.toBeNull();
     });
 });

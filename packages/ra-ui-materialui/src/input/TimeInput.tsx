@@ -60,7 +60,7 @@ export const TimeInput = ({
     variant,
     ...rest
 }: TimeInputProps) => {
-    const { field, fieldState, formState, id, isRequired } = useInput({
+    const { field, fieldState, id, isRequired } = useInput({
         defaultValue,
         format,
         parse,
@@ -72,11 +72,9 @@ export const TimeInput = ({
         ...rest,
     });
 
-    const { error, invalid, isTouched } = fieldState;
-    const { isSubmitted } = formState;
+    const { error, invalid } = fieldState;
 
-    const renderHelperText =
-        helperText !== false || ((isTouched || isSubmitted) && invalid);
+    const renderHelperText = helperText !== false || invalid;
 
     return (
         <TextField
@@ -87,11 +85,10 @@ export const TimeInput = ({
             size="small"
             variant={variant}
             margin={margin}
-            error={(isTouched || isSubmitted) && invalid}
+            error={invalid}
             helperText={
                 renderHelperText ? (
                     <InputHelperText
-                        touched={isTouched || isSubmitted}
                         error={error?.message}
                         helperText={helperText}
                     />

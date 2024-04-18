@@ -41,8 +41,7 @@ export const TextInput = (props: TextInputProps) => {
     } = props;
     const {
         field,
-        fieldState: { error, invalid, isTouched },
-        formState: { isSubmitted },
+        fieldState: { error, invalid },
         id,
         isRequired,
     } = useInput({
@@ -58,8 +57,7 @@ export const TextInput = (props: TextInputProps) => {
         ...rest,
     });
 
-    const renderHelperText =
-        helperText !== false || ((isTouched || isSubmitted) && invalid);
+    const renderHelperText = helperText !== false || invalid;
 
     return (
         <ResettableTextField
@@ -76,11 +74,10 @@ export const TextInput = (props: TextInputProps) => {
                     />
                 ) : null
             }
-            error={(isTouched || isSubmitted) && invalid}
+            error={invalid}
             helperText={
                 renderHelperText ? (
                     <InputHelperText
-                        touched={isTouched || isSubmitted}
                         error={error?.message}
                         helperText={helperText}
                     />
