@@ -38,8 +38,8 @@
     "dependencies": {
         "@emotion/react": "^11.4.1",
         "@emotion/styled": "^11.3.0",
-        "@mui/icons-material": "^5.0.1",
-        "@mui/material": "^5.0.2",
+        "@mui/icons-material": "^5.15.15",
+        "@mui/material": "^5.15.15",
         "ra-core": "^5.0.0-alpha.1",
         "ra-i18n-polyglot": "^5.0.0-alpha.1",
         "ra-language-english": "^5.0.0-alpha.1",

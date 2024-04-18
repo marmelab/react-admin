@@ -5,8 +5,8 @@
     "type": "module",
     "dependencies": {
         "@apollo/client": "^3.3.19",
-        "@mui/icons-material": "^5.14.18",
-        "@mui/material": "^5.14.18",
+        "@mui/icons-material": "^5.15.15",
+        "@mui/material": "^5.15.15",
         "@types/inflection": "^1.5.28",
         "@types/recharts": "^1.8.10",
         "@vitejs/plugin-react": "^2.2.0",
