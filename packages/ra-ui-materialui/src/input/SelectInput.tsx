@@ -182,13 +182,7 @@ export const SelectInput = (props: SelectInputProps) => {
         disableValue,
         translateChoice: translateChoice ?? !isFromReference,
     });
-    const {
-        field,
-        fieldState,
-        id,
-        isRequired,
-        formState: { isSubmitted },
-    } = useInput({
+    const { field, fieldState, id, isRequired } = useInput({
         defaultValue,
         parse,
         format,
@@ -200,7 +194,7 @@ export const SelectInput = (props: SelectInputProps) => {
         ...rest,
     });
 
-    const { error, invalid, isTouched } = fieldState;
+    const { error, invalid } = fieldState;
 
     const renderEmptyItemOption = useCallback(() => {
         return typeof emptyText === 'string'
@@ -283,7 +277,6 @@ export const SelectInput = (props: SelectInputProps) => {
                 sx={props.sx}
                 helperText={
                     <InputHelperText
-                        touched={isTouched || isSubmitted}
                         error={error?.message}
                         helperText={helperText}
                     />
@@ -296,10 +289,7 @@ export const SelectInput = (props: SelectInputProps) => {
         );
     }
 
-    const renderHelperText =
-        !!fetchError ||
-        helperText !== false ||
-        ((isTouched || isSubmitted) && invalid);
+    const renderHelperText = !!fetchError || helperText !== false || invalid;
 
     return (
         <>
@@ -321,11 +311,10 @@ export const SelectInput = (props: SelectInputProps) => {
                     )
                 }
                 clearAlwaysVisible
-                error={!!fetchError || ((isTouched || isSubmitted) && invalid)}
+                error={!!fetchError || invalid}
                 helperText={
                     renderHelperText ? (
                         <InputHelperText
-                            touched={isTouched || isSubmitted || fetchError}
                             error={error?.message || fetchError?.message}
                             helperText={helperText}
                         />

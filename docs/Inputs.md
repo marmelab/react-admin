@@ -877,16 +877,15 @@ import { useController } from 'react-hook-form';
 const BoundedTextField = ({ name, label }: { name: string; label: string }) => {
     const {
         field,
-        fieldState: { isTouched, invalid, error },
-        formState: { isSubmitted }
+        fieldState: { invalid, error }
     } = useController({ name, defaultValue: '' });
 
     return (
         <TextField
             {...field}
             label={label}
-            error={(isTouched || isSubmitted) && invalid}
-            helperText={(isTouched || isSubmitted) && invalid ? error?.message : ''}
+            error={invalid}
+            helperText={invalid ? error?.message : ''}
         />
     );
 };
@@ -947,8 +946,7 @@ const BoundedTextField = (props: BoundedTextFieldProps) => {
     const { onChange, onBlur, label, ...rest } = props;
     const {
         field,
-        fieldState: { isTouched, invalid, error },
-        formState: { isSubmitted },
+        fieldState: { invalid, error },
         isRequired,
     } = useInput({
         // Pass the event handlers to the hook but not the component as the field property already has them.
@@ -962,8 +960,8 @@ const BoundedTextField = (props: BoundedTextFieldProps) => {
         <TextField
             {...field}
             label={label}
-            error={(isTouched || isSubmitted) && invalid}
-            helperText={(isTouched || isSubmitted) && invalid ? error?.message : ""}
+            error={invalid}
+            helperText={invalid ? error?.message : ""}
             required={isRequired}
             {...rest}
         />
@@ -1054,8 +1052,7 @@ const BoundedTextField = (props: BoundedTextFieldProps) => {
     const { onChange, onBlur, label, helperText, ...rest } = props;
     const {
         field,
-        fieldState: { isTouched, invalid, error },
-        formState: { isSubmitted },
+        fieldState: { invalid, error },
         isRequired,
     } = useInput({
         onChange,
@@ -1064,17 +1061,16 @@ const BoundedTextField = (props: BoundedTextFieldProps) => {
     });
 
     const renderHelperText =
-        helperText !== false || ((isTouched || isSubmitted) && invalid);
+        helperText !== false || invalid;
 
     return (
         <TextField
             {...field}
             label={label}
-            error={(isTouched || isSubmitted) && invalid}
+            error={invalid}
             helperText={
                 renderHelperText ? (
                     <InputHelperText
-                        touched={isTouched || isSubmitted}
                         error={error?.message}
                         helperText={helperText}
                     />

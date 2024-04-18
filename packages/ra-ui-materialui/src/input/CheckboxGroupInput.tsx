@@ -141,8 +141,7 @@ export const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = pr
 
     const {
         field: { onChange: formOnChange, onBlur: formOnBlur, value, ref },
-        fieldState: { error, invalid, isTouched },
-        formState: { isSubmitted },
+        fieldState: { error, invalid },
         id,
         isRequired,
     } = useInput({
@@ -202,16 +201,13 @@ export const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = pr
         );
     }
 
-    const renderHelperText =
-        !!fetchError ||
-        helperText !== false ||
-        ((isTouched || isSubmitted) && invalid);
+    const renderHelperText = !!fetchError || helperText !== false || invalid;
 
     return (
         <StyledFormControl
             component="fieldset"
             margin={margin}
-            error={fetchError || ((isTouched || isSubmitted) && invalid)}
+            error={fetchError || invalid}
             className={clsx('ra-input', `ra-input-${source}`, className)}
             {...sanitizeRestProps(rest)}
         >
@@ -246,13 +242,10 @@ export const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = pr
             </FormGroup>
             {renderHelperText ? (
                 <FormHelperText
-                    error={
-                        fetchError || ((isTouched || isSubmitted) && !!error)
-                    }
+                    error={fetchError || !!error}
                     className={CheckboxGroupInputClasses.helperText}
                 >
                     <InputHelperText
-                        touched={isTouched || isSubmitted || fetchError}
                         error={error?.message || fetchError?.message}
                         helperText={helperText}
                     />

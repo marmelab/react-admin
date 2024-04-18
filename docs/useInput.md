@@ -65,8 +65,7 @@ const BoundedTextField = (props) => {
     const { onChange, onBlur, label, helperText, ...rest } = props;
     const {
         field,
-        fieldState: { isTouched, invalid, error },
-        formState: { isSubmitted },
+        fieldState: { invalid, error },
         isRequired
     } = useInput({
         // Pass the event handlers to the hook but not the component as the field property already has them.
@@ -80,11 +79,10 @@ const BoundedTextField = (props) => {
         <TextField
             {...field}
             label={label}
-            error={(isTouched || isSubmitted) && invalid}
-            helperText={helperText !== false || ((isTouched || isSubmitted) && invalid)
+            error={invalid}
+            helperText={helperText !== false || invalid
                 ? (
                     <InputHelperText
-                        touched={isTouched || isSubmitted}
                         error={error?.message}
                         helperText={helperText}
                     />

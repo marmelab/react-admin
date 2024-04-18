@@ -203,8 +203,7 @@ export const AutocompleteInput = <
         id,
         field,
         isRequired,
-        fieldState: { error, invalid, isTouched },
-        formState: { isSubmitted },
+        fieldState: { error, invalid },
     } = useInput({
         defaultValue,
         id: idOverride,
@@ -545,10 +544,7 @@ If you provided a React element for the optionText prop, you must also provide t
     const isOptionEqualToValue = (option, value) => {
         return String(getChoiceValue(option)) === String(getChoiceValue(value));
     };
-    const renderHelperText =
-        !!fetchError ||
-        helperText !== false ||
-        ((isTouched || isSubmitted) && invalid);
+    const renderHelperText = !!fetchError || helperText !== false || invalid;
 
     return (
         <>
@@ -578,18 +574,10 @@ If you provided a React element for the optionText prop, you must also provide t
                                     isRequired={isRequired}
                                 />
                             }
-                            error={
-                                !!fetchError ||
-                                ((isTouched || isSubmitted) && invalid)
-                            }
+                            error={!!fetchError || invalid}
                             helperText={
                                 renderHelperText ? (
                                     <InputHelperText
-                                        touched={
-                                            isTouched ||
-                                            isSubmitted ||
-                                            fetchError
-                                        }
                                         error={
                                             error?.message ||
                                             fetchError?.message

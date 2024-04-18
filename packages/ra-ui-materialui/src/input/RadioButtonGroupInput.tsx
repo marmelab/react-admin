@@ -133,7 +133,7 @@ export const RadioButtonGroupInput = (props: RadioButtonGroupInputProps) => {
         );
     }
 
-    const { id, isRequired, fieldState, field, formState } = useInput({
+    const { id, isRequired, fieldState, field } = useInput({
         format,
         onBlur,
         onChange,
@@ -144,8 +144,7 @@ export const RadioButtonGroupInput = (props: RadioButtonGroupInputProps) => {
         ...rest,
     });
 
-    const { error, invalid, isTouched } = fieldState;
-    const { isSubmitted } = formState;
+    const { error, invalid } = fieldState;
 
     if (isPending) {
         return (
@@ -162,17 +161,14 @@ export const RadioButtonGroupInput = (props: RadioButtonGroupInputProps) => {
         );
     }
 
-    const renderHelperText =
-        !!fetchError ||
-        helperText !== false ||
-        ((isTouched || isSubmitted) && invalid);
+    const renderHelperText = !!fetchError || helperText !== false || invalid;
 
     return (
         <StyledFormControl
             component="fieldset"
             className={clsx('ra-input', `ra-input-${source}`, className)}
             margin={margin}
-            error={fetchError || ((isTouched || isSubmitted) && invalid)}
+            error={fetchError || invalid}
             {...sanitizeRestProps(rest)}
         >
             <FormLabel
@@ -208,7 +204,6 @@ export const RadioButtonGroupInput = (props: RadioButtonGroupInputProps) => {
             {renderHelperText ? (
                 <FormHelperText>
                     <InputHelperText
-                        touched={isTouched || isSubmitted || fetchError}
                         error={error?.message || fetchError?.message}
                         helperText={helperText}
                     />

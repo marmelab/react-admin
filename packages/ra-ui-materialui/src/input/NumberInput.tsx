@@ -42,8 +42,7 @@ export const NumberInput = ({
 }: NumberInputProps) => {
     const {
         field,
-        fieldState: { error, invalid, isTouched },
-        formState: { isSubmitted },
+        fieldState: { error, invalid },
         id,
         isRequired,
     } = useInput({
@@ -118,8 +117,7 @@ export const NumberInput = ({
         setValue(value => (value !== stringValue ? stringValue : value));
     };
 
-    const renderHelperText =
-        helperText !== false || ((isTouched || isSubmitted) && invalid);
+    const renderHelperText = helperText !== false || invalid;
 
     const { ref, ...fieldWithoutRef } = field;
     return (
@@ -136,11 +134,10 @@ export const NumberInput = ({
             type="number"
             size="small"
             variant={variant}
-            error={(isTouched || isSubmitted) && invalid}
+            error={invalid}
             helperText={
                 renderHelperText ? (
                     <InputHelperText
-                        touched={isTouched || isSubmitted}
                         error={error?.message}
                         helperText={helperText}
                     />
