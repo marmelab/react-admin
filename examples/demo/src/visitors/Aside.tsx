@@ -206,6 +206,7 @@ const Timeline = ({ events }: { events: AsideEvent[] }) => (
                     to={`/${event.type === 'order' ? 'commands' : 'reviews'}/${
                         event.data.id
                     }`}
+                    underline="none"
                 >
                     <RecordContextProvider value={event.data}>
                         <StepLabel
