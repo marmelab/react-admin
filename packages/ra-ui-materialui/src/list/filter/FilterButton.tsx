@@ -28,7 +28,7 @@ import { extractValidSavedQueries, useSavedQueries } from './useSavedQueries';
 import { AddSavedQueryDialog } from './AddSavedQueryDialog';
 import { RemoveSavedQueryDialog } from './RemoveSavedQueryDialog';
 
-export const FilterButton = (props: FilterButtonProps): JSX.Element => {
+export const FilterButton = (props: FilterButtonProps) => {
     const {
         filters: filtersProp,
         className,
@@ -40,7 +40,12 @@ export const FilterButton = (props: FilterButtonProps): JSX.Element => {
     const filters = useContext(FilterContext) || filtersProp;
     const resource = useResourceContext(props);
     const translate = useTranslate();
-    const [savedQueries] = useSavedQueries(resource);
+    if (!resource && !disableSaveQuery) {
+        throw new Error(
+            '<FilterButton> must be called inside a ResourceContextProvider, or must provide a resource prop'
+        );
+    }
+    const [savedQueries] = useSavedQueries(resource || '');
     const navigate = useNavigate();
     const {
         displayedFilters = {},
@@ -194,8 +199,8 @@ export const FilterButton = (props: FilterButtonProps): JSX.Element => {
                                         filter: JSON.stringify(
                                             savedQuery.value.filter
                                         ),
-                                        sort: savedQuery.value.sort.field,
-                                        order: savedQuery.value.sort.order,
+                                        sort: savedQuery.value.sort?.field,
+                                        order: savedQuery.value.sort?.order,
                                         page: 1,
                                         perPage: savedQuery.value.perPage,
                                         displayedFilters: JSON.stringify(

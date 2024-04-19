@@ -59,7 +59,7 @@ export const ListView = <RecordType extends RaRecord = any>(
             )}
             <Content className={ListClasses.content}>{children}</Content>
             {error ? (
-                <Error error={error} resetErrorBoundary={null} />
+                <Error error={error} resetErrorBoundary={() => {}} />
             ) : (
                 pagination !== false && pagination
             )}

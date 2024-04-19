@@ -71,7 +71,7 @@ export const ListGuesser = <RecordType extends RaRecord = any>(
             perPage={perPage}
             queryOptions={{
                 placeholderData: previousData =>
-                    keepPreviousData ? previousData : null,
+                    keepPreviousData ? previousData : undefined,
             }}
             resource={resource}
             sort={sort}
@@ -86,7 +86,7 @@ const ListViewGuesser = (
 ) => {
     const { data } = useListContext();
     const resource = useResourceContext();
-    const [child, setChild] = useState(null);
+    const [child, setChild] = useState<React.ReactElement | null>(null);
     const {
         enableLog = process.env.NODE_ENV === 'development',
         ...rest
@@ -107,11 +107,19 @@ const ListViewGuesser = (
                 null,
                 inferredElements
             );
-            setChild(inferredChild.getElement());
-
-            if (!enableLog) return;
-
+            const inferredChildElement = inferredChild.getElement();
             const representation = inferredChild.getRepresentation();
+            if (!resource) {
+                throw new Error(
+                    'Cannot use <ListGuesser> outside of a ResourceContext'
+                );
+            }
+            if (!inferredChildElement || !representation || !enableLog) {
+                return;
+            }
+
+            setChild(inferredChildElement);
+
             const components = ['List']
                 .concat(
                     Array.from(
