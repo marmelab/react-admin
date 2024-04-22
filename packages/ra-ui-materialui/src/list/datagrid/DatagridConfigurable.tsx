@@ -51,7 +51,7 @@ export const DatagridConfigurable = ({
     >(`preferences.${finalPreferenceKey}.availableColumns`, []);
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [_, setOmit] = useStore<string[]>(
+    const [_, setOmit] = useStore<string[] | undefined>(
         `preferences.${finalPreferenceKey}.omit`,
         omit
     );
@@ -132,12 +132,17 @@ DatagridConfigurable.propTypes = Datagrid.propTypes;
  * This Datagrid filters its children depending on preferences
  */
 const DatagridWithPreferences = ({ children, ...props }: DatagridProps) => {
-    const [availableColumns] = usePreference('availableColumns', []);
-    const [omit] = usePreference('omit', []);
+    const [availableColumns] = usePreference<ConfigurableDatagridColumn[]>(
+        'availableColumns',
+        []
+    );
+    const [omit] = usePreference<string[]>('omit', []);
     const [columns] = usePreference(
         'columns',
         availableColumns
-            .filter(column => !omit?.includes(column.source))
+            .filter(column =>
+                column.source ? !omit?.includes(column.source) : true
+            )
             .map(column => column.index)
     );
     const childrenArray = React.Children.toArray(children);
