@@ -86,9 +86,9 @@ describe('<RadioButtonGroupInput />', () => {
         );
         expect(screen.queryByText('People')).not.toBeNull();
         const input1 = screen.getByLabelText('Leo Tolstoi');
-        expect(input1.id).toBe('type_123');
+        expect(input1.id).toBe('use-input-type_123');
         const input2 = screen.getByLabelText('Jane Austen');
-        expect(input2.id).toBe('type_456');
+        expect(input2.id).toBe('use-input-type_456');
     });
 
     it('should trigger custom onChange when clicking radio button', async () => {

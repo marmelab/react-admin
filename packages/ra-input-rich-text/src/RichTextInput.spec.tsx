@@ -9,18 +9,18 @@ describe('<RichTextInput />', () => {
         const { container, rerender } = render(<Basic record={record} />);
 
         await waitFor(() => {
-            expect(container.querySelector('#body')?.innerHTML).toEqual(
-                '<h1>Hello world!</h1>'
-            );
+            expect(
+                container.querySelector('#use-input-body')?.innerHTML
+            ).toEqual('<h1>Hello world!</h1>');
         });
 
         const newRecord = { id: 123, body: '<h1>Goodbye world!</h1>' };
         rerender(<Basic record={newRecord} />);
 
         await waitFor(() => {
-            expect(container.querySelector('#body')?.innerHTML).toEqual(
-                '<h1>Goodbye world!</h1>'
-            );
+            expect(
+                container.querySelector('#use-input-body')?.innerHTML
+            ).toEqual('<h1>Goodbye world!</h1>');
         });
     });
 });
