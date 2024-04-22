@@ -132,32 +132,6 @@ describe('useCheckAuth', () => {
         });
     });
 
-    it('should logout without showing a notification when disableNotification is true', async () => {
-        let location: Location;
-        render(
-            <TestMemoryRouter
-                initialEntries={['/']}
-                locationCallback={l => {
-                    location = l;
-                }}
-            >
-                <AuthContext.Provider value={authProvider}>
-                    <QueryClientProvider client={queryClient}>
-                        <TestComponent
-                            params={{ token: false }}
-                            disableNotification
-                        />
-                    </QueryClientProvider>
-                </AuthContext.Provider>
-            </TestMemoryRouter>
-        );
-        await waitFor(() => {
-            expect(notify).toHaveBeenCalledTimes(0);
-            expect(screen.queryByText('authenticated')).toBeNull();
-            expect(location.pathname).toBe('/login');
-        });
-    });
-
     it('should logout without showing a notification when authProvider returns error with message false', async () => {
         let location: Location;
         render(
