@@ -11,6 +11,7 @@ import useLogoutIfAccessDenied from './useLogoutIfAccessDenied';
 import convertLegacyAuthProvider from './convertLegacyAuthProvider';
 
 export * from './Authenticated';
+export * from './LogoutOnMount';
 export * from './types';
 export * from './useAuthenticated';
 export * from './useCheckAuth';
