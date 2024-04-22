@@ -36,7 +36,7 @@ describe('<BulkUpdateWithConfirmButton />', () => {
         const ActionButtons = () => (
             <>
                 <BulkUpdateWithConfirmButton
-                    data={{ views: 'foobar' }}
+                    data={{ title: 'foobar' }}
                     mutationMode="pessimistic"
                 />
             </>
