@@ -114,7 +114,7 @@ const ListViewGuesser = (
                     'Cannot use <ListGuesser> outside of a ResourceContext'
                 );
             }
-            if (!inferredChildElement || !representation || !enableLog) {
+            if (!inferredChildElement || !representation) {
                 return;
             }
 
@@ -132,20 +132,22 @@ const ListViewGuesser = (
                 )
                 .sort();
 
-            // eslint-disable-next-line no-console
-            console.log(
-                `Guessed List:
+            if (enableLog) {
+                // eslint-disable-next-line no-console
+                console.log(
+                    `Guessed List:
 
 import { ${components.join(', ')} } from 'react-admin';
 
 export const ${inflection.capitalize(
-                    inflection.singularize(resource)
-                )}List = () => (
+                        inflection.singularize(resource)
+                    )}List = () => (
     <List>
 ${inferredChild.getRepresentation()}
     </List>
 );`
-            );
+                );
+            }
         }
     }, [data, child, resource, enableLog]);
 
