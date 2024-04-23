@@ -9,6 +9,7 @@ import {
     useNotificationContext,
     undoableEventEmitter,
     useTranslate,
+    NotificationPayload,
 } from 'ra-core';
 
 const defaultAnchorOrigin: SnackbarOrigin = {
@@ -39,7 +40,9 @@ export const Notification = (props: NotificationProps) => {
     } = props;
     const { notifications, takeNotification } = useNotificationContext();
     const [open, setOpen] = useState(false);
-    const [messageInfo, setMessageInfo] = React.useState(undefined);
+    const [currentNotification, setCurrentNotification] = React.useState<
+        NotificationPayload | undefined
+    >(undefined);
     const translate = useTranslate();
 
     useEffect(() => {
@@ -50,54 +53,58 @@ export const Notification = (props: NotificationProps) => {
             return confirmationMessage;
         };
 
-        if (messageInfo?.notificationOptions?.undoable) {
+        if (currentNotification?.notificationOptions?.undoable) {
             window.addEventListener('beforeunload', beforeunload);
         }
 
-        if (notifications.length && !messageInfo) {
+        if (notifications.length && !currentNotification) {
             // Set a new snack when we don't have an active one
-            setMessageInfo(takeNotification());
+            setCurrentNotification(takeNotification() ?? undefined);
             setOpen(true);
-        } else if (notifications.length && messageInfo && open) {
+        } else if (notifications.length && currentNotification && open) {
             // Close an active snack when a new one is added
             setOpen(false);
         }
 
         return () => {
-            if (messageInfo?.notificationOptions?.undoable) {
+            if (currentNotification?.notificationOptions?.undoable) {
                 window.removeEventListener('beforeunload', beforeunload);
             }
         };
-    }, [notifications, messageInfo, open, takeNotification]);
+    }, [notifications, currentNotification, open, takeNotification]);
 
     const handleRequestClose = useCallback(() => {
         setOpen(false);
     }, [setOpen]);
 
     const handleExited = useCallback(() => {
-        if (messageInfo && messageInfo.notificationOptions.undoable) {
+        if (
+            currentNotification &&
+            currentNotification.notificationOptions?.undoable
+        ) {
             undoableEventEmitter.emit('end', { isUndo: false });
         }
-        setMessageInfo(undefined);
-    }, [messageInfo]);
+        setCurrentNotification(undefined);
+    }, [currentNotification]);
 
     const handleUndo = useCallback(() => {
         undoableEventEmitter.emit('end', { isUndo: true });
         setOpen(false);
     }, []);
 
-    if (!messageInfo) return null;
+    if (!currentNotification) return null;
     const {
         message,
         type: typeFromMessage,
-        notificationOptions: {
-            autoHideDuration: autoHideDurationFromMessage,
-            messageArgs,
-            multiLine: multilineFromMessage,
-            undoable,
-            ...options
-        },
-    } = messageInfo;
+        notificationOptions,
+    } = currentNotification;
+    const {
+        autoHideDuration: autoHideDurationFromMessage,
+        messageArgs,
+        multiLine: multilineFromMessage,
+        undoable,
+        ...options
+    } = notificationOptions || {};
 
     return (
         <StyledSnackbar
@@ -113,7 +120,7 @@ export const Notification = (props: NotificationProps) => {
                 // as 0 and null are valid values
                 autoHideDurationFromMessage === undefined
                     ? autoHideDuration
-                    : autoHideDurationFromMessage
+                    : autoHideDurationFromMessage ?? undefined
             }
             disableWindowBlurListener={undoable}
             TransitionProps={{ onExited: handleExited }}
@@ -140,7 +147,11 @@ export const Notification = (props: NotificationProps) => {
             {...rest}
             {...options}
         >
-            {message && typeof message !== 'string' ? message : null}
+            {message &&
+            typeof message !== 'string' &&
+            React.isValidElement(message)
+                ? message
+                : undefined}
         </StyledSnackbar>
     );
 };
@@ -166,25 +177,25 @@ const StyledSnackbar = styled(Snackbar, {
     overridesResolver: (props, styles) => styles.root,
 })(({ theme, type }: NotificationProps & { theme?: Theme }) => ({
     [`& .${NotificationClasses.success}`]: {
-        backgroundColor: theme.palette.success.main,
-        color: theme.palette.success.contrastText,
+        backgroundColor: theme?.palette.success.main,
+        color: theme?.palette.success.contrastText,
     },
 
     [`& .${NotificationClasses.error}`]: {
-        backgroundColor: theme.palette.error.main,
-        color: theme.palette.error.contrastText,
+        backgroundColor: theme?.palette.error.main,
+        color: theme?.palette.error.contrastText,
     },
 
     [`& .${NotificationClasses.warning}`]: {
-        backgroundColor: theme.palette.warning.main,
-        color: theme.palette.warning.contrastText,
+        backgroundColor: theme?.palette.warning.main,
+        color: theme?.palette.warning.contrastText,
     },
 
     [`& .${NotificationClasses.undo}`]: {
         color:
             type === 'success'
-                ? theme.palette.success.contrastText
-                : theme.palette.primary.light,
+                ? theme?.palette.success.contrastText
+                : theme?.palette.primary.light,
     },
     [`& .${NotificationClasses.multiLine}`]: {
         whiteSpace: 'pre-wrap',
