@@ -48,7 +48,6 @@ export const ListActions = (props: ListActionsProps) => {
     const { className, filters: filtersProp, hasCreate: _, ...rest } = props;
 
     const {
-        sort,
         displayedFilters,
         filterValues,
         exporter,
@@ -72,12 +71,7 @@ export const ListActions = (props: ListActionsProps) => {
                     : filters && <FilterButton />}
                 {hasCreate && <CreateButton />}
                 {exporter !== false && (
-                    <ExportButton
-                        disabled={total === 0}
-                        resource={resource}
-                        sort={sort}
-                        filterValues={filterValues}
-                    />
+                    <ExportButton disabled={total === 0} resource={resource} />
                 )}
             </TopToolbar>
         ),
@@ -91,7 +85,6 @@ export const ListActions = (props: ListActionsProps) => {
             filters,
             total,
             className,
-            sort,
             exporter,
             hasCreate,
         ]
