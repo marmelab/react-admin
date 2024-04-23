@@ -924,6 +924,17 @@ The `<InputHelperText>` component no longer accepts a `touched` prop. This prop 
 
 If you were using this prop, you can safely remove it.
 
+## `disableNotification` Param of `useCheckAuth` Was Removed
+
+The `useCheckAuth` hook no longer accepts the deprecated `disableNotification` param. To disabe the notification at the `checkAuth` call, `authProvider.checkAuth()` should return a rejected promise with a `falsy` message:
+
+```ts
+const authProvider: AuthProvider = {
+    //...
+    checkAuth: () => Promise.reject({ message: false }),
+}
+```
+
 ## Upgrading to v4
 
 If you are on react-admin v3, follow the [Upgrading to v4](https://marmelab.com/react-admin/doc/4.16/Upgrade.html) guide before upgrading to v5.
