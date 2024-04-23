@@ -2,7 +2,11 @@ import * as React from 'react';
 import expect from 'expect';
 import { render, fireEvent, screen, waitFor } from '@testing-library/react';
 import { createTheme } from '@mui/material/styles';
-import { ListContextProvider, ListControllerResult } from 'ra-core';
+import {
+    ListContextProvider,
+    ListControllerResult,
+    ResourceContextProvider,
+} from 'ra-core';
 
 import { AdminContext } from '../../AdminContext';
 import { FilterButton } from './FilterButton';
@@ -44,12 +48,15 @@ describe('<FilterButton />', () => {
             );
             const { getByLabelText, queryByText } = render(
                 <AdminContext theme={theme}>
-                    <ListContextProvider value={defaultListContext}>
-                        <FilterButton
-                            {...defaultProps}
-                            filters={defaultProps.filters.concat(hiddenFilter)}
-                        />
-                    </ListContextProvider>
+                    <ResourceContextProvider value="posts">
+                        <ListContextProvider value={defaultListContext}>
+                            <FilterButton
+                                filters={defaultProps.filters.concat(
+                                    hiddenFilter
+                                )}
+                            />
+                        </ListContextProvider>
+                    </ResourceContextProvider>
                 </AdminContext>
             );
 
@@ -62,26 +69,28 @@ describe('<FilterButton />', () => {
         it('should display the filter button if all filters are shown and there is a filter value', () => {
             render(
                 <AdminContext theme={theme}>
-                    <ListContextProvider
-                        value={{
-                            ...defaultListContext,
-                            displayedFilters: {
-                                title: true,
-                                'customer.name': true,
-                            },
-                            filterValues: { title: 'foo' },
-                        }}
-                    >
-                        <FilterButton
-                            filters={[
-                                <TextInput source="title" label="Title" />,
-                                <TextInput
-                                    source="customer.name"
-                                    label="Name"
-                                />,
-                            ]}
-                        />
-                    </ListContextProvider>
+                    <ResourceContextProvider value="posts">
+                        <ListContextProvider
+                            value={{
+                                ...defaultListContext,
+                                displayedFilters: {
+                                    title: true,
+                                    'customer.name': true,
+                                },
+                                filterValues: { title: 'foo' },
+                            }}
+                        >
+                            <FilterButton
+                                filters={[
+                                    <TextInput source="title" label="Title" />,
+                                    <TextInput
+                                        source="customer.name"
+                                        label="Name"
+                                    />,
+                                ]}
+                            />
+                        </ListContextProvider>
+                    </ResourceContextProvider>
                 </AdminContext>
             );
             expect(
@@ -97,11 +106,15 @@ describe('<FilterButton />', () => {
             );
             const { getByLabelText, queryByText } = render(
                 <AdminContext theme={theme}>
-                    <ListContextProvider value={defaultListContext}>
-                        <FilterButton
-                            filters={defaultProps.filters.concat(hiddenFilter)}
-                        />
-                    </ListContextProvider>
+                    <ResourceContextProvider value="posts">
+                        <ListContextProvider value={defaultListContext}>
+                            <FilterButton
+                                filters={defaultProps.filters.concat(
+                                    hiddenFilter
+                                )}
+                            />
+                        </ListContextProvider>
+                    </ResourceContextProvider>
                 </AdminContext>
             );
 
@@ -187,22 +200,24 @@ describe('<FilterButton />', () => {
         it('should not display save query in filter button', async () => {
             const { queryByText } = render(
                 <AdminContext theme={theme}>
-                    <ListContextProvider
-                        value={{
-                            ...defaultListContext,
-                            filterValues: { title: 'foo' },
-                        }}
-                    >
-                        <FilterButton
-                            filters={[
-                                <TextInput
-                                    source="Returned"
-                                    label="Returned"
-                                />,
-                            ]}
-                            disableSaveQuery
-                        />
-                    </ListContextProvider>
+                    <ResourceContextProvider value="posts">
+                        <ListContextProvider
+                            value={{
+                                ...defaultListContext,
+                                filterValues: { title: 'foo' },
+                            }}
+                        >
+                            <FilterButton
+                                filters={[
+                                    <TextInput
+                                        source="Returned"
+                                        label="Returned"
+                                    />,
+                                ]}
+                                disableSaveQuery
+                            />
+                        </ListContextProvider>
+                    </ResourceContextProvider>
                 </AdminContext>
             );
             expect(
