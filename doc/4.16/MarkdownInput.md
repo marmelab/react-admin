@@ -5,7 +5,7 @@ title: 'The MarkdownInput Component'
 
 # `<MarkdownInput>`
 
-This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> component allows to edit and preview Markdown data, based on [the Toast UI editor](https://nhn.github.io/tui.editor/latest/ToastUIEditor). To be used in Edit and Create views.
+This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" /> component allows to edit and preview Markdown data, based on [the Toast UI editor](https://nhn.github.io/tui.editor/latest/ToastUIEditor). To be used in Edit and Create views.
 
 <video controls autoplay playsinline muted loop>
   <source src="./img/markdown-input.webm" type="video/webm"/>
@@ -208,4 +208,4 @@ const Example = () => (
 ```
 {% endraw %}
 
-Check [the `ra-markdown` documentation](https://marmelab.com/ra-enterprise/modules/ra-markdown) for more details.
+Check [the `ra-markdown` documentation](https://react-admin-ee.marmelab.com/documentation/ra-markdown) for more details.

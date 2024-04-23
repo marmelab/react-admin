@@ -551,8 +551,8 @@ Note: In order to get the `mutationOptions` being considered, you have to set th
 `<Create>` is designed to be a page component, passed to the `create` prop of the `<Resource>` component. But you may want to let users create a record from another page. 
 
 <video controls autoplay playsinline muted loop>
-  <source src="https://marmelab.com/ra-enterprise/modules/assets/create-dialog.webm" type="video/webm" />
-  <source src="https://marmelab.com/ra-enterprise/modules/assets/create-dialog.mp4" type="video/mp4" />
+  <source src="https://react-admin-ee.marmelab.com/assets/create-dialog.webm" type="video/webm" />
+  <source src="https://react-admin-ee.marmelab.com/assets/create-dialog.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
 

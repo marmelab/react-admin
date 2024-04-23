@@ -5,21 +5,21 @@ title: "The SolarLayout Component"
 
 # `<SolarLayout>`
 
-This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> component is an alternative application layout without top bar, and using a narrow menu to maximize the usable screen real estate. The menu items can reveal a secondary panel to show sub menus, preference forms, a search engine, etc. Ideal for applications with a large number of resources.
+This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" /> component is an alternative application layout without top bar, and using a narrow menu to maximize the usable screen real estate. The menu items can reveal a secondary panel to show sub menus, preference forms, a search engine, etc. Ideal for applications with a large number of resources.
 
 <video controls autoplay playsinline muted loop>
-  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-solar-layout.mp4" type="video/mp4"/>
+  <source src="https://react-admin-ee.marmelab.com/assets/ra-solar-layout.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
 On mobile, it shows the AppBar to allow opening the navigation menu:
 
 <video controls autoplay playsinline muted loop>
-  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-solar-layout-small.mp4" type="video/mp4"/>
+  <source src="https://react-admin-ee.marmelab.com/assets/ra-solar-layout-small.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
-`<SolarLayout>` is part of the [ra-navigation](https://marmelab.com/ra-enterprise/modules/ra-navigation#solarlayout) package.
+`<SolarLayout>` is part of the [ra-navigation](https://react-admin-ee.marmelab.com/documentation/ra-navigation#solarlayout) package.
 
 ## Usage
 
@@ -65,7 +65,7 @@ However, you can customize these default app locations in your CRUD pages, and y
 
 ## `appBar`
 
-![Screenshot demonstrating the SolarLayout component with a custom appBar](https://marmelab.com/ra-enterprise/modules/assets/ra-navigation/latest/solar-layout-with-custom-app-bar.png)
+![Screenshot demonstrating the SolarLayout component with a custom appBar](https://react-admin-ee.marmelab.com/assets/ra-navigation/latest/solar-layout-with-custom-app-bar.png)
 
 You can customize the AppBar that appears on Mobile by setting the `appBar` prop. For instance, here's how you could customize its colors and add some extra content to its far right:
 
@@ -608,7 +608,7 @@ export const App = () => (
 
 The `sx` prop allows you to customize the menu styles using a MUI [SX](./SX.md) object:
 
-![Screenshot demonstrating SolarMenu with a pink background](https://marmelab.com/ra-enterprise/modules/assets/ra-navigation/latest/solar-menu-sx-pink.png)
+![Screenshot demonstrating SolarMenu with a pink background](https://react-admin-ee.marmelab.com/assets/ra-navigation/latest/solar-menu-sx-pink.png)
 
 For instance, here is how to change the background color of the menu:
 
@@ -865,10 +865,10 @@ export const App = () => (
 
 ## Use It With `<SearchWithResult>`
 
-The `<SearchWithResult>` component works perfectly when used inside the [`<SolarLayout>`](https://marmelab.com/ra-enterprise/modules/ra-navigation#solarlayout) menu.
+The `<SearchWithResult>` component works perfectly when used inside the [`<SolarLayout>`](https://react-admin-ee.marmelab.com/documentation/ra-navigation#solarlayout) menu.
 
 <video controls autoplay playsinline muted loop>
-  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-search-with-result-solar-layout-overview.mp4" type="video/mp4"/>
+  <source src="https://react-admin-ee.marmelab.com/assets/ra-search-with-result-solar-layout-overview.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 

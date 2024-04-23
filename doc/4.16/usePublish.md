@@ -5,7 +5,7 @@ title: "usePublish"
 
 # `usePublish`
 
-This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> hook returns a callback to publish an event on a topic. The callback returns a promise that resolves when the event is published.
+This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" /> hook returns a callback to publish an event on a topic. The callback returns a promise that resolves when the event is published.
 
 `usePublish` calls `dataProvider.publish()` to publish the event. It leverages react-query's `useMutation` hook to provide a callback.
 

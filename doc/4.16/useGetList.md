@@ -61,6 +61,8 @@ The react-query [query key](https://react-query-v3.tanstack.com/guides/query-key
 
 ## Usage
 
+Call the `useGetList` hook when you need to fetch a list of records from the data provider.
+
 ```jsx
 import { useGetList } from 'react-admin';
 
@@ -87,6 +89,50 @@ const LatestNews = () => {
     );
 };
 ```
+
+## Rendering Data
+
+If you want to use the result in a react-admin iterator component like [`<Datagrid>`](./Datagrid.md), [`<SimpleList>`](./SimpleList.md), or [`<SingleFieldList>`](./SingleFieldList.md), you must first create a [`ListContext`](./useListContext.md) with the data. The [`useList`](./useList.md) hook does that for you:
+
+```jsx
+import {
+    useGetList,
+    useList,
+    ListContextProvider,
+    Datagrid,
+    TextField,
+    DateField,
+    NumberField,
+    Pagination
+} from 'react-admin';
+
+const LatestNews = () => {
+    const { data, isLoading, error } = useGetList(
+        'posts',
+        { pagination: { page: 1, perPage: 100 } },
+    );
+    if (error) { return <p>ERROR</p>; }
+    const listContext = useList({ 
+        data,
+        isLoading,
+        perPage: 10,
+        sort: { field: 'published_at', order: 'DESC' }
+    });
+    return (
+        <ListContextProvider value={listContext}>
+            <h1>Latest news</h1>
+            <Datagrid>
+                <TextField source="title" />
+                <DateField source="published_at" />
+                <NumberField source="views" />
+            </Datagrid>
+            <Pagination />
+        </ListContextProvider>
+    );
+};
+```
+
+In this example, the `useGetList` hook fetches all the posts, and displays a list of the 10 most recent posts in a `<Datagrid>`. The `<Pagination>` component allows the user to navigate through the list. Users can also sort the list by clicking on the column headers.
 
 ## Partial Pagination
 
@@ -126,6 +172,52 @@ const LatestNews = () => {
 ```
 
 Alternately, you can use [the `useInfiniteGetList` hook](./useInfiniteGetList.md) to keep the previous pages on screen while loading new pages - just like users see older content when they scroll down their feed on social media. 
+
+## Fetching Related Records
+
+If you plan on using `useGetList` to fetch a list of records related to another one (e.g. the comments for a post), you're better off using [the `<ReferenceManyField>` component](./ReferenceManyField.md). It will handle the loading state for you, and display a loading spinner while the data is being fetched.
+
+```jsx
+import { ReferenceManyField } from 'react-admin';
+
+const PostComments = () => {
+    return (
+        <ReferenceManyField reference="comments" target="post_id">
+            <Datagrid>
+                <DateField source="created_at" />
+                <TextField source="author" />
+                <TextField source="body" />
+            </Datagrid>
+        </ReferenceManyField>
+    );
+};
+```
+
+is the equivalent of:
+
+```jsx
+import { useGetList } from 'react-admin';
+
+const PostComments = () => {
+    const record = useRecordContext();
+    const { data, isLoading, error } = useGetList(
+        'comments',
+        { filter: { post_id: record.id } }
+    );
+    if (isLoading) { return <Loading />; }
+    if (error) { return <p>ERROR</p>; }
+    const listContext = useList({ data });
+    return (
+        <ListContextProvider value={listContext}>
+            <Datagrid>
+                <DateField source="created_at" />
+                <TextField source="author" />
+                <TextField source="body" />
+            </Datagrid>
+        </ListContextProvider>
+    );
+};
+```
 
 ## Refreshing The List
 

@@ -5,11 +5,11 @@ title: "The IconMenu Component"
 
 # `<IconMenu>`
 
-This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> component offers an alternative menu user interface. It renders a reduced menu bar with a sliding panel for second-level menu items. This menu saves a lot of screen real estate, and allows for sub menus of any level of complexity.
+This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" /> component offers an alternative menu user interface. It renders a reduced menu bar with a sliding panel for second-level menu items. This menu saves a lot of screen real estate, and allows for sub menus of any level of complexity.
 
 <video controls autoplay playsinline muted loop>
-  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-multilevelmenu-categories.webm" type="video/webm" />
-  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-multilevelmenu-categories.mp4" type="video/mp4" />
+  <source src="https://react-admin-ee.marmelab.com/assets/ra-multilevelmenu-categories.webm" type="video/webm" />
+  <source src="https://react-admin-ee.marmelab.com/assets/ra-multilevelmenu-categories.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
 
@@ -56,7 +56,7 @@ export const MyLayout = (props) => (
 );
 ```
 
-`<AppLocationContext>` is necessary because `ra-navigation` doesn't use the URL to detect the current location. Instead, page components *declare* their location using a custom hook (`useDefineAppLocation()`). This allows complex site maps, with multiple levels of nesting. Check [the ra-navigation documentation](https://marmelab.com/ra-enterprise/modules/ra-navigation) to learn more about App Location.
+`<AppLocationContext>` is necessary because `ra-navigation` doesn't use the URL to detect the current location. Instead, page components *declare* their location using a custom hook (`useDefineAppLocation()`). This allows complex site maps, with multiple levels of nesting. Check [the ra-navigation documentation](https://react-admin-ee.marmelab.com/documentation/ra-navigation) to learn more about App Location.
 
 Finally, pass this custom layout to the `<Admin>` component. You should apply the theme provided by ra-navigation:
 

@@ -5,11 +5,11 @@ title: "useDefineAppLocation"
 
 # `useDefineAppLocation`
 
-This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> hook lets you define the app location for a page, used by components like [`<Breadcrumb>`](./Breadcrumb.md) and [`<IconMenu>`](./IconMenu.md) to render the current location.
+This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" /> hook lets you define the app location for a page, used by components like [`<Breadcrumb>`](./Breadcrumb.md) and [`<IconMenu>`](./IconMenu.md) to render the current location.
 
 <video controls autoplay playsinline muted loop width="100%">
-  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-navigation/latest/breadcumb-nested-resource.webm" type="video/webm" />
-  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-navigation/latest/breadcumb-nested-resource.mp4" type="video/mp4" />
+  <source src="https://react-admin-ee.marmelab.com/assets/ra-navigation/latest/breadcumb-nested-resource.webm" type="video/webm" />
+  <source src="https://react-admin-ee.marmelab.com/assets/ra-navigation/latest/breadcumb-nested-resource.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
 

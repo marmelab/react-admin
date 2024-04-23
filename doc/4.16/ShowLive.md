@@ -5,7 +5,7 @@ title: "ShowLive"
 
 # `<ShowLive>`
 
-`<ShowLive>` is an [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> component that  renders a Show page. It shows a notification and refreshes the page when the record is updated by another user. Also, it displays a warning when the record is deleted by another user.
+`<ShowLive>` is an [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" /> component that  renders a Show page. It shows a notification and refreshes the page when the record is updated by another user. Also, it displays a warning when the record is deleted by another user.
 
 ![ShowLive](./img/ShowLive.png)
 
