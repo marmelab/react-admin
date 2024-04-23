@@ -21,20 +21,18 @@ const TestComponent = ({
     params,
     logoutOnFailure,
     redirectTo,
-    disableNotification,
 }: {
     params?: any;
     logoutOnFailure?: boolean;
     redirectTo?: string;
-    disableNotification?: boolean;
 }) => {
     const [authenticated, setAuthenticated] = useState(true);
     const checkAuth = useCheckAuth();
     useEffect(() => {
-        checkAuth(params, logoutOnFailure, redirectTo, disableNotification)
+        checkAuth(params, logoutOnFailure, redirectTo)
             .then(() => setAuthenticated(true))
             .catch(() => setAuthenticated(false));
-    }, [params, logoutOnFailure, redirectTo, disableNotification, checkAuth]);
+    }, [params, logoutOnFailure, redirectTo, checkAuth]);
     return <div>{authenticated ? 'authenticated' : 'not authenticated'}</div>;
 };
 
