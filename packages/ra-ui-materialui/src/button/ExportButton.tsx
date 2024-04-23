@@ -92,10 +92,8 @@ const defaultIcon = <DownloadIcon />;
 const sanitizeRestProps = ({
     resource,
     ...rest
-}: Omit<
-    ExportButtonProps,
-    'sort' | 'maxResults' | 'label' | 'exporter' | 'meta'
->) => rest;
+}: Omit<ExportButtonProps, 'maxResults' | 'label' | 'exporter' | 'meta'>) =>
+    rest;
 
 interface Props {
     exporter?: Exporter;
