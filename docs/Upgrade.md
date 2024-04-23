@@ -924,9 +924,9 @@ The `<InputHelperText>` component no longer accepts a `touched` prop. This prop 
 
 If you were using this prop, you can safely remove it.
 
-## `disableNotification` Param of `useCheckAuth` Was Removed
+## `useCheckAuth` No Longer Accepts A `disableNotification` Param
 
-The `useCheckAuth` hook no longer accepts the deprecated `disableNotification` param. To disabe the notification at the `checkAuth` call, `authProvider.checkAuth()` should return a rejected promise with a `falsy` message:
+The `useCheckAuth` hook no longer accepts the deprecated `disableNotification` param. To disable the "Authentication required" notification when calling `checkAuth`, `authProvider.checkAuth()` should return a rejected promise with the value `{ message: false }`:
 
 ```ts
 const authProvider: AuthProvider = {
@@ -935,9 +935,9 @@ const authProvider: AuthProvider = {
 }
 ```
 
-## `disableNotification` Param of `useLogoutIfAccessDenied` Was Removed
+## `useLogoutIfAccessDenied` No Longer Accepts A `disableNotification` Param
 
-The `useLogoutIfAccessDenied` hook no longer accepts the deprecated `disableNotification` param. To disabe the notification at the `checkError` call, `authProvider.checkError()` should return a rejected promise with a `falsy` message:
+The `useLogoutIfAccessDenied` hook no longer accepts the deprecated `disableNotification` param. To disable the "Authentication required" notification when `checkError` is called, `authProvider.checkError()` should return a rejected promise with the value `{ message: false }`:
 
 ```ts
 const authProvider: AuthProvider = {
