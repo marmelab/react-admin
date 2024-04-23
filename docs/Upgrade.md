@@ -935,6 +935,24 @@ const authProvider: AuthProvider = {
 }
 ```
 
+## `disableNotification` Param of `useLogoutIfAccessDenied` Was Removed
+
+The `useLogoutIfAccessDenied` hook no longer accepts the deprecated `disableNotification` param. To disabe the notification at the `checkError` call, `authProvider.checkError()` should return a rejected promise with a `falsy` message:
+
+```ts
+const authProvider: AuthProvider = {
+    //...
+    checkError: () => Promise.reject({ message: false }),
+}
+```
+
+Or the `useLogoutIfAccessDenied` hook could be called with an error param as follows:
+
+```ts
+const logoutIfAccessDenied = useLogoutIfAccessDenied();
+logoutIfAccessDenied(new Error('Denied'));
+```
+
 ## Upgrading to v4
 
 If you are on react-admin v3, follow the [Upgrading to v4](https://marmelab.com/react-admin/doc/4.16/Upgrade.html) guide before upgrading to v5.
