@@ -59,8 +59,11 @@ export const Notification = (props: NotificationProps) => {
 
         if (notifications.length && !currentNotification) {
             // Set a new snack when we don't have an active one
-            setCurrentNotification(takeNotification() ?? undefined);
-            setOpen(true);
+            const notification = takeNotification();
+            if (notification) {
+                setCurrentNotification(notification);
+                setOpen(true);
+            }
         } else if (notifications.length && currentNotification && open) {
             // Close an active snack when a new one is added
             setOpen(false);
