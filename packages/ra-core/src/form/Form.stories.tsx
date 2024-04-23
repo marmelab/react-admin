@@ -97,6 +97,7 @@ const CustomInput = (props: UseControllerProps) => {
                 type="text"
                 aria-invalid={fieldState.invalid}
                 {...field}
+                value={field.value ?? ''}
             />
             <p>{fieldState.error?.message}</p>
         </div>

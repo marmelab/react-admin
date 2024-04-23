@@ -130,10 +130,15 @@ describe('<ReferenceInputBase />', () => {
     });
 
     it('should use meta when fetching current value', async () => {
+        const getList = jest
+            .fn()
+            .mockImplementationOnce(() =>
+                Promise.resolve({ data: [], total: 25 })
+            );
         const getMany = jest
             .fn()
             .mockImplementationOnce(() => Promise.resolve({ data: [] }));
-        const dataProvider = testDataProvider({ getMany });
+        const dataProvider = testDataProvider({ getList, getMany });
         render(
             <CoreAdminContext dataProvider={dataProvider}>
                 <Form record={{ post_id: 23 }}>
