@@ -7,9 +7,6 @@ import { ChoicesContextValue } from '../../form';
 import { useReferenceParams } from './useReferenceParams';
 import { UseQueryOptions } from '@tanstack/react-query';
 
-const defaultReferenceSource = (resource: string, source: string) =>
-    `${resource}@${source}`;
-
 /**
  * A hook for choosing a reference record. Useful for foreign keys.
  *
@@ -218,8 +215,6 @@ export interface UseReferenceInputControllerParams<
     perPage?: number;
     record?: RaRecord;
     reference: string;
-    // @deprecated ignored
-    referenceSource?: typeof defaultReferenceSource;
     resource?: string;
     sort?: SortPayload;
     source: string;
