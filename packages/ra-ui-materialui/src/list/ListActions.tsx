@@ -93,10 +93,6 @@ export const ListActions = (props: ListActionsProps) => {
 
 ListActions.propTypes = {
     className: PropTypes.string,
-    sort: PropTypes.shape({
-        field: PropTypes.string,
-        order: PropTypes.oneOf(['ASC', 'DESC'] as const),
-    }),
     displayedFilters: PropTypes.object,
     exporter: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
     filters: PropTypes.element,
@@ -108,7 +104,6 @@ ListActions.propTypes = {
 };
 
 export interface ListActionsProps extends ToolbarProps {
-    sort?: SortPayload;
     className?: string;
     resource?: string;
     filters?: ReactElement<any>;
