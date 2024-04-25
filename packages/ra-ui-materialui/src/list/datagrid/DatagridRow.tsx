@@ -70,7 +70,7 @@ const DatagridRow: FC<DatagridRowProps> = React.forwardRef((props, ref) => {
     const record = useRecordContext(props);
     if (!record) {
         throw new Error(
-            'DatagridRow can only be used within a RecordContext or be passed a recoerd prop'
+            'DatagridRow can only be used within a RecordContext or be passed a record prop'
         );
     }
     const resource = useResourceContext(props);
