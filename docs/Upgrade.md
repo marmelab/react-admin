@@ -952,6 +952,9 @@ Or the `useLogoutIfAccessDenied` hook could be called with an error param as fol
 const logoutIfAccessDenied = useLogoutIfAccessDenied();
 logoutIfAccessDenied(new Error('Denied'));
 ```
+## `onError` Type From `ra-core` Was Removed
+
+The `onError` type from `ra-core` was removed. Use `OnError` instead.
 
 ## Upgrading to v4
 
