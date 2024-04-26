@@ -1,4 +1,4 @@
-import { FieldProps, InjectedFieldProps } from './types';
+import { FieldProps } from './types';
 
 export * from './ArrayField';
 export * from './BooleanField';
@@ -24,4 +24,4 @@ export * from './TranslatableFieldsTabContent';
 export * from './UrlField';
 export * from './WrapperField';
 
-export type { FieldProps, InjectedFieldProps };
+export type { FieldProps };

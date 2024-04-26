@@ -163,14 +163,6 @@ export interface FieldProps<
     resource?: string;
 }
 
-/**
- * @deprecated use FieldProps instead
- */
-export interface InjectedFieldProps<RecordType = any> {
-    record?: RecordType;
-    resource?: string;
-}
-
 export const fieldPropTypes = {
     sortBy: PropTypes.string,
     sortByOrder: PropTypes.oneOf<SortOrder>(['ASC', 'DESC']),
