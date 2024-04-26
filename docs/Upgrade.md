@@ -1011,6 +1011,10 @@ The deprecated `<ThemeProvider theme>` prop was removed. Use the `ThemesContext.
  };
 ```
 
+## `<PaginationLimit>` Component Was Removed
+
+The deprecated `<PaginationLimit>` component was removed.
+
 ## Upgrading to v4
 
 If you are on react-admin v3, follow the [Upgrading to v4](https://marmelab.com/react-admin/doc/4.16/Upgrade.html) guide before upgrading to v5.

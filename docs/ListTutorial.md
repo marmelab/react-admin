@@ -825,7 +825,6 @@ The [`<Pagination>`](./Pagination.md) component gets the following constants fro
 * `hasPreviousPage`: True if the page number is greater than 1.
 * `hasNextPage`: True if the page number is lower than the total number of pages.
 * `actions`: A component that displays the pagination buttons (default: `<PaginationActions>`)
-* `limit`: An element that is displayed if there is no data to show (default: `<PaginationLimit>`)
 
 If you want to replace the default pagination by a "&lt; previous - next &gt;" pagination, create a pagination component like the following:
 
