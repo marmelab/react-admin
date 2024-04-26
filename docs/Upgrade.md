@@ -980,6 +980,10 @@ The deprecated `formClassName` prop of `CommonInputProps` type has been removed 
 
 `InjectedFieldProps` interface has been removed. Use `FieldProps` instead.
 
+## `<SimpleList rowStyle>` Is No Longer Supported
+
+The deprecated `rowStyle` prop from `<SimpleList>` is no longer supported. Use [`rowSx`](./SimpleList.md#rowsx) instead.
+
 ## Upgrading to v4
 
 If you are on react-admin v3, follow the [Upgrading to v4](https://marmelab.com/react-admin/doc/4.16/Upgrade.html) guide before upgrading to v5.

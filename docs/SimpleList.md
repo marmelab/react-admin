@@ -49,7 +49,6 @@ export const PostList = () => (
 | `leftIcon` | Optional | function | | A function returning an `<Icon>` component to display before the primary text. |
 | `rightAvatar` | Optional | function | | A function returning an `<Avatar>` component to display after the primary text. |
 | `rightIcon` | Optional | function | | A function returning an `<Icon>` component to display after the primary text. |
-| `rowStyle` | Optional | function | | A function returning a style object to apply to each row. |
 | `rowSx` | Optional | function | | A function returning a sx object to apply to each row. |
 | `empty` | Optional | ReactElement | | A ReactElement to display instead of the list when the data is empty. |
 
@@ -189,26 +188,6 @@ This prop should be a function returning an `<Avatar>` component. When present, 
 ## `rightIcon`
 
 This prop should be a function returning an `<Icon>` component. When present, the `<ListItem>` renders a `<ListIcon>` after the `<ListItemText>`.
-
-## `rowStyle`
-
-*Deprecated - use [`rowSx`](#rowsx) instead.*
-
-This optional prop should be a function, which gets called for each row. It receives the current record and index as arguments, and should return a style object. The style object is applied to the `<ListItem>` styles prop.
-
-```jsx
-import { List, SimpleList } from 'react-admin';
-
-const postRowStyle = (record, index) => ({
-    backgroundColor: record.nb_views >= 500 ? '#efe' : 'white',
-});
-
-export const PostList = () => (
-    <List>
-        <SimpleList primaryText={record => record.title} rowStyle={postRowStyle} />
-    </List>
-);
-```
 
 ## `rowSx`
 
