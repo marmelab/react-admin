@@ -984,6 +984,33 @@ The deprecated `formClassName` prop of `CommonInputProps` type has been removed 
 
 The deprecated `rowStyle` prop from `<SimpleList>` is no longer supported. Use [`rowSx`](./SimpleList.md#rowsx) instead.
 
+## `<ThemeProvider theme>` Is No Longer Supported
+
+The deprecated `<ThemeProvider theme>` prop was removed. Use the `ThemesContext.Provider` instead:
+
+```diff
+-import { ThemeProvider } from 'react-admin';
++import { ThemeProvider, ThemesContext } from 'react-admin';
+ 
+ export const ThemeWrapper = ({ children }) => {
+     return (
+-        <ThemeProvider
+-            theme={{
+-                palette: { mode: 'dark' },
++        <ThemesContext.Provider
++            value={{
++                darkTheme: { palette: { mode: 'dark' } },
++                lightTheme: { palette: { mode: 'light' } },
+             }}
+         >
+-            {children}
+-        </ThemeProvider>
++            <ThemeProvider>{children}</ThemeProvider>
++        </ThemesContext.Provider>
+     );
+ };
+```
+
 ## Upgrading to v4
 
 If you are on react-admin v3, follow the [Upgrading to v4](https://marmelab.com/react-admin/doc/4.16/Upgrade.html) guide before upgrading to v5.
