@@ -956,6 +956,10 @@ logoutIfAccessDenied(new Error('Denied'));
 
 The `onError` type from `ra-core` was removed. Use `OnError` instead.
 
+## `linkToRecord` Helper Was Removed
+
+The `linkToRecord` helper was removed. Use [`useCreatePath`](https://marmelab.com/react-admin/Routing.html#linking-to-a-page) instead.
+
 ## Upgrading to v4
 
 If you are on react-admin v3, follow the [Upgrading to v4](https://marmelab.com/react-admin/doc/4.16/Upgrade.html) guide before upgrading to v5.
