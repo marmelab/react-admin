@@ -972,6 +972,10 @@ The deprecated `formClassName` prop of `FieldProps` type has been removed as it 
 
 The deprecated `formClassName` prop of `CommonInputProps` type has been removed as it is no longer used.
 
+## `PublicFieldProps` Interface Was Removed
+
+`PublicFieldProps` interface has been removed. Use `FieldProps` instead.
+
 ## Upgrading to v4
 
 If you are on react-admin v3, follow the [Upgrading to v4](https://marmelab.com/react-admin/doc/4.16/Upgrade.html) guide before upgrading to v5.

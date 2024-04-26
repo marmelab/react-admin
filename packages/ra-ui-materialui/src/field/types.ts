@@ -166,30 +166,6 @@ export interface FieldProps<
 /**
  * @deprecated use FieldProps instead
  */
-export interface PublicFieldProps<
-    RecordType extends Record<string, any> = Record<string, any>,
-    SortByType = unknown
-> {
-    sortBy?: unknown extends SortByType
-        ? Call<Objects.AllPaths, RecordType>
-        : SortByType;
-    sortByOrder?: SortOrder;
-    source?: Call<Objects.AllPaths, RecordType>;
-    label?: string | ReactElement | boolean;
-    sortable?: boolean;
-    className?: string;
-    cellClassName?: string;
-    headerClassName?: string;
-    textAlign?: TextAlign;
-    emptyText?: string;
-    fullWidth?: boolean;
-    record?: RecordType;
-    resource?: string;
-}
-
-/**
- * @deprecated use FieldProps instead
- */
 export interface InjectedFieldProps<RecordType = any> {
     record?: RecordType;
     resource?: string;
