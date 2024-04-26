@@ -962,7 +962,7 @@ The `linkToRecord` helper was removed. Use [`useCreatePath`](https://marmelab.co
 
 ## `resolveRedirectTo` Helper Was Removed
 
-The `resolveRedirectTo` helper was removed. Use [`useCreatePath`](https://marmelab.com/react-admin/Routing.html#linking-to-a-page) instead.
+The `resolveRedirectTo` helper was removed. Use [`useCreatePath`](./Routing.html#linking-to-a-page) instead.
 
 ## `formClassName` Prop Of `FieldProps` Type Was Removed
 
