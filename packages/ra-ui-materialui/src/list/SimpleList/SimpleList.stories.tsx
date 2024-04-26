@@ -1,6 +1,11 @@
 import * as React from 'react';
 import fakeRestDataProvider from 'ra-data-fakerest';
-import { Resource, ListContextProvider, TestMemoryRouter } from 'ra-core';
+import {
+    Resource,
+    ListContextProvider,
+    TestMemoryRouter,
+    ResourceContextProvider,
+} from 'ra-core';
 import defaultMessages from 'ra-language-english';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 
@@ -97,12 +102,14 @@ const data = {
 
 export const Basic = () => (
     <TestMemoryRouter>
-        <SimpleList
-            data={data.books}
-            primaryText={record => record.title}
-            secondaryText={record => record.author}
-            tertiaryText={record => record.year}
-        />
+        <ResourceContextProvider value="books">
+            <SimpleList
+                data={data.books}
+                primaryText={record => record.title}
+                secondaryText={record => record.author}
+                tertiaryText={record => record.year}
+            />
+        </ResourceContextProvider>
     </TestMemoryRouter>
 );
 
