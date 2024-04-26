@@ -112,11 +112,6 @@ export interface FieldProps<
      */
     headerClassName?: string;
 
-    /*
-     * @deprecated this property is not used anymore
-     */
-    formClassName?: string;
-
     /**
      * The text alignment for the cell content, when used inside <Datagrid>.
      *
@@ -185,10 +180,6 @@ export interface PublicFieldProps<
     className?: string;
     cellClassName?: string;
     headerClassName?: string;
-    /*
-     * @deprecated this property is not used anymore
-     */
-    formClassName?: string;
     textAlign?: TextAlign;
     emptyText?: string;
     fullWidth?: boolean;

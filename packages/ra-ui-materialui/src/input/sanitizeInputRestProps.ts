@@ -9,7 +9,6 @@ export const sanitizeInputRestProps = ({
     error,
     format,
     formatOnBlur,
-    formClassName,
     initialValue,
     initializeForm,
     input,

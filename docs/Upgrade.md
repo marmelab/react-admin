@@ -964,6 +964,13 @@ The `linkToRecord` helper was removed. Use [`useCreatePath`](https://marmelab.co
 
 The `resolveRedirectTo` helper was removed. Use [`useCreatePath`](https://marmelab.com/react-admin/Routing.html#linking-to-a-page) instead.
 
+## `formClassName` Prop Of `FieldProps` Type Was Removed
+
+The deprecated `formClassName` prop of `FieldProps` type has been removed as it is no longer used.
+
+## `formClassName` Prop Of `CommonInputProps` Type Was Removed
+
+The deprecated `formClassName` prop of `CommonInputProps` type has been removed as it is no longer used.
 
 ## Upgrading to v4
 
