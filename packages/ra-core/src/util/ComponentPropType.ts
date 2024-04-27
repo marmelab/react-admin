@@ -6,4 +6,5 @@ export default (props, propName, componentName) => {
             `Invalid prop '${propName}' supplied to '${componentName}': the prop is not a valid React component`
         );
     }
+    return null;
 };

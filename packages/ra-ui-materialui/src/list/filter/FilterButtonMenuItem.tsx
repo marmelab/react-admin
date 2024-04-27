@@ -46,6 +46,6 @@ FilterButtonMenuItem.propTypes = {
 export interface FilterButtonMenuItemProps {
     filter: JSX.Element;
     onShow: (params: { source: string; defaultValue: any }) => void;
-    resource: string;
+    resource?: string;
     autoFocus?: boolean;
 }

@@ -3,6 +3,7 @@ import { useStore, useTranslate, useResourceContext } from 'ra-core';
 import {
     Box,
     Button,
+    ButtonProps,
     Popover,
     useMediaQuery,
     Theme,
@@ -55,7 +56,9 @@ export const SelectColumnsButton = (props: SelectColumnsButtonProps) => {
     const [columns, setColumns] = useStore<string[]>(
         `preferences.${finalPreferenceKey}.columns`,
         availableColumns
-            .filter(column => !omit?.includes(column.source))
+            .filter(column =>
+                column.source ? !omit?.includes(column.source) : true
+            )
             .map(column => column.index)
     );
     const translate = useTranslate();
@@ -191,16 +194,13 @@ const StyledButton = styled(Button, {
     },
 });
 
-/* eslint-disable @typescript-eslint/no-unused-vars */
 const sanitizeRestProps = ({
-    resource = null,
-    preferenceKey = null,
+    resource,
+    preferenceKey,
     ...rest
-}) => rest;
-/* eslint-enable @typescript-eslint/no-unused-vars */
+}: SelectColumnsButtonProps): ButtonProps => rest;
 
-export interface SelectColumnsButtonProps
-    extends React.HtmlHTMLAttributes<HTMLDivElement> {
+export interface SelectColumnsButtonProps extends ButtonProps {
     resource?: string;
     preferenceKey?: string;
 }

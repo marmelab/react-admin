@@ -62,15 +62,28 @@ const DatagridRow: FC<DatagridRowProps> = React.forwardRef((props, ref) => {
         ...rest
     } = props;
 
+    if (typeof id === 'undefined') {
+        throw new Error('DatagridRow expects an id prop');
+    }
     const context = useDatagridContext();
     const translate = useTranslate();
     const record = useRecordContext(props);
+    if (!record) {
+        throw new Error(
+            'DatagridRow can only be used within a RecordContext or be passed a record prop'
+        );
+    }
+    const resource = useResourceContext(props);
+    if (!resource) {
+        throw new Error(
+            'DatagridRow can only be used within a ResourceContext or be passed a resource prop'
+        );
+    }
     const expandable =
         (!context ||
             !context.isRowExpandable ||
             context.isRowExpandable(record)) &&
         expand;
-    const resource = useResourceContext(props);
     const createPath = useCreatePath();
     const [expanded, toggleExpanded] = useExpanded(
         resource,
@@ -105,7 +118,7 @@ const DatagridRow: FC<DatagridRowProps> = React.forwardRef((props, ref) => {
     );
     const handleToggleSelection = useCallback(
         event => {
-            if (!selectable) return;
+            if (!selectable || !onToggleItem) return;
             onToggleItem(id, event);
             event.stopPropagation();
         },

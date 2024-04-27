@@ -107,7 +107,7 @@ export const UserMenu = (props: UserMenuProps) => {
                 <Tooltip title={label && translate(label, { _: 'Profile' })}>
                     <IconButton
                         aria-label={label && translate(label, { _: 'Profile' })}
-                        aria-owns={open ? 'menu-appbar' : null}
+                        aria-owns={open ? 'menu-appbar' : undefined}
                         aria-haspopup={true}
                         color="inherit"
                         onClick={handleMenu}
