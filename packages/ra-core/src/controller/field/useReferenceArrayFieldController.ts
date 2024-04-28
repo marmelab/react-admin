@@ -72,12 +72,7 @@ export const useReferenceArrayFieldController = <
     const notify = useNotify();
     const value = get(record, source);
     const { meta, ...otherQueryOptions } = queryOptions;
-
-    const ids = useMemo(() => {
-        if (Array.isArray(value)) return value;
-        console.warn(`Value of field '${source}' is not an array.`, value);
-        return emptyArray;
-    }, [value, source]);
+    const ids = Array.isArray(value) ? value : emptyArray;
 
     const {
         data,
