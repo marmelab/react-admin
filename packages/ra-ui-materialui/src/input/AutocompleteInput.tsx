@@ -601,7 +601,9 @@ If you provided a React element for the optionText prop, you must also provide t
                         <Chip
                             label={
                                 isValidElement(optionText)
-                                    ? inputText!(option)
+                                    ? inputText
+                                        ? inputText(option)
+                                        : ''
                                     : getChoiceText(option)
                             }
                             size="small"
