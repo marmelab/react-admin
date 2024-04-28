@@ -16,9 +16,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
     - name: Use Node.js LTS
-      uses: actions/setup-node@v1
+      uses: actions/setup-node@v4
       with:
         node-version: '18.x'
     - uses: bahmutov/npm-install@v1
@@ -33,9 +33,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
     - name: Use Node.js LTS
-      uses: actions/setup-node@v1
+      uses: actions/setup-node@v4
       with:
         node-version: '18.x'
     - uses: bahmutov/npm-install@v1
@@ -50,9 +50,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
     - name: Use Node.js LTS
-      uses: actions/setup-node@v1
+      uses: actions/setup-node@v4
       with:
         node-version: '18.x'
     - uses: bahmutov/npm-install@v1
@@ -67,9 +67,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
     - name: Use Node.js LTS
-      uses: actions/setup-node@v1
+      uses: actions/setup-node@v4
       with:
         node-version: '18.x'
     - uses: bahmutov/npm-install@v1
@@ -86,7 +86,7 @@ jobs:
     - name: Zip demo build
       run: zip demo-build.zip -r examples/demo/dist examples/demo/package.json
     - name: Upload demo build artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
           name: demo-build
           path: demo-build.zip
@@ -96,9 +96,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
     - name: Use Node.js LTS
-      uses: actions/setup-node@v1
+      uses: actions/setup-node@v4
       with:
         node-version: '18.x'
     - uses: bahmutov/npm-install@v1
@@ -118,7 +118,7 @@ jobs:
       # To use this repository's private action,
       # you must check out the repository
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           fetch-depth: 2 # Fetch HEAD^ to enable git comparison
       - name: Download demo build
@@ -142,9 +142,9 @@ jobs:
     if: success() && (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/next')
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       - name: Use Node.js LTS
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v4
         with:
           node-version: '18.x'
       - uses: bahmutov/npm-install@v1
