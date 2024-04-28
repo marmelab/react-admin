@@ -1,6 +1,7 @@
 import * as React from 'react';
-import { useMemo } from 'react';
+import { ErrorInfo, useMemo, useState } from 'react';
 import { QueryClientProvider, QueryClient } from 'react-query';
+import { ErrorBoundary } from 'react-error-boundary';
 import { History } from 'history';
 
 import { AdminRouter } from '../routing';
@@ -183,6 +184,7 @@ export const CoreAdminContext = (props: CoreAdminContextProps) => {
         history,
         queryClient,
     } = props;
+    const [errorInfo, setErrorInfo] = useState<ErrorInfo>();
 
     if (!dataProvider) {
         throw new Error(`Missing dataProvider prop.
@@ -209,25 +211,43 @@ React-admin requires a valid dataProvider function to work.`);
         [dataProvider]
     );
 
+    const handleError = (error: Error, info: ErrorInfo) => {
+        setErrorInfo(info);
+    };
+
     return (
-        <AuthContext.Provider value={finalAuthProvider}>
-            <DataProviderContext.Provider value={finalDataProvider}>
-                <StoreContextProvider value={store}>
-                    <PreferencesEditorContextProvider>
-                        <QueryClientProvider client={finalQueryClient}>
-                            <AdminRouter history={history} basename={basename}>
-                                <I18nContextProvider value={i18nProvider}>
-                                    <NotificationContextProvider>
-                                        <ResourceDefinitionContextProvider>
-                                            {children}
-                                        </ResourceDefinitionContextProvider>
-                                    </NotificationContextProvider>
-                                </I18nContextProvider>
-                            </AdminRouter>
-                        </QueryClientProvider>
-                    </PreferencesEditorContextProvider>
-                </StoreContextProvider>
-            </DataProviderContext.Provider>
-        </AuthContext.Provider>
+        <ErrorBoundary
+            onError={handleError}
+            fallbackRender={({ error }) => (
+                <div>
+                    <p>Error: {error?.message}</p>
+                    <p>ErrorInfo: {JSON.stringify(errorInfo)}</p>
+                    <p>ComponentStack: {errorInfo?.componentStack}</p>
+                </div>
+            )}
+        >
+            <AuthContext.Provider value={finalAuthProvider}>
+                <DataProviderContext.Provider value={finalDataProvider}>
+                    <StoreContextProvider value={store}>
+                        <PreferencesEditorContextProvider>
+                            <QueryClientProvider client={finalQueryClient}>
+                                <AdminRouter
+                                    history={history}
+                                    basename={basename}
+                                >
+                                    <I18nContextProvider value={i18nProvider}>
+                                        <NotificationContextProvider>
+                                            <ResourceDefinitionContextProvider>
+                                                {children}
+                                            </ResourceDefinitionContextProvider>
+                                        </NotificationContextProvider>
+                                    </I18nContextProvider>
+                                </AdminRouter>
+                            </QueryClientProvider>
+                        </PreferencesEditorContextProvider>
+                    </StoreContextProvider>
+                </DataProviderContext.Provider>
+            </AuthContext.Provider>
+        </ErrorBoundary>
     );
 };
