@@ -71,26 +71,28 @@ const DateFieldImpl = <
     const date = transform(value);
 
     let dateString = '';
-    if (showTime && showDate) {
-        dateString = toLocaleStringSupportsLocales
-            ? date.toLocaleString(locales, options)
-            : date.toLocaleString();
-    } else if (showDate) {
-        // If input is a date string (e.g. '2022-02-15') without time and time zone,
-        // force timezone to UTC to fix issue with people in negative time zones
-        // who may see a different date when calling toLocaleDateString().
-        const dateOptions =
-            options ??
-            (typeof value === 'string' && value.length <= 10
-                ? { timeZone: 'UTC' }
-                : undefined);
-        dateString = toLocaleStringSupportsLocales
-            ? date.toLocaleDateString(locales, dateOptions)
-            : date.toLocaleDateString();
-    } else if (showTime) {
-        dateString = toLocaleStringSupportsLocales
-            ? date.toLocaleTimeString(locales, options)
-            : date.toLocaleTimeString();
+    if (date) {
+        if (showTime && showDate) {
+            dateString = toLocaleStringSupportsLocales
+                ? date.toLocaleString(locales, options)
+                : date.toLocaleString();
+        } else if (showDate) {
+            // If input is a date string (e.g. '2022-02-15') without time and time zone,
+            // force timezone to UTC to fix issue with people in negative time zones
+            // who may see a different date when calling toLocaleDateString().
+            const dateOptions =
+                options ??
+                (typeof value === 'string' && value.length <= 10
+                    ? { timeZone: 'UTC' }
+                    : undefined);
+            dateString = toLocaleStringSupportsLocales
+                ? date.toLocaleDateString(locales, dateOptions)
+                : date.toLocaleDateString();
+        } else if (showTime) {
+            dateString = toLocaleStringSupportsLocales
+                ? date.toLocaleTimeString(locales, options)
+                : date.toLocaleTimeString();
+        }
     }
 
     return (
