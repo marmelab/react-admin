@@ -195,7 +195,7 @@ export const useReferenceInputController = <RecordType extends RaRecord = any>(
             : undefined,
         hasPreviousPage: pageInfo ? pageInfo.hasPreviousPage : params.page > 1,
         isFromReference: true,
-    };
+    } as ChoicesContextValue<RecordType>;
 };
 
 export interface UseReferenceInputControllerParams<

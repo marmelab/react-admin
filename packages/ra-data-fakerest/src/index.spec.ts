@@ -50,6 +50,7 @@ describe('ra-data-fakerest', () => {
             expect(data).toEqual([]);
         });
         it('should return an error when requesting a nonexisting id', async () => {
+            jest.spyOn(console, 'error').mockImplementationOnce(() => {});
             const dataProvider = fakerestDataProvider({
                 posts: [
                     { id: 0, title: 'Hello, world!' },

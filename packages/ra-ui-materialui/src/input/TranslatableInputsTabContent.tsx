@@ -24,6 +24,11 @@ export const TranslatableInputsTabContent = (
     const resource = useResourceContext(props);
     const { selectedLocale } = useTranslatableContext();
     const parentSourceContext = useSourceContext();
+    if (!parentSourceContext && !resource) {
+        throw new Error(
+            'TranslatableInputsTabContent should be used inside a ResourceContext or given a resource prop.'
+        );
+    }
     const sourceContext = useMemo(
         () => ({
             getSource: (source: string) =>
@@ -33,7 +38,7 @@ export const TranslatableInputsTabContent = (
             getLabel: (source: string) => {
                 return parentSourceContext
                     ? parentSourceContext.getLabel(source)
-                    : getResourceFieldLabelKey(resource, source);
+                    : getResourceFieldLabelKey(resource!, source);
             },
         }),
         [locale, parentSourceContext, resource]

@@ -12,6 +12,7 @@ import {
     ArrayInput,
 } from 'ra-ui-materialui';
 import expect from 'expect';
+import { ResourceContextProvider } from '..';
 
 describe('FormDataConsumerView', () => {
     it('does not call its children function with scopedFormData if it did not receive a source containing an index', () => {
@@ -88,22 +89,24 @@ describe('FormDataConsumerView', () => {
         let globalScopedFormData;
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm>
-                    <ArrayInput source="authors">
-                        <SimpleFormIterator>
-                            <TextInput source="name" />
-                            <FormDataConsumer>
-                                {({ scopedFormData }) => {
-                                    globalScopedFormData = scopedFormData;
-                                    return scopedFormData &&
-                                        scopedFormData.name ? (
-                                        <TextInput source="role" />
-                                    ) : null;
-                                }}
-                            </FormDataConsumer>
-                        </SimpleFormIterator>
-                    </ArrayInput>
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm>
+                        <ArrayInput source="authors">
+                            <SimpleFormIterator>
+                                <TextInput source="name" />
+                                <FormDataConsumer>
+                                    {({ scopedFormData }) => {
+                                        globalScopedFormData = scopedFormData;
+                                        return scopedFormData &&
+                                            scopedFormData.name ? (
+                                            <TextInput source="role" />
+                                        ) : null;
+                                    }}
+                                </FormDataConsumer>
+                            </SimpleFormIterator>
+                        </ArrayInput>
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
 
@@ -114,7 +117,7 @@ describe('FormDataConsumerView', () => {
         expect(globalScopedFormData).toEqual({ name: null });
 
         fireEvent.change(
-            screen.getByLabelText('resources.undefined.fields.authors.name'),
+            screen.getByLabelText('resources.posts.fields.authors.name'),
             {
                 target: { value: 'a' },
             }

@@ -345,7 +345,7 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
                     {finalChoices.map(renderMenuItem)}
                 </Select>
                 {renderHelperText ? (
-                    <FormHelperText error={fetchError || !!error}>
+                    <FormHelperText error={!!fetchError || !!error}>
                         <InputHelperText
                             error={error?.message || fetchError?.message}
                             helperText={helperText}
