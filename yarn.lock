@@ -10174,7 +10174,7 @@ __metadata:
   resolution: "data-generator-retail@workspace:examples/data-generator"
   dependencies:
     cross-env: "npm:^5.2.0"
-    date-fns: "npm:^2.19.0"
+    date-fns: "npm:^3.6.0"
     faker: "npm:^4.1.0"
     ra-core: "npm:^5.0.0-alpha.1"
     rimraf: "npm:^3.0.2"
@@ -10195,10 +10195,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"date-fns@npm:^2.0.1, date-fns@npm:^2.19.0":
+"date-fns@npm:^2.0.1":
   version: 2.28.0
   resolution: "date-fns@npm:2.28.0"
   checksum: ecdacd36326e7f5f8c4f1e78ae931a8997109f1c841f5163053b866585ca899521b0e7a114eeb48a9fe5135a550787bd4bbd8baa321cded0b4d823f847889a80
+  languageName: node
+  linkType: hard
+
+"date-fns@npm:^3.6.0":
+  version: 3.6.0
+  resolution: "date-fns@npm:3.6.0"
+  checksum: 0b5fb981590ef2f8e5a3ba6cd6d77faece0ea7f7158948f2eaae7bbb7c80a8f63ae30b01236c2923cf89bb3719c33aeb150c715ea4fe4e86e37dcf06bed42fb6
   languageName: node
   linkType: hard
 
@@ -10443,7 +10450,7 @@ __metadata:
     "@vitejs/plugin-react": "npm:^4.2.1"
     clsx: "npm:^1.1.1"
     data-generator-retail: "npm:^5.0.0-alpha.0"
-    date-fns: "npm:^2.19.0"
+    date-fns: "npm:^3.6.0"
     fakerest: "npm:^3.0.0"
     fetch-mock: "npm:~9.11.0"
     graphql: "npm:^15.6.0"
@@ -18684,7 +18691,7 @@ __metadata:
     "@types/react": "npm:^18.2.37"
     clsx: "npm:^1.1.1"
     cross-env: "npm:^5.2.0"
-    date-fns: "npm:^2.19.0"
+    date-fns: "npm:^3.6.0"
     eventemitter3: "npm:^4.0.7"
     expect: "npm:^27.4.6"
     hotscript: "npm:^1.0.12"
@@ -18920,7 +18927,7 @@ __metadata:
     "@testing-library/user-event": "npm:^14.5.1"
     clsx: "npm:^1.1.1"
     cross-env: "npm:^5.2.0"
-    date-fns: "npm:^2.19.0"
+    date-fns: "npm:^3.6.0"
     inflection: "npm:~1.12.0"
     lodash: "npm:~4.17.5"
     papaparse: "npm:^5.3.0"
@@ -19091,7 +19098,7 @@ __metadata:
     "@types/react-dom": "npm:^18.2.16"
     "@vitejs/plugin-react": "npm:^4.2.1"
     clsx: "npm:^1.1.1"
-    date-fns: "npm:^2.19.0"
+    date-fns: "npm:^3.6.0"
     faker: "npm:~5.4.0"
     lodash: "npm:~4.17.5"
     prop-types: "npm:^15.8.1"

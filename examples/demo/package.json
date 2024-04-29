@@ -12,7 +12,7 @@
         "@vitejs/plugin-react": "^2.2.0",
         "clsx": "^1.1.1",
         "data-generator-retail": "^5.0.0-alpha.0",
-        "date-fns": "^2.19.0",
+        "date-fns": "^3.6.0",
         "fakerest": "^3.0.0",
         "fetch-mock": "~9.11.0",
         "graphql": "^15.6.0",
