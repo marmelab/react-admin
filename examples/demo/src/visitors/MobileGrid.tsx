@@ -46,7 +46,7 @@ const MobileGrid = () => {
                             <Typography variant="body2">
                                 {translate(
                                     'resources.commands.name',
-                                    record.nb_commands || 1
+                                    record.nb_orders || 1
                                 )}
                                 :&nbsp;
                                 <NumberField source="nb_commands" />

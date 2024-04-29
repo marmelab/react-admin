@@ -9,7 +9,7 @@ import {
 } from './utils';
 import type { Db } from './types';
 
-export const generateCommands = (db: Db): Command[] => {
+export const generateOrders = (db: Db): Order[] => {
     const today = new Date();
     const aMonthAgo = subDays(today, 30);
     const realCustomers = db.customers.filter(customer => customer.has_ordered);
@@ -42,7 +42,7 @@ export const generateCommands = (db: Db): Command[] => {
         const customer = random.arrayElement(realCustomers);
         const date = randomDate(customer.first_seen, customer.last_seen);
 
-        const status: CommandStatus =
+        const status: OrderStatus =
             isAfter(date, aMonthAgo) && random.boolean()
                 ? 'ordered'
                 : weightedArrayElement(['delivered', 'cancelled'], [10, 1]);
@@ -65,7 +65,7 @@ export const generateCommands = (db: Db): Command[] => {
     });
 };
 
-export type Command = {
+export type Order = {
     id: number;
     reference: string;
     date: string;
@@ -76,11 +76,11 @@ export type Command = {
     tax_rate: number;
     taxes: number;
     total: number;
-    status: CommandStatus;
+    status: OrderStatus;
     returned: boolean;
 };
 
-export type CommandStatus = 'ordered' | 'delivered' | 'cancelled';
+export type OrderStatus = 'ordered' | 'delivered' | 'cancelled';
 export type BasketItem = {
     product_id: number;
     quantity: number;
