@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useEffect, useState } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import inflection from 'inflection';
 import {
     ShowBase,
@@ -28,8 +28,15 @@ const ShowViewGuesser = (
     props: Omit<ShowProps, 'children'> & { enableLog?: boolean }
 ) => {
     const resource = useResourceContext(props);
+
+    if (!resource) {
+        throw new Error(
+            `<ShowGuesser> was called outside of a ResourceContext and without a resource prop. You must set the resource prop.`
+        );
+    }
+
     const { record } = useShowContext();
-    const [child, setChild] = useState(null);
+    const [child, setChild] = useState<ReactNode>(null);
     const {
         enableLog = process.env.NODE_ENV === 'development',
         ...rest
