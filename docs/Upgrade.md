@@ -980,10 +980,6 @@ The deprecated `formClassName` prop of `CommonInputProps` type has been removed 
 
 `InjectedFieldProps` interface has been removed. Use `FieldProps` instead.
 
-## `<SimpleList rowStyle>` Is No Longer Supported
-
-The deprecated `rowStyle` prop from `<SimpleList>` is no longer supported. Use [`rowSx`](./SimpleList.md#rowsx) instead.
-
 ## `<ThemeProvider theme>` Is No Longer Supported
 
 The deprecated `<ThemeProvider theme>` prop was removed. Use the `ThemesContext.Provider` instead:
