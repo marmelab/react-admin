@@ -26,8 +26,11 @@ export const combineDataProviders = (
 ): DataProvider =>
     new Proxy(defaultDataProvider, {
         get: (target, name) => {
+            if (name === 'then') {
+                return null;
+            }
             return (resource, params) => {
-                if (typeof name === 'symbol' || name === 'then') {
+                if (typeof name === 'symbol') {
                     return;
                 }
                 return dataProviderMatcher(resource)[name](resource, params);
