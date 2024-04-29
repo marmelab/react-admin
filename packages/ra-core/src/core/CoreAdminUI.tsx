@@ -1,6 +1,15 @@
 import * as React from 'react';
-import { ComponentType, useEffect, isValidElement, createElement } from 'react';
+import {
+    ComponentType,
+    useEffect,
+    isValidElement,
+    createElement,
+    useState,
+    ErrorInfo,
+    ReactElement,
+} from 'react';
 import { Routes, Route } from 'react-router-dom';
+import { ErrorBoundary, FallbackProps } from 'react-error-boundary';
 
 import { CoreAdminRoutes } from './CoreAdminRoutes';
 import { Ready } from '../util';
@@ -22,6 +31,28 @@ const DefaultLayout = ({ children }: { children: React.ReactNode }) => (
 );
 
 export interface CoreAdminUIProps {
+    /**
+     * The content displayed when the user visits the /auth-callback page, used for redirection by third-party authentication providers
+     *
+     * @see https://marmelab.com/react-admin/Admin.html#authcallbackpage
+     * @example
+     * import { Admin } from 'react-admin';
+     * import { dataProvider } from './dataProvider';
+     * import { authProvider } from './authProvider';
+     * import MyAuthCallbackPage from './MyAuthCallbackPage';
+     *
+     * const App = () => (
+     *     <Admin
+     *         authCallbackPage={MyAuthCallbackPage}
+     *         authProvider={authProvider}
+     *         dataProvider={dataProvider}
+     *     >
+     *         ...
+     *     </Admin>
+     * );
+     */
+    authCallbackPage?: ComponentType | boolean;
+
     /**
      * A catch-all react component to display when the URL does not match any
      *
@@ -90,6 +121,14 @@ export interface CoreAdminUIProps {
     disableTelemetry?: boolean;
 
     /**
+     * The component displayed when an error is caught in a child component
+     * @see https://marmelab.com/react-admin/Admin.html#error
+     * @example
+     * TODO: add an example
+     */
+    error?: (props: FallbackProps) => ReactElement;
+
+    /**
      * The main app layout component
      *
      * @see https://marmelab.com/react-admin/Admin.html#layout
@@ -116,28 +155,6 @@ export interface CoreAdminUIProps {
     loading?: LoadingComponent;
 
     /**
-     * The content displayed when the user visits the /auth-callback page, used for redirection by third-party authentication providers
-     *
-     * @see https://marmelab.com/react-admin/Admin.html#authcallbackpage
-     * @example
-     * import { Admin } from 'react-admin';
-     * import { dataProvider } from './dataProvider';
-     * import { authProvider } from './authProvider';
-     * import MyAuthCallbackPage from './MyAuthCallbackPage';
-     *
-     * const App = () => (
-     *     <Admin
-     *         authCallbackPage={MyAuthCallbackPage}
-     *         authProvider={authProvider}
-     *         dataProvider={dataProvider}
-     *     >
-     *         ...
-     *     </Admin>
-     * );
-     */
-    authCallbackPage?: ComponentType | boolean;
-
-    /**
      * The component displayed when the user visits the /login page
      * @see https://marmelab.com/react-admin/Admin.html#loginpage
      * @example
@@ -157,6 +174,14 @@ export interface CoreAdminUIProps {
      * );
      */
     loginPage?: LoginComponent | boolean;
+
+    /**
+     * The function called when an error is caught in a child component
+     * @see https://marmelab.com/react-admin/Admin.html#onerror
+     * @example
+     * TODO: add an example
+     */
+    onError?: (error: Error, info: ErrorInfo) => void;
 
     /**
      * Flag to require authentication for all routes. Defaults to false.
@@ -218,18 +243,29 @@ export interface CoreAdminUIProps {
 }
 
 export const CoreAdminUI = (props: CoreAdminUIProps) => {
+    const [errorInfo, setErrorInfo] = useState<ErrorInfo | undefined>(
+        undefined
+    );
     const {
+        authCallbackPage: LoginCallbackPage = false,
         catchAll = Noop,
         children,
         dashboard,
         disableTelemetry = false,
+        error = ({ error }) => (
+            <div>
+                <p>Error: {error?.message}</p>
+                <p>ErrorInfo: {JSON.stringify(errorInfo)}</p>
+                <p>ComponentStack: {errorInfo?.componentStack}</p>
+            </div>
+        ),
         layout = DefaultLayout,
         loading = Noop,
         loginPage: LoginPage = false,
-        authCallbackPage: LoginCallbackPage = false,
+        onError,
         ready = Ready,
-        title = 'React Admin',
         requireAuth = false,
+        title = 'React Admin',
     } = props;
 
     useEffect(() => {
@@ -246,39 +282,49 @@ export const CoreAdminUI = (props: CoreAdminUIProps) => {
         img.src = `https://react-admin-telemetry.marmelab.com/react-admin-telemetry?domain=${window.location.hostname}`;
     }, [disableTelemetry]);
 
+    const handleError = (error: Error, info: ErrorInfo) => {
+        setErrorInfo(info);
+    };
+
     return (
         <DefaultTitleContextProvider value={title}>
-            <Routes>
-                {LoginPage !== false && LoginPage !== true ? (
-                    <Route
-                        path="/login"
-                        element={createOrGetElement(LoginPage)}
-                    />
-                ) : null}
+            <ErrorBoundary
+                onError={onError ?? handleError}
+                fallbackRender={error}
+            >
+                <Routes>
+                    {LoginPage !== false && LoginPage !== true ? (
+                        <Route
+                            path="/login"
+                            element={createOrGetElement(LoginPage)}
+                        />
+                    ) : null}
 
-                {LoginCallbackPage !== false && LoginCallbackPage !== true ? (
-                    <Route
-                        path="/auth-callback"
-                        element={createOrGetElement(LoginCallbackPage)}
-                    />
-                ) : null}
+                    {LoginCallbackPage !== false &&
+                    LoginCallbackPage !== true ? (
+                        <Route
+                            path="/auth-callback"
+                            element={createOrGetElement(LoginCallbackPage)}
+                        />
+                    ) : null}
 
-                <Route
-                    path="/*"
-                    element={
-                        <CoreAdminRoutes
-                            catchAll={catchAll}
-                            dashboard={dashboard}
-                            layout={layout}
-                            loading={loading}
-                            requireAuth={requireAuth}
-                            ready={ready}
-                        >
-                            {children}
-                        </CoreAdminRoutes>
-                    }
-                />
-            </Routes>
+                    <Route
+                        path="/*"
+                        element={
+                            <CoreAdminRoutes
+                                catchAll={catchAll}
+                                dashboard={dashboard}
+                                layout={layout}
+                                loading={loading}
+                                requireAuth={requireAuth}
+                                ready={ready}
+                            >
+                                {children}
+                            </CoreAdminRoutes>
+                        }
+                    />
+                </Routes>
+            </ErrorBoundary>
         </DefaultTitleContextProvider>
     );
 };

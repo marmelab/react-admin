@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { createElement, ComponentType } from 'react';
+import { createElement, ComponentType, useState, ErrorInfo } from 'react';
 import { CoreAdminUI, CoreAdminUIProps } from 'ra-core';
 import { ScopedCssBaseline } from '@mui/material';
 
@@ -8,6 +8,7 @@ import {
     LoadingPage,
     NotFound,
     Notification,
+    Error,
 } from './layout';
 import { Login, AuthCallback } from './auth';
 
@@ -18,20 +19,40 @@ export const AdminUI = ({
     loginPage = Login,
     authCallbackPage = AuthCallback,
     notification = Notification,
+    error: errorComponent,
     ...props
-}: AdminUIProps) => (
-    <ScopedCssBaseline enableColorScheme>
-        <CoreAdminUI
-            layout={layout}
-            catchAll={catchAll}
-            loading={loading}
-            loginPage={loginPage}
-            authCallbackPage={authCallbackPage}
-            {...props}
-        />
-        {createElement(notification)}
-    </ScopedCssBaseline>
-);
+}: AdminUIProps) => {
+    const [errorInfo, setErrorInfo] = useState<ErrorInfo | undefined>(
+        undefined
+    );
+
+    const handleError = (error: Error, info: ErrorInfo) => {
+        setErrorInfo(info);
+    };
+
+    return (
+        <ScopedCssBaseline enableColorScheme>
+            <CoreAdminUI
+                layout={layout}
+                catchAll={catchAll}
+                loading={loading}
+                loginPage={loginPage}
+                authCallbackPage={authCallbackPage}
+                error={({ error, resetErrorBoundary }) => (
+                    <Error
+                        error={error}
+                        errorComponent={errorComponent}
+                        errorInfo={errorInfo}
+                        resetErrorBoundary={resetErrorBoundary}
+                    />
+                )}
+                onError={handleError}
+                {...props}
+            />
+            {createElement(notification)}
+        </ScopedCssBaseline>
+    );
+};
 
 export interface AdminUIProps extends CoreAdminUIProps {
     /**
