@@ -505,6 +505,7 @@ If you provided a React element for the optionText prop, you must also provide t
 
         // add create option if necessary
         const { inputValue } = params;
+        // FIXME pass the allowCreate: true option to useCreateSuggestions instead
         if (
             (onCreate || create) &&
             inputValue !== '' &&

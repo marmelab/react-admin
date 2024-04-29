@@ -98,7 +98,14 @@ export const useSupportCreateSuggestion = (
 
             if (finalValue?.id === createValue || finalValue === createValue) {
                 if (!isValidElement(create)) {
-                    const newSuggestion = await onCreate!(filter);
+                    if (!onCreate) {
+                        // this should never happen because the createValue is only added if a create function is provided
+                        // @see AutocompleteInput:filterOptions
+                        throw new Error(
+                            'To create a new option, you must pass an onCreate function or a create element.'
+                        );
+                    }
+                    const newSuggestion = await onCreate(filter);
                     if (newSuggestion) {
                         handleChange(newSuggestion);
                         return;
