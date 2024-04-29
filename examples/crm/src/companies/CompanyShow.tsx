@@ -178,11 +178,8 @@ const ContactsIterator = () => {
                                     component="span"
                                 >
                                     last activity{' '}
-                                    {formatDistance(
-                                        new Date(contact.last_seen),
-                                        now
-                                    )}{' '}
-                                    ago <Status status={contact.status} />
+                                    {formatDistance(contact.last_seen, now)} ago{' '}
+                                    <Status status={contact.status} />
                                 </Typography>
                             </ListItemSecondaryAction>
                         </ListItem>
@@ -252,8 +249,7 @@ const DealsIterator = () => {
                                 component="span"
                             >
                                 last activity{' '}
-                                {formatDistance(new Date(deal.updated_at), now)}{' '}
-                                ago{' '}
+                                {formatDistance(deal.updated_at, now)} ago{' '}
                             </Typography>
                         </ListItemSecondaryAction>
                     </ListItem>

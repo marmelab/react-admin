@@ -104,11 +104,8 @@ const ContactListContent = () => {
                                     color="textSecondary"
                                 >
                                     last activity{' '}
-                                    {formatDistance(
-                                        new Date(contact.last_seen),
-                                        now
-                                    )}{' '}
-                                    ago <Status status={contact.status} />
+                                    {formatDistance(contact.last_seen, now)} ago{' '}
+                                    <Status status={contact.status} />
                                 </Typography>
                             </ListItemSecondaryAction>
                         </ListItem>

@@ -80,13 +80,9 @@ export const LatestNotes = () => {
                                     <Contact note={note} />
                                 )}
                                 , added{' '}
-                                {formatDistance(
-                                    new Date(note.date),
-                                    new Date(),
-                                    {
-                                        addSuffix: true,
-                                    }
-                                )}
+                                {formatDistance(note.date, new Date(), {
+                                    addSuffix: true,
+                                })}
                             </Typography>
                             <div>
                                 <Typography
