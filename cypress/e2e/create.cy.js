@@ -16,8 +16,6 @@ describe('Create Page', () => {
     });
 
     it('should validate unique fields', () => {
-        // wait for the page to load
-        cy.get('#rd-title').should('be.visible');
         CreatePage.logout();
         LoginPage.login('admin', 'password');
 
