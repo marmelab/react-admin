@@ -15,6 +15,40 @@ describe('Create Page', () => {
         CreatePage.waitUntilVisible();
     });
 
+    it('should validate unique fields', () => {
+        // wait for the page to load
+        cy.get('#rd-title').should('be.visible');
+        CreatePage.logout();
+        LoginPage.login('admin', 'password');
+
+        UserCreatePage.navigate();
+        UserCreatePage.setValues([
+            {
+                type: 'input',
+                name: 'name',
+                value: 'Annamarie Mayer',
+            },
+        ]);
+        cy.get(UserCreatePage.elements.input('name')).blur();
+
+        cy.get(CreatePage.elements.nameError)
+            .should('exist')
+            .contains('Must be unique', { timeout: 10000 });
+
+        UserCreatePage.setValues([
+            {
+                type: 'input',
+                name: 'name',
+                value: 'Annamarie NotMayer',
+            },
+        ]);
+        cy.get(UserCreatePage.elements.input('name')).blur();
+
+        cy.get(CreatePage.elements.nameError)
+            .should('exist')
+            .should('not.contain', 'Must be unique', { timeout: 10000 });
+    });
+
     it('should show the correct title in the appBar', () => {
         cy.get(CreatePage.elements.title).contains('Create Post');
     });
@@ -372,37 +406,5 @@ describe('Create Page', () => {
         cy.get(EditPage.elements.input('body', 'rich-text-input')).contains(
             'Test body'
         );
-    });
-
-    it('should validate unique fields', () => {
-        CreatePage.logout();
-        LoginPage.login('admin', 'password');
-
-        UserCreatePage.navigate();
-        UserCreatePage.setValues([
-            {
-                type: 'input',
-                name: 'name',
-                value: 'Annamarie Mayer',
-            },
-        ]);
-        cy.get(UserCreatePage.elements.input('name')).blur();
-
-        cy.get(CreatePage.elements.nameError)
-            .should('exist')
-            .contains('Must be unique', { timeout: 10000 });
-
-        UserCreatePage.setValues([
-            {
-                type: 'input',
-                name: 'name',
-                value: 'Annamarie NotMayer',
-            },
-        ]);
-        cy.get(UserCreatePage.elements.input('name')).blur();
-
-        cy.get(CreatePage.elements.nameError)
-            .should('exist')
-            .should('not.contain', 'Must be unique', { timeout: 10000 });
     });
 });

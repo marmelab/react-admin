@@ -58,7 +58,7 @@ describe('useInput', () => {
             </CoreAdminContext>
         );
 
-        expect(inputProps.id).toEqual('use-input-title');
+        expect(inputProps.id).toEqual('r0-title');
         expect(inputProps.isRequired).toEqual(true);
         expect(inputProps.field).toBeDefined();
         expect(inputProps.field.name).toEqual('title');

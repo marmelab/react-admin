@@ -23,7 +23,7 @@ export default url => ({
         title: '#react-admin-title',
         userMenu: 'button[aria-label="Profile"]',
         logout: '.logout',
-        nameError: '#use-input-name-helper-text',
+        nameError: '#r23-name-helper-text',
     },
 
     navigate() {

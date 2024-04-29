@@ -1,4 +1,4 @@
-import { ReactElement, useEffect } from 'react';
+import { ReactElement, useEffect, useId } from 'react';
 import {
     ControllerFieldState,
     ControllerRenderProps,
@@ -44,6 +44,7 @@ export const useInput = <ValueType = any>(
     const formGroupName = useFormGroupContext();
     const formGroups = useFormGroups();
     const record = useRecordContext();
+    const defaultId = useId();
 
     if (
         !source &&
@@ -132,7 +133,9 @@ export const useInput = <ValueType = any>(
     };
 
     return {
-        id: id || `use-input-${finalSource}`,
+        id:
+            id ||
+            `${defaultId.substring(1, defaultId.length - 1)}-${finalSource}`,
         field,
         fieldState,
         formState,
