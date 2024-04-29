@@ -22,13 +22,12 @@ export const showFieldTypes: InferredTypeMap = {
     show: {
         component: (props: SimpleShowLayoutProps) => (
             <SimpleShowLayout {...props} />
-        ), // eslint-disable-line react/display-name
+        ),
         representation: (_, children) => `        <SimpleShowLayout>
 ${children.map(child => `            ${child.getRepresentation()}`).join('\n')}
         </SimpleShowLayout>`,
     },
     array: {
-        // eslint-disable-next-line react/display-name
         component: ({
             children,
             ...props
@@ -75,9 +74,10 @@ ${children.map(child => `            ${child.getRepresentation()}`).join('\n')}
             `<ReferenceField source="${props.source}" reference="${props.reference}" />`,
     },
     referenceChild: {
-        component: (props: { children: ReactNode } & InputProps) => (
-            <TextField source="id" {...props} />
-        ), // eslint-disable-line react/display-name
+        component: (
+            props: { children: ReactNode } & Omit<InputProps, 'source'> &
+                Partial<Pick<InputProps, 'source'>>
+        ) => <TextField source="id" {...props} />,
         representation: () => `<TextField source="id" />`,
     },
     referenceArray: {
@@ -86,9 +86,10 @@ ${children.map(child => `            ${child.getRepresentation()}`).join('\n')}
             `<ReferenceArrayField source="${props.source}" reference="${props.reference}"><TextField source="id" /></ReferenceArrayField>`,
     },
     referenceArrayChild: {
-        component: (props: { children: ReactNode } & InputProps) => (
-            <TextField source="id" {...props} />
-        ), // eslint-disable-line react/display-name
+        component: (
+            props: { children: ReactNode } & Omit<InputProps, 'source'> &
+                Partial<Pick<InputProps, 'source'>>
+        ) => <TextField source="id" {...props} />, // eslint-disable-line react/display-name
         representation: () => `<TextField source="id" />`,
     },
     richText: {
