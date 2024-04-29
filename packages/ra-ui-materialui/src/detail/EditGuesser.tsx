@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useEffect, useState } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import inflection from 'inflection';
 import {
     EditBase,
@@ -15,7 +15,7 @@ import { EditView } from './EditView';
 import { editFieldTypes } from './editFieldTypes';
 
 export const EditGuesser = <RecordType extends RaRecord = RaRecord>(
-    props: EditProps<RecordType> & { enableLog?: boolean }
+    props: Omit<EditProps<RecordType>, 'children'> & { enableLog?: boolean }
 ) => {
     const {
         resource,
@@ -48,8 +48,15 @@ const EditViewGuesser = (
     props: Omit<EditProps, 'children'> & { enableLog?: boolean }
 ) => {
     const resource = useResourceContext(props);
+
+    if (!resource) {
+        throw new Error(
+            `<EditGuesser> was called outside of a ResourceContext and without a resource prop. You must set the resource prop.`
+        );
+    }
+
     const { record } = useEditContext();
-    const [child, setChild] = useState(null);
+    const [child, setChild] = useState<ReactNode>(null);
     const {
         enableLog = process.env.NODE_ENV === 'development',
         ...rest
