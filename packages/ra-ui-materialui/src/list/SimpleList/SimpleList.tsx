@@ -284,9 +284,6 @@ export interface SimpleListProps<RecordType extends RaRecord = any>
     secondaryText?: FunctionToElement<RecordType> | ReactElement | string;
     tertiaryText?: FunctionToElement<RecordType> | ReactElement | string;
     rowSx?: (record: RecordType, index: number) => SxProps;
-    /**
-     * @deprecated Use rowSx instead
-     */
     rowStyle?: (record: RecordType, index: number) => any;
     // can be injected when using the component without context
     resource?: string;
