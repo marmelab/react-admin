@@ -27,4 +27,30 @@ describe('combineDataProviders', () => {
         expect(dataProvider1.getOne).not.toHaveBeenCalled();
         expect(dataProvider2.getOne).toHaveBeenCalled();
     });
+    it('works with a dataProvider that returns a promise', async () => {
+        const dataProvider1 = testDataProvider({
+            getOne: jest
+                .fn()
+                .mockResolvedValue({ data: { id: 1, foo: 'bar' } }),
+        });
+        const dataProvider2 = testDataProvider({
+            getOne: jest
+                .fn()
+                .mockResolvedValue({ data: { id: 1, foo: 'bar' } }),
+        });
+        const dataProviderValue = combineDataProviders(resource => {
+            switch (resource) {
+                case 'posts':
+                    return dataProvider1;
+                case 'comments':
+                    return dataProvider2;
+                default:
+                    throw new Error('Unknown resource');
+            }
+        });
+        const dataProvider = await dataProviderValue;
+        await dataProvider.getOne('comments', { id: 1 });
+        expect(dataProvider1.getOne).not.toHaveBeenCalled();
+        expect(dataProvider2.getOne).toHaveBeenCalled();
+    });
 });
