@@ -92,7 +92,9 @@ const SelectFieldImpl = <
     });
     const translate = useTranslate();
 
-    const choice = choices.find(choice => getChoiceValue(choice) === value);
+    const choice = choices
+        ? choices.find(choice => getChoiceValue(choice) === value)
+        : null;
 
     if (!choice) {
         return emptyText ? (
