@@ -61,13 +61,16 @@ export const FieldToggle = props => {
     const handleDragEnd = event => {
         const selectedItem = event.target as HTMLElement;
         const list = selectedItem.closest('ul');
+
+        const elementFromPoint =
+            x.current != null && y.current != null
+                ? document.elementFromPoint(x.current, y.current)
+                : null;
+
         let dropItem =
-            x.current == null ||
-            y.current == null ||
-            document.elementFromPoint(x.current, y.current) === null
+            x.current == null || y.current == null || elementFromPoint === null
                 ? selectedItem
-                : // @ts-ignore TypeScript is drunk
-                  document.elementFromPoint(x.current, y.current).closest('li');
+                : elementFromPoint.closest('li');
 
         if (y.current !== null && list && !dropItem) {
             const closestUL = selectedItem.closest('ul');
