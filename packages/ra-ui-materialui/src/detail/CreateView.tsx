@@ -22,10 +22,7 @@ export const CreateView = (props: CreateViewProps) => {
     const { resource, defaultTitle } = useCreateContext();
 
     return (
-        <Root
-            className={clsx('create-page', className)}
-            {...sanitizeRestProps(rest)}
-        >
+        <Root className={clsx('create-page', className)} {...rest}>
             <Title
                 title={title}
                 defaultTitle={defaultTitle}
@@ -65,31 +62,6 @@ CreateView.propTypes = {
     save: PropTypes.func,
     title: PropTypes.node,
 };
-
-/* eslint-disable @typescript-eslint/no-unused-vars */
-const sanitizeRestProps = ({
-    addMiddleware = null,
-    defaultTitle = null,
-    hasCreate = null,
-    hasEdit = null,
-    hasList = null,
-    hasShow = null,
-    history = null,
-    isFetching = null,
-    isLoading = null,
-    isPending = null,
-    location = null,
-    match = null,
-    mutationOptions = null,
-    options = null,
-    permissions = null,
-    save = null,
-    saving = null,
-    transform = null,
-    removeMiddleware = null,
-    ...rest
-}) => rest;
-/* eslint-enable @typescript-eslint/no-unused-vars */
 
 const PREFIX = 'RaCreate';
 
