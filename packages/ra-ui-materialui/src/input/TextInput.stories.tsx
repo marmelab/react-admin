@@ -31,6 +31,13 @@ export const Basic = () => (
     </Wrapper>
 );
 
+export const Resettable = () => (
+    <Wrapper>
+        <TextInput source="title" resettable />
+        <FormInspector />
+    </Wrapper>
+);
+
 export const DefaultValue = () => (
     <Wrapper>
         <TextInput source="title" defaultValue="hello" />

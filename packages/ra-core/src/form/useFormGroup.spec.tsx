@@ -11,6 +11,7 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import expect from 'expect';
 import { FormGroupContextProvider } from './FormGroupContextProvider';
 import { testDataProvider } from '../dataProvider';
+import { ResourceContextProvider } from '..';
 
 describe('useFormGroup', () => {
     test.each([
@@ -150,20 +151,22 @@ describe('useFormGroup', () => {
         ];
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm>
-                    <FormGroupContextProvider name="backlinks">
-                        <IsDirty />
-                        <ArrayInput
-                            defaultValue={backlinksDefaultValue}
-                            source="backlinks"
-                        >
-                            <SimpleFormIterator>
-                                <TextInput source="url" />
-                                <TextInput source="date" />
-                            </SimpleFormIterator>
-                        </ArrayInput>
-                    </FormGroupContextProvider>
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm>
+                        <FormGroupContextProvider name="backlinks">
+                            <IsDirty />
+                            <ArrayInput
+                                defaultValue={backlinksDefaultValue}
+                                source="backlinks"
+                            >
+                                <SimpleFormIterator>
+                                    <TextInput source="url" />
+                                    <TextInput source="date" />
+                                </SimpleFormIterator>
+                            </ArrayInput>
+                        </FormGroupContextProvider>
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
 

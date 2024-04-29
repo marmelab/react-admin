@@ -85,16 +85,18 @@ describe('<ArrayInput />', () => {
     it('should create one section subform per value in the array', async () => {
         const { baseElement } = render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm
-                    onSubmit={jest.fn}
-                    defaultValues={{
-                        foo: [{}, {}, {}],
-                    }}
-                >
-                    <ArrayInput source="foo">
-                        <SimpleFormIterator />
-                    </ArrayInput>
-                </SimpleForm>
+                <ResourceContextProvider value="bar">
+                    <SimpleForm
+                        onSubmit={jest.fn}
+                        defaultValues={{
+                            foo: [{}, {}, {}],
+                        }}
+                    >
+                        <ArrayInput source="foo">
+                            <SimpleFormIterator />
+                        </ArrayInput>
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
         await waitFor(() => {
@@ -278,19 +280,24 @@ describe('<ArrayInput />', () => {
     it('should update the form state to dirty, and allow submit, on updating an array input with default value', async () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                {/**
-                 * RecordContextProvider - required to mimic instantiating a form with default data so that the it reset by
-                 * a react admin lifecycle and giving a non dirty form state. This in turn means the submit button is disabled on first render.
-                 */}
-                <RecordContextProvider value={{ foo: 'bar' }}>
-                    <SimpleForm onSubmit={jest.fn}>
-                        <ArrayInput source="arr" defaultValue={[{ id: 'foo' }]}>
-                            <SimpleFormIterator>
-                                <TextInput source="id" />
-                            </SimpleFormIterator>
-                        </ArrayInput>
-                    </SimpleForm>
-                </RecordContextProvider>
+                <ResourceContextProvider value="posts">
+                    {/**
+                     * RecordContextProvider - required to mimic instantiating a form with default data so that the it reset by
+                     * a react admin lifecycle and giving a non dirty form state. This in turn means the submit button is disabled on first render.
+                     */}
+                    <RecordContextProvider value={{ foo: 'bar' }}>
+                        <SimpleForm onSubmit={jest.fn}>
+                            <ArrayInput
+                                source="arr"
+                                defaultValue={[{ id: 'foo' }]}
+                            >
+                                <SimpleFormIterator>
+                                    <TextInput source="id" />
+                                </SimpleFormIterator>
+                            </ArrayInput>
+                        </SimpleForm>
+                    </RecordContextProvider>
+                </ResourceContextProvider>
             </AdminContext>
         );
 

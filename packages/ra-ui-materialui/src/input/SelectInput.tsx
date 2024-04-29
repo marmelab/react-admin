@@ -236,10 +236,6 @@ export const SelectInput = (props: SelectInputProps) => {
     });
 
     const createItem = create || onCreate ? getCreateItem() : null;
-    let finalChoices = allChoices;
-    if (create || onCreate) {
-        finalChoices = [...finalChoices, createItem];
-    }
 
     const renderMenuItem = useCallback(
         choice => {
@@ -289,6 +285,10 @@ export const SelectInput = (props: SelectInputProps) => {
         );
     }
 
+    let finalChoices = fetchError ? [] : allChoices;
+    if (create || onCreate) {
+        finalChoices = [...finalChoices, createItem];
+    }
     const renderHelperText = !!fetchError || helperText !== false || invalid;
 
     return (

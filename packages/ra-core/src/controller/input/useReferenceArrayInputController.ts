@@ -170,7 +170,7 @@ export const useReferenceArrayInputController = <
             : undefined,
         hasPreviousPage: pageInfo ? pageInfo.hasPreviousPage : params.page > 1,
         isFromReference: true,
-    };
+    } as ChoicesContextValue<RecordType>;
 };
 
 const EmptyArray = [];

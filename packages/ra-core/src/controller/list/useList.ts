@@ -262,9 +262,9 @@ export const useList = <RecordType extends RaRecord = any>(
 
     return {
         sort,
-        data: finalItems?.data,
+        data: pendingState ? undefined : finalItems?.data ?? [],
         defaultTitle: '',
-        error,
+        error: error ?? null,
         displayedFilters,
         filterValues,
         hasNextPage:

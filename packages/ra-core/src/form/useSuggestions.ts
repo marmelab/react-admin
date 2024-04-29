@@ -87,7 +87,7 @@ const escapeRegExp = value =>
 export interface UseSuggestionsOptions extends UseChoicesOptions {
     allowCreate?: boolean;
     allowDuplicates?: boolean;
-    choices: any[];
+    choices?: any[];
     createText?: string;
     createValue?: any;
     limitChoicesToValue?: boolean;

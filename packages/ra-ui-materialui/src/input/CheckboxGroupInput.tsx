@@ -160,6 +160,7 @@ export const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = pr
             let newValue;
 
             if (
+                allChoices &&
                 allChoices.every(
                     item => typeof get(item, optionValue) === 'number'
                 )
@@ -185,7 +186,7 @@ export const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = pr
         [allChoices, formOnChange, formOnBlur, optionValue, value]
     );
 
-    if (isPending && (!allChoices || allChoices.length === 0)) {
+    if (isPending) {
         return (
             <Labeled
                 id={id}
@@ -242,7 +243,7 @@ export const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = pr
             </FormGroup>
             {renderHelperText ? (
                 <FormHelperText
-                    error={fetchError || !!error}
+                    error={!!fetchError || !!error}
                     className={CheckboxGroupInputClasses.helperText}
                 >
                     <InputHelperText
