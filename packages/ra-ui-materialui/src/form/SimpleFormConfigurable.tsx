@@ -31,27 +31,28 @@ export const SimpleFormConfigurable = ({
 
     React.useEffect(() => {
         // first render, or the preference have been cleared
-        const inputs = React.Children.map(props.children, (child, index) =>
-            React.isValidElement(child)
-                ? {
-                      index: String(index),
-                      source: child.props.source,
-                      label:
-                          child.props.source || child.props.label
-                              ? child.props.label
-                              : translate(
-                                    'ra.configurable.SimpleForm.unlabeled',
-                                    {
-                                        input: index,
-                                        _: `Unlabeled input #%{input}`,
-                                    }
-                                ),
-                  }
-                : null
-        ).filter(column => column != null);
+        const inputs =
+            React.Children.map(props.children, (child, index) =>
+                React.isValidElement(child)
+                    ? {
+                          index: String(index),
+                          source: child.props.source,
+                          label:
+                              child.props.source || child.props.label
+                                  ? child.props.label
+                                  : translate(
+                                        'ra.configurable.SimpleForm.unlabeled',
+                                        {
+                                            input: index,
+                                            _: `Unlabeled input #%{input}`,
+                                        }
+                                    ),
+                      }
+                    : null
+            )?.filter(column => column != null) ?? [];
         if (inputs.length !== availableInputs.length) {
             setAvailableInputs(inputs);
-            setOmit(omit);
+            setOmit(omit || []);
         }
     }, [availableInputs]); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -109,8 +110,11 @@ export interface SimpleFormConfigurableColumn {
  * This SimpleForm filters its children depending on preferences
  */
 const SimpleFormWithPreferences = ({ children, ...props }: SimpleFormProps) => {
-    const [availableInputs] = usePreference('availableInputs', []);
-    const [omit] = usePreference('omit', []);
+    const [availableInputs] = usePreference<SimpleFormConfigurableColumn[]>(
+        'availableInputs',
+        []
+    );
+    const [omit] = usePreference<string[]>('omit', []);
     const [inputs] = usePreference(
         'inputs',
         availableInputs
