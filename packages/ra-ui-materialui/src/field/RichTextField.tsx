@@ -52,7 +52,7 @@ const RichTextFieldImpl = <
             ) : (
                 <span
                     dangerouslySetInnerHTML={{
-                        __html: purify.sanitize(value, purifyOptions),
+                        __html: purify.sanitize(value, purifyOptions || {}),
                     }}
                 />
             )}
