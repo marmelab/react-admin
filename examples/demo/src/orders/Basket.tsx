@@ -36,20 +36,16 @@ const Basket = () => {
             <TableHead>
                 <TableRow>
                     <TableCell>
-                        {translate(
-                            'resources.commands.fields.basket.reference'
-                        )}
+                        {translate('resources.orders.fields.basket.reference')}
                     </TableCell>
                     <TableCellRight>
-                        {translate(
-                            'resources.commands.fields.basket.unit_price'
-                        )}
+                        {translate('resources.orders.fields.basket.unit_price')}
                     </TableCellRight>
                     <TableCellRight>
-                        {translate('resources.commands.fields.basket.quantity')}
+                        {translate('resources.orders.fields.basket.quantity')}
                     </TableCellRight>
                     <TableCellRight>
-                        {translate('resources.commands.fields.basket.total')}
+                        {translate('resources.orders.fields.basket.total')}
                     </TableCellRight>
                 </TableRow>
             </TableHead>

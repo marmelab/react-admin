@@ -15,7 +15,7 @@ const getGqlResource = (resource: string) => {
         case 'categories':
             return 'Category';
 
-        case 'commands':
+        case 'orders':
             return 'Command';
 
         case 'products':
@@ -72,7 +72,7 @@ const customBuildQuery: BuildQueryFactory = introspectionResults => {
                         $latest_purchase: Date
                         $has_newsletter: Boolean!
                         $groups: [String]!
-                        $nb_commands: Int!
+                        $nb_orders: Int!
                         $total_spent: Float!
                     ) {
                         createCustomer(
@@ -90,7 +90,7 @@ const customBuildQuery: BuildQueryFactory = introspectionResults => {
                             latest_purchase: $latest_purchase
                             has_newsletter: $has_newsletter
                             groups: $groups
-                            nb_commands: $nb_commands
+                            nb_orders: $nb_orders
                             total_spent: $total_spent
                         ) {
                             id

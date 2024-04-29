@@ -25,7 +25,7 @@ export const PendingOrder = (props: Props) => {
     });
 
     return (
-        <ListItem button component={Link} to={`/commands/${order.id}`}>
+        <ListItem button component={Link} to={`/orders/${order.id}`}>
             <ListItemAvatar>
                 {isPending ? (
                     <Avatar />

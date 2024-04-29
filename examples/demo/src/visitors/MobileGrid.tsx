@@ -45,11 +45,11 @@ const MobileGrid = () => {
                         <CardContent sx={{ pt: 0 }}>
                             <Typography variant="body2">
                                 {translate(
-                                    'resources.commands.name',
+                                    'resources.orders.name',
                                     record.nb_orders || 1
                                 )}
                                 :&nbsp;
-                                <NumberField source="nb_commands" />
+                                <NumberField source="nb_orders" />
                             </Typography>
                             <Typography variant="body2">
                                 {translate(
