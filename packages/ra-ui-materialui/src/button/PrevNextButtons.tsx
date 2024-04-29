@@ -141,15 +141,24 @@ export const PrevNextButtons = <RecordType extends RaRecord = any>(
             direction="row"
             className={clsx(PrevNextButtonClasses.root)}
         >
-            <IconButton
-                component={hasPrev ? Link : undefined}
-                to={prevPath}
-                aria-label={translate('ra.navigation.previous')}
-                disabled={!hasPrev}
-                size="small"
-            >
-                <NavigateBefore />
-            </IconButton>
+            {hasPrev && prevPath ? (
+                <IconButton
+                    component={Link}
+                    to={prevPath}
+                    aria-label={translate('ra.navigation.previous')}
+                    size="small"
+                >
+                    <NavigateBefore />
+                </IconButton>
+            ) : (
+                <IconButton
+                    aria-label={translate('ra.navigation.previous')}
+                    disabled
+                    size="small"
+                >
+                    <NavigateBefore />
+                </IconButton>
+            )}
 
             {typeof index === 'number' && (
                 <Typography variant="body2">
@@ -157,15 +166,24 @@ export const PrevNextButtons = <RecordType extends RaRecord = any>(
                 </Typography>
             )}
 
-            <IconButton
-                component={hasNext ? Link : undefined}
-                to={nextPath}
-                aria-label={translate('ra.navigation.next')}
-                disabled={!hasNext}
-                size="small"
-            >
-                <NavigateNext />
-            </IconButton>
+            {hasNext && nextPath ? (
+                <IconButton
+                    component={Link}
+                    to={nextPath}
+                    aria-label={translate('ra.navigation.next')}
+                    size="small"
+                >
+                    <NavigateNext />
+                </IconButton>
+            ) : (
+                <IconButton
+                    aria-label={translate('ra.navigation.next')}
+                    disabled
+                    size="small"
+                >
+                    <NavigateNext />
+                </IconButton>
+            )}
         </Root>
     );
 };
