@@ -1,5 +1,4 @@
 import get from 'lodash/get';
-import { useMemo } from 'react';
 import { RaRecord, SortPayload } from '../../types';
 import { useGetManyAggregate } from '../../dataProvider';
 import { ListControllerResult, useList } from '../list';
