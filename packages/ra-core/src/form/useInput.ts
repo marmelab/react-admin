@@ -133,9 +133,7 @@ export const useInput = <ValueType = any>(
     };
 
     return {
-        id:
-            id ||
-            `${defaultId.substring(1, defaultId.length - 1)}-${finalSource}`,
+        id: id || defaultId,
         field,
         fieldState,
         formState,
