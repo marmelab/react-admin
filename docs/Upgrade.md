@@ -934,6 +934,8 @@ In previous versions, the input default id was the source of the input. In v5, i
 
 **Tip:** You still can pass an id as prop of any [react-admin input](./Inputs.md) or use a [reference](https://fr.react.dev/reference/react/useRef).
 
+If you were using inputs ids in your tests, you should pass your own id to the dedicated input.
+
 ## Upgrading to v4
 
 If you are on react-admin v3, follow the [Upgrading to v4](https://marmelab.com/react-admin/doc/4.16/Upgrade.html) guide before upgrading to v5.
