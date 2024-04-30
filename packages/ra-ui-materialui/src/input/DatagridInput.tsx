@@ -72,7 +72,7 @@ export const DatagridInput = (props: DatagridInputProps) => {
         resource: resourceProp,
         source: sourceProp,
     });
-    const { field, fieldState, formState } = useInput({
+    const { field, fieldState } = useInput({
         ...props,
         ...choicesContext,
         source,

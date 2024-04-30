@@ -28,7 +28,7 @@ export const DealsChart = () => {
         if (!data) return [];
         const dealsByMonth = data.reduce((acc, deal) => {
             const month = startOfMonth(
-                deal.start_at ? new Date(deal.start_at) : new Date()
+                deal.start_at ?? new Date()
             ).toISOString();
             if (!acc[month]) {
                 acc[month] = [];
@@ -39,7 +39,7 @@ export const DealsChart = () => {
 
         const amountByMonth = Object.keys(dealsByMonth).map(month => {
             return {
-                date: format(new Date(month), 'MMM'),
+                date: format(month, 'MMM'),
                 won: dealsByMonth[month]
                     .filter((deal: Deal) => deal.stage === 'won')
                     .reduce((acc: number, deal: Deal) => {

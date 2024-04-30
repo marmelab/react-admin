@@ -120,7 +120,7 @@ export const SimpleList = <RecordType extends RaRecord = any>(
         }
     };
 
-    if (data == null || total == null || data.length === 0 || total === 0) {
+    if (data == null || data.length === 0 || total === 0) {
         if (empty) {
             return empty;
         }
