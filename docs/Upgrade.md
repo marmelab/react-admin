@@ -928,6 +928,35 @@ If you were using this prop, you can safely remove it.
 
 The `data-generator-retail` package has been updated to provide types for all its records. In the process, we renamed the `commands` resource to `orders`. Accordingly, the `nb_commands` property of the `customers` resource has been renamed to `nb_orders` and the `command_id` property of the `invoices` and `reviews` resources has been renamed to `order_id`.
 
+## `<SimpleFormIterator>` No Longer Clones Its Buttons
+
+`<SimpleFormIterator>` used to clones the add, remove and reorder buttons and inject some props to them such as `onClick` and `className`.
+If you relied on those props in your custom buttons, you can should now leverage the following hooks:
+
+- `useSimpleFormIterator` for buttons that are not tied to an item such as the add button.
+
+```diff
+- import { Button, ButtonProps } from 'react-admin';
++ import { Button, ButtonProps, useSimpleFormIterator } from 'react-admin';
+
+export const MyAddButton = (props: ButtonProps) => {
++    const { add } = useSimpleFormIterator();
+    return <Button {...props} onClick={() => add()}>Add</Button>;
+}
+```
+
+- `useSimpleFormIteratorItem` for buttons that are tied to an item such as the remove and reorder buttons.
+
+```diff
+- import { Button, ButtonProps } from 'react-admin';
++ import { Button, ButtonProps, useSimpleFormIteratorItem } from 'react-admin';
+
+export const MyRemoveButton = (props: ButtonProps) => {
++    const { remove } = useSimpleFormIteratorItem();
+    return <Button {...props} onClick={() => remove()}>Add</Button>;
+}
+```
+
 ## Upgrading to v4
 
 If you are on react-admin v3, follow the [Upgrading to v4](https://marmelab.com/react-admin/doc/4.16/Upgrade.html) guide before upgrading to v5.
