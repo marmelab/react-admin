@@ -924,6 +924,12 @@ The `<InputHelperText>` component no longer accepts a `touched` prop. This prop 
 
 If you were using this prop, you can safely remove it.
 
+## Inputs default ids are auto-generated
+
+In previous versions, the input default id was the source of the input. In v5, inputs defaults ids are auto-generated with [React useId()](https://react.dev/reference/react/useId).
+
+**Tip:** You still can pass an id as prop of any [react-admin input](./Inputs.md) or use a [reference](https://fr.react.dev/reference/react/useRef).
+
 ## Upgrading to v4
 
 If you are on react-admin v3, follow the [Upgrading to v4](https://marmelab.com/react-admin/doc/4.16/Upgrade.html) guide before upgrading to v5.
