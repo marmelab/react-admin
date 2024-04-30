@@ -41,6 +41,7 @@ export const useSupportCreateSuggestion = (
         handleChange,
         onCreate,
     } = options;
+
     const translate = useTranslate();
     const [renderOnCreate, setRenderOnCreate] = useState(false);
     const filterRef = useRef(filter);
@@ -97,6 +98,13 @@ export const useSupportCreateSuggestion = (
 
             if (finalValue?.id === createValue || finalValue === createValue) {
                 if (!isValidElement(create)) {
+                    if (!onCreate) {
+                        // this should never happen because the createValue is only added if a create function is provided
+                        // @see AutocompleteInput:filterOptions
+                        throw new Error(
+                            'To create a new option, you must pass an onCreate function or a create element.'
+                        );
+                    }
                     const newSuggestion = await onCreate(filter);
                     if (newSuggestion) {
                         handleChange(newSuggestion);
@@ -138,16 +146,23 @@ export interface UseSupportCreateValue {
     createElement: ReactElement | null;
 }
 
-const CreateSuggestionContext = createContext<CreateSuggestionContextValue>(
-    undefined
-);
+const CreateSuggestionContext = createContext<
+    CreateSuggestionContextValue | undefined
+>(undefined);
 
 interface CreateSuggestionContextValue {
     filter?: string;
     onCreate: (choice: any) => void;
     onCancel: () => void;
 }
-export const useCreateSuggestionContext = () =>
-    useContext(CreateSuggestionContext);
+export const useCreateSuggestionContext = () => {
+    const context = useContext(CreateSuggestionContext);
+    if (!context) {
+        throw new Error(
+            'useCreateSuggestionContext must be used inside a CreateSuggestionContext.Provider'
+        );
+    }
+    return context;
+};
 
 export type OnCreateHandler = (filter?: string) => any | Promise<any>;

@@ -105,6 +105,7 @@ export const FilterFormBase = (props: FilterFormBaseProps) => {
     const { displayedFilters = {}, hideFilter } = useListContext();
 
     useEffect(() => {
+        if (!filters) return;
         filters.forEach((filter: JSX.Element) => {
             if (filter.props.alwaysOn && filter.props.defaultValue) {
                 throw new Error(
@@ -115,6 +116,7 @@ export const FilterFormBase = (props: FilterFormBaseProps) => {
     }, [filters]);
 
     const getShownFilters = () => {
+        if (!filters) return [];
         const values = form.getValues();
         return filters.filter((filterElement: JSX.Element) => {
             const filterValue = get(values, filterElement.props.source);

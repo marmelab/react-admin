@@ -151,14 +151,13 @@ describe('useEditController', () => {
 
     describe('queryOptions', () => {
         it('should accept custom client query options', async () => {
-            const mock = jest
-                .spyOn(console, 'error')
-                .mockImplementation(() => {});
+            jest.spyOn(console, 'error').mockImplementationOnce(() => {});
             const getOne = jest
                 .fn()
                 .mockImplementationOnce(() => Promise.reject(new Error()));
             const onError = jest.fn();
             const dataProvider = ({ getOne } as unknown) as DataProvider;
+
             render(
                 <CoreAdminContext dataProvider={dataProvider}>
                     <EditController
@@ -170,11 +169,11 @@ describe('useEditController', () => {
                     </EditController>
                 </CoreAdminContext>
             );
+
             await waitFor(() => {
                 expect(getOne).toHaveBeenCalled();
                 expect(onError).toHaveBeenCalled();
             });
-            mock.mockRestore();
         });
 
         it('should accept a meta in query options', async () => {
@@ -959,6 +958,7 @@ describe('useEditController', () => {
 
     it('should return errors from the update call in pessimistic mode', async () => {
         let post = { id: 12 };
+        jest.spyOn(console, 'error').mockImplementationOnce(() => {});
         const update = jest.fn().mockImplementationOnce(() => {
             return Promise.reject({ body: { errors: { foo: 'invalid' } } });
         });

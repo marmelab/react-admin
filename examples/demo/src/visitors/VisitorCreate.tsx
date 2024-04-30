@@ -48,7 +48,7 @@ const VisitorCreate = () => (
                 latest_purchase: new Date(),
                 has_newsletter: false,
                 groups: [],
-                nb_commands: 0,
+                nb_orders: 0,
                 total_spent: 0,
             }}
             validate={validateForm}

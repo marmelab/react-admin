@@ -48,7 +48,7 @@ export const Pagination: FC<PaginationProps> = memo(props => {
     const handlePageChange = useCallback(
         (event, page) => {
             event && event.stopPropagation();
-            if (page < 0 || page > totalPages - 1) {
+            if (page < 0 || (totalPages && page > totalPages - 1)) {
                 throw new Error(
                     translate('ra.navigation.page_out_of_boundaries', {
                         page: page + 1,
@@ -94,7 +94,7 @@ export const Pagination: FC<PaginationProps> = memo(props => {
     }
 
     // Avoid rendering TablePagination if "page" value is invalid
-    if (total === 0 || page < 1 || (total != null && page > totalPages)) {
+    if (total === 0 || page < 1 || (total != null && page > totalPages!)) {
         if (limit != null && process.env.NODE_ENV === 'development') {
             console.warn(
                 'The Pagination limit prop is deprecated. Empty state should be handled by the component displaying data (Datagrid, SimpleList).'

@@ -27,7 +27,7 @@ DatagridCell.propTypes = {
 
 export interface DatagridCellProps extends TableCellProps {
     className?: string;
-    field?: JSX.Element;
+    field: JSX.Element;
     record?: RaRecord;
     resource?: string;
 }

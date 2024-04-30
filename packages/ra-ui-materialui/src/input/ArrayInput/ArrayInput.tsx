@@ -126,11 +126,15 @@ export const ArrayInput = (props: ArrayInputProps) => {
     // We need to register the array itself as a field to enable validation at its level
     useEffect(() => {
         register(finalSource);
-        formGroups.registerField(finalSource, formGroupName);
+        formGroups &&
+            formGroupName != null &&
+            formGroups.registerField(finalSource, formGroupName);
 
         return () => {
             unregister(finalSource, { keepValue: true });
-            formGroups.unregisterField(finalSource, formGroupName);
+            formGroups &&
+                formGroupName != null &&
+                formGroups.unregisterField(finalSource, formGroupName);
         };
     }, [register, unregister, finalSource, formGroups, formGroupName]);
 

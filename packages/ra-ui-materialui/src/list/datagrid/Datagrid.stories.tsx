@@ -375,10 +375,12 @@ export const Standalone = () => (
                 getList: () => Promise.resolve({ data, total: 4 }) as any,
             })}
         >
-            <h1>Static</h1>
-            <MyCustomList />
-            <h1>Dynamic (with useList)</h1>
-            <MyCustomListInteractive />
+            <ResourceContextProvider value="books">
+                <h1>Static</h1>
+                <MyCustomList />
+                <h1>Dynamic (with useList)</h1>
+                <MyCustomListInteractive />
+            </ResourceContextProvider>
         </CoreAdminContext>
     </ThemeProvider>
 );

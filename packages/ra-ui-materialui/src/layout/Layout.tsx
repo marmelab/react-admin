@@ -23,7 +23,9 @@ export const Layout = (props: LayoutProps) => {
         ...rest
     } = props;
 
-    const [errorInfo, setErrorInfo] = useState<ErrorInfo>(null);
+    const [errorInfo, setErrorInfo] = useState<ErrorInfo | undefined>(
+        undefined
+    );
 
     const handleError = (error: Error, info: ErrorInfo) => {
         setErrorInfo(info);

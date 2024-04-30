@@ -105,13 +105,6 @@ export const SimpleList = <RecordType extends RaRecord = any>(
         );
     }
 
-    if (data == null || data.length === 0 || total === 0) {
-        if (empty) {
-            return empty;
-        }
-
-        return null;
-    }
     const renderAvatar = (
         record: RecordType,
         avatarCallback: FunctionToElement<RecordType>
@@ -127,7 +120,15 @@ export const SimpleList = <RecordType extends RaRecord = any>(
         }
     };
 
-    return (total == null && data?.length > 0) || total > 0 ? (
+    if (data == null || data.length === 0 || total === 0) {
+        if (empty) {
+            return empty;
+        }
+
+        return null;
+    }
+
+    return (
         <Root className={className} {...sanitizeListRestProps(rest)}>
             {data.map((record, rowIndex) => (
                 <RecordContextProvider key={record.id} value={record}>
@@ -232,7 +233,7 @@ export const SimpleList = <RecordType extends RaRecord = any>(
                 </RecordContextProvider>
             ))}
         </Root>
-    ) : null;
+    );
 };
 
 SimpleList.propTypes = {
@@ -310,15 +311,18 @@ const LinkOrNot = (
     const type =
         typeof linkType === 'function' ? linkType(record, id) : linkType;
 
-    return type === false ? (
-        <ListItemText
-            // @ts-ignore
-            component="div"
-            {...rest}
-        >
-            {children}
-        </ListItemText>
-    ) : (
+    if (type === false) {
+        return (
+            <ListItemText
+                // @ts-ignore
+                component="div"
+                {...rest}
+            >
+                {children}
+            </ListItemText>
+        );
+    }
+    return (
         // @ts-ignore
         <ListItemButton
             component={Link}
@@ -333,8 +337,8 @@ const LinkOrNot = (
 export type FunctionLinkType = (record: RaRecord, id: Identifier) => string;
 
 export interface LinkOrNotProps {
-    linkType?: string | FunctionLinkType | false;
-    resource: string;
+    linkType: string | FunctionLinkType | false;
+    resource?: string;
     id: Identifier;
     record: RaRecord;
     children: ReactNode;

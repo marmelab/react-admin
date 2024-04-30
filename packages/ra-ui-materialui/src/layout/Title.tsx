@@ -9,7 +9,7 @@ import { PageTitleConfigurable } from './PageTitleConfigurable';
 
 export const Title = (props: TitleProps) => {
     const { defaultTitle, title, preferenceKey, ...rest } = props;
-    const [container, setContainer] = useState<HTMLElement>(() =>
+    const [container, setContainer] = useState<HTMLElement | null>(() =>
         typeof document !== 'undefined'
             ? document.getElementById('react-admin-title')
             : null

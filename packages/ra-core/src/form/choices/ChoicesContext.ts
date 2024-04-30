@@ -11,11 +11,8 @@ export const ChoicesContext = createContext<ChoicesContextValue | undefined>(
     undefined
 );
 
-export type ChoicesContextValue<RecordType extends RaRecord = any> = {
-    allChoices?: RecordType[];
-    availableChoices?: RecordType[];
+export type ChoicesContextBaseValue<RecordType extends RaRecord = any> = {
     displayedFilters: any;
-    error?: any;
     filter?: FilterPayload;
     filterValues: any;
     hasNextPage?: boolean;
@@ -23,12 +20,10 @@ export type ChoicesContextValue<RecordType extends RaRecord = any> = {
     hideFilter: (filterName: string) => void;
     isFetching: boolean;
     isLoading: boolean;
-    isPending: boolean;
     page: number;
     perPage: number;
     refetch: (() => void) | UseGetListHookValue<RecordType>['refetch'];
     resource: string;
-    selectedChoices?: RecordType[];
     setFilters: (
         filters: any,
         displayedFilters?: any,
@@ -39,7 +34,53 @@ export type ChoicesContextValue<RecordType extends RaRecord = any> = {
     setSort: (sort: SortPayload) => void;
     showFilter: (filterName: string, defaultValue: any) => void;
     sort: SortPayload;
-    source?: string;
-    total?: number;
+    source: string;
     isFromReference: boolean;
 };
+
+export interface ChoicesContextLoadingResult<RecordType extends RaRecord = any>
+    extends ChoicesContextBaseValue<RecordType> {
+    allChoices: undefined;
+    availableChoices: undefined;
+    selectedChoices: undefined;
+    total: undefined;
+    error: null;
+    isPending: true;
+}
+export interface ChoicesContextErrorResult<
+    RecordType extends RaRecord = any,
+    TError = Error
+> extends ChoicesContextBaseValue<RecordType> {
+    allChoices: undefined;
+    availableChoices: undefined;
+    selectedChoices: undefined;
+    total: undefined;
+    error: TError;
+    isPending: false;
+}
+export interface ChoicesContextRefetchErrorResult<
+    RecordType extends RaRecord = any,
+    TError = Error
+> extends ChoicesContextBaseValue<RecordType> {
+    allChoices: RecordType[];
+    availableChoices: RecordType[];
+    selectedChoices: RecordType[];
+    total: number;
+    error: TError;
+    isPending: false;
+}
+export interface ChoicesContextSuccessResult<RecordType extends RaRecord = any>
+    extends ChoicesContextBaseValue<RecordType> {
+    allChoices: RecordType[];
+    availableChoices: RecordType[];
+    selectedChoices: RecordType[];
+    total: number;
+    error: null;
+    isPending: false;
+}
+
+export type ChoicesContextValue<RecordType extends RaRecord = any> =
+    | ChoicesContextLoadingResult<RecordType>
+    | ChoicesContextErrorResult<RecordType>
+    | ChoicesContextRefetchErrorResult<RecordType>
+    | ChoicesContextSuccessResult<RecordType>;

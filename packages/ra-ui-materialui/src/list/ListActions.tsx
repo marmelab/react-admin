@@ -3,7 +3,6 @@ import { cloneElement, useMemo, useContext, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import {
     sanitizeListRestProps,
-    SortPayload,
     Exporter,
     useListContext,
     useResourceContext,
@@ -48,7 +47,6 @@ export const ListActions = (props: ListActionsProps) => {
     const { className, filters: filtersProp, hasCreate: _, ...rest } = props;
 
     const {
-        sort,
         displayedFilters,
         filterValues,
         exporter,
@@ -72,12 +70,7 @@ export const ListActions = (props: ListActionsProps) => {
                     : filters && <FilterButton />}
                 {hasCreate && <CreateButton />}
                 {exporter !== false && (
-                    <ExportButton
-                        disabled={total === 0}
-                        resource={resource}
-                        sort={sort}
-                        filterValues={filterValues}
-                    />
+                    <ExportButton disabled={total === 0} resource={resource} />
                 )}
             </TopToolbar>
         ),
@@ -91,7 +84,6 @@ export const ListActions = (props: ListActionsProps) => {
             filters,
             total,
             className,
-            sort,
             exporter,
             hasCreate,
         ]
@@ -100,10 +92,6 @@ export const ListActions = (props: ListActionsProps) => {
 
 ListActions.propTypes = {
     className: PropTypes.string,
-    sort: PropTypes.shape({
-        field: PropTypes.string,
-        order: PropTypes.oneOf(['ASC', 'DESC'] as const),
-    }),
     displayedFilters: PropTypes.object,
     exporter: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
     filters: PropTypes.element,
@@ -115,7 +103,6 @@ ListActions.propTypes = {
 };
 
 export interface ListActionsProps extends ToolbarProps {
-    sort?: SortPayload;
     className?: string;
     resource?: string;
     filters?: ReactElement<any>;
