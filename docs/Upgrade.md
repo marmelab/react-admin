@@ -931,7 +931,7 @@ The `data-generator-retail` package has been updated to provide types for all it
 ## `<SimpleFormIterator>` No Longer Clones Its Buttons
 
 `<SimpleFormIterator>` used to clones the add, remove and reorder buttons and inject some props to them such as `onClick` and `className`.
-If you relied on those props in your custom buttons, you can should now leverage the following hooks:
+If you relied on those props in your custom buttons, you should now leverage the following hooks:
 
 - `useSimpleFormIterator` for buttons that are not tied to an item such as the add button.
 
