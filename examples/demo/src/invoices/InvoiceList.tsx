@@ -22,7 +22,7 @@ const listFilters = [
     <DateInput source="date_gte" alwaysOn />,
     <DateInput source="date_lte" alwaysOn />,
     <ReferenceInput source="customer_id" reference="customers" />,
-    <ReferenceInput source="command_id" reference="commands" />,
+    <ReferenceInput source="order_id" reference="orders" />,
 ];
 
 const ListActions = () => (
@@ -71,7 +71,7 @@ const InvoiceList = () => (
             >
                 <AddressField />
             </ReferenceField>
-            <ReferenceField source="command_id" reference="commands">
+            <ReferenceField source="order_id" reference="orders">
                 <TextField source="reference" />
             </ReferenceField>
             <NumberField source="total_ex_taxes" />

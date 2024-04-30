@@ -62,7 +62,7 @@ describe('<useList />', () => {
                         { id: 2, title: 'world' },
                         { id: 1, title: 'hello' },
                     ],
-                    error: undefined,
+                    error: null,
                     total: 2,
                 })
             );
@@ -79,7 +79,7 @@ describe('<useList />', () => {
                         { id: 1, title: 'hello' },
                         { id: 2, title: 'world' },
                     ],
-                    error: undefined,
+                    error: null,
                     total: 2,
                 })
             );
@@ -120,7 +120,7 @@ describe('<useList />', () => {
                     ],
                     page: 2,
                     perPage: 5,
-                    error: undefined,
+                    error: null,
                     total: 7,
                 })
             );
@@ -159,7 +159,7 @@ describe('<useList />', () => {
                 isFetching: true,
                 isLoading: false,
                 data: [{ id: 2, title: 'world' }],
-                error: undefined,
+                error: null,
                 total: 1,
             })
         );
@@ -188,7 +188,7 @@ describe('<useList />', () => {
                     isFetching: false,
                     isLoading: false,
                     data: [{ id: 2, title: 'world' }],
-                    error: undefined,
+                    error: null,
                     total: 1,
                 })
             );
@@ -223,7 +223,7 @@ describe('<useList />', () => {
                             { id: 3, items: 'four' },
                             { id: 4, items: ['five'] },
                         ],
-                        error: undefined,
+                        error: null,
                         total: 3,
                     })
                 );
@@ -258,7 +258,7 @@ describe('<useList />', () => {
                             { id: 3, items: 'four' },
                             { id: 4, items: ['five'] },
                         ],
-                        error: undefined,
+                        error: null,
                         total: 2,
                     })
                 );
@@ -287,7 +287,7 @@ describe('<useList />', () => {
                     isFetching: false,
                     isLoading: false,
                     data: [{ id: 2, title: { name: 'world' } }],
-                    error: undefined,
+                    error: null,
                     total: 1,
                 })
             );

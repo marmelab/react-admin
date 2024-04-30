@@ -15,8 +15,6 @@ import {
 describe('<PrevNextButtons />', () => {
     beforeEach(() => {
         window.scrollTo = jest.fn();
-        // avoid logs due to the use of ListGuesser
-        console.log = jest.fn();
     });
 
     afterEach(() => {

@@ -23,6 +23,9 @@ export const FormTab = (props: FormTabProps) => {
         value,
         ...rest
     } = props;
+    if (typeof value === 'undefined') {
+        throw new Error('the value prop is required at runtime');
+    }
 
     const renderHeader = () => (
         <FormTabHeader
@@ -41,7 +44,7 @@ export const FormTab = (props: FormTabProps) => {
         <FormGroupContextProvider name={value.toString()}>
             <Stack
                 alignItems="flex-start"
-                style={hidden ? hiddenStyle : null}
+                style={hidden ? hiddenStyle : undefined}
                 className={contentClassName}
                 id={`tabpanel-${value}`}
                 aria-labelledby={`tabheader-${value}`}

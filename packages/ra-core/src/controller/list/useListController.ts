@@ -485,7 +485,7 @@ export interface ListControllerLoadingResult<RecordType extends RaRecord = any>
     error: null;
     isPending: true;
 }
-export interface ListControllerLoadingErrorResult<
+export interface ListControllerErrorResult<
     RecordType extends RaRecord = any,
     TError = Error
 > extends ListControllerBaseResult<RecordType> {
@@ -513,6 +513,6 @@ export interface ListControllerSuccessResult<RecordType extends RaRecord = any>
 
 export type ListControllerResult<RecordType extends RaRecord = any> =
     | ListControllerLoadingResult<RecordType>
-    | ListControllerLoadingErrorResult<RecordType>
+    | ListControllerErrorResult<RecordType>
     | ListControllerRefetchErrorResult<RecordType>
     | ListControllerSuccessResult<RecordType>;

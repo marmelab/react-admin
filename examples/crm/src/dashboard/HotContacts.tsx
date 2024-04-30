@@ -48,13 +48,9 @@ export const HotContacts = () => {
                     }
                     resource="contacts"
                     secondaryText={(contact: Contact) =>
-                        formatDistance(
-                            new Date(contact.last_seen),
-                            new Date(),
-                            {
-                                addSuffix: true,
-                            }
-                        )
+                        formatDistance(contact.last_seen, new Date(), {
+                            addSuffix: true,
+                        })
                     }
                     leftAvatar={contact => <Avatar record={contact} />}
                 />

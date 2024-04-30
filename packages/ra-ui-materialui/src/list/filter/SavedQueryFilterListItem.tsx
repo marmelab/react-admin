@@ -46,10 +46,10 @@ export const SavedQueryFilterListItem = memo(
             navigate({
                 search: stringify({
                     filter: JSON.stringify(value.filter),
-                    sort: value.sort.field,
-                    order: value.sort.order,
+                    sort: value.sort?.field,
+                    order: value.sort?.order,
                     page: 1,
-                    perPage: value.perPage,
+                    perPage: value.perPage ?? perPage,
                     displayedFilters: JSON.stringify(value.displayedFilters),
                 }),
             });

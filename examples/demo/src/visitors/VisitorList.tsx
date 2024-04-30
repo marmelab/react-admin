@@ -70,8 +70,8 @@ const VisitorList = () => {
                     />
                     <DateField source="last_seen" />
                     <NumberField
-                        source="nb_commands"
-                        label="resources.customers.fields.commands"
+                        source="nb_orders"
+                        label="resources.customers.fields.orders"
                     />
                     <ColoredNumberField
                         source="total_spent"

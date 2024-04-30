@@ -136,13 +136,13 @@ const TabbedDatagrid = () => {
                                 source="customer_id"
                                 reference="customers"
                                 link={false}
-                                label="resources.commands.fields.address"
+                                label="resources.orders.fields.address"
                             >
                                 <AddressField />
                             </ReferenceField>
                             <NumberField
                                 source="basket.length"
-                                label="resources.commands.fields.nb_items"
+                                label="resources.orders.fields.nb_items"
                             />
                             <NumberField
                                 source="total_ex_taxes"
@@ -187,13 +187,13 @@ const TabbedDatagrid = () => {
                                 source="customer_id"
                                 reference="customers"
                                 link={false}
-                                label="resources.commands.fields.address"
+                                label="resources.orders.fields.address"
                             >
                                 <AddressField />
                             </ReferenceField>
                             <NumberField
                                 source="basket.length"
-                                label="resources.commands.fields.nb_items"
+                                label="resources.orders.fields.nb_items"
                             />
                             <NumberField
                                 source="total_ex_taxes"
@@ -242,13 +242,13 @@ const TabbedDatagrid = () => {
                                 source="customer_id"
                                 reference="customers"
                                 link={false}
-                                label="resources.commands.fields.address"
+                                label="resources.orders.fields.address"
                             >
                                 <AddressField />
                             </ReferenceField>
                             <NumberField
                                 source="basket.length"
-                                label="resources.commands.fields.nb_items"
+                                label="resources.orders.fields.nb_items"
                             />
                             <NumberField
                                 source="total_ex_taxes"

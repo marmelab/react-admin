@@ -43,7 +43,7 @@ export const generateCustomers = (): Customer[] => {
             latest_purchase: null, // finalize
             has_newsletter: has_ordered ? weightedBoolean(30) : true,
             groups: [], // finalize
-            nb_commands: 0,
+            nb_orders: 0,
             total_spent: 0,
         };
     });
@@ -66,6 +66,6 @@ export type Customer = {
     latest_purchase: string;
     has_newsletter: boolean;
     groups: string[];
-    nb_commands: number;
+    nb_orders: number;
     total_spent: number;
 };

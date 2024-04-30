@@ -35,7 +35,7 @@ export const ResettableTextField = forwardRef(
         const handleClickClearButton = useCallback(
             event => {
                 event.preventDefault();
-                onChange('');
+                onChange && onChange('');
             },
             [onChange]
         );
@@ -80,9 +80,9 @@ export const ResettableTextField = forwardRef(
                     return (
                         <InputAdornment
                             position="end"
-                            classes={{
-                                root: props.select ? selectAdornment : null,
-                            }}
+                            className={
+                                props.select ? selectAdornment : undefined
+                            }
                         >
                             <IconButton
                                 className={clearButton}
@@ -110,9 +110,9 @@ export const ResettableTextField = forwardRef(
                         return (
                             <InputAdornment
                                 position="end"
-                                classes={{
-                                    root: props.select ? selectAdornment : null,
-                                }}
+                                className={
+                                    props.select ? selectAdornment : undefined
+                                }
                             >
                                 <span className={clearButton}>&nbsp;</span>
                             </InputAdornment>
@@ -124,9 +124,7 @@ export const ResettableTextField = forwardRef(
                 return (
                     <InputAdornment
                         position="end"
-                        classes={{
-                            root: props.select ? selectAdornment : null,
-                        }}
+                        className={props.select ? selectAdornment : undefined}
                     >
                         <IconButton
                             className={clearButton}

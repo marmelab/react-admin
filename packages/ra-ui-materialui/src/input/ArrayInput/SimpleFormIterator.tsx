@@ -34,8 +34,6 @@ import {
     SimpleFormIteratorItem,
 } from './SimpleFormIteratorItem';
 import { AddItemButton as DefaultAddItemButton } from './AddItemButton';
-import { RemoveItemButton as DefaultRemoveItemButton } from './RemoveItemButton';
-import { ReOrderButtons as DefaultReOrderButtons } from './ReOrderButtons';
 import { ClearArrayButton } from './ClearArrayButton';
 import { Confirm } from '../../layout';
 
@@ -46,8 +44,8 @@ export const SimpleFormIterator = (inProps: SimpleFormIteratorProps) => {
     });
     const {
         addButton = <DefaultAddItemButton />,
-        removeButton = <DefaultRemoveItemButton />,
-        reOrderButtons = <DefaultReOrderButtons />,
+        removeButton,
+        reOrderButtons,
         children,
         className,
         resource,
@@ -62,6 +60,9 @@ export const SimpleFormIterator = (inProps: SimpleFormIteratorProps) => {
         fullWidth,
         sx,
     } = props;
+    if (!source) {
+        throw new Error('SimpleFormIterator requires a source prop');
+    }
     const [confirmIsOpen, setConfirmIsOpen] = useState<boolean>(false);
     const { append, fields, move, remove, replace } = useArrayInput(props);
     const { resetField } = useFormContext();
@@ -94,12 +95,8 @@ export const SimpleFormIterator = (inProps: SimpleFormIteratorProps) => {
                     // @ts-ignore
                     !Children.only(children).props.source &&
                     // Make sure it's not a FormDataConsumer
-                    Children.map(
-                        children,
-                        input =>
-                            React.isValidElement(input) &&
-                            input.type !== FormDataConsumer
-                    ).some(Boolean)
+                    // @ts-ignore
+                    !Children.only(children).type !== FormDataConsumer
                 ) {
                     // ArrayInput used for an array of scalar values
                     // (e.g. tags: ['foo', 'bar'])

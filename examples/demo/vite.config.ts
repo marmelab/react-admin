@@ -7,7 +7,9 @@ import { visualizer } from 'rollup-plugin-visualizer';
 // https://vitejs.dev/config/
 export default defineConfig(async () => {
     const packages = fs.readdirSync(path.resolve(__dirname, '../../packages'));
-    const aliases: Record<string, string> = {};
+    const aliases: Record<string, string> = {
+        'data-generator-retail': path.resolve(__dirname, '../data-generator/src'),
+    };
     for (const dirName of packages) {
         if (dirName === 'create-react-admin') continue;
         // eslint-disable-next-line prettier/prettier

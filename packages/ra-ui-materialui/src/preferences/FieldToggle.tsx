@@ -10,9 +10,9 @@ import { styled } from '@mui/material/styles';
 export const FieldToggle = props => {
     const { selected, label, onToggle, onMove, source, index } = props;
     const resource = useResourceContext();
-    const dropIndex = React.useRef<number>(null);
-    const x = React.useRef<number>(null);
-    const y = React.useRef<number>(null);
+    const dropIndex = React.useRef<number | null>(null);
+    const x = React.useRef<number | null>(null);
+    const y = React.useRef<number | null>(null);
 
     const handleDocumentDragOver = React.useCallback(event => {
         x.current = event.clientX;
@@ -28,10 +28,17 @@ export const FieldToggle = props => {
         const selectedItem = event.target;
         selectedItem.classList.add('drag-active');
         const list = selectedItem.closest('ul');
+        if (x.current == null || y.current == null) {
+            return;
+        }
+        const elementAtDragCoordinates = document.elementFromPoint(
+            x.current,
+            y.current
+        );
         let dropItem =
-            document.elementFromPoint(x.current, y.current) === null
+            elementAtDragCoordinates === null
                 ? selectedItem
-                : document.elementFromPoint(x.current, y.current).closest('li');
+                : elementAtDragCoordinates.closest('li');
 
         if (!dropItem) {
             return;
@@ -54,15 +61,22 @@ export const FieldToggle = props => {
     const handleDragEnd = event => {
         const selectedItem = event.target as HTMLElement;
         const list = selectedItem.closest('ul');
-        let dropItem =
-            document.elementFromPoint(x.current, y.current) === null
-                ? selectedItem
-                : document.elementFromPoint(x.current, y.current).closest('li');
 
-        if (!dropItem) {
+        const elementFromPoint =
+            x.current != null && y.current != null
+                ? document.elementFromPoint(x.current, y.current)
+                : null;
+
+        let dropItem =
+            x.current == null || y.current == null || elementFromPoint === null
+                ? selectedItem
+                : elementFromPoint.closest('li');
+
+        if (y.current !== null && list && !dropItem) {
+            const closestUL = selectedItem.closest('ul');
             if (
-                y.current >
-                selectedItem.closest('ul').getBoundingClientRect().bottom
+                closestUL &&
+                y.current > closestUL.getBoundingClientRect().bottom
             ) {
                 dropItem = list.lastChild as HTMLElement;
             } else {

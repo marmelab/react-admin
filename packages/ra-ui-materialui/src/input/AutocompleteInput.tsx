@@ -235,7 +235,7 @@ export const AutocompleteInput = <
                               _: emptyText,
                           }),
                       },
-                  ].concat(allChoices),
+                  ].concat(allChoices || []),
         [
             allChoices,
             emptyValue,
@@ -505,6 +505,7 @@ If you provided a React element for the optionText prop, you must also provide t
 
         // add create option if necessary
         const { inputValue } = params;
+        // FIXME pass the allowCreate: true option to useCreateSuggestions instead
         if (
             (onCreate || create) &&
             inputValue !== '' &&
@@ -601,7 +602,9 @@ If you provided a React element for the optionText prop, you must also provide t
                         <Chip
                             label={
                                 isValidElement(optionText)
-                                    ? inputText(option)
+                                    ? inputText
+                                        ? inputText(option)
+                                        : ''
                                     : getChoiceText(option)
                             }
                             size="small"
@@ -763,7 +766,7 @@ const useSelectedChoice = <
 };
 
 const getSelectedItems = (
-    choices = [],
+    choices: RaRecord[] = [],
     value,
     optionValue = 'id',
     multiple
@@ -788,7 +791,7 @@ const areSelectedItemsEqual = (
     selectedChoice: RaRecord | RaRecord[],
     newSelectedChoice: RaRecord | RaRecord[],
     optionValue = 'id',
-    multiple: boolean
+    multiple?: boolean
 ) => {
     if (multiple) {
         const selectedChoiceArray = (selectedChoice as RaRecord[]) ?? [];

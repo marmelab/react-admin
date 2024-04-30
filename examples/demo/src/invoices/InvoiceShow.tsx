@@ -50,8 +50,8 @@ const InvoiceShow = () => {
                             Order
                         </Typography>
                         <ReferenceField
-                            reference="commands"
-                            source="command_id"
+                            reference="orders"
+                            source="order_id"
                             link={false}
                         >
                             <TextField
@@ -65,8 +65,8 @@ const InvoiceShow = () => {
                 </Grid>
                 <Box margin="10px 0">
                     <ReferenceField
-                        reference="commands"
-                        source="command_id"
+                        reference="orders"
+                        source="order_id"
                         link={false}
                     >
                         <Basket />

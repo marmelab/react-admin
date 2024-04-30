@@ -24,6 +24,8 @@ import {
     SimpleFormIteratorItemContext,
     SimpleFormIteratorItemContextValue,
 } from './SimpleFormIteratorItemContext';
+import { RemoveItemButton as DefaultRemoveItemButton } from './RemoveItemButton';
+import { ReOrderButtons as DefaultReOrderButtons } from './ReOrderButtons';
 
 export const SimpleFormIteratorItem = React.forwardRef(
     (props: SimpleFormIteratorItemProps, ref: any) => {
@@ -37,11 +39,16 @@ export const SimpleFormIteratorItem = React.forwardRef(
             inline,
             member,
             record,
-            removeButton,
-            reOrderButtons,
+            removeButton = <DefaultRemoveItemButton />,
+            reOrderButtons = <DefaultReOrderButtons />,
             source,
         } = props;
         const resource = useResourceContext(props);
+        if (!resource) {
+            throw new Error(
+                'SimpleFormIteratorItem must be used in a ResourceContextProvider or be passed a resource prop.'
+            );
+        }
         const { total, reOrder, remove } = useSimpleFormIterator();
         // Returns a boolean to indicate whether to disable the remove button for certain fields.
         // If disableRemove is a function, then call the function with the current record to
@@ -179,6 +186,6 @@ export type SimpleFormIteratorItemProps = Partial<ArrayInputContextValue> & {
     record: RaRecord;
     removeButton?: ReactElement;
     reOrderButtons?: ReactElement;
-    resource: string;
+    resource?: string;
     source: string;
 };

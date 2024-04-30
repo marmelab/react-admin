@@ -14,7 +14,7 @@
         "watch": "tsc --outDir dist/esm --module es2015 --watch"
     },
     "dependencies": {
-        "date-fns": "^2.19.0",
+        "date-fns": "^3.6.0",
         "faker": "^4.1.0"
     },
     "devDependencies": {

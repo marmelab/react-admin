@@ -31,7 +31,7 @@ const OrderTitle = () => {
     const record = useRecordContext<Order>();
     return record ? (
         <span>
-            {translate('resources.commands.title', {
+            {translate('resources.orders.title', {
                 reference: record.reference,
             })}
         </span>
@@ -83,7 +83,7 @@ const OrderForm = () => {
                             <Grid item xs={12} sm={12} md={8}>
                                 <Typography variant="h6" gutterBottom>
                                     {translate(
-                                        'resources.commands.section.order'
+                                        'resources.orders.section.order'
                                     )}
                                 </Typography>
                                 <Grid container>
@@ -137,7 +137,7 @@ const OrderForm = () => {
                             <Grid item xs={12} sm={12} md={4}>
                                 <Typography variant="h6" gutterBottom>
                                     {translate(
-                                        'resources.commands.section.customer'
+                                        'resources.orders.section.customer'
                                     )}
                                 </Typography>
                                 <ReferenceField
@@ -151,7 +151,7 @@ const OrderForm = () => {
 
                                 <Typography variant="h6" gutterBottom>
                                     {translate(
-                                        'resources.commands.section.shipping_address'
+                                        'resources.orders.section.shipping_address'
                                     )}
                                 </Typography>
                                 <ReferenceField
@@ -166,7 +166,7 @@ const OrderForm = () => {
                         <Spacer />
 
                         <Typography variant="h6" gutterBottom>
-                            {translate('resources.commands.section.items')}
+                            {translate('resources.orders.section.items')}
                         </Typography>
                         <div>
                             <Basket />
@@ -174,7 +174,7 @@ const OrderForm = () => {
                         <Spacer />
 
                         <Typography variant="h6" gutterBottom>
-                            {translate('resources.commands.section.total')}
+                            {translate('resources.orders.section.total')}
                         </Typography>
                         <div>
                             <Totals />

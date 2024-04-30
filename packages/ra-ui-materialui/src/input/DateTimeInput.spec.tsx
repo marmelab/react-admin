@@ -1,7 +1,7 @@
 import * as React from 'react';
 import expect from 'expect';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import { required, testDataProvider } from 'ra-core';
+import { ResourceContextProvider, required, testDataProvider } from 'ra-core';
 import { format } from 'date-fns';
 import { useFormState } from 'react-hook-form';
 
@@ -64,16 +64,18 @@ describe('<DateTimeInput />', () => {
         ];
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm onSubmit={jest.fn()}>
-                    <ArrayInput
-                        defaultValue={backlinksDefaultValue}
-                        source="backlinks"
-                    >
-                        <SimpleFormIterator>
-                            <DateTimeInput source="date" />
-                        </SimpleFormIterator>
-                    </ArrayInput>
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm onSubmit={jest.fn()}>
+                        <ArrayInput
+                            defaultValue={backlinksDefaultValue}
+                            source="backlinks"
+                        >
+                            <SimpleFormIterator>
+                                <DateTimeInput source="date" />
+                            </SimpleFormIterator>
+                        </ArrayInput>
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
 

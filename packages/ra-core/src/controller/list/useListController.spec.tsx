@@ -29,9 +29,7 @@ describe('useListController', () => {
 
     describe('queryOptions', () => {
         it('should accept custom client query options', async () => {
-            const mock = jest
-                .spyOn(console, 'error')
-                .mockImplementation(() => {});
+            jest.spyOn(console, 'error').mockImplementationOnce(() => {});
             const getList = jest
                 .fn()
                 .mockImplementationOnce(() => Promise.reject(new Error()));
@@ -48,7 +46,6 @@ describe('useListController', () => {
                 expect(getList).toHaveBeenCalled();
                 expect(onError).toHaveBeenCalled();
             });
-            mock.mockRestore();
         });
 
         it('should accept meta in queryOptions', async () => {
