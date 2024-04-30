@@ -9,7 +9,7 @@ import {
     ReactElement,
 } from 'react';
 import { Routes, Route } from 'react-router-dom';
-import { ErrorBoundary, FallbackProps } from 'react-error-boundary';
+import { ErrorBoundary } from 'react-error-boundary';
 
 import { CoreAdminRoutes } from './CoreAdminRoutes';
 import { Ready } from '../util';
@@ -28,6 +28,14 @@ export type ChildrenFunction = () => ComponentType[];
 
 const DefaultLayout = ({ children }: { children: React.ReactNode }) => (
     <>{children}</>
+);
+const DefaultError = ({ errorInfo }) => (
+    <div>
+        <h1>Error</h1>
+        <p>
+            <b>ComponentStack:</b> {errorInfo?.componentStack}
+        </p>
+    </div>
 );
 
 export interface CoreAdminUIProps {
@@ -133,7 +141,15 @@ export interface CoreAdminUIProps {
      *     </Admin>
      * );
      */
-    error?: (props: FallbackProps) => ReactElement;
+    error?: ({
+        errorInfo,
+        error,
+        resetErrorBoundary,
+    }: {
+        errorInfo?: ErrorInfo;
+        error?: Error;
+        resetErrorBoundary?: (args) => void;
+    }) => ReactElement;
 
     /**
      * The main app layout component
@@ -181,24 +197,6 @@ export interface CoreAdminUIProps {
      * );
      */
     loginPage?: LoginComponent | boolean;
-
-    /**
-     * The function called when an error is caught in a child component
-     * @see https://marmelab.com/react-admin/Admin.html#onerror
-     * @example
-     * import { Admin } from 'react-admin';
-     * import { MyError, onError } from './error';
-     *
-     * const App = () => (
-     *     <Admin
-     *         error={() => MyError}
-     *         onError={onError}
-     *     >
-     *         ...
-     *     </Admin>
-     * );
-     */
-    onError?: (error: Error, info: ErrorInfo) => void;
 
     /**
      * Flag to require authentication for all routes. Defaults to false.
@@ -260,26 +258,17 @@ export interface CoreAdminUIProps {
 }
 
 export const CoreAdminUI = (props: CoreAdminUIProps) => {
-    const [errorInfo, setErrorInfo] = useState<ErrorInfo | undefined>(
-        undefined
-    );
+    const [errorInfo, setErrorInfo] = useState<ErrorInfo>({});
     const {
         authCallbackPage: LoginCallbackPage = false,
         catchAll = Noop,
         children,
         dashboard,
         disableTelemetry = false,
-        error = ({ error }) => (
-            <div>
-                <p>Error: {error?.message}</p>
-                <p>ErrorInfo: {JSON.stringify(errorInfo)}</p>
-                <p>ComponentStack: {errorInfo?.componentStack}</p>
-            </div>
-        ),
+        error = DefaultError,
         layout = DefaultLayout,
         loading = Noop,
         loginPage: LoginPage = false,
-        onError,
         ready = Ready,
         requireAuth = false,
         title = 'React Admin',
@@ -299,15 +288,13 @@ export const CoreAdminUI = (props: CoreAdminUIProps) => {
         img.src = `https://react-admin-telemetry.marmelab.com/react-admin-telemetry?domain=${window.location.hostname}`;
     }, [disableTelemetry]);
 
-    const handleError = (error: Error, info: ErrorInfo) => {
-        setErrorInfo(info);
-    };
+    const handleError = (error: Error, info: ErrorInfo) => setErrorInfo(info);
 
     return (
         <DefaultTitleContextProvider value={title}>
             <ErrorBoundary
-                onError={onError ?? handleError}
-                fallbackRender={error}
+                onError={handleError}
+                fallbackRender={props => error({ errorInfo, ...props })}
             >
                 <Routes>
                     {LoginPage !== false && LoginPage !== true ? (

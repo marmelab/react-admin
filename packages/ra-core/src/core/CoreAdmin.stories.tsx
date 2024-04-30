@@ -24,8 +24,15 @@ export const Error = () => (
     </CoreAdmin>
 );
 
+const MyError = ({ errorInfo }: { errorInfo?: React.ErrorInfo }) => (
+    <div style={{ backgroundColor: 'purple', color: 'white', height: '100vh' }}>
+        <h1>Something went wrong...</h1>
+        <p>{errorInfo?.componentStack}</p>
+    </div>
+);
+
 export const CustomError = () => (
-    <CoreAdmin error={() => <h1>Something went wrong...</h1>}>
+    <CoreAdmin error={MyError}>
         <CustomRoutes noLayout>
             <Route path="/error" element={<ErrorComponent />} />
         </CustomRoutes>

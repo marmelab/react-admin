@@ -67,24 +67,32 @@ export const Error = () => (
     </Admin>
 );
 
-const ErrorPage = () => (
+const ErrorPage = ({ errorInfo }: { errorInfo?: React.ErrorInfo }) => (
     <Box
         sx={{
             display: 'flex',
-            justifyContent: 'center',
+            flexDirection: 'column',
             alignItems: 'center',
             minHeight: '100vh',
             backgroundColor: '#f44336',
         }}
     >
         <Typography variant="h1" style={{ color: 'white' }}>
-            Error
+            <b>Error</b>
         </Typography>
+        <ul>
+            {errorInfo?.componentStack
+                ?.split(' at ')
+                ?.slice(1)
+                ?.map((line, index) => (
+                    <li key={index}>At {line}</li>
+                ))}
+        </ul>
     </Box>
 );
 
 export const CustomError = () => (
-    <Admin layout={FailedLayout} error={() => <ErrorPage />}>
+    <Admin layout={FailedLayout} error={ErrorPage}>
         <Resource name="posts" list={PostList} />
     </Admin>
 );

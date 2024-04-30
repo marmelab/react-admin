@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { createElement, ComponentType, useState, ErrorInfo } from 'react';
+import { createElement, ComponentType } from 'react';
 import { CoreAdminUI, CoreAdminUIProps } from 'ra-core';
 import { ScopedCssBaseline } from '@mui/material';
 
@@ -21,38 +21,27 @@ export const AdminUI = ({
     notification = Notification,
     error: errorComponent,
     ...props
-}: AdminUIProps) => {
-    const [errorInfo, setErrorInfo] = useState<ErrorInfo | undefined>(
-        undefined
-    );
-
-    const handleError = (error: Error, info: ErrorInfo) => {
-        setErrorInfo(info);
-    };
-
-    return (
-        <ScopedCssBaseline enableColorScheme>
-            <CoreAdminUI
-                layout={layout}
-                catchAll={catchAll}
-                loading={loading}
-                loginPage={loginPage}
-                authCallbackPage={authCallbackPage}
-                error={({ error, resetErrorBoundary }) => (
-                    <Error
-                        error={error}
-                        errorComponent={errorComponent}
-                        errorInfo={errorInfo}
-                        resetErrorBoundary={resetErrorBoundary}
-                    />
-                )}
-                onError={handleError}
-                {...props}
-            />
-            {createElement(notification)}
-        </ScopedCssBaseline>
-    );
-};
+}: AdminUIProps) => (
+    <ScopedCssBaseline enableColorScheme>
+        <CoreAdminUI
+            layout={layout}
+            catchAll={catchAll}
+            loading={loading}
+            loginPage={loginPage}
+            authCallbackPage={authCallbackPage}
+            error={({ error, resetErrorBoundary, errorInfo }) => (
+                <Error
+                    error={error}
+                    errorComponent={errorComponent}
+                    errorInfo={errorInfo}
+                    resetErrorBoundary={resetErrorBoundary}
+                />
+            )}
+            {...props}
+        />
+        {createElement(notification)}
+    </ScopedCssBaseline>
+);
 
 export interface AdminUIProps extends CoreAdminUIProps {
     /**
