@@ -75,7 +75,7 @@ export const Configurable = (props: ConfigurableProps) => {
     const handleOpenEditor = () => {
         if (!setEditor) {
             throw new Error(
-                'PreferencesEditorContext is not available. Did you forget to put a PreferencesEditorContextProvider at a higher level?'
+                'Configurable must be used inside a PreferencesEditorContextProvider'
             );
         }
 
@@ -91,7 +91,7 @@ export const Configurable = (props: ConfigurableProps) => {
         );
         if (!setPreferenceKey) {
             throw new Error(
-                'PreferencesEditorContext is not available. Did you forget to put a PreferencesEditorContextProvider at a higher level?'
+                'Configurable must be used inside a PreferencesEditorContextProvider'
             );
         }
         // as we modify the editor, isEditorOpen cannot compare the editor element
