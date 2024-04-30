@@ -1,9 +1,7 @@
 import * as React from 'react';
 import { Route } from 'react-router';
 import { CoreAdmin } from './CoreAdmin';
-import { useAuthenticated, useLogin } from '../auth';
 import { CustomRoutes } from './CustomRoutes';
-import { Resource } from './Resource';
 import { FakeBrowserDecorator } from '../storybook/FakeBrowser';
 
 export default {
