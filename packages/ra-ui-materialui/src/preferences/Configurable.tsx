@@ -73,7 +73,12 @@ export const Configurable = (props: ConfigurableProps) => {
     }
 
     const handleOpenEditor = () => {
-        if (!setEditor) return;
+        if (!setEditor) {
+            throw new Error(
+                'PreferencesEditorContext is not available. Did you forget to put a PreferencesEditorContextProvider at a higher level?'
+            );
+        }
+
         // include the editorKey as key to force destroy and mount
         // when switching between two identical editors with different editor keys
         // otherwise the editor will see an update and its useStore will return one tick later
@@ -84,7 +89,11 @@ export const Configurable = (props: ConfigurableProps) => {
                 key: prefixedPreferenceKey,
             })
         );
-        if (!setPreferenceKey) return;
+        if (!setPreferenceKey) {
+            throw new Error(
+                'PreferencesEditorContext is not available. Did you forget to put a PreferencesEditorContextProvider at a higher level?'
+            );
+        }
         // as we modify the editor, isEditorOpen cannot compare the editor element
         // we'll compare the editor key instead
         setPreferenceKey(prefixedPreferenceKey);

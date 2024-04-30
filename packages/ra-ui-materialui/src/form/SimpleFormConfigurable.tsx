@@ -21,7 +21,7 @@ export const SimpleFormConfigurable = ({
 
     const [availableInputs, setAvailableInputs] = useStore<
         SimpleFormConfigurableColumn[]
-    >(`preferences.${finalPreferenceKey}.availableInputs`, []);
+    >(`preferences.${finalPreferenceKey}.availableInputs`, EMPTY_ARRAY);
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [_, setOmit] = useStore<string[]>(
@@ -49,10 +49,10 @@ export const SimpleFormConfigurable = ({
                                     ),
                       }
                     : null
-            )?.filter(column => column != null) ?? [];
+            )?.filter(column => column != null) ?? EMPTY_ARRAY;
         if (inputs.length !== availableInputs.length) {
             setAvailableInputs(inputs);
-            setOmit(omit || []);
+            setOmit(omit || EMPTY_ARRAY);
         }
     }, [availableInputs]); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -71,6 +71,8 @@ export const SimpleFormConfigurable = ({
         </Configurable>
     );
 };
+
+const EMPTY_ARRAY: any[] = [];
 
 export interface SimpleFormConfigurableProps extends SimpleFormProps {
     /**
