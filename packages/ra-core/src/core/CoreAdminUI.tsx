@@ -124,7 +124,14 @@ export interface CoreAdminUIProps {
      * The component displayed when an error is caught in a child component
      * @see https://marmelab.com/react-admin/Admin.html#error
      * @example
-     * TODO: add an example
+     * import { Admin } from 'react-admin';
+     * import { MyError } from './error';
+     *
+     * const App = () => (
+     *     <Admin error={MyError}>
+     *         ...
+     *     </Admin>
+     * );
      */
     error?: (props: FallbackProps) => ReactElement;
 
@@ -179,7 +186,17 @@ export interface CoreAdminUIProps {
      * The function called when an error is caught in a child component
      * @see https://marmelab.com/react-admin/Admin.html#onerror
      * @example
-     * TODO: add an example
+     * import { Admin } from 'react-admin';
+     * import { MyError, onError } from './error';
+     *
+     * const App = () => (
+     *     <Admin
+     *         error={() => MyError}
+     *         onError={onError}
+     *     >
+     *         ...
+     *     </Admin>
+     * );
      */
     onError?: (error: Error, info: ErrorInfo) => void;
 
