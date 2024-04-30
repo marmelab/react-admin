@@ -52,7 +52,7 @@ export const ImageField = <
                         const fileTitleValue = title
                             ? get(file, title, title)
                             : title;
-                        const srcValue = src ? get(file, src, src) : src;
+                        const srcValue = src ? get(file, src, title) : title;
 
                         return (
                             <li key={index}>
