@@ -18,12 +18,18 @@ const ErrorComponent = () => {
     throw Error();
 };
 
-export const Error = () => {
-    return (
-        <CoreAdmin>
-            <CustomRoutes noLayout>
-                <Route path="/error" element={<ErrorComponent />} />
-            </CustomRoutes>
-        </CoreAdmin>
-    );
-};
+export const Error = () => (
+    <CoreAdmin>
+        <CustomRoutes noLayout>
+            <Route path="/error" element={<ErrorComponent />} />
+        </CustomRoutes>
+    </CoreAdmin>
+);
+
+export const CustomError = () => (
+    <CoreAdmin error={() => <h1>Something went wrong...</h1>}>
+        <CustomRoutes noLayout>
+            <Route path="/error" element={<ErrorComponent />} />
+        </CustomRoutes>
+    </CoreAdmin>
+);

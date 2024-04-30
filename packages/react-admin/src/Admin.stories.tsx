@@ -4,6 +4,7 @@ import { Routes, Route, Link } from 'react-router-dom';
 import { Admin } from './Admin';
 import { Resource, testDataProvider, TestMemoryRouter } from 'ra-core';
 import { AppBar, Layout } from 'ra-ui-materialui';
+import { Box, Typography } from '@mui/material';
 
 export default {
     title: 'react-admin/Admin',
@@ -56,12 +57,34 @@ export const SubPath = () => (
 );
 
 // @ts-ignore
-const MyAppBar = () => <AppBar color="nothing" />;
+const FailedAppBar = () => <AppBar color="nothing" />;
 
-const MyLayout = props => <Layout {...props} appBar={MyAppBar} />;
+const FailedLayout = props => <Layout {...props} appBar={FailedAppBar} />;
 
 export const Error = () => (
-    <Admin layout={MyLayout} dataProvider={testDataProvider()}>
+    <Admin layout={FailedLayout}>
+        <Resource name="posts" list={PostList} />
+    </Admin>
+);
+
+const ErrorPage = () => (
+    <Box
+        sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            minHeight: '100vh',
+            backgroundColor: '#f44336',
+        }}
+    >
+        <Typography variant="h1" style={{ color: 'white' }}>
+            Error
+        </Typography>
+    </Box>
+);
+
+export const CustomError = () => (
+    <Admin layout={FailedLayout} error={() => <ErrorPage />}>
         <Resource name="posts" list={PostList} />
     </Admin>
 );
