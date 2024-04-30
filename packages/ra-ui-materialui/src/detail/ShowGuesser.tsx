@@ -9,7 +9,7 @@ import {
     useShowContext,
 } from 'ra-core';
 
-import { ShowProps } from '../types';
+import { ShowProps } from './Show';
 import { ShowView } from './ShowView';
 import { showFieldTypes } from './showFieldTypes';
 

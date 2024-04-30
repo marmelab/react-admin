@@ -1,11 +1,10 @@
 import * as React from 'react';
+import { ElementType, ReactElement, ReactNode } from 'react';
 import PropTypes from 'prop-types';
-import { Card } from '@mui/material';
-import { styled } from '@mui/material/styles';
+import { Card, styled, SxProps } from '@mui/material';
 import { useCreateContext } from 'ra-core';
 import clsx from 'clsx';
 
-import { CreateProps } from '../types';
 import { Title } from '../layout';
 
 export const CreateView = (props: CreateViewProps) => {
@@ -41,8 +40,15 @@ export const CreateView = (props: CreateViewProps) => {
     );
 };
 
-export type CreateViewProps = CreateProps;
-
+export interface CreateViewProps {
+    actions?: ReactElement | false;
+    aside?: ReactElement;
+    children: ReactNode;
+    className?: string;
+    component?: ElementType;
+    sx?: SxProps;
+    title?: string | ReactElement;
+}
 CreateView.propTypes = {
     actions: PropTypes.oneOfType([PropTypes.element, PropTypes.bool]),
     aside: PropTypes.element,

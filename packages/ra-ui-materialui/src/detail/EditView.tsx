@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
+import { ReactElement, ReactNode, ElementType } from 'react';
+import { Card, CardContent, styled, SxProps } from '@mui/material';
 import PropTypes from 'prop-types';
-import { Card, CardContent } from '@mui/material';
 import clsx from 'clsx';
 import {
     ComponentPropType,
@@ -11,7 +11,6 @@ import {
 
 import { EditActions } from './EditActions';
 import { Title } from '../layout';
-import { EditProps } from '../types';
 
 const defaultActions = <EditActions />;
 
@@ -59,17 +58,15 @@ export const EditView = (props: EditViewProps) => {
     );
 };
 
-export type EditViewProps = Omit<
-    EditProps,
-    | 'resource'
-    | 'id'
-    | 'mutationMode'
-    | 'mutationOptions'
-    | 'queryOptions'
-    | 'redirect'
-    | 'transform'
-    | 'disableAuthentication'
->;
+export interface EditViewProps {
+    actions?: ReactElement | false;
+    aside?: ReactElement;
+    children: ReactNode;
+    className?: string;
+    component?: ElementType;
+    title?: string | ReactElement;
+    sx?: SxProps;
+}
 
 EditView.propTypes = {
     actions: PropTypes.oneOfType([PropTypes.element, PropTypes.bool]),

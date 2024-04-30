@@ -15,7 +15,6 @@ import {
 import { UseMutationOptions } from '@tanstack/react-query';
 
 import { Button, ButtonProps } from './Button';
-import { BulkActionProps } from '../types';
 
 export const UpdateWithUndoButton = (props: UpdateWithUndoButtonProps) => {
     const record = useRecordContext(props);
@@ -109,8 +108,7 @@ const sanitizeRestProps = ({
 export interface UpdateWithUndoButtonProps<
     RecordType extends RaRecord = any,
     MutationOptionsError = unknown
-> extends BulkActionProps,
-        ButtonProps {
+> extends ButtonProps {
     icon?: ReactElement;
     data: any;
     mutationOptions?: UseMutationOptions<

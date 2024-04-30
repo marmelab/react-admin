@@ -19,7 +19,6 @@ import {
 
 import { Confirm } from '../layout';
 import { Button, ButtonProps } from './Button';
-import { BulkActionProps } from '../types';
 import { UseMutationOptions } from '@tanstack/react-query';
 
 export const BulkDeleteWithConfirmButton = (
@@ -150,8 +149,7 @@ const sanitizeRestProps = ({
 export interface BulkDeleteWithConfirmButtonProps<
     RecordType extends RaRecord = any,
     MutationOptionsError = unknown
-> extends BulkActionProps,
-        ButtonProps {
+> extends ButtonProps {
     confirmContent?: React.ReactNode;
     confirmTitle?: React.ReactNode;
     confirmColor?: 'primary' | 'warning';

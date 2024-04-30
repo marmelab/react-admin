@@ -1,11 +1,9 @@
 import * as React from 'react';
+import { ReactElement, ReactNode, ElementType } from 'react';
 import PropTypes from 'prop-types';
-import { Card } from '@mui/material';
-import { styled } from '@mui/material/styles';
+import { Card, styled, SxProps } from '@mui/material';
 import clsx from 'clsx';
 import { useShowContext, useResourceDefinition } from 'ra-core';
-
-import { ShowProps } from '../types';
 import { ShowActions } from './ShowActions';
 import { Title } from '../layout';
 
@@ -19,13 +17,12 @@ export const ShowView = (props: ShowViewProps) => {
         className,
         component: Content = Card,
         emptyWhileLoading = false,
-        hasEdit: hasEditFromProps,
         title,
         ...rest
     } = props;
 
     const { resource, defaultTitle, record } = useShowContext();
-    const { hasEdit } = useResourceDefinition(props);
+    const { hasEdit } = useResourceDefinition();
 
     const finalActions =
         typeof actions === 'undefined' && hasEdit ? defaultActions : actions;
@@ -56,10 +53,16 @@ export const ShowView = (props: ShowViewProps) => {
     );
 };
 
-export type ShowViewProps = Omit<
-    ShowProps,
-    'id' | 'disableAuthentication' | 'queryOptions' | 'resource'
->;
+export interface ShowViewProps {
+    actions?: ReactElement | false;
+    aside?: ReactElement;
+    children: ReactNode;
+    className?: string;
+    component?: ElementType;
+    emptyWhileLoading?: boolean;
+    title?: string | ReactElement;
+    sx?: SxProps;
+}
 
 ShowView.propTypes = {
     actions: PropTypes.oneOfType([PropTypes.element, PropTypes.bool]),

@@ -10,12 +10,12 @@ import {
     RaRecord,
 } from 'ra-core';
 
-import { EditProps } from '../types';
+import { EditProps } from './Edit';
 import { EditView } from './EditView';
 import { editFieldTypes } from './editFieldTypes';
 
-export const EditGuesser = <RecordType extends RaRecord = RaRecord>(
-    props: Omit<EditProps<RecordType>, 'children'> & { enableLog?: boolean }
+export const EditGuesser = <RecordType extends RaRecord = any>(
+    props: EditGuesserProps<RecordType>
 ) => {
     const {
         resource,
@@ -44,8 +44,11 @@ export const EditGuesser = <RecordType extends RaRecord = RaRecord>(
     );
 };
 
-const EditViewGuesser = (
-    props: Omit<EditProps, 'children'> & { enableLog?: boolean }
+interface EditGuesserProps<RecordType extends RaRecord = any>
+    extends Omit<EditProps<RecordType>, 'children'> {}
+
+const EditViewGuesser = <RecordType extends RaRecord = any>(
+    props: EditGuesserProps<RecordType>
 ) => {
     const resource = useResourceContext(props);
 
