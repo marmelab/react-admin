@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ElementType, ReactElement, ReactNode } from 'react';
+import { ElementType, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import { Card, styled, SxProps } from '@mui/material';
 import { useCreateContext } from 'ra-core';
@@ -40,15 +40,15 @@ export const CreateView = (props: CreateViewProps) => {
     );
 };
 
-export interface CreateViewProps {
+export interface CreateViewProps
+    extends Omit<React.HTMLAttributes<HTMLDivElement>, 'title'> {
     actions?: ReactElement | false;
     aside?: ReactElement;
-    children: ReactNode;
-    className?: string;
     component?: ElementType;
     sx?: SxProps;
     title?: string | ReactElement;
 }
+
 CreateView.propTypes = {
     actions: PropTypes.oneOfType([PropTypes.element, PropTypes.bool]),
     aside: PropTypes.element,
