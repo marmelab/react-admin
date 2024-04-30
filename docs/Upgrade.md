@@ -941,7 +941,8 @@ If you relied on those props in your custom buttons, you can should now leverage
 
 export const MyAddButton = (props: ButtonProps) => {
 +    const { add } = useSimpleFormIterator();
-    return <Button {...props} onClick={() => add()}>Add</Button>;
+-    return <Button {...props}>Add</Button>;
++    return <Button {...props} onClick={() => add()}>Add</Button>;
 }
 ```
 
@@ -953,7 +954,8 @@ export const MyAddButton = (props: ButtonProps) => {
 
 export const MyRemoveButton = (props: ButtonProps) => {
 +    const { remove } = useSimpleFormIteratorItem();
-    return <Button {...props} onClick={() => remove()}>Add</Button>;
+-    return <Button {...props}>Add</Button>;
++    return <Button {...props} onClick={() => remove()}>Add</Button>;
 }
 ```
 
