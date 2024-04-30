@@ -16,7 +16,7 @@ const getGqlResource = (resource: string) => {
             return 'Category';
 
         case 'orders':
-            return 'Command';
+            return 'Order';
 
         case 'products':
             return 'Product';
