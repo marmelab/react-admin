@@ -3,6 +3,7 @@ import { Routes, Route, Link } from 'react-router-dom';
 
 import { Admin } from './Admin';
 import { Resource, testDataProvider, TestMemoryRouter } from 'ra-core';
+import { AppBar, Layout } from 'ra-ui-materialui';
 
 export default {
     title: 'react-admin/Admin',
@@ -52,4 +53,15 @@ export const SubPath = () => (
             />
         </Routes>
     </TestMemoryRouter>
+);
+
+// @ts-ignore
+const MyAppBar = () => <AppBar color="nothing" />;
+
+const MyLayout = props => <Layout {...props} appBar={MyAppBar} />;
+
+export const Error = () => (
+    <Admin layout={MyLayout} dataProvider={testDataProvider()}>
+        <Resource name="posts" list={PostList} />
+    </Admin>
 );
