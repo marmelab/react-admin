@@ -29,7 +29,7 @@ const MobileGrid = () => {
                         <CardHeader
                             title={
                                 <>
-                                    {translate('resources.commands.name', 1)} #
+                                    {translate('resources.orders.name', 1)} #
                                     <TextField
                                         source="reference"
                                         variant="body1"
@@ -50,7 +50,7 @@ const MobileGrid = () => {
                             </Typography>
                             <Typography variant="body2" gutterBottom>
                                 {translate(
-                                    'resources.commands.fields.basket.total'
+                                    'resources.orders.fields.basket.total'
                                 )}
                                 :&nbsp;
                                 <NumberField
@@ -62,14 +62,12 @@ const MobileGrid = () => {
                                 />
                             </Typography>
                             <Typography variant="body2" gutterBottom>
-                                {translate('resources.commands.fields.status')}
+                                {translate('resources.orders.fields.status')}
                                 :&nbsp;
                                 <TextField source="status" />
                             </Typography>
                             <Typography variant="body2">
-                                {translate(
-                                    'resources.commands.fields.returned'
-                                )}
+                                {translate('resources.orders.fields.returned')}
                                 :&nbsp;
                                 <BooleanField source="returned" />
                             </Typography>

@@ -14,7 +14,7 @@ const Totals = () => {
             <TableBody>
                 <TableRow>
                     <TableCell>
-                        {translate('resources.commands.fields.basket.sum')}
+                        {translate('resources.orders.fields.basket.sum')}
                     </TableCell>
                     <TableCellRight>
                         {record?.total_ex_taxes.toLocaleString(undefined, {
@@ -25,7 +25,7 @@ const Totals = () => {
                 </TableRow>
                 <TableRow>
                     <TableCell>
-                        {translate('resources.commands.fields.basket.delivery')}
+                        {translate('resources.orders.fields.basket.delivery')}
                     </TableCell>
                     <TableCellRight>
                         {record?.delivery_fees.toLocaleString(undefined, {
@@ -36,7 +36,7 @@ const Totals = () => {
                 </TableRow>
                 <TableRow>
                     <TableCell>
-                        {translate('resources.commands.fields.basket.taxes')} (
+                        {translate('resources.orders.fields.basket.taxes')} (
                         {record?.tax_rate.toLocaleString(undefined, {
                             style: 'percent',
                         })}
@@ -51,7 +51,7 @@ const Totals = () => {
                 </TableRow>
                 <TableRow>
                     <TableCell sx={{ fontWeight: 'bold' }}>
-                        {translate('resources.commands.fields.basket.total')}
+                        {translate('resources.orders.fields.basket.total')}
                     </TableCell>
                     <TableCellRight sx={{ fontWeight: 'bold' }}>
                         {record?.total.toLocaleString(undefined, {

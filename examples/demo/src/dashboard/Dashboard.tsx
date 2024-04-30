@@ -46,7 +46,7 @@ const Dashboard = () => {
     );
     const aMonthAgo = useMemo(() => subDays(startOfDay(new Date()), 30), []);
 
-    const { data: orders } = useGetList<Order>('commands', {
+    const { data: orders } = useGetList<Order>('orders', {
         filter: { date_gte: aMonthAgo.toISOString() },
         sort: { field: 'date', order: 'DESC' },
         pagination: { page: 1, perPage: 50 },
