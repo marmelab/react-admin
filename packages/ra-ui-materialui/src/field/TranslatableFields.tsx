@@ -80,13 +80,13 @@ export const TranslatableFields = (
     const record = useRecordContext(props);
     if (!record) {
         throw new Error(
-            `<TranslatableFields> was called outside of a ResourceContext and without a resource prop. You must set the resource prop.`
+            `<TranslatableFields> was called outside of a RecordContext and without a record prop. You must set the record prop.`
         );
     }
     const resource = useResourceContext(props);
     if (!resource) {
         throw new Error(
-            `<TranslatableFields> was called outside of a ResourceContext and without a resource prop. You must set the resource prop.`
+            `<TranslatableFields> was called outside of a RecordContext and without a record prop. You must set the record prop.`
         );
     }
     const context = useTranslatable({ defaultLocale, locales });
