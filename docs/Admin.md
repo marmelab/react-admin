@@ -136,30 +136,29 @@ Three main props lets you configure the core features of the `<Admin>` component
 
 Here are all the props accepted by the component:
 
-| Prop               | Required | Type                                      | Default              | Description                                                     |
-|------------------- |----------|------------------------------------------ |--------------------- |---------------------------------------------------------------- |
-| `dataProvider`     | Required | `DataProvider`                            | -                    | The data provider for fetching resources                        |
-| `children`         | Required | `ReactNode`                               | -                    | The routes to render                                            |
-| `authCallbackPage` | Optional | `Component`                               | `AuthCallback`       | The content of the authentication callback page                 |
-| `authProvider`     | Optional | `AuthProvider`                            | -                    | The authentication provider for security and permissions        |
-| `basename`         | Optional | `string`                                  | -                    | The base path for all URLs                                      |
-| `catchAll`         | Optional | `Component`                               | `NotFound`           | The fallback component for unknown routes                       |
-| `dashboard`        | Optional | `Component`                               | -                    | The content of the dashboard page                               |
-| `darkTheme`        | Optional | `object`                                  | `default DarkTheme`  | The dark theme configuration                                    |
-| `defaultTheme`     | Optional | `boolean`                                 | `false`              | Flag to default to the light theme                              |
-| `disableTelemetry` | Optional | `boolean`                                 | `false`              | Set to `true` to disable telemetry collection                   |
-| `error`            | Optional | `(props: FallbackProps) => Component`     | -                    | A React component rendered in the content area in case of error |
-| `i18nProvider`     | Optional | `I18NProvider`                            | -                    | The internationalization provider for translations              |
-| `layout`           | Optional | `Component`                               | `Layout`             | The content of the layout                                       |
-| `loginPage`        | Optional | `Component`                               | `LoginPage`          | The content of the login page                                   |
-| `notification`     | Optional | `Component`                               | `Notification`       | The notification component                                      |
-| `onError`          | Optional | `(error: Error, info: ErrorInfo) => void` | -                    | A function called when an error appears                         |
-| `queryClient`      | Optional | `QueryClient`                             | -                    | The react-query client                                          |
-| `ready`            | Optional | `Component`                               | `Ready`              | The content of the ready page                                   |
-| `requireAuth`      | Optional | `boolean`                                 | `false`              | Flag to require authentication for all routes                   |
-| `store`            | Optional | `Store`                                   | -                    | The Store for managing user preferences                         |
-| `theme`            | Optional | `object`                                  | `default LightTheme` | The main (light) theme configuration                            |
-| `title`            | Optional | `string`                                  | -                    | The error page title                                            |
+| Prop               | Required | Type            | Default              | Description                                                     |
+|------------------- |----------|---------------- |--------------------- |---------------------------------------------------------------- |
+| `dataProvider`     | Required | `DataProvider`  | -                    | The data provider for fetching resources                        |
+| `children`         | Required | `ReactNode`     | -                    | The routes to render                                            |
+| `authCallbackPage` | Optional | `Component`     | `AuthCallback`       | The content of the authentication callback page                 |
+| `authProvider`     | Optional | `AuthProvider`  | -                    | The authentication provider for security and permissions        |
+| `basename`         | Optional | `string`        | -                    | The base path for all URLs                                      |
+| `catchAll`         | Optional | `Component`     | `NotFound`           | The fallback component for unknown routes                       |
+| `dashboard`        | Optional | `Component`     | -                    | The content of the dashboard page                               |
+| `darkTheme`        | Optional | `object`        | `default DarkTheme`  | The dark theme configuration                                    |
+| `defaultTheme`     | Optional | `boolean`       | `false`              | Flag to default to the light theme                              |
+| `disableTelemetry` | Optional | `boolean`       | `false`              | Set to `true` to disable telemetry collection                   |
+| `error`            | Optional | `Component`     | -                    | A React component rendered in the content area in case of error |
+| `i18nProvider`     | Optional | `I18NProvider`  | -                    | The internationalization provider for translations              |
+| `layout`           | Optional | `Component`     | `Layout`             | The content of the layout                                       |
+| `loginPage`        | Optional | `Component`     | `LoginPage`          | The content of the login page                                   |
+| `notification`     | Optional | `Component`     | `Notification`       | The notification component                                      |
+| `queryClient`      | Optional | `QueryClient`   | -                    | The react-query client                                          |
+| `ready`            | Optional | `Component`     | `Ready`              | The content of the ready page                                   |
+| `requireAuth`      | Optional | `boolean`       | `false`              | Flag to require authentication for all routes                   |
+| `store`            | Optional | `Store`         | -                    | The Store for managing user preferences                         |
+| `theme`            | Optional | `object`        | `default LightTheme` | The main (light) theme configuration                            |
+| `title`            | Optional | `string`        | -                    | The error page title                                            |
 
 
 ## `dataProvider`
@@ -525,7 +524,7 @@ const App = () => (
 
 ## `error`
 
-Whenever some client-side errors happens in react-admin, the user sees an error page. React-admin uses [React's Error Boundaries](https://react.dev/reference/react/Component#catching-rendering-errors-with-an-error-boundary) to render this page when any component in the page throws an unrecoverable error. 
+React-admin uses [React's Error Boundaries](https://react.dev/reference/react/Component#catching-rendering-errors-with-an-error-boundary) to render client-side errors happens in react-admin. 
 
 ![Default error page](./img/adminError.png)
 
@@ -537,7 +536,7 @@ import { Admin } from 'react-admin';
 import { MyError } from './MyError';
 
 export const MyLayout = ({ children }) => (
-    <Admin error={({ props }) => <MyError {...props} />}>
+    <Admin error={MyError}>
         {children}
     </Admin>
 );
@@ -554,7 +553,7 @@ import { useLocation } from 'react-router-dom';
 export const MyError = ({
     error,
     resetErrorBoundary,
-    ...rest
+    errorInfo,
 }) => {
     const { pathname } = useLocation();
     const originalPathname = useRef(pathname);
@@ -570,6 +569,12 @@ export const MyError = ({
         <div>
             <h1><ErrorIcon /> Something Went Wrong </h1>
             <div>A client error occurred and your request couldn't be completed.</div>
+            {process.env.NODE_ENV !== 'production' && (
+                <details>
+                    <h2>{error.toString()}</h2>
+                    {errorInfo.componentStack}
+                </details>
+            )}
             <div>
                 <Button
                     variant="contained"
@@ -584,7 +589,7 @@ export const MyError = ({
 };
 ```
 
-**Tip:** Some errors appear in a lower level than the admin. To customize this error page too, you can use the [`<Layout>` `error` prop](./Layout.md#error).
+**Tip:** Some errors appear in the `<Layout>` or in one of their children. To customize this error page too, you can use the [`<Layout>` `error` prop](./Layout.md#error).
 
 
 ## `i18nProvider`
@@ -754,45 +759,6 @@ const App = () => (
     <Admin authProvider={authProvider} loginPage={false}>
         ...
     </Admin>
-);
-```
-
-## `onError`
-
-When a error apears, you can override the react-admin function called to grab some informations as follows:
-
-```jsx
-// in src/App.js
-import * as React from 'react';
-import { Admin } from 'react-admin';
-import { MyError } from './MyError';
-
-export const MyLayout = ({ children }) => {
-    const [errorInfo, setErrorInfo] = React.useState<React.ErrorInfo | undefined>(undefined);
-    return (
-        <Admin 
-            error={({ props }) => <MyError {...props} errorInfo={errorInfo} />}
-            onError={(error: Error, info: ErrorInfo) => setErrorInfo(info)}
-        >
-            {children}
-        </Admin>
-    );
-}
-```
-
-```jsx
-// in src/MyError.js
-import * as React from 'react';
-import ErrorIcon from '@mui/icons-material/Report';
-
-export const MyError = ({errorInfo: React.ErrorInfo}) => (
-    <div>
-        <h1><ErrorIcon /> Something Went Wrong </h1>
-        <div>
-            <p>A client error occurred and your request couldn't be completed.</p>
-            <p>Error informations: {JSON.stringify(errorInfo)}</p>
-        </div>
-    </div>
 );
 ```
 
