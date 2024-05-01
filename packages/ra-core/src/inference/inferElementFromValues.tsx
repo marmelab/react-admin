@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as inflection from 'inflection';
 
 import getValuesFromRecords from './getValuesFromRecords';
 import InferredElement from './InferredElement';
@@ -17,6 +16,7 @@ import {
     valuesAreString,
 } from './assertions';
 import { InferredTypeMap } from './types';
+import { pluralize } from 'inflection';
 
 const DefaultComponent = () => <span>;</span>;
 const defaultType = {
@@ -86,7 +86,7 @@ const inferElementFromValues = (
         return new InferredElement(types.id, { source: name });
     }
     if (name.substr(name.length - 3) === '_id' && hasType('reference', types)) {
-        const reference = inflection.pluralize(name.substr(0, name.length - 3));
+        const reference = pluralize(name.substr(0, name.length - 3));
         return (
             types.reference &&
             new InferredElement(types.reference, {
@@ -96,7 +96,7 @@ const inferElementFromValues = (
         );
     }
     if (name.substr(name.length - 2) === 'Id' && hasType('reference', types)) {
-        const reference = inflection.pluralize(name.substr(0, name.length - 2));
+        const reference = pluralize(name.substr(0, name.length - 2));
         return (
             types.reference &&
             new InferredElement(types.reference, {
@@ -109,7 +109,7 @@ const inferElementFromValues = (
         name.substr(name.length - 4) === '_ids' &&
         hasType('referenceArray', types)
     ) {
-        const reference = inflection.pluralize(name.substr(0, name.length - 4));
+        const reference = pluralize(name.substr(0, name.length - 4));
         return (
             types.referenceArray &&
             new InferredElement(types.referenceArray, {
@@ -122,7 +122,7 @@ const inferElementFromValues = (
         name.substr(name.length - 3) === 'Ids' &&
         hasType('referenceArray', types)
     ) {
-        const reference = inflection.pluralize(name.substr(0, name.length - 3));
+        const reference = pluralize(name.substr(0, name.length - 3));
         return (
             types.referenceArray &&
             new InferredElement(types.referenceArray, {

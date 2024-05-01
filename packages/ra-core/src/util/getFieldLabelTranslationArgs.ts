@@ -1,4 +1,4 @@
-import * as inflection from 'inflection';
+import { transform } from 'inflection';
 
 interface Args {
     label?: string;
@@ -39,7 +39,7 @@ export const getFieldLabelTranslationArgs = (
 
     const { sourceWithoutDigits, sourceSuffix } = getSourceParts(source);
 
-    const defaultLabelTranslation = inflection.transform(
+    const defaultLabelTranslation = transform(
         sourceSuffix.replace(/\./g, ' '),
         ['underscore', 'humanize']
     );

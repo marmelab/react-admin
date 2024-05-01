@@ -1,5 +1,3 @@
-import * as inflection from 'inflection';
-
 import getValuesFromRecords from './getValuesFromRecords';
 
 import {
@@ -17,6 +15,7 @@ import {
     valuesAreImageUrl,
     valuesAreEmail,
 } from './assertions';
+import { pluralize } from 'inflection';
 
 export const InferenceTypes = [
     'array',
@@ -69,9 +68,7 @@ export const inferTypeFromValues = (
             type: 'reference',
             props: {
                 source: name,
-                reference: inflection.pluralize(
-                    name.substr(0, name.length - 3)
-                ),
+                reference: pluralize(name.substr(0, name.length - 3)),
             },
             children: { type: 'referenceChild' },
         };
@@ -81,9 +78,7 @@ export const inferTypeFromValues = (
             type: 'reference',
             props: {
                 source: name,
-                reference: inflection.pluralize(
-                    name.substr(0, name.length - 2)
-                ),
+                reference: pluralize(name.substr(0, name.length - 2)),
             },
             children: { type: 'referenceChild' },
         };
@@ -93,9 +88,7 @@ export const inferTypeFromValues = (
             type: 'referenceArray',
             props: {
                 source: name,
-                reference: inflection.pluralize(
-                    name.substr(0, name.length - 4)
-                ),
+                reference: pluralize(name.substr(0, name.length - 4)),
             },
             children: { type: 'referenceArrayChild' },
         };
@@ -105,9 +98,7 @@ export const inferTypeFromValues = (
             type: 'referenceArray',
             props: {
                 source: name,
-                reference: inflection.pluralize(
-                    name.substr(0, name.length - 3)
-                ),
+                reference: pluralize(name.substr(0, name.length - 3)),
             },
             children: { type: 'referenceArrayChild' },
         };

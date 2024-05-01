@@ -2,7 +2,7 @@ import React, { Fragment, ReactEventHandler, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import ActionDelete from '@mui/icons-material/Delete';
 import clsx from 'clsx';
-import * as inflection from 'inflection';
+
 import { UseMutationOptions } from '@tanstack/react-query';
 import {
     MutationMode,
@@ -17,6 +17,7 @@ import {
 
 import { Confirm } from '../layout';
 import { Button, ButtonProps } from './Button';
+import { humanize, singularize } from 'inflection';
 
 export const DeleteWithConfirmButton = <RecordType extends RaRecord = any>(
     props: DeleteWithConfirmButtonProps<RecordType>
@@ -76,12 +77,10 @@ export const DeleteWithConfirmButton = <RecordType extends RaRecord = any>(
                 translateOptions={{
                     name: translate(`resources.${resource}.forcedCaseName`, {
                         smart_count: 1,
-                        _: inflection.humanize(
+                        _: humanize(
                             translate(`resources.${resource}.name`, {
                                 smart_count: 1,
-                                _: resource
-                                    ? inflection.singularize(resource)
-                                    : undefined,
+                                _: resource ? singularize(resource) : undefined,
                             }),
                             true
                         ),

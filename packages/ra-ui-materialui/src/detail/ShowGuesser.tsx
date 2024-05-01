@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useEffect, useState } from 'react';
-import * as inflection from 'inflection';
+
 import {
     ShowBase,
     InferredElement,
@@ -12,6 +12,8 @@ import {
 import { ShowProps } from '../types';
 import { ShowView } from './ShowView';
 import { showFieldTypes } from './showFieldTypes';
+
+import { capitalize, singularize } from 'inflection';
 
 export const ShowGuesser = ({
     id,
@@ -73,9 +75,7 @@ const ShowViewGuesser = (
 
 import { ${components.join(', ')} } from 'react-admin';
 
-export const ${inflection.capitalize(
-                    inflection.singularize(resource)
-                )}Show = () => (
+export const ${capitalize(singularize(resource))}Show = () => (
     <Show>
 ${inferredChild.getRepresentation()}
     </Show>

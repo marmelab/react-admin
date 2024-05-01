@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as inflection from 'inflection';
 import { Card, CardContent } from '@mui/material';
 import LocalOfferIcon from '@mui/icons-material/LocalOfferOutlined';
 import BarChartIcon from '@mui/icons-material/BarChart';
@@ -13,6 +12,7 @@ import {
 } from 'react-admin';
 
 import { Category } from '../types';
+import { humanize } from 'inflection';
 
 const Aside = () => {
     const { data } = useGetList<Category>('categories', {
@@ -118,7 +118,7 @@ const Aside = () => {
                     {data &&
                         data.map((record: any) => (
                             <FilterListItem
-                                label={inflection.humanize(record.name)}
+                                label={humanize(record.name)}
                                 key={record.id}
                                 value={{ category_id: record.id }}
                             />

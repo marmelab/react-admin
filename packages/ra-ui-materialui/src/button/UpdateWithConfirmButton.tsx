@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Fragment, useState, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import ActionUpdate from '@mui/icons-material/Update';
-import * as inflection from 'inflection';
+
 import { alpha, styled } from '@mui/material/styles';
 import {
     useTranslate,
@@ -19,6 +19,7 @@ import { Confirm } from '../layout';
 import { Button, ButtonProps } from './Button';
 import { BulkActionProps } from '../types';
 import { UseMutationOptions } from '@tanstack/react-query';
+import { humanize, inflect } from 'inflection';
 
 export const UpdateWithConfirmButton = (
     props: UpdateWithConfirmButtonProps
@@ -125,12 +126,10 @@ export const UpdateWithConfirmButton = (
                     smart_count: 1,
                     name: translate(`resources.${resource}.forcedCaseName`, {
                         smart_count: 1,
-                        _: inflection.humanize(
+                        _: humanize(
                             translate(`resources.${resource}.name`, {
                                 smart_count: 1,
-                                _: resource
-                                    ? inflection.inflect(resource, 1)
-                                    : undefined,
+                                _: resource ? inflect(resource, 1) : undefined,
                             }),
                             true
                         ),

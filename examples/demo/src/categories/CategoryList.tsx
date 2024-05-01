@@ -5,7 +5,6 @@ import {
     RecordContextProvider,
     useListContext,
 } from 'react-admin';
-import * as inflection from 'inflection';
 import {
     Grid,
     Card,
@@ -14,6 +13,7 @@ import {
     CardActions,
     Typography,
 } from '@mui/material';
+import { humanize } from 'inflection';
 
 import LinkToRelatedProducts from './LinkToRelatedProducts';
 import { Category } from '../types';
@@ -62,7 +62,7 @@ const CategoryGrid = () => {
                                     component="h2"
                                     align="center"
                                 >
-                                    {inflection.humanize(record.name)}
+                                    {humanize(record.name)}
                                 </Typography>
                             </CardContent>
                             <CardActions
