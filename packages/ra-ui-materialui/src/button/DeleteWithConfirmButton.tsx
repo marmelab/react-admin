@@ -2,7 +2,7 @@ import React, { Fragment, ReactEventHandler, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import ActionDelete from '@mui/icons-material/Delete';
 import clsx from 'clsx';
-import inflection from 'inflection';
+import * as inflection from 'inflection';
 import { UseMutationOptions } from '@tanstack/react-query';
 import {
     MutationMode,

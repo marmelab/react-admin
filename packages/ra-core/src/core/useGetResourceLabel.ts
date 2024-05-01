@@ -1,4 +1,4 @@
-import inflection from 'inflection';
+import * as inflection from 'inflection';
 
 import { useResourceDefinitions } from './useResourceDefinitions';
 import { useTranslate } from '../i18n';

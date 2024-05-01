@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useEffect, useState } from 'react';
-import inflection from 'inflection';
+import * as inflection from 'inflection';
 import {
     ShowBase,
     InferredElement,

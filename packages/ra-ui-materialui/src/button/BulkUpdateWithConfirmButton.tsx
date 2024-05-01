@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Fragment, useState, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import ActionUpdate from '@mui/icons-material/Update';
-import inflection from 'inflection';
+import * as inflection from 'inflection';
 import { alpha, styled } from '@mui/material/styles';
 import {
     useListContext,

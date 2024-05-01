@@ -1,5 +1,5 @@
 import * as React from 'react';
-import inflection from 'inflection';
+import * as inflection from 'inflection';
 import { Card, CardContent } from '@mui/material';
 import LocalOfferIcon from '@mui/icons-material/LocalOfferOutlined';
 import BarChartIcon from '@mui/icons-material/BarChart';

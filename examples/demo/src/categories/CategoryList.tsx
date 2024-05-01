@@ -5,7 +5,7 @@ import {
     RecordContextProvider,
     useListContext,
 } from 'react-admin';
-import inflection from 'inflection';
+import * as inflection from 'inflection';
 import {
     Grid,
     Card,
