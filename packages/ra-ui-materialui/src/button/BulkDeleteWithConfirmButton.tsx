@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Fragment, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import ActionDelete from '@mui/icons-material/Delete';
-import inflection from 'inflection';
+
 import { alpha, styled } from '@mui/material/styles';
 import {
     MutationMode,
@@ -21,6 +21,7 @@ import { Confirm } from '../layout';
 import { Button, ButtonProps } from './Button';
 import { BulkActionProps } from '../types';
 import { UseMutationOptions } from '@tanstack/react-query';
+import { humanize, inflect } from 'inflection';
 
 export const BulkDeleteWithConfirmButton = (
     props: BulkDeleteWithConfirmButtonProps
@@ -117,14 +118,11 @@ export const BulkDeleteWithConfirmButton = (
                     smart_count: selectedIds.length,
                     name: translate(`resources.${resource}.forcedCaseName`, {
                         smart_count: selectedIds.length,
-                        _: inflection.humanize(
+                        _: humanize(
                             translate(`resources.${resource}.name`, {
                                 smart_count: selectedIds.length,
                                 _: resource
-                                    ? inflection.inflect(
-                                          resource,
-                                          selectedIds.length
-                                      )
+                                    ? inflect(resource, selectedIds.length)
                                     : undefined,
                             }),
                             true

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useEffect, useState } from 'react';
-import inflection from 'inflection';
+
 import {
     EditBase,
     InferredElement,
@@ -13,6 +13,7 @@ import {
 import { EditProps } from '../types';
 import { EditView } from './EditView';
 import { editFieldTypes } from './editFieldTypes';
+import { capitalize, singularize } from 'inflection';
 
 export const EditGuesser = <RecordType extends RaRecord = RaRecord>(
     props: EditProps<RecordType> & { enableLog?: boolean }
@@ -94,9 +95,7 @@ const EditViewGuesser = (
 
 import { ${components.join(', ')} } from 'react-admin';
 
-export const ${inflection.capitalize(
-                    inflection.singularize(resource)
-                )}Edit = () => (
+export const ${capitalize(singularize(resource))}Edit = () => (
     <Edit>
 ${representation}
     </Edit>
