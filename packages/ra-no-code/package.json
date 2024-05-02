@@ -51,7 +51,7 @@
         "prop-types": "^15.8.1",
         "ra-data-local-storage": "^5.0.0-alpha.1",
         "react-admin": "^5.0.0-alpha.1",
-        "react-dropzone": "^12.0.4"
+        "react-dropzone": "^14.2.3"
     },
     "gitHead": "b227592132da6ae5f01438fa8269e04596cdfdd8"
 }

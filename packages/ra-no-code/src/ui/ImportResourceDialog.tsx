@@ -65,7 +65,9 @@ export const ImportResourceDialog = (props: ImportResourceDialogProps) => {
     };
 
     const { getRootProps, getInputProps } = useDropzone({
-        accept: 'text/csv',
+        accept: {
+            'text/csv': ['.csv'],
+        },
         onDrop,
     });
     const { ref, ...rootProps } = getRootProps();
