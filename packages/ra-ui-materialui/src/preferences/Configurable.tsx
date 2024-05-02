@@ -73,6 +73,12 @@ export const Configurable = (props: ConfigurableProps) => {
     }
 
     const handleOpenEditor = () => {
+        if (!setEditor) {
+            throw new Error(
+                'Configurable must be used inside a PreferencesEditorContextProvider'
+            );
+        }
+
         // include the editorKey as key to force destroy and mount
         // when switching between two identical editors with different editor keys
         // otherwise the editor will see an update and its useStore will return one tick later
@@ -83,6 +89,11 @@ export const Configurable = (props: ConfigurableProps) => {
                 key: prefixedPreferenceKey,
             })
         );
+        if (!setPreferenceKey) {
+            throw new Error(
+                'Configurable must be used inside a PreferencesEditorContextProvider'
+            );
+        }
         // as we modify the editor, isEditorOpen cannot compare the editor element
         // we'll compare the editor key instead
         setPreferenceKey(prefixedPreferenceKey);
@@ -112,7 +123,7 @@ export const Configurable = (props: ConfigurableProps) => {
                 {children}
             </Root>
             <Popover
-                open={isEnabled && (isCustomizeButtonVisible || isEditorOpen)}
+                open={!!isEnabled && (isCustomizeButtonVisible || isEditorOpen)}
                 sx={{
                     pointerEvents: 'none',
                     '& .MuiPaper-root': {

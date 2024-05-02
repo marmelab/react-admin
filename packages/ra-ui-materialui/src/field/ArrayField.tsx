@@ -7,6 +7,7 @@ import {
     useList,
     SortPayload,
     FilterPayload,
+    RaRecord,
 } from 'ra-core';
 
 import { FieldProps, fieldPropTypes } from './types';
@@ -82,9 +83,7 @@ const ArrayFieldImpl = <
 ) => {
     const { children, resource, source, perPage, sort, filter } = props;
     const record = useRecordContext(props);
-    const data =
-        (get(record, source, emptyArray) as Record<string, any>[]) ||
-        emptyArray;
+    const data = (get(record, source, emptyArray) as RaRecord[]) || emptyArray;
     const listContext = useList({ data, resource, perPage, sort, filter });
     return (
         <ListContextProvider value={listContext}>

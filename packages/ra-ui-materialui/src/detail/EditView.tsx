@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
+import { ReactElement, ElementType } from 'react';
+import { Card, CardContent, styled, SxProps } from '@mui/material';
 import PropTypes from 'prop-types';
-import { Card, CardContent } from '@mui/material';
 import clsx from 'clsx';
 import {
     ComponentPropType,
@@ -11,7 +11,6 @@ import {
 
 import { EditActions } from './EditActions';
 import { Title } from '../layout';
-import { EditProps } from '../types';
 
 const defaultActions = <EditActions />;
 
@@ -35,10 +34,7 @@ export const EditView = (props: EditViewProps) => {
         return null;
     }
     return (
-        <Root
-            className={clsx('edit-page', className)}
-            {...sanitizeRestProps(rest)}
-        >
+        <Root className={clsx('edit-page', className)} {...rest}>
             <Title
                 title={title}
                 defaultTitle={defaultTitle}
@@ -59,17 +55,14 @@ export const EditView = (props: EditViewProps) => {
     );
 };
 
-export type EditViewProps = Omit<
-    EditProps,
-    | 'resource'
-    | 'id'
-    | 'mutationMode'
-    | 'mutationOptions'
-    | 'queryOptions'
-    | 'redirect'
-    | 'transform'
-    | 'disableAuthentication'
->;
+export interface EditViewProps
+    extends Omit<React.HTMLAttributes<HTMLDivElement>, 'id' | 'title'> {
+    actions?: ReactElement | false;
+    aside?: ReactElement;
+    component?: ElementType;
+    title?: string | ReactElement;
+    sx?: SxProps;
+}
 
 EditView.propTypes = {
     actions: PropTypes.oneOfType([PropTypes.element, PropTypes.bool]),
@@ -83,35 +76,6 @@ EditView.propTypes = {
     save: PropTypes.func,
     title: PropTypes.node,
 };
-
-/* eslint-disable @typescript-eslint/no-unused-vars */
-const sanitizeRestProps = ({
-    addMiddleware = null,
-    defaultTitle = null,
-    hasCreate = null,
-    hasEdit = null,
-    hasList = null,
-    hasShow = null,
-    history = null,
-    id = null,
-    isFetching = null,
-    isLoading = null,
-    isPending = null,
-    location = null,
-    match = null,
-    options = null,
-    queryOptions = null,
-    mutationOptions = null,
-    permissions = null,
-    refetch = null,
-    removeMiddleware = null,
-    resource = null,
-    save = null,
-    saving = null,
-    transform = null,
-    ...rest
-}) => rest;
-/* eslint-enable @typescript-eslint/no-unused-vars */
 
 const PREFIX = 'RaEdit';
 

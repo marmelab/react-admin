@@ -193,7 +193,7 @@ export const useCreateController = <
 
 export interface CreateControllerProps<
     RecordType extends Omit<RaRecord, 'id'> = any,
-    MutationOptionsError = unknown,
+    MutationOptionsError = Error,
     ResultRecordType extends RaRecord = RecordType & { id: Identifier }
 > {
     disableAuthentication?: boolean;
