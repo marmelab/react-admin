@@ -924,6 +924,10 @@ The `<InputHelperText>` component no longer accepts a `touched` prop. This prop 
 
 If you were using this prop, you can safely remove it.
 
+## TypeScript: `BulkActionProps` Type Has Been Removed
+
+The `BulkActionProps` has been removed as it did not contain any prop. You can safely remove it from your custom bulk actions.
+
 ## `data-generator-retail` `commands` Have Been Renamed to `orders`
 
 The `data-generator-retail` package has been updated to provide types for all its records. In the process, we renamed the `commands` resource to `orders`. Accordingly, the `nb_commands` property of the `customers` resource has been renamed to `nb_orders` and the `command_id` property of the `invoices` and `reviews` resources has been renamed to `order_id`.
@@ -935,6 +939,37 @@ In previous versions, the input default id was the source of the input. In v5, i
 **Tip:** You still can pass an id as prop of any [react-admin input](./Inputs.md) or use a [reference](https://fr.react.dev/reference/react/useRef).
 
 If you were using inputs ids in your tests, you should pass your own id to the dedicated input.
+
+## `<SimpleFormIterator>` No Longer Clones Its Buttons
+
+`<SimpleFormIterator>` used to clones the add, remove and reorder buttons and inject some props to them such as `onClick` and `className`.
+If you relied on those props in your custom buttons, you should now leverage the following hooks:
+
+- `useSimpleFormIterator` for buttons that are not tied to an item such as the add button.
+
+```diff
+- import { Button, ButtonProps } from 'react-admin';
++ import { Button, ButtonProps, useSimpleFormIterator } from 'react-admin';
+
+export const MyAddButton = (props: ButtonProps) => {
++    const { add } = useSimpleFormIterator();
+-    return <Button {...props}>Add</Button>;
++    return <Button {...props} onClick={() => add()}>Add</Button>;
+}
+```
+
+- `useSimpleFormIteratorItem` for buttons that are tied to an item such as the remove and reorder buttons.
+
+```diff
+- import { Button, ButtonProps } from 'react-admin';
++ import { Button, ButtonProps, useSimpleFormIteratorItem } from 'react-admin';
+
+export const MyRemoveButton = (props: ButtonProps) => {
++    const { remove } = useSimpleFormIteratorItem();
+-    return <Button {...props}>Add</Button>;
++    return <Button {...props} onClick={() => remove()}>Add</Button>;
+}
+```
 
 ## Upgrading to v4
 

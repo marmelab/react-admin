@@ -64,7 +64,7 @@
         "date-fns": "^3.6.0",
         "eventemitter3": "^4.0.7",
         "hotscript": "^1.0.12",
-        "inflection": "~1.12.0",
+        "inflection": "^3.0.0",
         "jsonexport": "^3.2.0",
         "lodash": "~4.17.5",
         "prop-types": "^15.8.1",

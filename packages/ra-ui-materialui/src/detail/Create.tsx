@@ -1,11 +1,15 @@
 import * as React from 'react';
 import { ReactElement } from 'react';
 import PropTypes from 'prop-types';
-import { Identifier, RaRecord, useCheckMinimumRequiredProps } from 'ra-core';
+import {
+    CreateBase,
+    CreateControllerProps,
+    Identifier,
+    RaRecord,
+    useCheckMinimumRequiredProps,
+} from 'ra-core';
 
-import { CreateProps } from '../types';
-import { CreateView } from './CreateView';
-import { CreateBase } from 'ra-core';
+import { CreateView, CreateViewProps } from './CreateView';
 
 /**
  * Page component for the Create view
@@ -83,6 +87,17 @@ export const Create = <
         </CreateBase>
     );
 };
+
+export interface CreateProps<
+    RecordType extends Omit<RaRecord, 'id'> = any,
+    MutationOptionsError = Error,
+    ResultRecordType extends RaRecord = RecordType & { id: Identifier }
+> extends CreateControllerProps<
+            RecordType,
+            MutationOptionsError,
+            ResultRecordType
+        >,
+        CreateViewProps {}
 
 Create.propTypes = {
     actions: PropTypes.oneOfType([PropTypes.element, PropTypes.bool]),

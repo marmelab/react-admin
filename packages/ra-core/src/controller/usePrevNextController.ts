@@ -125,7 +125,7 @@ export const usePrevNextController = <RecordType extends RaRecord = any>(
 
     if (!resource) {
         throw new Error(
-            `<useNextPrevController> was called outside of a ResourceContext and without a resource prop. You must set the resource prop.`
+            `useNextPrevController was called outside of a ResourceContext and without a resource prop. You must set the resource prop.`
         );
     }
 

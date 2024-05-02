@@ -15,7 +15,6 @@ import {
 } from 'ra-core';
 
 import { Button, ButtonProps } from './Button';
-import { BulkActionProps } from '../types';
 import { UseMutationOptions } from '@tanstack/react-query';
 
 export const BulkDeleteWithUndoButton = (
@@ -100,8 +99,7 @@ const sanitizeRestProps = ({
 export interface BulkDeleteWithUndoButtonProps<
     RecordType extends RaRecord = any,
     MutationOptionsError = unknown
-> extends BulkActionProps,
-        ButtonProps {
+> extends ButtonProps {
     icon?: ReactElement;
     mutationOptions?: UseMutationOptions<
         RecordType,
