@@ -27,7 +27,7 @@
     "dependencies": {
         "i18next": "^23.5.1",
         "ra-core": "^5.0.0-alpha.1",
-        "react-i18next": "^13.2.2"
+        "react-i18next": "^14.1.1"
     },
     "devDependencies": {
         "cross-env": "^5.2.0",
