@@ -163,7 +163,7 @@ const DatagridRow: FC<DatagridRowProps> = React.forwardRef((props, ref) => {
     );
 
     return (
-        <RecordContextProvider value={record}>
+        <>
             <TableRow
                 ref={ref}
                 className={clsx(className, {
@@ -240,7 +240,7 @@ const DatagridRow: FC<DatagridRowProps> = React.forwardRef((props, ref) => {
                     </TableCell>
                 </TableRow>
             )}
-        </RecordContextProvider>
+        </>
     );
 });
 
