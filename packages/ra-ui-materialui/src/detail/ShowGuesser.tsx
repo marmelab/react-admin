@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { ReactNode, useEffect, useState } from 'react';
-import inflection from 'inflection';
 import {
     ShowBase,
     InferredElement,
@@ -8,6 +7,7 @@ import {
     useResourceContext,
     useShowContext,
 } from 'ra-core';
+import { capitalize, singularize } from 'inflection';
 
 import { ShowProps } from './Show';
 import { ShowView } from './ShowView';
@@ -80,9 +80,7 @@ const ShowViewGuesser = (
 
 import { ${components.join(', ')} } from 'react-admin';
 
-export const ${inflection.capitalize(
-                    inflection.singularize(resource)
-                )}Show = () => (
+export const ${capitalize(singularize(resource))}Show = () => (
     <Show>
 ${inferredChild.getRepresentation()}
     </Show>

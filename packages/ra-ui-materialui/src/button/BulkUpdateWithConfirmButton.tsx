@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Fragment, useState, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import ActionUpdate from '@mui/icons-material/Update';
-import inflection from 'inflection';
+
 import { alpha, styled } from '@mui/material/styles';
 import {
     useListContext,
@@ -19,6 +19,7 @@ import {
 import { Confirm } from '../layout';
 import { Button, ButtonProps } from './Button';
 import { UseMutationOptions } from '@tanstack/react-query';
+import { humanize, inflect } from 'inflection';
 
 export const BulkUpdateWithConfirmButton = (
     props: BulkUpdateWithConfirmButtonProps
@@ -117,14 +118,11 @@ export const BulkUpdateWithConfirmButton = (
                     smart_count: selectedIds.length,
                     name: translate(`resources.${resource}.forcedCaseName`, {
                         smart_count: selectedIds.length,
-                        _: inflection.humanize(
+                        _: humanize(
                             translate(`resources.${resource}.name`, {
                                 smart_count: selectedIds.length,
                                 _: resource
-                                    ? inflection.inflect(
-                                          resource,
-                                          selectedIds.length
-                                      )
+                                    ? inflect(resource, selectedIds.length)
                                     : undefined,
                             }),
                             true
