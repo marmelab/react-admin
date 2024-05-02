@@ -68,7 +68,7 @@
         "jsonexport": "^3.2.0",
         "lodash": "~4.17.5",
         "prop-types": "^15.8.1",
-        "query-string": "^7.1.1",
+        "query-string": "^9.0.0",
         "react-is": "^18.2.0"
     },
     "gitHead": "e936ff2c3f887d2e98ef136cf3b3f3d254725fc4"

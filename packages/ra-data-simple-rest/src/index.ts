@@ -1,4 +1,4 @@
-import { stringify } from 'query-string';
+import queryString from 'query-string';
 import { fetchUtils, DataProvider } from 'ra-core';
 
 /**
@@ -50,7 +50,7 @@ export default (
             range: JSON.stringify([rangeStart, rangeEnd]),
             filter: JSON.stringify(params.filter),
         };
-        const url = `${apiUrl}/${resource}?${stringify(query)}`;
+        const url = `${apiUrl}/${resource}?${queryString.stringify(query)}`;
         const options =
             countHeader === 'Content-Range'
                 ? {
@@ -92,7 +92,7 @@ export default (
         const query = {
             filter: JSON.stringify({ id: params.ids }),
         };
-        const url = `${apiUrl}/${resource}?${stringify(query)}`;
+        const url = `${apiUrl}/${resource}?${queryString.stringify(query)}`;
         return httpClient(url, { signal: params?.signal }).then(({ json }) => ({
             data: json,
         }));
@@ -113,7 +113,7 @@ export default (
                 [params.target]: params.id,
             }),
         };
-        const url = `${apiUrl}/${resource}?${stringify(query)}`;
+        const url = `${apiUrl}/${resource}?${queryString.stringify(query)}`;
         const options =
             countHeader === 'Content-Range'
                 ? {

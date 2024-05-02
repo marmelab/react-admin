@@ -73,7 +73,7 @@
         "jsonexport": "^3.2.0",
         "lodash": "~4.17.5",
         "prop-types": "^15.8.1",
-        "query-string": "^7.1.1",
+        "query-string": "^9.0.0",
         "react-dropzone": "^12.0.4",
         "react-error-boundary": "^3.1.4",
         "react-transition-group": "^4.4.5"

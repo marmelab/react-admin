@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Button } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { useTranslate } from 'react-admin';
-import { stringify } from 'query-string';
+import queryString from 'query-string';
 
 import visitors from '../visitors';
 
@@ -15,7 +15,7 @@ const LinkToRelatedCustomers = ({ segment }: { segment: string }) => {
             component={Link}
             to={{
                 pathname: '/customers',
-                search: stringify({
+                search: queryString.stringify({
                     filter: JSON.stringify({ groups: segment }),
                 }),
             }}

@@ -700,7 +700,7 @@ For instance, if you have a list of posts ordered by publication date, and you w
 ```tsx
 import Button from '@mui/material/Button';
 import { Link } from 'react-router-dom';
-import { stringify } from 'query-string';
+import queryString from 'query-string';
 
 const SortByViews = () => (
     <Button
@@ -708,7 +708,7 @@ const SortByViews = () => (
         component={Link}
         to={{
             pathname: '/posts',
-            search: stringify({
+            search: queryString.stringify({
                 page: 1,
                 perPage: 25,
                 sort: 'nb_views',

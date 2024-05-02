@@ -18,7 +18,7 @@ import ContentFilter from '@mui/icons-material/FilterList';
 import lodashGet from 'lodash/get';
 import isEqual from 'lodash/isEqual';
 import { useListContext, useResourceContext, useTranslate } from 'ra-core';
-import { stringify } from 'query-string';
+import queryString from 'query-string';
 import { useNavigate } from 'react-router';
 
 import { FilterButtonMenuItem } from './FilterButtonMenuItem';
@@ -195,7 +195,7 @@ export const FilterButton = (props: FilterButtonProps) => {
                         <MenuItem
                             onClick={(): void => {
                                 navigate({
-                                    search: stringify({
+                                    search: queryString.stringify({
                                         filter: JSON.stringify(
                                             savedQuery.value.filter
                                         ),
