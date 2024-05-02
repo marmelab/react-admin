@@ -1,9 +1,12 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import { useCheckMinimumRequiredProps, RaRecord } from 'ra-core';
-import { EditProps } from '../types';
-import { EditView } from './EditView';
-import { EditBase } from 'ra-core';
+import {
+    EditBase,
+    useCheckMinimumRequiredProps,
+    RaRecord,
+    EditControllerProps,
+} from 'ra-core';
+import { EditView, EditViewProps } from './EditView';
 
 /**
  * Page component for the Edit view
@@ -51,7 +54,7 @@ import { EditBase } from 'ra-core';
  * export default App;
  */
 export const Edit = <RecordType extends RaRecord = any>(
-    props: EditProps<RecordType>
+    props: EditProps<RecordType, Error>
 ) => {
     useCheckMinimumRequiredProps('Edit', ['children'], props);
     const {
@@ -66,7 +69,7 @@ export const Edit = <RecordType extends RaRecord = any>(
         ...rest
     } = props;
     return (
-        <EditBase
+        <EditBase<RecordType>
             resource={resource}
             id={id}
             mutationMode={mutationMode}
@@ -80,6 +83,10 @@ export const Edit = <RecordType extends RaRecord = any>(
         </EditBase>
     );
 };
+
+export interface EditProps<RecordType extends RaRecord = any, ErrorType = Error>
+    extends EditControllerProps<RecordType, ErrorType>,
+        EditViewProps {}
 
 Edit.propTypes = {
     actions: PropTypes.oneOfType([PropTypes.element, PropTypes.bool]),

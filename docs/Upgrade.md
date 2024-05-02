@@ -924,6 +924,10 @@ The `<InputHelperText>` component no longer accepts a `touched` prop. This prop 
 
 If you were using this prop, you can safely remove it.
 
+## TypeScript: `BulkActionProps` Type Has Been Removed
+
+The `BulkActionProps` has been removed as it did not contain any prop. You can safely remove it from your custom bulk actions.
+
 ## `data-generator-retail` `commands` Have Been Renamed to `orders`
 
 The `data-generator-retail` package has been updated to provide types for all its records. In the process, we renamed the `commands` resource to `orders`. Accordingly, the `nb_commands` property of the `customers` resource has been renamed to `nb_orders` and the `command_id` property of the `invoices` and `reviews` resources has been renamed to `order_id`.

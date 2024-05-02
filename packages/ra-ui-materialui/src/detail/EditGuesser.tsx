@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { useEffect, useState } from 'react';
-
+import { ReactNode, useEffect, useState } from 'react';
 import {
     EditBase,
     InferredElement,
@@ -9,14 +8,14 @@ import {
     getElementsFromRecords,
     RaRecord,
 } from 'ra-core';
-
-import { EditProps } from '../types';
-import { EditView } from './EditView';
-import { editFieldTypes } from './editFieldTypes';
 import { capitalize, singularize } from 'inflection';
 
-export const EditGuesser = <RecordType extends RaRecord = RaRecord>(
-    props: EditProps<RecordType> & { enableLog?: boolean }
+import { EditProps } from './Edit';
+import { EditView } from './EditView';
+import { editFieldTypes } from './editFieldTypes';
+
+export const EditGuesser = <RecordType extends RaRecord = any>(
+    props: EditGuesserProps<RecordType>
 ) => {
     const {
         resource,
@@ -45,12 +44,22 @@ export const EditGuesser = <RecordType extends RaRecord = RaRecord>(
     );
 };
 
-const EditViewGuesser = (
-    props: Omit<EditProps, 'children'> & { enableLog?: boolean }
+interface EditGuesserProps<RecordType extends RaRecord = any>
+    extends Omit<EditProps<RecordType>, 'children'> {}
+
+const EditViewGuesser = <RecordType extends RaRecord = any>(
+    props: EditGuesserProps<RecordType>
 ) => {
     const resource = useResourceContext(props);
+
+    if (!resource) {
+        throw new Error(
+            `<EditGuesser> was called outside of a ResourceContext and without a resource prop. You must set the resource prop.`
+        );
+    }
+
     const { record } = useEditContext();
-    const [child, setChild] = useState(null);
+    const [child, setChild] = useState<ReactNode>(null);
     const {
         enableLog = process.env.NODE_ENV === 'development',
         ...rest

@@ -18,7 +18,6 @@ import {
 
 import { Confirm } from '../layout';
 import { Button, ButtonProps } from './Button';
-import { BulkActionProps } from '../types';
 import { UseMutationOptions } from '@tanstack/react-query';
 import { humanize, inflect } from 'inflection';
 
@@ -150,8 +149,7 @@ const sanitizeRestProps = ({
 export interface BulkUpdateWithConfirmButtonProps<
     RecordType extends RaRecord = any,
     MutationOptionsError = unknown
-> extends BulkActionProps,
-        ButtonProps {
+> extends ButtonProps {
     confirmContent?: React.ReactNode;
     confirmTitle?: React.ReactNode;
     icon?: ReactElement;

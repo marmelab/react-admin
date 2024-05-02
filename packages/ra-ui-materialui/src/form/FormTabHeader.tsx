@@ -66,7 +66,7 @@ interface FormTabHeaderProps extends Omit<MuiTabProps, 'children'> {
     path?: string;
     resource?: string;
     syncWithLocation?: boolean;
-    value?: string | number;
+    value: string | number;
     variant?: 'standard' | 'outlined' | 'filled';
 }
 

@@ -1,11 +1,9 @@
 import * as React from 'react';
+import { ReactElement, ElementType } from 'react';
 import PropTypes from 'prop-types';
-import { Card } from '@mui/material';
-import { styled } from '@mui/material/styles';
+import { Card, styled, SxProps } from '@mui/material';
 import clsx from 'clsx';
 import { useShowContext, useResourceDefinition } from 'ra-core';
-
-import { ShowProps } from '../types';
 import { ShowActions } from './ShowActions';
 import { Title } from '../layout';
 
@@ -19,13 +17,12 @@ export const ShowView = (props: ShowViewProps) => {
         className,
         component: Content = Card,
         emptyWhileLoading = false,
-        hasEdit: hasEditFromProps,
         title,
         ...rest
     } = props;
 
     const { resource, defaultTitle, record } = useShowContext();
-    const { hasEdit } = useResourceDefinition(props);
+    const { hasEdit } = useResourceDefinition();
 
     const finalActions =
         typeof actions === 'undefined' && hasEdit ? defaultActions : actions;
@@ -34,10 +31,7 @@ export const ShowView = (props: ShowViewProps) => {
         return null;
     }
     return (
-        <Root
-            className={clsx('show-page', className)}
-            {...sanitizeRestProps(rest)}
-        >
+        <Root className={clsx('show-page', className)} {...rest}>
             <Title
                 title={title}
                 defaultTitle={defaultTitle}
@@ -56,10 +50,15 @@ export const ShowView = (props: ShowViewProps) => {
     );
 };
 
-export type ShowViewProps = Omit<
-    ShowProps,
-    'id' | 'disableAuthentication' | 'queryOptions' | 'resource'
->;
+export interface ShowViewProps
+    extends Omit<React.HTMLAttributes<HTMLDivElement>, 'id' | 'title'> {
+    actions?: ReactElement | false;
+    aside?: ReactElement;
+    component?: ElementType;
+    emptyWhileLoading?: boolean;
+    title?: string | ReactElement;
+    sx?: SxProps;
+}
 
 ShowView.propTypes = {
     actions: PropTypes.oneOfType([PropTypes.element, PropTypes.bool]),
@@ -68,27 +67,6 @@ ShowView.propTypes = {
     emptyWhileLoading: PropTypes.bool,
     title: PropTypes.any,
 };
-
-/* eslint-disable @typescript-eslint/no-unused-vars */
-const sanitizeRestProps = ({
-    defaultTitle = null,
-    hasCreate = null,
-    hasEdit = null,
-    hasList = null,
-    hasShow = null,
-    history = null,
-    id = null,
-    isLoading = null,
-    isPending = null,
-    isFetching = null,
-    location = null,
-    match = null,
-    options = null,
-    refetch = null,
-    permissions = null,
-    ...rest
-}) => rest;
-/* eslint-enable @typescript-eslint/no-unused-vars */
 
 const PREFIX = 'RaShow';
 
