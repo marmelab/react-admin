@@ -13,7 +13,7 @@ const NbNewOrders = (props: Props) => {
     const translate = useTranslate();
     return (
         <CardWithIcon
-            to="/commands"
+            to="/orders"
             icon={ShoppingCartIcon}
             title={translate('pos.dashboard.new_orders')}
             subtitle={value}

@@ -66,11 +66,7 @@ const App = () => {
                 <Route path="/segments" element={<Segments />} />
             </CustomRoutes>
             <Resource name="customers" {...visitors} />
-            <Resource
-                name="commands"
-                {...orders}
-                options={{ label: 'Orders' }}
-            />
+            <Resource name="orders" {...orders} />
             <Resource name="invoices" {...invoices} />
             <Resource name="products" {...products} />
             <Resource name="categories" {...categories} />

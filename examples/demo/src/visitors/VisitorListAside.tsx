@@ -103,15 +103,15 @@ const Aside = () => (
                 <FilterListItem
                     label="ra.boolean.true"
                     value={{
-                        nb_commands_gte: 1,
-                        nb_commands_lte: undefined,
+                        nb_orders_gte: 1,
+                        nb_orders_lte: undefined,
                     }}
                 />
                 <FilterListItem
                     label="ra.boolean.false"
                     value={{
-                        nb_commands_gte: undefined,
-                        nb_commands_lte: 0,
+                        nb_orders_gte: undefined,
+                        nb_orders_lte: 0,
                     }}
                 />
             </FilterList>
