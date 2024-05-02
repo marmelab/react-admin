@@ -15,7 +15,6 @@ import { TableCell, TableRow, TableRowProps, Checkbox } from '@mui/material';
 import {
     Identifier,
     RaRecord,
-    RecordContextProvider,
     shallowEqual,
     useExpanded,
     useResourceContext,
