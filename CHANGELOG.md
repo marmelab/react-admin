@@ -1,5 +1,9 @@
 # Changelog
 
+## v4.16.17
+
+* Fix combineDataProviders doesn't work when returned by an async function ([#9798](https://github.com/marmelab/react-admin/pull/9798)) ([fzaninotto](https://github.com/fzaninotto))
+
 ## v4.16.16
 
 * Fix `<Admin requireAuth>` forbids access to custom routes with no layout ([#9786](https://github.com/marmelab/react-admin/pull/9786)) ([fzaninotto](https://github.com/fzaninotto))
