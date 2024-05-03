@@ -36,24 +36,13 @@ import { Admin, Resource } from 'react-admin';
 
 import { PostCreate, PostEdit, PostList } from './posts';
 
-const App = () => {
+const dataProvider = buildGraphQLProvider({ buildQuery });
 
-    const [dataProvider, setDataProvider] = React.useState(null);
-    React.useEffect(() => {
-        buildGraphQLProvider({ clientOptions: { uri: 'http://localhost:4000' } })
-            .then(graphQlDataProvider => setDataProvider(() => graphQlDataProvider));
-    }, []);
-
-    if (!dataProvider) {
-        return <div>Loading < /div>;
-    }
-
-    return (
-        <Admin dataProvider= { dataProvider } >
-            <Resource name="Post" list = { PostList } edit = { PostEdit } create = { PostCreate } />
-        </Admin>
-    );
-}
+const App = () => (
+    <Admin dataProvider={dataProvider} >
+        <Resource name="Post" list={PostList} edit={PostEdit} create={PostCreate} />
+    </Admin>
+);
 
 export default App;
 ```

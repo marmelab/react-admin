@@ -127,10 +127,7 @@ export type Options = {
     watchQuery?: GetWatchQueryOptions;
 };
 
-// @FIXME in v5: This doesn't need to be an async method
-const buildGraphQLProvider = async (
-    options: Options
-): Promise<DataProvider> => {
+const buildGraphQLProvider = (options: Options): DataProvider => {
     const {
         client: clientObject,
         clientOptions,

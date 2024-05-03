@@ -1058,6 +1058,42 @@ export const MyRemoveButton = (props: ButtonProps) => {
 }
 ```
 
+## `ra-data-graphql` And `ra-data-graphql-simple` No Longer Return A Promise
+
+The Graphql data providers builders used to return a promise that made admins initialization complicated. This is no longer needed.
+
+```diff
+// in App.js
+import React from 'react';
+import { Component } from 'react';
+import buildGraphQLProvider from 'ra-data-graphql-simple';
+import { Admin, Resource } from 'react-admin';
+
+import { PostCreate, PostEdit, PostList } from './posts';
+
++ const dataProvider = buildGraphQLProvider({ clientOptions: { uri: 'http://localhost:4000' } });
+
+const App = () => {
+-    const [dataProvider, setDataProvider] = React.useState(null);
+-    React.useEffect(() => {
+-        buildGraphQLProvider({ clientOptions: { uri: 'http://localhost:4000' } })
+-            .then(graphQlDataProvider => setDataProvider(() => graphQlDataProvider));
+-    }, []);
+
+-    if (!dataProvider) {
+-        return <div>Loading < /div>;
+-    }
+
+    return (
+        <Admin dataProvider={dataProvider} >
+            <Resource name="Post" list={PostList} edit={PostEdit} create={PostCreate} />
+        </Admin>
+    );
+}
+
+export default App;
+```
+
 ## Upgrading to v4
 
 If you are on react-admin v3, follow the [Upgrading to v4](https://marmelab.com/react-admin/doc/4.16/Upgrade.html) guide before upgrading to v5.
