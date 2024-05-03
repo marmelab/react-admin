@@ -19,7 +19,7 @@ export const AdminUI = ({
     loginPage = Login,
     authCallbackPage = AuthCallback,
     notification = Notification,
-    error: errorComponent,
+    error = Error,
     ...props
 }: AdminUIProps) => (
     <ScopedCssBaseline enableColorScheme>
@@ -29,14 +29,7 @@ export const AdminUI = ({
             loading={loading}
             loginPage={loginPage}
             authCallbackPage={authCallbackPage}
-            error={({ error, resetErrorBoundary, errorInfo }) => (
-                <Error
-                    error={error}
-                    errorComponent={errorComponent}
-                    errorInfo={errorInfo}
-                    resetErrorBoundary={resetErrorBoundary}
-                />
-            )}
+            error={error}
             {...props}
         />
         {createElement(notification)}

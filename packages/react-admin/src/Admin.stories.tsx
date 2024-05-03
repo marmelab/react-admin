@@ -61,7 +61,7 @@ const FailedAppBar = () => <AppBar color="nothing" />;
 
 const FailedLayout = props => <Layout {...props} appBar={FailedAppBar} />;
 
-export const Error = () => (
+export const DefaultError = () => (
     <Admin layout={FailedLayout}>
         <Resource name="posts" list={PostList} />
     </Admin>
