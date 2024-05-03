@@ -102,7 +102,7 @@ export const Error = (
                                     </li>
                                     <li>
                                         Get help from the core team via{' '}
-                                        <a href="https://marmelab.com/ra-enterprise/#fromsww">
+                                        <a href="https://react-admin-ee.marmelab.com/#fromsww">
                                             react-admin Enterprise Edition
                                         </a>
                                     </li>

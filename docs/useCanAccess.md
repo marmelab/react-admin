@@ -5,7 +5,7 @@ title: "useCanAccess"
 
 # `useCanAccess`
 
-This hook, part of [the ra-rbac module](https://marmelab.com/ra-enterprise/modules/ra-rbac)<img class="icon" src="./img/premium.svg" />, calls the `authProvider.getPermissions()` to get the role definitions, then checks whether the requested action and resource are allowed for the current user. 
+This hook, part of [the ra-rbac module](https://react-admin-ee.marmelab.com/documentation/ra-rbac)<img class="icon" src="./img/premium.svg" />, calls the `authProvider.getPermissions()` to get the role definitions, then checks whether the requested action and resource are allowed for the current user. 
 
 ## Usage
 

@@ -5,7 +5,7 @@ title: "The ReferenceManyToManyField Component"
 
 # `<ReferenceManyToManyField>`
 
-This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> component fetches a list of referenced records by lookup in an associative table, and passes the records down to its child component, which must be an iterator component (e.g. `<SingleFieldList>`).
+This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" /> component fetches a list of referenced records by lookup in an associative table, and passes the records down to its child component, which must be an iterator component (e.g. `<SingleFieldList>`).
 
 !["ReferenceManyToManyField example showing band's venues"](./img/reference-many-to-many-field.png)
 

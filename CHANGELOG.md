@@ -1,5 +1,21 @@
 # Changelog
 
+## v4.16.17
+
+* Fix combineDataProviders doesn't work when returned by an async function ([#9798](https://github.com/marmelab/react-admin/pull/9798)) ([fzaninotto](https://github.com/fzaninotto))
+
+## v4.16.16
+
+* Fix `<Admin requireAuth>` forbids access to custom routes with no layout ([#9786](https://github.com/marmelab/react-admin/pull/9786)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Add Soul data provider ([#9776](https://github.com/marmelab/react-admin/pull/9776)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Update third-party Inputs to add link to Google Places AutocompleteInput ([#9771](https://github.com/marmelab/react-admin/pull/9771)) ([quentin-decre](https://github.com/quentin-decre))
+* [Doc] Update `<Search>` and `<SearchWithResult>` to introduce `queryOptions` ([#9779](https://github.com/marmelab/react-admin/pull/9779)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Doc] Update RBAC to better explain the difference between the built-in actions ([#9766](https://github.com/marmelab/react-admin/pull/9766)) ([slax57](https://github.com/slax57))
+* [Doc] Fix `<SimpleForm>` has wrong import for `<RichTextInput>`  ([#9775](https://github.com/marmelab/react-admin/pull/9775)) ([anthonycmain](https://github.com/anthonycmain))
+* [Doc] Fix `<RichTextInput>` typo on TipTap ([#9759](https://github.com/marmelab/react-admin/pull/9759)) ([adguernier](https://github.com/adguernier))
+* [Doc] Update `<JsonSchemaForm>` to add details about available widgets  ([#9758](https://github.com/marmelab/react-admin/pull/9758)) ([adguernier](https://github.com/adguernier))
+* [TypeScript] Fix warning in `create-react-admin` ([#9728](https://github.com/marmelab/react-admin/pull/9728)) ([hbendev](https://github.com/hbendev))
+
 ## v5.0.0-alpha.0
 
 * Add automatic query cancellation to all data provider hooks using abort signal ([#9612](https://github.com/marmelab/react-admin/pull/9612)) ([slax57](https://github.com/slax57))
@@ -710,7 +726,7 @@ Note: This release wasn't published to npm, use version 4.10.1 or higher.
 
 We released [`ra-directus`](https://github.com/marmelab/ra-directus/) that contains a `DataProvider` and an `AuthProvider` to work with [Directus](https://directus.io/).
 
-We also released new landing pages for both [React-admin](https://marmelab.com/react-admin/) and the [Enterprise Edition](https://marmelab.com/ra-enterprise/). Check them out!
+We also released new landing pages for both [React-admin](https://marmelab.com/react-admin/) and the [Enterprise Edition](https://react-admin-ee.marmelab.com/). Check them out!
 
 ## v4.8.4
 

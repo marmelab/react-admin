@@ -128,12 +128,12 @@ Read more about the [Architecture choices](./Architecture.md).
 
 ## Support
 
-* Get professional support from Marmelab via [React-Admin Enterprise Edition](https://marmelab.com/ra-enterprise)
+* Get professional support from Marmelab via [React-Admin Enterprise Edition](https://react-admin-ee.marmelab.com)
 * Get community support via [StackOverflow](https://stackoverflow.com/questions/tagged/react-admin)
 
 ## Enterprise Edition
 
-The [React-Admin Enterprise Edition](https://marmelab.com/ra-enterprise) <img class="icon" src="./img/premium.svg" /> offers additional features and services for react-admin:
+The [React-Admin Enterprise Edition](https://react-admin-ee.marmelab.com) <img class="icon" src="./img/premium.svg" /> offers additional features and services for react-admin:
 
 - Save weeks of development thanks to the **Private Modules**, valid on an unlimited number of domains and projects.
   - `ra-ai`: Components powered by Artificial Intelligence (AI) to boost user productivity. Suggest completion for user inputs, fix and improve large chunks of text in React-Admin forms.
@@ -156,7 +156,7 @@ The [React-Admin Enterprise Edition](https://marmelab.com/ra-enterprise) <img cl
 - Get access to exclusive **Learning Material**, including a Storybook full of examples, and a dedicated demo app.
 - Prioritize your needs in the react-admin **Development Roadmap** thanks to a priority vote.
 
-[![React-admin enterprise Edition](https://marmelab.com/ra-enterprise/assets/ra-enterprise-demo.png)](https://marmelab.com/ra-enterprise/)
+[![React-admin enterprise Edition](https://react-admin-ee.marmelab.com/assets/ra-enterprise-demo.png)](https://react-admin-ee.marmelab.com/)
 
 ## Carbon Footprint
 
