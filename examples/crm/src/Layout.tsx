@@ -12,7 +12,6 @@ const Layout = ({ children }: { children: ReactNode }) => (
         <Header />
         <Container sx={{ maxWidth: { xl: 1280 } }}>
             <main id="main-content">
-                {/* @ts-ignore */}
                 <ErrorBoundary FallbackComponent={Error}>
                     <Suspense fallback={<Loading />}>{children}</Suspense>
                 </ErrorBoundary>
