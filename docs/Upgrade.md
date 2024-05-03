@@ -546,6 +546,7 @@ This concerns the following components:
 
 To continue using these components, you'll have to wrap them in a `<ListContextProvider>` component:
 
+{% raw %}
 ```diff
 const MyPagination = ({
     page,
@@ -562,6 +563,7 @@ const MyPagination = ({
     );
 };
 ```
+{% endraw %}
 
 The following components are not affected and can still be used in standalone mode:
 
@@ -1109,6 +1111,7 @@ const App = () => (
 
 The deprecated `<ThemeProvider theme>` prop was removed. Use the `ThemesContext.Provider` instead:
 
+{% raw %}
 ```diff
 -import { ThemeProvider } from 'react-admin';
 +import { ThemeProvider, ThemesContext } from 'react-admin';
@@ -1131,7 +1134,7 @@ The deprecated `<ThemeProvider theme>` prop was removed. Use the `ThemesContext.
      );
  };
 ```
-
+{% endraw %}
 
 ## Misc
 
