@@ -13,10 +13,6 @@ jobs:
         steps:
             - name: Checkout
               uses: actions/checkout@v4
-            - name: Use Node.js LTS
-              uses: actions/setup-node@v4
-              with:
-                  node-version: '18.x'
             - uses: bahmutov/npm-install@v1
             - name: Lint
               run: make lint
@@ -36,10 +32,6 @@ jobs:
         steps:
             - name: Checkout
               uses: actions/checkout@v4
-            - name: Use Node.js LTS
-              uses: actions/setup-node@v4
-              with:
-                  node-version: '18.x'
             - uses: bahmutov/npm-install@v1
             - name: Unit Tests
               run: make test-unit
@@ -51,10 +43,6 @@ jobs:
         steps:
             - name: Checkout
               uses: actions/checkout@v4
-            - name: Use Node.js LTS
-              uses: actions/setup-node@v4
-              with:
-                  node-version: '18.x'
             - uses: bahmutov/npm-install@v1
             - name: e2e Tests
               run: make test-e2e
@@ -66,10 +54,6 @@ jobs:
         steps:
             - name: Checkout
               uses: actions/checkout@v4
-            - name: Use Node.js LTS
-              uses: actions/setup-node@v4
-              with:
-                  node-version: '18.x'
             - uses: bahmutov/npm-install@v1
             - name: Build
               run: make build
@@ -93,10 +77,6 @@ jobs:
         steps:
             - name: Checkout
               uses: actions/checkout@v4
-            - name: Use Node.js LTS
-              uses: actions/setup-node@v4
-              with:
-                  node-version: '18.x'
             - uses: bahmutov/npm-install@v1
             - name: Build
               run: make build
@@ -137,10 +117,6 @@ jobs:
         steps:
             - name: Checkout
               uses: actions/checkout@v4
-            - name: Use Node.js LTS
-              uses: actions/setup-node@v4
-              with:
-                  node-version: '18.x'
             - uses: bahmutov/npm-install@v1
               with:
                   install-command: yarn --immutable
