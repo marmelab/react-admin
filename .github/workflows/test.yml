@@ -17,7 +17,7 @@ jobs:
               uses: actions/setup-node@v4
               with:
                   node-version: '18.x'
-            - uses: bahmutov/npm-install@latest
+            - uses: bahmutov/npm-install@v1
             - name: Lint
               run: make lint
             - name: Build
@@ -40,7 +40,7 @@ jobs:
               uses: actions/setup-node@v4
               with:
                   node-version: '18.x'
-            - uses: bahmutov/npm-install@latest
+            - uses: bahmutov/npm-install@v1
             - name: Unit Tests
               run: make test-unit
               env:
@@ -55,7 +55,7 @@ jobs:
               uses: actions/setup-node@v4
               with:
                   node-version: '18.x'
-            - uses: bahmutov/npm-install@latest
+            - uses: bahmutov/npm-install@v1
             - name: e2e Tests
               run: make test-e2e
               env:
@@ -70,7 +70,7 @@ jobs:
               uses: actions/setup-node@v4
               with:
                   node-version: '18.x'
-            - uses: bahmutov/npm-install@latest
+            - uses: bahmutov/npm-install@v1
             - name: Build
               run: make build
             - name: Build e-commerce
@@ -97,7 +97,7 @@ jobs:
               uses: actions/setup-node@v4
               with:
                   node-version: '18.x'
-            - uses: bahmutov/npm-install@latest
+            - uses: bahmutov/npm-install@v1
             - name: Build
               run: make build
             - name: Build crm
@@ -141,7 +141,7 @@ jobs:
               uses: actions/setup-node@v4
               with:
                   node-version: '18.x'
-            - uses: bahmutov/npm-install@latest
+            - uses: bahmutov/npm-install@v1
               with:
                   install-command: yarn --immutable
             - name: Build create-react-admin
