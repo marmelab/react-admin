@@ -60,7 +60,7 @@
     },
     "dependencies": {
         "@tanstack/react-query": "^5.8.4",
-        "clsx": "^1.1.1",
+        "clsx": "^2.1.1",
         "date-fns": "^3.6.0",
         "eventemitter3": "^4.0.7",
         "hotscript": "^1.0.12",
