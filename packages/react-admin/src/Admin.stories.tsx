@@ -3,7 +3,7 @@ import { Routes, Route, Link } from 'react-router-dom';
 
 import { Admin } from './Admin';
 import { Resource, testDataProvider, TestMemoryRouter } from 'ra-core';
-import { AppBar, Layout } from 'ra-ui-materialui';
+import { Layout } from 'ra-ui-materialui';
 import { Box, Typography } from '@mui/material';
 
 export default {
