@@ -14,10 +14,12 @@ import ErrorIcon from '@mui/icons-material/Report';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import History from '@mui/icons-material/History';
 import { useTranslate, useDefaultTitle } from 'ra-core';
-import type { TitleComponent } from 'ra-core';
+import type {
+    TitleComponent,
+    useResetErrorBoundaryOnLocationChange,
+} from 'ra-core';
 
 import { Title, TitlePropType } from './Title';
-import { useResetErrorBoundaryOnLocationChange } from './useResetErrorBoundaryOnLocationChange';
 
 export const Error = (
     props: InternalErrorProps & {

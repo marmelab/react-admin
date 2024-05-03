@@ -12,6 +12,7 @@ import { Routes, Route } from 'react-router-dom';
 import { ErrorBoundary } from 'react-error-boundary';
 
 import { CoreAdminRoutes } from './CoreAdminRoutes';
+import { useResetErrorBoundaryOnLocationChange } from '../routing';
 import { Ready } from '../util';
 import { DefaultTitleContextProvider } from './DefaultTitleContext';
 import type {
@@ -29,14 +30,18 @@ export type ChildrenFunction = () => ComponentType[];
 const DefaultLayout = ({ children }: { children: React.ReactNode }) => (
     <>{children}</>
 );
-const DefaultError = ({ errorInfo }) => (
-    <div>
-        <h1>Error</h1>
-        <p>
-            <b>ComponentStack:</b> {errorInfo?.componentStack}
-        </p>
-    </div>
-);
+const DefaultError = ({ error, errorInfo, resetErrorBoundary }) => {
+    useResetErrorBoundaryOnLocationChange(resetErrorBoundary);
+    return (
+        <div>
+            <h1>Error</h1>
+            <pre>
+                {error.message}
+                {errorInfo?.componentStack}
+            </pre>
+        </div>
+    );
+};
 
 export interface CoreAdminUIProps {
     /**
@@ -265,7 +270,7 @@ export const CoreAdminUI = (props: CoreAdminUIProps) => {
         children,
         dashboard,
         disableTelemetry = false,
-        error = DefaultError,
+        error: ErrorComponent = DefaultError,
         layout = DefaultLayout,
         loading = Noop,
         loginPage: LoginPage = false,
@@ -294,7 +299,13 @@ export const CoreAdminUI = (props: CoreAdminUIProps) => {
         <DefaultTitleContextProvider value={title}>
             <ErrorBoundary
                 onError={handleError}
-                fallbackRender={props => error({ errorInfo, ...props })}
+                fallbackRender={({ error, resetErrorBoundary }) => (
+                    <ErrorComponent
+                        error={error}
+                        errorInfo={errorInfo}
+                        resetErrorBoundary={resetErrorBoundary}
+                    />
+                )}
             >
                 <Routes>
                     {LoginPage !== false && LoginPage !== true ? (
