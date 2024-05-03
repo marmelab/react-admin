@@ -524,11 +524,11 @@ const App = () => (
 
 ## `error`
 
-React-admin uses [React's Error Boundaries](https://react.dev/reference/react/Component#catching-rendering-errors-with-an-error-boundary) to render client-side errors happens in react-admin. 
+React-admin uses [React's Error Boundaries](https://react.dev/reference/react/Component#catching-rendering-errors-with-an-error-boundary) to render a user-friendly error page in case of client-side JavaScript error, using an internal component called `<Error>`. In production mode, it only displays a generic error message. In development mode, this error page contains the error message and stack trace. 
 
 ![Default error page](./img/adminError.png)
 
-If you want to customize this page, or log the error to a third-party service, create your own `<Error>` component, and pass it to a custom Layout, as follows:
+If you want to customize this error page (e.g. to log the error in a monitoring service), create your own error component, set it as the `<Admin error>` prop, as follows:
 
 ```jsx
 // in src/App.js
@@ -541,6 +541,10 @@ export const MyLayout = ({ children }) => (
     </Admin>
 );
 ```
+
+React-admin relies on [the `react-error-boundary` package](https://github.com/bvaughn/react-error-boundary) for handling error boundaries. So your custom error component will receive the error, the error info, and a `resetErrorBoundary` function as props. You should call `resetErrorBoundary` upon navigation to remove the error screen.
+
+Here is an example of a custom error component:
 
 ```jsx
 // in src/MyError.js
@@ -589,8 +593,7 @@ export const MyError = ({
 };
 ```
 
-**Tip:** Some errors appear in the `<Layout>` or in one of their children. To customize this error page too, you can use the [`<Layout>` `error` prop](./Layout.md#error).
-
+**Tip:** React-admin uses the default `<Error>` component as error boundary **twice**: once in `<Admin>` for errors happening in the layout, and once in `<Layout>` for error happening in CRUD views. The reason is that `<Layout>` renders the navigation menu, giving more possibilities to the user after an error. If you want to customize the error page in the entire app, you should also pass your custom error component to the `<Layout error>` prop. See the [Layout error prop](./Layout.md#error) documentation for more details.
 
 ## `i18nProvider`
 

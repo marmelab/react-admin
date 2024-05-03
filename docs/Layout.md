@@ -138,11 +138,11 @@ export const MyLayout = ({ children }) => (
 
 ## `error`
 
-Whenever a client-side error happens in react-admin, the user sees an error page. React-admin uses [React's Error Boundaries](https://react.dev/reference/react/Component#catching-rendering-errors-with-an-error-boundary) to render this page when any component in the page throws an unrecoverable error. 
+React-admin uses [React's Error Boundaries](https://react.dev/reference/react/Component#catching-rendering-errors-with-an-error-boundary) to render a user-friendly error page in case of client-side JavaScript error, using an internal component called `<Error>`. In production mode, it only displays a generic error message. In development mode, this error page contains the error message and stack trace. 
 
 ![Default error page](./img/error.webp)
 
-If you want to customize this page, or log the error to a third-party service, create your own `<Error>` component, and pass it to a custom Layout, as follows:
+If you want to customize this error page (e.g. to log the error in a monitoring service), create your own error component, and pass it to a custom Layout, as follows:
 
 ```jsx
 // in src/MyLayout.js
@@ -156,7 +156,10 @@ export const MyLayout = ({ children }) => (
 );
 ```
 
-The following snippet is a simplified version of the react-admin `Error` component, that you can use as a base for your own:
+React-admin relies on [the `react-error-boundary` package](https://github.com/bvaughn/react-error-boundary) for handling error boundaries. So your custom error component will receive the error, the error info, and a `resetErrorBoundary` function as props. You should call `resetErrorBoundary` upon navigation to remove the error screen.
+
+Here is an example of a custom error component:
+
 
 ```jsx
 // in src/MyError.js
@@ -209,9 +212,7 @@ export const MyError = ({
 };
 ```
 
-**Tip:** [React's Error Boundaries](https://react.dev/reference/react/Component#catching-rendering-errors-with-an-error-boundary) are used internally to display the Error Page whenever an error occurs. Error Boundaries only catch errors during rendering, in lifecycle methods, and in constructors of the components tree. This implies in particular that errors during event callbacks (such as 'onClick') are not concerned. Also note that the Error Boundary component is only set around the main container of React Admin. In particular, you won't see it for errors thrown by the [sidebar Menu](./Menu.md), nor the [AppBar](#adding-a-custom-context). This ensures the user is always able to navigate away from the Error Page.
-
-**Tip:** Some errors appear in a higher level than the layout. To customize that second error page, you can use the [`<Admin error>` prop](./Admin.md#error).
+**Tip:** React-admin uses the default `<Error>` component as error boundary **twice**: once in `<Layout>` for error happening in CRUD views, and once in `<Admin>` for errors happening in the layout. If you want to customize the error page in the entire app, you should also pass your custom error component to the `<Admin error>` prop. See the [Admin error prop](./Admin.md#error) documentation for more details.
 
 ## `menu`
 
