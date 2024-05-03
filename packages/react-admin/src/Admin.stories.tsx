@@ -57,9 +57,11 @@ export const SubPath = () => (
 );
 
 // @ts-ignore
-const FailedAppBar = () => <AppBar color="nothing" />;
+const FailingAppBar = () => {
+    throw new Error('AppBar rendering failed');
+};
 
-const FailedLayout = props => <Layout {...props} appBar={FailedAppBar} />;
+const FailedLayout = props => <Layout {...props} appBar={FailingAppBar} />;
 
 export const DefaultError = () => (
     <Admin layout={FailedLayout}>
