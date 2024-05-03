@@ -1,5 +1,44 @@
 # Changelog
 
+## v5.0.0-beta.0
+
+* Add `<ReferenceFieldBase>` ([#9698](https://github.com/marmelab/react-admin/pull/9698)) ([djhi](https://github.com/djhi))
+* Add `<ReferenceInputBase>` ([#9672](https://github.com/marmelab/react-admin/pull/9672)) ([djhi](https://github.com/djhi))
+* Add `<ReferenceManyField queryOptions>` prop ([#9750](https://github.com/marmelab/react-admin/pull/9750)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* Add `<List storeKey={false}>` to disable all store interactions (sort, pagination, filters and now also selection state). ([#9742](https://github.com/marmelab/react-admin/pull/9742)) ([nbalaguer](https://github.com/nbalaguer))
+* Add ability to set Button default props via theme ([#9735](https://github.com/marmelab/react-admin/pull/9735)) ([fzaninotto](https://github.com/fzaninotto))
+* Add a global `ErrorBoundary` ([#9799](https://github.com/marmelab/react-admin/pull/9799)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* Update GraphQL data provider builders to return a data provider rather than a Promise ([#9820](https://github.com/marmelab/react-admin/pull/9820)) ([djhi](https://github.com/djhi))
+* Update `useInput` to generate a unique id by default ([#9788](https://github.com/marmelab/react-admin/pull/9788)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* Update `<List>` to restore scroll position when coming from Edit and Create views side effects ([#9774](https://github.com/marmelab/react-admin/pull/9774)) ([djhi](https://github.com/djhi))
+* Update `<SimpleFormIterator>` so that it doesn't clone buttons ([#9805](https://github.com/marmelab/react-admin/pull/9805)) ([djhi](https://github.com/djhi))
+* Update `react-error-boundary` to v4 ([#9819](https://github.com/marmelab/react-admin/pull/9819)) ([MohammedFaragallah](https://github.com/MohammedFaragallah))
+* Update `react-i18next` to v14 ([#9818](https://github.com/marmelab/react-admin/pull/9818)) ([MohammedFaragallah](https://github.com/MohammedFaragallah))
+* Update `react-dropzone` to v14 ([#9811](https://github.com/marmelab/react-admin/pull/9811)) ([MohammedFaragallah](https://github.com/MohammedFaragallah))
+* Update `date-fns` to v3 ([#9801](https://github.com/marmelab/react-admin/pull/9801)) ([MohammedFaragallah](https://github.com/MohammedFaragallah))
+* Update `@mui` to v5.15 ([#9763](https://github.com/marmelab/react-admin/pull/9763)) ([djhi](https://github.com/djhi))
+* Update `inflection` to v3 ([#9804](https://github.com/marmelab/react-admin/pull/9804)) ([MohammedFaragallah](https://github.com/MohammedFaragallah))
+* Remove deprecated props ([#9789](https://github.com/marmelab/react-admin/pull/9789)) ([adguernier](https://github.com/adguernier))
+* Remove condition restricting error display to touched inputs ([#9781](https://github.com/marmelab/react-admin/pull/9781)) ([slax57](https://github.com/slax57))
+* Remove `<ReferenceManyFieldView>` ([#9821](https://github.com/marmelab/react-admin/pull/9821)) ([djhi](https://github.com/djhi))
+* Fix CI action warnings ([#9794](https://github.com/marmelab/react-admin/pull/9794)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<SimpleList>` always returns empty when controlled ([#9802](https://github.com/marmelab/react-admin/pull/9802)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix react-admin requires custom routers to be data routers ([#9723](https://github.com/marmelab/react-admin/pull/9723)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<SimpleList>` `<Basic>` story ([#9792](https://github.com/marmelab/react-admin/pull/9792)) ([adguernier](https://github.com/adguernier))
+* Backport changes from master ([#9765](https://github.com/marmelab/react-admin/pull/9765)) ([slax57](https://github.com/slax57))
+* [Doc] Fix typo in tanstack query in migration docs ([#9780](https://github.com/marmelab/react-admin/pull/9780)) ([smeng9](https://github.com/smeng9))
+* [Doc] Fix imported tanstack devtools package ([#9736](https://github.com/marmelab/react-admin/pull/9736)) ([smeng9](https://github.com/smeng9))
+* [Demo] Rename commands to orders in `data-generator-retail` ([#9800](https://github.com/marmelab/react-admin/pull/9800)) ([djhi](https://github.com/djhi))
+* [Demo] Restore examples production profiling & fix build warnings ([#9817](https://github.com/marmelab/react-admin/pull/9817)) ([djhi](https://github.com/djhi))
+* [TypeScript] Add better types to data-generator ([#9764](https://github.com/marmelab/react-admin/pull/9764)) ([djhi](https://github.com/djhi))
+* [TypeScript] Fix remaining strictNullCheck errors in ra-ui-materialui ([#9797](https://github.com/marmelab/react-admin/pull/9797)) ([djhi](https://github.com/djhi))
+* [TypeScript] Make types more strict in ra-ui-materialui, part III ([#9795](https://github.com/marmelab/react-admin/pull/9795)) ([fzaninotto](https://github.com/fzaninotto))
+* [Typescript] Make types more strict in ra-ui-materialui, part II ([#9790](https://github.com/marmelab/react-admin/pull/9790)) ([fzaninotto](https://github.com/fzaninotto))
+* [TypeScript] Make types more strict in ra-ui-materialui ([#9761](https://github.com/marmelab/react-admin/pull/9761)) ([fzaninotto](https://github.com/fzaninotto))
+* [TypeScript] Make types more strict in ra-core, part III ([#9760](https://github.com/marmelab/react-admin/pull/9760)) ([fzaninotto](https://github.com/fzaninotto))
+* [TypeScript] Make types more strict in ra-core, part II ([#9743](https://github.com/marmelab/react-admin/pull/9743)) ([fzaninotto](https://github.com/fzaninotto))
+* [TypeScript] Make types more strict in ra-core ([#9741](https://github.com/marmelab/react-admin/pull/9741)) ([fzaninotto](https://github.com/fzaninotto))
+
 ## v4.16.17
 
 * Fix combineDataProviders doesn't work when returned by an async function ([#9798](https://github.com/marmelab/react-admin/pull/9798)) ([fzaninotto](https://github.com/fzaninotto))
@@ -15,6 +54,10 @@
 * [Doc] Fix `<RichTextInput>` typo on TipTap ([#9759](https://github.com/marmelab/react-admin/pull/9759)) ([adguernier](https://github.com/adguernier))
 * [Doc] Update `<JsonSchemaForm>` to add details about available widgets  ([#9758](https://github.com/marmelab/react-admin/pull/9758)) ([adguernier](https://github.com/adguernier))
 * [TypeScript] Fix warning in `create-react-admin` ([#9728](https://github.com/marmelab/react-admin/pull/9728)) ([hbendev](https://github.com/hbendev))
+
+## v5.0.0-alpha.1
+
+* Fixed failed `v5.0.0-alpha.0` release
 
 ## v5.0.0-alpha.0
 
