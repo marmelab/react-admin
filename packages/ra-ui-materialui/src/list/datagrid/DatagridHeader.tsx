@@ -114,9 +114,7 @@ export const DatagridHeader = (props: DatagridHeaderProps) => {
                             inputProps={{
                                 'aria-label': translate(
                                     'ra.action.select_all',
-                                    {
-                                        _: 'Select all',
-                                    }
+                                    { _: 'Select all' }
                                 ),
                             }}
                             className="select-all"
