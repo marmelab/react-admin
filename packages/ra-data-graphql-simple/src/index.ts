@@ -30,7 +30,7 @@ export default (
         buildQuery?: BuildQueryFactory;
         bulkActionsEnabled?: boolean;
     }
-): Promise<DataProvider> => {
+): DataProvider => {
     const { bulkActionsEnabled = false, ...dPOptions } = merge(
         {},
         defaultOptions,
@@ -43,55 +43,54 @@ export default (
             bulkActionOperationNames
         );
 
-    return buildDataProvider(dPOptions).then(defaultDataProvider => {
-        return {
-            ...defaultDataProvider,
-            // This provider defaults to sending multiple DELETE requests for DELETE_MANY
-            // and multiple UPDATE requests for UPDATE_MANY unless bulk actions are enabled
-            // This can be optimized using the apollo-link-batch-http link
-            ...(bulkActionsEnabled
-                ? {}
-                : {
-                      deleteMany: (resource, params) => {
-                          const { ids, ...otherParams } = params;
-                          return Promise.all(
-                              ids.map(id =>
-                                  defaultDataProvider.delete(resource, {
-                                      id,
-                                      previousData: null,
-                                      ...otherParams,
-                                  })
-                              )
-                          ).then(results => {
-                              const data = results.reduce<Identifier[]>(
-                                  (acc, { data }) => [...acc, data.id],
-                                  []
-                              );
+    const defaultDataProvider = buildDataProvider(dPOptions);
+    return {
+        ...defaultDataProvider,
+        // This provider defaults to sending multiple DELETE requests for DELETE_MANY
+        // and multiple UPDATE requests for UPDATE_MANY unless bulk actions are enabled
+        // This can be optimized using the apollo-link-batch-http link
+        ...(bulkActionsEnabled
+            ? {}
+            : {
+                  deleteMany: (resource, params) => {
+                      const { ids, ...otherParams } = params;
+                      return Promise.all(
+                          ids.map(id =>
+                              defaultDataProvider.delete(resource, {
+                                  id,
+                                  previousData: null,
+                                  ...otherParams,
+                              })
+                          )
+                      ).then(results => {
+                          const data = results.reduce<Identifier[]>(
+                              (acc, { data }) => [...acc, data.id],
+                              []
+                          );
 
-                              return { data };
-                          });
-                      },
-                      updateMany: (resource, params) => {
-                          const { ids, data, ...otherParams } = params;
-                          return Promise.all(
-                              ids.map(id =>
-                                  defaultDataProvider.update(resource, {
-                                      id,
-                                      data: data,
-                                      previousData: null,
-                                      ...otherParams,
-                                  })
-                              )
-                          ).then(results => {
-                              const data = results.reduce<Identifier[]>(
-                                  (acc, { data }) => [...acc, data.id],
-                                  []
-                              );
+                          return { data };
+                      });
+                  },
+                  updateMany: (resource, params) => {
+                      const { ids, data, ...otherParams } = params;
+                      return Promise.all(
+                          ids.map(id =>
+                              defaultDataProvider.update(resource, {
+                                  id,
+                                  data: data,
+                                  previousData: null,
+                                  ...otherParams,
+                              })
+                          )
+                      ).then(results => {
+                          const data = results.reduce<Identifier[]>(
+                              (acc, { data }) => [...acc, data.id],
+                              []
+                          );
 
-                              return { data };
-                          });
-                      },
-                  }),
-        };
-    });
+                          return { data };
+                      });
+                  },
+              }),
+    };
 };

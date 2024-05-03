@@ -112,8 +112,8 @@ const customBuildQuery: BuildQueryFactory = introspectionResults => {
     };
 };
 
-export default async () => {
-    const dataProvider = await buildApolloClient({
+export default () => {
+    const dataProvider = buildApolloClient({
         clientOptions: {
             uri: 'http://localhost:4000/graphql',
         },
