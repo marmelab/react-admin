@@ -133,6 +133,19 @@ Here are the available codemods you may need to run on your codebase:
 
 Check out React Query [codemod documentation](https://tanstack.com/query/latest/docs/react/guides/migrating-to-v5#codemod) for more information.
 
+## Upgraded dependencies
+
+The main dependencies of react-admin have been upgraded to their latest major:
+
+- [date-fns](https://www.npmjs.com/package/date-fns) from v2 to v3
+- [inflection](https://www.npmjs.com/package/inflection) from v1 to v3
+- [query-string](https://www.npmjs.com/package/query-string) from v7 to v9
+- [react-dropzone](https://www.npmjs.com/package/react-dropzone) from v12 to v14
+- [react-error-boundary](https://www.npmjs.com/package/react-error-boundary) from v3 to v4
+- [react-i18next](https://www.npmjs.com/package/react-i18next) from v13 to v14
+
+Each of these major versions comes with some breaking changes. You should check their respective changelogs to see if you need to update your code.
+
 ## `<Admin menu>` Is No Longer Supported
 
 The `<Admin menu>` prop was deprecated since 4.0. It's no longer supported. If you want to customize the application menu, you'll have to do it in a custom Layout instead:
@@ -860,6 +873,10 @@ Besides, these hooks will now throw an error when called outside of a page conte
             ...
 ```
 
+## TypeScript: `BulkActionProps` Type Has Been Removed
+
+The `BulkActionProps` has been removed as it did not contain any prop. You can safely remove it from your custom bulk actions.
+
 ## List Components Can No Longer Be Used In Standalone
 
 An undocumented feature allowed some components designed for list pages to be used outside of a list page, by relying on their props instead of the `ListContext`. This feature was removed in v5.
@@ -1010,10 +1027,6 @@ The deprecated `<ThemeProvider theme>` prop was removed. Use the `ThemesContext.
 ## `<PaginationLimit>` Component Was Removed
 
 The deprecated `<PaginationLimit>` component was removed.
-
-## TypeScript: `BulkActionProps` Type Has Been Removed
-
-The `BulkActionProps` has been removed as it did not contain any prop. You can safely remove it from your custom bulk actions.
 
 ## `data-generator-retail` `commands` Have Been Renamed to `orders`
 
