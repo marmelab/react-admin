@@ -3063,6 +3063,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@jridgewell/sourcemap-codec@npm:^1.4.15":
+  version: 1.4.15
+  resolution: "@jridgewell/sourcemap-codec@npm:1.4.15"
+  checksum: 0c6b5ae663087558039052a626d2d7ed5208da36cfd707dcc5cea4a07cfc918248403dcb5989a8f7afaf245ce0573b7cc6fd94c4a30453bd10e44d9363940ba5
+  languageName: node
+  linkType: hard
+
 "@jridgewell/trace-mapping@npm:^0.3.12, @jridgewell/trace-mapping@npm:^0.3.15, @jridgewell/trace-mapping@npm:^0.3.17, @jridgewell/trace-mapping@npm:^0.3.9":
   version: 0.3.18
   resolution: "@jridgewell/trace-mapping@npm:0.3.18"
@@ -10162,14 +10169,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"data-generator-retail@npm:^5.0.0-alpha.0, data-generator-retail@npm:^5.0.0-alpha.1, data-generator-retail@workspace:examples/data-generator":
+"data-generator-retail@npm:^5.0.0-alpha.0, data-generator-retail@npm:^5.0.0-beta.0, data-generator-retail@workspace:examples/data-generator":
   version: 0.0.0-use.local
   resolution: "data-generator-retail@workspace:examples/data-generator"
   dependencies:
     cross-env: "npm:^5.2.0"
     date-fns: "npm:^3.6.0"
     faker: "npm:^4.1.0"
-    ra-core: "npm:^5.0.0-alpha.1"
+    ra-core: "npm:^5.0.0-beta.0"
     rimraf: "npm:^3.0.2"
     typescript: "npm:^5.1.3"
   peerDependencies:
@@ -10467,6 +10474,7 @@ __metadata:
     recharts: "npm:^2.1.15"
     rewire: "npm:^5.0.0"
     rollup-plugin-visualizer: "npm:^5.12.0"
+    rollup-preserve-directives: "npm:^1.1.1"
     typescript: "npm:^5.1.3"
     vite: "npm:^5.0.11"
   languageName: unknown
@@ -16041,6 +16049,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"magic-string@npm:^0.30.5":
+  version: 0.30.10
+  resolution: "magic-string@npm:0.30.10"
+  dependencies:
+    "@jridgewell/sourcemap-codec": "npm:^1.4.15"
+  checksum: aa9ca17eae571a19bce92c8221193b6f93ee8511abb10f085e55ffd398db8e4c089a208d9eac559deee96a08b7b24d636ea4ab92f09c6cf42a7d1af51f7fd62b
+  languageName: node
+  linkType: hard
+
 "make-dir@npm:3.1.0, make-dir@npm:^3.0.0, make-dir@npm:^3.0.2":
   version: 3.1.0
   resolution: "make-dir@npm:3.1.0"
@@ -18661,7 +18678,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ra-core@npm:^5.0.0-alpha.1, ra-core@workspace:packages/ra-core":
+"ra-core@npm:^5.0.0-beta.0, ra-core@workspace:packages/ra-core":
   version: 0.0.0-use.local
   resolution: "ra-core@workspace:packages/ra-core"
   dependencies:
@@ -18708,7 +18725,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"ra-data-fakerest@npm:^5.0.0-alpha.0, ra-data-fakerest@npm:^5.0.0-alpha.1, ra-data-fakerest@workspace:packages/ra-data-fakerest":
+"ra-data-fakerest@npm:^5.0.0-alpha.0, ra-data-fakerest@npm:^5.0.0-beta.0, ra-data-fakerest@workspace:packages/ra-data-fakerest":
   version: 0.0.0-use.local
   resolution: "ra-data-fakerest@workspace:packages/ra-data-fakerest"
   dependencies:
@@ -18716,7 +18733,7 @@ __metadata:
     cross-env: "npm:^5.2.0"
     expect: "npm:^27.4.6"
     fakerest: "npm:^3.0.0"
-    ra-core: "npm:^5.0.0-alpha.1"
+    ra-core: "npm:^5.0.0-beta.0"
     rimraf: "npm:^3.0.2"
     typescript: "npm:^5.1.3"
   peerDependencies:
@@ -18734,7 +18751,7 @@ __metadata:
     graphql-ast-types-browser: "npm:~1.0.2"
     lodash: "npm:~4.17.5"
     pluralize: "npm:~7.0.0"
-    ra-data-graphql: "npm:^5.0.0-alpha.1"
+    ra-data-graphql: "npm:^5.0.0-beta.0"
     rimraf: "npm:^3.0.2"
     typescript: "npm:^5.1.3"
   peerDependencies:
@@ -18743,7 +18760,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"ra-data-graphql@npm:^5.0.0-alpha.0, ra-data-graphql@npm:^5.0.0-alpha.1, ra-data-graphql@workspace:packages/ra-data-graphql":
+"ra-data-graphql@npm:^5.0.0-alpha.0, ra-data-graphql@npm:^5.0.0-beta.0, ra-data-graphql@workspace:packages/ra-data-graphql":
   version: 0.0.0-use.local
   resolution: "ra-data-graphql@workspace:packages/ra-data-graphql"
   dependencies:
@@ -18766,7 +18783,7 @@ __metadata:
   dependencies:
     cross-env: "npm:^5.2.0"
     query-string: "npm:^7.1.1"
-    ra-core: "npm:^5.0.0-alpha.1"
+    ra-core: "npm:^5.0.0-beta.0"
     rimraf: "npm:^3.0.2"
     typescript: "npm:^5.1.3"
   languageName: unknown
@@ -18779,7 +18796,7 @@ __metadata:
     cross-env: "npm:^5.2.0"
     localforage: "npm:^1.7.1"
     lodash: "npm:~4.17.5"
-    ra-data-fakerest: "npm:^5.0.0-alpha.1"
+    ra-data-fakerest: "npm:^5.0.0-beta.0"
     rimraf: "npm:^3.0.2"
     typescript: "npm:^5.1.3"
   peerDependencies:
@@ -18787,13 +18804,13 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"ra-data-local-storage@npm:^5.0.0-alpha.0, ra-data-local-storage@npm:^5.0.0-alpha.1, ra-data-local-storage@workspace:packages/ra-data-localstorage":
+"ra-data-local-storage@npm:^5.0.0-alpha.0, ra-data-local-storage@npm:^5.0.0-beta.0, ra-data-local-storage@workspace:packages/ra-data-localstorage":
   version: 0.0.0-use.local
   resolution: "ra-data-local-storage@workspace:packages/ra-data-localstorage"
   dependencies:
     cross-env: "npm:^5.2.0"
     lodash: "npm:~4.17.5"
-    ra-data-fakerest: "npm:^5.0.0-alpha.1"
+    ra-data-fakerest: "npm:^5.0.0-beta.0"
     rimraf: "npm:^3.0.2"
     typescript: "npm:^5.1.3"
   peerDependencies:
@@ -18807,7 +18824,7 @@ __metadata:
   dependencies:
     cross-env: "npm:^5.2.0"
     query-string: "npm:^7.1.1"
-    ra-core: "npm:^5.0.0-alpha.1"
+    ra-core: "npm:^5.0.0-beta.0"
     rimraf: "npm:^3.0.2"
     typescript: "npm:^5.1.3"
   peerDependencies:
@@ -18822,26 +18839,26 @@ __metadata:
     cross-env: "npm:^5.2.0"
     i18next: "npm:^23.5.1"
     i18next-resources-to-backend: "npm:^1.1.4"
-    ra-core: "npm:^5.0.0-alpha.1"
-    react-i18next: "npm:^13.2.2"
+    ra-core: "npm:^5.0.0-beta.0"
+    react-i18next: "npm:^14.1.1"
     rimraf: "npm:^3.0.2"
     typescript: "npm:^5.1.3"
   languageName: unknown
   linkType: soft
 
-"ra-i18n-polyglot@npm:^5.0.0-alpha.0, ra-i18n-polyglot@npm:^5.0.0-alpha.1, ra-i18n-polyglot@workspace:packages/ra-i18n-polyglot":
+"ra-i18n-polyglot@npm:^5.0.0-alpha.0, ra-i18n-polyglot@npm:^5.0.0-beta.0, ra-i18n-polyglot@workspace:packages/ra-i18n-polyglot":
   version: 0.0.0-use.local
   resolution: "ra-i18n-polyglot@workspace:packages/ra-i18n-polyglot"
   dependencies:
     cross-env: "npm:^5.2.0"
     node-polyglot: "npm:^2.2.2"
-    ra-core: "npm:^5.0.0-alpha.1"
+    ra-core: "npm:^5.0.0-beta.0"
     rimraf: "npm:^3.0.2"
     typescript: "npm:^5.1.3"
   languageName: unknown
   linkType: soft
 
-"ra-input-rich-text@npm:^5.0.0-alpha.0, ra-input-rich-text@npm:^5.0.0-alpha.1, ra-input-rich-text@workspace:packages/ra-input-rich-text":
+"ra-input-rich-text@npm:^5.0.0-alpha.0, ra-input-rich-text@npm:^5.0.0-beta.0, ra-input-rich-text@workspace:packages/ra-input-rich-text":
   version: 0.0.0-use.local
   resolution: "ra-input-rich-text@workspace:packages/ra-input-rich-text"
   dependencies:
@@ -18863,10 +18880,10 @@ __metadata:
     "@tiptap/starter-kit": "npm:^2.0.3"
     "@tiptap/suggestion": "npm:^2.0.3"
     clsx: "npm:^2.1.1"
-    data-generator-retail: "npm:^5.0.0-alpha.1"
-    ra-core: "npm:^5.0.0-alpha.1"
-    ra-data-fakerest: "npm:^5.0.0-alpha.1"
-    ra-ui-materialui: "npm:^5.0.0-alpha.1"
+    data-generator-retail: "npm:^5.0.0-beta.0"
+    ra-core: "npm:^5.0.0-beta.0"
+    ra-data-fakerest: "npm:^5.0.0-beta.0"
+    ra-ui-materialui: "npm:^5.0.0-beta.0"
     react: "npm:^18.0.0"
     react-dom: "npm:^18.2.0"
     react-hook-form: "npm:^7.43.9"
@@ -18883,21 +18900,21 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"ra-language-english@npm:^5.0.0-alpha.0, ra-language-english@npm:^5.0.0-alpha.1, ra-language-english@workspace:packages/ra-language-english":
+"ra-language-english@npm:^5.0.0-alpha.0, ra-language-english@npm:^5.0.0-beta.0, ra-language-english@workspace:packages/ra-language-english":
   version: 0.0.0-use.local
   resolution: "ra-language-english@workspace:packages/ra-language-english"
   dependencies:
-    ra-core: "npm:^5.0.0-alpha.1"
+    ra-core: "npm:^5.0.0-beta.0"
     rimraf: "npm:^3.0.2"
     typescript: "npm:^5.1.3"
   languageName: unknown
   linkType: soft
 
-"ra-language-french@npm:^5.0.0-alpha.0, ra-language-french@npm:^5.0.0-alpha.1, ra-language-french@workspace:packages/ra-language-french":
+"ra-language-french@npm:^5.0.0-alpha.0, ra-language-french@npm:^5.0.0-beta.0, ra-language-french@workspace:packages/ra-language-french":
   version: 0.0.0-use.local
   resolution: "ra-language-french@workspace:packages/ra-language-french"
   dependencies:
-    ra-core: "npm:^5.0.0-alpha.1"
+    ra-core: "npm:^5.0.0-beta.0"
     rimraf: "npm:^3.0.2"
     typescript: "npm:^5.1.3"
   languageName: unknown
@@ -18917,9 +18934,9 @@ __metadata:
     lodash: "npm:~4.17.5"
     papaparse: "npm:^5.3.0"
     prop-types: "npm:^15.8.1"
-    ra-data-local-storage: "npm:^5.0.0-alpha.1"
+    ra-data-local-storage: "npm:^5.0.0-beta.0"
     react: "npm:^18.0.0"
-    react-admin: "npm:^5.0.0-alpha.1"
+    react-admin: "npm:^5.0.0-beta.0"
     react-dom: "npm:^18.2.0"
     react-dropzone: "npm:^14.2.3"
     react-router: "npm:^6.22.0"
@@ -18934,7 +18951,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"ra-ui-materialui@npm:^5.0.0-alpha.1, ra-ui-materialui@workspace:packages/ra-ui-materialui":
+"ra-ui-materialui@npm:^5.0.0-beta.0, ra-ui-materialui@workspace:packages/ra-ui-materialui":
   version: 0.0.0-use.local
   resolution: "ra-ui-materialui@workspace:packages/ra-ui-materialui"
   dependencies:
@@ -18961,13 +18978,13 @@ __metadata:
     lodash: "npm:~4.17.5"
     prop-types: "npm:^15.8.1"
     query-string: "npm:^7.1.1"
-    ra-core: "npm:^5.0.0-alpha.1"
-    ra-i18n-polyglot: "npm:^5.0.0-alpha.1"
-    ra-language-english: "npm:^5.0.0-alpha.1"
+    ra-core: "npm:^5.0.0-beta.0"
+    ra-i18n-polyglot: "npm:^5.0.0-beta.0"
+    ra-language-english: "npm:^5.0.0-beta.0"
     react: "npm:^18.0.0"
     react-dom: "npm:^18.2.0"
     react-dropzone: "npm:^14.2.3"
-    react-error-boundary: "npm:^3.1.4"
+    react-error-boundary: "npm:^4.0.13"
     react-hook-form: "npm:^7.43.9"
     react-is: "npm:^18.2.0"
     react-router: "npm:^6.22.0"
@@ -19091,10 +19108,11 @@ __metadata:
     react: "npm:^18.0.0"
     react-admin: "npm:^5.0.0-alpha.0"
     react-dom: "npm:^18.2.0"
-    react-error-boundary: "npm:^3.1.4"
+    react-error-boundary: "npm:^4.0.3"
     react-router: "npm:^6.22.0"
     react-router-dom: "npm:^6.22.0"
     rollup-plugin-visualizer: "npm:^5.12.0"
+    rollup-preserve-directives: "npm:^1.1.1"
     typescript: "npm:^5.1.3"
     vite: "npm:^5.0.11"
     web-vitals: "npm:^3.5.1"
@@ -19151,7 +19169,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"react-admin@npm:^5.0.0-alpha.0, react-admin@npm:^5.0.0-alpha.1, react-admin@workspace:packages/react-admin":
+"react-admin@npm:^5.0.0-alpha.0, react-admin@npm:^5.0.0-beta.0, react-admin@workspace:packages/react-admin":
   version: 0.0.0-use.local
   resolution: "react-admin@workspace:packages/react-admin"
   dependencies:
@@ -19161,10 +19179,10 @@ __metadata:
     "@mui/material": "npm:^5.15.15"
     cross-env: "npm:^5.2.0"
     expect: "npm:^27.4.6"
-    ra-core: "npm:^5.0.0-alpha.1"
-    ra-i18n-polyglot: "npm:^5.0.0-alpha.1"
-    ra-language-english: "npm:^5.0.0-alpha.1"
-    ra-ui-materialui: "npm:^5.0.0-alpha.1"
+    ra-core: "npm:^5.0.0-beta.0"
+    ra-i18n-polyglot: "npm:^5.0.0-beta.0"
+    ra-language-english: "npm:^5.0.0-beta.0"
+    ra-ui-materialui: "npm:^5.0.0-beta.0"
     react-hook-form: "npm:^7.43.9"
     react-router: "npm:^6.22.0"
     react-router-dom: "npm:^6.22.0"
@@ -19264,7 +19282,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-error-boundary@npm:^3.1.0, react-error-boundary@npm:^3.1.4":
+"react-error-boundary@npm:^3.1.0":
   version: 3.1.4
   resolution: "react-error-boundary@npm:3.1.4"
   dependencies:
@@ -19272,6 +19290,17 @@ __metadata:
   peerDependencies:
     react: ">=16.13.1"
   checksum: f977ca61823e43de2381d53dd7aa8b4d79ff6a984c9afdc88dc44f9973b99de7fd382d2f0f91f2688e24bb987c0185bf45d0b004f22afaaab0f990a830253bfb
+  languageName: node
+  linkType: hard
+
+"react-error-boundary@npm:^4.0.13, react-error-boundary@npm:^4.0.3":
+  version: 4.0.13
+  resolution: "react-error-boundary@npm:4.0.13"
+  dependencies:
+    "@babel/runtime": "npm:^7.12.5"
+  peerDependencies:
+    react: ">=16.13.1"
+  checksum: 6f3e0e4d7669f680ccf49c08c9571519c6e31f04dcfc30a765a7136c7e6fbbbe93423dd5a9fce12107f8166e54133e9dd5c2079a00c7a38201ac811f7a28b8e7
   languageName: node
   linkType: hard
 
@@ -19284,11 +19313,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-i18next@npm:^13.2.2":
-  version: 13.2.2
-  resolution: "react-i18next@npm:13.2.2"
+"react-i18next@npm:^14.1.1":
+  version: 14.1.1
+  resolution: "react-i18next@npm:14.1.1"
   dependencies:
-    "@babel/runtime": "npm:^7.22.5"
+    "@babel/runtime": "npm:^7.23.9"
     html-parse-stringify: "npm:^3.0.1"
   peerDependencies:
     i18next: ">= 23.2.3"
@@ -19298,7 +19327,7 @@ __metadata:
       optional: true
     react-native:
       optional: true
-  checksum: 846e73130414989304c395c247cec8371ec25b5a0284588c913542741ce0cc33b4681d573980c64320138601d08a2ddec5042dc6f841e48a575e3f11ab83a368
+  checksum: d6da148d5dd1635f57d7a85bdd5c6e1f1404982112358a5efa9f6f47d505a00e4650237d5fc94b4381dcb336c134d500268a7157e06e2b2f0293a2bcd7ec2812
   languageName: node
   linkType: hard
 
@@ -20263,6 +20292,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"rollup-preserve-directives@npm:^1.1.1":
+  version: 1.1.1
+  resolution: "rollup-preserve-directives@npm:1.1.1"
+  dependencies:
+    magic-string: "npm:^0.30.5"
+  peerDependencies:
+    rollup: ^2.0.0 || ^3.0.0 || ^4.0.0
+  checksum: a472dc02df5d93bf81ee7fe5befffd5ace1f7a2f9224a41518a2c8d70e16c1b62e9ac4f5f03d5f5b4193c3c84323aaedfb7e3243a4707a89e1bd4bb84543b2f2
+  languageName: node
+  linkType: hard
+
 "rollup@npm:^4.2.0":
   version: 4.9.3
   resolution: "rollup@npm:4.9.3"
@@ -20709,13 +20749,13 @@ __metadata:
     jsonexport: "npm:^3.2.0"
     lodash: "npm:~4.17.5"
     prop-types: "npm:^15.8.1"
-    ra-data-fakerest: "npm:^5.0.0-alpha.1"
-    ra-i18n-polyglot: "npm:^5.0.0-alpha.1"
-    ra-input-rich-text: "npm:^5.0.0-alpha.1"
-    ra-language-english: "npm:^5.0.0-alpha.1"
-    ra-language-french: "npm:^5.0.0-alpha.1"
+    ra-data-fakerest: "npm:^5.0.0-beta.0"
+    ra-i18n-polyglot: "npm:^5.0.0-beta.0"
+    ra-input-rich-text: "npm:^5.0.0-beta.0"
+    ra-language-english: "npm:^5.0.0-beta.0"
+    ra-language-french: "npm:^5.0.0-beta.0"
     react: "npm:^18.0.0"
-    react-admin: "npm:^5.0.0-alpha.1"
+    react-admin: "npm:^5.0.0-beta.0"
     react-dom: "npm:^18.2.0"
     react-hook-form: "npm:^7.43.9"
     react-router: "npm:^6.22.0"
