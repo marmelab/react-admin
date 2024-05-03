@@ -924,6 +924,93 @@ The `<InputHelperText>` component no longer accepts a `touched` prop. This prop 
 
 If you were using this prop, you can safely remove it.
 
+## `useCheckAuth` No Longer Accepts A `disableNotification` Param
+
+The `useCheckAuth` hook no longer accepts the deprecated `disableNotification` param. To disable the "Authentication required" notification when calling `checkAuth`, `authProvider.checkAuth()` should return a rejected promise with the value `{ message: false }`:
+
+```ts
+const authProvider: AuthProvider = {
+    //...
+    checkAuth: () => Promise.reject({ message: false }),
+}
+```
+
+## `useLogoutIfAccessDenied` No Longer Accepts A `disableNotification` Param
+
+The `useLogoutIfAccessDenied` hook no longer accepts the deprecated `disableNotification` param. To disable the "Authentication required" notification when `checkError` is called, `authProvider.checkError()` should return a rejected promise with the value `{ message: false }`:
+
+```ts
+const authProvider: AuthProvider = {
+    //...
+    checkError: () => Promise.reject({ message: false }),
+}
+```
+
+Or the `useLogoutIfAccessDenied` hook could be called with an error param as follows:
+
+```ts
+const logoutIfAccessDenied = useLogoutIfAccessDenied();
+logoutIfAccessDenied(new Error('Denied'));
+```
+## `onError` Type From `ra-core` Was Removed
+
+The `onError` type from `ra-core` was removed. Use `OnError` instead.
+
+## `linkToRecord` Helper Was Removed
+
+The `linkToRecord` helper was removed. Use [`useCreatePath`](https://marmelab.com/react-admin/Routing.html#linking-to-a-page) instead.
+
+## `resolveRedirectTo` Helper Was Removed
+
+The `resolveRedirectTo` helper was removed. Use [`useCreatePath`](./Routing.html#linking-to-a-page) instead.
+
+## `formClassName` Prop Of `FieldProps` Type Was Removed
+
+The deprecated `formClassName` prop of `FieldProps` type has been removed as it is no longer used.
+
+## `formClassName` Prop Of `CommonInputProps` Type Was Removed
+
+The deprecated `formClassName` prop of `CommonInputProps` type has been removed as it is no longer used.
+
+## `PublicFieldProps` Interface Was Removed
+
+`PublicFieldProps` interface has been removed. Use `FieldProps` instead.
+
+## `InjectedFieldProps` Interface Was Removed
+
+`InjectedFieldProps` interface has been removed. Use `FieldProps` instead.
+
+## `<ThemeProvider theme>` Is No Longer Supported
+
+The deprecated `<ThemeProvider theme>` prop was removed. Use the `ThemesContext.Provider` instead:
+
+```diff
+-import { ThemeProvider } from 'react-admin';
++import { ThemeProvider, ThemesContext } from 'react-admin';
+ 
+ export const ThemeWrapper = ({ children }) => {
+     return (
+-        <ThemeProvider
+-            theme={{
+-                palette: { mode: 'dark' },
++        <ThemesContext.Provider
++            value={{
++                darkTheme: { palette: { mode: 'dark' } },
++                lightTheme: { palette: { mode: 'light' } },
+             }}
+         >
+-            {children}
+-        </ThemeProvider>
++            <ThemeProvider>{children}</ThemeProvider>
++        </ThemesContext.Provider>
+     );
+ };
+```
+
+## `<PaginationLimit>` Component Was Removed
+
+The deprecated `<PaginationLimit>` component was removed.
+
 ## TypeScript: `BulkActionProps` Type Has Been Removed
 
 The `BulkActionProps` has been removed as it did not contain any prop. You can safely remove it from your custom bulk actions.

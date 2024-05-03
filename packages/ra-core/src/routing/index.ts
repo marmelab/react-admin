@@ -1,7 +1,5 @@
 export * from './AdminRouter';
 export * from './BasenameContextProvider';
-export * from './linkToRecord';
-export * from './resolveRedirectTo';
 export * from './RestoreScrollPosition';
 export * from './useBasename';
 export * from './useCreatePath';

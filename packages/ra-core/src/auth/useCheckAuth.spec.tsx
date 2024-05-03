@@ -21,20 +21,18 @@ const TestComponent = ({
     params,
     logoutOnFailure,
     redirectTo,
-    disableNotification,
 }: {
     params?: any;
     logoutOnFailure?: boolean;
     redirectTo?: string;
-    disableNotification?: boolean;
 }) => {
     const [authenticated, setAuthenticated] = useState(true);
     const checkAuth = useCheckAuth();
     useEffect(() => {
-        checkAuth(params, logoutOnFailure, redirectTo, disableNotification)
+        checkAuth(params, logoutOnFailure, redirectTo)
             .then(() => setAuthenticated(true))
             .catch(() => setAuthenticated(false));
-    }, [params, logoutOnFailure, redirectTo, disableNotification, checkAuth]);
+    }, [params, logoutOnFailure, redirectTo, checkAuth]);
     return <div>{authenticated ? 'authenticated' : 'not authenticated'}</div>;
 };
 
@@ -129,32 +127,6 @@ describe('useCheckAuth', () => {
             expect(notify).toHaveBeenCalledTimes(0);
             expect(screen.queryByText('not authenticated')).not.toBeNull();
             expect(location.pathname).toBe('/');
-        });
-    });
-
-    it('should logout without showing a notification when disableNotification is true', async () => {
-        let location: Location;
-        render(
-            <TestMemoryRouter
-                initialEntries={['/']}
-                locationCallback={l => {
-                    location = l;
-                }}
-            >
-                <AuthContext.Provider value={authProvider}>
-                    <QueryClientProvider client={queryClient}>
-                        <TestComponent
-                            params={{ token: false }}
-                            disableNotification
-                        />
-                    </QueryClientProvider>
-                </AuthContext.Provider>
-            </TestMemoryRouter>
-        );
-        await waitFor(() => {
-            expect(notify).toHaveBeenCalledTimes(0);
-            expect(screen.queryByText('authenticated')).toBeNull();
-            expect(location.pathname).toBe('/login');
         });
     });
 
