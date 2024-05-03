@@ -1,6 +1,6 @@
 {
     "name": "ra-core",
-    "version": "5.0.0-alpha.1",
+    "version": "5.0.0-beta.0",
     "description": "Core components of react-admin, a frontend Framework for building admin applications on top of REST services, using ES6, React",
     "files": [
         "*.md",
@@ -71,5 +71,5 @@
         "query-string": "^7.1.1",
         "react-is": "^18.2.0"
     },
-    "gitHead": "e936ff2c3f887d2e98ef136cf3b3f3d254725fc4"
+    "gitHead": "587df4c27bfcec4a756df4f95e5fc14728dfc0d7"
 }

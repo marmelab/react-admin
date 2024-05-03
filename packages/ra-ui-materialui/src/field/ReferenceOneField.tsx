@@ -62,7 +62,7 @@ export const ReferenceOneField = <
     );
 
     const resourceLinkPath =
-        link === false
+        !record || link === false
             ? false
             : createPath({
                   resource: reference,

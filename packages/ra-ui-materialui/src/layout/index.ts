@@ -26,6 +26,5 @@ export * from './TitlePortal';
 export * from './TopToolbar';
 export * from './UserMenu';
 export * from './UserMenuContext';
-export * from './useResetErrorBoundaryOnLocationChange';
 export * from './useSidebarState';
 export * from './useUserMenu';

@@ -403,7 +403,6 @@ const sanitizeRestProps = ({
     enableGetChoices,
     filter,
     filterToQuery,
-    formClassName,
     initializeForm,
     initialValue,
     input,

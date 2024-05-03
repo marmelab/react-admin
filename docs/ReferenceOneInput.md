@@ -5,7 +5,7 @@ title: "The ReferenceOneInput Component"
 
 # `<ReferenceOneInput>`
 
-Use `<ReferenceOneInput>` in an `<Edit>` or `<Create>` view to edit a record linked to the current record via a one-to-one relationship, e.g. to edit the details of a book in the book edition view. It's an [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> component, part of the `@react-admin/ra-relationships` package. 
+Use `<ReferenceOneInput>` in an `<Edit>` or `<Create>` view to edit a record linked to the current record via a one-to-one relationship, e.g. to edit the details of a book in the book edition view. It's an [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" /> component, part of the `@react-admin/ra-relationships` package. 
 
 <video controls autoplay playsinline muted loop width="100%">
   <source src="./img/reference-one-input.webm" type="video/webm" />
@@ -282,7 +282,7 @@ export const CustomInputs = () => (
 ```
 {% endraw %}
 
-![ReferenceOneInput with custom inputs](https://marmelab.com/ra-enterprise/modules/assets/ra-relationships/latest/reference-one-input-custom-inputs.png)
+![ReferenceOneInput with custom inputs](https://react-admin-ee.marmelab.com/assets/ra-relationships/latest/reference-one-input-custom-inputs.png)
 
 ## Limitations
 

@@ -57,7 +57,7 @@ If you need to render a UI despite the browser locale, MUI also proposes a [Date
 
 ## Material UI
 
-[React-admin Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> proposes an alternative `<DateInput>` styled with Material UI. 
+[React-admin Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" /> proposes an alternative `<DateInput>` styled with Material UI. 
 
 ![DateInput with Material UI](./img/DateInput-MUI.png)
 

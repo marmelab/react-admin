@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useState, useEffect, Children, ComponentType } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 
-import { WithPermissions, useCheckAuth } from '../auth';
+import { WithPermissions, useCheckAuth, LogoutOnMount } from '../auth';
 import { useScrollToTop, useCreatePath } from '../routing';
 import {
     AdminChildren,
@@ -34,16 +34,22 @@ export const CoreAdminRoutes = (props: CoreAdminRoutesProps) => {
         ready: Ready,
     } = props;
 
-    const [canRender, setCanRender] = useState(!requireAuth);
+    const [onlyAnonymousRoutes, setOnlyAnonymousRoutes] = useState(requireAuth);
+    const [checkAuthLoading, setCheckAuthLoading] = useState(requireAuth);
     const checkAuth = useCheckAuth();
 
     useEffect(() => {
         if (requireAuth) {
-            checkAuth()
+            // do not log the user out on failure to allow access to custom routes with no layout
+            // for other routes, the LogoutOnMount component will log the user out
+            checkAuth(undefined, false)
                 .then(() => {
-                    setCanRender(true);
+                    setOnlyAnonymousRoutes(false);
                 })
-                .catch(() => {});
+                .catch(() => {})
+                .finally(() => {
+                    setCheckAuthLoading(false);
+                });
         }
     }, [checkAuth, requireAuth]);
 
@@ -56,7 +62,9 @@ export const CoreAdminRoutes = (props: CoreAdminRoutesProps) => {
         return <Ready />;
     }
 
-    if (status === 'loading' || !canRender) {
+    // Note: custom routes with no layout are always rendered, regardless of the auth status
+
+    if (status === 'loading' || checkAuthLoading) {
         return (
             <Routes>
                 {customRoutesWithoutLayout}
@@ -68,6 +76,15 @@ export const CoreAdminRoutes = (props: CoreAdminRoutesProps) => {
                         </div>
                     }
                 />
+            </Routes>
+        );
+    }
+
+    if (onlyAnonymousRoutes) {
+        return (
+            <Routes>
+                {customRoutesWithoutLayout}
+                <Route path="*" element={<LogoutOnMount />} />
             </Routes>
         );
     }

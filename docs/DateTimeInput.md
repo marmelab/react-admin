@@ -44,7 +44,7 @@ If you need to implement your own `format` and `parse` functions, make sure the 
 
 ## Material UI
 
-[React-admin Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> proposes an alternative `<DateTimeInput>` styled with Material UI. 
+[React-admin Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" /> proposes an alternative `<DateTimeInput>` styled with Material UI. 
 
 ![DateTimeInput with Material UI](./img/DateTimeInput-MUI.png)
 

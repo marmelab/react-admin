@@ -14,7 +14,7 @@ export interface UseReferenceArrayFieldControllerParams<
     perPage?: number;
     record?: RecordType;
     reference: string;
-    resource: string;
+    resource?: string;
     sort?: SortPayload;
     source: string;
     queryOptions?: Omit<

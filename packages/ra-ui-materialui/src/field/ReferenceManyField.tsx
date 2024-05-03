@@ -1,11 +1,10 @@
-import React, { FC, ReactElement, ReactNode } from 'react';
+import React, { ReactElement, ReactNode } from 'react';
 import PropTypes from 'prop-types';
 import {
     FilterPayload,
     SortPayload,
     useReferenceManyFieldController,
     ListContextProvider,
-    ListControllerResult,
     ResourceContextProvider,
     useRecordContext,
     RaRecord,
@@ -146,44 +145,6 @@ ReferenceManyField.propTypes = {
         order: PropTypes.oneOf(['ASC', 'DESC'] as const),
     }),
     target: PropTypes.string.isRequired,
-};
-
-// FIXME kept for backwards compatibility, unused, to be removed in v5
-export const ReferenceManyFieldView: FC<ReferenceManyFieldViewProps> = props => {
-    const { children, pagination } = props;
-    if (process.env.NODE_ENV !== 'production') {
-        console.error(
-            '<ReferenceManyFieldView> is deprecated, use <ReferenceManyField> directly'
-        );
-    }
-    return (
-        <>
-            {children}
-            {pagination && props.total !== undefined ? pagination : null}
-        </>
-    );
-};
-
-export type ReferenceManyFieldViewProps = Omit<
-    ReferenceManyFieldProps,
-    'resource' | 'page' | 'perPage' | 'sort'
-> &
-    ListControllerResult & {
-        children: ReactElement;
-    };
-
-ReferenceManyFieldView.propTypes = {
-    children: PropTypes.element,
-    className: PropTypes.string,
-    sort: PropTypes.exact({
-        field: PropTypes.string,
-        order: PropTypes.oneOf(['ASC', 'DESC'] as const),
-    }),
-    data: PropTypes.any,
-    isLoading: PropTypes.bool,
-    pagination: PropTypes.element,
-    reference: PropTypes.string,
-    setSort: PropTypes.func,
 };
 
 const defaultFilter = {};

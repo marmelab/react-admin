@@ -25,7 +25,7 @@ describe('<EditGuesser />', () => {
             getMany: () => Promise.resolve({ data: [] }),
         };
         render(
-            <ThemeProvider theme={{}}>
+            <ThemeProvider>
                 <CoreAdminContext dataProvider={dataProvider as any}>
                     <EditGuesser resource="comments" id={123} enableLog />
                 </CoreAdminContext>

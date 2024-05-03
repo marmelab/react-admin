@@ -91,6 +91,7 @@ export const CoreAdmin = (props: CoreAdminProps) => {
         dashboard,
         dataProvider,
         disableTelemetry,
+        error,
         i18nProvider,
         queryClient,
         layout,
@@ -117,6 +118,7 @@ export const CoreAdmin = (props: CoreAdminProps) => {
                 catchAll={catchAll}
                 title={title}
                 loading={loading}
+                error={error}
                 loginPage={loginPage}
                 requireAuth={requireAuth}
                 ready={ready}

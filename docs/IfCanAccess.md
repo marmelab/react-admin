@@ -5,7 +5,7 @@ title: "IfCanAccess"
 
 # `<IfCanAccess>`
 
-This component, part of [the ra-rbac module](https://marmelab.com/ra-enterprise/modules/ra-rbac#ifcanaccess)<img class="icon" src="./img/premium.svg" />, renders its child only if the user has the right permissions.
+This component, part of [the ra-rbac module](https://react-admin-ee.marmelab.com/documentation/ra-rbac#ifcanaccess)<img class="icon" src="./img/premium.svg" />, renders its child only if the user has the right permissions.
 
 ## Usage
 

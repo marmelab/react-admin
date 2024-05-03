@@ -39,7 +39,7 @@ class InferredElement {
 
     getRepresentation() {
         if (!this.type) {
-            return;
+            return '';
         }
         if (this.type.representation) {
             return this.type.representation(this.props, this.children);
@@ -49,6 +49,7 @@ class InferredElement {
                 this.type.component.displayName || this.type.component.name
             } source="${this.props.source}" />`;
         }
+        return '';
     }
 }
 
