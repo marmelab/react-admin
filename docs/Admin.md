@@ -548,43 +548,28 @@ Here is an example of a custom error component:
 
 ```jsx
 // in src/MyError.js
-import * as React from 'react';
 import Button from '@mui/material/Button';
-import ErrorIcon from '@mui/icons-material/Report';
-import History from '@mui/icons-material/History';
-import { useLocation } from 'react-router-dom';
+import { useResetErrorBoundaryOnLocationChange } from 'react-admin';
 
 export const MyError = ({
     error,
     resetErrorBoundary,
     errorInfo,
 }) => {
-    const { pathname } = useLocation();
-    const originalPathname = useRef(pathname);
-
-    // Effect that resets the error state whenever the location changes
-    useEffect(() => {
-        if (pathname !== originalPathname.current) {
-            resetErrorBoundary();
-        }
-    }, [pathname, resetErrorBoundary]);
+    useResetErrorBoundaryOnLocationChange(errorBoundary);
 
     return (
         <div>
-            <h1><ErrorIcon /> Something Went Wrong </h1>
+            <h1>Something Went Wrong </h1>
             <div>A client error occurred and your request couldn't be completed.</div>
             {process.env.NODE_ENV !== 'production' && (
                 <details>
-                    <h2>{error.toString()}</h2>
+                    <h2>{error.message}</h2>
                     {errorInfo.componentStack}
                 </details>
             )}
             <div>
-                <Button
-                    variant="contained"
-                    startIcon={<History />}
-                    onClick={() => history.go(-1)}
-                >
+                <Button onClick={() => history.go(-1)}>
                     Back
                 </Button>
             </div>
