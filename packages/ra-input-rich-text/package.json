@@ -42,8 +42,8 @@
         "@mui/material": "^5.15.15",
         "ra-core": "^4.0.0",
         "ra-ui-materialui": "^4.0.0",
-        "react": "^16.9.0 || ^17.0.0 || ^18.0.0",
-        "react-dom": "^16.9.0 || ^17.0.0 || ^18.0.0"
+        "react": "^18.0.0",
+        "react-dom": "^18.0.0"
     },
     "devDependencies": {
         "@mui/icons-material": "^5.15.15",

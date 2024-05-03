@@ -52,8 +52,8 @@
         "zod": "^3.22.1"
     },
     "peerDependencies": {
-        "react": "^16.9.0 || ^17.0.0 || ^18.0.0",
-        "react-dom": "^16.9.0 || ^17.0.0 || ^18.0.0",
+        "react": "^18.0.0",
+        "react-dom": "^18.0.0",
         "react-hook-form": "^7.43.9",
         "react-router": "^6.22.0",
         "react-router-dom": "^6.22.0"
