@@ -5,7 +5,15 @@ title: "Upgrading to v5"
 
 # Upgrading to v5
 
-## React 18
+React-admin v5 mostly focuses on removing deprecated features and upgrading dependencies. This makes the upgrade process easier than previous versions. However, there are still some breaking changes you should be aware of.
+
+## IE11 Is No Longer Supported
+
+React-admin v5 uses React 18, which dropped support for Internet Explorer. If you need to support IE11, you'll have to stay on react-admin v4.
+
+## Dependencies
+
+### React 18
 
 React-admin v5 uses React 18. If you use react-admin as a library in your own application, you'll have to upgrade to React 18 as well.
 
@@ -23,11 +31,7 @@ The React team has published a [migration guide](https://react.dev/blog/2022/03/
 
 React 18 adds out-of-the-box performance improvements by doing more batching by default.
 
-## IE11 Is No Longer Supported
-
-React-admin v5 uses React 18, which dropped support for Internet Explorer. If you need to support IE11, you'll have to stay on react-admin v4.
-
-## Use `@tanstack/react-query` instead of `react-query`
+### Use `@tanstack/react-query` instead of `react-query`
 
 React-admin now uses `react-query` v5 instead of v3. The library name has changed to `@tanstack/react-query` (but it's almost the same API).
 
@@ -92,7 +96,7 @@ All react-query hooks, `queryClient` and `queryCache` methods now accept a singl
 + queryCache.findAll({ queryKey, ...filters })
 ```
 
-### Codemod
+#### Codemod
 
 Fortunately, React Query comes with [codemods](https://tanstack.com/query/latest/docs/react/guides/migrating-to-v5#codemod) to make the migration easier.
 
@@ -133,9 +137,9 @@ Here are the available codemods you may need to run on your codebase:
 
 Check out React Query [codemod documentation](https://tanstack.com/query/latest/docs/react/guides/migrating-to-v5#codemod) for more information.
 
-## Upgraded dependencies
+### Minor Dependencies
 
-The main dependencies of react-admin have been upgraded to their latest major:
+Some dependencies of react-admin have been upgraded to their latest major:
 
 - [date-fns](https://www.npmjs.com/package/date-fns) from v2 to v3
 - [inflection](https://www.npmjs.com/package/inflection) from v1 to v3
@@ -146,7 +150,151 @@ The main dependencies of react-admin have been upgraded to their latest major:
 
 Each of these major versions comes with some breaking changes. You should check their respective changelogs to see if you need to update your code.
 
-## `<Admin menu>` Is No Longer Supported
+If you use these dependencies in your own application, make sure you use similar versions to avoid bundling them twice in your application.
+
+## UI Changes
+
+### Inputs Have Full Width By Default
+
+In the default theme, all inputs now have full width. This makes forms better looking by default, and facilitates custom form layouts as you can nest inputs under `<Grid>`.
+
+If this breaks your existing form layouts, you can revert to the previous style by resetting the `fullWidth` default prop in the application theme. To do so:
+
+- If you didn't use a custom theme, create one based on the default theme:
+
+```diff
+-import { Admin } from 'react-admin';
++import { Admin, defaultTheme } from 'react-admin';
++import { deepmerge } from '@mui/utils';
+import { dataProvider } from './dataProvider';
+
++const theme = deepmerge(defaultTheme, {
++   components: { 
++       MuiFormControl: { defaultProps: { fullWidth: undefined } },
++       MuiTextField: { defaultProps: { fullWidth: undefined } },
++       MuiAutocomplete: { defaultProps: { fullWidth: undefined } },
++       RaSimpleFormIterator: { defaultProps: { fullWidth: undefined } },
++       RaTranslatableInputs: { defaultProps: { fullWidth: undefined } },
++   }
++});
+
+const MyApp = () => (
+-   <Admin dataProvider={dataProvider}>
++   <Admin dataProvider={dataProvider} theme={theme}>
+        ...
+    </Admin>
+);
+```
+
+- If you used a custom theme, update it to include the following lines:
+
+```diff
+const myTheme = {
+    // ...
+    components: {
+        // ...
++       MuiFormControl: { defaultProps: { fullWidth: undefined } },
++       MuiTextField: { defaultProps: { fullWidth: undefined } },
++       MuiAutocomplete: { defaultProps: { fullWidth: undefined } },
++       RaSimpleFormIterator: { defaultProps: { fullWidth: undefined } },
++       RaTranslatableInputs: { defaultProps: { fullWidth: undefined } },
+    },
+};
+```
+
+### Links are now underlined by default
+
+In the default theme, links are now underlined by default.
+
+If you use the `<Link>` component from `react-admin`, and you want to remove the underline, set the `underline` prop to `none`:
+
+```diff
+import { Link } from 'react-admin';
+
+const MyComponent = () => (
+-   <Link to="/foo">Foo</Link>
++   <Link to="/foo" underline="none">Foo</Link>
+);
+```
+
+Some react-admin component use `<Link>` under the hood, and will also render underlined links:
+
+- `<Count>`
+- `<EmailField>`
+- `<FileField>`
+- `<ReferenceField>`
+- `<ReferenceManyCount>`
+- `<UrlField>`
+
+`<SingleFieldList>` still disables the underline by default.
+
+To remove the underline in these components, use the `sx` prop. For instance, to remove the underline in `<ReferenceField>`:
+
+{% raw %}
+```diff
+const CompanyField = () => (
+-   <ReferenceField source="company_id" reference="companies" />
++   <ReferenceField source="company_id" reference="companies" sx={{
++      '& a': { textDecoration: 'none' }
++   }} />
+)
+```
+{% endraw %}
+
+### Dark Theme Is Available By Default
+
+In addition to the light theme, React-admin v5 includes a [dark theme](https://marmelab.com/react-admin/AppTheme.html#light-and-dark-themes), renders a theme switcher in the app bar, and chooses the default theme based on the user OS preferences.
+
+If you don't need the dark mode feature, you'll have to explicitly disable it:
+
+```diff
+-<Admin>
++<Admin darkTheme={null}>
+   ...
+</Admin>
+```
+
+## Data Provider
+
+### `ra-data-graphql` And `ra-data-graphql-simple` No Longer Return A Promise
+
+The Graphql data providers builders used to return a promise that made admins initialization complicated. This is no longer needed.
+
+```diff
+// in App.js
+import React from 'react';
+import { Component } from 'react';
+import buildGraphQLProvider from 'ra-data-graphql-simple';
+import { Admin, Resource } from 'react-admin';
+
+import { PostCreate, PostEdit, PostList } from './posts';
+
++ const dataProvider = buildGraphQLProvider({ clientOptions: { uri: 'http://localhost:4000' } });
+
+const App = () => {
+-    const [dataProvider, setDataProvider] = React.useState(null);
+-    React.useEffect(() => {
+-        buildGraphQLProvider({ clientOptions: { uri: 'http://localhost:4000' } })
+-            .then(graphQlDataProvider => setDataProvider(() => graphQlDataProvider));
+-    }, []);
+
+-    if (!dataProvider) {
+-        return <div>Loading < /div>;
+-    }
+
+    return (
+        <Admin dataProvider={dataProvider} >
+            <Resource name="Post" list={PostList} edit={PostEdit} create={PostCreate} />
+        </Admin>
+    );
+}
+
+export default App;
+```
+
+## Application Root & Layout 
+
+### `<Admin menu>` Is No Longer Supported
 
 The `<Admin menu>` prop was deprecated since 4.0. It's no longer supported. If you want to customize the application menu, you'll have to do it in a custom Layout instead:
 
@@ -167,7 +315,97 @@ const App = () => (
 );
 ```
 
-## Custom Layout No Longer Receives Props
+### `<Admin history>` Prop Was Removed
+
+The `<Admin history>` prop was deprecated since version 4. It is no longer supported.
+
+The most common use-case for this prop was inside unit tests (and stories), to pass a `MemoryRouter` and control the `initialEntries`.
+
+To that purpose, `react-admin` now exports a `TestMemoryHistory` component that you can use in your tests:
+
+```diff
+import { render, screen } from '@testing-library/react';
+-import { createMemoryHistory } from 'history';
+-import { CoreAdminContext } from 'react-admin';
++import { CoreAdminContext, TestMemoryRouter } from 'react-admin';
+import * as React from 'react';
+
+describe('my test suite', () => {
+    it('my test', async () => {
+-       const history = createMemoryHistory({ initialEntries: ['/'] });
+        render(
++           <TestMemoryRouter initialEntries={['/']}>
+-             <CoreAdminContext history={history}>
++             <CoreAdminContext>
+                <div>My Component</div>
+              </CoreAdminContext>
++           </TestMemoryRouter>
+        );
+        await screen.findByText('My Component');
+    });
+});
+```
+
+#### Codemod
+
+To help you migrate your tests, we've created a codemod that will replace the `<Admin history>` prop with the `<TestMemoryRouter>` component.
+
+> **DISCLAIMER**
+>
+> This codemod was used to migrate the react-admin test suite, but it was never designed to cover all cases, and was not tested against other code bases. You can try using it as basis to see if it helps migrating your code base, but please review the generated changes thoroughly!
+>
+> Applying the codemod might break your code formatting, so please don't forget to run `prettier` and/or `eslint` after you've applied the codemod!
+
+For `.js` or `.jsx` files:
+
+```sh
+npx jscodeshift ./path/to/src/ \
+    --extensions=js,jsx \
+    --transform=./node_modules/ra-core/codemods/replace-Admin-history.ts
+```
+
+For `.ts` or `.tsx` files:
+
+```sh
+npx jscodeshift ./path/to/src/ \
+    --extensions=ts,tsx \
+    --parser=tsx \
+    --transform=./node_modules/ra-core/codemods/replace-Admin-history.ts
+```
+
+### `<HistoryRouter>` Was Removed
+
+Along with the removal of the `<Admin history>` prop, we also removed the (undocumented) `<HistoryRouter>` component.
+
+Just like for `<Admin history>`, the most common use-case for this component was inside unit tests (and stories), to control the `initialEntries`.
+
+Here too, you can use `TestMemoryHistory` as a replacement:
+
+```diff
+import { render, screen } from '@testing-library/react';
+-import { createMemoryHistory } from 'history';
+-import { CoreAdminContext, HistoryRouter } from 'react-admin';
++import { CoreAdminContext, TestMemoryRouter } from 'react-admin';
+import * as React from 'react';
+
+describe('my test suite', () => {
+    it('my test', async () => {
+-       const history = createMemoryHistory({ initialEntries: ['/'] });
+        render(
+-           <HistoryRouter history={history}>            
++           <TestMemoryRouter initialEntries={['/']}>
+              <CoreAdminContext>
+                <div>My Component</div>
+              </CoreAdminContext>
+-           </HistoryRouter>
++           </TestMemoryRouter>
+        );
+        await screen.findByText('My Component');
+    });
+});
+```
+
+### Custom Layout No Longer Receives Props
 
 React-admin used to inject 4 props to [custom layouts](https://marmelab.com/react-admin/Admin.html#layout): `children`, `dashboard`, `menu`, and `title`. In react-admin v5, only the `children` prop is injected.
 
@@ -208,7 +446,7 @@ const App = () => (
 );
 ```
 
-## Custom App Bars No Longer Receive Props
+### Custom App Bars No Longer Receive Props
 
 React-admin used to inject 2 props to [custom app bars](https://marmelab.com/react-admin/Layout.html#appbar): `open`, and `title`. These deprecated props are no longer injected in v5. If you need them, you'll have to use hooks:
 
@@ -227,7 +465,7 @@ const MyLayout = ({ children }) => (
 );
 ```
 
-## Custom Menu No Longer Receive Props
+### Custom Menu No Longer Receive Props
 
 React-admin used to inject one prop to [custom menus](https://marmelab.com/react-admin/Layout.html#menu): `hasDashboard`. This deprecated prop is no longer injected in v5. If you need it, you'll have to use the `useHasDashboard` hook instead:
 
@@ -245,7 +483,7 @@ const MyLayout = ({ children }) => (
 );
 ```
 
-## Custom Error Page No Longer Receives Title
+### Custom Error Page No Longer Receives Title
 
 React-admin injects several props to [custom error pages](https://marmelab.com/react-admin/Layout.html#error), including the default app `title`. This prop is no longer injected in v5. If you need it, you'll have to use the `useDefaultTitle` hook instead:
 
@@ -263,7 +501,7 @@ const MyLayout = ({ children }) => (
 );
 ```
 
-## Custom Catch All No Longer Receives Title
+### Custom Catch All No Longer Receives Title
 
 React-admin used to inject the default app `title` to [custom catch all pages](https://marmelab.com/react-admin/Admin.html#catchall). This prop is no longer injected in v5. If you need it, you'll have to use the `useDefaultTitle` hook instead:
 
@@ -283,33 +521,55 @@ const App = () => (
 );
 ```
 
-## Custom Edit or Show Actions No Longer Receive Any Props
+## List Components
 
-React-admin used to inject the `record` and `resource` props to custom edit or show actions. These props are no longer injected in v5. If you need them, you'll have to use the `useRecordContext` and `useResourceContext` hooks instead. But if you use the standard react-admin buttons like `<ShowButton>`, which already uses these hooks, you don't need inject anything.
+### List Components Can No Longer Be Used In Standalone
+
+An undocumented feature allowed some components designed for list pages to be used outside of a list page, by relying on their props instead of the `ListContext`. This feature was removed in v5.
+
+This concerns the following components:
+
+- `<BulkActionsToolbar>`
+- `<BulkDeleteWithConfirmButton>`
+- `<BulkDeleteWithUndoButton>`
+- `<BulkExportButton>`
+- `<BulkUpdateWithConfirmButton>`
+- `<BulkUpdateWithUndoButton>`
+- `<EditActions>`
+- `<ExportButton>`
+- `<FilterButton>`
+- `<FilterForm>`
+- `<ListActions>`
+- `<Pagination>`
+- `<UpdateWithConfirmButton>`
+- `<UpdateWithUndoButton>`
+
+To continue using these components, you'll have to wrap them in a `<ListContextProvider>` component:
 
 ```diff
--const MyEditActions = ({ data }) => (
-+const MyEditActions = () => (
-    <TopToolbar>
--       <ShowButton record={data} />
-+       <ShowButton />
-    </TopToolbar>
-);
-
-const PostEdit = () => (
-    <Edit actions={<MyEditActions />} {...props}>
-        ...
-    </Edit>
-);
+const MyPagination = ({
+    page,
+    perPage,
+    total,
+    setPage,
+    setPerPage,
+}) => {
+    return (
+-       <Pagination page={page} perPage={perPage} total={total} setPage={setPage} setPerPage={setPerPage} />
++       <ListContextProvider value={{ page, perPage, total, setPage, setPerPage }}>
++           <Pagination />
++       </ListContextProvider>
+    );
+};
 ```
 
-## Removed deprecated hooks
+The following components are not affected and can still be used in standalone mode:
 
-The following deprecated hooks have been removed
+- `<Datagrid>`
+- `<SimpleList>`
+- `<SingleFieldList>`
 
-- `usePermissionsOptimized`. Use `usePermissions` instead.
-
-## `<List hasCreate>` Is No Longer Supported
+### `<List hasCreate>` Is No Longer Supported
 
 To force a List view to display a Create button even though the corresponding resource doesn't have a `create` component, pass a custom actions component to the List component:
 
@@ -325,7 +585,7 @@ const PostList = () => (
 );
 ```
 
-## `<Datagrid rowClick>` is no longer `false` by default
+### `<Datagrid rowClick>` is no longer `false` by default
 
 `<Datagrid>` will now make the rows clickable as soon as a Show or Edit view is declared on the resource (using the [resource definition](https://marmelab.com/react-admin/Resource.html)).
 
@@ -338,7 +598,47 @@ If you previously relied on the fact that the rows were not clickable by default
 </Datagrid>
 ```
 
-## Updates to `bulkActionButtons` Syntax
+### `<Datagrid expand>` Components No Longer Receive Any Props
+
+An undocumented features allowed datagrid expand panels to read the current resource, record, and id from their props. This is no longer the case in v5, as expand panels are now rendered without props by `<Datagrid>`. 
+
+If you used these props in your expand components, you'll have to use the `useRecordContext` hook instead:
+
+```diff
+-const PostExpandPanel = ({ record, resource, id }) => {
++const PostExpandPanel = () => {
++   const record = useRecordContext();
++   const resource = useResourceContext();
++   const id = record?.id;
+    // ...
+}
+```
+
+### `setFilters` Is No Longer Debounced By Default
+
+If you're using the `useListContext` hook to filter a list, you might have used the `setFilters` function to update the filters. In react-admin v5, the `setFilters` function is no longer debounced by default. If you want to debounce the filters, you'll have to pass `true` as the third argument:
+
+```diff
+import { useListContext } from 'react-admin';
+
+const MyFilter = () => {
+    const { filterValues, setFilters } = useListContext();
+    const handleChange = (event) => {
+-       setFilters({ ...filterValues, [event.target.name]: event.target.value });
++       setFilters({ ...filterValues, [event.target.name]: event.target.value }, undefined, true);
+    };
+
+    return (
+        <form>
+            <input name="country" value={filterValues.country} onChange={handleChange} />
+            <input name="city" value={filterValues.city} onChange={handleChange} />
+            <input name="zipcode" value={filterValues.zipcode} onChange={handleChange} />
+        </form>
+    );
+};
+```
+
+### Updates to `bulkActionButtons` Syntax
 
 The `bulkActionButtons` prop has been moved from the `<List>` component to the `<Datagrid>` component. 
 
@@ -389,152 +689,73 @@ Besides, the buttons passed as `bulkActionButtons` no longer receive any prop. I
 };
 ```
 
-## Dark Theme Is Available By Default
+### `<PaginationLimit>` Component Was Removed
 
-In addition to the light theme, React-admin v5 includes a [dark theme](https://marmelab.com/react-admin/AppTheme.html#light-and-dark-themes), renders a theme switcher in the app bar, and chooses the default theme based on the user OS preferences.
+The deprecated `<PaginationLimit>` component was removed.
 
-If you don't need the dark mode feature, you'll have to explicitly disable it:
+## Show and Edit Pages
 
-```diff
--<Admin>
-+<Admin darkTheme={null}>
-   ...
-</Admin>
-```
+### Custom Edit or Show Actions No Longer Receive Any Props
 
-## Inputs Have Full Width By Default
-
-In the default theme, all inputs now have full width. This makes forms better looking by default, and facilitates custom form layouts as you can nest inputs under `<Grid>`.
-
-If this breaks your existing form layouts, you can revert to the previous style by resetting the `fullWidth` default prop in the application theme. To do so:
-
-- If you didn't use a custom theme, create one based on the default theme:
+React-admin used to inject the `record` and `resource` props to custom edit or show actions. These props are no longer injected in v5. If you need them, you'll have to use the `useRecordContext` and `useResourceContext` hooks instead. But if you use the standard react-admin buttons like `<ShowButton>`, which already uses these hooks, you don't need inject anything.
 
 ```diff
--import { Admin } from 'react-admin';
-+import { Admin, defaultTheme } from 'react-admin';
-+import { deepmerge } from '@mui/utils';
-import { dataProvider } from './dataProvider';
+-const MyEditActions = ({ data }) => (
++const MyEditActions = () => (
+    <TopToolbar>
+-       <ShowButton record={data} />
++       <ShowButton />
+    </TopToolbar>
+);
 
-+const theme = deepmerge(defaultTheme, {
-+   components: { 
-+       MuiFormControl: { defaultProps: { fullWidth: undefined } },
-+       MuiTextField: { defaultProps: { fullWidth: undefined } },
-+       MuiAutocomplete: { defaultProps: { fullWidth: undefined } },
-+       RaSimpleFormIterator: { defaultProps: { fullWidth: undefined } },
-+       RaTranslatableInputs: { defaultProps: { fullWidth: undefined } },
-+   }
-+});
-
-const MyApp = () => (
--   <Admin dataProvider={dataProvider}>
-+   <Admin dataProvider={dataProvider} theme={theme}>
+const PostEdit = () => (
+    <Edit actions={<MyEditActions />} {...props}>
         ...
-    </Admin>
+    </Edit>
 );
 ```
 
-- If you used a custom theme, update it to include the following lines:
+### Inputs default ids are auto-generated
+
+In previous versions, the input default id was the source of the input. In v5, inputs defaults ids are auto-generated with [React useId()](https://react.dev/reference/react/useId).
+
+**Tip:** You still can pass an id as prop of any [react-admin input](./Inputs.md) or use a [reference](https://fr.react.dev/reference/react/useRef).
+
+If you were using inputs ids in your tests, you should pass your own id to the dedicated input.
+
+### `<SimpleFormIterator>` No Longer Clones Its Buttons
+
+`<SimpleFormIterator>` used to clones the add, remove and reorder buttons and inject some props to them such as `onClick` and `className`.
+If you relied on those props in your custom buttons, you should now leverage the following hooks:
+
+- `useSimpleFormIterator` for buttons that are not tied to an item such as the add button.
 
 ```diff
-const myTheme = {
-    // ...
-    components: {
-        // ...
-+       MuiFormControl: { defaultProps: { fullWidth: undefined } },
-+       MuiTextField: { defaultProps: { fullWidth: undefined } },
-+       MuiAutocomplete: { defaultProps: { fullWidth: undefined } },
-+       RaSimpleFormIterator: { defaultProps: { fullWidth: undefined } },
-+       RaTranslatableInputs: { defaultProps: { fullWidth: undefined } },
-    },
-};
+- import { Button, ButtonProps } from 'react-admin';
++ import { Button, ButtonProps, useSimpleFormIterator } from 'react-admin';
+
+export const MyAddButton = (props: ButtonProps) => {
++    const { add } = useSimpleFormIterator();
+-    return <Button {...props}>Add</Button>;
++    return <Button {...props} onClick={() => add()}>Add</Button>;
+}
 ```
 
-## Links are now underlined by default
-
-In the default theme, links are now underlined by default.
-
-If you use the `<Link>` component from `react-admin`, and you want to remove the underline, set the `underline` prop to `none`:
+- `useSimpleFormIteratorItem` for buttons that are tied to an item such as the remove and reorder buttons.
 
 ```diff
-import { Link } from 'react-admin';
+- import { Button, ButtonProps } from 'react-admin';
++ import { Button, ButtonProps, useSimpleFormIteratorItem } from 'react-admin';
 
-const MyComponent = () => (
--   <Link to="/foo">Foo</Link>
-+   <Link to="/foo" underline="none">Foo</Link>
-);
+export const MyRemoveButton = (props: ButtonProps) => {
++    const { remove } = useSimpleFormIteratorItem();
+-    return <Button {...props}>Add</Button>;
++    return <Button {...props} onClick={() => remove()}>Add</Button>;
+}
 ```
 
-Some react-admin component use `<Link>` under the hood, and will also render underlined links:
 
-- `<Count>`
-- `<EmailField>`
-- `<FileField>`
-- `<ReferenceField>`
-- `<ReferenceManyCount>`
-- `<UrlField>`
-
-`<SingleFieldList>` still disables the underline by default.
-
-To remove the underline in these components, use the `sx` prop. For instance, to remove the underline in `<ReferenceField>`:
-
-{% raw %}
-```diff
-const CompanyField = () => (
--   <ReferenceField source="company_id" reference="companies" />
-+   <ReferenceField source="company_id" reference="companies" sx={{
-+      '& a': { textDecoration: 'none' }
-+   }} />
-)
-```
-{% endraw %}
-
-## `useTheme` no longer accepts a theme object as an optional argument
-
-The useTheme hook no longer accepts a `RaTheme` object as an argument to return a `RaTheme` object; instead, it now only takes an optional default value for the theme **preference** (`ThemeType`, like `"light"` and `"dark"`), and returns the current theme **preference** (`ThemeType`, like `"light"` and `"dark"`) and a setter for the **preference**.
-
-If you're using a theme object to have `useTheme` determine the default value it should use, you should pass the value instead:
-
-```diff
-const myThemeObject = {
-    ...
-    palette: {
-        type: "light",
-        ...
-    }
-    ...
-};
-
-- const [themeObject, setTheme] = useTheme(myThemeObject)
-+ const [themePreference, setTheme] = useTheme(myThemeObject.palette.type)
-// Alternatively
-+ const [themePreference, setTheme] = const useTheme("light")
-// Alternatively, since you usually don't need a default value for the theme preference
-+ const [themePreference, setTheme] = useTheme();
-```
-
-## `ToggleThemeButton` no longer accepts themes as props
-
-In previous versions, `<ToggleThemeButton>` used to accept `lighTheme` and `darkTheme` props. These props are no longer supported in v5. Instead, you should set the themes in the `<Admin>` component. And by the way, react-admin is smart enough to include the `ToggleThemeButton` in the app bar if you set the themes in `<Admin>`, so you probably don't need to include the button manually anymore. 
-
-```diff
--import { Admin, Layout, AppBar, ToggleThemeButton } from 'react-admin';
-+import { Admin } from 'react-admin';
-import { dataProvider } from './dataProvider';
-import { lightTheme, darkTheme } from './themes';
-
--const MyAppBar = () => <AppBar toolbar={<ToggleThemeButton lightTheme={lightTheme} darkTheme={darkTheme} />} />
--const MyLayout = (props) => <Layout {...props} appBar={<MyAppBar />} />;
-
-const App = () => (
--   <Admin dataProvider={dataProvider} layout={MyLayout}>
-+   <Admin dataProvider={dataProvider} lightTheme={lightTheme} darkTheme={darkTheme}>
-       ...
-    </Admin>
-);
-```
-
-## `<SimpleFormIterator>` no longer clones its children
+### `<SimpleFormIterator>` no longer clones its children
 
 We've changed the implementation of `<SimpleFormIterator>`, the companion child of `<ArrayInput>`. This internal change is mostly backwards compatible, with one exception: defining the `disabled` prop on the `<ArrayInput>` component does not disable the children inputs anymore. If you relied on this behavior, you now have to specify the `disabled` prop on each input:
 
@@ -549,23 +770,7 @@ We've changed the implementation of `<SimpleFormIterator>`, the companion child 
 </ArrayInput>
 ```
 
-## `<Datagrid expand>` Components No Longer Receive Any Props
-
-An undocumented features allowed datagrid expand panels to read the current resource, record, and id from their props. This is no longer the case in v5, as expand panels are now rendered without props by `<Datagrid>`. 
-
-If you used these props in your expand components, you'll have to use the `useRecordContext` hook instead:
-
-```diff
--const PostExpandPanel = ({ record, resource, id }) => {
-+const PostExpandPanel = () => {
-+   const record = useRecordContext();
-+   const resource = useResourceContext();
-+   const id = record?.id;
-    // ...
-}
-```
-
-## `<FormDataConsumer>` no longer passes a `getSource` function
+### `<FormDataConsumer>` no longer passes a `getSource` function
 
 When using `<FormDataConsumer>` inside an `<ArrayInput>`, the child function no longer receives a `getSource` callback. We've made all Input components able to work seamlessly inside an `<ArrayInput>`, so it's no longer necessary to transform their source with `getSource`:
 
@@ -600,53 +805,7 @@ const PostEdit = () => (
 );
 ```
 
-## `setFilters` Is No Longer Debounced By Default
-
-If you're using the `useListContext` hook to filter a list, you might have used the `setFilters` function to update the filters. In react-admin v5, the `setFilters` function is no longer debounced by default. If you want to debounce the filters, you'll have to pass `true` as the third argument:
-
-```diff
-import { useListContext } from 'react-admin';
-
-const MyFilter = () => {
-    const { filterValues, setFilters } = useListContext();
-    const handleChange = (event) => {
--       setFilters({ ...filterValues, [event.target.name]: event.target.value });
-+       setFilters({ ...filterValues, [event.target.name]: event.target.value }, undefined, true);
-    };
-
-    return (
-        <form>
-            <input name="country" value={filterValues.country} onChange={handleChange} />
-            <input name="city" value={filterValues.city} onChange={handleChange} />
-            <input name="zipcode" value={filterValues.zipcode} onChange={handleChange} />
-        </form>
-    );
-};
-```
-
-## Fields Components Requires The `source` Prop
-
-The `FieldProps` interface now requires the `source` prop to be defined. As a consequence, all the default fields components also require the `source` prop to be defined.
-This impacts custom fields that typed their props with the `FieldProps` interface. If your custom field is not meant to be used in a `<Datagrid>`, you may declare the `source` prop optional:
-
-```diff
-import { FieldProps, useRecordContext } from 'react-admin';
-
--const AvatarField = (props: FieldProps) => {
-+const AvatarField = (props: Omit<FieldProps, 'source'>) => {
-    const record = useRecordContext();
-    if (!record) return null;
-    return (
-        <Avatar
-            src={record.avatar}
-            alt={`${record.first_name} ${record.last_name}`}
-            {...props}
-        />
-    );
-}
-```
-
-## `warnWhenUnsavedChanges` Changes
+### `warnWhenUnsavedChanges` Changes
 
 The `warnWhenUnsavedChanges` feature is a little more restrictive than before:
 
@@ -694,97 +853,53 @@ root.render(
 
 **Tip:** Check out the [Migrating to RouterProvider](https://reactrouter.com/en/main/upgrading/v6-data) documentation to learn more about the migration steps and impacts.
 
-## `<Admin history>` Prop Was Removed
+### Inputs No Longer Require To Be Touched To Display A Validation Error
 
-The `<Admin history>` prop was deprecated since version 4. It is no longer supported.
+In previous versions, validation errors were only displayed after the input was touched or the form was submitted. In v5, validation errors are fully entrusted to the form library (`react-hook-form`), which is responsible to decide when to display them.
 
-The most common use-case for this prop was inside unit tests (and stories), to pass a `MemoryRouter` and control the `initialEntries`.
+**Tip:** You can use the [`mode`](https://react-hook-form.com/docs/useform#mode) prop to configure the validation strategy to your needs (`onSubmit`, `onBlur`, `onChange`, or `onTouched`).
 
-To that purpose, `react-admin` now exports a `TestMemoryHistory` component that you can use in your tests:
+For most use-cases this will have no impact, because `react-hook-form` works the same way (it will wait for an input to be touched before triggering its validation).
 
-```diff
-import { render, screen } from '@testing-library/react';
--import { createMemoryHistory } from 'history';
--import { CoreAdminContext } from 'react-admin';
-+import { CoreAdminContext, TestMemoryRouter } from 'react-admin';
-import * as React from 'react';
+But this should help with some advanced cases, for instance if some validation errors need to be displayed on untouched fields.
 
-describe('my test suite', () => {
-    it('my test', async () => {
--       const history = createMemoryHistory({ initialEntries: ['/'] });
-        render(
-+           <TestMemoryRouter initialEntries={['/']}>
--             <CoreAdminContext history={history}>
-+             <CoreAdminContext>
-                <div>My Component</div>
-              </CoreAdminContext>
-+           </TestMemoryRouter>
-        );
-        await screen.findByText('My Component');
-    });
-});
-```
+It will also improve the user experience, as the form `isValid` state will be consistent with error messages displayed on inputs, regardless of whether they have been touched or not.
 
-### Codemod
+### `<InputHelperText touched>` Prop Was Removed
 
-To help you migrate your tests, we've created a codemod that will replace the `<Admin history>` prop with the `<TestMemoryRouter>` component.
+The `<InputHelperText>` component no longer accepts a `touched` prop. This prop was used to display validation errors only if the input was touched. This behavior is now handled by `react-hook-form`.
 
-> **DISCLAIMER**
->
-> This codemod was used to migrate the react-admin test suite, but it was never designed to cover all cases, and was not tested against other code bases. You can try using it as basis to see if it helps migrating your code base, but please review the generated changes thoroughly!
->
-> Applying the codemod might break your code formatting, so please don't forget to run `prettier` and/or `eslint` after you've applied the codemod!
+If you were using this prop, you can safely remove it.
 
-For `.js` or `.jsx` files:
 
-```sh
-npx jscodeshift ./path/to/src/ \
-    --extensions=js,jsx \
-    --transform=./node_modules/ra-core/codemods/replace-Admin-history.ts
-```
+## TypeScript
 
-For `.ts` or `.tsx` files:
+React-admin now compiles with `strictNullChecks`. This means that an application based on react-admin v4 will probably not compile immediately with react-admin v5. This will force you to update your codebase, but that's for the best: it will make your code more robust and less error-prone.
 
-```sh
-npx jscodeshift ./path/to/src/ \
-    --extensions=ts,tsx \
-    --parser=tsx \
-    --transform=./node_modules/ra-core/codemods/replace-Admin-history.ts
-```
+### Fields Components Requires The `source` Prop
 
-## `<HistoryRouter>` Was Removed
-
-Along with the removal of the `<Admin history>` prop, we also removed the (undocumented) `<HistoryRouter>` component.
-
-Just like for `<Admin history>`, the most common use-case for this component was inside unit tests (and stories), to control the `initialEntries`.
-
-Here too, you can use `TestMemoryHistory` as a replacement:
+The `FieldProps` interface now requires the `source` prop to be defined. As a consequence, all the default fields components also require the `source` prop to be defined.
+This impacts custom fields that typed their props with the `FieldProps` interface. If your custom field is not meant to be used in a `<Datagrid>`, you may declare the `source` prop optional:
 
 ```diff
-import { render, screen } from '@testing-library/react';
--import { createMemoryHistory } from 'history';
--import { CoreAdminContext, HistoryRouter } from 'react-admin';
-+import { CoreAdminContext, TestMemoryRouter } from 'react-admin';
-import * as React from 'react';
+import { FieldProps, useRecordContext } from 'react-admin';
 
-describe('my test suite', () => {
-    it('my test', async () => {
--       const history = createMemoryHistory({ initialEntries: ['/'] });
-        render(
--           <HistoryRouter history={history}>            
-+           <TestMemoryRouter initialEntries={['/']}>
-              <CoreAdminContext>
-                <div>My Component</div>
-              </CoreAdminContext>
--           </HistoryRouter>
-+           </TestMemoryRouter>
-        );
-        await screen.findByText('My Component');
-    });
-});
+-const AvatarField = (props: FieldProps) => {
++const AvatarField = (props: Omit<FieldProps, 'source'>) => {
+    const record = useRecordContext();
+    if (!record) return null;
+    return (
+        <Avatar
+            src={record.avatar}
+            alt={`${record.first_name} ${record.last_name}`}
+            {...props}
+        />
+    );
+}
 ```
 
-## TypeScript: `useRecordContext` Returns `undefined` When No Record Is Available
+
+### `useRecordContext` Returns `undefined` When No Record Is Available
 
 The `useRecordContext` hook reads the current record from the `RecordContext`. This context may be empty (e.g. while the record is being fetched). The return type for `useRecordContext` has been modified to `Record | undefined` instead of `Record` to denote this possibility.
 
@@ -805,7 +920,7 @@ const MyComponent = () => {
 };
 ```
 
-## TypeScript: Page Contexts Are Now Types Instead of Interfaces
+### Page Contexts Are Now Types Instead of Interfaces
 
 The return type of page controllers is now a type. If you were using an interface extending one of:
 
@@ -826,7 +941,7 @@ import { ListControllerResult } from 'react-admin';
 };
 ```
 
-## TypeScript: Stronger Types For Page Contexts
+### Stronger Types For Page Contexts
 
 The return type of page context hooks is now smarter. This concerns the following hooks:
 
@@ -861,7 +976,7 @@ const MyCustomList = () => {
 
 Besides, these hooks will now throw an error when called outside of a page context. This means that you can't use them in a custom component that is not a child of a `<List>`, `<ListBase>`, `<Edit>`, `<EditBase>`, `<Show>`, `<ShowBase>`, `<Create>`, or `<CreateBase>` component.
 
-## TypeScript: `EditProps` and `CreateProps` now expect a `children` prop
+### `EditProps` and `CreateProps` now expect a `children` prop
 
 `EditProps` and `CreateProps` now expect a `children` prop, just like `ListProps` and `ShowProps`. If you were using these types in your custom components, you'll have to update them:
 
@@ -873,75 +988,33 @@ Besides, these hooks will now throw an error when called outside of a page conte
             ...
 ```
 
-## TypeScript: `BulkActionProps` Type Has Been Removed
+### `BulkActionProps` Type Has Been Removed
 
 The `BulkActionProps` has been removed as it did not contain any prop. You can safely remove it from your custom bulk actions.
 
-## List Components Can No Longer Be Used In Standalone
+### `onError` Type From `ra-core` Was Removed
 
-An undocumented feature allowed some components designed for list pages to be used outside of a list page, by relying on their props instead of the `ListContext`. This feature was removed in v5.
+The `onError` type from `ra-core` was removed. Use `OnError` instead.
 
-This concerns the following components:
+### `PublicFieldProps` Interface Was Removed
 
-- `<BulkActionsToolbar>`
-- `<BulkDeleteWithConfirmButton>`
-- `<BulkDeleteWithUndoButton>`
-- `<BulkExportButton>`
-- `<BulkUpdateWithConfirmButton>`
-- `<BulkUpdateWithUndoButton>`
-- `<EditActions>`
-- `<ExportButton>`
-- `<FilterButton>`
-- `<FilterForm>`
-- `<ListActions>`
-- `<Pagination>`
-- `<UpdateWithConfirmButton>`
-- `<UpdateWithUndoButton>`
+`PublicFieldProps` interface has been removed. Use `FieldProps` instead.
 
-To continue using these components, you'll have to wrap them in a `<ListContextProvider>` component:
+### `InjectedFieldProps` Interface Was Removed
 
-```diff
-const MyPagination = ({
-    page,
-    perPage,
-    total,
-    setPage,
-    setPerPage,
-}) => {
-    return (
--       <Pagination page={page} perPage={perPage} total={total} setPage={setPage} setPerPage={setPerPage} />
-+       <ListContextProvider value={{ page, perPage, total, setPage, setPerPage }}>
-+           <Pagination />
-+       </ListContextProvider>
-    );
-};
-```
+`InjectedFieldProps` interface has been removed. Use `FieldProps` instead.
 
-The following components are not affected and can still be used in standalone mode:
+### `formClassName` Prop Of `FieldProps` Type Was Removed
 
-- `<Datagrid>`
-- `<SimpleList>`
-- `<SingleFieldList>`
+The deprecated `formClassName` prop of `FieldProps` type has been removed as it is no longer used.
 
-## Inputs No Longer Require To Be Touched To Display A Validation Error
+### `formClassName` Prop Of `CommonInputProps` Type Was Removed
 
-In previous versions, validation errors were only displayed after the input was touched or the form was submitted. In v5, validation errors are fully entrusted to the form library (`react-hook-form`), which is responsible to decide when to display them.
+The deprecated `formClassName` prop of `CommonInputProps` type has been removed as it is no longer used.
 
-**Tip:** You can use the [`mode`](https://react-hook-form.com/docs/useform#mode) prop to configure the validation strategy to your needs (`onSubmit`, `onBlur`, `onChange`, or `onTouched`).
+## Authentication
 
-For most use-cases this will have no impact, because `react-hook-form` works the same way (it will wait for an input to be touched before triggering its validation).
-
-But this should help with some advanced cases, for instance if some validation errors need to be displayed on untouched fields.
-
-It will also improve the user experience, as the form `isValid` state will be consistent with error messages displayed on inputs, regardless of whether they have been touched or not.
-
-## `<InputHelperText touched>` Prop Was Removed
-
-The `<InputHelperText>` component no longer accepts a `touched` prop. This prop was used to display validation errors only if the input was touched. This behavior is now handled by `react-hook-form`.
-
-If you were using this prop, you can safely remove it.
-
-## `useCheckAuth` No Longer Accepts A `disableNotification` Param
+### `useCheckAuth` No Longer Accepts A `disableNotification` Param
 
 The `useCheckAuth` hook no longer accepts the deprecated `disableNotification` param. To disable the "Authentication required" notification when calling `checkAuth`, `authProvider.checkAuth()` should return a rejected promise with the value `{ message: false }`:
 
@@ -952,7 +1025,7 @@ const authProvider: AuthProvider = {
 }
 ```
 
-## `useLogoutIfAccessDenied` No Longer Accepts A `disableNotification` Param
+### `useLogoutIfAccessDenied` No Longer Accepts A `disableNotification` Param
 
 The `useLogoutIfAccessDenied` hook no longer accepts the deprecated `disableNotification` param. To disable the "Authentication required" notification when `checkError` is called, `authProvider.checkError()` should return a rejected promise with the value `{ message: false }`:
 
@@ -969,35 +1042,70 @@ Or the `useLogoutIfAccessDenied` hook could be called with an error param as fol
 const logoutIfAccessDenied = useLogoutIfAccessDenied();
 logoutIfAccessDenied(new Error('Denied'));
 ```
-## `onError` Type From `ra-core` Was Removed
 
-The `onError` type from `ra-core` was removed. Use `OnError` instead.
+### `usePermissionsOptimized` Hook Was Removed
 
-## `linkToRecord` Helper Was Removed
+The `usePermissionsOptimized` hooks was deprecated and has been removed. Use `usePermissions` instead.
+
+## Routing
+
+### `linkToRecord` Helper Was Removed
 
 The `linkToRecord` helper was removed. Use [`useCreatePath`](https://marmelab.com/react-admin/Routing.html#linking-to-a-page) instead.
 
-## `resolveRedirectTo` Helper Was Removed
+### `resolveRedirectTo` Helper Was Removed
 
 The `resolveRedirectTo` helper was removed. Use [`useCreatePath`](./Routing.html#linking-to-a-page) instead.
 
-## `formClassName` Prop Of `FieldProps` Type Was Removed
 
-The deprecated `formClassName` prop of `FieldProps` type has been removed as it is no longer used.
+## Theming
 
-## `formClassName` Prop Of `CommonInputProps` Type Was Removed
+### `useTheme` no longer accepts a theme object as an optional argument
 
-The deprecated `formClassName` prop of `CommonInputProps` type has been removed as it is no longer used.
+The useTheme hook no longer accepts a `RaTheme` object as an argument to return a `RaTheme` object; instead, it now only takes an optional default value for the theme **preference** (`ThemeType`, like `"light"` and `"dark"`), and returns the current theme **preference** (`ThemeType`, like `"light"` and `"dark"`) and a setter for the **preference**.
 
-## `PublicFieldProps` Interface Was Removed
+If you're using a theme object to have `useTheme` determine the default value it should use, you should pass the value instead:
 
-`PublicFieldProps` interface has been removed. Use `FieldProps` instead.
+```diff
+const myThemeObject = {
+    ...
+    palette: {
+        type: "light",
+        ...
+    }
+    ...
+};
 
-## `InjectedFieldProps` Interface Was Removed
+- const [themeObject, setTheme] = useTheme(myThemeObject)
++ const [themePreference, setTheme] = useTheme(myThemeObject.palette.type)
+// Alternatively
++ const [themePreference, setTheme] = const useTheme("light")
+// Alternatively, since you usually don't need a default value for the theme preference
++ const [themePreference, setTheme] = useTheme();
+```
 
-`InjectedFieldProps` interface has been removed. Use `FieldProps` instead.
+### `ToggleThemeButton` no longer accepts themes as props
 
-## `<ThemeProvider theme>` Is No Longer Supported
+In previous versions, `<ToggleThemeButton>` used to accept `lighTheme` and `darkTheme` props. These props are no longer supported in v5. Instead, you should set the themes in the `<Admin>` component. And by the way, react-admin is smart enough to include the `ToggleThemeButton` in the app bar if you set the themes in `<Admin>`, so you probably don't need to include the button manually anymore. 
+
+```diff
+-import { Admin, Layout, AppBar, ToggleThemeButton } from 'react-admin';
++import { Admin } from 'react-admin';
+import { dataProvider } from './dataProvider';
+import { lightTheme, darkTheme } from './themes';
+
+-const MyAppBar = () => <AppBar toolbar={<ToggleThemeButton lightTheme={lightTheme} darkTheme={darkTheme} />} />
+-const MyLayout = (props) => <Layout {...props} appBar={<MyAppBar />} />;
+
+const App = () => (
+-   <Admin dataProvider={dataProvider} layout={MyLayout}>
++   <Admin dataProvider={dataProvider} lightTheme={lightTheme} darkTheme={darkTheme}>
+       ...
+    </Admin>
+);
+```
+
+### `<ThemeProvider theme>` Is No Longer Supported
 
 The deprecated `<ThemeProvider theme>` prop was removed. Use the `ThemesContext.Provider` instead:
 
@@ -1024,88 +1132,15 @@ The deprecated `<ThemeProvider theme>` prop was removed. Use the `ThemesContext.
  };
 ```
 
-## `<PaginationLimit>` Component Was Removed
 
-The deprecated `<PaginationLimit>` component was removed.
+## Misc
 
-## `data-generator-retail` `commands` Have Been Renamed to `orders`
+### `data-generator-retail` `commands` Have Been Renamed to `orders`
 
 The `data-generator-retail` package has been updated to provide types for all its records. In the process, we renamed the `commands` resource to `orders`. Accordingly, the `nb_commands` property of the `customers` resource has been renamed to `nb_orders` and the `command_id` property of the `invoices` and `reviews` resources has been renamed to `order_id`.
 
-## Inputs default ids are auto-generated
 
-In previous versions, the input default id was the source of the input. In v5, inputs defaults ids are auto-generated with [React useId()](https://react.dev/reference/react/useId).
 
-**Tip:** You still can pass an id as prop of any [react-admin input](./Inputs.md) or use a [reference](https://fr.react.dev/reference/react/useRef).
-
-If you were using inputs ids in your tests, you should pass your own id to the dedicated input.
-
-## `<SimpleFormIterator>` No Longer Clones Its Buttons
-
-`<SimpleFormIterator>` used to clones the add, remove and reorder buttons and inject some props to them such as `onClick` and `className`.
-If you relied on those props in your custom buttons, you should now leverage the following hooks:
-
-- `useSimpleFormIterator` for buttons that are not tied to an item such as the add button.
-
-```diff
-- import { Button, ButtonProps } from 'react-admin';
-+ import { Button, ButtonProps, useSimpleFormIterator } from 'react-admin';
-
-export const MyAddButton = (props: ButtonProps) => {
-+    const { add } = useSimpleFormIterator();
--    return <Button {...props}>Add</Button>;
-+    return <Button {...props} onClick={() => add()}>Add</Button>;
-}
-```
-
-- `useSimpleFormIteratorItem` for buttons that are tied to an item such as the remove and reorder buttons.
-
-```diff
-- import { Button, ButtonProps } from 'react-admin';
-+ import { Button, ButtonProps, useSimpleFormIteratorItem } from 'react-admin';
-
-export const MyRemoveButton = (props: ButtonProps) => {
-+    const { remove } = useSimpleFormIteratorItem();
--    return <Button {...props}>Add</Button>;
-+    return <Button {...props} onClick={() => remove()}>Add</Button>;
-}
-```
-
-## `ra-data-graphql` And `ra-data-graphql-simple` No Longer Return A Promise
-
-The Graphql data providers builders used to return a promise that made admins initialization complicated. This is no longer needed.
-
-```diff
-// in App.js
-import React from 'react';
-import { Component } from 'react';
-import buildGraphQLProvider from 'ra-data-graphql-simple';
-import { Admin, Resource } from 'react-admin';
-
-import { PostCreate, PostEdit, PostList } from './posts';
-
-+ const dataProvider = buildGraphQLProvider({ clientOptions: { uri: 'http://localhost:4000' } });
-
-const App = () => {
--    const [dataProvider, setDataProvider] = React.useState(null);
--    React.useEffect(() => {
--        buildGraphQLProvider({ clientOptions: { uri: 'http://localhost:4000' } })
--            .then(graphQlDataProvider => setDataProvider(() => graphQlDataProvider));
--    }, []);
-
--    if (!dataProvider) {
--        return <div>Loading < /div>;
--    }
-
-    return (
-        <Admin dataProvider={dataProvider} >
-            <Resource name="Post" list={PostList} edit={PostEdit} create={PostCreate} />
-        </Admin>
-    );
-}
-
-export default App;
-```
 
 ## Upgrading to v4
 
