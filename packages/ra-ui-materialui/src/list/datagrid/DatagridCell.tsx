@@ -8,7 +8,7 @@ const DatagridCell = React.forwardRef<HTMLTableCellElement, DatagridCellProps>(
     ({ className, field, record, resource, ...rest }, ref) => (
         <TableCell
             className={clsx(className, field.props.cellClassName)}
-            align={field.props.textAlign}
+            align={field.props.textAlign || field.type.textAlign}
             ref={ref}
             {...rest}
         >
