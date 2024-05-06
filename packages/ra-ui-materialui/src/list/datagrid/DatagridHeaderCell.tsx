@@ -45,7 +45,8 @@ export const DatagridHeaderCell = (
                 <Tooltip
                     title={sortLabel}
                     placement={
-                        field.props.textAlign === 'right'
+                        field.props.textAlign === 'right' ||
+                        field.type.textAlign === 'right'
                             ? 'bottom-end'
                             : 'bottom-start'
                     }
