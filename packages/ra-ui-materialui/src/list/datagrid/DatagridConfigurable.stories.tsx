@@ -39,8 +39,7 @@ const data = [
     },
 ];
 
-const AuthorField = () => <TextField source="author" />;
-AuthorField.defaultProps = { label: 'Author' };
+const AuthorField = () => <TextField label="Author" source="author" />;
 
 const theme = createTheme();
 

@@ -122,15 +122,17 @@ export interface FieldProps<
      *
      * @see https://marmelab.com/react-admin/Fields.html#textalign
      * @example
-     * const BasketTotal = () => {
-     *     const record = useRecordContext();
-     *     if (!record) return null;
-     *     const total = record.items.reduce((total, item) => total + item.price, 0);
-     *     return <span>{total}</span>;
-     * }
-     * BasketTotal.defaultProps = {
-     *     textAlign: 'right',
-     * };
+     * import { List, Datagrid, TextField } from 'react-admin';
+     * const PostList = () => (
+     *     <List>
+     *         <Datagrid>
+     *             <TextField source="id" />
+     *             <TextField source="title" />
+     *             <TextField source="author" />
+     *             <TextField source="year" textAlign="right" />
+     *         </Datagrid>
+     *     </List>
+     * );
      */
     textAlign?: TextAlign;
 

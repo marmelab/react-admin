@@ -106,11 +106,10 @@ NumberFieldImpl.propTypes = {
 
 // what? TypeScript loses the displayName if we don't set it explicitly
 NumberFieldImpl.displayName = 'NumberFieldImpl';
-NumberFieldImpl.defaultProps = {
-    textAlign: 'right',
-};
 
 export const NumberField = genericMemo(NumberFieldImpl);
+// @ts-expect-error This is a hack that replaces react support for defaultProps. We currently need this for the Datagrid.
+NumberField.textAlign = 'right';
 
 export interface NumberFieldProps<
     RecordType extends Record<string, any> = Record<string, any>

@@ -99,6 +99,9 @@ export const ReferenceManyCount = <RecordType extends RaRecord = RaRecord>(
     );
 };
 
+// This is a hack that replaces react support for defaultProps. We currently need this for the Datagrid.
+ReferenceManyCount.textAlign = 'right';
+
 export interface ReferenceManyCountProps<RecordType extends RaRecord = RaRecord>
     extends FieldProps<RecordType>,
         Omit<TypographyProps, 'textAlign'> {

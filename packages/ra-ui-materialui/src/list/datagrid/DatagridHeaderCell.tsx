@@ -34,17 +34,19 @@ export const DatagridHeaderCell = (
     return (
         <StyledTableCell
             className={clsx(className, field.props.headerClassName)}
-            align={field.props.textAlign}
+            align={field.props.textAlign || field.type.textAlign}
             variant="head"
             {...rest}
         >
             {updateSort &&
             field.props.sortable !== false &&
+            field.type.sortable !== false &&
             (field.props.sortBy || field.props.source) ? (
                 <Tooltip
                     title={sortLabel}
                     placement={
-                        field.props.textAlign === 'right'
+                        field.props.textAlign === 'right' ||
+                        field.type.textAlign === 'right'
                             ? 'bottom-end'
                             : 'bottom-start'
                     }
