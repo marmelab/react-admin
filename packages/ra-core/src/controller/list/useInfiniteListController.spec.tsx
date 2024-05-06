@@ -7,8 +7,6 @@ import {
     screen,
     act,
 } from '@testing-library/react';
-// TODO: we shouldn't import mui components in ra-core
-import { TextField } from '@mui/material';
 
 import { testDataProvider } from '../../dataProvider';
 import { memoryStore } from '../../store';
@@ -126,11 +124,8 @@ describe('useInfiniteListController', () => {
 
     describe('setFilters', () => {
         let childFunction = ({ setFilters, filterValues }) => (
-            // TODO: we shouldn't import mui components in ra-core
-            <TextField
-                inputProps={{
-                    'aria-label': 'search',
-                }}
+            <input
+                aria-label="search"
                 type="text"
                 value={filterValues.q || ''}
                 onChange={event => {
