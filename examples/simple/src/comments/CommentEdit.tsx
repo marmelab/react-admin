@@ -49,6 +49,8 @@ const LinkToRelatedPost = () => {
 
 const OptionRenderer = (props: any) => {
     const record = useRecordContext();
+    if (!record) return null;
+
     return record.id === '@@ra-create' ? (
         <div {...props}>{record.name}</div>
     ) : (

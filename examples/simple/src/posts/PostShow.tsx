@@ -27,6 +27,7 @@ import PostTitle from './PostTitle';
 
 const CreateRelatedComment = () => {
     const record = useRecordContext();
+    if (!record) return null;
     return (
         <CloneButton
             resource="comments"

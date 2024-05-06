@@ -1,5 +1,7 @@
+import { AuthProvider } from 'react-admin';
+
 // Authenticated by default
-export default {
+const authProvider: AuthProvider = {
     login: ({ username, password }) => {
         if (username === 'login' && password === 'password') {
             localStorage.removeItem('not_authenticated');
@@ -60,10 +62,16 @@ export default {
         return Promise.resolve(role ?? '');
     },
     getIdentity: () => {
+        const id = localStorage.getItem('login');
+        if (!id) {
+            return Promise.reject();
+        }
         return Promise.resolve({
-            id: localStorage.getItem('login'),
-            fullName: localStorage.getItem('user'),
-            avatar: localStorage.getItem('avatar'),
+            id,
+            fullName: localStorage.getItem('user') ?? '',
+            avatar: localStorage.getItem('avatar') ?? '',
         });
     },
 };
+
+export default authProvider;
