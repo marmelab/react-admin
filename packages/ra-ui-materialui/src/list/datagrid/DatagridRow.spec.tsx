@@ -43,9 +43,10 @@ const render = element =>
 describe('<DatagridRow />', () => {
     const defaultProps = {
         id: 15,
-        record: { id: 15, title: 'hello' },
         resource: 'posts',
     };
+
+    const defaultRecord = { id: 15, title: 'hello' };
 
     describe('isRowExpandable', () => {
         it('should show the expand button if it returns true', () => {
@@ -53,13 +54,15 @@ describe('<DatagridRow />', () => {
 
             const { queryAllByText, getByText } = render(
                 <DatagridContextProvider value={contextValue}>
-                    <DatagridRow
-                        {...defaultProps}
-                        rowClick="expand"
-                        expand={<ExpandPanel />}
-                    >
-                        <TitleField />
-                    </DatagridRow>
+                    <RecordContextProvider value={defaultRecord}>
+                        <DatagridRow
+                            {...defaultProps}
+                            rowClick="expand"
+                            expand={<ExpandPanel />}
+                        >
+                            <TitleField />
+                        </DatagridRow>
+                    </RecordContextProvider>
                 </DatagridContextProvider>
             );
             expect(queryAllByText('expanded')).toHaveLength(0);
@@ -72,13 +75,15 @@ describe('<DatagridRow />', () => {
 
             const { queryAllByText, getByText } = render(
                 <DatagridContextProvider value={contextValue}>
-                    <DatagridRow
-                        {...defaultProps}
-                        rowClick="expand"
-                        expand={<ExpandPanel />}
-                    >
-                        <TitleField />
-                    </DatagridRow>
+                    <RecordContextProvider value={defaultRecord}>
+                        <DatagridRow
+                            {...defaultProps}
+                            rowClick="expand"
+                            expand={<ExpandPanel />}
+                        >
+                            <TitleField />
+                        </DatagridRow>
+                    </RecordContextProvider>
                 </DatagridContextProvider>
             );
             expect(queryAllByText('expanded')).toHaveLength(0);
@@ -97,9 +102,11 @@ describe('<DatagridRow />', () => {
             let spy = jest.fn();
             render(
                 <LocationSpy spy={spy}>
-                    <DatagridRow {...defaultProps} rowClick="edit">
-                        <TitleField />
-                    </DatagridRow>
+                    <RecordContextProvider value={defaultRecord}>
+                        <DatagridRow {...defaultProps} rowClick="edit">
+                            <TitleField />
+                        </DatagridRow>
+                    </RecordContextProvider>
                 </LocationSpy>
             );
             fireEvent.click(screen.getByText('hello'));
@@ -112,9 +119,11 @@ describe('<DatagridRow />', () => {
             let spy = jest.fn();
             render(
                 <LocationSpy spy={spy}>
-                    <DatagridRow {...defaultProps} rowClick="show">
-                        <TitleField />
-                    </DatagridRow>
+                    <RecordContextProvider value={defaultRecord}>
+                        <DatagridRow {...defaultProps} rowClick="show">
+                            <TitleField />
+                        </DatagridRow>
+                    </RecordContextProvider>
                 </LocationSpy>
             );
             fireEvent.click(screen.getByText('hello'));
@@ -125,13 +134,15 @@ describe('<DatagridRow />', () => {
 
         it("should change the expand state if the 'expand' option is selected", () => {
             render(
-                <DatagridRow
-                    {...defaultProps}
-                    rowClick="expand"
-                    expand={<ExpandPanel />}
-                >
-                    <TitleField />
-                </DatagridRow>
+                <RecordContextProvider value={defaultRecord}>
+                    <DatagridRow
+                        {...defaultProps}
+                        rowClick="expand"
+                        expand={<ExpandPanel />}
+                    >
+                        <TitleField />
+                    </DatagridRow>
+                </RecordContextProvider>
             );
             expect(screen.queryAllByText('expanded')).toHaveLength(0);
             fireEvent.click(screen.getByText('hello'));
@@ -143,13 +154,15 @@ describe('<DatagridRow />', () => {
         it("should execute the onToggleItem function if the 'toggleSelection' option is selected", () => {
             const onToggleItem = jest.fn();
             const { getByText } = render(
-                <DatagridRow
-                    {...defaultProps}
-                    onToggleItem={onToggleItem}
-                    rowClick="toggleSelection"
-                >
-                    <TitleField />
-                </DatagridRow>
+                <RecordContextProvider value={defaultRecord}>
+                    <DatagridRow
+                        {...defaultProps}
+                        onToggleItem={onToggleItem}
+                        rowClick="toggleSelection"
+                    >
+                        <TitleField />
+                    </DatagridRow>
+                </RecordContextProvider>
             );
             fireEvent.click(getByText('hello'));
             expect(onToggleItem.mock.calls.length).toEqual(1);
@@ -158,14 +171,16 @@ describe('<DatagridRow />', () => {
         it('should not execute the onToggleItem function if the row is not selectable', () => {
             const onToggleItem = jest.fn();
             const { getByText } = render(
-                <DatagridRow
-                    {...defaultProps}
-                    selectable={false}
-                    onToggleItem={onToggleItem}
-                    rowClick="toggleSelection"
-                >
-                    <TitleField />
-                </DatagridRow>
+                <RecordContextProvider value={defaultRecord}>
+                    <DatagridRow
+                        {...defaultProps}
+                        selectable={false}
+                        onToggleItem={onToggleItem}
+                        rowClick="toggleSelection"
+                    >
+                        <TitleField />
+                    </DatagridRow>
+                </RecordContextProvider>
             );
             fireEvent.click(getByText('hello'));
             expect(onToggleItem).not.toHaveBeenCalled();
@@ -176,9 +191,11 @@ describe('<DatagridRow />', () => {
             let spy = jest.fn();
             render(
                 <LocationSpy spy={spy}>
-                    <DatagridRow {...defaultProps} rowClick={path}>
-                        <TitleField />
-                    </DatagridRow>
+                    <RecordContextProvider value={defaultRecord}>
+                        <DatagridRow {...defaultProps} rowClick={path}>
+                            <TitleField />
+                        </DatagridRow>
+                    </RecordContextProvider>
                 </LocationSpy>
             );
             fireEvent.click(screen.getByText('hello'));
@@ -192,9 +209,14 @@ describe('<DatagridRow />', () => {
             let spy = jest.fn();
             render(
                 <LocationSpy spy={spy}>
-                    <DatagridRow {...defaultProps} rowClick={customRowClick}>
-                        <TitleField />
-                    </DatagridRow>
+                    <RecordContextProvider value={defaultRecord}>
+                        <DatagridRow
+                            {...defaultProps}
+                            rowClick={customRowClick}
+                        >
+                            <TitleField />
+                        </DatagridRow>
+                    </RecordContextProvider>
                 </LocationSpy>
             );
             fireEvent.click(screen.getByText('hello'));
@@ -210,9 +232,11 @@ describe('<DatagridRow />', () => {
             let spy = jest.fn();
             render(
                 <LocationSpy spy={spy}>
-                    <DatagridRow {...defaultProps} rowClick={false}>
-                        <TitleField />
-                    </DatagridRow>
+                    <RecordContextProvider value={defaultRecord}>
+                        <DatagridRow {...defaultProps} rowClick={false}>
+                            <TitleField />
+                        </DatagridRow>
+                    </RecordContextProvider>
                 </LocationSpy>
             );
             fireEvent.click(screen.getByText('hello'));
@@ -225,9 +249,11 @@ describe('<DatagridRow />', () => {
             let spy = jest.fn();
             render(
                 <LocationSpy spy={spy}>
-                    <DatagridRow {...defaultProps} rowClick="">
-                        <TitleField />
-                    </DatagridRow>
+                    <RecordContextProvider value={defaultRecord}>
+                        <DatagridRow {...defaultProps} rowClick="">
+                            <TitleField />
+                        </DatagridRow>
+                    </RecordContextProvider>
                 </LocationSpy>
             );
             fireEvent.click(screen.getByText('hello'));
@@ -245,9 +271,11 @@ describe('<DatagridRow />', () => {
                             posts: { name: 'posts', hasEdit: true },
                         }}
                     >
-                        <DatagridRow {...defaultProps}>
-                            <TitleField />
-                        </DatagridRow>
+                        <RecordContextProvider value={defaultRecord}>
+                            <DatagridRow {...defaultProps}>
+                                <TitleField />
+                            </DatagridRow>
+                        </RecordContextProvider>
                     </ResourceDefinitionContextProvider>
                 </LocationSpy>
             );
@@ -266,9 +294,11 @@ describe('<DatagridRow />', () => {
                             posts: { name: 'posts', hasShow: true },
                         }}
                     >
-                        <DatagridRow {...defaultProps}>
-                            <TitleField />
-                        </DatagridRow>
+                        <RecordContextProvider value={defaultRecord}>
+                            <DatagridRow {...defaultProps}>
+                                <TitleField />
+                            </DatagridRow>
+                        </RecordContextProvider>
                     </ResourceDefinitionContextProvider>
                 </LocationSpy>
             );
@@ -291,9 +321,11 @@ describe('<DatagridRow />', () => {
                             },
                         }}
                     >
-                        <DatagridRow {...defaultProps}>
-                            <TitleField />
-                        </DatagridRow>
+                        <RecordContextProvider value={defaultRecord}>
+                            <DatagridRow {...defaultProps}>
+                                <TitleField />
+                            </DatagridRow>
+                        </RecordContextProvider>
                     </ResourceDefinitionContextProvider>
                 </LocationSpy>
             );
@@ -316,7 +348,7 @@ describe('<DatagridRow />', () => {
                             },
                         }}
                     >
-                        <RecordContextProvider value={defaultProps.record}>
+                        <RecordContextProvider value={defaultRecord}>
                             <DatagridRow {...rest}>
                                 <TitleField />
                             </DatagridRow>
