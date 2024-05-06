@@ -16,7 +16,8 @@ The `<SimpleForm>` creates a `<form>` to edit a record, and renders its children
 `<SimpleForm>` is often used as child of `<Create>` or `<Edit>`. It accepts Input and Field components as children. It relies on [react-hook-form](https://react-hook-form.com/) for form handling. It requires no prop by default.
 
 ```jsx
-import { Create, SimpleForm, TextInput, RichTextInput, NumberInput } from 'react-admin';
+import { Create, SimpleForm, TextInput, NumberInput } from 'react-admin';
+import { RichTextInput } from 'ra-input-rich-text';
 
 export const PostCreate = () => (
     <Create>
@@ -689,7 +690,7 @@ Check [the RBAC `<SimpleForm>` component](./AuthRBAC.md#simpleform) documentatio
 
 ## Versioning
 
-By default, `<SimpleForm>` updates the current record (via `dataProvider.update()`), so the previous version of the record is lost. If you want to keep the previous version, you can use the [`<SimpleFormWithRevision>`](https://marmelab.com/ra-enterprise/modules/ra-history#simpleformwithrevision) component instead:
+By default, `<SimpleForm>` updates the current record (via `dataProvider.update()`), so the previous version of the record is lost. If you want to keep the previous version, you can use the [`<SimpleFormWithRevision>`](https://react-admin-ee.marmelab.com/documentation/ra-history#simpleformwithrevision) component instead:
 
 ```diff
 // in src/posts/PostCreate.js
@@ -712,12 +713,12 @@ export const PostCreate = () => (
 
 This won't change the look and feel of the form. But when the user submits the form, they will see a dialog asking them for the reason of the change.
 
-![SimpleFormWithRevision](https://marmelab.com/ra-enterprise/modules/assets/ra-history/latest/SimpleFormWithRevision.png)
+![SimpleFormWithRevision](https://react-admin-ee.marmelab.com/assets/ra-history/latest/SimpleFormWithRevision.png)
 
-After submitting this dialog, react-admin will update the main record and **create a new revision**. A revision represents the state of the record at a given point in time. It is immutable. A revision also records the date, author, and reason of the change. Past revisions can be accessed via the [`<RevisionsButton>`](https://marmelab.com/ra-enterprise/modules/ra-history#revisionsbutton) component.
+After submitting this dialog, react-admin will update the main record and **create a new revision**. A revision represents the state of the record at a given point in time. It is immutable. A revision also records the date, author, and reason of the change. Past revisions can be accessed via the [`<RevisionsButton>`](https://react-admin-ee.marmelab.com/documentation/ra-history#revisionsbutton) component.
 
 <video controls autoplay playsinline muted loop>
-  <source src="https://marmelab.com/ra-enterprise/modules/assets/RevisionsButton.mp4" type="video/mp4"/>
+  <source src="https://react-admin-ee.marmelab.com/assets/RevisionsButton.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
@@ -746,7 +747,7 @@ export const PostEdit = () => (
 );
 ```
 
-Check the [`<SimpleFormWithRevision>`](https://marmelab.com/ra-enterprise/modules/ra-history#simpleformwithrevision) and [`<RevisionsButton>`](https://marmelab.com/ra-enterprise/modules/ra-history#revisionsbutton) documentation for more details.
+Check the [`<SimpleFormWithRevision>`](https://react-admin-ee.marmelab.com/documentation/ra-history#simpleformwithrevision) and [`<RevisionsButton>`](https://react-admin-ee.marmelab.com/documentation/ra-history#revisionsbutton) documentation for more details.
 
 ## Linking Two Inputs
 

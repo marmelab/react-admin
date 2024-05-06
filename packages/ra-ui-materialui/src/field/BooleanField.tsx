@@ -1,10 +1,9 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
-import { SvgIconComponent } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import DoneIcon from '@mui/icons-material/Done';
 import ClearIcon from '@mui/icons-material/Clear';
-import { Tooltip, Typography, TypographyProps } from '@mui/material';
+import { Tooltip, Typography, TypographyProps, SvgIcon } from '@mui/material';
 import { useTranslate, useFieldValue } from 'ra-core';
 import { genericMemo } from './genericMemo';
 import { FieldProps, fieldPropTypes } from './types';
@@ -99,8 +98,8 @@ export interface BooleanFieldProps<
         Omit<TypographyProps, 'textAlign'> {
     valueLabelTrue?: string;
     valueLabelFalse?: string;
-    TrueIcon?: SvgIconComponent | null;
-    FalseIcon?: SvgIconComponent | null;
+    TrueIcon?: typeof SvgIcon | null;
+    FalseIcon?: typeof SvgIcon | null;
     looseValue?: boolean;
 }
 

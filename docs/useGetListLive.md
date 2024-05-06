@@ -5,7 +5,7 @@ title: "useGetListLive"
 
 # `useGetListLive`
 
-This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> hook, alternative to [`useGetList`](./useGetList.md), subscribes to live updates on the record list.
+This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" /> hook, alternative to [`useGetList`](./useGetList.md), subscribes to live updates on the record list.
 
 ## Usage
 

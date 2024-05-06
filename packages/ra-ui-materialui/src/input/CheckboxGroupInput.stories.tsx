@@ -2,7 +2,8 @@ import * as React from 'react';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
 import { Typography } from '@mui/material';
-import { FavoriteBorder, Favorite } from '@mui/icons-material';
+import FavoriteBorder from '@mui/icons-material/FavoriteBorder';
+import Favorite from '@mui/icons-material/Favorite';
 import { required, testDataProvider, useRecordContext } from 'ra-core';
 import { useFormContext } from 'react-hook-form';
 

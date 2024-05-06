@@ -1,12 +1,5 @@
 import * as React from 'react';
-import {
-    cloneElement,
-    MouseEvent,
-    MouseEventHandler,
-    ReactElement,
-    ReactNode,
-    useMemo,
-} from 'react';
+import { ReactElement, ReactNode, useMemo } from 'react';
 import { Typography, Stack } from '@mui/material';
 import clsx from 'clsx';
 import {
@@ -41,7 +34,6 @@ export const SimpleFormIteratorItem = React.forwardRef(
             record,
             removeButton = <DefaultRemoveItemButton />,
             reOrderButtons = <DefaultReOrderButtons />,
-            source,
         } = props;
         const resource = useResourceContext(props);
         if (!resource) {
@@ -59,17 +51,6 @@ export const SimpleFormIteratorItem = React.forwardRef(
                 return disableRemove;
             }
             return disableRemove && disableRemove(record);
-        };
-
-        // remove field and call the onClick event of the button passed as removeButton prop
-        const handleRemoveButtonClick = (
-            originalOnClickHandler: MouseEventHandler,
-            index: number
-        ) => (event: MouseEvent) => {
-            remove(index);
-            if (originalOnClickHandler) {
-                originalOnClickHandler(event);
-            }
         };
 
         const context = useMemo<SimpleFormIteratorItemContextValue>(
@@ -138,28 +119,9 @@ export const SimpleFormIteratorItem = React.forwardRef(
                     </SourceContextProvider>
                     {!disabled && (
                         <span className={SimpleFormIteratorClasses.action}>
-                            {!disableReordering &&
-                                cloneElement(reOrderButtons, {
-                                    index,
-                                    max: total,
-                                    reOrder,
-                                    className: clsx(
-                                        'button-reorder',
-                                        `button-reorder-${source}-${index}`
-                                    ),
-                                })}
+                            {!disableReordering && reOrderButtons}
 
-                            {!disableRemoveField(record) &&
-                                cloneElement(removeButton, {
-                                    onClick: handleRemoveButtonClick(
-                                        removeButton.props.onClick,
-                                        index
-                                    ),
-                                    className: clsx(
-                                        'button-remove',
-                                        `button-remove-${source}-${index}`
-                                    ),
-                                })}
+                            {!disableRemoveField(record) && removeButton}
                         </span>
                     )}
                 </li>

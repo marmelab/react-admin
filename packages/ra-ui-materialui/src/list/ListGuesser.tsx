@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
-import inflection from 'inflection';
+
 import {
     ListBase,
     getElementsFromRecords,
@@ -15,6 +15,7 @@ import { useLocation } from 'react-router';
 import { ListProps } from './List';
 import { ListView, ListViewProps } from './ListView';
 import { listFieldTypes } from './listFieldTypes';
+import { capitalize, singularize } from 'inflection';
 
 /**
  * List component rendering a <Datagrid> based on the result of the
@@ -139,9 +140,7 @@ const ListViewGuesser = (
 
 import { ${components.join(', ')} } from 'react-admin';
 
-export const ${inflection.capitalize(
-                        inflection.singularize(resource)
-                    )}List = () => (
+export const ${capitalize(singularize(resource))}List = () => (
     <List>
 ${inferredChild.getRepresentation()}
     </List>

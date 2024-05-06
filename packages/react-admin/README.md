@@ -167,7 +167,7 @@ And then browse to the URL displayed in your console.
 
 ## Support
 
-You can get professional support from Marmelab via [React-Admin Enterprise Edition](https://marmelab.com/ra-enterprise), or community support via [StackOverflow](https://stackoverflow.com/questions/tagged/react-admin). 
+You can get professional support from Marmelab via [React-Admin Enterprise Edition](https://react-admin-ee.marmelab.com), or community support via [StackOverflow](https://stackoverflow.com/questions/tagged/react-admin). 
 
 ## Versions In This Repository
 

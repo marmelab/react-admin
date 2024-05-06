@@ -8,6 +8,7 @@ import {
     LoadingPage,
     NotFound,
     Notification,
+    Error,
 } from './layout';
 import { Login, AuthCallback } from './auth';
 
@@ -18,6 +19,7 @@ export const AdminUI = ({
     loginPage = Login,
     authCallbackPage = AuthCallback,
     notification = Notification,
+    error = Error,
     ...props
 }: AdminUIProps) => (
     <ScopedCssBaseline enableColorScheme>
@@ -27,6 +29,7 @@ export const AdminUI = ({
             loading={loading}
             loginPage={loginPage}
             authCallbackPage={authCallbackPage}
+            error={error}
             {...props}
         />
         {createElement(notification)}

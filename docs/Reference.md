@@ -34,7 +34,7 @@ title: "Index"
 * [`<CheckForApplicationUpdate>`](./CheckForApplicationUpdate.md)
 * [`<ChipField>`](./ChipField.md)
 * [`<CloneButton>`](./CloneButton.md)
-* [`<CompleteCalendar>`](https://marmelab.com/ra-enterprise/modules/ra-calendar#completecalendar)<img class="icon" src="./img/premium.svg" />
+* [`<CompleteCalendar>`](https://react-admin-ee.marmelab.com/documentation/ra-calendar#completecalendar)<img class="icon" src="./img/premium.svg" />
 * [`<Confirm>`](./Confirm.md)
 * [`<ContainerLayout>`](./ContainerLayout.md)<img class="icon" src="./img/premium.svg" />
 * [`<Count>`](./Count.md)
@@ -69,7 +69,7 @@ title: "Index"
 * [`<Empty>`](./List.md#empty)
 
 **- F -**
-* [`<FieldDiff>`](https://marmelab.com/ra-enterprise/modules/ra-history#fielddiff)<img class="icon" src="./img/premium.svg" />
+* [`<FieldDiff>`](https://react-admin-ee.marmelab.com/documentation/ra-history#fielddiff)<img class="icon" src="./img/premium.svg" />
 * [`<FileField>`](./FileField.md)
 * [`<FileInput>`](./FileInput.md)
 * [`<Filter>`](./List.md#filters-filter-inputs)
@@ -123,7 +123,7 @@ title: "Index"
 **- P -**
 * [`<Pagination>`](./List.md#pagination)
 * [`<PasswordInput>`](./PasswordInput.md)
-* [`<PreferencesSetter>`](https://marmelab.com/ra-enterprise/modules/ra-preferences#preferencessetter-setting-preferences-declaratively)<img class="icon" src="./img/premium.svg" />
+* [`<PreferencesSetter>`](https://react-admin-ee.marmelab.com/documentation/ra-preferences#preferencessetter-setting-preferences-declaratively)<img class="icon" src="./img/premium.svg" />
 
 **- R -**
 * [`<RadioButtonGroupInput>`](./RadioButtonGroupInput.md)
@@ -142,10 +142,10 @@ title: "Index"
 * [`<ReferenceOneInput>`](./ReferenceOneInput.md)
 * [`<Resource>`](./Resource.md)
 * [`<RevisionsButton>`](./RevisionsButton.md)<img class="icon" src="./img/premium.svg" />
-* [`<RevisionListWithDetailsInDialog>`](https://marmelab.com/ra-enterprise/modules/ra-history#revisionlistwithdetailsindialog)<img class="icon" src="./img/premium.svg" />
+* [`<RevisionListWithDetailsInDialog>`](https://react-admin-ee.marmelab.com/documentation/ra-history#revisionlistwithdetailsindialog)<img class="icon" src="./img/premium.svg" />
 * [`<RichTextField>`](./RichTextField.md)
 * [`<RichTextInput>`](./RichTextInput.md)
-* [`<RowForm>`](https://marmelab.com/ra-enterprise/modules/ra-editable-datagrid#rowform)<img class="icon" src="./img/premium.svg" />
+* [`<RowForm>`](https://react-admin-ee.marmelab.com/documentation/ra-editable-datagrid#rowform)<img class="icon" src="./img/premium.svg" />
 
 **- S -**
 * [`<SaveButton>`](./SaveButton.md)
@@ -160,18 +160,18 @@ title: "Index"
 * [`<Show>`](./Show.md#show)
 * [`<ShowGuesser`](./ShowGuesser.md#showguesser)
 * [`<ShowButton>`](./Buttons.md#showbutton)
-* [`<ShowDialog>`](https://marmelab.com/ra-enterprise/modules/ra-form-layout#createdialog-editdialog--showdialog)<img class="icon" src="./img/premium.svg" />
+* [`<ShowDialog>`](https://react-admin-ee.marmelab.com/documentation/ra-form-layout#createdialog-editdialog--showdialog)<img class="icon" src="./img/premium.svg" />
 * [`<ShowInDialogButton>`](./ShowInDialogButton.md)<img class="icon" src="./img/premium.svg" />
 * [`<ShowLive>`](./ShowLive.md)<img class="icon" src="./img/premium.svg" />
 * [`<Sidebar>`](./Layout.md#sidebar)
-* [`<SidebarOpenPreferenceSync>`](https://marmelab.com/ra-enterprise/modules/ra-preferences#sidebaropenpreferencesync-store-the-sidebar-openclose-state-in-preferences)<img class="icon" src="./img/premium.svg" />
+* [`<SidebarOpenPreferenceSync>`](https://react-admin-ee.marmelab.com/documentation/ra-preferences#sidebaropenpreferencesync-store-the-sidebar-openclose-state-in-preferences)<img class="icon" src="./img/premium.svg" />
 * [`<SimpleForm>`](./SimpleForm.md)
 * [`<SimpleFormIterator>`](./SimpleFormIterator.md)
 * [`<SimpleFormWithRevision>`](./SimpleForm.md#versioning)<img class="icon" src="./img/premium.svg" />
 * [`<SimpleList>`](./SimpleList.md)
 * [`<SimpleShowLayout>`](./SimpleShowLayout.md)
 * [`<SingleFieldList>`](./SingleFieldList.md)
-* [`<SmartFieldDiff>`](https://marmelab.com/ra-enterprise/modules/ra-history#smartfielddiff)<img class="icon" src="./img/premium.svg" />
+* [`<SmartFieldDiff>`](https://react-admin-ee.marmelab.com/documentation/ra-history#smartfielddiff)<img class="icon" src="./img/premium.svg" />
 * [`<SmartRichTextInput>`](./SmartRichTextInput.md)<img class="icon" src="./img/premium.svg" />
 * [`<SolarLayout>`](./SolarLayout.md)<img class="icon" src="./img/premium.svg" />
 * [`<SolarMenu>`](./SolarLayout.md#solarmenu)<img class="icon" src="./img/premium.svg" />
@@ -190,10 +190,10 @@ title: "Index"
 * [`<Title>`](./Title.md)
 * [`<TitlePortal>`](./AppBar.md#children)
 * [`<ToggleThemeButton>`](./ToggleThemeButton.md)
-* [`<TourProvider>`](https://marmelab.com/ra-enterprise/modules/ra-tour)<img class="icon" src="./img/premium.svg" />
+* [`<TourProvider>`](https://react-admin-ee.marmelab.com/documentation/ra-tour)<img class="icon" src="./img/premium.svg" />
 * [`<TranslatableFields>`](./TranslatableFields.md)
 * [`<TranslatableInputs>`](./TranslatableInputs.md)
-* [`<Tree>`](https://marmelab.com/ra-enterprise/modules/ra-tree#tree-component)<img class="icon" src="./img/premium.svg" />
+* [`<Tree>`](https://react-admin-ee.marmelab.com/documentation/ra-tree#tree-component)<img class="icon" src="./img/premium.svg" />
 * [`<TreeInput>`](./TreeInput.md)<img class="icon" src="./img/premium.svg" />
 * [`<TreeWithDetails>`](./TreeWithDetails.md)<img class="icon" src="./img/premium.svg" />
 * [`<Toolbar>`](./Toolbar.md)
@@ -219,8 +219,8 @@ title: "Index"
 <div class="pages-index" markdown="1">
 
 **- A -**
-* [`useAppLocationState`](https://marmelab.com/ra-enterprise/modules/ra-navigation#useapplocationstate-retrieve-and-define-app-location)<img class="icon" src="./img/premium.svg" />
-* [`useAppLocationMatcher`](https://marmelab.com/ra-enterprise/modules/ra-navigation#useapplocationmatcher-apply-a-matching-on-the-current-app-location)<img class="icon" src="./img/premium.svg" />
+* [`useAppLocationState`](https://react-admin-ee.marmelab.com/documentation/ra-navigation#useapplocationstate-retrieve-and-define-app-location)<img class="icon" src="./img/premium.svg" />
+* [`useAppLocationMatcher`](https://react-admin-ee.marmelab.com/documentation/ra-navigation#useapplocationmatcher)<img class="icon" src="./img/premium.svg" />
 * [`useAuthenticated`](./useAuthenticated.md)
 * [`useAuthProvider`](./useAuthProvider.md)
 * [`useAuthState`](./useAuthState.md)
@@ -296,11 +296,10 @@ title: "Index"
 * [`useRegisterMutationMiddleware`](./useRegisterMutationMiddleware.md)
 * [`useRemoveFromStore`](./useRemoveFromStore.md)
 * [`useResetStore`](./useResetStore.md)
-* [`useResourceAppLocation`](https://marmelab.com/ra-enterprise/modules/ra-navigation#useresourceapplocation-access-current-resource-app-location)<img class="icon" src="./img/premium.svg" />
 
 **- S -**
 * [`useSaveContext`](./useSaveContext.md)
-* [`useSearch`](https://marmelab.com/ra-enterprise/modules/ra-search#the-usesearch-hook)<img class="icon" src="./img/premium.svg" />
+* [`useSearch`](https://react-admin-ee.marmelab.com/documentation/ra-search#usesearch)<img class="icon" src="./img/premium.svg" />
 * [`useShowContext`](./useShowContext.md)
 * [`useShowController`](./useShowController.md#useshowcontroller)
 * [`useStore`](./useStore.md)
@@ -312,7 +311,7 @@ title: "Index"
 
 **- T -**
 * [`useTheme`](./useTheme.md)
-* [`useTour`](https://marmelab.com/ra-enterprise/modules/ra-tour)<img class="icon" src="./img/premium.svg" />
+* [`useTour`](https://react-admin-ee.marmelab.com/documentation/ra-tour)<img class="icon" src="./img/premium.svg" />
 * [`useTranslate`](./useTranslate.md)
 
 **- U -**

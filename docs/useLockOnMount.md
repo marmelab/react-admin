@@ -5,7 +5,7 @@ title: "useLockOnMount"
 
 # `useLockOnMount`
 
-This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> hook locks the current record on mount.
+This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" /> hook locks the current record on mount.
 
 `useLockOnMount` calls `dataProvider.lock()` on mount and `dataProvider.unlock()` on unmount to lock and unlock the record. It relies on `authProvider.getIdentity()` to get the identity of the current user. It guesses the current `resource` and `recordId` from the context (or the route) if not provided.
 

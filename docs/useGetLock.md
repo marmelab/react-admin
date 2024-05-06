@@ -5,7 +5,7 @@ title: "useGetLock"
 
 # `useGetLock`
 
-This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> hook gets the lock status for a record. It calls `dataProvider.getLock()` on mount.
+This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" /> hook gets the lock status for a record. It calls `dataProvider.getLock()` on mount.
 
 ## Usage
 

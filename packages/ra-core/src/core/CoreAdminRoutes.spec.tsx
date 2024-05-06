@@ -216,8 +216,7 @@ describe('<CoreAdminRoutes>', () => {
             jest.useRealTimers();
         });
     });
-
-    describe('requireAuth', () => {
+    describe('anonymous access', () => {
         it('should not wait for the authProvider.checkAuth to return before rendering by default', () => {
             const authProvider = {
                 login: jest.fn().mockResolvedValue(''),
@@ -250,6 +249,53 @@ describe('<CoreAdminRoutes>', () => {
             expect(screen.queryByText('PostList')).not.toBeNull();
             expect(screen.queryByText('Loading')).toBeNull();
         });
+        it('should render custom routes with no layout when the user is not authenticated ', async () => {
+            const authProvider = {
+                login: jest.fn().mockResolvedValue(''),
+                logout: jest.fn().mockResolvedValue(''),
+                checkAuth: () => Promise.reject('Not authenticated'),
+                checkError: jest.fn().mockResolvedValue(''),
+                getPermissions: jest.fn().mockResolvedValue(''),
+            };
+            let navigate;
+
+            render(
+                <TestMemoryRouter
+                    navigateCallback={n => {
+                        navigate = n;
+                    }}
+                >
+                    <CoreAdminContext
+                        authProvider={authProvider}
+                        dataProvider={testDataProvider()}
+                    >
+                        <CoreAdminRoutes
+                            layout={Layout}
+                            loading={Loading}
+                            catchAll={CatchAll}
+                        >
+                            <CustomRoutes noLayout>
+                                <Route path="/custom" element={<i>Custom</i>} />
+                                <Route path="/login" element={<i>Login</i>} />
+                            </CustomRoutes>
+                            <Resource
+                                name="posts"
+                                list={() => <i>PostList</i>}
+                            />
+                        </CoreAdminRoutes>
+                    </CoreAdminContext>
+                </TestMemoryRouter>
+            );
+            expect(screen.queryByText('PostList')).not.toBeNull();
+            expect(screen.queryByText('Loading')).toBeNull();
+            navigate('/custom');
+            await new Promise(resolve => setTimeout(resolve, 1100));
+            await waitFor(() =>
+                expect(screen.queryByText('Custom')).not.toBeNull()
+            );
+        });
+    });
+    describe('requireAuth', () => {
         it('should wait for the authProvider.checkAuth to return before rendering when requireAuth is true', async () => {
             let resolve;
             const authProvider = {
@@ -288,7 +334,7 @@ describe('<CoreAdminRoutes>', () => {
                 expect(screen.queryByText('PostList')).not.toBeNull()
             );
         });
-        it('should redirect to login when requireAuth is true and authProvider.checkAuth() rejects', async () => {
+        it('should redirect anonymous users to login when requireAuth is true and user accesses a resource page', async () => {
             let reject;
             const authProvider = {
                 login: jest.fn().mockResolvedValue(''),
@@ -329,22 +375,59 @@ describe('<CoreAdminRoutes>', () => {
                 expect(screen.queryByText('Login')).not.toBeNull()
             );
         });
-        it('should render custom routes when the user is not authenticated and requireAuth is false', async () => {
+        it('should redirect anonymous users to login when requireAuth is true and user accesses a custom route', async () => {
+            let reject;
             const authProvider = {
                 login: jest.fn().mockResolvedValue(''),
                 logout: jest.fn().mockResolvedValue(''),
-                checkAuth: () => Promise.reject('Not authenticated'),
+                checkAuth: (): Promise<void> =>
+                    new Promise((res, rej) => (reject = rej)),
                 checkError: jest.fn().mockResolvedValue(''),
                 getPermissions: jest.fn().mockResolvedValue(''),
             };
 
-            let navigate: NavigateFunction | null = null;
             render(
-                <TestMemoryRouter
-                    navigateCallback={n => {
-                        navigate = n;
-                    }}
-                >
+                <TestMemoryRouter initialEntries={['/custom']}>
+                    <CoreAdminContext
+                        dataProvider={testDataProvider()}
+                        authProvider={authProvider}
+                    >
+                        <CoreAdminRoutes
+                            layout={Layout}
+                            loading={Loading}
+                            catchAll={CatchAll}
+                            requireAuth
+                        >
+                            <CustomRoutes>
+                                <Route path="/custom" element={<i>Custom</i>} />
+                            </CustomRoutes>
+                            <CustomRoutes noLayout>
+                                <Route path="/login" element={<i>Login</i>} />
+                            </CustomRoutes>
+                        </CoreAdminRoutes>
+                    </CoreAdminContext>
+                </TestMemoryRouter>
+            );
+            expect(screen.queryByText('Custom')).toBeNull();
+            expect(screen.queryByText('Loading')).not.toBeNull();
+            reject();
+            await waitFor(() =>
+                expect(screen.queryByText('Login')).not.toBeNull()
+            );
+        });
+        it('should render custom routes with no layout even for anonymous users', async () => {
+            let reject;
+            const authProvider = {
+                login: jest.fn().mockResolvedValue(''),
+                logout: jest.fn().mockResolvedValue(''),
+                checkAuth: (): Promise<void> =>
+                    new Promise((res, rej) => (reject = rej)),
+                checkError: jest.fn().mockResolvedValue(''),
+                getPermissions: jest.fn().mockResolvedValue(''),
+            };
+
+            render(
+                <TestMemoryRouter initialEntries={['/custom']}>
                     <CoreAdminContext
                         authProvider={authProvider}
                         dataProvider={testDataProvider()}
@@ -353,26 +436,21 @@ describe('<CoreAdminRoutes>', () => {
                             layout={Layout}
                             loading={Loading}
                             catchAll={CatchAll}
+                            requireAuth
                         >
                             <CustomRoutes noLayout>
                                 <Route path="/custom" element={<i>Custom</i>} />
                                 <Route path="/login" element={<i>Login</i>} />
                             </CustomRoutes>
-                            <Resource
-                                name="posts"
-                                list={() => <i>PostList</i>}
-                            />
                         </CoreAdminRoutes>
                     </CoreAdminContext>
                 </TestMemoryRouter>
             );
-            expect(screen.queryByText('PostList')).not.toBeNull();
+            // the custom page should show during loading and after the checkAuth promise is rejected
+            expect(screen.queryByText('Custom')).not.toBeNull();
             expect(screen.queryByText('Loading')).toBeNull();
-            navigate('/custom');
-            await new Promise(resolve => setTimeout(resolve, 1100));
-            await waitFor(() =>
-                expect(screen.queryByText('Custom')).not.toBeNull()
-            );
+            reject();
+            expect(screen.queryByText('Custom')).not.toBeNull();
         });
     });
 });

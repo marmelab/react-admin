@@ -257,8 +257,6 @@ export type OnSuccess = (
 ) => void;
 
 export type OnError = (error?: any, variables?: any, context?: any) => void;
-// @deprecated - use OnError instead
-export type onError = OnError;
 
 export type TransformData = (
     data: any,
@@ -271,7 +269,7 @@ export interface UseDataProviderOptions {
     meta?: object;
     mutationMode?: MutationMode;
     onSuccess?: OnSuccess;
-    onError?: onError;
+    onError?: OnError;
     enabled?: boolean;
 }
 

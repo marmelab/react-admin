@@ -13,11 +13,14 @@ import {
 import ErrorIcon from '@mui/icons-material/Report';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import History from '@mui/icons-material/History';
-import { useTranslate, useDefaultTitle } from 'ra-core';
+import {
+    useTranslate,
+    useDefaultTitle,
+    useResetErrorBoundaryOnLocationChange,
+} from 'ra-core';
 import type { TitleComponent } from 'ra-core';
 
 import { Title, TitlePropType } from './Title';
-import { useResetErrorBoundaryOnLocationChange } from './useResetErrorBoundaryOnLocationChange';
 
 export const Error = (
     props: InternalErrorProps & {
@@ -99,7 +102,7 @@ export const Error = (
                                     </li>
                                     <li>
                                         Get help from the core team via{' '}
-                                        <a href="https://marmelab.com/ra-enterprise/#fromsww">
+                                        <a href="https://react-admin-ee.marmelab.com/#fromsww">
                                             react-admin Enterprise Edition
                                         </a>
                                     </li>

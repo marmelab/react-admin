@@ -5,7 +5,7 @@ title: "useGetLocks"
 
 # `useGetLocks`
 
-This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> hook gets all the locks for a given resource. Calls `dataProvider.getLocks()` on mount.
+This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" /> hook gets all the locks for a given resource. Calls `dataProvider.getLocks()` on mount.
 
 ## Usage
 

@@ -18,15 +18,13 @@ import {
     List,
     Tooltip,
 } from '@mui/material';
-import {
-    Dashboard,
-    PieChartOutlined,
-    PeopleOutlined,
-    Inventory,
-    ExpandLess,
-    ExpandMore,
-    QrCode,
-} from '@mui/icons-material';
+import Dashboard from '@mui/icons-material/Dashboard';
+import PieChartOutlined from '@mui/icons-material/PieChartOutlined';
+import PeopleOutlined from '@mui/icons-material/PeopleOutlined';
+import Inventory from '@mui/icons-material/Inventory';
+import ExpandLess from '@mui/icons-material/ExpandLess';
+import ExpandMore from '@mui/icons-material/ExpandMore';
+import QrCode from '@mui/icons-material/QrCode';
 import { Route } from 'react-router-dom';
 
 import { Layout, Menu, Title } from '.';

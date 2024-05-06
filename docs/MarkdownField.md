@@ -5,9 +5,9 @@ title: "The MarkdownField Component"
 
 # `<MarkdownField>`
 
-This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> component allows to render Markdown data as HTML.
+This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" /> component allows to render Markdown data as HTML.
 
-![MarkdownField preview](https://marmelab.com/ra-enterprise/modules/assets/ra-markdown/latest/markdown-field-preview.png)
+![MarkdownField preview](https://react-admin-ee.marmelab.com/assets/ra-markdown/latest/markdown-field-preview.png)
 
 ```jsx
 import { Show, SimpleShowLayout, TextField } from 'react-admin';
@@ -38,4 +38,4 @@ const PostShow = () => (
 );
 ```
 
-Check [the `ra-markdown` documentation](https://marmelab.com/ra-enterprise/modules/ra-markdown) for more details.
+Check [the `ra-markdown` documentation](https://react-admin-ee.marmelab.com/documentation/ra-markdown) for more details.
