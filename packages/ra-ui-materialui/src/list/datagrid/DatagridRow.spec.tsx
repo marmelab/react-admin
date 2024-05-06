@@ -10,6 +10,7 @@ import {
     ResourceDefinitionContextProvider,
     useRecordContext,
     TestMemoryRouter,
+    RecordContextProvider,
 } from 'ra-core';
 
 import { AdminContext } from '../../AdminContext';
@@ -304,6 +305,7 @@ describe('<DatagridRow />', () => {
 
         it('should default to false if the resource has no show nor edit page', () => {
             let spy = jest.fn();
+            const { record, ...rest } = defaultProps;
             render(
                 <LocationSpy spy={spy}>
                     <ResourceDefinitionContextProvider
@@ -314,9 +316,11 @@ describe('<DatagridRow />', () => {
                             },
                         }}
                     >
-                        <DatagridRow {...defaultProps}>
-                            <TitleField />
-                        </DatagridRow>
+                        <RecordContextProvider value={defaultProps.record}>
+                            <DatagridRow {...rest}>
+                                <TitleField />
+                            </DatagridRow>
+                        </RecordContextProvider>
                     </ResourceDefinitionContextProvider>
                 </LocationSpy>
             );
