@@ -9205,17 +9205,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"clsx@npm:^1.1.1":
-  version: 1.1.1
-  resolution: "clsx@npm:1.1.1"
-  checksum: 5c34e1d5623e3dce0dbf22eedd4f3cc7cd0dee6b1b1ef3ad49d042c9d86372a1dc7788c2ca3213ec08e65ad0e91572ae7cb77183a478c9977bd5327e8f43ffe5
-  languageName: node
-  linkType: hard
-
-"clsx@npm:^2.1.0":
-  version: 2.1.0
-  resolution: "clsx@npm:2.1.0"
-  checksum: c09c00ad14f638366ca814097e6cab533dfa1972a358da5b557be487168acbb25b4c1395e89ffa842a8a61ba87a462d2b4885bc9d4f8410b598f3cb339599cdb
+"clsx@npm:^2.1.0, clsx@npm:^2.1.1":
+  version: 2.1.1
+  resolution: "clsx@npm:2.1.1"
+  checksum: c4c8eb865f8c82baab07e71bfa8897c73454881c4f99d6bc81585aecd7c441746c1399d08363dc096c550cceaf97bd4ce1e8854e1771e9998d9f94c4fe075839
   languageName: node
   linkType: hard
 
@@ -10447,7 +10440,7 @@ __metadata:
     "@types/react-dom": "npm:^18.2.16"
     "@types/recharts": "npm:^1.8.10"
     "@vitejs/plugin-react": "npm:^4.2.1"
-    clsx: "npm:^1.1.1"
+    clsx: "npm:^2.1.1"
     data-generator-retail: "npm:^5.0.0-alpha.0"
     date-fns: "npm:^3.6.0"
     fakerest: "npm:^3.0.0"
@@ -18691,7 +18684,7 @@ __metadata:
     "@types/node": "npm:^20.10.7"
     "@types/node-polyglot": "npm:^0.4.31"
     "@types/react": "npm:^18.2.37"
-    clsx: "npm:^1.1.1"
+    clsx: "npm:^2.1.1"
     cross-env: "npm:^5.2.0"
     date-fns: "npm:^3.6.0"
     eventemitter3: "npm:^4.0.7"
@@ -18879,7 +18872,7 @@ __metadata:
     "@tiptap/react": "npm:^2.0.3"
     "@tiptap/starter-kit": "npm:^2.0.3"
     "@tiptap/suggestion": "npm:^2.0.3"
-    clsx: "npm:^1.1.1"
+    clsx: "npm:^2.1.1"
     data-generator-retail: "npm:^5.0.0-beta.0"
     ra-core: "npm:^5.0.0-beta.0"
     ra-data-fakerest: "npm:^5.0.0-beta.0"
@@ -18927,7 +18920,7 @@ __metadata:
     "@tanstack/react-query": "npm:^5.8.4"
     "@testing-library/react": "npm:^14.1.2"
     "@testing-library/user-event": "npm:^14.5.1"
-    clsx: "npm:^1.1.1"
+    clsx: "npm:^2.1.1"
     cross-env: "npm:^5.2.0"
     date-fns: "npm:^3.6.0"
     inflection: "npm:^3.0.0"
@@ -18965,7 +18958,7 @@ __metadata:
     "@types/react-is": "npm:^18.2.4"
     "@types/react-transition-group": "npm:^4.4.9"
     autosuggest-highlight: "npm:^3.1.1"
-    clsx: "npm:^1.1.1"
+    clsx: "npm:^2.1.1"
     cross-env: "npm:^5.2.0"
     css-mediaquery: "npm:^0.1.2"
     dompurify: "npm:^2.4.3"
@@ -19099,7 +19092,7 @@ __metadata:
     "@types/react": "npm:^18.2.37"
     "@types/react-dom": "npm:^18.2.16"
     "@vitejs/plugin-react": "npm:^4.2.1"
-    clsx: "npm:^1.1.1"
+    clsx: "npm:^2.1.1"
     date-fns: "npm:^3.6.0"
     faker: "npm:~5.4.0"
     lodash: "npm:~4.17.5"
