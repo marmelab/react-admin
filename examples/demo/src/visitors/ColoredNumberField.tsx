@@ -13,6 +13,4 @@ const ColoredNumberField = (props: NumberFieldProps) => {
     );
 };
 
-ColoredNumberField.defaultProps = NumberField.defaultProps;
-
 export default ColoredNumberField;
