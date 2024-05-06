@@ -102,6 +102,7 @@ export const Admin = (props: AdminProps) => {
         dashboard,
         dataProvider,
         disableTelemetry,
+        error,
         i18nProvider = defaultI18nProvider,
         layout,
         loading,
@@ -143,6 +144,7 @@ export const Admin = (props: AdminProps) => {
                 dashboard={dashboard}
                 disableTelemetry={disableTelemetry}
                 catchAll={catchAll}
+                error={error}
                 title={title}
                 loading={loading}
                 loginPage={loginPage}

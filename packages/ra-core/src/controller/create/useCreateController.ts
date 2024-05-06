@@ -193,7 +193,7 @@ export const useCreateController = <
 
 export interface CreateControllerProps<
     RecordType extends Omit<RaRecord, 'id'> = any,
-    MutationOptionsError = unknown,
+    MutationOptionsError = Error,
     ResultRecordType extends RaRecord = RecordType & { id: Identifier }
 > {
     disableAuthentication?: boolean;
@@ -213,9 +213,6 @@ export interface CreateControllerProps<
 export interface CreateControllerResult<
     RecordType extends Omit<RaRecord, 'id'> = any
 > extends SaveContextValue {
-    // Necessary for actions (EditActions) which expect a data prop containing the record
-    // @deprecated - to be removed in 4.0d
-    data?: RecordType;
     defaultTitle?: string;
     isFetching: boolean;
     isPending: boolean;

@@ -5,14 +5,14 @@ title: "The SearchWithResult Component"
 
 # `<SearchWithResult>`
 
-This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> component, part of [`ra-search`](https://marmelab.com/ra-enterprise/modules/ra-search), renders a search input and the search results directly below the input. It's ideal for dashboards or menu panels.
+This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" /> component, part of [`ra-search`](https://react-admin-ee.marmelab.com/documentation/ra-search), renders a search input and the search results directly below the input. It's ideal for dashboards or menu panels.
 
 <video controls autoplay playsinline muted loop>
-  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-search-with-result-overview.mp4" type="video/mp4"/>
+  <source src="https://react-admin-ee.marmelab.com/assets/ra-search-with-result-overview.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
-It relies on the `dataProvider` to provide a `search()` method, so you can use it with any search engine (Lucene, ElasticSearch, Solr, Algolia, Google Cloud Search, and many others). And if you don't have a search engine, no problem! `<SearchWithResult>` can also do the search across several resources [via parallel `dataProvider.getList()` queries](https://marmelab.com/ra-enterprise/modules/ra-search#addsearchmethod-helper).
+It relies on the `dataProvider` to provide a `search()` method, so you can use it with any search engine (Lucene, ElasticSearch, Solr, Algolia, Google Cloud Search, and many others). And if you don't have a search engine, no problem! `<SearchWithResult>` can also do the search across several resources [via parallel `dataProvider.getList()` queries](https://react-admin-ee.marmelab.com/documentation/ra-search#addsearchmethod-helper).
 
 By default, `<SearchWithResult>` will group the search results by target, and show their `content.label` and `content.description`.
 
@@ -26,7 +26,7 @@ The `<SearchWithResult>` component is part of the `@react-admin/ra-search` packa
 yarn add '@react-admin/ra-search'
 ```
 
-This requires a valid subscription to [React-admin Enterprise Edition](https://marmelab.com/ra-enterprise).
+This requires a valid subscription to [React-admin Enterprise Edition](https://react-admin-ee.marmelab.com).
 
 ### Implement `dataProvider.search()`
 
@@ -98,17 +98,18 @@ export const App = () => (
 );
 ```
 
-Check [the `ra-search` documentation](https://marmelab.com/ra-enterprise/modules/ra-search) to learn more about the input and output format of `dataProvider.search()`, as well as the possibilities to customize the `addSearchMethod`.
+Check [the `ra-search` documentation](https://react-admin-ee.marmelab.com/documentation/ra-search) to learn more about the input and output format of `dataProvider.search()`, as well as the possibilities to customize the `addSearchMethod`.
 
 ## Props
 
-| Prop         | Required | Type       | Default                                                                         | Description                                                                                        |
-| ------------ | -------- | ---------- | ------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
-| `children`   | Optional | `Element`  | `<SearchResultsPanel>`                                                          | A component that will display the results.                                                         |
-| `color`      | Optional | `string`   | The opposite of theme mode. If mode is `light` default is `dark` and vice versa | The color mode for the input, applying light or dark backgrounds. Accept either `light` or `dark`. |
-| `onNavigate` | Optional | `function` | `() => undefined`                                                               | A callback function to run when the user navigate to a result.                                     |
-| `options`    | Optional | `Object`   | -                                                                               | An object containing options to apply to the search.                                               |
-| `wait`       | Optional | `number`   | 500                                                                             | The delay of debounce for the search to launch after typing in ms.                                 |
+| Prop           | Required | Type                                                                              | Default                                                                         | Description                                                                                        |
+| ------------   | -------- | --------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| `children`     | Optional | `Element`                                                                         | `<SearchResultsPanel>`                                                          | A component that will display the results.                                                         |
+| `color`        | Optional | `string`                                                                          | The opposite of theme mode. If mode is `light` default is `dark` and vice versa | The color mode for the input, applying light or dark backgrounds. Accept either `light` or `dark`. |
+| `onNavigate`   | Optional | `function`                                                                        | `() => undefined`                                                               | A callback function to run when the user navigate to a result.                                     |
+| `options`      | Optional | `Object`                                                                          | -                                                                               | An object containing options to apply to the search.                                               |
+| `queryOptions` | Optional | [`UseQuery Options`](https://tanstack.com/query/v3/docs/react/reference/useQuery) | -                                                                               | `react-query` options for the search query                                                         |
+| `wait`         | Optional | `number`                                                                          | 500                                                                             | The delay of debounce for the search to launch after typing in ms.                                 |
 
 ## `children`
 
@@ -180,6 +181,24 @@ An object containing options to apply to the search:
 
 -   `targets`: `string[]`: an array of the indices on which to perform the search. Defaults to an empty array.
 -   `{any}`: `{any}`: any custom option to pass to the search engine.
+
+{% raw %}
+```tsx
+<SearchWithResult options={{ foo: 'bar' }} />
+```
+{% endraw %}
+
+## `queryOptions`
+
+`<SearchWithResult>` accepts a [`queryOptions` prop](https://tanstack.com/query/v3/docs/framework/react/reference/useQuery) to pass options to the react-query client.
+This can be useful e.g. to override the default side effects such as `onSuccess` or `onError`.
+
+
+{% raw %}
+```tsx
+<SearchWithResult queryOptions={{ onSuccess: data => console.log(data) }} />
+```
+{% endraw %}
 
 ## `wait`
 
@@ -345,10 +364,10 @@ export const App = () => (
 
 ## Use It With SolarLayout
 
-The `<SearchWithResult>` component works perfectly when used inside the [`<SolarLayout>`](https://marmelab.com/ra-enterprise/modules/ra-navigation#solarlayout) menu.
+The `<SearchWithResult>` component works perfectly when used inside the [`<SolarLayout>`](https://react-admin-ee.marmelab.com/documentation/ra-navigation#solarlayout) menu.
 
 <video controls autoplay playsinline muted loop>
-  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-search-with-result-solar-layout-overview.mp4" type="video/mp4"/>
+  <source src="https://react-admin-ee.marmelab.com/assets/ra-search-with-result-solar-layout-overview.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 

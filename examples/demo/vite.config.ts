@@ -3,6 +3,7 @@ import path from 'path';
 import fs from 'fs';
 import react from '@vitejs/plugin-react';
 import { visualizer } from 'rollup-plugin-visualizer';
+import preserveDirectives from 'rollup-preserve-directives';
 
 // https://vitejs.dev/config/
 export default defineConfig(async () => {
@@ -44,12 +45,15 @@ export default defineConfig(async () => {
         },
         build: {
             sourcemap: true,
+            rollupOptions: {
+                plugins: [preserveDirectives()],
+            }
         },
         resolve: {
             preserveSymlinks: true,
             alias: [
                 // allow profiling in production
-                // { find: 'react-dom', replacement: 'react-dom/profiling' },
+                { find: /^react-dom$/, replacement: 'react-dom/profiling' },
                 {
                     find: 'scheduler/tracing',
                     replacement: 'scheduler/tracing-profiling',

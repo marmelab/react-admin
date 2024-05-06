@@ -5,7 +5,7 @@ title: "useLock"
 
 # `useLock`
 
-`useLock` is a low-level [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> hook that returns a callback to call `dataProvider.lock()`, leveraging react-query's `useMutation`.
+`useLock` is a low-level [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" /> hook that returns a callback to call `dataProvider.lock()`, leveraging react-query's `useMutation`.
 
 ## Usage
 

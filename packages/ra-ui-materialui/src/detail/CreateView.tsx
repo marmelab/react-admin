@@ -1,11 +1,10 @@
 import * as React from 'react';
+import { ElementType, ReactElement } from 'react';
 import PropTypes from 'prop-types';
-import { Card } from '@mui/material';
-import { styled } from '@mui/material/styles';
+import { Card, styled, SxProps } from '@mui/material';
 import { useCreateContext } from 'ra-core';
 import clsx from 'clsx';
 
-import { CreateProps } from '../types';
 import { Title } from '../layout';
 
 export const CreateView = (props: CreateViewProps) => {
@@ -22,10 +21,7 @@ export const CreateView = (props: CreateViewProps) => {
     const { resource, defaultTitle } = useCreateContext();
 
     return (
-        <Root
-            className={clsx('create-page', className)}
-            {...sanitizeRestProps(rest)}
-        >
+        <Root className={clsx('create-page', className)} {...rest}>
             <Title
                 title={title}
                 defaultTitle={defaultTitle}
@@ -44,7 +40,14 @@ export const CreateView = (props: CreateViewProps) => {
     );
 };
 
-export type CreateViewProps = CreateProps;
+export interface CreateViewProps
+    extends Omit<React.HTMLAttributes<HTMLDivElement>, 'title'> {
+    actions?: ReactElement | false;
+    aside?: ReactElement;
+    component?: ElementType;
+    sx?: SxProps;
+    title?: string | ReactElement;
+}
 
 CreateView.propTypes = {
     actions: PropTypes.oneOfType([PropTypes.element, PropTypes.bool]),
@@ -65,31 +68,6 @@ CreateView.propTypes = {
     save: PropTypes.func,
     title: PropTypes.node,
 };
-
-/* eslint-disable @typescript-eslint/no-unused-vars */
-const sanitizeRestProps = ({
-    addMiddleware = null,
-    defaultTitle = null,
-    hasCreate = null,
-    hasEdit = null,
-    hasList = null,
-    hasShow = null,
-    history = null,
-    isFetching = null,
-    isLoading = null,
-    isPending = null,
-    location = null,
-    match = null,
-    mutationOptions = null,
-    options = null,
-    permissions = null,
-    save = null,
-    saving = null,
-    transform = null,
-    removeMiddleware = null,
-    ...rest
-}) => rest;
-/* eslint-enable @typescript-eslint/no-unused-vars */
 
 const PREFIX = 'RaCreate';
 

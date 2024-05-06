@@ -73,7 +73,7 @@ export const ReferenceManyCount = <RecordType extends RaRecord = RaRecord>(
         total
     );
 
-    return link ? (
+    return link && record ? (
         <Link
             to={{
                 pathname: createPath({ resource: reference, type: 'list' }),

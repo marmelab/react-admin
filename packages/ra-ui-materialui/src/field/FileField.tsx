@@ -44,6 +44,7 @@ export const FileField = <
     const titleValue =
         useFieldValue({
             ...props,
+            // @ts-ignore We ignore here because title might be a custom label or undefined instead of a field name
             source: title,
         })?.toString() ?? title;
     const translate = useTranslate();
@@ -67,8 +68,10 @@ export const FileField = <
         return (
             <StyledList className={className} {...sanitizeFieldRestProps(rest)}>
                 {sourceValue.map((file, index) => {
-                    const fileTitleValue = get(file, title) || title;
-                    const srcValue = get(file, src) || title;
+                    const fileTitleValue = title
+                        ? get(file, title, title)
+                        : title;
+                    const srcValue = src ? get(file, src, title) : title;
 
                     return (
                         <li key={index}>
@@ -114,7 +117,7 @@ export interface FileFieldProps<
     src?: string;
     title?: Call<Objects.AllPaths, RecordType> extends never
         ? AnyString
-        : Call<Objects.AllPaths, RecordType>;
+        : Call<Objects.AllPaths, RecordType> | AnyString;
     target?: string;
     download?: boolean | string;
     ping?: string;

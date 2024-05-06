@@ -23,8 +23,6 @@ import { useLocaleState } from './useLocaleState';
  *         }</ul>
  *     );
  * }
- *
- * @deprecated use useLocaleState instead
  */
 export const useSetLocale = () => {
     const [, setLocale] = useLocaleState();

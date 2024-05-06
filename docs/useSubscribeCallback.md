@@ -5,7 +5,7 @@ title: "useSubscribeCallback"
 
 # `useSubscribeCallback`
 
-This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> hook gets a callback to subscribe to events on a topic and optionally unsubscribe on unmount.
+This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" /> hook gets a callback to subscribe to events on a topic and optionally unsubscribe on unmount.
 
 This is useful to start a subscription from an event handler, like a button click.
 

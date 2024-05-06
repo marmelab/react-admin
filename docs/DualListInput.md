@@ -5,11 +5,11 @@ title: "The DualListInput Component"
 
 # `<DualListInput>`
 
-This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> component allows to edit array values, one-to-many or many-to-many relationships by moving items from one list to another.
+This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" /> component allows to edit array values, one-to-many or many-to-many relationships by moving items from one list to another.
 
 <video controls autoplay playsinline muted loop>
-  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-relationships-duallistinput.webm" type="video/webm" />
-  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-relationships-duallistinput.mp4" type="video/mp4" />
+  <source src="https://react-admin-ee.marmelab.com/assets/ra-relationships-duallistinput.webm" type="video/webm" />
+  <source src="https://react-admin-ee.marmelab.com/assets/ra-relationships-duallistinput.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
 
@@ -57,7 +57,7 @@ The form value for the source must be an array of the selected values, e.g.
 }
 ```
 
-Check [the `ra-relationships` documentation](https://marmelab.com/ra-enterprise/modules/ra-relationships) for more details.
+Check [the `ra-relationships` documentation](https://react-admin-ee.marmelab.com/documentation/ra-relationships) for more details.
 
 ## Props
 

@@ -41,7 +41,7 @@ The `<Datagrid>` is an **iterator** component: it gets an array of records from 
 - [`<EditableDatagrid>`](./EditableDatagrid.md)<img class="icon" src="./img/premium.svg" /> lets users edit the content right in the datagrid
 - [`<DatagridAG>`](./DatagridAG.md)<img class="icon" src="./img/premium.svg" /> adds suport for column reordering, aggregation, pivoting, row grouping, infinite scroll, etc.
 
-Both are [Enterprise Edition](https://marmelab.com/ra-enterprise) components.
+Both are [Enterprise Edition](https://react-admin-ee.marmelab.com) components.
 
 ## Props
 
@@ -941,7 +941,7 @@ const PostList = () => (
 **Tip**: For even more column customization (resizable columns, column grouping, etc.), check out the [`<DatagridAG>`](./DatagridAG.md) component.
 
 <video controls autoplay playsinline muted loop>
-  <source src="https://marmelab.com/ra-enterprise/modules/assets/DatagridAG.mp4" type="video/mp4"/>
+  <source src="https://react-admin-ee.marmelab.com/assets/DatagridAG.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
@@ -955,8 +955,8 @@ The separation between list pages and edit pages is not always relevant. Sometim
 ### `<EditableDatagrid>`: Editable Rows
 
 <video controls autoplay playsinline muted loop>
-  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-editable-datagrid-overview.webm" type="video/webm" />
-  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-editable-datagrid-overview.mp4" type="video/mp4" />
+  <source src="https://react-admin-ee.marmelab.com/assets/ra-editable-datagrid-overview.webm" type="video/webm" />
+  <source src="https://react-admin-ee.marmelab.com/assets/ra-editable-datagrid-overview.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
 
@@ -1022,7 +1022,7 @@ Check [the `<EditableDatagrid>` documentation](./EditableDatagrid.md) for more d
 ### `<DatagridAG>`: Spreadsheet-like Interface
 
 <video controls autoplay playsinline muted loop>
-  <source src="https://marmelab.com/ra-enterprise/modules/assets/DatagridAG.mp4" type="video/mp4"/>
+  <source src="https://react-admin-ee.marmelab.com/assets/DatagridAG.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
@@ -1050,7 +1050,7 @@ Additionally, `<DatagridAG>` is compatible with the [Enterprise version of ag-gr
 -   And more...
 
 <video controls autoplay playsinline muted loop>
-  <source src="https://marmelab.com/ra-enterprise/modules/assets/DatagridAG-enterprise.mp4" type="video/mp4"/>
+  <source src="https://react-admin-ee.marmelab.com/assets/DatagridAG-enterprise.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
@@ -1263,7 +1263,7 @@ const PostList = () => (
 **Tip**: For even more column customization (resizable columns, column grouping, etc.), check out the [`<DatagridAG>`](./DatagridAG.md) component.
 
 <video controls autoplay playsinline muted loop>
-  <source src="https://marmelab.com/ra-enterprise/modules/assets/DatagridAG.mp4" type="video/mp4"/>
+  <source src="https://react-admin-ee.marmelab.com/assets/DatagridAG.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 

@@ -38,7 +38,8 @@ import { useCreatePath } from '../routing';
  * @example <caption>Custom PrevNextButton</caption>
  *
  * import { UsePrevNextControllerProps, useTranslate } from 'ra-core';
- * import { NavigateBefore, NavigateNext } from '@mui/icons-material';
+ * import NavigateBefore from '@mui/icons-material/NavigateBefore';
+ * import NavigateNext from '@mui/icons-material/NavigateNext';
  * import ErrorIcon from '@mui/icons-material/Error';
  * import { Link } from 'react-router-dom';
  * import { CircularProgress, IconButton } from '@mui/material';
@@ -125,7 +126,7 @@ export const usePrevNextController = <RecordType extends RaRecord = any>(
 
     if (!resource) {
         throw new Error(
-            `<useNextPrevController> was called outside of a ResourceContext and without a resource prop. You must set the resource prop.`
+            `useNextPrevController was called outside of a ResourceContext and without a resource prop. You must set the resource prop.`
         );
     }
 

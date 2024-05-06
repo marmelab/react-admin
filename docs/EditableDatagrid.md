@@ -7,11 +7,11 @@ title: "The EditableDatagrid Component"
 
 The default react-admin user experience consists of three pages: List, Edit, and Create. However, in some cases, users may prefer to do all CRUD tasks in one page.
 
-`<EditableDatagrid>` is an [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> component that offers an "edit-in-place" experience, allowing users to edit, create, and delete records in place inside a `<Datagrid>`.
+`<EditableDatagrid>` is an [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" /> component that offers an "edit-in-place" experience, allowing users to edit, create, and delete records in place inside a `<Datagrid>`.
 
 <video controls autoplay playsinline muted loop>
-  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-editable-datagrid-overview.webm" type="video/webm" />
-  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-editable-datagrid-overview.mp4" type="video/mp4" />
+  <source src="https://react-admin-ee.marmelab.com/assets/ra-editable-datagrid-overview.webm" type="video/webm" />
+  <source src="https://react-admin-ee.marmelab.com/assets/ra-editable-datagrid-overview.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
 
@@ -31,7 +31,7 @@ npm install --save @react-admin/ra-editable-datagrid
 yarn add @react-admin/ra-editable-datagrid
 ```
 
-**Tip**: `ra-editable-datagrid` is part of the [React-Admin Enterprise Edition](https://marmelab.com/ra-enterprise/), and hosted in a private npm registry. You need to subscribe to one of the Enterprise Edition plans to access this registry.
+**Tip**: `ra-editable-datagrid` is part of the [React-Admin Enterprise Edition](https://react-admin-ee.marmelab.com/), and hosted in a private npm registry. You need to subscribe to one of the Enterprise Edition plans to access this registry.
 
 Then, replace `<Datagrid>` with `<EditableDatagrid>` in a react-admin `<List>`, `<ReferenceManyField>`, or any other component that creates a `ListContext`. In addition, pass a form component to be displayed when the user switches to edit or create mode.
 
@@ -579,8 +579,8 @@ const ArtistListWithMeta = () => {
 You can let end users customize what fields are displayed in the `<EditableDatagrid>` by using the `<EditableDatagridConfigurable>` component instead, together with the `<RowFormConfigurable>` component.
 
 <video controls autoplay playsinline muted loop>
-  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-editable-datagrid-configurable.mp4" type="video/mp4"/>
-  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-editable-datagrid-configurable.webm" type="video/webm"/>
+  <source src="https://react-admin-ee.marmelab.com/assets/ra-editable-datagrid-configurable.mp4" type="video/mp4"/>
+  <source src="https://react-admin-ee.marmelab.com/assets/ra-editable-datagrid-configurable.webm" type="video/webm"/>
   Your browser does not support the video tag.
 </video>
 

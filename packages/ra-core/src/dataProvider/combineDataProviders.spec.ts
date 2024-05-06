@@ -27,26 +27,30 @@ describe('combineDataProviders', () => {
         expect(dataProvider1.getOne).not.toHaveBeenCalled();
         expect(dataProvider2.getOne).toHaveBeenCalled();
     });
-    it('calls custom dataProvider methods with any number of parameters', async () => {
-        const dataProviderWithCustomMethod = testDataProvider({
-            customMethod: jest
+    it('works with a dataProvider that returns a promise', async () => {
+        const dataProvider1 = testDataProvider({
+            getOne: jest
                 .fn()
                 .mockResolvedValue({ data: { id: 1, foo: 'bar' } }),
         });
-        const dataProvider = combineDataProviders(resource => {
+        const dataProvider2 = testDataProvider({
+            getOne: jest
+                .fn()
+                .mockResolvedValue({ data: { id: 1, foo: 'bar' } }),
+        });
+        const dataProviderValue = combineDataProviders(resource => {
             switch (resource) {
-                case 'custom':
-                    return dataProviderWithCustomMethod;
+                case 'posts':
+                    return dataProvider1;
+                case 'comments':
+                    return dataProvider2;
                 default:
                     throw new Error('Unknown resource');
             }
         });
-        dataProvider.customMethod('custom', 1, 2, 3);
-        expect(dataProviderWithCustomMethod.customMethod).toHaveBeenCalledWith(
-            'custom',
-            1,
-            2,
-            3
-        );
+        const dataProvider = await dataProviderValue;
+        await dataProvider.getOne('comments', { id: 1 });
+        expect(dataProvider1.getOne).not.toHaveBeenCalled();
+        expect(dataProvider2.getOne).toHaveBeenCalled();
     });
 });

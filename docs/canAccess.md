@@ -5,7 +5,7 @@ title: "The canAccess helper"
 
 # `canAccess`
 
-This helper function, part of [the ra-rbac module](https://marmelab.com/ra-enterprise/modules/ra-rbac)<img class="icon" src="./img/premium.svg" />, can check if the current permissions allow the user to execute an action on a resource (and optionally a record). It requires the user `permissions` array, so it must be used in conjunction with `usePermissions`.
+This helper function, part of [the ra-rbac module](https://react-admin-ee.marmelab.com/documentation/ra-rbac)<img class="icon" src="./img/premium.svg" />, can check if the current permissions allow the user to execute an action on a resource (and optionally a record). It requires the user `permissions` array, so it must be used in conjunction with `usePermissions`.
 
 ## Usage
 

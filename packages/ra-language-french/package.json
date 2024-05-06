@@ -1,6 +1,6 @@
 {
     "name": "ra-language-french",
-    "version": "5.0.0-alpha.1",
+    "version": "5.0.0-beta.0",
     "description": "French messages for react-admin, the frontend framework for building admin applications on top of REST/GraphQL services",
     "repository": {
         "type": "git",
@@ -21,7 +21,7 @@
         "watch": "tsc --outDir dist/esm --module es2015 --watch"
     },
     "dependencies": {
-        "ra-core": "^5.0.0-alpha.1"
+        "ra-core": "^5.0.0-beta.0"
     },
     "devDependencies": {
         "rimraf": "^3.0.2",
@@ -39,5 +39,5 @@
         "url": "https://github.com/marmelab/react-admin/issues"
     },
     "homepage": "https://github.com/marmelab/react-admin#readme",
-    "gitHead": "e936ff2c3f887d2e98ef136cf3b3f3d254725fc4"
+    "gitHead": "587df4c27bfcec4a756df4f95e5fc14728dfc0d7"
 }

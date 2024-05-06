@@ -6,7 +6,6 @@ import {
 } from '@mui/material/styles';
 import { useMediaQuery } from '@mui/material';
 
-import { RaThemeOptions } from './types';
 import { useTheme } from './useTheme';
 import { useThemesContext } from './useThemesContext';
 import { AdminChildren } from 'ra-core';
@@ -30,10 +29,7 @@ import { AdminChildren } from 'ra-core';
  *   </ThemesContext.Provider>
  * );
  */
-export const ThemeProvider = ({
-    children,
-    theme: themeOverride,
-}: ThemeProviderProps) => {
+export const ThemeProvider = ({ children }: ThemeProviderProps) => {
     const { lightTheme, darkTheme, defaultTheme } = useThemesContext();
 
     const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)', {
@@ -45,14 +41,12 @@ export const ThemeProvider = ({
 
     const themeValue = useMemo(() => {
         try {
-            return createTheme(
-                mode === 'dark' ? darkTheme : lightTheme || themeOverride
-            );
+            return createTheme(mode === 'dark' ? darkTheme : lightTheme);
         } catch (e) {
             console.warn('Failed to reuse custom theme from store', e);
             return createTheme();
         }
-    }, [mode, themeOverride, lightTheme, darkTheme]);
+    }, [mode, lightTheme, darkTheme]);
 
     return (
         <MuiThemeProvider theme={themeValue}>
@@ -64,8 +58,4 @@ export const ThemeProvider = ({
 
 export interface ThemeProviderProps {
     children: AdminChildren;
-    /**
-     * @deprecated Use the `ThemesProvider` component instead.
-     */
-    theme?: RaThemeOptions;
 }

@@ -28,7 +28,7 @@ describe('<ListGuesser />', () => {
             getMany: () => Promise.resolve({ data: [], total: 0 }),
         });
         render(
-            <ThemeProvider theme={{}}>
+            <ThemeProvider>
                 <CoreAdminContext dataProvider={dataProvider as any}>
                     <ListGuesser resource="comments" enableLog />
                 </CoreAdminContext>

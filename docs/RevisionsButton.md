@@ -8,11 +8,11 @@ title: "The RevisionsButton Component"
 This button opens a menu with the list of revisions of the current record. When users select a revision, it opens a diff view, allowing them to see the changes between the current version and the selected revision. The user can then revert to the selected revision by clicking on the "Revert" button.
 
 <video controls autoplay playsinline muted loop>
-  <source src="https://marmelab.com/ra-enterprise/modules/assets/RevisionsButton.mp4" type="video/mp4"/>
+  <source src="https://react-admin-ee.marmelab.com/assets/RevisionsButton.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
-`<RevisionsButton>` is an [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> component, part of [`ra-history`](https://marmelab.com/ra-enterprise/modules/ra-history).
+`<RevisionsButton>` is an [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" /> component, part of [`ra-history`](https://react-admin-ee.marmelab.com/documentation/ra-history).
 
 ## Usage
 
@@ -24,7 +24,7 @@ npm install --save @react-admin/ra-history
 yarn add @react-admin/ra-history
 ```
 
-Tip: `ra-history` is hosted in a private npm registry. You need to subscribe to one of the [Enterprise Edition](https://marmelab.com/ra-enterprise/) plans to access this package.
+Tip: `ra-history` is hosted in a private npm registry. You need to subscribe to one of the [Enterprise Edition](https://react-admin-ee.marmelab.com/) plans to access this package.
 
 `<RevisionsButton>` is usually used in the page `actions` of an `<Edit>` component, in conjunction with [`<SimpleFormWithRevision>`](./SimpleForm.md#versioning).
 
@@ -83,8 +83,8 @@ The detail view of a revision includes a diff view to compare the current versio
 
 This element can grab the current record using `useRecordContext`, and the record from the revision selected by the user using `useReferenceRecordContext`. But instead of doing the diff by hand, you can use the two field diff components provided by `ra-history`:
 
--   [`<FieldDiff>`](https://marmelab.com/ra-enterprise/modules/ra-history#fielddiff) displays the diff of a given field. It accepts a react-admin Field component as child.
--   [`<SmartFieldDiff>`](https://marmelab.com/ra-enterprise/modules/ra-history#smartfielddiff) displays the diff of a string field, and uses a word-by-word diffing algorithm to highlight the changes.
+-   [`<FieldDiff>`](https://react-admin-ee.marmelab.com/documentation/ra-history#fielddiff) displays the diff of a given field. It accepts a react-admin Field component as child.
+-   [`<SmartFieldDiff>`](https://react-admin-ee.marmelab.com/documentation/ra-history#smartfielddiff) displays the diff of a string field, and uses a word-by-word diffing algorithm to highlight the changes.
 
 So a custom diff view is usually a layout component with `<FieldDiff>` and `<SmartFieldDiff>` components as children:
 
@@ -169,10 +169,10 @@ const ProductEditActions = () => (
 
 ## Showing the List of Revisions
 
-By default, the `<RevisionsButton>` component only shows the list of revisions when the user clicks on the button. If you want to always show the list of revisions, you can use the [`<RevisionListWithDetailsInDialog>`](https://marmelab.com/ra-enterprise/modules/ra-history#revisionlistwithdetailsindialog) component instead. 
+By default, the `<RevisionsButton>` component only shows the list of revisions when the user clicks on the button. If you want to always show the list of revisions, you can use the [`<RevisionListWithDetailsInDialog>`](https://react-admin-ee.marmelab.com/documentation/ra-history#revisionlistwithdetailsindialog) component instead. 
 
 <video controls autoplay playsinline muted loop>
-  <source src="https://marmelab.com/ra-enterprise/modules/assets/RevisionListWithDetailsInDialog.mp4" type="video/mp4"/>
+  <source src="https://react-admin-ee.marmelab.com/assets/RevisionListWithDetailsInDialog.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
@@ -203,4 +203,4 @@ export const ProductEdit = () => (
 );
 ```
 
-Check the [`<RevisionListWithDetailsInDialog>`](https://marmelab.com/ra-enterprise/modules/ra-history#revisionlistwithdetailsindialog) documentation for more details.
+Check the [`<RevisionListWithDetailsInDialog>`](https://react-admin-ee.marmelab.com/documentation/ra-history#revisionlistwithdetailsindialog) documentation for more details.
