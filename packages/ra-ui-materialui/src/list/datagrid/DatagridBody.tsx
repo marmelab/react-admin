@@ -35,7 +35,10 @@ const DatagridBody: FC<DatagridBodyProps> = React.forwardRef(
             {...rest}
         >
             {data.map((record, rowIndex) => (
-                <RecordContextProvider value={record} key={record.id}>
+                <RecordContextProvider
+                    value={record}
+                    key={record.id ?? `row${rowIndex}`}
+                >
                     {cloneElement(
                         row,
                         {
@@ -47,7 +50,6 @@ const DatagridBody: FC<DatagridBodyProps> = React.forwardRef(
                             hasBulkActions: hasBulkActions && !!selectedIds,
                             hover,
                             id: record.id ?? `row${rowIndex}`,
-                            key: record.id ?? `row${rowIndex}`,
                             onToggleItem,
                             resource,
                             rowClick,

@@ -928,6 +928,10 @@ If you were using this prop, you can safely remove it.
 
 The `data-generator-retail` package has been updated to provide types for all its records. In the process, we renamed the `commands` resource to `orders`. Accordingly, the `nb_commands` property of the `customers` resource has been renamed to `nb_orders` and the `command_id` property of the `invoices` and `reviews` resources has been renamed to `order_id`.
 
+## `<DatagridBody>` No Longer Provides `record` Prop To `<DatagridRow>`
+
+The `<DatagridBody>` component no longer provides a `record` prop to its `<DatagridRow>` children. Instead, it provides a `recordContext` for each row. See the [`<Datagrid body/>`](./Datagrid.md#body) documentation to learn how to create your own row component.
+
 ## Upgrading to v4
 
 If you are on react-admin v3, follow the [Upgrading to v4](https://marmelab.com/react-admin/doc/4.16/Upgrade.html) guide before upgrading to v5.
