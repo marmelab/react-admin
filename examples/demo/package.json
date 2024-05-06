@@ -38,6 +38,7 @@
     "scripts": {
         "dev": "vite",
         "build": "tsc && vite build",
+        "type-check": "tsc",
         "preview": "vite preview"
     },
     "devDependencies": {
