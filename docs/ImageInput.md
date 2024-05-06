@@ -53,7 +53,7 @@ Files are accepted or rejected based on the `accept`, `multiple`, `minSize` and 
 
 | Prop                   | Required | Type                | Default    | Description                                                         |
 |------------------------|----------|---------------------|------------|---------------------------------------------------------------------|
-| `accept`               | Optional | `string | string[]` | -                                                                   | Accepted file type(s). When empty, all file types are accepted.     |
+| `accept`               | Optional | `Object`            | -          | Accepted file type(s). When empty, all file types are accepted.     |
 | `children`             | Optional | `ReactNode`         | -          | Element used to preview file(s)                                     |
 | `minSize`              | Optional | `number`            | 0          | Minimum file size (in bytes), e.g. 5000 for 5KB                     |
 | `maxSize`              | Optional | `number`            | `Infinity` | Maximum file size (in bytes), e.g. 5000000 for 5MB                  |
@@ -70,7 +70,7 @@ Files are accepted or rejected based on the `accept`, `multiple`, `minSize` and 
 Equivalent of [the `accept` attribute of an `<input type="file">`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file#accept). `accept` must be a valid [MIME type](https://www.iana.org/assignments/media-types/media-types.xhtml), according to [input element specification](https://www.w3.org/wiki/HTML/Elements/input/file).
 
 ```jsx
-<ImageInput source="pictures" accept="image/*">
+<ImageInput source="pictures" accept={{ 'image/*': ['.png', '.jpg'] }}>
     <ImageField source="src" title="title" />
 </ImageInput>
 ```
