@@ -13,6 +13,7 @@ title: "The FileInput Component"
 
 ## Usage
 
+{% raw %}
 ```jsx
 import { FileInput, FileField } from 'react-admin';
 
@@ -20,6 +21,7 @@ import { FileInput, FileField } from 'react-admin';
     <FileField source="src" title="title" />
 </FileInput>
 ```
+{% endraw %}
 
 `<FileInput>` uses its child component to give a preview of the files. `<FileInput>` renders its child once per file, inside a `<RecordContext>`, so the child can be a Field component. The default [`<FileField>`](./FileField.md) renders the name of the file(s), with a hyperlink.
 
@@ -71,11 +73,13 @@ Files are accepted or rejected based on the `accept`, `multiple`, `minSize` and 
 
 Equivalent of [the `accept` attribute of an `<input type="file">`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file#accept). `accept` must be a valid [MIME type](https://www.iana.org/assignments/media-types/media-types.xhtml), according to [input element specification](https://www.w3.org/wiki/HTML/Elements/input/file) or a valid file extension.
 
+{% raw %}
 ```jsx
 <FileInput source="attachments" accept={{ 'application/pdf': ['.pdf'] }}>
     <FileField source="src" title="title" />
 </FileInput>
 ```
+{% endraw %}
 
 Examples of valid `accept` values:
 
@@ -89,11 +93,13 @@ If left empty, all file types are accepted.
 
 `<FileInput>` clones its child component once per file, inside a [`<RecordContext>`](./useRecordContext.md), so the child can be a [Field](./Fields.md) component. The default [`<FileField>`](./FileField.md) renders the name of the file(s), with a hyperlink.
 
+{% raw %}
 ```jsx
 <FileInput source="attachments">
     <FileField source="src" title="title" />
 </FileInput>
 ```
+{% endraw %}
 
 Writing a custom preview component is quite straightforward: it's a standard [field](./Fields.md#writing-your-own-field-component).
 
@@ -101,21 +107,25 @@ Writing a custom preview component is quite straightforward: it's a standard [fi
 
 Minimum file size (in bytes), e.g. 5000 for 5KB. Defaults to 0.
 
+{% raw %}
 ```jsx
 <FileInput source="attachments" minSize={5000}>
     <FileField source="src" title="title" />
 </FileInput>
 ```
+{% endraw %}
 
 ## `maxSize`
 
 Maximum file size (in bytes), e.g. 5000000 for 5MB. Defaults to `Infinity`.
 
+{% raw %}
 ```jsx
 <FileInput source="attachments" maxSize={5000000}>
     <FileField source="src" title="title" />
 </FileInput>
 ```
+{% endraw %}
 
 ## `multiple`
 
@@ -123,11 +133,13 @@ Set to `true` if the input should accept a list of files, `false` if it should o
 
 If `multiple` is set to `false` and additional files are dropped, all files besides the first will be rejected. Any file which does not have a size in the [`minSize`, `maxSize`] range, will be rejected as well.
 
+{% raw %}
 ```jsx
 <FileInput source="attachments" multiple>
     <FileField source="src" title="title" />
 </FileInput>
 ```
+{% endraw %}
 
 ## `options`
 
@@ -147,21 +159,25 @@ You can customize these labels using the following translation keys:
 
 If that's not enough, you can pass a `placeholder` prop to overwrite it. The value can be anything React can render:
 
+{% raw %}
 ```jsx
 <FileInput source="files" placeholder={<p>Drop your file here</p>}>
     <ImageField source="src" title="title" />
 </FileInput>
 ```
+{% endraw %}
 
 ## `removeIcon`
 
 Use the `removeIcon` prop to change the icon displayed as the remove button:
 
+{% raw %}
 ```jsx
 <ImageInput source="attachments" removeIcon={CustomSvgIcon}>
     <ImageField source="src" title="title" />
 </ImageInput>
 ```
+{% endraw %}
 
 ## `sx`: CSS API
 
@@ -182,6 +198,7 @@ This prop can also be used to confirm the deletion of items to users.
 The following example shows a react-admin's `Confirm` dialog when clicking the delete button of an `FileInput` item. It will interrupt the removal of items if "dataProvider.deleteImages" fails or cancel button is clicked.
 This example asumes the implementation of a `deleteImages` function in the dataProvider.
 
+{% raw %}
 ```jsx
 import { Edit, SimpleForm, ImageInput, Confirm, useDataProvider } from 'react-admin';
 import { useMutation } from '@tanstack/react-query';
@@ -236,6 +253,7 @@ const MyEdit = () => {
     )
 }
 ```
+{% endraw %}
 
 ## Uploading Files
 
