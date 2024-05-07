@@ -69,11 +69,13 @@ Files are accepted or rejected based on the `accept`, `multiple`, `minSize` and 
 
 Equivalent of [the `accept` attribute of an `<input type="file">`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file#accept). `accept` must be a valid [MIME type](https://www.iana.org/assignments/media-types/media-types.xhtml), according to [input element specification](https://www.w3.org/wiki/HTML/Elements/input/file).
 
+{% raw %}
 ```jsx
 <ImageInput source="pictures" accept={{ 'image/*': ['.png', '.jpg'] }}>
     <ImageField source="src" title="title" />
 </ImageInput>
 ```
+{% endraw %}
 
 Examples of valid `accept` values:
 
