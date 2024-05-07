@@ -24,6 +24,8 @@ jobs:
       run: make lint        
     - name: Build
       run: make build
+    - name: Type check simple example
+      run: cd examples/simple && yarn type-check
 
   doc-check:
     runs-on: ubuntu-latest
@@ -66,27 +68,6 @@ jobs:
       run: make test-e2e
       env:
         CI: true
-
-simple-example:
-    runs-on: ubuntu-latest
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v4
-    - name: Use Node.js LTS
-      uses: actions/setup-node@v4
-      with:
-        node-version: '18.x'
-    - uses: bahmutov/npm-install@v1
-      with:
-        install-command: yarn --immutable
-    - name: Build
-      run: make build
-    - name: Build simple example
-      run: cd examples/simple && yarn type-check
-      env:
-          # Needed as workaround for Vite https://github.com/vitejs/vite/issues/2433#issuecomment-831399876
-          # value = (your memory in GiB, 6.51 for GH Actions) * 1024 - 512
-          NODE_OPTIONS: '--max-old-space-size=6163'
 
   e-commerce:
     runs-on: ubuntu-latest
