@@ -322,10 +322,12 @@ If you don't need the dark mode feature, you'll have to explicitly disable it:
 
 As we updated [react-dropzone](https://www.npmjs.com/package/react-dropzone) from v12 to v14, the `accept` prop of the `<FileInput>` and `<ImageInput>` components has changed:
 
+{% raw %}
 ```diff
 -<FileInput source="attachments" accept="application/pdf">
 +<FileInput source="attachments" accept={{ 'application/pdf': ['.pdf'] }}>
 ```
+{% endraw %}
 
 See [react-dropzone documentation](https://react-dropzone.js.org/#section-accepting-specific-file-types) for more details.
 
