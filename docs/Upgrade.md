@@ -759,6 +759,60 @@ Besides, the buttons passed as `bulkActionButtons` no longer receive any prop. I
 
 The deprecated `<PaginationLimit>` component was removed.
 
+### `<DatagridBody>` No Longer Provides `record` Prop To `<DatagridRow>`
+
+The `<DatagridBody>` component no longer provides a `record` prop to its `<DatagridRow>` children. Instead, it provides a `recordContext` for each row: 
+
+```diff
+const DatagridBody: FC<DatagridBodyProps> = React.forwardRef(({/*...*/}, ref) 
+    => (
+        <TableBody>
+-            {data.map((record, rowIndex) =>
+-                cloneElement(
++            {data.map((record, rowIndex) => (
++               <RecordContextProvider
++                   value={record}
++                   key={record.id ?? `row${rowIndex}`}
++               >
++                   {cloneElement(
+                        row,
+                        {
+                            //...
+                            id: record.id ?? `row${rowIndex}`,
+-                           key: record.id ?? `row${rowIndex}`,
+                            onToggleItem,
+-                           record,
+                            resource,
+                            //...
+                        },
+                        children
+-                   )
+                    )}
++               </RecordContextProvider>
++            ))}
+        </TableBody>
+    )
+);
+```
+
+Also, `<DatagridRow>` no longer provides a `<RecordContextProvider>` to its children:
+
+```diff
+const DatagridRow: FC<DatagridRowProps> = React.forwardRef((props, ref) => {
+     return (
+-        <RecordContextProvider value={record}>
++        <>
+            <TableRow>
+                {/*...*/}
+            </TableRow>
+-        </RecordContextProvider>
++        </>
+     );
+ });
+```
+
+See the [`<Datagrid body/>`](./Datagrid.md#body) documentation to learn how to create your own row component.
+
 ## Show and Edit Pages
 
 ### Custom Edit or Show Actions No Longer Receive Any Props
@@ -1205,10 +1259,6 @@ The deprecated `<ThemeProvider theme>` prop was removed. Use the `ThemesContext.
 ### `data-generator-retail` `commands` Have Been Renamed to `orders`
 
 The `data-generator-retail` package has been updated to provide types for all its records. In the process, we renamed the `commands` resource to `orders`. Accordingly, the `nb_commands` property of the `customers` resource has been renamed to `nb_orders` and the `command_id` property of the `invoices` and `reviews` resources has been renamed to `order_id`.
-
-## `<DatagridBody>` No Longer Provides `record` Prop To `<DatagridRow>`
-
-The `<DatagridBody>` component no longer provides a `record` prop to its `<DatagridRow>` children. Instead, it provides a `recordContext` for each row. See the [`<Datagrid body/>`](./Datagrid.md#body) documentation to learn how to create your own row component.
 
 ## Upgrading to v4
 
