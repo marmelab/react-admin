@@ -35,3 +35,10 @@ export const Sx = () => (
         </PreferencesEditorContextProvider>
     </TestMemoryRouter>
 );
+
+export const NonConfigurable = () => (
+    <TestMemoryRouter>
+        <TitlePortal variant="body1" />
+        <Title title="Hello, world" nonConfigurable />
+    </TestMemoryRouter>
+);

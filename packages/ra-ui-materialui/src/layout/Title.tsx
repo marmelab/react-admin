@@ -39,7 +39,7 @@ export const Title = (props: TitleProps) => {
     warning(!defaultTitle && !title, 'Missing title prop in <Title> element');
 
     const pageTitle = nonConfigurable ? (
-        <PageTitle {...rest} />
+        <PageTitle title={title} defaultTitle={defaultTitle} {...rest} />
     ) : (
         <PageTitleConfigurable
             title={title}

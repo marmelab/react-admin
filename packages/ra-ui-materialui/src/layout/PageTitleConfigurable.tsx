@@ -1,6 +1,11 @@
 import * as React from 'react';
 import { useLocation } from 'react-router-dom';
-import { usePreferenceInput } from 'ra-core';
+import {
+    usePreferenceInput,
+    usePreference,
+    useRecordContext,
+    useTranslate,
+} from 'ra-core';
 import { TextField } from '@mui/material';
 
 import { Configurable } from '../preferences';
@@ -34,7 +39,24 @@ export const PageTitleConfigurable = ({ preferenceKey, ...props }) => {
                 },
             }}
         >
-            <PageTitle {...props} />
+            <PageTitleConfigurableInner {...props} />
         </Configurable>
+    );
+};
+
+const PageTitleConfigurableInner = ({ className, ...rest }: any) => {
+    const [titleFromPreferences] = usePreference();
+    const translate = useTranslate();
+    const record = useRecordContext();
+
+    return titleFromPreferences ? (
+        <span className={className} {...rest}>
+            {translate(titleFromPreferences, {
+                ...record,
+                _: titleFromPreferences,
+            })}
+        </span>
+    ) : (
+        <PageTitle className={className} {...rest} />
     );
 };
