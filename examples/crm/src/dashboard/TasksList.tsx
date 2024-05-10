@@ -31,7 +31,7 @@ export const TasksList = () => {
     const { data: tasks, isPending: tasksLoading } = useGetList(
         'tasks',
         {
-            pagination: { page: 1, perPage: 5 },
+            pagination: { page: 1, perPage: 10 },
             sort: { field: 'due_date', order: 'ASC' },
             filter: { contact_id: contacts?.map(contact => contact.id) },
         },

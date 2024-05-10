@@ -3,7 +3,7 @@ import { random, lorem } from 'faker/locale/en_US';
 import { Db } from './types';
 import { randomDate } from './utils';
 
-const type = [
+export const type = [
     'Email',
     'Email',
     'Email',

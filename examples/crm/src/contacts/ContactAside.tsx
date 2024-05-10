@@ -12,6 +12,7 @@ import {
 } from 'react-admin';
 import { Box, Typography, Divider } from '@mui/material';
 import { TagsListEdit } from './TagsListEdit';
+import { AddTask } from '../tasks/AddTask';
 import { TasksIterator } from '../tasks/TasksIterator';
 
 import { Contact, Sale } from '../types';
@@ -113,6 +114,7 @@ export const ContactAside = ({ link = 'edit' }: { link?: 'edit' | 'show' }) => {
                 <ReferenceManyField target="contact_id" reference="tasks">
                     <TasksIterator />
                 </ReferenceManyField>
+                <AddTask />
             </Box>
         </Box>
     );
