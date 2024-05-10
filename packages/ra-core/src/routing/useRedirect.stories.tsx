@@ -16,6 +16,19 @@ const Home = () => {
             <h1>Home</h1>
             <ul>
                 <li>
+                    <button
+                        onClick={() =>
+                            redirect({
+                                pathname: '/some/path',
+                                search: '?query=string',
+                                hash: '#hash',
+                            })
+                        }
+                    >
+                        123th post detail
+                    </button>
+                </li>
+                <li>
                     <button onClick={() => redirect('/dashboard')}>
                         Dashboard
                     </button>

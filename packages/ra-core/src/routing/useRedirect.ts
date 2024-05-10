@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import { useNavigate, To } from 'react-router-dom';
+import { useNavigate, To, Path } from 'react-router-dom';
 import { Identifier, RaRecord } from '../types';
 
 import { useBasename } from './useBasename';
@@ -12,7 +12,12 @@ type RedirectToFunction = (
     state?: object
 ) => To;
 
-export type RedirectionSideEffect = CreatePathType | false | RedirectToFunction;
+export type RedirectionSideEffect =
+    | CreatePathType
+    | false
+    | RedirectToFunction
+    // | Location;
+    | Path;
 
 /**
  * Hook for Redirection Side Effect
@@ -26,6 +31,7 @@ export type RedirectionSideEffect = CreatePathType | false | RedirectToFunction;
  * redirect('edit', 'posts', 123);
  * // redirect to edit view with state data
  * redirect('edit', 'comments', 123, {}, { record: { post_id: record.id } });
+ * // TODO: add example with state
  * // do not redirect
  * redirect(false);
  * // redirect to the result of a function
@@ -59,6 +65,9 @@ export const useRedirect = () => {
                     state: { _scrollToTop: true, ...state },
                 });
                 return;
+            } else if (redirectTo instanceof Location) {
+                navigate(redirectTo);
+                return;
             } else if (
                 typeof redirectTo === 'string' &&
                 redirectTo.startsWith('http') &&
@@ -70,14 +79,21 @@ export const useRedirect = () => {
                 return;
             } else {
                 // redirection to an internal link
-                navigate(createPath({ resource, id, type: redirectTo }), {
-                    state:
-                        // We force the scrollToTop except when navigating to a list
-                        // where this is already done by <RestoreScrollPosition> in <Resource>
-                        redirectTo === 'list'
-                            ? state
-                            : { _scrollToTop: true, ...state },
-                });
+                navigate(
+                    createPath({
+                        resource,
+                        id,
+                        type: redirectTo as CreatePathType,
+                    }),
+                    {
+                        state:
+                            // We force the scrollToTop except when navigating to a list
+                            // where this is already done by <RestoreScrollPosition> in <Resource>
+                            redirectTo === 'list'
+                                ? state
+                                : { _scrollToTop: true, ...state },
+                    }
+                );
                 return;
             }
         },

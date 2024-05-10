@@ -25,6 +25,7 @@ The callback takes 5 arguments:
  - The `id` of the record to redirect to (if any)
  - A record-like object to be passed to the first argument, when the first argument is a function
  - A `state` to be set to the location
+ - // TODO: add the to
 
 Here are more examples of `useRedirect` calls: 
 
@@ -41,6 +42,7 @@ redirect((resource, id, data) => {
 }, 'posts', 1, { hasComments: true });
 // redirect to edit view with state data
 redirect('edit', 'posts', 1, {}, { record: { post_id: record.id } });
+// TODO: add example with state
 // do not redirect (resets the record form)
 redirect(false);
 ```
