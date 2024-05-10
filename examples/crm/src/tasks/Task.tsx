@@ -59,7 +59,11 @@ export const Task = ({
                         </>
                     )}
                     {task.text}
-                    <Typography variant="body2" color="textSecondary">
+                    <Typography
+                        variant="body2"
+                        color="textSecondary"
+                        component="div"
+                    >
                         due <DateField source="due_date" record={task} />
                         {showContact && (
                             <>
