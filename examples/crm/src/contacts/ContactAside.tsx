@@ -6,13 +6,13 @@ import {
     ReferenceManyField,
     EditButton,
     ShowButton,
-    useListContext,
     ReferenceField,
     FunctionField,
     useRecordContext,
 } from 'react-admin';
-import { Box, Typography, Divider, List, ListItem } from '@mui/material';
+import { Box, Typography, Divider } from '@mui/material';
 import { TagsListEdit } from './TagsListEdit';
+import { TasksIterator } from '../tasks/TasksIterator';
 
 import { Contact, Sale } from '../types';
 
@@ -107,34 +107,13 @@ export const ContactAside = ({ link = 'edit' }: { link?: 'edit' | 'show' }) => {
                 <Divider />
                 <TagsListEdit />
             </Box>
-            <ReferenceManyField target="contact_id" reference="tasks">
-                <TasksIterator />
-            </ReferenceManyField>
-        </Box>
-    );
-};
-
-const TasksIterator = () => {
-    const { data, error, isPending } = useListContext();
-    if (isPending || error || data.length === 0) return null;
-    return (
-        <Box>
-            <Typography variant="subtitle2">Tasks</Typography>
-            <Divider />
-
-            <List>
-                {data.map(task => (
-                    <ListItem key={task.id} disableGutters>
-                        <Box>
-                            <Typography variant="body2">{task.text}</Typography>
-                            <Typography variant="body2" color="textSecondary">
-                                due{' '}
-                                <DateField source="due_date" record={task} />
-                            </Typography>
-                        </Box>
-                    </ListItem>
-                ))}
-            </List>
+            <Box>
+                <Typography variant="subtitle2">Tasks</Typography>
+                <Divider />
+                <ReferenceManyField target="contact_id" reference="tasks">
+                    <TasksIterator />
+                </ReferenceManyField>
+            </Box>
         </Box>
     );
 };
