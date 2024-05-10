@@ -134,7 +134,8 @@ export default (data, loggingEnabled = false): DataProvider => {
             return Promise.reject(error);
         }
         if (loggingEnabled) {
-            log(type, resource, params, response);
+            const { signal, ...paramsWithoutSignal } = params;
+            log(type, resource, paramsWithoutSignal, response);
         }
         return Promise.resolve(response);
     };
