@@ -40,7 +40,7 @@ export const generateTasks = (db: Db) => {
             type: random.arrayElement(type),
             text: lorem.sentence(),
             due_date: randomDate(
-                new Date(contact.first_seen),
+                random.boolean() ? new Date() : new Date(contact.first_seen),
                 new Date(Date.now() + 100 * 24 * 60 * 60 * 1000)
             ).toISOString(),
             done_date: undefined,

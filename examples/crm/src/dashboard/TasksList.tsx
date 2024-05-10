@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { Card, Box } from '@mui/material';
-import ContactsIcon from '@mui/icons-material/Contacts';
+import { Card, Box, Button } from '@mui/material';
+import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn';
 import {
     useGetList,
     Link,
@@ -15,40 +15,45 @@ import { Contact } from '../types';
 
 export const TasksList = () => {
     const { identity } = useGetIdentity();
-    const {
-        data: contacts,
-        error: contactsError,
-        isPending: contactsLoading,
-    } = useGetList<Contact>(
+
+    // get all the contacts for this sales
+    const { data: contacts, isPending: contactsLoading } = useGetList<Contact>(
         'contacts',
         {
-            pagination: { page: 1, perPage: 100 },
-            sort: { field: 'last_seen', order: 'DESC' },
-            filter: { status: 'hot', sales_id: identity?.id },
+            pagination: { page: 1, perPage: 500 },
+            filter: { sales_id: identity?.id },
         },
-        { enabled: Number.isInteger(identity?.id) }
+        { enabled: !!identity }
     );
+
+    // get the first 100 upcoming tasks for these contacts
     const { data: tasks, isPending: tasksLoading } = useGetList(
         'tasks',
         {
-            pagination: { page: 1, perPage: 10 },
+            pagination: { page: 1, perPage: 100 },
             sort: { field: 'due_date', order: 'ASC' },
-            filter: { contact_id: contacts?.map(contact => contact.id) },
+            filter: {
+                done_date: undefined,
+                contact_id: contacts?.map(contact => contact.id),
+            },
         },
-        {
-            enabled: !contactsLoading && !contactsError,
-        }
+        { enabled: !!contacts }
     );
+
+    const isPending = tasksLoading || contactsLoading;
+
+    // limit to 10 tasks and provide the list context
     const listContext = useList({
         data: tasks,
-        isPending: tasksLoading,
+        isPending,
         resource: 'tasks',
+        perPage: 10,
     });
     return (
         <>
             <Box display="flex" alignItems="center" marginBottom="1em">
                 <Box ml={2} mr={2} display="flex">
-                    <ContactsIcon color="disabled" fontSize="large" />
+                    <AssignmentTurnedInIcon color="disabled" fontSize="large" />
                 </Box>
                 <Link
                     underline="none"
@@ -65,6 +70,16 @@ export const TasksList = () => {
                         <TasksIterator showContact />
                     </ListContextProvider>
                 </ResourceContextProvider>
+                {!isPending && (
+                    <Button
+                        onClick={() =>
+                            listContext.setPerPage(listContext.perPage + 10)
+                        }
+                        fullWidth
+                    >
+                        Load more
+                    </Button>
+                )}
             </Card>
         </>
     );
