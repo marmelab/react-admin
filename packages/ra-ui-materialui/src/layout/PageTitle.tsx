@@ -1,13 +1,7 @@
 import * as React from 'react';
 import { useTranslate } from 'ra-core';
 
-export const PageTitle = ({
-    title,
-    defaultTitle,
-    className,
-    nonConfigurable,
-    ...rest
-}: any) => {
+export const PageTitle = ({ title, defaultTitle, className, ...rest }: any) => {
     const translate = useTranslate();
 
     return (

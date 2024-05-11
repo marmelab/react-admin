@@ -44,19 +44,19 @@ export const PageTitleConfigurable = ({ preferenceKey, ...props }) => {
     );
 };
 
-const PageTitleConfigurableInner = ({ className, ...rest }: any) => {
+const PageTitleConfigurableInner = props => {
     const [titleFromPreferences] = usePreference();
     const translate = useTranslate();
     const record = useRecordContext();
 
     return titleFromPreferences ? (
-        <span className={className} {...rest}>
+        <span className={props.className}>
             {translate(titleFromPreferences, {
                 ...record,
                 _: titleFromPreferences,
             })}
         </span>
     ) : (
-        <PageTitle className={className} {...rest} />
+        <PageTitle {...props} />
     );
 };
