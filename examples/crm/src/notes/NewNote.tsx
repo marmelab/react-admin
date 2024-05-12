@@ -10,7 +10,7 @@ import {
     Identifier,
     useResourceContext,
 } from 'react-admin';
-import { Box, TextField as TextInput, Button } from '@mui/material';
+import { Box, TextField as TextInput, Button, Stack } from '@mui/material';
 
 import { StatusSelector } from './StatusSelector';
 
@@ -83,7 +83,7 @@ export const NewNote = ({
                 <Box display="flex" justifyContent="space-between" mt={1}>
                     <span>
                         {text ? (
-                            <>
+                            <Stack direction="row">
                                 {showStatus && (
                                     <StatusSelector
                                         status={status}
@@ -117,7 +117,7 @@ export const NewNote = ({
                                         },
                                     }}
                                 />
-                            </>
+                            </Stack>
                         ) : null}
                     </span>
                     <Button

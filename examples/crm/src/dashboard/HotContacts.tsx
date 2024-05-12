@@ -53,6 +53,7 @@ export const HotContacts = () => {
                         })
                     }
                     leftAvatar={contact => <Avatar record={contact} />}
+                    dense
                 />
             </Card>
         </>
