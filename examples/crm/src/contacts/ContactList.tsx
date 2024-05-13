@@ -56,7 +56,7 @@ const ContactListContent = () => {
             <BulkActionsToolbar>
                 <BulkDeleteButton />
             </BulkActionsToolbar>
-            <List>
+            <List dense>
                 {contacts.map(contact => (
                     <RecordContextProvider key={contact.id} value={contact}>
                         <ListItem
