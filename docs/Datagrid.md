@@ -89,38 +89,39 @@ import {
 import { TableCell, TableRow, Checkbox } from "@mui/material";
 
 const MyDatagridRow = ({
-    record,
-    id,
     onToggleItem,
     children,
     selected,
     selectable,
-}: DatagridRowProps) =>
-    id ? (
-        <RecordContextProvider value={record}>
-            <TableRow>
-                {/* first column: selection checkbox */}
-                <TableCell padding="none">
-                    {selectable && (
-                        <Checkbox
-                            checked={selected}
-                            onClick={(event) => {
-                                if (onToggleItem) {
-                                    onToggleItem(id, event);
-                                }
-                            }}
-                        />
-                    )}
-                </TableCell>
-                {/* data columns based on children */}
-                {React.Children.map(children, (field) =>
-                    React.isValidElement<FieldProps>(field) && field.props.source ? (
-                        <TableCell key={`${id}-${field.props.source}`}>{field}</TableCell>
-                    ) : null
+}: DatagridRowProps) => {
+    const record = useRecordContext();
+    return record ? (
+        <TableRow>
+            {/* first column: selection checkbox */}
+            <TableCell padding="none">
+                {selectable && (
+                    <Checkbox
+                        checked={selected}
+                        onClick={event => {
+                            if (onToggleItem) {
+                                onToggleItem(record.id, event);
+                            }
+                        }}
+                    />
                 )}
-            </TableRow>
-        </RecordContextProvider>
+            </TableCell>
+            {/* data columns based on children */}
+            {React.Children.map(children, field =>
+                React.isValidElement<FieldProps>(field) &&
+                field.props.source ? (
+                    <TableCell key={`${record.id}-${field.props.source}`}>
+                        {field}
+                    </TableCell>
+                ) : null
+            )}
+        </TableRow>
     ) : null;
+};
 
 const MyDatagridBody = (props: DatagridBodyProps) => (
     <DatagridBody {...props} row={<MyDatagridRow />} />

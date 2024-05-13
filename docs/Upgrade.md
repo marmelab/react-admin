@@ -764,51 +764,42 @@ The deprecated `<PaginationLimit>` component was removed.
 The `<DatagridBody>` component no longer provides a `record` prop to its `<DatagridRow>` children. Instead, it provides a `recordContext` for each row: 
 
 ```diff
-const DatagridBody: FC<DatagridBodyProps> = React.forwardRef(({/*...*/}, ref) 
-    => (
-        <TableBody>
--            {data.map((record, rowIndex) =>
--                cloneElement(
-+            {data.map((record, rowIndex) => (
-+               <RecordContextProvider
-+                   value={record}
-+                   key={record.id ?? `row${rowIndex}`}
-+               >
-+                   {cloneElement(
-                        row,
-                        {
-                            //...
-                            id: record.id ?? `row${rowIndex}`,
--                           key: record.id ?? `row${rowIndex}`,
-                            onToggleItem,
--                           record,
-                            resource,
-                            //...
-                        },
-                        children
--                   )
-                    )}
-+               </RecordContextProvider>
-+            ))}
-        </TableBody>
-    )
-);
-```
-
-Also, `<DatagridRow>` no longer provides a `<RecordContextProvider>` to its children:
-
-```diff
-const DatagridRow: FC<DatagridRowProps> = React.forwardRef((props, ref) => {
-     return (
--        <RecordContextProvider value={record}>
-+        <>
-            <TableRow>
-                {/*...*/}
-            </TableRow>
--        </RecordContextProvider>
-+        </>
-     );
- });
+const MyDatagridRow = ({
+-    record,
+-    id,
+     onToggleItem,
+     children,
+     selected,
+     selectable,
+}: DatagridRowProps) => {
++    const record = useRecordContext();
++    return record ? (
+-         <RecordContextProvider value={record}>
+          <TableRow>
+              </TableCell>
+                  {selectable && (
+                      <Checkbox
+                          checked={selected}
+                          onClick={event => {
+                              if (onToggleItem) {
+-                                      onToggleItem(id, event);
++                                      onToggleItem(record.id, event);
+                              }
+                          }}
+                      />
+                  )}
+              </TableCell>
+              {React.Children.map(children, field =>
+                  React.isValidElement<FieldProps>(field) &&
+                  field.props.source ? (
+-                         <TableCell key={`${id}-${field.props.source}`}>{field}</TableCell>
++                         <TableCell key={`${record.id}-${field.props.source}`}>{field}</TableCell>
+                  ) : null
+              )}
+          </TableRow>
+-         </RecordContextProvider>
+     ) : null;
+};
 ```
 
 See the [`<Datagrid body/>`](./Datagrid.md#body) documentation to learn how to create your own row component.
