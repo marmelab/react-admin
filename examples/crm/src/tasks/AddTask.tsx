@@ -3,17 +3,26 @@ import { useState } from 'react';
 import ControlPointIcon from '@mui/icons-material/ControlPoint';
 import {
     Box,
+    Button,
     Chip,
     Dialog,
-    Button,
     DialogTitle,
     DialogContent,
     DialogActions,
-    MenuItem,
     Stack,
-    TextField,
 } from '@mui/material';
-import { RecordRepresentation, useCreate, useRecordContext } from 'react-admin';
+import {
+    RecordRepresentation,
+    CreateBase,
+    Form,
+    TextInput,
+    DateInput,
+    SaveButton,
+    SelectInput,
+    Toolbar,
+    required,
+    useRecordContext,
+} from 'react-admin';
 
 const taskTypes = [
     'None',
@@ -27,27 +36,10 @@ const taskTypes = [
 ];
 
 export const AddTask = () => {
-    const [create, { isPending }] = useCreate();
     const contact = useRecordContext();
     const [open, setOpen] = useState(false);
     const handleOpen = () => {
         setOpen(true);
-    };
-    const handleCreateTask = (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-        const form = event.currentTarget;
-        const formData = new FormData(form);
-        const formJson = Object.fromEntries(formData.entries());
-        create(
-            'tasks',
-            { data: { ...formJson, contact_id: contact?.id } },
-            {
-                onSuccess: () => {
-                    setOpen(false);
-                },
-                onError: error => console.error(error),
-            }
-        );
     };
     return (
         <>
@@ -61,80 +53,70 @@ export const AddTask = () => {
                     color="primary"
                 />
             </Box>
-            <Dialog
-                open={open}
-                onClose={() => setOpen(false)}
-                aria-labelledby="form-dialog-title"
-                fullWidth
-                maxWidth="sm"
+            <CreateBase
+                resource="tasks"
+                record={{
+                    type: 'None',
+                    contact_id: contact?.id,
+                    due_date: new Date().toISOString().slice(0, 10),
+                }}
+                mutationOptions={{ onSuccess: () => setOpen(false) }}
             >
-                <form onSubmit={handleCreateTask}>
-                    <DialogTitle id="form-dialog-title">
-                        Create a new task for{' '}
-                        <RecordRepresentation
-                            record={contact}
-                            resource="contacts"
-                        />
-                    </DialogTitle>
-                    <DialogContent>
-                        <TextField
-                            autoFocus
-                            margin="dense"
-                            name="text"
-                            label="Description"
-                            required
-                            multiline
-                            fullWidth
-                            disabled={isPending}
-                        />
-                        <Stack direction="row" spacing={1} mt={2}>
-                            <TextField
-                                margin="dense"
-                                name="due_date"
-                                label="Due date"
-                                type="date"
-                                defaultValue={new Date()
-                                    .toISOString()
-                                    .slice(0, 10)}
-                                fullWidth
-                                disabled={isPending}
+                <Dialog
+                    open={open}
+                    onClose={() => setOpen(false)}
+                    aria-labelledby="form-dialog-title"
+                    fullWidth
+                    maxWidth="sm"
+                >
+                    <Form>
+                        <DialogTitle id="form-dialog-title">
+                            Create a new task for{' '}
+                            <RecordRepresentation
+                                record={contact}
+                                resource="contacts"
                             />
-
-                            <TextField
-                                margin="dense"
-                                name="type"
-                                label="Type"
-                                select
-                                fullWidth
-                                disabled={isPending}
-                                defaultValue="None"
+                        </DialogTitle>
+                        <DialogContent>
+                            <TextInput
+                                autoFocus
+                                source="text"
+                                label="Description"
+                                validate={required()}
+                                multiline
+                            />
+                            <Stack direction="row" spacing={1} mt={2}>
+                                <DateInput
+                                    source="due_date"
+                                    validate={required()}
+                                />
+                                <SelectInput
+                                    source="type"
+                                    validate={required()}
+                                    choices={taskTypes.map(type => ({
+                                        id: type,
+                                        name: type,
+                                    }))}
+                                />
+                            </Stack>
+                        </DialogContent>
+                        <DialogActions sx={{ p: 0 }}>
+                            <Toolbar
+                                sx={{
+                                    width: '100%',
+                                    justifyContent: 'flex-end',
+                                    gap: 1,
+                                }}
                             >
-                                {taskTypes.map(type => (
-                                    <MenuItem key={type} value={type}>
-                                        {type}
-                                    </MenuItem>
-                                ))}
-                            </TextField>
-                        </Stack>
-                    </DialogContent>
-                    <DialogActions>
-                        <Button
-                            onClick={() => setOpen(false)}
-                            color="primary"
-                            disabled={isPending}
-                        >
-                            Cancel
-                        </Button>
-                        <Button
-                            type="submit"
-                            color="primary"
-                            disabled={isPending}
-                        >
-                            Create
-                        </Button>
-                    </DialogActions>
-                </form>
-            </Dialog>
+                                <Button onClick={() => setOpen(false)}>
+                                    Cancel
+                                </Button>
+                                <SaveButton onClick={() => setOpen(false)} />
+                            </Toolbar>
+                        </DialogActions>
+                    </Form>
+                </Dialog>
+            </CreateBase>
         </>
     );
 };

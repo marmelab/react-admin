@@ -111,7 +111,11 @@ export const ContactAside = ({ link = 'edit' }: { link?: 'edit' | 'show' }) => {
             <Box>
                 <Typography variant="subtitle2">Tasks</Typography>
                 <Divider />
-                <ReferenceManyField target="contact_id" reference="tasks">
+                <ReferenceManyField
+                    target="contact_id"
+                    reference="tasks"
+                    sort={{ field: 'due_date', order: 'ASC' }}
+                >
                     <TasksIterator />
                 </ReferenceManyField>
                 <AddTask />
