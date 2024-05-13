@@ -33,13 +33,18 @@ const Home = () => {
                 <li>
                     <button
                         onClick={() =>
-                            redirect({
-                                pathname: '/some/path',
-                                search: '?query=string',
-                                hash: '#hash',
-                                state: null,
-                                key: 'my_key',
-                            })
+                            redirect(
+                                {
+                                    pathname: '/some/path',
+                                    search: '?query=string',
+                                    hash: '#hash',
+                                },
+                                undefined,
+                                undefined,
+                                {
+                                    state: null,
+                                }
+                            )
                         }
                     >
                         Location

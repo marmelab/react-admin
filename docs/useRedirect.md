@@ -42,6 +42,7 @@ redirect((resource, id, data) => {
 // redirect to edit view with state data
 redirect('edit', 'posts', 1, {}, { record: { post_id: record.id } });
 // redirect to a history Location object
+// TODO: change here
 redirect({ pathname: '/some/path', search: '?query=string', hash: '#hash', state: null, key: 'my_key' });
 // do not redirect (resets the record form)
 redirect(false);
