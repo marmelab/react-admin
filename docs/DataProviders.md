@@ -250,6 +250,8 @@ const App = () => (
 **Tip**: For TypeScript users, here is a typed version of the `fetchJson` function:
 
 ```ts
+import { fetchUtils } from "react-admin";
+
 const fetchJson = (url: string, options: fetchUtils.Options = {}) => {
     const customHeaders = (options.headers ||
         new Headers({
