@@ -761,7 +761,7 @@ The deprecated `<PaginationLimit>` component was removed.
 
 ### `<DatagridBody>` No Longer Provides `record` Prop To `<DatagridRow>`
 
-The `<DatagridBody>` component no longer provides a `record` prop to its `<DatagridRow>` children. Instead, it provides a `recordContext` for each row: 
+The `<DatagridBody>` component no longer provides a `record` prop to its `<DatagridRow>` children. Instead, it provides a `RecordContext` for each row: 
 
 ```diff
 const MyDatagridRow = ({
