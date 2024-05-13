@@ -17,17 +17,17 @@ const Home = () => {
             <ul>
                 <li>
                     <button onClick={() => redirect('/dashboard')}>
-                        Dashboard
+                        Relative url
                     </button>
                 </li>
                 <li>
                     <button onClick={() => redirect('list', 'posts')}>
-                        Post list
+                        View name
                     </button>
                 </li>
                 <li>
                     <button onClick={() => redirect('edit', 'posts', 123)}>
-                        123th post detail
+                        View name with details
                     </button>
                 </li>
                 <li>
@@ -42,7 +42,7 @@ const Home = () => {
                             })
                         }
                     >
-                        My page
+                        Location
                     </button>
                 </li>
                 <li>
@@ -53,7 +53,7 @@ const Home = () => {
                             })
                         }
                     >
-                        Redirect function
+                        Function
                     </button>
                 </li>
             </ul>
