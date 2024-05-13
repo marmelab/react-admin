@@ -1,5 +1,6 @@
 import { useCallback } from 'react';
-import { useNavigate, To, Path } from 'react-router-dom';
+import { useNavigate, To } from 'react-router-dom';
+import { Location } from 'history';
 import { Identifier, RaRecord } from '../types';
 
 import { useBasename } from './useBasename';
@@ -16,8 +17,7 @@ export type RedirectionSideEffect =
     | CreatePathType
     | false
     | RedirectToFunction
-    // | Location;
-    | Path;
+    | Location;
 
 /**
  * Hook for Redirection Side Effect
@@ -31,11 +31,12 @@ export type RedirectionSideEffect =
  * redirect('edit', 'posts', 123);
  * // redirect to edit view with state data
  * redirect('edit', 'comments', 123, {}, { record: { post_id: record.id } });
- * // TODO: add example with state
  * // do not redirect
  * redirect(false);
  * // redirect to the result of a function
  * redirect((resource, id, data) => ...)
+ * // redirect to a Location object
+ * redirect({ pathname: '/some/path', search: '?query=string', hash: '#hash', state: null, key: 'my_key' });
  */
 export const useRedirect = () => {
     const navigate = useNavigate();
@@ -65,7 +66,7 @@ export const useRedirect = () => {
                     state: { _scrollToTop: true, ...state },
                 });
                 return;
-            } else if (redirectTo instanceof Location) {
+            } else if (typeof redirectTo === 'object') {
                 navigate(redirectTo);
                 return;
             } else if (
