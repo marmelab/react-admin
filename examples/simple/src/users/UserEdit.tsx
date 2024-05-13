@@ -45,6 +45,7 @@ const EditActions = () => (
 const UserEditForm = () => {
     const { permissions } = usePermissions();
     const { save } = useSaveContext();
+    if (!save) return null;
 
     const newSave = values =>
         new Promise(resolve => {

@@ -23,6 +23,7 @@ export default (url, initialField = 'title') => ({
     },
 
     logout() {
+        cy.wait(1000);
         cy.get(this.elements.userMenu).click();
         cy.get(this.elements.logout).click();
     },

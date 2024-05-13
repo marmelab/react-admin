@@ -39,7 +39,7 @@ export const PostIcon = BookIcon;
 const QuickFilter = ({
     label,
 }: {
-    label?: string;
+    label: string;
     source?: string;
     defaultValue?: any;
 }) => {
