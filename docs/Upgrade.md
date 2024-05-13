@@ -772,6 +772,51 @@ Besides, the buttons passed as `bulkActionButtons` no longer receive any prop. I
 
 The deprecated `<PaginationLimit>` component was removed.
 
+### `<DatagridBody>` No Longer Provides `record` Prop To `<DatagridRow>`
+
+The `<DatagridBody>` component no longer provides a `record` prop to its `<DatagridRow>` children. Instead, it provides a `RecordContext` for each row: 
+
+```diff
+const MyDatagridRow = ({
+-    record,
+-    id,
+     onToggleItem,
+     children,
+     selected,
+     selectable,
+}: DatagridRowProps) => {
++    const record = useRecordContext();
++    return record ? (
+-         <RecordContextProvider value={record}>
+          <TableRow>
+              </TableCell>
+                  {selectable && (
+                      <Checkbox
+                          checked={selected}
+                          onClick={event => {
+                              if (onToggleItem) {
+-                                      onToggleItem(id, event);
++                                      onToggleItem(record.id, event);
+                              }
+                          }}
+                      />
+                  )}
+              </TableCell>
+              {React.Children.map(children, field =>
+                  React.isValidElement<FieldProps>(field) &&
+                  field.props.source ? (
+-                         <TableCell key={`${id}-${field.props.source}`}>{field}</TableCell>
++                         <TableCell key={`${record.id}-${field.props.source}`}>{field}</TableCell>
+                  ) : null
+              )}
+          </TableRow>
+-         </RecordContextProvider>
+     ) : null;
+};
+```
+
+See the [`<Datagrid body/>`](./Datagrid.md#body) documentation to learn how to create your own row component.
+
 ## Show and Edit Pages
 
 ### Custom Edit or Show Actions No Longer Receive Any Props
@@ -1218,9 +1263,6 @@ The deprecated `<ThemeProvider theme>` prop was removed. Use the `ThemesContext.
 ### `data-generator-retail` `commands` Have Been Renamed to `orders`
 
 The `data-generator-retail` package has been updated to provide types for all its records. In the process, we renamed the `commands` resource to `orders`. Accordingly, the `nb_commands` property of the `customers` resource has been renamed to `nb_orders` and the `command_id` property of the `invoices` and `reviews` resources has been renamed to `order_id`.
-
-
-
 
 ## Upgrading to v4
 

@@ -15,7 +15,6 @@ import { TableCell, TableRow, TableRowProps, Checkbox } from '@mui/material';
 import {
     Identifier,
     RaRecord,
-    RecordContextProvider,
     shallowEqual,
     useExpanded,
     useResourceContext,
@@ -163,7 +162,7 @@ const DatagridRow: FC<DatagridRowProps> = React.forwardRef((props, ref) => {
     );
 
     return (
-        <RecordContextProvider value={record}>
+        <>
             <TableRow
                 ref={ref}
                 className={clsx(className, {
@@ -240,7 +239,7 @@ const DatagridRow: FC<DatagridRowProps> = React.forwardRef((props, ref) => {
                     </TableCell>
                 </TableRow>
             )}
-        </RecordContextProvider>
+        </>
     );
 });
 

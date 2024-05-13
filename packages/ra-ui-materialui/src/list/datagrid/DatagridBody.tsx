@@ -3,7 +3,7 @@ import { cloneElement, memo, FC, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import { SxProps, TableBody, TableBodyProps } from '@mui/material';
 import clsx from 'clsx';
-import { Identifier, RaRecord } from 'ra-core';
+import { Identifier, RaRecord, RecordContextProvider } from 'ra-core';
 
 import { DatagridClasses } from './useDatagridStyles';
 import DatagridRow, { PureDatagridRow, RowClickFunction } from './DatagridRow';
@@ -34,31 +34,35 @@ const DatagridBody: FC<DatagridBodyProps> = React.forwardRef(
             className={clsx('datagrid-body', className, DatagridClasses.tbody)}
             {...rest}
         >
-            {data.map((record, rowIndex) =>
-                cloneElement(
-                    row,
-                    {
-                        className: clsx(DatagridClasses.row, {
-                            [DatagridClasses.rowEven]: rowIndex % 2 === 0,
-                            [DatagridClasses.rowOdd]: rowIndex % 2 !== 0,
-                        }),
-                        expand,
-                        hasBulkActions: hasBulkActions && !!selectedIds,
-                        hover,
-                        id: record.id ?? `row${rowIndex}`,
-                        key: record.id ?? `row${rowIndex}`,
-                        onToggleItem,
-                        record,
-                        resource,
-                        rowClick,
-                        selectable: !isRowSelectable || isRowSelectable(record),
-                        selected: selectedIds?.includes(record.id),
-                        sx: rowSx?.(record, rowIndex),
-                        style: rowStyle?.(record, rowIndex),
-                    },
-                    children
-                )
-            )}
+            {data.map((record, rowIndex) => (
+                <RecordContextProvider
+                    value={record}
+                    key={record.id ?? `row${rowIndex}`}
+                >
+                    {cloneElement(
+                        row,
+                        {
+                            className: clsx(DatagridClasses.row, {
+                                [DatagridClasses.rowEven]: rowIndex % 2 === 0,
+                                [DatagridClasses.rowOdd]: rowIndex % 2 !== 0,
+                            }),
+                            expand,
+                            hasBulkActions: hasBulkActions && !!selectedIds,
+                            hover,
+                            id: record.id ?? `row${rowIndex}`,
+                            onToggleItem,
+                            resource,
+                            rowClick,
+                            selectable:
+                                !isRowSelectable || isRowSelectable(record),
+                            selected: selectedIds?.includes(record.id),
+                            sx: rowSx?.(record, rowIndex),
+                            style: rowStyle?.(record, rowIndex),
+                        },
+                        children
+                    )}
+                </RecordContextProvider>
+            ))}
         </TableBody>
     )
 );
