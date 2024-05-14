@@ -149,7 +149,7 @@ A lifecycle callback is an object that defines a resource and callbacks for life
 
 You can also use the wilcard value '*' for the resource to apply the callback to every resource.
 
-Lifecycle callbacks are are executed in the order they are defined.
+Lifecycle callbacks are executed in the order they are defined.
 
 ```jsx
 import { baseDataProvider } from "./baseDataProvider";
@@ -351,7 +351,7 @@ export const dataProvider = withLifecycleCallbacks(baseDataProvider, [
 ]);
 ```
 
-If you have many callbacks for the same resource and event, this is a good practice to passe arrays of named functions instead of a single function for each event.
+If you have many callbacks for the same resource and event, this is a good practice to pass arrays of named functions instead of a single function for each event.
 
 ```jsx
 // in src/posts/index.js

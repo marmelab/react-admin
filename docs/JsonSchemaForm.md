@@ -117,7 +117,7 @@ For `number` and `integer` fields, you can also specify the `format` to render a
 -   `range`
 -   `radio`
 
-`ra-json-schema-form` comes with the an additional UI widget for `string` fields: `reference`. It's the equivalent of [react-admin's `<ReferenceInput>` component](https://marmelab.com/react-admin/ReferenceInput.html). It fetches the foreign key, and uses a relationship to populate the list of options.
+`ra-json-schema-form` comes with an additional UI widget for `string` fields: `reference`. It's the equivalent of [react-admin's `<ReferenceInput>` component](https://marmelab.com/react-admin/ReferenceInput.html). It fetches the foreign key, and uses a relationship to populate the list of options.
 
 Specify the `reference`, `optionText`, and other options through the `ui:options` UI schema directive:
 

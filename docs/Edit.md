@@ -361,7 +361,7 @@ The default `onSuccess` function is:
 
 **Tip**: If you just want to customize the redirect behavior, you can use [the `redirect` prop](#redirect) instead.
 
-**Tip**: When you use `mutationMode="pessimistic"`, the `onSuccess` function receives the response from the `dataProvider.update()` call, which is the created/edited record (see [the dataProvider documentation for details](./DataProviderWriting.md#response-format)). You can use that response in the success side effects: 
+**Tip**: When you use `mutationMode="pessimistic"`, the `onSuccess` function receives the response from the `dataProvider.update()` call, which is the created/edited record (see [the dataProvider documentation for details](./DataProviderWriting.md#update)). You can use that response in the success side effects: 
 
 {% raw %}
 ```jsx

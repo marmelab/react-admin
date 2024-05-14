@@ -118,7 +118,7 @@ export const MyApp = () => (
 );
 ```
 
-In this example, users will see the list of last products and the list of last categories but they won't be able to see the list of last orders.
+In this example, users will see the list of last products and the list of last categories, but they won't be able to see the list of last orders.
 
 
 **Note**: [ra-rbac's `<Resource>` component](./AuthRBAC.md#resource) automatically checks for the `list`, `show`, `create` and `edit` actions, so you don't actually need to use `canAccess` if you want to restrict a whole resource.
@@ -260,7 +260,7 @@ const ProductList = () => {
 
 ## Disable Menu Items Instead Of Not Showing Them
 
-The `ra-rbac` `<Menu>` component does not show menu items the current user has not access to.
+The `ra-rbac` `<Menu>` component does not show menu items the current user has no access to.
 It is considered good security practice not to disclose to a potentially malicious user that a page exists if they are not allowed to see it.
 
 However, you might want to disable menu items instead of not showing them.

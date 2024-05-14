@@ -500,7 +500,7 @@ React-admin uses [React Query](https://tanstack.com/query/v5/) to fetch, cache a
 * Query results that are no longer used in the current page are labeled as "inactive" and remain in the cache in case they are used again at a later time.
 * By default, "inactive" queries are garbage collected after 5 minutes.
 * Queries that fail are silently retried 3 times, with exponential backoff delay before capturing and displaying an error to the UI.
-* Query results by default are structurally shared to detect if data has actually changed and if not, the data reference remains unchanged to better help with value stabilization with regards to `useMemo` and `useCallback`. 
+* Query results by default are structurally shared to detect if data has actually changed and if not, the data reference remains unchanged to better help with value stabilization in regard to `useMemo` and `useCallback`. 
 
 If you want to override the react-query default query and mutation default options, or use a specific client or mutation cache, you can create your own `QueryClient` instance and pass it to the `<Admin queryClient>` prop:
 
@@ -786,7 +786,7 @@ export const loader = ({ request }: LoaderFunctionArgs) => {
 
 The following `dataProvider` extends an existing one and leverages [`withLifecycleCallbacks`](#adding-lifecycle-callbacks) to modify the `dataProvider.create()` and `dataProvider.update()` methods for the `posts` resource only with the [`beforeSave`](./withLifecycleCallbacks.md#beforesave) methods. 
 
-It works as follow:
+It works as follows:
 - it grabs the Cloudinary signature to allow the autentication in the request;
 - it creates a new `FormData` object with the file received from the form;
 - it sends this file to the Cloudinary API; 

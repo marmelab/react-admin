@@ -233,7 +233,7 @@ This delay can be customized by setting the `debounce` prop.
 </ReferenceInput>
 ```
 
-**Tip**: [The `signal` Parameter section](./DataProviders.md#the-signal-parameter) explains how to use the [AbortSignal](https://developer.mozilla.org/en-US/docs/Web/API/AbortSignal) interface to abort the last API call and avoid parallel requests.
+**Tip**: [The `signal` Parameter section](./DataProviderWriting.md#the-signal-parameter) explains how to use the [AbortSignal](https://developer.mozilla.org/en-US/docs/Web/API/AbortSignal) interface to abort the last API call and avoid parallel requests.
 
 ## `emptyText`
 

@@ -98,7 +98,7 @@ export const PostShow = () => (
 
 ## `aside`
 
-You can pass an aside element to the `<Show>` component. It will be rendered on the right side of the page, below the actions toolbar.
+You can pass an aside element to the `<Show>` component. It will be rendered on the right side of the page, below the action toolbar.
 
 The aside component renders in the same `RecordContext` as the `Show` child component. That means you can display details of the current `record` in the aside component by calling `useRecordContext`:
 
