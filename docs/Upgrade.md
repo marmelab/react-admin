@@ -46,7 +46,7 @@ React-admin v5 mostly focuses on removing deprecated features and upgrading depe
     - [`<InputHelperText touched>` Prop Was Removed](#inputhelpertext-touched-prop-was-removed)
 - [TypeScript](#typescript)
     - [Fields Components Requires The source Prop](#fields-components-requires-the-source-prop)
-    - `[useRecordContext` Returns undefined When No Record Is Available](#userecordcontext-returns-undefined-when-no-record-is-available)
+    - [`useRecordContext` Returns undefined When No Record Is Available](#userecordcontext-returns-undefined-when-no-record-is-available)
     - [Page Contexts Are Now Types Instead of Interfaces](#page-contexts-are-now-types-instead-of-interfaces)
     - [Stronger Types For Page Contexts](#stronger-types-for-page-contexts)
     - [EditProps and CreateProps now expect a children prop](#editprops-and-createprops-now-expect-a-children-prop)
