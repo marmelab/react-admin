@@ -260,7 +260,7 @@ const ProductList = () => {
 
 ## Disable Menu Items Instead Of Not Showing Them
 
-The `ra-rbac` `<Menu>` component does not show menu items the current user has not accessed to.
+The `ra-rbac` `<Menu>` component does not show menu items the current user has no access to.
 It is considered good security practice not to disclose to a potentially malicious user that a page exists if they are not allowed to see it.
 
 However, you might want to disable menu items instead of not showing them.
