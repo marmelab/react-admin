@@ -443,7 +443,7 @@ Check the [Handling Authentication](./DataProviders.md#handling-authentication) 
 A good way to test your data provider is to build a react-admin app with components that depend on it. Here is a list of components calling the data provider methods:
 
 | Method             | Components |
-| ------------------ |---------- |
+| ------------------ | --------- |
 | `getList`          | [`<List>`](./List.md), [`<ListGuesser>`](./ListGuesser.md), [`<ListBase>`](./ListBase.md), [`<InfiniteList>`](./InfiniteList.md), [`<Count>`](./Count.md), [`<Calendar>`](./Calendar.md), [`<ReferenceInput>`](./ReferenceInput.md), [`<ReferenceArrayInput>`](./ReferenceArrayInput.md), [`<ExportButton>`](./Buttons.md#exportbutton), [`<PrevNextButtons>`](./PrevNextButtons.md) |
 | `getOne`           | [`<Show>`](./Show.md), [`<ShowGuesser>`](./ShowGuesser.md), [`<ShowBase>`](./ShowBase.md), [`<Edit>`](./Edit.md), [`<EditGuesser>`](./EditGuesser.md), [`<EditBase>`](./EditBase.md) |
 | `getMany`          | [`<ReferenceField>`](./ReferenceField.md), [`<ReferenceArrayField>`](./ReferenceArrayField.md), [`<ReferenceInput>`](./ReferenceInput.md), [`<ReferenceArrayInput>`](./ReferenceArrayInput.md) |
