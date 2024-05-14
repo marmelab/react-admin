@@ -17,6 +17,7 @@ import { required } from './validate';
 import ValidationError from './ValidationError';
 import { mergeTranslations } from '../i18n';
 import { I18nProvider } from '../types';
+import { SaveContextProvider, useNotificationContext } from '..';
 
 export default {
     title: 'ra-core/form/Form',
@@ -179,7 +180,11 @@ export const UndefinedValue = () => {
 
 const defaultI18nProvider = polyglotI18nProvider(() =>
     mergeTranslations(englishMessages, {
-        app: { validation: { required: 'This field must be provided' } },
+        app: {
+            validation: {
+                required: 'This field must be provided',
+            },
+        },
     })
 );
 
@@ -338,3 +343,62 @@ export const InNonDataRouter = ({
         </CoreAdminContext>
     </HashRouter>
 );
+
+const Notifications = () => {
+    const { notifications } = useNotificationContext();
+    return (
+        <ul>
+            {notifications.map(({ message }, id) => (
+                <li key={id}>{message}</li>
+            ))}
+        </ul>
+    );
+};
+
+export const ServerSideValidation = () => {
+    const save = React.useCallback(values => {
+        const errors: any = {};
+        if (!values.defaultMessage) {
+            errors.defaultMessage = 'ra.validation.required';
+        }
+        if (!values.customMessage) {
+            errors.customMessage = 'This field is required';
+        }
+        if (!values.customMessageTranslationKey) {
+            errors.customMessageTranslationKey = 'app.validation.required';
+        }
+        if (!values.missingCustomMessageTranslationKey) {
+            errors.missingCustomMessageTranslationKey =
+                'app.validation.missing';
+        }
+        if (!values.customGlobalMessage) {
+            errors.customGlobalMessage = 'ra.validation.required';
+            errors.rootError = 'There are validation errors. Please fix them.';
+        }
+        return Object.keys(errors).length > 0 ? errors : undefined;
+    }, []);
+    return (
+        <CoreAdminContext i18nProvider={defaultI18nProvider}>
+            <SaveContextProvider value={{ save }}>
+                <Form
+                    record={{
+                        id: 1,
+                        defaultMessage: 'foo',
+                        customMessage: 'foo',
+                        customMessageTranslationKey: 'foo',
+                        missingCustomMessageTranslationKey: 'foo',
+                        customGlobalMessage: 'foo',
+                    }}
+                >
+                    <Input source="defaultMessage" />
+                    <Input source="customMessage" />
+                    <Input source="customMessageTranslationKey" />
+                    <Input source="missingCustomMessageTranslationKey" />
+                    <Input source="customGlobalMessage" />
+                    <button type="submit">Submit</button>
+                </Form>
+                <Notifications />
+            </SaveContextProvider>
+        </CoreAdminContext>
+    );
+};
