@@ -1,5 +1,11 @@
 import * as React from 'react';
-import { Link, Routes, Route, useLocation } from 'react-router-dom';
+import {
+    Link,
+    Routes,
+    Route,
+    useLocation,
+    useNavigate,
+} from 'react-router-dom';
 
 import { FakeBrowserDecorator } from '../storybook//FakeBrowser';
 import { useRedirect as useRedirectRA } from './useRedirect';
@@ -11,6 +17,7 @@ export default {
 
 const Home = () => {
     const redirect = useRedirectRA();
+    const navigate = useNavigate();
     return (
         <>
             <h1>Home</h1>
@@ -33,32 +40,30 @@ const Home = () => {
                 <li>
                     <button
                         onClick={() =>
-                            redirect(
-                                {
-                                    pathname: '/some/path',
-                                    search: '?query=string',
-                                    hash: '#hash',
-                                },
-                                undefined,
-                                undefined,
-                                {
-                                    state: null,
-                                }
-                            )
-                        }
-                    >
-                        Location
-                    </button>
-                </li>
-                <li>
-                    <button
-                        onClick={() =>
                             redirect((resource, id, data) => {
                                 return data?.hasComments ? 'comments' : 'posts';
                             })
                         }
                     >
                         Function
+                    </button>
+                </li>
+                <li>
+                    <button
+                        onClick={() =>
+                            navigate(
+                                {
+                                    pathname: '/some/path',
+                                    search: '?query=string',
+                                    hash: '#hash',
+                                },
+                                {
+                                    state: { key: 'value' },
+                                }
+                            )
+                        }
+                    >
+                        useNavigation
                     </button>
                 </li>
             </ul>

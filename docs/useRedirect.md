@@ -41,11 +41,33 @@ redirect((resource, id, data) => {
 }, 'posts', 1, { hasComments: true });
 // redirect to edit view with state data
 redirect('edit', 'posts', 1, {}, { record: { post_id: record.id } });
-// redirect to a history Location object
-// TODO: change here
-redirect({ pathname: '/some/path', search: '?query=string', hash: '#hash', state: null, key: 'my_key' });
 // do not redirect (resets the record form)
 redirect(false);
 ```
 
 Note that `useRedirect` allows redirection to an absolute URL outside the current React app.
+
+## `useNavigate`
+
+For even more specific navigation, you can use the Hook [`useNavigate`](https://reactrouter.com/en/main/hooks/use-navigate) from `react-router-dom` as follows
+
+```jsx
+import { useNavigate } from 'react-router-dom';
+
+const MyPageButton = () => {
+    const navigate = useNavigate();
+    const handleClick = () => {
+        navigate(
+            {
+                pathname: '/some/path',
+                search: '?query=string',
+                hash: '#hash',
+            },
+            {
+                state: { key: 'value' },
+            }
+        );
+    }
+    return <button onClick={handleClick}>My page</button>;
+};
+```

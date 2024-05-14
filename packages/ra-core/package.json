@@ -30,7 +30,6 @@
         "@hookform/resolvers": "^3.2.0",
         "@testing-library/react": "^14.1.2",
         "@testing-library/react-hooks": "^8.0.1",
-        "@types/history": "^5.0.0",
         "@types/jest": "^29.5.2",
         "@types/jscodeshift": "^0.11.11",
         "@types/node": "^20.10.7",
@@ -53,7 +52,6 @@
         "zod": "^3.22.1"
     },
     "peerDependencies": {
-        "@types/history": "^5.0.0",
         "react": "^18.0.0",
         "react-dom": "^18.0.0",
         "react-hook-form": "^7.43.9",

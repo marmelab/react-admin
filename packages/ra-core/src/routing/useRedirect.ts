@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import { useNavigate, To, NavigateOptions } from 'react-router-dom';
+import { useNavigate, To } from 'react-router-dom';
 import { Identifier, RaRecord } from '../types';
 
 import { useBasename } from './useBasename';
@@ -12,16 +12,7 @@ type RedirectToFunction = (
     state?: object
 ) => To;
 
-// type RedirectToFunctionUseNavigate = (
-//     to: To,
-//     options?: NavigateOptions
-// ) => void;
-
-export type RedirectionSideEffect =
-    | CreatePathType
-    | false
-    | RedirectToFunction
-    | To;
+export type RedirectionSideEffect = CreatePathType | false | RedirectToFunction;
 
 /**
  * Hook for Redirection Side Effect
@@ -39,9 +30,6 @@ export type RedirectionSideEffect =
  * redirect(false);
  * // redirect to the result of a function
  * redirect((resource, id, data) => ...)
- * // redirect to a Location object
- * // TODO: change here
- * redirect({ pathname: '/some/path', search: '?query=string', hash: '#hash', state: null, key: 'my_key' });
  */
 export const useRedirect = () => {
     const navigate = useNavigate();
@@ -54,7 +42,6 @@ export const useRedirect = () => {
             resource: string = '',
             id?: Identifier,
             data?: Partial<RaRecord>,
-            options?: NavigateOptions,
             state: object = {}
         ) => {
             if (!redirectTo) {
@@ -71,10 +58,6 @@ export const useRedirect = () => {
                 navigate(absoluteTarget, {
                     state: { _scrollToTop: true, ...state },
                 });
-                return;
-            } else if (typeof redirectTo === 'object') {
-                if (!options) navigate(redirectTo);
-                else navigate(redirectTo, options);
                 return;
             } else if (
                 typeof redirectTo === 'string' &&
