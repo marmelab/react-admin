@@ -35,15 +35,15 @@
         "@tiptap/pm": "^2.0.3",
         "@tiptap/react": "^2.0.3",
         "@tiptap/starter-kit": "^2.0.3",
-        "clsx": "^1.1.1"
+        "clsx": "^2.1.1"
     },
     "peerDependencies": {
         "@mui/icons-material": "^5.15.15",
         "@mui/material": "^5.15.15",
         "ra-core": "^4.0.0",
         "ra-ui-materialui": "^4.0.0",
-        "react": "^16.9.0 || ^17.0.0 || ^18.0.0",
-        "react-dom": "^16.9.0 || ^17.0.0 || ^18.0.0"
+        "react": "^18.0.0",
+        "react-dom": "^18.0.0"
     },
     "devDependencies": {
         "@mui/icons-material": "^5.15.15",

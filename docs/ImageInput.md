@@ -53,7 +53,7 @@ Files are accepted or rejected based on the `accept`, `multiple`, `minSize` and 
 
 | Prop                   | Required | Type                | Default    | Description                                                         |
 |------------------------|----------|---------------------|------------|---------------------------------------------------------------------|
-| `accept`               | Optional | `string | string[]` | -                                                                   | Accepted file type(s). When empty, all file types are accepted.     |
+| `accept`               | Optional | `Object`            | -          | Accepted file type(s). When empty, all file types are accepted.     |
 | `children`             | Optional | `ReactNode`         | -          | Element used to preview file(s)                                     |
 | `minSize`              | Optional | `number`            | 0          | Minimum file size (in bytes), e.g. 5000 for 5KB                     |
 | `maxSize`              | Optional | `number`            | `Infinity` | Maximum file size (in bytes), e.g. 5000000 for 5MB                  |
@@ -69,11 +69,13 @@ Files are accepted or rejected based on the `accept`, `multiple`, `minSize` and 
 
 Equivalent of [the `accept` attribute of an `<input type="file">`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file#accept). `accept` must be a valid [MIME type](https://www.iana.org/assignments/media-types/media-types.xhtml), according to [input element specification](https://www.w3.org/wiki/HTML/Elements/input/file).
 
+{% raw %}
 ```jsx
-<ImageInput source="pictures" accept="image/*">
+<ImageInput source="pictures" accept={{ 'image/*': ['.png', '.jpg'] }}>
     <ImageField source="src" title="title" />
 </ImageInput>
 ```
+{% endraw %}
 
 Examples of valid `accept` values:
 
@@ -86,11 +88,13 @@ If left empty, all file types are accepted (even non-image types).
 
 `<ImageInput>` delegates the preview of currently selected images to its child. `<ImageInput>` clones its child component once per file, inside a [`<RecordContext>`](./useRecordContext.md), so the child can be a [Field](./Fields.md) component. The default [`<ImageField>`](./ImageField.md) renders a thumbnail for the current image(s).
 
+{% raw %}
 ```jsx
 <ImageInput source="pictures">
     <ImageField source="src" title="title" />
 </ImageInput>
 ```
+{% endraw %}
 
 Writing a custom preview component is quite straightforward: it's a standard [field](./Fields.md#writing-your-own-field-component).
 
@@ -98,21 +102,25 @@ Writing a custom preview component is quite straightforward: it's a standard [fi
 
 Minimum file size (in bytes), e.g. 5000 for 5KB. Defaults to 0.
 
+{% raw %}
 ```jsx
 <ImageInput source="pictures" minSize={5000}>
     <ImageField source="src" title="title" />
 </ImageInput>
 ```
+{% endraw %}
 
 ## `maxSize`
 
 Maximum file size (in bytes), e.g. 5000000 for 5MB. Defaults to `Infinity`.
 
+{% raw %}
 ```jsx
 <ImageInput source="pictures" maxSize={5000000}>
     <ImageField source="src" title="title" />
 </ImageInput>
 ```
+{% endraw %}
 
 ## `multiple`
 
@@ -120,11 +128,13 @@ Set to `true` if the input should accept a list of files, `false` if it should o
 
 If `multiple` is set to `false` and additional files are dropped, all files besides the first will be rejected. Any file which does not have a size in the [`minSize`, `maxSize`] range, will be rejected as well.
 
+{% raw %}
 ```jsx
 <ImageInput source="pictures" multiple>
     <ImageField source="src" title="title" />
 </ImageInput>
 ```
+{% endraw %}
 
 ## `options`
 
@@ -144,21 +154,25 @@ You can customize these labels using the followinf translation keys:
 
 If that's not enough, you can pass a `placeholder` prop to overwrite it. The value can be anything React can render:
 
+{% raw %}
 ```jsx
 <ImageInput source="files" placeholder={<p>Drop your file here</p>}>
     <ImageField source="src" title="title" />
 </ImageInput>
 ```
+{% endraw %}
 
 ## `removeIcon`
 
 Use the `removeIcon` prop to change the icon displayed as the remove button:
 
+{% raw %}
 ```jsx
 <ImageInput source="pictures" removeIcon={CustomSvgIcon}>
     <ImageField source="src" title="title" />
 </ImageInput>
 ```
+{% endraw %}
 
 ## `sx`: CSS API
 

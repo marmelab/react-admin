@@ -46,7 +46,7 @@ const UserEditToolbar = ({ permissions, ...props }) => {
 };
 
 const isValidName = async value =>
-    new Promise<string>(resolve =>
+    new Promise<string | undefined>(resolve =>
         setTimeout(() =>
             resolve(value === 'Admin' ? "Can't be Admin" : undefined)
         )

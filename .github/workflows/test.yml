@@ -8,16 +8,22 @@ on:
     pull_request:
 
 jobs:
-    typecheck:
-        runs-on: ubuntu-latest
-        steps:
-            - name: Checkout
-              uses: actions/checkout@v4
-            - uses: bahmutov/npm-install@v1.10.2
-            - name: Lint
-              run: make lint
-            - name: Build
-              run: make build
+  typecheck:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    - name: Use Node.js LTS
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18.x'
+    - uses: bahmutov/npm-install@v1.10.2
+    - name: Lint
+      run: make lint        
+    - name: Build
+      run: make build
+    - name: Type check simple example
+      run: cd examples/simple && yarn type-check
 
     doc-check:
         runs-on: ubuntu-latest

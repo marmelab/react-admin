@@ -18,12 +18,16 @@ import Aside from './Aside';
 import UserEditEmbedded from './UserEditEmbedded';
 export const UserIcon = PeopleIcon;
 
-const getUserFilters = permissions =>
-    [
+const getUserFilters = (permissions: string): React.ReactElement[] => {
+    const filters = [
         <SearchInput source="q" alwaysOn />,
         <TextInput source="name" />,
-        permissions === 'admin' ? <TextInput source="role" /> : null,
-    ].filter(filter => filter !== null);
+    ];
+    if (permissions === 'admin') {
+        filters.push(<TextInput source="role" />);
+    }
+    return filters;
+};
 
 const UserBulkActionButtons = props => (
     <BulkDeleteWithConfirmButton {...props} />

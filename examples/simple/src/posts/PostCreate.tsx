@@ -113,7 +113,7 @@ const PostCreate = () => {
                 <FileInput
                     source="pdffile"
                     label="PDF-Template"
-                    accept="application/pdf"
+                    accept={{ 'application/pdf': ['.pdf'] }}
                 >
                     <FileField source="src" title="title" />
                 </FileInput>

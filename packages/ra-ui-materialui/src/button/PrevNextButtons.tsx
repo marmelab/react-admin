@@ -5,7 +5,8 @@ import {
     usePrevNextController,
     UsePrevNextControllerProps,
 } from 'ra-core';
-import { NavigateBefore, NavigateNext } from '@mui/icons-material';
+import NavigateBefore from '@mui/icons-material/NavigateBefore';
+import NavigateNext from '@mui/icons-material/NavigateNext';
 import ErrorIcon from '@mui/icons-material/Error';
 import { Link } from 'react-router-dom';
 import {

@@ -37,7 +37,7 @@ const addTagsSearchSupport = (dataProvider: DataProvider) => ({
                     pageInfo: {
                         hasNextPage:
                             params.pagination.perPage * params.pagination.page <
-                            total,
+                            (total || 0),
                         hasPreviousPage: params.pagination.page > 1,
                     },
                 }));

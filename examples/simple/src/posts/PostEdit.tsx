@@ -143,7 +143,7 @@ const PostEdit = () => {
                     <ImageInput
                         multiple
                         source="pictures"
-                        accept="image/*"
+                        accept={{ 'image/*': ['.jpeg', '.png', '.jpg'] }}
                         helperText=""
                     >
                         <ImageField source="src" title="title" />

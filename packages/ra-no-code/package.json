@@ -38,12 +38,12 @@
     "peerDependencies": {
         "@mui/icons-material": "^5.15.15",
         "@mui/material": "^5.15.15",
-        "react": "^16.9.0 || ^17.0.0 || ^18.0.0",
-        "react-dom": "^16.9.0 || ^17.0.0 || ^18.0.0"
+        "react": "^18.0.0",
+        "react-dom": "^18.0.0"
     },
     "dependencies": {
         "@tanstack/react-query": "^5.8.4",
-        "clsx": "^1.1.1",
+        "clsx": "^2.1.1",
         "date-fns": "^3.6.0",
         "inflection": "^3.0.0",
         "lodash": "~4.17.5",

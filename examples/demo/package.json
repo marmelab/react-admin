@@ -9,7 +9,7 @@
         "@mui/material": "^5.15.15",
         "@types/recharts": "^1.8.10",
         "@vitejs/plugin-react": "^2.2.0",
-        "clsx": "^1.1.1",
+        "clsx": "^2.1.1",
         "data-generator-retail": "^5.0.0-alpha.0",
         "date-fns": "^3.6.0",
         "fakerest": "^3.0.0",
@@ -38,6 +38,7 @@
     "scripts": {
         "dev": "vite",
         "build": "tsc && vite build",
+        "type-check": "tsc",
         "preview": "vite preview"
     },
     "devDependencies": {

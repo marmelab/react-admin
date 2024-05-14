@@ -52,17 +52,17 @@
         "zod": "^3.22.1"
     },
     "peerDependencies": {
-        "react": "^16.9.0 || ^17.0.0 || ^18.0.0",
-        "react-dom": "^16.9.0 || ^17.0.0 || ^18.0.0",
+        "react": "^18.0.0",
+        "react-dom": "^18.0.0",
         "react-hook-form": "^7.43.9",
         "react-router": "^6.22.0",
         "react-router-dom": "^6.22.0"
     },
     "dependencies": {
         "@tanstack/react-query": "^5.8.4",
-        "clsx": "^1.1.1",
+        "clsx": "^2.1.1",
         "date-fns": "^3.6.0",
-        "eventemitter3": "^4.0.7",
+        "eventemitter3": "^5.0.1",
         "hotscript": "^1.0.12",
         "inflection": "^3.0.0",
         "jsonexport": "^3.2.0",

@@ -72,7 +72,11 @@ export const LatestNotes = () => {
                             key={`${note.type}_${note.id}`}
                             sx={{ marginBottom: 2 }}
                         >
-                            <Typography variant="body2" color="textSecondary">
+                            <Typography
+                                variant="body2"
+                                color="textSecondary"
+                                component="div"
+                            >
                                 on{' '}
                                 {note.type === 'dealNote' ? (
                                     <Deal note={note} />
