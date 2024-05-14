@@ -273,6 +273,11 @@ const myTheme = {
 
 In the default theme, links are now underlined by default.
 
+| Before | After |
+|-------|-------|
+| ![localhost_8000_ (1)](https://github.com/marmelab/react-admin/assets/99944/5501a2bc-5cc8-47c9-b267-2b80b672cf1a) | ![localhost_8000_](https://github.com/marmelab/react-admin/assets/99944/525dc9f5-0b27-4fd0-b3c7-fe9f9af089b1) |
+
+
 If you use the `<Link>` component from `react-admin`, and you want to remove the underline, set the `underline` prop to `none`:
 
 ```diff
