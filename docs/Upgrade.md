@@ -221,6 +221,10 @@ If you use these dependencies in your own application, make sure you use similar
 
 In the default theme, all inputs now have full width. This makes forms better looking by default, and facilitates custom form layouts as you can nest inputs under `<Grid>`.
 
+| Before | After | 
+| ------| ------|
+| <img width="606" alt="Capture d’écran 2024-03-08 à 22 47 03" src="https://github.com/marmelab/react-admin/assets/99944/b9ff3b48-55ff-4d70-b154-da074f99f88b"> | <img width="580" alt="Capture d’écran 2024-03-08 à 22 46 24" src="https://github.com/marmelab/react-admin/assets/99944/3c0e83da-3f3f-491b-999d-17fdec09e05e"> |
+
 If this breaks your existing form layouts, you can revert to the previous style by resetting the `fullWidth` default prop in the application theme. To do so:
 
 - If you didn't use a custom theme, create one based on the default theme:
