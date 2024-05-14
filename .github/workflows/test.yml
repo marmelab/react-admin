@@ -13,7 +13,7 @@ jobs:
         steps:
             - name: Checkout
               uses: actions/checkout@v4
-            - uses: bahmutov/npm-install@v1.9.0
+            - uses: bahmutov/npm-install@v1.10.2
             - name: Lint
               run: make lint
             - name: Build
@@ -32,7 +32,7 @@ jobs:
         steps:
             - name: Checkout
               uses: actions/checkout@v4
-            - uses: bahmutov/npm-install@v1.9.0
+            - uses: bahmutov/npm-install@v1.10.2
             - name: Unit Tests
               run: make test-unit
               env:
@@ -43,7 +43,7 @@ jobs:
         steps:
             - name: Checkout
               uses: actions/checkout@v4
-            - uses: bahmutov/npm-install@v1.9.0
+            - uses: bahmutov/npm-install@v1.10.2
             - name: e2e Tests
               run: make test-e2e
               env:
@@ -54,7 +54,7 @@ jobs:
         steps:
             - name: Checkout
               uses: actions/checkout@v4
-            - uses: bahmutov/npm-install@v1.9.0
+            - uses: bahmutov/npm-install@v1.10.2
             - name: Build
               run: make build
             - name: Build e-commerce
@@ -77,7 +77,7 @@ jobs:
         steps:
             - name: Checkout
               uses: actions/checkout@v4
-            - uses: bahmutov/npm-install@v1.9.0
+            - uses: bahmutov/npm-install@v1.10.2
             - name: Build
               run: make build
             - name: Build crm
@@ -117,7 +117,7 @@ jobs:
         steps:
             - name: Checkout
               uses: actions/checkout@v4
-            - uses: bahmutov/npm-install@v1.9.0
+            - uses: bahmutov/npm-install@v1.10.2
               with:
                   install-command: yarn --immutable
             - name: Build create-react-admin
