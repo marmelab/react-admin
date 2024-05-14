@@ -123,7 +123,7 @@ const App = () => (
 export default App;
 ```
 
-## Using A Custom Router 
+## Using A Custom Router
 
 By default, react-admin creates a [HashRouter](https://reactrouter.com/en/6/router-components/hash-router#hashrouter). The hash portion of the URL (i.e. `#/posts/123` in the example) contains the main application route. This strategy has the benefit of working without a server, and with legacy web browsers. 
 

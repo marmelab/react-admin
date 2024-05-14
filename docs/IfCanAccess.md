@@ -114,7 +114,7 @@ const EditCompanyButton = () => {
 
 `ra-rbac` shows a Not Found page when users try to access a page they don't have the permissions for. It is considered good security practice not to disclose to a potentially malicious user that a page exists if they are not allowed to see it.
 
-However, should you prefer to show an Access Denied screen in those cases, you can do so by specifying a `fallback` component in `<IfCanAccess>`:
+However, should you prefer to show an 'Access Denied' screen in those cases, you can do so by specifying a `fallback` component in `<IfCanAccess>`:
 
 ```tsx
 // in src/posts/PostCreate.tsx

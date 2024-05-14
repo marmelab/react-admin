@@ -17,7 +17,7 @@ import { ChipField } from 'react-admin';
 
 ![ChipField](./img/chip-field.png)
 
-This field type is especially useful for one to many relationships, e.g. to display a list of books for a given author:
+This field type is especially useful for one-to-many relationships, e.g. to display a list of books for a given author:
 
 ```jsx
 import { ChipField, SingleFieldList, ReferenceManyField } from 'react-admin';

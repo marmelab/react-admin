@@ -325,7 +325,7 @@ Set `helperText` to `false` to remove the empty line below the input. Beware tha
 
 ## `label`
 
-The input label. In i18n apps, the label is passed to the translate function. When omitted, the `source` property is humanized and used as a label. Set `label={false}` to hide the label.
+The input label. In i18n apps, the label is passed to the `translate` function. When omitted, the `source` property is humanized and used as a label. Set `label={false}` to hide the label.
 
 ```tsx
 <TextInput source="title" /> {/* input label is "Title" */}

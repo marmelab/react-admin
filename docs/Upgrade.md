@@ -377,7 +377,7 @@ const App = () => {
 export default App;
 ```
 
-## Application Root & Layout 
+## Application Root & Layout
 
 ### `<Admin menu>` Is No Longer Supported
 
@@ -829,7 +829,7 @@ See the [`<Datagrid body/>`](./Datagrid.md#body) documentation to learn how to c
 
 ### Custom Edit or Show Actions No Longer Receive Any Props
 
-React-admin used to inject the `record` and `resource` props to custom edit or show actions. These props are no longer injected in v5. If you need them, you'll have to use the `useRecordContext` and `useResourceContext` hooks instead. But if you use the standard react-admin buttons like `<ShowButton>`, which already uses these hooks, you don't need inject anything.
+React-admin used to inject the `record` and `resource` props to custom edit or show actions. These props are no longer injected in v5. If you need them, you'll have to use the `useRecordContext` and `useResourceContext` hooks instead. But if you use the standard react-admin buttons like `<ShowButton>`, which already uses these hooks, you don't need to inject anything.
 
 ```diff
 -const MyEditActions = ({ data }) => (
@@ -1183,11 +1183,11 @@ The `usePermissionsOptimized` hooks was deprecated and has been removed. Use `us
 
 ### `linkToRecord` Helper Was Removed
 
-The `linkToRecord` helper was removed. Use [`useCreatePath`](https://marmelab.com/react-admin/Routing.html#linking-to-a-page) instead.
+The `linkToRecord` helper was removed. Use [`useCreatePath`](./Routing.md#linking-to-a-page) instead.
 
 ### `resolveRedirectTo` Helper Was Removed
 
-The `resolveRedirectTo` helper was removed. Use [`useCreatePath`](./Routing.html#linking-to-a-page) instead.
+The `resolveRedirectTo` helper was removed. Use [`useCreatePath`](./Routing.md#linking-to-a-page) instead.
 
 
 ## Theming

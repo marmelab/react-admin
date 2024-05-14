@@ -220,7 +220,7 @@ const CreateCategory = () => {
 {% endraw %}
 
 If you just need to ask users for a single string to create the new option, you can use [the `onCreate` prop](#oncreate) instead.
-
+**Tip**: [The `signal` Parameter section](./DataProviderWriting.md#the-signal-parameter) explains how to use the [AbortSignal](https://developer.mozilla.org/en-US/docs/Web/API/AbortSignal) interface to abort the last API call and avoid parallel requests.
 ## `debounce`
 
 When used inside a [`<ReferenceInput>`](./ReferenceInput.md), `<AutocompleteInput>` will call `dataProvider.getList()` with the current input value as filter after a delay of 250ms. This is to avoid calling the API too often while users are typing their query.
@@ -233,7 +233,7 @@ This delay can be customized by setting the `debounce` prop.
 </ReferenceInput>
 ```
 
-**Tip**: [The `signal` Parameter section](./DataProviders.md#the-signal-parameter) explains how to use the [AbortSignal](https://developer.mozilla.org/en-US/docs/Web/API/AbortSignal) interface to abort the last API call and avoid parallel requests.
+
 
 ## `emptyText`
 
