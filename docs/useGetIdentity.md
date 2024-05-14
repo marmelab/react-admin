@@ -23,7 +23,7 @@ Once loaded, the `data` object contains the following properties:
 const { id, fullName, avatar } = data;
 ```
 
-`useGetIdentity` uses [react-query's `useQuery` hook](https://tanstack.com/query/v3/docs/react/reference/useQuery) to call the `authProvider`.
+`useGetIdentity` uses [react-query's `useQuery` hook](https://tanstack.com/query/v3/docs/react/reference/useQuery) to call the `authProvider`. This means you will need to wrap the component where you want to use it in a react-query `<QueryClientProvider>` with a default `QueryClient`. To use `useGetIdentity()` in your `App.tsx` you wrap it in `index.tsx`.
 
 ## Usage
 
