@@ -46,7 +46,7 @@ const PostDetail = ({ id }) => {
 }
 ```
 
-**Tip**: This hook requires the component where it is used to be wrapped in a react-query `<QueryClientProvider>` with a default `QueryClient`. 
+**Tip**: When using this hook in your <Admin> component, it requires that component to be wrapped in a react-query `<QueryClientProvider>` with a default `QueryClient` in its parent component. 
 
 ## Refreshing The Identity
 
