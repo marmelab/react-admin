@@ -19,6 +19,7 @@ import {
     SanitizeEmptyValues,
     NullValue,
     InNonDataRouter,
+    ServerSideValidation,
 } from './Form.stories';
 import { mergeTranslations } from '../i18n';
 
@@ -767,5 +768,27 @@ describe('Form', () => {
         });
         fireEvent.click(screen.getByText('Leave the form'));
         await screen.findByText('Go to form');
+    });
+
+    it('should support server side validation', async () => {
+        render(<ServerSideValidation />);
+        fireEvent.change(screen.getByLabelText('defaultMessage'), {
+            target: { value: '' },
+        });
+        fireEvent.click(screen.getByText('Submit'));
+        await screen.findByText('Required');
+        await screen.findByText('ra.message.invalid_form');
+    });
+
+    it('should support using a custom global message with server side validation', async () => {
+        render(<ServerSideValidation />);
+        fireEvent.change(screen.getByLabelText('customGlobalMessage'), {
+            target: { value: '' },
+        });
+        fireEvent.click(screen.getByText('Submit'));
+        await screen.findByText('Required');
+        await screen.findByText(
+            'There are validation errors. Please fix them.'
+        );
     });
 });
