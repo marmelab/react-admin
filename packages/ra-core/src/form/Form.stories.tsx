@@ -373,7 +373,9 @@ export const ServerSideValidation = () => {
         }
         if (!values.customGlobalMessage) {
             errors.customGlobalMessage = 'ra.validation.required';
-            errors.rootError = 'There are validation errors. Please fix them.';
+            errors.root = {
+                serverError: 'There are validation errors. Please fix them.',
+            };
         }
         return Object.keys(errors).length > 0 ? errors : undefined;
     }, []);

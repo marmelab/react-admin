@@ -26,11 +26,11 @@ export const useNotifyIsFormInvalid = (
             submitCountRef.current = submitCount;
 
             if (Object.keys(errors).length > 0) {
-                const rootError =
-                    typeof errors.rootError?.message === 'string'
-                        ? errors.rootError.message
+                const serverError =
+                    typeof errors.root?.serverError?.message === 'string'
+                        ? errors.root.serverError.message
                         : undefined;
-                notify(rootError || 'ra.message.invalid_form', {
+                notify(serverError || 'ra.message.invalid_form', {
                     type: 'error',
                 });
             }
