@@ -70,21 +70,14 @@ export const useRedirect = () => {
                 return;
             } else {
                 // redirection to an internal link
-                navigate(
-                    createPath({
-                        resource,
-                        id,
-                        type: redirectTo as CreatePathType,
-                    }),
-                    {
-                        state:
-                            // We force the scrollToTop except when navigating to a list
-                            // where this is already done by <RestoreScrollPosition> in <Resource>
-                            redirectTo === 'list'
-                                ? state
-                                : { _scrollToTop: true, ...state },
-                    }
-                );
+                navigate(createPath({ resource, id, type: redirectTo }), {
+                    state:
+                        // We force the scrollToTop except when navigating to a list
+                        // where this is already done by <RestoreScrollPosition> in <Resource>
+                        redirectTo === 'list'
+                            ? state
+                            : { _scrollToTop: true, ...state },
+                });
                 return;
             }
         },
