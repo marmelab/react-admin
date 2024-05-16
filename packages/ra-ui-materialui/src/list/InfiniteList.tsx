@@ -6,7 +6,6 @@ import {
     RaRecord,
 } from 'ra-core';
 
-import { TitlePropType } from '../layout/Title';
 import { InfinitePagination } from './pagination';
 import { ListView, ListViewProps } from './ListView';
 

@@ -11,7 +11,6 @@ import {
     useTranslate,
     useListPaginationContext,
     sanitizeListRestProps,
-    ComponentPropType,
 } from 'ra-core';
 
 import { PaginationActions, PaginationActionsProps } from './PaginationActions';

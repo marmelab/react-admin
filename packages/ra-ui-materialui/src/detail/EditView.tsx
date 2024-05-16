@@ -2,11 +2,7 @@ import * as React from 'react';
 import { ReactElement, ElementType } from 'react';
 import { Card, CardContent, styled, SxProps } from '@mui/material';
 import clsx from 'clsx';
-import {
-    ComponentPropType,
-    useEditContext,
-    useResourceDefinition,
-} from 'ra-core';
+import { useEditContext, useResourceDefinition } from 'ra-core';
 
 import { EditActions } from './EditActions';
 import { Title } from '../layout';

@@ -7,7 +7,6 @@ import {
     RaRecord,
     RecordContextProvider,
     RecordRepresentation,
-    ComponentPropType,
     useCreatePath,
 } from 'ra-core';
 

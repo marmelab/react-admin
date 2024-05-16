@@ -2,8 +2,6 @@ import * as React from 'react';
 import { ReactElement } from 'react';
 import { ListBase, ListControllerProps, RaRecord } from 'ra-core';
 
-import { TitlePropType } from '../layout/Title';
-
 import { ListView, ListViewProps } from './ListView';
 
 /**

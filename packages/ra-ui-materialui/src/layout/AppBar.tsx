@@ -9,7 +9,7 @@ import {
     useMediaQuery,
     Theme,
 } from '@mui/material';
-import { ComponentPropType, useLocales } from 'ra-core';
+import { useLocales } from 'ra-core';
 
 import { SidebarToggleButton } from './SidebarToggleButton';
 import { LoadingIndicator } from './LoadingIndicator';

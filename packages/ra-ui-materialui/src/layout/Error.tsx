@@ -19,7 +19,7 @@ import {
 } from 'ra-core';
 import type { TitleComponent } from 'ra-core';
 
-import { Title, TitlePropType } from './Title';
+import { Title } from './Title';
 
 export const Error = (
     props: InternalErrorProps & {

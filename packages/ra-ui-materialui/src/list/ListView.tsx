@@ -4,9 +4,9 @@ import { ReactElement, ReactNode, ElementType } from 'react';
 import { SxProps } from '@mui/system';
 import Card from '@mui/material/Card';
 import clsx from 'clsx';
-import { ComponentPropType, useListContext, RaRecord } from 'ra-core';
+import { useListContext, RaRecord } from 'ra-core';
 
-import { Title, TitlePropType } from '../layout/Title';
+import { Title } from '../layout/Title';
 import { ListToolbar } from './ListToolbar';
 import { Pagination as DefaultPagination } from './pagination';
 import { ListActions as DefaultActions } from './ListActions';
