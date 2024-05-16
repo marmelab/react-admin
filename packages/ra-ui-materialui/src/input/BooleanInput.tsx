@@ -103,7 +103,7 @@ export const BooleanInput = (props: BooleanInputProps) => {
 };
 
 export type BooleanInputProps = CommonInputProps &
-    SwitchProps &
+    Omit<SwitchProps, 'defaultValue'> &
     Omit<FormGroupProps, 'defaultValue' | 'onChange' | 'onBlur' | 'onFocus'> & {
         options?: SwitchProps;
     };
