@@ -47,9 +47,7 @@ redirect(false);
 
 Note that `useRedirect` allows redirection to an absolute URL outside the current React app.
 
-## `useNavigate`
-
-For even more specific navigation, you can use the Hook [`useNavigate`](https://reactrouter.com/en/main/hooks/use-navigate) from `react-router-dom` as follows
+**Tip:** For even more specific navigation, you can use the [`useNavigate`](https://reactrouter.com/en/main/hooks/use-navigate) hook from `react-router-dom` as follows:
 
 ```jsx
 import { useNavigate } from 'react-router-dom';
