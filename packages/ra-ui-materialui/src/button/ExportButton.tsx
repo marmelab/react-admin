@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { useCallback } from 'react';
-import PropTypes from 'prop-types';
 import DownloadIcon from '@mui/icons-material/GetApp';
 import {
     fetchRelatedRecords,
@@ -106,13 +105,3 @@ interface Props {
 }
 
 export type ExportButtonProps = Props & ButtonProps;
-
-ExportButton.propTypes = {
-    exporter: PropTypes.func,
-    filterValues: PropTypes.object,
-    label: PropTypes.string,
-    maxResults: PropTypes.number,
-    resource: PropTypes.string,
-    icon: PropTypes.element,
-    meta: PropTypes.any,
-};

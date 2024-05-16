@@ -1,6 +1,5 @@
 import React, { forwardRef, useCallback, ReactElement, ReactNode } from 'react';
 import { styled } from '@mui/material/styles';
-import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { Link, LinkProps, useMatch } from 'react-router-dom';
 import {
@@ -155,15 +154,6 @@ export type MenuItemLinkProps = Omit<
      */
     sidebarIsOpen?: boolean;
     tooltipProps?: TooltipProps;
-};
-
-MenuItemLink.propTypes = {
-    className: PropTypes.string,
-    leftIcon: PropTypes.element,
-    onClick: PropTypes.func,
-    primaryText: PropTypes.node,
-    to: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
-    sidebarIsOpen: PropTypes.bool,
 };
 
 const PREFIX = 'RaMenuItemLink';

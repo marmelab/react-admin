@@ -11,7 +11,6 @@ import {
 import { styled, SxProps, useThemeProps } from '@mui/material';
 import clsx from 'clsx';
 import get from 'lodash/get';
-import PropTypes from 'prop-types';
 import {
     FormDataConsumer,
     RaRecord,
@@ -210,26 +209,6 @@ export const SimpleFormIterator = (inProps: SimpleFormIteratorProps) => {
             </Root>
         </SimpleFormIteratorContext.Provider>
     ) : null;
-};
-
-SimpleFormIterator.propTypes = {
-    addButton: PropTypes.element,
-    removeButton: PropTypes.element,
-    children: PropTypes.node,
-    className: PropTypes.string,
-    field: PropTypes.object,
-    fields: PropTypes.array,
-    fieldState: PropTypes.object,
-    formState: PropTypes.object,
-    fullWidth: PropTypes.bool,
-    inline: PropTypes.bool,
-    record: PropTypes.object,
-    source: PropTypes.string,
-    resource: PropTypes.string,
-    translate: PropTypes.func,
-    disableAdd: PropTypes.bool,
-    disableRemove: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
-    TransitionProps: PropTypes.shape({}),
 };
 
 type GetItemLabelFunc = (index: number) => string | ReactElement;

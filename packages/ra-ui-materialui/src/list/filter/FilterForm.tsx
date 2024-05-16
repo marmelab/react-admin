@@ -6,7 +6,6 @@ import {
     useCallback,
     useContext,
 } from 'react';
-import PropTypes from 'prop-types';
 import { styled } from '@mui/material/styles';
 import {
     FormGroupsProvider,
@@ -167,15 +166,6 @@ export const FilterFormBase = (props: FilterFormBaseProps) => {
 const handleSubmit = event => {
     event.preventDefault();
     return false;
-};
-
-FilterFormBase.propTypes = {
-    resource: PropTypes.string,
-    filters: PropTypes.arrayOf(PropTypes.node).isRequired,
-    displayedFilters: PropTypes.object,
-    hideFilter: PropTypes.func,
-    initialValues: PropTypes.object,
-    className: PropTypes.string,
 };
 
 const sanitizeRestProps = ({

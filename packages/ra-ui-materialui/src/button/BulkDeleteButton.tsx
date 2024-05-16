@@ -1,5 +1,4 @@
 import * as React from 'react';
-import PropTypes from 'prop-types';
 import {
     BulkDeleteWithConfirmButton,
     BulkDeleteWithConfirmButtonProps,
@@ -49,11 +48,3 @@ interface Props {
 
 export type BulkDeleteButtonProps = Props &
     (BulkDeleteWithUndoButtonProps | BulkDeleteWithConfirmButtonProps);
-
-BulkDeleteButton.propTypes = {
-    label: PropTypes.string,
-    resource: PropTypes.string,
-    selectedIds: PropTypes.arrayOf(PropTypes.any),
-    mutationMode: PropTypes.oneOf(['pessimistic', 'optimistic', 'undoable']),
-    icon: PropTypes.element,
-};

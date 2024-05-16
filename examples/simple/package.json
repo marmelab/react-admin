@@ -18,7 +18,6 @@
         "@tanstack/react-query-devtools": "^5.8.4",
         "jsonexport": "^3.2.0",
         "lodash": "~4.17.5",
-        "prop-types": "^15.8.1",
         "ra-data-fakerest": "^5.0.0-beta.0",
         "ra-i18n-polyglot": "^5.0.0-beta.0",
         "ra-input-rich-text": "^5.0.0-beta.0",

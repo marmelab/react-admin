@@ -1,12 +1,11 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
-import PropTypes from 'prop-types';
 import DoneIcon from '@mui/icons-material/Done';
 import ClearIcon from '@mui/icons-material/Clear';
 import { Tooltip, Typography, TypographyProps, SvgIcon } from '@mui/material';
 import { useTranslate, useFieldValue } from 'ra-core';
 import { genericMemo } from './genericMemo';
-import { FieldProps, fieldPropTypes } from './types';
+import { FieldProps } from './types';
 import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
 
 const BooleanFieldImpl = <
@@ -76,17 +75,6 @@ const BooleanFieldImpl = <
             {emptyText && translate(emptyText, { _: emptyText })}
         </Typography>
     );
-};
-
-BooleanFieldImpl.propTypes = {
-    // @ts-ignore
-    ...Typography.propTypes,
-    ...fieldPropTypes,
-    valueLabelFalse: PropTypes.string,
-    valueLabelTrue: PropTypes.string,
-    TrueIcon: PropTypes.elementType,
-    FalseIcon: PropTypes.elementType,
-    looseValue: PropTypes.bool,
 };
 BooleanFieldImpl.displayName = 'BooleanFieldImpl';
 

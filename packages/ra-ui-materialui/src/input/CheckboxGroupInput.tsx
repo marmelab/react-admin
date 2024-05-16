@@ -2,7 +2,6 @@ import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import clsx from 'clsx';
 import { useCallback, FunctionComponent } from 'react';
-import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import FormLabel from '@mui/material/FormLabel';
 import FormControl, { FormControlProps } from '@mui/material/FormControl';
@@ -265,21 +264,6 @@ const sanitizeRestProps = ({
     touched,
     ...rest
 }: any) => sanitizeInputRestProps(rest);
-
-CheckboxGroupInput.propTypes = {
-    choices: PropTypes.arrayOf(PropTypes.any),
-    className: PropTypes.string,
-    source: PropTypes.string,
-    optionText: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.func,
-        PropTypes.element,
-    ]),
-    optionValue: PropTypes.string,
-    row: PropTypes.bool,
-    resource: PropTypes.string,
-    translateChoice: PropTypes.bool,
-};
 
 export type CheckboxGroupInputProps = Omit<CommonInputProps, 'source'> &
     ChoicesProps &

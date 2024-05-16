@@ -115,5 +115,3 @@ ${representation}
 
     return <EditView {...rest}>{child}</EditView>;
 };
-
-EditViewGuesser.propTypes = EditView.propTypes;

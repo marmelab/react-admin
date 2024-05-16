@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { useCallback, useMemo, FC, memo, ReactElement } from 'react';
-import PropTypes from 'prop-types';
 import {
     TablePagination,
     TablePaginationBaseProps,
@@ -145,20 +144,6 @@ export const Pagination: FC<PaginationProps> = memo(props => {
         />
     );
 });
-
-Pagination.propTypes = {
-    actions: ComponentPropType,
-    limit: PropTypes.element,
-    rowsPerPageOptions: PropTypes.arrayOf(
-        PropTypes.oneOfType([
-            PropTypes.number,
-            PropTypes.exact({
-                label: PropTypes.string.isRequired,
-                value: PropTypes.number.isRequired,
-            }),
-        ])
-    ),
-};
 
 const DefaultRowsPerPageOptions = [5, 10, 25, 50];
 const emptyArray = [];

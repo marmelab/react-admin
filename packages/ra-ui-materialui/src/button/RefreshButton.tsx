@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { ReactElement, MouseEvent, useCallback } from 'react';
-import PropTypes from 'prop-types';
 import NavigationRefresh from '@mui/icons-material/Refresh';
 import { useRefresh } from 'ra-core';
 
@@ -41,9 +40,3 @@ interface Props {
 }
 
 export type RefreshButtonProps = Props & ButtonProps;
-
-RefreshButton.propTypes = {
-    label: PropTypes.string,
-    icon: PropTypes.element,
-    onClick: PropTypes.func,
-};

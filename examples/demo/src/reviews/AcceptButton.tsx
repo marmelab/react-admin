@@ -1,5 +1,4 @@
 import * as React from 'react';
-import PropTypes from 'prop-types';
 import Button from '@mui/material/Button';
 import ThumbUp from '@mui/icons-material/ThumbUp';
 import {
@@ -56,10 +55,6 @@ const AcceptButton = () => {
     ) : (
         <span />
     );
-};
-
-AcceptButton.propTypes = {
-    record: PropTypes.any,
 };
 
 export default AcceptButton;

@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import { useCallback, useRef, ChangeEvent } from 'react';
-import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import {
     Select,
@@ -367,28 +366,6 @@ export type SelectArrayInputProps = ChoicesProps &
         source?: string;
         onChange?: (event: ChangeEvent<HTMLInputElement> | RaRecord) => void;
     };
-
-SelectArrayInput.propTypes = {
-    choices: PropTypes.arrayOf(PropTypes.object),
-    className: PropTypes.string,
-    children: PropTypes.node,
-    label: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.bool,
-        PropTypes.element,
-    ]),
-    options: PropTypes.object,
-    optionText: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.func,
-        PropTypes.element,
-    ]),
-    optionValue: PropTypes.string,
-    disableValue: PropTypes.string,
-    resource: PropTypes.string,
-    source: PropTypes.string,
-    translateChoice: PropTypes.bool,
-};
 
 const sanitizeRestProps = ({
     alwaysOn,

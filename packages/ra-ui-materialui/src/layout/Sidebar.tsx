@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import { ReactElement } from 'react';
-import PropTypes from 'prop-types';
 import {
     Drawer,
     DrawerProps,
@@ -49,10 +48,6 @@ export const Sidebar = (props: SidebarProps) => {
             <div className={SidebarClasses.fixed}>{children}</div>
         </StyledDrawer>
     );
-};
-
-Sidebar.propTypes = {
-    children: PropTypes.node.isRequired,
 };
 
 export interface SidebarProps extends DrawerProps {

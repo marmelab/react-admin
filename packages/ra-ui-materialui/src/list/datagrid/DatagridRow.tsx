@@ -9,7 +9,6 @@ import React, {
     ReactElement,
 } from 'react';
 import { isElement } from 'react-is';
-import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { TableCell, TableRow, TableRowProps, Checkbox } from '@mui/material';
 import {
@@ -242,29 +241,6 @@ const DatagridRow: FC<DatagridRowProps> = React.forwardRef((props, ref) => {
         </>
     );
 });
-
-DatagridRow.propTypes = {
-    children: PropTypes.node,
-    className: PropTypes.string,
-    // @ts-ignore
-    expand: PropTypes.oneOfType([PropTypes.element, PropTypes.elementType]),
-    hasBulkActions: PropTypes.bool,
-    hover: PropTypes.bool,
-    id: PropTypes.any,
-    onToggleItem: PropTypes.func,
-    // @ts-ignore
-    record: PropTypes.object,
-    resource: PropTypes.string,
-    // @ts-ignore
-    rowClick: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.func,
-        PropTypes.bool,
-    ]),
-    selected: PropTypes.bool,
-    style: PropTypes.object,
-    selectable: PropTypes.bool,
-};
 
 export interface DatagridRowProps
     extends Omit<TableRowProps, 'id' | 'classes'> {

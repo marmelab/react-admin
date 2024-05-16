@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { memo, ReactElement } from 'react';
-import PropTypes from 'prop-types';
 import ImageEye from '@mui/icons-material/RemoveRedEye';
 import { Link } from 'react-router-dom';
 import {
@@ -77,13 +76,6 @@ export type ShowButtonProps<RecordType extends RaRecord = any> = Props<
     RecordType
 > &
     Omit<ButtonProps<typeof Link>, 'to'>;
-
-ShowButton.propTypes = {
-    icon: PropTypes.element,
-    label: PropTypes.string,
-    record: PropTypes.any,
-    scrollToTop: PropTypes.bool,
-};
 
 const PureShowButton = memo(
     ShowButton,

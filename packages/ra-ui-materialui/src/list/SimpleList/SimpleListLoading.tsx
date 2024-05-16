@@ -1,5 +1,4 @@
 import * as React from 'react';
-import PropTypes from 'prop-types';
 import { styled } from '@mui/material/styles';
 import Avatar from '@mui/material/Avatar';
 import {
@@ -66,15 +65,6 @@ export const SimpleListLoading = (props: Props & ListProps) => {
             ))}
         </StyledList>
     ) : null;
-};
-
-SimpleListLoading.propTypes = {
-    className: PropTypes.string,
-    hasLeftAvatarOrIcon: PropTypes.bool,
-    hasRightAvatarOrIcon: PropTypes.bool,
-    hasSecondaryText: PropTypes.bool,
-    hasTertiaryText: PropTypes.bool,
-    nbFakeLines: PropTypes.number,
 };
 
 const PREFIX = 'RaSimpleListLoading';

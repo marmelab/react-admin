@@ -1,10 +1,9 @@
 import * as React from 'react';
-import PropTypes from 'prop-types';
 import { Typography, TypographyProps } from '@mui/material';
 import { useFieldValue, useTranslate } from 'ra-core';
 
 import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
-import { FieldProps, fieldPropTypes } from './types';
+import { FieldProps } from './types';
 import { genericMemo } from './genericMemo';
 
 /**
@@ -105,19 +104,6 @@ const DateFieldImpl = <
             {dateString}
         </Typography>
     );
-};
-
-DateFieldImpl.propTypes = {
-    // @ts-ignore
-    ...Typography.propTypes,
-    ...fieldPropTypes,
-    locales: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.arrayOf(PropTypes.string),
-    ]),
-    options: PropTypes.object,
-    showTime: PropTypes.bool,
-    showDate: PropTypes.bool,
 };
 DateFieldImpl.displayName = 'DateFieldImpl';
 

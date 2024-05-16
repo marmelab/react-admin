@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { Chip, Stack, StackProps, styled } from '@mui/material';
-import PropTypes from 'prop-types';
 import {
     sanitizeListRestProps,
     useListContextWithProps,
@@ -121,29 +120,6 @@ export const SingleFieldList = (props: SingleFieldListProps) => {
             })}
         </Root>
     );
-};
-
-SingleFieldList.propTypes = {
-    children: PropTypes.node,
-    classes: PropTypes.object,
-    className: PropTypes.string,
-    component: ComponentPropType,
-    data: PropTypes.any,
-    empty: PropTypes.element,
-    // @ts-ignore
-    linkType: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
-    resource: PropTypes.string,
-    sx: PropTypes.oneOfType([
-        PropTypes.arrayOf(
-            PropTypes.oneOfType([
-                PropTypes.func,
-                PropTypes.object,
-                PropTypes.bool,
-            ])
-        ),
-        PropTypes.func,
-        PropTypes.object,
-    ]),
 };
 
 export interface SingleFieldListProps<RecordType extends RaRecord = any>

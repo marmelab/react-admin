@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
-import PropTypes from 'prop-types';
 import { Button, CardContent, CircularProgress } from '@mui/material';
 import {
     Form,
@@ -126,6 +125,3 @@ interface FormData {
     username: string;
     password: string;
 }
-LoginForm.propTypes = {
-    redirectTo: PropTypes.string,
-};

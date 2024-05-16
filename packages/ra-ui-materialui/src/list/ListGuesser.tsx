@@ -152,5 +152,3 @@ ${inferredChild.getRepresentation()}
 
     return <ListView {...rest}>{child}</ListView>;
 };
-
-ListViewGuesser.propTypes = ListView.propTypes;

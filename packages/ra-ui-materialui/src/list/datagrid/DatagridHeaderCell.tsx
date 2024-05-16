@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import { memo } from 'react';
-import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { TableCell, TableSortLabel, Tooltip } from '@mui/material';
 import { TableCellProps } from '@mui/material/TableCell';
@@ -81,17 +80,6 @@ export const DatagridHeaderCell = (
             )}
         </StyledTableCell>
     );
-};
-
-DatagridHeaderCell.propTypes = {
-    className: PropTypes.string,
-    field: PropTypes.element,
-    sort: PropTypes.shape({
-        field: PropTypes.string,
-        order: PropTypes.oneOf(['ASC', 'DESC'] as const),
-    }).isRequired,
-    isSorting: PropTypes.bool,
-    updateSort: PropTypes.func,
 };
 
 export interface DatagridHeaderCellProps

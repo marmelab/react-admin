@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { ReactElement, ElementType } from 'react';
-import PropTypes from 'prop-types';
 import { Card, styled, SxProps } from '@mui/material';
 import clsx from 'clsx';
 import { useShowContext, useResourceDefinition } from 'ra-core';
@@ -59,14 +58,6 @@ export interface ShowViewProps
     title?: string | ReactElement;
     sx?: SxProps;
 }
-
-ShowView.propTypes = {
-    actions: PropTypes.oneOfType([PropTypes.element, PropTypes.bool]),
-    children: PropTypes.node,
-    className: PropTypes.string,
-    emptyWhileLoading: PropTypes.bool,
-    title: PropTypes.any,
-};
 
 const PREFIX = 'RaShow';
 

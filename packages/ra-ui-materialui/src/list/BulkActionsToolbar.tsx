@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { ReactNode, useCallback } from 'react';
-import PropTypes from 'prop-types';
 import { styled } from '@mui/material/styles';
 import clsx from 'clsx';
 import Toolbar from '@mui/material/Toolbar';
@@ -60,11 +59,6 @@ export const BulkActionsToolbar = (props: BulkActionsToolbarProps) => {
             </Toolbar>
         </Root>
     );
-};
-
-BulkActionsToolbar.propTypes = {
-    children: PropTypes.node,
-    label: PropTypes.string,
 };
 
 export interface BulkActionsToolbarProps {

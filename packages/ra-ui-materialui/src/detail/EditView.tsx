@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { ReactElement, ElementType } from 'react';
 import { Card, CardContent, styled, SxProps } from '@mui/material';
-import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import {
     ComponentPropType,
@@ -63,19 +62,6 @@ export interface EditViewProps
     title?: string | ReactElement;
     sx?: SxProps;
 }
-
-EditView.propTypes = {
-    actions: PropTypes.oneOfType([PropTypes.element, PropTypes.bool]),
-    aside: PropTypes.element,
-    className: PropTypes.string,
-    component: ComponentPropType,
-    defaultTitle: PropTypes.any,
-    hasList: PropTypes.bool,
-    hasShow: PropTypes.bool,
-    record: PropTypes.object,
-    save: PropTypes.func,
-    title: PropTypes.node,
-};
 
 const PREFIX = 'RaEdit';
 

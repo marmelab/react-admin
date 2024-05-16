@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import { ReactElement } from 'react';
-import PropTypes from 'prop-types';
 import ActionUpdate from '@mui/icons-material/Update';
 import { alpha } from '@mui/material/styles';
 import {
@@ -118,14 +117,6 @@ export interface BulkUpdateWithUndoButtonProps<
         UpdateManyParams<RecordType>
     > & { meta?: any };
 }
-
-BulkUpdateWithUndoButton.propTypes = {
-    label: PropTypes.string,
-    resource: PropTypes.string,
-    selectedIds: PropTypes.arrayOf(PropTypes.any),
-    icon: PropTypes.element,
-    data: PropTypes.any.isRequired,
-};
 
 const PREFIX = 'RaBulkUpdateWithUndoButton';
 

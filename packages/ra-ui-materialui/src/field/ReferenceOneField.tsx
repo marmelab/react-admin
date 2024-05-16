@@ -1,5 +1,4 @@
 import React, { ReactNode, useMemo } from 'react';
-import PropTypes from 'prop-types';
 import { UseQueryOptions } from '@tanstack/react-query';
 import { Typography } from '@mui/material';
 import {
@@ -15,7 +14,7 @@ import {
     UseReferenceFieldControllerResult,
 } from 'ra-core';
 
-import { fieldPropTypes, FieldProps } from './types';
+import { FieldProps } from './types';
 import { ReferenceFieldView } from './ReferenceField';
 
 /**
@@ -114,17 +113,6 @@ export interface ReferenceOneFieldProps<
         total: number;
     }> & { meta?: any };
 }
-
-ReferenceOneField.propTypes = {
-    children: PropTypes.node,
-    className: PropTypes.string,
-    label: fieldPropTypes.label,
-    record: PropTypes.any,
-    reference: PropTypes.string.isRequired,
-    source: PropTypes.string,
-    target: PropTypes.string.isRequired,
-    queryOptions: PropTypes.any,
-};
 
 ReferenceOneField.defaultProps = {
     // disable sorting on this field by default as its default source prop ('id')

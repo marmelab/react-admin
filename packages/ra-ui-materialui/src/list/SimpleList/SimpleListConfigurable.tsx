@@ -34,5 +34,3 @@ const SimpleListWithPreferences = (props: SimpleListProps) => {
         />
     );
 };
-
-SimpleListConfigurable.propTypes = SimpleList.propTypes;

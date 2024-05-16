@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { styled, SxProps } from '@mui/material';
 import LockIcon from '@mui/icons-material/Lock';
-import PropTypes from 'prop-types';
 import { useTranslate } from 'ra-core';
 import { Button } from '../button';
 import { Link } from 'react-router-dom';
@@ -26,12 +25,6 @@ export const AuthError = (props: AuthErrorProps) => {
             </div>
         </Root>
     );
-};
-
-AuthError.propTypes = {
-    className: PropTypes.string,
-    title: PropTypes.string,
-    message: PropTypes.string,
 };
 
 export interface AuthErrorProps {

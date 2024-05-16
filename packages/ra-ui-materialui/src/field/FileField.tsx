@@ -1,13 +1,12 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
-import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import Typography from '@mui/material/Typography';
 import { useFieldValue, useTranslate } from 'ra-core';
 import { Call, Objects } from 'hotscript';
 
 import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
-import { FieldProps, fieldPropTypes } from './types';
+import { FieldProps } from './types';
 import { SxProps } from '@mui/system';
 import { Link } from '@mui/material';
 
@@ -125,16 +124,6 @@ export interface FileFieldProps<
     sx?: SxProps;
 }
 type AnyString = string & {};
-
-FileField.propTypes = {
-    ...fieldPropTypes,
-    src: PropTypes.string,
-    title: PropTypes.string,
-    target: PropTypes.string,
-    download: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
-    ping: PropTypes.string,
-    rel: PropTypes.string,
-};
 
 const PREFIX = 'RaFileField';
 

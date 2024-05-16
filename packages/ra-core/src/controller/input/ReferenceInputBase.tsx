@@ -1,5 +1,4 @@
 import React, { ReactNode } from 'react';
-import PropTypes from 'prop-types';
 
 import { ResourceContextProvider } from '../../core';
 import { ChoicesContextProvider, InputProps } from '../../form';
@@ -86,21 +85,6 @@ export const ReferenceInputBase = (props: ReferenceInputBaseProps) => {
             </ChoicesContextProvider>
         </ResourceContextProvider>
     );
-};
-
-ReferenceInputBase.propTypes = {
-    children: PropTypes.element,
-    filter: PropTypes.object,
-    page: PropTypes.number,
-    perPage: PropTypes.number,
-    record: PropTypes.object,
-    reference: PropTypes.string.isRequired,
-    resource: PropTypes.string,
-    sort: PropTypes.shape({
-        field: PropTypes.string,
-        order: PropTypes.oneOf(['ASC', 'DESC']),
-    }),
-    source: PropTypes.string,
 };
 
 export interface ReferenceInputBaseProps

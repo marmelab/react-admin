@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { ReactElement } from 'react';
-import PropTypes from 'prop-types';
 import {
     CreateBase,
     CreateControllerProps,
@@ -98,24 +97,3 @@ export interface CreateProps<
             ResultRecordType
         >,
         CreateViewProps {}
-
-Create.propTypes = {
-    actions: PropTypes.oneOfType([PropTypes.element, PropTypes.bool]),
-    aside: PropTypes.element,
-    children: PropTypes.node,
-    className: PropTypes.string,
-    disableAuthentication: PropTypes.bool,
-    hasEdit: PropTypes.bool,
-    hasShow: PropTypes.bool,
-    redirect: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.bool,
-        PropTypes.func,
-    ]),
-    resource: PropTypes.string,
-    title: PropTypes.node,
-    record: PropTypes.object,
-    mutationOptions: PropTypes.object,
-    transform: PropTypes.func,
-    sx: PropTypes.any,
-};

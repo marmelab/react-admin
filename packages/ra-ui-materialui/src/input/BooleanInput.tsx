@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { useCallback } from 'react';
-import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormHelperText from '@mui/material/FormHelperText';
@@ -11,7 +10,6 @@ import { FieldTitle, useInput } from 'ra-core';
 import { CommonInputProps } from './CommonInputProps';
 import { sanitizeInputRestProps } from './sanitizeInputRestProps';
 import { InputHelperText } from './InputHelperText';
-import { InputPropTypes } from './InputPropTypes';
 
 export const BooleanInput = (props: BooleanInputProps) => {
     const {
@@ -102,13 +100,6 @@ export const BooleanInput = (props: BooleanInputProps) => {
             ) : null}
         </FormGroup>
     );
-};
-
-BooleanInput.propTypes = {
-    ...InputPropTypes,
-    // @ts-ignore
-    options: PropTypes.shape(Switch.propTypes),
-    disabled: PropTypes.bool,
 };
 
 export type BooleanInputProps = CommonInputProps &

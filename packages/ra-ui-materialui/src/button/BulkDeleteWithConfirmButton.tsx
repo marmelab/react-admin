@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { Fragment, ReactElement } from 'react';
-import PropTypes from 'prop-types';
 import ActionDelete from '@mui/icons-material/Delete';
 
 import { alpha, styled } from '@mui/material/styles';
@@ -177,14 +176,3 @@ const StyledButton = styled(Button, {
 }));
 
 const defaultIcon = <ActionDelete />;
-
-BulkDeleteWithConfirmButton.propTypes = {
-    confirmTitle: PropTypes.node,
-    confirmContent: PropTypes.node,
-    confirmColor: PropTypes.string,
-    icon: PropTypes.element,
-    label: PropTypes.string,
-    mutationMode: PropTypes.oneOf(['pessimistic', 'optimistic', 'undoable']),
-    resource: PropTypes.string,
-    selectedIds: PropTypes.arrayOf(PropTypes.any),
-};

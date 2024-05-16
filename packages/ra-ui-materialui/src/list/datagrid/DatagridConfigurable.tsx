@@ -126,8 +126,6 @@ export interface ConfigurableDatagridColumn {
     label?: string;
 }
 
-DatagridConfigurable.propTypes = Datagrid.propTypes;
-
 /**
  * This Datagrid filters its children depending on preferences
  */

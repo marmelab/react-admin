@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { ReactElement } from 'react';
-import PropTypes from 'prop-types';
 import { ShowBase, RaRecord, ShowControllerProps } from 'ra-core';
 import { ShowView, ShowViewProps } from './ShowView';
 
@@ -76,15 +75,3 @@ export const Show = <RecordType extends RaRecord = any>({
 export interface ShowProps<RecordType extends RaRecord = any>
     extends ShowControllerProps<RecordType>,
         ShowViewProps {}
-
-Show.propTypes = {
-    actions: PropTypes.oneOfType([PropTypes.element, PropTypes.bool]),
-    children: PropTypes.node.isRequired,
-    className: PropTypes.string,
-    disableAuthentication: PropTypes.bool,
-    emptyWhileLoading: PropTypes.bool,
-    component: PropTypes.elementType,
-    resource: PropTypes.string,
-    title: PropTypes.node,
-    sx: PropTypes.any,
-};

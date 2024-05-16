@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { ReactElement, ReactNode } from 'react';
-import PropTypes from 'prop-types';
 import { Form, FormProps } from 'ra-core';
 import { Stack, CardContent, SxProps, StackProps } from '@mui/material';
 import { styled } from '@mui/material/styles';
@@ -56,15 +55,6 @@ export const SimpleForm = (props: SimpleFormProps) => {
             {toolbar !== false ? toolbar : null}
         </Form>
     );
-};
-
-SimpleForm.propTypes = {
-    children: PropTypes.node,
-    defaultValues: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
-    // @ts-ignore
-    record: PropTypes.object,
-    toolbar: PropTypes.oneOfType([PropTypes.element, PropTypes.oneOf([false])]),
-    validate: PropTypes.func,
 };
 
 export interface SimpleFormProps

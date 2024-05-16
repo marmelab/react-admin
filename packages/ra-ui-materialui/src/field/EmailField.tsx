@@ -4,7 +4,7 @@ import { Link, LinkProps } from '@mui/material';
 import { useFieldValue, useTranslate } from 'ra-core';
 
 import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
-import { FieldProps, fieldPropTypes } from './types';
+import { FieldProps } from './types';
 import { genericMemo } from './genericMemo';
 
 const EmailFieldImpl = <
@@ -41,8 +41,6 @@ const EmailFieldImpl = <
         </Link>
     );
 };
-
-EmailFieldImpl.propTypes = fieldPropTypes;
 EmailFieldImpl.displayName = 'EmailFieldImpl';
 
 export const EmailField = genericMemo(EmailFieldImpl);

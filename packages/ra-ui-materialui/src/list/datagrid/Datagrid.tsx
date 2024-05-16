@@ -11,7 +11,6 @@ import {
     ReactElement,
     useMemo,
 } from 'react';
-import PropTypes from 'prop-types';
 import {
     sanitizeListRestProps,
     useListContextWithProps,
@@ -294,44 +293,6 @@ const createOrCloneElement = (element, props, children) =>
     isValidElement(element)
         ? cloneElement(element, props, children)
         : createElement(element, props, children);
-
-Datagrid.propTypes = {
-    // @ts-ignore
-    body: PropTypes.oneOfType([PropTypes.element, PropTypes.elementType]),
-    // @ts-ignore-line
-    bulkActionButtons: PropTypes.oneOfType([PropTypes.bool, PropTypes.element]),
-    children: PropTypes.node.isRequired,
-    className: PropTypes.string,
-    sort: PropTypes.exact({
-        field: PropTypes.string,
-        order: PropTypes.oneOf(['ASC', 'DESC'] as const),
-    }),
-    data: PropTypes.arrayOf(PropTypes.any),
-    empty: PropTypes.element,
-    // @ts-ignore
-    expand: PropTypes.oneOfType([PropTypes.element, PropTypes.elementType]),
-    // @ts-ignore
-    header: PropTypes.oneOfType([PropTypes.element, PropTypes.elementType]),
-    hover: PropTypes.bool,
-    isLoading: PropTypes.bool,
-    onSelect: PropTypes.func,
-    onToggleItem: PropTypes.func,
-    resource: PropTypes.string,
-    // @ts-ignore
-    rowClick: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.func,
-        PropTypes.bool,
-    ]),
-    rowSx: PropTypes.func,
-    rowStyle: PropTypes.func,
-    selectedIds: PropTypes.arrayOf(PropTypes.any),
-    setSort: PropTypes.func,
-    total: PropTypes.number,
-    isRowSelectable: PropTypes.func,
-    isRowExpandable: PropTypes.func,
-    expandSingle: PropTypes.bool,
-};
 
 export interface DatagridProps<RecordType extends RaRecord = any>
     extends Omit<TableProps, 'size' | 'classes' | 'onSelect'> {

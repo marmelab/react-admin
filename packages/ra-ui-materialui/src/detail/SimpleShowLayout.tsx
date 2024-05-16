@@ -3,7 +3,6 @@ import { Children, isValidElement, ReactNode } from 'react';
 import { styled } from '@mui/material/styles';
 import { Stack, StackProps } from '@mui/material';
 import { SxProps } from '@mui/system';
-import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import {
     RaRecord,
@@ -94,14 +93,6 @@ export interface SimpleShowLayoutProps extends StackProps {
     record?: RaRecord;
     sx?: SxProps;
 }
-
-SimpleShowLayout.propTypes = {
-    children: PropTypes.node,
-    className: PropTypes.string,
-    record: PropTypes.object,
-    spacing: PropTypes.any,
-    sx: PropTypes.any,
-};
 
 const PREFIX = 'RaSimpleShowLayout';
 

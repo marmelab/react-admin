@@ -6,7 +6,6 @@ import React, {
     ReactNode,
 } from 'react';
 import { styled } from '@mui/material/styles';
-import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { useDropzone, DropzoneOptions } from 'react-dropzone';
 import FormHelperText from '@mui/material/FormHelperText';
@@ -214,30 +213,6 @@ export const FileInput = (props: FileInputProps) => {
             </>
         </StyledLabeled>
     );
-};
-
-FileInput.propTypes = {
-    accept: PropTypes.string,
-    children: PropTypes.element,
-    className: PropTypes.string,
-    id: PropTypes.string,
-    isRequired: PropTypes.bool,
-    label: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.bool,
-        PropTypes.element,
-    ]),
-    labelMultiple: PropTypes.string,
-    labelSingle: PropTypes.string,
-    maxSize: PropTypes.number,
-    minSize: PropTypes.number,
-    multiple: PropTypes.bool,
-    validateFileRemoval: PropTypes.func,
-    options: PropTypes.object,
-    removeIcon: PropTypes.elementType,
-    resource: PropTypes.string,
-    source: PropTypes.string,
-    placeholder: PropTypes.node,
 };
 
 const PREFIX = 'RaFileInput';

@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { Children, ReactNode } from 'react';
-import PropTypes from 'prop-types';
 
 import { FilterForm } from './FilterForm';
 import { FilterButton } from './FilterButton';
@@ -40,12 +39,6 @@ export const Filter = (props: FilterProps) => {
             {props.context === 'button' ? renderButton() : renderForm()}
         </FilterContext.Provider>
     );
-};
-
-Filter.propTypes = {
-    children: PropTypes.node,
-    classes: PropTypes.object,
-    context: PropTypes.oneOf(['form', 'button']),
 };
 
 const PREFIX = 'RaFilter';

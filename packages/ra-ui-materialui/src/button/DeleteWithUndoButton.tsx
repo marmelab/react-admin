@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { ReactElement, ReactEventHandler } from 'react';
-import PropTypes from 'prop-types';
 import ActionDelete from '@mui/icons-material/Delete';
 import clsx from 'clsx';
 import { UseMutationOptions } from '@tanstack/react-query';
@@ -71,16 +70,3 @@ export interface DeleteWithUndoButtonProps<
     redirect?: RedirectionSideEffect;
     resource?: string;
 }
-
-DeleteWithUndoButton.propTypes = {
-    className: PropTypes.string,
-    label: PropTypes.string,
-    record: PropTypes.any,
-    redirect: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.bool,
-        PropTypes.func,
-    ]),
-    resource: PropTypes.string,
-    icon: PropTypes.element,
-};

@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { ReferenceInputBase, ReferenceInputBaseProps } from 'ra-core';
 
 import { AutocompleteInput } from './AutocompleteInput';
@@ -74,21 +73,6 @@ export const ReferenceInput = (props: ReferenceInputProps) => {
     }
 
     return <ReferenceInputBase {...rest}>{children}</ReferenceInputBase>;
-};
-
-ReferenceInput.propTypes = {
-    children: PropTypes.element,
-    filter: PropTypes.object,
-    page: PropTypes.number,
-    perPage: PropTypes.number,
-    record: PropTypes.object,
-    reference: PropTypes.string.isRequired,
-    resource: PropTypes.string,
-    sort: PropTypes.shape({
-        field: PropTypes.string,
-        order: PropTypes.oneOf(['ASC', 'DESC']),
-    }),
-    source: PropTypes.string,
 };
 
 const defaultChildren = <AutocompleteInput />;

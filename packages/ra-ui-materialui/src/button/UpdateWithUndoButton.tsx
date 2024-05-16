@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { alpha, styled } from '@mui/material/styles';
 import { ReactElement } from 'react';
-import PropTypes from 'prop-types';
 import ActionUpdate from '@mui/icons-material/Update';
 import {
     useRefresh,
@@ -117,14 +116,6 @@ export interface UpdateWithUndoButtonProps<
         UpdateParams<RecordType>
     > & { meta?: any };
 }
-
-UpdateWithUndoButton.propTypes = {
-    label: PropTypes.string,
-    resource: PropTypes.string,
-    record: PropTypes.object,
-    icon: PropTypes.element,
-    data: PropTypes.any.isRequired,
-};
 
 const PREFIX = 'RaUpdateWithUndoButton';
 
