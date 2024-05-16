@@ -2,7 +2,6 @@ import * as React from 'react';
 import { MouseEventHandler, ReactElement, useCallback } from 'react';
 import { UseMutationOptions } from '@tanstack/react-query';
 import { styled } from '@mui/material/styles';
-import PropTypes from 'prop-types';
 import { Button, ButtonProps, CircularProgress } from '@mui/material';
 import ContentSave from '@mui/icons-material/Save';
 import { useFormContext, useFormState } from 'react-hook-form';
@@ -178,15 +177,6 @@ export type SaveButtonProps<RecordType extends RaRecord = any> = Props<
     ButtonProps & {
         alwaysEnable?: boolean;
     };
-
-SaveButton.propTypes = {
-    className: PropTypes.string,
-    invalid: PropTypes.bool,
-    label: PropTypes.string,
-    variant: PropTypes.oneOf(['text', 'outlined', 'contained']),
-    icon: PropTypes.element,
-    alwaysEnable: PropTypes.bool,
-};
 
 const PREFIX = 'RaSaveButton';
 

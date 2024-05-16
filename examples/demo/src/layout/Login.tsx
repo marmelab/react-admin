@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { useState } from 'react';
-import PropTypes from 'prop-types';
 import { useLocation } from 'react-router-dom';
 
 import {
@@ -133,11 +132,6 @@ const Login = () => {
             </Box>
         </Form>
     );
-};
-
-Login.propTypes = {
-    authProvider: PropTypes.func,
-    previousRoute: PropTypes.string,
 };
 
 export default Login;

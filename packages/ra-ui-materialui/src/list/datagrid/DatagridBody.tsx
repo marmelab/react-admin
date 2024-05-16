@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { cloneElement, memo, FC, ReactElement } from 'react';
-import PropTypes from 'prop-types';
 import { SxProps, TableBody, TableBodyProps } from '@mui/material';
 import clsx from 'clsx';
 import { Identifier, RaRecord, RecordContextProvider } from 'ra-core';
@@ -68,30 +67,6 @@ const DatagridBody: FC<DatagridBodyProps> = React.forwardRef(
 );
 
 const defaultChildren = <DatagridRow />;
-
-DatagridBody.propTypes = {
-    className: PropTypes.string,
-    children: PropTypes.node,
-    // @ts-ignore
-    data: PropTypes.arrayOf(PropTypes.object),
-    // @ts-ignore
-    expand: PropTypes.oneOfType([PropTypes.element, PropTypes.elementType]),
-    hasBulkActions: PropTypes.bool,
-    hover: PropTypes.bool,
-    onToggleItem: PropTypes.func,
-    resource: PropTypes.string,
-    row: PropTypes.element,
-    // @ts-ignore
-    rowClick: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.func,
-        PropTypes.bool,
-    ]),
-    rowSx: PropTypes.func,
-    rowStyle: PropTypes.func,
-    selectedIds: PropTypes.arrayOf(PropTypes.any),
-    isRowSelectable: PropTypes.func,
-};
 
 export interface DatagridBodyProps extends Omit<TableBodyProps, 'classes'> {
     className?: string;

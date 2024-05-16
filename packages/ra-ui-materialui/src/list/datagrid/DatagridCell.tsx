@@ -1,5 +1,4 @@
 import * as React from 'react';
-import PropTypes from 'prop-types';
 import TableCell, { TableCellProps } from '@mui/material/TableCell';
 import clsx from 'clsx';
 import { RaRecord } from 'ra-core';
@@ -16,14 +15,6 @@ const DatagridCell = React.forwardRef<HTMLTableCellElement, DatagridCellProps>(
         </TableCell>
     )
 );
-
-DatagridCell.propTypes = {
-    className: PropTypes.string,
-    field: PropTypes.element,
-    // @ts-ignore
-    record: PropTypes.object, // eslint-disable-line react/forbid-prop-types
-    resource: PropTypes.string,
-};
 
 export interface DatagridCellProps extends TableCellProps {
     className?: string;

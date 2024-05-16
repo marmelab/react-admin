@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { ReactNode } from 'react';
-import PropTypes from 'prop-types';
 import { Typography, SxProps } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import ErrorIcon from '@mui/icons-material/Error';
@@ -18,7 +17,7 @@ import { UseQueryOptions } from '@tanstack/react-query';
 
 import { LinearProgress } from '../layout';
 import { Link } from '../Link';
-import { FieldProps, fieldPropTypes } from './types';
+import { FieldProps } from './types';
 import { genericMemo } from './genericMemo';
 
 /**
@@ -77,27 +76,6 @@ export const ReferenceField = <
             />
         </ReferenceFieldBase>
     );
-};
-
-ReferenceField.propTypes = {
-    children: PropTypes.node,
-    className: PropTypes.string,
-    cellClassName: PropTypes.string,
-    headerClassName: PropTypes.string,
-    label: fieldPropTypes.label,
-    record: PropTypes.any,
-    reference: PropTypes.string.isRequired,
-    resource: PropTypes.string,
-    sortBy: PropTypes.string,
-    sortByOrder: fieldPropTypes.sortByOrder,
-    source: PropTypes.string.isRequired,
-    translateChoice: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
-    // @ts-ignore
-    link: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.bool,
-        PropTypes.func,
-    ]),
 };
 
 export interface ReferenceFieldProps<
@@ -206,16 +184,6 @@ export interface ReferenceFieldViewProps<
     translateChoice?: Function | boolean;
     sx?: SxProps;
 }
-
-ReferenceFieldView.propTypes = {
-    children: PropTypes.element,
-    className: PropTypes.string,
-    record: PropTypes.any,
-    reference: PropTypes.string,
-    resource: PropTypes.string,
-    source: PropTypes.string,
-    translateChoice: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
-};
 
 const PureReferenceFieldView = genericMemo(ReferenceFieldView);
 

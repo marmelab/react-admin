@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import { To } from 'react-router';
 import { useBasename } from 'ra-core';
@@ -32,11 +31,3 @@ export interface DashboardMenuItemProps extends Omit<MenuItemLinkProps, 'to'> {
      */
     sidebarIsOpen?: boolean;
 }
-
-DashboardMenuItem.propTypes = {
-    leftIcon: PropTypes.element,
-    locale: PropTypes.string,
-    onClick: PropTypes.func,
-    dense: PropTypes.bool,
-    sidebarIsOpen: PropTypes.bool,
-};

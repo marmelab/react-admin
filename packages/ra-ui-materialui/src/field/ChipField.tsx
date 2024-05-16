@@ -6,7 +6,7 @@ import clsx from 'clsx';
 import { useFieldValue, useTranslate } from 'ra-core';
 
 import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
-import { FieldProps, fieldPropTypes } from './types';
+import { FieldProps } from './types';
 import { genericMemo } from './genericMemo';
 
 const ChipFieldImpl = <
@@ -38,12 +38,6 @@ const ChipFieldImpl = <
             {...sanitizeFieldRestProps(rest)}
         />
     );
-};
-
-ChipFieldImpl.propTypes = {
-    // @ts-ignore
-    ...Chip.propTypes,
-    ...fieldPropTypes,
 };
 ChipFieldImpl.displayName = 'ChipFieldImpl';
 

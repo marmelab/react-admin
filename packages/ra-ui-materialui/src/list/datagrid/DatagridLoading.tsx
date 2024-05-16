@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { ReactElement, FC, memo } from 'react';
-import PropTypes from 'prop-types';
 import {
     Table,
     TableCell,
@@ -114,15 +113,6 @@ const DatagridLoading = ({
             </Table>
         </div>
     );
-};
-
-DatagridLoading.propTypes = {
-    className: PropTypes.string,
-    expand: PropTypes.oneOfType([PropTypes.element, PropTypes.elementType]),
-    hasBulkActions: PropTypes.bool,
-    nbChildren: PropTypes.number,
-    nbFakeLines: PropTypes.number,
-    size: PropTypes.oneOf(['small', 'medium']),
 };
 
 export interface DatagridLoadingProps {

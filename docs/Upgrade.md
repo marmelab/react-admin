@@ -69,6 +69,7 @@ React-admin v5 mostly focuses on removing deprecated features and upgrading depe
     - [`<ThemeProvider theme>` Is No Longer Supported](#themeprovider-theme-is-no-longer-supported)
 - [Misc](#misc)
     - [`data-generator-retail` commands Have Been Renamed to orders](#data-generator-retail-commands-have-been-renamed-to-orders)
+    - [Support For PropTypes Was Removed](#support-for-proptypes-was-removed)
 
 ## IE11 Is No Longer Supported
 
@@ -1271,6 +1272,10 @@ The deprecated `<ThemeProvider theme>` prop was removed. Use the `ThemesContext.
 ### `data-generator-retail` `commands` Have Been Renamed to `orders`
 
 The `data-generator-retail` package has been updated to provide types for all its records. In the process, we renamed the `commands` resource to `orders`. Accordingly, the `nb_commands` property of the `customers` resource has been renamed to `nb_orders` and the `command_id` property of the `invoices` and `reviews` resources has been renamed to `order_id`.
+
+### Support For PropTypes Was Removed
+
+React-admin no longer supports ([deprecated React PropTypes](https://legacy.reactjs.org/blog/2017/04/07/react-v15.5.0.html#new-deprecation-warnings)). We encourage you to switch to TypeScript to type component props.
 
 ## Upgrading to v4
 

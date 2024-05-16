@@ -1,5 +1,4 @@
 import React, { ReactElement, ReactNode } from 'react';
-import PropTypes from 'prop-types';
 import {
     FilterPayload,
     SortPayload,
@@ -11,7 +10,7 @@ import {
 } from 'ra-core';
 import { UseQueryOptions } from '@tanstack/react-query';
 
-import { fieldPropTypes, FieldProps } from './types';
+import { FieldProps } from './types';
 
 /**
  * Render related records to the current one.
@@ -127,25 +126,6 @@ export interface ReferenceManyFieldProps<
         Error
     >;
 }
-
-ReferenceManyField.propTypes = {
-    children: PropTypes.node.isRequired,
-    className: PropTypes.string,
-    filter: PropTypes.object,
-    label: fieldPropTypes.label,
-    perPage: PropTypes.number,
-    record: PropTypes.any,
-    reference: PropTypes.string.isRequired,
-    resource: PropTypes.string,
-    sortBy: PropTypes.string,
-    sortByOrder: fieldPropTypes.sortByOrder,
-    source: PropTypes.string,
-    sort: PropTypes.exact({
-        field: PropTypes.string,
-        order: PropTypes.oneOf(['ASC', 'DESC'] as const),
-    }),
-    target: PropTypes.string.isRequired,
-};
 
 const defaultFilter = {};
 const defaultSort = { field: 'id', order: 'DESC' as const };

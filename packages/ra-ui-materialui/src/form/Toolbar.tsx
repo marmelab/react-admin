@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import { Children, ReactNode } from 'react';
-import PropTypes from 'prop-types';
 import {
     Toolbar as MuiToolbar,
     ToolbarProps as MuiToolbarProps,
@@ -88,13 +87,6 @@ export interface ToolbarProps extends Omit<MuiToolbarProps, 'classes'> {
     className?: string;
     resource?: string;
 }
-
-Toolbar.propTypes = {
-    children: PropTypes.node,
-    className: PropTypes.string,
-
-    resource: PropTypes.string,
-};
 
 const PREFIX = 'RaToolbar';
 

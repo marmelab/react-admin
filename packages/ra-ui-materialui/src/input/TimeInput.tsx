@@ -1,5 +1,4 @@
 import * as React from 'react';
-import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import TextField, { TextFieldProps } from '@mui/material/TextField';
 import { useInput, FieldTitle } from 'ra-core';
@@ -106,12 +105,6 @@ export const TimeInput = ({
             {...sanitizeInputRestProps(rest)}
         />
     );
-};
-
-TimeInput.propTypes = {
-    label: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
-    resource: PropTypes.string,
-    source: PropTypes.string,
 };
 
 export type TimeInputProps = CommonInputProps &

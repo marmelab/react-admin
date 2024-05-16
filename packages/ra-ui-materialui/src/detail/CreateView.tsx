@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { ElementType, ReactElement } from 'react';
-import PropTypes from 'prop-types';
 import { Card, styled, SxProps } from '@mui/material';
 import { useCreateContext } from 'ra-core';
 import clsx from 'clsx';
@@ -48,26 +47,6 @@ export interface CreateViewProps
     sx?: SxProps;
     title?: string | ReactElement;
 }
-
-CreateView.propTypes = {
-    actions: PropTypes.oneOfType([PropTypes.element, PropTypes.bool]),
-    aside: PropTypes.element,
-    children: PropTypes.node,
-    className: PropTypes.string,
-    defaultTitle: PropTypes.any,
-    hasList: PropTypes.bool,
-    hasShow: PropTypes.bool,
-    mutationOptions: PropTypes.object,
-    record: PropTypes.object,
-    redirect: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.bool,
-        PropTypes.func,
-    ]),
-    resource: PropTypes.string,
-    save: PropTypes.func,
-    title: PropTypes.node,
-};
 
 const PREFIX = 'RaCreate';
 

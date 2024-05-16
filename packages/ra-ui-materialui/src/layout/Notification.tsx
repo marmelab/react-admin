@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { styled, Theme } from '@mui/material/styles';
 import { useState, useEffect, useCallback } from 'react';
-import PropTypes from 'prop-types';
 import { Button, Snackbar, SnackbarProps, SnackbarOrigin } from '@mui/material';
 import clsx from 'clsx';
 
@@ -157,12 +156,6 @@ export const Notification = (props: NotificationProps) => {
                 : undefined}
         </StyledSnackbar>
     );
-};
-
-Notification.propTypes = {
-    type: PropTypes.string,
-    autoHideDuration: PropTypes.number,
-    multiLine: PropTypes.bool,
 };
 
 const PREFIX = 'RaNotification';

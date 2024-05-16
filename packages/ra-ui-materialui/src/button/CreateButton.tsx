@@ -5,7 +5,6 @@ import { styled } from '@mui/material/styles';
 import clsx from 'clsx';
 import isEqual from 'lodash/isEqual';
 import merge from 'lodash/merge';
-import PropTypes from 'prop-types';
 import { useTranslate, useResourceContext, useCreatePath } from 'ra-core';
 import { Link, To } from 'react-router-dom';
 
@@ -97,13 +96,6 @@ interface Props {
 }
 
 export type CreateButtonProps = Props & Omit<ButtonProps<typeof Link>, 'to'>;
-
-CreateButton.propTypes = {
-    resource: PropTypes.string,
-    className: PropTypes.string,
-    icon: PropTypes.element,
-    label: PropTypes.string,
-};
 
 const PREFIX = 'RaCreateButton';
 

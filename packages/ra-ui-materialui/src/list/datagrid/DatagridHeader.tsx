@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { Children, isValidElement, useCallback } from 'react';
-import PropTypes from 'prop-types';
 import {
     useListContextWithProps,
     Identifier,
@@ -153,24 +152,6 @@ export const DatagridHeader = (props: DatagridHeaderProps) => {
             </TableRow>
         </TableHead>
     );
-};
-
-DatagridHeader.propTypes = {
-    children: PropTypes.node,
-    className: PropTypes.string,
-    sort: PropTypes.exact({
-        field: PropTypes.string,
-        order: PropTypes.oneOf(['ASC', 'DESC'] as const),
-    }),
-    data: PropTypes.arrayOf(PropTypes.any),
-    hasExpand: PropTypes.bool,
-    hasBulkActions: PropTypes.bool,
-    isRowSelectable: PropTypes.func,
-    isRowExpandable: PropTypes.func,
-    onSelect: PropTypes.func,
-    onToggleItem: PropTypes.func,
-    selectedIds: PropTypes.arrayOf(PropTypes.any),
-    setSort: PropTypes.func,
 };
 
 export interface DatagridHeaderProps<RecordType extends RaRecord = any> {

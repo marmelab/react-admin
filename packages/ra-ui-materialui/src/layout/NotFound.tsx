@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
-import PropTypes from 'prop-types';
 import Button from '@mui/material/Button';
 import HotTub from '@mui/icons-material/HotTub';
 import History from '@mui/icons-material/History';
@@ -42,12 +41,6 @@ const sanitizeRestProps = ({
     match,
     ...rest
 }) => rest;
-
-NotFound.propTypes = {
-    className: PropTypes.string,
-    title: PropTypes.string,
-    location: PropTypes.object,
-};
 
 const PREFIX = 'RaNotFound';
 

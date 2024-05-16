@@ -3,7 +3,7 @@ import { AnchorHTMLAttributes } from 'react';
 import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
 import { Typography, Link } from '@mui/material';
 import { useFieldValue, useTranslate } from 'ra-core';
-import { FieldProps, fieldPropTypes } from './types';
+import { FieldProps } from './types';
 import { genericMemo } from './genericMemo';
 
 const UrlFieldImpl = <
@@ -40,8 +40,6 @@ const UrlFieldImpl = <
         </Link>
     );
 };
-
-UrlFieldImpl.propTypes = fieldPropTypes;
 UrlFieldImpl.displayName = 'UrlFieldImpl';
 
 export const UrlField = genericMemo(UrlFieldImpl);

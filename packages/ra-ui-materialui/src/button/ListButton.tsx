@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { ReactElement } from 'react';
-import PropTypes from 'prop-types';
 import ActionList from '@mui/icons-material/List';
 import { Link } from 'react-router-dom';
 import { useResourceContext, useCreatePath } from 'ra-core';
@@ -72,8 +71,3 @@ interface Props {
 }
 
 export type ListButtonProps = Props & ButtonProps;
-
-ListButton.propTypes = {
-    icon: PropTypes.element,
-    label: PropTypes.string,
-};

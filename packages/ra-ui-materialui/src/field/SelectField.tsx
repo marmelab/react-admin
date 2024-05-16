@@ -1,10 +1,9 @@
 import * as React from 'react';
-import PropTypes from 'prop-types';
 import { ChoicesProps, useChoices, useFieldValue, useTranslate } from 'ra-core';
 import { Typography, TypographyProps } from '@mui/material';
 
 import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
-import { FieldProps, fieldPropTypes } from './types';
+import { FieldProps } from './types';
 import { genericMemo } from './genericMemo';
 
 /**
@@ -121,20 +120,6 @@ const SelectFieldImpl = <
             {choiceText}
         </Typography>
     );
-};
-
-SelectFieldImpl.propTypes = {
-    // @ts-ignore
-    ...Typography.propTypes,
-    ...fieldPropTypes,
-    choices: PropTypes.arrayOf(PropTypes.object).isRequired,
-    optionText: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.func,
-        PropTypes.element,
-    ]),
-    optionValue: PropTypes.string,
-    translateChoice: PropTypes.bool,
 };
 
 SelectFieldImpl.displayName = 'SelectFieldImpl';

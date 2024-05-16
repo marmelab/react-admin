@@ -1,5 +1,4 @@
 import * as React from 'react';
-import PropTypes from 'prop-types';
 import {
     BulkUpdateWithConfirmButton,
     BulkUpdateWithConfirmButtonProps,
@@ -53,13 +52,5 @@ interface Props {
 
 export type BulkUpdateButtonProps = Props &
     (BulkUpdateWithUndoButtonProps | BulkUpdateWithConfirmButtonProps);
-
-BulkUpdateButton.propTypes = {
-    label: PropTypes.string,
-    resource: PropTypes.string,
-    selectedIds: PropTypes.arrayOf(PropTypes.any),
-    mutationMode: PropTypes.oneOf(['pessimistic', 'optimistic', 'undoable']),
-    icon: PropTypes.element,
-};
 
 const defaultData = [];

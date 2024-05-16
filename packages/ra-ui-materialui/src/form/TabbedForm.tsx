@@ -6,7 +6,6 @@ import {
     ReactNode,
     HtmlHTMLAttributes,
 } from 'react';
-import PropTypes from 'prop-types';
 import { Form, FormProps, MutationMode, RaRecord } from 'ra-core';
 import get from 'lodash/get';
 
@@ -112,17 +111,6 @@ const sanitizeRestProps = ({
     ...rest
 }: TabbedFormProps) => rest;
 /* eslint-enable @typescript-eslint/no-unused-vars */
-
-TabbedForm.propTypes = {
-    children: PropTypes.node,
-    defaultValues: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
-    formRootPathname: PropTypes.string,
-    mutationMode: PropTypes.oneOf(['pessimistic', 'optimistic', 'undoable']),
-    // @ts-ignore
-    record: PropTypes.object,
-    saving: PropTypes.bool,
-    validate: PropTypes.func,
-};
 
 export interface TabbedFormProps
     extends Omit<FormProps, 'render'>,

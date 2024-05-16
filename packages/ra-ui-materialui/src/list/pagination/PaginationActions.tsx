@@ -2,7 +2,6 @@ import * as React from 'react';
 import { memo, FC } from 'react';
 import { styled } from '@mui/material/styles';
 import { Pagination, PaginationProps } from '@mui/material';
-import PropTypes from 'prop-types';
 import { useTranslate } from 'ra-core';
 
 export const PaginationActions: FC<PaginationActionsProps> = memo(props => {
@@ -64,20 +63,6 @@ export interface PaginationActionsProps extends PaginationProps {
     count: number;
     onPageChange: (event: MouseEvent, page: number) => void;
 }
-/**
- * PaginationActions propTypes are copied over from Material UI’s
- * TablePaginationActions propTypes. See
- * https://github.com/mui/material-ui/blob/869692ecf3812bc4577ed4dde81a9911c5949695/packages/material-ui/src/TablePaginationActions/TablePaginationActions.js#L53-L85
- * for reference.
- */
-PaginationActions.propTypes = {
-    count: PropTypes.number.isRequired,
-    onPageChange: PropTypes.func.isRequired,
-    page: PropTypes.number.isRequired,
-    rowsPerPage: PropTypes.number.isRequired,
-    color: PropTypes.oneOf(['primary', 'secondary', 'standard']),
-    size: PropTypes.oneOf(['small', 'medium', 'large']),
-};
 
 const PREFIX = 'RaPaginationActions';
 

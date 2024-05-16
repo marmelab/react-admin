@@ -2,7 +2,6 @@ import * as React from 'react';
 import { ComponentType, ErrorInfo, Fragment, HtmlHTMLAttributes } from 'react';
 import { FallbackProps } from 'react-error-boundary';
 import { styled } from '@mui/material/styles';
-import PropTypes from 'prop-types';
 import {
     Button,
     Accordion,
@@ -20,7 +19,7 @@ import {
 } from 'ra-core';
 import type { TitleComponent } from 'ra-core';
 
-import { Title, TitlePropType } from './Title';
+import { Title } from './Title';
 
 export const Error = (
     props: InternalErrorProps & {
@@ -123,13 +122,6 @@ export const Error = (
             </Root>
         </Fragment>
     );
-};
-
-Error.propTypes = {
-    className: PropTypes.string,
-    error: PropTypes.object.isRequired,
-    errorInfo: PropTypes.object,
-    title: TitlePropType,
 };
 
 interface InternalErrorProps

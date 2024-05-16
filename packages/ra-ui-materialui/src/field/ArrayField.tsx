@@ -10,7 +10,7 @@ import {
     RaRecord,
 } from 'ra-core';
 
-import { FieldProps, fieldPropTypes } from './types';
+import { FieldProps } from './types';
 import { genericMemo } from './genericMemo';
 
 /**
@@ -91,7 +91,6 @@ const ArrayFieldImpl = <
         </ListContextProvider>
     );
 };
-ArrayFieldImpl.propTypes = { ...fieldPropTypes };
 ArrayFieldImpl.displayName = 'ArrayFieldImpl';
 
 export const ArrayField = genericMemo(ArrayFieldImpl);

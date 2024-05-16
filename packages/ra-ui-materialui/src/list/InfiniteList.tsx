@@ -1,13 +1,11 @@
 import * as React from 'react';
 import { ReactElement } from 'react';
-import PropTypes from 'prop-types';
 import {
     InfiniteListBase,
     InfiniteListControllerProps,
     RaRecord,
 } from 'ra-core';
 
-import { TitlePropType } from '../layout/Title';
 import { InfinitePagination } from './pagination';
 import { ListView, ListViewProps } from './ListView';
 
@@ -102,35 +100,3 @@ const defaultFilter = {};
 export interface InfiniteListProps<RecordType extends RaRecord = any>
     extends InfiniteListControllerProps<RecordType>,
         ListViewProps {}
-
-InfiniteList.propTypes = {
-    // the props you can change
-    // @ts-ignore-line
-    actions: PropTypes.oneOfType([PropTypes.bool, PropTypes.element]),
-    aside: PropTypes.element,
-    children: PropTypes.node.isRequired,
-    className: PropTypes.string,
-    emptyWhileLoading: PropTypes.bool,
-    filter: PropTypes.object,
-    filterDefaultValues: PropTypes.object,
-    filters: PropTypes.oneOfType([
-        PropTypes.element,
-        PropTypes.arrayOf(PropTypes.element),
-    ]),
-    // @ts-ignore-line
-    pagination: PropTypes.oneOfType([PropTypes.element, PropTypes.bool]),
-    perPage: PropTypes.number,
-    //@ts-ignore-line
-    sort: PropTypes.shape({
-        field: PropTypes.string,
-        order: PropTypes.oneOf(['ASC', 'DESC'] as const),
-    }),
-    sx: PropTypes.any,
-    title: TitlePropType,
-    // the props managed by react-admin
-    disableSyncWithLocation: PropTypes.bool,
-    hasEdit: PropTypes.bool,
-    hasList: PropTypes.bool,
-    hasShow: PropTypes.bool,
-    resource: PropTypes.string,
-};

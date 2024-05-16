@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { ReactElement, useCallback, useEffect, ChangeEvent } from 'react';
-import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { MenuItem, TextFieldProps } from '@mui/material';
 import { styled } from '@mui/material/styles';
@@ -338,29 +337,6 @@ export const SelectInput = (props: SelectInputProps) => {
             {createElement}
         </>
     );
-};
-
-SelectInput.propTypes = {
-    emptyText: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
-    emptyValue: PropTypes.any,
-    choices: PropTypes.arrayOf(PropTypes.object),
-    className: PropTypes.string,
-    label: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.bool,
-        PropTypes.element,
-    ]),
-    optionText: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.func,
-        PropTypes.element,
-    ]),
-    optionValue: PropTypes.string,
-    disableValue: PropTypes.string,
-    resettable: PropTypes.bool,
-    resource: PropTypes.string,
-    source: PropTypes.string,
-    translateChoice: PropTypes.bool,
 };
 
 const sanitizeRestProps = ({

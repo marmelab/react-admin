@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { FC, memo, ReactElement, ReactNode } from 'react';
-import PropTypes from 'prop-types';
 import {
     ListContextProvider,
     useListContext,
@@ -16,7 +15,7 @@ import { styled } from '@mui/material/styles';
 import { SxProps } from '@mui/system';
 import { UseQueryOptions } from '@tanstack/react-query';
 
-import { fieldPropTypes, FieldProps } from './types';
+import { FieldProps } from './types';
 import { LinearProgress } from '../layout';
 import { SingleFieldList } from '../list/SingleFieldList';
 
@@ -115,21 +114,6 @@ export const ReferenceArrayField = <
         </ResourceContextProvider>
     );
 };
-
-ReferenceArrayField.propTypes = {
-    ...fieldPropTypes,
-    className: PropTypes.string,
-    children: PropTypes.node,
-    label: fieldPropTypes.label,
-    record: PropTypes.any,
-    reference: PropTypes.string.isRequired,
-    resource: PropTypes.string,
-    sortBy: PropTypes.string,
-    sortByOrder: fieldPropTypes.sortByOrder,
-    source: PropTypes.string.isRequired,
-    queryOptions: PropTypes.any,
-};
-
 export interface ReferenceArrayFieldProps<
     RecordType extends RaRecord = RaRecord,
     ReferenceRecordType extends RaRecord = RaRecord
@@ -167,12 +151,6 @@ export const ReferenceArrayFieldView: FC<ReferenceArrayFieldViewProps> = props =
             )}
         </Root>
     );
-};
-
-ReferenceArrayFieldView.propTypes = {
-    className: PropTypes.string,
-    children: PropTypes.node,
-    reference: PropTypes.string.isRequired,
 };
 
 const PREFIX = 'RaReferenceArrayField';

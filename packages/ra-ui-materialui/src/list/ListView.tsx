@@ -1,13 +1,12 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import { ReactElement, ReactNode, ElementType } from 'react';
-import PropTypes from 'prop-types';
 import { SxProps } from '@mui/system';
 import Card from '@mui/material/Card';
 import clsx from 'clsx';
-import { ComponentPropType, useListContext, RaRecord } from 'ra-core';
+import { useListContext, RaRecord } from 'ra-core';
 
-import { Title, TitlePropType } from '../layout/Title';
+import { Title } from '../layout/Title';
 import { ListToolbar } from './ListToolbar';
 import { Pagination as DefaultPagination } from './pagination';
 import { ListActions as DefaultActions } from './ListActions';
@@ -86,21 +85,6 @@ export const ListView = <RecordType extends RaRecord = any>(
             {aside}
         </Root>
     );
-};
-
-ListView.propTypes = {
-    actions: PropTypes.oneOfType([PropTypes.bool, PropTypes.element]),
-    aside: PropTypes.element,
-    children: PropTypes.node,
-    className: PropTypes.string,
-    component: ComponentPropType,
-    emptyWhileLoading: PropTypes.bool,
-    filters: PropTypes.oneOfType([
-        PropTypes.element,
-        PropTypes.arrayOf(PropTypes.element),
-    ]),
-    pagination: PropTypes.oneOfType([PropTypes.element, PropTypes.bool]),
-    title: TitlePropType,
 };
 
 export interface ListViewProps {

@@ -8,7 +8,6 @@ import {
     Theme,
 } from '@mui/material';
 import { styled, useThemeProps } from '@mui/material/styles';
-import PropTypes from 'prop-types';
 import { useTranslate } from 'ra-core';
 import { Path, To } from 'react-router';
 
@@ -107,28 +106,6 @@ interface Props<RootComponent extends React.ElementType> {
 export type ButtonProps<
     RootComponent extends React.ElementType = 'button'
 > = Props<RootComponent> & MuiButtonProps<RootComponent>;
-
-Button.propTypes = {
-    alignIcon: PropTypes.oneOf(['left', 'right']),
-    children: PropTypes.element,
-    className: PropTypes.string,
-    color: PropTypes.oneOfType([
-        PropTypes.oneOf([
-            'inherit',
-            'default',
-            'primary',
-            'secondary',
-            'error',
-            'info',
-            'success',
-            'warning',
-        ]),
-        PropTypes.string,
-    ]),
-    disabled: PropTypes.bool,
-    label: PropTypes.string,
-    size: PropTypes.oneOf(['small', 'medium', 'large']),
-};
 
 const PREFIX = 'RaButton';
 

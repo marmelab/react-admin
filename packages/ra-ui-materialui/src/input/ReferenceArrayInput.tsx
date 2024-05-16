@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { ReactElement } from 'react';
-import PropTypes from 'prop-types';
 import {
     InputProps,
     useReferenceArrayInputController,
@@ -103,21 +102,6 @@ export const ReferenceArrayInput = (props: ReferenceArrayInputProps) => {
             </ChoicesContextProvider>
         </ResourceContextProvider>
     );
-};
-
-ReferenceArrayInput.propTypes = {
-    children: PropTypes.element,
-    filter: PropTypes.object,
-    label: PropTypes.string,
-    page: PropTypes.number,
-    perPage: PropTypes.number,
-    reference: PropTypes.string.isRequired,
-    resource: PropTypes.string,
-    sort: PropTypes.shape({
-        field: PropTypes.string,
-        order: PropTypes.oneOf(['ASC', 'DESC']),
-    }),
-    source: PropTypes.string,
 };
 
 const defaultChildren = <AutocompleteArrayInput />;

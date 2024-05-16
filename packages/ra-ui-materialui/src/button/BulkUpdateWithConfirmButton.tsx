@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { Fragment, useState, ReactElement } from 'react';
-import PropTypes from 'prop-types';
 import ActionUpdate from '@mui/icons-material/Update';
 
 import { alpha, styled } from '@mui/material/styles';
@@ -163,17 +162,6 @@ export interface BulkUpdateWithConfirmButtonProps<
         UpdateManyParams<RecordType>
     > & { meta?: any };
 }
-
-BulkUpdateWithConfirmButton.propTypes = {
-    confirmTitle: PropTypes.node,
-    confirmContent: PropTypes.node,
-    label: PropTypes.string,
-    resource: PropTypes.string,
-    selectedIds: PropTypes.arrayOf(PropTypes.any),
-    icon: PropTypes.element,
-    data: PropTypes.any.isRequired,
-    mutationMode: PropTypes.oneOf(['pessimistic', 'optimistic', 'undoable']),
-};
 
 const PREFIX = 'RaBulkUpdateWithConfirmButton';
 

@@ -1,5 +1,4 @@
 import * as React from 'react';
-import PropTypes from 'prop-types';
 import {
     EditBase,
     useCheckMinimumRequiredProps,
@@ -87,28 +86,3 @@ export const Edit = <RecordType extends RaRecord = any>(
 export interface EditProps<RecordType extends RaRecord = any, ErrorType = Error>
     extends EditControllerProps<RecordType, ErrorType>,
         EditViewProps {}
-
-Edit.propTypes = {
-    actions: PropTypes.oneOfType([PropTypes.element, PropTypes.bool]),
-    aside: PropTypes.element,
-    children: PropTypes.node,
-    className: PropTypes.string,
-    disableAuthentication: PropTypes.bool,
-    hasCreate: PropTypes.bool,
-    hasEdit: PropTypes.bool,
-    hasShow: PropTypes.bool,
-    hasList: PropTypes.bool,
-    id: PropTypes.any,
-    mutationMode: PropTypes.oneOf(['pessimistic', 'optimistic', 'undoable']),
-    mutationOptions: PropTypes.object,
-    queryOptions: PropTypes.object,
-    redirect: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.bool,
-        PropTypes.func,
-    ]),
-    resource: PropTypes.string,
-    title: PropTypes.node,
-    transform: PropTypes.func,
-    sx: PropTypes.any,
-};

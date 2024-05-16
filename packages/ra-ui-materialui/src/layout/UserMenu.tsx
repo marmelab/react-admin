@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { ReactNode, useCallback, useMemo, useState } from 'react';
 import { styled } from '@mui/material/styles';
-import PropTypes from 'prop-types';
 import { useAuthProvider, useGetIdentity, useTranslate } from 'ra-core';
 import {
     Tooltip,
@@ -139,13 +138,6 @@ export const UserMenu = (props: UserMenuProps) => {
             </UserMenuContextProvider>
         </Root>
     );
-};
-
-UserMenu.propTypes = {
-    children: PropTypes.node,
-    classes: PropTypes.object,
-    label: PropTypes.string,
-    icon: PropTypes.node,
 };
 
 export interface UserMenuProps {
