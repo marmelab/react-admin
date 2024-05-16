@@ -1021,7 +1021,7 @@ You can now include a global server-side error message in the response to a fail
 }
 ```
 
-**Minor BC:** To avoid a race condition between the notifications sent due to both the http error and the validation error, React Admin will no longer display a notification for the http error as soon as the response contains a non-empty `errors` object. If you relied on this behavior to render a global server-side error message, you should now include the message in the `root.serverError` key of the `errors` object.
+**Minor BC:** To avoid a race condition between the notifications sent due to both the http error and the validation error, React Admin will no longer display a notification for the http error if the response contains a non-empty `errors` object and the mutation mode is `pessimistic`. If you relied on this behavior to render a global server-side error message, you should now include the message in the `root.serverError` key of the `errors` object.
 
 ```diff
 {

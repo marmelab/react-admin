@@ -165,7 +165,7 @@ export const useEditController = <
                 const hasValidationErrors =
                     !!validationErrors &&
                     Object.keys(validationErrors).length > 0;
-                if (!hasValidationErrors) {
+                if (!hasValidationErrors || mutationMode !== 'pessimistic') {
                     notify(
                         typeof error === 'string'
                             ? error
