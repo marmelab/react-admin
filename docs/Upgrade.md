@@ -1272,6 +1272,10 @@ The deprecated `<ThemeProvider theme>` prop was removed. Use the `ThemesContext.
 
 The `data-generator-retail` package has been updated to provide types for all its records. In the process, we renamed the `commands` resource to `orders`. Accordingly, the `nb_commands` property of the `customers` resource has been renamed to `nb_orders` and the `command_id` property of the `invoices` and `reviews` resources has been renamed to `order_id`.
 
+### Support For PropTypes Was Removed
+
+React-admin no longer supports ([deprecated](https://legacy.reactjs.org/blog/2017/04/07/react-v15.5.0.html#new-deprecation-warnings)) React PropTypes. We encourage you to switch to TypeScript to type component props.
+
 ## Upgrading to v4
 
 If you are on react-admin v3, follow the [Upgrading to v4](https://marmelab.com/react-admin/doc/4.16/Upgrade.html) guide before upgrading to v5.
