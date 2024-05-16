@@ -1275,7 +1275,7 @@ The `data-generator-retail` package has been updated to provide types for all it
 
 ### Support For PropTypes Was Removed
 
-React-admin no longer supports ([deprecated](https://legacy.reactjs.org/blog/2017/04/07/react-v15.5.0.html#new-deprecation-warnings)) React PropTypes. We encourage you to switch to TypeScript to type component props.
+React-admin no longer supports ([deprecated React PropTypes](https://legacy.reactjs.org/blog/2017/04/07/react-v15.5.0.html#new-deprecation-warnings)). We encourage you to switch to TypeScript to type component props.
 
 ## Upgrading to v4
 
