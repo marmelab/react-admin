@@ -69,6 +69,7 @@ React-admin v5 mostly focuses on removing deprecated features and upgrading depe
     - [`<ThemeProvider theme>` Is No Longer Supported](#themeprovider-theme-is-no-longer-supported)
 - [Misc](#misc)
     - [`data-generator-retail` commands Have Been Renamed to orders](#data-generator-retail-commands-have-been-renamed-to-orders)
+    - [Support For PropTypes Was Removed](#support-for-proptypes-was-removed)
 
 ## IE11 Is No Longer Supported
 
