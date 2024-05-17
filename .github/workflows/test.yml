@@ -26,6 +26,14 @@ jobs:
       run: make build
     - name: Type check simple example
       run: cd examples/simple && yarn type-check
+    - name: Zip packages build artifact
+      run: zip packages-build.zip -r packages/*/esm packages/*/lib node_modules/@react-admin/*
+    - name: Upload packages build artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: packages-build
+        path: packages-build.zip
+        retention-days: 1
 
   doc-check:
     runs-on: ubuntu-latest
@@ -81,8 +89,12 @@ jobs:
           cache: 'yarn'
       - name: Install dependencies
         run: yarn
-      - name: Build
-        run: make build
+      - name: Download packages build artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: packages-build
+      - name: Unzip packages build artifact
+        run: unzip -o -u packages-build.zip
       - name: Build e-commerce
         run: make build-demo
         env:
@@ -110,8 +122,12 @@ jobs:
           cache: 'yarn'
       - name: Install dependencies
         run: yarn
-      - name: Build
-        run: make build
+      - name: Download packages build artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: packages-build
+      - name: Unzip packages build artifact
+        run: unzip -o -u packages-build.zip
       - name: Build crm
         run: make build-crm
 
