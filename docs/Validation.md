@@ -384,7 +384,7 @@ Server-side validation is supported out of the box for `pessimistic` mode only. 
 
 **Tip**: The shape of the returned validation errors must match the form shape: each key needs to match a `source` prop. The only exception is the `root.serverError` key, which can be used to define a global error message for the form.
 
-**Tip**: The returned validation errors might have any validation format we support (simple strings, translation strings or translation objects with a `message` attribute) for each key. However `root.serverError` must be a plain string.
+**Tip**: The returned validation errors might have any validation format we support (simple strings, translation strings or translation objects with a `message` attribute) for each key. However `root.serverError` does not accept translation objects.
 
 **Tip**: If your data provider leverages React Admin's [`httpClient`](https://marmelab.com/react-admin/DataProviderWriting.html#example-rest-implementation), all error response bodies are wrapped and thrown as `HttpError`. This means your API only needs to return an invalid response with a json body containing the `errors` key.
 
