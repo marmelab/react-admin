@@ -16,6 +16,15 @@ import { Divider, Box, Stack } from '@mui/material';
 import { Company } from '../types';
 import { genders } from './constants';
 
+const isUrl = (value: string) => {
+    if (!value) return;
+    try {
+        new URL(value);
+    } catch (_) {
+        return 'Must be a valid URL';
+    }
+};
+
 export const ContactInputs = () => {
     const [create] = useCreate();
     const { identity } = useGetIdentity();
@@ -85,7 +94,12 @@ export const ContactInputs = () => {
             <Divider sx={{ my: 2 }} />
             <Box width={430}>
                 <TextInput source="background" multiline helperText={false} />
-                <TextInput source="avatar" helperText={false} />
+                <TextInput
+                    source="avatar"
+                    label="Avatar URL"
+                    helperText={false}
+                    validate={isUrl}
+                />
                 <Stack direction="row" gap={1} alignItems="center">
                     <SelectInput
                         source="gender"
