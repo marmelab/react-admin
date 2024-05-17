@@ -7,6 +7,7 @@ import {
     EditButton,
     ShowButton,
     ReferenceField,
+    SelectField,
     FunctionField,
     useRecordContext,
 } from 'react-admin';
@@ -16,6 +17,7 @@ import { AddTask } from '../tasks/AddTask';
 import { TasksIterator } from '../tasks/TasksIterator';
 
 import { Contact, Sale } from '../types';
+import { genders } from './constants';
 
 export const ContactAside = ({ link = 'edit' }: { link?: 'edit' | 'show' }) => {
     const record = useRecordContext<Contact>();
@@ -56,14 +58,10 @@ export const ContactAside = ({ link = 'edit' }: { link?: 'edit' | 'show' }) => {
                     </Typography>
                 </Box>
             )}
-            <Typography variant="body2" mb={3}>
-                {record
-                    ? record.gender === 'male'
-                        ? 'He/Him'
-                        : 'She/Her'
-                    : ''}
+            <SelectField source="gender" choices={genders} />
+            <Typography variant="subtitle2" mt={2}>
+                Background
             </Typography>
-            <Typography variant="subtitle2">Background</Typography>
             <Divider />
             <Typography variant="body2" mt={2}>
                 {record && record.background}

@@ -14,13 +14,12 @@ export const ContactCreate = () => {
                 ...data,
                 first_seen: new Date().toISOString(),
                 last_seen: new Date().toISOString(),
-                sales_id: identity?.id,
                 tags: [],
             })}
         >
             <Box mt={2} display="flex">
                 <Box flex="1">
-                    <Form>
+                    <Form defaultValues={{ sales_id: identity?.id }}>
                         <Card>
                             <CardContent>
                                 <Box>

@@ -11,7 +11,7 @@ import { randomDate, weightedBoolean } from './utils';
 import { Db } from './types';
 import { Contact } from '../types';
 
-const genders = ['male', 'female'];
+const genders = ['male', 'female', 'nonbinary'];
 const status = ['cold', 'cold', 'cold', 'warm', 'warm', 'hot', 'in-contract'];
 const maxContacts = {
     1: 1,

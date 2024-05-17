@@ -4,14 +4,17 @@ import {
     ReferenceInput,
     AutocompleteInput,
     BooleanInput,
+    SelectInput,
     required,
+    email,
     useCreate,
     useGetIdentity,
     useNotify,
 } from 'react-admin';
-import { Divider, Box } from '@mui/material';
+import { Divider, Box, Stack } from '@mui/material';
 
 import { Company } from '../types';
+import { genders } from './constants';
 
 export const ContactInputs = () => {
     const [create] = useCreate();
@@ -44,39 +47,75 @@ export const ContactInputs = () => {
     };
     return (
         <Box flex="1" mt={-1}>
-            <Box display="flex" width={430}>
-                <TextInput source="first_name" validate={required()} />
-                <Spacer />
-                <TextInput source="last_name" validate={required()} />
-            </Box>
-            <Box display="flex" width={430}>
-                <TextInput source="title" />
-                <Spacer />
+            <Stack direction="row" width={430} gap={1}>
+                <TextInput
+                    source="first_name"
+                    validate={required()}
+                    helperText={false}
+                />
+                <TextInput
+                    source="last_name"
+                    validate={required()}
+                    helperText={false}
+                />
+            </Stack>
+            <Stack direction="row" width={430} gap={1}>
+                <TextInput source="title" helperText={false} />
                 <ReferenceInput source="company_id" reference="companies">
                     <AutocompleteInput
                         optionText="name"
                         validate={required()}
                         onCreate={handleCreateCompany}
+                        helperText={false}
                     />
                 </ReferenceInput>
+            </Stack>
+            <Divider sx={{ my: 2 }} />
+            <Box width={430}>
+                <TextInput
+                    source="email"
+                    helperText={false}
+                    validate={email()}
+                />
+                <Stack direction="row" gap={1}>
+                    <TextInput source="phone_number1" helperText={false} />
+                    <TextInput source="phone_number2" helperText={false} />
+                </Stack>
             </Box>
-            <Divider />
-            <Box mt={2} width={430}>
-                <TextInput source="email" />
+            <Divider sx={{ my: 2 }} />
+            <Box width={430}>
+                <TextInput source="background" multiline helperText={false} />
+                <TextInput source="avatar" helperText={false} />
+                <Stack direction="row" gap={1} alignItems="center">
+                    <SelectInput
+                        source="gender"
+                        choices={genders}
+                        helperText={false}
+                    />
+                    <BooleanInput
+                        source="has_newsletter"
+                        sx={{
+                            width: '100%',
+                            label: { justifyContent: 'center' },
+                        }}
+                        helperText={false}
+                    />
+                </Stack>
             </Box>
-            <Box display="flex" width={430}>
-                <TextInput source="phone_number1" />
-                <Spacer />
-                <TextInput source="phone_number2" />
-            </Box>
-            <Divider />
-            <Box mt={2} width={430}>
-                <TextInput source="background" multiline />
-                <TextInput source="avatar" />
-                <BooleanInput source="has_newsletter" />
+            <Divider sx={{ my: 2 }} />
+            <Box width={430}>
+                <ReferenceInput
+                    reference="sales"
+                    source="sales_id"
+                    sort={{ field: 'last_name', order: 'ASC' }}
+                >
+                    <SelectInput
+                        helperText={false}
+                        label="Account manager"
+                        sx={{ width: 210 }}
+                    />
+                </ReferenceInput>
             </Box>
         </Box>
     );
 };
-
-const Spacer = () => <Box width={20} component="span" />;
