@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { renderHook } from '@testing-library/react-hooks';
+import { renderHook } from '@testing-library/react';
 
 import { useRecordSelection } from './useRecordSelection';
 import { StoreSetter, StoreContextProvider, memoryStore } from '../../store';

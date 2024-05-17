@@ -5802,28 +5802,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@testing-library/react-hooks@npm:^8.0.1":
-  version: 8.0.1
-  resolution: "@testing-library/react-hooks@npm:8.0.1"
-  dependencies:
-    "@babel/runtime": "npm:^7.12.5"
-    react-error-boundary: "npm:^3.1.0"
-  peerDependencies:
-    "@types/react": ^16.9.0 || ^17.0.0
-    react: ^16.9.0 || ^17.0.0
-    react-dom: ^16.9.0 || ^17.0.0
-    react-test-renderer: ^16.9.0 || ^17.0.0
-  peerDependenciesMeta:
-    "@types/react":
-      optional: true
-    react-dom:
-      optional: true
-    react-test-renderer:
-      optional: true
-  checksum: 83bef2d4c437b84143213b5275ef00ef14e5bcd344f9ded12b162d253dc3c799138ead4428026b9c725e5a38dbebf611f2898aa43f3e43432bcaccbd7bf413e5
-  languageName: node
-  linkType: hard
-
 "@testing-library/react@npm:^14.1.2":
   version: 14.1.2
   resolution: "@testing-library/react@npm:14.1.2"
@@ -9759,7 +9737,7 @@ __metadata:
     ink-select-input: "npm:^4.2.2"
     ink-text-input: "npm:^4.0.3"
     meow: "npm:^9.0.0"
-    react: "npm:^18.0.0"
+    react: "npm:rc"
     typescript: "npm:^5.1.3"
     yn: "npm:^5.0.0"
   bin:
@@ -10457,9 +10435,9 @@ __metadata:
     ra-input-rich-text: "npm:^5.0.0-alpha.0"
     ra-language-english: "npm:^5.0.0-alpha.0"
     ra-language-french: "npm:^5.0.0-alpha.0"
-    react: "npm:^18.0.0"
+    react: "npm:rc"
     react-admin: "npm:^5.0.0-alpha.0"
-    react-dom: "npm:^18.2.0"
+    react-dom: "npm:rc"
     react-router: "npm:^6.22.0"
     react-router-dom: "npm:^6.22.0"
     recharts: "npm:^2.1.15"
@@ -16764,9 +16742,9 @@ __metadata:
     "@vitejs/plugin-react": "npm:^4.2.1"
     ra-data-local-storage: "npm:^5.0.0-alpha.0"
     ra-no-code: "npm:^5.0.0-alpha.0"
-    react: "npm:^18.0.0"
+    react: "npm:rc"
     react-admin: "npm:^5.0.0-alpha.0"
-    react-dom: "npm:^18.2.0"
+    react-dom: "npm:rc"
     typescript: "npm:^5.1.3"
     vite: "npm:^5.0.11"
   languageName: unknown
@@ -18682,7 +18660,6 @@ __metadata:
     "@hookform/resolvers": "npm:^3.2.0"
     "@tanstack/react-query": "npm:^5.8.4"
     "@testing-library/react": "npm:^14.1.2"
-    "@testing-library/react-hooks": "npm:^8.0.1"
     "@types/jest": "npm:^29.5.2"
     "@types/jscodeshift": "npm:^0.11.11"
     "@types/node": "npm:^20.10.7"
@@ -18700,8 +18677,8 @@ __metadata:
     jsonexport: "npm:^3.2.0"
     lodash: "npm:~4.17.5"
     query-string: "npm:^9.0.0"
-    react: "npm:^18.0.0"
-    react-dom: "npm:^18.2.0"
+    react: "npm:rc"
+    react-dom: "npm:rc"
     react-hook-form: "npm:^7.43.9"
     react-is: "npm:^18.2.0"
     react-router: "npm:^6.22.0"
@@ -18713,8 +18690,8 @@ __metadata:
     yup: "npm:^0.32.11"
     zod: "npm:^3.22.1"
   peerDependencies:
-    react: ^18.0.0
-    react-dom: ^18.0.0
+    react: ^18.0.0 || ^19.0.0
+    react-dom: ^18.0.0 || ^19.0.0
     react-hook-form: ^7.43.9
     react-router: ^6.22.0
     react-router-dom: ^6.22.0
@@ -18880,7 +18857,7 @@ __metadata:
     ra-core: "npm:^5.0.0-beta.0"
     ra-data-fakerest: "npm:^5.0.0-beta.0"
     ra-ui-materialui: "npm:^5.0.0-beta.0"
-    react: "npm:^18.0.0"
+    react: "npm:rc"
     react-dom: "npm:^18.2.0"
     react-hook-form: "npm:^7.43.9"
     rimraf: "npm:^3.0.2"
@@ -18891,8 +18868,8 @@ __metadata:
     "@mui/material": ^5.15.15
     ra-core: ^4.0.0
     ra-ui-materialui: ^4.0.0
-    react: ^18.0.0
-    react-dom: ^18.0.0
+    react: ^18.0.0 || ^19.0.0
+    react-dom: ^18.0.0 || ^19.0.0
   languageName: unknown
   linkType: soft
 
@@ -18930,7 +18907,7 @@ __metadata:
     lodash: "npm:~4.17.5"
     papaparse: "npm:^5.3.0"
     ra-data-local-storage: "npm:^5.0.0-beta.0"
-    react: "npm:^18.0.0"
+    react: "npm:rc"
     react-admin: "npm:^5.0.0-beta.0"
     react-dom: "npm:^18.2.0"
     react-dropzone: "npm:^14.2.3"
@@ -18941,8 +18918,8 @@ __metadata:
   peerDependencies:
     "@mui/icons-material": ^5.15.15
     "@mui/material": ^5.15.15
-    react: ^18.0.0
-    react-dom: ^18.0.0
+    react: ^18.0.0 || ^19.0.0
+    react-dom: ^18.0.0 || ^19.0.0
   languageName: unknown
   linkType: soft
 
@@ -18975,8 +18952,8 @@ __metadata:
     ra-core: "npm:^5.0.0-beta.0"
     ra-i18n-polyglot: "npm:^5.0.0-beta.0"
     ra-language-english: "npm:^5.0.0-beta.0"
-    react: "npm:^18.0.0"
-    react-dom: "npm:^18.2.0"
+    react: "npm:rc"
+    react-dom: "npm:rc"
     react-dropzone: "npm:^14.2.3"
     react-error-boundary: "npm:^4.0.13"
     react-hook-form: "npm:^7.43.9"
@@ -18991,8 +18968,8 @@ __metadata:
     "@mui/icons-material": ^5.15.15
     "@mui/material": ^5.15.15
     ra-core: ^5.0.0-beta.0
-    react: ^18.0.0
-    react-dom: ^18.0.0
+    react: ^18.0.0 || ^19.0.0
+    react-dom: ^18.0.0 || ^19.0.0
     react-hook-form: "*"
     react-is: ^18.0.0
     react-router: ^6.22.0
@@ -19098,9 +19075,9 @@ __metadata:
     faker: "npm:~5.4.0"
     lodash: "npm:~4.17.5"
     ra-data-fakerest: "npm:^5.0.0-alpha.0"
-    react: "npm:^18.0.0"
+    react: "npm:rc"
     react-admin: "npm:^5.0.0-alpha.0"
-    react-dom: "npm:^18.2.0"
+    react-dom: "npm:rc"
     react-error-boundary: "npm:^4.0.3"
     react-router: "npm:^6.22.0"
     react-router-dom: "npm:^6.22.0"
@@ -19150,8 +19127,8 @@ __metadata:
     lolex: "npm:~2.3.2"
     prettier: "npm:~2.1.1"
     raf: "npm:~3.4.1"
-    react: "npm:^18.0.0"
-    react-dom: "npm:^18.2.0"
+    react: "npm:rc"
+    react-dom: "npm:rc"
     storybook: "npm:^7.5.1"
     ts-jest: "npm:^29.1.0"
     typescript: "npm:^5.1.3"
@@ -19182,8 +19159,8 @@ __metadata:
     rimraf: "npm:^3.0.2"
     typescript: "npm:^5.1.3"
   peerDependencies:
-    react: 18.0.0
-    react-dom: 18.0.0
+    react: 18.0.0 || ^19.0.0
+    react-dom: 18.0.0 || ^19.0.0
   languageName: unknown
   linkType: soft
 
@@ -19248,6 +19225,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-dom@npm:rc":
+  version: 19.0.0-rc-915b914b3a-20240515
+  resolution: "react-dom@npm:19.0.0-rc-915b914b3a-20240515"
+  dependencies:
+    scheduler: "npm:0.25.0-rc-915b914b3a-20240515"
+  peerDependencies:
+    react: 19.0.0-rc-915b914b3a-20240515
+  checksum: 2839196513cba9ec7376797e3c45744f16f09116e552ebf1cdfb0c3097aa874d075693d747b40881f3f977d253235caac2f77b5d68971864b2d6f7fa6768bfc1
+  languageName: node
+  linkType: hard
+
 "react-dropzone@npm:^14.2.3":
   version: 14.2.3
   resolution: "react-dropzone@npm:14.2.3"
@@ -19272,17 +19260,6 @@ __metadata:
     react: ^0.14.8 || ^15.0.1 || ^16.0.0 || ^17.0.1 || ^18.0.0
     react-dom: ^0.14.8 || ^15.0.1 || ^16.0.0 || ^17.0.1 || ^18.0.0
   checksum: 0d60a0ea758529c32a706d0c69d70b69fb94de3c46442fffdee34f08f51ffceddbb5395b41dfd1565895653e9f60f98ca525835be9d5db1f16d6b22be12f4cd4
-  languageName: node
-  linkType: hard
-
-"react-error-boundary@npm:^3.1.0":
-  version: 3.1.4
-  resolution: "react-error-boundary@npm:3.1.4"
-  dependencies:
-    "@babel/runtime": "npm:^7.12.5"
-  peerDependencies:
-    react: ">=16.13.1"
-  checksum: f977ca61823e43de2381d53dd7aa8b4d79ff6a984c9afdc88dc44f9973b99de7fd382d2f0f91f2688e24bb987c0185bf45d0b004f22afaaab0f990a830253bfb
   languageName: node
   linkType: hard
 
@@ -19609,12 +19586,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react@npm:^18.0.0, react@npm:^18.2.0":
-  version: 18.2.0
-  resolution: "react@npm:18.2.0"
-  dependencies:
-    loose-envify: "npm:^1.1.0"
-  checksum: b562d9b569b0cb315e44b48099f7712283d93df36b19a39a67c254c6686479d3980b7f013dc931f4a5a3ae7645eae6386b4aa5eea933baa54ecd0f9acb0902b8
+"react@npm:rc":
+  version: 19.0.0-rc-915b914b3a-20240515
+  resolution: "react@npm:19.0.0-rc-915b914b3a-20240515"
+  checksum: 5a098c977135b20f2011c278461b2ac146c86cc8ca5e91de10e7223beecda9f9c4d35f42c15742b37b0db43b505cc39e399da0c0495f36fe108b54cffecc9618
   languageName: node
   linkType: hard
 
@@ -20430,6 +20405,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"scheduler@npm:0.25.0-rc-915b914b3a-20240515":
+  version: 0.25.0-rc-915b914b3a-20240515
+  resolution: "scheduler@npm:0.25.0-rc-915b914b3a-20240515"
+  checksum: 9a7a28e157324768f329fe652535c8a8a2cf778eae3ea87ac498dc0d6dd2d5f1c11184b7693550aa0bc97cbeb647d5b19a6c5ff994be0620d957d702d681c358
+  languageName: node
+  linkType: hard
+
 "scheduler@npm:^0.20.2":
   version: 0.20.2
   resolution: "scheduler@npm:0.20.2"
@@ -20746,9 +20728,9 @@ __metadata:
     ra-input-rich-text: "npm:^5.0.0-beta.0"
     ra-language-english: "npm:^5.0.0-beta.0"
     ra-language-french: "npm:^5.0.0-beta.0"
-    react: "npm:^18.0.0"
+    react: "npm:rc"
     react-admin: "npm:^5.0.0-beta.0"
-    react-dom: "npm:^18.2.0"
+    react-dom: "npm:rc"
     react-hook-form: "npm:^7.43.9"
     react-router: "npm:^6.22.0"
     react-router-dom: "npm:^6.22.0"
@@ -21912,9 +21894,9 @@ __metadata:
     "@types/react-dom": "npm:^18.2.16"
     "@vitejs/plugin-react": "npm:^4.2.1"
     ra-data-json-server: "npm:^5.0.0-alpha.0"
-    react: "npm:^18.2.0"
+    react: "npm:rc"
     react-admin: "npm:^5.0.0-alpha.0"
-    react-dom: "npm:^18.2.0"
+    react-dom: "npm:rc"
     typescript: "npm:^5.1.3"
     vite: "npm:^5.0.11"
   languageName: unknown

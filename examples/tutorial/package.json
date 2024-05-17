@@ -10,9 +10,9 @@
     },
     "dependencies": {
         "ra-data-json-server": "^5.0.0-alpha.0",
-        "react": "^18.2.0",
+        "react": "rc",
         "react-admin": "^5.0.0-alpha.0",
-        "react-dom": "^18.2.0"
+        "react-dom": "rc"
     },
     "devDependencies": {
         "@types/react": "^18.2.37",

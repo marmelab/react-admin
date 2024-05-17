@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { renderHook } from '@testing-library/react-hooks';
+import { renderHook } from '@testing-library/react';
 
 import { useExpanded } from './useExpanded';
 import { StoreSetter, StoreContextProvider, memoryStore } from '../../store';

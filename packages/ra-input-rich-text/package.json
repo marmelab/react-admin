@@ -42,8 +42,8 @@
         "@mui/material": "^5.15.15",
         "ra-core": "^4.0.0",
         "ra-ui-materialui": "^4.0.0",
-        "react": "^18.0.0",
-        "react-dom": "^18.0.0"
+        "react": "^18.0.0 || ^19.0.0",
+        "react-dom": "^18.0.0 || ^19.0.0"
     },
     "devDependencies": {
         "@mui/icons-material": "^5.15.15",
@@ -55,7 +55,7 @@
         "ra-core": "^5.0.0-beta.0",
         "ra-data-fakerest": "^5.0.0-beta.0",
         "ra-ui-materialui": "^5.0.0-beta.0",
-        "react": "^18.0.0",
+        "react": "rc",
         "react-dom": "^18.2.0",
         "react-hook-form": "^7.43.9",
         "rimraf": "^3.0.2",
