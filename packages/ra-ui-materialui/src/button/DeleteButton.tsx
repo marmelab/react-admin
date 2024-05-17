@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { ReactElement } from 'react';
-import PropTypes from 'prop-types';
 import { UseMutationOptions } from '@tanstack/react-query';
 import {
     RaRecord,
@@ -97,17 +96,3 @@ export interface DeleteButtonProps<
     redirect?: RedirectionSideEffect;
     resource?: string;
 }
-
-DeleteButton.propTypes = {
-    label: PropTypes.string,
-    mutationMode: PropTypes.oneOf(['pessimistic', 'optimistic', 'undoable']),
-    record: PropTypes.any,
-    // @ts-ignore
-    redirect: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.bool,
-        PropTypes.func,
-    ]),
-    resource: PropTypes.string,
-    icon: PropTypes.element,
-};

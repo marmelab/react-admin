@@ -2,7 +2,6 @@ import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { ReactElement } from 'react';
 import { createPortal } from 'react-dom';
-import PropTypes from 'prop-types';
 import { RaRecord, TitleComponent, warning } from 'ra-core';
 
 import { PageTitleConfigurable } from './PageTitleConfigurable';
@@ -45,18 +44,6 @@ export const Title = (props: TitleProps) => {
             )}
         </>
     );
-};
-
-export const TitlePropType = PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.element,
-]);
-
-Title.propTypes = {
-    defaultTitle: PropTypes.string,
-    className: PropTypes.string,
-    record: PropTypes.any,
-    title: TitlePropType,
 };
 
 export interface TitleProps {

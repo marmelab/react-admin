@@ -16,17 +16,19 @@ import fakeRestDataProvider from 'ra-data-fakerest';
 import defaultMessages from 'ra-language-english';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 
-import { Box, styled } from '@mui/material';
+import { Box, Checkbox, TableCell, TableRow, styled } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-import { TextField } from '../../field';
+import { FieldProps, TextField } from '../../field';
 import { BulkDeleteButton, BulkExportButton } from '../../button';
-import { Datagrid } from './Datagrid';
+import { Datagrid, DatagridProps } from './Datagrid';
 import { SimpleShowLayout } from '../../detail';
 import { AdminUI } from '../../AdminUI';
 import { AdminContext } from '../../AdminContext';
 import { List } from '../List';
 import { EditGuesser } from '../../detail';
+import { DatagridRowProps } from './DatagridRow';
+import DatagridBody, { DatagridBodyProps } from './DatagridBody';
 
 export default { title: 'ra-ui-materialui/list/Datagrid' };
 
@@ -490,4 +492,64 @@ export const FullApp = () => (
             />
         </AdminUI>
     </AdminContext>
+);
+
+const MyDatagridRow = ({
+    onToggleItem,
+    children,
+    selected,
+    selectable,
+}: DatagridRowProps) => {
+    const record = useRecordContext();
+    return record ? (
+        <TableRow
+            sx={{
+                '&:nth-of-type(odd)': {
+                    backgroundColor: theme.palette.action.hover,
+                },
+                '&:last-child td, &:last-child th': {
+                    border: 0,
+                },
+            }}
+        >
+            <TableCell padding="none">
+                {selectable && (
+                    <Checkbox
+                        checked={selected}
+                        onClick={event => {
+                            if (onToggleItem) {
+                                onToggleItem(record.id, event);
+                            }
+                        }}
+                    />
+                )}
+            </TableCell>
+            {React.Children.map(children, field =>
+                React.isValidElement<FieldProps>(field) &&
+                field.props.source ? (
+                    <TableCell key={`${record.id}-${field.props.source}`}>
+                        {field}
+                    </TableCell>
+                ) : null
+            )}
+        </TableRow>
+    ) : null;
+};
+
+const MyDatagridBody = (props: DatagridBodyProps) => (
+    <DatagridBody {...props} row={<MyDatagridRow />} />
+);
+const MyDatagrid = (props: DatagridProps) => (
+    <Datagrid {...props} body={<MyDatagridBody />} />
+);
+
+export const CustomDatagridRow = () => (
+    <Wrapper>
+        <MyDatagrid>
+            <TextField source="id" />
+            <TextField source="title" />
+            <TextField source="author" />
+            <TextField source="year" />
+        </MyDatagrid>
+    </Wrapper>
 );

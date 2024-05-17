@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { cloneElement, useMemo, useContext, ReactElement } from 'react';
-import PropTypes from 'prop-types';
 import {
     sanitizeListRestProps,
     Exporter,
@@ -88,18 +87,6 @@ export const ListActions = (props: ListActionsProps) => {
             hasCreate,
         ]
     );
-};
-
-ListActions.propTypes = {
-    className: PropTypes.string,
-    displayedFilters: PropTypes.object,
-    exporter: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
-    filters: PropTypes.element,
-    filterValues: PropTypes.object,
-    hasCreate: PropTypes.bool,
-    resource: PropTypes.string,
-    showFilter: PropTypes.func,
-    total: PropTypes.number,
 };
 
 export interface ListActionsProps extends ToolbarProps {

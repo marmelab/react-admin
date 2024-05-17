@@ -2,7 +2,6 @@ import * as React from 'react';
 import { ReactNode } from 'react';
 import { MenuList } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import PropTypes from 'prop-types';
 import lodashGet from 'lodash/get';
 import clsx from 'clsx';
 
@@ -65,11 +64,6 @@ export interface MenuProps {
     dense?: boolean;
     [key: string]: any;
 }
-
-Menu.propTypes = {
-    className: PropTypes.string,
-    dense: PropTypes.bool,
-};
 
 // re-export MenuItem components for convenience
 Menu.Item = MenuItemLink;

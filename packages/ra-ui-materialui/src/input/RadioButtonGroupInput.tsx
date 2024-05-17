@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
-import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import {
     FormControl,
@@ -211,25 +210,6 @@ export const RadioButtonGroupInput = (props: RadioButtonGroupInputProps) => {
             ) : null}
         </StyledFormControl>
     );
-};
-
-RadioButtonGroupInput.propTypes = {
-    choices: PropTypes.arrayOf(PropTypes.any),
-    label: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.bool,
-        PropTypes.element,
-    ]),
-    options: PropTypes.object,
-    optionText: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.func,
-        PropTypes.element,
-    ]),
-    optionValue: PropTypes.string,
-    resource: PropTypes.string,
-    source: PropTypes.string,
-    translateChoice: PropTypes.bool,
 };
 
 const sanitizeRestProps = ({

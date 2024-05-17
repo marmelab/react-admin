@@ -1,5 +1,4 @@
 import * as React from 'react';
-import PropTypes from 'prop-types';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import {
     useUpdateMany,
@@ -45,12 +44,6 @@ const ResetViewsButton = () => {
             <VisibilityOff />
         </Button>
     );
-};
-
-ResetViewsButton.propTypes = {
-    label: PropTypes.string,
-    resource: PropTypes.string.isRequired,
-    selectedIds: PropTypes.arrayOf(PropTypes.any).isRequired,
 };
 
 export default ResetViewsButton;

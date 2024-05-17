@@ -1,5 +1,4 @@
 import * as React from 'react';
-import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import TextField, { TextFieldProps } from '@mui/material/TextField';
 import { useInput, FieldTitle } from 'ra-core';
@@ -156,17 +155,6 @@ export const NumberInput = ({
             {...sanitizeInputRestProps(rest)}
         />
     );
-};
-
-NumberInput.propTypes = {
-    label: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.bool,
-        PropTypes.element,
-    ]),
-    resource: PropTypes.string,
-    source: PropTypes.string,
-    step: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 };
 
 export interface NumberInputProps

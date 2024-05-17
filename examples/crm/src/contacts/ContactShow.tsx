@@ -34,7 +34,7 @@ const ContactShowContent = () => {
                                 <Typography variant="h5">
                                     {record.first_name} {record.last_name}
                                 </Typography>
-                                <Typography variant="body2">
+                                <Typography variant="body2" component="div">
                                     {record.title} at{' '}
                                     <ReferenceField
                                         source="company_id"

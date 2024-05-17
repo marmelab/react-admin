@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { Children, cloneElement, ReactElement, isValidElement } from 'react';
-import PropTypes from 'prop-types';
 import Tabs, { TabsProps } from '@mui/material/Tabs';
 import { useParams } from 'react-router-dom';
 import { TabProps } from './Tab';
@@ -48,7 +47,3 @@ export interface TabbedShowLayoutTabsProps extends TabsProps {
     children?: ReactElement<TabProps>;
     syncWithLocation?: boolean;
 }
-
-TabbedShowLayoutTabs.propTypes = {
-    children: PropTypes.node,
-};

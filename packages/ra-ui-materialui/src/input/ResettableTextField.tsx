@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { forwardRef, useCallback } from 'react';
 import { styled } from '@mui/material/styles';
-import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import {
     InputAdornment,
@@ -177,17 +176,6 @@ ResettableTextField.displayName = 'ResettableTextField';
 
 const handleMouseDownClearButton = event => {
     event.preventDefault();
-};
-
-ResettableTextField.propTypes = {
-    clearAlwaysVisible: PropTypes.bool,
-    disabled: PropTypes.bool,
-    InputProps: PropTypes.object,
-    onBlur: PropTypes.func,
-    onChange: PropTypes.func.isRequired,
-    onFocus: PropTypes.func,
-    resettable: PropTypes.bool,
-    value: PropTypes.any,
 };
 
 interface Props {

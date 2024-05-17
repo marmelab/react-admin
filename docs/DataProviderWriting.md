@@ -450,9 +450,9 @@ A good way to test your data provider is to build a react-admin app with compone
 | `getManyReference` | [`<ReferenceManyField>`](./ReferenceManyField.md), [`<ReferenceOneField>`](./ReferenceOneField.md), [`<ReferenceManyInput>`](./ReferenceManyInput.md), [`<ReferenceOneInput>`](./ReferenceOneInput.md) |
 | `create`           | [`<Create>`](./Create.md), [`<CreateBase>`](./CreateBase.md), [`<EditableDatagrid>`](./EditableDatagrid.md), [`<CreateInDialogButton>`](./CreateInDialogButton.md) |
 | `update`           | [`<Edit>`](./Edit.md), [`<EditGuesser>`](./EditGuesser.md), [`<EditBase>`](./EditBase.md), [`<EditableDatagrid>`](./EditableDatagrid.md), [`<EditInDialogButton>`](./EditInDialogButton.md), [`<UpdateButton>`](./UpdateButton.md) |
-| `updateMany`       | [`<BulkUpdateButton>`](./BulkUpdateButton.md) |
-| `delete`           | [`<DeleteButton>`](./DeleteButton.md), [`<EditableDatagrid>`](./EditableDatagrid.md) |
-| `deleteMany`       | [`<BulkDeleteButton>`](./BulkDeleteButton.md) |
+| `updateMany`       | [`<BulkUpdateButton>`](./Buttons.md#bulkupdatebutton) |
+| `delete`           | [`<DeleteButton>`](./Buttons.md#deletebutton), [`<EditableDatagrid>`](./EditableDatagrid.md) |
+| `deleteMany`       | [`<BulkDeleteButton>`](./Buttons.md#bulkdeletebutton) |
 
 A simple react-admin app with one `<Resource>` using [guessers](./Features.md#guessers--scaffolding) for the `list`, `edit`, and `show` pages is a good start.
 

@@ -3,7 +3,6 @@ import { isElement } from 'react-is';
 import { styled } from '@mui/material/styles';
 import type { SxProps } from '@mui/material';
 import { isValidElement, ReactNode, ReactElement } from 'react';
-import PropTypes from 'prop-types';
 import {
     Avatar,
     List,
@@ -234,36 +233,6 @@ export const SimpleList = <RecordType extends RaRecord = any>(
             ))}
         </Root>
     );
-};
-
-SimpleList.propTypes = {
-    className: PropTypes.string,
-    leftAvatar: PropTypes.func,
-    leftIcon: PropTypes.func,
-    linkType: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.bool,
-        PropTypes.func,
-    ]),
-    primaryText: PropTypes.oneOfType([
-        PropTypes.func,
-        PropTypes.element,
-        PropTypes.string,
-    ]),
-    rightAvatar: PropTypes.func,
-    rightIcon: PropTypes.func,
-    secondaryText: PropTypes.oneOfType([
-        PropTypes.func,
-        PropTypes.element,
-        PropTypes.string,
-    ]),
-    tertiaryText: PropTypes.oneOfType([
-        PropTypes.func,
-        PropTypes.element,
-        PropTypes.string,
-    ]),
-    rowStyle: PropTypes.func,
-    rowSx: PropTypes.func,
 };
 
 export type FunctionToElement<RecordType extends RaRecord = any> = (

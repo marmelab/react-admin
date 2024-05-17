@@ -203,7 +203,7 @@ The `<EditableDatagrid>` component renders the `editForm` elements in a `<table>
 
 ## `mutationMode`
 
-Use the `mutationMode` prop to specify the [mutation mode](./Edit.html#mutationmode) for the edit and delete actions. By default, the `<EditableDatagrid>` uses the `undoable` mutation mode. You can change it to `optimistic` or `pessimistic` if you prefer.
+Use the `mutationMode` prop to specify the [mutation mode](./Edit.md#mutationmode) for the edit and delete actions. By default, the `<EditableDatagrid>` uses the `undoable` mutation mode. You can change it to `optimistic` or `pessimistic` if you prefer.
 
 ```jsx
 <EditableDatagrid mutationMode="pessimistic">

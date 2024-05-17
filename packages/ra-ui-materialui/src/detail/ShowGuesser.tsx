@@ -91,5 +91,3 @@ ${inferredChild.getRepresentation()}
 
     return <ShowView {...rest}>{child}</ShowView>;
 };
-
-ShowViewGuesser.propTypes = ShowView.propTypes;

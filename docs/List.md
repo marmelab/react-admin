@@ -950,7 +950,7 @@ The title can be either a string or a React element.
 
 ## `sx`: CSS API
 
-The `<List>` component accepts the usual `className` prop but you can override many class names injected to the inner components by React-admin thanks to the `sx` property (see [the `sx` documentation](./SX.md) for syntax and examples). This property accepts the following subclasses:
+The `<List>` component accepts the usual `className` prop, but you can override many class names injected to the inner components by React-admin thanks to the `sx` property (see [the `sx` documentation](./SX.md) for syntax and examples). This property accepts the following subclasses:
 
 | Rule name             | Description                                                   |
 |-----------------------|---------------------------------------------------------------|
@@ -982,7 +982,7 @@ const PostList = () => (
 
 ## Scaffolding a List page
 
-You can use [`<ListGuesser>`](./ListGuesser.md) to quickly bootstrap an List view on top of an existing API, without adding the fields one by one.
+You can use [`<ListGuesser>`](./ListGuesser.md) to quickly bootstrap a List view on top of an existing API, without adding the fields one by one.
 
 ```jsx
 // in src/App.js
@@ -1079,7 +1079,7 @@ const PostList = () => (
 
 ## Rendering An Empty List
 
-When there is no data, react-admin displays a special page inviting the user to create the first record. This page can be customized using [the `empty` prop](#empty-empty-page-component).
+When there is no data, react-admin displays a special page inviting the user to create the first record. This page can be customized using [the `empty` prop](#empty).
 
 You can set the `empty` props value to `false` to render an empty list instead.
 

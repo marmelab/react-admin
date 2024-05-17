@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { ReactElement, ReactNode } from 'react';
-import PropTypes from 'prop-types';
 import { Link, useLocation } from 'react-router-dom';
 import { Tab as MuiTab, TabProps as MuiTabProps } from '@mui/material';
 import clsx from 'clsx';
@@ -69,22 +68,3 @@ interface FormTabHeaderProps extends Omit<MuiTabProps, 'children'> {
     value: string | number;
     variant?: 'standard' | 'outlined' | 'filled';
 }
-
-FormTabHeader.propTypes = {
-    className: PropTypes.string,
-    contentClassName: PropTypes.string,
-    count: PropTypes.node,
-    children: PropTypes.node,
-    intent: PropTypes.oneOf(['header', 'content']),
-    hidden: PropTypes.bool,
-    icon: PropTypes.element,
-    label: PropTypes.oneOfType([PropTypes.string, PropTypes.element])
-        .isRequired,
-    margin: PropTypes.oneOf(['none', 'dense', 'normal']),
-    path: PropTypes.string,
-    // @ts-ignore
-    record: PropTypes.object,
-    resource: PropTypes.string,
-    value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    variant: PropTypes.oneOf(['standard', 'outlined', 'filled']),
-};

@@ -242,7 +242,7 @@ Check [the useMutation documentation](https://tanstack.com/query/v5/docs/react/r
 - `retryDelay`,
 - `throwOnError`.
 
-In addition to the `useMutation` options, react-admin mutation hooks also accept the `mutationMode` option, letting you switch between `pessimistic` rendering, `optimistic` rendering and `undoable` modes. By default, side effect callbacks (`onSuccess`, `onError`, `onSettled`) are "pessimistic", ie. react-admin executes them after the dataProvider responds. You can switch to "optimistic" to execute them right when the dataProvider is called, without waiting for the response.
+In addition to the `useMutation` options, react-admin mutation hooks also accept the `mutationMode` option, letting you switch between `pessimistic` rendering, `optimistic` rendering and `undoable` modes. By default, side effect callbacks (`onSuccess`, `onError`, `onSettled`) are "pessimistic", i.e. react-admin executes them after the dataProvider responds. You can switch to "optimistic" to execute them right when the dataProvider is called, without waiting for the response.
 
 ```jsx
 const [update, { data, isPending, error }] = useUpdate(
@@ -273,7 +273,7 @@ const ApproveButton = () => {
     return <UpdateButton
         label="Approve"
         data={{ isApproved: true }}
-        mutationOptions={
+        mutationOptions={{
             onSuccess: (data) => {
                 // success side effects go here
                 redirect('/comments');
@@ -283,7 +283,7 @@ const ApproveButton = () => {
                 // failure side effects go here 
                 notify(`Comment approval error: ${error.message}`, { type: 'error' });
             },
-        }
+        }}
     />;
 };
 ```

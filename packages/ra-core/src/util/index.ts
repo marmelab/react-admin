@@ -1,6 +1,5 @@
 import escapePath from './escapePath';
 import FieldTitle, { FieldTitleProps } from './FieldTitle';
-import ComponentPropType from './ComponentPropType';
 import removeEmpty from './removeEmpty';
 import removeKey from './removeKey';
 import Ready from './Ready';
@@ -15,7 +14,6 @@ export * from './useFieldValue';
 export {
     escapePath,
     FieldTitle,
-    ComponentPropType,
     Ready,
     removeEmpty,
     removeKey,

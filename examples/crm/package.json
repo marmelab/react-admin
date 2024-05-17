@@ -9,11 +9,10 @@
         "@mui/material": "^5.15.15",
         "@nivo/bar": "^0.80.0",
         "@nivo/core": "^0.80.0",
-        "clsx": "^1.1.1",
+        "clsx": "^2.1.1",
         "date-fns": "^3.6.0",
         "faker": "~5.4.0",
         "lodash": "~4.17.5",
-        "prop-types": "^15.8.1",
         "ra-data-fakerest": "^5.0.0-alpha.0",
         "react": "^18.0.0",
         "react-admin": "^5.0.0-alpha.0",
@@ -41,6 +40,7 @@
     "scripts": {
         "dev": "vite",
         "build": "tsc && vite build",
+        "type-check": "tsc",
         "preview": "vite preview"
     }
 }

@@ -1,11 +1,10 @@
 import * as React from 'react';
 import { useMemo, ReactNode } from 'react';
 import { useRecordContext } from 'ra-core';
-import PropTypes from 'prop-types';
 import Typography, { TypographyProps } from '@mui/material/Typography';
 
 import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
-import { FieldProps, fieldPropTypes } from './types';
+import { FieldProps } from './types';
 
 /**
  * Field using a render function
@@ -37,13 +36,6 @@ export const FunctionField = <RecordType extends Record<string, any> = any>(
             ) : null,
         [className, record, source, render, rest]
     );
-};
-
-FunctionField.propTypes = {
-    // @ts-ignore
-    ...Typography.propTypes,
-    ...fieldPropTypes,
-    render: PropTypes.func.isRequired,
 };
 
 export interface FunctionFieldProps<

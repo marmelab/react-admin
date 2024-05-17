@@ -1,5 +1,4 @@
 import * as React from 'react';
-import PropTypes from 'prop-types';
 import { ToolbarProps } from '@mui/material';
 import { useResourceDefinition } from 'ra-core';
 
@@ -56,12 +55,3 @@ export interface CreateActionsProps extends ToolbarProps {
     hasShow?: boolean;
     resource?: string;
 }
-
-CreateActions.propTypes = {
-    className: PropTypes.string,
-    hasCreate: PropTypes.bool,
-    hasEdit: PropTypes.bool,
-    hasShow: PropTypes.bool,
-    hasList: PropTypes.bool,
-    resource: PropTypes.string,
-};

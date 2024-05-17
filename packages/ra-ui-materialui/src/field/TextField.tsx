@@ -4,7 +4,7 @@ import Typography, { TypographyProps } from '@mui/material/Typography';
 import { useFieldValue, useTranslate } from 'ra-core';
 
 import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
-import { FieldProps, fieldPropTypes } from './types';
+import { FieldProps } from './types';
 import { genericMemo } from './genericMemo';
 
 const TextFieldImpl = <
@@ -29,12 +29,6 @@ const TextFieldImpl = <
                   (emptyText ? translate(emptyText, { _: emptyText }) : null)}
         </Typography>
     );
-};
-
-TextFieldImpl.propTypes = {
-    // @ts-ignore
-    ...Typography.propTypes,
-    ...fieldPropTypes,
 };
 
 // what? TypeScript loses the displayName if we don't set it explicitly

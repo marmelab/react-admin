@@ -1,10 +1,9 @@
 import * as React from 'react';
-import PropTypes from 'prop-types';
 import Typography, { TypographyProps } from '@mui/material/Typography';
 import { useFieldValue, useTranslate } from 'ra-core';
 
 import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
-import { FieldProps, fieldPropTypes } from './types';
+import { FieldProps } from './types';
 import { genericMemo } from './genericMemo';
 
 /**
@@ -86,17 +85,6 @@ const NumberFieldImpl = <
 
 const defaultTransform = value =>
     value && typeof value === 'string' && !isNaN(value as any) ? +value : value;
-
-NumberFieldImpl.propTypes = {
-    // @ts-ignore
-    ...Typography.propTypes,
-    ...fieldPropTypes,
-    locales: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.arrayOf(PropTypes.string),
-    ]),
-    options: PropTypes.object,
-};
 
 // what? TypeScript loses the displayName if we don't set it explicitly
 NumberFieldImpl.displayName = 'NumberFieldImpl';

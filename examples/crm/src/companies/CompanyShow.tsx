@@ -152,7 +152,7 @@ const ContactsIterator = () => {
     const now = Date.now();
     return (
         <Box>
-            <List>
+            <List dense>
                 {contacts.map(contact => (
                     <RecordContextProvider key={contact.id} value={contact}>
                         <ListItem
@@ -217,7 +217,7 @@ const DealsIterator = () => {
     const now = Date.now();
     return (
         <Box>
-            <List>
+            <List dense>
                 {deals.map(deal => (
                     <ListItem
                         button

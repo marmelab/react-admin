@@ -1,5 +1,4 @@
 import * as React from 'react';
-import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { useInput, FieldTitle } from 'ra-core';
 
@@ -86,17 +85,6 @@ export const TextInput = (props: TextInputProps) => {
             {...sanitizeInputRestProps(rest)}
         />
     );
-};
-
-TextInput.propTypes = {
-    className: PropTypes.string,
-    label: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.bool,
-        PropTypes.element,
-    ]),
-    resource: PropTypes.string,
-    source: PropTypes.string,
 };
 
 export type TextInputProps = CommonInputProps &

@@ -1,5 +1,4 @@
 import React, { Fragment, ReactEventHandler, ReactElement } from 'react';
-import PropTypes from 'prop-types';
 import ActionDelete from '@mui/icons-material/Delete';
 import clsx from 'clsx';
 
@@ -118,21 +117,3 @@ export interface DeleteWithConfirmButtonProps<
     redirect?: RedirectionSideEffect;
     resource?: string;
 }
-
-DeleteWithConfirmButton.propTypes = {
-    className: PropTypes.string,
-    confirmTitle: PropTypes.node,
-    confirmContent: PropTypes.node,
-    confirmColor: PropTypes.string,
-    label: PropTypes.string,
-    mutationMode: PropTypes.oneOf(['pessimistic', 'optimistic', 'undoable']),
-    record: PropTypes.any,
-    redirect: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.bool,
-        PropTypes.func,
-    ]),
-    resource: PropTypes.string,
-    icon: PropTypes.element,
-    translateOptions: PropTypes.object,
-};

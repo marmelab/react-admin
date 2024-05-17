@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { memo, ReactElement } from 'react';
-import PropTypes from 'prop-types';
 import Queue from '@mui/icons-material/Queue';
 import { Link } from 'react-router-dom';
 import queryString from 'query-string';
@@ -62,11 +61,5 @@ interface Props {
 }
 
 export type CloneButtonProps = Props & Omit<ButtonProps<typeof Link>, 'to'>;
-
-CloneButton.propTypes = {
-    icon: PropTypes.element,
-    label: PropTypes.string,
-    record: PropTypes.any,
-};
 
 export default memo(CloneButton);

@@ -7,7 +7,6 @@ import {
     HtmlHTMLAttributes,
     useContext,
 } from 'react';
-import PropTypes from 'prop-types';
 import {
     Menu,
     MenuItem,
@@ -259,14 +258,6 @@ const sanitizeRestProps = ({
     showFilter = null,
     ...rest
 }) => rest;
-/* eslint-enable @typescript-eslint/no-unused-vars */
-
-FilterButton.propTypes = {
-    className: PropTypes.string,
-    disableSaveQuery: PropTypes.bool,
-    filters: PropTypes.arrayOf(PropTypes.node),
-    resource: PropTypes.string,
-};
 
 export interface FilterButtonProps
     extends HtmlHTMLAttributes<HTMLDivElement>,

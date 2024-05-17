@@ -1,13 +1,8 @@
 import * as React from 'react';
 import { ReactElement, ElementType } from 'react';
 import { Card, CardContent, styled, SxProps } from '@mui/material';
-import PropTypes from 'prop-types';
 import clsx from 'clsx';
-import {
-    ComponentPropType,
-    useEditContext,
-    useResourceDefinition,
-} from 'ra-core';
+import { useEditContext, useResourceDefinition } from 'ra-core';
 
 import { EditActions } from './EditActions';
 import { Title } from '../layout';
@@ -63,19 +58,6 @@ export interface EditViewProps
     title?: string | ReactElement;
     sx?: SxProps;
 }
-
-EditView.propTypes = {
-    actions: PropTypes.oneOfType([PropTypes.element, PropTypes.bool]),
-    aside: PropTypes.element,
-    className: PropTypes.string,
-    component: ComponentPropType,
-    defaultTitle: PropTypes.any,
-    hasList: PropTypes.bool,
-    hasShow: PropTypes.bool,
-    record: PropTypes.object,
-    save: PropTypes.func,
-    title: PropTypes.node,
-};
 
 const PREFIX = 'RaEdit';
 

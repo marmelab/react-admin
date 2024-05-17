@@ -1,13 +1,12 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import { Box, Typography } from '@mui/material';
-import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import { useFieldValue, useTranslate } from 'ra-core';
 import { Call, Objects } from 'hotscript';
 
 import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
-import { FieldProps, fieldPropTypes } from './types';
+import { FieldProps } from './types';
 import { SxProps } from '@mui/system';
 
 export const ImageField = <
@@ -84,12 +83,6 @@ export const ImageField = <
 
 // What? TypeScript loses the displayName if we don't set it explicitly
 ImageField.displayName = 'ImageField';
-
-ImageField.propTypes = {
-    ...fieldPropTypes,
-    src: PropTypes.string,
-    title: PropTypes.string,
-};
 
 const PREFIX = 'RaImageField';
 

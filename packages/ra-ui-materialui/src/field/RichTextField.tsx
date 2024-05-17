@@ -1,11 +1,10 @@
 import * as React from 'react';
-import PropTypes from 'prop-types';
 import Typography, { TypographyProps } from '@mui/material/Typography';
 import { useFieldValue, useTranslate } from 'ra-core';
 import purify from 'dompurify';
 
 import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
-import { FieldProps, fieldPropTypes } from './types';
+import { FieldProps } from './types';
 import { genericMemo } from './genericMemo';
 
 /**
@@ -58,14 +57,6 @@ const RichTextFieldImpl = <
             )}
         </Typography>
     );
-};
-
-RichTextFieldImpl.propTypes = {
-    // @ts-ignore
-    ...Typography.propTypes,
-    ...fieldPropTypes,
-    stripTags: PropTypes.bool,
-    purifyOptions: PropTypes.any,
 };
 RichTextFieldImpl.displayName = 'RichTextFieldImpl';
 

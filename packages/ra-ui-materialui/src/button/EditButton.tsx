@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { ReactElement } from 'react';
-import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { styled } from '@mui/material/styles';
 import ContentCreate from '@mui/icons-material/Create';
@@ -78,13 +77,6 @@ export type EditButtonProps<RecordType extends RaRecord = any> = Props<
     RecordType
 > &
     ButtonProps;
-
-EditButton.propTypes = {
-    icon: PropTypes.element,
-    label: PropTypes.string,
-    record: PropTypes.any,
-    scrollToTop: PropTypes.bool,
-};
 
 const PREFIX = 'RaEditButton';
 

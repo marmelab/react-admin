@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
-import PropTypes from 'prop-types';
 import TextField, { TextFieldProps } from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
 import clsx from 'clsx';
@@ -86,20 +85,6 @@ export const NullableBooleanInput = (props: NullableBooleanInputProps) => {
             <MenuItem value="true">{translate(trueLabel)}</MenuItem>
         </StyledTextField>
     );
-};
-
-NullableBooleanInput.propTypes = {
-    label: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.bool,
-        PropTypes.element,
-    ]),
-    options: PropTypes.object,
-    resource: PropTypes.string,
-    source: PropTypes.string,
-    nullLabel: PropTypes.string,
-    falseLabel: PropTypes.string,
-    trueLabel: PropTypes.string,
 };
 
 const PREFIX = 'RaNullableBooleanInput';

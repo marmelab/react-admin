@@ -633,7 +633,7 @@ React-admin offers predefined layouts for you to use:
     </svg>
 </figure>
 
-- [`<Layout>`](./Layout.md): The default layout. It renders a top app bar and the navigation menu in a side bar.
+- [`<Layout>`](./Layout.md): The default layout. It renders a top app bar and the navigation menu in a sidebar.
 - [`<ContainerLayout>`](./ContainerLayout.md) is centered layout with horizontal navigation.
 - [`<SolarLayout>`](./SolarLayout.md) is a layout with a small icon sidebar, no top bar, and a full-width content area.
 
@@ -790,7 +790,7 @@ React-admin uses [React Query](https://tanstack.com/query/v5/) to fetch, cache a
 * Query results that are no longer used in the current page are labeled as "inactive" and remain in the cache in case they are used again at a later time.
 * By default, "inactive" queries are garbage collected after 5 minutes.
 * Queries that fail are silently retried 3 times, with exponential backoff delay before capturing and displaying an error to the UI.
-* Query results by default are structurally shared to detect if data have actually changed and if not, the data reference remains unchanged to better help with value stabilization with regards to `useMemo` and `useCallback`. 
+* Query results by default are structurally shared to detect if data have actually changed and if not, the data reference remains unchanged to better help with value stabilization in regard to `useMemo` and `useCallback`. 
 
 If you want to override the react-query default query and mutation default options, or use a specific client or mutation cache, you can create your own `QueryClient` instance and pass it to the `<Admin queryClient>` prop:
 

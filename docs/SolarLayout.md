@@ -369,7 +369,7 @@ By default, just like the classic react-admin menu, it contains menu items for e
 | `userMenu`      | Optional | Component |         | Allows to customize the user menu                            |
 | `sx`            | Optional | `SxProps` |         | Style overrides, powered by MUI System                       |
 
-It also accept the props of its root `HTMLDivElement`.
+It also accepts the props of its root `HTMLDivElement`.
 
 In addition, the `SolarMenu` object provides shortcuts to its items components:
 

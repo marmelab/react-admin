@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { ReactElement, ReactNode } from 'react';
-import PropTypes from 'prop-types';
 import { FormGroupContextProvider } from 'ra-core';
 import { Stack, StackProps, TabProps as MuiTabProps } from '@mui/material';
 
@@ -59,22 +58,6 @@ export const FormTab = (props: FormTabProps) => {
     );
 
     return intent === 'header' ? renderHeader() : renderContent();
-};
-
-FormTab.propTypes = {
-    className: PropTypes.string,
-    contentClassName: PropTypes.string,
-    children: PropTypes.node,
-    count: PropTypes.node,
-    intent: PropTypes.oneOf(['header', 'content']),
-    hidden: PropTypes.bool,
-    icon: PropTypes.element,
-    label: PropTypes.oneOfType([PropTypes.string, PropTypes.element])
-        .isRequired,
-    path: PropTypes.string,
-    // @ts-ignore
-    resource: PropTypes.string,
-    value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 };
 
 export interface FormTabProps

@@ -17,11 +17,11 @@ React-admin v5 mostly focuses on removing deprecated features and upgrading depe
     - [Links are now underlined by default](#links-are-now-underlined-by-default)
     - [Dark Theme Is Available By Default](#dark-theme-is-available-by-default)
 - [Data Provider](#data-provider)
-    - [ra-data-graphql And ra-data-graphql-simple No Longer Return A Promise](#ra-data-graphql-and-ra-data-graphql-simple-no-longer-return-a-promise)
+    - [`ra-data-graphql` And `ra-data-graphql-simple` No Longer Return A Promise](#ra-data-graphql-and-ra-data-graphql-simple-no-longer-return-a-promise)
 - [Application Root & Layout](#application-root--layout)
-    - [<Admin menu> Is No Longer Supported](#admin-menu-is-no-longer-supported)
-    - [<Admin history> Prop Was Removed](#admin-history-prop-was-removed)
-    - [<HistoryRouter> Was Removed](#historyrouter-was-removed)
+    - [`<Admin menu>` Is No Longer Supported](#admin-menu-is-no-longer-supported)
+    - [`<Admin history>` Prop Was Removed](#admin-history-prop-was-removed)
+    - [`<HistoryRouter>` Was Removed](#historyrouter-was-removed)
     - [Custom Layout No Longer Receives Props](#custom-layout-no-longer-receives-props)
     - [Custom App Bars No Longer Receive Props](#custom-app-bars-no-longer-receive-props)
     - [Custom Menu No Longer Receive Props](#custom-menu-no-longer-receive-props)
@@ -29,24 +29,24 @@ React-admin v5 mostly focuses on removing deprecated features and upgrading depe
     - [Custom Catch All No Longer Receives Title](#custom-catch-all-no-longer-receives-title)
 - [List Components](#list-components)
     - [List Components Can No Longer Be Used In Standalone](#list-components-can-no-longer-be-used-in-standalone)
-    - [<List hasCreate> Is No Longer Supported](#list-hascreate-is-no-longer-supported)
-    - [<Datagrid rowClick> is no longer false by default](#datagrid-rowclick-is-no-longer-false-by-default)
-    - [<Datagrid expand> Components No Longer Receive Any Props](#datagrid-expand-components-no-longer-receive-any-props)
+    - [`<List hasCreate>` Is No Longer Supported](#list-hascreate-is-no-longer-supported)
+    - [`<Datagrid rowClick>` is no longer false by default](#datagrid-rowclick-is-no-longer-false-by-default)
+    - [`<Datagrid expand>` Components No Longer Receive Any Props](#datagrid-expand-components-no-longer-receive-any-props)
     - [setFilters Is No Longer Debounced By Default](#setfilters-is-no-longer-debounced-by-default)
     - [Updates to bulkActionButtons Syntax](#updates-to-bulkactionbuttons-syntax)
-    - [<PaginationLimit> Component Was Removed](#paginationlimit-component-was-removed)
+    - [`<PaginationLimit>` Component Was Removed](#paginationlimit-component-was-removed)
 - [Show and Edit Pages](#show-and-edit-pages)
     - [Custom Edit or Show Actions No Longer Receive Any Props](#custom-edit-or-show-actions-no-longer-receive-any-props)
     - [Inputs default ids are auto-generated](#inputs-default-ids-are-auto-generated)
-    - [<SimpleFormIterator> No Longer Clones Its Buttons](#simpleformiterator-no-longer-clones-its-buttons)
-    - [<SimpleFormIterator> no longer clones its children](#simpleformiterator-no-longer-clones-its-children)
-    - [<FormDataConsumer> no longer passes a getSource function](#formdataconsumer-no-longer-passes-a-getsource-function)
-    - [warnWhenUnsavedChanges Changes](#warnwhenunsavedchanges-changes)
+    - [`<SimpleFormIterator>` No Longer Clones Its Buttons](#simpleformiterator-no-longer-clones-its-buttons)
+    - [`<SimpleFormIterator>` no longer clones its children](#simpleformiterator-no-longer-clones-its-children)
+    - [`<FormDataConsumer>` no longer passes a getSource function](#formdataconsumer-no-longer-passes-a-getsource-function)
+    - [`warnWhenUnsavedChanges` Changes](#warnwhenunsavedchanges-changes)
     - [Inputs No Longer Require To Be Touched To Display A Validation Error](#inputs-no-longer-require-to-be-touched-to-display-a-validation-error)
-    - [<InputHelperText touched> Prop Was Removed](#inputhelpertext-touched-prop-was-removed)
+    - [`<InputHelperText touched>` Prop Was Removed](#inputhelpertext-touched-prop-was-removed)
 - [TypeScript](#typescript)
     - [Fields Components Requires The source Prop](#fields-components-requires-the-source-prop)
-    - [useRecordContext Returns undefined When No Record Is Available](#userecordcontext-returns-undefined-when-no-record-is-available)
+    - [`useRecordContext` Returns undefined When No Record Is Available](#userecordcontext-returns-undefined-when-no-record-is-available)
     - [Page Contexts Are Now Types Instead of Interfaces](#page-contexts-are-now-types-instead-of-interfaces)
     - [Stronger Types For Page Contexts](#stronger-types-for-page-contexts)
     - [EditProps and CreateProps now expect a children prop](#editprops-and-createprops-now-expect-a-children-prop)
@@ -57,19 +57,19 @@ React-admin v5 mostly focuses on removing deprecated features and upgrading depe
     - [formClassName Prop Of FieldProps Type Was Removed](#formclassname-prop-of-fieldprops-type-was-removed)
     - [formClassName Prop Of CommonInputProps Type Was Removed](#formclassname-prop-of-commoninputprops-type-was-removed)
 - [Authentication](#authentication)
-    - [useCheckAuth No Longer Accepts A disableNotification Param](#usecheckauth-no-longer-accepts-a-disablenotification-param)
-    - [useLogoutIfAccessDenied No Longer Accepts A disableNotification Param](#uselogoutifaccessdenied-no-longer-accepts-a-disablenotification-param)
-    - [usePermissionsOptimized Hook Was Removed](#usepermissionsoptimized-hook-was-removed)
+    - [`useCheckAuth` No Longer Accepts A disableNotification Param](#usecheckauth-no-longer-accepts-a-disablenotification-param)
+    - [`useLogoutIfAccessDenied` No Longer Accepts A disableNotification Param](#uselogoutifaccessdenied-no-longer-accepts-a-disablenotification-param)
+    - [`usePermissionsOptimized` Hook Was Removed](#usepermissionsoptimized-hook-was-removed)
 - [Routing](#routing)
-    - [linkToRecord Helper Was Removed](#linktorecord-helper-was-removed)
-    - [resolveRedirectTo Helper Was Removed](#resolveredirectto-helper-was-removed)
+    - [`linkToRecord` Helper Was Removed](#linktorecord-helper-was-removed)
+    - [`resolveRedirectTo` Helper Was Removed](#resolveredirectto-helper-was-removed)
 - [Theming](#theming)
-    - [useTheme no longer accepts a theme object as an optional argument](#usetheme-no-longer-accepts-a-theme-object-as-an-optional-argument)
-    - [ToggleThemeButton no longer accepts themes as props](#togglethemebutton-no-longer-accepts-themes-as-props)
-    - [<ThemeProvider theme> Is No Longer Supported](#themeprovider-theme-is-no-longer-supported)
+    - [`useTheme` no longer accepts a theme object as an optional argument](#usetheme-no-longer-accepts-a-theme-object-as-an-optional-argument)
+    - [`<ToggleThemeButton>` no longer accepts themes as props](#togglethemebutton-no-longer-accepts-themes-as-props)
+    - [`<ThemeProvider theme>` Is No Longer Supported](#themeprovider-theme-is-no-longer-supported)
 - [Misc](#misc)
-    - [data-generator-retail commands Have Been Renamed to orders](#data-generator-retail-commands-have-been-renamed-to-orders)
-- [Upgrading to v4](#upgrading-to-v4)
+    - [`data-generator-retail` commands Have Been Renamed to orders](#data-generator-retail-commands-have-been-renamed-to-orders)
+    - [Support For PropTypes Was Removed](#support-for-proptypes-was-removed)
 
 ## IE11 Is No Longer Supported
 
@@ -222,6 +222,10 @@ If you use these dependencies in your own application, make sure you use similar
 
 In the default theme, all inputs now have full width. This makes forms better looking by default, and facilitates custom form layouts as you can nest inputs under `<Grid>`.
 
+| Before | After | 
+| ------| ------|
+| <img width="606" alt="Capture d’écran 2024-03-08 à 22 47 03" src="https://github.com/marmelab/react-admin/assets/99944/b9ff3b48-55ff-4d70-b154-da074f99f88b"> | <img width="580" alt="Capture d’écran 2024-03-08 à 22 46 24" src="https://github.com/marmelab/react-admin/assets/99944/3c0e83da-3f3f-491b-999d-17fdec09e05e"> |
+
 If this breaks your existing form layouts, you can revert to the previous style by resetting the `fullWidth` default prop in the application theme. To do so:
 
 - If you didn't use a custom theme, create one based on the default theme:
@@ -269,6 +273,11 @@ const myTheme = {
 ### Links are now underlined by default
 
 In the default theme, links are now underlined by default.
+
+| Before | After |
+|-------|-------|
+| ![localhost_8000_ (1)](https://github.com/marmelab/react-admin/assets/99944/5501a2bc-5cc8-47c9-b267-2b80b672cf1a) | ![localhost_8000_](https://github.com/marmelab/react-admin/assets/99944/525dc9f5-0b27-4fd0-b3c7-fe9f9af089b1) |
+
 
 If you use the `<Link>` component from `react-admin`, and you want to remove the underline, set the `underline` prop to `none`:
 
@@ -318,6 +327,19 @@ If you don't need the dark mode feature, you'll have to explicitly disable it:
 </Admin>
 ```
 
+### `<FileInput>` And `<ImageInput>` `accept` prop has changed
+
+As we updated [react-dropzone](https://www.npmjs.com/package/react-dropzone) from v12 to v14, the `accept` prop of the `<FileInput>` and `<ImageInput>` components has changed:
+
+{% raw %}
+```diff
+-<FileInput source="attachments" accept="application/pdf">
++<FileInput source="attachments" accept={{ 'application/pdf': ['.pdf'] }}>
+```
+{% endraw %}
+
+See [react-dropzone documentation](https://react-dropzone.js.org/#section-accepting-specific-file-types) for more details.
+
 ## Data Provider
 
 ### `ra-data-graphql` And `ra-data-graphql-simple` No Longer Return A Promise
@@ -356,7 +378,7 @@ const App = () => {
 export default App;
 ```
 
-## Application Root & Layout 
+## Application Root & Layout
 
 ### `<Admin menu>` Is No Longer Supported
 
@@ -759,11 +781,56 @@ Besides, the buttons passed as `bulkActionButtons` no longer receive any prop. I
 
 The deprecated `<PaginationLimit>` component was removed.
 
+### `<DatagridBody>` No Longer Provides `record` Prop To `<DatagridRow>`
+
+The `<DatagridBody>` component no longer provides a `record` prop to its `<DatagridRow>` children. Instead, it provides a `RecordContext` for each row: 
+
+```diff
+const MyDatagridRow = ({
+-    record,
+-    id,
+     onToggleItem,
+     children,
+     selected,
+     selectable,
+}: DatagridRowProps) => {
++    const record = useRecordContext();
++    return record ? (
+-         <RecordContextProvider value={record}>
+          <TableRow>
+              </TableCell>
+                  {selectable && (
+                      <Checkbox
+                          checked={selected}
+                          onClick={event => {
+                              if (onToggleItem) {
+-                                      onToggleItem(id, event);
++                                      onToggleItem(record.id, event);
+                              }
+                          }}
+                      />
+                  )}
+              </TableCell>
+              {React.Children.map(children, field =>
+                  React.isValidElement<FieldProps>(field) &&
+                  field.props.source ? (
+-                         <TableCell key={`${id}-${field.props.source}`}>{field}</TableCell>
++                         <TableCell key={`${record.id}-${field.props.source}`}>{field}</TableCell>
+                  ) : null
+              )}
+          </TableRow>
+-         </RecordContextProvider>
+     ) : null;
+};
+```
+
+See the [`<Datagrid body/>`](./Datagrid.md#body) documentation to learn how to create your own row component.
+
 ## Show and Edit Pages
 
 ### Custom Edit or Show Actions No Longer Receive Any Props
 
-React-admin used to inject the `record` and `resource` props to custom edit or show actions. These props are no longer injected in v5. If you need them, you'll have to use the `useRecordContext` and `useResourceContext` hooks instead. But if you use the standard react-admin buttons like `<ShowButton>`, which already uses these hooks, you don't need inject anything.
+React-admin used to inject the `record` and `resource` props to custom edit or show actions. These props are no longer injected in v5. If you need them, you'll have to use the `useRecordContext` and `useResourceContext` hooks instead. But if you use the standard react-admin buttons like `<ShowButton>`, which already uses these hooks, you don't need to inject anything.
 
 ```diff
 -const MyEditActions = ({ data }) => (
@@ -1117,11 +1184,11 @@ The `usePermissionsOptimized` hooks was deprecated and has been removed. Use `us
 
 ### `linkToRecord` Helper Was Removed
 
-The `linkToRecord` helper was removed. Use [`useCreatePath`](https://marmelab.com/react-admin/Routing.html#linking-to-a-page) instead.
+The `linkToRecord` helper was removed. Use [`useCreatePath`](./Routing.md#linking-to-a-page) instead.
 
 ### `resolveRedirectTo` Helper Was Removed
 
-The `resolveRedirectTo` helper was removed. Use [`useCreatePath`](./Routing.html#linking-to-a-page) instead.
+The `resolveRedirectTo` helper was removed. Use [`useCreatePath`](./Routing.md#linking-to-a-page) instead.
 
 
 ## Theming
@@ -1206,8 +1273,9 @@ The deprecated `<ThemeProvider theme>` prop was removed. Use the `ThemesContext.
 
 The `data-generator-retail` package has been updated to provide types for all its records. In the process, we renamed the `commands` resource to `orders`. Accordingly, the `nb_commands` property of the `customers` resource has been renamed to `nb_orders` and the `command_id` property of the `invoices` and `reviews` resources has been renamed to `order_id`.
 
+### Support For PropTypes Was Removed
 
-
+React-admin no longer supports ([deprecated React PropTypes](https://legacy.reactjs.org/blog/2017/04/07/react-v15.5.0.html#new-deprecation-warnings)). We encourage you to switch to TypeScript to type component props.
 
 ## Upgrading to v4
 

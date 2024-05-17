@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import { ReactElement } from 'react';
-import PropTypes from 'prop-types';
 import ActionDelete from '@mui/icons-material/Delete';
 import { alpha } from '@mui/material/styles';
 import {
@@ -123,10 +122,3 @@ const StyledButton = styled(Button, {
         },
     },
 }));
-
-BulkDeleteWithUndoButton.propTypes = {
-    label: PropTypes.string,
-    resource: PropTypes.string,
-    selectedIds: PropTypes.arrayOf(PropTypes.any),
-    icon: PropTypes.element,
-};

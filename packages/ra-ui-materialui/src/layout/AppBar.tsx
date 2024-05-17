@@ -2,7 +2,6 @@ import * as React from 'react';
 import { FC } from 'react';
 import { styled } from '@mui/material/styles';
 import { Children, memo } from 'react';
-import PropTypes from 'prop-types';
 import {
     AppBar as MuiAppBar,
     AppBarProps as MuiAppBarProps,
@@ -10,7 +9,7 @@ import {
     useMediaQuery,
     Theme,
 } from '@mui/material';
-import { ComponentPropType, useLocales } from 'ra-core';
+import { useLocales } from 'ra-core';
 
 import { SidebarToggleButton } from './SidebarToggleButton';
 import { LoadingIndicator } from './LoadingIndicator';
@@ -104,22 +103,6 @@ const DefaultToolbar = () => {
 };
 
 const defaultToolbarElement = <DefaultToolbar />;
-
-AppBar.propTypes = {
-    alwaysOn: PropTypes.bool,
-    children: PropTypes.node,
-    className: PropTypes.string,
-    color: PropTypes.oneOf([
-        'default',
-        'inherit',
-        'primary',
-        'secondary',
-        'transparent',
-    ]),
-    container: ComponentPropType,
-    toolbar: PropTypes.element,
-    userMenu: PropTypes.oneOfType([PropTypes.element, PropTypes.bool]),
-};
 
 const DefaultUserMenu = <UserMenu />;
 

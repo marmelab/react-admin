@@ -49,7 +49,7 @@ This custom Show view has no action buttons - it's up to you to add them in pure
 
 * [`disableAuthentication`](#disableauthentication): Boolean, set to `true` to disable the authentication check.
 * [`id`](#id): Record identifier. If not provided, it will be deduced from the URL.
-* [`queryOptions`](#queryoptions): Options object to pass to the [`useQuery`](./Actions.mdl#usequery-and-usemutation) hook.
+* [`queryOptions`](#queryoptions): Options object to pass to the [`useQuery`](./Actions.md#usequery-and-usemutation) hook.
 * [`resource`](#resource): Resource name, e.g. `posts`
 
 

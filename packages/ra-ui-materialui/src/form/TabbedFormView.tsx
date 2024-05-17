@@ -9,7 +9,6 @@ import {
     ReactNode,
     useState,
 } from 'react';
-import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import {
     Routes,
@@ -101,19 +100,6 @@ export const TabbedFormView = (props: TabbedFormViewProps): ReactElement => {
             {toolbar !== false ? toolbar : null}
         </Root>
     );
-};
-
-TabbedFormView.propTypes = {
-    children: PropTypes.node,
-    className: PropTypes.string,
-    location: PropTypes.object,
-    match: PropTypes.object,
-    // @ts-ignore
-    resource: PropTypes.string,
-    tabs: PropTypes.element,
-    toolbar: PropTypes.oneOfType([PropTypes.element, PropTypes.oneOf([false])]),
-    validate: PropTypes.func,
-    value: PropTypes.number,
 };
 
 const DefaultTabs = <TabbedFormTabs />;

@@ -11,10 +11,9 @@ export const genericMemo: <T extends FunctionComponent>(component: T) => T = <
 ) => {
     const result = (memo(component) as unknown) as T;
 
-    // We have to set the propTypes, defaultProps and displayName on both the field implementation and the memoized version.
+    // We have to set the defaultProps and displayName on both the field implementation and the memoized version.
     // On the implementation so that the memoized version can pick them up and users may reference the defaultProps in their components.
     // On the memoized version so that components that inspect their children props may read them.
-    result.propTypes = component.propTypes;
     result.defaultProps = component.defaultProps;
     result.displayName = component.displayName?.replace('Impl', '');
     return result;

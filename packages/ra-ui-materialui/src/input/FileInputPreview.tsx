@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { FC, ReactNode, useEffect } from 'react';
 import { styled } from '@mui/material/styles';
-import PropTypes from 'prop-types';
 import RemoveCircle from '@mui/icons-material/RemoveCircle';
 import IconButton from '@mui/material/IconButton';
 import { useTranslate } from 'ra-core';
@@ -43,14 +42,6 @@ export const FileInputPreview = (props: FileInputPreviewProps) => {
             {children}
         </Root>
     );
-};
-
-FileInputPreview.propTypes = {
-    children: PropTypes.element.isRequired,
-    className: PropTypes.string,
-    file: PropTypes.object,
-    onRemove: PropTypes.func.isRequired,
-    removeIcon: PropTypes.elementType,
 };
 
 const PREFIX = 'RaFileInputPreview';

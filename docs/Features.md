@@ -96,7 +96,7 @@ const PostList = () => {
 
 The data provider object is responsible for translating the data provider method calls into HTTP requests, and for translating the HTTP responses into data provider method results.
 
-And by the way, using `useEffect` for data fetching is cumbersome. Instead, you can rely on the [specialized data provider hooks](./Actions.md#dataprovider-method-hooks), such as `useGetList`:
+And by the way, using `useEffect` for data fetching is cumbersome. Instead, you can rely on the [specialized data provider hooks](./Actions.md#query-hooks), such as `useGetList`:
 
 ```jsx
 import { useGetList } from 'react-admin';
