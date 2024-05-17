@@ -54,11 +54,7 @@ export const NewNote = ({
                     refetch();
                     update(reference, {
                         id: ((record && record.id) as unknown) as Identifier,
-                        data: {
-                            last_seen: date,
-                            status,
-                            nb_notes: record.nb_notes + 1,
-                        },
+                        data: { last_seen: date, status },
                         previousData: record,
                     });
                 },

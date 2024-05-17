@@ -48,6 +48,7 @@ export const Task = ({
                     ? undefined
                     : new Date().toISOString(),
             },
+            previousData: task,
         });
     };
     const labelId = `checkbox-list-label-${task.id}`;
@@ -166,6 +167,7 @@ export const Task = ({
                                     source="contact_id"
                                     reference="contacts"
                                     record={task}
+                                    link="show"
                                 />
                                 )
                             </>

@@ -77,6 +77,7 @@ export const generateContacts = (db: Db): Contact[] => {
                 .map(tag => tag.id), // finalize
             sales_id: company.sales_id,
             nb_notes: 0,
+            nb_tasks: 0,
         };
     });
 };

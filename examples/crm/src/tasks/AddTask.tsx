@@ -67,6 +67,7 @@ export const AddTask = () => {
                     onClose={() => setOpen(false)}
                     aria-labelledby="form-dialog-title"
                     fullWidth
+                    disableRestoreFocus
                     maxWidth="sm"
                 >
                     <Form>
