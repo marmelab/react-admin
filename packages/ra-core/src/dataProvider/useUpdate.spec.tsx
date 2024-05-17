@@ -473,6 +473,55 @@ describe('useUpdate', () => {
             });
         });
     });
+    it('accept middlewares', async () => {
+        const middleware = jest.fn((resource, params, next) => {
+            return next(resource, params);
+        });
+        const dataProvider = {
+            update: jest.fn(() => Promise.resolve({ data: { id: 1 } } as any)),
+        } as any;
+        let localUpdate;
+        const Dummy = () => {
+            const [update] = useUpdate(
+                'foo',
+                {
+                    id: 1,
+                    data: { bar: 'baz' },
+                    previousData: { id: 1, bar: 'bar' },
+                },
+                {
+                    getMutateMiddlewares: update => (resource, params) => {
+                        return middleware(resource, params, update);
+                    },
+                }
+            );
+            localUpdate = update;
+            return <span />;
+        };
+
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
+                <Dummy />
+            </CoreAdminContext>
+        );
+        localUpdate();
+        await waitFor(() => {
+            expect(dataProvider.update).toHaveBeenCalledWith('foo', {
+                id: 1,
+                data: { bar: 'baz' },
+                previousData: { id: 1, bar: 'bar' },
+            });
+        });
+        expect(middleware).toHaveBeenCalledWith(
+            'foo',
+            {
+                id: 1,
+                data: { bar: 'baz' },
+                previousData: { id: 1, bar: 'bar' },
+            },
+            expect.any(Function)
+        );
+    });
 });
 
 afterEach(() => {

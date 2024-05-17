@@ -18,6 +18,7 @@ import {
     MutationMode,
     GetListResult as OriginalGetListResult,
     GetInfiniteListResult,
+    DataProvider,
 } from '../types';
 import { useEvent } from '../util';
 
@@ -91,13 +92,21 @@ export const useUpdate = <RecordType extends RaRecord = any, ErrorType = Error>(
     const dataProvider = useDataProvider();
     const queryClient = useQueryClient();
     const { id, data, meta } = params;
-    const { mutationMode = 'pessimistic', ...mutationOptions } = options;
+    const {
+        mutationMode = 'pessimistic',
+        getMutateMiddlewares,
+        ...mutationOptions
+    } = options;
     const mode = useRef<MutationMode>(mutationMode);
     const paramsRef = useRef<Partial<UpdateParams<RecordType>>>(params);
     const snapshot = useRef<Snapshot>([]);
-    const hasCallTimeOnError = useRef(false);
+    const callTimeOnError = useRef<
+        UseUpdateOptions<RecordType, ErrorType>['onError']
+    >();
     const hasCallTimeOnSuccess = useRef(false);
-    const hasCallTimeOnSettled = useRef(false);
+    const callTimeOnSettled = useRef<
+        UseUpdateOptions<RecordType, ErrorType>['onSettled']
+    >();
 
     const updateCache = ({ resource, id, data }) => {
         // hack: only way to tell react-query not to fetch this query for the next 5 seconds
@@ -195,8 +204,19 @@ export const useUpdate = <RecordType extends RaRecord = any, ErrorType = Error>(
                     'useUpdate mutation requires a non-empty data object'
                 );
             }
+            if (getMutateMiddlewares) {
+                const updateMiddleware = getMutateMiddlewares(
+                    dataProvider.update
+                );
+                return updateMiddleware(callTimeResource, {
+                    id: callTimeId,
+                    data: callTimeData,
+                    previousData: callTimePreviousData,
+                    meta: callTimeMeta,
+                }).then(({ data }) => data);
+            }
             return dataProvider
-                .update<RecordType>(callTimeResource, {
+                .update(callTimeResource, {
                     id: callTimeId,
                     data: callTimeData,
                     previousData: callTimePreviousData,
@@ -229,7 +249,10 @@ export const useUpdate = <RecordType extends RaRecord = any, ErrorType = Error>(
                 });
             }
 
-            if (mutationOptions.onError && !hasCallTimeOnError.current) {
+            if (callTimeOnError.current) {
+                return callTimeOnError.current(error, variables, context);
+            }
+            if (mutationOptions.onError) {
                 return mutationOptions.onError(error, variables, context);
             }
             // call-time error callback is executed by react-query
@@ -272,7 +295,15 @@ export const useUpdate = <RecordType extends RaRecord = any, ErrorType = Error>(
                 });
             }
 
-            if (mutationOptions.onSettled && !hasCallTimeOnSettled.current) {
+            if (callTimeOnSettled.current) {
+                return callTimeOnSettled.current(
+                    data,
+                    error,
+                    variables,
+                    context
+                );
+            }
+            if (mutationOptions.onSettled) {
                 return mutationOptions.onSettled(
                     data,
                     error,
@@ -296,12 +327,17 @@ export const useUpdate = <RecordType extends RaRecord = any, ErrorType = Error>(
         const {
             mutationMode,
             returnPromise = mutationOptions.returnPromise,
+            onError,
+            onSettled,
             ...otherCallTimeOptions
         } = callTimeOptions;
 
-        hasCallTimeOnError.current = !!otherCallTimeOptions.onError;
+        // We need to keep the onSuccess callback here and not in the useMutation for undoable mutations
         hasCallTimeOnSuccess.current = !!otherCallTimeOptions.onSuccess;
-        hasCallTimeOnSettled.current = !!otherCallTimeOptions.onSettled;
+        // We need to store the onError and onSettled callbacks here to be able to call them in the useMutation hook
+        // so that they are called even when the calling component is unmounted
+        callTimeOnError.current = onError;
+        callTimeOnSettled.current = onSettled;
 
         // store the hook time params *at the moment of the call*
         // because they may change afterwards, which would break the undoable mode
@@ -415,13 +451,10 @@ export const useUpdate = <RecordType extends RaRecord = any, ErrorType = Error>(
 
         if (mode.current === 'optimistic') {
             // call the mutate method without success side effects
-            return mutation.mutate(
-                { resource: callTimeResource, ...callTimeParams },
-                {
-                    onSettled: otherCallTimeOptions.onSettled,
-                    onError: otherCallTimeOptions.onError,
-                }
-            );
+            return mutation.mutate({
+                resource: callTimeResource,
+                ...callTimeParams,
+            });
         } else {
             // undoable mutation: register the mutation for later
             undoableEventEmitter.once('end', ({ isUndo }) => {
@@ -432,13 +465,10 @@ export const useUpdate = <RecordType extends RaRecord = any, ErrorType = Error>(
                     });
                 } else {
                     // call the mutate method without success side effects
-                    mutation.mutate(
-                        { resource: callTimeResource, ...callTimeParams },
-                        {
-                            onSettled: otherCallTimeOptions.onSettled,
-                            onError: otherCallTimeOptions.onError,
-                        }
-                    );
+                    mutation.mutate({
+                        resource: callTimeResource,
+                        ...callTimeParams,
+                    });
                 }
             });
         }
@@ -472,7 +502,13 @@ export type UseUpdateOptions<
     RecordType,
     ErrorType,
     Partial<Omit<UseUpdateMutateParams<RecordType>, 'mutationFn'>>
-> & { mutationMode?: MutationMode; returnPromise?: boolean };
+> & {
+    mutationMode?: MutationMode;
+    returnPromise?: boolean;
+    getMutateMiddlewares?: (
+        mutate: DataProvider['update']
+    ) => DataProvider['update'];
+};
 
 export type UpdateMutationFunction<
     RecordType extends RaRecord = any,
