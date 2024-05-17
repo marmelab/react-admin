@@ -65,7 +65,8 @@ const CompanyShowContent = () => {
                                     {record.name}
                                 </Typography>
                                 <Typography variant="body2">
-                                    <TextField source="sector" />,{' '}
+                                    <TextField source="sector" />
+                                    {record.size && ', '}
                                     <SelectField
                                         source="size"
                                         choices={sizes}
