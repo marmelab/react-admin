@@ -159,27 +159,35 @@ export const useEditController = <
                 if (onError) {
                     return onError(error, variables, context);
                 }
-                notify(
-                    typeof error === 'string'
-                        ? error
-                        : (error as Error).message ||
-                              'ra.notification.http_error',
-                    {
-                        type: 'error',
-                        messageArgs: {
-                            _:
-                                typeof error === 'string'
-                                    ? error
-                                    : error instanceof Error ||
-                                      (typeof error === 'object' &&
-                                          error !== null &&
-                                          error.hasOwnProperty('message'))
-                                    ? // @ts-ignore
-                                      error.message
-                                    : undefined,
-                        },
-                    }
-                );
+                // Don't trigger a notification if this is a validation error
+                // (notification will be handled by the useNotifyIsFormInvalid hook)
+                const validationErrors = (error as HttpError)?.body?.errors;
+                const hasValidationErrors =
+                    !!validationErrors &&
+                    Object.keys(validationErrors).length > 0;
+                if (!hasValidationErrors || mutationMode !== 'pessimistic') {
+                    notify(
+                        typeof error === 'string'
+                            ? error
+                            : (error as Error).message ||
+                                  'ra.notification.http_error',
+                        {
+                            type: 'error',
+                            messageArgs: {
+                                _:
+                                    typeof error === 'string'
+                                        ? error
+                                        : error instanceof Error ||
+                                          (typeof error === 'object' &&
+                                              error !== null &&
+                                              error.hasOwnProperty('message'))
+                                        ? // @ts-ignore
+                                          error.message
+                                        : undefined,
+                            },
+                        }
+                    );
+                }
             },
             ...otherMutationOptions,
             mutationMode,

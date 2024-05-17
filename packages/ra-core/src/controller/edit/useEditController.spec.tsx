@@ -742,6 +742,157 @@ describe('useEditController', () => {
         ]);
     });
 
+    it('should use the default error message in case no message was provided', async () => {
+        jest.spyOn(console, 'error').mockImplementation(() => {});
+        let saveCallback;
+        const dataProvider = ({
+            getOne: () => Promise.resolve({ data: { id: 12 } }),
+            update: () => Promise.reject({}),
+        } as unknown) as DataProvider;
+
+        let notificationsSpy;
+        const Notification = () => {
+            const { notifications } = useNotificationContext();
+            React.useEffect(() => {
+                notificationsSpy = notifications;
+            }, [notifications]);
+            return null;
+        };
+
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
+                <Notification />
+                <EditController {...defaultProps} mutationMode="pessimistic">
+                    {({ save }) => {
+                        saveCallback = save;
+                        return <div />;
+                    }}
+                </EditController>
+            </CoreAdminContext>
+        );
+        await act(async () => saveCallback({ foo: 'bar' }));
+        await new Promise(resolve => setTimeout(resolve, 10));
+        expect(notificationsSpy).toEqual([
+            {
+                message: 'ra.notification.http_error',
+                type: 'error',
+                notificationOptions: { messageArgs: { _: undefined } },
+            },
+        ]);
+    });
+
+    it('should not trigger a notification in case of a validation error (handled by useNotifyIsFormInvalid)', async () => {
+        jest.spyOn(console, 'error').mockImplementation(() => {});
+        let saveCallback;
+        const dataProvider = ({
+            getOne: () => Promise.resolve({ data: { id: 12 } }),
+            update: () =>
+                Promise.reject({ body: { errors: { foo: 'invalid' } } }),
+        } as unknown) as DataProvider;
+
+        let notificationsSpy;
+        const Notification = () => {
+            const { notifications } = useNotificationContext();
+            React.useEffect(() => {
+                notificationsSpy = notifications;
+            }, [notifications]);
+            return null;
+        };
+
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
+                <Notification />
+                <EditController {...defaultProps} mutationMode="pessimistic">
+                    {({ save }) => {
+                        saveCallback = save;
+                        return <div />;
+                    }}
+                </EditController>
+            </CoreAdminContext>
+        );
+        await act(async () => saveCallback({ foo: 'bar' }));
+        await new Promise(resolve => setTimeout(resolve, 10));
+        expect(notificationsSpy).toEqual([]);
+    });
+
+    it('should trigger a notification even in case of a validation error in optimistic mode', async () => {
+        jest.spyOn(console, 'error').mockImplementation(() => {});
+        let saveCallback;
+        const dataProvider = ({
+            getOne: () => Promise.resolve({ data: { id: 12 } }),
+            update: () =>
+                Promise.reject({ body: { errors: { foo: 'invalid' } } }),
+        } as unknown) as DataProvider;
+
+        let notificationsSpy;
+        const Notification = () => {
+            const { notifications } = useNotificationContext();
+            React.useEffect(() => {
+                notificationsSpy = notifications;
+            }, [notifications]);
+            return null;
+        };
+
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
+                <Notification />
+                <EditController {...defaultProps} mutationMode="optimistic">
+                    {({ save }) => {
+                        saveCallback = save;
+                        return <div />;
+                    }}
+                </EditController>
+            </CoreAdminContext>
+        );
+        await act(async () => saveCallback({ foo: 'bar' }));
+        await new Promise(resolve => setTimeout(resolve, 10));
+        expect(notificationsSpy).toContainEqual({
+            message: 'ra.notification.http_error',
+            type: 'error',
+            notificationOptions: { messageArgs: { _: undefined } },
+        });
+    });
+
+    it('should trigger a notification even in case of a validation error in undoable mode', async () => {
+        jest.spyOn(console, 'error').mockImplementation(() => {});
+        let saveCallback;
+        const dataProvider = ({
+            getOne: () => Promise.resolve({ data: { id: 12 } }),
+            update: () =>
+                Promise.reject({ body: { errors: { foo: 'invalid' } } }),
+        } as unknown) as DataProvider;
+
+        let notificationsSpy;
+        const Notification = () => {
+            const { notifications } = useNotificationContext();
+            React.useEffect(() => {
+                notificationsSpy = notifications;
+            }, [notifications]);
+            return null;
+        };
+
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
+                <Notification />
+                <EditController {...defaultProps} mutationMode="undoable">
+                    {({ save }) => {
+                        saveCallback = save;
+                        return <div />;
+                    }}
+                </EditController>
+            </CoreAdminContext>
+        );
+        await act(async () => saveCallback({ foo: 'bar' }));
+        await new Promise(resolve => setTimeout(resolve, 10));
+        undoableEventEmitter.emit('end', { isUndo: false });
+        await new Promise(resolve => setTimeout(resolve, 10));
+        expect(notificationsSpy).toContainEqual({
+            message: 'ra.notification.http_error',
+            type: 'error',
+            notificationOptions: { messageArgs: { _: undefined } },
+        });
+    });
+
     it('should allow the save onError option to override the failure side effects override', async () => {
         jest.spyOn(console, 'error').mockImplementation(() => {});
         let saveCallback;

@@ -180,6 +180,77 @@ describe('useCreateController', () => {
         ]);
     });
 
+    it('should use the default error message in case no message was provided', async () => {
+        jest.spyOn(console, 'error').mockImplementation(() => {});
+        let saveCallback;
+        const dataProvider = testDataProvider({
+            getOne: () => Promise.resolve({ data: { id: 12 } } as any),
+            create: () => Promise.reject({}),
+        });
+
+        let notificationsSpy;
+        const Notification = () => {
+            const { notifications } = useNotificationContext();
+            React.useEffect(() => {
+                notificationsSpy = notifications;
+            }, [notifications]);
+            return null;
+        };
+
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
+                <Notification />
+                <CreateController {...defaultProps}>
+                    {({ save }) => {
+                        saveCallback = save;
+                        return null;
+                    }}
+                </CreateController>
+            </CoreAdminContext>
+        );
+        await act(async () => saveCallback({ foo: 'bar' }));
+        expect(notificationsSpy).toEqual([
+            {
+                message: 'ra.notification.http_error',
+                type: 'error',
+                notificationOptions: { messageArgs: { _: undefined } },
+            },
+        ]);
+    });
+
+    it('should not trigger a notification in case of a validation error (handled by useNotifyIsFormInvalid)', async () => {
+        jest.spyOn(console, 'error').mockImplementation(() => {});
+        let saveCallback;
+        const dataProvider = testDataProvider({
+            getOne: () => Promise.resolve({ data: { id: 12 } } as any),
+            create: () =>
+                Promise.reject({ body: { errors: { foo: 'invalid' } } }),
+        });
+
+        let notificationsSpy;
+        const Notification = () => {
+            const { notifications } = useNotificationContext();
+            React.useEffect(() => {
+                notificationsSpy = notifications;
+            }, [notifications]);
+            return null;
+        };
+
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
+                <Notification />
+                <CreateController {...defaultProps}>
+                    {({ save }) => {
+                        saveCallback = save;
+                        return null;
+                    }}
+                </CreateController>
+            </CoreAdminContext>
+        );
+        await act(async () => saveCallback({ foo: 'bar' }));
+        expect(notificationsSpy).toEqual([]);
+    });
+
     it('should allow mutationOptions to override the default success side effects', async () => {
         let saveCallback;
         const dataProvider = testDataProvider({

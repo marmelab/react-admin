@@ -44,6 +44,7 @@ React-admin v5 mostly focuses on removing deprecated features and upgrading depe
     - [`warnWhenUnsavedChanges` Changes](#warnwhenunsavedchanges-changes)
     - [Inputs No Longer Require To Be Touched To Display A Validation Error](#inputs-no-longer-require-to-be-touched-to-display-a-validation-error)
     - [`<InputHelperText touched>` Prop Was Removed](#inputhelpertext-touched-prop-was-removed)
+    - [Global Server Side Validation Error Message Must Be Passed Via The `root.serverError` Key](#global-server-side-validation-error-message-must-be-passed-via-the-rootservererror-key)
 - [TypeScript](#typescript)
     - [Fields Components Requires The source Prop](#fields-components-requires-the-source-prop)
     - [`useRecordContext` Returns undefined When No Record Is Available](#userecordcontext-returns-undefined-when-no-record-is-available)
@@ -1004,6 +1005,38 @@ The `<InputHelperText>` component no longer accepts a `touched` prop. This prop 
 
 If you were using this prop, you can safely remove it.
 
+### Global Server Side Validation Error Message Must Be Passed Via The `root.serverError` Key
+
+You can now include a global server-side error message in the response to a failed create or update request. This message will be rendered in a notification. To do so, include the error message in the `root.serverError` key of the `errors` object in the response body:
+
+```diff
+{
+    "body": {
+        "errors": {
++           "root": { "serverError": "Some of the provided values are not valid. Please fix them and retry." },
+            "title": "An article with this title already exists. The title must be unique.",
+            "date": "The date is required",
+            "tags": { "message": "The tag 'agrriculture' doesn't exist" },
+        }
+    }
+}
+```
+
+**Minor BC:** To avoid a race condition between the notifications sent due to both the http error and the validation error, React Admin will no longer display a notification for the http error if the response contains a non-empty `errors` object and the mutation mode is `pessimistic`. If you relied on this behavior to render a global server-side error message, you should now include the message in the `root.serverError` key of the `errors` object.
+
+```diff
+{
+-   "message": "Some of the provided values are not valid. Please fix them and retry.",
+    "body": {
+        "errors": {
++           "root": { "serverError": "Some of the provided values are not valid. Please fix them and retry." },
+            "title": "An article with this title already exists. The title must be unique.",
+            "date": "The date is required",
+            "tags": { "message": "The tag 'agrriculture' doesn't exist" },
+        }
+    }
+}
+```
 
 ## TypeScript
 
