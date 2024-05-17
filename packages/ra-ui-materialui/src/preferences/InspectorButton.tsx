@@ -6,7 +6,10 @@ import { useTranslate, usePreferencesEditor } from 'ra-core';
 
 export const InspectorButton = React.forwardRef<
     HTMLButtonElement,
-    IconButtonProps & { label?: string; SvgIconProps?: any }
+    Omit<
+        IconButtonProps,
+        'placeholder' | 'onPointerEnterCapture' | 'onPointerLeaveCapture'
+    > & { label?: string; SvgIconProps?: any }
 >(
     (
         {

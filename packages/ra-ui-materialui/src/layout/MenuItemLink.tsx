@@ -142,7 +142,7 @@ export const MenuItemLink = forwardRef<any, MenuItemLinkProps>((props, ref) => {
 
 export type MenuItemLinkProps = Omit<
     LinkProps & MenuItemProps<'li'>,
-    'placeholder'
+    'placeholder' | 'onPointerEnterCapture' | 'onPointerLeaveCapture'
 > & {
     leftIcon?: ReactElement;
     primaryText?: ReactNode;

@@ -203,7 +203,10 @@ interface Props {
 }
 
 export type ResettableTextFieldProps = Props &
-    Omit<TextFieldProps, 'onChange'> & {
+    Omit<
+        TextFieldProps,
+        'onChange' | 'onPointerEnterCapture' | 'onPointerLeaveCapture'
+    > & {
         onChange?: (eventOrValue: any) => void;
     };
 
