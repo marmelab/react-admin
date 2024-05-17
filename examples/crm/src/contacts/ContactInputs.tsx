@@ -29,10 +29,10 @@ export const ContactInputs = () => {
     const [create] = useCreate();
     const { identity } = useGetIdentity();
     const notify = useNotify();
-    const handleCreateCompany = (companyName?: string) => {
+    const handleCreateCompany = async (companyName?: string) => {
         if (!companyName) return;
-        return new Promise<Company>((resolve, reject) => {
-            create(
+        try {
+            const newCompany = await create(
                 'companies',
                 {
                     data: {
@@ -41,17 +41,15 @@ export const ContactInputs = () => {
                         created_at: new Date().toISOString(),
                     },
                 },
-                {
-                    onSuccess: resolve,
-                    onError: (error: Error) => {
-                        notify('An error occurred while creating the company', {
-                            type: 'error',
-                        });
-                        reject(error);
-                    },
-                }
+                { returnPromise: true }
             );
-        });
+            return newCompany;
+        } catch (error) {
+            notify('An error occurred while creating the company', {
+                type: 'error',
+            });
+            throw error;
+        }
     };
     return (
         <Box flex="1" mt={-1}>
