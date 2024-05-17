@@ -23,7 +23,6 @@ export const NotesIterator = ({
                         note={note}
                         isLast={index === data.length - 1}
                         showStatus={showStatus}
-                        reference={reference}
                         key={index}
                     />
                 ))}

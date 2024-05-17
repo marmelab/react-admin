@@ -8,7 +8,6 @@ import {
     useDelete,
     useUpdate,
     useNotify,
-    useRecordContext,
 } from 'react-admin';
 import {
     Box,
@@ -26,18 +25,15 @@ import { Status } from '../misc/Status';
 export const Note = ({
     showStatus,
     note,
-    reference,
 }: {
     showStatus?: boolean;
     note: any;
     isLast: boolean;
-    reference: string;
 }) => {
     const [isHover, setHover] = useState(false);
     const [isEditing, setEditing] = useState(false);
     const [noteText, setNoteText] = useState(note.text);
     const resource = useResourceContext();
-    const record = useRecordContext();
     const notify = useNotify();
 
     const [update, { isPending }] = useUpdate();
@@ -49,11 +45,6 @@ export const Note = ({
             mutationMode: 'undoable',
             onSuccess: () => {
                 notify('Note deleted', { type: 'info', undoable: true });
-                update(reference, {
-                    id: record?.id,
-                    data: { nb_notes: record?.nb_notes - 1 },
-                    previousData: record,
-                });
             },
         }
     );

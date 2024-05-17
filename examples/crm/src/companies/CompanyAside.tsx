@@ -34,9 +34,19 @@ export const CompanyAside = ({ link = 'edit' }: CompanyAsideProps) => {
 
             <Box mt={2}>
                 <Typography variant="body2">
-                    Website: <Link href={record.website}>{record.website}</Link>
-                    <br />
-                    LinkedIn: <Link href={record.linkedIn}>LinkedIn</Link>
+                    {record.website && (
+                        <>
+                            Website:{' '}
+                            <Link href={record.website}>{record.website}</Link>
+                        </>
+                    )}
+                    {record.linkedIn && (
+                        <>
+                            <br />
+                            LinkedIn:{' '}
+                            <Link href={record.linkedIn}>LinkedIn</Link>
+                        </>
+                    )}
                 </Typography>
             </Box>
 
@@ -47,7 +57,7 @@ export const CompanyAside = ({ link = 'edit' }: CompanyAsideProps) => {
                     color="textSecondary"
                     component="span"
                 >
-                    Main
+                    Main Address
                 </Typography>
             </Box>
 

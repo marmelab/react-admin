@@ -7,6 +7,7 @@ import {
     EditButton,
     ShowButton,
     ReferenceField,
+    SelectField,
     FunctionField,
     useRecordContext,
 } from 'react-admin';
@@ -16,9 +17,11 @@ import { AddTask } from '../tasks/AddTask';
 import { TasksIterator } from '../tasks/TasksIterator';
 
 import { Contact, Sale } from '../types';
+import { genders } from './constants';
 
 export const ContactAside = ({ link = 'edit' }: { link?: 'edit' | 'show' }) => {
     const record = useRecordContext<Contact>();
+    if (!record) return null;
     return (
         <Box ml={4} width={250} minWidth={250}>
             <Box textAlign="center" mb={2}>
@@ -30,32 +33,35 @@ export const ContactAside = ({ link = 'edit' }: { link?: 'edit' | 'show' }) => {
             </Box>
             <Typography variant="subtitle2">Personal info</Typography>
             <Divider />
-            <EmailField
-                sx={{ mt: 2, mb: 1, display: 'block' }}
-                source="email"
-            />
-            <TextField source="phone_number1" />{' '}
-            <Typography variant="body2" color="textSecondary" component="span">
-                Work
+            <EmailField sx={{ mt: 2, display: 'block' }} source="email" />
+            {record.phone_number1 && (
+                <Box>
+                    <TextField source="phone_number1" />{' '}
+                    <Typography
+                        variant="body2"
+                        color="textSecondary"
+                        component="span"
+                    >
+                        Work
+                    </Typography>
+                </Box>
+            )}
+            {record.phone_number2 && (
+                <Box>
+                    <TextField source="phone_number2" />{' '}
+                    <Typography
+                        variant="body2"
+                        color="textSecondary"
+                        component="span"
+                    >
+                        Home
+                    </Typography>
+                </Box>
+            )}
+            <SelectField source="gender" choices={genders} />
+            <Typography variant="subtitle2" mt={2}>
+                Background
             </Typography>
-            <Box mb={1}>
-                <TextField source="phone_number2" />{' '}
-                <Typography
-                    variant="body2"
-                    color="textSecondary"
-                    component="span"
-                >
-                    Home
-                </Typography>
-            </Box>
-            <Typography variant="body2" mb={3}>
-                {record
-                    ? record.gender === 'male'
-                        ? 'He/Him'
-                        : 'She/Her'
-                    : ''}
-            </Typography>
-            <Typography variant="subtitle2">Background</Typography>
             <Divider />
             <Typography variant="body2" mt={2}>
                 {record && record.background}

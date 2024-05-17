@@ -90,9 +90,21 @@ const ContactListContent = () => {
                                             link={false}
                                         >
                                             <TextField source="name" />
-                                        </ReferenceField>{' '}
-                                        {contact.nb_notes &&
-                                            `- ${contact.nb_notes} notes`}
+                                        </ReferenceField>
+                                        {contact.nb_notes
+                                            ? ` - ${contact.nb_notes} note${
+                                                  contact.nb_notes > 1
+                                                      ? 's'
+                                                      : ''
+                                              }`
+                                            : ''}
+                                        {contact.nb_tasks
+                                            ? ` - ${contact.nb_tasks} task${
+                                                  contact.nb_tasks > 1
+                                                      ? 's'
+                                                      : ''
+                                              }`
+                                            : ''}
                                         &nbsp;&nbsp;
                                         <TagsList />
                                     </>
