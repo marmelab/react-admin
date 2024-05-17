@@ -27,7 +27,7 @@ jobs:
     - name: Type check simple example
       run: cd examples/simple && yarn type-check
     - name: Zip packages build artifact
-      run: zip packages-build.zip -r packages/*/esm packages/*/lib node_modules/@react-admin/*
+      run: zip packages-build.zip -r packages/*/dist
     - name: Upload packages build artifact
       uses: actions/upload-artifact@v3
       with:
