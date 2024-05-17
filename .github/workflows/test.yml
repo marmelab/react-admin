@@ -17,7 +17,7 @@ jobs:
       uses: actions/setup-node@v4
       with:
         node-version: '18.x'
-    - uses: bahmutov/npm-install@v1.10.2
+    - uses: threeal/setup-yarn-action@v2.0.0
     - name: Lint
       run: make lint        
     - name: Build
@@ -38,7 +38,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - uses: bahmutov/npm-install@v1.10.2
+      - uses: threeal/setup-yarn-action@v2.0.0
       - name: Unit Tests
         run: make test-unit
         env:
@@ -49,7 +49,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - uses: bahmutov/npm-install@v1.10.2
+      - uses: threeal/setup-yarn-action@v2.0.0
       - name: e2e Tests
         run: make test-e2e
         env:
@@ -60,7 +60,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - uses: bahmutov/npm-install@v1.10.2
+      - uses: threeal/setup-yarn-action@v2.0.0
       - name: Build
         run: make build
       - name: Build e-commerce
@@ -83,7 +83,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - uses: bahmutov/npm-install@v1.10.2
+      - uses: threeal/setup-yarn-action@v2.0.0
       - name: Build
         run: make build
       - name: Build crm
@@ -123,9 +123,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - uses: bahmutov/npm-install@v1.10.2
-        with:
-          install-command: yarn --immutable
+      - uses: threeal/setup-yarn-action@v2.0.0
       - name: Build create-react-admin
         run: make build-create-react-admin install
       - name: Create new project
