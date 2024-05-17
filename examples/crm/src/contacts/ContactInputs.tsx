@@ -13,7 +13,6 @@ import {
 } from 'react-admin';
 import { Divider, Box, Stack } from '@mui/material';
 
-import { Company } from '../types';
 import { genders } from './constants';
 
 const isUrl = (value: string) => {
@@ -29,14 +28,14 @@ export const ContactInputs = () => {
     const [create] = useCreate();
     const { identity } = useGetIdentity();
     const notify = useNotify();
-    const handleCreateCompany = async (companyName?: string) => {
-        if (!companyName) return;
+    const handleCreateCompany = async (name?: string) => {
+        if (!name) return;
         try {
             const newCompany = await create(
                 'companies',
                 {
                     data: {
-                        name: companyName,
+                        name,
                         sales_id: identity?.id,
                         created_at: new Date().toISOString(),
                     },
