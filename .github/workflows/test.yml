@@ -27,7 +27,7 @@ jobs:
     - name: Type check simple example
       run: cd examples/simple && yarn type-check
     - name: Zip packages build artifact
-      run: zip packages-build.zip -r packages/*/dist
+      run: zip packages-build.zip -r examples/data-generator/dist packages/*/dist
     - name: Upload packages build artifact
       uses: actions/upload-artifact@v3
       with:
