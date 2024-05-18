@@ -241,17 +241,40 @@ export const OptionTextElement = () => (
     </Wrapper>
 );
 
+const choicesForCreationSupport = [
+    { id: 1, name: 'Leo Tolstoy' },
+    { id: 2, name: 'Victor Hugo' },
+    { id: 3, name: 'William Shakespeare' },
+    { id: 4, name: 'Charles Baudelaire' },
+    { id: 5, name: 'Marcel Proust' },
+];
+
 export const OnCreate = () => (
     <Wrapper>
         <AutocompleteInput
             source="author"
-            choices={[
-                { id: 1, name: 'Leo Tolstoy' },
-                { id: 2, name: 'Victor Hugo' },
-                { id: 3, name: 'William Shakespeare' },
-                { id: 4, name: 'Charles Baudelaire' },
-                { id: 5, name: 'Marcel Proust' },
-            ]}
+            choices={choicesForCreationSupport}
+            onCreate={filter => {
+                const newOption = {
+                    id: choicesForCreationSupport.length + 1,
+                    name: filter,
+                };
+                choicesForCreationSupport.push(newOption);
+                return newOption;
+            }}
+            fullWidth
+            TextFieldProps={{
+                placeholder: 'Start typing to create a new item',
+            }}
+        />
+    </Wrapper>
+);
+
+export const OnCreatePrompt = () => (
+    <Wrapper>
+        <AutocompleteInput
+            source="author"
+            choices={choicesForCreationSupport}
             onCreate={filter => {
                 const newAuthorName = window.prompt(
                     'Enter a new author',
@@ -279,28 +302,18 @@ export const CreateLabel = () => (
     <Wrapper>
         <AutocompleteInput
             source="author"
-            choices={[
-                { id: 1, name: 'Leo Tolstoy' },
-                { id: 2, name: 'Victor Hugo' },
-                { id: 3, name: 'William Shakespeare' },
-                { id: 4, name: 'Charles Baudelaire' },
-                { id: 5, name: 'Marcel Proust' },
-            ]}
+            choices={choicesForCreationSupport}
             onCreate={filter => {
-                const newAuthorName = window.prompt(
-                    'Enter a new author',
-                    filter
-                );
-
-                if (newAuthorName) {
+                if (filter) {
                     const newAuthor = {
                         id: choicesForCreationSupport.length + 1,
-                        name: newAuthorName,
+                        name: filter,
                     };
                     choicesForCreationSupport.push(newAuthor);
                     return newAuthor;
                 }
             }}
+            fullWidth
             createLabel="Start typing to create a new item"
         />
     </Wrapper>

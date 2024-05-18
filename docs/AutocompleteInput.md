@@ -219,7 +219,47 @@ const CreateCategory = () => {
 ```
 {% endraw %}
 
+If you want to customize the label of the "Create XXX" option, use [the `createItemLabel` prop](#createitemlabel).
+
 If you just need to ask users for a single string to create the new option, you can use [the `onCreate` prop](#oncreate) instead.
+
+## `createLabel`
+
+When you set the `create` or `onCreate` prop, `<AutocompleteInput>` lets users create new options. By default, it renders a "Create" menu item at the bottom of the list. You can customize the label of that menu item by setting a custom translation for the `ra.action.create` key in the translation files.
+
+![Create Label](./img/AutocompleteInput-createLabel.png)
+
+Or, if you want to customize it just for this `<AutocompleteInput>`, use the `createLabel` prop:
+
+You can customize the label of that menu item by setting a custom translation for the `ra.action.create` key in the translation files.
+
+```jsx
+<AutocompleteInput
+    source="author"
+    choices={authors}
+    onCreate={onCreate}
+    createLabel="Start typing to create a new item"
+/>
+```
+
+## `createItemLabel`
+
+If you set the `create` or `onCreate` prop, `<AutocompleteInput>` lets users create new options. When the text entered by the user doesn't match any option, the input renders a "Create XXX" menu item at the bottom of the list.
+
+![Create Item Label](./img/AutocompleteInput-createItemLabel.png)
+
+You can customize the label of that menu item by setting a custom translation for the `ra.action.create_item` key in the translation files.
+
+Or, if you want to customize it just for this `<AutocompleteInput>`, use the `createItemLabel` prop:
+
+```jsx
+<AutocompleteInput
+    source="author"
+    choices={authors}
+    onCreate={onCreate}
+    createItemLabel="Add a new author %{item}"
+/>
+```
 
 ## `debounce`
 
@@ -369,39 +409,50 @@ const BookCreate = () => (
 
 ## `onCreate`
 
-Use the `onCreate` prop to allow users to create new options on-the-fly. Its value must be a function. This lets you render a `prompt` to ask users about the new value. You can return either the new choice directly or a Promise resolving to the new choice.
+Use the `onCreate` prop to allow users to create new options on the fly. This is equivalent to MUI's `<AutoComplete freeSolo>` prop. 
 
-{% raw %}
+<video controls playsinline muted>
+  <source src="./img/AutocompleteInput-onCreate.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
+`onCreate` must be a function that adds a new choice and returns it. This function can be async. The added choice must use the same format as the other choices (usually `{ id, name }`).
+
+In the following example, users can create a new company by typing its name in the `<AutocompleteInput>`:
+
 ```js
 import { AutocompleteInput, Create, SimpleForm, TextInput } from 'react-admin';
 
-const PostCreate = () => {
-    const categories = [
-        { name: 'Tech', id: 'tech' },
-        { name: 'Lifestyle', id: 'lifestyle' },
+const ContactCreate = () => {
+    const companies = [
+        { id: 1, name: 'Globex Corp.' },
+        { id: 2, name: 'Soylent Inc.' },
     ];
     return (
         <Create>
             <SimpleForm>
-                <TextInput source="title" />
+                <TextInput source="first_name" />
+                <TextInput source="last_name" />
                 <AutocompleteInput
-                    onCreate={() => {
-                        const newCategoryName = prompt('Enter a new category');
-                        const newCategory = { id: newCategoryName.toLowerCase(), name: newCategoryName };
-                        categories.push(newCategory);
-                        return newCategory;
+                    source="company"
+                    choices={companies}
+                    onCreate={companyName => {
+                        const newCompany = { id: companies.length + 1, name: companyName };
+                        companies.push(newCompany);
+                        return newCompany;
                     }}
-                    source="category"
-                    choices={categories}
                 />
             </SimpleForm>
         </Create>
     );
 }
 ```
-{% endraw %}
 
-If a prompt is not enough, you can use [the `create` prop](#create) to render a custom component instead.
+If you want to customize the label of the "Create XXX" option, use [the `createItemLabel` prop](#createitemlabel).
+
+When used inside a `<ReferenceInput>`, the `onCreate` prop should create a new record in the reference resource, and return it. See [Creating a New Reference](./ReferenceInput.md#creating-a-new-reference) for more details.
+
+If a function is not enough, you can use [the `create` prop](#create) to render a custom component instead.
 
 ## `optionText`
 
