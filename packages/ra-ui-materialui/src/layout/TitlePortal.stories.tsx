@@ -1,9 +1,12 @@
 import * as React from 'react';
-import { TestMemoryRouter } from 'ra-core';
-import { PreferencesEditorContextProvider } from 'ra-core';
+import { PreferencesEditorContextProvider, TestMemoryRouter } from 'ra-core';
 
 import { TitlePortal } from './TitlePortal';
 import { Title } from './Title';
+import { InspectorButton } from '../preferences/InspectorButton';
+import { Inspector } from '../preferences/Inspector';
+import { Configurable } from '../preferences/Configurable';
+import { PageTitleEditor } from './PageTitleConfigurable';
 
 export default {
     title: 'ra-ui-materialui/layout/TitlePortal',
@@ -36,9 +39,20 @@ export const Sx = () => (
     </TestMemoryRouter>
 );
 
-export const NonConfigurable = () => (
+export const NonConfigurable = ({ preferenceKey = 'title' }) => (
     <TestMemoryRouter>
-        <TitlePortal variant="body1" />
-        <Title title="Hello, world" nonConfigurable />
+        <PreferencesEditorContextProvider>
+            <Inspector />
+            <InspectorButton />
+            <Configurable
+                editor={<PageTitleEditor />}
+                preferenceKey={preferenceKey}
+            >
+                <>
+                    <TitlePortal variant="body1" />
+                    <Title title="Hello, world" nonConfigurable />
+                </>
+            </Configurable>
+        </PreferencesEditorContextProvider>
     </TestMemoryRouter>
 );
