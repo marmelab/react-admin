@@ -29,7 +29,7 @@ You can find translation packages for the following languages:
 - Hindi (`hi`): [harshit-budhraja/ra-language-hindi](https://github.com/harshit-budhraja/ra-language-hindi)
 - Hungarian (`hu`): [phelion/ra-language-hungarian](https://github.com/phelion/ra-language-hungarian)
 - Indonesian (`id`): [danangekal/ra-language-indonesian-new](https://github.com/danangekal/ra-language-indonesian-new)
-- Italian (`it`): [stefsava/ra-italian](https://github.com/stefsava/ra-italian)
+- Italian (`it`): [christianascone/ra-language-italian](https://github.com/christianascone/ra-language-italian)
 - Japanese (`ja`): [bicstone/ra-language-japanese](https://github.com/bicstone/ra-language-japanese)
 - Korean (`ko`): [acidsound/ra-language-korean](https://github.com/acidsound/ra-language-korean)
 - Latvian (`lv`): [tui-ru/ra-language-latvian](https://github.com/tui-ru/ra-language-latvian)

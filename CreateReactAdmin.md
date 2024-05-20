@@ -7,6 +7,8 @@ title: "The create-react-admin CLI"
 
 `create-react-admin` is a package that generates a react-admin app scaffolding using [Vite](https://vitejs.dev/). It is designed to work on most setups and produces predictable and consistent results. It's the preferred way to create a new react-admin application.
 
+<iframe src="https://www.youtube-nocookie.com/embed/i_TbS7quzww" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;"></iframe>
+
 ## Usage
 
 Use it by running the following command:

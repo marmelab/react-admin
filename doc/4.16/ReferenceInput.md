@@ -166,32 +166,6 @@ You can filter the query used to populate the possible values. Use the `filter` 
 
 **Note**: When users type a search term in the `<AutocompleteInput>`, this doesn't affect the `filter` prop. Check the [Customizing the filter query](#customizing-the-filter-query) section below for details on how that filter works.
 
-## `format`
-
-By default, children of `<ReferenceInput>` transform `null` values from the `dataProvider` into empty strings. 
-
-If you want to change this behavior, you have to pass a custom `format` prop to the `<ReferenceInput>` *child component*, because  **`<ReferenceInput>` doesn't have a `format` prop**. It is the responsibility of the child component to format the input value.
-
-For instance, if you want to transform an option value before rendering, and the selection control is an `<AutocompleteInput>` (the default), set [the `<AutocompleteInput format>` prop](./Inputs.md#format) as follows:
-
-```jsx
-import { ReferenceInput, AutocompleteInput } from 'react-admin';
-
-<ReferenceInput source="company_id" reference="companies">
-    <AutocompleteInput format={value => value == null ? 'not defined' : value} />
-</ReferenceInput>
-```
-
-The same goes if the child is a `<SelectInput>`:
-
-```jsx
-import { ReferenceInput, SelectInput } from 'react-admin';
-
-<ReferenceInput source="company_id" reference="companies">
-    <SelectInput format={value => value === undefined ? 'not defined' : null} />
-</ReferenceInput>
-```
-
 ## `label`
 
 In an `<Edit>` or `<Create>` view, the `label` prop has no effect. `<ReferenceInput>` has no label, it simply renders its child (an `<AutocompleteInput>` by default). If you need to customize the label, set the `label` prop on the child element:
@@ -327,6 +301,32 @@ Then to display a selector for the contact company, you should call `<ReferenceI
 <ReferenceInput source="company_id" reference="companies" />
 ```
 
+## Transforming The Input Value
+
+By default, children of `<ReferenceInput>` transform `null` values from the `dataProvider` into empty strings. 
+
+If you want to change this behavior, you have to pass a custom `format` prop to the `<ReferenceInput>` *child component*, because  `<ReferenceInput>` doesn't have a `format` prop. It is the responsibility of the child component to format the input value.
+
+For instance, if you want to transform an option value before rendering, and the selection control is an `<AutocompleteInput>` (the default), set [the `<AutocompleteInput format>` prop](./Inputs.md#format) as follows:
+
+```jsx
+import { ReferenceInput, AutocompleteInput } from 'react-admin';
+
+<ReferenceInput source="company_id" reference="companies">
+    <AutocompleteInput format={value => value == null ? 'not defined' : value} />
+</ReferenceInput>
+```
+
+The same goes if the child is a `<SelectInput>`:
+
+```jsx
+import { ReferenceInput, SelectInput } from 'react-admin';
+
+<ReferenceInput source="company_id" reference="companies">
+    <SelectInput format={value => value === undefined ? 'not defined' : null} />
+</ReferenceInput>
+```
+
 ## Customizing The Filter Query
 
 By default, `<ReferenceInput>` renders an `<AutocompleteInput>`, which lets users type a search term to filter the possible values. `<ReferenceInput>` calls `dataProvider.getList()` using the search term as filter, using the format `filter: { q: [search term] }`.
@@ -340,6 +340,64 @@ const filterToQuery = searchText => ({ name_ilike: `%${searchText}%` });
     <AutocompleteInput filterToQuery={filterToQuery} />
 </ReferenceInput>
 ```
+
+## Creating a New Reference
+
+When users don't find the reference they are looking for in the list of possible values, they need to create a new reference. If they have to quit the current form to create the reference, they may lose the data they have already entered. So a common feature for `<ReferenceInput>` is to let users create a new reference on the fly.
+
+<iframe src="https://www.youtube-nocookie.com/embed/CIUp5MF6A1M" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;"></iframe>
+
+Children of `<ReferenceInput>` (`<AutocompleteInput>`, `<SelectInput>`, etc.) allow the creation of new choices via the `onCreate` prop. This displays a new "Create new" option in the list of choices. You can leverage this capability to create a new reference record.
+
+The following example is a contact edition form using a `<ReferenceInput>` to select the contact company. Its child `<AutocompleteInput onCreate>` allows to create a new company on the fly if it doesn't exist yet.
+
+```tsx
+export const ContactEdit = () => {
+    const [create] = useCreate();
+    const notify = useNotify();
+    const handleCreateCompany = async (companyName?: string) => {
+        if (!companyName) return;
+        try {
+            const newCompany = await create(
+                'companies',
+                { data: { name: companyName } },
+                { returnPromise: true }
+            );
+            return newCompany;
+        } catch (error) {
+            notify('An error occurred while creating the company', {
+                type: 'error',
+            });
+            throw(error);
+        }
+    };
+    return (
+        <Edit>
+            <SimpleForm>
+                <TextInput source="first_name" />
+                <TextInput source="last_name" />
+                <ReferenceInput source="company_id" reference="companies">
+                    <AutocompleteInput onCreate={handleCreateCompany} />
+                </ReferenceInput>
+            </SimpleForm>
+        </Edit>
+    );
+};
+```
+
+In the example above, the `handleCreateCompany` function creates a new company with the name provided by the user, and returns it so that `<AutocompleteInput>` selects it.
+
+You can learn more about the `onCreate` prop in the documentation of the selection input components:
+
+- [`<AutocompleteInput onCreate>`](./AutocompleteInput.md#oncreate)
+- [`<SelectInput onCreate>`](./SelectInput.md#oncreate)
+
+If you need to ask the user for more details about the new reference, you display a custom element (e.g. a dialog) when the user selects the "Create" option. use the `create` prop for that instead of `onCreate`.
+
+You can learn more about the `create` prop in the documentation of the selection input components:
+
+- [`<AutocompleteInput create>`](./AutocompleteInput.md#create)
+- [`<SelectInput create>`](./SelectInput.md#create)
 
 ## Tree Structure
 

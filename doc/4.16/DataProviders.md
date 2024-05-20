@@ -250,6 +250,8 @@ const App = () => (
 **Tip**: For TypeScript users, here is a typed version of the `fetchJson` function:
 
 ```ts
+import { fetchUtils } from "react-admin";
+
 const fetchJson = (url: string, options: fetchUtils.Options = {}) => {
     const customHeaders = (options.headers ||
         new Headers({
@@ -416,6 +418,8 @@ export default App;
 ## Combining Data Providers
 
 If you need to build an app relying on more than one API, you may face a problem: the `<Admin>` component accepts only one `dataProvider` prop. You can combine multiple data providers into one using the `combineDataProviders` helper. It expects a function as parameter accepting a resource name and returning a data provider for that resource.
+
+<iframe src="https://www.youtube-nocookie.com/embed/x9EZk0i6VHw" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;"></iframe>
 
 For instance, the following app uses `ra-data-simple-rest` for the `posts` and `comments` resources,  and `ra-data-local-storage` for the `user` resource:
 
