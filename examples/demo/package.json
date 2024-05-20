@@ -18,7 +18,7 @@
         "graphql-tag": "^2.12.6",
         "inflection": "^3.0.0",
         "json-graphql-server": "~3.0.1",
-        "query-string": "^7.1.1",
+        "query-string": "^9.0.0",
         "ra-data-fakerest": "^5.0.0-alpha.0",
         "ra-data-graphql": "^5.0.0-alpha.0",
         "ra-data-graphql-simple": "^5.0.0-alpha.0",

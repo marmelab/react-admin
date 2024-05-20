@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 // @ts-ignore
-import { parse } from 'query-string';
+import queryString from 'query-string';
 import { useLocation, Location } from 'react-router-dom';
 import { UseMutationOptions } from '@tanstack/react-query';
 
@@ -240,7 +240,7 @@ export const getRecordFromLocation = ({ state, search }: Location) => {
     }
     if (search) {
         try {
-            const searchParams = parse(search);
+            const searchParams = queryString.parse(search);
             if (searchParams.source) {
                 if (Array.isArray(searchParams.source)) {
                     console.error(

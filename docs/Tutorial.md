@@ -1029,7 +1029,7 @@ The code for a Data Provider for the `my.api.url` API is as follows:
 ```tsx
 // in src/dataProvider.ts
 import { DataProvider, fetchUtils } from "react-admin";
-import { stringify } from "query-string";
+import queryString from "query-string";
 
 const apiUrl = 'https://my.api.com/';
 const httpClient = fetchUtils.fetchJson;
@@ -1043,7 +1043,7 @@ export const dataProvider: DataProvider = {
             range: JSON.stringify([(page - 1) * perPage, page * perPage - 1]),
             filter: JSON.stringify(params.filter),
         };
-        const url = `${apiUrl}/${resource}?${stringify(query)}`;
+        const url = `${apiUrl}/${resource}?${queryString.stringify(query)}`;
 
         return httpClient(url).then(({ headers, json }) => ({
             data: json,
@@ -1060,7 +1060,7 @@ export const dataProvider: DataProvider = {
         const query = {
             filter: JSON.stringify({ id: params.ids }),
         };
-        const url = `${apiUrl}/${resource}?${stringify(query)}`;
+        const url = `${apiUrl}/${resource}?${queryString.stringify(query)}`;
         return httpClient(url).then(({ json }) => ({ data: json }));
     },
 
@@ -1075,7 +1075,7 @@ export const dataProvider: DataProvider = {
                 [params.target]: params.id,
             }),
         };
-        const url = `${apiUrl}/${resource}?${stringify(query)}`;
+        const url = `${apiUrl}/${resource}?${queryString.stringify(query)}`;
 
         return httpClient(url).then(({ headers, json }) => ({
             data: json,
@@ -1093,7 +1093,7 @@ export const dataProvider: DataProvider = {
         const query = {
             filter: JSON.stringify({ id: params.ids}),
         };
-        return httpClient(`${apiUrl}/${resource}?${stringify(query)}`, {
+        return httpClient(`${apiUrl}/${resource}?${queryString.stringify(query)}`, {
             method: 'PUT',
             body: JSON.stringify(params.data),
         }).then(({ json }) => ({ data: json }));
@@ -1116,7 +1116,7 @@ export const dataProvider: DataProvider = {
         const query = {
             filter: JSON.stringify({ id: params.ids}),
         };
-        return httpClient(`${apiUrl}/${resource}?${stringify(query)}`, {
+        return httpClient(`${apiUrl}/${resource}?${queryString.stringify(query)}`, {
             method: 'DELETE',
         }).then(({ json }) => ({ data: json }));
     }
