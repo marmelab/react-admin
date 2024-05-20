@@ -257,7 +257,7 @@ Or, if you want to customize it just for this `<AutocompleteInput>`, use the `cr
     source="author"
     choices={authors}
     onCreate={onCreate}
-    createItemLabel="Add a new author %{item}"
+    createItemLabel="Add a new author: %{item}"
 />
 ```
 
