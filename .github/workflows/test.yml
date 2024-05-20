@@ -1,6 +1,6 @@
-name: "Test - action"
+name: 'Test - action'
 
-on: 
+on:
   push:
     branches:
       - master
@@ -17,9 +17,9 @@ jobs:
       uses: actions/setup-node@v4
       with:
         node-version: '18.x'
-    - uses: bahmutov/npm-install@v1
-      with:
-        install-command: yarn --immutable
+        cache: 'yarn'
+    - name: Install dependencies
+      run: yarn
     - name: Lint
       run: make lint        
     - name: Build
@@ -30,70 +30,70 @@ jobs:
   doc-check:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout
-      uses: actions/checkout@v4  
-    - name: Jekyll build
-      run: docker run -v="${PWD}/docs:/site" bretfisher/jekyll build
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Jekyll build
+        run: docker run -v="${PWD}/docs:/site" bretfisher/jekyll build
 
   unit-test:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout
-      uses: actions/checkout@v4
-    - name: Use Node.js LTS
-      uses: actions/setup-node@v4
-      with:
-        node-version: '18.x'
-    - uses: bahmutov/npm-install@v1
-      with:
-        install-command: yarn --immutable
-    - name: Unit Tests
-      run: make test-unit
-      env:
-        CI: true
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Use Node.js LTS
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18.x'
+          cache: 'yarn'
+      - name: Install dependencies
+        run: yarn
+      - name: Unit Tests
+        run: make test-unit
+        env:
+          CI: true
 
   e2e-test:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout
-      uses: actions/checkout@v4
-    - name: Use Node.js LTS
-      uses: actions/setup-node@v4
-      with:
-        node-version: '18.x'
-    - uses: bahmutov/npm-install@v1
-      with:
-        install-command: yarn --immutable
-    - name: e2e Tests
-      run: make test-e2e
-      env:
-        CI: true
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Use Node.js LTS
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18.x'
+          cache: 'yarn'
+      - name: Install dependencies
+        run: yarn
+      - name: e2e Tests
+        run: make test-e2e
+        env:
+          CI: true
 
   e-commerce:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout
-      uses: actions/checkout@v4
-    - name: Use Node.js LTS
-      uses: actions/setup-node@v4
-      with:
-        node-version: '18.x'
-    - uses: bahmutov/npm-install@v1
-      with:
-        install-command: yarn --immutable
-    - name: Build
-      run: make build
-    - name: Build e-commerce
-      run: make build-demo
-      env:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Use Node.js LTS
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18.x'
+          cache: 'yarn'
+      - name: Install dependencies
+        run: yarn
+      - name: Build
+        run: make build
+      - name: Build e-commerce
+        run: make build-demo
+        env:
           # Needed as workaround for Vite https://github.com/vitejs/vite/issues/2433#issuecomment-831399876
           # value = (your memory in GiB, 6.51 for GH Actions) * 1024 - 512
           NODE_OPTIONS: '--max-old-space-size=6163'
-    - name: Zip demo build
-      run: zip demo-build.zip -r examples/demo/dist examples/demo/package.json
-    - name: Upload demo build artifact
-      uses: actions/upload-artifact@v4
-      with:
+      - name: Zip demo build
+        run: zip demo-build.zip -r examples/demo/dist examples/demo/package.json
+      - name: Upload demo build artifact
+        uses: actions/upload-artifact@v4
+        with:
           name: demo-build
           path: demo-build.zip
           retention-days: 1
@@ -101,19 +101,19 @@ jobs:
   crm:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout
-      uses: actions/checkout@v4
-    - name: Use Node.js LTS
-      uses: actions/setup-node@v4
-      with:
-        node-version: '18.x'
-    - uses: bahmutov/npm-install@v1
-      with:
-        install-command: yarn --immutable
-    - name: Build
-      run: make build
-    - name: Build crm
-      run: make build-crm
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Use Node.js LTS
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18.x'
+          cache: 'yarn'
+      - name: Install dependencies
+        run: yarn
+      - name: Build
+        run: make build
+      - name: Build crm
+        run: make build-crm
 
   greenframe:
     runs-on: ubuntu-latest
@@ -127,10 +127,17 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 2 # Fetch HEAD^ to enable git comparison
+      - name: Use Node.js LTS
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18.x'
+          cache: 'yarn'
+      - name: Install dependencies
+        run: yarn
       - name: Download demo build
         uses: actions/download-artifact@v3
         with:
-            name: demo-build
+          name: demo-build
       - name: Unzip demo build
         run: unzip -o -u demo-build.zip
       - name: Run e-commerce
@@ -153,9 +160,9 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '18.x'
-      - uses: bahmutov/npm-install@v1
-        with:
-          install-command: yarn --immutable
+          cache: 'yarn'
+      - name: Install dependencies
+        run: yarn
       - name: Build create-react-admin
         run: make build-create-react-admin install
       - name: Create new project
