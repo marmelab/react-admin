@@ -83,12 +83,82 @@ Check [the `ra-tree` documentation](https://react-admin-ee.marmelab.com/document
 | `lazy`               | Optional | `boolean`              | `false` | To only load children when they are expanded                                                   |
 | `motion`             | Optional | `boolean`              | `false` | To enable [rc-tree's `<Tree>`](https://github.com/react-component/tree#tree-props) transitions |
 | `nodeActions`        | Optional | `ReactNode`            | -       | To customize the default dropdown action                                                       |
+| `show`               | Required | `ReactNode`            | -       | The show page of your ressource                                                                |
 | `showLine`           | Optional | `boolean`              | `false` | Shows a connecting line                                                                        |
+| `sx`                 | Optional | `SxProps`              | -       | Material UI shortcut for defining custom styles                                                |
 | `title`              | Optional | `string`               | -       | The title to display in the App Bar                                                            |
 | `titleField`         | Optional | `string`               | `title` | To set the record field to display in the tree                                                 |
-| `sx`                 | Optional | `SxProps`              | -       | Material UI shortcut for defining custom styles                                                |
 
 `<TreeWithDetails>` also accepts the [rc-tree](https://tree-react-component.vercel.app/) props.
+
+## `create` / `edit` / `show`
+
+If you want to give users access to the `create`, `edit` and/or `show` view. You can create and add them to your `<TreeWithDetails>`
+
+```tsx
+import {
+    EditButton,
+    Labeled,
+    SimpleForm,
+    TextField,
+    TextInput,
+    TopToolbar,
+} from 'react-admin';
+import {
+    AddChildButton,
+    CreateNode,
+    EditNode,
+    EditNodeToolbar,
+    ShowNode,
+    TreeWithDetails,
+} from '@react-admin/ra-tree';
+
+const NodeShowAction = () => (
+    <TopToolbar>
+        <EditButton />
+        <AddChildButton />
+    </TopToolbar>
+);
+
+const CategoriesShow = () => (
+    <ShowNode actions={<NodeShowAction />}>
+        <SimpleForm>
+            <Labeled label="Id">
+                <TextField source="id" />
+            </Labeled>
+            <Labeled label="Title">
+                <TextField source="title" />
+            </Labeled>
+        </SimpleForm>
+    </ShowNode>
+);
+
+const CategoriesEdit = () => (
+    <EditNode>
+        <SimpleForm toolbar={<EditNodeToolbar />}>
+            <TextField source="id" label="id" />
+            <TextInput source="title" />
+        </SimpleForm>
+    </EditNode>
+);
+
+const CategoriesCreate = () => (
+    <CreateNode>
+        <SimpleForm>
+            <TextInput source="title" />
+        </SimpleForm>
+    </CreateNode>
+);
+
+export const CategoriesList = () => (
+    <TreeWithDetails
+        linkTo="show"
+        show={CategoriesShow}
+        edit={CategoriesEdit}
+        create={CategoriesCreate}
+    />
+);
+```
 
 ## `allowMultipleRoots`
 
@@ -122,10 +192,6 @@ export const CategoriesList = () => (
 
 **Tip**: You can hide the add root button completely by passing `false` to `addRootButton` prop
 
-## `create`
-
-TODO
-
 ## `draggable`
 
 If you want to allow user to reorder nodes in the tree, simply add the `draggable` prop to the `<TreeWithDetails>` component:
@@ -133,10 +199,6 @@ If you want to allow user to reorder nodes in the tree, simply add the `draggabl
 ```tsx
 export const CategoriesList = () => <TreeWithDetails draggable />;
 ```
-
-## `edit`
-
-TODO
 
 ## `hideRootNodes`
 
