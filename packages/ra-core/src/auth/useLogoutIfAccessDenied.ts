@@ -44,8 +44,11 @@ const useLogoutIfAccessDenied = (): LogoutIfAccessDenied => {
     const notify = useNotify();
     const navigate = useNavigate();
     const logoutIfAccessDenied = useCallback(
-        (error?: any) =>
-            authProvider
+        (error?: any) => {
+            if (!authProvider) {
+                return logoutIfAccessDeniedWithoutProvider();
+            }
+            return authProvider
                 .checkError(error)
                 .then(() => false)
                 .catch(async e => {
@@ -110,12 +113,11 @@ const useLogoutIfAccessDenied = (): LogoutIfAccessDenied => {
                     }
 
                     return true;
-                }),
+                });
+        },
         [authProvider, logout, notify, navigate]
     );
-    return authProvider
-        ? logoutIfAccessDenied
-        : logoutIfAccessDeniedWithoutProvider;
+    return logoutIfAccessDenied;
 };
 
 const logoutIfAccessDeniedWithoutProvider = () => Promise.resolve(false);
