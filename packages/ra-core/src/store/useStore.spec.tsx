@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { renderHook } from '@testing-library/react';
 
 import { useStore } from './useStore';
@@ -63,10 +63,12 @@ describe('useStore', () => {
         expect(unsubscribe).toHaveBeenCalled();
     });
 
-    it('should allow to set values', () => {
+    it('should allow to set values', async () => {
         const { result } = renderHook(() => useStore('foo.bar'));
-        result.current[1]('hello');
-        expect(result.current[0]).toBe('hello');
+        await waitFor(() => {
+            result.current[1]('hello');
+            expect(result.current[0]).toBe('hello');
+        });
     });
 
     it('should update all components using the same store key on update', () => {
@@ -105,7 +107,7 @@ describe('useStore', () => {
         screen.getByText('hello');
     });
 
-    it('should accept an updater function as parameter', () => {
+    it('should accept an updater function as parameter', async () => {
         const { result } = renderHook(() => useStore('foo.bar'));
         result.current[1]('hello');
         let innerValue;
@@ -113,7 +115,9 @@ describe('useStore', () => {
             innerValue = value;
             return 'world';
         });
-        expect(innerValue).toBe('hello');
+        await waitFor(() => {
+            expect(innerValue).toBe('hello');
+        });
         expect(result.current[0]).toBe('world');
     });
 
