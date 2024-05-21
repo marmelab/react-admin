@@ -351,3 +351,34 @@ export const ProductEdit = () => (
   <source src="./img/ReferenceNodeInput-TreeInput-basic.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
+
+## Insert as first child
+
+By default, when users add a new child to a node, the child is inserted as the _last child_ of the parent node. You can force new children to be added as _first child_ instead, by setting the `insertAsFirstChild` prop in the `<AddChildButton>`, as follows:
+
+```tsx
+// in src/posts.js
+import { TopToolbar } from 'react-admin';
+import {
+    AddChildButton,
+    EditNode,
+    TreeWithDetails,
+} from '@react-admin/ra-tree';
+
+const NodeEditActions = () => (
+    <TopToolbar>
+        <AddChildButton label="Add child at top" insertAsFirstChild />
+    </TopToolbar>
+);
+
+const CategoriesEdit = () => (
+    <EditNode actions={<NodeEditActions />}>...</EditNode>
+);
+
+export const CategoriesList = () => (
+    <TreeWithDetails edit={CategoriesEdit}>...</TreeWithDetails>
+);
+```
+
+**Note**: `dataProvider.addChildNode()` must support the `position` param for this feature to work. See the [`dataProvider` section](https://react-admin-ee.marmelab.com/documentation/ra-tree#dataprovider) for details.
+
