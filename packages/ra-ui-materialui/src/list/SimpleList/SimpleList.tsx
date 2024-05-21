@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { isElement } from 'react-is';
 import { styled } from '@mui/material/styles';
 import type { SxProps } from '@mui/material';
 import { isValidElement, ReactNode, ReactElement } from 'react';
@@ -163,7 +162,7 @@ export const SimpleList = <RecordType extends RaRecord = any>(
                                                       ...record,
                                                       _: primaryText,
                                                   })
-                                                : isElement(primaryText)
+                                                : isValidElement(primaryText)
                                                 ? primaryText
                                                 : // @ts-ignore
                                                   primaryText(record, record.id)
@@ -187,7 +186,7 @@ export const SimpleList = <RecordType extends RaRecord = any>(
                                                                   _: tertiaryText,
                                                               }
                                                           )
-                                                        : isElement(
+                                                        : isValidElement(
                                                               tertiaryText
                                                           )
                                                         ? tertiaryText
@@ -207,7 +206,7 @@ export const SimpleList = <RecordType extends RaRecord = any>(
                                               ...record,
                                               _: secondaryText,
                                           })
-                                        : isElement(secondaryText)
+                                        : isValidElement(secondaryText)
                                         ? secondaryText
                                         : // @ts-ignore
                                           secondaryText(record, record.id))
