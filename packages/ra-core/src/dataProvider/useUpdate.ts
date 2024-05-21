@@ -367,11 +367,13 @@ export const useUpdate = <RecordType extends RaRecord = any, ErrorType = Error>(
             if (returnPromise) {
                 return mutation.mutateAsync(
                     { resource: callTimeResource, ...callTimeParams },
+                    // We don't pass onError and onSettled here as we will call them in the useMutation hook side effects
                     { onSuccess, ...otherCallTimeOptions }
                 );
             }
             return mutation.mutate(
                 { resource: callTimeResource, ...callTimeParams },
+                // We don't pass onError and onSettled here as we will call them in the useMutation hook side effects
                 { onSuccess, ...otherCallTimeOptions }
             );
         }
@@ -462,6 +464,7 @@ export const useUpdate = <RecordType extends RaRecord = any, ErrorType = Error>(
             // call the mutate method without success side effects
             return mutation.mutate({
                 resource: callTimeResource,
+                // We don't pass onError and onSettled here as we will call them in the useMutation hook side effects
                 ...callTimeParams,
             });
         } else {
