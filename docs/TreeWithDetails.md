@@ -287,7 +287,9 @@ The menu item will receive the current record and the resource.
 
 ## `showLine`
 
-TODO
+By default `ra-tree` applied a `react-admin`'s style. To keep native icons you can set `showLine` to `true` as this Tree:
+
+![showLine Tree](./assets/show-line-tree.png)
 
 ## `title`
 
