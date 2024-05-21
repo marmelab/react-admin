@@ -3,7 +3,6 @@ import { styled } from '@mui/material/styles';
 import get from 'lodash/get';
 import Typography from '@mui/material/Typography';
 import { useFieldValue, useTranslate } from 'ra-core';
-import { Call, Objects } from 'hotscript';
 
 import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
 import { FieldProps } from './types';
@@ -24,116 +23,114 @@ import { Link } from '@mui/material';
  * </div>
  */
 export const FileField = <
-    RecordType extends Record<string, any> = Record<string, any>
+  RecordType extends Record<string, any> = Record<string, any>
 >(
-    props: FileFieldProps<RecordType>
+  props: FileFieldProps<RecordType>
 ) => {
-    const {
-        className,
-        emptyText,
-        title,
-        src,
-        target,
-        download,
-        ping,
-        rel,
-        ...rest
-    } = props;
-    const sourceValue = useFieldValue(props);
-    const titleValue =
-        useFieldValue({
-            ...props,
-            // @ts-ignore We ignore here because title might be a custom label or undefined instead of a field name
-            source: title,
-        })?.toString() ?? title;
-    const translate = useTranslate();
+  const {
+    className,
+    emptyText,
+    title,
+    src,
+    target,
+    download,
+    ping,
+    rel,
+    ...rest
+  } = props;
+  const sourceValue = useFieldValue(props);
+  const titleValue =
+    useFieldValue({
+      ...props,
+      // @ts-ignore We ignore here because title might be a custom label or undefined instead of a field name
+      source: title,
+    })?.toString() ?? title;
+  const translate = useTranslate();
 
-    if (!sourceValue) {
-        return emptyText ? (
-            <Typography
-                component="span"
-                variant="body2"
-                className={className}
-                {...sanitizeFieldRestProps(rest)}
-            >
-                {emptyText && translate(emptyText, { _: emptyText })}
-            </Typography>
-        ) : (
-            <Root className={className} {...sanitizeFieldRestProps(rest)} />
-        );
-    }
+  if (!sourceValue) {
+    return emptyText ? (
+      <Typography
+        component="span"
+        variant="body2"
+        className={className}
+        {...sanitizeFieldRestProps(rest)}
+      >
+        {emptyText && translate(emptyText, { _: emptyText })}
+      </Typography>
+    ) : (
+      <Root className={className} {...sanitizeFieldRestProps(rest)} />
+    );
+  }
 
-    if (Array.isArray(sourceValue)) {
-        return (
-            <StyledList className={className} {...sanitizeFieldRestProps(rest)}>
-                {sourceValue.map((file, index) => {
-                    const fileTitleValue = title
-                        ? get(file, title, title)
-                        : title;
-                    const srcValue = src ? get(file, src, title) : title;
-
-                    return (
-                        <li key={index}>
-                            <Link
-                                href={srcValue}
-                                title={fileTitleValue}
-                                target={target}
-                                download={download}
-                                ping={ping}
-                                rel={rel}
-                                variant="body2"
-                                onClick={e => e.stopPropagation()}
-                            >
-                                {fileTitleValue}
-                            </Link>
-                        </li>
-                    );
-                })}
-            </StyledList>
-        );
-    }
-
+  if (Array.isArray(sourceValue)) {
     return (
-        <Root className={className} {...sanitizeFieldRestProps(rest)}>
-            <Link
-                href={sourceValue?.toString()}
-                title={titleValue}
+      <StyledList className={className} {...sanitizeFieldRestProps(rest)}>
+        {sourceValue.map((file, index) => {
+          const fileTitleValue = title
+            ? get(file, title, title)
+            : title;
+          const srcValue = src ? get(file, src, title) : title;
+
+          return (
+            <li key={index}>
+              <Link
+                href={srcValue}
+                title={fileTitleValue}
                 target={target}
                 download={download}
                 ping={ping}
                 rel={rel}
                 variant="body2"
-            >
-                {titleValue}
-            </Link>
-        </Root>
+                onClick={e => e.stopPropagation()}
+              >
+                {fileTitleValue}
+              </Link>
+            </li>
+          );
+        })}
+      </StyledList>
     );
+  }
+
+  return (
+    <Root className={className} {...sanitizeFieldRestProps(rest)}>
+      <Link
+        href={sourceValue?.toString()}
+        title={titleValue}
+        target={target}
+        download={download}
+        ping={ping}
+        rel={rel}
+        variant="body2"
+      >
+        {titleValue}
+      </Link>
+    </Root>
+  );
 };
 
 export interface FileFieldProps<
-    RecordType extends Record<string, any> = Record<string, any>
+  RecordType extends Record<string, any> = Record<string, any>
 > extends FieldProps<RecordType> {
-    src?: string;
-    title?: Call<Objects.AllPaths, RecordType> extends never
-        ? AnyString
-        : Call<Objects.AllPaths, RecordType> | AnyString;
-    target?: string;
-    download?: boolean | string;
-    ping?: string;
-    rel?: string;
-    sx?: SxProps;
+  src?: string;
+  title?: keyof RecordType extends never ? AnyString : keyof RecordType | AnyString;
+  target?: string;
+  download?: boolean | string;
+  ping?: string;
+  rel?: string;
+  sx?: SxProps;
 }
 type AnyString = string & {};
 
 const PREFIX = 'RaFileField';
 
 const Root = styled('div', {
-    name: PREFIX,
-    overridesResolver: (props, styles) => styles.root,
+  name: PREFIX,
+  overridesResolver: (props, styles) => styles.root,
 })({
-    display: 'inline-block',
+  display: 'inline-block',
 });
 
 const StyledList = styled('ul')({
-    display: 'inline-block',
+  display: 'inline-block',
 });

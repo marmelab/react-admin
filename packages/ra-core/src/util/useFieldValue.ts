@@ -1,5 +1,4 @@
 import get from 'lodash/get';
-import { Call, Objects } from 'hotscript';
 import { useRecordContext } from '../controller';
 import { useSourceContext } from '../core';
 
@@ -18,30 +17,29 @@ import { useSourceContext } from '../core';
  * }
  */
 export const useFieldValue = <
-    RecordType extends Record<string, any> = Record<string, any>
+  RecordType extends Record<string, any> = Record<string, any>
 >(
-    params: UseFieldValueOptions<RecordType>
+  params: UseFieldValueOptions<RecordType>
 ) => {
-    const { defaultValue, source } = params;
-    const sourceContext = useSourceContext();
-    const record = useRecordContext<RecordType>(params);
+  const { defaultValue, source } = params;
+  const sourceContext = useSourceContext();
+  const record = useRecordContext<RecordType>(params);
 
-    return get(
-        record,
-        sourceContext?.getSource(source) ?? source,
-        defaultValue
-    );
+  return get(
+    record,
+    sourceContext?.getSource(source) ?? source,
+    defaultValue
+  );
 };
 
 export interface UseFieldValueOptions<
-    RecordType extends Record<string, any> = Record<string, any>
+  RecordType extends Record<string, any> = Record<string, any>
 > {
-    // FIXME: Find a way to throw a type error when defaultValue is not of RecordType[Source] type
-    defaultValue?: any;
-    source: Call<Objects.AllPaths, RecordType> extends never
-        ? AnyString
-        : Call<Objects.AllPaths, RecordType>;
-    record?: RecordType;
+  // FIXME: Find a way to throw a type error when defaultValue is not of RecordType[Source] type
+  defaultValue?: any;
+
+  source?: keyof RecordType extends never ? AnyString : keyof RecordType;
+  record?: RecordType;
 }
 
 type AnyString = string & {};
