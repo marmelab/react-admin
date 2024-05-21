@@ -90,6 +90,21 @@ Check [the `ra-tree` documentation](https://react-admin-ee.marmelab.com/document
 
 `<TreeWithDetails>` also accepts the [rc-tree](https://tree-react-component.vercel.app/) props.
 
+## `allowMultipleRoots`
+
+By default, this package allows only one root per tree. You can allow trees with multiple roots by setting the `allowMultipleRoots` prop:
+
+```tsx
+export const CategoriesList = (props: ListProps) => (
+    <TreeWithDetails
+        create={CategoriesCreate}
+        edit={CategoriesEdit}
+        allowMultipleRoots
+        {...props}
+    />
+);
+```
+
 ## `addRootButton`
 
 When `allowMultipleRoots` is set to `true` or there are no root nodes in the tree, a button is displayed to allow the user to add root nodes. You can pass your own button component using `addRootButton` prop:
@@ -106,10 +121,6 @@ export const CategoriesList = () => (
 ```
 
 **Tip**: You can hide the add root button completely by passing `false` to `addRootButton` prop
-
-## `allowMultipleRoots`
-
-TODO
 
 ## `create`
 
