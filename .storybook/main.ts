@@ -1,25 +1,27 @@
-const fs = require('fs');
-const path = require('path');
+import { StorybookConfig } from '@storybook/react-webpack5';
+import fs from 'fs';
+import path from 'path';
+
 const packages = fs.readdirSync(path.resolve(__dirname, '../packages'));
-module.exports = {
+
+const config: StorybookConfig = {
     stories: [`../packages/${process.env.ONLY || '**'}/**/*.stories.@(tsx)`],
     addons: [
         {
             name: '@storybook/addon-storysource',
             options: {
                 loaderOptions: {
-                    injectStoryParameters: false,
                     parser: 'typescript',
                 },
             },
         },
         '@storybook/addon-actions',
         '@storybook/addon-controls',
+        '@storybook/addon-webpack5-compiler-swc',
     ],
     typescript: {
         check: false,
-        checkOptions: {},
-        reactDocgen: 'none',
+        reactDocgen: false,
     },
     babel: async options => {
         const { plugins = [] } = options;
@@ -71,11 +73,10 @@ module.exports = {
             },
         };
     },
-    framework: {
-        name: '@storybook/react-webpack5',
-        options: {},
-    },
+    framework: { name: '@storybook/react-webpack5', options: {} },
     docs: {
         autodocs: false,
     },
 };
+
+export default config;
