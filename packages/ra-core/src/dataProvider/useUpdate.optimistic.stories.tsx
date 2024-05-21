@@ -85,7 +85,7 @@ export const ErrorCase = ({ timeout = 1000 }) => {
                 data: posts.find(p => p.id === params.id),
             });
         },
-        update: (resource, params) => {
+        update: () => {
             return new Promise((resolve, reject) => {
                 setTimeout(() => {
                     reject(new Error('something went wrong'));
@@ -238,7 +238,7 @@ export const WithMiddlewaresError = ({ timeout = 1000 }) => {
                 data: posts.find(p => p.id === params.id),
             });
         },
-        update: (resource, params) => {
+        update: () => {
             return new Promise((resolve, reject) => {
                 setTimeout(() => {
                     reject(new Error('something went wrong'));
