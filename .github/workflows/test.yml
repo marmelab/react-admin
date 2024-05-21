@@ -46,6 +46,12 @@ jobs:
         cache: 'yarn'
     - name: Install dependencies
       run: yarn
+    - name: Download packages build artifact
+      uses: actions/download-artifact@v3
+      with:
+        name: packages-build
+    - name: Unzip packages build artifact
+      run: unzip -o -u packages-build.zip
     - name: Type check simple example
       run: cd examples/simple && yarn type-check
 
