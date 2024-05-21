@@ -58,8 +58,11 @@ export const useMutationMiddlewares = <
         []
     );
 
-    const getMutateWithMiddlewares = useCallback((fn: MutateFunc) => {
-        return (...args: Parameters<MutateFunc>): ReturnType<MutateFunc> => {
+    const mutateWithMiddlewares = useCallback(
+        (
+            fn: MutateFunc,
+            ...args: Parameters<MutateFunc>
+        ): ReturnType<MutateFunc> => {
             let index = callbacks.current.length - 1;
 
             // Called by middlewares to call the next middleware function
@@ -84,18 +87,19 @@ export const useMutationMiddlewares = <
             }
 
             return fn(...args);
-        };
-    }, []);
+        },
+        []
+    );
 
     const functions = useMemo<UseMutationMiddlewaresResult<MutateFunc>>(
         () => ({
             registerMutationMiddleware,
-            getMutateWithMiddlewares,
+            mutateWithMiddlewares,
             unregisterMutationMiddleware,
         }),
         [
             registerMutationMiddleware,
-            getMutateWithMiddlewares,
+            mutateWithMiddlewares,
             unregisterMutationMiddleware,
         ]
     );
@@ -107,9 +111,10 @@ export interface UseMutationMiddlewaresResult<
     MutateFunc extends (...args: any[]) => any = (...args: any[]) => any
 > {
     registerMutationMiddleware: (callback: Middleware<MutateFunc>) => void;
-    getMutateWithMiddlewares: (
-        mutate: MutateFunc
-    ) => (...args: Parameters<MutateFunc>) => ReturnType<MutateFunc>;
+    mutateWithMiddlewares: (
+        mutate: MutateFunc,
+        ...args: Parameters<MutateFunc>
+    ) => ReturnType<MutateFunc>;
     unregisterMutationMiddleware: (callback: Middleware<MutateFunc>) => void;
 }
 

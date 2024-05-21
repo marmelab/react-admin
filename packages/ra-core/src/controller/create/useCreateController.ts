@@ -84,7 +84,7 @@ export const useCreateController = <
     } = mutationOptions;
     const {
         registerMutationMiddleware,
-        getMutateWithMiddlewares,
+        mutateWithMiddlewares,
         unregisterMutationMiddleware,
     } = useMutationMiddlewares();
 
@@ -139,7 +139,7 @@ export const useCreateController = <
         },
         ...otherMutationOptions,
         returnPromise: true,
-        getMutateMiddlewares: getMutateWithMiddlewares,
+        mutateWithMiddlewares,
     });
 
     const save = useCallback(
