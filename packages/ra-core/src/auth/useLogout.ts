@@ -118,13 +118,15 @@ const useLogout = (): Logout => {
                         return redirectToFromProvider;
                     });
             } else {
-                navigate(
+                navigateRef.current(
                     {
                         pathname: loginUrl,
                     },
                     {
                         state: {
-                            nextPathname: location && location.pathname,
+                            nextPathname:
+                                locationRef.current &&
+                                locationRef.current.pathname,
                         },
                     }
                 );
@@ -133,7 +135,7 @@ const useLogout = (): Logout => {
                 return Promise.resolve();
             }
         },
-        [authProvider, resetStore, loginUrl, queryClient, location, navigate]
+        [authProvider, resetStore, loginUrl, queryClient]
     );
 
     return logout;
