@@ -13,13 +13,11 @@ export const SuccessCase = ({ timeout = 1000 }) => {
     const posts = [{ id: 1, title: 'Hello', author: 'John Doe' }];
     const dataProvider = {
         getOne: (resource, params) => {
-            console.log('getOne', resource, params);
             return Promise.resolve({
                 data: posts.find(p => p.id === params.id),
             });
         },
         update: (resource, params) => {
-            console.log('update', resource, params);
             return new Promise(resolve => {
                 setTimeout(() => {
                     const post = posts.find(p => p.id === params.id);
@@ -112,13 +110,11 @@ export const ErrorCase = ({ timeout = 1000 }) => {
     const posts = [{ id: 1, title: 'Hello', author: 'John Doe' }];
     const dataProvider = {
         getOne: (resource, params) => {
-            console.log('getOne', resource, params);
             return Promise.resolve({
                 data: posts.find(p => p.id === params.id),
             });
         },
         update: (resource, params) => {
-            console.log('update', resource, params);
             return new Promise((resolve, reject) => {
                 setTimeout(() => {
                     reject(new Error('something went wrong'));
@@ -213,13 +209,11 @@ export const WithMiddlewaresSuccess = ({ timeout = 1000 }) => {
     const posts = [{ id: 1, title: 'Hello', author: 'John Doe' }];
     const dataProvider = {
         getOne: (resource, params) => {
-            console.log('getOne', resource, params);
             return Promise.resolve({
                 data: posts.find(p => p.id === params.id),
             });
         },
         update: (resource, params) => {
-            console.log('update', resource, params);
             return new Promise(resolve => {
                 setTimeout(() => {
                     const post = posts.find(p => p.id === params.id);
@@ -326,13 +320,11 @@ export const WithMiddlewaresError = ({ timeout = 1000 }) => {
     const posts = [{ id: 1, title: 'Hello', author: 'John Doe' }];
     const dataProvider = {
         getOne: (resource, params) => {
-            console.log('getOne', resource, params);
             return Promise.resolve({
                 data: posts.find(p => p.id === params.id),
             });
         },
         update: (resource, params) => {
-            console.log('update', resource, params);
             return new Promise((resolve, reject) => {
                 setTimeout(() => {
                     reject(new Error('something went wrong'));
