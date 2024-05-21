@@ -86,8 +86,9 @@ Check [the `ra-tree` documentation](https://react-admin-ee.marmelab.com/document
 | `showLine`           | Optional | `boolean`              | `false` | Shows a connecting line                                                                        |
 | `title`              | Optional | `string`               | -       | The title to display in the App Bar                                                            |
 | `titleField`         | Optional | `string`               | `title` | To set the record field to display in the tree                                                 |
+| `sx`                 | Optional | `SxProps`              | -       | Material UI shortcut for defining custom styles                                                |
 
-`<TreeWithDetails>` also accepts the [common input props](./Inputs.md#common-input-props) and the [rc-tree](https://tree-react-component.vercel.app/) props.
+`<TreeWithDetails>` also accepts the [rc-tree](https://tree-react-component.vercel.app/) props.
 
 ## `addRootButton`
 
