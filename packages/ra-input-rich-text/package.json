@@ -56,7 +56,7 @@
         "ra-data-fakerest": "^5.0.0-beta.0",
         "ra-ui-materialui": "^5.0.0-beta.0",
         "react": "rc",
-        "react-dom": "^18.2.0",
+        "react-dom": "rc",
         "react-hook-form": "^7.43.9",
         "rimraf": "^3.0.2",
         "tippy.js": "^6.3.7",
