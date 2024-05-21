@@ -22,9 +22,9 @@
         "react-router-dom": "^6.22.0"
     },
     "devDependencies": {
-        "@testing-library/jest-dom": "^6.1.4",
-        "@testing-library/react": "^14.1.2",
-        "@testing-library/user-event": "^14.5.1",
+        "@testing-library/jest-dom": "^6.4.5",
+        "@testing-library/react": "^15.0.7",
+        "@testing-library/user-event": "^14.5.2",
         "@types/faker": "^5.1.7",
         "@types/jest": "^29.5.2",
         "@types/lodash": "~4.14.168",

@@ -28,7 +28,7 @@
     },
     "devDependencies": {
         "@hookform/resolvers": "^3.2.0",
-        "@testing-library/react": "^14.1.2",
+        "@testing-library/react": "^15.0.7",
         "@types/jest": "^29.5.2",
         "@types/jscodeshift": "^0.11.11",
         "@types/node": "^20.10.7",
