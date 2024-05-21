@@ -24,8 +24,6 @@ jobs:
       run: make lint        
     - name: Build
       run: make build
-    - name: Type check simple example
-      run: cd examples/simple && yarn type-check
     - name: Zip packages build artifact
       run: zip packages-build.zip -r examples/data-generator/dist packages/*/dist
     - name: Upload packages build artifact
@@ -34,6 +32,22 @@ jobs:
         name: packages-build
         path: packages-build.zip
         retention-days: 1
+
+  simple-example-typecheck:
+    runs-on: ubuntu-latest
+    needs: [typecheck]
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    - name: Use Node.js LTS
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18.x'
+        cache: 'yarn'
+    - name: Install dependencies
+      run: yarn
+    - name: Type check simple example
+      run: cd examples/simple && yarn type-check
 
   doc-check:
     runs-on: ubuntu-latest
@@ -62,6 +76,7 @@ jobs:
 
   e2e-test:
     runs-on: ubuntu-latest
+    needs: [typecheck]
     steps:
       - name: Checkout
         uses: actions/checkout@v4
