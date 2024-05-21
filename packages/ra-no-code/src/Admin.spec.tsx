@@ -60,25 +60,25 @@ describe('Admin', () => {
         await waitFor(() => {
             screen.getByText('Customers', { selector: '#react-admin-title *' });
         });
-        screen.getByText('Id', { selector: 'th *' });
-        screen.getByText('First name', { selector: 'th *' });
-        screen.getByText('Last name', { selector: 'th *' });
-        screen.getByText('Email', { selector: 'th *' });
-        screen.getByText('Address', { selector: 'th *' });
-        screen.getByText('Zipcode', { selector: 'th *' });
-        screen.getByText('City', { selector: 'th *' });
-        screen.getByText('State abbr', { selector: 'th *' });
-        screen.getByText('Avatar', { selector: 'th *' });
-        screen.getByText('Birthday', { selector: 'th *' });
-        screen.getByText('First seen', { selector: 'th *' });
-        screen.getByText('Last seen', { selector: 'th *' });
-        screen.getByText('Has ordered', { selector: 'th *' });
-        screen.getByText('Latest purchase', { selector: 'th *' });
-        screen.getByText('Has newsletter', { selector: 'th *' });
-        screen.getByText('Nb commands', { selector: 'th *' });
-        screen.getByText('Total spent', { selector: 'th *' });
-        screen.getByText('Groups', { selector: 'th *' });
-        screen.getByText('1-10 of 10');
+        await screen.findByText('Id', { selector: 'th *' });
+        await screen.findByText('First name', { selector: 'th *' });
+        await screen.findByText('Last name', { selector: 'th *' });
+        await screen.findByText('Email', { selector: 'th *' });
+        await screen.findByText('Address', { selector: 'th *' });
+        await screen.findByText('Zipcode', { selector: 'th *' });
+        await screen.findByText('City', { selector: 'th *' });
+        await screen.findByText('State abbr', { selector: 'th *' });
+        await screen.findByText('Avatar', { selector: 'th *' });
+        await screen.findByText('Birthday', { selector: 'th *' });
+        await screen.findByText('First seen', { selector: 'th *' });
+        await screen.findByText('Last seen', { selector: 'th *' });
+        await screen.findByText('Has ordered', { selector: 'th *' });
+        await screen.findByText('Latest purchase', { selector: 'th *' });
+        await screen.findByText('Has newsletter', { selector: 'th *' });
+        await screen.findByText('Nb commands', { selector: 'th *' });
+        await screen.findByText('Total spent', { selector: 'th *' });
+        await screen.findByText('Groups', { selector: 'th *' });
+        await screen.findByText('1-10 of 10');
 
         fireEvent.click(
             screen.getAllByText('New resource', {
@@ -98,19 +98,19 @@ describe('Admin', () => {
         await waitFor(() => {
             screen.getByText('Orders', { selector: '#react-admin-title *' });
         });
-        screen.getByText('Id', { selector: 'th *' });
-        screen.getByText('Reference', { selector: 'th *' });
-        screen.getByText('Date', { selector: 'th *' });
-        screen.getByText('Customer', { selector: 'th *' });
-        screen.getByText('Basket product', { selector: 'th *' });
-        screen.getByText('Total ex taxes', { selector: 'th *' });
-        screen.getByText('Delivery fees', { selector: 'th *' });
-        screen.getByText('Tax rate', { selector: 'th *' });
-        screen.getByText('Taxes', { selector: 'th *' });
-        screen.getByText('Total', { selector: 'th *' });
-        screen.getByText('Status', { selector: 'th *' });
-        screen.getByText('Returned', { selector: 'th *' });
-        screen.getByText('1-5 of 5');
+        await screen.findByText('Id', { selector: 'th *' });
+        await screen.findByText('Reference', { selector: 'th *' });
+        await screen.findByText('Date', { selector: 'th *' });
+        await screen.findByText('Customer', { selector: 'th *' });
+        await screen.findByText('Basket product', { selector: 'th *' });
+        await screen.findByText('Total ex taxes', { selector: 'th *' });
+        await screen.findByText('Delivery fees', { selector: 'th *' });
+        await screen.findByText('Tax rate', { selector: 'th *' });
+        await screen.findByText('Taxes', { selector: 'th *' });
+        await screen.findByText('Total', { selector: 'th *' });
+        await screen.findByText('Status', { selector: 'th *' });
+        await screen.findByText('Returned', { selector: 'th *' });
+        await screen.findByText('1-5 of 5');
 
         fireEvent.click(
             screen.getAllByText('New resource', {
@@ -130,9 +130,7 @@ describe('Admin', () => {
         });
         fireEvent.click(screen.getByText('Import'));
 
-        await waitFor(() => {
-            screen.getByText('Orders', { selector: '#react-admin-title *' });
-            screen.getByText('1-10 of 12');
-        });
+        await screen.findByText('Orders', { selector: '#react-admin-title *' });
+        await screen.findByText('1-10 of 12');
     }, 10000);
 });
