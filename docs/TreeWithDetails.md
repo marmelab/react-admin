@@ -70,9 +70,240 @@ const App = () => (
 
 Check [the `ra-tree` documentation](https://react-admin-ee.marmelab.com/documentation/ra-tree#treewithdetails-component) for more details.
 
+## Props
+
+| Prop                 | Required | Type                   | Default | Description                                    |
+| -------------------- | -------- | ---------------------- | ------- | ---------------------------------------------- |
+| `addRootButton`      | Optional | `ReactNode` or `false` | -       | The create button to add a root node           |
+| `allowMultipleRoots` | Optional | `boolean`              | `false` | To allow trees with multiple roots             |
+| `create`             | Required | `ReactNode`            | -       | The create page of your ressource              |
+| `draggable`          | Optional | `boolean`              | `false` | To allow user to reorder nodes                 |
+| `edit`               | Required | `ReactNode`            | -       | The edit page of your ressource                |
+| `hideRootNodes`      | Optional | `boolean`              | `false` | To hide all root nodes                         |
+| `lazy`               | Optional | `boolean`              | `false` | To only load children when they are expanded   |
+| `motion`             | Optional | `boolean`              | `false` | To enable [rc-tree's `<Tree>`](https://github.com/react-component/tree#tree-props) transitions     |
+| `nodeActions`        | Optional | `ReactNode`            | -       | To customize the default dropdown action       |
+| `showLine`           | Optional | `boolean`              | `false` | Shows a connecting line                        |
+| `title`              | Optional | `string`               | -       | The title to display in the App Bar            |
+| `titleField`         | Optional | `string`               | `title` | To set the record field to display in the tree |
+
+`<TreeWithDetails>` also accepts the [common input props](./Inputs.md#common-input-props) and the [rc-tree](https://tree-react-component.vercel.app/) props.
+
+## `addRootButton`
+
+When `allowMultipleRoots` is set to `true` or there are no root nodes in the tree, a button is displayed to allow the user to add root nodes. You can pass your own button component using `addRootButton` prop:
+
+```tsx
+// in src/posts.js
+import { CreateButton } from 'react-admin';
+
+export const CategoriesList = () => (
+    <TreeWithDetails addRootButton={<CreateButton label="Add Categories!" />}>
+        ...
+    </TreeWithDetails>
+);
+```
+
+**Tip**: You can hide the add root button completely by passing `false` to `addRootButton` prop
+
+## `allowMultipleRoots`
+
+TODO
+
+## `create`
+
+TODO
+
+## `draggable`
+
+If you want to allow user to reorder nodes in the tree, simply add the `draggable` prop to the `<TreeWithDetails>` component:
+
+```tsx
+export const CategoriesList = () => <TreeWithDetails draggable />;
+```
+
+## `edit`
+
+TODO
+
+## `hideRootNodes`
+
+Sometimes, a tree only has one root node for technical reasons and users should probably not see it at all. Use the `hideRootNodes` prop to hide all root nodes.
+
+```tsx
+export const CategoriesList = () => <TreeWithDetails hideRootNodes />;
+```
+
+## `lazy`
+
+If you have a tree with a lot of nodes, you may want to only load the root nodes at first and their children when they are expanded. To enable this mode, set the `lazy` prop to `true`.
+
+<video controls autoplay playsinline muted loop>
+  <source src="./img/ra-tree-lazy.webm" type="video/webm"/>
+  <source src="./img/ra-tree-lazy.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
+**Important**: When using the `lazy` mode, you cannot use the 'undoable' [mutation mode](./Edit.md#mutationmode). Hence, you need to set the `mutationMode` prop to `'pessimistic'` or `'optimistic'` on `<EditNode>`.
+
+```tsx
+import React from 'react';
+import { Admin, Resource, SimpleForm, TextField, TextInput } from 'react-admin';
+
+import { EditNode, EditNodeToolbar, TreeWithDetails } from '@react-admin/ra-tree';
+import CategoriesCreate from '../CategoriesCreate';
+import i18nProvider from '../i18nProvider';
+import dataProvider from './dataProvider';
+
+const CategoriesEdit = () => (
+    <EditNode mutationMode="pessimistic">
+        <SimpleForm toolbar={<EditNodeToolbar />}>
+            <TextField source="id" />
+            <TextInput source="name" />
+        </SimpleForm>
+    </EditNode>
+);
+
+const CategoriesList = () => (
+    <TreeWithDetails
+        titleField="name"
+        edit={CategoriesEdit}
+        create={CategoriesCreate}
+        lazy
+    />
+);
+
+export const App = () => (
+    <Admin dataProvider={dataProvider} i18nProvider={i18nProvider}>
+        <Resource name="categories" list={CategoriesList} />
+    </Admin>
+);
+```
+
+## `motion`
+
+[rc-tree's `<Tree>`](https://github.com/react-component/tree#tree-props) allows to customize the transition effect used when expanding or collapsing a node. However, by default, these transition effects are **disabled** in react-admin, because they are known to cause issues with the expand on click feature.
+
+If you want to enable them, you can pass the `motion` prop to the `<TreeWithDetails>` component:
+
+```tsx
+export const CategoriesList = () => <TreeWithDetails motion />;
+```
+
+The `motion` prop also accepts a transition object, allowing you to customize the transition effect:
+
+{% raw %}
+```tsx
+import { TreeWithDetails } from '@react-admin/ra-tree';
+import { CSSProperties } from 'react';
+
+const myMotion = {
+    motionName: 'node-motion',
+    motionAppear: false,
+    onAppearStart: (): CSSProperties => ({ height: 0, width: 0 }),
+    onAppearActive: (node: HTMLElement): CSSProperties => ({
+        height: node.scrollHeight,
+        width: node.scrollWidth,
+    }),
+    onLeaveStart: (node: HTMLElement): CSSProperties => ({
+        height: node.offsetHeight,
+        width: node.scrollWidth,
+    }),
+    onLeaveActive: (): CSSProperties => ({ height: 0, width: 0 }),
+};
+
+export const CategoriesList = () => (
+    <TreeWithDetails
+        motion={myMotion}
+        sx={{
+            '& .node-motion': {
+                transition: 'all .7s',
+                overflowX: 'hidden',
+                overflowY: 'hidden',
+            },
+        }}
+    />
+);
+```
+{% endraw %}
+
+## `nodeActions`
+
+By default, every node has an action dropdown menu displayed after its name when hovered.
+
+While this menu only has a delete action by default, it's possible to customize it.
+
+```tsx
+import {
+    NodeActions,
+    DeleteMenuItem,
+    TreeWithDetails,
+} from '@react-admin/ra-tree';
+
+const MyCustomActionMenuItem = forwardRef(
+    ({ record, resource, parentId }, ref) => {
+        const handleClick = () => {
+            // Do something with dataProvider ?
+        };
+        return (
+            <MenuItem ref={ref} onClick={handleClick}>
+                Do something
+            </MenuItem>
+        );
+    }
+);
+
+const MyActions = (props: NodeActionsProps) => (
+    <NodeActions {...props}>
+        <MyCustomActionMenuItem />
+        <DeleteMenuItem />
+    </NodeActions>
+);
+
+const CategoriesList = () => (
+    <TreeWithDetails
+        titleField="name"
+        edit={CategoriesEdit}
+        draggable
+        showLine
+        nodeActions={<MyActions />}
+    />
+);
+```
+
+The menu item will receive the current record and the resource.
+
+## `showLine`
+
+TODO
+
+## `title`
+
+The default title for a tree view is “[resource] list” (e.g. “Posts list”). Use the title prop to customize the Tree view title:
+
+```tsx
+// in src/posts.js
+export const CategoriesList = () => (
+    <TreeWithDetails title="List of categories">...</TreeWithDetails>
+);
+```
+
+The title can be either a string or an element of your own.
+
+## `titleField`
+
+Use the `titleField` prop to specify the name of the field holding the node title:
+
+```tsx
+// in src/posts.js
+export const CategoriesList = () => (
+    <TreeWithDetails titleField="name">...</TreeWithDetails>
+);
+```
+
 ## Selecting a Node
 
-If you need to let users select a node in a tree, use the [`<TreeInput>`](./TreeInput.md) component.
+If you need to let users select a node in a tree, use the [`<TreeInput>` component](./TreeInput.md).
 
 ```tsx
 import { Edit, SimpleForm, TextInput } from 'react-admin';
