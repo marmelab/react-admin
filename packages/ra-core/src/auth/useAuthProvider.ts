@@ -13,6 +13,7 @@ export const defaultAuthParams = {
  */
 const useAuthProvider = <
     AuthProviderType extends AuthProvider = AuthProvider
->(): AuthProviderType => useContext(AuthContext) as AuthProviderType;
+>(): AuthProviderType | undefined =>
+    useContext(AuthContext) as AuthProviderType | undefined;
 
 export default useAuthProvider;

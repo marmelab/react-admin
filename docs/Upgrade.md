@@ -47,7 +47,8 @@ React-admin v5 mostly focuses on removing deprecated features and upgrading depe
     - [Global Server Side Validation Error Message Must Be Passed Via The `root.serverError` Key](#global-server-side-validation-error-message-must-be-passed-via-the-rootservererror-key)
 - [TypeScript](#typescript)
     - [Fields Components Requires The source Prop](#fields-components-requires-the-source-prop)
-    - [`useRecordContext` Returns undefined When No Record Is Available](#userecordcontext-returns-undefined-when-no-record-is-available)
+    - [`useRecordContext` Returns `undefined` When No Record Is Available](#userecordcontext-returns-undefined-when-no-record-is-available)
+    - [`useAuthProvider` Returns `undefined` When No `authProvider` Is Available](#useauthprovider-returns-undefined-when-no-authprovider-is-available)
     - [Page Contexts Are Now Types Instead of Interfaces](#page-contexts-are-now-types-instead-of-interfaces)
     - [Stronger Types For Page Contexts](#stronger-types-for-page-contexts)
     - [EditProps and CreateProps now expect a children prop](#editprops-and-createprops-now-expect-a-children-prop)
@@ -1083,6 +1084,30 @@ const MyComponent = () => {
             <p>{record.body}</p>
         </div>
     );
+};
+```
+
+### `useAuthProvider` Returns `undefined` When No `authProvider` Is Available
+
+The `useAuthProvider` hook returns the current `authProvider`. Since the `authProvider` is optional, this context may be empty. Thus, the return type for `useAuthProvider` has been modified to `AuthProvider | undefined` instead of `AuthProvider` to denote this possibility.
+
+As a consequence, the TypeScript compilation of your project may fail if you don't check the existence of the `authProvider` before reading it.
+
+To fix this error, your code should handle the case where `useAuthProvider` returns `undefined`:
+
+```diff
+const useGetPermissions = (): GetPermissions => {
+    const authProvider = useAuthProvider();
+    const getPermissions = useCallback(
+        (params: any = {}) =>
++           authProvider ?
+                authProvider
+                      .getPermissions(params)
+                      .then(result => result ?? null)
++               : Promise.resolve([]),
+        [authProvider]
+    );
+    return getPermissions;
 };
 ```
 

@@ -62,77 +62,81 @@ const useLogout = (): Logout => {
             params = {},
             redirectTo = loginUrl,
             redirectToCurrentLocationAfterLogin = true
-        ) =>
-            authProvider.logout(params).then(redirectToFromProvider => {
-                if (redirectToFromProvider === false || redirectTo === false) {
-                    resetStore();
-                    queryClient.clear();
-                    // do not redirect
-                    return;
-                }
+        ) => {
+            if (authProvider) {
+                return authProvider
+                    .logout(params)
+                    .then(redirectToFromProvider => {
+                        if (
+                            redirectToFromProvider === false ||
+                            redirectTo === false
+                        ) {
+                            resetStore();
+                            queryClient.clear();
+                            // do not redirect
+                            return;
+                        }
 
-                const finalRedirectTo = redirectToFromProvider || redirectTo;
+                        const finalRedirectTo =
+                            redirectToFromProvider || redirectTo;
 
-                if (finalRedirectTo?.startsWith('http')) {
-                    // absolute link (e.g. https://my.oidc.server/login)
-                    resetStore();
-                    queryClient.clear();
-                    window.location.href = finalRedirectTo;
-                    return finalRedirectTo;
-                }
+                        if (finalRedirectTo?.startsWith('http')) {
+                            // absolute link (e.g. https://my.oidc.server/login)
+                            resetStore();
+                            queryClient.clear();
+                            window.location.href = finalRedirectTo;
+                            return finalRedirectTo;
+                        }
 
-                // redirectTo is an internal location that may contain a query string, e.g. '/login?foo=bar'
-                // we must split it to pass a structured location to navigate()
-                const redirectToParts = finalRedirectTo.split('?');
-                const newLocation: Partial<Path> = {
-                    pathname: redirectToParts[0],
-                };
-                let newLocationOptions = {};
+                        // redirectTo is an internal location that may contain a query string, e.g. '/login?foo=bar'
+                        // we must split it to pass a structured location to navigate()
+                        const redirectToParts = finalRedirectTo.split('?');
+                        const newLocation: Partial<Path> = {
+                            pathname: redirectToParts[0],
+                        };
+                        let newLocationOptions = {};
 
-                if (
-                    redirectToCurrentLocationAfterLogin &&
-                    locationRef.current &&
-                    locationRef.current.pathname
-                ) {
-                    newLocationOptions = {
+                        if (
+                            redirectToCurrentLocationAfterLogin &&
+                            locationRef.current &&
+                            locationRef.current.pathname
+                        ) {
+                            newLocationOptions = {
+                                state: {
+                                    nextPathname: locationRef.current.pathname,
+                                    nextSearch: locationRef.current.search,
+                                },
+                            };
+                        }
+                        if (redirectToParts[1]) {
+                            newLocation.search = redirectToParts[1];
+                        }
+                        navigateRef.current(newLocation, newLocationOptions);
+                        resetStore();
+                        queryClient.clear();
+
+                        return redirectToFromProvider;
+                    });
+            } else {
+                navigate(
+                    {
+                        pathname: loginUrl,
+                    },
+                    {
                         state: {
-                            nextPathname: locationRef.current.pathname,
-                            nextSearch: locationRef.current.search,
+                            nextPathname: location && location.pathname,
                         },
-                    };
-                }
-                if (redirectToParts[1]) {
-                    newLocation.search = redirectToParts[1];
-                }
-                navigateRef.current(newLocation, newLocationOptions);
+                    }
+                );
                 resetStore();
                 queryClient.clear();
-
-                return redirectToFromProvider;
-            }),
-        [authProvider, resetStore, loginUrl, queryClient]
-    );
-
-    const logoutWithoutProvider = useCallback(
-        _ => {
-            navigate(
-                {
-                    pathname: loginUrl,
-                },
-                {
-                    state: {
-                        nextPathname: location && location.pathname,
-                    },
-                }
-            );
-            resetStore();
-            queryClient.clear();
-            return Promise.resolve();
+                return Promise.resolve();
+            }
         },
-        [resetStore, location, navigate, loginUrl, queryClient]
+        [authProvider, resetStore, loginUrl, queryClient, location, navigate]
     );
 
-    return authProvider ? logout : logoutWithoutProvider;
+    return logout;
 };
 
 /**

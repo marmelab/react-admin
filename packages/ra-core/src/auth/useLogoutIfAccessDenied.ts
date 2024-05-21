@@ -46,76 +46,76 @@ const useLogoutIfAccessDenied = (): LogoutIfAccessDenied => {
     const logoutIfAccessDenied = useCallback(
         (error?: any) =>
             authProvider
-                .checkError(error)
-                .then(() => false)
-                .catch(async e => {
-                    const logoutUser = e?.logoutUser ?? true;
-                    //manual debounce
-                    if (timer) {
-                        // side effects already triggered in this tick, exit
-                        return true;
-                    }
-                    timer = setTimeout(() => {
-                        timer = undefined;
-                    }, 0);
+                ? authProvider
+                      .checkError(error)
+                      .then(() => false)
+                      .catch(async e => {
+                          const logoutUser = e?.logoutUser ?? true;
+                          //manual debounce
+                          if (timer) {
+                              // side effects already triggered in this tick, exit
+                              return true;
+                          }
+                          timer = setTimeout(() => {
+                              timer = undefined;
+                          }, 0);
 
-                    const redirectTo =
-                        e && e.redirectTo != null
-                            ? e.redirectTo
-                            : error && error.redirectTo
-                            ? error.redirectTo
-                            : undefined;
+                          const redirectTo =
+                              e && e.redirectTo != null
+                                  ? e.redirectTo
+                                  : error && error.redirectTo
+                                  ? error.redirectTo
+                                  : undefined;
 
-                    const shouldNotify = !(
-                        (e && e.message === false) ||
-                        (error && error.message === false) ||
-                        redirectTo?.startsWith('http')
-                    );
-                    if (shouldNotify) {
-                        // notify only if not yet logged out
-                        authProvider
-                            .checkAuth({})
-                            .then(() => {
-                                if (logoutUser) {
-                                    notify(
-                                        getErrorMessage(
-                                            e,
-                                            'ra.notification.logged_out'
-                                        ),
-                                        { type: 'error' }
-                                    );
-                                } else {
-                                    notify(
-                                        getErrorMessage(
-                                            e,
-                                            'ra.notification.not_authorized'
-                                        ),
-                                        { type: 'error' }
-                                    );
-                                }
-                            })
-                            .catch(() => {});
-                    }
+                          const shouldNotify = !(
+                              (e && e.message === false) ||
+                              (error && error.message === false) ||
+                              redirectTo?.startsWith('http')
+                          );
+                          if (shouldNotify) {
+                              // notify only if not yet logged out
+                              authProvider
+                                  .checkAuth({})
+                                  .then(() => {
+                                      if (logoutUser) {
+                                          notify(
+                                              getErrorMessage(
+                                                  e,
+                                                  'ra.notification.logged_out'
+                                              ),
+                                              { type: 'error' }
+                                          );
+                                      } else {
+                                          notify(
+                                              getErrorMessage(
+                                                  e,
+                                                  'ra.notification.not_authorized'
+                                              ),
+                                              { type: 'error' }
+                                          );
+                                      }
+                                  })
+                                  .catch(() => {});
+                          }
 
-                    if (logoutUser) {
-                        logout({}, redirectTo);
-                    } else {
-                        if (redirectTo.startsWith('http')) {
-                            // absolute link (e.g. https://my.oidc.server/login)
-                            window.location.href = redirectTo;
-                        } else {
-                            // internal location
-                            navigate(redirectTo);
-                        }
-                    }
+                          if (logoutUser) {
+                              logout({}, redirectTo);
+                          } else {
+                              if (redirectTo.startsWith('http')) {
+                                  // absolute link (e.g. https://my.oidc.server/login)
+                                  window.location.href = redirectTo;
+                              } else {
+                                  // internal location
+                                  navigate(redirectTo);
+                              }
+                          }
 
-                    return true;
-                }),
+                          return true;
+                      })
+                : logoutIfAccessDeniedWithoutProvider(),
         [authProvider, logout, notify, navigate]
     );
-    return authProvider
-        ? logoutIfAccessDenied
-        : logoutIfAccessDeniedWithoutProvider;
+    return logoutIfAccessDenied;
 };
 
 const logoutIfAccessDeniedWithoutProvider = () => Promise.resolve(false);
