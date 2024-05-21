@@ -16,16 +16,19 @@ describe('usePaginationState', () => {
     });
 
     it('should update perPage state when the perPage props update', () => {
+        let all: any[] = [];
         let perPage = 50,
             page = 10;
-        const { result, rerender } = renderHook(() =>
-            usePaginationState({ perPage, page })
-        );
+        const { result, rerender } = renderHook(() => {
+            const state = usePaginationState({ perPage, page });
+            all.push(state);
+            return state;
+        });
         expect(result.current.pagination).toEqual({ page: 10, perPage: 50 });
         perPage = 100;
         rerender();
 
-        expect(result.all).toHaveLength(3);
+        expect(all).toHaveLength(3);
 
         expect(result.current.pagination).toEqual({
             page: 1,
@@ -34,12 +37,17 @@ describe('usePaginationState', () => {
     });
 
     it('should provide a setPagination function to update the pagination state (page + perPage)', () => {
-        const { result } = renderHook(() => usePaginationState());
+        let all: any[] = [];
+        const { result } = renderHook(() => {
+            const state = usePaginationState();
+            all.push(state);
+            return state;
+        });
         expect(result.current.pagination).toEqual({ page: 1, perPage: 25 });
 
         act(() => result.current.setPagination({ perPage: 100, page: 20 }));
 
-        expect(result.all).toHaveLength(2);
+        expect(all).toHaveLength(2);
 
         expect(result.current.pagination).toEqual({
             page: 20,
@@ -48,12 +56,17 @@ describe('usePaginationState', () => {
     });
 
     it('should provide setPage function to update the page state', () => {
-        const { result } = renderHook(() => usePaginationState());
+        let all: any[] = [];
+        const { result } = renderHook(() => {
+            const state = usePaginationState();
+            all.push(state);
+            return state;
+        });
         expect(result.current.pagination).toEqual({ page: 1, perPage: 25 });
 
         act(() => result.current.setPage(20));
 
-        expect(result.all).toHaveLength(2);
+        expect(all).toHaveLength(2);
 
         expect(result.current.pagination).toEqual({
             page: 20,
@@ -62,12 +75,17 @@ describe('usePaginationState', () => {
     });
 
     it('should provide a setPerPage function to update the perPage state', () => {
-        const { result } = renderHook(() => usePaginationState());
+        let all: any[] = [];
+        const { result } = renderHook(() => {
+            const state = usePaginationState();
+            all.push(state);
+            return state;
+        });
         expect(result.current.pagination).toEqual({ page: 1, perPage: 25 });
 
         act(() => result.current.setPerPage(100));
 
-        expect(result.all).toHaveLength(2);
+        expect(all).toHaveLength(2);
 
         expect(result.current.pagination).toEqual({
             page: 1,
@@ -76,15 +94,18 @@ describe('usePaginationState', () => {
     });
 
     it('should reset the current page to 1 when perPage state changes', () => {
-        const { result } = renderHook(() =>
-            usePaginationState({ page: 2, perPage: 25 })
-        );
+        let all: any[] = [];
+        const { result } = renderHook(() => {
+            const state = usePaginationState({ page: 2, perPage: 25 });
+            all.push(state);
+            return state;
+        });
 
         expect(result.current.pagination).toEqual({ page: 2, perPage: 25 });
 
         act(() => result.current.setPerPage(100));
 
-        expect(result.all).toHaveLength(2);
+        expect(all).toHaveLength(2);
 
         expect(result.current.pagination).toEqual({
             page: 1,
