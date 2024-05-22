@@ -103,7 +103,7 @@ See [the `<RichTextInput>` documentation](./RichTextInput.md) for more details.
 
 ## Predictive Text Input
 
-An alternative to `<TextInput>` is [`<PredictiveTextInput>`](./PredictiveTextInput.md), which suggests completion for the input value, using your favorite AI backend. Users can accept the completion by pressing the `Tab` key. It's like Intellisense or Copilot for your forms.
+An alternative to `<TextInput>` is the [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" /> component [`<PredictiveTextInput>`](./PredictiveTextInput.md), which suggests completion for the input value, using your favorite AI backend. Users can accept the completion by pressing the `Tab` key. It's like Intellisense or Copilot for your forms.
 
 <video controls autoplay playsinline muted loop>
   <source src="./img/PredictiveTextInput.mp4" type="video/mp4"/>
