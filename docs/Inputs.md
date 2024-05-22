@@ -23,7 +23,7 @@ import { Edit, SimpleForm, ReferenceInput, SelectInput, TextInput, required } fr
 export const PostEdit = () => (
     <Edit>
         <SimpleForm>
-            <TextInput disabled source="id" />
+            <TextInput readOnly source="id" />
             <ReferenceInput label="User" source="userId" reference="users" validate={[required()]}>
                 <SelectInput optionText="name" />
             </ReferenceInput>

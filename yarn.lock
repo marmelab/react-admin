@@ -6829,7 +6829,29 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react@npm:*, @types/react@npm:>=16, @types/react@npm:>=18.0.0, @types/react@npm:^18.2.37":
+"@types/react@npm:*":
+  version: 17.0.38
+  resolution: "@types/react@npm:17.0.38"
+  dependencies:
+    "@types/prop-types": "npm:*"
+    "@types/scheduler": "npm:*"
+    csstype: "npm:^3.0.2"
+  checksum: 828cd27ac220be8232535c4451b0020f6f05535d62407e5fe2547544a7d3123777ed31ab547d7c7f3d8b59d37268ee4b9209f1c110809f084cbbf0a7e27cd7ef
+  languageName: node
+  linkType: hard
+
+"@types/react@npm:>=16":
+  version: 18.2.6
+  resolution: "@types/react@npm:18.2.6"
+  dependencies:
+    "@types/prop-types": "npm:*"
+    "@types/scheduler": "npm:*"
+    csstype: "npm:^3.0.2"
+  checksum: 7740541afde84a50c557e576dd564a861b45ad436d1c3ed33496d70046a6eb734bfe7f7f18995f88bdc50be0d295c2b878f705a6b9573cc0781e11ea58470139
+  languageName: node
+  linkType: hard
+
+"@types/react@npm:>=18.0.0, @types/react@npm:^18.2.37":
   version: 18.2.37
   resolution: "@types/react@npm:18.2.37"
   dependencies:

@@ -211,7 +211,29 @@ const choicesForCreationSupport = [
     { id: 4, name: 'Charles Baudelaire' },
     { id: 5, name: 'Marcel Proust' },
 ];
+
 export const OnCreate = () => (
+    <Wrapper>
+        <AutocompleteInput
+            source="author"
+            choices={choicesForCreationSupport}
+            onCreate={filter => {
+                const newOption = {
+                    id: choicesForCreationSupport.length + 1,
+                    name: filter ?? 'New Author',
+                };
+                choicesForCreationSupport.push(newOption);
+                return newOption;
+            }}
+            fullWidth
+            TextFieldProps={{
+                placeholder: 'Start typing to create a new item',
+            }}
+        />
+    </Wrapper>
+);
+
+export const OnCreatePrompt = () => (
     <Wrapper>
         <AutocompleteInput
             source="author"
@@ -234,6 +256,27 @@ export const OnCreate = () => (
             TextFieldProps={{
                 placeholder: 'Start typing to create a new item',
             }}
+        />
+    </Wrapper>
+);
+
+export const CreateLabel = () => (
+    <Wrapper>
+        <AutocompleteInput
+            source="author"
+            choices={choicesForCreationSupport}
+            onCreate={filter => {
+                if (filter) {
+                    const newAuthor = {
+                        id: choicesForCreationSupport.length + 1,
+                        name: filter,
+                    };
+                    choicesForCreationSupport.push(newAuthor);
+                    return newAuthor;
+                }
+            }}
+            fullWidth
+            createLabel="Start typing to create a new item"
         />
     </Wrapper>
 );

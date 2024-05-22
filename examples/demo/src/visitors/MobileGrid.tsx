@@ -62,6 +62,7 @@ const MobileGrid = () => {
                                         style: 'currency',
                                         currency: 'USD',
                                     }}
+                                    textAlign="right"
                                 />
                             </Typography>
                         </CardContent>
