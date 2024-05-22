@@ -189,8 +189,9 @@ const WithMiddlewaresSuccessCore = () => {
             data: { title: 'Hello World' },
         },
         {
-            mutateWithMiddlewares: async (update, resource, params) => {
-                return update(resource, {
+            mutationMode: 'optimistic',
+            mutateWithMiddlewares: async (mutate, resource, params) => {
+                return mutate(resource, {
                     ...params,
                     data: { title: `${params.data.title} from middleware` },
                 });
@@ -269,8 +270,8 @@ const WithMiddlewaresErrorCore = () => {
         },
         {
             mutationMode: 'optimistic',
-            mutateWithMiddlewares: async (update, resource, params) => {
-                return update(resource, {
+            mutateWithMiddlewares: async (mutate, resource, params) => {
+                return mutate(resource, {
                     ...params,
                     data: { title: `${params.data.title} from middleware` },
                 });

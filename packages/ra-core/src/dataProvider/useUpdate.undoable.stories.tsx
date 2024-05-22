@@ -247,8 +247,9 @@ const WithMiddlewaresCore = () => {
             data: { title: 'Hello World' },
         },
         {
-            mutateWithMiddlewares: async (update, resource, params) => {
-                return update(resource, {
+            mutationMode: 'undoable',
+            mutateWithMiddlewares: async (mutate, resource, params) => {
+                return mutate(resource, {
                     ...params,
                     data: { title: `${params.data.title} from middleware` },
                 });
@@ -263,7 +264,6 @@ const WithMiddlewaresCore = () => {
                 data: { title: 'Hello World' },
             },
             {
-                mutationMode: 'undoable',
                 onSuccess: () => setSuccess('success'),
             }
         );
@@ -355,8 +355,9 @@ const WithMiddlewaresErrorCore = () => {
             data: { title: 'Hello World' },
         },
         {
-            mutateWithMiddlewares: async (update, resource, params) => {
-                return update(resource, {
+            mutationMode: 'undoable',
+            mutateWithMiddlewares: async (mutate, resource, params) => {
+                return mutate(resource, {
                     ...params,
                     data: { title: `${params.data.title} from middleware` },
                 });
@@ -371,7 +372,6 @@ const WithMiddlewaresErrorCore = () => {
                 data: { title: 'Hello World' },
             },
             {
-                mutationMode: 'undoable',
                 onSuccess: () => setSuccess('success'),
                 onError: e => {
                     setError(e);
