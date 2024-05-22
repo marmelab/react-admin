@@ -76,18 +76,18 @@ Check [the `ra-tree` documentation](https://react-admin-ee.marmelab.com/document
 | -------------------- | -------- | ---------------------- | ------- | ---------------------------------------------------------------------------------------------- |
 | `addRootButton`      | Optional | `ReactNode` or `false` | -       | The create button to add a root node                                                           |
 | `allowMultipleRoots` | Optional | `boolean`              | `false` | To allow trees with multiple roots                                                             |
-| `create`             | Required | `ReactNode`            | -       | The create page of your ressource                                                              |
+| `create`             | Required | `ReactNode`            | -       | The create form of your ressource                                                              |
 | `draggable`          | Optional | `boolean`              | `false` | To allow user to reorder nodes                                                                 |
-| `edit`               | Required | `ReactNode`            | -       | The edit page of your ressource                                                                |
+| `edit`               | Required | `ReactNode`            | -       | The edit form of your ressource                                                                |
 | `hideRootNodes`      | Optional | `boolean`              | `false` | To hide all root nodes                                                                         |
-| `lazy`               | Optional | `boolean`              | `false` | To only load children when they are expanded                                                   |
+| `lazy`               | Optional | `boolean`              | `false` | To load children only when they are expanded                                                   |
 | `motion`             | Optional | `boolean`              | `false` | To enable [rc-tree's `<Tree>`](https://github.com/react-component/tree#tree-props) transitions |
 | `nodeActions`        | Optional | `ReactNode`            | -       | To customize the default dropdown action                                                       |
-| `show`               | Required | `ReactNode`            | -       | The show page of your ressource                                                                |
+| `show`               | Required | `ReactNode`            | -       | The show view of your ressource                                                                |
 | `showLine`           | Optional | `boolean`              | `false` | Shows a connecting line                                                                        |
 | `sx`                 | Optional | `SxProps`              | -       | Material UI shortcut for defining custom styles                                                |
-| `title`              | Optional | `string`               | -       | The title to display in the App Bar                                                            |
-| `titleField`         | Optional | `string`               | `title` | To set the record field to display in the tree                                                 |
+| `title`              | Optional | `string`               | -       | The title to display in the `<AppBar>`                                                         |
+| `titleField`         | Optional | `string`               | `title` | Set the record field to display in the tree                                                    |
 
 `<TreeWithDetails>` also accepts the [rc-tree](https://tree-react-component.vercel.app/) props.
 
@@ -393,7 +393,7 @@ The menu item will receive the current record and the resource.
 
 ## `showLine`
 
-By default `ra-tree` applied a `react-admin`'s style. To keep native icons you can set `showLine` to `true` as this Tree:
+By default `ra-tree` applies the `react-admin`'s style. Setting `showLine` to `true` will keep the native icons as follows:
 
 ![showLine Tree](./img/show-line-tree.png)
 
