@@ -216,7 +216,6 @@ export const Create = () => (
             create={<CreateCategory />}
             source="category"
             choices={categories}
-            fullWidth
         />
     </Wrapper>
 );
@@ -231,6 +230,7 @@ export const OnCreate = () => {
             <SelectInput
                 onCreate={() => {
                     const newCategoryName = prompt('Enter a new category');
+                    if (!newCategoryName) return;
                     const newCategory = {
                         id: newCategoryName.toLowerCase(),
                         name: newCategoryName,
@@ -240,7 +240,6 @@ export const OnCreate = () => {
                 }}
                 source="category"
                 choices={categories}
-                fullWidth
             />
         </Wrapper>
     );
@@ -256,6 +255,7 @@ export const CreateLabel = () => {
             <SelectInput
                 onCreate={() => {
                     const newCategoryName = prompt('Enter a new category');
+                    if (!newCategoryName) return;
                     const newCategory = {
                         id: newCategoryName.toLowerCase(),
                         name: newCategoryName,
@@ -266,7 +266,6 @@ export const CreateLabel = () => {
                 source="category"
                 choices={categories}
                 createLabel="Create a new category"
-                fullWidth
             />
         </Wrapper>
     );

@@ -218,9 +218,11 @@ export const OnCreate = () => (
             source="author"
             choices={choicesForCreationSupport}
             onCreate={filter => {
+                if (!filter) return;
+
                 const newOption = {
                     id: choicesForCreationSupport.length + 1,
-                    name: filter ?? 'New Author',
+                    name: filter,
                 };
                 choicesForCreationSupport.push(newOption);
                 return newOption;
