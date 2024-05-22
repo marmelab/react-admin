@@ -14,19 +14,12 @@ import { useCallback, useMemo, useRef } from 'react';
  *
  * const CustomerForm = props => {
  *     const [createCustomer] = useCreate<Customer>();
- *     const middleware: Middleware<UseCreateResult<OrderCreateFormData>[0]> = useCallback(async (resource, params, options, next) => {
+ *     const middleware: Middleware<UseCreateResult<OrderCreateFormData>[0]> = useCallback(async (resource, params, next) => {
  *         const { data } = params;
  *         const { user, ...orderData } = data;
- *         await createCustomer(
- *             'customers',
- *             { data: user },
- *             {
- *                 onSuccess: (newCustomer) => {
- *                     const orderDataWithCustomer = { ...orderData, customerId: newCustomer.id };
- *                     next(resource, { data: orderDataWithCustomer }, options);
- *                 },
- *             }
- *         });
+ *         const { data = newCustomer } = await createCustomer('customers', { data: user });
+ *         const orderDataWithCustomer = { ...orderData, customerId: newCustomer.id };
+ *         next(resource, { data: orderDataWithCustomer });
  *     }, [createCustomer]);
  *     useRegisterMutationMiddleware(middleware);
  *
