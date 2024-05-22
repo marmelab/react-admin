@@ -95,8 +95,8 @@ React-admin provides several form components to help you build forms with differ
 - [`<SimpleForm>`](./SimpleForm.md) is the most common form layout. It renders a form with a single column of inputs, and a submit button at the bottom.
 - [`<TabbedForm>`](./TabbedForm.md) renders a form with tabs. Each tab contains a group of inputs. It's useful to organize a form with many fields.
 - [`<AccordionForm>`](./AccordionForm.md) renders a form with accordion sections. Each section contains a group of inputs.
-- [`<WizardForm>`](./WizardForm.md) renders a form with several steps. Each step contains a group of inputs. It's useful when you need to guide the user through a complex form.
-- [`<LongForm>`](./LongForm.md) provides a table of contents on the left side of the form. It's useful when you have a very long form and want to help the user navigate through it.
+- [`<WizardForm>`](./WizardForm.md) renders a form with several steps. Each step contains a group of inputs. It's useful when you need to guide users through a complex form.
+- [`<LongForm>`](./LongForm.md) provides a table of contents on the left side of the form. It's useful when you have a very long form and want to help users navigate through it.
 
 You can use these forms in creation and edition pages, as well as in dialogs (see e.g. [`<EditDialog>`](./EditDialog.md)). If none of these layouts fit your needs, you can build your own layout based on the `<Form>` component.
 
