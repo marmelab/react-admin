@@ -26,6 +26,7 @@ export const BulkDeleteWithUndoButton = (
         icon = defaultIcon,
         onClick,
         mutationOptions = {},
+        successMessage = 'ra.notification.deleted',
         ...rest
     } = props;
     const { meta: mutationMeta, ...otherMutationOptions } = mutationOptions;
@@ -42,7 +43,7 @@ export const BulkDeleteWithUndoButton = (
             { ids: selectedIds, meta: mutationMeta },
             {
                 onSuccess: () => {
-                    notify('ra.notification.deleted', {
+                    notify(successMessage, {
                         type: 'info',
                         messageArgs: { smart_count: selectedIds.length },
                         undoable: true,
@@ -110,6 +111,7 @@ export interface BulkDeleteWithUndoButtonProps<
         MutationOptionsError,
         DeleteManyParams<RecordType>
     > & { meta?: any };
+    successMessage?: string;
 }
 
 const PREFIX = 'RaBulkDeleteWithUndoButton';

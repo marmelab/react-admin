@@ -72,6 +72,7 @@ const useDeleteWithConfirmController = <RecordType extends RaRecord = any>(
         mutationMode,
         onClick,
         mutationOptions = {},
+        successMessage = 'ra.notification.deleted',
     } = props;
     const { meta: mutationMeta, ...otherMutationOptions } = mutationOptions;
     const resource = useResourceContext(props);
@@ -104,7 +105,7 @@ const useDeleteWithConfirmController = <RecordType extends RaRecord = any>(
                 {
                     onSuccess: () => {
                         setOpen(false);
-                        notify('ra.notification.deleted', {
+                        notify(successMessage, {
                             type: 'info',
                             messageArgs: { smart_count: 1 },
                             undoable: mutationMode === 'undoable',
@@ -179,6 +180,7 @@ export interface UseDeleteWithConfirmControllerParams<
         MutationOptionsError,
         DeleteParams<RecordType>
     >;
+    successMessage?: string;
 }
 
 export interface UseDeleteWithConfirmControllerReturn {

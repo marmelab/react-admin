@@ -33,6 +33,7 @@ export const BulkDeleteWithConfirmButton = (
         label = 'ra.action.delete',
         mutationMode = 'pessimistic',
         mutationOptions = {},
+        successMessage = 'ra.notification.deleted',
         onClick,
         ...rest
     } = props;
@@ -49,7 +50,7 @@ export const BulkDeleteWithConfirmButton = (
         {
             onSuccess: () => {
                 refresh();
-                notify('ra.notification.deleted', {
+                notify(successMessage, {
                     type: 'info',
                     messageArgs: { smart_count: selectedIds.length },
                     undoable: mutationMode === 'undoable',
@@ -162,6 +163,7 @@ export interface BulkDeleteWithConfirmButtonProps<
         MutationOptionsError,
         DeleteManyParams<RecordType>
     > & { meta?: any };
+    successMessage?: string;
 }
 
 const PREFIX = 'RaBulkDeleteWithConfirmButton';

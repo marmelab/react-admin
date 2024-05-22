@@ -26,6 +26,7 @@ export const DeleteWithUndoButton = <RecordType extends RaRecord = any>(
         redirect = 'list',
         mutationOptions,
         color = 'error',
+        successMessage,
         ...rest
     } = props;
 
@@ -37,6 +38,7 @@ export const DeleteWithUndoButton = <RecordType extends RaRecord = any>(
         redirect,
         onClick,
         mutationOptions,
+        successMessage,
     });
 
     return (
@@ -70,6 +72,7 @@ export interface DeleteWithUndoButtonProps<
     record?: RecordType;
     redirect?: RedirectionSideEffect;
     resource?: string;
+    successMessage?: string;
 }
 
 DeleteWithUndoButton.propTypes = {
