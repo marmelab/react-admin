@@ -44,12 +44,12 @@ export const BookEdit = () => (
 This may look surprisingly simple because `<SimpleForm>` doesn't define a submit handler or default values. How does it work?
 
 - `<Edit>` is the **page controller component**. It calls `dataProvider.getOne()` to fetch the book record from the API, and stores it in a `<RecordContext>`. It also creates a submit handler that calls `dataProvider.update()` when executed, and stores it in a `<SaveContext>`.
-- `<SimpleForm>` is the main **form component**. It manages the form state and validation. It reads the default form values from the `<RecordContext>`. It wraps its children in a `<FormContext>`, so that input components can read and update the form values. It also renders a save button that triggers the submit handler found in the `<SaveContext>`.
+- `<SimpleForm>` is the main **form component**. It manages the form state and validation. It reads the default form values from the `<RecordContext>`. It wraps its children in a `<FormContext>` so that input components can read and update the form values. It also renders a save button that triggers the submit handler found in the `<SaveContext>`.
 - `<TextInput>`, `<ReferenceInput>`, `<DateInput>`, and `<SelectInput>` are **input components**. They read the form values from the `<FormContext>` and update them when the user interacts with them. They can also define validation rules using the `validate` prop.
 
 As you can see, form components aren't responsible for fetching data or saving it. They only manage the form state and validation. It's the `<Edit>` component's responsibility to call the `dataProvider` methods.
 
-This separation of concerns allows to change the form layout without affecting the data fetching and saving logic, or to reuse the same form in different pages (e.g. in a creation page and an edition page).
+This separation of concerns allows changing the form layout without affecting the data fetching logic or reusing the same form on different pages (e.g. on a creation page and an edition page).
 
 ## Form Layouts
 
@@ -96,7 +96,7 @@ React-admin provides several form components to help you build forms with differ
 - [`<TabbedForm>`](./TabbedForm.md) renders a form with tabs. Each tab contains a group of inputs. It's useful to organize a form with many fields.
 - [`<AccordionForm>`](./AccordionForm.md) renders a form with accordion sections. Each section contains a group of inputs.
 - [`<WizardForm>`](./WizardForm.md) renders a form with several steps. Each step contains a group of inputs. It's useful when you need to guide the user through a complex form.
-- [`<LongForm>`](./LongForm.md) provides a table of content on the left side of the form. It's useful when you have a very long form and want to help the user navigate through it.
+- [`<LongForm>`](./LongForm.md) provides a table of contents on the left side of the form. It's useful when you have a very long form and want to help the user navigate through it.
 
 You can use these forms in creation and edition pages, as well as in dialogs (see e.g. [`<EditDialog>`](./EditDialog.md)). If none of these layouts fit your needs, you can build your own layout based on the `<Form>` component.
 
@@ -157,7 +157,7 @@ You can add validation rules to your form inputs in several ways:
     }
     ```
 
-Form validation deserves a section of its own ; check [the Validation chapter](./Validation.md) for more details.
+Form validation deserves a section of its own; check [the Validation chapter](./Validation.md) for more details.
 
 ## Default Values
 
@@ -210,11 +210,11 @@ React-admin relies on another library, `react-hook-form`, to handle forms. Its A
 | [`useController`](https://react-hook-form.com/docs/usecontroller) | Create controlled input components. All react-admin [Input components](./Inputs.md) use it. You can use it to create custom input components. |
 | [`useWatch`](https://react-hook-form.com/docs/usewatch) | Subscribe to input changes. It's useful to create dependencies between inputs. |
 | [`useFormContext`](https://react-hook-form.com/docs/useformcontext) | Access the form context (e.g. to alter the form values programmatically). |
-| [`useFormState`](https://react-hook-form.com/docs/useformstate) | Access the form state (e.g. to determine is a form is dirty or invalid). |
+| [`useFormState`](https://react-hook-form.com/docs/useformstate) | Access the form state (e.g. to determine if a form is dirty or invalid). |
 
 React-admin Form components all create a [`<FormProvider>`](https://react-hook-form.com/docs/formprovider), so you can use the `useController`, `useWatch`, `useFormContext`, and `useFormState` hooks in your custom form components.
 
-**Note:** [react-hook-form's `formState` is wrapped with a Proxy](https://react-hook-form.com/docs/useformstate/#rules) to improve render performance and skip extra computation if specific state is not subscribed. So, make sure you deconstruct or read the `formState` before render in order to enable the subscription.
+**Note:** [react-hook-form's `formState` is wrapped with a Proxy](https://react-hook-form.com/docs/useformstate/#rules) to improve render performance and skip extra computation if a specific state is not subscribed. So, make sure you deconstruct or read the `formState` before rendering in order to enable the subscription.
 
 ```js
 const { isDirty } = useFormState(); // ✅
@@ -267,7 +267,7 @@ const OrderEdit = () => (
 export default OrderEdit;
 ```
 
-Alternatively, you can use the react-admin `<FormDataConsumer>` component, which grabs the form values, and passes them to a child function. As `<FormDataConsumer>` uses the render props pattern, you can avoid creating an intermediate component like the `<CityInput>` component above:
+Alternatively, you can use the react-admin `<FormDataConsumer>` component, which grabs the form values and passes them to a child function. As `<FormDataConsumer>` uses the render props pattern, you can avoid creating an intermediate component like the `<CityInput>` component above:
 
 ```tsx
 import * as React from "react";
@@ -415,7 +415,7 @@ const dataProvider = {
 }
 ```
 
-**Tip**: `<Edit>`'s transform prop function also get the `previousData` in its second argument:
+**Tip**: `<Edit>`'s transform prop function also gets the `previousData` in its second argument:
 
 ```jsx
 const PostEditToolbar = () => (
@@ -461,7 +461,7 @@ export const TagEdit = () => (
 );
 ```
 
-And that's all. `warnWhenUnsavedChanges` works for both `<SimpleForm>` and `<TabbedForm>`. In fact, this feature is provided by a custom hook called `useWarnWhenUnsavedChanges()`, which you can use in your own react-hook-form forms.
+And that's all. `warnWhenUnsavedChanges` works for both `<SimpleForm>` and `<TabbedForm>`. In fact, this feature is provided by a custom hook called `useWarnWhenUnsavedChanges()`, which you can use in your react-hook-form forms.
 
 ```jsx
 import { useForm } from 'react-hook-form';
@@ -606,7 +606,7 @@ const PersonEdit = () => (
 ```
 {% endraw %}
 
-Note that you **must** set the `<SimpleForm resetOptions>` prop to `{ keepDirtyValues: true }`. If you forget that prop, any change entered by the end user after the autosave but before its acknowledgement by the server will be lost.
+Note that you **must** set the `<SimpleForm resetOptions>` prop to `{ keepDirtyValues: true }`. If you forget that prop, any change entered by the end user after the autosave but before its acknowledgment by the server will be lost.
 
 If you're using it in an `<Edit>` page, you must also use a `pessimistic` or `optimistic` [`mutationMode`](https://marmelab.com/react-admin/Edit.html#mutationmode) - `<AutoSave>` doesn't work with the default `mutationMode="undoable"`.
 
@@ -741,9 +741,9 @@ export const PostEdit = () => (
 );
 ```
 
-This affects both the submit button, and the form submission when the user presses `ENTER` in one of the form fields.
+This affects both the submit button and the form submission when the user presses `ENTER` in one of the form fields.
 
-**Tip**: The `redirect` prop is ignored if you've set the `onSuccess` prop in the `<Edit>`/`<Create>` component, or in the `<SaveButton>` component.
+**Tip**: The `redirect` prop is ignored if you've set the `onSuccess` prop in the `<Edit>`/`<Create>` component, or the `<SaveButton>` component.
 
 ## Nested Forms
 
