@@ -160,6 +160,48 @@ export const CategoriesList = () => (
 );
 ```
 
+**IMPORTANT**: Note that in the Edition view, the `<SimpleForm>` must use the `<EditNodeToolbar>`. This toolbar replaces react-admin's default `<DeleteButton>` with a ra-tree version that deletes a branch instead of a record.
+
+This also means that if you need to customize the `Toolbar` and includes a Delete Button, you must import the aternative button from `@react-admin/ra-tree`:
+
+```tsx
+import { Toolbar, ToolbarProps } from 'react-admin';
+import { DeleteBranchButton } from '@react-admin/ra-tree';
+
+import MyCustomButton from './MyCustomButton';
+
+export const MyToolbar = (props: ToolbarProps) => (
+    <Toolbar>
+        <MyCustomButton />
+        <DeleteBranchButton />
+    </Toolbar>
+);
+```
+
+**Tip**: `CreateNode` and `EditNode` components accept a `mutationOptions` prop. So you can override the mutationOptions of the main mutation query.
+
+```jsx
+const CategoriesCreate = () => (
+    <CreateNode
+        mutationOptions={{
+            onSuccess: () => {
+                console.log('Success!');
+            },
+            onError: () => {
+                console.log('Error');
+            },
+            meta: { foo: 'bar' }, // The 'meta' object will be passed to the dataProvider methods
+        }}
+    >
+        <SimpleForm>
+            <TextInput source="name" />
+        </SimpleForm>
+    </CreateNode>
+);
+```
+
+
+
 ## `allowMultipleRoots`
 
 By default, this package allows only one root per tree. You can allow trees with multiple roots by setting the `allowMultipleRoots` prop:
