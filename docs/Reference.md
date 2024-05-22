@@ -323,7 +323,7 @@ title: "Index"
 * [`useUpdateMany`](./useUpdateMany.md)
 
 **- W -**
-* [`useWarnWhenUnsavedChanges`](./EditTutorial.md#warning-about-unsaved-changes)
+* [`useWarnWhenUnsavedChanges`](./Forms.md#warning-about-unsaved-changes)
 * [`withLifecycleCallbacks`](./withLifecycleCallbacks.md)
 
 </div>
