@@ -91,7 +91,7 @@ export const useEditController = <
     } = mutationOptions;
     const {
         registerMutationMiddleware,
-        getMutateWithMiddlewares,
+        mutateWithMiddlewares,
         unregisterMutationMiddleware,
     } = useMutationMiddlewares();
     const {
@@ -192,6 +192,7 @@ export const useEditController = <
             ...otherMutationOptions,
             mutationMode,
             returnPromise: mutationMode === 'pessimistic',
+            mutateWithMiddlewares,
         }
     );
 
@@ -216,10 +217,8 @@ export const useEditController = <
                       })
                     : data
             ).then(async (data: Partial<RecordType>) => {
-                const mutate = getMutateWithMiddlewares(update);
-
                 try {
-                    await mutate(
+                    await update(
                         resource,
                         {
                             id,
@@ -239,7 +238,6 @@ export const useEditController = <
             }),
         [
             id,
-            getMutateWithMiddlewares,
             mutationMeta,
             resource,
             transform,

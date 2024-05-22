@@ -15,14 +15,14 @@ import {
     useEditController,
 } from '..';
 import { CoreAdminContext } from '../../core';
-import { testDataProvider, useUpdate } from '../../dataProvider';
+import { testDataProvider } from '../../dataProvider';
 import undoableEventEmitter from '../../dataProvider/undoableEventEmitter';
 import { Form, InputProps, useInput } from '../../form';
 import { useNotificationContext } from '../../notification';
 import { DataProvider } from '../../types';
 import { Middleware, useRegisterMutationMiddleware } from '../saveContext';
 import { EditController } from './EditController';
-import { TestMemoryRouter } from '../../routing';
+import { RedirectionSideEffect, TestMemoryRouter } from '../../routing';
 
 describe('useEditController', () => {
     const defaultProps = {
@@ -131,10 +131,14 @@ describe('useEditController', () => {
                 Promise.resolve({ data: { id: 12, title: 'hello' } })
             );
         const dataProvider = ({ getOne } as unknown) as DataProvider;
-        const Component = ({ redirect = undefined }) => (
+        const Component = ({
+            redirect = undefined,
+        }: {
+            redirect?: RedirectionSideEffect;
+        }) => (
             <CoreAdminContext dataProvider={dataProvider}>
                 <EditController {...defaultProps} redirect={redirect}>
-                    {({ redirect }) => <div>{redirect}</div>}
+                    {({ redirect }) => <div>{redirect.toString()}</div>}
                 </EditController>
             </CoreAdminContext>
         );
@@ -224,7 +228,7 @@ describe('useEditController', () => {
                                 <p>{record?.test}</p>
                                 <button
                                     aria-label="save"
-                                    onClick={() => save({ test: 'updated' })}
+                                    onClick={() => save!({ test: 'updated' })}
                                 />
                             </>
                         );
@@ -268,7 +272,7 @@ describe('useEditController', () => {
                                 <p>{record?.test}</p>
                                 <button
                                     aria-label="save"
-                                    onClick={() => save({ test: 'updated' })}
+                                    onClick={() => save!({ test: 'updated' })}
                                 />
                             </>
                         );
@@ -1044,20 +1048,17 @@ describe('useEditController', () => {
             getOne: () => Promise.resolve({ data: { id: 12 } }),
             update,
         });
-        const middleware: Middleware<ReturnType<typeof useUpdate>[0]> = jest.fn(
-            (resource, params, options, next) => {
-                return next(
-                    resource,
-                    { ...params, meta: { addedByMiddleware: true } },
-                    options
-                );
+        const middleware: Middleware<DataProvider['update']> = jest.fn(
+            (resource, params, next) => {
+                return next(resource, {
+                    ...params,
+                    meta: { addedByMiddleware: true },
+                });
             }
         );
 
         const Child = () => {
-            useRegisterMutationMiddleware<ReturnType<typeof useUpdate>[0]>(
-                middleware
-            );
+            useRegisterMutationMiddleware<DataProvider['update']>(middleware);
             return null;
         };
         render(
@@ -1102,7 +1103,6 @@ describe('useEditController', () => {
                 id: 12,
                 data: { foo: 'bar' },
             },
-            expect.any(Object),
             expect.any(Function)
         );
     });

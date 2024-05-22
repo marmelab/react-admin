@@ -8,7 +8,7 @@ import {
 } from '@tanstack/react-query';
 
 import { useDataProvider } from './useDataProvider';
-import { RaRecord, CreateParams, Identifier } from '../types';
+import { RaRecord, CreateParams, Identifier, DataProvider } from '../types';
 import { useEvent } from '../util';
 
 /**
@@ -86,7 +86,7 @@ export const useCreate = <
     const hasCallTimeOnError = useRef(false);
     const hasCallTimeOnSuccess = useRef(false);
     const hasCallTimeOnSettled = useRef(false);
-
+    const { mutateWithMiddlewares, ...mutationOptions } = options;
     const mutation = useMutation<
         ResultRecordType,
         MutationError,
@@ -107,6 +107,16 @@ export const useCreate = <
                     'useCreate mutation requires a non-empty data object'
                 );
             }
+            if (mutateWithMiddlewares) {
+                return mutateWithMiddlewares(
+                    dataProvider.create.bind(dataProvider),
+                    callTimeResource,
+                    {
+                        data: callTimeData,
+                        meta: callTimeMeta,
+                    }
+                ).then(({ data }) => data);
+            }
             return dataProvider
                 .create<RecordType, ResultRecordType>(callTimeResource, {
                     data: callTimeData,
@@ -114,7 +124,7 @@ export const useCreate = <
                 })
                 .then(({ data }) => data);
         },
-        ...options,
+        ...mutationOptions,
         onError: (error, variables, context) => {
             if (options.onError && !hasCallTimeOnError.current) {
                 return options.onError(error, variables, context);
@@ -215,7 +225,15 @@ export type UseCreateOptions<
         Partial<UseCreateMutateParams<RecordType>>
     >,
     'mutationFn'
-> & { returnPromise?: boolean };
+> & {
+    returnPromise?: boolean;
+    mutateWithMiddlewares?: <
+        CreateFunctionType extends DataProvider['create'] = DataProvider['create']
+    >(
+        mutate: CreateFunctionType,
+        ...Params: Parameters<CreateFunctionType>
+    ) => ReturnType<CreateFunctionType>;
+};
 
 export type CreateMutationFunction<
     RecordType extends Omit<RaRecord, 'id'> = any,

@@ -84,7 +84,7 @@ export const useCreateController = <
     } = mutationOptions;
     const {
         registerMutationMiddleware,
-        getMutateWithMiddlewares,
+        mutateWithMiddlewares,
         unregisterMutationMiddleware,
     } = useMutationMiddlewares();
 
@@ -139,6 +139,7 @@ export const useCreateController = <
         },
         ...otherMutationOptions,
         returnPromise: true,
+        mutateWithMiddlewares,
     });
 
     const save = useCallback(
@@ -157,9 +158,8 @@ export const useCreateController = <
                     ? transform(data)
                     : data
             ).then(async (data: Partial<RecordType>) => {
-                const mutate = getMutateWithMiddlewares(create);
                 try {
-                    await mutate(
+                    await create(
                         resource,
                         { data, meta: metaFromSave ?? meta },
                         callTimeOptions
@@ -176,7 +176,7 @@ export const useCreateController = <
                     }
                 }
             }),
-        [create, getMutateWithMiddlewares, meta, resource, transform]
+        [create, meta, resource, transform]
     );
 
     const getResourceLabel = useGetResourceLabel();

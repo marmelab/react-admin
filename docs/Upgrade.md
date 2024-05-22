@@ -1335,6 +1335,40 @@ The `data-generator-retail` package has been updated to provide types for all it
 
 React-admin no longer supports ([deprecated React PropTypes](https://legacy.reactjs.org/blog/2017/04/07/react-v15.5.0.html#new-deprecation-warnings)). We encourage you to switch to TypeScript to type component props.
 
+### Mutation Middlewares No Longer Receive The Mutation Options
+
+Mutations middlewares no longer receive the mutation options:
+
+```diff
+import * as React from 'react';
+import {
+    useRegisterMutationMiddleware,
+    CreateParams,
+-    MutateOptions,
+    CreateMutationFunction
+} from 'react-admin';
+
+const MyComponent = () => {
+    const createMiddleware = async (
+        resource: string,
+        params: CreateParams,
+-        options: MutateOptions,
+        next: CreateMutationFunction
+    ) => {
+        // Do something before the mutation
+
+        // Call the next middleware
+-        await next(resource, params, options);
++        await next(resource, params);
+
+        // Do something after the mutation
+    }
+    const memoizedMiddleWare = React.useCallback(createMiddleware, []);
+    useRegisterMutationMiddleware(memoizedMiddleWare);
+    // ...
+}
+```
+
 ## Upgrading to v4
 
 If you are on react-admin v3, follow the [Upgrading to v4](https://marmelab.com/react-admin/doc/4.16/Upgrade.html) guide before upgrading to v5.

@@ -18,7 +18,7 @@ import {
     useInput,
 } from '../..';
 import { CoreAdminContext } from '../../core';
-import { testDataProvider, useCreate } from '../../dataProvider';
+import { testDataProvider } from '../../dataProvider';
 import { useNotificationContext } from '../../notification';
 import {
     Middleware,
@@ -35,9 +35,9 @@ describe('useCreateController', () => {
         const location: Location = {
             key: 'a_key',
             pathname: '/foo',
-            search: undefined,
+            search: '',
             state: undefined,
-            hash: undefined,
+            hash: '',
         };
 
         it('should return location state record when set', () => {
@@ -563,20 +563,17 @@ describe('useCreateController', () => {
         const dataProvider = testDataProvider({
             create,
         });
-        const middleware: Middleware<ReturnType<typeof useCreate>[0]> = jest.fn(
-            (resource, params, options, next) => {
-                return next(
-                    resource,
-                    { ...params, meta: { addedByMiddleware: true } },
-                    options
-                );
+        const middleware: Middleware<DataProvider['create']> = jest.fn(
+            (resource, params, next) => {
+                return next(resource, {
+                    ...params,
+                    meta: { addedByMiddleware: true },
+                });
             }
         );
 
         const Child = () => {
-            useRegisterMutationMiddleware<ReturnType<typeof useCreate>[0]>(
-                middleware
-            );
+            useRegisterMutationMiddleware<DataProvider['create']>(middleware);
             return null;
         };
         render(
@@ -616,7 +613,6 @@ describe('useCreateController', () => {
             {
                 data: { foo: 'bar' },
             },
-            expect.any(Object),
             expect.any(Function)
         );
     });
