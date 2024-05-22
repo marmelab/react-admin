@@ -109,7 +109,7 @@ export const PostCreate = () => (
 
 **Tip**: You can include properties in the form `defaultValues` that are not listed as input components, like the `created_at` property in the previous example.
 
-**Tip**: React-admin also allows to define default values at the input level. See the [Setting default Values](./EditTutorial.md#setting-default-values) section.
+**Tip**: React-admin also allows to define default values at the input level. See the [Setting default Values](./forms.md#default-values) section.
 
 ## `id`
 
