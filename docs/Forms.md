@@ -351,8 +351,9 @@ import { FormDataConsumer } from 'react-admin';
          <SimpleForm shouldUnregister>
              <BooleanInput source="hasEmail" />
              <FormDataConsumer<{ hasEmail: boolean }>>
-                 {({ formData, ...rest }) => formData.hasEmail &&
-                      <TextInput source="email" {...rest} />
+                 {({ formData, ...rest }) => formData.hasEmail
+                      ? <TextInput source="email" {...rest} />
+                      : null
                  }
              </FormDataConsumer>
          </SimpleForm>
