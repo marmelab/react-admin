@@ -1,5 +1,27 @@
 # Changelog
 
+## v5.0.0-beta.1
+
+* Fix mutation middlewares ([#9855](https://github.com/marmelab/react-admin/pull/9855)) ([djhi](https://github.com/djhi))
+* Fix `useAuthProvider` may return undefined when no `authProvider` is available ([#9861](https://github.com/marmelab/react-admin/pull/9861)) ([slax57](https://github.com/slax57))
+* Fix race condition between HTTP error notification and server-side validation error notification ([#9848](https://github.com/marmelab/react-admin/pull/9848)) ([slax57](https://github.com/slax57))
+* Update `<DatagridBody>` to create `<RecordContext>` ([#9808](https://github.com/marmelab/react-admin/pull/9808)) ([adguernier](https://github.com/adguernier))
+* Update `clsx` to v2 ([#9822](https://github.com/marmelab/react-admin/pull/9822)) ([MohammedFaragallah](https://github.com/MohammedFaragallah))
+* Update `query-string` to v9 ([#9812](https://github.com/marmelab/react-admin/pull/9812)) ([MohammedFaragallah](https://github.com/MohammedFaragallah))
+* Update minimal requirement to React 18 ([#9827](https://github.com/marmelab/react-admin/pull/9827)) ([fzaninotto](https://github.com/fzaninotto))
+* Remove support for React `PropTypes` ([#9851](https://github.com/marmelab/react-admin/pull/9851)) ([slax57](https://github.com/slax57))
+* [Doc] Add Forms dedicated chapter ([#9864](https://github.com/marmelab/react-admin/pull/9864)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix typos, anchor and examples ([#9846](https://github.com/marmelab/react-admin/pull/9846)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Explain how to change page with `useNavigation` ([#9840](https://github.com/marmelab/react-admin/pull/9840)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Doc] Add story for custom `<DatagridRow>` ([#9847](https://github.com/marmelab/react-admin/pull/9847)) ([adguernier](https://github.com/adguernier))
+* [Demo] Add task management to CRM app ([#9842](https://github.com/marmelab/react-admin/pull/9842)) ([fzaninotto](https://github.com/fzaninotto))
+* [Demo] Fix `strictNullCheck` errors in examples ([#9833](https://github.com/marmelab/react-admin/pull/9833)) ([djhi](https://github.com/djhi))
+* [TypeScript] Fix `useResourceDefinition` return type ([#9852](https://github.com/marmelab/react-admin/pull/9852)) ([slax57](https://github.com/slax57))
+* [Chore] Optimize CI ([#9857](https://github.com/marmelab/react-admin/pull/9857)) ([djhi](https://github.com/djhi))
+* [Chore] Fix yarn cache in CI workflows ([#9829](https://github.com/marmelab/react-admin/pull/9829)) ([fzaninotto](https://github.com/fzaninotto))
+* [Chore] Avoid using MUI in ra-core ([#9831](https://github.com/marmelab/react-admin/pull/9831)) ([djhi](https://github.com/djhi))
+* [Chore] Speed up unit tests by not using MUI Icons barrel files ([#9828](https://github.com/marmelab/react-admin/pull/9828)) ([fzaninotto](https://github.com/fzaninotto))
+
 ## v5.0.0-beta.0
 
 * Add `<ReferenceFieldBase>` ([#9698](https://github.com/marmelab/react-admin/pull/9698)) ([djhi](https://github.com/djhi))
