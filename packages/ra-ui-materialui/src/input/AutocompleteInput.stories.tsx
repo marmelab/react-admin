@@ -225,7 +225,6 @@ export const OnCreate = () => (
                 choicesForCreationSupport.push(newOption);
                 return newOption;
             }}
-            fullWidth
             TextFieldProps={{
                 placeholder: 'Start typing to create a new item',
             }}
@@ -275,7 +274,6 @@ export const CreateLabel = () => (
                     return newAuthor;
                 }
             }}
-            fullWidth
             createLabel="Start typing to create a new item"
         />
     </Wrapper>
