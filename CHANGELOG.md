@@ -61,6 +61,19 @@
 * [TypeScript] Make types more strict in ra-core, part II ([#9743](https://github.com/marmelab/react-admin/pull/9743)) ([fzaninotto](https://github.com/fzaninotto))
 * [TypeScript] Make types more strict in ra-core ([#9741](https://github.com/marmelab/react-admin/pull/9741)) ([fzaninotto](https://github.com/fzaninotto))
 
+## v4.16.18
+
+* Fix `<Datagrid>` uses wrong element for "Select All" label ([#9826](https://github.com/marmelab/react-admin/pull/9826)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<ListView>` crashes when inside a tab ([#9824](https://github.com/marmelab/react-admin/pull/9824)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix warning about `defaultProps` in React 18.3 ([#9832](https://github.com/marmelab/react-admin/pull/9832)) ([djhi](https://github.com/djhi))
+* Bump ejs from 3.1.8 to 3.1.10 ([#9814](https://github.com/marmelab/react-admin/pull/9814)) ([dependabot bot](https://github.com/dependabot))
+* [Doc] Improve doc for `<Autocomplete onCreate>` and similar props ([#9858](https://github.com/marmelab/react-admin/pull/9858)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Add missing `fetchUtils` import to make custom httpClient snippet clearer in TypeScript ([#9843](https://github.com/marmelab/react-admin/pull/9843)) ([adguernier](https://github.com/adguernier))
+* [Doc] update italian locale reference ([#9830](https://github.com/marmelab/react-admin/pull/9830)) ([christianascone](https://github.com/christianascone))
+* [Doc] Fix Input usage mentions `disabled` instead of `readOnly` ([#9825](https://github.com/marmelab/react-admin/pull/9825)) ([fzaninotto](https://github.com/fzaninotto))
+* [Typescript] Fix compilation error in `<MenuItemLink>`, `<ResettableTextField>` and `<InspectorButton>` with latest `@types/react` ([#9853](https://github.com/marmelab/react-admin/pull/9853)) ([ilia-os](https://github.com/ilia-os))
+* [Storybook] Fix `<TitlePortal>` stories ([#9834](https://github.com/marmelab/react-admin/pull/9834)) ([djhi](https://github.com/djhi))
+
 ## v4.16.17
 
 * Fix combineDataProviders doesn't work when returned by an async function ([#9798](https://github.com/marmelab/react-admin/pull/9798)) ([fzaninotto](https://github.com/fzaninotto))
@@ -72,7 +85,7 @@
 * [Doc] Update third-party Inputs to add link to Google Places AutocompleteInput ([#9771](https://github.com/marmelab/react-admin/pull/9771)) ([quentin-decre](https://github.com/quentin-decre))
 * [Doc] Update `<Search>` and `<SearchWithResult>` to introduce `queryOptions` ([#9779](https://github.com/marmelab/react-admin/pull/9779)) ([erwanMarmelab](https://github.com/erwanMarmelab))
 * [Doc] Update RBAC to better explain the difference between the built-in actions ([#9766](https://github.com/marmelab/react-admin/pull/9766)) ([slax57](https://github.com/slax57))
-* [Doc] Fix `<SimpleForm>` has wrong import for `<RichTextInput>`  ([#9775](https://github.com/marmelab/react-admin/pull/9775)) ([anthonycmain](https://github.com/anthonycmain))
+* [Doc] Fix `<SimpleForm>` has wrong import for `<RichTextInput>` ([#9775](https://github.com/marmelab/react-admin/pull/9775)) ([anthonycmain](https://github.com/anthonycmain))
 * [Doc] Fix `<RichTextInput>` typo on TipTap ([#9759](https://github.com/marmelab/react-admin/pull/9759)) ([adguernier](https://github.com/adguernier))
 * [Doc] Update `<JsonSchemaForm>` to add details about available widgets  ([#9758](https://github.com/marmelab/react-admin/pull/9758)) ([adguernier](https://github.com/adguernier))
 * [TypeScript] Fix warning in `create-react-admin` ([#9728](https://github.com/marmelab/react-admin/pull/9728)) ([hbendev](https://github.com/hbendev))

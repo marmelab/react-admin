@@ -113,9 +113,12 @@ export const DatagridHeader = (props: DatagridHeaderProps) => {
                         className={DatagridClasses.headerCell}
                     >
                         <Checkbox
-                            aria-label={translate('ra.action.select_all', {
-                                _: 'Select all',
-                            })}
+                            inputProps={{
+                                'aria-label': translate(
+                                    'ra.action.select_all',
+                                    { _: 'Select all' }
+                                ),
+                            }}
                             className="select-all"
                             color="primary"
                             checked={

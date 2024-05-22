@@ -8,7 +8,6 @@ import React, {
     FC,
     ReactElement,
 } from 'react';
-import { isElement } from 'react-is';
 import clsx from 'clsx';
 import { TableCell, TableRow, TableRowProps, Checkbox } from '@mui/material';
 import {
@@ -230,7 +229,7 @@ const DatagridRow: FC<DatagridRowProps> = React.forwardRef((props, ref) => {
                     className={DatagridClasses.expandedPanel}
                 >
                     <TableCell colSpan={nbColumns}>
-                        {isElement(expand)
+                        {isValidElement(expand)
                             ? expand
                             : createElement(
                                   expand as React.FunctionComponent<any>
