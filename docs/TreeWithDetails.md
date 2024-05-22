@@ -180,6 +180,7 @@ export const MyToolbar = (props: ToolbarProps) => (
 
 **Tip**: `CreateNode` and `EditNode` components accept a `mutationOptions` prop. So you can override the mutationOptions of the main mutation query.
 
+{% raw %}
 ```jsx
 const CategoriesCreate = () => (
     <CreateNode
@@ -199,6 +200,7 @@ const CategoriesCreate = () => (
     </CreateNode>
 );
 ```
+{% endraw %}
 
 
 
