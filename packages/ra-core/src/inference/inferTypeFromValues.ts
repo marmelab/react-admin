@@ -35,7 +35,7 @@ export const InferenceTypes = [
     'object',
 ] as const;
 
-export type PossibleInferredElementTypes = typeof InferenceTypes[number];
+export type PossibleInferredElementTypes = (typeof InferenceTypes)[number];
 
 export interface InferredElementDescription {
     type: PossibleInferredElementTypes;

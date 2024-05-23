@@ -37,7 +37,7 @@ RecordContext.displayName = 'RecordContext';
  * };
  */
 export const RecordContextProvider = <
-    RecordType extends RaRecord | Omit<RaRecord, 'id'> = RaRecord
+    RecordType extends RaRecord | Omit<RaRecord, 'id'> = RaRecord,
 >({
     children,
     value,

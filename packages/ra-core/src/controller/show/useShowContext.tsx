@@ -14,7 +14,7 @@ import { ShowControllerResult } from './useShowController';
  * @see useShowController for how it is filled
  */
 export const useShowContext = <
-    RecordType extends RaRecord = any
+    RecordType extends RaRecord = any,
 >(): ShowControllerResult<RecordType> => {
     const context = useContext(ShowContext);
     // Props take precedence over the context

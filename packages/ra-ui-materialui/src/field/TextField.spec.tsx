@@ -97,7 +97,7 @@ describe('<TextField />', () => {
                             not_found: 'Not found',
                         },
                     },
-                } as any),
+                }) as any,
             'en'
         );
         render(

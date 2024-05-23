@@ -13,7 +13,7 @@ import { SaveContext, SaveContextValue } from './SaveContext';
  * } = useSaveContext();
  */
 export const useSaveContext = <
-    PropsType extends SaveContextValue = SaveContextValue
+    PropsType extends SaveContextValue = SaveContextValue,
 >(
     _props?: PropsType
 ): SaveContextValue => {

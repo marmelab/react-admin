@@ -71,11 +71,11 @@ export const useUnique = (options?: UseUniqueOptions) => {
 
     const validateUnique = useCallback(
         (callTimeOptions?: UseUniqueOptions) => {
-            const { message, filter, debounce: interval } = merge<
-                UseUniqueOptions,
-                any,
-                any
-            >(
+            const {
+                message,
+                filter,
+                debounce: interval,
+            } = merge<UseUniqueOptions, any, any>(
                 {
                     debounce: DEFAULT_DEBOUNCE,
                     filter: {},

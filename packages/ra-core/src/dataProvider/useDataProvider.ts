@@ -76,10 +76,10 @@ import { reactAdminFetchActions } from './dataFetchActions';
 const arrayReturnTypes = ['getList', 'getMany', 'getManyReference'];
 
 export const useDataProvider = <
-    TDataProvider extends DataProvider = DataProvider
+    TDataProvider extends DataProvider = DataProvider,
 >(): TDataProvider => {
-    const dataProvider = ((useContext(DataProviderContext) ||
-        defaultDataProvider) as unknown) as TDataProvider;
+    const dataProvider = (useContext(DataProviderContext) ||
+        defaultDataProvider) as unknown as TDataProvider;
 
     const logoutIfAccessDenied = useLogoutIfAccessDenied();
 

@@ -46,20 +46,19 @@ export const ReferenceManyCount = <RecordType extends RaRecord = RaRecord>(
     const oneSecondHasPassed = useTimeout(timeout);
     const createPath = useCreatePath();
 
-    const { isPending, error, total } = useReferenceManyFieldController<
-        RecordType
-    >({
-        filter,
-        sort,
-        page: 1,
-        perPage: 1,
-        record,
-        reference,
-        // @ts-ignore remove when #8491 is released
-        resource,
-        source,
-        target,
-    });
+    const { isPending, error, total } =
+        useReferenceManyFieldController<RecordType>({
+            filter,
+            sort,
+            page: 1,
+            perPage: 1,
+            record,
+            reference,
+            // @ts-ignore remove when #8491 is released
+            resource,
+            source,
+            target,
+        });
 
     const body = isPending ? (
         oneSecondHasPassed ? (

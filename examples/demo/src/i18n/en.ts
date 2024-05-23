@@ -22,8 +22,7 @@ const customEnglishMessages: TranslationMessages = {
             all_customers: 'See all customers',
             pending_orders: 'Pending Orders',
             order: {
-                items:
-                    'by %{customer_name}, one item |||| by %{customer_name}, %{nb_items} items',
+                items: 'by %{customer_name}, one item |||| by %{customer_name}, %{nb_items} items',
             },
             welcome: {
                 title: 'Welcome to the react-admin e-commerce demo',

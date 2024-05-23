@@ -138,9 +138,10 @@ export interface SupportCreateSuggestionOptions {
 
 export interface UseSupportCreateValue {
     createId: string;
-    getCreateItem: (
-        filterValue?: string
-    ) => { id: Identifier; [key: string]: any };
+    getCreateItem: (filterValue?: string) => {
+        id: Identifier;
+        [key: string]: any;
+    };
     handleChange: (eventOrValue: ChangeEvent | any) => Promise<void>;
     createElement: ReactElement | null;
 }

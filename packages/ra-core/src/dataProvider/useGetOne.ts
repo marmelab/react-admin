@@ -113,6 +113,5 @@ export type UseGetOneOptions<RecordType extends RaRecord = any> = Omit<
     ) => void;
 };
 
-export type UseGetOneHookValue<
-    RecordType extends RaRecord = any
-> = UseQueryResult<GetOneResult<RecordType>['data']>;
+export type UseGetOneHookValue<RecordType extends RaRecord = any> =
+    UseQueryResult<GetOneResult<RecordType>['data']>;

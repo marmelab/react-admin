@@ -98,13 +98,8 @@ export const ArrayInput = (props: ArrayInputProps) => {
         : validate;
     const getValidationErrorMessage = useGetValidationErrorMessage();
 
-    const {
-        getFieldState,
-        formState,
-        getValues,
-        register,
-        unregister,
-    } = useFormContext();
+    const { getFieldState, formState, getValues, register, unregister } =
+        useFormContext();
 
     const fieldProps = useFieldArray({
         name: finalSource,

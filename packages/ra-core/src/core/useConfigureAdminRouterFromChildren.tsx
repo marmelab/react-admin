@@ -79,11 +79,8 @@ const useRoutesAndResourcesFromChildren = (
     // We need to know right away whether some resources were declared to correctly
     // initialize the status at the next stop
     const doLogout = useLogout();
-    const [
-        routesAndResources,
-        setRoutesAndResources,
-        mergeRoutesAndResources,
-    ] = useRoutesAndResourcesState(getRoutesAndResourceFromNodes(children));
+    const [routesAndResources, setRoutesAndResources, mergeRoutesAndResources] =
+        useRoutesAndResourcesState(getRoutesAndResourceFromNodes(children));
 
     const [status, setStatus] = useSafeSetState<AdminRouterStatus>(() =>
         getStatus({
@@ -126,18 +123,19 @@ const useRoutesAndResourcesFromChildren = (
 
         const updateFromChildren = async () => {
             const functionChild = getSingleChildFunction(children);
-            const newRoutesAndResources = getRoutesAndResourceFromNodes(
-                children
-            );
+            const newRoutesAndResources =
+                getRoutesAndResourceFromNodes(children);
             setRoutesAndResources(newRoutesAndResources);
             setStatus(
                 !!functionChild
                     ? 'loading'
                     : newRoutesAndResources.resources.length > 0 ||
-                      newRoutesAndResources.customRoutesWithLayout.length > 0 ||
-                      newRoutesAndResources.customRoutesWithoutLayout.length > 0
-                    ? 'ready'
-                    : 'empty'
+                        newRoutesAndResources.customRoutesWithLayout.length >
+                            0 ||
+                        newRoutesAndResources.customRoutesWithoutLayout.length >
+                            0
+                      ? 'ready'
+                      : 'empty'
             );
 
             if (functionChild) {
@@ -169,7 +167,7 @@ const useRoutesAndResourcesState = (
 ): [
     RoutesAndResources,
     Dispatch<SetStateAction<RoutesAndResources>>,
-    (newRoutesAndResources: RoutesAndResources) => void
+    (newRoutesAndResources: RoutesAndResources) => void,
 ] => {
     const [routesAndResources, setRoutesAndResources] = useState(initialState);
 
@@ -179,9 +177,10 @@ const useRoutesAndResourcesState = (
                 customRoutesWithLayout: previous.customRoutesWithLayout.concat(
                     newRoutesAndResources.customRoutesWithLayout
                 ),
-                customRoutesWithoutLayout: previous.customRoutesWithoutLayout.concat(
-                    newRoutesAndResources.customRoutesWithoutLayout
-                ),
+                customRoutesWithoutLayout:
+                    previous.customRoutesWithoutLayout.concat(
+                        newRoutesAndResources.customRoutesWithoutLayout
+                    ),
                 resources: previous.resources.concat(
                     newRoutesAndResources.resources
                 ),
@@ -207,13 +206,13 @@ const useRegisterResources = (
     useEffect(() => {
         resources.forEach(resource => {
             if (
-                typeof ((resource.type as unknown) as ResourceWithRegisterFunction)
-                    .registerResource === 'function'
+                typeof (
+                    resource.type as unknown as ResourceWithRegisterFunction
+                ).registerResource === 'function'
             ) {
-                const definition = ((resource.type as unknown) as ResourceWithRegisterFunction).registerResource(
-                    resource.props,
-                    permissions
-                );
+                const definition = (
+                    resource.type as unknown as ResourceWithRegisterFunction
+                ).registerResource(resource.props, permissions);
                 register(definition);
             } else {
                 throw new Error(
@@ -224,13 +223,13 @@ const useRegisterResources = (
         return () => {
             resources.forEach(resource => {
                 if (
-                    typeof ((resource.type as unknown) as ResourceWithRegisterFunction)
-                        .registerResource === 'function'
+                    typeof (
+                        resource.type as unknown as ResourceWithRegisterFunction
+                    ).registerResource === 'function'
                 ) {
-                    const definition = ((resource.type as unknown) as ResourceWithRegisterFunction).registerResource(
-                        resource.props,
-                        permissions
-                    );
+                    const definition = (
+                        resource.type as unknown as ResourceWithRegisterFunction
+                    ).registerResource(resource.props, permissions);
                     unregister(definition);
                 } else {
                     throw new Error(
@@ -256,10 +255,10 @@ const getStatus = ({
     return getSingleChildFunction(children)
         ? 'loading'
         : resources.length > 0 ||
-          customRoutesWithLayout.length > 0 ||
-          customRoutesWithoutLayout.length > 0
-        ? 'ready'
-        : 'empty';
+            customRoutesWithLayout.length > 0 ||
+            customRoutesWithoutLayout.length > 0
+          ? 'ready'
+          : 'empty';
 };
 
 /**
@@ -330,9 +329,8 @@ const getRoutesAndResourceFromNodes = (
         }
 
         if ((element.type as any).raName === 'CustomRoutes') {
-            const customRoutesElement = element as ReactElement<
-                CustomRoutesProps
-            >;
+            const customRoutesElement =
+                element as ReactElement<CustomRoutesProps>;
 
             if (customRoutesElement.props.noLayout) {
                 customRoutesWithoutLayout.push(

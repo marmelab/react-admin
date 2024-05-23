@@ -40,8 +40,8 @@ const DatagridRow: FC<DatagridRowProps> = React.forwardRef((props, ref) => {
     const defaultRowClick = definition?.hasShow
         ? 'show'
         : definition?.hasEdit
-        ? 'edit'
-        : false;
+          ? 'edit'
+          : false;
 
     const {
         children,

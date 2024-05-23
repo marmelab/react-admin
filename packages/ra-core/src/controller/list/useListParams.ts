@@ -354,8 +354,8 @@ export const getQuery = ({
         Object.keys(queryFromLocation).length > 0
             ? queryFromLocation
             : hasCustomParams(params)
-            ? { ...params }
-            : { filter: filterDefaultValues || {} };
+              ? { ...params }
+              : { filter: filterDefaultValues || {} };
 
     if (!query.sort) {
         query.sort = sort.field;

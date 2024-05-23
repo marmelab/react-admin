@@ -58,10 +58,10 @@ const StoreRaw = ({ name }) => {
             {value === undefined
                 ? 'undefined'
                 : value === null
-                ? 'null'
-                : value === ''
-                ? "''"
-                : value}
+                  ? 'null'
+                  : value === ''
+                    ? "''"
+                    : value}
         </>
     );
 };

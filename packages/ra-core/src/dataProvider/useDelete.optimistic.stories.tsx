@@ -62,11 +62,7 @@ const SuccessCore = () => {
     };
     return (
         <>
-            <ul>
-                {data?.map(post => (
-                    <li key={post.id}>{post.title}</li>
-                ))}
-            </ul>
+            <ul>{data?.map(post => <li key={post.id}>{post.title}</li>)}</ul>
             <div>
                 <button onClick={handleClick} disabled={isPending}>
                     Delete first post
@@ -138,11 +134,7 @@ const ErrorCore = () => {
     };
     return (
         <>
-            <ul>
-                {data?.map(post => (
-                    <li key={post.id}>{post.title}</li>
-                ))}
-            </ul>
+            <ul>{data?.map(post => <li key={post.id}>{post.title}</li>)}</ul>
             <div>
                 <button onClick={handleClick} disabled={isPending}>
                     Delete first post

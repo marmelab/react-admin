@@ -239,8 +239,8 @@ describe('useInput', () => {
                     {typeof values[source] === 'undefined'
                         ? 'undefined'
                         : values[source]
-                        ? 'true'
-                        : 'false'}
+                          ? 'true'
+                          : 'false'}
                 </>
             );
         };

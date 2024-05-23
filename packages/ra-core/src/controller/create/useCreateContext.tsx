@@ -14,7 +14,7 @@ import { CreateControllerResult } from './useCreateController';
  * @see useCreateController for how it is filled
  */
 export const useCreateContext = <
-    RecordType extends RaRecord = RaRecord
+    RecordType extends RaRecord = RaRecord,
 >(): CreateControllerResult<RecordType> => {
     const context = useContext(CreateContext);
     if (!context) {

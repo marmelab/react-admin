@@ -7,7 +7,7 @@ import { UseQueryOptions } from '@tanstack/react-query';
 
 export interface UseReferenceArrayFieldControllerParams<
     RecordType extends RaRecord = RaRecord,
-    ReferenceRecordType extends RaRecord = RaRecord
+    ReferenceRecordType extends RaRecord = RaRecord,
 > {
     filter?: any;
     page?: number;
@@ -51,7 +51,7 @@ const defaultFilter = {};
  */
 export const useReferenceArrayFieldController = <
     RecordType extends RaRecord = RaRecord,
-    ReferenceRecordType extends RaRecord = RaRecord
+    ReferenceRecordType extends RaRecord = RaRecord,
 >(
     props: UseReferenceArrayFieldControllerParams<
         RecordType,
@@ -73,37 +73,31 @@ export const useReferenceArrayFieldController = <
     const { meta, ...otherQueryOptions } = queryOptions;
     const ids = Array.isArray(value) ? value : emptyArray;
 
-    const {
-        data,
-        error,
-        isLoading,
-        isFetching,
-        isPending,
-        refetch,
-    } = useGetManyAggregate<ReferenceRecordType>(
-        reference,
-        { ids, meta },
-        {
-            onError: error =>
-                notify(
-                    typeof error === 'string'
-                        ? error
-                        : error.message || 'ra.notification.http_error',
-                    {
-                        type: 'error',
-                        messageArgs: {
-                            _:
-                                typeof error === 'string'
-                                    ? error
-                                    : error && error.message
-                                    ? error.message
-                                    : undefined,
-                        },
-                    }
-                ),
-            ...otherQueryOptions,
-        }
-    );
+    const { data, error, isLoading, isFetching, isPending, refetch } =
+        useGetManyAggregate<ReferenceRecordType>(
+            reference,
+            { ids, meta },
+            {
+                onError: error =>
+                    notify(
+                        typeof error === 'string'
+                            ? error
+                            : error.message || 'ra.notification.http_error',
+                        {
+                            type: 'error',
+                            messageArgs: {
+                                _:
+                                    typeof error === 'string'
+                                        ? error
+                                        : error && error.message
+                                          ? error.message
+                                          : undefined,
+                            },
+                        }
+                    ),
+                ...otherQueryOptions,
+            }
+        );
 
     const listProps = useList<ReferenceRecordType>({
         data,

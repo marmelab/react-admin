@@ -27,12 +27,8 @@ const arePropsEqual = (
 export const SavedQueryFilterListItem = memo(
     (props: SavedQueryFilterListItemProps): ReactElement => {
         const { className, label, sx, value } = props;
-        const {
-            filterValues,
-            sort,
-            perPage,
-            displayedFilters,
-        } = useListContext();
+        const { filterValues, sort, perPage, displayedFilters } =
+            useListContext();
         const navigate = useNavigate();
 
         const isSelected = isEqual(value, {

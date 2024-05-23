@@ -25,10 +25,8 @@ const defaultData = [
             fr: 'Médecins sans frontières',
         },
         description: {
-            en:
-                'International humanitarian medical non-governmental organisation of French origin',
-            fr:
-                "Organisation non gouvernementale (ONG) médicale humanitaire internationale d'origine française fondée en 1971 à Paris",
+            en: 'International humanitarian medical non-governmental organisation of French origin',
+            fr: "Organisation non gouvernementale (ONG) médicale humanitaire internationale d'origine française fondée en 1971 à Paris",
         },
         internal_organizations: {
             OCB: {

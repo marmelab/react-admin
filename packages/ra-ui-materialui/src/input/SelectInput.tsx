@@ -203,9 +203,10 @@ export const SelectInput = (props: SelectInputProps) => {
             : emptyText;
     }, [emptyText, translate]);
 
-    const renderMenuItemOption = useCallback(choice => getChoiceText(choice), [
-        getChoiceText,
-    ]);
+    const renderMenuItemOption = useCallback(
+        choice => getChoiceText(choice),
+        [getChoiceText]
+    );
 
     const handleChange = useCallback(
         async (eventOrChoice: ChangeEvent<HTMLInputElement> | RaRecord) => {

@@ -23,7 +23,7 @@ export const useArrayInput = (
                 replace: props?.replace,
                 swap: props?.swap,
                 update: props?.update,
-            } as ArrayInputContextValue),
+            }) as ArrayInputContextValue,
         [props]
     );
 

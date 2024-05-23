@@ -24,7 +24,7 @@ import { FieldProps } from './types';
  * );
  */
 export const WrapperField = <
-    RecordType extends Record<string, any> = Record<string, any>
+    RecordType extends Record<string, any> = Record<string, any>,
 >({
     children,
 }: WrapperFieldProps<RecordType>) => <>{children}</>;
@@ -32,7 +32,7 @@ export const WrapperField = <
 WrapperField.displayName = 'WrapperField';
 
 export interface WrapperFieldProps<
-    RecordType extends Record<string, any> = Record<string, any>
+    RecordType extends Record<string, any> = Record<string, any>,
 > extends FieldProps<RecordType> {
     children: ReactNode;
 }

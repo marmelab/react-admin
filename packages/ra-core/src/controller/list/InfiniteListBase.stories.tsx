@@ -57,14 +57,8 @@ const dataProvider = new Proxy(baseDataProvider, {
 });
 
 const BookListView = () => {
-    const {
-        data,
-        isPending,
-        sort,
-        setSort,
-        filterValues,
-        setFilters,
-    } = useListContext();
+    const { data, isPending, sort, setSort, filterValues, setFilters } =
+        useListContext();
     if (isPending) {
         return <div>Loading...</div>;
     }

@@ -23,7 +23,7 @@ export type UseRecordSelectionResult<RecordType extends RaRecord = any> = [
         unselect: (ids: RecordType['id'][]) => void;
         toggle: (id: RecordType['id']) => void;
         clearSelection: () => void;
-    }
+    },
 ];
 
 /**
@@ -41,9 +41,8 @@ export const useRecordSelection = <RecordType extends RaRecord = any>(
 
     const storeKey = `${resource}.selectedIds`;
 
-    const [localIds, setLocalIds] = useState<RecordType['id'][]>(
-        defaultSelection
-    );
+    const [localIds, setLocalIds] =
+        useState<RecordType['id'][]>(defaultSelection);
     // As we can't conditionally call a hook, if the storeKey is false,
     // we'll ignore the params variable later on and won't call setParams either.
     const [storeIds, setStoreIds] = useStore<RecordType['id'][]>(

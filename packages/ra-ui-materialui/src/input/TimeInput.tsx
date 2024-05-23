@@ -110,7 +110,10 @@ export const TimeInput = ({
 export type TimeInputProps = CommonInputProps &
     Omit<TextFieldProps, 'helperText' | 'label'>;
 
-const leftPad = (nb = 2) => value => ('0'.repeat(nb) + value).slice(-nb);
+const leftPad =
+    (nb = 2) =>
+    value =>
+        ('0'.repeat(nb) + value).slice(-nb);
 const leftPad2 = leftPad(2);
 
 /**

@@ -257,11 +257,8 @@ describe('buildFields', () => {
 
     describe('with sparse fields', () => {
         it('returns an object with the fields to retrieve', () => {
-            const {
-                introspectionResults,
-                resource,
-                params,
-            } = buildGQLParamsWithSparseFieldsFactory();
+            const { introspectionResults, resource, params } =
+                buildGQLParamsWithSparseFieldsFactory();
 
             // nested sparse params
             params.meta.sparseFields[1].linked.push({ nestedLink: ['bar'] });
@@ -289,10 +286,8 @@ describe('buildFields', () => {
         });
 
         it('throws an error when sparse fields is requested but empty', () => {
-            const {
-                introspectionResults,
-                resource,
-            } = buildGQLParamsWithSparseFieldsFactory();
+            const { introspectionResults, resource } =
+                buildGQLParamsWithSparseFieldsFactory();
 
             expect(() =>
                 buildFields(introspectionResults)(resource.type.fields, [])
@@ -302,10 +297,8 @@ describe('buildFields', () => {
         });
 
         it('throws an error when requested sparse fields are not available', () => {
-            const {
-                introspectionResults,
-                resource,
-            } = buildGQLParamsWithSparseFieldsFactory();
+            const { introspectionResults, resource } =
+                buildGQLParamsWithSparseFieldsFactory();
 
             expect(() =>
                 buildFields(introspectionResults)(resource.type.fields, [
@@ -586,12 +579,8 @@ describe('buildGqlQuery', () => {
         });
 
         it('returns the correct query with sparse fields', () => {
-            const {
-                introspectionResults,
-                params,
-                queryType,
-                resource,
-            } = buildGQLParamsWithSparseFieldsFactory();
+            const { introspectionResults, params, queryType, resource } =
+                buildGQLParamsWithSparseFieldsFactory();
 
             expect(
                 print(
@@ -655,12 +644,8 @@ describe('buildGqlQuery', () => {
         });
 
         it('returns the correct query with sparse fields', () => {
-            const {
-                introspectionResults,
-                params,
-                queryType,
-                resource,
-            } = buildGQLParamsWithSparseFieldsFactory();
+            const { introspectionResults, params, queryType, resource } =
+                buildGQLParamsWithSparseFieldsFactory();
 
             expect(
                 print(
@@ -725,12 +710,8 @@ describe('buildGqlQuery', () => {
         });
 
         it('returns the correct query with sparse fields', () => {
-            const {
-                introspectionResults,
-                params,
-                queryType,
-                resource,
-            } = buildGQLParamsWithSparseFieldsFactory();
+            const { introspectionResults, params, queryType, resource } =
+                buildGQLParamsWithSparseFieldsFactory();
 
             expect(
                 print(
@@ -791,12 +772,8 @@ describe('buildGqlQuery', () => {
         });
 
         it('returns the correct query with sparse fields', () => {
-            const {
-                introspectionResults,
-                params,
-                queryType,
-                resource,
-            } = buildGQLParamsWithSparseFieldsFactory();
+            const { introspectionResults, params, queryType, resource } =
+                buildGQLParamsWithSparseFieldsFactory();
 
             expect(
                 print(
@@ -854,12 +831,8 @@ describe('buildGqlQuery', () => {
         });
 
         it('returns the correct query with sparse fields', () => {
-            const {
-                introspectionResults,
-                params,
-                queryType,
-                resource,
-            } = buildGQLParamsWithSparseFieldsFactory();
+            const { introspectionResults, params, queryType, resource } =
+                buildGQLParamsWithSparseFieldsFactory();
 
             expect(
                 print(
@@ -917,12 +890,8 @@ describe('buildGqlQuery', () => {
         });
 
         it('returns the correct query with sparse fields', () => {
-            const {
-                introspectionResults,
-                params,
-                queryType,
-                resource,
-            } = buildGQLParamsWithSparseFieldsFactory();
+            const { introspectionResults, params, queryType, resource } =
+                buildGQLParamsWithSparseFieldsFactory();
 
             expect(
                 print(
@@ -980,12 +949,8 @@ describe('buildGqlQuery', () => {
         });
 
         it('returns the correct query with sparse fields', () => {
-            const {
-                introspectionResults,
-                params,
-                queryType,
-                resource,
-            } = buildGQLParamsWithSparseFieldsFactory();
+            const { introspectionResults, params, queryType, resource } =
+                buildGQLParamsWithSparseFieldsFactory();
 
             expect(
                 print(

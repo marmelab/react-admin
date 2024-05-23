@@ -621,9 +621,9 @@ describe('useCreateController', () => {
         const create = jest.fn().mockImplementationOnce(() => {
             return Promise.reject({ body: { errors: { foo: 'invalid' } } });
         });
-        const dataProvider = ({
+        const dataProvider = {
             create,
-        } as unknown) as DataProvider;
+        } as unknown as DataProvider;
         let saveCallback;
         render(
             <CoreAdminContext dataProvider={dataProvider}>

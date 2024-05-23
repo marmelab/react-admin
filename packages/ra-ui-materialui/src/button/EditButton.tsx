@@ -73,10 +73,8 @@ interface Props<RecordType extends RaRecord = any> {
     scrollToTop?: boolean;
 }
 
-export type EditButtonProps<RecordType extends RaRecord = any> = Props<
-    RecordType
-> &
-    ButtonProps;
+export type EditButtonProps<RecordType extends RaRecord = any> =
+    Props<RecordType> & ButtonProps;
 
 const PREFIX = 'RaEditButton';
 

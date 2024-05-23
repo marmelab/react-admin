@@ -428,9 +428,10 @@ export const ActionsLeft = () => (
                             <ArrayInput source="authors">
                                 <SimpleFormIterator
                                     sx={{
-                                        '& .RaSimpleFormIterator-indexContainer': {
-                                            order: 0,
-                                        },
+                                        '& .RaSimpleFormIterator-indexContainer':
+                                            {
+                                                order: 0,
+                                            },
                                         '& .RaSimpleFormIterator-action': {
                                             order: 1,
                                             visibility: 'visible',

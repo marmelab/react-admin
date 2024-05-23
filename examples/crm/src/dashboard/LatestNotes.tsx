@@ -14,18 +14,16 @@ import { Contact as ContactType } from '../types';
 
 export const LatestNotes = () => {
     const { identity } = useGetIdentity();
-    const {
-        data: contactNotesData,
-        isPending: contactNotesLoading,
-    } = useGetList(
-        'contactNotes',
-        {
-            pagination: { page: 1, perPage: 5 },
-            sort: { field: 'date', order: 'DESC' },
-            filter: { sales_id: identity?.id },
-        },
-        { enabled: Number.isInteger(identity?.id) }
-    );
+    const { data: contactNotesData, isPending: contactNotesLoading } =
+        useGetList(
+            'contactNotes',
+            {
+                pagination: { page: 1, perPage: 5 },
+                sort: { field: 'date', order: 'DESC' },
+                filter: { sales_id: identity?.id },
+            },
+            { enabled: Number.isInteger(identity?.id) }
+        );
     const { data: dealNotesData, isPending: dealNotesLoading } = useGetList(
         'dealNotes',
         {

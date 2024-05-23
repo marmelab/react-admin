@@ -60,10 +60,8 @@ const EditViewGuesser = <RecordType extends RaRecord = any>(
 
     const { record } = useEditContext();
     const [child, setChild] = useState<ReactNode>(null);
-    const {
-        enableLog = process.env.NODE_ENV === 'development',
-        ...rest
-    } = props;
+    const { enableLog = process.env.NODE_ENV === 'development', ...rest } =
+        props;
 
     useEffect(() => {
         setChild(null);

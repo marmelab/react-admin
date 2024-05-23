@@ -35,10 +35,11 @@ export const FilterForm = (props: FilterFormProps) => {
     const { setFilters, displayedFilters, filterValues } = useListContext();
     const filters = useContext(FilterContext) || filtersProps;
 
-    const mergedInitialValuesWithDefaultValues = mergeInitialValuesWithDefaultValues(
-        defaultValues || filterValues,
-        filters
-    );
+    const mergedInitialValuesWithDefaultValues =
+        mergeInitialValuesWithDefaultValues(
+            defaultValues || filterValues,
+            filters
+        );
 
     const form = useForm({
         defaultValues: mergedInitialValuesWithDefaultValues,
@@ -254,10 +255,13 @@ export const getFilterFormValues = (
     formValues: Record<string, any>,
     filterValues: Record<string, any>
 ) => {
-    return Object.keys(formValues).reduce((acc, key) => {
-        acc[key] = getInputValue(formValues, key, filterValues);
-        return acc;
-    }, cloneDeep(filterValues) ?? {});
+    return Object.keys(formValues).reduce(
+        (acc, key) => {
+            acc[key] = getInputValue(formValues, key, filterValues);
+            return acc;
+        },
+        cloneDeep(filterValues) ?? {}
+    );
 };
 
 const getInputValue = (

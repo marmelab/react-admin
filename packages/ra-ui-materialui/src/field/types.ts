@@ -7,7 +7,7 @@ type SortOrder = 'ASC' | 'DESC';
 type AnyString = string & {};
 
 export interface FieldProps<
-    RecordType extends Record<string, any> = Record<string, any>
+    RecordType extends Record<string, any> = Record<string, any>,
 > {
     /**
      * The field to use for sorting when users click this column head, if sortable.

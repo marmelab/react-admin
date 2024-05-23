@@ -10,9 +10,7 @@ describe('useListContextWithProps', () => {
         const { data } = useListContextWithProps(props);
         return (
             <ul>
-                {data?.map(record => (
-                    <li key={record.id}>{record.title}</li>
-                ))}
+                {data?.map(record => <li key={record.id}>{record.title}</li>)}
             </ul>
         );
     };

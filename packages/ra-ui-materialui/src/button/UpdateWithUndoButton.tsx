@@ -53,8 +53,8 @@ export const UpdateWithUndoButton = (props: UpdateWithUndoButtonProps) => {
                             typeof error === 'string'
                                 ? error
                                 : error && error.message
-                                ? error.message
-                                : undefined,
+                                  ? error.message
+                                  : undefined,
                     },
                 }
             );
@@ -106,7 +106,7 @@ const sanitizeRestProps = ({
 
 export interface UpdateWithUndoButtonProps<
     RecordType extends RaRecord = any,
-    MutationOptionsError = unknown
+    MutationOptionsError = unknown,
 > extends ButtonProps {
     icon?: ReactElement;
     data: any;

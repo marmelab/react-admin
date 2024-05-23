@@ -22,9 +22,8 @@ export const Basic = () => {
         options: {
             resources: {
                 en: {
-                    translation: convertRaTranslationsToI18next(
-                        englishMessages
-                    ),
+                    translation:
+                        convertRaTranslationsToI18next(englishMessages),
                 },
             },
         },

@@ -77,7 +77,7 @@ import { SingleFieldList } from '../list/SingleFieldList';
  */
 export const ReferenceArrayField = <
     RecordType extends RaRecord = RaRecord,
-    ReferenceRecordType extends RaRecord = RaRecord
+    ReferenceRecordType extends RaRecord = RaRecord,
 >(
     props: ReferenceArrayFieldProps<RecordType, ReferenceRecordType>
 ) => {
@@ -116,7 +116,7 @@ export const ReferenceArrayField = <
 };
 export interface ReferenceArrayFieldProps<
     RecordType extends RaRecord = RaRecord,
-    ReferenceRecordType extends RaRecord = RaRecord
+    ReferenceRecordType extends RaRecord = RaRecord,
 > extends FieldProps<RecordType> {
     children?: ReactNode;
     filter?: FilterPayload;
@@ -133,7 +133,9 @@ export interface ReferenceArrayFieldViewProps
     extends Omit<ReferenceArrayFieldProps, 'resource' | 'page' | 'perPage'>,
         Omit<ListControllerProps, 'queryOptions'> {}
 
-export const ReferenceArrayFieldView: FC<ReferenceArrayFieldViewProps> = props => {
+export const ReferenceArrayFieldView: FC<
+    ReferenceArrayFieldViewProps
+> = props => {
     const { children, pagination, className, sx } = props;
     const { isPending, total } = useListContext();
 

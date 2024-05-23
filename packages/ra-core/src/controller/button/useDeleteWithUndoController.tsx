@@ -82,8 +82,8 @@ const useDeleteWithUndoController = <RecordType extends RaRecord = any>(
                                 typeof error === 'string'
                                     ? error
                                     : error && error.message
-                                    ? error.message
-                                    : undefined,
+                                      ? error.message
+                                      : undefined,
                         },
                     }
                 );
@@ -130,7 +130,7 @@ const useDeleteWithUndoController = <RecordType extends RaRecord = any>(
 
 export interface UseDeleteWithUndoControllerParams<
     RecordType extends RaRecord = any,
-    MutationOptionsError = unknown
+    MutationOptionsError = unknown,
 > {
     record?: RecordType;
     redirect?: RedirectionSideEffect;

@@ -50,7 +50,7 @@ import {
  */
 export const useEditController = <
     RecordType extends RaRecord = any,
-    ErrorType = Error
+    ErrorType = Error,
 >(
     props: EditControllerProps<RecordType, ErrorType> = {}
 ): EditControllerResult<RecordType> => {
@@ -178,12 +178,12 @@ export const useEditController = <
                                     typeof error === 'string'
                                         ? error
                                         : error instanceof Error ||
-                                          (typeof error === 'object' &&
-                                              error !== null &&
-                                              error.hasOwnProperty('message'))
-                                        ? // @ts-ignore
-                                          error.message
-                                        : undefined,
+                                            (typeof error === 'object' &&
+                                                error !== null &&
+                                                error.hasOwnProperty('message'))
+                                          ? // @ts-ignore
+                                            error.message
+                                          : undefined,
                             },
                         }
                     );
@@ -212,10 +212,10 @@ export const useEditController = <
                           previousData: recordCached.previousData,
                       })
                     : transform
-                    ? transform(data, {
-                          previousData: recordCached.previousData,
-                      })
-                    : data
+                      ? transform(data, {
+                            previousData: recordCached.previousData,
+                        })
+                      : data
             ).then(async (data: Partial<RecordType>) => {
                 try {
                     await update(
@@ -268,7 +268,7 @@ const DefaultRedirect = 'list';
 
 export interface EditControllerProps<
     RecordType extends RaRecord = any,
-    ErrorType = Error
+    ErrorType = Error,
 > {
     disableAuthentication?: boolean;
     id?: RecordType['id'];
@@ -299,7 +299,7 @@ export interface EditControllerLoadingResult<RecordType extends RaRecord = any>
 }
 export interface EditControllerLoadingErrorResult<
     RecordType extends RaRecord = any,
-    TError = Error
+    TError = Error,
 > extends EditControllerBaseResult<RecordType> {
     record: undefined;
     error: TError;
@@ -307,7 +307,7 @@ export interface EditControllerLoadingErrorResult<
 }
 export interface EditControllerRefetchErrorResult<
     RecordType extends RaRecord = any,
-    TError = Error
+    TError = Error,
 > extends EditControllerBaseResult<RecordType> {
     record: RecordType;
     error: TError;

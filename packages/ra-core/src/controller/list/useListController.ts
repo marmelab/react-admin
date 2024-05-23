@@ -180,8 +180,8 @@ export const useListController = <RecordType extends RaRecord = any>(
         hasNextPage: pageInfo
             ? pageInfo.hasNextPage
             : total != null
-            ? query.page * query.perPage < total
-            : undefined,
+              ? query.page * query.perPage < total
+              : undefined,
         hasPreviousPage: pageInfo ? pageInfo.hasPreviousPage : query.page > 1,
     } as ListControllerResult<RecordType>;
 };
@@ -487,7 +487,7 @@ export interface ListControllerLoadingResult<RecordType extends RaRecord = any>
 }
 export interface ListControllerErrorResult<
     RecordType extends RaRecord = any,
-    TError = Error
+    TError = Error,
 > extends ListControllerBaseResult<RecordType> {
     data: undefined;
     total: undefined;
@@ -496,7 +496,7 @@ export interface ListControllerErrorResult<
 }
 export interface ListControllerRefetchErrorResult<
     RecordType extends RaRecord = any,
-    TError = Error
+    TError = Error,
 > extends ListControllerBaseResult<RecordType> {
     data: RecordType[];
     total: number;

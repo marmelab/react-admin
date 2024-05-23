@@ -30,7 +30,7 @@ import { UseQueryOptions } from '@tanstack/react-query';
  * @return {Object} controllerProps Fetched data and callbacks for the ReferenceArrayInput components
  */
 export const useReferenceArrayInputController = <
-    RecordType extends RaRecord = any
+    RecordType extends RaRecord = any,
 >(
     props: UseReferenceArrayInputParams<RecordType>
 ): ChoicesContextValue<RecordType> => {
@@ -124,8 +124,8 @@ export const useReferenceArrayInputController = <
         matchingReferences && matchingReferences.length > 0
             ? mergeReferences(matchingReferences, finalReferenceRecords)
             : finalReferenceRecords.length > 0
-            ? finalReferenceRecords
-            : matchingReferences;
+              ? finalReferenceRecords
+              : matchingReferences;
 
     const refetch = useCallback(() => {
         refetchGetMany();
@@ -166,8 +166,8 @@ export const useReferenceArrayInputController = <
         hasNextPage: pageInfo
             ? pageInfo.hasNextPage
             : total != null
-            ? params.page * params.perPage < total
-            : undefined,
+              ? params.page * params.perPage < total
+              : undefined,
         hasPreviousPage: pageInfo ? pageInfo.hasPreviousPage : params.page > 1,
         isFromReference: true,
     } as ChoicesContextValue<RecordType>;
@@ -192,7 +192,7 @@ const mergeReferences = <RecordType extends RaRecord = any>(
 };
 
 export interface UseReferenceArrayInputParams<
-    RecordType extends RaRecord = any
+    RecordType extends RaRecord = any,
 > {
     debounce?: number;
     filter?: FilterPayload;

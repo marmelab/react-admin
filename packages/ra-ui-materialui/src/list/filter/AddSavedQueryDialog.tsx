@@ -17,13 +17,8 @@ export const AddSavedQueryDialog = ({
     onClose,
 }: AddSavedQueryDialogProps): ReactElement => {
     const translate = useTranslate();
-    const {
-        resource,
-        filterValues,
-        displayedFilters,
-        sort,
-        perPage,
-    } = useListContext();
+    const { resource, filterValues, displayedFilters, sort, perPage } =
+        useListContext();
 
     const [savedQueries, setSavedQueries] = useSavedQueries(resource);
 

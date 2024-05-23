@@ -65,7 +65,7 @@ export const TranslatableInputsTabContent = (
 };
 
 export type TranslatableInputsTabContentProps<
-    RecordType extends RaRecord | Omit<RaRecord, 'id'> = any
+    RecordType extends RaRecord | Omit<RaRecord, 'id'> = any,
 > = StackProps & {
     children: ReactNode;
     groupKey?: string;

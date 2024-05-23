@@ -29,9 +29,8 @@ enum ColorType {
 export const ColorButtons = (props: Omit<ToggleButtonProps, 'value'>) => {
     const translate = useTranslate();
     const editor = useTiptapEditor();
-    const [showColorChoiceDialog, setShowColorChoiceDialog] = React.useState<
-        boolean
-    >(false);
+    const [showColorChoiceDialog, setShowColorChoiceDialog] =
+        React.useState<boolean>(false);
     const [colorType, setColorType] = React.useState<ColorType>(ColorType.FONT);
 
     const colorLabel = translate('ra.tiptap.color', { _: 'Color' });

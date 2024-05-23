@@ -18,7 +18,7 @@ import { useSourceContext } from '../core';
  * }
  */
 export const useFieldValue = <
-    RecordType extends Record<string, any> = Record<string, any>
+    RecordType extends Record<string, any> = Record<string, any>,
 >(
     params: UseFieldValueOptions<RecordType>
 ) => {
@@ -34,7 +34,7 @@ export const useFieldValue = <
 };
 
 export interface UseFieldValueOptions<
-    RecordType extends Record<string, any> = Record<string, any>
+    RecordType extends Record<string, any> = Record<string, any>,
 > {
     // FIXME: Find a way to throw a type error when defaultValue is not of RecordType[Source] type
     defaultValue?: any;
