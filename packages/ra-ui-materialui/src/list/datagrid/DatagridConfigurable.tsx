@@ -67,13 +67,13 @@ export const DatagridConfigurable = ({
                     child.props.label && typeof child.props.label === 'string' // this list is serializable, so we can't store ReactElement in it
                         ? child.props.label
                         : child.props.source
-                        ? //  force the label to be the source
-                          undefined
-                        : // no source or label, generate a label
-                          translate('ra.configurable.Datagrid.unlabeled', {
-                              column: index,
-                              _: `Unlabeled column #%{column}`,
-                          }),
+                          ? //  force the label to be the source
+                            undefined
+                          : // no source or label, generate a label
+                            translate('ra.configurable.Datagrid.unlabeled', {
+                                column: index,
+                                _: `Unlabeled column #%{column}`,
+                            }),
             }));
         if (columns.length !== availableColumns.length) {
             setAvailableColumns(columns);

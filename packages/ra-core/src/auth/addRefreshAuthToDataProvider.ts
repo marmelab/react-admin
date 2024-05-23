@@ -20,7 +20,7 @@ import { DataProvider } from '../types';
  * const dataProvider = addRefreshAuthToDataProvider(jsonServerProvider('http://localhost:3000'), refreshAuth);
  */
 export const addRefreshAuthToDataProvider = <
-    DataProviderType extends DataProvider = DataProvider
+    DataProviderType extends DataProvider = DataProvider,
 >(
     provider: DataProviderType,
     refreshAuth: () => Promise<void>

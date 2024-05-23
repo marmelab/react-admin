@@ -29,13 +29,8 @@ export const DatagridHeader = (props: DatagridHeaderProps) => {
         isRowSelectable,
     } = props;
     const translate = useTranslate();
-    const {
-        sort,
-        data,
-        onSelect,
-        selectedIds,
-        setSort,
-    } = useListContextWithProps(props);
+    const { sort, data, onSelect, selectedIds, setSort } =
+        useListContextWithProps(props);
     const { expandSingle } = useDatagridContext();
 
     const updateSortCallback = useCallback(

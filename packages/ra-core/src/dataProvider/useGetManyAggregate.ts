@@ -237,13 +237,16 @@ const callGetManyQueries = batch((calls: GetManyCallArgs[]) => {
      *     tags: [{ resource, ids, resolve, reject, dataProvider, queryClient }, ...],
      * }
      */
-    const callsByResource = calls.reduce((acc, callArgs) => {
-        if (!acc[callArgs.resource]) {
-            acc[callArgs.resource] = [];
-        }
-        acc[callArgs.resource].push(callArgs);
-        return acc;
-    }, {} as { [resource: string]: GetManyCallArgs[] });
+    const callsByResource = calls.reduce(
+        (acc, callArgs) => {
+            if (!acc[callArgs.resource]) {
+                acc[callArgs.resource] = [];
+            }
+            acc[callArgs.resource].push(callArgs);
+            return acc;
+        },
+        {} as { [resource: string]: GetManyCallArgs[] }
+    );
 
     /**
      * For each resource, aggregate ids and call dataProvider.getMany() once
@@ -282,13 +285,8 @@ const callGetManyQueries = batch((calls: GetManyCallArgs[]) => {
             // There is only one call (no aggregation), or one of the calls has the same ids as the sum of all calls.
             // Either way, we can't trigger a new fetchQuery with the same signature, as it's already pending.
             // Therefore, we reply with the dataProvider
-            const {
-                dataProvider,
-                resource,
-                ids,
-                meta,
-                signal,
-            } = callThatHasAllAggregatedIds;
+            const { dataProvider, resource, ids, meta, signal } =
+                callThatHasAllAggregatedIds;
 
             dataProvider
                 .getMany<any>(resource, { ids, meta, signal })

@@ -83,7 +83,9 @@ import { LinearProgress } from '../layout';
  *
  * The object passed as `options` props is passed to the Material UI <Checkbox> components
  */
-export const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = props => {
+export const CheckboxGroupInput: FunctionComponent<
+    CheckboxGroupInputProps
+> = props => {
     const {
         choices: choicesProp,
         className,

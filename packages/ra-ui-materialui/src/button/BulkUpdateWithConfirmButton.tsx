@@ -59,8 +59,8 @@ export const BulkUpdateWithConfirmButton = (
                             typeof error === 'string'
                                 ? error
                                 : error && error.message
-                                ? error.message
-                                : undefined,
+                                  ? error.message
+                                  : undefined,
                     },
                 }
             );
@@ -147,7 +147,7 @@ const sanitizeRestProps = ({
 
 export interface BulkUpdateWithConfirmButtonProps<
     RecordType extends RaRecord = any,
-    MutationOptionsError = unknown
+    MutationOptionsError = unknown,
 > extends ButtonProps {
     confirmContent?: React.ReactNode;
     confirmTitle?: React.ReactNode;

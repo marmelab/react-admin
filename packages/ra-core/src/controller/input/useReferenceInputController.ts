@@ -188,15 +188,15 @@ export const useReferenceInputController = <RecordType extends RaRecord = any>(
         hasNextPage: pageInfo
             ? pageInfo.hasNextPage
             : total != null
-            ? params.page * params.perPage < total
-            : undefined,
+              ? params.page * params.perPage < total
+              : undefined,
         hasPreviousPage: pageInfo ? pageInfo.hasPreviousPage : params.page > 1,
         isFromReference: true,
     } as ChoicesContextValue<RecordType>;
 };
 
 export interface UseReferenceInputControllerParams<
-    RecordType extends RaRecord = any
+    RecordType extends RaRecord = any,
 > {
     debounce?: number;
     filter?: FilterPayload;

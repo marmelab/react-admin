@@ -53,18 +53,12 @@ export const useReference = <RecordType extends RaRecord = RaRecord>({
     options = {},
 }: UseReferenceProps<RecordType>): UseReferenceResult<RecordType> => {
     const { meta, ...otherQueryOptions } = options;
-    const {
-        data,
-        error,
-        isLoading,
-        isFetching,
-        isPending,
-        refetch,
-    } = useGetManyAggregate<RecordType>(
-        reference,
-        { ids: [id], meta },
-        otherQueryOptions
-    );
+    const { data, error, isLoading, isFetching, isPending, refetch } =
+        useGetManyAggregate<RecordType>(
+            reference,
+            { ids: [id], meta },
+            otherQueryOptions
+        );
     return {
         referenceRecord: error ? undefined : data ? data[0] : undefined,
         refetch,

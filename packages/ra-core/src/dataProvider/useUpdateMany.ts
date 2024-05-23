@@ -79,7 +79,7 @@ import { Identifier } from '..';
  */
 export const useUpdateMany = <
     RecordType extends RaRecord = any,
-    MutationError = unknown
+    MutationError = unknown,
 >(
     resource?: string,
     params: Partial<UpdateManyParams<Partial<RecordType>>> = {},
@@ -90,9 +90,8 @@ export const useUpdateMany = <
     const { ids, data, meta } = params;
     const { mutationMode = 'pessimistic', ...mutationOptions } = options;
     const mode = useRef<MutationMode>(mutationMode);
-    const paramsRef = useRef<Partial<UpdateManyParams<Partial<RecordType>>>>(
-        params
-    );
+    const paramsRef =
+        useRef<Partial<UpdateManyParams<Partial<RecordType>>>>(params);
     const snapshot = useRef<Snapshot>([]);
     const hasCallTimeOnError = useRef(false);
     const hasCallTimeOnSuccess = useRef(false);
@@ -497,7 +496,7 @@ export interface UseUpdateManyMutateParams<RecordType extends RaRecord = any> {
 
 export type UseUpdateManyOptions<
     RecordType extends RaRecord = any,
-    MutationError = unknown
+    MutationError = unknown,
 > = UseMutationOptions<
     Array<RecordType['id']>,
     MutationError,
@@ -507,7 +506,7 @@ export type UseUpdateManyOptions<
 export type UseUpdateManyResult<
     RecordType extends RaRecord = any,
     TReturnPromise extends boolean = boolean,
-    MutationError = unknown
+    MutationError = unknown,
 > = [
     (
         resource?: string,
@@ -524,5 +523,5 @@ export type UseUpdateManyResult<
         MutationError,
         Partial<UpdateManyParams<Partial<RecordType>> & { resource?: string }>,
         unknown
-    >
+    >,
 ];

@@ -39,7 +39,7 @@ export const FunctionField = <RecordType extends Record<string, any> = any>(
 };
 
 export interface FunctionFieldProps<
-    RecordType extends Record<string, any> = any
+    RecordType extends Record<string, any> = any,
 > extends Omit<FieldProps<RecordType>, 'source'>,
         Omit<TypographyProps, 'textAlign'> {
     source?: string;

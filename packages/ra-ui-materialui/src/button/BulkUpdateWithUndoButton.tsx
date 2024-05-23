@@ -52,8 +52,8 @@ export const BulkUpdateWithUndoButton = (
                             typeof error === 'string'
                                 ? error
                                 : error && error.message
-                                ? error.message
-                                : undefined,
+                                  ? error.message
+                                  : undefined,
                     },
                 }
             );
@@ -105,7 +105,7 @@ const sanitizeRestProps = ({
 
 export interface BulkUpdateWithUndoButtonProps<
     RecordType extends RaRecord = any,
-    MutationOptionsError = unknown
+    MutationOptionsError = unknown,
 > extends ButtonProps {
     icon?: ReactElement;
     data: any;

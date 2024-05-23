@@ -162,28 +162,26 @@ export const useGetManyReference = <RecordType extends RaRecord = any>(
     };
 };
 
-export type UseGetManyReferenceHookOptions<
-    RecordType extends RaRecord = any
-> = Omit<
-    UseQueryOptions<GetManyReferenceResult<RecordType>>,
-    'queryKey' | 'queryFn'
-> & {
-    onSuccess?: (data: GetManyReferenceResult<RecordType>) => void;
-    onError?: (error: Error) => void;
-    onSettled?: (
-        data?: GetManyReferenceResult<RecordType>,
-        error?: Error | null
-    ) => void;
-};
-
-export type UseGetManyReferenceHookValue<
-    RecordType extends RaRecord = any
-> = Omit<UseQueryResult<RecordType[]>, 'queryKey' | 'queryFn'> & {
-    total?: number;
-    pageInfo?: {
-        hasNextPage?: boolean;
-        hasPreviousPage?: boolean;
+export type UseGetManyReferenceHookOptions<RecordType extends RaRecord = any> =
+    Omit<
+        UseQueryOptions<GetManyReferenceResult<RecordType>>,
+        'queryKey' | 'queryFn'
+    > & {
+        onSuccess?: (data: GetManyReferenceResult<RecordType>) => void;
+        onError?: (error: Error) => void;
+        onSettled?: (
+            data?: GetManyReferenceResult<RecordType>,
+            error?: Error | null
+        ) => void;
     };
-};
+
+export type UseGetManyReferenceHookValue<RecordType extends RaRecord = any> =
+    Omit<UseQueryResult<RecordType[]>, 'queryKey' | 'queryFn'> & {
+        total?: number;
+        pageInfo?: {
+            hasNextPage?: boolean;
+            hasPreviousPage?: boolean;
+        };
+    };
 
 const noop = () => undefined;

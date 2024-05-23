@@ -116,7 +116,7 @@ export const AutocompleteInput = <
     OptionType extends RaRecord = RaRecord,
     Multiple extends boolean | undefined = false,
     DisableClearable extends boolean | undefined = false,
-    SupportCreate extends boolean | undefined = false
+    SupportCreate extends boolean | undefined = false,
 >(
     props: AutocompleteInputProps<
         OptionType,
@@ -641,9 +641,11 @@ If you provided a React element for the optionText prop, you must also provide t
                 onBlur={finalOnBlur}
                 onInputChange={handleInputChange}
                 renderOption={(props, record: RaRecord) => {
-                    (props as {
-                        key: string;
-                    }).key = getChoiceValue(record);
+                    (
+                        props as {
+                            key: string;
+                        }
+                    ).key = getChoiceValue(record);
 
                     const optionLabel = getOptionLabel(record, true);
 
@@ -679,7 +681,7 @@ export interface AutocompleteInputProps<
     OptionType extends any = RaRecord,
     Multiple extends boolean | undefined = false,
     DisableClearable extends boolean | undefined = false,
-    SupportCreate extends boolean | undefined = false
+    SupportCreate extends boolean | undefined = false,
 > extends Omit<CommonInputProps, 'source' | 'onChange'>,
         ChoicesProps,
         UseSuggestionsOptions,
@@ -719,7 +721,7 @@ const useSelectedChoice = <
     OptionType extends any = RaRecord,
     Multiple extends boolean | undefined = false,
     DisableClearable extends boolean | undefined = false,
-    SupportCreate extends boolean | undefined = false
+    SupportCreate extends boolean | undefined = false,
 >(
     value: any,
     {

@@ -27,9 +27,8 @@ export const useWarnWhenUnsavedChanges = (
 
         // Also check if the new location is inside the form
         const initialLocation = formRootPathname || currentLocation.pathname;
-        const newLocationIsInsideCurrentLocation = nextLocation.pathname.startsWith(
-            initialLocation
-        );
+        const newLocationIsInsideCurrentLocation =
+            nextLocation.pathname.startsWith(initialLocation);
         const newLocationIsShowView = nextLocation.pathname.startsWith(
             `${initialLocation}/show`
         );

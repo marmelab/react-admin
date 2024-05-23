@@ -125,8 +125,8 @@ export default function App(props: Props) {
         resources: props.resources?.includes('skip')
             ? []
             : props.dataProvider === 'ra-data-fakerest'
-            ? ['posts', 'comments']
-            : props.resources,
+              ? ['posts', 'comments']
+              : props.resources,
         installer: props.install,
         name: sanitizedName,
     };

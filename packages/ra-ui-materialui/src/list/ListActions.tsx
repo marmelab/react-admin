@@ -45,13 +45,8 @@ import { FilterButton } from './filter';
 export const ListActions = (props: ListActionsProps) => {
     const { className, filters: filtersProp, hasCreate: _, ...rest } = props;
 
-    const {
-        displayedFilters,
-        filterValues,
-        exporter,
-        showFilter,
-        total,
-    } = useListContext();
+    const { displayedFilters, filterValues, exporter, showFilter, total } =
+        useListContext();
     const resource = useResourceContext(props);
     const { hasCreate } = useResourceDefinition(props);
     const filters = useContext(FilterContext) || filtersProp;

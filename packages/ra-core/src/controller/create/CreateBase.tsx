@@ -39,7 +39,7 @@ import { ResourceContextProvider } from '../../core';
  */
 export const CreateBase = <
     RecordType extends Omit<RaRecord, 'id'> = any,
-    ResultRecordType extends RaRecord = RecordType & { id: Identifier }
+    ResultRecordType extends RaRecord = RecordType & { id: Identifier },
 >({
     children,
     ...props

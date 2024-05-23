@@ -85,9 +85,8 @@ export const SimpleList = <RecordType extends RaRecord = any>(
         rowStyle,
         ...rest
     } = props;
-    const { data, isPending, total } = useListContextWithProps<RecordType>(
-        props
-    );
+    const { data, isPending, total } =
+        useListContextWithProps<RecordType>(props);
     const resource = useResourceContext(props);
     const getRecordRepresentation = useGetRecordRepresentation(resource);
     const translate = useTranslate();
@@ -164,9 +163,12 @@ export const SimpleList = <RecordType extends RaRecord = any>(
                                                       _: primaryText,
                                                   })
                                                 : isElement(primaryText)
-                                                ? primaryText
-                                                : // @ts-ignore
-                                                  primaryText(record, record.id)
+                                                  ? primaryText
+                                                  : // @ts-ignore
+                                                    primaryText(
+                                                        record,
+                                                        record.id
+                                                    )
                                             : getRecordRepresentation(record)}
 
                                         {!!tertiaryText &&
@@ -188,14 +190,14 @@ export const SimpleList = <RecordType extends RaRecord = any>(
                                                               }
                                                           )
                                                         : isElement(
-                                                              tertiaryText
-                                                          )
-                                                        ? tertiaryText
-                                                        : // @ts-ignore
-                                                          tertiaryText(
-                                                              record,
-                                                              record.id
-                                                          )}
+                                                                tertiaryText
+                                                            )
+                                                          ? tertiaryText
+                                                          : // @ts-ignore
+                                                            tertiaryText(
+                                                                record,
+                                                                record.id
+                                                            )}
                                                 </span>
                                             ))}
                                     </div>
@@ -208,9 +210,9 @@ export const SimpleList = <RecordType extends RaRecord = any>(
                                               _: secondaryText,
                                           })
                                         : isElement(secondaryText)
-                                        ? secondaryText
-                                        : // @ts-ignore
-                                          secondaryText(record, record.id))
+                                          ? secondaryText
+                                          : // @ts-ignore
+                                            secondaryText(record, record.id))
                                 }
                             />
                             {(rightAvatar || rightIcon) && (

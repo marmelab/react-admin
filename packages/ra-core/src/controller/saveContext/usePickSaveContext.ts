@@ -6,7 +6,7 @@ import { SaveContextValue } from './SaveContext';
  * This hook extracts the `save`, `saving` and mutationMode properties from either the `CreateContext` or `EditContext`. This ensures the `SaveContext` doesn't rerender when those two contexts have other properties changes.
  */
 export const usePickSaveContext = <
-    ContextType extends SaveContextValue = SaveContextValue
+    ContextType extends SaveContextValue = SaveContextValue,
 >(
     context: ContextType
 ): SaveContextValue => {

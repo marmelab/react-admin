@@ -179,33 +179,44 @@ export const SimpleFormIterator = (inProps: SimpleFormIteratorProps) => {
                         </SimpleFormIteratorItem>
                     ))}
                 </ul>
-                {!disabled && !(disableAdd && (disableClear || disableRemove)) && (
-                    <div className={SimpleFormIteratorClasses.buttons}>
-                        {!disableAdd && (
-                            <div className={SimpleFormIteratorClasses.add}>
-                                {addButton}
-                            </div>
-                        )}
-                        {fields.length > 0 && !disableClear && !disableRemove && (
-                            <div className={SimpleFormIteratorClasses.clear}>
-                                <Confirm
-                                    isOpen={confirmIsOpen}
-                                    title={translate(
-                                        'ra.action.clear_array_input'
-                                    )}
-                                    content={translate(
-                                        'ra.message.clear_array_input'
-                                    )}
-                                    onConfirm={handleArrayClear}
-                                    onClose={() => setConfirmIsOpen(false)}
-                                />
-                                <ClearArrayButton
-                                    onClick={() => setConfirmIsOpen(true)}
-                                />
-                            </div>
-                        )}
-                    </div>
-                )}
+                {!disabled &&
+                    !(disableAdd && (disableClear || disableRemove)) && (
+                        <div className={SimpleFormIteratorClasses.buttons}>
+                            {!disableAdd && (
+                                <div className={SimpleFormIteratorClasses.add}>
+                                    {addButton}
+                                </div>
+                            )}
+                            {fields.length > 0 &&
+                                !disableClear &&
+                                !disableRemove && (
+                                    <div
+                                        className={
+                                            SimpleFormIteratorClasses.clear
+                                        }
+                                    >
+                                        <Confirm
+                                            isOpen={confirmIsOpen}
+                                            title={translate(
+                                                'ra.action.clear_array_input'
+                                            )}
+                                            content={translate(
+                                                'ra.message.clear_array_input'
+                                            )}
+                                            onConfirm={handleArrayClear}
+                                            onClose={() =>
+                                                setConfirmIsOpen(false)
+                                            }
+                                        />
+                                        <ClearArrayButton
+                                            onClick={() =>
+                                                setConfirmIsOpen(true)
+                                            }
+                                        />
+                                    </div>
+                                )}
+                        </div>
+                    )}
             </Root>
         </SimpleFormIteratorContext.Provider>
     ) : null;
@@ -288,7 +299,8 @@ const Root = styled('div', {
     [`& .${SimpleFormIteratorClasses.clear}`]: {
         borderBottom: 'none',
     },
-    [`& .${SimpleFormIteratorClasses.line}:hover > .${SimpleFormIteratorClasses.action}`]: {
-        visibility: 'visible',
-    },
+    [`& .${SimpleFormIteratorClasses.line}:hover > .${SimpleFormIteratorClasses.action}`]:
+        {
+            visibility: 'visible',
+        },
 }));

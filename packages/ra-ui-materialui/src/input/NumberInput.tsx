@@ -95,8 +95,8 @@ export const NumberInput = ({
                     ? parse(target.valueAsNumber)
                     : target.valueAsNumber
                 : parse
-                ? parse(target.value)
-                : convertStringToNumber(target.value);
+                  ? parse(target.value)
+                  : convertStringToNumber(target.value);
         field.onChange(newValue);
     };
 

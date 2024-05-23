@@ -14,13 +14,12 @@ export type ResourceDefinitionContextValue = {
     unregister: (config: ResourceDefinition) => void;
 };
 
-export const ResourceDefinitionContext = createContext<
-    ResourceDefinitionContextValue
->({
-    definitions: {},
-    register: () => {},
-    unregister: () => {},
-});
+export const ResourceDefinitionContext =
+    createContext<ResourceDefinitionContextValue>({
+        definitions: {},
+        register: () => {},
+        unregister: () => {},
+    });
 
 /**
  * Context to store the current resource Definition.
@@ -49,9 +48,8 @@ export const ResourceDefinitionContextProvider = ({
     definitions?: ResourceDefinitions;
     children: AdminChildren;
 }) => {
-    const [definitions, setState] = useState<ResourceDefinitions>(
-        defaultDefinitions
-    );
+    const [definitions, setState] =
+        useState<ResourceDefinitions>(defaultDefinitions);
 
     const register = useCallback((config: ResourceDefinition) => {
         setState(prev =>

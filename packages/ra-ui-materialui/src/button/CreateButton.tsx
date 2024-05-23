@@ -104,7 +104,7 @@ export const CreateButtonClasses = {
     floating: `${PREFIX}-floating`,
 };
 
-const StyledFab = (styled(Fab, {
+const StyledFab = styled(Fab, {
     name: PREFIX,
     overridesResolver: (_props, styles) => styles.root,
 })(({ theme }) => ({
@@ -118,7 +118,7 @@ const StyledFab = (styled(Fab, {
         position: 'fixed',
         zIndex: 1000,
     },
-})) as unknown) as typeof Fab;
+})) as unknown as typeof Fab;
 
 const StyledButton = styled(Button, {
     name: PREFIX,

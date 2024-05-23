@@ -84,5 +84,5 @@ export const useStore = <T = any>(
 
 export type useStoreResult<T = any> = [
     T,
-    (value: T | ((value: T) => void), defaultValue?: T) => void
+    (value: T | ((value: T) => void), defaultValue?: T) => void,
 ];

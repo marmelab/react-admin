@@ -9,7 +9,7 @@ import { FieldProps } from './types';
 import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
 
 const BooleanFieldImpl = <
-    RecordType extends Record<string, any> = Record<string, any>
+    RecordType extends Record<string, any> = Record<string, any>,
 >(
     props: BooleanFieldProps<RecordType>
 ) => {
@@ -81,7 +81,7 @@ BooleanFieldImpl.displayName = 'BooleanFieldImpl';
 export const BooleanField = genericMemo(BooleanFieldImpl);
 
 export interface BooleanFieldProps<
-    RecordType extends Record<string, any> = Record<string, any>
+    RecordType extends Record<string, any> = Record<string, any>,
 > extends FieldProps<RecordType>,
         Omit<TypographyProps, 'textAlign'> {
     valueLabelTrue?: string;

@@ -27,7 +27,11 @@ import { Customer, Review } from '../types';
 
 const PendingReviews = () => {
     const translate = useTranslate();
-    const { data: reviews, total, isPending } = useGetList<Review>('reviews', {
+    const {
+        data: reviews,
+        total,
+        isPending,
+    } = useGetList<Review>('reviews', {
         filter: { status: 'pending' },
         sort: { field: 'date', order: 'DESC' },
         pagination: { page: 1, perPage: 100 },

@@ -1,9 +1,8 @@
 import { createContext, useContext } from 'react';
 import type { UseReferenceFieldControllerResult } from './useReferenceFieldController';
 
-export const ReferenceFieldContext = createContext<UseReferenceFieldControllerResult | null>(
-    null
-);
+export const ReferenceFieldContext =
+    createContext<UseReferenceFieldControllerResult | null>(null);
 
 export const ReferenceFieldContextProvider = ReferenceFieldContext.Provider;
 

@@ -35,9 +35,8 @@ export const NewResourceMenuItem = (
     props: MenuItemProps<'li', { button?: true } & { sidebarIsOpen: boolean }>
 ) => {
     const { sidebarIsOpen, ...rest } = props;
-    const [showImportResourceDialog, setShowImportResourceDialog] = useState(
-        false
-    );
+    const [showImportResourceDialog, setShowImportResourceDialog] =
+        useState(false);
 
     const handleClick = () => {
         setShowImportResourceDialog(true);

@@ -60,7 +60,7 @@ const FormDataConsumer = <TFieldValues extends FieldValues = FieldValues>(
 };
 
 export const FormDataConsumerView = <
-    TFieldValues extends FieldValues = FieldValues
+    TFieldValues extends FieldValues = FieldValues,
 >(
     props: Props<TFieldValues>
 ) => {
@@ -89,14 +89,14 @@ const ArraySourceRegex = new RegExp(/.+\.\d+$/);
 
 export interface FormDataConsumerRenderParams<
     TFieldValues extends FieldValues = FieldValues,
-    TScopedFieldValues extends FieldValues = TFieldValues
+    TScopedFieldValues extends FieldValues = TFieldValues,
 > {
     formData: TFieldValues;
     scopedFormData?: TScopedFieldValues;
 }
 
 export type FormDataConsumerRender<
-    TFieldValues extends FieldValues = FieldValues
+    TFieldValues extends FieldValues = FieldValues,
 > = (params: FormDataConsumerRenderParams<TFieldValues>) => ReactNode;
 
 interface ConnectedProps<TFieldValues extends FieldValues = FieldValues> {

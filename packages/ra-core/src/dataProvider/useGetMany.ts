@@ -169,6 +169,5 @@ export type UseGetManyOptions<RecordType extends RaRecord = any> = Omit<
     onSettled?: (data?: RecordType[], error?: Error | null) => void;
 };
 
-export type UseGetManyHookValue<
-    RecordType extends RaRecord = any
-> = UseQueryResult<RecordType[], Error>;
+export type UseGetManyHookValue<RecordType extends RaRecord = any> =
+    UseQueryResult<RecordType[], Error>;

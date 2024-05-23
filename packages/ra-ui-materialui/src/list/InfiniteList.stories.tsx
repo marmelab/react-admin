@@ -197,11 +197,8 @@ export const PaginationInfinite = () => (
 );
 
 const LoadMore = () => {
-    const {
-        hasNextPage,
-        fetchNextPage,
-        isFetchingNextPage,
-    } = useInfinitePaginationContext();
+    const { hasNextPage, fetchNextPage, isFetchingNextPage } =
+        useInfinitePaginationContext();
     return hasNextPage ? (
         <Box mt={1} textAlign="center">
             <Button

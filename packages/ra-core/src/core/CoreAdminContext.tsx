@@ -181,9 +181,10 @@ export const CoreAdminContext = (props: CoreAdminContextProps) => {
 React-admin requires a valid dataProvider function to work.`);
     }
 
-    const finalQueryClient = useMemo(() => queryClient || new QueryClient(), [
-        queryClient,
-    ]);
+    const finalQueryClient = useMemo(
+        () => queryClient || new QueryClient(),
+        [queryClient]
+    );
 
     const finalAuthProvider = useMemo(
         () =>

@@ -23,13 +23,8 @@ export const RemoveSavedQueryDialog = ({
     onClose,
 }: RemoveSavedQueryDialogProps): ReactElement => {
     const translate = useTranslate();
-    const {
-        resource,
-        filterValues,
-        sort,
-        perPage,
-        displayedFilters,
-    } = useListContext();
+    const { resource, filterValues, sort, perPage, displayedFilters } =
+        useListContext();
 
     const [savedQueries, setSavedQueries] = useSavedQueries(resource);
 
@@ -67,8 +62,7 @@ export const RemoveSavedQueryDialog = ({
             <DialogContent>
                 <DialogContentText>
                     {translate('ra.saved_queries.remove_message', {
-                        _:
-                            'Are you sure you want to remove that item from your list of saved queries?',
+                        _: 'Are you sure you want to remove that item from your list of saved queries?',
                     })}
                 </DialogContentText>
             </DialogContent>

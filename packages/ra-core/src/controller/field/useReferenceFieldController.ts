@@ -7,7 +7,7 @@ import { useResourceDefinition } from '../../core';
 import { useFieldValue } from '../../util';
 
 export const useReferenceFieldController = <
-    ReferenceRecordType extends RaRecord = RaRecord
+    ReferenceRecordType extends RaRecord = RaRecord,
 >(
     options: UseReferenceFieldControllerOptions<ReferenceRecordType>
 ): UseReferenceFieldControllerResult<ReferenceRecordType> => {
@@ -55,14 +55,14 @@ export const useReferenceFieldController = <
                                           : link,
                               })
                         : undefined,
-            } as const),
+            }) as const,
         [createPath, link, reference, referenceRecordQuery, resourceDefinition]
     );
     return result;
 };
 
 export interface UseReferenceFieldControllerOptions<
-    ReferenceRecordType extends RaRecord = RaRecord
+    ReferenceRecordType extends RaRecord = RaRecord,
 > {
     source: string;
     queryOptions?: Partial<
@@ -75,7 +75,7 @@ export interface UseReferenceFieldControllerOptions<
 }
 
 export interface UseReferenceFieldControllerResult<
-    ReferenceRecordType extends RaRecord = RaRecord
+    ReferenceRecordType extends RaRecord = RaRecord,
 > extends UseReferenceResult<ReferenceRecordType> {
     link?: string | false;
 }

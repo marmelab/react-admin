@@ -49,7 +49,7 @@ export interface ChoicesContextLoadingResult<RecordType extends RaRecord = any>
 }
 export interface ChoicesContextErrorResult<
     RecordType extends RaRecord = any,
-    TError = Error
+    TError = Error,
 > extends ChoicesContextBaseValue<RecordType> {
     allChoices: undefined;
     availableChoices: undefined;
@@ -60,7 +60,7 @@ export interface ChoicesContextErrorResult<
 }
 export interface ChoicesContextRefetchErrorResult<
     RecordType extends RaRecord = any,
-    TError = Error
+    TError = Error,
 > extends ChoicesContextBaseValue<RecordType> {
     allChoices: RecordType[];
     availableChoices: RecordType[];

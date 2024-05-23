@@ -16,7 +16,7 @@ import { Basic, WithAutoCompleteArrayInput } from './FilterButton.stories';
 const theme = createTheme();
 
 describe('<FilterButton />', () => {
-    const defaultListContext = ({
+    const defaultListContext = {
         resource: 'post',
         displayedFilters: {
             title: true,
@@ -24,7 +24,7 @@ describe('<FilterButton />', () => {
         },
         showFilter: () => {},
         filterValues: {},
-    } as unknown) as ListControllerResult;
+    } as unknown as ListControllerResult;
 
     const defaultProps = {
         filters: [
@@ -174,8 +174,7 @@ describe('<FilterButton />', () => {
             // Then we apply a filter to an alwaysOn filter
             fireEvent.change(screen.getByLabelText('Search'), {
                 target: {
-                    value:
-                        'Accusantium qui nihil voluptatum quia voluptas maxime ab similique',
+                    value: 'Accusantium qui nihil voluptatum quia voluptas maxime ab similique',
                 },
             });
             await screen.findByDisplayValue(

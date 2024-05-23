@@ -25,12 +25,12 @@ import {
 } from './FilterForm';
 
 describe('<FilterForm />', () => {
-    const defaultListContext = ({
+    const defaultListContext = {
         resource: 'post',
         showFilter: () => {},
         hideFilter: () => {},
         displayedFilters: {},
-    } as unknown) as ListControllerResult;
+    } as unknown as ListControllerResult;
 
     beforeAll(() => {
         window.scrollTo = jest.fn();

@@ -107,8 +107,8 @@ const useDeleteWithConfirmController = <RecordType extends RaRecord = any>(
                                 typeof error === 'string'
                                     ? error
                                     : error && error.message
-                                    ? error.message
-                                    : undefined,
+                                      ? error.message
+                                      : undefined,
                         },
                     }
                 );
@@ -173,7 +173,7 @@ const useDeleteWithConfirmController = <RecordType extends RaRecord = any>(
 
 export interface UseDeleteWithConfirmControllerParams<
     RecordType extends RaRecord = any,
-    MutationOptionsError = unknown
+    MutationOptionsError = unknown,
 > {
     mutationMode?: MutationMode;
     record?: RecordType;

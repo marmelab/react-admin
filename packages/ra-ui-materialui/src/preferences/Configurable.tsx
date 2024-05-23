@@ -51,9 +51,8 @@ export const Configurable = (props: ConfigurableProps) => {
     const isEditorOpen = prefixedPreferenceKey === currentPreferenceKey;
     const editorOpenRef = useRef(isEditorOpen);
     const wrapperRef = useRef(null);
-    const [isCustomizeButtonVisible, setIsCustomizeButtonVisible] = useState(
-        false
-    );
+    const [isCustomizeButtonVisible, setIsCustomizeButtonVisible] =
+        useState(false);
 
     useEffect(() => {
         editorOpenRef.current = isEditorOpen;
@@ -199,7 +198,8 @@ const Root = styled('span', {
     [`&.${ConfigurableClasses.editMode}:hover `]: {
         outline: `${alpha(theme.palette.warning.main, 0.5)} solid 2px`,
     },
-    [`&.${ConfigurableClasses.editMode}.${ConfigurableClasses.editorActive} , &.${ConfigurableClasses.editMode}.${ConfigurableClasses.editorActive}:hover `]: {
-        outline: `${theme.palette.warning.main} solid 2px`,
-    },
+    [`&.${ConfigurableClasses.editMode}.${ConfigurableClasses.editorActive} , &.${ConfigurableClasses.editMode}.${ConfigurableClasses.editorActive}:hover `]:
+        {
+            outline: `${theme.palette.warning.main} solid 2px`,
+        },
 }));

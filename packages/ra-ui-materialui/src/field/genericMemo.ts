@@ -5,11 +5,11 @@ import { FunctionComponent, memo } from 'react';
  * See {@link https://stackoverflow.com/a/70890101}
  */
 export const genericMemo: <T extends FunctionComponent>(component: T) => T = <
-    T extends FunctionComponent
+    T extends FunctionComponent,
 >(
     component: T
 ) => {
-    const result = (memo(component) as unknown) as T;
+    const result = memo(component) as unknown as T;
 
     // We have to set the defaultProps and displayName on both the field implementation and the memoized version.
     // On the implementation so that the memoized version can pick them up and users may reference the defaultProps in their components.
