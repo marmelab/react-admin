@@ -1,5 +1,5 @@
 import { useCallback, useMemo, useEffect, useState, useRef } from 'react';
-import queryString from 'query-string';
+import { parse, stringify } from 'query-string';
 import lodashDebounce from 'lodash/debounce';
 import pickBy from 'lodash/pickBy';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -167,7 +167,7 @@ export const useListParams = ({
                         // the useEffect above will apply the changes to the params in the store
                         navigate(
                             {
-                                search: `?${queryString.stringify({
+                                search: `?${stringify({
                                     ...tempParams.current,
                                     filter: JSON.stringify(
                                         tempParams.current.filter
@@ -304,7 +304,7 @@ const parseObject = (query, field) => {
 
 export const parseQueryFromLocation = ({ search }): Partial<ListParams> => {
     const query = pickBy(
-        queryString.parse(search),
+        parse(search),
         (v, k) => validQueryParams.indexOf(k) !== -1
     );
     parseObject(query, 'filter');
