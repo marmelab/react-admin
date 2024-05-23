@@ -831,6 +831,8 @@ export default LatLngInput;
 
 ### Using `<Labeled>`
 
+<iframe src="https://www.youtube-nocookie.com/embed/fWc7c0URQMQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;"></iframe>
+
 This component lacks a label. React-admin provides the `<Labeled>` component for that:
 
 ```tsx

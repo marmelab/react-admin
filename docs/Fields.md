@@ -327,6 +327,8 @@ Then you can render the author name like this:
 
 ## Setting A Field Label
 
+<iframe src="https://www.youtube-nocookie.com/embed/fWc7c0URQMQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;"></iframe>
+
 React-admin Field layout components like [`<Datagrid>`](./Datagrid.md) and [`<SimpleShowLayout>`](./SimpleShowLayout.md) inspect their children and use their `label` prop to set the table headers or the field labels.
 
 So inside these components, you can provide a `label` prop to override the default label.
