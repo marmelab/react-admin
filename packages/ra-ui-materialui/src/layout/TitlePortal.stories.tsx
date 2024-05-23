@@ -44,10 +44,8 @@ export const NonConfigurable = () => (
         <PreferencesEditorContextProvider>
             <Inspector />
             <InspectorButton />
-            <>
-                <TitlePortal variant="body1" />
-                <Title title="Hello, world" preferenceKey={undefined} />
-            </>
+            <TitlePortal variant="body1" />
+            <Title title="Hello, world" preferenceKey={undefined} />
         </PreferencesEditorContextProvider>
     </TestMemoryRouter>
 );
