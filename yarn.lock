@@ -18693,6 +18693,7 @@ __metadata:
     query-string: "npm:^9.0.0"
     react: "npm:^18.0.0"
     react-dom: "npm:^18.2.0"
+    react-error-boundary: "npm:^4.0.13"
     react-hook-form: "npm:^7.43.9"
     react-is: "npm:^18.2.0"
     react-router: "npm:^6.22.0"
