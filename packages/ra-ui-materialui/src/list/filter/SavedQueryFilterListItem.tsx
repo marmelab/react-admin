@@ -12,7 +12,7 @@ import {
 import CancelIcon from '@mui/icons-material/CancelOutlined';
 import isEqual from 'lodash/isEqual';
 import { useNavigate } from 'react-router-dom';
-import queryString from 'query-string';
+import { stringify } from 'query-string';
 import { useListContext } from 'ra-core';
 
 import { SavedQuery } from './useSavedQueries';
@@ -40,7 +40,7 @@ export const SavedQueryFilterListItem = memo(
 
         const addFilter = (): void => {
             navigate({
-                search: queryString.stringify({
+                search: stringify({
                     filter: JSON.stringify(value.filter),
                     sort: value.sort?.field,
                     order: value.sort?.order,
@@ -53,7 +53,7 @@ export const SavedQueryFilterListItem = memo(
 
         const removeFilter = (): void => {
             navigate({
-                search: queryString.stringify({
+                search: stringify({
                     filter: JSON.stringify({}),
                 }),
             });

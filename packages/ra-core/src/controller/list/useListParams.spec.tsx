@@ -1,7 +1,7 @@
 import * as React from 'react';
 import expect from 'expect';
 import { render, screen } from '@testing-library/react';
-import queryString from 'query-string';
+import { stringify } from 'query-string';
 import { fireEvent, waitFor } from '@testing-library/react';
 import { CoreAdminContext } from '../../core';
 
@@ -217,7 +217,7 @@ describe('useListParams', () => {
                         pathname: '/',
                         search:
                             '?' +
-                            queryString.stringify({
+                            stringify({
                                 displayedFilters: JSON.stringify({ foo: true }),
                                 filter: JSON.stringify({ foo: 'bar' }),
                                 sort: 'id',
@@ -258,7 +258,7 @@ describe('useListParams', () => {
                         pathname: '/',
                         search:
                             '?' +
-                            queryString.stringify({
+                            stringify({
                                 displayedFilters: JSON.stringify({ foo: true }),
                                 filter: JSON.stringify({ foo: 'bar' }),
                                 sort: 'id',
@@ -300,7 +300,7 @@ describe('useListParams', () => {
                         pathname: '/',
                         search:
                             '?' +
-                            queryString.stringify({
+                            stringify({
                                 displayedFilters: JSON.stringify({
                                     'foo.bar': true,
                                 }),
@@ -344,7 +344,7 @@ describe('useListParams', () => {
                         pathname: '/',
                         search:
                             '?' +
-                            queryString.stringify({
+                            stringify({
                                 displayedFilters: JSON.stringify({
                                     'foo.bar': true,
                                 }),
@@ -409,7 +409,7 @@ describe('useListParams', () => {
                         pathname: '/',
                         search:
                             '?' +
-                            queryString.stringify({
+                            stringify({
                                 filter: JSON.stringify({}),
                                 sort: 'id',
                                 order: 'ASC',
@@ -462,7 +462,7 @@ describe('useListParams', () => {
                     pathname: '/',
                     search:
                         '?' +
-                        queryString.stringify({
+                        stringify({
                             filter: JSON.stringify({}),
                             sort: 'id',
                             order: 'ASC',
