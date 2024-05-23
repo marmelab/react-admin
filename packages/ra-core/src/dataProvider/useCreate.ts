@@ -85,7 +85,7 @@ export const useCreate = <
     const hasCallTimeOnError = useRef(false);
     const hasCallTimeOnSuccess = useRef(false);
     const hasCallTimeOnSettled = useRef(false);
-    const { mutateWithMiddlewares, ...mutationOptions } = options;
+    const { getMutateWithMiddlewares, ...mutationOptions } = options;
     const mutation = useMutation<
         ResultRecordType,
         MutationError,
@@ -106,15 +106,14 @@ export const useCreate = <
                     'useCreate mutation requires a non-empty data object'
                 );
             }
-            if (mutateWithMiddlewares) {
-                return mutateWithMiddlewares(
-                    dataProvider.create.bind(dataProvider),
-                    callTimeResource,
-                    {
-                        data: callTimeData,
-                        meta: callTimeMeta,
-                    }
-                ).then(({ data }) => data);
+            if (getMutateWithMiddlewares) {
+                const createWithMiddlewares = getMutateWithMiddlewares(
+                    dataProvider.create.bind(dataProvider)
+                );
+                return createWithMiddlewares(callTimeResource, {
+                    data: callTimeData,
+                    meta: callTimeMeta,
+                }).then(({ data }) => data);
             }
             return dataProvider
                 .create<RecordType, ResultRecordType>(callTimeResource, {
@@ -226,11 +225,12 @@ export type UseCreateOptions<
     'mutationFn'
 > & {
     returnPromise?: boolean;
-    mutateWithMiddlewares?: <
+    getMutateWithMiddlewares?: <
         CreateFunctionType extends
             DataProvider['create'] = DataProvider['create'],
     >(
-        mutate: CreateFunctionType,
+        mutate: CreateFunctionType
+    ) => (
         ...Params: Parameters<CreateFunctionType>
     ) => ReturnType<CreateFunctionType>;
 };
