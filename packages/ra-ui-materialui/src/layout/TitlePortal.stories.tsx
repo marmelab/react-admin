@@ -39,20 +39,15 @@ export const Sx = () => (
     </TestMemoryRouter>
 );
 
-export const NonConfigurable = ({ preferenceKey = 'title' }) => (
+export const NonConfigurable = () => (
     <TestMemoryRouter>
         <PreferencesEditorContextProvider>
             <Inspector />
             <InspectorButton />
-            <Configurable
-                editor={<PageTitleEditor />}
-                preferenceKey={preferenceKey}
-            >
-                <>
-                    <TitlePortal variant="body1" />
-                    <Title title="Hello, world" nonConfigurable />
-                </>
-            </Configurable>
+            <>
+                <TitlePortal variant="body1" />
+                <Title title="Hello, world" preferenceKey={undefined} />
+            </>
         </PreferencesEditorContextProvider>
     </TestMemoryRouter>
 );

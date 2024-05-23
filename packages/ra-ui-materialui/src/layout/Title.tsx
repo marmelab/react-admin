@@ -8,13 +8,7 @@ import { PageTitle } from './PageTitle';
 import { PageTitleConfigurable } from './PageTitleConfigurable';
 
 export const Title = (props: TitleProps) => {
-    const {
-        defaultTitle,
-        title,
-        preferenceKey,
-        nonConfigurable,
-        ...rest
-    } = props;
+    const { defaultTitle, title, preferenceKey, ...rest } = props;
     const [container, setContainer] = useState<HTMLElement | null>(() =>
         typeof document !== 'undefined'
             ? document.getElementById('react-admin-title')
@@ -38,15 +32,15 @@ export const Title = (props: TitleProps) => {
 
     warning(!defaultTitle && !title, 'Missing title prop in <Title> element');
 
-    const pageTitle = nonConfigurable ? (
-        <PageTitle title={title} defaultTitle={defaultTitle} {...rest} />
-    ) : (
+    const pageTitle = preferenceKey ? (
         <PageTitleConfigurable
             title={title}
             defaultTitle={defaultTitle}
             preferenceKey={preferenceKey}
             {...rest}
         />
+    ) : (
+        <PageTitle title={title} defaultTitle={defaultTitle} {...rest} />
     );
 
     return <>{createPortal(pageTitle, container)}</>;
@@ -58,5 +52,4 @@ export interface TitleProps {
     record?: Partial<RaRecord>;
     title?: string | ReactElement;
     preferenceKey?: string;
-    nonConfigurable?: boolean;
 }
