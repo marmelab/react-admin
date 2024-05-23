@@ -81,7 +81,7 @@ import { useEvent } from '../util';
  */
 export const useDeleteMany = <
     RecordType extends RaRecord = any,
-    MutationError = unknown
+    MutationError = unknown,
 >(
     resource?: string,
     params: Partial<DeleteManyParams<RecordType>> = {},
@@ -478,7 +478,7 @@ export interface UseDeleteManyMutateParams<RecordType extends RaRecord = any> {
 
 export type UseDeleteManyOptions<
     RecordType extends RaRecord = any,
-    MutationError = unknown
+    MutationError = unknown,
 > = UseMutationOptions<
     RecordType['id'][],
     MutationError,
@@ -487,7 +487,7 @@ export type UseDeleteManyOptions<
 
 export type UseDeleteManyResult<
     RecordType extends RaRecord = any,
-    MutationError = unknown
+    MutationError = unknown,
 > = [
     (
         resource?: string,
@@ -504,5 +504,5 @@ export type UseDeleteManyResult<
         MutationError,
         Partial<DeleteManyParams<RecordType> & { resource?: string }>,
         unknown
-    >
+    >,
 ];

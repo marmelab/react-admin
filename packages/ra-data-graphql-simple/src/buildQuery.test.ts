@@ -31,12 +31,11 @@ describe('buildQuery', () => {
     it('correctly builds a query and returns it along with variables and parseResponse', () => {
         const buildVariables = jest.fn(() => ({ foo: true }));
         const buildGqlQuery = jest.fn(
-            () =>
-                gql`
-                    query {
-                        id
-                    }
-                `
+            () => gql`
+                query {
+                    id
+                }
+            `
         );
         const getResponseParser = jest.fn(() => 'parseResponseFunction');
         const buildVariablesFactory = jest.fn(() => buildVariables);

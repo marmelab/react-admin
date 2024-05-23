@@ -120,7 +120,7 @@ export interface UsePermissionsOptions<PermissionsType = any, ErrorType = Error>
 
 export type UsePermissionsResult<
     PermissionsType = any,
-    ErrorType = Error
+    ErrorType = Error,
 > = QueryObserverResult<PermissionsType, ErrorType> & {
     permissions: PermissionsType | undefined;
 };

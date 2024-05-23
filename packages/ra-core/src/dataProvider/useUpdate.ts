@@ -102,12 +102,10 @@ export const useUpdate = <RecordType extends RaRecord = any, ErrorType = Error>(
     const snapshot = useRef<Snapshot>([]);
     // We need to store the call-time onError and onSettled in refs to be able to call them in the useMutation hook even
     // when the calling component is unmounted
-    const callTimeOnError = useRef<
-        UseUpdateOptions<RecordType, ErrorType>['onError']
-    >();
-    const callTimeOnSettled = useRef<
-        UseUpdateOptions<RecordType, ErrorType>['onSettled']
-    >();
+    const callTimeOnError =
+        useRef<UseUpdateOptions<RecordType, ErrorType>['onError']>();
+    const callTimeOnSettled =
+        useRef<UseUpdateOptions<RecordType, ErrorType>['onSettled']>();
 
     // We don't need to keep a ref on the onSuccess callback as we call it ourselves for optimistic and
     // undoable mutations. There is a limitation though: if one of the side effects applied by the onSuccess callback
@@ -509,7 +507,7 @@ export interface UseUpdateMutateParams<RecordType extends RaRecord = any> {
 
 export type UseUpdateOptions<
     RecordType extends RaRecord = any,
-    ErrorType = Error
+    ErrorType = Error,
 > = UseMutationOptions<
     RecordType,
     ErrorType,
@@ -518,7 +516,8 @@ export type UseUpdateOptions<
     mutationMode?: MutationMode;
     returnPromise?: boolean;
     mutateWithMiddlewares?: <
-        UpdateFunctionType extends DataProvider['update'] = DataProvider['update']
+        UpdateFunctionType extends
+            DataProvider['update'] = DataProvider['update'],
     >(
         mutate: UpdateFunctionType,
         ...Params: Parameters<UpdateFunctionType>
@@ -528,7 +527,7 @@ export type UseUpdateOptions<
 export type UpdateMutationFunction<
     RecordType extends RaRecord = any,
     TReturnPromise extends boolean = boolean,
-    ErrorType = Error
+    ErrorType = Error,
 > = (
     resource?: string,
     params?: Partial<UpdateParams<RecordType>>,
@@ -543,7 +542,7 @@ export type UpdateMutationFunction<
 export type UseUpdateResult<
     RecordType extends RaRecord = any,
     TReturnPromise extends boolean = boolean,
-    ErrorType = Error
+    ErrorType = Error,
 > = [
     UpdateMutationFunction<RecordType, TReturnPromise, ErrorType>,
     UseMutationResult<
@@ -551,5 +550,5 @@ export type UseUpdateResult<
         ErrorType,
         Partial<UpdateParams<RecordType> & { resource?: string }>,
         unknown
-    >
+    >,
 ];

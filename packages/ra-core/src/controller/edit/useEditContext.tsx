@@ -14,7 +14,7 @@ import { EditControllerResult } from './useEditController';
  * @see useEditController for how it is filled
  */
 export const useEditContext = <
-    RecordType extends RaRecord = any
+    RecordType extends RaRecord = any,
 >(): EditControllerResult<RecordType> => {
     const context = useContext(EditContext);
     if (!context) {

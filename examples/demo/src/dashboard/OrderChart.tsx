@@ -24,14 +24,17 @@ const dateFormatter = (date: number): string =>
 const aggregateOrdersByDay = (orders: Order[]): { [key: string]: number } =>
     orders
         .filter((order: Order) => order.status !== 'cancelled')
-        .reduce((acc, curr) => {
-            const day = format(curr.date, 'yyyy-MM-dd');
-            if (!acc[day]) {
-                acc[day] = 0;
-            }
-            acc[day] += curr.total;
-            return acc;
-        }, {} as { [key: string]: number });
+        .reduce(
+            (acc, curr) => {
+                const day = format(curr.date, 'yyyy-MM-dd');
+                if (!acc[day]) {
+                    acc[day] = 0;
+                }
+                acc[day] += curr.total;
+                return acc;
+            },
+            {} as { [key: string]: number }
+        );
 
 const getRevenuePerDay = (orders: Order[]): TotalByDay[] => {
     const daysWithRevenue = aggregateOrdersByDay(orders);

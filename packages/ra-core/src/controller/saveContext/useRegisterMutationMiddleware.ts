@@ -7,14 +7,12 @@ import { useSaveContext } from './useSaveContext';
  * @param callback The middleware function.
  */
 export const useRegisterMutationMiddleware = <
-    MutateFunc extends (...args: any[]) => any = (...args: any[]) => any
+    MutateFunc extends (...args: any[]) => any = (...args: any[]) => any,
 >(
     callback: Middleware<MutateFunc>
 ) => {
-    const {
-        registerMutationMiddleware,
-        unregisterMutationMiddleware,
-    } = useSaveContext();
+    const { registerMutationMiddleware, unregisterMutationMiddleware } =
+        useSaveContext();
 
     useEffect(() => {
         if (!registerMutationMiddleware || !unregisterMutationMiddleware) {

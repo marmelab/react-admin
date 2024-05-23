@@ -65,8 +65,8 @@ export const useAugmentedForm = <RecordType = any>(
     const finalResolver = resolver
         ? resolver
         : validate
-        ? getSimpleValidationResolver(validate)
-        : undefined;
+          ? getSimpleValidationResolver(validate)
+          : undefined;
 
     const form = useForm({
         criteriaMode,
@@ -120,12 +120,11 @@ export const useAugmentedForm = <RecordType = any>(
     };
 };
 
-export type UseAugmentedFormProps<RecordType = any> = UseFormOwnProps<
-    RecordType
-> &
-    Omit<UseFormProps, 'onSubmit'> & {
-        validate?: ValidateForm;
-    };
+export type UseAugmentedFormProps<RecordType = any> =
+    UseFormOwnProps<RecordType> &
+        Omit<UseFormProps, 'onSubmit'> & {
+            validate?: ValidateForm;
+        };
 
 export interface UseFormOwnProps<RecordType = any> {
     defaultValues?: any;

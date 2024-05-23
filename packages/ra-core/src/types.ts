@@ -119,7 +119,7 @@ export type DataProvider<ResourceType extends string = string> = {
 
     create: <
         RecordType extends Omit<RaRecord, 'id'> = any,
-        ResultRecordType extends RaRecord = RecordType & { id: Identifier }
+        ResultRecordType extends RaRecord = RecordType & { id: Identifier },
     >(
         resource: ResourceType,
         params: CreateParams
@@ -304,9 +304,7 @@ export type Dispatch<T> = T extends (...args: infer A) => any
     : never;
 
 export type ResourceElement = ReactElement<ResourceProps>;
-export type RenderResourcesFunction = (
-    permissions: any
-) =>
+export type RenderResourcesFunction = (permissions: any) =>
     | ReactNode // (permissions) => <><Resource /><Resource /><Resource /></>
     | Promise<ReactNode> // (permissions) => fetch().then(() => <><Resource /><Resource /><Resource /></>)
     | ResourceElement[] // // (permissions) => [<Resource />, <Resource />, <Resource />]

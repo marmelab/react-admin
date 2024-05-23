@@ -72,10 +72,8 @@ interface Props<RecordType extends RaRecord = any> {
     scrollToTop?: boolean;
 }
 
-export type ShowButtonProps<RecordType extends RaRecord = any> = Props<
-    RecordType
-> &
-    Omit<ButtonProps<typeof Link>, 'to'>;
+export type ShowButtonProps<RecordType extends RaRecord = any> =
+    Props<RecordType> & Omit<ButtonProps<typeof Link>, 'to'>;
 
 const PureShowButton = memo(
     ShowButton,

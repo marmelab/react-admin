@@ -183,12 +183,11 @@ export type UseGetListOptions<RecordType extends RaRecord = any> = Omit<
     ) => void;
 };
 
-export type UseGetListHookValue<
-    RecordType extends RaRecord = any
-> = UseQueryResult<RecordType[], Error> & {
-    total?: number;
-    pageInfo?: {
-        hasNextPage?: boolean;
-        hasPreviousPage?: boolean;
+export type UseGetListHookValue<RecordType extends RaRecord = any> =
+    UseQueryResult<RecordType[], Error> & {
+        total?: number;
+        pageInfo?: {
+            hasNextPage?: boolean;
+            hasPreviousPage?: boolean;
+        };
     };
-};

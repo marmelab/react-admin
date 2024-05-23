@@ -16,7 +16,7 @@ import { useResourceContext } from '../../core';
 
 export interface UseReferenceManyFieldControllerParams<
     RecordType extends RaRecord = RaRecord,
-    ReferenceRecordType extends RaRecord = RaRecord
+    ReferenceRecordType extends RaRecord = RaRecord,
 > {
     debounce?: number;
     filter?: any;
@@ -65,7 +65,7 @@ const defaultFilter = {};
  */
 export const useReferenceManyFieldController = <
     RecordType extends RaRecord = RaRecord,
-    ReferenceRecordType extends RaRecord = RaRecord
+    ReferenceRecordType extends RaRecord = RaRecord,
 >(
     props: UseReferenceManyFieldControllerParams<
         RecordType,
@@ -211,8 +211,8 @@ export const useReferenceManyFieldController = <
                                 typeof error === 'string'
                                     ? error
                                     : error && error.message
-                                    ? error.message
-                                    : undefined,
+                                      ? error.message
+                                      : undefined,
                         },
                     }
                 ),
@@ -245,8 +245,8 @@ export const useReferenceManyFieldController = <
         hasNextPage: pageInfo
             ? pageInfo.hasNextPage
             : total != null
-            ? page * perPage < total
-            : undefined,
+              ? page * perPage < total
+              : undefined,
         hasPreviousPage: pageInfo ? pageInfo.hasPreviousPage : page > 1,
         setSort,
         showFilter,

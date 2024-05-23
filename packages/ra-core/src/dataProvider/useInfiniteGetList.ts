@@ -200,13 +200,15 @@ export const useInfiniteGetList = <RecordType extends RaRecord = any>(
         result.isFetching,
     ]);
 
-    return (result.data
-        ? {
-              ...result,
-              data: result.data,
-              total: result.data?.pages[0]?.total ?? undefined,
-          }
-        : result) as UseInfiniteQueryResult<
+    return (
+        result.data
+            ? {
+                  ...result,
+                  data: result.data,
+                  total: result.data?.pages[0]?.total ?? undefined,
+              }
+            : result
+    ) as UseInfiniteQueryResult<
         InfiniteData<GetInfiniteListResult<RecordType>>,
         Error
     > & {
@@ -239,9 +241,8 @@ export type UseInfiniteGetListOptions<RecordType extends RaRecord = any> = Omit<
     ) => void;
 };
 
-export type UseInfiniteGetListHookValue<
-    RecordType extends RaRecord = any
-> = UseInfiniteQueryResult<InfiniteData<GetInfiniteListResult<RecordType>>> & {
-    total?: number;
-    pageParam?: number;
-};
+export type UseInfiniteGetListHookValue<RecordType extends RaRecord = any> =
+    UseInfiniteQueryResult<InfiniteData<GetInfiniteListResult<RecordType>>> & {
+        total?: number;
+        pageParam?: number;
+    };

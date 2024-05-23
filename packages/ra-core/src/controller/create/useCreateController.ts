@@ -1,6 +1,5 @@
 import { useCallback } from 'react';
-// @ts-ignore
-import queryString from 'query-string';
+import { parse } from 'query-string';
 import { useLocation, Location } from 'react-router-dom';
 import { UseMutationOptions } from '@tanstack/react-query';
 
@@ -45,7 +44,7 @@ import {
 export const useCreateController = <
     RecordType extends Omit<RaRecord, 'id'> = any,
     MutationOptionsError = Error,
-    ResultRecordType extends RaRecord = RecordType & { id: Identifier }
+    ResultRecordType extends RaRecord = RecordType & { id: Identifier },
 >(
     props: CreateControllerProps<
         RecordType,
@@ -76,12 +75,8 @@ export const useCreateController = <
     const notify = useNotify();
     const redirect = useRedirect();
     const recordToUse = record ?? getRecordFromLocation(location) ?? undefined;
-    const {
-        onSuccess,
-        onError,
-        meta,
-        ...otherMutationOptions
-    } = mutationOptions;
+    const { onSuccess, onError, meta, ...otherMutationOptions } =
+        mutationOptions;
     const {
         registerMutationMiddleware,
         mutateWithMiddlewares,
@@ -126,12 +121,12 @@ export const useCreateController = <
                                 typeof error === 'string'
                                     ? error
                                     : error instanceof Error ||
-                                      (typeof error === 'object' &&
-                                          error !== null &&
-                                          error.hasOwnProperty('message'))
-                                    ? // @ts-ignore
-                                      error.message
-                                    : undefined,
+                                        (typeof error === 'object' &&
+                                            error !== null &&
+                                            error.hasOwnProperty('message'))
+                                      ? // @ts-ignore
+                                        error.message
+                                      : undefined,
                         },
                     }
                 );
@@ -155,8 +150,8 @@ export const useCreateController = <
                 transformFromSave
                     ? transformFromSave(data)
                     : transform
-                    ? transform(data)
-                    : data
+                      ? transform(data)
+                      : data
             ).then(async (data: Partial<RecordType>) => {
                 try {
                     await create(
@@ -202,7 +197,7 @@ export const useCreateController = <
 export interface CreateControllerProps<
     RecordType extends Omit<RaRecord, 'id'> = any,
     MutationOptionsError = Error,
-    ResultRecordType extends RaRecord = RecordType & { id: Identifier }
+    ResultRecordType extends RaRecord = RecordType & { id: Identifier },
 > {
     disableAuthentication?: boolean;
     hasEdit?: boolean;
@@ -219,7 +214,7 @@ export interface CreateControllerProps<
 }
 
 export interface CreateControllerResult<
-    RecordType extends Omit<RaRecord, 'id'> = any
+    RecordType extends Omit<RaRecord, 'id'> = any,
 > extends SaveContextValue {
     defaultTitle?: string;
     isFetching: boolean;
@@ -240,7 +235,7 @@ export const getRecordFromLocation = ({ state, search }: Location) => {
     }
     if (search) {
         try {
-            const searchParams = queryString.parse(search);
+            const searchParams = parse(search);
             if (searchParams.source) {
                 if (Array.isArray(searchParams.source)) {
                     console.error(

@@ -35,7 +35,7 @@ import { genericMemo } from './genericMemo';
  * <span>25,99 $US</span>
  */
 const NumberFieldImpl = <
-    RecordType extends Record<string, any> = Record<string, any>
+    RecordType extends Record<string, any> = Record<string, any>,
 >(
     props: NumberFieldProps<RecordType>
 ) => {
@@ -94,7 +94,7 @@ export const NumberField = genericMemo(NumberFieldImpl);
 NumberField.textAlign = 'right';
 
 export interface NumberFieldProps<
-    RecordType extends Record<string, any> = Record<string, any>
+    RecordType extends Record<string, any> = Record<string, any>,
 > extends FieldProps<RecordType>,
         Omit<TypographyProps, 'textAlign'> {
     locales?: string | string[];

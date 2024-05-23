@@ -66,8 +66,8 @@ const useLogoutIfAccessDenied = (): LogoutIfAccessDenied => {
                         e && e.redirectTo != null
                             ? e.redirectTo
                             : error && error.redirectTo
-                            ? error.redirectTo
-                            : undefined;
+                              ? error.redirectTo
+                              : undefined;
 
                     const shouldNotify = !(
                         (e && e.message === false) ||
@@ -136,7 +136,7 @@ const getErrorMessage = (error, defaultMessage) =>
     typeof error === 'string'
         ? error
         : typeof error === 'undefined' || !error.message
-        ? defaultMessage
-        : error.message;
+          ? defaultMessage
+          : error.message;
 
 export default useLogoutIfAccessDenied;

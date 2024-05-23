@@ -42,8 +42,8 @@ export const useExpanded = (
                     ? []
                     : [...ids.slice(0, index), ...ids.slice(index + 1)]
                 : single
-                ? [id]
-                : [...ids, id];
+                  ? [id]
+                  : [...ids, id];
         });
     }, [setExpandedIds, id, single]);
 

@@ -204,7 +204,7 @@ export const useInfiniteListController = <RecordType extends RaRecord = any>(
 };
 
 export interface InfiniteListControllerProps<
-    RecordType extends RaRecord = any
+    RecordType extends RaRecord = any,
 > {
     debounce?: number;
     disableAuthentication?: boolean;
@@ -222,19 +222,18 @@ export interface InfiniteListControllerProps<
     storeKey?: string | false;
 }
 
-export type InfiniteListControllerResult<
-    RecordType extends RaRecord = any
-> = ListControllerResult<RecordType> & {
-    fetchNextPage: InfiniteQueryObserverBaseResult<
-        InfiniteData<GetInfiniteListResult<RecordType>>
-    >['fetchNextPage'];
-    fetchPreviousPage: InfiniteQueryObserverBaseResult<
-        InfiniteData<GetInfiniteListResult<RecordType>>
-    >['fetchPreviousPage'];
-    isFetchingNextPage: InfiniteQueryObserverBaseResult<
-        InfiniteData<GetInfiniteListResult<RecordType>>
-    >['isFetchingNextPage'];
-    isFetchingPreviousPage: InfiniteQueryObserverBaseResult<
-        InfiniteData<GetInfiniteListResult<RecordType>>
-    >['isFetchingPreviousPage'];
-};
+export type InfiniteListControllerResult<RecordType extends RaRecord = any> =
+    ListControllerResult<RecordType> & {
+        fetchNextPage: InfiniteQueryObserverBaseResult<
+            InfiniteData<GetInfiniteListResult<RecordType>>
+        >['fetchNextPage'];
+        fetchPreviousPage: InfiniteQueryObserverBaseResult<
+            InfiniteData<GetInfiniteListResult<RecordType>>
+        >['fetchPreviousPage'];
+        isFetchingNextPage: InfiniteQueryObserverBaseResult<
+            InfiniteData<GetInfiniteListResult<RecordType>>
+        >['isFetchingNextPage'];
+        isFetchingPreviousPage: InfiniteQueryObserverBaseResult<
+            InfiniteData<GetInfiniteListResult<RecordType>>
+        >['isFetchingPreviousPage'];
+    };

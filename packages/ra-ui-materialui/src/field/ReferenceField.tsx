@@ -53,7 +53,7 @@ import { genericMemo } from './genericMemo';
  */
 export const ReferenceField = <
     RecordType extends Record<string, any> = Record<string, any>,
-    ReferenceRecordType extends RaRecord = RaRecord
+    ReferenceRecordType extends RaRecord = RaRecord,
 >(
     props: ReferenceFieldProps<RecordType, ReferenceRecordType>
 ) => {
@@ -80,7 +80,7 @@ export const ReferenceField = <
 
 export interface ReferenceFieldProps<
     RecordType extends Record<string, any> = Record<string, any>,
-    ReferenceRecordType extends RaRecord = RaRecord
+    ReferenceRecordType extends RaRecord = RaRecord,
 > extends Omit<FieldProps<RecordType>, 'source'>,
         Required<Pick<FieldProps<RecordType>, 'source'>> {
     children?: ReactNode;
@@ -100,17 +100,13 @@ const stopPropagation = e => e.stopPropagation();
 
 export const ReferenceFieldView = <
     RecordType extends Record<string, any> = Record<string, any>,
-    ReferenceRecordType extends RaRecord = RaRecord
+    ReferenceRecordType extends RaRecord = RaRecord,
 >(
     props: ReferenceFieldViewProps<RecordType, ReferenceRecordType>
 ) => {
     const { children, className, emptyText, reference, sx } = props;
-    const {
-        error,
-        link,
-        isLoading,
-        referenceRecord,
-    } = useReferenceFieldContext();
+    const { error, link, isLoading, referenceRecord } =
+        useReferenceFieldContext();
 
     const getRecordRepresentation = useGetRecordRepresentation(reference);
     const translate = useTranslate();
@@ -175,7 +171,7 @@ export const ReferenceFieldView = <
 
 export interface ReferenceFieldViewProps<
     RecordType extends Record<string, any> = Record<string, any>,
-    ReferenceRecordType extends RaRecord = RaRecord
+    ReferenceRecordType extends RaRecord = RaRecord,
 > extends FieldProps<RecordType>,
         Omit<ReferenceFieldProps<RecordType, ReferenceRecordType>, 'link'> {
     children?: ReactNode;

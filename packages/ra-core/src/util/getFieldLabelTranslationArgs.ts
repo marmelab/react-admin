@@ -25,13 +25,8 @@ export const getFieldLabelTranslationArgs = (
     options?: Args
 ): TranslationArguments => {
     if (!options) return [''];
-    const {
-        label,
-        defaultLabel,
-        resource,
-        resourceFromContext,
-        source,
-    } = options;
+    const { label, defaultLabel, resource, resourceFromContext, source } =
+        options;
 
     if (typeof label !== 'undefined') return [label, { _: label }];
 

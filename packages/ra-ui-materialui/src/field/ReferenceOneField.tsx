@@ -29,7 +29,7 @@ import { ReferenceFieldView } from './ReferenceField';
  */
 export const ReferenceOneField = <
     RecordType extends RaRecord = RaRecord,
-    ReferenceRecordType extends RaRecord = RaRecord
+    ReferenceRecordType extends RaRecord = RaRecord,
 >(
     props: ReferenceOneFieldProps<RecordType, ReferenceRecordType>
 ) => {
@@ -100,7 +100,7 @@ export const ReferenceOneField = <
 
 export interface ReferenceOneFieldProps<
     RecordType extends RaRecord = RaRecord,
-    ReferenceRecordType extends RaRecord = RaRecord
+    ReferenceRecordType extends RaRecord = RaRecord,
 > extends FieldProps<RecordType> {
     children?: ReactNode;
     reference: string;

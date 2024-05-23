@@ -2,7 +2,7 @@ import * as React from 'react';
 import { memo, ReactElement } from 'react';
 import Queue from '@mui/icons-material/Queue';
 import { Link } from 'react-router-dom';
-import queryString from 'query-string';
+import { stringify } from 'query-string';
 import { useResourceContext, useRecordContext, useCreatePath } from 'ra-core';
 
 import { Button, ButtonProps } from './Button';
@@ -25,7 +25,7 @@ export const CloneButton = (props: CloneButtonProps) => {
                 record
                     ? {
                           pathname,
-                          search: queryString.stringify({
+                          search: stringify({
                               source: JSON.stringify(omitId(record)),
                           }),
                       }

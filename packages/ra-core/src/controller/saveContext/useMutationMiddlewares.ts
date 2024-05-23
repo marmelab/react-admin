@@ -33,7 +33,7 @@ import { useCallback, useMemo, useRef } from 'react';
  * }
  */
 export const useMutationMiddlewares = <
-    MutateFunc extends (...args: any[]) => any = (...args: any[]) => any
+    MutateFunc extends (...args: any[]) => any = (...args: any[]) => any,
 >(): UseMutationMiddlewaresResult<MutateFunc> => {
     const callbacks = useRef<Middleware<MutateFunc>[]>([]);
 
@@ -101,7 +101,7 @@ export const useMutationMiddlewares = <
 };
 
 export interface UseMutationMiddlewaresResult<
-    MutateFunc extends (...args: any[]) => any = (...args: any[]) => any
+    MutateFunc extends (...args: any[]) => any = (...args: any[]) => any,
 > {
     registerMutationMiddleware: (callback: Middleware<MutateFunc>) => void;
     mutateWithMiddlewares: (
@@ -111,8 +111,7 @@ export interface UseMutationMiddlewaresResult<
     unregisterMutationMiddleware: (callback: Middleware<MutateFunc>) => void;
 }
 
-export type Middleware<
-    MutateFunc = (...args: any[]) => any
-> = MutateFunc extends (...a: any[]) => infer R
-    ? (...a: [...U: Parameters<MutateFunc>, next: MutateFunc]) => R
-    : never;
+export type Middleware<MutateFunc = (...args: any[]) => any> =
+    MutateFunc extends (...a: any[]) => infer R
+        ? (...a: [...U: Parameters<MutateFunc>, next: MutateFunc]) => R
+        : never;

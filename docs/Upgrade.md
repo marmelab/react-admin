@@ -209,7 +209,6 @@ Some dependencies of react-admin have been upgraded to their latest major:
 
 - [date-fns](https://www.npmjs.com/package/date-fns) from v2 to v3
 - [inflection](https://www.npmjs.com/package/inflection) from v1 to v3
-- [query-string](https://www.npmjs.com/package/query-string) from v7 to v9
 - [react-dropzone](https://www.npmjs.com/package/react-dropzone) from v12 to v14
 - [react-error-boundary](https://www.npmjs.com/package/react-error-boundary) from v3 to v4
 - [react-i18next](https://www.npmjs.com/package/react-i18next) from v13 to v14

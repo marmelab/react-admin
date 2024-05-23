@@ -615,6 +615,8 @@ Check [the `<AutoSave>` component](./AutoSave.md) documentation for more details
 
 ## Adding Fields With Labels
 
+<iframe src="https://www.youtube-nocookie.com/embed/fWc7c0URQMQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;"></iframe>
+
 All react-admin inputs handle the display of their label by wrapping their content inside a `<Labeled>` component.
 
 You can wrap your own components inside the `<Labeled>` component too. You can either provide it the `label` prop directly or leverage the automatic label inference by providing it the `source` prop:

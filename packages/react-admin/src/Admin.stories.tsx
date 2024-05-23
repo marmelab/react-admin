@@ -86,9 +86,7 @@ const ErrorPage = ({ errorInfo }: { errorInfo?: React.ErrorInfo }) => (
             {errorInfo?.componentStack
                 ?.split(' at ')
                 ?.slice(1)
-                ?.map((line, index) => (
-                    <li key={index}>At {line}</li>
-                ))}
+                ?.map((line, index) => <li key={index}>At {line}</li>)}
         </ul>
     </Box>
 );

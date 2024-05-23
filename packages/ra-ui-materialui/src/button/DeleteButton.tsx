@@ -62,8 +62,8 @@ export const DeleteButton = <RecordType extends RaRecord = any>(
     const finalMutationMode = mutationMode
         ? mutationMode
         : saveContext?.mutationMode
-        ? saveContext.mutationMode
-        : 'undoable';
+          ? saveContext.mutationMode
+          : 'undoable';
 
     return finalMutationMode === 'undoable' ? (
         <DeleteWithUndoButton<RecordType> record={record} {...rest} />
@@ -79,7 +79,7 @@ export const DeleteButton = <RecordType extends RaRecord = any>(
 
 export interface DeleteButtonProps<
     RecordType extends RaRecord = any,
-    MutationOptionsError = unknown
+    MutationOptionsError = unknown,
 > extends ButtonProps,
         SaveContextValue {
     confirmTitle?: React.ReactNode;

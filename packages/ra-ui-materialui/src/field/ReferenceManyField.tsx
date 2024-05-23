@@ -60,7 +60,7 @@ import { FieldProps } from './types';
  */
 export const ReferenceManyField = <
     RecordType extends RaRecord = RaRecord,
-    ReferenceRecordType extends RaRecord = RaRecord
+    ReferenceRecordType extends RaRecord = RaRecord,
 >(
     props: ReferenceManyFieldProps<RecordType, ReferenceRecordType>
 ) => {
@@ -109,7 +109,7 @@ export const ReferenceManyField = <
 
 export interface ReferenceManyFieldProps<
     RecordType extends Record<string, any> = Record<string, any>,
-    ReferenceRecordType extends Record<string, any> = Record<string, any>
+    ReferenceRecordType extends Record<string, any> = Record<string, any>,
 > extends Omit<FieldProps<RecordType>, 'source'> {
     children: ReactNode;
     debounce?: number;

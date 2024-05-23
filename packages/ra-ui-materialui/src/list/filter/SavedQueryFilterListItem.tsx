@@ -12,7 +12,7 @@ import {
 import CancelIcon from '@mui/icons-material/CancelOutlined';
 import isEqual from 'lodash/isEqual';
 import { useNavigate } from 'react-router-dom';
-import queryString from 'query-string';
+import { stringify } from 'query-string';
 import { useListContext } from 'ra-core';
 
 import { SavedQuery } from './useSavedQueries';
@@ -27,12 +27,8 @@ const arePropsEqual = (
 export const SavedQueryFilterListItem = memo(
     (props: SavedQueryFilterListItemProps): ReactElement => {
         const { className, label, sx, value } = props;
-        const {
-            filterValues,
-            sort,
-            perPage,
-            displayedFilters,
-        } = useListContext();
+        const { filterValues, sort, perPage, displayedFilters } =
+            useListContext();
         const navigate = useNavigate();
 
         const isSelected = isEqual(value, {
@@ -44,7 +40,7 @@ export const SavedQueryFilterListItem = memo(
 
         const addFilter = (): void => {
             navigate({
-                search: queryString.stringify({
+                search: stringify({
                     filter: JSON.stringify(value.filter),
                     sort: value.sort?.field,
                     order: value.sort?.order,
@@ -57,7 +53,7 @@ export const SavedQueryFilterListItem = memo(
 
         const removeFilter = (): void => {
             navigate({
-                search: queryString.stringify({
+                search: stringify({
                     filter: JSON.stringify({}),
                 }),
             });
