@@ -1,9 +1,8 @@
 import * as React from 'react';
 import { useMemo } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
-import { Box, Link } from '@mui/material';
+import { Box } from '@mui/material';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
-import { useGetList } from 'react-admin';
+import { useGetList, Link } from 'react-admin';
 import { startOfMonth, format } from 'date-fns';
 import { ResponsiveBar } from '@nivo/bar';
 
@@ -17,7 +16,7 @@ const multiplier = {
 };
 
 export const DealsChart = () => {
-    const { data, isLoading } = useGetList<Deal>('deals', {
+    const { data, isPending } = useGetList<Deal>('deals', {
         pagination: { perPage: 100, page: 1 },
         sort: {
             field: 'start_at',
@@ -29,7 +28,7 @@ export const DealsChart = () => {
         if (!data) return [];
         const dealsByMonth = data.reduce((acc, deal) => {
             const month = startOfMonth(
-                deal.start_at ? new Date(deal.start_at) : new Date()
+                deal.start_at ?? new Date()
             ).toISOString();
             if (!acc[month]) {
                 acc[month] = [];
@@ -40,7 +39,7 @@ export const DealsChart = () => {
 
         const amountByMonth = Object.keys(dealsByMonth).map(month => {
             return {
-                date: format(new Date(month), 'MMM'),
+                date: format(month, 'MMM'),
                 won: dealsByMonth[month]
                     .filter((deal: Deal) => deal.stage === 'won')
                     .reduce((acc: number, deal: Deal) => {
@@ -68,7 +67,7 @@ export const DealsChart = () => {
         return amountByMonth;
     }, [data]);
 
-    if (isLoading) return null; // FIXME return skeleton instead
+    if (isPending) return null; // FIXME return skeleton instead
 
     const range = months.reduce(
         (acc, month) => {
@@ -89,7 +88,6 @@ export const DealsChart = () => {
                     underline="none"
                     variant="h5"
                     color="textSecondary"
-                    component={RouterLink}
                     to="/deals"
                 >
                     Upcoming Deal Revenue

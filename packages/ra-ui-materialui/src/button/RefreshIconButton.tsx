@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { useCallback, ReactElement } from 'react';
-import PropTypes from 'prop-types';
 import Tooltip from '@mui/material/Tooltip';
 import IconButton, { IconButtonProps } from '@mui/material/IconButton';
 import NavigationRefresh from '@mui/icons-material/Refresh';
@@ -52,9 +51,3 @@ interface Props {
 }
 
 export type RefreshIconButtonProps = Props & IconButtonProps;
-
-RefreshIconButton.propTypes = {
-    className: PropTypes.string,
-    label: PropTypes.string,
-    icon: PropTypes.element,
-};

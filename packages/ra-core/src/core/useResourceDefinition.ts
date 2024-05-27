@@ -27,7 +27,7 @@ import { ResourceDefinition, ResourceOptions } from '../types';
  * const definition = useResourceDefinition({ resource: 'posts' });
  */
 export const useResourceDefinition = <
-    OptionsType extends ResourceOptions = any
+    OptionsType extends ResourceOptions = any,
 >(
     props?: UseResourceDefinitionOptions
 ): ResourceDefinition<OptionsType> => {
@@ -46,8 +46,8 @@ export const useResourceDefinition = <
                 hasShow,
                 recordRepresentation,
             },
-            resourceDefinitions[resource]
-        );
+            resource ? resourceDefinitions[resource] : {}
+        ) as ResourceDefinition<OptionsType>;
     }, [
         resource,
         resourceDefinitions,

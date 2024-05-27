@@ -56,6 +56,7 @@ interface GetListParams {
     sort: { field: string, order: 'ASC' | 'DESC' };
     filter: any;
     meta?: any;
+    signal?: AbortSignal;
 }
 interface GetListResult {
     data: Record[];
@@ -101,6 +102,7 @@ React-admin calls `dataProvider.getOne()` to fetch a single record by `id`.
 interface GetOneParams {
     id: Identifier;
     meta?: any;
+    signal?: AbortSignal;
 }
 interface GetOneResult {
     data: Record;
@@ -129,6 +131,7 @@ React-admin calls `dataProvider.getMany()` to fetch several records at once usin
 interface GetManyParams {
     ids: Identifier[];
     meta?: any;
+    signal?: AbortSignal;
 }
 interface GetManyResult {
     data: Record[];
@@ -165,6 +168,7 @@ interface GetManyReferenceParams {
     sort: { field: string, order: 'ASC' | 'DESC' };
     filter: any;
     meta?: any;
+    signal?: AbortSignal;
 }
 interface GetManyReferenceResult {
     data: Record[];
@@ -446,9 +450,9 @@ A good way to test your data provider is to build a react-admin app with compone
 | `getManyReference` | [`<ReferenceManyField>`](./ReferenceManyField.md), [`<ReferenceOneField>`](./ReferenceOneField.md), [`<ReferenceManyInput>`](./ReferenceManyInput.md), [`<ReferenceOneInput>`](./ReferenceOneInput.md) |
 | `create`           | [`<Create>`](./Create.md), [`<CreateBase>`](./CreateBase.md), [`<EditableDatagrid>`](./EditableDatagrid.md), [`<CreateInDialogButton>`](./CreateInDialogButton.md) |
 | `update`           | [`<Edit>`](./Edit.md), [`<EditGuesser>`](./EditGuesser.md), [`<EditBase>`](./EditBase.md), [`<EditableDatagrid>`](./EditableDatagrid.md), [`<EditInDialogButton>`](./EditInDialogButton.md), [`<UpdateButton>`](./UpdateButton.md) |
-| `updateMany`       | [`<BulkUpdateButton>`](./BulkUpdateButton.md) |
-| `delete`           | [`<DeleteButton>`](./DeleteButton.md), [`<EditableDatagrid>`](./EditableDatagrid.md) |
-| `deleteMany`       | [`<BulkDeleteButton>`](./BulkDeleteButton.md) |
+| `updateMany`       | [`<BulkUpdateButton>`](./Buttons.md#bulkupdatebutton) |
+| `delete`           | [`<DeleteButton>`](./Buttons.md#deletebutton), [`<EditableDatagrid>`](./EditableDatagrid.md) |
+| `deleteMany`       | [`<BulkDeleteButton>`](./Buttons.md#bulkdeletebutton) |
 
 A simple react-admin app with one `<Resource>` using [guessers](./Features.md#guessers--scaffolding) for the `list`, `edit`, and `show` pages is a good start.
 
@@ -459,13 +463,50 @@ All data provider methods accept a `meta` parameter. React-admin core components
 For instance, you could pass an option to embed related records in the response:
 
 ```jsx
-const { data, isLoading, error } = useGetOne(
+const { data, isPending, error } = useGetOne(
     'books',
     { id, meta: { _embed: 'authors' } },
 );
 ```
 
 It's up to you to use this `meta` parameter in your data provider.
+
+## The `signal` Parameter
+
+All data provider queries can be called with an extra `signal` parameter. This parameter will receive an [AbortSignal](https://developer.mozilla.org/en-US/docs/Web/API/AbortSignal) that can be used to abort the request.
+
+When React Admin calls a data provider query method, it wraps it using [React Query](https://tanstack.com/query/v5/docs/react/overview), which supports automatic [Query Cancellation](https://tanstack.com/query/latest/docs/framework/react/guides/query-cancellation) thanks to the `signal` parameter.
+
+You can also benefit from this feature if you wrap your calls to the dataProvider with `useQuery`, and pass the `signal` parameter to the dataProvider:
+
+```jsx
+import * as React from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { useDataProvider, Loading, Error } from 'react-admin';
+
+const UserProfile = ({ userId }) => {
+    const dataProvider = useDataProvider();
+    const { data, isLoading, error } = useQuery({
+        queryKey: ['users', 'getOne', { id: userId }], 
+        queryFn: ({ signal }) => dataProvider.getOne('users', { id: userId, signal })
+    });
+
+    if (isLoading) return <Loading />;
+    if (error) return <Error />;
+    if (!data) return null;
+
+    return (
+        <ul>
+            <li>Name: {data.data.name}</li>
+            <li>Email: {data.data.email}</li>
+        </ul>
+    )
+};
+```
+
+It's then the responsibility of the dataProvider to use this `signal` parameter, and pass it to the library responsible for making the HTTP requests, like `fetch`, `axios`, `XMLHttpRequest` , `apollo`, `graphql-request`, etc.
+
+You can find example implementations in the [Query Cancellation guide](https://tanstack.com/query/latest/docs/framework/react/guides/query-cancellation).
 
 ## `getList` and `getOne` Shared Cache
 
@@ -661,7 +702,7 @@ export default {
             filter: JSON.stringify(params.filter),
         };
         const url = `${apiUrl}/${resource}?${stringify(query)}`;
-        const { json, headers } = await httpClient(url);
+        const { json, headers } = await httpClient(url, { signal: params.signal });
         return {
             data: json,
             total: parseInt(headers.get('content-range').split('/').pop(), 10),
@@ -670,7 +711,7 @@ export default {
 
     getOne: async (resource, params) => {
         const url = `${apiUrl}/${resource}/${params.id}`
-        const { json } = await httpClient(url);
+        const { json } = await httpClient(url, { signal: params.signal });
         return { data: json };
     },
 
@@ -679,7 +720,7 @@ export default {
             filter: JSON.stringify({ ids: params.ids }),
         };
         const url = `${apiUrl}/${resource}?${stringify(query)}`;
-        const { json } = await httpClient(url);
+        const { json } = await httpClient(url, { signal: params.signal });
         return { data: json };
     },
 
@@ -695,7 +736,7 @@ export default {
             }),
         };
         const url = `${apiUrl}/${resource}?${stringify(query)}`;
-        const { json, headers } = await httpClient(url);
+        const { json, headers } = await httpClient(url, { signal: params.signal });
         return {
             data: json,
             total: parseInt(headers.get('content-range').split('/').pop(), 10),
@@ -752,6 +793,8 @@ export default {
     },
 };
 ```
+
+**Tip:** You may have noticed that we pass the `signal` parameter to the `httpClient` function in all query functions. This is to support automatic [Query Cancellation](https://tanstack.com/query/latest/docs/framework/react/guides/query-cancellation). You can learn more about this parameter in the section dedicated to [the `signal` parameter](#the-signal-parameter).
 
 ## Example GraphQL Implementation
 
@@ -915,7 +958,7 @@ const fields = {
 };
 
 export const dataProvider = {
-  getList: (resource, { sort, pagination, filter }) => {
+  getList: (resource, { sort, pagination, filter, signal }) => {
     const { field, order } = sort;
     const { page, perPage } = pagination;
     return client
@@ -943,6 +986,11 @@ export const dataProvider = {
             {}
           ),
         },
+        context: {
+            fetchOptions: {
+                signal,
+            },
+        },
       })
       .then((result) => ({
         data: result.data[resource],
@@ -961,6 +1009,11 @@ export const dataProvider = {
         variables: {
           id: params.id,
         },
+        context: {
+            fetchOptions: {
+                signal: params.signal,
+            },
+        },
       })
       .then((result) => ({ data: result.data[`${resource}_by_pk`] }));
   },
@@ -978,12 +1031,17 @@ export const dataProvider = {
             id: { _in: params.ids },
           },
         },
+        context: {
+            fetchOptions: {
+                signal: params.signal,
+            },
+        },
       })
       .then((result) => ({ data: result.data[resource] }));
   },
   getManyReference: (
     resource,
-    { target, id, sort, pagination, filter }
+    { target, id, sort, pagination, filter, signal }
   ) => {
     const { field, order } = sort;
     const { page, perPage } = pagination;
@@ -1011,6 +1069,11 @@ export const dataProvider = {
             }),
             { [target]: { _eq: id } }
           ),
+        },
+        context: {
+            fetchOptions: {
+                signal,
+            },
         },
       })
       .then((result) => ({
@@ -1111,6 +1174,8 @@ export const dataProvider = {
   },
 };
 ```
+
+**Tip:** You may have noticed that we pass the `signal` parameter to the apollo client in all query functions. This is to support automatic [Query Cancellation](https://tanstack.com/query/latest/docs/framework/react/guides/query-cancellation). You can learn more about this parameter in the section dedicated to [the `signal` parameter](#the-signal-parameter).
 
 ## Resource-Specific Business Logic
 

@@ -5,7 +5,7 @@ title: "useTheme"
 
 # `useTheme`
 
-React-admin provides the `useTheme` hook to read and update the [theme preference](./AppTheme.md#letting-users-choose-the-theme) (light or dark) programmatically. It uses the same syntax as React's `useState`. Its used internally by [the `<ToggleThemeButton>` component](./ToggleThemeButton.md).
+React-admin provides the `useTheme` hook to read and update the [theme preference](./AppTheme.md#changing-the-theme-programmatically) (light or dark) programmatically. It uses the same syntax as React's `useState`. Its used internally by [the `<ToggleThemeButton>` component](./ToggleThemeButton.md).
 
 ```jsx
 import { defaultTheme, useTheme } from 'react-admin';

@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import { ReactElement } from 'react';
-import PropTypes from 'prop-types';
 import ActionDelete from '@mui/icons-material/Delete';
 import { alpha } from '@mui/material/styles';
 import {
@@ -15,8 +14,7 @@ import {
 } from 'ra-core';
 
 import { Button, ButtonProps } from './Button';
-import { BulkActionProps } from '../types';
-import { UseMutationOptions } from 'react-query';
+import { UseMutationOptions } from '@tanstack/react-query';
 
 export const BulkDeleteWithUndoButton = (
     props: BulkDeleteWithUndoButtonProps
@@ -30,12 +28,12 @@ export const BulkDeleteWithUndoButton = (
         ...rest
     } = props;
     const { meta: mutationMeta, ...otherMutationOptions } = mutationOptions;
-    const { selectedIds, onUnselectItems } = useListContext(props);
+    const { selectedIds, onUnselectItems } = useListContext();
 
     const notify = useNotify();
     const resource = useResourceContext(props);
     const refresh = useRefresh();
-    const [deleteMany, { isLoading }] = useDeleteMany();
+    const [deleteMany, { isPending }] = useDeleteMany();
 
     const handleClick = e => {
         deleteMany(
@@ -62,8 +60,8 @@ export const BulkDeleteWithUndoButton = (
                                     typeof error === 'string'
                                         ? error
                                         : error && error.message
-                                        ? error.message
-                                        : undefined,
+                                          ? error.message
+                                          : undefined,
                             },
                         }
                     );
@@ -82,7 +80,7 @@ export const BulkDeleteWithUndoButton = (
         <StyledButton
             onClick={handleClick}
             label={label}
-            disabled={isLoading}
+            disabled={isPending}
             {...sanitizeRestProps(rest)}
         >
             {icon}
@@ -94,17 +92,14 @@ const defaultIcon = <ActionDelete />;
 
 const sanitizeRestProps = ({
     classes,
-    filterValues,
     label,
-    selectedIds,
     ...rest
 }: Omit<BulkDeleteWithUndoButtonProps, 'resource' | 'icon'>) => rest;
 
 export interface BulkDeleteWithUndoButtonProps<
     RecordType extends RaRecord = any,
-    MutationOptionsError = unknown
-> extends BulkActionProps,
-        ButtonProps {
+    MutationOptionsError = unknown,
+> extends ButtonProps {
     icon?: ReactElement;
     mutationOptions?: UseMutationOptions<
         RecordType,
@@ -129,10 +124,3 @@ const StyledButton = styled(Button, {
         },
     },
 }));
-
-BulkDeleteWithUndoButton.propTypes = {
-    label: PropTypes.string,
-    resource: PropTypes.string,
-    selectedIds: PropTypes.arrayOf(PropTypes.any),
-    icon: PropTypes.element,
-};

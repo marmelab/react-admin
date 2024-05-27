@@ -15,7 +15,7 @@ export const LogoField = ({
     size?: 'small' | 'medium';
 }) => {
     const record = useRecordContext<Company>();
-    if (!record) return null;
+    if (!record || !record.logo) return null;
     return (
         <Box
             component="img"

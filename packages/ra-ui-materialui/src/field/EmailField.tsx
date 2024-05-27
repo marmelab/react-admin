@@ -1,21 +1,19 @@
 import * as React from 'react';
-import get from 'lodash/get';
 import Typography from '@mui/material/Typography';
 import { Link, LinkProps } from '@mui/material';
-import { useRecordContext, useTranslate } from 'ra-core';
+import { useFieldValue, useTranslate } from 'ra-core';
 
 import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
-import { FieldProps, fieldPropTypes } from './types';
+import { FieldProps } from './types';
 import { genericMemo } from './genericMemo';
 
 const EmailFieldImpl = <
-    RecordType extends Record<string, any> = Record<string, any>
+    RecordType extends Record<string, any> = Record<string, any>,
 >(
     props: EmailFieldProps<RecordType>
 ) => {
-    const { className, source, emptyText, ...rest } = props;
-    const record = useRecordContext(props);
-    const value = get(record, source);
+    const { className, emptyText, ...rest } = props;
+    const value = useFieldValue(props);
     const translate = useTranslate();
 
     if (value == null) {
@@ -43,14 +41,12 @@ const EmailFieldImpl = <
         </Link>
     );
 };
-
-EmailFieldImpl.propTypes = fieldPropTypes;
 EmailFieldImpl.displayName = 'EmailFieldImpl';
 
 export const EmailField = genericMemo(EmailFieldImpl);
 
 export interface EmailFieldProps<
-    RecordType extends Record<string, any> = Record<string, any>
+    RecordType extends Record<string, any> = Record<string, any>,
 > extends FieldProps<RecordType>,
         Omit<LinkProps, 'textAlign'> {}
 

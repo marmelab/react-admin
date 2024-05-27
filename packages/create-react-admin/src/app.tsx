@@ -13,7 +13,30 @@ import { StepGenerate } from './StepGenerate';
 import { StepRunInstall } from './StepRunInstall';
 
 type Props = {
-    name: string | undefined;
+    name?: string;
+    authProvider?: string;
+    dataProvider?: string;
+    resources?: string[];
+    install?: string;
+};
+
+const getNextStep = (state: ProjectConfiguration) => {
+    if (state.name) {
+        if (state.dataProvider) {
+            if (state.authProvider) {
+                if (state.resources) {
+                    if (state.installer) {
+                        return 'generate';
+                    }
+                    return 'install';
+                }
+                return 'resources';
+            }
+            return 'auth-provider';
+        }
+        return 'data-provider';
+    }
+    return 'name';
 };
 
 const stepReducer = (
@@ -21,48 +44,67 @@ const stepReducer = (
     action
 ): ProjectConfiguration => {
     switch (state.step) {
-        case 'name':
-            return {
+        case 'name': {
+            const newState = {
                 ...state,
                 name: action.value,
-                step: 'data-provider',
             };
-        case 'data-provider':
             return {
+                ...newState,
+                step: getNextStep(newState),
+            };
+        }
+        case 'data-provider': {
+            const newState = {
                 ...state,
-                step: 'auth-provider',
                 dataProvider: action.value,
                 resources:
                     action.value === 'ra-data-fakerest'
                         ? ['posts', 'comments']
                         : state.resources,
             };
-        case 'auth-provider':
             return {
+                ...newState,
+                step: getNextStep(newState),
+            };
+        }
+        case 'auth-provider': {
+            const newState = {
                 ...state,
-                step:
-                    state.dataProvider === 'ra-data-fakerest'
-                        ? 'install'
-                        : 'resources',
                 authProvider: action.value,
             };
-        case 'resources':
             return {
+                ...newState,
+                step: getNextStep(newState),
+            };
+        }
+        case 'resources': {
+            const newState = {
                 ...state,
-                step: 'install',
                 resources: action.value,
             };
-        case 'install':
             return {
+                ...newState,
+                step: getNextStep(newState),
+            };
+        }
+        case 'install':
+            const newState = {
                 ...state,
                 installer: action.value,
-                step: 'generate',
+            };
+            return {
+                ...newState,
+                step: getNextStep(newState),
             };
         case 'generate':
             return {
                 ...state,
                 messages: action.value.messages,
-                step: state.installer ? 'run-install' : 'finish',
+                step:
+                    state.installer && state.installer !== 'skip'
+                        ? 'run-install'
+                        : 'finish',
             };
         case 'run-install':
             return {
@@ -74,12 +116,26 @@ const stepReducer = (
     }
 };
 
-export default function App({ name = 'my-admin' }: Props) {
-    const sanitizedName = sanitizeName(name);
-    const [state, dispatch] = useReducer(stepReducer, {
+export default function App(props: Props) {
+    const sanitizedName = sanitizeName(props.name);
+    const initialState = {
         ...InitialProjectConfiguration,
+        dataProvider: props.dataProvider,
+        authProvider: props.authProvider,
+        resources: props.resources?.includes('skip')
+            ? []
+            : props.dataProvider === 'ra-data-fakerest'
+              ? ['posts', 'comments']
+              : props.resources,
+        installer: props.install,
         name: sanitizedName,
-        step: sanitizedName === name ? 'data-provider' : 'name',
+    };
+
+    const initialStep = getNextStep(initialState);
+
+    const [state, dispatch] = useReducer(stepReducer, {
+        ...initialState,
+        step: initialStep,
     });
 
     const handleSubmit = (value: any) => {
@@ -145,11 +201,13 @@ export default function App({ name = 'my-admin' }: Props) {
     );
 }
 
-const sanitizeName = (name: string) => {
+const sanitizeName = (name?: string) => {
     return name
-        .trim()
-        .toLowerCase()
-        .replace(/\s+/g, '-')
-        .replace(/^[._]/, '')
-        .replace(/[^a-z\d\-~]+/g, '-');
+        ? name
+              .trim()
+              .toLowerCase()
+              .replace(/\s+/g, '-')
+              .replace(/^[._]/, '')
+              .replace(/[^a-z\d\-~]+/g, '-')
+        : undefined;
 };

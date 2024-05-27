@@ -57,13 +57,8 @@ export const SavedQueriesList = ({
     icon = defaultIcon,
 }: SavedQueriesListProps) => {
     const translate = useTranslate();
-    const {
-        resource,
-        filterValues,
-        displayedFilters,
-        sort,
-        perPage,
-    } = useListContext();
+    const { resource, filterValues, displayedFilters, sort, perPage } =
+        useListContext();
 
     const [savedQueries] = useSavedQueries(resource);
     const validSavedQueries = extractValidSavedQueries(savedQueries);

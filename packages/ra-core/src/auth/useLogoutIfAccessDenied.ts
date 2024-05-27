@@ -44,13 +44,15 @@ const useLogoutIfAccessDenied = (): LogoutIfAccessDenied => {
     const notify = useNotify();
     const navigate = useNavigate();
     const logoutIfAccessDenied = useCallback(
-        (error?: any, disableNotification?: boolean) =>
-            authProvider
+        (error?: any) => {
+            if (!authProvider) {
+                return logoutIfAccessDeniedWithoutProvider();
+            }
+            return authProvider
                 .checkError(error)
                 .then(() => false)
                 .catch(async e => {
                     const logoutUser = e?.logoutUser ?? true;
-
                     //manual debounce
                     if (timer) {
                         // side effects already triggered in this tick, exit
@@ -64,11 +66,10 @@ const useLogoutIfAccessDenied = (): LogoutIfAccessDenied => {
                         e && e.redirectTo != null
                             ? e.redirectTo
                             : error && error.redirectTo
-                            ? error.redirectTo
-                            : undefined;
+                              ? error.redirectTo
+                              : undefined;
 
                     const shouldNotify = !(
-                        disableNotification ||
                         (e && e.message === false) ||
                         (error && error.message === false) ||
                         redirectTo?.startsWith('http')
@@ -112,12 +113,11 @@ const useLogoutIfAccessDenied = (): LogoutIfAccessDenied => {
                     }
 
                     return true;
-                }),
+                });
+        },
         [authProvider, logout, notify, navigate]
     );
-    return authProvider
-        ? logoutIfAccessDenied
-        : logoutIfAccessDeniedWithoutProvider;
+    return logoutIfAccessDenied;
 };
 
 const logoutIfAccessDeniedWithoutProvider = () => Promise.resolve(false);
@@ -127,21 +127,16 @@ const logoutIfAccessDeniedWithoutProvider = () => Promise.resolve(false);
  * If the authProvider rejects the call, logs the user out and shows a logged out notification.
  *
  * @param {Error} error An Error object (usually returned by the dataProvider)
- * @param {boolean} disableNotification Avoid showing a notification after the user is logged out. false by default.
  *
  * @return {Promise} Resolved to true if there was a logout, false otherwise
  */
-type LogoutIfAccessDenied = (
-    error?: any,
-    /** @deprecated to disable the notification, authProvider.checkAuth() should return an object with an error property set to true */
-    disableNotification?: boolean
-) => Promise<boolean>;
+type LogoutIfAccessDenied = (error?: any) => Promise<boolean>;
 
 const getErrorMessage = (error, defaultMessage) =>
     typeof error === 'string'
         ? error
         : typeof error === 'undefined' || !error.message
-        ? defaultMessage
-        : error.message;
+          ? defaultMessage
+          : error.message;
 
 export default useLogoutIfAccessDenied;

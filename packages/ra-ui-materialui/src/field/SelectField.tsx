@@ -1,16 +1,9 @@
 import * as React from 'react';
-import PropTypes from 'prop-types';
-import get from 'lodash/get';
-import {
-    ChoicesProps,
-    useChoices,
-    useRecordContext,
-    useTranslate,
-} from 'ra-core';
+import { ChoicesProps, useChoices, useFieldValue, useTranslate } from 'ra-core';
 import { Typography, TypographyProps } from '@mui/material';
 
 import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
-import { FieldProps, fieldPropTypes } from './types';
+import { FieldProps } from './types';
 import { genericMemo } from './genericMemo';
 
 /**
@@ -76,22 +69,21 @@ import { genericMemo } from './genericMemo';
  * **Tip**: <ReferenceField> sets `translateChoice` to false by default.
  */
 const SelectFieldImpl = <
-    RecordType extends Record<string, any> = Record<string, any>
+    RecordType extends Record<string, any> = Record<string, any>,
 >(
     props: SelectFieldProps<RecordType>
 ) => {
     const {
         className,
         emptyText,
-        source,
         choices,
         optionValue = 'id',
         optionText = 'name',
         translateChoice = true,
         ...rest
     } = props;
-    const record = useRecordContext(props);
-    const value = get(record, source);
+    const value = useFieldValue(props);
+
     const { getChoiceText, getChoiceValue } = useChoices({
         optionText,
         optionValue,
@@ -99,7 +91,9 @@ const SelectFieldImpl = <
     });
     const translate = useTranslate();
 
-    const choice = choices.find(choice => getChoiceValue(choice) === value);
+    const choice = choices
+        ? choices.find(choice => getChoiceValue(choice) === value)
+        : null;
 
     if (!choice) {
         return emptyText ? (
@@ -128,26 +122,12 @@ const SelectFieldImpl = <
     );
 };
 
-SelectFieldImpl.propTypes = {
-    // @ts-ignore
-    ...Typography.propTypes,
-    ...fieldPropTypes,
-    choices: PropTypes.arrayOf(PropTypes.object).isRequired,
-    optionText: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.func,
-        PropTypes.element,
-    ]),
-    optionValue: PropTypes.string,
-    translateChoice: PropTypes.bool,
-};
-
 SelectFieldImpl.displayName = 'SelectFieldImpl';
 
 export const SelectField = genericMemo(SelectFieldImpl);
 
 export interface SelectFieldProps<
-    RecordType extends Record<string, any> = Record<string, any>
+    RecordType extends Record<string, any> = Record<string, any>,
 > extends ChoicesProps,
         FieldProps<RecordType>,
         Omit<TypographyProps, 'textAlign'> {}

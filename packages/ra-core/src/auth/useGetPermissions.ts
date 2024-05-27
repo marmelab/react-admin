@@ -38,11 +38,17 @@ const getPermissionsWithoutProvider = () => Promise.resolve([]);
 const useGetPermissions = (): GetPermissions => {
     const authProvider = useAuthProvider();
     const getPermissions = useCallback(
-        (params: any = {}) => authProvider.getPermissions(params),
+        (params: any = {}) =>
+            // react-query requires the query to return something
+            authProvider
+                ? authProvider
+                      .getPermissions(params)
+                      .then(result => result ?? null)
+                : getPermissionsWithoutProvider(),
         [authProvider]
     );
 
-    return authProvider ? getPermissions : getPermissionsWithoutProvider;
+    return getPermissions;
 };
 
 /**

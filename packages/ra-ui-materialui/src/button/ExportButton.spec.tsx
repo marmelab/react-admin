@@ -1,7 +1,11 @@
 import * as React from 'react';
 import { screen, render, waitFor, fireEvent } from '@testing-library/react';
 import expect from 'expect';
-import { CoreAdminContext, testDataProvider } from 'ra-core';
+import {
+    CoreAdminContext,
+    testDataProvider,
+    ListContextProvider,
+} from 'ra-core';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import { ExportButton } from './ExportButton';
@@ -18,12 +22,19 @@ describe('<ExportButton />', () => {
         render(
             <CoreAdminContext dataProvider={dataProvider}>
                 <ThemeProvider theme={theme}>
-                    <ExportButton
-                        resource="test"
-                        filterValues={{ filters: 'override' }}
-                        exporter={exporter}
-                        meta={{ pass: 'meta' }}
-                    />
+                    <ListContextProvider
+                        value={
+                            {
+                                resource: 'test',
+                                filterValues: { filters: 'override' },
+                            } as any
+                        }
+                    >
+                        <ExportButton
+                            exporter={exporter}
+                            meta={{ pass: 'meta' }}
+                        />
+                    </ListContextProvider>
                 </ThemeProvider>
             </CoreAdminContext>
         );
@@ -32,7 +43,6 @@ describe('<ExportButton />', () => {
 
         await waitFor(() => {
             expect(dataProvider.getList).toHaveBeenCalledWith('test', {
-                sort: null,
                 filter: { filters: 'override' },
                 pagination: { page: 1, perPage: 1000 },
                 meta: { pass: 'meta' },

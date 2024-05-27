@@ -1,11 +1,11 @@
 import * as React from 'react';
-import { MemoryRouter } from 'react-router-dom';
 import { Divider as MuiDivider } from '@mui/material';
 import {
     RecordContextProvider,
     ResourceContext,
     useRecordContext,
     WithRecord,
+    TestMemoryRouter,
 } from 'ra-core';
 import { Labeled } from '../Labeled';
 import { TextField, NumberField } from '../field';
@@ -23,7 +23,7 @@ const record = {
 };
 
 export const Basic = () => (
-    <MemoryRouter>
+    <TestMemoryRouter>
         <ResourceContext.Provider value="books">
             <RecordContextProvider value={record}>
                 <TabbedShowLayout>
@@ -39,11 +39,11 @@ export const Basic = () => (
                 </TabbedShowLayout>
             </RecordContextProvider>
         </ResourceContext.Provider>
-    </MemoryRouter>
+    </TestMemoryRouter>
 );
 
 export const Count = () => (
-    <MemoryRouter>
+    <TestMemoryRouter>
         <ResourceContext.Provider value="books">
             <RecordContextProvider value={record}>
                 <TabbedShowLayout>
@@ -62,7 +62,7 @@ export const Count = () => (
                 </TabbedShowLayout>
             </RecordContextProvider>
         </ResourceContext.Provider>
-    </MemoryRouter>
+    </TestMemoryRouter>
 );
 
 const BookTitle = () => {
@@ -71,7 +71,7 @@ const BookTitle = () => {
 };
 
 export const CustomChild = () => (
-    <MemoryRouter>
+    <TestMemoryRouter>
         <ResourceContext.Provider value="books">
             <RecordContextProvider value={record}>
                 <TabbedShowLayout>
@@ -84,11 +84,11 @@ export const CustomChild = () => (
                 </TabbedShowLayout>
             </RecordContextProvider>
         </ResourceContext.Provider>
-    </MemoryRouter>
+    </TestMemoryRouter>
 );
 
 export const CustomLabel = () => (
-    <MemoryRouter>
+    <TestMemoryRouter>
         <ResourceContext.Provider value="books">
             <RecordContextProvider value={record}>
                 <TabbedShowLayout>
@@ -104,11 +104,11 @@ export const CustomLabel = () => (
                 </TabbedShowLayout>
             </RecordContextProvider>
         </ResourceContext.Provider>
-    </MemoryRouter>
+    </TestMemoryRouter>
 );
 
 export const Spacing = () => (
-    <MemoryRouter>
+    <TestMemoryRouter>
         <ResourceContext.Provider value="books">
             <RecordContextProvider value={record}>
                 <TabbedShowLayout spacing={3}>
@@ -122,11 +122,11 @@ export const Spacing = () => (
                 </TabbedShowLayout>
             </RecordContextProvider>
         </ResourceContext.Provider>
-    </MemoryRouter>
+    </TestMemoryRouter>
 );
 
 export const Divider = () => (
-    <MemoryRouter>
+    <TestMemoryRouter>
         <ResourceContext.Provider value="books">
             <RecordContextProvider value={record}>
                 <TabbedShowLayout divider={<MuiDivider />}>
@@ -140,11 +140,11 @@ export const Divider = () => (
                 </TabbedShowLayout>
             </RecordContextProvider>
         </ResourceContext.Provider>
-    </MemoryRouter>
+    </TestMemoryRouter>
 );
 
 export const SX = () => (
-    <MemoryRouter>
+    <TestMemoryRouter>
         <ResourceContext.Provider value="books">
             <RecordContextProvider value={record}>
                 <TabbedShowLayout
@@ -164,5 +164,5 @@ export const SX = () => (
                 </TabbedShowLayout>
             </RecordContextProvider>
         </ResourceContext.Provider>
-    </MemoryRouter>
+    </TestMemoryRouter>
 );

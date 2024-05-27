@@ -1,10 +1,9 @@
 import * as React from 'react';
-import { Resource } from 'ra-core';
+import { Resource, TestMemoryRouter } from 'ra-core';
 import fakeRestDataProvider from 'ra-data-fakerest';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
 import frenchMessages from 'ra-language-french';
-import { createMemoryHistory } from 'history';
 
 import { AdminContext } from '../AdminContext';
 import { AdminUI } from '../AdminUI';
@@ -107,8 +106,6 @@ const i18nProvider = polyglotI18nProvider(
     'en' // Default locale
 );
 
-const history = createMemoryHistory({ initialEntries: ['/books'] });
-
 const postFilters = [<SearchInput source="q" alwaysOn />];
 
 const BookList = () => {
@@ -125,15 +122,13 @@ const BookList = () => {
 };
 
 export const Basic = () => (
-    <AdminContext
-        dataProvider={dataProvider}
-        i18nProvider={i18nProvider}
-        history={history}
-    >
-        <AdminUI>
-            <Resource name="books" list={BookList} />
-        </AdminUI>
-    </AdminContext>
+    <TestMemoryRouter initialEntries={['/books']}>
+        <AdminContext dataProvider={dataProvider} i18nProvider={i18nProvider}>
+            <AdminUI>
+                <Resource name="books" list={BookList} />
+            </AdminUI>
+        </AdminContext>
+    </TestMemoryRouter>
 );
 
 const postFiltersReadOnly = [<SearchInput source="q" alwaysOn readOnly />];
@@ -152,13 +147,11 @@ const BookListReadOnly = () => {
 };
 
 export const ReadOnly = () => (
-    <AdminContext
-        dataProvider={dataProvider}
-        i18nProvider={i18nProvider}
-        history={history}
-    >
-        <AdminUI>
-            <Resource name="books" list={BookListReadOnly} />
-        </AdminUI>
-    </AdminContext>
+    <TestMemoryRouter initialEntries={['/books']}>
+        <AdminContext dataProvider={dataProvider} i18nProvider={i18nProvider}>
+            <AdminUI>
+                <Resource name="books" list={BookListReadOnly} />
+            </AdminUI>
+        </AdminContext>
+    </TestMemoryRouter>
 );

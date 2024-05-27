@@ -45,7 +45,6 @@ const PostReferenceInput = () => {
                 sort={{ field: 'title', order: 'ASC' as const }}
             >
                 <SelectInput
-                    fullWidth
                     create={<PostQuickCreate />}
                     optionText="title"
                     validate={required()}

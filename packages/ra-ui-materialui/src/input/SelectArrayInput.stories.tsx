@@ -6,11 +6,10 @@ import {
     Dialog,
     DialogActions,
     DialogContent,
-    Stack,
-    Box,
     TextField,
 } from '@mui/material';
 import fakeRestProvider from 'ra-data-fakerest';
+import { useWatch } from 'react-hook-form';
 
 import { AdminContext } from '../AdminContext';
 import { Create, Edit } from '../detail';
@@ -20,8 +19,7 @@ import { ReferenceArrayInput } from './ReferenceArrayInput';
 import { useCreateSuggestionContext } from './useSupportCreateSuggestion';
 import { TextInput } from './TextInput';
 import { ArrayInput, SimpleFormIterator } from './ArrayInput';
-import { FormDataConsumer } from 'ra-core';
-import { useWatch } from 'react-hook-form';
+
 export default { title: 'ra-ui-materialui/input/SelectArrayInput' };
 
 const i18nProvider = polyglotI18nProvider(() => englishMessages);
@@ -39,7 +37,7 @@ const FormInspector = ({ source }) => {
 };
 
 export const Basic = () => (
-    <AdminContext i18nProvider={i18nProvider}>
+    <AdminContext i18nProvider={i18nProvider} defaultTheme="light">
         <Create
             resource="users"
             record={{ roles: ['u001', 'u003'] }}
@@ -83,150 +81,8 @@ export const Basic = () => (
     </AdminContext>
 );
 
-export const Disabled = () => (
-    <AdminContext i18nProvider={i18nProvider}>
-        <Create
-            resource="users"
-            record={{ roles: ['u001', 'u003'] }}
-            sx={{ width: 800 }}
-        >
-            <SimpleForm>
-                <Stack direction="row">
-                    <Box>
-                        <SelectArrayInput
-                            source="roles"
-                            choices={[
-                                { id: 'admin', name: 'Admin' },
-                                { id: 'u001', name: 'Editor' },
-                                { id: 'u002', name: 'Moderator' },
-                                { id: 'u003', name: 'Reviewer' },
-                            ]}
-                            sx={{ width: 300 }}
-                            disabled
-                        />
-                        <SelectArrayInput
-                            source="roles"
-                            variant="outlined"
-                            choices={[
-                                { id: 'admin', name: 'Admin' },
-                                { id: 'u001', name: 'Editor' },
-                                { id: 'u002', name: 'Moderator' },
-                                { id: 'u003', name: 'Reviewer' },
-                            ]}
-                            sx={{ width: 300 }}
-                            disabled
-                        />
-                        <SelectArrayInput
-                            source="roles"
-                            variant="standard"
-                            choices={[
-                                { id: 'admin', name: 'Admin' },
-                                { id: 'u001', name: 'Editor' },
-                                { id: 'u002', name: 'Moderator' },
-                                { id: 'u003', name: 'Reviewer' },
-                            ]}
-                            sx={{ width: 300 }}
-                            disabled
-                        />
-                    </Box>
-                    <Box>
-                        <SelectArrayInput
-                            source="title"
-                            sx={{ width: 300 }}
-                            disabled
-                        />
-                        <SelectArrayInput
-                            source="title"
-                            variant="outlined"
-                            sx={{ width: 300 }}
-                            disabled
-                        />
-                        <SelectArrayInput
-                            source="title"
-                            variant="standard"
-                            sx={{ width: 300 }}
-                            disabled
-                        />
-                    </Box>
-                </Stack>
-            </SimpleForm>
-        </Create>
-    </AdminContext>
-);
-
-export const ReadOnly = () => (
-    <AdminContext i18nProvider={i18nProvider}>
-        <Create
-            resource="users"
-            record={{ roles: ['u001', 'u003'] }}
-            sx={{ width: 800 }}
-        >
-            <SimpleForm>
-                <Stack direction="row">
-                    <Box>
-                        <SelectArrayInput
-                            source="roles"
-                            choices={[
-                                { id: 'admin', name: 'Admin' },
-                                { id: 'u001', name: 'Editor' },
-                                { id: 'u002', name: 'Moderator' },
-                                { id: 'u003', name: 'Reviewer' },
-                            ]}
-                            sx={{ width: 300 }}
-                            readOnly
-                        />
-                        <SelectArrayInput
-                            source="roles"
-                            variant="outlined"
-                            choices={[
-                                { id: 'admin', name: 'Admin' },
-                                { id: 'u001', name: 'Editor' },
-                                { id: 'u002', name: 'Moderator' },
-                                { id: 'u003', name: 'Reviewer' },
-                            ]}
-                            sx={{ width: 300 }}
-                            readOnly
-                        />
-                        <SelectArrayInput
-                            source="roles"
-                            variant="standard"
-                            choices={[
-                                { id: 'admin', name: 'Admin' },
-                                { id: 'u001', name: 'Editor' },
-                                { id: 'u002', name: 'Moderator' },
-                                { id: 'u003', name: 'Reviewer' },
-                            ]}
-                            sx={{ width: 300 }}
-                            readOnly
-                        />
-                    </Box>
-                    <Box>
-                        <SelectArrayInput
-                            source="title"
-                            sx={{ width: 300 }}
-                            readOnly
-                        />
-                        <SelectArrayInput
-                            source="title"
-                            variant="outlined"
-                            sx={{ width: 300 }}
-                            readOnly
-                        />
-                        <SelectArrayInput
-                            source="title"
-                            variant="standard"
-                            sx={{ width: 300 }}
-                            readOnly
-                        />
-                    </Box>
-                </Stack>
-            </SimpleForm>
-        </Create>
-    </AdminContext>
-);
-
 export const DefaultValue = () => (
-    <AdminContext i18nProvider={i18nProvider}>
+    <AdminContext i18nProvider={i18nProvider} defaultTheme="light">
         <Create resource="users" sx={{ width: 600 }}>
             <SimpleForm>
                 <SelectArrayInput
@@ -246,7 +102,7 @@ export const DefaultValue = () => (
 );
 
 export const InsideArrayInput = () => (
-    <AdminContext i18nProvider={i18nProvider}>
+    <AdminContext i18nProvider={i18nProvider} defaultTheme="light">
         <Create resource="users" sx={{ width: 600 }}>
             <SimpleForm>
                 <ArrayInput
@@ -255,24 +111,15 @@ export const InsideArrayInput = () => (
                     defaultValue={[{ data: ['foo'] }]}
                 >
                     <SimpleFormIterator>
-                        <FormDataConsumer>
-                            {({ getSource }) => {
-                                const source = getSource!('data');
-                                return (
-                                    <>
-                                        <SelectArrayInput
-                                            label="data"
-                                            source={source}
-                                            choices={[
-                                                { id: 'foo', name: 'Foo' },
-                                                { id: 'bar', name: 'Bar' },
-                                            ]}
-                                            defaultValue={['foo']}
-                                        />
-                                    </>
-                                );
-                            }}
-                        </FormDataConsumer>
+                        <SelectArrayInput
+                            label="data"
+                            source="data"
+                            choices={[
+                                { id: 'foo', name: 'Foo' },
+                                { id: 'bar', name: 'Bar' },
+                            ]}
+                            defaultValue={['foo']}
+                        />
                     </SimpleFormIterator>
                 </ArrayInput>
                 <FormInspector source="items" />
@@ -321,7 +168,7 @@ const CreateRole = () => {
 };
 
 export const CreateProp = () => (
-    <AdminContext i18nProvider={i18nProvider}>
+    <AdminContext i18nProvider={i18nProvider} defaultTheme="light">
         <Create
             resource="users"
             record={{ roles: ['u001', 'u003'] }}
@@ -350,12 +197,11 @@ export const DifferentIdTypes = () => {
     };
     const dataProvider = fakeRestProvider(fakeData, false);
     return (
-        <AdminContext dataProvider={dataProvider}>
+        <AdminContext dataProvider={dataProvider} defaultTheme="light">
             <Edit resource="bands" id={1} sx={{ width: 600 }}>
                 <SimpleForm>
-                    <TextInput source="name" fullWidth />
+                    <TextInput source="name" />
                     <SelectArrayInput
-                        fullWidth
                         source="members"
                         choices={fakeData.artists}
                     ></SelectArrayInput>
@@ -376,31 +222,27 @@ export const DifferentSizes = () => {
     };
     const dataProvider = fakeRestProvider(fakeData, false);
     return (
-        <AdminContext dataProvider={dataProvider}>
+        <AdminContext dataProvider={dataProvider} defaultTheme="light">
             <Edit resource="bands" id={1} sx={{ width: 600 }}>
                 <SimpleForm>
-                    <TextInput source="name" fullWidth />
+                    <TextInput source="name" />
                     <SelectArrayInput
-                        fullWidth
                         source="members"
                         choices={fakeData.artists}
                         size="small"
                     />
                     <SelectArrayInput
-                        fullWidth
                         source="members"
                         choices={fakeData.artists}
                         size="medium"
                     />
                     <SelectArrayInput
-                        fullWidth
                         source="members"
                         choices={fakeData.artists}
                         size="small"
                         variant="outlined"
                     />
                     <SelectArrayInput
-                        fullWidth
                         source="members"
                         choices={fakeData.artists}
                         size="medium"
@@ -442,6 +284,7 @@ export const TranslateChoice = () => {
                         }),
                 } as any
             }
+            defaultTheme="light"
         >
             <Edit resource="posts" id="1">
                 <SimpleForm>

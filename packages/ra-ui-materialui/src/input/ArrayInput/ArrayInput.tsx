@@ -10,6 +10,7 @@ import {
     useGetValidationErrorMessage,
     useFormGroupContext,
     useFormGroups,
+    useWrappedSource,
 } from 'ra-core';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 import {
@@ -75,6 +76,7 @@ export const ArrayInput = (props: ArrayInputProps) => {
         label,
         isFetching,
         isLoading,
+        isPending,
         children,
         helperText,
         record,
@@ -83,29 +85,24 @@ export const ArrayInput = (props: ArrayInputProps) => {
         validate,
         variant,
         disabled,
-        readOnly,
         margin = 'dense',
         ...rest
     } = props;
 
     const formGroupName = useFormGroupContext();
     const formGroups = useFormGroups();
+    const finalSource = useWrappedSource(source);
 
     const sanitizedValidate = Array.isArray(validate)
         ? composeSyncValidators(validate)
         : validate;
     const getValidationErrorMessage = useGetValidationErrorMessage();
 
-    const {
-        getFieldState,
-        formState,
-        getValues,
-        register,
-        unregister,
-    } = useFormContext();
+    const { getFieldState, formState, getValues, register, unregister } =
+        useFormContext();
 
     const fieldProps = useFieldArray({
-        name: source,
+        name: finalSource,
         rules: {
             validate: async value => {
                 if (!sanitizedValidate) return true;
@@ -121,23 +118,20 @@ export const ArrayInput = (props: ArrayInputProps) => {
         },
     });
 
-    const { isSubmitted } = formState;
-
     // We need to register the array itself as a field to enable validation at its level
     useEffect(() => {
-        register(source);
-        formGroups.registerField(source, formGroupName);
+        register(finalSource);
+        formGroups &&
+            formGroupName != null &&
+            formGroups.registerField(finalSource, formGroupName);
 
         return () => {
-            unregister(source, {
-                keepValue: true,
-                keepError: true,
-                keepDirty: true,
-                keepTouched: true,
-            });
-            formGroups.unregisterField(source, formGroupName);
+            unregister(finalSource, { keepValue: true });
+            formGroups &&
+                formGroupName != null &&
+                formGroups.unregisterField(finalSource, formGroupName);
         };
-    }, [register, unregister, source, formGroups, formGroupName]);
+    }, [register, unregister, finalSource, formGroups, formGroupName]);
 
     useApplyInputDefaultValues({
         inputProps: props,
@@ -145,17 +139,16 @@ export const ArrayInput = (props: ArrayInputProps) => {
         fieldArrayInputControl: fieldProps,
     });
 
-    const { isDirty, error } = getFieldState(source, formState);
+    const { error } = getFieldState(finalSource, formState);
 
-    if (isLoading) {
+    if (isPending) {
         return (
             <Labeled label={label} className={className}>
                 <LinearProgress />
             </Labeled>
         );
     }
-    const renderHelperText =
-        helperText !== false || ((isDirty || isSubmitted) && !!error);
+    const renderHelperText = helperText !== false || !!error;
 
     return (
         <Root
@@ -167,14 +160,14 @@ export const ArrayInput = (props: ArrayInputProps) => {
                 ArrayInputClasses.root,
                 className
             )}
-            error={(isDirty || isSubmitted) && !!error}
+            error={!!error}
             {...sanitizeInputRestProps(rest)}
         >
             <InputLabel
-                htmlFor={source}
+                htmlFor={finalSource}
                 className={ArrayInputClasses.label}
                 shrink
-                error={(isDirty || isSubmitted) && !!error}
+                error={!!error}
             >
                 <FieldTitle
                     label={label}
@@ -191,14 +184,12 @@ export const ArrayInput = (props: ArrayInputProps) => {
                     source,
                     variant,
                     margin,
-                    disabled: children.props.disabled || disabled,
-                    readOnly: children.props.readOnly || readOnly,
+                    disabled,
                 })}
             </ArrayInputContext.Provider>
             {renderHelperText ? (
-                <FormHelperText error={(isDirty || isSubmitted) && !!error}>
+                <FormHelperText error={!!error}>
                     <InputHelperText
-                        touched={isDirty || isSubmitted}
                         // root property is applicable to built-in validation only,
                         // Resolvers are yet to support useFieldArray root level validation.
                         // Reference: https://react-hook-form.com/docs/usefieldarray
@@ -226,6 +217,7 @@ export interface ArrayInputProps
     disabled?: boolean;
     isFetching?: boolean;
     isLoading?: boolean;
+    isPending?: boolean;
     record?: Partial<RaRecord>;
 }
 

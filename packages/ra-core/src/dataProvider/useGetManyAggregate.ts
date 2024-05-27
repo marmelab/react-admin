@@ -1,16 +1,17 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import {
     QueryClient,
     useQueryClient,
     useQuery,
     UseQueryOptions,
-    hashQueryKey,
-} from 'react-query';
+    hashKey,
+} from '@tanstack/react-query';
 import union from 'lodash/union';
 
 import { UseGetManyHookValue } from './useGetMany';
 import { Identifier, RaRecord, GetManyParams, DataProvider } from '../types';
 import { useDataProvider } from './useDataProvider';
+import { useEvent } from '../util';
 
 /**
  * Call the dataProvider.getMany() method and return the resolved result
@@ -18,9 +19,9 @@ import { useDataProvider } from './useDataProvider';
  *
  * The return value updates according to the request state:
  *
- * - start: { isLoading: true, isFetching: true, refetch }
- * - success: { data: [data from response], isLoading: false, isFetching: false, refetch }
- * - error: { error: [error from response], isLoading: false, isFetching: false, refetch }
+ * - start: { isPending: true, isFetching: true, refetch }
+ * - success: { data: [data from response], isPending: false, isFetching: false, refetch }
+ * - error: { error: [error from response], isPending: false, isFetching: false, refetch }
  *
  * This hook will return the cached result when called a second time
  * with the same parameters, until the response arrives.
@@ -45,7 +46,7 @@ import { useDataProvider } from './useDataProvider';
  * @prop params.ids The ids to get, e.g. [123, 456, 789]
  * @prop params.meta Optional meta parameters
 
- * @returns The current request state. Destructure as { data, error, isLoading, isFetching, refetch }.
+ * @returns The current request state. Destructure as { data, error, isPending, isFetching, refetch }.
  *
  * @example
  *
@@ -53,8 +54,8 @@ import { useDataProvider } from './useDataProvider';
  *
  * const PostTags = () => {
  *     const record = useRecordContext();
- *     const { data, isLoading, error } = useGetManyAggregate('tags', { ids: record.tagIds });
- *     if (isLoading) { return <Loading />; }
+ *     const { data, isPending, error } = useGetManyAggregate('tags', { ids: record.tagIds });
+ *     if (isPending) { return <Loading />; }
  *     if (error) { return <p>ERROR</p>; }
  *     return (
  *          <ul>
@@ -68,15 +69,25 @@ import { useDataProvider } from './useDataProvider';
 export const useGetManyAggregate = <RecordType extends RaRecord = any>(
     resource: string,
     params: GetManyParams,
-    options: UseQueryOptions<RecordType[], Error> = {}
+    options: UseGetManyAggregateOptions<RecordType> = {}
 ): UseGetManyHookValue<RecordType> => {
     const dataProvider = useDataProvider();
     const queryClient = useQueryClient();
     const queryCache = queryClient.getQueryCache();
+    const {
+        onError = noop,
+        onSuccess = noop,
+        onSettled = noop,
+        ...queryOptions
+    } = options;
+    const onSuccessEvent = useEvent(onSuccess);
+    const onErrorEvent = useEvent(onError);
+    const onSettledEvent = useEvent(onSettled);
+
     const { ids, meta } = params;
     const placeholderData = useMemo(() => {
         const records = (Array.isArray(ids) ? ids : [ids]).map(id => {
-            const queryHash = hashQueryKey([
+            const queryHash = hashKey([
                 resource,
                 'getOne',
                 { id: String(id), meta },
@@ -90,8 +101,8 @@ export const useGetManyAggregate = <RecordType extends RaRecord = any>(
         }
     }, [ids, queryCache, resource, meta]);
 
-    return useQuery<RecordType[], Error, RecordType[]>(
-        [
+    const result = useQuery<RecordType[], Error, RecordType[]>({
+        queryKey: [
             resource,
             'getMany',
             {
@@ -99,7 +110,7 @@ export const useGetManyAggregate = <RecordType extends RaRecord = any>(
                 meta,
             },
         ],
-        () =>
+        queryFn: ({ signal }) =>
             new Promise((resolve, reject) => {
                 if (!ids || ids.length === 0) {
                     // no need to call the dataProvider
@@ -114,23 +125,60 @@ export const useGetManyAggregate = <RecordType extends RaRecord = any>(
                     reject,
                     dataProvider,
                     queryClient,
+                    signal,
                 });
             }),
-        {
-            placeholderData,
-            onSuccess: data => {
-                // optimistically populate the getOne cache
-                (data ?? []).forEach(record => {
-                    queryClient.setQueryData(
-                        [resource, 'getOne', { id: String(record.id), meta }],
-                        oldRecord => oldRecord ?? record
-                    );
-                });
-            },
-            retry: false,
-            ...options,
-        }
-    );
+        placeholderData,
+        retry: false,
+        ...queryOptions,
+    });
+
+    const metaValue = useRef(meta);
+    const resourceValue = useRef(resource);
+
+    useEffect(() => {
+        metaValue.current = meta;
+    }, [meta]);
+
+    useEffect(() => {
+        resourceValue.current = resource;
+    }, [resource]);
+
+    useEffect(() => {
+        if (result.data === undefined || result.isFetching) return;
+
+        // optimistically populate the getOne cache
+        (result.data ?? []).forEach(record => {
+            queryClient.setQueryData(
+                [
+                    resourceValue.current,
+                    'getOne',
+                    { id: String(record.id), meta: metaValue.current },
+                ],
+                oldRecord => oldRecord ?? record
+            );
+        });
+
+        onSuccessEvent(result.data);
+    }, [queryClient, onSuccessEvent, result.data, result.isFetching]);
+
+    useEffect(() => {
+        if (result.error == null || result.isFetching) return;
+        onErrorEvent(result.error);
+    }, [onErrorEvent, result.error, result.isFetching]);
+
+    useEffect(() => {
+        if (result.status === 'pending' || result.isFetching) return;
+        onSettledEvent(result.data, result.error);
+    }, [
+        onSettledEvent,
+        result.data,
+        result.error,
+        result.status,
+        result.isFetching,
+    ]);
+
+    return result;
 };
 
 /**
@@ -167,6 +215,7 @@ interface GetManyCallArgs {
     reject: (error?: any) => void;
     dataProvider: DataProvider;
     queryClient: QueryClient;
+    signal: AbortSignal;
 }
 
 /**
@@ -188,13 +237,16 @@ const callGetManyQueries = batch((calls: GetManyCallArgs[]) => {
      *     tags: [{ resource, ids, resolve, reject, dataProvider, queryClient }, ...],
      * }
      */
-    const callsByResource = calls.reduce((acc, callArgs) => {
-        if (!acc[callArgs.resource]) {
-            acc[callArgs.resource] = [];
-        }
-        acc[callArgs.resource].push(callArgs);
-        return acc;
-    }, {} as { [resource: string]: GetManyCallArgs[] });
+    const callsByResource = calls.reduce(
+        (acc, callArgs) => {
+            if (!acc[callArgs.resource]) {
+                acc[callArgs.resource] = [];
+            }
+            acc[callArgs.resource].push(callArgs);
+            return acc;
+        },
+        {} as { [resource: string]: GetManyCallArgs[] }
+    );
 
     /**
      * For each resource, aggregate ids and call dataProvider.getMany() once
@@ -225,21 +277,19 @@ const callGetManyQueries = batch((calls: GetManyCallArgs[]) => {
         }
 
         const callThatHasAllAggregatedIds = callsForResource.find(
-            ({ ids }) => JSON.stringify(ids) === JSON.stringify(aggregatedIds)
+            ({ ids, signal }) =>
+                JSON.stringify(ids) === JSON.stringify(aggregatedIds) &&
+                !signal.aborted
         );
         if (callThatHasAllAggregatedIds) {
             // There is only one call (no aggregation), or one of the calls has the same ids as the sum of all calls.
             // Either way, we can't trigger a new fetchQuery with the same signature, as it's already pending.
             // Therefore, we reply with the dataProvider
-            const {
-                dataProvider,
-                resource,
-                ids,
-                meta,
-            } = callThatHasAllAggregatedIds;
+            const { dataProvider, resource, ids, meta, signal } =
+                callThatHasAllAggregatedIds;
 
             dataProvider
-                .getMany<any>(resource, { ids, meta })
+                .getMany<any>(resource, { ids, meta, signal })
                 .then(({ data }) => data)
                 .then(
                     data => {
@@ -269,8 +319,8 @@ const callGetManyQueries = batch((calls: GetManyCallArgs[]) => {
          * and resolve each of the promises using the results
          */
         queryClient
-            .fetchQuery<any[], Error, any[]>(
-                [
+            .fetchQuery<any[], Error, any[]>({
+                queryKey: [
                     resource,
                     'getMany',
                     {
@@ -278,14 +328,15 @@ const callGetManyQueries = batch((calls: GetManyCallArgs[]) => {
                         meta: uniqueMeta,
                     },
                 ],
-                () =>
+                queryFn: ({ signal }) =>
                     dataProvider
                         .getMany<any>(resource, {
                             ids: aggregatedIds,
                             meta: uniqueMeta,
+                            signal,
                         })
-                        .then(({ data }) => data)
-            )
+                        .then(({ data }) => data),
+            })
             .then(data => {
                 callsForResource.forEach(({ ids, resolve }) => {
                     resolve(
@@ -302,3 +353,14 @@ const callGetManyQueries = batch((calls: GetManyCallArgs[]) => {
             );
     });
 });
+
+const noop = () => undefined;
+
+export type UseGetManyAggregateOptions<RecordType extends RaRecord> = Omit<
+    UseQueryOptions<RecordType[]>,
+    'queryKey' | 'queryFn'
+> & {
+    onSuccess?: (data: RecordType[]) => void;
+    onError?: (error: Error) => void;
+    onSettled?: (data?: RecordType[], error?: Error | null) => void;
+};

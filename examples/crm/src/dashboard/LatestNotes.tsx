@@ -14,19 +14,17 @@ import { Contact as ContactType } from '../types';
 
 export const LatestNotes = () => {
     const { identity } = useGetIdentity();
-    const {
-        data: contactNotesData,
-        isLoading: contactNotesLoading,
-    } = useGetList(
-        'contactNotes',
-        {
-            pagination: { page: 1, perPage: 5 },
-            sort: { field: 'date', order: 'DESC' },
-            filter: { sales_id: identity?.id },
-        },
-        { enabled: Number.isInteger(identity?.id) }
-    );
-    const { data: dealNotesData, isLoading: dealNotesLoading } = useGetList(
+    const { data: contactNotesData, isPending: contactNotesLoading } =
+        useGetList(
+            'contactNotes',
+            {
+                pagination: { page: 1, perPage: 5 },
+                sort: { field: 'date', order: 'DESC' },
+                filter: { sales_id: identity?.id },
+            },
+            { enabled: Number.isInteger(identity?.id) }
+        );
+    const { data: dealNotesData, isPending: dealNotesLoading } = useGetList(
         'dealNotes',
         {
             pagination: { page: 1, perPage: 5 },
@@ -72,7 +70,11 @@ export const LatestNotes = () => {
                             key={`${note.type}_${note.id}`}
                             sx={{ marginBottom: 2 }}
                         >
-                            <Typography variant="body2" color="textSecondary">
+                            <Typography
+                                variant="body2"
+                                color="textSecondary"
+                                component="div"
+                            >
                                 on{' '}
                                 {note.type === 'dealNote' ? (
                                     <Deal note={note} />
@@ -80,13 +82,9 @@ export const LatestNotes = () => {
                                     <Contact note={note} />
                                 )}
                                 , added{' '}
-                                {formatDistance(
-                                    new Date(note.date),
-                                    new Date(),
-                                    {
-                                        addSuffix: true,
-                                    }
-                                )}
+                                {formatDistance(note.date, new Date(), {
+                                    addSuffix: true,
+                                })}
                             </Typography>
                             <div>
                                 <Typography

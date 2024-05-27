@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { alpha, styled } from '@mui/material/styles';
 import { ReactElement } from 'react';
-import PropTypes from 'prop-types';
 import ActionUpdate from '@mui/icons-material/Update';
 import {
     useRefresh,
@@ -12,10 +11,9 @@ import {
     useUpdate,
     UpdateParams,
 } from 'ra-core';
-import { UseMutationOptions } from 'react-query';
+import { UseMutationOptions } from '@tanstack/react-query';
 
 import { Button, ButtonProps } from './Button';
-import { BulkActionProps } from '../types';
 
 export const UpdateWithUndoButton = (props: UpdateWithUndoButtonProps) => {
     const record = useRecordContext(props);
@@ -32,7 +30,7 @@ export const UpdateWithUndoButton = (props: UpdateWithUndoButtonProps) => {
         ...rest
     } = props;
 
-    const [updateMany, { isLoading }] = useUpdate();
+    const [updateMany, { isPending }] = useUpdate();
 
     const {
         meta: mutationMeta,
@@ -55,8 +53,8 @@ export const UpdateWithUndoButton = (props: UpdateWithUndoButtonProps) => {
                             typeof error === 'string'
                                 ? error
                                 : error && error.message
-                                ? error.message
-                                : undefined,
+                                  ? error.message
+                                  : undefined,
                     },
                 }
             );
@@ -66,6 +64,11 @@ export const UpdateWithUndoButton = (props: UpdateWithUndoButtonProps) => {
     } = mutationOptions;
 
     const handleClick = e => {
+        if (!record) {
+            throw new Error(
+                'The UpdateWithUndoButton must be used inside a RecordContext.Provider or must be passed a record prop.'
+            );
+        }
         updateMany(
             resource,
             { id: record.id, data, meta: mutationMeta, previousData: record },
@@ -86,7 +89,7 @@ export const UpdateWithUndoButton = (props: UpdateWithUndoButtonProps) => {
         <StyledButton
             onClick={handleClick}
             label={label}
-            disabled={isLoading}
+            disabled={isPending}
             {...sanitizeRestProps(rest)}
         >
             {icon}
@@ -97,17 +100,14 @@ export const UpdateWithUndoButton = (props: UpdateWithUndoButtonProps) => {
 const defaultIcon = <ActionUpdate />;
 
 const sanitizeRestProps = ({
-    filterValues,
     label,
-    selectedIds,
     ...rest
 }: Omit<UpdateWithUndoButtonProps, 'resource' | 'icon' | 'data'>) => rest;
 
 export interface UpdateWithUndoButtonProps<
     RecordType extends RaRecord = any,
-    MutationOptionsError = unknown
-> extends BulkActionProps,
-        ButtonProps {
+    MutationOptionsError = unknown,
+> extends ButtonProps {
     icon?: ReactElement;
     data: any;
     mutationOptions?: UseMutationOptions<
@@ -116,14 +116,6 @@ export interface UpdateWithUndoButtonProps<
         UpdateParams<RecordType>
     > & { meta?: any };
 }
-
-UpdateWithUndoButton.propTypes = {
-    label: PropTypes.string,
-    resource: PropTypes.string,
-    record: PropTypes.object,
-    icon: PropTypes.element,
-    data: PropTypes.any.isRequired,
-};
 
 const PREFIX = 'RaUpdateWithUndoButton';
 

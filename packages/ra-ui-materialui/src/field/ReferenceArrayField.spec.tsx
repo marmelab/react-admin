@@ -1,13 +1,13 @@
 import * as React from 'react';
 import expect from 'expect';
 import { render, screen, act, waitFor } from '@testing-library/react';
-import { MemoryRouter } from 'react-router-dom';
 import {
     ListContextProvider,
     CoreAdminContext,
     RecordContextProvider,
     useRecordContext,
     useListContext,
+    TestMemoryRouter,
 } from 'ra-core';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
@@ -24,13 +24,13 @@ const theme = createTheme({});
 
 describe('<ReferenceArrayField />', () => {
     it('should render a loading indicator when related records are not yet fetched and a second has passed', async () => {
-        const { queryAllByRole } = render(
+        render(
             <ThemeProvider theme={theme}>
                 <ListContextProvider
                     value={{
                         resource: 'foo',
                         data: null,
-                        isLoading: true,
+                        isPending: true,
                     }}
                 >
                     <ReferenceArrayFieldView
@@ -47,7 +47,7 @@ describe('<ReferenceArrayField />', () => {
         );
 
         await new Promise(resolve => setTimeout(resolve, 1001));
-        expect(queryAllByRole('progressbar')).toHaveLength(1);
+        await screen.findByRole('progressbar');
     });
 
     it('should render a list of the child component', () => {
@@ -56,7 +56,7 @@ describe('<ReferenceArrayField />', () => {
             { id: 2, title: 'world' },
         ];
         const { queryAllByRole, container, getByText } = render(
-            <MemoryRouter>
+            <TestMemoryRouter>
                 <ThemeProvider theme={theme}>
                     <ListContextProvider
                         value={{
@@ -70,13 +70,13 @@ describe('<ReferenceArrayField />', () => {
                             record={{ id: 123, barIds: [1, 2] }}
                             reference="bar"
                         >
-                            <SingleFieldList>
+                            <SingleFieldList linkType={false}>
                                 <TextField source="title" />
                             </SingleFieldList>
                         </ReferenceArrayFieldView>
                     </ListContextProvider>
                 </ThemeProvider>
-            </MemoryRouter>
+            </TestMemoryRouter>
         );
         expect(queryAllByRole('progressbar')).toHaveLength(0);
         expect(container.firstChild?.textContent).not.toBeUndefined();
@@ -99,7 +99,7 @@ describe('<ReferenceArrayField />', () => {
                         record={{ id: 123, barIds: [1, 2] }}
                         reference="bar"
                     >
-                        <SingleFieldList>
+                        <SingleFieldList linkType={false}>
                             <TextField source="title" />
                         </SingleFieldList>
                     </ReferenceArrayFieldView>
@@ -116,7 +116,7 @@ describe('<ReferenceArrayField />', () => {
             { id: 'abc-2', title: 'world' },
         ];
         const { queryAllByRole, container, getByText } = render(
-            <MemoryRouter>
+            <TestMemoryRouter>
                 <ThemeProvider theme={theme}>
                     <ListContextProvider
                         value={{
@@ -130,13 +130,13 @@ describe('<ReferenceArrayField />', () => {
                             reference="bar"
                             source="barIds"
                         >
-                            <SingleFieldList>
+                            <SingleFieldList linkType={false}>
                                 <TextField source="title" />
                             </SingleFieldList>
                         </ReferenceArrayFieldView>
                     </ListContextProvider>
                 </ThemeProvider>
-            </MemoryRouter>
+            </TestMemoryRouter>
         );
         expect(queryAllByRole('progressbar')).toHaveLength(0);
         expect(container.firstChild?.textContent).not.toBeUndefined();
@@ -150,7 +150,7 @@ describe('<ReferenceArrayField />', () => {
             { id: 2, title: 'world' },
         ];
         const { queryAllByRole, container, getByText } = render(
-            <MemoryRouter>
+            <TestMemoryRouter>
                 <ThemeProvider theme={theme}>
                     <ListContextProvider
                         value={{
@@ -165,13 +165,13 @@ describe('<ReferenceArrayField />', () => {
                             reference="bar"
                             source="barIds"
                         >
-                            <SingleFieldList>
+                            <SingleFieldList linkType={false}>
                                 <TextField source="title" />
                             </SingleFieldList>
                         </ReferenceArrayFieldView>
                     </ListContextProvider>
                 </ThemeProvider>
-            </MemoryRouter>
+            </TestMemoryRouter>
         );
         expect(queryAllByRole('progressbar')).toHaveLength(0);
         expect(container.firstChild.textContent).not.toBeUndefined();
@@ -185,7 +185,7 @@ describe('<ReferenceArrayField />', () => {
             { id: 2, title: 'world' },
         ];
         const { container } = render(
-            <MemoryRouter>
+            <TestMemoryRouter>
                 <ThemeProvider theme={theme}>
                     <ListContextProvider
                         value={{
@@ -201,13 +201,13 @@ describe('<ReferenceArrayField />', () => {
                             reference="bar"
                             source="barIds"
                         >
-                            <SingleFieldList>
+                            <SingleFieldList linkType={false}>
                                 <TextField source="title" />
                             </SingleFieldList>
                         </ReferenceArrayFieldView>
                     </ListContextProvider>
                 </ThemeProvider>
-            </MemoryRouter>
+            </TestMemoryRouter>
         );
         expect(container.getElementsByClassName('myClass')).toHaveLength(1);
     });

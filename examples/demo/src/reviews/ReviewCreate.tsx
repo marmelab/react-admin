@@ -32,7 +32,12 @@ const ReviewCreate = () => {
 
     return (
         <Create mutationOptions={{ onSuccess }}>
-            <SimpleForm defaultValues={{ status: 'pending' }}>
+            <SimpleForm
+                defaultValues={{ status: 'pending' }}
+                sx={{
+                    maxWidth: '30em',
+                }}
+            >
                 <ReferenceInput source="customer_id" reference="customers">
                     <AutocompleteInput validate={required()} />
                 </ReferenceInput>
@@ -51,7 +56,6 @@ const ReviewCreate = () => {
                 <TextInput
                     source="comment"
                     multiline
-                    fullWidth
                     resettable
                     validate={required()}
                 />

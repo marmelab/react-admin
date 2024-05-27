@@ -12,36 +12,36 @@ import {
     ReferenceArrayField,
     TextField,
     UrlField,
+    ArrayFieldProps,
 } from '../field';
 
 export const listFieldTypes = {
     table: {
         component: props => {
-            const { hasEdit, hasShow, ...rest } = props;
-            return (
-                <Datagrid
-                    rowClick={!hasEdit && hasShow ? 'show' : 'edit'}
-                    {...rest}
-                />
-            );
+            return <Datagrid {...props} />;
         }, // eslint-disable-line react/display-name
-        representation: (props, children) => `        <Datagrid rowClick="${
-            !props.hasEdit && props.hasShow ? 'show' : 'edit'
-        }">
+        representation: (_props, children) => `        <Datagrid>
 ${children.map(child => `            ${child.getRepresentation()}`).join('\n')}
         </Datagrid>`,
     },
     array: {
         // eslint-disable-next-line react/display-name
-        component: ({ children, ...props }) => (
-            <ArrayField {...props}>
-                <SingleFieldList>
-                    <ChipField
-                        source={children.length > 0 && children[0].props.source}
-                    />
-                </SingleFieldList>
-            </ArrayField>
-        ),
+        component: ({ children, ...props }: ArrayFieldProps) => {
+            const childrenArray = React.Children.toArray(children);
+            return (
+                <ArrayField {...props}>
+                    <SingleFieldList>
+                        <ChipField
+                            source={
+                                childrenArray.length > 0 &&
+                                React.isValidElement(childrenArray[0]) &&
+                                childrenArray[0].props.source
+                            }
+                        />
+                    </SingleFieldList>
+                </ArrayField>
+            );
+        },
         representation: (props, children) =>
             `<ArrayField source="${
                 props.source

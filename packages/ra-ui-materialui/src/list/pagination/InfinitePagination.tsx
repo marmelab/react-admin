@@ -28,12 +28,9 @@ export const InfinitePagination = ({
     options = defaultOptions,
     sx,
 }: InfinitePaginationProps) => {
-    const { isLoading } = useListContext();
-    const {
-        fetchNextPage,
-        hasNextPage,
-        isFetchingNextPage,
-    } = useInfinitePaginationContext();
+    const { isPending } = useListContext();
+    const { fetchNextPage, hasNextPage, isFetchingNextPage } =
+        useInfinitePaginationContext();
 
     if (!fetchNextPage) {
         throw new Error(
@@ -63,11 +60,11 @@ export const InfinitePagination = ({
         hasNextPage,
         handleObserver,
         options,
-        isLoading,
+        isPending,
         isFetchingNextPage,
     ]);
 
-    if (isLoading) return null;
+    if (isPending) return null;
 
     return (
         <Box ref={observerElem} py={2} textAlign="center" sx={sx}>

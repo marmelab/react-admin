@@ -1,8 +1,10 @@
 import * as React from 'react';
 import { useGetRecordId } from './useGetRecordId';
 import { render, screen } from '@testing-library/react';
-import { MemoryRouter, Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import { RecordContextProvider } from '..';
+
+import { TestMemoryRouter } from '../routing';
 
 describe('useGetRecordId', () => {
     const UseGetRecordId = (props: any) => {
@@ -40,22 +42,22 @@ describe('useGetRecordId', () => {
 
     it('should return the record id parsed from the location', () => {
         render(
-            <MemoryRouter initialEntries={['/posts/abc']}>
+            <TestMemoryRouter initialEntries={['/posts/abc']}>
                 <Routes>
                     <Route path="/posts/:id" element={<UseGetRecordId />} />
                 </Routes>
-            </MemoryRouter>
+            </TestMemoryRouter>
         );
         expect(screen.queryByText('abc')).not.toBeNull();
     });
 
     it('should return the record id parsed from the location even if it is falsy', () => {
         render(
-            <MemoryRouter initialEntries={['/posts/0']}>
+            <TestMemoryRouter initialEntries={['/posts/0']}>
                 <Routes>
                     <Route path="/posts/:id" element={<UseGetRecordId />} />
                 </Routes>
-            </MemoryRouter>
+            </TestMemoryRouter>
         );
         expect(screen.queryByText('0')).not.toBeNull();
     });

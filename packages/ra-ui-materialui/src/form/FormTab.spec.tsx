@@ -37,31 +37,25 @@ describe('<TabbedForm.Tab label="foo" />', () => {
 
         const { container } = render(
             <AdminContext dataProvider={testDataProvider()}>
-                <TabbedForm>
+                <TabbedForm record={record}>
                     <TabbedForm.Tab
                         label="First"
                         resource="posts"
-                        record={record}
                         margin="none"
-                        variant="standard"
                     >
                         <TextInput source="name" />
                     </TabbedForm.Tab>
                     <TabbedForm.Tab
                         label="Second"
                         resource="posts"
-                        record={record}
                         margin="dense"
-                        variant="filled"
                     >
                         <TextInput source="name" />
                     </TabbedForm.Tab>
                     <TabbedForm.Tab
                         label="Third"
                         resource="posts"
-                        record={record}
                         margin="normal"
-                        variant="outlined"
                     >
                         <TextInput source="name" />
                     </TabbedForm.Tab>

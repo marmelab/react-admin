@@ -1,5 +1,4 @@
 import * as React from 'react';
-import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import TextField, { TextFieldProps } from '@mui/material/TextField';
 import { useInput, FieldTitle } from 'ra-core';
@@ -45,11 +44,9 @@ export const DateInput = ({
     parse,
     validate,
     variant,
-    disabled,
-    readOnly,
     ...rest
 }: DateInputProps) => {
-    const { field, fieldState, formState, id, isRequired } = useInput({
+    const { field, fieldState, id, isRequired } = useInput({
         defaultValue,
         name,
         format,
@@ -59,15 +56,11 @@ export const DateInput = ({
         resource,
         source,
         validate,
-        disabled,
-        readOnly,
         ...rest,
     });
 
-    const { error, invalid, isTouched } = fieldState;
-    const { isSubmitted } = formState;
-    const renderHelperText =
-        helperText !== false || ((isTouched || isSubmitted) && invalid);
+    const { error, invalid } = fieldState;
+    const renderHelperText = helperText !== false || invalid;
 
     return (
         <TextField
@@ -78,13 +71,10 @@ export const DateInput = ({
             size="small"
             variant={variant}
             margin={margin}
-            error={(isTouched || isSubmitted) && invalid}
-            disabled={disabled || readOnly}
-            readOnly={readOnly}
+            error={invalid}
             helperText={
                 renderHelperText ? (
                     <InputHelperText
-                        touched={isTouched || isSubmitted}
                         error={error?.message}
                         helperText={helperText}
                     />
@@ -102,16 +92,6 @@ export const DateInput = ({
             {...sanitizeInputRestProps(rest)}
         />
     );
-};
-
-DateInput.propTypes = {
-    label: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.bool,
-        PropTypes.element,
-    ]),
-    resource: PropTypes.string,
-    source: PropTypes.string,
 };
 
 export type DateInputProps = CommonInputProps &

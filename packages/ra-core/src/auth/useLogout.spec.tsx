@@ -1,12 +1,14 @@
 import * as React from 'react';
 import { render, fireEvent, screen } from '@testing-library/react';
-import { MemoryRouter, Routes, Route } from 'react-router-dom';
-import { QueryClient } from 'react-query';
+import { Routes, Route } from 'react-router-dom';
+import { QueryClient } from '@tanstack/react-query';
 import expect from 'expect';
 
 import { useGetOne } from '../dataProvider';
 import useLogout from './useLogout';
 import { CoreAdminContext } from '../core/CoreAdminContext';
+
+import { TestMemoryRouter } from '../routing';
 
 describe('useLogout', () => {
     it('should clear the QueryClient cache', async () => {
@@ -24,7 +26,7 @@ describe('useLogout', () => {
         };
         const Login = () => <div>Login</div>;
         render(
-            <MemoryRouter>
+            <TestMemoryRouter>
                 <CoreAdminContext
                     dataProvider={dataProvider}
                     queryClient={queryClient}
@@ -36,7 +38,7 @@ describe('useLogout', () => {
 
                     <LogoutButton />
                 </CoreAdminContext>
-            </MemoryRouter>
+            </TestMemoryRouter>
         );
         await screen.findByText('foo');
         expect(

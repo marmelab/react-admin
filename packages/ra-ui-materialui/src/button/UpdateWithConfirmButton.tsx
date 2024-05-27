@@ -1,8 +1,7 @@
 import * as React from 'react';
 import { Fragment, useState, ReactElement } from 'react';
-import PropTypes from 'prop-types';
 import ActionUpdate from '@mui/icons-material/Update';
-import inflection from 'inflection';
+
 import { alpha, styled } from '@mui/material/styles';
 import {
     useTranslate,
@@ -17,8 +16,8 @@ import {
 
 import { Confirm } from '../layout';
 import { Button, ButtonProps } from './Button';
-import { BulkActionProps } from '../types';
-import { UseMutationOptions } from 'react-query';
+import { UseMutationOptions } from '@tanstack/react-query';
+import { humanize, inflect } from 'inflection';
 
 export const UpdateWithConfirmButton = (
     props: UpdateWithConfirmButtonProps
@@ -61,8 +60,8 @@ export const UpdateWithConfirmButton = (
                             typeof error === 'string'
                                 ? error
                                 : error && error.message
-                                ? error.message
-                                : undefined,
+                                  ? error.message
+                                  : undefined,
                     },
                 }
             );
@@ -73,7 +72,17 @@ export const UpdateWithConfirmButton = (
         ...otherMutationOptions
     } = mutationOptions;
 
-    const [updateMany, { isLoading }] = useUpdate();
+    const [update, { isPending }] = useUpdate(
+        resource,
+        { id: record?.id, data, meta: mutationMeta, previousData: record },
+        {
+            onSuccess,
+            onError,
+            onSettled,
+            mutationMode,
+            ...otherMutationOptions,
+        }
+    );
 
     const handleClick = e => {
         setOpen(true);
@@ -85,17 +94,12 @@ export const UpdateWithConfirmButton = (
     };
 
     const handleUpdate = e => {
-        updateMany(
-            resource,
-            { id: record.id, data, meta: mutationMeta, previousData: record },
-            {
-                onSuccess,
-                onError,
-                onSettled,
-                mutationMode,
-                ...otherMutationOptions,
-            }
-        );
+        update(resource, {
+            id: record?.id,
+            data,
+            meta: mutationMeta,
+            previousData: record,
+        });
 
         if (typeof onClick === 'function') {
             onClick(e);
@@ -113,17 +117,17 @@ export const UpdateWithConfirmButton = (
             </StyledButton>
             <Confirm
                 isOpen={isOpen}
-                loading={isLoading}
+                loading={isPending}
                 title={confirmTitle}
                 content={confirmContent}
                 translateOptions={{
                     smart_count: 1,
                     name: translate(`resources.${resource}.forcedCaseName`, {
                         smart_count: 1,
-                        _: inflection.humanize(
+                        _: humanize(
                             translate(`resources.${resource}.name`, {
                                 smart_count: 1,
-                                _: inflection.inflect(resource, 1),
+                                _: resource ? inflect(resource, 1) : undefined,
                             }),
                             true
                         ),
@@ -137,7 +141,6 @@ export const UpdateWithConfirmButton = (
 };
 
 const sanitizeRestProps = ({
-    filterValues,
     label,
     ...rest
 }: Omit<
@@ -147,9 +150,8 @@ const sanitizeRestProps = ({
 
 export interface UpdateWithConfirmButtonProps<
     RecordType extends RaRecord = any,
-    MutationOptionsError = unknown
-> extends BulkActionProps,
-        ButtonProps {
+    MutationOptionsError = unknown,
+> extends ButtonProps {
     confirmContent?: React.ReactNode;
     confirmTitle?: React.ReactNode;
     icon?: ReactElement;
@@ -161,17 +163,6 @@ export interface UpdateWithConfirmButtonProps<
         UpdateParams<RecordType>
     > & { meta?: any };
 }
-
-UpdateWithConfirmButton.propTypes = {
-    confirmTitle: PropTypes.node,
-    confirmContent: PropTypes.node,
-    label: PropTypes.string,
-    resource: PropTypes.string,
-    selectedIds: PropTypes.arrayOf(PropTypes.any),
-    icon: PropTypes.element,
-    data: PropTypes.any.isRequired,
-    mutationMode: PropTypes.oneOf(['pessimistic', 'optimistic', 'undoable']),
-};
 
 const PREFIX = 'RaUpdateWithConfirmButton';
 

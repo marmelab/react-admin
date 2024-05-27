@@ -5,10 +5,7 @@ import { FilterPayload, RaRecord, SortPayload } from '../../types';
 import { useReference } from '../useReference';
 import { ChoicesContextValue } from '../../form';
 import { useReferenceParams } from './useReferenceParams';
-import { UseQueryOptions } from 'react-query';
-
-const defaultReferenceSource = (resource: string, source: string) =>
-    `${resource}@${source}`;
+import { UseQueryOptions } from '@tanstack/react-query';
 
 /**
  * A hook for choosing a reference record. Useful for foreign keys.
@@ -82,9 +79,10 @@ export const useReferenceInputController = <RecordType extends RaRecord = any>(
         data: possibleValuesData = [],
         total,
         pageInfo,
-        isFetching: possibleValuesFetching,
-        isLoading: possibleValuesLoading,
-        error: possibleValuesError,
+        isFetching: isFetchingPossibleValues,
+        isLoading: isLoadingPossibleValues,
+        isPending: isPendingPossibleValues,
+        error: errorPossibleValues,
         refetch: refetchGetList,
     } = useGetList<RecordType>(
         reference,
@@ -99,7 +97,7 @@ export const useReferenceInputController = <RecordType extends RaRecord = any>(
         },
         {
             enabled: isGetMatchingEnabled,
-            keepPreviousData: true,
+            placeholderData: previousData => previousData,
             ...otherQueryOptions,
         }
     );
@@ -108,9 +106,10 @@ export const useReferenceInputController = <RecordType extends RaRecord = any>(
     const {
         referenceRecord: currentReferenceRecord,
         refetch: refetchReference,
-        error: referenceError,
-        isLoading: referenceLoading,
-        isFetching: referenceFetching,
+        error: errorReference,
+        isLoading: isLoadingReference,
+        isFetching: isFetchingReference,
+        isPending: isPendingReference,
     } = useReference<RecordType>({
         id: currentValue,
         reference,
@@ -122,16 +121,23 @@ export const useReferenceInputController = <RecordType extends RaRecord = any>(
         },
     });
 
+    const isPending =
+        // The reference query isn't enabled when there is no value yet but as it has no data, react-query will flag it as pending
+        (currentValue != null && currentValue !== '' && isPendingReference) ||
+        isPendingPossibleValues;
+
     // We need to delay the update of the referenceRecord and the finalData
     // to the next React state update, because otherwise it can raise a warning
     // with AutocompleteInput saying the current value is not in the list of choices
-    const [referenceRecord, setReferenceRecord] = useState(null);
+    const [referenceRecord, setReferenceRecord] = useState<
+        RecordType | undefined
+    >(undefined);
     useEffect(() => {
         setReferenceRecord(currentReferenceRecord);
     }, [currentReferenceRecord]);
 
     // add current value to possible sources
-    let finalData: RecordType[], finalTotal: number;
+    let finalData: RecordType[], finalTotal: number | undefined;
     if (
         !referenceRecord ||
         possibleValuesData.find(record => record.id === referenceRecord.id)
@@ -159,14 +165,15 @@ export const useReferenceInputController = <RecordType extends RaRecord = any>(
         sort: currentSort,
         allChoices: finalData,
         availableChoices: possibleValuesData,
-        selectedChoices: [referenceRecord],
+        selectedChoices: referenceRecord ? [referenceRecord] : [],
         displayedFilters: params.displayedFilters,
-        error: referenceError || possibleValuesError,
+        error: errorReference || errorPossibleValues,
         filter: params.filter,
         filterValues: params.filterValues,
         hideFilter: paramsModifiers.hideFilter,
-        isFetching: referenceFetching || possibleValuesFetching,
-        isLoading: referenceLoading || possibleValuesLoading,
+        isFetching: isFetchingReference || isFetchingPossibleValues,
+        isLoading: isLoadingReference || isLoadingPossibleValues,
+        isPending: isPending,
         page: params.page,
         perPage: params.perPage,
         refetch,
@@ -181,32 +188,33 @@ export const useReferenceInputController = <RecordType extends RaRecord = any>(
         hasNextPage: pageInfo
             ? pageInfo.hasNextPage
             : total != null
-            ? params.page * params.perPage < total
-            : undefined,
+              ? params.page * params.perPage < total
+              : undefined,
         hasPreviousPage: pageInfo ? pageInfo.hasPreviousPage : params.page > 1,
         isFromReference: true,
-    };
+    } as ChoicesContextValue<RecordType>;
 };
 
 export interface UseReferenceInputControllerParams<
-    RecordType extends RaRecord = any
+    RecordType extends RaRecord = any,
 > {
     debounce?: number;
     filter?: FilterPayload;
-    queryOptions?: UseQueryOptions<{
-        data: RecordType[];
-        total?: number;
-        pageInfo?: {
-            hasNextPage?: boolean;
-            hasPreviousPage?: boolean;
-        };
-    }> & { meta?: any };
+    queryOptions?: Omit<
+        UseQueryOptions<{
+            data: RecordType[];
+            total?: number;
+            pageInfo?: {
+                hasNextPage?: boolean;
+                hasPreviousPage?: boolean;
+            };
+        }>,
+        'queryFn' | 'queryKey'
+    > & { meta?: any };
     page?: number;
     perPage?: number;
     record?: RaRecord;
     reference: string;
-    // @deprecated ignored
-    referenceSource?: typeof defaultReferenceSource;
     resource?: string;
     sort?: SortPayload;
     source: string;

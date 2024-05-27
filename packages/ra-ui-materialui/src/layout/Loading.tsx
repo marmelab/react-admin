@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import { Typography, SxProps } from '@mui/material';
-import PropTypes from 'prop-types';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useTimeout, useTranslate } from 'ra-core';
 
@@ -27,12 +26,6 @@ export const Loading = (props: LoadingProps) => {
             </div>
         </Root>
     ) : null;
-};
-
-Loading.propTypes = {
-    className: PropTypes.string,
-    loadingPrimary: PropTypes.string,
-    loadingSecondary: PropTypes.string,
 };
 
 export interface LoadingProps {

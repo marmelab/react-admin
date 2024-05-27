@@ -5,7 +5,6 @@ import {
     RecordContextProvider,
     useListContext,
 } from 'react-admin';
-import inflection from 'inflection';
 import {
     Grid,
     Card,
@@ -14,6 +13,7 @@ import {
     CardActions,
     Typography,
 } from '@mui/material';
+import { humanize } from 'inflection';
 
 import LinkToRelatedProducts from './LinkToRelatedProducts';
 import { Category } from '../types';
@@ -31,8 +31,11 @@ const CategoryList = () => (
 );
 
 const CategoryGrid = () => {
-    const { data, isLoading } = useListContext<Category>();
-    if (isLoading) {
+    const { data, error, isPending } = useListContext<Category>();
+    if (isPending) {
+        return null;
+    }
+    if (error) {
         return null;
     }
     return (
@@ -59,7 +62,7 @@ const CategoryGrid = () => {
                                     component="h2"
                                     align="center"
                                 >
-                                    {inflection.humanize(record.name)}
+                                    {humanize(record.name)}
                                 </Typography>
                             </CardContent>
                             <CardActions

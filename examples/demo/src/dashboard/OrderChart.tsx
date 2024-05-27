@@ -24,20 +24,23 @@ const dateFormatter = (date: number): string =>
 const aggregateOrdersByDay = (orders: Order[]): { [key: string]: number } =>
     orders
         .filter((order: Order) => order.status !== 'cancelled')
-        .reduce((acc, curr) => {
-            const day = format(new Date(curr.date), 'yyyy-MM-dd');
-            if (!acc[day]) {
-                acc[day] = 0;
-            }
-            acc[day] += curr.total;
-            return acc;
-        }, {} as { [key: string]: number });
+        .reduce(
+            (acc, curr) => {
+                const day = format(curr.date, 'yyyy-MM-dd');
+                if (!acc[day]) {
+                    acc[day] = 0;
+                }
+                acc[day] += curr.total;
+                return acc;
+            },
+            {} as { [key: string]: number }
+        );
 
 const getRevenuePerDay = (orders: Order[]): TotalByDay[] => {
     const daysWithRevenue = aggregateOrdersByDay(orders);
     return lastMonthDays.map(date => ({
         date: date.getTime(),
-        total: daysWithRevenue[format(new Date(date), 'yyyy-MM-dd')] || 0,
+        total: daysWithRevenue[format(date, 'yyyy-MM-dd')] || 0,
     }));
 };
 

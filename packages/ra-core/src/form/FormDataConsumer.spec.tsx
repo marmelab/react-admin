@@ -12,9 +12,10 @@ import {
     ArrayInput,
 } from 'ra-ui-materialui';
 import expect from 'expect';
+import { ResourceContextProvider } from '..';
 
 describe('FormDataConsumerView', () => {
-    it('does not call its children function with scopedFormData and getSource if it did not receive an index prop', () => {
+    it('does not call its children function with scopedFormData if it did not receive a source containing an index', () => {
         const children = jest.fn();
         const formData = { id: 123, title: 'A title' };
 
@@ -30,33 +31,7 @@ describe('FormDataConsumerView', () => {
 
         expect(children).toHaveBeenCalledWith({
             formData,
-            getSource: expect.anything(),
         });
-    });
-
-    it('calls its children function with scopedFormData and getSource if it received an index prop', () => {
-        const children = jest.fn(({ getSource }) => {
-            getSource('id');
-            return null;
-        });
-        const formData = { id: 123, title: 'A title', authors: [{ id: 0 }] };
-
-        render(
-            <FormDataConsumerView
-                form="a-form"
-                source="authors[0]"
-                index={0}
-                formData={formData}
-            >
-                {children}
-            </FormDataConsumerView>
-        );
-
-        expect(children.mock.calls[0][0].formData).toEqual(formData);
-        expect(children.mock.calls[0][0].scopedFormData).toEqual({ id: 0 });
-        expect(children.mock.calls[0][0].getSource('id')).toEqual(
-            'authors[0].id'
-        );
     });
 
     it('calls its children with updated formData on first render', async () => {
@@ -66,10 +41,10 @@ describe('FormDataConsumerView', () => {
                 <SimpleForm>
                     <BooleanInput source="hi" defaultValue />
                     <FormDataConsumer>
-                        {({ formData, ...rest }) => {
+                        {({ formData }) => {
                             globalFormData = formData;
 
-                            return <TextInput source="bye" {...rest} />;
+                            return <TextInput source="bye" />;
                         }}
                     </FormDataConsumer>
                 </SimpleForm>
@@ -87,10 +62,8 @@ describe('FormDataConsumerView', () => {
                 <SimpleForm>
                     <BooleanInput source="hi" defaultValue />
                     <FormDataConsumer>
-                        {({ formData, ...rest }) =>
-                            !formData.hi ? (
-                                <TextInput source="bye" {...rest} />
-                            ) : null
+                        {({ formData }) =>
+                            !formData.hi ? <TextInput source="bye" /> : null
                         }
                     </FormDataConsumer>
                 </SimpleForm>
@@ -116,30 +89,24 @@ describe('FormDataConsumerView', () => {
         let globalScopedFormData;
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm>
-                    <ArrayInput source="authors">
-                        <SimpleFormIterator>
-                            <TextInput source="name" />
-                            <FormDataConsumer>
-                                {({
-                                    formData,
-                                    scopedFormData,
-                                    getSource,
-                                    ...rest
-                                }) => {
-                                    globalScopedFormData = scopedFormData;
-                                    return scopedFormData &&
-                                        scopedFormData.name ? (
-                                        <TextInput
-                                            source={getSource('role')}
-                                            {...rest}
-                                        />
-                                    ) : null;
-                                }}
-                            </FormDataConsumer>
-                        </SimpleFormIterator>
-                    </ArrayInput>
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm>
+                        <ArrayInput source="authors">
+                            <SimpleFormIterator>
+                                <TextInput source="name" />
+                                <FormDataConsumer>
+                                    {({ scopedFormData }) => {
+                                        globalScopedFormData = scopedFormData;
+                                        return scopedFormData &&
+                                            scopedFormData.name ? (
+                                            <TextInput source="role" />
+                                        ) : null;
+                                    }}
+                                </FormDataConsumer>
+                            </SimpleFormIterator>
+                        </ArrayInput>
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
 
@@ -150,7 +117,7 @@ describe('FormDataConsumerView', () => {
         expect(globalScopedFormData).toEqual({ name: null });
 
         fireEvent.change(
-            screen.getByLabelText('resources.undefined.fields.authors.name'),
+            screen.getByLabelText('resources.posts.fields.authors.name'),
             {
                 target: { value: 'a' },
             }

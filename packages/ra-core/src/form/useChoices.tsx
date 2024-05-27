@@ -16,6 +16,7 @@ export interface ChoicesProps {
     choices?: any[];
     isFetching?: boolean;
     isLoading?: boolean;
+    isPending?: boolean;
     optionValue?: string;
     optionText?: OptionText;
     translateChoice?: boolean;
@@ -64,19 +65,21 @@ export const useChoices = ({
             return isValidElement(choiceName)
                 ? choiceName
                 : translateChoice
-                ? translate(String(choiceName), { _: choiceName })
-                : String(choiceName);
+                  ? translate(String(choiceName), { _: choiceName })
+                  : String(choiceName);
         },
         [optionText, translate, translateChoice]
     );
 
-    const getChoiceValue = useCallback(choice => get(choice, optionValue), [
-        optionValue,
-    ]);
+    const getChoiceValue = useCallback(
+        choice => get(choice, optionValue),
+        [optionValue]
+    );
 
-    const getDisableValue = useCallback(choice => get(choice, disableValue), [
-        disableValue,
-    ]);
+    const getDisableValue = useCallback(
+        choice => get(choice, disableValue),
+        [disableValue]
+    );
 
     return {
         getChoiceText,

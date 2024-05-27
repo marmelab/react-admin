@@ -1,8 +1,10 @@
 import * as React from 'react';
-import { MemoryRouter, Routes, Route, Link } from 'react-router-dom';
+import { Routes, Route, Link } from 'react-router-dom';
 
 import { Admin } from './Admin';
-import { Resource, testDataProvider } from 'ra-core';
+import { Resource, testDataProvider, TestMemoryRouter } from 'ra-core';
+import { Layout } from 'ra-ui-materialui';
+import { Box, Typography } from '@mui/material';
 
 export default {
     title: 'react-admin/Admin',
@@ -19,16 +21,16 @@ export const Basic = () => (
 );
 
 export const InsideRouter = () => (
-    <MemoryRouter>
+    <TestMemoryRouter>
         <Admin dataProvider={testDataProvider()}>
             <Resource name="posts" list={PostList} />
             <Resource name="comments" list={CommentList} />
         </Admin>
-    </MemoryRouter>
+    </TestMemoryRouter>
 );
 
 export const SubPath = () => (
-    <MemoryRouter>
+    <TestMemoryRouter>
         <Routes>
             <Route
                 path="/"
@@ -51,5 +53,46 @@ export const SubPath = () => (
                 }
             />
         </Routes>
-    </MemoryRouter>
+    </TestMemoryRouter>
+);
+
+// @ts-ignore
+const FailingAppBar = () => {
+    throw new Error('AppBar rendering failed');
+};
+
+const FailedLayout = props => <Layout {...props} appBar={FailingAppBar} />;
+
+export const DefaultError = () => (
+    <Admin layout={FailedLayout}>
+        <Resource name="posts" list={PostList} />
+    </Admin>
+);
+
+const ErrorPage = ({ errorInfo }: { errorInfo?: React.ErrorInfo }) => (
+    <Box
+        sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            minHeight: '100vh',
+            backgroundColor: '#f44336',
+        }}
+    >
+        <Typography variant="h1" style={{ color: 'white' }}>
+            <b>Error</b>
+        </Typography>
+        <ul>
+            {errorInfo?.componentStack
+                ?.split(' at ')
+                ?.slice(1)
+                ?.map((line, index) => <li key={index}>At {line}</li>)}
+        </ul>
+    </Box>
+);
+
+export const CustomError = () => (
+    <Admin layout={FailedLayout} error={ErrorPage}>
+        <Resource name="posts" list={PostList} />
+    </Admin>
 );

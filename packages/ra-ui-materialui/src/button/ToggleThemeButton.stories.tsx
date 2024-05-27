@@ -1,8 +1,7 @@
 import * as React from 'react';
 import { Admin } from 'react-admin';
-import { Resource, memoryStore } from 'ra-core';
+import { Resource, memoryStore, TestMemoryRouter } from 'ra-core';
 import fakeRestDataProvider from 'ra-data-fakerest';
-import { createMemoryHistory } from 'history';
 
 import { List, Datagrid } from '../list';
 import { TextField } from '../field';
@@ -83,8 +82,6 @@ const dataProvider = fakeRestDataProvider({
     authors: [],
 });
 
-const history = createMemoryHistory({ initialEntries: ['/books'] });
-
 const BookList = () => (
     <List>
         <Datagrid>
@@ -97,14 +94,11 @@ const BookList = () => (
 );
 
 export const Basic = () => (
-    <Admin
-        store={memoryStore()}
-        dataProvider={dataProvider}
-        history={history}
-        darkTheme={{ palette: { mode: 'dark' } }}
-    >
-        <Resource name="books" list={BookList} />
-    </Admin>
+    <TestMemoryRouter initialEntries={['/books']}>
+        <Admin store={memoryStore()} dataProvider={dataProvider}>
+            <Resource name="books" list={BookList} />
+        </Admin>
+    </TestMemoryRouter>
 );
 
 const MyAppBar = () => (
@@ -113,15 +107,18 @@ const MyAppBar = () => (
         <ToggleThemeButton darkTheme={{ palette: { mode: 'dark' } }} />
     </AppBar>
 );
-const MyLayout = props => <Layout {...props} appBar={MyAppBar} />;
+const MyLayout = ({ children }) => (
+    <Layout appBar={MyAppBar}>{children}</Layout>
+);
 
 export const Legacy = () => (
-    <Admin
-        store={memoryStore()}
-        dataProvider={dataProvider}
-        history={history}
-        layout={MyLayout}
-    >
-        <Resource name="books" list={BookList} />
-    </Admin>
+    <TestMemoryRouter initialEntries={['/books']}>
+        <Admin
+            store={memoryStore()}
+            dataProvider={dataProvider}
+            layout={MyLayout}
+        >
+            <Resource name="books" list={BookList} />
+        </Admin>
+    </TestMemoryRouter>
 );

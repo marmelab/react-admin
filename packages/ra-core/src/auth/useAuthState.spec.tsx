@@ -4,28 +4,19 @@ import { waitFor, render, screen } from '@testing-library/react';
 import { CoreAdminContext } from '../core/CoreAdminContext';
 
 import useAuthState from './useAuthState';
+import { QueryClient } from '@tanstack/react-query';
 
 const UseAuth = (authParams: any) => {
     const state = useAuthState(authParams);
     return (
         <div>
-            <span>{state.isLoading && 'LOADING'}</span>
-            <span>{state.authenticated && 'AUTHENTICATED'}</span>
+            <span>{state.isPending && 'LOADING'}</span>
+            <span>AUTHENTICATED: {state.authenticated.toString()}</span>
         </div>
     );
 };
 
 describe('useAuthState', () => {
-    it('should return a loading state on mount', () => {
-        render(
-            <CoreAdminContext>
-                <UseAuth />
-            </CoreAdminContext>
-        );
-        expect(screen.queryByText('LOADING')).not.toBeNull();
-        expect(screen.queryByText('AUTHENTICATED')).not.toBeNull();
-    });
-
     it('should return authenticated by default after a tick', async () => {
         render(
             <CoreAdminContext>
@@ -34,8 +25,8 @@ describe('useAuthState', () => {
         );
         await waitFor(() => {
             expect(screen.queryByText('LOADING')).toBeNull();
-            expect(screen.queryByText('AUTHENTICATED')).not.toBeNull();
         });
+        screen.getByText('AUTHENTICATED: true');
     });
 
     it('should return an error after a tick if the auth fails', async () => {
@@ -53,7 +44,39 @@ describe('useAuthState', () => {
         );
         await waitFor(() => {
             expect(screen.queryByText('LOADING')).toBeNull();
-            expect(screen.queryByText('AUTHENTICATED')).toBeNull();
+        });
+        screen.getByText('AUTHENTICATED: false');
+    });
+
+    it('should abort the request if the query is canceled', async () => {
+        const abort = jest.fn();
+        const authProvider = {
+            checkAuth: jest.fn(
+                ({ signal }) =>
+                    new Promise(() => {
+                        signal.addEventListener('abort', () => {
+                            abort(signal.reason);
+                        });
+                    })
+            ) as any,
+        } as any;
+        const queryClient = new QueryClient();
+        render(
+            <CoreAdminContext
+                authProvider={authProvider}
+                queryClient={queryClient}
+            >
+                <UseAuth />
+            </CoreAdminContext>
+        );
+        await waitFor(() => {
+            expect(authProvider.checkAuth).toHaveBeenCalled();
+        });
+        queryClient.cancelQueries({
+            queryKey: ['auth', 'checkAuth'],
+        });
+        await waitFor(() => {
+            expect(abort).toHaveBeenCalled();
         });
     });
 });

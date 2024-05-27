@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { useCallback, useMemo, FC, memo, ReactElement } from 'react';
-import PropTypes from 'prop-types';
 import {
     TablePagination,
     TablePaginationBaseProps,
@@ -12,8 +11,6 @@ import {
     useTranslate,
     useListPaginationContext,
     sanitizeListRestProps,
-    ComponentPropType,
-    ListPaginationContextValue,
 } from 'ra-core';
 
 import { PaginationActions, PaginationActionsProps } from './PaginationActions';
@@ -26,14 +23,14 @@ export const Pagination: FC<PaginationProps> = memo(props => {
         ...rest
     } = props;
     const {
-        isLoading,
+        isPending,
         hasNextPage,
         page,
         perPage,
         total,
         setPage,
         setPerPage,
-    } = useListPaginationContext(props);
+    } = useListPaginationContext();
     const translate = useTranslate();
     const isSmall = useMediaQuery((theme: Theme) =>
         theme.breakpoints.down('md')
@@ -49,7 +46,7 @@ export const Pagination: FC<PaginationProps> = memo(props => {
     const handlePageChange = useCallback(
         (event, page) => {
             event && event.stopPropagation();
-            if (page < 0 || page > totalPages - 1) {
+            if (page < 0 || (totalPages && page > totalPages - 1)) {
                 throw new Error(
                     translate('ra.navigation.page_out_of_boundaries', {
                         page: page + 1,
@@ -90,12 +87,12 @@ export const Pagination: FC<PaginationProps> = memo(props => {
         [translate]
     );
 
-    if (isLoading) {
+    if (isPending) {
         return <Toolbar variant="dense" />;
     }
 
     // Avoid rendering TablePagination if "page" value is invalid
-    if (total === 0 || page < 1 || (total != null && page > totalPages)) {
+    if (total === 0 || page < 1 || (total != null && page > totalPages!)) {
         if (limit != null && process.env.NODE_ENV === 'development') {
             console.warn(
                 'The Pagination limit prop is deprecated. Empty state should be handled by the component displaying data (Datagrid, SimpleList).'
@@ -121,9 +118,9 @@ export const Pagination: FC<PaginationProps> = memo(props => {
 
     const ActionsComponent = actions
         ? actions // overridden by caller
-        : !isLoading && total != null
-        ? PaginationActions // regular navigation
-        : undefined; // partial navigation (uses default TablePaginationActions)
+        : !isPending && total != null
+          ? PaginationActions // regular navigation
+          : undefined; // partial navigation (uses default TablePaginationActions)
 
     return (
         <TablePagination
@@ -147,26 +144,10 @@ export const Pagination: FC<PaginationProps> = memo(props => {
     );
 });
 
-Pagination.propTypes = {
-    actions: ComponentPropType,
-    limit: PropTypes.element,
-    rowsPerPageOptions: PropTypes.arrayOf(
-        PropTypes.oneOfType([
-            PropTypes.number,
-            PropTypes.exact({
-                label: PropTypes.string.isRequired,
-                value: PropTypes.number.isRequired,
-            }),
-        ])
-    ),
-};
-
 const DefaultRowsPerPageOptions = [5, 10, 25, 50];
 const emptyArray = [];
 
-export interface PaginationProps
-    extends TablePaginationBaseProps,
-        Partial<ListPaginationContextValue> {
+export interface PaginationProps extends TablePaginationBaseProps {
     rowsPerPageOptions?: Array<number | { label: string; value: number }>;
     actions?: FC<PaginationActionsProps>;
     limit?: ReactElement;

@@ -15,14 +15,8 @@ import { useTheme, styled } from '@mui/material/styles';
 import { InspectorRoot } from './InspectorRoot';
 
 export const Inspector = () => {
-    const {
-        isEnabled,
-        disable,
-        title,
-        titleOptions,
-        editor,
-        preferenceKey,
-    } = usePreferencesEditor();
+    const { isEnabled, disable, title, titleOptions, editor, preferenceKey } =
+        usePreferencesEditor();
 
     const isDragging = useRef(false);
     const removeItems = useRemoveItemsFromStore(preferenceKey);
@@ -52,7 +46,7 @@ export const Inspector = () => {
     const handleDragStart = e => {
         // exit if the user drags on anything but the title
         const draggedElement = document?.elementFromPoint(e.clientX, e.clientY);
-        if (draggedElement.id !== 'inspector-dialog-title') {
+        if (draggedElement?.id !== 'inspector-dialog-title') {
             return;
         }
         isDragging.current = true;
@@ -67,7 +61,7 @@ export const Inspector = () => {
         });
     };
     const handleDragEnd = e => {
-        if (isDragging.current) {
+        if (isDragging.current && clickPosition) {
             setDialogPosition({
                 x: e.clientX - clickPosition.x,
                 y: e.clientY - clickPosition.y,

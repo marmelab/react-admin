@@ -21,10 +21,11 @@ interface UseFilterStateProps {
     setFilter: (v: string) => void;
 }
 
+const defaultFilter = {};
 const defaultFilterToQuery = (v: string) => ({ q: v });
 
 /**
- * Hooks to provide filter state and setFilter which update the query part of the filter
+ * Hooks to provide filter state and setFilter which updates the query part of the filter
  *
  * @example
  *
@@ -59,7 +60,7 @@ export default ({
 }: UseFilterStateOptions): UseFilterStateProps => {
     const permanentFilterProp = useRef(permanentFilter);
     const latestValue = useRef<string>();
-    const [filter, setFilterValue] = useSafeSetState({
+    const [filter, setFilterValue] = useSafeSetState<FilterPayload>({
         ...permanentFilter,
         ...filterToQuery(''),
     });
@@ -76,7 +77,7 @@ export default ({
             permanentFilterProp.current = permanentFilter;
             setFilterValue({
                 ...permanentFilter,
-                ...filterToQuery(latestValue.current),
+                ...filterToQuery(latestValue.current || ''),
             });
         }
     }, [permanentFilterSignature, permanentFilterProp, filterToQuery]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -94,7 +95,7 @@ export default ({
     );
 
     return {
-        filter,
+        filter: filter ?? defaultFilter,
         setFilter,
     };
 };

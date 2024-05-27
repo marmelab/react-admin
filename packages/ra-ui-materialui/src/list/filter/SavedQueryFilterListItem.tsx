@@ -27,12 +27,8 @@ const arePropsEqual = (
 export const SavedQueryFilterListItem = memo(
     (props: SavedQueryFilterListItemProps): ReactElement => {
         const { className, label, sx, value } = props;
-        const {
-            filterValues,
-            sort,
-            perPage,
-            displayedFilters,
-        } = useListContext();
+        const { filterValues, sort, perPage, displayedFilters } =
+            useListContext();
         const navigate = useNavigate();
 
         const isSelected = isEqual(value, {
@@ -46,10 +42,10 @@ export const SavedQueryFilterListItem = memo(
             navigate({
                 search: stringify({
                     filter: JSON.stringify(value.filter),
-                    sort: value.sort.field,
-                    order: value.sort.order,
+                    sort: value.sort?.field,
+                    order: value.sort?.order,
                     page: 1,
-                    perPage: value.perPage,
+                    perPage: value.perPage ?? perPage,
                     displayedFilters: JSON.stringify(value.displayedFilters),
                 }),
             });

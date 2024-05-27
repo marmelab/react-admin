@@ -90,9 +90,8 @@ describe('createHeadersFromOptions', () => {
         const headersWithMethod = createHeadersFromOptions(optionsWithMethod);
         expect(headersWithMethod.get('Content-Type')).toBeNull();
 
-        const headersWithoutMethod = createHeadersFromOptions(
-            optionsWithoutMethod
-        );
+        const headersWithoutMethod =
+            createHeadersFromOptions(optionsWithoutMethod);
         expect(headersWithoutMethod.get('Content-Type')).toBeNull();
     });
 

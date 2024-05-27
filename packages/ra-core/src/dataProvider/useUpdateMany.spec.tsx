@@ -5,7 +5,7 @@ import expect from 'expect';
 import { testDataProvider } from './testDataProvider';
 import { CoreAdminContext } from '../core';
 import { useUpdateMany } from './useUpdateMany';
-import { QueryClient } from 'react-query';
+import { QueryClient } from '@tanstack/react-query';
 
 describe('useUpdateMany', () => {
     it('returns a callback that can be used with update arguments', async () => {

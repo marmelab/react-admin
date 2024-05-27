@@ -62,11 +62,13 @@ export type AuthProvider = {
         params: any
     ) => Promise<{ redirectTo?: string | boolean } | void | any>;
     logout: (params: any) => Promise<void | false | string>;
-    checkAuth: (params: any) => Promise<void>;
+    checkAuth: (params: any & QueryFunctionContext) => Promise<void>;
     checkError: (error: any) => Promise<void>;
-    getIdentity?: () => Promise<UserIdentity>;
-    getPermissions: (params: any) => Promise<any>;
-    handleCallback?: () => Promise<AuthRedirectResult | void | any>;
+    getIdentity?: (params?: QueryFunctionContext) => Promise<UserIdentity>;
+    getPermissions: (params: any & QueryFunctionContext) => Promise<any>;
+    handleCallback?: (
+        params?: QueryFunctionContext
+    ) => Promise<AuthRedirectResult | void | any>;
     [key: string]: any;
 };
 
@@ -87,22 +89,22 @@ export type LegacyAuthProvider = (
 export type DataProvider<ResourceType extends string = string> = {
     getList: <RecordType extends RaRecord = any>(
         resource: ResourceType,
-        params: GetListParams
+        params: GetListParams & QueryFunctionContext
     ) => Promise<GetListResult<RecordType>>;
 
     getOne: <RecordType extends RaRecord = any>(
         resource: ResourceType,
-        params: GetOneParams<RecordType>
+        params: GetOneParams<RecordType> & QueryFunctionContext
     ) => Promise<GetOneResult<RecordType>>;
 
     getMany: <RecordType extends RaRecord = any>(
         resource: ResourceType,
-        params: GetManyParams
+        params: GetManyParams & QueryFunctionContext
     ) => Promise<GetManyResult<RecordType>>;
 
     getManyReference: <RecordType extends RaRecord = any>(
         resource: ResourceType,
-        params: GetManyReferenceParams
+        params: GetManyReferenceParams & QueryFunctionContext
     ) => Promise<GetManyReferenceResult<RecordType>>;
 
     update: <RecordType extends RaRecord = any>(
@@ -117,7 +119,7 @@ export type DataProvider<ResourceType extends string = string> = {
 
     create: <
         RecordType extends Omit<RaRecord, 'id'> = any,
-        ResultRecordType extends RaRecord = RecordType & { id: Identifier }
+        ResultRecordType extends RaRecord = RecordType & { id: Identifier },
     >(
         resource: ResourceType,
         params: CreateParams
@@ -136,10 +138,14 @@ export type DataProvider<ResourceType extends string = string> = {
     [key: string]: any;
 };
 
+export interface QueryFunctionContext {
+    signal?: AbortSignal;
+}
+
 export interface GetListParams {
-    pagination: PaginationPayload;
-    sort: SortPayload;
-    filter: any;
+    pagination?: PaginationPayload;
+    sort?: SortPayload;
+    filter?: any;
     meta?: any;
 }
 export interface GetListResult<RecordType extends RaRecord = any> {
@@ -153,7 +159,7 @@ export interface GetListResult<RecordType extends RaRecord = any> {
 
 export interface GetInfiniteListResult<RecordType extends RaRecord = any>
     extends GetListResult<RecordType> {
-    pageParam?: number;
+    pageParam: number;
 }
 export interface GetOneParams<RecordType extends RaRecord = any> {
     id: RecordType['id'];
@@ -251,8 +257,6 @@ export type OnSuccess = (
 ) => void;
 
 export type OnError = (error?: any, variables?: any, context?: any) => void;
-// @deprecated - use OnError instead
-export type onError = OnError;
 
 export type TransformData = (
     data: any,
@@ -265,7 +269,7 @@ export interface UseDataProviderOptions {
     meta?: object;
     mutationMode?: MutationMode;
     onSuccess?: OnSuccess;
-    onError?: onError;
+    onError?: OnError;
     enabled?: boolean;
 }
 
@@ -300,14 +304,15 @@ export type Dispatch<T> = T extends (...args: infer A) => any
     : never;
 
 export type ResourceElement = ReactElement<ResourceProps>;
-export type RenderResourcesFunction = (
-    permissions: any
-) =>
+export type RenderResourcesFunction = (permissions: any) =>
     | ReactNode // (permissions) => <><Resource /><Resource /><Resource /></>
     | Promise<ReactNode> // (permissions) => fetch().then(() => <><Resource /><Resource /><Resource /></>)
     | ResourceElement[] // // (permissions) => [<Resource />, <Resource />, <Resource />]
     | Promise<ResourceElement[]>; // (permissions) => fetch().then(() => [<Resource />, <Resource />, <Resource />])
-export type AdminChildren = RenderResourcesFunction | ReactNode;
+export type AdminChildren =
+    | RenderResourcesFunction
+    | Iterable<ReactNode | RenderResourcesFunction>
+    | ReactNode;
 
 export type TitleComponent = string | ReactElement<any>;
 export type CatchAllComponent = ComponentType<{ title?: TitleComponent }>;
@@ -316,12 +321,7 @@ export type LoginComponent = ComponentType<{}> | ReactElement<any>;
 export type DashboardComponent = ComponentType<WithPermissionsChildrenParams>;
 
 export interface CoreLayoutProps {
-    children?: ReactNode;
-    dashboard?: DashboardComponent;
-    menu?: ComponentType<{
-        hasDashboard?: boolean;
-    }>;
-    title?: TitleComponent;
+    children: ReactNode;
 }
 
 export type LayoutComponent = ComponentType<CoreLayoutProps>;

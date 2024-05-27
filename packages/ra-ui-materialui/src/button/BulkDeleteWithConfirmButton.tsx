@@ -1,8 +1,7 @@
 import * as React from 'react';
 import { Fragment, ReactElement } from 'react';
-import PropTypes from 'prop-types';
 import ActionDelete from '@mui/icons-material/Delete';
-import inflection from 'inflection';
+
 import { alpha, styled } from '@mui/material/styles';
 import {
     MutationMode,
@@ -19,8 +18,8 @@ import {
 
 import { Confirm } from '../layout';
 import { Button, ButtonProps } from './Button';
-import { BulkActionProps } from '../types';
-import { UseMutationOptions } from 'react-query';
+import { UseMutationOptions } from '@tanstack/react-query';
+import { humanize, inflect } from 'inflection';
 
 export const BulkDeleteWithConfirmButton = (
     props: BulkDeleteWithConfirmButtonProps
@@ -38,13 +37,13 @@ export const BulkDeleteWithConfirmButton = (
         ...rest
     } = props;
     const { meta: mutationMeta, ...otherMutationOptions } = mutationOptions;
-    const { selectedIds, onUnselectItems } = useListContext(props);
+    const { selectedIds, onUnselectItems } = useListContext();
     const [isOpen, setOpen] = useSafeSetState(false);
     const notify = useNotify();
     const resource = useResourceContext(props);
     const refresh = useRefresh();
     const translate = useTranslate();
-    const [deleteMany, { isLoading }] = useDeleteMany(
+    const [deleteMany, { isPending }] = useDeleteMany(
         resource,
         { ids: selectedIds, meta: mutationMeta },
         {
@@ -70,8 +69,8 @@ export const BulkDeleteWithConfirmButton = (
                                 typeof error === 'string'
                                     ? error
                                     : error && error.message
-                                    ? error.message
-                                    : undefined,
+                                      ? error.message
+                                      : undefined,
                         },
                     }
                 );
@@ -110,7 +109,7 @@ export const BulkDeleteWithConfirmButton = (
             </StyledButton>
             <Confirm
                 isOpen={isOpen}
-                loading={isLoading}
+                loading={isPending}
                 title={confirmTitle}
                 content={confirmContent}
                 confirmColor={confirmColor}
@@ -118,13 +117,12 @@ export const BulkDeleteWithConfirmButton = (
                     smart_count: selectedIds.length,
                     name: translate(`resources.${resource}.forcedCaseName`, {
                         smart_count: selectedIds.length,
-                        _: inflection.humanize(
+                        _: humanize(
                             translate(`resources.${resource}.name`, {
                                 smart_count: selectedIds.length,
-                                _: inflection.inflect(
-                                    resource,
-                                    selectedIds.length
-                                ),
+                                _: resource
+                                    ? inflect(resource, selectedIds.length)
+                                    : undefined,
                             }),
                             true
                         ),
@@ -139,9 +137,7 @@ export const BulkDeleteWithConfirmButton = (
 
 const sanitizeRestProps = ({
     classes,
-    filterValues,
     label,
-    selectedIds,
     ...rest
 }: Omit<
     BulkDeleteWithConfirmButtonProps,
@@ -150,9 +146,8 @@ const sanitizeRestProps = ({
 
 export interface BulkDeleteWithConfirmButtonProps<
     RecordType extends RaRecord = any,
-    MutationOptionsError = unknown
-> extends BulkActionProps,
-        ButtonProps {
+    MutationOptionsError = unknown,
+> extends ButtonProps {
     confirmContent?: React.ReactNode;
     confirmTitle?: React.ReactNode;
     confirmColor?: 'primary' | 'warning';
@@ -183,14 +178,3 @@ const StyledButton = styled(Button, {
 }));
 
 const defaultIcon = <ActionDelete />;
-
-BulkDeleteWithConfirmButton.propTypes = {
-    confirmTitle: PropTypes.node,
-    confirmContent: PropTypes.node,
-    confirmColor: PropTypes.string,
-    icon: PropTypes.element,
-    label: PropTypes.string,
-    mutationMode: PropTypes.oneOf(['pessimistic', 'optimistic', 'undoable']),
-    resource: PropTypes.string,
-    selectedIds: PropTypes.arrayOf(PropTypes.any),
-};

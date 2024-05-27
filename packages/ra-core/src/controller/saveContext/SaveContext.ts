@@ -10,7 +10,7 @@ import { Middleware } from './useMutationMiddlewares';
 
 export interface SaveContextValue<
     RecordType extends RaRecord = any,
-    MutateFunc extends (...args: any[]) => any = (...args: any[]) => any
+    MutateFunc extends (...args: any[]) => any = (...args: any[]) => any,
 > {
     save?: SaveHandler<RecordType>;
     /**
@@ -24,11 +24,13 @@ export interface SaveContextValue<
 
 export type SaveHandler<RecordType> = (
     record: Partial<RecordType>,
-    callbacks?: {
-        onSuccess?: OnSuccess;
-        onError?: OnError;
-        transform?: TransformData;
-    }
+    callbacks?: SaveHandlerCallbacks
 ) => Promise<void | RecordType> | Record<string, string>;
 
-export const SaveContext = createContext<SaveContextValue>(undefined);
+export type SaveHandlerCallbacks = {
+    onSuccess?: OnSuccess;
+    onError?: OnError;
+    transform?: TransformData;
+    meta?: any;
+};
+export const SaveContext = createContext<SaveContextValue>({});

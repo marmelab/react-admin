@@ -73,7 +73,7 @@ If your problem is related to a library used by react-admin, you should ask for 
 
 * Material UI: [Documentation](https://mui.com/material-ui/getting-started/), [Support](https://mui.com/material-ui/getting-started/support/)
 * react-router: [Documentation](https://reactrouter.com/en/main), [Discord](https://rmx.as/discord)
-* react-query: [Documentation](https://tanstack.com/query/v3/docs/react/overview), [Discord](https://tlinz.com/discord)
+* react-query: [Documentation](https://tanstack.com/query/v5/docs/react/overview), [Discord](https://tlinz.com/discord)
 * react-hook-form: [Documentation](https://react-hook-form.com/get-started), [Discord](https://discord.gg/yYv7GZ8)
 * emotion: [Documentation](https://emotion.sh/docs/introduction), [Slack](https://join.slack.com/t/emotion-slack/shared_invite/zt-rmtwsy74-2uvyFdz5uxa8OiMguJJeuQ), [Community](https://emotion.sh/docs/community)
 

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { MemoryRouter } from 'react-router-dom';
+import { TestMemoryRouter } from 'ra-core';
 import { PreferencesEditorContextProvider } from 'ra-core';
 
 import { TitlePortal } from './TitlePortal';
@@ -10,28 +10,28 @@ export default {
 };
 
 export const Basic = () => (
-    <MemoryRouter>
+    <TestMemoryRouter>
         <PreferencesEditorContextProvider>
             <TitlePortal />
             <Title title="Hello, world" />
         </PreferencesEditorContextProvider>
-    </MemoryRouter>
+    </TestMemoryRouter>
 );
 
 export const Props = () => (
-    <MemoryRouter>
+    <TestMemoryRouter>
         <PreferencesEditorContextProvider>
             <TitlePortal variant="body1" />
             <Title title="Hello, world" />
         </PreferencesEditorContextProvider>
-    </MemoryRouter>
+    </TestMemoryRouter>
 );
 
 export const Sx = () => (
-    <MemoryRouter>
+    <TestMemoryRouter>
         <PreferencesEditorContextProvider>
             <TitlePortal sx={{ color: 'primary.main' }} />
             <Title title="Hello, world" />
         </PreferencesEditorContextProvider>
-    </MemoryRouter>
+    </TestMemoryRouter>
 );

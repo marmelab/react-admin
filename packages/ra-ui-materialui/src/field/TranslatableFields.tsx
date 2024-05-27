@@ -7,6 +7,7 @@ import {
     UseTranslatableOptions,
     RaRecord,
     useRecordContext,
+    useResourceContext,
 } from 'ra-core';
 import { TranslatableFieldsTabs } from './TranslatableFieldsTabs';
 import { TranslatableFieldsTabContent } from './TranslatableFieldsTabContent';
@@ -74,10 +75,20 @@ export const TranslatableFields = (
         groupKey = '',
         selector = <TranslatableFieldsTabs groupKey={groupKey} />,
         children,
-        resource,
         className,
     } = props;
     const record = useRecordContext(props);
+    if (!record) {
+        throw new Error(
+            `<TranslatableFields> was called outside of a RecordContext and without a record prop. You must set the record prop.`
+        );
+    }
+    const resource = useResourceContext(props);
+    if (!resource) {
+        throw new Error(
+            `<TranslatableFields> was called outside of a RecordContext and without a record prop. You must set the record prop.`
+        );
+    }
     const context = useTranslatable({ defaultLocale, locales });
 
     return (

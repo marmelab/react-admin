@@ -33,7 +33,7 @@ export const combineDataProviders = (
                 if (typeof name === 'symbol') {
                     return;
                 }
-                return dataProviderMatcher(resource)[name](resource, params);
+                return dataProviderMatcher(resource)[name](resource, ...params);
             };
         },
     });

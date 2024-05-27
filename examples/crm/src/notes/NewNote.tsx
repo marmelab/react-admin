@@ -10,7 +10,7 @@ import {
     Identifier,
     useResourceContext,
 } from 'react-admin';
-import { Box, TextField as TextInput, Button } from '@mui/material';
+import { Box, TextField as TextInput, Button, Stack } from '@mui/material';
 
 import { StatusSelector } from './StatusSelector';
 
@@ -27,7 +27,7 @@ export const NewNote = ({
     const [text, setText] = useState('');
     const [status, setStatus] = useState(record && record.status);
     const [date, setDate] = useState(getCurrentDate());
-    const [create, { isLoading }] = useCreate();
+    const [create, { isPending }] = useCreate();
     const [update] = useUpdate();
     const notify = useNotify();
     const { identity } = useGetIdentity();
@@ -53,12 +53,8 @@ export const NewNote = ({
                     notify('Note added successfully');
                     refetch();
                     update(reference, {
-                        id: ((record && record.id) as unknown) as Identifier,
-                        data: {
-                            last_seen: date,
-                            status,
-                            nb_notes: record.nb_notes + 1,
-                        },
+                        id: (record && record.id) as unknown as Identifier,
+                        data: { last_seen: date, status },
                         previousData: record,
                     });
                 },
@@ -73,7 +69,6 @@ export const NewNote = ({
                     label="Add a note"
                     variant="filled"
                     size="small"
-                    fullWidth
                     multiline
                     value={text}
                     onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
@@ -84,7 +79,7 @@ export const NewNote = ({
                 <Box display="flex" justifyContent="space-between" mt={1}>
                     <span>
                         {text ? (
-                            <>
+                            <Stack direction="row">
                                 {showStatus && (
                                     <StatusSelector
                                         status={status}
@@ -105,9 +100,7 @@ export const NewNote = ({
                                     margin="none"
                                     value={date}
                                     onChange={(
-                                        event: React.ChangeEvent<
-                                            HTMLInputElement
-                                        >
+                                        event: React.ChangeEvent<HTMLInputElement>
                                     ) => {
                                         setDate(event.target.value);
                                     }}
@@ -118,14 +111,14 @@ export const NewNote = ({
                                         },
                                     }}
                                 />
-                            </>
+                            </Stack>
                         ) : null}
                     </span>
                     <Button
                         type="submit"
                         variant="contained"
                         color="primary"
-                        disabled={!text || isLoading}
+                        disabled={!text || isPending}
                     >
                         Add this note
                     </Button>

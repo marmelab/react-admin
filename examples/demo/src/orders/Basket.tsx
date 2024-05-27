@@ -17,7 +17,7 @@ const Basket = () => {
 
     const productIds = record ? record.basket.map(item => item.product_id) : [];
 
-    const { isLoading, data: products } = useGetMany<Product>(
+    const { isPending, data: products } = useGetMany<Product>(
         'products',
         { ids: productIds },
         { enabled: !!record }
@@ -29,27 +29,23 @@ const Basket = () => {
           }, {} as any)
         : {};
 
-    if (isLoading || !record || !products) return null;
+    if (isPending || !record || !products) return null;
 
     return (
         <Table>
             <TableHead>
                 <TableRow>
                     <TableCell>
-                        {translate(
-                            'resources.commands.fields.basket.reference'
-                        )}
+                        {translate('resources.orders.fields.basket.reference')}
                     </TableCell>
                     <TableCellRight>
-                        {translate(
-                            'resources.commands.fields.basket.unit_price'
-                        )}
+                        {translate('resources.orders.fields.basket.unit_price')}
                     </TableCellRight>
                     <TableCellRight>
-                        {translate('resources.commands.fields.basket.quantity')}
+                        {translate('resources.orders.fields.basket.quantity')}
                     </TableCellRight>
                     <TableCellRight>
-                        {translate('resources.commands.fields.basket.total')}
+                        {translate('resources.orders.fields.basket.total')}
                     </TableCellRight>
                 </TableRow>
             </TableHead>

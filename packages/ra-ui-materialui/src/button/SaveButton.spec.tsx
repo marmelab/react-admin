@@ -155,12 +155,11 @@ describe('<SaveButton />', () => {
             </AdminContext>
         );
         // waitFor for the dataProvider.getOne() return
-        await waitFor(() => {
-            expect(screen.queryByDisplayValue('lorem')).toBeDefined();
-        });
+        await screen.findByDisplayValue('lorem');
+
         // change one input to enable the SaveButton (which is disabled when the form is pristine)
         fireEvent.change(
-            screen.getByLabelText('resources.posts.fields.title'),
+            await screen.findByLabelText('resources.posts.fields.title'),
             {
                 target: { value: 'ipsum' },
             }
@@ -208,12 +207,11 @@ describe('<SaveButton />', () => {
             </AdminContext>
         );
         // waitFor for the dataProvider.getOne() return
-        await waitFor(() => {
-            expect(screen.queryByDisplayValue('lorem')).toBeDefined();
-        });
+        await screen.findByDisplayValue('lorem');
+
         // change one input to enable the SaveButton (which is disabled when the form is pristine)
         fireEvent.change(
-            screen.getByLabelText('resources.posts.fields.title'),
+            await screen.findByLabelText('resources.posts.fields.title'),
             {
                 target: { value: 'ipsum' },
             }
@@ -265,12 +263,10 @@ describe('<SaveButton />', () => {
             </AdminContext>
         );
         // waitFor for the dataProvider.getOne() return
-        await waitFor(() => {
-            expect(screen.queryByDisplayValue('lorem')).toBeDefined();
-        });
+        await screen.findByDisplayValue('lorem');
         // change one input to enable the SaveButton (which is disabled when the form is pristine)
         fireEvent.change(
-            screen.getByLabelText('resources.posts.fields.title'),
+            await screen.findByLabelText('resources.posts.fields.title'),
             {
                 target: { value: 'ipsum' },
             }

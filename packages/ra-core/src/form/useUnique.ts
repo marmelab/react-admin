@@ -55,6 +55,9 @@ export const useUnique = (options?: UseUniqueOptions) => {
     const dataProvider = useDataProvider();
     const translateLabel = useTranslateLabel();
     const resource = useResourceContext(options);
+    if (!resource) {
+        throw new Error('useUnique: missing resource prop or context');
+    }
     const translate = useTranslate();
     const record = useRecordContext();
 
@@ -68,11 +71,11 @@ export const useUnique = (options?: UseUniqueOptions) => {
 
     const validateUnique = useCallback(
         (callTimeOptions?: UseUniqueOptions) => {
-            const { message, filter, debounce: interval } = merge<
-                UseUniqueOptions,
-                any,
-                any
-            >(
+            const {
+                message,
+                filter,
+                debounce: interval,
+            } = merge<UseUniqueOptions, any, any>(
                 {
                     debounce: DEFAULT_DEBOUNCE,
                     filter: {},

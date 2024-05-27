@@ -110,6 +110,7 @@ describe('useReferenceManyFieldController', () => {
                     pagination: { page: 1, perPage: 25 },
                     sort: { field: 'id', order: 'DESC' },
                     filter: {},
+                    signal: expect.anything(),
                 }
             );
         });
@@ -230,6 +231,7 @@ describe('useReferenceManyFieldController', () => {
                     pagination: { page: 1, perPage: 25 },
                     sort: { field: 'id', order: 'DESC' },
                     filter: {},
+                    signal: expect.anything(),
                 }
             );
         });
@@ -269,6 +271,7 @@ describe('useReferenceManyFieldController', () => {
                     pagination: { page: 1, perPage: 25 },
                     sort: { field: 'id', order: 'ASC' },
                     filter: {},
+                    signal: expect.anything(),
                 }
             );
         });
@@ -281,12 +284,15 @@ describe('useReferenceManyFieldController', () => {
                 type="text"
                 value={filterValues.q || ''}
                 onChange={event => {
-                    setFilters({ q: event.target.value });
+                    setFilters({ q: event.target.value }, undefined, true);
                 }}
             />
         );
-        const dataProvider = testDataProvider();
-        const getManyReference = jest.spyOn(dataProvider, 'getManyReference');
+        const dataProvider = testDataProvider({
+            getManyReference: jest
+                .fn()
+                .mockResolvedValue({ data: [], total: 0 }),
+        });
         render(
             <CoreAdminContext dataProvider={dataProvider}>
                 <ReferenceManyFieldController
@@ -309,14 +315,15 @@ describe('useReferenceManyFieldController', () => {
         await waitFor(() => new Promise(resolve => setTimeout(resolve, 600)));
 
         // Called twice: on load and on filter changes
-        expect(getManyReference).toHaveBeenCalledTimes(2);
-        expect(getManyReference).toHaveBeenCalledWith('books', {
+        expect(dataProvider.getManyReference).toHaveBeenCalledTimes(2);
+        expect(dataProvider.getManyReference).toHaveBeenCalledWith('books', {
             target: 'author_id',
             id: 123,
             filter: { q: 'hello' },
             pagination: { page: 1, perPage: 25 },
             sort: { field: 'id', order: 'DESC' },
             meta: undefined,
+            signal: expect.anything(),
         });
     });
 });

@@ -43,21 +43,28 @@ const useLogin = (): Login => {
     );
 
     const login = useCallback(
-        (params: any = {}, pathName) =>
-            authProvider.login(params).then(ret => {
-                resetNotifications();
-                if (ret && ret.hasOwnProperty('redirectTo')) {
-                    if (ret) {
-                        navigate(ret.redirectTo);
+        (params: any = {}, pathName) => {
+            if (authProvider) {
+                return authProvider.login(params).then(ret => {
+                    resetNotifications();
+                    if (ret && ret.hasOwnProperty('redirectTo')) {
+                        if (ret) {
+                            navigate(ret.redirectTo);
+                        }
+                    } else {
+                        const redirectUrl = pathName
+                            ? pathName
+                            : nextPathName + nextSearch || afterLoginUrl;
+                        navigate(redirectUrl);
                     }
-                } else {
-                    const redirectUrl = pathName
-                        ? pathName
-                        : nextPathName + nextSearch || afterLoginUrl;
-                    navigate(redirectUrl);
-                }
-                return ret;
-            }),
+                    return ret;
+                });
+            } else {
+                resetNotifications();
+                navigate(afterLoginUrl);
+                return Promise.resolve();
+            }
+        },
         [
             authProvider,
             navigate,
@@ -68,16 +75,7 @@ const useLogin = (): Login => {
         ]
     );
 
-    const loginWithoutProvider = useCallback(
-        (_, __) => {
-            resetNotifications();
-            navigate(afterLoginUrl);
-            return Promise.resolve();
-        },
-        [navigate, resetNotifications, afterLoginUrl]
-    );
-
-    return authProvider ? login : loginWithoutProvider;
+    return login;
 };
 
 /**

@@ -1,9 +1,8 @@
 import * as React from 'react';
 import { cloneElement, memo, FC, ReactElement } from 'react';
-import PropTypes from 'prop-types';
 import { SxProps, TableBody, TableBodyProps } from '@mui/material';
 import clsx from 'clsx';
-import { Identifier, RaRecord } from 'ra-core';
+import { Identifier, RaRecord, RecordContextProvider } from 'ra-core';
 
 import { DatagridClasses } from './useDatagridStyles';
 import DatagridRow, { PureDatagridRow, RowClickFunction } from './DatagridRow';
@@ -34,61 +33,40 @@ const DatagridBody: FC<DatagridBodyProps> = React.forwardRef(
             className={clsx('datagrid-body', className, DatagridClasses.tbody)}
             {...rest}
         >
-            {data.map((record, rowIndex) =>
-                cloneElement(
-                    row,
-                    {
-                        className: clsx(DatagridClasses.row, {
-                            [DatagridClasses.rowEven]: rowIndex % 2 === 0,
-                            [DatagridClasses.rowOdd]: rowIndex % 2 !== 0,
-                        }),
-                        expand,
-                        hasBulkActions: hasBulkActions && !!selectedIds,
-                        hover,
-                        id: record.id ?? `row${rowIndex}`,
-                        key: record.id ?? `row${rowIndex}`,
-                        onToggleItem,
-                        record,
-                        resource,
-                        rowClick,
-                        selectable: !isRowSelectable || isRowSelectable(record),
-                        selected: selectedIds?.includes(record.id),
-                        sx: rowSx?.(record, rowIndex),
-                        style: rowStyle?.(record, rowIndex),
-                    },
-                    children
-                )
-            )}
+            {data.map((record, rowIndex) => (
+                <RecordContextProvider
+                    value={record}
+                    key={record.id ?? `row${rowIndex}`}
+                >
+                    {cloneElement(
+                        row,
+                        {
+                            className: clsx(DatagridClasses.row, {
+                                [DatagridClasses.rowEven]: rowIndex % 2 === 0,
+                                [DatagridClasses.rowOdd]: rowIndex % 2 !== 0,
+                            }),
+                            expand,
+                            hasBulkActions: hasBulkActions && !!selectedIds,
+                            hover,
+                            id: record.id ?? `row${rowIndex}`,
+                            onToggleItem,
+                            resource,
+                            rowClick,
+                            selectable:
+                                !isRowSelectable || isRowSelectable(record),
+                            selected: selectedIds?.includes(record.id),
+                            sx: rowSx?.(record, rowIndex),
+                            style: rowStyle?.(record, rowIndex),
+                        },
+                        children
+                    )}
+                </RecordContextProvider>
+            ))}
         </TableBody>
     )
 );
 
 const defaultChildren = <DatagridRow />;
-
-DatagridBody.propTypes = {
-    className: PropTypes.string,
-    children: PropTypes.node,
-    // @ts-ignore
-    data: PropTypes.arrayOf(PropTypes.object),
-    // @ts-ignore
-    expand: PropTypes.oneOfType([PropTypes.element, PropTypes.elementType]),
-    hasBulkActions: PropTypes.bool,
-    hover: PropTypes.bool,
-    onToggleItem: PropTypes.func,
-    resource: PropTypes.string,
-    row: PropTypes.element,
-    // @ts-ignore
-    rowClick: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.func,
-        PropTypes.bool,
-    ]),
-    rowSx: PropTypes.func,
-    rowStyle: PropTypes.func,
-    selectedIds: PropTypes.arrayOf(PropTypes.any),
-    styles: PropTypes.object,
-    isRowSelectable: PropTypes.func,
-};
 
 export interface DatagridBodyProps extends Omit<TableBodyProps, 'classes'> {
     className?: string;

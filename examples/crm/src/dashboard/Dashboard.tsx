@@ -5,7 +5,8 @@ import { Welcome } from './Welcome';
 import { DealsChart } from './DealsChart';
 import { HotContacts } from './HotContacts';
 import { LatestNotes } from './LatestNotes';
-import { DealsPipeline } from './DealsPipeline';
+
+import { TasksList } from './TasksList';
 
 export const Dashboard = () => (
     <Grid container spacing={2} mt={1}>
@@ -19,10 +20,10 @@ export const Dashboard = () => (
             <LatestNotes />
         </Grid>
         <Grid item xs={12} md={3}>
-            <HotContacts />
+            <TasksList />
         </Grid>
         <Grid item xs={12} md={3}>
-            <DealsPipeline />
+            <HotContacts />
         </Grid>
     </Grid>
 );

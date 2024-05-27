@@ -5,14 +5,14 @@ import { FilterPayload, RaRecord, SortPayload } from '../../types';
 import { useGetList, useGetManyAggregate } from '../../dataProvider';
 import { useReferenceParams } from './useReferenceParams';
 import { ChoicesContextValue } from '../../form';
-import { UseQueryOptions } from 'react-query';
+import { UseQueryOptions } from '@tanstack/react-query';
 
 /**
  * Prepare data for the ReferenceArrayInput components
  *
  * @example
  *
- * const { allChoices, availableChoices, selectedChoices, error, isFetching, isLoading } = useReferenceArrayInputController({
+ * const { allChoices, availableChoices, selectedChoices, error, isFetching, isLoading, isPending } = useReferenceArrayInputController({
  *      record: { referenceIds: ['id1', 'id2']};
  *      reference: 'reference';
  *      resource: 'resource';
@@ -30,7 +30,7 @@ import { UseQueryOptions } from 'react-query';
  * @return {Object} controllerProps Fetched data and callbacks for the ReferenceArrayInput components
  */
 export const useReferenceArrayInputController = <
-    RecordType extends RaRecord = any
+    RecordType extends RaRecord = any,
 >(
     props: UseReferenceArrayInputParams<RecordType>
 ): ChoicesContextValue<RecordType> => {
@@ -59,6 +59,7 @@ export const useReferenceArrayInputController = <
         error: errorGetMany,
         isLoading: isLoadingGetMany,
         isFetching: isFetchingGetMany,
+        isPending: isPendingGetMany,
         refetch: refetchGetMany,
     } = useGetManyAggregate<RecordType>(
         reference,
@@ -96,6 +97,7 @@ export const useReferenceArrayInputController = <
         error: errorGetList,
         isLoading: isLoadingGetList,
         isFetching: isFetchingGetList,
+        isPending: isPendingGetList,
         refetch: refetchGetMatching,
     } = useGetList<RecordType>(
         reference,
@@ -111,7 +113,7 @@ export const useReferenceArrayInputController = <
         {
             retry: false,
             enabled: isGetMatchingEnabled,
-            keepPreviousData: true,
+            placeholderData: previousData => previousData,
             ...otherQueryOptions,
         }
     );
@@ -122,8 +124,8 @@ export const useReferenceArrayInputController = <
         matchingReferences && matchingReferences.length > 0
             ? mergeReferences(matchingReferences, finalReferenceRecords)
             : finalReferenceRecords.length > 0
-            ? finalReferenceRecords
-            : matchingReferences;
+              ? finalReferenceRecords
+              : matchingReferences;
 
     const refetch = useCallback(() => {
         refetchGetMany();
@@ -149,6 +151,7 @@ export const useReferenceArrayInputController = <
         hideFilter: paramsModifiers.hideFilter,
         isFetching: isFetchingGetMany || isFetchingGetList,
         isLoading: isLoadingGetMany || isLoadingGetList,
+        isPending: isPendingGetMany || isPendingGetList,
         page: params.page,
         perPage: params.perPage,
         refetch,
@@ -163,11 +166,11 @@ export const useReferenceArrayInputController = <
         hasNextPage: pageInfo
             ? pageInfo.hasNextPage
             : total != null
-            ? params.page * params.perPage < total
-            : undefined,
+              ? params.page * params.perPage < total
+              : undefined,
         hasPreviousPage: pageInfo ? pageInfo.hasPreviousPage : params.page > 1,
         isFromReference: true,
-    };
+    } as ChoicesContextValue<RecordType>;
 };
 
 const EmptyArray = [];
@@ -189,18 +192,21 @@ const mergeReferences = <RecordType extends RaRecord = any>(
 };
 
 export interface UseReferenceArrayInputParams<
-    RecordType extends RaRecord = any
+    RecordType extends RaRecord = any,
 > {
     debounce?: number;
     filter?: FilterPayload;
-    queryOptions?: UseQueryOptions<{
-        data: RecordType[];
-        total?: number;
-        pageInfo?: {
-            hasNextPage?: boolean;
-            hasPreviousPage?: boolean;
-        };
-    }> & { meta?: any };
+    queryOptions?: Omit<
+        UseQueryOptions<{
+            data: RecordType[];
+            total?: number;
+            pageInfo?: {
+                hasNextPage?: boolean;
+                hasPreviousPage?: boolean;
+            };
+        }>,
+        'queryFn' | 'queryKey'
+    > & { meta?: any };
     page?: number;
     perPage?: number;
     record?: RecordType;

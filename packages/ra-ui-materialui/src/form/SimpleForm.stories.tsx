@@ -4,9 +4,9 @@ import {
     required,
     ResourceContextProvider,
     testDataProvider,
+    TestMemoryRouter,
 } from 'ra-core';
 import { Stack, ThemeProvider, createTheme } from '@mui/material';
-import { MemoryRouter } from 'react-router-dom';
 
 import { AdminContext } from '../AdminContext';
 import { Edit } from '../detail';
@@ -35,6 +35,7 @@ const Wrapper = ({
         dataProvider={testDataProvider({
             getOne: () => Promise.resolve({ data }),
         } as any)}
+        defaultTheme="light"
     >
         <ResourceContextProvider value="books">
             <Edit id={1} sx={{ width: 600 }}>
@@ -47,7 +48,7 @@ const Wrapper = ({
 export const Basic = () => (
     <Wrapper>
         <SimpleForm>
-            <TextInput source="title" fullWidth />
+            <TextInput source="title" />
             <TextInput source="author" />
             <NumberInput source="year" />
         </SimpleForm>
@@ -57,7 +58,7 @@ export const Basic = () => (
 export const CustomLayout = () => (
     <Wrapper>
         <SimpleForm>
-            <TextInput source="title" fullWidth />
+            <TextInput source="title" />
             <Stack direction="row" gap={1} width="100%">
                 <TextInput source="author" sx={{ width: '50%' }} />
                 <NumberInput source="year" sx={{ width: '50%' }} />
@@ -69,7 +70,7 @@ export const CustomLayout = () => (
 export const StackProps = () => (
     <Wrapper>
         <SimpleForm spacing={3} alignItems="center">
-            <TextInput source="title" fullWidth />
+            <TextInput source="title" />
             <TextInput source="author" />
             <NumberInput source="year" />
         </SimpleForm>
@@ -79,7 +80,7 @@ export const StackProps = () => (
 export const NoToolbar = () => (
     <Wrapper>
         <SimpleForm toolbar={false}>
-            <TextInput source="title" fullWidth />
+            <TextInput source="title" />
             <TextInput source="author" />
             <NumberInput source="year" />
         </SimpleForm>
@@ -138,7 +139,7 @@ export const GlobalValidation = () => (
         }}
     >
         <SimpleForm validate={validate}>
-            <TextInput source="title" fullWidth />
+            <TextInput source="title" />
             <TextInput source="author" />
             <NumberInput source="year" />
         </SimpleForm>
@@ -156,7 +157,6 @@ export const InputBasedValidation = () => (
         <SimpleForm>
             <TextInput
                 source="title"
-                fullWidth
                 validate={required('The title is required')}
             />
             <TextInput
@@ -174,18 +174,18 @@ export const InputBasedValidation = () => (
 export const Controlled = () => {
     const [record, setRecord] = React.useState({} as any);
     return (
-        <MemoryRouter>
+        <TestMemoryRouter>
             <ThemeProvider theme={createTheme()}>
                 <SimpleForm
                     resource="books"
                     onSubmit={values => setRecord(values)}
                 >
-                    <TextInput source="title" fullWidth />
+                    <TextInput source="title" />
                     <TextInput source="author" />
                     <NumberInput source="year" />
                 </SimpleForm>
                 <div>Record values: {JSON.stringify(record)}</div>
             </ThemeProvider>
-        </MemoryRouter>
+        </TestMemoryRouter>
     );
 };

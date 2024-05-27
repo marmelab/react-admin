@@ -2,14 +2,16 @@ import * as React from 'react';
 import { useEffect } from 'react';
 import expect from 'expect';
 import { render, screen, waitFor } from '@testing-library/react';
-import { MemoryRouter, Routes, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 
 import useLogoutIfAccessDenied from './useLogoutIfAccessDenied';
-import AuthContext from './AuthContext';
+import { AuthContext } from './AuthContext';
 import useLogout from './useLogout';
 import { useNotify } from '../notification/useNotify';
 import { AuthProvider } from '../types';
 import { useSafeSetState } from '../util';
+
+import { TestMemoryRouter } from '../routing';
 
 let loggedIn = true;
 
@@ -37,18 +39,12 @@ const authProvider: AuthProvider = {
     getPermissions: () => Promise.reject('bad method'),
 };
 
-const TestComponent = ({
-    error,
-    disableNotification,
-}: {
-    error?: any;
-    disableNotification?: boolean;
-}) => {
+const TestComponent = ({ error }: { error?: any }) => {
     const [loggedOut, setLoggedOut] = useSafeSetState(false);
     const logoutIfAccessDenied = useLogoutIfAccessDenied();
     useEffect(() => {
-        logoutIfAccessDenied(error, disableNotification).then(setLoggedOut);
-    }, [error, disableNotification, logoutIfAccessDenied, setLoggedOut]);
+        logoutIfAccessDenied(error).then(setLoggedOut);
+    }, [error, logoutIfAccessDenied, setLoggedOut]);
     return <div>{loggedOut ? '' : 'logged in'}</div>;
 };
 
@@ -65,11 +61,11 @@ const notify = jest.fn();
 useNotify.mockImplementation(() => notify);
 
 const TestWrapper = ({ children }) => (
-    <MemoryRouter>
+    <TestMemoryRouter>
         <AuthContext.Provider value={authProvider}>
             <Routes>{children}</Routes>
         </AuthContext.Provider>
-    </MemoryRouter>
+    </TestMemoryRouter>
 );
 
 describe('useLogoutIfAccessDenied', () => {
@@ -144,7 +140,7 @@ describe('useLogoutIfAccessDenied', () => {
                 }),
         };
         render(
-            <MemoryRouter>
+            <TestMemoryRouter>
                 <AuthContext.Provider value={delayedAuthProvider}>
                     <Routes>
                         <Route
@@ -158,7 +154,7 @@ describe('useLogoutIfAccessDenied', () => {
                         />
                     </Routes>
                 </AuthContext.Provider>
-            </MemoryRouter>
+            </TestMemoryRouter>
         );
         await waitFor(() => {
             expect(authProvider.logout).toHaveBeenCalledTimes(2); /// two logouts, but only one notification
@@ -167,31 +163,9 @@ describe('useLogoutIfAccessDenied', () => {
         expect(screen.queryByText('logged in')).toBeNull();
     });
 
-    it('should logout without showing a notification if disableAuthentication is true', async () => {
-        render(
-            <Route
-                path="/"
-                element={
-                    <TestComponent
-                        error={new Error('denied')}
-                        disableNotification
-                    />
-                }
-            />,
-            {
-                wrapper: TestWrapper,
-            }
-        );
-        await waitFor(() => {
-            expect(authProvider.logout).toHaveBeenCalledTimes(1);
-            expect(notify).toHaveBeenCalledTimes(0);
-            expect(screen.queryByText('logged in')).toBeNull();
-        });
-    });
-
     it('should logout without showing a notification if authProvider returns error with message false', async () => {
         render(
-            <MemoryRouter>
+            <TestMemoryRouter>
                 <AuthContext.Provider
                     value={{
                         ...authProvider,
@@ -201,22 +175,31 @@ describe('useLogoutIfAccessDenied', () => {
                     }}
                 >
                     <Routes>
-                        <Route
-                            path="/"
-                            element={
-                                <>
-                                    <TestComponent />
-                                </>
-                            }
-                        />
+                        <Route path="/" element={<TestComponent />} />
                     </Routes>
                 </AuthContext.Provider>
-            </MemoryRouter>
+            </TestMemoryRouter>
         );
         await waitFor(() => {
             expect(authProvider.logout).toHaveBeenCalledTimes(1);
             expect(notify).toHaveBeenCalledTimes(0);
             expect(screen.queryByText('logged in')).toBeNull();
+        });
+    });
+
+    it('should logout without showing a notification if it has been called with error param', async () => {
+        render(
+            <Route
+                path="/"
+                element={<TestComponent error={new Error('Error')} />}
+            />,
+            {
+                wrapper: TestWrapper,
+            }
+        );
+        await waitFor(() => {
+            expect(authProvider.logout).toHaveBeenCalledTimes(0);
+            expect(notify).toHaveBeenCalledTimes(0);
         });
     });
 
@@ -240,7 +223,7 @@ describe('useLogoutIfAccessDenied', () => {
 
     it('should not logout the user if logoutUser is set to false', async () => {
         render(
-            <MemoryRouter>
+            <TestMemoryRouter>
                 <AuthContext.Provider
                     value={{
                         ...authProvider,
@@ -267,7 +250,7 @@ describe('useLogoutIfAccessDenied', () => {
                         />
                     </Routes>
                 </AuthContext.Provider>
-            </MemoryRouter>
+            </TestMemoryRouter>
         );
         await waitFor(() => {
             expect(authProvider.logout).toHaveBeenCalledTimes(0);

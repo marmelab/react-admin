@@ -28,8 +28,8 @@ type FormGroupState = {
  * import { Accordion, AccordionDetails, AccordionSummary, Typography } from '@mui/material';
  * import ExpandMoreIcon from '@mui/icons-material/ExpandMoreIcon';
  *
- * const PostEdit = (props) => (
- *     <Edit {...props}>
+ * const PostEdit = () => (
+ *     <Edit>
  *         <SimpleForm>
  *             <TextInput source="title" />
  *             <FormGroupContextProvider name="options">
@@ -73,6 +73,7 @@ export const useFormGroup = (name: string): FormGroupState => {
     });
 
     const updateGroupState = useCallback(() => {
+        if (!formGroups) return;
         const fields = formGroups.getGroupFields(name);
         const fieldStates = fields
             .map<FieldState>(field => {
@@ -109,11 +110,13 @@ export const useFormGroup = (name: string): FormGroupState => {
     );
 
     useEffect(() => {
+        if (!formGroups) return;
         // Whenever the group content changes (input are added or removed)
         // we must update its state
-        return formGroups.subscribe(name, () => {
+        const unsubscribe = formGroups.subscribe(name, () => {
             updateGroupState();
         });
+        return unsubscribe;
     }, [formGroups, name, updateGroupState]);
 
     return state;

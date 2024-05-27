@@ -46,22 +46,21 @@ export const ReferenceManyCount = <RecordType extends RaRecord = RaRecord>(
     const oneSecondHasPassed = useTimeout(timeout);
     const createPath = useCreatePath();
 
-    const { isLoading, error, total } = useReferenceManyFieldController<
-        RecordType
-    >({
-        filter,
-        sort,
-        page: 1,
-        perPage: 1,
-        record,
-        reference,
-        // @ts-ignore remove when #8491 is released
-        resource,
-        source,
-        target,
-    });
+    const { isPending, error, total } =
+        useReferenceManyFieldController<RecordType>({
+            filter,
+            sort,
+            page: 1,
+            perPage: 1,
+            record,
+            reference,
+            // @ts-ignore remove when #8491 is released
+            resource,
+            source,
+            target,
+        });
 
-    const body = isLoading ? (
+    const body = isPending ? (
         oneSecondHasPassed ? (
             <CircularProgress size={14} />
         ) : (
@@ -73,7 +72,7 @@ export const ReferenceManyCount = <RecordType extends RaRecord = RaRecord>(
         total
     );
 
-    return link ? (
+    return link && record ? (
         <Link
             to={{
                 pathname: createPath({ resource: reference, type: 'list' }),
@@ -103,9 +102,10 @@ export const ReferenceManyCount = <RecordType extends RaRecord = RaRecord>(
 ReferenceManyCount.textAlign = 'right';
 
 export interface ReferenceManyCountProps<RecordType extends RaRecord = RaRecord>
-    extends FieldProps<RecordType>,
+    extends Omit<FieldProps<RecordType>, 'source'>,
         Omit<TypographyProps, 'textAlign'> {
     reference: string;
+    source?: string;
     target: string;
     sort?: SortPayload;
     filter?: any;

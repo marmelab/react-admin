@@ -1,22 +1,27 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import { Box, Typography } from '@mui/material';
-import PropTypes from 'prop-types';
 import get from 'lodash/get';
-import { useRecordContext, useTranslate } from 'ra-core';
+import { useFieldValue, useTranslate } from 'ra-core';
+import { Call, Objects } from 'hotscript';
 
 import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
-import { FieldProps, fieldPropTypes } from './types';
+import { FieldProps } from './types';
 import { SxProps } from '@mui/system';
 
 export const ImageField = <
-    RecordType extends Record<string, any> = Record<string, any>
+    RecordType extends Record<string, any> = Record<string, any>,
 >(
     props: ImageFieldProps<RecordType>
 ) => {
-    const { className, emptyText, source, src, title, ...rest } = props;
-    const record = useRecordContext(props);
-    const sourceValue = get(record, source);
+    const { className, emptyText, src, title, ...rest } = props;
+    const sourceValue = useFieldValue(props);
+    const titleValue =
+        useFieldValue({
+            ...props,
+            // @ts-ignore We ignore here because title might be a custom label or undefined instead of a field name
+            source: title,
+        })?.toString() ?? title;
     const translate = useTranslate();
 
     if (!sourceValue) {
@@ -43,8 +48,10 @@ export const ImageField = <
             <Root className={className} {...sanitizeFieldRestProps(rest)}>
                 <ul className={ImageFieldClasses.list}>
                     {sourceValue.map((file, index) => {
-                        const fileTitleValue = get(file, title) || title;
-                        const srcValue = get(file, src) || title;
+                        const fileTitleValue = title
+                            ? get(file, title, title)
+                            : title;
+                        const srcValue = src ? get(file, src, title) : title;
 
                         return (
                             <li key={index}>
@@ -62,8 +69,6 @@ export const ImageField = <
         );
     }
 
-    const titleValue = get(record, title)?.toString() || title;
-
     return (
         <Root className={className} {...sanitizeFieldRestProps(rest)}>
             <img
@@ -78,12 +83,6 @@ export const ImageField = <
 
 // What? TypeScript loses the displayName if we don't set it explicitly
 ImageField.displayName = 'ImageField';
-
-ImageField.propTypes = {
-    ...fieldPropTypes,
-    src: PropTypes.string,
-    title: PropTypes.string,
-};
 
 const PREFIX = 'RaImageField';
 
@@ -109,9 +108,13 @@ const Root = styled(Box, {
 });
 
 export interface ImageFieldProps<
-    RecordType extends Record<string, any> = Record<string, any>
+    RecordType extends Record<string, any> = Record<string, any>,
 > extends FieldProps<RecordType> {
     src?: string;
-    title?: string;
+    title?: Call<Objects.AllPaths, RecordType> extends never
+        ? AnyString
+        : Call<Objects.AllPaths, RecordType> | AnyString;
     sx?: SxProps;
 }
+
+type AnyString = string & {};

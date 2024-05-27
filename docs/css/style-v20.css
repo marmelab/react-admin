@@ -304,6 +304,10 @@ ul.sidenav code {
     background: 0 0;
 }
 
+.markdown-section a code {
+    color: #4183c4;
+}
+
 .markdown-section a:active,
 .markdown-section a:focus,
 .markdown-section a:hover {
@@ -545,10 +549,6 @@ ul.sidenav code {
     box-shadow: 0 0px 0px 0px rgba(0, 0, 0, 0);
     color: inherit;
     transition: box-shadow 0.2s ease-in-out, border-color 0.2s ease-in-out;
-}
-
-.docBlock code {
-    font-size: 0.85em;
 }
 
 .docBlocks a:hover {

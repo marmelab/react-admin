@@ -97,8 +97,8 @@ If you have fetched a `record` and you want to make it available to descendants,
 import { useGetOne, RecordContextProvider } from 'react-admin';
 
 const RecordFetcher = ({ id, resource, children }) => {
-    const { data, isLoading, error } = useGetOne(resource, { id });
-    if (isLoading) return <p>Loading...</p>;
+    const { data, isPending, error } = useGetOne(resource, { id });
+    if (isPending) return <p>Loading...</p>;
     if (error) return <p>Error :(</p>;
     return (
         <RecordContextProvider value={data}>

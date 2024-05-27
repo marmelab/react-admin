@@ -7,6 +7,10 @@ import { testDataProvider } from './testDataProvider';
 import { useCreate } from './useCreate';
 import { useGetList } from './useGetList';
 import { CoreAdminContext } from '../core';
+import {
+    WithMiddlewaresError,
+    WithMiddlewaresSuccess,
+} from './useCreate.stories';
 
 describe('useCreate', () => {
     it('returns a callback that can be used with create arguments', async () => {
@@ -153,8 +157,8 @@ describe('useCreate', () => {
             },
         });
         const ProductPage = () => {
-            const { data: products, isLoading } = useGetList('products');
-            if (isLoading) return null;
+            const { data: products, isPending } = useGetList('products');
+            if (isPending) return null;
             return (
                 <ul>
                     {products?.map(product => (
@@ -179,6 +183,51 @@ describe('useCreate', () => {
         createButton.click();
         await waitFor(() => {
             expect(screen.queryByText('ghi')).not.toBeNull();
+        });
+    });
+
+    describe('middlewares', () => {
+        it('it accepts middlewares and displays result and success side effects when dataProvider promise resolves', async () => {
+            render(<WithMiddlewaresSuccess timeout={10} />);
+            screen.getByText('Create post').click();
+            await waitFor(() => {
+                expect(screen.queryByText('success')).toBeNull();
+                expect(
+                    screen.queryByText('Hello World from middleware')
+                ).toBeNull();
+                expect(screen.queryByText('mutating')).not.toBeNull();
+            });
+            await waitFor(() => {
+                expect(screen.queryByText('success')).not.toBeNull();
+                expect(
+                    screen.queryByText('Hello World from middleware')
+                ).not.toBeNull();
+                expect(screen.queryByText('mutating')).toBeNull();
+            });
+        });
+
+        it('it accepts middlewares and displays error and error side effects when dataProvider promise rejects', async () => {
+            jest.spyOn(console, 'error').mockImplementation(() => {});
+            render(<WithMiddlewaresError timeout={10} />);
+            screen.getByText('Create post').click();
+            await waitFor(() => {
+                expect(screen.queryByText('success')).toBeNull();
+                expect(screen.queryByText('something went wrong')).toBeNull();
+                expect(
+                    screen.queryByText('Hello World from middleware')
+                ).toBeNull();
+                expect(screen.queryByText('mutating')).not.toBeNull();
+            });
+            await waitFor(() => {
+                expect(screen.queryByText('success')).toBeNull();
+                expect(
+                    screen.queryByText('something went wrong')
+                ).not.toBeNull();
+                expect(
+                    screen.queryByText('Hello World from middleware')
+                ).toBeNull();
+                expect(screen.queryByText('mutating')).toBeNull();
+            });
         });
     });
 });

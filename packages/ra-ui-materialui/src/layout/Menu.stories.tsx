@@ -1,10 +1,15 @@
 import * as React from 'react';
-import { Resource, CustomRoutes, testDataProvider, memoryStore } from 'ra-core';
-import { defaultTheme, Admin, useSidebarState } from 'react-admin';
+import {
+    Resource,
+    CustomRoutes,
+    testDataProvider,
+    memoryStore,
+    TestMemoryRouter,
+} from 'ra-core';
+import { Admin, useSidebarState } from 'react-admin';
 import {
     Typography,
     Skeleton,
-    ThemeOptions,
     MenuItem,
     ListItemText,
     ListItemIcon,
@@ -13,24 +18,20 @@ import {
     List,
     Tooltip,
 } from '@mui/material';
-import {
-    Dashboard,
-    PieChartOutlined,
-    PeopleOutlined,
-    Inventory,
-    ExpandLess,
-    ExpandMore,
-    QrCode,
-} from '@mui/icons-material';
-import { MemoryRouter, Route } from 'react-router-dom';
+import Dashboard from '@mui/icons-material/Dashboard';
+import PieChartOutlined from '@mui/icons-material/PieChartOutlined';
+import PeopleOutlined from '@mui/icons-material/PeopleOutlined';
+import Inventory from '@mui/icons-material/Inventory';
+import ExpandLess from '@mui/icons-material/ExpandLess';
+import ExpandMore from '@mui/icons-material/ExpandMore';
+import QrCode from '@mui/icons-material/QrCode';
+import { Route } from 'react-router-dom';
 
 import { Layout, Menu, Title } from '.';
 
 export default { title: 'ra-ui-materialui/layout/Menu' };
 
 const resources = ['Posts', 'Comments', 'Tags', 'Users', 'Orders', 'Reviews'];
-
-const darkTheme: ThemeOptions = { ...defaultTheme, palette: { mode: 'dark' } };
 
 const DemoList = ({ name }) => (
     <>
@@ -41,14 +42,15 @@ const DemoList = ({ name }) => (
 
 export const Default = () => {
     const MenuDefault = () => <Menu hasDashboard={true} dense={false} />;
-    const DefaultLayout = props => <Layout {...props} menu={MenuDefault} />;
+    const DefaultLayout = ({ children }) => (
+        <Layout menu={MenuDefault}>{children}</Layout>
+    );
 
     return (
         <Admin
             store={memoryStore()}
             dataProvider={testDataProvider()}
             layout={DefaultLayout}
-            darkTheme={darkTheme}
         >
             {resources.map((resource, index) => (
                 <Resource
@@ -63,14 +65,15 @@ export const Default = () => {
 
 export const Dense = () => {
     const MenuDense = () => <Menu hasDashboard={true} dense={true} />;
-    const LayoutDense = props => <Layout {...props} menu={MenuDense} />;
+    const LayoutDense = ({ children }) => (
+        <Layout menu={MenuDense}>{children}</Layout>
+    );
 
     return (
         <Admin
             store={memoryStore()}
             dataProvider={testDataProvider()}
             layout={LayoutDense}
-            darkTheme={darkTheme}
         >
             {resources.map((resource, index) => (
                 <Resource
@@ -108,10 +111,12 @@ export const Custom = () => {
             />
         </Menu>
     );
-    const CustomLayout = props => <Layout {...props} menu={CustomMenu} />;
+    const CustomLayout = ({ children }) => (
+        <Layout menu={CustomMenu}>{children}</Layout>
+    );
 
     return (
-        <MemoryRouter initialEntries={['/']}>
+        <TestMemoryRouter initialEntries={['/']}>
             <Admin dataProvider={testDataProvider()} layout={CustomLayout}>
                 <CustomRoutes>
                     <Route path="/" element={<Page title="Dashboard" />} />
@@ -126,7 +131,7 @@ export const Custom = () => {
                     />
                 </CustomRoutes>
             </Admin>
-        </MemoryRouter>
+        </TestMemoryRouter>
     );
 };
 
@@ -197,10 +202,12 @@ export const MenuItemChild = () => {
             </Menu>
         );
     };
-    const CustomLayout = props => <Layout {...props} menu={CustomMenu} />;
+    const CustomLayout = ({ children }) => (
+        <Layout menu={CustomMenu}>{children}</Layout>
+    );
 
     return (
-        <MemoryRouter initialEntries={['/']}>
+        <TestMemoryRouter initialEntries={['/']}>
             <Admin dataProvider={testDataProvider()} layout={CustomLayout}>
                 <CustomRoutes>
                     <Route path="/" element={<Page title="Dashboard" />} />
@@ -215,6 +222,6 @@ export const MenuItemChild = () => {
                     />
                 </CustomRoutes>
             </Admin>
-        </MemoryRouter>
+        </TestMemoryRouter>
     );
 };

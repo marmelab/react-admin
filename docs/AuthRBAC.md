@@ -675,7 +675,11 @@ const authProvider= {
     }),
 };
 
-const CustomLayout = props => <Layout {...props} menu={Menu} />;
+const CustomLayout = ({ children }) => (
+    <Layout menu={Menu}>
+        {children}
+    </Layout>
+);
 
 const App = () => (
     <Admin dataProvider={dataProvider} authProvider={authProvider} layout={CustomLayout}>

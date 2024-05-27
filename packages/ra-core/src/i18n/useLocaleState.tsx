@@ -30,8 +30,9 @@ import { useStore } from '../store/useStore';
  */
 export const useLocaleState = () => {
     const i18nProvider = useI18nProvider();
-    const defaultLocale = useMemo(() => i18nProvider.getLocale(), [
-        i18nProvider,
-    ]);
+    const defaultLocale = useMemo(
+        () => i18nProvider.getLocale(),
+        [i18nProvider]
+    );
     return useStore<string>('locale', defaultLocale);
 };

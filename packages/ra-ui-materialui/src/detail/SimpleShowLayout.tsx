@@ -1,9 +1,8 @@
 import * as React from 'react';
 import { Children, isValidElement, ReactNode } from 'react';
 import { styled } from '@mui/material/styles';
-import { Stack } from '@mui/material';
-import { ResponsiveStyleValue, SxProps } from '@mui/system';
-import PropTypes from 'prop-types';
+import { Stack, StackProps } from '@mui/material';
+import { SxProps } from '@mui/system';
 import clsx from 'clsx';
 import {
     RaRecord,
@@ -53,17 +52,17 @@ import { Labeled } from '../Labeled';
  * @param {Object} props.sx Custom style object.
  */
 export const SimpleShowLayout = (props: SimpleShowLayoutProps) => {
-    const { className, children, divider, spacing = 1, ...rest } = props;
+    const { className, children, spacing = 1, sx, ...rest } = props;
     const record = useRecordContext(props);
     if (!record) {
         return null;
     }
     return (
         <OptionalRecordContextProvider value={props.record}>
-            <Root className={className} {...sanitizeRestProps(rest)}>
+            <Root className={className} sx={sx}>
                 <Stack
                     spacing={spacing}
-                    divider={divider}
+                    {...sanitizeRestProps(rest)}
                     className={SimpleShowLayoutClasses.stack}
                 >
                     {Children.map(children, field =>
@@ -88,22 +87,12 @@ export const SimpleShowLayout = (props: SimpleShowLayoutProps) => {
     );
 };
 
-export interface SimpleShowLayoutProps {
+export interface SimpleShowLayoutProps extends StackProps {
     children: ReactNode;
     className?: string;
-    divider?: ReactNode;
     record?: RaRecord;
-    spacing?: ResponsiveStyleValue<number | string>;
     sx?: SxProps;
 }
-
-SimpleShowLayout.propTypes = {
-    children: PropTypes.node,
-    className: PropTypes.string,
-    record: PropTypes.object,
-    spacing: PropTypes.any,
-    sx: PropTypes.any,
-};
 
 const PREFIX = 'RaSimpleShowLayout';
 

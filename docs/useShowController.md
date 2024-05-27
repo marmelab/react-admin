@@ -19,9 +19,9 @@ You can use `useShowController` to create your own custom Show view, like this o
 import { useShowController, RecordContextProvider, SimpleShowLayout } from 'react-admin';
 
 const PostShow = () => {
-    const { defaultTitle, error, isLoading, record } = useShowController();
+    const { defaultTitle, error, isPending, record } = useShowController();
 
-    if (isLoading) {
+    if (isPending) {
         return <div>Loading...</div>;
     }
     if (error) {
@@ -49,7 +49,7 @@ This custom Show view has no action buttons - it's up to you to add them in pure
 
 * [`disableAuthentication`](#disableauthentication): Boolean, set to `true` to disable the authentication check.
 * [`id`](#id): Record identifier. If not provided, it will be deduced from the URL.
-* [`queryOptions`](#queryoptions): Options object to pass to the [`useQuery`](./Actions.mdl#usequery-and-usemutation) hook.
+* [`queryOptions`](#queryoptions): Options object to pass to the [`useQuery`](./Actions.md#usequery-and-usemutation) hook.
 * [`resource`](#resource): Resource name, e.g. `posts`
 
 
@@ -115,11 +115,11 @@ const PostShow = props => {
     const {
         defaultTitle,
         error,
-        isLoading,
+        isPending,
         record,
     } = useShowController({ queryOptions: { onError } });
 
-    if (isLoading) {
+    if (isPending) {
         return <div>Loading...</div>;
     }
     if (error) {
@@ -172,6 +172,7 @@ const PostShow = () => {
 ```jsx
 const {
     defaultTitle, // Translated title based on the resource, e.g. 'Post #123'
+    isPending, // Boolean, true until the record is available
     isFetching, // Boolean, true while the record is being fetched, and false once done fetching
     isLoading, // Boolean, true until the record is available for the first time
     record, // Either the record fetched via dataProvider.getOne() based on the id from the location, a cached version of the record (see also the Caching documentation page) or undefined 

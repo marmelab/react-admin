@@ -11,7 +11,6 @@ export * from './TimeInput';
 export * from './FileInput';
 export * from './ImageInput';
 export * from './InputHelperText';
-export * from './InputPropTypes';
 export * from './LoadingInput';
 export * from './NullableBooleanInput';
 export * from './NumberInput';

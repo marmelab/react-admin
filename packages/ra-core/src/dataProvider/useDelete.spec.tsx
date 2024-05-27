@@ -18,7 +18,7 @@ import {
     ErrorCase as ErrorCaseUndoable,
     SuccessCase as SuccessCaseUndoable,
 } from './useDelete.undoable.stories';
-import { QueryClient } from 'react-query';
+import { QueryClient } from '@tanstack/react-query';
 
 describe('useDelete', () => {
     it('returns a callback that can be used with deleteOne arguments', async () => {
@@ -339,12 +339,15 @@ describe('useDelete', () => {
                 expect(screen.queryByText('World')).not.toBeNull();
                 expect(screen.queryByText('mutating')).not.toBeNull();
             });
-            await waitFor(() => {
-                expect(screen.queryByText('success')).not.toBeNull();
-                expect(screen.queryByText('Hello')).toBeNull();
-                expect(screen.queryByText('World')).not.toBeNull();
-                expect(screen.queryByText('mutating')).toBeNull();
-            });
+            await waitFor(
+                () => {
+                    expect(screen.queryByText('success')).not.toBeNull();
+                    expect(screen.queryByText('Hello')).toBeNull();
+                    expect(screen.queryByText('World')).not.toBeNull();
+                    expect(screen.queryByText('mutating')).toBeNull();
+                },
+                { timeout: 4000 }
+            );
         });
         it('when undoable, displays result and success side effects right away and reverts on cancel', async () => {
             jest.spyOn(console, 'log').mockImplementation(() => {});
@@ -383,12 +386,15 @@ describe('useDelete', () => {
                 expect(screen.queryByText('World')).not.toBeNull();
                 expect(screen.queryByText('mutating')).not.toBeNull();
             });
-            await waitFor(() => {
-                expect(screen.queryByText('success')).toBeNull();
-                expect(screen.queryByText('Hello')).not.toBeNull();
-                expect(screen.queryByText('World')).not.toBeNull();
-                expect(screen.queryByText('mutating')).toBeNull();
-            });
+            await waitFor(
+                () => {
+                    expect(screen.queryByText('success')).toBeNull();
+                    expect(screen.queryByText('Hello')).not.toBeNull();
+                    expect(screen.queryByText('World')).not.toBeNull();
+                    expect(screen.queryByText('mutating')).toBeNull();
+                },
+                { timeout: 4000 }
+            );
         });
     });
 

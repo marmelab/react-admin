@@ -161,7 +161,11 @@ Next, pass the custom menu to a custom `<Layout>` component:
 import { Layout } from 'react-admin';
 import { MyMenu } from './MyMenu';
 
-export const MyLayout = (props) => <Layout {...props} menu={MyMenu} />;
+export const MyLayout = ({ children }) => (
+    <Layout menu={MyMenu}>
+        {children}
+    </Layout>
+);
 ```
 
 Finally, pass the custom `<Layout>` component to `<Admin>`:
@@ -262,7 +266,7 @@ const BookList = () => {
     const { authorId } = useParams();
     return (
         <List resource="books" filter={{ authorId }}>
-            <Datagrid rowClick="edit">
+            <Datagrid>
                 <TextField source="id" />
                 <TextField source="title" />
                 <TextField source="year" />

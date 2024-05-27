@@ -1,6 +1,6 @@
 {
     "name": "ra-input-rich-text",
-    "version": "4.16.17",
+    "version": "5.0.0-beta.2",
     "description": "<RichTextInput> component for react-admin, useful for editing HTML code in admin GUIs.",
     "author": "Gildas Garcia",
     "repository": "marmelab/react-admin",
@@ -35,32 +35,32 @@
         "@tiptap/pm": "^2.0.3",
         "@tiptap/react": "^2.0.3",
         "@tiptap/starter-kit": "^2.0.3",
-        "clsx": "^1.1.1"
+        "clsx": "^2.1.1"
     },
     "peerDependencies": {
-        "@mui/icons-material": "^5.0.1",
-        "@mui/material": "^5.0.2",
+        "@mui/icons-material": "^5.15.15",
+        "@mui/material": "^5.15.15",
         "ra-core": "^4.0.0",
         "ra-ui-materialui": "^4.0.0",
-        "react": "^16.9.0 || ^17.0.0 || ^18.0.0",
-        "react-dom": "^16.9.0 || ^17.0.0 || ^18.0.0"
+        "react": "^18.0.0",
+        "react-dom": "^18.0.0"
     },
     "devDependencies": {
-        "@mui/icons-material": "^5.0.1",
-        "@mui/material": "^5.0.2",
-        "@testing-library/react": "^11.2.3",
+        "@mui/icons-material": "^5.15.15",
+        "@mui/material": "^5.15.15",
+        "@testing-library/react": "^14.1.2",
         "@tiptap/extension-mention": "^2.0.3",
         "@tiptap/suggestion": "^2.0.3",
-        "data-generator-retail": "^4.16.17",
-        "ra-core": "^4.16.17",
-        "ra-data-fakerest": "^4.16.17",
-        "ra-ui-materialui": "^4.16.17",
-        "react": "^17.0.0",
-        "react-dom": "^17.0.0",
+        "data-generator-retail": "^5.0.0-beta.2",
+        "ra-core": "^5.0.0-beta.2",
+        "ra-data-fakerest": "^5.0.0-beta.2",
+        "ra-ui-materialui": "^5.0.0-beta.2",
+        "react": "^18.0.0",
+        "react-dom": "^18.2.0",
         "react-hook-form": "^7.43.9",
         "rimraf": "^3.0.2",
         "tippy.js": "^6.3.7",
         "typescript": "^5.1.3"
     },
-    "gitHead": "b227592132da6ae5f01438fa8269e04596cdfdd8"
+    "gitHead": "587df4c27bfcec4a756df4f95e5fc14728dfc0d7"
 }

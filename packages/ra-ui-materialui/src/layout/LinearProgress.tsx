@@ -5,7 +5,6 @@ import {
     LinearProgress as MuiLinearProgress,
     LinearProgressProps as ProgressProps,
 } from '@mui/material';
-import PropTypes from 'prop-types';
 import { useTimeout } from 'ra-core';
 
 /**
@@ -36,11 +35,6 @@ export const LinearProgress = ({
     ) : (
         <Box my={1} height={4} />
     );
-};
-
-LinearProgress.propTypes = {
-    className: PropTypes.string,
-    timeout: PropTypes.number,
 };
 
 // What? TypeScript loses the displayName if we don't set it explicitly

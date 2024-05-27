@@ -23,7 +23,6 @@ export const ConfigurationInputsFromFieldDefinition = ({
                     <SelectInput
                         source={`${sourcePrefix}.props.reference`}
                         label="Referenced resource"
-                        fullWidth
                         choices={Object.keys(resources).map(name => ({
                             id: name,
                             name: resources[name].label || resources[name].name,
@@ -32,11 +31,10 @@ export const ConfigurationInputsFromFieldDefinition = ({
                     <SelectInput
                         source={`${sourcePrefix}.options.selectionType`}
                         label="How to select the reference"
-                        fullWidth
                         choices={ReferenceSelectionChoice}
                     />
                     <FormDataConsumer>
-                        {({ formData, ...rest }) => {
+                        {({ formData }) => {
                             const resourceName = get(
                                 formData,
                                 `${sourcePrefix}.props.reference`
@@ -54,7 +52,6 @@ export const ConfigurationInputsFromFieldDefinition = ({
                                             field.props.label ||
                                             field.props.source,
                                     }))}
-                                    {...rest}
                                 />
                             );
                         }}

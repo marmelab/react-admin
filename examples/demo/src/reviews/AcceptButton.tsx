@@ -1,5 +1,4 @@
 import * as React from 'react';
-import PropTypes from 'prop-types';
 import Button from '@mui/material/Button';
 import ThumbUp from '@mui/icons-material/ThumbUp';
 import {
@@ -20,9 +19,9 @@ const AcceptButton = () => {
     const redirectTo = useRedirect();
     const record = useRecordContext<Review>();
 
-    const [approve, { isLoading }] = useUpdate(
+    const [approve, { isPending }] = useUpdate(
         'reviews',
-        { id: record.id, data: { status: 'accepted' }, previousData: record },
+        { id: record?.id, data: { status: 'accepted' }, previousData: record },
         {
             mutationMode: 'undoable',
             onSuccess: () => {
@@ -49,17 +48,13 @@ const AcceptButton = () => {
             startIcon={
                 <ThumbUp sx={{ color: theme => theme.palette.success.main }} />
             }
-            disabled={isLoading}
+            disabled={isPending}
         >
             {translate('resources.reviews.action.accept')}
         </Button>
     ) : (
         <span />
     );
-};
-
-AcceptButton.propTypes = {
-    record: PropTypes.any,
 };
 
 export default AcceptButton;

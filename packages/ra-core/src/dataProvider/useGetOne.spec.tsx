@@ -5,13 +5,20 @@ import { render, waitFor } from '@testing-library/react';
 import { CoreAdminContext } from '../core';
 import { useGetOne } from './useGetOne';
 import { testDataProvider } from '../dataProvider';
+import { QueryClient } from '@tanstack/react-query';
 
 const UseGetOne = ({
     resource,
     id,
     meta = undefined,
     options = {},
-    callback = null,
+    callback = undefined,
+}: {
+    resource: string;
+    id: string | number;
+    meta?: object;
+    options?: object;
+    callback?: Function;
 }) => {
     const hookValue = useGetOne(resource, { id, meta }, options);
     if (callback) callback(hookValue);
@@ -39,6 +46,7 @@ describe('useGetOne', () => {
             expect(dataProvider.getOne).toHaveBeenCalledTimes(1);
             expect(dataProvider.getOne).toHaveBeenCalledWith('posts', {
                 id: 1,
+                signal: expect.anything(),
             });
         });
     });
@@ -134,6 +142,7 @@ describe('useGetOne', () => {
             expect(dataProvider.getOne).toHaveBeenCalledWith('posts', {
                 id: 1,
                 meta: { hello: 'world' },
+                signal: expect.anything(),
             });
         });
     });
@@ -162,11 +171,13 @@ describe('useGetOne', () => {
         await waitFor(() => {
             expect(dataProvider.getOne).toHaveBeenCalledTimes(1);
         });
-        expect(hookValue).toHaveBeenCalledWith(
-            expect.objectContaining({
-                error: new Error('failed'),
-            })
-        );
+        await waitFor(() => {
+            expect(hookValue).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    error: new Error('failed'),
+                })
+            );
+        });
     });
 
     it('should execute success side effects on success', async () => {
@@ -200,6 +211,38 @@ describe('useGetOne', () => {
         await waitFor(() => {
             expect(dataProvider.getOne).toHaveBeenCalledTimes(1);
             expect(onError).toHaveBeenCalledWith(new Error('failed'));
+        });
+    });
+
+    it('should abort the request if the query is canceled', async () => {
+        const abort = jest.fn();
+        const dataProvider = testDataProvider({
+            getOne: jest.fn(
+                (_resource, { signal }) =>
+                    new Promise(() => {
+                        signal.addEventListener('abort', () => {
+                            abort(signal.reason);
+                        });
+                    })
+            ) as any,
+        });
+        const queryClient = new QueryClient();
+        render(
+            <CoreAdminContext
+                dataProvider={dataProvider}
+                queryClient={queryClient}
+            >
+                <UseGetOne resource="posts" id={1} />
+            </CoreAdminContext>
+        );
+        await waitFor(() => {
+            expect(dataProvider.getOne).toHaveBeenCalled();
+        });
+        queryClient.cancelQueries({
+            queryKey: ['posts', 'getOne', { id: '1' }],
+        });
+        await waitFor(() => {
+            expect(abort).toHaveBeenCalled();
         });
     });
 });

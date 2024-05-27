@@ -8,7 +8,9 @@ import { ListGuesser } from '../list';
 
 describe('ResourceMenuItem', () => {
     it('should not throw when used with only <Resource> as <Admin> child', async () => {
-        const dataProvider = testDataProvider();
+        const dataProvider = testDataProvider({
+            getList: () => Promise.resolve({ data: [], total: 0 }),
+        });
         const CustomMenu = () => (
             <Menu>
                 <Menu.ResourceItem name="users" />
@@ -27,7 +29,9 @@ describe('ResourceMenuItem', () => {
         render(<App />);
     });
     it('should not throw when used with a Function as <Admin> child', async () => {
-        const dataProvider = testDataProvider();
+        const dataProvider = testDataProvider({
+            getList: () => Promise.resolve({ data: [], total: 0 }),
+        });
         const authProvider: any = {
             getPermissions: () => Promise.resolve([]),
             checkAuth: () => Promise.resolve(),

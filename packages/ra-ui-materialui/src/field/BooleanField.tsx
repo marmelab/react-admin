@@ -1,25 +1,21 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
-import { SvgIconComponent } from '@mui/icons-material';
-import PropTypes from 'prop-types';
-import get from 'lodash/get';
 import DoneIcon from '@mui/icons-material/Done';
 import ClearIcon from '@mui/icons-material/Clear';
-import { Tooltip, Typography, TypographyProps } from '@mui/material';
-import { useTranslate, useRecordContext } from 'ra-core';
+import { Tooltip, Typography, TypographyProps, SvgIcon } from '@mui/material';
+import { useTranslate, useFieldValue } from 'ra-core';
 import { genericMemo } from './genericMemo';
-import { FieldProps, fieldPropTypes } from './types';
+import { FieldProps } from './types';
 import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
 
 const BooleanFieldImpl = <
-    RecordType extends Record<string, any> = Record<string, any>
+    RecordType extends Record<string, any> = Record<string, any>,
 >(
     props: BooleanFieldProps<RecordType>
 ) => {
     const {
         className,
         emptyText,
-        source,
         valueLabelTrue,
         valueLabelFalse,
         TrueIcon = DoneIcon,
@@ -27,10 +23,8 @@ const BooleanFieldImpl = <
         looseValue = false,
         ...rest
     } = props;
-    const record = useRecordContext<RecordType>(props);
     const translate = useTranslate();
-
-    const value = get(record, source);
+    const value = useFieldValue(props);
     const isTruthyValue = value === true || (looseValue && value);
     let ariaLabel = value ? valueLabelTrue : valueLabelFalse;
 
@@ -82,29 +76,18 @@ const BooleanFieldImpl = <
         </Typography>
     );
 };
-
-BooleanFieldImpl.propTypes = {
-    // @ts-ignore
-    ...Typography.propTypes,
-    ...fieldPropTypes,
-    valueLabelFalse: PropTypes.string,
-    valueLabelTrue: PropTypes.string,
-    TrueIcon: PropTypes.elementType,
-    FalseIcon: PropTypes.elementType,
-    looseValue: PropTypes.bool,
-};
 BooleanFieldImpl.displayName = 'BooleanFieldImpl';
 
 export const BooleanField = genericMemo(BooleanFieldImpl);
 
 export interface BooleanFieldProps<
-    RecordType extends Record<string, any> = Record<string, any>
+    RecordType extends Record<string, any> = Record<string, any>,
 > extends FieldProps<RecordType>,
         Omit<TypographyProps, 'textAlign'> {
     valueLabelTrue?: string;
     valueLabelFalse?: string;
-    TrueIcon?: SvgIconComponent | null;
-    FalseIcon?: SvgIconComponent | null;
+    TrueIcon?: typeof SvgIcon | null;
+    FalseIcon?: typeof SvgIcon | null;
     looseValue?: boolean;
 }
 

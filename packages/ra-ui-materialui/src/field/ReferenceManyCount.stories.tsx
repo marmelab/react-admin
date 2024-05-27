@@ -1,11 +1,11 @@
 import * as React from 'react';
-import { QueryClientProvider, QueryClient } from 'react-query';
+import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 import {
     DataProviderContext,
     RecordContextProvider,
     ResourceContextProvider,
+    TestMemoryRouter,
 } from 'ra-core';
-import { MemoryRouter } from 'react-router-dom';
 
 import { ReferenceManyCount } from './ReferenceManyCount';
 
@@ -27,7 +27,7 @@ const comments = [
 ];
 
 export const Wrapper = ({ dataProvider, children }) => (
-    <MemoryRouter>
+    <TestMemoryRouter>
         <DataProviderContext.Provider value={dataProvider}>
             <QueryClientProvider
                 client={
@@ -47,7 +47,7 @@ export const Wrapper = ({ dataProvider, children }) => (
                 </ResourceContextProvider>
             </QueryClientProvider>
         </DataProviderContext.Provider>
-    </MemoryRouter>
+    </TestMemoryRouter>
 );
 
 export const Basic = () => (

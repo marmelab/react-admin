@@ -1,7 +1,11 @@
 import * as React from 'react';
 import { Admin } from 'react-admin';
-import { required, Resource } from 'ra-core';
-import { createMemoryHistory } from 'history';
+import {
+    required,
+    Resource,
+    testI18nProvider,
+    TestMemoryRouter,
+} from 'ra-core';
 import { InputAdornment } from '@mui/material';
 
 import { Edit, Create } from '../../detail';
@@ -40,8 +44,6 @@ const dataProvider = {
     },
 } as any;
 
-const history = createMemoryHistory({ initialEntries: ['/books/1'] });
-
 const BookEdit = () => {
     return (
         <Edit
@@ -66,71 +68,43 @@ const BookEdit = () => {
 };
 
 export const Basic = () => (
-    <Admin dataProvider={dataProvider} history={history}>
-        <Resource name="books" edit={BookEdit} />
-    </Admin>
+    <TestMemoryRouter initialEntries={['/books/1']}>
+        <Admin dataProvider={dataProvider}>
+            <Resource name="books" edit={BookEdit} />
+        </Admin>
+    </TestMemoryRouter>
 );
 
 export const Disabled = () => (
-    <Admin dataProvider={dataProvider} history={history}>
-        <Resource
-            name="books"
-            edit={() => {
-                return (
-                    <Edit
-                        mutationMode="pessimistic"
-                        mutationOptions={{
-                            onSuccess: data => {
-                                console.log(data);
-                            },
-                        }}
-                    >
-                        <SimpleForm>
-                            <TextInput source="title" />
-                            <ArrayInput source="authors" disabled>
-                                <SimpleFormIterator>
-                                    <TextInput source="name" />
-                                    <TextInput source="role" />
-                                    <TextInput source="surname" />
-                                </SimpleFormIterator>
-                            </ArrayInput>
-                        </SimpleForm>
-                    </Edit>
-                );
-            }}
-        />
-    </Admin>
-);
-
-export const ReadOnly = () => (
-    <Admin dataProvider={dataProvider} history={history}>
-        <Resource
-            name="books"
-            edit={() => {
-                return (
-                    <Edit
-                        mutationMode="pessimistic"
-                        mutationOptions={{
-                            onSuccess: data => {
-                                console.log(data);
-                            },
-                        }}
-                    >
-                        <SimpleForm>
-                            <TextInput source="title" />
-                            <ArrayInput source="authors" readOnly>
-                                <SimpleFormIterator>
-                                    <TextInput source="name" />
-                                    <TextInput source="role" />
-                                    <TextInput source="surname" />
-                                </SimpleFormIterator>
-                            </ArrayInput>
-                        </SimpleForm>
-                    </Edit>
-                );
-            }}
-        />
-    </Admin>
+    <TestMemoryRouter initialEntries={['/books/1']}>
+        <Admin dataProvider={dataProvider}>
+            <Resource
+                name="books"
+                edit={() => {
+                    return (
+                        <Edit
+                            mutationMode="pessimistic"
+                            mutationOptions={{
+                                onSuccess: data => {
+                                    console.log(data);
+                                },
+                            }}
+                        >
+                            <SimpleForm>
+                                <TextInput source="title" />
+                                <ArrayInput source="authors" disabled>
+                                    <SimpleFormIterator>
+                                        <TextInput source="name" />
+                                        <TextInput source="role" />
+                                    </SimpleFormIterator>
+                                </ArrayInput>
+                            </SimpleForm>
+                        </Edit>
+                    );
+                }}
+            />
+        </Admin>
+    </TestMemoryRouter>
 );
 
 const BookEditWithAutocomplete = () => {
@@ -163,40 +137,91 @@ const BookEditWithAutocomplete = () => {
 };
 
 export const AutocompleteFirst = () => (
-    <Admin dataProvider={dataProvider} history={history}>
-        <Resource name="books" edit={BookEditWithAutocomplete} />
-    </Admin>
+    <TestMemoryRouter initialEntries={['/books/1']}>
+        <Admin dataProvider={dataProvider}>
+            <Resource name="books" edit={BookEditWithAutocomplete} />
+        </Admin>
+    </TestMemoryRouter>
 );
 
 export const Scalar = () => (
-    <Admin dataProvider={dataProvider} history={history}>
-        <Resource
-            name="books"
-            edit={() => (
-                <Edit
-                    mutationMode="pessimistic"
-                    mutationOptions={{
-                        onSuccess: data => {
-                            console.log(data);
+    <TestMemoryRouter initialEntries={['/books/1']}>
+        <Admin dataProvider={dataProvider}>
+            <Resource
+                name="books"
+                edit={() => (
+                    <Edit
+                        mutationMode="pessimistic"
+                        mutationOptions={{
+                            onSuccess: data => {
+                                console.log(data);
+                            },
+                        }}
+                    >
+                        <SimpleForm>
+                            <TextInput source="title" />
+                            <ArrayInput source="tags" fullWidth>
+                                <SimpleFormIterator disableReordering>
+                                    <TextInput
+                                        source=""
+                                        label="tag"
+                                        helperText={false}
+                                    />
+                                </SimpleFormIterator>
+                            </ArrayInput>
+                        </SimpleForm>
+                    </Edit>
+                )}
+            />
+        </Admin>
+    </TestMemoryRouter>
+);
+
+export const ScalarI18n = () => (
+    <TestMemoryRouter initialEntries={['/books/1']}>
+        <Admin
+            dataProvider={dataProvider}
+            i18nProvider={testI18nProvider({
+                messages: {
+                    resources: {
+                        books: {
+                            fields: {
+                                tags: 'Some tags',
+                                tag: 'A tag',
+                            },
                         },
-                    }}
-                >
-                    <SimpleForm>
-                        <TextInput source="title" />
-                        <ArrayInput source="tags" fullWidth>
-                            <SimpleFormIterator disableReordering>
-                                <TextInput
-                                    source=""
-                                    label="tag"
-                                    helperText={false}
-                                />
-                            </SimpleFormIterator>
-                        </ArrayInput>
-                    </SimpleForm>
-                </Edit>
-            )}
-        />
-    </Admin>
+                    },
+                },
+            })}
+        >
+            <Resource
+                name="books"
+                edit={() => (
+                    <Edit
+                        mutationMode="pessimistic"
+                        mutationOptions={{
+                            onSuccess: data => {
+                                console.log(data);
+                            },
+                        }}
+                    >
+                        <SimpleForm>
+                            <TextInput source="title" />
+                            <ArrayInput source="tags" fullWidth>
+                                <SimpleFormIterator disableReordering>
+                                    <TextInput
+                                        source=""
+                                        label="resources.books.fields.tag"
+                                        helperText={false}
+                                    />
+                                </SimpleFormIterator>
+                            </ArrayInput>
+                        </SimpleForm>
+                    </Edit>
+                )}
+            />
+        </Admin>
+    </TestMemoryRouter>
 );
 
 const order = {
@@ -247,168 +272,185 @@ const order = {
 };
 
 export const Realistic = () => (
-    <Admin
-        dataProvider={
-            {
-                getOne: () => Promise.resolve({ data: order }),
-                update: (_resource, params) => Promise.resolve(params),
-            } as any
-        }
-        history={createMemoryHistory({ initialEntries: ['/orders/1'] })}
-    >
-        <Resource
-            name="orders"
-            edit={() => (
-                <Edit
-                    mutationMode="pessimistic"
-                    mutationOptions={{
-                        onSuccess: data => {
-                            console.log(data);
-                        },
-                    }}
-                >
-                    <SimpleForm>
-                        <TextInput
-                            source="customer"
-                            helperText={false}
-                            sx={{ width: 250 }}
-                        />
-                        <DateInput source="date" helperText={false} />
-                        <ArrayInput source="items">
-                            <SimpleFormIterator inline>
-                                <TextInput
-                                    source="name"
-                                    helperText={false}
-                                    sx={{ width: 250 }}
-                                />
-                                <NumberInput
-                                    source="price"
-                                    helperText={false}
-                                    InputProps={{
-                                        startAdornment: (
-                                            <InputAdornment position="start">
-                                                €
-                                            </InputAdornment>
-                                        ),
-                                    }}
-                                    sx={{ maxWidth: 120 }}
-                                />
-                                <NumberInput
-                                    source="quantity"
-                                    helperText={false}
-                                    sx={{ maxWidth: 120 }}
-                                />
-                            </SimpleFormIterator>
-                        </ArrayInput>
-                    </SimpleForm>
-                </Edit>
-            )}
-        />
-    </Admin>
+    <TestMemoryRouter initialEntries={['/orders/1']}>
+        <Admin
+            dataProvider={
+                {
+                    getOne: () => Promise.resolve({ data: order }),
+                    update: (_resource, params) => Promise.resolve(params),
+                } as any
+            }
+        >
+            <Resource
+                name="orders"
+                edit={() => (
+                    <Edit
+                        mutationMode="pessimistic"
+                        mutationOptions={{
+                            onSuccess: data => {
+                                console.log(data);
+                            },
+                        }}
+                    >
+                        <SimpleForm sx={{ maxWidth: 600 }}>
+                            <TextInput source="customer" helperText={false} />
+                            <DateInput source="date" helperText={false} />
+                            <ArrayInput source="items">
+                                <SimpleFormIterator inline>
+                                    <TextInput
+                                        source="name"
+                                        helperText={false}
+                                        sx={{ width: 250 }}
+                                    />
+                                    <NumberInput
+                                        source="price"
+                                        helperText={false}
+                                        InputProps={{
+                                            startAdornment: (
+                                                <InputAdornment position="start">
+                                                    €
+                                                </InputAdornment>
+                                            ),
+                                        }}
+                                        sx={{ maxWidth: 120 }}
+                                    />
+                                    <NumberInput
+                                        source="quantity"
+                                        helperText={false}
+                                        sx={{ maxWidth: 120 }}
+                                    />
+                                </SimpleFormIterator>
+                            </ArrayInput>
+                        </SimpleForm>
+                    </Edit>
+                )}
+            />
+        </Admin>
+    </TestMemoryRouter>
 );
 
 export const NestedInline = () => (
-    <Admin
-        dataProvider={
-            {
-                getOne: () => Promise.resolve({ data: order }),
-                update: (_resource, params) => Promise.resolve(params),
-            } as any
-        }
-        history={createMemoryHistory({ initialEntries: ['/orders/1'] })}
-    >
-        <Resource
-            name="orders"
-            edit={() => (
-                <Edit
-                    mutationMode="pessimistic"
-                    mutationOptions={{
-                        onSuccess: data => {
-                            console.log(data);
-                        },
-                    }}
-                >
-                    <SimpleForm>
-                        <TextInput source="customer" helperText={false} />
-                        <DateInput source="date" helperText={false} />
-                        <ArrayInput source="items">
-                            <SimpleFormIterator inline fullWidth>
-                                <TextInput source="name" helperText={false} />
-                                <NumberInput
-                                    source="price"
-                                    helperText={false}
-                                />
-                                <NumberInput
-                                    source="quantity"
-                                    helperText={false}
-                                />
-                                <ArrayInput source="extras">
-                                    <SimpleFormIterator
-                                        inline
-                                        disableReordering
-                                    >
-                                        <TextInput
-                                            source="type"
-                                            helperText={false}
-                                        />
-                                        <NumberInput
-                                            source="price"
-                                            helperText={false}
-                                        />
-                                        <TextInput
-                                            source="content"
-                                            helperText={false}
-                                        />
-                                    </SimpleFormIterator>
-                                </ArrayInput>
-                            </SimpleFormIterator>
-                        </ArrayInput>
-                    </SimpleForm>
-                </Edit>
-            )}
-        />
-    </Admin>
+    <TestMemoryRouter initialEntries={['/orders/1']}>
+        <Admin
+            dataProvider={
+                {
+                    getOne: () => Promise.resolve({ data: order }),
+                    update: (_resource, params) => Promise.resolve(params),
+                } as any
+            }
+        >
+            <Resource
+                name="orders"
+                edit={() => (
+                    <Edit
+                        mutationMode="pessimistic"
+                        mutationOptions={{
+                            onSuccess: data => {
+                                console.log(data);
+                            },
+                        }}
+                    >
+                        <SimpleForm>
+                            <TextInput source="customer" helperText={false} />
+                            <DateInput source="date" helperText={false} />
+                            <ArrayInput source="items">
+                                <SimpleFormIterator
+                                    inline
+                                    sx={{
+                                        '& .MuiStack-root': {
+                                            flexWrap: 'wrap',
+                                        },
+                                    }}
+                                >
+                                    <TextInput
+                                        source="name"
+                                        helperText={false}
+                                        sx={{ width: 200 }}
+                                    />
+                                    <NumberInput
+                                        source="price"
+                                        helperText={false}
+                                        sx={{ width: 100 }}
+                                    />
+                                    <NumberInput
+                                        source="quantity"
+                                        helperText={false}
+                                        sx={{ width: 100 }}
+                                    />
+                                    <ArrayInput source="extras">
+                                        <SimpleFormIterator
+                                            inline
+                                            disableReordering
+                                        >
+                                            <TextInput
+                                                source="type"
+                                                helperText={false}
+                                                sx={{ width: 100 }}
+                                            />
+                                            <NumberInput
+                                                source="price"
+                                                helperText={false}
+                                                sx={{ width: 100 }}
+                                            />
+                                            <TextInput
+                                                source="content"
+                                                helperText={false}
+                                                sx={{ width: 200 }}
+                                            />
+                                        </SimpleFormIterator>
+                                    </ArrayInput>
+                                </SimpleFormIterator>
+                            </ArrayInput>
+                        </SimpleForm>
+                    </Edit>
+                )}
+            />
+        </Admin>
+    </TestMemoryRouter>
 );
 
 export const ActionsLeft = () => (
-    <Admin dataProvider={dataProvider} history={history}>
-        <Resource
-            name="books"
-            edit={() => (
-                <Edit
-                    mutationMode="pessimistic"
-                    mutationOptions={{
-                        onSuccess: data => {
-                            console.log(data);
-                        },
-                    }}
-                >
-                    <SimpleForm>
-                        <TextInput source="title" />
-                        <ArrayInput source="authors">
-                            <SimpleFormIterator
-                                sx={{
-                                    '& .RaSimpleFormIterator-indexContainer': {
-                                        order: 0,
-                                    },
-                                    '& .RaSimpleFormIterator-action': {
-                                        order: 1,
-                                        visibility: 'visible',
-                                    },
-                                    '& .RaSimpleFormIterator-form': {
-                                        order: 2,
-                                    },
-                                }}
-                            >
-                                <TextInput source="name" />
-                                <TextInput source="role" />
-                            </SimpleFormIterator>
-                        </ArrayInput>
-                    </SimpleForm>
-                </Edit>
-            )}
-        />
-    </Admin>
+    <TestMemoryRouter initialEntries={['/books/1']}>
+        <Admin dataProvider={dataProvider}>
+            <Resource
+                name="books"
+                edit={() => (
+                    <Edit
+                        mutationMode="pessimistic"
+                        mutationOptions={{
+                            onSuccess: data => {
+                                console.log(data);
+                            },
+                        }}
+                    >
+                        <SimpleForm>
+                            <TextInput source="title" />
+                            <ArrayInput source="authors">
+                                <SimpleFormIterator
+                                    sx={{
+                                        '& .RaSimpleFormIterator-indexContainer':
+                                            {
+                                                order: 0,
+                                            },
+                                        '& .RaSimpleFormIterator-action': {
+                                            order: 1,
+                                            visibility: 'visible',
+                                        },
+                                        '& .RaSimpleFormIterator-form': {
+                                            order: 2,
+                                        },
+                                    }}
+                                >
+                                    <TextInput source="name" />
+                                    <TextInput source="role" />
+                                </SimpleFormIterator>
+                            </ArrayInput>
+                        </SimpleForm>
+                    </Edit>
+                )}
+            />
+        </Admin>
+    </TestMemoryRouter>
 );
 
 const globalValidator = values => {
@@ -440,8 +482,8 @@ const BookEditGlobalValidation = () => {
             }}
         >
             <SimpleForm validate={globalValidator}>
-                {/*
-                  We still need `validate={required()}` to indicate fields are required
+                {/* 
+                  We still need `validate={required()}` to indicate fields are required 
                   with a '*' symbol after the label, but the real validation happens in `globalValidator`
                 */}
                 <ArrayInput source="authors" fullWidth validate={required()}>
@@ -455,9 +497,11 @@ const BookEditGlobalValidation = () => {
     );
 };
 export const GlobalValidation = () => (
-    <Admin dataProvider={dataProvider} history={history}>
-        <Resource name="books" edit={BookEditGlobalValidation} />
-    </Admin>
+    <TestMemoryRouter initialEntries={['/books/1']}>
+        <Admin dataProvider={dataProvider}>
+            <Resource name="books" edit={BookEditGlobalValidation} />
+        </Admin>
+    </TestMemoryRouter>
 );
 
 const CreateGlobalValidationInFormTab = () => {
@@ -470,8 +514,8 @@ const CreateGlobalValidationInFormTab = () => {
             }}
         >
             <TabbedForm validate={globalValidator}>
-                {/*
-                  We still need `validate={required()}` to indicate fields are required
+                {/* 
+                  We still need `validate={required()}` to indicate fields are required 
                   with a '*' symbol after the label, but the real validation happens in `globalValidator`
                 */}
                 <TabbedForm.Tab label="Main">
@@ -493,12 +537,9 @@ const CreateGlobalValidationInFormTab = () => {
 };
 
 export const ValidationInFormTab = () => (
-    <Admin
-        dataProvider={dataProvider}
-        history={createMemoryHistory({
-            initialEntries: ['/books/create'],
-        })}
-    >
-        <Resource name="books" create={CreateGlobalValidationInFormTab} />
-    </Admin>
+    <TestMemoryRouter initialEntries={['/books/create']}>
+        <Admin dataProvider={dataProvider}>
+            <Resource name="books" create={CreateGlobalValidationInFormTab} />
+        </Admin>
+    </TestMemoryRouter>
 );

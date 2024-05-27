@@ -1,17 +1,16 @@
-import React, { FC, ReactElement, ReactNode } from 'react';
-import PropTypes from 'prop-types';
+import React, { ReactElement, ReactNode } from 'react';
 import {
     FilterPayload,
     SortPayload,
     useReferenceManyFieldController,
     ListContextProvider,
-    ListControllerResult,
     ResourceContextProvider,
     useRecordContext,
     RaRecord,
 } from 'ra-core';
+import { UseQueryOptions } from '@tanstack/react-query';
 
-import { fieldPropTypes, FieldProps } from './types';
+import { FieldProps } from './types';
 
 /**
  * Render related records to the current one.
@@ -61,9 +60,9 @@ import { fieldPropTypes, FieldProps } from './types';
  */
 export const ReferenceManyField = <
     RecordType extends RaRecord = RaRecord,
-    ReferenceRecordType extends RaRecord = RaRecord
+    ReferenceRecordType extends RaRecord = RaRecord,
 >(
-    props: ReferenceManyFieldProps<RecordType>
+    props: ReferenceManyFieldProps<RecordType, ReferenceRecordType>
 ) => {
     const {
         children,
@@ -77,6 +76,7 @@ export const ReferenceManyField = <
         sort = defaultSort,
         source = 'id',
         target,
+        queryOptions,
     } = props;
     const record = useRecordContext(props);
 
@@ -94,6 +94,7 @@ export const ReferenceManyField = <
         sort,
         source,
         target,
+        queryOptions,
     });
 
     return (
@@ -107,8 +108,9 @@ export const ReferenceManyField = <
 };
 
 export interface ReferenceManyFieldProps<
-    RecordType extends Record<string, any> = Record<string, any>
-> extends FieldProps<RecordType> {
+    RecordType extends Record<string, any> = Record<string, any>,
+    ReferenceRecordType extends Record<string, any> = Record<string, any>,
+> extends Omit<FieldProps<RecordType>, 'source'> {
     children: ReactNode;
     debounce?: number;
     filter?: FilterPayload;
@@ -117,66 +119,13 @@ export interface ReferenceManyFieldProps<
     perPage?: number;
     reference: string;
     sort?: SortPayload;
+    source?: string;
     target: string;
+    queryOptions?: UseQueryOptions<
+        { data: ReferenceRecordType[]; total: number },
+        Error
+    >;
 }
-
-ReferenceManyField.propTypes = {
-    children: PropTypes.node.isRequired,
-    className: PropTypes.string,
-    filter: PropTypes.object,
-    label: fieldPropTypes.label,
-    perPage: PropTypes.number,
-    record: PropTypes.any,
-    reference: PropTypes.string.isRequired,
-    resource: PropTypes.string,
-    sortBy: PropTypes.string,
-    sortByOrder: fieldPropTypes.sortByOrder,
-    source: PropTypes.string,
-    sort: PropTypes.exact({
-        field: PropTypes.string,
-        order: PropTypes.oneOf(['ASC', 'DESC'] as const),
-    }),
-    target: PropTypes.string.isRequired,
-};
-
-// FIXME kept for backwards compatibility, unused, to be removed in v5
-export const ReferenceManyFieldView: FC<ReferenceManyFieldViewProps> = props => {
-    const { children, pagination } = props;
-    if (process.env.NODE_ENV !== 'production') {
-        console.error(
-            '<ReferenceManyFieldView> is deprecated, use <ReferenceManyField> directly'
-        );
-    }
-    return (
-        <>
-            {children}
-            {pagination && props.total !== undefined ? pagination : null}
-        </>
-    );
-};
-
-export interface ReferenceManyFieldViewProps
-    extends Omit<
-            ReferenceManyFieldProps,
-            'resource' | 'page' | 'perPage' | 'sort'
-        >,
-        ListControllerResult {
-    children: ReactElement;
-}
-
-ReferenceManyFieldView.propTypes = {
-    children: PropTypes.element,
-    className: PropTypes.string,
-    sort: PropTypes.exact({
-        field: PropTypes.string,
-        order: PropTypes.oneOf(['ASC', 'DESC'] as const),
-    }),
-    data: PropTypes.any,
-    isLoading: PropTypes.bool,
-    pagination: PropTypes.element,
-    reference: PropTypes.string,
-    setSort: PropTypes.func,
-};
 
 const defaultFilter = {};
 const defaultSort = { field: 'id', order: 'DESC' as const };

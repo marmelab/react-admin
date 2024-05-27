@@ -1,20 +1,18 @@
 import * as React from 'react';
 import { AnchorHTMLAttributes } from 'react';
-import get from 'lodash/get';
 import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
 import { Typography, Link } from '@mui/material';
-import { useRecordContext, useTranslate } from 'ra-core';
-import { FieldProps, fieldPropTypes } from './types';
+import { useFieldValue, useTranslate } from 'ra-core';
+import { FieldProps } from './types';
 import { genericMemo } from './genericMemo';
 
 const UrlFieldImpl = <
-    RecordType extends Record<string, any> = Record<string, any>
+    RecordType extends Record<string, any> = Record<string, any>,
 >(
     props: UrlFieldProps<RecordType>
 ) => {
-    const { className, emptyText, source, ...rest } = props;
-    const record = useRecordContext(props);
-    const value = get(record, source);
+    const { className, emptyText, ...rest } = props;
+    const value = useFieldValue(props);
     const translate = useTranslate();
 
     if (value == null) {
@@ -42,14 +40,12 @@ const UrlFieldImpl = <
         </Link>
     );
 };
-
-UrlFieldImpl.propTypes = fieldPropTypes;
 UrlFieldImpl.displayName = 'UrlFieldImpl';
 
 export const UrlField = genericMemo(UrlFieldImpl);
 
 export interface UrlFieldProps<
-    RecordType extends Record<string, any> = Record<string, any>
+    RecordType extends Record<string, any> = Record<string, any>,
 > extends FieldProps<RecordType>,
         AnchorHTMLAttributes<HTMLAnchorElement> {}
 

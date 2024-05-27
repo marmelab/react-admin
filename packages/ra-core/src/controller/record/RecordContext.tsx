@@ -8,9 +8,9 @@ import { RaRecord } from '../../types';
  * @see RecordContextProvider
  * @see useRecordContext
  */
-export const RecordContext = createContext<RaRecord | Omit<RaRecord, 'id'>>(
-    undefined
-);
+export const RecordContext = createContext<
+    RaRecord | Omit<RaRecord, 'id'> | undefined
+>(undefined);
 
 RecordContext.displayName = 'RecordContext';
 
@@ -37,7 +37,7 @@ RecordContext.displayName = 'RecordContext';
  * };
  */
 export const RecordContextProvider = <
-    RecordType extends RaRecord | Omit<RaRecord, 'id'> = RaRecord
+    RecordType extends RaRecord | Omit<RaRecord, 'id'> = RaRecord,
 >({
     children,
     value,

@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { ReactElement, FC, memo } from 'react';
-import PropTypes from 'prop-types';
 import {
     Table,
     TableCell,
@@ -27,10 +26,10 @@ const DatagridLoading = ({
     nbChildren,
     nbFakeLines = 5,
     size,
-}: DatagridLoadingProps): JSX.Element => {
+}: DatagridLoadingProps) => {
     const oneSecondHasPassed = useTimeout(1000);
-
-    return oneSecondHasPassed ? (
+    if (!oneSecondHasPassed) return null;
+    return (
         <div className={DatagridClasses.root}>
             <Table
                 className={clsx(DatagridClasses.table, className)}
@@ -113,16 +112,7 @@ const DatagridLoading = ({
                 </TableBody>
             </Table>
         </div>
-    ) : null;
-};
-
-DatagridLoading.propTypes = {
-    className: PropTypes.string,
-    expand: PropTypes.oneOfType([PropTypes.element, PropTypes.elementType]),
-    hasBulkActions: PropTypes.bool,
-    nbChildren: PropTypes.number,
-    nbFakeLines: PropTypes.number,
-    size: PropTypes.oneOf(['small', 'medium']),
+    );
 };
 
 export interface DatagridLoadingProps {

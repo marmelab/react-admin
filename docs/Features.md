@@ -19,7 +19,7 @@ React-admin provides the **best-in-class documentation**, demo apps, and support
 
 That probably explains why more than 3,000 new apps are published every month using react-admin.
 
-So react-admin is not just the assembly of [react-query](https://react-query.tanstack.com/), [react-hook-form](https://react-hook-form.com/), [react-router](https://reacttraining.com/react-router/), [Material UI](https://mui.com/material-ui/getting-started/) and [Emotion](https://github.com/emotion-js/emotion). It's a **framework** made to speed up and facilitate the development of single-page apps in React.
+So react-admin is not just the assembly of [React Query](https://react-query.tanstack.com/), [react-hook-form](https://react-hook-form.com/), [react-router](https://reacttraining.com/react-router/), [Material UI](https://mui.com/material-ui/getting-started/) and [Emotion](https://github.com/emotion-js/emotion). It's a **framework** made to speed up and facilitate the development of single-page apps in React.
 
 ## Basic CRUD
 
@@ -70,7 +70,7 @@ import { useDataProvider } from 'react-admin';
 const PostList = () => {
     const [posts, setPosts] = useState([]);
     const [error, setError] = useState();
-    const [isLoading, setIsLoading] = useState(true);
+    const [isPending, setIsPending] = useState(true);
     const dataProvider = useDataProvider();
     useEffect(() => {
         dataProvider.getList('posts', {
@@ -80,9 +80,9 @@ const PostList = () => {
         })
             .then(({ data }) => setPosts(data))
             .catch(error => setError(error))
-            .finally(() => setIsLoading(false));
+            .finally(() => setIsPending(false));
     }, []);
-    if (isLoading) { return <p>Loading</p>; }
+    if (isPending) { return <p>Loading</p>; }
     if (error) { return <p>ERROR</p>; }
     return (
         <ul>
@@ -96,18 +96,18 @@ const PostList = () => {
 
 The data provider object is responsible for translating the data provider method calls into HTTP requests, and for translating the HTTP responses into data provider method results.
 
-And by the way, using `useEffect` for data fetching is cumbersome. Instead, you can rely on the [specialized data provider hooks](./Actions.md#dataprovider-method-hooks), such as `useGetList`:
+And by the way, using `useEffect` for data fetching is cumbersome. Instead, you can rely on the [specialized data provider hooks](./Actions.md#query-hooks), such as `useGetList`:
 
 ```jsx
 import { useGetList } from 'react-admin';
 
 const PostList = () => {
-    const { data, isLoading, error } = useGetList('posts', {
+    const { data, isPending, error } = useGetList('posts', {
         pagination: { page: 1, perPage: 10 },
         sort: { field: 'published_at', order: 'DESC' },
         filter: { status: 'published' }
     });
-    if (isLoading) { return <Loading />; }
+    if (isPending) { return <Loading />; }
     if (error) { return <p>ERROR</p>; }
     return (
         <ul>
@@ -214,7 +214,7 @@ const BookList = () => (
     <List filters={[
         <ReferenceInput source="authorId" reference="authors" alwaysOn />,
     ]}>
-        <Datagrid rowClick="edit">
+        <Datagrid>
             <TextField source="id" />
             <TextField source="title" />
             <ReferenceField source="authorId" reference="authors" />
@@ -295,7 +295,7 @@ import {
 import { Link } from 'react-router-dom';
 
 const PostList = () => {
-  const { data, page, total, setPage, isLoading } = useListController({
+  const { data, page, total, setPage, isPending } = useListController({
     sort: { field: 'published_at', order: 'DESC' },
     perPage: 10,
   });
@@ -309,7 +309,7 @@ const PostList = () => {
           <Button icon={<PlusOutlined />}>Create</Button>
         </Link>
       </div>
-      <Card bodyStyle={{ padding: '0' }} loading={isLoading}>
+      <Card bodyStyle={{ padding: '0' }} loading={isPending}>
         <Table
           size="small"
           dataSource={data}
@@ -978,13 +978,13 @@ import { useGetList } from "react-admin";
 import { Timeline } from "@react-admin/ra-audit-log";
 
 const Dashboard = () => {
-  const { data, isLoading } = useGetList(
+  const { data, isPending } = useGetList(
     "events",
     { page: 1, perPage: 25 },
     { field: "date", order: "desc" }
   );
 
-  return <Timeline isLoading={isLoading} records={data} />;
+  return <Timeline isPending={isPending} records={data} />;
 };
 ```
 
@@ -1133,7 +1133,7 @@ These building blocks include:
 And if you want to create your building blocks, you can use any of the [75+ hooks](./Reference.md#hooks) that carry **headless, reusable logic**. To name a few of them:
 
 - [`useRecordContext`](./useRecordContext.md) to get the current record anywhere in the app
-- [`useWarnWhenUnsavedChanges`](./EditTutorial.md#warning-about-unsaved-changes) to warn the user when he tries to leave a page with unsaved changes
+- [`useWarnWhenUnsavedChanges`](./Forms.md#warning-about-unsaved-changes) to warn the user when he tries to leave a page with unsaved changes
 - [`useSaveContext`](./useSaveContext.md) to tweak form submission
 - [`useTheme`](./useTheme.md) to change the theme programmatically
 
@@ -1223,8 +1223,10 @@ import { MenuLive } from '@react-admin/ra-realtime';
 
 import { PostList, PostShow, PostEdit, realTimeDataProvider } from '.';
 
-const CustomLayout = (props) => (
-    <Layout {...props} menu={MenuLive} />
+const CustomLayout = ({ children }) => (
+    <Layout menu={MenuLive}>
+        {children}
+    </Layout>
 );
 
 const MyReactAdmin = () => (
@@ -1252,7 +1254,7 @@ A user can lock a resource, either by voluntarily asking for a lock or by editin
 
 ```tsx
 export const NewMessageForm = () => {
-    const [create, { isLoading: isCreating }] = useCreate();
+    const [create, { isPending }] = useCreate();
     const record = useRecordContext();
 
     const { data: lock } = useGetLockLive('tickets', { id: record.id });
@@ -1279,7 +1281,7 @@ export const NewMessageForm = () => {
                 choices={statusChoices}
                 disabled={isFormDisabled}
             />
-            <Button type="submit" disabled={isCreating || isFormDisabled}>
+            <Button type="submit" disabled={isPending || isFormDisabled}>
                 Submit
             </Button>
         </Form>
@@ -1723,4 +1725,4 @@ The core team is fortunate to be able to work full-time on react-admin, and this
 - stay up-to-date with the latest React and libraries versions
 - contribute to the open-source community
 
-At Marmelab, "sustainable" also means **low carbon footprint**. React-admin is regularly audited with [GreenFrame](https://greenframe.io/), a tool that measures the carbon footprint of software projects. Technical choices are also made with the environment in mind. For instance, the use of [React Query](https://react-query-v3.tanstack.com/) for caching data in react-admin reduces the number of HTTP requests, and thus reduces the carbon footprint of the application.
+At Marmelab, "sustainable" also means **low carbon footprint**. React-admin is regularly audited with [GreenFrame](https://greenframe.io/), a tool that measures the carbon footprint of software projects. Technical choices are also made with the environment in mind. For instance, the use of [React Query](https://tanstack.com/query/v5/) for caching data in react-admin reduces the number of HTTP requests, and thus reduces the carbon footprint of the application.

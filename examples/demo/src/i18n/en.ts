@@ -22,8 +22,7 @@ const customEnglishMessages: TranslationMessages = {
             all_customers: 'See all customers',
             pending_orders: 'Pending Orders',
             order: {
-                items:
-                    'by %{customer_name}, one item |||| by %{customer_name}, %{nb_items} items',
+                items: 'by %{customer_name}, one item |||| by %{customer_name}, %{nb_items} items',
             },
             welcome: {
                 title: 'Welcome to the react-admin e-commerce demo',
@@ -51,7 +50,7 @@ const customEnglishMessages: TranslationMessages = {
         customers: {
             name: 'Customer |||| Customers',
             fields: {
-                commands: 'Orders',
+                orders: 'Orders',
                 first_seen: 'First seen',
                 full_name: 'Name',
                 groups: 'Segments',
@@ -91,7 +90,7 @@ const customEnglishMessages: TranslationMessages = {
                     'The password confirmation is not the same as the password.',
             },
         },
-        commands: {
+        orders: {
             name: 'Order |||| Orders',
             amount: '1 order |||| %{smart_count} orders',
             title: 'Order %{reference}',
@@ -128,7 +127,7 @@ const customEnglishMessages: TranslationMessages = {
             fields: {
                 date: 'Invoice date',
                 customer_id: 'Customer',
-                command_id: 'Order',
+                order_id: 'Order',
                 date_gte: 'Passed Since',
                 date_lte: 'Passed Before',
                 total_gte: 'Min amount',
@@ -186,7 +185,7 @@ const customEnglishMessages: TranslationMessages = {
             detail: 'Review detail',
             fields: {
                 customer_id: 'Customer',
-                command_id: 'Order',
+                order_id: 'Order',
                 product_id: 'Product',
                 date_gte: 'Posted since',
                 date_lte: 'Posted before',

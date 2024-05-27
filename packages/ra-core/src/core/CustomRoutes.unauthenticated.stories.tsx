@@ -14,13 +14,11 @@ export default {
     },
 };
 
-export const UnauthenticatedCustomRoute = (argsOrProps, context) => {
-    const history = context?.history || argsOrProps.history;
+export const UnauthenticatedCustomRoute = () => {
     return (
         <CoreAdmin
             authProvider={authProvider}
             dataProvider={dataProvider}
-            history={history}
             loginPage={Login}
         >
             <CustomRoutes noLayout>
@@ -33,7 +31,7 @@ export const UnauthenticatedCustomRoute = (argsOrProps, context) => {
         </CoreAdmin>
     );
 };
-const dataProvider = {
+const dataProvider: any = {
     getList: () => Promise.resolve({ data: [], total: 0 }),
     getOne: () => Promise.resolve({ data: { id: 0 } }),
     getMany: () => Promise.resolve({ data: [] }),

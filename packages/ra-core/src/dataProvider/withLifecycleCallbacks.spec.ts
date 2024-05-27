@@ -9,9 +9,12 @@ describe('withLifecycleCallbacks', () => {
             resource: 'posts',
             beforeGetOne: jest.fn(params => Promise.resolve(params)),
         };
-        const dataProvider = withLifecycleCallbacks(testDataProvider(), [
-            resourceCallback,
-        ]);
+        const dataProvider = withLifecycleCallbacks(
+            testDataProvider({
+                getOne: async () => ({ data: { id: 123 } }),
+            }),
+            [resourceCallback]
+        );
         dataProvider.getOne('posts', { id: 1 });
         expect(resourceCallback.beforeGetOne).toHaveBeenCalled();
     });
@@ -20,9 +23,12 @@ describe('withLifecycleCallbacks', () => {
             resource: 'posts',
             beforeGetOne: jest.fn(params => Promise.resolve(params)),
         };
-        const dataProvider = withLifecycleCallbacks(testDataProvider(), [
-            resourceCallback,
-        ]);
+        const dataProvider = withLifecycleCallbacks(
+            testDataProvider({
+                getOne: async () => ({ data: { id: 123 } }),
+            }),
+            [resourceCallback]
+        );
         dataProvider.getOne('comments', { id: 1 });
         expect(resourceCallback.beforeGetOne).not.toHaveBeenCalled();
     });
@@ -32,9 +38,13 @@ describe('withLifecycleCallbacks', () => {
             beforeGetOne: jest.fn(params => Promise.resolve(params)),
             beforeGetMany: jest.fn(params => Promise.resolve(params)),
         };
-        const dataProvider = withLifecycleCallbacks(testDataProvider(), [
-            resourceCallback,
-        ]);
+        const dataProvider = withLifecycleCallbacks(
+            testDataProvider({
+                getOne: async () => ({ data: { id: 123 } }),
+                getMany: async () => ({ data: [{ id: 123 }, { id: 456 }] }),
+            }),
+            [resourceCallback]
+        );
 
         dataProvider.getOne('posts', { id: 1 });
         expect(resourceCallback.beforeGetOne).toHaveBeenCalled();
@@ -848,6 +858,74 @@ describe('withLifecycleCallbacks', () => {
 
             expect(result).toEqual({
                 data: [1, 2, 'foo', 'bar'],
+            });
+        });
+    });
+
+    describe('wildcard', () => {
+        it('a wildcard should apply to all resources', async () => {
+            const params = {
+                filter: { q: 'foo' },
+                sort: { field: 'id', order: 'DESC' },
+                pagination: { page: 1, perPage: 10 },
+            };
+            const base = {
+                getList: jest.fn(() => Promise.resolve({ data: [], total: 0 })),
+            };
+
+            const dataProvider = withLifecycleCallbacks(base, [
+                {
+                    resource: '*',
+                    beforeGetList: jest.fn(params =>
+                        Promise.resolve({ ...params, meta: 'foo' })
+                    ),
+                },
+            ]);
+
+            await dataProvider.getList('posts', params);
+
+            expect(base.getList).toHaveBeenCalledWith('posts', {
+                ...params,
+                meta: 'foo',
+            });
+        });
+    });
+
+    describe('multiple callbacks', () => {
+        it('you can pass multiple callbacks as an array', async () => {
+            const params = {
+                filter: { q: 'foo' },
+                sort: { field: 'id', order: 'DESC' },
+                pagination: { page: 1, perPage: 10 },
+            };
+            const base = {
+                getList: jest.fn(() => Promise.resolve({ data: [], total: 0 })),
+            };
+
+            const dataProvider = withLifecycleCallbacks(base, [
+                {
+                    resource: 'posts',
+                    beforeGetList: [
+                        jest.fn(params =>
+                            Promise.resolve({ ...params, one: 'done' })
+                        ),
+                        jest.fn(params =>
+                            Promise.resolve({ ...params, two: 'done' })
+                        ),
+                        jest.fn(params =>
+                            Promise.resolve({ ...params, three: 'done' })
+                        ),
+                    ],
+                },
+            ]);
+
+            await dataProvider.getList('posts', params);
+
+            expect(base.getList).toHaveBeenCalledWith('posts', {
+                ...params,
+                one: 'done',
+                two: 'done',
+                three: 'done',
             });
         });
     });

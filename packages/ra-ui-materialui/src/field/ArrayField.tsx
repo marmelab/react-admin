@@ -7,9 +7,10 @@ import {
     useList,
     SortPayload,
     FilterPayload,
+    RaRecord,
 } from 'ra-core';
 
-import { FieldProps, fieldPropTypes } from './types';
+import { FieldProps } from './types';
 import { genericMemo } from './genericMemo';
 
 /**
@@ -76,15 +77,13 @@ import { genericMemo } from './genericMemo';
  * @see useListContext
  */
 const ArrayFieldImpl = <
-    RecordType extends Record<string, any> = Record<string, any>
+    RecordType extends Record<string, any> = Record<string, any>,
 >(
     props: ArrayFieldProps<RecordType>
 ) => {
     const { children, resource, source, perPage, sort, filter } = props;
     const record = useRecordContext(props);
-    const data =
-        (get(record, source, emptyArray) as Record<string, any>[]) ||
-        emptyArray;
+    const data = (get(record, source, emptyArray) as RaRecord[]) || emptyArray;
     const listContext = useList({ data, resource, perPage, sort, filter });
     return (
         <ListContextProvider value={listContext}>
@@ -92,13 +91,12 @@ const ArrayFieldImpl = <
         </ListContextProvider>
     );
 };
-ArrayFieldImpl.propTypes = { ...fieldPropTypes };
 ArrayFieldImpl.displayName = 'ArrayFieldImpl';
 
 export const ArrayField = genericMemo(ArrayFieldImpl);
 
 export interface ArrayFieldProps<
-    RecordType extends Record<string, any> = Record<string, any>
+    RecordType extends Record<string, any> = Record<string, any>,
 > extends FieldProps<RecordType> {
     children?: ReactNode;
     perPage?: number;

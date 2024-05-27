@@ -7,7 +7,7 @@ title: "useUnique"
 
 Validating the uniqueness of a field is a common requirement so React-admin provides the `useUnique` hook that returns a validator for this use case.
 
-It will call the [`dataProvider.getList`](./DataProviderWriting.md#request-format) method with a filter to check whether a record exists with the current value of the input for the field matching the input source.
+It will call the [`dataProvider.getList`](./DataProviderWriting.md#getlist) method with a filter to check whether a record exists with the current value of the input for the field matching the input source.
 
 <video controls autoplay playsinline muted loop>
   <source src="./img/useUnique.webm" type="video/webm"/>
@@ -75,7 +75,7 @@ const UserCreateForm = () => {
 
 ## `debounce`
 
-The number of milliseconds to wait for new changes before actually calling the [`dataProvider.getList`](./DataProviderWriting.md#request-format) method.
+The number of milliseconds to wait for new changes before actually calling the [`dataProvider.getList`](./DataProviderWriting.md#getlist) method.
 
 
 ```jsx
@@ -93,7 +93,7 @@ const UserCreateForm = () => {
 
 ## `resource`
 
-The resource targeted by the [`dataProvider.getList`](./DataProviderWriting.md#request-format) call. Defaults to the resource from the nearest [`ResourceContext`](./Resource.md#resource-context).
+The resource targeted by the [`dataProvider.getList`](./DataProviderWriting.md#getlist) call. Defaults to the resource from the nearest [`ResourceContext`](./Resource.md#resource-context).
 
 This can be useful for custom pages instead of setting up a [`ResourceContext`](./Resource.md#resource-context).
 
@@ -113,7 +113,7 @@ const UserCreateForm = () => {
 
 ## `filter`
 
-Additional filters to pass to the [`dataProvider.getList`](./DataProviderWriting.md#request-format) method. This is useful when the value should be unique across a subset of the resource records, for instance, usernames in an organization:
+Additional filters to pass to the [`dataProvider.getList`](./DataProviderWriting.md#getlist) method. This is useful when the value should be unique across a subset of the resource records, for instance, usernames in an organization:
 
 ```jsx
 import { FormDataConsumer, ReferenceInput, SimpleForm, TextInput, useUnique } from 'react-admin';

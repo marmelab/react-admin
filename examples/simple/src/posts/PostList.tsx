@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { Fragment, memo } from 'react';
 import BookIcon from '@mui/icons-material/Book';
 import { Box, Chip, useMediaQuery } from '@mui/material';
 import { Theme, styled } from '@mui/material/styles';
@@ -30,6 +29,7 @@ import {
     TextField,
     TextInput,
     TopToolbar,
+    useRecordContext,
     useTranslate,
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
 
@@ -39,7 +39,7 @@ export const PostIcon = BookIcon;
 const QuickFilter = ({
     label,
 }: {
-    label?: string;
+    label: string;
     source?: string;
     defaultValue?: any;
 }) => {
@@ -67,7 +67,7 @@ const exporter = posts => {
     return jsonExport(data, (err, csv) => downloadCSV(csv, 'posts'));
 };
 
-const PostListMobileActions = () => (
+const postListMobileActions = (
     <TopToolbar>
         <FilterButton />
         <CreateButton />
@@ -80,7 +80,7 @@ const PostListMobile = () => (
         filters={postFilter}
         sort={{ field: 'published_at', order: 'DESC' }}
         exporter={exporter}
-        actions={<PostListMobileActions />}
+        actions={postListMobileActions}
     >
         <SimpleList
             primaryText={record => record.title}
@@ -110,21 +110,15 @@ const StyledDatagrid = styled(DatagridConfigurable)(({ theme }) => ({
     '& .publishedAt': { fontStyle: 'italic' },
 }));
 
-const PostListBulkActions = memo(
-    ({
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        children,
-        ...props
-    }) => (
-        <Fragment>
-            <ResetViewsButton {...props} />
-            <BulkDeleteButton {...props} />
-            <BulkExportButton {...props} />
-        </Fragment>
-    )
+const postListBulkActions = (
+    <>
+        <ResetViewsButton />
+        <BulkDeleteButton />
+        <BulkExportButton />
+    </>
 );
 
-const PostListActions = () => (
+const postListActions = (
     <TopToolbar>
         <SelectColumnsButton />
         <FilterButton />
@@ -145,21 +139,22 @@ const rowClick = (_id, _resource, record) => {
     return 'show';
 };
 
-const PostPanel = ({ record }) => (
-    <div dangerouslySetInnerHTML={{ __html: record.body }} />
-);
+const PostPanel = () => {
+    const record = useRecordContext();
+    return <div dangerouslySetInnerHTML={{ __html: record?.body }} />;
+};
 
-const tagSort = { field: 'name.en', order: 'ASC' };
+const tagSort = { field: 'name.en', order: 'ASC' } as const;
 
 const PostListDesktop = () => (
     <List
         filters={postFilter}
         sort={{ field: 'published_at', order: 'DESC' }}
         exporter={exporter}
-        actions={<PostListActions />}
+        actions={postListActions}
     >
         <StyledDatagrid
-            bulkActionButtons={<PostListBulkActions />}
+            bulkActionButtons={postListBulkActions}
             rowClick={rowClick}
             expand={PostPanel}
             omit={['average_note']}

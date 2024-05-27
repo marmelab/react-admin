@@ -47,20 +47,22 @@ const EventList = () => {
     const translate = useTranslate();
 
     const { data: orders, total: totalOrders } = useGetList<OrderRecord>(
-        'commands',
+        'orders',
         {
             pagination: { page: 1, perPage: 100 },
             sort: { field: 'date', order: 'DESC' },
-            filter: { customer_id: record.id },
-        }
+            filter: { customer_id: record?.id },
+        },
+        { enabled: !!record?.id }
     );
     const { data: reviews, total: totalReviews } = useGetList<ReviewRecord>(
         'reviews',
         {
             pagination: { page: 1, perPage: 100 },
             sort: { field: 'date', order: 'DESC' },
-            filter: { customer_id: record.id },
-        }
+            filter: { customer_id: record?.id },
+        },
+        { enabled: !!record?.id }
     );
     const events = mixOrdersAndReviews(orders, reviews);
 
@@ -87,7 +89,7 @@ const EventList = () => {
                             </Box>
                         </Grid>
                         <Grid item xs={6} display="flex" gap={1}>
-                            {totalOrders! > 0 && (
+                            {totalOrders! > 0 && record && (
                                 <>
                                     <order.icon
                                         fontSize="small"
@@ -97,7 +99,7 @@ const EventList = () => {
                                         variant="body2"
                                         flexGrow={1}
                                         to={{
-                                            pathname: '/commands',
+                                            pathname: '/orders',
                                             search: `displayedFilters=${JSON.stringify(
                                                 { customer_id: true }
                                             )}&filter=${JSON.stringify({
@@ -106,12 +108,9 @@ const EventList = () => {
                                             })}`,
                                         }}
                                     >
-                                        {translate(
-                                            'resources.commands.amount',
-                                            {
-                                                smart_count: totalOrders,
-                                            }
-                                        )}
+                                        {translate('resources.orders.amount', {
+                                            smart_count: totalOrders,
+                                        })}
                                     </Link>
                                 </>
                             )}
@@ -128,7 +127,7 @@ const EventList = () => {
                             </Box>
                         </Grid>
                         <Grid item xs={6} display="flex" gap={1}>
-                            {totalReviews! > 0 && (
+                            {totalReviews! > 0 && record && (
                                 <>
                                     <review.icon
                                         fontSize="small"
@@ -164,7 +163,7 @@ const EventList = () => {
 
 interface AsideEvent {
     type: string;
-    date: Date;
+    date: string;
     data: OrderRecord | ReviewRecord;
 }
 
@@ -203,9 +202,10 @@ const Timeline = ({ events }: { events: AsideEvent[] }) => (
                 completed
             >
                 <Link
-                    to={`/${event.type === 'order' ? 'commands' : 'reviews'}/${
+                    to={`/${event.type === 'order' ? 'orders' : 'reviews'}/${
                         event.data.id
                     }`}
+                    underline="none"
                 >
                     <RecordContextProvider value={event.data}>
                         <StepLabel

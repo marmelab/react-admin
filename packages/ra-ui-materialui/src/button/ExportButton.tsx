@@ -1,16 +1,12 @@
 import * as React from 'react';
 import { useCallback } from 'react';
-import PropTypes from 'prop-types';
 import DownloadIcon from '@mui/icons-material/GetApp';
 import {
     fetchRelatedRecords,
     useDataProvider,
     useNotify,
     useListContext,
-    SortPayload,
     Exporter,
-    FilterPayload,
-    useResourceContext,
 } from 'ra-core';
 import { Button, ButtonProps } from './Button';
 
@@ -27,11 +23,11 @@ export const ExportButton = (props: ExportButtonProps) => {
     const {
         filter,
         filterValues,
+        resource,
         sort,
         exporter: exporterFromContext,
         total,
-    } = useListContext(props);
-    const resource = useResourceContext(props);
+    } = useListContext();
     const exporter = customExporter || exporterFromContext;
     const dataProvider = useDataProvider();
     const notify = useNotify();
@@ -93,38 +89,19 @@ export const ExportButton = (props: ExportButtonProps) => {
 const defaultIcon = <DownloadIcon />;
 
 const sanitizeRestProps = ({
-    filterValues,
     resource,
     ...rest
-}: Omit<
-    ExportButtonProps,
-    'sort' | 'maxResults' | 'label' | 'exporter' | 'meta'
->) => rest;
+}: Omit<ExportButtonProps, 'maxResults' | 'label' | 'exporter' | 'meta'>) =>
+    rest;
 
 interface Props {
     exporter?: Exporter;
-    filterValues?: FilterPayload;
     icon?: JSX.Element;
     label?: string;
     maxResults?: number;
     onClick?: (e: Event) => void;
     resource?: string;
-    sort?: SortPayload;
     meta?: any;
 }
 
 export type ExportButtonProps = Props & ButtonProps;
-
-ExportButton.propTypes = {
-    exporter: PropTypes.func,
-    filterValues: PropTypes.object,
-    label: PropTypes.string,
-    maxResults: PropTypes.number,
-    resource: PropTypes.string,
-    sort: PropTypes.exact({
-        field: PropTypes.string,
-        order: PropTypes.oneOf(['ASC', 'DESC'] as const),
-    }),
-    icon: PropTypes.element,
-    meta: PropTypes.any,
-};

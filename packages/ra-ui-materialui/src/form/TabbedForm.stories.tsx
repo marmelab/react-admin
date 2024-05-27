@@ -15,8 +15,7 @@ const data = {
     id: 1,
     title: 'War and Peace',
     author: 'Leo Tolstoy',
-    bio:
-        'Leo Tolstoy (1828-1910) was a Russian writer who is regarded as one of the greatest authors of all time. He received nominations for the Nobel Prize in Literature every year from 1902 to 1906 and for the Nobel Peace Prize in 1901, 1902, and 1909.',
+    bio: 'Leo Tolstoy (1828-1910) was a Russian writer who is regarded as one of the greatest authors of all time. He received nominations for the Nobel Prize in Literature every year from 1902 to 1906 and for the Nobel Peace Prize in 1901, 1902, and 1909.',
     year: 1869,
 };
 
@@ -30,6 +29,7 @@ const Wrapper = ({ children }) => (
         dataProvider={testDataProvider({
             getOne: () => Promise.resolve({ data }),
         })}
+        defaultTheme="light"
     >
         <ResourceContextProvider value="books">
             <Edit id={1} sx={{ width: 600 }}>
@@ -43,7 +43,7 @@ export const Basic = () => (
     <Wrapper>
         <TabbedForm>
             <TabbedForm.Tab label="main">
-                <TextInput source="title" fullWidth />
+                <TextInput source="title" />
                 <TextInput source="author" />
                 <NumberInput source="year" />
             </TabbedForm.Tab>
@@ -55,12 +55,12 @@ export const MultipleTabs = () => (
     <Wrapper>
         <TabbedForm>
             <TabbedForm.Tab label="main">
-                <TextInput source="title" fullWidth />
+                <TextInput source="title" />
                 <TextInput source="author" />
                 <NumberInput source="year" />
             </TabbedForm.Tab>
             <TabbedForm.Tab label="details">
-                <TextInput multiline source="bio" fullWidth />
+                <TextInput multiline source="bio" />
             </TabbedForm.Tab>
         </TabbedForm>
     </Wrapper>
@@ -70,7 +70,7 @@ export const CustomLayout = () => (
     <Wrapper>
         <TabbedForm>
             <TabbedForm.Tab label="main">
-                <TextInput source="title" fullWidth />
+                <TextInput source="title" />
                 <Stack direction="row" gap={1} width="100%">
                     <TextInput source="author" sx={{ width: '50%' }} />
                     <NumberInput source="year" sx={{ width: '50%' }} />
@@ -84,7 +84,7 @@ export const NoToolbar = () => (
     <Wrapper>
         <TabbedForm toolbar={false}>
             <TabbedForm.Tab label="main">
-                <TextInput source="title" fullWidth />
+                <TextInput source="title" />
                 <TextInput source="author" sx={{ width: '50%' }} />
                 <NumberInput source="year" sx={{ width: '50%' }} />
             </TabbedForm.Tab>
@@ -96,12 +96,12 @@ export const Count = () => (
     <Wrapper>
         <TabbedForm>
             <TabbedForm.Tab label="main">
-                <TextInput source="title" fullWidth />
+                <TextInput source="title" />
                 <TextInput source="author" />
                 <NumberInput source="year" />
             </TabbedForm.Tab>
             <TabbedForm.Tab label="comments" count={3}>
-                <TextInput multiline source="bio" fullWidth />
+                <TextInput multiline source="bio" />
             </TabbedForm.Tab>
         </TabbedForm>
     </Wrapper>

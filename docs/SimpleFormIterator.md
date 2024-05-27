@@ -13,12 +13,11 @@ This component provides a UI for editing arrays of objects, one row per object.
   Your browser does not support the video tag.
 </video>
 
-
 `<SimpleFormIterator>` lets users edit, add, remove and reorder sub-records. It is designed to be used as a child of [`<ArrayInput>`](./ArrayInput.md) or [`<ReferenceManyInput>`](./ReferenceManyInput.md). You can also use it within an `ArrayInputContext` containing a *field array*, i.e. the value returned by [react-hook-form's `useFieldArray` hook](https://react-hook-form.com/docs/usefieldarray).
 
 ## Usage
 
-`<SimpleFormIterator>` requires no prop by default. It expects an array of inputs as children. It renders these inputs once per row and takes care of setting a different source for each row. 
+`<SimpleFormIterator>` requires no prop by default. It expects an array of inputs as children. It renders these inputs once per row and takes care of setting a different source for each row.
 
 ```jsx
 import { 
@@ -68,7 +67,7 @@ const OrderEdit = () => (
 );
 ```
 
-![Simple form iterator block](./img/array-input-block.png)
+![Simple form iterator block](./img/array-input-block.webp)
 
 ## Props
 
@@ -81,13 +80,11 @@ const OrderEdit = () => (
 | `disableClear` | Optional | `boolean` | `false` | When true, the user cannot clear the array |
 | `disableRemove` | Optional | `boolean` | `false` | When true, the user cannot remove rows |
 | `disableReordering` | Optional | `boolean` | `false` | When true, the user cannot reorder rows |
-| `fullWidth` | Optional | `boolean` | `false` | Set to true to push the actions to the right |
+| `fullWidth` | Optional | `boolean` | `true` | Set to false to glue the actions to last input |
 | `getItemLabel` | Optional | `function` | `x => x` | Callback to render the label displayed in each row |
 | `inline` | Optional | `boolean` | `false` | When true, inputs are put on the same line |
 | `removeButton` | Optional | `ReactElement` | - | Component to render for the remove button |
 | `reOrderButtons` | Optional | `ReactElement` | - | Component to render for the up / down button |
-| `readOnly` | Optional | `boolean` | `false` | If true, all inputs are in read-only mode. |
-| `disabled` | Optional | `boolean` | `false` | If true, all inputs are disabled. |
 | `sx` | Optional | `SxProps` | - | Material UI shortcut for defining custom styles |
 
 ## `addButton`
@@ -116,12 +113,7 @@ A list of Input elements, that will be rendered on each row.
 
 By default, `<SimpleFormIterator>` renders one input per line, but they can be displayed inline with the `inline` prop.
 
-`<SimpleFormIterator>` also accepts `<FormDataConsumer>` as child. When used inside a form iterator, `<FormDataConsumer>` provides two additional properties to its children function:
-
-- `scopedFormData`: an object containing the current values of the currently rendered item from the ArrayInput
-- `getSource`: a function that translates the source into a valid one for the ArrayInput
-
-And here is an example usage for `getSource` inside `<ArrayInput>`:
+`<SimpleFormIterator>` also accepts `<FormDataConsumer>` as child. In this case, `<FormDataConsumer>` provides one additional property to its child function called `scopedFormData`. It's an object containing the current values of the *currently rendered item*. This allows you to create dependencies between inputs inside a `<SimpleFormIterator>`, as in the following example:
 
 ```jsx
 import { FormDataConsumer } from 'react-admin';
@@ -136,14 +128,11 @@ const PostEdit = () => (
                         {({
                             formData, // The whole form data
                             scopedFormData, // The data for this item of the ArrayInput
-                            getSource, // A function to get the valid source inside an ArrayInput
-                            ...rest
                         }) =>
                             scopedFormData && scopedFormData.name ? (
                                 <SelectInput
-                                    source={getSource('role')} // Will translate to "authors[0].role"
+                                    source="role" // Will translate to "authors[0].role"
                                     choices={[{ id: 1, name: 'Head Writer' }, { id: 2, name: 'Co-Writer' }]}
-                                    {...rest}
                                 />
                             ) : null
                         }
@@ -155,7 +144,7 @@ const PostEdit = () => (
 );
 ```
 
-**Tip:** TypeScript users will notice that `scopedFormData` and `getSource` are typed as optional parameters. This is because the `<FormDataConsumer>` component can be used outside of a `<SimpleFormIterator>` and in that case, these parameters will be `undefined`. If you are inside a `<SimpleFormIterator>`, you can safely assume that these parameters will be defined.
+**Tip:** TypeScript users will notice that `scopedFormData` is typed as an optional parameter. This is because the `<FormDataConsumer>` component can be used outside of an `<ArrayInput>` and in that case, this parameter will be `undefined`. If you are inside an `<ArrayInput>`, you can safely assume that this parameter will be defined.
 
 **Note**: `<SimpleFormIterator>` only accepts `Input` components as children. If you want to use some `Fields` instead, you have to use a `<FormDataConsumer>`, as follows:
 
@@ -243,19 +232,19 @@ When true, the up and down buttons aren't rendered, so the user cannot reorder r
 
 ## `fullWidth`
 
-When true, the row actions appear at the end of the row.
+By default, the row actions appear at the end of the row.
+
+![SimpleFormIterator full width](./img/simple-form-iterator-fullWidth.png)
+
+If your form is narrow, you can set the `fullWidth` prop to `false` to make the row actions appear at the end of the form.
 
 ```jsx
-<SimpleFormIterator fullWidth>
+<SimpleFormIterator fullWidth={false}>
     <TextInput source="name" />
     <NumberInput source="price" />
     <NumberInput source="quantity" />
 </SimpleFormIterator>
 ```
-
-![SimpleFormIterator full width](./img/simple-form-iterator-fullWidth.png)
-
-This differs with the default behavior, where the row actions appear after the inputs.
 
 ![SimpleFormIterator default width](./img/simple-form-iterator-fullWidth-false.png)
 
@@ -285,7 +274,7 @@ When true, inputs are put on the same line. Use this option to make the lines mo
 </SimpleFormIterator>
 ```
 
-![Inline form iterator](./img/simple-form-iterator-inline.png)
+![Inline form iterator](./img/simple-form-iterator-inline.webp)
 
 Without this prop, `<SimpleFormIterator>` will render one input per line.
 
@@ -297,7 +286,7 @@ Without this prop, `<SimpleFormIterator>` will render one input per line.
 </SimpleFormIterator>
 ```
 
-![Not Inline form iterator](./img/simple-form-iterator-not-inline.png)
+![Not Inline form iterator](./img/simple-form-iterator-not-inline.webp)
 
 ## `removeButton`
 
@@ -355,34 +344,6 @@ const OrderEdit = () => (
     </Edit>
 );
 ```
-
-## `readOnly`
-
-The `readOnly` prop set to true makes the children input not mutable, meaning the user can not edit them.
-
-```jsx
-<SimpleFormIterator readOnly>
-    <TextInput source="name" />
-    <NumberInput source="price" />
-    <NumberInput source="quantity" />
-</SimpleFormIterator>
-```
-
-Contrary to disabled controls, read-only controls are submitted with the form.
-
-## `disabled`
-
-The `disabled` prop set to true makes the children input not mutable, focusable, or even submitted with the form.
-
-```jsx
-<SimpleFormIterator disabled>
-    <TextInput source="name" />
-    <NumberInput source="price" />
-    <NumberInput source="quantity" />
-</SimpleFormIterator>
-```
-
-Contrary to read-only controls, disabled controls are not submitted with the form.
 
 ## `sx`
 

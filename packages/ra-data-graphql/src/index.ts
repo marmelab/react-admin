@@ -56,7 +56,7 @@ export const ALL_TYPES = INNER_ALL_TYPES;
  * dataProvider.delete()           // mutation deleteCustomer($id: id) { ... }
  * // note that updateMany and deleteMany aren't mapped in this adapter
  */
-const defaultOptions = {
+export const defaultOptions = {
     resolveIntrospection: introspectSchema,
     introspection: {
         operationNames: {
@@ -127,10 +127,7 @@ export type Options = {
     watchQuery?: GetWatchQueryOptions;
 };
 
-// @FIXME in v5: This doesn't need to be an async method
-const buildGraphQLProvider = async (
-    options: Options
-): Promise<DataProvider> => {
+const buildGraphQLProvider = (options: Options): DataProvider => {
     const {
         client: clientObject,
         clientOptions,
@@ -185,6 +182,11 @@ const buildGraphQLProvider = async (
                 ...query,
                 fetchPolicy: 'network-only',
                 ...getOptions(otherOptions.query, raFetchMethod, resource),
+                context: {
+                    fetchOptions: {
+                        signal: params?.signal,
+                    },
+                },
             };
 
             return (

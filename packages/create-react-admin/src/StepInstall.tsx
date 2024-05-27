@@ -15,7 +15,7 @@ const choices: ChoiceType[] = [
     },
     {
         label: "Don't install dependencies, I'll do it myself.",
-        value: '',
+        value: 'skip',
     },
 ];
 

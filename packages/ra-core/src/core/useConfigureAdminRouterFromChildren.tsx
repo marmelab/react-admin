@@ -43,13 +43,13 @@ import { useResourceDefinitionContext } from './useResourceDefinitionContext';
 export const useConfigureAdminRouterFromChildren = (
     children: AdminChildren
 ): RoutesAndResources & { status: AdminRouterStatus } => {
-    const { permissions, isLoading } = usePermissions();
+    const { permissions, isPending } = usePermissions();
 
     // Whenever children are updated, update our custom routes and resources
     const [routesAndResources, status] = useRoutesAndResourcesFromChildren(
         children,
         permissions,
-        isLoading
+        isPending
     );
 
     // Whenever the resources change, we must ensure they're all registered
@@ -70,7 +70,7 @@ export const useConfigureAdminRouterFromChildren = (
  * @param permissions The permissions
  */
 const useRoutesAndResourcesFromChildren = (
-    children: ReactNode,
+    children: AdminChildren,
     permissions: any,
     isLoading: boolean
 ): [RoutesAndResources, AdminRouterStatus] => {
@@ -79,11 +79,8 @@ const useRoutesAndResourcesFromChildren = (
     // We need to know right away whether some resources were declared to correctly
     // initialize the status at the next stop
     const doLogout = useLogout();
-    const [
-        routesAndResources,
-        setRoutesAndResources,
-        mergeRoutesAndResources,
-    ] = useRoutesAndResourcesState(getRoutesAndResourceFromNodes(children));
+    const [routesAndResources, setRoutesAndResources, mergeRoutesAndResources] =
+        useRoutesAndResourcesState(getRoutesAndResourceFromNodes(children));
 
     const [status, setStatus] = useSafeSetState<AdminRouterStatus>(() =>
         getStatus({
@@ -91,6 +88,9 @@ const useRoutesAndResourcesFromChildren = (
             ...routesAndResources,
         })
     );
+    if (!status) {
+        throw new Error('Status should be defined');
+    }
 
     useEffect(() => {
         const resolveChildFunction = async (
@@ -109,7 +109,9 @@ const useRoutesAndResourcesFromChildren = (
                     );
                 } else {
                     mergeRoutesAndResources(
-                        getRoutesAndResourceFromNodes(childrenFuncResult)
+                        getRoutesAndResourceFromNodes(
+                            childrenFuncResult as ReactNode
+                        )
                     );
                     setStatus('ready');
                 }
@@ -121,18 +123,19 @@ const useRoutesAndResourcesFromChildren = (
 
         const updateFromChildren = async () => {
             const functionChild = getSingleChildFunction(children);
-            const newRoutesAndResources = getRoutesAndResourceFromNodes(
-                children
-            );
+            const newRoutesAndResources =
+                getRoutesAndResourceFromNodes(children);
             setRoutesAndResources(newRoutesAndResources);
             setStatus(
                 !!functionChild
                     ? 'loading'
                     : newRoutesAndResources.resources.length > 0 ||
-                      newRoutesAndResources.customRoutesWithLayout.length > 0 ||
-                      newRoutesAndResources.customRoutesWithoutLayout.length > 0
-                    ? 'ready'
-                    : 'empty'
+                        newRoutesAndResources.customRoutesWithLayout.length >
+                            0 ||
+                        newRoutesAndResources.customRoutesWithoutLayout.length >
+                            0
+                      ? 'ready'
+                      : 'empty'
             );
 
             if (functionChild) {
@@ -164,7 +167,7 @@ const useRoutesAndResourcesState = (
 ): [
     RoutesAndResources,
     Dispatch<SetStateAction<RoutesAndResources>>,
-    (newRoutesAndResources: RoutesAndResources) => void
+    (newRoutesAndResources: RoutesAndResources) => void,
 ] => {
     const [routesAndResources, setRoutesAndResources] = useState(initialState);
 
@@ -174,9 +177,10 @@ const useRoutesAndResourcesState = (
                 customRoutesWithLayout: previous.customRoutesWithLayout.concat(
                     newRoutesAndResources.customRoutesWithLayout
                 ),
-                customRoutesWithoutLayout: previous.customRoutesWithoutLayout.concat(
-                    newRoutesAndResources.customRoutesWithoutLayout
-                ),
+                customRoutesWithoutLayout:
+                    previous.customRoutesWithoutLayout.concat(
+                        newRoutesAndResources.customRoutesWithoutLayout
+                    ),
                 resources: previous.resources.concat(
                     newRoutesAndResources.resources
                 ),
@@ -194,7 +198,7 @@ const useRoutesAndResourcesState = (
  * @param permissions: The permissions
  */
 const useRegisterResources = (
-    resources: (ReactElement<ResourceProps> & ResourceWithRegisterFunction)[],
+    resources: (ReactElement & ResourceWithRegisterFunction)[],
     permissions: any
 ) => {
     const { register, unregister } = useResourceDefinitionContext();
@@ -202,13 +206,13 @@ const useRegisterResources = (
     useEffect(() => {
         resources.forEach(resource => {
             if (
-                typeof ((resource.type as unknown) as ResourceWithRegisterFunction)
-                    .registerResource === 'function'
+                typeof (
+                    resource.type as unknown as ResourceWithRegisterFunction
+                ).registerResource === 'function'
             ) {
-                const definition = ((resource.type as unknown) as ResourceWithRegisterFunction).registerResource(
-                    resource.props,
-                    permissions
-                );
+                const definition = (
+                    resource.type as unknown as ResourceWithRegisterFunction
+                ).registerResource(resource.props, permissions);
                 register(definition);
             } else {
                 throw new Error(
@@ -219,13 +223,13 @@ const useRegisterResources = (
         return () => {
             resources.forEach(resource => {
                 if (
-                    typeof ((resource.type as unknown) as ResourceWithRegisterFunction)
-                        .registerResource === 'function'
+                    typeof (
+                        resource.type as unknown as ResourceWithRegisterFunction
+                    ).registerResource === 'function'
                 ) {
-                    const definition = ((resource.type as unknown) as ResourceWithRegisterFunction).registerResource(
-                        resource.props,
-                        permissions
-                    );
+                    const definition = (
+                        resource.type as unknown as ResourceWithRegisterFunction
+                    ).registerResource(resource.props, permissions);
                     unregister(definition);
                 } else {
                     throw new Error(
@@ -243,18 +247,18 @@ const getStatus = ({
     customRoutesWithLayout,
     customRoutesWithoutLayout,
 }: {
-    children: ReactNode;
-    resources: ReactElement<ResourceProps>[];
-    customRoutesWithLayout: ReactElement<CustomRoutesProps>[];
-    customRoutesWithoutLayout: ReactElement<CustomRoutesProps>[];
-}) => {
+    children: AdminChildren;
+    resources: ReactNode[];
+    customRoutesWithLayout: ReactNode[];
+    customRoutesWithoutLayout: ReactNode[];
+}): AdminRouterStatus => {
     return getSingleChildFunction(children)
         ? 'loading'
         : resources.length > 0 ||
-          customRoutesWithLayout.length > 0 ||
-          customRoutesWithoutLayout.length > 0
-        ? 'ready'
-        : 'empty';
+            customRoutesWithLayout.length > 0 ||
+            customRoutesWithoutLayout.length > 0
+          ? 'ready'
+          : 'empty';
 };
 
 /**
@@ -263,7 +267,7 @@ const getStatus = ({
  * Returns the function child if one was provided, or null otherwise.
  */
 const getSingleChildFunction = (
-    children: ReactNode
+    children: AdminChildren
 ): RenderResourcesFunction | null => {
     const childrenArray = Array.isArray(children) ? children : [children];
 
@@ -291,11 +295,20 @@ const getSingleChildFunction = (
  * - resources: an array of resources elements
  */
 const getRoutesAndResourceFromNodes = (
-    children: ReactNode
+    children: AdminChildren
 ): RoutesAndResources => {
-    const customRoutesWithLayout = [];
-    const customRoutesWithoutLayout = [];
-    const resources = [];
+    const customRoutesWithLayout: ReactNode[] = [];
+    const customRoutesWithoutLayout: ReactNode[] = [];
+    const resources: (ReactElement & ResourceWithRegisterFunction)[] = [];
+
+    if (typeof children === 'function') {
+        return {
+            customRoutesWithLayout: [],
+            customRoutesWithoutLayout: [],
+            resources: [],
+        };
+    }
+    // @ts-ignore
     Children.forEach(children, element => {
         if (!React.isValidElement(element)) {
             // Ignore non-elements. This allows people to more easily inline
@@ -316,9 +329,8 @@ const getRoutesAndResourceFromNodes = (
         }
 
         if ((element.type as any).raName === 'CustomRoutes') {
-            const customRoutesElement = element as ReactElement<
-                CustomRoutesProps
-            >;
+            const customRoutesElement =
+                element as ReactElement<CustomRoutesProps>;
 
             if (customRoutesElement.props.noLayout) {
                 customRoutesWithoutLayout.push(
@@ -328,7 +340,9 @@ const getRoutesAndResourceFromNodes = (
                 customRoutesWithLayout.push(customRoutesElement.props.children);
             }
         } else if ((element.type as any).raName === 'Resource') {
-            resources.push(element as ReactElement<ResourceProps>);
+            resources.push(
+                element as ReactElement & ResourceWithRegisterFunction
+            );
         }
     });
 
@@ -340,9 +354,9 @@ const getRoutesAndResourceFromNodes = (
 };
 
 type RoutesAndResources = {
-    customRoutesWithLayout: ReactElement<CustomRoutesProps>[];
-    customRoutesWithoutLayout: ReactElement<CustomRoutesProps>[];
-    resources: (ReactElement<ResourceProps> & ResourceWithRegisterFunction)[];
+    customRoutesWithLayout: ReactNode[];
+    customRoutesWithoutLayout: ReactNode[];
+    resources: (ReactElement & ResourceWithRegisterFunction)[];
 };
 
 type ResourceWithRegisterFunction = {

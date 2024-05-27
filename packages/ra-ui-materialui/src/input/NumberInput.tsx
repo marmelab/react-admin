@@ -1,5 +1,4 @@
 import * as React from 'react';
-import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import TextField, { TextFieldProps } from '@mui/material/TextField';
 import { useInput, FieldTitle } from 'ra-core';
@@ -38,14 +37,11 @@ export const NumberInput = ({
     validate,
     variant,
     inputProps: overrideInputProps,
-    disabled,
-    readOnly,
     ...rest
 }: NumberInputProps) => {
     const {
         field,
-        fieldState: { error, invalid, isTouched },
-        formState: { isSubmitted },
+        fieldState: { error, invalid },
         id,
         isRequired,
     } = useInput({
@@ -54,8 +50,6 @@ export const NumberInput = ({
         resource,
         source,
         validate,
-        disabled,
-        readOnly,
         ...rest,
     });
     const { onBlur: onBlurFromField } = field;
@@ -101,8 +95,8 @@ export const NumberInput = ({
                     ? parse(target.valueAsNumber)
                     : target.valueAsNumber
                 : parse
-                ? parse(target.value)
-                : convertStringToNumber(target.value);
+                  ? parse(target.value)
+                  : convertStringToNumber(target.value);
         field.onChange(newValue);
     };
 
@@ -122,8 +116,7 @@ export const NumberInput = ({
         setValue(value => (value !== stringValue ? stringValue : value));
     };
 
-    const renderHelperText =
-        helperText !== false || ((isTouched || isSubmitted) && invalid);
+    const renderHelperText = helperText !== false || invalid;
 
     const { ref, ...fieldWithoutRef } = field;
     return (
@@ -140,13 +133,10 @@ export const NumberInput = ({
             type="number"
             size="small"
             variant={variant}
-            error={(isTouched || isSubmitted) && invalid}
-            disabled={disabled || readOnly}
-            readOnly={readOnly}
+            error={invalid}
             helperText={
                 renderHelperText ? (
                     <InputHelperText
-                        touched={isTouched || isSubmitted}
                         error={error?.message}
                         helperText={helperText}
                     />
@@ -161,21 +151,10 @@ export const NumberInput = ({
                 />
             }
             margin={margin}
-            inputProps={{ ...inputProps, readOnly }}
+            inputProps={inputProps}
             {...sanitizeInputRestProps(rest)}
         />
     );
-};
-
-NumberInput.propTypes = {
-    label: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.bool,
-        PropTypes.element,
-    ]),
-    resource: PropTypes.string,
-    source: PropTypes.string,
-    step: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 };
 
 export interface NumberInputProps

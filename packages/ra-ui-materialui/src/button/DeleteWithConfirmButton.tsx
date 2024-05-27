@@ -1,9 +1,8 @@
 import React, { Fragment, ReactEventHandler, ReactElement } from 'react';
-import PropTypes from 'prop-types';
 import ActionDelete from '@mui/icons-material/Delete';
 import clsx from 'clsx';
-import inflection from 'inflection';
-import { UseMutationOptions } from 'react-query';
+
+import { UseMutationOptions } from '@tanstack/react-query';
 import {
     MutationMode,
     RaRecord,
@@ -17,6 +16,7 @@ import {
 
 import { Confirm } from '../layout';
 import { Button, ButtonProps } from './Button';
+import { humanize, singularize } from 'inflection';
 
 export const DeleteWithConfirmButton = <RecordType extends RaRecord = any>(
     props: DeleteWithConfirmButtonProps<RecordType>
@@ -43,7 +43,7 @@ export const DeleteWithConfirmButton = <RecordType extends RaRecord = any>(
 
     const {
         open,
-        isLoading,
+        isPending,
         handleDialogOpen,
         handleDialogClose,
         handleDelete,
@@ -71,17 +71,17 @@ export const DeleteWithConfirmButton = <RecordType extends RaRecord = any>(
             </Button>
             <Confirm
                 isOpen={open}
-                loading={isLoading}
+                loading={isPending}
                 title={confirmTitle}
                 content={confirmContent}
                 confirmColor={confirmColor}
                 translateOptions={{
                     name: translate(`resources.${resource}.forcedCaseName`, {
                         smart_count: 1,
-                        _: inflection.humanize(
+                        _: humanize(
                             translate(`resources.${resource}.name`, {
                                 smart_count: 1,
-                                _: inflection.singularize(resource),
+                                _: resource ? singularize(resource) : undefined,
                             }),
                             true
                         ),
@@ -100,7 +100,7 @@ const defaultIcon = <ActionDelete />;
 
 export interface DeleteWithConfirmButtonProps<
     RecordType extends RaRecord = any,
-    MutationOptionsError = unknown
+    MutationOptionsError = unknown,
 > extends ButtonProps {
     confirmTitle?: React.ReactNode;
     confirmContent?: React.ReactNode;
@@ -120,21 +120,3 @@ export interface DeleteWithConfirmButtonProps<
     resource?: string;
     successMessage?: string;
 }
-
-DeleteWithConfirmButton.propTypes = {
-    className: PropTypes.string,
-    confirmTitle: PropTypes.node,
-    confirmContent: PropTypes.node,
-    confirmColor: PropTypes.string,
-    label: PropTypes.string,
-    mutationMode: PropTypes.oneOf(['pessimistic', 'optimistic', 'undoable']),
-    record: PropTypes.any,
-    redirect: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.bool,
-        PropTypes.func,
-    ]),
-    resource: PropTypes.string,
-    icon: PropTypes.element,
-    translateOptions: PropTypes.object,
-};

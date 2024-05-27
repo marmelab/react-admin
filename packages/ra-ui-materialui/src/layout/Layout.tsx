@@ -1,21 +1,13 @@
-import React, {
-    ComponentType,
-    ErrorInfo,
-    HtmlHTMLAttributes,
-    Suspense,
-    useState,
-} from 'react';
+import React, { ComponentType, ErrorInfo, Suspense, useState } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 import clsx from 'clsx';
 import { styled, SxProps } from '@mui/material/styles';
-import { CoreLayoutProps } from 'ra-core';
 
 import { AppBar as DefaultAppBar, AppBarProps } from './AppBar';
 import { Sidebar as DefaultSidebar, SidebarProps } from './Sidebar';
 import { Menu as DefaultMenu, MenuProps } from './Menu';
 import { Error, ErrorProps } from './Error';
 import { SkipNavigationButton } from '../button';
-import { useSidebarState } from './useSidebarState';
 import { Inspector } from '../preferences';
 import { Loading } from './Loading';
 
@@ -25,16 +17,15 @@ export const Layout = (props: LayoutProps) => {
         appBarAlwaysOn,
         children,
         className,
-        dashboard,
         error: errorComponent,
         menu: Menu = DefaultMenu,
         sidebar: Sidebar = DefaultSidebar,
-        title,
         ...rest
     } = props;
 
-    const [open] = useSidebarState();
-    const [errorInfo, setErrorInfo] = useState<ErrorInfo>(null);
+    const [errorInfo, setErrorInfo] = useState<ErrorInfo | undefined>(
+        undefined
+    );
 
     const handleError = (error: Error, info: ErrorInfo) => {
         setErrorInfo(info);
@@ -44,10 +35,10 @@ export const Layout = (props: LayoutProps) => {
         <Core className={clsx('layout', className)} {...rest}>
             <SkipNavigationButton />
             <div className={LayoutClasses.appFrame}>
-                <AppBar open={open} title={title} alwaysOn={appBarAlwaysOn} />
+                <AppBar alwaysOn={appBarAlwaysOn} />
                 <main className={LayoutClasses.contentWithSidebar}>
                     <Sidebar appBarAlwaysOn={appBarAlwaysOn}>
-                        <Menu hasDashboard={!!dashboard} />
+                        <Menu />
                     </Sidebar>
                     <div id="main-content" className={LayoutClasses.content}>
                         <ErrorBoundary
@@ -58,7 +49,6 @@ export const Layout = (props: LayoutProps) => {
                                     errorComponent={errorComponent}
                                     errorInfo={errorInfo}
                                     resetErrorBoundary={resetErrorBoundary}
-                                    title={title}
                                 />
                             )}
                         >
@@ -74,12 +64,11 @@ export const Layout = (props: LayoutProps) => {
     );
 };
 
-export interface LayoutProps
-    extends CoreLayoutProps,
-        Omit<HtmlHTMLAttributes<HTMLDivElement>, 'title'> {
+export interface LayoutProps {
     appBar?: ComponentType<AppBarProps>;
     appBarAlwaysOn?: boolean;
     className?: string;
+    children: React.ReactNode;
     error?: ComponentType<ErrorProps>;
     menu?: ComponentType<MenuProps>;
     sidebar?: ComponentType<SidebarProps>;

@@ -100,8 +100,7 @@ const englishMessages: TranslationMessages = {
             delete_content: 'Are you sure you want to delete this item?',
             delete_title: 'Delete %{name} #%{id}',
             details: 'Details',
-            error:
-                "A client error occurred and your request couldn't be completed.",
+            error: "A client error occurred and your request couldn't be completed.",
 
             invalid_form: 'The form is not valid. Please check for errors',
             loading: 'Please wait',

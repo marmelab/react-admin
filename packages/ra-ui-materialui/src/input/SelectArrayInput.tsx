@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import { useCallback, useRef, ChangeEvent } from 'react';
-import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import {
     Select,
@@ -100,6 +99,7 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
         label,
         isFetching: isFetchingProp,
         isLoading: isLoadingProp,
+        isPending: isPendingProp,
         margin,
         onBlur,
         onChange,
@@ -114,8 +114,6 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
         translateChoice,
         validate,
         variant,
-        disabled,
-        readOnly,
         ...rest
     } = props;
 
@@ -123,7 +121,7 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
 
     const {
         allChoices,
-        isLoading,
+        isPending,
         error: fetchError,
         source,
         resource,
@@ -131,6 +129,7 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
     } = useChoicesContext({
         choices: choicesProp,
         isLoading: isLoadingProp,
+        isPending: isPendingProp,
         isFetching: isFetchingProp,
         resource: resourceProp,
         source: sourceProp,
@@ -146,8 +145,7 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
     const {
         field,
         isRequired,
-        fieldState: { error, invalid, isTouched },
-        formState: { isSubmitted },
+        fieldState: { error, invalid },
         id,
     } = useInput({
         format,
@@ -157,8 +155,6 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
         resource,
         source,
         validate,
-        disabled,
-        readOnly,
         ...rest,
     });
 
@@ -241,7 +237,7 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
         [getChoiceValue, getDisableValue, renderMenuItemOption, createItem]
     );
 
-    if (isLoading) {
+    if (isPending) {
         return (
             <Labeled
                 label={label}
@@ -259,8 +255,8 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
     const finalValue = Array.isArray(field.value ?? [])
         ? field.value
         : field.value
-        ? [field.value]
-        : [];
+          ? [field.value]
+          : [];
 
     const outlinedInputProps =
         variant === 'outlined'
@@ -280,17 +276,14 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
                   ),
               }
             : {};
-    const renderHelperText =
-        !!fetchError ||
-        helperText !== false ||
-        ((isTouched || isSubmitted) && invalid);
+    const renderHelperText = !!fetchError || helperText !== false || invalid;
 
     return (
         <>
             <StyledFormControl
                 margin={margin}
                 className={clsx('ra-input', `ra-input-${source}`, className)}
-                error={fetchError || ((isTouched || isSubmitted) && invalid)}
+                error={fetchError || invalid}
                 variant={variant}
                 {...sanitizeRestProps(rest)}
             >
@@ -319,9 +312,7 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
                         />
                     }
                     multiple
-                    error={
-                        !!fetchError || ((isTouched || isSubmitted) && invalid)
-                    }
+                    error={!!fetchError || invalid}
                     renderValue={(selected: any[]) => (
                         <div className={SelectArrayInputClasses.chips}>
                             {(Array.isArray(selected) ? selected : [])
@@ -342,8 +333,6 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
                                 ))}
                         </div>
                     )}
-                    disabled={disabled || readOnly}
-                    readOnly={readOnly}
                     data-testid="selectArray"
                     size={size}
                     {...field}
@@ -355,11 +344,8 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
                     {finalChoices.map(renderMenuItem)}
                 </Select>
                 {renderHelperText ? (
-                    <FormHelperText
-                        error={fetchError || (isTouched && !!error)}
-                    >
+                    <FormHelperText error={!!fetchError || !!error}>
                         <InputHelperText
-                            touched={isTouched || isSubmitted || fetchError}
                             error={error?.message || fetchError?.message}
                             helperText={helperText}
                         />
@@ -381,28 +367,6 @@ export type SelectArrayInputProps = ChoicesProps &
         onChange?: (event: ChangeEvent<HTMLInputElement> | RaRecord) => void;
     };
 
-SelectArrayInput.propTypes = {
-    choices: PropTypes.arrayOf(PropTypes.object),
-    className: PropTypes.string,
-    children: PropTypes.node,
-    label: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.bool,
-        PropTypes.element,
-    ]),
-    options: PropTypes.object,
-    optionText: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.func,
-        PropTypes.element,
-    ]),
-    optionValue: PropTypes.string,
-    disableValue: PropTypes.string,
-    resource: PropTypes.string,
-    source: PropTypes.string,
-    translateChoice: PropTypes.bool,
-};
-
 const sanitizeRestProps = ({
     alwaysOn,
     choices,
@@ -416,7 +380,6 @@ const sanitizeRestProps = ({
     enableGetChoices,
     filter,
     filterToQuery,
-    formClassName,
     initializeForm,
     initialValue,
     input,

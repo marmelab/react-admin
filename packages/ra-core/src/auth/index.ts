@@ -1,8 +1,6 @@
-import AuthContext from './AuthContext';
 import useAuthProvider from './useAuthProvider';
 import useAuthState from './useAuthState';
 import usePermissions from './usePermissions';
-import usePermissionsOptimized from './usePermissionsOptimized';
 import WithPermissions, { WithPermissionsProps } from './WithPermissions';
 import useLogin from './useLogin';
 import useLogout from './useLogout';
@@ -11,6 +9,7 @@ import useLogoutIfAccessDenied from './useLogoutIfAccessDenied';
 import convertLegacyAuthProvider from './convertLegacyAuthProvider';
 
 export * from './Authenticated';
+export * from './AuthContext';
 export * from './LogoutOnMount';
 export * from './types';
 export * from './useAuthenticated';
@@ -21,7 +20,6 @@ export * from './addRefreshAuthToAuthProvider';
 export * from './addRefreshAuthToDataProvider';
 
 export {
-    AuthContext,
     useAuthProvider,
     convertLegacyAuthProvider,
     // low-level hooks for calling a particular verb on the authProvider
@@ -30,7 +28,6 @@ export {
     useGetPermissions,
     // hooks with state management
     usePermissions,
-    usePermissionsOptimized,
     useAuthState,
     // hook with immediate effect
     useLogoutIfAccessDenied,

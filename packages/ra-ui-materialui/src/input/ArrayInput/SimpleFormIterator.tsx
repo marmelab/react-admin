@@ -1,9 +1,6 @@
 import * as React from 'react';
 import {
     Children,
-    cloneElement,
-    MouseEvent,
-    MouseEventHandler,
     ReactElement,
     ReactNode,
     useCallback,
@@ -11,10 +8,9 @@ import {
     useRef,
     useState,
 } from 'react';
-import { styled, SxProps } from '@mui/material';
+import { styled, SxProps, useThemeProps } from '@mui/material';
 import clsx from 'clsx';
 import get from 'lodash/get';
-import PropTypes from 'prop-types';
 import {
     FormDataConsumer,
     RaRecord,
@@ -34,21 +30,22 @@ import {
     SimpleFormIteratorItem,
 } from './SimpleFormIteratorItem';
 import { AddItemButton as DefaultAddItemButton } from './AddItemButton';
-import { RemoveItemButton as DefaultRemoveItemButton } from './RemoveItemButton';
-import { ReOrderButtons as DefaultReOrderButtons } from './ReOrderButtons';
 import { ClearArrayButton } from './ClearArrayButton';
 import { Confirm } from '../../layout';
 
-export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
+export const SimpleFormIterator = (inProps: SimpleFormIteratorProps) => {
+    const props = useThemeProps({
+        props: inProps,
+        name: 'RaSimpleFormIterator',
+    });
     const {
         addButton = <DefaultAddItemButton />,
-        removeButton = <DefaultRemoveItemButton />,
-        reOrderButtons = <DefaultReOrderButtons />,
+        removeButton,
+        reOrderButtons,
         children,
         className,
         resource,
         source,
-        readOnly,
         disabled,
         disableAdd = false,
         disableClear,
@@ -59,6 +56,9 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
         fullWidth,
         sx,
     } = props;
+    if (!source) {
+        throw new Error('SimpleFormIterator requires a source prop');
+    }
     const [confirmIsOpen, setConfirmIsOpen] = useState<boolean>(false);
     const { append, fields, move, remove, replace } = useArrayInput(props);
     const { resetField } = useFormContext();
@@ -91,12 +91,8 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
                     // @ts-ignore
                     !Children.only(children).props.source &&
                     // Make sure it's not a FormDataConsumer
-                    Children.map(
-                        children,
-                        input =>
-                            React.isValidElement(input) &&
-                            input.type !== FormDataConsumer
-                    ).some(Boolean)
+                    // @ts-ignore
+                    !Children.only(children).type !== FormDataConsumer
                 ) {
                     // ArrayInput used for an array of scalar values
                     // (e.g. tags: ['foo', 'bar'])
@@ -124,16 +120,6 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
         },
         [append, children, resetField, source, fields.length]
     );
-
-    // add field and call the onClick event of the button passed as addButton prop
-    const handleAddButtonClick = (
-        originalOnClickHandler: MouseEventHandler
-    ) => (event: MouseEvent) => {
-        addField();
-        if (originalOnClickHandler) {
-            originalOnClickHandler(event);
-        }
-    };
 
     const handleReorder = useCallback(
         (origin: number, destination: number) => {
@@ -165,7 +151,7 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
                 className={clsx(
                     className,
                     fullWidth && 'fullwidth',
-                    (disabled || readOnly) && 'disabled'
+                    disabled && 'disabled'
                 )}
                 sx={sx}
             >
@@ -173,7 +159,7 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
                     {fields.map((member, index) => (
                         <SimpleFormIteratorItem
                             key={member.id}
-                            disabled={disabled || readOnly}
+                            disabled={disabled}
                             disableRemove={disableRemove}
                             disableReordering={disableReordering}
                             fields={fields}
@@ -193,20 +179,12 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
                         </SimpleFormIteratorItem>
                     ))}
                 </ul>
-                {!(disabled || readOnly) &&
+                {!disabled &&
                     !(disableAdd && (disableClear || disableRemove)) && (
                         <div className={SimpleFormIteratorClasses.buttons}>
                             {!disableAdd && (
                                 <div className={SimpleFormIteratorClasses.add}>
-                                    {cloneElement(addButton, {
-                                        className: clsx(
-                                            'button-add',
-                                            `button-add-${source}`
-                                        ),
-                                        onClick: handleAddButtonClick(
-                                            addButton.props.onClick
-                                        ),
-                                    })}
+                                    {addButton}
                                 </div>
                             )}
                             {fields.length > 0 &&
@@ -244,35 +222,12 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
     ) : null;
 };
 
-SimpleFormIterator.propTypes = {
-    addButton: PropTypes.element,
-    removeButton: PropTypes.element,
-    children: PropTypes.node,
-    className: PropTypes.string,
-    field: PropTypes.object,
-    fields: PropTypes.array,
-    fieldState: PropTypes.object,
-    formState: PropTypes.object,
-    fullWidth: PropTypes.bool,
-    inline: PropTypes.bool,
-    record: PropTypes.object,
-    source: PropTypes.string,
-    resource: PropTypes.string,
-    translate: PropTypes.func,
-    readOnly: PropTypes.bool,
-    disabled: PropTypes.bool,
-    disableAdd: PropTypes.bool,
-    disableRemove: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
-    TransitionProps: PropTypes.shape({}),
-};
-
 type GetItemLabelFunc = (index: number) => string | ReactElement;
 
 export interface SimpleFormIteratorProps extends Partial<UseFieldArrayReturn> {
     addButton?: ReactElement;
     children?: ReactNode;
     className?: string;
-    readOnly?: boolean;
     disabled?: boolean;
     disableAdd?: boolean;
     disableClear?: boolean;
@@ -320,18 +275,13 @@ const Root = styled('div', {
         marginTop: theme.spacing(1),
         [theme.breakpoints.down('md')]: { display: 'none' },
     },
-    [`& .${SimpleFormIteratorClasses.form}`]: {
-        alignItems: 'flex-start',
-        display: 'flex',
-        flexDirection: 'column',
-    },
+    [`& .${SimpleFormIteratorClasses.form}`]: {},
     [`&.fullwidth > ul > li > .${SimpleFormIteratorClasses.form}`]: {
         flex: 2,
     },
     [`& .${SimpleFormIteratorClasses.inline}`]: {
         flexDirection: 'row',
         columnGap: '1em',
-        flexWrap: 'wrap',
     },
     [`& .${SimpleFormIteratorClasses.action}`]: {
         marginTop: theme.spacing(0.5),
@@ -349,7 +299,8 @@ const Root = styled('div', {
     [`& .${SimpleFormIteratorClasses.clear}`]: {
         borderBottom: 'none',
     },
-    [`& .${SimpleFormIteratorClasses.line}:hover > .${SimpleFormIteratorClasses.action}`]: {
-        visibility: 'visible',
-    },
+    [`& .${SimpleFormIteratorClasses.line}:hover > .${SimpleFormIteratorClasses.action}`]:
+        {
+            visibility: 'visible',
+        },
 }));

@@ -7,11 +7,12 @@ import { useScrollToTop, useCreatePath } from '../routing';
 import {
     AdminChildren,
     CatchAllComponent,
+    DashboardComponent,
     LayoutComponent,
     LoadingComponent,
-    CoreLayoutProps,
 } from '../types';
 import { useConfigureAdminRouterFromChildren } from './useConfigureAdminRouterFromChildren';
+import { HasDashboardContextProvider } from './HasDashboardContext';
 
 export const CoreAdminRoutes = (props: CoreAdminRoutesProps) => {
     useScrollToTop();
@@ -29,10 +30,8 @@ export const CoreAdminRoutes = (props: CoreAdminRoutesProps) => {
         catchAll: CatchAll,
         dashboard,
         loading: LoadingPage,
-        menu,
         requireAuth,
         ready: Ready,
-        title,
     } = props;
 
     const [onlyAnonymousRoutes, setOnlyAnonymousRoutes] = useState(requireAuth);
@@ -55,6 +54,11 @@ export const CoreAdminRoutes = (props: CoreAdminRoutesProps) => {
     }, [checkAuth, requireAuth]);
 
     if (status === 'empty') {
+        if (!Ready) {
+            throw new Error(
+                'The admin is empty. Please provide an empty component, or pass Resource or CustomRoutes as children.'
+            );
+        }
         return <Ready />;
     }
 
@@ -94,8 +98,8 @@ export const CoreAdminRoutes = (props: CoreAdminRoutesProps) => {
             <Route
                 path="/*"
                 element={
-                    <div>
-                        <Layout dashboard={dashboard} menu={menu} title={title}>
+                    <HasDashboardContextProvider value={!!dashboard}>
+                        <Layout>
                             <Routes>
                                 {customRoutesWithLayout}
                                 {Children.map(resources, resource => (
@@ -124,20 +128,18 @@ export const CoreAdminRoutes = (props: CoreAdminRoutesProps) => {
                                         ) : null
                                     }
                                 />
-                                <Route
-                                    path="*"
-                                    element={<CatchAll title={title} />}
-                                />
+                                <Route path="*" element={<CatchAll />} />
                             </Routes>
                         </Layout>
-                    </div>
+                    </HasDashboardContextProvider>
                 }
             />
         </Routes>
     );
 };
 
-export interface CoreAdminRoutesProps extends CoreLayoutProps {
+export interface CoreAdminRoutesProps {
+    dashboard?: DashboardComponent;
     layout: LayoutComponent;
     catchAll: CatchAllComponent;
     children?: AdminChildren;

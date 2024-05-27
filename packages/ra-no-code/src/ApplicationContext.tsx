@@ -6,8 +6,7 @@ export type ApplicationContextValue = {
     onExit: () => void;
 };
 
-export const ApplicationContext = createContext<ApplicationContextValue>(
-    undefined
-);
+export const ApplicationContext =
+    createContext<ApplicationContextValue>(undefined);
 
 export const useApplication = () => useContext(ApplicationContext);

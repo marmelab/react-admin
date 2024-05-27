@@ -34,7 +34,7 @@ const resouceDefs = {
     },
 };
 export const Basic = () => (
-    <AdminContext dataProvider={dataProvider}>
+    <AdminContext dataProvider={dataProvider} defaultTheme="light">
         <ResourceDefinitionContextProvider definitions={resouceDefs}>
             <Show resource="bands" id={1} sx={{ width: 600 }}>
                 <SimpleShowLayout>
@@ -47,7 +47,7 @@ export const Basic = () => (
 );
 
 export const Children = () => (
-    <AdminContext dataProvider={dataProvider}>
+    <AdminContext dataProvider={dataProvider} defaultTheme="light">
         <ResourceDefinitionContextProvider definitions={resouceDefs}>
             <Show resource="bands" id={1} sx={{ width: 600 }}>
                 <SimpleShowLayout>
@@ -79,7 +79,10 @@ const dataProviderWithDifferentIdTypes = fakeRestProvider(
 );
 
 export const DifferentIdTypes = () => (
-    <AdminContext dataProvider={dataProviderWithDifferentIdTypes}>
+    <AdminContext
+        dataProvider={dataProviderWithDifferentIdTypes}
+        defaultTheme="light"
+    >
         <CardContent>
             <Show resource="bands" id={1} sx={{ width: 600 }}>
                 <TextField source="name" fullWidth />
@@ -108,7 +111,7 @@ const dataProviderWithLog = {
 
 export const WithMeta = () => {
     return (
-        <AdminContext dataProvider={dataProviderWithLog}>
+        <AdminContext dataProvider={dataProviderWithLog} defaultTheme="light">
             <CardContent>
                 <Show resource="bands" id={1} sx={{ width: 600 }}>
                     <TextField source="name" />

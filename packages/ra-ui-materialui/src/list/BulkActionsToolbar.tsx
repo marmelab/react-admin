@@ -1,12 +1,5 @@
 import * as React from 'react';
-import {
-    Children,
-    ReactNode,
-    cloneElement,
-    isValidElement,
-    useCallback,
-} from 'react';
-import PropTypes from 'prop-types';
+import { ReactNode, useCallback } from 'react';
 import { styled } from '@mui/material/styles';
 import clsx from 'clsx';
 import Toolbar from '@mui/material/Toolbar';
@@ -14,12 +7,7 @@ import Typography from '@mui/material/Typography';
 import { lighten } from '@mui/material/styles';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
-import {
-    useTranslate,
-    sanitizeListRestProps,
-    useListContext,
-    Identifier,
-} from 'ra-core';
+import { useTranslate, sanitizeListRestProps, useListContext } from 'ra-core';
 
 import TopToolbar from '../layout/TopToolbar';
 
@@ -30,12 +18,7 @@ export const BulkActionsToolbar = (props: BulkActionsToolbarProps) => {
         className,
         ...rest
     } = props;
-    const {
-        filterValues,
-        resource,
-        selectedIds = [],
-        onUnselectItems,
-    } = useListContext(props);
+    const { selectedIds = [], onUnselectItems } = useListContext();
 
     const translate = useTranslate();
 
@@ -71,30 +54,16 @@ export const BulkActionsToolbar = (props: BulkActionsToolbarProps) => {
                     </Typography>
                 </div>
                 <TopToolbar className={BulkActionsToolbarClasses.topToolbar}>
-                    {Children.map(children, child =>
-                        isValidElement<any>(child)
-                            ? cloneElement(child, {
-                                  filterValues,
-                                  resource,
-                                  selectedIds,
-                              })
-                            : null
-                    )}
+                    {children}
                 </TopToolbar>
             </Toolbar>
         </Root>
     );
 };
 
-BulkActionsToolbar.propTypes = {
-    children: PropTypes.node,
-    label: PropTypes.string,
-};
-
 export interface BulkActionsToolbarProps {
     children?: ReactNode;
     label?: string;
-    selectedIds?: Identifier[];
     className?: string;
 }
 

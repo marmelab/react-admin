@@ -3,9 +3,15 @@ import {
     render as baseRender,
     fireEvent,
     screen,
+    waitFor,
 } from '@testing-library/react';
 import { useLocation } from 'react-router-dom';
-import { useRecordContext } from 'ra-core';
+import {
+    ResourceDefinitionContextProvider,
+    useRecordContext,
+    TestMemoryRouter,
+    RecordContextProvider,
+} from 'ra-core';
 
 import { AdminContext } from '../../AdminContext';
 import DatagridRow from './DatagridRow';
@@ -21,21 +27,26 @@ const ExpandPanel = () => <span>expanded</span>;
 // remove validateDomNesting warnings by react-testing-library
 const render = element =>
     baseRender(element, {
-        wrapper: ({ children }) => (
-            <AdminContext>
-                <table>
-                    <tbody>{children}</tbody>
-                </table>
-            </AdminContext>
-        ),
+        wrapper: ({ children }) => {
+            return (
+                <TestMemoryRouter>
+                    <AdminContext>
+                        <table>
+                            <tbody>{children}</tbody>
+                        </table>
+                    </AdminContext>
+                </TestMemoryRouter>
+            );
+        },
     });
 
 describe('<DatagridRow />', () => {
     const defaultProps = {
         id: 15,
-        record: { id: 15, title: 'hello' },
         resource: 'posts',
     };
+
+    const defaultRecord = { id: 15, title: 'hello' };
 
     describe('isRowExpandable', () => {
         it('should show the expand button if it returns true', () => {
@@ -43,13 +54,15 @@ describe('<DatagridRow />', () => {
 
             const { queryAllByText, getByText } = render(
                 <DatagridContextProvider value={contextValue}>
-                    <DatagridRow
-                        {...defaultProps}
-                        rowClick="expand"
-                        expand={<ExpandPanel />}
-                    >
-                        <TitleField />
-                    </DatagridRow>
+                    <RecordContextProvider value={defaultRecord}>
+                        <DatagridRow
+                            {...defaultProps}
+                            rowClick="expand"
+                            expand={<ExpandPanel />}
+                        >
+                            <TitleField />
+                        </DatagridRow>
+                    </RecordContextProvider>
                 </DatagridContextProvider>
             );
             expect(queryAllByText('expanded')).toHaveLength(0);
@@ -62,13 +75,15 @@ describe('<DatagridRow />', () => {
 
             const { queryAllByText, getByText } = render(
                 <DatagridContextProvider value={contextValue}>
-                    <DatagridRow
-                        {...defaultProps}
-                        rowClick="expand"
-                        expand={<ExpandPanel />}
-                    >
-                        <TitleField />
-                    </DatagridRow>
+                    <RecordContextProvider value={defaultRecord}>
+                        <DatagridRow
+                            {...defaultProps}
+                            rowClick="expand"
+                            expand={<ExpandPanel />}
+                        >
+                            <TitleField />
+                        </DatagridRow>
+                    </RecordContextProvider>
                 </DatagridContextProvider>
             );
             expect(queryAllByText('expanded')).toHaveLength(0);
@@ -87,9 +102,11 @@ describe('<DatagridRow />', () => {
             let spy = jest.fn();
             render(
                 <LocationSpy spy={spy}>
-                    <DatagridRow {...defaultProps} rowClick="edit">
-                        <TitleField />
-                    </DatagridRow>
+                    <RecordContextProvider value={defaultRecord}>
+                        <DatagridRow {...defaultProps} rowClick="edit">
+                            <TitleField />
+                        </DatagridRow>
+                    </RecordContextProvider>
                 </LocationSpy>
             );
             fireEvent.click(screen.getByText('hello'));
@@ -102,9 +119,11 @@ describe('<DatagridRow />', () => {
             let spy = jest.fn();
             render(
                 <LocationSpy spy={spy}>
-                    <DatagridRow {...defaultProps} rowClick="show">
-                        <TitleField />
-                    </DatagridRow>
+                    <RecordContextProvider value={defaultRecord}>
+                        <DatagridRow {...defaultProps} rowClick="show">
+                            <TitleField />
+                        </DatagridRow>
+                    </RecordContextProvider>
                 </LocationSpy>
             );
             fireEvent.click(screen.getByText('hello'));
@@ -115,13 +134,15 @@ describe('<DatagridRow />', () => {
 
         it("should change the expand state if the 'expand' option is selected", () => {
             render(
-                <DatagridRow
-                    {...defaultProps}
-                    rowClick="expand"
-                    expand={<ExpandPanel />}
-                >
-                    <TitleField />
-                </DatagridRow>
+                <RecordContextProvider value={defaultRecord}>
+                    <DatagridRow
+                        {...defaultProps}
+                        rowClick="expand"
+                        expand={<ExpandPanel />}
+                    >
+                        <TitleField />
+                    </DatagridRow>
+                </RecordContextProvider>
             );
             expect(screen.queryAllByText('expanded')).toHaveLength(0);
             fireEvent.click(screen.getByText('hello'));
@@ -133,13 +154,15 @@ describe('<DatagridRow />', () => {
         it("should execute the onToggleItem function if the 'toggleSelection' option is selected", () => {
             const onToggleItem = jest.fn();
             const { getByText } = render(
-                <DatagridRow
-                    {...defaultProps}
-                    onToggleItem={onToggleItem}
-                    rowClick="toggleSelection"
-                >
-                    <TitleField />
-                </DatagridRow>
+                <RecordContextProvider value={defaultRecord}>
+                    <DatagridRow
+                        {...defaultProps}
+                        onToggleItem={onToggleItem}
+                        rowClick="toggleSelection"
+                    >
+                        <TitleField />
+                    </DatagridRow>
+                </RecordContextProvider>
             );
             fireEvent.click(getByText('hello'));
             expect(onToggleItem.mock.calls.length).toEqual(1);
@@ -148,14 +171,16 @@ describe('<DatagridRow />', () => {
         it('should not execute the onToggleItem function if the row is not selectable', () => {
             const onToggleItem = jest.fn();
             const { getByText } = render(
-                <DatagridRow
-                    {...defaultProps}
-                    selectable={false}
-                    onToggleItem={onToggleItem}
-                    rowClick="toggleSelection"
-                >
-                    <TitleField />
-                </DatagridRow>
+                <RecordContextProvider value={defaultRecord}>
+                    <DatagridRow
+                        {...defaultProps}
+                        selectable={false}
+                        onToggleItem={onToggleItem}
+                        rowClick="toggleSelection"
+                    >
+                        <TitleField />
+                    </DatagridRow>
+                </RecordContextProvider>
             );
             fireEvent.click(getByText('hello'));
             expect(onToggleItem).not.toHaveBeenCalled();
@@ -166,9 +191,11 @@ describe('<DatagridRow />', () => {
             let spy = jest.fn();
             render(
                 <LocationSpy spy={spy}>
-                    <DatagridRow {...defaultProps} rowClick={path}>
-                        <TitleField />
-                    </DatagridRow>
+                    <RecordContextProvider value={defaultRecord}>
+                        <DatagridRow {...defaultProps} rowClick={path}>
+                            <TitleField />
+                        </DatagridRow>
+                    </RecordContextProvider>
                 </LocationSpy>
             );
             fireEvent.click(screen.getByText('hello'));
@@ -182,15 +209,39 @@ describe('<DatagridRow />', () => {
             let spy = jest.fn();
             render(
                 <LocationSpy spy={spy}>
-                    <DatagridRow {...defaultProps} rowClick={customRowClick}>
-                        <TitleField />
-                    </DatagridRow>
+                    <RecordContextProvider value={defaultRecord}>
+                        <DatagridRow
+                            {...defaultProps}
+                            rowClick={customRowClick}
+                        >
+                            <TitleField />
+                        </DatagridRow>
+                    </RecordContextProvider>
                 </LocationSpy>
             );
             fireEvent.click(screen.getByText('hello'));
             await new Promise(resolve => setTimeout(resolve)); // waitFor one tick
+            await waitFor(() => {
+                expect(spy).toHaveBeenCalledWith(
+                    expect.objectContaining({ pathname: '/bar/foo' })
+                );
+            });
+        });
+
+        it('should not call push if onRowClick is false', () => {
+            let spy = jest.fn();
+            render(
+                <LocationSpy spy={spy}>
+                    <RecordContextProvider value={defaultRecord}>
+                        <DatagridRow {...defaultProps} rowClick={false}>
+                            <TitleField />
+                        </DatagridRow>
+                    </RecordContextProvider>
+                </LocationSpy>
+            );
+            fireEvent.click(screen.getByText('hello'));
             expect(spy).toHaveBeenCalledWith(
-                expect.objectContaining({ pathname: '/bar/foo' })
+                expect.objectContaining({ pathname: '/' })
             );
         });
 
@@ -198,9 +249,111 @@ describe('<DatagridRow />', () => {
             let spy = jest.fn();
             render(
                 <LocationSpy spy={spy}>
-                    <DatagridRow {...defaultProps} rowClick="">
-                        <TitleField />
-                    </DatagridRow>
+                    <RecordContextProvider value={defaultRecord}>
+                        <DatagridRow {...defaultProps} rowClick="">
+                            <TitleField />
+                        </DatagridRow>
+                    </RecordContextProvider>
+                </LocationSpy>
+            );
+            fireEvent.click(screen.getByText('hello'));
+            expect(spy).toHaveBeenCalledWith(
+                expect.objectContaining({ pathname: '/' })
+            );
+        });
+
+        it("should default to 'edit' if the resource has an edit page", () => {
+            let spy = jest.fn();
+            render(
+                <LocationSpy spy={spy}>
+                    <ResourceDefinitionContextProvider
+                        definitions={{
+                            posts: { name: 'posts', hasEdit: true },
+                        }}
+                    >
+                        <RecordContextProvider value={defaultRecord}>
+                            <DatagridRow {...defaultProps}>
+                                <TitleField />
+                            </DatagridRow>
+                        </RecordContextProvider>
+                    </ResourceDefinitionContextProvider>
+                </LocationSpy>
+            );
+            fireEvent.click(screen.getByText('hello'));
+            expect(spy).toHaveBeenCalledWith(
+                expect.objectContaining({ pathname: '/posts/15' })
+            );
+        });
+
+        it("should default to 'show' if the resource has a show page", () => {
+            let spy = jest.fn();
+            render(
+                <LocationSpy spy={spy}>
+                    <ResourceDefinitionContextProvider
+                        definitions={{
+                            posts: { name: 'posts', hasShow: true },
+                        }}
+                    >
+                        <RecordContextProvider value={defaultRecord}>
+                            <DatagridRow {...defaultProps}>
+                                <TitleField />
+                            </DatagridRow>
+                        </RecordContextProvider>
+                    </ResourceDefinitionContextProvider>
+                </LocationSpy>
+            );
+            fireEvent.click(screen.getByText('hello'));
+            expect(spy).toHaveBeenCalledWith(
+                expect.objectContaining({ pathname: '/posts/15/show' })
+            );
+        });
+
+        it("should default to 'show' if the resource has both a show and an edit page", () => {
+            let spy = jest.fn();
+            render(
+                <LocationSpy spy={spy}>
+                    <ResourceDefinitionContextProvider
+                        definitions={{
+                            posts: {
+                                name: 'posts',
+                                hasShow: true,
+                                hasEdit: true,
+                            },
+                        }}
+                    >
+                        <RecordContextProvider value={defaultRecord}>
+                            <DatagridRow {...defaultProps}>
+                                <TitleField />
+                            </DatagridRow>
+                        </RecordContextProvider>
+                    </ResourceDefinitionContextProvider>
+                </LocationSpy>
+            );
+            fireEvent.click(screen.getByText('hello'));
+            expect(spy).toHaveBeenCalledWith(
+                expect.objectContaining({ pathname: '/posts/15/show' })
+            );
+        });
+
+        it('should default to false if the resource has no show nor edit page', () => {
+            let spy = jest.fn();
+            const { record, ...rest } = defaultProps;
+            render(
+                <LocationSpy spy={spy}>
+                    <ResourceDefinitionContextProvider
+                        definitions={{
+                            posts: {
+                                name: 'posts',
+                                hasList: true,
+                            },
+                        }}
+                    >
+                        <RecordContextProvider value={defaultRecord}>
+                            <DatagridRow {...rest}>
+                                <TitleField />
+                            </DatagridRow>
+                        </RecordContextProvider>
+                    </ResourceDefinitionContextProvider>
                 </LocationSpy>
             );
             fireEvent.click(screen.getByText('hello'));

@@ -1,10 +1,11 @@
 import * as React from 'react';
-import { ReactNode } from 'react';
-import PropTypes from 'prop-types';
-import { useCheckMinimumRequiredProps, RaRecord } from 'ra-core';
-import { EditProps } from '../types';
-import { EditView } from './EditView';
-import { EditBase } from 'ra-core';
+import {
+    EditBase,
+    useCheckMinimumRequiredProps,
+    RaRecord,
+    EditControllerProps,
+} from 'ra-core';
+import { EditView, EditViewProps } from './EditView';
 
 /**
  * Page component for the Edit view
@@ -30,8 +31,8 @@ import { EditBase } from 'ra-core';
  * import * as React from "react";
  * import { Edit, SimpleForm, TextInput } from 'react-admin';
  *
- * export const PostEdit = (props) => (
- *     <Edit {...props}>
+ * export const PostEdit = () => (
+ *     <Edit>
  *         <SimpleForm>
  *             <TextInput source="title" />
  *         </SimpleForm>
@@ -52,7 +53,7 @@ import { EditBase } from 'ra-core';
  * export default App;
  */
 export const Edit = <RecordType extends RaRecord = any>(
-    props: EditProps<RecordType> & { children: ReactNode }
+    props: EditProps<RecordType, Error>
 ) => {
     useCheckMinimumRequiredProps('Edit', ['children'], props);
     const {
@@ -67,7 +68,7 @@ export const Edit = <RecordType extends RaRecord = any>(
         ...rest
     } = props;
     return (
-        <EditBase
+        <EditBase<RecordType>
             resource={resource}
             id={id}
             mutationMode={mutationMode}
@@ -82,27 +83,6 @@ export const Edit = <RecordType extends RaRecord = any>(
     );
 };
 
-Edit.propTypes = {
-    actions: PropTypes.oneOfType([PropTypes.element, PropTypes.bool]),
-    aside: PropTypes.element,
-    children: PropTypes.node,
-    className: PropTypes.string,
-    disableAuthentication: PropTypes.bool,
-    hasCreate: PropTypes.bool,
-    hasEdit: PropTypes.bool,
-    hasShow: PropTypes.bool,
-    hasList: PropTypes.bool,
-    id: PropTypes.any,
-    mutationMode: PropTypes.oneOf(['pessimistic', 'optimistic', 'undoable']),
-    mutationOptions: PropTypes.object,
-    queryOptions: PropTypes.object,
-    redirect: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.bool,
-        PropTypes.func,
-    ]),
-    resource: PropTypes.string,
-    title: PropTypes.node,
-    transform: PropTypes.func,
-    sx: PropTypes.any,
-};
+export interface EditProps<RecordType extends RaRecord = any, ErrorType = Error>
+    extends EditControllerProps<RecordType, ErrorType>,
+        EditViewProps {}

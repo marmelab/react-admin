@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
-import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { useTheme } from '@mui/material/styles';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -36,12 +35,6 @@ export const LoadingIndicator = (props: LoadingIndicatorProps) => {
             )}
         </Root>
     );
-};
-
-LoadingIndicator.propTypes = {
-    classes: PropTypes.object,
-    className: PropTypes.string,
-    width: PropTypes.string,
 };
 
 interface Props {

@@ -1,8 +1,6 @@
 import { useState, useMemo } from 'react';
-import { useResourceContext } from '../core';
 import { TranslatableContextValue } from './TranslatableContext';
 import { useLocaleState } from './useLocaleState';
-import { useTranslateLabel } from './useTranslateLabel';
 
 /**
  * Hook supplying the logic to translate a field value in multiple languages.
@@ -25,20 +23,14 @@ export const useTranslatable = (
     const [localeFromUI] = useLocaleState();
     const { defaultLocale = localeFromUI, locales } = options;
     const [selectedLocale, setSelectedLocale] = useState(defaultLocale);
-    const resource = useResourceContext({});
-    const translateLabel = useTranslateLabel();
 
     const context = useMemo<TranslatableContextValue>(
         () => ({
-            getSource: (source: string, locale: string = selectedLocale) =>
-                `${source}.${locale}`,
-            getLabel: (source: string, label?: string) =>
-                translateLabel({ source, resource, label }) as string,
             locales,
             selectedLocale,
             selectLocale: setSelectedLocale,
         }),
-        [locales, resource, selectedLocale, translateLabel]
+        [locales, selectedLocale]
     );
 
     return context;

@@ -2,7 +2,6 @@ import * as React from 'react';
 import { FC } from 'react';
 import { styled } from '@mui/material/styles';
 import { Children, memo } from 'react';
-import PropTypes from 'prop-types';
 import {
     AppBar as MuiAppBar,
     AppBarProps as MuiAppBarProps,
@@ -10,7 +9,7 @@ import {
     useMediaQuery,
     Theme,
 } from '@mui/material';
-import { ComponentPropType, useLocales } from 'ra-core';
+import { useLocales } from 'ra-core';
 
 import { SidebarToggleButton } from './SidebarToggleButton';
 import { LoadingIndicator } from './LoadingIndicator';
@@ -49,8 +48,6 @@ export const AppBar: FC<AppBarProps> = memo(props => {
         children,
         className,
         color = 'secondary',
-        open,
-        title,
         toolbar = defaultToolbarElement,
         userMenu = DefaultUserMenu,
         container: Container = alwaysOn ? 'div' : HideOnScroll,
@@ -107,29 +104,9 @@ const DefaultToolbar = () => {
 
 const defaultToolbarElement = <DefaultToolbar />;
 
-AppBar.propTypes = {
-    alwaysOn: PropTypes.bool,
-    children: PropTypes.node,
-    className: PropTypes.string,
-    color: PropTypes.oneOf([
-        'default',
-        'inherit',
-        'primary',
-        'secondary',
-        'transparent',
-    ]),
-    container: ComponentPropType,
-    /**
-     * @deprecated
-     */
-    open: PropTypes.bool,
-    toolbar: PropTypes.element,
-    userMenu: PropTypes.oneOfType([PropTypes.element, PropTypes.bool]),
-};
-
 const DefaultUserMenu = <UserMenu />;
 
-export interface AppBarProps extends Omit<MuiAppBarProps, 'title'> {
+export interface AppBarProps extends MuiAppBarProps {
     /**
      * This prop is injected by Layout. You should not use it directly unless
      * you are using a custom layout.
@@ -137,14 +114,6 @@ export interface AppBarProps extends Omit<MuiAppBarProps, 'title'> {
      */
     alwaysOn?: boolean;
     container?: React.ElementType<any>;
-    /**
-     * @deprecated injected by Layout but not used by this AppBar
-     */
-    open?: boolean;
-    /**
-     * @deprecated injected by Layout but not used by this AppBar
-     */
-    title?: string | JSX.Element;
     toolbar?: JSX.Element;
     userMenu?: JSX.Element | boolean;
 }

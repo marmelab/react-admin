@@ -27,7 +27,8 @@ const UrlRegexp = /http(s*):\/\/.*/i;
 export const isUrl = (value: any) => !value || UrlRegexp.test(value);
 export const valuesAreUrl = (values: any[]) => values.every(isUrl);
 
-const ImageUrlRegexp = /http(s*):\/\/.*\.(jpeg|jpg|jfif|pjpeg|pjp|png|svg|gif|webp|apng|bmp|ico|cur|tif|tiff)/i;
+const ImageUrlRegexp =
+    /http(s*):\/\/.*\.(jpeg|jpg|jfif|pjpeg|pjp|png|svg|gif|webp|apng|bmp|ico|cur|tif|tiff)/i;
 export const isImageUrl = (value: any) => !value || ImageUrlRegexp.test(value);
 export const valuesAreImageUrl = (values: any[]) => values.every(isImageUrl);
 

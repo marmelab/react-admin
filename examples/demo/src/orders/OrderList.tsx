@@ -12,18 +12,17 @@ import {
     List,
     NullableBooleanInput,
     NumberField,
+    NumberInput,
     ReferenceField,
     ReferenceInput,
     SearchInput,
     SelectColumnsButton,
     TextField,
-    TextInput,
     TopToolbar,
     useListContext,
 } from 'react-admin';
 import { useMediaQuery, Divider, Tabs, Tab, Theme } from '@mui/material';
 
-import NbItemsField from './NbItemsField';
 import CustomerReferenceField from '../visitors/CustomerReferenceField';
 import AddressField from '../visitors/AddressField';
 import MobileGrid from './MobileGrid';
@@ -61,9 +60,9 @@ const orderFilters = [
             sx={{ minWidth: 200 }}
         />
     </ReferenceInput>,
-    <DateInput source="date_gte" />,
-    <DateInput source="date_lte" />,
-    <TextInput source="total_gte" />,
+    <DateInput source="date_gte" parse={d => new Date(d).toISOString()} />,
+    <DateInput source="date_lte" parse={d => new Date(d).toISOString()} />,
+    <NumberInput source="total_gte" />,
     <NullableBooleanInput source="returned" />,
 ];
 
@@ -85,8 +84,7 @@ const TabbedDatagrid = () => {
             setFilters &&
                 setFilters(
                     { ...filterValues, status: value },
-                    displayedFilters,
-                    false // no debounce, we want the filter to fire immediately
+                    displayedFilters
                 );
         },
         [displayedFilters, filterValues, setFilters]
@@ -138,13 +136,13 @@ const TabbedDatagrid = () => {
                                 source="customer_id"
                                 reference="customers"
                                 link={false}
-                                label="resources.commands.fields.address"
+                                label="resources.orders.fields.address"
                             >
                                 <AddressField />
                             </ReferenceField>
-                            <NbItemsField
-                                label="resources.commands.fields.nb_items"
-                                textAlign="right"
+                            <NumberField
+                                source="basket.length"
+                                label="resources.orders.fields.nb_items"
                             />
                             <NumberField
                                 source="total_ex_taxes"
@@ -189,13 +187,13 @@ const TabbedDatagrid = () => {
                                 source="customer_id"
                                 reference="customers"
                                 link={false}
-                                label="resources.commands.fields.address"
+                                label="resources.orders.fields.address"
                             >
                                 <AddressField />
                             </ReferenceField>
-                            <NbItemsField
-                                label="resources.commands.fields.nb_items"
-                                textAlign="right"
+                            <NumberField
+                                source="basket.length"
+                                label="resources.orders.fields.nb_items"
                             />
                             <NumberField
                                 source="total_ex_taxes"
@@ -244,13 +242,13 @@ const TabbedDatagrid = () => {
                                 source="customer_id"
                                 reference="customers"
                                 link={false}
-                                label="resources.commands.fields.address"
+                                label="resources.orders.fields.address"
                             >
                                 <AddressField />
                             </ReferenceField>
-                            <NbItemsField
-                                label="resources.commands.fields.nb_items"
-                                textAlign="right"
+                            <NumberField
+                                source="basket.length"
+                                label="resources.orders.fields.nb_items"
                             />
                             <NumberField
                                 source="total_ex_taxes"

@@ -2,7 +2,6 @@ import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import clsx from 'clsx';
 import { useCallback, FunctionComponent } from 'react';
-import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import FormLabel from '@mui/material/FormLabel';
 import FormControl, { FormControlProps } from '@mui/material/FormControl';
@@ -84,7 +83,9 @@ import { LinearProgress } from '../layout';
  *
  * The object passed as `options` props is passed to the Material UI <Checkbox> components
  */
-export const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = props => {
+export const CheckboxGroupInput: FunctionComponent<
+    CheckboxGroupInputProps
+> = props => {
     const {
         choices: choicesProp,
         className,
@@ -94,6 +95,7 @@ export const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = pr
         label,
         labelPlacement,
         isLoading: isLoadingProp,
+        isPending: isPendingProp,
         isFetching: isFetchingProp,
         margin = 'dense',
         onBlur,
@@ -107,14 +109,12 @@ export const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = pr
         source: sourceProp,
         translateChoice,
         validate,
-        disabled,
-        readOnly,
         ...rest
     } = props;
 
     const {
         allChoices,
-        isLoading,
+        isPending,
         error: fetchError,
         resource,
         source,
@@ -123,6 +123,7 @@ export const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = pr
         choices: choicesProp,
         isFetching: isFetchingProp,
         isLoading: isLoadingProp,
+        isPending: isPendingProp,
         resource: resourceProp,
         source: sourceProp,
     });
@@ -133,7 +134,7 @@ export const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = pr
         );
     }
 
-    if (!isLoading && !fetchError && allChoices === undefined) {
+    if (!isPending && !fetchError && allChoices === undefined) {
         throw new Error(
             `If you're not wrapping the CheckboxGroupInput inside a ReferenceArrayInput, you must provide the choices prop`
         );
@@ -141,8 +142,7 @@ export const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = pr
 
     const {
         field: { onChange: formOnChange, onBlur: formOnBlur, value, ref },
-        fieldState: { error, invalid, isTouched },
-        formState: { isSubmitted },
+        fieldState: { error, invalid },
         id,
         isRequired,
     } = useInput({
@@ -153,8 +153,6 @@ export const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = pr
         validate,
         onChange,
         onBlur,
-        disabled,
-        readOnly,
         ...rest,
     });
 
@@ -163,6 +161,7 @@ export const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = pr
             let newValue;
 
             if (
+                allChoices &&
                 allChoices.every(
                     item => typeof get(item, optionValue) === 'number'
                 )
@@ -188,7 +187,7 @@ export const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = pr
         [allChoices, formOnChange, formOnBlur, optionValue, value]
     );
 
-    if (isLoading && (!allChoices || allChoices.length === 0)) {
+    if (isPending) {
         return (
             <Labeled
                 id={id}
@@ -204,16 +203,13 @@ export const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = pr
         );
     }
 
-    const renderHelperText =
-        !!fetchError ||
-        helperText !== false ||
-        ((isTouched || isSubmitted) && invalid);
+    const renderHelperText = !!fetchError || helperText !== false || invalid;
 
     return (
         <StyledFormControl
             component="fieldset"
             margin={margin}
-            error={fetchError || ((isTouched || isSubmitted) && invalid)}
+            error={fetchError || invalid}
             className={clsx('ra-input', `ra-input-${source}`, className)}
             {...sanitizeRestProps(rest)}
         >
@@ -242,21 +238,16 @@ export const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = pr
                         value={value}
                         labelPlacement={labelPlacement}
                         inputRef={index === 0 ? ref : undefined}
-                        disabled={disabled || readOnly}
-                        readOnly={readOnly}
                         {...sanitizeRestProps(rest)}
                     />
                 ))}
             </FormGroup>
             {renderHelperText ? (
                 <FormHelperText
-                    error={
-                        fetchError || ((isTouched || isSubmitted) && !!error)
-                    }
+                    error={!!fetchError || !!error}
                     className={CheckboxGroupInputClasses.helperText}
                 >
                     <InputHelperText
-                        touched={isTouched || isSubmitted || fetchError}
                         error={error?.message || fetchError?.message}
                         helperText={helperText}
                     />
@@ -275,23 +266,6 @@ const sanitizeRestProps = ({
     touched,
     ...rest
 }: any) => sanitizeInputRestProps(rest);
-
-CheckboxGroupInput.propTypes = {
-    choices: PropTypes.arrayOf(PropTypes.any),
-    className: PropTypes.string,
-    source: PropTypes.string,
-    optionText: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.func,
-        PropTypes.element,
-    ]),
-    optionValue: PropTypes.string,
-    disabled: PropTypes.bool,
-    readOnly: PropTypes.bool,
-    row: PropTypes.bool,
-    resource: PropTypes.string,
-    translateChoice: PropTypes.bool,
-};
 
 export type CheckboxGroupInputProps = Omit<CommonInputProps, 'source'> &
     ChoicesProps &

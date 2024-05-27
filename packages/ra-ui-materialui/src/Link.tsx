@@ -1,5 +1,4 @@
 import * as React from 'react';
-import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { Link as RRLink, LinkProps as RRLinkProps } from 'react-router-dom';
 import {
@@ -16,7 +15,6 @@ export const Link = (props: LinkProps) => {
             component={RRLink}
             to={to}
             className={clsx(LinkClasses.link, className)}
-            underline="none"
             {...rest}
         >
             {children}
@@ -37,9 +35,3 @@ export interface LinkProps
     extends MuiLinkProps<React.ElementType<any>, RRLinkProps> {
     className?: string;
 }
-
-Link.propTypes = {
-    className: PropTypes.string,
-    children: PropTypes.node,
-    to: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-};

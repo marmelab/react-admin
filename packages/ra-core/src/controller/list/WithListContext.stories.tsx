@@ -135,8 +135,8 @@ export const Basic = () => (
     <CoreAdminContext dataProvider={dataProvider}>
         <ListBase resource="fruits" disableSyncWithLocation perPage={100}>
             <WithListContext<Fruit>
-                render={({ isLoading, data, total }) =>
-                    isLoading ? (
+                render={({ isPending, data, total }) =>
+                    isPending ? (
                         <>Loading...</>
                     ) : (
                         <table style={{ borderSpacing: '30px 5px' }}>

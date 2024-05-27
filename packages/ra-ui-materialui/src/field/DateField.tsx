@@ -1,11 +1,9 @@
 import * as React from 'react';
-import PropTypes from 'prop-types';
-import get from 'lodash/get';
 import { Typography, TypographyProps } from '@mui/material';
-import { useRecordContext, useTranslate } from 'ra-core';
+import { useFieldValue, useTranslate } from 'ra-core';
 
 import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
-import { FieldProps, fieldPropTypes } from './types';
+import { FieldProps } from './types';
 import { genericMemo } from './genericMemo';
 
 /**
@@ -33,7 +31,7 @@ import { genericMemo } from './genericMemo';
  * <span>mercredi 7 novembre 2012</span>
  */
 const DateFieldImpl = <
-    RecordType extends Record<string, any> = Record<string, any>
+    RecordType extends Record<string, any> = Record<string, any>,
 >(
     props: DateFieldProps<RecordType>
 ) => {
@@ -44,7 +42,6 @@ const DateFieldImpl = <
         options,
         showTime = false,
         showDate = true,
-        source,
         transform = defaultTransform,
         ...rest
     } = props;
@@ -56,12 +53,7 @@ const DateFieldImpl = <
         );
     }
 
-    const record = useRecordContext<RecordType>(props);
-    if (!record) {
-        return null;
-    }
-
-    const value = get(record, source) as any;
+    const value = useFieldValue(props);
     if (value == null || value === '') {
         return emptyText ? (
             <Typography
@@ -78,26 +70,28 @@ const DateFieldImpl = <
     const date = transform(value);
 
     let dateString = '';
-    if (showTime && showDate) {
-        dateString = toLocaleStringSupportsLocales
-            ? date.toLocaleString(locales, options)
-            : date.toLocaleString();
-    } else if (showDate) {
-        // If input is a date string (e.g. '2022-02-15') without time and time zone,
-        // force timezone to UTC to fix issue with people in negative time zones
-        // who may see a different date when calling toLocaleDateString().
-        const dateOptions =
-            options ??
-            (typeof value === 'string' && value.length <= 10
-                ? { timeZone: 'UTC' }
-                : undefined);
-        dateString = toLocaleStringSupportsLocales
-            ? date.toLocaleDateString(locales, dateOptions)
-            : date.toLocaleDateString();
-    } else if (showTime) {
-        dateString = toLocaleStringSupportsLocales
-            ? date.toLocaleTimeString(locales, options)
-            : date.toLocaleTimeString();
+    if (date) {
+        if (showTime && showDate) {
+            dateString = toLocaleStringSupportsLocales
+                ? date.toLocaleString(locales, options)
+                : date.toLocaleString();
+        } else if (showDate) {
+            // If input is a date string (e.g. '2022-02-15') without time and time zone,
+            // force timezone to UTC to fix issue with people in negative time zones
+            // who may see a different date when calling toLocaleDateString().
+            const dateOptions =
+                options ??
+                (typeof value === 'string' && value.length <= 10
+                    ? { timeZone: 'UTC' }
+                    : undefined);
+            dateString = toLocaleStringSupportsLocales
+                ? date.toLocaleDateString(locales, dateOptions)
+                : date.toLocaleDateString();
+        } else if (showTime) {
+            dateString = toLocaleStringSupportsLocales
+                ? date.toLocaleTimeString(locales, options)
+                : date.toLocaleTimeString();
+        }
     }
 
     return (
@@ -111,25 +105,12 @@ const DateFieldImpl = <
         </Typography>
     );
 };
-
-DateFieldImpl.propTypes = {
-    // @ts-ignore
-    ...Typography.propTypes,
-    ...fieldPropTypes,
-    locales: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.arrayOf(PropTypes.string),
-    ]),
-    options: PropTypes.object,
-    showTime: PropTypes.bool,
-    showDate: PropTypes.bool,
-};
 DateFieldImpl.displayName = 'DateFieldImpl';
 
 export const DateField = genericMemo(DateFieldImpl);
 
 export interface DateFieldProps<
-    RecordType extends Record<string, any> = Record<string, any>
+    RecordType extends Record<string, any> = Record<string, any>,
 > extends FieldProps<RecordType>,
         Omit<TypographyProps, 'textAlign'> {
     locales?: Intl.LocalesArgument;
@@ -143,8 +124,8 @@ const defaultTransform = value =>
     value instanceof Date
         ? value
         : typeof value === 'string' || typeof value === 'number'
-        ? new Date(value)
-        : undefined;
+          ? new Date(value)
+          : undefined;
 
 const toLocaleStringSupportsLocales = (() => {
     // from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toLocaleString

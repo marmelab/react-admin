@@ -1,7 +1,13 @@
-import { act, fireEvent, render, screen } from '@testing-library/react';
+import {
+    act,
+    fireEvent,
+    render,
+    screen,
+    waitFor,
+} from '@testing-library/react';
 import expect from 'expect';
 import React from 'react';
-import { Location, MemoryRouter, Route, Routes } from 'react-router-dom';
+import { Location, Route, Routes } from 'react-router-dom';
 
 import {
     CreateContextProvider,
@@ -12,7 +18,7 @@ import {
     useInput,
 } from '../..';
 import { CoreAdminContext } from '../../core';
-import { testDataProvider, useCreate } from '../../dataProvider';
+import { testDataProvider } from '../../dataProvider';
 import { useNotificationContext } from '../../notification';
 import {
     Middleware,
@@ -22,14 +28,16 @@ import {
 import { CreateController } from './CreateController';
 import { getRecordFromLocation } from './useCreateController';
 
+import { TestMemoryRouter } from '../../routing';
+
 describe('useCreateController', () => {
     describe('getRecordFromLocation', () => {
         const location: Location = {
             key: 'a_key',
             pathname: '/foo',
-            search: undefined,
+            search: '',
             state: undefined,
-            hash: undefined,
+            hash: '',
         };
 
         it('should return location state record when set', () => {
@@ -172,6 +180,77 @@ describe('useCreateController', () => {
         ]);
     });
 
+    it('should use the default error message in case no message was provided', async () => {
+        jest.spyOn(console, 'error').mockImplementation(() => {});
+        let saveCallback;
+        const dataProvider = testDataProvider({
+            getOne: () => Promise.resolve({ data: { id: 12 } } as any),
+            create: () => Promise.reject({}),
+        });
+
+        let notificationsSpy;
+        const Notification = () => {
+            const { notifications } = useNotificationContext();
+            React.useEffect(() => {
+                notificationsSpy = notifications;
+            }, [notifications]);
+            return null;
+        };
+
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
+                <Notification />
+                <CreateController {...defaultProps}>
+                    {({ save }) => {
+                        saveCallback = save;
+                        return null;
+                    }}
+                </CreateController>
+            </CoreAdminContext>
+        );
+        await act(async () => saveCallback({ foo: 'bar' }));
+        expect(notificationsSpy).toEqual([
+            {
+                message: 'ra.notification.http_error',
+                type: 'error',
+                notificationOptions: { messageArgs: { _: undefined } },
+            },
+        ]);
+    });
+
+    it('should not trigger a notification in case of a validation error (handled by useNotifyIsFormInvalid)', async () => {
+        jest.spyOn(console, 'error').mockImplementation(() => {});
+        let saveCallback;
+        const dataProvider = testDataProvider({
+            getOne: () => Promise.resolve({ data: { id: 12 } } as any),
+            create: () =>
+                Promise.reject({ body: { errors: { foo: 'invalid' } } }),
+        });
+
+        let notificationsSpy;
+        const Notification = () => {
+            const { notifications } = useNotificationContext();
+            React.useEffect(() => {
+                notificationsSpy = notifications;
+            }, [notifications]);
+            return null;
+        };
+
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
+                <Notification />
+                <CreateController {...defaultProps}>
+                    {({ save }) => {
+                        saveCallback = save;
+                        return null;
+                    }}
+                </CreateController>
+            </CoreAdminContext>
+        );
+        await act(async () => saveCallback({ foo: 'bar' }));
+        expect(notificationsSpy).toEqual([]);
+    });
+
     it('should allow mutationOptions to override the default success side effects', async () => {
         let saveCallback;
         const dataProvider = testDataProvider({
@@ -205,7 +284,7 @@ describe('useCreateController', () => {
             </CoreAdminContext>
         );
         await act(async () => saveCallback({ foo: 'bar' }));
-        expect(onSuccess).toHaveBeenCalled();
+        await waitFor(() => expect(onSuccess).toHaveBeenCalled());
         expect(notificationsSpy).toEqual([]);
     });
 
@@ -288,7 +367,7 @@ describe('useCreateController', () => {
             </CoreAdminContext>
         );
         await act(async () => saveCallback({ foo: 'bar' }));
-        expect(onError).toHaveBeenCalled();
+        await waitFor(() => expect(onError).toHaveBeenCalled());
         expect(notificationsSpy).toEqual([]);
     });
 
@@ -484,20 +563,17 @@ describe('useCreateController', () => {
         const dataProvider = testDataProvider({
             create,
         });
-        const middleware: Middleware<ReturnType<typeof useCreate>[0]> = jest.fn(
-            (resource, params, options, next) => {
-                return next(
-                    resource,
-                    { ...params, meta: { addedByMiddleware: true } },
-                    options
-                );
+        const middleware: Middleware<DataProvider['create']> = jest.fn(
+            (resource, params, next) => {
+                return next(resource, {
+                    ...params,
+                    meta: { addedByMiddleware: true },
+                });
             }
         );
 
         const Child = () => {
-            useRegisterMutationMiddleware<ReturnType<typeof useCreate>[0]>(
-                middleware
-            );
+            useRegisterMutationMiddleware<DataProvider['create']>(middleware);
             return null;
         };
         render(
@@ -537,7 +613,6 @@ describe('useCreateController', () => {
             {
                 data: { foo: 'bar' },
             },
-            expect.any(Object),
             expect.any(Function)
         );
     });
@@ -546,9 +621,9 @@ describe('useCreateController', () => {
         const create = jest.fn().mockImplementationOnce(() => {
             return Promise.reject({ body: { errors: { foo: 'invalid' } } });
         });
-        const dataProvider = ({
+        const dataProvider = {
             create,
-        } as unknown) as DataProvider;
+        } as unknown as DataProvider;
         let saveCallback;
         render(
             <CoreAdminContext dataProvider={dataProvider}>
@@ -611,14 +686,14 @@ describe('useCreateController', () => {
         };
         const ShowView = () => <div>Show</div>;
         render(
-            <MemoryRouter initialEntries={['/posts/create']}>
+            <TestMemoryRouter initialEntries={['/posts/create']}>
                 <CoreAdminContext dataProvider={dataProvider}>
                     <Routes>
                         <Route path="/posts/create" element={<CreateView />} />
                         <Route path="/posts/123/show" element={<ShowView />} />
                     </Routes>
                 </CoreAdminContext>
-            </MemoryRouter>
+            </TestMemoryRouter>
         );
         await screen.findByText('Create');
         fireEvent.change(screen.getByLabelText('foo'), {

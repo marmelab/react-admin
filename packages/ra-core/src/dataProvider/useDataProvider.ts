@@ -76,10 +76,10 @@ import { reactAdminFetchActions } from './dataFetchActions';
 const arrayReturnTypes = ['getList', 'getMany', 'getManyReference'];
 
 export const useDataProvider = <
-    TDataProvider extends DataProvider = DataProvider
+    TDataProvider extends DataProvider = DataProvider,
 >(): TDataProvider => {
-    const dataProvider = ((useContext(DataProviderContext) ||
-        defaultDataProvider) as unknown) as TDataProvider;
+    const dataProvider = (useContext(DataProviderContext) ||
+        defaultDataProvider) as unknown as TDataProvider;
 
     const logoutIfAccessDenied = useLogoutIfAccessDenied();
 
@@ -111,7 +111,11 @@ export const useDataProvider = <
                                 return response;
                             })
                             .catch(error => {
-                                if (process.env.NODE_ENV !== 'production') {
+                                if (
+                                    process.env.NODE_ENV !== 'production' &&
+                                    // do not log AbortErrors
+                                    !isAbortError(error)
+                                ) {
                                     console.error(error);
                                 }
                                 return logoutIfAccessDenied(error).then(
@@ -143,3 +147,7 @@ export const useDataProvider = <
 
     return dataProviderProxy;
 };
+
+const isAbortError = error =>
+    error instanceof DOMException &&
+    (error as DOMException).name === 'AbortError';

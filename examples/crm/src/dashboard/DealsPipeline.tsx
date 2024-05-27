@@ -1,11 +1,11 @@
 import * as React from 'react';
-import { Link as RouterLink } from 'react-router-dom';
-import { Card, Link, Box } from '@mui/material';
+import { Card, Box } from '@mui/material';
 import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
 import {
     useGetList,
     SimpleList,
     useGetIdentity,
+    Link,
     ReferenceField,
 } from 'react-admin';
 
@@ -15,7 +15,7 @@ import { Deal } from '../types';
 
 export const DealsPipeline = () => {
     const { identity } = useGetIdentity();
-    const { data, total, isLoading } = useGetList<Deal>(
+    const { data, total, isPending } = useGetList<Deal>(
         'deals',
         {
             pagination: { page: 1, perPage: 10 },
@@ -50,7 +50,6 @@ export const DealsPipeline = () => {
                     underline="none"
                     variant="h5"
                     color="textSecondary"
-                    component={RouterLink}
                     to="/deals"
                 >
                     Deals Pipeline
@@ -62,7 +61,7 @@ export const DealsPipeline = () => {
                     linkType="show"
                     data={getOrderedDeals(data)}
                     total={total}
-                    isLoading={isLoading}
+                    isPending={isPending}
                     primaryText={deal => deal.name}
                     secondaryText={deal =>
                         `${deal.amount.toLocaleString('en-US', {

@@ -1,9 +1,7 @@
 import { useCallback } from 'react';
-// @ts-ignore
 import { parse } from 'query-string';
-import { useLocation } from 'react-router-dom';
-import { Location } from 'history';
-import { UseMutationOptions } from 'react-query';
+import { useLocation, Location } from 'react-router-dom';
+import { UseMutationOptions } from '@tanstack/react-query';
 
 import { useAuthenticated } from '../../auth';
 import {
@@ -13,7 +11,11 @@ import {
 } from '../../dataProvider';
 import { useRedirect, RedirectionSideEffect } from '../../routing';
 import { useNotify } from '../../notification';
-import { SaveContextValue, useMutationMiddlewares } from '../saveContext';
+import {
+    SaveContextValue,
+    SaveHandlerCallbacks,
+    useMutationMiddlewares,
+} from '../saveContext';
 import { useTranslate } from '../../i18n';
 import { Identifier, RaRecord, TransformData } from '../../types';
 import {
@@ -41,8 +43,8 @@ import {
  */
 export const useCreateController = <
     RecordType extends Omit<RaRecord, 'id'> = any,
-    MutationOptionsError = unknown,
-    ResultRecordType extends RaRecord = RecordType & { id: Identifier }
+    MutationOptionsError = Error,
+    ResultRecordType extends RaRecord = RecordType & { id: Identifier },
 >(
     props: CreateControllerProps<
         RecordType,
@@ -60,6 +62,11 @@ export const useCreateController = <
 
     useAuthenticated({ enabled: !disableAuthentication });
     const resource = useResourceContext(props);
+    if (!resource) {
+        throw new Error(
+            'useCreateController requires a non-empty resource prop or context'
+        );
+    }
     const { hasEdit, hasShow } = useResourceDefinition(props);
     const finalRedirectTo =
         redirectTo ?? getDefaultRedirectRoute(hasShow, hasEdit);
@@ -68,114 +75,103 @@ export const useCreateController = <
     const notify = useNotify();
     const redirect = useRedirect();
     const recordToUse = record ?? getRecordFromLocation(location) ?? undefined;
-    const {
-        onSuccess,
-        onError,
-        meta,
-        ...otherMutationOptions
-    } = mutationOptions;
+    const { onSuccess, onError, meta, ...otherMutationOptions } =
+        mutationOptions;
     const {
         registerMutationMiddleware,
         getMutateWithMiddlewares,
         unregisterMutationMiddleware,
     } = useMutationMiddlewares();
 
-    const [create, { isLoading: saving }] = useCreate<
+    const [create, { isPending: saving }] = useCreate<
         RecordType,
         MutationOptionsError,
         ResultRecordType
-    >(resource, undefined, { ...otherMutationOptions, returnPromise: true });
+    >(resource, undefined, {
+        onSuccess: async (data, variables, context) => {
+            if (onSuccess) {
+                return onSuccess(data, variables, context);
+            }
+
+            notify('ra.notification.created', {
+                type: 'info',
+                messageArgs: { smart_count: 1 },
+            });
+            redirect(finalRedirectTo, resource, data.id, data);
+        },
+        onError: (error: MutationOptionsError, variables, context) => {
+            if (onError) {
+                return onError(error, variables, context);
+            }
+            // Don't trigger a notification if this is a validation error
+            // (notification will be handled by the useNotifyIsFormInvalid hook)
+            const validationErrors = (error as HttpError)?.body?.errors;
+            const hasValidationErrors =
+                !!validationErrors && Object.keys(validationErrors).length > 0;
+            if (!hasValidationErrors) {
+                notify(
+                    typeof error === 'string'
+                        ? error
+                        : (error as Error).message ||
+                              'ra.notification.http_error',
+                    {
+                        type: 'error',
+                        messageArgs: {
+                            _:
+                                typeof error === 'string'
+                                    ? error
+                                    : error instanceof Error ||
+                                        (typeof error === 'object' &&
+                                            error !== null &&
+                                            error.hasOwnProperty('message'))
+                                      ? // @ts-ignore
+                                        error.message
+                                      : undefined,
+                        },
+                    }
+                );
+            }
+        },
+        ...otherMutationOptions,
+        returnPromise: true,
+        getMutateWithMiddlewares,
+    });
 
     const save = useCallback(
         (
             data: Partial<RecordType>,
             {
-                onSuccess: onSuccessFromSave,
-                onError: onErrorFromSave,
                 transform: transformFromSave,
                 meta: metaFromSave,
-            } = {}
+                ...callTimeOptions
+            } = {} as SaveHandlerCallbacks
         ) =>
             Promise.resolve(
                 transformFromSave
                     ? transformFromSave(data)
                     : transform
-                    ? transform(data)
-                    : data
+                      ? transform(data)
+                      : data
             ).then(async (data: Partial<RecordType>) => {
-                const mutate = getMutateWithMiddlewares(create);
                 try {
-                    await mutate(
+                    await create(
                         resource,
                         { data, meta: metaFromSave ?? meta },
-                        {
-                            onSuccess: async (data, variables, context) => {
-                                if (onSuccessFromSave) {
-                                    return onSuccessFromSave(
-                                        data,
-                                        variables,
-                                        context
-                                    );
-                                }
-                                if (onSuccess) {
-                                    return onSuccess(data, variables, context);
-                                }
-
-                                notify('ra.notification.created', {
-                                    type: 'info',
-                                    messageArgs: { smart_count: 1 },
-                                });
-                                redirect(
-                                    finalRedirectTo,
-                                    resource,
-                                    data.id,
-                                    data
-                                );
-                            },
-                            onError: onErrorFromSave
-                                ? onErrorFromSave
-                                : onError
-                                ? onError
-                                : (error: Error) => {
-                                      notify(
-                                          typeof error === 'string'
-                                              ? error
-                                              : error.message ||
-                                                    'ra.notification.http_error',
-                                          {
-                                              type: 'error',
-                                              messageArgs: {
-                                                  _:
-                                                      typeof error === 'string'
-                                                          ? error
-                                                          : error &&
-                                                            error.message
-                                                          ? error.message
-                                                          : undefined,
-                                              },
-                                          }
-                                      );
-                                  },
-                        }
+                        callTimeOptions
                     );
                 } catch (error) {
-                    if ((error as HttpError).body?.errors != null) {
-                        return (error as HttpError).body.errors;
+                    if (
+                        (error instanceof HttpError ||
+                            (typeof error === 'object' &&
+                                error !== null &&
+                                error.hasOwnProperty('body'))) &&
+                        error.body?.errors != null
+                    ) {
+                        return error.body.errors;
                     }
                 }
             }),
-        [
-            create,
-            finalRedirectTo,
-            getMutateWithMiddlewares,
-            meta,
-            notify,
-            onError,
-            onSuccess,
-            redirect,
-            resource,
-            transform,
-        ]
+        [create, meta, resource, transform]
     );
 
     const getResourceLabel = useGetResourceLabel();
@@ -186,6 +182,7 @@ export const useCreateController = <
     return {
         isFetching: false,
         isLoading: false,
+        isPending: saving,
         saving,
         defaultTitle,
         save,
@@ -199,8 +196,8 @@ export const useCreateController = <
 
 export interface CreateControllerProps<
     RecordType extends Omit<RaRecord, 'id'> = any,
-    MutationOptionsError = unknown,
-    ResultRecordType extends RaRecord = RecordType & { id: Identifier }
+    MutationOptionsError = Error,
+    ResultRecordType extends RaRecord = RecordType & { id: Identifier },
 > {
     disableAuthentication?: boolean;
     hasEdit?: boolean;
@@ -217,13 +214,11 @@ export interface CreateControllerProps<
 }
 
 export interface CreateControllerResult<
-    RecordType extends Omit<RaRecord, 'id'> = any
+    RecordType extends Omit<RaRecord, 'id'> = any,
 > extends SaveContextValue {
-    // Necessary for actions (EditActions) which expect a data prop containing the record
-    // @deprecated - to be removed in 4.0d
-    data?: RecordType;
-    defaultTitle: string;
+    defaultTitle?: string;
     isFetching: boolean;
+    isPending: boolean;
     isLoading: boolean;
     record?: Partial<RecordType>;
     redirect: RedirectionSideEffect;

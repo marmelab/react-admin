@@ -27,7 +27,7 @@ export const IconButtonWithTooltip = ({
 
     const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
         handleClose();
-        onClick(event);
+        onClick && onClick(event);
     };
 
     return (

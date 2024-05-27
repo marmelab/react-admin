@@ -116,7 +116,7 @@ export const AutocompleteInput = <
     OptionType extends RaRecord = RaRecord,
     Multiple extends boolean | undefined = false,
     DisableClearable extends boolean | undefined = false,
-    SupportCreate extends boolean | undefined = false
+    SupportCreate extends boolean | undefined = false,
 >(
     props: AutocompleteInputProps<
         OptionType,
@@ -146,6 +146,7 @@ export const AutocompleteInput = <
         inputText,
         isFetching: isFetchingProp,
         isLoading: isLoadingProp,
+        isPending: isPendingProp,
         isRequired: isRequiredOverride,
         label,
         limitChoicesToValue,
@@ -174,8 +175,6 @@ export const AutocompleteInput = <
         validate,
         variant,
         onInputChange,
-        disabled,
-        readOnly,
         ...rest
     } = props;
 
@@ -183,7 +182,7 @@ export const AutocompleteInput = <
 
     const {
         allChoices,
-        isLoading,
+        isPending,
         error: fetchError,
         resource,
         source,
@@ -193,6 +192,7 @@ export const AutocompleteInput = <
         choices: choicesProp,
         isFetching: isFetchingProp,
         isLoading: isLoadingProp,
+        isPending: isPendingProp,
         resource: resourceProp,
         source: sourceProp,
     });
@@ -203,8 +203,7 @@ export const AutocompleteInput = <
         id,
         field,
         isRequired,
-        fieldState: { error, invalid, isTouched },
-        formState: { isSubmitted },
+        fieldState: { error, invalid },
     } = useInput({
         defaultValue,
         id: idOverride,
@@ -219,8 +218,6 @@ export const AutocompleteInput = <
         resource,
         source,
         validate,
-        disabled,
-        readOnly,
         ...rest,
     });
 
@@ -238,7 +235,7 @@ export const AutocompleteInput = <
                               _: emptyText,
                           }),
                       },
-                  ].concat(allChoices),
+                  ].concat(allChoices || []),
         [
             allChoices,
             emptyValue,
@@ -347,7 +344,7 @@ If you provided a React element for the optionText prop, you must also provide t
                 return;
             }
 
-            setFilters(filterToQuery(filter), undefined, true);
+            setFilters(filterToQuery(filter));
         }, debounceDelay),
         [debounceDelay, setFilters, setFilter]
     );
@@ -508,16 +505,13 @@ If you provided a React element for the optionText prop, you must also provide t
 
         // add create option if necessary
         const { inputValue } = params;
-        if (onCreate || create) {
-            if (inputValue === '') {
-                // create option with createLabel
-                filteredOptions = filteredOptions.concat(getCreateItem(''));
-            } else if (!doesQueryMatchSuggestion(filterValue)) {
-                filteredOptions = filteredOptions.concat(
-                    // create option with createItemLabel
-                    getCreateItem(inputValue)
-                );
-            }
+        // FIXME pass the allowCreate: true option to useCreateSuggestions instead
+        if (
+            (onCreate || create) &&
+            inputValue !== '' &&
+            !doesQueryMatchSuggestion(filterValue)
+        ) {
+            filteredOptions = filteredOptions.concat(getCreateItem(inputValue));
         }
 
         return filteredOptions;
@@ -551,14 +545,12 @@ If you provided a React element for the optionText prop, you must also provide t
     const isOptionEqualToValue = (option, value) => {
         return String(getChoiceValue(option)) === String(getChoiceValue(value));
     };
-    const renderHelperText =
-        !!fetchError ||
-        helperText !== false ||
-        ((isTouched || isSubmitted) && invalid);
+    const renderHelperText = !!fetchError || helperText !== false || invalid;
 
     return (
         <>
             <StyledAutocomplete
+                blurOnSelect
                 className={clsx('ra-input', `ra-input-${source}`, className)}
                 clearText={translate(clearText, { _: clearText })}
                 closeText={translate(closeText, { _: closeText })}
@@ -567,10 +559,8 @@ If you provided a React element for the optionText prop, you must also provide t
                 id={id}
                 isOptionEqualToValue={isOptionEqualToValue}
                 filterSelectedOptions
-                disabled={disabled || readOnly}
                 renderInput={params => {
                     const mergedTextFieldProps = {
-                        readOnly,
                         ...params.InputProps,
                         ...TextFieldProps?.InputProps,
                     };
@@ -585,18 +575,10 @@ If you provided a React element for the optionText prop, you must also provide t
                                     isRequired={isRequired}
                                 />
                             }
-                            error={
-                                !!fetchError ||
-                                ((isTouched || isSubmitted) && invalid)
-                            }
+                            error={!!fetchError || invalid}
                             helperText={
                                 renderHelperText ? (
                                     <InputHelperText
-                                        touched={
-                                            isTouched ||
-                                            isSubmitted ||
-                                            fetchError
-                                        }
                                         error={
                                             error?.message ||
                                             fetchError?.message
@@ -609,7 +591,6 @@ If you provided a React element for the optionText prop, you must also provide t
                             variant={variant}
                             className={AutocompleteInputClasses.textField}
                             {...params}
-                            {...TextFieldProps}
                             InputProps={mergedTextFieldProps}
                             size={size}
                         />
@@ -621,7 +602,9 @@ If you provided a React element for the optionText prop, you must also provide t
                         <Chip
                             label={
                                 isValidElement(optionText)
-                                    ? inputText(option)
+                                    ? inputText
+                                        ? inputText(option)
+                                        : ''
                                     : getChoiceText(option)
                             }
                             size="small"
@@ -649,7 +632,7 @@ If you provided a React element for the optionText prop, you must also provide t
                 getOptionLabel={getOptionLabel}
                 inputValue={filterValue}
                 loading={
-                    isLoading &&
+                    isPending &&
                     (!finalChoices || finalChoices.length === 0) &&
                     oneSecondHasPassed
                 }
@@ -658,9 +641,11 @@ If you provided a React element for the optionText prop, you must also provide t
                 onBlur={finalOnBlur}
                 onInputChange={handleInputChange}
                 renderOption={(props, record: RaRecord) => {
-                    (props as {
-                        key: string;
-                    }).key = getChoiceValue(record);
+                    (
+                        props as {
+                            key: string;
+                        }
+                    ).key = getChoiceValue(record);
 
                     const optionLabel = getOptionLabel(record, true);
 
@@ -696,7 +681,7 @@ export interface AutocompleteInputProps<
     OptionType extends any = RaRecord,
     Multiple extends boolean | undefined = false,
     DisableClearable extends boolean | undefined = false,
-    SupportCreate extends boolean | undefined = false
+    SupportCreate extends boolean | undefined = false,
 > extends Omit<CommonInputProps, 'source' | 'onChange'>,
         ChoicesProps,
         UseSuggestionsOptions,
@@ -736,7 +721,7 @@ const useSelectedChoice = <
     OptionType extends any = RaRecord,
     Multiple extends boolean | undefined = false,
     DisableClearable extends boolean | undefined = false,
-    SupportCreate extends boolean | undefined = false
+    SupportCreate extends boolean | undefined = false,
 >(
     value: any,
     {
@@ -783,7 +768,7 @@ const useSelectedChoice = <
 };
 
 const getSelectedItems = (
-    choices = [],
+    choices: RaRecord[] = [],
     value,
     optionValue = 'id',
     multiple
@@ -808,7 +793,7 @@ const areSelectedItemsEqual = (
     selectedChoice: RaRecord | RaRecord[],
     newSelectedChoice: RaRecord | RaRecord[],
     optionValue = 'id',
-    multiple: boolean
+    multiple?: boolean
 ) => {
     if (multiple) {
         const selectedChoiceArray = (selectedChoice as RaRecord[]) ?? [];

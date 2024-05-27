@@ -43,12 +43,12 @@ const BookList = () => {
     const [filter, setFilter] = useState('');
     const [page, setPage] = useState(1);
     const perPage = 10;
-    const { data, total, isLoading } = useGetList<Book>('books', {
+    const { data, total, isPending } = useGetList<Book>('books', {
         filter: { q: filter },
         pagination: { page, perPage },
         sort: { field: 'id', order: 'ASC' }
     });
-    if (isLoading) {
+    if (isPending) {
         return <div>Loading...</div>;
     }
     return (
@@ -126,12 +126,12 @@ const BookList = () => {
     const [page, setPage] = useState(1);
     const perPage = 10;
 +   const sort = { field: 'id', order: 'ASC' };
-    const { data, total, isLoading } = useGetList('books', {
+    const { data, total, isPending } = useGetList('books', {
         filter: { q: filter },
         pagination: { page, perPage },
 +       sort
     });
-    if (isLoading) {
+    if (isPending) {
         return <div>Loading...</div>;
     }
     return (
@@ -210,12 +210,12 @@ const BookList = () => {
     const [page, setPage] = useState(1);
     const perPage = 10;
     const sort = { field: 'id', order: 'ASC' };
-    const { data, total, isLoading } = useGetList('books', {
+    const { data, total, isPending } = useGetList('books', {
         filter: { q: filter },
         pagination: { page, perPage },
         sort,
     });
-    if (isLoading) {
+    if (isPending) {
         return <div>Loading...</div>;
     }
 +   const filters = [<TextInput label="Search" source="q" size="small" alwaysOn />];
@@ -282,16 +282,16 @@ const BookList = () => {
 -   const [page, setPage] = useState(1);
 -   const perPage = 10;
 -   const sort = { field: 'id', order: 'ASC' };
--   const { data, total, isLoading } = useGetList('books', {
+-   const { data, total, isPending } = useGetList('books', {
 -       filter: { q: filter },
 -       pagination: { page, perPage },
 -       sort,
 -   });
--   if (isLoading) {
+-   if (isPending) {
 -       return <div>Loading...</div>;
 -   }
 +   const listContext = useListController();
-+   if (listContext.isLoading) {
++   if (listContext.isPending) {
 +       return <div>Loading...</div>;
 +   }
     const filters = [<TextInput label="Search" source="q" size="small" alwaysOn />];
@@ -354,7 +354,7 @@ import { Card } from '@mui/material';
 
 const BookList = () => {
 -   const listContext = useListController();
--   if (listContext.isLoading) {
+-   if (listContext.isPending) {
 -       return <div>Loading...</div>;
 -   }
 -   const filters = [<TextInput label="Search" source="q" size="small" alwaysOn />];
@@ -542,7 +542,7 @@ export const PostList = () => {
                     tertiaryText={record => new Date(record.published_at).toLocaleDateString()}
                 />
             ) : (
-                <Datagrid rowClick="edit">
+                <Datagrid>
                     <TextField source="id" />
                     <ReferenceField label="User" source="userId" reference="users">
                         <TextField source="name" />
@@ -629,7 +629,7 @@ const BookList = () => (
 
 **Tip**: With `emptyWhileLoading` turned on, the `<List>` component doesn't render its child component until the data is available. Without this flag, the `<SimpleBookList>` component would render even during the loading phase, break at `data.map()`. 
 
-You can also handle the loading state inside a custom list layout by grabbing the `isLoading` variable from the `ListContext`, but `emptyWhileLoading` is usually more convenient.
+You can also handle the loading state inside a custom list layout by grabbing the `isPending` variable from the `ListContext`, but `emptyWhileLoading` is usually more convenient.
 
 ## Filtering the List
 
@@ -825,7 +825,6 @@ The [`<Pagination>`](./Pagination.md) component gets the following constants fro
 * `hasPreviousPage`: True if the page number is greater than 1.
 * `hasNextPage`: True if the page number is lower than the total number of pages.
 * `actions`: A component that displays the pagination buttons (default: `<PaginationActions>`)
-* `limit`: An element that is displayed if there is no data to show (default: `<PaginationLimit>`)
 
 If you want to replace the default pagination by a "&lt; previous - next &gt;" pagination, create a pagination component like the following:
 

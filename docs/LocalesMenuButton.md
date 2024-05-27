@@ -46,7 +46,11 @@ import { Admin, Resource, Layout } from 'react-admin';
 
 import { MyAppBar } from './MyAppBar';
 
-const MyLayout = (props) => <Layout {...props} appBar={MyAppBar} />;
+const MyLayout = ({ children }) => (
+    <Layout appBar={MyAppBar}>
+        {children}
+    </Layout>
+);
 
 const i18nProvider = polyglotI18nProvider(
     locale => (locale === 'fr' ? frenchMessages : englishMessages),

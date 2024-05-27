@@ -1,14 +1,12 @@
 import * as React from 'react';
 import { Chip, Stack, StackProps, styled } from '@mui/material';
-import PropTypes from 'prop-types';
 import {
     sanitizeListRestProps,
-    useListContext,
+    useListContextWithProps,
     useResourceContext,
     RaRecord,
     RecordContextProvider,
     RecordRepresentation,
-    ComponentPropType,
     useCreatePath,
 } from 'ra-core';
 
@@ -59,11 +57,11 @@ export const SingleFieldList = (props: SingleFieldListProps) => {
         direction = 'row',
         ...rest
     } = props;
-    const { data, total, isLoading } = useListContext(props);
+    const { data, total, isPending } = useListContextWithProps(props);
     const resource = useResourceContext(props);
     const createPath = useCreatePath();
 
-    if (isLoading === true) {
+    if (isPending === true) {
         return <LinearProgress />;
     }
 
@@ -121,29 +119,6 @@ export const SingleFieldList = (props: SingleFieldListProps) => {
             })}
         </Root>
     );
-};
-
-SingleFieldList.propTypes = {
-    children: PropTypes.node,
-    classes: PropTypes.object,
-    className: PropTypes.string,
-    component: ComponentPropType,
-    data: PropTypes.any,
-    empty: PropTypes.element,
-    // @ts-ignore
-    linkType: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
-    resource: PropTypes.string,
-    sx: PropTypes.oneOfType([
-        PropTypes.arrayOf(
-            PropTypes.oneOfType([
-                PropTypes.func,
-                PropTypes.object,
-                PropTypes.bool,
-            ])
-        ),
-        PropTypes.func,
-        PropTypes.object,
-    ]),
 };
 
 export interface SingleFieldListProps<RecordType extends RaRecord = any>

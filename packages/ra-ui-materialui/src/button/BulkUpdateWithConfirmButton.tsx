@@ -1,8 +1,7 @@
 import * as React from 'react';
 import { Fragment, useState, ReactElement } from 'react';
-import PropTypes from 'prop-types';
 import ActionUpdate from '@mui/icons-material/Update';
-import inflection from 'inflection';
+
 import { alpha, styled } from '@mui/material/styles';
 import {
     useListContext,
@@ -18,8 +17,8 @@ import {
 
 import { Confirm } from '../layout';
 import { Button, ButtonProps } from './Button';
-import { BulkActionProps } from '../types';
-import { UseMutationOptions } from 'react-query';
+import { UseMutationOptions } from '@tanstack/react-query';
+import { humanize, inflect } from 'inflection';
 
 export const BulkUpdateWithConfirmButton = (
     props: BulkUpdateWithConfirmButtonProps
@@ -29,7 +28,7 @@ export const BulkUpdateWithConfirmButton = (
     const resource = useResourceContext(props);
     const unselectAll = useUnselectAll(resource);
     const [isOpen, setOpen] = useState(false);
-    const { selectedIds } = useListContext(props);
+    const { selectedIds } = useListContext();
 
     const {
         confirmTitle = 'ra.message.bulk_update_title',
@@ -60,8 +59,8 @@ export const BulkUpdateWithConfirmButton = (
                             typeof error === 'string'
                                 ? error
                                 : error && error.message
-                                ? error.message
-                                : undefined,
+                                  ? error.message
+                                  : undefined,
                     },
                 }
             );
@@ -72,7 +71,7 @@ export const BulkUpdateWithConfirmButton = (
     } = props;
     const { meta: mutationMeta, ...otherMutationOptions } = mutationOptions;
 
-    const [updateMany, { isLoading }] = useUpdateMany(
+    const [updateMany, { isPending }] = useUpdateMany(
         resource,
         { ids: selectedIds, data, meta: mutationMeta },
         {
@@ -111,20 +110,19 @@ export const BulkUpdateWithConfirmButton = (
             </StyledButton>
             <Confirm
                 isOpen={isOpen}
-                loading={isLoading}
+                loading={isPending}
                 title={confirmTitle}
                 content={confirmContent}
                 translateOptions={{
                     smart_count: selectedIds.length,
                     name: translate(`resources.${resource}.forcedCaseName`, {
                         smart_count: selectedIds.length,
-                        _: inflection.humanize(
+                        _: humanize(
                             translate(`resources.${resource}.name`, {
                                 smart_count: selectedIds.length,
-                                _: inflection.inflect(
-                                    resource,
-                                    selectedIds.length
-                                ),
+                                _: resource
+                                    ? inflect(resource, selectedIds.length)
+                                    : undefined,
                             }),
                             true
                         ),
@@ -138,7 +136,6 @@ export const BulkUpdateWithConfirmButton = (
 };
 
 const sanitizeRestProps = ({
-    filterValues,
     label,
     onSuccess,
     onError,
@@ -150,9 +147,8 @@ const sanitizeRestProps = ({
 
 export interface BulkUpdateWithConfirmButtonProps<
     RecordType extends RaRecord = any,
-    MutationOptionsError = unknown
-> extends BulkActionProps,
-        ButtonProps {
+    MutationOptionsError = unknown,
+> extends ButtonProps {
     confirmContent?: React.ReactNode;
     confirmTitle?: React.ReactNode;
     icon?: ReactElement;
@@ -166,17 +162,6 @@ export interface BulkUpdateWithConfirmButtonProps<
         UpdateManyParams<RecordType>
     > & { meta?: any };
 }
-
-BulkUpdateWithConfirmButton.propTypes = {
-    confirmTitle: PropTypes.node,
-    confirmContent: PropTypes.node,
-    label: PropTypes.string,
-    resource: PropTypes.string,
-    selectedIds: PropTypes.arrayOf(PropTypes.any),
-    icon: PropTypes.element,
-    data: PropTypes.any.isRequired,
-    mutationMode: PropTypes.oneOf(['pessimistic', 'optimistic', 'undoable']),
-};
 
 const PREFIX = 'RaBulkUpdateWithConfirmButton';
 

@@ -92,10 +92,11 @@ export const useReferenceParams = ({
     const changeParams = useCallback(action => {
         if (!tempParams.current) {
             // no other changeParams action dispatched this tick
-            tempParams.current = queryReducer(query, action);
+            const newTempParams = queryReducer(query, action);
+            tempParams.current = newTempParams;
             // schedule side effects for next tick
             setTimeout(() => {
-                setParams(tempParams.current);
+                setParams(newTempParams);
                 tempParams.current = undefined;
             }, 0);
         } else {
@@ -128,7 +129,7 @@ export const useReferenceParams = ({
     const displayedFilterValues = query.displayedFilters || emptyObject;
 
     const debouncedSetFilters = useRef(
-        lodashDebounce((filter, displayedFilters) => {
+        lodashDebounce((filter, displayedFilters = undefined) => {
             changeParams({
                 type: SET_FILTER,
                 payload: {
@@ -146,7 +147,7 @@ export const useReferenceParams = ({
     }, []);
 
     const setFilters = useCallback(
-        (filter, displayedFilters, debounce = true) => {
+        (filter, displayedFilters = undefined, debounce = false) => {
             debounce
                 ? debouncedSetFilters.current(filter, displayedFilters)
                 : changeParams({
@@ -178,10 +179,10 @@ export const useReferenceParams = ({
     }, requestSignature); // eslint-disable-line react-hooks/exhaustive-deps
     return [
         {
-            displayedFilters: displayedFilterValues,
             filterValues,
             requestSignature,
             ...query,
+            displayedFilters: displayedFilterValues,
         },
         {
             changeParams,
@@ -270,6 +271,9 @@ export const getNumberOrDefault = (
     possibleNumber: string | number | undefined,
     defaultValue: number
 ) => {
+    if (typeof possibleNumber === 'undefined') {
+        return defaultValue;
+    }
     const parsedNumber =
         typeof possibleNumber === 'string'
             ? parseInt(possibleNumber, 10)
@@ -310,7 +314,11 @@ interface Modifiers {
     setPage: (page: number) => void;
     setPerPage: (pageSize: number) => void;
     setSort: (sort: SortPayload) => void;
-    setFilters: (filters: any, displayedFilters: any) => void;
+    setFilters: (
+        filters: any,
+        displayedFilters?: any,
+        debounce?: boolean
+    ) => void;
     hideFilter: (filterName: string) => void;
     showFilter: (filterName: string, defaultValue: any) => void;
 }

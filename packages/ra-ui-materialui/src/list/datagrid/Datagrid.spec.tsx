@@ -5,6 +5,7 @@ import {
     testDataProvider,
     ListContextProvider,
     useRecordContext,
+    ResourceContextProvider,
 } from 'ra-core';
 import { ThemeProvider, createTheme } from '@mui/material';
 import { Datagrid } from './Datagrid';
@@ -17,9 +18,11 @@ const TitleField = (): JSX.Element => {
 const Wrapper = ({ children, listContext }) => (
     <ThemeProvider theme={createTheme()}>
         <CoreAdminContext dataProvider={testDataProvider()}>
-            <ListContextProvider value={listContext}>
-                {children}
-            </ListContextProvider>
+            <ResourceContextProvider value={listContext.resource}>
+                <ListContextProvider value={listContext}>
+                    {children}
+                </ListContextProvider>
+            </ResourceContextProvider>
         </CoreAdminContext>
     </ThemeProvider>
 );

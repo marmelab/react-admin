@@ -1,10 +1,12 @@
 import * as React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import { MemoryRouter, Routes, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import expect from 'expect';
 
 import { CoreAdminContext } from '../core/CoreAdminContext';
 import useLogin from './useLogin';
+
+import { TestMemoryRouter } from '../routing';
 
 describe('useLogin', () => {
     describe('redirect after login', () => {
@@ -22,14 +24,14 @@ describe('useLogin', () => {
                 getPermissions: () => Promise.resolve(),
             };
             render(
-                <MemoryRouter initialEntries={['/login']}>
+                <TestMemoryRouter initialEntries={['/login']}>
                     <CoreAdminContext authProvider={authProvider}>
                         <Routes>
                             <Route path="/" element={<div>Home</div>} />
                             <Route path="/login" element={<Login />} />
                         </Routes>
                     </CoreAdminContext>
-                </MemoryRouter>
+                </TestMemoryRouter>
             );
             await screen.findByText('Login');
             fireEvent.click(screen.getByText('Login'));
@@ -49,7 +51,7 @@ describe('useLogin', () => {
                 getPermissions: () => Promise.resolve(),
             };
             render(
-                <MemoryRouter initialEntries={['/login']}>
+                <TestMemoryRouter initialEntries={['/login']}>
                     <CoreAdminContext authProvider={authProvider}>
                         <Routes>
                             <Route path="/" element={<div>Home</div>} />
@@ -57,7 +59,7 @@ describe('useLogin', () => {
                             <Route path="/foo" element={<div>Foo</div>} />
                         </Routes>
                     </CoreAdminContext>
-                </MemoryRouter>
+                </TestMemoryRouter>
             );
             await screen.findByText('Login');
             fireEvent.click(screen.getByText('Login'));
@@ -78,14 +80,14 @@ describe('useLogin', () => {
                 getPermissions: () => Promise.resolve(),
             };
             render(
-                <MemoryRouter initialEntries={['/login']}>
+                <TestMemoryRouter initialEntries={['/login']}>
                     <CoreAdminContext authProvider={authProvider}>
                         <Routes>
                             <Route path="/" element={<div>Home</div>} />
                             <Route path="/login" element={<Login />} />
                         </Routes>
                     </CoreAdminContext>
-                </MemoryRouter>
+                </TestMemoryRouter>
             );
             await screen.findByText('Login');
             fireEvent.click(screen.getByText('Login'));

@@ -8,14 +8,14 @@ import {
     useGetMany,
     ResourceDefinitionContextProvider,
 } from 'ra-core';
-import { QueryClient } from 'react-query';
+import { QueryClient } from '@tanstack/react-query';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import { ReferenceField } from './ReferenceField';
 import {
     Children,
-    EmptyWithTranslate,
-    MissingReference,
+    MissingReferenceIdEmptyTextTranslation,
+    MissingReferenceEmptyText,
     SXLink,
     SXNoLink,
 } from './ReferenceField.stories';
@@ -107,7 +107,7 @@ describe('<ReferenceField />', () => {
                 </ThemeProvider>
             );
             await new Promise(resolve => setTimeout(resolve, 1001));
-            expect(screen.queryByRole('progressbar')).not.toBeNull();
+            await screen.findByRole('progressbar');
             expect(screen.queryAllByRole('link')).toHaveLength(0);
         });
 
@@ -299,7 +299,7 @@ describe('<ReferenceField />', () => {
     });
 
     it('should display the emptyText if there is no reference', async () => {
-        render(<MissingReference />);
+        render(<MissingReferenceEmptyText />);
         await screen.findByText('no detail');
     });
 
@@ -332,7 +332,7 @@ describe('<ReferenceField />', () => {
         );
         await new Promise(resolve => setTimeout(resolve, 10));
         expect(screen.queryByRole('progressbar')).toBeNull();
-        expect(screen.getByText('#123')).not.toBeNull();
+        expect(screen.getByText('foo')).not.toBeNull();
         expect(screen.queryAllByRole('link')).toHaveLength(1);
         expect(screen.queryByRole('link')?.getAttribute('href')).toBe(
             '#/posts/123'
@@ -369,7 +369,7 @@ describe('<ReferenceField />', () => {
         );
         await new Promise(resolve => setTimeout(resolve, 10));
         expect(screen.queryByRole('progressbar')).toBeNull();
-        expect(screen.getByText('foo')).not.toBeNull();
+        await screen.findByText('foo');
         expect(screen.queryAllByRole('link')).toHaveLength(1);
         expect(screen.queryByRole('link')?.getAttribute('href')).toBe(
             '#/posts/123'
@@ -622,7 +622,7 @@ describe('<ReferenceField />', () => {
     });
 
     it('should translate emptyText', () => {
-        render(<EmptyWithTranslate />);
+        render(<MissingReferenceIdEmptyTextTranslation />);
 
         expect(screen.findByText('Not found')).not.toBeNull();
     });
@@ -652,6 +652,7 @@ describe('<ReferenceField />', () => {
             expect(dataProvider.getMany).toHaveBeenCalledWith('posts', {
                 ids: [123],
                 meta: { foo: 'bar' },
+                signal: expect.anything(),
             });
         });
     });

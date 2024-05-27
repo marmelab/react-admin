@@ -9,6 +9,7 @@ import {
     useRecordContext,
     useListContext,
     RecordContextProvider,
+    SortButton,
 } from 'react-admin';
 import {
     Box,
@@ -24,6 +25,7 @@ import {
     Tabs,
     Tab,
     Divider,
+    Stack,
 } from '@mui/material';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import { Link as RouterLink } from 'react-router-dom';
@@ -45,12 +47,12 @@ export const CompanyShow = () => (
 );
 
 const CompanyShowContent = () => {
-    const { record, isLoading } = useShowContext<Company>();
+    const { record, isPending } = useShowContext<Company>();
     const [tabValue, setTabValue] = useState(0);
     const handleTabChange = (event: ChangeEvent<{}>, newValue: number) => {
         setTabValue(newValue);
     };
-    if (isLoading || !record) return null;
+    if (isPending || !record) return null;
     return (
         <Box mt={2} display="flex">
             <Box flex="1">
@@ -63,7 +65,8 @@ const CompanyShowContent = () => {
                                     {record.name}
                                 </Typography>
                                 <Typography variant="body2">
-                                    <TextField source="sector" />,{' '}
+                                    <TextField source="sector" />
+                                    {record.size && ', '}
                                     <SelectField
                                         source="size"
                                         choices={sizes}
@@ -103,6 +106,21 @@ const CompanyShowContent = () => {
                                 target="company_id"
                                 sort={{ field: 'last_name', order: 'ASC' }}
                             >
+                                <Stack
+                                    direction="row"
+                                    justifyContent="flex-end"
+                                    spacing={2}
+                                    mt={1}
+                                >
+                                    <SortButton
+                                        fields={[
+                                            'last_name',
+                                            'first_name',
+                                            'last_seen',
+                                        ]}
+                                    />
+                                    <CreateRelatedContactButton />
+                                </Stack>
                                 <ContactsIterator />
                             </ReferenceManyField>
                         </TabPanel>
@@ -146,53 +164,57 @@ const TabPanel = (props: TabPanelProps) => {
 };
 
 const ContactsIterator = () => {
-    const { data: contacts, isLoading } = useListContext<Contact>();
-    if (isLoading) return null;
+    const { data: contacts, error, isPending } = useListContext<Contact>();
+    if (isPending || error) return null;
 
     const now = Date.now();
     return (
-        <Box>
-            <List>
-                {contacts.map(contact => (
-                    <RecordContextProvider key={contact.id} value={contact}>
-                        <ListItem
-                            button
-                            component={RouterLink}
-                            to={`/contacts/${contact.id}/show`}
-                        >
-                            <ListItemAvatar>
-                                <Avatar />
-                            </ListItemAvatar>
-                            <ListItemText
-                                primary={`${contact.first_name} ${contact.last_name}`}
-                                secondary={
-                                    <>
-                                        {contact.title} <TagsList />
-                                    </>
-                                }
-                            />
-                            <ListItemSecondaryAction>
-                                <Typography
-                                    variant="body2"
-                                    color="textSecondary"
-                                    component="span"
-                                >
-                                    last activity{' '}
-                                    {formatDistance(
-                                        new Date(contact.last_seen),
-                                        now
-                                    )}{' '}
-                                    ago <Status status={contact.status} />
-                                </Typography>
-                            </ListItemSecondaryAction>
-                        </ListItem>
-                    </RecordContextProvider>
-                ))}
-            </List>
-            <Box textAlign="center" mt={1}>
-                <CreateRelatedContactButton />
-            </Box>
-        </Box>
+        <List dense sx={{ pt: 0 }}>
+            {contacts.map(contact => (
+                <RecordContextProvider key={contact.id} value={contact}>
+                    <ListItem
+                        button
+                        component={RouterLink}
+                        to={`/contacts/${contact.id}/show`}
+                    >
+                        <ListItemAvatar>
+                            <Avatar />
+                        </ListItemAvatar>
+                        <ListItemText
+                            primary={`${contact.first_name} ${contact.last_name}`}
+                            secondary={
+                                <>
+                                    {contact.title}
+                                    {contact.nb_notes
+                                        ? ` - ${contact.nb_notes} note${
+                                              contact.nb_notes > 1 ? 's' : ''
+                                          }`
+                                        : ''}
+                                    {contact.nb_tasks
+                                        ? ` - ${contact.nb_tasks} task${
+                                              contact.nb_tasks > 1 ? 's' : ''
+                                          }`
+                                        : ''}
+                                    &nbsp; &nbsp;
+                                    <TagsList />
+                                </>
+                            }
+                        />
+                        <ListItemSecondaryAction>
+                            <Typography
+                                variant="body2"
+                                color="textSecondary"
+                                component="span"
+                            >
+                                last activity{' '}
+                                {formatDistance(contact.last_seen, now)} ago{' '}
+                                <Status status={contact.status} />
+                            </Typography>
+                        </ListItemSecondaryAction>
+                    </ListItem>
+                </RecordContextProvider>
+            ))}
+        </List>
     );
 };
 
@@ -202,9 +224,8 @@ const CreateRelatedContactButton = () => {
         <Button
             component={RouterLink}
             to="/contacts/create"
-            state={{ record: { company_id: company.id } }}
+            state={company ? { record: { company_id: company.id } } : undefined}
             color="primary"
-            variant="contained"
             size="small"
             startIcon={<PersonAddIcon />}
         >
@@ -214,13 +235,13 @@ const CreateRelatedContactButton = () => {
 };
 
 const DealsIterator = () => {
-    const { data: deals, isLoading } = useListContext<Deal>();
-    if (isLoading) return null;
+    const { data: deals, error, isPending } = useListContext<Deal>();
+    if (isPending || error) return null;
 
     const now = Date.now();
     return (
         <Box>
-            <List>
+            <List dense>
                 {deals.map(deal => (
                     <ListItem
                         button
@@ -252,8 +273,7 @@ const DealsIterator = () => {
                                 component="span"
                             >
                                 last activity{' '}
-                                {formatDistance(new Date(deal.updated_at), now)}{' '}
-                                ago{' '}
+                                {formatDistance(deal.updated_at, now)} ago{' '}
                             </Typography>
                         </ListItemSecondaryAction>
                     </ListItem>

@@ -16,4 +16,10 @@ export const chiptuneTheme: RaThemeOptions = {
     typography: {
         fontFamily: `'Pixelify Sans', cursive`,
     },
+    components: {
+        MuiAutocomplete: { defaultProps: { fullWidth: true } },
+        MuiFormControl: { defaultProps: { fullWidth: true } },
+        MuiTextField: { defaultProps: { fullWidth: true } },
+        RaSimpleFormIterator: { defaultProps: { fullWidth: true } },
+    },
 };

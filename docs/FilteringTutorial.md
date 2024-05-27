@@ -427,7 +427,7 @@ export default {
 </video>
 
 
-Saved Queries let users save a combination of filters and sort parameters into a new, personal filter. Saved queries persist between sessions, so users can find their custom queries even after closing and reopening the admin. Saved queries are available both for the Filter Button/Form combo and for the `<FilterList>` Sidebar. It's enabled by default for the Filter Button/Form combo but you have to add it yourself in the `<FilterList>` Sidebar.
+Saved Queries let users save a combination of filters and sort parameters into a new, personal filter. Saved queries persist between sessions, so users can find their custom queries even after closing and reopening the admin. Saved queries are available both for the Filter Button/Form combo and for the `<FilterList>` Sidebar. It's enabled by default for the Filter Button/Form combo, but you have to add it yourself in the `<FilterList>` Sidebar.
 
 `<SavedQueriesList>` is a complement to `<FilterList>` sections for the filter sidebar
 
@@ -543,14 +543,14 @@ const PostFilterForm = () => {
 
     const onSubmit = (values) => {
         if (Object.keys(values).length > 0) {
-            setFilters(values, undefined, false);
+            setFilters(values);
         } else {
             hideFilter("main");
         }
     };
 
     const resetFilter = () => {
-        setFilters({}, [], false);
+        setFilters({}, []);
     };
 
     return (
@@ -626,23 +626,3 @@ export const PostList = () => (
 **Tip**: No need to pass any `filters` to the list anymore, as the `<PostFilterForm>` component will display them.
 
 You can use a similar approach to offer alternative User Experiences for data filtering, e.g. to display the filters as a line in the datagrid headers.
-
-## Using `setFilters` With Other List Context Methods
-
-The `setFilters` method takes three arguments:
-
-- `filters`: an object containing the new filter values
-- `displayedFilters`: an object containing the new displayed filters
-- `debounced`: set to false to disable the debounce (true by default)
-
-So `setFilters` is debounced by default, to avoid making too many requests to the server when using search-as-you-type inputs.
-
-When you use `setFilters` and other list context methods (like `setSort`) in a single function, you must disable the debounce. Otherwise, the `setFilters` call would override the other changes.
-
-```jsx
-const changeListParams = () => {
-    setSort({ field: 'name', order: 'ASC' });
-    // The 3rd parameter disables the debounce     ⤵
-    setFilters({ is_published: true }, undefined, false);
-};
-```

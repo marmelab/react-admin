@@ -136,7 +136,7 @@ const choices = possibleValues.map(value => ({ id: value, name: ucfirst(value) }
 
 ## `create`
 
-To allow users to add new options, pass a React element as the `create` prop. `<AutocompleteArrayInput>` will then render a "Create" option at the bottom of the choices list. When clicked, it will render the create element.
+To allow users to add new options, pass a React element as the `create` prop. `<AutocompleteArrayInput>` will then render a "Create" option at the bottom of the choices list. When clicked, it will render the `Create` element.
 
 <video controls autoplay playsinline muted loop>
   <source src="./img/autocomplete-array-input-create.webm" type="video/webm"/>
@@ -304,7 +304,6 @@ const LanguageChangingAuthorInput = () => {
     return (
         <ReferenceArrayInput reference="authors" source="author">
             <AutocompleteArrayInput
-                fullWidth
                 optionText="name"
                 onChange={handleChange}
                 label="Authors"

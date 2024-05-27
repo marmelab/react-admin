@@ -18,7 +18,7 @@ By default, the `<AppBar>` component displays:
 - a hamburger icon to toggle the sidebar width,
 - the page title,
 - a button to change locales (if the application uses [i18n](./Translation.md)),
-- a button to change the theme (if the application uses a [dark theme](./Admin.md#darktheme)),
+- a button to change the theme (unless the [dark theme](./Admin.md#darktheme) is disabled),
 - a loading indicator,
 - a button to display the user menu.
 
@@ -43,10 +43,13 @@ Then, create a custom layout based on react-admin's `<Layout>`:
 ```jsx
 // in src/MyLayout.js
 import { Layout } from 'react-admin';
-
 import { MyAppBar } from './MyAppBar';
 
-export const MyLayout = props => <Layout {...props} appBar={MyAppBar} />;
+export const MyLayout = ({ children }) => (
+    <Layout appBar={MyAppBar}>
+        {children}
+    </Layout>
+);
 ```
 
 Then pass this custom layout to the `<Admin>` component:
@@ -463,11 +466,12 @@ Then, use your custom app bar in a custom `<Layout>` component:
 ```jsx
 // in src/MyLayout.js
 import { Layout } from 'react-admin';
-
 import { MyAppBar } from './MyAppBar';
 
-export const MyLayout = (props) => (
-    <Layout {...props} appBar={MyAppBar} />
+export const MyLayout = ({ children }) => (
+    <Layout appBar={MyAppBar}>
+        {children}
+    </Layout>
 );
 ```
 

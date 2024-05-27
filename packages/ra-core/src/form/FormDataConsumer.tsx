@@ -3,6 +3,7 @@ import { ReactNode } from 'react';
 import { useFormContext, FieldValues } from 'react-hook-form';
 import get from 'lodash/get';
 import { useFormValues } from './useFormValues';
+import { useWrappedSource } from '../core';
 
 /**
  * Get the current (edited) value of the record from the form and pass it
@@ -10,13 +11,13 @@ import { useFormValues } from './useFormValues';
  *
  * @example
  *
- * const PostEdit = (props) => (
- *     <Edit {...props}>
+ * const PostEdit = () => (
+ *     <Edit>
  *         <SimpleForm<FieldValues>>
  *             <BooleanInput source="hasEmail" />
  *             <FormDataConsumer>
- *                 {({ formData, ...rest }) => formData.hasEmail &&
- *                      <TextInput source="email" {...rest} />
+ *                 {({ formData }) => formData.hasEmail &&
+ *                      <TextInput source="email" />
  *                 }
  *             </FormDataConsumer>
  *         </SimpleForm>
@@ -25,16 +26,15 @@ import { useFormValues } from './useFormValues';
  *
  * @example
  *
- * const OrderEdit = (props) => (
- *     <Edit {...props}>
+ * const OrderEdit = () => (
+ *     <Edit>
  *         <SimpleForm>
  *             <SelectInput source="country" choices={countries} />
  *             <FormDataConsumer<FieldValues>>
- *                 {({ formData, ...rest }) =>
+ *                 {({ formData }) =>
  *                      <SelectInput
  *                          source="city"
  *                          choices={getCitiesFor(formData.country)}
- *                          {...rest}
  *                      />
  *                 }
  *             </FormDataConsumer>
@@ -60,24 +60,24 @@ const FormDataConsumer = <TFieldValues extends FieldValues = FieldValues>(
 };
 
 export const FormDataConsumerView = <
-    TFieldValues extends FieldValues = FieldValues
+    TFieldValues extends FieldValues = FieldValues,
 >(
     props: Props<TFieldValues>
 ) => {
-    const { children, form, formData, source, index, ...rest } = props;
+    const { children, formData, source } = props;
     let ret;
 
+    const finalSource = useWrappedSource(source || '');
+
+    // Passes an empty string here as we don't have the children sources and we just want to know if we are in an iterator
+    const matches = ArraySourceRegex.exec(finalSource);
+
     // If we have an index, we are in an iterator like component (such as the SimpleFormIterator)
-    if (typeof index !== 'undefined' && source) {
-        const scopedFormData = get(formData, source);
-        const getSource = (scopedSource: string) => `${source}.${scopedSource}`;
-        ret = children({ formData, scopedFormData, getSource, ...rest });
+    if (matches) {
+        const scopedFormData = get(formData, matches[0]);
+        ret = children({ formData, scopedFormData });
     } else {
-        ret = children({
-            formData,
-            getSource: (scopedSource: string) => scopedSource,
-            ...rest,
-        });
+        ret = children({ formData });
     }
 
     return ret === undefined ? null : ret;
@@ -85,17 +85,18 @@ export const FormDataConsumerView = <
 
 export default FormDataConsumer;
 
+const ArraySourceRegex = new RegExp(/.+\.\d+$/);
+
 export interface FormDataConsumerRenderParams<
     TFieldValues extends FieldValues = FieldValues,
-    TScopedFieldValues extends FieldValues = TFieldValues
+    TScopedFieldValues extends FieldValues = TFieldValues,
 > {
     formData: TFieldValues;
     scopedFormData?: TScopedFieldValues;
-    getSource: (source: string) => string;
 }
 
 export type FormDataConsumerRender<
-    TFieldValues extends FieldValues = FieldValues
+    TFieldValues extends FieldValues = FieldValues,
 > = (params: FormDataConsumerRenderParams<TFieldValues>) => ReactNode;
 
 interface ConnectedProps<TFieldValues extends FieldValues = FieldValues> {

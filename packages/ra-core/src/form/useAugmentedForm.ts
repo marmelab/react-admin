@@ -7,7 +7,7 @@ import {
 } from 'react-hook-form';
 
 import { RaRecord } from '../types';
-import { useSaveContext } from '../controller';
+import { SaveHandler, useSaveContext } from '../controller';
 import { useRecordContext } from '../controller';
 import getFormInitialValues from './getFormInitialValues';
 import {
@@ -16,7 +16,6 @@ import {
 } from './getSimpleValidationResolver';
 import { setSubmissionErrors } from './setSubmissionErrors';
 import { useNotifyIsFormInvalid } from './useNotifyIsFormInvalid';
-import { useWarnWhenUnsavedChanges } from './useWarnWhenUnsavedChanges';
 import { sanitizeEmptyValues as sanitizeValues } from './sanitizeEmptyValues';
 
 /**
@@ -30,7 +29,9 @@ import { sanitizeEmptyValues as sanitizeValues } from './sanitizeEmptyValues';
  * - notification on invalid form
  * - stop form submission event propagation
  */
-export const useAugmentedForm = (props: UseAugmentedFormProps) => {
+export const useAugmentedForm = <RecordType = any>(
+    props: UseAugmentedFormProps<RecordType>
+) => {
     const {
         criteriaMode = 'firstError',
         defaultValues,
@@ -39,7 +40,6 @@ export const useAugmentedForm = (props: UseAugmentedFormProps) => {
         reValidateMode = 'onChange',
         onSubmit,
         sanitizeEmptyValues,
-        warnWhenUnsavedChanges,
         validate,
         disableInvalidFormNotification,
         ...rest
@@ -65,8 +65,8 @@ export const useAugmentedForm = (props: UseAugmentedFormProps) => {
     const finalResolver = resolver
         ? resolver
         : validate
-        ? getSimpleValidationResolver(validate)
-        : undefined;
+          ? getSimpleValidationResolver(validate)
+          : undefined;
 
     const form = useForm({
         criteriaMode,
@@ -80,13 +80,6 @@ export const useAugmentedForm = (props: UseAugmentedFormProps) => {
 
     // notify on invalid form
     useNotifyIsFormInvalid(form.control, !disableInvalidFormNotification);
-
-    // warn when unsaved change
-    useWarnWhenUnsavedChanges(
-        Boolean(warnWhenUnsavedChanges),
-        formRootPathname,
-        form.control
-    );
 
     // submit callbacks
     const handleSubmit = useCallback(
@@ -127,17 +120,17 @@ export const useAugmentedForm = (props: UseAugmentedFormProps) => {
     };
 };
 
-export type UseAugmentedFormProps = UseFormOwnProps &
-    Omit<UseFormProps, 'onSubmit'> & {
-        validate?: ValidateForm;
-    };
+export type UseAugmentedFormProps<RecordType = any> =
+    UseFormOwnProps<RecordType> &
+        Omit<UseFormProps, 'onSubmit'> & {
+            validate?: ValidateForm;
+        };
 
-export interface UseFormOwnProps {
+export interface UseFormOwnProps<RecordType = any> {
     defaultValues?: any;
     formRootPathname?: string;
     record?: Partial<RaRecord>;
-    onSubmit?: SubmitHandler<FieldValues>;
-    warnWhenUnsavedChanges?: boolean;
+    onSubmit?: SubmitHandler<FieldValues> | SaveHandler<RecordType>;
     sanitizeEmptyValues?: boolean;
     disableInvalidFormNotification?: boolean;
 }

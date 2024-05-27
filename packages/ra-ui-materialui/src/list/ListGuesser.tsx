@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
-import inflection from 'inflection';
+
 import {
     ListBase,
     getElementsFromRecords,
@@ -9,13 +9,13 @@ import {
     useResourceContext,
     RaRecord,
     usePrevious,
-    useResourceDefinition,
 } from 'ra-core';
 import { useLocation } from 'react-router';
 
 import { ListProps } from './List';
 import { ListView, ListViewProps } from './ListView';
 import { listFieldTypes } from './listFieldTypes';
+import { capitalize, singularize } from 'inflection';
 
 /**
  * List component rendering a <Datagrid> based on the result of the
@@ -70,7 +70,10 @@ export const ListGuesser = <RecordType extends RaRecord = any>(
             filter={filter}
             filterDefaultValues={filterDefaultValues}
             perPage={perPage}
-            queryOptions={{ keepPreviousData }}
+            queryOptions={{
+                placeholderData: previousData =>
+                    keepPreviousData ? previousData : undefined,
+            }}
             resource={resource}
             sort={sort}
         >
@@ -82,14 +85,11 @@ export const ListGuesser = <RecordType extends RaRecord = any>(
 const ListViewGuesser = (
     props: Omit<ListViewProps, 'children'> & { enableLog?: boolean }
 ) => {
-    const { data } = useListContext(props);
+    const { data } = useListContext();
     const resource = useResourceContext();
-    const { hasEdit, hasShow } = useResourceDefinition(props);
-    const [child, setChild] = useState(null);
-    const {
-        enableLog = process.env.NODE_ENV === 'development',
-        ...rest
-    } = props;
+    const [child, setChild] = useState<React.ReactElement | null>(null);
+    const { enableLog = process.env.NODE_ENV === 'development', ...rest } =
+        props;
 
     useEffect(() => {
         setChild(null);
@@ -103,14 +103,22 @@ const ListViewGuesser = (
             );
             const inferredChild = new InferredElement(
                 listFieldTypes.table,
-                { hasEdit, hasShow },
+                null,
                 inferredElements
             );
-            setChild(inferredChild.getElement());
-
-            if (!enableLog) return;
-
+            const inferredChildElement = inferredChild.getElement();
             const representation = inferredChild.getRepresentation();
+            if (!resource) {
+                throw new Error(
+                    'Cannot use <ListGuesser> outside of a ResourceContext'
+                );
+            }
+            if (!inferredChildElement || !representation) {
+                return;
+            }
+
+            setChild(inferredChildElement);
+
             const components = ['List']
                 .concat(
                     Array.from(
@@ -123,24 +131,22 @@ const ListViewGuesser = (
                 )
                 .sort();
 
-            // eslint-disable-next-line no-console
-            console.log(
-                `Guessed List:
+            if (enableLog) {
+                // eslint-disable-next-line no-console
+                console.log(
+                    `Guessed List:
 
 import { ${components.join(', ')} } from 'react-admin';
 
-export const ${inflection.capitalize(
-                    inflection.singularize(resource)
-                )}List = () => (
+export const ${capitalize(singularize(resource))}List = () => (
     <List>
 ${inferredChild.getRepresentation()}
     </List>
 );`
-            );
+                );
+            }
         }
-    }, [data, child, resource, hasEdit, hasShow, enableLog]);
+    }, [data, child, resource, enableLog]);
 
     return <ListView {...rest}>{child}</ListView>;
 };
-
-ListViewGuesser.propTypes = ListView.propTypes;

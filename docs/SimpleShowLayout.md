@@ -33,6 +33,7 @@ The `<SimpleShowLayout>` component accepts the following props:
 |------------------|----------|------------------|---------|--------------------------------------------------------
 | `children`      | Required | `ReactNode`      |         | The components rendering the record fields
 | `className`      | Optional | `string`         |         | The class name applied to the root element
+| `direction`      | Optional | `string`         | `column`| The direction of the layout. Passed to the `<Stack>` component
 | `divider`        | Optional | `ReactElement`   |         | Optional element to render between each field
 | `record`         | Optional | `object`         |         | The record to render. Passed to the `RecordContext`
 | `spacing`        | Optional | `number`         | `1`     | The spacing between fields. Passed to the `<Stack>` component
@@ -143,6 +144,22 @@ const PostShow = () => (
 
 The default spacing is `1`.
 
+## `direction`
+
+`<SimpleShowLayout>` renders a Material UI `<Stack>`. You can customize the direction of the layout by passing a `direction` prop:
+
+```jsx
+const PostShow = () => (
+    <Show>
+        <SimpleShowLayout direction="row">
+            <PostTitle label="title" />
+            <PostTitle label="author" />
+            <PostTitle label="published_at" />
+        </SimpleShowLayout>
+    </Show>
+);
+```
+
 ## `divider`
 
 `<Stack>` accepts an optional `divider` prop - a component rendered between each row. `<SimpleShowLayout>` also accepts this props, and passes it to the `<Stack>` component.
@@ -212,6 +229,24 @@ const BookShow = () => (
 );
 ```
 
+You can also nest `<SimpleShowLayout>` components with different `direction` props to create complex layouts:
+
+```jsx
+const BookShow = () => (
+    <Show>
+        <SimpleShowLayout>
+            <TextField source="title" />
+            <TextField source="summary" />
+            <SimpleShowLayout direction="row">
+                <TextField source="author" />
+                <TextField source="category" />
+                <NumberField source="year" />
+            </SimpleShowLayout>
+        </SimpleShowLayout>
+    </Show>
+);
+```
+            
 ## Hiding The Field Labels
 
 You can disable the `<Labeled>` decoration added by `<SimpleShowLayout>` by setting `label={false}` on a field:

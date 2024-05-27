@@ -11,7 +11,7 @@ export type ProjectConfiguration = {
         | 'finish';
     dataProvider: string;
     authProvider: string;
-    resources: string[];
+    resources?: string[];
     messages: string[];
     installer: string;
 };
@@ -21,7 +21,6 @@ export const InitialProjectConfiguration: ProjectConfiguration = {
     step: 'name',
     dataProvider: '',
     authProvider: '',
-    resources: [],
     messages: [],
     installer: '',
 };

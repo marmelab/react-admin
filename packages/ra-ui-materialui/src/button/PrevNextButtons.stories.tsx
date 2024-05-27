@@ -5,12 +5,12 @@ import {
     Resource,
     ResourceContext,
     testDataProvider,
+    TestMemoryRouter,
 } from 'ra-core';
 import englishMessages from 'ra-language-english';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
-import { MemoryRouter } from 'react-router';
 import { seed, address, internet, name } from 'faker/locale/en_GB';
-import { QueryClient } from 'react-query';
+import { QueryClient } from '@tanstack/react-query';
 
 import {
     AdminUI,
@@ -80,7 +80,7 @@ const CustomerShow = ({ actions }: any) => (
 );
 
 export const Basic = () => (
-    <MemoryRouter>
+    <TestMemoryRouter>
         <AdminContext dataProvider={dataProvider} i18nProvider={i18nProvider}>
             <AdminUI>
                 <Resource
@@ -109,11 +109,11 @@ export const Basic = () => (
                 />
             </AdminUI>
         </AdminContext>
-    </MemoryRouter>
+    </TestMemoryRouter>
 );
 
 export const WithStoreKey = () => (
-    <MemoryRouter>
+    <TestMemoryRouter>
         <AdminContext dataProvider={dataProvider} i18nProvider={i18nProvider}>
             <AdminUI>
                 <Resource
@@ -145,11 +145,11 @@ export const WithStoreKey = () => (
                 />
             </AdminUI>
         </AdminContext>
-    </MemoryRouter>
+    </TestMemoryRouter>
 );
 
 export const WithFilter = () => (
-    <MemoryRouter>
+    <TestMemoryRouter>
         <AdminContext dataProvider={dataProvider} i18nProvider={i18nProvider}>
             <AdminUI>
                 <Resource
@@ -196,11 +196,11 @@ export const WithFilter = () => (
                 />
             </AdminUI>
         </AdminContext>
-    </MemoryRouter>
+    </TestMemoryRouter>
 );
 
 export const WithQueryFilter = () => (
-    <MemoryRouter>
+    <TestMemoryRouter>
         <AdminContext dataProvider={dataProvider} i18nProvider={i18nProvider}>
             <AdminUI>
                 <Resource
@@ -239,11 +239,11 @@ export const WithQueryFilter = () => (
                 />
             </AdminUI>
         </AdminContext>
-    </MemoryRouter>
+    </TestMemoryRouter>
 );
 
 export const WithLimit = ({ customDataProvider = dataProvider }) => (
-    <MemoryRouter>
+    <TestMemoryRouter>
         <AdminContext
             dataProvider={customDataProvider}
             i18nProvider={i18nProvider}
@@ -278,7 +278,7 @@ export const WithLimit = ({ customDataProvider = dataProvider }) => (
                 />
             </AdminUI>
         </AdminContext>
-    </MemoryRouter>
+    </TestMemoryRouter>
 );
 
 export const WithStyle = () => (

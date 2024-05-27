@@ -12,166 +12,93 @@ import { FormInspector } from './common';
 
 export default { title: 'ra-ui-materialui/input/TextInput' };
 
+const Wrapper = ({ children }) => (
+    <AdminContext defaultTheme="light">
+        <Create
+            resource="posts"
+            record={{ id: 123, title: 'Lorem ipsum' }}
+            sx={{ width: 600 }}
+        >
+            <SimpleForm>{children}</SimpleForm>
+        </Create>
+    </AdminContext>
+);
+
 export const Basic = () => (
-    <AdminContext>
-        <Create
-            resource="posts"
-            record={{ id: 123, title: 'Lorem ipsum' }}
-            sx={{ width: 600 }}
-        >
-            <SimpleForm>
-                <TextInput source="title" />
-                <FormInspector />
-            </SimpleForm>
-        </Create>
-    </AdminContext>
+    <Wrapper>
+        <TextInput source="title" />
+        <FormInspector />
+    </Wrapper>
 );
 
-export const Disabled = () => (
-    <AdminContext>
-        <Create
-            resource="posts"
-            record={{ id: 123, title: 'Lorem ipsum' }}
-            sx={{ width: 600 }}
-        >
-            <SimpleForm>
-                <TextInput source="title" disabled />
-                <TextInput source="name" disabled />
-                <FormInspector />
-            </SimpleForm>
-        </Create>
-    </AdminContext>
-);
-
-export const ReadOnly = () => (
-    <AdminContext>
-        <Create
-            resource="posts"
-            record={{ id: 123, title: 'Lorem ipsum' }}
-            sx={{ width: 600 }}
-        >
-            <SimpleForm>
-                <TextInput source="title" readOnly />
-                <TextInput source="name" readOnly />
-                <FormInspector />
-            </SimpleForm>
-        </Create>
-    </AdminContext>
+export const Resettable = () => (
+    <Wrapper>
+        <TextInput source="title" resettable />
+        <FormInspector />
+    </Wrapper>
 );
 
 export const DefaultValue = () => (
-    <AdminContext>
-        <Create
-            resource="posts"
-            record={{ id: 123, title: 'Lorem ipsum' }}
-            sx={{ width: 600 }}
-        >
-            <SimpleForm>
-                <TextInput source="title" defaultValue="hello" />
-                <TextInput
-                    source="title1"
-                    label="Default john"
-                    defaultValue="john"
-                />
-                <TextInput
-                    source="title2"
-                    label="Default empty string"
-                    defaultValue=""
-                />
-                <TextInput source="title3" label="Default undefined" />
-                <FormInspector name="title" />
-                <FormInspector name="title1" />
-                <FormInspector name="title2" />
-                <FormInspector name="title3" />
-            </SimpleForm>
-        </Create>
-    </AdminContext>
+    <Wrapper>
+        <TextInput source="title" defaultValue="hello" />
+        <TextInput source="title1" label="Default john" defaultValue="john" />
+        <TextInput
+            source="title2"
+            label="Default empty string"
+            defaultValue=""
+        />
+        <TextInput source="title3" label="Default undefined" />
+        <FormInspector name="title" />
+        <FormInspector name="title1" />
+        <FormInspector name="title2" />
+        <FormInspector name="title3" />
+    </Wrapper>
 );
 
 export const HelperText = () => (
-    <AdminContext>
-        <Create
-            resource="posts"
-            record={{ id: 123, title: 'Lorem ipsum' }}
-            sx={{ width: 600 }}
-        >
-            <SimpleForm>
-                <TextInput source="title" />
-                <TextInput source="title" helperText={false} />
-                <TextInput
-                    source="title"
-                    helperText="Number of times the post was read"
-                />
-            </SimpleForm>
-        </Create>
-    </AdminContext>
+    <Wrapper>
+        <TextInput source="title" />
+        <TextInput source="title" helperText={false} />
+        <TextInput
+            source="title"
+            helperText="Number of times the post was read"
+        />
+    </Wrapper>
 );
 
 export const Label = () => (
-    <AdminContext>
-        <Create
-            resource="posts"
-            record={{ id: 123, title: 'Lorem ipsum' }}
-            sx={{ width: 600 }}
-        >
-            <SimpleForm>
-                <TextInput source="title" />
-                <TextInput source="title" label={false} />
-                <TextInput source="title" label="label of title" />
-            </SimpleForm>
-        </Create>
-    </AdminContext>
+    <Wrapper>
+        <TextInput source="title" />
+        <TextInput source="title" label={false} />
+        <TextInput source="title" label="label of title" />
+    </Wrapper>
 );
 
-export const FullWidth = () => (
-    <AdminContext>
-        <Create
-            resource="posts"
-            record={{ id: 123, title: 'Lorem ipsum' }}
-            sx={{ width: 600 }}
-        >
-            <SimpleForm>
-                <TextInput source="title" label="default" />
-                <TextInput source="title" label="Full Width" fullWidth />
-            </SimpleForm>
-        </Create>
-    </AdminContext>
+export const NonFullWidth = () => (
+    <Wrapper>
+        <TextInput source="title" label="default" />
+        <TextInput source="title" label="Full Width False" fullWidth={false} />
+    </Wrapper>
 );
 
 export const Margin = () => (
-    <AdminContext>
-        <Create
-            resource="posts"
-            record={{ id: 123, title: 'Lorem ipsum' }}
-            sx={{ width: 600 }}
-        >
-            <SimpleForm>
-                <TextInput source="title" label="default (dense)" />
-                <TextInput source="title" label="none" margin="none" />
-                <TextInput source="title" label="normal" margin="normal" />
-            </SimpleForm>
-        </Create>
-    </AdminContext>
+    <Wrapper>
+        <TextInput source="title" label="default (dense)" />
+        <TextInput source="title" label="none" margin="none" />
+        <TextInput source="title" label="normal" margin="normal" />
+    </Wrapper>
 );
 
 export const Variant = () => (
-    <AdminContext>
-        <Create
-            resource="posts"
-            record={{ id: 123, title: 'Lorem ipsum' }}
-            sx={{ width: 600 }}
-        >
-            <SimpleForm>
-                <TextInput source="title" label="default (filled)" />
-                <TextInput source="title" label="outlined" variant="outlined" />
-                <TextInput source="title" label="standard" variant="standard" />
-            </SimpleForm>
-        </Create>
-    </AdminContext>
+    <Wrapper>
+        <TextInput source="title" label="default (filled)" />
+        <TextInput source="title" label="outlined" variant="outlined" />
+        <TextInput source="title" label="standard" variant="standard" />
+    </Wrapper>
 );
 
 export const Required = () => (
-    <AdminContext>
+    <AdminContext defaultTheme="light">
         <Create
             resource="posts"
             record={{ id: 123, title: 'Lorem ipsum' }}
@@ -188,7 +115,7 @@ export const Required = () => (
 );
 
 export const Error = () => (
-    <AdminContext>
+    <AdminContext defaultTheme="light">
         <Create
             resource="posts"
             record={{ id: 123, title: 'Lorem ipsum' }}
@@ -212,28 +139,20 @@ export const Error = () => (
 );
 
 export const Sx = () => (
-    <AdminContext>
-        <Create
-            resource="posts"
-            record={{ id: 123, title: 'Lorem ipsum' }}
-            sx={{ width: 600 }}
-        >
-            <SimpleForm>
-                <TextInput
-                    source="title"
-                    sx={{
-                        border: 'solid 1px red',
-                        borderRadius: '5px',
-                        '& .MuiInputLabel-root': { fontWeight: 'bold' },
-                    }}
-                />
-            </SimpleForm>
-        </Create>
-    </AdminContext>
+    <Wrapper>
+        <TextInput
+            source="title"
+            sx={{
+                border: 'solid 1px red',
+                borderRadius: '5px',
+                '& .MuiInputLabel-root': { fontWeight: 'bold' },
+            }}
+        />
+    </Wrapper>
 );
 
 export const ExtraProps = () => (
-    <AdminContext>
+    <AdminContext defaultTheme="light">
         <Create resource="posts" sx={{ width: 600 }}>
             <SimpleForm>
                 <TextInput
@@ -246,13 +165,8 @@ export const ExtraProps = () => (
 );
 
 const FormStateInspector = () => {
-    const {
-        touchedFields,
-        isDirty,
-        dirtyFields,
-        isValid,
-        errors,
-    } = useFormState();
+    const { touchedFields, isDirty, dirtyFields, isValid, errors } =
+        useFormState();
     return (
         <div>
             form state:&nbsp;
@@ -284,19 +198,11 @@ const FieldStateInspector = ({ name = 'title' }) => {
 };
 
 export const FieldState = () => (
-    <AdminContext>
-        <Create
-            resource="posts"
-            record={{ id: 123, title: 'Lorem ipsum' }}
-            sx={{ width: 600 }}
-        >
-            <SimpleForm>
-                <TextInput source="title" />
-                <FormStateInspector />
-                <FieldStateInspector />
-            </SimpleForm>
-        </Create>
-    </AdminContext>
+    <Wrapper>
+        <TextInput source="title" />
+        <FormStateInspector />
+        <FieldStateInspector />
+    </Wrapper>
 );
 
 const AlwaysOnToolbar = (
@@ -313,6 +219,7 @@ export const ValueUndefined = ({ onSuccess = console.log }) => (
                 update: (resource, { data }) => Promise.resolve({ data }),
             } as any
         }
+        defaultTheme="light"
     >
         <Edit
             resource="posts"
@@ -337,6 +244,7 @@ export const ValueNull = ({ onSuccess = console.log }) => (
                 update: (resource, { data }) => Promise.resolve({ data }),
             } as any
         }
+        defaultTheme="light"
     >
         <Edit
             resource="posts"
@@ -353,7 +261,7 @@ export const ValueNull = ({ onSuccess = console.log }) => (
 );
 
 export const Parse = ({ onSuccess = console.log }) => (
-    <AdminContext>
+    <AdminContext defaultTheme="light">
         <Create
             resource="posts"
             record={{ id: 123, title: 'Lorem ipsum' }}

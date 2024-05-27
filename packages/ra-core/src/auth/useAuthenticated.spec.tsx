@@ -1,13 +1,13 @@
 import * as React from 'react';
 import expect from 'expect';
 import { render, screen, waitFor } from '@testing-library/react';
-import { createMemoryHistory } from 'history';
 import { Routes, Route, useLocation } from 'react-router-dom';
-
 import { memoryStore } from '../store';
+
 import { useNotificationContext } from '../notification';
 import { CoreAdminContext } from '../core';
 import { useAuthenticated } from '.';
+import { TestMemoryRouter } from '../routing';
 
 const Authenticated = ({ children, ...params }) => {
     useAuthenticated({ params });
@@ -41,7 +41,9 @@ describe('useAuthenticated', () => {
             </CoreAdminContext>
         );
         expect(authProvider.checkAuth).toBeCalledTimes(1);
-        expect(authProvider.checkAuth.mock.calls[0][0]).toEqual({});
+        expect(authProvider.checkAuth.mock.calls[0][0]).toEqual({
+            signal: expect.anything(),
+        });
         expect(reset).toHaveBeenCalledTimes(0);
     });
 
@@ -66,7 +68,10 @@ describe('useAuthenticated', () => {
         const { rerender } = render(<FooWrapper />);
         rerender(<FooWrapper foo="bar" />);
         expect(authProvider.checkAuth).toBeCalledTimes(2);
-        expect(authProvider.checkAuth.mock.calls[1][0]).toEqual({ foo: 'bar' });
+        expect(authProvider.checkAuth.mock.calls[1][0]).toEqual({
+            foo: 'bar',
+            signal: expect.anything(),
+        });
         expect(reset).toHaveBeenCalledTimes(0);
     });
 
@@ -102,7 +107,6 @@ describe('useAuthenticated', () => {
         };
         const store = memoryStore();
         const reset = jest.spyOn(store, 'reset');
-        const history = createMemoryHistory();
 
         const Login = () => {
             const location = useLocation();
@@ -123,32 +127,35 @@ describe('useAuthenticated', () => {
         };
 
         render(
-            <CoreAdminContext
-                authProvider={authProvider}
-                history={history}
-                store={store}
-            >
-                <Notification />
-                <Routes>
-                    <Route
-                        path="/"
-                        element={
-                            <Authenticated>
-                                <Foo />
-                            </Authenticated>
-                        }
-                    />
-                    <Route path="/login" element={<Login />} />
-                </Routes>
-            </CoreAdminContext>
+            <TestMemoryRouter>
+                <CoreAdminContext authProvider={authProvider} store={store}>
+                    <Notification />
+                    <Routes>
+                        <Route
+                            path="/"
+                            element={
+                                <Authenticated>
+                                    <Foo />
+                                </Authenticated>
+                            }
+                        />
+                        <Route path="/login" element={<Login />} />
+                    </Routes>
+                </CoreAdminContext>
+            </TestMemoryRouter>
         );
         await waitFor(() => {
             expect(authProvider.checkAuth).toHaveBeenCalledTimes(1);
         });
-        expect(authProvider.checkAuth.mock.calls[0][0]).toEqual({});
-        await waitFor(() => {
-            expect(authProvider.logout).toHaveBeenCalledTimes(1);
+        expect(authProvider.checkAuth.mock.calls[0][0]).toEqual({
+            signal: expect.anything(),
         });
+        await waitFor(
+            () => {
+                expect(authProvider.logout).toHaveBeenCalledTimes(1);
+            },
+            { timeout: 4000 }
+        );
         expect(authProvider.logout.mock.calls[0][0]).toEqual({});
         expect(reset).toHaveBeenCalledTimes(1);
         expect(notificationsSpy).toEqual([

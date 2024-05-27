@@ -21,7 +21,7 @@ const invalidButtonDomProps = {
 };
 
 describe('<UpdateWithConfirmButton />', () => {
-    it('should render a button with no DOM errors', () => {
+    it('should render a button with no DOM errors', async () => {
         const spy = jest.spyOn(console, 'error').mockImplementation(() => {});
 
         render(
@@ -37,7 +37,9 @@ describe('<UpdateWithConfirmButton />', () => {
 
         expect(spy).not.toHaveBeenCalled();
         expect(
-            screen.getByLabelText('ra.action.update').getAttribute('type')
+            (await screen.findByLabelText('ra.action.update')).getAttribute(
+                'type'
+            )
         ).toEqual('button');
 
         spy.mockRestore();
@@ -69,21 +71,21 @@ describe('<UpdateWithConfirmButton />', () => {
             </Toolbar>
         );
         render(
-            <ThemeProvider theme={theme}>
-                <CoreAdminContext dataProvider={dataProvider}>
+            <CoreAdminContext dataProvider={dataProvider}>
+                <ThemeProvider theme={theme}>
                     <Edit {...defaultEditProps}>
                         <SimpleForm toolbar={<EditToolbar />}>
                             <TextInput source="title" />
                         </SimpleForm>
                     </Edit>
-                </CoreAdminContext>
-            </ThemeProvider>
+                </ThemeProvider>
+            </CoreAdminContext>
         );
         // waitFor for the dataProvider.getOne() return
         await waitFor(() => {
             expect(screen.queryByDisplayValue('lorem')).not.toBeNull();
         });
-        fireEvent.click(screen.getByLabelText('ra.action.update'));
+        fireEvent.click(await screen.findByLabelText('ra.action.update'));
         fireEvent.click(screen.getByText('ra.action.confirm'));
         await waitFor(() => {
             expect(dataProvider.update).toHaveBeenCalledWith('comments', {
@@ -130,7 +132,7 @@ describe('<UpdateWithConfirmButton />', () => {
         await waitFor(() => {
             expect(screen.queryByDisplayValue('lorem')).not.toBeNull();
         });
-        fireEvent.click(screen.getByLabelText('ra.action.update'));
+        fireEvent.click(await screen.findByLabelText('ra.action.update'));
         fireEvent.click(screen.getByText('ra.action.confirm'));
 
         await waitFor(() => {
@@ -174,7 +176,7 @@ describe('<UpdateWithConfirmButton />', () => {
         await waitFor(() => {
             expect(screen.queryByDisplayValue('lorem')).not.toBeNull();
         });
-        fireEvent.click(screen.getByLabelText('ra.action.update'));
+        fireEvent.click(await screen.findByLabelText('ra.action.update'));
         fireEvent.click(screen.getByText('ra.action.confirm'));
         await waitFor(() => {
             expect(dataProvider.update).toHaveBeenCalled();
@@ -226,7 +228,7 @@ describe('<UpdateWithConfirmButton />', () => {
         await waitFor(() => {
             expect(screen.queryByDisplayValue('lorem')).toBeDefined();
         });
-        fireEvent.click(screen.getByLabelText('ra.action.update'));
+        fireEvent.click(await screen.findByLabelText('ra.action.update'));
         fireEvent.click(screen.getByText('ra.action.confirm'));
         await waitFor(() => {
             expect(dataProvider.update).toHaveBeenCalled();
@@ -246,8 +248,14 @@ describe('<UpdateWithConfirmButton />', () => {
 
     it('should close the dialog even with custom success side effect', async () => {
         render(<MutationOptions />);
-        fireEvent.click(await screen.findByLabelText('Reset views'));
-        await screen.findByText('Are you sure you want to update this post?');
+        await screen.findByText('Reset views');
+        fireEvent.click(await screen.findByText('Reset views'));
+        await screen.findByRole('dialog');
+        await screen.findByText(
+            'Are you sure you want to update this post?',
+            undefined,
+            { timeout: 4000 }
+        );
         fireEvent.click(screen.getByText('Confirm'));
         await screen.findByText('Reset views success', undefined, {
             timeout: 2000,

@@ -1,11 +1,17 @@
 import * as React from 'react';
-import { createMemoryHistory } from 'history';
 import { Admin, AdminContext } from 'react-admin';
-import { Resource, required, useGetList } from 'ra-core';
+import { Resource, required, useGetList, TestMemoryRouter } from 'ra-core';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
+import {
+    Dialog,
+    DialogContent,
+    DialogActions,
+    TextField,
+    Button,
+} from '@mui/material';
 
-import { Create, Edit } from '../detail';
+import { Create as RaCreate, Edit } from '../detail';
 import { SimpleForm } from '../form';
 import { SelectInput } from './SelectInput';
 import { TextInput } from './TextInput';
@@ -13,6 +19,7 @@ import { ReferenceInput } from './ReferenceInput';
 import { SaveButton } from '../button/SaveButton';
 import { Toolbar } from '../form/Toolbar';
 import { FormInspector } from './common';
+import { useCreateSuggestionContext } from './useSupportCreateSuggestion';
 
 export default { title: 'ra-ui-materialui/input/SelectInput' };
 
@@ -49,6 +56,7 @@ export const InitialValue = () => (
                 getOne: () => Promise.resolve({ data: { id: 1, gender: 'F' } }),
             } as any
         }
+        defaultTheme="light"
     >
         <Edit resource="posts" id="1">
             <SimpleForm>
@@ -75,43 +83,12 @@ export const Disabled = () => (
             ]}
             disabled
         />
-        <SelectInput
-            source="city"
-            choices={[
-                { id: 'P', name: 'Paris ' },
-                { id: 'L', name: 'London' },
-            ]}
-            defaultValue="P"
-            disabled
-        />
     </Wrapper>
 );
 
-export const ReadOnly = () => (
+export const IsPending = () => (
     <Wrapper>
-        <SelectInput
-            source="gender"
-            choices={[
-                { id: 'M', name: 'Male ' },
-                { id: 'F', name: 'Female' },
-            ]}
-            readOnly
-        />
-        <SelectInput
-            source="city"
-            choices={[
-                { id: 'P', name: 'Paris ' },
-                { id: 'L', name: 'London' },
-            ]}
-            defaultValue="P"
-            readOnly
-        />
-    </Wrapper>
-);
-
-export const IsLoading = () => (
-    <Wrapper>
-        <SelectInput source="gender" isLoading />
+        <SelectInput source="gender" isPending />
     </Wrapper>
 );
 
@@ -196,6 +173,104 @@ export const Sort = () => (
     </Wrapper>
 );
 
+const categories = [
+    { name: 'Tech', id: 'tech' },
+    { name: 'Lifestyle', id: 'lifestyle' },
+];
+
+const CreateCategory = () => {
+    const { onCancel, onCreate } = useCreateSuggestionContext();
+    const [value, setValue] = React.useState('');
+
+    const handleSubmit = event => {
+        event.preventDefault();
+        const newCategory = { name: value, id: value.toLowerCase() };
+        categories.push(newCategory);
+        setValue('');
+        onCreate(newCategory);
+    };
+
+    return (
+        <Dialog open onClose={onCancel}>
+            <form onSubmit={handleSubmit}>
+                <DialogContent>
+                    <TextField
+                        label="New category name"
+                        value={value}
+                        onChange={event => setValue(event.target.value)}
+                        autoFocus
+                    />
+                </DialogContent>
+                <DialogActions>
+                    <Button type="submit">Save</Button>
+                    <Button onClick={onCancel}>Cancel</Button>
+                </DialogActions>
+            </form>
+        </Dialog>
+    );
+};
+
+export const Create = () => (
+    <Wrapper>
+        <SelectInput
+            create={<CreateCategory />}
+            source="category"
+            choices={categories}
+        />
+    </Wrapper>
+);
+
+export const OnCreate = () => {
+    const categories = [
+        { name: 'Tech', id: 'tech' },
+        { name: 'Lifestyle', id: 'lifestyle' },
+    ];
+    return (
+        <Wrapper>
+            <SelectInput
+                onCreate={() => {
+                    const newCategoryName = prompt('Enter a new category');
+                    if (!newCategoryName) return;
+                    const newCategory = {
+                        id: newCategoryName.toLowerCase(),
+                        name: newCategoryName,
+                    };
+                    categories.push(newCategory);
+                    return newCategory;
+                }}
+                source="category"
+                choices={categories}
+            />
+        </Wrapper>
+    );
+};
+
+export const CreateLabel = () => {
+    const categories = [
+        { name: 'Tech', id: 'tech' },
+        { name: 'Lifestyle', id: 'lifestyle' },
+    ];
+    return (
+        <Wrapper>
+            <SelectInput
+                onCreate={() => {
+                    const newCategoryName = prompt('Enter a new category');
+                    if (!newCategoryName) return;
+                    const newCategory = {
+                        id: newCategoryName.toLowerCase(),
+                        name: newCategoryName,
+                    };
+                    categories.push(newCategory);
+                    return newCategory;
+                }}
+                source="category"
+                choices={categories}
+                createLabel="Create a new category"
+            />
+        </Wrapper>
+    );
+};
+
 const i18nProvider = polyglotI18nProvider(() => englishMessages);
 
 const Wrapper = ({ children, onSuccess = console.log }) => (
@@ -207,8 +282,9 @@ const Wrapper = ({ children, onSuccess = console.log }) => (
                     Promise.resolve({ data: { id: 1, ...params.data } }),
             } as any
         }
+        defaultTheme="light"
     >
-        <Create resource="posts" mutationOptions={{ onSuccess }}>
+        <RaCreate resource="posts" mutationOptions={{ onSuccess }}>
             <SimpleForm
                 toolbar={
                     <Toolbar>
@@ -219,7 +295,7 @@ const Wrapper = ({ children, onSuccess = console.log }) => (
                 {children}
                 <FormInspector name="gender" />
             </SimpleForm>
-        </Create>
+        </RaCreate>
     </AdminContext>
 );
 
@@ -283,11 +359,9 @@ const dataProviderWithAuthors = {
     },
 } as any;
 
-const history = createMemoryHistory({ initialEntries: ['/books/1'] });
-
 export const FetchChoices = () => {
     const BookAuthorsInput = () => {
-        const { data, isLoading } = useGetList('authors');
+        const { data, isPending } = useGetList('authors');
         return (
             <SelectInput
                 source="author"
@@ -295,12 +369,45 @@ export const FetchChoices = () => {
                 optionText={record =>
                     `${record.first_name} ${record.last_name}`
                 }
-                isLoading={isLoading}
+                isPending={isPending}
             />
         );
     };
     return (
-        <Admin dataProvider={dataProviderWithAuthors} history={history}>
+        <TestMemoryRouter initialEntries={['/books/1']}>
+            <Admin dataProvider={dataProviderWithAuthors}>
+                <Resource
+                    name="authors"
+                    recordRepresentation={record =>
+                        `${record.first_name} ${record.last_name}`
+                    }
+                />
+                <Resource
+                    name="books"
+                    edit={() => (
+                        <Edit
+                            mutationMode="pessimistic"
+                            mutationOptions={{
+                                onSuccess: data => {
+                                    console.log(data);
+                                },
+                            }}
+                        >
+                            <SimpleForm>
+                                <BookAuthorsInput />
+                                <FormInspector name="author" />
+                            </SimpleForm>
+                        </Edit>
+                    )}
+                />
+            </Admin>
+        </TestMemoryRouter>
+    );
+};
+
+export const InsideReferenceInput = () => (
+    <TestMemoryRouter initialEntries={['/books/1']}>
+        <Admin dataProvider={dataProviderWithAuthors}>
             <Resource
                 name="authors"
                 recordRepresentation={record =>
@@ -319,129 +426,102 @@ export const FetchChoices = () => {
                         }}
                     >
                         <SimpleForm>
-                            <BookAuthorsInput />
+                            <ReferenceInput reference="authors" source="author">
+                                <SelectInput />
+                            </ReferenceInput>
                             <FormInspector name="author" />
                         </SimpleForm>
                     </Edit>
                 )}
             />
         </Admin>
-    );
-};
-
-export const InsideReferenceInput = () => (
-    <Admin dataProvider={dataProviderWithAuthors} history={history}>
-        <Resource
-            name="authors"
-            recordRepresentation={record =>
-                `${record.first_name} ${record.last_name}`
-            }
-        />
-        <Resource
-            name="books"
-            edit={() => (
-                <Edit
-                    mutationMode="pessimistic"
-                    mutationOptions={{
-                        onSuccess: data => {
-                            console.log(data);
-                        },
-                    }}
-                >
-                    <SimpleForm>
-                        <ReferenceInput reference="authors" source="author">
-                            <SelectInput />
-                        </ReferenceInput>
-                        <FormInspector name="author" />
-                    </SimpleForm>
-                </Edit>
-            )}
-        />
-    </Admin>
+    </TestMemoryRouter>
 );
 
 export const InsideReferenceInputDefaultValue = ({
     onSuccess = console.log,
 }) => (
-    <Admin
-        dataProvider={{
-            ...dataProviderWithAuthors,
-            getOne: () =>
-                Promise.resolve({
-                    data: {
-                        id: 1,
-                        title: 'War and Peace',
-                        // trigger default value
-                        author: undefined,
-                        summary:
-                            "War and Peace broadly focuses on Napoleon's invasion of Russia, and the impact it had on Tsarist society. The book explores themes such as revolution, revolution and empire, the growth and decline of various states and the impact it had on their economies, culture, and society.",
-                        year: 1869,
-                    },
-                }),
-        }}
-        history={history}
-    >
-        <Resource
-            name="authors"
-            recordRepresentation={record =>
-                `${record.first_name} ${record.last_name}`
-            }
-        />
-        <Resource
-            name="books"
-            edit={() => (
-                <Edit
-                    mutationMode="pessimistic"
-                    mutationOptions={{ onSuccess }}
-                >
-                    <SimpleForm>
-                        <TextInput source="title" />
-                        <ReferenceInput reference="authors" source="author">
-                            <SelectInput />
-                        </ReferenceInput>
-                        <FormInspector name="author" />
-                    </SimpleForm>
-                </Edit>
-            )}
-        />
-    </Admin>
+    <TestMemoryRouter initialEntries={['/books/1']}>
+        <Admin
+            dataProvider={{
+                ...dataProviderWithAuthors,
+                getOne: () =>
+                    Promise.resolve({
+                        data: {
+                            id: 1,
+                            title: 'War and Peace',
+                            // trigger default value
+                            author: undefined,
+                            summary:
+                                "War and Peace broadly focuses on Napoleon's invasion of Russia, and the impact it had on Tsarist society. The book explores themes such as revolution, revolution and empire, the growth and decline of various states and the impact it had on their economies, culture, and society.",
+                            year: 1869,
+                        },
+                    }),
+            }}
+        >
+            <Resource
+                name="authors"
+                recordRepresentation={record =>
+                    `${record.first_name} ${record.last_name}`
+                }
+            />
+            <Resource
+                name="books"
+                edit={() => (
+                    <Edit
+                        mutationMode="pessimistic"
+                        mutationOptions={{ onSuccess }}
+                    >
+                        <SimpleForm>
+                            <TextInput source="title" />
+                            <ReferenceInput reference="authors" source="author">
+                                <SelectInput />
+                            </ReferenceInput>
+                            <FormInspector name="author" />
+                        </SimpleForm>
+                    </Edit>
+                )}
+            />
+        </Admin>
+    </TestMemoryRouter>
 );
 
 export const InsideReferenceInputWithError = () => (
-    <Admin
-        dataProvider={{
-            ...dataProviderWithAuthors,
-            getList: () => Promise.reject('error'),
-        }}
-        history={history}
-    >
-        <Resource
-            name="authors"
-            recordRepresentation={record =>
-                `${record.first_name} ${record.last_name}`
-            }
-        />
-        <Resource
-            name="books"
-            edit={() => (
-                <Edit
-                    mutationMode="pessimistic"
-                    mutationOptions={{
-                        onSuccess: data => {
-                            console.log(data);
-                        },
-                    }}
-                >
-                    <SimpleForm>
-                        <ReferenceInput reference="authors" source="author">
-                            <SelectInput />
-                        </ReferenceInput>
-                        <FormInspector name="author" />
-                    </SimpleForm>
-                </Edit>
-            )}
-        />
-    </Admin>
+    <TestMemoryRouter initialEntries={['/books/1']}>
+        <Admin
+            dataProvider={{
+                ...dataProviderWithAuthors,
+                getList: () => Promise.reject('error'),
+            }}
+        >
+            <Resource
+                name="authors"
+                recordRepresentation={record =>
+                    `${record.first_name} ${record.last_name}`
+                }
+            />
+            <Resource
+                name="books"
+                edit={() => (
+                    <Edit
+                        mutationMode="pessimistic"
+                        mutationOptions={{
+                            onSuccess: data => {
+                                console.log(data);
+                            },
+                        }}
+                    >
+                        <SimpleForm>
+                            <ReferenceInput reference="authors" source="author">
+                                <SelectInput />
+                            </ReferenceInput>
+                            <FormInspector name="author" />
+                        </SimpleForm>
+                    </Edit>
+                )}
+            />
+        </Admin>
+    </TestMemoryRouter>
 );
 
 export const TranslateChoice = () => {
@@ -474,6 +554,7 @@ export const TranslateChoice = () => {
                         }),
                 } as any
             }
+            defaultTheme="light"
         >
             <Edit resource="posts" id="1">
                 <SimpleForm>

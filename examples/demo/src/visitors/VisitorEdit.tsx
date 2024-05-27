@@ -30,31 +30,17 @@ const VisitorEdit = () => {
                             </Typography>
                             <Box display={{ xs: 'block', sm: 'flex' }}>
                                 <Box flex={1} mr={{ xs: 0, sm: '0.5em' }}>
-                                    <TextInput
-                                        source="first_name"
-                                        isRequired
-                                        fullWidth
-                                    />
+                                    <TextInput source="first_name" isRequired />
                                 </Box>
                                 <Box flex={1} ml={{ xs: 0, sm: '0.5em' }}>
-                                    <TextInput
-                                        source="last_name"
-                                        isRequired
-                                        fullWidth
-                                    />
+                                    <TextInput source="last_name" isRequired />
                                 </Box>
                             </Box>
-                            <TextInput
-                                type="email"
-                                source="email"
-                                isRequired
-                                fullWidth
-                            />
+                            <TextInput type="email" source="email" isRequired />
                             <Box display={{ xs: 'block', sm: 'flex' }}>
                                 <Box flex={1} mr={{ xs: 0, sm: '0.5em' }}>
                                     <DateInput
                                         source="birthday"
-                                        fullWidth
                                         helperText={false}
                                     />
                                 </Box>
@@ -71,28 +57,24 @@ const VisitorEdit = () => {
                             <TextInput
                                 source="address"
                                 multiline
-                                fullWidth
                                 helperText={false}
                             />
                             <Box display={{ xs: 'block', sm: 'flex' }}>
                                 <Box flex={2} mr={{ xs: 0, sm: '0.5em' }}>
                                     <TextInput
                                         source="city"
-                                        fullWidth
                                         helperText={false}
                                     />
                                 </Box>
                                 <Box flex={1} mr={{ xs: 0, sm: '0.5em' }}>
                                     <TextInput
                                         source="stateAbbr"
-                                        fullWidth
                                         helperText={false}
                                     />
                                 </Box>
                                 <Box flex={2}>
                                     <TextInput
                                         source="zipcode"
-                                        fullWidth
                                         helperText={false}
                                     />
                                 </Box>
@@ -107,16 +89,10 @@ const VisitorEdit = () => {
                             </Typography>
                             <Box display={{ xs: 'block', sm: 'flex' }}>
                                 <Box flex={1} mr={{ xs: 0, sm: '0.5em' }}>
-                                    <PasswordInput
-                                        source="password"
-                                        fullWidth
-                                    />
+                                    <PasswordInput source="password" />
                                 </Box>
                                 <Box flex={1} ml={{ xs: 0, sm: '0.5em' }}>
-                                    <PasswordInput
-                                        source="confirm_password"
-                                        fullWidth
-                                    />
+                                    <PasswordInput source="confirm_password" />
                                 </Box>
                             </Box>
                         </Grid>
@@ -127,11 +103,8 @@ const VisitorEdit = () => {
                                 )}
                             </Typography>
 
-                            <SegmentsInput fullWidth />
-                            <NullableBooleanInput
-                                fullWidth
-                                source="has_newsletter"
-                            />
+                            <SegmentsInput />
+                            <NullableBooleanInput source="has_newsletter" />
                         </Grid>
                     </Grid>
                 </div>

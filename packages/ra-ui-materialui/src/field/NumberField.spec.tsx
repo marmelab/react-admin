@@ -59,7 +59,7 @@ describe('<NumberField />', () => {
                 options={{ minimumFractionDigits: 2 }}
             />
         );
-        expect(queryByText('2.10')).not.toBeNull();
+        expect(queryByText(/2[.,]10/)).not.toBeNull();
     });
 
     it('should use record from RecordContext', () => {

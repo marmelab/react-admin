@@ -4,7 +4,7 @@ import {
     ReactEventHandler,
     SyntheticEvent,
 } from 'react';
-import { UseMutationOptions } from 'react-query';
+import { UseMutationOptions } from '@tanstack/react-query';
 
 import { useDelete } from '../../dataProvider';
 import { useUnselect } from '../../controller';
@@ -27,7 +27,7 @@ import { useResourceContext } from '../../core';
  * }) => {
  *     const {
  *         open,
- *         isLoading,
+ *         isPending,
  *         handleDialogOpen,
  *         handleDialogClose,
  *         handleDelete,
@@ -49,7 +49,7 @@ import { useResourceContext } from '../../core';
  *             </Button>
  *             <Confirm
  *                 isOpen={open}
- *                 loading={isLoading}
+ *                 loading={isPending}
  *                 title="ra.message.delete_title"
  *                 content="ra.message.delete_content"
  *                 translateOptions={{
@@ -68,7 +68,7 @@ const useDeleteWithConfirmController = <RecordType extends RaRecord = any>(
 ): UseDeleteWithConfirmControllerReturn => {
     const {
         record,
-        redirect: redirectTo,
+        redirect: redirectTo = 'list',
         mutationMode,
         onClick,
         mutationOptions = {},
@@ -80,7 +80,42 @@ const useDeleteWithConfirmController = <RecordType extends RaRecord = any>(
     const notify = useNotify();
     const unselect = useUnselect(resource);
     const redirect = useRedirect();
-    const [deleteOne, { isLoading }] = useDelete<RecordType>();
+    const [deleteOne, { isPending }] = useDelete<RecordType>(
+        resource,
+        undefined,
+        {
+            onSuccess: () => {
+                setOpen(false);
+                notify(successMessage, {
+                    type: 'info',
+                    messageArgs: { smart_count: 1 },
+                    undoable: mutationMode === 'undoable',
+                });
+                record && unselect([record.id]);
+                redirect(redirectTo, resource);
+            },
+            onError: (error: Error) => {
+                setOpen(false);
+
+                notify(
+                    typeof error === 'string'
+                        ? error
+                        : error.message || 'ra.notification.http_error',
+                    {
+                        type: 'error',
+                        messageArgs: {
+                            _:
+                                typeof error === 'string'
+                                    ? error
+                                    : error && error.message
+                                      ? error.message
+                                      : undefined,
+                        },
+                    }
+                );
+            },
+        }
+    );
 
     const handleDialogOpen = e => {
         setOpen(true);
@@ -95,6 +130,11 @@ const useDeleteWithConfirmController = <RecordType extends RaRecord = any>(
     const handleDelete = useCallback(
         event => {
             event.stopPropagation();
+            if (!record) {
+                throw new Error(
+                    'The record cannot be deleted because no record has been passed'
+                );
+            }
             deleteOne(
                 resource,
                 {
@@ -103,36 +143,6 @@ const useDeleteWithConfirmController = <RecordType extends RaRecord = any>(
                     meta: mutationMeta,
                 },
                 {
-                    onSuccess: () => {
-                        setOpen(false);
-                        notify(successMessage, {
-                            type: 'info',
-                            messageArgs: { smart_count: 1 },
-                            undoable: mutationMode === 'undoable',
-                        });
-                        unselect([record.id]);
-                        redirect(redirectTo, resource);
-                    },
-                    onError: (error: Error) => {
-                        setOpen(false);
-
-                        notify(
-                            typeof error === 'string'
-                                ? error
-                                : error.message || 'ra.notification.http_error',
-                            {
-                                type: 'error',
-                                messageArgs: {
-                                    _:
-                                        typeof error === 'string'
-                                            ? error
-                                            : error && error.message
-                                            ? error.message
-                                            : undefined,
-                                },
-                            }
-                        );
-                    },
                     mutationMode,
                     ...otherMutationOptions,
                 }
@@ -146,19 +156,16 @@ const useDeleteWithConfirmController = <RecordType extends RaRecord = any>(
             mutationMeta,
             mutationMode,
             otherMutationOptions,
-            notify,
             onClick,
             record,
-            redirect,
-            redirectTo,
             resource,
-            unselect,
         ]
     );
 
     return {
         open,
-        isLoading,
+        isPending,
+        isLoading: isPending,
         handleDialogOpen,
         handleDialogClose,
         handleDelete,
@@ -167,12 +174,11 @@ const useDeleteWithConfirmController = <RecordType extends RaRecord = any>(
 
 export interface UseDeleteWithConfirmControllerParams<
     RecordType extends RaRecord = any,
-    MutationOptionsError = unknown
+    MutationOptionsError = unknown,
 > {
     mutationMode?: MutationMode;
     record?: RecordType;
     redirect?: RedirectionSideEffect;
-    // @deprecated. This hook get the resource from the context
     resource?: string;
     onClick?: ReactEventHandler<any>;
     mutationOptions?: UseMutationOptions<
@@ -186,6 +192,7 @@ export interface UseDeleteWithConfirmControllerParams<
 export interface UseDeleteWithConfirmControllerReturn {
     open: boolean;
     isLoading: boolean;
+    isPending: boolean;
     handleDialogOpen: (e: SyntheticEvent) => void;
     handleDialogClose: (e: SyntheticEvent) => void;
     handleDelete: ReactEventHandler<any>;

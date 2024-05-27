@@ -24,6 +24,7 @@ import set from 'lodash/set';
  * @param {String} options.filter Optional. The filter users may have already entered. Useful for autocomplete inputs for example.
  * @param {OnCreateHandler} options.onCreate Optional. A function which will be called when users choose to create a new choice, if the `create` option wasn't provided.
  * @param {Function} options.handleChange A function to pass to the input. Receives the same parameter as the original event handler and an additional newItem parameter if a new item was create.
+ *
  * @returns {UseSupportCreateValue} An object with the following properties:
  * - getCreateItem: a function which will return the label of the choice for create a new choice.
  * - createElement: a React element to render after the input. It will be rendered when users choose to create a new choice. It renders null otherwise.
@@ -41,6 +42,7 @@ export const useSupportCreateSuggestion = (
         handleChange,
         onCreate,
     } = options;
+
     const translate = useTranslate();
     const [renderOnCreate, setRenderOnCreate] = useState(false);
     const filterRef = useRef(filter);
@@ -95,6 +97,13 @@ export const useSupportCreateSuggestion = (
 
             if (finalValue?.id === createValue || finalValue === createValue) {
                 if (!isValidElement(create)) {
+                    if (!onCreate) {
+                        // this should never happen because the createValue is only added if a create function is provided
+                        // @see AutocompleteInput:filterOptions
+                        throw new Error(
+                            'To create a new option, you must pass an onCreate function or a create element.'
+                        );
+                    }
                     const newSuggestion = await onCreate(filter);
                     if (newSuggestion) {
                         handleChange(newSuggestion);
@@ -129,23 +138,31 @@ export interface SupportCreateSuggestionOptions {
 
 export interface UseSupportCreateValue {
     createId: string;
-    getCreateItem: (
-        filterValue?: string
-    ) => { id: Identifier; [key: string]: any };
+    getCreateItem: (filterValue?: string) => {
+        id: Identifier;
+        [key: string]: any;
+    };
     handleChange: (eventOrValue: ChangeEvent | any) => Promise<void>;
     createElement: ReactElement | null;
 }
 
-const CreateSuggestionContext = createContext<CreateSuggestionContextValue>(
-    undefined
-);
+const CreateSuggestionContext = createContext<
+    CreateSuggestionContextValue | undefined
+>(undefined);
 
 interface CreateSuggestionContextValue {
     filter?: string;
     onCreate: (choice: any) => void;
     onCancel: () => void;
 }
-export const useCreateSuggestionContext = () =>
-    useContext(CreateSuggestionContext);
+export const useCreateSuggestionContext = () => {
+    const context = useContext(CreateSuggestionContext);
+    if (!context) {
+        throw new Error(
+            'useCreateSuggestionContext must be used inside a CreateSuggestionContext.Provider'
+        );
+    }
+    return context;
+};
 
 export type OnCreateHandler = (filter?: string) => any | Promise<any>;

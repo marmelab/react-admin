@@ -1,6 +1,5 @@
-import React, { ReactNode } from 'react';
-import PropTypes from 'prop-types';
-import { UseQueryOptions } from 'react-query';
+import React, { ReactNode, useMemo } from 'react';
+import { UseQueryOptions } from '@tanstack/react-query';
 import { Typography } from '@mui/material';
 import {
     useReferenceOneFieldController,
@@ -11,9 +10,11 @@ import {
     useTranslate,
     SortPayload,
     RaRecord,
+    ReferenceFieldContextProvider,
+    UseReferenceFieldControllerResult,
 } from 'ra-core';
 
-import { fieldPropTypes, FieldProps } from './types';
+import { FieldProps } from './types';
 import { ReferenceFieldView } from './ReferenceField';
 
 /**
@@ -28,7 +29,7 @@ import { ReferenceFieldView } from './ReferenceField';
  */
 export const ReferenceOneField = <
     RecordType extends RaRecord = RaRecord,
-    ReferenceRecordType extends RaRecord = RaRecord
+    ReferenceRecordType extends RaRecord = RaRecord,
 >(
     props: ReferenceOneFieldProps<RecordType, ReferenceRecordType>
 ) => {
@@ -47,35 +48,40 @@ export const ReferenceOneField = <
     const createPath = useCreatePath();
     const translate = useTranslate();
 
-    const {
-        isLoading,
-        isFetching,
-        referenceRecord,
-        error,
-        refetch,
-    } = useReferenceOneFieldController<ReferenceRecordType>({
-        record,
-        reference,
-        source,
-        target,
-        sort,
-        filter,
-        queryOptions,
-    });
+    const controllerProps = useReferenceOneFieldController<ReferenceRecordType>(
+        {
+            record,
+            reference,
+            source,
+            target,
+            sort,
+            filter,
+            queryOptions,
+        }
+    );
 
     const resourceLinkPath =
-        link === false
+        !record || link === false
             ? false
             : createPath({
                   resource: reference,
-                  id: referenceRecord?.id,
+                  id: controllerProps.referenceRecord?.id,
                   type:
                       typeof link === 'function'
                           ? link(record, reference)
                           : link,
               });
 
-    return !record || (!isLoading && referenceRecord == null) ? (
+    const context = useMemo<UseReferenceFieldControllerResult>(
+        () => ({
+            ...controllerProps,
+            link: resourceLinkPath,
+        }),
+        [controllerProps, resourceLinkPath]
+    );
+    return !record ||
+        (!controllerProps.isPending &&
+            controllerProps.referenceRecord == null) ? (
         emptyText ? (
             <Typography component="span" variant="body2">
                 {emptyText && translate(emptyText, { _: emptyText })}
@@ -83,24 +89,18 @@ export const ReferenceOneField = <
         ) : null
     ) : (
         <ResourceContextProvider value={reference}>
-            <ReferenceFieldView
-                isLoading={isLoading}
-                isFetching={isFetching}
-                referenceRecord={referenceRecord}
-                resourceLinkPath={resourceLinkPath}
-                reference={reference}
-                refetch={refetch}
-                error={error}
-            >
-                {children}
-            </ReferenceFieldView>
+            <ReferenceFieldContextProvider value={context}>
+                <ReferenceFieldView reference={reference} source={source}>
+                    {children}
+                </ReferenceFieldView>
+            </ReferenceFieldContextProvider>
         </ResourceContextProvider>
     );
 };
 
 export interface ReferenceOneFieldProps<
     RecordType extends RaRecord = RaRecord,
-    ReferenceRecordType extends RaRecord = RaRecord
+    ReferenceRecordType extends RaRecord = RaRecord,
 > extends FieldProps<RecordType> {
     children?: ReactNode;
     reference: string;
@@ -113,17 +113,6 @@ export interface ReferenceOneFieldProps<
         total: number;
     }> & { meta?: any };
 }
-
-ReferenceOneField.propTypes = {
-    children: PropTypes.node,
-    className: PropTypes.string,
-    label: fieldPropTypes.label,
-    record: PropTypes.any,
-    reference: PropTypes.string.isRequired,
-    source: PropTypes.string,
-    target: PropTypes.string.isRequired,
-    queryOptions: PropTypes.any,
-};
 
 // disable sorting on this field by default as its default source prop ('id')
 // will match the default sort ({ field: 'id', order: 'DESC'})

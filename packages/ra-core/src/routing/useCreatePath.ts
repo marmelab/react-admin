@@ -41,6 +41,14 @@ export const useCreatePath = () => {
     const basename = useBasename();
     return useCallback(
         ({ resource, id, type }: CreatePathParams): string => {
+            if (
+                ['list', 'create', 'edit', 'show'].includes(type) &&
+                !resource
+            ) {
+                throw new Error(
+                    'Cannot create a link without a resource. You must provide the resource name.'
+                );
+            }
             switch (type) {
                 case 'list':
                     return removeDoubleSlashes(`${basename}/${resource}`);
@@ -81,7 +89,7 @@ export type CreatePathType = 'list' | 'edit' | 'show' | 'create' | AnyString;
 
 export interface CreatePathParams {
     type: CreatePathType;
-    resource: string;
+    resource?: string;
     id?: Identifier;
 }
 

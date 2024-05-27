@@ -48,7 +48,7 @@ const VisitorCreate = () => (
                 latest_purchase: new Date(),
                 has_newsletter: false,
                 groups: [],
-                nb_commands: 0,
+                nb_orders: 0,
                 total_spent: 0,
             }}
             validate={validateForm}
@@ -56,45 +56,36 @@ const VisitorCreate = () => (
             <SectionTitle label="resources.customers.fieldGroups.identity" />
             <Box display={{ xs: 'block', sm: 'flex', width: '100%' }}>
                 <Box flex={1} mr={{ xs: 0, sm: '0.5em' }}>
-                    <TextInput source="first_name" isRequired fullWidth />
+                    <TextInput source="first_name" isRequired />
                 </Box>
                 <Box flex={1} ml={{ xs: 0, sm: '0.5em' }}>
-                    <TextInput source="last_name" isRequired fullWidth />
+                    <TextInput source="last_name" isRequired />
                 </Box>
             </Box>
-            <TextInput type="email" source="email" isRequired fullWidth />
+            <TextInput type="email" source="email" isRequired />
             <DateInput source="birthday" />
             <Separator />
             <SectionTitle label="resources.customers.fieldGroups.address" />
-            <TextInput
-                source="address"
-                multiline
-                fullWidth
-                helperText={false}
-            />
+            <TextInput source="address" multiline helperText={false} />
             <Box display={{ xs: 'block', sm: 'flex' }}>
                 <Box flex={2} mr={{ xs: 0, sm: '0.5em' }}>
-                    <TextInput source="city" fullWidth helperText={false} />
+                    <TextInput source="city" helperText={false} />
                 </Box>
                 <Box flex={1} mr={{ xs: 0, sm: '0.5em' }}>
-                    <TextInput
-                        source="stateAbbr"
-                        fullWidth
-                        helperText={false}
-                    />
+                    <TextInput source="stateAbbr" helperText={false} />
                 </Box>
                 <Box flex={2}>
-                    <TextInput source="zipcode" fullWidth helperText={false} />
+                    <TextInput source="zipcode" helperText={false} />
                 </Box>
             </Box>
             <Separator />
             <SectionTitle label="resources.customers.fieldGroups.password" />
             <Box display={{ xs: 'block', sm: 'flex' }}>
                 <Box flex={1} mr={{ xs: 0, sm: '0.5em' }}>
-                    <PasswordInput source="password" fullWidth />
+                    <PasswordInput source="password" />
                 </Box>
                 <Box flex={1} ml={{ xs: 0, sm: '0.5em' }}>
-                    <PasswordInput source="confirm_password" fullWidth />
+                    <PasswordInput source="confirm_password" />
                 </Box>
             </Box>
         </SimpleForm>

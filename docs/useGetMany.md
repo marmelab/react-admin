@@ -10,7 +10,7 @@ This hook calls `dataProvider.getMany()` when the component mounts. It queries t
 ## Syntax
 
 ```jsx
-const { data, isLoading, error, refetch } = useGetMany(
+const { data, isPending, error, refetch } = useGetMany(
     resource,
     { ids, meta },
     options
@@ -24,11 +24,11 @@ import { useGetMany, useRecordContext } from 'react-admin';
 
 const PostTags = () => {
     const record = useRecordContext();
-    const { data, isLoading, error } = useGetMany(
+    const { data, isPending, error } = useGetMany(
         'tags',
         { ids: record.tagIds }
     );
-    if (isLoading) { return <Loading />; }
+    if (isPending) { return <Loading />; }
     if (error) { return <p>ERROR</p>; }
     return (
          <ul>
@@ -75,11 +75,11 @@ type Tag = {
 const PostTags = () => {
     const post = useRecordContext<Post>();
 
-    const { data: tags, isLoading, error } = useGetMany<Tag>(
+    const { data: tags, isPending, error } = useGetMany<Tag>(
         'tags',
         { ids: post.tagIds }
     );
-    if (isLoading) { return <Loading />; }
+    if (isPending) { return <Loading />; }
     if (error) { return <p>ERROR</p>; }
     return (
         <ul>

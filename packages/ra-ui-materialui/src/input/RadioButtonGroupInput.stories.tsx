@@ -25,18 +25,6 @@ export const Basic = () => (
     </Wrapper>
 );
 
-export const Disabled = () => (
-    <Wrapper>
-        <RadioButtonGroupInput source="category" choices={choices} disabled />
-    </Wrapper>
-);
-
-export const ReadOnly = () => (
-    <Wrapper>
-        <RadioButtonGroupInput source="category" choices={choices} readOnly />
-    </Wrapper>
-);
-
 export const Row = () => (
     <Wrapper>
         <RadioButtonGroupInput
@@ -73,9 +61,9 @@ export const Invalid = () => (
     </Wrapper>
 );
 
-export const IsLoading = () => (
+export const IsPending = () => (
     <Wrapper>
-        <RadioButtonGroupInput source="category" isLoading />
+        <RadioButtonGroupInput source="category" isPending />
     </Wrapper>
 );
 
@@ -89,7 +77,11 @@ const dataProvider = testDataProvider({
 } as any);
 
 export const InsideReferenceArrayInput = () => (
-    <AdminContext dataProvider={dataProvider} i18nProvider={i18nProvider}>
+    <AdminContext
+        dataProvider={dataProvider}
+        i18nProvider={i18nProvider}
+        defaultTheme="light"
+    >
         <Create
             resource="posts"
             record={{ options: [1, 2] }}
@@ -111,6 +103,7 @@ export const InsideReferenceArrayInputWithError = () => (
             getList: () => Promise.reject(new Error('fetch error')),
         }}
         i18nProvider={i18nProvider}
+        defaultTheme="light"
     >
         <Create
             resource="posts"
@@ -148,7 +141,7 @@ export const Id = () => (
 const i18nProvider = polyglotI18nProvider(() => englishMessages);
 
 const Wrapper = ({ children }) => (
-    <AdminContext i18nProvider={i18nProvider}>
+    <AdminContext i18nProvider={i18nProvider} defaultTheme="light">
         <Create resource="posts">
             <SimpleForm>
                 {children}
@@ -188,6 +181,7 @@ export const TranslateChoice = () => {
                         }),
                 } as any
             }
+            defaultTheme="light"
         >
             <Edit resource="posts" id="1">
                 <SimpleForm>

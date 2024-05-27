@@ -136,28 +136,29 @@ Three main props lets you configure the core features of the `<Admin>` component
 
 Here are all the props accepted by the component:
 
-| Prop               | Required | Type           | Default        | Description                                              |
-|------------------- |----------|----------------|----------------|----------------------------------------------------------|
-| `dataProvider`     | Required | `DataProvider` | -              | The data provider for fetching resources                 |
-| `children`         | Required | `ReactNode`    | -              | The routes to render                                     |
-| `authCallbackPage` | Optional | `Component`    | `AuthCallback` | The content of the authentication callback page          |
-| `authProvider`     | Optional | `AuthProvider` | -              | The authentication provider for security and permissions |
-| `basename`         | Optional | `string`       | -              | The base path for all URLs                               |
-| `catchAll`         | Optional | `Component`    | `NotFound`     | The fallback component for unknown routes                |
-| `dashboard`        | Optional | `Component`    | -              | The content of the dashboard page                        |
-| `darkTheme`        | Optional | `object`       | -              | The dark theme configuration                             |
-| `defaultTheme`     | Optional | `boolean`      | `false`        | Flag to default to the light theme                       |
-| `disableTelemetry` | Optional | `boolean`      | `false`        | Set to `true` to disable telemetry collection            |
-| `i18nProvider`     | Optional | `I18NProvider` | -              | The internationalization provider for translations       |
-| `layout`           | Optional | `Component`    | `Layout`       | The content of the layout                                |
-| `loginPage`        | Optional | `Component`    | `LoginPage`    | The content of the login page                            |
-| `notification`     | Optional | `Component`    | `Notification` | The notification component                               |
-| `queryClient`      | Optional | `QueryClient`  | -              | The react-query client                                   |
-| `ready`            | Optional | `Component`    | `Ready`        | The content of the ready page                            |
-| `requireAuth`      | Optional | `boolean`      | `false`        | Flag to require authentication for all routes            |
-| `store`            | Optional | `Store`        | -              | The Store for managing user preferences                  |
-| `theme`            | Optional | `object`       | -              | The main (light) theme configuration                     |
-| `title`            | Optional | `string`       | -              | The error page title                                     |
+| Prop               | Required | Type            | Default              | Description                                                     |
+|------------------- |----------|---------------- |--------------------- |---------------------------------------------------------------- |
+| `dataProvider`     | Required | `DataProvider`  | -                    | The data provider for fetching resources                        |
+| `children`         | Required | `ReactNode`     | -                    | The routes to render                                            |
+| `authCallbackPage` | Optional | `Component`     | `AuthCallback`       | The content of the authentication callback page                 |
+| `authProvider`     | Optional | `AuthProvider`  | -                    | The authentication provider for security and permissions        |
+| `basename`         | Optional | `string`        | -                    | The base path for all URLs                                      |
+| `catchAll`         | Optional | `Component`     | `NotFound`           | The fallback component for unknown routes                       |
+| `dashboard`        | Optional | `Component`     | -                    | The content of the dashboard page                               |
+| `darkTheme`        | Optional | `object`        | `default DarkTheme`  | The dark theme configuration                                    |
+| `defaultTheme`     | Optional | `boolean`       | `false`              | Flag to default to the light theme                              |
+| `disableTelemetry` | Optional | `boolean`       | `false`              | Set to `true` to disable telemetry collection                   |
+| `error`            | Optional | `Component`     | -                    | A React component rendered in the content area in case of error |
+| `i18nProvider`     | Optional | `I18NProvider`  | -                    | The internationalization provider for translations              |
+| `layout`           | Optional | `Component`     | `Layout`             | The content of the layout                                       |
+| `loginPage`        | Optional | `Component`     | `LoginPage`          | The content of the login page                                   |
+| `notification`     | Optional | `Component`     | `Notification`       | The notification component                                      |
+| `queryClient`      | Optional | `QueryClient`   | -                    | The react-query client                                          |
+| `ready`            | Optional | `Component`     | `Ready`              | The content of the ready page                                   |
+| `requireAuth`      | Optional | `boolean`       | `false`              | Flag to require authentication for all routes                   |
+| `store`            | Optional | `Store`         | -                    | The Store for managing user preferences                         |
+| `theme`            | Optional | `object`        | `default LightTheme` | The main (light) theme configuration                            |
+| `title`            | Optional | `string`        | -                    | The error page title                                            |
 
 
 ## `dataProvider`
@@ -433,28 +434,47 @@ const App = () => (
 
 ## `darkTheme`
 
-If you want to support both light and dark mode, you can provide a `darkTheme` in addition to the `theme` prop. The app will use the `darkTheme` by default for users who prefer the dark mode at the OS level, and users will be able to switch from light to dark mode using a new app bar button leveraging [the `<ToggleThemeButton>` component](./ToggleThemeButton.md).
+React-admin provides a [built-in dark theme](./AppTheme.md#default). The app will use the `darkTheme` by default for users who prefer the dark mode at the OS level, and users will be able to switch from light to dark mode using [the `<ToggleThemeButton>` component](./ToggleThemeButton.md).
 
 <video controls autoplay muted loop>
   <source src="./img/ToggleThemeButton.webm" type="video/webm"/>
   Your browser does not support the video tag.
 </video>
 
+If you want to override it, you can provide your own `darkTheme` in addition to the `theme` prop:
+
 ```tsx
 import { Admin } from 'react-admin';
 import { dataProvider } from './dataProvider';
-import { darkTheme, lightTheme } from './themes';
+import { myDarkTheme } from './themes';
 
 const App = () => (
     <Admin
         dataProvider={dataProvider}
-        theme={lightTheme}
-        darkTheme={darkTheme}
+        darkTheme={myDarkTheme}
     >
         ...
     </Admin>
 );
 ```
+
+If you want to remove the user's ability to switch to dark theme, you can set `darkTheme` to `null`, therefore the `<ToggleThemeButton>` component won't be shown: 
+
+```tsx
+import { Admin } from 'react-admin';
+import { dataProvider } from './dataProvider';
+
+const App = () => (
+    <Admin
+        dataProvider={dataProvider}
+        darkTheme={null}
+    >
+        ...
+    </Admin>
+);
+```
+
+If the `theme` prop is provided and the `darkTheme` prop is not, the dark theme is disabled.
 
 **Tip**: To disable OS preference detection and always use one theme by default, see the [`defaultTheme`](#defaulttheme) prop.
 
@@ -501,6 +521,64 @@ const App = () => (
 );
 ```
 
+
+## `error`
+
+React-admin uses [React's Error Boundaries](https://react.dev/reference/react/Component#catching-rendering-errors-with-an-error-boundary) to render a user-friendly error page in case of client-side JavaScript error, using an internal component called `<Error>`. In production mode, it only displays a generic error message. In development mode, this error page contains the error message and stack trace. 
+
+![Default error page](./img/adminError.png)
+
+If you want to customize this error page (e.g. to log the error in a monitoring service), create your own error component, set it as the `<Admin error>` prop, as follows:
+
+```jsx
+// in src/App.js
+import { Admin } from 'react-admin';
+import { MyError } from './MyError';
+
+export const MyLayout = ({ children }) => (
+    <Admin error={MyError}>
+        {children}
+    </Admin>
+);
+```
+
+React-admin relies on [the `react-error-boundary` package](https://github.com/bvaughn/react-error-boundary) for handling error boundaries. So your custom error component will receive the error, the error info, and a `resetErrorBoundary` function as props. You should call `resetErrorBoundary` upon navigation to remove the error screen.
+
+Here is an example of a custom error component:
+
+```jsx
+// in src/MyError.js
+import Button from '@mui/material/Button';
+import { useResetErrorBoundaryOnLocationChange } from 'react-admin';
+
+export const MyError = ({
+    error,
+    resetErrorBoundary,
+    errorInfo,
+}) => {
+    useResetErrorBoundaryOnLocationChange(errorBoundary);
+
+    return (
+        <div>
+            <h1>Something Went Wrong </h1>
+            <div>A client error occurred and your request couldn't be completed.</div>
+            {process.env.NODE_ENV !== 'production' && (
+                <details>
+                    <h2>{error.message}</h2>
+                    {errorInfo.componentStack}
+                </details>
+            )}
+            <div>
+                <Button onClick={() => history.go(-1)}>
+                    Back
+                </Button>
+            </div>
+        </div>
+    );
+};
+```
+
+**Tip:** React-admin uses the default `<Error>` component as error boundary **twice**: once in `<Admin>` for errors happening in the layout, and once in `<Layout>` for error happening in CRUD views. The reason is that `<Layout>` renders the navigation menu, giving more possibilities to the user after an error. If you want to customize the error page in the entire app, you should also pass your custom error component to the `<Layout error>` prop. See the [Layout error prop](./Layout.md#error) documentation for more details.
 
 ## `i18nProvider`
 
@@ -555,7 +633,7 @@ React-admin offers predefined layouts for you to use:
     </svg>
 </figure>
 
-- [`<Layout>`](./Layout.md): The default layout. It renders a top app bar and the navigation menu in a side bar.
+- [`<Layout>`](./Layout.md): The default layout. It renders a top app bar and the navigation menu in a sidebar.
 - [`<ContainerLayout>`](./ContainerLayout.md) is centered layout with horizontal navigation.
 - [`<SolarLayout>`](./SolarLayout.md) is a layout with a small icon sidebar, no top bar, and a full-width content area.
 
@@ -576,10 +654,15 @@ Layout components can be customized via props. For instance, you can pass a cust
 
 ```tsx
 // in src/MyLayout.js
+import type { ReactNode } from 'react';
 import { Layout } from 'react-admin';
 import MyMenu from './MyMenu';
 
-export const MyLayout = (props) => <Layout {...props} menu={MyMenu} />;
+export const MyLayout = ({ children }: { children: ReactNode }) => (
+    <Layout menu={MyMenu}>
+        {children}
+    </Layout>
+);
 ```
 
 Then, pass it to the `<Admin>` component as the `layout` prop:
@@ -598,7 +681,31 @@ const App = () => (
 
 Refer to each layout component documentation to understand the props it accepts.
 
-Finally, you can also pass a custom component as the `layout` prop. It must contain a `{children}` placeholder, where react-admin will render the page content. Check [the custom layout documentation](./Layout.md#writing-a-layout-from-scratch) for examples, and use the [default `<Layout>`](https://github.com/marmelab/react-admin/blob/master/packages/ra-ui-materialui/src/layout/Layout.tsx) as a starting point.
+Finally, you can also pass a custom component as the `layout` prop. Your custom layout will receive the page content as `children`, so it should render it somewhere.
+
+```tsx
+// in src/MyLayout.js
+import type { ReactNode } from 'react';
+export const MyLayout = ({ children }: { children: ReactNode }) => (
+    <div>
+        <h1>My App</h1>
+        <main>{children}</main>
+    </div>
+);
+
+// in src/App.js
+import { Admin } from 'react-admin';
+import { dataProvider } from './dataProvider';
+import { MyLayout } from './MyLayout';
+
+const App = () => (
+    <Admin dataProvider={dataProvider} layout={MyLayout}>
+        // ...
+    </Admin>
+);
+```
+
+Check [the custom layout documentation](./Layout.md#writing-a-layout-from-scratch) for examples, and use the [default `<Layout>`](https://github.com/marmelab/react-admin/blob/master/packages/ra-ui-materialui/src/layout/Layout.tsx) as a starting point.
 
 ## `loginPage`
 
@@ -672,7 +779,7 @@ const App = () => (
 
 ## `queryClient`
 
-React-admin uses [react-query](https://react-query-v3.tanstack.com/) to fetch, cache and update data. Internally, the `<Admin>` component creates a react-query [`QueryClient`](https://tanstack.com/query/v3/docs/react/reference/QueryClient) on mount, using [react-query's "aggressive but sane" defaults](https://react-query-v3.tanstack.com/guides/important-defaults):
+React-admin uses [React Query](https://tanstack.com/query/v5/) to fetch, cache and update data. Internally, the `<Admin>` component creates a react-query [`QueryClient`](https://tanstack.com/query/v5/docs/react/reference/QueryClient) on mount, using [react-query's "aggressive but sane" defaults](https://tanstack.com/query/v5/docs/react/guides/important-defaults):
 
 * Queries consider cached data as stale
 * Stale queries are refetched automatically in the background when:
@@ -683,13 +790,13 @@ React-admin uses [react-query](https://react-query-v3.tanstack.com/) to fetch, c
 * Query results that are no longer used in the current page are labeled as "inactive" and remain in the cache in case they are used again at a later time.
 * By default, "inactive" queries are garbage collected after 5 minutes.
 * Queries that fail are silently retried 3 times, with exponential backoff delay before capturing and displaying an error to the UI.
-* Query results by default are structurally shared to detect if data have actually changed and if not, the data reference remains unchanged to better help with value stabilization with regards to `useMemo` and `useCallback`. 
+* Query results by default are structurally shared to detect if data have actually changed and if not, the data reference remains unchanged to better help with value stabilization in regard to `useMemo` and `useCallback`. 
 
 If you want to override the react-query default query and mutation default options, or use a specific client or mutation cache, you can create your own `QueryClient` instance and pass it to the `<Admin queryClient>` prop:
 
 ```tsx
 import { Admin } from 'react-admin';
-import { QueryClient } from 'react-query';
+import { QueryClient } from '@tanstack/react-query';
 import { dataProvider } from './dataProvider';
 
 const queryClient = new QueryClient({
@@ -711,12 +818,12 @@ const App = () => (
 );
 ```
 
-To know which options you can pass to the `QueryClient` constructor, check the [react-query documentation](https://tanstack.com/query/v3/docs/react/reference/QueryClient) and the [query options](https://tanstack.com/query/v3/docs/react/reference/useQuery) and [mutation options](https://tanstack.com/query/v3/docs/react/reference/useMutation) sections.
+To know which options you can pass to the `QueryClient` constructor, check the [react-query documentation](https://tanstack.com/query/v5/docs/react/reference/QueryClient) and the [query options](https://tanstack.com/query/v5/docs/react/reference/useQuery) and [mutation options](https://tanstack.com/query/v5/docs/react/reference/useMutation) sections.
 
 The common settings that react-admin developers often overwrite are:
 
 ```tsx
-import { QueryClient } from 'react-query';
+import { QueryClient } from '@tanstack/react-query';
 
 const queryClient = new QueryClient({
     defaultOptions: {
@@ -845,7 +952,7 @@ const App = () => (
 
 You can also [write your own theme](./AppTheme.md#writing-a-custom-theme) to fit your company branding. For more details on predefined and custom themes, refer to [the Application Theme chapter](./AppTheme.md).
 
-If you want to support both a light and a dark theme, check out [the `<Admin darkTheme>` prop](#darktheme). 
+React-admin provides a [built-in dark theme by default](./AppTheme.md#default). If you want to override it, check out [the `<Admin darkTheme>` prop](#darktheme). 
 
 ## `title`
 
@@ -857,6 +964,17 @@ const App = () => (
         // ...
     </Admin>
 );
+```
+
+If you need to display this application title somewhere in your app, use the `useDefaultTitle` hook:
+
+```tsx
+import { useDefaultTitle } from 'react-admin';
+
+const MyTitle = () => {
+    const defaultTitle = useDefaultTitle();
+    return <span>{defaultTitle}</span>; // My Custom Admin
+};
 ```
 
 ## Adding Custom Pages

@@ -67,13 +67,12 @@ You can find more advanced examples of `<List>` usage in the [demos](./Demos.md)
 | `filters`                 | Optional | `ReactElement` | -              | The filters to display in the toolbar.                                                       |
 | `filter`                  | Optional | `object`       | -              | The permanent filter values.                                                                 |
 | `filter DefaultValues`    | Optional | `object`       | -              | The default filter values.                                                                   |
-| `hasCreate`               | Optional | `boolean`      | `false`        | Set to `true` to show the create button.                                                     |
 | `pagination`              | Optional | `ReactElement` | `<Pagination>` | The pagination component to use.                                                             |
 | `perPage`                 | Optional | `number`       | `10`           | The number of records to fetch per page.                                                     |
 | `queryOptions`            | Optional | `object`       | -              | The options to pass to the `useQuery` hook.                                                  |
 | `resource`                | Optional | `string`       | -              | The resource name, e.g. `posts`.                                                             |
 | `sort`                    | Optional | `object`       | -              | The initial sort parameters.                                                                 |
-| `storeKey`                | Optional | `string | false` | -            | The key to use to store the current filter & sort. Pass `false` to disable                                         |
+| `storeKey`                | Optional | `string \| false` | -           | The key to use to store the current filter & sort. Pass `false` to disable store syncronization |
 | `title`                   | Optional | `string`       | -              | The title to display in the App Bar.                                                         |
 | `sx`                      | Optional | `object`       | -              | The CSS styles to apply to the component.                                                    |
 
@@ -84,12 +83,26 @@ Additional props are passed down to the root component (a MUI `<Card>` by defaul
 By default, the `<List>` view displays a toolbar on top of the list. It contains:
 
 - A `<FilterButton>` to display the filter form if you set [the `filters` prop](#filters-filter-inputs)
-- A `<CreateButton>` if the resource has a creation view, or if you set [the `hasCreate` prop](#hascreate)
+- A `<CreateButton>` if the resource has a creation view
 - An `<ExportButton>`
 
 ![Actions Toolbar](./img/actions-toolbar.png)
 
-You can replace this toolbar  by your own using the `actions` prop. For instance, to add a [`<SelectColumnsButton>`](./SelectColumnsButton.md) to let the user choose which columns to display in the list:
+The `actions` prop allows you to replace the default toolbar by your own.
+
+For instance, you can force the toolbar to display a Create button, even if the resource has no creation view, by passing a custom `<ListActions>` component:
+
+```jsx
+import { List, ListActions } from 'react-admin';
+
+export const PostList = () => (
+    <List actions={<ListActions hasCreate />}>
+        ...
+    </List>
+);
+```
+
+You can also add custom actions, e.g. a [`<SelectColumnsButton>`](./SelectColumnsButton.md) to let the user choose which columns to display in the list:
 
 ```jsx
 import {
@@ -142,13 +155,13 @@ import {
 import IconEvent from '@mui/icons-material/Event';
 
 const ListActions = () => {
-    const { total, isLoading } = useListContext();
+    const { total, isPending } = useListContext();
     const { permissions } = usePermissions();
     return (
         <TopToolbar>
             <FilterButton />
             {permissions === "admin" && <CreateButton/>}
-            <ExportButton disabled={isLoading || total === 0} />
+            <ExportButton disabled={isPending || total === 0} />
         </TopToolbar>
     );
 }
@@ -189,8 +202,8 @@ import { Typography } from '@mui/material';
 import { useListContext } from 'react-admin';
 
 const Aside = () => {
-    const { data, isLoading } = useListContext();
-    if (isLoading) return null;
+    const { data, isPending } = useListContext();
+    if (isPending) return null;
     return (
         <div style={{ width: 200, margin: '4em 1em' }}>
             <Typography variant="h6">Posts stats</Typography>
@@ -302,7 +315,7 @@ export const PostList = () => {
                     tertiaryText={record => new Date(record.published_at).toLocaleDateString()}
                 />
             ) : (
-                <Datagrid rowClick="edit">
+                <Datagrid>
                     <TextField source="id" />
                     <ReferenceField label="User" source="userId" reference="users">
                         <TextField source="name" />
@@ -430,9 +443,9 @@ const Dashboard = () => (
 ```
 {% endraw %}
 
-**Tip**: As `disableSyncWithLocation` also disables the persistence of the list parameters in the Store, the `storeKey` prop is ignored when `disableSyncWithLocation` is set to `true`.
+**Tip**: As `disableSyncWithLocation` also disables the persistence of the list parameters in the Store, any custom string specified in the `storeKey` prop is ignored when `disableSyncWithLocation` is set to `true`.
 
-Please note that the selection state is not synced in the URL but in a global store using the resource as key. Thus, all lists in the page using the same resource will share the same selection state. This is a design choice because if row selection is not tied to a resource, then when a user deletes a record it may remain selected without any ability to unselect it. If you want the selection state to be local, you will have to implement your own `useListController` hook and pass a custom key to the `useRecordSelection` hook. You will then need to implement your own `DeleteButton` and `BulkDeleteButton` to manually unselect rows when deleting records.
+Please note that the selection state is not synced in the URL but in a global store using the resource as key. Thus, all lists in the page using the same resource will share the same synced selection state. This is a design choice because if row selection is not tied to a resource, then when a user deletes a record it may remain selected without any ability to unselect it. If you want to allow custom `storeKey`'s for managing selection state, you will have to implement your own `useListController` hook and pass a custom key to the `useRecordSelection` hook. You will then need to implement your own `DeleteButton` and `BulkDeleteButton` to manually unselect rows when deleting records. You can still opt out of all store interactions including selection if you set it to `false`.
 
 ## `empty`
 
@@ -512,12 +525,12 @@ const BookList = () => (
 );
 ```
 
-You can handle this case by getting the `isLoading` variable from the [`useListContext`](./useListContext.md) hook:
+You can handle this case by getting the `isPending` variable from the [`useListContext`](./useListContext.md) hook:
 
 ```jsx
 const SimpleBookList = () => {
-    const { data, isLoading } = useListContext();
-    if (isLoading) return null;
+    const { data, isPending } = useListContext();
+    if (isPending) return null;
     return (
         <Stack spacing={2}>
             {data.map(book => (
@@ -718,18 +731,6 @@ export const PostList = () => (
 const filterSentToDataProvider = { ...filterDefaultValues, ...filterChosenByUser, ...filter };
 ```
 
-## `hasCreate`
-
-The List page shows a Create button if the resource has a create view, or if the `hasCreate` prop is set to true. Using this prop lets you force the display of the create button, or hide it.
-
-```jsx
-export const PostList = () => (
-    <List hasCreate={false}>
-        ...
-    </List>
-);
-```
-
 ## `pagination`
 
 By default, the `<List>` view displays a set of pagination controls at the bottom of the list.
@@ -865,7 +866,7 @@ For more details on list sort, see the [Sorting The List](./ListTutorial.md#sort
 
 By default, react-admin stores the list parameters (sort, pagination, filters) in localStorage so that  users can come back to the list and find it in the same state as when they left it. React-admin uses the current resource as the identifier to store the list parameters (under the key `${resource}.listParams`).
 
-If you want to display multiple lists of the same resource and keep distinct store states for each of them (filters, sorting and pagination), you must give each list a unique `storeKey` property. You can also disable the persistence of list parameters in the store by setting the `storeKey` prop to `false`.
+If you want to display multiple lists of the same resource and keep distinct store states for each of them (filters, sorting and pagination), you must give each list a unique `storeKey` property. You can also disable the persistence of list parameters and selection in the store by setting the `storeKey` prop to `false`.
 
 In the example below, both lists `NewerBooks` and `OlderBooks` use the same resource ('books'), but their list parameters are stored separately (under the store keys `'newerBooks'` and `'olderBooks'` respectively). This allows to use both components in the same app, each having its own state (filters, sorting and pagination).
 
@@ -927,7 +928,7 @@ const Admin = () => {
 
 **Tip:** The `storeKey` is actually passed to the underlying `useListController` hook, which you can use directly for more complex scenarios. See the [`useListController` doc](./useListController.md#storekey) for more info.
 
-**Note:** *Selection state* will remain linked to a resource-based key regardless of the `storeKey`. This is a design choice because if row selection is not tied to a resource, then when a user deletes a record it may remain selected without any ability to unselect it. If you want the selection state to be local, you will have to implement your own `useListController` hook and pass a custom key to the `useRecordSelection` hook. You will then need to implement your own `DeleteButton` and `BulkDeleteButton` to manually unselect rows when deleting records.
+**Note:** *Selection state* will remain linked to a resource-based key regardless of the specified `storeKey` string. This is a design choice because if row selection is not tied to a resource, then when a user deletes a record it may remain selected without any ability to unselect it. If you want to allow custom `storeKey`'s for managing selection state, you will have to implement your own `useListController` hook and pass a custom key to the `useRecordSelection` hook. You will then need to implement your own `DeleteButton` and `BulkDeleteButton` to manually unselect rows when deleting records. You can still opt out of all store interactions including selection if you set it to `false`.
 
 ## `title`
 
@@ -949,7 +950,7 @@ The title can be either a string or a React element.
 
 ## `sx`: CSS API
 
-The `<List>` component accepts the usual `className` prop but you can override many class names injected to the inner components by React-admin thanks to the `sx` property (see [the `sx` documentation](./SX.md) for syntax and examples). This property accepts the following subclasses:
+The `<List>` component accepts the usual `className` prop, but you can override many class names injected to the inner components by React-admin thanks to the `sx` property (see [the `sx` documentation](./SX.md) for syntax and examples). This property accepts the following subclasses:
 
 | Rule name             | Description                                                   |
 |-----------------------|---------------------------------------------------------------|
@@ -981,7 +982,7 @@ const PostList = () => (
 
 ## Scaffolding a List page
 
-You can use [`<ListGuesser>`](./ListGuesser.md) to quickly bootstrap an List view on top of an existing API, without adding the fields one by one.
+You can use [`<ListGuesser>`](./ListGuesser.md) to quickly bootstrap a List view on top of an existing API, without adding the fields one by one.
 
 ```jsx
 // in src/App.js
@@ -1078,7 +1079,7 @@ const PostList = () => (
 
 ## Rendering An Empty List
 
-When there is no data, react-admin displays a special page inviting the user to create the first record. This page can be customized using [the `empty` prop](#empty-empty-page-component).
+When there is no data, react-admin displays a special page inviting the user to create the first record. This page can be customized using [the `empty` prop](#empty).
 
 You can set the `empty` props value to `false` to render an empty list instead.
 
@@ -1210,8 +1211,8 @@ const ProductList = () => (
     <ListBase>
         <Container>
             <Typography variant="h4">All products</Typography>
-            <WithListContext render={({ isLoading, data }) => (
-                    !isLoading && (
+            <WithListContext render={({ isPending, data }) => (
+                    !isPending && (
                         <Stack spacing={1}>
                             {data.map(product => (
                                 <Card key={product.id}>
@@ -1223,8 +1224,8 @@ const ProductList = () => (
                         </Stack>
                     )
                 )} />
-            <WithListContext render={({ isLoading, total }) => (
-                !isLoading && <Typography>{total} results</Typography>
+            <WithListContext render={({ isPending, total }) => (
+                !isPending && <Typography>{total} results</Typography>
             )} />
         </Container>
     </ListBase>
@@ -1240,11 +1241,11 @@ import { useListController } from 'react-admin';
 import { Card, CardContent, Container, Stack, Typography } from '@mui/material';
 
 const ProductList = () => {
-    const { isLoading, data, total } = useListController();
+    const { isPending, data, total } = useListController();
     return (
         <Container>
             <Typography variant="h4">All products</Typography>
-                {!isLoading && (
+                {!isPending && (
                     <Stack spacing={1}>
                         {data.map(product => (
                             <Card key={product.id}>
@@ -1255,7 +1256,7 @@ const ProductList = () => {
                         ))}
                     </Stack>
                 )}
-            {!isLoading && <Typography>{total} results</Typography>}
+            {!isPending && <Typography>{total} results</Typography>}
         </Container>
     );
 };

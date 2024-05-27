@@ -41,23 +41,16 @@ import { ListControllerResult } from './useListController';
  *     );
  * };
  */
-export const ListPaginationContext = createContext<ListPaginationContextValue>({
-    isLoading: null,
-    page: null,
-    perPage: null,
-    setPage: null,
-    setPerPage: null,
-    hasPreviousPage: null,
-    hasNextPage: null,
-    total: undefined,
-    resource: null,
-});
+export const ListPaginationContext = createContext<
+    ListPaginationContextValue | undefined
+>(undefined);
 
 ListPaginationContext.displayName = 'ListPaginationContext';
 
 export type ListPaginationContextValue = Pick<
     ListControllerResult,
     | 'isLoading'
+    | 'isPending'
     | 'hasPreviousPage'
     | 'hasNextPage'
     | 'page'
@@ -75,6 +68,7 @@ export const usePickPaginationContext = (
         () =>
             pick(context, [
                 'isLoading',
+                'isPending',
                 'hasPreviousPage',
                 'hasNextPage',
                 'page',
@@ -87,6 +81,7 @@ export const usePickPaginationContext = (
         // eslint-disable-next-line react-hooks/exhaustive-deps
         [
             context.isLoading,
+            context.isPending,
             context.hasPreviousPage,
             context.hasNextPage,
             context.page,

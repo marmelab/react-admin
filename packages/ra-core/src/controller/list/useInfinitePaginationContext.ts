@@ -19,5 +19,5 @@ import {
  *
  * @see useInfiniteListController for how the callbacks are built
  */
-export const useInfinitePaginationContext = (): InfinitePaginationContextValue =>
-    useContext(InfinitePaginationContext);
+export const useInfinitePaginationContext =
+    (): InfinitePaginationContextValue => useContext(InfinitePaginationContext);

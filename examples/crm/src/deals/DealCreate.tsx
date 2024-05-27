@@ -16,7 +16,7 @@ import {
     DateInput,
 } from 'react-admin';
 import { Dialog } from '@mui/material';
-import { useQueryClient } from 'react-query';
+import { useQueryClient } from '@tanstack/react-query';
 import { stageChoices } from './stages';
 import { typeChoices } from './types';
 import { Deal } from '../types';
@@ -35,6 +35,10 @@ export const DealCreate = ({ open }: { open: boolean }) => {
     const queryClient = useQueryClient();
 
     const onSuccess = async (deal: Deal) => {
+        if (!allDeals) {
+            redirect('/deals');
+            return;
+        }
         // increase the index of all deals in the same stage as the new deal
         // first, get the list of deals in the same stage
         const deals = allDeals.filter(
@@ -61,7 +65,7 @@ export const DealCreate = ({ open }: { open: boolean }) => {
         );
         const now = Date.now();
         queryClient.setQueriesData<GetListResult | undefined>(
-            ['deals', 'getList'],
+            { queryKey: ['deals', 'getList'] },
             res => {
                 if (!res) return res;
                 return {
@@ -87,24 +91,19 @@ export const DealCreate = ({ open }: { open: boolean }) => {
                     defaultValues={{
                         index: 0,
                         sales_id: identity && identity?.id,
+                        start_at: new Date().toISOString(),
+                        contact_ids: [],
                     }}
                 >
                     <TextInput
                         source="name"
                         label="Deal name"
-                        fullWidth
                         validate={validateRequired}
                     />
-                    <TextInput
-                        source="description"
-                        multiline
-                        rows={3}
-                        fullWidth
-                    />
+                    <TextInput source="description" multiline rows={3} />
                     <ReferenceInput source="company_id" reference="companies">
                         <AutocompleteInput
                             optionText="name"
-                            fullWidth
                             validate={validateRequired}
                         />
                     </ReferenceInput>
@@ -116,16 +115,11 @@ export const DealCreate = ({ open }: { open: boolean }) => {
                     <SelectInput
                         source="stage"
                         choices={stageChoices}
-                        fullWidth
                         validate={validateRequired}
                         defaultValue="opportunity"
                     />
-                    <SelectInput
-                        source="type"
-                        choices={typeChoices}
-                        fullWidth
-                    />
-                    <NumberInput source="amount" fullWidth defaultValue={0} />
+                    <SelectInput source="type" choices={typeChoices} />
+                    <NumberInput source="amount" defaultValue={0} />
                 </SimpleForm>
             </Create>
         </Dialog>

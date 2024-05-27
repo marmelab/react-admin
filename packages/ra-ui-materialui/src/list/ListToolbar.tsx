@@ -2,7 +2,6 @@ import * as React from 'react';
 import { FC, memo } from 'react';
 import { styled } from '@mui/material/styles';
 import { ReactElement } from 'react';
-import PropTypes from 'prop-types';
 import { ToolbarProps } from '@mui/material';
 import { Exporter } from 'ra-core';
 
@@ -17,11 +16,7 @@ export const ListToolbar: FC<ListToolbarProps> = memo(props => {
             <Root className={className}>
                 <FilterForm />
                 <span />
-                {actions &&
-                    React.cloneElement(actions, {
-                        ...rest,
-                        ...actions.props,
-                    })}
+                {actions}
             </Root>
         </FilterContext.Provider>
     ) : (
@@ -41,17 +36,6 @@ export const ListToolbar: FC<ListToolbarProps> = memo(props => {
         </Root>
     );
 });
-
-ListToolbar.propTypes = {
-    filters: PropTypes.oneOfType([
-        PropTypes.element,
-        PropTypes.arrayOf(PropTypes.element),
-    ]),
-    // @ts-ignore
-    actions: PropTypes.oneOfType([PropTypes.bool, PropTypes.element]),
-    // @ts-ignore
-    exporter: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
-};
 
 export interface ListToolbarProps
     extends Omit<ToolbarProps, 'classes' | 'onSelect'> {

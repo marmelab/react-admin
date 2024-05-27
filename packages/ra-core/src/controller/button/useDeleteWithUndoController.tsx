@@ -1,5 +1,5 @@
 import { useCallback, ReactEventHandler } from 'react';
-import { UseMutationOptions } from 'react-query';
+import { UseMutationOptions } from '@tanstack/react-query';
 
 import { useDelete } from '../../dataProvider';
 import { useUnselect } from '../../controller';
@@ -24,7 +24,7 @@ import { useResourceContext } from '../../core';
  *     onClick,
  *     ...rest
  * }) => {
- *     const { isLoading, handleDelete } = useDeleteWithUndoController({
+ *     const { isPending, handleDelete } = useDeleteWithUndoController({
  *         resource,
  *         record,
  *         redirect,
@@ -34,7 +34,7 @@ import { useResourceContext } from '../../core';
  *     return (
  *         <Button
  *             onClick={handleDelete}
- *             disabled={isLoading}
+ *             disabled={isPending}
  *             label="ra.action.delete"
  *             {...rest}
  *         >
@@ -58,11 +58,48 @@ const useDeleteWithUndoController = <RecordType extends RaRecord = any>(
     const notify = useNotify();
     const unselect = useUnselect(resource);
     const redirect = useRedirect();
-    const [deleteOne, { isLoading }] = useDelete<RecordType>();
+    const [deleteOne, { isPending }] = useDelete<RecordType>(
+        resource,
+        undefined,
+        {
+            onSuccess: () => {
+                notify(successMessage, {
+                    type: 'info',
+                    messageArgs: { smart_count: 1 },
+                    undoable: true,
+                });
+                record && unselect([record.id]);
+                redirect(redirectTo, resource);
+            },
+            onError: (error: Error) => {
+                notify(
+                    typeof error === 'string'
+                        ? error
+                        : error.message || 'ra.notification.http_error',
+                    {
+                        type: 'error',
+                        messageArgs: {
+                            _:
+                                typeof error === 'string'
+                                    ? error
+                                    : error && error.message
+                                      ? error.message
+                                      : undefined,
+                        },
+                    }
+                );
+            },
+        }
+    );
 
     const handleDelete = useCallback(
         event => {
             event.stopPropagation();
+            if (!record) {
+                throw new Error(
+                    'The record cannot be deleted because no record has been passed'
+                );
+            }
             deleteOne(
                 resource,
                 {
@@ -71,33 +108,6 @@ const useDeleteWithUndoController = <RecordType extends RaRecord = any>(
                     meta: mutationMeta,
                 },
                 {
-                    onSuccess: () => {
-                        notify(successMessage, {
-                            type: 'info',
-                            messageArgs: { smart_count: 1 },
-                            undoable: true,
-                        });
-                        unselect([record.id]);
-                        redirect(redirectTo, resource);
-                    },
-                    onError: (error: Error) => {
-                        notify(
-                            typeof error === 'string'
-                                ? error
-                                : error.message || 'ra.notification.http_error',
-                            {
-                                type: 'error',
-                                messageArgs: {
-                                    _:
-                                        typeof error === 'string'
-                                            ? error
-                                            : error && error.message
-                                            ? error.message
-                                            : undefined,
-                                },
-                            }
-                        );
-                    },
                     mutationMode: 'undoable',
                     ...otherMutationOptions,
                 }
@@ -110,26 +120,21 @@ const useDeleteWithUndoController = <RecordType extends RaRecord = any>(
             deleteOne,
             mutationMeta,
             otherMutationOptions,
-            notify,
             onClick,
             record,
-            redirect,
-            redirectTo,
             resource,
-            unselect,
         ]
     );
 
-    return { isLoading, handleDelete };
+    return { isPending, isLoading: isPending, handleDelete };
 };
 
 export interface UseDeleteWithUndoControllerParams<
     RecordType extends RaRecord = any,
-    MutationOptionsError = unknown
+    MutationOptionsError = unknown,
 > {
     record?: RecordType;
     redirect?: RedirectionSideEffect;
-    // @deprecated. This hook get the resource from the context
     resource?: string;
     onClick?: ReactEventHandler<any>;
     mutationOptions?: UseMutationOptions<
@@ -141,6 +146,7 @@ export interface UseDeleteWithUndoControllerParams<
 }
 
 export interface UseDeleteWithUndoControllerReturn {
+    isPending: boolean;
     isLoading: boolean;
     handleDelete: ReactEventHandler<any>;
 }

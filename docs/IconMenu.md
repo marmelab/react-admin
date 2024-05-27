@@ -49,9 +49,11 @@ import { AppLocationContext } from '@react-admin/ra-navigation';
 
 import { MyMenu } from './MyMenu';
 
-export const MyLayout = (props) => (
+export const MyLayout = ({ children }) => (
   <AppLocationContext>
-    <Layout {...props} menu={MyMenu} />
+    <Layout menu={MyMenu}>
+      {children}
+    </Layout>
   </AppLocationContext>
 );
 ```

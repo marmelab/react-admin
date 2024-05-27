@@ -1,7 +1,7 @@
 import * as React from 'react';
 import expect from 'expect';
 import { render, screen, waitFor, fireEvent } from '@testing-library/react';
-import { QueryClient } from 'react-query';
+import { QueryClient } from '@tanstack/react-query';
 import {
     testDataProvider,
     useChoicesContext,
@@ -133,6 +133,7 @@ describe('<ReferenceInput />', () => {
                 pagination: { page: 1, perPage: 25 },
                 sort: { field: 'id', order: 'DESC' },
                 meta: { foo: 'bar' },
+                signal: expect.anything(),
             });
         });
     });
@@ -156,6 +157,7 @@ describe('<ReferenceInput />', () => {
             expect(getMany).toHaveBeenCalledWith('posts', {
                 ids: [23],
                 meta: { foo: 'bar' },
+                signal: expect.anything(),
             });
         });
     });
@@ -181,23 +183,30 @@ describe('<ReferenceInput />', () => {
                 ),
         };
         render(<Basic dataProvider={dataProvider} />);
-        await screen.findByDisplayValue('Leo Tolstoy');
-        const input = screen.getByLabelText('Author') as HTMLInputElement;
+        const input = (await screen.findByDisplayValue(
+            'Leo Tolstoy'
+        )) as HTMLInputElement;
         input.focus();
         screen.getByLabelText('Clear value').click();
+        await screen.findByDisplayValue('');
         screen.getByLabelText('Save').click();
         await waitFor(() => {
             expect(
                 (screen.getByLabelText('Save') as HTMLButtonElement).disabled
             ).toBeTruthy();
         });
-        expect(dataProvider.update).toHaveBeenCalledWith(
-            'books',
-            expect.objectContaining({
-                data: expect.objectContaining({
-                    author: null,
-                }),
-            })
+        await waitFor(
+            () => {
+                expect(dataProvider.update).toHaveBeenCalledWith(
+                    'books',
+                    expect.objectContaining({
+                        data: expect.objectContaining({
+                            author: null,
+                        }),
+                    })
+                );
+            },
+            { timeout: 4000 }
         );
     });
 
@@ -248,22 +257,23 @@ describe('<ReferenceInput />', () => {
         await screen.findByText('Proust', undefined, { timeout: 5000 });
     });
 
-    it('should throw an error when using the validate prop', () => {
+    it('should throw an error when using the validate prop', async () => {
         jest.spyOn(console, 'error').mockImplementation(jest.fn());
         const dataProvider = testDataProvider({
             getList: async () => ({ data: [], total: 25 }),
         });
-        expect(() =>
-            render(
-                <CoreAdminContext dataProvider={dataProvider}>
-                    <Form>
-                        <ReferenceInput
-                            {...defaultProps}
-                            validate={() => undefined}
-                        />
-                    </Form>
-                </CoreAdminContext>
-            )
-        ).toThrowError();
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
+                <Form>
+                    <ReferenceInput
+                        {...defaultProps}
+                        validate={() => undefined}
+                    />
+                </Form>
+            </CoreAdminContext>
+        );
+        await screen.findByText(
+            '<ReferenceInput> does not accept a validate prop. Set the validate prop on the child instead.'
+        );
     });
 });

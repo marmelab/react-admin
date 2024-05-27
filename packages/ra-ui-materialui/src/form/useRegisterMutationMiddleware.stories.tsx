@@ -19,28 +19,40 @@ export default {
     title: 'ra-ui-materialui/forms/useRegisterMutationMiddleware',
 };
 
-const handleImageUpload = (
-    source: string
-): Middleware<UseCreateResult[0]> => async (
-    resource,
-    params,
-    options,
-    next
-) => {
-    console.log('ORIGINAL DATA', params?.data);
-    const images = get(params?.data, source);
+const handleImageUpload =
+    (source: string): Middleware<UseCreateResult[0]> =>
+    async (resource, params, options, next) => {
+        console.log('ORIGINAL DATA', params?.data);
+        const images = get(params?.data, source);
 
-    if (Array.isArray(images)) {
-        const newImages = await Promise.all(
-            images.map(async image => {
-                const b64 = await convertFileToBase64(image);
-                return {
-                    title: image.title,
-                    src: b64,
-                };
-            })
-        );
-        const newData = set({ ...params?.data }, source, newImages);
+        if (Array.isArray(images)) {
+            const newImages = await Promise.all(
+                images.map(async image => {
+                    const b64 = await convertFileToBase64(image);
+                    return {
+                        title: image.title,
+                        src: b64,
+                    };
+                })
+            );
+            const newData = set({ ...params?.data }, source, newImages);
+
+            await next(
+                resource,
+                {
+                    ...params,
+                    data: newData,
+                },
+                options
+            );
+            return;
+        }
+
+        const b64 = await convertFileToBase64(images);
+        const newData = set({ ...params?.data }, source, {
+            title: images.title,
+            src: b64,
+        });
 
         await next(
             resource,
@@ -50,24 +62,7 @@ const handleImageUpload = (
             },
             options
         );
-        return;
-    }
-
-    const b64 = await convertFileToBase64(images);
-    const newData = set({ ...params?.data }, source, {
-        title: images.title,
-        src: b64,
-    });
-
-    await next(
-        resource,
-        {
-            ...params,
-            data: newData,
-        },
-        options
-    );
-};
+    };
 
 const convertFileToBase64 = file =>
     new Promise((resolve, reject) => {
@@ -107,7 +102,7 @@ export const Basic = () => {
         true
     );
     return (
-        <AdminContext dataProvider={dataProvider}>
+        <AdminContext dataProvider={dataProvider} defaultTheme="light">
             <Create resource="posts">
                 <SimpleForm>
                     <MyImageInput source="thumbnail" />

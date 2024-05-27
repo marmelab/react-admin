@@ -2,14 +2,14 @@ import * as React from 'react';
 import expect from 'expect';
 import { render, screen } from '@testing-library/react';
 import { stringify } from 'query-string';
-import { createMemoryHistory } from 'history';
 import { fireEvent, waitFor } from '@testing-library/react';
-
 import { CoreAdminContext } from '../../core';
+
 import { testDataProvider } from '../../dataProvider';
 import { useStore } from '../../store/useStore';
 import { useListParams, getQuery, getNumberOrDefault } from './useListParams';
 import { SORT_DESC, SORT_ASC } from './queryReducer';
+import { TestMemoryRouter } from '../../routing';
 
 describe('useListParams', () => {
     describe('getQuery', () => {
@@ -191,8 +191,7 @@ describe('useListParams', () => {
     });
     describe('showFilter', () => {
         it('should initialize displayed filters', async () => {
-            const history = createMemoryHistory();
-            const navigate = jest.spyOn(history, 'push');
+            let location;
             const TestedComponent = () => {
                 const [, { showFilter }] = useListParams({
                     resource: 'foo',
@@ -201,16 +200,19 @@ describe('useListParams', () => {
                 return <span />;
             };
             render(
-                <CoreAdminContext
-                    history={history}
-                    dataProvider={testDataProvider()}
+                <TestMemoryRouter
+                    locationCallback={l => {
+                        location = l;
+                    }}
                 >
-                    <TestedComponent />
-                </CoreAdminContext>
+                    <CoreAdminContext dataProvider={testDataProvider()}>
+                        <TestedComponent />
+                    </CoreAdminContext>
+                </TestMemoryRouter>
             );
             await waitFor(() => {
-                expect(navigate).toHaveBeenCalledWith(
-                    {
+                expect(location).toEqual(
+                    expect.objectContaining({
                         hash: '',
                         pathname: '/',
                         search:
@@ -223,14 +225,13 @@ describe('useListParams', () => {
                                 page: 1,
                                 perPage: 10,
                             }),
-                    },
-                    { _scrollToTop: false }
+                        state: { _scrollToTop: false },
+                    })
                 );
             });
         });
         it('should initialize filters', async () => {
-            const history = createMemoryHistory();
-            const navigate = jest.spyOn(history, 'push');
+            let location;
 
             const TestedComponent = () => {
                 const [, { showFilter }] = useListParams({
@@ -240,16 +241,19 @@ describe('useListParams', () => {
                 return <span />;
             };
             render(
-                <CoreAdminContext
-                    history={history}
-                    dataProvider={testDataProvider()}
+                <TestMemoryRouter
+                    locationCallback={l => {
+                        location = l;
+                    }}
                 >
-                    <TestedComponent />
-                </CoreAdminContext>
+                    <CoreAdminContext dataProvider={testDataProvider()}>
+                        <TestedComponent />
+                    </CoreAdminContext>
+                </TestMemoryRouter>
             );
             await waitFor(() => {
-                expect(navigate).toBeCalledWith(
-                    {
+                expect(location).toEqual(
+                    expect.objectContaining({
                         hash: '',
                         pathname: '/',
                         search:
@@ -262,15 +266,14 @@ describe('useListParams', () => {
                                 page: 1,
                                 perPage: 10,
                             }),
-                    },
-                    { _scrollToTop: false }
+                        state: { _scrollToTop: false },
+                    })
                 );
             });
         });
 
         it('should initialize displayed filters on compound filters', async () => {
-            const history = createMemoryHistory();
-            const navigate = jest.spyOn(history, 'push');
+            let location;
 
             const TestedComponent = () => {
                 const [, { showFilter }] = useListParams({
@@ -280,16 +283,19 @@ describe('useListParams', () => {
                 return <span />;
             };
             render(
-                <CoreAdminContext
-                    history={history}
-                    dataProvider={testDataProvider()}
+                <TestMemoryRouter
+                    locationCallback={l => {
+                        location = l;
+                    }}
                 >
-                    <TestedComponent />
-                </CoreAdminContext>
+                    <CoreAdminContext dataProvider={testDataProvider()}>
+                        <TestedComponent />
+                    </CoreAdminContext>
+                </TestMemoryRouter>
             );
             await waitFor(() => {
-                expect(navigate).toBeCalledWith(
-                    {
+                expect(location).toEqual(
+                    expect.objectContaining({
                         hash: '',
                         pathname: '/',
                         search:
@@ -304,15 +310,14 @@ describe('useListParams', () => {
                                 page: 1,
                                 perPage: 10,
                             }),
-                    },
-                    { _scrollToTop: false }
+                        state: { _scrollToTop: false },
+                    })
                 );
             });
         });
 
         it('should initialize filters on compound filters', async () => {
-            const history = createMemoryHistory();
-            const navigate = jest.spyOn(history, 'push');
+            let location;
 
             const TestedComponent = () => {
                 const [, { showFilter }] = useListParams({
@@ -322,16 +327,19 @@ describe('useListParams', () => {
                 return <span />;
             };
             render(
-                <CoreAdminContext
-                    history={history}
-                    dataProvider={testDataProvider()}
+                <TestMemoryRouter
+                    locationCallback={l => {
+                        location = l;
+                    }}
                 >
-                    <TestedComponent />
-                </CoreAdminContext>
+                    <CoreAdminContext dataProvider={testDataProvider()}>
+                        <TestedComponent />
+                    </CoreAdminContext>
+                </TestMemoryRouter>
             );
             await waitFor(() => {
-                expect(navigate).toBeCalledWith(
-                    {
+                expect(location).toEqual(
+                    expect.objectContaining({
                         hash: '',
                         pathname: '/',
                         search:
@@ -346,15 +354,15 @@ describe('useListParams', () => {
                                 page: 1,
                                 perPage: 10,
                             }),
-                    },
-                    { _scrollToTop: false }
+                        state: { _scrollToTop: false },
+                    })
                 );
             });
         });
     });
     describe('useListParams', () => {
         const Component = ({ disableSyncWithLocation = false }) => {
-            const [, { setPage }] = useListParams({
+            const [{ page }, { setPage }] = useListParams({
                 resource: 'posts',
                 disableSyncWithLocation,
             });
@@ -363,12 +371,16 @@ describe('useListParams', () => {
                 setPage(10);
             };
 
-            return <button onClick={handleClick}>update</button>;
+            return (
+                <>
+                    <p>page: {page}</p>
+                    <button onClick={handleClick}>update</button>
+                </>
+            );
         };
 
         it('should synchronize parameters with location and store when sync is enabled', async () => {
-            const history = createMemoryHistory();
-            const navigate = jest.spyOn(history, 'push');
+            let location;
             let storeValue;
             const StoreReader = () => {
                 const [value] = useStore('posts.listParams');
@@ -378,18 +390,34 @@ describe('useListParams', () => {
                 return null;
             };
             render(
-                <CoreAdminContext
-                    history={history}
-                    dataProvider={testDataProvider()}
+                <TestMemoryRouter
+                    locationCallback={l => {
+                        location = l;
+                    }}
                 >
-                    <Component />
-                    <StoreReader />
-                </CoreAdminContext>
+                    <CoreAdminContext dataProvider={testDataProvider()}>
+                        <Component />
+                        <StoreReader />
+                    </CoreAdminContext>
+                </TestMemoryRouter>
             );
 
             fireEvent.click(screen.getByText('update'));
             await waitFor(() => {
-                expect(navigate).toHaveBeenCalled();
+                expect(location).toEqual(
+                    expect.objectContaining({
+                        pathname: '/',
+                        search:
+                            '?' +
+                            stringify({
+                                filter: JSON.stringify({}),
+                                sort: 'id',
+                                order: 'ASC',
+                                page: 10,
+                                perPage: 10,
+                            }),
+                    })
+                );
             });
 
             expect(storeValue).toEqual({
@@ -402,8 +430,7 @@ describe('useListParams', () => {
         });
 
         test('should not synchronize parameters with location and store when sync is not enabled', async () => {
-            const history = createMemoryHistory();
-            const navigate = jest.spyOn(history, 'push');
+            let location;
             let storeValue;
             const StoreReader = () => {
                 const [value] = useStore('posts.listParams');
@@ -414,21 +441,37 @@ describe('useListParams', () => {
             };
 
             render(
-                <CoreAdminContext
-                    history={history}
-                    dataProvider={testDataProvider()}
+                <TestMemoryRouter
+                    locationCallback={l => {
+                        location = l;
+                    }}
                 >
-                    <Component />
-                    <StoreReader />
-                </CoreAdminContext>
+                    <CoreAdminContext dataProvider={testDataProvider()}>
+                        <Component disableSyncWithLocation />
+                        <StoreReader />
+                    </CoreAdminContext>
+                </TestMemoryRouter>
             );
 
             fireEvent.click(screen.getByText('update'));
 
-            await waitFor(() => {
-                expect(navigate).not.toHaveBeenCalled();
-                expect(storeValue).toBeUndefined();
-            });
+            await screen.findByText('page: 10');
+
+            expect(location).not.toEqual(
+                expect.objectContaining({
+                    pathname: '/',
+                    search:
+                        '?' +
+                        stringify({
+                            filter: JSON.stringify({}),
+                            sort: 'id',
+                            order: 'ASC',
+                            page: 10,
+                            perPage: 10,
+                        }),
+                })
+            );
+            expect(storeValue).toBeUndefined();
         });
     });
 });

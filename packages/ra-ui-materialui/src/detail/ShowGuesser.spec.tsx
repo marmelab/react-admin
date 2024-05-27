@@ -17,14 +17,13 @@ describe('<ShowGuesser />', () => {
                         author: 'john doe',
                         post_id: 6,
                         score: 3,
-                        body:
-                            "Queen, tossing her head through the wood. 'If it had lost something; and she felt sure it.",
+                        body: "Queen, tossing her head through the wood. 'If it had lost something; and she felt sure it.",
                         created_at: new Date('2012-08-02'),
                     },
                 }),
         };
         render(
-            <ThemeProvider theme={{}}>
+            <ThemeProvider>
                 <CoreAdminContext dataProvider={dataProvider as any}>
                     <ShowGuesser resource="comments" id={123} enableLog />
                 </CoreAdminContext>

@@ -1,6 +1,6 @@
 {
     "name": "ra-data-simple-rest",
-    "version": "4.16.17",
+    "version": "5.0.0-beta.2",
     "description": "Simple REST data provider for react-admin",
     "main": "dist/cjs/index.js",
     "module": "dist/esm/index.js",
@@ -25,16 +25,16 @@
         "watch": "tsc --outDir dist/esm --module es2015 --watch"
     },
     "dependencies": {
-        "query-string": "^7.1.1"
+        "query-string": "^7.1.3"
     },
     "devDependencies": {
         "cross-env": "^5.2.0",
-        "ra-core": "^4.16.17",
+        "ra-core": "^5.0.0-beta.2",
         "rimraf": "^3.0.2",
         "typescript": "^5.1.3"
     },
     "peerDependencies": {
         "ra-core": "^4.0.0"
     },
-    "gitHead": "e936ff2c3f887d2e98ef136cf3b3f3d254725fc4"
+    "gitHead": "587df4c27bfcec4a756df4f95e5fc14728dfc0d7"
 }

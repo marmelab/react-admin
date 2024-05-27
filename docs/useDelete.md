@@ -10,7 +10,7 @@ This hook allows calling `dataProvider.delete()` when the callback is executed a
 ## Syntax
 
 ```jsx
-const [deleteOne, { data, isLoading, error }] = useDelete(
+const [deleteOne, { data, isPending, error }] = useDelete(
     resource,
     { id, previousData, meta },
     options
@@ -37,7 +37,7 @@ import { useDelete, useRecordContext } from 'react-admin';
 
 const DeleteButton = () => {
     const record = useRecordContext();
-    const [deleteOne, { isLoading, error }] = useDelete(
+    const [deleteOne, { isPending, error }] = useDelete(
         'likes',
         { id: record.id, previousData: record }
     );
@@ -45,7 +45,7 @@ const DeleteButton = () => {
         deleteOne();
     }
     if (error) { return <p>ERROR</p>; }
-    return <button disabled={isLoading} onClick={handleClick}>Delete</button>;
+    return <button disabled={isPending} onClick={handleClick}>Delete</button>;
 };
 
 // set params when calling the deleteOne callback
@@ -53,7 +53,7 @@ import { useDelete, useRecordContext } from 'react-admin';
 
 const DeleteButton = () => {
     const record = useRecordContext();
-    const [deleteOne, { isLoading, error }] = useDelete();
+    const [deleteOne, { isPending, error }] = useDelete();
     const handleClick = () => {
         deleteOne(
             'likes',
@@ -61,7 +61,7 @@ const DeleteButton = () => {
         );
     }
     if (error) { return <p>ERROR</p>; }
-    return <button disabled={isLoading} onClick={handleClick}>Delete</button>;
+    return <button disabled={isPending} onClick={handleClick}>Delete</button>;
 };
 ```
 

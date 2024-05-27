@@ -8,6 +8,12 @@ import {
 } from './index.stories';
 
 describe('i18next i18nProvider', () => {
+    beforeAll(() => {
+        window.scrollTo = jest.fn();
+    });
+    afterAll(() => {
+        jest.clearAllMocks();
+    });
     test('should work with no configuration except the messages', async () => {
         render(<Basic />);
 
@@ -19,7 +25,7 @@ describe('i18next i18nProvider', () => {
         await screen.findByText('1-1 of 1');
         fireEvent.click(await screen.findByText('Lorem Ipsum'));
         // Check singularization
-        await screen.findByText('Post #1');
+        await screen.findByText('Post Lorem Ipsum');
     });
 
     test('should work with multiple languages', async () => {
@@ -47,7 +53,7 @@ describe('i18next i18nProvider', () => {
         await screen.findByText('1-1 of 1');
         fireEvent.click(await screen.findByText('Lorem Ipsum'));
         // Check singularization
-        await screen.findByText('Blog post #1');
+        await screen.findByText('Blog post Lorem Ipsum');
     });
 
     test('should work with custom interpolation options', async () => {
@@ -61,6 +67,6 @@ describe('i18next i18nProvider', () => {
         await screen.findByText('1-1 of 1');
         fireEvent.click(await screen.findByText('Lorem Ipsum'));
         // Check singularization
-        await screen.findByText('Post #1');
+        await screen.findByText('Post Lorem Ipsum');
     });
 });

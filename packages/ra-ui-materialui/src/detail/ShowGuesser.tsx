@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { useEffect, useState } from 'react';
-import inflection from 'inflection';
+import { ReactNode, useEffect, useState } from 'react';
 import {
     ShowBase,
     InferredElement,
@@ -8,8 +7,9 @@ import {
     useResourceContext,
     useShowContext,
 } from 'ra-core';
+import { capitalize, singularize } from 'inflection';
 
-import { ShowProps } from '../types';
+import { ShowProps } from './Show';
 import { ShowView } from './ShowView';
 import { showFieldTypes } from './showFieldTypes';
 
@@ -28,12 +28,17 @@ const ShowViewGuesser = (
     props: Omit<ShowProps, 'children'> & { enableLog?: boolean }
 ) => {
     const resource = useResourceContext(props);
+
+    if (!resource) {
+        throw new Error(
+            `<ShowGuesser> was called outside of a ResourceContext and without a resource prop. You must set the resource prop.`
+        );
+    }
+
     const { record } = useShowContext();
-    const [child, setChild] = useState(null);
-    const {
-        enableLog = process.env.NODE_ENV === 'development',
-        ...rest
-    } = props;
+    const [child, setChild] = useState<ReactNode>(null);
+    const { enableLog = process.env.NODE_ENV === 'development', ...rest } =
+        props;
 
     useEffect(() => {
         setChild(null);
@@ -73,9 +78,7 @@ const ShowViewGuesser = (
 
 import { ${components.join(', ')} } from 'react-admin';
 
-export const ${inflection.capitalize(
-                    inflection.singularize(resource)
-                )}Show = () => (
+export const ${capitalize(singularize(resource))}Show = () => (
     <Show>
 ${inferredChild.getRepresentation()}
     </Show>
@@ -86,5 +89,3 @@ ${inferredChild.getRepresentation()}
 
     return <ShowView {...rest}>{child}</ShowView>;
 };
-
-ShowViewGuesser.propTypes = ShowView.propTypes;

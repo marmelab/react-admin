@@ -1,13 +1,17 @@
 import * as React from 'react';
-import { createMemoryHistory } from 'history';
 import { Admin, AdminContext, Datagrid, List, TextField } from 'react-admin';
-import { QueryClient } from 'react-query';
-import { Resource, Form, testDataProvider, useRedirect } from 'ra-core';
+import { QueryClient } from '@tanstack/react-query';
+import {
+    Resource,
+    Form,
+    testDataProvider,
+    useRedirect,
+    TestMemoryRouter,
+} from 'ra-core';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
 import fakeRestDataProvider from 'ra-data-fakerest';
 import { Stack, Divider, Typography, Button } from '@mui/material';
-import { MemoryRouter } from 'react-router-dom';
 
 import { Edit } from '../detail';
 import { SimpleForm } from '../form';
@@ -84,18 +88,18 @@ const BookEdit = () => (
     </Edit>
 );
 
-const history = createMemoryHistory({ initialEntries: ['/books/1'] });
-
 export const Basic = ({ dataProvider = dataProviderWithAuthors }) => (
-    <Admin dataProvider={dataProvider} history={history}>
-        <Resource
-            name="authors"
-            recordRepresentation={record =>
-                `${record.first_name} ${record.last_name}`
-            }
-        />
-        <Resource name="books" edit={BookEdit} />
-    </Admin>
+    <TestMemoryRouter initialEntries={['/books/1']}>
+        <Admin dataProvider={dataProvider}>
+            <Resource
+                name="authors"
+                recordRepresentation={record =>
+                    `${record.first_name} ${record.last_name}`
+                }
+            />
+            <Resource name="books" edit={BookEdit} />
+        </Admin>
+    </TestMemoryRouter>
 );
 
 const tags = [
@@ -287,183 +291,199 @@ const book = {
 };
 
 export const ErrorAutocomplete = () => (
-    <Admin
-        dataProvider={
-            {
-                getOne: () => Promise.resolve({ data: book }),
-                getMany: (_resource, params) =>
-                    Promise.resolve({
-                        data: authors.filter(author =>
-                            params.ids.includes(author.id)
-                        ),
-                    }),
-                getList: (_resource, params) =>
-                    params.filter.q === 'lorem'
-                        ? Promise.reject(new Error('An error occured'))
-                        : Promise.resolve({
-                              data: authors,
-                              total: authors.length,
-                          }),
-            } as any
-        }
-        history={history}
-        queryClient={
-            new QueryClient({ defaultOptions: { queries: { retry: false } } })
-        }
-    >
-        <Resource
-            name="authors"
-            recordRepresentation={r => `${r.first_name} ${r.last_name}`}
-        />
-        <Resource
-            name="books"
-            edit={() => (
-                <Edit mutationMode="pessimistic">
-                    <SimpleForm>
-                        <ReferenceInput reference="authors" source="author" />
-                    </SimpleForm>
-                </Edit>
-            )}
-        />
-    </Admin>
+    <TestMemoryRouter initialEntries={['/books/1']}>
+        <Admin
+            dataProvider={
+                {
+                    getOne: () => Promise.resolve({ data: book }),
+                    getMany: (_resource, params) =>
+                        Promise.resolve({
+                            data: authors.filter(author =>
+                                params.ids.includes(author.id)
+                            ),
+                        }),
+                    getList: (_resource, params) =>
+                        params.filter.q === 'lorem'
+                            ? Promise.reject(new Error('An error occured'))
+                            : Promise.resolve({
+                                  data: authors,
+                                  total: authors.length,
+                              }),
+                } as any
+            }
+            queryClient={
+                new QueryClient({
+                    defaultOptions: { queries: { retry: false } },
+                })
+            }
+        >
+            <Resource
+                name="authors"
+                recordRepresentation={r => `${r.first_name} ${r.last_name}`}
+            />
+            <Resource
+                name="books"
+                edit={() => (
+                    <Edit mutationMode="pessimistic">
+                        <SimpleForm>
+                            <ReferenceInput
+                                reference="authors"
+                                source="author"
+                            />
+                        </SimpleForm>
+                    </Edit>
+                )}
+            />
+        </Admin>
+    </TestMemoryRouter>
 );
 
 export const WithSelectInput = ({ dataProvider = dataProviderWithAuthors }) => (
-    <Admin dataProvider={dataProvider} history={history}>
-        <Resource
-            name="authors"
-            recordRepresentation={record =>
-                `${record.first_name} ${record.last_name}`
-            }
-        />
-        <Resource
-            name="books"
-            edit={() => (
-                <Edit
-                    mutationMode="pessimistic"
-                    mutationOptions={{
-                        onSuccess: data => {
-                            console.log(data);
-                        },
-                    }}
-                >
-                    <SimpleForm>
-                        <ReferenceInput reference="authors" source="author">
-                            <SelectInput optionText="first_name" />
-                        </ReferenceInput>
-                    </SimpleForm>
-                </Edit>
-            )}
-        />
-    </Admin>
+    <TestMemoryRouter initialEntries={['/books/1']}>
+        <Admin dataProvider={dataProvider}>
+            <Resource
+                name="authors"
+                recordRepresentation={record =>
+                    `${record.first_name} ${record.last_name}`
+                }
+            />
+            <Resource
+                name="books"
+                edit={() => (
+                    <Edit
+                        mutationMode="pessimistic"
+                        mutationOptions={{
+                            onSuccess: data => {
+                                console.log(data);
+                            },
+                        }}
+                    >
+                        <SimpleForm>
+                            <ReferenceInput reference="authors" source="author">
+                                <SelectInput optionText="first_name" />
+                            </ReferenceInput>
+                        </SimpleForm>
+                    </Edit>
+                )}
+            />
+        </Admin>
+    </TestMemoryRouter>
 );
 
 export const ErrorSelectInput = () => (
-    <Admin
-        dataProvider={
-            {
-                getOne: () => Promise.resolve({ data: book }),
-                getMany: (_resource, params) =>
-                    Promise.resolve({
-                        data: authors.filter(author =>
-                            params.ids.includes(author.id)
-                        ),
-                    }),
-                getList: (_resource, _params) =>
-                    Promise.reject(new Error('An error occured')),
-            } as any
-        }
-        history={history}
-        queryClient={
-            new QueryClient({ defaultOptions: { queries: { retry: false } } })
-        }
-    >
-        <Resource
-            name="authors"
-            recordRepresentation={r => `${r.first_name} ${r.last_name}`}
-        />
-        <Resource
-            name="books"
-            edit={() => (
-                <Edit mutationMode="pessimistic">
-                    <SimpleForm>
-                        <ReferenceInput reference="authors" source="author">
-                            <SelectInput />
-                        </ReferenceInput>
-                    </SimpleForm>
-                </Edit>
-            )}
-        />
-    </Admin>
+    <TestMemoryRouter initialEntries={['/books/1']}>
+        <Admin
+            dataProvider={
+                {
+                    getOne: () => Promise.resolve({ data: book }),
+                    getMany: (_resource, params) =>
+                        Promise.resolve({
+                            data: authors.filter(author =>
+                                params.ids.includes(author.id)
+                            ),
+                        }),
+                    getList: (_resource, _params) =>
+                        Promise.reject(new Error('An error occured')),
+                } as any
+            }
+            queryClient={
+                new QueryClient({
+                    defaultOptions: { queries: { retry: false } },
+                })
+            }
+        >
+            <Resource
+                name="authors"
+                recordRepresentation={r => `${r.first_name} ${r.last_name}`}
+            />
+            <Resource
+                name="books"
+                edit={() => (
+                    <Edit mutationMode="pessimistic">
+                        <SimpleForm>
+                            <ReferenceInput reference="authors" source="author">
+                                <SelectInput />
+                            </ReferenceInput>
+                        </SimpleForm>
+                    </Edit>
+                )}
+            />
+        </Admin>
+    </TestMemoryRouter>
 );
 
 export const WithRadioButtonGroupInput = () => (
-    <Admin dataProvider={dataProviderWithAuthors} history={history}>
-        <Resource
-            name="authors"
-            recordRepresentation={record =>
-                `${record.first_name} ${record.last_name}`
-            }
-        />
-        <Resource
-            name="books"
-            edit={() => (
-                <Edit
-                    mutationMode="pessimistic"
-                    mutationOptions={{
-                        onSuccess: data => {
-                            console.log(data);
-                        },
-                    }}
-                >
-                    <SimpleForm>
-                        <ReferenceInput reference="authors" source="author">
-                            <RadioButtonGroupInput optionText="first_name" />
-                        </ReferenceInput>
-                    </SimpleForm>
-                </Edit>
-            )}
-        />
-    </Admin>
+    <TestMemoryRouter initialEntries={['/books/1']}>
+        <Admin dataProvider={dataProviderWithAuthors}>
+            <Resource
+                name="authors"
+                recordRepresentation={record =>
+                    `${record.first_name} ${record.last_name}`
+                }
+            />
+            <Resource
+                name="books"
+                edit={() => (
+                    <Edit
+                        mutationMode="pessimistic"
+                        mutationOptions={{
+                            onSuccess: data => {
+                                console.log(data);
+                            },
+                        }}
+                    >
+                        <SimpleForm>
+                            <ReferenceInput reference="authors" source="author">
+                                <RadioButtonGroupInput optionText="first_name" />
+                            </ReferenceInput>
+                        </SimpleForm>
+                    </Edit>
+                )}
+            />
+        </Admin>
+    </TestMemoryRouter>
 );
 
 export const ErrorRadioButtonGroupInput = () => (
-    <Admin
-        dataProvider={
-            {
-                getOne: () => Promise.resolve({ data: book }),
-                getMany: (_resource, params) =>
-                    Promise.resolve({
-                        data: authors.filter(author =>
-                            params.ids.includes(author.id)
-                        ),
-                    }),
-                getList: (_resource, _params) =>
-                    Promise.reject(new Error('An error occured')),
-            } as any
-        }
-        history={history}
-        queryClient={
-            new QueryClient({ defaultOptions: { queries: { retry: false } } })
-        }
-    >
-        <Resource
-            name="authors"
-            recordRepresentation={r => `${r.first_name} ${r.last_name}`}
-        />
-        <Resource
-            name="books"
-            edit={() => (
-                <Edit mutationMode="pessimistic">
-                    <SimpleForm>
-                        <ReferenceInput reference="authors" source="author">
-                            <RadioButtonGroupInput optionText="first_name" />
-                        </ReferenceInput>
-                    </SimpleForm>
-                </Edit>
-            )}
-        />
-    </Admin>
+    <TestMemoryRouter initialEntries={['/books/1']}>
+        <Admin
+            dataProvider={
+                {
+                    getOne: () => Promise.resolve({ data: book }),
+                    getMany: (_resource, params) =>
+                        Promise.resolve({
+                            data: authors.filter(author =>
+                                params.ids.includes(author.id)
+                            ),
+                        }),
+                    getList: (_resource, _params) =>
+                        Promise.reject(new Error('An error occured')),
+                } as any
+            }
+            queryClient={
+                new QueryClient({
+                    defaultOptions: { queries: { retry: false } },
+                })
+            }
+        >
+            <Resource
+                name="authors"
+                recordRepresentation={r => `${r.first_name} ${r.last_name}`}
+            />
+            <Resource
+                name="books"
+                edit={() => (
+                    <Edit mutationMode="pessimistic">
+                        <SimpleForm>
+                            <ReferenceInput reference="authors" source="author">
+                                <RadioButtonGroupInput optionText="first_name" />
+                            </ReferenceInput>
+                        </SimpleForm>
+                    </Edit>
+                )}
+            />
+        </Admin>
+    </TestMemoryRouter>
 );
 
 const AuthorList = () => (
@@ -498,16 +518,18 @@ const BookEditWithSelfReference = () => {
 };
 
 export const SelfReference = ({ dataProvider = dataProviderWithAuthors }) => (
-    <Admin dataProvider={dataProvider} history={history}>
-        <Resource
-            name="authors"
-            recordRepresentation={record =>
-                `${record.first_name} ${record.last_name}`
-            }
-            list={AuthorList}
-        />
-        <Resource name="books" edit={BookEditWithSelfReference} />
-    </Admin>
+    <TestMemoryRouter initialEntries={['/books/1']}>
+        <Admin dataProvider={dataProvider}>
+            <Resource
+                name="authors"
+                recordRepresentation={record =>
+                    `${record.first_name} ${record.last_name}`
+                }
+                list={AuthorList}
+            />
+            <Resource name="books" edit={BookEditWithSelfReference} />
+        </Admin>
+    </TestMemoryRouter>
 );
 
 const BookEditQueryOptions = () => {
@@ -530,7 +552,7 @@ const BookEditQueryOptions = () => {
 };
 
 export const QueryOptions = () => (
-    <MemoryRouter initialEntries={['/books/1']}>
+    <TestMemoryRouter initialEntries={['/books/1']}>
         <Admin
             dataProvider={fakeRestDataProvider(
                 {
@@ -589,5 +611,5 @@ export const QueryOptions = () => (
             />
             <Resource name="books" edit={BookEditQueryOptions} />
         </Admin>
-    </MemoryRouter>
+    </TestMemoryRouter>
 );

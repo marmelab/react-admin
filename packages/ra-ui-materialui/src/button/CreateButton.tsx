@@ -5,7 +5,6 @@ import { styled } from '@mui/material/styles';
 import clsx from 'clsx';
 import isEqual from 'lodash/isEqual';
 import merge from 'lodash/merge';
-import PropTypes from 'prop-types';
 import { useTranslate, useResourceContext, useCreatePath } from 'ra-core';
 import { Link, To } from 'react-router-dom';
 
@@ -98,13 +97,6 @@ interface Props {
 
 export type CreateButtonProps = Props & Omit<ButtonProps<typeof Link>, 'to'>;
 
-CreateButton.propTypes = {
-    resource: PropTypes.string,
-    className: PropTypes.string,
-    icon: PropTypes.element,
-    label: PropTypes.string,
-};
-
 const PREFIX = 'RaCreateButton';
 
 export const CreateButtonClasses = {
@@ -112,7 +104,7 @@ export const CreateButtonClasses = {
     floating: `${PREFIX}-floating`,
 };
 
-const StyledFab = (styled(Fab, {
+const StyledFab = styled(Fab, {
     name: PREFIX,
     overridesResolver: (_props, styles) => styles.root,
 })(({ theme }) => ({
@@ -126,7 +118,7 @@ const StyledFab = (styled(Fab, {
         position: 'fixed',
         zIndex: 1000,
     },
-})) as unknown) as typeof Fab;
+})) as unknown as typeof Fab;
 
 const StyledButton = styled(Button, {
     name: PREFIX,
@@ -145,7 +137,7 @@ export default React.memo(CreateButton, (prevProps, nextProps) => {
 });
 
 const getLinkParams = (locationDescriptor?: LocationDescriptor | string) => {
-    // eslint-disable-next-line eqeqeq
+    // eslint-disable-next-line
     if (locationDescriptor == undefined) {
         return undefined;
     }

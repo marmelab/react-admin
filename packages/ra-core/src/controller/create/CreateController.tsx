@@ -1,3 +1,4 @@
+import { ReactNode } from 'react';
 import {
     useCreateController,
     CreateControllerProps,
@@ -21,7 +22,7 @@ export const CreateController = ({
     children,
     ...props
 }: {
-    children: (params: CreateControllerResult) => JSX.Element;
+    children: (params: CreateControllerResult) => ReactNode;
 } & CreateControllerProps) => {
     const controllerProps = useCreateController(props);
     return children(controllerProps);

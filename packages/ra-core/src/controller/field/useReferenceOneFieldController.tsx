@@ -1,5 +1,5 @@
 import get from 'lodash/get';
-import { UseQueryOptions } from 'react-query';
+import { UseQueryOptions } from '@tanstack/react-query';
 
 import { useGetManyReference } from '../../dataProvider';
 import { useNotify } from '../../notification';
@@ -7,7 +7,7 @@ import { RaRecord, SortPayload } from '../../types';
 import { UseReferenceResult } from '../useReference';
 
 export interface UseReferenceOneFieldControllerParams<
-    RecordType extends RaRecord = any
+    RecordType extends RaRecord = any,
 > {
     record?: RaRecord;
     reference: string;
@@ -15,10 +15,13 @@ export interface UseReferenceOneFieldControllerParams<
     target: string;
     sort?: SortPayload;
     filter?: any;
-    queryOptions?: UseQueryOptions<{
-        data: RecordType[];
-        total: number;
-    }> & { meta?: any };
+    queryOptions?: Omit<
+        UseQueryOptions<{
+            data: RecordType[];
+            total: number;
+        }>,
+        'queryFn' | 'queryKey'
+    > & { meta?: any };
 }
 
 /**
@@ -29,7 +32,7 @@ export interface UseReferenceOneFieldControllerParams<
  *
  * @example
  *
- * const { data, isLoading, error } = useReferenceOneFieldController({
+ * const { data, isPending, error } = useReferenceOneFieldController({
  *     record: { id: 7, name: 'James Joyce'}
  *     reference: 'bios',
  *     target: 'author_id',
@@ -42,10 +45,10 @@ export interface UseReferenceOneFieldControllerParams<
  * @prop {string} props.source The key current record identifier ('id' by default)
  * @prop {Object} props.sort The sort to apply to the referenced records
  * @prop {Object} props.filter The filter to apply to the referenced records
- * @returns {UseReferenceResult} The request state. Destructure as { referenceRecord, isLoading, error }.
+ * @returns {UseReferenceResult} The request state. Destructure as { referenceRecord, isPending, error }.
  */
 export const useReferenceOneFieldController = <
-    RecordType extends RaRecord = any
+    RecordType extends RaRecord = any,
 >(
     props: UseReferenceOneFieldControllerParams<RecordType>
 ): UseReferenceResult<RecordType> => {
@@ -61,46 +64,46 @@ export const useReferenceOneFieldController = <
     const notify = useNotify();
     const { meta, ...otherQueryOptions } = queryOptions;
 
-    const { data, error, isFetching, isLoading, refetch } = useGetManyReference<
-        RecordType
-    >(
-        reference,
-        {
-            target,
-            id: get(record, source),
-            pagination: { page: 1, perPage: 1 },
-            sort,
-            filter,
-            meta,
-        },
-        {
-            enabled: !!record,
-            onError: error =>
-                notify(
-                    typeof error === 'string'
-                        ? error
-                        : error.message || 'ra.notification.http_error',
-                    {
-                        type: 'error',
-                        messageArgs: {
-                            _:
-                                typeof error === 'string'
-                                    ? error
-                                    : error && error.message
-                                    ? error.message
-                                    : undefined,
-                        },
-                    }
-                ),
-            ...otherQueryOptions,
-        }
-    );
+    const { data, error, isFetching, isLoading, isPending, refetch } =
+        useGetManyReference<RecordType>(
+            reference,
+            {
+                target,
+                id: get(record, source),
+                pagination: { page: 1, perPage: 1 },
+                sort,
+                filter,
+                meta,
+            },
+            {
+                enabled: !!record,
+                onError: error =>
+                    notify(
+                        typeof error === 'string'
+                            ? error
+                            : error.message || 'ra.notification.http_error',
+                        {
+                            type: 'error',
+                            messageArgs: {
+                                _:
+                                    typeof error === 'string'
+                                        ? error
+                                        : error && error.message
+                                          ? error.message
+                                          : undefined,
+                            },
+                        }
+                    ),
+                ...otherQueryOptions,
+            }
+        );
 
     return {
         referenceRecord: data ? data[0] : undefined,
         error,
         isFetching,
         isLoading,
+        isPending,
         refetch,
     };
 };

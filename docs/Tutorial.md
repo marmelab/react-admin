@@ -166,7 +166,7 @@ import { List, Datagrid, TextField, EmailField } from "react-admin";
 
 export const UserList = () => (
     <List>
-        <Datagrid rowClick="edit">
+        <Datagrid>
             <TextField source="id" />
             <TextField source="name" />
             <TextField source="username" />
@@ -208,7 +208,7 @@ Let's take a moment to analyze the code of the `<UserList>` component:
 ```tsx
 export const UserList = () => (
     <List>
-        <Datagrid rowClick="edit">
+        <Datagrid>
             <TextField source="id" />
             <TextField source="name" />
             <TextField source="username" />
@@ -290,7 +290,7 @@ export const UserList = () => {
                     tertiaryText={(record) => record.email}
                 />
             ) : (
-                <Datagrid rowClick="edit">
+                <Datagrid>
                     <TextField source="id" />
                     <TextField source="name" />
                     <TextField source="username" />
@@ -325,7 +325,7 @@ Let's get back to `<Datagrid>`. It reads the data fetched by `<List>`, then rend
 
 ```diff
 // in src/users.tsx
-  <Datagrid rowClick="edit">
+  <Datagrid>
     <TextField source="id" />
     <TextField source="name" />
 -   <TextField source="username" />
@@ -352,7 +352,7 @@ For instance, the `website` field looks like a URL. Instead of displaying it as 
 -import { List, SimpleList, Datagrid, TextField, EmailField } from "react-admin";
 +import { List, SimpleList, Datagrid, TextField, EmailField, UrlField } from "react-admin";
 // ...
-  <Datagrid rowClick="edit">
+  <Datagrid>
     <TextField source="id" />
     <TextField source="name" />
     <EmailField source="email" />
@@ -396,7 +396,7 @@ You can use the `<MyUrlField>` component in `<UserList>`, instead of react-admin
 +import { List, SimpleList, Datagrid, TextField, EmailField } from "react-admin";
 +import MyUrlField from './MyUrlField';
 // ...
-  <Datagrid rowClick="edit">
+  <Datagrid>
     <TextField source="id" />
     <TextField source="name" />
     <EmailField source="email" />
@@ -484,7 +484,7 @@ import { List, Datagrid, TextField, ReferenceField } from "react-admin";
 
 export const PostList = () => (
     <List>
-        <Datagrid rowClick="edit">
+        <Datagrid>
             <ReferenceField source="userId" reference="users" />
             <TextField source="id" />
             <TextField source="title" />
@@ -532,7 +532,7 @@ The `<ReferenceField>` component fetches the reference data, creates a `RecordCo
 
 **Tip**: Look at the network tab of your browser again: react-admin deduplicates requests for users, and aggregates them in order to make only *one* HTTP request to the `/users` endpoint for the whole Datagrid. That's one of many optimizations that keep the UI fast and responsive.
 
-To finish the post list, place the post `id` field as first column, and remove the `body` field. From a UX point of view, fields containing large chunks of text should not appear in a Datagrid, only in detail views. Also, to make the Edit action stand out, let's replace the `rowClick` action by an explicit action button:
+To finish the post list, place the post `id` field as first column, and remove the `body` field. From a UX point of view, fields containing large chunks of text should not appear in a Datagrid, only in detail views. Also, to make the Edit action stand out, let's replace the default `rowClick` action by an explicit action button:
 
 ```diff
 // in src/posts.tsx
@@ -541,8 +541,8 @@ To finish the post list, place the post `id` field as first column, and remove t
 
 export const PostList = () => (
   <List>
--   <Datagrid rowClick="edit">
-+   <Datagrid>
+-   <Datagrid>
++   <Datagrid rowClick={false}>
 +     <TextField source="id" />
       <ReferenceField source="userId" reference="users" />
 -     <TextField source="id" />
@@ -577,18 +577,6 @@ export const App = () => (
 );
 ```
 
-You will need to modify the user list view so that a click on a datagrid row links to the show view:
-
-```diff
-// in src/users.tsx
-export const UserList = () => {
-    // ...
--        <Datagrid rowClick="edit">
-+        <Datagrid rowClick="show">
-    // ...
-};
-```
-
 Now you can click on a user in the list to see its details:
 
 <video controls autoplay playsinline muted loop>
@@ -604,7 +592,7 @@ But now that the `users` resource has a `show` view, you can also link to it fro
 // in src/posts.tsx
 export const PostList = () => (
     <List>
-        <Datagrid rowClick="edit">
+        <Datagrid>
 -           <ReferenceField source="userId" reference="users" />
 +           <ReferenceField source="userId" reference="users" link="show" />
             <TextField source="id" />

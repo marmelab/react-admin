@@ -23,7 +23,7 @@ export default url => ({
         title: '#react-admin-title',
         userMenu: 'button[aria-label="Profile"]',
         logout: '.logout',
-        nameError: '#name-helper-text',
+        nameError: '.MuiFormHelperText-root',
     },
 
     navigate() {
@@ -105,6 +105,7 @@ export default url => ({
     },
 
     logout() {
+        cy.wait(1000);
         cy.get(this.elements.userMenu).click();
         cy.get(this.elements.logout).click();
     },

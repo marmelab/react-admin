@@ -51,9 +51,8 @@ export const Configurable = (props: ConfigurableProps) => {
     const isEditorOpen = prefixedPreferenceKey === currentPreferenceKey;
     const editorOpenRef = useRef(isEditorOpen);
     const wrapperRef = useRef(null);
-    const [isCustomizeButtonVisible, setIsCustomizeButtonVisible] = useState(
-        false
-    );
+    const [isCustomizeButtonVisible, setIsCustomizeButtonVisible] =
+        useState(false);
 
     useEffect(() => {
         editorOpenRef.current = isEditorOpen;
@@ -73,6 +72,12 @@ export const Configurable = (props: ConfigurableProps) => {
     }
 
     const handleOpenEditor = () => {
+        if (!setEditor) {
+            throw new Error(
+                'Configurable must be used inside a PreferencesEditorContextProvider'
+            );
+        }
+
         // include the editorKey as key to force destroy and mount
         // when switching between two identical editors with different editor keys
         // otherwise the editor will see an update and its useStore will return one tick later
@@ -83,6 +88,11 @@ export const Configurable = (props: ConfigurableProps) => {
                 key: prefixedPreferenceKey,
             })
         );
+        if (!setPreferenceKey) {
+            throw new Error(
+                'Configurable must be used inside a PreferencesEditorContextProvider'
+            );
+        }
         // as we modify the editor, isEditorOpen cannot compare the editor element
         // we'll compare the editor key instead
         setPreferenceKey(prefixedPreferenceKey);
@@ -112,7 +122,7 @@ export const Configurable = (props: ConfigurableProps) => {
                 {children}
             </Root>
             <Popover
-                open={isEnabled && (isCustomizeButtonVisible || isEditorOpen)}
+                open={!!isEnabled && (isCustomizeButtonVisible || isEditorOpen)}
                 sx={{
                     pointerEvents: 'none',
                     '& .MuiPaper-root': {
@@ -188,7 +198,8 @@ const Root = styled('span', {
     [`&.${ConfigurableClasses.editMode}:hover `]: {
         outline: `${alpha(theme.palette.warning.main, 0.5)} solid 2px`,
     },
-    [`&.${ConfigurableClasses.editMode}.${ConfigurableClasses.editorActive} , &.${ConfigurableClasses.editMode}.${ConfigurableClasses.editorActive}:hover `]: {
-        outline: `${theme.palette.warning.main} solid 2px`,
-    },
+    [`&.${ConfigurableClasses.editMode}.${ConfigurableClasses.editorActive} , &.${ConfigurableClasses.editMode}.${ConfigurableClasses.editorActive}:hover `]:
+        {
+            outline: `${theme.palette.warning.main} solid 2px`,
+        },
 }));

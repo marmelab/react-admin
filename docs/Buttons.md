@@ -376,7 +376,7 @@ const PostList = () => (
 | `children`        | Required (*) | Element  | -               | A form component to render inside the Dialog                                                                                       |
 | `DialogProps`     | -            | Object   | -               | Additional props to pass to the [MUI Dialog](https://mui.com/material-ui/react-dialog/)                                            |
 | `mutationMode`    | -            | `string` | `'pessimistic'` | The mutation mode (`'undoable'`, `'pessimistic'` or `'optimistic'`)                                                                |
-| `mutationOptions` | -            | Object   | -               | Mutation options passed to [react-query](https://tanstack.com/query/v3/docs/react/reference/useMutation) when calling `updateMany` |
+| `mutationOptions` | -            | Object   | -               | Mutation options passed to [React Query](https://tanstack.com/query/v5/docs/react/reference/useMutation) when calling `updateMany` |
 
 
 #### `children`
@@ -802,7 +802,11 @@ To use this custom menu component, pass it to a custom Layout:
 import { Layout } from 'react-admin';
 import { Menu } from './Menu';
 
-export const Layout = (props) => <Layout {...props} menu={Menu} />;
+export const Layout = ({ children }) => (
+    <Layout menu={Menu}>
+        {children}
+    </Layout>
+);
 ```
 
 Then, use this layout in the `<Admin>` `layout` prop:

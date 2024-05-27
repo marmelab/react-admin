@@ -1,5 +1,4 @@
 import * as React from 'react';
-import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import TextField, { TextFieldProps } from '@mui/material/TextField';
 import { useInput, FieldTitle } from 'ra-core';
@@ -35,11 +34,9 @@ export const DateTimeInput = ({
     parse = parseDateTime,
     validate,
     variant,
-    disabled,
-    readOnly,
     ...rest
 }: DateTimeInputProps) => {
-    const { field, fieldState, formState, id, isRequired } = useInput({
+    const { field, fieldState, id, isRequired } = useInput({
         defaultValue,
         format,
         parse,
@@ -48,15 +45,11 @@ export const DateTimeInput = ({
         resource,
         source,
         validate,
-        disabled,
-        readOnly,
         ...rest,
     });
 
-    const { error, invalid, isTouched } = fieldState;
-    const { isSubmitted } = formState;
-    const renderHelperText =
-        helperText !== false || ((isTouched || isSubmitted) && invalid);
+    const { error, invalid } = fieldState;
+    const renderHelperText = helperText !== false || invalid;
     return (
         <TextField
             id={id}
@@ -66,13 +59,10 @@ export const DateTimeInput = ({
             size="small"
             variant={variant}
             margin={margin}
-            error={(isTouched || isSubmitted) && invalid}
-            disabled={disabled || readOnly}
-            readOnly={readOnly}
+            error={invalid}
             helperText={
                 renderHelperText ? (
                     <InputHelperText
-                        touched={isTouched || isSubmitted}
                         error={error?.message}
                         helperText={helperText}
                     />
@@ -92,20 +82,13 @@ export const DateTimeInput = ({
     );
 };
 
-DateTimeInput.propTypes = {
-    label: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.bool,
-        PropTypes.element,
-    ]),
-    resource: PropTypes.string,
-    source: PropTypes.string,
-};
-
 export type DateTimeInputProps = CommonInputProps &
     Omit<TextFieldProps, 'helperText' | 'label'>;
 
-const leftPad = (nb = 2) => value => ('0'.repeat(nb) + value).slice(-nb);
+const leftPad =
+    (nb = 2) =>
+    value =>
+        ('0'.repeat(nb) + value).slice(-nb);
 const leftPad4 = leftPad(4);
 const leftPad2 = leftPad(2);
 

@@ -106,6 +106,9 @@ describe('List Page', () => {
             LoginPage.login('admin', 'password');
             ListPagePosts.navigate();
             ListPagePosts.showFilter('title');
+            cy.get(ListPagePosts.elements.filter('title')).should(el =>
+                expect(el).to.have.value('Qui tempore rerum et voluptates')
+            );
             ListPagePosts.setFilterValue(
                 'title',
                 'Omnis voluptate enim similique est possimus'

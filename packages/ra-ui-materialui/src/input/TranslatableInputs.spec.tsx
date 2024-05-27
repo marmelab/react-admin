@@ -10,6 +10,7 @@ import { SimpleForm } from '../form';
 import { TranslatableInputs } from './TranslatableInputs';
 import { TranslatableInputsTab } from './TranslatableInputsTab';
 import { TranslatableInputsTabContentClasses } from './TranslatableInputsTabContent';
+import { Basic } from './TranslatableInputs.stories';
 
 const record = {
     id: 123,
@@ -78,11 +79,8 @@ describe('<TranslatableInputs />', () => {
         const handleSubmit = jest.fn();
 
         const Selector = () => {
-            const {
-                locales,
-                selectLocale,
-                selectedLocale,
-            } = useTranslatableContext();
+            const { locales, selectLocale, selectedLocale } =
+                useTranslatableContext();
 
             const handleChange = (event, newLocale): void => {
                 selectLocale(newLocale);
@@ -163,11 +161,11 @@ describe('<TranslatableInputs />', () => {
             </AdminContext>
         );
 
-        fireEvent.change(screen.queryByDisplayValue('english name'), {
+        fireEvent.change(screen.getByDisplayValue('english name'), {
             target: { value: 'english name updated' },
         });
         fireEvent.click(screen.getByText('ra.locales.fr'));
-        fireEvent.change(screen.queryByDisplayValue('french nested field'), {
+        fireEvent.change(screen.getByDisplayValue('french nested field'), {
             target: { value: 'french nested field updated' },
         });
         fireEvent.click(screen.getByText('ra.action.save'));
@@ -198,11 +196,8 @@ describe('<TranslatableInputs />', () => {
 
     it('should allow to customize the locale selector', () => {
         const Selector = () => {
-            const {
-                locales,
-                selectLocale,
-                selectedLocale,
-            } = useTranslatableContext();
+            const { locales, selectLocale, selectedLocale } =
+                useTranslatableContext();
 
             const handleChange = (event): void => {
                 selectLocale(event.target.value);
@@ -272,5 +267,12 @@ describe('<TranslatableInputs />', () => {
         expect(screen.getByLabelText('fr').classList).not.toContain(
             TranslatableInputsTabContentClasses.hidden
         );
+    });
+
+    it('should infer labels correctly', async () => {
+        render(<Basic />);
+
+        expect(await screen.findAllByLabelText('Title')).toHaveLength(2);
+        expect(await screen.findAllByLabelText('Description')).toHaveLength(2);
     });
 });

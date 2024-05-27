@@ -38,12 +38,16 @@ import { Contact } from '../types';
 const ContactListContent = () => {
     const {
         data: contacts,
-        isLoading,
+        error,
+        isPending,
         onToggleItem,
         selectedIds,
     } = useListContext<Contact>();
-    if (isLoading) {
+    if (isPending) {
         return <SimpleListLoading hasLeftAvatarOrIcon hasSecondaryText />;
+    }
+    if (error) {
+        return null;
     }
     const now = Date.now();
 
@@ -52,7 +56,7 @@ const ContactListContent = () => {
             <BulkActionsToolbar>
                 <BulkDeleteButton />
             </BulkActionsToolbar>
-            <List>
+            <List dense>
                 {contacts.map(contact => (
                     <RecordContextProvider key={contact.id} value={contact}>
                         <ListItem
@@ -86,9 +90,21 @@ const ContactListContent = () => {
                                             link={false}
                                         >
                                             <TextField source="name" />
-                                        </ReferenceField>{' '}
-                                        {contact.nb_notes &&
-                                            `- ${contact.nb_notes} notes`}
+                                        </ReferenceField>
+                                        {contact.nb_notes
+                                            ? ` - ${contact.nb_notes} note${
+                                                  contact.nb_notes > 1
+                                                      ? 's'
+                                                      : ''
+                                              }`
+                                            : ''}
+                                        {contact.nb_tasks
+                                            ? ` - ${contact.nb_tasks} task${
+                                                  contact.nb_tasks > 1
+                                                      ? 's'
+                                                      : ''
+                                              }`
+                                            : ''}
                                         &nbsp;&nbsp;
                                         <TagsList />
                                     </>
@@ -100,11 +116,8 @@ const ContactListContent = () => {
                                     color="textSecondary"
                                 >
                                     last activity{' '}
-                                    {formatDistance(
-                                        new Date(contact.last_seen),
-                                        now
-                                    )}{' '}
-                                    ago <Status status={contact.status} />
+                                    {formatDistance(contact.last_seen, now)} ago{' '}
+                                    <Status status={contact.status} />
                                 </Typography>
                             </ListItemSecondaryAction>
                         </ListItem>

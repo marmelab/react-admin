@@ -19,7 +19,7 @@ import { RecordContextProvider } from './RecordContext';
  * );
  */
 export const OptionalRecordContextProvider = <
-    RecordType extends RaRecord | Omit<RaRecord, 'id'> = RaRecord
+    RecordType extends RaRecord | Omit<RaRecord, 'id'> = RaRecord,
 >({
     value,
     children,

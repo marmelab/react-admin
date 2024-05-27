@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
-import PropTypes from 'prop-types';
 import TextField, { TextFieldProps } from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
 import clsx from 'clsx';
@@ -21,8 +20,6 @@ export const NullableBooleanInput = (props: NullableBooleanInputProps) => {
         onChange,
         parse = getBooleanFromString,
         resource,
-        disabled,
-        readOnly,
         source,
         validate,
         variant,
@@ -36,8 +33,7 @@ export const NullableBooleanInput = (props: NullableBooleanInputProps) => {
 
     const {
         field,
-        fieldState: { error, invalid, isTouched },
-        formState: { isSubmitted },
+        fieldState: { error, invalid },
         id,
         isRequired,
     } = useInput({
@@ -48,12 +44,9 @@ export const NullableBooleanInput = (props: NullableBooleanInputProps) => {
         resource,
         source,
         validate,
-        disabled,
-        readOnly,
         ...rest,
     });
-    const renderHelperText =
-        helperText !== false || ((isTouched || isSubmitted) && invalid);
+    const renderHelperText = helperText !== false || invalid;
     return (
         <StyledTextField
             id={id}
@@ -66,8 +59,6 @@ export const NullableBooleanInput = (props: NullableBooleanInputProps) => {
                 className
             )}
             select
-            disabled={disabled || readOnly}
-            readOnly={readOnly}
             margin={margin}
             label={
                 <FieldTitle
@@ -77,11 +68,10 @@ export const NullableBooleanInput = (props: NullableBooleanInputProps) => {
                     isRequired={isRequired}
                 />
             }
-            error={(isTouched || isSubmitted) && invalid}
+            error={invalid}
             helperText={
                 renderHelperText ? (
                     <InputHelperText
-                        touched={isTouched || isSubmitted}
                         error={error?.message}
                         helperText={helperText}
                     />
@@ -97,22 +87,6 @@ export const NullableBooleanInput = (props: NullableBooleanInputProps) => {
     );
 };
 
-NullableBooleanInput.propTypes = {
-    label: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.bool,
-        PropTypes.element,
-    ]),
-    options: PropTypes.object,
-    disabled: PropTypes.bool,
-    readOnly: PropTypes.bool,
-    resource: PropTypes.string,
-    source: PropTypes.string,
-    nullLabel: PropTypes.string,
-    falseLabel: PropTypes.string,
-    trueLabel: PropTypes.string,
-};
-
 const PREFIX = 'RaNullableBooleanInput';
 
 export const NullableBooleanInputClasses = {
@@ -122,10 +96,8 @@ export const NullableBooleanInputClasses = {
 const StyledTextField = styled(TextField, {
     name: PREFIX,
     overridesResolver: (props, styles) => styles.root,
-})(({ theme, fullWidth }) => ({
-    [`&.${NullableBooleanInputClasses.input}`]: {
-        width: fullWidth ? '100%' : theme.spacing(16),
-    },
+})(({ theme }) => ({
+    minWidth: theme.spacing(20),
     [theme.breakpoints.down('sm')]: {
         [`&.${NullableBooleanInputClasses.input}`]: {
             width: '100%',
@@ -146,7 +118,7 @@ const getStringFromBoolean = (value?: boolean | null): string => {
 };
 
 export type NullableBooleanInputProps = CommonInputProps &
-    Omit<TextFieldProps, 'label' | 'helperText' | 'readOnly'> & {
+    Omit<TextFieldProps, 'label' | 'helperText'> & {
         nullLabel?: string;
         falseLabel?: string;
         trueLabel?: string;

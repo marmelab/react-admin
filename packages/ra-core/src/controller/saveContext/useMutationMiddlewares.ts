@@ -14,19 +14,12 @@ import { useCallback, useMemo, useRef } from 'react';
  *
  * const CustomerForm = props => {
  *     const [createCustomer] = useCreate<Customer>();
- *     const middleware: Middleware<UseCreateResult<OrderCreateFormData>[0]> = useCallback(async (resource, params, options, next) => {
+ *     const middleware: Middleware<UseCreateResult<OrderCreateFormData>[0]> = useCallback(async (resource, params, next) => {
  *         const { data } = params;
  *         const { user, ...orderData } = data;
- *         await createCustomer(
- *             'customers',
- *             { data: user },
- *             {
- *                 onSuccess: (newCustomer) => {
- *                     const orderDataWithCustomer = { ...orderData, customerId: newCustomer.id };
- *                     next(resource, { data: orderDataWithCustomer }, options);
- *                 },
- *             }
- *         });
+ *         const { data = newCustomer } = await createCustomer('customers', { data: user });
+ *         const orderDataWithCustomer = { ...orderData, customerId: newCustomer.id };
+ *         next(resource, { data: orderDataWithCustomer });
  *     }, [createCustomer]);
  *     useRegisterMutationMiddleware(middleware);
  *
@@ -40,7 +33,7 @@ import { useCallback, useMemo, useRef } from 'react';
  * }
  */
 export const useMutationMiddlewares = <
-    MutateFunc extends (...args: any[]) => any = (...args: any[]) => any
+    MutateFunc extends (...args: any[]) => any = (...args: any[]) => any,
 >(): UseMutationMiddlewaresResult<MutateFunc> => {
     const callbacks = useRef<Middleware<MutateFunc>[]>([]);
 
@@ -59,8 +52,10 @@ export const useMutationMiddlewares = <
     );
 
     const getMutateWithMiddlewares = useCallback((fn: MutateFunc) => {
+        // Stores the current callbacks in a closure to avoid losing them if the calling component is unmounted
+        const currentCallbacks = [...callbacks.current];
         return (...args: Parameters<MutateFunc>): ReturnType<MutateFunc> => {
-            let index = callbacks.current.length - 1;
+            let index = currentCallbacks.length - 1;
 
             // Called by middlewares to call the next middleware function
             // Should take the same arguments as the original mutation function
@@ -71,16 +66,16 @@ export const useMutationMiddlewares = <
 
                 // If there are no more middlewares, we call the original mutation function
                 if (index >= 0) {
-                    return callbacks.current[index](...newArgs, next);
+                    return currentCallbacks[index](...newArgs, next);
                 } else {
                     return fn(...newArgs);
                 }
             };
 
-            if (callbacks.current.length > 0) {
+            if (currentCallbacks.length > 0) {
                 // Call the first middleware with the same args as the original mutation function
                 // with an additional next function
-                return callbacks.current[index](...args, next);
+                return currentCallbacks[index](...args, next);
             }
 
             return fn(...args);
@@ -104,7 +99,7 @@ export const useMutationMiddlewares = <
 };
 
 export interface UseMutationMiddlewaresResult<
-    MutateFunc extends (...args: any[]) => any = (...args: any[]) => any
+    MutateFunc extends (...args: any[]) => any = (...args: any[]) => any,
 > {
     registerMutationMiddleware: (callback: Middleware<MutateFunc>) => void;
     getMutateWithMiddlewares: (
@@ -113,8 +108,7 @@ export interface UseMutationMiddlewaresResult<
     unregisterMutationMiddleware: (callback: Middleware<MutateFunc>) => void;
 }
 
-export type Middleware<
-    MutateFunc = (...args: any[]) => any
-> = MutateFunc extends (...a: any[]) => infer R
-    ? (...a: [...U: Parameters<MutateFunc>, next: MutateFunc]) => R
-    : never;
+export type Middleware<MutateFunc = (...args: any[]) => any> =
+    MutateFunc extends (...a: any[]) => infer R
+        ? (...a: [...U: Parameters<MutateFunc>, next: MutateFunc]) => R
+        : never;

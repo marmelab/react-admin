@@ -6,8 +6,11 @@ import { ListContext } from './ListContext';
 import { useListContext } from './useListContext';
 
 describe('useListContext', () => {
-    const NaiveList = props => {
-        const { data } = useListContext(props);
+    const NaiveList = () => {
+        const { isPending, error, data } = useListContext();
+        if (isPending || error) {
+            return null;
+        }
         return (
             <ul>
                 {data.map(record => (
@@ -32,11 +35,10 @@ describe('useListContext', () => {
         expect(getByText('hello')).not.toBeNull();
     });
 
-    it('should return injected props if the context was not set', () => {
-        jest.spyOn(console, 'log').mockImplementationOnce(() => {});
-        const { getByText } = render(
-            <NaiveList resource="foo" data={[{ id: 1, title: 'hello' }]} />
+    it('should throw when called outside of a ListContextProvider', () => {
+        jest.spyOn(console, 'error').mockImplementation(() => {});
+        expect(() => render(<NaiveList />)).toThrow(
+            'useListContext must be used inside a ListContextProvider'
         );
-        expect(getByText('hello')).not.toBeNull();
     });
 });

@@ -57,15 +57,9 @@ const dataProvider = new Proxy(baseDataProvider, {
 });
 
 const BookListView = () => {
-    const {
-        data,
-        isLoading,
-        sort,
-        setSort,
-        filterValues,
-        setFilters,
-    } = useListContext();
-    if (isLoading) {
+    const { data, isPending, sort, setSort, filterValues, setFilters } =
+        useListContext();
+    if (isPending) {
         return <div>Loading...</div>;
     }
     const toggleSort = () => {
@@ -75,7 +69,7 @@ const BookListView = () => {
         });
     };
     const toggleFilter = () => {
-        setFilters(filterValues.q ? {} : { q: 'The ' }, null);
+        setFilters(filterValues.q ? {} : { q: 'The ' });
     };
 
     return (

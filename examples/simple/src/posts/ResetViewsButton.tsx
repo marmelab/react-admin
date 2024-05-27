@@ -1,12 +1,18 @@
 import * as React from 'react';
-import PropTypes from 'prop-types';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import { useUpdateMany, useNotify, useUnselectAll, Button } from 'react-admin';
+import {
+    useUpdateMany,
+    useNotify,
+    useUnselectAll,
+    Button,
+    useListContext,
+} from 'react-admin';
 
-const ResetViewsButton = ({ resource, selectedIds }) => {
+const ResetViewsButton = () => {
+    const { resource, selectedIds } = useListContext();
     const notify = useNotify();
     const unselectAll = useUnselectAll(resource);
-    const [updateMany, { isLoading }] = useUpdateMany(
+    const [updateMany, { isPending }] = useUpdateMany(
         resource,
         { ids: selectedIds, data: { views: 0 } },
         {
@@ -32,18 +38,12 @@ const ResetViewsButton = ({ resource, selectedIds }) => {
     return (
         <Button
             label="simple.action.resetViews"
-            disabled={isLoading}
+            disabled={isPending}
             onClick={() => updateMany()}
         >
             <VisibilityOff />
         </Button>
     );
-};
-
-ResetViewsButton.propTypes = {
-    label: PropTypes.string,
-    resource: PropTypes.string.isRequired,
-    selectedIds: PropTypes.arrayOf(PropTypes.any).isRequired,
 };
 
 export default ResetViewsButton;

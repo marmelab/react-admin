@@ -108,11 +108,12 @@ const PostCreate = () => {
             <SimpleFormConfigurable
                 toolbar={<PostCreateToolbar />}
                 defaultValues={defaultValues}
+                sx={{ maxWidth: { md: 'auto', lg: '30em' } }}
             >
                 <FileInput
                     source="pdffile"
                     label="PDF-Template"
-                    accept="application/pdf"
+                    accept={{ 'application/pdf': ['.pdf'] }}
                 >
                     <FileField source="src" title="title" />
                 </FileInput>
@@ -123,7 +124,6 @@ const PostCreate = () => {
                 />
                 <TextInput
                     source="teaser"
-                    fullWidth
                     multiline
                     validate={required('Required field')}
                 />
@@ -163,10 +163,10 @@ const PostCreate = () => {
                                 />
                             </ReferenceInput>
                             <FormDataConsumer>
-                                {({ scopedFormData, getSource, ...rest }) =>
+                                {({ scopedFormData }) =>
                                     scopedFormData && scopedFormData.user_id ? (
                                         <SelectInput
-                                            source={getSource('role')}
+                                            source="role"
                                             choices={[
                                                 {
                                                     id: 'headwriter',
@@ -181,7 +181,6 @@ const PostCreate = () => {
                                                     name: 'Co-Writer',
                                                 },
                                             ]}
-                                            {...rest}
                                             label="Role"
                                         />
                                     ) : null

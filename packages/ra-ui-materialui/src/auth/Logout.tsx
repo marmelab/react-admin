@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { styled, Theme } from '@mui/material/styles';
-import { useCallback, FunctionComponent, ReactElement } from 'react';
-import PropTypes from 'prop-types';
+import { useCallback, FunctionComponent, ReactNode } from 'react';
 import {
     ListItemIcon,
     ListItemText,
@@ -19,49 +18,42 @@ import { useTranslate, useLogout, useAuthState } from 'ra-core';
  *
  * Used for the Logout Menu item in the sidebar
  */
-export const Logout: FunctionComponent<
-    LogoutProps & MenuItemProps<'li'>
-> = React.forwardRef(function Logout(props, ref) {
-    const { className, redirectTo, icon, ...rest } = props;
+export const Logout: FunctionComponent<LogoutProps & MenuItemProps<'li'>> =
+    React.forwardRef(function Logout(props, ref) {
+        const { className, redirectTo, icon, ...rest } = props;
 
-    const { authenticated } = useAuthState();
-    const isXSmall = useMediaQuery((theme: Theme) =>
-        theme.breakpoints.down('sm')
-    );
-    const translate = useTranslate();
-    const logout = useLogout();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    const handleClick = useCallback(() => logout(null, redirectTo, false), [
-        redirectTo,
-        logout,
-    ]);
+        const { authenticated } = useAuthState();
+        const isXSmall = useMediaQuery((theme: Theme) =>
+            theme.breakpoints.down('sm')
+        );
+        const translate = useTranslate();
+        const logout = useLogout();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        const handleClick = useCallback(
+            () => logout(null, redirectTo, false),
+            [redirectTo, logout]
+        );
 
-    if (!authenticated) return null;
+        if (!authenticated) return null;
 
-    return (
-        <StyledMenuItem
-            className={clsx('logout', className)}
-            onClick={handleClick}
-            ref={ref}
-            // @ts-ignore
-            component={isXSmall ? 'span' : 'li'}
-            {...rest}
-        >
-            <ListItemIcon className={LogoutClasses.icon}>
-                {icon ? icon : <ExitIcon fontSize="small" />}
-            </ListItemIcon>
-            <ListItemText>
-                {translate('ra.auth.logout', { _: 'Logout' })}
-            </ListItemText>
-        </StyledMenuItem>
-    );
-});
-
-Logout.propTypes = {
-    className: PropTypes.string,
-    redirectTo: PropTypes.string,
-    icon: PropTypes.element,
-};
+        return (
+            <StyledMenuItem
+                className={clsx('logout', className)}
+                onClick={handleClick}
+                ref={ref}
+                // @ts-ignore
+                component={isXSmall ? 'span' : 'li'}
+                {...rest}
+            >
+                <ListItemIcon className={LogoutClasses.icon}>
+                    {icon ? icon : <ExitIcon fontSize="small" />}
+                </ListItemIcon>
+                <ListItemText>
+                    {translate('ra.auth.logout', { _: 'Logout' })}
+                </ListItemText>
+            </StyledMenuItem>
+        );
+    });
 
 const PREFIX = 'RaLogout';
 
@@ -79,5 +71,5 @@ const StyledMenuItem = styled(MenuItem, {
 export interface LogoutProps {
     className?: string;
     redirectTo?: string;
-    icon?: ReactElement;
+    icon?: ReactNode;
 }

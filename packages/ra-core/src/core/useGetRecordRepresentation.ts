@@ -16,7 +16,7 @@ import { useResourceDefinition } from './useResourceDefinition';
  * getRecordRepresentation({ id: 1, title: 'Hello' }); // => "Hello"
  */
 export const useGetRecordRepresentation = (
-    resource: string
+    resource?: string
 ): ((record: any) => ReactNode) => {
     const { recordRepresentation } = useResourceDefinition({ resource });
     return useCallback(
@@ -30,6 +30,18 @@ export const useGetRecordRepresentation = (
             }
             if (React.isValidElement(recordRepresentation)) {
                 return recordRepresentation;
+            }
+            if (record?.name != null && record?.name !== '') {
+                return record.name;
+            }
+            if (record?.title != null && record?.title !== '') {
+                return record.title;
+            }
+            if (record?.label != null && record?.label !== '') {
+                return record.label;
+            }
+            if (record?.reference != null && record?.reference !== '') {
+                return record.reference;
             }
             return `#${record.id}`;
         },

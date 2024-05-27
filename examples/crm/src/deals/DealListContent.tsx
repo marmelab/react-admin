@@ -9,7 +9,7 @@ import { DealColumn } from './DealColumn';
 import { DealsByStage, getDealsByStage, stages } from './stages';
 
 export const DealListContent = () => {
-    const { data: unorderedDeals, isLoading, refetch } = useListContext<Deal>();
+    const { data: unorderedDeals, isPending, refetch } = useListContext<Deal>();
     const dataProvider = useDataProvider();
 
     const [dealsByStage, setDealsByStage] = useState<DealsByStage>(
@@ -26,7 +26,7 @@ export const DealListContent = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [unorderedDeals]);
 
-    if (isLoading) return null;
+    if (isPending) return null;
 
     const onDragEnd: OnDragEndResponder = result => {
         const { destination, source } = result;
@@ -195,21 +195,19 @@ const updateDealStage = async (
     } else {
         // moving deal across columns
         // Fetch all the deals in both stages (because the list may be filtered, but we need to update even non-filtered deals)
-        const [
-            { data: sourceDeals },
-            { data: destinationDeals },
-        ] = await Promise.all([
-            dataProvider.getList('deals', {
-                sort: { field: 'index', order: 'ASC' },
-                pagination: { page: 1, perPage: 100 },
-                filter: { stage: source.stage },
-            }),
-            dataProvider.getList('deals', {
-                sort: { field: 'index', order: 'ASC' },
-                pagination: { page: 1, perPage: 100 },
-                filter: { stage: destination.stage },
-            }),
-        ]);
+        const [{ data: sourceDeals }, { data: destinationDeals }] =
+            await Promise.all([
+                dataProvider.getList('deals', {
+                    sort: { field: 'index', order: 'ASC' },
+                    pagination: { page: 1, perPage: 100 },
+                    filter: { stage: source.stage },
+                }),
+                dataProvider.getList('deals', {
+                    sort: { field: 'index', order: 'ASC' },
+                    pagination: { page: 1, perPage: 100 },
+                    filter: { stage: destination.stage },
+                }),
+            ]);
         const destinationIndex =
             destination.index ?? destinationDeals.length + 1;
 

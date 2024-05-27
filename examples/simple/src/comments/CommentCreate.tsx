@@ -13,11 +13,11 @@ const now = new Date();
 
 const CommentCreate = () => (
     <Create redirect={false}>
-        <SimpleFormConfigurable>
+        <SimpleFormConfigurable sx={{ maxWidth: { md: 'auto', lg: '30em' } }}>
             <PostReferenceInput />
             <TextInput source="author.name" validate={minLength(10)} />
             <DateInput source="created_at" defaultValue={now} />
-            <TextInput fullWidth source="body" multiline />
+            <TextInput source="body" multiline />
         </SimpleFormConfigurable>
     </Create>
 );

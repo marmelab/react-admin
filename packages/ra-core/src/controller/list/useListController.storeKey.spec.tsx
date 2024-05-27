@@ -6,21 +6,19 @@ import {
     waitFor,
     act,
 } from '@testing-library/react';
-import { createMemoryHistory } from 'history';
 import {
     ListsUsingSameResource,
     ListsWithoutStore,
 } from './useListController.storeKey.stories';
+import { TestMemoryRouter } from '../../routing';
 
 describe('useListController', () => {
     describe('storeKey', () => {
         it('should keep distinct two lists of the same resource given different keys', async () => {
             render(
-                <ListsUsingSameResource
-                    history={createMemoryHistory({
-                        initialEntries: ['/top'],
-                    })}
-                />
+                <TestMemoryRouter initialEntries={['/top']}>
+                    <ListsUsingSameResource />
+                </TestMemoryRouter>
             );
 
             await waitFor(() => {
@@ -49,11 +47,9 @@ describe('useListController', () => {
 
         it('should not use the store when storeKey is false', async () => {
             render(
-                <ListsWithoutStore
-                    history={createMemoryHistory({
-                        initialEntries: ['/store'],
-                    })}
-                />
+                <TestMemoryRouter initialEntries={['/store']}>
+                    <ListsWithoutStore />
+                </TestMemoryRouter>
             );
 
             await waitFor(() => {

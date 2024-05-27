@@ -1,9 +1,14 @@
 import * as React from 'react';
 import { Admin } from 'react-admin';
-import { Resource, required, useCreate, useRecordContext } from 'ra-core';
+import {
+    Resource,
+    required,
+    useCreate,
+    useRecordContext,
+    TestMemoryRouter,
+} from 'ra-core';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
-import { createMemoryHistory } from 'history';
 import {
     Dialog,
     DialogContent,
@@ -30,107 +35,47 @@ export default { title: 'ra-ui-materialui/input/AutocompleteArrayInput' };
 
 const i18nProvider = polyglotI18nProvider(() => englishMessages);
 
+const Wrapper = ({ children }) => (
+    <AdminContext i18nProvider={i18nProvider} defaultTheme="light">
+        <Create
+            resource="posts"
+            record={{ roles: ['u001', 'u003'] }}
+            sx={{ width: 600 }}
+        >
+            <SimpleForm>{children}</SimpleForm>
+        </Create>
+    </AdminContext>
+);
+
 export const Basic = () => (
-    <AdminContext i18nProvider={i18nProvider}>
-        <Create
-            resource="posts"
-            record={{ roles: ['u001', 'u003'] }}
-            sx={{ width: 600 }}
-        >
-            <SimpleForm>
-                <AutocompleteArrayInput
-                    source="roles"
-                    choices={[
-                        { id: 'admin', name: 'Admin' },
-                        { id: 'u001', name: 'Editor' },
-                        { id: 'u002', name: 'Moderator' },
-                        { id: 'u003', name: 'Reviewer' },
-                    ]}
-                />
-            </SimpleForm>
-        </Create>
-    </AdminContext>
-);
-
-export const ReadOnly = () => (
-    <AdminContext i18nProvider={i18nProvider}>
-        <Create
-            resource="posts"
-            record={{ roles: ['u001', 'u003'] }}
-            sx={{ width: 600 }}
-        >
-            <SimpleForm>
-                <AutocompleteArrayInput
-                    source="roles"
-                    choices={[
-                        { id: 'admin', name: 'Admin' },
-                        { id: 'u001', name: 'Editor' },
-                        { id: 'u002', name: 'Moderator' },
-                        { id: 'u003', name: 'Reviewer' },
-                    ]}
-                    readOnly
-                />
-                <AutocompleteArrayInput
-                    source="authors"
-                    choices={[]}
-                    readOnly
-                />
-            </SimpleForm>
-        </Create>
-    </AdminContext>
-);
-
-export const Disabled = () => (
-    <AdminContext i18nProvider={i18nProvider}>
-        <Create
-            resource="posts"
-            record={{ roles: ['u001', 'u003'] }}
-            sx={{ width: 600 }}
-        >
-            <SimpleForm>
-                <AutocompleteArrayInput
-                    source="roles"
-                    choices={[
-                        { id: 'admin', name: 'Admin' },
-                        { id: 'u001', name: 'Editor' },
-                        { id: 'u002', name: 'Moderator' },
-                        { id: 'u003', name: 'Reviewer' },
-                    ]}
-                    disabled
-                />
-                <AutocompleteArrayInput
-                    source="authors"
-                    choices={[]}
-                    disabled
-                />
-            </SimpleForm>
-        </Create>
-    </AdminContext>
+    <Wrapper>
+        <AutocompleteArrayInput
+            source="roles"
+            choices={[
+                { id: 'admin', name: 'Admin' },
+                { id: 'u001', name: 'Editor' },
+                { id: 'u002', name: 'Moderator' },
+                { id: 'u003', name: 'Reviewer' },
+            ]}
+        />
+    </Wrapper>
 );
 
 export const OnChange = ({
     onChange = (value, records) => console.log({ value, records }),
 }: Pick<AutocompleteArrayInputProps, 'onChange'>) => (
-    <AdminContext i18nProvider={i18nProvider}>
-        <Create
-            resource="posts"
-            record={{ roles: ['u001', 'u003'] }}
-            sx={{ width: 600 }}
-        >
-            <SimpleForm>
-                <AutocompleteArrayInput
-                    source="roles"
-                    choices={[
-                        { id: 'admin', name: 'Admin' },
-                        { id: 'u001', name: 'Editor' },
-                        { id: 'u002', name: 'Moderator' },
-                        { id: 'u003', name: 'Reviewer' },
-                    ]}
-                    onChange={onChange}
-                />
-            </SimpleForm>
-        </Create>
-    </AdminContext>
+    <Wrapper>
+        <AutocompleteArrayInput
+            source="roles"
+            choices={[
+                { id: 'admin', name: 'Admin' },
+                { id: 'u001', name: 'Editor' },
+                { id: 'u002', name: 'Moderator' },
+                { id: 'u003', name: 'Reviewer' },
+            ]}
+            onChange={onChange}
+        />
+    </Wrapper>
 );
 
 const choices = [
@@ -173,22 +118,14 @@ const CreateRole = () => {
 };
 
 export const CreateProp = () => (
-    <AdminContext i18nProvider={i18nProvider}>
-        <Create
-            resource="users"
-            record={{ roles: ['u001', 'u003'] }}
-            sx={{ width: 600 }}
-        >
-            <SimpleForm>
-                <AutocompleteArrayInput
-                    source="roles"
-                    choices={choices}
-                    sx={{ width: 400 }}
-                    create={<CreateRole />}
-                />
-            </SimpleForm>
-        </Create>
-    </AdminContext>
+    <Wrapper>
+        <AutocompleteArrayInput
+            source="roles"
+            choices={choices}
+            sx={{ width: 400 }}
+            create={<CreateRole />}
+        />
+    </Wrapper>
 );
 
 const dataProvider = {
@@ -205,8 +142,6 @@ const dataProvider = {
         }),
     update: (_resource, params) => Promise.resolve(params),
 } as any;
-
-const history = createMemoryHistory({ initialEntries: ['/books/1'] });
 
 const BookEdit = () => {
     const choices = [
@@ -230,7 +165,6 @@ const BookEdit = () => {
                     source="author"
                     choices={choices}
                     validate={required()}
-                    fullWidth
                 />
             </SimpleForm>
         </Edit>
@@ -238,9 +172,11 @@ const BookEdit = () => {
 };
 
 export const InEdit = () => (
-    <Admin dataProvider={dataProvider} history={history}>
-        <Resource name="books" edit={BookEdit} />
-    </Admin>
+    <TestMemoryRouter initialEntries={['/books/1']}>
+        <Admin dataProvider={dataProvider}>
+            <Resource name="books" edit={BookEdit} />
+        </Admin>
+    </TestMemoryRouter>
 );
 
 const BookEditCustomText = () => {
@@ -265,7 +201,6 @@ const BookEditCustomText = () => {
                     source="author"
                     optionText="fullName"
                     choices={choices}
-                    fullWidth
                 />
             </SimpleForm>
         </Edit>
@@ -273,9 +208,11 @@ const BookEditCustomText = () => {
 };
 
 export const CustomText = () => (
-    <Admin dataProvider={dataProvider} history={history}>
-        <Resource name="books" edit={BookEditCustomText} />
-    </Admin>
+    <TestMemoryRouter initialEntries={['/books/1']}>
+        <Admin dataProvider={dataProvider}>
+            <Resource name="books" edit={BookEditCustomText} />
+        </Admin>
+    </TestMemoryRouter>
 );
 
 const BookEditCustomTextFunction = () => {
@@ -300,7 +237,6 @@ const BookEditCustomTextFunction = () => {
                     source="author"
                     optionText={choice => choice?.fullName}
                     choices={choices}
-                    fullWidth
                 />
             </SimpleForm>
         </Edit>
@@ -308,9 +244,11 @@ const BookEditCustomTextFunction = () => {
 };
 
 export const CustomTextFunction = () => (
-    <Admin dataProvider={dataProvider} history={history}>
-        <Resource name="books" edit={BookEditCustomTextFunction} />
-    </Admin>
+    <TestMemoryRouter initialEntries={['/books/1']}>
+        <Admin dataProvider={dataProvider}>
+            <Resource name="books" edit={BookEditCustomTextFunction} />
+        </Admin>
+    </TestMemoryRouter>
 );
 
 const CustomOption = () => {
@@ -358,7 +296,6 @@ const BookEditCustomOptions = () => {
                         );
                     }}
                     choices={choices}
-                    fullWidth
                 />
             </SimpleForm>
         </Edit>
@@ -366,9 +303,11 @@ const BookEditCustomOptions = () => {
 };
 
 export const CustomOptions = () => (
-    <Admin dataProvider={dataProvider} history={history}>
-        <Resource name="books" edit={BookEditCustomOptions} />
-    </Admin>
+    <TestMemoryRouter initialEntries={['/books/1']}>
+        <Admin dataProvider={dataProvider}>
+            <Resource name="books" edit={BookEditCustomOptions} />
+        </Admin>
+    </TestMemoryRouter>
 );
 
 const choicesForCreationSupport = [
@@ -406,16 +345,17 @@ const BookEditWithCreationSupport = () => (
                         return newAuthor;
                     }
                 }}
-                fullWidth
             />
         </SimpleForm>
     </Edit>
 );
 
 export const CreationSupport = () => (
-    <Admin dataProvider={dataProvider} history={history}>
-        <Resource name="books" edit={BookEditWithCreationSupport} />
-    </Admin>
+    <TestMemoryRouter initialEntries={['/books/1']}>
+        <Admin dataProvider={dataProvider}>
+            <Resource name="books" edit={BookEditWithCreationSupport} />
+        </Admin>
+    </TestMemoryRouter>
 );
 
 const authors = [
@@ -495,17 +435,19 @@ const BookEditWithReference = () => (
     >
         <SimpleForm>
             <ReferenceArrayInput reference="authors" source="author">
-                <AutocompleteArrayInput fullWidth optionText="name" />
+                <AutocompleteArrayInput optionText="name" />
             </ReferenceArrayInput>
         </SimpleForm>
     </Edit>
 );
 
 export const InsideReferenceArrayInput = () => (
-    <Admin dataProvider={dataProviderWithAuthors} history={history}>
-        <Resource name="authors" />
-        <Resource name="books" edit={BookEditWithReference} />
-    </Admin>
+    <TestMemoryRouter initialEntries={['/books/1']}>
+        <Admin dataProvider={dataProviderWithAuthors}>
+            <Resource name="authors" />
+            <Resource name="books" edit={BookEditWithReference} />
+        </Admin>
+    </TestMemoryRouter>
 );
 
 const LanguageChangingAuthorInput = ({ onChange }) => {
@@ -520,7 +462,6 @@ const LanguageChangingAuthorInput = ({ onChange }) => {
     return (
         <ReferenceArrayInput reference="authors" source="author">
             <AutocompleteArrayInput
-                fullWidth
                 optionText="name"
                 onChange={handleChange}
                 label="Authors"
@@ -532,34 +473,33 @@ const LanguageChangingAuthorInput = ({ onChange }) => {
 export const InsideReferenceArrayInputOnChange = ({
     onChange = (value, records) => console.log({ value, records }),
 }: Pick<AutocompleteArrayInputProps, 'onChange'>) => (
-    <Admin
-        dataProvider={dataProviderWithAuthors}
-        history={createMemoryHistory({ initialEntries: ['/books/create'] })}
-    >
-        <Resource name="authors" />
-        <Resource
-            name="books"
-            create={() => (
-                <Create
-                    mutationOptions={{
-                        onSuccess: data => {
-                            console.log(data);
-                        },
-                    }}
-                    redirect={false}
-                >
-                    <SimpleForm>
-                        <LanguageChangingAuthorInput onChange={onChange} />
-                        <ArrayInput source="language" label="Languages">
-                            <SimpleFormIterator>
-                                <TextInput source="." label="Language" />
-                            </SimpleFormIterator>
-                        </ArrayInput>
-                    </SimpleForm>
-                </Create>
-            )}
-        />
-    </Admin>
+    <TestMemoryRouter initialEntries={['/books/create']}>
+        <Admin dataProvider={dataProviderWithAuthors}>
+            <Resource name="authors" />
+            <Resource
+                name="books"
+                create={() => (
+                    <Create
+                        mutationOptions={{
+                            onSuccess: data => {
+                                console.log(data);
+                            },
+                        }}
+                        redirect={false}
+                    >
+                        <SimpleForm>
+                            <LanguageChangingAuthorInput onChange={onChange} />
+                            <ArrayInput source="language" label="Languages">
+                                <SimpleFormIterator>
+                                    <TextInput source="." label="Language" />
+                                </SimpleFormIterator>
+                            </ArrayInput>
+                        </SimpleForm>
+                    </Create>
+                )}
+            />
+        </Admin>
+    </TestMemoryRouter>
 );
 
 const CreateAuthor = () => {
@@ -631,7 +571,6 @@ const BookEditWithReferenceAndCreationSupport = () => (
             <ReferenceArrayInput reference="authors" source="author">
                 <AutocompleteArrayInput
                     create={<CreateAuthor />}
-                    fullWidth
                     optionText="name"
                 />
             </ReferenceArrayInput>
@@ -640,8 +579,13 @@ const BookEditWithReferenceAndCreationSupport = () => (
 );
 
 export const InsideReferenceArrayInputWithCreationSupport = () => (
-    <Admin dataProvider={dataProviderWithAuthors} history={history}>
-        <Resource name="authors" />
-        <Resource name="books" edit={BookEditWithReferenceAndCreationSupport} />
-    </Admin>
+    <TestMemoryRouter initialEntries={['/books/1']}>
+        <Admin dataProvider={dataProviderWithAuthors}>
+            <Resource name="authors" />
+            <Resource
+                name="books"
+                edit={BookEditWithReferenceAndCreationSupport}
+            />
+        </Admin>
+    </TestMemoryRouter>
 );

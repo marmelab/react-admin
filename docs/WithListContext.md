@@ -25,8 +25,8 @@ const BookList = () => (
             <TextField source="id" />
             <TextField source="title" />
             <ReferenceArrayField label="Tags" reference="tags" source="tag_ids">
-                <WithListContext render={({ isLoading, data }) => (
-                    !isLoading && (
+                <WithListContext render={({ isPending, data }) => (
+                    !isPending && (
                         <Stack direction="row" spacing={1}>
                             {data.map(tag => (
                                 <Chip key={tag.id} label={tag.name} />
@@ -60,8 +60,8 @@ const BookList = () => (
 );
 
 const TagList = () => {
-    const { isLoading, data } = useListContext();
-    return isLoading 
+    const { isPending, data } = useListContext();
+    return isPending 
         ? null
         : (
             <Stack direction="row" spacing={1}>
@@ -102,7 +102,8 @@ As a reminder, the [`ListContext`](./useListContext.md) is an object with the fo
     // fetched data
     data, // an array of the list records, e.g. [{ id: 123, title: 'hello world' }, { ... }]
     total, // the total number of results for the current filters, excluding pagination. Useful to build the pagination controls, e.g. 23      
-    isLoading, // boolean that is true until the data is available for the first time
+    isPending, // boolean that is true until the data is available for the first time
+    isLoading, // boolean that is true until the data is fetched for the first time
     isFetching, // boolean that is true while the data is being fetched, and false once the data is fetched
     // pagination
     page, // the current page. Starts at 1

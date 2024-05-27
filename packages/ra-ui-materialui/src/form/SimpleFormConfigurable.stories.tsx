@@ -1,8 +1,11 @@
 import * as React from 'react';
-import { MemoryRouter } from 'react-router-dom';
-import { PreferencesEditorContextProvider, I18nContextProvider } from 'ra-core';
+import {
+    PreferencesEditorContextProvider,
+    I18nContextProvider,
+    TestMemoryRouter,
+} from 'ra-core';
 import { ThemeProvider, createTheme, Box, Paper } from '@mui/material';
-import { QueryClientProvider, QueryClient } from 'react-query';
+import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import en from 'ra-language-english';
 
@@ -24,13 +27,13 @@ const Wrapper = ({ children }) => (
     <QueryClientProvider client={new QueryClient()}>
         <ThemeProvider theme={createTheme(defaultTheme)}>
             <PreferencesEditorContextProvider>
-                <MemoryRouter>
+                <TestMemoryRouter>
                     <Inspector />
                     <Box display="flex" justifyContent="flex-end">
                         <InspectorButton />
                     </Box>
                     <Paper sx={{ width: 600, m: 2 }}>{children}</Paper>
-                </MemoryRouter>
+                </TestMemoryRouter>
             </PreferencesEditorContextProvider>
         </ThemeProvider>
     </QueryClientProvider>
@@ -39,7 +42,7 @@ const Wrapper = ({ children }) => (
 export const Basic = () => (
     <Wrapper>
         <SimpleFormConfigurable record={data} resource="books">
-            <TextInput source="title" fullWidth />
+            <TextInput source="title" />
             <TextInput source="author" />
             <NumberInput source="year" />
         </SimpleFormConfigurable>
@@ -53,7 +56,7 @@ export const Omit = () => (
             resource="books2"
             omit={['author']}
         >
-            <TextInput source="title" fullWidth />
+            <TextInput source="title" />
             <TextInput source="author" />
             <NumberInput source="year" />
         </SimpleFormConfigurable>
@@ -67,7 +70,7 @@ export const PreferenceKey = () => (
             resource="books3"
             preferenceKey="pref1"
         >
-            <TextInput source="title" fullWidth />
+            <TextInput source="title" />
             <TextInput source="author" />
             <NumberInput source="year" />
         </SimpleFormConfigurable>
@@ -76,7 +79,7 @@ export const PreferenceKey = () => (
             resource="books3"
             preferenceKey="pref2"
         >
-            <TextInput source="title" fullWidth />
+            <TextInput source="title" />
             <TextInput source="author" />
             <NumberInput source="year" />
         </SimpleFormConfigurable>
@@ -90,7 +93,7 @@ export const I18N = () => (
     <I18nContextProvider value={i18nProvider}>
         <Wrapper>
             <SimpleFormConfigurable record={data} resource="books">
-                <TextInput source="title" fullWidth />
+                <TextInput source="title" />
                 <TextInput source="author" />
                 <NumberInput source="year" />
             </SimpleFormConfigurable>

@@ -10,7 +10,7 @@ This hook allows to call `dataProvider.create()` when the callback is executed.
 ## Syntax
 
 ```jsx
-const [create, { data, isLoading, error }] = useCreate(
+const [create, { data, isPending, error }] = useCreate(
     resource,
     { data, meta },
     options
@@ -38,12 +38,12 @@ import { useCreate, useRecordContext } from 'react-admin';
 const LikeButton = () => {
     const record = useRecordContext();
     const like = { postId: record.id };
-    const [create, { isLoading, error }] = useCreate('likes', { data: like });
+    const [create, { isPending, error }] = useCreate('likes', { data: like });
     const handleClick = () => {
         create()
     }
     if (error) { return <p>ERROR</p>; }
-    return <button disabled={isLoading} onClick={handleClick}>Like</button>;
+    return <button disabled={isPending} onClick={handleClick}>Like</button>;
 };
 
 // set params when calling the create callback
@@ -52,12 +52,12 @@ import { useCreate, useRecordContext } from 'react-admin';
 const LikeButton = () => {
     const record = useRecordContext();
     const like = { postId: record.id };
-    const [create, { isLoading, error }] = useCreate();
+    const [create, { isPending, error }] = useCreate();
     const handleClick = () => {
         create('likes', { data: like })
     }
     if (error) { return <p>ERROR</p>; }
-    return <button disabled={isLoading} onClick={handleClick}>Like</button>;
+    return <button disabled={isPending} onClick={handleClick}>Like</button>;
 };
 ```
 

@@ -1,10 +1,13 @@
 import { isValidElement, useEffect, useMemo } from 'react';
-import { UseQueryOptions } from 'react-query';
 
 import { useAuthenticated } from '../../auth';
 import { useTranslate } from '../../i18n';
 import { useNotify } from '../../notification';
-import { useGetList, UseGetListHookValue } from '../../dataProvider';
+import {
+    useGetList,
+    UseGetListHookValue,
+    UseGetListOptions,
+} from '../../dataProvider';
 import { SORT_ASC } from './queryReducer';
 import { defaultExporter } from '../../export';
 import { FilterPayload, SortPayload, RaRecord, Exporter } from '../../types';
@@ -50,12 +53,12 @@ export const useListController = <RecordType extends RaRecord = any>(
 
     if (!resource) {
         throw new Error(
-            `<List> was called outside of a ResourceContext and without a resource prop. You must set the resource prop.`
+            `useListController requires a non-empty resource prop or context`
         );
     }
     if (filter && isValidElement(filter)) {
         throw new Error(
-            '<List> received a React element as `filter` props. If you intended to set the list filter elements, use the `filters` (with an s) prop instead. The `filter` prop is internal and should not be set by the developer.'
+            'useListController received a React element as `filter` props. If you intended to set the list filter elements, use the `filters` (with an s) prop instead. The `filter` prop is internal and should not be set by the developer.'
         );
     }
 
@@ -72,7 +75,10 @@ export const useListController = <RecordType extends RaRecord = any>(
         storeKey,
     });
 
-    const [selectedIds, selectionModifiers] = useRecordSelection(resource);
+    const [selectedIds, selectionModifiers] = useRecordSelection({
+        resource,
+        disableSyncWithStore: storeKey === false,
+    });
 
     const {
         data,
@@ -81,6 +87,7 @@ export const useListController = <RecordType extends RaRecord = any>(
         error,
         isLoading,
         isFetching,
+        isPending,
         refetch,
     } = useGetList<RecordType>(
         resource,
@@ -94,7 +101,7 @@ export const useListController = <RecordType extends RaRecord = any>(
             meta,
         },
         {
-            keepPreviousData: true,
+            placeholderData: previousData => previousData,
             retry: false,
             onError: error =>
                 notify(error?.message || 'ra.notification.http_error', {
@@ -155,6 +162,7 @@ export const useListController = <RecordType extends RaRecord = any>(
         hideFilter: queryModifiers.hideFilter,
         isFetching,
         isLoading,
+        isPending,
         onSelect: selectionModifiers.select,
         onToggleItem: selectionModifiers.toggle,
         onUnselectItems: selectionModifiers.clearSelection,
@@ -172,10 +180,10 @@ export const useListController = <RecordType extends RaRecord = any>(
         hasNextPage: pageInfo
             ? pageInfo.hasNextPage
             : total != null
-            ? query.page * query.perPage < total
-            : undefined,
+              ? query.page * query.perPage < total
+              : undefined,
         hasPreviousPage: pageInfo ? pageInfo.hasPreviousPage : query.page > 1,
-    };
+    } as ListControllerResult<RecordType>;
 };
 
 export interface ListControllerProps<RecordType extends RaRecord = any> {
@@ -336,14 +344,7 @@ export interface ListControllerProps<RecordType extends RaRecord = any> {
      *     );
      * }
      */
-    queryOptions?: UseQueryOptions<{
-        data: RecordType[];
-        total?: number;
-        pageInfo?: {
-            hasNextPage?: boolean;
-            hasPreviousPage?: boolean;
-        };
-    }> & { meta?: any };
+    queryOptions?: UseGetListOptions<RecordType>;
 
     /**
      * The resource name. Defaults to the resource from ResourceContext.
@@ -396,40 +397,6 @@ const defaultSort = {
     order: SORT_ASC,
 } as const;
 
-export interface ListControllerResult<RecordType extends RaRecord = any> {
-    sort: SortPayload;
-    data: RecordType[];
-    defaultTitle?: string;
-    displayedFilters: any;
-    error?: any;
-    exporter?: Exporter | false;
-    filter?: FilterPayload;
-    filterValues: any;
-    hideFilter: (filterName: string) => void;
-    isFetching: boolean;
-    isLoading: boolean;
-    onSelect: (ids: RecordType['id'][]) => void;
-    onToggleItem: (id: RecordType['id']) => void;
-    onUnselectItems: () => void;
-    page: number;
-    perPage: number;
-    refetch: (() => void) | UseGetListHookValue<RecordType>['refetch'];
-    resource: string;
-    selectedIds: RecordType['id'][];
-    setFilters: (
-        filters: any,
-        displayedFilters: any,
-        debounce?: boolean
-    ) => void;
-    setPage: (page: number) => void;
-    setPerPage: (page: number) => void;
-    setSort: (sort: SortPayload) => void;
-    showFilter: (filterName: string, defaultValue: any) => void;
-    total: number;
-    hasNextPage: boolean;
-    hasPreviousPage: boolean;
-}
-
 export const injectedProps = [
     'sort',
     'data',
@@ -443,6 +410,7 @@ export const injectedProps = [
     'hideFilter',
     'isFetching',
     'isLoading',
+    'isPending',
     'onSelect',
     'onToggleItem',
     'onUnselectItems',
@@ -478,3 +446,73 @@ export const sanitizeListRestProps = props =>
     Object.keys(props)
         .filter(propName => !injectedProps.includes(propName))
         .reduce((acc, key) => ({ ...acc, [key]: props[key] }), {});
+
+export interface ListControllerBaseResult<RecordType extends RaRecord = any> {
+    sort: SortPayload;
+    defaultTitle?: string;
+    displayedFilters: any;
+    exporter?: Exporter | false;
+    filter?: FilterPayload;
+    filterValues: any;
+    hideFilter: (filterName: string) => void;
+    onSelect: (ids: RecordType['id'][]) => void;
+    onToggleItem: (id: RecordType['id']) => void;
+    onUnselectItems: () => void;
+    page: number;
+    perPage: number;
+    refetch: (() => void) | UseGetListHookValue<RecordType>['refetch'];
+    resource: string;
+    selectedIds: RecordType['id'][];
+    setFilters: (
+        filters: any,
+        displayedFilters?: any,
+        debounce?: boolean
+    ) => void;
+    setPage: (page: number) => void;
+    setPerPage: (page: number) => void;
+    setSort: (sort: SortPayload) => void;
+    showFilter: (filterName: string, defaultValue: any) => void;
+    hasNextPage?: boolean;
+    hasPreviousPage?: boolean;
+    isFetching?: boolean;
+    isLoading?: boolean;
+}
+
+export interface ListControllerLoadingResult<RecordType extends RaRecord = any>
+    extends ListControllerBaseResult<RecordType> {
+    data: undefined;
+    total: undefined;
+    error: null;
+    isPending: true;
+}
+export interface ListControllerErrorResult<
+    RecordType extends RaRecord = any,
+    TError = Error,
+> extends ListControllerBaseResult<RecordType> {
+    data: undefined;
+    total: undefined;
+    error: TError;
+    isPending: false;
+}
+export interface ListControllerRefetchErrorResult<
+    RecordType extends RaRecord = any,
+    TError = Error,
+> extends ListControllerBaseResult<RecordType> {
+    data: RecordType[];
+    total: number;
+    error: TError;
+    isPending: false;
+}
+export interface ListControllerSuccessResult<RecordType extends RaRecord = any>
+    extends ListControllerBaseResult<RecordType> {
+    data: RecordType[];
+    total: number;
+    error: null;
+    isPending: false;
+}
+
+export type ListControllerResult<RecordType extends RaRecord = any> =
+    | ListControllerLoadingResult<RecordType>
+    | ListControllerErrorResult<RecordType>
+    | ListControllerRefetchErrorResult<RecordType>
+    | ListControllerSuccessResult<RecordType>;

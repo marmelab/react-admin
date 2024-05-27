@@ -4,6 +4,7 @@ import { render, screen } from '@testing-library/react';
 import { CreatePathType, useCreatePath } from './useCreatePath';
 import { AtRoot, SubPath } from './useCreatePath.stories';
 import { Identifier } from '../types';
+import { TestMemoryRouter } from './TestMemoryRouter';
 
 describe('useCreatePath', () => {
     beforeEach(() => {
@@ -50,24 +51,32 @@ describe('useCreatePath', () => {
     });
 
     it('creates valid links when used without a basename', async () => {
-        render(<AtRoot />);
+        render(
+            <TestMemoryRouter>
+                <AtRoot />
+            </TestMemoryRouter>
+        );
         await screen.findByText('Home');
         screen.getByText('Post list').click();
         await screen.findByText('Posts');
         screen.getByText('Home').click();
-        screen.getByText('Post detail').click();
+        (await screen.findByText('Post detail')).click();
         await screen.findByText('Post 123');
     });
 
     it('creates valid links when used with a basename', async () => {
-        render(<SubPath />);
+        render(
+            <TestMemoryRouter>
+                <SubPath />
+            </TestMemoryRouter>
+        );
         await screen.findByText('Main');
         screen.getByText('Go to admin').click();
         await screen.findByText('Home');
         screen.getByText('Post list').click();
         await screen.findByText('Posts');
         screen.getByText('Home').click();
-        screen.getByText('Post detail').click();
+        (await screen.findByText('Post detail')).click();
         await screen.findByText('Post 123');
     });
 });

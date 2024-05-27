@@ -60,6 +60,7 @@ export const useList = <RecordType extends RaRecord = any>(
         filter = defaultFilter,
         isFetching = false,
         isLoading = false,
+        isPending = false,
         page: initialPage = 1,
         perPage: initialPerPage = 1000,
         sort: initialSort,
@@ -73,7 +74,11 @@ export const useList = <RecordType extends RaRecord = any>(
 
     const [loadingState, setLoadingState] = useSafeSetState<boolean>(
         isLoading
-    ) as [boolean, (isFetching: boolean) => void];
+    ) as [boolean, (isLoading: boolean) => void];
+
+    const [pendingState, setPendingState] = useSafeSetState<boolean>(
+        isPending
+    ) as [boolean, (isPending: boolean) => void];
 
     const [finalItems, setFinalItems] = useSafeSetState<{
         data?: RecordType[];
@@ -100,7 +105,13 @@ export const useList = <RecordType extends RaRecord = any>(
     );
 
     // selection logic
-    const [selectedIds, selectionModifiers] = useRecordSelection(resource);
+    const [selectedIds, selectionModifiers] = useRecordSelection(
+        resource
+            ? {
+                  resource,
+              }
+            : { disableSyncWithStore: true }
+    );
 
     // filter logic
     const filterRef = useRef(filter);
@@ -139,7 +150,7 @@ export const useList = <RecordType extends RaRecord = any>(
         [setDisplayedFilters, setFilterValues]
     );
     const setFilters = useCallback(
-        (filters, displayedFilters) => {
+        (filters, displayedFilters = undefined) => {
             setFilterValues(removeEmpty(filters));
             if (displayedFilters) {
                 setDisplayedFilters(displayedFilters);
@@ -177,18 +188,21 @@ export const useList = <RecordType extends RaRecord = any>(
                                           )
                                         : recordValue.includes(filterValue)
                                     : Array.isArray(filterValue)
-                                    ? filterValue.includes(recordValue)
-                                    : filterName === 'q' // special full-text filter
-                                    ? Object.keys(record).some(
-                                          key =>
-                                              typeof record[key] === 'string' &&
-                                              record[key]
-                                                  .toLowerCase()
-                                                  .includes(
-                                                      (filterValue as string).toLowerCase()
-                                                  )
-                                      )
-                                    : filterValue == recordValue; // eslint-disable-line eqeqeq
+                                      ? filterValue.includes(recordValue)
+                                      : filterName === 'q' // special full-text filter
+                                        ? Object.keys(record).some(
+                                              key =>
+                                                  typeof record[key] ===
+                                                      'string' &&
+                                                  record[key]
+                                                      .toLowerCase()
+                                                      .includes(
+                                                          (
+                                                              filterValue as string
+                                                          ).toLowerCase()
+                                                      )
+                                          )
+                                        : filterValue == recordValue; // eslint-disable-line eqeqeq
                                 return result;
                             }
                         )
@@ -243,11 +257,17 @@ export const useList = <RecordType extends RaRecord = any>(
         }
     }, [isLoading, loadingState, setLoadingState]);
 
+    useEffect(() => {
+        if (isPending !== pendingState) {
+            setPendingState(isPending);
+        }
+    }, [isPending, pendingState, setPendingState]);
+
     return {
         sort,
-        data: finalItems?.data,
+        data: pendingState ? undefined : finalItems?.data ?? [],
         defaultTitle: '',
-        error,
+        error: error ?? null,
         displayedFilters,
         filterValues,
         hasNextPage:
@@ -258,12 +278,13 @@ export const useList = <RecordType extends RaRecord = any>(
         hideFilter,
         isFetching: fetchingState,
         isLoading: loadingState,
+        isPending: pendingState,
         onSelect: selectionModifiers.select,
         onToggleItem: selectionModifiers.toggle,
         onUnselectItems: selectionModifiers.clearSelection,
         page,
         perPage,
-        resource: undefined,
+        resource: '',
         refetch,
         selectedIds,
         setFilters,
@@ -272,7 +293,7 @@ export const useList = <RecordType extends RaRecord = any>(
         setSort,
         showFilter,
         total: finalItems?.total,
-    };
+    } as UseListValue<RecordType>;
 };
 
 export interface UseListOptions<RecordType extends RaRecord = any> {
@@ -281,6 +302,7 @@ export interface UseListOptions<RecordType extends RaRecord = any> {
     filter?: FilterPayload;
     isFetching?: boolean;
     isLoading?: boolean;
+    isPending?: boolean;
     page?: number;
     perPage?: number;
     sort?: SortPayload;
@@ -288,8 +310,7 @@ export interface UseListOptions<RecordType extends RaRecord = any> {
     filterCallback?: (record: RecordType) => boolean;
 }
 
-export type UseListValue<
-    RecordType extends RaRecord = any
-> = ListControllerResult<RecordType>;
+export type UseListValue<RecordType extends RaRecord = any> =
+    ListControllerResult<RecordType>;
 
 const defaultFilter = {};
