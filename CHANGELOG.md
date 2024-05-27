@@ -1,5 +1,13 @@
 # Changelog
 
+## v5.0.0-beta.2
+
+* Fix middlewares do not handle optimistic cases ([#9875](https://github.com/marmelab/react-admin/pull/9875)) ([djhi](https://github.com/djhi))
+* Fix `ra-core` is missing `react-error-boundary` dependency ([#9873](https://github.com/marmelab/react-admin/pull/9873)) ([djhi](https://github.com/djhi))
+* Fix broken app build by downgrading `query-string` ([#9871](https://github.com/marmelab/react-admin/pull/9871)) ([djhi](https://github.com/djhi))
+* Upgrade prettier to v3 ([#9874](https://github.com/marmelab/react-admin/pull/9874)) ([djhi](https://github.com/djhi))
+* Backport changes from master to next ([#9866](https://github.com/marmelab/react-admin/pull/9866)) ([djhi](https://github.com/djhi))
+
 ## v5.0.0-beta.1
 
 * Fix mutation middlewares ([#9855](https://github.com/marmelab/react-admin/pull/9855)) ([djhi](https://github.com/djhi))
