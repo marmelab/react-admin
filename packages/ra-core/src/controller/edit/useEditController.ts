@@ -91,7 +91,7 @@ export const useEditController = <
     } = mutationOptions;
     const {
         registerMutationMiddleware,
-        mutateWithMiddlewares,
+        getMutateWithMiddlewares,
         unregisterMutationMiddleware,
     } = useMutationMiddlewares();
     const {
@@ -192,7 +192,7 @@ export const useEditController = <
             ...otherMutationOptions,
             mutationMode,
             returnPromise: mutationMode === 'pessimistic',
-            mutateWithMiddlewares,
+            getMutateWithMiddlewares,
         }
     );
 

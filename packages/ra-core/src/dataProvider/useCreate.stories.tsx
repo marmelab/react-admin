@@ -3,26 +3,24 @@ import { useState } from 'react';
 import { QueryClient, useIsMutating } from '@tanstack/react-query';
 
 import { CoreAdminContext } from '../core';
-import { useUpdate } from './useUpdate';
+import { useCreate } from './useCreate';
 import { useGetOne } from './useGetOne';
 
-export default { title: 'ra-core/dataProvider/useUpdate/pessimistic' };
+export default { title: 'ra-core/dataProvider/useCreate' };
 
 export const SuccessCase = ({ timeout = 1000 }) => {
-    const posts = [{ id: 1, title: 'Hello', author: 'John Doe' }];
+    const posts: { id: number; title: string; author: string }[] = [];
     const dataProvider = {
         getOne: (resource, params) => {
             return Promise.resolve({
                 data: posts.find(p => p.id === params.id),
             });
         },
-        update: (resource, params) => {
+        create: (resource, params) => {
             return new Promise(resolve => {
                 setTimeout(() => {
-                    const post = posts.find(p => p.id === params.id);
-                    if (post) {
-                        post.title = params.data.title;
-                    }
+                    const post = { id: posts.length + 1, ...params.data };
+                    posts.push(post);
                     resolve({ data: post });
                 }, timeout);
             });
@@ -41,17 +39,19 @@ export const SuccessCase = ({ timeout = 1000 }) => {
 const SuccessCore = () => {
     const isMutating = useIsMutating();
     const [success, setSuccess] = useState<string>();
-    const { data, refetch } = useGetOne('posts', { id: 1 });
-    const [update, { isPending }] = useUpdate();
+    const { data, refetch } = useGetOne(
+        'posts',
+        { id: 1 },
+        { enabled: success === 'success' }
+    );
+    const [create, { isPending }] = useCreate();
     const handleClick = () => {
-        update(
+        create(
             'posts',
             {
-                id: 1,
                 data: { title: 'Hello World' },
             },
             {
-                mutationMode: 'pessimistic',
                 onSuccess: () => setSuccess('success'),
             }
         );
@@ -61,12 +61,10 @@ const SuccessCore = () => {
             <dl>
                 <dt>title</dt>
                 <dd>{data?.title}</dd>
-                <dt>author</dt>
-                <dd>{data?.author}</dd>
             </dl>
             <div>
                 <button onClick={handleClick} disabled={isPending}>
-                    Update title
+                    Create post
                 </button>
                 &nbsp;
                 <button onClick={() => refetch()}>Refetch</button>
@@ -78,14 +76,14 @@ const SuccessCore = () => {
 };
 
 export const ErrorCase = ({ timeout = 1000 }) => {
-    const posts = [{ id: 1, title: 'Hello', author: 'John Doe' }];
+    const posts: { id: number; title: string; author: string }[] = [];
     const dataProvider = {
         getOne: (resource, params) => {
             return Promise.resolve({
                 data: posts.find(p => p.id === params.id),
             });
         },
-        update: () => {
+        create: () => {
             return new Promise((resolve, reject) => {
                 setTimeout(() => {
                     reject(new Error('something went wrong'));
@@ -107,18 +105,20 @@ const ErrorCore = () => {
     const isMutating = useIsMutating();
     const [success, setSuccess] = useState<string>();
     const [error, setError] = useState<any>();
-    const { data, refetch } = useGetOne('posts', { id: 1 });
-    const [update, { isPending }] = useUpdate();
+    const { data, refetch } = useGetOne(
+        'posts',
+        { id: 1 },
+        { enabled: success === 'success' }
+    );
+    const [create, { isPending }] = useCreate();
     const handleClick = () => {
         setError(undefined);
-        update(
+        create(
             'posts',
             {
-                id: 1,
                 data: { title: 'Hello World' },
             },
             {
-                mutationMode: 'pessimistic',
                 onSuccess: () => setSuccess('success'),
                 onError: e => setError(e),
             }
@@ -129,12 +129,10 @@ const ErrorCore = () => {
             <dl>
                 <dt>title</dt>
                 <dd>{data?.title}</dd>
-                <dt>author</dt>
-                <dd>{data?.author}</dd>
             </dl>
             <div>
                 <button onClick={handleClick} disabled={isPending}>
-                    Update title
+                    Create post
                 </button>
                 &nbsp;
                 <button onClick={() => refetch()}>Refetch</button>
@@ -147,20 +145,18 @@ const ErrorCore = () => {
 };
 
 export const WithMiddlewaresSuccess = ({ timeout = 1000 }) => {
-    const posts = [{ id: 1, title: 'Hello', author: 'John Doe' }];
+    const posts: { id: number; title: string; author: string }[] = [];
     const dataProvider = {
         getOne: (resource, params) => {
             return Promise.resolve({
                 data: posts.find(p => p.id === params.id),
             });
         },
-        update: (resource, params) => {
+        create: (resource, params) => {
             return new Promise(resolve => {
                 setTimeout(() => {
-                    const post = posts.find(p => p.id === params.id);
-                    if (post) {
-                        post.title = params.data.title;
-                    }
+                    const post = { id: posts.length + 1, ...params.data };
+                    posts.push(post);
                     resolve({ data: post });
                 }, timeout);
             });
@@ -179,15 +175,17 @@ export const WithMiddlewaresSuccess = ({ timeout = 1000 }) => {
 const WithMiddlewaresSuccessCore = () => {
     const isMutating = useIsMutating();
     const [success, setSuccess] = useState<string>();
-    const { data, refetch } = useGetOne('posts', { id: 1 });
-    const [update, { isPending }] = useUpdate(
+    const { data, refetch } = useGetOne(
+        'posts',
+        { id: 1 },
+        { enabled: success === 'success' }
+    );
+    const [create, { isPending }] = useCreate(
         'posts',
         {
-            id: 1,
             data: { title: 'Hello World' },
         },
         {
-            mutationMode: 'pessimistic',
             // @ts-ignore
             getMutateWithMiddlewares: mutate => async (resource, params) => {
                 return mutate(resource, {
@@ -198,14 +196,12 @@ const WithMiddlewaresSuccessCore = () => {
         }
     );
     const handleClick = () => {
-        update(
+        create(
             'posts',
             {
-                id: 1,
                 data: { title: 'Hello World' },
             },
             {
-                mutationMode: 'pessimistic',
                 onSuccess: () => setSuccess('success'),
             }
         );
@@ -215,12 +211,10 @@ const WithMiddlewaresSuccessCore = () => {
             <dl>
                 <dt>title</dt>
                 <dd>{data?.title}</dd>
-                <dt>author</dt>
-                <dd>{data?.author}</dd>
             </dl>
             <div>
                 <button onClick={handleClick} disabled={isPending}>
-                    Update title
+                    Create post
                 </button>
                 &nbsp;
                 <button onClick={() => refetch()}>Refetch</button>
@@ -232,14 +226,14 @@ const WithMiddlewaresSuccessCore = () => {
 };
 
 export const WithMiddlewaresError = ({ timeout = 1000 }) => {
-    const posts = [{ id: 1, title: 'Hello', author: 'John Doe' }];
+    const posts: { id: number; title: string; author: string }[] = [];
     const dataProvider = {
         getOne: (resource, params) => {
             return Promise.resolve({
                 data: posts.find(p => p.id === params.id),
             });
         },
-        update: () => {
+        create: () => {
             return new Promise((resolve, reject) => {
                 setTimeout(() => {
                     reject(new Error('something went wrong'));
@@ -261,15 +255,17 @@ const WithMiddlewaresErrorCore = () => {
     const isMutating = useIsMutating();
     const [success, setSuccess] = useState<string>();
     const [error, setError] = useState<any>();
-    const { data, refetch } = useGetOne('posts', { id: 1 });
-    const [update, { isPending }] = useUpdate(
+    const { data, refetch } = useGetOne(
+        'posts',
+        { id: 1 },
+        { enabled: success === 'success' }
+    );
+    const [create, { isPending }] = useCreate(
         'posts',
         {
-            id: 1,
             data: { title: 'Hello World' },
         },
         {
-            mutationMode: 'pessimistic',
             // @ts-ignore
             getMutateWithMiddlewares: mutate => async (resource, params) => {
                 return mutate(resource, {
@@ -281,14 +277,12 @@ const WithMiddlewaresErrorCore = () => {
     );
     const handleClick = () => {
         setError(undefined);
-        update(
+        create(
             'posts',
             {
-                id: 1,
                 data: { title: 'Hello World' },
             },
             {
-                mutationMode: 'pessimistic',
                 onSuccess: () => setSuccess('success'),
                 onError: e => setError(e),
             }
@@ -299,12 +293,10 @@ const WithMiddlewaresErrorCore = () => {
             <dl>
                 <dt>title</dt>
                 <dd>{data?.title}</dd>
-                <dt>author</dt>
-                <dd>{data?.author}</dd>
             </dl>
             <div>
                 <button onClick={handleClick} disabled={isPending}>
-                    Update title
+                    Create post
                 </button>
                 &nbsp;
                 <button onClick={() => refetch()}>Refetch</button>

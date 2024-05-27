@@ -94,12 +94,14 @@ export const useUpdate = <RecordType extends RaRecord = any, ErrorType = Error>(
     const { id, data, meta } = params;
     const {
         mutationMode = 'pessimistic',
-        mutateWithMiddlewares,
+        getMutateWithMiddlewares,
         ...mutationOptions
     } = options;
     const mode = useRef<MutationMode>(mutationMode);
     const paramsRef = useRef<Partial<UpdateParams<RecordType>>>(params);
     const snapshot = useRef<Snapshot>([]);
+    // Ref that stores the mutation with middlewares to avoid losing them if the calling component is unmounted
+    const mutateWithMiddlewares = useRef(dataProvider.update);
     // We need to store the call-time onError and onSettled in refs to be able to call them in the useMutation hook even
     // when the calling component is unmounted
     const callTimeOnError =
@@ -209,20 +211,9 @@ export const useUpdate = <RecordType extends RaRecord = any, ErrorType = Error>(
                     'useUpdate mutation requires a non-empty data object'
                 );
             }
-            if (mutateWithMiddlewares) {
-                return mutateWithMiddlewares(
-                    dataProvider.update.bind(dataProvider),
-                    callTimeResource,
-                    {
-                        id: callTimeId,
-                        data: callTimeData,
-                        previousData: callTimePreviousData,
-                        meta: callTimeMeta,
-                    }
-                ).then(({ data }) => data);
-            }
-            return dataProvider
-                .update<RecordType>(callTimeResource, {
+
+            return mutateWithMiddlewares
+                .current(callTimeResource, {
                     id: callTimeId,
                     data: callTimeData,
                     previousData: callTimePreviousData,
@@ -338,6 +329,15 @@ export const useUpdate = <RecordType extends RaRecord = any, ErrorType = Error>(
             onSuccess,
             ...otherCallTimeOptions
         } = callTimeOptions;
+
+        // Store the mutation with middlewares to avoid losing them if the calling component is unmounted
+        if (getMutateWithMiddlewares) {
+            mutateWithMiddlewares.current = getMutateWithMiddlewares(
+                dataProvider.update.bind(dataProvider)
+            );
+        } else {
+            mutateWithMiddlewares.current = dataProvider.update;
+        }
 
         // We need to keep the onSuccess callback here and not in the useMutation for undoable mutations
         hasCallTimeOnSuccess.current = !!onSuccess;
@@ -515,11 +515,12 @@ export type UseUpdateOptions<
 > & {
     mutationMode?: MutationMode;
     returnPromise?: boolean;
-    mutateWithMiddlewares?: <
+    getMutateWithMiddlewares?: <
         UpdateFunctionType extends
             DataProvider['update'] = DataProvider['update'],
     >(
-        mutate: UpdateFunctionType,
+        mutate: UpdateFunctionType
+    ) => (
         ...Params: Parameters<UpdateFunctionType>
     ) => ReturnType<UpdateFunctionType>;
 };

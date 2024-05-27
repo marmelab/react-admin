@@ -248,7 +248,8 @@ const WithMiddlewaresCore = () => {
         },
         {
             mutationMode: 'undoable',
-            mutateWithMiddlewares: async (mutate, resource, params) => {
+            // @ts-ignore
+            getMutateWithMiddlewares: mutate => async (resource, params) => {
                 return mutate(resource, {
                     ...params,
                     data: { title: `${params.data.title} from middleware` },
@@ -356,7 +357,8 @@ const WithMiddlewaresErrorCore = () => {
         },
         {
             mutationMode: 'undoable',
-            mutateWithMiddlewares: async (mutate, resource, params) => {
+            // @ts-ignore
+            getMutateWithMiddlewares: mutate => async (resource, params) => {
                 return mutate(resource, {
                     ...params,
                     data: { title: `${params.data.title} from middleware` },
