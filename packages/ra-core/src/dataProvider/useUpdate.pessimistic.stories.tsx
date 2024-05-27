@@ -188,6 +188,7 @@ const WithMiddlewaresSuccessCore = () => {
         },
         {
             mutationMode: 'pessimistic',
+            // @ts-ignore
             getMutateWithMiddlewares: mutate => async (resource, params) => {
                 return mutate(resource, {
                     ...params,
@@ -269,6 +270,7 @@ const WithMiddlewaresErrorCore = () => {
         },
         {
             mutationMode: 'pessimistic',
+            // @ts-ignore
             getMutateWithMiddlewares: mutate => async (resource, params) => {
                 return mutate(resource, {
                     ...params,

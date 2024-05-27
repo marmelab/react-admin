@@ -186,6 +186,7 @@ const WithMiddlewaresSuccessCore = () => {
             data: { title: 'Hello World' },
         },
         {
+            // @ts-ignore
             getMutateWithMiddlewares: mutate => async (resource, params) => {
                 return mutate(resource, {
                     ...params,
@@ -265,6 +266,7 @@ const WithMiddlewaresErrorCore = () => {
             data: { title: 'Hello World' },
         },
         {
+            // @ts-ignore
             getMutateWithMiddlewares: mutate => async (resource, params) => {
                 return mutate(resource, {
                     ...params,
