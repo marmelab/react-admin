@@ -93,9 +93,9 @@ import { Layout } from 'react-admin';
 
 import { MyBreadcrumb } from './MyBreadcrumb';
 
-export const MyLayout = ({ children, ...rest }) => (
+export const MyLayout = ({ children }) => (
     <AppLocationContext>
-        <Layout {...rest}>
+        <Layout>
             <MyBreadcrumb />
             {children}
         </Layout>
