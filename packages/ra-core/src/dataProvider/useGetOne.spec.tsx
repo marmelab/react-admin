@@ -193,6 +193,59 @@ describe('useGetOne', () => {
         });
     });
 
+    it('should not execute success side effect on error on refetch', async () => {
+        jest.spyOn(console, 'error').mockImplementation(() => {});
+        const onSuccess = jest.fn();
+        const onError = jest.fn();
+        let index = 0;
+        const dataProvider = testDataProvider({
+            getOne: jest.fn().mockImplementation(() => {
+                if (index === 0) {
+                    index++;
+                    return Promise.resolve({ data: { id: 1, title: 'foo' } });
+                } else {
+                    return new Promise((resolve, reject) => {
+                        setTimeout(() => {
+                            reject(new Error('failed'));
+                        }, 100);
+                    });
+                }
+            }),
+        });
+        let localRefetch;
+        const callback = ({ refetch }) => {
+            localRefetch = refetch;
+        };
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
+                <UseGetOne
+                    resource="posts"
+                    id={1}
+                    options={{ onSuccess, onError, retry: false }}
+                    callback={callback}
+                />
+            </CoreAdminContext>
+        );
+        await waitFor(() => {
+            expect(dataProvider.getOne).toHaveBeenCalledTimes(1);
+        });
+        await waitFor(() => {
+            expect(onSuccess).toHaveBeenCalledTimes(1);
+            expect(onError).toHaveBeenCalledTimes(0);
+        });
+
+        await localRefetch();
+
+        await waitFor(() => {
+            expect(dataProvider.getOne).toHaveBeenCalledTimes(2);
+        });
+        await waitFor(() => {
+            expect(onSuccess).toHaveBeenCalledTimes(1);
+            expect(onError).toHaveBeenCalledTimes(1);
+        });
+        jest.clearAllMocks();
+    });
+
     it('should execute error side effects on failure', async () => {
         jest.spyOn(console, 'error').mockImplementationOnce(() => {});
         const dataProvider = testDataProvider({
