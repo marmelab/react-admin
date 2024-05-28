@@ -112,7 +112,12 @@ export const useGetList = <RecordType extends RaRecord = any>(
     }, [resource]);
 
     useEffect(() => {
-        if (result.data === undefined || result.isFetching) return;
+        if (
+            result.data === undefined ||
+            result.error != null ||
+            result.isFetching
+        )
+            return;
 
         // optimistically populate the getOne cache
         if (
@@ -131,7 +136,13 @@ export const useGetList = <RecordType extends RaRecord = any>(
             });
         }
         onSuccessEvent(result.data);
-    }, [onSuccessEvent, queryClient, result.data, result.isFetching]);
+    }, [
+        onSuccessEvent,
+        queryClient,
+        result.data,
+        result.error,
+        result.isFetching,
+    ]);
 
     useEffect(() => {
         if (result.error == null || result.isFetching) return;

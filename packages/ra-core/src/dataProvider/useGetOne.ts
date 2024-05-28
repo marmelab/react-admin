@@ -76,9 +76,14 @@ export const useGetOne = <RecordType extends RaRecord = any>(
     });
 
     useEffect(() => {
-        if (result.data === undefined || result.isFetching) return;
+        if (
+            result.data === undefined ||
+            result.error != null ||
+            result.isFetching
+        )
+            return;
         onSuccessEvent(result.data);
-    }, [onSuccessEvent, result.data, result.isFetching]);
+    }, [onSuccessEvent, result.data, result.error, result.isFetching]);
 
     useEffect(() => {
         if (result.error == null || result.isFetching) return;
