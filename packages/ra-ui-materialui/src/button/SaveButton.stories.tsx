@@ -10,7 +10,7 @@ export default {
 };
 
 export const Basic = () => (
-    <AdminContext>
+    <AdminContext defaultTheme="light">
         <Form>
             <SaveButton />
         </Form>
@@ -26,7 +26,7 @@ const MakeFormChange = () => {
 };
 
 export const Dirty = () => (
-    <AdminContext>
+    <AdminContext defaultTheme="light">
         <Form>
             <MakeFormChange />
             <SaveButton />
@@ -35,7 +35,7 @@ export const Dirty = () => (
 );
 
 export const AlwaysEnable = () => (
-    <AdminContext>
+    <AdminContext defaultTheme="light">
         <Form>
             <SaveButton alwaysEnable />
         </Form>
@@ -43,7 +43,7 @@ export const AlwaysEnable = () => (
 );
 
 export const Submitting = () => (
-    <AdminContext>
+    <AdminContext defaultTheme="light">
         <Form onSubmit={() => new Promise(() => {})}>
             <MakeFormChange />
             <SaveButton />

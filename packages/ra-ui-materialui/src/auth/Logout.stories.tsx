@@ -15,7 +15,7 @@ const MinimalAdmin = (props: { authenticated: boolean }) => {
         getPermissions: () => Promise.resolve(),
     };
     return (
-        <AdminContext authProvider={authProvider}>
+        <AdminContext authProvider={authProvider} defaultTheme="light">
             <Typography variant="h6">
                 Should {props.authenticated ? '' : 'not '}display logout button
             </Typography>

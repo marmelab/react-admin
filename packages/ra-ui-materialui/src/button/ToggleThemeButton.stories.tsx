@@ -100,25 +100,3 @@ export const Basic = () => (
         </Admin>
     </TestMemoryRouter>
 );
-
-const MyAppBar = () => (
-    <AppBar>
-        <TitlePortal />
-        <ToggleThemeButton darkTheme={{ palette: { mode: 'dark' } }} />
-    </AppBar>
-);
-const MyLayout = ({ children }) => (
-    <Layout appBar={MyAppBar}>{children}</Layout>
-);
-
-export const Legacy = () => (
-    <TestMemoryRouter initialEntries={['/books']}>
-        <Admin
-            store={memoryStore()}
-            dataProvider={dataProvider}
-            layout={MyLayout}
-        >
-            <Resource name="books" list={BookList} />
-        </Admin>
-    </TestMemoryRouter>
-);
