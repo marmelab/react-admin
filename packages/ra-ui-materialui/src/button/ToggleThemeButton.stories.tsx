@@ -5,8 +5,6 @@ import fakeRestDataProvider from 'ra-data-fakerest';
 
 import { List, Datagrid } from '../list';
 import { TextField } from '../field';
-import { AppBar, Layout, TitlePortal } from '../layout';
-import { ToggleThemeButton } from './ToggleThemeButton';
 
 export default { title: 'ra-ui-materialui/button/ToggleThemeButton' };
 
