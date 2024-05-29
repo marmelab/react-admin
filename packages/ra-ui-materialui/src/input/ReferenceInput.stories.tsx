@@ -16,8 +16,15 @@ import { Stack, Divider, Typography, Button, Paper } from '@mui/material';
 import { AdminContext } from '../AdminContext';
 import { Edit } from '../detail';
 import { SimpleForm } from '../form';
-import { SelectInput, RadioButtonGroupInput, TextInput } from '../input';
+import {
+    SelectInput,
+    RadioButtonGroupInput,
+    TextInput,
+    ArrayInput,
+    SimpleFormIterator,
+} from '../input';
 import { ReferenceInput } from './ReferenceInput';
+import { ListGuesser } from '../list/ListGuesser';
 
 export default {
     title: 'ra-ui-materialui/input/ReferenceInput',
@@ -621,6 +628,102 @@ export const QueryOptions = () => (
                 list={AuthorList}
             />
             <Resource name="books" edit={BookEditQueryOptions} />
+        </Admin>
+    </TestMemoryRouter>
+);
+
+const CollectionEdit = () => (
+    <Edit>
+        <SimpleForm>
+            <TextInput source="name" />
+            <ArrayInput source="books">
+                <SimpleFormIterator>
+                    <TextInput source="title" />
+                    <ReferenceInput
+                        reference="authors"
+                        source="author_id"
+                        perPage={1}
+                    />
+                </SimpleFormIterator>
+            </ArrayInput>
+        </SimpleForm>
+    </Edit>
+);
+
+export const InArrayInput = () => (
+    <TestMemoryRouter initialEntries={['/collections/1']}>
+        <Admin
+            dataProvider={fakeRestDataProvider(
+                {
+                    collections: [
+                        {
+                            id: 1,
+                            name: 'Novels',
+                            books: [
+                                {
+                                    title: 'War and Peace',
+                                    author_id: 1,
+                                    summary:
+                                        "War and Peace broadly focuses on Napoleon's invasion of Russia, and the impact it had on Tsarist society. The book explores themes such as revolution, revolution and empire, the growth and decline of various states and the impact it had on their economies, culture, and society.",
+                                    year: 1869,
+                                },
+                                {
+                                    title: 'Les misérables',
+                                    author_id: 2,
+                                    summary:
+                                        'Les Misérables is a French historical novel by Victor Hugo, first published in 1862, that is considered one of the greatest novels of the 19th century.',
+                                    year: 1862,
+                                },
+                            ],
+                        },
+                    ],
+                    authors: [
+                        {
+                            id: 1,
+                            first_name: 'Leo',
+                            last_name: 'Tolstoy',
+                            language: 'Russian',
+                        },
+                        {
+                            id: 2,
+                            first_name: 'Victor',
+                            last_name: 'Hugo',
+                            language: 'French',
+                        },
+                        {
+                            id: 3,
+                            first_name: 'William',
+                            last_name: 'Shakespeare',
+                            language: 'English',
+                        },
+                        {
+                            id: 4,
+                            first_name: 'Charles',
+                            last_name: 'Baudelaire',
+                            language: 'French',
+                        },
+                        {
+                            id: 5,
+                            first_name: 'Marcel',
+                            last_name: 'Proust',
+                            language: 'French',
+                        },
+                    ],
+                },
+                process.env.NODE_ENV === 'development'
+            )}
+        >
+            <Resource
+                name="authors"
+                recordRepresentation={record =>
+                    `${record.first_name} ${record.last_name}`
+                }
+            />
+            <Resource
+                name="collections"
+                list={ListGuesser}
+                edit={CollectionEdit}
+            />
         </Admin>
     </TestMemoryRouter>
 );

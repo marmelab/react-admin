@@ -18,6 +18,7 @@ import {
     dataProviderWithAuthors,
     SelfReference,
     QueryOptions,
+    InArrayInput,
 } from './ReferenceInput.stories';
 
 describe('<ReferenceInput />', () => {
@@ -275,5 +276,14 @@ describe('<ReferenceInput />', () => {
         await screen.findByText(
             '<ReferenceInput> does not accept a validate prop. Set the validate prop on the child instead.'
         );
+    });
+
+    it('should work in an ArrayInput', async () => {
+        render(<InArrayInput />);
+        await screen.findByDisplayValue('Novels');
+        await screen.findByDisplayValue('War and Peace');
+        await screen.findByDisplayValue('Leo Tolstoy');
+        await screen.findByDisplayValue('Les misérables');
+        await screen.findByDisplayValue('Victor Hugo');
     });
 });
