@@ -186,6 +186,7 @@ export const useReferenceInputController = <RecordType extends RaRecord = any>(
         setPerPage: paramsModifiers.setPerPage,
         setSort: paramsModifiers.setSort,
         showFilter: paramsModifiers.showFilter,
+        // we return source and not finalSource because child inputs (e.g. AutocompleteInput) already call useInput and compute the final source
         source,
         total: finalTotal,
         hasNextPage: pageInfo
