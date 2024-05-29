@@ -984,7 +984,7 @@ const Dashboard = () => {
     { field: "date", order: "desc" }
   );
 
-  return <Timeline isPending={isPending} records={data} />;
+  return <Timeline isLoading={isPending} records={data} />;
 };
 ```
 
