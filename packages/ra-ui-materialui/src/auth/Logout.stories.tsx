@@ -1,4 +1,4 @@
-import { Typography } from '@mui/material';
+import { Typography, Paper } from '@mui/material';
 import * as React from 'react';
 import { AdminContext } from '../AdminContext';
 import { Logout } from './Logout';
@@ -15,11 +15,14 @@ const MinimalAdmin = (props: { authenticated: boolean }) => {
         getPermissions: () => Promise.resolve(),
     };
     return (
-        <AdminContext authProvider={authProvider} defaultTheme="light">
-            <Typography variant="h6">
-                Should {props.authenticated ? '' : 'not '}display logout button
-            </Typography>
-            <Logout />
+        <AdminContext authProvider={authProvider}>
+            <Paper>
+                <Typography variant="h6">
+                    Should {props.authenticated ? '' : 'not '}display logout
+                    button
+                </Typography>
+                <Logout />
+            </Paper>
         </AdminContext>
     );
 };
