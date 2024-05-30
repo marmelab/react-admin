@@ -24,7 +24,7 @@ const TextFieldImpl = <
             {...sanitizeFieldRestProps(rest)}
         >
             {value != null && typeof value !== 'string'
-                ? JSON.stringify(value)
+                ? value.toString()
                 : value ||
                   (emptyText ? translate(emptyText, { _: emptyText }) : null)}
         </Typography>
