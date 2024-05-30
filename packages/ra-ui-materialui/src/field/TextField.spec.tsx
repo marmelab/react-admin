@@ -112,4 +112,15 @@ describe('<TextField />', () => {
 
         expect(screen.getByText('Not found')).not.toBeNull();
     });
+
+    it('should call toString on a value that is not a string', () => {
+        const record = {
+            id: 123,
+            type: ['Rock', 'Folk Rock'],
+        };
+        const { queryByText } = render(
+            <TextField record={record} source="type" />
+        );
+        expect(queryByText('Rock,Folk Rock')).not.toBeNull();
+    });
 });
