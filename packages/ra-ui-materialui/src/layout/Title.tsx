@@ -35,15 +35,15 @@ export const Title = (props: TitleProps) => {
     warning(!defaultTitle && !title, 'Missing title prop in <Title> element');
 
     const pageTitle =
-        preferenceKey !== undefined ? (
+        preferenceKey === false ? (
+            <PageTitle title={title} defaultTitle={defaultTitle} {...rest} />
+        ) : (
             <PageTitleConfigurable
                 title={title}
                 defaultTitle={defaultTitle}
-                preferenceKey={preferenceKey || `${pathname}.title`}
+                preferenceKey={preferenceKey}
                 {...rest}
             />
-        ) : (
-            <PageTitle title={title} defaultTitle={defaultTitle} {...rest} />
         );
 
     return <>{createPortal(pageTitle, container)}</>;
@@ -54,5 +54,5 @@ export interface TitleProps {
     defaultTitle?: TitleComponent;
     record?: Partial<RaRecord>;
     title?: string | ReactElement;
-    preferenceKey?: string;
+    preferenceKey?: string | false;
 }
