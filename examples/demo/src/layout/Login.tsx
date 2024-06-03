@@ -4,6 +4,7 @@ import { useLocation } from 'react-router-dom';
 
 import {
     Avatar,
+    Box,
     Button,
     Card,
     CardActions,
@@ -18,8 +19,6 @@ import {
     useLogin,
     useNotify,
 } from 'react-admin';
-
-import Box from '@mui/material/Box';
 
 const Login = () => {
     const [loading, setLoading] = useState(false);
