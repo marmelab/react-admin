@@ -167,6 +167,31 @@ describe('useDelete', () => {
         });
     });
 
+    it('should delete record even if id is zero', async () => {
+        const dataProvider = testDataProvider({
+            delete: jest.fn(() => Promise.resolve({ data: { id: 0 } } as any)),
+        });
+        let localDeleteOne;
+        const Dummy = () => {
+            const [deleteOne] = useDelete();
+            localDeleteOne = deleteOne;
+            return <span />;
+        };
+
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
+                <Dummy />
+            </CoreAdminContext>
+        );
+        localDeleteOne('foo', { id: 0, previousData: { id: 0, bar: 'bar' } });
+        await waitFor(() => {
+            expect(dataProvider.delete).toHaveBeenCalledWith('foo', {
+                id: 0,
+                previousData: { id: 0, bar: 'bar' },
+            });
+        });
+    });
+
     describe('mutationOptions', () => {
         it('when pessimistic, executes success side effects on success', async () => {
             const onSuccess = jest.fn();
