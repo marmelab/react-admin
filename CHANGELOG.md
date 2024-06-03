@@ -1,5 +1,15 @@
 # Changelog
 
+## v5.0.0-beta.3
+
+* Fix React requirement is too strict on npm ([#9879](https://github.com/marmelab/react-admin/pull/9879)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix success side effects run after error on refetch ([#9878](https://github.com/marmelab/react-admin/pull/9878)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<TextField>` should call `toString` instead of `JSON.stringify` for non-string values ([#9888](https://github.com/marmelab/react-admin/pull/9888)) ([slax57](https://github.com/slax57))
+* Fix `<ReferenceInput>` in `<ArrayInput>` ([#9882](https://github.com/marmelab/react-admin/pull/9882)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Update `ra-audit-log` chapter ([#9881](https://github.com/marmelab/react-admin/pull/9881)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Doc] Update `ra-navigation` chapter ([#9877](https://github.com/marmelab/react-admin/pull/9877)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Storybook] Fix some stories appear broken on devices which prefer dark mode ([#9880](https://github.com/marmelab/react-admin/pull/9880)) ([slax57](https://github.com/slax57))
+
 ## v5.0.0-beta.2
 
 * Fix middlewares do not handle optimistic cases ([#9875](https://github.com/marmelab/react-admin/pull/9875)) ([djhi](https://github.com/djhi))
