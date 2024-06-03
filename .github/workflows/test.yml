@@ -27,7 +27,7 @@ jobs:
     - name: Zip packages build artifact
       run: zip packages-build.zip -r examples/data-generator/dist packages/*/dist
     - name: Upload packages build artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: packages-build
         path: packages-build.zip
@@ -47,7 +47,7 @@ jobs:
     - name: Install dependencies
       run: yarn
     - name: Download packages build artifact
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: packages-build
     - name: Unzip packages build artifact
@@ -111,7 +111,7 @@ jobs:
       - name: Install dependencies
         run: yarn
       - name: Download packages build artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: packages-build
       - name: Unzip packages build artifact
@@ -145,7 +145,7 @@ jobs:
       - name: Install dependencies
         run: yarn
       - name: Download packages build artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: packages-build
       - name: Unzip packages build artifact
@@ -173,7 +173,7 @@ jobs:
       - name: Install dependencies
         run: yarn
       - name: Download demo build
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: demo-build
       - name: Unzip demo build
