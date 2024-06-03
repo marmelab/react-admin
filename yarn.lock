@@ -10224,7 +10224,7 @@ __metadata:
     rimraf: "npm:^3.0.2"
     typescript: "npm:^5.1.3"
   peerDependencies:
-    ra-core: ^4.0.0
+    ra-core: ^5.0.0-beta.3
   languageName: unknown
   linkType: soft
 
@@ -18793,7 +18793,7 @@ __metadata:
     rimraf: "npm:^3.0.2"
     typescript: "npm:^5.1.3"
   peerDependencies:
-    ra-core: ^4.0.0
+    ra-core: ^5.0.0-beta.3
   languageName: unknown
   linkType: soft
 
