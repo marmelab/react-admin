@@ -204,7 +204,7 @@ export const useDelete = <
                     'useDelete mutation requires a non-empty resource'
                 );
             }
-            if (callTimeId === undefined || callTimeId === null) {
+            if (callTimeId == null) {
                 throw new Error('useDelete mutation requires a non-empty id');
             }
             return dataProvider
