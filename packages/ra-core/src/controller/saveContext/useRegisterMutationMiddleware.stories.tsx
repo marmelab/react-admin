@@ -3,12 +3,12 @@ import { useCallback } from 'react';
 import {
     AdminContext,
     Create,
+    DataProvider,
     ImageField,
     ImageInput,
     ImageInputProps,
     Middleware,
     SimpleForm,
-    UseCreateResult,
     useRegisterMutationMiddleware,
 } from 'react-admin';
 import get from 'lodash/get';
@@ -16,12 +16,12 @@ import set from 'lodash/set';
 import fakerestDataProvider from 'ra-data-fakerest';
 
 export default {
-    title: 'ra-ui-materialui/forms/useRegisterMutationMiddleware',
+    title: 'ra-core/form/useRegisterMutationMiddleware',
 };
 
 const handleImageUpload =
-    (source: string): Middleware<UseCreateResult[0]> =>
-    async (resource, params, options, next) => {
+    (source: string): Middleware<DataProvider['create']> =>
+    async (resource, params, next) => {
         console.log('ORIGINAL DATA', params?.data);
         const images = get(params?.data, source);
 
@@ -37,15 +37,10 @@ const handleImageUpload =
             );
             const newData = set({ ...params?.data }, source, newImages);
 
-            await next(
-                resource,
-                {
-                    ...params,
-                    data: newData,
-                },
-                options
-            );
-            return;
+            return next(resource, {
+                ...params,
+                data: newData,
+            });
         }
 
         const b64 = await convertFileToBase64(images);
@@ -54,14 +49,10 @@ const handleImageUpload =
             src: b64,
         });
 
-        await next(
-            resource,
-            {
-                ...params,
-                data: newData,
-            },
-            options
-        );
+        return next(resource, {
+            ...params,
+            data: newData,
+        });
     };
 
 const convertFileToBase64 = file =>
@@ -79,9 +70,9 @@ const convertFileToBase64 = file =>
     });
 
 const MyImageInput = (props: Omit<ImageInputProps, 'children'>) => {
-    const middleware = useCallback<Middleware<UseCreateResult[0]>>(
-        (resource, params, options, next) =>
-            handleImageUpload(props.source)(resource, params, options, next),
+    const middleware = useCallback<Middleware<DataProvider['create']>>(
+        (resource, params, next) =>
+            handleImageUpload(props.source)(resource, params, next),
         [props.source]
     );
 
@@ -106,6 +97,24 @@ export const Basic = () => {
             <Create resource="posts">
                 <SimpleForm>
                     <MyImageInput source="thumbnail" />
+                </SimpleForm>
+            </Create>
+        </AdminContext>
+    );
+};
+
+export const Multiple = () => {
+    const dataProvider = fakerestDataProvider(
+        {
+            posts: [],
+        },
+        true
+    );
+    return (
+        <AdminContext dataProvider={dataProvider} defaultTheme="light">
+            <Create resource="posts">
+                <SimpleForm>
+                    <MyImageInput source="thumbnail" multiple />
                 </SimpleForm>
             </Create>
         </AdminContext>
