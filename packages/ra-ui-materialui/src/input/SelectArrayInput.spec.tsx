@@ -670,7 +670,7 @@ describe('<SelectArrayInput />', () => {
         expect(await screen.findAllByText('Foo')).toHaveLength(2);
     });
 
-    describe('inside ReferenceInput', () => {
+    describe('inside ReferenceArrayInput', () => {
         it('should use the recordRepresentation as optionText', async () => {
             render(<InsideReferenceArrayInput />);
             await screen.findByText('Leo Tolstoy');
