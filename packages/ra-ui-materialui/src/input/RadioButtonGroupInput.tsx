@@ -10,7 +10,13 @@ import {
 import { RadioGroupProps } from '@mui/material/RadioGroup';
 import { FormControlProps } from '@mui/material/FormControl';
 import get from 'lodash/get';
-import { useInput, FieldTitle, ChoicesProps, useChoicesContext } from 'ra-core';
+import {
+    useInput,
+    FieldTitle,
+    ChoicesProps,
+    useChoicesContext,
+    useGetRecordRepresentation,
+} from 'ra-core';
 
 import { CommonInputProps } from './CommonInputProps';
 import { sanitizeInputRestProps } from './sanitizeInputRestProps';
@@ -93,7 +99,7 @@ export const RadioButtonGroupInput = (props: RadioButtonGroupInputProps) => {
         onBlur,
         onChange,
         options = defaultOptions,
-        optionText = 'name',
+        optionText,
         optionValue = 'id',
         parse,
         resource: resourceProp,
@@ -142,6 +148,8 @@ export const RadioButtonGroupInput = (props: RadioButtonGroupInputProps) => {
         validate,
         ...rest,
     });
+
+    const getRecordRepresentation = useGetRecordRepresentation(resource);
 
     const { error, invalid } = fieldState;
 
@@ -193,7 +201,10 @@ export const RadioButtonGroupInput = (props: RadioButtonGroupInputProps) => {
                     <RadioButtonGroupInputItem
                         key={get(choice, optionValue)}
                         choice={choice}
-                        optionText={optionText}
+                        optionText={
+                            optionText ??
+                            (isFromReference ? getRecordRepresentation : 'name')
+                        }
                         optionValue={optionValue}
                         source={id}
                         translateChoice={translateChoice ?? !isFromReference}

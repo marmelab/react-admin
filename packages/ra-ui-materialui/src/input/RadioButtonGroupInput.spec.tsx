@@ -249,7 +249,7 @@ describe('<RadioButtonGroupInput />', () => {
     it('should use optionText with an element value as text identifier', () => {
         const Foobar = () => {
             const record = useRecordContext();
-            return <span data-testid="label">{record.longname}</span>;
+            return <span data-testid="label">{record?.longname}</span>;
         };
         render(
             <AdminContext dataProvider={testDataProvider()}>
@@ -477,9 +477,9 @@ describe('<RadioButtonGroupInput />', () => {
         it('should use the recordRepresentation as optionText', async () => {
             render(<InsideReferenceArrayInput />);
 
-            await screen.findByText('Lifestyle');
-            await screen.findByText('Tech');
-            await screen.findByText('People');
+            await screen.findByText('Lifestyle (Lifestyle details)');
+            await screen.findByText('Tech (Tech details)');
+            await screen.findByText('People (People details)');
         });
     });
 });
