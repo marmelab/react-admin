@@ -491,7 +491,10 @@ export const InsideReferenceInputWithError = () => (
         <Admin
             dataProvider={{
                 ...dataProviderWithAuthors,
-                getList: () => Promise.reject('error'),
+                getList: () =>
+                    Promise.reject(
+                        new Error('Error while fetching the authors')
+                    ),
             }}
         >
             <Resource

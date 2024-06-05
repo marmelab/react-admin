@@ -303,7 +303,7 @@ describe('<SelectInput />', () => {
             const Foobar = () => {
                 const record = useRecordContext();
                 return (
-                    <span data-value={record.id} aria-label={record.foobar} />
+                    <span data-value={record?.id} aria-label={record?.foobar} />
                 );
             };
             render(

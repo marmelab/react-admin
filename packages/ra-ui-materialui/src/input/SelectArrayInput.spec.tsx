@@ -11,6 +11,8 @@ import {
     DifferentIdTypes,
     TranslateChoice,
     InsideArrayInput,
+    InsideReferenceInput,
+    InsideReferenceInputDefaultValue,
 } from './SelectArrayInput.stories';
 
 describe('<SelectArrayInput />', () => {
@@ -177,7 +179,7 @@ describe('<SelectArrayInput />', () => {
     it('should use optionText with an element value as text identifier', () => {
         const Foobar = () => {
             const record = useRecordContext();
-            return <span>{record.foobar}</span>;
+            return <span>{record?.foobar}</span>;
         };
         render(
             <AdminContext dataProvider={testDataProvider()}>
@@ -560,7 +562,7 @@ describe('<SelectArrayInput />', () => {
         });
     });
 
-    it('should recive a value on change when creating a new choice', async () => {
+    it('should receive a value on change when creating a new choice', async () => {
         jest.spyOn(console, 'warn').mockImplementation(() => {});
         const choices = [...defaultProps.choices];
         const newChoice = { id: 'js_fatigue', name: 'New Kid On The Block' };
@@ -603,7 +605,7 @@ describe('<SelectArrayInput />', () => {
         });
     });
 
-    it('should show selected values when ids type are inconsistant', async () => {
+    it('should show selected values when ids type are inconsistent', async () => {
         render(<DifferentIdTypes />);
         await waitFor(() => {
             expect(screen.queryByText('artist_1')).not.toBeNull();
@@ -666,5 +668,26 @@ describe('<SelectArrayInput />', () => {
         await screen.findByText('Foo');
         fireEvent.click(screen.getByLabelText('Add'));
         expect(await screen.findAllByText('Foo')).toHaveLength(2);
+    });
+
+    describe('inside ReferenceInput', () => {
+        it('should use the recordRepresentation as optionText', async () => {
+            render(<InsideReferenceInput />);
+            await screen.findByText('Leo Tolstoy');
+        });
+        it('should not change an undefined value to empty string', async () => {
+            const onSuccess = jest.fn();
+            render(<InsideReferenceInputDefaultValue onSuccess={onSuccess} />);
+            const input = await screen.findByDisplayValue('War and Peace');
+            fireEvent.change(input, { target: { value: 'War' } });
+            screen.getByText('Save').click();
+            await waitFor(() => {
+                expect(onSuccess).toHaveBeenCalledWith(
+                    expect.objectContaining({ authors: undefined }),
+                    expect.anything(),
+                    expect.anything()
+                );
+            });
+        });
     });
 });

@@ -9,7 +9,6 @@ import {
     TextField,
 } from '@mui/material';
 import fakeRestProvider from 'ra-data-fakerest';
-import { useWatch } from 'react-hook-form';
 
 import { AdminContext } from '../AdminContext';
 import { Create, Edit } from '../detail';
@@ -19,22 +18,13 @@ import { ReferenceArrayInput } from './ReferenceArrayInput';
 import { useCreateSuggestionContext } from './useSupportCreateSuggestion';
 import { TextInput } from './TextInput';
 import { ArrayInput, SimpleFormIterator } from './ArrayInput';
+import { Resource, TestMemoryRouter } from 'ra-core';
+import { Admin } from 'react-admin';
+import { FormInspector } from './common';
 
 export default { title: 'ra-ui-materialui/input/SelectArrayInput' };
 
 const i18nProvider = polyglotI18nProvider(() => englishMessages);
-
-const FormInspector = ({ source }) => {
-    const value = useWatch({ name: source });
-    return (
-        <div style={{ backgroundColor: 'lightgrey' }}>
-            {source} value in form:&nbsp;
-            <code>
-                {JSON.stringify(value)} ({typeof value})
-            </code>
-        </div>
-    );
-};
 
 export const Basic = () => (
     <AdminContext i18nProvider={i18nProvider} defaultTheme="light">
@@ -122,7 +112,7 @@ export const InsideArrayInput = () => (
                         />
                     </SimpleFormIterator>
                 </ArrayInput>
-                <FormInspector source="items" />
+                <FormInspector name="items" />
             </SimpleForm>
         </Create>
     </AdminContext>
@@ -337,3 +327,194 @@ export const TranslateChoice = () => {
         </AdminContext>
     );
 };
+
+const authors = [
+    { id: 1, first_name: 'Leo', last_name: 'Tolstoy', language: 'Russian' },
+    { id: 2, first_name: 'Victor', last_name: 'Hugo', language: 'French' },
+    {
+        id: 3,
+        first_name: 'William',
+        last_name: 'Shakespeare',
+        language: 'English',
+    },
+    {
+        id: 4,
+        first_name: 'Charles',
+        last_name: 'Baudelaire',
+        language: 'French',
+    },
+    { id: 5, first_name: 'Marcel', last_name: 'Proust', language: 'French' },
+];
+
+const dataProviderWithAuthors = {
+    getOne: () =>
+        Promise.resolve({
+            data: {
+                id: 1,
+                title: 'War and Peace',
+                authors: [1],
+                summary:
+                    "War and Peace broadly focuses on Napoleon's invasion of Russia, and the impact it had on Tsarist society. The book explores themes such as revolution, revolution and empire, the growth and decline of various states and the impact it had on their economies, culture, and society.",
+                year: 1869,
+            },
+        }),
+    getMany: (_resource, params) =>
+        Promise.resolve({
+            data: authors.filter(author => params.ids.includes(author.id)),
+        }),
+    getList: () =>
+        new Promise(resolve => {
+            // eslint-disable-next-line eqeqeq
+            setTimeout(
+                () =>
+                    resolve({
+                        data: authors,
+                        total: authors.length,
+                    }),
+                500
+            );
+            return;
+        }),
+    update: (_resource, params) => Promise.resolve(params),
+    create: (_resource, params) => {
+        const newAuthor = {
+            id: authors.length + 1,
+            first_name: params.data.first_name,
+            last_name: params.data.last_name,
+            language: params.data.language,
+        };
+        authors.push(newAuthor);
+        return Promise.resolve({ data: newAuthor });
+    },
+} as any;
+
+export const InsideReferenceInput = () => (
+    <TestMemoryRouter initialEntries={['/books/1']}>
+        <Admin dataProvider={dataProviderWithAuthors}>
+            <Resource
+                name="authors"
+                recordRepresentation={record =>
+                    `${record.first_name} ${record.last_name}`
+                }
+            />
+            <Resource
+                name="books"
+                edit={() => (
+                    <Edit
+                        mutationMode="pessimistic"
+                        mutationOptions={{
+                            onSuccess: data => {
+                                console.log(data);
+                            },
+                        }}
+                    >
+                        <SimpleForm>
+                            <ReferenceArrayInput
+                                reference="authors"
+                                source="authors"
+                            >
+                                <SelectArrayInput />
+                            </ReferenceArrayInput>
+                            <FormInspector name="authors" />
+                        </SimpleForm>
+                    </Edit>
+                )}
+            />
+        </Admin>
+    </TestMemoryRouter>
+);
+
+export const InsideReferenceInputDefaultValue = ({
+    onSuccess = console.log,
+}) => (
+    <TestMemoryRouter initialEntries={['/books/1']}>
+        <Admin
+            dataProvider={{
+                ...dataProviderWithAuthors,
+                getOne: () =>
+                    Promise.resolve({
+                        data: {
+                            id: 1,
+                            title: 'War and Peace',
+                            // trigger default value
+                            author: undefined,
+                            summary:
+                                "War and Peace broadly focuses on Napoleon's invasion of Russia, and the impact it had on Tsarist society. The book explores themes such as revolution, revolution and empire, the growth and decline of various states and the impact it had on their economies, culture, and society.",
+                            year: 1869,
+                        },
+                    }),
+            }}
+        >
+            <Resource
+                name="authors"
+                recordRepresentation={record =>
+                    `${record.first_name} ${record.last_name}`
+                }
+            />
+            <Resource
+                name="books"
+                edit={() => (
+                    <Edit
+                        mutationMode="pessimistic"
+                        mutationOptions={{ onSuccess }}
+                    >
+                        <SimpleForm>
+                            <TextInput source="title" />
+                            <ReferenceArrayInput
+                                reference="authors"
+                                source="authors"
+                            >
+                                <SelectArrayInput />
+                            </ReferenceArrayInput>
+                            <FormInspector name="authors" />
+                        </SimpleForm>
+                    </Edit>
+                )}
+            />
+        </Admin>
+    </TestMemoryRouter>
+);
+
+export const InsideReferenceInputWithError = () => (
+    <TestMemoryRouter initialEntries={['/books/1']}>
+        <Admin
+            dataProvider={{
+                ...dataProviderWithAuthors,
+                getList: () =>
+                    Promise.reject(
+                        new Error('Error while fetching the authors')
+                    ),
+            }}
+        >
+            <Resource
+                name="authors"
+                recordRepresentation={record =>
+                    `${record.first_name} ${record.last_name}`
+                }
+            />
+            <Resource
+                name="books"
+                edit={() => (
+                    <Edit
+                        mutationMode="pessimistic"
+                        mutationOptions={{
+                            onSuccess: data => {
+                                console.log(data);
+                            },
+                        }}
+                    >
+                        <SimpleForm>
+                            <ReferenceArrayInput
+                                reference="authors"
+                                source="authors"
+                            >
+                                <SelectArrayInput />
+                            </ReferenceArrayInput>
+                            <FormInspector name="authors" />
+                        </SimpleForm>
+                    </Edit>
+                )}
+            />
+        </Admin>
+    </TestMemoryRouter>
+);
