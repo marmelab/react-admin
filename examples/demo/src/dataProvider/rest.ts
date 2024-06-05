@@ -8,9 +8,6 @@ const delayedDataProvider = new Proxy(restProvider, {
         if (name === 'then') {
             return self;
         }
-        if (name === 'supportAbortSignal') {
-            return restProvider.supportAbortSignal;
-        }
         return (resource: string, params: any) =>
             new Promise(resolve =>
                 setTimeout(
@@ -22,5 +19,4 @@ const delayedDataProvider = new Proxy(restProvider, {
     },
 });
 
-delayedDataProvider.supportAbortSignal = import.meta.env.MODE === 'production';
 export default delayedDataProvider;
