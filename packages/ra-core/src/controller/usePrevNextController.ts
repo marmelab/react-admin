@@ -6,7 +6,7 @@ import {
 import { useResourceContext } from '../core';
 import { useDataProvider } from '../dataProvider';
 import { useStore } from '../store';
-import { FilterPayload, GetListParams, RaRecord, SortPayload } from '../types';
+import { FilterPayload, RaRecord, SortPayload } from '../types';
 import { ListParams, SORT_ASC } from './list';
 import { useRecordContext } from './record';
 import { useCreatePath } from '../routing';
@@ -191,15 +191,13 @@ export const usePrevNextController = <RecordType extends RaRecord = any>(
     const { data, error, isFetching, isLoading, isPending } = useQuery({
         queryKey: [resource, 'getList', params],
         queryFn: queryParams => {
-            const dataProviderParams: GetListParams = {
+            return dataProvider.getList(resource, {
                 ...params,
-                signal: undefined,
-            };
-
-            if (dataProvider.supportAbortSignal === true) {
-                dataProviderParams.signal = queryParams.signal;
-            }
-            return dataProvider.getList(resource, dataProviderParams);
+                signal:
+                    dataProvider.supportAbortSignal === true
+                        ? queryParams.signal
+                        : undefined,
+            });
         },
         enabled: !canUseCacheData,
         ...otherQueryOptions,

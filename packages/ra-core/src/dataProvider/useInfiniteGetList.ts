@@ -103,22 +103,20 @@ export const useInfiniteGetList = <RecordType extends RaRecord = any>(
         ],
         queryFn: queryParams => {
             const { pageParam = pagination.page } = queryParams;
-            const dataProviderParams: GetListParams = {
-                pagination: {
-                    page: pageParam,
-                    perPage: pagination.perPage,
-                },
-                sort,
-                filter,
-                meta,
-                signal: undefined,
-            };
-
-            if (dataProvider.supportAbortSignal === true) {
-                dataProviderParams.signal = queryParams.signal;
-            }
             return dataProvider
-                .getList<RecordType>(resource, dataProviderParams)
+                .getList<RecordType>(resource, {
+                    pagination: {
+                        page: pageParam,
+                        perPage: pagination.perPage,
+                    },
+                    sort,
+                    filter,
+                    meta,
+                    signal:
+                        dataProvider.supportAbortSignal === true
+                            ? queryParams.signal
+                            : undefined,
+                })
                 .then(({ data, pageInfo, total }) => ({
                     data,
                     total,

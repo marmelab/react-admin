@@ -116,7 +116,9 @@ export const useGetManyAggregate = <RecordType extends RaRecord = any>(
                     // no need to call the dataProvider
                     return resolve([]);
                 }
-                const dataProviderParams: GetManyCallArgs = {
+
+                // debounced / batched fetch
+                return callGetManyQueries({
                     resource,
                     ids,
                     meta,
@@ -124,14 +126,11 @@ export const useGetManyAggregate = <RecordType extends RaRecord = any>(
                     reject,
                     dataProvider,
                     queryClient,
-                    signal: undefined,
-                };
-
-                if (dataProvider.supportAbortSignal === true) {
-                    dataProviderParams.signal = queryParams.signal;
-                }
-                // debounced / batched fetch
-                return callGetManyQueries(dataProviderParams);
+                    signal:
+                        dataProvider.supportAbortSignal === true
+                            ? queryParams.signal
+                            : undefined,
+                });
             }),
         placeholderData,
         retry: false,
@@ -344,19 +343,17 @@ const callGetManyQueries = batch((calls: GetManyCallArgs[]) => {
                         meta: uniqueMeta,
                     },
                 ],
-                queryFn: queryParams => {
-                    const dataProviderParams: GetManyParams = {
-                        ids: aggregatedIds,
-                        meta: uniqueMeta,
-                        signal: undefined,
-                    };
-                    if (dataProvider.supportAbortSignal === true) {
-                        dataProviderParams.signal = queryParams.signal;
-                    }
-                    return dataProvider
-                        .getMany<any>(resource, dataProviderParams)
-                        .then(({ data }) => data);
-                },
+                queryFn: queryParams =>
+                    dataProvider
+                        .getMany<any>(resource, {
+                            ids: aggregatedIds,
+                            meta: uniqueMeta,
+                            signal:
+                                dataProvider.supportAbortSignal === true
+                                    ? queryParams.signal
+                                    : undefined,
+                        })
+                        .then(({ data }) => data),
             })
             .then(data => {
                 callsForResource.forEach(({ ids, resolve }) => {

@@ -83,26 +83,23 @@ export const useGetList = <RecordType extends RaRecord = any>(
         GetListResult<RecordType>
     >({
         queryKey: [resource, 'getList', { pagination, sort, filter, meta }],
-        queryFn: queryParams => {
-            const dataProviderParams: GetListParams = {
-                pagination,
-                sort,
-                filter,
-                meta,
-                signal: undefined,
-            };
-
-            if (dataProvider.supportAbortSignal === true) {
-                dataProviderParams.signal = queryParams.signal;
-            }
-            return dataProvider
-                .getList<RecordType>(resource, dataProviderParams)
+        queryFn: queryParams =>
+            dataProvider
+                .getList<RecordType>(resource, {
+                    pagination,
+                    sort,
+                    filter,
+                    meta,
+                    signal:
+                        dataProvider.supportAbortSignal === true
+                            ? queryParams.signal
+                            : undefined,
+                })
                 .then(({ data, total, pageInfo }) => ({
                     data,
                     total,
                     pageInfo,
-                }));
-        },
+                })),
         ...queryOptions,
     });
 

@@ -100,21 +100,20 @@ export const useGetManyReference = <RecordType extends RaRecord = any>(
                 // check at runtime to support partial parameters with the enabled option
                 return Promise.reject(new Error('target and id are required'));
             }
-            const dataProviderParams: GetManyReferenceParams = {
-                target,
-                id,
-                pagination,
-                sort,
-                filter,
-                meta,
-                signal: undefined,
-            };
 
-            if (dataProvider.supportAbortSignal === true) {
-                dataProviderParams.signal = queryParams.signal;
-            }
             return dataProvider
-                .getManyReference<RecordType>(resource, dataProviderParams)
+                .getManyReference<RecordType>(resource, {
+                    target,
+                    id,
+                    pagination,
+                    sort,
+                    filter,
+                    meta,
+                    signal:
+                        dataProvider.supportAbortSignal === true
+                            ? queryParams.signal
+                            : undefined,
+                })
                 .then(({ data, total, pageInfo }) => ({
                     data,
                     total,
