@@ -213,7 +213,7 @@ const buildGraphQLProvider = (options: Options): DataProvider => {
         );
     };
 
-    const raDataProvider = {
+    const raDataProvider: DataProvider = {
         create: (resource, params) => callApollo(CREATE, resource, params),
         delete: (resource, params) => callApollo(DELETE, resource, params),
         deleteMany: (resource, params) =>
@@ -227,6 +227,8 @@ const buildGraphQLProvider = (options: Options): DataProvider => {
         updateMany: (resource, params) =>
             callApollo(UPDATE_MANY, resource, params),
     };
+
+    raDataProvider.supportAbortSignal = process.env.NODE_ENV === 'production';
 
     return raDataProvider;
 };
