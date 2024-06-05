@@ -228,8 +228,6 @@ const buildGraphQLProvider = (options: Options): DataProvider => {
             callApollo(UPDATE_MANY, resource, params),
     };
 
-    raDataProvider.supportAbortSignal = process.env.NODE_ENV === 'production';
-
     return raDataProvider;
 };
 
