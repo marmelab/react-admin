@@ -242,7 +242,7 @@ describe('<ReferenceArrayInput />', () => {
                 pagination: { page: 1, perPage: 25 },
                 sort: { field: 'id', order: 'DESC' },
                 meta: { foo: 'bar' },
-                signal: expect.anything(),
+                signal: undefined,
             });
         });
     });

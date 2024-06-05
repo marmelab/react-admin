@@ -46,7 +46,7 @@ describe('useGetOne', () => {
             expect(dataProvider.getOne).toHaveBeenCalledTimes(1);
             expect(dataProvider.getOne).toHaveBeenCalledWith('posts', {
                 id: 1,
-                signal: expect.anything(),
+                signal: undefined,
             });
         });
     });
@@ -142,7 +142,7 @@ describe('useGetOne', () => {
             expect(dataProvider.getOne).toHaveBeenCalledWith('posts', {
                 id: 1,
                 meta: { hello: 'world' },
-                signal: expect.anything(),
+                signal: undefined,
             });
         });
     });
@@ -279,6 +279,7 @@ describe('useGetOne', () => {
                     })
             ) as any,
         });
+        dataProvider.supportAbortSignal = true;
         const queryClient = new QueryClient();
         render(
             <CoreAdminContext

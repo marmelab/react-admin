@@ -56,7 +56,7 @@ describe('useGetList', () => {
                 filter: {},
                 pagination: { page: 1, perPage: 20 },
                 sort: { field: 'id', order: 'DESC' },
-                signal: expect.anything(),
+                signal: undefined,
             });
         });
     });
@@ -132,7 +132,7 @@ describe('useGetList', () => {
                 pagination: { page: 1, perPage: 20 },
                 sort: { field: 'id', order: 'DESC' },
                 meta: { hello: 'world' },
-                signal: expect.anything(),
+                signal: undefined,
             });
         });
     });
@@ -419,6 +419,7 @@ describe('useGetList', () => {
                     })
             ) as any,
         });
+        dataProvider.supportAbortSignal = true;
         const queryClient = new QueryClient();
         render(
             <CoreAdminContext

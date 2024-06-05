@@ -39,7 +39,7 @@ describe('useGetManyAggregate', () => {
             expect(dataProvider.getMany).toHaveBeenCalledTimes(1);
             expect(dataProvider.getMany).toHaveBeenCalledWith('posts', {
                 ids: [1],
-                signal: expect.anything(),
+                signal: undefined,
             });
         });
     });
@@ -265,7 +265,7 @@ describe('useGetManyAggregate', () => {
             expect(dataProvider.getMany).toHaveBeenCalledTimes(1);
             expect(dataProvider.getMany).toHaveBeenCalledWith('posts', {
                 ids: [1, 2, 3, 4, 5, 6],
-                signal: expect.anything(),
+                signal: undefined,
             });
         });
     });
@@ -282,11 +282,11 @@ describe('useGetManyAggregate', () => {
             expect(dataProvider.getMany).toHaveBeenCalledTimes(2);
             expect(dataProvider.getMany).toHaveBeenCalledWith('posts', {
                 ids: [1, 2, 3, 4],
-                signal: expect.anything(),
+                signal: undefined,
             });
             expect(dataProvider.getMany).toHaveBeenCalledWith('comments', {
                 ids: [5, 6],
-                signal: expect.anything(),
+                signal: undefined,
             });
         });
     });
@@ -303,7 +303,7 @@ describe('useGetManyAggregate', () => {
             expect(dataProvider.getMany).toHaveBeenCalledTimes(1);
             expect(dataProvider.getMany).toHaveBeenCalledWith('posts', {
                 ids: [1, 2, 3, 4],
-                signal: expect.anything(),
+                signal: undefined,
             });
         });
     });
@@ -344,7 +344,7 @@ describe('useGetManyAggregate', () => {
             expect(dataProvider.getMany).toHaveBeenCalledTimes(1);
             expect(dataProvider.getMany).toHaveBeenCalledWith('posts', {
                 ids: [1, 2, 3],
-                signal: expect.anything(),
+                signal: undefined,
             });
         });
 
@@ -408,6 +408,7 @@ describe('useGetManyAggregate', () => {
                         })
                 ) as any,
             });
+            dataProvider.supportAbortSignal = true;
             const queryClient = new QueryClient();
             render(
                 <CoreAdminContext
@@ -458,6 +459,7 @@ describe('useGetManyAggregate', () => {
                     })
             ) as any,
         });
+        dataProvider.supportAbortSignal = true;
         const queryClient = new QueryClient();
         const { rerender } = render(
             <CoreAdminContext

@@ -35,7 +35,7 @@ describe('<Count />', () => {
             pagination: { page: 1, perPage: 1 },
             sort: { field: 'custom_id', order: 'ASC' },
             meta: undefined,
-            signal: expect.anything(),
+            signal: undefined,
         });
     });
 });

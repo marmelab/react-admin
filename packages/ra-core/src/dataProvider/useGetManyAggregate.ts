@@ -110,14 +110,13 @@ export const useGetManyAggregate = <RecordType extends RaRecord = any>(
                 meta,
             },
         ],
-        queryFn: ({ signal }) =>
+        queryFn: queryParams =>
             new Promise((resolve, reject) => {
                 if (!ids || ids.length === 0) {
                     // no need to call the dataProvider
                     return resolve([]);
                 }
-                // debounced / batched fetch
-                return callGetManyQueries({
+                const dataProviderParams: GetManyCallArgs = {
                     resource,
                     ids,
                     meta,
@@ -125,8 +124,14 @@ export const useGetManyAggregate = <RecordType extends RaRecord = any>(
                     reject,
                     dataProvider,
                     queryClient,
-                    signal,
-                });
+                    signal: undefined,
+                };
+
+                if (dataProvider.supportAbortSignal === true) {
+                    dataProviderParams.signal = queryParams.signal;
+                }
+                // debounced / batched fetch
+                return callGetManyQueries(dataProviderParams);
             }),
         placeholderData,
         retry: false,
@@ -226,7 +231,7 @@ interface GetManyCallArgs {
     reject: (error?: any) => void;
     dataProvider: DataProvider;
     queryClient: QueryClient;
-    signal: AbortSignal;
+    signal?: AbortSignal;
 }
 
 /**
@@ -290,7 +295,7 @@ const callGetManyQueries = batch((calls: GetManyCallArgs[]) => {
         const callThatHasAllAggregatedIds = callsForResource.find(
             ({ ids, signal }) =>
                 JSON.stringify(ids) === JSON.stringify(aggregatedIds) &&
-                !signal.aborted
+                !signal?.aborted
         );
         if (callThatHasAllAggregatedIds) {
             // There is only one call (no aggregation), or one of the calls has the same ids as the sum of all calls.
@@ -339,14 +344,19 @@ const callGetManyQueries = batch((calls: GetManyCallArgs[]) => {
                         meta: uniqueMeta,
                     },
                 ],
-                queryFn: ({ signal }) =>
-                    dataProvider
-                        .getMany<any>(resource, {
-                            ids: aggregatedIds,
-                            meta: uniqueMeta,
-                            signal,
-                        })
-                        .then(({ data }) => data),
+                queryFn: queryParams => {
+                    const dataProviderParams: GetManyParams = {
+                        ids: aggregatedIds,
+                        meta: uniqueMeta,
+                        signal: undefined,
+                    };
+                    if (dataProvider.supportAbortSignal === true) {
+                        dataProviderParams.signal = queryParams.signal;
+                    }
+                    return dataProvider
+                        .getMany<any>(resource, dataProviderParams)
+                        .then(({ data }) => data);
+                },
             })
             .then(data => {
                 callsForResource.forEach(({ ids, resolve }) => {

@@ -63,7 +63,7 @@ describe('useShowController', () => {
         await waitFor(() => {
             expect(getOne).toHaveBeenCalledWith('posts', {
                 id: 'test?',
-                signal: expect.anything(),
+                signal: undefined,
             });
         });
         await waitFor(() => {
@@ -99,7 +99,7 @@ describe('useShowController', () => {
         await waitFor(() => {
             expect(getOne).toHaveBeenCalledWith('posts', {
                 id: 0,
-                signal: expect.anything(),
+                signal: undefined,
             });
         });
         await waitFor(() => {
@@ -171,7 +171,7 @@ describe('useShowController', () => {
             expect(getOne).toHaveBeenCalledWith('posts', {
                 id: '1',
                 meta: { foo: 'bar' },
-                signal: expect.anything(),
+                signal: undefined,
             });
         });
     });

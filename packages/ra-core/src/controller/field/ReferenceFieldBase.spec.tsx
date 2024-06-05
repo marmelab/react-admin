@@ -88,7 +88,7 @@ describe('<ReferenceFieldBase />', () => {
             expect(getMany).toHaveBeenCalledWith('authors', {
                 ids: [1],
                 meta: { test: true },
-                signal: expect.any(AbortSignal),
+                signal: undefined,
             });
         });
     });
