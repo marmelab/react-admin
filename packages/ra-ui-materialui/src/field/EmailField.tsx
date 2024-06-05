@@ -43,7 +43,7 @@ const EmailFieldImpl = <
 };
 EmailFieldImpl.displayName = 'EmailFieldImpl';
 
-export const EmailField = genericMemo(EmailFieldImpl) as typeof EmailFieldImpl;
+export const EmailField = genericMemo(EmailFieldImpl);
 
 export interface EmailFieldProps<
     RecordType extends Record<string, any> = Record<string, any>,

@@ -89,9 +89,7 @@ const defaultTransform = value =>
 // what? TypeScript loses the displayName if we don't set it explicitly
 NumberFieldImpl.displayName = 'NumberFieldImpl';
 
-export const NumberField = genericMemo(
-    NumberFieldImpl
-) as typeof NumberFieldImpl;
+export const NumberField = genericMemo(NumberFieldImpl);
 // @ts-expect-error This is a hack that replaces react support for defaultProps. We currently need this for the Datagrid.
 NumberField.textAlign = 'right';
 
