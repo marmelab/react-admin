@@ -7,20 +7,21 @@ import polyglotI18nProvider from 'ra-i18n-polyglot';
 import { DateField } from './DateField';
 
 const i18nProvider = polyglotI18nProvider(
-    _locale => ({
-        resources: {
-            books: {
-                name: 'Books',
-                fields: {
-                    id: 'Id',
-                    title: 'Title',
-                    author: 'Author',
-                    year: 'Year',
+    _locale =>
+        ({
+            resources: {
+                books: {
+                    name: 'Books',
+                    fields: {
+                        id: 'Id',
+                        title: 'Title',
+                        author: 'Author',
+                        year: 'Year',
+                    },
+                    not_found: 'Not found',
                 },
-                not_found: 'Not found',
             },
-        },
-    }),
+        }) as any,
     'en'
 );
 
@@ -32,7 +33,11 @@ describe('<DateField />', () => {
 
     it('should return null when the record has no value for the source', () => {
         const { container } = render(
-            <DateField record={{ id: 123 }} source="foo" />
+            <DateField
+                record={{ id: 123 }}
+                // @ts-expect-error source prop does not have a valid value
+                source="foo"
+            />
         );
         expect(container.firstChild).toBeNull();
     });
@@ -195,6 +200,7 @@ describe('<DateField />', () => {
                 <I18nContextProvider value={i18nProvider}>
                     <DateField
                         record={{ id: 123 }}
+                        // @ts-expect-error source prop does not have a valid value
                         source="foo.bar"
                         emptyText="resources.books.not_found"
                     />

@@ -93,7 +93,7 @@ const ArrayFieldImpl = <
 };
 ArrayFieldImpl.displayName = 'ArrayFieldImpl';
 
-export const ArrayField = genericMemo(ArrayFieldImpl);
+export const ArrayField = genericMemo(ArrayFieldImpl) as typeof ArrayFieldImpl;
 
 export interface ArrayFieldProps<
     RecordType extends Record<string, any> = Record<string, any>,

@@ -101,17 +101,21 @@ export const ReferenceOneField = <
 export interface ReferenceOneFieldProps<
     RecordType extends RaRecord = RaRecord,
     ReferenceRecordType extends RaRecord = RaRecord,
-> extends FieldProps<RecordType> {
+> extends Omit<FieldProps<RecordType>, 'source'> {
     children?: ReactNode;
     reference: string;
     target: string;
     sort?: SortPayload;
+    source?: string;
     filter?: any;
     link?: LinkToType<RecordType>;
-    queryOptions?: UseQueryOptions<{
-        data: ReferenceRecordType[];
-        total: number;
-    }> & { meta?: any };
+    queryOptions?: Omit<
+        UseQueryOptions<{
+            data: ReferenceRecordType[];
+            total: number;
+        }>,
+        'queryKey'
+    > & { meta?: any };
 }
 
 // disable sorting on this field by default as its default source prop ('id')

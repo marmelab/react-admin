@@ -107,7 +107,7 @@ const DateFieldImpl = <
 };
 DateFieldImpl.displayName = 'DateFieldImpl';
 
-export const DateField = genericMemo(DateFieldImpl);
+export const DateField = genericMemo(DateFieldImpl) as typeof DateFieldImpl;
 
 export interface DateFieldProps<
     RecordType extends Record<string, any> = Record<string, any>,

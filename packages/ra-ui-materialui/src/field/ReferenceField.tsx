@@ -181,7 +181,9 @@ export interface ReferenceFieldViewProps<
     sx?: SxProps;
 }
 
-const PureReferenceFieldView = genericMemo(ReferenceFieldView);
+const PureReferenceFieldView = genericMemo(
+    ReferenceFieldView
+) as typeof ReferenceFieldView;
 
 const PREFIX = 'RaReferenceField';
 

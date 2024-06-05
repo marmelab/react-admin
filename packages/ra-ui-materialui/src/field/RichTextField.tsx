@@ -60,7 +60,9 @@ const RichTextFieldImpl = <
 };
 RichTextFieldImpl.displayName = 'RichTextFieldImpl';
 
-export const RichTextField = genericMemo(RichTextFieldImpl);
+export const RichTextField = genericMemo(
+    RichTextFieldImpl
+) as typeof RichTextFieldImpl;
 
 // We only support the case when sanitize() returns a string
 // hence we need to force the RETURN_DOM_FRAGMENT and RETURN_DOM

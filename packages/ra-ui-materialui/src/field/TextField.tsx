@@ -34,7 +34,7 @@ const TextFieldImpl = <
 // what? TypeScript loses the displayName if we don't set it explicitly
 TextFieldImpl.displayName = 'TextFieldImpl';
 
-export const TextField = genericMemo(TextFieldImpl);
+export const TextField = genericMemo(TextFieldImpl) as typeof TextFieldImpl;
 
 export interface TextFieldProps<
     RecordType extends Record<string, any> = Record<string, any>,

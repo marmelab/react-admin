@@ -6,20 +6,21 @@ import { RecordContextProvider, I18nContextProvider } from 'ra-core';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 
 const i18nProvider = polyglotI18nProvider(
-    _locale => ({
-        resources: {
-            books: {
-                name: 'Books',
-                fields: {
-                    id: 'Id',
-                    title: 'Title',
-                    author: 'Author',
-                    year: 'Year',
+    _locale =>
+        ({
+            resources: {
+                books: {
+                    name: 'Books',
+                    fields: {
+                        id: 'Id',
+                        title: 'Title',
+                        author: 'Author',
+                        year: 'Year',
+                    },
+                    not_found: 'Not found',
                 },
-                not_found: 'Not found',
             },
-        },
-    }),
+        }) as any,
     'en'
 );
 
@@ -79,6 +80,7 @@ describe('<ChipField />', () => {
             <I18nContextProvider value={i18nProvider}>
                 <ChipField
                     record={{ id: 123 }}
+                    // @ts-expect-error source prop does not have a valid value
                     source="foo.bar"
                     emptyText="resources.books.not_found"
                 />

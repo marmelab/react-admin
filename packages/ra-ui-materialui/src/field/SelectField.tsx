@@ -124,7 +124,9 @@ const SelectFieldImpl = <
 
 SelectFieldImpl.displayName = 'SelectFieldImpl';
 
-export const SelectField = genericMemo(SelectFieldImpl);
+export const SelectField = genericMemo(
+    SelectFieldImpl
+) as typeof SelectFieldImpl;
 
 export interface SelectFieldProps<
     RecordType extends Record<string, any> = Record<string, any>,

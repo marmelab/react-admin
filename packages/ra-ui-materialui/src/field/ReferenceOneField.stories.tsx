@@ -242,6 +242,7 @@ export const InDatagrid = () => (
 
 const BookDetailsRepresentation = () => {
     const record = useRecordContext();
+    if (!record) return null;
     return (
         <>
             <strong>Genre</strong>: {record.genre}, <strong>ISBN</strong>:{' '}

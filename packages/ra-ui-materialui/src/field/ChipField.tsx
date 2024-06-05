@@ -41,7 +41,7 @@ const ChipFieldImpl = <
 };
 ChipFieldImpl.displayName = 'ChipFieldImpl';
 
-export const ChipField = genericMemo(ChipFieldImpl);
+export const ChipField = genericMemo(ChipFieldImpl) as typeof ChipFieldImpl;
 
 export interface ChipFieldProps<
     RecordType extends Record<string, any> = Record<string, any>,

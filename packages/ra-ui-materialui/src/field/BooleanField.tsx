@@ -78,7 +78,9 @@ const BooleanFieldImpl = <
 };
 BooleanFieldImpl.displayName = 'BooleanFieldImpl';
 
-export const BooleanField = genericMemo(BooleanFieldImpl);
+export const BooleanField = genericMemo(
+    BooleanFieldImpl
+) as typeof BooleanFieldImpl;
 
 export interface BooleanFieldProps<
     RecordType extends Record<string, any> = Record<string, any>,

@@ -7,26 +7,27 @@ import polyglotI18nProvider from 'ra-i18n-polyglot';
 
 const defaultProps = {
     record: { id: 123, published: true },
-    source: 'published',
+    source: 'published' as const,
     resource: 'posts',
     classes: {},
 };
 
 const i18nProvider = polyglotI18nProvider(
-    _locale => ({
-        resources: {
-            books: {
-                name: 'Books',
-                fields: {
-                    id: 'Id',
-                    title: 'Title',
-                    author: 'Author',
-                    year: 'Year',
+    _locale =>
+        ({
+            resources: {
+                books: {
+                    name: 'Books',
+                    fields: {
+                        id: 'Id',
+                        title: 'Title',
+                        author: 'Author',
+                        year: 'Year',
+                    },
+                    not_found: 'Not found',
                 },
-                not_found: 'Not found',
             },
-        },
-    }),
+        }) as any,
     'en'
 );
 
@@ -34,7 +35,7 @@ describe('<BooleanField />', () => {
     it('should display tick and truthy text if value is true', () => {
         render(<BooleanField {...defaultProps} />);
         expect(screen.queryByLabelText('ra.boolean.true')).not.toBeNull();
-        expect(screen.queryByLabelText('ra.boolean.true').dataset.testid).toBe(
+        expect(screen.queryByLabelText('ra.boolean.true')?.dataset.testid).toBe(
             'true'
         );
         expect(screen.queryByLabelText('ra.boolean.false')).toBeNull();
@@ -47,7 +48,7 @@ describe('<BooleanField />', () => {
             </RecordContextProvider>
         );
         expect(screen.queryByLabelText('ra.boolean.true')).not.toBeNull();
-        expect(screen.queryByLabelText('ra.boolean.true').dataset.testid).toBe(
+        expect(screen.queryByLabelText('ra.boolean.true')?.dataset.testid).toBe(
             'true'
         );
         expect(screen.queryByLabelText('ra.boolean.false')).toBeNull();
@@ -73,9 +74,9 @@ describe('<BooleanField />', () => {
         );
         expect(screen.queryByLabelText('ra.boolean.true')).toBeNull();
         expect(screen.queryByLabelText('ra.boolean.false')).not.toBeNull();
-        expect(screen.queryByLabelText('ra.boolean.false').dataset.testid).toBe(
-            'false'
-        );
+        expect(
+            screen.queryByLabelText('ra.boolean.false')?.dataset.testid
+        ).toBe('false');
     });
 
     it('should use valueLabelFalse for custom falsy text', () => {
@@ -106,13 +107,13 @@ describe('<BooleanField />', () => {
     it('should display tick and truthy text if looseValue is true and value is truthy', () => {
         const defaultProps = {
             record: { id: 123, published: 1 },
-            source: 'published',
+            source: 'published' as const,
             resource: 'posts',
             classes: {},
         };
         render(<BooleanField {...defaultProps} looseValue />);
         expect(screen.queryByLabelText('ra.boolean.true')).not.toBeNull();
-        expect(screen.queryByLabelText('ra.boolean.true').dataset.testid).toBe(
+        expect(screen.queryByLabelText('ra.boolean.true')?.dataset.testid).toBe(
             'true'
         );
         expect(screen.queryByLabelText('ra.boolean.false')).toBeNull();
@@ -121,16 +122,16 @@ describe('<BooleanField />', () => {
     it('should display cross and falsy text if looseValue is true and value is falsy', () => {
         const defaultProps = {
             record: { id: 123, published: 0 },
-            source: 'published',
+            source: 'published' as const,
             resource: 'posts',
             classes: {},
         };
 
         render(<BooleanField {...defaultProps} looseValue />);
         expect(screen.queryByLabelText('ra.boolean.false')).not.toBeNull();
-        expect(screen.queryByLabelText('ra.boolean.false').dataset.testid).toBe(
-            'false'
-        );
+        expect(
+            screen.queryByLabelText('ra.boolean.false')?.dataset.testid
+        ).toBe('false');
         expect(screen.queryByLabelText('ra.boolean.true')).toBeNull();
     });
 
@@ -152,6 +153,7 @@ describe('<BooleanField />', () => {
 
     it('should use custom className', () => {
         const { container } = render(
+            // @ts-expect-error source prop does not have a valid value
             <BooleanField
                 {...defaultProps}
                 record={{ id: 123, foo: true }}
@@ -177,6 +179,7 @@ describe('<BooleanField />', () => {
             <I18nContextProvider value={i18nProvider}>
                 <BooleanField
                     record={{ id: 123 }}
+                    // @ts-expect-error source prop does not have a valid value
                     source="foo.bar"
                     emptyText="resources.books.not_found"
                 />

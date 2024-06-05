@@ -107,6 +107,7 @@ const FilterButton = () => {
 const SelectedChip = () => {
     const { selectedIds, onToggleItem } = useListContext();
     const record = useRecordContext();
+    if (!record) return null;
     return (
         <ChipField
             source="title"
