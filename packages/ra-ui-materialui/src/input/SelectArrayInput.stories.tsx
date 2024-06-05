@@ -388,7 +388,7 @@ const dataProviderWithAuthors = {
     },
 } as any;
 
-export const InsideReferenceInput = () => (
+export const InsideReferenceArrayInput = () => (
     <TestMemoryRouter initialEntries={['/books/1']}>
         <Admin dataProvider={dataProviderWithAuthors}>
             <Resource
@@ -424,7 +424,7 @@ export const InsideReferenceInput = () => (
     </TestMemoryRouter>
 );
 
-export const InsideReferenceInputDefaultValue = ({
+export const InsideReferenceArrayInputDefaultValue = ({
     onSuccess = console.log,
 }) => (
     <TestMemoryRouter initialEntries={['/books/1']}>
@@ -475,7 +475,7 @@ export const InsideReferenceInputDefaultValue = ({
     </TestMemoryRouter>
 );
 
-export const InsideReferenceInputWithError = () => (
+export const InsideReferenceArrayInputWithError = () => (
     <TestMemoryRouter initialEntries={['/books/1']}>
         <Admin
             dataProvider={{
