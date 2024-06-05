@@ -14,7 +14,7 @@ export default (type: string) => {
     // the login page. By the time they come back to the admin as a signed-in user,
     // the fake server will be initialized.
     const dataProviderWithGeneratedData = new Proxy(defaultDataProvider, {
-        get(target, name) {
+        get(_, name) {
             if (name === 'supportAbortSignal') {
                 return supportAbortSignal;
             }

@@ -84,13 +84,13 @@ export const useDataProvider = <
     const logoutIfAccessDenied = useLogoutIfAccessDenied();
 
     const dataProviderProxy = useMemo(() => {
-        const proxy = new Proxy(dataProvider, {
-            get: (target, name) => {
+        return new Proxy(dataProvider, {
+            get: (_, name) => {
                 if (typeof name === 'symbol' || name === 'then') {
                     return;
                 }
                 if (name === 'supportAbortSignal') {
-                    return target.supportAbortSignal;
+                    return dataProvider.supportAbortSignal;
                 }
                 return (...args) => {
                     const type = name.toString();
@@ -146,7 +146,6 @@ export const useDataProvider = <
                 };
             },
         });
-        return proxy;
     }, [dataProvider, logoutIfAccessDenied]);
 
     return dataProviderProxy;
