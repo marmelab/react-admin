@@ -859,3 +859,16 @@ const dataProvider = withLifecycleCallbacks(
 ```
 
 Feel free to read the [Cloudinary Get Started doc](https://cloudinary.com/documentation/programmable_media_overview) to learn more.
+
+## Query Cancellation
+
+React-admin supports [Query Cancellation](https://tanstack.com/query/latest/docs/framework/react/guides/query-cancellation) through an [AbortSignal](https://developer.mozilla.org/en-US/docs/Web/API/AbortSignal).
+
+To enable this feature, your data provider must have a `supportAbortSignal` property set to `true`. This is necessary to avoid queries to be sent twice in `development` mode when rendering your application inside [`<React.StrictMode>`](https://react.dev/reference/react/StrictMode).
+
+```tsx
+const dataProvider = simpleRestProvider('https://myapi.com');
+dataProvider.supportAbortSignal = true;
+// You can set this property depending on the production mode, e.g in Vite
+dataProvider.supportAbortSignal = import.meta.env.MODE === 'production';
+```
