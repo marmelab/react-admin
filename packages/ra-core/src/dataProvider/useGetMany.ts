@@ -79,13 +79,20 @@ export const useGetMany = <RecordType extends RaRecord = any>(
                 meta,
             },
         ],
-        queryFn: ({ signal }) => {
+        queryFn: queryParams => {
             if (!ids || ids.length === 0) {
                 // no need to call the dataProvider
                 return Promise.resolve([]);
             }
             return dataProvider
-                .getMany<RecordType>(resource, { ids, meta, signal })
+                .getMany<RecordType>(resource, {
+                    ids,
+                    meta,
+                    signal:
+                        dataProvider.supportAbortSignal === true
+                            ? queryParams.signal
+                            : undefined,
+                })
                 .then(({ data }) => data);
         },
         placeholderData: () => {

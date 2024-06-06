@@ -71,7 +71,7 @@ describe('useGetMany', () => {
             expect(dataProvider.getMany).toHaveBeenCalledTimes(1);
             expect(dataProvider.getMany).toHaveBeenCalledWith('posts', {
                 ids: [1],
-                signal: expect.anything(),
+                signal: undefined,
             });
         });
     });
@@ -171,7 +171,7 @@ describe('useGetMany', () => {
             expect(dataProvider.getMany).toHaveBeenCalledWith('posts', {
                 ids: [1],
                 meta: { hello: 'world' },
-                signal: expect.anything(),
+                signal: undefined,
             });
         });
     });
@@ -378,6 +378,7 @@ describe('useGetMany', () => {
                     })
             ) as any,
         });
+        dataProvider.supportAbortSignal = true;
         const queryClient = new QueryClient();
         render(
             <CoreAdminContext

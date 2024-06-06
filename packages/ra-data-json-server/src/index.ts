@@ -127,7 +127,9 @@ export default (apiUrl, httpClient = fetchUtils.fetchJson): DataProvider => ({
                     body: JSON.stringify(params.data),
                 })
             )
-        ).then(responses => ({ data: responses.map(({ json }) => json.id) })),
+        ).then(responses => ({
+            data: responses.map(({ json }) => json.id),
+        })),
 
     create: (resource, params) =>
         httpClient(`${apiUrl}/${resource}`, {
@@ -150,5 +152,7 @@ export default (apiUrl, httpClient = fetchUtils.fetchJson): DataProvider => ({
                     method: 'DELETE',
                 })
             )
-        ).then(responses => ({ data: responses.map(({ json }) => json.id) })),
+        ).then(responses => ({
+            data: responses.map(({ json }) => json.id),
+        })),
 });

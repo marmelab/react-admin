@@ -213,7 +213,7 @@ const buildGraphQLProvider = (options: Options): DataProvider => {
         );
     };
 
-    const raDataProvider = {
+    const raDataProvider: DataProvider = {
         create: (resource, params) => callApollo(CREATE, resource, params),
         delete: (resource, params) => callApollo(DELETE, resource, params),
         deleteMany: (resource, params) =>

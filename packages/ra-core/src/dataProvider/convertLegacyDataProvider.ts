@@ -24,9 +24,6 @@ const fetchMap = {
     updateMany: UPDATE_MANY,
 };
 
-interface ConvertedDataProvider extends DataProvider {
-    [key: string]: (...params: any) => Promise<any>;
-}
 /**
  * Turn a function-based dataProvider to an object-based one
  *
@@ -38,7 +35,7 @@ interface ConvertedDataProvider extends DataProvider {
  */
 const convertLegacyDataProvider = (
     legacyDataProvider: LegacyDataProvider
-): ConvertedDataProvider => {
+): DataProvider => {
     const proxy = new Proxy(defaultDataProvider, {
         get(_, name) {
             return (resource, params) => {

@@ -159,7 +159,9 @@ export default (
                     body: JSON.stringify(params.data),
                 })
             )
-        ).then(responses => ({ data: responses.map(({ json }) => json.id) })),
+        ).then(responses => ({
+            data: responses.map(({ json }) => json.id),
+        })),
 
     create: (resource, params) =>
         httpClient(`${apiUrl}/${resource}`, {

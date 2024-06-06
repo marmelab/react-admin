@@ -136,6 +136,7 @@ export type DataProvider<ResourceType extends string = string> = {
     ) => Promise<DeleteManyResult<RecordType>>;
 
     [key: string]: any;
+    supportAbortSignal?: boolean;
 };
 
 export interface QueryFunctionContext {
@@ -147,6 +148,7 @@ export interface GetListParams {
     sort?: SortPayload;
     filter?: any;
     meta?: any;
+    signal?: AbortSignal;
 }
 export interface GetListResult<RecordType extends RaRecord = any> {
     data: RecordType[];
@@ -164,6 +166,7 @@ export interface GetInfiniteListResult<RecordType extends RaRecord = any>
 export interface GetOneParams<RecordType extends RaRecord = any> {
     id: RecordType['id'];
     meta?: any;
+    signal?: AbortSignal;
 }
 export interface GetOneResult<RecordType extends RaRecord = any> {
     data: RecordType;
@@ -172,6 +175,7 @@ export interface GetOneResult<RecordType extends RaRecord = any> {
 export interface GetManyParams {
     ids: Identifier[];
     meta?: any;
+    signal?: AbortSignal;
 }
 export interface GetManyResult<RecordType extends RaRecord = any> {
     data: RecordType[];
@@ -184,6 +188,7 @@ export interface GetManyReferenceParams {
     sort: SortPayload;
     filter: any;
     meta?: any;
+    signal?: AbortSignal;
 }
 export interface GetManyReferenceResult<RecordType extends RaRecord = any> {
     data: RecordType[];

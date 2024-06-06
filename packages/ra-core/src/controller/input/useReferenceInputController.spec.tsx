@@ -73,7 +73,7 @@ describe('useReferenceInputController', () => {
                 field: 'id',
                 order: 'ASC',
             },
-            signal: expect.anything(),
+            signal: undefined,
         });
     });
 
@@ -107,7 +107,7 @@ describe('useReferenceInputController', () => {
                     field: 'title',
                     order: 'ASC',
                 },
-                signal: expect.anything(),
+                signal: undefined,
             });
         });
     });
@@ -129,7 +129,7 @@ describe('useReferenceInputController', () => {
             expect(dataProvider.getMany).toBeCalledTimes(1);
             expect(dataProvider.getMany).toBeCalledWith('posts', {
                 ids: [1],
-                signal: expect.anything(),
+                signal: undefined,
             });
         });
     });
@@ -247,7 +247,7 @@ describe('useReferenceInputController', () => {
                 field: 'title',
                 order: 'ASC',
             },
-            signal: expect.anything(),
+            signal: undefined,
         });
 
         fireEvent.click(screen.getByLabelText('Change sort'));
@@ -265,7 +265,7 @@ describe('useReferenceInputController', () => {
                 field: 'body',
                 order: 'DESC',
             },
-            signal: expect.anything(),
+            signal: undefined,
         });
     });
 

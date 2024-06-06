@@ -68,9 +68,16 @@ export const useGetOne = <RecordType extends RaRecord = any>(
         // Sometimes the id comes as a number (e.g. when read from a Record in useGetList response).
         // As the react-query cache is type-sensitive, we always stringify the identifier to get a match
         queryKey: [resource, 'getOne', { id: String(id), meta }],
-        queryFn: ({ signal }) =>
+        queryFn: queryParams =>
             dataProvider
-                .getOne<RecordType>(resource, { id, meta, signal })
+                .getOne<RecordType>(resource, {
+                    id,
+                    meta,
+                    signal:
+                        dataProvider.supportAbortSignal === true
+                            ? queryParams.signal
+                            : undefined,
+                })
                 .then(({ data }) => data),
         ...queryOptions,
     });

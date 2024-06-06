@@ -85,9 +85,12 @@ export const useDataProvider = <
 
     const dataProviderProxy = useMemo(() => {
         return new Proxy(dataProvider, {
-            get: (target, name) => {
+            get: (_, name) => {
                 if (typeof name === 'symbol' || name === 'then') {
                     return;
+                }
+                if (name === 'supportAbortSignal') {
+                    return dataProvider.supportAbortSignal;
                 }
                 return (...args) => {
                     const type = name.toString();
