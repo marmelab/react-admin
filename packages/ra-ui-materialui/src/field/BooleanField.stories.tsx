@@ -5,7 +5,7 @@ import { BooleanField, BooleanFieldProps } from './BooleanField';
 
 export default { title: 'ra-ui-materialui/fields/BooleanField' };
 
-export const Basic = (props: BooleanFieldProps) => {
+export const Basic = (props: Partial<BooleanFieldProps>) => {
     const [value, setValue] = React.useState(true);
     return (
         <Stack direction="row">

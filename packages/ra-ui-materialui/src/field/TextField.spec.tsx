@@ -104,6 +104,7 @@ describe('<TextField />', () => {
             <I18nContextProvider value={i18nProvider}>
                 <TextField
                     record={{ id: 123 }}
+                    // @ts-expect-error source prop does not have a valid value
                     source="foo.bar"
                     emptyText="resources.books.not_found"
                 />

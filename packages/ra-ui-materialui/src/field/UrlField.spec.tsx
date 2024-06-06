@@ -9,20 +9,21 @@ import { UrlField } from './UrlField';
 const url = 'https://en.wikipedia.org/wiki/HAL_9000';
 
 const i18nProvider = polyglotI18nProvider(
-    _locale => ({
-        resources: {
-            books: {
-                name: 'Books',
-                fields: {
-                    id: 'Id',
-                    title: 'Title',
-                    author: 'Author',
-                    year: 'Year',
+    _locale =>
+        ({
+            resources: {
+                books: {
+                    name: 'Books',
+                    fields: {
+                        id: 'Id',
+                        title: 'Title',
+                        author: 'Author',
+                        year: 'Year',
+                    },
+                    not_found: 'Not found',
                 },
-                not_found: 'Not found',
             },
-        },
-    }),
+        }) as any,
     'en'
 );
 
@@ -69,6 +70,7 @@ describe('<UrlField />', () => {
             <I18nContextProvider value={i18nProvider}>
                 <UrlField
                     record={{ id: 123 }}
+                    // @ts-expect-error source prop does not have a valid value
                     source="foo.bar"
                     emptyText="resources.books.not_found"
                 />
