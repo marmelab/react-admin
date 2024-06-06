@@ -157,6 +157,7 @@ const Root = styled('div', {
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
+    margin: 'auto',
     [theme.breakpoints.down('md')]: {
         padding: '1em',
     },

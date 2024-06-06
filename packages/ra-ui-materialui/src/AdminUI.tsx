@@ -22,7 +22,7 @@ export const AdminUI = ({
     error = Error,
     ...props
 }: AdminUIProps) => (
-    <ScopedCssBaseline enableColorScheme sx={{ height: '100vh' }}>
+    <ScopedCssBaseline enableColorScheme>
         <CoreAdminUI
             layout={layout}
             catchAll={catchAll}
