@@ -46,8 +46,11 @@ export default (data, loggingEnabled = false): DataProvider => {
                 const { page, perPage } = params.pagination;
                 const { field, order } = params.sort;
                 const query = {
-                    sort: [field, order],
-                    range: [(page - 1) * perPage, page * perPage - 1],
+                    sort: [field, order] as [string, 'asc' | 'desc'],
+                    range: [(page - 1) * perPage, page * perPage - 1] as [
+                        number,
+                        number,
+                    ],
                     filter: params.filter,
                 };
                 return {
@@ -71,8 +74,11 @@ export default (data, loggingEnabled = false): DataProvider => {
                 const { page, perPage } = params.pagination;
                 const { field, order } = params.sort;
                 const query = {
-                    sort: [field, order],
-                    range: [(page - 1) * perPage, page * perPage - 1],
+                    sort: [field, order] as [string, 'asc' | 'desc'],
+                    range: [(page - 1) * perPage, page * perPage - 1] as [
+                        number,
+                        number,
+                    ],
                     filter: { ...params.filter, [params.target]: params.id },
                 };
                 return {
