@@ -149,5 +149,5 @@ export type SimpleFormIteratorItemProps = Partial<ArrayInputContextValue> & {
     removeButton?: ReactElement;
     reOrderButtons?: ReactElement;
     resource?: string;
-    source: string;
+    source?: string;
 };
