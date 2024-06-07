@@ -15,6 +15,7 @@ import {
     FormDataConsumer,
     RaRecord,
     useRecordContext,
+    useSourceContext,
     useTranslate,
 } from 'ra-core';
 import { UseFieldArrayReturn, useFormContext } from 'react-hook-form';
@@ -56,9 +57,15 @@ export const SimpleFormIterator = (inProps: SimpleFormIteratorProps) => {
         fullWidth,
         sx,
     } = props;
-    if (!source) {
-        throw new Error('SimpleFormIterator requires a source prop');
+
+    const sourceContext = useSourceContext();
+    const finalSource = sourceContext?.getSource(source || '') ?? source;
+    if (!finalSource) {
+        throw new Error(
+            'SimpleFormIterator should be wrapped in a SourceContext or requires a source prop'
+        );
     }
+
     const [confirmIsOpen, setConfirmIsOpen] = useState<boolean>(false);
     const { append, fields, move, remove, replace } = useArrayInput(props);
     const { resetField } = useFormContext();
@@ -133,7 +140,7 @@ export const SimpleFormIterator = (inProps: SimpleFormIteratorProps) => {
         setConfirmIsOpen(false);
     }, [replace]);
 
-    const records = get(record, source);
+    const records = get(record, finalSource);
 
     const context = useMemo(
         () => ({
@@ -141,9 +148,9 @@ export const SimpleFormIterator = (inProps: SimpleFormIteratorProps) => {
             add: addField,
             remove: removeField,
             reOrder: handleReorder,
-            source,
+            source: finalSource,
         }),
-        [addField, fields.length, handleReorder, removeField, source]
+        [addField, fields.length, handleReorder, removeField, finalSource]
     );
     return fields ? (
         <SimpleFormIteratorContext.Provider value={context}>
@@ -165,14 +172,14 @@ export const SimpleFormIterator = (inProps: SimpleFormIteratorProps) => {
                             fields={fields}
                             getItemLabel={getItemLabel}
                             index={index}
-                            member={`${source}.${index}`}
+                            member={`${index}`}
                             onRemoveField={removeField}
                             onReorder={handleReorder}
                             record={(records && records[index]) || {}}
                             removeButton={removeButton}
                             reOrderButtons={reOrderButtons}
                             resource={resource}
-                            source={source}
+                            source={finalSource}
                             inline={inline}
                         >
                             {children}

@@ -11,6 +11,11 @@ import {
     useFormGroupContext,
     useFormGroups,
     useWrappedSource,
+    SourceContextProvider,
+    SourceContextValue,
+    RecordContextProvider,
+    ResourceContextProvider,
+    useSourceContext,
 } from 'ra-core';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 import {
@@ -92,6 +97,7 @@ export const ArrayInput = (props: ArrayInputProps) => {
     const formGroupName = useFormGroupContext();
     const formGroups = useFormGroups();
     const finalSource = useWrappedSource(source);
+    const parentSourceContext = useSourceContext();
 
     const sanitizedValidate = Array.isArray(validate)
         ? composeSyncValidators(validate)
@@ -141,6 +147,22 @@ export const ArrayInput = (props: ArrayInputProps) => {
 
     const { error } = getFieldState(finalSource, formState);
 
+    const sourceContext = React.useMemo<SourceContextValue>(
+        () => ({
+            getSource: (source: string) =>
+                parentSourceContext
+                    ? parentSourceContext.getSource(`${finalSource}.${source}`)
+                    : `${finalSource}.${source}`,
+            getLabel: (source: string) =>
+                parentSourceContext
+                    ? parentSourceContext.getLabel(
+                          `resources.${resourceFromProps}.fields.${source}`
+                      )
+                    : `resources.${resourceFromProps}.fields.${source}`,
+        }),
+        [parentSourceContext, finalSource, resourceFromProps]
+    );
+
     if (isPending) {
         return (
             <Labeled label={label} className={className}>
@@ -177,15 +199,13 @@ export const ArrayInput = (props: ArrayInputProps) => {
                 />
             </InputLabel>
             <ArrayInputContext.Provider value={fieldProps}>
-                {cloneElement(Children.only(children), {
-                    ...fieldProps,
-                    record,
-                    resource: resourceFromProps,
-                    source,
-                    variant,
-                    margin,
-                    disabled,
-                })}
+                <ResourceContextProvider value={resourceFromProps}>
+                    <SourceContextProvider value={sourceContext}>
+                        <RecordContextProvider value={record}>
+                            {children}
+                        </RecordContextProvider>
+                    </SourceContextProvider>
+                </ResourceContextProvider>
             </ArrayInputContext.Provider>
             {renderHelperText ? (
                 <FormHelperText error={!!error}>
