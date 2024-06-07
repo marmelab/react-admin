@@ -90,6 +90,15 @@ const App = () => (
 );
 ```
 
+## Inspecting the Data
+
+`ra-data-fakerest` makes its internal database accessible in the global scope under the `_database` key. You can use it to inspect the data in your browser console.
+
+```js
+_database.getOne('posts', 1);
+// { id: 1, title: 'FooBar' }
+```
+
 ## Features
 
 This data provider uses [FakeRest](https://github.com/marmelab/FakeRest) under the hood. That means that it offers the same features:

@@ -1,4 +1,4 @@
-import FakeRest from 'fakerest';
+import { Database } from 'fakerest';
 import { DataProvider } from 'ra-core';
 
 /* eslint-disable no-console */
@@ -34,11 +34,10 @@ function log(type, resource, params, response) {
  * })
  */
 export default (data, loggingEnabled = false): DataProvider => {
-    const restServer = new FakeRest.Server();
-    restServer.init(data);
+    const database = new Database({ data });
     if (typeof window !== 'undefined') {
         // give way to update data in the console
-        (window as any).restServer = restServer;
+        (window as any)._database = database;
     }
 
     function getResponse(type, resource, params) {
@@ -52,22 +51,21 @@ export default (data, loggingEnabled = false): DataProvider => {
                     filter: params.filter,
                 };
                 return {
-                    data: restServer.getAll(resource, query),
-                    total: restServer.getCount(resource, {
+                    data: database.getAll(resource, query),
+                    total: database.getCount(resource, {
                         filter: params.filter,
                     }),
                 };
             }
             case 'getOne':
                 return {
-                    data: restServer.getOne(resource, params.id, { ...params }),
+                    data: database.getOne(resource, params.id, { ...params }),
                 };
             case 'getMany':
                 return {
-                    data: params.ids.map(
-                        id => restServer.getOne(resource, id),
-                        { ...params }
-                    ),
+                    data: params.ids.map(id => database.getOne(resource, id), {
+                        ...params,
+                    }),
                 };
             case 'getManyReference': {
                 const { page, perPage } = params.pagination;
@@ -78,33 +76,33 @@ export default (data, loggingEnabled = false): DataProvider => {
                     filter: { ...params.filter, [params.target]: params.id },
                 };
                 return {
-                    data: restServer.getAll(resource, query),
-                    total: restServer.getCount(resource, {
+                    data: database.getAll(resource, query),
+                    total: database.getCount(resource, {
                         filter: query.filter,
                     }),
                 };
             }
             case 'update':
                 return {
-                    data: restServer.updateOne(resource, params.id, {
+                    data: database.updateOne(resource, params.id, {
                         ...params.data,
                     }),
                 };
             case 'updateMany':
                 params.ids.forEach(id =>
-                    restServer.updateOne(resource, id, {
+                    database.updateOne(resource, id, {
                         ...params.data,
                     })
                 );
                 return { data: params.ids };
             case 'create':
                 return {
-                    data: restServer.addOne(resource, { ...params.data }),
+                    data: database.addOne(resource, { ...params.data }),
                 };
             case 'delete':
-                return { data: restServer.removeOne(resource, params.id) };
+                return { data: database.removeOne(resource, params.id) };
             case 'deleteMany':
-                params.ids.forEach(id => restServer.removeOne(resource, id));
+                params.ids.forEach(id => database.removeOne(resource, id));
                 return { data: params.ids };
             default:
                 return false;
@@ -118,7 +116,7 @@ export default (data, loggingEnabled = false): DataProvider => {
      * @returns {Promise} The response
      */
     const handle = (type, resource, params): Promise<any> => {
-        const collection = restServer.getCollection(resource);
+        const collection = database.getCollection(resource);
         if (!collection && type !== 'create') {
             const error = new UndefinedResourceError(
                 `Undefined collection "${resource}"`
