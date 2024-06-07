@@ -13,7 +13,11 @@ jest.spyOn(console, 'error').mockImplementation((...args) => {
  * Mock fetch objects Response, Request and Headers
  */
 const { Response, Headers, Request } = require('whatwg-fetch');
+// TextEncoder isn't bundled with JsDom, see https://stackoverflow.com/a/68468204/1333479
+const { TextEncoder, TextDecoder } = require('util');
 
 global.Response = Response;
 global.Headers = Headers;
 global.Request = Request;
+global.TextEncoder = TextEncoder;
+global.TextDecoder = TextDecoder;
