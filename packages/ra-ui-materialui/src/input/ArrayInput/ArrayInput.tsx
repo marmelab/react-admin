@@ -149,10 +149,14 @@ export const ArrayInput = (props: ArrayInputProps) => {
 
     const sourceContext = React.useMemo<SourceContextValue>(
         () => ({
-            getSource: (source: string) =>
-                parentSourceContext
-                    ? parentSourceContext.getSource(`${finalSource}.${source}`)
-                    : `${finalSource}.${source}`,
+            getSource: (source: string) => {
+                const sourceResult = source
+                    ? `${finalSource}.${source}`
+                    : finalSource;
+                return parentSourceContext
+                    ? parentSourceContext.getSource(sourceResult)
+                    : sourceResult;
+            },
             getLabel: (source: string) =>
                 parentSourceContext
                     ? parentSourceContext.getLabel(
