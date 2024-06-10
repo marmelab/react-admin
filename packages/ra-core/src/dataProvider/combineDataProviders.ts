@@ -29,7 +29,7 @@ export const combineDataProviders = (
             if (name === 'then') {
                 return null;
             }
-            return (resource, params) => {
+            return (resource, ...params) => {
                 if (typeof name === 'symbol') {
                     return;
                 }
