@@ -9916,7 +9916,7 @@ __metadata:
     clsx: "npm:^2.1.1"
     data-generator-retail: "npm:^5.0.0-alpha.0"
     date-fns: "npm:^3.6.0"
-    fakerest: "npm:^4.0.0-beta.0"
+    fakerest: "npm:^4.0.0-beta.3"
     fetch-mock: "npm:~9.11.0"
     graphql: "npm:^15.6.0"
     graphql-tag: "npm:^2.12.6"
@@ -11395,21 +11395,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fakerest@npm:^4.0.0-beta.0":
-  version: 4.0.0-beta.0
-  resolution: "fakerest@npm:4.0.0-beta.0"
+"fakerest@npm:^4.0.0-beta.3":
+  version: 4.0.0-beta.3
+  resolution: "fakerest@npm:4.0.0-beta.3"
   dependencies:
     lodash: "npm:^4.17.21"
-  checksum: c09ce6b59ac45e9eb3ca32b78e457aa5dae5d46c16fe2d78e12b823eff353791a58b956630d26d494ed8f50927fea2f9225ee35c974ef9125bf4c648f77d6649
-  languageName: node
-  linkType: hard
-
-"fakerest@npm:^4.0.0-beta.2":
-  version: 4.0.0-beta.2
-  resolution: "fakerest@npm:4.0.0-beta.2"
-  dependencies:
-    lodash: "npm:^4.17.21"
-  checksum: a49394d8abdcf98d351d05ced5ebb33a0776e0377f1fd89778fd950ca3526b9e5c8562634aeb074166c64d6dbdb9aab9beabaa101ac20c6799358bd69208892b
+  checksum: 915d6c29e2dc895089b71f238a1c562eaa02178a5e8031d9ce84aa39dfffa46a22844073b2ca1a55a6948e0a7175595ea723f9d5e2421da6aec58139e72b893c
   languageName: node
   linkType: hard
 
@@ -17960,7 +17951,7 @@ __metadata:
     "@types/jest": "npm:^29.5.2"
     cross-env: "npm:^5.2.0"
     expect: "npm:^27.4.6"
-    fakerest: "npm:^4.0.0-beta.2"
+    fakerest: "npm:^4.0.0-beta.3"
     ra-core: "npm:^5.0.0-beta.3"
     rimraf: "npm:^3.0.2"
     typescript: "npm:^5.1.3"

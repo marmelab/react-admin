@@ -12,7 +12,7 @@
         "clsx": "^2.1.1",
         "data-generator-retail": "^5.0.0-alpha.0",
         "date-fns": "^3.6.0",
-        "fakerest": "^4.0.0-beta.0",
+        "fakerest": "^4.0.0-beta.3",
         "fetch-mock": "~9.11.0",
         "graphql": "^15.6.0",
         "graphql-tag": "^2.12.6",
