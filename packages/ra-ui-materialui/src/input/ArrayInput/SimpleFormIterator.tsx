@@ -46,7 +46,6 @@ export const SimpleFormIterator = (inProps: SimpleFormIteratorProps) => {
         children,
         className,
         resource,
-        source,
         disabled,
         disableAdd = false,
         disableClear,
@@ -59,10 +58,10 @@ export const SimpleFormIterator = (inProps: SimpleFormIteratorProps) => {
     } = props;
 
     const sourceContext = useSourceContext();
-    const finalSource = sourceContext?.getSource(source || '') ?? source;
+    const finalSource = sourceContext?.getSource('');
     if (!finalSource) {
         throw new Error(
-            'SimpleFormIterator should be wrapped in a SourceContext or requires a source prop'
+            'SimpleFormIterator should be wrapped in a SourceContext'
         );
     }
 
@@ -123,9 +122,9 @@ export const SimpleFormIterator = (inProps: SimpleFormIteratorProps) => {
             }
             append(defaultValue);
             // Make sure the newly added inputs are not considered dirty by react-hook-form
-            resetField(`${source}.${fields.length}`, { defaultValue });
+            resetField(`${finalSource}.${fields.length}`, { defaultValue });
         },
-        [append, children, resetField, source, fields.length]
+        [append, children, resetField, finalSource, fields.length]
     );
 
     const handleReorder = useCallback(
@@ -172,14 +171,12 @@ export const SimpleFormIterator = (inProps: SimpleFormIteratorProps) => {
                             fields={fields}
                             getItemLabel={getItemLabel}
                             index={index}
-                            member={`${index}`}
                             onRemoveField={removeField}
                             onReorder={handleReorder}
                             record={(records && records[index]) || {}}
                             removeButton={removeButton}
                             reOrderButtons={reOrderButtons}
                             resource={resource}
-                            source={finalSource}
                             inline={inline}
                         >
                             {children}

@@ -30,7 +30,6 @@ export const SimpleFormIteratorItem = React.forwardRef(
             getItemLabel,
             index,
             inline,
-            member,
             record,
             removeButton = <DefaultRemoveItemButton />,
             reOrderButtons = <DefaultReOrderButtons />,
@@ -74,25 +73,18 @@ export const SimpleFormIteratorItem = React.forwardRef(
                 getSource: (source: string) => {
                     if (parentSourceContext) {
                         return parentSourceContext.getSource(
-                            source ? `${member}.${source}` : member
+                            source ? `${index}.${source}` : `${index}`
                         );
                     }
-                    return source ? `${member}.${source}` : member;
+                    return source ? `${index}.${source}` : `${index}`;
                 },
                 getLabel: (source: string) => {
-                    // remove digits, e.g. 'book.authors.2.categories.3.identifier.name' => 'book.authors.categories.identifier.name'
-                    const sanitizedMember = member.replace(/\.\d+/g, '');
-                    // source may be empty for scalar values arrays
-                    const itemSource = source
-                        ? `${sanitizedMember}.${source}`
-                        : sanitizedMember;
-
                     return parentSourceContext
-                        ? parentSourceContext.getLabel(itemSource)
-                        : getResourceFieldLabelKey(resource, itemSource);
+                        ? parentSourceContext.getLabel(source)
+                        : getResourceFieldLabelKey(resource, source);
                 },
             }),
-            [member, parentSourceContext, resource]
+            [index, parentSourceContext, resource]
         );
 
         return (
@@ -142,7 +134,6 @@ export type SimpleFormIteratorItemProps = Partial<ArrayInputContextValue> & {
     getItemLabel?: boolean | GetItemLabelFunc;
     index: number;
     inline?: boolean;
-    member: string;
     onRemoveField: (index: number) => void;
     onReorder: (origin: number, destination: number) => void;
     record: RaRecord;
