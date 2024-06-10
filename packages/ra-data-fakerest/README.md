@@ -90,6 +90,25 @@ const App = () => (
 );
 ```
 
+## Delay
+
+You can pass a delay in milliseconds as the third argument to the constructor. This will simulate a network delay for each request.
+
+```jsx
+// in src/App.js
+import * as React from "react";
+import { Admin, Resource } from 'react-admin';
+import fakeDataProvider from 'ra-data-fakerest';
+
+const dataProvider = fakeDataProvider({ /* data here */ }, false, 1000);
+
+const App = () => (
+    <Admin dataProvider={dataProvider}>
+        // ...
+    </Admin>
+);
+```
+
 ## Inspecting the Data
 
 `ra-data-fakerest` makes its internal database accessible in the global scope under the `_database` key. You can use it to inspect the data in your browser console.

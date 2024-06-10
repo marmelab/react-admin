@@ -14,6 +14,16 @@ function log(type, resource, params, response) {
     }
 }
 
+function delayed(response: any, delay?: number) {
+    // If there is no delay, we return the value right away/
+    // This saves a tick in unit tests.
+    return delay
+        ? new Promise(resolve => {
+              setTimeout(() => resolve(response), delay);
+          })
+        : response;
+}
+
 /**
  * Respond to react-admin data queries using a local JavaScript object
  *
@@ -33,7 +43,7 @@ function log(type, resource, params, response) {
  *   ],
  * })
  */
-export default (data, loggingEnabled = false): DataProvider => {
+export default (data, loggingEnabled = false, delay?: number): DataProvider => {
     const database = new Database({ data });
     if (typeof window !== 'undefined') {
         // give way to update data in the console
@@ -53,23 +63,35 @@ export default (data, loggingEnabled = false): DataProvider => {
                     ],
                     filter: params.filter,
                 };
-                return {
-                    data: database.getAll(resource, query),
-                    total: database.getCount(resource, {
-                        filter: params.filter,
-                    }),
-                };
+                return delayed(
+                    {
+                        data: database.getAll(resource, query),
+                        total: database.getCount(resource, {
+                            filter: params.filter,
+                        }),
+                    },
+                    delay
+                );
             }
             case 'getOne':
-                return {
-                    data: database.getOne(resource, params.id, { ...params }),
-                };
+                return delayed(
+                    {
+                        data: database.getOne(resource, params.id, {
+                            ...params,
+                        }),
+                    },
+                    delay
+                );
             case 'getMany':
-                return {
-                    data: params.ids.map(id => database.getOne(resource, id), {
-                        ...params,
-                    }),
-                };
+                return delayed(
+                    {
+                        data: params.ids.map(
+                            id => database.getOne(resource, id),
+                            { ...params }
+                        ),
+                    },
+                    delay
+                );
             case 'getManyReference': {
                 const { page, perPage } = params.pagination;
                 const { field, order } = params.sort;
@@ -81,35 +103,45 @@ export default (data, loggingEnabled = false): DataProvider => {
                     ],
                     filter: { ...params.filter, [params.target]: params.id },
                 };
-                return {
-                    data: database.getAll(resource, query),
-                    total: database.getCount(resource, {
-                        filter: query.filter,
-                    }),
-                };
+                return delayed(
+                    {
+                        data: database.getAll(resource, query),
+                        total: database.getCount(resource, {
+                            filter: query.filter,
+                        }),
+                    },
+                    delay
+                );
             }
             case 'update':
-                return {
-                    data: database.updateOne(resource, params.id, {
-                        ...params.data,
-                    }),
-                };
+                return delayed(
+                    {
+                        data: database.updateOne(resource, params.id, {
+                            ...params.data,
+                        }),
+                    },
+                    delay
+                );
             case 'updateMany':
                 params.ids.forEach(id =>
                     database.updateOne(resource, id, {
                         ...params.data,
                     })
                 );
-                return { data: params.ids };
+                return delayed({ data: params.ids }, delay);
             case 'create':
-                return {
-                    data: database.addOne(resource, { ...params.data }),
-                };
+                return delayed(
+                    { data: database.addOne(resource, { ...params.data }) },
+                    delay
+                );
             case 'delete':
-                return { data: database.removeOne(resource, params.id) };
+                return delayed(
+                    { data: database.removeOne(resource, params.id) },
+                    delay
+                );
             case 'deleteMany':
                 params.ids.forEach(id => database.removeOne(resource, id));
-                return { data: params.ids };
+                return delayed({ data: params.ids }, delay);
             default:
                 return false;
         }

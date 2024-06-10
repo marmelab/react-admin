@@ -3,14 +3,14 @@ import { withLifecycleCallbacks } from 'react-admin';
 
 import generateData from './dataGenerator';
 
-const baseDataProvider = fakeRestDataProvider(generateData(), true);
+const baseDataProvider = fakeRestDataProvider(generateData(), true, 300);
 
 const TASK_MARKED_AS_DONE = 'TASK_MARKED_AS_DONE';
 const TASK_MARKED_AS_UNDONE = 'TASK_MARKED_AS_UNDONE';
 const TASK_DONE_NOT_CHANGED = 'TASK_DONE_NOT_CHANGED';
 let taskUpdateType = TASK_DONE_NOT_CHANGED;
 
-const augmentedDataProvider = withLifecycleCallbacks(baseDataProvider, [
+export const dataProvider = withLifecycleCallbacks(baseDataProvider, [
     {
         resource: 'contactNotes',
         afterCreate: async (result, dataProvider) => {
@@ -109,13 +109,3 @@ const augmentedDataProvider = withLifecycleCallbacks(baseDataProvider, [
         },
     },
 ]);
-
-export const dataProvider = new Proxy(augmentedDataProvider, {
-    get: (target, name: string) => (resource: string, params: any) =>
-        new Promise(resolve =>
-            setTimeout(
-                () => resolve(augmentedDataProvider[name](resource, params)),
-                300
-            )
-        ),
-});

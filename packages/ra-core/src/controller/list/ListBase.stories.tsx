@@ -39,21 +39,7 @@ const data = {
     ],
 };
 
-const baseDataProvider = fakeRestProvider(data, true);
-
-const dataProvider = new Proxy(baseDataProvider, {
-    get: (target, name) => (resource, params) => {
-        if (typeof name === 'symbol' || name === 'then') {
-            return;
-        }
-        return new Promise(resolve =>
-            setTimeout(
-                () => resolve(baseDataProvider[name](resource, params)),
-                300
-            )
-        );
-    },
-});
+const dataProvider = fakeRestProvider(data, true, 300);
 
 const BookListView = () => {
     const {
