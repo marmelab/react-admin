@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { cloneElement, Children, ReactElement, useEffect } from 'react';
+import { ReactElement, useEffect } from 'react';
 import clsx from 'clsx';
 import {
     isRequired,
@@ -150,12 +150,7 @@ export const ArrayInput = (props: ArrayInputProps) => {
     const sourceContext = React.useMemo<SourceContextValue>(
         () => ({
             getSource: (source: string) => {
-                const sourceResult = source
-                    ? `${finalSource}.${source}`
-                    : finalSource;
-                return parentSourceContext
-                    ? parentSourceContext.getSource(sourceResult)
-                    : sourceResult;
+                return source ? `${finalSource}.${source}` : finalSource;
             },
             getLabel: (source: string) =>
                 parentSourceContext
