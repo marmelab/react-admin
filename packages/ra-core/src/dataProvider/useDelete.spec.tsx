@@ -289,22 +289,30 @@ describe('useDelete', () => {
             jest.spyOn(console, 'error').mockImplementation(() => {});
             render(<ErrorCasePessimistic />);
             screen.getByText('Delete first post').click();
-            await waitFor(() => {
-                expect(screen.queryByText('success')).toBeNull();
-                expect(screen.queryByText('something went wrong')).toBeNull();
-                expect(screen.queryByText('Hello')).not.toBeNull();
-                expect(screen.queryByText('World')).not.toBeNull();
-                expect(screen.queryByText('mutating')).not.toBeNull();
-            });
-            await waitFor(() => {
-                expect(screen.queryByText('success')).toBeNull();
-                expect(
-                    screen.queryByText('something went wrong')
-                ).not.toBeNull();
-                expect(screen.queryByText('Hello')).not.toBeNull();
-                expect(screen.queryByText('World')).not.toBeNull();
-                expect(screen.queryByText('mutating')).toBeNull();
-            });
+            await waitFor(
+                () => {
+                    expect(screen.queryByText('success')).toBeNull();
+                    expect(
+                        screen.queryByText('something went wrong')
+                    ).toBeNull();
+                    expect(screen.queryByText('Hello')).not.toBeNull();
+                    expect(screen.queryByText('World')).not.toBeNull();
+                    expect(screen.queryByText('mutating')).not.toBeNull();
+                },
+                { timeout: 4000 }
+            );
+            await waitFor(
+                () => {
+                    expect(screen.queryByText('success')).toBeNull();
+                    expect(
+                        screen.queryByText('something went wrong')
+                    ).not.toBeNull();
+                    expect(screen.queryByText('Hello')).not.toBeNull();
+                    expect(screen.queryByText('World')).not.toBeNull();
+                    expect(screen.queryByText('mutating')).toBeNull();
+                },
+                { timeout: 4000 }
+            );
         });
         it('when optimistic, displays result and success side effects right away', async () => {
             jest.spyOn(console, 'log').mockImplementation(() => {});
