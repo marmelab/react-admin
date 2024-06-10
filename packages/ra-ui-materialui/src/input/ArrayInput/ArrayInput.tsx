@@ -10,12 +10,12 @@ import {
     useGetValidationErrorMessage,
     useFormGroupContext,
     useFormGroups,
-    useWrappedSource,
     SourceContextProvider,
     SourceContextValue,
-    RecordContextProvider,
-    ResourceContextProvider,
     useSourceContext,
+    useResourceContext,
+    OptionalResourceContextProvider,
+    OptionalRecordContextProvider,
 } from 'ra-core';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 import {
@@ -86,7 +86,7 @@ export const ArrayInput = (props: ArrayInputProps) => {
         helperText,
         record,
         resource: resourceFromProps,
-        source,
+        source: inputSource,
         validate,
         variant,
         disabled,
@@ -94,10 +94,12 @@ export const ArrayInput = (props: ArrayInputProps) => {
         ...rest
     } = props;
 
+    const resource = useResourceContext(props);
     const formGroupName = useFormGroupContext();
     const formGroups = useFormGroups();
-    const finalSource = useWrappedSource(source);
     const parentSourceContext = useSourceContext();
+    const finalSource =
+        parentSourceContext?.getSource(inputSource) ?? inputSource;
 
     const sanitizedValidate = Array.isArray(validate)
         ? composeSyncValidators(validate)
@@ -150,16 +152,21 @@ export const ArrayInput = (props: ArrayInputProps) => {
     const sourceContext = React.useMemo<SourceContextValue>(
         () => ({
             getSource: (source: string) => {
+                if (parentSourceContext) {
+                    return source
+                        ? parentSourceContext.getSource(
+                              `${inputSource}.${source}`
+                          )
+                        : parentSourceContext.getSource(finalSource);
+                }
                 return source ? `${finalSource}.${source}` : finalSource;
             },
             getLabel: (source: string) =>
                 parentSourceContext
-                    ? parentSourceContext.getLabel(
-                          `resources.${resourceFromProps}.fields.${source}`
-                      )
-                    : `resources.${resourceFromProps}.fields.${source}`,
+                    ? parentSourceContext.getLabel(`${inputSource}.${source}`)
+                    : `resources.${resource}.fields.${inputSource}.${source}`,
         }),
-        [parentSourceContext, finalSource, resourceFromProps]
+        [parentSourceContext, finalSource, inputSource, resource]
     );
 
     if (isPending) {
@@ -177,7 +184,7 @@ export const ArrayInput = (props: ArrayInputProps) => {
             margin={margin}
             className={clsx(
                 'ra-input',
-                `ra-input-${source}`,
+                `ra-input-${finalSource}`,
                 ArrayInputClasses.root,
                 className
             )}
@@ -185,26 +192,26 @@ export const ArrayInput = (props: ArrayInputProps) => {
             {...sanitizeInputRestProps(rest)}
         >
             <InputLabel
-                htmlFor={finalSource}
+                component="span"
                 className={ArrayInputClasses.label}
                 shrink
                 error={!!error}
             >
                 <FieldTitle
                     label={label}
-                    source={source}
+                    source={inputSource}
                     resource={resourceFromProps}
                     isRequired={isRequired(validate)}
                 />
             </InputLabel>
             <ArrayInputContext.Provider value={fieldProps}>
-                <ResourceContextProvider value={resourceFromProps}>
+                <OptionalResourceContextProvider value={resourceFromProps}>
                     <SourceContextProvider value={sourceContext}>
-                        <RecordContextProvider value={record}>
+                        <OptionalRecordContextProvider value={record}>
                             {children}
-                        </RecordContextProvider>
+                        </OptionalRecordContextProvider>
                     </SourceContextProvider>
-                </ResourceContextProvider>
+                </OptionalResourceContextProvider>
             </ArrayInputContext.Provider>
             {renderHelperText ? (
                 <FormHelperText error={!!error}>

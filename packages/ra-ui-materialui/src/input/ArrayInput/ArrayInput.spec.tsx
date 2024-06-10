@@ -7,6 +7,7 @@ import {
     minLength,
     required,
     testDataProvider,
+    useRecordContext,
 } from 'ra-core';
 
 import { AdminContext } from '../../AdminContext';
@@ -17,12 +18,13 @@ import { ArrayInput } from './ArrayInput';
 import { SimpleFormIterator } from './SimpleFormIterator';
 import { useFormContext } from 'react-hook-form';
 import { GlobalValidation, ValidationInFormTab } from './ArrayInput.stories';
+import { useArrayInput } from './useArrayInput';
 
 describe('<ArrayInput />', () => {
     it('should pass its record props to its child', async () => {
-        let childProps;
-        const MockChild = props => {
-            childProps = props;
+        let record;
+        const MockChild = () => {
+            record = useRecordContext();
             return null;
         };
 
@@ -37,7 +39,7 @@ describe('<ArrayInput />', () => {
         );
 
         await waitFor(() => {
-            expect(childProps.record).toEqual({
+            expect(record).toEqual({
                 iAmRecord: true,
             });
         });
@@ -45,8 +47,8 @@ describe('<ArrayInput />', () => {
 
     it('should pass array functions to child', async () => {
         let childProps;
-        const MockChild = props => {
-            childProps = props;
+        const MockChild = () => {
+            childProps = useArrayInput();
             return null;
         };
         render(
