@@ -300,11 +300,13 @@ export const CoreAdminUI = (props: CoreAdminUIProps) => {
             <ErrorBoundary
                 onError={handleError}
                 fallbackRender={({ error, resetErrorBoundary }) => (
-                    <ErrorComponent
-                        error={error}
-                        errorInfo={errorInfo}
-                        resetErrorBoundary={resetErrorBoundary}
-                    />
+                    <div style={{ minHeight: '100vh' }}>
+                        <ErrorComponent
+                            error={error}
+                            errorInfo={errorInfo}
+                            resetErrorBoundary={resetErrorBoundary}
+                        />
+                    </div>
                 )}
             >
                 <Routes>
