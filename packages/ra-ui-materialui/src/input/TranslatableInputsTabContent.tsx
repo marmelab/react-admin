@@ -1,12 +1,14 @@
 import * as React from 'react';
+import { ReactElement, ReactNode, useMemo } from 'react';
 import { styled } from '@mui/material/styles';
 import { Stack, StackProps } from '@mui/material';
 import clsx from 'clsx';
-import { ReactElement, ReactNode, useMemo } from 'react';
 import {
     FormGroupContextProvider,
     RaRecord,
+    RecordContextProvider,
     SourceContextProvider,
+    useRecordContext,
     useSourceContext,
     useTranslatableContext,
 } from 'ra-core';
@@ -19,8 +21,9 @@ export const TranslatableInputsTabContent = (
     props: TranslatableInputsTabContentProps
 ): ReactElement => {
     const { children, groupKey = '', locale, ...other } = props;
-    const { selectedLocale } = useTranslatableContext();
+    const { selectedLocale, getRecordForLocale } = useTranslatableContext();
     const parentSourceContext = useSourceContext();
+    const record = useRecordContext(props);
 
     // The SourceContext will be read by children of TranslatableInputs to compute their composed source and label
     //
@@ -44,6 +47,15 @@ export const TranslatableInputsTabContent = (
         [locale, parentSourceContext]
     );
 
+    // As fields rely on the RecordContext to get their values and have no knowledge of the locale,
+    // we need to create a new record with the values for the current locale only
+    // Given the record { title: { en: 'title_en', fr: 'title_fr' } } and the locale 'fr',
+    // the record for the locale 'fr' will be { title: 'title_fr' }
+    const recordForLocale = useMemo(
+        () => getRecordForLocale(record, locale),
+        [getRecordForLocale, record, locale]
+    );
+
     return (
         <FormGroupContextProvider name={`${groupKey}${locale}`}>
             <Root
@@ -57,7 +69,9 @@ export const TranslatableInputsTabContent = (
                 {...other}
             >
                 <SourceContextProvider value={sourceContext}>
-                    {children}
+                    <RecordContextProvider value={recordForLocale}>
+                        {children}
+                    </RecordContextProvider>
                 </SourceContextProvider>
             </Root>
         </FormGroupContextProvider>

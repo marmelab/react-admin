@@ -15,8 +15,8 @@ import {
     FormDataConsumer,
     RaRecord,
     useRecordContext,
-    useSourceContext,
     useTranslate,
+    useWrappedSource,
 } from 'ra-core';
 import { UseFieldArrayReturn, useFormContext } from 'react-hook-form';
 
@@ -57,8 +57,7 @@ export const SimpleFormIterator = (inProps: SimpleFormIteratorProps) => {
         sx,
     } = props;
 
-    const sourceContext = useSourceContext();
-    const finalSource = sourceContext?.getSource('');
+    const finalSource = useWrappedSource('');
     if (!finalSource) {
         throw new Error(
             'SimpleFormIterator should be wrapped in a SourceContext'
