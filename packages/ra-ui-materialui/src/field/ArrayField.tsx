@@ -1,13 +1,11 @@
 import * as React from 'react';
 import { ReactNode } from 'react';
-import get from 'lodash/get';
 import {
     ListContextProvider,
-    useRecordContext,
     useList,
     SortPayload,
     FilterPayload,
-    RaRecord,
+    useFieldValue,
 } from 'ra-core';
 
 import { FieldProps } from './types';
@@ -81,9 +79,8 @@ const ArrayFieldImpl = <
 >(
     props: ArrayFieldProps<RecordType>
 ) => {
-    const { children, resource, source, perPage, sort, filter } = props;
-    const record = useRecordContext(props);
-    const data = (get(record, source, emptyArray) as RaRecord[]) || emptyArray;
+    const { children, resource, perPage, sort, filter } = props;
+    const data = useFieldValue(props) || emptyArray;
     const listContext = useList({ data, resource, perPage, sort, filter });
     return (
         <ListContextProvider value={listContext}>
