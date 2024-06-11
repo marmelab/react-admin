@@ -1,6 +1,14 @@
 import * as React from 'react';
+import {
+    Children,
+    isValidElement,
+    ReactElement,
+    ReactNode,
+    useState,
+} from 'react';
 import { styled } from '@mui/material/styles';
-import { Children, isValidElement, ReactElement, ReactNode } from 'react';
+import set from 'lodash/set';
+import get from 'lodash/get';
 import {
     useTranslatableContext,
     RaRecord,
@@ -8,7 +16,6 @@ import {
     useOptionalSourceContext,
     getResourceFieldLabelKey,
     RecordContextProvider,
-    ResourceContextProvider,
 } from 'ra-core';
 import { Labeled } from '../Labeled';
 
@@ -46,6 +53,10 @@ export const TranslatableFieldsTabContent = (
     );
     const addLabel = Children.count(children) > 1;
 
+    const [recordForLocale] = useState(() =>
+        getRecordForLocale(record, locale)
+    );
+
     return (
         <Root
             role="tabpanel"
@@ -57,28 +68,23 @@ export const TranslatableFieldsTabContent = (
         >
             {Children.map(children, field =>
                 field && isValidElement<any>(field) ? (
-                    <ResourceContextProvider
-                        value={resource}
-                        key={field.props.source}
-                    >
-                        <RecordContextProvider value={record}>
-                            <SourceContextProvider value={sourceContext}>
-                                <div>
-                                    {addLabel ? (
-                                        <Labeled
-                                            resource={resource}
-                                            label={field.props.label}
-                                            source={field.props.source}
-                                        >
-                                            {field}
-                                        </Labeled>
-                                    ) : (
-                                        field
-                                    )}
-                                </div>
-                            </SourceContextProvider>
-                        </RecordContextProvider>
-                    </ResourceContextProvider>
+                    <RecordContextProvider value={recordForLocale}>
+                        <SourceContextProvider value={sourceContext}>
+                            <div>
+                                {addLabel ? (
+                                    <Labeled
+                                        resource={resource}
+                                        label={field.props.label}
+                                        source={field.props.source}
+                                    >
+                                        {field}
+                                    </Labeled>
+                                ) : (
+                                    field
+                                )}
+                            </div>
+                        </SourceContextProvider>
+                    </RecordContextProvider>
                 ) : null
             )}
         </Root>
@@ -109,3 +115,31 @@ const Root = styled('div', {
     border: `1px solid ${theme.palette.divider}`,
     borderTop: 0,
 }));
+
+const getRecordForLocale = (record: RaRecord, locale: string) => {
+    // Get all paths of the record
+    const paths = getRecordPaths(record);
+
+    // For each path, if a path ends with the locale, set the value of the path without the locale
+    // to the value of the path with the locale
+    const recordForLocale = paths.reduce((acc, path) => {
+        if (path.includes(locale)) {
+            const pathWithoutLocale = path.slice(0, -1);
+            const value = get(record, path);
+            return set(acc, pathWithoutLocale, value);
+        }
+        return acc;
+    }, structuredClone(record));
+
+    return recordForLocale;
+};
+
+const getRecordPaths = (
+    record: any = {},
+    path: Array<string> = []
+): Array<Array<string>> =>
+    Array.isArray(record) || Object(record) !== record
+        ? [path]
+        : Object.entries(record).flatMap(([k, v]) =>
+              getRecordPaths(v, [...path, k])
+          );

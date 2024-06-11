@@ -7,7 +7,6 @@ import {
     minLength,
     required,
     testDataProvider,
-    useRecordContext,
 } from 'ra-core';
 
 import { AdminContext } from '../../AdminContext';
@@ -21,30 +20,6 @@ import { GlobalValidation, ValidationInFormTab } from './ArrayInput.stories';
 import { useArrayInput } from './useArrayInput';
 
 describe('<ArrayInput />', () => {
-    it('should pass its record props to its child', async () => {
-        let record;
-        const MockChild = () => {
-            record = useRecordContext();
-            return null;
-        };
-
-        render(
-            <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm onSubmit={jest.fn}>
-                    <ArrayInput source="foo" record={{ iAmRecord: true }}>
-                        <MockChild />
-                    </ArrayInput>
-                </SimpleForm>
-            </AdminContext>
-        );
-
-        await waitFor(() => {
-            expect(record).toEqual({
-                iAmRecord: true,
-            });
-        });
-    });
-
     it('should pass array functions to child', async () => {
         let childProps;
         const MockChild = () => {

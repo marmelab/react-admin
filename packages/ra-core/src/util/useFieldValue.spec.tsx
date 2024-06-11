@@ -2,7 +2,6 @@ import * as React from 'react';
 import { render, screen } from '@testing-library/react';
 import { useFieldValue, UseFieldValueOptions } from './useFieldValue';
 import { RecordContextProvider } from '../controller';
-import { SourceContextProvider } from '..';
 
 describe('useFieldValue', () => {
     const Component = (props: UseFieldValueOptions) => {
@@ -64,29 +63,5 @@ describe('useFieldValue', () => {
         );
 
         await screen.findByText('John');
-    });
-
-    it('should return the field value from the record inside a SourceContext', async () => {
-        render(
-            <RecordContextProvider
-                value={{
-                    id: 2,
-                    name: { fr: 'Neuromancien', en: 'Neuromancer' },
-                }}
-            >
-                <SourceContextProvider
-                    value={{
-                        getSource(source) {
-                            return `${source}.fr`;
-                        },
-                        getLabel: source => source,
-                    }}
-                >
-                    <Component source="name" />
-                </SourceContextProvider>
-            </RecordContextProvider>
-        );
-
-        await screen.findByText('Neuromancien');
     });
 });

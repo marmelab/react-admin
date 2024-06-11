@@ -1,7 +1,6 @@
 import get from 'lodash/get';
 import { Call, Objects } from 'hotscript';
 import { useRecordContext } from '../controller';
-import { useSourceContext } from '../core';
 
 /**
  * A hook that gets the value of a field of the current record.
@@ -23,14 +22,9 @@ export const useFieldValue = <
     params: UseFieldValueOptions<RecordType>
 ) => {
     const { defaultValue, source } = params;
-    const sourceContext = useSourceContext();
     const record = useRecordContext<RecordType>(params);
 
-    return get(
-        record,
-        sourceContext?.getSource(source) ?? source,
-        defaultValue
-    );
+    return get(record, source, defaultValue);
 };
 
 export interface UseFieldValueOptions<
