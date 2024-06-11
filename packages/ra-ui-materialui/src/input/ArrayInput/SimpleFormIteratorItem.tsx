@@ -3,7 +3,6 @@ import { ReactElement, ReactNode, useMemo } from 'react';
 import { Typography, Stack } from '@mui/material';
 import clsx from 'clsx';
 import {
-    getResourceFieldLabelKey,
     RaRecord,
     SourceContextProvider,
     useResourceContext,
@@ -71,11 +70,6 @@ export const SimpleFormIteratorItem = React.forwardRef(
         const sourceContext = useMemo(
             () => ({
                 getSource: (source: string) => {
-                    if (!parentSourceContext) {
-                        throw new Error(
-                            'Cannot use SimpleFormIterator outside of an ArrayInput'
-                        );
-                    }
                     if (!source) {
                         // source can be empty for scalar values, e.g.
                         // <ArrayInput source="tags" /> => SourceContext is "tags"
@@ -97,12 +91,17 @@ export const SimpleFormIteratorItem = React.forwardRef(
                     }
                 },
                 getLabel: (source: string) => {
-                    return parentSourceContext
-                        ? parentSourceContext.getLabel(source)
-                        : getResourceFieldLabelKey(resource, source);
+                    // <ArrayInput source="orders" /> => LabelContext is "orders"
+                    //   <SimpleFormIterator> => LabelContext is ALSO "orders"
+                    //      <DateInput source="date" /> => use its parent's getLabel so finalLabel = "orders.date"
+                    //   </SimpleFormIterator>
+                    // </ArrayInput>
+                    //
+                    // we don't prefix with the index to avoid that translation keys contain it
+                    return parentSourceContext.getLabel(source);
                 },
             }),
-            [index, parentSourceContext, resource]
+            [index, parentSourceContext]
         );
 
         return (

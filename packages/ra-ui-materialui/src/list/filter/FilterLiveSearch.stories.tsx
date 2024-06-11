@@ -58,7 +58,7 @@ const CountryList = () => {
     const { data } = useListContext();
     return (
         <List>
-            {data.map(record => (
+            {data?.map(record => (
                 <ListItem key={record.id} disablePadding>
                     <ListItemText>{record.name}</ListItemText>
                 </ListItem>

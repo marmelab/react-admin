@@ -7,8 +7,6 @@ import {
     FormGroupContextProvider,
     RaRecord,
     SourceContextProvider,
-    getResourceFieldLabelKey,
-    useResourceContext,
     useSourceContext,
     useTranslatableContext,
 } from 'ra-core';
@@ -21,27 +19,29 @@ export const TranslatableInputsTabContent = (
     props: TranslatableInputsTabContentProps
 ): ReactElement => {
     const { children, groupKey = '', locale, ...other } = props;
-    const resource = useResourceContext(props);
     const { selectedLocale } = useTranslatableContext();
     const parentSourceContext = useSourceContext();
-    if (!parentSourceContext && !resource) {
-        throw new Error(
-            'TranslatableInputsTabContent should be used inside a ResourceContext or given a resource prop.'
-        );
-    }
+
+    // The SourceContext will be read by children of TranslatableInputs to compute their composed source and label
+    //
+    // <TranslatableInputs locales={['en', 'fr']} /> => SourceContext is "fr"
+    //     <TextInput source="description" /> => final source for this input will be "description.fr"
+    // </TranslatableInputs>
     const sourceContext = useMemo(
         () => ({
-            getSource: (source: string) =>
-                parentSourceContext
-                    ? parentSourceContext.getSource(`${source}.${locale}`)
-                    : `${source}.${locale}`,
+            getSource: (source: string) => {
+                if (!source) {
+                    throw new Error(
+                        'Children of TranslatableInputs must have a source'
+                    );
+                }
+                return parentSourceContext.getSource(`${source}.${locale}`);
+            },
             getLabel: (source: string) => {
-                return parentSourceContext
-                    ? parentSourceContext.getLabel(source)
-                    : getResourceFieldLabelKey(resource!, source);
+                return parentSourceContext.getLabel(source);
             },
         }),
-        [locale, parentSourceContext, resource]
+        [locale, parentSourceContext]
     );
 
     return (
