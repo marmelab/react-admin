@@ -4,6 +4,7 @@ import { Typography, Stack } from '@mui/material';
 import clsx from 'clsx';
 import {
     RaRecord,
+    RecordContextProvider,
     SourceContextProvider,
     useResourceContext,
     useSourceContext,
@@ -116,15 +117,19 @@ export const SimpleFormIteratorItem = React.forwardRef(
                         </Typography>
                     )}
                     <SourceContextProvider value={sourceContext}>
-                        <Stack
-                            className={clsx(SimpleFormIteratorClasses.form)}
-                            direction={
-                                inline ? { xs: 'column', sm: 'row' } : 'column'
-                            }
-                            gap={inline ? 2 : 0}
-                        >
-                            {children}
-                        </Stack>
+                        <RecordContextProvider value={record}>
+                            <Stack
+                                className={clsx(SimpleFormIteratorClasses.form)}
+                                direction={
+                                    inline
+                                        ? { xs: 'column', sm: 'row' }
+                                        : 'column'
+                                }
+                                gap={inline ? 2 : 0}
+                            >
+                                {children}
+                            </Stack>
+                        </RecordContextProvider>
                     </SourceContextProvider>
                     {!disabled && (
                         <span className={SimpleFormIteratorClasses.action}>
