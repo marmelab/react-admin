@@ -27,8 +27,13 @@ import { LoginForm as DefaultLoginForm } from './LoginForm';
  *     );
  */
 export const Login = (props: LoginProps) => {
-    const { children = defaultLoginForm, backgroundImage, ...rest } = props;
-    const containerRef = useRef<HTMLDivElement>(null);
+    const {
+        children = defaultLoginForm,
+        backgroundImage,
+        avatarIcon = defaultAvatarIcon,
+        ...rest
+    } = props;
+    const containerRef = useRef<HTMLDivElement>();
     let backgroundImageLoaded = false;
     const checkAuth = useCheckAuth();
     const navigate = useNavigate();
@@ -68,9 +73,7 @@ export const Login = (props: LoginProps) => {
         <Root {...rest} ref={containerRef}>
             <Card className={LoginClasses.card}>
                 <div className={LoginClasses.avatar}>
-                    <Avatar className={LoginClasses.icon}>
-                        <LockIcon />
-                    </Avatar>
+                    <Avatar className={LoginClasses.icon}>{avatarIcon}</Avatar>
                 </div>
                 {children}
             </Card>
@@ -80,7 +83,10 @@ export const Login = (props: LoginProps) => {
 
 const defaultLoginForm = <DefaultLoginForm />;
 
+const defaultAvatarIcon = <LockIcon />;
+
 export interface LoginProps extends HtmlHTMLAttributes<HTMLDivElement> {
+    avatarIcon?: ReactNode;
     backgroundImage?: string;
     children?: ReactNode;
     className?: string;
