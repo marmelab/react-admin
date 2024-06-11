@@ -5,7 +5,7 @@ import {
     useTranslatableContext,
     RaRecord,
     SourceContextProvider,
-    useSourceContext,
+    useOptionalSourceContext,
     getResourceFieldLabelKey,
     RecordContextProvider,
     ResourceContextProvider,
@@ -30,7 +30,7 @@ export const TranslatableFieldsTabContent = (
     } = props;
     const { selectedLocale } = useTranslatableContext();
 
-    const parentSourceContext = useSourceContext();
+    const parentSourceContext = useOptionalSourceContext();
     const sourceContext = React.useMemo(
         () => ({
             getSource: (source: string) =>

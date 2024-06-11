@@ -14,7 +14,9 @@ export type SourceContextValue =
     | undefined;
 
 /**
- * Context that provides a function that accept a source and return a modified source (prefixed, suffixed, etc.) for fields and inputs.
+ * Context that provides a function that accept a source and return getters for the modified source and label.
+ *
+ * This allows some special inputs to prefix or suffix the source of their children.
  *
  * @example
  * const sourceContext = {
@@ -23,10 +25,10 @@ export type SourceContextValue =
  * }
  * const CoordinatesInput = () => {
  *   return (
- *     <SouceContextProvider value={sourceContext}>
+ *     <SourceContextProvider value={sourceContext}>
  *       <TextInput source="lat" />
  *       <TextInput source="lng" />
- *     </SouceContextProvider>
+ *     </SourceContextProvider>
  *   );
  * };
  */
@@ -34,4 +36,14 @@ export const SourceContext = createContext<SourceContextValue>(undefined);
 
 export const SourceContextProvider = SourceContext.Provider;
 
-export const useSourceContext = () => useContext(SourceContext);
+export const useSourceContext = () => {
+    const context = useContext(SourceContext);
+
+    if (!context) {
+        throw new Error('Inputs must be used inside a react-admin Form');
+    }
+
+    return context;
+};
+
+export const useOptionalSourceContext = () => useContext(SourceContext);

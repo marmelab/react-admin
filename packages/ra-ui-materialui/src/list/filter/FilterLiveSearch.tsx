@@ -3,7 +3,13 @@ import { ChangeEvent, memo, useMemo } from 'react';
 import { InputAdornment } from '@mui/material';
 import { SxProps } from '@mui/system';
 import SearchIcon from '@mui/icons-material/Search';
-import { useTranslate, useListFilterContext } from 'ra-core';
+import {
+    useTranslate,
+    useListFilterContext,
+    SourceContextProvider,
+    useResourceContext,
+    SourceContextValue,
+} from 'ra-core';
 import { FormProvider, useForm } from 'react-hook-form';
 
 import { TextInput, TextInputProps } from '../../input';
@@ -26,6 +32,7 @@ import { TextInput, TextInputProps } from '../../input';
 export const FilterLiveSearch = memo((props: FilterLiveSearchProps) => {
     const { filterValues, setFilters } = useListFilterContext();
     const translate = useTranslate();
+    const resource = useResourceContext(props);
 
     const {
         source = 'q',
@@ -60,29 +67,41 @@ export const FilterLiveSearch = memo((props: FilterLiveSearchProps) => {
         e.preventDefault();
     };
 
+    const sourceContext = React.useMemo<SourceContextValue>(
+        () => ({
+            getSource: (source: string) => source,
+            getLabel: (source: string) =>
+                `resources.${resource}.fields.${source}`,
+        }),
+        [resource]
+    );
+
     return (
         <FormProvider {...form}>
-            <form onSubmit={onSubmit}>
-                <TextInput
-                    resettable
-                    helperText={false}
-                    source={source}
-                    InputProps={{
-                        endAdornment: (
-                            <InputAdornment position="end">
-                                <SearchIcon color="disabled" />
-                            </InputAdornment>
-                        ),
-                    }}
-                    onChange={handleChange}
-                    size="small"
-                    label={rest.hiddenLabel ? false : label}
-                    placeholder={
-                        placeholder ?? (rest.hiddenLabel ? label : undefined)
-                    }
-                    {...rest}
-                />
-            </form>
+            <SourceContextProvider value={sourceContext}>
+                <form onSubmit={onSubmit}>
+                    <TextInput
+                        resettable
+                        helperText={false}
+                        source={source}
+                        InputProps={{
+                            endAdornment: (
+                                <InputAdornment position="end">
+                                    <SearchIcon color="disabled" />
+                                </InputAdornment>
+                            ),
+                        }}
+                        onChange={handleChange}
+                        size="small"
+                        label={rest.hiddenLabel ? false : label}
+                        placeholder={
+                            placeholder ??
+                            (rest.hiddenLabel ? label : undefined)
+                        }
+                        {...rest}
+                    />
+                </form>
+            </SourceContextProvider>
         </FormProvider>
     );
 });

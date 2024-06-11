@@ -5,7 +5,6 @@ import {
     isRequired,
     FieldTitle,
     composeSyncValidators,
-    RaRecord,
     useApplyInputDefaultValues,
     useGetValidationErrorMessage,
     useFormGroupContext,
@@ -13,9 +12,7 @@ import {
     SourceContextProvider,
     SourceContextValue,
     useSourceContext,
-    useResourceContext,
     OptionalResourceContextProvider,
-    OptionalRecordContextProvider,
 } from 'ra-core';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 import {
@@ -84,9 +81,8 @@ export const ArrayInput = (props: ArrayInputProps) => {
         isPending,
         children,
         helperText,
-        record,
         resource: resourceFromProps,
-        source: inputSource,
+        source: arraySource,
         validate,
         variant,
         disabled,
@@ -94,12 +90,10 @@ export const ArrayInput = (props: ArrayInputProps) => {
         ...rest
     } = props;
 
-    const resource = useResourceContext(props);
     const formGroupName = useFormGroupContext();
     const formGroups = useFormGroups();
     const parentSourceContext = useSourceContext();
-    const finalSource =
-        parentSourceContext?.getSource(inputSource) ?? inputSource;
+    const finalSource = parentSourceContext.getSource(arraySource);
 
     const sanitizedValidate = Array.isArray(validate)
         ? composeSyncValidators(validate)
@@ -151,43 +145,43 @@ export const ArrayInput = (props: ArrayInputProps) => {
 
     // The SourceContext will be read by children of ArrayInput to compute their composed source and label
     //
-    // <ArrayInput source="orders" /> => will prefix all its children with "orders"
-    //   <SimpleFormIterator> => will postfix index for each row, e.g. "orders.0"
+    // <ArrayInput source="orders" /> => SourceContext is "orders"
+    //   <SimpleFormIterator> => SourceContext is "orders.0"
     //     <DateInput source="date" /> => final source for this input will be "orders.0.date"
     //   </SimpleFormIterator>
     // </ArrayInput>
     //
-    // As we want to support nesting and composition with other inputs (e.g. TranslatableInputs, ReferenceOneInput, etc),
-    // we must also take into account the parent SourceContext
-    //
-    // <ArrayInput source="orders" /> => will prefix all its children with "orders"
-    //   <SimpleFormIterator> => will postfix index for each row, e.g. "orders.0"
-    //      <DateInput source="date" /> => final source for this input will be "orders.0.date"
-    //      <ArrayInput source="items" /> => will prefix all its children with "items', e.g. "orders.0.items"
-    //          <SimpleFormIterator> => will postfix index for each row, e.g. "orders.0.items.0"
-    //              <TextInput source="reference" /> => final source for this input will be "orders.0.items.0.reference"
-    //          </SimpleFormIterator>
-    //      </ArrayInput>
-    //   </SimpleFormIterator>
-    // </ArrayInput>
     const sourceContext = React.useMemo<SourceContextValue>(
         () => ({
             // source is the source of the ArrayInput child
             getSource: (source: string) => {
-                if (parentSourceContext) {
-                    return parentSourceContext.getSource(
-                        `${inputSource}.${source}`
-                    );
-                } else {
-                    return `${inputSource}.${source}`;
+                if (!source) {
+                    // SimpleFormIterator calls getSource('') to get the arraySource
+                    return parentSourceContext.getSource(arraySource);
                 }
+
+                // We want to support nesting and composition with other inputs (e.g. TranslatableInputs, ReferenceOneInput, etc),
+                // we must also take into account the parent SourceContext
+                //
+                // <ArrayInput source="orders" /> => SourceContext is "orders"
+                //   <SimpleFormIterator> => SourceContext is "orders.0"
+                //      <DateInput source="date" /> => final source for this input will be "orders.0.date"
+                //      <ArrayInput source="items" /> => SourceContext is "orders.0.items"
+                //          <SimpleFormIterator> => SourceContext is "orders.0.items.0"
+                //              <TextInput source="reference" /> => final source for this input will be "orders.0.items.0.reference"
+                //          </SimpleFormIterator>
+                //      </ArrayInput>
+                //   </SimpleFormIterator>
+                // </ArrayInput>
+                return parentSourceContext.getSource(
+                    `${arraySource}.${source}`
+                );
             },
+            // if Array source is items, and child source is name, .0.name => resources.orders.fields.items.name
             getLabel: (source: string) =>
-                parentSourceContext
-                    ? parentSourceContext.getLabel(`${inputSource}.${source}`)
-                    : `resources.${resource}.fields.${inputSource}.${source}`,
+                parentSourceContext.getLabel(`${arraySource}.${source}`),
         }),
-        [parentSourceContext, inputSource, resource]
+        [parentSourceContext, arraySource]
     );
 
     if (isPending) {
@@ -220,7 +214,7 @@ export const ArrayInput = (props: ArrayInputProps) => {
             >
                 <FieldTitle
                     label={label}
-                    source={inputSource}
+                    source={arraySource}
                     resource={resourceFromProps}
                     isRequired={isRequired(validate)}
                 />
@@ -228,9 +222,7 @@ export const ArrayInput = (props: ArrayInputProps) => {
             <ArrayInputContext.Provider value={fieldProps}>
                 <OptionalResourceContextProvider value={resourceFromProps}>
                     <SourceContextProvider value={sourceContext}>
-                        <OptionalRecordContextProvider value={record}>
-                            {children}
-                        </OptionalRecordContextProvider>
+                        {children}
                     </SourceContextProvider>
                 </OptionalResourceContextProvider>
             </ArrayInputContext.Provider>
@@ -265,7 +257,6 @@ export interface ArrayInputProps
     isFetching?: boolean;
     isLoading?: boolean;
     isPending?: boolean;
-    record?: Partial<RaRecord>;
 }
 
 const PREFIX = 'RaArrayInput';

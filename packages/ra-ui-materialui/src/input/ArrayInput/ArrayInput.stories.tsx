@@ -17,6 +17,8 @@ import { DateInput } from '../DateInput';
 import { NumberInput } from '../NumberInput';
 import { AutocompleteInput } from '../AutocompleteInput';
 import { TranslatableInputs } from '../TranslatableInputs';
+import { ReferenceField, TextField } from '../../field';
+import { Labeled } from '../../Labeled';
 
 export default { title: 'ra-ui-materialui/input/ArrayInput' };
 
@@ -30,10 +32,12 @@ const dataProvider = {
                     {
                         name: 'Leo Tolstoy',
                         role: 'head_writer',
+                        country_id: 1,
                     },
                     {
                         name: 'Alexander Pushkin',
                         role: 'co_writer',
+                        country_id: 2,
                     },
                 ],
                 tags: ['novel', 'war', 'classic'],
@@ -600,6 +604,71 @@ export const ValidationInFormTab = () => (
     <TestMemoryRouter initialEntries={['/books/create']}>
         <Admin dataProvider={dataProvider}>
             <Resource name="books" create={CreateGlobalValidationInFormTab} />
+        </Admin>
+    </TestMemoryRouter>
+);
+
+const countries = [
+    { id: 1, name: 'France' },
+    { id: 2, name: 'Italy' },
+    { id: 3, name: 'Spain' },
+    { id: 4, name: 'Russia' },
+];
+const dataProviderWithCountries = {
+    getOne: () =>
+        Promise.resolve({
+            data: {
+                id: 1,
+                title: 'War and Peace',
+                authors: [
+                    {
+                        name: 'Leo Tolstoy',
+                        role: 'head_writer',
+                        country_id: 4,
+                    },
+                    {
+                        name: 'Alexander Pushkin',
+                        role: 'co_writer',
+                        country_id: 2,
+                    },
+                ],
+                tags: ['novel', 'war', 'classic'],
+            },
+        }),
+    getList: (_resource, params) =>
+        Promise.resolve({ data: countries, count: countries.length }),
+    getMany: (_resource, params) => {
+        return Promise.resolve({
+            data: countries.filter(country => params.ids.includes(country.id)),
+        });
+    },
+} as any;
+
+const EditWithReferenceField = () => (
+    <Edit>
+        <SimpleForm>
+            <ArrayInput source="authors" fullWidth validate={required()}>
+                <SimpleFormIterator>
+                    <TextInput source="name" validate={required()} />
+                    <TextInput source="role" validate={required()} />
+                    <Labeled source="country_id">
+                        <ReferenceField
+                            source="country_id"
+                            reference="countries"
+                        >
+                            <TextField source="name" />
+                        </ReferenceField>
+                    </Labeled>
+                </SimpleFormIterator>
+            </ArrayInput>
+        </SimpleForm>
+    </Edit>
+);
+
+export const WithReferenceField = () => (
+    <TestMemoryRouter initialEntries={['/books/1']}>
+        <Admin dataProvider={dataProviderWithCountries}>
+            <Resource name="books" edit={EditWithReferenceField} />
         </Admin>
     </TestMemoryRouter>
 );

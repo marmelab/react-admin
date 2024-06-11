@@ -2,12 +2,12 @@ import { useCallback, ReactElement } from 'react';
 
 import { useTranslate } from './useTranslate';
 import { getFieldLabelTranslationArgs } from '../util';
-import { useResourceContext, useSourceContext } from '../core';
+import { useResourceContext, useOptionalSourceContext } from '../core';
 
 export const useTranslateLabel = () => {
     const translate = useTranslate();
     const resourceFromContext = useResourceContext();
-    const sourceContext = useSourceContext();
+    const sourceContext = useOptionalSourceContext();
 
     return useCallback(
         ({
