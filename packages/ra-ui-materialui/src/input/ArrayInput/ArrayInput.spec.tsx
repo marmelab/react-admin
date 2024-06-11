@@ -16,7 +16,12 @@ import { TextInput } from '../TextInput';
 import { ArrayInput } from './ArrayInput';
 import { SimpleFormIterator } from './SimpleFormIterator';
 import { useFormContext } from 'react-hook-form';
-import { GlobalValidation, ValidationInFormTab } from './ArrayInput.stories';
+import {
+    GlobalValidation,
+    ValidationInFormTab,
+    NestedInline,
+    WithReferenceField,
+} from './ArrayInput.stories';
 import { useArrayInput } from './useArrayInput';
 
 describe('<ArrayInput />', () => {
@@ -83,7 +88,7 @@ describe('<ArrayInput />', () => {
         });
     });
 
-    it('should clone each input once per value in the array', () => {
+    it('should render each input once per value in the array', () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="bar">
@@ -348,5 +353,25 @@ describe('<ArrayInput />', () => {
             });
             expect(formTab.classList.contains('error')).toBe(true);
         });
+    });
+
+    it('should support nested ArrayInput and inputs that set up SourceContexts', async () => {
+        render(<NestedInline />);
+
+        await screen.findByDisplayValue('Office Jeans');
+        await screen.findByDisplayValue('Jean de bureau');
+        await screen.findByDisplayValue('45.99');
+        expect(
+            await screen.findAllByDisplayValue('For you my love')
+        ).toHaveLength(2);
+        expect(
+            await screen.findAllByDisplayValue('Pour toi mon amour')
+        ).toHaveLength(2);
+    });
+
+    it('should support fields', async () => {
+        render(<WithReferenceField />);
+        await screen.findByText('Russia');
+        await screen.findByText('Italy');
     });
 });
