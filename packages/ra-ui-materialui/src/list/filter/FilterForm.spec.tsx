@@ -1,3 +1,4 @@
+import { chipClasses } from '@mui/material/Chip';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import expect from 'expect';
 import {
@@ -13,8 +14,9 @@ import { ReferenceInput, SelectInput, TextInput } from '../../input';
 import { Filter } from './Filter';
 import {
     Basic,
-    WithAutoCompleteArrayInput,
     WithArrayInput,
+    WithAutoCompleteArrayInput,
+    WithComplexValueFilter,
 } from './FilterButton.stories';
 import {
     FilterForm,
@@ -209,7 +211,7 @@ describe('<FilterForm />', () => {
         });
     });
 
-    it('should allow to add and clear a filter with a complex object value', async () => {
+    it('should allow to add and clear a filter with a nested value', async () => {
         render(<Basic />);
 
         const addFilterButton = await screen.findByText('Add filter');
@@ -228,6 +230,25 @@ describe('<FilterForm />', () => {
         await screen.findByText('1-10 of 13');
         expect(screen.queryByText('Nested')).toBeNull();
         expect(screen.queryByLabelText('Nested')).toBeNull();
+    });
+
+    it('should hide a removed filter with a complex object value', async () => {
+        render(<WithComplexValueFilter />);
+
+        const addFilterButton = await screen.findByText('Add filter');
+        fireEvent.click(addFilterButton);
+        fireEvent.click(await screen.findByText('Complex'));
+        await screen.findByText('1-7 of 7');
+        await screen.findByText('Complex', {
+            selector: `.${chipClasses.root} *`,
+        });
+        fireEvent.click(await screen.findByTitle('Remove this filter'));
+        await screen.findByText('1-10 of 13');
+        expect(
+            screen.queryByText('Complex', {
+                selector: `.${chipClasses.root} *`,
+            })
+        ).toBeNull();
     });
 
     it('should provide a FormGroupContext', async () => {
