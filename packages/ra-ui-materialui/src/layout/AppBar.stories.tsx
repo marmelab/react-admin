@@ -13,7 +13,14 @@ import {
 } from '@mui/material';
 import SettingsIcon from '@mui/icons-material/Settings';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
-import { I18nContextProvider, AuthContext, TestMemoryRouter } from 'ra-core';
+import {
+    I18nContextProvider,
+    AuthContext,
+    PreferencesEditorContextProvider,
+    StoreContextProvider,
+    TestMemoryRouter,
+    memoryStore,
+} from 'ra-core';
 
 import { AppBar } from './AppBar';
 import { Title } from './Title';
@@ -50,10 +57,14 @@ const Wrapper = ({ children, theme = createTheme(defaultTheme) }) => (
     <TestMemoryRouter>
         <QueryClientProvider client={new QueryClient()}>
             <MuiThemeProvider theme={theme}>
-                <AuthContext.Provider value={undefined as any}>
-                    {children}
-                </AuthContext.Provider>
-                <Content />
+                <StoreContextProvider value={memoryStore()}>
+                    <PreferencesEditorContextProvider>
+                        <AuthContext.Provider value={undefined as any}>
+                            {children}
+                        </AuthContext.Provider>
+                        <Content />
+                    </PreferencesEditorContextProvider>
+                </StoreContextProvider>
             </MuiThemeProvider>
         </QueryClientProvider>
     </TestMemoryRouter>
