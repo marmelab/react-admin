@@ -53,6 +53,10 @@ export const TranslatableFieldsTabContent = (
     );
     const addLabel = Children.count(children) > 1;
 
+    // As fields rely on the RecordContext to get their values and have no knowledge of the locale,
+    // we need to create a new record with the values for the current locale only
+    // Given the record { title: { en: 'title_en', fr: 'title_fr' } } and the locale 'fr',
+    // the record for the locale 'fr' will be { title: 'title_fr' }
     const [recordForLocale] = useState(() =>
         getRecordForLocale(record, locale)
     );
