@@ -16,6 +16,7 @@ import { TextInput } from '../TextInput';
 import { DateInput } from '../DateInput';
 import { NumberInput } from '../NumberInput';
 import { AutocompleteInput } from '../AutocompleteInput';
+import { TranslatableInputs } from '../TranslatableInputs';
 
 export default { title: 'ra-ui-materialui/input/ArrayInput' };
 
@@ -329,12 +330,65 @@ export const Realistic = () => (
     </TestMemoryRouter>
 );
 
+const orderNested = {
+    id: 1,
+    date: '2022-08-30',
+    customer: 'John Doe',
+    items: [
+        {
+            name: { en: 'Office Jeans', fr: 'Jean de bureau' },
+            price: 45.99,
+            quantity: 1,
+            extras: [
+                {
+                    type: 'card',
+                    price: 2.99,
+                    content: {
+                        en: 'For you my love',
+                        fr: 'Pour toi mon amour',
+                    },
+                },
+                {
+                    type: 'gift package',
+                    price: 1.99,
+                },
+                {
+                    type: 'insurance',
+                    price: 5,
+                },
+            ],
+        },
+        {
+            name: {
+                en: 'Black Elegance Jeans',
+                fr: 'Jean élégant noir',
+            },
+            price: 69.99,
+            quantity: 2,
+            extras: [
+                {
+                    type: 'card',
+                    price: 2.99,
+                    content: {
+                        en: 'For you my love',
+                        fr: 'Pour toi mon amour',
+                    },
+                },
+            ],
+        },
+        {
+            name: { en: 'Slim Fit Jeans', fr: 'Jean slim' },
+            price: 55.99,
+            quantity: 1,
+        },
+    ],
+};
 export const NestedInline = () => (
     <TestMemoryRouter initialEntries={['/orders/1']}>
         <Admin
             dataProvider={
                 {
-                    getOne: () => Promise.resolve({ data: order }),
+                    getOne: () => Promise.resolve({ data: orderNested }),
                     update: (_resource, params) => Promise.resolve(params),
                 } as any
             }
@@ -362,11 +416,13 @@ export const NestedInline = () => (
                                         },
                                     }}
                                 >
-                                    <TextInput
-                                        source="name"
-                                        helperText={false}
-                                        sx={{ width: 200 }}
-                                    />
+                                    <TranslatableInputs locales={['en', 'fr']}>
+                                        <TextInput
+                                            source="name"
+                                            helperText={false}
+                                            sx={{ width: 200 }}
+                                        />
+                                    </TranslatableInputs>
                                     <NumberInput
                                         source="price"
                                         helperText={false}
@@ -392,11 +448,15 @@ export const NestedInline = () => (
                                                 helperText={false}
                                                 sx={{ width: 100 }}
                                             />
-                                            <TextInput
-                                                source="content"
-                                                helperText={false}
-                                                sx={{ width: 200 }}
-                                            />
+                                            <TranslatableInputs
+                                                locales={['en', 'fr']}
+                                            >
+                                                <TextInput
+                                                    source="content"
+                                                    helperText={false}
+                                                    sx={{ width: 200 }}
+                                                />
+                                            </TranslatableInputs>
                                         </SimpleFormIterator>
                                     </ArrayInput>
                                 </SimpleFormIterator>
