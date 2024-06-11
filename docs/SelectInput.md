@@ -7,12 +7,7 @@ title: "The SelectInput Component"
 
 To let users choose a value in a list using a dropdown, use `<SelectInput>`. It renders using [Material UI's `<Select>`](https://mui.com/api/select).
 
-<video controls autoplay playsinline muted loop>
-  <source src="./img/select-input.webm" type="video/webm"/>
-  <source src="./img/select-input.mp4" type="video/mp4"/>
-  Your browser does not support the video tag.
-</video>
-
+<iframe src="https://www.youtube-nocookie.com/embed/2QKZWI2vsec" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;"></iframe>
 
 This input allows editing record fields that are scalar values, e.g. `123`, `'admin'`, etc.
 
@@ -29,6 +24,13 @@ import { SelectInput } from 'react-admin';
     { id: 'people', name: 'People' },
 ]} />
 ```
+
+<video controls autoplay playsinline muted loop>
+  <source src="./img/select-input.webm" type="video/webm"/>
+  <source src="./img/select-input.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
 
 By default, the possible choices are built from the `choices` prop, using:
   - the `id` field as the option value,
@@ -49,7 +51,7 @@ The form value for the source must be the selected value, e.g.
  - [`<AutocompleteInput>`](./AutocompleteInput.md) renders a list of suggestions in an autocomplete input
  - [`<RadioButtonGroupInput>`](./RadioButtonGroupInput.md) renders a list of radio buttons
 
-**Tip**: If you need to let users select more than one item in the list, check out the [`<SelectArrayInput>`](./SelectArrayInput.md) component.
+**Tip**: If you need to let users select multiple items in the list, check out the [`<SelectArrayInput>`](./SelectArrayInput.md) component.
 
 ## Props
 
@@ -152,7 +154,7 @@ const choices = possibleValues.map(value => ({ id: value, name: ucfirst(value) }
 
 ## `create`
 
-To allow users to add new options, pass a React element as the `create` prop. `<SelectInput>` will then render a menu item at the bottom of the list, which will render the passed element when clicked.
+To allow users to add new options, pass a React element as the `create` prop. `<SelectInput>` will then render a "Create" menu item at the bottom of the list, which will render the passed element when clicked.
 
 {% raw %}
 ```jsx
@@ -222,7 +224,24 @@ const CreateCategory = () => {
 ```
 {% endraw %}
 
+If you want to customize the label of the "Create" option, use [the `createLabel` prop](#createlabel).
+
 If you just need to ask users for a single string to create the new option, you can use [the `onCreate` prop](#oncreate) instead.
+
+## `createLabel`
+
+When you set the `create` or `onCreate` prop to let users create new options, `<SelectInput>` renders a "Create" menu item at the bottom of the list. You can customize the label of that menu item by setting a custom translation for the `ra.action.create` key in the translation files.
+
+Or, if you want to customize it just for this `<SelectInput>`, use the `createLabel` prop:
+
+```jsx
+<SelectInput
+    source="category"
+    choices={categories}
+    onCreate={onCreate}
+    createLabel="Add a new category"
+/>
+```
 
 ## `disableValue`
 
@@ -302,9 +321,16 @@ const UserCountry = () => {
 
 ## `onCreate`
 
-Use the `onCreate` prop to allow users to create new options on-the-fly. Its value must be a function. This lets you render a `prompt` to ask users about the new value. You can return either the new choice directly or a Promise resolving to the new choice.
+Use the `onCreate` prop to allow users to create new options on the fly. When enabled, `<SelectInput>` will render a "Create" menu item at the bottom of the list, which will call the `onCreate` function when selected.
 
-<iframe src="https://www.youtube-nocookie.com/embed/CIUp5MF6A1M" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;"></iframe>
+<video controls autoplay playsinline muted loop>
+  <source src="./img/SelectInput-onCreate.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
+`onCreate` must be a function that adds a new choice and returns it to let `<SelectInput>` select it. The added choice must use the same format as the other choices (usually `{ id, name }`). `onCreate` can be an async function.
+
+The following example shows how to trigger a prompt for the user to enter a new category:
 
 {% raw %}
 ```js
@@ -318,7 +344,7 @@ const PostCreate = () => {
     return (
         <Create>
             <SimpleForm>
-                <TextInput source="title" />
+                // ...
                 <SelectInput
                     onCreate={() => {
                         const newCategoryName = prompt('Enter a new category');
@@ -335,6 +361,12 @@ const PostCreate = () => {
 }
 ```
 {% endraw %}
+
+If you want to customize the label of the "Create" option, use [the `createLabel` prop](#createlabel).
+
+When used inside a `<ReferenceInput>`, the `onCreate` prop should create a new record in the reference resource, and return it. See [Creating a New Reference](./ReferenceInput.md#creating-a-new-reference) for more details.
+
+<iframe src="https://www.youtube-nocookie.com/embed/CIUp5MF6A1M" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;"></iframe>
 
 If a prompt is not enough, you can use [the `create` prop](#create) to render a custom component instead.
 

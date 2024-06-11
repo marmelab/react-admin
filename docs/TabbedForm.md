@@ -150,7 +150,7 @@ export const PostCreate = () => (
 
 **Tip**: You can include properties in the form `defaultValues` that are not listed as input components, like the `created_at` property in the previous example.
 
-**Tip**: React-admin also allows to define default values at the input level. See the [Setting default Values](./EditTutorial.md#setting-default-values) section.
+**Tip**: React-admin also allows to define default values at the input level. See the [Setting default Values](./forms.md#default-values) section.
 
 ## `id`
 
@@ -556,6 +556,8 @@ const ProductEdit = () => (
 **Tip**: React-admin renders each tab *twice*: once to get the tab header, and once to get the tab content. If you use a custom component instead of a `<TabbedForm.Tab>`, make sure that it accepts an `intent` prop, and renders differently when the value of that prop is 'header' or 'content'.
 
 ## Using Fields As Children
+
+<iframe src="https://www.youtube-nocookie.com/embed/fWc7c0URQMQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;"></iframe>
 
 The basic usage of `<TabbedForm>` is to pass [Input components](./Inputs.md) as children of `<TabbedForm.Tab>`. For non-editable fields, you can pass `disabled` inputs, or even [Field components](./Fields.md). But since `<Field>` components have no label by default, you'll have to wrap your inputs in a `<Labeled>` component in that case:
 

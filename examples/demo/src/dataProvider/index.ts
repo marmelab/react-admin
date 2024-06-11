@@ -14,6 +14,9 @@ export default (type: string) => {
     // the fake server will be initialized.
     const dataProviderWithGeneratedData = new Proxy(defaultDataProvider, {
         get(_, name) {
+            if (name === 'supportAbortSignal') {
+                return import.meta.env.MODE === 'production';
+            }
             return (resource: string, params: any) => {
                 return dataProviderPromise.then(dataProvider => {
                     return dataProvider[name.toString()](resource, params);

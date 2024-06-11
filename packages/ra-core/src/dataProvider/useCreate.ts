@@ -8,7 +8,7 @@ import {
 } from '@tanstack/react-query';
 
 import { useDataProvider } from './useDataProvider';
-import { RaRecord, CreateParams, Identifier } from '../types';
+import { RaRecord, CreateParams, Identifier, DataProvider } from '../types';
 import { useEvent } from '../util';
 
 /**
@@ -72,7 +72,7 @@ import { useEvent } from '../util';
 export const useCreate = <
     RecordType extends Omit<RaRecord, 'id'> = any,
     MutationError = unknown,
-    ResultRecordType extends RaRecord = RecordType & { id: Identifier }
+    ResultRecordType extends RaRecord = RecordType & { id: Identifier },
 >(
     resource?: string,
     params: Partial<CreateParams<Partial<RecordType>>> = {},
@@ -80,13 +80,12 @@ export const useCreate = <
 ): UseCreateResult<RecordType, boolean, MutationError, ResultRecordType> => {
     const dataProvider = useDataProvider();
     const queryClient = useQueryClient();
-    const paramsRef = useRef<Partial<CreateParams<Partial<RecordType>>>>(
-        params
-    );
+    const paramsRef =
+        useRef<Partial<CreateParams<Partial<RecordType>>>>(params);
     const hasCallTimeOnError = useRef(false);
     const hasCallTimeOnSuccess = useRef(false);
     const hasCallTimeOnSettled = useRef(false);
-
+    const { getMutateWithMiddlewares, ...mutationOptions } = options;
     const mutation = useMutation<
         ResultRecordType,
         MutationError,
@@ -107,6 +106,15 @@ export const useCreate = <
                     'useCreate mutation requires a non-empty data object'
                 );
             }
+            if (getMutateWithMiddlewares) {
+                const createWithMiddlewares = getMutateWithMiddlewares(
+                    dataProvider.create.bind(dataProvider)
+                );
+                return createWithMiddlewares(callTimeResource, {
+                    data: callTimeData,
+                    meta: callTimeMeta,
+                }).then(({ data }) => data);
+            }
             return dataProvider
                 .create<RecordType, ResultRecordType>(callTimeResource, {
                     data: callTimeData,
@@ -114,7 +122,7 @@ export const useCreate = <
                 })
                 .then(({ data }) => data);
         },
-        ...options,
+        ...mutationOptions,
         onError: (error, variables, context) => {
             if (options.onError && !hasCallTimeOnError.current) {
                 return options.onError(error, variables, context);
@@ -197,7 +205,7 @@ export const useCreate = <
 };
 
 export interface UseCreateMutateParams<
-    RecordType extends Omit<RaRecord, 'id'> = any
+    RecordType extends Omit<RaRecord, 'id'> = any,
 > {
     resource?: string;
     data?: Partial<Omit<RecordType, 'id'>>;
@@ -207,7 +215,7 @@ export interface UseCreateMutateParams<
 export type UseCreateOptions<
     RecordType extends Omit<RaRecord, 'id'> = any,
     MutationError = unknown,
-    ResultRecordType extends RaRecord = RecordType & { id: Identifier }
+    ResultRecordType extends RaRecord = RecordType & { id: Identifier },
 > = Omit<
     UseMutationOptions<
         ResultRecordType,
@@ -215,13 +223,23 @@ export type UseCreateOptions<
         Partial<UseCreateMutateParams<RecordType>>
     >,
     'mutationFn'
-> & { returnPromise?: boolean };
+> & {
+    returnPromise?: boolean;
+    getMutateWithMiddlewares?: <
+        CreateFunctionType extends
+            DataProvider['create'] = DataProvider['create'],
+    >(
+        mutate: CreateFunctionType
+    ) => (
+        ...Params: Parameters<CreateFunctionType>
+    ) => ReturnType<CreateFunctionType>;
+};
 
 export type CreateMutationFunction<
     RecordType extends Omit<RaRecord, 'id'> = any,
     TReturnPromise extends boolean = boolean,
     MutationError = unknown,
-    ResultRecordType extends RaRecord = RecordType & { id: Identifier }
+    ResultRecordType extends RaRecord = RecordType & { id: Identifier },
 > = (
     resource?: string,
     params?: Partial<CreateParams<Partial<RecordType>>>,
@@ -237,7 +255,7 @@ export type UseCreateResult<
     RecordType extends Omit<RaRecord, 'id'> = any,
     TReturnPromise extends boolean = boolean,
     MutationError = unknown,
-    ResultRecordType extends RaRecord = RecordType & { id: Identifier }
+    ResultRecordType extends RaRecord = RecordType & { id: Identifier },
 > = [
     CreateMutationFunction<
         RecordType,
@@ -250,5 +268,5 @@ export type UseCreateResult<
         MutationError,
         Partial<UseCreateMutateParams<RecordType>>,
         unknown
-    >
+    >,
 ];

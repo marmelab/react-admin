@@ -48,6 +48,7 @@ describe('<ReferenceField />', () => {
                         <ResourceDefinitionContextProvider
                             definitions={{
                                 posts: {
+                                    name: 'posts',
                                     hasEdit: true,
                                 },
                             }}
@@ -90,6 +91,7 @@ describe('<ReferenceField />', () => {
                         <ResourceDefinitionContextProvider
                             definitions={{
                                 posts: {
+                                    name: 'posts',
                                     hasEdit: true,
                                 },
                             }}
@@ -157,6 +159,7 @@ describe('<ReferenceField />', () => {
                         <ResourceDefinitionContextProvider
                             definitions={{
                                 posts: {
+                                    name: 'posts',
                                     hasEdit: true,
                                 },
                             }}
@@ -190,6 +193,7 @@ describe('<ReferenceField />', () => {
                         <ResourceDefinitionContextProvider
                             definitions={{
                                 posts: {
+                                    name: 'posts',
                                     hasEdit: true,
                                 },
                             }}
@@ -225,6 +229,7 @@ describe('<ReferenceField />', () => {
                         <ResourceDefinitionContextProvider
                             definitions={{
                                 posts: {
+                                    name: 'posts',
                                     hasEdit: true,
                                 },
                             }}
@@ -257,6 +262,7 @@ describe('<ReferenceField />', () => {
                         <ResourceDefinitionContextProvider
                             definitions={{
                                 posts: {
+                                    name: 'posts',
                                     hasEdit: true,
                                 },
                             }}
@@ -286,6 +292,7 @@ describe('<ReferenceField />', () => {
                     <ReferenceField
                         record={{ id: 123 }}
                         resource="comments"
+                        // @ts-expect-error source prop does not have a valid value
                         source="postId"
                         reference="posts"
                         emptyText="EMPTY"
@@ -315,6 +322,7 @@ describe('<ReferenceField />', () => {
                     <ResourceDefinitionContextProvider
                         definitions={{
                             posts: {
+                                name: 'posts',
                                 hasEdit: true,
                             },
                         }}
@@ -351,6 +359,7 @@ describe('<ReferenceField />', () => {
                     <ResourceDefinitionContextProvider
                         definitions={{
                             posts: {
+                                name: 'posts',
                                 recordRepresentation: 'title',
                                 hasEdit: true,
                             },
@@ -388,6 +397,7 @@ describe('<ReferenceField />', () => {
                     <ResourceDefinitionContextProvider
                         definitions={{
                             posts: {
+                                name: 'posts',
                                 hasEdit: true,
                             },
                         }}
@@ -479,6 +489,7 @@ describe('<ReferenceField />', () => {
                     <ResourceDefinitionContextProvider
                         definitions={{
                             posts: {
+                                name: 'posts',
                                 hasShow: true,
                             },
                         }}
@@ -516,6 +527,7 @@ describe('<ReferenceField />', () => {
                     <ResourceDefinitionContextProvider
                         definitions={{
                             posts: {
+                                name: 'posts',
                                 hasShow: false,
                             },
                         }}
@@ -551,6 +563,7 @@ describe('<ReferenceField />', () => {
                     <ResourceDefinitionContextProvider
                         definitions={{
                             posts: {
+                                name: 'posts',
                                 hasEdit: true,
                             },
                         }}
@@ -588,6 +601,7 @@ describe('<ReferenceField />', () => {
                     <ResourceDefinitionContextProvider
                         definitions={{
                             posts: {
+                                name: 'posts',
                                 hasEdit: true,
                             },
                         }}
@@ -652,7 +666,7 @@ describe('<ReferenceField />', () => {
             expect(dataProvider.getMany).toHaveBeenCalledWith('posts', {
                 ids: [123],
                 meta: { foo: 'bar' },
-                signal: expect.anything(),
+                signal: undefined,
             });
         });
     });

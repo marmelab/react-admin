@@ -55,7 +55,7 @@ import { CreateView, CreateViewProps } from './CreateView';
  */
 export const Create = <
     RecordType extends Omit<RaRecord, 'id'> = any,
-    ResultRecordType extends RaRecord = RecordType & { id: Identifier }
+    ResultRecordType extends RaRecord = RecordType & { id: Identifier },
 >(
     props: CreateProps<RecordType, Error, ResultRecordType>
 ): ReactElement => {
@@ -90,7 +90,7 @@ export const Create = <
 export interface CreateProps<
     RecordType extends Omit<RaRecord, 'id'> = any,
     MutationOptionsError = Error,
-    ResultRecordType extends RaRecord = RecordType & { id: Identifier }
+    ResultRecordType extends RaRecord = RecordType & { id: Identifier },
 > extends CreateControllerProps<
             RecordType,
             MutationOptionsError,

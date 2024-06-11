@@ -4,6 +4,7 @@ import { useLocation } from 'react-router-dom';
 
 import {
     Avatar,
+    Box,
     Button,
     Card,
     CardActions,
@@ -18,8 +19,6 @@ import {
     useLogin,
     useNotify,
 } from 'react-admin';
-
-import Box from '@mui/material/Box';
 
 const Login = () => {
     const [loading, setLoading] = useState(false);
@@ -40,8 +39,8 @@ const Login = () => {
                 typeof error === 'string'
                     ? error
                     : typeof error === 'undefined' || !error.message
-                    ? 'ra.auth.sign_in_error'
-                    : error.message,
+                      ? 'ra.auth.sign_in_error'
+                      : error.message,
                 {
                     type: 'error',
                     messageArgs: {
@@ -49,8 +48,8 @@ const Login = () => {
                             typeof error === 'string'
                                 ? error
                                 : error && error.message
-                                ? error.message
-                                : undefined,
+                                  ? error.message
+                                  : undefined,
                     },
                 }
             );

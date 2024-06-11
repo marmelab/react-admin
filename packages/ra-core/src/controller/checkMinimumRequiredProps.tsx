@@ -1,13 +1,13 @@
 import * as React from 'react';
 import { ComponentType } from 'react';
 
-const checkMinimumRequiredProps = (
-    displayName: string,
-    requiredProps: string[]
-) => (WrappedComponent: ComponentType) => (props: any) => {
-    useCheckMinimumRequiredProps(displayName, requiredProps, props);
-    return <WrappedComponent {...props} />;
-};
+const checkMinimumRequiredProps =
+    (displayName: string, requiredProps: string[]) =>
+    (WrappedComponent: ComponentType) =>
+    (props: any) => {
+        useCheckMinimumRequiredProps(displayName, requiredProps, props);
+        return <WrappedComponent {...props} />;
+    };
 
 export default checkMinimumRequiredProps;
 

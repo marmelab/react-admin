@@ -3,12 +3,9 @@ const fs = require('fs');
 
 const packages = fs.readdirSync(path.resolve(__dirname, './packages'));
 const moduleNameMapper = packages.reduce((mapper, dirName) => {
-    const pkg = require(path.resolve(
-        __dirname,
-        './packages',
-        dirName,
-        'package.json'
-    ));
+    const pkg = require(
+        path.resolve(__dirname, './packages', dirName, 'package.json')
+    );
     mapper[`^${pkg.name}(.*)$`] = path.join(
         __dirname,
         `./packages/${dirName}/src$1`
@@ -28,7 +25,7 @@ module.exports = {
         '/packages/create-react-admin/templates',
     ],
     transformIgnorePatterns: [
-        '[/\\\\]node_modules[/\\\\](?!(@hookform|query-string|decode-uri-component|filter-obj|split-on-first)/).+\\.(js|jsx|mjs|ts|tsx)$',
+        '[/\\\\]node_modules[/\\\\](?!(@hookform)/).+\\.(js|jsx|mjs|ts|tsx)$',
     ],
     transform: {
         // '^.+\\.[tj]sx?$' to process js/ts with `ts-jest`

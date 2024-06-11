@@ -19,7 +19,7 @@ import {
     useIsDataLoaded,
 } from 'react-admin';
 
-import queryString from 'query-string';
+import { stringify } from 'query-string';
 
 import CardWithIcon from './CardWithIcon';
 import StarRatingField from '../reviews/StarRatingField';
@@ -27,7 +27,11 @@ import { Customer, Review } from '../types';
 
 const PendingReviews = () => {
     const translate = useTranslate();
-    const { data: reviews, total, isPending } = useGetList<Review>('reviews', {
+    const {
+        data: reviews,
+        total,
+        isPending,
+    } = useGetList<Review>('reviews', {
         filter: { status: 'pending' },
         sort: { field: 'date', order: 'DESC' },
         pagination: { page: 1, perPage: 100 },
@@ -47,7 +51,7 @@ const PendingReviews = () => {
         <CardWithIcon
             to={{
                 pathname: '/reviews',
-                search: queryString.stringify({
+                search: stringify({
                     filter: JSON.stringify({ status: 'pending' }),
                 }),
             }}

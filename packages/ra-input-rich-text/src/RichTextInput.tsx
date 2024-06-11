@@ -208,7 +208,7 @@ export type RichTextInputProps = CommonInputProps &
         readOnly?: boolean;
         editorOptions?: Partial<EditorOptions>;
         toolbar?: ReactNode;
-        sx?: typeof Root['defaultProps']['sx'];
+        sx?: (typeof Root)['defaultProps']['sx'];
     };
 
 const PREFIX = 'RaRichTextInput';
@@ -235,9 +235,10 @@ const Root = styled('div', {
             borderWidth: '1px',
             padding: theme.spacing(1),
 
-            '&[contenteditable="false"], &[contenteditable="false"]:hover, &[contenteditable="false"]:focus': {
-                backgroundColor: theme.palette.action.disabledBackground,
-            },
+            '&[contenteditable="false"], &[contenteditable="false"]:hover, &[contenteditable="false"]:focus':
+                {
+                    backgroundColor: theme.palette.action.disabledBackground,
+                },
 
             '&:hover': {
                 backgroundColor: theme.palette.action.hover,

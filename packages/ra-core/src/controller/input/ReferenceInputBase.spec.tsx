@@ -124,7 +124,7 @@ describe('<ReferenceInputBase />', () => {
                 pagination: { page: 1, perPage: 25 },
                 sort: { field: 'id', order: 'DESC' },
                 meta: { test: true },
-                signal: expect.any(AbortSignal),
+                signal: undefined,
             });
         });
     });
@@ -155,7 +155,7 @@ describe('<ReferenceInputBase />', () => {
             expect(getMany).toHaveBeenCalledWith('posts', {
                 ids: [23],
                 meta: { foo: 'bar' },
-                signal: expect.any(AbortSignal),
+                signal: undefined,
             });
         });
     });
@@ -208,7 +208,7 @@ const AutocompleteInput = (
                 id={`${source}-search`}
                 list={`${source}-choices`}
                 onChange={e => {
-                    const choice = allChoices.find(
+                    const choice = allChoices?.find(
                         choice =>
                             getChoiceText(choice).toString() === e.target.value
                     );
@@ -221,7 +221,7 @@ const AutocompleteInput = (
             />
 
             <datalist id={`${source}-choices`}>
-                {allChoices.map(choice => (
+                {allChoices?.map(choice => (
                     <option
                         key={getChoiceValue(choice)}
                         value={getChoiceText(choice).toString()}

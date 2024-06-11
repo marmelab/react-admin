@@ -103,9 +103,8 @@ interface Props<RootComponent extends React.ElementType> {
     variant?: string;
 }
 
-export type ButtonProps<
-    RootComponent extends React.ElementType = 'button'
-> = Props<RootComponent> & MuiButtonProps<RootComponent>;
+export type ButtonProps<RootComponent extends React.ElementType = 'button'> =
+    Props<RootComponent> & MuiButtonProps<RootComponent>;
 
 const PREFIX = 'RaButton';
 

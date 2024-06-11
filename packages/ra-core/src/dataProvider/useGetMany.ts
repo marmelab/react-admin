@@ -79,13 +79,20 @@ export const useGetMany = <RecordType extends RaRecord = any>(
                 meta,
             },
         ],
-        queryFn: ({ signal }) => {
+        queryFn: queryParams => {
             if (!ids || ids.length === 0) {
                 // no need to call the dataProvider
                 return Promise.resolve([]);
             }
             return dataProvider
-                .getMany<RecordType>(resource, { ids, meta, signal })
+                .getMany<RecordType>(resource, {
+                    ids,
+                    meta,
+                    signal:
+                        dataProvider.supportAbortSignal === true
+                            ? queryParams.signal
+                            : undefined,
+                })
                 .then(({ data }) => data);
         },
         placeholderData: () => {
@@ -123,7 +130,12 @@ export const useGetMany = <RecordType extends RaRecord = any>(
     }, [resource]);
 
     useEffect(() => {
-        if (result.data === undefined || result.isFetching) return;
+        if (
+            result.data === undefined ||
+            result.error != null ||
+            result.isFetching
+        )
+            return;
         // optimistically populate the getOne cache
         result.data.forEach(record => {
             queryClient.setQueryData(
@@ -137,7 +149,13 @@ export const useGetMany = <RecordType extends RaRecord = any>(
         });
 
         onSuccessEvent(result.data);
-    }, [queryClient, onSuccessEvent, result.data, result.isFetching]);
+    }, [
+        queryClient,
+        onSuccessEvent,
+        result.data,
+        result.error,
+        result.isFetching,
+    ]);
 
     useEffect(() => {
         if (result.error == null || result.isFetching) return;
@@ -169,6 +187,5 @@ export type UseGetManyOptions<RecordType extends RaRecord = any> = Omit<
     onSettled?: (data?: RecordType[], error?: Error | null) => void;
 };
 
-export type UseGetManyHookValue<
-    RecordType extends RaRecord = any
-> = UseQueryResult<RecordType[], Error>;
+export type UseGetManyHookValue<RecordType extends RaRecord = any> =
+    UseQueryResult<RecordType[], Error>;

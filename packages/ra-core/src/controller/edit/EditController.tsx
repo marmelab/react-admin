@@ -1,3 +1,4 @@
+import { ReactNode } from 'react';
 import {
     useEditController,
     EditControllerProps,
@@ -21,7 +22,7 @@ export const EditController = ({
     children,
     ...props
 }: {
-    children: (params: EditControllerResult) => JSX.Element;
+    children: (params: EditControllerResult) => ReactNode;
 } & EditControllerProps) => {
     const controllerProps = useEditController(props);
     return children(controllerProps);

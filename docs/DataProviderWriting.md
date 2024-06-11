@@ -475,6 +475,15 @@ It's up to you to use this `meta` parameter in your data provider.
 
 All data provider queries can be called with an extra `signal` parameter. This parameter will receive an [AbortSignal](https://developer.mozilla.org/en-US/docs/Web/API/AbortSignal) that can be used to abort the request.
 
+To enable this feature, your data provider must have a `supportAbortSignal` property set to `true`. This is necessary to avoid queries to be sent twice in `development` mode when rendering your application inside [`<React.StrictMode>`](https://react.dev/reference/react/StrictMode).
+
+```tsx
+const dataProvider = simpleRestProvider('https://myapi.com');
+dataProvider.supportAbortSignal = true;
+// You can set this property depending on the production mode, e.g in Vite
+dataProvider.supportAbortSignal = import.meta.env.MODE === 'production';
+```
+
 When React Admin calls a data provider query method, it wraps it using [React Query](https://tanstack.com/query/v5/docs/react/overview), which supports automatic [Query Cancellation](https://tanstack.com/query/latest/docs/framework/react/guides/query-cancellation) thanks to the `signal` parameter.
 
 You can also benefit from this feature if you wrap your calls to the dataProvider with `useQuery`, and pass the `signal` parameter to the dataProvider:
@@ -687,7 +696,7 @@ Here is an example implementation, that you can use as a base for your own Data 
 
 ```js
 import { fetchUtils } from 'react-admin';
-import queryString from 'query-string';
+import { stringify } from 'query-string';
 
 const apiUrl = 'https://my.api.com/';
 const httpClient = fetchUtils.fetchJson;
@@ -701,7 +710,7 @@ export default {
             range: JSON.stringify([(page - 1) * perPage, page * perPage - 1]),
             filter: JSON.stringify(params.filter),
         };
-        const url = `${apiUrl}/${resource}?${queryString.stringify(query)}`;
+        const url = `${apiUrl}/${resource}?${stringify(query)}`;
         const { json, headers } = await httpClient(url, { signal: params.signal });
         return {
             data: json,
@@ -719,7 +728,7 @@ export default {
         const query = {
             filter: JSON.stringify({ ids: params.ids }),
         };
-        const url = `${apiUrl}/${resource}?${queryString.stringify(query)}`;
+        const url = `${apiUrl}/${resource}?${stringify(query)}`;
         const { json } = await httpClient(url, { signal: params.signal });
         return { data: json };
     },
@@ -735,7 +744,7 @@ export default {
                 [params.target]: params.id,
             }),
         };
-        const url = `${apiUrl}/${resource}?${queryString.stringify(query)}`;
+        const url = `${apiUrl}/${resource}?${stringify(query)}`;
         const { json, headers } = await httpClient(url, { signal: params.signal });
         return {
             data: json,
@@ -764,7 +773,7 @@ export default {
         const query = {
             filter: JSON.stringify({ id: params.ids}),
         };
-        const url = `${apiUrl}/${resource}?${queryString.stringify(query)}`;
+        const url = `${apiUrl}/${resource}?${stringify(query)}`;
         const { json } = await httpClient(url, {
             method: 'PUT',
             body: JSON.stringify(params.data),
@@ -784,7 +793,7 @@ export default {
         const query = {
             filter: JSON.stringify({ id: params.ids}),
         };
-        const url = `${apiUrl}/${resource}?${queryString.stringify(query)}`;
+        const url = `${apiUrl}/${resource}?${stringify(query)}`;
         const { json } = await httpClient(url, {
             method: 'DELETE',
             body: JSON.stringify(params.data),

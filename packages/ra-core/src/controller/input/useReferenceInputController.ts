@@ -1,11 +1,13 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useWatch } from 'react-hook-form';
+import type { UseQueryOptions } from '@tanstack/react-query';
+
 import { useGetList } from '../../dataProvider';
-import { FilterPayload, RaRecord, SortPayload } from '../../types';
 import { useReference } from '../useReference';
-import { ChoicesContextValue } from '../../form';
 import { useReferenceParams } from './useReferenceParams';
-import { UseQueryOptions } from '@tanstack/react-query';
+import { useWrappedSource } from '../../core';
+import type { FilterPayload, RaRecord, SortPayload } from '../../types';
+import type { ChoicesContextValue } from '../../form';
 
 /**
  * A hook for choosing a reference record. Useful for foreign keys.
@@ -68,7 +70,8 @@ export const useReferenceInputController = <RecordType extends RaRecord = any>(
     });
 
     // selection logic
-    const currentValue = useWatch({ name: source });
+    const finalSource = useWrappedSource(source);
+    const currentValue = useWatch({ name: finalSource });
 
     const isGetMatchingEnabled = enableGetChoices
         ? enableGetChoices(params.filterValues)
@@ -183,20 +186,21 @@ export const useReferenceInputController = <RecordType extends RaRecord = any>(
         setPerPage: paramsModifiers.setPerPage,
         setSort: paramsModifiers.setSort,
         showFilter: paramsModifiers.showFilter,
+        // we return source and not finalSource because child inputs (e.g. AutocompleteInput) already call useInput and compute the final source
         source,
         total: finalTotal,
         hasNextPage: pageInfo
             ? pageInfo.hasNextPage
             : total != null
-            ? params.page * params.perPage < total
-            : undefined,
+              ? params.page * params.perPage < total
+              : undefined,
         hasPreviousPage: pageInfo ? pageInfo.hasPreviousPage : params.page > 1,
         isFromReference: true,
     } as ChoicesContextValue<RecordType>;
 };
 
 export interface UseReferenceInputControllerParams<
-    RecordType extends RaRecord = any
+    RecordType extends RaRecord = any,
 > {
     debounce?: number;
     filter?: FilterPayload;

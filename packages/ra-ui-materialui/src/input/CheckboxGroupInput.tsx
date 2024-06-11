@@ -8,7 +8,13 @@ import FormControl, { FormControlProps } from '@mui/material/FormControl';
 import FormGroup from '@mui/material/FormGroup';
 import FormHelperText from '@mui/material/FormHelperText';
 import { CheckboxProps } from '@mui/material/Checkbox';
-import { FieldTitle, useInput, ChoicesProps, useChoicesContext } from 'ra-core';
+import {
+    FieldTitle,
+    useInput,
+    ChoicesProps,
+    useChoicesContext,
+    useGetRecordRepresentation,
+} from 'ra-core';
 
 import { CommonInputProps } from './CommonInputProps';
 import { sanitizeInputRestProps } from './sanitizeInputRestProps';
@@ -83,7 +89,9 @@ import { LinearProgress } from '../layout';
  *
  * The object passed as `options` props is passed to the Material UI <Checkbox> components
  */
-export const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = props => {
+export const CheckboxGroupInput: FunctionComponent<
+    CheckboxGroupInputProps
+> = props => {
     const {
         choices: choicesProp,
         className,
@@ -99,7 +107,7 @@ export const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = pr
         onBlur,
         onChange,
         options,
-        optionText = 'name',
+        optionText,
         optionValue = 'id',
         parse,
         resource: resourceProp,
@@ -153,6 +161,8 @@ export const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = pr
         onBlur,
         ...rest,
     });
+
+    const getRecordRepresentation = useGetRecordRepresentation(resource);
 
     const handleCheck = useCallback(
         (event, isChecked) => {
@@ -230,7 +240,10 @@ export const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = pr
                         id={id}
                         onChange={handleCheck}
                         options={options}
-                        optionText={optionText}
+                        optionText={
+                            optionText ??
+                            (isFromReference ? getRecordRepresentation : 'name')
+                        }
                         optionValue={optionValue}
                         translateChoice={translateChoice ?? !isFromReference}
                         value={value}

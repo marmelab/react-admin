@@ -984,7 +984,7 @@ const Dashboard = () => {
     { field: "date", order: "desc" }
   );
 
-  return <Timeline isPending={isPending} records={data} />;
+  return <Timeline isLoading={isPending} records={data} />;
 };
 ```
 
@@ -1133,7 +1133,7 @@ These building blocks include:
 And if you want to create your building blocks, you can use any of the [75+ hooks](./Reference.md#hooks) that carry **headless, reusable logic**. To name a few of them:
 
 - [`useRecordContext`](./useRecordContext.md) to get the current record anywhere in the app
-- [`useWarnWhenUnsavedChanges`](./EditTutorial.md#warning-about-unsaved-changes) to warn the user when he tries to leave a page with unsaved changes
+- [`useWarnWhenUnsavedChanges`](./Forms.md#warning-about-unsaved-changes) to warn the user when he tries to leave a page with unsaved changes
 - [`useSaveContext`](./useSaveContext.md) to tweak form submission
 - [`useTheme`](./useTheme.md) to change the theme programmatically
 

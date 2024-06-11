@@ -10,7 +10,7 @@ import { FieldProps } from './types';
 import { SxProps } from '@mui/system';
 
 export const ImageField = <
-    RecordType extends Record<string, any> = Record<string, any>
+    RecordType extends Record<string, any> = Record<string, any>,
 >(
     props: ImageFieldProps<RecordType>
 ) => {
@@ -108,7 +108,7 @@ const Root = styled(Box, {
 });
 
 export interface ImageFieldProps<
-    RecordType extends Record<string, any> = Record<string, any>
+    RecordType extends Record<string, any> = Record<string, any>,
 > extends FieldProps<RecordType> {
     src?: string;
     title?: Call<Objects.AllPaths, RecordType> extends never

@@ -6,7 +6,10 @@ import { useTranslate, usePreferencesEditor } from 'ra-core';
 
 export const InspectorButton = React.forwardRef<
     HTMLButtonElement,
-    IconButtonProps & { label?: string; SvgIconProps?: any }
+    Omit<
+        IconButtonProps,
+        'placeholder' | 'onPointerEnterCapture' | 'onPointerLeaveCapture'
+    > & { label?: string; SvgIconProps?: any }
 >(
     (
         {
@@ -16,12 +19,8 @@ export const InspectorButton = React.forwardRef<
         },
         ref
     ) => {
-        const {
-            enable,
-            disable,
-            setPreferenceKey,
-            isEnabled,
-        } = usePreferencesEditor();
+        const { enable, disable, setPreferenceKey, isEnabled } =
+            usePreferencesEditor();
         const translate = useTranslate();
 
         const handleClick: MouseEventHandler<HTMLButtonElement> = () => {

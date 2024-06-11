@@ -304,6 +304,10 @@ ul.sidenav code {
     background: 0 0;
 }
 
+.markdown-section a code {
+    color: #4183c4;
+}
+
 .markdown-section a:active,
 .markdown-section a:focus,
 .markdown-section a:hover {

@@ -35,19 +35,24 @@ React-admin v5 mostly focuses on removing deprecated features and upgrading depe
     - [setFilters Is No Longer Debounced By Default](#setfilters-is-no-longer-debounced-by-default)
     - [Updates to bulkActionButtons Syntax](#updates-to-bulkactionbuttons-syntax)
     - [`<PaginationLimit>` Component Was Removed](#paginationlimit-component-was-removed)
+    - [`<DatagridBody>` No Longer Provides record Prop To `<DatagridRow>`](#datagridbody-no-longer-provides-record-prop-to-datagridrow)
 - [Show and Edit Pages](#show-and-edit-pages)
     - [Custom Edit or Show Actions No Longer Receive Any Props](#custom-edit-or-show-actions-no-longer-receive-any-props)
     - [Inputs default ids are auto-generated](#inputs-default-ids-are-auto-generated)
     - [`<SimpleFormIterator>` No Longer Clones Its Buttons](#simpleformiterator-no-longer-clones-its-buttons)
     - [`<SimpleFormIterator>` no longer clones its children](#simpleformiterator-no-longer-clones-its-children)
     - [`<FormDataConsumer>` no longer passes a getSource function](#formdataconsumer-no-longer-passes-a-getsource-function)
+    - [Mutation Middlewares No Longer Receive The Mutation Options](#mutation-middlewares-no-longer-receive-the-mutation-options)
     - [`warnWhenUnsavedChanges` Changes](#warnwhenunsavedchanges-changes)
+    - [Global Server Side Validation Error Message Must Be Passed Via The `root.serverError` Key](#global-server-side-validation-error-message-must-be-passed-via-the-rootservererror-key)
+- [Input Components](#input-components)
+    - [`<FileInput>` And `<ImageInput>` accept prop has changed](#fileinput-and-imageinput-accept-prop-has-changed)
     - [Inputs No Longer Require To Be Touched To Display A Validation Error](#inputs-no-longer-require-to-be-touched-to-display-a-validation-error)
     - [`<InputHelperText touched>` Prop Was Removed](#inputhelpertext-touched-prop-was-removed)
-    - [Global Server Side Validation Error Message Must Be Passed Via The `root.serverError` Key](#global-server-side-validation-error-message-must-be-passed-via-the-rootservererror-key)
 - [TypeScript](#typescript)
     - [Fields Components Requires The source Prop](#fields-components-requires-the-source-prop)
-    - [`useRecordContext` Returns undefined When No Record Is Available](#userecordcontext-returns-undefined-when-no-record-is-available)
+    - [`useRecordContext` Returns `undefined` When No Record Is Available](#userecordcontext-returns-undefined-when-no-record-is-available)
+    - [`useAuthProvider` Returns `undefined` When No `authProvider` Is Available](#useauthprovider-returns-undefined-when-no-authprovider-is-available)
     - [Page Contexts Are Now Types Instead of Interfaces](#page-contexts-are-now-types-instead-of-interfaces)
     - [Stronger Types For Page Contexts](#stronger-types-for-page-contexts)
     - [EditProps and CreateProps now expect a children prop](#editprops-and-createprops-now-expect-a-children-prop)
@@ -98,7 +103,7 @@ React 18 adds out-of-the-box performance improvements by doing more batching by 
 
 ### Use `@tanstack/react-query` instead of `react-query`
 
-React-admin now uses `react-query` v5 instead of v3. The library name has changed to `@tanstack/react-query` (but it's almost the same API).
+React-admin now uses `react-query` v5 instead of v3. The library name has changed to `@tanstack/react-query` (but it's almost the same API). This new version supports React 18, offers performance improvements and new features (see [v4](https://tanstack.com/blog/announcing-tanstack-query-v4) and [v5](https://tanstack.com/blog/announcing-tanstack-query-v5) announcements).
 
 If you used `react-query` directly in your code, you'll have to update it, following their migration guides:
 
@@ -208,7 +213,6 @@ Some dependencies of react-admin have been upgraded to their latest major:
 
 - [date-fns](https://www.npmjs.com/package/date-fns) from v2 to v3
 - [inflection](https://www.npmjs.com/package/inflection) from v1 to v3
-- [query-string](https://www.npmjs.com/package/query-string) from v7 to v9
 - [react-dropzone](https://www.npmjs.com/package/react-dropzone) from v12 to v14
 - [react-error-boundary](https://www.npmjs.com/package/react-error-boundary) from v3 to v4
 - [react-i18next](https://www.npmjs.com/package/react-i18next) from v13 to v14
@@ -268,7 +272,82 @@ const myTheme = {
 +       RaSimpleFormIterator: { defaultProps: { fullWidth: undefined } },
 +       RaTranslatableInputs: { defaultProps: { fullWidth: undefined } },
     },
-};
+<!-- TOC -->
+
+- [Upgrading to v5](#upgrading-to-v5)
+    - [IE11 Is No Longer Supported](#ie11-is-no-longer-supported)
+    - [Dependencies](#dependencies)
+        - [React 18](#react-18)
+        - [Use @tanstack/react-query instead of react-query](#use-tanstackreact-query-instead-of-react-query)
+            - [Codemod](#codemod)
+        - [Minor Dependencies](#minor-dependencies)
+    - [UI Changes](#ui-changes)
+        - [Inputs Have Full Width By Default](#inputs-have-full-width-by-default)
+        - [Links are now underlined by default](#links-are-now-underlined-by-default)
+        - [Dark Theme Is Available By Default](#dark-theme-is-available-by-default)
+        - [<FileInput> And <ImageInput> accept prop has changed](#fileinput-and-imageinput-accept-prop-has-changed)
+    - [Data Provider](#data-provider)
+        - [ra-data-graphql And ra-data-graphql-simple No Longer Return A Promise](#ra-data-graphql-and-ra-data-graphql-simple-no-longer-return-a-promise)
+    - [Application Root & Layout](#application-root--layout)
+        - [<Admin menu> Is No Longer Supported](#admin-menu-is-no-longer-supported)
+        - [<Admin history> Prop Was Removed](#admin-history-prop-was-removed)
+            - [Codemod](#codemod)
+        - [<HistoryRouter> Was Removed](#historyrouter-was-removed)
+        - [Custom Layout No Longer Receives Props](#custom-layout-no-longer-receives-props)
+        - [Custom App Bars No Longer Receive Props](#custom-app-bars-no-longer-receive-props)
+        - [Custom Menu No Longer Receive Props](#custom-menu-no-longer-receive-props)
+        - [Custom Error Page No Longer Receives Title](#custom-error-page-no-longer-receives-title)
+        - [Custom Catch All No Longer Receives Title](#custom-catch-all-no-longer-receives-title)
+    - [List Components](#list-components)
+        - [List Components Can No Longer Be Used In Standalone](#list-components-can-no-longer-be-used-in-standalone)
+        - [<List hasCreate> Is No Longer Supported](#list-hascreate-is-no-longer-supported)
+        - [<Datagrid rowClick> is no longer false by default](#datagrid-rowclick-is-no-longer-false-by-default)
+        - [<Datagrid expand> Components No Longer Receive Any Props](#datagrid-expand-components-no-longer-receive-any-props)
+        - [setFilters Is No Longer Debounced By Default](#setfilters-is-no-longer-debounced-by-default)
+        - [Updates to bulkActionButtons Syntax](#updates-to-bulkactionbuttons-syntax)
+        - [<PaginationLimit> Component Was Removed](#paginationlimit-component-was-removed)
+        - [<DatagridBody> No Longer Provides record Prop To <DatagridRow>](#datagridbody-no-longer-provides-record-prop-to-datagridrow)
+    - [Show and Edit Pages](#show-and-edit-pages)
+        - [Custom Edit or Show Actions No Longer Receive Any Props](#custom-edit-or-show-actions-no-longer-receive-any-props)
+        - [Inputs default ids are auto-generated](#inputs-default-ids-are-auto-generated)
+        - [<SimpleFormIterator> No Longer Clones Its Buttons](#simpleformiterator-no-longer-clones-its-buttons)
+        - [<SimpleFormIterator> no longer clones its children](#simpleformiterator-no-longer-clones-its-children)
+        - [<FormDataConsumer> no longer passes a getSource function](#formdataconsumer-no-longer-passes-a-getsource-function)
+        - [warnWhenUnsavedChanges Changes](#warnwhenunsavedchanges-changes)
+        - [Inputs No Longer Require To Be Touched To Display A Validation Error](#inputs-no-longer-require-to-be-touched-to-display-a-validation-error)
+        - [<InputHelperText touched> Prop Was Removed](#inputhelpertext-touched-prop-was-removed)
+        - [Global Server Side Validation Error Message Must Be Passed Via The root.serverError Key](#global-server-side-validation-error-message-must-be-passed-via-the-rootservererror-key)
+    - [TypeScript](#typescript)
+        - [Fields Components Requires The source Prop](#fields-components-requires-the-source-prop)
+        - [useRecordContext Returns undefined When No Record Is Available](#userecordcontext-returns-undefined-when-no-record-is-available)
+        - [useAuthProvider Returns undefined When No authProvider Is Available](#useauthprovider-returns-undefined-when-no-authprovider-is-available)
+        - [Page Contexts Are Now Types Instead of Interfaces](#page-contexts-are-now-types-instead-of-interfaces)
+        - [Stronger Types For Page Contexts](#stronger-types-for-page-contexts)
+        - [EditProps and CreateProps now expect a children prop](#editprops-and-createprops-now-expect-a-children-prop)
+        - [BulkActionProps Type Has Been Removed](#bulkactionprops-type-has-been-removed)
+        - [onError Type From ra-core Was Removed](#onerror-type-from-ra-core-was-removed)
+        - [PublicFieldProps Interface Was Removed](#publicfieldprops-interface-was-removed)
+        - [InjectedFieldProps Interface Was Removed](#injectedfieldprops-interface-was-removed)
+        - [formClassName Prop Of FieldProps Type Was Removed](#formclassname-prop-of-fieldprops-type-was-removed)
+        - [formClassName Prop Of CommonInputProps Type Was Removed](#formclassname-prop-of-commoninputprops-type-was-removed)
+    - [Authentication](#authentication)
+        - [useCheckAuth No Longer Accepts A disableNotification Param](#usecheckauth-no-longer-accepts-a-disablenotification-param)
+        - [useLogoutIfAccessDenied No Longer Accepts A disableNotification Param](#uselogoutifaccessdenied-no-longer-accepts-a-disablenotification-param)
+        - [usePermissionsOptimized Hook Was Removed](#usepermissionsoptimized-hook-was-removed)
+    - [Routing](#routing)
+        - [linkToRecord Helper Was Removed](#linktorecord-helper-was-removed)
+        - [resolveRedirectTo Helper Was Removed](#resolveredirectto-helper-was-removed)
+    - [Theming](#theming)
+        - [useTheme no longer accepts a theme object as an optional argument](#usetheme-no-longer-accepts-a-theme-object-as-an-optional-argument)
+        - [ToggleThemeButton no longer accepts themes as props](#togglethemebutton-no-longer-accepts-themes-as-props)
+        - [<ThemeProvider theme> Is No Longer Supported](#themeprovider-theme-is-no-longer-supported)
+    - [Misc](#misc)
+        - [data-generator-retail commands Have Been Renamed to orders](#data-generator-retail-commands-have-been-renamed-to-orders)
+        - [Support For PropTypes Was Removed](#support-for-proptypes-was-removed)
+        - [Mutation Middlewares No Longer Receive The Mutation Options](#mutation-middlewares-no-longer-receive-the-mutation-options)
+    - [Upgrading to v4](#upgrading-to-v4)
+
+<!-- /TOC -->};
 ```
 
 ### Links are now underlined by default
@@ -327,19 +406,6 @@ If you don't need the dark mode feature, you'll have to explicitly disable it:
    ...
 </Admin>
 ```
-
-### `<FileInput>` And `<ImageInput>` `accept` prop has changed
-
-As we updated [react-dropzone](https://www.npmjs.com/package/react-dropzone) from v12 to v14, the `accept` prop of the `<FileInput>` and `<ImageInput>` components has changed:
-
-{% raw %}
-```diff
--<FileInput source="attachments" accept="application/pdf">
-+<FileInput source="attachments" accept={{ 'application/pdf': ['.pdf'] }}>
-```
-{% endraw %}
-
-See [react-dropzone documentation](https://react-dropzone.js.org/#section-accepting-specific-file-types) for more details.
 
 ## Data Provider
 
@@ -939,6 +1005,40 @@ const PostEdit = () => (
 );
 ```
 
+### Mutation Middlewares No Longer Receive The Mutation Options
+
+Mutations middlewares no longer receive the mutation options:
+
+```diff
+import * as React from 'react';
+import {
+    useRegisterMutationMiddleware,
+    CreateParams,
+-    MutateOptions,
+    CreateMutationFunction
+} from 'react-admin';
+
+const MyComponent = () => {
+    const createMiddleware = async (
+        resource: string,
+        params: CreateParams,
+-        options: MutateOptions,
+        next: CreateMutationFunction
+    ) => {
+        // Do something before the mutation
+
+        // Call the next middleware
+-        await next(resource, params, options);
++        await next(resource, params);
+
+        // Do something after the mutation
+    }
+    const memoizedMiddleWare = React.useCallback(createMiddleware, []);
+    useRegisterMutationMiddleware(memoizedMiddleWare);
+    // ...
+}
+```
+
 ### `warnWhenUnsavedChanges` Changes
 
 The `warnWhenUnsavedChanges` feature is a little more restrictive than before:
@@ -987,24 +1087,6 @@ root.render(
 
 **Tip:** Check out the [Migrating to RouterProvider](https://reactrouter.com/en/main/upgrading/v6-data) documentation to learn more about the migration steps and impacts.
 
-### Inputs No Longer Require To Be Touched To Display A Validation Error
-
-In previous versions, validation errors were only displayed after the input was touched or the form was submitted. In v5, validation errors are fully entrusted to the form library (`react-hook-form`), which is responsible to decide when to display them.
-
-**Tip:** You can use the [`mode`](https://react-hook-form.com/docs/useform#mode) prop to configure the validation strategy to your needs (`onSubmit`, `onBlur`, `onChange`, or `onTouched`).
-
-For most use-cases this will have no impact, because `react-hook-form` works the same way (it will wait for an input to be touched before triggering its validation).
-
-But this should help with some advanced cases, for instance if some validation errors need to be displayed on untouched fields.
-
-It will also improve the user experience, as the form `isValid` state will be consistent with error messages displayed on inputs, regardless of whether they have been touched or not.
-
-### `<InputHelperText touched>` Prop Was Removed
-
-The `<InputHelperText>` component no longer accepts a `touched` prop. This prop was used to display validation errors only if the input was touched. This behavior is now handled by `react-hook-form`.
-
-If you were using this prop, you can safely remove it.
-
 ### Global Server Side Validation Error Message Must Be Passed Via The `root.serverError` Key
 
 You can now include a global server-side error message in the response to a failed create or update request. This message will be rendered in a notification. To do so, include the error message in the `root.serverError` key of the `errors` object in the response body:
@@ -1037,6 +1119,39 @@ You can now include a global server-side error message in the response to a fail
     }
 }
 ```
+
+## Input Components
+
+### `<FileInput>` And `<ImageInput>` `accept` prop has changed
+
+As we updated [react-dropzone](https://www.npmjs.com/package/react-dropzone) from v12 to v14, the `accept` prop of the `<FileInput>` and `<ImageInput>` components has changed:
+
+{% raw %}
+```diff
+-<FileInput source="attachments" accept="application/pdf">
++<FileInput source="attachments" accept={{ 'application/pdf': ['.pdf'] }}>
+```
+{% endraw %}
+
+See [react-dropzone documentation](https://react-dropzone.js.org/#section-accepting-specific-file-types) for more details.
+
+### Inputs No Longer Require To Be Touched To Display A Validation Error
+
+In previous versions, validation errors were only displayed after the input was touched or the form was submitted. In v5, validation errors are fully entrusted to the form library (`react-hook-form`), which is responsible to decide when to display them.
+
+**Tip:** You can use the [`mode`](https://react-hook-form.com/docs/useform#mode) prop to configure the validation strategy to your needs (`onSubmit`, `onBlur`, `onChange`, or `onTouched`).
+
+For most use-cases this will have no impact, because `react-hook-form` works the same way (it will wait for an input to be touched before triggering its validation).
+
+But this should help with some advanced cases, for instance if some validation errors need to be displayed on untouched fields.
+
+It will also improve the user experience, as the form `isValid` state will be consistent with error messages displayed on inputs, regardless of whether they have been touched or not.
+
+### `<InputHelperText touched>` Prop Was Removed
+
+The `<InputHelperText>` component no longer accepts a `touched` prop. This prop was used to display validation errors only if the input was touched. This behavior is now handled by `react-hook-form`.
+
+If you were using this prop, you can safely remove it.
 
 ## TypeScript
 
@@ -1083,6 +1198,30 @@ const MyComponent = () => {
             <p>{record.body}</p>
         </div>
     );
+};
+```
+
+### `useAuthProvider` Returns `undefined` When No `authProvider` Is Available
+
+The `useAuthProvider` hook returns the current `authProvider`. Since the `authProvider` is optional, this context may be empty. Thus, the return type for `useAuthProvider` has been modified to `AuthProvider | undefined` instead of `AuthProvider` to denote this possibility.
+
+As a consequence, the TypeScript compilation of your project may fail if you don't check the existence of the `authProvider` before reading it.
+
+To fix this error, your code should handle the case where `useAuthProvider` returns `undefined`:
+
+```diff
+const useGetPermissions = (): GetPermissions => {
+    const authProvider = useAuthProvider();
+    const getPermissions = useCallback(
+        (params: any = {}) =>
++           authProvider ?
+                authProvider
+                      .getPermissions(params)
+                      .then(result => result ?? null)
++               : Promise.resolve([]),
+        [authProvider]
+    );
+    return getPermissions;
 };
 ```
 

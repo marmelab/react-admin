@@ -29,11 +29,8 @@ export const InfinitePagination = ({
     sx,
 }: InfinitePaginationProps) => {
     const { isPending } = useListContext();
-    const {
-        fetchNextPage,
-        hasNextPage,
-        isFetchingNextPage,
-    } = useInfinitePaginationContext();
+    const { fetchNextPage, hasNextPage, isFetchingNextPage } =
+        useInfinitePaginationContext();
 
     if (!fetchNextPage) {
         throw new Error(

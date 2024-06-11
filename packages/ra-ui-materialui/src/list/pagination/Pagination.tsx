@@ -119,8 +119,8 @@ export const Pagination: FC<PaginationProps> = memo(props => {
     const ActionsComponent = actions
         ? actions // overridden by caller
         : !isPending && total != null
-        ? PaginationActions // regular navigation
-        : undefined; // partial navigation (uses default TablePaginationActions)
+          ? PaginationActions // regular navigation
+          : undefined; // partial navigation (uses default TablePaginationActions)
 
     return (
         <TablePagination

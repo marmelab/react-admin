@@ -338,7 +338,24 @@ export const UserCreate = () => (
 
 ## Schema Validation
 
-`react-hook-form` supports schema validation with many libraries through its [`resolver` props](https://react-hook-form.com/docs/useform#validationResolver). To use it, follow their [resolvers documentation](https://github.com/react-hook-form/resolvers). Here's an example using `yup`:
+`react-hook-form` supports schema validation with many libraries through its [`resolver` props](https://react-hook-form.com/docs/useform#validationResolver). The supported libraries are:
+
+- [Yup](https://github.com/jquense/yup),
+- [Zod](https://github.com/vriad/zod),
+- [Superstruct](https://github.com/ianstormtaylor/superstruct),
+- [Joi](https://github.com/sideway/joi),
+- [Vest](https://github.com/ealush/vest),
+- [class-validator](https://github.com/typestack/class-validator),
+- [io-ts](https://github.com/gcanti/io-ts),
+- [Nope](https://github.com/bvego/nope-validator)
+- [computed-types](https://github.com/neuledge/computed-types)
+- [typanion](https://github.com/arcanis/typanion),
+- [AJV](https://github.com/ajv-validator/ajv),
+- [TypeBox](https://github.com/sinclairzx81/typebox),
+- [ArkType](https://github.com/arktypeio/arktype), and
+- [Valibot](https://github.com/fabian-hiller/valibot).
+
+To use schema validation, use the `resolver` prop following [react-hook-form's resolvers documentation](https://github.com/react-hook-form/resolvers). Here's an example using `yup`:
 
 ```jsx
 import { yupResolver } from '@hookform/resolvers/yup';

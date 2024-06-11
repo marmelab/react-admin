@@ -3,8 +3,15 @@ import { Admin, AdminContext } from 'react-admin';
 import { Resource, required, useGetList, TestMemoryRouter } from 'ra-core';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
+import {
+    Dialog,
+    DialogContent,
+    DialogActions,
+    TextField,
+    Button,
+} from '@mui/material';
 
-import { Create, Edit } from '../detail';
+import { Create as RaCreate, Edit } from '../detail';
 import { SimpleForm } from '../form';
 import { SelectInput } from './SelectInput';
 import { TextInput } from './TextInput';
@@ -12,6 +19,7 @@ import { ReferenceInput } from './ReferenceInput';
 import { SaveButton } from '../button/SaveButton';
 import { Toolbar } from '../form/Toolbar';
 import { FormInspector } from './common';
+import { useCreateSuggestionContext } from './useSupportCreateSuggestion';
 
 export default { title: 'ra-ui-materialui/input/SelectInput' };
 
@@ -165,6 +173,104 @@ export const Sort = () => (
     </Wrapper>
 );
 
+const categories = [
+    { name: 'Tech', id: 'tech' },
+    { name: 'Lifestyle', id: 'lifestyle' },
+];
+
+const CreateCategory = () => {
+    const { onCancel, onCreate } = useCreateSuggestionContext();
+    const [value, setValue] = React.useState('');
+
+    const handleSubmit = event => {
+        event.preventDefault();
+        const newCategory = { name: value, id: value.toLowerCase() };
+        categories.push(newCategory);
+        setValue('');
+        onCreate(newCategory);
+    };
+
+    return (
+        <Dialog open onClose={onCancel}>
+            <form onSubmit={handleSubmit}>
+                <DialogContent>
+                    <TextField
+                        label="New category name"
+                        value={value}
+                        onChange={event => setValue(event.target.value)}
+                        autoFocus
+                    />
+                </DialogContent>
+                <DialogActions>
+                    <Button type="submit">Save</Button>
+                    <Button onClick={onCancel}>Cancel</Button>
+                </DialogActions>
+            </form>
+        </Dialog>
+    );
+};
+
+export const Create = () => (
+    <Wrapper>
+        <SelectInput
+            create={<CreateCategory />}
+            source="category"
+            choices={categories}
+        />
+    </Wrapper>
+);
+
+export const OnCreate = () => {
+    const categories = [
+        { name: 'Tech', id: 'tech' },
+        { name: 'Lifestyle', id: 'lifestyle' },
+    ];
+    return (
+        <Wrapper>
+            <SelectInput
+                onCreate={() => {
+                    const newCategoryName = prompt('Enter a new category');
+                    if (!newCategoryName) return;
+                    const newCategory = {
+                        id: newCategoryName.toLowerCase(),
+                        name: newCategoryName,
+                    };
+                    categories.push(newCategory);
+                    return newCategory;
+                }}
+                source="category"
+                choices={categories}
+            />
+        </Wrapper>
+    );
+};
+
+export const CreateLabel = () => {
+    const categories = [
+        { name: 'Tech', id: 'tech' },
+        { name: 'Lifestyle', id: 'lifestyle' },
+    ];
+    return (
+        <Wrapper>
+            <SelectInput
+                onCreate={() => {
+                    const newCategoryName = prompt('Enter a new category');
+                    if (!newCategoryName) return;
+                    const newCategory = {
+                        id: newCategoryName.toLowerCase(),
+                        name: newCategoryName,
+                    };
+                    categories.push(newCategory);
+                    return newCategory;
+                }}
+                source="category"
+                choices={categories}
+                createLabel="Create a new category"
+            />
+        </Wrapper>
+    );
+};
+
 const i18nProvider = polyglotI18nProvider(() => englishMessages);
 
 const Wrapper = ({ children, onSuccess = console.log }) => (
@@ -178,7 +284,7 @@ const Wrapper = ({ children, onSuccess = console.log }) => (
         }
         defaultTheme="light"
     >
-        <Create resource="posts" mutationOptions={{ onSuccess }}>
+        <RaCreate resource="posts" mutationOptions={{ onSuccess }}>
             <SimpleForm
                 toolbar={
                     <Toolbar>
@@ -189,7 +295,7 @@ const Wrapper = ({ children, onSuccess = console.log }) => (
                 {children}
                 <FormInspector name="gender" />
             </SimpleForm>
-        </Create>
+        </RaCreate>
     </AdminContext>
 );
 
@@ -385,7 +491,10 @@ export const InsideReferenceInputWithError = () => (
         <Admin
             dataProvider={{
                 ...dataProviderWithAuthors,
-                getList: () => Promise.reject('error'),
+                getList: () =>
+                    Promise.reject(
+                        new Error('Error while fetching the authors')
+                    ),
             }}
         >
             <Resource

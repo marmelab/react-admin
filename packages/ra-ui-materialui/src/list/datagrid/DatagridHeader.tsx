@@ -29,13 +29,8 @@ export const DatagridHeader = (props: DatagridHeaderProps) => {
         isRowSelectable,
     } = props;
     const translate = useTranslate();
-    const {
-        sort,
-        data,
-        onSelect,
-        selectedIds,
-        setSort,
-    } = useListContextWithProps(props);
+    const { sort, data, onSelect, selectedIds, setSort } =
+        useListContextWithProps(props);
     const { expandSingle } = useDatagridContext();
 
     const updateSortCallback = useCallback(
@@ -113,9 +108,12 @@ export const DatagridHeader = (props: DatagridHeaderProps) => {
                         className={DatagridClasses.headerCell}
                     >
                         <Checkbox
-                            aria-label={translate('ra.action.select_all', {
-                                _: 'Select all',
-                            })}
+                            inputProps={{
+                                'aria-label': translate(
+                                    'ra.action.select_all',
+                                    { _: 'Select all' }
+                                ),
+                            }}
                             className="select-all"
                             color="primary"
                             checked={

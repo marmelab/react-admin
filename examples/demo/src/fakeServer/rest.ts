@@ -1,15 +1,18 @@
-import FakeRest from 'fakerest';
+import { FetchMockAdapter, withDelay } from 'fakerest';
 import fetchMock from 'fetch-mock';
 import generateData from 'data-generator-retail';
 
 export default () => {
     const data = generateData();
-    const restServer = new FakeRest.FetchServer('http://localhost:4000');
+    const adapter = new FetchMockAdapter({
+        baseUrl: 'http://localhost:4000',
+        data,
+        loggingEnabled: true,
+        middlewares: [withDelay(500)],
+    });
     if (window) {
-        window.restServer = restServer; // give way to update data in the console
+        window.restServer = adapter.server; // give way to update data in the console
     }
-    restServer.init(data);
-    restServer.toggleLogging(); // logging is off by default, enable it
-    fetchMock.mock('begin:http://localhost:4000', restServer.getHandler());
+    fetchMock.mock('begin:http://localhost:4000', adapter.getHandler());
     return () => fetchMock.restore();
 };

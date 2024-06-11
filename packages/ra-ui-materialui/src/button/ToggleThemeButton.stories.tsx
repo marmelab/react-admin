@@ -5,8 +5,6 @@ import fakeRestDataProvider from 'ra-data-fakerest';
 
 import { List, Datagrid } from '../list';
 import { TextField } from '../field';
-import { AppBar, Layout, TitlePortal } from '../layout';
-import { ToggleThemeButton } from './ToggleThemeButton';
 
 export default { title: 'ra-ui-materialui/button/ToggleThemeButton' };
 
@@ -96,28 +94,6 @@ const BookList = () => (
 export const Basic = () => (
     <TestMemoryRouter initialEntries={['/books']}>
         <Admin store={memoryStore()} dataProvider={dataProvider}>
-            <Resource name="books" list={BookList} />
-        </Admin>
-    </TestMemoryRouter>
-);
-
-const MyAppBar = () => (
-    <AppBar>
-        <TitlePortal />
-        <ToggleThemeButton darkTheme={{ palette: { mode: 'dark' } }} />
-    </AppBar>
-);
-const MyLayout = ({ children }) => (
-    <Layout appBar={MyAppBar}>{children}</Layout>
-);
-
-export const Legacy = () => (
-    <TestMemoryRouter initialEntries={['/books']}>
-        <Admin
-            store={memoryStore()}
-            dataProvider={dataProvider}
-            layout={MyLayout}
-        >
             <Resource name="books" list={BookList} />
         </Admin>
     </TestMemoryRouter>

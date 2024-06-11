@@ -186,10 +186,7 @@ describe('<ReferenceArrayInput />', () => {
                 .getByLabelText('ra.action.select_row')
                 .querySelector('input');
         const getCheckboxAll = () =>
-            screen
-                .getByLabelText('ra.action.select_all')
-                .querySelector('input');
-
+            screen.getByLabelText('ra.action.select_all');
         await waitFor(() => {
             expect(getCheckbox1().checked).toEqual(true);
             expect(getCheckbox2().checked).toEqual(false);
@@ -245,7 +242,7 @@ describe('<ReferenceArrayInput />', () => {
                 pagination: { page: 1, perPage: 25 },
                 sort: { field: 'id', order: 'DESC' },
                 meta: { foo: 'bar' },
-                signal: expect.anything(),
+                signal: undefined,
             });
         });
     });

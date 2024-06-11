@@ -1,3 +1,4 @@
+import expect from 'expect';
 import { testDataProvider } from './testDataProvider';
 import { combineDataProviders } from './combineDataProviders';
 
@@ -25,7 +26,9 @@ describe('combineDataProviders', () => {
         });
         await dataProvider.getOne('comments', { id: 1 });
         expect(dataProvider1.getOne).not.toHaveBeenCalled();
-        expect(dataProvider2.getOne).toHaveBeenCalled();
+        expect(dataProvider2.getOne).toHaveBeenCalledWith('comments', {
+            id: 1,
+        });
     });
     it('works with a dataProvider that returns a promise', async () => {
         const dataProvider1 = testDataProvider({
@@ -51,6 +54,8 @@ describe('combineDataProviders', () => {
         const dataProvider = await dataProviderValue;
         await dataProvider.getOne('comments', { id: 1 });
         expect(dataProvider1.getOne).not.toHaveBeenCalled();
-        expect(dataProvider2.getOne).toHaveBeenCalled();
+        expect(dataProvider2.getOne).toHaveBeenCalledWith('comments', {
+            id: 1,
+        });
     });
 });

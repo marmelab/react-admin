@@ -79,11 +79,8 @@ describe('<TranslatableInputs />', () => {
         const handleSubmit = jest.fn();
 
         const Selector = () => {
-            const {
-                locales,
-                selectLocale,
-                selectedLocale,
-            } = useTranslatableContext();
+            const { locales, selectLocale, selectedLocale } =
+                useTranslatableContext();
 
             const handleChange = (event, newLocale): void => {
                 selectLocale(newLocale);
@@ -199,11 +196,8 @@ describe('<TranslatableInputs />', () => {
 
     it('should allow to customize the locale selector', () => {
         const Selector = () => {
-            const {
-                locales,
-                selectLocale,
-                selectedLocale,
-            } = useTranslatableContext();
+            const { locales, selectLocale, selectedLocale } =
+                useTranslatableContext();
 
             const handleChange = (event): void => {
                 selectLocale(event.target.value);

@@ -250,6 +250,8 @@ const App = () => (
 **Tip**: For TypeScript users, here is a typed version of the `fetchJson` function:
 
 ```ts
+import { fetchUtils } from "react-admin";
+
 const fetchJson = (url: string, options: fetchUtils.Options = {}) => {
     const customHeaders = (options.headers ||
         new Headers({
@@ -857,3 +859,34 @@ const dataProvider = withLifecycleCallbacks(
 ```
 
 Feel free to read the [Cloudinary Get Started doc](https://cloudinary.com/documentation/programmable_media_overview) to learn more.
+
+## Query Cancellation
+
+React-admin supports [Query Cancellation](https://tanstack.com/query/latest/docs/framework/react/guides/query-cancellation), which means that when a component is unmounted, any pending query that it initiated is cancelled. This is useful to avoid out-of-date side effects and to prevent unnecessary network requests.
+
+To enable this feature, your data provider must have a `supportAbortSignal` property set to `true`.
+
+```tsx
+const dataProvider = simpleRestProvider('https://myapi.com');
+dataProvider.supportAbortSignal = true;
+```
+
+Now, every call to the data provider will receive an additional `signal` parameter (an [AbortSignal](https://developer.mozilla.org/en-US/docs/Web/API/AbortSignal) instance). You must pass this signal down to the fetch call:
+
+```tsx
+const dataProvider = {
+    getOne: async (resource, params) => {
+        const url = `${API_URL}/${resource}/${params.id}`;
+        const options = { signal: params.signal };
+        const res = await fetch(url, options);
+        if (!res.ok) {
+            throw new HttpError(res.statusText);
+        }
+        return res.json();
+    },
+}
+```
+
+Some data providers already support query cancellation, such as the `ra-data-simple-rest` provider. Check their documentation for details.
+
+**Note**: In development, if your app is using [`<React.StrictMode>`](https://react.dev/reference/react/StrictMode), enabling query cancellation will duplicate the API queries. This is only a development issue and won't happen in production.

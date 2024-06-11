@@ -13,6 +13,7 @@ import { defaultTheme } from '../theme/defaultTheme';
 import { List } from './List';
 import { Filter } from './filter';
 import { TextInput } from '../input';
+import { Notification } from '../layout';
 
 const theme = createTheme(defaultTheme);
 
@@ -270,13 +271,11 @@ describe('<List />', () => {
         });
     });
 
-    it('should render a list page with an error message when there is an error', async () => {
+    it('should render a list page with an error notification when there is an error', async () => {
         jest.spyOn(console, 'error').mockImplementation(() => {});
         const Datagrid = () => <div>datagrid</div>;
         const dataProvider = {
-            getList: jest.fn(() =>
-                Promise.reject({ error: { key: 'error.unknown' } })
-            ),
+            getList: jest.fn(() => Promise.reject(new Error('Lorem ipsum'))),
         } as any;
         render(
             <CoreAdminContext dataProvider={dataProvider}>
@@ -284,11 +283,12 @@ describe('<List />', () => {
                     <List resource="posts">
                         <Datagrid />
                     </List>
+                    <Notification />
                 </ThemeProvider>
             </CoreAdminContext>
         );
         await waitFor(() => {
-            expect(screen.getByText('ra.page.error'));
+            expect(screen.getByText('Lorem ipsum'));
         });
     });
 });

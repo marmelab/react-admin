@@ -102,6 +102,7 @@ describe('<RichTextField />', () => {
         const { container } = render(
             <RichTextField
                 record={{ id: 123, foo: true }}
+                // @ts-expect-error source prop does not have a valid value
                 source="body"
                 className="foo"
             />
@@ -166,13 +167,14 @@ describe('<RichTextField />', () => {
                             not_found: 'Not found',
                         },
                     },
-                } as any),
+                }) as any,
             'en'
         );
         render(
             <I18nContextProvider value={i18nProvider}>
                 <RichTextField
                     record={{ id: 123 }}
+                    // @ts-expect-error source prop does not have a valid value
                     source="foo.bar"
                     emptyText="resources.books.not_found"
                 />

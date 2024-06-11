@@ -53,27 +53,33 @@ export const useCheckAuth = (): CheckAuth => {
 
     const checkAuth = useCallback(
         (params: any = {}, logoutOnFailure = true, redirectTo = loginUrl) =>
-            authProvider.checkAuth(params).catch(error => {
-                if (logoutOnFailure) {
-                    logout(
-                        {},
-                        error && error.redirectTo != null
-                            ? error.redirectTo
-                            : redirectTo
-                    );
-                    const shouldSkipNotify = error && error.message === false;
-                    !shouldSkipNotify &&
-                        notify(
-                            getErrorMessage(error, 'ra.auth.auth_check_error'),
-                            { type: 'error' }
-                        );
-                }
-                throw error;
-            }),
+            authProvider
+                ? authProvider.checkAuth(params).catch(error => {
+                      if (logoutOnFailure) {
+                          logout(
+                              {},
+                              error && error.redirectTo != null
+                                  ? error.redirectTo
+                                  : redirectTo
+                          );
+                          const shouldSkipNotify =
+                              error && error.message === false;
+                          !shouldSkipNotify &&
+                              notify(
+                                  getErrorMessage(
+                                      error,
+                                      'ra.auth.auth_check_error'
+                                  ),
+                                  { type: 'error' }
+                              );
+                      }
+                      throw error;
+                  })
+                : checkAuthWithoutAuthProvider(),
         [authProvider, logout, notify, loginUrl]
     );
 
-    return authProvider ? checkAuth : checkAuthWithoutAuthProvider;
+    return checkAuth;
 };
 
 const checkAuthWithoutAuthProvider = () => Promise.resolve();
@@ -98,5 +104,5 @@ const getErrorMessage = (error, defaultMessage) =>
     typeof error === 'string'
         ? error
         : typeof error === 'undefined' || !error.message
-        ? defaultMessage
-        : error.message;
+          ? defaultMessage
+          : error.message;

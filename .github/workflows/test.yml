@@ -24,6 +24,34 @@ jobs:
       run: make lint        
     - name: Build
       run: make build
+    - name: Zip packages build artifact
+      run: zip packages-build.zip -r examples/data-generator/dist packages/*/dist
+    - name: Upload packages build artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: packages-build
+        path: packages-build.zip
+        retention-days: 1
+
+  simple-example-typecheck:
+    runs-on: ubuntu-latest
+    needs: [typecheck]
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    - name: Use Node.js LTS
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18.x'
+        cache: 'yarn'
+    - name: Install dependencies
+      run: yarn
+    - name: Download packages build artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: packages-build
+    - name: Unzip packages build artifact
+      run: unzip -o -u packages-build.zip
     - name: Type check simple example
       run: cd examples/simple && yarn type-check
 
@@ -71,6 +99,7 @@ jobs:
 
   e-commerce:
     runs-on: ubuntu-latest
+    needs: [typecheck]
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -81,8 +110,12 @@ jobs:
           cache: 'yarn'
       - name: Install dependencies
         run: yarn
-      - name: Build
-        run: make build
+      - name: Download packages build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: packages-build
+      - name: Unzip packages build artifact
+        run: unzip -o -u packages-build.zip
       - name: Build e-commerce
         run: make build-demo
         env:
@@ -100,6 +133,7 @@ jobs:
 
   crm:
     runs-on: ubuntu-latest
+    needs: [typecheck]
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -110,8 +144,12 @@ jobs:
           cache: 'yarn'
       - name: Install dependencies
         run: yarn
-      - name: Build
-        run: make build
+      - name: Download packages build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: packages-build
+      - name: Unzip packages build artifact
+        run: unzip -o -u packages-build.zip
       - name: Build crm
         run: make build-crm
 
@@ -135,7 +173,7 @@ jobs:
       - name: Install dependencies
         run: yarn
       - name: Download demo build
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: demo-build
       - name: Unzip demo build

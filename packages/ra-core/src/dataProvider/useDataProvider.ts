@@ -76,18 +76,21 @@ import { reactAdminFetchActions } from './dataFetchActions';
 const arrayReturnTypes = ['getList', 'getMany', 'getManyReference'];
 
 export const useDataProvider = <
-    TDataProvider extends DataProvider = DataProvider
+    TDataProvider extends DataProvider = DataProvider,
 >(): TDataProvider => {
-    const dataProvider = ((useContext(DataProviderContext) ||
-        defaultDataProvider) as unknown) as TDataProvider;
+    const dataProvider = (useContext(DataProviderContext) ||
+        defaultDataProvider) as unknown as TDataProvider;
 
     const logoutIfAccessDenied = useLogoutIfAccessDenied();
 
     const dataProviderProxy = useMemo(() => {
         return new Proxy(dataProvider, {
-            get: (target, name) => {
+            get: (_, name) => {
                 if (typeof name === 'symbol' || name === 'then') {
                     return;
+                }
+                if (name === 'supportAbortSignal') {
+                    return dataProvider.supportAbortSignal;
                 }
                 return (...args) => {
                     const type = name.toString();

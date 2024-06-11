@@ -4,7 +4,13 @@ import englishMessages from 'ra-language-english';
 import { Typography } from '@mui/material';
 import FavoriteBorder from '@mui/icons-material/FavoriteBorder';
 import Favorite from '@mui/icons-material/Favorite';
-import { required, testDataProvider, useRecordContext } from 'ra-core';
+import {
+    Resource,
+    TestMemoryRouter,
+    required,
+    testDataProvider,
+    useRecordContext,
+} from 'ra-core';
 import { useFormContext } from 'react-hook-form';
 
 import { AdminContext } from '../AdminContext';
@@ -13,6 +19,7 @@ import { SimpleForm } from '../form';
 import { CheckboxGroupInput } from './CheckboxGroupInput';
 import { ReferenceArrayInput } from './ReferenceArrayInput';
 import { TextInput } from './TextInput';
+import { Admin } from 'react-admin';
 
 export default { title: 'ra-ui-materialui/input/CheckboxGroupInput' };
 
@@ -61,23 +68,39 @@ const dataProvider = testDataProvider({
 });
 
 export const InsideReferenceArrayInput = () => (
-    <AdminContext
-        dataProvider={dataProvider}
-        i18nProvider={i18nProvider}
-        defaultTheme="light"
-    >
-        <Create
-            resource="posts"
-            record={{ options: [1, 2] }}
-            sx={{ width: 600 }}
+    <TestMemoryRouter initialEntries={['/posts/create']}>
+        <Admin
+            dataProvider={dataProvider}
+            i18nProvider={i18nProvider}
+            defaultTheme="light"
         >
-            <SimpleForm>
-                <ReferenceArrayInput reference="options" source="options">
-                    <CheckboxGroupInput />
-                </ReferenceArrayInput>
-            </SimpleForm>
-        </Create>
-    </AdminContext>
+            <Resource
+                name="options"
+                recordRepresentation={record =>
+                    `${record.name} (${record.details})`
+                }
+            />
+            <Resource
+                name="posts"
+                create={
+                    <Create
+                        resource="posts"
+                        record={{ options: [1, 2] }}
+                        sx={{ width: 600 }}
+                    >
+                        <SimpleForm>
+                            <ReferenceArrayInput
+                                reference="options"
+                                source="options"
+                            >
+                                <CheckboxGroupInput />
+                            </ReferenceArrayInput>
+                        </SimpleForm>
+                    </Create>
+                }
+            />
+        </Admin>
+    </TestMemoryRouter>
 );
 
 export const Disabled = () => (

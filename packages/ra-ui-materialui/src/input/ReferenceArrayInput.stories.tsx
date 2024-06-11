@@ -95,11 +95,11 @@ export const WithAutocompleteInput = () => (
 export const ErrorAutocomplete = () => (
     <AdminContext
         dataProvider={
-            ({
+            {
                 getList: () => Promise.reject(new Error('fetch error')),
                 getMany: () =>
                     Promise.resolve({ data: [{ id: 5, name: 'test1' }] }),
-            } as unknown) as DataProvider
+            } as unknown as DataProvider
         }
         i18nProvider={i18nProvider}
         defaultTheme="light"
@@ -137,11 +137,11 @@ export const WithSelectArrayInput = () => (
 export const ErrorSelectArray = () => (
     <AdminContext
         dataProvider={
-            ({
+            {
                 getList: () => Promise.reject(new Error('fetch error')),
                 getMany: () =>
                     Promise.resolve({ data: [{ id: 5, name: 'test1' }] }),
-            } as unknown) as DataProvider
+            } as unknown as DataProvider
         }
         i18nProvider={i18nProvider}
         defaultTheme="light"
@@ -179,11 +179,11 @@ export const WithCheckboxGroupInput = () => (
 export const ErrorCheckboxGroupInput = () => (
     <AdminContext
         dataProvider={
-            ({
+            {
                 getList: () => Promise.reject(new Error('fetch error')),
                 getMany: () =>
                     Promise.resolve({ data: [{ id: 5, name: 'test1' }] }),
-            } as unknown) as DataProvider
+            } as unknown as DataProvider
         }
         i18nProvider={i18nProvider}
         defaultTheme="light"
@@ -223,13 +223,13 @@ export const WithDatagridInput = () => (
 export const ErrorDatagridInput = () => (
     <AdminContext
         dataProvider={
-            ({
+            {
                 getList: () => Promise.reject(new Error('fetch error')),
                 getMany: () =>
                     Promise.resolve({
                         data: [{ id: 5, name: 'test1' }],
                     }),
-            } as unknown) as DataProvider
+            } as unknown as DataProvider
         }
         i18nProvider={i18nProvider}
         defaultTheme="light"

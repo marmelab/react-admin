@@ -152,7 +152,7 @@ export interface ShowControllerLoadingResult<RecordType extends RaRecord = any>
 }
 export interface ShowControllerLoadingErrorResult<
     RecordType extends RaRecord = any,
-    TError = Error
+    TError = Error,
 > extends ShowControllerBaseResult<RecordType> {
     record: undefined;
     error: TError;
@@ -160,7 +160,7 @@ export interface ShowControllerLoadingErrorResult<
 }
 export interface ShowControllerRefetchErrorResult<
     RecordType extends RaRecord = any,
-    TError = Error
+    TError = Error,
 > extends ShowControllerBaseResult<RecordType> {
     record: RecordType;
     error: TError;

@@ -54,8 +54,8 @@ const TestedComponent = ({ role }) => {
                                   <Resource name="admin" />,
                               ]
                             : role === 'user'
-                            ? [<Resource name="user" />]
-                            : []
+                              ? [<Resource name="user" />]
+                              : []
                     }
                 </CoreAdminRoutes>
             </CoreAdminContext>
@@ -81,8 +81,8 @@ const TestedComponentReturningNull = ({ role }) => {
                                   <Resource name="admin" />,
                               ]
                             : role === 'user'
-                            ? [<Resource name="user" />]
-                            : null
+                              ? [<Resource name="user" />]
+                              : null
                     }
                 </CoreAdminRoutes>
             </CoreAdminContext>
@@ -198,10 +198,8 @@ const TestedComponentWithPermissions = () => {
 };
 
 const TestedComponentWithOnlyLazyCustomRoutes = ({ navigateCallback }) => {
-    const [
-        lazyRoutes,
-        setLazyRoutes,
-    ] = React.useState<React.ReactElement | null>(null);
+    const [lazyRoutes, setLazyRoutes] =
+        React.useState<React.ReactElement | null>(null);
 
     React.useEffect(() => {
         const timer = setTimeout(

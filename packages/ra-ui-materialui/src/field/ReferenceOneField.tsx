@@ -29,7 +29,7 @@ import { ReferenceFieldView } from './ReferenceField';
  */
 export const ReferenceOneField = <
     RecordType extends RaRecord = RaRecord,
-    ReferenceRecordType extends RaRecord = RaRecord
+    ReferenceRecordType extends RaRecord = RaRecord,
 >(
     props: ReferenceOneFieldProps<RecordType, ReferenceRecordType>
 ) => {
@@ -100,23 +100,25 @@ export const ReferenceOneField = <
 
 export interface ReferenceOneFieldProps<
     RecordType extends RaRecord = RaRecord,
-    ReferenceRecordType extends RaRecord = RaRecord
-> extends FieldProps<RecordType> {
+    ReferenceRecordType extends RaRecord = RaRecord,
+> extends Omit<FieldProps<RecordType>, 'source'> {
     children?: ReactNode;
     reference: string;
     target: string;
     sort?: SortPayload;
+    source?: string;
     filter?: any;
     link?: LinkToType<RecordType>;
-    queryOptions?: UseQueryOptions<{
-        data: ReferenceRecordType[];
-        total: number;
-    }> & { meta?: any };
+    queryOptions?: Omit<
+        UseQueryOptions<{
+            data: ReferenceRecordType[];
+            total: number;
+        }>,
+        'queryKey'
+    > & { meta?: any };
 }
 
-ReferenceOneField.defaultProps = {
-    // disable sorting on this field by default as its default source prop ('id')
-    // will match the default sort ({ field: 'id', order: 'DESC'})
-    // leading to an incorrect sort indicator in a datagrid header
-    sortable: false,
-};
+// disable sorting on this field by default as its default source prop ('id')
+// will match the default sort ({ field: 'id', order: 'DESC'})
+// leading to an incorrect sort indicator in a datagrid header
+ReferenceOneField.sortable = false;

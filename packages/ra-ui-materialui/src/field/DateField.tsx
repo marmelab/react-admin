@@ -31,7 +31,7 @@ import { genericMemo } from './genericMemo';
  * <span>mercredi 7 novembre 2012</span>
  */
 const DateFieldImpl = <
-    RecordType extends Record<string, any> = Record<string, any>
+    RecordType extends Record<string, any> = Record<string, any>,
 >(
     props: DateFieldProps<RecordType>
 ) => {
@@ -110,7 +110,7 @@ DateFieldImpl.displayName = 'DateFieldImpl';
 export const DateField = genericMemo(DateFieldImpl);
 
 export interface DateFieldProps<
-    RecordType extends Record<string, any> = Record<string, any>
+    RecordType extends Record<string, any> = Record<string, any>,
 > extends FieldProps<RecordType>,
         Omit<TypographyProps, 'textAlign'> {
     locales?: Intl.LocalesArgument;
@@ -124,8 +124,8 @@ const defaultTransform = value =>
     value instanceof Date
         ? value
         : typeof value === 'string' || typeof value === 'number'
-        ? new Date(value)
-        : undefined;
+          ? new Date(value)
+          : undefined;
 
 const toLocaleStringSupportsLocales = (() => {
     // from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toLocaleString

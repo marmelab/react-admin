@@ -25,10 +25,8 @@ export const useNotify = () => {
             message: string | ReactNode,
             options: NotificationOptions & { type?: NotificationType } = {}
         ) => {
-            const {
-                type: messageType = 'info',
-                ...notificationOptions
-            } = options;
+            const { type: messageType = 'info', ...notificationOptions } =
+                options;
             addNotification({
                 message,
                 type: messageType,

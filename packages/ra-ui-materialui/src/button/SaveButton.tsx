@@ -155,7 +155,7 @@ const defaultIcon = <ContentSave />;
 
 interface Props<
     RecordType extends RaRecord = any,
-    MutationOptionsError = unknown
+    MutationOptionsError = unknown,
 > {
     className?: string;
     disabled?: boolean;
@@ -171,12 +171,11 @@ interface Props<
     variant?: string;
 }
 
-export type SaveButtonProps<RecordType extends RaRecord = any> = Props<
-    RecordType
-> &
-    ButtonProps & {
-        alwaysEnable?: boolean;
-    };
+export type SaveButtonProps<RecordType extends RaRecord = any> =
+    Props<RecordType> &
+        ButtonProps & {
+            alwaysEnable?: boolean;
+        };
 
 const PREFIX = 'RaSaveButton';
 

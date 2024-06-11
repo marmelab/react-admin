@@ -53,7 +53,7 @@ export const NewNote = ({
                     notify('Note added successfully');
                     refetch();
                     update(reference, {
-                        id: ((record && record.id) as unknown) as Identifier,
+                        id: (record && record.id) as unknown as Identifier,
                         data: { last_seen: date, status },
                         previousData: record,
                     });
@@ -100,9 +100,7 @@ export const NewNote = ({
                                     margin="none"
                                     value={date}
                                     onChange={(
-                                        event: React.ChangeEvent<
-                                            HTMLInputElement
-                                        >
+                                        event: React.ChangeEvent<HTMLInputElement>
                                     ) => {
                                         setDate(event.target.value);
                                     }}

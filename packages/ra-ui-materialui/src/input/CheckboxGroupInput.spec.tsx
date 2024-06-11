@@ -11,6 +11,7 @@ import {
 import { AdminContext } from '../AdminContext';
 import { SimpleForm } from '../form';
 import { CheckboxGroupInput } from './CheckboxGroupInput';
+import { InsideReferenceArrayInput } from './CheckboxGroupInput.stories';
 
 describe('<CheckboxGroupInput />', () => {
     const defaultProps = {
@@ -145,7 +146,7 @@ describe('<CheckboxGroupInput />', () => {
     it('should use optionText with an element value as text identifier', () => {
         const Foobar = () => {
             const record = useRecordContext();
-            return <span data-testid="label">{record.foobar}</span>;
+            return <span data-testid="label">{record?.foobar}</span>;
         };
         render(
             <AdminContext dataProvider={testDataProvider()}>
@@ -382,5 +383,13 @@ describe('<CheckboxGroupInput />', () => {
         );
 
         expect(screen.queryByRole('progressbar')).toBeNull();
+    });
+
+    describe('inside ReferenceArrayInput', () => {
+        it('should use the recordRepresentation as optionText', async () => {
+            render(<InsideReferenceArrayInput />);
+
+            await screen.findByText('Option 1 (This is option 1)');
+        });
     });
 });

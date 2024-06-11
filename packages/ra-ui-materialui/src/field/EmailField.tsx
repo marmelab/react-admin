@@ -8,7 +8,7 @@ import { FieldProps } from './types';
 import { genericMemo } from './genericMemo';
 
 const EmailFieldImpl = <
-    RecordType extends Record<string, any> = Record<string, any>
+    RecordType extends Record<string, any> = Record<string, any>,
 >(
     props: EmailFieldProps<RecordType>
 ) => {
@@ -46,7 +46,7 @@ EmailFieldImpl.displayName = 'EmailFieldImpl';
 export const EmailField = genericMemo(EmailFieldImpl);
 
 export interface EmailFieldProps<
-    RecordType extends Record<string, any> = Record<string, any>
+    RecordType extends Record<string, any> = Record<string, any>,
 > extends FieldProps<RecordType>,
         Omit<LinkProps, 'textAlign'> {}
 

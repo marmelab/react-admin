@@ -65,8 +65,8 @@ export const getSelectedReferencesStatus = <RecordType extends RaRecord = any>(
     !field.value || field.value.length === referenceRecords.length
         ? REFERENCES_STATUS_READY
         : referenceRecords.length > 0
-        ? REFERENCES_STATUS_INCOMPLETE
-        : REFERENCES_STATUS_EMPTY;
+          ? REFERENCES_STATUS_INCOMPLETE
+          : REFERENCES_STATUS_EMPTY;
 
 interface GetStatusForArrayInputParams<RecordType extends RaRecord = any> {
     field: ControllerRenderProps;

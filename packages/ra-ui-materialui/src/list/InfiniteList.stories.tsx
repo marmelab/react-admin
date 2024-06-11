@@ -82,24 +82,11 @@ const data = {
     ],
 };
 
-const baseDataProvider = fakeRestProvider(
+const dataProvider = fakeRestProvider(
     data,
-    process.env.NODE_ENV === 'development'
+    process.env.NODE_ENV === 'development',
+    500
 );
-
-const dataProvider = new Proxy(baseDataProvider, {
-    get: (target, name) => (resource, params) => {
-        if (typeof name === 'symbol' || name === 'then') {
-            return;
-        }
-        return new Promise(resolve =>
-            setTimeout(
-                () => resolve(baseDataProvider[name](resource, params)),
-                500
-            )
-        );
-    },
-});
 
 const Admin = ({ children, dataProvider, layout }: any) => (
     <TestMemoryRouter>
@@ -197,11 +184,8 @@ export const PaginationInfinite = () => (
 );
 
 const LoadMore = () => {
-    const {
-        hasNextPage,
-        fetchNextPage,
-        isFetchingNextPage,
-    } = useInfinitePaginationContext();
+    const { hasNextPage, fetchNextPage, isFetchingNextPage } =
+        useInfinitePaginationContext();
     return hasNextPage ? (
         <Box mt={1} textAlign="center">
             <Button

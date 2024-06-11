@@ -17,7 +17,7 @@ import ContentFilter from '@mui/icons-material/FilterList';
 import lodashGet from 'lodash/get';
 import isEqual from 'lodash/isEqual';
 import { useListContext, useResourceContext, useTranslate } from 'ra-core';
-import queryString from 'query-string';
+import { stringify } from 'query-string';
 import { useNavigate } from 'react-router';
 
 import { FilterButtonMenuItem } from './FilterButtonMenuItem';
@@ -114,9 +114,8 @@ export const FilterButton = (props: FilterButtonProps) => {
     );
 
     // add query dialog state
-    const [addSavedQueryDialogOpen, setAddSavedQueryDialogOpen] = useState(
-        false
-    );
+    const [addSavedQueryDialogOpen, setAddSavedQueryDialogOpen] =
+        useState(false);
     const hideAddSavedQueryDialog = (): void => {
         setAddSavedQueryDialogOpen(false);
     };
@@ -126,10 +125,8 @@ export const FilterButton = (props: FilterButtonProps) => {
     };
 
     // remove query dialog state
-    const [
-        removeSavedQueryDialogOpen,
-        setRemoveSavedQueryDialogOpen,
-    ] = useState(false);
+    const [removeSavedQueryDialogOpen, setRemoveSavedQueryDialogOpen] =
+        useState(false);
     const hideRemoveSavedQueryDialog = (): void => {
         setRemoveSavedQueryDialogOpen(false);
     };
@@ -194,7 +191,7 @@ export const FilterButton = (props: FilterButtonProps) => {
                         <MenuItem
                             onClick={(): void => {
                                 navigate({
-                                    search: queryString.stringify({
+                                    search: stringify({
                                         filter: JSON.stringify(
                                             savedQuery.value.filter
                                         ),
@@ -215,13 +212,15 @@ export const FilterButton = (props: FilterButtonProps) => {
                         </MenuItem>
                     )
                 )}
-                {hasFilterValues && !hasSavedCurrentQuery && !disableSaveQuery && (
-                    <MenuItem onClick={showAddSavedQueryDialog}>
-                        {translate('ra.saved_queries.new_label', {
-                            _: 'Save current query...',
-                        })}
-                    </MenuItem>
-                )}
+                {hasFilterValues &&
+                    !hasSavedCurrentQuery &&
+                    !disableSaveQuery && (
+                        <MenuItem onClick={showAddSavedQueryDialog}>
+                            {translate('ra.saved_queries.new_label', {
+                                _: 'Save current query...',
+                            })}
+                        </MenuItem>
+                    )}
                 {hasFilterValues && (
                     <MenuItem
                         onClick={() => {

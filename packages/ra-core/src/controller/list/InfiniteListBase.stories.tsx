@@ -40,31 +40,11 @@ const data = {
     ],
 };
 
-const baseDataProvider = fakeRestProvider(data);
-
-const dataProvider = new Proxy(baseDataProvider, {
-    get: (target, name) => (resource, params) => {
-        if (typeof name === 'symbol' || name === 'then') {
-            return;
-        }
-        return new Promise(resolve =>
-            setTimeout(
-                () => resolve(baseDataProvider[name](resource, params)),
-                300
-            )
-        );
-    },
-});
+const dataProvider = fakeRestProvider(data, undefined, 300);
 
 const BookListView = () => {
-    const {
-        data,
-        isPending,
-        sort,
-        setSort,
-        filterValues,
-        setFilters,
-    } = useListContext();
+    const { data, isPending, sort, setSort, filterValues, setFilters } =
+        useListContext();
     if (isPending) {
         return <div>Loading...</div>;
     }

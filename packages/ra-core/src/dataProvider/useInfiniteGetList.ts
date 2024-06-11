@@ -101,8 +101,9 @@ export const useInfiniteGetList = <RecordType extends RaRecord = any>(
             'getInfiniteList',
             { pagination, sort, filter, meta },
         ],
-        queryFn: ({ pageParam = pagination.page, signal }) =>
-            dataProvider
+        queryFn: queryParams => {
+            const { pageParam = pagination.page } = queryParams;
+            return dataProvider
                 .getList<RecordType>(resource, {
                     pagination: {
                         page: pageParam,
@@ -111,14 +112,18 @@ export const useInfiniteGetList = <RecordType extends RaRecord = any>(
                     sort,
                     filter,
                     meta,
-                    signal,
+                    signal:
+                        dataProvider.supportAbortSignal === true
+                            ? queryParams.signal
+                            : undefined,
                 })
                 .then(({ data, pageInfo, total }) => ({
                     data,
                     total,
                     pageParam,
                     pageInfo,
-                })),
+                }));
+        },
         initialPageParam: pagination.page,
         ...queryOptions,
         getNextPageParam: lastLoadedPage => {
@@ -160,7 +165,12 @@ export const useInfiniteGetList = <RecordType extends RaRecord = any>(
     }, [resource]);
 
     useEffect(() => {
-        if (result.data === undefined || result.isFetching) return;
+        if (
+            result.data === undefined ||
+            result.error != null ||
+            result.isFetching
+        )
+            return;
         // optimistically populate the getOne cache
         const allPagesDataLength = result.data.pages.reduce(
             (acc, page) => acc + page.data.length,
@@ -182,7 +192,13 @@ export const useInfiniteGetList = <RecordType extends RaRecord = any>(
         }
 
         onSuccessEvent(result.data);
-    }, [onSuccessEvent, queryClient, result.data, result.isFetching]);
+    }, [
+        onSuccessEvent,
+        queryClient,
+        result.data,
+        result.error,
+        result.isFetching,
+    ]);
 
     useEffect(() => {
         if (result.error == null || result.isFetching) return;
@@ -200,13 +216,15 @@ export const useInfiniteGetList = <RecordType extends RaRecord = any>(
         result.isFetching,
     ]);
 
-    return (result.data
-        ? {
-              ...result,
-              data: result.data,
-              total: result.data?.pages[0]?.total ?? undefined,
-          }
-        : result) as UseInfiniteQueryResult<
+    return (
+        result.data
+            ? {
+                  ...result,
+                  data: result.data,
+                  total: result.data?.pages[0]?.total ?? undefined,
+              }
+            : result
+    ) as UseInfiniteQueryResult<
         InfiniteData<GetInfiniteListResult<RecordType>>,
         Error
     > & {
@@ -239,9 +257,8 @@ export type UseInfiniteGetListOptions<RecordType extends RaRecord = any> = Omit<
     ) => void;
 };
 
-export type UseInfiniteGetListHookValue<
-    RecordType extends RaRecord = any
-> = UseInfiniteQueryResult<InfiniteData<GetInfiniteListResult<RecordType>>> & {
-    total?: number;
-    pageParam?: number;
-};
+export type UseInfiniteGetListHookValue<RecordType extends RaRecord = any> =
+    UseInfiniteQueryResult<InfiniteData<GetInfiniteListResult<RecordType>>> & {
+        total?: number;
+        pageParam?: number;
+    };

@@ -9,14 +9,15 @@ import { RadioButtonGroupInput } from './RadioButtonGroupInput';
 import { FormInspector } from './common';
 import { ReferenceInput } from './ReferenceInput';
 import { ReferenceArrayInput } from './ReferenceArrayInput';
-import { testDataProvider } from 'ra-core';
+import { Resource, TestMemoryRouter, testDataProvider } from 'ra-core';
+import { Admin } from 'react-admin';
 
 export default { title: 'ra-ui-materialui/input/RadioButtonGroupInput' };
 
 const choices = [
-    { id: 'tech', name: 'Tech' },
-    { id: 'lifestyle', name: 'Lifestyle' },
-    { id: 'people', name: 'People' },
+    { id: 'tech', name: 'Tech', details: 'Tech details' },
+    { id: 'lifestyle', name: 'Lifestyle', details: 'Lifestyle details' },
+    { id: 'people', name: 'People', details: 'People details' },
 ];
 
 export const Basic = () => (
@@ -77,23 +78,39 @@ const dataProvider = testDataProvider({
 } as any);
 
 export const InsideReferenceArrayInput = () => (
-    <AdminContext
-        dataProvider={dataProvider}
-        i18nProvider={i18nProvider}
-        defaultTheme="light"
-    >
-        <Create
-            resource="posts"
-            record={{ options: [1, 2] }}
-            sx={{ width: 600 }}
+    <TestMemoryRouter initialEntries={['/posts/create']}>
+        <Admin
+            dataProvider={dataProvider}
+            i18nProvider={i18nProvider}
+            defaultTheme="light"
         >
-            <SimpleForm>
-                <ReferenceArrayInput reference="categories" source="category">
-                    <RadioButtonGroupInput />
-                </ReferenceArrayInput>
-            </SimpleForm>
-        </Create>
-    </AdminContext>
+            <Resource
+                name="categories"
+                recordRepresentation={record =>
+                    `${record.name} (${record.details})`
+                }
+            />
+            <Resource
+                name="posts"
+                create={
+                    <Create
+                        resource="posts"
+                        record={{ options: [1, 2] }}
+                        sx={{ width: 600 }}
+                    >
+                        <SimpleForm>
+                            <ReferenceArrayInput
+                                reference="categories"
+                                source="category"
+                            >
+                                <RadioButtonGroupInput />
+                            </ReferenceArrayInput>
+                        </SimpleForm>
+                    </Create>
+                }
+            />
+        </Admin>
+    </TestMemoryRouter>
 );
 
 export const InsideReferenceArrayInputWithError = () => (

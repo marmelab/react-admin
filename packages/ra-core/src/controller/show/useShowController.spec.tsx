@@ -21,7 +21,7 @@ describe('useShowController', () => {
             .mockImplementationOnce(() =>
                 Promise.resolve({ data: { id: 12, title: 'hello' } })
             );
-        const dataProvider = ({ getOne } as unknown) as DataProvider;
+        const dataProvider = { getOne } as unknown as DataProvider;
         render(
             <CoreAdminContext dataProvider={dataProvider}>
                 <ShowController {...defaultProps}>
@@ -41,7 +41,7 @@ describe('useShowController', () => {
             .mockImplementationOnce(() =>
                 Promise.resolve({ data: { id: 'test?', title: 'hello' } })
             );
-        const dataProvider = ({ getOne } as unknown) as DataProvider;
+        const dataProvider = { getOne } as unknown as DataProvider;
         render(
             <TestMemoryRouter initialEntries={['/posts/test%3F']}>
                 <CoreAdminContext dataProvider={dataProvider}>
@@ -63,7 +63,7 @@ describe('useShowController', () => {
         await waitFor(() => {
             expect(getOne).toHaveBeenCalledWith('posts', {
                 id: 'test?',
-                signal: expect.anything(),
+                signal: undefined,
             });
         });
         await waitFor(() => {
@@ -77,7 +77,7 @@ describe('useShowController', () => {
             .mockImplementationOnce(() =>
                 Promise.resolve({ data: { id: 0, title: 'hello' } })
             );
-        const dataProvider = ({ getOne } as unknown) as DataProvider;
+        const dataProvider = { getOne } as unknown as DataProvider;
         render(
             <TestMemoryRouter initialEntries={['/posts/test%3F']}>
                 <CoreAdminContext dataProvider={dataProvider}>
@@ -99,7 +99,7 @@ describe('useShowController', () => {
         await waitFor(() => {
             expect(getOne).toHaveBeenCalledWith('posts', {
                 id: 0,
-                signal: expect.anything(),
+                signal: undefined,
             });
         });
         await waitFor(() => {
@@ -113,7 +113,7 @@ describe('useShowController', () => {
             .fn()
             .mockImplementationOnce(() => Promise.reject(new Error()));
         const onError = jest.fn();
-        const dataProvider = ({ getOne } as unknown) as DataProvider;
+        const dataProvider = { getOne } as unknown as DataProvider;
         render(
             <TestMemoryRouter initialEntries={['/posts/1']}>
                 <CoreAdminContext dataProvider={dataProvider}>
@@ -147,7 +147,7 @@ describe('useShowController', () => {
                 Promise.resolve({ data: { id: 0, title: 'hello' } })
             );
 
-        const dataProvider = ({ getOne } as unknown) as DataProvider;
+        const dataProvider = { getOne } as unknown as DataProvider;
         render(
             <TestMemoryRouter initialEntries={['/posts/1']}>
                 <CoreAdminContext dataProvider={dataProvider}>
@@ -171,7 +171,7 @@ describe('useShowController', () => {
             expect(getOne).toHaveBeenCalledWith('posts', {
                 id: '1',
                 meta: { foo: 'bar' },
-                signal: expect.anything(),
+                signal: undefined,
             });
         });
     });

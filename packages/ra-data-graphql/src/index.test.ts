@@ -28,9 +28,10 @@ describe('GraphQL data provider', () => {
                     });
                 };
                 const dataProvider = await buildDataProvider({
-                    client: (mockClient as unknown) as ApolloClient<unknown>,
+                    client: mockClient as unknown as ApolloClient<unknown>,
                     introspection: false,
-                    buildQuery: (mockBuildQueryFactory as unknown) as BuildQueryFactory,
+                    buildQuery:
+                        mockBuildQueryFactory as unknown as BuildQueryFactory,
                 });
                 try {
                     await dataProvider.update('myResource', {

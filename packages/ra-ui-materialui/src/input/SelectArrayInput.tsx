@@ -19,6 +19,7 @@ import {
     useChoicesContext,
     useChoices,
     RaRecord,
+    useGetRecordRepresentation,
 } from 'ra-core';
 import { InputHelperText } from './InputHelperText';
 import { FormControlProps } from '@mui/material/FormControl';
@@ -105,7 +106,7 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
         onChange,
         onCreate,
         options = defaultOptions,
-        optionText = 'name',
+        optionText,
         optionValue = 'id',
         parse,
         resource: resourceProp,
@@ -135,13 +136,6 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
         source: sourceProp,
     });
 
-    const { getChoiceText, getChoiceValue, getDisableValue } = useChoices({
-        optionText,
-        optionValue,
-        disableValue,
-        translateChoice: translateChoice ?? !isFromReference,
-    });
-
     const {
         field,
         isRequired,
@@ -156,6 +150,17 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
         source,
         validate,
         ...rest,
+    });
+
+    const getRecordRepresentation = useGetRecordRepresentation(resource);
+
+    const { getChoiceText, getChoiceValue, getDisableValue } = useChoices({
+        optionText:
+            optionText ??
+            (isFromReference ? getRecordRepresentation : undefined),
+        optionValue,
+        disableValue,
+        translateChoice: translateChoice ?? !isFromReference,
     });
 
     const handleChange = useCallback(
@@ -255,8 +260,8 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
     const finalValue = Array.isArray(field.value ?? [])
         ? field.value
         : field.value
-        ? [field.value]
-        : [];
+          ? [field.value]
+          : [];
 
     const outlinedInputProps =
         variant === 'outlined'

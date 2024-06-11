@@ -3,11 +3,7 @@ import { useMemo } from 'react';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 
 import { AdminRouter } from '../routing';
-import {
-    AuthContext,
-    defaultAuthProvider,
-    convertLegacyAuthProvider,
-} from '../auth';
+import { AuthContext, convertLegacyAuthProvider } from '../auth';
 import {
     DataProviderContext,
     convertLegacyDataProvider,
@@ -185,17 +181,16 @@ export const CoreAdminContext = (props: CoreAdminContextProps) => {
 React-admin requires a valid dataProvider function to work.`);
     }
 
-    const finalQueryClient = useMemo(() => queryClient || new QueryClient(), [
-        queryClient,
-    ]);
+    const finalQueryClient = useMemo(
+        () => queryClient || new QueryClient(),
+        [queryClient]
+    );
 
     const finalAuthProvider = useMemo(
         () =>
-            authProvider
-                ? authProvider instanceof Function
-                    ? convertLegacyAuthProvider(authProvider)
-                    : authProvider
-                : defaultAuthProvider,
+            authProvider instanceof Function
+                ? convertLegacyAuthProvider(authProvider)
+                : authProvider,
         [authProvider]
     );
 

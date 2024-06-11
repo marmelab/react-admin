@@ -59,8 +59,8 @@ if (cli.flags.h) {
                 cli.flags.resource.includes('skip')
                     ? []
                     : cli.flags.resource.length > 0
-                    ? cli.flags.resource
-                    : undefined
+                      ? cli.flags.resource
+                      : undefined
             }
             install={cli.flags.install}
         />

@@ -288,18 +288,19 @@ And see [the Material UI system documentation](https://mui.com/system/the-sx-pro
 
 This prop defines the text alignment of the field when rendered inside a `<Datagrid>` cell. By default, datagrid values are left-aligned ; for numeric values, it's often better to right-align them. Set `textAlign` to `right` for that.
 
-[`<NumberField>`](./NumberField.md) already uses `textAlign="right"`. Set the default value for this prop if you create a custom numeric field.
-
 ```jsx
-const BasketTotal = () => {
-    const record = useRecordContext();
-    if (!record) return null;
-    const total = record.items.reduce((total, item) => total + item.price, 0);
-    return <span>{total}</span>;
-}
-BasketTotal.defaultProps = {
-    textAlign: 'right',
-};
+import { List, Datagrid, TextField } from 'react-admin';
+
+const PostList = () => (
+    <List>
+        <Datagrid>
+            <TextField source="id" />
+            <TextField source="title" />
+            <TextField source="author" />
+            <TextField source="year" textAlign="right" />
+        </Datagrid>
+    </List>
+);
 ```
 
 ## Deep Field Source
@@ -325,6 +326,8 @@ Then you can render the author name like this:
 ```
 
 ## Setting A Field Label
+
+<iframe src="https://www.youtube-nocookie.com/embed/fWc7c0URQMQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;"></iframe>
 
 React-admin Field layout components like [`<Datagrid>`](./Datagrid.md) and [`<SimpleShowLayout>`](./SimpleShowLayout.md) inspect their children and use their `label` prop to set the table headers or the field labels.
 
@@ -386,9 +389,6 @@ If you want to format a field depending on the value, create another component w
 const FormattedNumberField = ({ source }) => {
     const record = useRecordContext();
     return <NumberField sx={{ color: record && record[source] < 0 ? 'red' : '' }} source={source} />;
-};
-FormattedNumberField.defaultProps = {
-    textAlign: 'right',
 };
 ```
 {% endraw %}

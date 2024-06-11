@@ -83,7 +83,7 @@ describe('useUnique', () => {
         await waitFor(() =>
             expect(dataProvider.getOne).toHaveBeenCalledWith('users', {
                 id: 1,
-                signal: expect.anything(),
+                signal: undefined,
             })
         );
         await new Promise(resolve => setTimeout(resolve, 500));

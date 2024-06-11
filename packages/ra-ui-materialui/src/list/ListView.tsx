@@ -11,7 +11,6 @@ import { ListToolbar } from './ListToolbar';
 import { Pagination as DefaultPagination } from './pagination';
 import { ListActions as DefaultActions } from './ListActions';
 import { Empty } from './Empty';
-import { Error } from '../layout';
 
 const defaultActions = <DefaultActions />;
 const defaultPagination = <DefaultPagination />;
@@ -34,14 +33,8 @@ export const ListView = <RecordType extends RaRecord = any>(
         empty = defaultEmpty,
         ...rest
     } = props;
-    const {
-        defaultTitle,
-        data,
-        error,
-        isPending,
-        filterValues,
-        resource,
-    } = useListContext<RecordType>();
+    const { defaultTitle, data, error, isPending, filterValues, resource } =
+        useListContext<RecordType>();
 
     if (!children || (!data && isPending && emptyWhileLoading)) {
         return null;
@@ -57,11 +50,7 @@ export const ListView = <RecordType extends RaRecord = any>(
                 />
             )}
             <Content className={ListClasses.content}>{children}</Content>
-            {error ? (
-                <Error error={error} resetErrorBoundary={() => {}} />
-            ) : (
-                pagination !== false && pagination
-            )}
+            {!error && pagination !== false && pagination}
         </div>
     );
 
