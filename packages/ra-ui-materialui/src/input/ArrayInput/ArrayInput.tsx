@@ -149,24 +149,45 @@ export const ArrayInput = (props: ArrayInputProps) => {
 
     const { error } = getFieldState(finalSource, formState);
 
+    // The SourceContext will be read by children of ArrayInput to compute their composed source and label
+    //
+    // <ArrayInput source="orders" /> => will prefix all its children with "orders"
+    //   <SimpleFormIterator> => will postfix index for each row, e.g. "orders.0"
+    //     <DateInput source="date" /> => final source for this input will be "orders.0.date"
+    //   </SimpleFormIterator>
+    // </ArrayInput>
+    //
+    // As we want to support nesting and composition with other inputs (e.g. TranslatableInputs, ReferenceOneInput, etc),
+    // we must also take into account the parent SourceContext
+    //
+    // <ArrayInput source="orders" /> => will prefix all its children with "orders"
+    //   <SimpleFormIterator> => will postfix index for each row, e.g. "orders.0"
+    //      <DateInput source="date" /> => final source for this input will be "orders.0.date"
+    //      <ArrayInput source="items" /> => will prefix all its children with "items', e.g. "orders.0.items"
+    //          <SimpleFormIterator> => will postfix index for each row, e.g. "orders.0.items.0"
+    //              <TextInput source="reference" /> => final source for this input will be "orders.0.items.0.reference"
+    //          </SimpleFormIterator>
+    //      </ArrayInput>
+    //   </SimpleFormIterator>
+    // </ArrayInput>
     const sourceContext = React.useMemo<SourceContextValue>(
         () => ({
+            // source is the source of the ArrayInput child
             getSource: (source: string) => {
                 if (parentSourceContext) {
-                    return source
-                        ? parentSourceContext.getSource(
-                              `${inputSource}.${source}`
-                          )
-                        : parentSourceContext.getSource(finalSource);
+                    return parentSourceContext.getSource(
+                        `${inputSource}.${source}`
+                    );
+                } else {
+                    return `${inputSource}.${source}`;
                 }
-                return source ? `${finalSource}.${source}` : finalSource;
             },
             getLabel: (source: string) =>
                 parentSourceContext
                     ? parentSourceContext.getLabel(`${inputSource}.${source}`)
                     : `resources.${resource}.fields.${inputSource}.${source}`,
         }),
-        [parentSourceContext, finalSource, inputSource, resource]
+        [parentSourceContext, inputSource, resource]
     );
 
     if (isPending) {

@@ -71,12 +71,30 @@ export const SimpleFormIteratorItem = React.forwardRef(
         const sourceContext = useMemo(
             () => ({
                 getSource: (source: string) => {
-                    if (parentSourceContext) {
-                        return parentSourceContext.getSource(
-                            source ? `${index}.${source}` : `${index}`
+                    if (!parentSourceContext) {
+                        throw new Error(
+                            'Cannot use SimpleFormIterator outside of an ArrayInput'
                         );
                     }
-                    return source ? `${index}.${source}` : `${index}`;
+                    if (!source) {
+                        // source can be empty for scalar values, e.g.
+                        // <ArrayInput source="tags" /> => SourceContext is "tags"
+                        //   <SimpleFormIterator> => SourceContext is "tags.0"
+                        //      <TextInput /> => use its parent's getSource so finalSource = "tags.0"
+                        //   </SimpleFormIterator>
+                        // </ArrayInput>
+                        return parentSourceContext.getSource(`${index}`);
+                    } else {
+                        // Normal input with source, e.g.
+                        // <ArrayInput source="orders" /> => SourceContext is "orders"
+                        //   <SimpleFormIterator> => SourceContext is "orders.0"
+                        //      <DateInput source="date" /> => use its parent's getSource so finalSource = "orders.0.date"
+                        //   </SimpleFormIterator>
+                        // </ArrayInput>
+                        return parentSourceContext.getSource(
+                            `${index}.${source}`
+                        );
+                    }
                 },
                 getLabel: (source: string) => {
                     return parentSourceContext
