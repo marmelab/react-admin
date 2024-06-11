@@ -1,31 +1,128 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>React Admin</title>
-    <style>
-      body {
-        margin: 0;
-      }
-    </style>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/index.tsx"></script>
-    <!-- This script adds the Roboto font to our project. For more detail go to this site:  http://www.google.com/fonts#UsePlace:use/Collection:Roboto:400,300,500 -->
-    <script>
-        var WebFontConfig = {
-            google: { families: ['Roboto:300,400,500,700:latin'] }
-        };
-        (function () {
-            var wf = document.createElement('script');
-            wf.src = 'https://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
-            wf.type = 'text/javascript';
-            wf.async = 'true';
-            var s = document.getElementsByTagName('script')[0];
-            s.parentNode.insertBefore(wf, s);
-        })();
-    </script>
-  </body>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>React Admin</title>
+        <style>
+            body {
+                margin: 0;
+                background-color: #fafafb;
+            }
+
+            @media (prefers-color-scheme: dark) {
+                body {
+                    background-color: #313131;
+                }
+            }
+
+            .initialLoader {
+                width: 100px;
+                height: 102px;
+                border-radius: 100%;
+                position: absolute;
+                top: 45%;
+                left: calc(50% - 50px);
+            }
+
+            .initialLoader .circle {
+                width: 100%;
+                height: 100%;
+                position: absolute;
+            }
+            .initialLoader .circle .inner {
+                width: 100%;
+                height: 100%;
+                border-radius: 100%;
+                border: 5px solid rgba(187, 255, 255, 0.7);
+                border-right: none;
+                border-top: none;
+                background-clip: padding;
+                box-shadow: inset 0px 0px 10px rgba(187, 255, 255, 0.15);
+            }
+
+            @-webkit-keyframes initialLoaderSpin {
+                from {
+                    transform: rotate(0deg);
+                }
+                to {
+                    transform: rotate(360deg);
+                }
+            }
+
+            @keyframes initialLoaderSpin {
+                from {
+                    transform: rotate(0deg);
+                }
+                to {
+                    transform: rotate(360deg);
+                }
+            }
+            .circle:nth-of-type(0) {
+                transform: rotate(0deg);
+            }
+            .circle:nth-of-type(0) .inner {
+                -webkit-animation: initialLoaderSpin 2s infinite linear;
+                animation: initialLoaderSpin 2s infinite linear;
+            }
+
+            .circle:nth-of-type(1) {
+                transform: rotate(70deg);
+            }
+            .circle:nth-of-type(1) .inner {
+                -webkit-animation: initialLoaderSpin 2s infinite linear;
+                animation: initialLoaderSpin 2s infinite linear;
+            }
+
+            .circle:nth-of-type(2) {
+                transform: rotate(140deg);
+            }
+            .circle:nth-of-type(2) .inner {
+                -webkit-animation: initialLoaderSpin 2s infinite linear;
+                animation: initialLoaderSpin 2s infinite linear;
+            }
+
+            .initialLoader {
+                -webkit-animation: initialLoaderSpin 5s infinite linear;
+                animation: initialLoaderSpin 5s infinite linear;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="root">
+            <div class="initialLoader">
+                <div class="circle">
+                    <div class="inner"></div>
+                </div>
+                <div class="circle">
+                    <div class="inner"></div>
+                </div>
+                <div class="circle">
+                    <div class="inner"></div>
+                </div>
+                <div class="circle">
+                    <div class="inner"></div>
+                </div>
+                <div class="circle">
+                    <div class="inner"></div>
+                </div>
+            </div>
+        </div>
+        <script type="module" src="/src/index.tsx"></script>
+        <!-- This script adds the Roboto font to our project. For more detail go to this site:  http://www.google.com/fonts#UsePlace:use/Collection:Roboto:400,300,500 -->
+        <script>
+            var WebFontConfig = {
+                google: { families: ['Roboto:300,400,500,700:latin'] },
+            };
+            (function () {
+                var wf = document.createElement('script');
+                wf.src =
+                    'https://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
+                wf.type = 'text/javascript';
+                wf.async = 'true';
+                var s = document.getElementsByTagName('script')[0];
+                s.parentNode.insertBefore(wf, s);
+            })();
+        </script>
+    </body>
 </html>
