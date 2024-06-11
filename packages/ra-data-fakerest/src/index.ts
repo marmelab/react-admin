@@ -1,4 +1,4 @@
-import FakeRest from 'fakerest';
+import { Database } from 'fakerest';
 import { DataProvider } from 'ra-core';
 
 /* eslint-disable no-console */
@@ -12,6 +12,16 @@ function log(type, resource, params, response) {
         console.log('FakeRest request ', type, resource, params);
         console.log('FakeRest response', response);
     }
+}
+
+function delayed(response: any, delay?: number) {
+    // If there is no delay, we return the value right away/
+    // This saves a tick in unit tests.
+    return delay
+        ? new Promise(resolve => {
+              setTimeout(() => resolve(response), delay);
+          })
+        : response;
 }
 
 /**
@@ -33,12 +43,11 @@ function log(type, resource, params, response) {
  *   ],
  * })
  */
-export default (data, loggingEnabled = false): DataProvider => {
-    const restServer = new FakeRest.Server();
-    restServer.init(data);
+export default (data, loggingEnabled = false, delay?: number): DataProvider => {
+    const database = new Database({ data });
     if (typeof window !== 'undefined') {
         // give way to update data in the console
-        (window as any).restServer = restServer;
+        (window as any)._database = database;
     }
 
     function getResponse(type, resource, params) {
@@ -47,65 +56,92 @@ export default (data, loggingEnabled = false): DataProvider => {
                 const { page, perPage } = params.pagination;
                 const { field, order } = params.sort;
                 const query = {
-                    sort: [field, order],
-                    range: [(page - 1) * perPage, page * perPage - 1],
+                    sort: [field, order] as [string, 'asc' | 'desc'],
+                    range: [(page - 1) * perPage, page * perPage - 1] as [
+                        number,
+                        number,
+                    ],
                     filter: params.filter,
                 };
-                return {
-                    data: restServer.getAll(resource, query),
-                    total: restServer.getCount(resource, {
-                        filter: params.filter,
-                    }),
-                };
+                return delayed(
+                    {
+                        data: database.getAll(resource, query),
+                        total: database.getCount(resource, {
+                            filter: params.filter,
+                        }),
+                    },
+                    delay
+                );
             }
             case 'getOne':
-                return {
-                    data: restServer.getOne(resource, params.id, { ...params }),
-                };
+                return delayed(
+                    {
+                        data: database.getOne(resource, params.id, {
+                            ...params,
+                        }),
+                    },
+                    delay
+                );
             case 'getMany':
-                return {
-                    data: params.ids.map(
-                        id => restServer.getOne(resource, id),
-                        { ...params }
-                    ),
-                };
+                return delayed(
+                    {
+                        data: params.ids.map(
+                            id => database.getOne(resource, id),
+                            { ...params }
+                        ),
+                    },
+                    delay
+                );
             case 'getManyReference': {
                 const { page, perPage } = params.pagination;
                 const { field, order } = params.sort;
                 const query = {
-                    sort: [field, order],
-                    range: [(page - 1) * perPage, page * perPage - 1],
+                    sort: [field, order] as [string, 'asc' | 'desc'],
+                    range: [(page - 1) * perPage, page * perPage - 1] as [
+                        number,
+                        number,
+                    ],
                     filter: { ...params.filter, [params.target]: params.id },
                 };
-                return {
-                    data: restServer.getAll(resource, query),
-                    total: restServer.getCount(resource, {
-                        filter: query.filter,
-                    }),
-                };
+                return delayed(
+                    {
+                        data: database.getAll(resource, query),
+                        total: database.getCount(resource, {
+                            filter: query.filter,
+                        }),
+                    },
+                    delay
+                );
             }
             case 'update':
-                return {
-                    data: restServer.updateOne(resource, params.id, {
-                        ...params.data,
-                    }),
-                };
+                return delayed(
+                    {
+                        data: database.updateOne(resource, params.id, {
+                            ...params.data,
+                        }),
+                    },
+                    delay
+                );
             case 'updateMany':
                 params.ids.forEach(id =>
-                    restServer.updateOne(resource, id, {
+                    database.updateOne(resource, id, {
                         ...params.data,
                     })
                 );
-                return { data: params.ids };
+                return delayed({ data: params.ids }, delay);
             case 'create':
-                return {
-                    data: restServer.addOne(resource, { ...params.data }),
-                };
+                return delayed(
+                    { data: database.addOne(resource, { ...params.data }) },
+                    delay
+                );
             case 'delete':
-                return { data: restServer.removeOne(resource, params.id) };
+                return delayed(
+                    { data: database.removeOne(resource, params.id) },
+                    delay
+                );
             case 'deleteMany':
-                params.ids.forEach(id => restServer.removeOne(resource, id));
-                return { data: params.ids };
+                params.ids.forEach(id => database.removeOne(resource, id));
+                return delayed({ data: params.ids }, delay);
             default:
                 return false;
         }
@@ -118,7 +154,7 @@ export default (data, loggingEnabled = false): DataProvider => {
      * @returns {Promise} The response
      */
     const handle = (type, resource, params): Promise<any> => {
-        const collection = restServer.getCollection(resource);
+        const collection = database.getCollection(resource);
         if (!collection && type !== 'create') {
             const error = new UndefinedResourceError(
                 `Undefined collection "${resource}"`

@@ -6,7 +6,7 @@ import type { Invoice } from './invoices';
 import type { Review } from './reviews';
 import { Settings } from './finalize';
 
-export interface Db {
+export interface Db extends Record<string, any> {
     customers: Customer[];
     categories: Category[];
     products: Product[];

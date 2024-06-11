@@ -113,16 +113,12 @@ export const LinkedShow = () => (
     </AdminContext>
 );
 
-const delayedDataProvider = new Proxy(dataProvider, {
-    get: (target, name) => (resource, params) => {
-        if (typeof name === 'symbol' || name === 'then') {
-            return;
-        }
-        return new Promise(resolve =>
-            setTimeout(() => resolve(dataProvider[name](resource, params)), 300)
-        );
-    },
-});
+const delayedDataProvider = fakeRestProvider(
+    data,
+    process.env.NODE_ENV !== 'test',
+    300
+);
+
 export const ManyResources = () => (
     <AdminContext
         dataProvider={delayedDataProvider}
