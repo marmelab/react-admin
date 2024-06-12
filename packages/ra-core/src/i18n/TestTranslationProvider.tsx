@@ -20,7 +20,7 @@ export const testI18nProvider = ({
 }: {
     translate?: I18nProvider['translate'];
     messages?: Record<string, string | ((options?: any) => string)>;
-}): I18nProvider => {
+} = {}): I18nProvider => {
     return {
         translate: messages
             ? (key, options) => {
