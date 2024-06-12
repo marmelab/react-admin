@@ -76,6 +76,7 @@ export const TranslatableFields = (
         selector = <TranslatableFieldsTabs groupKey={groupKey} />,
         children,
         className,
+        resource: resourceProp,
     } = props;
     const record = useRecordContext(props);
     if (!record) {
@@ -100,7 +101,7 @@ export const TranslatableFields = (
                         key={locale}
                         locale={locale}
                         record={record}
-                        resource={resource}
+                        resource={resourceProp}
                         groupKey={groupKey}
                     >
                         {children}
