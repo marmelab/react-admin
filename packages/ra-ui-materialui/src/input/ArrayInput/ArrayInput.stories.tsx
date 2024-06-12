@@ -500,7 +500,6 @@ export const NestedInlineNoTranslation = () => (
                             <DateInput source="date" helperText={false} />
                             <ArrayInput source="items">
                                 <SimpleFormIterator
-                                    inline
                                     sx={{
                                         '& .MuiStack-root': {
                                             flexWrap: 'wrap',
@@ -520,6 +519,7 @@ export const NestedInlineNoTranslation = () => (
                                             source="name"
                                             sx={{ width: 200 }}
                                         />
+                                        {/* Duplicated so that TranslatableFields adds labels */}
                                         <TextField
                                             source="name"
                                             sx={{ width: 200 }}
@@ -733,7 +733,7 @@ const dataProviderWithCountries = {
                 tags: ['novel', 'war', 'classic'],
             },
         }),
-    getList: (_resource, params) =>
+    getList: () =>
         Promise.resolve({ data: countries, count: countries.length }),
     getMany: (_resource, params) => {
         return Promise.resolve({
