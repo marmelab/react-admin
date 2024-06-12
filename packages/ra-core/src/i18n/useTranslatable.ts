@@ -1,6 +1,7 @@
 import { useState, useMemo } from 'react';
 import set from 'lodash/set';
 import get from 'lodash/get';
+import cloneDeep from 'lodash/cloneDeep';
 import { TranslatableContextValue } from './TranslatableContext';
 import { useLocaleState } from './useLocaleState';
 
@@ -67,7 +68,7 @@ export const getRecordForLocale = (record: {} | undefined, locale: string) => {
             return set(acc, pathWithoutLocale, value);
         }
         return acc;
-    }, structuredClone(record));
+    }, cloneDeep(record));
 
     return recordForLocale;
 };
