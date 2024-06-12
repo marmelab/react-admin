@@ -21,6 +21,7 @@ import {
     ValidationInFormTab,
     NestedInline,
     WithReferenceField,
+    NestedInlineNoTranslation,
 } from './ArrayInput.stories';
 import { useArrayInput } from './useArrayInput';
 
@@ -373,5 +374,14 @@ describe('<ArrayInput />', () => {
         render(<WithReferenceField />);
         await screen.findByText('Russia');
         await screen.findByText('Italy');
+    });
+
+    it('should correctly set inputs and field labels even nested', async () => {
+        render(<NestedInlineNoTranslation />);
+        await screen.findByLabelText('resources.orders.fields.customer');
+        await screen.findByLabelText('resources.orders.fields.date');
+        await screen.findByText('resources.orders.fields.items');
+        await screen.findAllByText('resources.orders.fields.items.name');
+        await screen.findAllByLabelText('resources.orders.fields.items.price');
     });
 });
