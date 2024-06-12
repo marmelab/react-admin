@@ -60,7 +60,7 @@ export const SimpleFormIterator = (inProps: SimpleFormIteratorProps) => {
     const finalSource = useWrappedSource('');
     if (!finalSource) {
         throw new Error(
-            'SimpleFormIterator should be wrapped in a SourceContext'
+            'SimpleFormIterator can only be called within an iterator input like ArrayInput'
         );
     }
 
