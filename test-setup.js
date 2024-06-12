@@ -17,8 +17,3 @@ const { Response, Headers, Request } = require('whatwg-fetch');
 global.Response = Response;
 global.Headers = Headers;
 global.Request = Request;
-
-// jsdom does not support structuredClone
-global.structuredClone = jest.fn(val => {
-    return JSON.parse(JSON.stringify(val));
-});
