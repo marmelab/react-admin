@@ -1,7 +1,6 @@
 import get from 'lodash/get';
 import { Call, Objects } from 'hotscript';
 import { useRecordContext } from '../controller';
-import { useSourceContext } from '../core';
 
 /**
  * A hook that gets the value of a field of the current record.
@@ -23,14 +22,15 @@ export const useFieldValue = <
     params: UseFieldValueOptions<RecordType>
 ) => {
     const { defaultValue, source } = params;
-    const sourceContext = useSourceContext();
+    // We use the record from the RecordContext and do not rely on the SourceContext on purpose to
+    // avoid having the wrong source targeting the record.
+    // Indeed, some components may create a sub record context (SimpleFormIterator, TranslatableInputs, etc.). In this case,
+    // it they used the SourceContext as well, they would have the wrong source.
+    // Inputs needs the SourceContext as they rely on the Form value and you can't have nested forms.
+    // Fields needs the RecordContext as they rely on the Record value and you can have nested RecordContext.
     const record = useRecordContext<RecordType>(params);
 
-    return get(
-        record,
-        sourceContext?.getSource(source) ?? source,
-        defaultValue
-    );
+    return get(record, source, defaultValue);
 };
 
 export interface UseFieldValueOptions<

@@ -1,16 +1,18 @@
 import * as React from 'react';
-import { cloneElement, Children, ReactElement, useEffect } from 'react';
+import { ReactElement, useEffect } from 'react';
 import clsx from 'clsx';
 import {
     isRequired,
     FieldTitle,
     composeSyncValidators,
-    RaRecord,
     useApplyInputDefaultValues,
     useGetValidationErrorMessage,
     useFormGroupContext,
     useFormGroups,
-    useWrappedSource,
+    SourceContextProvider,
+    SourceContextValue,
+    useSourceContext,
+    OptionalResourceContextProvider,
 } from 'ra-core';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 import {
@@ -79,9 +81,8 @@ export const ArrayInput = (props: ArrayInputProps) => {
         isPending,
         children,
         helperText,
-        record,
         resource: resourceFromProps,
-        source,
+        source: arraySource,
         validate,
         variant,
         disabled,
@@ -91,7 +92,8 @@ export const ArrayInput = (props: ArrayInputProps) => {
 
     const formGroupName = useFormGroupContext();
     const formGroups = useFormGroups();
-    const finalSource = useWrappedSource(source);
+    const parentSourceContext = useSourceContext();
+    const finalSource = parentSourceContext.getSource(arraySource);
 
     const sanitizedValidate = Array.isArray(validate)
         ? composeSyncValidators(validate)
@@ -141,6 +143,47 @@ export const ArrayInput = (props: ArrayInputProps) => {
 
     const { error } = getFieldState(finalSource, formState);
 
+    // The SourceContext will be read by children of ArrayInput to compute their composed source and label
+    //
+    // <ArrayInput source="orders" /> => SourceContext is "orders"
+    //   <SimpleFormIterator> => SourceContext is "orders.0"
+    //     <DateInput source="date" /> => final source for this input will be "orders.0.date"
+    //   </SimpleFormIterator>
+    // </ArrayInput>
+    //
+    const sourceContext = React.useMemo<SourceContextValue>(
+        () => ({
+            // source is the source of the ArrayInput child
+            getSource: (source: string) => {
+                if (!source) {
+                    // SimpleFormIterator calls getSource('') to get the arraySource
+                    return parentSourceContext.getSource(arraySource);
+                }
+
+                // We want to support nesting and composition with other inputs (e.g. TranslatableInputs, ReferenceOneInput, etc),
+                // we must also take into account the parent SourceContext
+                //
+                // <ArrayInput source="orders" /> => SourceContext is "orders"
+                //   <SimpleFormIterator> => SourceContext is "orders.0"
+                //      <DateInput source="date" /> => final source for this input will be "orders.0.date"
+                //      <ArrayInput source="items" /> => SourceContext is "orders.0.items"
+                //          <SimpleFormIterator> => SourceContext is "orders.0.items.0"
+                //              <TextInput source="reference" /> => final source for this input will be "orders.0.items.0.reference"
+                //          </SimpleFormIterator>
+                //      </ArrayInput>
+                //   </SimpleFormIterator>
+                // </ArrayInput>
+                return parentSourceContext.getSource(
+                    `${arraySource}.${source}`
+                );
+            },
+            // if Array source is items, and child source is name, .0.name => resources.orders.fields.items.name
+            getLabel: (source: string) =>
+                parentSourceContext.getLabel(`${arraySource}.${source}`),
+        }),
+        [parentSourceContext, arraySource]
+    );
+
     if (isPending) {
         return (
             <Labeled label={label} className={className}>
@@ -156,7 +199,7 @@ export const ArrayInput = (props: ArrayInputProps) => {
             margin={margin}
             className={clsx(
                 'ra-input',
-                `ra-input-${source}`,
+                `ra-input-${finalSource}`,
                 ArrayInputClasses.root,
                 className
             )}
@@ -164,28 +207,24 @@ export const ArrayInput = (props: ArrayInputProps) => {
             {...sanitizeInputRestProps(rest)}
         >
             <InputLabel
-                htmlFor={finalSource}
+                component="span"
                 className={ArrayInputClasses.label}
                 shrink
                 error={!!error}
             >
                 <FieldTitle
                     label={label}
-                    source={source}
+                    source={arraySource}
                     resource={resourceFromProps}
                     isRequired={isRequired(validate)}
                 />
             </InputLabel>
             <ArrayInputContext.Provider value={fieldProps}>
-                {cloneElement(Children.only(children), {
-                    ...fieldProps,
-                    record,
-                    resource: resourceFromProps,
-                    source,
-                    variant,
-                    margin,
-                    disabled,
-                })}
+                <OptionalResourceContextProvider value={resourceFromProps}>
+                    <SourceContextProvider value={sourceContext}>
+                        {children}
+                    </SourceContextProvider>
+                </OptionalResourceContextProvider>
             </ArrayInputContext.Provider>
             {renderHelperText ? (
                 <FormHelperText error={!!error}>
@@ -218,7 +257,6 @@ export interface ArrayInputProps
     isFetching?: boolean;
     isLoading?: boolean;
     isPending?: boolean;
-    record?: Partial<RaRecord>;
 }
 
 const PREFIX = 'RaArrayInput';

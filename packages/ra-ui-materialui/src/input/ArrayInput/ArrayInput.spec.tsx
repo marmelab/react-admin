@@ -16,37 +16,20 @@ import { TextInput } from '../TextInput';
 import { ArrayInput } from './ArrayInput';
 import { SimpleFormIterator } from './SimpleFormIterator';
 import { useFormContext } from 'react-hook-form';
-import { GlobalValidation, ValidationInFormTab } from './ArrayInput.stories';
+import {
+    GlobalValidation,
+    ValidationInFormTab,
+    NestedInline,
+    WithReferenceField,
+    NestedInlineNoTranslation,
+} from './ArrayInput.stories';
+import { useArrayInput } from './useArrayInput';
 
 describe('<ArrayInput />', () => {
-    it('should pass its record props to its child', async () => {
-        let childProps;
-        const MockChild = props => {
-            childProps = props;
-            return null;
-        };
-
-        render(
-            <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm onSubmit={jest.fn}>
-                    <ArrayInput source="foo" record={{ iAmRecord: true }}>
-                        <MockChild />
-                    </ArrayInput>
-                </SimpleForm>
-            </AdminContext>
-        );
-
-        await waitFor(() => {
-            expect(childProps.record).toEqual({
-                iAmRecord: true,
-            });
-        });
-    });
-
     it('should pass array functions to child', async () => {
         let childProps;
-        const MockChild = props => {
-            childProps = props;
+        const MockChild = () => {
+            childProps = useArrayInput();
             return null;
         };
         render(
@@ -106,7 +89,7 @@ describe('<ArrayInput />', () => {
         });
     });
 
-    it('should clone each input once per value in the array', () => {
+    it('should render each input once per value in the array', () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="bar">
@@ -371,5 +354,34 @@ describe('<ArrayInput />', () => {
             });
             expect(formTab.classList.contains('error')).toBe(true);
         });
+    });
+
+    it('should support nested ArrayInput and inputs that set up SourceContexts', async () => {
+        render(<NestedInline />);
+
+        await screen.findByDisplayValue('Office Jeans');
+        await screen.findByDisplayValue('Jean de bureau');
+        await screen.findByDisplayValue('45.99');
+        expect(
+            await screen.findAllByDisplayValue('For you my love')
+        ).toHaveLength(2);
+        expect(
+            await screen.findAllByDisplayValue('Pour toi mon amour')
+        ).toHaveLength(2);
+    });
+
+    it('should support fields', async () => {
+        render(<WithReferenceField />);
+        await screen.findByText('Russia');
+        await screen.findByText('Italy');
+    });
+
+    it('should correctly set inputs and field labels even nested', async () => {
+        render(<NestedInlineNoTranslation />);
+        await screen.findByLabelText('resources.orders.fields.customer');
+        await screen.findByLabelText('resources.orders.fields.date');
+        await screen.findByText('resources.orders.fields.items');
+        await screen.findAllByText('resources.orders.fields.items.name');
+        await screen.findAllByLabelText('resources.orders.fields.items.price');
     });
 });
