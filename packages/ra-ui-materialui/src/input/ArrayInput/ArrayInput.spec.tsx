@@ -15,7 +15,11 @@ import { TextInput } from '../TextInput';
 import { ArrayInput } from './ArrayInput';
 import { SimpleFormIterator } from './SimpleFormIterator';
 import { useFormContext } from 'react-hook-form';
-import { GlobalValidation, ValidationInFormTab } from './ArrayInput.stories';
+import {
+    GlobalValidation,
+    ScalarWithValidation,
+    ValidationInFormTab,
+} from './ArrayInput.stories';
 
 describe('<ArrayInput />', () => {
     it('should pass its record props to its child', async () => {
@@ -359,6 +363,19 @@ describe('<ArrayInput />', () => {
         });
     });
 
+    it('should correctly update validation state after removing an item', async () => {
+        render(<ScalarWithValidation />);
+
+        await screen.findByDisplayValue('classic');
+        fireEvent.click(await screen.findByLabelText('Add'));
+        fireEvent.click(await screen.findByText('Save'));
+        await screen.findByText('Required');
+        fireEvent.click((await screen.findAllByLabelText('Remove'))[0]);
+        await waitFor(() => {
+            expect(screen.queryByText('Required')).toBeNull();
+        });
+    });
+
     describe('used within a form with global validation', () => {
         it('should display an error if the array is required and empty', async () => {
             render(<GlobalValidation />);
@@ -366,10 +383,15 @@ describe('<ArrayInput />', () => {
             const RemoveButtons = screen.getAllByLabelText('Remove');
             fireEvent.click(RemoveButtons[1]);
             fireEvent.click(RemoveButtons[0]);
+            await waitFor(() => {
+                expect(screen.queryAllByLabelText('Remove')).toHaveLength(0);
+            });
             const SaveButton = screen.getByText('Save');
             fireEvent.click(SaveButton);
             await screen.findByText(
-                'The form is not valid. Please check for errors'
+                'The form is not valid. Please check for errors',
+                undefined,
+                { timeout: 3000 }
             );
         });
         it('should display an error if one of the required field is empty', async () => {

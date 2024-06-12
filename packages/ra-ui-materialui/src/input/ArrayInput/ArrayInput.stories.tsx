@@ -199,6 +199,38 @@ export const Scalar = () => (
     </Admin>
 );
 
+export const ScalarWithValidation = () => (
+    <Admin dataProvider={dataProvider} history={history}>
+        <Resource
+            name="books"
+            edit={() => (
+                <Edit
+                    mutationMode="pessimistic"
+                    mutationOptions={{
+                        onSuccess: data => {
+                            console.log(data);
+                        },
+                    }}
+                >
+                    <SimpleForm>
+                        <TextInput source="title" />
+                        <ArrayInput source="tags" fullWidth>
+                            <SimpleFormIterator disableReordering>
+                                <TextInput
+                                    source=""
+                                    label="tag"
+                                    validate={required()}
+                                    helperText={false}
+                                />
+                            </SimpleFormIterator>
+                        </ArrayInput>
+                    </SimpleForm>
+                </Edit>
+            )}
+        />
+    </Admin>
+);
+
 const order = {
     id: 1,
     date: '2022-08-30',

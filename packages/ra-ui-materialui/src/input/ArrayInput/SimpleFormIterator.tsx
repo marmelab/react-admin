@@ -61,7 +61,7 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
     } = props;
     const [confirmIsOpen, setConfirmIsOpen] = useState<boolean>(false);
     const { append, fields, move, remove, replace } = useArrayInput(props);
-    const { resetField } = useFormContext();
+    const { resetField, trigger } = useFormContext();
     const translate = useTranslate();
     const record = useRecordContext(props);
     const initialDefaultValue = useRef({});
@@ -69,8 +69,11 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
     const removeField = useCallback(
         (index: number) => {
             remove(index);
+            // Trigger validation on the Array to avoid ghost errors.
+            // Otherwise, validation errors on removed fields might still be displayed
+            trigger(source);
         },
-        [remove]
+        [remove, trigger, source]
     );
 
     if (fields.length > 0) {
