@@ -50,13 +50,10 @@ export const TranslatableFieldsTabContent = (
                 parentSourceContext
                     ? parentSourceContext.getSource(`${source}.${locale}`)
                     : `${source}.${locale}`,
-            getLabel: (source: string) => {
-                const label = parentSourceContext
+            getLabel: (source: string) =>
+                parentSourceContext
                     ? parentSourceContext.getLabel(source)
-                    : getResourceFieldLabelKey(resource, source);
-                console.log(source, label);
-                return label;
-            },
+                    : getResourceFieldLabelKey(resource, source),
         }),
         [locale, parentSourceContext, resource]
     );
