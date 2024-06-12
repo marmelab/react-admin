@@ -93,7 +93,6 @@ const PendingReviews = () => {
                             primary={
                                 <StarRatingField
                                     record={record}
-                                    label="resources.reviews.fields.rating"
                                     source="rating"
                                 />
                             }
