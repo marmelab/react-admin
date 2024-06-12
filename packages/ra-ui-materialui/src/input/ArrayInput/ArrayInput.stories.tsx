@@ -17,7 +17,7 @@ import { DateInput } from '../DateInput';
 import { NumberInput } from '../NumberInput';
 import { AutocompleteInput } from '../AutocompleteInput';
 import { TranslatableInputs } from '../TranslatableInputs';
-import { ReferenceField, TextField } from '../../field';
+import { ReferenceField, TextField, TranslatableFields } from '../../field';
 import { Labeled } from '../../Labeled';
 
 export default { title: 'ra-ui-materialui/input/ArrayInput' };
@@ -427,6 +427,104 @@ export const NestedInline = () => (
                                             sx={{ width: 200 }}
                                         />
                                     </TranslatableInputs>
+                                    <NumberInput
+                                        source="price"
+                                        helperText={false}
+                                        sx={{ width: 100 }}
+                                    />
+                                    <NumberInput
+                                        source="quantity"
+                                        helperText={false}
+                                        sx={{ width: 100 }}
+                                    />
+                                    <ArrayInput source="extras">
+                                        <SimpleFormIterator
+                                            inline
+                                            disableReordering
+                                        >
+                                            <TextInput
+                                                source="type"
+                                                helperText={false}
+                                                sx={{ width: 100 }}
+                                            />
+                                            <NumberInput
+                                                source="price"
+                                                helperText={false}
+                                                sx={{ width: 100 }}
+                                            />
+                                            <TranslatableInputs
+                                                locales={['en', 'fr']}
+                                            >
+                                                <TextInput
+                                                    source="content"
+                                                    helperText={false}
+                                                    sx={{ width: 200 }}
+                                                />
+                                            </TranslatableInputs>
+                                        </SimpleFormIterator>
+                                    </ArrayInput>
+                                </SimpleFormIterator>
+                            </ArrayInput>
+                        </SimpleForm>
+                    </Edit>
+                )}
+            />
+        </Admin>
+    </TestMemoryRouter>
+);
+
+export const NestedInlineNoTranslation = () => (
+    <TestMemoryRouter initialEntries={['/orders/1']}>
+        <Admin
+            dataProvider={
+                {
+                    getOne: () => Promise.resolve({ data: orderNested }),
+                    update: (_resource, params) => Promise.resolve(params),
+                } as any
+            }
+            i18nProvider={testI18nProvider()}
+        >
+            <Resource
+                name="orders"
+                edit={() => (
+                    <Edit
+                        mutationMode="pessimistic"
+                        mutationOptions={{
+                            onSuccess: data => {
+                                console.log(data);
+                            },
+                        }}
+                    >
+                        <SimpleForm>
+                            <TextInput source="customer" helperText={false} />
+                            <DateInput source="date" helperText={false} />
+                            <ArrayInput source="items">
+                                <SimpleFormIterator
+                                    inline
+                                    sx={{
+                                        '& .MuiStack-root': {
+                                            flexWrap: 'wrap',
+                                        },
+                                    }}
+                                >
+                                    <TranslatableInputs locales={['en', 'fr']}>
+                                        <Labeled source="name">
+                                            <TextField
+                                                source="name"
+                                                sx={{ width: 200 }}
+                                            />
+                                        </Labeled>
+                                    </TranslatableInputs>
+                                    <TranslatableFields locales={['en', 'fr']}>
+                                        <TextField
+                                            source="name"
+                                            sx={{ width: 200 }}
+                                        />
+                                        <TextField
+                                            source="name"
+                                            sx={{ width: 200 }}
+                                        />
+                                    </TranslatableFields>
                                     <NumberInput
                                         source="price"
                                         helperText={false}
