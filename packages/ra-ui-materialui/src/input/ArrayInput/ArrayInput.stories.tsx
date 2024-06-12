@@ -508,32 +508,21 @@ export const NestedInlineNoTranslation = () => (
                                 >
                                     <TranslatableInputs locales={['en', 'fr']}>
                                         <Labeled source="name">
-                                            <TextField
-                                                source="name"
-                                                sx={{ width: 200 }}
-                                            />
+                                            <TextField source="name" />
                                         </Labeled>
                                     </TranslatableInputs>
                                     <TranslatableFields locales={['en', 'fr']}>
-                                        <TextField
-                                            source="name"
-                                            sx={{ width: 200 }}
-                                        />
+                                        <TextField source="name" />
                                         {/* Duplicated so that TranslatableFields adds labels */}
-                                        <TextField
-                                            source="name"
-                                            sx={{ width: 200 }}
-                                        />
+                                        <TextField source="name" />
                                     </TranslatableFields>
                                     <NumberInput
                                         source="price"
                                         helperText={false}
-                                        sx={{ width: 100 }}
                                     />
                                     <NumberInput
                                         source="quantity"
                                         helperText={false}
-                                        sx={{ width: 100 }}
                                     />
                                     <ArrayInput source="extras">
                                         <SimpleFormIterator
@@ -543,12 +532,10 @@ export const NestedInlineNoTranslation = () => (
                                             <TextInput
                                                 source="type"
                                                 helperText={false}
-                                                sx={{ width: 100 }}
                                             />
                                             <NumberInput
                                                 source="price"
                                                 helperText={false}
-                                                sx={{ width: 100 }}
                                             />
                                             <TranslatableInputs
                                                 locales={['en', 'fr']}
@@ -556,7 +543,6 @@ export const NestedInlineNoTranslation = () => (
                                                 <TextInput
                                                     source="content"
                                                     helperText={false}
-                                                    sx={{ width: 200 }}
                                                 />
                                             </TranslatableInputs>
                                         </SimpleFormIterator>
