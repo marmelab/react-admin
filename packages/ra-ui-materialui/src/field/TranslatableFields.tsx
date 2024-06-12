@@ -76,6 +76,7 @@ export const TranslatableFields = (
         selector = <TranslatableFieldsTabs groupKey={groupKey} />,
         children,
         className,
+        resource: resourceProp,
     } = props;
     const record = useRecordContext(props);
     if (!record) {
@@ -86,7 +87,7 @@ export const TranslatableFields = (
     const resource = useResourceContext(props);
     if (!resource) {
         throw new Error(
-            `<TranslatableFields> was called outside of a RecordContext and without a record prop. You must set the record prop.`
+            `<TranslatableFields> was called outside of a ResourceContext and without a record prop. You must set the resource prop.`
         );
     }
     const context = useTranslatable({ defaultLocale, locales });
@@ -100,7 +101,7 @@ export const TranslatableFields = (
                         key={locale}
                         locale={locale}
                         record={record}
-                        resource={resource}
+                        resource={resourceProp}
                         groupKey={groupKey}
                     >
                         {children}

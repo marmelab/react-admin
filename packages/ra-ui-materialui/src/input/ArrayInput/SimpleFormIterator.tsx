@@ -16,6 +16,7 @@ import {
     RaRecord,
     useRecordContext,
     useTranslate,
+    useWrappedSource,
 } from 'ra-core';
 import { UseFieldArrayReturn, useFormContext } from 'react-hook-form';
 
@@ -45,7 +46,6 @@ export const SimpleFormIterator = (inProps: SimpleFormIteratorProps) => {
         children,
         className,
         resource,
-        source,
         disabled,
         disableAdd = false,
         disableClear,
@@ -56,9 +56,14 @@ export const SimpleFormIterator = (inProps: SimpleFormIteratorProps) => {
         fullWidth,
         sx,
     } = props;
-    if (!source) {
-        throw new Error('SimpleFormIterator requires a source prop');
+
+    const finalSource = useWrappedSource('');
+    if (!finalSource) {
+        throw new Error(
+            'SimpleFormIterator can only be called within an iterator input like ArrayInput'
+        );
     }
+
     const [confirmIsOpen, setConfirmIsOpen] = useState<boolean>(false);
     const { append, fields, move, remove, replace } = useArrayInput(props);
     const { resetField } = useFormContext();
@@ -116,9 +121,9 @@ export const SimpleFormIterator = (inProps: SimpleFormIteratorProps) => {
             }
             append(defaultValue);
             // Make sure the newly added inputs are not considered dirty by react-hook-form
-            resetField(`${source}.${fields.length}`, { defaultValue });
+            resetField(`${finalSource}.${fields.length}`, { defaultValue });
         },
-        [append, children, resetField, source, fields.length]
+        [append, children, resetField, finalSource, fields.length]
     );
 
     const handleReorder = useCallback(
@@ -133,7 +138,7 @@ export const SimpleFormIterator = (inProps: SimpleFormIteratorProps) => {
         setConfirmIsOpen(false);
     }, [replace]);
 
-    const records = get(record, source);
+    const records = get(record, finalSource);
 
     const context = useMemo(
         () => ({
@@ -141,9 +146,9 @@ export const SimpleFormIterator = (inProps: SimpleFormIteratorProps) => {
             add: addField,
             remove: removeField,
             reOrder: handleReorder,
-            source,
+            source: finalSource,
         }),
-        [addField, fields.length, handleReorder, removeField, source]
+        [addField, fields.length, handleReorder, removeField, finalSource]
     );
     return fields ? (
         <SimpleFormIteratorContext.Provider value={context}>
@@ -165,14 +170,12 @@ export const SimpleFormIterator = (inProps: SimpleFormIteratorProps) => {
                             fields={fields}
                             getItemLabel={getItemLabel}
                             index={index}
-                            member={`${source}.${index}`}
                             onRemoveField={removeField}
                             onReorder={handleReorder}
                             record={(records && records[index]) || {}}
                             removeButton={removeButton}
                             reOrderButtons={reOrderButtons}
                             resource={resource}
-                            source={source}
                             inline={inline}
                         >
                             {children}

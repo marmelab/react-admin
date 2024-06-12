@@ -1,14 +1,14 @@
 import * as React from 'react';
+import { ReactElement, ReactNode, useMemo } from 'react';
 import { styled } from '@mui/material/styles';
 import { Stack, StackProps } from '@mui/material';
 import clsx from 'clsx';
-import { ReactElement, ReactNode, useMemo } from 'react';
 import {
     FormGroupContextProvider,
     RaRecord,
+    RecordContextProvider,
     SourceContextProvider,
-    getResourceFieldLabelKey,
-    useResourceContext,
+    useRecordContext,
     useSourceContext,
     useTranslatableContext,
 } from 'ra-core';
@@ -21,27 +21,39 @@ export const TranslatableInputsTabContent = (
     props: TranslatableInputsTabContentProps
 ): ReactElement => {
     const { children, groupKey = '', locale, ...other } = props;
-    const resource = useResourceContext(props);
-    const { selectedLocale } = useTranslatableContext();
+    const { selectedLocale, getRecordForLocale } = useTranslatableContext();
     const parentSourceContext = useSourceContext();
-    if (!parentSourceContext && !resource) {
-        throw new Error(
-            'TranslatableInputsTabContent should be used inside a ResourceContext or given a resource prop.'
-        );
-    }
+    const record = useRecordContext(props);
+
+    // The SourceContext will be read by children of TranslatableInputs to compute their composed source and label
+    //
+    // <TranslatableInputs locales={['en', 'fr']} /> => SourceContext is "fr"
+    //     <TextInput source="description" /> => final source for this input will be "description.fr"
+    // </TranslatableInputs>
     const sourceContext = useMemo(
         () => ({
-            getSource: (source: string) =>
-                parentSourceContext
-                    ? parentSourceContext.getSource(`${source}.${locale}`)
-                    : `${source}.${locale}`,
+            getSource: (source: string) => {
+                if (!source) {
+                    throw new Error(
+                        'Children of TranslatableInputs must have a source'
+                    );
+                }
+                return parentSourceContext.getSource(`${source}.${locale}`);
+            },
             getLabel: (source: string) => {
-                return parentSourceContext
-                    ? parentSourceContext.getLabel(source)
-                    : getResourceFieldLabelKey(resource!, source);
+                return parentSourceContext.getLabel(source);
             },
         }),
-        [locale, parentSourceContext, resource]
+        [locale, parentSourceContext]
+    );
+
+    // As fields rely on the RecordContext to get their values and have no knowledge of the locale,
+    // we need to create a new record with the values for the current locale only
+    // Given the record { title: { en: 'title_en', fr: 'title_fr' } } and the locale 'fr',
+    // the record for the locale 'fr' will be { title: 'title_fr' }
+    const recordForLocale = useMemo(
+        () => getRecordForLocale(record, locale),
+        [getRecordForLocale, record, locale]
     );
 
     return (
@@ -57,7 +69,9 @@ export const TranslatableInputsTabContent = (
                 {...other}
             >
                 <SourceContextProvider value={sourceContext}>
-                    {children}
+                    <RecordContextProvider value={recordForLocale}>
+                        {children}
+                    </RecordContextProvider>
                 </SourceContextProvider>
             </Root>
         </FormGroupContextProvider>

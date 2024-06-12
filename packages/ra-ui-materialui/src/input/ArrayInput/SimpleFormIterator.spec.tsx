@@ -127,8 +127,8 @@ describe('<SimpleFormIterator />', () => {
         render(
             <Wrapper>
                 <SimpleForm>
-                    <ArrayInput source="emails" disabled>
-                        <SimpleFormIterator>
+                    <ArrayInput source="emails">
+                        <SimpleFormIterator disabled>
                             <TextInput source="email" />
                         </SimpleFormIterator>
                     </ArrayInput>
@@ -194,8 +194,8 @@ describe('<SimpleFormIterator />', () => {
                         emails: [{ email: '' }, { email: '' }],
                     }}
                 >
-                    <ArrayInput source="emails" disabled>
-                        <SimpleFormIterator>
+                    <ArrayInput source="emails">
+                        <SimpleFormIterator disabled>
                             <TextInput source="email" />
                         </SimpleFormIterator>
                     </ArrayInput>

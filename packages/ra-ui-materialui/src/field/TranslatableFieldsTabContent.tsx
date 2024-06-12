@@ -1,14 +1,20 @@
 import * as React from 'react';
+import {
+    Children,
+    isValidElement,
+    ReactElement,
+    ReactNode,
+    useMemo,
+} from 'react';
 import { styled } from '@mui/material/styles';
-import { Children, isValidElement, ReactElement, ReactNode } from 'react';
 import {
     useTranslatableContext,
     RaRecord,
-    SourceContextProvider,
-    useSourceContext,
-    getResourceFieldLabelKey,
     RecordContextProvider,
-    ResourceContextProvider,
+    useOptionalSourceContext,
+    SourceContextProvider,
+    getResourceFieldLabelKey,
+    useResourceContext,
 } from 'ra-core';
 import { Labeled } from '../Labeled';
 
@@ -24,14 +30,21 @@ export const TranslatableFieldsTabContent = (
         groupKey = '',
         locale,
         record,
-        resource,
+        resource: resourceProp,
         className,
         ...other
     } = props;
-    const { selectedLocale } = useTranslatableContext();
+    const { selectedLocale, getRecordForLocale } = useTranslatableContext();
+    const addLabel = Children.count(children) > 1;
 
-    const parentSourceContext = useSourceContext();
-    const sourceContext = React.useMemo(
+    const parentSourceContext = useOptionalSourceContext();
+    const resource = useResourceContext(props);
+    if (!resource) {
+        throw new Error(
+            `<TranslatableFieldsTabContent> was called outside of a ResourceContext and without a record prop. You must set the resource prop.`
+        );
+    }
+    const sourceContext = useMemo(
         () => ({
             getSource: (source: string) =>
                 parentSourceContext
@@ -44,7 +57,14 @@ export const TranslatableFieldsTabContent = (
         }),
         [locale, parentSourceContext, resource]
     );
-    const addLabel = Children.count(children) > 1;
+    // As fields rely on the RecordContext to get their values and have no knowledge of the locale,
+    // we need to create a new record with the values for the current locale only
+    // Given the record { title: { en: 'title_en', fr: 'title_fr' } } and the locale 'fr',
+    // the record for the locale 'fr' will be { title: 'title_fr' }
+    const recordForLocale = useMemo(
+        () => getRecordForLocale(record, locale),
+        [getRecordForLocale, record, locale]
+    );
 
     return (
         <Root
@@ -55,32 +75,29 @@ export const TranslatableFieldsTabContent = (
             className={className}
             {...other}
         >
-            {Children.map(children, field =>
-                field && isValidElement<any>(field) ? (
-                    <ResourceContextProvider
-                        value={resource}
-                        key={field.props.source}
-                    >
-                        <RecordContextProvider value={record}>
-                            <SourceContextProvider value={sourceContext}>
-                                <div>
-                                    {addLabel ? (
-                                        <Labeled
-                                            resource={resource}
-                                            label={field.props.label}
-                                            source={field.props.source}
-                                        >
-                                            {field}
-                                        </Labeled>
-                                    ) : (
-                                        field
-                                    )}
-                                </div>
-                            </SourceContextProvider>
-                        </RecordContextProvider>
-                    </ResourceContextProvider>
-                ) : null
-            )}
+            <RecordContextProvider value={recordForLocale}>
+                <SourceContextProvider value={sourceContext}>
+                    {Children.map(children, field =>
+                        field && isValidElement<any>(field) ? (
+                            <div>
+                                {addLabel ? (
+                                    <Labeled
+                                        // Only pass the resource if it was overridden through props to avoid
+                                        // the default inference to potentially override label set by SourceContext
+                                        resource={resourceProp}
+                                        label={field.props.label}
+                                        source={field.props.source}
+                                    >
+                                        {field}
+                                    </Labeled>
+                                ) : (
+                                    field
+                                )}
+                            </div>
+                        ) : null
+                    )}
+                </SourceContextProvider>
+            </RecordContextProvider>
         </Root>
     );
 };
@@ -92,7 +109,7 @@ export type TranslatableFieldsTabContentProps = {
     groupKey: string;
     locale: string;
     record: RaRecord;
-    resource: string;
+    resource?: string;
 };
 
 const PREFIX = 'RaTranslatableFieldsTabContent';

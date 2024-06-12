@@ -16,6 +16,9 @@ import { TextInput } from '../TextInput';
 import { DateInput } from '../DateInput';
 import { NumberInput } from '../NumberInput';
 import { AutocompleteInput } from '../AutocompleteInput';
+import { TranslatableInputs } from '../TranslatableInputs';
+import { ReferenceField, TextField, TranslatableFields } from '../../field';
+import { Labeled } from '../../Labeled';
 
 export default { title: 'ra-ui-materialui/input/ArrayInput' };
 
@@ -29,10 +32,12 @@ const dataProvider = {
                     {
                         name: 'Leo Tolstoy',
                         role: 'head_writer',
+                        country_id: 1,
                     },
                     {
                         name: 'Alexander Pushkin',
                         role: 'co_writer',
+                        country_id: 2,
                     },
                 ],
                 tags: ['novel', 'war', 'classic'],
@@ -329,12 +334,65 @@ export const Realistic = () => (
     </TestMemoryRouter>
 );
 
+const orderNested = {
+    id: 1,
+    date: '2022-08-30',
+    customer: 'John Doe',
+    items: [
+        {
+            name: { en: 'Office Jeans', fr: 'Jean de bureau' },
+            price: 45.99,
+            quantity: 1,
+            extras: [
+                {
+                    type: 'card',
+                    price: 2.99,
+                    content: {
+                        en: 'For you my love',
+                        fr: 'Pour toi mon amour',
+                    },
+                },
+                {
+                    type: 'gift package',
+                    price: 1.99,
+                },
+                {
+                    type: 'insurance',
+                    price: 5,
+                },
+            ],
+        },
+        {
+            name: {
+                en: 'Black Elegance Jeans',
+                fr: 'Jean élégant noir',
+            },
+            price: 69.99,
+            quantity: 2,
+            extras: [
+                {
+                    type: 'card',
+                    price: 2.99,
+                    content: {
+                        en: 'For you my love',
+                        fr: 'Pour toi mon amour',
+                    },
+                },
+            ],
+        },
+        {
+            name: { en: 'Slim Fit Jeans', fr: 'Jean slim' },
+            price: 55.99,
+            quantity: 1,
+        },
+    ],
+};
 export const NestedInline = () => (
     <TestMemoryRouter initialEntries={['/orders/1']}>
         <Admin
             dataProvider={
                 {
-                    getOne: () => Promise.resolve({ data: order }),
+                    getOne: () => Promise.resolve({ data: orderNested }),
                     update: (_resource, params) => Promise.resolve(params),
                 } as any
             }
@@ -362,11 +420,13 @@ export const NestedInline = () => (
                                         },
                                     }}
                                 >
-                                    <TextInput
-                                        source="name"
-                                        helperText={false}
-                                        sx={{ width: 200 }}
-                                    />
+                                    <TranslatableInputs locales={['en', 'fr']}>
+                                        <TextInput
+                                            source="name"
+                                            helperText={false}
+                                            sx={{ width: 200 }}
+                                        />
+                                    </TranslatableInputs>
                                     <NumberInput
                                         source="price"
                                         helperText={false}
@@ -392,11 +452,99 @@ export const NestedInline = () => (
                                                 helperText={false}
                                                 sx={{ width: 100 }}
                                             />
+                                            <TranslatableInputs
+                                                locales={['en', 'fr']}
+                                            >
+                                                <TextInput
+                                                    source="content"
+                                                    helperText={false}
+                                                    sx={{ width: 200 }}
+                                                />
+                                            </TranslatableInputs>
+                                        </SimpleFormIterator>
+                                    </ArrayInput>
+                                </SimpleFormIterator>
+                            </ArrayInput>
+                        </SimpleForm>
+                    </Edit>
+                )}
+            />
+        </Admin>
+    </TestMemoryRouter>
+);
+
+export const NestedInlineNoTranslation = () => (
+    <TestMemoryRouter initialEntries={['/orders/1']}>
+        <Admin
+            dataProvider={
+                {
+                    getOne: () => Promise.resolve({ data: orderNested }),
+                    update: (_resource, params) => Promise.resolve(params),
+                } as any
+            }
+            i18nProvider={testI18nProvider()}
+        >
+            <Resource
+                name="orders"
+                edit={() => (
+                    <Edit
+                        mutationMode="pessimistic"
+                        mutationOptions={{
+                            onSuccess: data => {
+                                console.log(data);
+                            },
+                        }}
+                    >
+                        <SimpleForm>
+                            <TextInput source="customer" helperText={false} />
+                            <DateInput source="date" helperText={false} />
+                            <ArrayInput source="items">
+                                <SimpleFormIterator
+                                    sx={{
+                                        '& .MuiStack-root': {
+                                            flexWrap: 'wrap',
+                                        },
+                                    }}
+                                >
+                                    <TranslatableInputs locales={['en', 'fr']}>
+                                        <Labeled source="name">
+                                            <TextField source="name" />
+                                        </Labeled>
+                                    </TranslatableInputs>
+                                    <TranslatableFields locales={['en', 'fr']}>
+                                        <TextField source="name" />
+                                        {/* Duplicated so that TranslatableFields adds labels */}
+                                        <TextField source="name" />
+                                    </TranslatableFields>
+                                    <NumberInput
+                                        source="price"
+                                        helperText={false}
+                                    />
+                                    <NumberInput
+                                        source="quantity"
+                                        helperText={false}
+                                    />
+                                    <ArrayInput source="extras">
+                                        <SimpleFormIterator
+                                            inline
+                                            disableReordering
+                                        >
                                             <TextInput
-                                                source="content"
+                                                source="type"
                                                 helperText={false}
-                                                sx={{ width: 200 }}
                                             />
+                                            <NumberInput
+                                                source="price"
+                                                helperText={false}
+                                            />
+                                            <TranslatableInputs
+                                                locales={['en', 'fr']}
+                                            >
+                                                <TextInput
+                                                    source="content"
+                                                    helperText={false}
+                                                />
+                                            </TranslatableInputs>
                                         </SimpleFormIterator>
                                     </ArrayInput>
                                 </SimpleFormIterator>
@@ -540,6 +688,71 @@ export const ValidationInFormTab = () => (
     <TestMemoryRouter initialEntries={['/books/create']}>
         <Admin dataProvider={dataProvider}>
             <Resource name="books" create={CreateGlobalValidationInFormTab} />
+        </Admin>
+    </TestMemoryRouter>
+);
+
+const countries = [
+    { id: 1, name: 'France' },
+    { id: 2, name: 'Italy' },
+    { id: 3, name: 'Spain' },
+    { id: 4, name: 'Russia' },
+];
+const dataProviderWithCountries = {
+    getOne: () =>
+        Promise.resolve({
+            data: {
+                id: 1,
+                title: 'War and Peace',
+                authors: [
+                    {
+                        name: 'Leo Tolstoy',
+                        role: 'head_writer',
+                        country_id: 4,
+                    },
+                    {
+                        name: 'Alexander Pushkin',
+                        role: 'co_writer',
+                        country_id: 2,
+                    },
+                ],
+                tags: ['novel', 'war', 'classic'],
+            },
+        }),
+    getList: () =>
+        Promise.resolve({ data: countries, count: countries.length }),
+    getMany: (_resource, params) => {
+        return Promise.resolve({
+            data: countries.filter(country => params.ids.includes(country.id)),
+        });
+    },
+} as any;
+
+const EditWithReferenceField = () => (
+    <Edit>
+        <SimpleForm>
+            <ArrayInput source="authors" fullWidth validate={required()}>
+                <SimpleFormIterator>
+                    <TextInput source="name" validate={required()} />
+                    <TextInput source="role" validate={required()} />
+                    <Labeled source="country_id">
+                        <ReferenceField
+                            source="country_id"
+                            reference="countries"
+                        >
+                            <TextField source="name" />
+                        </ReferenceField>
+                    </Labeled>
+                </SimpleFormIterator>
+            </ArrayInput>
+        </SimpleForm>
+    </Edit>
+);
+
+export const WithReferenceField = () => (
+    <TestMemoryRouter initialEntries={['/books/1']}>
+        <Admin dataProvider={dataProviderWithCountries}>
+            <Resource name="books" edit={EditWithReferenceField} />
         </Admin>
     </TestMemoryRouter>
 );

@@ -3,8 +3,8 @@ import { ReactElement, ReactNode, useMemo } from 'react';
 import { Typography, Stack } from '@mui/material';
 import clsx from 'clsx';
 import {
-    getResourceFieldLabelKey,
     RaRecord,
+    RecordContextProvider,
     SourceContextProvider,
     useResourceContext,
     useSourceContext,
@@ -30,7 +30,6 @@ export const SimpleFormIteratorItem = React.forwardRef(
             getItemLabel,
             index,
             inline,
-            member,
             record,
             removeButton = <DefaultRemoveItemButton />,
             reOrderButtons = <DefaultReOrderButtons />,
@@ -72,27 +71,38 @@ export const SimpleFormIteratorItem = React.forwardRef(
         const sourceContext = useMemo(
             () => ({
                 getSource: (source: string) => {
-                    if (parentSourceContext) {
+                    if (!source) {
+                        // source can be empty for scalar values, e.g.
+                        // <ArrayInput source="tags" /> => SourceContext is "tags"
+                        //   <SimpleFormIterator> => SourceContext is "tags.0"
+                        //      <TextInput /> => use its parent's getSource so finalSource = "tags.0"
+                        //   </SimpleFormIterator>
+                        // </ArrayInput>
+                        return parentSourceContext.getSource(`${index}`);
+                    } else {
+                        // Normal input with source, e.g.
+                        // <ArrayInput source="orders" /> => SourceContext is "orders"
+                        //   <SimpleFormIterator> => SourceContext is "orders.0"
+                        //      <DateInput source="date" /> => use its parent's getSource so finalSource = "orders.0.date"
+                        //   </SimpleFormIterator>
+                        // </ArrayInput>
                         return parentSourceContext.getSource(
-                            source ? `${member}.${source}` : member
+                            `${index}.${source}`
                         );
                     }
-                    return source ? `${member}.${source}` : member;
                 },
                 getLabel: (source: string) => {
-                    // remove digits, e.g. 'book.authors.2.categories.3.identifier.name' => 'book.authors.categories.identifier.name'
-                    const sanitizedMember = member.replace(/\.\d+/g, '');
-                    // source may be empty for scalar values arrays
-                    const itemSource = source
-                        ? `${sanitizedMember}.${source}`
-                        : sanitizedMember;
-
-                    return parentSourceContext
-                        ? parentSourceContext.getLabel(itemSource)
-                        : getResourceFieldLabelKey(resource, itemSource);
+                    // <ArrayInput source="orders" /> => LabelContext is "orders"
+                    //   <SimpleFormIterator> => LabelContext is ALSO "orders"
+                    //      <DateInput source="date" /> => use its parent's getLabel so finalLabel = "orders.date"
+                    //   </SimpleFormIterator>
+                    // </ArrayInput>
+                    //
+                    // we don't prefix with the index to avoid that translation keys contain it
+                    return parentSourceContext.getLabel(source);
                 },
             }),
-            [member, parentSourceContext, resource]
+            [index, parentSourceContext]
         );
 
         return (
@@ -107,15 +117,19 @@ export const SimpleFormIteratorItem = React.forwardRef(
                         </Typography>
                     )}
                     <SourceContextProvider value={sourceContext}>
-                        <Stack
-                            className={clsx(SimpleFormIteratorClasses.form)}
-                            direction={
-                                inline ? { xs: 'column', sm: 'row' } : 'column'
-                            }
-                            gap={inline ? 2 : 0}
-                        >
-                            {children}
-                        </Stack>
+                        <RecordContextProvider value={record}>
+                            <Stack
+                                className={clsx(SimpleFormIteratorClasses.form)}
+                                direction={
+                                    inline
+                                        ? { xs: 'column', sm: 'row' }
+                                        : 'column'
+                                }
+                                gap={inline ? 2 : 0}
+                            >
+                                {children}
+                            </Stack>
+                        </RecordContextProvider>
                     </SourceContextProvider>
                     {!disabled && (
                         <span className={SimpleFormIteratorClasses.action}>
@@ -142,12 +156,11 @@ export type SimpleFormIteratorItemProps = Partial<ArrayInputContextValue> & {
     getItemLabel?: boolean | GetItemLabelFunc;
     index: number;
     inline?: boolean;
-    member: string;
     onRemoveField: (index: number) => void;
     onReorder: (origin: number, destination: number) => void;
     record: RaRecord;
     removeButton?: ReactElement;
     reOrderButtons?: ReactElement;
     resource?: string;
-    source: string;
+    source?: string;
 };
