@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { styled, Theme } from '@mui/material/styles';
-import { useCallback, FunctionComponent, ReactNode } from 'react';
+import { useCallback, ReactNode } from 'react';
 import {
     ListItemIcon,
     ListItemText,
@@ -18,8 +18,10 @@ import { useTranslate, useLogout, useAuthState } from 'ra-core';
  *
  * Used for the Logout Menu item in the sidebar
  */
-export const Logout: FunctionComponent<LogoutProps & MenuItemProps<'li'>> =
-    React.forwardRef(function Logout(props, ref) {
+export const Logout: React.ForwardRefExoticComponent<
+    Omit<MenuItemProps<'li'>, 'ref'> & React.RefAttributes<HTMLLIElement>
+> = React.forwardRef<HTMLLIElement, LogoutProps & MenuItemProps<'li'>>(
+    function Logout(props, ref) {
         const { className, redirectTo, icon, ...rest } = props;
 
         const { authenticated } = useAuthState();
@@ -41,7 +43,6 @@ export const Logout: FunctionComponent<LogoutProps & MenuItemProps<'li'>> =
                 className={clsx('logout', className)}
                 onClick={handleClick}
                 ref={ref}
-                // @ts-ignore
                 component={isXSmall ? 'span' : 'li'}
                 {...rest}
             >
@@ -53,7 +54,8 @@ export const Logout: FunctionComponent<LogoutProps & MenuItemProps<'li'>> =
                 </ListItemText>
             </StyledMenuItem>
         );
-    });
+    }
+);
 
 const PREFIX = 'RaLogout';
 

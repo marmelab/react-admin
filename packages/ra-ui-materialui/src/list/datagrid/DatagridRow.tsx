@@ -35,7 +35,9 @@ const computeNbColumns = (expand, children, hasBulkActions) =>
           React.Children.toArray(children).filter(child => !!child).length // non-null children
         : 0; // we don't need to compute columns if there is no expand panel;
 
-const DatagridRow: FC<DatagridRowProps> = React.forwardRef((props, ref) => {
+const DatagridRow: React.ForwardRefExoticComponent<
+    Omit<DatagridRowProps, 'ref'> & React.RefAttributes<HTMLTableRowElement>
+> = React.forwardRef<HTMLTableRowElement, DatagridRowProps>((props, ref) => {
     const definition = useResourceDefinition(props);
     const defaultRowClick = definition?.hasShow
         ? 'show'

@@ -114,7 +114,9 @@ const defaultBulkActionButtons = <BulkDeleteButton />;
  *     );
  * }
  */
-export const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
+export const Datagrid: React.ForwardRefExoticComponent<
+    Omit<DatagridProps, 'ref'> & React.RefAttributes<HTMLTableElement>
+> = React.forwardRef<HTMLTableElement, DatagridProps>((props, ref) => {
     const {
         optimized = false,
         body = optimized ? PureDatagridBody : DatagridBody,
@@ -560,7 +562,9 @@ const injectedProps = [
 
 const sanitizeRestProps = props =>
     Object.keys(sanitizeListRestProps(props))
-        .filter(propName => !injectedProps.includes(propName))
+        .filter(
+            propName => !injectedProps.includes(propName) || propName === 'ref'
+        )
         .reduce((acc, key) => ({ ...acc, [key]: props[key] }), {});
 
 Datagrid.displayName = 'Datagrid';

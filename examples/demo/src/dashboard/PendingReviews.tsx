@@ -90,7 +90,13 @@ const PendingReviews = () => {
                         </ListItemAvatar>
 
                         <ListItemText
-                            primary={<StarRatingField record={record} />}
+                            primary={
+                                <StarRatingField
+                                    record={record}
+                                    label="resources.reviews.fields.rating"
+                                    source="rating"
+                                />
+                            }
                             secondary={record.comment}
                             sx={{
                                 overflowY: 'hidden',
