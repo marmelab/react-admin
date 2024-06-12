@@ -75,10 +75,10 @@ export const TranslatableFieldsTabContent = (
             className={className}
             {...other}
         >
-            {Children.map(children, field =>
-                field && isValidElement<any>(field) ? (
-                    <RecordContextProvider value={recordForLocale}>
-                        <SourceContextProvider value={sourceContext}>
+            <RecordContextProvider value={recordForLocale}>
+                <SourceContextProvider value={sourceContext}>
+                    {Children.map(children, field =>
+                        field && isValidElement<any>(field) ? (
                             <div>
                                 {addLabel ? (
                                     <Labeled
@@ -94,10 +94,10 @@ export const TranslatableFieldsTabContent = (
                                     field
                                 )}
                             </div>
-                        </SourceContextProvider>
-                    </RecordContextProvider>
-                ) : null
-            )}
+                        ) : null
+                    )}
+                </SourceContextProvider>
+            </RecordContextProvider>
         </Root>
     );
 };
