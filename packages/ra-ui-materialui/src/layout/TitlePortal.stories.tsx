@@ -5,8 +5,6 @@ import { TitlePortal } from './TitlePortal';
 import { Title } from './Title';
 import { InspectorButton } from '../preferences/InspectorButton';
 import { Inspector } from '../preferences/Inspector';
-import { Configurable } from '../preferences/Configurable';
-import { PageTitleEditor } from './PageTitleConfigurable';
 
 export default {
     title: 'ra-ui-materialui/layout/TitlePortal',

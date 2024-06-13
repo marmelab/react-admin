@@ -2,7 +2,6 @@ import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { ReactElement } from 'react';
 import { createPortal } from 'react-dom';
-import { useLocation } from 'react-router-dom';
 import { RaRecord, TitleComponent, warning } from 'ra-core';
 
 import { PageTitle } from './PageTitle';
@@ -10,7 +9,6 @@ import { PageTitleConfigurable } from './PageTitleConfigurable';
 
 export const Title = (props: TitleProps) => {
     const { defaultTitle, title, preferenceKey, ...rest } = props;
-    const { pathname } = useLocation();
     const [container, setContainer] = useState<HTMLElement | null>(() =>
         typeof document !== 'undefined'
             ? document.getElementById('react-admin-title')
