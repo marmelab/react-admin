@@ -185,6 +185,12 @@ const englishMessages: TranslationMessages = {
                 'Are you sure you want to remove that item from your list of saved queries?',
             help: 'Filter the list and save this query for later',
         },
+        rowCount: {
+            per_page_5: '5 per page',
+            per_page_10: '10 per page',
+            per_page_25: '25 per page',
+            per_page_50: '50 per page',
+        },
         configurable: {
             customize: 'Customize',
             configureMode: 'Configure this page',
