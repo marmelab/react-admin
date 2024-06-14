@@ -35,13 +35,13 @@ export const DateInput = ({
     defaultValue,
     format = getStringFromDate,
     label,
-    name,
     source,
     resource,
     helperText,
     margin,
     onBlur,
     onChange,
+    onFocus,
     parse,
     validate,
     variant,
@@ -49,13 +49,15 @@ export const DateInput = ({
     readOnly,
     ...rest
 }: DateInputProps) => {
-    const { field, fieldState, formState, id, isRequired } = useInput({
+    const {
+        field,
+        fieldState: { error, invalid, isTouched },
+        formState: { isSubmitted },
+        id,
+        isRequired,
+    } = useInput({
         defaultValue,
-        name,
-        format,
-        parse,
         onBlur,
-        onChange,
         resource,
         source,
         validate,
@@ -63,18 +65,94 @@ export const DateInput = ({
         readOnly,
         ...rest,
     });
+    const [renderCount, setRenderCount] = React.useState(1);
 
-    const { error, invalid, isTouched } = fieldState;
-    const { isSubmitted } = formState;
+    const initialDefaultValueRef = React.useRef(field.value);
+
+    React.useEffect(() => {
+        const initialDateValue =
+            new Date(initialDefaultValueRef.current).getTime() || null;
+
+        const fieldDateValue = new Date(field.value).getTime() || null;
+
+        if (initialDateValue !== fieldDateValue) {
+            setRenderCount(r => r + 1);
+            parse
+                ? field.onChange(parse(field.value))
+                : field.onChange(field.value);
+            initialDefaultValueRef.current = field.value;
+        }
+    }, [setRenderCount, parse, field]);
+
+    const { onBlur: onBlurFromField } = field;
+    const hasFocus = React.useRef(false);
+
+    // update the input text when the user types in the input
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        if (onChange) {
+            onChange(event);
+        }
+        if (
+            typeof event.target === 'undefined' ||
+            typeof event.target.value === 'undefined'
+        ) {
+            return;
+        }
+        const target = event.target;
+
+        const newValue =
+            target.valueAsDate !== undefined &&
+            target.valueAsDate !== null &&
+            !isNaN(new Date(target.valueAsDate).getTime())
+                ? parse
+                    ? parse(target.valueAsDate)
+                    : getStringFromDate(target.valueAsDate)
+                : parse
+                ? parse(target.value)
+                : getStringFromDate(target.value);
+
+        // if value empty, set it to null
+        if (newValue === '') {
+            field.onChange(null);
+            return;
+        }
+
+        field.onChange(newValue);
+    };
+
+    const handleFocus = (event: React.FocusEvent<HTMLInputElement>) => {
+        if (onFocus) {
+            onFocus(event);
+        }
+        hasFocus.current = true;
+    };
+
+    const handleBlur = () => {
+        if (onBlurFromField) {
+            onBlurFromField();
+        }
+        hasFocus.current = false;
+    };
+
     const renderHelperText =
         helperText !== false || ((isTouched || isSubmitted) && invalid);
+
+    const { ref, name } = field;
+
+    console.log('field', field);
 
     return (
         <TextField
             id={id}
-            {...field}
-            className={clsx('ra-input', `ra-input-${source}`, className)}
+            name={name}
+            inputRef={ref}
+            defaultValue={format(initialDefaultValueRef.current)}
+            key={renderCount}
             type="date"
+            onChange={handleChange}
+            onFocus={handleFocus}
+            onBlur={handleBlur}
+            className={clsx('ra-input', `ra-input-${source}`, className)}
             size="small"
             variant={variant}
             margin={margin}
@@ -139,7 +217,7 @@ const getStringFromDate = (value: string | Date) => {
     // null, undefined and empty string values should not go through dateFormatter
     // otherwise, it returns undefined and will make the input an uncontrolled one.
     if (value == null || value === '') {
-        return '';
+        return null;
     }
 
     if (value instanceof Date) {
