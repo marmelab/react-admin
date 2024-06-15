@@ -134,6 +134,7 @@ export const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
         size = 'small',
         sx,
         expandSingle = false,
+        alwaysExpand = false,
         ...rest
     } = props;
 
@@ -253,7 +254,7 @@ export const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
                                 children,
                                 sort,
                                 data,
-                                hasExpand: !!expand,
+                                hasExpand: !!expand && !alwaysExpand,
                                 hasBulkActions,
                                 isRowSelectable,
                                 onSelect,
@@ -328,6 +329,7 @@ Datagrid.propTypes = {
     isRowSelectable: PropTypes.func,
     isRowExpandable: PropTypes.func,
     expandSingle: PropTypes.bool,
+    alwaysExpand: PropTypes.bool,
 };
 
 export interface DatagridProps<RecordType extends RaRecord = any>
@@ -399,6 +401,24 @@ export interface DatagridProps<RecordType extends RaRecord = any>
               record: RecordType;
               resource: string;
           }>;
+
+    /**
+     * If true, all rows will be expanded by default and cannot be collapsed.
+     * Defaults to false.
+     *
+     * @see https://marmelab.com/react-admin/Datagrid.html#alwaysexpand
+     * @example
+     * import { List, Datagrid } from 'react-admin';
+     *
+     * export const PostList = () => (
+     *    <List>
+     *       <Datagrid alwaysExpand>
+     *          ...
+     *      </Datagrid>
+     *   </List>
+     * );
+     */
+    alwaysExpand?: boolean;
 
     /**
      * The component used to render the header row. Defaults to <DatagridHeader>.

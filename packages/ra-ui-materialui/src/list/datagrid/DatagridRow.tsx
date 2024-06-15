@@ -52,6 +52,7 @@ const DatagridRow: FC<DatagridRowProps> = React.forwardRef((props, ref) => {
         selected = false,
         style,
         selectable = true,
+        alwaysExpand = false,
         ...rest
     } = props;
 
@@ -158,7 +159,7 @@ const DatagridRow: FC<DatagridRowProps> = React.forwardRef((props, ref) => {
                 onClick={handleClick}
                 {...rest}
             >
-                {expand && (
+                {expand && !alwaysExpand && (
                     <TableCell
                         padding="none"
                         className={DatagridClasses.expandIconCell}
@@ -205,7 +206,7 @@ const DatagridRow: FC<DatagridRowProps> = React.forwardRef((props, ref) => {
                     ) : null
                 )}
             </TableRow>
-            {expandable && expanded && (
+            {expandable && (expanded || alwaysExpand) && (
                 <TableRow
                     key={`${id}-expand`}
                     id={`${id}-expand`}
@@ -236,6 +237,7 @@ DatagridRow.propTypes = {
     className: PropTypes.string,
     // @ts-ignore
     expand: PropTypes.oneOfType([PropTypes.element, PropTypes.elementType]),
+    alwaysExpand: PropTypes.bool,
     hasBulkActions: PropTypes.bool,
     hover: PropTypes.bool,
     id: PropTypes.any,
@@ -265,6 +267,7 @@ export interface DatagridRowProps
               resource: string;
           }>;
     hasBulkActions?: boolean;
+    alwaysExpand?: boolean;
     hover?: boolean;
     id?: Identifier;
     onToggleItem?: (
