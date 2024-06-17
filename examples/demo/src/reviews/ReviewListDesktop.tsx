@@ -47,9 +47,13 @@ const ReviewListDesktop = ({ selectedRow }: ReviewListDesktopProps) => (
         }}
     >
         <DateField source="date" />
-        <CustomerReferenceField link={false} />
+        <CustomerReferenceField source="customer_id" link={false} />
         <ProductReferenceField source="product_id" link={false} />
-        <StarRatingField size="small" />
+        <StarRatingField
+            size="small"
+            label="resources.reviews.fields.rating"
+            source="rating"
+        />
         <TextField source="comment" />
         <TextField source="status" />
     </DatagridConfigurable>

@@ -1,25 +1,24 @@
-const fs = require('fs');
-const path = require('path');
+import { StorybookConfig } from '@storybook/react-webpack5';
+import fs from 'fs';
+import path, { dirname, join } from 'path';
+
 const packages = fs.readdirSync(path.resolve(__dirname, '../packages'));
-module.exports = {
-    stories: [`../packages/${process.env.ONLY || '**'}/**/*.stories.@(tsx)`],
+
+const config: StorybookConfig = {
+    stories: [
+        path.resolve(
+            __dirname,
+            `../packages/${process.env.ONLY || '**'}/**/*.stories.@(tsx)`
+        ),
+    ],
     addons: [
-        {
-            name: '@storybook/addon-storysource',
-            options: {
-                loaderOptions: {
-                    injectStoryParameters: false,
-                    parser: 'typescript',
-                },
-            },
-        },
+        '@storybook/addon-webpack5-compiler-babel',
         '@storybook/addon-actions',
         '@storybook/addon-controls',
     ],
     typescript: {
         check: false,
-        checkOptions: {},
-        reactDocgen: 'none',
+        reactDocgen: false,
     },
     babel: async options => {
         const { plugins = [] } = options;
@@ -54,6 +53,16 @@ module.exports = {
         };
     },
     webpackFinal: async (config, { configType }) => {
+        config.module?.rules?.push({
+            test: /\.stories\.tsx?$/,
+            use: [
+                {
+                    loader: require.resolve('@storybook/source-loader'),
+                    options: { parser: 'typescript' },
+                },
+            ],
+            enforce: 'pre',
+        });
         return {
             ...config,
             resolve: {
@@ -72,10 +81,14 @@ module.exports = {
         };
     },
     framework: {
-        name: '@storybook/react-webpack5',
+        name: getAbsolutePath('@storybook/react-webpack5'),
         options: {},
     },
-    docs: {
-        autodocs: false,
-    },
+    docs: {},
 };
+
+export default config;
+
+function getAbsolutePath(value: string): any {
+    return dirname(require.resolve(join(value, 'package.json')));
+}

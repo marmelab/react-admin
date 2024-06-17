@@ -9,7 +9,10 @@ import preserveDirectives from 'rollup-preserve-directives';
 export default defineConfig(async () => {
     const packages = fs.readdirSync(path.resolve(__dirname, '../../packages'));
     const aliases: Record<string, string> = {
-        'data-generator-retail': path.resolve(__dirname, '../data-generator/src'),
+        'data-generator-retail': path.resolve(
+            __dirname,
+            '../data-generator/src'
+        ),
     };
     for (const dirName of packages) {
         if (dirName === 'create-react-admin') continue;
@@ -47,17 +50,18 @@ export default defineConfig(async () => {
             sourcemap: true,
             rollupOptions: {
                 plugins: [preserveDirectives()],
-            }
+            },
         },
         resolve: {
             preserveSymlinks: true,
             alias: [
+                // FIXME: doesn't work with react 19
                 // allow profiling in production
-                { find: /^react-dom$/, replacement: 'react-dom/profiling' },
-                {
-                    find: 'scheduler/tracing',
-                    replacement: 'scheduler/tracing-profiling',
-                },
+                // { find: /^react-dom$/, replacement: 'react-dom/profiling' },
+                // {
+                //     find: 'scheduler/tracing',
+                //     replacement: 'scheduler/tracing-profiling',
+                // },
                 // we need to manually follow the symlinks for local packages to allow deep HMR
                 ...Object.keys(aliases).map(packageName => ({
                     find: packageName,

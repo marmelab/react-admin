@@ -7,7 +7,10 @@ import { Identifier, RaRecord, RecordContextProvider } from 'ra-core';
 import { DatagridClasses } from './useDatagridStyles';
 import DatagridRow, { PureDatagridRow, RowClickFunction } from './DatagridRow';
 
-const DatagridBody: FC<DatagridBodyProps> = React.forwardRef(
+const DatagridBody: React.ForwardRefExoticComponent<
+    Omit<DatagridBodyProps, 'ref'> &
+        React.RefAttributes<HTMLTableSectionElement>
+> = React.forwardRef<HTMLTableSectionElement, DatagridBodyProps>(
     (
         {
             children,

@@ -40,8 +40,8 @@ const ReviewEdit = ({ id, onCancel }: ReviewEditProps) => {
                 >
                     <Grid container rowSpacing={1} mb={1}>
                         <Grid item xs={6}>
-                            <Labeled>
-                                <CustomerReferenceField />
+                            <Labeled source="customer_id">
+                                <CustomerReferenceField source="customer_id" />
                             </Labeled>
                         </Grid>
                         <Grid item xs={6}>
@@ -55,8 +55,8 @@ const ReviewEdit = ({ id, onCancel }: ReviewEditProps) => {
                             </Labeled>
                         </Grid>
                         <Grid item xs={6}>
-                            <Labeled>
-                                <StarRatingField />
+                            <Labeled label="resources.reviews.fields.rating">
+                                <StarRatingField source="rating" />
                             </Labeled>
                         </Grid>
                     </Grid>
