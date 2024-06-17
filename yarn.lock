@@ -5844,15 +5844,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@storybook/csf@npm:^0.1.0":
-  version: 0.1.1
-  resolution: "@storybook/csf@npm:0.1.1"
-  dependencies:
-    type-fest: "npm:^2.19.0"
-  checksum: 999bb87fbbe047a559bbaa5baf2ed84872fcd5cdcae3c1169f8e4c641eefe8759d09a09034a78ed114032c0e5cf6301b7fa89e5e3ce60d75cf0bd5e33ec0a6e7
-  languageName: node
-  linkType: hard
-
 "@storybook/csf@npm:^0.1.7":
   version: 0.1.7
   resolution: "@storybook/csf@npm:0.1.7"
@@ -6118,21 +6109,6 @@ __metadata:
     fs-extra: "npm:^11.1.0"
     read-pkg-up: "npm:^7.0.1"
   checksum: 5fc5e49033f5e6749f4294d968d127d25ce2ab608dd34a3fbba033893e01c03a19dbe6f5b8e70e1f98483190620205edff45a5e11d16d6def05cb45a11a13794
-  languageName: node
-  linkType: hard
-
-"@storybook/testing-react@npm:^2.0.1":
-  version: 2.0.1
-  resolution: "@storybook/testing-react@npm:2.0.1"
-  dependencies:
-    "@storybook/csf": "npm:^0.1.0"
-  peerDependencies:
-    "@storybook/client-logger": ^7.0.0-beta.0 || ^7.0.0-rc.0 || ^7.0.0
-    "@storybook/preview-api": ^7.0.0-beta.0 || ^7.0.0-rc.0 || ^7.0.0
-    "@storybook/react": ^7.0.0-beta.0 || ^7.0.0-rc.0 || ^7.0.0
-    "@storybook/types": ^7.0.0-beta.0 || ^7.0.0-rc.0 || ^7.0.0
-    react: ^16.8.0 || ^17.0.0 || ^18.0.0
-  checksum: 6e12c7d0755034132bcfc3e3b2cab995cd83dcdcf2a70bcad91832e9760e4b9fb500d529f68df25edb44a7defccfaab390933536f6a7d276bd5c49d0c3cd2091
   languageName: node
   linkType: hard
 
@@ -19240,7 +19216,6 @@ __metadata:
     "@storybook/addon-webpack5-compiler-swc": "npm:^1.0.2"
     "@storybook/react": "npm:^8.1.1"
     "@storybook/react-webpack5": "npm:^8.1.1"
-    "@storybook/testing-react": "npm:^2.0.1"
     "@types/jest": "npm:^29.5.2"
     "@types/react": "npm:^18.3.3"
     "@typescript-eslint/eslint-plugin": "npm:^5.60.0"

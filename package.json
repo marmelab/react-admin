@@ -32,7 +32,6 @@
         "@storybook/addon-webpack5-compiler-swc": "^1.0.2",
         "@storybook/react": "^8.1.1",
         "@storybook/react-webpack5": "^8.1.1",
-        "@storybook/testing-react": "^2.0.1",
         "@types/jest": "^29.5.2",
         "@types/react": "^18.3.3",
         "@typescript-eslint/eslint-plugin": "^5.60.0",
