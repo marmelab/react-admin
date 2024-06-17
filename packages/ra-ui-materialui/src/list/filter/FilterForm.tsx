@@ -298,7 +298,7 @@ const getInputValue = (
 };
 
 const isEmptyValue = (filterValue: unknown) => {
-    if (filterValue === '' || typeof filterValue === 'undefined') return true;
+    if (filterValue === '' || filterValue == null) return true;
 
     // If one of the value leaf is not empty
     // the value is considered not empty
