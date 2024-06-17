@@ -79,6 +79,18 @@
 * [TypeScript] Make types more strict in ra-core, part II ([#9743](https://github.com/marmelab/react-admin/pull/9743)) ([fzaninotto](https://github.com/fzaninotto))
 * [TypeScript] Make types more strict in ra-core ([#9741](https://github.com/marmelab/react-admin/pull/9741)) ([fzaninotto](https://github.com/fzaninotto))
 
+## v4.16.19
+
+* Fix `<ArrayInput>` ghost error after removing scalar item ([#9918](https://github.com/marmelab/react-admin/pull/9918)) ([djhi](https://github.com/djhi))
+* Fix filters with complex object are not removed from the UI ([#9898](https://github.com/marmelab/react-admin/pull/9898)) ([hmatthieu](https://github.com/hmatthieu))
+* Fix `<SelectInput resettable>` does not reset the value ([#9895](https://github.com/marmelab/react-admin/pull/9895)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Clarify `<SaveButton transform>` usage ([#9915](https://github.com/marmelab/react-admin/pull/9915)) ([slax57](https://github.com/slax57))
+* [Doc] Add link to Codesandbox for the simple demo ([#9900](https://github.com/marmelab/react-admin/pull/9900)) ([adguernier](https://github.com/adguernier))
+* [Doc] Added Genezio as a data provider ([#9890](https://github.com/marmelab/react-admin/pull/9890)) ([bogdanripa](https://github.com/bogdanripa))
+* [Doc] Fix typo in TreeWithDetails props list ([#9884](https://github.com/marmelab/react-admin/pull/9884)) ([wfouche](https://github.com/wfouche))
+* [Doc] Fix NextJS API routing snippet ([#9883](https://github.com/marmelab/react-admin/pull/9883)) ([PaulieScanlon](https://github.com/PaulieScanlon))
+* [Doc] Update ra-tree documentation ([#9862](https://github.com/marmelab/react-admin/pull/9862)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+
 ## v4.16.18
 
 * Fix `<Datagrid>` uses wrong element for "Select All" label ([#9826](https://github.com/marmelab/react-admin/pull/9826)) ([fzaninotto](https://github.com/fzaninotto))

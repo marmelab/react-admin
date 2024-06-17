@@ -255,10 +255,12 @@ const transformUser = data => ({
 
 const UserCreateToolbar = () => (
     <Toolbar>
-        <SaveButton transform={transformUser} />
+        <SaveButton type="button" transform={transformUser} />
     </Toolbar>
 );
 ```
+
+**Tip:** You need to set `type="button"` on the `<SaveButton>` to use `transform`. Without it, the form would be submitted with the default `transform` from the main page.
 
 ## `type`
 
