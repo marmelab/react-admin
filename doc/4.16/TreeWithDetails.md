@@ -72,22 +72,22 @@ Check [the `ra-tree` documentation](https://react-admin-ee.marmelab.com/document
 
 ## Props
 
-| Prop                 | Required | Type                   | Default | Description                                                                                    |
-| -------------------- | -------- | ---------------------- | ------- | ---------------------------------------------------------------------------------------------- |
-| `addRootButton`      | Optional | `ReactNode` or `false` | -       | The create button to add a root node                                                           |
-| `allowMultipleRoots` | Optional | `boolean`              | `false` | To allow trees with multiple roots                                                             |
-| `create`             | Required | `ReactNode`            | -       | The create form of your ressource                                                              |
-| `draggable`          | Optional | `boolean`              | `false` | To allow user to reorder nodes                                                                 |
-| `edit`               | Required | `ReactNode`            | -       | The edit form of your ressource                                                                |
-| `hideRootNodes`      | Optional | `boolean`              | `false` | To hide all root nodes                                                                         |
-| `lazy`               | Optional | `boolean`              | `false` | To load children only when they are expanded                                                   |
+| Prop                 | Required | Type                   | Default | Description                                                                                 |
+| -------------------- | -------- | ---------------------- | ------- |---------------------------------------------------------------------------------------------|
+| `addRootButton`      | Optional | `ReactNode` or `false` | -       | The create button to add a root node                                                        |
+| `allowMultipleRoots` | Optional | `boolean`              | `false` | To allow trees with multiple roots                                                          |
+| `create`             | Required | `ReactNode`            | -       | The create form of your resource                                                            |
+| `draggable`          | Optional | `boolean`              | `false` | To allow user to reorder nodes                                                              |
+| `edit`               | Required | `ReactNode`            | -       | The edit form of your resource                                                              |
+| `hideRootNodes`      | Optional | `boolean`              | `false` | To hide all root nodes                                                                      |
+| `lazy`               | Optional | `boolean`              | `false` | To load children only when they are expanded                                                |
 | `motion`             | Optional | `boolean`              | `false` | To enable [rc-tree's `<Tree>`](https://github.com/react-component/tree#tree-props) transitions |
-| `nodeActions`        | Optional | `ReactNode`            | -       | To customize the default dropdown action                                                       |
-| `show`               | Required | `ReactNode`            | -       | The show view of your ressource                                                                |
-| `showLine`           | Optional | `boolean`              | `false` | Shows a connecting line                                                                        |
-| `sx`                 | Optional | `SxProps`              | -       | Material UI shortcut for defining custom styles                                                |
-| `title`              | Optional | `string`               | -       | The title to display in the `<AppBar>`                                                         |
-| `titleField`         | Optional | `string`               | `title` | Set the record field to display in the tree                                                    |
+| `nodeActions`        | Optional | `ReactNode`            | -       | To customize the default dropdown action                                                    |
+| `show`               | Required | `ReactNode`            | -       | The show view of your resource                                                              |
+| `showLine`           | Optional | `boolean`              | `false` | Shows a connecting line                                                                     |
+| `sx`                 | Optional | `SxProps`              | -       | Material UI shortcut for defining custom styles                                             |
+| `title`              | Optional | `string`               | -       | The title to display in the `<AppBar>`                                                      |
+| `titleField`         | Optional | `string`               | `title` | Set the record field to display in the tree                                                 |
 
 `<TreeWithDetails>` also accepts the [rc-tree](https://tree-react-component.vercel.app/) props.
 
