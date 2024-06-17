@@ -598,19 +598,24 @@ If you provided a React element for the optionText prop, you must also provide t
                 }}
                 multiple={multiple}
                 renderTags={(value, getTagProps) =>
-                    value.map((option, index) => (
-                        <Chip
-                            label={
-                                isValidElement(optionText)
-                                    ? inputText
-                                        ? inputText(option)
-                                        : ''
-                                    : getChoiceText(option)
-                            }
-                            size="small"
-                            {...getTagProps({ index })}
-                        />
-                    ))
+                    value.map((option, index) => {
+                        // We have to extract the key because react 19 does not allow to spread the key prop
+                        const { key, ...tagProps } = getTagProps({ index });
+                        return (
+                            <Chip
+                                label={
+                                    isValidElement(optionText)
+                                        ? inputText
+                                            ? inputText(option)
+                                            : ''
+                                        : getChoiceText(option)
+                                }
+                                size="small"
+                                key={key}
+                                {...tagProps}
+                            />
+                        );
+                    })
                 }
                 noOptionsText={
                     typeof noOptionsText === 'string'
@@ -641,16 +646,15 @@ If you provided a React element for the optionText prop, you must also provide t
                 onBlur={finalOnBlur}
                 onInputChange={handleInputChange}
                 renderOption={(props, record: RaRecord) => {
-                    (
-                        props as {
-                            key: string;
-                        }
-                    ).key = getChoiceValue(record);
-
+                    // We have to extract the key because react 19 does not allow to spread the key prop
+                    // @ts-expect-error The key is indeed inside props but MUI does not provide the correct type
+                    const { key: ignoredKey, ...rest } = props;
+                    // We don't use MUI key which is generated from the option label because we may have options with the same label but with different values
+                    const key = getChoiceValue(record);
                     const optionLabel = getOptionLabel(record, true);
 
                     return (
-                        <li {...props}>
+                        <li key={key} {...rest}>
                             {optionLabel === '' ? ' ' : optionLabel}
                         </li>
                     );

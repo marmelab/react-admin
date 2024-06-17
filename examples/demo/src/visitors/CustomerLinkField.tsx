@@ -11,7 +11,7 @@ const CustomerLinkField = (_: FieldProps<Customer>) => {
     }
     return (
         <Link to={`/customers/${record.id}`}>
-            <FullNameField />
+            <FullNameField source="last_name" />
         </Link>
     );
 };

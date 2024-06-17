@@ -327,7 +327,7 @@ const Review = () => {
                 {record.comment}
             </Typography>
             <Typography variant="body2" color="textSecondary">
-                <StarRatingField />
+                <StarRatingField source="rating" />
             </Typography>
         </>
     );

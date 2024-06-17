@@ -1,5 +1,5 @@
 import { waitFor } from '@testing-library/react';
-import { act, renderHook } from '@testing-library/react-hooks';
+import { act, renderHook } from '@testing-library/react';
 
 import useFilterState from './useFilterState';
 
@@ -25,17 +25,20 @@ describe('useFilterState', () => {
     });
 
     it('should return a setFilter function to update the filter value after a given debounceTime', async () => {
-        const { result } = renderHook(() =>
-            useFilterState({ debounceTime: 50 })
-        );
+        const all: any[] = [];
+        const { result } = renderHook(() => {
+            const state = useFilterState({ debounceTime: 50 });
+            all.push(state);
+            return state;
+        });
 
         expect(result.current.filter).toEqual({ q: '' });
 
         act(() => result.current.setFilter('needle in a haystack'));
 
-        expect(result.all).toHaveLength(1);
+        expect(all).toHaveLength(1);
         await waitFor(() => {
-            expect(result.all).toHaveLength(2);
+            expect(all).toHaveLength(2);
         });
         expect(result.current.filter).toEqual({
             q: 'needle in a haystack',
