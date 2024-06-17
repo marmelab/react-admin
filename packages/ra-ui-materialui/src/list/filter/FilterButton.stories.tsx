@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Chip } from '@mui/material';
 import { ListBase, memoryStore, TestMemoryRouter } from 'ra-core';
 import {
     Admin,
@@ -13,6 +14,7 @@ import {
     TopToolbar,
     SearchInput,
     FilterButtonProps,
+    InputProps,
 } from 'react-admin';
 import fakerestDataProvider from 'ra-data-fakerest';
 import {
@@ -361,6 +363,33 @@ export const WithAutoCompleteArrayInput = (args: {
                             args={{ disableSaveQuery: args.disableSaveQuery }}
                         />
                     }
+                />
+            </Admin>
+        </TestMemoryRouter>
+    );
+};
+
+const QuickFilter = ({ label }: InputProps) => <Chip label={label} />;
+
+export const WithComplexValueFilter = (args: {
+    disableSaveQuery?: boolean;
+}) => {
+    const postFilters: React.ReactElement[] = [
+        <QuickFilter
+            label="Complex"
+            source="nested"
+            defaultValue={{ foo: 'bar' }}
+        />,
+    ];
+    return (
+        <TestMemoryRouter>
+            <Admin
+                dataProvider={fakerestDataProvider(data)}
+                store={memoryStore()}
+            >
+                <Resource
+                    name="posts"
+                    list={<PostList postFilters={postFilters} args={args} />}
                 />
             </Admin>
         </TestMemoryRouter>

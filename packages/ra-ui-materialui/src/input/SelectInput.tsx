@@ -209,17 +209,24 @@ export const SelectInput = (props: SelectInputProps) => {
     );
 
     const handleChange = useCallback(
-        async (eventOrChoice: ChangeEvent<HTMLInputElement> | RaRecord) => {
-            // We might receive an event from the mui component
-            // In this case, it will be the choice id
-            if (eventOrChoice?.target) {
+        async (
+            eventOrChoice: ChangeEvent<HTMLInputElement> | RaRecord | ''
+        ) => {
+            if (typeof eventOrChoice === 'string') {
+                if (eventOrChoice === '') {
+                    // called  by the reset button
+                    field.onChange(emptyValue);
+                }
+            } else if (eventOrChoice?.target) {
+                // We might receive an event from the mui component
+                // In this case, it will be the choice id
                 field.onChange(eventOrChoice);
             } else {
                 // Or we might receive a choice directly, for instance a newly created one
                 field.onChange(getChoiceValue(eventOrChoice));
             }
         },
-        [field, getChoiceValue]
+        [field, getChoiceValue, emptyValue]
     );
 
     const {

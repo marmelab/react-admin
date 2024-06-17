@@ -123,7 +123,7 @@ export const FilterFormBase = (props: FilterFormBaseProps) => {
             return (
                 filterElement.props.alwaysOn ||
                 displayedFilters[filterElement.props.source] ||
-                (filterValue !== '' && typeof filterValue !== 'undefined')
+                !isEmptyValue(filterValue)
             );
         });
     };
@@ -295,4 +295,18 @@ const getInputValue = (
         return inputValues;
     }
     return get(filterValues, key, '');
+};
+
+const isEmptyValue = (filterValue: unknown) => {
+    if (filterValue === '' || filterValue == null) return true;
+
+    // If one of the value leaf is not empty
+    // the value is considered not empty
+    if (typeof filterValue === 'object') {
+        return Object.keys(filterValue).every(key =>
+            isEmptyValue(filterValue[key])
+        );
+    }
+
+    return false;
 };

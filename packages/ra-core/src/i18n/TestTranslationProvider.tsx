@@ -14,12 +14,15 @@ export const TestTranslationProvider = ({
     </I18nContextProvider>
 );
 
+export interface IMessages
+    extends Record<string, string | ((options?: any) => string) | IMessages> {}
+
 export const testI18nProvider = ({
     translate,
     messages,
 }: {
     translate?: I18nProvider['translate'];
-    messages?: Record<string, string | ((options?: any) => string)>;
+    messages?: IMessages;
 } = {}): I18nProvider => {
     return {
         translate: messages

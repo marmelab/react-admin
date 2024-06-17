@@ -60,10 +60,10 @@ These methods return Promises for `TreeRecord` objects.
 
 **Write methods**
 
--   `moveAsNthChildOf(resource, { source, destination, position })`: `source` and `destination` are `TreeRecord` objects, and `position` a zero-based integer
--   `moveAsNthSiblingOf(resource, { source, destination, position })`
--   `addRootNode(resource, { data })`
--   `addChildNode(resource, { parentId, data })`
--   `deleteBranch(resource, { id, data })`: `id` is the identifier of the node to remove, and `data` its content
+-   `moveAsNthChildOf(resource, { source, destination, position, meta })`: `source` and `destination` are `TreeRecord` objects, and `position` a zero-based integer
+-   `moveAsNthSiblingOf(resource, { source, destination, position, meta })`
+-   `addRootNode(resource, { data, meta })`
+-   `addChildNode(resource, { parentId, data, position, meta })`
+-   `deleteBranch(resource, { id, data, meta })`: `id` is the identifier of the node to remove, and `data` its content
 
 Check [the `ra-tree` documentation](https://react-admin-ee.marmelab.com/documentation/ra-tree) for more details.
