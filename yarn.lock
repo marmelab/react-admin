@@ -4967,7 +4967,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@storybook/source-loader@npm:8.1.9":
+"@storybook/source-loader@npm:8.1.9, @storybook/source-loader@npm:^8.1.9":
   version: 8.1.9
   resolution: "@storybook/source-loader@npm:8.1.9"
   dependencies:
@@ -17987,6 +17987,7 @@ __metadata:
     "@storybook/addon-webpack5-compiler-babel": "npm:^3.0.3"
     "@storybook/react": "npm:^8.1.9"
     "@storybook/react-webpack5": "npm:^8.1.9"
+    "@storybook/source-loader": "npm:^8.1.9"
     "@types/jest": "npm:^29.5.2"
     "@types/react": "npm:^18.3.3"
     "@typescript-eslint/eslint-plugin": "npm:^5.60.0"

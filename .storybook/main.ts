@@ -13,23 +13,6 @@ const config: StorybookConfig = {
     ],
     addons: [
         '@storybook/addon-webpack5-compiler-babel',
-        {
-            name: '@storybook/addon-storysource',
-            options: {
-                rule: {
-                    include: [
-                        path.resolve(
-                            __dirname,
-                            `../packages/${process.env.ONLY || '**'}/**/*.stories.@(tsx)`
-                        ),
-                    ],
-                },
-                loaderOptions: {
-                    parser: 'typescript',
-                    injectStoryParameters: false,
-                },
-            },
-        },
         '@storybook/addon-actions',
         '@storybook/addon-controls',
     ],
@@ -70,6 +53,16 @@ const config: StorybookConfig = {
         };
     },
     webpackFinal: async (config, { configType }) => {
+        config.module?.rules?.push({
+            test: /\.stories\.tsx?$/,
+            use: [
+                {
+                    loader: require.resolve('@storybook/source-loader'),
+                    options: { parser: 'typescript' },
+                },
+            ],
+            enforce: 'pre',
+        });
         return {
             ...config,
             resolve: {
