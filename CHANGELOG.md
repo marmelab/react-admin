@@ -1,5 +1,21 @@
 # Changelog
 
+## v5.0.0-rc.0
+
+* Ensure React 19 compatibility ([#9919](https://github.com/marmelab/react-admin/pull/9919)) ([djhi](https://github.com/djhi))
+* Fix data provider queries are doubled in development when using strict mode ([#9901](https://github.com/marmelab/react-admin/pull/9901)) ([djhi](https://github.com/djhi))
+* Fix default `<Error>` background in global `ErrorBoundary` ([#9913](https://github.com/marmelab/react-admin/pull/9913)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `combineDataProvider` throws a runtime error ([#9910](https://github.com/marmelab/react-admin/pull/9910)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<List>` should not render `<Error>` component on fetch error ([#9912](https://github.com/marmelab/react-admin/pull/9912)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `useDelete` doesn't delete record if its `id` is zero ([#9894](https://github.com/marmelab/react-admin/pull/9894)) ([adguernier](https://github.com/adguernier))
+* Update `<ArrayInput>` to use `SourceContext` instead of cloning children ([#9911](https://github.com/marmelab/react-admin/pull/9911)) ([adguernier](https://github.com/adguernier))
+* Update `<SelectArrayInput>` to use default record representation when used inside `<ReferenceArrayInput>` ([#9902](https://github.com/marmelab/react-admin/pull/9902)) ([djhi](https://github.com/djhi))
+* Upgrade FakeRest to 4.0 ([#9908](https://github.com/marmelab/react-admin/pull/9908)) ([fzaninotto](https://github.com/fzaninotto))
+* [TypeScript] Fix types of Field components ([#9903](https://github.com/marmelab/react-admin/pull/9903)) ([slax57](https://github.com/slax57))
+* [Dev] Fix `useRegisterMutationMiddleware` stories ([#9899](https://github.com/marmelab/react-admin/pull/9899)) ([djhi](https://github.com/djhi))
+* [Dev] Deduplicate `yarn`.lock ([#9897](https://github.com/marmelab/react-admin/pull/9897)) ([fzaninotto](https://github.com/fzaninotto))
+* Backport changes from master ([#9923](https://github.com/marmelab/react-admin/pull/9923)) ([slax57](https://github.com/slax57))
+
 ## v5.0.0-beta.3
 
 * Fix React requirement is too strict on npm ([#9879](https://github.com/marmelab/react-admin/pull/9879)) ([fzaninotto](https://github.com/fzaninotto))
