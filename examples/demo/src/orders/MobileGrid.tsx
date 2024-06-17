@@ -41,6 +41,7 @@ const MobileGrid = () => {
                         />
                         <CardContent sx={{ pt: 0 }}>
                             <CustomerReferenceField
+                                source="customer_id"
                                 sx={{ display: 'block', mb: 1 }}
                             />
                             <Typography variant="body2" gutterBottom>

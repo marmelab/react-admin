@@ -598,19 +598,23 @@ If you provided a React element for the optionText prop, you must also provide t
                 }}
                 multiple={multiple}
                 renderTags={(value, getTagProps) =>
-                    value.map((option, index) => (
-                        <Chip
-                            label={
-                                isValidElement(optionText)
-                                    ? inputText
-                                        ? inputText(option)
-                                        : ''
-                                    : getChoiceText(option)
-                            }
-                            size="small"
-                            {...getTagProps({ index })}
-                        />
-                    ))
+                    value.map((option, index) => {
+                        const { key, ...tagProps } = getTagProps({ index });
+                        return (
+                            <Chip
+                                label={
+                                    isValidElement(optionText)
+                                        ? inputText
+                                            ? inputText(option)
+                                            : ''
+                                        : getChoiceText(option)
+                                }
+                                size="small"
+                                key={key}
+                                {...tagProps}
+                            />
+                        );
+                    })
                 }
                 noOptionsText={
                     typeof noOptionsText === 'string'

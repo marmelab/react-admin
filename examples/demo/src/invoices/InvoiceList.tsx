@@ -61,7 +61,7 @@ const InvoiceList = () => (
             <TextField source="id" />
             <DateField source="date" />
             <ReferenceField source="customer_id" reference="customers">
-                <FullNameField />
+                <FullNameField source="last_name" />
             </ReferenceField>
             <ReferenceField
                 source="customer_id"

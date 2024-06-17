@@ -113,6 +113,8 @@ const VisitorEdit = () => {
     );
 };
 
-const VisitorTitle = () => <FullNameField size="32" sx={{ margin: '5px 0' }} />;
+const VisitorTitle = () => (
+    <FullNameField source="last_name" size="32" sx={{ margin: '5px 0' }} />
+);
 
 export default VisitorEdit;

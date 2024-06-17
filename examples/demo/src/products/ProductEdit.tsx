@@ -85,7 +85,7 @@ const ProductEdit = () => (
                         }}
                     >
                         <DateField source="date" />
-                        <CustomerReferenceField />
+                        <CustomerReferenceField source="customer_id" />
                         <StarRatingField
                             label="resources.reviews.fields.rating"
                             source="rating"

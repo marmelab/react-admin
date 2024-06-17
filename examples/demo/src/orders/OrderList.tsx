@@ -131,7 +131,7 @@ const TabbedDatagrid = () => {
                         >
                             <DateField source="date" showTime />
                             <TextField source="reference" />
-                            <CustomerReferenceField />
+                            <CustomerReferenceField source="customer_id" />
                             <ReferenceField
                                 source="customer_id"
                                 reference="customers"
@@ -182,7 +182,7 @@ const TabbedDatagrid = () => {
                         >
                             <DateField source="date" showTime />
                             <TextField source="reference" />
-                            <CustomerReferenceField />
+                            <CustomerReferenceField source="customer_id" />
                             <ReferenceField
                                 source="customer_id"
                                 reference="customers"
@@ -237,7 +237,7 @@ const TabbedDatagrid = () => {
                         >
                             <DateField source="date" showTime />
                             <TextField source="reference" />
-                            <CustomerReferenceField />
+                            <CustomerReferenceField source="customer_id" />
                             <ReferenceField
                                 source="customer_id"
                                 reference="customers"
