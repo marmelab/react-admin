@@ -36,11 +36,11 @@ export const useApplyInputDefaultValues = ({
     const finalSource = useWrappedSource(source);
 
     const record = useRecordContext(inputProps);
-    const { getValues, resetField, getFieldState, formState, reset } =
-        useFormContext();
+    const { getValues, resetField, formState, reset } = useFormContext();
     const recordValue = get(record, finalSource);
     const formValue = get(getValues(), finalSource);
-    const { isDirty } = getFieldState(finalSource, formState);
+    const { dirtyFields } = formState;
+    const isDirty = Object.keys(dirtyFields).includes(finalSource);
 
     useEffect(() => {
         if (

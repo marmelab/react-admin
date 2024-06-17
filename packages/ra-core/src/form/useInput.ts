@@ -34,7 +34,7 @@ export const useInput = <ValueType = any>(
         name,
         onBlur: initialOnBlur,
         onChange: initialOnChange,
-        parse = defaultParse,
+        parse: parseProp = defaultParse,
         source,
         validate,
         ...options
@@ -44,6 +44,8 @@ export const useInput = <ValueType = any>(
     const formGroupName = useFormGroupContext();
     const formGroups = useFormGroups();
     const record = useRecordContext();
+    // @ts-ignore
+    const parse = useEvent(parseProp);
     const defaultId = useId();
 
     if (
