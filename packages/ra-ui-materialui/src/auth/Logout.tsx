@@ -19,7 +19,9 @@ import { useTranslate, useLogout, useAuthState } from 'ra-core';
  * Used for the Logout Menu item in the sidebar
  */
 export const Logout: React.ForwardRefExoticComponent<
-    Omit<MenuItemProps<'li'>, 'ref'> & React.RefAttributes<HTMLLIElement>
+    Omit<MenuItemProps<'li'>, 'ref'> &
+        React.RefAttributes<HTMLLIElement> &
+        LogoutProps
 > = React.forwardRef<HTMLLIElement, LogoutProps & MenuItemProps<'li'>>(
     function Logout(props, ref) {
         const { className, redirectTo, icon, ...rest } = props;
