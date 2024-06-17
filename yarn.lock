@@ -9916,7 +9916,7 @@ __metadata:
     clsx: "npm:^2.1.1"
     data-generator-retail: "npm:^5.0.0-alpha.0"
     date-fns: "npm:^3.6.0"
-    fakerest: "npm:^4.0.0"
+    fakerest: "npm:^4.0.1"
     fetch-mock: "npm:~9.11.0"
     graphql: "npm:^15.6.0"
     graphql-tag: "npm:^2.12.6"
@@ -11395,12 +11395,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fakerest@npm:^4.0.0":
-  version: 4.0.0
-  resolution: "fakerest@npm:4.0.0"
+"fakerest@npm:^4.0.1":
+  version: 4.0.1
+  resolution: "fakerest@npm:4.0.1"
   dependencies:
     lodash: "npm:^4.17.21"
-  checksum: 85a6a369d4899a82b4a23517e1f8ea37462494ec442814613a5d3ba34406979bc86cff6de36ea1101ea29579ba7a6ec1e12300baa329e71e41e3ba58798f4afd
+  checksum: 997aae176d08bc984c6996dd0df0cb425b2b7405e8b9f7797d54da9df314ca50b33211c8d80a14972261d92913de86959309beeab225bd32a5530f869ff9596b
   languageName: node
   linkType: hard
 
@@ -17951,7 +17951,7 @@ __metadata:
     "@types/jest": "npm:^29.5.2"
     cross-env: "npm:^5.2.0"
     expect: "npm:^27.4.6"
-    fakerest: "npm:^4.0.0"
+    fakerest: "npm:^4.0.1"
     ra-core: "npm:^5.0.0-beta.3"
     rimraf: "npm:^3.0.2"
     typescript: "npm:^5.1.3"
