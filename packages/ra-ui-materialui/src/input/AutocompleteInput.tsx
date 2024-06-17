@@ -645,16 +645,12 @@ If you provided a React element for the optionText prop, you must also provide t
                 onBlur={finalOnBlur}
                 onInputChange={handleInputChange}
                 renderOption={(props, record: RaRecord) => {
-                    (
-                        props as {
-                            key: string;
-                        }
-                    ).key = getChoiceValue(record);
-
+                    // @ts-expect-error The key is indeed inside props but MUI does not provide the correct type
+                    const { key, ...rest } = props;
                     const optionLabel = getOptionLabel(record, true);
 
                     return (
-                        <li {...props}>
+                        <li key={key} {...rest}>
                             {optionLabel === '' ? ' ' : optionLabel}
                         </li>
                     );
