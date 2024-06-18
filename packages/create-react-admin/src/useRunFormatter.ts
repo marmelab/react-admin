@@ -1,6 +1,6 @@
 import execa from 'execa';
 import { useStderr } from 'ink';
-import { ProjectConfiguration } from './ProjectState';
+import { ProjectConfiguration } from './ProjectState.js';
 
 export const useRunFormatter = () => {
     const { stderr } = useStderr();
