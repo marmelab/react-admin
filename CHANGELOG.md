@@ -1,5 +1,9 @@
 # Changelog
 
+## v5.0.0-rc.1
+
+- Fix `create-react-admin` ([#9926](https://github.com/marmelab/react-admin/pull/9926)) ([djhi](https://github.com/djhi))
+
 ## v5.0.0-rc.0
 
 * Ensure React 19 compatibility ([#9919](https://github.com/marmelab/react-admin/pull/9919)) ([djhi](https://github.com/djhi))
