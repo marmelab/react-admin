@@ -4,6 +4,7 @@
     "version": "5.0.0-rc.0",
     "license": "MIT",
     "bin": "lib/cli.js",
+    "type": "module",
     "authors": [
         "Gildas Garcia"
     ],

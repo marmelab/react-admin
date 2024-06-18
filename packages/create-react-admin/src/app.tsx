@@ -9,8 +9,8 @@ import { StepAuthProvider } from './StepAuthProvider.js';
 import { StepResources } from './StepResources.js';
 import { StepInstall } from './StepInstall.js';
 import { StepName } from './StepName.js';
-import { StepGenerate } from './StepGenerate';
-import { StepRunInstall } from './StepRunInstall';
+import { StepGenerate } from './StepGenerate.js';
+import { StepRunInstall } from './StepRunInstall.js';
 
 type Props = {
     name?: string;
