@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { Text } from 'ink';
-import { ProjectConfiguration } from './ProjectState';
-import { useInstallDeps } from './useInstallDeps';
-import { useRunFormatter } from './useRunFormatter';
+import { ProjectConfiguration } from './ProjectState.js';
+import { useInstallDeps } from './useInstallDeps.js';
+import { useRunFormatter } from './useRunFormatter.js';
 
 export const StepRunInstall = ({
     config,

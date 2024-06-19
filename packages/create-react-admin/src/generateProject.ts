@@ -1,14 +1,17 @@
 import path from 'path';
 import fs from 'fs';
 import fsExtra from 'fs-extra';
-import merge from 'lodash/merge';
+import url from 'url';
+import merge from 'lodash/merge.js';
 import { ProjectConfiguration } from './ProjectState.js';
 import { generateAppFile } from './generateAppFile.js';
 import { generateAppTestFile } from './generateAppTestFile.js';
 
+const __filename = url.fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 export const generateProject = async (state: ProjectConfiguration) => {
     const projectDirectory = initializeProjectDirectory(state.name);
-
     copyDirectoryFiles(
         path.join(__dirname, '../templates/common'),
         projectDirectory,

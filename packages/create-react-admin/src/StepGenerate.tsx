@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Text } from 'ink';
-import { generateProject } from './generateProject';
-import { ProjectConfiguration } from './ProjectState';
+import { generateProject } from './generateProject.js';
+import { ProjectConfiguration } from './ProjectState.js';
 
 export const StepGenerate = ({
     config,
