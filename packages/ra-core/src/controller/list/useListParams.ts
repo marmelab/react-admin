@@ -1,7 +1,6 @@
 import { useCallback, useMemo, useEffect, useState, useRef } from 'react';
 import { parse, stringify } from 'query-string';
 import lodashDebounce from 'lodash/debounce';
-import pickBy from 'lodash/pickBy';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 import { useStore } from '../../store';
@@ -283,15 +282,6 @@ export const useListParams = ({
     ];
 };
 
-export const validQueryParams = [
-    'page',
-    'perPage',
-    'sort',
-    'order',
-    'filter',
-    'displayedFilters',
-];
-
 const parseObject = (query, field) => {
     if (query[field] && typeof query[field] === 'string') {
         try {
@@ -303,10 +293,7 @@ const parseObject = (query, field) => {
 };
 
 export const parseQueryFromLocation = ({ search }): Partial<ListParams> => {
-    const query = pickBy(
-        parse(search),
-        (v, k) => validQueryParams.indexOf(k) !== -1
-    );
+    const query = parse(search);
     parseObject(query, 'filter');
     parseObject(query, 'displayedFilters');
     return query;
