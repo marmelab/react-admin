@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FunctionComponent, ReactElement, useEffect } from 'react';
+import { FunctionComponent, ReactElement } from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { useFormContext, useWatch } from 'react-hook-form';
 import { CoreAdminContext } from '../core';
@@ -12,9 +12,9 @@ const Input: FunctionComponent<
     {
         children: (props: ReturnType<typeof useInput>) => ReactElement;
     } & InputProps
-> = ({ children, ...props }) => {
+> = props => {
     const inputProps = useInput(props);
-    return children(inputProps);
+    return props.children(inputProps);
 };
 
 const InputWithCustomOnChange: FunctionComponent<
@@ -28,8 +28,12 @@ const InputWithCustomOnChange: FunctionComponent<
         <Input
             {...props}
             onChange={e => {
-                props.onChange(e);
-                setContextValue(getValues()[props.source]);
+                if (props.onChange) {
+                    props.onChange(e);
+                }
+                if (setContextValue) {
+                    setContextValue(getValues()[props.source]);
+                }
             }}
         >
             {children}
@@ -375,7 +379,7 @@ describe('useInput', () => {
             expect(inputProps.field.value).toEqual('');
         });
 
-        test('should apply the provided format function before passing the value to the real input', () => {
+        it('should apply the provided format function before passing the value to the real input', () => {
             render(
                 <CoreAdminContext dataProvider={testDataProvider()}>
                     <Form onSubmit={jest.fn()}>
@@ -395,7 +399,7 @@ describe('useInput', () => {
     });
 
     describe('parse', () => {
-        test('should apply the provided parse function before applying the value from the real input', () => {
+        it('should apply the provided parse function before applying the value from the real input', () => {
             render(
                 <CoreAdminContext dataProvider={testDataProvider()}>
                     <Form onSubmit={jest.fn()}>
@@ -404,20 +408,30 @@ describe('useInput', () => {
                             parse={value => (value + 1).toString()}
                             source="test"
                             children={({ id, field }) => {
-                                useEffect(() => {
-                                    field.onChange(999);
-                                }, [field]);
-
-                                return <input type="text" id={id} {...field} />;
+                                return (
+                                    <>
+                                        <input type="text" id={id} {...field} />
+                                        <button
+                                            type="button"
+                                            onClick={() => {
+                                                field.onChange(999);
+                                            }}
+                                        >
+                                            Set to 999
+                                        </button>
+                                    </>
+                                );
                             }}
                         />
                     </Form>
                 </CoreAdminContext>
             );
+
+            fireEvent.click(screen.getByText('Set to 999'));
             expect(screen.getByDisplayValue('1000')).not.toBeNull();
         });
 
-        test('should parse empty strings to null by default', async () => {
+        it('should parse empty strings to null by default', async () => {
             const onSubmit = jest.fn();
             render(
                 <CoreAdminContext dataProvider={testDataProvider()}>
@@ -426,9 +440,6 @@ describe('useInput', () => {
                             defaultValue="foo"
                             source="test"
                             children={({ id, field }) => {
-                                useEffect(() => {
-                                    field.onChange('');
-                                }, [field]);
                                 const value = useWatch({ name: 'test' });
 
                                 return (
@@ -441,6 +452,14 @@ describe('useInput', () => {
                                                 {typeof value})
                                             </code>
                                         </div>
+                                        <button
+                                            type="button"
+                                            onClick={() => {
+                                                field.onChange('');
+                                            }}
+                                        >
+                                            Set to empty
+                                        </button>
                                     </>
                                 );
                             }}
@@ -448,6 +467,7 @@ describe('useInput', () => {
                     </Form>
                 </CoreAdminContext>
             );
+            fireEvent.click(screen.getByText('Set to empty'));
             await screen.findByText('null (object)');
         });
     });

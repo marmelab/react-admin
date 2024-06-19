@@ -15,8 +15,8 @@ export default url => ({
     },
 
     login(username = 'login', password = 'password') {
-        cy.get(this.elements.username).type(username);
-        cy.get(this.elements.password).type(password);
+        cy.get(this.elements.username).clear().type(username);
+        cy.get(this.elements.password).clear().type(password);
         cy.get(this.elements.submitButton).click();
     },
 });

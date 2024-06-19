@@ -189,13 +189,21 @@ const FormStateInspector = () => {
 
 const FieldStateInspector = ({ name = 'views' }) => {
     const formContext = useFormContext();
+    const { dirtyFields } = formContext.formState;
+    const isDirty = Object.keys(dirtyFields).includes(name);
+    const { isTouched, isValidating, invalid, error } =
+        formContext.getFieldState(name, formContext.formState);
     return (
         <div>
             {name}:
             <code style={{ backgroundColor: 'lightgrey' }}>
-                {JSON.stringify(
-                    formContext.getFieldState(name, formContext.formState)
-                )}
+                {JSON.stringify({
+                    isDirty,
+                    isTouched,
+                    isValidating,
+                    invalid,
+                    error,
+                })}
             </code>
         </div>
     );
