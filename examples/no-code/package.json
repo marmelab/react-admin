@@ -1,6 +1,6 @@
 {
     "name": "no-code",
-    "version": "5.0.0-rc.0",
+    "version": "5.0.0",
     "private": true,
     "scripts": {
         "dev": "yarn vite",
@@ -9,10 +9,10 @@
     },
     "dependencies": {
         "@mui/material": "^5.15.20",
-        "ra-data-local-storage": "^5.0.0-rc.0",
-        "ra-no-code": "^5.0.0-rc.0",
+        "ra-data-local-storage": "^5.0.0",
+        "ra-no-code": "^5.0.0",
         "react": "^18.3.1",
-        "react-admin": "^5.0.0-rc.0",
+        "react-admin": "^5.0.0",
         "react-dom": "^18.3.1"
     },
     "devDependencies": {

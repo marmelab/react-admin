@@ -1,6 +1,6 @@
 {
     "name": "react-admin-crm",
-    "version": "5.0.0-rc.0",
+    "version": "5.0.0",
     "private": true,
     "type": "module",
     "dependencies": {
@@ -13,9 +13,9 @@
         "date-fns": "^3.6.0",
         "faker": "~5.4.0",
         "lodash": "~4.17.5",
-        "ra-data-fakerest": "^5.0.0-rc.0",
+        "ra-data-fakerest": "^5.0.0",
         "react": "^18.3.1",
-        "react-admin": "^5.0.0-rc.0",
+        "react-admin": "^5.0.0",
         "react-dom": "^18.3.1",
         "react-error-boundary": "^4.0.3",
         "react-router": "^6.22.0",
