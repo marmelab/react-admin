@@ -1,5 +1,14 @@
 # Changelog
 
+## v5.0.1
+
+* Fix useFormGroup does not update when its group changes ([#9940](https://github.com/marmelab/react-admin/pull/9940)) ([djhi](https://github.com/djhi))
+* Fix useFormGroup does not reflect its fields state ([#9939](https://github.com/marmelab/react-admin/pull/9939)) ([djhi](https://github.com/djhi))
+* Bump ws from 8.13.0 to 8.17.1 ([#9938](https://github.com/marmelab/react-admin/pull/9938)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* Bump braces from 3.0.2 to 3.0.3 ([#9937](https://github.com/marmelab/react-admin/pull/9937)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* Bump vite from 5.0.11 to 5.0.13 ([#9936](https://github.com/marmelab/react-admin/pull/9936)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* Bump follow-redirects from 1.15.4 to 1.15.6 ([#9725](https://github.com/marmelab/react-admin/pull/9725)) ([dependabot[bot]](https://github.com/apps/dependabot))
+
 ## v5.0.0
 
 This major release introduces new features and some breaking changes. Here are the highlights:
@@ -68,6 +77,13 @@ We've written a [migration guide](https://marmelab.com/react-admin/doc/5.0/Upgra
 We estimate that a react-admin app with 50,000 lines of code will require about 2 days of work to upgrade to v5.
 
 ### Changelog
+* Fix useFormGroup does not update when its group changes ([#9940](https://github.com/marmelab/react-admin/pull/9940)) ([djhi](https://github.com/djhi))
+* Fix useFormGroup does not reflect its fields state ([#9939](https://github.com/marmelab/react-admin/pull/9939)) ([djhi](https://github.com/djhi))
+* Bump ws from 8.13.0 to 8.17.1 ([#9938](https://github.com/marmelab/react-admin/pull/9938)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* Bump braces from 3.0.2 to 3.0.3 ([#9937](https://github.com/marmelab/react-admin/pull/9937)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* Bump vite from 5.0.11 to 5.0.13 ([#9936](https://github.com/marmelab/react-admin/pull/9936)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* Bump follow-redirects from 1.15.4 to 1.15.6 ([#9725](https://github.com/marmelab/react-admin/pull/9725)) ([dependabot[bot]](https://github.com/apps/dependabot))
+
 
 For a detailed changelog, see the release notes for the following pre-releases:
 
