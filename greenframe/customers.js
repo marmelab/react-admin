@@ -1,5 +1,4 @@
-// eslint-disable-next-line no-unused-expressions
-async page => {
+const scenario = async page => {
     const raNotificationAutoHideDuration = 4000;
     const isRaSettled = () => !document.querySelector('.app-loader');
     const waitForRaSettled = async () =>
@@ -37,7 +36,7 @@ async page => {
     await page.getByRole('row').getByRole('cell').nth(1).click();
     await waitForRaSettled();
 
-    await page.getByRole('button', { name: /Segments/ }).click();
+    await page.getByLabel('Segments').click();
     await page.getByRole('option', { name: 'Compulsive' }).click();
     await page.locator('#menu-groups div').first().click();
     await page.addMilestone('Click Save button');
@@ -64,3 +63,5 @@ async page => {
     await page.getByRole('link').first().click();
     await waitForRaSettled();
 };
+
+module.exports = scenario;
