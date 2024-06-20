@@ -157,6 +157,67 @@ describe('useFormGroup', () => {
         });
     });
 
+    it('should return the correct group state when the group changes', async () => {
+        let state;
+        const IsDirty = () => {
+            const [group, setGroup] = React.useState('simplegroup');
+            state = useFormGroup(group);
+            return (
+                <button onClick={() => setGroup('simplegroup2')}>
+                    Change group
+                </button>
+            );
+        };
+
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm mode="onChange">
+                    <FormGroupContextProvider name="simplegroup">
+                        <TextInput source="url" />
+                    </FormGroupContextProvider>
+                    <FormGroupContextProvider name="simplegroup2">
+                        <TextInput source="test" />
+                    </FormGroupContextProvider>
+                    <IsDirty />
+                </SimpleForm>
+            </AdminContext>
+        );
+
+        await waitFor(() => {
+            expect(state).toEqual({
+                errors: {},
+                isDirty: false,
+                isTouched: false,
+                isValid: true,
+                isValidating: false,
+            });
+        });
+
+        const input = screen.getByLabelText('resources.undefined.fields.url');
+        fireEvent.change(input, {
+            target: { value: 'test' },
+        });
+        await waitFor(() => {
+            expect(state).toEqual({
+                errors: {},
+                isDirty: true,
+                isTouched: false,
+                isValid: true,
+                isValidating: false,
+            });
+        });
+        fireEvent.click(screen.getByText('Change group'));
+        await waitFor(() => {
+            expect(state).toEqual({
+                errors: {},
+                isDirty: false,
+                isTouched: false,
+                isValid: true,
+                isValidating: false,
+            });
+        });
+    });
+
     it('should return correct group state when an ArrayInput is in the group', async () => {
         let state;
         const IsDirty = () => {

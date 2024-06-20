@@ -127,6 +127,8 @@ export const useFormGroup = (name: string): FormGroupState => {
             // eslint-disable-next-line react-hooks/exhaustive-deps
             JSON.stringify(validatingFieldsNames),
             updateGroupState,
+            name,
+            formGroups,
         ]
     );
 
