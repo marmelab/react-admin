@@ -1,5 +1,85 @@
 # Changelog
 
+## v5.0.0
+
+This major release introduces new features and some breaking changes. Here are the highlights:
+
+### UI Improvements
+
+- Apps now have a theme switcher and a dark theme by default ([#9479](https://github.com/marmelab/react-admin/pull/9479))
+- Inputs now default to full width ([#9704](https://github.com/marmelab/react-admin/pull/9704))
+- Links are now underlined ([#9483](https://github.com/marmelab/react-admin/pull/9483))
+- List pages restore scroll position when coming back from Edit and Create views ([#9774](https://github.com/marmelab/react-admin/pull/9774))
+- Errors in the Layout code now trigger the Error Boundary ([#9799](https://github.com/marmelab/react-admin/pull/9799))
+- Button size can be set via props ([#9735](https://github.com/marmelab/react-admin/pull/9735))
+
+### App Initialization
+
+- Simpler custom layout components just need to render their children ([#9591](https://github.com/marmelab/react-admin/pull/9591))
+- No more props drilling for Layout, AppBar, Menu, etc ([#9591](https://github.com/marmelab/react-admin/pull/9591))
+- useDefaultTitle() hook returns the application title from anywhere in the app ([#9591](https://github.com/marmelab/react-admin/pull/9591))
+
+### Data Providers
+
+- Data providers can now cancel queries for unmounted components (opt-in) ([#9612](https://github.com/marmelab/react-admin/pull/9612))
+- GraphQL data providers are easier to initialize (they are now synchronous) ([#9820](https://github.com/marmelab/react-admin/pull/9820))
+- GraphQL-Simple data provider supports Sparse Fields in queries ([#9392](https://github.com/marmelab/react-admin/pull/9392))
+- GraphQL-Simple data provider supports updateMany and deleteMany mutations ([#9393](https://github.com/marmelab/react-admin/pull/9393))
+- withLifecycleCallbacks now supports for wildcard and array of callbacks ([#9577](https://github.com/marmelab/react-admin/pull/9577))
+- Middlewares are more powerful and handle errors better ([#9875](https://github.com/marmelab/react-admin/pull/9875))
+
+### List pages
+
+- Datagrid has rowClick enabled by default, it links to the edit or show view depending on the resource definition ([#9466](https://github.com/marmelab/react-admin/pull/9466))
+- List bulkActionButtons is now a Datagrid prop ([#9707](https://github.com/marmelab/react-admin/pull/9707))
+- setFilters doesn't debounce by default, so custom filters work as expected ([#9682](https://github.com/marmelab/react-admin/pull/9682))
+- List parameters persistence in the store can be disabled ([#9742](https://github.com/marmelab/react-admin/pull/9742))
+
+### Forms & Inputs
+
+- Inputs no longer require to be touched to display a validation error ([#9781](https://github.com/marmelab/react-admin/pull/9781))
+- ReferenceInputs are now smarter by default as they use the recordRepresentation ([#9902](https://github.com/marmelab/react-admin/pull/9902))
+- Server-Side validation is now more robust ([#9848](https://github.com/marmelab/react-admin/pull/9848))
+- warnWhenUnsavedChanges works again ([#9657](https://github.com/marmelab/react-admin/pull/9657))
+- Smart input components like TranslatableInputs, ArrayInput, or ReferenceManyInput now compose more seamlessly thanks to a new SourceContext. There is no need for getSource in FormDataConsumer. ([#9533](https://github.com/marmelab/react-admin/pull/9533))
+- All inputs now have a unique ID - no more duplicate ID warnings ([#9788](https://github.com/marmelab/react-admin/pull/9788))
+- Learning Forms is facilitated by a new Form chapter in the doc ([#9864](https://github.com/marmelab/react-admin/pull/9864))
+
+### DX Improvements
+
+- The default Record Representation for resources is now smarter ([#9650](https://github.com/marmelab/react-admin/pull/9650))
+- Data provider hooks like useGetOne have a smart return type based on the request state. This will force you to plan for the error case. ([#9743](https://github.com/marmelab/react-admin/pull/9743))
+- Stricter TypeScript types will detect more errors at compile time ([#9741](https://github.com/marmelab/react-admin/pull/9741))
+- PropTypes are gone, so there is no conflict with TypeScript types ([#9851](https://github.com/marmelab/react-admin/pull/9851))
+- create-react-admin can run in non-interactive mode ([#9544](https://github.com/marmelab/react-admin/pull/9544))
+- ra-data-fakerest accepts a delay parameter to simulate network delays ([#9908](https://github.com/marmelab/react-admin/pull/9908))
+- data-generator-retail now exposes types for the generated data ([#9764](https://github.com/marmelab/react-admin/pull/9764))
+
+### Bump dependencies
+
+- React-admin requires React 18 to leverage Concurrent React ([#9827](https://github.com/marmelab/react-admin/pull/9827))
+- React-admin uses the latest version of react-router, react-query, date-fns, fakerest, etc. ([#9657](https://github.com/marmelab/react-admin/pull/9657), [#9473](https://github.com/marmelab/react-admin/pull/9473), [#9812](https://github.com/marmelab/react-admin/pull/9812), [#9801](https://github.com/marmelab/react-admin/pull/9801), [#9908](https://github.com/marmelab/react-admin/pull/9908))
+- Internet Explorer is no longer supported ([#9530](https://github.com/marmelab/react-admin/pull/9530))
+
+### Upgrading to v5
+
+We've written a [migration guide](https://marmelab.com/react-admin/doc/5.0/Upgrade.html) to help you upgrade your apps to v5. It covers all the breaking changes and how to adapt your code to the new APIs.
+
+We estimate that a react-admin app with 50,000 lines of code will require about 2 days of work to upgrade to v5.
+
+### Changelog
+
+For a detailed changelog, see the release notes for the following pre-releases:
+
+- [v5.0.0-rc.1](#v500-rc1)
+- [v5.0.0-rc.0](#v500-rc0)
+- [v5.0.0-beta.3](#v500-beta3)
+- [v5.0.0-beta.2](#v500-beta2)
+- [v5.0.0-beta.1](#v500-beta1)
+- [v5.0.0-beta.0](#v500-beta0)
+- [v5.0.0-alpha.1](#v500-alpha1)
+- [v5.0.0-alpha.0](#v500-alpha0)
+
 ## v5.0.0-rc.1
 
 - Fix `create-react-admin` ([#9926](https://github.com/marmelab/react-admin/pull/9926)) ([djhi](https://github.com/djhi))
