@@ -22,8 +22,8 @@ import { Edit, SimpleForm, TextInput, required } from 'react-admin';
 export const PostEdit = () => (
     <Edit title={<PostTitle />}>
         <SimpleForm>
-            <TextInput source="title" validate={[required()]} fullWidth />
-            <TextInput source="teaser" validate={[required()]} defaultValue="Lorem Ipsum" multiline fullWidth />
+            <TextInput source="title" validate={[required()]} />
+            <TextInput source="teaser" validate={[required()]} defaultValue="Lorem Ipsum" multiline />
         </SimpleForm>
     </Edit>
 );

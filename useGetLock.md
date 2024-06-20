@@ -30,12 +30,12 @@ import { useGetLock } from '@react-admin/ra-enterprise';
 const CustomToolbar = () => {
     const resource = useResourceContext();
     const record = useRecordContext();
-    const { isLoading: identityLoading, identity } = useGetIdentity();
+    const { isPending: isPendingIdentity, identity } = useGetIdentity();
     const { isLoading: lockLoading, data: lock } = useGetLock(resource, {
         id: record.id,
     });
 
-    if (identityLoading || lockLoading) {
+    if (isPendingIdentity || lockLoading) {
         return null;
     }
 

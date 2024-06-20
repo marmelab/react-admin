@@ -7,12 +7,7 @@ title: "The SelectInput Component"
 
 To let users choose a value in a list using a dropdown, use `<SelectInput>`. It renders using [Material UI's `<Select>`](https://mui.com/api/select).
 
-<video controls autoplay playsinline muted loop>
-  <source src="./img/select-input.webm" type="video/webm"/>
-  <source src="./img/select-input.mp4" type="video/mp4"/>
-  Your browser does not support the video tag.
-</video>
-
+<iframe src="https://www.youtube-nocookie.com/embed/2QKZWI2vsec" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;"></iframe>
 
 This input allows editing record fields that are scalar values, e.g. `123`, `'admin'`, etc.
 
@@ -29,6 +24,13 @@ import { SelectInput } from 'react-admin';
     { id: 'people', name: 'People' },
 ]} />
 ```
+
+<video controls autoplay playsinline muted loop>
+  <source src="./img/select-input.webm" type="video/webm"/>
+  <source src="./img/select-input.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
 
 By default, the possible choices are built from the `choices` prop, using:
   - the `id` field as the option value,
@@ -49,7 +51,7 @@ The form value for the source must be the selected value, e.g.
  - [`<AutocompleteInput>`](./AutocompleteInput.md) renders a list of suggestions in an autocomplete input
  - [`<RadioButtonGroupInput>`](./RadioButtonGroupInput.md) renders a list of radio buttons
 
-**Tip**: If you need to let users select more than one item in the list, check out the [`<SelectArrayInput>`](./SelectArrayInput.md) component.
+**Tip**: If you need to let users select multiple items in the list, check out the [`<SelectArrayInput>`](./SelectArrayInput.md) component.
 
 ## Props
 

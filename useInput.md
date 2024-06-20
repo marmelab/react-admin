@@ -41,16 +41,16 @@ const TitleInput = ({ source, label }) => {
 
 ## Props
 
-| Prop           | Required | Type                           | Default | Description                                                       |
-|----------------|----------|--------------------------------|---------|-------------------------------------------------------------------|
-| `source`       | Required | `string`                       | -       | The name of the field in the record                               |
-| `defaultValue` | Optional | `any`                          | -       | The default value of the input                                    |
-| `format`       | Optional | `Function`                     | -       | A function to format the value from the record to the input value |
-| `parse`        | Optional | `Function`                     | -       | A function to parse the value from the input to the record value  |
-| `validate`     | Optional | `Function` &#124; `Function[]` | -       | A function or an array of functions to validate the input value   |
-| `id`           | Optional | `string`                       | -       | The id of the input                                               |
-| `onChange`     | Optional | `Function`                     | -       | A function to call when the input value changes                   |
-| `onBlur`       | Optional | `Function`                     | -       | A function to call when the input is blurred                      |
+| Prop           | Required | Type                           | Default          | Description                                                       |
+|----------------|----------|--------------------------------|----------------- |-------------------------------------------------------------------|
+| `source`       | Required | `string`                       | -                | The name of the field in the record                               |
+| `defaultValue` | Optional | `any`                          | -                | The default value of the input                                    |
+| `format`       | Optional | `Function`                     | -                | A function to format the value from the record to the input value |
+| `parse`        | Optional | `Function`                     | -                | A function to parse the value from the input to the record value  |
+| `validate`     | Optional | `Function` &#124; `Function[]` | -                | A function or an array of functions to validate the input value   |
+| `id`           | Optional | `string`                       | `auto-generated` | The id of the input                                               |
+| `onChange`     | Optional | `Function`                     | -                | A function to call when the input value changes                   |
+| `onBlur`       | Optional | `Function`                     | -                | A function to call when the input is blurred                      |
 
 Additional props are passed to [react-hook-form's `useController` hook](https://react-hook-form.com/docs/usecontroller).
 
@@ -65,8 +65,7 @@ const BoundedTextField = (props) => {
     const { onChange, onBlur, label, helperText, ...rest } = props;
     const {
         field,
-        fieldState: { isTouched, invalid, error },
-        formState: { isSubmitted },
+        fieldState: { invalid, error },
         isRequired
     } = useInput({
         // Pass the event handlers to the hook but not the component as the field property already has them.
@@ -80,11 +79,10 @@ const BoundedTextField = (props) => {
         <TextField
             {...field}
             label={label}
-            error={(isTouched || isSubmitted) && invalid}
-            helperText={helperText !== false || ((isTouched || isSubmitted) && invalid)
+            error={invalid}
+            helperText={helperText !== false || invalid
                 ? (
                     <InputHelperText
-                        touched={isTouched || isSubmitted}
                         error={error?.message}
                         helperText={helperText}
                     />
@@ -119,11 +117,7 @@ import MenuItem from '@mui/material/MenuItem';
 import { useInput } from 'react-admin';
 
 const SexInput = props => {
-    const {
-        field,
-        fieldState: { isTouched, invalid, error },
-        formState: { isSubmitted }
-    } = useInput(props);
+    const { field } = useInput(props);
 
     return (
         <Select

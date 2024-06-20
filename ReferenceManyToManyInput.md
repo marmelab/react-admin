@@ -96,7 +96,6 @@ const BandEdit = () => (
 );
 ```
 
-**Limitation**: `<ReferenceManyToManyInput>` cannot be used to filter a list.
 
 ## Props
 

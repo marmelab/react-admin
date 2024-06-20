@@ -16,8 +16,8 @@ import { usePermissions, EditButton  } from 'react-admin';
 import { canAccess } from '@react-admin/ra-rbac';
 
 const PostEditButton = () => {
-    const { isLoading, permissions } = usePermissions();
-    if (isLoading) return null;
+    const { isPending, permissions } = usePermissions();
+    if (isPending) return null;
     if (canAccess({ permissions, action: "edit", resource: "posts" })) {
         return <EditButton />;
     } else {
@@ -118,7 +118,7 @@ export const MyApp = () => (
 );
 ```
 
-In this example, users will see the list of last products and the list of last categories but they won't be able to see the list of last orders.
+In this example, users will see the list of last products and the list of last categories, but they won't be able to see the list of last orders.
 
 
 **Note**: [ra-rbac's `<Resource>` component](./AuthRBAC.md#resource) automatically checks for the `list`, `show`, `create` and `edit` actions, so you don't actually need to use `canAccess` if you want to restrict a whole resource.
@@ -158,8 +158,8 @@ The `resource` parameter is the resource you want to check. It can be the name o
 
 ```tsx
 const ProductList = () => {
-    const { isLoading, permissions } = usePermissions();
-    if (isLoading) return null;
+    const { isPending, permissions } = usePermissions();
+    if (isPending) return null;
     return (
         <List>
             <Datagrid>
@@ -230,8 +230,8 @@ const authProvider = {
 };
 
 const ProductList = () => {
-    const { isLoading, permissions } = usePermissions();
-    if (isLoading) return null;
+    const { isPending, permissions } = usePermissions();
+    if (isPending) return null;
     return (
         <List>
             <Datagrid>
@@ -260,7 +260,7 @@ const ProductList = () => {
 
 ## Disable Menu Items Instead Of Not Showing Them
 
-The `ra-rbac` `<Menu>` component does not show menu items the current user has not access to.
+The `ra-rbac` `<Menu>` component does not show menu items the current user has no access to.
 It is considered good security practice not to disclose to a potentially malicious user that a page exists if they are not allowed to see it.
 
 However, you might want to disable menu items instead of not showing them.
@@ -349,7 +349,11 @@ const MyMenu = () => {
     );
 };
 
-const MyLayout = props => <Layout {...props} menu={MyMenu} />;
+const MyLayout = ({ children }) => (
+    <Layout menu={MyMenu}>
+        {children}
+    </Layout>
+);
 
 export const App = () => (
     <Admin

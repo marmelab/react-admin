@@ -103,7 +103,7 @@ React 18 adds out-of-the-box performance improvements by doing more batching by 
 
 ### Use `@tanstack/react-query` instead of `react-query`
 
-React-admin now uses `react-query` v5 instead of v3. The library name has changed to `@tanstack/react-query` (but it's almost the same API).
+React-admin now uses `react-query` v5 instead of v3. The library name has changed to `@tanstack/react-query` (but it's almost the same API). This new version supports React 18, offers performance improvements and new features (see [v4](https://tanstack.com/blog/announcing-tanstack-query-v4) and [v5](https://tanstack.com/blog/announcing-tanstack-query-v5) announcements).
 
 If you used `react-query` directly in your code, you'll have to update it, following their migration guides:
 

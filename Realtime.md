@@ -218,8 +218,10 @@ import { MenuLive } from '@react-admin/ra-realtime';
 
 import { PostList, PostShow, PostEdit, realTimeDataProvider } from '.';
 
-const CustomLayout = (props) => (
-    <Layout {...props} menu={MenuLive} />
+const CustomLayout = ({ children }) => (
+    <Layout menu={MenuLive}>
+        {children}
+    </Layout>
 );
 
 const MyReactAdmin = () => (
@@ -249,7 +251,7 @@ A user can lock a resource, either by voluntarily asking for a lock or by editin
 
 ```tsx
 export const NewMessageForm = () => {
-    const [create, { isLoading: isCreating }] = useCreate();
+    const [create, { isPending }] = useCreate();
     const record = useRecordContext();
 
     const { data: lock } = useGetLockLive('tickets', { id: record.id });
@@ -276,7 +278,7 @@ export const NewMessageForm = () => {
                 choices={statusChoices}
                 disabled={isFormDisabled}
             />
-            <Button type="submit" disabled={isCreating || isFormDisabled}>
+            <Button type="submit" disabled={isPending || isFormDisabled}>
                 Submit
             </Button>
         </Form>

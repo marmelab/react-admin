@@ -150,7 +150,7 @@ export const PostCreate = () => (
 
 **Tip**: You can include properties in the form `defaultValues` that are not listed as input components, like the `created_at` property in the previous example.
 
-**Tip**: React-admin also allows to define default values at the input level. See the [Setting default Values](./EditTutorial.md#setting-default-values) section.
+**Tip**: React-admin also allows to define default values at the input level. See the [Setting default Values](./forms.md#default-values) section.
 
 ## `id`
 
@@ -500,7 +500,7 @@ export const TagEdit = () => (
 );
 ```
 
-**Warning**: This feature only works if you have a dependency on react-router 6.3.0 **at most**. The react-router team disabled this possibility in react-router 6.4, so `warnWhenUnsavedChanges` will silently fail with react-router 6.4 or later.
+**Note**: Due to limitations in react-router, this feature only works if you use the default router provided by react-admin, or if you use a [Data Router](https://reactrouter.com/en/6.22.3/routers/picking-a-router).
 
 ## `<TabbedForm.Tab>`
 
@@ -557,6 +557,8 @@ const ProductEdit = () => (
 
 ## Using Fields As Children
 
+<iframe src="https://www.youtube-nocookie.com/embed/fWc7c0URQMQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;"></iframe>
+
 The basic usage of `<TabbedForm>` is to pass [Input components](./Inputs.md) as children of `<TabbedForm.Tab>`. For non-editable fields, you can pass `disabled` inputs, or even [Field components](./Fields.md). But since `<Field>` components have no label by default, you'll have to wrap your inputs in a `<Labeled>` component in that case:
 
 ```jsx
@@ -609,11 +611,11 @@ const ProductEdit = () => (
 const ProductEditDetails = () => (
     <Grid container columnSpacing={2}>
         <Grid item xs={12} sm={8}>
-            <TextInput source="reference" fullWidth validate={req} />
+            <TextInput source="reference" validate={req} />
         </Grid>
         <Grid item xs={12} sm={4}>
             <ReferenceInput source="category_id" reference="categories">
-                <SelectInput source="name" validate={req} fullWidth />
+                <SelectInput source="name" validate={req} />
             </ReferenceInput>
         </Grid>
         <Grid item xs={12} sm={4}>
@@ -625,7 +627,6 @@ const ProductEditDetails = () => (
                     ),
                 }}
                 validate={req}
-                fullWidth
             />
         </Grid>
         <Grid item xs={12} sm={4}>
@@ -637,7 +638,6 @@ const ProductEditDetails = () => (
                     ),
                 }}
                 validate={req}
-                fullWidth
             />
         </Grid>
         <Grid item xs={0} sm={4}></Grid>
@@ -650,14 +650,13 @@ const ProductEditDetails = () => (
                     ),
                 }}
                 validate={req}
-                fullWidth
             />
         </Grid>
         <Grid item xs={12} sm={4}>
-            <NumberInput source="stock" validate={req} fullWidth />
+            <NumberInput source="stock" validate={req} />
         </Grid>
         <Grid item xs={12} sm={4}>
-            <NumberInput source="sales" validate={req} fullWidth />
+            <NumberInput source="sales" validate={req} />
         </Grid>
     </Grid>
 );
@@ -686,7 +685,7 @@ To achieve that, create a custom commponent that renders a `<TabbedForm.Tab>` wi
 ```jsx
 const ReviewsFormTab = props => {
     const record = useRecordContext();
-    const { isLoading, total } = useGetManyReference(
+    const { isPending, total } = useGetManyReference(
         'reviews',
         {
             target: 'product_id',
@@ -698,7 +697,7 @@ const ReviewsFormTab = props => {
     );
     const translate = useTranslate();
     let label = translate('resources.products.tabs.reviews');
-    if (!isLoading) {
+    if (!isPending) {
         label += ` (${total})`;
     }
     return <TabbedForm.Tab label={label} {...props} />;

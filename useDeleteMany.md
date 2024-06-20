@@ -10,7 +10,7 @@ This hook allows to call `dataProvider.deleteMany()` when the callback is execut
 ## Syntax
 
 ```jsx
-const [deleteMany, { data, isLoading, error }] = useDeleteMany(
+const [deleteMany, { data, isPending, error }] = useDeleteMany(
     resource,
     { ids, meta },
     options
@@ -33,10 +33,11 @@ So, should you pass the parameters when calling the hook, or when executing the 
 
 ```jsx
 // set params when calling the hook
-import { useDeleteMany } from 'react-admin';
+import { useListContext, useDeleteMany } from 'react-admin';
 
-const BulkDeletePostsButton = ({ selectedIds }) => {
-    const [deleteMany, { isLoading, error }] = useDeleteMany(
+const BulkDeletePostsButton = () => {
+    const { selectedIds } = useListContext();
+    const [deleteMany, { isPending, error }] = useDeleteMany(
         'posts',
         { ids: selectedIds }
     );
@@ -44,14 +45,15 @@ const BulkDeletePostsButton = ({ selectedIds }) => {
         deleteMany()
     }
     if (error) { return <p>ERROR</p>; }
-    return <button disabled={isLoading} onClick={handleClick}>Delete selected posts</button>;
+    return <button disabled={isPending} onClick={handleClick}>Delete selected posts</button>;
 };
 
 // set params when calling the deleteMany callback
-import { useDeleteMany } from 'react-admin';
+import { useListContext, useDeleteMany } from 'react-admin';
 
-const BulkDeletePostsButton = ({ selectedIds }) => {
-    const [deleteMany, { isLoading, error }] = useDeleteMany();
+const BulkDeletePostsButton = () => {
+    const { selectedIds } = useListContext();
+    const [deleteMany, { isPending, error }] = useDeleteMany();
     const handleClick = () => {
         deleteMany(
             'posts',
@@ -59,7 +61,7 @@ const BulkDeletePostsButton = ({ selectedIds }) => {
         )
     }
     if (error) { return <p>ERROR</p>; }
-    return <button disabled={isLoading} onClick={handleClick}>Delete selected posts</button>;
+    return <button disabled={isPending} onClick={handleClick}>Delete selected posts</button>;
 };
 ```
 

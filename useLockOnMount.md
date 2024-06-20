@@ -48,9 +48,9 @@ const PostAside = () => {
 const PostEdit = () => (
     <Edit aside={<PostAside />}>
         <SimpleForm>
-            <TextInput source="title" fullWidth />
-            <TextInput source="headline" fullWidth multiline />
-            <TextInput source="author" fullWidth />
+            <TextInput source="title" />
+            <TextInput source="headline" multiline />
+            <TextInput source="author" />
         </SimpleForm>
     </Edit>
 );
@@ -83,7 +83,7 @@ const { isLocked, error, isLoading } = useLockOnMount({
 });
 ```
 
-**Tip**: If the record can't be locked because another user is already locking it, you can use [`react-query`'s retry feature](https://react-query-v3.tanstack.com/guides/mutations#retry) to try again later:
+**Tip**: If the record can't be locked because another user is already locking it, you can use [`react-query`'s retry feature](https://tanstack.com/query/v5/docs/react/guides/mutations#retry) to try again later:
 
 ```jsx
 const { isLocked, error, isLoading } = useLockOnMount({

@@ -31,7 +31,7 @@ import {
 import { Link } from 'react-router-dom';
 
 const PostList = () => {
-  const { data, page, total, setPage, isLoading } = useListController({
+  const { data, page, total, setPage, isPending } = useListController({
     sort: { field: 'published_at', order: 'DESC' },
     perPage: 10,
   });
@@ -45,7 +45,7 @@ const PostList = () => {
           <Button icon={<PlusOutlined />}>Create</Button>
         </Link>
       </div>
-      <Card bodyStyle={{ padding: '0' }} loading={isLoading}>
+      <Card bodyStyle={{ padding: '0' }} loading={isPending}>
         <Table
           size="small"
           dataSource={data}
@@ -192,7 +192,7 @@ const OrderedPostList = ({
     return (
         <div>
             <ul style={styles.ul}>
-                {!params.isLoading &&
+                {!params.isPending &&
                     params.data.map(post => (
                         <li key={`post_${post.id}`}>
                             {post.title} - {post.votes} votes
@@ -224,8 +224,9 @@ const {
     // Data
     data, // Array of the list records, e.g. [{ id: 123, title: 'hello world' }, { ... }
     total, // Total number of results for the current filters, excluding pagination. Useful to build the pagination controls, e.g. 23      
+    isPending, // Boolean, true until the data is available
     isFetching, // Boolean, true while the data is being fetched, false once the data is fetched
-    isLoading, // Boolean, true until the data is available for the first time
+    isLoading, // Boolean, true until the data is fetched for the first time
     // Pagination
     page, // Current page. Starts at 1
     perPage, // Number of results per page. Defaults to 25
@@ -260,7 +261,7 @@ The `setFilters` method is used to update the filters. It takes three arguments:
 
 - `filters`: an object containing the new filter values
 - `displayedFilters`: an object containing the new displayed filters
-- `debounced`: set to false to disable the debounce (true by default)
+- `debounced`: set to true to debounce the call to setFilters (false by default)
 
 You can use it to update the list filters:
 
@@ -281,8 +282,7 @@ const OfficeList = () => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        // The 3rd parameter disables the debounce ⤵
-        setFilters(filterFormValues, undefined, false);
+        setFilters(filterFormValues);
     };
 
     if (isLoading) return <div>Loading...</div>;
@@ -302,17 +302,5 @@ const OfficeList = () => {
             </ul>
         </>
     );
-};
-```
-
-Beware that `setFilters` is debounced by default, to avoid making too many requests to the server when using search-as-you-type inputs. In the example above, this is not necessary. That's why you should set the third argument to `setFilters` is set to `false` to disable the debounce.
-
-Disabling the debounce with the third parameter is also necessary when you use `setFilters` and other list controller methods (like `setSort`) in a single function. Otherwise, the `setFilters` call would override the other changes.
-
-```jsx
-const changeListParams = () => {
-    setSort({ field: 'name', order: 'ASC' });
-    // The 3rd parameter disables the debounce     ⤵
-    setFilters({ is_published: true }, undefined, false);
 };
 ```

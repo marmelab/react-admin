@@ -7,12 +7,7 @@ title: "The SelectInput Component"
 
 To let users choose a value in a list using a dropdown, use `<SelectInput>`. It renders using [Material UI's `<Select>`](https://mui.com/api/select).
 
-<video controls autoplay playsinline muted loop>
-  <source src="./img/select-input.webm" type="video/webm"/>
-  <source src="./img/select-input.mp4" type="video/mp4"/>
-  Your browser does not support the video tag.
-</video>
-
+<iframe src="https://www.youtube-nocookie.com/embed/2QKZWI2vsec" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;"></iframe>
 
 This input allows editing record fields that are scalar values, e.g. `123`, `'admin'`, etc.
 
@@ -29,6 +24,13 @@ import { SelectInput } from 'react-admin';
     { id: 'people', name: 'People' },
 ]} />
 ```
+
+<video controls autoplay playsinline muted loop>
+  <source src="./img/select-input.webm" type="video/webm"/>
+  <source src="./img/select-input.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
 
 By default, the possible choices are built from the `choices` prop, using:
   - the `id` field as the option value,
@@ -49,7 +51,7 @@ The form value for the source must be the selected value, e.g.
  - [`<AutocompleteInput>`](./AutocompleteInput.md) renders a list of suggestions in an autocomplete input
  - [`<RadioButtonGroupInput>`](./RadioButtonGroupInput.md) renders a list of radio buttons
 
-**Tip**: If you need to let users select more than one item in the list, check out the [`<SelectArrayInput>`](./SelectArrayInput.md) component.
+**Tip**: If you need to let users select multiple items in the list, check out the [`<SelectArrayInput>`](./SelectArrayInput.md) component.
 
 ## Props
 
@@ -61,7 +63,7 @@ The form value for the source must be the selected value, e.g.
 | `disableValue`    | Optional | `string`                   | 'disabled'         | The custom field name used in `choices` to disable some choices                                                                        |
 | `emptyText`       | Optional | `string`                   | ''                 | The text to display for the empty option                                                                                               |
 | `emptyValue`      | Optional | `any`                      | ''                 | The value to use for the empty option                                                                                                  |
-| `isLoading`       | Optional | `boolean`                  | `false`            | If `true`, the component will display a loading indicator.                                                                             |
+| `isPending`       | Optional | `boolean`                  | `false`            | If `true`, the component will display a loading indicator.                                                                             |
 | `onCreate`        | Optional | `Function`                 | `-`                | A function called with the current filter value when users choose to create a new choice.                                              |
 | `optionText`      | Optional | `string` &#124; `Function` &#124; `Component` | `undefined` &#124; `record Representation` | Field name of record to display in the suggestion item or function using the choice object as argument |
 | `optionValue`     | Optional | `string`                   | `id`               | Field name of record containing the value to use as input value                                                                        |
@@ -295,15 +297,15 @@ You can override this value with the `emptyValue` prop.
 
 **Tip**: While you can set `emptyValue` to a non-string value (e.g. `0`), you cannot use `null` or `undefined`, as it would turn the `<SelectInput>` into an [uncontrolled component](https://react.dev/learn/sharing-state-between-components#controlled-and-uncontrolled-components). If you need the empty choice to be stored as `null` or `undefined`, use [the `parse` prop](./Inputs.md#parse) to convert the default empty value ('') to `null` or `undefined`, or use [the `sanitizeEmptyValues` prop](./SimpleForm.md#sanitizeemptyvalues) on the Form component.
 
-## `isLoading`
+## `isPending`
 
-When [fetching choices from a remote API](#fetching-choices), the `<SelectInput>` can't be used until the choices are fetched. To let the user know, you can pass the `isLoading` prop to `<SelectInput>`. This displays a loading indicator while the choices are being fetched.
+When [fetching choices from a remote API](#fetching-choices), the `<SelectInput>` can't be used until the choices are fetched. To let the user know, you can pass the `isPending` prop to `<SelectInput>`. This displays a loading indicator while the choices are being fetched.
 
 ```jsx
 import { useGetList, SelectInput } from 'react-admin';
 
 const UserCountry = () => {
-    const { data, isLoading } = useGetList('countries');
+    const { data, isPending } = useGetList('countries');
     // data is an array of { id: 123, code: 'FR', name: 'France' }
     return (
         <SelectInput
@@ -311,7 +313,7 @@ const UserCountry = () => {
             choices={data}
             optionText="name"
             optionValue="code"
-            isLoading={isLoading}
+            isPending={isPending}
         />
     );
 }
@@ -514,7 +516,7 @@ You can use [`useGetList`](./useGetList.md) to fetch choices. For example, to fe
 import { useGetList, SelectInput } from 'react-admin';
 
 const CountryInput = () => {
-    const { data, isLoading } = useGetList('countries');
+    const { data, isPending } = useGetList('countries');
     // data is an array of { id: 123, code: 'FR', name: 'France' }
     return (
         <SelectInput
@@ -522,13 +524,13 @@ const CountryInput = () => {
             choices={data}
             optionText="name"
             optionValue="code"
-            isLoading={isLoading}
+            isPending={isPending}
         />
     );
 }
 ```
 
-The `isLoading` prop is used to display a loading indicator while the data is being fetched.
+The `isPending` prop is used to display a loading indicator while the data is being fetched.
 
 However, most of the time, if you need to populate a `<SelectInput>` with choices fetched from another resource, it's because you are trying to set a foreign key. In that case, you should use [`<ReferenceInput>`](./ReferenceInput.md) to fetch the choices instead (see next section).
 
@@ -544,25 +546,27 @@ import { useWatch } from 'react-hook-form';
 
 const CompanyInput = () => {
     // fetch possible companies
-    const { data: choices, isLoading: isLoadingChoices } = useGetList('companies');
+    const { data: choices, isPending: isPendingChoices } = useGetList('companies');
     // companies are like { id: 123, name: 'Acme' }
     // get the current value of the foreign key
     const companyId = useWatch({ name: 'company_id'})
     // fetch the current company
-    const { data: currentCompany, isLoading: isLoadingCurrentCompany } = useGetOne('companies', { id: companyId });
+    const { data: currentCompany, isPending: isPendingCurrentCompany } = useGetOne('companies', { id: companyId });
     // if the current company is not in the list of possible companies, add it
     const choicesWithCurrentCompany = choices
         ? choices.find(choice => choice.id === companyId)
             ? choices
             : [...choices, currentCompany]
         : [];
+    const isPending = isPendingChoices && isPendingCurrentCompany;
+
     return (
         <SelectInput
             label="Company"
             source="company_id"
             choices={choicesWithCurrentCompany}
             optionText="name"
-            disabled={isLoading}
+            disabled={isPending}
         />
     );
 }
@@ -587,10 +591,10 @@ const CompanyInput = () => (
 `<ReferenceInput>` is a headless component that:
 
  - fetches a list of records with `dataProvider.getList()` and `dataProvider.getOne()`, using the `reference` prop for the resource,
- - puts the result of the fetch in the `ChoiceContext` as the `choices` prop, as well as the `isLoading` state,
+ - puts the result of the fetch in the `ChoiceContext` as the `choices` prop, as well as the `isPending` state,
  - and renders its child component
 
-When rendered as a child of `<ReferenceInput>`, `<SelectInput>` reads that `ChoiceContext` to populate its own `choices` and `isLoading` props.
+When rendered as a child of `<ReferenceInput>`, `<SelectInput>` reads that `ChoiceContext` to populate its own `choices` and `isPending` props.
 
 In fact, you can simplify the code even further:
 

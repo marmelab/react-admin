@@ -117,7 +117,7 @@ import { useRecordContext, useUpdate, useNotify } from 'react-admin';
 
 const ResetViewsButton = () => {
     const record = useRecordContext();
-    const [update, { isLoading }] = useUpdate();
+    const [update, { isPending }] = useUpdate();
     const notify  = useNotify();
     const handleClick = () => {
         update(
@@ -132,7 +132,7 @@ const ResetViewsButton = () => {
         );
     };
     return (
-        <Button onClick={handleClick} disabled={isLoading}>
+        <Button onClick={handleClick} disabled={isPending}>
             Reset views
         </Button>
     );
@@ -316,7 +316,7 @@ const PostEdit = () => (
 ```
 {% endraw %}
 
-You can also use `mutationOptions` to override success or error side effects, by setting the `mutationOptions` prop. Refer to the [useMutation documentation](https://tanstack.com/query/v3/docs/react/reference/useMutation) in the react-query website for a list of the possible options.
+You can also use `mutationOptions` to override success or error side effects, by setting the `mutationOptions` prop. Refer to the [useMutation documentation](https://tanstack.com/query/v5/docs/react/reference/useMutation) in the react-query website for a list of the possible options.
 
 Let's see an example with the success side effect. By default, when the save action succeeds, react-admin shows a notification, and redirects to the list page. You can override this behavior and pass custom success side effects by providing a `mutationOptions` prop with an `onSuccess` key:
 
@@ -361,7 +361,7 @@ The default `onSuccess` function is:
 
 **Tip**: If you just want to customize the redirect behavior, you can use [the `redirect` prop](#redirect) instead.
 
-**Tip**: When you use `mutationMode="pessimistic"`, the `onSuccess` function receives the response from the `dataProvider.update()` call, which is the created/edited record (see [the dataProvider documentation for details](./DataProviderWriting.md#response-format)). You can use that response in the success side effects: 
+**Tip**: When you use `mutationMode="pessimistic"`, the `onSuccess` function receives the response from the `dataProvider.update()` call, which is the created/edited record (see [the dataProvider documentation for details](./DataProviderWriting.md#update)). You can use that response in the success side effects: 
 
 {% raw %}
 ```jsx
@@ -468,7 +468,7 @@ const PostEdit = () => (
 ```
 {% endraw %}
 
-Refer to the [useQuery documentation](https://tanstack.com/query/v3/docs/react/reference/useQuery) in the react-query website for a list of the possible options.
+Refer to the [useQuery documentation](https://tanstack.com/query/v5/docs/react/reference/useQuery) in the react-query website for a list of the possible options.
 
 ## `redirect`
 

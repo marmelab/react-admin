@@ -5,7 +5,7 @@ title: "Caching"
 
 # Caching
 
-Not hitting the server is the best way to improve a web app performance, and its an ecological footprint too (network and datacenter usage account for about 40% of the CO2 emissions in IT). React-admin comes with a built-in cache-first approach called *optimistic rendering*, and it supports caching both at the HTTP level and the application level. 
+Not hitting the server is the best way to improve a web app performance, and its ecological footprint too (network and datacenter usage account for about 40% of the CO2 emissions in IT). React-admin comes with a built-in cache-first approach called *optimistic rendering*, and it supports caching both at the HTTP level and the application level. 
 
 ## Optimistic Rendering
 
@@ -89,7 +89,7 @@ Finally, if your API uses GraphQL, it probably doesn't offer HTTP caching.
 React-admin uses react-query for data fetching. React-query comes with its own caching system, allowing you to skip API calls completely. React-admin calls this the *application cache*. It's a good way to overcome the limitations if the HTTP cache. **This cache is opt-in** - you have to enable it by setting a custom `queryClient` in your `<Admin>` with a specific `staleTime` option. 
 
 ```jsx
-import { QueryClient } from 'react-query';
+import { QueryClient } from '@tanstack/react-query';
 import { Admin, Resource } from 'react-admin';
 
 const App = () => {
@@ -110,7 +110,7 @@ const App = () => {
 
 With this setting, all queries will be considered valid for 5 minutes. That means that react-admin *won't refetch* data from the API if the data is already in the cache and younger than 5 minutes.
 
-Check the details about this cache [in the react-query documentation](https://react-query-v3.tanstack.com/guides/caching).
+Check the details about this cache [in the react-query documentation](https://tanstack.com/query/v5/docs/react/guides/caching).
 
 It especially fits admins for API backends with a small number of users (because with a large number of users, there is a high chance that a record kept in the client-side cache for a few minutes may be updated on the backend by another user). It also works with GraphQL APIs. 
 

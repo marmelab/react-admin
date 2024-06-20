@@ -89,38 +89,39 @@ import {
 import { TableCell, TableRow, Checkbox } from "@mui/material";
 
 const MyDatagridRow = ({
-    record,
-    id,
     onToggleItem,
     children,
     selected,
     selectable,
-}: DatagridRowProps) =>
-    id ? (
-        <RecordContextProvider value={record}>
-            <TableRow>
-                {/* first column: selection checkbox */}
-                <TableCell padding="none">
-                    {selectable && (
-                        <Checkbox
-                            checked={selected}
-                            onClick={(event) => {
-                                if (onToggleItem) {
-                                    onToggleItem(id, event);
-                                }
-                            }}
-                        />
-                    )}
-                </TableCell>
-                {/* data columns based on children */}
-                {React.Children.map(children, (field) =>
-                    React.isValidElement<FieldProps>(field) && field.props.source ? (
-                        <TableCell key={`${id}-${field.props.source}`}>{field}</TableCell>
-                    ) : null
+}: DatagridRowProps) => {
+    const record = useRecordContext();
+    return record ? (
+        <TableRow>
+            {/* first column: selection checkbox */}
+            <TableCell padding="none">
+                {selectable && (
+                    <Checkbox
+                        checked={selected}
+                        onClick={event => {
+                            if (onToggleItem) {
+                                onToggleItem(record.id, event);
+                            }
+                        }}
+                    />
                 )}
-            </TableRow>
-        </RecordContextProvider>
+            </TableCell>
+            {/* data columns based on children */}
+            {React.Children.map(children, field =>
+                React.isValidElement<FieldProps>(field) &&
+                field.props.source ? (
+                    <TableCell key={`${record.id}-${field.props.source}`}>
+                        {field}
+                    </TableCell>
+                ) : null
+            )}
+        </TableRow>
     ) : null;
+};
 
 const MyDatagridBody = (props: DatagridBodyProps) => (
     <DatagridBody {...props} row={<MyDatagridRow />} />
@@ -231,7 +232,7 @@ const CustomResetViewsButton = () => {
     const refresh = useRefresh();
     const notify = useNotify();
     const unselectAll = useUnselectAll('posts');
-    const [updateMany, { isLoading }] = useUpdateMany();
+    const [updateMany, { isPending }] = useUpdateMany();
     const handleClick = () => {
         updateMany(
             'posts',
@@ -250,7 +251,7 @@ const CustomResetViewsButton = () => {
     }
 
     return (
-        <Button label="Reset views" onClick={handleClick} disabled={isLoading}>
+        <Button label="Reset views" onClick={handleClick} disabled={isPending}>
             <VisibilityOff />
         </Button>
     );
@@ -278,7 +279,7 @@ const CustomResetViewsButton = () => {
     const refresh = useRefresh();
     const notify = useNotify();
     const unselectAll = useUnselectAll('posts');
-    const [updateMany, { isLoading }] = useUpdateMany(
+    const [updateMany, { isPending }] = useUpdateMany(
         'posts',
         { ids: selectedIds, data: { views: 0 } },
         {
@@ -305,7 +306,7 @@ const CustomResetViewsButton = () => {
             <Button label="Reset Views" onClick={handleClick} />
             <Confirm
                 isOpen={open}
-                loading={isLoading}
+                loading={isPending}
                 title="Update View Count"
                 content="Are you sure you want to reset the views for these items?"
                 onConfirm={handleConfirm}
@@ -345,7 +346,7 @@ const CustomResetViewsButton = () => {
 -   const refresh = useRefresh();
     const notify = useNotify();
     const unselectAll = useUnselectAll('posts');
-    const [updateMany, { isLoading }] = useUpdateMany(
+    const [updateMany, { isPending }] = useUpdateMany(
         'posts',
         { ids: selectedIds, data: { views: 0 } },
         {
@@ -363,7 +364,7 @@ const CustomResetViewsButton = () => {
     return (
         <Button
             label="simple.action.resetViews"
-            disabled={isLoading}
+            disabled={isPending}
             onClick={updateMany}
         >
             <VisibilityOff />
@@ -392,7 +393,7 @@ const FullNameField = () => {
 
 export const UserList = () => (
     <List>
-        <Datagrid rowclick="edit">
+        <Datagrid>
             <FullNameField source="last_name" label="Name" />
             <DateField source="dob" />
             <TextField source="city" />
@@ -659,7 +660,9 @@ const PostList = () => (
 
 ## `rowClick`
 
-You can catch clicks on rows to redirect to the show or edit view by setting the `rowClick` prop:
+By default, `<Datagrid>` will look at the current [resource definition](https://marmelab.com/react-admin/Resource.html) to determine what to do when the user clicks on a row. If the resource has a `show` page, it will redirect to the Show view. If the resource has an `edit` page, it will redirect to the Edit view. Otherwise, the row will not be clickable.
+
+You can choose what happens when the user clicks on a row by setting the `rowClick` prop. For instance, set the `rowClick` prop to `"edit"` to redirect to the Edit view:
 
 ```tsx
 import { List, Datagrid } from 'react-admin';
@@ -675,10 +678,10 @@ export const PostList = () => (
 
 `rowClick` accepts the following values:
 
-* "edit" to redirect to the edition view
-* "show" to redirect to the show view
-* "expand" to open the `expand` panel
-* "toggleSelection" to trigger the `onToggleItem` function
+* `"edit"` to redirect to the edition view
+* `"show"` to redirect to the show view
+* `"expand"` to open the `expand` panel
+* `"toggleSelection"` to trigger the `onToggleItem` function
 * `false` to do nothing
 * a function `(id, resource, record) => path` that may return any of the above values or a custom path
 
@@ -963,6 +966,7 @@ The separation between list pages and edit pages is not always relevant. Sometim
 ```tsx
 import {
     List,
+    ListActions,
     TextField,
     TextInput,
     DateField,
@@ -980,7 +984,7 @@ const professionChoices = [
 ];
 
 const ArtistList = () => (
-    <List hasCreate empty={false}>
+    <List actions={<ListActions hasCreate />} empty={false}>
         <EditableDatagrid
             mutationMode="undoable"
             createForm={<ArtistForm />}
@@ -1105,7 +1109,7 @@ import { useGetList, Datagrid, TextField } from 'react-admin';
 const sort = { field: 'id', order: 'DESC' };
 
 const MyCustomList = () => {
-    const { data, total, isLoading } = useGetList('books', {
+    const { data, total, isPending } = useGetList('books', {
         pagination: { page: 1, perPage: 10 },
         sort,
     });
@@ -1114,7 +1118,7 @@ const MyCustomList = () => {
         <Datagrid
             data={data}
             total={total}
-            isLoading={isLoading}
+            isPending={isPending}
             sort={sort}
             bulkActionButtons={false}
         >
@@ -1125,7 +1129,7 @@ const MyCustomList = () => {
 };
 ```
 
-This list has no filtering, sorting, or row selection - it's static. If you want to allow users to interact with this list, you should pass more props to the `<Datagrid>` component, but the logic isn't trivial. Fortunately, react-admin provides [the `useList` hook](./useList.md) to build callbacks to manipulate local data. You just have to put the result in a `ListContext` to have an interactive `<Datagrid>`:
+This list has no filtering, sorting, or row selection - it's static. If you want to allow users to interact with the `<Datagrid>`, use [the `useList` hook](./useList.md) to build callbacks to manipulate local data. You will have to put the result in a `<ListContextProvider>` parent component:
 
 ```tsx
 import {
@@ -1139,11 +1143,11 @@ import {
 const sort = { field: 'id', order: 'DESC' };
 
 const MyCustomList = () => {
-    const { data, isLoading } = useGetList('books', {
+    const { data, isPending } = useGetList('books', {
         pagination: { page: 1, perPage: 10 },
         sort,
     });
-    const listContext = useList({ data, isLoading });
+    const listContext = useList({ data, isPending });
 
     return (
         <ListContextProvider value={listContext}>

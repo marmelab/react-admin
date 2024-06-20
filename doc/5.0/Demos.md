@@ -342,7 +342,7 @@ A simple application with posts, comments and users that we use for our e2e test
 
 ![Blog demo](./img/blog_demo.png)
 
-* Demo: [https://stackblitz.com/github/marmelab/react-admin/tree/master/examples/simple](https://stackblitz.com/github/marmelab/react-admin/tree/master/examples/simple)
+* Demo: available on [Stackblitz](https://stackblitz.com/github/marmelab/react-admin/tree/master/examples/simple) or on [Codesandbox](https://codesandbox.io/p/devbox/github/marmelab/react-admin/tree/master/examples/simple)
 * Source code: [https://github.com/marmelab/react-admin/tree/master/examples/simple](https://github.com/marmelab/react-admin/tree/master/examples/simple)
 
 ## Music Player

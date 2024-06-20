@@ -24,13 +24,13 @@ export const PostCreate = () => (
         <Form>
             <Grid container>
                 <Grid item xs={6}>
-                    <TextInput source="title" fullWidth />
+                    <TextInput source="title" />
                 </Grid>
                 <Grid item xs={6}>
-                    <TextInput source="author" fullWidth />
+                    <TextInput source="author" />
                 </Grid>
                 <Grid item xs={12}>
-                    <RichTextInput source="body" fullWidth />
+                    <RichTextInput source="body" />
                 </Grid>
                 <Grid item xs={12}>
                     <SaveButton />
@@ -83,7 +83,7 @@ export const PostCreate = () => (
 
 **Tip**: You can include properties in the form `defaultValues` that are not listed as input components, like the `created_at` property in the previous example.
 
-**Tip**: React-admin also allows to define default values at the input level. See the [Setting default Values](./EditTutorial.md#setting-default-values) section.
+**Tip**: React-admin also allows to define default values at the input level. See the [Setting default Values](./Forms.md#default-values) section.
 
 ## `id`
 
@@ -236,7 +236,7 @@ export const TagEdit = () => (
 );
 ```
 
-**Warning**: This feature only works if you have a dependency on react-router 6.3.0 **at most**. The react-router team disabled this possibility in react-router 6.4, so `warnWhenUnsavedChanges` will silently fail with react-router 6.4 or later.
+**Note**: Due to limitations in react-router, this feature only works if you use the default router provided by react-admin, or if you use a [Data Router](https://reactrouter.com/en/6.22.3/routers/picking-a-router).
 
 ## Subscribing To Form Changes
 

@@ -7,7 +7,7 @@ title: "The ReferenceManyCount Component"
 
 When you need to render the number of records related to another record via a one-to-many relationship (e.g. the number of comments related to a post), use the `<ReferenceManyCount>` component. It calls `dataProvider.getManyReference()` with the `pagination` parameter set to retrieve no data - only the total number of records.
 
-<iframe src="https://www.youtube-nocookie.com/embed/XCucarroK8o" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;"></iframe>
+![ReferenceManyCount](./img/reference_many_count.webp)
 
 ## Usage
 
@@ -15,8 +15,6 @@ Use `<ReferenceManyCount>` as a regular Field in a `<Datagrid>` or `<SimpleShowL
 
 - `reference` is the name of the related resource to fetch (e.g. `comments`)
 - `target` is the name of the field in the related resource that points to the current resource (e.g. `post_id`)
-
-For instance, to display the number of comments related to a post in a List view:
 
 ```jsx
 import { 
@@ -57,8 +55,6 @@ export const PostList = () => (
     </List>
 )
 ```
-
-![ReferenceManyCount](./img/reference_many_count.webp)
 
 **Tip**: If you need to count all the records of a given resource, use [the `<Count>` component](./Count.md) instead.
 

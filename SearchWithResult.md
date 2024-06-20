@@ -377,6 +377,7 @@ Here is an implementation example:
 
 {% raw %}
 ```tsx
+import type { ReactNode } from 'react';
 import { Admin } from 'react-admin';
 import { Box } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
@@ -384,15 +385,16 @@ import AlbumIcon from '@mui/icons-material/Album';
 import Groups3Icon from '@mui/icons-material/Groups3';
 import {
     SolarLayout,
-    SolarLayoutProps,
     SolarMenu,
     useSolarSidebarActiveMenu,
 } from '@react-admin/ra-navigation';
 import { SearchWithResult } from '@react-admin/ra-search';
 import { searchDataProvider } from './searchDataProvider';
 
-const MySolarLayout = (props: SolarLayoutProps) => (
-    <SolarLayout {...props} menu={MySolarMenu} />
+const MySolarLayout = ({ children }: { children: ReactNode }) => (
+    <SolarLayout menu={MySolarMenu}>
+        {children}
+    </SolarLayout>
 );
 
 const MySolarMenu = () => (

@@ -201,7 +201,7 @@ async function handler(request: Request) {
     const requestUrl = request.url.split('/api/admin')[1];
 
     // build the CRUD request based on the incoming request
-    const url = `${process.env.SUPABASE_URL}/rest/v1/${requestUrl}`;
+    const url = `${process.env.SUPABASE_URL}/rest/v1${requestUrl}`;
 
     const options: RequestInit = {
         method: request.method,

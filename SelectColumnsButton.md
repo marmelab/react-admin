@@ -65,22 +65,30 @@ const ListActions = () => (
 If you include `<SelectColumnsButton>` in a page that has more than one `<DatagridConfigurable>` (e.g. in a dasboard), you have to link the two components by giving them the same `preferenceKey`:
 
 ```jsx
-const BookListActions = () => (
-    <TopToolbar>
-        <SelectColumnsButton preferenceKey="books.datagrid" />
-    </TopToolbar>
-);
-
-const BookList = () => (
-    <List actions={<BookListActions />}>
-        <DatagridConfigurable preferenceKey="books.datagrid">
-            <TextField source="id" />
-            <TextField source="title" />
-            <TextField source="author" />
-            <TextField source="year" />
-        </DatagridConfigurable>
-    </List>
-);
+const BookList = () => {
+    const { data, total, isPending } = useGetList('books', {
+        pagination: { page: 1, perPage: 10 },
+        sort,
+    });
+    return (
+        <div>
+            <SelectColumnsButton preferenceKey="books.datagrid" />
+            <DatagridConfigurable
+                preferenceKey="books.datagrid"
+                data={data}
+                total={total}
+                isPending={isPending}
+                sort={sort}
+                bulkActionButtons={false}
+            >
+                <TextField source="id" />
+                <TextField source="title" />
+                <TextField source="author" />
+                <TextField source="year" />
+            </DatagridConfigurable>
+        </div>
+    );
+};
 ```
 
 ## Adding a label to unlabeled columns

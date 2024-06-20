@@ -66,7 +66,7 @@ export const App = () => (
 
 const SaleList = () => (
     <ListLive>
-        <Datagrid rowClick="edit">
+        <Datagrid>
             <TextField source="id" />
             <TextField source="first_name" />
             <TextField source="last_name" />

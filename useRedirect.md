@@ -46,3 +46,26 @@ redirect(false);
 ```
 
 Note that `useRedirect` allows redirection to an absolute URL outside the current React app.
+
+**Tip:** For even more specific navigation, you can use the [`useNavigate`](https://reactrouter.com/en/main/hooks/use-navigate) hook from `react-router-dom` as follows:
+
+```jsx
+import { useNavigate } from 'react-router-dom';
+
+const MyPageButton = () => {
+    const navigate = useNavigate();
+    const handleClick = () => {
+        navigate(
+            {
+                pathname: '/some/path',
+                search: '?query=string',
+                hash: '#hash',
+            },
+            {
+                state: { key: 'value' },
+            }
+        );
+    }
+    return <button onClick={handleClick}>My page</button>;
+};
+```

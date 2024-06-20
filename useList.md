@@ -40,17 +40,17 @@ const MyComponent = () => {
 };
 ```
 
-If you use it with data coming from the `dataProvider`, don't forget to pass the `isLoading` prop so that it only manipulates the data once it's available:
+If you use it with data coming from the `dataProvider`, don't forget to pass the `isPending` prop so that it only manipulates the data once it's available:
 
 ```jsx
 import { useGetList, useList } from 'react-admin';
 
 const MyComponent = () => {
-    const { data, isLoading } = useGetList(
+    const { data, isPending } = useGetList(
         'posts',
         { pagination: { page: 1, perPage: 10 } },
     );
-    const listContext = useList({ data, isLoading });
+    const listContext = useList({ data, isPending });
     return (
         <ListContextProvider value={listContext}>
             <Datagrid>
@@ -69,7 +69,7 @@ const MyComponent = () => {
 * [`filter`](#filter)
 * [`filterCallback`](#filtercallback)
 * [`isFetching`](#isfetching)
-* [`isLoading`](#isloading)
+* [`isPending`](#isPending)
 * [`page`](#page)
 * [`perPage`](#perpage)
 * [`sort`](#sort)
@@ -162,7 +162,7 @@ const MyComponent = () => {
 };
 ```
 
-## `isLoading`
+## `isPending`
 
 This value ends up in the return value. It is used by list iterators (like `<Datagrid>`) to know when to display a loading indicator.
 
@@ -176,11 +176,11 @@ import {
 } from 'react-admin';
 
 const MyComponent = () => {
-    const { data, isLoading } = useGetList(
+    const { data, isPending } = useGetList(
         'posts',
         { page: 1, perPage: 10 }
     );
-    const listContext = useList({ data, isLoading });
+    const listContext = useList({ data, isPending });
     return (
         <ListContextProvider value={listContext}>
             <Datagrid>
@@ -263,8 +263,9 @@ const {
     // Data
     data, // Array of the list records, e.g. [{ id: 123, title: 'hello world' }, { ... }
     total, // Total number of results for the current filters, excluding pagination. Useful to build the pagination controls, e.g. 23      
-    isFetching, // Boolean, true while the data is being fetched, false once the data is fetched
-    isLoading, // Boolean, true until the data is available for the first time
+    isPending, // Boolean, the value of the isPending parameter
+    isFetching, // Boolean, the value of the isFetching parameter
+    isLoading, // Boolean, the value of the isLoading parameter
     // Pagination
     page, // Current page. Starts at 1
     perPage, // Number of results per page. Defaults to 25
@@ -287,8 +288,8 @@ const {
     onToggleItem, // Callback to toggle the record selection for a given id, e.g. onToggleItem(456)
     onUnselectItems, // Callback to clear the record selection, e.g. onUnselectItems();
     // Misc
-    defaultTitle, // Translated title based on the resource, e.g. 'Posts'
-    resource, // Resource name, deduced from the location. e.g. 'posts'
-    refetch, // Callback for fetching the list data again
+    defaultTitle, // Empty string
+    resource, // undefined
+    refetch, // Callback that throws an error, as refetch doesn't make sense for local data
 } = useList();
 ```

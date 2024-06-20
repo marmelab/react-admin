@@ -384,21 +384,24 @@ const CustomerCreate = () => (
 
 Server-side validation is supported out of the box for `pessimistic` mode only. It requires that the dataProvider throws an error with the following shape:
 
-```
+```json
 {
-    body: {
-        errors: {
-            title: 'An article with this title already exists. The title must be unique.',
-            date: 'The date is required',
-            tags: { message: "The tag 'agrriculture' doesn't exist" },
+    "body": {
+        "errors": {
+            // Global validation error message (optional)
+            "root": { "serverError": "Some of the provided values are not valid. Please fix them and retry." },
+            // Field validation error messages
+            "title": "An article with this title already exists. The title must be unique.",
+            "date": "The date is required",
+            "tags": { "message": "The tag 'agrriculture' doesn't exist" },
         }
     }
 }
 ```
 
-**Tip**: The shape of the returned validation errors must match the form shape: each key needs to match a `source` prop.
+**Tip**: The shape of the returned validation errors must match the form shape: each key needs to match a `source` prop. The only exception is the `root.serverError` key, which can be used to define a global error message for the form.
 
-**Tip**: The returned validation errors might have any validation format we support (simple strings, translation strings or translation objects with a `message` attribute) for each key.
+**Tip**: The returned validation errors might have any validation format we support (simple strings, translation strings or translation objects with a `message` attribute) for each key. However `root.serverError` does not accept translation objects.
 
 **Tip**: If your data provider leverages React Admin's [`httpClient`](https://marmelab.com/react-admin/DataProviderWriting.html#example-rest-implementation), all error response bodies are wrapped and thrown as `HttpError`. This means your API only needs to return an invalid response with a json body containing the `errors` key.
 
@@ -413,6 +416,7 @@ const apiUrl = 'https://my.api.com/';
 
   {
     "errors": {
+      "root": { "serverError": "Some of the provided values are not valid. Please fix them and retry." },
       "title": "An article with this title already exists. The title must be unique.",
       "date": "The date is required",
       "tags": { "message": "The tag 'agrriculture' doesn't exist" },
@@ -448,6 +452,7 @@ const myDataProvider = {
             body should be something like:
             {
                 errors: {
+                    root: { serverError: "Some of the provided values are not valid. Please fix them and retry." },
                     title: "An article with this title already exists. The title must be unique.",
                     date: "The date is required",
                     tags: { message: "The tag 'agrriculture' doesn't exist" },

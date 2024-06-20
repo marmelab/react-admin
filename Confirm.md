@@ -28,7 +28,7 @@ const BulkResetViewsButton = () => {
     const record = useRecordContext();
     const [open, setOpen] = useState(false);
 
-    const [remove, { isLoading }] = useDelete(
+    const [remove, { isPending }] = useDelete(
         'posts',
         { id: record && record.id }
     );
@@ -45,7 +45,7 @@ const BulkResetViewsButton = () => {
             <Button label="Delete" onClick={handleClick} />
             <Confirm
                 isOpen={open}
-                loading={isLoading}
+                loading={isPending}
                 title={`Delete post #${record && record.id}`}
                 content="Are you sure you want to delete this item?"
                 onConfirm={handleConfirm}

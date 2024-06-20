@@ -53,7 +53,6 @@ import { TimeInput } from 'react-admin';
 
 `<TimeInput>` accepts the [common input props](./Inputs.md#common-input-props).
 
-
 ## Material UI
 
 [React-admin Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" /> proposes an alternative `<TimeInput>` styled with Material UI. 
@@ -85,7 +84,7 @@ export const EventEdit = () => (
 
 | Prop         | Required | Type              | Default                                | Description                                                                                                                                                                                  |
 | ------------ | -------- | ----------------- | -------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `fullWidth`  | -        | boolean           | `false`                                | If `true`, the input will expand to fill the form width                                                                                                                                      |
+| `fullWidth`  | -        | boolean           | `true`                                | If `false`, the input will not expand to fill the form width                                                                                                                                      |
 | `helperText` | -        | string            | -                                      | Text to be displayed under the input                                                                                                                                                         |
 | `mask`       | -        | string            | -                                      | Alias for the MUI [`format`](https://mui.com/x/api/date-pickers/date-picker/#DatePicker-prop-format) prop. Format of the date/time when rendered in the input. Defaults to localized format. |
 | `parse`      | -        | Function          | `value => value === '' ? null : value` | Callback taking the input value, and returning the value you want stored in the form state.                                                                                                  |

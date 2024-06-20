@@ -10,7 +10,7 @@ This hook allows to call `dataProvider.updateMany()` when the callback is execut
 ## Syntax
 
 ```jsx
-const [updateMany, { data, isLoading, error }] = useUpdateMany(
+const [updateMany, { data, isPending, error }] = useUpdateMany(
     resource,
     { ids, data },
     options
@@ -37,7 +37,7 @@ import { useUpdateMany, useListContext } from 'react-admin';
 
 const BulkResetViewsButton = () => {
     const { selectedIds } = useListContext();
-    const [updateMany, { isLoading, error }] = useUpdateMany(
+    const [updateMany, { isPending, error }] = useUpdateMany(
         'posts',
         { ids: selectedIds, data: { views: 0 } }
     );
@@ -45,7 +45,7 @@ const BulkResetViewsButton = () => {
         updateMany();
     }
     if (error) { return <p>ERROR</p>; }
-    return <button disabled={isLoading} onClick={handleClick}>Reset views</button>;
+    return <button disabled={isPending} onClick={handleClick}>Reset views</button>;
 };
 
 // set params when calling the updateMany callback
@@ -53,7 +53,7 @@ import { useUpdateMany, useListContext } from 'react-admin';
 
 const BulkResetViewsButton = () => {
     const { selectedIds } = useListContext();
-    const [updateMany, { isLoading, error }] = useUpdateMany();
+    const [updateMany, { isPending, error }] = useUpdateMany();
     const handleClick = () => {
         updateMany(
             'posts',
@@ -61,7 +61,7 @@ const BulkResetViewsButton = () => {
         );
     }
     if (error) { return <p>ERROR</p>; }
-    return <button disabled={isLoading} onClick={handleClick}>Reset views</button>;
+    return <button disabled={isPending} onClick={handleClick}>Reset views</button>;
 };
 ```
 
