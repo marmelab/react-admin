@@ -30,27 +30,13 @@ export const ResettableTextField = forwardRef(
 
         const translate = useTranslate();
 
-        const { onChange, onFocus, onBlur } = props;
+        const { onChange } = props;
         const handleClickClearButton = useCallback(
             event => {
                 event.preventDefault();
                 onChange && onChange('');
             },
             [onChange]
-        );
-
-        const handleFocus = useCallback(
-            event => {
-                onFocus && onFocus(event);
-            },
-            [onFocus]
-        );
-
-        const handleBlur = useCallback(
-            event => {
-                onBlur && onBlur(event);
-            },
-            [onBlur]
         );
 
         const {
@@ -164,8 +150,6 @@ export const ResettableTextField = forwardRef(
                 margin={margin}
                 className={className}
                 {...rest}
-                onFocus={handleFocus}
-                onBlur={handleBlur}
                 inputRef={ref}
             />
         );

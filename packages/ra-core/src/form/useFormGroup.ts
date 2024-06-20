@@ -1,8 +1,9 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import get from 'lodash/get';
 import isEqual from 'lodash/isEqual';
 import { useFormState } from 'react-hook-form';
 import { useFormGroups } from './useFormGroups';
+import { useEvent } from '../util';
 
 type FieldState = {
     name: string;
@@ -10,6 +11,7 @@ type FieldState = {
     isDirty: boolean;
     isTouched: boolean;
     isValid: boolean;
+    isValidating: boolean;
 };
 
 type FormGroupState = {
@@ -17,6 +19,7 @@ type FormGroupState = {
     isDirty: boolean;
     isTouched: boolean;
     isValid: boolean;
+    isValidating: boolean;
 };
 
 /**
@@ -63,16 +66,27 @@ type FormGroupState = {
  * @returns {FormGroupState} The form group state
  */
 export const useFormGroup = (name: string): FormGroupState => {
-    const { dirtyFields, touchedFields, errors } = useFormState();
+    const { dirtyFields, touchedFields, validatingFields, errors } =
+        useFormState();
+
+    // dirtyFields, touchedFields and validatingFields are objects with keys being the field names
+    // Ex: { title: true }
+    // However, they are not correctly serialized when using JSON.stringify
+    // To avoid our effects to not be triggered when they should, we extract the keys and use that as a dependency
+    const dirtyFieldsNames = Object.keys(dirtyFields);
+    const touchedFieldsNames = Object.keys(touchedFields);
+    const validatingFieldsNames = Object.keys(validatingFields);
+
     const formGroups = useFormGroups();
     const [state, setState] = useState<FormGroupState>({
         errors: undefined,
         isDirty: false,
         isTouched: false,
         isValid: true,
+        isValidating: true,
     });
 
-    const updateGroupState = useCallback(() => {
+    const updateGroupState = useEvent(() => {
         if (!formGroups) return;
         const fields = formGroups.getGroupFields(name);
         const fieldStates = fields
@@ -81,7 +95,9 @@ export const useFormGroup = (name: string): FormGroupState => {
                     name: field,
                     error: get(errors, field, undefined),
                     isDirty: get(dirtyFields, field, false) !== false,
-                    isValid: get(errors, field, undefined) == undefined, // eslint-disable-line
+                    isValid: get(errors, field, undefined) == null,
+                    isValidating:
+                        get(validatingFields, field, undefined) == null,
                     isTouched: get(touchedFields, field, false) !== false,
                 };
             })
@@ -95,16 +111,21 @@ export const useFormGroup = (name: string): FormGroupState => {
 
             return oldState;
         });
-    }, [dirtyFields, errors, touchedFields, formGroups, name]);
+    });
 
     useEffect(
         () => {
             updateGroupState();
         },
-        // eslint-disable-next-line
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         [
-            // eslint-disable-next-line
-            JSON.stringify({ dirtyFields, errors, touchedFields }),
+            // eslint-disable-next-line react-hooks/exhaustive-deps
+            JSON.stringify(dirtyFieldsNames),
+            errors,
+            // eslint-disable-next-line react-hooks/exhaustive-deps
+            JSON.stringify(touchedFieldsNames),
+            // eslint-disable-next-line react-hooks/exhaustive-deps
+            JSON.stringify(validatingFieldsNames),
             updateGroupState,
         ]
     );
@@ -144,6 +165,7 @@ export const getFormGroupState = (
                 errors,
                 isTouched: acc.isTouched || fieldState.isTouched,
                 isValid: acc.isValid && fieldState.isValid,
+                isValidating: acc.isValidating && fieldState.isValidating,
             };
 
             return newState;
@@ -153,6 +175,7 @@ export const getFormGroupState = (
             errors: undefined,
             isValid: true,
             isTouched: false,
+            isValidating: false,
         }
     );
 };
