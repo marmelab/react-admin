@@ -511,22 +511,11 @@ export const App = () => (
 );
 ```
 
-When displaying the posts list, the app displays the `id` of the post author. This doesn't mean much - we should use the user `name` instead. For that purpose, set the `recordRepresentation` prop of the "users" Resource:
-
-```diff
-// in src/App.tsx
-const App = () => (
-    <Admin dataProvider={dataProvider}>
-        <Resource name="posts" list={PostList} />
--       <Resource name="users" list={UserList} />
-+       <Resource name="users" list={UserList} recordRepresentation="name" />
-    </Admin>
-);
-```
-
-The post list now displays the user names on each line.
+When displaying the posts list, react-admin is smart enough to display the `name` of the post author:
 
 [![Post List With User Names](./img/tutorial_list_user_name.png)](./img/tutorial_list_user_name.png)
+
+**Tip**: To customize how to represent a record, set [the `recordRepresentation` prop of the `<Resource>`](/Resource.md#recordrepresentation)
 
 The `<ReferenceField>` component fetches the reference data, creates a `RecordContext` with the result, and renders the record representation (or its children).
 
@@ -571,8 +560,8 @@ import { UserList } from "./users";
 export const App = () => (
     <Admin dataProvider={dataProvider}>
         <Resource name="posts" list={PostList} />
--       <Resource name="users" list={UserList} recordRepresentation="name" />
-+       <Resource name="users" list={UserList} show={ShowGuesser} recordRepresentation="name" />
+-       <Resource name="users" list={UserList}  />
++       <Resource name="users" list={UserList} show={ShowGuesser}  />
     </Admin>
 );
 ```
@@ -623,7 +612,7 @@ export const App = () => (
     <Admin dataProvider={dataProvider}>
 -       <Resource name="posts" list={PostList} />
 +       <Resource name="posts" list={PostList} edit={EditGuesser} />
-        <Resource name="users" list={UserList} show={ShowGuesser} recordRepresentation="name" />
+        <Resource name="users" list={UserList} show={ShowGuesser}  />
     </Admin>
 );
 ```
@@ -684,7 +673,7 @@ export const App = () => (
   <Admin dataProvider={dataProvider}>
 -   <Resource name="posts" list={PostList} edit={EditGuesser} />
 +   <Resource name="posts" list={PostList} edit={PostEdit} />
-    <Resource name="users" list={UserList} show={ShowGuesser} recordRepresentation="name" />
+    <Resource name="users" list={UserList} show={ShowGuesser}  />
   </Admin>
 );
 ```
@@ -767,7 +756,7 @@ export const App = () => (
   <Admin dataProvider={dataProvider}>
 -   <Resource name="posts" list={PostList} edit={PostEdit} />
 +   <Resource name="posts" list={PostList} edit={PostEdit} create={PostCreate} />
-    <Resource name="users" list={UserList} show={ShowGuesser} recordRepresentation="name" />
+    <Resource name="users" list={UserList} show={ShowGuesser}  />
   </Admin>
 );
 ```
@@ -803,37 +792,6 @@ Even though updates appear immediately due to Optimistic Rendering, React-admin 
 Optimistic updates and undo require no specific code on the API side - react-admin handles them purely on the client-side. That means that you'll get them for free with your own API!
 
 **Note**: When you add the ability to edit an item, you also add the ability to delete it. The "Delete" button in the edit view is fully working out of the box - and it is also "Undo"-able .
-
-## Customizing The Page Title
-
-The post editing page has a slight problem: it uses the post id as main title (the text displayed in the top bar). We could set a custom `recordRepresentation` in the `<Resource name="posts">` component, but it's limited to rendering a string.
-
-Let's customize the view title with a custom title component:
-
-```diff
-// in src/posts.tsx
-+import { useRecordContext} from "react-admin";
-
-// ...
-
-+const PostTitle = () => {
-+  const record = useRecordContext();
-+  return <span>Post {record ? `"${record.title}"` : ''}</span>;
-+};
-
-export const PostEdit = () => (
--   <Edit>
-+   <Edit title={<PostTitle />}>
-        // ...
-    </Edit>
-);
-```
-
-[![Post Edit Title](./img/tutorial_post_title.png)](./img/tutorial_post_title.png)
-
-This component uses the same `useRecordContext` hook as the custom `<UrlField>` component described earlier.
-
-As users can access the post editing page directly by its url, the `<PostTitle>` component may render *without a record* while the `<Edit>` component is fetching it. That's why you must always check that the `record` returned by `useRecordContext` is defined before using it - as in `PostTitle` above.
 
 ## Adding Search And Filters To The List
 
@@ -889,7 +847,6 @@ export const App = () => (
             name="users"
             list={UserList}
             show={ShowGuesser}
-            recordRepresentation="name"
             icon={UserIcon}
         />
     </Admin>
