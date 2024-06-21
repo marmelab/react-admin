@@ -1,4 +1,3 @@
-import { get } from 'lodash';
 import { createContext, useContext } from 'react';
 
 export type SourceContextValue = {
