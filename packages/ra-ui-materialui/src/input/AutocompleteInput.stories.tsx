@@ -299,12 +299,23 @@ export const CreateLabel = () => (
     <Wrapper>
         <AutocompleteInput
             source="author"
-            choices={choicesForCreationSupport}
+            choices={[
+                { id: 1, name: 'Leo Tolstoy' },
+                { id: 2, name: 'Victor Hugo' },
+                { id: 3, name: 'William Shakespeare' },
+                { id: 4, name: 'Charles Baudelaire' },
+                { id: 5, name: 'Marcel Proust' },
+            ]}
             onCreate={filter => {
-                if (filter) {
+                const newAuthorName = window.prompt(
+                    'Enter a new author',
+                    filter
+                );
+
+                if (newAuthorName) {
                     const newAuthor = {
                         id: choicesForCreationSupport.length + 1,
-                        name: filter,
+                        name: newAuthorName,
                     };
                     choicesForCreationSupport.push(newAuthor);
                     return newAuthor;
