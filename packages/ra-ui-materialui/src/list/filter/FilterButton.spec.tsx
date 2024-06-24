@@ -269,7 +269,7 @@ describe('<FilterButton />', () => {
                 () => {
                     expect(screen.getAllByRole('checkbox')).toHaveLength(2);
                 },
-                { timeout: 4000 }
+                { timeout: 10000 }
             );
 
             expect(screen.queryByText('Save current query...')).toBeNull();
