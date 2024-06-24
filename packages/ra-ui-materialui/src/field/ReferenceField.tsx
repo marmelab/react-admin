@@ -5,7 +5,6 @@ import { styled } from '@mui/material/styles';
 import ErrorIcon from '@mui/icons-material/Error';
 import {
     LinkToType,
-    RecordContextProvider,
     useGetRecordRepresentation,
     useTranslate,
     RaRecord,
@@ -146,25 +145,21 @@ export const ReferenceFieldView = <
     if (link) {
         return (
             <Root className={className} sx={sx}>
-                <RecordContextProvider value={referenceRecord}>
-                    <Link
-                        to={link}
-                        className={ReferenceFieldClasses.link}
-                        onClick={stopPropagation}
-                        state={{ _scrollToTop: true }}
-                    >
-                        {child}
-                    </Link>
-                </RecordContextProvider>
+                <Link
+                    to={link}
+                    className={ReferenceFieldClasses.link}
+                    onClick={stopPropagation}
+                    state={{ _scrollToTop: true }}
+                >
+                    {child}
+                </Link>
             </Root>
         );
     }
 
     return (
         <Root className={className} sx={sx}>
-            <RecordContextProvider value={referenceRecord}>
-                {child}
-            </RecordContextProvider>
+            {child}
         </Root>
     );
 };

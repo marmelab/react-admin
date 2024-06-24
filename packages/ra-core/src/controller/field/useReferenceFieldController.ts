@@ -11,7 +11,7 @@ export const useReferenceFieldController = <
 >(
     options: UseReferenceFieldControllerOptions<ReferenceRecordType>
 ): UseReferenceFieldControllerResult<ReferenceRecordType> => {
-    const { link = 'edit', reference, queryOptions } = options;
+    const { link, reference, queryOptions } = options;
     if (!reference) {
         throw new Error(
             'useReferenceFieldController: missing reference prop. You must provide a reference, e.g. reference="posts".'
@@ -33,31 +33,37 @@ export const useReferenceFieldController = <
     const createPath = useCreatePath();
     const resourceDefinition = useResourceDefinition({ resource: reference });
 
-    const result = useMemo(
-        () =>
-            ({
-                ...referenceRecordQuery,
-                link:
-                    referenceRecordQuery.referenceRecord != null
-                        ? link === false ||
-                          (link === 'edit' && !resourceDefinition.hasEdit) ||
-                          (link === 'show' && !resourceDefinition.hasShow)
-                            ? false
-                            : createPath({
-                                  resource: reference,
-                                  id: referenceRecordQuery.referenceRecord.id,
-                                  type:
-                                      typeof link === 'function'
-                                          ? link(
-                                                referenceRecordQuery.referenceRecord,
-                                                reference
-                                            )
-                                          : link,
-                              })
-                        : undefined,
-            }) as const,
-        [createPath, link, reference, referenceRecordQuery, resourceDefinition]
-    );
+    const result = useMemo(() => {
+        const defaultLink = resourceDefinition.hasEdit
+            ? 'edit'
+            : resourceDefinition.hasShow
+              ? 'show'
+              : false;
+        const isLinkFalse =
+            link === false ||
+            (link === 'edit' && !resourceDefinition.hasEdit) ||
+            (link === 'show' && !resourceDefinition.hasShow) ||
+            (link == null && defaultLink === false);
+        const linkString =
+            referenceRecordQuery.referenceRecord == null || isLinkFalse
+                ? false
+                : createPath({
+                      resource: reference,
+                      id: referenceRecordQuery.referenceRecord.id,
+                      // @ts-ignore TypeScript doesn't understand that type cannot be false here
+                      type:
+                          typeof link === 'function'
+                              ? link(
+                                    referenceRecordQuery.referenceRecord,
+                                    reference
+                                )
+                              : link ?? defaultLink,
+                  });
+        return {
+            ...referenceRecordQuery,
+            link: linkString,
+        } as const;
+    }, [createPath, link, reference, referenceRecordQuery, resourceDefinition]);
     return result;
 };
 

@@ -14,6 +14,11 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { ReferenceField } from './ReferenceField';
 import {
     Children,
+    LinkShow,
+    LinkDefaultEditView,
+    LinkDefaultShowView,
+    LinkMissingView,
+    LinkFalse,
     MissingReferenceIdEmptyTextTranslation,
     MissingReferenceEmptyText,
     SXLink,
@@ -477,156 +482,90 @@ describe('<ReferenceField />', () => {
         expect(ErrorIcon?.getAttribute('aria-errormessage')).toBe('boo');
     });
 
-    it('should render a link to specified link type', async () => {
-        const dataProvider = testDataProvider({
-            getMany: jest.fn().mockResolvedValue({
-                data: [{ id: 123, title: 'foo' }],
-            }),
+    describe('link', () => {
+        it('should render a link to specified link type', async () => {
+            render(<LinkShow />);
+            const referenceField = await screen.findByText('9780393966473');
+            expect(screen.queryAllByRole('link')).toHaveLength(1);
+            expect(referenceField?.parentElement?.getAttribute('href')).toBe(
+                '/book_details/1/show'
+            );
         });
-        render(
-            <ThemeProvider theme={theme}>
-                <CoreAdminContext dataProvider={dataProvider}>
-                    <ResourceDefinitionContextProvider
-                        definitions={{
-                            posts: {
-                                name: 'posts',
-                                hasShow: true,
-                            },
-                        }}
-                    >
-                        <ReferenceField
-                            record={record}
-                            resource="comments"
-                            source="postId"
-                            reference="posts"
-                            link="show"
-                        >
-                            <TextField source="title" />
-                        </ReferenceField>
-                    </ResourceDefinitionContextProvider>
-                </CoreAdminContext>
-            </ThemeProvider>
-        );
-        await waitFor(() =>
-            expect(dataProvider.getMany).toHaveBeenCalledTimes(1)
-        );
-        expect(screen.queryByRole('link')?.getAttribute('href')).toBe(
-            '#/posts/123/show'
-        );
-    });
 
-    it('should render no link when view to link to does not exist', async () => {
-        const dataProvider = testDataProvider({
-            getMany: jest.fn().mockResolvedValue({
-                data: [{ id: 123, title: 'foo' }],
-            }),
+        it('should link to edit by default if there is an edit view', async () => {
+            render(<LinkDefaultEditView />);
+            const referenceField = await screen.findByText('9780393966473');
+            expect(screen.queryAllByRole('link')).toHaveLength(1);
+            expect(referenceField?.parentElement?.getAttribute('href')).toBe(
+                '/book_details/1'
+            );
         });
-        render(
-            <ThemeProvider theme={theme}>
-                <CoreAdminContext dataProvider={dataProvider}>
-                    <ResourceDefinitionContextProvider
-                        definitions={{
-                            posts: {
-                                name: 'posts',
-                                hasShow: false,
-                            },
-                        }}
-                    >
-                        <ReferenceField
-                            record={record}
-                            resource="comments"
-                            source="postId"
-                            reference="posts"
-                            link="show"
-                        >
-                            <TextField source="title" />
-                        </ReferenceField>
-                    </ResourceDefinitionContextProvider>
-                </CoreAdminContext>
-            </ThemeProvider>
-        );
-        await waitFor(() =>
-            expect(dataProvider.getMany).toHaveBeenCalledTimes(1)
-        );
-        expect(screen.queryAllByRole('link')).toHaveLength(0);
-    });
 
-    it('should render no link when link is false', async () => {
-        const dataProvider = testDataProvider({
-            getMany: jest.fn().mockResolvedValue({
-                data: [{ id: 123, title: 'foo' }],
-            }),
+        it('should link to edit by default if there is no edit view but a show view', async () => {
+            render(<LinkDefaultShowView />);
+            const referenceField = await screen.findByText('9780393966473');
+            expect(screen.queryAllByRole('link')).toHaveLength(1);
+            expect(referenceField?.parentElement?.getAttribute('href')).toBe(
+                '/book_details/1/show'
+            );
         });
-        render(
-            <ThemeProvider theme={theme}>
-                <CoreAdminContext dataProvider={dataProvider}>
-                    <ResourceDefinitionContextProvider
-                        definitions={{
-                            posts: {
-                                name: 'posts',
-                                hasEdit: true,
-                            },
-                        }}
-                    >
-                        <ReferenceField
-                            record={record}
-                            resource="comments"
-                            source="postId"
-                            reference="posts"
-                            link={false}
-                        >
-                            <TextField source="title" />
-                        </ReferenceField>
-                    </ResourceDefinitionContextProvider>
-                </CoreAdminContext>
-            </ThemeProvider>
-        );
-        await waitFor(() =>
-            expect(dataProvider.getMany).toHaveBeenCalledTimes(1)
-        );
-        expect(screen.queryAllByRole('link')).toHaveLength(0);
-    });
 
-    it('should call the link function with the referenced record', async () => {
-        const dataProvider = testDataProvider({
-            getMany: jest.fn().mockResolvedValue({
-                data: [{ id: 123, title: 'foo' }],
-            }),
+        it('should render no link when link view does not exist', async () => {
+            render(<LinkMissingView />);
+            await screen.findByText('9780393966473');
+            expect(screen.queryAllByRole('link')).toHaveLength(0);
         });
-        const link = jest.fn().mockReturnValue('/posts/123');
 
-        render(
-            <ThemeProvider theme={theme}>
-                <CoreAdminContext dataProvider={dataProvider}>
-                    <ResourceDefinitionContextProvider
-                        definitions={{
-                            posts: {
-                                name: 'posts',
-                                hasEdit: true,
-                            },
-                        }}
-                    >
-                        <ReferenceField
-                            record={record}
-                            resource="comments"
-                            source="postId"
-                            reference="posts"
-                            link={link}
+        it('should render no link when link is false', async () => {
+            render(<LinkFalse />);
+            await screen.findByText('9780393966473');
+            expect(screen.queryAllByRole('link')).toHaveLength(0);
+        });
+
+        it('should call the link function with the referenced record', async () => {
+            const dataProvider = testDataProvider({
+                getMany: jest.fn().mockResolvedValue({
+                    data: [{ id: 123, title: 'foo' }],
+                }),
+            });
+            const link = jest.fn().mockReturnValue('/posts/123');
+
+            render(
+                <ThemeProvider theme={theme}>
+                    <CoreAdminContext dataProvider={dataProvider}>
+                        <ResourceDefinitionContextProvider
+                            definitions={{
+                                posts: {
+                                    name: 'posts',
+                                    hasEdit: true,
+                                },
+                            }}
                         >
-                            <TextField source="title" />
-                        </ReferenceField>
-                    </ResourceDefinitionContextProvider>
-                </CoreAdminContext>
-            </ThemeProvider>
-        );
-        await waitFor(() =>
-            expect(dataProvider.getMany).toHaveBeenCalledTimes(1)
-        );
-        expect(screen.queryByRole('link')?.getAttribute('href')).toBe(
-            '#/posts/123'
-        );
+                            <ReferenceField
+                                record={record}
+                                resource="comments"
+                                source="postId"
+                                reference="posts"
+                                link={link}
+                            >
+                                <TextField source="title" />
+                            </ReferenceField>
+                        </ResourceDefinitionContextProvider>
+                    </CoreAdminContext>
+                </ThemeProvider>
+            );
+            await waitFor(() =>
+                expect(dataProvider.getMany).toHaveBeenCalledTimes(1)
+            );
+            expect(screen.queryByRole('link')?.getAttribute('href')).toBe(
+                '#/posts/123'
+            );
 
-        expect(link).toHaveBeenCalledWith({ id: 123, title: 'foo' }, 'posts');
+            expect(link).toHaveBeenCalledWith(
+                { id: 123, title: 'foo' },
+                'posts'
+            );
+        });
     });
 
     it('should accept multiple children', async () => {

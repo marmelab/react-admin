@@ -57,22 +57,24 @@ const defaultDataProvider = {
         }),
 } as any;
 const defaultRecord = { id: 1, title: 'War and Peace', detail_id: 1 };
+const defaultResourceDefinitions = {
+    book_details: {
+        name: 'book_details',
+        hasShow: true,
+        hasEdit: true,
+    },
+};
 
 const Wrapper = ({
     children,
     dataProvider = defaultDataProvider,
     record = defaultRecord,
+    resourceDefinitions = defaultResourceDefinitions,
 }: any) => (
     <TestMemoryRouter initialEntries={['/books/1/show']}>
         <CoreAdminContext dataProvider={dataProvider}>
             <ResourceDefinitionContextProvider
-                definitions={{
-                    book_details: {
-                        name: 'book_details',
-                        hasShow: true,
-                        hasEdit: true,
-                    },
-                }}
+                definitions={resourceDefinitions}
             >
                 <ResourceContextProvider value="books">
                     <RecordContextProvider value={record}>
@@ -171,7 +173,7 @@ export const MissingReferenceEmptyText = () => (
     </Wrapper>
 );
 
-export const Link = () => (
+export const LinkShow = () => (
     <Wrapper>
         <ReferenceField source="detail_id" reference="book_details" link="show">
             <TextField source="ISBN" />
@@ -179,30 +181,77 @@ export const Link = () => (
     </Wrapper>
 );
 
-export const LinkWithoutEditView = () => (
-    <TestMemoryRouter initialEntries={['/books/1/show']}>
-        <CoreAdminContext dataProvider={defaultDataProvider}>
-            <ResourceDefinitionContextProvider
-                definitions={{
-                    book_details: {
-                        name: 'book_details',
-                        hasEdit: false,
-                    },
-                }}
-            >
-                <ResourceContextProvider value="books">
-                    <RecordContextProvider value={defaultRecord}>
-                        <ReferenceField
-                            source="detail_id"
-                            reference="book_details"
-                        >
-                            <TextField source="ISBN" />
-                        </ReferenceField>
-                    </RecordContextProvider>
-                </ResourceContextProvider>
-            </ResourceDefinitionContextProvider>
-        </CoreAdminContext>
-    </TestMemoryRouter>
+export const LinkMissingView = () => (
+    <Wrapper
+        resourceDefinitions={{
+            book_details: {
+                name: 'book_details',
+                hasShow: false,
+            },
+        }}
+    >
+        <ReferenceField source="detail_id" reference="book_details" link="show">
+            <TextField source="ISBN" />
+        </ReferenceField>
+    </Wrapper>
+);
+
+export const LinkFalse = () => (
+    <Wrapper>
+        <ReferenceField
+            source="detail_id"
+            reference="book_details"
+            link={false}
+        >
+            <TextField source="ISBN" />
+        </ReferenceField>
+    </Wrapper>
+);
+
+export const LinkDefaultEditView = () => (
+    <Wrapper
+        resourceDefinitions={{
+            book_details: {
+                name: 'book_details',
+                hasEdit: true,
+            },
+        }}
+    >
+        <ReferenceField source="detail_id" reference="book_details">
+            <TextField source="ISBN" />
+        </ReferenceField>
+    </Wrapper>
+);
+
+export const LinkDefaultShowView = () => (
+    <Wrapper
+        resourceDefinitions={{
+            book_details: {
+                name: 'book_details',
+                hasShow: true,
+            },
+        }}
+    >
+        <ReferenceField source="detail_id" reference="book_details">
+            <TextField source="ISBN" />
+        </ReferenceField>
+    </Wrapper>
+);
+
+export const LinkDefaultNoDetailView = () => (
+    <Wrapper
+        resourceDefinitions={{
+            book_details: {
+                name: 'book_details',
+                hasShow: false,
+                hasEdit: false,
+            },
+        }}
+    >
+        <ReferenceField source="detail_id" reference="book_details">
+            <TextField source="ISBN" />
+        </ReferenceField>
+    </Wrapper>
 );
 
 export const Children = () => (
