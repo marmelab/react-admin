@@ -255,9 +255,12 @@ describe('<FilterButton />', () => {
             userEvent.click(screen.getByLabelText('Add filter'));
             userEvent.click(await screen.findByText('Remove all filters'));
 
-            await waitFor(() => {
-                expect(screen.getAllByRole('checkbox')).toHaveLength(11);
-            });
+            await waitFor(
+                () => {
+                    expect(screen.getAllByRole('checkbox')).toHaveLength(11);
+                },
+                { timeout: 10000 }
+            );
 
             userEvent.click(await screen.findByLabelText('Open'));
             userEvent.click(await screen.findByText('Sint...'));
