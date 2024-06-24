@@ -110,7 +110,7 @@ const ExpandPanel = () => {
     const book = useRecordContext();
     return (
         <div data-testid="ExpandPanel">
-            <i>{book.title}</i>, by {book.author} ({book.year})
+            <i>{book?.title}</i>, by {book?.author} ({book?.year})
         </div>
     );
 };

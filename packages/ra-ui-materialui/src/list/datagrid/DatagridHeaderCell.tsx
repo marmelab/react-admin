@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
-import { memo } from 'react';
+import { isValidElement, memo } from 'react';
 import clsx from 'clsx';
 import { TableCell, TableSortLabel, Tooltip } from '@mui/material';
 import { TableCellProps } from '@mui/material/TableCell';
@@ -23,7 +23,9 @@ export const DatagridHeaderCell = (
     const sortLabel = translate('ra.sort.sort_by', {
         field: field
             ? translateLabel({
-                  label: field.props.label,
+                  label: isValidElement(field.props.label)
+                      ? undefined
+                      : field.props.label,
                   resource,
                   source: field.props.source,
               })
