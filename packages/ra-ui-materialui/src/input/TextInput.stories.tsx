@@ -1,6 +1,11 @@
 import * as React from 'react';
-import { required } from 'ra-core';
-import { useFormState, useFormContext } from 'react-hook-form';
+import { Form, required } from 'ra-core';
+import {
+    useFormState,
+    useFormContext,
+    useForm,
+    FormProvider,
+} from 'react-hook-form';
 
 import { TextInput } from './TextInput';
 import { AdminContext } from '../AdminContext';
@@ -285,3 +290,22 @@ export const Parse = ({ onSuccess = console.log }) => (
         </Create>
     </AdminContext>
 );
+
+export const SourceContext = () => {
+    return (
+        <Form>
+            <TextInput source="book" />
+        </Form>
+    );
+};
+
+export const WithoutSourceContext = () => {
+    const form = useForm();
+    return (
+        <FormProvider {...form}>
+            <form>
+                <TextInput source="book" />
+            </form>
+        </FormProvider>
+    );
+};

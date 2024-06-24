@@ -5,7 +5,12 @@ import { required, testDataProvider } from 'ra-core';
 import { AdminContext } from '../AdminContext';
 import { SimpleForm } from '../form';
 import { TextInput } from './TextInput';
-import { ValueNull, Parse } from './TextInput.stories';
+import {
+    ValueNull,
+    Parse,
+    SourceContext,
+    WithoutSourceContext,
+} from './TextInput.stories';
 
 describe('<TextInput />', () => {
     const defaultProps = {
@@ -226,6 +231,26 @@ describe('<TextInput />', () => {
             );
 
             expect(container.querySelector(`label`)).toBeNull();
+        });
+    });
+
+    describe('SourcContext', () => {
+        describe('SourceContext', () => {
+            it('should read SourceContext inside from a Form', () => {
+                render(<SourceContext />);
+                screen.getByLabelText('Book');
+                expect(
+                    screen.getByRole('textbox').getAttribute('name')
+                ).toEqual('book');
+            });
+
+            it('should read default SourceContext if not provided', () => {
+                render(<WithoutSourceContext />);
+                screen.getByLabelText('Book');
+                expect(
+                    screen.getByRole('textbox').getAttribute('name')
+                ).toEqual('book');
+            });
         });
     });
 });
