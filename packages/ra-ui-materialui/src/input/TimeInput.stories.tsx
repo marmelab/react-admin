@@ -25,6 +25,13 @@ export const NonFullWidth = () => (
 export const Disabled = () => (
     <Wrapper>
         <TimeInput source="published" disabled />
+        <TimeInput source="announcement" defaultValue="12:12" disabled />
+    </Wrapper>
+);
+export const ReadOnly = () => (
+    <Wrapper>
+        <TimeInput source="published" readOnly />
+        <TimeInput source="announcement" defaultValue="12:12" readOnly />
     </Wrapper>
 );
 

@@ -84,6 +84,19 @@ export const Disabled = (props: Partial<SimpleFormProps>) => (
     </AdminContext>
 );
 
+export const ReadOnly = (props: Partial<SimpleFormProps>) => (
+    <AdminContext i18nProvider={i18nProvider}>
+        <SimpleForm
+            defaultValues={{ body: 'Hello World' }}
+            onSubmit={() => {}}
+            {...props}
+        >
+            <RichTextInput source="body" readOnly />
+            <FormInspector />
+        </SimpleForm>
+    </AdminContext>
+);
+
 export const Small = (props: Partial<SimpleFormProps>) => (
     <AdminContext i18nProvider={i18nProvider}>
         <SimpleForm

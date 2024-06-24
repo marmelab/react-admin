@@ -86,6 +86,7 @@ export const ArrayInput = (props: ArrayInputProps) => {
         validate,
         variant,
         disabled,
+        readOnly,
         margin = 'dense',
         ...rest
     } = props;

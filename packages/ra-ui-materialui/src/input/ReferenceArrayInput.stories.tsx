@@ -31,8 +31,8 @@ const tags = [
 ];
 
 const dataProvider = testDataProvider({
+    // @ts-ignore
     getList: () =>
-        // @ts-ignore
         Promise.resolve({
             data: tags,
             total: tags.length,

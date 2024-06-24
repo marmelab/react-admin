@@ -85,6 +85,7 @@ const OrderEdit = () => (
 | `inline` | Optional | `boolean` | `false` | When true, inputs are put on the same line |
 | `removeButton` | Optional | `ReactElement` | - | Component to render for the remove button |
 | `reOrderButtons` | Optional | `ReactElement` | - | Component to render for the up / down button |
+| `disabled` | Optional | `boolean` | `false` | If true, all buttons are disabled. |
 | `sx` | Optional | `SxProps` | - | Material UI shortcut for defining custom styles |
 
 ## `addButton`
@@ -344,6 +345,34 @@ const OrderEdit = () => (
     </Edit>
 );
 ```
+
+## `readOnly`
+
+The `readOnly` prop set to true makes the children input not mutable, meaning the user can not edit them.
+
+```jsx
+<SimpleFormIterator readOnly>
+    <TextInput source="name" />
+    <NumberInput source="price" />
+    <NumberInput source="quantity" />
+</SimpleFormIterator>
+```
+
+Contrary to disabled controls, read-only controls are still focusable and are submitted with the form.
+
+## `disabled`
+
+The `disabled` prop set to true makes the children input not mutable, focusable, or even submitted with the form.
+
+```jsx
+<SimpleFormIterator disabled>
+    <TextInput source="name" />
+    <NumberInput source="price" />
+    <NumberInput source="quantity" />
+</SimpleFormIterator>
+```
+
+Contrary to read-only controls, disabled controls can not receive focus and are not submitted with the form.
 
 ## `sx`
 
