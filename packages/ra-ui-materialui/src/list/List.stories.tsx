@@ -504,32 +504,3 @@ export const ErrorInFetch = () => (
         </Admin>
     </TestMemoryRouter>
 );
-
-export const LabelElements = () => (
-    <TestMemoryRouter initialEntries={['/books']}>
-        <Admin dataProvider={dataProvider}>
-            <Resource
-                name="books"
-                list={
-                    <List>
-                        <Datagrid>
-                            <TextField source="id" label={<span>ID</span>} />
-                            <TextField
-                                source="title"
-                                label={<span>TITLE</span>}
-                            />
-                            <TextField
-                                source="author"
-                                label={<span>AUTHOR</span>}
-                            />
-                            <TextField
-                                source="year"
-                                label={<span>YEAR</span>}
-                            />
-                        </Datagrid>
-                    </List>
-                }
-            />
-        </Admin>
-    </TestMemoryRouter>
-);

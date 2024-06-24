@@ -29,6 +29,7 @@ import { List } from '../List';
 import { EditGuesser } from '../../detail';
 import { DatagridRowProps } from './DatagridRow';
 import DatagridBody, { DatagridBodyProps } from './DatagridBody';
+import { Admin } from 'react-admin';
 
 export default { title: 'ra-ui-materialui/list/Datagrid' };
 
@@ -552,4 +553,33 @@ export const CustomDatagridRow = () => (
             <TextField source="year" />
         </MyDatagrid>
     </Wrapper>
+);
+
+export const LabelElements = () => (
+    <TestMemoryRouter initialEntries={['/books']}>
+        <Admin dataProvider={dataProvider}>
+            <Resource
+                name="books"
+                list={
+                    <List>
+                        <Datagrid>
+                            <TextField source="id" label={<span>ID</span>} />
+                            <TextField
+                                source="title"
+                                label={<span>TITLE</span>}
+                            />
+                            <TextField
+                                source="author"
+                                label={<span>AUTHOR</span>}
+                            />
+                            <TextField
+                                source="year"
+                                label={<span>YEAR</span>}
+                            />
+                        </Datagrid>
+                    </List>
+                }
+            />
+        </Admin>
+    </TestMemoryRouter>
 );

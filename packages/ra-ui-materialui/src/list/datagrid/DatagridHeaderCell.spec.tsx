@@ -4,7 +4,7 @@ import { render, screen } from '@testing-library/react';
 import { ResourceContextProvider } from 'ra-core';
 
 import { DatagridHeaderCell } from './DatagridHeaderCell';
-import { LabelElements } from '../List.stories';
+import { LabelElements } from './Datagrid.stories';
 
 const Wrapper = ({ children }) => (
     <table>
