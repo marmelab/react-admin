@@ -1,17 +1,15 @@
 import { createContext, useContext } from 'react';
 
-export type SourceContextValue =
-    | {
-          /*
-           * Returns the source for a field or input, modified according to the context.
-           */
-          getSource: (source: string) => string;
-          /*
-           * Returns the label for a field or input, modified according to the context. Returns a translation key.
-           */
-          getLabel: (source: string) => string;
-      }
-    | undefined;
+export type SourceContextValue = {
+    /*
+     * Returns the source for a field or input, modified according to the context.
+     */
+    getSource: (source: string) => string;
+    /*
+     * Returns the label for a field or input, modified according to the context. Returns a translation key.
+     */
+    getLabel: (source: string) => string;
+};
 
 /**
  * Context that provides a function that accept a source and return getters for the modified source and label.
@@ -32,17 +30,15 @@ export type SourceContextValue =
  *   );
  * };
  */
-export const SourceContext = createContext<SourceContextValue>(undefined);
+export const SourceContext = createContext<SourceContextValue>({
+    getSource: (source: string) => source,
+    getLabel: (source: string) => source,
+});
 
 export const SourceContextProvider = SourceContext.Provider;
 
 export const useSourceContext = () => {
     const context = useContext(SourceContext);
-
-    if (!context) {
-        throw new Error('Inputs must be used inside a react-admin Form');
-    }
-
     return context;
 };
 
