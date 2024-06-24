@@ -375,15 +375,16 @@ This component renders a [Material UI `<Accordion>` component](https://mui.com/c
 
 Here are all the props you can set on the `<AccordionForm.Panel>` component:
 
-| Prop              | Required | Type        | Default | Description                                                                                      |
-| ----------------- | -------- | ----------- | ------- | ------------------------------------------------------------------------------------------------ |
-| `label`           | Required | `string`    | -       | The main label used as the accordion summary. Appears in red when the accordion has errors       |
-| `children`        | Required | `ReactNode` | -       | A list of `<Input>` elements                                                                     |
-| `secondary`       | Optional | `string`    | -       | The secondary label used as the accordion summary                                                |
-| `defaultExpanded` | Optional | `boolean`   | `false` | Set to true to have the accordion expanded by default (except if autoClose = true on the parent) |
-| `disabled`        | Optional | `boolean`   | `false` | If true, the accordion will be displayed in a disabled state.                                    |
-| `square`          | Optional | `boolean`   | `false` | If true, rounded corners are disabled.                                                           |
-| `sx`              | Optional | `Object`    | -       | An object containing the MUI style overrides to apply to the root component.                     |
+| Prop              | Required | Type                    | Default | Description                                                                                            |
+| ----------------- | -------- | ----------------------- | ------- | ------------------------------------------------------------------------------------------------       |
+| `children`        | Required | `ReactNode`             | -       | A list of `<Input>` elements                                                                           |
+| `defaultExpanded` | Optional | `boolean`               | `false` | Set to true to have the accordion expanded by default (except if autoClose = true on the parent)       |
+| `disabled`        | Optional | `boolean`               | `false` | If true, the accordion will be displayed in a disabled state.                                          |
+| `id`              | Optional | `string`                | -       | An id for this Accordion to be used in the [`useFormGroup`](./Upgrade.md#useformgroup-hook-returned-state-has-changed) hook and for CSS classes. |
+| `label`           | Required | `string` or `ReactNode` | -       | The main label used as the accordion summary. Appears in red when the accordion has errors             |
+| `secondary`       | Optional | `string` or `ReactNode` | -       | The secondary label used as the accordion summary                                                      |
+| `square`          | Optional | `boolean`               | `false` | If true, rounded corners are disabled.                                                                 |
+| `sx`              | Optional | `Object`                | -       | An object containing the MUI style overrides to apply to the root component.                           |
 
 ```tsx
 import {
@@ -413,6 +414,8 @@ const CustomerEdit = () => (
 );
 ```
 
+**Warning**: To use an `<AccordionFormPanel>` with the `autoClose` prop and a React node element as a `label`, you **must** specify an `id`.
+
 ## `<AccordionSection>`
 
 Renders children (Inputs) inside a Material UI `<Accordion>` element without a Card style. To be used as child of a `<SimpleForm>` or a `<TabbedForm>` element.
@@ -430,19 +433,20 @@ Prefer `<AccordionSection>` to `<AccordionForm>` to always display a list of imp
 
 Here are all the props you can set on the `<AccordionSection>` component:
 
-| Prop               | Required | Type        | Default | Description                                                   |
-| ------------------ | -------- | ----------- | ------- | ------------------------------------------------------------- |
-| `Accordion`        | Optional | `Component` | -       | The component to use as the accordion.                        |
-| `AccordionDetails` | Optional | `Component` | -       | The component to use as the accordion details.                |
-| `AccordionSummary` | Optional | `Component` | -       | The component to use as the accordion summary.                |
-| `label`            | Required | `string`    | -       | The main label used as the accordion summary.                 |
-| `children`         | Required | `ReactNode` | -       | A list of `<Input>` elements                                  |
-| `fullWidth`        | Optional | `boolean`   | `false` | If true, the Accordion takes the entire form width.           |
-| `className`        | Optional | `string`    | -       | A class name to style the underlying `<Accordion>`            |
-| `secondary`        | Optional | `string`    | -       | The secondary label used as the accordion summary             |
-| `defaultExpanded`  | Optional | `boolean`   | `false` | Set to true to have the accordion expanded by default         |
-| `disabled`         | Optional | `boolean`   | `false` | If true, the accordion will be displayed in a disabled state. |
-| `square`           | Optional | `boolean`   | `false` | If true, rounded corners are disabled.                        |
+| Prop               | Required | Type                    | Default | Description                                                   |
+| ------------------ | -------- | ----------------------- | ------- | ------------------------------------------------------------- |
+| `Accordion`        | Optional | `Component`             | -       | The component to use as the accordion.                        |
+| `AccordionDetails` | Optional | `Component`             | -       | The component to use as the accordion details.                |
+| `AccordionSummary` | Optional | `Component`             | -       | The component to use as the accordion summary.                |
+| `children`         | Required | `ReactNode`             | -       | A list of `<Input>` elements                                  |
+| `className`        | Optional | `string`                | -       | A class name to style the underlying `<Accordion>`            |
+| `defaultExpanded`  | Optional | `boolean`               | `false` | Set to true to have the accordion expanded by default         |
+| `disabled`         | Optional | `boolean`               | `false` | If true, the accordion will be displayed in a disabled state. |
+| `fullWidth`        | Optional | `boolean`               | `false` | If true, the Accordion takes the entire form width.           |
+| `id`               | Optional | `string`                | -       | An id for this Accordion to be used for CSS classes.          |
+| `label`            | Required | `string` or `ReactNode` | -       | The main label used as the accordion summary.                 |
+| `secondary`        | Optional | `string` or `ReactNode` | -       | The secondary label used as the accordion summary             |
+| `square`           | Optional | `boolean`               | `false` | If true, rounded corners are disabled.                        |
 
 ```tsx
 import {
