@@ -248,6 +248,60 @@ describe('<ArrayInput />', () => {
         });
     });
 
+    it('should not clear errors of children when unmounted', async () => {
+        let setArrayInputVisible;
+
+        const MyArrayInput = () => {
+            const [visible, setVisible] = React.useState(true);
+
+            setArrayInputVisible = setVisible;
+
+            return visible ? (
+                <ArrayInput resource="bar" source="arr">
+                    <SimpleFormIterator>
+                        <TextInput source="id" />
+                        <TextInput source="foo" />
+                    </SimpleFormIterator>
+                </ArrayInput>
+            ) : null;
+        };
+
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm
+                    onSubmit={jest.fn}
+                    defaultValues={{
+                        arr: [
+                            { id: 1, foo: 'bar' },
+                            { id: 2, foo: 'baz' },
+                        ],
+                    }}
+                    validate={() => ({ arr: [{ foo: 'Must be "baz"' }, {}] })}
+                >
+                    <MyArrayInput />
+                </SimpleForm>
+            </AdminContext>
+        );
+
+        // change one input to enable the SaveButton (which is disabled when the form is pristine)
+        fireEvent.change(
+            screen.getAllByLabelText('resources.bar.fields.arr.id')[0],
+            {
+                target: { value: '42' },
+            }
+        );
+        fireEvent.click(await screen.findByLabelText('ra.action.save'));
+
+        await screen.findByText('Must be "baz"');
+
+        setArrayInputVisible(false);
+        expect(screen.queryByText('Must be "baz"')).toBeNull();
+
+        // ensure errors are still there after re-mount
+        setArrayInputVisible(true);
+        await screen.findByText('Must be "baz"');
+    });
+
     it('should allow to have a helperText', () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
