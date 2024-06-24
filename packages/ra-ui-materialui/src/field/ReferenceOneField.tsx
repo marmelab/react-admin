@@ -10,6 +10,7 @@ import {
     useTranslate,
     SortPayload,
     RaRecord,
+    RecordContextProvider,
     ReferenceFieldContextProvider,
     UseReferenceFieldControllerResult,
 } from 'ra-core';
@@ -90,9 +91,11 @@ export const ReferenceOneField = <
     ) : (
         <ResourceContextProvider value={reference}>
             <ReferenceFieldContextProvider value={context}>
-                <ReferenceFieldView reference={reference} source={source}>
-                    {children}
-                </ReferenceFieldView>
+                <RecordContextProvider value={context.referenceRecord}>
+                    <ReferenceFieldView reference={reference} source={source}>
+                        {children}
+                    </ReferenceFieldView>
+                </RecordContextProvider>
             </ReferenceFieldContextProvider>
         </ResourceContextProvider>
     );
