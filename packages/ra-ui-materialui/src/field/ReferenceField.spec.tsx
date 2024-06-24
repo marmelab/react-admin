@@ -510,10 +510,13 @@ describe('<ReferenceField />', () => {
             );
         });
 
-        it('should render no link when link view does not exist', async () => {
+        it('should render a link even though link view does not exist', async () => {
             render(<LinkMissingView />);
-            await screen.findByText('9780393966473');
-            expect(screen.queryAllByRole('link')).toHaveLength(0);
+            const referenceField = await screen.findByText('9780393966473');
+            expect(screen.queryAllByRole('link')).toHaveLength(1);
+            expect(referenceField?.parentElement?.getAttribute('href')).toBe(
+                '/book_details/1/show'
+            );
         });
 
         it('should render no link when link is false', async () => {

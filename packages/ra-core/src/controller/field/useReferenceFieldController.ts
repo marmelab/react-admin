@@ -40,10 +40,7 @@ export const useReferenceFieldController = <
               ? 'show'
               : false;
         const isLinkFalse =
-            link === false ||
-            (link === 'edit' && !resourceDefinition.hasEdit) ||
-            (link === 'show' && !resourceDefinition.hasShow) ||
-            (link == null && defaultLink === false);
+            link === false || (link == null && defaultLink === false);
         const linkString =
             referenceRecordQuery.referenceRecord == null || isLinkFalse
                 ? false
