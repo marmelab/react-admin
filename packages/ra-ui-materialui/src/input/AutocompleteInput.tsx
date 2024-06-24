@@ -557,7 +557,6 @@ If you provided a React element for the optionText prop, you must also provide t
     return (
         <>
             <StyledAutocomplete
-                blurOnSelect
                 className={clsx('ra-input', `ra-input-${source}`, className)}
                 clearText={translate(clearText, { _: clearText })}
                 closeText={translate(closeText, { _: closeText })}

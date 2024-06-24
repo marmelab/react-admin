@@ -1,6 +1,7 @@
 import * as React from 'react';
 import expect from 'expect';
 import { render, fireEvent, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { createTheme } from '@mui/material/styles';
 import {
     ListContextProvider,
@@ -234,14 +235,14 @@ describe('<FilterButton />', () => {
             render(<WithAutoCompleteArrayInput />);
 
             // Open Posts List
-            fireEvent.click(await screen.findByText('Posts'));
+            userEvent.click(await screen.findByText('Posts'));
 
             await waitFor(() => {
                 expect(screen.queryAllByRole('checkbox')).toHaveLength(11);
             });
 
-            fireEvent.click(await screen.findByLabelText('Open'));
-            fireEvent.click(await screen.findByText('Sint...'));
+            userEvent.click(await screen.findByLabelText('Open'));
+            userEvent.click(await screen.findByText('Sint...'));
 
             await screen.findByLabelText('Add filter');
             await waitFor(
