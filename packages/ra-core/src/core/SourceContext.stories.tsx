@@ -1,10 +1,20 @@
 import * as React from 'react';
-import { TextInput } from 'ra-ui-materialui';
 import { FormProvider, useForm } from 'react-hook-form';
-import { Form } from '../form';
+import { Form, useInput } from '../form';
 
 export default {
     title: 'ra-core/core/SourceContext',
+};
+
+const TextInput = props => {
+    const { field } = useInput(props);
+
+    return (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
+            <label htmlFor={field.name}>{props.label || field.name}</label>
+            <input {...field} />
+        </div>
+    );
 };
 
 export const Basic = () => {

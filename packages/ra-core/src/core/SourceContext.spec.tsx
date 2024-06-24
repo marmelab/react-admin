@@ -5,7 +5,7 @@ import { Basic, WithoutSourceContext } from './SourceContext.stories';
 describe('SourceContext', () => {
     it('should read SourceContext inside from a Form', () => {
         render(<Basic />);
-        screen.getByLabelText('Book');
+        screen.getByText('book');
         expect(screen.getByRole('textbox').getAttribute('name')).toEqual(
             'book'
         );
@@ -13,7 +13,7 @@ describe('SourceContext', () => {
 
     it('should read default SourceContext if not provided', () => {
         render(<WithoutSourceContext />);
-        screen.getByLabelText('Book');
+        screen.getByText('book');
         expect(screen.getByRole('textbox').getAttribute('name')).toEqual(
             'book'
         );
