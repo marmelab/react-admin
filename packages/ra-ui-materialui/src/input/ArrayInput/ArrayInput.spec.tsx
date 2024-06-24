@@ -257,7 +257,7 @@ describe('<ArrayInput />', () => {
             setArrayInputVisible = setVisible;
 
             return visible ? (
-                <ArrayInput resource="bar" source="arr">
+                <ArrayInput source="arr">
                     <SimpleFormIterator>
                         <TextInput source="id" />
                         <TextInput source="foo" />
@@ -268,18 +268,22 @@ describe('<ArrayInput />', () => {
 
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm
-                    onSubmit={jest.fn}
-                    defaultValues={{
-                        arr: [
-                            { id: 1, foo: 'bar' },
-                            { id: 2, foo: 'baz' },
-                        ],
-                    }}
-                    validate={() => ({ arr: [{ foo: 'Must be "baz"' }, {}] })}
-                >
-                    <MyArrayInput />
-                </SimpleForm>
+                <ResourceContextProvider value="bar">
+                    <SimpleForm
+                        onSubmit={jest.fn}
+                        defaultValues={{
+                            arr: [
+                                { id: 1, foo: 'bar' },
+                                { id: 2, foo: 'baz' },
+                            ],
+                        }}
+                        validate={() => ({
+                            arr: [{ foo: 'Must be "baz"' }, {}],
+                        })}
+                    >
+                        <MyArrayInput />
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
 
@@ -295,7 +299,9 @@ describe('<ArrayInput />', () => {
         await screen.findByText('Must be "baz"');
 
         setArrayInputVisible(false);
-        expect(screen.queryByText('Must be "baz"')).toBeNull();
+        await waitFor(() => {
+            expect(screen.queryByText('Must be "baz"')).toBeNull();
+        });
 
         // ensure errors are still there after re-mount
         setArrayInputVisible(true);
