@@ -38,7 +38,7 @@ import type { LinkToType } from './types';
  *   return path ? <Link to={path}>Edit</Link> : null;
  * };
  */
-export const useGetRouteForRecord = <RecordType extends RaRecord = RaRecord>(
+export const useGetPathForRecord = <RecordType extends RaRecord = RaRecord>(
     options: UseGetRouteForRecordOptions<RecordType>
 ): string | false | undefined => {
     const { link } = options || {};

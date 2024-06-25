@@ -18,7 +18,7 @@ import {
     useResourceContext,
     useTranslate,
     useRecordContext,
-    useGetRouteForRecord,
+    useGetPathForRecord,
 } from 'ra-core';
 import { useNavigate } from 'react-router-dom';
 
@@ -122,7 +122,7 @@ const DatagridRow: React.ForwardRefExoticComponent<
               ? // rowClick doesn't have the same signature as linkTo, so we need to adapt
                 (record, resource) => rowClick(record?.id, resource, record)
               : rowClick;
-    const target = useGetRouteForRecord({ record, resource, link: linkType });
+    const path = useGetPathForRecord({ record, resource, link: linkType });
 
     const handleClick = useCallback(
         async event => {
@@ -135,14 +135,14 @@ const DatagridRow: React.ForwardRefExoticComponent<
                 handleToggleSelection(event);
                 return;
             }
-            if (target === false || target == null) {
+            if (path === false || path == null) {
                 return;
             }
-            navigate(target, {
+            navigate(path, {
                 state: { _scrollToTop: true },
             });
         },
-        [rowClick, navigate, handleToggleExpand, handleToggleSelection, target]
+        [rowClick, navigate, handleToggleExpand, handleToggleSelection, path]
     );
 
     return (
