@@ -68,6 +68,7 @@ export const useReferenceArrayInputController = <
         },
         {
             enabled: value != null && value.length > 0,
+            ...otherQueryOptions,
         }
     );
 
