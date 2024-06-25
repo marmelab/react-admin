@@ -1,9 +1,9 @@
 import { useMemo } from 'react';
 import { UseQueryOptions } from '@tanstack/react-query';
+
 import { RaRecord } from '../../types';
-import { LinkToType, useCreatePath } from '../../routing';
+import { LinkToType, useGetRouteForRecord } from '../../routing';
 import { UseReferenceResult, useReference } from '../useReference';
-import { useResourceDefinition } from '../../core';
 import { useFieldValue } from '../../util';
 
 export const useReferenceFieldController = <
@@ -30,37 +30,21 @@ export const useReferenceFieldController = <
         },
     });
 
-    const createPath = useCreatePath();
-    const resourceDefinition = useResourceDefinition({ resource: reference });
+    const target = useGetRouteForRecord({
+        record: referenceRecordQuery.referenceRecord,
+        resource: reference,
+        link,
+    });
 
-    const result = useMemo(() => {
-        const defaultLink = resourceDefinition.hasEdit
-            ? 'edit'
-            : resourceDefinition.hasShow
-              ? 'show'
-              : false;
-        const isLinkFalse =
-            link === false || (link == null && defaultLink === false);
-        const linkString =
-            referenceRecordQuery.referenceRecord == null || isLinkFalse
-                ? false
-                : createPath({
-                      resource: reference,
-                      id: referenceRecordQuery.referenceRecord.id,
-                      // @ts-ignore TypeScript doesn't understand that type cannot be false here
-                      type:
-                          typeof link === 'function'
-                              ? link(
-                                    referenceRecordQuery.referenceRecord,
-                                    reference
-                                )
-                              : link ?? defaultLink,
-                  });
-        return {
-            ...referenceRecordQuery,
-            link: linkString,
-        } as const;
-    }, [createPath, link, reference, referenceRecordQuery, resourceDefinition]);
+    const result = useMemo(
+        () =>
+            ({
+                ...referenceRecordQuery,
+                link: target,
+            }) as const,
+        [target, referenceRecordQuery]
+    );
+
     return result;
 };
 
