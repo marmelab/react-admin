@@ -58,10 +58,10 @@ export const useGetPathForRecord = <RecordType extends RaRecord = RaRecord>(
         []
     );
 
-    const defaultLink = resourceDefinition.hasEdit
-        ? 'edit'
-        : resourceDefinition.hasShow
-          ? 'show'
+    const defaultLink = resourceDefinition.hasShow
+        ? 'show'
+        : resourceDefinition.hasEdit
+          ? 'edit'
           : false;
 
     const isLinkFalse =
