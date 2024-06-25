@@ -6,10 +6,11 @@ import {
     useRecordContext,
     ResourceContextProvider,
     LinkToType,
-    useCreatePath,
+    useGetPathForRecord,
     useTranslate,
     SortPayload,
     RaRecord,
+    RecordContextProvider,
     ReferenceFieldContextProvider,
     UseReferenceFieldControllerResult,
 } from 'ra-core';
@@ -41,11 +42,10 @@ export const ReferenceOneField = <
         emptyText,
         sort,
         filter,
-        link = false,
+        link,
         queryOptions,
     } = props;
     const record = useRecordContext<RecordType>(props);
-    const createPath = useCreatePath();
     const translate = useTranslate();
 
     const controllerProps = useReferenceOneFieldController<ReferenceRecordType>(
@@ -60,24 +60,18 @@ export const ReferenceOneField = <
         }
     );
 
-    const resourceLinkPath =
-        !record || link === false
-            ? false
-            : createPath({
-                  resource: reference,
-                  id: controllerProps.referenceRecord?.id,
-                  type:
-                      typeof link === 'function'
-                          ? link(record, reference)
-                          : link,
-              });
+    const path = useGetPathForRecord({
+        record: controllerProps.referenceRecord,
+        resource: reference,
+        link,
+    });
 
     const context = useMemo<UseReferenceFieldControllerResult>(
         () => ({
             ...controllerProps,
-            link: resourceLinkPath,
+            link: path,
         }),
-        [controllerProps, resourceLinkPath]
+        [controllerProps, path]
     );
     return !record ||
         (!controllerProps.isPending &&
@@ -90,9 +84,11 @@ export const ReferenceOneField = <
     ) : (
         <ResourceContextProvider value={reference}>
             <ReferenceFieldContextProvider value={context}>
-                <ReferenceFieldView reference={reference} source={source}>
-                    {children}
-                </ReferenceFieldView>
+                <RecordContextProvider value={context.referenceRecord}>
+                    <ReferenceFieldView reference={reference} source={source}>
+                        {children}
+                    </ReferenceFieldView>
+                </RecordContextProvider>
             </ReferenceFieldContextProvider>
         </ResourceContextProvider>
     );
@@ -108,7 +104,7 @@ export interface ReferenceOneFieldProps<
     sort?: SortPayload;
     source?: string;
     filter?: any;
-    link?: LinkToType<RecordType>;
+    link?: LinkToType<ReferenceRecordType>;
     queryOptions?: Omit<
         UseQueryOptions<{
             data: ReferenceRecordType[];

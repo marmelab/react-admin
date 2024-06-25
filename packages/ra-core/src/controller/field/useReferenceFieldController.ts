@@ -1,9 +1,9 @@
 import { useMemo } from 'react';
 import { UseQueryOptions } from '@tanstack/react-query';
+
 import { RaRecord } from '../../types';
-import { LinkToType, useCreatePath } from '../../routing';
+import { LinkToType, useGetPathForRecord } from '../../routing';
 import { UseReferenceResult, useReference } from '../useReference';
-import { useResourceDefinition } from '../../core';
 import { useFieldValue } from '../../util';
 
 export const useReferenceFieldController = <
@@ -11,7 +11,7 @@ export const useReferenceFieldController = <
 >(
     options: UseReferenceFieldControllerOptions<ReferenceRecordType>
 ): UseReferenceFieldControllerResult<ReferenceRecordType> => {
-    const { link = 'edit', reference, queryOptions } = options;
+    const { link, reference, queryOptions } = options;
     if (!reference) {
         throw new Error(
             'useReferenceFieldController: missing reference prop. You must provide a reference, e.g. reference="posts".'
@@ -30,34 +30,21 @@ export const useReferenceFieldController = <
         },
     });
 
-    const createPath = useCreatePath();
-    const resourceDefinition = useResourceDefinition({ resource: reference });
+    const path = useGetPathForRecord({
+        record: referenceRecordQuery.referenceRecord,
+        resource: reference,
+        link,
+    });
 
     const result = useMemo(
         () =>
             ({
                 ...referenceRecordQuery,
-                link:
-                    referenceRecordQuery.referenceRecord != null
-                        ? link === false ||
-                          (link === 'edit' && !resourceDefinition.hasEdit) ||
-                          (link === 'show' && !resourceDefinition.hasShow)
-                            ? false
-                            : createPath({
-                                  resource: reference,
-                                  id: referenceRecordQuery.referenceRecord.id,
-                                  type:
-                                      typeof link === 'function'
-                                          ? link(
-                                                referenceRecordQuery.referenceRecord,
-                                                reference
-                                            )
-                                          : link,
-                              })
-                        : undefined,
+                link: path,
             }) as const,
-        [createPath, link, reference, referenceRecordQuery, resourceDefinition]
+        [path, referenceRecordQuery]
     );
+
     return result;
 };
 

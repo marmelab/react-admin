@@ -3,6 +3,7 @@ export * from './BasenameContextProvider';
 export * from './RestoreScrollPosition';
 export * from './useBasename';
 export * from './useCreatePath';
+export * from './useGetPathForRecord';
 export * from './useRedirect';
 export * from './useResetErrorBoundaryOnLocationChange';
 export * from './useScrollToTop';
