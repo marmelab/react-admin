@@ -267,7 +267,7 @@ describe('useDelete', () => {
     });
 
     describe('mutationMode', () => {
-        it.only('when pessimistic, displays result and success side effects when dataProvider promise resolves', async () => {
+        it('when pessimistic, displays result and success side effects when dataProvider promise resolves', async () => {
             jest.spyOn(console, 'log').mockImplementation(() => {});
             render(<SuccessCasePessimistic />);
             screen.getByText('Delete first post').click();
