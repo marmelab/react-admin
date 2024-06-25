@@ -17,9 +17,8 @@ import {
     useExpanded,
     useResourceContext,
     useTranslate,
-    useCreatePath,
     useRecordContext,
-    useResourceDefinition,
+    useGetRouteForRecord,
 } from 'ra-core';
 import { useNavigate } from 'react-router-dom';
 
@@ -38,13 +37,6 @@ const computeNbColumns = (expand, children, hasBulkActions) =>
 const DatagridRow: React.ForwardRefExoticComponent<
     Omit<DatagridRowProps, 'ref'> & React.RefAttributes<HTMLTableRowElement>
 > = React.forwardRef<HTMLTableRowElement, DatagridRowProps>((props, ref) => {
-    const definition = useResourceDefinition(props);
-    const defaultRowClick = definition?.hasShow
-        ? 'show'
-        : definition?.hasEdit
-          ? 'edit'
-          : false;
-
     const {
         children,
         className,
@@ -54,7 +46,7 @@ const DatagridRow: React.ForwardRefExoticComponent<
         id,
         onToggleItem,
         record: recordOverride,
-        rowClick = defaultRowClick,
+        rowClick,
         selected = false,
         style,
         selectable = true,
@@ -83,7 +75,6 @@ const DatagridRow: React.ForwardRefExoticComponent<
             !context.isRowExpandable ||
             context.isRowExpandable(record)) &&
         expand;
-    const createPath = useCreatePath();
     const [expanded, toggleExpanded] = useExpanded(
         resource,
         id,
@@ -123,42 +114,35 @@ const DatagridRow: React.ForwardRefExoticComponent<
         },
         [id, onToggleItem, selectable]
     );
+
+    const linkType =
+        rowClick === 'expand' || rowClick === 'toggleSelection'
+            ? undefined
+            : typeof rowClick === 'function'
+              ? // rowClick doesn't have the same signature as linkTo, so we need to adapt
+                (record, resource) => rowClick(record?.id, resource, record)
+              : rowClick;
+    const target = useGetRouteForRecord({ record, resource, link: linkType });
+
     const handleClick = useCallback(
         async event => {
             event.persist();
-            const type =
-                typeof rowClick === 'function'
-                    ? await rowClick(id, resource, record)
-                    : rowClick;
-            if (type === false || type == null) {
-                return;
-            }
-            if (['edit', 'show'].includes(type)) {
-                navigate(createPath({ resource, id, type }), {
-                    state: { _scrollToTop: true },
-                });
-                return;
-            }
-            if (type === 'expand') {
+            if (rowClick === 'expand') {
                 handleToggleExpand(event);
                 return;
             }
-            if (type === 'toggleSelection') {
+            if (rowClick === 'toggleSelection') {
                 handleToggleSelection(event);
                 return;
             }
-            navigate(type);
+            if (target === false || target == null) {
+                return;
+            }
+            navigate(target, {
+                state: { _scrollToTop: true },
+            });
         },
-        [
-            rowClick,
-            id,
-            resource,
-            record,
-            navigate,
-            createPath,
-            handleToggleExpand,
-            handleToggleSelection,
-        ]
+        [rowClick, navigate, handleToggleExpand, handleToggleSelection, target]
     );
 
     return (
