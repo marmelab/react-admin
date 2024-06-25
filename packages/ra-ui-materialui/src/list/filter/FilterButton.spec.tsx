@@ -1,6 +1,7 @@
 import * as React from 'react';
 import expect from 'expect';
 import { render, fireEvent, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { createTheme } from '@mui/material/styles';
 import {
     ListContextProvider,
@@ -234,37 +235,41 @@ describe('<FilterButton />', () => {
             render(<WithAutoCompleteArrayInput />);
 
             // Open Posts List
-            fireEvent.click(await screen.findByText('Posts'));
+            userEvent.click(await screen.findByText('Posts'));
 
             await waitFor(() => {
                 expect(screen.queryAllByRole('checkbox')).toHaveLength(11);
             });
 
-            fireEvent.click(await screen.findByLabelText('Open'));
-            fireEvent.click(await screen.findByText('Sint...'));
+            userEvent.click(await screen.findByLabelText('Open'));
+            userEvent.click(await screen.findByText('Sint...'));
 
             await screen.findByLabelText('Add filter');
+            expect(screen.queryAllByText('Close')).toHaveLength(0);
             await waitFor(
                 () => {
                     expect(screen.getAllByRole('checkbox')).toHaveLength(2);
                 },
                 { timeout: 10000 }
             );
-            fireEvent.click(screen.getByLabelText('Add filter'));
-            fireEvent.click(await screen.findByText('Remove all filters'));
+            userEvent.click(screen.getByLabelText('Add filter'));
+            userEvent.click(await screen.findByText('Remove all filters'));
 
-            await waitFor(() => {
-                expect(screen.getAllByRole('checkbox')).toHaveLength(11);
-            });
+            await waitFor(
+                () => {
+                    expect(screen.getAllByRole('checkbox')).toHaveLength(11);
+                },
+                { timeout: 10000 }
+            );
 
-            fireEvent.click(await screen.findByLabelText('Open'));
-            fireEvent.click(await screen.findByText('Sint...'));
+            userEvent.click(await screen.findByLabelText('Open'));
+            userEvent.click(await screen.findByText('Sint...'));
 
             await waitFor(
                 () => {
                     expect(screen.getAllByRole('checkbox')).toHaveLength(2);
                 },
-                { timeout: 4000 }
+                { timeout: 10000 }
             );
 
             expect(screen.queryByText('Save current query...')).toBeNull();

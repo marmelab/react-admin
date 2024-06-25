@@ -157,7 +157,10 @@ export const DatagridInput = (props: DatagridInputProps) => {
     );
 };
 
-export type DatagridInputProps = Omit<CommonInputProps, 'source'> &
+export type DatagridInputProps = Omit<
+    CommonInputProps,
+    'source' | 'readOnly' | 'disabled'
+> &
     ChoicesProps &
     Omit<SupportCreateSuggestionOptions, 'handleChange'> &
     DatagridProps & {

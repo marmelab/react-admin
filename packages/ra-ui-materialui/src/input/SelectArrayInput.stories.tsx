@@ -6,6 +6,8 @@ import {
     Dialog,
     DialogActions,
     DialogContent,
+    Stack,
+    Box,
     TextField,
 } from '@mui/material';
 import fakeRestProvider from 'ra-data-fakerest';
@@ -66,6 +68,148 @@ export const Basic = () => (
                     ]}
                     sx={{ width: 300 }}
                 />
+            </SimpleForm>
+        </Create>
+    </AdminContext>
+);
+
+export const Disabled = () => (
+    <AdminContext i18nProvider={i18nProvider}>
+        <Create
+            resource="users"
+            record={{ roles: ['u001', 'u003'] }}
+            sx={{ width: 800 }}
+        >
+            <SimpleForm>
+                <Stack direction="row">
+                    <Box>
+                        <SelectArrayInput
+                            source="roles"
+                            choices={[
+                                { id: 'admin', name: 'Admin' },
+                                { id: 'u001', name: 'Editor' },
+                                { id: 'u002', name: 'Moderator' },
+                                { id: 'u003', name: 'Reviewer' },
+                            ]}
+                            sx={{ width: 300 }}
+                            disabled
+                        />
+                        <SelectArrayInput
+                            source="roles"
+                            variant="outlined"
+                            choices={[
+                                { id: 'admin', name: 'Admin' },
+                                { id: 'u001', name: 'Editor' },
+                                { id: 'u002', name: 'Moderator' },
+                                { id: 'u003', name: 'Reviewer' },
+                            ]}
+                            sx={{ width: 300 }}
+                            disabled
+                        />
+                        <SelectArrayInput
+                            source="roles"
+                            variant="standard"
+                            choices={[
+                                { id: 'admin', name: 'Admin' },
+                                { id: 'u001', name: 'Editor' },
+                                { id: 'u002', name: 'Moderator' },
+                                { id: 'u003', name: 'Reviewer' },
+                            ]}
+                            sx={{ width: 300 }}
+                            disabled
+                        />
+                    </Box>
+                    <Box>
+                        <SelectArrayInput
+                            source="title"
+                            sx={{ width: 300 }}
+                            disabled
+                        />
+                        <SelectArrayInput
+                            source="title"
+                            variant="outlined"
+                            sx={{ width: 300 }}
+                            disabled
+                        />
+                        <SelectArrayInput
+                            source="title"
+                            variant="standard"
+                            sx={{ width: 300 }}
+                            disabled
+                        />
+                    </Box>
+                </Stack>
+            </SimpleForm>
+        </Create>
+    </AdminContext>
+);
+
+export const ReadOnly = () => (
+    <AdminContext i18nProvider={i18nProvider}>
+        <Create
+            resource="users"
+            record={{ roles: ['u001', 'u003'] }}
+            sx={{ width: 800 }}
+        >
+            <SimpleForm>
+                <Stack direction="row">
+                    <Box>
+                        <SelectArrayInput
+                            source="roles"
+                            choices={[
+                                { id: 'admin', name: 'Admin' },
+                                { id: 'u001', name: 'Editor' },
+                                { id: 'u002', name: 'Moderator' },
+                                { id: 'u003', name: 'Reviewer' },
+                            ]}
+                            sx={{ width: 300 }}
+                            readOnly
+                        />
+                        <SelectArrayInput
+                            source="roles"
+                            variant="outlined"
+                            choices={[
+                                { id: 'admin', name: 'Admin' },
+                                { id: 'u001', name: 'Editor' },
+                                { id: 'u002', name: 'Moderator' },
+                                { id: 'u003', name: 'Reviewer' },
+                            ]}
+                            sx={{ width: 300 }}
+                            readOnly
+                        />
+                        <SelectArrayInput
+                            source="roles"
+                            variant="standard"
+                            choices={[
+                                { id: 'admin', name: 'Admin' },
+                                { id: 'u001', name: 'Editor' },
+                                { id: 'u002', name: 'Moderator' },
+                                { id: 'u003', name: 'Reviewer' },
+                            ]}
+                            sx={{ width: 300 }}
+                            readOnly
+                        />
+                    </Box>
+                    <Box>
+                        <SelectArrayInput
+                            source="title"
+                            sx={{ width: 300 }}
+                            readOnly
+                        />
+                        <SelectArrayInput
+                            source="title"
+                            variant="outlined"
+                            sx={{ width: 300 }}
+                            readOnly
+                        />
+                        <SelectArrayInput
+                            source="title"
+                            variant="standard"
+                            sx={{ width: 300 }}
+                            readOnly
+                        />
+                    </Box>
+                </Stack>
             </SimpleForm>
         </Create>
     </AdminContext>

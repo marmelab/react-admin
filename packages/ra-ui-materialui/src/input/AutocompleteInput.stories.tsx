@@ -110,6 +110,40 @@ export const Basic = ({ onSuccess = console.log }) => (
     </Wrapper>
 );
 
+export const ReadOnly = () => (
+    <Wrapper>
+        <AutocompleteInput
+            source="author"
+            choices={defaultChoices}
+            fullWidth
+            readOnly
+        />
+        <AutocompleteInput
+            source="genre"
+            choices={defaultChoices}
+            fullWidth
+            readOnly
+        />
+    </Wrapper>
+);
+
+export const Disabled = () => (
+    <Wrapper>
+        <AutocompleteInput
+            source="author"
+            choices={defaultChoices}
+            fullWidth
+            disabled
+        />
+        <AutocompleteInput
+            source="genre"
+            choices={defaultChoices}
+            fullWidth
+            disabled
+        />
+    </Wrapper>
+);
+
 export const Required = () => (
     <Wrapper>
         <AutocompleteInput
@@ -265,12 +299,23 @@ export const CreateLabel = () => (
     <Wrapper>
         <AutocompleteInput
             source="author"
-            choices={choicesForCreationSupport}
+            choices={[
+                { id: 1, name: 'Leo Tolstoy' },
+                { id: 2, name: 'Victor Hugo' },
+                { id: 3, name: 'William Shakespeare' },
+                { id: 4, name: 'Charles Baudelaire' },
+                { id: 5, name: 'Marcel Proust' },
+            ]}
             onCreate={filter => {
-                if (filter) {
+                const newAuthorName = window.prompt(
+                    'Enter a new author',
+                    filter
+                );
+
+                if (newAuthorName) {
                     const newAuthor = {
                         id: choicesForCreationSupport.length + 1,
-                        name: filter,
+                        name: newAuthorName,
                     };
                     choicesForCreationSupport.push(newAuthor);
                     return newAuthor;

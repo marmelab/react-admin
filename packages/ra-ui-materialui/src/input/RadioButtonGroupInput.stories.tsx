@@ -26,6 +26,18 @@ export const Basic = () => (
     </Wrapper>
 );
 
+export const Disabled = () => (
+    <Wrapper>
+        <RadioButtonGroupInput source="category" choices={choices} disabled />
+    </Wrapper>
+);
+
+export const ReadOnly = () => (
+    <Wrapper>
+        <RadioButtonGroupInput source="category" choices={choices} readOnly />
+    </Wrapper>
+);
+
 export const Row = () => (
     <Wrapper>
         <RadioButtonGroupInput

@@ -26,6 +26,14 @@ export const NonFullWidth = () => (
 export const Disabled = () => (
     <Wrapper>
         <DateInput source="published" disabled />
+        <DateInput source="announcement" defaultValue="01/01/2000" disabled />
+    </Wrapper>
+);
+
+export const ReadOnly = () => (
+    <Wrapper>
+        <DateInput source="published" readOnly />
+        <DateInput source="announcement" defaultValue="01/01/2000" readOnly />
     </Wrapper>
 );
 
