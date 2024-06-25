@@ -10,6 +10,7 @@ import { useStore } from '../../store/useStore';
 import { useListParams, getQuery, getNumberOrDefault } from './useListParams';
 import { SORT_DESC, SORT_ASC } from './queryReducer';
 import { TestMemoryRouter } from '../../routing';
+import { parse } from 'query-string';
 
 describe('useListParams', () => {
     describe('getQuery', () => {
@@ -426,6 +427,73 @@ describe('useListParams', () => {
                 page: 10,
                 perPage: 10,
                 filter: {},
+            });
+        });
+
+        it('should synchronize parameters with location and store when sync is enabled while keeping custom query params', async () => {
+            let locationSearchValue;
+            let storeValue;
+            const ComponentThatSetsCustomQueryString = ({
+                disableSyncWithLocation = false,
+            }) => {
+                const [_, { setFilters }] = useListParams({
+                    resource: 'posts',
+                    disableSyncWithLocation,
+                });
+
+                const handleClick = () => {
+                    setFilters({ x: 'y' }, []);
+                };
+
+                return (
+                    <>
+                        <button onClick={handleClick}>set filters</button>
+                    </>
+                );
+            };
+            const StoreReader = () => {
+                const [value] = useStore('posts.listParams');
+                React.useEffect(() => {
+                    storeValue = value;
+                }, [value]);
+                return null;
+            };
+            render(
+                <TestMemoryRouter
+                    initialEntries={['/posts?foo=bar']}
+                    locationCallback={l => {
+                        locationSearchValue = l.search;
+                    }}
+                >
+                    <CoreAdminContext dataProvider={testDataProvider()}>
+                        <ComponentThatSetsCustomQueryString />
+                        <StoreReader />
+                    </CoreAdminContext>
+                </TestMemoryRouter>
+            );
+
+            fireEvent.click(screen.getByText('set filters'));
+
+            await waitFor(() => {
+                expect(parse(locationSearchValue)).toEqual({
+                    displayedFilters: '[]',
+                    filter: '{"x":"y"}',
+                    foo: 'bar',
+                    order: 'ASC',
+                    page: '1',
+                    perPage: '10',
+                    sort: 'id',
+                });
+            });
+
+            expect(storeValue).toEqual({
+                displayedFilters: [],
+                filter: { x: 'y' },
+                foo: 'bar',
+                order: 'ASC',
+                page: 1,
+                perPage: 10,
+                sort: 'id',
             });
         });
 
