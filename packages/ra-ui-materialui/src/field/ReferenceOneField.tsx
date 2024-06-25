@@ -6,7 +6,7 @@ import {
     useRecordContext,
     ResourceContextProvider,
     LinkToType,
-    useCreatePath,
+    useGetPathForRecord,
     useTranslate,
     SortPayload,
     RaRecord,
@@ -42,11 +42,10 @@ export const ReferenceOneField = <
         emptyText,
         sort,
         filter,
-        link = false,
+        link,
         queryOptions,
     } = props;
     const record = useRecordContext<RecordType>(props);
-    const createPath = useCreatePath();
     const translate = useTranslate();
 
     const controllerProps = useReferenceOneFieldController<ReferenceRecordType>(
@@ -61,24 +60,18 @@ export const ReferenceOneField = <
         }
     );
 
-    const resourceLinkPath =
-        !record || link === false
-            ? false
-            : createPath({
-                  resource: reference,
-                  id: controllerProps.referenceRecord?.id,
-                  type:
-                      typeof link === 'function'
-                          ? link(record, reference)
-                          : link,
-              });
+    const path = useGetPathForRecord({
+        record: controllerProps.referenceRecord,
+        resource: reference,
+        link,
+    });
 
     const context = useMemo<UseReferenceFieldControllerResult>(
         () => ({
             ...controllerProps,
-            link: resourceLinkPath,
+            link: path,
         }),
-        [controllerProps, resourceLinkPath]
+        [controllerProps, path]
     );
     return !record ||
         (!controllerProps.isPending &&
@@ -111,7 +104,7 @@ export interface ReferenceOneFieldProps<
     sort?: SortPayload;
     source?: string;
     filter?: any;
-    link?: LinkToType<RecordType>;
+    link?: LinkToType<ReferenceRecordType>;
     queryOptions?: Omit<
         UseQueryOptions<{
             data: ReferenceRecordType[];
