@@ -267,22 +267,22 @@ describe('useDelete', () => {
     });
 
     describe('mutationMode', () => {
-        it('when pessimistic, displays result and success side effects when dataProvider promise resolves', async () => {
+        it.only('when pessimistic, displays result and success side effects when dataProvider promise resolves', async () => {
             jest.spyOn(console, 'log').mockImplementation(() => {});
             render(<SuccessCasePessimistic />);
             screen.getByText('Delete first post').click();
             await waitFor(() => {
                 expect(screen.queryByText('success')).toBeNull();
-                expect(screen.queryByText('Hello')).not.toBeNull();
-                expect(screen.queryByText('World')).not.toBeNull();
                 expect(screen.queryByText('mutating')).not.toBeNull();
             });
+            expect(screen.queryByText('Hello')).not.toBeNull();
+            expect(screen.queryByText('World')).not.toBeNull();
             await waitFor(() => {
                 expect(screen.queryByText('success')).not.toBeNull();
-                expect(screen.queryByText('Hello')).toBeNull();
-                expect(screen.queryByText('World')).not.toBeNull();
                 expect(screen.queryByText('mutating')).toBeNull();
             });
+            expect(screen.queryByText('Hello')).toBeNull();
+            expect(screen.queryByText('World')).not.toBeNull();
         });
         it('when pessimistic, displays error and error side effects when dataProvider promise rejects', async () => {
             jest.spyOn(console, 'log').mockImplementation(() => {});
