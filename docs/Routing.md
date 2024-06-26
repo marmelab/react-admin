@@ -146,14 +146,14 @@ const App = () => (
 
 React-admin links are absolute (e.g. `/posts/123/show`). If you serve your admin from a sub path (e.g. `/admin`), react-admin works seamlessly as it only appends a hash (URLs will look like `/admin#/posts/123/show`).
 
-However, if you serve your admin from a sub path AND use another Router (like `BrowserRouter` for instance), you need to set the `<Admin basename>` prop, so that react-admin routes include the basename in all links (e.g. `/admin/posts/123/show`).
+However, if you serve your admin from a sub path AND use another Router (like `BrowserRouter` for instance), you need to set the `<BrowserRouter basename>` prop, so that react-admin routes include the basename in all links (e.g. `/admin/posts/123/show`).
 
 ```jsx
 import { Admin, Resource } from 'react-admin';
 
 const App = () => (
-    <BrowserRouter>
-        <Admin basename="/admin" dataProvider={...}>
+    <BrowserRouter basename="/admin">
+        <Admin dataProvider={...}>
             <Resource name="posts" />
         </Admin>
     </BrowserRouter>
