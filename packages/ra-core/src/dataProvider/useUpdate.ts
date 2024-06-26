@@ -203,7 +203,7 @@ export const useUpdate = <RecordType extends RaRecord = any, ErrorType = Error>(
                     'useUpdate mutation requires a non-empty resource'
                 );
             }
-            if (!callTimeId) {
+            if (callTimeId == null) {
                 throw new Error('useUpdate mutation requires a non-empty id');
             }
             if (!callTimeData) {
