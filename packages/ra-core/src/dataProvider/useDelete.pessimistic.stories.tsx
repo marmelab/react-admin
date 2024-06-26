@@ -28,7 +28,7 @@ export const SuccessCase = () => {
                     const index = posts.findIndex(p => p.id === params.id);
                     posts.splice(index, 1);
                     resolve({ data: params.previousData });
-                }, 1000);
+                }, 500);
             });
         },
     } as any;
@@ -94,7 +94,7 @@ export const ErrorCase = () => {
             return new Promise((resolve, reject) => {
                 setTimeout(() => {
                     reject(new Error('something went wrong'));
-                }, 1000);
+                }, 500);
             });
         },
     } as any;
