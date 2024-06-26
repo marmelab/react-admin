@@ -210,7 +210,14 @@ const App = () => (
 
 ## `recordRepresentation`
 
-Whenever react-admin needs to render a record (e.g. in the title of an edition view, or in a `<ReferenceField>`), it uses the `recordRepresentation` to do it. By default, the representation of a record is its `id` field. But you can customize it by specifying the representation you want.
+Whenever react-admin needs to render a record (e.g. in the title of an edition view, or in a `<ReferenceField>`), it uses the `recordRepresentation` to do it. By default, react-admin will use the first available field among the following:
+- `name`
+- `title`
+- `label`
+- `reference`
+- `id`
+
+However, you can customize it by specifying the representation you want.
 
 For instance, to change the default representation of "users" records to render the full name instead of the id:
 

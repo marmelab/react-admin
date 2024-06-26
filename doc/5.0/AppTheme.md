@@ -94,6 +94,16 @@ const App = () => (
 );
 ```
 
+**Tip**: If you provide both a `theme` and a `darkTheme`, react-admin will choose the default theme to use for each user based on their OS preference. If you prefer to always default to the light or the dark theme regardless of the user’s OS preference, you can set the [`<Admin defaultTheme>`](./Admin.md#defaulttheme) prop to either "light" or "dark":
+
+```tsx
+const App = () => (
+    <Admin defaultTheme="light">
+        // ...
+    </Admin>
+);
+```
+
 ## Built-In Themes
 
 React-admin comes with 4 built-in themes, each one having a light and a dark variant. You can use them as a starting point for your custom theme, or use them as-is.
