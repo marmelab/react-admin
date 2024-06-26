@@ -1,5 +1,16 @@
 # Changelog
 
+## v5.0.2
+
+* Fix `useUpdate` throws an error when record id is a valid falsy value such as zero ([#9957](https://github.com/marmelab/react-admin/pull/9957)) ([djhi](https://github.com/djhi))
+* Fix `<DatagridHeader>` Tooltip when using React element as a field label ([#9948](https://github.com/marmelab/react-admin/pull/9948)) ([djhi](https://github.com/djhi))
+* Fix Inputs used outside `<Form>` need a `SourceContext` ([#9944](https://github.com/marmelab/react-admin/pull/9944)) ([adguernier](https://github.com/adguernier))
+* Backport Changes from 4.x branch ([#9949](https://github.com/marmelab/react-admin/pull/9949)) ([djhi](https://github.com/djhi))
+* [Doc] Fix basename usage in routing chapter ([#9956](https://github.com/marmelab/react-admin/pull/9956)) ([djhi](https://github.com/djhi))
+* [Doc] Update tutorial for v5 ([#9945](https://github.com/marmelab/react-admin/pull/9945)) ([djhi](https://github.com/djhi))
+* [Doc] Explain that `<Form sanitizeEmptyValues>` does not work on nested fields ([#9950](https://github.com/marmelab/react-admin/pull/9950)) ([djhi](https://github.com/djhi))
+* [Dev] Fix flaky tests ([#9952](https://github.com/marmelab/react-admin/pull/9952)) ([djhi](https://github.com/djhi))
+
 ## v5.0.1
 
 * Fix useFormGroup does not update when its group changes ([#9940](https://github.com/marmelab/react-admin/pull/9940)) ([djhi](https://github.com/djhi))
