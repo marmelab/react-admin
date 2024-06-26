@@ -153,27 +153,27 @@ export default (data, loggingEnabled = false, delay?: number): DataProvider => {
      * @param {Object} params The data request params, depending on the type
      * @returns {Promise} The response
      */
-    const handle = (type, resource, params): Promise<any> => {
+    const handle = async (type, resource, params): Promise<any> => {
         const collection = database.getCollection(resource);
         if (!collection && type !== 'create') {
             const error = new UndefinedResourceError(
                 `Undefined collection "${resource}"`
             );
             error.code = 1; // make that error detectable
-            return Promise.reject(error);
+            throw error;
         }
         let response;
         try {
-            response = getResponse(type, resource, params);
+            response = await getResponse(type, resource, params);
         } catch (error) {
             console.error(error);
-            return Promise.reject(error);
+            throw error;
         }
         if (loggingEnabled) {
             const { signal, ...paramsWithoutSignal } = params;
             log(type, resource, paramsWithoutSignal, response);
         }
-        return Promise.resolve(response);
+        return response;
     };
 
     return {
