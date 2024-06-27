@@ -1,7 +1,12 @@
 import { useCallback, useMemo } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 
-import { FilterPayload, RaRecord, SortPayload } from '../../types';
+import {
+    FilterPayload,
+    GetListResult,
+    RaRecord,
+    SortPayload,
+} from '../../types';
 import { useGetList, useGetManyAggregate } from '../../dataProvider';
 import { useReferenceParams } from './useReferenceParams';
 import { ChoicesContextValue } from '../../form';
@@ -68,7 +73,9 @@ export const useReferenceArrayInputController = <
         },
         {
             enabled: value != null && value.length > 0,
-            ...otherQueryOptions,
+            ...(otherQueryOptions as UseQueryOptions<
+                GetManyAggregateResult<RecordType>
+            >),
         }
     );
 
@@ -113,7 +120,9 @@ export const useReferenceArrayInputController = <
             retry: false,
             enabled: isGetMatchingEnabled,
             keepPreviousData: true,
-            ...otherQueryOptions,
+            ...(otherQueryOptions as UseQueryOptions<
+                GetListResult<RecordType>
+            >),
         }
     );
 
@@ -189,19 +198,16 @@ const mergeReferences = <RecordType extends RaRecord = any>(
     return res;
 };
 
+type GetManyAggregateResult<RecordType extends RaRecord = any> = RecordType[];
+
 export interface UseReferenceArrayInputParams<
     RecordType extends RaRecord = any
 > {
     debounce?: number;
     filter?: FilterPayload;
-    queryOptions?: UseQueryOptions<{
-        data: RecordType[];
-        total?: number;
-        pageInfo?: {
-            hasNextPage?: boolean;
-            hasPreviousPage?: boolean;
-        };
-    }> & { meta?: any };
+    queryOptions?: UseQueryOptions<
+        GetListResult<RecordType> | GetManyAggregateResult<RecordType>
+    > & { meta?: any };
     page?: number;
     perPage?: number;
     record?: RecordType;
