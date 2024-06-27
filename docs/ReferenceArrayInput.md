@@ -254,7 +254,7 @@ This prop is mostly useful when using [`<SelectArrayInput>`](./SelectArrayInput.
 
 ## `queryOptions`
 
-Use the `queryOptions` prop to pass options to the `dataProvider.getList()` query that fetches the possible choices.
+Use the `queryOptions` prop to pass options to the `dataProvider.getList()` query that fetches the possible choices, as well as the `dataProvider.getManyAggregate()` query that retrieves the currently selected choices.
 
 For instance, to pass [a custom `meta`](./Actions.md#meta-parameter):
 
