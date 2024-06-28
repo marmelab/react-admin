@@ -169,7 +169,7 @@ nav ul li:nth-child(7) {
 
 ul.sidenav code {
     font-size: 0.9em;
-    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+    font-family: Menlo, Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
 }
 
 .sidenav img.premium {
@@ -398,7 +398,7 @@ ul.sidenav code {
 
 .markdown-section code,
 .markdown-section pre {
-    font-family: Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+    font-family: Menlo, Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
     direction: ltr;
     margin: 0;
     padding: 0;
@@ -713,13 +713,13 @@ body.no-sidebar .sidenav-trigger {
 }
 
 .language-switcher {
-    background-color: #f5f2f0;
+    background-color: #eff1f5;
     padding: 0.5rem 1rem;
     transition: all 0.2s ease-in-out;
 }
 
 .language-switcher.active {
-    background-color: #f5f2f0;
+    background-color: #eff1f5;
     text-decoration: none !important;
 }
 
