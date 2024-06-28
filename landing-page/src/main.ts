@@ -78,7 +78,7 @@ if (buildingBlocksULs[0] === null) {
 
 for (let i = 0; i < 5; i++) {
   buildingBlocksULs.push(
-    buildingBlocksULs[0].cloneNode(true) as typeof buildingBlocksULs[0]
+    buildingBlocksULs[0].cloneNode(true) as (typeof buildingBlocksULs)[0]
   );
 
   for (let j = 0; j < buildingBlocksULs[i]!.childElementCount; j++) {
@@ -106,4 +106,17 @@ for (let i = 0; i < buildingBlocksULs.length; i++) {
     "slide" + (i % 2 === 0 ? "Left" : "Right") + " 90s linear infinite";
 }
 
-export {};
+
+function hideBanner() {
+const banner = document.getElementById("banner");
+if (banner) {
+  banner.style.display = "none";
+}
+}
+const closeBanner = document.getElementById("closeBanner");
+if (closeBanner) {
+  closeBanner.addEventListener("click", (e) => {
+    e.preventDefault();
+    hideBanner();
+  });
+}
