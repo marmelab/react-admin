@@ -42,6 +42,23 @@ body {
   --translate-speed: 3;
   transform-origin: bottom center;
   /* --base-scale and min-scale are defined on the HTML element through tailwind responsive classes */
-  transform:
-    scale(clamp(var(--min-scale), calc(var(--base-scale) - var(--scale-speed) * var(--scroll)), var(--base-scale))) translateY(calc(var(--scroll) * var(--translate-speed) * var(--translate-base)));
+  transform: scale(
+      clamp(
+        var(--min-scale),
+        calc(var(--base-scale) - var(--scale-speed) * var(--scroll)),
+        var(--base-scale)
+      )
+    )
+    translateY(
+      calc(var(--scroll) * var(--translate-speed) * var(--translate-base))
+    );
+}
+
+#closeBanner {
+  cursor: pointer;
+}
+@media screen and (max-width: 576px) {
+  #closeBanner {
+    display: none;
+  }
 }
