@@ -180,7 +180,7 @@ export type UseGetManyReferenceHookOptions<RecordType extends RaRecord = any> =
     };
 
 export type UseGetManyReferenceHookValue<RecordType extends RaRecord = any> =
-    Omit<UseQueryResult<RecordType[]>, 'queryKey' | 'queryFn'> & {
+    UseQueryResult<RecordType[]> & {
         total?: number;
         pageInfo?: {
             hasNextPage?: boolean;
