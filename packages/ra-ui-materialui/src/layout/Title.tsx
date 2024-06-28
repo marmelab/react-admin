@@ -4,6 +4,7 @@ import { ReactElement } from 'react';
 import { createPortal } from 'react-dom';
 import { RaRecord, TitleComponent, warning } from 'ra-core';
 
+import { PageTitle } from './PageTitle';
 import { PageTitleConfigurable } from './PageTitleConfigurable';
 
 export const Title = (props: TitleProps) => {
@@ -31,19 +32,19 @@ export const Title = (props: TitleProps) => {
 
     warning(!defaultTitle && !title, 'Missing title prop in <Title> element');
 
-    return (
-        <>
-            {createPortal(
-                <PageTitleConfigurable
-                    title={title}
-                    defaultTitle={defaultTitle}
-                    preferenceKey={preferenceKey}
-                    {...rest}
-                />,
-                container
-            )}
-        </>
-    );
+    const pageTitle =
+        preferenceKey === false ? (
+            <PageTitle title={title} defaultTitle={defaultTitle} {...rest} />
+        ) : (
+            <PageTitleConfigurable
+                title={title}
+                defaultTitle={defaultTitle}
+                preferenceKey={preferenceKey}
+                {...rest}
+            />
+        );
+
+    return <>{createPortal(pageTitle, container)}</>;
 };
 
 export interface TitleProps {
@@ -51,5 +52,5 @@ export interface TitleProps {
     defaultTitle?: TitleComponent;
     record?: Partial<RaRecord>;
     title?: string | ReactElement;
-    preferenceKey?: string;
+    preferenceKey?: string | false;
 }
