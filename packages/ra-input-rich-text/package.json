@@ -40,8 +40,8 @@
     "peerDependencies": {
         "@mui/icons-material": "^5.15.20",
         "@mui/material": "^5.15.20",
-        "ra-core": "^4.0.0",
-        "ra-ui-materialui": "^4.0.0",
+        "ra-core": "^5.0.0",
+        "ra-ui-materialui": "^5.0.0",
         "react": "^18.0.0 || ^19.0.0",
         "react-dom": "^18.0.0 || ^19.0.0"
     },
