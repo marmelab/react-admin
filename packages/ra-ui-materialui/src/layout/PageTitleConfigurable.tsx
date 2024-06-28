@@ -27,7 +27,12 @@ export const PageTitleEditor = () => {
     );
 };
 
-export const PageTitleConfigurable = ({ preferenceKey, ...props }) => {
+export const PageTitleConfigurable = ({
+    preferenceKey,
+    title,
+    defaultTitle,
+    ...props
+}) => {
     const { pathname } = useLocation();
     return (
         <Configurable
@@ -39,24 +44,30 @@ export const PageTitleConfigurable = ({ preferenceKey, ...props }) => {
                 },
             }}
         >
-            <PageTitleConfigurableInner {...props} />
+            <PageTitleConfigurableInner
+                title={title}
+                defaultTitle={defaultTitle}
+                {...props}
+            />
         </Configurable>
     );
 };
 
-const PageTitleConfigurableInner = props => {
+const PageTitleConfigurableInner = ({ title, defaultTitle, ...props }) => {
     const [titleFromPreferences] = usePreference();
     const translate = useTranslate();
     const record = useRecordContext();
 
     return titleFromPreferences ? (
-        <span className={props.className}>
+        <span className={props.className} {...props}>
             {translate(titleFromPreferences, {
                 ...record,
                 _: titleFromPreferences,
             })}
         </span>
     ) : (
-        <PageTitle {...props} />
+        <>
+            <PageTitle title={title} defaultTitle={defaultTitle} {...props} />
+        </>
     );
 };

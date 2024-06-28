@@ -121,3 +121,15 @@ const CustomPage = () => (
 );
 ```
 
+If you want to disable configuring the page title even while in [Configurable mode](./AppBar.md#configurable), you can pass `preferenceKey=false`.
+
+```jsx
+import { Title } from 'react-admin';
+
+const CustomPageWithNonConfigurableTitle = () => (
+    <>
+        <Title title="My Custom Page" preferenceKey={false} />
+        <div>Content</div>
+    </>
+);
+```
