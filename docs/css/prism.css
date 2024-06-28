@@ -2,10 +2,10 @@
 https://prismjs.com/download.html#themes=prism&languages=markup+css+clike+javascript+jsx+tsx+typescript */
 code[class*="language-"],
 pre[class*="language-"] {
-  color: #000;
+  color: #222;
   background: 0 0;
   text-shadow: 0 1px #fff;
-  font-family: Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
+  font-family: Menlo, Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
   text-align: left;
   white-space: pre;
   word-spacing: normal;
@@ -44,10 +44,11 @@ pre[class*="language-"] {
   padding: 1em;
   margin: 0;
   overflow: auto;
+  border-radius: 4px;
 }
 :not(pre) > code[class*="language-"],
 pre[class*="language-"] {
-  background: #f5f2f0;
+  background: #eff1f5;
 }
 :not(pre) > code[class*="language-"] {
   padding: 0.1em;
