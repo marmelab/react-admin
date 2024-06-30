@@ -30,6 +30,7 @@ describe('<BulkDeleteWithConfirmButton />', () => {
             return null;
         };
 
+        const successMessage = 'Test Message';
         render(
             <CoreAdminContext dataProvider={dataProvider}>
                 <ThemeProvider theme={theme}>
@@ -42,6 +43,7 @@ describe('<BulkDeleteWithConfirmButton />', () => {
                         <BulkDeleteWithConfirmButton
                             resource="test"
                             mutationMode={'pessimistic'}
+                            successMessage={successMessage}
                         />
                         <Notification />
                     </ListContextProvider>
@@ -54,7 +56,7 @@ describe('<BulkDeleteWithConfirmButton />', () => {
         await waitFor(() => {
             expect(notificationsSpy).toEqual([
                 {
-                    message: 'ra.notification.deleted',
+                    message: successMessage,
                     type: 'info',
                     notificationOptions: {
                         messageArgs: { smart_count: 1 },

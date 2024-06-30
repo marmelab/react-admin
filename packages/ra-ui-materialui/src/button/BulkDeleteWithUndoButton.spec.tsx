@@ -30,6 +30,7 @@ describe('<BulkDeleteWithUndoButton />', () => {
             return null;
         };
 
+        const successMessage = 'Test Message';
         render(
             <CoreAdminContext dataProvider={dataProvider}>
                 <ThemeProvider theme={theme}>
@@ -39,7 +40,10 @@ describe('<BulkDeleteWithUndoButton />', () => {
                             onUnselectItems: jest.fn(),
                         }}
                     >
-                        <BulkDeleteWithUndoButton resource="test" />
+                        <BulkDeleteWithUndoButton
+                            resource="test"
+                            successMessage={successMessage}
+                        />
                         <Notification />
                     </ListContextProvider>
                 </ThemeProvider>
@@ -50,7 +54,7 @@ describe('<BulkDeleteWithUndoButton />', () => {
         await waitFor(() => {
             expect(notificationsSpy).toEqual([
                 {
-                    message: 'ra.notification.deleted',
+                    message: successMessage,
                     type: 'info',
                     notificationOptions: {
                         messageArgs: { smart_count: 1 },
