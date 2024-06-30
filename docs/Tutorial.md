@@ -319,9 +319,9 @@ This shows that the `<List>` child can be anything you want - even a custom Reac
 
 ## Selecting Columns
 
-Let's get back to `<Datagrid>`. It reads the data fetched by `<List>`, then renders a table with one row for each record. `<Datagrid>` uses its child components (here, a list of [`<TextField>`](./TextField.md) and [`<EmailField>`](./EmailField.md)) to determine the columns to render. Each [Field](./Fields.md) component maps a different field in the API response, specified by the `source` prop.
+Let's get back to `<Datagrid>`. It reads the data fetched by `<List>`, then renders a table with one row for each record. `<Datagrid>` uses its child components (here, a list of [Field component](./Fields.md)) to render the columns. Each Field component renders one field of the current record, specified by the `source` prop.
 
-`<ListGuesser>` created one column for every field in the response. That's a bit too much for a usable grid, so let's remove a couple of `<TextField>` components from the Datagrid and see the effect:
+`<ListGuesser>` created one column for every field in the API response. That's a bit too much for a usable grid, so let's remove a couple of `<TextField>` components from the Datagrid and see the effect:
 
 ```diff
 // in src/users.tsx
@@ -343,7 +343,7 @@ In react-admin, most configuration is achieved via components. `<Datagrid>` coul
 
 ## Using Field Types
 
-You've just met the `<TextField>` and the `<EmailField>` components. React-admin provides [many more Field components](./Fields.md), mapping various data types: number, date, image, HTML, array, relationship, etc.
+You've just met the [`<TextField>`](./TextField.md) and the [`<EmailField>`](./EmailField.md) components. React-admin provides [many more Field components](./Fields.md), mapping various data types: number, date, image, HTML, array, relationship, etc.
 
 For instance, the `website` field looks like a URL. Instead of displaying it as text, why not display it using a clickable link? That's exactly what the [`<UrlField>`](./UrlField.md) does:
 
