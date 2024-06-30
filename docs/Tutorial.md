@@ -371,7 +371,7 @@ This reflects the early stages of development with react-admin: let the guesser 
 
 In react-admin, fields are just React components. When rendered, they grab the `record` fetched from the API (e.g. `{ "id": 2, "name": "Ervin Howell", "website": "anastasia.net", ... }`) using a custom hook, and use the `source` field (e.g. `website`) to get the value they should display (e.g. "anastasia.net").
 
-That means that you can do the same to write a custom Field. For instance, here is a simplified version of the `<UrlField>`:
+That means that you can do the same to [write a custom Field](./Fields.md#writing-your-own-field-component). For instance, here is a simplified version of the `<UrlField>`:
 
 ```tsx
 // in src/MyUrlField.tsx
