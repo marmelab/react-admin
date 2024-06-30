@@ -73,7 +73,7 @@ This empty component only defines a `dataProvider` prop. But what is a data prov
 
 ## Using an API As Data Source
 
-React-admin apps are single-Page-Apps (SPAs) running in the browser, and fetching data from an API. Since there is no standard for data exchanges between computers, react-admin needs an adapter to talk to your API. This adapter is called a [*Data Provider*](https://marmelab.com/react-admin/DataProviders.html).
+React-admin apps are single-Page-Apps (SPAs) running in the browser, and fetching data from an API. Since there is no standard for data exchanges between computers, react-admin needs an adapter to talk to your API. This adapter is called a [*Data Provider*](./DataProviders.md).
 
 For this tutorial, we'll be using [JSONPlaceholder](https://jsonplaceholder.typicode.com/), a fake REST API designed for testing and prototyping, as the data source for the application. Here is what it looks like:
 
