@@ -16,9 +16,8 @@ import {
     TopToolbar,
     useGetIdentity,
     useListContext,
-    number,
 } from 'react-admin';
-import type { FetchRelatedRecords, DataProvider } from 'react-admin';
+import type { FetchRelatedRecords } from 'react-admin';
 import {
     List,
     ListItem,
@@ -146,8 +145,7 @@ const ContactListActions = () => (
 
 const exporter = async (
     records: Contact[],
-    fetchRelatedRecords: FetchRelatedRecords,
-    dataProvider: DataProvider
+    fetchRelatedRecords: FetchRelatedRecords
 ) => {
     const companies = await fetchRelatedRecords<Company>(
         records,
@@ -155,17 +153,7 @@ const exporter = async (
         'companies'
     );
     const sales = await fetchRelatedRecords<Sale>(records, 'sales_id', 'sales');
-    const tagIds = records.reduce<number[]>(
-        (acc, contact) => acc.concat(contact.tags as number[]),
-        []
-    );
-    const { data: tags } = await dataProvider.getMany<Tag>('tags', {
-        ids: Array.from(new Set(tagIds)),
-    });
-    const tagsById = tags.reduce<{ [key: number]: Tag }>((acc, tag) => {
-        acc[tag.id as number] = tag;
-        return acc;
-    }, {});
+    const tags = await fetchRelatedRecords<Tag>(records, 'tags', 'tags');
 
     const contacts = records.map(contact => ({
         ...contact,
@@ -173,9 +161,7 @@ const exporter = async (
         sales: `${sales[contact.sales_id as number].first_name} ${
             sales[contact.sales_id as number].last_name
         }`,
-        tags: contact.tags
-            .map(tagId => tagsById[tagId as number].name)
-            .join(', '),
+        tags: contact.tags.map(tagId => tags[tagId as number].name).join(', '),
     }));
     return jsonExport(contacts, {}, (_err: any, csv: string) => {
         downloadCSV(csv, 'contacts');
