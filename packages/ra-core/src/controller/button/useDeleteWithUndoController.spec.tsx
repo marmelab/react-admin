@@ -6,8 +6,8 @@ import { fireEvent, screen, render, waitFor } from '@testing-library/react';
 import { testDataProvider } from '../../dataProvider';
 import { CoreAdminContext } from '../../core';
 import useDeleteWithUndoController, {
-    UseDeleteWithConfirmControllerParams,
-} from './useDeleteWithConfirmController';
+    UseDeleteWithUndoControllerParams,
+} from './useDeleteWithUndoController';
 
 import { TestMemoryRouter } from '../../routing';
 import { useNotificationContext } from '../../notification';
@@ -28,7 +28,7 @@ describe('useDeleteWithUndoController', () => {
                 resource: 'posts',
                 mutationMode: 'undoable',
                 mutationOptions: { meta: { key: 'metadata' } },
-            } as UseDeleteWithConfirmControllerParams);
+            } as UseDeleteWithUndoControllerParams);
             return <button onClick={handleDelete}>Delete</button>;
         };
 
@@ -60,7 +60,7 @@ describe('useDeleteWithUndoController', () => {
                 record: { id: 1 },
                 resource: 'posts',
                 successMessage,
-            } as UseDeleteWithConfirmControllerParams);
+            } as UseDeleteWithUndoControllerParams);
             return <button onClick={handleDelete}>Delete</button>;
         };
 
@@ -92,7 +92,7 @@ describe('useDeleteWithUndoController', () => {
                     type: 'info',
                     notificationOptions: {
                         messageArgs: { smart_count: 1 },
-                        undoable: false,
+                        undoable: true,
                     },
                 },
             ]);
