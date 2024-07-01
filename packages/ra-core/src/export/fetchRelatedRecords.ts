@@ -1,4 +1,9 @@
-import { RaRecord, Identifier, DataProvider } from '../types';
+import {
+    RaRecord,
+    Identifier,
+    DataProvider,
+    FetchRelatedRecords,
+} from '../types';
 
 /**
  * Helper function for calling the dataProvider.getMany() method,
@@ -13,7 +18,8 @@ import { RaRecord, Identifier, DataProvider } from '../types';
  *     );
  */
 const fetchRelatedRecords =
-    (dataProvider: DataProvider) => (data, field, resource) =>
+    (dataProvider: DataProvider): FetchRelatedRecords =>
+    (data, field, resource) =>
         dataProvider
             .getMany(resource, { ids: getRelatedIds(data, field) })
             .then(({ data }) =>

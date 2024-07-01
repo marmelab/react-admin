@@ -368,14 +368,16 @@ export interface ResourceProps {
 
 export type Exporter = (
     data: any,
-    fetchRelatedRecords: (
-        data: any,
-        field: string,
-        resource: string
-    ) => Promise<any>,
+    fetchRelatedRecords: FetchRelatedRecords,
     dataProvider: DataProvider,
     resource?: string
 ) => void | Promise<void>;
+
+export type FetchRelatedRecords = <RecordType = any>(
+    data: any[],
+    field: string,
+    resource: string
+) => Promise<{ [key: Identifier]: RecordType }>;
 
 export type SetOnSave = (
     onSave?: (values: object, redirect: any) => void

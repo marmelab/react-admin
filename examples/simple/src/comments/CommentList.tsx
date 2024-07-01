@@ -18,6 +18,7 @@ import {
     ListActions,
     DateField,
     EditButton,
+    FetchRelatedRecords,
     Pagination,
     ReferenceField,
     ReferenceInput,
@@ -36,7 +37,7 @@ const commentFilters = [
     <ReferenceInput source="post_id" reference="posts" />,
 ];
 
-const exporter = (records, fetchRelatedRecords) =>
+const exporter = (records, fetchRelatedRecords: FetchRelatedRecords) =>
     fetchRelatedRecords(records, 'post_id', 'posts').then(posts => {
         const data = records.map(record => {
             const { author, ...recordForExport } = record; // omit author
