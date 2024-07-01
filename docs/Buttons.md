@@ -185,6 +185,8 @@ export const PostList = () => (
 | `exporter`   | Optional | `Function`      | -                  | Override the List exporter function |
 | `meta`       | Optional | `any`           | undefined          | Metadata passed to the dataProvider |
 
+**Tip**: If you are looking for an `<ImportButton>`, check out this third-party package: [benwinding/react-admin-import-csv](https://github.com/benwinding/react-admin-import-csv).
+
 ### `<BulkExportButton>`
 
 Same as `<ExportButton>`, except it only exports the selected rows instead of the entire list. To be used inside [the `<Datagrid bulkActionButtons>` prop](./Datagrid.md#bulkactionbuttons).
