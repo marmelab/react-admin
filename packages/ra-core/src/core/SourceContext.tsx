@@ -30,15 +30,21 @@ export type SourceContextValue = {
  *   );
  * };
  */
-export const SourceContext = createContext<SourceContextValue>({
+export const SourceContext = createContext<SourceContextValue | undefined>(
+    undefined
+);
+
+const defaultContextValue = {
     getSource: (source: string) => source,
     getLabel: (source: string) => source,
-});
-
+};
 export const SourceContextProvider = SourceContext.Provider;
 
 export const useSourceContext = () => {
     const context = useContext(SourceContext);
+    if (!context) {
+        return defaultContextValue;
+    }
     return context;
 };
 

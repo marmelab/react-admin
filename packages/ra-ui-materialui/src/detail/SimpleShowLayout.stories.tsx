@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Grid, Divider as MuiDivider } from '@mui/material';
 import {
+    I18nContextProvider,
     RecordContextProvider,
     ResourceContext,
     useRecordContext,
@@ -172,4 +173,26 @@ export const Nested = () => (
             </SimpleShowLayout>
         </RecordContextProvider>
     </ResourceContext.Provider>
+);
+
+export const I18nKey = () => (
+    <I18nContextProvider
+        value={{
+            getLocale: () => 'en',
+            translate: m => m,
+            changeLocale: async () => {},
+        }}
+    >
+        <ResourceContext.Provider value="books">
+            <RecordContextProvider value={record}>
+                <SimpleShowLayout>
+                    <TextField source="id" />
+                    <TextField source="title" />
+                    <TextField source="author" />
+                    <TextField source="summary" />
+                    <NumberField source="year" />
+                </SimpleShowLayout>
+            </RecordContextProvider>
+        </ResourceContext.Provider>
+    </I18nContextProvider>
 );
