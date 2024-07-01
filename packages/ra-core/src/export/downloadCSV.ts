@@ -1,4 +1,4 @@
-export default (csv: string, filename: string = 'export'): void => {
+export const downloadCSV = (csv: string, filename: string = 'export'): void => {
     const fakeLink = document.createElement('a');
     fakeLink.style.display = 'none';
     document.body.appendChild(fakeLink);
