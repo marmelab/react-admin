@@ -71,7 +71,7 @@ That's enough to display the post show view above.
 | `queryOptions`   | Optional | `object`          |         | The options to pass to the `useQuery` hook
 | `resource`       | Optional | `string`          |         | The resource name, e.g. `posts`
 | `sx`             | Optional | `object`          |         | Override or extend the styles applied to the component
-| `title`          | Optional | `string | ReactElement` |   | The title to display in the App Bar
+| `title`          | Optional | `string | ReactElement | false` |   | The title to display in the App Bar
 
 ## `actions`
 
@@ -385,9 +385,9 @@ To override the style of all instances of `<Show>` using the [application-wide s
 
 ## `title`
 
-By default, the title for the Show view is `"[resource_name] #[record_id]"`.
+By default, the title for the Show view is "[resource_name] [record representation]". Check the [`<Resource recordRepresentation>`](./Resource.md#recordrepresentation) prop for more details.
 
-You can customize this title by specifying a custom `title` prop:
+You can customize this title by specifying a custom `title` string:
 
 ```jsx
 export const PostShow = () => (
@@ -397,7 +397,7 @@ export const PostShow = () => (
 );
 ```
 
-More interestingly, you can pass a component as `title`. React-admin clones this component, which can access the current record via `useRecordContext`. This allows to customize the title according to the current record:
+More interestingly, you can pass an element as `title`. This element can access the current record via `useRecordContext`. This allows to customize the title according to the current record:
 
 ```jsx
 import { useRecordContext, Show } from 'react-admin';
@@ -411,6 +411,16 @@ const PostTitle = () => {
 
 export const PostShow = () => (
     <Show title={<PostTitle />}>
+        ...
+    </Show>
+);
+```
+
+Finally, you can also pass `false` to disable the title:
+
+```jsx
+export const PostShow = () => (
+    <Show title={false}>
         ...
     </Show>
 );

@@ -31,11 +31,13 @@ export const ShowView = (props: ShowViewProps) => {
     }
     return (
         <Root className={clsx('show-page', className)} {...rest}>
-            <Title
-                title={title}
-                defaultTitle={defaultTitle}
-                preferenceKey={`${resource}.show.title`}
-            />
+            {title !== false && (
+                <Title
+                    title={title}
+                    defaultTitle={defaultTitle}
+                    preferenceKey={`${resource}.show.title`}
+                />
+            )}
             {finalActions !== false && finalActions}
             <div
                 className={clsx(ShowClasses.main, {
@@ -55,7 +57,7 @@ export interface ShowViewProps
     aside?: ReactElement;
     component?: ElementType;
     emptyWhileLoading?: boolean;
-    title?: string | ReactElement;
+    title?: string | ReactElement | false;
     sx?: SxProps;
 }
 

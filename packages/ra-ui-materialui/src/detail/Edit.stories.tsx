@@ -1,15 +1,15 @@
 import * as React from 'react';
 import { Admin } from 'react-admin';
-import { Resource, useRecordContext, TestMemoryRouter } from 'ra-core';
+import { Resource, Form, useRecordContext, TestMemoryRouter } from 'ra-core';
 import { Box, Card, Stack } from '@mui/material';
-import { TextField } from '../field';
-import { Labeled } from '../Labeled';
-import { SimpleShowLayout } from './SimpleShowLayout';
-import { EditButton } from '../button';
-import TopToolbar from '../layout/TopToolbar';
-import { Show } from './Show';
 
-export default { title: 'ra-ui-materialui/detail/Show' };
+import { TextInput } from '../input';
+import { SimpleForm } from '../form/SimpleForm';
+import { ShowButton, SaveButton } from '../button';
+import TopToolbar from '../layout/TopToolbar';
+import { Edit } from './Edit';
+
+export default { title: 'ra-ui-materialui/detail/Edit' };
 
 const dataProvider = {
     getOne: () =>
@@ -31,42 +31,37 @@ const BookTitle = () => {
 };
 
 export const Basic = () => (
-    <TestMemoryRouter initialEntries={['/books/1/show']}>
+    <TestMemoryRouter initialEntries={['/books/1/Edit']}>
         <Admin dataProvider={dataProvider}>
             <Resource
                 name="books"
-                show={() => (
-                    <Show>
+                edit={() => (
+                    <Edit>
                         <BookTitle />
-                    </Show>
+                    </Edit>
                 )}
             />
         </Admin>
     </TestMemoryRouter>
 );
 
-export const WithFields = () => (
-    <TestMemoryRouter initialEntries={['/books/1/show']}>
+export const WithForm = () => (
+    <TestMemoryRouter initialEntries={['/books/1/Edit']}>
         <Admin dataProvider={dataProvider}>
             <Resource
                 name="books"
-                show={() => (
-                    <Show>
-                        <Stack spacing={2} sx={{ padding: 2 }}>
-                            <Labeled label="Title">
-                                <TextField source="title" />
-                            </Labeled>
-                            <Labeled label="Author">
-                                <TextField source="author" />
-                            </Labeled>
-                            <Labeled label="Summary">
-                                <TextField source="summary" />
-                            </Labeled>
-                            <Labeled label="Year">
-                                <TextField source="year" />
-                            </Labeled>
-                        </Stack>
-                    </Show>
+                edit={() => (
+                    <Edit>
+                        <Form>
+                            <Stack spacing={2} sx={{ padding: 2 }}>
+                                <TextInput source="title" />
+                                <TextInput source="author" />
+                                <TextInput source="summary" />
+                                <TextInput source="year" />
+                            </Stack>
+                            <SaveButton />
+                        </Form>
+                    </Edit>
                 )}
             />
         </Admin>
@@ -74,20 +69,20 @@ export const WithFields = () => (
 );
 
 export const Actions = () => (
-    <TestMemoryRouter initialEntries={['/books/1/show']}>
+    <TestMemoryRouter initialEntries={['/books/1/Edit']}>
         <Admin dataProvider={dataProvider}>
             <Resource
                 name="books"
-                show={() => (
-                    <Show
+                edit={() => (
+                    <Edit
                         actions={
                             <TopToolbar>
-                                <EditButton />
+                                <ShowButton />
                             </TopToolbar>
                         }
                     >
                         <BookTitle />
-                    </Show>
+                    </Edit>
                 )}
             />
         </Admin>
@@ -95,14 +90,14 @@ export const Actions = () => (
 );
 
 export const Title = () => (
-    <TestMemoryRouter initialEntries={['/books/1/show']}>
+    <TestMemoryRouter initialEntries={['/books/1/Edit']}>
         <Admin dataProvider={dataProvider}>
             <Resource
                 name="books"
-                show={() => (
-                    <Show title="Hello">
+                edit={() => (
+                    <Edit title="Hello">
                         <BookTitle />
-                    </Show>
+                    </Edit>
                 )}
             />
         </Admin>
@@ -110,14 +105,14 @@ export const Title = () => (
 );
 
 export const TitleElement = () => (
-    <TestMemoryRouter initialEntries={['/books/1/show']}>
+    <TestMemoryRouter initialEntries={['/books/1/Edit']}>
         <Admin dataProvider={dataProvider}>
             <Resource
                 name="books"
-                show={() => (
-                    <Show title={<span>Hello</span>}>
+                edit={() => (
+                    <Edit title={<span>Hello</span>}>
                         <BookTitle />
-                    </Show>
+                    </Edit>
                 )}
             />
         </Admin>
@@ -125,14 +120,14 @@ export const TitleElement = () => (
 );
 
 export const TitleFalse = () => (
-    <TestMemoryRouter initialEntries={['/books/1/show']}>
+    <TestMemoryRouter initialEntries={['/books/1/Edit']}>
         <Admin dataProvider={dataProvider}>
             <Resource
                 name="books"
-                show={() => (
-                    <Show title={false}>
+                edit={() => (
+                    <Edit title={false}>
                         <BookTitle />
-                    </Show>
+                    </Edit>
                 )}
             />
         </Admin>
@@ -142,14 +137,14 @@ export const TitleFalse = () => (
 const AsideComponent = () => <Card sx={{ padding: 2 }}>Aside</Card>;
 
 export const Aside = () => (
-    <TestMemoryRouter initialEntries={['/books/1/show']}>
+    <TestMemoryRouter initialEntries={['/books/1/Edit']}>
         <Admin dataProvider={dataProvider}>
             <Resource
                 name="books"
-                show={() => (
-                    <Show aside={<AsideComponent />}>
+                edit={() => (
+                    <Edit aside={<AsideComponent />}>
                         <BookTitle />
-                    </Show>
+                    </Edit>
                 )}
             />
         </Admin>
@@ -166,14 +161,14 @@ const CustomWrapper = ({ children }) => (
 );
 
 export const Component = () => (
-    <TestMemoryRouter initialEntries={['/books/1/show']}>
+    <TestMemoryRouter initialEntries={['/books/1/Edit']}>
         <Admin dataProvider={dataProvider}>
             <Resource
                 name="books"
-                show={() => (
-                    <Show component={CustomWrapper}>
+                edit={() => (
+                    <Edit component={CustomWrapper}>
                         <BookTitle />
-                    </Show>
+                    </Edit>
                 )}
             />
         </Admin>
@@ -181,19 +176,19 @@ export const Component = () => (
 );
 
 export const SX = () => (
-    <TestMemoryRouter initialEntries={['/books/1/show']}>
+    <TestMemoryRouter initialEntries={['/books/1/Edit']}>
         <Admin dataProvider={dataProvider}>
             <Resource
                 name="books"
-                show={() => (
-                    <Show
+                edit={() => (
+                    <Edit
                         sx={{
                             padding: 2,
                             border: '1px solid #333',
                         }}
                     >
                         <BookTitle />
-                    </Show>
+                    </Edit>
                 )}
             />
         </Admin>
@@ -201,7 +196,7 @@ export const SX = () => (
 );
 
 export const Meta = () => (
-    <TestMemoryRouter initialEntries={['/books/1/show']}>
+    <TestMemoryRouter initialEntries={['/books/1/Edit']}>
         <Admin
             dataProvider={
                 {
@@ -214,10 +209,10 @@ export const Meta = () => (
         >
             <Resource
                 name="books"
-                show={() => (
-                    <Show queryOptions={{ meta: { foo: 'bar ' } }}>
+                edit={() => (
+                    <Edit queryOptions={{ meta: { foo: 'bar ' } }}>
                         <BookTitle />
-                    </Show>
+                    </Edit>
                 )}
             />
         </Admin>
@@ -225,21 +220,21 @@ export const Meta = () => (
 );
 
 export const Default = () => (
-    <TestMemoryRouter initialEntries={['/books/1/show']}>
+    <TestMemoryRouter initialEntries={['/books/1/Edit']}>
         <Admin dataProvider={dataProvider}>
             <Resource
                 name="books"
-                show={() => (
-                    <Show>
-                        <SimpleShowLayout>
-                            <TextField source="title" />
-                            <TextField source="author" />
-                            <TextField source="summary" />
-                            <TextField source="year" />
-                        </SimpleShowLayout>
-                    </Show>
+                edit={() => (
+                    <Edit>
+                        <SimpleForm>
+                            <TextInput source="title" />
+                            <TextInput source="author" />
+                            <TextInput source="summary" />
+                            <TextInput source="year" />
+                        </SimpleForm>
+                    </Edit>
                 )}
-                edit={() => <span />}
+                show={() => <span />}
             />
         </Admin>
     </TestMemoryRouter>

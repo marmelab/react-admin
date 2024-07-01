@@ -72,8 +72,8 @@ You can find more advanced examples of `<List>` usage in the [demos](./Demos.md)
 | `queryOptions`            | Optional | `object`       | -              | The options to pass to the `useQuery` hook.                                                  |
 | `resource`                | Optional | `string`       | -              | The resource name, e.g. `posts`.                                                             |
 | `sort`                    | Optional | `object`       | -              | The initial sort parameters.                                                                 |
-| `storeKey`                | Optional | `string \| false` | -           | The key to use to store the current filter & sort. Pass `false` to disable store syncronization |
-| `title`                   | Optional | `string`       | -              | The title to display in the App Bar.                                                         |
+| `storeKey`                | Optional | `string | false` | -           | The key to use to store the current filter & sort. Pass `false` to disable store synchronization |
+| `title`                   | Optional | `string | ReactElement | false` | -              | The title to display in the App Bar.                                                         |
 | `sx`                      | Optional | `object`       | -              | The CSS styles to apply to the component.                                                    |
 
 Additional props are passed down to the root component (a MUI `<Card>` by default).
@@ -946,7 +946,7 @@ export const PostList = () => (
 );
 ```
 
-The title can be either a string or a React element.
+The title can be a string, a React element, or `false` to disable the title.
 
 ## `sx`: CSS API
 

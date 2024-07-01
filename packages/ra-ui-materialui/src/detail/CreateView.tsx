@@ -21,11 +21,13 @@ export const CreateView = (props: CreateViewProps) => {
 
     return (
         <Root className={clsx('create-page', className)} {...rest}>
-            <Title
-                title={title}
-                defaultTitle={defaultTitle}
-                preferenceKey={`${resource}.create.title`}
-            />
+            {title !== false && (
+                <Title
+                    title={title}
+                    defaultTitle={defaultTitle}
+                    preferenceKey={`${resource}.create.title`}
+                />
+            )}
             {actions}
             <div
                 className={clsx(CreateClasses.main, {
@@ -45,7 +47,7 @@ export interface CreateViewProps
     aside?: ReactElement;
     component?: ElementType;
     sx?: SxProps;
-    title?: string | ReactElement;
+    title?: string | ReactElement | false;
 }
 
 const PREFIX = 'RaCreate';
