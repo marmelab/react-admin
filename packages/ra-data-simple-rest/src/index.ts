@@ -39,8 +39,8 @@ export default (
     countHeader: string = 'Content-Range'
 ): DataProvider => ({
     getList: (resource, params) => {
-        const { page, perPage } = params.pagination;
-        const { field, order } = params.sort;
+        const { page, perPage } = params.pagination || { page: 1, perPage: 10 };
+        const { field, order } = params.sort || { field: 'id', order: 'ASC' };
 
         const rangeStart = (page - 1) * perPage;
         const rangeEnd = page * perPage - 1;
@@ -73,10 +73,11 @@ export default (
                 total:
                     countHeader === 'Content-Range'
                         ? parseInt(
-                              headers.get('content-range').split('/').pop(),
+                              headers.get('content-range')!.split('/').pop() ||
+                                  '',
                               10
                           )
-                        : parseInt(headers.get(countHeader.toLowerCase())),
+                        : parseInt(headers.get(countHeader.toLowerCase())!),
             };
         });
     },
@@ -136,10 +137,11 @@ export default (
                 total:
                     countHeader === 'Content-Range'
                         ? parseInt(
-                              headers.get('content-range').split('/').pop(),
+                              headers.get('content-range')!.split('/').pop() ||
+                                  '',
                               10
                           )
-                        : parseInt(headers.get(countHeader.toLowerCase())),
+                        : parseInt(headers.get(countHeader.toLowerCase())!),
             };
         });
     },
