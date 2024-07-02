@@ -140,6 +140,8 @@ export const PostList = () => (
 );
 ```
 
+**Tip**: If you are looking for an `<ImportButton>`, check out this third-party package: [benwinding/react-admin-import-csv](https://github.com/benwinding/react-admin-import-csv).
+
 Use the `useListContext` hook to customize the actions depending on the list context, and the `usePermissions` to show/hide buttons depending on permissions. For example, you can hide the `<CreateButton>` when the user doesn't have the right permission, and disable the `<ExportButton>` when the list is empty:
 
 ```jsx
@@ -605,23 +607,24 @@ In many cases, you'll need more than simple object manipulation. You'll need to 
 
 Here is an example for a Comments exporter, fetching related Posts:
 
-```jsx
+```tsx
 // in CommentList.js
 import { List, downloadCSV } from 'react-admin';
+import type { FetchRelatedRecords } from 'react-admin';
 import jsonExport from 'jsonexport/dist';
 
-const exporter = (records, fetchRelatedRecords) => {
-    // will call dataProvider.getMany('posts', { ids: records.map(record => record.post_id) }), ignoring duplicate and empty post_id
-    fetchRelatedRecords(records, 'post_id', 'posts').then(posts => {
-        const data = records.map(record => ({
-                ...record,
-                post_title: posts[record.post_id].title,
-        }));
-        return jsonExport(data, {
-            headers: ['id', 'post_id', 'post_title', 'body'],
-        }, (err, csv) => {
-            downloadCSV(csv, 'comments');
-        });
+const exporter = async (comments: Comments[], fetchRelatedRecords: FetchRelatedRecords) => {
+    // will call dataProvider.getMany('posts', { ids: records.map(record => record.post_id) }),
+    // ignoring duplicate and empty post_id
+    const posts = await fetchRelatedRecords<Post>(comments, 'post_id', 'posts')
+    const commentsWithPostTitle = comments.map(comment => ({
+            ...comment,
+            post_title: posts[comment.post_id].title,
+    }));
+    return jsonExport(commentsWithPostTitle, {
+        headers: ['id', 'post_id', 'post_title', 'body'],
+    }, (err, csv) => {
+        downloadCSV(csv, 'comments');
     });
 };
 
@@ -629,7 +632,7 @@ const CommentList = () => (
     <List exporter={exporter}>
         ...
     </List>
-)
+);
 ```
 
 **Tip**: If you need to call another verb in the exporter, take advantage of the third parameter passed to the function: it's the `dataProvider` function.

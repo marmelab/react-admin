@@ -102,7 +102,7 @@ const UserProfile = () => {
 +   const { referenceRecord: user, isPending, error } = useReference({ reference: 'users', id: record.userId });
     if (isPending) { return <Loading />; }
     if (error) { return <p>ERROR</p>; }
-    return <div>User {data.username}</div>;
+    return <div>User {user.username}</div>;
 };
 ```
 

@@ -280,13 +280,14 @@ A complete CRM app allowing to manage contacts, companies, deals, notes, tasks, 
 
 The source shows how to implement the following features:
 
-- [Horizontal navigation](https://github.com/marmelab/react-admin/blob/7c60db09aea34a90607a4e7560e9e4b51bd7b9a3/examples/crm/src/Layout.tsx)
-- [Trello-like Kanban board for the deals pipeline](https://github.com/marmelab/react-admin/blob/7c60db09aea34a90607a4e7560e9e4b51bd7b9a3/examples/crm/src/deals/DealListContent.tsx)
-- [Custom d3.js / Nivo Chart in the dashboard](https://github.com/marmelab/react-admin/blob/7c60db09aea34a90607a4e7560e9e4b51bd7b9a3/examples/crm/src/dashboard/DealsChart.tsx)
-- [Add or remove tags to a contact](https://github.com/marmelab/react-admin/blob/7c60db09aea34a90607a4e7560e9e4b51bd7b9a3/examples/crm/src/contacts/TagsListEdit.tsx)
-- [Use dataProvider hooks to update notes](https://github.com/marmelab/react-admin/blob/7c60db09aea34a90607a4e7560e9e4b51bd7b9a3/examples/crm/src/notes/Note.tsx)
-- [Custom grid layout for companies](https://github.com/marmelab/react-admin/blob/7c60db09aea34a90607a4e7560e9e4b51bd7b9a3/examples/crm/src/companies/GridList.tsx)
-- [Filter by "my favorites" in the company list](https://github.com/marmelab/react-admin/blob/7c60db09aea34a90607a4e7560e9e4b51bd7b9a3/examples/crm/src/deals/OnlyMineInput.tsx)
+- [Horizontal navigation](https://github.com/marmelab/react-admin/blob/master/examples/crm/src/Layout.tsx)
+- [Custom exporter](https://github.com/marmelab/react-admin/blob/master/examples/crm/src/contacts/ContactList.tsx)
+- [Trello-like Kanban board for the deals pipeline](https://github.com/marmelab/react-admin/blob/master/examples/crm/src/deals/DealListContent.tsx)
+- [Custom d3.js / Nivo Chart in the dashboard](https://github.com/marmelab/react-admin/blob/master/examples/crm/src/dashboard/DealsChart.tsx)
+- [Add or remove tags to a contact](https://github.com/marmelab/react-admin/blob/master/examples/crm/src/contacts/TagsListEdit.tsx)
+- [Use dataProvider hooks to update notes](https://github.com/marmelab/react-admin/blob/master/examples/crm/src/notes/Note.tsx)
+- [Custom grid layout for companies](https://github.com/marmelab/react-admin/blob/master/examples/crm/src/companies/GridList.tsx)
+- [Filter by "my favorites" in the company list](https://github.com/marmelab/react-admin/blob/master/examples/crm/src/deals/OnlyMineInput.tsx)
 
 ## Help Desk
 
