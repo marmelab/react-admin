@@ -154,11 +154,11 @@ const exporter: Exporter<Contact> = async (records, fetchRelatedRecords) => {
 
     const contacts = records.map(contact => ({
         ...contact,
-        company: companies[contact.company_id as number].name,
-        sales: `${sales[contact.sales_id as number].first_name} ${
-            sales[contact.sales_id as number].last_name
+        company: companies[contact.company_id].name,
+        sales: `${sales[contact.sales_id].first_name} ${
+            sales[contact.sales_id].last_name
         }`,
-        tags: contact.tags.map(tagId => tags[tagId as number].name).join(', '),
+        tags: contact.tags.map(tagId => tags[tagId].name).join(', '),
     }));
     return jsonExport(contacts, {}, (_err: any, csv: string) => {
         downloadCSV(csv, 'contacts');
