@@ -1,12 +1,11 @@
 import merge from 'lodash/merge';
 import { useResourceContext } from '../core';
-import { useDataProvider } from '../dataProvider';
+import { useDataProvider, useGetRecordId } from '../dataProvider';
 import { useTranslate, useTranslateLabel } from '../i18n';
 import { InputProps } from './useInput';
 import { useCallback, useRef } from 'react';
 import set from 'lodash/set';
 import { asyncDebounce } from '../util';
-import { useRecordContext } from '../controller';
 import { isEmpty } from './validate';
 
 /**
@@ -59,7 +58,7 @@ export const useUnique = (options?: UseUniqueOptions) => {
         throw new Error('useUnique: missing resource prop or context');
     }
     const translate = useTranslate();
-    const record = useRecordContext();
+    const recordId = useGetRecordId();
 
     const debouncedGetList = useRef(
         // The initial value is here to set the correct type on useRef
@@ -112,7 +111,7 @@ export const useUnique = (options?: UseUniqueOptions) => {
                     if (
                         typeof total !== 'undefined' &&
                         total > 0 &&
-                        !data.some(r => r.id === record?.id)
+                        !data.some(r => r.id === recordId)
                     ) {
                         return {
                             message,
@@ -134,7 +133,7 @@ export const useUnique = (options?: UseUniqueOptions) => {
                 return undefined;
             };
         },
-        [dataProvider, options, record, resource, translate, translateLabel]
+        [dataProvider, options, recordId, resource, translate, translateLabel]
     );
 
     return validateUnique;
