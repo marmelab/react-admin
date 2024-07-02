@@ -44,7 +44,7 @@ export const TagsListEdit = () => {
     const { data: tags, isPending: isPendingRecordTags } = useGetMany<Tag>(
         'tags',
         { ids: record?.tags },
-        { enabled: record && record.tags && record.tags.length > 0 }
+        { enabled: !!(record && record.tags && record.tags.length > 0) }
     );
     const [update] = useUpdate<Contact>();
     const [create] = useCreate<Tag>();
