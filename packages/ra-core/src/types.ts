@@ -99,7 +99,7 @@ export type DataProvider<ResourceType extends string = string> = {
 
     getMany: <RecordType extends RaRecord = any>(
         resource: ResourceType,
-        params: GetManyParams & QueryFunctionContext
+        params: GetManyParams<RecordType> & QueryFunctionContext
     ) => Promise<GetManyResult<RecordType>>;
 
     getManyReference: <RecordType extends RaRecord = any>(
@@ -172,8 +172,8 @@ export interface GetOneResult<RecordType extends RaRecord = any> {
     data: RecordType;
 }
 
-export interface GetManyParams {
-    ids: Identifier[];
+export interface GetManyParams<RecordType extends RaRecord = any> {
+    ids: RecordType['id'][];
     meta?: any;
     signal?: AbortSignal;
 }

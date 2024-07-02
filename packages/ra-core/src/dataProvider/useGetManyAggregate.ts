@@ -68,7 +68,7 @@ import { useEvent } from '../util';
  */
 export const useGetManyAggregate = <RecordType extends RaRecord = any>(
     resource: string,
-    params: GetManyParams,
+    params: GetManyParams<RecordType>,
     options: UseGetManyAggregateOptions<RecordType> = {}
 ): UseGetManyHookValue<RecordType> => {
     const dataProvider = useDataProvider();

@@ -53,19 +53,19 @@ import { useEvent } from '../util';
  */
 export function useGetMany<RecordType extends RaRecord = any>(
     resource: string,
-    params: GetManyParams,
+    params: GetManyParams<RecordType>,
     options?: UseGetManyOptions<RecordType>
 ): UseGetManyHookValue<RecordType>;
 export function useGetMany<RecordType extends RaRecord = any>(
     resource: string,
-    params: Omit<GetManyParams, 'ids'> & {
+    params: Omit<GetManyParams<RecordType>, 'ids'> & {
         ids?: RecordType['id'][];
     },
     options: UseGetManyOptions<RecordType> & { enabled: boolean }
 ): UseGetManyHookValue<RecordType>;
 export function useGetMany<RecordType extends RaRecord = any>(
     resource: string,
-    params: GetManyParams,
+    params: GetManyParams<RecordType>,
     options: UseGetManyOptions<RecordType> = {}
 ): UseGetManyHookValue<RecordType> {
     const { ids, meta } = params;
