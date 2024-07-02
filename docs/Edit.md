@@ -519,9 +519,19 @@ To override the style of all instances of `<Edit>` components using the [applica
 
 ## `title`
 
-By default, the title for the Edit view is “Edit [resource_name] #[record_id]”.
+By default, the title for the Edit view is “Edit [resource_name] [record representation]”. Check the [`<Resource recordRepresentation>`](./Resource.md#recordrepresentation) prop for more details.
 
-You can customize this title by specifying a custom `title` prop:
+You can customize this title by specifying a custom `title` string:
+
+```jsx
+export const PostEdit = () => (
+    <Edit title="Edit post">
+        ...
+    </Edit>
+);
+```
+
+More interestingly, you can pass an element as `title`. This element can access the current record via `useRecordContext`. This allows to customize the title according to the current record:
 
 ```jsx
 const PostTitle = () => {
@@ -536,7 +546,15 @@ export const PostEdit = () => (
 );
 ```
 
-The `title` value can be a string or a React element.
+Finally, you can also pass `false` to disable the title:
+
+```jsx
+export const PostEdit = () => (
+    <Edit title={false}>
+        ...
+    </Edit>
+);
+```
 
 ## `transform`
 

@@ -65,11 +65,13 @@ export const ListView = <RecordType extends RaRecord = any>(
 
     return (
         <Root className={clsx('list-page', className)} {...rest}>
-            <Title
-                title={title}
-                defaultTitle={defaultTitle}
-                preferenceKey={`${resource}.list.title`}
-            />
+            {title !== false && (
+                <Title
+                    title={title}
+                    defaultTitle={defaultTitle}
+                    preferenceKey={`${resource}.list.title`}
+                />
+            )}
             {shouldRenderEmptyPage ? renderEmpty() : renderList()}
             {aside}
         </Root>
@@ -277,7 +279,7 @@ export interface ListViewProps {
      *     </List>
      * );
      */
-    title?: string | ReactElement;
+    title?: string | ReactElement | false;
 
     /**
      * The CSS styles to apply to the component.

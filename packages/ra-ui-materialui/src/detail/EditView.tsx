@@ -28,13 +28,16 @@ export const EditView = (props: EditViewProps) => {
     if (!children) {
         return null;
     }
+
     return (
         <Root className={clsx('edit-page', className)} {...rest}>
-            <Title
-                title={title}
-                defaultTitle={defaultTitle}
-                preferenceKey={`${resource}.edit.title`}
-            />
+            {title !== false && (
+                <Title
+                    title={title}
+                    defaultTitle={defaultTitle}
+                    preferenceKey={`${resource}.edit.title`}
+                />
+            )}
             {finalActions}
             <div
                 className={clsx(EditClasses.main, {
@@ -55,7 +58,7 @@ export interface EditViewProps
     actions?: ReactElement | false;
     aside?: ReactElement;
     component?: ElementType;
-    title?: string | ReactElement;
+    title?: string | ReactElement | false;
     sx?: SxProps;
 }
 

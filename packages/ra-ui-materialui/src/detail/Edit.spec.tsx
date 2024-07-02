@@ -20,6 +20,7 @@ import englishMessages from 'ra-language-english';
 
 import { AdminContext } from '../AdminContext';
 import { Edit } from './Edit';
+import { Basic, Title, TitleFalse, TitleElement } from './Edit.stories';
 
 describe('<Edit />', () => {
     const defaultEditProps = {
@@ -807,6 +808,34 @@ describe('<Edit />', () => {
                 </AdminContext>
             );
             expect(screen.queryAllByText('Hello')).toHaveLength(1);
+        });
+    });
+
+    describe('title', () => {
+        it('should display by default the title of the resource', async () => {
+            render(<Basic />);
+            await screen.findByText('War and Peace');
+            screen.getByText('Book War and Peace');
+        });
+
+        it('should render custom title string when defined', async () => {
+            render(<Title />);
+            await screen.findByText('War and Peace');
+            screen.getByText('Hello');
+            expect(screen.queryByText('Book War and Peace')).toBeNull();
+        });
+
+        it('should render custom title element when defined', async () => {
+            render(<TitleElement />);
+            await screen.findByText('War and Peace');
+            screen.getByText('Hello');
+            expect(screen.queryByText('Book War and Peace')).toBeNull();
+        });
+
+        it('should not render default title when false', async () => {
+            render(<TitleFalse />);
+            await screen.findByText('War and Peace');
+            expect(screen.queryByText('Book War and Peace')).toBeNull();
         });
     });
 

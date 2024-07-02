@@ -318,7 +318,7 @@ export const PostCreate = () => (
 );
 ```
 
-The `title` value can be a string or a React element.
+The title can be either a string, a React element, or `false` to disable the title.
 
 ## `transform`
 
