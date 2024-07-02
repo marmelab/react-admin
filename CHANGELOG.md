@@ -1,5 +1,13 @@
 # Changelog
 
+## v5.0.3
+
+* Fix npm install error due to outdated peer dependencies ([#9964](https://github.com/marmelab/react-admin/pull/9964)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<SimpleShowLayout>` uses a wrong translation key for field labels ([#9966](https://github.com/marmelab/react-admin/pull/9966)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `ra-data-fakerest` log of queries ([#9960](https://github.com/marmelab/react-admin/pull/9960)) ([fzaninotto](https://github.com/fzaninotto))
+* [TypeScript] Fix `useGetManyReference` return type ([#9963](https://github.com/marmelab/react-admin/pull/9963)) ([fzaninotto](https://github.com/fzaninotto))
+* [Demo] Fix `ReviewList` scrolls to top when editing a review ([#9958](https://github.com/marmelab/react-admin/pull/9958)) ([djhi](https://github.com/djhi))
+
 ## v5.0.2
 
 * Fix `useUpdate` throws an error when record id is a valid falsy value such as zero ([#9957](https://github.com/marmelab/react-admin/pull/9957)) ([djhi](https://github.com/djhi))
