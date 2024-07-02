@@ -1,12 +1,12 @@
 import * as React from 'react';
 import expect from 'expect';
 import { render, waitFor } from '@testing-library/react';
+import { QueryClient } from '@tanstack/react-query';
 
 import { CoreAdminContext } from '../core';
 import { useGetMany } from './useGetMany';
+import { useGetOne } from './useGetOne';
 import { testDataProvider } from '../dataProvider';
-import { useState } from 'react';
-import { QueryClient } from '@tanstack/react-query';
 
 const UseGetMany = ({
     resource,
@@ -39,7 +39,7 @@ const UseCustomGetMany = ({
     options?: any;
     callback?: Function;
 }) => {
-    const [stateIds, setStateIds] = useState(ids);
+    const [stateIds, setStateIds] = React.useState(ids);
     const hookValue = useGetMany(resource, { ids: stateIds }, options);
     if (callback) callback(hookValue);
 
@@ -396,6 +396,49 @@ describe('useGetMany', () => {
         });
         await waitFor(() => {
             expect(abort).toHaveBeenCalled();
+        });
+    });
+
+    describe('TypeScript', () => {
+        it('should return the parametric type', () => {
+            type Foo = { id: number; name: string };
+            const _Dummy = () => {
+                const { data, error, isPending } = useGetMany<Foo>('posts', {
+                    ids: [1],
+                });
+                if (isPending || error) return null;
+                return <div>{data[0].name}</div>;
+            };
+            // no render needed, only checking types
+        });
+        it('should accept empty id param when disabled', () => {
+            const _Dummy = () => {
+                type Post = {
+                    id: number;
+                    tag_ids: number[];
+                };
+                const { data: comment } = useGetOne<Post>('comments', {
+                    id: 1,
+                });
+                type Tag = {
+                    id: number;
+                    name: string;
+                };
+                const { data, error, isPending } = useGetMany<Tag>(
+                    'posts',
+                    { ids: comment?.tag_ids },
+                    { enabled: !!comment } // without this line, TS would complain about comment?.post_id potentially being undefined
+                );
+                if (isPending || error) return null;
+                return (
+                    <ul>
+                        {data.map(tag => (
+                            <li key={tag.id}>{tag.name}</li>
+                        ))}
+                    </ul>
+                );
+            };
+            // no render needed, only checking types
         });
     });
 });

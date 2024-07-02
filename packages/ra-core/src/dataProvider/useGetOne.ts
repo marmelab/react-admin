@@ -47,11 +47,21 @@ import { useEvent } from '../util';
  *     return <div>User {data.username}</div>;
  * };
  */
-export const useGetOne = <RecordType extends RaRecord = any>(
+export function useGetOne<RecordType extends RaRecord = any>(
+    resource: string,
+    params: GetOneParams<RecordType>,
+    options?: UseGetOneOptions<RecordType>
+): UseGetOneHookValue<RecordType>;
+export function useGetOne<RecordType extends RaRecord = any>(
+    resource: string,
+    params: Omit<GetOneParams<RecordType>, 'id'> & { id?: RecordType['id'] },
+    options: UseGetOneOptions<RecordType> & { enabled: boolean }
+): UseGetOneHookValue<RecordType>;
+export function useGetOne<RecordType extends RaRecord = any>(
     resource: string,
     { id, meta }: GetOneParams<RecordType>,
     options: UseGetOneOptions<RecordType> = {}
-): UseGetOneHookValue<RecordType> => {
+): UseGetOneHookValue<RecordType> {
     const dataProvider = useDataProvider();
     const {
         onError = noop,
@@ -109,7 +119,7 @@ export const useGetOne = <RecordType extends RaRecord = any>(
     ]);
 
     return result;
-};
+}
 
 const noop = () => undefined;
 

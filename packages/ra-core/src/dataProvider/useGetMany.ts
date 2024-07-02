@@ -51,11 +51,23 @@ import { useEvent } from '../util';
  *     )}</ul>;
  * };
  */
-export const useGetMany = <RecordType extends RaRecord = any>(
+export function useGetMany<RecordType extends RaRecord = any>(
     resource: string,
-    params: Partial<GetManyParams> = {},
+    params: GetManyParams,
+    options?: UseGetManyOptions<RecordType>
+): UseGetManyHookValue<RecordType>;
+export function useGetMany<RecordType extends RaRecord = any>(
+    resource: string,
+    params: Omit<GetManyParams, 'ids'> & {
+        ids?: RecordType['id'][];
+    },
+    options: UseGetManyOptions<RecordType> & { enabled: boolean }
+): UseGetManyHookValue<RecordType>;
+export function useGetMany<RecordType extends RaRecord = any>(
+    resource: string,
+    params: GetManyParams,
     options: UseGetManyOptions<RecordType> = {}
-): UseGetManyHookValue<RecordType> => {
+): UseGetManyHookValue<RecordType> {
     const { ids, meta } = params;
     const dataProvider = useDataProvider();
     const queryClient = useQueryClient();
@@ -174,7 +186,7 @@ export const useGetMany = <RecordType extends RaRecord = any>(
     ]);
 
     return result;
-};
+}
 
 const noop = () => undefined;
 
