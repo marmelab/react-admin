@@ -366,8 +366,8 @@ export interface ResourceProps {
     children?: ReactNode;
 }
 
-export type Exporter = (
-    data: any,
+export type Exporter<RecordType extends RaRecord = any> = (
+    data: RecordType[],
     fetchRelatedRecords: FetchRelatedRecords,
     dataProvider: DataProvider,
     resource?: string

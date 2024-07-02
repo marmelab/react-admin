@@ -17,7 +17,7 @@ import {
     useGetIdentity,
     useListContext,
 } from 'react-admin';
-import type { FetchRelatedRecords } from 'react-admin';
+import type { Exporter } from 'react-admin';
 import {
     List,
     ListItem,
@@ -143,10 +143,7 @@ const ContactListActions = () => (
     </TopToolbar>
 );
 
-const exporter = async (
-    records: Contact[],
-    fetchRelatedRecords: FetchRelatedRecords
-) => {
+const exporter: Exporter<Contact> = async (records, fetchRelatedRecords) => {
     const companies = await fetchRelatedRecords<Company>(
         records,
         'company_id',
@@ -171,7 +168,7 @@ const exporter = async (
 export const ContactList = () => {
     const { identity } = useGetIdentity();
     return identity ? (
-        <RaList
+        <RaList<Contact>
             actions={<ContactListActions />}
             aside={<ContactListFilter />}
             perPage={25}

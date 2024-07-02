@@ -274,7 +274,7 @@ export interface ListControllerProps<RecordType extends RaRecord = any> {
      *     </List>
      * )
      */
-    exporter?: Exporter | false;
+    exporter?: Exporter<RecordType> | false;
 
     /**
      * Permanent filter applied to all getList queries, regardless of the user selected filters.
