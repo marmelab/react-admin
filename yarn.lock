@@ -5975,6 +5975,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/jsonexport@npm:^3.0.5":
+  version: 3.0.5
+  resolution: "@types/jsonexport@npm:3.0.5"
+  dependencies:
+    "@types/node": "npm:*"
+  checksum: 5234efbccb2d28632bf5f47272c838d1f011a1e34c9bf36f329edafe17c51b81d12ceb455c919adf7f5c6cd946ba9049c2a9782d7caf7cb0ff60aa0e5e2fa63b
+  languageName: node
+  linkType: hard
+
 "@types/lodash@npm:^4.14.167, @types/lodash@npm:^4.14.168, @types/lodash@npm:^4.14.175, @types/lodash@npm:~4.14.168":
   version: 4.14.194
   resolution: "@types/lodash@npm:4.14.194"
@@ -18058,6 +18067,7 @@ __metadata:
     "@testing-library/user-event": "npm:^14.5.2"
     "@types/faker": "npm:^5.1.7"
     "@types/jest": "npm:^29.5.2"
+    "@types/jsonexport": "npm:^3.0.5"
     "@types/lodash": "npm:~4.14.168"
     "@types/react": "npm:^18.3.3"
     "@types/react-dom": "npm:^18.3.0"

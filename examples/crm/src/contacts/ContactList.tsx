@@ -1,21 +1,23 @@
 /* eslint-disable import/no-anonymous-default-export */
 import * as React from 'react';
 import {
-    List as RaList,
-    SimpleListLoading,
-    ReferenceField,
-    TextField,
-    useListContext,
-    ExportButton,
-    SortButton,
-    TopToolbar,
-    CreateButton,
-    Pagination,
-    useGetIdentity,
     BulkActionsToolbar,
     BulkDeleteButton,
+    CreateButton,
+    downloadCSV,
+    ExportButton,
+    List as RaList,
+    Pagination,
     RecordContextProvider,
+    ReferenceField,
+    SimpleListLoading,
+    SortButton,
+    TextField,
+    TopToolbar,
+    useGetIdentity,
+    useListContext,
 } from 'react-admin';
+import type { Exporter } from 'react-admin';
 import {
     List,
     ListItem,
@@ -28,12 +30,13 @@ import {
 } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { formatDistance } from 'date-fns';
+import jsonExport from 'jsonexport/dist';
 
 import { Avatar } from './Avatar';
 import { Status } from '../misc/Status';
 import { TagsList } from './TagsList';
 import { ContactListFilter } from './ContactListFilter';
-import { Contact } from '../types';
+import { Contact, Company, Sale, Tag } from '../types';
 
 const ContactListContent = () => {
     const {
@@ -140,16 +143,39 @@ const ContactListActions = () => (
     </TopToolbar>
 );
 
+const exporter: Exporter<Contact> = async (records, fetchRelatedRecords) => {
+    const companies = await fetchRelatedRecords<Company>(
+        records,
+        'company_id',
+        'companies'
+    );
+    const sales = await fetchRelatedRecords<Sale>(records, 'sales_id', 'sales');
+    const tags = await fetchRelatedRecords<Tag>(records, 'tags', 'tags');
+
+    const contacts = records.map(contact => ({
+        ...contact,
+        company: companies[contact.company_id].name,
+        sales: `${sales[contact.sales_id].first_name} ${
+            sales[contact.sales_id].last_name
+        }`,
+        tags: contact.tags.map(tagId => tags[tagId].name).join(', '),
+    }));
+    return jsonExport(contacts, {}, (_err: any, csv: string) => {
+        downloadCSV(csv, 'contacts');
+    });
+};
+
 export const ContactList = () => {
     const { identity } = useGetIdentity();
     return identity ? (
-        <RaList
+        <RaList<Contact>
             actions={<ContactListActions />}
             aside={<ContactListFilter />}
             perPage={25}
             pagination={<Pagination rowsPerPageOptions={[10, 25, 50, 100]} />}
             filterDefaultValues={{ sales_id: identity?.id }}
             sort={{ field: 'last_seen', order: 'DESC' }}
+            exporter={exporter}
         >
             <ContactListContent />
         </RaList>
