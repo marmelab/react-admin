@@ -291,7 +291,7 @@ The source shows how to implement the following features:
 
 ## Help Desk
 
-A simple help desk app allowing to manage tickets, users, and tags. Built by the core team.
+A simple help desk app allowing to manage issues, users, and tags. ZenDesk / Linear clone, built by the core team.
 
 <video src="https://user-images.githubusercontent.com/99944/212743583-a4ee135f-f55b-4305-86c4-a3da1c49bb98.mov" controls="controls"></video>
 
