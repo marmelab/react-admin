@@ -411,7 +411,7 @@ describe('useGetMany', () => {
             };
             // no render needed, only checking types
         });
-        it('should accept empty id param when disabled', () => {
+        it('should accept empty id param', () => {
             const _Dummy = () => {
                 type Post = {
                     id: number;
@@ -424,11 +424,9 @@ describe('useGetMany', () => {
                     id: number;
                     name: string;
                 };
-                const { data, error, isPending } = useGetMany<Tag>(
-                    'posts',
-                    { ids: comment?.tag_ids },
-                    { enabled: !!comment } // without this line, TS would complain about comment?.post_id potentially being undefined
-                );
+                const { data, error, isPending } = useGetMany<Tag>('posts', {
+                    ids: comment?.tag_ids,
+                });
                 if (isPending || error) return null;
                 return (
                     <ul>

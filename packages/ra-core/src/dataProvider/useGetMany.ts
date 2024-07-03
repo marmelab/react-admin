@@ -51,23 +51,11 @@ import { useEvent } from '../util';
  *     )}</ul>;
  * };
  */
-export function useGetMany<RecordType extends RaRecord = any>(
+export const useGetMany = <RecordType extends RaRecord = any>(
     resource: string,
-    params: GetManyParams<RecordType>,
-    options?: UseGetManyOptions<RecordType>
-): UseGetManyHookValue<RecordType>;
-export function useGetMany<RecordType extends RaRecord = any>(
-    resource: string,
-    params: Omit<GetManyParams<RecordType>, 'ids'> & {
-        ids?: RecordType['id'][];
-    },
-    options: UseGetManyOptions<RecordType> & { enabled: boolean }
-): UseGetManyHookValue<RecordType>;
-export function useGetMany<RecordType extends RaRecord = any>(
-    resource: string,
-    params: GetManyParams<RecordType>,
+    params: Partial<GetManyParams<RecordType>>,
     options: UseGetManyOptions<RecordType> = {}
-): UseGetManyHookValue<RecordType> {
+): UseGetManyHookValue<RecordType> => {
     const { ids, meta } = params;
     const dataProvider = useDataProvider();
     const queryClient = useQueryClient();
@@ -76,6 +64,7 @@ export function useGetMany<RecordType extends RaRecord = any>(
         onError = noop,
         onSuccess = noop,
         onSettled = noop,
+        enabled,
         ...queryOptions
     } = options;
     const onSuccessEvent = useEvent(onSuccess);
@@ -127,6 +116,7 @@ export function useGetMany<RecordType extends RaRecord = any>(
             }
         },
         retry: false,
+        enabled: enabled ?? ids != null,
         ...queryOptions,
     });
 
@@ -186,7 +176,7 @@ export function useGetMany<RecordType extends RaRecord = any>(
     ]);
 
     return result;
-}
+};
 
 const noop = () => undefined;
 

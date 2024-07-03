@@ -68,7 +68,7 @@ import { useEvent } from '../util';
  */
 export const useGetManyAggregate = <RecordType extends RaRecord = any>(
     resource: string,
-    params: GetManyParams<RecordType>,
+    params: Partial<GetManyParams<RecordType>>,
     options: UseGetManyAggregateOptions<RecordType> = {}
 ): UseGetManyHookValue<RecordType> => {
     const dataProvider = useDataProvider();
@@ -78,6 +78,7 @@ export const useGetManyAggregate = <RecordType extends RaRecord = any>(
         onError = noop,
         onSuccess = noop,
         onSettled = noop,
+        enabled,
         ...queryOptions
     } = options;
     const onSuccessEvent = useEvent(onSuccess);
@@ -133,6 +134,7 @@ export const useGetManyAggregate = <RecordType extends RaRecord = any>(
                 });
             }),
         placeholderData,
+        enabled: enabled ?? ids != null,
         retry: false,
         ...queryOptions,
     });

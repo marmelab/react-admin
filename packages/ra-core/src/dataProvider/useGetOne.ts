@@ -47,26 +47,17 @@ import { useEvent } from '../util';
  *     return <div>User {data.username}</div>;
  * };
  */
-export function useGetOne<RecordType extends RaRecord = any>(
+export const useGetOne = <RecordType extends RaRecord = any>(
     resource: string,
-    params: GetOneParams<RecordType>,
-    options?: UseGetOneOptions<RecordType>
-): UseGetOneHookValue<RecordType>;
-export function useGetOne<RecordType extends RaRecord = any>(
-    resource: string,
-    params: Omit<GetOneParams<RecordType>, 'id'> & { id?: RecordType['id'] },
-    options: UseGetOneOptions<RecordType> & { enabled: boolean }
-): UseGetOneHookValue<RecordType>;
-export function useGetOne<RecordType extends RaRecord = any>(
-    resource: string,
-    { id, meta }: GetOneParams<RecordType>,
+    { id, meta }: Partial<GetOneParams<RecordType>>,
     options: UseGetOneOptions<RecordType> = {}
-): UseGetOneHookValue<RecordType> {
+): UseGetOneHookValue<RecordType> => {
     const dataProvider = useDataProvider();
     const {
         onError = noop,
         onSuccess = noop,
         onSettled = noop,
+        enabled,
         ...queryOptions
     } = options;
     const onSuccessEvent = useEvent(onSuccess);
@@ -79,16 +70,19 @@ export function useGetOne<RecordType extends RaRecord = any>(
         // As the react-query cache is type-sensitive, we always stringify the identifier to get a match
         queryKey: [resource, 'getOne', { id: String(id), meta }],
         queryFn: queryParams =>
-            dataProvider
-                .getOne<RecordType>(resource, {
-                    id,
-                    meta,
-                    signal:
-                        dataProvider.supportAbortSignal === true
-                            ? queryParams.signal
-                            : undefined,
-                })
-                .then(({ data }) => data),
+            id == null
+                ? new Promise(() => {})
+                : dataProvider
+                      .getOne<RecordType>(resource, {
+                          id,
+                          meta,
+                          signal:
+                              dataProvider.supportAbortSignal === true
+                                  ? queryParams.signal
+                                  : undefined,
+                      })
+                      .then(({ data }) => data),
+        enabled: enabled ?? id != null,
         ...queryOptions,
     });
 
@@ -119,7 +113,7 @@ export function useGetOne<RecordType extends RaRecord = any>(
     ]);
 
     return result;
-}
+};
 
 const noop = () => undefined;
 

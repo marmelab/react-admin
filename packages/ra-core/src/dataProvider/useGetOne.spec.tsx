@@ -311,7 +311,7 @@ describe('useGetOne', () => {
             };
             // no render needed, only checking types
         });
-        it('should accept empty id param when disabled', () => {
+        it('should accept empty id param', () => {
             const _Dummy = () => {
                 type Comment = {
                     id: number;
@@ -324,11 +324,9 @@ describe('useGetOne', () => {
                     id: number;
                     title: string;
                 };
-                const { data, error, isPending } = useGetOne<Post>(
-                    'posts',
-                    { id: comment?.post_id },
-                    { enabled: !!comment } // without this line, TS would complain about comment?.post_id potentially being undefined
-                );
+                const { data, error, isPending } = useGetOne<Post>('posts', {
+                    id: comment?.post_id,
+                });
                 if (isPending || error) return null;
                 return <div>{data.title}</div>;
             };
