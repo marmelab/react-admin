@@ -74,7 +74,11 @@ export const defaultOptions = {
 };
 
 const getOptions = (
-    options: GetQueryOptions | GetMutationOptions | GetWatchQueryOptions,
+    options:
+        | GetQueryOptions
+        | GetMutationOptions
+        | GetWatchQueryOptions
+        | undefined,
     raFetchMethod: string,
     resource: string
 ) => {

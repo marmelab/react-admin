@@ -3,6 +3,7 @@ import { DataProvider } from 'ra-core';
 
 /* eslint-disable no-console */
 function log(type, resource, params, response) {
+    // @ts-ignore
     if (console.group) {
         // Better logging in Chrome
         console.groupCollapsed(type, resource, JSON.stringify(params));
