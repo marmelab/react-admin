@@ -190,6 +190,8 @@ To override the style of all instances of `<ReferenceField>` using the [applicat
 
 ## Performance
 
+<iframe src="https://www.youtube-nocookie.com/embed/egBhWqF3sWc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;"></iframe>
+
 When used in a `<Datagrid>`, `<ReferenceField>` fetches the referenced record only once for the entire table. 
 
 ![ReferenceField](./img/reference-field.png)
