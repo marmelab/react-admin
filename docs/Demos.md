@@ -128,21 +128,6 @@ If you want to see what react-admin is capable of, or if you want to learn from 
         </div>
     </div>
     <div class="card">
-        <a href="#e-commerce-enterprise" class="no-decoration"><img src="./img/demo-ecommerce-ee.png" alt="ecommerce-ee"></a>
-        <div class="content-card">
-            <a href="#e-commerce-enterprise" class="no-decoration">
-                <p class="title-card"><b>E-commerce Enterprise</b></p>
-                <p  class="description-card">Based on the E-commerce demo and upgraded with some React Admin Enterprise features. Built by the core team.</p>
-            </a>
-        </div>
-        <div class="card-footer">
-            <div class="links-container">
-                <p><b><a href="https://marmelab.com/ra-enterprise-demo/" class="demo link">Demo</a></b></p>
-                <p><b><a href="https://github.com/marmelab/ra-enterprise-demo" class="source-code link">Source code</a></b></p>
-            </div>
-        </div>
-    </div>
-    <div class="card">
         <a href="#crm" class="no-decoration"><img src="./img/demo-CRM.png" alt="CRM"></a>
         <div class="content-card">
             <a href="#crm" class="no-decoration">
@@ -242,9 +227,7 @@ The source shows how to implement the following features:
 - [Custom page with static list](https://github.com/marmelab/react-admin/blob/master/examples/demo/src/routes.tsx)
 - [Edit view in a sidebar](https://github.com/marmelab/react-admin/blob/master/examples/demo/src/reviews/ReviewList.tsx)
 
-## E-commerce Enterprise
-
-Based on the E-commerce demo and upgraded with some React Admin Enterprise features.
+A modified version of this demo uses the React Admin Enterprise features.
 
 <div style="padding:56.93% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/884005183?h=7f12a85dcf&title=0&byline=0&portrait=0" style="position:absolute;top:0;left:0;width:100%;height:100%;" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe></div>
 <br>
@@ -252,22 +235,22 @@ Based on the E-commerce demo and upgraded with some React Admin Enterprise featu
 * Demo: [https://marmelab.com/ra-enterprise-demo/](https://marmelab.com/ra-enterprise-demo/)
 * Source code: [https://github.com/marmelab/ra-enterprise-demo](https://github.com/marmelab/ra-enterprise-demo)
 
-The source shows how to implement the following features:
+The source shows example implementation of the following features:
 
-- [AccordionForm](https://github.com/marmelab/ra-enterprise-demo/blob/master/src/products/ProductEdit.tsx)
+- [Solar Layout](https://github.com/marmelab/ra-enterprise-demo/blob/master/src/layout/Layout.tsx)
 - [Breadcrumb](https://github.com/marmelab/ra-enterprise-demo/blob/master/src/layout/Breadcrumb.tsx)
-- [SolarLayout](https://github.com/marmelab/ra-enterprise-demo/blob/master/src/layout/Layout.tsx)
+- [Editable Datagrid](https://github.com/marmelab/ra-enterprise-demo/blob/master/src/stores/StoreList.tsx)
+- [Accordion Form](https://github.com/marmelab/ra-enterprise-demo/blob/master/src/products/ProductEdit.tsx)
 - [Locks](https://github.com/marmelab/ra-enterprise-demo/blob/master/src/products/GridList.tsx)
-- [ListLive](https://github.com/marmelab/ra-enterprise-demo/blob/master/src/orders/OrderList.tsx)
-- [RealtimeDataProvider](https://github.com/marmelab/ra-enterprise-demo/blob/master/src/dataProvider/addRealtimeMethodsWithFakeTransport.ts)
-- [CompleteCalendar](https://github.com/marmelab/ra-enterprise-demo/blob/master/src/visits/VisitList.tsx)
+- [Live List](https://github.com/marmelab/ra-enterprise-demo/blob/master/src/orders/OrderList.tsx)
+- [Realtime Data Provider](https://github.com/marmelab/ra-enterprise-demo/blob/master/src/dataProvider/addRealtimeMethodsWithFakeTransport.ts)
+- [Calendar](https://github.com/marmelab/ra-enterprise-demo/blob/master/src/visits/VisitList.tsx)
 - [Audit Log](https://github.com/marmelab/ra-enterprise-demo/blob/master/src/i18n/en.ts)
-- [SearchWithResult](https://github.com/marmelab/ra-enterprise-demo/blob/master/src/layout/SearchSubMenu.tsx)
-- [TreeWithDetails](https://github.com/marmelab/ra-enterprise-demo/blob/master/src/categories/CategoryList.tsx)
-- [MarkdownField](https://github.com/marmelab/ra-enterprise-demo/blob/master/src/products/ProductPreview.tsx)
-- [MarkdownInput](https://github.com/marmelab/ra-enterprise-demo/blob/master/src/products/ProductCreate.tsx)
-- [Tours](https://github.com/marmelab/ra-enterprise-demo/blob/master/src/tours/TourList.tsx)
-- [EditableDatagrid](https://github.com/marmelab/ra-enterprise-demo/blob/master/src/stores/StoreList.tsx)
+- [Search Sub Menu](https://github.com/marmelab/ra-enterprise-demo/blob/master/src/layout/SearchSubMenu.tsx)
+- [Category List with Hierarchical Structure](https://github.com/marmelab/ra-enterprise-demo/blob/master/src/categories/CategoryList.tsx)
+- [Markdown Input](https://github.com/marmelab/ra-enterprise-demo/blob/master/src/products/ProductCreate.tsx)
+- [Markdown Field](https://github.com/marmelab/ra-enterprise-demo/blob/master/src/products/ProductPreview.tsx)
+- [Guided Tours](https://github.com/marmelab/ra-enterprise-demo/blob/master/src/tours/TourList.tsx)
 
 ## CRM
 
