@@ -186,12 +186,16 @@ const buildGraphQLProvider = (options: Options): DataProvider => {
                 ...query,
                 fetchPolicy: 'network-only',
                 ...getOptions(otherOptions.query, raFetchMethod, resource),
-                context: {
+            };
+
+            apolloQuery.context = merge(
+                {
                     fetchOptions: {
                         signal: params?.signal,
                     },
                 },
-            };
+                apolloQuery.context
+            );
 
             return (
                 client
