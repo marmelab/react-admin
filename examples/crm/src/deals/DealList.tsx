@@ -4,6 +4,7 @@ import {
     ExportButton,
     FilterButton,
     List,
+    ReferenceInput,
     SearchInput,
     SelectInput,
     TopToolbar,
@@ -44,8 +45,9 @@ const DealList = () => {
 
 const dealFilters = [
     <SearchInput source="q" alwaysOn />,
+    <ReferenceInput source="company_id" reference="companies" />,
+    <SelectInput source="type" label="Category" choices={typeChoices} />,
     <OnlyMineInput source="sales_id" alwaysOn />,
-    <SelectInput source="type" choices={typeChoices} />,
 ];
 
 const DealActions = () => {

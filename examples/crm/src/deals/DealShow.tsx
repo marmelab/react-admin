@@ -108,7 +108,7 @@ const DealShowContent = () => {
 
                         <Box display="flex" mr={5} flexDirection="column">
                             <Typography color="textSecondary" variant="body2">
-                                Type
+                                Category
                             </Typography>
                             <Typography variant="subtitle1">
                                 {record.type}
