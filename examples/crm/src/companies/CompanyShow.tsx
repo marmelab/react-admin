@@ -185,11 +185,6 @@ const ContactsIterator = () => {
                             secondary={
                                 <>
                                     {contact.title}
-                                    {contact.nb_notes
-                                        ? ` - ${contact.nb_notes} note${
-                                              contact.nb_notes > 1 ? 's' : ''
-                                          }`
-                                        : ''}
                                     {contact.nb_tasks
                                         ? ` - ${contact.nb_tasks} task${
                                               contact.nb_tasks > 1 ? 's' : ''

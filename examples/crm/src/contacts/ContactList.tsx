@@ -67,7 +67,7 @@ const ContactListContent = () => {
                             component={Link}
                             to={`/contacts/${contact.id}/show`}
                         >
-                            <ListItemIcon>
+                            <ListItemIcon sx={{ minWidth: '2.5em' }}>
                                 <Checkbox
                                     edge="start"
                                     checked={selectedIds.includes(contact.id)}
@@ -94,13 +94,6 @@ const ContactListContent = () => {
                                         >
                                             <TextField source="name" />
                                         </ReferenceField>
-                                        {contact.nb_notes
-                                            ? ` - ${contact.nb_notes} note${
-                                                  contact.nb_notes > 1
-                                                      ? 's'
-                                                      : ''
-                                              }`
-                                            : ''}
                                         {contact.nb_tasks
                                             ? ` - ${contact.nb_tasks} task${
                                                   contact.nb_tasks > 1

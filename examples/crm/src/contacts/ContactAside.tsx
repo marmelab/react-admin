@@ -24,7 +24,7 @@ export const ContactAside = ({ link = 'edit' }: { link?: 'edit' | 'show' }) => {
     if (!record) return null;
     return (
         <Box ml={4} width={250} minWidth={250}>
-            <Box textAlign="center" mb={2}>
+            <Box mb={2} ml="-5px">
                 {link === 'edit' ? (
                     <EditButton label="Edit Contact" />
                 ) : (
