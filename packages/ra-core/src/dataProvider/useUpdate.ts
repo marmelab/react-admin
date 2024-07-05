@@ -551,5 +551,5 @@ export type UseUpdateResult<
         ErrorType,
         Partial<UpdateParams<RecordType> & { resource?: string }>,
         unknown
-    >,
+    > & { isLoading: boolean },
 ];
