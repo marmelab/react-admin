@@ -181,18 +181,18 @@ Once you have added `@tanstack/react-query` to your dependencies, you can run a 
 For `.js` or `.jsx` files:
 
 ```sh
-npx jscodeshift ./path/to/src/ \
-    --extensions=js,jsx \
-    --transform=./node_modules/@tanstack/react-query/build/codemods/src/v4/replace-import-specifier.js
+npx jscodeshift@latest ./path/to/src/ \
+  --extensions=js,jsx \
+  --transform=./node_modules/@tanstack/react-query/build/codemods/src/v5/remove-overloads/remove-overloads.cjs
 ```
 
 For `.ts` or `.tsx` files:
 
 ```sh
-npx jscodeshift ./path/to/src/ \
-    --extensions=ts,tsx \
-    --parser=tsx \
-    --transform=./node_modules/@tanstack/react-query/build/codemods/src/v4/replace-import-specifier.js
+npx jscodeshift@latest ./path/to/src/ \
+  --extensions=ts,tsx \
+  --parser=tsx \
+  --transform=./node_modules/@tanstack/react-query/build/codemods/src/v5/remove-overloads/remove-overloads.cjs
 ```
 
 Here are the available codemods you may need to run on your codebase:
