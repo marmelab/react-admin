@@ -18,7 +18,9 @@ import {
     ListItemText,
     Checkbox,
     Typography,
+    useMediaQuery,
 } from '@mui/material';
+import type { Theme } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { formatDistance } from 'date-fns';
 
@@ -35,6 +37,9 @@ export const ContactListContent = () => {
         onToggleItem,
         selectedIds,
     } = useListContext<Contact>();
+    const isSmall = useMediaQuery((theme: Theme) =>
+        theme.breakpoints.down('md')
+    );
     if (isPending) {
         return <SimpleListLoading hasLeftAvatarOrIcon hasSecondaryText />;
     }
@@ -95,14 +100,21 @@ export const ContactListContent = () => {
                                     </>
                                 }
                             />
-                            <ListItemSecondaryAction>
+                            <ListItemSecondaryAction
+                                sx={{
+                                    top: '10px',
+                                    transform: 'none',
+                                }}
+                            >
                                 <Typography
                                     variant="body2"
                                     color="textSecondary"
                                 >
-                                    last activity{' '}
-                                    {formatDistance(contact.last_seen, now)} ago{' '}
-                                    <Status status={contact.status} />
+                                    {!isSmall && 'last activity '}
+                                    {formatDistance(
+                                        contact.last_seen,
+                                        now
+                                    )} ago <Status status={contact.status} />
                                 </Typography>
                             </ListItemSecondaryAction>
                         </ListItem>
