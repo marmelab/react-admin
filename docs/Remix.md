@@ -36,8 +36,7 @@ cd remix-admin
 npm add react-admin ra-data-json-server
 ```
 
-
-**Tip**: As Remix now use Vite for SSR too, you'll have to add the following to the `vite.config.ts` file:
+**Tip**: As Remix now use Vite, you'll have to add the following to the `vite.config.ts` file for some dataProviders such as `ra-data-json-server`:
 
 ```diff
 import { vitePlugin as remix } from "@remix-run/dev";
@@ -114,20 +113,6 @@ body { margin: 0; }
 ```
 
 **Tip** Don't forget to set the `<Admin basename>` prop, so that react-admin generates links relative to the "/admin" subpath:
-
-Finally, update your `remix.config.js` to add `ra-data-json-server` to the `serverDependenciesToBundle` array:
-
-```diff
-/** @type {import('@remix-run/dev').AppConfig} */
-export default {
-  ignoredRouteFiles: ["**/.*"],
-+  serverDependenciesToBundle: ["ra-data-json-server"],
-  // appDirectory: "app",
-  // assetsBuildDirectory: "public/build",
-  // publicPath: "/build/",
-  // serverBuildPath: "build/index.js",
-};
-```
 
 You can now start the app in `development` mode with `npm run dev`. The admin should render at `http://localhost:3000/admin`, and you can use the Remix routing system to add more pages.
 
@@ -213,18 +198,29 @@ Update the react-admin data provider to use the Supabase adapter instead of the 
 npm add @raphiniert/ra-data-postgrest
 ```
 
-Update your `remix.config.js` to add `@raphiniert/ra-data-postgrest` to the `serverDependenciesToBundle` array:
+Update your `vite.config.ts` to add `@raphiniert/ra-data-postgrest` to the `noExternal` array:
+
 
 ```diff
-/** @type {import('@remix-run/dev').AppConfig} */
-export default {
-  ignoredRouteFiles: ["**/.*"],
-+  serverDependenciesToBundle: ["@raphiniert/ra-data-postgrest"],
-  // appDirectory: "app",
-  // assetsBuildDirectory: "public/build",
-  // publicPath: "/build/",
-  // serverBuildPath: "build/index.js",
-};
+import { vitePlugin as remix } from "@remix-run/dev";
+import { defineConfig } from "vite";
+import tsconfigPaths from "vite-tsconfig-paths";
+
+export default defineConfig({
+	plugins: [
+		remix({
+			future: {
+				v3_fetcherPersist: true,
+				v3_relativeSplatPath: true,
+				v3_throwAbortReason: true,
+			},
+		}),
+		tsconfigPaths(),
+	],
++	ssr: {
++		noExternal: ['@raphiniert/ra-data-postgrest']
++	},
+});
 ```
 
 Finally, update your Admin dataProvider:
