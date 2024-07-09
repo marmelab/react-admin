@@ -33,7 +33,7 @@ export const Login = (props: LoginProps) => {
         avatarIcon = defaultAvatarIcon,
         ...rest
     } = props;
-    const containerRef = useRef<HTMLDivElement>();
+    const containerRef = useRef<HTMLDivElement>(null);
     let backgroundImageLoaded = false;
     const checkAuth = useCheckAuth();
     const navigate = useNavigate();
