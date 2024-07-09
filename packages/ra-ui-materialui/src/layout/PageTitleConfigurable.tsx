@@ -7,7 +7,7 @@ import { Configurable } from '../preferences';
 import { PageTitle } from './PageTitle';
 
 export const PageTitleEditor = () => {
-    const field = usePreferenceInput();
+    const field = usePreferenceInput('', '');
     return (
         <form>
             <TextField
