@@ -38,7 +38,7 @@ export const MyLayout = ({ children }) => (
 );
 ```
 
-**Tip**: The layout must be wrapped with `<AppLocationContext>`, as `<Breadcrumb>` reads the app location from this context and not the URL. Layout components from `ra-navigation` ([`<ContainerLayout>`](./ContainerLayout.md) or `<SolarLayout>`) already include that context, so it's not necessary to include it in the custom layout.
+**Tip**: The layout must be wrapped with `<AppLocationContext>`, as `<Breadcrumb>` reads the app location from this context and not the URL. Layout components from `ra-navigation` ([`<ContainerLayout>`](./ContainerLayout.md) or [`<SolarLayout>`](./SolarLayout.md)) already include that context, so it's not necessary to include it in the custom layout.
 
 **Tip:** The `ra-enterprise` package exports an alternative `<Layout>`, which contains a pre-configured `<Breadcrumb>` that renders breadcrumb paths for all resources.
 
@@ -119,6 +119,25 @@ To leverage the provided components such as the [`<Breadcrumb>`](#breadcrumb) or
 Layout components from `ra-navigation` ([`<ContainerLayout>`](./ContainerLayout) or [`<SolarLayout>`](./SolarLayout)) already include that context, so you can skip that step if you are using one of these layouts.
 
 If, however, you are using the default `<Layout>` component from `react-admin`, or a custom layout, you must wrap it with `<AppLocationContext>`:
+
+```tsx
+import { AppLocationContext } from '@react-admin/ra-navigation';
+import { Admin, Resource, Layout } from 'react-admin';
+
+const MyLayout = ({ children }) => (
+    <AppLocationContext>
+        <Layout>
+            {children}
+        </Layout>
+    </AppLocationContext>
+);
+
+const App = () => (
+    <Admin dataProvider={dataProvider} layout={MyLayout}>
+        <Resource name="posts" list={PostList} />
+    </Admin>
+);
+```
 
 ## Props
 
@@ -324,6 +343,53 @@ const MyBreadcrumb = () => (
 );
 ```
 
+Here is another example, showing how to use a React component as label:
+
+```jsx
+import { Breadcrumb } from '@react-admin/ra-navigation';
+import { Typography, Stack } from '@mui/material';
+import NewspaperIcon from '@mui/icons-material/Newspaper';
+
+const IconAndLabel = ({
+    label,
+    icon,
+}: {
+    label: string;
+    icon: React.ReactNode;
+}) => (
+    <Stack direction="row" alignItems="center" spacing={1}>
+        {icon}
+        <Typography variant="body2">{label}</Typography>
+    </Stack>
+);
+
+const MyBreadcrumb = () => (
+    <Breadcrumb>
+        <Breadcrumb.Item 
+            name="posts"
+            label={
+                <IconAndLabel
+                    label="My Fabulous Posts"
+                    icon={<NewspaperIcon />}
+                />
+            }
+        >
+            <Breadcrumb.Item
+                name="edit"
+                label={({ record }) => `Edit "${record.title}"`}
+                to={({ record }) => `/posts/${record.id}`}
+            />
+            <Breadcrumb.Item
+                name="show"
+                label={({ record }) => record.title}
+                to={({ record }) => `/posts/${record.id}/show`}
+            />
+            <Breadcrumb.Item name="create" label="Let's write a Post!" />
+        </Breadcrumb.Item>
+    </Breadcrumb>
+);
+```
+
 `<Breadcrumb>` contains shortcut components for defining several `<Breadcrumb.Item>` children in a row: `<Breadcrumb.ResourceItem>`and `<Breadcrumb.ResourceItems>`.
 
 ## `<Breadcrumb.ResourceItem>`
@@ -503,7 +569,7 @@ The breadcrumb will show respectively:
 
 **Tip:** Even though it is rendered as a 'home' icon (🏠️), the dashboard breadcrumb item also contains the hidden placeholder text 'Dashboard', for screen readers. If you want to customize this text, e.g. to rename "Dashboard" to "Home", provide a [custom translation](https://marmelab.com/react-admin/Translation.html) for the `ra.page.dashboard` message.
 
-If you want to provide your own label for the dashboard breadcrumb item (either a string or a React component), you can use the [`<Breadcrumb.DashboardItem>`](#breadcrumbdashboarditem) component. Remember to pass `hasDashboard={false}` to `<Breadcrumb.ResourceItems>` to avoid having two Home links.
+If you want to provide your own label for the dashboard breadcrumb item (either a string or a React component), you can use the [`<Breadcrumb.DashboardItem>`](#breadcrumbdashboarditem) component.
 
 ## Adding Custom Pages
 
