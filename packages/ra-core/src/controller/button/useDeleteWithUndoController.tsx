@@ -51,6 +51,7 @@ const useDeleteWithUndoController = <RecordType extends RaRecord = any>(
         redirect: redirectTo = 'list',
         onClick,
         mutationOptions = {},
+        successMessage = 'ra.notification.deleted',
     } = props;
     const { meta: mutationMeta, ...otherMutationOptions } = mutationOptions;
     const resource = useResourceContext(props);
@@ -62,7 +63,7 @@ const useDeleteWithUndoController = <RecordType extends RaRecord = any>(
         undefined,
         {
             onSuccess: () => {
-                notify('ra.notification.deleted', {
+                notify(successMessage, {
                     type: 'info',
                     messageArgs: { smart_count: 1 },
                     undoable: true,
@@ -141,6 +142,7 @@ export interface UseDeleteWithUndoControllerParams<
         MutationOptionsError,
         DeleteParams<RecordType>
     >;
+    successMessage?: string;
 }
 
 export interface UseDeleteWithUndoControllerReturn {

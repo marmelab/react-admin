@@ -95,4 +95,5 @@ export interface DeleteButtonProps<
     record?: RecordType;
     redirect?: RedirectionSideEffect;
     resource?: string;
+    successMessage?: string;
 }

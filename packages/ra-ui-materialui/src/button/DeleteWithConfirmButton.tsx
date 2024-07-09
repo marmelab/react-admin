@@ -34,6 +34,7 @@ export const DeleteWithConfirmButton = <RecordType extends RaRecord = any>(
         translateOptions = {},
         mutationOptions,
         color = 'error',
+        successMessage,
         ...rest
     } = props;
     const translate = useTranslate();
@@ -53,6 +54,7 @@ export const DeleteWithConfirmButton = <RecordType extends RaRecord = any>(
         onClick,
         mutationOptions,
         resource,
+        successMessage,
     });
 
     return (
@@ -116,4 +118,5 @@ export interface DeleteWithConfirmButtonProps<
     record?: RecordType;
     redirect?: RedirectionSideEffect;
     resource?: string;
+    successMessage?: string;
 }

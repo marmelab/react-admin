@@ -1,7 +1,12 @@
 import * as React from 'react';
 import { screen, render, waitFor, fireEvent } from '@testing-library/react';
 import expect from 'expect';
-import { CoreAdminContext, MutationMode, testDataProvider } from 'ra-core';
+import {
+    CoreAdminContext,
+    MutationMode,
+    testDataProvider,
+    useNotificationContext,
+} from 'ra-core';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import { DeleteWithConfirmButton } from './DeleteWithConfirmButton';
@@ -260,5 +265,65 @@ describe('<DeleteWithConfirmButton />', () => {
 
         fireEvent.click(await screen.findByLabelText('ra.action.delete'));
         expect(screen.queryByDisplayValue('#20061703')).toBeDefined();
+    });
+
+    it('should display success message after successful deletion', async () => {
+        const successMessage = 'Test Message';
+        const dataProvider = testDataProvider({
+            getOne: () =>
+                // @ts-ignore
+                Promise.resolve({
+                    data: { id: 123, title: 'lorem' },
+                }),
+            delete: jest.fn().mockResolvedValueOnce({ data: { id: 123 } }),
+        });
+        const EditToolbar = props => (
+            <Toolbar {...props}>
+                <DeleteWithConfirmButton
+                    resource="comments"
+                    successMessage={successMessage}
+                />
+            </Toolbar>
+        );
+
+        let notificationsSpy;
+        const Notification = () => {
+            const { notifications } = useNotificationContext();
+            React.useEffect(() => {
+                notificationsSpy = notifications;
+            }, [notifications]);
+            return null;
+        };
+
+        render(
+            <ThemeProvider theme={theme}>
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <Edit {...defaultEditProps}>
+                        <SimpleForm toolbar={<EditToolbar />}>
+                            <TextInput source="title" />
+                        </SimpleForm>
+                    </Edit>
+                    <Notification />
+                </CoreAdminContext>
+            </ThemeProvider>
+        );
+        // waitFor for the dataProvider.getOne() return
+        await waitFor(() => {
+            expect(screen.queryByDisplayValue('lorem')).not.toBeNull();
+        });
+        fireEvent.click(await screen.findByLabelText('ra.action.delete'));
+        fireEvent.click(screen.getByText('ra.action.confirm'));
+        await waitFor(() => {
+            expect(notificationsSpy).toEqual([
+                {
+                    message: successMessage,
+                    type: 'info',
+                    notificationOptions: {
+                        messageArgs: { smart_count: 1 },
+                        undoable: false,
+                    },
+                },
+            ]);
+        });
     });
 });
