@@ -35,14 +35,40 @@ Add the `react-admin` npm package, as well as a data provider package. In this e
 cd remix-admin
 npm add react-admin ra-data-json-server
 ```
-**Tip**: If you're using yarn, Remix and react-admin both install `react-router`, and due to the way each library handles its dependencies, this results in duplicate packages. To avoid this, use [yarn resolutions](https://classic.yarnpkg.com/en/docs/selective-version-resolutions/) to force Remix to use the same version of `react-router` as react-admin. So add the following to the `package.json` file:
+
+
+**Tip**: As Remix now use Vite for SSR too, you'll have to add the following to the `vite.config.ts` file:
+
+```diff
+import { vitePlugin as remix } from "@remix-run/dev";
+import { defineConfig } from "vite";
+import tsconfigPaths from "vite-tsconfig-paths";
+
+export default defineConfig({
+	plugins: [
+		remix({
+			future: {
+				v3_fetcherPersist: true,
+				v3_relativeSplatPath: true,
+				v3_throwAbortReason: true,
+			},
+		}),
+		tsconfigPaths(),
+	],
++	ssr: {
++		noExternal: ['ra-data-json-server']
++	},
+});
+```
+
+**Tip**: If you're using yarn, Remix and react-admin both install `react-router`, and due to the way each library handles its dependencies, this results in duplicate packages. To avoid this, use [yarn resolutions](https://classic.yarnpkg.com/en/docs/selective-version-resolutions/) to force React Admin to use the same version of `react-router` as Remix. So add the following to the `package.json` file:
 
 ```js
 {
   // ...
   "resolutions": {
-    "react-router": "6.8.1",
-    "react-router-dom": "6.8.1"
+    "react-router": "6.24.1",
+    "react-router-dom": "6.24.1"
   }
 }
 ```
