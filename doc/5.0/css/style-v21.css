@@ -429,6 +429,9 @@ ul.sidenav code {
     white-space: pre;
     background: 0 0;
 }
+.markdown-section .highlight > pre > code {
+    font-size: 14px;
+}
 .markdown-section pre > code:after,
 .markdown-section pre > code:before {
     content: normal;
@@ -437,6 +440,9 @@ ul.sidenav code {
     padding: 0.2em;
     margin: 0;
     font-size: 0.85em;
+}
+.markdown-section p > code {
+    font-size: 14px;
     background-color: #f7f7f7;
 }
 .markdown-section code:after,
