@@ -36,7 +36,7 @@ cd remix-admin
 npm add react-admin ra-data-json-server
 ```
 
-**Tip**: As Remix now use Vite, you'll have to add the following to the `vite.config.ts` file for some dataProviders such as `ra-data-json-server`:
+Edit the `vite.config.ts` file to prevent Remix from executing the data provider package server-side:
 
 ```diff
 import { vitePlugin as remix } from "@remix-run/dev";
@@ -55,7 +55,7 @@ export default defineConfig({
 		tsconfigPaths(),
 	],
 +	ssr: {
-+		noExternal: ['ra-data-json-server']
++		noExternal: ['ra-data-json-server'] // or the dataProvider you are using
 +	},
 });
 ```
