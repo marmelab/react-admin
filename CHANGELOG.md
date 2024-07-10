@@ -1,5 +1,24 @@
 # Changelog
 
+## v5.0.4
+
+* Fix warning when using `<List filter>`instead of `filters` ([#9980](https://github.com/marmelab/react-admin/pull/9980)) ([djhi](https://github.com/djhi))
+* Fix `ra-data-graphql` custom context gets overwritten on queries ([#9976](https://github.com/marmelab/react-admin/pull/9976)) ([jspizziri](https://github.com/jspizziri))
+* [Chore] Backport missing changes from master ([#9989](https://github.com/marmelab/react-admin/pull/9989)) ([slax57](https://github.com/slax57))
+* [Doc] Fix Remix installation instructions ([#9982](https://github.com/marmelab/react-admin/pull/9982)) ([djhi](https://github.com/djhi))
+* [Doc] Update `<Admin>` doc to explain how to allow anonymous access to dashboard ([#9992](https://github.com/marmelab/react-admin/pull/9992)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix `<Datagrid>` standalone usage misses required resource prop ([#9991](https://github.com/marmelab/react-admin/pull/9991)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Update `<Breadcrumb>` doc according V5 upgrade ([#9988](https://github.com/marmelab/react-admin/pull/9988)) ([adguernier](https://github.com/adguernier))
+* [Doc] Update `ra-rbac` documentation following v5 upgrade ([#9987](https://github.com/marmelab/react-admin/pull/9987)) ([slax57](https://github.com/slax57))
+* [Doc] Update `ra-datagrid-ag` doc according to V5 ([#9985](https://github.com/marmelab/react-admin/pull/9985)) ([adguernier](https://github.com/adguernier))
+* [Doc] Improve `<EditableDatagrid>` documentation ([#9984](https://github.com/marmelab/react-admin/pull/9984)) ([adguernier](https://github.com/adguernier))
+* [Doc] Fix `react-query` upgrade codemod snippets ([#9977](https://github.com/marmelab/react-admin/pull/9977)) ([adguernier](https://github.com/adguernier))
+* [TypeScript] Update mutations results types to include `isLoading` ([#9978](https://github.com/marmelab/react-admin/pull/9978)) ([djhi](https://github.com/djhi))
+* [TypeScript] Fix `<WrapperField source>` prop should not be required ([#9983](https://github.com/marmelab/react-admin/pull/9983)) ([jonathan-marmelab](https://github.com/jonathan-marmelab))
+* [TypeScript] Fix `<ReferenceField>` Props type is confusing ([#9972](https://github.com/marmelab/react-admin/pull/9972)) ([fzaninotto](https://github.com/fzaninotto))
+* [TypeScript] Fix `useGetOne` and `useGetMany` params type when `id` param is undefined ([#9971](https://github.com/marmelab/react-admin/pull/9971)) ([fzaninotto](https://github.com/fzaninotto))
+* [TypeScript] Fix data provider packages export non-strict types ([#9970](https://github.com/marmelab/react-admin/pull/9970)) ([fzaninotto](https://github.com/fzaninotto))
+
 ## v5.0.3
 
 * Fix npm install error due to outdated peer dependencies ([#9964](https://github.com/marmelab/react-admin/pull/9964)) ([fzaninotto](https://github.com/fzaninotto))
