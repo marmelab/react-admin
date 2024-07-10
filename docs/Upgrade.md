@@ -32,6 +32,7 @@ React-admin v5 mostly focuses on removing deprecated features and upgrading depe
     - [`<List hasCreate>` Is No Longer Supported](#list-hascreate-is-no-longer-supported)
     - [`<Datagrid rowClick>` is no longer false by default](#datagrid-rowclick-is-no-longer-false-by-default)
     - [`<Datagrid expand>` Components No Longer Receive Any Props](#datagrid-expand-components-no-longer-receive-any-props)
+    - [`<Datagrid>` In Standalone Requires a `resource` Prop](#datagrid-in-standalone-requires-a-resource-prop)
     - [setFilters Is No Longer Debounced By Default](#setfilters-is-no-longer-debounced-by-default)
     - [Updates to bulkActionButtons Syntax](#updates-to-bulkactionbuttons-syntax)
     - [`<PaginationLimit>` Component Was Removed](#paginationlimit-component-was-removed)
@@ -767,6 +768,35 @@ If you used these props in your expand components, you'll have to use the `useRe
 +   const id = record?.id;
     // ...
 }
+```
+
+### `<Datagrid>` In Standalone Requires a `resource` Prop
+
+When using `<Datagrid>` outside of a `<List>` component, you now need to pass a `resource` prop:
+
+```diff
+const sort = { field: 'id', order: 'DESC' };
+
+const MyCustomList = () => {
+    const { data, total, isPending } = useGetList('books', {
+        pagination: { page: 1, perPage: 10 },
+        sort,
+    });
+
+    return (
+        <Datagrid
++           resource="books"
+            data={data}
+            total={total}
+            isPending={isPending}
+            sort={sort}
+            bulkActionButtons={false}
+        >
+            <TextField source="id" />
+            <TextField source="title" />
+        </Datagrid>
+    );
+};
 ```
 
 ### `setFilters` Is No Longer Debounced By Default
