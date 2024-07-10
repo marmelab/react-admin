@@ -425,9 +425,12 @@ ul.sidenav code {
     margin: 0;
     overflow: initial;
     line-height: inherit;
-    font-size: 14px;
+    font-size: 0.85em;
     white-space: pre;
     background: 0 0;
+}
+.markdown-section .highlight > pre > code {
+    font-size: 14px;
 }
 .markdown-section pre > code:after,
 .markdown-section pre > code:before {
@@ -436,6 +439,9 @@ ul.sidenav code {
 .markdown-section code {
     padding: 0.2em;
     margin: 0;
+    font-size: 0.85em;
+}
+.markdown-section p > code {
     font-size: 14px;
     background-color: #f7f7f7;
 }
