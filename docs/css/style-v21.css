@@ -425,7 +425,7 @@ ul.sidenav code {
     margin: 0;
     overflow: initial;
     line-height: inherit;
-    font-size: 0.85em;
+    font-size: 14px;
     white-space: pre;
     background: 0 0;
 }
@@ -436,7 +436,7 @@ ul.sidenav code {
 .markdown-section code {
     padding: 0.2em;
     margin: 0;
-    font-size: 0.85em;
+    font-size: 14px;
     background-color: #f7f7f7;
 }
 .markdown-section code:after,
