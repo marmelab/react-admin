@@ -132,7 +132,6 @@ const RowAction = () => (
 ```
 
 <video controls autoplay playsinline muted loop>
-  <source src="./img/editableDatagrid-actions.webm" type="video/webm"/>
   <source src="./img/editableDatagrid-actions.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
@@ -223,7 +222,6 @@ Use the `mutationMode` prop to specify the [mutation mode](./Edit.md#mutationmod
 ```
 
 <video controls autoplay playsinline muted loop>
-  <source src="./img/editableDatagrid-mutationMode.webm" type="video/webm"/>
   <source src="./img/editableDatagrid-mutationMode.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
@@ -341,12 +339,9 @@ export const BookList = () => (
 
 Feel free to visit the [dedicated stories](https://react-admin.github.io/ra-enterprise/?path=/story/ra-editable-datagrid-empty--custom-empty-standalone) to see more examples.
 
-## Recipes
-
-### Using Inside a `<ReferenceManyField>`
+## Using Inside a `<ReferenceManyField>`
 
 <video controls autoplay playsinline muted loop>
-  <source src="./img/editableDatagrid-referenceManyField.webm" type="video/webm"/>
   <source src="./img/editableDatagrid-referenceManyField.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
@@ -414,10 +409,9 @@ In these examples, the same form component is used in `createForm` and `editForm
 
 **Tip**: To edit a one-to-many relationship, you can also use [the `<ReferenceManyInput>` component](./ReferenceManyInput.md).
 
-### Providing Custom Side Effects
+## Providing Custom Side Effects
 
 <video controls autoplay playsinline muted loop>
-  <source src="./img/editableDatagrid-custom_side_effect.webm" type="video/webm"/>
   <source src="./img/editableDatagrid-custom_side_effect.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
@@ -504,7 +498,7 @@ const ArtistCreateForm = () => {
 };
 ```
 
-### Adding A `meta` Prop To All Mutations
+## Adding A `meta` Prop To All Mutations
 
 Just like with `<Datagrid>`, if you'd like to add a `meta` prop to all the dataProvider calls, you will need to provide custom `mutationOptions` at all the places where mutations occur:
 
@@ -587,7 +581,7 @@ const ArtistListWithMeta = () => {
 ```
 {% endraw %}
 
-## Configurable
+## Configurable Variant
 
 You can let end users customize what fields are displayed in the `<EditableDatagrid>` by using the `<EditableDatagridConfigurable>` component instead, together with the `<RowFormConfigurable>` component.
 
