@@ -35,14 +35,39 @@ Add the `react-admin` npm package, as well as a data provider package. In this e
 cd remix-admin
 npm add react-admin ra-data-json-server
 ```
-**Tip**: If you're using yarn, Remix and react-admin both install `react-router`, and due to the way each library handles its dependencies, this results in duplicate packages. To avoid this, use [yarn resolutions](https://classic.yarnpkg.com/en/docs/selective-version-resolutions/) to force Remix to use the same version of `react-router` as react-admin. So add the following to the `package.json` file:
+
+Edit the `vite.config.ts` file to prevent Remix from executing the data provider package server-side:
+
+```diff
+import { vitePlugin as remix } from "@remix-run/dev";
+import { defineConfig } from "vite";
+import tsconfigPaths from "vite-tsconfig-paths";
+
+export default defineConfig({
+	plugins: [
+		remix({
+			future: {
+				v3_fetcherPersist: true,
+				v3_relativeSplatPath: true,
+				v3_throwAbortReason: true,
+			},
+		}),
+		tsconfigPaths(),
+	],
++	ssr: {
++		noExternal: ['ra-data-json-server'] // or the dataProvider you are using
++	},
+});
+```
+
+**Tip**: If you're using yarn, Remix and react-admin both install `react-router`, and due to the way each library handles its dependencies, this results in duplicate packages. To avoid this, use [yarn resolutions](https://classic.yarnpkg.com/en/docs/selective-version-resolutions/) to force React Admin to use the same version of `react-router` as Remix. So add the following to the `package.json` file:
 
 ```js
 {
   // ...
   "resolutions": {
-    "react-router": "6.8.1",
-    "react-router-dom": "6.8.1"
+    "react-router": "6.24.1",
+    "react-router-dom": "6.24.1"
   }
 }
 ```
@@ -88,20 +113,6 @@ body { margin: 0; }
 ```
 
 **Tip** Don't forget to set the `<Admin basename>` prop, so that react-admin generates links relative to the "/admin" subpath:
-
-Finally, update your `remix.config.js` to add `ra-data-json-server` to the `serverDependenciesToBundle` array:
-
-```diff
-/** @type {import('@remix-run/dev').AppConfig} */
-export default {
-  ignoredRouteFiles: ["**/.*"],
-+  serverDependenciesToBundle: ["ra-data-json-server"],
-  // appDirectory: "app",
-  // assetsBuildDirectory: "public/build",
-  // publicPath: "/build/",
-  // serverBuildPath: "build/index.js",
-};
-```
 
 You can now start the app in `development` mode with `npm run dev`. The admin should render at `http://localhost:3000/admin`, and you can use the Remix routing system to add more pages.
 
@@ -187,18 +198,29 @@ Update the react-admin data provider to use the Supabase adapter instead of the 
 npm add @raphiniert/ra-data-postgrest
 ```
 
-Update your `remix.config.js` to add `@raphiniert/ra-data-postgrest` to the `serverDependenciesToBundle` array:
+Update your `vite.config.ts` to add `@raphiniert/ra-data-postgrest` to the `noExternal` array:
+
 
 ```diff
-/** @type {import('@remix-run/dev').AppConfig} */
-export default {
-  ignoredRouteFiles: ["**/.*"],
-+  serverDependenciesToBundle: ["@raphiniert/ra-data-postgrest"],
-  // appDirectory: "app",
-  // assetsBuildDirectory: "public/build",
-  // publicPath: "/build/",
-  // serverBuildPath: "build/index.js",
-};
+import { vitePlugin as remix } from "@remix-run/dev";
+import { defineConfig } from "vite";
+import tsconfigPaths from "vite-tsconfig-paths";
+
+export default defineConfig({
+	plugins: [
+		remix({
+			future: {
+				v3_fetcherPersist: true,
+				v3_relativeSplatPath: true,
+				v3_throwAbortReason: true,
+			},
+		}),
+		tsconfigPaths(),
+	],
++	ssr: {
++		noExternal: ['@raphiniert/ra-data-postgrest']
++	},
+});
 ```
 
 Finally, update your Admin dataProvider:

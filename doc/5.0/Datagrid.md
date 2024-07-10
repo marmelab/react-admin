@@ -1116,6 +1116,7 @@ const MyCustomList = () => {
 
     return (
         <Datagrid
+            resource="books"
             data={data}
             total={total}
             isPending={isPending}

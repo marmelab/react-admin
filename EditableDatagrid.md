@@ -36,20 +36,27 @@ yarn add @react-admin/ra-editable-datagrid
 Then, replace `<Datagrid>` with `<EditableDatagrid>` in a react-admin `<List>`, `<ReferenceManyField>`, or any other component that creates a `ListContext`. In addition, pass a form component to be displayed when the user switches to edit or create mode.
 
 ```tsx
-import { List, ListActions,TextField, TextInput, DateField, DateInput, SelectField, SelectInput, required } from 'react-admin';
+import {
+    List,
+    ListActions,
+    TextField,
+    TextInput,
+    DateField,
+    DateInput,
+    SelectField,
+    SelectInput,
+    required,
+} from 'react-admin';
 import { EditableDatagrid, RowForm } from '@react-admin/ra-editable-datagrid';
 
 export const ArtistList = () => (
     <List actions={<ListActions hasCreate />} empty={false}>
-        <EditableDatagrid
-            createForm={<ArtistForm />}
-            editForm={<ArtistForm />}
-        >
+        <EditableDatagrid createForm={<ArtistForm />} editForm={<ArtistForm />}>
             <TextField source="id" />
             <TextField source="firstName" />
             <TextField source="lastName" />
             <DateField source="dob" label="born" />
-            <SelectField source="profession" choices={professionChoices} />
+            <SelectField source="profession" choices={professions} />
         </EditableDatagrid>
     </List>
 );
@@ -125,7 +132,6 @@ const RowAction = () => (
 ```
 
 <video controls autoplay playsinline muted loop>
-  <source src="./img/editableDatagrid-actions.webm" type="video/webm"/>
   <source src="./img/editableDatagrid-actions.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
@@ -168,6 +174,10 @@ Also, when the list is empty, the `<List>` component normally doesn't render its
 `<EditableDatagrid>` renders the `createForm` elements in a `<table>`, so the create form element should render a `<tr>`. We advise you to use the [`<RowForm>`](#rowform) component, which renders a `<tr>` by default. But you can also use your own component to render the creation form ([see `<RowForm>` below](#rowform)).
 
 **Tip**: The `createForm` component must render as many columns as there are children in the `<EditableDatagrid>`. That's why in the example above, the `<ArtistForm>` component renders a `<TextInput>` for each `<TextField>` (except for the read-only `id` field, for which it renders a `<TextField>`).
+
+**Tip**: To display a create button on top of the list, you should add a `<ListActions hasCreate />` component to the `actions` prop of the `<List>` component, as in the example below.
+
+**Tip**: To display a custom create button, pass a custom component as the `empty` prop. It can use the `useEditableDatagridContext` hook to access to `openStandaloneCreateForm` and `closeStandaloneCreateForm` callbacks.
 
 ## `editForm`
 
@@ -212,7 +222,6 @@ Use the `mutationMode` prop to specify the [mutation mode](./Edit.md#mutationmod
 ```
 
 <video controls autoplay playsinline muted loop>
-  <source src="./img/editableDatagrid-mutationMode.webm" type="video/webm"/>
   <source src="./img/editableDatagrid-mutationMode.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
@@ -231,6 +240,8 @@ You can disable the delete button by setting the `noDelete` prop to `true`:
 ## `<RowForm>`
 
 `<RowForm>` renders a form in a table row, with one table cell per child. It is designed to be used as [`editForm`](#editform) and [`createForm`](#createform) element.
+
+`<RowForm>` and `<EditableDatagrid>` should have the same number of children, and these children should concern the same `source`.
 
 ```tsx
 import { List, ListActions, TextField, TextInput } from 'react-admin';
@@ -257,8 +268,6 @@ const ArtistForm = () => (
     </RowForm>
 );
 ```
-
-`<RowForm>` and `<EditableDatagrid>` should have the same number of children, and these children should concern the same `source`.
 
 **Tip**: No need to include a `<SaveButton>` in the form, as `<RowForm>` automatically adds a column with save/cancel buttons.
 
@@ -333,7 +342,6 @@ Feel free to visit the [dedicated stories](https://react-admin.github.io/ra-ente
 ## Using Inside a `<ReferenceManyField>`
 
 <video controls autoplay playsinline muted loop>
-  <source src="./img/editableDatagrid-referenceManyField.webm" type="video/webm"/>
   <source src="./img/editableDatagrid-referenceManyField.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
@@ -404,7 +412,6 @@ In these examples, the same form component is used in `createForm` and `editForm
 ## Providing Custom Side Effects
 
 <video controls autoplay playsinline muted loop>
-  <source src="./img/editableDatagrid-custom_side_effect.webm" type="video/webm"/>
   <source src="./img/editableDatagrid-custom_side_effect.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
@@ -574,7 +581,7 @@ const ArtistListWithMeta = () => {
 ```
 {% endraw %}
 
-## Configurable
+## Configurable Variant
 
 You can let end users customize what fields are displayed in the `<EditableDatagrid>` by using the `<EditableDatagridConfigurable>` component instead, together with the `<RowFormConfigurable>` component.
 
@@ -585,7 +592,7 @@ You can let end users customize what fields are displayed in the `<EditableDatag
 </video>
 
 ```diff
-import { List, TextField } from 'react-admin';
+import { List, ListActions, TextField } from 'react-admin';
 import {
 -   EditableDatagrid,
 +   EditableDatagridConfigurable,

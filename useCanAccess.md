@@ -9,7 +9,7 @@ This hook, part of [the ra-rbac module](https://react-admin-ee.marmelab.com/docu
 
 ## Usage
 
-`useCanAccess` takes an object `{ action, resource, record }` as argument. It returns an object describing the state of the RBAC request. As calls to the `authProvider` are asynchronous, the hook returns a `loading` state in addition to the `canAccess` key.
+`useCanAccess` takes an object `{ action, resource, record }` as argument. It returns an object describing the state of the RBAC request. As calls to the `authProvider` are asynchronous, the hook returns a `isPending` state in addition to the `canAccess` key.
 
 ```jsx
 import { useCanAccess } from '@react-admin/ra-rbac';
@@ -17,8 +17,8 @@ import { useRecordContext, DeleteButton } from 'react-admin';
 
 const DeleteUserButton = () => {
     const record = useRecordContext();
-    const { isLoading, canAccess } = useCanAccess({ action: 'delete', resource: 'users', record });
-    if (isLoading || !canAccess) return null;
+    const { isPending, canAccess } = useCanAccess({ action: 'delete', resource: 'users', record });
+    if (isPending || !canAccess) return null;
     return <DeleteButton record={record} resource="users" />;
 };
 ```

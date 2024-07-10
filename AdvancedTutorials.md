@@ -7,6 +7,10 @@ title: "Advanced Tutorials"
 
 If you want to learn the best practices of react-admin development by example, you've come to the right place. This page lists the advanced tutorials we've published on [the react-admin blog](https://marmelab.com/en/blog/#react-admin).
 
+* 2024-06: [Introducing React-Admin V5](https://marmelab.com/blog/2024/06/20/react-admin-v5.html)
+* 2024-06: [Using AI To Autofill Forms With Wikipedia](https://marmelab.com/blog/2024/06/05/ai-form-autocompletion-with-openai-and-wikipedia.html)
+* 2024-05: [Using React-Admin With React Native](https://marmelab.com/blog/2024/05/22/using-react-admin-with-react-native.html)
+* 2024-01: [Continuous Migration: Keeping Users Uninterrupted](https://marmelab.com/blog/2024/01/18/continous-migration.html)
 * 2023-11: [Using React-Admin With DaisyUI, Tailwind CSS, Tanstack Table and React-aria](https://marmelab.com/blog/2023/11/28/using-react-admin-with-your-favorite-ui-library.html)
 * 2023-10: [Creating a Record Related to the Current One](https://marmelab.com/blog/2023/10/12/react-admin-v4-advanced-recipes-creating-a-record-related-to-the-current-one.html)
 * 2023-09: [Authentication using ActiveDirectory](https://marmelab.com/blog/2023/09/13/active-directory-integration-tutorial.html)

@@ -422,7 +422,8 @@ import * as React from "react";
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import { Title } from 'react-admin';
-export default () => (
+
+export const Dashboard = () => (
     <Card>
         <Title title="Welcome to the administration" />
         <CardContent>Lorem ipsum sic dolor amet...</CardContent>
@@ -436,7 +437,7 @@ import * as React from "react";
 import { Admin } from 'react-admin';
 import simpleRestProvider from 'ra-data-simple-rest';
 
-import Dashboard from './Dashboard';
+import { Dashboard } from './Dashboard';
 
 const App = () => (
     <Admin dashboard={Dashboard} dataProvider={simpleRestProvider('http://path.to.my.api')}>
@@ -446,6 +447,18 @@ const App = () => (
 ```
 
 ![Custom home page](./img/dashboard.png)
+
+The `dashboard` page requires users to be authenticated and will redirect anonymous users to the login page. If you want to allow anonymous access to the dashboard, edit your `authProvider` to add an exception to the `checkAuth` method, as follows:
+
+```diff
+const authProvider = {
+    // ...
+    checkAuth: (params) => {
++       if (params?.route === 'dashboard') return Promise.resolve();
+        // ...
+    },
+}
+```
 
 ## `darkTheme`
 
