@@ -1,6 +1,5 @@
 /* eslint-disable import/no-anonymous-default-export */
 import fakeRestProvider from 'ra-data-fakerest';
-
 import {
     CreateParams,
     DataProvider,
@@ -111,7 +110,7 @@ export default async (
         ) => baseDataProvider.getOne<RecordType>(resource, params),
         getMany: <RecordType extends RaRecord = any>(
             resource: string,
-            params: GetManyParams
+            params: GetManyParams<RecordType>
         ) => baseDataProvider.getMany<RecordType>(resource, params),
         getManyReference: <RecordType extends RaRecord = any>(
             resource: string,

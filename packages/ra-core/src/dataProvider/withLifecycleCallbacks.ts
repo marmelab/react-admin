@@ -202,7 +202,7 @@ export const withLifecycleCallbacks = (
 
         getMany: async function <RecordType extends RaRecord = any>(
             resource: string,
-            params: GetManyParams
+            params: GetManyParams<RecordType>
         ) {
             let newParams = params;
 
