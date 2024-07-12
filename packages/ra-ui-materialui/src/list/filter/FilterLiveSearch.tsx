@@ -61,7 +61,7 @@ export const FilterLiveSearch = memo((props: FilterLiveSearchProps) => {
         [filterValues, source]
     );
 
-    const form = useForm({ defaultValues: initialValues });
+    const form = useForm({ values: initialValues });
 
     const onSubmit = e => {
         e.preventDefault();
