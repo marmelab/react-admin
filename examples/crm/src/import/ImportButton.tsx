@@ -5,6 +5,7 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
+import * as Papa from 'papaparse';
 import { useState } from 'react';
 import { Button, FileField, FileInput, Form } from 'react-admin';
 import { Link } from 'react-router-dom';
@@ -15,6 +16,7 @@ type ImportButtonProps = {
 
 export const ImportButton = ({ sampleUrl }: ImportButtonProps) => {
     const [isModalOpen, setModalOpen] = useState(true);
+    const [file, setFile] = useState<File | null>(null);
 
     const handleOpenModal = () => {
         setModalOpen(true);
@@ -24,8 +26,21 @@ export const ImportButton = ({ sampleUrl }: ImportButtonProps) => {
         setModalOpen(false);
     };
 
+    const handleFileChange = (file: File | null) => {
+        setFile(file);
+    };
+
     const startImport = () => {
-        console.log('starting import');
+        if (!file) {
+            return;
+        }
+
+        Papa.parse(file, {
+            header: true,
+            step(row) {
+                console.log(row);
+            },
+        });
     };
 
     return (
@@ -63,6 +78,7 @@ export const ImportButton = ({ sampleUrl }: ImportButtonProps) => {
                                 source="csv"
                                 label="CSV File"
                                 accept={{ 'text/csv': ['.csv'] }}
+                                onChange={handleFileChange}
                             >
                                 <FileField source="src" title="title" />
                             </FileInput>
@@ -71,7 +87,11 @@ export const ImportButton = ({ sampleUrl }: ImportButtonProps) => {
                 </DialogContent>
                 <DialogActions>
                     <Button label="Cancel" onClick={handleCancel} />
-                    <Button label="Import" onClick={startImport} />
+                    <Button
+                        label="Import"
+                        onClick={startImport}
+                        disabled={!file}
+                    />
                 </DialogActions>
             </Dialog>
         </>
