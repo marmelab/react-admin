@@ -49,10 +49,13 @@ export const CompanyShow = () => (
 const CompanyShowContent = () => {
     const { record, isPending } = useShowContext<Company>();
     const [tabValue, setTabValue] = useState(0);
-    const handleTabChange = (event: ChangeEvent<{}>, newValue: number) => {
+    const handleTabChange = (_: ChangeEvent<{}>, newValue: number) => {
         setTabValue(newValue);
     };
     if (isPending || !record) return null;
+
+    let tabIndex = 0;
+
     return (
         <Box mt={2} display="flex">
             <Box flex="1">
@@ -98,41 +101,53 @@ const CompanyShowContent = () => {
                                     }
                                 />
                             )}
+                            {record.description && <Tab label="Description" />}
                         </Tabs>
                         <Divider />
-                        <TabPanel value={tabValue} index={0}>
-                            <ReferenceManyField
-                                reference="contacts"
-                                target="company_id"
-                                sort={{ field: 'last_name', order: 'ASC' }}
-                            >
-                                <Stack
-                                    direction="row"
-                                    justifyContent="flex-end"
-                                    spacing={2}
-                                    mt={1}
+                        {record.nb_contacts ? (
+                            <TabPanel value={tabValue} index={tabIndex++}>
+                                <ReferenceManyField
+                                    reference="contacts"
+                                    target="company_id"
+                                    sort={{ field: 'last_name', order: 'ASC' }}
                                 >
-                                    <SortButton
-                                        fields={[
-                                            'last_name',
-                                            'first_name',
-                                            'last_seen',
-                                        ]}
-                                    />
-                                    <CreateRelatedContactButton />
+                                    <Stack
+                                        direction="row"
+                                        justifyContent="flex-end"
+                                        spacing={2}
+                                        mt={1}
+                                    >
+                                        <SortButton
+                                            fields={[
+                                                'last_name',
+                                                'first_name',
+                                                'last_seen',
+                                            ]}
+                                        />
+                                        <CreateRelatedContactButton />
+                                    </Stack>
+                                    <ContactsIterator />
+                                </ReferenceManyField>
+                            </TabPanel>
+                        ) : null}
+                        {record.nb_deals ? (
+                            <TabPanel value={tabValue} index={tabIndex++}>
+                                <ReferenceManyField
+                                    reference="deals"
+                                    target="company_id"
+                                    sort={{ field: 'name', order: 'ASC' }}
+                                >
+                                    <DealsIterator />
+                                </ReferenceManyField>
+                            </TabPanel>
+                        ) : null}
+                        {record.description ? (
+                            <TabPanel value={tabValue} index={tabIndex++}>
+                                <Stack mt={2}>
+                                    <TextField source="description" />
                                 </Stack>
-                                <ContactsIterator />
-                            </ReferenceManyField>
-                        </TabPanel>
-                        <TabPanel value={tabValue} index={1}>
-                            <ReferenceManyField
-                                reference="deals"
-                                target="company_id"
-                                sort={{ field: 'name', order: 'ASC' }}
-                            >
-                                <DealsIterator />
-                            </ReferenceManyField>
-                        </TabPanel>
+                            </TabPanel>
+                        ) : null}
                     </CardContent>
                 </Card>
             </Box>

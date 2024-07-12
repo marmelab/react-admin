@@ -22,6 +22,7 @@ export interface Company extends RaRecord {
     nb_deals: number;
     sales_id: Identifier;
     created_at: string;
+    description: string;
 }
 
 export interface Contact extends RaRecord {
