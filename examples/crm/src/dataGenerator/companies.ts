@@ -54,6 +54,9 @@ export const generateCompanies = (db: Db): Company[] => {
                 random.number(2) === 0 ? 0 : random.arrayElement(db.sales).id,
             created_at: randomDate().toISOString(),
             description: lorem.paragraph(),
+            revenue: random.arrayElement(['$1M', '$10M', '$100M', '$1B']),
+            taxe_identifier: random.alphaNumeric(10),
+            country: random.arrayElement(['USA', 'France', 'UK']),
         };
     });
 };

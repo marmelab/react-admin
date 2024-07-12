@@ -57,6 +57,19 @@ export const CompanyForm = () => (
         </Stack>
 
         <Divider sx={{ mb: 2, width: '100%' }} />
+        <Grid container spacing={2}>
+            <Grid item xs={12} sm={4}>
+                <TextInput source="revenue" />
+            </Grid>
+            <Grid item xs={12} sm={4}>
+                <TextInput source="taxe_identifier" />
+            </Grid>
+            <Grid item xs={12} sm={4}>
+                <TextInput source="country" />
+            </Grid>
+        </Grid>
+
+        <Divider sx={{ mb: 2, width: '100%' }} />
         <TextInput source="description" multiline />
     </>
 );

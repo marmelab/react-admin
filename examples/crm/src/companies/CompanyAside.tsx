@@ -8,7 +8,7 @@ import {
     ShowButton,
     useRecordContext,
 } from 'react-admin';
-import { Box, Typography, Divider, Link } from '@mui/material';
+import { Box, Typography, Divider, Link, Stack } from '@mui/material';
 
 import { Company, Sale } from '../types';
 
@@ -52,6 +52,31 @@ export const CompanyAside = ({ link = 'edit' }: CompanyAsideProps) => {
 
             <Box mt={1}>
                 <TextField source="phone_number" />{' '}
+            </Box>
+
+            {record.revenue || record.identifier || record.country ? (
+                <Stack mt={1}>
+                    {record.revenue && (
+                        <Typography component="span" variant="body2">
+                            Revenue: <TextField source="revenue" />
+                        </Typography>
+                    )}
+
+                    {record.taxe_identifier && (
+                        <Typography component="span" variant="body2">
+                            Taxe identifier:{' '}
+                            <TextField source="taxe_identifier" />
+                        </Typography>
+                    )}
+                    {record.country && (
+                        <Typography component="span" variant="body2">
+                            Country: <TextField source="country" />
+                        </Typography>
+                    )}
+                </Stack>
+            ) : null}
+
+            <Stack mt={1} mb={3}>
                 <Typography
                     variant="body2"
                     color="textSecondary"
@@ -59,14 +84,10 @@ export const CompanyAside = ({ link = 'edit' }: CompanyAsideProps) => {
                 >
                     Main Address
                 </Typography>
-            </Box>
-
-            <Box mt={1} mb={3}>
                 <TextField source="address" />
-                <br />
                 <TextField source="city" /> <TextField source="zipcode" />{' '}
                 <TextField source="stateAbbr" />
-            </Box>
+            </Stack>
 
             <Typography variant="subtitle2">Background</Typography>
             <Divider />
