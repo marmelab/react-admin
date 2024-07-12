@@ -43,11 +43,7 @@ export const CompanyForm = () => (
         <Divider sx={{ mb: 2, width: '100%' }} />
 
         <Stack direction="row">
-            <TextInput
-                source="phone_number"
-                helperText={false}
-                sx={{ width: 200 }}
-            />
+            <TextInput source="phone_number" sx={{ width: 200 }} />
             <ReferenceInput source="sales_id" reference="sales">
                 <SelectInput
                     label="Account manager"
@@ -59,5 +55,8 @@ export const CompanyForm = () => (
                 />
             </ReferenceInput>
         </Stack>
+
+        <Divider sx={{ mb: 2, width: '100%' }} />
+        <TextInput source="description" multiline />
     </>
 );

@@ -1,4 +1,11 @@
-import { company, internet, address, phone, random } from 'faker/locale/en_US';
+import {
+    company,
+    internet,
+    address,
+    phone,
+    random,
+    lorem,
+} from 'faker/locale/en_US';
 import { randomDate } from './utils';
 
 import { Db } from './types';
@@ -46,6 +53,7 @@ export const generateCompanies = (db: Db): Company[] => {
             sales_id:
                 random.number(2) === 0 ? 0 : random.arrayElement(db.sales).id,
             created_at: randomDate().toISOString(),
+            description: lorem.paragraph(),
         };
     });
 };
