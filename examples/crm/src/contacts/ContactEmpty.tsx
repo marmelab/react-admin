@@ -30,7 +30,7 @@ export const ContactEmpty = () => {
                 height: `calc(100dvh - ${appbarHeight}px)`,
             }}
         >
-            <img src="/img/empty.svg" alt="No contacts found" />
+            <img src="./img/empty.svg" alt="No contacts found" />
             <Typography variant="h6" fontWeight="bold">
                 No contacts found
             </Typography>
