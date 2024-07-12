@@ -23,6 +23,9 @@ export interface Company extends RaRecord {
     sales_id: Identifier;
     created_at: string;
     description: string;
+    revenue: string;
+    taxe_identifier: string;
+    country: string;
 }
 
 export interface Contact extends RaRecord {
