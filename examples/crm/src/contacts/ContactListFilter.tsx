@@ -31,7 +31,7 @@ export const ContactListFilter = () => {
                     '& .MuiFilledInput-root': { width: '100%' },
                 }}
             />
-            <FilterList label="Last seen" icon={<AccessTimeIcon />}>
+            <FilterList label="Last activity" icon={<AccessTimeIcon />}>
                 <FilterListItem
                     label="Today"
                     value={{
