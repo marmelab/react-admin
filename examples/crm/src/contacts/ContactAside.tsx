@@ -85,7 +85,7 @@ export const ContactAside = ({ link = 'edit' }: { link?: 'edit' | 'show' }) => {
                     variant="body2"
                     color="textSecondary"
                 >
-                    Last seen on
+                    Last activity on
                 </Typography>{' '}
                 <DateField
                     source="last_seen"
