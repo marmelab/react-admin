@@ -4,11 +4,14 @@ import {
     CreateButton,
     downloadCSV,
     ExportButton,
-    List as RaList,
     Pagination,
     SortButton,
     TopToolbar,
     useGetIdentity,
+    ListBase,
+    Title,
+    ListToolbar,
+    useListContext,
 } from 'react-admin';
 import type { Exporter } from 'react-admin';
 import jsonExport from 'jsonexport/dist';
@@ -16,22 +19,43 @@ import jsonExport from 'jsonexport/dist';
 import { ContactListFilter } from './ContactListFilter';
 import { ContactListContent } from './ContactListContent';
 import { Contact, Company, Sale, Tag } from '../types';
+import { Card, LinearProgress, Stack } from '@mui/material';
+import { ContactEmpty } from './ContactEmpty';
 
 export const ContactList = () => {
     const { identity } = useGetIdentity();
+
     if (!identity) return null;
+
     return (
-        <RaList<Contact>
-            actions={<ContactListActions />}
-            aside={<ContactListFilter />}
+        <ListBase
             perPage={25}
-            pagination={<Pagination rowsPerPageOptions={[10, 25, 50, 100]} />}
             filterDefaultValues={{ sales_id: identity?.id }}
             sort={{ field: 'last_seen', order: 'DESC' }}
             exporter={exporter}
         >
-            <ContactListContent />
-        </RaList>
+            <ContactListLayout />
+        </ListBase>
+    );
+};
+
+const ContactListLayout = () => {
+    const { data, isPending } = useListContext();
+    if (isPending) return <LinearProgress />;
+    if (!data?.length) return <ContactEmpty />;
+
+    return (
+        <Stack direction="row">
+            <ContactListFilter />
+            <Stack sx={{ width: '100%' }}>
+                <Title title={'Contacts'} />
+                <ListToolbar actions={<ContactListActions />} />
+                <Card>
+                    <ContactListContent />
+                </Card>
+                <Pagination rowsPerPageOptions={[10, 25, 50, 100]} />
+            </Stack>
+        </Stack>
     );
 };
 
