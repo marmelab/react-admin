@@ -2,6 +2,7 @@ import fakeRestDataProvider from 'ra-data-fakerest';
 import { withLifecycleCallbacks } from 'react-admin';
 
 import generateData from './dataGenerator';
+import { getAvatarUrl } from './misc/getContactAvatar';
 
 const baseDataProvider = fakeRestDataProvider(generateData(), true, 300);
 
@@ -11,6 +12,15 @@ const TASK_DONE_NOT_CHANGED = 'TASK_DONE_NOT_CHANGED';
 let taskUpdateType = TASK_DONE_NOT_CHANGED;
 
 export const dataProvider = withLifecycleCallbacks(baseDataProvider, [
+    {
+        resource: 'contacts',
+        beforeUpdate: async params => {
+            const { data } = params;
+            const avatarUrl = await getAvatarUrl(data);
+            data.avatar = avatarUrl || null;
+            return params;
+        },
+    },
     {
         resource: 'contactNotes',
         afterCreate: async (result, dataProvider) => {
