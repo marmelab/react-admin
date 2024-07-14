@@ -3,12 +3,15 @@ import {
     CreateButton,
     ExportButton,
     FilterButton,
-    List,
+    ListBase,
+    ListToolbar,
     ReferenceInput,
     SearchInput,
     SelectInput,
+    Title,
     TopToolbar,
     useGetIdentity,
+    useListContext,
 } from 'react-admin';
 import { matchPath, useLocation } from 'react-router';
 
@@ -17,29 +20,43 @@ import { DealCreate } from './DealCreate';
 import { DealShow } from './DealShow';
 import { OnlyMineInput } from './OnlyMineInput';
 import { typeChoices } from './types';
+import { Card, LinearProgress, Stack } from '@mui/material';
+import { DealEmpty } from './DealEmpty';
 
 const DealList = () => {
     const { identity } = useGetIdentity();
+
+    if (!identity) return null;
+    return (
+        <ListBase
+            perPage={100}
+            filterDefaultValues={{ sales_id: identity && identity?.id }}
+            sort={{ field: 'index', order: 'ASC' }}
+        >
+            <DealLayout />
+        </ListBase>
+    );
+};
+
+const DealLayout = () => {
     const location = useLocation();
     const matchCreate = matchPath('/deals/create', location.pathname);
     const matchShow = matchPath('/deals/:id/show', location.pathname);
-    if (!identity) return null;
+
+    const { data, isPending } = useListContext();
+    if (isPending) return <LinearProgress />;
+    if (!data?.length) return <DealEmpty />;
+
     return (
-        <>
-            <List
-                perPage={100}
-                sort={{ field: 'index', order: 'ASC' }}
-                filters={dealFilters}
-                filterDefaultValues={{ sales_id: identity && identity?.id }}
-                actions={<DealActions />}
-                pagination={false}
-                component="div"
-            >
+        <Stack component="div" sx={{ width: '100%' }}>
+            <Title title={'Deals'} />
+            <ListToolbar filters={dealFilters} actions={<DealActions />} />
+            <Card>
                 <DealListContent />
                 <DealCreate open={!!matchCreate} />
-            </List>
+            </Card>
             <DealShow open={!!matchShow} id={matchShow?.params.id} />
-        </>
+        </Stack>
     );
 };
 

@@ -24,18 +24,7 @@ export const DealShow = ({ open, id }: { open: boolean; id?: string }) => {
     };
 
     return (
-        <Dialog
-            open={open}
-            onClose={handleClose}
-            fullWidth
-            maxWidth="md"
-            sx={{
-                '.MuiDialog-paper': {
-                    position: 'absolute',
-                    top: 50,
-                },
-            }}
-        >
+        <Dialog open={open} onClose={handleClose} fullWidth maxWidth="lg">
             <DialogContent>
                 {!!id ? (
                     <ShowBase id={id}>

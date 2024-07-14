@@ -1,23 +1,7 @@
-import {
-    Button,
-    Stack,
-    Typography,
-    useMediaQuery,
-    useTheme,
-} from '@mui/material';
+import { Button, Stack, Typography } from '@mui/material';
 import { CreateButton } from 'react-admin';
 import FileUploadIcon from '@mui/icons-material/FileUpload';
-
-const DENSE_NAVBAR_HEIGHT = 48;
-const DENSE_NAVBAR_HEIGHT_MOBILE = 64;
-
-export default function useAppBarHeight(): number {
-    const { breakpoints } = useTheme();
-    const queryDesktop = breakpoints.up('sm');
-    return useMediaQuery(queryDesktop)
-        ? DENSE_NAVBAR_HEIGHT
-        : DENSE_NAVBAR_HEIGHT_MOBILE;
-}
+import useAppBarHeight from '../misc/useAppBarHeight';
 
 export const ContactEmpty = () => {
     const appbarHeight = useAppBarHeight();
@@ -35,7 +19,7 @@ export const ContactEmpty = () => {
                 No contacts found
             </Typography>
             <Typography
-                variant="caption"
+                variant="body2"
                 align="center"
                 color="text.secondary"
                 gutterBottom
