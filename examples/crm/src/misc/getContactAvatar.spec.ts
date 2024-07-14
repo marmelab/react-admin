@@ -4,6 +4,12 @@
 
 import { Contact } from '../types';
 import { getAvatarUrl, hash } from './getContactAvatar';
+// eslint-disable-next-line no-global-assign
+import { webcrypto } from 'node:crypto';
+
+Object.defineProperty(globalThis, 'crypto', {
+    value: webcrypto,
+});
 
 it('should return gravatar URL for anthony@marmelab.com', async () => {
     const email = 'anthony@marmelab.com';
