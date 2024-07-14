@@ -15,6 +15,7 @@ import { ImageList } from './GridList';
 import { CompanyListFilter } from './CompanyListFilter';
 import { Card, LinearProgress, Stack } from '@mui/material';
 import { CompanyEmpty } from './CompanyEmpty';
+import { hasOtherFiltersThanDefault } from '../misc/hasOtherFiltersThanDefault';
 
 export const CompanyList = () => {
     const { identity } = useGetIdentity();
@@ -31,9 +32,16 @@ export const CompanyList = () => {
 };
 
 const CompanyListLayout = () => {
-    const { data, isPending } = useListContext();
+    const { data, isPending, filterValues } = useListContext();
+    const { identity } = useGetIdentity();
+    const hasOtherFiltersThanDefaultBoolean = hasOtherFiltersThanDefault(
+        filterValues,
+        'sales_id',
+        identity?.id
+    );
     if (isPending) return <LinearProgress />;
-    if (!data?.length) return <CompanyEmpty />;
+    if (!data?.length && !hasOtherFiltersThanDefaultBoolean)
+        return <CompanyEmpty />;
 
     return (
         <Stack direction="row" component="div">
