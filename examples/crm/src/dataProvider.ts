@@ -14,6 +14,12 @@ let taskUpdateType = TASK_DONE_NOT_CHANGED;
 export const dataProvider = withLifecycleCallbacks(baseDataProvider, [
     {
         resource: 'contacts',
+        beforeCreate: async params => {
+            const { data } = params;
+            const avatarUrl = await getAvatarUrl(data);
+            data.avatar = avatarUrl || null;
+            return params;
+        },
         beforeUpdate: async params => {
             const { data } = params;
             const avatarUrl = await getAvatarUrl(data);
