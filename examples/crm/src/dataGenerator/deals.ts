@@ -34,6 +34,13 @@ export const generateDeals = (db: Db): Deal[] => {
         const created_at = randomDate(
             new Date(company.created_at)
         ).toISOString();
+
+        const start_at = created_at;
+        const expecting_closing_date = randomDate(
+            new Date(start_at),
+            add(new Date(start_at), { months: 6 })
+        ).toISOString();
+
         return {
             id,
             name: lowercaseName[0].toUpperCase() + lowercaseName.slice(1),
@@ -45,10 +52,8 @@ export const generateDeals = (db: Db): Deal[] => {
             amount: random.number(1000) * 100,
             created_at: created_at,
             updated_at: randomDate(new Date(created_at)).toISOString(),
-            start_at: randomDate(
-                new Date(),
-                add(new Date(), { months: 6 })
-            ).toISOString(),
+            start_at: start_at,
+            expecting_closing_date: expecting_closing_date,
             sales_id: company.sales_id,
             index: 0,
             nb_notes: 0,

@@ -90,6 +90,14 @@ const DealShowContent = () => {
                                 {format(record.start_at, 'PP')}
                             </Typography>
                         </Box>
+                        <Box display="flex" mr={5} flexDirection="column">
+                            <Typography color="textSecondary" variant="body2">
+                                Expecting closing date
+                            </Typography>
+                            <Typography variant="subtitle1">
+                                {format(record.expecting_closing_date, 'PP')}
+                            </Typography>
+                        </Box>
 
                         <Box display="flex" mr={5} flexDirection="column">
                             <Typography color="textSecondary" variant="body2">
