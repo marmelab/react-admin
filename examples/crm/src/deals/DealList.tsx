@@ -22,6 +22,7 @@ import { OnlyMineInput } from './OnlyMineInput';
 import { typeChoices } from './types';
 import { Card, LinearProgress, Stack } from '@mui/material';
 import { DealEmpty } from './DealEmpty';
+import { hasOtherFiltersThanDefault } from '../misc/hasOtherFiltersThanDefault';
 
 const DealList = () => {
     const { identity } = useGetIdentity();
@@ -30,7 +31,7 @@ const DealList = () => {
     return (
         <ListBase
             perPage={100}
-            filterDefaultValues={{ sales_id: identity && identity?.id }}
+            filterDefaultValues={{ sales_id: identity?.id }}
             sort={{ field: 'index', order: 'ASC' }}
         >
             <DealLayout />
@@ -43,9 +44,17 @@ const DealLayout = () => {
     const matchCreate = matchPath('/deals/create', location.pathname);
     const matchShow = matchPath('/deals/:id/show', location.pathname);
 
-    const { data, isPending } = useListContext();
+    const { data, isPending, filterValues } = useListContext();
+    const { identity } = useGetIdentity();
+    const hasOtherFiltersThanDefaultBoolean = hasOtherFiltersThanDefault(
+        filterValues,
+        'sales_id',
+        identity?.id
+    );
+
     if (isPending) return <LinearProgress />;
-    if (!data?.length) return <DealEmpty />;
+    if (!data?.length && !hasOtherFiltersThanDefaultBoolean)
+        return <DealEmpty />;
 
     return (
         <Stack component="div" sx={{ width: '100%' }}>
