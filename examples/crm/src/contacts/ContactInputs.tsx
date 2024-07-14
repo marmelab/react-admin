@@ -24,6 +24,13 @@ const isUrl = (value: string) => {
     }
 };
 
+const isLinkedinUrl = (value: string) => {
+    if (!value) return;
+    if (!value.toLowerCase().includes('linkedin.com')) {
+        return 'Must be an URL from linkedin.com';
+    }
+};
+
 export const ContactInputs = () => {
     const [create] = useCreate();
     const { identity } = useGetIdentity();
@@ -90,6 +97,12 @@ export const ContactInputs = () => {
             <Divider sx={{ my: 2 }} />
             <Box width={430}>
                 <TextInput source="background" multiline helperText={false} />
+                <TextInput
+                    source="linkedin_url"
+                    label="Linkedin URL"
+                    helperText={false}
+                    validate={isLinkedinUrl}
+                />
                 <TextInput
                     source="avatar"
                     label="Avatar URL"

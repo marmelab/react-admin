@@ -10,6 +10,7 @@ import {
     SelectField,
     FunctionField,
     useRecordContext,
+    UrlField,
 } from 'react-admin';
 import { Box, Typography, Divider } from '@mui/material';
 import { TagsListEdit } from './TagsListEdit';
@@ -32,8 +33,9 @@ export const ContactAside = ({ link = 'edit' }: { link?: 'edit' | 'show' }) => {
                 )}
             </Box>
             <Typography variant="subtitle2">Personal info</Typography>
-            <Divider />
-            <EmailField sx={{ mt: 2, display: 'block' }} source="email" />
+            <Divider sx={{ mb: 2 }} />
+            <EmailField sx={{ display: 'block' }} source="email" />
+            <UrlField source="linkedin_url" target="_blank" rel="noopener" />
             {record.phone_number1 && (
                 <Box>
                     <TextField source="phone_number1" />{' '}
