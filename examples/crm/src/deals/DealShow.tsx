@@ -84,7 +84,7 @@ const DealShowContent = () => {
                     <Box display="flex" mt={2}>
                         <Box display="flex" mr={5} flexDirection="column">
                             <Typography color="textSecondary" variant="body2">
-                                Start
+                                Starting date
                             </Typography>
                             <Typography variant="subtitle1">
                                 {format(record.start_at, 'PP')}
