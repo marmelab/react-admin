@@ -24,10 +24,16 @@ const isUrl = (value: string) => {
     }
 };
 
-const isLinkedinUrl = (value: string) => {
-    if (!value) return;
-    if (!value.toLowerCase().includes('linkedin.com')) {
-        return 'Must be an URL from linkedin.com';
+const isLinkedinUrl = (url: string) => {
+    try {
+        // Parse the URL to ensure it is valid
+        const parsedUrl = new URL(url);
+        if (!parsedUrl.hostname.includes('linkedin.com')) {
+            return 'URL must be from linkedin.com';
+        }
+    } catch (e) {
+        // If URL parsing fails, return false
+        return 'Must be a valid URL';
     }
 };
 
