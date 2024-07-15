@@ -35,10 +35,10 @@ import { Avatar } from '../contacts/Avatar';
 import { Status } from '../misc/Status';
 import { TagsList } from '../contacts/TagsList';
 import { sizes } from './sizes';
-import { LogoField } from './LogoField';
 import { CompanyAside } from './CompanyAside';
 import { Company, Deal, Contact } from '../types';
 import { stageNames } from '../deals/stages';
+import { CompanyAvatar } from './CompanyAvatar';
 
 export const CompanyShow = () => (
     <ShowBase>
@@ -62,7 +62,7 @@ const CompanyShowContent = () => {
                 <Card>
                     <CardContent>
                         <Box display="flex" mb={1}>
-                            <LogoField />
+                            <CompanyAvatar />
                             <Box ml={2} flex="1">
                                 <Typography variant="h5">
                                     {record.name}

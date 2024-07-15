@@ -2,9 +2,8 @@ import * as React from 'react';
 import { ReferenceField, useRedirect } from 'react-admin';
 import { Box, Card, Typography } from '@mui/material';
 import { Draggable } from '@hello-pangea/dnd';
-
-import { LogoField } from '../companies/LogoField';
 import { Deal } from '../types';
+import { CompanyAvatar } from '../companies/CompanyAvatar';
 
 export const DealCard = ({ deal, index }: { deal: Deal; index: number }) => {
     const redirect = useRedirect();
@@ -39,7 +38,7 @@ export const DealCard = ({ deal, index }: { deal: Deal; index: number }) => {
                                 record={deal}
                                 reference="companies"
                             >
-                                <LogoField size="small" />
+                                <CompanyAvatar size="small" />
                             </ReferenceField>
                             <Box sx={{ marginLeft: 1 }}>
                                 <Typography variant="body2" gutterBottom>

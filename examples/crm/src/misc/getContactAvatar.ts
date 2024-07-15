@@ -43,7 +43,7 @@ async function getFaviconUrl(domain: string): Promise<string | null> {
 }
 
 // Main function to get the avatar URL
-export async function getAvatarUrl(
+export async function getContactAvatar(
     record: Partial<Contact>
 ): Promise<string | null> {
     if (!record.email) {
@@ -68,7 +68,7 @@ export async function getAvatarUrl(
         return faviconUrl;
     }
 
-    // TODO: Step 3: Try to get favicon from LinkedIn.
+    // TODO: Step 3: Try to get image from LinkedIn.
 
     return null;
 }
