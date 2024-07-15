@@ -1,6 +1,13 @@
 import * as React from 'react';
 
-import { ReferenceInput, TextInput, SelectInput, required } from 'react-admin';
+import {
+    ReferenceInput,
+    TextInput,
+    SelectInput,
+    required,
+    ArrayInput,
+    SimpleFormIterator,
+} from 'react-admin';
 import { Divider, Stack, Grid } from '@mui/material';
 
 import { sectors } from './sectors';
@@ -71,5 +78,10 @@ export const CompanyForm = () => (
 
         <Divider sx={{ mb: 2, width: '100%' }} />
         <TextInput source="description" multiline />
+        <ArrayInput source="context_links">
+            <SimpleFormIterator disableReordering fullWidth>
+                <TextInput source="" hiddenLabel helperText={false} />
+            </SimpleFormIterator>
+        </ArrayInput>
     </>
 );
