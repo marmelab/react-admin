@@ -15,16 +15,8 @@ import { Divider, Box, Stack } from '@mui/material';
 
 import { genders } from './constants';
 
-const isUrl = (value: string) => {
-    if (!value) return;
-    try {
-        new URL(value);
-    } catch (_) {
-        return 'Must be a valid URL';
-    }
-};
-
 const isLinkedinUrl = (url: string) => {
+    if (!url) return;
     try {
         // Parse the URL to ensure it is valid
         const parsedUrl = new URL(url);
@@ -113,12 +105,6 @@ export const ContactInputs = () => {
                     label="Linkedin URL"
                     helperText={false}
                     validate={isLinkedinUrl}
-                />
-                <TextInput
-                    source="avatar"
-                    label="Avatar URL"
-                    helperText={false}
-                    validate={isUrl}
                 />
                 <Stack direction="row" gap={1} alignItems="center">
                     <SelectInput
