@@ -1,9 +1,8 @@
-import { Button, Stack, Typography } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 import { CreateButton } from 'react-admin';
-import FileUploadIcon from '@mui/icons-material/FileUpload';
 import useAppBarHeight from '../misc/useAppBarHeight';
 
-export const ContactEmpty = () => {
+export const CompanyEmpty = () => {
     const appbarHeight = useAppBarHeight();
     return (
         <Stack
@@ -16,7 +15,7 @@ export const ContactEmpty = () => {
         >
             <img src="./img/empty.svg" alt="No contacts found" />
             <Typography variant="h6" fontWeight="bold">
-                No contacts found
+                No companies found
             </Typography>
             <Typography
                 variant="caption"
@@ -24,18 +23,10 @@ export const ContactEmpty = () => {
                 color="text.secondary"
                 gutterBottom
             >
-                It looks like your contact list is empty.
+                It looks like your company list is empty.
             </Typography>
             <Stack spacing={2} direction="row">
-                <CreateButton variant="contained" label="New Contact" />
-                <Button
-                    variant="contained"
-                    size="small"
-                    startIcon={<FileUploadIcon />}
-                    disabled
-                >
-                    Import Contacts
-                </Button>
+                <CreateButton variant="contained" label="Create Company" />
             </Stack>
         </Stack>
     );

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Box, Paper } from '@mui/material';
+import { Box, Paper, Typography } from '@mui/material';
 import { RecordContextProvider, useListContext } from 'react-admin';
 
 import { CompanyCard } from './CompanyCard';
@@ -37,6 +37,10 @@ const LoadedGridList = () => {
                     <CompanyCard />
                 </RecordContextProvider>
             ))}
+
+            {data.length === 0 && (
+                <Typography p={2}>No companies found</Typography>
+            )}
         </Box>
     );
 };
