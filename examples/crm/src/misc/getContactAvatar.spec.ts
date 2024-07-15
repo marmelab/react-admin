@@ -31,7 +31,7 @@ it('should return favicon URL if gravatar does not exist', async () => {
 });
 
 it('should not return favicon URL if not domain not allowed', async () => {
-    const email = 'no-gravatar@google.com';
+    const email = 'no-gravatar@gmail.com';
     const record: Partial<Contact> = { email };
 
     const avatarUrl = await getAvatarUrl(record);

@@ -11,7 +11,6 @@ export async function hash(string: string) {
 }
 
 const DOMAINS_NOT_SUPPORTING_FAVICON = [
-    'google.com',
     'gmail.com',
     'yahoo.com',
     'hotmail.com',
