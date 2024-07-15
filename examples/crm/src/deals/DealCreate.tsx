@@ -23,6 +23,15 @@ import { Deal } from '../types';
 
 const validateRequired = required();
 
+const dateInPresentOrFuture = (value: string) => {
+    const valueDate = new Date(value).setHours(0, 0, 0, 0);
+    const presentDate = new Date().setHours(0, 0, 0, 0);
+    if (valueDate < presentDate) {
+        return 'The date must be in the present or the future';
+    }
+    return undefined;
+};
+
 export const DealCreate = ({ open }: { open: boolean }) => {
     const redirect = useRedirect();
     const dataProvider = useDataProvider();
@@ -119,6 +128,14 @@ export const DealCreate = ({ open }: { open: boolean }) => {
                         choices={typeChoices}
                     />
                     <NumberInput source="amount" defaultValue={0} />
+                    <DateInput
+                        source="expecting_closing_date"
+                        fullWidth
+                        validate={[validateRequired, dateInPresentOrFuture]}
+                        inputProps={{
+                            min: new Date().toISOString().split('T')[0],
+                        }}
+                    />
                     <DateInput
                         source="start_at"
                         defaultValue={new Date()}
