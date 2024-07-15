@@ -15,11 +15,16 @@ import { Divider, Box, Stack } from '@mui/material';
 
 import { genders } from './constants';
 
-const isUrl = (value: string) => {
-    if (!value) return;
+const isLinkedinUrl = (url: string) => {
+    if (!url) return;
     try {
-        new URL(value);
-    } catch (_) {
+        // Parse the URL to ensure it is valid
+        const parsedUrl = new URL(url);
+        if (!parsedUrl.hostname.includes('linkedin.com')) {
+            return 'URL must be from linkedin.com';
+        }
+    } catch (e) {
+        // If URL parsing fails, return false
         return 'Must be a valid URL';
     }
 };
@@ -89,12 +94,17 @@ export const ContactInputs = () => {
             </Box>
             <Divider sx={{ my: 2 }} />
             <Box width={430}>
-                <TextInput source="background" multiline helperText={false} />
                 <TextInput
-                    source="avatar"
-                    label="Avatar URL"
+                    source="background"
+                    label="How you met?"
+                    multiline
                     helperText={false}
-                    validate={isUrl}
+                />
+                <TextInput
+                    source="linkedin_url"
+                    label="Linkedin URL"
+                    helperText={false}
+                    validate={isLinkedinUrl}
                 />
                 <Stack direction="row" gap={1} alignItems="center">
                     <SelectInput

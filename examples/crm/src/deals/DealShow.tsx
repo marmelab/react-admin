@@ -24,18 +24,7 @@ export const DealShow = ({ open, id }: { open: boolean; id?: string }) => {
     };
 
     return (
-        <Dialog
-            open={open}
-            onClose={handleClose}
-            fullWidth
-            maxWidth="md"
-            sx={{
-                '.MuiDialog-paper': {
-                    position: 'absolute',
-                    top: 50,
-                },
-            }}
-        >
+        <Dialog open={open} onClose={handleClose} fullWidth maxWidth="lg">
             <DialogContent>
                 {!!id ? (
                     <ShowBase id={id}>
@@ -84,7 +73,7 @@ const DealShowContent = () => {
                     <Box display="flex" mt={2}>
                         <Box display="flex" mr={5} flexDirection="column">
                             <Typography color="textSecondary" variant="body2">
-                                Start
+                                Starting date
                             </Typography>
                             <Typography variant="subtitle1">
                                 {format(record.start_at, 'PP')}

@@ -120,6 +120,12 @@ export const ContactListContent = () => {
                         </ListItem>
                     </RecordContextProvider>
                 ))}
+
+                {contacts.length === 0 && (
+                    <ListItem>
+                        <ListItemText primary="No contacts found" />
+                    </ListItem>
+                )}
             </List>
         </>
     );
