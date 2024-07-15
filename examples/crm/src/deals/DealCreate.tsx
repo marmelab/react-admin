@@ -107,11 +107,6 @@ export const DealCreate = ({ open }: { open: boolean }) => {
                             validate={validateRequired}
                         />
                     </ReferenceInput>
-                    <DateInput
-                        source="start_at"
-                        defaultValue={new Date()}
-                        fullWidth
-                    />
                     <SelectInput
                         source="stage"
                         choices={stageChoices}
@@ -124,6 +119,13 @@ export const DealCreate = ({ open }: { open: boolean }) => {
                         choices={typeChoices}
                     />
                     <NumberInput source="amount" defaultValue={0} />
+                    <DateInput
+                        source="start_at"
+                        defaultValue={new Date()}
+                        fullWidth
+                        label="Starting date"
+                        readOnly
+                    />
                 </SimpleForm>
             </Create>
         </Dialog>
