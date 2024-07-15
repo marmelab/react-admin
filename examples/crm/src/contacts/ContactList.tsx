@@ -21,6 +21,7 @@ import { ContactListContent } from './ContactListContent';
 import { Contact, Company, Sale, Tag } from '../types';
 import { Card, LinearProgress, Stack } from '@mui/material';
 import { ContactEmpty } from './ContactEmpty';
+import { hasOtherFiltersThanDefault } from '../misc/hasOtherFiltersThanDefault';
 
 export const ContactList = () => {
     const { identity } = useGetIdentity();
@@ -40,9 +41,19 @@ export const ContactList = () => {
 };
 
 const ContactListLayout = () => {
-    const { data, isPending } = useListContext();
+    const { data, isPending, filterValues } = useListContext();
+    const { identity } = useGetIdentity();
+    const hasOtherFiltersThanDefaultBoolean = hasOtherFiltersThanDefault(
+        filterValues,
+        'sales_id',
+        identity?.id
+    );
+
+    if (!identity) return null;
     if (isPending) return <LinearProgress />;
-    if (!data?.length) return <ContactEmpty />;
+
+    if (!data?.length && !hasOtherFiltersThanDefaultBoolean)
+        return <ContactEmpty />;
 
     return (
         <Stack direction="row">

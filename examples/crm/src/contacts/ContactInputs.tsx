@@ -24,6 +24,19 @@ const isUrl = (value: string) => {
     }
 };
 
+const isLinkedinUrl = (url: string) => {
+    try {
+        // Parse the URL to ensure it is valid
+        const parsedUrl = new URL(url);
+        if (!parsedUrl.hostname.includes('linkedin.com')) {
+            return 'URL must be from linkedin.com';
+        }
+    } catch (e) {
+        // If URL parsing fails, return false
+        return 'Must be a valid URL';
+    }
+};
+
 export const ContactInputs = () => {
     const [create] = useCreate();
     const { identity } = useGetIdentity();
@@ -94,6 +107,12 @@ export const ContactInputs = () => {
                     label="How you met?"
                     multiline
                     helperText={false}
+                />
+                <TextInput
+                    source="linkedin_url"
+                    label="Linkedin URL"
+                    helperText={false}
+                    validate={isLinkedinUrl}
                 />
                 <TextInput
                     source="avatar"
