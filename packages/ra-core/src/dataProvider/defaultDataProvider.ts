@@ -1,5 +1,7 @@
+import { DataProvider } from '../types';
+
 // avoids adding a context in tests
-export const defaultDataProvider = {
+export const defaultDataProvider: DataProvider = {
     create: () => Promise.resolve({ data: null }),
     delete: () => Promise.resolve({ data: null }),
     deleteMany: () => Promise.resolve({ data: [] }),
@@ -9,4 +11,4 @@ export const defaultDataProvider = {
     getOne: () => Promise.resolve({ data: { id: 'o' } }),
     update: () => Promise.resolve({ data: null }),
     updateMany: () => Promise.resolve({ data: [] }),
-};
+} as DataProvider;
