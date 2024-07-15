@@ -19,7 +19,7 @@ export const ContactEmpty = () => {
                 No contacts found
             </Typography>
             <Typography
-                variant="caption"
+                variant="body2"
                 align="center"
                 color="text.secondary"
                 gutterBottom
