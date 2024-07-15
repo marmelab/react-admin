@@ -89,7 +89,12 @@ export const ContactInputs = () => {
             </Box>
             <Divider sx={{ my: 2 }} />
             <Box width={430}>
-                <TextInput source="background" multiline helperText={false} />
+                <TextInput
+                    source="background"
+                    label="How you met?"
+                    multiline
+                    helperText={false}
+                />
                 <TextInput
                     source="avatar"
                     label="Avatar URL"

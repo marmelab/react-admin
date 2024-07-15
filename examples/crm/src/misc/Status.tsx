@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Box } from '@mui/material';
+import { Box, Tooltip } from '@mui/material';
 
 const getColorFromStatus = (status: string) =>
     status === 'cold'
@@ -13,13 +13,15 @@ const getColorFromStatus = (status: string) =>
               : '#000';
 
 export const Status = ({ status }: { status: string }) => (
-    <Box
-        marginLeft={0.5}
-        width={10}
-        height={10}
-        display="inline-block"
-        borderRadius="5px"
-        bgcolor={getColorFromStatus(status)}
-        component="span"
-    />
+    <Tooltip title={status} placement="top">
+        <Box
+            marginLeft={0.5}
+            width={10}
+            height={10}
+            display="inline-block"
+            borderRadius="5px"
+            bgcolor={getColorFromStatus(status)}
+            component="span"
+        />
+    </Tooltip>
 );
