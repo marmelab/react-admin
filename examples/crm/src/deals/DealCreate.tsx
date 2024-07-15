@@ -14,12 +14,16 @@ import {
     useListContext,
     GetListResult,
     DateInput,
+    AutocompleteArrayInput,
+    ReferenceArrayInput,
+    useRecordContext,
 } from 'react-admin';
-import { Dialog } from '@mui/material';
+import { Dialog, Stack } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
 import { stageChoices } from './stages';
 import { typeChoices } from './types';
-import { Deal } from '../types';
+import { Contact, Deal } from '../types';
+import { Avatar } from '../contacts/Avatar';
 
 const validateRequired = required();
 
@@ -90,11 +94,11 @@ export const DealCreate = ({ open }: { open: boolean }) => {
     const { identity } = useGetIdentity();
 
     return (
-        <Dialog open={open} onClose={handleClose}>
+        <Dialog open={open} onClose={handleClose} fullWidth maxWidth="lg">
             <Create<Deal>
                 resource="deals"
                 mutationOptions={{ onSuccess }}
-                sx={{ width: 500, '& .RaCreate-main': { mt: 0 } }}
+                sx={{ '& .RaCreate-main': { mt: 0 } }}
             >
                 <SimpleForm
                     defaultValues={{
@@ -116,6 +120,17 @@ export const DealCreate = ({ open }: { open: boolean }) => {
                             validate={validateRequired}
                         />
                     </ReferenceInput>
+
+                    <ReferenceArrayInput
+                        source="contact_ids"
+                        reference="contacts"
+                    >
+                        <AutocompleteArrayInput
+                            optionText={contactOptionText}
+                            inputText={contactInputText}
+                        />
+                    </ReferenceArrayInput>
+
                     <SelectInput
                         source="stage"
                         choices={stageChoices}
@@ -148,3 +163,17 @@ export const DealCreate = ({ open }: { open: boolean }) => {
         </Dialog>
     );
 };
+
+const ContactOptionRender = () => {
+    const record: Contact | undefined = useRecordContext();
+    if (!record) return null;
+    return (
+        <Stack direction="row" gap={1} alignItems="center">
+            <Avatar record={record} />
+            {record.first_name} {record.last_name}
+        </Stack>
+    );
+};
+const contactOptionText = <ContactOptionRender />;
+const contactInputText = (choice: { first_name: string; last_name: string }) =>
+    `${choice.first_name} ${choice.last_name}`;
