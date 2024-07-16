@@ -17,6 +17,8 @@ import {
     AutocompleteArrayInput,
     ReferenceArrayInput,
     useRecordContext,
+    useCreate,
+    useNotify,
 } from 'react-admin';
 import { Dialog, Stack } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
@@ -40,6 +42,31 @@ export const DealCreate = ({ open }: { open: boolean }) => {
     const redirect = useRedirect();
     const dataProvider = useDataProvider();
     const { data: allDeals } = useListContext<Deal>();
+    const [create] = useCreate();
+    const notify = useNotify();
+
+    const handleCreateCompany = async (name?: string) => {
+        if (!name) return;
+        try {
+            const newCompany = await create(
+                'companies',
+                {
+                    data: {
+                        name,
+                        sales_id: identity?.id,
+                        created_at: new Date().toISOString(),
+                    },
+                },
+                { returnPromise: true }
+            );
+            return newCompany;
+        } catch (error) {
+            notify('An error occurred while creating the company', {
+                type: 'error',
+            });
+            throw error;
+        }
+    };
 
     const handleClose = () => {
         redirect('/deals');
@@ -102,10 +129,9 @@ export const DealCreate = ({ open }: { open: boolean }) => {
             >
                 <SimpleForm
                     defaultValues={{
-                        index: 0,
-                        sales_id: identity && identity?.id,
-                        start_at: new Date().toISOString(),
+                        sales_id: identity?.id,
                         contact_ids: [],
+                        index: 0,
                     }}
                 >
                     <TextInput
@@ -117,6 +143,7 @@ export const DealCreate = ({ open }: { open: boolean }) => {
                     <ReferenceInput source="company_id" reference="companies">
                         <AutocompleteInput
                             optionText="name"
+                            onCreate={handleCreateCompany}
                             validate={validateRequired}
                         />
                     </ReferenceInput>
