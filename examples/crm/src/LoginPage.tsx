@@ -1,11 +1,12 @@
-import { Button, Container, Stack, TextField, Typography } from '@mui/material';
 import {
-    LinearProgress,
-    useCreate,
-    useGetList,
-    useLogin,
-    useNotify,
-} from 'react-admin';
+    Button,
+    Container,
+    Skeleton,
+    Stack,
+    TextField,
+    Typography,
+} from '@mui/material';
+import { useCreate, useGetList, useLogin, useNotify } from 'react-admin';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { LoginCRM } from './LoginCRM';
 
@@ -21,7 +22,7 @@ export const LoginPage = () => {
         sort: { field: 'name', order: 'ASC' },
     });
 
-    if (isPending) return <LinearProgress />;
+    if (isPending) return <SignUpSkelton />;
     if (error) return <LoginCRM />;
     if (total && total > 0) return <LoginCRM />;
 
@@ -115,6 +116,32 @@ const SignUp = () => {
                             Create account
                         </Button>
                     </form>
+                </Container>
+            </Stack>
+        </Container>
+    );
+};
+
+const SignUpSkelton = () => {
+    return (
+        <Container maxWidth="xl" sx={{ height: '100dvh', pt: 2 }}>
+            <Stack sx={{ height: '100%' }}>
+                <Container
+                    maxWidth="sm"
+                    sx={{
+                        height: '100%',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'center',
+                        gap: 2,
+                    }}
+                >
+                    <Skeleton variant="rectangular" width="100%" height={100} />
+                    <Skeleton variant="rectangular" width="80%" height={50} />
+                    <Skeleton variant="rectangular" width="100%" height={36} />
+                    <Skeleton variant="rectangular" width="100%" height={36} />
+                    <Skeleton variant="rectangular" width="100%" height={36} />
+                    <Skeleton variant="rectangular" width="40%" height={36} />
                 </Container>
             </Stack>
         </Container>
