@@ -5,6 +5,8 @@ import {
     TextInput,
     SelectInput,
     required,
+    ArrayInput,
+    SimpleFormIterator,
     ImageInput,
     ImageField,
 } from 'react-admin';
@@ -80,5 +82,10 @@ export const CompanyForm = () => (
 
         <Divider sx={{ mb: 2, width: '100%' }} />
         <TextInput source="description" multiline />
+        <ArrayInput source="context_links">
+            <SimpleFormIterator disableReordering fullWidth>
+                <TextInput source="" hiddenLabel helperText={false} />
+            </SimpleFormIterator>
+        </ArrayInput>
     </>
 );
