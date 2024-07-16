@@ -1,5 +1,10 @@
 import fakeRestDataProvider from 'ra-data-fakerest';
-import { withLifecycleCallbacks } from 'react-admin';
+import {
+    CreateParams,
+    DataProvider,
+    UpdateParams,
+    withLifecycleCallbacks,
+} from 'react-admin';
 
 import generateData from './dataGenerator';
 import { getAvatarUrl } from './misc/getContactAvatar';
@@ -11,20 +16,45 @@ const TASK_MARKED_AS_UNDONE = 'TASK_MARKED_AS_UNDONE';
 const TASK_DONE_NOT_CHANGED = 'TASK_DONE_NOT_CHANGED';
 let taskUpdateType = TASK_DONE_NOT_CHANGED;
 
+const beforeContactUpsert = async (
+    params: CreateParams<any> | UpdateParams<any>,
+    dataProvider: DataProvider
+) => {
+    const { data } = params;
+    const avatarUrl = await getAvatarUrl(data);
+    data.avatar = avatarUrl || null;
+
+    if (!data.company_id) {
+        return params;
+    }
+
+    const { data: company } = await dataProvider.getOne('companies', {
+        id: data.company_id,
+    });
+
+    if (!company) {
+        return params;
+    }
+
+    data.company_name = company.name;
+    return params;
+};
+
 export const dataProvider = withLifecycleCallbacks(baseDataProvider, [
     {
         resource: 'contacts',
-        beforeCreate: async params => {
-            const { data } = params;
-            const avatarUrl = await getAvatarUrl(data);
-            data.avatar = avatarUrl || null;
-            return params;
+        beforeCreate: async (params, dataProvider) => {
+            return beforeContactUpsert(params, dataProvider);
         },
-        beforeUpdate: async params => {
-            const { data } = params;
-            const avatarUrl = await getAvatarUrl(data);
-            data.avatar = avatarUrl || null;
-            return params;
+        beforeUpdate: async (
+            params: UpdateParams<any>,
+            dataProvider: DataProvider
+        ) => {
+            const result = await beforeContactUpsert(params, dataProvider);
+            return {
+                ...params,
+                data: result.data,
+            };
         },
     },
     {
@@ -121,6 +151,30 @@ export const dataProvider = withLifecycleCallbacks(baseDataProvider, [
                 },
                 previousData: contact,
             });
+            return result;
+        },
+    },
+    {
+        resource: 'companies',
+        afterUpdate: async (result, dataProvider) => {
+            // get all users of the company and for each user, update the company_name
+            const { id, name } = result.data;
+            const { data: contacts } = await dataProvider.getList('contacts', {
+                filter: { company_id: id },
+                pagination: { page: 1, perPage: 1000 },
+                sort: { field: 'id', order: 'ASC' },
+            });
+            await Promise.all(
+                contacts.map(contact =>
+                    dataProvider.update('contacts', {
+                        id: contact.id,
+                        data: {
+                            company_name: name,
+                        },
+                        previousData: contact,
+                    })
+                )
+            );
             return result;
         },
     },

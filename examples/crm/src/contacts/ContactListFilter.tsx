@@ -30,6 +30,7 @@ export const ContactListFilter = () => {
                     display: 'block',
                     '& .MuiFilledInput-root': { width: '100%' },
                 }}
+                placeholder="Search name, company, etc."
             />
             <FilterList label="Last activity" icon={<AccessTimeIcon />}>
                 <FilterListItem
