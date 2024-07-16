@@ -7,6 +7,7 @@ import {
     ReferenceArrayField,
     useRecordContext,
     useRedirect,
+    EditButton,
 } from 'react-admin';
 import { Box, Dialog, DialogContent, Typography, Divider } from '@mui/material';
 import { format } from 'date-fns';
@@ -69,6 +70,7 @@ const DealShowContent = () => {
                 </Box>
                 <Box ml={2} flex="1">
                     <Typography variant="h5">{record.name}</Typography>
+                    <EditButton />
 
                     <Box display="flex" mt={2}>
                         <Box display="flex" mr={5} flexDirection="column">

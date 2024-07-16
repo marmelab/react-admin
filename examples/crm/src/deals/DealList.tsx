@@ -23,6 +23,7 @@ import { typeChoices } from './types';
 import { Card, LinearProgress, Stack } from '@mui/material';
 import { DealEmpty } from './DealEmpty';
 import { hasOtherFiltersThanDefault } from '../misc/hasOtherFiltersThanDefault';
+import { DealEdit } from './DealEdit';
 
 const DealList = () => {
     const { identity } = useGetIdentity();
@@ -43,6 +44,8 @@ const DealLayout = () => {
     const location = useLocation();
     const matchCreate = matchPath('/deals/create', location.pathname);
     const matchShow = matchPath('/deals/:id/show', location.pathname);
+    const matchEdit = matchPath('/deals/:id', location.pathname);
+    console.log('matchEdit', matchEdit);
 
     const { data, isPending, filterValues } = useListContext();
     const { identity } = useGetIdentity();
@@ -62,8 +65,9 @@ const DealLayout = () => {
             <ListToolbar filters={dealFilters} actions={<DealActions />} />
             <Card>
                 <DealListContent />
-                <DealCreate open={!!matchCreate} />
             </Card>
+            <DealCreate open={!!matchCreate} />
+            <DealEdit open={!!matchEdit} id={matchEdit?.params.id} />
             <DealShow open={!!matchShow} id={matchShow?.params.id} />
         </Stack>
     );
