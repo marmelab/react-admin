@@ -7,7 +7,8 @@ import {
 } from 'react-admin';
 
 import generateData from './dataGenerator';
-import { getAvatarUrl } from './misc/getContactAvatar';
+import { getContactAvatar } from './misc/getContactAvatar';
+import { getCompanyAvatar } from './misc/getCompanyAvatar';
 
 const baseDataProvider = fakeRestDataProvider(generateData(), true, 300);
 
@@ -16,12 +17,28 @@ const TASK_MARKED_AS_UNDONE = 'TASK_MARKED_AS_UNDONE';
 const TASK_DONE_NOT_CHANGED = 'TASK_DONE_NOT_CHANGED';
 let taskUpdateType = TASK_DONE_NOT_CHANGED;
 
+const processLogo = async (params: any) => {
+    if (typeof params.data.logo !== 'object' || params.data.logo === null) {
+        return getCompanyAvatar(params.data);
+    }
+    const logo = params.data.logo;
+    if (logo.rawFile instanceof File) {
+        const base64Logo = await convertFileToBase64(logo);
+        return {
+            src: base64Logo,
+            title: logo.title,
+        };
+    }
+
+    return logo;
+};
+
 const beforeContactUpsert = async (
     params: CreateParams<any> | UpdateParams<any>,
     dataProvider: DataProvider
 ) => {
     const { data } = params;
-    const avatarUrl = await getAvatarUrl(data);
+    const avatarUrl = await getContactAvatar(data);
     data.avatar = avatarUrl || null;
 
     if (!data.company_id) {
@@ -44,12 +61,15 @@ export const dataProvider = withLifecycleCallbacks(baseDataProvider, [
     {
         resource: 'contacts',
         beforeCreate: async (params, dataProvider) => {
+            const { data } = params;
+            const avatarUrl = await getContactAvatar(data);
+            data.avatar = avatarUrl || null;
             return beforeContactUpsert(params, dataProvider);
         },
-        beforeUpdate: async (
-            params: UpdateParams<any>,
-            dataProvider: DataProvider
-        ) => {
+        beforeUpdate: async params => {
+            const { data } = params;
+            const avatarUrl = await getContactAvatar(data);
+            data.avatar = avatarUrl || null;
             const result = await beforeContactUpsert(params, dataProvider);
             return {
                 ...params,
@@ -156,6 +176,26 @@ export const dataProvider = withLifecycleCallbacks(baseDataProvider, [
     },
     {
         resource: 'companies',
+        beforeCreate: async params => {
+            const logo = await processLogo(params);
+            return {
+                ...params,
+                data: {
+                    ...params.data,
+                    logo,
+                },
+            };
+        },
+        beforeUpdate: async params => {
+            const logo = await processLogo(params);
+            return {
+                ...params,
+                data: {
+                    ...params.data,
+                    logo,
+                },
+            };
+        },
         afterUpdate: async (result, dataProvider) => {
             // get all users of the company and for each user, update the company_name
             const { id, name } = result.data;
@@ -179,3 +219,16 @@ export const dataProvider = withLifecycleCallbacks(baseDataProvider, [
         },
     },
 ]);
+
+/**
+ * Convert a `File` object returned by the upload input into a base 64 string.
+ * That's not the most optimized way to store images in production, but it's
+ * enough to illustrate the idea of dataprovider decoration.
+ */
+const convertFileToBase64 = (file: { rawFile: Blob }) =>
+    new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = reject;
+        reader.readAsDataURL(file.rawFile);
+    });

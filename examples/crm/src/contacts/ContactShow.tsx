@@ -10,9 +10,9 @@ import { Box, Card, CardContent, Typography } from '@mui/material';
 
 import { Avatar } from './Avatar';
 import { ContactAside } from './ContactAside';
-import { LogoField } from '../companies/LogoField';
 import { NotesIterator } from '../notes';
 import { Contact } from '../types';
+import { CompanyAvatar } from '../companies/CompanyAvatar';
 
 export const ContactShow = () => (
     <ShowBase>
@@ -52,7 +52,7 @@ const ContactShowContent = () => {
                                     reference="companies"
                                     link="show"
                                 >
-                                    <LogoField />
+                                    <CompanyAvatar />
                                 </ReferenceField>
                             </Box>
                         </Box>

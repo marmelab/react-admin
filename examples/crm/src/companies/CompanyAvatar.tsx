@@ -13,13 +13,14 @@ export const CompanyAvatar = (props: {
     if (!record) return null;
     return (
         <Avatar
-            src={record.logo}
+            src={record.logo?.src}
             alt={record.name}
             sx={{
-                bgcolor: 'aliceblue',
                 '& img': { objectFit: 'contain' },
             }}
-            imgProps={{ className: size }}
-        />
+            sizes={size}
+        >
+            {record.name.charAt(0)}
+        </Avatar>
     );
 };
