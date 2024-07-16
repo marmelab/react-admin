@@ -2,71 +2,21 @@ import * as React from 'react';
 import {
     Create,
     SimpleForm,
-    TextInput,
-    SelectInput,
-    NumberInput,
-    ReferenceInput,
-    AutocompleteInput,
-    required,
     useRedirect,
     useDataProvider,
     useGetIdentity,
     useListContext,
     GetListResult,
-    DateInput,
-    AutocompleteArrayInput,
-    ReferenceArrayInput,
-    useRecordContext,
-    useCreate,
-    useNotify,
 } from 'react-admin';
-import { Dialog, Stack } from '@mui/material';
+import { Dialog } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
-import { stageChoices } from './stages';
-import { typeChoices } from './types';
-import { Contact, Deal } from '../types';
-import { Avatar } from '../contacts/Avatar';
-
-const validateRequired = required();
-
-const dateInPresentOrFuture = (value: string) => {
-    const valueDate = new Date(value).setHours(0, 0, 0, 0);
-    const presentDate = new Date().setHours(0, 0, 0, 0);
-    if (valueDate < presentDate) {
-        return 'The date must be in the present or the future';
-    }
-    return undefined;
-};
+import { Deal } from '../types';
+import { DealForm } from './DealForm';
 
 export const DealCreate = ({ open }: { open: boolean }) => {
     const redirect = useRedirect();
     const dataProvider = useDataProvider();
     const { data: allDeals } = useListContext<Deal>();
-    const [create] = useCreate();
-    const notify = useNotify();
-
-    const handleCreateCompany = async (name?: string) => {
-        if (!name) return;
-        try {
-            const newCompany = await create(
-                'companies',
-                {
-                    data: {
-                        name,
-                        sales_id: identity?.id,
-                        created_at: new Date().toISOString(),
-                    },
-                },
-                { returnPromise: true }
-            );
-            return newCompany;
-        } catch (error) {
-            notify('An error occurred while creating the company', {
-                type: 'error',
-            });
-            throw error;
-        }
-    };
 
     const handleClose = () => {
         redirect('/deals');
@@ -134,73 +84,9 @@ export const DealCreate = ({ open }: { open: boolean }) => {
                         index: 0,
                     }}
                 >
-                    <TextInput
-                        source="name"
-                        label="Deal name"
-                        validate={validateRequired}
-                    />
-                    <TextInput source="description" multiline rows={3} />
-                    <ReferenceInput source="company_id" reference="companies">
-                        <AutocompleteInput
-                            optionText="name"
-                            onCreate={handleCreateCompany}
-                            validate={validateRequired}
-                        />
-                    </ReferenceInput>
-
-                    <ReferenceArrayInput
-                        source="contact_ids"
-                        reference="contacts"
-                    >
-                        <AutocompleteArrayInput
-                            optionText={contactOptionText}
-                            inputText={contactInputText}
-                        />
-                    </ReferenceArrayInput>
-
-                    <SelectInput
-                        source="stage"
-                        choices={stageChoices}
-                        validate={validateRequired}
-                        defaultValue="opportunity"
-                    />
-                    <SelectInput
-                        source="type"
-                        label="Category"
-                        choices={typeChoices}
-                    />
-                    <NumberInput source="amount" defaultValue={0} />
-                    <DateInput
-                        source="expecting_closing_date"
-                        fullWidth
-                        validate={[validateRequired, dateInPresentOrFuture]}
-                        inputProps={{
-                            min: new Date().toISOString().split('T')[0],
-                        }}
-                    />
-                    <DateInput
-                        source="start_at"
-                        defaultValue={new Date()}
-                        fullWidth
-                        label="Starting date"
-                        readOnly
-                    />
+                    <DealForm />
                 </SimpleForm>
             </Create>
         </Dialog>
     );
 };
-
-const ContactOptionRender = () => {
-    const record: Contact | undefined = useRecordContext();
-    if (!record) return null;
-    return (
-        <Stack direction="row" gap={1} alignItems="center">
-            <Avatar record={record} />
-            {record.first_name} {record.last_name}
-        </Stack>
-    );
-};
-const contactOptionText = <ContactOptionRender />;
-const contactInputText = (choice: { first_name: string; last_name: string }) =>
-    `${choice.first_name} ${choice.last_name}`;
