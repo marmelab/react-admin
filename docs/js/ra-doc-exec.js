@@ -246,9 +246,8 @@ function replaceContent(text) {
     toggleDockBlocks(false);
 
     var content = document.querySelector('.DocSearch-content');
-    content.innerHTML = tmpElement.querySelector(
-        '.DocSearch-content'
-    ).innerHTML;
+    content.innerHTML =
+        tmpElement.querySelector('.DocSearch-content').innerHTML;
 
     window.scrollTo(0, 0);
 
@@ -318,23 +317,27 @@ function showNonBeginnerDoc() {
     });
 }
 
-document
-    .getElementById('beginner-mode-trigger')
-    .addEventListener('click', () => {
-        beginnerMode = !beginnerMode;
-        if (beginnerMode) {
-            window.localStorage.setItem('beginner-mode', 'true');
-            hideNonBeginnerDoc();
-        } else {
-            window.localStorage.removeItem('beginner-mode');
-            showNonBeginnerDoc();
-        }
-    });
+document.addEventListener('DOMContentLoaded', () => {
+    const beginnerModeTrigger = document.getElementById(
+        'beginner-mode-trigger'
+    );
 
-window.addEventListener('DOMContentLoaded', () => {
-    document.getElementById('beginner-mode-trigger').checked = beginnerMode;
-    if (beginnerMode) {
-        hideNonBeginnerDoc();
+    if (beginnerModeTrigger) {
+        beginnerModeTrigger.addEventListener('click', () => {
+            beginnerMode = !beginnerMode;
+            if (beginnerMode) {
+                window.localStorage.setItem('beginner-mode', 'true');
+                hideNonBeginnerDoc();
+            } else {
+                window.localStorage.removeItem('beginner-mode');
+                showNonBeginnerDoc();
+            }
+        });
+
+        beginnerModeTrigger.checked = beginnerMode;
+        if (beginnerMode) {
+            hideNonBeginnerDoc();
+        }
     }
 });
 
