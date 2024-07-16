@@ -62,6 +62,7 @@ export const generateContacts = (db: Db): Contact[] => {
             gender,
             title: title.charAt(0).toUpperCase() + title.substr(1),
             company_id: company.id,
+            company_name: company.name,
             email,
             phone_number1: phone.phoneNumber(),
             phone_number2: phone.phoneNumber(),

@@ -35,7 +35,10 @@ export const generateCompanies = (db: Db): Company[] => {
         return {
             id,
             name: name,
-            logo: `./logos/${id}.png`,
+            logo: {
+                title: lorem.text(1),
+                src: `./logos/${id}.png`,
+            },
             sector: random.arrayElement(sectors),
             size: random.arrayElement(sizes) as 1 | 10 | 50 | 250 | 500,
             linkedIn: `https://www.linkedin.com/company/${name

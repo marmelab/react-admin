@@ -7,6 +7,8 @@ import {
     required,
     ArrayInput,
     SimpleFormIterator,
+    ImageInput,
+    ImageField,
 } from 'react-admin';
 import { Divider, Stack, Grid } from '@mui/material';
 
@@ -46,7 +48,9 @@ export const CompanyForm = () => (
 
         <TextInput source="website" helperText={false} />
         <TextInput source="linkedIn" helperText={false} />
-        <TextInput source="logo" />
+        <ImageInput source="logo" accept={{ 'image/*': ['.png', '.jpg'] }}>
+            <ImageField source="src" title="title" />
+        </ImageInput>
         <Divider sx={{ mb: 2, width: '100%' }} />
 
         <Stack direction="row">

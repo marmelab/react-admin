@@ -27,6 +27,7 @@ export const NewNote = ({
     const [text, setText] = useState('');
     const [status, setStatus] = useState(record && record.status);
     const [date, setDate] = useState(getCurrentDate());
+    console.log('date', date);
     const [create, { isPending }] = useCreate();
     const [update] = useUpdate();
     const notify = useNotify();
@@ -131,6 +132,8 @@ export const NewNote = ({
 const getCurrentDate = () => {
     const now = new Date();
     now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+    now.setSeconds(0);
+    now.setMilliseconds(0);
     return now.toISOString().slice(0, -1);
 };
 

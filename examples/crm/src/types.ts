@@ -8,7 +8,7 @@ export interface Sale extends RaRecord {
 
 export interface Company extends RaRecord {
     name: string;
-    logo: string;
+    logo: { title: string; src: string };
     sector: string;
     size: 1 | 10 | 50 | 250 | 500;
     linkedIn: string;
