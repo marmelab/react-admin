@@ -13,6 +13,7 @@ import contacts from './contacts';
 import { Dashboard } from './dashboard/Dashboard';
 import { dataProvider } from './dataProvider';
 import deals from './deals';
+import { LoginPage } from './LoginPage';
 
 const App = () => (
     <Admin
@@ -20,6 +21,7 @@ const App = () => (
         authProvider={authProvider}
         store={localStorageStore(undefined, 'CRM')}
         layout={Layout}
+        loginPage={LoginPage}
         dashboard={Dashboard}
         theme={{
             ...defaultTheme,

@@ -45,7 +45,6 @@ const DealLayout = () => {
     const matchCreate = matchPath('/deals/create', location.pathname);
     const matchShow = matchPath('/deals/:id/show', location.pathname);
     const matchEdit = matchPath('/deals/:id', location.pathname);
-    console.log('matchEdit', matchEdit);
 
     const { data, isPending, filterValues } = useListContext();
     const { identity } = useGetIdentity();
