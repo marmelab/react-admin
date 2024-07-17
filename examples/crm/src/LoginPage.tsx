@@ -22,7 +22,7 @@ export const LoginPage = () => {
         sort: { field: 'name', order: 'ASC' },
     });
 
-    if (isPending) return <SignUpSkelton />;
+    if (isPending) return <SignUpSkeleton />;
     if (error) return <LoginCRM />;
     if (total && total > 0) return <LoginCRM />;
 
@@ -53,6 +53,11 @@ const SignUp = () => {
                         password: data.password,
                         redirectTo: '/contacts',
                     });
+                    setTimeout(() => {
+                        notify(
+                            'Welcome! You can now start entering contacts, write notes and plan deals'
+                        );
+                    }, 0);
                 },
                 onError: () => {
                     notify('An error occurred. Please try again.');
@@ -122,7 +127,7 @@ const SignUp = () => {
     );
 };
 
-const SignUpSkelton = () => {
+const SignUpSkeleton = () => {
     return (
         <Container maxWidth="xl" sx={{ height: '100dvh', pt: 2 }}>
             <Stack sx={{ height: '100%' }}>
