@@ -1,5 +1,6 @@
 import {
     Admin,
+    CustomRoutes,
     ListGuesser,
     Resource,
     defaultTheme,
@@ -14,6 +15,8 @@ import { Dashboard } from './dashboard/Dashboard';
 import { dataProvider } from './dataProvider';
 import deals from './deals';
 import { LoginPage } from './LoginPage';
+import { Route } from 'react-router';
+import { SignupPage } from './SignupPage';
 
 const App = () => (
     <Admin
@@ -32,6 +35,9 @@ const App = () => (
             },
         }}
     >
+        <CustomRoutes noLayout>
+            <Route path={SignupPage.path} element={<SignupPage />} />
+        </CustomRoutes>
         <Resource name="deals" {...deals} />
         <Resource name="contacts" {...contacts} />
         <Resource name="companies" {...companies} />

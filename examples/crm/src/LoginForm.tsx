@@ -1,6 +1,11 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
-import { Button, CardContent, CircularProgress } from '@mui/material';
+import {
+    Button,
+    CardActions,
+    CardContent,
+    CircularProgress,
+} from '@mui/material';
 import { Form, useLogin, useNotify, useSafeSetState } from 'ra-core';
 import { Login, TextInput } from 'react-admin';
 import { SubmitHandler } from 'react-hook-form';
@@ -28,7 +33,7 @@ const StyledForm = styled(Form, {
     },
 }));
 
-export const LoginCRM = () => {
+export const LoginForm = () => {
     const [loading, setLoading] = useSafeSetState(false);
     const login = useLogin();
     const notify = useNotify();
@@ -78,7 +83,8 @@ export const LoginCRM = () => {
                         type="password"
                         autoComplete="current-password"
                     />
-
+                </CardContent>
+                <CardActions sx={{ flexDirection: 'column', gap: 1 }}>
                     <Button
                         variant="contained"
                         type="submit"
@@ -97,7 +103,7 @@ export const LoginCRM = () => {
                             'Sign In'
                         )}
                     </Button>
-                </CardContent>
+                </CardActions>
             </StyledForm>
         </Login>
     );
