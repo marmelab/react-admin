@@ -303,6 +303,11 @@ You can specify the columns to use in the associative using the `using` prop.
 </ReferenceManyToManyInput>
 ```
 
+## Limitations
+
+-   `<ReferenceManyToManyInput>` cannot be used inside an `<ArrayInput>`, a `<ReferenceOneInput>` or a `<ReferenceManyInput>`.
+-   `<ReferenceManyToManyInput>` does not support server side validation.
+
 ## DataProvider Calls
 
 When rendered, `<ReferenceManyToManyInput>` fetches the `dataProvider` three times in a row:
