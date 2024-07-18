@@ -1,5 +1,13 @@
 import EditIcon from '@mui/icons-material/Edit';
-import { Button, Stack, Typography } from '@mui/material';
+import {
+    Button,
+    Card,
+    CardActions,
+    CardContent,
+    Container,
+    Stack,
+    Typography,
+} from '@mui/material';
 import { useState } from 'react';
 import {
     Form,
@@ -14,7 +22,7 @@ import { UpdatePassword } from './UpdatePassword';
 
 export const SettingsPage = () => {
     const [update] = useUpdate();
-    const [isEditMode, setIsEditMode] = useState(false);
+    const [isReadOnly, setReadOnly] = useState(true);
     const { identity, refetch } = useGetIdentity();
     const user = useGetOne('users', { id: identity?.id });
     const notify = useNotify();
@@ -33,7 +41,7 @@ export const SettingsPage = () => {
                 onSuccess: data => {
                     localStorage.setItem('user', JSON.stringify(data));
                     refetch();
-                    setIsEditMode(false);
+                    setReadOnly(true);
                     notify('Your profile has been updated');
                 },
                 onError: _ => {
@@ -46,28 +54,21 @@ export const SettingsPage = () => {
     };
 
     return (
-        <>
-            <Stack mt={2} direction="row" justifyContent="space-between">
-                <Typography variant="h5" color="textSecondary">
-                    My info
-                </Typography>
-                <Button
-                    variant="text"
-                    size="small"
-                    startIcon={<EditIcon />}
-                    onClick={() => setIsEditMode(!isEditMode)}
-                >
-                    Edit
-                </Button>
-            </Stack>
+        <Container maxWidth="sm" sx={{ mt: 4 }}>
             <Form onSubmit={handleOnSubmit} record={user.data}>
-                <SettingsForm readOnly={!isEditMode} />
+                <SettingsForm readOnly={isReadOnly} setReadOnly={setReadOnly} />
             </Form>
-        </>
+        </Container>
     );
 };
 
-const SettingsForm = ({ readOnly }: { readOnly: boolean }) => {
+const SettingsForm = ({
+    readOnly,
+    setReadOnly,
+}: {
+    readOnly: boolean;
+    setReadOnly: (value: boolean) => void;
+}) => {
     const { isDirty } = useFormState();
     const [openPasswordChange, setOpenPasswordChange] = useState(false);
 
@@ -76,17 +77,43 @@ const SettingsForm = ({ readOnly }: { readOnly: boolean }) => {
     };
 
     return (
-        <>
-            <Stack>
-                <TextInput source="full_name" readOnly={readOnly} />
-                <TextInput source="email" readOnly={readOnly} />
-            </Stack>
-            <Stack
-                gap={2}
-                direction="row"
-                justifyContent={readOnly ? 'flex-end' : 'space-between'}
-            >
-                {!readOnly && (
+        <Card>
+            <CardContent>
+                <Stack mb={2} direction="row" justifyContent="space-between">
+                    <Typography variant="h5" color="textSecondary">
+                        My info
+                    </Typography>
+                    <Button
+                        variant="text"
+                        size="small"
+                        startIcon={<EditIcon />}
+                        onClick={() => setReadOnly(!readOnly)}
+                    >
+                        Edit
+                    </Button>
+                </Stack>
+                <Stack>
+                    <TextInput source="full_name" readOnly={readOnly} />
+                    <TextInput source="email" readOnly={readOnly} />
+                </Stack>
+                <Button
+                    variant="outlined"
+                    onClick={handleClickOpenPasswordChange}
+                >
+                    Change password
+                </Button>
+                <UpdatePassword
+                    open={openPasswordChange}
+                    setOpen={setOpenPasswordChange}
+                />
+            </CardContent>
+            {!readOnly && (
+                <CardActions
+                    sx={{
+                        paddingX: 2,
+                        background: theme => theme.palette.background.default,
+                    }}
+                >
                     <Button
                         variant="contained"
                         type="submit"
@@ -95,19 +122,9 @@ const SettingsForm = ({ readOnly }: { readOnly: boolean }) => {
                     >
                         Save
                     </Button>
-                )}
-                <Button
-                    variant="outlined"
-                    onClick={handleClickOpenPasswordChange}
-                >
-                    Change password
-                </Button>
-            </Stack>
-            <UpdatePassword
-                open={openPasswordChange}
-                setOpen={setOpenPasswordChange}
-            />
-        </>
+                </CardActions>
+            )}
+        </Card>
     );
 };
 
