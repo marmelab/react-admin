@@ -66,12 +66,12 @@ const dataProviderWithCustomMethode = {
         });
 
         if (!users.data.length) {
-            return null;
+            return { id: 0, full_name: 'Jane Doe' };
         }
 
         const user = users.data.find(user => user.email === email);
         if (!user) {
-            return null;
+            return { id: 0, full_name: 'Jane Doe' };
         }
         return user;
     },

@@ -9,7 +9,14 @@ import {
     useRedirect,
     EditButton,
 } from 'react-admin';
-import { Box, Dialog, DialogContent, Typography, Divider } from '@mui/material';
+import {
+    Box,
+    Dialog,
+    DialogContent,
+    Typography,
+    Divider,
+    Stack,
+} from '@mui/material';
 import { format } from 'date-fns';
 
 import { CompanyAvatar } from '../companies/CompanyAvatar';
@@ -69,8 +76,10 @@ const DealShowContent = () => {
                     </ReferenceField>
                 </Box>
                 <Box ml={2} flex="1">
-                    <Typography variant="h5">{record.name}</Typography>
-                    <EditButton />
+                    <Stack direction="row" justifyContent="space-between">
+                        <Typography variant="h5">{record.name}</Typography>
+                        <EditButton />
+                    </Stack>
 
                     <Box display="flex" mt={2}>
                         <Box display="flex" mr={5} flexDirection="column">

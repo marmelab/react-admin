@@ -17,6 +17,7 @@ import deals from './deals';
 import { LoginPage } from './LoginPage';
 import { Route } from 'react-router';
 import { SignupPage } from './SignupPage';
+import { SettingsPage } from './settings/SettingsPage';
 
 const App = () => (
     <Admin
@@ -37,6 +38,9 @@ const App = () => (
     >
         <CustomRoutes noLayout>
             <Route path={SignupPage.path} element={<SignupPage />} />
+        </CustomRoutes>
+        <CustomRoutes>
+            <Route path={SettingsPage.path} element={<SettingsPage />} />
         </CustomRoutes>
         <Resource name="deals" {...deals} />
         <Resource name="contacts" {...contacts} />
