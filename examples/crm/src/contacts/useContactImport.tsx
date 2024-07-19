@@ -96,7 +96,7 @@ export function useContactImport() {
 
             return tagNames
                 .map(tagName => tagsCache.get(tagName))
-                .filter(tag => tag != null);
+                .filter((tag): tag is Tag => tag != null);
         },
         [dataProvider, tagsCache]
     );
