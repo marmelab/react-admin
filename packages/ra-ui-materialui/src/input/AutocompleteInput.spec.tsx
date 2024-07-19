@@ -24,6 +24,7 @@ import {
     OnChange,
     InsideReferenceInputOnChange,
     WithInputProps,
+    OnCreate,
 } from './AutocompleteInput.stories';
 import { act } from '@testing-library/react-hooks';
 import { ReferenceArrayInput } from './ReferenceArrayInput';
@@ -1690,6 +1691,21 @@ describe('<AutocompleteInput />', () => {
         await waitFor(() => {
             expect(input.value).toEqual('');
         });
+    });
+
+    it('should clear the input mutiple tiles with on create set', async () => {
+        render(<OnCreate />);
+
+        const input = (await screen.findByLabelText(
+            'Author'
+        )) as HTMLInputElement;
+        userEvent.type(input, 'New choice');
+        const clear = screen.getByLabelText('Clear value');
+        fireEvent.click(clear);
+        expect(input.value).toEqual('');
+        userEvent.type(input, 'New choice');
+        fireEvent.click(clear);
+        expect(input.value).toEqual('');
     });
 
     it('should handle nullish values', async () => {
