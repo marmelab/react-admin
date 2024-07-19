@@ -38,10 +38,10 @@ export const TaskEdit = ({
                     id={id}
                     resource="tasks"
                     sx={{ '& .RaCreate-main': { mt: 0 } }}
-                    redirect={() => {
-                        setTaskSelectedId(undefined);
-                        return false;
+                    mutationOptions={{
+                        onSuccess: () => setTaskSelectedId(undefined),
                     }}
+                    redirect={false}
                 >
                     <SimpleForm>
                         <TextInput
