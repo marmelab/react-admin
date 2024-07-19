@@ -4,9 +4,11 @@ import { isAfter } from 'date-fns';
 import { List } from '@mui/material';
 
 import { Task } from './Task';
+import { TaskEdit } from './TaskEdit';
 
 export const TasksIterator = ({ showContact }: { showContact?: boolean }) => {
     const { data, error, isPending } = useListContext();
+    const [taskSelectedId, setTaskSelectedId] = React.useState<string>();
     if (isPending || error || data.length === 0) return null;
 
     // Keep only tasks that are not done or done less than 5 minutes ago
@@ -22,8 +24,17 @@ export const TasksIterator = ({ showContact }: { showContact?: boolean }) => {
     return (
         <List dense>
             {tasks.map(task => (
-                <Task task={task} showContact={showContact} key={task.id} />
+                <Task
+                    task={task}
+                    showContact={showContact}
+                    key={task.id}
+                    setTaskSelectedId={setTaskSelectedId}
+                />
             ))}
+            <TaskEdit
+                id={taskSelectedId}
+                setTaskSelectedId={setTaskSelectedId}
+            />
         </List>
     );
 };
