@@ -8,6 +8,9 @@ import {
     useRecordContext,
     useRedirect,
     EditButton,
+    useUpdate,
+    useNotify,
+    useRefresh,
 } from 'react-admin';
 import {
     Box,
@@ -16,6 +19,7 @@ import {
     Typography,
     Divider,
     Stack,
+    Button,
 } from '@mui/material';
 import { format } from 'date-fns';
 
@@ -23,6 +27,7 @@ import { CompanyAvatar } from '../companies/CompanyAvatar';
 import { NotesIterator } from '../notes';
 import { ContactList } from './ContactList';
 import { stageNames } from './stages';
+import ArchiveIcon from '@mui/icons-material/Archive';
 
 export const DealShow = ({ open, id }: { open: boolean; id?: string }) => {
     const redirect = useRedirect();
@@ -33,7 +38,7 @@ export const DealShow = ({ open, id }: { open: boolean; id?: string }) => {
 
     return (
         <Dialog open={open} onClose={handleClose} fullWidth maxWidth="lg">
-            <DialogContent>
+            <DialogContent sx={{ padding: 0 }}>
                 {!!id ? (
                     <ShowBase id={id}>
                         <DealShowContent />
@@ -48,8 +53,9 @@ const DealShowContent = () => {
     const record = useRecordContext();
     if (!record) return null;
     return (
-        <div>
-            <Box display="flex">
+        <Stack gap={1}>
+            {record.archived_at ? <ArchivedTitle /> : null}
+            <Box display="flex" p={3}>
                 <Box
                     width={100}
                     display="flex"
@@ -78,7 +84,10 @@ const DealShowContent = () => {
                 <Box ml={2} flex="1">
                     <Stack direction="row" justifyContent="space-between">
                         <Typography variant="h5">{record.name}</Typography>
-                        <EditButton />
+                        <Stack gap={1} direction="row">
+                            <ArchiveButton record={record} />
+                            <EditButton />
+                        </Stack>
                     </Stack>
 
                     <Box display="flex" mt={2}>
@@ -173,6 +182,63 @@ const DealShowContent = () => {
                     </Box>
                 </Box>
             </Box>
-        </div>
+        </Stack>
+    );
+};
+
+const ArchivedTitle = () => (
+    <Box
+        sx={{
+            background: theme => theme.palette.warning.main,
+            px: 3,
+            py: 2,
+        }}
+    >
+        <Typography
+            variant="h6"
+            fontWeight="bold"
+            sx={{
+                color: theme => theme.palette.warning.contrastText,
+            }}
+        >
+            Archived Deal
+        </Typography>
+    </Box>
+);
+
+const ArchiveButton = ({ record }: { record: any }) => {
+    const [update] = useUpdate();
+    const redirect = useRedirect();
+    const notify = useNotify();
+    const refresh = useRefresh();
+    const handleClick = () => {
+        update(
+            'deals',
+            {
+                id: record.id,
+                data: { archived_at: new Date().toISOString() },
+                previousData: record,
+            },
+            {
+                onSuccess: () => {
+                    redirect('list', 'deals');
+                    notify('Deal archived', { type: 'info', undoable: false });
+                    refresh();
+                },
+                onError: () => {
+                    notify('Error: deal not archived', { type: 'error' });
+                },
+            }
+        );
+    };
+
+    return (
+        <Button
+            onClick={handleClick}
+            variant="contained"
+            startIcon={<ArchiveIcon />}
+        >
+            Archive
+        </Button>
     );
 };

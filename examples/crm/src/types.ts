@@ -68,6 +68,7 @@ export interface Deal extends RaRecord {
     amount: number;
     created_at: string;
     updated_at: string;
+    archived_at?: string;
     start_at: string;
     expecting_closing_date: string;
     sales_id: Identifier;
