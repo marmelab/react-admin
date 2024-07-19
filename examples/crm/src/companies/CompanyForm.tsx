@@ -35,15 +35,16 @@ export const CompanyForm = () => (
         <TextInput source="address" helperText={false} />
         <Grid container spacing={2}>
             <Grid item xs={12} sm={4}>
-                <TextInput source="city" />
+                <TextInput source="city" helperText={false} />
             </Grid>
             <Grid item xs={12} sm={4}>
-                <TextInput source="zipcode" />
+                <TextInput source="zipcode" helperText={false} />
             </Grid>
             <Grid item xs={12} sm={4}>
-                <TextInput source="stateAbbr" />
+                <TextInput source="stateAbbr" helperText={false} />
             </Grid>
         </Grid>
+        <TextInput source="country" />
         <Divider sx={{ mb: 2, width: '100%' }} />
 
         <TextInput source="website" helperText={false} />
@@ -74,9 +75,6 @@ export const CompanyForm = () => (
             </Grid>
             <Grid item xs={12} sm={4}>
                 <TextInput source="taxe_identifier" />
-            </Grid>
-            <Grid item xs={12} sm={4}>
-                <TextInput source="country" />
             </Grid>
         </Grid>
 

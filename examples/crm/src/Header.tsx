@@ -103,7 +103,7 @@ const ConfigurationMenu = () => {
             <ListItemIcon>
                 <SettingsIcon fontSize="small" />
             </ListItemIcon>
-            <ListItemText>Configuration</ListItemText>
+            <ListItemText>My info</ListItemText>
         </MenuItem>
     );
 };

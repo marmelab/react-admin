@@ -68,7 +68,7 @@ const CompanyInfo = ({ record }: { record: Company }) => {
 };
 
 const FinancialInfo = ({ record }: { record: Company }) => {
-    if (!record.revenue && !record.identifier && !record.country) {
+    if (!record.revenue && !record.identifier) {
         return null;
     }
 
@@ -95,15 +95,6 @@ const FinancialInfo = ({ record }: { record: Company }) => {
                     <TextField source="taxe_identifier" color="textPrimary" />
                 </Typography>
             )}
-            {record.country && (
-                <Typography
-                    component="span"
-                    variant="body2"
-                    color="textSecondary"
-                >
-                    Country: <TextField source="country" color="textPrimary" />
-                </Typography>
-            )}
         </Stack>
     );
 };
@@ -126,6 +117,7 @@ const AddressInfo = ({ record }: { record: Company }) => {
             <TextField source="city" color="textSecondary" />
             <TextField source="zipcode" color="textSecondary" />
             <TextField source="stateAbbr" color="textSecondary" />
+            <TextField source="country" color="textSecondary" />
         </Stack>
     );
 };

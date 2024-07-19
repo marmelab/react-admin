@@ -6,11 +6,15 @@ import {
     DialogTitle,
     Stack,
     TextField,
+    Typography,
 } from '@mui/material';
 import { useGetIdentity, useGetOne, useNotify, useUpdate } from 'react-admin';
 import { useForm } from 'react-hook-form';
 
-const PASSWORD_POLICY = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/; // Example policy: Minimum 8 characters, at least one letter and one number
+const PASSWORD_POLICY = {
+    regex: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/, // Example policy: Minimum 8 characters, at least one letter and one number
+    text: 'Password must be at least 8 characters long and contain at least one letter and one number.',
+};
 
 export const UpdatePassword = ({
     open,
@@ -73,6 +77,13 @@ export const UpdatePassword = ({
         <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
             <DialogTitle>Change Password</DialogTitle>
             <DialogContent>
+                <Typography
+                    variant="caption"
+                    color="textSecondary"
+                    gutterBottom
+                >
+                    Password for Jane Doe account is "password"
+                </Typography>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <Stack gap={2}>
                         <TextField
@@ -86,14 +97,18 @@ export const UpdatePassword = ({
                             type="password"
                             fullWidth
                             error={!!errors.currentPassword}
+                            helperText={
+                                errors.currentPassword
+                                    ? 'Current password is incorrect'
+                                    : ''
+                            }
                         />
                         <TextField
                             {...register('newPassword', {
                                 required: 'New password is required',
                                 pattern: {
-                                    value: PASSWORD_POLICY,
-                                    message:
-                                        'Password must be according to the password policy',
+                                    value: PASSWORD_POLICY.regex,
+                                    message: PASSWORD_POLICY.text,
                                 },
                             })}
                             margin="dense"
@@ -102,9 +117,7 @@ export const UpdatePassword = ({
                             fullWidth
                             error={!!errors.newPassword}
                             helperText={
-                                errors.newPassword
-                                    ? 'Password must be according to the password policy'
-                                    : ''
+                                errors.newPassword ? PASSWORD_POLICY.text : ''
                             }
                         />
                         <TextField
