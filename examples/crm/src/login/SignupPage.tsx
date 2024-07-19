@@ -2,6 +2,7 @@ import { Button, Container, Stack, TextField, Typography } from '@mui/material';
 import { useCreate, useGetList, useLogin, useNotify } from 'react-admin';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { Navigate } from 'react-router';
+import { LoginSkeleton } from './LoginSkeleton';
 
 interface UserInput {
     full_name: string;
@@ -10,7 +11,7 @@ interface UserInput {
 }
 
 export const SignupPage = () => {
-    const { total } = useGetList('users', {
+    const { total, isPending } = useGetList('users', {
         pagination: { page: 1, perPage: 10 },
         sort: { field: 'name', order: 'ASC' },
     });
@@ -26,6 +27,10 @@ export const SignupPage = () => {
     } = useForm<UserInput>({
         mode: 'onChange',
     });
+
+    if (isPending) {
+        return <LoginSkeleton />;
+    }
 
     // For the moment, we only allow one user to sign up. Other users must be created by the administrator.
     if (total) {

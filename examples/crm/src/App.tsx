@@ -14,9 +14,9 @@ import contacts from './contacts';
 import { Dashboard } from './dashboard/Dashboard';
 import { dataProvider } from './dataProvider';
 import deals from './deals';
-import { LoginPage } from './LoginPage';
+import { LoginPage } from './login/LoginPage';
 import { Route } from 'react-router';
-import { SignupPage } from './SignupPage';
+import { SignupPage } from './login/SignupPage';
 
 const App = () => (
     <Admin
