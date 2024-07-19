@@ -6,7 +6,7 @@ import {
     Stack,
     Typography,
 } from '@mui/material';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useGetIdentity, useGetList } from 'react-admin';
 import { DealCardContent } from './DealCard';
 import { Deal } from '../types';
@@ -23,6 +23,12 @@ export const DealArchivedList = () => {
         filter: { sales_id: identity?.id, archived_at_neq: null },
     });
     const [openDialog, setOpenDialog] = useState(false);
+
+    useEffect(() => {
+        if (!isPending && total === 0) {
+            setOpenDialog(false);
+        }
+    }, [isPending, total]);
 
     if (!identity || isPending || !total || !archivedLists) return null;
 

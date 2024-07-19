@@ -1,33 +1,35 @@
-import * as React from 'react';
-import {
-    ShowBase,
-    TextField,
-    ReferenceField,
-    ReferenceManyField,
-    ReferenceArrayField,
-    useRecordContext,
-    useRedirect,
-    EditButton,
-    useUpdate,
-    useNotify,
-    useRefresh,
-} from 'react-admin';
 import {
     Box,
+    Button,
     Dialog,
     DialogContent,
-    Typography,
     Divider,
     Stack,
-    Button,
+    Typography,
 } from '@mui/material';
 import { format } from 'date-fns';
+import {
+    DeleteButton,
+    EditButton,
+    ReferenceArrayField,
+    ReferenceField,
+    ReferenceManyField,
+    ShowBase,
+    TextField,
+    useNotify,
+    useRecordContext,
+    useRedirect,
+    useRefresh,
+    useUpdate,
+} from 'react-admin';
 
+import ArchiveIcon from '@mui/icons-material/Archive';
+import UnarchiveIcon from '@mui/icons-material/Unarchive';
 import { CompanyAvatar } from '../companies/CompanyAvatar';
 import { NotesIterator } from '../notes';
+import { Deal } from '../types';
 import { ContactList } from './ContactList';
 import { stageNames } from './stages';
-import ArchiveIcon from '@mui/icons-material/Archive';
 
 export const DealShow = ({ open, id }: { open: boolean; id?: string }) => {
     const redirect = useRedirect();
@@ -50,7 +52,7 @@ export const DealShow = ({ open, id }: { open: boolean; id?: string }) => {
 };
 
 const DealShowContent = () => {
-    const record = useRecordContext();
+    const record = useRecordContext<Deal>();
     if (!record) return null;
     return (
         <Stack gap={1}>
@@ -85,8 +87,17 @@ const DealShowContent = () => {
                     <Stack direction="row" justifyContent="space-between">
                         <Typography variant="h5">{record.name}</Typography>
                         <Stack gap={1} direction="row">
-                            <ArchiveButton record={record} />
-                            <EditButton />
+                            {record.archived_at ? (
+                                <>
+                                    <UnarchiveButton record={record} />
+                                    <DeleteButton />
+                                </>
+                            ) : (
+                                <>
+                                    <ArchiveButton record={record} />
+                                    <EditButton />
+                                </>
+                            )}
                         </Stack>
                     </Stack>
 
@@ -206,7 +217,7 @@ const ArchivedTitle = () => (
     </Box>
 );
 
-const ArchiveButton = ({ record }: { record: any }) => {
+const ArchiveButton = ({ record }: { record: Deal }) => {
     const [update] = useUpdate();
     const redirect = useRedirect();
     const notify = useNotify();
@@ -239,6 +250,49 @@ const ArchiveButton = ({ record }: { record: any }) => {
             startIcon={<ArchiveIcon />}
         >
             Archive
+        </Button>
+    );
+};
+
+const UnarchiveButton = ({ record }: { record: Deal }) => {
+    const [update] = useUpdate();
+    const redirect = useRedirect();
+    const notify = useNotify();
+    const refresh = useRefresh();
+    const handleClick = () => {
+        update(
+            'deals',
+            {
+                id: record.id,
+                data: {
+                    archived_at: null,
+                    updated_at: new Date().toISOString(),
+                },
+                previousData: record,
+            },
+            {
+                onSuccess: () => {
+                    redirect('list', 'deals');
+                    notify('Deal unarchived', {
+                        type: 'info',
+                        undoable: false,
+                    });
+                    refresh();
+                },
+                onError: () => {
+                    notify('Error: deal not unarchived', { type: 'error' });
+                },
+            }
+        );
+    };
+
+    return (
+        <Button
+            onClick={handleClick}
+            variant="contained"
+            startIcon={<UnarchiveIcon />}
+        >
+            Send back to the board
         </Button>
     );
 };

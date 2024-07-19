@@ -37,7 +37,7 @@ const DealList = () => {
                 sales_id: identity?.id,
                 archived_at_eq: null,
             }}
-            sort={{ field: 'index', order: 'ASC' }}
+            sort={{ field: 'updated_at', order: 'DESC' }}
         >
             <DealLayout />
         </ListBase>

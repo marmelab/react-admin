@@ -40,7 +40,12 @@ export const getDealsByStage = (unorderedDeals: Deal[]) => {
     // order each column by index
     stages.forEach(stage => {
         dealsByStage[stage] = dealsByStage[stage].sort(
-            (recordA: Deal, recordB: Deal) => recordA.index - recordB.index
+            (recordA: Deal, recordB: Deal) => {
+                const dateA = new Date(recordA.updated_at);
+                const dateB = new Date(recordB.updated_at);
+
+                return dateB.getTime() - dateA.getTime();
+            }
         );
     });
     return dealsByStage;
