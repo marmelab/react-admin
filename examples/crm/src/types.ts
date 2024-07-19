@@ -55,6 +55,7 @@ export interface ContactNote extends RaRecord {
     date: string;
     sales_id: Identifier;
     status: string;
+    attachment?: { title: string; src: string };
 }
 
 export interface Deal extends RaRecord {

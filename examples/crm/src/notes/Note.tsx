@@ -8,6 +8,8 @@ import {
     useDelete,
     useUpdate,
     useNotify,
+    ImageField,
+    FileField,
 } from 'react-admin';
 import {
     Box,
@@ -84,11 +86,10 @@ export const Note = ({
 
     return (
         <Box
-            mb={2}
             onMouseEnter={() => setHover(true)}
             onMouseLeave={() => setHover(false)}
         >
-            <Box mb={1} color="text.secondary">
+            <Box color="text.secondary">
                 <ReferenceField
                     record={note}
                     resource="contactNotes"
@@ -199,6 +200,37 @@ export const Note = ({
                     </Box>
                 </Box>
             )}
+            <NoteAttachmentField note={note} />
         </Box>
     );
+};
+
+const NoteAttachmentField = ({ note }: { note: any }) => {
+    if (!note.attachment) {
+        return null;
+    }
+
+    if (isImage(note.attachment.rawFile)) {
+        return (
+            <ImageField
+                record={note}
+                source="attachment.src"
+                title="attachment.title"
+                sx={{ ml: 2 }}
+            />
+        );
+    }
+
+    return (
+        <FileField
+            record={note}
+            source="attachment.src"
+            title="attachment.title"
+            sx={{ ml: 3 }}
+        />
+    );
+};
+
+const isImage = (file: File) => {
+    return file && file.type.startsWith('image/');
 };
