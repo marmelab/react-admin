@@ -5,6 +5,7 @@
 * Fix `<AutocompleteInput>` clear button does not clear new choice  ([#10023](https://github.com/marmelab/react-admin/pull/10023)) ([adguernier](https://github.com/adguernier))
 * Fix `<FilterLiveSearch>` should react to filter values change ([#9996](https://github.com/marmelab/react-admin/pull/9996)) ([slax57](https://github.com/slax57))
 * Fix defaultDataProvider breaking change ([#10001](https://github.com/marmelab/react-admin/pull/10001)) ([Nilegfx](https://github.com/Nilegfx))
+* Fix TabbedForm with uri encoded identifiers ([#10021](https://github.com/marmelab/react-admin/pull/10021)) ([djhi](https://github.com/djhi))
 * [Doc] Update ra-relationships documentation ([#10018](https://github.com/marmelab/react-admin/pull/10018)) ([djhi](https://github.com/djhi))
 * [Doc] Verify if Beginning mode exist before add event ([#10016](https://github.com/marmelab/react-admin/pull/10016)) ([arimet](https://github.com/arimet))
 
