@@ -8,17 +8,7 @@ import {
     DateInput,
 } from 'react-admin';
 import { Dialog, Stack } from '@mui/material';
-
-const taskTypes = [
-    'None',
-    'Email',
-    'Demo',
-    'Lunch',
-    'Meeting',
-    'Follow-up',
-    'Thank you',
-    'Ship',
-];
+import { taskTypes } from './task.const';
 
 export const TaskEdit = ({
     id,

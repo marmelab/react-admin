@@ -23,17 +23,7 @@ import {
     required,
     useRecordContext,
 } from 'react-admin';
-
-const taskTypes = [
-    'None',
-    'Email',
-    'Demo',
-    'Lunch',
-    'Meeting',
-    'Follow-up',
-    'Thank you',
-    'Ship',
-];
+import { taskTypes } from './task.const';
 
 export const AddTask = () => {
     const contact = useRecordContext();
