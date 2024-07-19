@@ -1,5 +1,13 @@
 # Changelog
 
+## v5.0.5
+
+* Fix `<AutocompleteInput>` clear button does not clear new choice  ([#10023](https://github.com/marmelab/react-admin/pull/10023)) ([adguernier](https://github.com/adguernier))
+* Fix `<FilterLiveSearch>` should react to filter values change ([#9996](https://github.com/marmelab/react-admin/pull/9996)) ([slax57](https://github.com/slax57))
+* Fix defaultDataProvider breaking change ([#10001](https://github.com/marmelab/react-admin/pull/10001)) ([Nilegfx](https://github.com/Nilegfx))
+* [Doc] Update ra-relationships documentation ([#10018](https://github.com/marmelab/react-admin/pull/10018)) ([djhi](https://github.com/djhi))
+* [Doc] Verify if Beginning mode exist before add event ([#10016](https://github.com/marmelab/react-admin/pull/10016)) ([arimet](https://github.com/arimet))
+
 ## v5.0.4
 
 * Fix warning when using `<List filter>`instead of `filters` ([#9980](https://github.com/marmelab/react-admin/pull/9980)) ([djhi](https://github.com/djhi))
@@ -115,6 +123,12 @@ We've written a [migration guide](https://marmelab.com/react-admin/doc/5.0/Upgra
 We estimate that a react-admin app with 50,000 lines of code will require about 2 days of work to upgrade to v5.
 
 ### Changelog
+
+* fix `<AutocompleteInput>` clear button does not clear new choice  ([#10023](https://github.com/marmelab/react-admin/pull/10023)) ([adguernier](https://github.com/adguernier))
+* [Doc] Update ra-relationships documentation ([#10018](https://github.com/marmelab/react-admin/pull/10018)) ([djhi](https://github.com/djhi))
+* [Doc] Verify if Beginning mode exist before add event ([#10016](https://github.com/marmelab/react-admin/pull/10016)) ([arimet](https://github.com/arimet))
+* separate test and default data providers ([#10001](https://github.com/marmelab/react-admin/pull/10001)) ([Nilegfx](https://github.com/Nilegfx))
+* Fix `<FilterLiveSearch>` should react to filter values change ([#9996](https://github.com/marmelab/react-admin/pull/9996)) ([slax57](https://github.com/slax57))
 
 For a detailed changelog, see the release notes for the following pre-releases:
 
