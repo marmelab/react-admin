@@ -57,7 +57,7 @@ const beforeContactUpsert = async (
     return params;
 };
 
-const dataProviderWithCustomMethode = {
+const dataProviderWithCustomMethod = {
     ...baseDataProvider,
     login: async ({ email }: { email: string }) => {
         const users = await baseDataProvider.getList('users', {
@@ -78,7 +78,7 @@ const dataProviderWithCustomMethode = {
 };
 
 export const dataProvider = withLifecycleCallbacks(
-    dataProviderWithCustomMethode,
+    dataProviderWithCustomMethod,
     [
         {
             resource: 'contacts',
