@@ -20,6 +20,7 @@ import { AdminContext } from '../AdminContext';
 import { TabbedForm } from './TabbedForm';
 import { TabbedFormClasses } from './TabbedFormView';
 import { TextInput } from '../input';
+import { EncodedPaths } from './TabbedForm.stories';
 
 describe('<TabbedForm />', () => {
     it('should display the tabs', () => {
@@ -36,6 +37,14 @@ describe('<TabbedForm />', () => {
 
         const tabs = screen.queryAllByRole('tab');
         expect(tabs.length).toEqual(2);
+    });
+
+    it('should display the tabs contents with encoded complex record identifiers', async () => {
+        render(<EncodedPaths />);
+
+        const tabs = await screen.findAllByRole('tab');
+        expect(tabs.length).toEqual(2);
+        await screen.findByLabelText('Title');
     });
 
     it('should set the style of an inactive Tab button with errors', async () => {

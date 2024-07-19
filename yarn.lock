@@ -4143,10 +4143,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@remix-run/router@npm:1.15.0":
-  version: 1.15.0
-  resolution: "@remix-run/router@npm:1.15.0"
-  checksum: 4805b5761ccbce3a522d3313c74ece7d4a411f02fd6d495d20f4352dcc87d8899f1b79a4c172a130e0f7a73b5f63a29177d8860131c35e3388552b1bd38a97f2
+"@remix-run/router@npm:1.18.0":
+  version: 1.18.0
+  resolution: "@remix-run/router@npm:1.18.0"
+  checksum: 3ec7e441a0e54932a3d3bf932432094420f2c117715d80a5454bc7e55d13b91250749942aab032cd07aee191f1c1de33fede8682025bfd3a453dd207c016e140
   languageName: node
   linkType: hard
 
@@ -17694,8 +17694,8 @@ __metadata:
     react-error-boundary: "npm:^4.0.13"
     react-hook-form: "npm:^7.52.0"
     react-is: "npm:^18.2.0"
-    react-router: "npm:^6.22.0"
-    react-router-dom: "npm:^6.22.0"
+    react-router: "npm:^6.25.1"
+    react-router-dom: "npm:^6.25.1"
     react-test-renderer: "npm:^18.2.0"
     recharts: "npm:^2.1.15"
     rimraf: "npm:^3.0.2"
@@ -17971,8 +17971,8 @@ __metadata:
     react-error-boundary: "npm:^4.0.13"
     react-hook-form: "npm:^7.52.0"
     react-is: "npm:^18.2.0"
-    react-router: "npm:^6.22.0"
-    react-router-dom: "npm:^6.22.0"
+    react-router: "npm:^6.25.1"
+    react-router-dom: "npm:^6.25.1"
     react-test-renderer: "npm:^18.2.0"
     react-transition-group: "npm:^4.4.5"
     rimraf: "npm:^3.0.2"
@@ -18413,27 +18413,27 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-router-dom@npm:^6.22.0":
-  version: 6.22.0
-  resolution: "react-router-dom@npm:6.22.0"
+"react-router-dom@npm:^6.22.0, react-router-dom@npm:^6.25.1":
+  version: 6.25.1
+  resolution: "react-router-dom@npm:6.25.1"
   dependencies:
-    "@remix-run/router": "npm:1.15.0"
-    react-router: "npm:6.22.0"
+    "@remix-run/router": "npm:1.18.0"
+    react-router: "npm:6.25.1"
   peerDependencies:
     react: ">=16.8"
     react-dom: ">=16.8"
-  checksum: f1c338d6a37ee331f141d683a9139bc397128f6c15ef796589894ba29de1101eeeab7c4bf26429632c86bbca7376a9d900a6bfbd351ac5c9e1e231ac1b05fe5d
+  checksum: 15e2b5bf89a26db9a108d19a4e0e2054180bfb1f5f62662dd93ad697ee1bdc91a8041efd762d552c95e65fc06ca0cb0c1e88acdeeaf03aba37f7a29e470c7cc4
   languageName: node
   linkType: hard
 
-"react-router@npm:6.22.0, react-router@npm:^6.22.0":
-  version: 6.22.0
-  resolution: "react-router@npm:6.22.0"
+"react-router@npm:6.25.1, react-router@npm:^6.22.0, react-router@npm:^6.25.1":
+  version: 6.25.1
+  resolution: "react-router@npm:6.25.1"
   dependencies:
-    "@remix-run/router": "npm:1.15.0"
+    "@remix-run/router": "npm:1.18.0"
   peerDependencies:
     react: ">=16.8"
-  checksum: aa3878321797e526e4f3a57f97e8dd06f7cf6d7b9f95db39ea5d74259a2058404a04af0f852296ba6f09f9cecd7ca5f67125b9853ceb7fe6a852ffa5e3369dca
+  checksum: a7e824c1f6d9641beabc23111865ddd2525b3794403e07b297fc2bdd4cddec93e166aacdb9d2602768864d70f3bf490f59eeab8474a04ae1f13a832f305eeec3
   languageName: node
   linkType: hard
 
