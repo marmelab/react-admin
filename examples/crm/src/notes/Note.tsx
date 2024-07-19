@@ -8,8 +8,8 @@ import {
     useDelete,
     useUpdate,
     useNotify,
-    ImageField,
     FileField,
+    ResourceContextValue,
 } from 'react-admin';
 import {
     Box,
@@ -18,6 +18,7 @@ import {
     IconButton,
     FilledInput,
     Button,
+    Stack,
 } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import TrashIcon from '@mui/icons-material/Delete';
@@ -92,7 +93,7 @@ export const Note = ({
             <Box color="text.secondary">
                 <ReferenceField
                     record={note}
-                    resource="contactNotes"
+                    resource={resource}
                     source="sales_id"
                     reference="sales"
                 >
@@ -200,34 +201,83 @@ export const Note = ({
                     </Box>
                 </Box>
             )}
-            <NoteAttachmentField note={note} />
+            {note.attachment && (
+                <NoteAttachmentField
+                    note={note}
+                    resource={resource}
+                    isEditing={isEditing}
+                />
+            )}
         </Box>
     );
 };
 
-const NoteAttachmentField = ({ note }: { note: any }) => {
+const NoteAttachmentField = ({
+    note,
+    resource,
+    isEditing,
+}: {
+    note: any;
+    resource: ResourceContextValue;
+    isEditing: boolean;
+}) => {
+    const [update] = useUpdate();
+
     if (!note.attachment) {
         return null;
     }
 
+    const handleDeleteAttachment = () => {
+        update(resource, {
+            id: note.id,
+            data: { attachment: null },
+            previousData: note,
+        });
+    };
+
     if (isImage(note.attachment.rawFile)) {
         return (
-            <ImageField
-                record={note}
-                source="attachment.src"
-                title="attachment.title"
-                sx={{ ml: 2 }}
-            />
+            <Stack direction="row" alignItems="center" ml={3}>
+                <img
+                    src={note.attachment.src}
+                    alt={note.attachment.title}
+                    style={{
+                        width: '200px',
+                        height: '100px',
+                        objectFit: 'contain',
+                        cursor: 'pointer',
+                    }}
+                    onClick={() => window.open(note.attachment.src, '_blank')}
+                />
+                {isEditing && (
+                    <IconButton
+                        aria-label="delete"
+                        onClick={() => handleDeleteAttachment()}
+                    >
+                        <TrashIcon />
+                    </IconButton>
+                )}
+            </Stack>
         );
     }
 
     return (
-        <FileField
-            record={note}
-            source="attachment.src"
-            title="attachment.title"
-            sx={{ ml: 3 }}
-        />
+        <Stack direction="row" alignItems="center" ml={3}>
+            <FileField
+                record={note}
+                source="attachment.src"
+                title="attachment.title"
+                target="_blank"
+            />
+            {isEditing && (
+                <IconButton
+                    aria-label="delete"
+                    onClick={() => handleDeleteAttachment()}
+                >
+                    <TrashIcon />
+                </IconButton>
+            )}
+        </Stack>
     );
 };
 
