@@ -87,7 +87,6 @@ const TaskEditToolBar = ({
     const notify = useNotify();
     return (
         <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
-            <SaveButton label="Save" />
             <DeleteButton
                 label="Delete"
                 mutationOptions={{
@@ -101,6 +100,7 @@ const TaskEditToolBar = ({
                 }}
                 redirect={false}
             />
+            <SaveButton label="Save" />
         </Toolbar>
     );
 };
