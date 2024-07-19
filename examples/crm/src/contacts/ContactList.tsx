@@ -1,4 +1,5 @@
 /* eslint-disable import/no-anonymous-default-export */
+import { Card, LinearProgress, Stack } from '@mui/material';
 import jsonExport from 'jsonexport/dist';
 import type { Exporter } from 'react-admin';
 import {
@@ -14,16 +15,12 @@ import {
     useGetIdentity,
     useListContext,
 } from 'react-admin';
-
-import { Card, LinearProgress, Stack } from '@mui/material';
-import { ImportButton, toDataUrl } from '../import/ImportButton';
 import { hasOtherFiltersThanDefault } from '../misc/hasOtherFiltersThanDefault';
 import { Company, Contact, Sale, Tag } from '../types';
 import { ContactEmpty } from './ContactEmpty';
+import { ContactImportButton } from './ContactImportButton';
 import { ContactListContent } from './ContactListContent';
 import { ContactListFilter } from './ContactListFilter';
-
-import * as sampleCsv from './contacts_export.csv?raw';
 
 export const ContactList = () => {
     const { identity } = useGetIdentity();
@@ -75,9 +72,7 @@ const ContactListLayout = () => {
 const ContactListActions = () => (
     <TopToolbar>
         <SortButton fields={['last_name', 'first_name', 'last_seen']} />
-        <ImportButton
-            sampleUrl={toDataUrl(sampleCsv.default, 'text/csv;charset=utf-8')}
-        />
+        <ContactImportButton />
         <ExportButton />
         <CreateButton
             variant="contained"
