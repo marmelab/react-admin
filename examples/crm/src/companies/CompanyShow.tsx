@@ -260,7 +260,6 @@ const DealsIterator = () => {
     if (isPending || error) return null;
 
     const now = Date.now();
-    console.log(deals);
     return (
         <Box>
             <List dense>
