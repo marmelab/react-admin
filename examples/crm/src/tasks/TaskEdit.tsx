@@ -6,6 +6,10 @@ import {
     required,
     SelectInput,
     DateInput,
+    Toolbar,
+    SaveButton,
+    DeleteButton,
+    useNotify,
 } from 'react-admin';
 import { Dialog, Stack } from '@mui/material';
 import { taskTypes } from './task.const';
@@ -17,6 +21,7 @@ export const TaskEdit = ({
     id: string | undefined;
     setTaskSelectedId: (id: string | undefined) => void;
 }) => {
+    const notify = useNotify();
     const handleClose = () => {
         setTaskSelectedId(undefined);
     };
@@ -29,11 +34,23 @@ export const TaskEdit = ({
                     resource="tasks"
                     sx={{ '& .RaCreate-main': { mt: 0 } }}
                     mutationOptions={{
-                        onSuccess: () => setTaskSelectedId(undefined),
+                        onSuccess: () => {
+                            setTaskSelectedId(undefined);
+                            notify('Task updated', {
+                                type: 'info',
+                                undoable: true,
+                            });
+                        },
                     }}
                     redirect={false}
                 >
-                    <SimpleForm>
+                    <SimpleForm
+                        toolbar={
+                            <TaskEditToolBar
+                                setTaskSelectedId={setTaskSelectedId}
+                            />
+                        }
+                    >
                         <TextInput
                             autoFocus
                             source="text"
@@ -59,5 +76,31 @@ export const TaskEdit = ({
                 </Edit>
             ) : null}
         </Dialog>
+    );
+};
+
+const TaskEditToolBar = ({
+    setTaskSelectedId,
+}: {
+    setTaskSelectedId: (id: string | undefined) => void;
+}) => {
+    const notify = useNotify();
+    return (
+        <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
+            <SaveButton label="Save" />
+            <DeleteButton
+                label="Delete"
+                mutationOptions={{
+                    onSuccess: () => {
+                        setTaskSelectedId(undefined);
+                        notify('Task deleted', {
+                            type: 'info',
+                            undoable: true,
+                        });
+                    },
+                }}
+                redirect={false}
+            />
+        </Toolbar>
     );
 };
