@@ -78,3 +78,10 @@ export interface Tag extends RaRecord {
     name: string;
     color: string;
 }
+
+export interface User extends RaRecord {
+    full_name: string;
+    email: string;
+    password: string;
+    administrator: boolean;
+}

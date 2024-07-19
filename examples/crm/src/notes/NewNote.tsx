@@ -27,7 +27,6 @@ export const NewNote = ({
     const [text, setText] = useState('');
     const [status, setStatus] = useState(record && record.status);
     const [date, setDate] = useState(getCurrentDate());
-    console.log('date', date);
     const [create, { isPending }] = useCreate();
     const [update] = useUpdate();
     const notify = useNotify();

@@ -57,168 +57,209 @@ const beforeContactUpsert = async (
     return params;
 };
 
-export const dataProvider = withLifecycleCallbacks(baseDataProvider, [
-    {
-        resource: 'contacts',
-        beforeCreate: async (params, dataProvider) => {
-            const { data } = params;
-            const avatarUrl = await getContactAvatar(data);
-            data.avatar = avatarUrl || null;
-            return beforeContactUpsert(params, dataProvider);
-        },
-        beforeUpdate: async params => {
-            const { data } = params;
-            const avatarUrl = await getContactAvatar(data);
-            data.avatar = avatarUrl || null;
-            const result = await beforeContactUpsert(params, dataProvider);
-            return {
-                ...params,
-                data: result.data,
-            };
-        },
+const dataProviderWithCustomMethod = {
+    ...baseDataProvider,
+    login: async ({ email }: { email: string }) => {
+        const users = await baseDataProvider.getList('users', {
+            pagination: { page: 1, perPage: 200 },
+            sort: { field: 'name', order: 'ASC' },
+        });
+
+        if (!users.data.length) {
+            return null;
+        }
+
+        const user = users.data.find(user => user.email === email);
+        if (!user) {
+            return null;
+        }
+        return user;
     },
-    {
-        resource: 'contactNotes',
-        afterCreate: async (result, dataProvider) => {
-            // update the notes count in the related contact
-            const { contact_id } = result.data;
-            const { data: contact } = await dataProvider.getOne('contacts', {
-                id: contact_id,
-            });
-            await dataProvider.update('contacts', {
-                id: contact_id,
-                data: {
-                    nb_notes: (contact.nb_notes ?? 0) + 1,
-                },
-                previousData: contact,
-            });
-            return result;
+};
+
+export const dataProvider = withLifecycleCallbacks(
+    dataProviderWithCustomMethod,
+    [
+        {
+            resource: 'contacts',
+            beforeCreate: async (params, dataProvider) => {
+                const { data } = params;
+                const avatarUrl = await getContactAvatar(data);
+                data.avatar = avatarUrl || null;
+                return beforeContactUpsert(params, dataProvider);
+            },
+            beforeUpdate: async params => {
+                const { data } = params;
+                const avatarUrl = await getContactAvatar(data);
+                data.avatar = avatarUrl || null;
+                const result = await beforeContactUpsert(params, dataProvider);
+                return {
+                    ...params,
+                    data: result.data,
+                };
+            },
         },
-        afterDelete: async (result, dataProvider) => {
-            // update the notes count in the related contact
-            const { contact_id } = result.data;
-            const { data: contact } = await dataProvider.getOne('contacts', {
-                id: contact_id,
-            });
-            await dataProvider.update('contacts', {
-                id: contact_id,
-                data: {
-                    nb_notes: (contact.nb_notes ?? 0) - 1,
-                },
-                previousData: contact,
-            });
-            return result;
-        },
-    },
-    {
-        resource: 'tasks',
-        afterCreate: async (result, dataProvider) => {
-            // update the task count in the related contact
-            const { contact_id } = result.data;
-            const { data: contact } = await dataProvider.getOne('contacts', {
-                id: contact_id,
-            });
-            await dataProvider.update('contacts', {
-                id: contact_id,
-                data: {
-                    nb_tasks: (contact.nb_tasks ?? 0) + 1,
-                },
-                previousData: contact,
-            });
-            return result;
-        },
-        beforeUpdate: async params => {
-            const { data, previousData } = params;
-            if (previousData.done_date !== data.done_date) {
-                taskUpdateType = data.done_date
-                    ? TASK_MARKED_AS_DONE
-                    : TASK_MARKED_AS_UNDONE;
-            } else {
-                taskUpdateType = TASK_DONE_NOT_CHANGED;
-            }
-            return params;
-        },
-        afterUpdate: async (result, dataProvider) => {
-            // update the contact: if the task is done, decrement the nb tasks, otherwise increment it
-            const { contact_id } = result.data;
-            const { data: contact } = await dataProvider.getOne('contacts', {
-                id: contact_id,
-            });
-            if (taskUpdateType !== TASK_DONE_NOT_CHANGED) {
+        {
+            resource: 'contactNotes',
+            afterCreate: async (result, dataProvider) => {
+                // update the notes count in the related contact
+                const { contact_id } = result.data;
+                const { data: contact } = await dataProvider.getOne(
+                    'contacts',
+                    {
+                        id: contact_id,
+                    }
+                );
                 await dataProvider.update('contacts', {
                     id: contact_id,
                     data: {
-                        nb_tasks:
-                            taskUpdateType === TASK_MARKED_AS_DONE
-                                ? (contact.nb_tasks ?? 0) - 1
-                                : (contact.nb_tasks ?? 0) + 1,
+                        nb_notes: (contact.nb_notes ?? 0) + 1,
                     },
                     previousData: contact,
                 });
-            }
-            return result;
+                return result;
+            },
+            afterDelete: async (result, dataProvider) => {
+                // update the notes count in the related contact
+                const { contact_id } = result.data;
+                const { data: contact } = await dataProvider.getOne(
+                    'contacts',
+                    {
+                        id: contact_id,
+                    }
+                );
+                await dataProvider.update('contacts', {
+                    id: contact_id,
+                    data: {
+                        nb_notes: (contact.nb_notes ?? 0) - 1,
+                    },
+                    previousData: contact,
+                });
+                return result;
+            },
         },
-        afterDelete: async (result, dataProvider) => {
-            // update the task count in the related contact
-            const { contact_id } = result.data;
-            const { data: contact } = await dataProvider.getOne('contacts', {
-                id: contact_id,
-            });
-            await dataProvider.update('contacts', {
-                id: contact_id,
-                data: {
-                    nb_tasks: (contact.nb_tasks ?? 0) - 1,
-                },
-                previousData: contact,
-            });
-            return result;
-        },
-    },
-    {
-        resource: 'companies',
-        beforeCreate: async params => {
-            const logo = await processLogo(params);
-            return {
-                ...params,
-                data: {
-                    ...params.data,
-                    logo,
-                },
-            };
-        },
-        beforeUpdate: async params => {
-            const logo = await processLogo(params);
-            return {
-                ...params,
-                data: {
-                    ...params.data,
-                    logo,
-                },
-            };
-        },
-        afterUpdate: async (result, dataProvider) => {
-            // get all users of the company and for each user, update the company_name
-            const { id, name } = result.data;
-            const { data: contacts } = await dataProvider.getList('contacts', {
-                filter: { company_id: id },
-                pagination: { page: 1, perPage: 1000 },
-                sort: { field: 'id', order: 'ASC' },
-            });
-            await Promise.all(
-                contacts.map(contact =>
-                    dataProvider.update('contacts', {
-                        id: contact.id,
+        {
+            resource: 'tasks',
+            afterCreate: async (result, dataProvider) => {
+                // update the task count in the related contact
+                const { contact_id } = result.data;
+                const { data: contact } = await dataProvider.getOne(
+                    'contacts',
+                    {
+                        id: contact_id,
+                    }
+                );
+                await dataProvider.update('contacts', {
+                    id: contact_id,
+                    data: {
+                        nb_tasks: (contact.nb_tasks ?? 0) + 1,
+                    },
+                    previousData: contact,
+                });
+                return result;
+            },
+            beforeUpdate: async params => {
+                const { data, previousData } = params;
+                if (previousData.done_date !== data.done_date) {
+                    taskUpdateType = data.done_date
+                        ? TASK_MARKED_AS_DONE
+                        : TASK_MARKED_AS_UNDONE;
+                } else {
+                    taskUpdateType = TASK_DONE_NOT_CHANGED;
+                }
+                return params;
+            },
+            afterUpdate: async (result, dataProvider) => {
+                // update the contact: if the task is done, decrement the nb tasks, otherwise increment it
+                const { contact_id } = result.data;
+                const { data: contact } = await dataProvider.getOne(
+                    'contacts',
+                    {
+                        id: contact_id,
+                    }
+                );
+                if (taskUpdateType !== TASK_DONE_NOT_CHANGED) {
+                    await dataProvider.update('contacts', {
+                        id: contact_id,
                         data: {
-                            company_name: name,
+                            nb_tasks:
+                                taskUpdateType === TASK_MARKED_AS_DONE
+                                    ? (contact.nb_tasks ?? 0) - 1
+                                    : (contact.nb_tasks ?? 0) + 1,
                         },
                         previousData: contact,
-                    })
-                )
-            );
-            return result;
+                    });
+                }
+                return result;
+            },
+            afterDelete: async (result, dataProvider) => {
+                // update the task count in the related contact
+                const { contact_id } = result.data;
+                const { data: contact } = await dataProvider.getOne(
+                    'contacts',
+                    {
+                        id: contact_id,
+                    }
+                );
+                await dataProvider.update('contacts', {
+                    id: contact_id,
+                    data: {
+                        nb_tasks: (contact.nb_tasks ?? 0) - 1,
+                    },
+                    previousData: contact,
+                });
+                return result;
+            },
         },
-    },
-]);
+        {
+            resource: 'companies',
+            beforeCreate: async params => {
+                const logo = await processLogo(params);
+                return {
+                    ...params,
+                    data: {
+                        ...params.data,
+                        logo,
+                    },
+                };
+            },
+            beforeUpdate: async params => {
+                const logo = await processLogo(params);
+                return {
+                    ...params,
+                    data: {
+                        ...params.data,
+                        logo,
+                    },
+                };
+            },
+            afterUpdate: async (result, dataProvider) => {
+                // get all users of the company and for each user, update the company_name
+                const { id, name } = result.data;
+                const { data: contacts } = await dataProvider.getList(
+                    'contacts',
+                    {
+                        filter: { company_id: id },
+                        pagination: { page: 1, perPage: 1000 },
+                        sort: { field: 'id', order: 'ASC' },
+                    }
+                );
+                await Promise.all(
+                    contacts.map(contact =>
+                        dataProvider.update('contacts', {
+                            id: contact.id,
+                            data: {
+                                company_name: name,
+                            },
+                            previousData: contact,
+                        })
+                    )
+                );
+                return result;
+            },
+        },
+    ]
+);
 
 /**
  * Convert a `File` object returned by the upload input into a base 64 string.

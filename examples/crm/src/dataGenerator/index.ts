@@ -20,6 +20,15 @@ export default (): Db => {
     db.deals = generateDeals(db);
     db.dealNotes = generateDealNotes(db);
     db.tasks = generateTasks(db);
+    db.users = [
+        {
+            id: 0,
+            full_name: 'Jane Doe',
+            email: 'jane@doe.com',
+            password: 'password',
+            administrator: false,
+        },
+    ];
     finalize(db);
 
     return db;

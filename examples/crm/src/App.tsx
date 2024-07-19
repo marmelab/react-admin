@@ -1,5 +1,6 @@
 import {
     Admin,
+    CustomRoutes,
     ListGuesser,
     Resource,
     defaultTheme,
@@ -13,6 +14,9 @@ import contacts from './contacts';
 import { Dashboard } from './dashboard/Dashboard';
 import { dataProvider } from './dataProvider';
 import deals from './deals';
+import { LoginPage } from './login/LoginPage';
+import { Route } from 'react-router';
+import { SignupPage } from './login/SignupPage';
 
 const App = () => (
     <Admin
@@ -20,6 +24,7 @@ const App = () => (
         authProvider={authProvider}
         store={localStorageStore(undefined, 'CRM')}
         layout={Layout}
+        loginPage={LoginPage}
         dashboard={Dashboard}
         theme={{
             ...defaultTheme,
@@ -30,6 +35,9 @@ const App = () => (
             },
         }}
     >
+        <CustomRoutes noLayout>
+            <Route path={SignupPage.path} element={<SignupPage />} />
+        </CustomRoutes>
         <Resource name="deals" {...deals} />
         <Resource name="contacts" {...contacts} />
         <Resource name="companies" {...companies} />
