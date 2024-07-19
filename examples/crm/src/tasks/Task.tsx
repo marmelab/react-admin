@@ -22,9 +22,11 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 export const Task = ({
     task,
     showContact,
+    setTaskSelectedId,
 }: {
     task: any;
     showContact?: boolean;
+    setTaskSelectedId: (id: string) => void;
 }) => {
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
@@ -39,6 +41,11 @@ export const Task = ({
         record: task,
         redirect: false,
     });
+
+    const handleEdit = () => {
+        setAnchorEl(null);
+        setTaskSelectedId(task.id);
+    };
 
     const handleCheck = () => () => {
         update('tasks', {
@@ -112,6 +119,7 @@ export const Task = ({
                         >
                             Postpone to next week
                         </MenuItem>
+                        <MenuItem onClick={handleEdit}>Edit</MenuItem>
                         <MenuItem onClick={handleDelete}>Delete</MenuItem>
                     </Menu>
                 </>
