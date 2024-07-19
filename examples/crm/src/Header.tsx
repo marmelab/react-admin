@@ -1,7 +1,19 @@
 import React from 'react';
-import { Tabs, Tab, Toolbar, AppBar, Box, Typography } from '@mui/material';
+import {
+    Tabs,
+    Tab,
+    Toolbar,
+    AppBar,
+    Box,
+    Typography,
+    MenuList,
+    MenuItem,
+    ListItemIcon,
+    ListItemText,
+} from '@mui/material';
 import { Link, matchPath, useLocation } from 'react-router-dom';
-import { UserMenu, Logout, LoadingIndicator } from 'react-admin';
+import { UserMenu, Logout, LoadingIndicator, useUserMenu } from 'react-admin';
+import SettingsIcon from '@mui/icons-material/Settings';
 
 const Header = () => {
     const location = useLocation();
@@ -13,6 +25,8 @@ const Header = () => {
         currentPath = '/companies';
     } else if (!!matchPath('/deals/*', location.pathname)) {
         currentPath = '/deals';
+    } else if (!!matchPath('/settings', location.pathname)) {
+        currentPath = '/settings';
     }
 
     return (
@@ -69,7 +83,10 @@ const Header = () => {
                         <Box display="flex" alignItems="center">
                             <LoadingIndicator />
                             <UserMenu>
-                                <Logout />
+                                <MenuList>
+                                    <ConfigurationMenu />
+                                    <Logout />
+                                </MenuList>
                             </UserMenu>
                         </Box>
                     </Box>
@@ -79,4 +96,15 @@ const Header = () => {
     );
 };
 
+const ConfigurationMenu = () => {
+    const { onClose } = useUserMenu() ?? {};
+    return (
+        <MenuItem component={Link} to="/settings" onClick={onClose}>
+            <ListItemIcon>
+                <SettingsIcon fontSize="small" />
+            </ListItemIcon>
+            <ListItemText>Configuration</ListItemText>
+        </MenuItem>
+    );
+};
 export default Header;

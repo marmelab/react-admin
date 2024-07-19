@@ -16,6 +16,7 @@ import { dataProvider } from './dataProvider';
 import deals from './deals';
 import { LoginPage } from './login/LoginPage';
 import { Route } from 'react-router';
+import { SettingsPage } from './settings/SettingsPage';
 import { SignupPage } from './login/SignupPage';
 
 const App = () => (
@@ -37,6 +38,9 @@ const App = () => (
     >
         <CustomRoutes noLayout>
             <Route path={SignupPage.path} element={<SignupPage />} />
+        </CustomRoutes>
+        <CustomRoutes>
+            <Route path={SettingsPage.path} element={<SettingsPage />} />
         </CustomRoutes>
         <Resource name="deals" {...deals} />
         <Resource name="contacts" {...contacts} />

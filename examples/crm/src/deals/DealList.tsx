@@ -66,7 +66,10 @@ const DealLayout = () => {
                 <DealListContent />
             </Card>
             <DealCreate open={!!matchCreate} />
-            <DealEdit open={!!matchEdit} id={matchEdit?.params.id} />
+            <DealEdit
+                open={!!matchEdit && !matchCreate}
+                id={matchEdit?.params.id}
+            />
             <DealShow open={!!matchShow} id={matchShow?.params.id} />
         </Stack>
     );
