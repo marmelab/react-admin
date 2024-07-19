@@ -1,4 +1,11 @@
 import { Identifier, RaRecord } from 'react-admin';
+import {
+    COMPANY_CREATED,
+    CONTACT_CREATED,
+    CONTACT_NOTE_CREATED,
+    DEAL_CREATED,
+} from './consts';
+import { taskTypes } from './tasks/task.const';
 
 export interface Sale extends RaRecord {
     first_name: string;
@@ -37,7 +44,7 @@ export interface Contact extends RaRecord {
     title: string;
     company_id: Identifier;
     email: string;
-    avatar?: string;
+    avatar?: string | null;
     linkedin_url?: string;
     first_seen: string;
     last_seen: string;
@@ -82,3 +89,30 @@ export interface Tag extends RaRecord {
     name: string;
     color: string;
 }
+
+export interface User extends RaRecord {
+    full_name: string;
+    email: string;
+    password: string;
+    administrator: boolean;
+}
+
+export interface Task extends RaRecord {
+    contact_id: Identifier;
+    type: (typeof taskTypes)[number];
+    text: string;
+    due_date: string;
+    done_date?: string | null;
+}
+
+export type Activity = (
+    | {
+          type: typeof COMPANY_CREATED;
+      }
+    | { type: typeof CONTACT_CREATED; contact_id: Identifier }
+    | { type: typeof DEAL_CREATED; deal_id: Identifier }
+    | { type: typeof CONTACT_NOTE_CREATED; contact_note_id: Identifier }
+) & {
+    company_id: Identifier;
+    date: string;
+} & RaRecord;

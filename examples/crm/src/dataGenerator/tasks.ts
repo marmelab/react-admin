@@ -1,9 +1,10 @@
-import { random, lorem } from 'faker/locale/en_US';
+import { lorem, random } from 'faker/locale/en_US';
 
+import { Task } from '../types';
 import { Db } from './types';
 import { randomDate } from './utils';
 
-export const type = [
+export const type: Task['type'][] = [
     'Email',
     'Email',
     'Email',
@@ -32,7 +33,7 @@ export const type = [
 ];
 
 export const generateTasks = (db: Db) => {
-    return Array.from(Array(400).keys()).map(id => {
+    return Array.from(Array(400).keys()).map<Task>(id => {
         const contact = random.arrayElement(db.contacts);
         contact.nb_tasks++;
         return {
