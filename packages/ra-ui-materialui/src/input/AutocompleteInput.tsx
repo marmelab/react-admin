@@ -468,7 +468,10 @@ If you provided a React element for the optionText prop, you must also provide t
             setFilterValue(newInputValue);
             debouncedSetFilter(newInputValue);
         }
-
+        if (reason === 'clear') {
+            setFilterValue('');
+            debouncedSetFilter('');
+        }
         onInputChange?.(event, newInputValue, reason);
     };
 
@@ -524,13 +527,14 @@ If you provided a React element for the optionText prop, you must also provide t
         return filteredOptions;
     };
 
-    const handleAutocompleteChange = (
-        event: any,
-        newValue: any,
-        _reason: string
-    ) => {
-        handleChangeWithCreateSupport(newValue != null ? newValue : emptyValue);
-    };
+    const handleAutocompleteChange = useCallback(
+        (event: any, newValue: any, _reason: string) => {
+            handleChangeWithCreateSupport(
+                newValue != null ? newValue : emptyValue
+            );
+        },
+        [emptyValue, handleChangeWithCreateSupport]
+    );
 
     const oneSecondHasPassed = useTimeout(1000, filterValue);
 
