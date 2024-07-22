@@ -35,7 +35,7 @@ export interface Company extends RaRecord {
     revenue: string;
     taxe_identifier: string;
     country: string;
-    context_links: string[];
+    context_links?: string[];
 }
 
 export interface Contact extends RaRecord {

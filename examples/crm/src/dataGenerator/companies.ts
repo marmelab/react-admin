@@ -60,7 +60,7 @@ export const generateCompanies = (db: Db): Company[] => {
             revenue: random.arrayElement(['$1M', '$10M', '$100M', '$1B']),
             taxe_identifier: random.alphaNumeric(10),
             country: random.arrayElement(['USA', 'France', 'UK']),
-            context_links: ['https://www.pappers.fr/'],
+            context_links: [],
         };
     });
 };
