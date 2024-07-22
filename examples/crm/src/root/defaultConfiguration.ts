@@ -1,8 +1,9 @@
-const logo =
+export const defaultLogo =
     'https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg';
-const title = 'Atomic CRM';
 
-const companySectors = [
+export const defaultTitle = 'Atomic CRM';
+
+export const defaultCompanySectors = [
     'Communication Services',
     'Consumer Discretionary',
     'Consumer Staples',
@@ -16,7 +17,7 @@ const companySectors = [
     'Utilities',
 ];
 
-const dealStages = [
+export const defaultDealStages = [
     { value: 'opportunity', label: 'Opportunity' },
     { value: 'proposal-sent', label: 'Proposal Sent' },
     { value: 'in-negociation', label: 'In Negotiation' },
@@ -25,7 +26,7 @@ const dealStages = [
     { value: 'delayed', label: 'Delayed' },
 ];
 
-const dealCategories = [
+export const defaultDealCategories = [
     'Other',
     'Copywriting',
     'Print project',
@@ -33,14 +34,14 @@ const dealCategories = [
     'Website design',
 ];
 
-const noteStatuses = [
+export const defaultNoteStatuses = [
     { value: 'cold', label: 'Cold', color: '#7dbde8' },
     { value: 'warm', label: 'Warm', color: '#e8cb7d' },
     { value: 'hot', label: 'Hot', color: '#e88b7d' },
     { value: 'in-contract', label: 'In Contract', color: '#a4e87d' },
 ];
 
-const taskTypes = [
+export const defaultTaskTypes = [
     'None',
     'Email',
     'Demo',
@@ -52,12 +53,8 @@ const taskTypes = [
     'Call',
 ];
 
-export const crmConfig = {
-    logo,
-    title,
-    companySectors,
-    dealStages,
-    dealCategories,
-    noteStatuses,
-    taskTypes,
-};
+export const defaultContactGender = [
+    { value: 'male', label: 'He/Him' },
+    { value: 'female', label: 'She/Her' },
+    { value: 'nonbinary', label: 'They/Them' },
+];

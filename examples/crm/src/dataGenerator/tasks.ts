@@ -3,7 +3,38 @@ import { lorem, random } from 'faker/locale/en_US';
 import { Task } from '../types';
 import { Db } from './types';
 import { randomDate } from './utils';
-import { crmConfig } from '../CRM/crm.config';
+import { defaultTaskTypes } from '../root/defaultConfiguration';
+
+type TaskType = (typeof defaultTaskTypes)[number];
+
+export const type: TaskType[] = [
+    'Email',
+    'Email',
+    'Email',
+    'Email',
+    'Email',
+    'Email',
+    'Call',
+    'Call',
+    'Call',
+    'Call',
+    'Call',
+    'Call',
+    'Call',
+    'Call',
+    'Call',
+    'Call',
+    'Call',
+    'Demo',
+    'Lunch',
+    'Meeting',
+    'Follow-up',
+    'Follow-up',
+    'Thank you',
+    'Ship',
+    'None',
+    'toto',
+];
 
 export const generateTasks = (db: Db) => {
     return Array.from(Array(400).keys()).map<Task>(id => {
@@ -12,7 +43,7 @@ export const generateTasks = (db: Db) => {
         return {
             id,
             contact_id: contact.id,
-            type: random.arrayElement(crmConfig.taskTypes),
+            type: random.arrayElement(defaultTaskTypes),
             text: lorem.sentence(),
             due_date: randomDate(
                 random.boolean() ? new Date() : new Date(contact.first_seen),

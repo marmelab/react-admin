@@ -14,10 +14,10 @@ import {
 import { Link, matchPath, useLocation } from 'react-router-dom';
 import { UserMenu, Logout, LoadingIndicator, useUserMenu } from 'react-admin';
 import SettingsIcon from '@mui/icons-material/Settings';
-import { useCRMContext } from './CRM/CRMContext';
+import { useConfigurationContext } from './root/ConfigurationContext';
 
 const Header = () => {
-    const { logo, title } = useCRMContext();
+    const { logo, title } = useConfigurationContext();
 
     const location = useLocation();
 

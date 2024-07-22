@@ -24,7 +24,7 @@ import { DealEmpty } from './DealEmpty';
 import { hasOtherFiltersThanDefault } from '../misc/hasOtherFiltersThanDefault';
 import { DealEdit } from './DealEdit';
 import { DealArchivedList } from './DealArchivedList';
-import { useCRMContext } from '../CRM/CRMContext';
+import { useConfigurationContext } from '../root/ConfigurationContext';
 
 const DealList = () => {
     const { identity } = useGetIdentity();
@@ -50,7 +50,7 @@ const DealLayout = () => {
     const matchShow = matchPath('/deals/:id/show', location.pathname);
     const matchEdit = matchPath('/deals/:id', location.pathname);
 
-    const { dealCategories } = useCRMContext();
+    const { dealCategories } = useConfigurationContext();
 
     const dealFilters = [
         <SearchInput source="q" alwaysOn />,

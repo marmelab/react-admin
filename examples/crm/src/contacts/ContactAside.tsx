@@ -18,9 +18,10 @@ import { AddTask } from '../tasks/AddTask';
 import { TasksIterator } from '../tasks/TasksIterator';
 
 import { Contact, Sale } from '../types';
-import { genders } from './constants';
+import { useConfigurationContext } from '../root/ConfigurationContext';
 
 export const ContactAside = ({ link = 'edit' }: { link?: 'edit' | 'show' }) => {
+    const { contactGender } = useConfigurationContext();
     const record = useRecordContext<Contact>();
     if (!record) return null;
     return (
@@ -60,7 +61,12 @@ export const ContactAside = ({ link = 'edit' }: { link?: 'edit' | 'show' }) => {
                     </Typography>
                 </Box>
             )}
-            <SelectField source="gender" choices={genders} />
+            <SelectField
+                source="gender"
+                choices={contactGender}
+                optionText="label"
+                optionValue="value"
+            />
             <Typography variant="subtitle2" mt={2}>
                 Background
             </Typography>

@@ -12,10 +12,10 @@ import {
 
 import { CompanyAvatar } from './CompanyAvatar';
 import { Company } from '../types';
-import { useCRMContext } from '../CRM/CRMContext';
+import { useConfigurationContext } from '../root/ConfigurationContext';
 
 export const CompanyCard = (props: { record?: Company }) => {
-    const { companySectors } = useCRMContext();
+    const { companySectors } = useConfigurationContext();
     const [elevation, setElevation] = useState(1);
     const createPath = useCreatePath();
     const record = useRecordContext<Company>(props);

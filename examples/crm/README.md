@@ -51,15 +51,14 @@ Your app is ready to be deployed!
 
 Deploy the build to GitHub gh-pages.
 
-## Look and Feel
+## Customizing
 
-This project offers a customizable CRM component. It leverages React context, allowing props to be accessed in any child component. By default, the values are sourced from the `crm.config.ts` file, but you can also override these props directly through the CRM component.
+You can customize the title, logo, theme, and domain of the CRM app by passing custom props to the `<CRM>` component:
 
 ```tsx
 // App.tsx
 import React from 'react';
 import CRM from './CRM';
-import { crmConfig } from './crm.config';
 
 const App = () => (
     <CRM 
@@ -70,46 +69,97 @@ const App = () => (
 
 export default App;
 ```
-You can also pass a custom `lightTheme` object to the CRM component to override the default React-admin theme. While React-admin supports `darkTheme`, you can add a theme switch button by including a ToggleThemeButton component in the Toolbar. For more information, refer to the [React-admin theme documentation](https://marmelab.com/react-admin/AppTheme.html).
 
 ## Domain & Process
 
 In addition to the design, you can easily customize various aspects relevant to your business domain. The behavior is the same as described above. You can modify the following:
 
-| Props          | Description                                   | Type     |
-|----------------|-----------------------------------------------|----------|
-| companySectors | The industry sectors of the companies you add | string[] |
-| dealStages     | Stages used for sort deals in the kaban       | { value: string; label: string }[];[] |
-| dealCategories | Categories that defined a deal    | string[] |
-| noteStatuses   | Statuses that defined a note    | { value: string; label: string; color: string }[] |
-| taskTypes      | Types that defined a task    | string[] |
-
+| Props          | Description                                              | Type            |
+|----------------|----------------------------------------------------------|-----------------|
+| contactGender  | The gender options for contacts used in the application. | ContactGender[] |
+| companySectors | The list of company sectors used in the application.     | string[]        |
+| darkTheme      | The theme to use when the application is in dark mode.   | RaThemeOptions  |
+| dealCategories | The categories of deals used in the application.         | string[]        |
+| dealStages     | The stages of deals used in the application.             | DealStage[]     |
+| lightTheme     | The theme to use when the application is in light mode.  | RaThemeOptions  |
+| logo           | The logo used in the CRM application.                    | string          |
+| noteStatuses   | The statuses of notes used in the application.           | NoteStatus[]    |
+| taskTypes      | The types of tasks used in the application.              | string[]        |
+| title          | The title of the CRM application.                        | string          |
 
 ```tsx
-import { CRM } from './CRM/CRM';
-import { crmConfig } from './CRM/crm.config';
+import { CRM } from './root/CRM';
+import { ThemeOptions } from '@mui/material/styles';
 
-const App = () => (
-    <CRM
-        title={crmConfig.title}
-        logo={crmConfig.logo}
-        companySectors={crmConfig.companySectors}
-        dealStages={crmConfig.dealStages}
-        dealCategories={crmConfig.dealCategories}
-        noteStatuses={crmConfig.noteStatuses}
-        taskTypes={crmConfig.taskTypes}
-    />
-);
+const lightTheme: ThemeOptions = {
+    palette: {
+        mode: 'light',
+    },
+};
+
+const darkTheme: ThemeOptions = {
+    palette: {
+        mode: 'dark',
+    },
+};
+
+const App = () => {
+    return (
+        <CRM
+            contactGender={[
+                { value: 'male', label: 'He' },
+                { value: 'female', label: 'She' },
+            ]}
+            companySectors={['Technology', 'Finance']}
+            darkTheme={darkTheme}
+            dealCategories={['Copywriting', 'Design']}
+            dealStages={[
+                { value: 'opportunity', label: 'Opportunity' },
+                { value: 'proposal-sent', label: 'Proposal Sent' },
+            ]}
+            lightTheme={lightTheme}
+            logo="https://example.com/logo.png"
+            noteStatuses={[
+                { value: 'cold', label: 'Cold', color: '#7dbde8' },
+                { value: 'warm', label: 'Warm', color: '#e8cb7d' },
+                { value: 'hot', label: 'Hot', color: '#e88b7d' },
+            ]}
+            taskTypes={['Call', 'Email', 'Meeting']}
+            title="CRM Dashboard"
+        />
+    );
+};
 
 export default App;
 ```
 
-## Add Sales
+## Adding Sales
 
 To add a new sale to the CRM, you need to use an administrator account. By default, the first account created has this role. If you are starting fresh, a sign-up page will prompt you to create this admin account.
 
 When logged in as an admin, an 'Account Manager' tab will be available. From this page, you can create sales and transfer the administrator role.
 
-## Customize the Homepage
+## Customizing the Homepage
 
 The first page of the application is managed by the `Dashboard.tsx` component. You can customize it by updating this file.
+
+```jsx
+// ./src/dashboard/Dashboard.tsx
+import React from 'react';
+import { Card, CardContent, Typography } from '@mui/material';
+
+export const Dashboard = () => {
+    return (
+        <Card>
+            <CardContent>
+                <Typography variant="h5" component="div">
+                    Welcome to the Custom Dashboard!
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                    This is a customized homepage for your application. You can add any components or content here to suit your needs.
+                </Typography>
+            </CardContent>
+        </Card>
+    );
+};
+```

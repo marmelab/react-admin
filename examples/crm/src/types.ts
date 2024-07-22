@@ -107,3 +107,19 @@ export type Activity = (
     company_id: Identifier;
     date: string;
 } & RaRecord;
+
+export interface DealStage {
+    value: string;
+    label: string;
+}
+
+export interface NoteStatus {
+    value: string;
+    label: string;
+    color: string;
+}
+
+export interface ContactGender {
+    value: string;
+    label: string;
+}

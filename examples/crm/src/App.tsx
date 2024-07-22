@@ -1,15 +1,25 @@
-import { CRM } from './CRM/CRM';
-import { crmConfig } from './CRM/crm.config';
+import { CRM } from './root/CRM';
+import {
+    defaultCompanySectors,
+    defaultContactGender,
+    defaultDealCategories,
+    defaultDealStages,
+    defaultLogo,
+    defaultNoteStatuses,
+    defaultTaskTypes,
+    defaultTitle,
+} from './root/defaultConfiguration';
 
 const App = () => (
     <CRM
-        title={crmConfig.title}
-        logo={crmConfig.logo}
-        companySectors={crmConfig.companySectors}
-        dealStages={crmConfig.dealStages}
-        dealCategories={crmConfig.dealCategories}
-        noteStatuses={crmConfig.noteStatuses}
-        taskTypes={crmConfig.taskTypes}
+        contactGender={defaultContactGender}
+        companySectors={defaultCompanySectors}
+        dealCategories={defaultDealCategories}
+        dealStages={defaultDealStages}
+        logo={defaultLogo}
+        noteStatuses={defaultNoteStatuses}
+        taskTypes={defaultTaskTypes}
+        title={defaultTitle}
     />
 );
 

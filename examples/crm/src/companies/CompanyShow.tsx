@@ -39,7 +39,8 @@ import { CompanyActivityIterator } from './CompanyActivityIterator';
 import { CompanyAside } from './CompanyAside';
 import { CompanyAvatar } from './CompanyAvatar';
 import { sizes } from './sizes';
-import { useCRMContext } from '../CRM/CRMContext';
+import { useConfigurationContext } from '../root/ConfigurationContext';
+import { findDealLabel } from '../deals/deal';
 
 export const CompanyShow = () => (
     <ShowBase>
@@ -257,7 +258,7 @@ const CreateRelatedContactButton = () => {
 
 const DealsIterator = () => {
     const { data: deals, error, isPending } = useListContext<Deal>();
-    const { dealStages } = useCRMContext();
+    const { dealStages } = useConfigurationContext();
     if (isPending || error) return null;
 
     const now = Date.now();
@@ -275,13 +276,7 @@ const DealsIterator = () => {
                             primary={deal.name}
                             secondary={
                                 <>
-                                    {/* @ts-ignore */}
-                                    {
-                                        dealStages?.find(
-                                            stage => stage.value === deal.stage
-                                        )?.label
-                                    }
-                                    ,{' '}
+                                    {findDealLabel(dealStages, deal.stage)},{' '}
                                     {deal.amount.toLocaleString('en-US', {
                                         notation: 'compact',
                                         style: 'currency',

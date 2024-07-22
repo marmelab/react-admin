@@ -1,4 +1,4 @@
-import { CRMContextValue } from '../CRM/CRMContext';
+import { CRMContextValue } from '../root/ConfigurationContext';
 import { Deal } from '../types';
 
 export type DealsByStage = Record<Deal['stage'], Deal[]>;

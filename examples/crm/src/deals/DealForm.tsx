@@ -16,7 +16,7 @@ import {
 import { Contact } from '../types';
 import { Stack } from '@mui/material';
 import { Avatar } from '../contacts/Avatar';
-import { useCRMContext } from '../CRM/CRMContext';
+import { useConfigurationContext } from '../root/ConfigurationContext';
 
 const validateRequired = required();
 
@@ -30,7 +30,7 @@ const dateInPresentOrFuture = (value: string) => {
 };
 
 export const DealForm = () => {
-    const { dealStages, dealCategories } = useCRMContext();
+    const { dealStages, dealCategories } = useConfigurationContext();
     const [create] = useCreate();
     const notify = useNotify();
     const { identity } = useGetIdentity();

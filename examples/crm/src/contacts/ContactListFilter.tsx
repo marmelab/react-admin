@@ -15,10 +15,10 @@ import SupervisorAccountIcon from '@mui/icons-material/SupervisorAccount';
 import { endOfYesterday, startOfWeek, startOfMonth, subMonths } from 'date-fns';
 
 import { Status } from '../misc/Status';
-import { useCRMContext } from '../CRM/CRMContext';
+import { useConfigurationContext } from '../root/ConfigurationContext';
 
 export const ContactListFilter = () => {
-    const { noteStatuses } = useCRMContext();
+    const { noteStatuses } = useConfigurationContext();
     const { identity } = useGetIdentity();
     const { data } = useGetList('tags', {
         pagination: { page: 1, perPage: 10 },
@@ -75,19 +75,17 @@ export const ContactListFilter = () => {
                 />
             </FilterList>
             <FilterList label="Status" icon={<TrendingUpIcon />}>
-                {noteStatuses &&
-                    noteStatuses.map(status => (
-                        <FilterListItem
-                            key={status.value}
-                            label={
-                                <>
-                                    {status.label}{' '}
-                                    <Status status={status.value} />
-                                </>
-                            }
-                            value={{ status: status.value }}
-                        />
-                    ))}
+                {noteStatuses.map(status => (
+                    <FilterListItem
+                        key={status.value}
+                        label={
+                            <>
+                                {status.label} <Status status={status.value} />
+                            </>
+                        }
+                        value={{ status: status.value }}
+                    />
+                ))}
             </FilterList>
             <FilterList label="Tags" icon={<LocalOfferIcon />}>
                 {data &&

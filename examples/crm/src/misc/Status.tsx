@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { Box, Tooltip } from '@mui/material';
-import { useCRMContext } from '../CRM/CRMContext';
+import { useConfigurationContext } from '../root/ConfigurationContext';
 
 export const Status = ({ status }: { status: string }) => {
-    const { noteStatuses } = useCRMContext();
+    const { noteStatuses } = useConfigurationContext();
     if (!status || !noteStatuses) return null;
     const statusObject = noteStatuses.find((s: any) => s.value === status);
 

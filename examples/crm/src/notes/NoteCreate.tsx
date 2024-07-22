@@ -24,7 +24,7 @@ import { useFormContext } from 'react-hook-form';
 
 import { Status } from '../misc/Status';
 import { Stack } from '@mui/material';
-import { useCRMContext } from '../CRM/CRMContext';
+import { useConfigurationContext } from '../root/ConfigurationContext';
 
 const foreignKeyMapping = {
     contacts: 'contact_id',
@@ -46,7 +46,7 @@ export const NoteCreate = ({
     showStatus?: boolean;
     reference: 'contacts' | 'deals';
 }) => {
-    const { noteStatuses } = useCRMContext();
+    const { noteStatuses } = useConfigurationContext();
     const resource = useResourceContext();
     const record = useRecordContext();
     const { identity } = useGetIdentity();

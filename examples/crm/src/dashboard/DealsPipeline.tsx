@@ -11,11 +11,12 @@ import {
 
 import { CompanyAvatar } from '../companies/CompanyAvatar';
 import { Deal } from '../types';
-import { useCRMContext } from '../CRM/CRMContext';
+import { useConfigurationContext } from '../root/ConfigurationContext';
+import { findDealLabel } from '../deals/deal';
 
 export const DealsPipeline = () => {
     const { identity } = useGetIdentity();
-    const { dealStages } = useCRMContext();
+    const { dealStages } = useConfigurationContext();
     const { data, total, isPending } = useGetList<Deal>(
         'deals',
         {
@@ -71,8 +72,7 @@ export const DealsPipeline = () => {
                             currency: 'USD',
                             currencyDisplay: 'narrowSymbol',
                             minimumSignificantDigits: 3,
-                            // @ts-ignore
-                        })} , ${dealStages.find(stage => stage.value === deal.stage)?.label}}`
+                        })} , ${findDealLabel(dealStages, deal.stage)}`
                     }
                     leftAvatar={deal => (
                         <ReferenceField

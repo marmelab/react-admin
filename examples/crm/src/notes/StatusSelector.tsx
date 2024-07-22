@@ -2,10 +2,10 @@ import * as React from 'react';
 import { TextField, MenuItem } from '@mui/material';
 
 import { Status } from '../misc/Status';
-import { useCRMContext } from '../CRM/CRMContext';
+import { useConfigurationContext } from '../root/ConfigurationContext';
 
 export const StatusSelector = ({ status, setStatus, sx }: any) => {
-    const { noteStatuses } = useCRMContext();
+    const { noteStatuses } = useConfigurationContext();
     return (
         <TextField
             select

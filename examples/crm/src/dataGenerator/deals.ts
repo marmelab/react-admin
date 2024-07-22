@@ -4,7 +4,10 @@ import { add } from 'date-fns';
 import { Db } from './types';
 import { Deal } from '../types';
 import { randomDate } from './utils';
-import { crmConfig } from '../CRM/crm.config';
+import {
+    defaultDealCategories,
+    defaultDealStages,
+} from '../root/defaultConfiguration';
 
 export const generateDeals = (db: Db): Deal[] => {
     const deals = Array.from(Array(50).keys()).map(id => {
@@ -30,8 +33,8 @@ export const generateDeals = (db: Db): Deal[] => {
             name: lowercaseName[0].toUpperCase() + lowercaseName.slice(1),
             company_id: company.id,
             contact_ids: contacts.map(contact => contact.id),
-            category: random.arrayElement(crmConfig.dealCategories),
-            stage: random.arrayElement(crmConfig.dealStages).value,
+            category: random.arrayElement(defaultDealCategories),
+            stage: random.arrayElement(defaultDealStages).value,
             description: lorem.paragraphs(random.number({ min: 1, max: 4 })),
             amount: random.number(1000) * 100,
             created_at: created_at,
@@ -44,7 +47,7 @@ export const generateDeals = (db: Db): Deal[] => {
         };
     });
     // compute index based on stage
-    crmConfig.dealStages.forEach(stage => {
+    defaultDealStages.forEach(stage => {
         deals
             .filter(deal => deal.stage === stage.value)
             .forEach((deal, index) => {

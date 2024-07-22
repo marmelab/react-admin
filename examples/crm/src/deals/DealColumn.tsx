@@ -3,7 +3,8 @@ import { Box, Typography } from '@mui/material';
 
 import { Deal } from '../types';
 import { DealCard } from './DealCard';
-import { useCRMContext } from '../CRM/CRMContext';
+import { useConfigurationContext } from '../root/ConfigurationContext';
+import { findDealLabel } from './deal';
 
 export const DealColumn = ({
     stage,
@@ -12,7 +13,7 @@ export const DealColumn = ({
     stage: string;
     deals: Deal[];
 }) => {
-    const { dealStages } = useCRMContext();
+    const { dealStages } = useConfigurationContext();
     return (
         <Box
             sx={{
@@ -31,11 +32,7 @@ export const DealColumn = ({
             }}
         >
             <Typography align="center" variant="subtitle1">
-                {/* @ts-ignore */}
-                {
-                    dealStages?.find(dealStage => dealStage.value === stage)
-                        ?.label
-                }
+                {findDealLabel(dealStages, stage)}
             </Typography>
             <Droppable droppableId={stage}>
                 {(droppableProvided, snapshot) => (

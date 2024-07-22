@@ -7,10 +7,10 @@ import { DataProvider, useDataProvider, useListContext } from 'react-admin';
 import { Deal } from '../types';
 import { DealColumn } from './DealColumn';
 import { DealsByStage, getDealsByStage } from './stages';
-import { useCRMContext } from '../CRM/CRMContext';
+import { useConfigurationContext } from '../root/ConfigurationContext';
 
 export const DealListContent = () => {
-    const { dealStages } = useCRMContext();
+    const { dealStages } = useConfigurationContext();
     const { data: unorderedDeals, isPending, refetch } = useListContext<Deal>();
     const dataProvider = useDataProvider();
 

@@ -12,11 +12,11 @@ import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import SupervisorAccountIcon from '@mui/icons-material/SupervisorAccount';
 
 import { sizes } from './sizes';
-import { useCRMContext } from '../CRM/CRMContext';
+import { useConfigurationContext } from '../root/ConfigurationContext';
 
 export const CompanyListFilter = () => {
     const { identity } = useGetIdentity();
-    const { companySectors } = useCRMContext();
+    const { companySectors } = useConfigurationContext();
     const sectors = companySectors?.map(sector => ({
         id: sector,
         name: sector,

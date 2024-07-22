@@ -13,10 +13,10 @@ import {
 import { Divider, Stack, Grid } from '@mui/material';
 
 import { sizes } from './sizes';
-import { useCRMContext } from '../CRM/CRMContext';
+import { useConfigurationContext } from '../root/ConfigurationContext';
 
 export const CompanyForm = () => {
-    const { companySectors } = useCRMContext();
+    const { companySectors } = useConfigurationContext();
     return (
         <>
             <TextInput source="name" validate={required()} />
