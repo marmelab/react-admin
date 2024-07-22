@@ -70,3 +70,13 @@ const App = () => (
 
 export default App;
 ```
+You can also pass a custom `lightTheme` object to the CRM component to override the default React-admin theme. While React-admin supports `darkTheme`, you can add a theme switch button by including a ToggleThemeButton component in the Toolbar. For more information, refer to the [React-admin theme documentation](https://marmelab.com/react-admin/AppTheme.html).
+
+## Domain & Process
+
+In addition to the design, you can easily customize various aspects relevant to your business domain. The behavior is the same as described above. You can modify the following:
+
+| Props          | Description                                   | Type     |
+|----------------|-----------------------------------------------|----------|
+| companySectors | The industry sectors of the companies you add | String[] |
+| dealCategories | Categories used for sort deal in the kaban    | String[] |

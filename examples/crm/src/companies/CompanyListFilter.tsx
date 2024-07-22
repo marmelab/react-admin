@@ -12,10 +12,15 @@ import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import SupervisorAccountIcon from '@mui/icons-material/SupervisorAccount';
 
 import { sizes } from './sizes';
-import { sectors } from './sectors';
+import { useCRMContext } from '../CRM/CRMContext';
 
 export const CompanyListFilter = () => {
     const { identity } = useGetIdentity();
+    const { companySectors } = useCRMContext();
+    const sectors = companySectors?.map(sector => ({
+        id: sector,
+        name: sector,
+    }));
     return (
         <Box width="13em" minWidth="13em" order={-1} mr={2} mt={5}>
             <FilterLiveSearch hiddenLabel />
@@ -31,7 +36,7 @@ export const CompanyListFilter = () => {
             </FilterList>
 
             <FilterList label="Sector" icon={<LocalShippingIcon />}>
-                {sectors.map(sector => (
+                {sectors?.map(sector => (
                     <FilterListItem
                         key={sector.id}
                         label={sector.name}

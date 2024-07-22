@@ -19,7 +19,7 @@ interface CRMProviderProps extends CRMContextValue {
 
 // Create context with default value
 export const CRMContext = createContext<CRMContextValue>({
-    companySectors: [],
+    companySectors: crmConfig.companySectors,
     dealSteps: [],
     dealCategories: [],
     noteStatuses: [],
@@ -30,7 +30,7 @@ export const CRMContext = createContext<CRMContextValue>({
 
 export const CRMProvider = ({
     children,
-    companySectors,
+    companySectors = crmConfig.companySectors,
     dealSteps,
     dealCategories,
     logo = crmConfig.logo,
