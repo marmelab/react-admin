@@ -90,13 +90,6 @@ export interface Tag extends RaRecord {
     color: string;
 }
 
-export interface User extends RaRecord {
-    full_name: string;
-    email: string;
-    password: string;
-    administrator: boolean;
-}
-
 export interface Task extends RaRecord {
     contact_id: Identifier;
     type: (typeof taskTypes)[number];
