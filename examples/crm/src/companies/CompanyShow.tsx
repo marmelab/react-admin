@@ -1,44 +1,45 @@
-import * as React from 'react';
-import { useState, ChangeEvent } from 'react';
-import {
-    ShowBase,
-    TextField,
-    ReferenceManyField,
-    SelectField,
-    useShowContext,
-    useRecordContext,
-    useListContext,
-    RecordContextProvider,
-    SortButton,
-} from 'react-admin';
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import {
     Box,
     Button,
     Card,
     CardContent,
-    Typography,
+    Divider,
     List,
     ListItem,
     ListItemAvatar,
-    ListItemText,
     ListItemSecondaryAction,
-    Tabs,
-    Tab,
-    Divider,
+    ListItemText,
     Stack,
+    Tab,
+    Tabs,
+    Typography,
 } from '@mui/material';
-import PersonAddIcon from '@mui/icons-material/PersonAdd';
-import { Link as RouterLink } from 'react-router-dom';
 import { formatDistance } from 'date-fns';
+import * as React from 'react';
+import { ChangeEvent, useState } from 'react';
+import {
+    RecordContextProvider,
+    ReferenceManyField,
+    SelectField,
+    ShowBase,
+    SortButton,
+    TextField,
+    useListContext,
+    useRecordContext,
+    useShowContext,
+} from 'react-admin';
+import { Link as RouterLink } from 'react-router-dom';
 
 import { Avatar } from '../contacts/Avatar';
-import { Status } from '../misc/Status';
 import { TagsList } from '../contacts/TagsList';
-import { sizes } from './sizes';
-import { CompanyAside } from './CompanyAside';
-import { Company, Deal, Contact } from '../types';
 import { stageNames } from '../deals/stages';
+import { Status } from '../misc/Status';
+import { Company, Contact, Deal } from '../types';
+import { CompanyActivityIterator } from './CompanyActivityIterator';
+import { CompanyAside } from './CompanyAside';
 import { CompanyAvatar } from './CompanyAvatar';
+import { sizes } from './sizes';
 
 export const CompanyShow = () => (
     <ShowBase>
@@ -102,6 +103,7 @@ const CompanyShowContent = () => {
                                 />
                             )}
                             {record.description && <Tab label="Description" />}
+                            <Tab label="Activity Log" />
                         </Tabs>
                         <Divider />
                         {record.nb_contacts ? (
@@ -148,6 +150,15 @@ const CompanyShowContent = () => {
                                 </Stack>
                             </TabPanel>
                         ) : null}
+                        <TabPanel value={tabValue} index={tabIndex++}>
+                            <ReferenceManyField
+                                reference="activityLogs"
+                                target="company_id"
+                                sort={{ field: 'date', order: 'DESC' }}
+                            >
+                                <CompanyActivityIterator />
+                            </ReferenceManyField>
+                        </TabPanel>
                     </CardContent>
                 </Card>
             </Box>

@@ -2,13 +2,20 @@ import fakeRestDataProvider from 'ra-data-fakerest';
 import {
     CreateParams,
     DataProvider,
+    ResourceCallbacks,
     UpdateParams,
     withLifecycleCallbacks,
 } from 'react-admin';
-
+import {
+    COMPANY_CREATED,
+    CONTACT_CREATED,
+    CONTACT_NOTE_CREATED,
+    DEAL_CREATED,
+} from './consts';
 import generateData from './dataGenerator';
 import { getCompanyAvatar } from './misc/getCompanyAvatar';
 import { getContactAvatar } from './misc/getContactAvatar';
+import { Company, Contact, ContactNote, Deal, Task } from './types';
 
 const baseDataProvider = fakeRestDataProvider(generateData(), true, 300);
 
@@ -98,13 +105,25 @@ export const dataProvider = withLifecycleCallbacks(
                     data: result.data,
                 };
             },
-        },
+            afterCreate: async (result, dataProvider) => {
+                await dataProvider.create('activityLogs', {
+                    data: {
+                        date: new Date().toISOString(),
+                        type: CONTACT_CREATED,
+                        company_id: result.data.company_id,
+                        contact_id: result.data.id,
+                    },
+                });
+
+                return result;
+            },
+        } satisfies ResourceCallbacks<Contact>,
         {
             resource: 'contactNotes',
             afterCreate: async (result, dataProvider) => {
                 // update the notes count in the related contact
                 const { contact_id } = result.data;
-                const { data: contact } = await dataProvider.getOne(
+                const { data: contact } = await dataProvider.getOne<Contact>(
                     'contacts',
                     {
                         id: contact_id,
@@ -116,6 +135,14 @@ export const dataProvider = withLifecycleCallbacks(
                         nb_notes: (contact.nb_notes ?? 0) + 1,
                     },
                     previousData: contact,
+                });
+                await dataProvider.create('activityLogs', {
+                    data: {
+                        date: new Date().toISOString(),
+                        type: CONTACT_NOTE_CREATED,
+                        company_id: contact.company_id,
+                        contact_note_id: result.data.id,
+                    },
                 });
                 return result;
             },
@@ -137,7 +164,7 @@ export const dataProvider = withLifecycleCallbacks(
                 });
                 return result;
             },
-        },
+        } satisfies ResourceCallbacks<ContactNote>,
         {
             resource: 'tasks',
             afterCreate: async (result, dataProvider) => {
@@ -210,7 +237,7 @@ export const dataProvider = withLifecycleCallbacks(
                 });
                 return result;
             },
-        },
+        } satisfies ResourceCallbacks<Task>,
         {
             resource: 'companies',
             beforeCreate: async params => {
@@ -222,6 +249,16 @@ export const dataProvider = withLifecycleCallbacks(
                         logo,
                     },
                 };
+            },
+            afterCreate: async (result, dataProvider) => {
+                await dataProvider.create('activityLogs', {
+                    data: {
+                        date: new Date().toISOString(),
+                        type: COMPANY_CREATED,
+                        company_id: result.data.id,
+                    },
+                });
+                return result;
             },
             beforeUpdate: async params => {
                 const logo = await processLogo(params);
@@ -257,7 +294,55 @@ export const dataProvider = withLifecycleCallbacks(
                 );
                 return result;
             },
-        },
+        } satisfies ResourceCallbacks<Company>,
+        {
+            resource: 'deals',
+            beforeCreate: async params => {
+                return {
+                    ...params,
+                    data: {
+                        ...params.data,
+                        created_at: new Date().toISOString(),
+                        updated_at: new Date().toISOString(),
+                    },
+                };
+            },
+            afterCreate: async (result, dataProvider) => {
+                const { data: company } = await dataProvider.getOne<Company>(
+                    'companies',
+                    {
+                        id: result.data.company_id,
+                    }
+                );
+                await dataProvider.update('companies', {
+                    id: company.id,
+                    data: {
+                        nb_deals: (company.nb_deals ?? 0) + 1,
+                    },
+                    previousData: company,
+                });
+
+                await dataProvider.create('activityLogs', {
+                    data: {
+                        date: new Date().toISOString(),
+                        type: DEAL_CREATED,
+                        company_id: result.data.company_id,
+                        deal_id: result.data.id,
+                    },
+                });
+
+                return result;
+            },
+            beforeUpdate: async params => {
+                return {
+                    ...params,
+                    data: {
+                        ...params.data,
+                        updated_at: new Date().toISOString(),
+                    },
+                };
+            },
+        } satisfies ResourceCallbacks<Deal>,
     ]
 );
 

@@ -8,4 +8,4 @@ export const taskTypes = [
     'Thank you',
     'Ship',
     'Call',
-];
+] as const;
