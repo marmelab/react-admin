@@ -54,7 +54,6 @@ export const DealForm = () => {
             notify('An error occurred while creating the company', {
                 type: 'error',
             });
-            throw error;
         }
     };
     return (
