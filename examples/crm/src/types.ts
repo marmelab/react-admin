@@ -43,6 +43,7 @@ export interface Contact extends RaRecord {
     last_name: string;
     title: string;
     company_id: Identifier;
+    company_name: string;
     email: string;
     avatar?: string | null;
     linkedin_url?: string;

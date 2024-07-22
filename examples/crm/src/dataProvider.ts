@@ -40,29 +40,41 @@ const processLogo = async (params: any) => {
     return logo;
 };
 
-const beforeContactUpsert = async (
-    params: CreateParams<any> | UpdateParams<any>,
+async function beforeContactUpsert(
+    params: UpdateParams<Contact>,
     dataProvider: DataProvider
-) => {
+): Promise<UpdateParams<Contact>>;
+
+async function beforeContactUpsert(
+    params: CreateParams<Contact>,
+    dataProvider: DataProvider
+): Promise<CreateParams<Contact>>;
+
+async function beforeContactUpsert(
+    params: any,
+    dataProvider: any
+): Promise<any> {
     const { data } = params;
     const avatarUrl = await getContactAvatar(data);
-    data.avatar = avatarUrl || null;
 
-    if (!data.company_id) {
-        return params;
+    // Clone the data and modify the clone
+    const newData = { ...data, avatar: avatarUrl || null };
+
+    if (!newData.company_id) {
+        return { ...params, data: newData };
     }
 
     const { data: company } = await dataProvider.getOne('companies', {
-        id: data.company_id,
+        id: newData.company_id,
     });
 
     if (!company) {
-        return params;
+        return { ...params, data: newData };
     }
 
-    data.company_name = company.name;
-    return params;
-};
+    newData.company_name = company.name;
+    return { ...params, data: newData };
+}
 
 const dataProviderWithCustomMethod = {
     ...baseDataProvider,
@@ -90,20 +102,10 @@ export const dataProvider = withLifecycleCallbacks(
         {
             resource: 'contacts',
             beforeCreate: async (params, dataProvider) => {
-                const { data } = params;
-                const avatarUrl = await getContactAvatar(data);
-                data.avatar = avatarUrl || null;
                 return beforeContactUpsert(params, dataProvider);
             },
             beforeUpdate: async params => {
-                const { data } = params;
-                const avatarUrl = await getContactAvatar(data);
-                data.avatar = avatarUrl || null;
-                const result = await beforeContactUpsert(params, dataProvider);
-                return {
-                    ...params,
-                    data: result.data,
-                };
+                return beforeContactUpsert(params, dataProvider);
             },
             afterCreate: async (result, dataProvider) => {
                 await dataProvider.create('activityLogs', {
@@ -281,17 +283,14 @@ export const dataProvider = withLifecycleCallbacks(
                         sort: { field: 'id', order: 'ASC' },
                     }
                 );
-                await Promise.all(
-                    contacts.map(contact =>
-                        dataProvider.update('contacts', {
-                            id: contact.id,
-                            data: {
-                                company_name: name,
-                            },
-                            previousData: contact,
-                        })
-                    )
-                );
+
+                const contactIds = contacts.map(contact => contact.id);
+                await dataProvider.updateMany('contacts', {
+                    ids: contactIds,
+                    data: {
+                        company_name: name,
+                    },
+                });
                 return result;
             },
         } satisfies ResourceCallbacks<Company>,
