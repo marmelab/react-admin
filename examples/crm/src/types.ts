@@ -5,7 +5,6 @@ import {
     CONTACT_NOTE_CREATED,
     DEAL_CREATED,
 } from './consts';
-import { taskTypes } from './tasks/task.const';
 
 export interface Sale extends RaRecord {
     first_name: string;
@@ -91,7 +90,7 @@ export interface Tag extends RaRecord {
 
 export interface Task extends RaRecord {
     contact_id: Identifier;
-    type: (typeof taskTypes)[number];
+    type: string;
     text: string;
     due_date: string;
     done_date?: string | null;

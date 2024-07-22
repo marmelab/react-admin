@@ -8,6 +8,8 @@ const App = () => (
         companySectors={crmConfig.companySectors}
         dealStages={crmConfig.dealStages}
         dealCategories={crmConfig.dealCategories}
+        noteStatuses={crmConfig.noteStatuses}
+        taskTypes={crmConfig.taskTypes}
     />
 );
 

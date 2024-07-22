@@ -31,6 +31,7 @@ interface CRMProps {
     dealStages?: CRMContextValue['dealStages'];
     dealCategories?: CRMContextValue['dealCategories'];
     noteStatuses?: CRMContextValue['noteStatuses'];
+    taskTypes?: CRMContextValue['taskTypes'];
 }
 
 export const CRM = ({
@@ -42,12 +43,14 @@ export const CRM = ({
     dealStages,
     dealCategories,
     noteStatuses,
+    taskTypes,
 }: CRMProps) => (
     <CRMProvider
         noteStatuses={noteStatuses}
         dealStages={dealStages}
         dealCategories={dealCategories}
         companySectors={companySectors}
+        taskTypes={taskTypes}
         title={title}
         logo={logo}
     >

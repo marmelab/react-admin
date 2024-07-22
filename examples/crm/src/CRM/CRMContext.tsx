@@ -7,6 +7,7 @@ export interface CRMContextValue {
     dealCategories?: string[];
     dealStages?: { value: string; label: string }[];
     noteStatuses?: { value: string; label: string; color: string }[];
+    taskTypes?: string[];
     title?: string;
     logo?: string;
 }
@@ -22,6 +23,7 @@ export const CRMContext = createContext<CRMContextValue>({
     dealCategories: crmConfig.dealCategories,
     dealStages: crmConfig.dealStages,
     noteStatuses: crmConfig.noteStatuses,
+    taskTypes: crmConfig.taskTypes,
     title: crmConfig.title,
     logo: crmConfig.logo,
 });
@@ -33,6 +35,7 @@ export const CRMProvider = ({
     dealStages = crmConfig.dealStages,
     logo = crmConfig.logo,
     noteStatuses = crmConfig.noteStatuses,
+    taskTypes = crmConfig.taskTypes,
     title = crmConfig.title,
 }: CRMProviderProps) => (
     <CRMContext.Provider
@@ -43,6 +46,7 @@ export const CRMProvider = ({
             logo,
             noteStatuses,
             title,
+            taskTypes,
         }}
     >
         {children}

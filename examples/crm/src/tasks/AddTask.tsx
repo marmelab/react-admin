@@ -23,9 +23,10 @@ import {
     required,
     useRecordContext,
 } from 'react-admin';
-import { taskTypes } from './task.const';
+import { useCRMContext } from '../CRM/CRMContext';
 
 export const AddTask = () => {
+    const { taskTypes } = useCRMContext();
     const contact = useRecordContext();
     const [open, setOpen] = useState(false);
     const handleOpen = () => {
@@ -84,7 +85,7 @@ export const AddTask = () => {
                                 <SelectInput
                                     source="type"
                                     validate={required()}
-                                    choices={taskTypes.map(type => ({
+                                    choices={taskTypes?.map(type => ({
                                         id: type,
                                         name: type,
                                     }))}

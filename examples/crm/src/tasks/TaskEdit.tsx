@@ -12,7 +12,7 @@ import {
     useNotify,
 } from 'react-admin';
 import { Dialog, Stack } from '@mui/material';
-import { taskTypes } from './task.const';
+import { useCRMContext } from '../CRM/CRMContext';
 
 export const TaskEdit = ({
     id,
@@ -21,6 +21,7 @@ export const TaskEdit = ({
     id: string | undefined;
     setTaskSelectedId: (id: string | undefined) => void;
 }) => {
+    const { taskTypes } = useCRMContext();
     const notify = useNotify();
     const handleClose = () => {
         setTaskSelectedId(undefined);
@@ -66,7 +67,7 @@ export const TaskEdit = ({
                             <SelectInput
                                 source="type"
                                 validate={required()}
-                                choices={taskTypes.map(type => ({
+                                choices={taskTypes?.map(type => ({
                                     id: type,
                                     name: type,
                                 }))}
