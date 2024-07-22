@@ -1,4 +1,4 @@
-import { Box, List } from '@mui/material';
+import { List } from '@mui/material';
 import { useListContext, useRecordContext } from 'react-admin';
 import { ActivityCompanyCreated } from '../activity/ActivityCompanyCreated';
 import { ActivityContactCreated } from '../activity/ActivityContactCreated';
@@ -18,27 +18,25 @@ export function CompanyActivityIterator() {
     if (!company || isPending || error) return null;
 
     return (
-        <Box>
-            <List
-                sx={{
-                    '& .MuiListItem-root': {
-                        justifyContent: 'space-between',
-                        gap: 2,
-                    },
-                    '& .MuiListItem-root:not(:first-child)': {
-                        borderTop: '1px solid #f0f0f0',
-                    },
-                }}
-            >
-                {activity.map(activity => (
-                    <ActivityItem
-                        key={activity.id}
-                        activity={activity}
-                        company={company}
-                    />
-                ))}
-            </List>
-        </Box>
+        <List
+            sx={{
+                '& .MuiListItem-root': {
+                    justifyContent: 'space-between',
+                    gap: 2,
+                },
+                '& .MuiListItem-root:not(:first-child)': {
+                    borderTop: '1px solid #f0f0f0',
+                },
+            }}
+        >
+            {activity.map(activity => (
+                <ActivityItem
+                    key={activity.id}
+                    activity={activity}
+                    company={company}
+                />
+            ))}
+        </List>
     );
 }
 
