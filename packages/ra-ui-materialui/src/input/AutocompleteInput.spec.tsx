@@ -1695,16 +1695,30 @@ describe('<AutocompleteInput />', () => {
 
     it('should clear the input mutiple tiles with on create set', async () => {
         render(<OnCreate />);
-
-        const input = (await screen.findByLabelText(
+        let input = (await screen.findByLabelText(
             'Author'
         )) as HTMLInputElement;
+
+        fireEvent.focus(input);
+        expect(screen.getAllByRole('option')).toHaveLength(5);
+        expect(screen.queryByText('Create New choice')).toBeNull();
+
         userEvent.type(input, 'New choice');
-        const clear = screen.getByLabelText('Clear value');
-        fireEvent.click(clear);
+        expect(screen.getAllByRole('option')).toHaveLength(1);
+        expect(screen.getByText('Create New choice')).toBeDefined();
+
+        fireEvent.click(screen.getByLabelText('Clear value'));
         expect(input.value).toEqual('');
+        expect(screen.getAllByRole('option')).toHaveLength(6);
+        expect(screen.queryByText('Create New choice')).toBeNull();
+
         userEvent.type(input, 'New choice');
-        fireEvent.click(clear);
+        expect(screen.getAllByRole('option')).toHaveLength(1);
+        expect(screen.getByText('Create New choice')).toBeDefined();
+
+        fireEvent.click(screen.getByLabelText('Clear value'));
+        expect(screen.getAllByRole('option')).toHaveLength(6);
+        expect(screen.queryByText('Create New choice')).toBeNull();
         expect(input.value).toEqual('');
     });
 
