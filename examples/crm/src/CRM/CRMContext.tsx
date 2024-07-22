@@ -2,10 +2,10 @@ import { createContext, ReactNode, useContext } from 'react';
 import { crmConfig } from './crm.config';
 
 // Define types for the context value
-interface CRMContextValue {
+export interface CRMContextValue {
     companySectors?: string[];
     dealSteps?: string[];
-    dealCategories?: string[];
+    dealStages?: { value: string; label: string }[];
     noteStatuses?: string[];
     noteTypes?: string[];
     title?: string;
@@ -21,7 +21,7 @@ interface CRMProviderProps extends CRMContextValue {
 export const CRMContext = createContext<CRMContextValue>({
     companySectors: crmConfig.companySectors,
     dealSteps: [],
-    dealCategories: [],
+    dealStages: crmConfig.dealStages,
     noteStatuses: [],
     noteTypes: [],
     title: crmConfig.title,
@@ -32,7 +32,7 @@ export const CRMProvider = ({
     children,
     companySectors = crmConfig.companySectors,
     dealSteps,
-    dealCategories,
+    dealStages = crmConfig.dealStages,
     logo = crmConfig.logo,
     noteStatuses,
     noteTypes,
@@ -42,7 +42,7 @@ export const CRMProvider = ({
         value={{
             companySectors,
             dealSteps,
-            dealCategories,
+            dealStages,
             logo,
             noteStatuses,
             noteTypes,

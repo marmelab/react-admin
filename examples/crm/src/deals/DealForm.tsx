@@ -16,8 +16,8 @@ import {
 import { Contact } from '../types';
 import { Stack } from '@mui/material';
 import { Avatar } from '../contacts/Avatar';
-import { stageChoices } from './stages';
 import { typeChoices } from './types';
+import { useCRMContext } from '../CRM/CRMContext';
 
 const validateRequired = required();
 
@@ -31,6 +31,7 @@ const dateInPresentOrFuture = (value: string) => {
 };
 
 export const DealForm = () => {
+    const { dealStages } = useCRMContext();
     const [create] = useCreate();
     const notify = useNotify();
     const { identity } = useGetIdentity();
@@ -82,7 +83,10 @@ export const DealForm = () => {
 
             <SelectInput
                 source="stage"
-                choices={stageChoices}
+                choices={dealStages?.map(stage => ({
+                    id: stage.value,
+                    name: stage.label,
+                }))}
                 validate={validateRequired}
                 defaultValue="opportunity"
             />

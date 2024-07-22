@@ -10,11 +10,12 @@ import {
 } from 'react-admin';
 
 import { CompanyAvatar } from '../companies/CompanyAvatar';
-import { stages, stageNames } from '../deals/stages';
 import { Deal } from '../types';
+import { useCRMContext } from '../CRM/CRMContext';
 
 export const DealsPipeline = () => {
     const { identity } = useGetIdentity();
+    const { dealStages } = useCRMContext();
     const { data, total, isPending } = useGetList<Deal>(
         'deals',
         {
@@ -30,11 +31,11 @@ export const DealsPipeline = () => {
             return;
         }
         const deals: Deal[] = [];
-        stages
-            .filter(stage => stage !== 'won')
+        dealStages
+            ?.filter(stage => stage.value !== 'won')
             .forEach(stage =>
                 data
-                    .filter(deal => deal.stage === stage)
+                    .filter(deal => deal.stage === stage.value)
                     .forEach(deal => deals.push(deal))
             );
         return deals;
@@ -71,7 +72,7 @@ export const DealsPipeline = () => {
                             currencyDisplay: 'narrowSymbol',
                             minimumSignificantDigits: 3,
                             // @ts-ignore
-                        })} , ${stageNames[deal.stage]}`
+                        })} , ${dealStages.find(stage => stage.value === deal.stage)?.label}}`
                     }
                     leftAvatar={deal => (
                         <ReferenceField

@@ -9,7 +9,7 @@ import {
 } from 'react-admin';
 
 import { Route } from 'react-router';
-import { CRMProvider } from './CRMContext';
+import { CRMContextValue, CRMProvider } from './CRMContext';
 import Layout from '../Layout';
 import { authProvider } from '../authProvider';
 import companies from '../companies';
@@ -24,12 +24,12 @@ import { SettingsPage } from '../settings/SettingsPage';
 // Define the interface for the CRM component props
 interface CRMProps {
     apiUrl?: string;
-    logo?: string;
+    logo?: CRMContextValue['logo'];
     darkTheme?: RaThemeOptions;
     lightTheme?: RaThemeOptions;
-    title?: string;
-    companySectors?: string[];
-    dealCategories?: string[];
+    title?: CRMContextValue['title'];
+    companySectors?: CRMContextValue['companySectors'];
+    dealStages?: CRMContextValue['dealStages'];
     dealSteps?: string[];
     noteStatuses?: string[];
     noteTypes?: string[];
@@ -42,7 +42,7 @@ export const CRM = ({
     lightTheme,
     darkTheme,
     companySectors,
-    dealCategories,
+    dealStages,
     dealSteps,
     noteStatuses,
     noteTypes,
@@ -51,7 +51,7 @@ export const CRM = ({
         noteStatuses={noteStatuses}
         noteTypes={noteTypes}
         dealSteps={dealSteps}
-        dealCategories={dealCategories}
+        dealStages={dealStages}
         companySectors={companySectors}
         title={title}
         logo={logo}

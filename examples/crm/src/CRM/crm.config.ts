@@ -16,8 +16,18 @@ const companySectors = [
     'Utilities',
 ];
 
+const dealStages = [
+    { value: 'opportunity', label: 'Opportunity' },
+    { value: 'proposal-sent', label: 'Proposal Sent' },
+    { value: 'in-negociation', label: 'In Negotiation' },
+    { value: 'won', label: 'Won' },
+    { value: 'lost', label: 'Lost' },
+    { value: 'delayed', label: 'Delayed' },
+];
+
 export const crmConfig = {
     logo,
     title,
     companySectors,
+    dealStages,
 };
