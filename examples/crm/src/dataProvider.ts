@@ -7,8 +7,8 @@ import {
 } from 'react-admin';
 
 import generateData from './dataGenerator';
-import { getContactAvatar } from './misc/getContactAvatar';
 import { getCompanyAvatar } from './misc/getCompanyAvatar';
+import { getContactAvatar } from './misc/getContactAvatar';
 
 const baseDataProvider = fakeRestDataProvider(generateData(), true, 300);
 
@@ -60,20 +60,20 @@ const beforeContactUpsert = async (
 const dataProviderWithCustomMethod = {
     ...baseDataProvider,
     login: async ({ email }: { email: string }) => {
-        const users = await baseDataProvider.getList('users', {
+        const sales = await baseDataProvider.getList('sales', {
             pagination: { page: 1, perPage: 200 },
             sort: { field: 'name', order: 'ASC' },
         });
 
-        if (!users.data.length) {
-            return { id: 0, full_name: 'Jane Doe' };
+        if (!sales.data.length) {
+            return { id: 0, first_name: 'Jane', last_name: 'Doe' };
         }
 
-        const user = users.data.find(user => user.email === email);
-        if (!user) {
-            return { id: 0, full_name: 'Jane Doe' };
+        const sale = sales.data.find(sale => sale.email === email);
+        if (!sale) {
+            return { id: 0, first_name: 'Jane', last_name: 'Doe' };
         }
-        return user;
+        return sale;
     },
 };
 
@@ -234,7 +234,7 @@ export const dataProvider = withLifecycleCallbacks(
                 };
             },
             afterUpdate: async (result, dataProvider) => {
-                // get all users of the company and for each user, update the company_name
+                // get all contacts of the company and for each contact, update the company_name
                 const { id, name } = result.data;
                 const { data: contacts } = await dataProvider.getList(
                     'contacts',

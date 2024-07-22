@@ -1,5 +1,5 @@
 import { RaRecord } from 'react-admin';
-import { Company, Contact, ContactNote, Deal, Sale, Tag, User } from '../types';
+import { Company, Contact, ContactNote, Deal, Sale, Tag } from '../types';
 
 export interface Db {
     companies: Company[];
@@ -10,5 +10,4 @@ export interface Db {
     sales: Sale[];
     tags: Tag[];
     tasks: RaRecord[];
-    users: User[];
 }
