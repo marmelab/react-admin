@@ -124,23 +124,28 @@ const AddressInfo = ({ record }: { record: Company }) => {
 
 const ContextInfo = ({ record }: { record: Company }) => {
     if (!record.context_links || record.context_links.length === 0) return null;
-
+    const getBaseURL = (url: string) => {
+        const urlObject = new URL(url);
+        return urlObject.origin;
+    };
     return (
         <Stack>
             <Typography variant="subtitle2">Context</Typography>
             <Divider sx={{ mb: 1 }} />
-            {record.context_links.map((link, index) => (
-                <Typography
-                    key={index}
-                    variant="body2"
-                    component={Link}
-                    href={link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
-                    {link}
-                </Typography>
-            ))}
+            <Stack gap={1}>
+                {record.context_links.map((link, index) => (
+                    <Typography
+                        key={index}
+                        variant="body2"
+                        component={Link}
+                        href={link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        {getBaseURL(link)}
+                    </Typography>
+                ))}
+            </Stack>
         </Stack>
     );
 };
