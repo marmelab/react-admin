@@ -24,6 +24,7 @@ import {
     OnChange,
     InsideReferenceInputOnChange,
     WithInputProps,
+    OnCreate,
 } from './AutocompleteInput.stories';
 import { act } from '@testing-library/react-hooks';
 import { ReferenceArrayInput } from './ReferenceArrayInput';
@@ -1690,6 +1691,35 @@ describe('<AutocompleteInput />', () => {
         await waitFor(() => {
             expect(input.value).toEqual('');
         });
+    });
+
+    it('should clear the input mutiple tiles with on create set', async () => {
+        render(<OnCreate />);
+        let input = (await screen.findByLabelText(
+            'Author'
+        )) as HTMLInputElement;
+
+        fireEvent.focus(input);
+        expect(screen.getAllByRole('option')).toHaveLength(5);
+        expect(screen.queryByText('Create New choice')).toBeNull();
+
+        userEvent.type(input, 'New choice');
+        expect(screen.getAllByRole('option')).toHaveLength(1);
+        expect(screen.getByText('Create New choice')).toBeDefined();
+
+        fireEvent.click(screen.getByLabelText('Clear value'));
+        expect(input.value).toEqual('');
+        expect(screen.getAllByRole('option')).toHaveLength(6);
+        expect(screen.queryByText('Create New choice')).toBeNull();
+
+        userEvent.type(input, 'New choice');
+        expect(screen.getAllByRole('option')).toHaveLength(1);
+        expect(screen.getByText('Create New choice')).toBeDefined();
+
+        fireEvent.click(screen.getByLabelText('Clear value'));
+        expect(screen.getAllByRole('option')).toHaveLength(6);
+        expect(screen.queryByText('Create New choice')).toBeNull();
+        expect(input.value).toEqual('');
     });
 
     it('should handle nullish values', async () => {
