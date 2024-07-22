@@ -1,27 +1,26 @@
 /* eslint-disable import/no-anonymous-default-export */
-import * as React from 'react';
+import { Card, LinearProgress, Stack } from '@mui/material';
+import jsonExport from 'jsonexport/dist';
+import type { Exporter } from 'react-admin';
 import {
     CreateButton,
     downloadCSV,
     ExportButton,
+    ListBase,
+    ListToolbar,
     Pagination,
     SortButton,
+    Title,
     TopToolbar,
     useGetIdentity,
-    ListBase,
-    Title,
-    ListToolbar,
     useListContext,
 } from 'react-admin';
-import type { Exporter } from 'react-admin';
-import jsonExport from 'jsonexport/dist';
-
-import { ContactListFilter } from './ContactListFilter';
-import { ContactListContent } from './ContactListContent';
-import { Contact, Company, Sale, Tag } from '../types';
-import { Card, LinearProgress, Stack } from '@mui/material';
-import { ContactEmpty } from './ContactEmpty';
 import { hasOtherFiltersThanDefault } from '../misc/hasOtherFiltersThanDefault';
+import { Company, Contact, Sale, Tag } from '../types';
+import { ContactEmpty } from './ContactEmpty';
+import { ContactImportButton } from './ContactImportButton';
+import { ContactListContent } from './ContactListContent';
+import { ContactListFilter } from './ContactListFilter';
 
 export const ContactList = () => {
     const { identity } = useGetIdentity();
@@ -73,6 +72,7 @@ const ContactListLayout = () => {
 const ContactListActions = () => (
     <TopToolbar>
         <SortButton fields={['last_name', 'first_name', 'last_seen']} />
+        <ContactImportButton />
         <ExportButton />
         <CreateButton
             variant="contained"
