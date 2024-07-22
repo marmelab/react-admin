@@ -27,6 +27,7 @@ import {
     defaultCompanySectors,
     defaultContactGender,
     defaultDealCategories,
+    defaultDealPipelineStatuses,
     defaultDealStages,
     defaultLogo,
     defaultNoteStatuses,
@@ -40,6 +41,7 @@ interface CRMProps {
     companySectors?: ConfigurationContextValue['companySectors'];
     darkTheme?: RaThemeOptions;
     dealCategories?: ConfigurationContextValue['dealCategories'];
+    dealPipelineStatuses?: ConfigurationContextValue['dealPipelineStatuses'];
     dealStages?: ConfigurationContextValue['dealStages'];
     lightTheme?: RaThemeOptions;
     logo?: ConfigurationContextValue['logo'];
@@ -68,6 +70,7 @@ const defaultLightTheme = {
  * @param {string[]} companySectors - The list of company sectors used in the application.
  * @param {RaThemeOptions} darkTheme - The theme to use when the application is in dark mode.
  * @param {string[]} dealCategories - The categories of deals used in the application.
+ * @param {string[]} dealPipelineStatuses - The statuses of deals in the pipeline used in the application.
  * @param {DealStage[]} dealStages - The stages of deals used in the application.
  * @param {RaThemeOptions} lightTheme - The theme to use when the application is in light mode.
  * @param {string} logo - The logo used in the CRM application.
@@ -101,6 +104,7 @@ export const CRM = ({
     companySectors = defaultCompanySectors,
     darkTheme,
     dealCategories = defaultDealCategories,
+    dealPipelineStatuses = defaultDealPipelineStatuses,
     dealStages = defaultDealStages,
     lightTheme = defaultLightTheme,
     logo = defaultLogo,
@@ -112,6 +116,7 @@ export const CRM = ({
         contactGender={contactGender}
         companySectors={companySectors}
         dealCategories={dealCategories}
+        dealPipelineStatuses={dealPipelineStatuses}
         dealStages={dealStages}
         logo={logo}
         noteStatuses={noteStatuses}

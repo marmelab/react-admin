@@ -3,6 +3,7 @@ import {
     defaultCompanySectors,
     defaultContactGender,
     defaultDealCategories,
+    defaultDealPipelineStatuses,
     defaultDealStages,
     defaultLogo,
     defaultNoteStatuses,
@@ -15,6 +16,7 @@ import { ContactGender, DealStage, NoteStatus } from '../types';
 export interface ConfigurationContextValue {
     companySectors: string[];
     dealCategories: string[];
+    dealPipelineStatuses: string[];
     dealStages: DealStage[];
     noteStatuses: NoteStatus[];
     taskTypes: string[];
@@ -31,6 +33,7 @@ export interface ConfigurationProviderProps extends ConfigurationContextValue {
 export const ConfigurationContext = createContext<ConfigurationContextValue>({
     companySectors: defaultCompanySectors,
     dealCategories: defaultDealCategories,
+    dealPipelineStatuses: defaultDealPipelineStatuses,
     dealStages: defaultDealStages,
     noteStatuses: defaultNoteStatuses,
     taskTypes: defaultTaskTypes,
@@ -43,6 +46,7 @@ export const ConfigurationProvider = ({
     children,
     companySectors,
     dealCategories,
+    dealPipelineStatuses,
     dealStages,
     logo,
     noteStatuses,
@@ -54,6 +58,7 @@ export const ConfigurationProvider = ({
         value={{
             companySectors,
             dealCategories,
+            dealPipelineStatuses,
             dealStages,
             logo,
             noteStatuses,

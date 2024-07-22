@@ -26,6 +26,8 @@ export const defaultDealStages = [
     { value: 'delayed', label: 'Delayed' },
 ];
 
+export const defaultDealPipelineStatuses = ['won'];
+
 export const defaultDealCategories = [
     'Other',
     'Copywriting',

@@ -1,11 +1,11 @@
-import { CRMContextValue } from '../root/ConfigurationContext';
+import { ConfigurationContextValue } from '../root/ConfigurationContext';
 import { Deal } from '../types';
 
 export type DealsByStage = Record<Deal['stage'], Deal[]>;
 
 export const getDealsByStage = (
     unorderedDeals: Deal[],
-    dealStages: CRMContextValue['dealStages']
+    dealStages: ConfigurationContextValue['dealStages']
 ) => {
     if (!dealStages) return {};
     const dealsByStage: Record<Deal['stage'], Deal[]> = unorderedDeals.reduce(

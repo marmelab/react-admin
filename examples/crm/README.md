@@ -74,18 +74,19 @@ export default App;
 
 In addition to the design, you can easily customize various aspects relevant to your business domain. The behavior is the same as described above. You can modify the following:
 
-| Props          | Description                                              | Type            |
-|----------------|----------------------------------------------------------|-----------------|
-| contactGender  | The gender options for contacts used in the application. | ContactGender[] |
-| companySectors | The list of company sectors used in the application.     | string[]        |
-| darkTheme      | The theme to use when the application is in dark mode.   | RaThemeOptions  |
-| dealCategories | The categories of deals used in the application.         | string[]        |
-| dealStages     | The stages of deals used in the application.             | DealStage[]     |
-| lightTheme     | The theme to use when the application is in light mode.  | RaThemeOptions  |
-| logo           | The logo used in the CRM application.                    | string          |
-| noteStatuses   | The statuses of notes used in the application.           | NoteStatus[]    |
-| taskTypes      | The types of tasks used in the application.              | string[]        |
-| title          | The title of the CRM application.                        | string          |
+| Props                 | Description                                                           | Type            |
+|-----------------------|-----------------------------------------------------------------------|-----------------|
+| contactGender         | The gender options for contacts used in the application.              | ContactGender[] |
+| companySectors        | The list of company sectors used in the application.                  |  string[]       |
+| darkTheme             | The theme to use when the application is in dark mode.                | RaThemeOptions  |
+| dealCategories        | The categories of deals used in the application.                      | string[]        |
+| dealPipelineStatuses  | The statuses of deals in the pipeline used in the application         | string[]        |
+| dealStages            | The stages of deals used in the application.                          | DealStage[]     |
+| lightTheme            | The theme to use when the application is in light mode.               | RaThemeOptions  |
+| logo                  | The logo used in the CRM application.                                 | string          |
+| noteStatuses          | The statuses of notes used in the application.                        | NoteStatus[]    |
+| taskTypes             | The types of tasks used in the application.                           | string[]        |
+| title                 | The title of the CRM application.                                     | string          |
 
 ```tsx
 import { CRM } from './root/CRM';
@@ -113,9 +114,12 @@ const App = () => {
             companySectors={['Technology', 'Finance']}
             darkTheme={darkTheme}
             dealCategories={['Copywriting', 'Design']}
+            dealPipelineStatuses={['won']}
             dealStages={[
                 { value: 'opportunity', label: 'Opportunity' },
                 { value: 'proposal-sent', label: 'Proposal Sent' },
+                { value: 'won', label: 'Won' },
+                { value: 'lost', label: 'Lost' },
             ]}
             lightTheme={lightTheme}
             logo="https://example.com/logo.png"

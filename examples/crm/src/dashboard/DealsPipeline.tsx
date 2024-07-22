@@ -16,7 +16,7 @@ import { findDealLabel } from '../deals/deal';
 
 export const DealsPipeline = () => {
     const { identity } = useGetIdentity();
-    const { dealStages } = useConfigurationContext();
+    const { dealStages, dealPipelineStatuses } = useConfigurationContext();
     const { data, total, isPending } = useGetList<Deal>(
         'deals',
         {
@@ -33,7 +33,7 @@ export const DealsPipeline = () => {
         }
         const deals: Deal[] = [];
         dealStages
-            ?.filter(stage => stage.value !== 'won')
+            ?.filter(stage => !dealPipelineStatuses.includes(stage.value))
             .forEach(stage =>
                 data
                     .filter(deal => deal.stage === stage.value)
