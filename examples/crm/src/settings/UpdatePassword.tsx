@@ -82,7 +82,7 @@ export const UpdatePassword = ({
                     color="textSecondary"
                     gutterBottom
                 >
-                    Password for Jane Doe account is "password"
+                    Password for Jane Doe account is "demo"
                 </Typography>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <Stack gap={2}>
