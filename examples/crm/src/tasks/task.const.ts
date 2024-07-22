@@ -7,4 +7,5 @@ export const taskTypes = [
     'Follow-up',
     'Thank you',
     'Ship',
+    'Call',
 ];
