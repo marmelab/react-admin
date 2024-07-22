@@ -24,6 +24,7 @@ import { Card, LinearProgress, Stack } from '@mui/material';
 import { DealEmpty } from './DealEmpty';
 import { hasOtherFiltersThanDefault } from '../misc/hasOtherFiltersThanDefault';
 import { DealEdit } from './DealEdit';
+import { DealArchivedList } from './DealArchivedList';
 
 const DealList = () => {
     const { identity } = useGetIdentity();
@@ -32,8 +33,11 @@ const DealList = () => {
     return (
         <ListBase
             perPage={100}
-            filterDefaultValues={{ sales_id: identity?.id }}
-            sort={{ field: 'index', order: 'ASC' }}
+            filterDefaultValues={{
+                sales_id: identity?.id,
+                archived_at_eq: null,
+            }}
+            sort={{ field: 'updated_at', order: 'DESC' }}
         >
             <DealLayout />
         </ListBase>
@@ -65,6 +69,7 @@ const DealLayout = () => {
             <Card>
                 <DealListContent />
             </Card>
+            <DealArchivedList />
             <DealCreate open={!!matchCreate} />
             <DealEdit
                 open={!!matchEdit && !matchCreate}
