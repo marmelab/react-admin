@@ -61,6 +61,15 @@ export const Basic = () => (
     </Wrapper>
 );
 
+export const StringChoices = () => (
+    <Wrapper>
+        <AutocompleteArrayInput
+            source="roles"
+            choices={['admin', 'u001', 'u002', 'u003']}
+        />
+    </Wrapper>
+);
+
 export const OnChange = ({
     onChange = (value, records) => console.log({ value, records }),
 }: Pick<AutocompleteArrayInputProps, 'onChange'>) => (

@@ -110,6 +110,21 @@ export const Basic = ({ onSuccess = console.log }) => (
     </Wrapper>
 );
 
+export const StringChoices = () => (
+    <Wrapper>
+        <AutocompleteInput
+            source="author"
+            choices={[
+                'Leo Tolstoy',
+                'Victor Hugo',
+                'William Shakespeare',
+                'Charles Baudelaire',
+                'Marcel Proust',
+            ]}
+        />
+    </Wrapper>
+);
+
 export const Required = () => (
     <Wrapper>
         <AutocompleteInput

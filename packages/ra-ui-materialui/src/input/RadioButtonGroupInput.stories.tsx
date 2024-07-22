@@ -26,6 +26,15 @@ export const Basic = () => (
     </Wrapper>
 );
 
+export const StringChoices = () => (
+    <Wrapper>
+        <RadioButtonGroupInput
+            source="category"
+            choices={['Tech', 'Lifestyle', 'People']}
+        />
+    </Wrapper>
+);
+
 export const Row = () => (
     <Wrapper>
         <RadioButtonGroupInput

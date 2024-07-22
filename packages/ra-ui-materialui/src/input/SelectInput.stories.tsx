@@ -35,6 +35,12 @@ export const Basic = () => (
     </Wrapper>
 );
 
+export const StringChoices = () => (
+    <Wrapper>
+        <SelectInput source="gender" choices={['Male', 'Female']} />
+    </Wrapper>
+);
+
 export const DefaultValue = () => (
     <Wrapper>
         <SelectInput

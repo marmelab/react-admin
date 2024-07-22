@@ -26,96 +26,108 @@ export default { title: 'ra-ui-materialui/input/SelectArrayInput' };
 
 const i18nProvider = polyglotI18nProvider(() => englishMessages);
 
-export const Basic = () => (
+const Wrapper = ({ children }) => (
     <AdminContext i18nProvider={i18nProvider} defaultTheme="light">
-        <Create
-            resource="users"
-            record={{ roles: ['u001', 'u003'] }}
-            sx={{ width: 600 }}
-        >
-            <SimpleForm>
-                <SelectArrayInput
-                    source="roles"
-                    choices={[
-                        { id: 'admin', name: 'Admin' },
-                        { id: 'u001', name: 'Editor' },
-                        { id: 'u002', name: 'Moderator' },
-                        { id: 'u003', name: 'Reviewer' },
-                    ]}
-                    sx={{ width: 300 }}
-                />
-                <SelectArrayInput
-                    source="roles"
-                    variant="outlined"
-                    choices={[
-                        { id: 'admin', name: 'Admin' },
-                        { id: 'u001', name: 'Editor' },
-                        { id: 'u002', name: 'Moderator' },
-                        { id: 'u003', name: 'Reviewer' },
-                    ]}
-                    sx={{ width: 300 }}
-                />
-                <SelectArrayInput
-                    source="roles"
-                    variant="standard"
-                    choices={[
-                        { id: 'admin', name: 'Admin' },
-                        { id: 'u001', name: 'Editor' },
-                        { id: 'u002', name: 'Moderator' },
-                        { id: 'u003', name: 'Reviewer' },
-                    ]}
-                    sx={{ width: 300 }}
-                />
-            </SimpleForm>
+        <Create resource="posts" sx={{ width: 600 }}>
+            <SimpleForm>{children}</SimpleForm>
         </Create>
     </AdminContext>
+);
+
+export const Basic = () => (
+    <Wrapper>
+        <SelectArrayInput
+            source="roles"
+            choices={[
+                { id: 'admin', name: 'Admin' },
+                { id: 'u001', name: 'Editor' },
+                { id: 'u002', name: 'Moderator' },
+                { id: 'u003', name: 'Reviewer' },
+            ]}
+        />
+    </Wrapper>
+);
+
+export const StringChoices = () => (
+    <Wrapper>
+        <SelectArrayInput
+            source="roles"
+            choices={['Admin', 'Editor', 'Moderator', 'Reviewer']}
+        />
+    </Wrapper>
+);
+
+export const Variant = () => (
+    <Wrapper>
+        <SelectArrayInput
+            source="roles"
+            choices={[
+                { id: 'admin', name: 'Admin' },
+                { id: 'u001', name: 'Editor' },
+                { id: 'u002', name: 'Moderator' },
+                { id: 'u003', name: 'Reviewer' },
+            ]}
+        />
+        <SelectArrayInput
+            source="roles"
+            variant="outlined"
+            choices={[
+                { id: 'admin', name: 'Admin' },
+                { id: 'u001', name: 'Editor' },
+                { id: 'u002', name: 'Moderator' },
+                { id: 'u003', name: 'Reviewer' },
+            ]}
+        />
+        <SelectArrayInput
+            source="roles"
+            variant="standard"
+            choices={[
+                { id: 'admin', name: 'Admin' },
+                { id: 'u001', name: 'Editor' },
+                { id: 'u002', name: 'Moderator' },
+                { id: 'u003', name: 'Reviewer' },
+            ]}
+        />
+    </Wrapper>
 );
 
 export const DefaultValue = () => (
-    <AdminContext i18nProvider={i18nProvider} defaultTheme="light">
-        <Create resource="users" sx={{ width: 600 }}>
-            <SimpleForm>
-                <SelectArrayInput
-                    source="roles"
-                    defaultValue={['u001', 'u003']}
-                    choices={[
-                        { id: 'admin', name: 'Admin' },
-                        { id: 'u001', name: 'Editor' },
-                        { id: 'u002', name: 'Moderator' },
-                        { id: 'u003', name: 'Reviewer' },
-                    ]}
-                    sx={{ width: 300 }}
-                />
-            </SimpleForm>
-        </Create>
-    </AdminContext>
+    <Wrapper>
+        <SelectArrayInput
+            source="roles"
+            defaultValue={['u001', 'u003']}
+            choices={[
+                { id: 'admin', name: 'Admin' },
+                { id: 'u001', name: 'Editor' },
+                { id: 'u002', name: 'Moderator' },
+                { id: 'u003', name: 'Reviewer' },
+            ]}
+            sx={{ width: 300 }}
+        />
+    </Wrapper>
 );
 
 export const InsideArrayInput = () => (
-    <AdminContext i18nProvider={i18nProvider} defaultTheme="light">
-        <Create resource="users" sx={{ width: 600 }}>
-            <SimpleForm>
-                <ArrayInput
-                    source="items"
-                    label="Items"
-                    defaultValue={[{ data: ['foo'] }]}
-                >
-                    <SimpleFormIterator>
-                        <SelectArrayInput
-                            label="data"
-                            source="data"
-                            choices={[
-                                { id: 'foo', name: 'Foo' },
-                                { id: 'bar', name: 'Bar' },
-                            ]}
-                            defaultValue={['foo']}
-                        />
-                    </SimpleFormIterator>
-                </ArrayInput>
-                <FormInspector name="items" />
-            </SimpleForm>
-        </Create>
-    </AdminContext>
+    <Wrapper>
+        <ArrayInput
+            source="items"
+            label="Items"
+            defaultValue={[{ data: ['foo'] }]}
+        >
+            <SimpleFormIterator>
+                <SelectArrayInput
+                    label="data"
+                    source="data"
+                    choices={[
+                        { id: 'foo', name: 'Foo' },
+                        { id: 'bar', name: 'Bar' },
+                    ]}
+                    defaultValue={['foo']}
+                />
+            </SimpleFormIterator>
+        </ArrayInput>
+        <FormInspector name="items" />
+    </Wrapper>
 );
 
 const choices = [
@@ -158,22 +170,14 @@ const CreateRole = () => {
 };
 
 export const CreateProp = () => (
-    <AdminContext i18nProvider={i18nProvider} defaultTheme="light">
-        <Create
-            resource="users"
-            record={{ roles: ['u001', 'u003'] }}
-            sx={{ width: 600 }}
-        >
-            <SimpleForm>
-                <SelectArrayInput
-                    source="roles"
-                    choices={choices}
-                    sx={{ width: 300 }}
-                    create={<CreateRole />}
-                />
-            </SimpleForm>
-        </Create>
-    </AdminContext>
+    <Wrapper>
+        <SelectArrayInput
+            source="roles"
+            choices={choices}
+            defaultValue={['u001', 'u003']}
+            create={<CreateRole />}
+        />
+    </Wrapper>
 );
 
 export const DifferentIdTypes = () => {
@@ -201,7 +205,7 @@ export const DifferentIdTypes = () => {
     );
 };
 
-export const DifferentSizes = () => {
+export const Size = () => {
     const fakeData = {
         bands: [{ id: 1, name: 'band_1', members: [1, '2'] }],
         artists: [
