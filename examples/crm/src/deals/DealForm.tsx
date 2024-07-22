@@ -90,7 +90,7 @@ export const DealForm = () => {
                 defaultValue="opportunity"
             />
             <SelectInput
-                source="type"
+                source="category"
                 label="Category"
                 choices={dealCategories?.map(type => ({
                     id: type,

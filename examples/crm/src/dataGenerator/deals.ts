@@ -30,7 +30,7 @@ export const generateDeals = (db: Db): Deal[] => {
             name: lowercaseName[0].toUpperCase() + lowercaseName.slice(1),
             company_id: company.id,
             contact_ids: contacts.map(contact => contact.id),
-            type: random.arrayElement(crmConfig.dealCategories),
+            category: random.arrayElement(crmConfig.dealCategories),
             stage: random.arrayElement(crmConfig.dealStages).value,
             description: lorem.paragraphs(random.number({ min: 1, max: 4 })),
             amount: random.number(1000) * 100,

@@ -23,7 +23,6 @@ import { SettingsPage } from '../settings/SettingsPage';
 
 // Define the interface for the CRM component props
 interface CRMProps {
-    apiUrl?: string;
     logo?: CRMContextValue['logo'];
     darkTheme?: RaThemeOptions;
     lightTheme?: RaThemeOptions;
@@ -31,12 +30,10 @@ interface CRMProps {
     companySectors?: CRMContextValue['companySectors'];
     dealStages?: CRMContextValue['dealStages'];
     dealCategories?: CRMContextValue['dealCategories'];
-    noteStatuses?: string[];
-    noteTypes?: string[];
+    noteStatuses?: CRMContextValue['noteStatuses'];
 }
 
 export const CRM = ({
-    // apiUrl,
     logo,
     title,
     lightTheme,
@@ -45,11 +42,9 @@ export const CRM = ({
     dealStages,
     dealCategories,
     noteStatuses,
-    noteTypes,
 }: CRMProps) => (
     <CRMProvider
         noteStatuses={noteStatuses}
-        noteTypes={noteTypes}
         dealStages={dealStages}
         dealCategories={dealCategories}
         companySectors={companySectors}

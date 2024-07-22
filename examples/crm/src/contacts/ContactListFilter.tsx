@@ -15,8 +15,10 @@ import SupervisorAccountIcon from '@mui/icons-material/SupervisorAccount';
 import { endOfYesterday, startOfWeek, startOfMonth, subMonths } from 'date-fns';
 
 import { Status } from '../misc/Status';
+import { useCRMContext } from '../CRM/CRMContext';
 
 export const ContactListFilter = () => {
+    const { noteStatuses } = useCRMContext();
     const { identity } = useGetIdentity();
     const { data } = useGetList('tags', {
         pagination: { page: 1, perPage: 10 },
@@ -73,38 +75,19 @@ export const ContactListFilter = () => {
                 />
             </FilterList>
             <FilterList label="Status" icon={<TrendingUpIcon />}>
-                <FilterListItem
-                    label={
-                        <>
-                            Cold <Status status="cold" />
-                        </>
-                    }
-                    value={{ status: 'cold' }}
-                />
-                <FilterListItem
-                    label={
-                        <>
-                            Warm <Status status="warm" />
-                        </>
-                    }
-                    value={{ status: 'warm' }}
-                />
-                <FilterListItem
-                    label={
-                        <>
-                            Hot <Status status="hot" />
-                        </>
-                    }
-                    value={{ status: 'hot' }}
-                />
-                <FilterListItem
-                    label={
-                        <>
-                            In contract <Status status="in-contract" />
-                        </>
-                    }
-                    value={{ status: 'in-contract' }}
-                />
+                {noteStatuses &&
+                    noteStatuses.map(status => (
+                        <FilterListItem
+                            key={status.value}
+                            label={
+                                <>
+                                    {status.label}{' '}
+                                    <Status status={status.value} />
+                                </>
+                            }
+                            value={{ status: status.value }}
+                        />
+                    ))}
             </FilterList>
             <FilterList label="Tags" icon={<LocalOfferIcon />}>
                 {data &&

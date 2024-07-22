@@ -81,3 +81,4 @@ In addition to the design, you can easily customize various aspects relevant to 
 | companySectors | The industry sectors of the companies you add | string[] |
 | dealStages     | Stages used for sort deals in the kaban       | { value: string; label: string }[];[] |
 | dealCategories | Categories that defined a deal    | string[] |
+| noteStatuses   | Statuses that defined a note    | { value: string; label: string; color: string }[] |

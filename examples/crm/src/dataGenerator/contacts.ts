@@ -10,9 +10,9 @@ import {
 import { randomDate, weightedBoolean } from './utils';
 import { Db } from './types';
 import { Contact } from '../types';
+import { crmConfig } from '../CRM/crm.config';
 
 const genders = ['male', 'female', 'nonbinary'];
-const status = ['cold', 'cold', 'cold', 'warm', 'warm', 'hot', 'in-contract'];
 const maxContacts = {
     1: 1,
     10: 4,
@@ -72,7 +72,7 @@ export const generateContacts = (db: Db): Contact[] => {
             first_seen: first_seen,
             last_seen: last_seen,
             has_newsletter: weightedBoolean(30),
-            status: random.arrayElement(status),
+            status: random.arrayElement(crmConfig.noteStatuses).value,
             tags: random
                 .arrayElements(db.tags, random.arrayElement([0, 0, 0, 1, 1, 2]))
                 .map(tag => tag.id), // finalize

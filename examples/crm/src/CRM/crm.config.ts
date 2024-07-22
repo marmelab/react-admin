@@ -33,10 +33,31 @@ const dealCategories = [
     'Website design',
 ];
 
+const noteStatuses = [
+    { value: 'cold', label: 'Cold', color: '#7dbde8' },
+    { value: 'warm', label: 'Warm', color: '#e8cb7d' },
+    { value: 'hot', label: 'Hot', color: '#e88b7d' },
+    { value: 'in-contract', label: 'In Contract', color: '#a4e87d' },
+];
+
+const taskTypes = [
+    'None',
+    'Email',
+    'Demo',
+    'Lunch',
+    'Meeting',
+    'Follow-up',
+    'Thank you',
+    'Ship',
+    'Call',
+];
+
 export const crmConfig = {
     logo,
     title,
     companySectors,
     dealStages,
     dealCategories,
+    noteStatuses,
+    taskTypes,
 };

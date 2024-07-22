@@ -24,6 +24,7 @@ import { useFormContext } from 'react-hook-form';
 
 import { Status } from '../misc/Status';
 import { Stack } from '@mui/material';
+import { useCRMContext } from '../CRM/CRMContext';
 
 const foreignKeyMapping = {
     contacts: 'contact_id',
@@ -45,6 +46,7 @@ export const NoteCreate = ({
     showStatus?: boolean;
     reference: 'contacts' | 'deals';
 }) => {
+    const { noteStatuses } = useCRMContext();
     const resource = useResourceContext();
     const record = useRecordContext();
     const { identity } = useGetIdentity();
@@ -76,15 +78,8 @@ export const NoteCreate = ({
                                     {showStatus && (
                                         <SelectInput
                                             source="status"
-                                            choices={[
-                                                { id: 'cold', name: 'Cold' },
-                                                { id: 'warm', name: 'Warm' },
-                                                { id: 'hot', name: 'Hot' },
-                                                {
-                                                    id: 'in-contract',
-                                                    name: 'In Contract',
-                                                },
-                                            ]}
+                                            choices={noteStatuses}
+                                            optionValue="value"
                                             optionText={optionRenderer}
                                             isRequired
                                             defaultValue={'warm'}
@@ -168,6 +163,6 @@ const isImage = (file: File) => {
 
 const optionRenderer = (choice: any) => (
     <div>
-        {choice.name} <Status status={choice.id} />
+        {choice.label} <Status status={choice.value} />
     </div>
 );
