@@ -1,4 +1,5 @@
 import { Contact } from '../types';
+import { DOMAINS_NOT_SUPPORTING_FAVICON } from './unsupportedDomains.const';
 
 export async function hash(string: string) {
     const utf8 = new TextEncoder().encode(string);
@@ -9,14 +10,6 @@ export async function hash(string: string) {
         .join('');
     return hashHex;
 }
-
-const DOMAINS_NOT_SUPPORTING_FAVICON = [
-    'gmail.com',
-    'yahoo.com',
-    'hotmail.com',
-    'outlook.com',
-    'hotmail.fr',
-];
 
 // Helper function to get the Gravatar URL
 async function getGravatarUrl(email: string): Promise<string> {
