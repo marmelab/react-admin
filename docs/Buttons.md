@@ -39,6 +39,8 @@ It also supports [all the other `<Button>` props](#button).
 
 **Tip**: If you want to link to the Edit view manually, use the `/{resource}/{record.id}` location.
 
+**Tip:** You are also able to use a [`<EditInDialogButton>`](./EditInDialogButton.md) to opening an `<Edit>` view inside a dialog, hence allowing to edit a record without leaving the current view.
+
 ### `<ShowButton>`
 
 Opens the Show view of the current record:
@@ -94,6 +96,8 @@ const CommentCreateButton = () => <CreateButton label="Create comment" />;
 It also supports [all the other `<Button>` props](#button).
 
 **Tip**: If you want to link to the Create view manually, use the `/{resource}/create` location.
+
+**Tip:** You are also able to use a [`<CreateInDialogButton>`](./CreateInDialogButton.md) to open a `<Create>` view inside a dialog, hence allowing to create a new record without leaving the current view.
 
 #### `sx`: CSS API
 
