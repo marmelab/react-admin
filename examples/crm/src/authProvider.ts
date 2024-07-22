@@ -20,7 +20,7 @@ export const authProvider: AuthProvider = {
 
         localStorage.setItem(
             USER_STORAGE_KEY,
-            JSON.stringify({ first_name: 'Jane', last_name: 'Doe' })
+            JSON.stringify({ id: 0, first_name: 'Jane', last_name: 'Doe' })
         );
         return Promise.resolve(redirectTo ? { redirectTo } : undefined);
     },

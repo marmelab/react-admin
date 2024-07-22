@@ -2,6 +2,7 @@ import fakeRestDataProvider from 'ra-data-fakerest';
 import {
     CreateParams,
     DataProvider,
+    Identifier,
     ResourceCallbacks,
     UpdateParams,
     withLifecycleCallbacks,
@@ -15,7 +16,7 @@ import {
 import generateData from './dataGenerator';
 import { getCompanyAvatar } from './misc/getCompanyAvatar';
 import { getContactAvatar } from './misc/getContactAvatar';
-import { Company, Contact, ContactNote, Deal, Task } from './types';
+import { Company, Contact, ContactNote, Deal, Sale, Task } from './types';
 
 const baseDataProvider = fakeRestDataProvider(generateData(), true, 300);
 
@@ -82,11 +83,99 @@ const dataProviderWithCustomMethod = {
         }
         return sale;
     },
+    transferAdministrator: async (from: Identifier, to: Identifier) => {
+        const { data: sales } = await baseDataProvider.getList('sales', {
+            filter: { id: [from, to] },
+            pagination: { page: 1, perPage: 2 },
+            sort: { field: 'name', order: 'ASC' },
+        });
+
+        const fromSale = sales.find(sale => sale.id === from);
+        const toSale = sales.find(sale => sale.id === to);
+
+        if (!fromSale || !toSale) {
+            return;
+        }
+
+        await baseDataProvider.update('sales', {
+            id: to,
+            data: {
+                administrator: true,
+            },
+            previousData: toSale,
+        });
+
+        return await baseDataProvider.update('sales', {
+            id: from,
+            data: {
+                administrator: false,
+            },
+            previousData: fromSale,
+        });
+    },
 };
+
+export type CustomDataProvider = typeof dataProviderWithCustomMethod;
 
 export const dataProvider = withLifecycleCallbacks(
     dataProviderWithCustomMethod,
     [
+        {
+            resource: 'sales',
+            afterDelete: async (params, dataProvider) => {
+                const [companies, contacts, contactNotes, deals] =
+                    await Promise.all([
+                        dataProvider.getList('companies', {
+                            filter: { sales_id: params.data.id },
+                            pagination: {
+                                page: 1,
+                                perPage: 10_000,
+                            },
+                            sort: { field: 'id', order: 'ASC' },
+                        }),
+                        dataProvider.getList('contacts', {
+                            filter: { sales_id: params.data.id },
+                            pagination: {
+                                page: 1,
+                                perPage: 10_000,
+                            },
+                            sort: { field: 'id', order: 'ASC' },
+                        }),
+                        dataProvider.getList('contactNotes', {
+                            filter: { sales_id: params.data.id },
+                            pagination: {
+                                page: 1,
+                                perPage: 10_000,
+                            },
+                            sort: { field: 'id', order: 'ASC' },
+                        }),
+                        dataProvider.getList('deals', {
+                            filter: { sales_id: params.data.id },
+                            pagination: {
+                                page: 1,
+                                perPage: 10_000,
+                            },
+                            sort: { field: 'id', order: 'ASC' },
+                        }),
+                    ]);
+
+                await Promise.all([
+                    dataProvider.deleteMany('companies', {
+                        ids: companies.data.map(company => company.id),
+                    }),
+                    dataProvider.deleteMany('contacts', {
+                        ids: contacts.data.map(company => company.id),
+                    }),
+                    dataProvider.deleteMany('contactNotes', {
+                        ids: contactNotes.data.map(company => company.id),
+                    }),
+                    dataProvider.deleteMany('deals', {
+                        ids: deals.data.map(company => company.id),
+                    }),
+                ]);
+                return params;
+            },
+        } satisfies ResourceCallbacks<Sale>,
         {
             resource: 'contacts',
             beforeCreate: async (params, dataProvider) => {

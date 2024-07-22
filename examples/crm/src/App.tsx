@@ -7,6 +7,7 @@ import {
     localStorageStore,
 } from 'react-admin';
 
+import { Route } from 'react-router';
 import Layout from './Layout';
 import { authProvider } from './authProvider';
 import companies from './companies';
@@ -15,9 +16,9 @@ import { Dashboard } from './dashboard/Dashboard';
 import { dataProvider } from './dataProvider';
 import deals from './deals';
 import { LoginPage } from './login/LoginPage';
-import { Route } from 'react-router';
-import { SettingsPage } from './settings/SettingsPage';
 import { SignupPage } from './login/SignupPage';
+import sales from './sales';
+import { SettingsPage } from './settings/SettingsPage';
 
 const App = () => (
     <Admin
@@ -45,6 +46,7 @@ const App = () => (
         <Resource name="deals" {...deals} />
         <Resource name="contacts" {...contacts} />
         <Resource name="companies" {...companies} />
+        <Resource name="sales" {...sales} />
         <Resource name="contactNotes" />
         <Resource name="dealNotes" />
         <Resource name="tasks" list={ListGuesser} />

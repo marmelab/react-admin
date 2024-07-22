@@ -1,22 +1,31 @@
-import React from 'react';
+import SettingsIcon from '@mui/icons-material/Settings';
 import {
-    Tabs,
-    Tab,
-    Toolbar,
     AppBar,
     Box,
-    Typography,
-    MenuList,
-    MenuItem,
     ListItemIcon,
     ListItemText,
+    MenuItem,
+    MenuList,
+    Tab,
+    Tabs,
+    Toolbar,
+    Typography,
 } from '@mui/material';
+import {
+    LoadingIndicator,
+    Logout,
+    useGetIdentity,
+    useGetOne,
+    UserMenu,
+    useUserMenu,
+} from 'react-admin';
 import { Link, matchPath, useLocation } from 'react-router-dom';
-import { UserMenu, Logout, LoadingIndicator, useUserMenu } from 'react-admin';
-import SettingsIcon from '@mui/icons-material/Settings';
+import { Sale } from './types';
 
 const Header = () => {
     const location = useLocation();
+    const { identity } = useGetIdentity();
+    const user = useGetOne<Sale>('sales', { id: identity?.id });
 
     let currentPath = '/';
     if (!!matchPath('/contacts/*', location.pathname)) {
@@ -27,6 +36,8 @@ const Header = () => {
         currentPath = '/deals';
     } else if (!!matchPath('/settings', location.pathname)) {
         currentPath = '/settings';
+    } else if (!!matchPath('/sales/*', location.pathname)) {
+        currentPath = '/sales';
     }
 
     return (
@@ -78,6 +89,14 @@ const Header = () => {
                                     to="/deals"
                                     value="/deals"
                                 />
+                                {user?.data?.administrator && (
+                                    <Tab
+                                        label={'Account Managers'}
+                                        component={Link}
+                                        to="/sales"
+                                        value="/sales"
+                                    />
+                                )}
                             </Tabs>
                         </Box>
                         <Box display="flex" alignItems="center">
