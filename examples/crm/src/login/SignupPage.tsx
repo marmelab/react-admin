@@ -1,17 +1,18 @@
 import { Button, Container, Stack, TextField, Typography } from '@mui/material';
 import { useCreate, useGetList, useLogin, useNotify } from 'react-admin';
-import { useForm, SubmitHandler } from 'react-hook-form';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { Navigate } from 'react-router';
 import { LoginSkeleton } from './LoginSkeleton';
 
 interface UserInput {
-    full_name: string;
+    first_name: string;
+    last_name: string;
     email: string;
     password: string;
 }
 
 export const SignupPage = () => {
-    const { total, isPending } = useGetList('users', {
+    const { total, isPending } = useGetList('sales', {
         pagination: { page: 1, perPage: 10 },
         sort: { field: 'name', order: 'ASC' },
     });
@@ -39,8 +40,8 @@ export const SignupPage = () => {
 
     const onSubmit: SubmitHandler<UserInput> = async data => {
         await create(
-            'users',
-            { data: { ...data, administrator: true } }, // The first user is an administrator
+            'sales',
+            { data: { ...data, administrator: true } }, // The first sale is an administrator
             {
                 onSuccess: () => {
                     login({
@@ -85,11 +86,20 @@ export const SignupPage = () => {
                     </Typography>
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <TextField
-                            {...register('full_name', { required: true })}
-                            label="Full name"
+                            {...register('first_name', { required: true })}
+                            label="First name"
                             variant="outlined"
                             helperText={false}
                             InputLabelProps={{ shrink: true }}
+                            required
+                        />
+                        <TextField
+                            {...register('last_name', { required: true })}
+                            label="Last name"
+                            variant="outlined"
+                            helperText={false}
+                            InputLabelProps={{ shrink: true }}
+                            required
                         />
                         <TextField
                             {...register('email', { required: true })}

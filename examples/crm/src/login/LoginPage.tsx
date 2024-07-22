@@ -1,10 +1,10 @@
 import { useGetList } from 'react-admin';
-import { LoginForm } from './LoginForm';
 import { Navigate } from 'react-router-dom';
+import { LoginForm } from './LoginForm';
 import { LoginSkeleton } from './LoginSkeleton';
 
 export const LoginPage = () => {
-    const { total, isPending, error } = useGetList('users', {
+    const { total, isPending, error } = useGetList('sales', {
         pagination: { page: 1, perPage: 10 },
         sort: { field: 'name', order: 'ASC' },
     });

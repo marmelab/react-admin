@@ -4,6 +4,8 @@ export interface Sale extends RaRecord {
     first_name: string;
     last_name: string;
     email: string;
+    password: string;
+    administrator: boolean;
 }
 
 export interface Company extends RaRecord {
@@ -79,11 +81,4 @@ export interface Deal extends RaRecord {
 export interface Tag extends RaRecord {
     name: string;
     color: string;
-}
-
-export interface User extends RaRecord {
-    full_name: string;
-    email: string;
-    password: string;
-    administrator: boolean;
 }

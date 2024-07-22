@@ -1,13 +1,13 @@
 /* eslint-disable import/no-anonymous-default-export */
+import { generateCompanies } from './companies';
+import { generateContactNotes } from './contactNotes';
+import { generateContacts } from './contacts';
+import { generateDealNotes } from './dealNotes';
+import { generateDeals } from './deals';
+import { finalize } from './finalize';
 import { generateSales } from './sales';
 import { generateTags } from './tags';
-import { generateCompanies } from './companies';
-import { generateContacts } from './contacts';
-import { generateContactNotes } from './contactNotes';
 import { generateTasks } from './tasks';
-import { generateDeals } from './deals';
-import { generateDealNotes } from './dealNotes';
-import { finalize } from './finalize';
 import { Db } from './types';
 
 export default (): Db => {
@@ -20,15 +20,6 @@ export default (): Db => {
     db.deals = generateDeals(db);
     db.dealNotes = generateDealNotes(db);
     db.tasks = generateTasks(db);
-    db.users = [
-        {
-            id: 0,
-            full_name: 'Jane Doe',
-            email: 'jane@doe.com',
-            password: 'password',
-            administrator: false,
-        },
-    ];
     finalize(db);
 
     return db;

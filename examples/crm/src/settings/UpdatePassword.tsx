@@ -36,7 +36,7 @@ export const UpdatePassword = ({
     const newPassword = watch('newPassword');
     const { identity } = useGetIdentity();
     const notify = useNotify();
-    const { data: dataUser, refetch } = useGetOne('users', {
+    const { data: dataUser, refetch } = useGetOne('sales', {
         id: identity?.id,
     });
 
@@ -44,7 +44,7 @@ export const UpdatePassword = ({
 
     const onSubmit = async (data: any) => {
         await update(
-            'users',
+            'sales',
             {
                 id: identity.id,
                 data: {

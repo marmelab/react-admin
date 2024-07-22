@@ -1,4 +1,4 @@
-import { name, internet } from 'faker/locale/en_US';
+import { internet, name } from 'faker/locale/en_US';
 
 import { Db } from './types';
 
@@ -13,6 +13,8 @@ export const generateSales = (_: Db) => {
             first_name,
             last_name,
             email,
+            password: 'demo',
+            administrator: false,
         };
     });
     return [
@@ -21,6 +23,8 @@ export const generateSales = (_: Db) => {
             first_name: 'Jane',
             last_name: 'Doe',
             email: 'janedoe@atomic.dev',
+            password: 'demo',
+            administrator: true,
         },
         ...randomSales,
     ];

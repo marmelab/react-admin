@@ -18,20 +18,21 @@ import {
     useUpdate,
 } from 'react-admin';
 import { useFormState } from 'react-hook-form';
+import { USER_STORAGE_KEY } from '../authProvider';
 import { UpdatePassword } from './UpdatePassword';
 
 export const SettingsPage = () => {
     const [update] = useUpdate();
     const [isReadOnly, setReadOnly] = useState(true);
     const { identity, refetch } = useGetIdentity();
-    const user = useGetOne('users', { id: identity?.id });
+    const user = useGetOne('sales', { id: identity?.id });
     const notify = useNotify();
 
     if (!identity) return null;
 
     const handleOnSubmit = async (values: any) => {
         await update(
-            'users',
+            'sales',
             {
                 id: identity.id,
                 data: values,
@@ -39,7 +40,11 @@ export const SettingsPage = () => {
             },
             {
                 onSuccess: data => {
-                    localStorage.setItem('user', JSON.stringify(data));
+                    // Update local user
+                    localStorage.setItem(
+                        USER_STORAGE_KEY,
+                        JSON.stringify(data)
+                    );
                     refetch();
                     setReadOnly(true);
                     notify('Your profile has been updated');
@@ -93,7 +98,8 @@ const SettingsForm = ({
                     </Button>
                 </Stack>
                 <Stack>
-                    <TextInput source="full_name" readOnly={readOnly} />
+                    <TextInput source="first_name" readOnly={readOnly} />
+                    <TextInput source="last_name" readOnly={readOnly} />
                     <TextInput source="email" readOnly={readOnly} />
                 </Stack>
                 <Button
