@@ -83,3 +83,33 @@ In addition to the design, you can easily customize various aspects relevant to 
 | dealCategories | Categories that defined a deal    | string[] |
 | noteStatuses   | Statuses that defined a note    | { value: string; label: string; color: string }[] |
 | taskTypes      | Types that defined a task    | string[] |
+
+
+```tsx
+import { CRM } from './CRM/CRM';
+import { crmConfig } from './CRM/crm.config';
+
+const App = () => (
+    <CRM
+        title={crmConfig.title}
+        logo={crmConfig.logo}
+        companySectors={crmConfig.companySectors}
+        dealStages={crmConfig.dealStages}
+        dealCategories={crmConfig.dealCategories}
+        noteStatuses={crmConfig.noteStatuses}
+        taskTypes={crmConfig.taskTypes}
+    />
+);
+
+export default App;
+```
+
+## Add Sales
+
+To add a new sale to the CRM, you need to use an administrator account. By default, the first account created has this role. If you are starting fresh, a sign-up page will prompt you to create this admin account.
+
+When logged in as an admin, an 'Account Manager' tab will be available. From this page, you can create sales and transfer the administrator role.
+
+## Customize the Homepage
+
+The first page of the application is managed by the `Dashboard.tsx` component. You can customize it by updating this file.
