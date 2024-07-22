@@ -25,9 +25,18 @@ const dealStages = [
     { value: 'delayed', label: 'Delayed' },
 ];
 
+const dealCategories = [
+    'Other',
+    'Copywriting',
+    'Print project',
+    'UI Design',
+    'Website design',
+];
+
 export const crmConfig = {
     logo,
     title,
     companySectors,
     dealStages,
+    dealCategories,
 };

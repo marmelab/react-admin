@@ -7,6 +7,7 @@ const App = () => (
         logo={crmConfig.logo}
         companySectors={crmConfig.companySectors}
         dealStages={crmConfig.dealStages}
+        dealCategories={crmConfig.dealCategories}
     />
 );
 

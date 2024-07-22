@@ -78,5 +78,6 @@ In addition to the design, you can easily customize various aspects relevant to 
 
 | Props          | Description                                   | Type     |
 |----------------|-----------------------------------------------|----------|
-| companySectors | The industry sectors of the companies you add | String[] |
-| dealStages     | Stages used for sort deals in the kaban       | String[] |
+| companySectors | The industry sectors of the companies you add | string[] |
+| dealStages     | Stages used for sort deals in the kaban       | { value: string; label: string }[];[] |
+| dealCategories | Categories that defined a deal    | string[] |

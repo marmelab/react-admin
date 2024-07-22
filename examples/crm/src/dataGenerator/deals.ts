@@ -6,14 +6,6 @@ import { Deal } from '../types';
 import { randomDate } from './utils';
 import { crmConfig } from '../CRM/crm.config';
 
-const type = [
-    'Other',
-    'Copywriting',
-    'Print project',
-    'UI Design',
-    'Website design',
-];
-
 export const generateDeals = (db: Db): Deal[] => {
     const deals = Array.from(Array(50).keys()).map(id => {
         const company = random.arrayElement(db.companies);
@@ -38,7 +30,7 @@ export const generateDeals = (db: Db): Deal[] => {
             name: lowercaseName[0].toUpperCase() + lowercaseName.slice(1),
             company_id: company.id,
             contact_ids: contacts.map(contact => contact.id),
-            type: random.arrayElement(type),
+            type: random.arrayElement(crmConfig.dealCategories),
             stage: random.arrayElement(crmConfig.dealStages).value,
             description: lorem.paragraphs(random.number({ min: 1, max: 4 })),
             amount: random.number(1000) * 100,

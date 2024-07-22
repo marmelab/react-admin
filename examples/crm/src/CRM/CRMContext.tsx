@@ -4,7 +4,7 @@ import { crmConfig } from './crm.config';
 // Define types for the context value
 export interface CRMContextValue {
     companySectors?: string[];
-    dealSteps?: string[];
+    dealCategories?: string[];
     dealStages?: { value: string; label: string }[];
     noteStatuses?: string[];
     noteTypes?: string[];
@@ -20,7 +20,7 @@ interface CRMProviderProps extends CRMContextValue {
 // Create context with default value
 export const CRMContext = createContext<CRMContextValue>({
     companySectors: crmConfig.companySectors,
-    dealSteps: [],
+    dealCategories: crmConfig.dealCategories,
     dealStages: crmConfig.dealStages,
     noteStatuses: [],
     noteTypes: [],
@@ -31,7 +31,7 @@ export const CRMContext = createContext<CRMContextValue>({
 export const CRMProvider = ({
     children,
     companySectors = crmConfig.companySectors,
-    dealSteps,
+    dealCategories,
     dealStages = crmConfig.dealStages,
     logo = crmConfig.logo,
     noteStatuses,
@@ -41,7 +41,7 @@ export const CRMProvider = ({
     <CRMContext.Provider
         value={{
             companySectors,
-            dealSteps,
+            dealCategories,
             dealStages,
             logo,
             noteStatuses,
