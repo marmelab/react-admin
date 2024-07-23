@@ -132,7 +132,7 @@ If you need to *fetch* the options from another resource, you're actually editin
 You can also pass an *array of strings* for the choices:
 
 ```jsx
-const roles = ['admin', 'u001', 'u002', 'u003'];
+const roles = ['Admin', 'Editor', 'Moderator', 'Reviewer'];
 <SelectArrayInput source="roles" choices={roles} />
 // is equivalent to
 const choices = roles.map(value => ({ id: value, name: value }));

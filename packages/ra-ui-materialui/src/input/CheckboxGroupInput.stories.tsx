@@ -63,7 +63,7 @@ export const StringChoices = () => (
     <Wrapper>
         <CheckboxGroupInput
             source="roles"
-            choices={['admin', 'u001', 'u002', 'u003']}
+            choices={['Admin', 'Editor', 'Moderator', 'Reviewer']}
         />
     </Wrapper>
 );
