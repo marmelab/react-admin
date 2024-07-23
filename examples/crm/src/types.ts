@@ -86,7 +86,6 @@ export interface Deal extends RaRecord {
 
 export interface DealNote extends RaRecord {
     deal_id: Identifier;
-    type: string;
     text: string;
     date: string;
     sales_id: Identifier;
