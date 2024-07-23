@@ -36,7 +36,7 @@ export const DealArchivedList = () => {
     const archivedListsByDate: { [date: string]: Deal[] } =
         archivedLists.reduce(
             (acc, deal) => {
-                const date = new Date(deal.archived_at).toLocaleDateString();
+                const date = new Date(deal.archived_at).toDateString();
                 if (!acc[date]) {
                     acc[date] = [];
                 }
@@ -92,11 +92,9 @@ export const DealArchivedList = () => {
     );
 };
 
-export function getRelativeTimeString(
-    dateString: string,
-    lang = navigator.language
-): string {
+export function getRelativeTimeString(dateString: string, lang = 'en'): string {
     const date = new Date(dateString);
+    console.log('date', date);
     date.setHours(0, 0, 0, 0);
 
     const today = new Date();
