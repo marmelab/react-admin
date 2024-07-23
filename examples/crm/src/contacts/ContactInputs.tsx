@@ -100,7 +100,7 @@ export const ContactInputs = () => {
                     multiline
                 />
                 <TextInput
-                    source="linkedIn"
+                    source="linkedin_url"
                     label="Linkedin URL"
                     helperText={false}
                     validate={isLinkedinUrl}
