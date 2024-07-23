@@ -51,9 +51,9 @@ async function beforeContactUpsert(
 ): Promise<CreateParams<Contact>>;
 
 async function beforeContactUpsert(
-    params: any,
-    dataProvider: any
-): Promise<any> {
+    params: CreateParams<Contact> | UpdateParams<Contact>,
+    dataProvider: DataProvider
+): Promise<CreateParams<Contact> | UpdateParams<Contact>> {
     const { data } = params;
     const avatarUrl = await getContactAvatar(data);
 
