@@ -53,7 +53,7 @@ export const CompanyForm = () => {
             <Divider sx={{ mb: 2, width: '100%' }} />
 
             <TextInput source="website" helperText={false} />
-            <TextInput source="linkedIn" helperText={false} />
+            <TextInput source="linkedin_url" helperText={false} />
             <ImageInput source="logo" accept={{ 'image/*': ['.png', '.jpg'] }}>
                 <ImageField source="src" title="title" />
             </ImageInput>

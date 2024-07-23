@@ -52,7 +52,6 @@ export const ContactInputs = () => {
             notify('An error occurred while creating the company', {
                 type: 'error',
             });
-            throw error;
         }
     };
     return (
@@ -96,9 +95,8 @@ export const ContactInputs = () => {
             <Box width={430}>
                 <TextInput
                     source="background"
-                    label="How you met?"
+                    label="Background info (bio, how you met, etc)"
                     multiline
-                    helperText={false}
                 />
                 <TextInput
                     source="linkedin_url"

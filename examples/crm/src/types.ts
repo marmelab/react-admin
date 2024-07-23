@@ -19,7 +19,7 @@ export interface Company extends RaRecord {
     logo: { title: string; src: string };
     sector: string;
     size: 1 | 10 | 50 | 250 | 500;
-    linkedIn: string;
+    linkedin_url: string;
     website: string;
     phone_number: string;
     address: string;
@@ -34,7 +34,7 @@ export interface Company extends RaRecord {
     revenue: string;
     taxe_identifier: string;
     country: string;
-    context_links: string[];
+    context_links?: string[];
 }
 
 export interface Contact extends RaRecord {
@@ -42,6 +42,7 @@ export interface Contact extends RaRecord {
     last_name: string;
     title: string;
     company_id: Identifier;
+    company_name: string;
     email: string;
     avatar?: string | null;
     linkedin_url?: string;
@@ -81,6 +82,15 @@ export interface Deal extends RaRecord {
     sales_id: Identifier;
     index: number;
     nb_notes: number;
+}
+
+export interface DealNote extends RaRecord {
+    deal_id: Identifier;
+    type: string;
+    text: string;
+    date: string;
+    sales_id: Identifier;
+    attachment?: { title: string; src: string };
 }
 
 export interface Tag extends RaRecord {

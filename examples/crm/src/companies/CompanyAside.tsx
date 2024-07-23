@@ -4,11 +4,15 @@ import {
     DateField,
     FunctionField,
     ReferenceField,
+    UrlField,
     EditButton,
     ShowButton,
     useRecordContext,
 } from 'react-admin';
 import { Typography, Divider, Link, Stack } from '@mui/material';
+import PublicIcon from '@mui/icons-material/Public';
+import LinkedInIcon from '@mui/icons-material/LinkedIn';
+import PhoneIcon from '@mui/icons-material/Phone';
 
 import { Company } from '../types';
 
@@ -53,16 +57,43 @@ const CompanyInfo = ({ record }: { record: Company }) => {
             <Typography variant="subtitle2">Company Info</Typography>
             <Divider sx={{ mb: 1 }} />
             {record.website && (
-                <Typography variant="body2" color="textSecondary">
-                    Website: <Link href={record.website}>{record.website}</Link>
-                </Typography>
+                <Stack
+                    direction="row"
+                    alignItems="center"
+                    gap={1}
+                    minHeight={24}
+                >
+                    <PublicIcon color="disabled" fontSize="small" />
+                    <UrlField source="website" target="_blank" rel="noopener" />
+                </Stack>
             )}
-            {record.linkedIn && (
-                <Typography variant="body2" color="textSecondary">
-                    LinkedIn: <Link href={record.linkedIn}>LinkedIn</Link>
-                </Typography>
+            {record.linkedin_url && (
+                <Stack
+                    direction="row"
+                    alignItems="center"
+                    gap={1}
+                    minHeight={24}
+                >
+                    <LinkedInIcon color="disabled" fontSize="small" />
+                    <UrlField
+                        source="linkedin_url"
+                        content="LinkedIn"
+                        target="_blank"
+                        rel="noopener"
+                    />
+                </Stack>
             )}
-            <TextField source="phone_number" color="textSecondary" />
+            {record.phone_number && (
+                <Stack
+                    direction="row"
+                    alignItems="center"
+                    gap={1}
+                    minHeight={24}
+                >
+                    <PhoneIcon color="disabled" fontSize="small" />
+                    <TextField source="phone_number" color="textSecondary" />
+                </Stack>
+            )}
         </Stack>
     );
 };

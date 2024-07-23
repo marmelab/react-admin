@@ -109,6 +109,7 @@ export const ContactListContent = () => {
                                 <Typography
                                     variant="body2"
                                     color="textSecondary"
+                                    title={contact.last_seen}
                                 >
                                     {!isSmall && 'last activity '}
                                     {formatDistance(

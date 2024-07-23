@@ -12,7 +12,10 @@ import {
     useRecordContext,
     UrlField,
 } from 'react-admin';
-import { Box, Typography, Divider } from '@mui/material';
+import { Box, Typography, Divider, Stack } from '@mui/material';
+import EmailIcon from '@mui/icons-material/Email';
+import LinkedInIcon from '@mui/icons-material/LinkedIn';
+import PhoneIcon from '@mui/icons-material/Phone';
 import { TagsListEdit } from './TagsListEdit';
 import { AddTask } from '../tasks/AddTask';
 import { TasksIterator } from '../tasks/TasksIterator';
@@ -35,31 +38,63 @@ export const ContactAside = ({ link = 'edit' }: { link?: 'edit' | 'show' }) => {
             </Box>
             <Typography variant="subtitle2">Personal info</Typography>
             <Divider sx={{ mb: 2 }} />
-            <EmailField sx={{ display: 'block' }} source="email" />
-            <UrlField source="linkedin_url" target="_blank" rel="noopener" />
+            {record.email && (
+                <Stack
+                    direction="row"
+                    alignItems="center"
+                    gap={1}
+                    minHeight={24}
+                >
+                    <EmailIcon color="disabled" fontSize="small" />
+                    <EmailField source="email" />
+                </Stack>
+            )}
+
+            {record.linkedin_url && (
+                <Stack
+                    direction="row"
+                    alignItems="center"
+                    gap={1}
+                    minHeight={24}
+                >
+                    <LinkedInIcon color="disabled" fontSize="small" />
+                    <UrlField
+                        source="linkedin_url"
+                        content="linkedin_url"
+                        target="_blank"
+                        rel="noopener"
+                    />
+                </Stack>
+            )}
             {record.phone_number1 && (
-                <Box>
-                    <TextField source="phone_number1" />{' '}
-                    <Typography
-                        variant="body2"
-                        color="textSecondary"
-                        component="span"
-                    >
-                        Work
-                    </Typography>
-                </Box>
+                <Stack direction="row" alignItems="center" gap={1}>
+                    <PhoneIcon color="disabled" fontSize="small" />
+                    <Box>
+                        <TextField source="phone_number1" />{' '}
+                        <Typography
+                            variant="body2"
+                            color="textSecondary"
+                            component="span"
+                        >
+                            Work
+                        </Typography>
+                    </Box>
+                </Stack>
             )}
             {record.phone_number2 && (
-                <Box>
-                    <TextField source="phone_number2" />{' '}
-                    <Typography
-                        variant="body2"
-                        color="textSecondary"
-                        component="span"
-                    >
-                        Home
-                    </Typography>
-                </Box>
+                <Stack direction="row" alignItems="center" gap={1}>
+                    <PhoneIcon color="disabled" fontSize="small" />
+                    <Box>
+                        <TextField source="phone_number2" />{' '}
+                        <Typography
+                            variant="body2"
+                            color="textSecondary"
+                            component="span"
+                        >
+                            Home
+                        </Typography>
+                    </Box>
+                </Stack>
             )}
             <SelectField
                 source="gender"
@@ -68,7 +103,7 @@ export const ContactAside = ({ link = 'edit' }: { link?: 'edit' | 'show' }) => {
                 optionValue="value"
             />
             <Typography variant="subtitle2" mt={2}>
-                Background
+                Background info
             </Typography>
             <Divider />
             <Typography variant="body2" mt={2}>

@@ -54,7 +54,6 @@ export const DealForm = () => {
             notify('An error occurred while creating the company', {
                 type: 'error',
             });
-            throw error;
         }
     };
     return (
@@ -75,6 +74,7 @@ export const DealForm = () => {
 
             <ReferenceArrayInput source="contact_ids" reference="contacts">
                 <AutocompleteArrayInput
+                    label="Contacts"
                     optionText={contactOptionText}
                     inputText={contactInputText}
                 />

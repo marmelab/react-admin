@@ -11,7 +11,7 @@ const UrlFieldImpl = <
 >(
     props: UrlFieldProps<RecordType>
 ) => {
-    const { className, emptyText, ...rest } = props;
+    const { className, emptyText, content, ...rest } = props;
     const value = useFieldValue(props);
     const translate = useTranslate();
 
@@ -36,7 +36,7 @@ const UrlFieldImpl = <
             variant="body2"
             {...sanitizeFieldRestProps(rest)}
         >
-            {value}
+            {content ?? value}
         </Link>
     );
 };
@@ -47,7 +47,9 @@ export const UrlField = genericMemo(UrlFieldImpl);
 export interface UrlFieldProps<
     RecordType extends Record<string, any> = Record<string, any>,
 > extends FieldProps<RecordType>,
-        AnchorHTMLAttributes<HTMLAnchorElement> {}
+        AnchorHTMLAttributes<HTMLAnchorElement> {
+    content?: string;
+}
 
 // useful to prevent click bubbling in a Datagrid with rowClick
 const stopPropagation = e => e.stopPropagation();
