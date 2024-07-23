@@ -75,6 +75,7 @@ export const DealForm = () => {
 
             <ReferenceArrayInput source="contact_ids" reference="contacts">
                 <AutocompleteArrayInput
+                    label="Contacts"
                     optionText={contactOptionText}
                     inputText={contactInputText}
                 />
