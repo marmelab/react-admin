@@ -86,6 +86,15 @@ export interface Deal extends RaRecord {
     nb_notes: number;
 }
 
+export interface DealNote extends RaRecord {
+    deal_id: Identifier;
+    type: string;
+    text: string;
+    date: string;
+    sales_id: Identifier;
+    attachment?: { title: string; src: string };
+}
+
 export interface Tag extends RaRecord {
     name: string;
     color: string;
