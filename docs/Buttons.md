@@ -97,7 +97,7 @@ It also supports [all the other `<Button>` props](#button).
 
 **Tip**: If you want to link to the Create view manually, use the `/{resource}/create` location.
 
-**Tip:** To allow users to edit a record without leaving the current view, use the [`<EditInDialogButton>`](./EditInDialogButton.md) component.
+**Tip:** To allow users to create a record without leaving the current view, use the [`<CreateInDialogButton>`](./CreateInDialogButton.md) component.
 
 #### `sx`: CSS API
 
