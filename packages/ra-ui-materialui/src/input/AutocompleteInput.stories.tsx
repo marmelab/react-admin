@@ -27,6 +27,8 @@ import { useFormContext } from 'react-hook-form';
 import fakeRestProvider from 'ra-data-fakerest';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
+import ExpandCircleDownIcon from '@mui/icons-material/ExpandCircleDown';
+import AttributionIcon from '@mui/icons-material/Attribution';
 
 import { Create, Edit } from '../detail';
 import { SimpleForm } from '../form';
@@ -34,8 +36,6 @@ import { AutocompleteInput, AutocompleteInputProps } from './AutocompleteInput';
 import { ReferenceInput } from './ReferenceInput';
 import { TextInput } from './TextInput';
 import { useCreateSuggestionContext } from './useSupportCreateSuggestion';
-import ExpandCircleDownIcon from '@mui/icons-material/ExpandCircleDown';
-import AttributionIcon from '@mui/icons-material/Attribution';
 
 export default { title: 'ra-ui-materialui/input/AutocompleteInput' };
 
@@ -265,6 +265,49 @@ export const OnCreate = () => (
                 placeholder: 'Start typing to create a new item',
             }}
         />
+    </Wrapper>
+);
+
+const AutocompleteWithCreateInReferenceInput = () => {
+    const [create] = useCreate();
+    const handleCreateAuthor = async (authorName?: string) => {
+        if (!authorName) return;
+        const newAuthor = await create(
+            'authors',
+            { data: { name: authorName } },
+            { returnPromise: true }
+        );
+        return newAuthor;
+    };
+    return <AutocompleteInput onCreate={handleCreateAuthor} />;
+};
+
+export const OnCreateSlow = () => (
+    <Wrapper
+        dataProvider={fakeRestProvider(
+            {
+                authors: [
+                    { id: 1, name: 'Leo Tolstoy' },
+                    { id: 2, name: 'Victor Hugo' },
+                    { id: 3, name: 'William Shakespeare' },
+                    { id: 4, name: 'Charles Baudelaire' },
+                    { id: 5, name: 'Marcel Proust' },
+                ],
+                books: [
+                    { id: 1, title: 'War and Peace', author: 1 },
+                    { id: 2, title: 'Les Misérables', author: 2 },
+                    { id: 3, title: 'Romeo and Juliet', author: 3 },
+                    { id: 4, title: 'Les Fleurs du Mal', author: 4 },
+                    { id: 5, title: 'In Search of Lost Time', author: 5 },
+                ],
+            },
+            false,
+            1500
+        )}
+    >
+        <ReferenceInput reference="authors" source="author">
+            <AutocompleteWithCreateInReferenceInput />
+        </ReferenceInput>
     </Wrapper>
 );
 
