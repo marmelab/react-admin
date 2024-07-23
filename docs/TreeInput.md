@@ -15,48 +15,45 @@ This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" 
 
 ## Usage
 
-Use `<TreeInput>` in a react-admin form, and pass the possible choices as the `treeData` prop . It must be an array of nodes with a `children` field.
+Use `<TreeInput>` in a react-admin form, and pass the possible choices as the `data` prop in the format of the data returned by `dataProvider.getTree()` method (i.e. an array of nodes with a `children` field).
 
 ```tsx
-import { Edit, SimpleForm, TextInput } from 'react-admin';
 import { TreeInput } from '@react-admin/ra-tree';
+import { SimpleForm } from 'react-admin';
 
-export const ProductEdit = () => (
-    <Edit>
-        <SimpleForm>
-            <TextInput source="id" disabled />
-            <TextInput source="name" />
-            <TreeInput source="category" treeData={[
-                { id: 1, title: 'Clothing', isRoot: true, children: [2, 6] },
-                { id: 2, title: 'Men', children: [3] },
-                { id: 3, title: 'Suits', children: [4, 5] },
-                { id: 4, title: 'Slacks', children: [] },
-                { id: 5, title: 'Jackets', children: [] },
-                { id: 6, title: 'Women', children: [7, 10, 11] },
-                { id: 7, title: 'Dresses', children: [8, 9] },
-                { id: 8, title: 'Evening Gowns', children: [] },
-                { id: 9, title: 'Sun Dresses', children: [] },
-                { id: 10, title: 'Skirts', children: [] },
-                { id: 11, title: 'Blouses', children: [] },
-            ]} />
-        </SimpleForm>
-    </Edit>
+export const SimpleTreeForm = () => (
+    <SimpleForm>
+        <TreeInput source="category" data={[
+            { id: 1, title: 'Clothing', isRoot: true, children: [2, 6] },
+            { id: 2, title: 'Men', children: [3] },
+            { id: 3, title: 'Suits', children: [4, 5] },
+            { id: 4, title: 'Slacks', children: [] },
+            { id: 5, title: 'Jackets', children: [] },
+            { id: 6, title: 'Women', children: [7, 10, 11] },
+            { id: 7, title: 'Dresses', children: [8, 9] },
+            { id: 8, title: 'Evening Gowns', children: [] },
+            { id: 9, title: 'Sun Dresses', children: [] },
+            { id: 10, title: 'Skirts', children: [] },
+            { id: 11, title: 'Blouses', children: [] },
+        ]} />
+    </SimpleForm>
 );
 ```
 
-**Tip:** You can use the `<TreeInput>` component in a [`<ReferenceNodeInput>`](./ReferenceNodeInput.md) to automatically fetch the `treeData` from a reference resource.
+**Tip:** You can use the `<TreeInput>` component in a [`<ReferenceNodeInput>`](./ReferenceNodeInput.md) to automatically fetch the `data` from a reference resource.
 
 `<TreeInput>` uses rc-tree's [`<Tree>` component](https://tree-react-component.vercel.app/#tree-props) under the hood, and accepts all its props.
 
 ## Props
 
-| Prop              | Required     | Type             | Default   | Description                                                                               |
-| ----------------- | ------------ | ---------------- | --------- | ----------------------------------------------------------------------------------------- |
-| `source`          | Required     | string           | -         | The name of the source field. Required unless when used inside `<ReferenceNodeInput>` |
-| `treeData`        | Required     | array of objects | -         | The tree data                                                                             |
-| `multiple`        | Optional     | boolean          | `false`   | Set to true to allow selecting multiple nodes                                             |
-| `hideRootNodes`   | Optional     | boolean          | `false`   | Set to true to hide all root nodes                                                        |
-| `titleField`      | Optional     | string           | `'title'` | The name of the field holding the node title                                              |
+| Prop            | Required | Type             | Default   | Description                                                                           |
+| --------------- | -------- | ---------------- | --------- | ------------------------------------------------------------------------------------- |
+| `source`        | Required | string           | -         | The name of the source field. Required unless when used inside `<ReferenceNodeInput>` |
+| `checkStrictly` | Optional | boolena          | `true`    | Check node precisely, parent and children nodes are not associated                    |
+| `data`          | Optional | array of objects | -         | The tree data                                                                         |
+| `hideRootNodes` | Optional | boolean          | `false`   | Set to true to hide all root nodes                                                    |
+| `multiple`      | Optional | boolean          | `false`   | Set to true to allow selecting multiple nodes                                         |
+| `titleField`    | Optional | string           | `'title'` | The name of the field holding the node title                                          |
 
 `<TreeInput>` also accepts the [common input props](./Inputs.md#common-input-props) and the [rc-tree](https://tree-react-component.vercel.app/) props.
 
@@ -67,11 +64,34 @@ By default, `<TreeInput>` uses the `checkStrictly` prop from rc-tree's [`<Tree>`
 ```tsx
 <TreeInput 
     source="category" 
-    treeData={treeData} 
+    data={treeData} 
     multiple 
     checkStrictly={false} 
 />
 ```
+
+## `data`
+
+The list of possible choices must be passed as the `data` prop. It must be an array of nodes with a `children` field.
+
+```tsx
+<TreeInput source="category" data={[
+    { id: 1, title: 'Clothing', isRoot: true, children: [2, 6] },
+    { id: 2, title: 'Men', children: [3] },
+    { id: 3, title: 'Suits', children: [4, 5] },
+    { id: 4, title: 'Slacks', children: [] },
+    { id: 5, title: 'Jackets', children: [] },
+    { id: 6, title: 'Women', children: [7, 10, 11] },
+    { id: 7, title: 'Dresses', children: [8, 9] },
+    { id: 8, title: 'Evening Gowns', children: [] },
+    { id: 9, title: 'Sun Dresses', children: [] },
+    { id: 10, title: 'Skirts', children: [] },
+    { id: 11, title: 'Blouses', children: [] },
+]} />
+```
+
+If you need to fetch the `data`, you're probably editing a relationship. In that case, you should use the [`<ReferenceNodeInput>`](./ReferenceNodeInput.md) component, which fetches the `data` from a reference resource on mount .
+
 
 ## `hideRootNodes`
 
@@ -80,7 +100,7 @@ Use the `hideRootNodes` prop to hide all root nodes:
 ```tsx
 <TreeInput 
     source="category" 
-    treeData={treeData} 
+    data={treeData} 
     hideRootNodes
 />
 ```
@@ -103,7 +123,7 @@ import treeData from './treeData';
 
 export const SimpleTreeForm = () => (
     <SimpleForm>
-        <TreeInput source="category" treeData={treeData} multiple />
+        <TreeInput source="category" data={treeData} multiple />
     </SimpleForm>
 );
 ```
@@ -115,32 +135,10 @@ Use the `titleField` prop to specify the name of the field holding the node titl
 ```tsx
 <TreeInput 
     source="category" 
-    treeData={treeData} 
+    data={treeData} 
     titleField="name" 
 />
 ```
-
-## `treeData`
-
-The list of possible choices must be passed as the `treeData` prop. It must be an array of nodes with a `children` field.
-
-```tsx
-<TreeInput source="category" treeData={[
-    { id: 1, title: 'Clothing', isRoot: true, children: [2, 6] },
-    { id: 2, title: 'Men', children: [3] },
-    { id: 3, title: 'Suits', children: [4, 5] },
-    { id: 4, title: 'Slacks', children: [] },
-    { id: 5, title: 'Jackets', children: [] },
-    { id: 6, title: 'Women', children: [7, 10, 11] },
-    { id: 7, title: 'Dresses', children: [8, 9] },
-    { id: 8, title: 'Evening Gowns', children: [] },
-    { id: 9, title: 'Sun Dresses', children: [] },
-    { id: 10, title: 'Skirts', children: [] },
-    { id: 11, title: 'Blouses', children: [] },
-]} />
-```
-
-If you need to fetch the `treeData`, you're probably editing a relationship. In that case, you should use the [`<ReferenceNodeInput>`](./ReferenceNodeInput.md) component, which fetches the `treeData` from a reference resource on mount .
 
 ## Fetching Choices
 
@@ -155,7 +153,7 @@ const CategoryInput = () => {
     return (
         <TreeInput 
             source="category" 
-            treeData={tree} 
+            data={tree} 
         />
     );
 };
