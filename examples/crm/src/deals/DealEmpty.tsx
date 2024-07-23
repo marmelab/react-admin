@@ -25,7 +25,7 @@ export const DealEmpty = () => {
         <Stack
             justifyContent="center"
             alignItems="center"
-            gap={2}
+            gap={1}
             sx={{
                 height: `calc(100dvh - ${appbarHeight}px)`,
             }}
