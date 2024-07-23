@@ -7,6 +7,7 @@ import {
     UpdateParams,
     withLifecycleCallbacks,
 } from 'react-admin';
+import { DEFAULT_USER } from './authProvider';
 import {
     COMPANY_CREATED,
     CONTACT_CREATED,
@@ -74,12 +75,12 @@ const dataProviderWithCustomMethod = {
         });
 
         if (!sales.data.length) {
-            return { id: 0, first_name: 'Jane', last_name: 'Doe' };
+            return { ...DEFAULT_USER };
         }
 
         const sale = sales.data.find(sale => sale.email === email);
         if (!sale) {
-            return { id: 0, first_name: 'Jane', last_name: 'Doe' };
+            return { ...DEFAULT_USER };
         }
         return sale;
     },

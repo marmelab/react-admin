@@ -3,7 +3,7 @@ import { SalesForm } from './SalesForm';
 
 export function SalesCreate() {
     return (
-        <Create>
+        <Create redirect="list">
             <SimpleForm>
                 <SalesForm />
                 <PasswordInput source="password" validate={required()} />
