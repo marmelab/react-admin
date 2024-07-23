@@ -94,7 +94,6 @@ export const DealArchivedList = () => {
 
 export function getRelativeTimeString(dateString: string, lang = 'en'): string {
     const date = new Date(dateString);
-    console.log('date', date);
     date.setHours(0, 0, 0, 0);
 
     const today = new Date();

@@ -26,7 +26,7 @@ import { UpdatePassword } from './UpdatePassword';
 
 export const SettingsPage = () => {
     const [update] = useUpdate();
-    const [isEditMode, setEditMode] = useState(true);
+    const [isEditMode, setEditMode] = useState(false);
     const { identity, refetch } = useGetIdentity();
     const user = useGetOne('sales', { id: identity?.id });
     const notify = useNotify();
@@ -98,11 +98,11 @@ const SettingsForm = ({
                         variant="text"
                         size="small"
                         startIcon={
-                            isEditMode ? <EditIcon /> : <VisibilityIcon />
+                            isEditMode ? <VisibilityIcon /> : <EditIcon />
                         }
                         onClick={() => setEditMode(!isEditMode)}
                     >
-                        {isEditMode ? 'Edit' : 'Show'}
+                        {isEditMode ? 'Show' : 'Edit'}
                     </Button>
                 </Stack>
                 <Stack gap={2} mb={2}>
@@ -150,13 +150,13 @@ const TextRender = ({
     isEditMode: boolean;
 }) => {
     if (isEditMode) {
-        return (
-            <Labeled mb={'20px'}>
-                <TextField source={source} />
-            </Labeled>
-        );
+        return <TextInput source={source} helperText={false} />;
     }
-    return <TextInput source={source} helperText={false} />;
+    return (
+        <Labeled mb={'20px'}>
+            <TextField source={source} />
+        </Labeled>
+    );
 };
 
 SettingsPage.path = '/settings';
