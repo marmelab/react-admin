@@ -1,3 +1,4 @@
+import { Stack } from '@mui/material';
 import {
     AutocompleteArrayInput,
     AutocompleteInput,
@@ -13,10 +14,9 @@ import {
     useNotify,
     useRecordContext,
 } from 'react-admin';
-import { Contact } from '../types';
-import { Stack } from '@mui/material';
 import { Avatar } from '../contacts/Avatar';
 import { useConfigurationContext } from '../root/ConfigurationContext';
+import { Contact } from '../types';
 
 const validateRequired = required();
 
@@ -28,9 +28,9 @@ const dateInPresentOrFuture = (value: string) => {
     }
     return undefined;
 };
-
-export const DealForm = () => {
+export const DealInputs = () => {
     const { dealStages, dealCategories } = useConfigurationContext();
+
     const [create] = useCreate();
     const notify = useNotify();
     const { identity } = useGetIdentity();

@@ -1,11 +1,9 @@
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import CloseIcon from '@mui/icons-material/Close';
+import { Typography } from '@mui/material';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
 import {
     DeleteWithConfirmButton,
@@ -17,7 +15,7 @@ import {
 } from 'react-admin';
 import { Link } from 'react-router-dom';
 import { Deal } from '../types';
-import { DealForm } from './DealForm';
+import { DealInputs } from './DealInputs';
 
 export const DealEdit = ({ open, id }: { open: boolean; id?: string }) => {
     const redirect = useRedirect();
@@ -49,14 +47,14 @@ export const DealEdit = ({ open, id }: { open: boolean; id?: string }) => {
                     }}
                     disablePortal
                 >
-                    <EditHeader onClose={handleClose} />
+                    <EditHeader />
                     <DialogContent
                         sx={{
                             scrollbarGutter: 'stable',
                             paddingInlineEnd: 1.5,
                         }}
                     >
-                        <DealForm />
+                        <DealInputs />
                     </DialogContent>
                     <DialogActions
                         sx={{
@@ -75,7 +73,7 @@ export const DealEdit = ({ open, id }: { open: boolean; id?: string }) => {
     );
 };
 
-function EditHeader({ onClose }: { onClose: () => void }) {
+function EditHeader() {
     const deal = useRecordContext<Deal>();
     if (!deal) {
         return null;
@@ -89,16 +87,19 @@ function EditHeader({ onClose }: { onClose: () => void }) {
                 justifyContent="space-between"
                 spacing={1}
             >
-                <Button
-                    component={Link}
-                    to={`/deals/${deal.id}/show`}
-                    startIcon={<ArrowBackIcon />}
-                >
-                    Back to {deal.name}
-                </Button>
-                <IconButton aria-label="Close" onClick={onClose} size="small">
-                    <CloseIcon />
-                </IconButton>
+                <Typography component="span" flexGrow={1}>
+                    Edit{' '}
+                    <Typography component="strong" fontWeight={700}>
+                        {deal.name}
+                    </Typography>{' '}
+                    deal
+                </Typography>
+
+                <Stack direction="row" spacing={1}>
+                    <Button component={Link} to={`/deals/${deal.id}/show`}>
+                        Back to show
+                    </Button>
+                </Stack>
             </Stack>
         </DialogTitle>
     );
