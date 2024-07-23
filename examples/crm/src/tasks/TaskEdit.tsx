@@ -1,56 +1,79 @@
+import { Dialog, DialogContent, DialogTitle, Stack } from '@mui/material';
 import * as React from 'react';
 import {
+    DateInput,
+    DeleteButton,
+    EditBase,
+    required,
+    SaveButton,
+    SelectInput,
     SimpleForm,
     TextInput,
-    required,
-    SelectInput,
-    DateInput,
     Toolbar,
-    SaveButton,
-    DeleteButton,
     useNotify,
-    EditBase,
 } from 'react-admin';
-import { Dialog, Stack } from '@mui/material';
 import { taskTypes } from './task.const';
 
 export const TaskEdit = ({
-    id,
-    setTaskSelectedId,
+    open,
+    close,
+    taskId,
 }: {
-    id: string | undefined;
-    setTaskSelectedId: (id: string | undefined) => void;
+    taskId: string;
+    open: boolean;
+    close: () => void;
 }) => {
     const notify = useNotify();
-    const handleClose = () => {
-        setTaskSelectedId(undefined);
-    };
-
     return (
-        <Dialog open={!!id} onClose={handleClose} fullWidth maxWidth="lg">
-            {!!id ? (
-                <EditBase
-                    id={id}
-                    resource="tasks"
-                    sx={{ '& .RaCreate-main': { mt: 0 } }}
-                    mutationOptions={{
-                        onSuccess: () => {
-                            setTaskSelectedId(undefined);
-                            notify('Task updated', {
-                                type: 'info',
-                                undoable: true,
-                            });
-                        },
-                    }}
-                    redirect={false}
-                >
-                    <SimpleForm
-                        toolbar={
-                            <TaskEditToolBar
-                                setTaskSelectedId={setTaskSelectedId}
+        <Dialog
+            open={open}
+            onClose={close}
+            fullWidth
+            disableRestoreFocus
+            maxWidth="sm"
+        >
+            <EditBase
+                id={taskId}
+                resource="tasks"
+                sx={{ '& .RaCreate-main': { mt: 0 } }}
+                mutationOptions={{
+                    onSuccess: () => {
+                        close();
+                        notify('Task updated', {
+                            type: 'info',
+                            undoable: true,
+                        });
+                    },
+                }}
+                redirect={false}
+            >
+                <SimpleForm
+                    toolbar={
+                        <Toolbar
+                            sx={{
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                            }}
+                        >
+                            <DeleteButton
+                                label="Delete"
+                                mutationOptions={{
+                                    onSuccess: () => {
+                                        close();
+                                        notify('Task deleted', {
+                                            type: 'info',
+                                            undoable: true,
+                                        });
+                                    },
+                                }}
+                                redirect={false}
                             />
-                        }
-                    >
+                            <SaveButton label="Save" />
+                        </Toolbar>
+                    }
+                >
+                    <DialogTitle id="form-dialog-title">Edit task</DialogTitle>
+                    <DialogContent sx={{ width: '100%' }}>
                         <TextInput
                             autoFocus
                             source="text"
@@ -72,35 +95,9 @@ export const TaskEdit = ({
                                 }))}
                             />
                         </Stack>
-                    </SimpleForm>
-                </EditBase>
-            ) : null}
+                    </DialogContent>
+                </SimpleForm>
+            </EditBase>
         </Dialog>
-    );
-};
-
-const TaskEditToolBar = ({
-    setTaskSelectedId,
-}: {
-    setTaskSelectedId: (id: string | undefined) => void;
-}) => {
-    const notify = useNotify();
-    return (
-        <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
-            <DeleteButton
-                label="Delete"
-                mutationOptions={{
-                    onSuccess: () => {
-                        setTaskSelectedId(undefined);
-                        notify('Task deleted', {
-                            type: 'info',
-                            undoable: true,
-                        });
-                    },
-                }}
-                redirect={false}
-            />
-            <SaveButton label="Save" />
-        </Toolbar>
     );
 };
