@@ -33,7 +33,7 @@ export const DealsPipeline = () => {
         }
         const deals: Deal[] = [];
         dealStages
-            ?.filter(stage => !dealPipelineStatuses.includes(stage.value))
+            .filter(stage => !dealPipelineStatuses.includes(stage.value))
             .forEach(stage =>
                 data
                     .filter(deal => deal.stage === stage.value)

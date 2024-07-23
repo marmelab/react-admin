@@ -52,7 +52,7 @@ export const CompanyCard = (props: { record?: Company }) => {
                         <SelectField
                             color="textSecondary"
                             source="sector"
-                            choices={companySectors?.map(sector => ({
+                            choices={companySectors.map(sector => ({
                                 id: sector,
                                 name: sector,
                             }))}

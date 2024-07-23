@@ -23,7 +23,7 @@ export const CompanyForm = () => {
             <Stack direction="row">
                 <SelectInput
                     source="sector"
-                    choices={companySectors?.map(sector => ({
+                    choices={companySectors.map(sector => ({
                         id: sector,
                         name: sector,
                     }))}

@@ -36,19 +36,10 @@ import {
 } from './defaultConfiguration';
 
 // Define the interface for the CRM component props
-interface CRMProps {
-    contactGender?: ConfigurationContextValue['contactGender'];
-    companySectors?: ConfigurationContextValue['companySectors'];
-    darkTheme?: RaThemeOptions;
-    dealCategories?: ConfigurationContextValue['dealCategories'];
-    dealPipelineStatuses?: ConfigurationContextValue['dealPipelineStatuses'];
-    dealStages?: ConfigurationContextValue['dealStages'];
+type CRMProps = {
     lightTheme?: RaThemeOptions;
-    logo?: ConfigurationContextValue['logo'];
-    noteStatuses?: ConfigurationContextValue['noteStatuses'];
-    taskTypes?: ConfigurationContextValue['taskTypes'];
-    title?: ConfigurationContextValue['title'];
-}
+    darkTheme?: RaThemeOptions;
+} & Partial<ConfigurationContextValue>;
 
 const defaultLightTheme = {
     ...defaultTheme,

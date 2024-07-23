@@ -82,7 +82,7 @@ export const DealForm = () => {
 
             <SelectInput
                 source="stage"
-                choices={dealStages?.map(stage => ({
+                choices={dealStages.map(stage => ({
                     id: stage.value,
                     name: stage.label,
                 }))}
@@ -92,7 +92,7 @@ export const DealForm = () => {
             <SelectInput
                 source="category"
                 label="Category"
-                choices={dealCategories?.map(type => ({
+                choices={dealCategories.map(type => ({
                     id: type,
                     name: type,
                 }))}

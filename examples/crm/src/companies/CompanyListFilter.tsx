@@ -17,7 +17,7 @@ import { useConfigurationContext } from '../root/ConfigurationContext';
 export const CompanyListFilter = () => {
     const { identity } = useGetIdentity();
     const { companySectors } = useConfigurationContext();
-    const sectors = companySectors?.map(sector => ({
+    const sectors = companySectors.map(sector => ({
         id: sector,
         name: sector,
     }));
@@ -36,7 +36,7 @@ export const CompanyListFilter = () => {
             </FilterList>
 
             <FilterList label="Sector" icon={<LocalShippingIcon />}>
-                {sectors?.map(sector => (
+                {sectors.map(sector => (
                     <FilterListItem
                         key={sector.id}
                         label={sector.name}

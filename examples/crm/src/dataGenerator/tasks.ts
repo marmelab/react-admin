@@ -33,7 +33,6 @@ export const type: TaskType[] = [
     'Thank you',
     'Ship',
     'None',
-    'toto',
 ];
 
 export const generateTasks = (db: Db) => {

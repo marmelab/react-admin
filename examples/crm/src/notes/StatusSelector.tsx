@@ -19,7 +19,7 @@ export const StatusSelector = ({ status, setStatus, sx }: any) => {
             size="small"
             sx={sx}
         >
-            {noteStatuses?.map(status => (
+            {noteStatuses.map(status => (
                 <MenuItem key={status.value} value={status.value}>
                     {status.label} <Status status={status.value} />
                 </MenuItem>

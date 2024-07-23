@@ -73,7 +73,7 @@ export const DealListContent = () => {
     return (
         <DragDropContext onDragEnd={onDragEnd}>
             <Box display="flex">
-                {dealStages?.map(stage => (
+                {dealStages.map(stage => (
                     <DealColumn
                         stage={stage.value}
                         deals={dealsByStage[stage.value]}

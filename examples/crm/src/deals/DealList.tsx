@@ -58,7 +58,7 @@ const DealLayout = () => {
         <SelectInput
             source="type"
             label="Category"
-            choices={dealCategories?.map(type => ({ id: type, name: type }))}
+            choices={dealCategories.map(type => ({ id: type, name: type }))}
         />,
         <OnlyMineInput source="sales_id" alwaysOn />,
     ];
