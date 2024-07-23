@@ -45,7 +45,7 @@ export interface Contact extends RaRecord {
     company_id: Identifier;
     email: string;
     avatar?: string | null;
-    linkedin_url?: string;
+    linkedIn?: string;
     first_seen: string;
     last_seen: string;
     has_newsletter: Boolean;

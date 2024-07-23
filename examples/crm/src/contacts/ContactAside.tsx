@@ -49,7 +49,7 @@ export const ContactAside = ({ link = 'edit' }: { link?: 'edit' | 'show' }) => {
                 </Stack>
             )}
 
-            {record.linkedin_url && (
+            {record.linkedIn && (
                 <Stack
                     direction="row"
                     alignItems="center"
@@ -58,7 +58,7 @@ export const ContactAside = ({ link = 'edit' }: { link?: 'edit' | 'show' }) => {
                 >
                     <LinkedInIcon color="disabled" fontSize="small" />
                     <UrlField
-                        source="linkedin_url"
+                        source="linkedIn"
                         content="LinkedIn"
                         target="_blank"
                         rel="noopener"
