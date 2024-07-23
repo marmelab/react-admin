@@ -2,18 +2,18 @@
  * @jest-environment node
  */
 
+// This test file uses the node environment because the getContactAvatar uses the TextEncoder API. This API is not available in the version of JSDOM used by Jest in CI.
+// As CI uses Node18 and not the latest LTS, the crypto module is not available in the global scope.
+
 import { Contact } from '../types';
 import { getContactAvatar, hash } from './getContactAvatar';
 
-// Mock the hash function
-jest.mock('./getContactAvatar', () => ({
-    ...jest.requireActual('./getContactAvatar'),
-    hash: jest
-        .fn()
-        .mockResolvedValue(
-            'b1e5a85e4b9d701bbf7937dc82d8b05fd80b9467b7ffaaae1b429a368f82ea88'
-        ),
-}));
+// eslint-disable-next-line no-global-assign
+import { webcrypto } from 'node:crypto';
+
+Object.defineProperty(globalThis, 'crypto', {
+    value: webcrypto,
+});
 
 it('should return gravatar URL for anthony@marmelab.com', async () => {
     const email = 'anthony@marmelab.com';
