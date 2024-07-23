@@ -52,7 +52,6 @@ export const ContactInputs = () => {
             notify('An error occurred while creating the company', {
                 type: 'error',
             });
-            throw error;
         }
     };
     return (
