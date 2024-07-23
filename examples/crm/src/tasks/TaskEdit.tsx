@@ -1,13 +1,19 @@
-import { Dialog, DialogContent, DialogTitle, Stack } from '@mui/material';
+import {
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
+    Stack,
+} from '@mui/material';
 import * as React from 'react';
 import {
     DateInput,
     DeleteButton,
     EditBase,
+    Form,
     required,
     SaveButton,
     SelectInput,
-    SimpleForm,
     TextInput,
     Toolbar,
     useNotify,
@@ -47,33 +53,9 @@ export const TaskEdit = ({
                 }}
                 redirect={false}
             >
-                <SimpleForm
-                    toolbar={
-                        <Toolbar
-                            sx={{
-                                display: 'flex',
-                                justifyContent: 'space-between',
-                            }}
-                        >
-                            <DeleteButton
-                                label="Delete"
-                                mutationOptions={{
-                                    onSuccess: () => {
-                                        close();
-                                        notify('Task deleted', {
-                                            type: 'info',
-                                            undoable: true,
-                                        });
-                                    },
-                                }}
-                                redirect={false}
-                            />
-                            <SaveButton label="Save" />
-                        </Toolbar>
-                    }
-                >
+                <Form>
                     <DialogTitle id="form-dialog-title">Edit task</DialogTitle>
-                    <DialogContent sx={{ width: '100%' }}>
+                    <DialogContent>
                         <TextInput
                             autoFocus
                             source="text"
@@ -96,7 +78,31 @@ export const TaskEdit = ({
                             />
                         </Stack>
                     </DialogContent>
-                </SimpleForm>
+                    <DialogActions sx={{ p: 0 }}>
+                        <Toolbar
+                            sx={{
+                                width: '100%',
+                                justifyContent: 'space-between',
+                                gap: 1,
+                            }}
+                        >
+                            <DeleteButton
+                                label="Delete"
+                                mutationOptions={{
+                                    onSuccess: () => {
+                                        close();
+                                        notify('Task deleted', {
+                                            type: 'info',
+                                            undoable: true,
+                                        });
+                                    },
+                                }}
+                                redirect={false}
+                            />
+                            <SaveButton label="Save" />
+                        </Toolbar>
+                    </DialogActions>
+                </Form>
             </EditBase>
         </Dialog>
     );
