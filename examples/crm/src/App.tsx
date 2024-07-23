@@ -37,27 +37,29 @@ const App = () => (
             },
         }}
     >
-        <CustomRoutes noLayout>
-            <Route path={SignupPage.path} element={<SignupPage />} />
-        </CustomRoutes>
-        <CustomRoutes>
-            <Route path={SettingsPage.path} element={<SettingsPage />} />
-        </CustomRoutes>
-        <Resource name="deals" {...deals} />
-        <Resource name="contacts" {...contacts} />
-        <Resource name="companies" {...companies} />
-        <Resource name="sales" {...sales} />
-        <Resource name="contactNotes" />
-        <Resource name="dealNotes" />
-        <Resource name="tasks" list={ListGuesser} />
-        <Resource
-            name="sales"
-            list={ListGuesser}
-            recordRepresentation={(record: any) =>
-                `${record.first_name} ${record.last_name}`
-            }
-        />
-        <Resource name="tags" list={ListGuesser} />
+        {permissions => (
+            <>
+                <CustomRoutes noLayout>
+                    <Route path={SignupPage.path} element={<SignupPage />} />
+                </CustomRoutes>
+                <CustomRoutes>
+                    <Route
+                        path={SettingsPage.path}
+                        element={<SettingsPage />}
+                    />
+                </CustomRoutes>
+                <Resource name="deals" {...deals} />
+                <Resource name="contacts" {...contacts} />
+                <Resource name="companies" {...companies} />
+                {permissions === 'admin' ? (
+                    <Resource name="sales" {...sales} />
+                ) : null}
+                <Resource name="contactNotes" />
+                <Resource name="dealNotes" />
+                <Resource name="tasks" list={ListGuesser} />
+                <Resource name="tags" list={ListGuesser} />
+            </>
+        )}
     </Admin>
 );
 

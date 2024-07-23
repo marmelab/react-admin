@@ -46,7 +46,7 @@ export function TransferAdminRole() {
                                     cursor: 'pointer',
                                 }}
                             >
-                                transfer administrator role
+                                transfer the administrator role
                             </Link>{' '}
                             to another account manager. By transfering the
                             administrator role, you will no longer be able to

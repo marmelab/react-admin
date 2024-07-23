@@ -3,19 +3,13 @@ import {
     BooleanField,
     CreateButton,
     DatagridConfigurable,
-    DeleteWithConfirmButton,
-    EditButton,
     ExportButton,
     List,
     SearchInput,
     TextField,
     TopToolbar,
-    useGetIdentity,
-    useRecordContext,
 } from 'react-admin';
-import { Sale } from '../types';
 import { TransferAdminRole } from './TransferAdminRole';
-import { useIsAdmin } from './useIsAdmin';
 
 function SalesListActions() {
     return (
@@ -29,11 +23,6 @@ function SalesListActions() {
 const filters = [<SearchInput source="q" alwaysOn />];
 
 export function SalesList() {
-    const isAdmin = useIsAdmin();
-    if (!isAdmin) {
-        return null;
-    }
-
     return (
         <Stack gap={4}>
             <List
@@ -46,21 +35,10 @@ export function SalesList() {
                     <TextField source="last_name" />
                     <TextField source="email" />
                     <BooleanField source="administrator" />
-                    <EditButton />
-                    <DeleteButton />
                 </DatagridConfigurable>
             </List>
 
             <TransferAdminRole />
         </Stack>
     );
-}
-
-function DeleteButton() {
-    const { identity } = useGetIdentity();
-    const record = useRecordContext<Sale>();
-    if (record?.id === identity?.id) {
-        return null;
-    }
-    return <DeleteWithConfirmButton />;
 }

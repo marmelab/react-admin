@@ -1,7 +1,7 @@
 import {
-    BooleanInput,
     DeleteWithConfirmButton,
     Edit,
+    PasswordInput,
     SaveButton,
     SimpleForm,
     Toolbar,
@@ -10,7 +10,6 @@ import {
 } from 'react-admin';
 import { Sale } from '../types';
 import { SalesForm } from './SalesForm';
-import { useIsAdmin } from './useIsAdmin';
 
 function EditToolbar() {
     const { identity } = useGetIdentity();
@@ -20,30 +19,28 @@ function EditToolbar() {
         <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
             <SaveButton />
 
-            <DeleteWithConfirmButton disabled={record?.id === identity?.id} />
+            <DeleteWithConfirmButton
+                disabled={record?.id === identity?.id}
+                mutationOptions={{
+                    meta: {
+                        identity,
+                    },
+                }}
+            />
         </Toolbar>
     );
 }
 
 export function SalesEdit() {
-    const { identity } = useGetIdentity();
-    const record = useRecordContext<Sale>();
-
-    const isAdmin = useIsAdmin();
-    if (!isAdmin) {
-        return null;
-    }
-
     return (
-        <Edit>
-            <SimpleForm toolbar={<EditToolbar />}>
-                <SalesForm />
+        <>
+            <Edit>
+                <SimpleForm toolbar={<EditToolbar />}>
+                    <SalesForm />
 
-                <BooleanInput
-                    source="administrator"
-                    readOnly={record?.id === identity?.id}
-                />
-            </SimpleForm>
-        </Edit>
+                    <PasswordInput source="new_password" />
+                </SimpleForm>
+            </Edit>
+        </>
     );
 }

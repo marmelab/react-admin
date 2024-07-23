@@ -83,7 +83,7 @@ const dataProviderWithCustomMethod = {
         }
         return sale;
     },
-    transferAdministrator: async (from: Identifier, to: Identifier) => {
+    transferAdministratorRole: async (from: Identifier, to: Identifier) => {
         const { data: sales } = await baseDataProvider.getList('sales', {
             filter: { id: [from, to] },
             pagination: { page: 1, perPage: 2 },
@@ -94,7 +94,7 @@ const dataProviderWithCustomMethod = {
         const toSale = sales.find(sale => sale.id === to);
 
         if (!fromSale || !toSale) {
-            return;
+            return null;
         }
 
         await baseDataProvider.update('sales', {
@@ -105,13 +105,14 @@ const dataProviderWithCustomMethod = {
             previousData: toSale,
         });
 
-        return await baseDataProvider.update('sales', {
+        const updatedUser = await baseDataProvider.update('sales', {
             id: from,
             data: {
                 administrator: false,
             },
             previousData: fromSale,
         });
+        return updatedUser.data;
     },
 };
 
@@ -122,11 +123,34 @@ export const dataProvider = withLifecycleCallbacks(
     [
         {
             resource: 'sales',
-            afterDelete: async (params, dataProvider) => {
+            beforeCreate: async params => {
+                const { data } = params;
+                // If administrator role is not set, we simply set it to false
+                if (data.administrator == null) {
+                    data.administrator = false;
+                }
+                return params;
+            },
+            beforeUpdate: async params => {
+                const { data } = params;
+                if (data.new_password) {
+                    data.password = data.new_password;
+                    delete data.new_password;
+                }
+
+                return params;
+            },
+            beforeDelete: async params => {
+                if (params.meta?.identity?.id == null) {
+                    throw new Error('Identity MUST be set in meta');
+                }
+
+                const newSaleId = params.meta.identity.id as Identifier;
+
                 const [companies, contacts, contactNotes, deals] =
                     await Promise.all([
                         dataProvider.getList('companies', {
-                            filter: { sales_id: params.data.id },
+                            filter: { sales_id: params.id },
                             pagination: {
                                 page: 1,
                                 perPage: 10_000,
@@ -134,7 +158,7 @@ export const dataProvider = withLifecycleCallbacks(
                             sort: { field: 'id', order: 'ASC' },
                         }),
                         dataProvider.getList('contacts', {
-                            filter: { sales_id: params.data.id },
+                            filter: { sales_id: params.id },
                             pagination: {
                                 page: 1,
                                 perPage: 10_000,
@@ -142,7 +166,7 @@ export const dataProvider = withLifecycleCallbacks(
                             sort: { field: 'id', order: 'ASC' },
                         }),
                         dataProvider.getList('contactNotes', {
-                            filter: { sales_id: params.data.id },
+                            filter: { sales_id: params.id },
                             pagination: {
                                 page: 1,
                                 perPage: 10_000,
@@ -150,7 +174,7 @@ export const dataProvider = withLifecycleCallbacks(
                             sort: { field: 'id', order: 'ASC' },
                         }),
                         dataProvider.getList('deals', {
-                            filter: { sales_id: params.data.id },
+                            filter: { sales_id: params.id },
                             pagination: {
                                 page: 1,
                                 perPage: 10_000,
@@ -160,19 +184,32 @@ export const dataProvider = withLifecycleCallbacks(
                     ]);
 
                 await Promise.all([
-                    dataProvider.deleteMany('companies', {
+                    dataProvider.updateMany('companies', {
                         ids: companies.data.map(company => company.id),
+                        data: {
+                            sales_id: newSaleId,
+                        },
                     }),
-                    dataProvider.deleteMany('contacts', {
+                    dataProvider.updateMany('contacts', {
                         ids: contacts.data.map(company => company.id),
+                        data: {
+                            sales_id: newSaleId,
+                        },
                     }),
-                    dataProvider.deleteMany('contactNotes', {
+                    dataProvider.updateMany('contactNotes', {
                         ids: contactNotes.data.map(company => company.id),
+                        data: {
+                            sales_id: newSaleId,
+                        },
                     }),
-                    dataProvider.deleteMany('deals', {
+                    dataProvider.updateMany('deals', {
                         ids: deals.data.map(company => company.id),
+                        data: {
+                            sales_id: newSaleId,
+                        },
                     }),
                 ]);
+
                 return params;
             },
         } satisfies ResourceCallbacks<Sale>,

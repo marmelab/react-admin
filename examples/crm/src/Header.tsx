@@ -14,18 +14,15 @@ import {
 import {
     LoadingIndicator,
     Logout,
-    useGetIdentity,
-    useGetOne,
+    usePermissions,
     UserMenu,
     useUserMenu,
 } from 'react-admin';
 import { Link, matchPath, useLocation } from 'react-router-dom';
-import { Sale } from './types';
 
 const Header = () => {
     const location = useLocation();
-    const { identity } = useGetIdentity();
-    const user = useGetOne<Sale>('sales', { id: identity?.id });
+    const { permissions } = usePermissions();
 
     let currentPath = '/';
     if (!!matchPath('/contacts/*', location.pathname)) {
@@ -89,9 +86,9 @@ const Header = () => {
                                     to="/deals"
                                     value="/deals"
                                 />
-                                {user?.data?.administrator && (
+                                {permissions === 'admin' && (
                                     <Tab
-                                        label={'Account Managers'}
+                                        label={'Sales'}
                                         component={Link}
                                         to="/sales"
                                         value="/sales"

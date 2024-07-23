@@ -33,7 +33,20 @@ export const authProvider: AuthProvider = {
         localStorage.getItem(USER_STORAGE_KEY)
             ? Promise.resolve()
             : Promise.reject(),
-    getPermissions: () => Promise.resolve([]),
+    getPermissions: async () => {
+        const userItem = localStorage.getItem(USER_STORAGE_KEY);
+        const localUser = userItem ? (JSON.parse(userItem) as Sale) : null;
+        if (!localUser) {
+            return Promise.reject('user is not logged in');
+        }
+
+        // We fetch permissions from server to avoid local storage tampering
+        const user = await dataProvider.getOne<Sale>('sales', {
+            id: localUser.id,
+        });
+
+        return user.data?.administrator ? 'admin' : 'user';
+    },
     getIdentity: () => {
         const userItem = localStorage.getItem(USER_STORAGE_KEY);
         const user = userItem ? (JSON.parse(userItem) as Sale) : null;
