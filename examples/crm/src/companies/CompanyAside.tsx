@@ -67,7 +67,7 @@ const CompanyInfo = ({ record }: { record: Company }) => {
                     <UrlField source="website" target="_blank" rel="noopener" />
                 </Stack>
             )}
-            {record.linkedIn && (
+            {record.linkedin_url && (
                 <Stack
                     direction="row"
                     alignItems="center"
@@ -76,7 +76,7 @@ const CompanyInfo = ({ record }: { record: Company }) => {
                 >
                     <LinkedInIcon color="disabled" fontSize="small" />
                     <UrlField
-                        source="linkedIn"
+                        source="linkedin_url"
                         content="LinkedIn"
                         target="_blank"
                         rel="noopener"

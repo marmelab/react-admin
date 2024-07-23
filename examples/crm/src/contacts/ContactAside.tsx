@@ -59,7 +59,7 @@ export const ContactAside = ({ link = 'edit' }: { link?: 'edit' | 'show' }) => {
                     <LinkedInIcon color="disabled" fontSize="small" />
                     <UrlField
                         source="linkedin_url"
-                        content="LinkedIn"
+                        content="linkedin_url"
                         target="_blank"
                         rel="noopener"
                     />

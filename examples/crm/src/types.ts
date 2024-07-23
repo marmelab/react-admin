@@ -20,7 +20,7 @@ export interface Company extends RaRecord {
     logo: { title: string; src: string };
     sector: string;
     size: 1 | 10 | 50 | 250 | 500;
-    linkedIn: string;
+    linkedin_url: string;
     website: string;
     phone_number: string;
     address: string;

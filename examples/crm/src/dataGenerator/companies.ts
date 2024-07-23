@@ -41,7 +41,7 @@ export const generateCompanies = (db: Db): Company[] => {
             },
             sector: random.arrayElement(sectors),
             size: random.arrayElement(sizes) as 1 | 10 | 50 | 250 | 500,
-            linkedIn: `https://www.linkedin.com/company/${name
+            linkedin_url: `https://www.linkedin.com/company/${name
                 .toLowerCase()
                 .replace(regex, '_')}`,
             website: internet.url(),
