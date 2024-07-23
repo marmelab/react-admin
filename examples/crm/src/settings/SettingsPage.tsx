@@ -1,4 +1,5 @@
 import EditIcon from '@mui/icons-material/Edit';
+import VisibilityIcon from '@mui/icons-material/Visibility';
 import {
     Button,
     Card,
@@ -11,6 +12,8 @@ import {
 import { useState } from 'react';
 import {
     Form,
+    Labeled,
+    TextField,
     TextInput,
     useGetIdentity,
     useGetOne,
@@ -23,7 +26,7 @@ import { UpdatePassword } from './UpdatePassword';
 
 export const SettingsPage = () => {
     const [update] = useUpdate();
-    const [isReadOnly, setReadOnly] = useState(true);
+    const [isEditMode, setEditMode] = useState(false);
     const { identity, refetch } = useGetIdentity();
     const user = useGetOne('sales', { id: identity?.id });
     const notify = useNotify();
@@ -46,7 +49,7 @@ export const SettingsPage = () => {
                         JSON.stringify(data)
                     );
                     refetch();
-                    setReadOnly(true);
+                    setEditMode(true);
                     notify('Your profile has been updated');
                 },
                 onError: _ => {
@@ -61,18 +64,21 @@ export const SettingsPage = () => {
     return (
         <Container maxWidth="sm" sx={{ mt: 4 }}>
             <Form onSubmit={handleOnSubmit} record={user.data}>
-                <SettingsForm readOnly={isReadOnly} setReadOnly={setReadOnly} />
+                <SettingsForm
+                    isEditMode={isEditMode}
+                    setEditMode={setEditMode}
+                />
             </Form>
         </Container>
     );
 };
 
 const SettingsForm = ({
-    readOnly,
-    setReadOnly,
+    isEditMode,
+    setEditMode,
 }: {
-    readOnly: boolean;
-    setReadOnly: (value: boolean) => void;
+    isEditMode: boolean;
+    setEditMode: (value: boolean) => void;
 }) => {
     const { isDirty } = useFormState();
     const [openPasswordChange, setOpenPasswordChange] = useState(false);
@@ -91,16 +97,18 @@ const SettingsForm = ({
                     <Button
                         variant="text"
                         size="small"
-                        startIcon={<EditIcon />}
-                        onClick={() => setReadOnly(!readOnly)}
+                        startIcon={
+                            isEditMode ? <VisibilityIcon /> : <EditIcon />
+                        }
+                        onClick={() => setEditMode(!isEditMode)}
                     >
-                        Edit
+                        {isEditMode ? 'Show' : 'Edit'}
                     </Button>
                 </Stack>
-                <Stack>
-                    <TextInput source="first_name" readOnly={readOnly} />
-                    <TextInput source="last_name" readOnly={readOnly} />
-                    <TextInput source="email" readOnly={readOnly} />
+                <Stack gap={2} mb={2}>
+                    <TextRender source="first_name" isEditMode={isEditMode} />
+                    <TextRender source="last_name" isEditMode={isEditMode} />
+                    <TextRender source="email" isEditMode={isEditMode} />
                 </Stack>
                 <Button
                     variant="outlined"
@@ -113,7 +121,7 @@ const SettingsForm = ({
                     setOpen={setOpenPasswordChange}
                 />
             </CardContent>
-            {!readOnly && (
+            {!isEditMode && (
                 <CardActions
                     sx={{
                         paddingX: 2,
@@ -124,13 +132,30 @@ const SettingsForm = ({
                         variant="contained"
                         type="submit"
                         disabled={!isDirty}
-                        hidden={readOnly}
+                        hidden={isEditMode}
                     >
                         Save
                     </Button>
                 </CardActions>
             )}
         </Card>
+    );
+};
+
+const TextRender = ({
+    source,
+    isEditMode,
+}: {
+    source: string;
+    isEditMode: boolean;
+}) => {
+    if (isEditMode) {
+        return <TextInput source={source} helperText={false} />;
+    }
+    return (
+        <Labeled mb={'20px'}>
+            <TextField source={source} />
+        </Labeled>
     );
 };
 
