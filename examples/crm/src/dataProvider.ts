@@ -24,33 +24,36 @@ const TASK_MARKED_AS_UNDONE = 'TASK_MARKED_AS_UNDONE';
 const TASK_DONE_NOT_CHANGED = 'TASK_DONE_NOT_CHANGED';
 let taskUpdateType = TASK_DONE_NOT_CHANGED;
 
-const processLogo = async (params: any) => {
-    if (typeof params.data.logo !== 'object' || params.data.logo === null) {
-        return getCompanyAvatar(params.data);
-    }
-    const logo = params.data.logo;
-    if (logo.rawFile instanceof File) {
+const processCompanyLogo = async (params: any) => {
+    let logo = params.data.logo;
+
+    if (typeof logo !== 'object' || logo === null) {
+        logo = getCompanyAvatar(params.data);
+    } else if (logo.rawFile instanceof File) {
         const base64Logo = await convertFileToBase64(logo);
-        return {
-            src: base64Logo,
-            title: logo.title,
-        };
+        logo = { src: base64Logo, title: logo.title };
     }
 
-    return logo;
+    return {
+        ...params,
+        data: {
+            ...params.data,
+            logo,
+        },
+    };
 };
 
-async function beforeContactUpsert(
+async function processContactAvatar(
     params: UpdateParams<Contact>,
     dataProvider: DataProvider
 ): Promise<UpdateParams<Contact>>;
 
-async function beforeContactUpsert(
+async function processContactAvatar(
     params: CreateParams<Contact>,
     dataProvider: DataProvider
 ): Promise<CreateParams<Contact>>;
 
-async function beforeContactUpsert(
+async function processContactAvatar(
     params: CreateParams<Contact> | UpdateParams<Contact>,
     dataProvider: DataProvider
 ): Promise<CreateParams<Contact> | UpdateParams<Contact>> {
@@ -102,10 +105,10 @@ export const dataProvider = withLifecycleCallbacks(
         {
             resource: 'contacts',
             beforeCreate: async (params, dataProvider) => {
-                return beforeContactUpsert(params, dataProvider);
+                return processContactAvatar(params, dataProvider);
             },
             beforeUpdate: async params => {
-                return beforeContactUpsert(params, dataProvider);
+                return processContactAvatar(params, dataProvider);
             },
             afterCreate: async (result, dataProvider) => {
                 await dataProvider.create('activityLogs', {
@@ -243,14 +246,7 @@ export const dataProvider = withLifecycleCallbacks(
         {
             resource: 'companies',
             beforeCreate: async params => {
-                const logo = await processLogo(params);
-                return {
-                    ...params,
-                    data: {
-                        ...params.data,
-                        logo,
-                    },
-                };
+                return await processCompanyLogo(params);
             },
             afterCreate: async (result, dataProvider) => {
                 await dataProvider.create('activityLogs', {
@@ -263,14 +259,7 @@ export const dataProvider = withLifecycleCallbacks(
                 return result;
             },
             beforeUpdate: async params => {
-                const logo = await processLogo(params);
-                return {
-                    ...params,
-                    data: {
-                        ...params.data,
-                        logo,
-                    },
-                };
+                return await processCompanyLogo(params);
             },
             afterUpdate: async (result, dataProvider) => {
                 // get all contacts of the company and for each contact, update the company_name
