@@ -346,3 +346,45 @@ In these cases, use [the `<ReferenceOneField>` component](./ReferenceOneField.md
 </ReferenceOneField>
 ```
 {% endraw %}
+
+## Adding a related record
+
+To allow users to create a record without leaving the current view, use the [`<CreateInDialogButton>`](./CreateInDialogButton.md) component.
+
+{% raw %}
+```jsx
+import { Edit, SimpleForm, TextInput, ReferenceManyField, WithRecord, Datagrid } from 'react-admin';
+import { CreateInDialogButton } from "@react-admin/ra-form-layout";
+
+const EmployerEdit = () => (
+  <Edit>
+      <SimpleForm>
+          <TextInput source="name" />
+          <TextInput source="address" />
+          <TextInput source="city" />
+          <ReferenceManyField
+              target="employer_id"
+              reference="customers"
+          >
+              <WithRecord
+                  render={record => (
+                      <CreateInDialogButton
+                          record={{ employer_id: record.id }}
+                      >
+                          <SimpleForm>
+                              <TextInput source="first_name" />
+                              <TextInput source="last_name" />
+                          </SimpleForm>
+                      </CreateInDialogButton>
+                  )}
+              />
+              <Datagrid>
+                  <TextField source="first_name" />
+                  <TextField source="last_name" />
+              </Datagrid>
+          </ReferenceManyField>
+      </SimpleForm>
+  </Edit>
+)
+```
+{% endraw %}
