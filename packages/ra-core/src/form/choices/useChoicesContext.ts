@@ -4,14 +4,20 @@ import { useList } from '../../controller';
 import { ChoicesContext, ChoicesContextValue } from './ChoicesContext';
 
 export const useChoicesContext = <ChoicesType extends RaRecord = RaRecord>(
-    options: Partial<ChoicesContextValue> & { choices?: ChoicesType[] } = {}
+    options: Partial<ChoicesContextValue> & {
+        choices?: ChoicesType[];
+    } = {}
 ): ChoicesContextValue<ChoicesType> => {
     const context = useContext(
         ChoicesContext
     ) as ChoicesContextValue<ChoicesType>;
+    const choices =
+        options.choices && isArrayOfStrings(options.choices)
+            ? convertOptionsToChoices(options.choices)
+            : options.choices;
     // @ts-ignore cannot satisfy the type of useList because of ability to pass partial options
-    const { data, ...list } = useList<ChoicesType>({
-        data: options.choices,
+    const { data, ...list } = useList<any>({
+        data: choices,
         isLoading: options.isLoading ?? false,
         isPending: options.isPending ?? false,
         isFetching: options.isFetching ?? false,
@@ -58,3 +64,13 @@ export const useChoicesContext = <ChoicesType extends RaRecord = RaRecord>(
 
     return result as ChoicesContextValue<ChoicesType>;
 };
+
+const isArrayOfStrings = (choices: any[]): choices is string[] =>
+    Array.isArray(choices) &&
+    choices.every(choice => typeof choice === 'string');
+
+const convertOptionsToChoices = (options: string[]) =>
+    options.map(choice => ({
+        id: choice,
+        name: choice,
+    }));

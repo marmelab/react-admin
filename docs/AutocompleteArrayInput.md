@@ -124,13 +124,13 @@ If you need to *fetch* the options from another resource, you're actually editin
 </ReferenceArrayInput>
 ```
 
-If you have an *array of values* for the options, turn it into an array of objects with the `id` and `name` properties:
+You can also pass an *array of strings* for the choices:
 
 ```jsx
-const possibleValues = ['programming', 'lifestyle', 'photography'];
-const ucfirst = name => name.charAt(0).toUpperCase() + name.slice(1);
-const choices = possibleValues.map(value => ({ id: value, name: ucfirst(value) }));
-
+const roles = ['Admin', 'Editor', 'Moderator', 'Reviewer'];  
+<AutocompleteArrayInput source="roles" choices={roles} />
+// is equivalent to
+const choices = roles.map(value => ({ id: value, name: value }));
 <AutocompleteArrayInput source="roles" choices={choices} />
 ```
 

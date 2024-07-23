@@ -116,13 +116,13 @@ If you need to *fetch* the options from another resource, you're actually editin
 
 See [Selecting a foreign key](#selecting-a-foreign-key) below for more information.
 
-If you have an *array of values* for the options, turn it into an array of objects with the `id` and `name` properties:
+You can also pass an *array of strings* for the choices:
 
 ```jsx
-const possibleValues = ['tech', 'lifestyle', 'people'];
-const ucfirst = name => name.charAt(0).toUpperCase() + name.slice(1);
-const choices = possibleValues.map(value => ({ id: value, name: ucfirst(value) }));
-
+const categories = ['tech', 'lifestyle', 'people'];
+<RadioButtonGroupInput source="category" choices={categories} />
+// is equivalent to
+const choices = categories.map(value => ({ id: value, name: value }));
 <RadioButtonGroupInput source="category" choices={choices} />
 ```
 

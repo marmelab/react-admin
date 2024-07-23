@@ -7,6 +7,7 @@ import { SimpleForm } from '../form';
 import { SelectInput } from './SelectInput';
 import { useCreateSuggestionContext } from './useSupportCreateSuggestion';
 import {
+    StringChoices,
     EmptyText,
     InsideReferenceInput,
     InsideReferenceInputDefaultValue,
@@ -129,6 +130,14 @@ describe('<SelectInput />', () => {
             const options = screen.queryAllByRole('option');
             expect(options.length).toEqual(6);
             expect(options[1].textContent).toEqual('Created');
+        });
+
+        it('should accept strings as choices', () => {
+            render(<StringChoices />);
+            fireEvent.mouseDown(screen.getByLabelText('Gender'));
+            const options = screen.queryAllByRole('option');
+            expect(options.length).toEqual(3);
+            expect(options[1].textContent).toEqual('Male');
         });
     });
 
