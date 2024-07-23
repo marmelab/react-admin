@@ -96,9 +96,8 @@ export const ContactInputs = () => {
             <Box width={430}>
                 <TextInput
                     source="background"
-                    label="How you met?"
+                    label="Background info (bio, how you met, etc)"
                     multiline
-                    helperText={false}
                 />
                 <TextInput
                     source="linkedin_url"

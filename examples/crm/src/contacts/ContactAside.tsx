@@ -62,7 +62,7 @@ export const ContactAside = ({ link = 'edit' }: { link?: 'edit' | 'show' }) => {
             )}
             <SelectField source="gender" choices={genders} />
             <Typography variant="subtitle2" mt={2}>
-                Background
+                Background info
             </Typography>
             <Divider />
             <Typography variant="body2" mt={2}>
