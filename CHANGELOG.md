@@ -1,5 +1,15 @@
 # Changelog
 
+## v4.16.20
+
+* Fix `<AutocompleteInput>` clear button does not clear new choice ([#10033](https://github.com/marmelab/react-admin/pull/10033)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* Fix `<ReferenceArrayInput>` should forward `queryOptions` to `getMany` ([#9954](https://github.com/marmelab/react-admin/pull/9954)) ([bendenoz](https://github.com/bendenoz))
+* Fix `<TitleConfigurable>` logs a warning when customizing the title ([#9930](https://github.com/marmelab/react-admin/pull/9930)) ([JardelCheung](https://github.com/JardelCheung))
+* Bump ws from 6.2.2 to 6.2.3 ([#9925](https://github.com/marmelab/react-admin/pull/9925)) ([dependabot](https://github.com/dependabot))
+* Bump braces from 3.0.2 to 3.0.3 ([#9921](https://github.com/marmelab/react-admin/pull/9921)) ([dependabot](https://github.com/dependabot))
+* [Doc] Fix routing section regarding `basename` ([#9955](https://github.com/marmelab/react-admin/pull/9955)) ([djhi](https://github.com/djhi))
+* [TypeScript] Improve List exporter type ([#9968](https://github.com/marmelab/react-admin/pull/9968)) ([fzaninotto](https://github.com/fzaninotto))
+
 ## v4.16.19
 
 * Fix `<ArrayInput>` ghost error after removing scalar item ([#9918](https://github.com/marmelab/react-admin/pull/9918)) ([djhi](https://github.com/djhi))
