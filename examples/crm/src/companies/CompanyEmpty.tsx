@@ -18,7 +18,7 @@ export const CompanyEmpty = () => {
                 No companies found
             </Typography>
             <Typography
-                variant="caption"
+                variant="body2"
                 align="center"
                 color="text.secondary"
                 gutterBottom
