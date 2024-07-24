@@ -15,6 +15,7 @@ import {
     LoadingIndicator,
     Logout,
     usePermissions,
+    useRedirect,
     UserMenu,
     useUserMenu,
 } from 'react-admin';
@@ -23,7 +24,7 @@ import { useConfigurationContext } from './root/ConfigurationContext';
 
 const Header = () => {
     const { logo, title } = useConfigurationContext();
-
+    const redirect = useRedirect();
     const location = useLocation();
     const { permissions } = usePermissions();
 
@@ -45,10 +46,18 @@ const Header = () => {
             <AppBar position="static" color="primary">
                 <Toolbar variant="dense">
                     <Box flex={1} display="flex" justifyContent="space-between">
-                        <Box display="flex" alignItems="center">
+                        <Box
+                            display="flex"
+                            alignItems="center"
+                            onClick={() => redirect('/')}
+                            sx={{ cursor: 'pointer' }}
+                        >
                             <Box
                                 component="img"
-                                sx={{ marginRight: '1em', height: 30 }}
+                                sx={{
+                                    marginRight: '1em',
+                                    height: 30,
+                                }}
                                 src={logo}
                                 alt="CRM Logo"
                             />
