@@ -145,30 +145,31 @@ export const Note = ({
                         marginBottom: 1,
                     }}
                 >
-                    <Box flex={1}>
+                    <Box
+                        flex={1}
+                        sx={{
+                            '& p:first-of-type': {
+                                marginTop: 0,
+                            },
+                            '& p:last-of-type': {
+                                marginBottom: 0,
+                            },
+                        }}
+                    >
                         {note.text
                             .split('\n')
-                            .map(
-                                (
-                                    paragraph: string,
-                                    index: number,
-                                    array: string[]
-                                ) => (
-                                    <Box
-                                        component="p"
-                                        fontFamily="fontFamily"
-                                        fontSize="body1.fontSize"
-                                        lineHeight={1.3}
-                                        marginTop={index === 0 ? 0 : undefined}
-                                        marginBottom={
-                                            index === array.length - 1 ? 0 : 2.4
-                                        }
-                                        key={index}
-                                    >
-                                        {paragraph}
-                                    </Box>
-                                )
-                            )}
+                            .map((paragraph: string, index: number) => (
+                                <Box
+                                    component="p"
+                                    fontFamily="fontFamily"
+                                    fontSize="body1.fontSize"
+                                    lineHeight={1.3}
+                                    marginBottom={2.4}
+                                    key={index}
+                                >
+                                    {paragraph}
+                                </Box>
+                            ))}
 
                         {note.attachments && <NoteAttachments note={note} />}
                     </Box>
