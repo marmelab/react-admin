@@ -35,9 +35,11 @@ const DealList = () => {
             perPage={100}
             filterDefaultValues={{
                 sales_id: identity?.id,
+            }}
+            filter={{
                 archived_at_eq: null,
             }}
-            sort={{ field: 'updated_at', order: 'DESC' }}
+            sort={{ field: 'index', order: 'DESC' }}
         >
             <DealLayout />
         </ListBase>

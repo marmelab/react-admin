@@ -21,12 +21,7 @@ export const getDealsByStage = (
     // order each column by index
     dealStages.forEach(stage => {
         dealsByStage[stage.value] = dealsByStage[stage.value].sort(
-            (recordA: Deal, recordB: Deal) => {
-                const dateA = new Date(recordA.updated_at);
-                const dateB = new Date(recordB.updated_at);
-
-                return dateB.getTime() - dateA.getTime();
-            }
+            (recordA: Deal, recordB: Deal) => recordA.index - recordB.index
         );
     });
     return dealsByStage;
