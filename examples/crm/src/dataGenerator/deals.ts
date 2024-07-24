@@ -4,23 +4,10 @@ import { add } from 'date-fns';
 import { Db } from './types';
 import { Deal } from '../types';
 import { randomDate } from './utils';
-
-const type = [
-    'Other',
-    'Copywriting',
-    'Print project',
-    'UI Design',
-    'Website design',
-];
-const stages = [
-    'opportunity',
-    'proposal-sent',
-    'in-negociation',
-    'won',
-    'lost',
-    'delayed',
-];
-//const tags = ["new deal", "upsell", "SAV"];
+import {
+    defaultDealCategories,
+    defaultDealStages,
+} from '../root/defaultConfiguration';
 
 export const generateDeals = (db: Db): Deal[] => {
     const deals = Array.from(Array(50).keys()).map(id => {
@@ -46,8 +33,8 @@ export const generateDeals = (db: Db): Deal[] => {
             name: lowercaseName[0].toUpperCase() + lowercaseName.slice(1),
             company_id: company.id,
             contact_ids: contacts.map(contact => contact.id),
-            type: random.arrayElement(type),
-            stage: random.arrayElement(stages),
+            category: random.arrayElement(defaultDealCategories),
+            stage: random.arrayElement(defaultDealStages).value,
             description: lorem.paragraphs(random.number({ min: 1, max: 4 })),
             amount: random.number(1000) * 100,
             created_at: created_at,
@@ -60,9 +47,9 @@ export const generateDeals = (db: Db): Deal[] => {
         };
     });
     // compute index based on stage
-    stages.forEach(stage => {
+    defaultDealStages.forEach(stage => {
         deals
-            .filter(deal => deal.stage === stage)
+            .filter(deal => deal.stage === stage.value)
             .forEach((deal, index) => {
                 deals[deal.id].index = index;
             });

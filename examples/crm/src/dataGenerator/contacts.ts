@@ -10,9 +10,11 @@ import {
 import { randomDate, weightedBoolean } from './utils';
 import { Db } from './types';
 import { Contact } from '../types';
+import {
+    defaultNoteStatuses,
+    defaultContactGender,
+} from '../root/defaultConfiguration';
 
-const genders = ['male', 'female', 'nonbinary'];
-const status = ['cold', 'cold', 'cold', 'warm', 'warm', 'hot', 'in-contract'];
 const maxContacts = {
     1: 1,
     10: 4,
@@ -28,7 +30,7 @@ export const generateContacts = (db: Db): Contact[] => {
     return Array.from(Array(500).keys()).map(id => {
         const has_avatar =
             weightedBoolean(25) && numberOfContacts < nbAvailblePictures;
-        const gender = random.arrayElement(genders);
+        const gender = random.arrayElement(defaultContactGender).value;
         const first_name = name.firstName(gender as any);
         const last_name = name.lastName();
         const email = internet.email(first_name, last_name);
@@ -72,7 +74,7 @@ export const generateContacts = (db: Db): Contact[] => {
             first_seen: first_seen,
             last_seen: last_seen,
             has_newsletter: weightedBoolean(30),
-            status: random.arrayElement(status),
+            status: random.arrayElement(defaultNoteStatuses).value,
             tags: random
                 .arrayElements(db.tags, random.arrayElement([0, 0, 0, 1, 1, 2]))
                 .map(tag => tag.id), // finalize

@@ -12,8 +12,7 @@ import {
     useNotify,
 } from 'react-admin';
 import { Divider, Box, Stack } from '@mui/material';
-
-import { genders } from './constants';
+import { useConfigurationContext } from '../root/ConfigurationContext';
 
 const isLinkedinUrl = (url: string) => {
     if (!url) return;
@@ -30,6 +29,7 @@ const isLinkedinUrl = (url: string) => {
 };
 
 export const ContactInputs = () => {
+    const { contactGender } = useConfigurationContext();
     const [create] = useCreate();
     const { identity } = useGetIdentity();
     const notify = useNotify();
@@ -107,8 +107,10 @@ export const ContactInputs = () => {
                 <Stack direction="row" gap={1} alignItems="center">
                     <SelectInput
                         source="gender"
-                        choices={genders}
+                        choices={contactGender}
                         helperText={false}
+                        optionText="label"
+                        optionValue="value"
                     />
                     <BooleanInput
                         source="has_newsletter"

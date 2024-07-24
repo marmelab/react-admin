@@ -14,8 +14,11 @@ import {
 import { Link, matchPath, useLocation } from 'react-router-dom';
 import { UserMenu, Logout, LoadingIndicator, useUserMenu } from 'react-admin';
 import SettingsIcon from '@mui/icons-material/Settings';
+import { useConfigurationContext } from './root/ConfigurationContext';
 
 const Header = () => {
+    const { logo, title } = useConfigurationContext();
+
     const location = useLocation();
 
     let currentPath = '/';
@@ -38,13 +41,11 @@ const Header = () => {
                             <Box
                                 component="img"
                                 sx={{ marginRight: '1em', height: 30 }}
-                                src={
-                                    'https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg'
-                                }
-                                alt="Bosch Logo"
+                                src={logo}
+                                alt="CRM Logo"
                             />
                             <Typography component="span" variant="h5">
-                                Atomic CRM
+                                {title}
                             </Typography>
                         </Box>
                         <Box>
