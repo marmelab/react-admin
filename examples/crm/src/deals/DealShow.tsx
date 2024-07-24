@@ -7,6 +7,7 @@ import {
     Stack,
     Typography,
 } from '@mui/material';
+import { useMutation } from '@tanstack/react-query';
 import { format } from 'date-fns';
 import {
     DeleteButton,
@@ -16,6 +17,7 @@ import {
     ReferenceManyField,
     ShowBase,
     TextField,
+    useDataProvider,
     useNotify,
     useRecordContext,
     useRedirect,
@@ -27,9 +29,9 @@ import ArchiveIcon from '@mui/icons-material/Archive';
 import UnarchiveIcon from '@mui/icons-material/Unarchive';
 import { CompanyAvatar } from '../companies/CompanyAvatar';
 import { NotesIterator } from '../notes';
+import { useConfigurationContext } from '../root/ConfigurationContext';
 import { Deal } from '../types';
 import { ContactList } from './ContactList';
-import { useConfigurationContext } from '../root/ConfigurationContext';
 import { findDealLabel } from './deal';
 
 export const DealShow = ({ open, id }: { open: boolean; id?: string }) => {
@@ -256,35 +258,28 @@ const ArchiveButton = ({ record }: { record: Deal }) => {
 };
 
 const UnarchiveButton = ({ record }: { record: Deal }) => {
-    const [update] = useUpdate();
+    const dataProvider = useDataProvider();
     const redirect = useRedirect();
     const notify = useNotify();
     const refresh = useRefresh();
+
+    const { mutate } = useMutation({
+        mutationFn: () => dataProvider.unarchiveDeal(record),
+        onSuccess: () => {
+            redirect('list', 'deals');
+            notify('Deal unarchived', {
+                type: 'info',
+                undoable: false,
+            });
+            refresh();
+        },
+        onError: () => {
+            notify('Error: deal not unarchived', { type: 'error' });
+        },
+    });
+
     const handleClick = () => {
-        update(
-            'deals',
-            {
-                id: record.id,
-                data: {
-                    archived_at: null,
-                    updated_at: new Date().toISOString(),
-                },
-                previousData: record,
-            },
-            {
-                onSuccess: () => {
-                    redirect('list', 'deals');
-                    notify('Deal unarchived', {
-                        type: 'info',
-                        undoable: false,
-                    });
-                    refresh();
-                },
-                onError: () => {
-                    notify('Error: deal not unarchived', { type: 'error' });
-                },
-            }
-        );
+        mutate();
     };
 
     return (
