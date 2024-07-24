@@ -34,6 +34,7 @@ import {
     defaultTaskTypes,
     defaultTitle,
 } from './defaultConfiguration';
+import sales from '../sales';
 
 // Define the interface for the CRM component props
 type CRMProps = {
@@ -124,26 +125,32 @@ export const CRM = ({
             theme={lightTheme}
             darkTheme={darkTheme || null}
         >
-            <CustomRoutes noLayout>
-                <Route path={SignupPage.path} element={<SignupPage />} />
-            </CustomRoutes>
-            <CustomRoutes>
-                <Route path={SettingsPage.path} element={<SettingsPage />} />
-            </CustomRoutes>
-            <Resource name="deals" {...deals} />
-            <Resource name="contacts" {...contacts} />
-            <Resource name="companies" {...companies} />
-            <Resource name="contactNotes" />
-            <Resource name="dealNotes" />
-            <Resource name="tasks" list={ListGuesser} />
-            <Resource
-                name="sales"
-                list={ListGuesser}
-                recordRepresentation={(record: any) =>
-                    `${record.first_name} ${record.last_name}`
-                }
-            />
-            <Resource name="tags" list={ListGuesser} />
+            {permissions => (
+                <>
+                    <CustomRoutes noLayout>
+                        <Route
+                            path={SignupPage.path}
+                            element={<SignupPage />}
+                        />
+                    </CustomRoutes>
+                    <CustomRoutes>
+                        <Route
+                            path={SettingsPage.path}
+                            element={<SettingsPage />}
+                        />
+                    </CustomRoutes>
+                    <Resource name="deals" {...deals} />
+                    <Resource name="contacts" {...contacts} />
+                    <Resource name="companies" {...companies} />
+                    <Resource name="contactNotes" />
+                    <Resource name="dealNotes" />
+                    <Resource name="tasks" list={ListGuesser} />
+                    {permissions === 'admin' ? (
+                        <Resource name="sales" {...sales} />
+                    ) : null}
+                    <Resource name="tags" list={ListGuesser} />
+                </>
+            )}
         </Admin>
     </ConfigurationProvider>
 );
