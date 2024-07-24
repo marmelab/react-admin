@@ -32,7 +32,9 @@ export const DealCardContent = ({
 }) => {
     const redirect = useRedirect();
     const handleClick = () => {
-        redirect(`/deals/${deal.id}/show`);
+        redirect(`/deals/${deal.id}/show`, undefined, undefined, undefined, {
+            _scrollToTop: false,
+        });
     };
 
     return (

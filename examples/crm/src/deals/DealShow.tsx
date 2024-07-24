@@ -99,7 +99,7 @@ const DealShowContent = () => {
                             ) : (
                                 <>
                                     <ArchiveButton record={record} />
-                                    <EditButton />
+                                    <EditButton scrollToTop={false} />
                                 </>
                             )}
                         </Stack>
