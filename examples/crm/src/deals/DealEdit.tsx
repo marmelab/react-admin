@@ -3,7 +3,15 @@ import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import { Edit, SimpleForm, useRecordContext, useRedirect } from 'react-admin';
+import {
+    DeleteWithConfirmButton,
+    Edit,
+    SaveButton,
+    SimpleForm,
+    Toolbar,
+    useRecordContext,
+    useRedirect,
+} from 'react-admin';
 import { Link } from 'react-router-dom';
 import { Deal } from '../types';
 import { DealInputs } from './DealInputs';
@@ -20,7 +28,7 @@ export const DealEdit = ({ open, id }: { open: boolean; id?: string }) => {
             {!!id ? (
                 <Edit id={id} redirect="show">
                     <EditHeader />
-                    <SimpleForm>
+                    <SimpleForm toolbar={<EditToolbar />}>
                         <DealInputs />
                     </SimpleForm>
                 </Edit>
@@ -62,5 +70,15 @@ function EditHeader() {
                 </Stack>
             </Stack>
         </DialogTitle>
+    );
+}
+
+function EditToolbar() {
+    return (
+        <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
+            <SaveButton />
+
+            <DeleteWithConfirmButton />
+        </Toolbar>
     );
 }
