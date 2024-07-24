@@ -10,20 +10,7 @@ import { randomDate } from './utils';
 
 import { Db } from './types';
 import { Company } from '../types';
-
-const sectors = [
-    'Communication Services',
-    'Consumer Discretionary',
-    'Consumer Staples',
-    'Energy',
-    'Financials',
-    'Health Care',
-    'Industrials',
-    'Information Technology',
-    'Materials',
-    'Real Estate',
-    'Utilities',
-];
+import { defaultCompanySectors } from '../root/defaultConfiguration';
 
 const sizes = [1, 10, 50, 250, 500];
 
@@ -39,7 +26,7 @@ export const generateCompanies = (db: Db): Company[] => {
                 title: lorem.text(1),
                 src: `./logos/${id}.png`,
             },
-            sector: random.arrayElement(sectors),
+            sector: random.arrayElement(defaultCompanySectors),
             size: random.arrayElement(sizes) as 1 | 10 | 50 | 250 | 500,
             linkedin_url: `https://www.linkedin.com/company/${name
                 .toLowerCase()

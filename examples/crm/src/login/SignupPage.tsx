@@ -103,7 +103,7 @@ export const SignupPage = () => {
                         />
                         <TextField
                             {...register('email', { required: true })}
-                            label="email"
+                            label="Email"
                             type="email"
                             variant="outlined"
                             helperText={false}
@@ -112,7 +112,7 @@ export const SignupPage = () => {
                         />
                         <TextField
                             {...register('password', { required: true })}
-                            label="password"
+                            label="Password"
                             type="password"
                             variant="outlined"
                             InputLabelProps={{ shrink: true }}

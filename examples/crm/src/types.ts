@@ -5,7 +5,6 @@ import {
     CONTACT_NOTE_CREATED,
     DEAL_CREATED,
 } from './consts';
-import { taskTypes } from './tasks/task.const';
 
 export interface Sale extends RaRecord {
     first_name: string;
@@ -60,7 +59,6 @@ export interface Contact extends RaRecord {
 
 export interface ContactNote extends RaRecord {
     contact_id: Identifier;
-    type: string;
     text: string;
     date: string;
     sales_id: Identifier;
@@ -72,7 +70,7 @@ export interface Deal extends RaRecord {
     name: string;
     company_id: Identifier;
     contact_ids: Identifier[];
-    type: string;
+    category: string;
     stage: string;
     description: string;
     amount: number;
@@ -88,7 +86,6 @@ export interface Deal extends RaRecord {
 
 export interface DealNote extends RaRecord {
     deal_id: Identifier;
-    type: string;
     text: string;
     date: string;
     sales_id: Identifier;
@@ -102,7 +99,7 @@ export interface Tag extends RaRecord {
 
 export interface Task extends RaRecord {
     contact_id: Identifier;
-    type: (typeof taskTypes)[number];
+    type: string;
     text: string;
     due_date: string;
     done_date?: string | null;
@@ -124,4 +121,19 @@ export interface AttachmentNote {
     src: string;
     title: string;
     rawFile: File;
+}
+export interface DealStage {
+    value: string;
+    label: string;
+}
+
+export interface NoteStatus {
+    value: string;
+    label: string;
+    color: string;
+}
+
+export interface ContactGender {
+    value: string;
+    label: string;
 }

@@ -29,7 +29,8 @@ import { CompanyAvatar } from '../companies/CompanyAvatar';
 import { NotesIterator } from '../notes';
 import { Deal } from '../types';
 import { ContactList } from './ContactList';
-import { stageNames } from './stages';
+import { useConfigurationContext } from '../root/ConfigurationContext';
+import { findDealLabel } from './deal';
 
 export const DealShow = ({ open, id }: { open: boolean; id?: string }) => {
     const redirect = useRedirect();
@@ -52,6 +53,7 @@ export const DealShow = ({ open, id }: { open: boolean; id?: string }) => {
 };
 
 const DealShowContent = () => {
+    const { dealStages } = useConfigurationContext();
     const record = useRecordContext<Deal>();
     if (!record) return null;
     return (
@@ -139,7 +141,7 @@ const DealShowContent = () => {
                                 Category
                             </Typography>
                             <Typography variant="subtitle1">
-                                {record.type}
+                                {record.category}
                             </Typography>
                         </Box>
 
@@ -148,8 +150,7 @@ const DealShowContent = () => {
                                 Stage
                             </Typography>
                             <Typography variant="subtitle1">
-                                {/* @ts-ignore */}
-                                {stageNames[record.stage]}
+                                {findDealLabel(dealStages, record.stage)}
                             </Typography>
                         </Box>
                     </Box>

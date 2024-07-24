@@ -1,28 +1,29 @@
 import * as React from 'react';
 import {
-    useNotify,
-    useGetIdentity,
-    useResourceContext,
     Create,
-    SimpleForm,
-    TextInput,
     DateTimeInput,
-    useRecordContext,
-    Toolbar,
-    SaveButton,
-    Identifier,
-    useUpdate,
-    useListContext,
-    SelectInput,
-    RaRecord,
-    FormDataConsumer,
     FileField,
     FileInput,
+    FormDataConsumer,
+    Identifier,
+    RaRecord,
+    SaveButton,
+    SelectInput,
+    SimpleForm,
+    TextInput,
+    Toolbar,
+    useGetIdentity,
+    useListContext,
+    useNotify,
+    useRecordContext,
+    useResourceContext,
+    useUpdate,
 } from 'react-admin';
 import { useFormContext } from 'react-hook-form';
 
-import { Status } from '../misc/Status';
 import { Stack } from '@mui/material';
+import { Status } from '../misc/Status';
+import { useConfigurationContext } from '../root/ConfigurationContext';
 import { AttachmentNote } from '../types';
 
 const foreignKeyMapping = {
@@ -45,6 +46,7 @@ export const NoteCreate = ({
     showStatus?: boolean;
     reference: 'contacts' | 'deals';
 }) => {
+    const { noteStatuses } = useConfigurationContext();
     const resource = useResourceContext();
     const record = useRecordContext();
     const { identity } = useGetIdentity();
@@ -76,15 +78,8 @@ export const NoteCreate = ({
                                     {showStatus && (
                                         <SelectInput
                                             source="status"
-                                            choices={[
-                                                { id: 'cold', name: 'Cold' },
-                                                { id: 'warm', name: 'Warm' },
-                                                { id: 'hot', name: 'Hot' },
-                                                {
-                                                    id: 'in-contract',
-                                                    name: 'In Contract',
-                                                },
-                                            ]}
+                                            choices={noteStatuses}
+                                            optionValue="value"
                                             optionText={optionRenderer}
                                             isRequired
                                             defaultValue={'warm'}
@@ -156,6 +151,6 @@ const NoteCreateToolbar = ({
 
 const optionRenderer = (choice: any) => (
     <div>
-        {choice.name} <Status status={choice.id} />
+        {choice.label} <Status status={choice.value} />
     </div>
 );

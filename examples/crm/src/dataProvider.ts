@@ -2,10 +2,12 @@ import fakeRestDataProvider from 'ra-data-fakerest';
 import {
     CreateParams,
     DataProvider,
+    Identifier,
     ResourceCallbacks,
     UpdateParams,
     withLifecycleCallbacks,
 } from 'react-admin';
+import { DEFAULT_USER } from './authProvider';
 import {
     COMPANY_CREATED,
     CONTACT_CREATED,
@@ -15,7 +17,7 @@ import {
 import generateData from './dataGenerator';
 import { getCompanyAvatar } from './misc/getCompanyAvatar';
 import { getContactAvatar } from './misc/getContactAvatar';
-import { Company, Contact, ContactNote, Deal, Task } from './types';
+import { Company, Contact, ContactNote, Deal, Sale, Task } from './types';
 
 const baseDataProvider = fakeRestDataProvider(generateData(), true, 300);
 
@@ -88,20 +90,145 @@ const dataProviderWithCustomMethod = {
         });
 
         if (!sales.data.length) {
-            return { id: 0, first_name: 'Jane', last_name: 'Doe' };
+            return { ...DEFAULT_USER };
         }
 
         const sale = sales.data.find(sale => sale.email === email);
         if (!sale) {
-            return { id: 0, first_name: 'Jane', last_name: 'Doe' };
+            return { ...DEFAULT_USER };
         }
         return sale;
     },
+    transferAdministratorRole: async (from: Identifier, to: Identifier) => {
+        const { data: sales } = await baseDataProvider.getList('sales', {
+            filter: { id: [from, to] },
+            pagination: { page: 1, perPage: 2 },
+            sort: { field: 'name', order: 'ASC' },
+        });
+
+        const fromSale = sales.find(sale => sale.id === from);
+        const toSale = sales.find(sale => sale.id === to);
+
+        if (!fromSale || !toSale) {
+            return null;
+        }
+
+        await baseDataProvider.update('sales', {
+            id: to,
+            data: {
+                administrator: true,
+            },
+            previousData: toSale,
+        });
+
+        const updatedUser = await baseDataProvider.update('sales', {
+            id: from,
+            data: {
+                administrator: false,
+            },
+            previousData: fromSale,
+        });
+        return updatedUser.data;
+    },
 };
+
+export type CustomDataProvider = typeof dataProviderWithCustomMethod;
 
 export const dataProvider = withLifecycleCallbacks(
     dataProviderWithCustomMethod,
     [
+        {
+            resource: 'sales',
+            beforeCreate: async params => {
+                const { data } = params;
+                // If administrator role is not set, we simply set it to false
+                if (data.administrator == null) {
+                    data.administrator = false;
+                }
+                return params;
+            },
+            beforeUpdate: async params => {
+                const { data } = params;
+                if (data.new_password) {
+                    data.password = data.new_password;
+                    delete data.new_password;
+                }
+
+                return params;
+            },
+            beforeDelete: async params => {
+                if (params.meta?.identity?.id == null) {
+                    throw new Error('Identity MUST be set in meta');
+                }
+
+                const newSaleId = params.meta.identity.id as Identifier;
+
+                const [companies, contacts, contactNotes, deals] =
+                    await Promise.all([
+                        dataProvider.getList('companies', {
+                            filter: { sales_id: params.id },
+                            pagination: {
+                                page: 1,
+                                perPage: 10_000,
+                            },
+                            sort: { field: 'id', order: 'ASC' },
+                        }),
+                        dataProvider.getList('contacts', {
+                            filter: { sales_id: params.id },
+                            pagination: {
+                                page: 1,
+                                perPage: 10_000,
+                            },
+                            sort: { field: 'id', order: 'ASC' },
+                        }),
+                        dataProvider.getList('contactNotes', {
+                            filter: { sales_id: params.id },
+                            pagination: {
+                                page: 1,
+                                perPage: 10_000,
+                            },
+                            sort: { field: 'id', order: 'ASC' },
+                        }),
+                        dataProvider.getList('deals', {
+                            filter: { sales_id: params.id },
+                            pagination: {
+                                page: 1,
+                                perPage: 10_000,
+                            },
+                            sort: { field: 'id', order: 'ASC' },
+                        }),
+                    ]);
+
+                await Promise.all([
+                    dataProvider.updateMany('companies', {
+                        ids: companies.data.map(company => company.id),
+                        data: {
+                            sales_id: newSaleId,
+                        },
+                    }),
+                    dataProvider.updateMany('contacts', {
+                        ids: contacts.data.map(company => company.id),
+                        data: {
+                            sales_id: newSaleId,
+                        },
+                    }),
+                    dataProvider.updateMany('contactNotes', {
+                        ids: contactNotes.data.map(company => company.id),
+                        data: {
+                            sales_id: newSaleId,
+                        },
+                    }),
+                    dataProvider.updateMany('deals', {
+                        ids: deals.data.map(company => company.id),
+                        data: {
+                            sales_id: newSaleId,
+                        },
+                    }),
+                ]);
+
+                return params;
+            },
+        } satisfies ResourceCallbacks<Sale>,
         {
             resource: 'contacts',
             beforeCreate: async (params, dataProvider) => {
