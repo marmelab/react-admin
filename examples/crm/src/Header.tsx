@@ -1,22 +1,31 @@
-import React from 'react';
+import SettingsIcon from '@mui/icons-material/Settings';
 import {
-    Tabs,
-    Tab,
-    Toolbar,
     AppBar,
     Box,
-    Typography,
-    MenuList,
-    MenuItem,
     ListItemIcon,
     ListItemText,
+    MenuItem,
+    MenuList,
+    Tab,
+    Tabs,
+    Toolbar,
+    Typography,
 } from '@mui/material';
+import {
+    LoadingIndicator,
+    Logout,
+    usePermissions,
+    UserMenu,
+    useUserMenu,
+} from 'react-admin';
 import { Link, matchPath, useLocation } from 'react-router-dom';
-import { UserMenu, Logout, LoadingIndicator, useUserMenu } from 'react-admin';
-import SettingsIcon from '@mui/icons-material/Settings';
+import { useConfigurationContext } from './root/ConfigurationContext';
 
 const Header = () => {
+    const { logo, title } = useConfigurationContext();
+
     const location = useLocation();
+    const { permissions } = usePermissions();
 
     let currentPath = '/';
     if (!!matchPath('/contacts/*', location.pathname)) {
@@ -27,6 +36,8 @@ const Header = () => {
         currentPath = '/deals';
     } else if (!!matchPath('/settings', location.pathname)) {
         currentPath = '/settings';
+    } else if (!!matchPath('/sales/*', location.pathname)) {
+        currentPath = '/sales';
     }
 
     return (
@@ -38,13 +49,11 @@ const Header = () => {
                             <Box
                                 component="img"
                                 sx={{ marginRight: '1em', height: 30 }}
-                                src={
-                                    'https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg'
-                                }
-                                alt="Bosch Logo"
+                                src={logo}
+                                alt="CRM Logo"
                             />
                             <Typography component="span" variant="h5">
-                                Atomic CRM
+                                {title}
                             </Typography>
                         </Box>
                         <Box>
@@ -78,6 +87,14 @@ const Header = () => {
                                     to="/deals"
                                     value="/deals"
                                 />
+                                {permissions === 'admin' && (
+                                    <Tab
+                                        label={'Sales'}
+                                        component={Link}
+                                        to="/sales"
+                                        value="/sales"
+                                    />
+                                )}
                             </Tabs>
                         </Box>
                         <Box display="flex" alignItems="center">

@@ -3,7 +3,8 @@ import { Box, Stack, Typography } from '@mui/material';
 
 import { Deal } from '../types';
 import { DealCard } from './DealCard';
-import { stageNames } from './stages';
+import { useConfigurationContext } from '../root/ConfigurationContext';
+import { findDealLabel } from './deal';
 
 export const DealColumn = ({
     stage,
@@ -14,6 +15,7 @@ export const DealColumn = ({
 }) => {
     const totalAmount = deals.reduce((sum, deal) => sum + deal.amount, 0);
 
+    const { dealStages } = useConfigurationContext();
     return (
         <Box
             sx={{
@@ -33,8 +35,7 @@ export const DealColumn = ({
         >
             <Stack alignItems="center">
                 <Typography variant="subtitle1">
-                    {/* @ts-ignore */}
-                    {stageNames[stage]}
+                    {findDealLabel(dealStages, stage)}
                 </Typography>
                 <Typography
                     variant="subtitle1"

@@ -19,12 +19,12 @@ import { DealListContent } from './DealListContent';
 import { DealCreate } from './DealCreate';
 import { DealShow } from './DealShow';
 import { OnlyMineInput } from './OnlyMineInput';
-import { typeChoices } from './types';
 import { Card, LinearProgress, Stack } from '@mui/material';
 import { DealEmpty } from './DealEmpty';
 import { hasOtherFiltersThanDefault } from '../misc/hasOtherFiltersThanDefault';
 import { DealEdit } from './DealEdit';
 import { DealArchivedList } from './DealArchivedList';
+import { useConfigurationContext } from '../root/ConfigurationContext';
 
 const DealList = () => {
     const { identity } = useGetIdentity();
@@ -49,6 +49,19 @@ const DealLayout = () => {
     const matchCreate = matchPath('/deals/create', location.pathname);
     const matchShow = matchPath('/deals/:id/show', location.pathname);
     const matchEdit = matchPath('/deals/:id', location.pathname);
+
+    const { dealCategories } = useConfigurationContext();
+
+    const dealFilters = [
+        <SearchInput source="q" alwaysOn />,
+        <ReferenceInput source="company_id" reference="companies" />,
+        <SelectInput
+            source="type"
+            label="Category"
+            choices={dealCategories.map(type => ({ id: type, name: type }))}
+        />,
+        <OnlyMineInput source="sales_id" alwaysOn />,
+    ];
 
     const { data, isPending, filterValues } = useListContext();
     const { identity } = useGetIdentity();
@@ -79,13 +92,6 @@ const DealLayout = () => {
         </Stack>
     );
 };
-
-const dealFilters = [
-    <SearchInput source="q" alwaysOn />,
-    <ReferenceInput source="company_id" reference="companies" />,
-    <SelectInput source="type" label="Category" choices={typeChoices} />,
-    <OnlyMineInput source="sales_id" alwaysOn />,
-];
 
 const DealActions = () => {
     return (

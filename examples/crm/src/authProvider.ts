@@ -2,12 +2,15 @@ import { AuthProvider } from 'react-admin';
 import { dataProvider } from './dataProvider';
 import { Sale } from './types';
 
+export const DEFAULT_USER = {
+    id: 0,
+    first_name: 'Jane',
+    last_name: 'Doe',
+} as const;
+
 export const USER_STORAGE_KEY = 'user';
 
-localStorage.setItem(
-    USER_STORAGE_KEY,
-    JSON.stringify({ id: 0, first_name: 'Jane', last_name: 'Doe' })
-);
+localStorage.setItem(USER_STORAGE_KEY, JSON.stringify({ ...DEFAULT_USER }));
 
 export const authProvider: AuthProvider = {
     login: async ({ email, redirectTo }) => {
@@ -20,7 +23,7 @@ export const authProvider: AuthProvider = {
 
         localStorage.setItem(
             USER_STORAGE_KEY,
-            JSON.stringify({ first_name: 'Jane', last_name: 'Doe' })
+            JSON.stringify({ ...DEFAULT_USER })
         );
         return Promise.resolve(redirectTo ? { redirectTo } : undefined);
     },
@@ -33,7 +36,20 @@ export const authProvider: AuthProvider = {
         localStorage.getItem(USER_STORAGE_KEY)
             ? Promise.resolve()
             : Promise.reject(),
-    getPermissions: () => Promise.resolve([]),
+    getPermissions: async () => {
+        const userItem = localStorage.getItem(USER_STORAGE_KEY);
+        const localUser = userItem ? (JSON.parse(userItem) as Sale) : null;
+        if (!localUser) {
+            return Promise.reject('user is not logged in');
+        }
+
+        // We fetch permissions from server to avoid local storage tampering
+        const user = await dataProvider.getOne<Sale>('sales', {
+            id: localUser.id,
+        });
+
+        return user.data?.administrator ? 'admin' : 'user';
+    },
     getIdentity: () => {
         const userItem = localStorage.getItem(USER_STORAGE_KEY);
         const user = userItem ? (JSON.parse(userItem) as Sale) : null;

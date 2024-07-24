@@ -16,8 +16,7 @@ import {
 import { Contact } from '../types';
 import { Stack } from '@mui/material';
 import { Avatar } from '../contacts/Avatar';
-import { stageChoices } from './stages';
-import { typeChoices } from './types';
+import { useConfigurationContext } from '../root/ConfigurationContext';
 
 const validateRequired = required();
 
@@ -31,6 +30,7 @@ const dateInPresentOrFuture = (value: string) => {
 };
 
 export const DealForm = () => {
+    const { dealStages, dealCategories } = useConfigurationContext();
     const [create] = useCreate();
     const notify = useNotify();
     const { identity } = useGetIdentity();
@@ -82,11 +82,21 @@ export const DealForm = () => {
 
             <SelectInput
                 source="stage"
-                choices={stageChoices}
+                choices={dealStages.map(stage => ({
+                    id: stage.value,
+                    name: stage.label,
+                }))}
                 validate={validateRequired}
                 defaultValue="opportunity"
             />
-            <SelectInput source="type" label="Category" choices={typeChoices} />
+            <SelectInput
+                source="category"
+                label="Category"
+                choices={dealCategories.map(type => ({
+                    id: type,
+                    name: type,
+                }))}
+            />
             <NumberInput
                 source="amount"
                 defaultValue={0}
