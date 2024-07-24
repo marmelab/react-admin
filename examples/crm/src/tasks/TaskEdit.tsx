@@ -18,7 +18,7 @@ import {
     Toolbar,
     useNotify,
 } from 'react-admin';
-import { taskTypes } from './task.const';
+import { useConfigurationContext } from '../root/ConfigurationContext';
 
 export const TaskEdit = ({
     open,
@@ -29,6 +29,7 @@ export const TaskEdit = ({
     open: boolean;
     close: () => void;
 }) => {
+    const { taskTypes } = useConfigurationContext();
     const notify = useNotify();
     return (
         <Dialog

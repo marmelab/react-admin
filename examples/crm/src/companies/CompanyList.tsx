@@ -49,9 +49,7 @@ const CompanyListLayout = () => {
             <Stack sx={{ width: '100%' }}>
                 <Title title={'Companies'} />
                 <ListToolbar actions={<CompanyListActions />} />
-                <Card>
-                    <ImageList />
-                </Card>
+                <ImageList />
                 <Pagination rowsPerPageOptions={[10, 25, 50, 100]} />
             </Stack>
         </Stack>
