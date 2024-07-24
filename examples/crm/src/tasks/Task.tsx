@@ -73,7 +73,9 @@ export const Task = ({
                         <IconButton
                             edge="end"
                             aria-label="task actions"
-                            aria-controls={open ? 'basic-menu' : undefined}
+                            aria-controls={
+                                open ? `task-${task.id}-menu` : undefined
+                            }
                             onClick={handleClick}
                             aria-haspopup="true"
                             aria-expanded={open ? 'true' : undefined}
@@ -82,7 +84,7 @@ export const Task = ({
                             <MoreVertIcon />
                         </IconButton>
                         <Menu
-                            id="basic-menu"
+                            id={`task-${task.id}-menu`}
                             anchorEl={anchorEl}
                             open={open}
                             onClose={Menu}
@@ -168,7 +170,10 @@ export const Task = ({
                     >
                         {task.type && task.type !== 'None' && (
                             <>
-                                <strong>{task.type}</strong>&nbsp;
+                                <Typography component="strong">
+                                    {task.type}
+                                </Typography>
+                                &nbsp;
                             </>
                         )}
                         {task.text}
