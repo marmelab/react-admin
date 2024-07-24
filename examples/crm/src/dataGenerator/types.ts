@@ -1,10 +1,10 @@
-import { RaRecord } from 'react-admin';
 import {
     Activity,
     Company,
     Contact,
     ContactNote,
     Deal,
+    DealNote,
     Sale,
     Tag,
     Task,
@@ -15,7 +15,7 @@ export interface Db {
     contacts: Contact[];
     contactNotes: ContactNote[];
     deals: Deal[];
-    dealNotes: RaRecord[];
+    dealNotes: DealNote[];
     sales: Sale[];
     tags: Tag[];
     tasks: Task[];

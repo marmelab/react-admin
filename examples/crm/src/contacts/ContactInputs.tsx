@@ -12,8 +12,7 @@ import {
     useNotify,
 } from 'react-admin';
 import { Divider, Box, Stack } from '@mui/material';
-
-import { genders } from './constants';
+import { useConfigurationContext } from '../root/ConfigurationContext';
 
 const isLinkedinUrl = (url: string) => {
     if (!url) return;
@@ -30,6 +29,7 @@ const isLinkedinUrl = (url: string) => {
 };
 
 export const ContactInputs = () => {
+    const { contactGender } = useConfigurationContext();
     const [create] = useCreate();
     const { identity } = useGetIdentity();
     const notify = useNotify();
@@ -52,7 +52,6 @@ export const ContactInputs = () => {
             notify('An error occurred while creating the company', {
                 type: 'error',
             });
-            throw error;
         }
     };
     return (
@@ -96,9 +95,8 @@ export const ContactInputs = () => {
             <Box width={430}>
                 <TextInput
                     source="background"
-                    label="How you met?"
+                    label="Background info (bio, how you met, etc)"
                     multiline
-                    helperText={false}
                 />
                 <TextInput
                     source="linkedin_url"
@@ -109,8 +107,10 @@ export const ContactInputs = () => {
                 <Stack direction="row" gap={1} alignItems="center">
                     <SelectInput
                         source="gender"
-                        choices={genders}
+                        choices={contactGender}
                         helperText={false}
+                        optionText="label"
+                        optionValue="value"
                     />
                     <BooleanInput
                         source="has_newsletter"

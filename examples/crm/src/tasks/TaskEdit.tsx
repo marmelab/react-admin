@@ -1,7 +1,6 @@
 import * as React from 'react';
 import {
     SimpleForm,
-    Edit,
     TextInput,
     required,
     SelectInput,
@@ -10,9 +9,10 @@ import {
     SaveButton,
     DeleteButton,
     useNotify,
+    EditBase,
 } from 'react-admin';
 import { Dialog, Stack } from '@mui/material';
-import { taskTypes } from './task.const';
+import { useConfigurationContext } from '../root/ConfigurationContext';
 
 export const TaskEdit = ({
     id,
@@ -21,6 +21,7 @@ export const TaskEdit = ({
     id: string | undefined;
     setTaskSelectedId: (id: string | undefined) => void;
 }) => {
+    const { taskTypes } = useConfigurationContext();
     const notify = useNotify();
     const handleClose = () => {
         setTaskSelectedId(undefined);
@@ -29,7 +30,7 @@ export const TaskEdit = ({
     return (
         <Dialog open={!!id} onClose={handleClose} fullWidth maxWidth="lg">
             {!!id ? (
-                <Edit
+                <EditBase
                     id={id}
                     resource="tasks"
                     sx={{ '& .RaCreate-main': { mt: 0 } }}
@@ -73,7 +74,7 @@ export const TaskEdit = ({
                             />
                         </Stack>
                     </SimpleForm>
-                </Edit>
+                </EditBase>
             ) : null}
         </Dialog>
     );

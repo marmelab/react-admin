@@ -19,8 +19,11 @@ import {
     useUserMenu,
 } from 'react-admin';
 import { Link, matchPath, useLocation } from 'react-router-dom';
+import { useConfigurationContext } from './root/ConfigurationContext';
 
 const Header = () => {
+    const { logo, title } = useConfigurationContext();
+
     const location = useLocation();
     const { permissions } = usePermissions();
 
@@ -46,13 +49,11 @@ const Header = () => {
                             <Box
                                 component="img"
                                 sx={{ marginRight: '1em', height: 30 }}
-                                src={
-                                    'https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg'
-                                }
-                                alt="Bosch Logo"
+                                src={logo}
+                                alt="CRM Logo"
                             />
                             <Typography component="span" variant="h5">
-                                Atomic CRM
+                                {title}
                             </Typography>
                         </Box>
                         <Box>

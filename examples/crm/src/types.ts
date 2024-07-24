@@ -5,7 +5,6 @@ import {
     CONTACT_NOTE_CREATED,
     DEAL_CREATED,
 } from './consts';
-import { taskTypes } from './tasks/task.const';
 
 export interface Sale extends RaRecord {
     first_name: string;
@@ -20,7 +19,7 @@ export interface Company extends RaRecord {
     logo: { title: string; src: string };
     sector: string;
     size: 1 | 10 | 50 | 250 | 500;
-    linkedIn: string;
+    linkedin_url: string;
     website: string;
     phone_number: string;
     address: string;
@@ -35,7 +34,7 @@ export interface Company extends RaRecord {
     revenue: string;
     taxe_identifier: string;
     country: string;
-    context_links: string[];
+    context_links?: string[];
 }
 
 export interface Contact extends RaRecord {
@@ -43,6 +42,7 @@ export interface Contact extends RaRecord {
     last_name: string;
     title: string;
     company_id: Identifier;
+    company_name: string;
     email: string;
     avatar?: string | null;
     linkedin_url?: string;
@@ -59,7 +59,6 @@ export interface Contact extends RaRecord {
 
 export interface ContactNote extends RaRecord {
     contact_id: Identifier;
-    type: string;
     text: string;
     date: string;
     sales_id: Identifier;
@@ -71,7 +70,7 @@ export interface Deal extends RaRecord {
     name: string;
     company_id: Identifier;
     contact_ids: Identifier[];
-    type: string;
+    category: string;
     stage: string;
     description: string;
     amount: number;
@@ -85,6 +84,14 @@ export interface Deal extends RaRecord {
     nb_notes: number;
 }
 
+export interface DealNote extends RaRecord {
+    deal_id: Identifier;
+    text: string;
+    date: string;
+    sales_id: Identifier;
+    attachment?: { title: string; src: string };
+}
+
 export interface Tag extends RaRecord {
     name: string;
     color: string;
@@ -92,7 +99,7 @@ export interface Tag extends RaRecord {
 
 export interface Task extends RaRecord {
     contact_id: Identifier;
-    type: (typeof taskTypes)[number];
+    type: string;
     text: string;
     due_date: string;
     done_date?: string | null;
@@ -109,3 +116,19 @@ export type Activity = (
     company_id: Identifier;
     date: string;
 } & RaRecord;
+
+export interface DealStage {
+    value: string;
+    label: string;
+}
+
+export interface NoteStatus {
+    value: string;
+    label: string;
+    color: string;
+}
+
+export interface ContactGender {
+    value: string;
+    label: string;
+}

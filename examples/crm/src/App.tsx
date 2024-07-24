@@ -1,66 +1,26 @@
+import { CRM } from './root/CRM';
 import {
-    Admin,
-    CustomRoutes,
-    ListGuesser,
-    Resource,
-    defaultTheme,
-    localStorageStore,
-} from 'react-admin';
-
-import { Route } from 'react-router';
-import Layout from './Layout';
-import { authProvider } from './authProvider';
-import companies from './companies';
-import contacts from './contacts';
-import { Dashboard } from './dashboard/Dashboard';
-import { dataProvider } from './dataProvider';
-import deals from './deals';
-import { LoginPage } from './login/LoginPage';
-import { SignupPage } from './login/SignupPage';
-import sales from './sales';
-import { SettingsPage } from './settings/SettingsPage';
+    defaultCompanySectors,
+    defaultContactGender,
+    defaultDealCategories,
+    defaultDealStages,
+    defaultLogo,
+    defaultNoteStatuses,
+    defaultTaskTypes,
+    defaultTitle,
+} from './root/defaultConfiguration';
 
 const App = () => (
-    <Admin
-        dataProvider={dataProvider}
-        authProvider={authProvider}
-        store={localStorageStore(undefined, 'CRM')}
-        layout={Layout}
-        loginPage={LoginPage}
-        dashboard={Dashboard}
-        theme={{
-            ...defaultTheme,
-            palette: {
-                background: {
-                    default: '#fafafb',
-                },
-            },
-        }}
-    >
-        {permissions => (
-            <>
-                <CustomRoutes noLayout>
-                    <Route path={SignupPage.path} element={<SignupPage />} />
-                </CustomRoutes>
-                <CustomRoutes>
-                    <Route
-                        path={SettingsPage.path}
-                        element={<SettingsPage />}
-                    />
-                </CustomRoutes>
-                <Resource name="deals" {...deals} />
-                <Resource name="contacts" {...contacts} />
-                <Resource name="companies" {...companies} />
-                {permissions === 'admin' ? (
-                    <Resource name="sales" {...sales} />
-                ) : null}
-                <Resource name="contactNotes" />
-                <Resource name="dealNotes" />
-                <Resource name="tasks" list={ListGuesser} />
-                <Resource name="tags" list={ListGuesser} />
-            </>
-        )}
-    </Admin>
+    <CRM
+        contactGender={defaultContactGender}
+        companySectors={defaultCompanySectors}
+        dealCategories={defaultDealCategories}
+        dealStages={defaultDealStages}
+        logo={defaultLogo}
+        noteStatuses={defaultNoteStatuses}
+        taskTypes={defaultTaskTypes}
+        title={defaultTitle}
+    />
 );
 
 export default App;

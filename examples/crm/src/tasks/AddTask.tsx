@@ -23,9 +23,10 @@ import {
     required,
     useRecordContext,
 } from 'react-admin';
-import { taskTypes } from './task.const';
+import { useConfigurationContext } from '../root/ConfigurationContext';
 
 export const AddTask = () => {
+    const { taskTypes } = useConfigurationContext();
     const contact = useRecordContext();
     const [open, setOpen] = useState(false);
     const handleOpen = () => {
