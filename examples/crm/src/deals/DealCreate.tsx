@@ -1,17 +1,16 @@
-import * as React from 'react';
+import { Dialog } from '@mui/material';
+import { useQueryClient } from '@tanstack/react-query';
 import {
     Create,
+    GetListResult,
     SimpleForm,
-    useRedirect,
     useDataProvider,
     useGetIdentity,
     useListContext,
-    GetListResult,
+    useRedirect,
 } from 'react-admin';
-import { Dialog } from '@mui/material';
-import { useQueryClient } from '@tanstack/react-query';
 import { Deal } from '../types';
-import { DealForm } from './DealForm';
+import { DealInputs } from './DealInputs';
 
 export const DealCreate = ({ open }: { open: boolean }) => {
     const redirect = useRedirect();
@@ -85,7 +84,7 @@ export const DealCreate = ({ open }: { open: boolean }) => {
                         start_at: new Date().toISOString(),
                     }}
                 >
-                    <DealForm />
+                    <DealInputs />
                 </SimpleForm>
             </Create>
         </Dialog>

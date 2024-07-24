@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState, FormEvent, ChangeEvent } from 'react';
+import { useState } from 'react';
 import {
     TextField,
     ReferenceField,
@@ -9,33 +9,29 @@ import {
     useUpdate,
     useNotify,
     FileField,
-    ResourceContextValue,
+    Form,
+    TextInput,
+    FileInput,
 } from 'react-admin';
-import {
-    Box,
-    Typography,
-    Tooltip,
-    IconButton,
-    FilledInput,
-    Button,
-    Stack,
-} from '@mui/material';
+import { Box, Typography, Tooltip, IconButton, Button } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import TrashIcon from '@mui/icons-material/Delete';
+import { SubmitHandler, FieldValues } from 'react-hook-form';
 
 import { Status } from '../misc/Status';
+import { ContactNote, DealNote } from '../types';
+import { NoteAttachments } from './NoteAttachments';
 
 export const Note = ({
     showStatus,
     note,
 }: {
     showStatus?: boolean;
-    note: any;
+    note: DealNote | ContactNote;
     isLast: boolean;
 }) => {
     const [isHover, setHover] = useState(false);
     const [isEditing, setEditing] = useState(false);
-    const [noteText, setNoteText] = useState(note.text);
     const resource = useResourceContext();
     const notify = useNotify();
 
@@ -62,23 +58,16 @@ export const Note = ({
 
     const handleCancelEdit = () => {
         setEditing(false);
-        setNoteText(note.text);
         setHover(false);
     };
 
-    const handleTextChange = (event: ChangeEvent<HTMLInputElement>) => {
-        setNoteText(event.target.value);
-    };
-
-    const handleNoteUpdate = (event: FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
+    const handleNoteUpdate: SubmitHandler<FieldValues> = values => {
         update(
             resource,
-            { id: note.id, data: { text: noteText }, previousData: note },
+            { id: note.id, data: values, previousData: note },
             {
                 onSuccess: () => {
                     setEditing(false);
-                    setNoteText(note.text);
                     setHover(false);
                 },
             }
@@ -116,21 +105,17 @@ export const Note = ({
                 {showStatus && <Status status={note.status} />}
             </Box>
             {isEditing ? (
-                <form onSubmit={handleNoteUpdate}>
-                    <FilledInput
-                        value={noteText}
-                        onChange={handleTextChange}
-                        fullWidth
+                <Form onSubmit={handleNoteUpdate} record={note}>
+                    <TextInput
+                        source="text"
+                        label="Update note"
+                        variant="filled"
+                        size="small"
                         multiline
-                        sx={{
-                            paddingTop: '16px',
-                            paddingLeft: '14px',
-                            paddingRight: '60px',
-                            paddingBottom: '14px',
-                            lineHeight: 1.3,
-                        }}
-                        autoFocus
                     />
+                    <FileInput source="attachments" multiple>
+                        <FileField source="src" title="title" />
+                    </FileInput>
                     <Box display="flex" justifyContent="flex-end" mt={1}>
                         <Button
                             sx={{ mr: 1 }}
@@ -148,19 +133,29 @@ export const Note = ({
                             Update Note
                         </Button>
                     </Box>
-                </form>
+                </Form>
             ) : (
                 <Box
                     sx={{
                         bgcolor: '#edf3f0',
-                        padding: '0 1em',
+                        padding: '1em',
                         borderRadius: '10px',
                         display: 'flex',
                         alignItems: 'stretch',
                         marginBottom: 1,
                     }}
                 >
-                    <Box flex={1}>
+                    <Box
+                        flex={1}
+                        sx={{
+                            '& p:first-of-type': {
+                                marginTop: 0,
+                            },
+                            '& p:last-of-type': {
+                                marginBottom: 0,
+                            },
+                        }}
+                    >
                         {note.text
                             .split('\n')
                             .map((paragraph: string, index: number) => (
@@ -175,13 +170,15 @@ export const Note = ({
                                     {paragraph}
                                 </Box>
                             ))}
+
+                        {note.attachments && <NoteAttachments note={note} />}
                     </Box>
+
                     <Box
                         sx={{
                             marginLeft: 2,
                             display: 'flex',
                             flexDirection: 'column',
-                            justifyContent: 'space-around',
                             visibility: isHover ? 'visible' : 'hidden',
                         }}
                     >
@@ -201,86 +198,6 @@ export const Note = ({
                     </Box>
                 </Box>
             )}
-            {note.attachment && (
-                <NoteAttachmentField
-                    note={note}
-                    resource={resource}
-                    isEditing={isEditing}
-                />
-            )}
         </Box>
     );
-};
-
-const NoteAttachmentField = ({
-    note,
-    resource,
-    isEditing,
-}: {
-    note: any;
-    resource: ResourceContextValue;
-    isEditing: boolean;
-}) => {
-    const [update] = useUpdate();
-
-    if (!note.attachment) {
-        return null;
-    }
-
-    const handleDeleteAttachment = () => {
-        update(resource, {
-            id: note.id,
-            data: { attachment: null },
-            previousData: note,
-        });
-    };
-
-    if (isImage(note.attachment.rawFile)) {
-        return (
-            <Stack direction="row" alignItems="center" ml={3}>
-                <img
-                    src={note.attachment.src}
-                    alt={note.attachment.title}
-                    style={{
-                        width: '200px',
-                        height: '100px',
-                        objectFit: 'contain',
-                        cursor: 'pointer',
-                    }}
-                    onClick={() => window.open(note.attachment.src, '_blank')}
-                />
-                {isEditing && (
-                    <IconButton
-                        aria-label="delete"
-                        onClick={() => handleDeleteAttachment()}
-                    >
-                        <TrashIcon />
-                    </IconButton>
-                )}
-            </Stack>
-        );
-    }
-
-    return (
-        <Stack direction="row" alignItems="center" ml={3}>
-            <FileField
-                record={note}
-                source="attachment.src"
-                title="attachment.title"
-                target="_blank"
-            />
-            {isEditing && (
-                <IconButton
-                    aria-label="delete"
-                    onClick={() => handleDeleteAttachment()}
-                >
-                    <TrashIcon />
-                </IconButton>
-            )}
-        </Stack>
-    );
-};
-
-const isImage = (file: File) => {
-    return file && file.type.startsWith('image/');
 };
