@@ -1,5 +1,5 @@
 import { Droppable } from '@hello-pangea/dnd';
-import { Box, Typography } from '@mui/material';
+import { Box, Stack, Typography } from '@mui/material';
 
 import { Deal } from '../types';
 import { DealCard } from './DealCard';
@@ -13,6 +13,8 @@ export const DealColumn = ({
     stage: string;
     deals: Deal[];
 }) => {
+    const totalAmount = deals.reduce((sum, deal) => sum + deal.amount, 0);
+
     const { dealStages } = useConfigurationContext();
     return (
         <Box
@@ -31,9 +33,26 @@ export const DealColumn = ({
                 },
             }}
         >
-            <Typography align="center" variant="subtitle1">
-                {findDealLabel(dealStages, stage)}
-            </Typography>
+            <Stack alignItems="center">
+                <Typography variant="subtitle1">
+                    {findDealLabel(dealStages, stage)}
+                </Typography>
+                <Typography
+                    variant="subtitle1"
+                    color="text.secondary"
+                    fontSize="small"
+                >
+                    (
+                    {totalAmount.toLocaleString('en-US', {
+                        notation: 'compact',
+                        style: 'currency',
+                        currency: 'USD',
+                        currencyDisplay: 'narrowSymbol',
+                        minimumSignificantDigits: 3,
+                    })}
+                    )
+                </Typography>
+            </Stack>
             <Droppable droppableId={stage}>
                 {(droppableProvided, snapshot) => (
                     <Box

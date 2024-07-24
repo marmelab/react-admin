@@ -97,7 +97,11 @@ export const DealInputs = () => {
                     name: type,
                 }))}
             />
-            <NumberInput source="amount" defaultValue={0} />
+            <NumberInput
+                source="amount"
+                defaultValue={0}
+                validate={validateRequired}
+            />
             <DateInput
                 source="expecting_closing_date"
                 fullWidth
