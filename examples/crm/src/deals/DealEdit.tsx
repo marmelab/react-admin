@@ -1,18 +1,9 @@
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import {
-    DeleteWithConfirmButton,
-    EditBase,
-    Form,
-    SaveButton,
-    useRecordContext,
-    useRedirect,
-} from 'react-admin';
+import { Edit, SimpleForm, useRecordContext, useRedirect } from 'react-admin';
 import { Link } from 'react-router-dom';
 import { Deal } from '../types';
 import { DealInputs } from './DealInputs';
@@ -24,52 +15,17 @@ export const DealEdit = ({ open, id }: { open: boolean; id?: string }) => {
         redirect('/deals');
     };
 
-    if (id == null) {
-        return null;
-    }
-
     return (
-        <EditBase id={id} redirect="show">
-            <Form>
-                <Dialog
-                    open={open}
-                    onClose={handleClose}
-                    fullWidth
-                    maxWidth="lg"
-                    scroll="paper"
-                    sx={{
-                        '& form': {
-                            display: 'flex',
-                            flexDirection: 'column',
-                            flex: 1,
-                            flexBasis: '100%',
-                        },
-                    }}
-                    disablePortal
-                >
+        <Dialog open={open} onClose={handleClose} fullWidth maxWidth="lg">
+            {!!id ? (
+                <Edit id={id} redirect="show">
                     <EditHeader />
-                    <DialogContent
-                        sx={{
-                            scrollbarGutter: 'stable',
-                            paddingInlineEnd: 1.5,
-                        }}
-                    >
+                    <SimpleForm>
                         <DealInputs />
-                    </DialogContent>
-                    <DialogActions
-                        sx={{
-                            display: 'flex',
-                            justifyContent: 'space-between',
-                            paddingBlock: 1,
-                            paddingInline: 3,
-                        }}
-                    >
-                        <SaveButton />
-                        <DeleteWithConfirmButton />
-                    </DialogActions>
-                </Dialog>
-            </Form>
-        </EditBase>
+                    </SimpleForm>
+                </Edit>
+            ) : null}
+        </Dialog>
     );
 };
 
@@ -80,7 +36,11 @@ function EditHeader() {
     }
 
     return (
-        <DialogTitle>
+        <DialogTitle
+            sx={{
+                paddingBottom: 0,
+            }}
+        >
             <Stack
                 direction="row"
                 alignItems="center"
