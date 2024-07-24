@@ -8,12 +8,16 @@ import {
     useDelete,
     useUpdate,
     useNotify,
-    FileField,
     Form,
-    TextInput,
-    FileInput,
 } from 'react-admin';
-import { Box, Typography, Tooltip, IconButton, Button } from '@mui/material';
+import {
+    Box,
+    Typography,
+    Tooltip,
+    IconButton,
+    Button,
+    Stack,
+} from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import TrashIcon from '@mui/icons-material/Delete';
 import { SubmitHandler, FieldValues } from 'react-hook-form';
@@ -21,6 +25,7 @@ import { SubmitHandler, FieldValues } from 'react-hook-form';
 import { Status } from '../misc/Status';
 import { ContactNote, DealNote } from '../types';
 import { NoteAttachments } from './NoteAttachments';
+import { NoteInputs } from './NoteInputs';
 
 export const Note = ({
     showStatus,
@@ -53,7 +58,7 @@ export const Note = ({
     };
 
     const handleEnterEditMode = () => {
-        setEditing(true);
+        setEditing(!isEditing);
     };
 
     const handleCancelEdit = () => {
@@ -79,43 +84,56 @@ export const Note = ({
             onMouseEnter={() => setHover(true)}
             onMouseLeave={() => setHover(false)}
         >
-            <Box color="text.secondary">
-                <ReferenceField
-                    record={note}
-                    resource={resource}
-                    source="sales_id"
-                    reference="sales"
-                >
-                    <TextField source="first_name" variant="body1" />
-                </ReferenceField>{' '}
-                <Typography component="span" variant="body1">
-                    added a note on{' '}
-                </Typography>
-                <DateField
-                    source="date"
-                    record={note}
-                    variant="body1"
-                    showTime
-                    locales="en"
-                    options={{
-                        dateStyle: 'full',
-                        timeStyle: 'short',
+            <Stack
+                direction="row"
+                justifyContent="space-between"
+                alignItems="center"
+            >
+                <Box color="text.secondary">
+                    <ReferenceField
+                        record={note}
+                        resource={resource}
+                        source="sales_id"
+                        reference="sales"
+                    >
+                        <TextField source="first_name" variant="body1" />
+                    </ReferenceField>{' '}
+                    <Typography component="span" variant="body1">
+                        added a note on{' '}
+                    </Typography>
+                    <DateField
+                        source="date"
+                        record={note}
+                        variant="body1"
+                        showTime
+                        locales="en"
+                        options={{
+                            dateStyle: 'full',
+                            timeStyle: 'short',
+                        }}
+                    />{' '}
+                    {showStatus && <Status status={note.status} />}
+                </Box>
+                <Box
+                    sx={{
+                        visibility: isHover ? 'visible' : 'hidden',
                     }}
-                />{' '}
-                {showStatus && <Status status={note.status} />}
-            </Box>
+                >
+                    <Tooltip title="Edit note">
+                        <IconButton size="small" onClick={handleEnterEditMode}>
+                            <EditIcon />
+                        </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Delete note">
+                        <IconButton size="small" onClick={handleDelete}>
+                            <TrashIcon />
+                        </IconButton>
+                    </Tooltip>
+                </Box>
+            </Stack>
             {isEditing ? (
                 <Form onSubmit={handleNoteUpdate} record={note}>
-                    <TextInput
-                        source="text"
-                        label="Update note"
-                        variant="filled"
-                        size="small"
-                        multiline
-                    />
-                    <FileInput source="attachments" multiple>
-                        <FileField source="src" title="title" />
-                    </FileInput>
+                    <NoteInputs showStatus={showStatus} edition />
                     <Box display="flex" justifyContent="flex-end" mt={1}>
                         <Button
                             sx={{ mr: 1 }}
@@ -137,12 +155,10 @@ export const Note = ({
             ) : (
                 <Box
                     sx={{
-                        bgcolor: '#edf3f0',
-                        padding: '1em',
+                        paddingTop: '1em',
                         borderRadius: '10px',
                         display: 'flex',
                         alignItems: 'stretch',
-                        marginBottom: 1,
                     }}
                 >
                     <Box
@@ -162,7 +178,7 @@ export const Note = ({
                                 <Box
                                     component="p"
                                     fontFamily="fontFamily"
-                                    fontSize="body1.fontSize"
+                                    fontSize="body2.fontSize"
                                     lineHeight={1.3}
                                     marginBottom={2.4}
                                     key={index}
@@ -172,29 +188,6 @@ export const Note = ({
                             ))}
 
                         {note.attachments && <NoteAttachments note={note} />}
-                    </Box>
-
-                    <Box
-                        sx={{
-                            marginLeft: 2,
-                            display: 'flex',
-                            flexDirection: 'column',
-                            visibility: isHover ? 'visible' : 'hidden',
-                        }}
-                    >
-                        <Tooltip title="Edit note">
-                            <IconButton
-                                size="small"
-                                onClick={handleEnterEditMode}
-                            >
-                                <EditIcon />
-                            </IconButton>
-                        </Tooltip>
-                        <Tooltip title="Delete note">
-                            <IconButton size="small" onClick={handleDelete}>
-                                <TrashIcon />
-                            </IconButton>
-                        </Tooltip>
                     </Box>
                 </Box>
             )}

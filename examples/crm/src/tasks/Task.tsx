@@ -170,7 +170,7 @@ export const Task = ({
                     >
                         {task.type && task.type !== 'None' && (
                             <>
-                                <Typography component="strong">
+                                <Typography component="strong" variant="body2">
                                     {task.type}
                                 </Typography>
                                 &nbsp;

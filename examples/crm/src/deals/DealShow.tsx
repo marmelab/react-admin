@@ -107,27 +107,27 @@ const DealShowContent = () => {
 
                     <Box display="flex" mt={2}>
                         <Box display="flex" mr={5} flexDirection="column">
-                            <Typography color="textSecondary" variant="body2">
+                            <Typography color="textSecondary" variant="caption">
                                 Starting date
                             </Typography>
-                            <Typography variant="subtitle1">
+                            <Typography variant="body2">
                                 {format(record.start_at, 'PP')}
                             </Typography>
                         </Box>
                         <Box display="flex" mr={5} flexDirection="column">
-                            <Typography color="textSecondary" variant="body2">
+                            <Typography color="textSecondary" variant="caption">
                                 Expecting closing date
                             </Typography>
-                            <Typography variant="subtitle1">
+                            <Typography variant="body2">
                                 {format(record.expecting_closing_date, 'PP')}
                             </Typography>
                         </Box>
 
                         <Box display="flex" mr={5} flexDirection="column">
-                            <Typography color="textSecondary" variant="body2">
+                            <Typography color="textSecondary" variant="caption">
                                 Budget
                             </Typography>
-                            <Typography variant="subtitle1">
+                            <Typography variant="body2">
                                 {record.amount.toLocaleString('en-US', {
                                     notation: 'compact',
                                     style: 'currency',
@@ -139,19 +139,19 @@ const DealShowContent = () => {
                         </Box>
 
                         <Box display="flex" mr={5} flexDirection="column">
-                            <Typography color="textSecondary" variant="body2">
+                            <Typography color="textSecondary" variant="caption">
                                 Category
                             </Typography>
-                            <Typography variant="subtitle1">
+                            <Typography variant="body2">
                                 {record.category}
                             </Typography>
                         </Box>
 
                         <Box display="flex" mr={5} flexDirection="column">
-                            <Typography color="textSecondary" variant="body2">
+                            <Typography color="textSecondary" variant="caption">
                                 Stage
                             </Typography>
-                            <Typography variant="subtitle1">
+                            <Typography variant="body2">
                                 {findDealLabel(dealStages, record.stage)}
                             </Typography>
                         </Box>
@@ -164,7 +164,7 @@ const DealShowContent = () => {
                             flexDirection="column"
                             minHeight={48}
                         >
-                            <Typography color="textSecondary" variant="body2">
+                            <Typography color="textSecondary" variant="caption">
                                 Contacts
                             </Typography>
                             <ReferenceArrayField
@@ -177,10 +177,12 @@ const DealShowContent = () => {
                     </Box>
 
                     <Box mt={2} mb={2} style={{ whiteSpace: 'pre-line' }}>
-                        <Typography color="textSecondary" variant="body2">
+                        <Typography color="textSecondary" variant="caption">
                             Description
                         </Typography>
-                        <Typography>{record.description}</Typography>
+                        <Typography variant="body2">
+                            {record.description}
+                        </Typography>
                     </Box>
 
                     <Divider />
