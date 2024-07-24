@@ -13,7 +13,7 @@ import {
 
 import { ImageList } from './GridList';
 import { CompanyListFilter } from './CompanyListFilter';
-import { Card, LinearProgress, Stack } from '@mui/material';
+import { LinearProgress, Stack } from '@mui/material';
 import { CompanyEmpty } from './CompanyEmpty';
 import { hasOtherFiltersThanDefault } from '../misc/hasOtherFiltersThanDefault';
 

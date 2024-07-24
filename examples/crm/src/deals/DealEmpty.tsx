@@ -25,7 +25,7 @@ export const DealEmpty = () => {
         <Stack
             justifyContent="center"
             alignItems="center"
-            gap={2}
+            gap={3}
             sx={{
                 height: `calc(100dvh - ${appbarHeight}px)`,
             }}
@@ -33,17 +33,19 @@ export const DealEmpty = () => {
             <img src="./img/empty.svg" alt="No contacts found" />
             {contacts && contacts.length > 0 ? (
                 <>
-                    <Typography variant="h6" fontWeight="bold">
-                        No deals found
-                    </Typography>
-                    <Typography
-                        variant="body2"
-                        align="center"
-                        color="text.secondary"
-                        gutterBottom
-                    >
-                        It looks like your deal list is empty.
-                    </Typography>
+                    <Stack gap={0} alignItems="center">
+                        <Typography variant="h6" fontWeight="bold">
+                            No deals found
+                        </Typography>
+                        <Typography
+                            variant="body2"
+                            align="center"
+                            color="text.secondary"
+                            gutterBottom
+                        >
+                            It looks like your deal list is empty.
+                        </Typography>
+                    </Stack>
                     <Stack spacing={2} direction="row">
                         <CreateButton variant="contained" label="Create deal" />
                     </Stack>

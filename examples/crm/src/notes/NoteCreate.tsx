@@ -1,30 +1,30 @@
 import * as React from 'react';
 import {
-    useNotify,
-    useGetIdentity,
-    useResourceContext,
     Create,
-    SimpleForm,
-    TextInput,
     DateTimeInput,
-    useRecordContext,
-    Toolbar,
-    SaveButton,
-    Identifier,
-    useUpdate,
-    useListContext,
-    SelectInput,
-    RaRecord,
-    FormDataConsumer,
     FileField,
     FileInput,
-    ImageField,
+    FormDataConsumer,
+    Identifier,
+    RaRecord,
+    SaveButton,
+    SelectInput,
+    SimpleForm,
+    TextInput,
+    Toolbar,
+    useGetIdentity,
+    useListContext,
+    useNotify,
+    useRecordContext,
+    useResourceContext,
+    useUpdate,
 } from 'react-admin';
 import { useFormContext } from 'react-hook-form';
 
-import { Status } from '../misc/Status';
 import { Stack } from '@mui/material';
+import { Status } from '../misc/Status';
 import { useConfigurationContext } from '../root/ConfigurationContext';
+import { AttachmentNote } from '../types';
 
 const foreignKeyMapping = {
     contacts: 'contact_id',
@@ -69,7 +69,7 @@ export const NoteCreate = ({
                 />
                 <FormDataConsumer<{
                     text: string;
-                    attachment: { src: Blob; title: string; rawFile: File };
+                    attachments: AttachmentNote[];
                 }>>
                     {({ formData }) =>
                         formData.text ? (
@@ -91,16 +91,8 @@ export const NoteCreate = ({
                                         defaultValue={getCurrentDate()}
                                     />
                                 </Stack>
-                                <FileInput source="attachment">
-                                    {formData.attachment &&
-                                    isImage(formData.attachment.rawFile) ? (
-                                        <ImageField
-                                            source="src"
-                                            title="title"
-                                        />
-                                    ) : (
-                                        <FileField source="src" title="title" />
-                                    )}
+                                <FileInput source="attachments" multiple>
+                                    <FileField source="src" title="title" />
                                 </FileInput>
                             </>
                         ) : null
@@ -155,10 +147,6 @@ const NoteCreateToolbar = ({
             />
         </Toolbar>
     );
-};
-
-const isImage = (file: File) => {
-    return file && file.type.startsWith('image/');
 };
 
 const optionRenderer = (choice: any) => (
