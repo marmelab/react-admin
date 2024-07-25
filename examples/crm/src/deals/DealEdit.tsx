@@ -20,7 +20,9 @@ export const DealEdit = ({ open, id }: { open: boolean; id?: string }) => {
     const redirect = useRedirect();
 
     const handleClose = () => {
-        redirect('/deals');
+        redirect('/deals', undefined, undefined, undefined, {
+            _scrollToTop: false,
+        });
     };
 
     return (
