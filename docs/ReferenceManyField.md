@@ -347,14 +347,14 @@ In these cases, use [the `<ReferenceOneField>` component](./ReferenceOneField.md
 ```
 {% endraw %}
 
-## Adding a related record
+## Adding or editing a related record
 
-To allow users to create a record without leaving the current view, use the [`<CreateInDialogButton>`](./CreateInDialogButton.md) component.
+To allow users to create or edit a record without leaving the current view, use the [`<CreateInDialogButton>`](./CreateInDialogButton.md) or the [`<EditInDialogButton>`](./EditInDialogButton.md) component.
 
 {% raw %}
 ```jsx
 import { Edit, SimpleForm, TextInput, ReferenceManyField, WithRecord, Datagrid } from 'react-admin';
-import { CreateInDialogButton } from "@react-admin/ra-form-layout";
+import { CreateInDialogButton, EditInDialogButton } from "@react-admin/ra-form-layout";
 
 const EmployerEdit = () => (
   <Edit>
@@ -381,6 +381,14 @@ const EmployerEdit = () => (
               <Datagrid>
                   <TextField source="first_name" />
                   <TextField source="last_name" />
+                  <EditInDialogButton>
+                        <SimpleForm
+                          record={{ employer_id: record.id }}
+                        >
+                            <TextInput source="first_name" />
+                            <TextInput source="last_name" />
+                        </SimpleForm>
+                    </EditInDialogButton>
               </Datagrid>
           </ReferenceManyField>
       </SimpleForm>
