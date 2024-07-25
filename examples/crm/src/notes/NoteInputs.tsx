@@ -21,7 +21,7 @@ export const NoteInputs = ({
     const { noteStatuses } = useConfigurationContext();
     const [displayMore, setDisplayMore] = useState(false);
     return (
-        <Stack gap={1}>
+        <>
             <TextInput
                 source="text"
                 label={edition ? 'Edit note' : 'Add a note'}
@@ -31,17 +31,25 @@ export const NoteInputs = ({
                 minRows={3}
                 helperText={false}
             />
-            <Typography
-                variant="caption"
-                color="textSecondary"
-                onClick={() => setDisplayMore(!displayMore)}
-                component={Link}
-                sx={{ cursor: 'pointer' }}
-            >
-                {`${displayMore ? 'Hide' : 'Show'} options (attach files, or change details)`}
-            </Typography>
+            {!displayMore && (
+                <Stack gap={0.5} direction="row">
+                    <Link
+                        variant="caption"
+                        href="#"
+                        onClick={e => {
+                            setDisplayMore(!displayMore);
+                            e.preventDefault();
+                        }}
+                    >
+                        Show options
+                    </Link>
+                    <Typography variant="caption" color="textSecondary">
+                        (attach files, or change details)
+                    </Typography>
+                </Stack>
+            )}
             <Collapse in={displayMore}>
-                <Stack gap={1}>
+                <Stack gap={1} mt={1}>
                     <Stack direction="row" spacing={2}>
                         {showStatus && (
                             <SelectInput
@@ -66,7 +74,7 @@ export const NoteInputs = ({
                     </FileInput>
                 </Stack>
             </Collapse>
-        </Stack>
+        </>
     );
 };
 
