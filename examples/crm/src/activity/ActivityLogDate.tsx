@@ -1,6 +1,6 @@
 import Typography from '@mui/material/Typography';
 
-export function ActivityDate({ date }: { date: string }) {
+export function ActivityLogDate({ date }: { date: string }) {
     const now = new Date();
     const d = new Date(date);
 
@@ -16,6 +16,7 @@ export function ActivityDate({ date }: { date: string }) {
                     minWidth: '96px',
                     display: 'flex',
                     justifyContent: 'flex-end',
+                    justifySelf: 'flex-end',
                 }}
             >
                 {new Intl.DateTimeFormat('en-US', {

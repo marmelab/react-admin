@@ -4,6 +4,7 @@ import {
     CONTACT_CREATED,
     CONTACT_NOTE_CREATED,
     DEAL_CREATED,
+    DEAL_NOTE_CREATED,
 } from './consts';
 
 export interface Sale extends RaRecord {
@@ -105,17 +106,48 @@ export interface Task extends RaRecord {
     done_date?: string | null;
 }
 
-export type Activity = (
-    | {
-          type: typeof COMPANY_CREATED;
-      }
-    | { type: typeof CONTACT_CREATED; contact_id: Identifier }
-    | { type: typeof DEAL_CREATED; deal_id: Identifier }
-    | { type: typeof CONTACT_NOTE_CREATED; contact_note_id: Identifier }
-) & {
-    company_id: Identifier;
-    date: string;
-} & RaRecord;
+export type ActivityCompanyCreated = {
+    type: typeof COMPANY_CREATED;
+    company: Company;
+    sale: Sale;
+};
+
+export type ActivityContactCreated = {
+    type: typeof CONTACT_CREATED;
+    company: Company;
+    sale: Sale;
+    contact: Contact;
+};
+
+export type ActivityContactNoteCreated = {
+    type: typeof CONTACT_NOTE_CREATED;
+    sale: Sale;
+    contact: Contact;
+    contactNote: ContactNote;
+};
+
+export type ActivityDealCreated = {
+    type: typeof DEAL_CREATED;
+    company: Company;
+    sale: Sale;
+    deal: Deal;
+};
+
+export type ActivityDealNoteCreated = {
+    type: typeof DEAL_NOTE_CREATED;
+    company: Company;
+    sale: Sale;
+    deal: Deal;
+    dealNote: DealNote;
+};
+
+export type Activity = RaRecord & { date: string } & (
+        | ActivityCompanyCreated
+        | ActivityContactCreated
+        | ActivityContactNoteCreated
+        | ActivityDealCreated
+        | ActivityDealNoteCreated
+    );
 
 export interface AttachmentNote {
     src: string;

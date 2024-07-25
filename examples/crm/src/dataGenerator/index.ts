@@ -20,7 +20,6 @@ export default (): Db => {
     db.deals = generateDeals(db);
     db.dealNotes = generateDealNotes(db);
     db.tasks = generateTasks(db);
-    db.activityLogs = [];
     finalize(db);
 
     return db;
