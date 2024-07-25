@@ -33,6 +33,7 @@ import { useConfigurationContext } from '../root/ConfigurationContext';
 import { Deal } from '../types';
 import { ContactList } from './ContactList';
 import { findDealLabel } from './deal';
+import { DialogCloseButton } from '../misc/DialogCloseButton';
 
 export const DealShow = ({ open, id }: { open: boolean; id?: string }) => {
     const redirect = useRedirect();
@@ -43,6 +44,7 @@ export const DealShow = ({ open, id }: { open: boolean; id?: string }) => {
 
     return (
         <Dialog open={open} onClose={handleClose} fullWidth maxWidth="lg">
+            <DialogCloseButton onClose={handleClose} top={22} right={20} />
             <DialogContent sx={{ padding: 0 }}>
                 {!!id ? (
                     <ShowBase id={id}>
@@ -90,7 +92,7 @@ const DealShowContent = () => {
                 <Box ml={2} flex="1">
                     <Stack direction="row" justifyContent="space-between">
                         <Typography variant="h5">{record.name}</Typography>
-                        <Stack gap={1} direction="row">
+                        <Stack gap={1} direction="row" pr={4}>
                             {record.archived_at ? (
                                 <>
                                     <UnarchiveButton record={record} />

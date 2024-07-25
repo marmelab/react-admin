@@ -13,7 +13,7 @@ import {
 import { Link } from 'react-router-dom';
 import { Deal } from '../types';
 import { DealInputs } from './DealInputs';
-import { DialogContent } from '@mui/material';
+import { DialogContent, Stack, Button } from '@mui/material';
 import { DialogCloseButton } from '../misc/DialogCloseButton';
 
 export const DealEdit = ({ open, id }: { open: boolean; id?: string }) => {
@@ -29,7 +29,7 @@ export const DealEdit = ({ open, id }: { open: boolean; id?: string }) => {
         <Dialog open={open} onClose={handleClose} fullWidth maxWidth="lg">
             {!!id ? (
                 <EditBase id={id} redirect="show">
-                    <DialogCloseButton onClose={handleClose} />
+                    <DialogCloseButton onClose={handleClose} top={13} />
                     <EditHeader />
                     <Form>
                         <DialogContent>
@@ -50,17 +50,31 @@ function EditHeader() {
     }
 
     return (
-        <DialogTitle>
-            Edit{' '}
-            <Typography
-                fontWeight={700}
-                variant="h6"
-                component={Link}
-                to={`/deals/${deal.id}/show`}
+        <DialogTitle
+            sx={{
+                paddingBottom: 0,
+            }}
+        >
+            <Stack
+                direction="row"
+                alignItems="center"
+                justifyContent="space-between"
+                spacing={1}
             >
-                {deal.name}
-            </Typography>{' '}
-            deal
+                <Typography component="span" flexGrow={1}>
+                    Edit{' '}
+                    <Typography component="strong" fontWeight={700}>
+                        {deal.name}
+                    </Typography>{' '}
+                    deal
+                </Typography>
+
+                <Stack direction="row" spacing={1} sx={{ pr: 3 }}>
+                    <Button component={Link} to={`/deals/${deal.id}/show`}>
+                        Back to show
+                    </Button>
+                </Stack>
+            </Stack>
         </DialogTitle>
     );
 }
