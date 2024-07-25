@@ -10,6 +10,7 @@ import {
     useCreate,
     useGetIdentity,
     useNotify,
+    RadioButtonGroupInput,
 } from 'react-admin';
 import {
     Divider,
@@ -20,6 +21,7 @@ import {
 } from '@mui/material';
 import { useConfigurationContext } from '../root/ConfigurationContext';
 import { Avatar } from './Avatar';
+import { Sale } from '../types';
 
 const isLinkedinUrl = (url: string) => {
     if (!url) return;
@@ -70,6 +72,15 @@ const ContactIdentityInputs = () => {
     return (
         <Stack gap={1} flex={1}>
             <Typography variant="h6">Identity</Typography>
+            <RadioButtonGroupInput
+                label={false}
+                source="gender"
+                choices={contactGender}
+                helperText={false}
+                optionText="label"
+                optionValue="value"
+                sx={{ '& .MuiRadio-root': { paddingY: 0 } }}
+            />
             <TextInput
                 source="first_name"
                 validate={required()}
@@ -79,13 +90,6 @@ const ContactIdentityInputs = () => {
                 source="last_name"
                 validate={required()}
                 helperText={false}
-            />
-            <SelectInput
-                source="gender"
-                choices={contactGender}
-                helperText={false}
-                optionText="label"
-                optionValue="value"
             />
         </Stack>
     );
@@ -165,8 +169,15 @@ const ContactMiscInputs = () => {
                 source="sales_id"
                 sort={{ field: 'last_name', order: 'ASC' }}
             >
-                <SelectInput helperText={false} label="Account manager" />
+                <SelectInput
+                    helperText={false}
+                    label="Account manager"
+                    optionText={saleOptionRenderer}
+                />
             </ReferenceInput>
         </Stack>
     );
 };
+
+const saleOptionRenderer = (choice: Sale) =>
+    `${choice.first_name} ${choice.last_name}`;
