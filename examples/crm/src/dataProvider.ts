@@ -8,13 +8,8 @@ import {
     withLifecycleCallbacks,
 } from 'react-admin';
 import { DEFAULT_USER } from './authProvider';
-import {
-    COMPANY_CREATED,
-    CONTACT_CREATED,
-    CONTACT_NOTE_CREATED,
-    DEAL_CREATED,
-} from './consts';
 import generateData from './dataGenerator';
+import { getActivityLog } from './dataProvider/activity';
 import { getCompanyAvatar } from './misc/getCompanyAvatar';
 import { getContactAvatar } from './misc/getContactAvatar';
 import { Company, Contact, ContactNote, Deal, Sale, Task } from './types';
@@ -155,6 +150,10 @@ const dataProviderWithCustomMethod = {
             )
         );
     },
+    // We simulate a remote endpoint that is in charge of returning activity log
+    getActivityLog: async (companyId?: Identifier) => {
+        return getActivityLog(baseDataProvider, companyId);
+    },
 };
 
 export type CustomDataProvider = typeof dataProviderWithCustomMethod;
@@ -262,18 +261,6 @@ export const dataProvider = withLifecycleCallbacks(
             beforeUpdate: async params => {
                 return processContactAvatar(params, dataProvider);
             },
-            afterCreate: async (result, dataProvider) => {
-                await dataProvider.create('activityLogs', {
-                    data: {
-                        date: new Date().toISOString(),
-                        type: CONTACT_CREATED,
-                        company_id: result.data.company_id,
-                        contact_id: result.data.id,
-                    },
-                });
-
-                return result;
-            },
         } satisfies ResourceCallbacks<Contact>,
         {
             resource: 'contactNotes',
@@ -292,14 +279,6 @@ export const dataProvider = withLifecycleCallbacks(
                         nb_notes: (contact.nb_notes ?? 0) + 1,
                     },
                     previousData: contact,
-                });
-                await dataProvider.create('activityLogs', {
-                    data: {
-                        date: new Date().toISOString(),
-                        type: CONTACT_NOTE_CREATED,
-                        company_id: contact.company_id,
-                        contact_note_id: result.data.id,
-                    },
                 });
                 return result;
             },
@@ -400,16 +379,6 @@ export const dataProvider = withLifecycleCallbacks(
             beforeCreate: async params => {
                 return await processCompanyLogo(params);
             },
-            afterCreate: async (result, dataProvider) => {
-                await dataProvider.create('activityLogs', {
-                    data: {
-                        date: new Date().toISOString(),
-                        type: COMPANY_CREATED,
-                        company_id: result.data.id,
-                    },
-                });
-                return result;
-            },
             beforeUpdate: async params => {
                 return await processCompanyLogo(params);
             },
@@ -460,15 +429,6 @@ export const dataProvider = withLifecycleCallbacks(
                         nb_deals: (company.nb_deals ?? 0) + 1,
                     },
                     previousData: company,
-                });
-
-                await dataProvider.create('activityLogs', {
-                    data: {
-                        date: new Date().toISOString(),
-                        type: DEAL_CREATED,
-                        company_id: result.data.company_id,
-                        deal_id: result.data.id,
-                    },
                 });
 
                 return result;

@@ -31,16 +31,16 @@ import {
 } from 'react-admin';
 import { Link as RouterLink } from 'react-router-dom';
 
+import { ActivityLog } from '../activity/ActivityLog';
 import { Avatar } from '../contacts/Avatar';
 import { TagsList } from '../contacts/TagsList';
+import { findDealLabel } from '../deals/deal';
 import { Status } from '../misc/Status';
+import { useConfigurationContext } from '../root/ConfigurationContext';
 import { Company, Contact, Deal } from '../types';
-import { CompanyActivityIterator } from './CompanyActivityIterator';
 import { CompanyAside } from './CompanyAside';
 import { CompanyAvatar } from './CompanyAvatar';
 import { sizes } from './sizes';
-import { useConfigurationContext } from '../root/ConfigurationContext';
-import { findDealLabel } from '../deals/deal';
 
 export const CompanyShow = () => (
     <ShowBase>
@@ -152,13 +152,7 @@ const CompanyShowContent = () => {
                             </TabPanel>
                         ) : null}
                         <TabPanel value={tabValue} index={tabIndex++}>
-                            <ReferenceManyField
-                                reference="activityLogs"
-                                target="company_id"
-                                sort={{ field: 'date', order: 'DESC' }}
-                            >
-                                <CompanyActivityIterator />
-                            </ReferenceManyField>
+                            <ActivityLog companyId={record.id} />
                         </TabPanel>
                     </CardContent>
                 </Card>
