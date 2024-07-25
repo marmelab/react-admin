@@ -42,7 +42,6 @@ export const DealColumn = ({
                     color="text.secondary"
                     fontSize="small"
                 >
-                    (
                     {totalAmount.toLocaleString('en-US', {
                         notation: 'compact',
                         style: 'currency',
@@ -50,7 +49,6 @@ export const DealColumn = ({
                         currencyDisplay: 'narrowSymbol',
                         minimumSignificantDigits: 3,
                     })}
-                    )
                 </Typography>
             </Stack>
             <Droppable droppableId={stage}>

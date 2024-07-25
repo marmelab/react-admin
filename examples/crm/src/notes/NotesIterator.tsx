@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Stack } from '@mui/material';
+import { Box, Divider, Stack } from '@mui/material';
 import { useListContext } from 'react-admin';
 
 import { Note } from './Note';
@@ -15,18 +15,23 @@ export const NotesIterator = ({
     const { data, error, isPending } = useListContext();
     if (isPending || error) return null;
     return (
-        <>
+        <Box mt={4}>
             <NoteCreate showStatus={showStatus} reference={reference} />
-            <Stack mt={4} gap={3}>
-                {data.map((note, index) => (
-                    <Note
-                        note={note}
-                        isLast={index === data.length - 1}
-                        showStatus={showStatus}
-                        key={index}
-                    />
-                ))}
-            </Stack>
-        </>
+            {data && (
+                <Stack mt={4} gap={3}>
+                    {data.map((note, index) => (
+                        <React.Fragment key={index}>
+                            <Divider />
+                            <Note
+                                note={note}
+                                isLast={index === data.length - 1}
+                                showStatus={showStatus}
+                                key={index}
+                            />
+                        </React.Fragment>
+                    ))}
+                </Stack>
+            )}
+        </Box>
     );
 };

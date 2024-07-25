@@ -33,12 +33,12 @@ export function TransferAdminRole() {
                             Transfer Administrator Role
                         </Typography>
 
-                        <Typography component="p">
+                        <Typography component="p" variant="body2">
                             You are an administrator. Only administrators can
                             manage access for account managers.
                         </Typography>
 
-                        <Typography component="p">
+                        <Typography component="p" variant="body2">
                             You can{' '}
                             <Link
                                 onClick={handleShowModal}
