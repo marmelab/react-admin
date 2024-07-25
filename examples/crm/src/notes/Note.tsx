@@ -1,26 +1,28 @@
+import ContentSave from '@mui/icons-material/Save';
+import {
+    Box,
+    Button,
+    IconButton,
+    Stack,
+    Tooltip,
+    Typography,
+} from '@mui/material';
 import * as React from 'react';
 import { useState } from 'react';
 import {
-    TextField,
-    ReferenceField,
     DateField,
-    useResourceContext,
-    useDelete,
-    useUpdate,
-    useNotify,
     Form,
+    ReferenceField,
+    TextField,
+    useDelete,
+    useNotify,
+    useResourceContext,
+    useUpdate,
 } from 'react-admin';
-import {
-    Box,
-    Typography,
-    Tooltip,
-    IconButton,
-    Button,
-    Stack,
-} from '@mui/material';
-import EditIcon from '@mui/icons-material/Edit';
+
 import TrashIcon from '@mui/icons-material/Delete';
-import { SubmitHandler, FieldValues } from 'react-hook-form';
+import EditIcon from '@mui/icons-material/Edit';
+import { FieldValues, SubmitHandler } from 'react-hook-form';
 
 import { Status } from '../misc/Status';
 import { ContactNote, DealNote } from '../types';
@@ -134,21 +136,22 @@ export const Note = ({
             {isEditing ? (
                 <Form onSubmit={handleNoteUpdate} record={note}>
                     <NoteInputs showStatus={showStatus} edition />
-                    <Box display="flex" justifyContent="flex-end" mt={1}>
+                    <Box display="flex" justifyContent="flex-start" mt={1}>
+                        <Button
+                            type="submit"
+                            color="primary"
+                            variant="contained"
+                            disabled={isPending}
+                            startIcon={<ContentSave />}
+                        >
+                            Update Note
+                        </Button>
                         <Button
                             sx={{ mr: 1 }}
                             onClick={handleCancelEdit}
                             color="primary"
                         >
                             Cancel
-                        </Button>
-                        <Button
-                            type="submit"
-                            color="primary"
-                            variant="contained"
-                            disabled={isPending}
-                        >
-                            Update Note
                         </Button>
                     </Box>
                 </Form>

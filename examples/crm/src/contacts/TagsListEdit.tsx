@@ -7,6 +7,7 @@ import {
     useGetList,
     Identifier,
     useRecordContext,
+    Toolbar,
 } from 'react-admin';
 import {
     Chip,
@@ -25,6 +26,8 @@ import EditIcon from '@mui/icons-material/Edit';
 
 import { colors } from '../tags/colors';
 import { Contact, Tag } from '../types';
+import { DialogCloseButton } from '../misc/DialogCloseButton';
+import ContentSave from '@mui/icons-material/Save';
 
 export const TagsListEdit = () => {
     const record = useRecordContext<Contact>();
@@ -190,6 +193,7 @@ export const TagsListEdit = () => {
                 aria-labelledby="form-dialog-title"
             >
                 <form onSubmit={handleCreateTag}>
+                    <DialogCloseButton onClose={() => setOpen(false)} />
                     <DialogTitle id="form-dialog-title">
                         Create a new tag
                     </DialogTitle>
@@ -214,17 +218,27 @@ export const TagsListEdit = () => {
                             ))}
                         </Box>
                     </DialogContent>
-                    <DialogActions>
-                        <Button onClick={() => setOpen(false)} color="primary">
-                            Cancel
-                        </Button>
-                        <Button
-                            type="submit"
-                            color="primary"
-                            disabled={disabled}
+                    <DialogActions
+                        sx={{
+                            justifyContent: 'flex-start',
+                            p: 0,
+                        }}
+                    >
+                        <Toolbar
+                            sx={{
+                                width: '100%',
+                            }}
                         >
-                            Add tag
-                        </Button>
+                            <Button
+                                type="submit"
+                                color="primary"
+                                disabled={disabled}
+                                variant="contained"
+                                startIcon={<ContentSave />}
+                            >
+                                Save
+                            </Button>
+                        </Toolbar>
                     </DialogActions>
                 </form>
             </Dialog>

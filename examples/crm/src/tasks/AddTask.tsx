@@ -1,29 +1,29 @@
-import * as React from 'react';
-import { useState } from 'react';
 import ControlPointIcon from '@mui/icons-material/ControlPoint';
 import {
     Box,
-    Button,
     Chip,
     Dialog,
-    DialogTitle,
-    DialogContent,
     DialogActions,
+    DialogContent,
+    DialogTitle,
     Stack,
 } from '@mui/material';
+import * as React from 'react';
+import { useState } from 'react';
 import {
-    RecordRepresentation,
     CreateBase,
-    Form,
-    TextInput,
     DateInput,
+    Form,
+    RecordRepresentation,
     SaveButton,
     SelectInput,
+    TextInput,
     Toolbar,
     required,
     useRecordContext,
 } from 'react-admin';
 import { useConfigurationContext } from '../root/ConfigurationContext';
+import { DialogCloseButton } from '../misc/DialogCloseButton';
 
 export const AddTask = () => {
     const { taskTypes } = useConfigurationContext();
@@ -62,6 +62,7 @@ export const AddTask = () => {
                     maxWidth="sm"
                 >
                     <Form>
+                        <DialogCloseButton onClose={() => setOpen(false)} />
                         <DialogTitle id="form-dialog-title">
                             Create a new task for{' '}
                             <RecordRepresentation
@@ -76,11 +77,13 @@ export const AddTask = () => {
                                 label="Description"
                                 validate={required()}
                                 multiline
+                                helperText={false}
                             />
                             <Stack direction="row" spacing={1} mt={2}>
                                 <DateInput
                                     source="due_date"
                                     validate={required()}
+                                    helperText={false}
                                 />
                                 <SelectInput
                                     source="type"
@@ -89,6 +92,7 @@ export const AddTask = () => {
                                         id: type,
                                         name: type,
                                     }))}
+                                    helperText={false}
                                 />
                             </Stack>
                         </DialogContent>
@@ -96,13 +100,8 @@ export const AddTask = () => {
                             <Toolbar
                                 sx={{
                                     width: '100%',
-                                    justifyContent: 'flex-end',
-                                    gap: 1,
                                 }}
                             >
-                                <Button onClick={() => setOpen(false)}>
-                                    Cancel
-                                </Button>
                                 <SaveButton onClick={() => setOpen(false)} />
                             </Toolbar>
                         </DialogActions>
