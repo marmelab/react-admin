@@ -6,9 +6,10 @@ import { ActivityLogIterator } from './ActivityLogIterator';
 
 type ActivityLogProps = {
     companyId?: Identifier;
+    pageSize?: number;
 };
 
-export function ActivityLog({ companyId }: ActivityLogProps) {
+export function ActivityLog({ companyId, pageSize = 20 }: ActivityLogProps) {
     const dataProvider = useDataProvider<CustomDataProvider>();
     const { data, isPending, error } = useQuery({
         queryKey: ['activityLog', companyId],
@@ -23,5 +24,5 @@ export function ActivityLog({ companyId }: ActivityLogProps) {
         return <Alert severity="error">Failed to load acticity log</Alert>;
     }
 
-    return <ActivityLogIterator activities={data} />;
+    return <ActivityLogIterator activities={data} pageSize={pageSize} />;
 }

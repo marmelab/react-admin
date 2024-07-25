@@ -1,10 +1,9 @@
-import * as React from 'react';
-import { useMemo } from 'react';
-import { Box } from '@mui/material';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
-import { useGetList, Link } from 'react-admin';
-import { startOfMonth, format } from 'date-fns';
+import { Box } from '@mui/material';
 import { ResponsiveBar } from '@nivo/bar';
+import { format, startOfMonth } from 'date-fns';
+import { useMemo } from 'react';
+import { Link, useGetList } from 'react-admin';
 
 import { Deal } from '../types';
 
@@ -100,7 +99,7 @@ export const DealsChart = () => {
                     keys={['won', 'pending', 'lost']}
                     colors={['#61cdbb', '#97e3d5', '#e25c3b']}
                     margin={{ top: 50, right: 50, bottom: 50, left: 0 }}
-                    padding={0.3}
+                    padding={0.5}
                     valueScale={{
                         type: 'linear',
                         min: range.min * 1.2,

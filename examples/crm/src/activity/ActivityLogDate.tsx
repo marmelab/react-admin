@@ -10,15 +10,7 @@ export function ActivityLogDate({ date }: { date: string }) {
         d.getFullYear() === now.getFullYear()
     ) {
         return (
-            <Typography
-                color="textSecondary"
-                sx={{
-                    minWidth: '96px',
-                    display: 'flex',
-                    justifyContent: 'flex-end',
-                    justifySelf: 'flex-end',
-                }}
-            >
+            <Typography color="textSecondary" variant="body2">
                 {new Intl.DateTimeFormat('en-US', {
                     timeStyle: 'short',
                 }).format(d)}
@@ -27,14 +19,7 @@ export function ActivityLogDate({ date }: { date: string }) {
     }
 
     return (
-        <Typography
-            color="textSecondary"
-            sx={{
-                minWidth: '96px',
-                display: 'flex',
-                justifyContent: 'flex-end',
-            }}
-        >
+        <Typography color="textSecondary" variant="body2">
             {new Intl.DateTimeFormat('en-US', {
                 dateStyle: 'short',
             }).format(d)}
