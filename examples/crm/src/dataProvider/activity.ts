@@ -34,7 +34,7 @@ export async function getActivityLog(
 }
 
 async function getSales(dataProvider: DataProvider) {
-    const salesDict = await dataProvider
+    const salesById = await dataProvider
         .getList<Sale>('sales', {
             pagination: { page: 1, perPage: 10_000 },
             sort: { field: 'id', order: 'ASC' },
@@ -47,14 +47,14 @@ async function getSales(dataProvider: DataProvider) {
         );
 
     return {
-        salesDict,
-        salesIds: [...salesDict.keys()],
+        salesById,
+        salesIds: [...salesById.keys()],
     };
 }
 
 async function getCompaniesLog(
     dataProvider: DataProvider,
-    { salesDict, salesIds }: Awaited<ReturnType<typeof getSales>>,
+    { salesById, salesIds }: Awaited<ReturnType<typeof getSales>>,
     companyId?: Identifier
 ) {
     const companies = await dataProvider
@@ -70,11 +70,11 @@ async function getCompaniesLog(
             id: `company.${company.id}.created`,
             type: COMPANY_CREATED,
             company,
-            sale: salesDict.get(company.sales_id) as Sale,
+            sale: salesById.get(company.sales_id) as Sale,
             date: company.created_at,
         })),
         companiesIds: companies.map(({ id }) => id),
-        companiesDict: companies.reduce((acc, company) => {
+        companiesById: companies.reduce((acc, company) => {
             acc.set(company.id, company);
             return acc;
         }, new Map<Identifier, Company>()),
@@ -83,8 +83,8 @@ async function getCompaniesLog(
 
 async function getContactsLog(
     dataProvider: DataProvider,
-    { salesDict, salesIds }: Awaited<ReturnType<typeof getSales>>,
-    { companiesIds, companiesDict }: Awaited<ReturnType<typeof getCompaniesLog>>
+    { salesById: salesDict, salesIds }: Awaited<ReturnType<typeof getSales>>,
+    { companiesIds, companiesById }: Awaited<ReturnType<typeof getCompaniesLog>>
 ) {
     const contacts = await dataProvider
         .getList<Contact>('contacts', {
@@ -117,7 +117,7 @@ async function getContactsLog(
         .map<Activity>(contact => ({
             id: `contact.${contact.id}.created`,
             type: CONTACT_CREATED,
-            company: companiesDict.get(contact.company_id) as Company,
+            company: companiesById.get(contact.company_id) as Company,
             sale: salesDict.get(contact.sales_id) as Sale,
             contact,
             date: contact.first_seen,
@@ -136,8 +136,8 @@ async function getContactsLog(
 
 async function getDealsLog(
     dataProvider: DataProvider,
-    { salesDict, salesIds }: Awaited<ReturnType<typeof getSales>>,
-    { companiesIds, companiesDict }: Awaited<ReturnType<typeof getCompaniesLog>>
+    { salesById: salesDict, salesIds }: Awaited<ReturnType<typeof getSales>>,
+    { companiesIds, companiesById }: Awaited<ReturnType<typeof getCompaniesLog>>
 ) {
     const deals = await dataProvider
         .getList<Deal>('deals', {
@@ -170,7 +170,7 @@ async function getDealsLog(
         .map<Activity>(deal => ({
             id: `deal.${deal.id}.created`,
             type: DEAL_CREATED,
-            company: companiesDict.get(deal.company_id) as Company,
+            company: companiesById.get(deal.company_id) as Company,
             sale: salesDict.get(deal.sales_id) as Sale,
             deal,
             date: deal.created_at,
@@ -181,7 +181,7 @@ async function getDealsLog(
                 return {
                     id: `dealNote.${dealNote.id}.created`,
                     type: DEAL_NOTE_CREATED,
-                    company: companiesDict.get(deal.company_id) as Company,
+                    company: companiesById.get(deal.company_id) as Company,
                     sale: salesDict.get(dealNote.sales_id) as Sale,
                     deal,
                     dealNote,

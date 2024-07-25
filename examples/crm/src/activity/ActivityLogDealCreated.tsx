@@ -26,28 +26,17 @@ export function ActivityLogDealCreated({
                 >
                     <CompanyAvatar />
                     <Typography
-                        component="div"
+                        component="p"
                         sx={{
                             flexGrow: 1,
                         }}
                         variant="body2"
                     >
-                        <Typography
-                            component={Link}
-                            to={`/deals/${deal.id}/show`}
-                            variant="body2"
-                        >
+                        <Link to={`/deals/${deal.id}/show`} variant="body2">
                             {deal.name}
-                        </Typography>{' '}
-                        deal was added to{' '}
-                        <Typography
-                            component="strong"
-                            fontWeight={700}
-                            variant="body2"
-                        >
-                            {company.name}
-                        </Typography>{' '}
-                        by {sale.first_name} {sale.last_name}
+                        </Link>{' '}
+                        deal was added to <strong>{company.name}</strong> by{' '}
+                        {sale.first_name} {sale.last_name}
                     </Typography>
 
                     <ActivityLogDate date={deal.created_at} />

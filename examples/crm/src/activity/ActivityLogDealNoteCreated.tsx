@@ -19,20 +19,16 @@ export function ActivityLogDealNoteCreated({
                     <>
                         <CompanyAvatar />
                         <Typography
-                            component="div"
+                            component="p"
                             sx={{
                                 flexGrow: 1,
                             }}
                             variant="body2"
                         >
                             A note was added to{' '}
-                            <Typography
-                                component={Link}
-                                to={`/deals/${deal.id}/show`}
-                                variant="body2"
-                            >
+                            <Link to={`/deals/${deal.id}/show`} variant="body2">
                                 {deal.name}
-                            </Typography>{' '}
+                            </Link>{' '}
                             deal by {sale.first_name} {sale.last_name}
                         </Typography>
 

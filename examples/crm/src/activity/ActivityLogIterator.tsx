@@ -28,12 +28,10 @@ export function ActivityLogIterator({ activities }: ActivityLogIteratorProps) {
     return (
         <List
             sx={{
-                '& .MuiListItem-root': {
-                    justifyContent: 'space-between',
-                    gap: 2,
-                },
                 '& .MuiListItem-root:not(:first-child)': {
                     borderTop: '1px solid #f0f0f0',
+                    marginTop: 2,
+                    paddingTop: 3,
                 },
             }}
         >

@@ -26,28 +26,21 @@ export function ActivityLogContactCreated({
                 >
                     <Avatar />
                     <Typography
-                        component="div"
+                        component="p"
                         sx={{
                             flexGrow: 1,
                         }}
                         variant="body2"
                     >
-                        <Typography
+                        <Link
                             component={Link}
                             to={`/contacts/${contact.id}/show`}
                             variant="body2"
                         >
                             {contact.first_name} {contact.last_name}
-                        </Typography>{' '}
-                        contact was added to{' '}
-                        <Typography
-                            component="strong"
-                            fontWeight={700}
-                            variant="body2"
-                        >
-                            {company.name}
-                        </Typography>{' '}
-                        by {sale.first_name} {sale.last_name}
+                        </Link>{' '}
+                        contact was added to <strong>{company.name}</strong> by{' '}
+                        {sale.first_name} {sale.last_name}
                     </Typography>
 
                     <ActivityLogDate date={contact.first_seen} />

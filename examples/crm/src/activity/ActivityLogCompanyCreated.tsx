@@ -26,21 +26,14 @@ export function ActivityLogCompanyCreated({
                 >
                     <CompanyAvatar />
                     <Typography
-                        component="div"
+                        component="p"
                         sx={{
                             flexGrow: 1,
                         }}
                         variant="body2"
                     >
-                        <Typography
-                            component="strong"
-                            fontWeight={700}
-                            variant="body2"
-                        >
-                            {company.name}
-                        </Typography>{' '}
-                        was added to companies by {sale.first_name}{' '}
-                        {sale.last_name}
+                        <strong>{company.name}</strong> was added to companies
+                        by {sale.first_name} {sale.last_name}
                     </Typography>
 
                     <ActivityLogDate date={company.created_at} />

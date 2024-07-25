@@ -19,20 +19,19 @@ export function ActivityLogContactNoteCreated({
                     <>
                         <Avatar />
                         <Typography
-                            component="div"
+                            component="p"
                             sx={{
                                 flexGrow: 1,
                             }}
                             variant="body2"
                         >
                             A note was added to{' '}
-                            <Typography
-                                component={Link}
+                            <Link
                                 to={`/contacts/${contact.id}/show`}
                                 variant="body2"
                             >
                                 {contact.first_name} {contact.last_name}
-                            </Typography>{' '}
+                            </Link>{' '}
                             contact by {sale.first_name} {sale.last_name}
                         </Typography>
 
