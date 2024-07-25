@@ -11,8 +11,15 @@ import {
     useGetIdentity,
     useNotify,
 } from 'react-admin';
-import { Divider, Box, Stack } from '@mui/material';
+import {
+    Divider,
+    Stack,
+    Typography,
+    useMediaQuery,
+    useTheme,
+} from '@mui/material';
 import { useConfigurationContext } from '../root/ConfigurationContext';
+import { Avatar } from './Avatar';
 
 const isLinkedinUrl = (url: string) => {
     if (!url) return;
@@ -29,7 +36,62 @@ const isLinkedinUrl = (url: string) => {
 };
 
 export const ContactInputs = () => {
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
+    return (
+        <Stack gap={8} p={1}>
+            <Stack gap={2}>
+                <Avatar />
+                <Stack gap={4} flexDirection={isMobile ? 'column' : 'row'}>
+                    <ContactIdentityInputs />
+                    <Divider
+                        orientation={isMobile ? 'horizontal' : 'vertical'}
+                        flexItem
+                    />
+                    <ContactPositionInputs />
+                </Stack>
+            </Stack>
+
+            <Stack gap={4} flexDirection={isMobile ? 'column' : 'row'}>
+                <ContactPersonalInformationInputs />
+                <Divider
+                    orientation={isMobile ? 'horizontal' : 'vertical'}
+                    flexItem
+                />
+                <ContactMiscInputs />
+            </Stack>
+        </Stack>
+    );
+};
+
+const ContactIdentityInputs = () => {
     const { contactGender } = useConfigurationContext();
+    return (
+        <Stack gap={1} flex={1}>
+            <Typography variant="h6">Identity</Typography>
+            <TextInput
+                source="first_name"
+                validate={required()}
+                helperText={false}
+            />
+            <TextInput
+                source="last_name"
+                validate={required()}
+                helperText={false}
+            />
+            <SelectInput
+                source="gender"
+                choices={contactGender}
+                helperText={false}
+                optionText="label"
+                optionValue="value"
+            />
+        </Stack>
+    );
+};
+
+const ContactPositionInputs = () => {
     const [create] = useCreate();
     const { identity } = useGetIdentity();
     const notify = useNotify();
@@ -55,87 +117,56 @@ export const ContactInputs = () => {
         }
     };
     return (
-        <Box flex="1" mt={-1}>
-            <Stack direction="row" width={430} gap={1}>
-                <TextInput
-                    source="first_name"
+        <Stack gap={1} flex={1}>
+            <Typography variant="h6">Position</Typography>
+            <TextInput source="title" helperText={false} />
+            <ReferenceInput source="company_id" reference="companies">
+                <AutocompleteInput
+                    optionText="name"
                     validate={required()}
+                    onCreate={handleCreateCompany}
                     helperText={false}
                 />
-                <TextInput
-                    source="last_name"
-                    validate={required()}
-                    helperText={false}
-                />
-            </Stack>
-            <Stack direction="row" width={430} gap={1}>
-                <TextInput source="title" helperText={false} />
-                <ReferenceInput source="company_id" reference="companies">
-                    <AutocompleteInput
-                        optionText="name"
-                        validate={required()}
-                        onCreate={handleCreateCompany}
-                        helperText={false}
-                    />
-                </ReferenceInput>
-            </Stack>
-            <Divider sx={{ my: 2 }} />
-            <Box width={430}>
-                <TextInput
-                    source="email"
-                    helperText={false}
-                    validate={email()}
-                />
-                <Stack direction="row" gap={1}>
-                    <TextInput source="phone_number1" helperText={false} />
-                    <TextInput source="phone_number2" helperText={false} />
-                </Stack>
-            </Box>
-            <Divider sx={{ my: 2 }} />
-            <Box width={430}>
-                <TextInput
-                    source="background"
-                    label="Background info (bio, how you met, etc)"
-                    multiline
-                />
-                <TextInput
-                    source="linkedin_url"
-                    label="Linkedin URL"
-                    helperText={false}
-                    validate={isLinkedinUrl}
-                />
-                <Stack direction="row" gap={1} alignItems="center">
-                    <SelectInput
-                        source="gender"
-                        choices={contactGender}
-                        helperText={false}
-                        optionText="label"
-                        optionValue="value"
-                    />
-                    <BooleanInput
-                        source="has_newsletter"
-                        sx={{
-                            width: '100%',
-                            label: { justifyContent: 'center' },
-                        }}
-                        helperText={false}
-                    />
-                </Stack>
-            </Box>
-            <Divider sx={{ my: 2 }} />
-            <Box width={430}>
-                <ReferenceInput
-                    reference="sales"
-                    source="sales_id"
-                    sort={{ field: 'last_name', order: 'ASC' }}
-                >
-                    <SelectInput
-                        helperText={false}
-                        label="Account manager"
-                        sx={{ width: 210 }}
-                    />
-                </ReferenceInput>
-            </Box>
-        </Box>
+            </ReferenceInput>
+        </Stack>
+    );
+};
+
+const ContactPersonalInformationInputs = () => {
+    return (
+        <Stack gap={1} flex={1}>
+            <Typography variant="h6">Personal info</Typography>
+            <TextInput source="email" helperText={false} validate={email()} />
+            <TextInput source="phone_number1" helperText={false} />
+            <TextInput source="phone_number2" helperText={false} />
+            <TextInput
+                source="linkedin_url"
+                label="Linkedin URL"
+                helperText={false}
+                validate={isLinkedinUrl}
+            />
+        </Stack>
+    );
+};
+
+const ContactMiscInputs = () => {
+    return (
+        <Stack gap={1} flex={1}>
+            <Typography variant="h6">Misc</Typography>
+            <TextInput
+                source="background"
+                label="Background info (bio, how you met, etc)"
+                multiline
+                helperText={false}
+            />
+            <BooleanInput source="has_newsletter" helperText={false} />
+            <ReferenceInput
+                reference="sales"
+                source="sales_id"
+                sort={{ field: 'last_name', order: 'ASC' }}
+            >
+                <SelectInput helperText={false} label="Account manager" />
+            </ReferenceInput>
+        </Stack>
     );
 };
