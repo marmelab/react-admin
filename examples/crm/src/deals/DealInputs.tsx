@@ -20,14 +20,6 @@ import { Contact } from '../types';
 
 const validateRequired = required();
 
-const dateInPresentOrFuture = (value: string) => {
-    const valueDate = new Date(value).setHours(0, 0, 0, 0);
-    const presentDate = new Date().setHours(0, 0, 0, 0);
-    if (valueDate < presentDate) {
-        return 'The date must be in the present or the future';
-    }
-    return undefined;
-};
 export const DealInputs = () => {
     const { dealStages, dealCategories } = useConfigurationContext();
 
@@ -105,10 +97,7 @@ export const DealInputs = () => {
             <DateInput
                 source="expecting_closing_date"
                 fullWidth
-                validate={[validateRequired, dateInPresentOrFuture]}
-                inputProps={{
-                    min: new Date().toISOString().split('T')[0],
-                }}
+                validate={[validateRequired]}
             />
             <DateInput
                 source="start_at"
