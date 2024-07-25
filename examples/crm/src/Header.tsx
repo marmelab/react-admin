@@ -23,7 +23,6 @@ import { useConfigurationContext } from './root/ConfigurationContext';
 
 const Header = () => {
     const { logo, title } = useConfigurationContext();
-
     const location = useLocation();
     const { permissions } = usePermissions();
 
@@ -45,10 +44,22 @@ const Header = () => {
             <AppBar position="static" color="primary">
                 <Toolbar variant="dense">
                     <Box flex={1} display="flex" justifyContent="space-between">
-                        <Box display="flex" alignItems="center">
+                        <Box
+                            display="flex"
+                            alignItems="center"
+                            component={Link}
+                            to="/"
+                            sx={{
+                                color: 'inherit',
+                                textDecoration: 'inherit',
+                            }}
+                        >
                             <Box
                                 component="img"
-                                sx={{ marginRight: '1em', height: 30 }}
+                                sx={{
+                                    marginRight: '1em',
+                                    height: 30,
+                                }}
                                 src={logo}
                                 alt="CRM Logo"
                             />
