@@ -28,12 +28,12 @@ import {
 import ArchiveIcon from '@mui/icons-material/Archive';
 import UnarchiveIcon from '@mui/icons-material/Unarchive';
 import { CompanyAvatar } from '../companies/CompanyAvatar';
+import { DialogCloseButton } from '../misc/DialogCloseButton';
 import { NotesIterator } from '../notes';
 import { useConfigurationContext } from '../root/ConfigurationContext';
 import { Deal } from '../types';
 import { ContactList } from './ContactList';
 import { findDealLabel } from './deal';
-import { DialogCloseButton } from '../misc/DialogCloseButton';
 
 export const DealShow = ({ open, id }: { open: boolean; id?: string }) => {
     const redirect = useRedirect();
@@ -178,7 +178,7 @@ const DealShowContent = () => {
                         </Box>
                     </Box>
 
-                    <Box mt={2} mb={2} style={{ whiteSpace: 'pre-line' }}>
+                    <Box mt={2} mb={2} sx={{ whiteSpace: 'pre-line' }}>
                         <Typography color="textSecondary" variant="caption">
                             Description
                         </Typography>

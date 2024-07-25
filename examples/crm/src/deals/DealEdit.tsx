@@ -1,3 +1,4 @@
+import { Button, DialogContent, Stack } from '@mui/material';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import Typography from '@mui/material/Typography';
@@ -12,10 +13,9 @@ import {
     useRedirect,
 } from 'react-admin';
 import { Link } from 'react-router-dom';
+import { DialogCloseButton } from '../misc/DialogCloseButton';
 import { Deal } from '../types';
 import { DealInputs } from './DealInputs';
-import { DialogContent, Stack, Button } from '@mui/material';
-import { DialogCloseButton } from '../misc/DialogCloseButton';
 
 export const DealEdit = ({ open, id }: { open: boolean; id?: string }) => {
     const redirect = useRedirect();
@@ -32,11 +32,10 @@ export const DealEdit = ({ open, id }: { open: boolean; id?: string }) => {
             {!!id ? (
                 <EditBase
                     id={id}
+                    mutationMode="pessimistic"
                     mutationOptions={{
                         onSuccess: () => {
-                            notify('Deal updated', {
-                                undoable: true,
-                            });
+                            notify('Deal updated');
                             redirect(
                                 `/deals/${id}/show`,
                                 undefined,
