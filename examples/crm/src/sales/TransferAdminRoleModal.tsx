@@ -3,13 +3,13 @@ import Autocomplete from '@mui/material/Autocomplete';
 import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
 import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import Skeleton from '@mui/material/Skeleton';
 import { default as MuiTextField } from '@mui/material/TextField';
 import { DefaultError, useMutation } from '@tanstack/react-query';
 import {
+    Toolbar,
     useDataProvider,
     useGetIdentity,
     useGetList,
@@ -20,6 +20,7 @@ import { useNavigate } from 'react-router';
 import { USER_STORAGE_KEY } from '../authProvider';
 import { CustomDataProvider } from '../dataProvider';
 import { Sale } from '../types';
+import { DialogCloseButton } from '../misc/DialogCloseButton';
 
 type TransferAdminRoleForm = {
     sale: Sale;
@@ -83,6 +84,7 @@ export function TransferAdminRoleModal({
     return (
         <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
             <form onSubmit={handleSubmit(handleTransfer)}>
+                <DialogCloseButton onClose={onClose} />
                 <DialogTitle>Transfer Administrator Role</DialogTitle>
                 <DialogContent>
                     {mutation.error && (
@@ -93,8 +95,7 @@ export function TransferAdminRoleModal({
 
                     <SalesAutocomplete control={control} />
                 </DialogContent>
-                <DialogActions>
-                    <Button onClick={onClose}>Cancel</Button>
+                <Toolbar>
                     <Button
                         type="submit"
                         color="error"
@@ -107,7 +108,7 @@ export function TransferAdminRoleModal({
                             'Transfer Role'
                         )}
                     </Button>
-                </DialogActions>
+                </Toolbar>
             </form>
         </Dialog>
     );

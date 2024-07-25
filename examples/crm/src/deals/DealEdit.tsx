@@ -1,13 +1,11 @@
-import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
-import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import {
     DeleteWithConfirmButton,
-    Edit,
+    EditBase,
+    Form,
     SaveButton,
-    SimpleForm,
     Toolbar,
     useRecordContext,
     useRedirect,
@@ -15,6 +13,8 @@ import {
 import { Link } from 'react-router-dom';
 import { Deal } from '../types';
 import { DealInputs } from './DealInputs';
+import { DialogContent, Stack, Button } from '@mui/material';
+import { DialogCloseButton } from '../misc/DialogCloseButton';
 
 export const DealEdit = ({ open, id }: { open: boolean; id?: string }) => {
     const redirect = useRedirect();
@@ -28,12 +28,16 @@ export const DealEdit = ({ open, id }: { open: boolean; id?: string }) => {
     return (
         <Dialog open={open} onClose={handleClose} fullWidth maxWidth="lg">
             {!!id ? (
-                <Edit id={id} redirect="show">
+                <EditBase id={id} redirect="show">
+                    <DialogCloseButton onClose={handleClose} top={13} />
                     <EditHeader />
-                    <SimpleForm toolbar={<EditToolbar />}>
-                        <DealInputs />
-                    </SimpleForm>
-                </Edit>
+                    <Form>
+                        <DialogContent>
+                            <DealInputs />
+                        </DialogContent>
+                        <EditToolbar />
+                    </Form>
+                </EditBase>
             ) : null}
         </Dialog>
     );
@@ -65,7 +69,7 @@ function EditHeader() {
                     deal
                 </Typography>
 
-                <Stack direction="row" spacing={1}>
+                <Stack direction="row" spacing={1} sx={{ pr: 3 }}>
                     <Button component={Link} to={`/deals/${deal.id}/show`}>
                         Back to show
                     </Button>
@@ -79,7 +83,6 @@ function EditToolbar() {
     return (
         <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
             <SaveButton />
-
             <DeleteWithConfirmButton />
         </Toolbar>
     );

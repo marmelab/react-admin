@@ -32,7 +32,7 @@ export const NoteInputs = ({
                 helperText={false}
             />
             {!displayMore && (
-                <Stack gap={0.5} direction="row">
+                <Stack gap={0.5} direction="row" justifyContent="flex-end">
                     <Link
                         variant="caption"
                         href="#"
