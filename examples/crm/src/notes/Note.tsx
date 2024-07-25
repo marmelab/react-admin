@@ -96,15 +96,15 @@ export const Note = ({
                         source="sales_id"
                         reference="sales"
                     >
-                        <TextField source="first_name" variant="body1" />
+                        <TextField source="first_name" variant="body2" />
                     </ReferenceField>{' '}
-                    <Typography component="span" variant="body1">
+                    <Typography component="span" variant="body2">
                         added a note on{' '}
                     </Typography>
                     <DateField
                         source="date"
                         record={note}
-                        variant="body1"
+                        variant="body2"
                         showTime
                         locales="en"
                         options={{
@@ -155,8 +155,7 @@ export const Note = ({
             ) : (
                 <Box
                     sx={{
-                        paddingTop: '1em',
-                        borderRadius: '10px',
+                        paddingTop: '0.5em',
                         display: 'flex',
                         alignItems: 'stretch',
                     }}
@@ -164,6 +163,7 @@ export const Note = ({
                     <Box
                         flex={1}
                         sx={{
+                            maxWidth: '80%',
                             '& p:first-of-type': {
                                 marginTop: 0,
                             },
