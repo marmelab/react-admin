@@ -1,4 +1,4 @@
-import { Stack } from '@mui/material';
+import { Divider, Stack } from '@mui/material';
 import {
     AutocompleteArrayInput,
     AutocompleteInput,
@@ -62,13 +62,21 @@ export const DealInputs = () => {
                 source="name"
                 label="Deal name"
                 validate={validateRequired}
+                helperText={false}
             />
-            <TextInput source="description" multiline rows={3} />
+            <TextInput
+                source="description"
+                multiline
+                rows={3}
+                helperText={false}
+            />
+            <Divider sx={{ my: 2, width: '100%' }} />
             <ReferenceInput source="company_id" reference="companies">
                 <AutocompleteInput
                     optionText="name"
                     onCreate={handleCreateCompany}
                     validate={validateRequired}
+                    helperText={false}
                 />
             </ReferenceInput>
 
@@ -77,9 +85,10 @@ export const DealInputs = () => {
                     label="Contacts"
                     optionText={contactOptionText}
                     inputText={contactInputText}
+                    helperText={false}
                 />
             </ReferenceArrayInput>
-
+            <Divider sx={{ my: 2, width: '100%' }} />
             <SelectInput
                 source="stage"
                 choices={dealStages.map(stage => ({
@@ -88,6 +97,7 @@ export const DealInputs = () => {
                 }))}
                 validate={validateRequired}
                 defaultValue="opportunity"
+                helperText={false}
             />
             <SelectInput
                 source="category"
@@ -96,12 +106,15 @@ export const DealInputs = () => {
                     id: type,
                     name: type,
                 }))}
+                helperText={false}
             />
             <NumberInput
                 source="amount"
                 defaultValue={0}
                 validate={validateRequired}
+                helperText={false}
             />
+            <Divider sx={{ my: 2, width: '100%' }} />
             <DateInput
                 source="expecting_closing_date"
                 fullWidth
@@ -109,6 +122,7 @@ export const DealInputs = () => {
                 inputProps={{
                     min: new Date().toISOString().split('T')[0],
                 }}
+                helperText={false}
             />
             <DateInput
                 source="start_at"
@@ -116,6 +130,7 @@ export const DealInputs = () => {
                 fullWidth
                 label="Starting date"
                 readOnly
+                helperText={false}
             />
         </>
     );

@@ -19,6 +19,7 @@ import {
     useNotify,
 } from 'react-admin';
 import { useConfigurationContext } from '../root/ConfigurationContext';
+import { DialogCloseButton } from '../misc/DialogCloseButton';
 
 export const TaskEdit = ({
     open,
@@ -55,6 +56,7 @@ export const TaskEdit = ({
                 redirect={false}
             >
                 <Form>
+                    <DialogCloseButton onClose={close} />
                     <DialogTitle id="form-dialog-title">Edit task</DialogTitle>
                     <DialogContent>
                         <TextInput
@@ -63,11 +65,13 @@ export const TaskEdit = ({
                             label="Description"
                             validate={required()}
                             multiline
+                            helperText={false}
                         />
                         <Stack direction="row" spacing={1} mt={2}>
                             <DateInput
                                 source="due_date"
                                 validate={required()}
+                                helperText={false}
                             />
                             <SelectInput
                                 source="type"
@@ -76,6 +80,7 @@ export const TaskEdit = ({
                                     id: type,
                                     name: type,
                                 }))}
+                                helperText={false}
                             />
                         </Stack>
                     </DialogContent>
@@ -87,6 +92,7 @@ export const TaskEdit = ({
                                 gap: 1,
                             }}
                         >
+                            <SaveButton label="Save" />
                             <DeleteButton
                                 label="Delete"
                                 mutationOptions={{
@@ -100,7 +106,6 @@ export const TaskEdit = ({
                                 }}
                                 redirect={false}
                             />
-                            <SaveButton label="Save" />
                         </Toolbar>
                     </DialogActions>
                 </Form>

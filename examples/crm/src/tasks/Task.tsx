@@ -87,7 +87,7 @@ export const Task = ({
                             id={`task-${task.id}-menu`}
                             anchorEl={anchorEl}
                             open={open}
-                            onClose={Menu}
+                            onClose={handleCloseMenu}
                             MenuListProps={{
                                 'aria-labelledby': 'basic-button',
                             }}

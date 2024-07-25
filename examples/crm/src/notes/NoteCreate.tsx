@@ -39,7 +39,7 @@ export const NoteCreate = ({
         <CreateBase resource={resource} redirect={false}>
             <Form>
                 <NoteInputs showStatus={showStatus} />
-                <Stack direction="row" justifyContent={'flex-end'}>
+                <Stack direction="row">
                     <NoteCreateButton reference={reference} record={record} />
                 </Stack>
             </Form>
@@ -76,7 +76,6 @@ const NoteCreateButton = ({
         <SaveButton
             type="button"
             label="Add this note"
-            icon={<></>}
             variant="contained"
             transform={data => ({
                 ...data,

@@ -1,9 +1,11 @@
-import { Dialog } from '@mui/material';
+import { Dialog, DialogContent, DialogTitle } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
 import {
     Create,
+    Form,
     GetListResult,
-    SimpleForm,
+    SaveButton,
+    Toolbar,
     useDataProvider,
     useGetIdentity,
     useListContext,
@@ -11,6 +13,7 @@ import {
 } from 'react-admin';
 import { Deal } from '../types';
 import { DealInputs } from './DealInputs';
+import { DialogCloseButton } from '../misc/DialogCloseButton';
 
 export const DealCreate = ({ open }: { open: boolean }) => {
     const redirect = useRedirect();
@@ -76,7 +79,9 @@ export const DealCreate = ({ open }: { open: boolean }) => {
                 mutationOptions={{ onSuccess }}
                 sx={{ '& .RaCreate-main': { mt: 0 } }}
             >
-                <SimpleForm
+                <DialogCloseButton onClose={handleClose} />
+                <DialogTitle>Create a new deal</DialogTitle>
+                <Form
                     defaultValues={{
                         sales_id: identity?.id,
                         contact_ids: [],
@@ -84,8 +89,13 @@ export const DealCreate = ({ open }: { open: boolean }) => {
                         start_at: new Date().toISOString(),
                     }}
                 >
-                    <DealInputs />
-                </SimpleForm>
+                    <DialogContent>
+                        <DealInputs />
+                    </DialogContent>
+                    <Toolbar>
+                        <SaveButton />
+                    </Toolbar>
+                </Form>
             </Create>
         </Dialog>
     );
