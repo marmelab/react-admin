@@ -1,45 +1,31 @@
 import * as React from 'react';
 import { useListContext } from 'react-admin';
-import { Box, Link } from '@mui/material';
+import { Link, Stack, Typography } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
+import { Avatar } from '../contacts/Avatar';
 
 export const ContactList = () => {
     const { data, error, isPending } = useListContext();
-
     if (isPending || error) return <div style={{ height: '2em' }} />;
     return (
-        <Box
-            component="ul"
-            sx={{
-                listStyle: 'none',
-                padding: 0,
-                margin: 0,
-                display: 'inline-block',
-            }}
-        >
+        <Stack direction="row" flexWrap="wrap" gap={3} mt={1}>
             {data.map(contact => (
-                <Box
-                    component="li"
-                    key={contact.id}
-                    sx={{
-                        display: 'inline',
-                        '&:after': {
-                            content: '", "',
-                        },
-                        '&:last-child:after': {
-                            content: '""',
-                        },
-                    }}
-                >
-                    <Link
-                        component={RouterLink}
-                        to={`/contacts/${contact.id}/show`}
-                        variant="body2"
-                    >
-                        {contact.first_name} {contact.last_name}
-                    </Link>
-                </Box>
+                <Stack direction="row" key={contact.id} gap={1}>
+                    <Avatar record={contact} />
+                    <Stack>
+                        <Link
+                            component={RouterLink}
+                            to={`/contacts/${contact.id}/show`}
+                            variant="body2"
+                        >
+                            {contact.first_name} {contact.last_name}
+                        </Link>
+                        <Typography variant="caption" color="text.secondary">
+                            {contact.title} at {contact.company_name}
+                        </Typography>
+                    </Stack>
+                </Stack>
             ))}
-        </Box>
+        </Stack>
     );
 };

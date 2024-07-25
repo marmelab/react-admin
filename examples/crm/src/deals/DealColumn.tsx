@@ -23,11 +23,11 @@ export const DealColumn = ({
                 paddingTop: '8px',
                 paddingBottom: '16px',
                 bgcolor: '#eaeaee',
-                '&:first-child': {
+                '&:first-of-type': {
                     paddingLeft: '5px',
                     borderTopLeftRadius: 5,
                 },
-                '&:last-child': {
+                '&:last-of-type': {
                     paddingRight: '5px',
                     borderTopRightRadius: 5,
                 },
