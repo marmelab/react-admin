@@ -25,7 +25,7 @@ const ContactShowContent = () => {
     if (isPending || !record) return null;
 
     return (
-        <Box mt={2} display="flex">
+        <Box mt={2} mb={2} display="flex">
             <Box flex="1">
                 <Card>
                     <CardContent>

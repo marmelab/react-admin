@@ -88,6 +88,7 @@ export const LatestNotes = () => {
                             </Typography>
                             <div>
                                 <Typography
+                                    variant="body2"
                                     sx={{
                                         display: '-webkit-box',
                                         WebkitLineClamp: 3,
