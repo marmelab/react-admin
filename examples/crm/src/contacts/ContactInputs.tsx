@@ -42,7 +42,7 @@ export const ContactInputs = () => {
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
     return (
-        <Stack gap={8} p={1}>
+        <Stack gap={4} p={1}>
             <Stack gap={2}>
                 <Avatar />
                 <Stack gap={4} flexDirection={isMobile ? 'column' : 'row'}>
@@ -141,8 +141,34 @@ const ContactPersonalInformationInputs = () => {
         <Stack gap={1} flex={1}>
             <Typography variant="h6">Personal info</Typography>
             <TextInput source="email" helperText={false} validate={email()} />
-            <TextInput source="phone_number1" helperText={false} />
-            <TextInput source="phone_number2" helperText={false} />
+            <Stack gap={1} flexDirection="row">
+                <TextInput
+                    source="phone_number1.number"
+                    label="Phone number 1"
+                    helperText={false}
+                />
+                <SelectInput
+                    source="phone_number1.type"
+                    label="Type"
+                    helperText={false}
+                    optionText={choice => choice.id}
+                    choices={[{ id: 'Work' }, { id: 'Home' }, { id: 'Other' }]}
+                />
+            </Stack>
+            <Stack gap={1} flexDirection="row">
+                <TextInput
+                    source="phone_number2.number"
+                    label="Phone number 2"
+                    helperText={false}
+                />
+                <SelectInput
+                    source="phone_number2.type"
+                    label="Type"
+                    helperText={false}
+                    optionText={choice => choice.id}
+                    choices={[{ id: 'Work' }, { id: 'Home' }, { id: 'Other' }]}
+                />
+            </Stack>
             <TextInput
                 source="linkedin_url"
                 label="Linkedin URL"

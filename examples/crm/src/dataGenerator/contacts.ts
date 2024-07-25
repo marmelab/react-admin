@@ -66,8 +66,14 @@ export const generateContacts = (db: Db): Contact[] => {
             company_id: company.id,
             company_name: company.name,
             email,
-            phone_number1: phone.phoneNumber(),
-            phone_number2: phone.phoneNumber(),
+            phone_number1: {
+                number: phone.phoneNumber(),
+                type: random.arrayElement(['Work', 'Home', 'Other']),
+            },
+            phone_number2: {
+                number: phone.phoneNumber(),
+                type: random.arrayElement(['Work', 'Home', 'Other']),
+            },
             background: lorem.sentence(),
             acquisition: random.arrayElement(['inbound', 'outbound']),
             avatar,
