@@ -70,7 +70,7 @@ export const DealCardContent = ({
                                 currencyDisplay: 'narrowSymbol',
                                 minimumSignificantDigits: 3,
                             })}
-                            , {deal.type}
+                            , {deal.category}
                         </Typography>
                     </Box>
                 </Box>
