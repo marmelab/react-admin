@@ -182,7 +182,7 @@ export const Note = ({
                                     component="p"
                                     fontFamily="fontFamily"
                                     fontSize="body2.fontSize"
-                                    lineHeight={1.3}
+                                    lineHeight={1.5}
                                     marginBottom={2.4}
                                     key={index}
                                 >
