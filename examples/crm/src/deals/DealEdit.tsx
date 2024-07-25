@@ -7,6 +7,7 @@ import {
     Form,
     SaveButton,
     Toolbar,
+    useNotify,
     useRecordContext,
     useRedirect,
 } from 'react-admin';
@@ -18,6 +19,7 @@ import { DialogCloseButton } from '../misc/DialogCloseButton';
 
 export const DealEdit = ({ open, id }: { open: boolean; id?: string }) => {
     const redirect = useRedirect();
+    const notify = useNotify();
 
     const handleClose = () => {
         redirect('/deals', undefined, undefined, undefined, {
@@ -28,7 +30,25 @@ export const DealEdit = ({ open, id }: { open: boolean; id?: string }) => {
     return (
         <Dialog open={open} onClose={handleClose} fullWidth maxWidth="lg">
             {!!id ? (
-                <EditBase id={id} redirect="show">
+                <EditBase
+                    id={id}
+                    mutationOptions={{
+                        onSuccess: () => {
+                            notify('Deal updated', {
+                                undoable: true,
+                            });
+                            redirect(
+                                `/deals/${id}/show`,
+                                undefined,
+                                undefined,
+                                undefined,
+                                {
+                                    _scrollToTop: false,
+                                }
+                            );
+                        },
+                    }}
+                >
                     <DialogCloseButton onClose={handleClose} top={13} />
                     <EditHeader />
                     <Form>
