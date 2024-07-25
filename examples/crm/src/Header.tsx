@@ -15,7 +15,6 @@ import {
     LoadingIndicator,
     Logout,
     usePermissions,
-    useRedirect,
     UserMenu,
     useUserMenu,
 } from 'react-admin';
@@ -24,7 +23,6 @@ import { useConfigurationContext } from './root/ConfigurationContext';
 
 const Header = () => {
     const { logo, title } = useConfigurationContext();
-    const redirect = useRedirect();
     const location = useLocation();
     const { permissions } = usePermissions();
 
@@ -49,8 +47,12 @@ const Header = () => {
                         <Box
                             display="flex"
                             alignItems="center"
-                            onClick={() => redirect('/')}
-                            sx={{ cursor: 'pointer' }}
+                            component={Link}
+                            to="/"
+                            sx={{
+                                color: 'inherit',
+                                textDecoration: 'inherit',
+                            }}
                         >
                             <Box
                                 component="img"
