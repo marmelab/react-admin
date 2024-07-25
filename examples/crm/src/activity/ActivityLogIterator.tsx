@@ -14,14 +14,16 @@ import { ActivityLogContactNoteCreated } from './ActivityLogContactNoteCreated';
 import { ActivityLogDealCreated } from './ActivityLogDealCreated';
 import { ActivityLogDealNoteCreated } from './ActivityLogDealNoteCreated';
 
-const PAGE_SIZE = 20;
-
 type ActivityLogIteratorProps = {
     activities: Activity[];
+    pageSize: number;
 };
 
-export function ActivityLogIterator({ activities }: ActivityLogIteratorProps) {
-    const [activitiesDisplayed, setActivityDisplayed] = useState(PAGE_SIZE);
+export function ActivityLogIterator({
+    activities,
+    pageSize,
+}: ActivityLogIteratorProps) {
+    const [activitiesDisplayed, setActivityDisplayed] = useState(pageSize);
 
     const filteredActivities = activities.slice(0, activitiesDisplayed);
 
@@ -44,7 +46,7 @@ export function ActivityLogIterator({ activities }: ActivityLogIteratorProps) {
                     onClick={() =>
                         setActivityDisplayed(
                             activitiesDisplayed =>
-                                activitiesDisplayed + PAGE_SIZE
+                                activitiesDisplayed + pageSize
                         )
                     }
                     fullWidth

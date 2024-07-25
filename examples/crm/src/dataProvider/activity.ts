@@ -27,8 +27,6 @@ export async function getActivityLog(
         getContactsLog(dataProvider, sales, companies),
         getDealsLog(dataProvider, sales, companies),
     ]);
-    console.log(companies);
-
     return companies.companiesLog.concat(contactsLog, dealsLog).sort(
         (a, b) => a.date.localeCompare(b.date) * -1 // sort by date desc
     );

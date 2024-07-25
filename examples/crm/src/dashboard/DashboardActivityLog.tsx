@@ -12,11 +12,11 @@ export function DashboardActivityLog() {
                     <AccessTimeIcon color="disabled" fontSize="large" />
                 </Box>
                 <Typography variant="h5" color="textSecondary">
-                    Upcoming tasks
+                    Latest Activity
                 </Typography>
             </Box>
             <Card sx={{ mb: 2 }}>
-                <ActivityLog />
+                <ActivityLog pageSize={10} />
             </Card>
         </>
     );

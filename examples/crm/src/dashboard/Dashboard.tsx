@@ -15,7 +15,7 @@ export const Dashboard = () => (
                 <DealsChart />
             </Grid>
             <Grid item xs={12} md={4}>
-                <TasksList />
+                <HotContacts />
             </Grid>
             <Grid item xs={12} md={8}>
                 <DashboardActivityLog />
@@ -23,7 +23,7 @@ export const Dashboard = () => (
         </Grid>
 
         <Grid item xs={12} md={3}>
-            <HotContacts />
+            <TasksList />
         </Grid>
     </Grid>
 );
