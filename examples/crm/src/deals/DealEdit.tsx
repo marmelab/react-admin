@@ -81,13 +81,7 @@ function EditHeader() {
                 justifyContent="space-between"
                 spacing={1}
             >
-                <Typography component="span" flexGrow={1}>
-                    Edit{' '}
-                    <Typography component="strong" fontWeight={700}>
-                        {deal.name}
-                    </Typography>{' '}
-                    deal
-                </Typography>
+                <Typography variant="h6">Edit {deal.name} deal</Typography>
 
                 <Stack direction="row" spacing={1} sx={{ pr: 3 }}>
                     <Button component={Link} to={`/deals/${deal.id}/show`}>

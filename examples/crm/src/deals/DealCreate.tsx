@@ -80,7 +80,13 @@ export const DealCreate = ({ open }: { open: boolean }) => {
                 sx={{ '& .RaCreate-main': { mt: 0 } }}
             >
                 <DialogCloseButton onClose={handleClose} />
-                <DialogTitle>Create a new deal</DialogTitle>
+                <DialogTitle
+                    sx={{
+                        paddingBottom: 0,
+                    }}
+                >
+                    Create a new deal
+                </DialogTitle>
                 <Form
                     defaultValues={{
                         sales_id: identity?.id,
