@@ -27,6 +27,7 @@ export async function getActivityLog(
         getContactsLog(dataProvider, sales, companies),
         getDealsLog(dataProvider, sales, companies),
     ]);
+    console.log(companies);
 
     return companies.companiesLog.concat(contactsLog, dealsLog).sort(
         (a, b) => a.date.localeCompare(b.date) * -1 // sort by date desc
@@ -59,7 +60,9 @@ async function getCompaniesLog(
 ) {
     const companies = await dataProvider
         .getList<Company>('companies', {
-            filter: { id: companyId, sales_id: salesIds },
+            filter: companyId
+                ? { id: companyId, sales_id: salesIds }
+                : { sales_id: salesIds },
             pagination: { page: 1, perPage: 10_000 },
             sort: { field: 'created_at', order: 'DESC' },
         })

@@ -1,13 +1,12 @@
-import * as React from 'react';
-import {
-    Typography,
-    Card,
-    CardContent,
-    CardActions,
-    Button,
-} from '@mui/material';
-import HomeIcon from '@mui/icons-material/Home';
 import CodeIcon from '@mui/icons-material/Code';
+import HomeIcon from '@mui/icons-material/Home';
+import {
+    Button,
+    Card,
+    CardActions,
+    CardContent,
+    Typography,
+} from '@mui/material';
 
 export const Welcome = () => (
     <Card
@@ -15,8 +14,6 @@ export const Welcome = () => (
             background: `#c5dedd`,
             color: 'rgba(0, 0, 0, 0.87)',
             padding: '1em',
-            marginBottom: '1em',
-            marginTop: '2em',
             [`& .MuiCardActions-root`]: {
                 p: 2,
                 mt: -2,
