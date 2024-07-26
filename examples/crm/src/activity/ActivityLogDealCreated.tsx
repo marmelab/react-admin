@@ -35,7 +35,7 @@ export function ActivityLogDealCreated({
                         <Link to={`/deals/${deal.id}/show`} variant="body2">
                             {deal.name}
                         </Link>{' '}
-                        deal was added to <strong>{company.name}</strong> by{' '}
+                        has been added to <strong>{company.name}</strong> by{' '}
                         {sale.first_name} {sale.last_name}
                     </Typography>
 

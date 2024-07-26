@@ -124,14 +124,20 @@ async function getContactsLog(
             date: contact.first_seen,
         }))
         .concat(
-            contactNotes.map<Activity>(contactNote => ({
-                id: `contactNote.${contactNote.id}.created`,
-                type: CONTACT_NOTE_CREATED,
-                sale: salesDict.get(contactNote.sales_id) as Sale,
-                contact: contactsDict.get(contactNote.contact_id) as Contact,
-                contactNote,
-                date: contactNote.date,
-            }))
+            contactNotes.map<Activity>(contactNote => {
+                const contact = contactsDict.get(
+                    contactNote.contact_id
+                ) as Contact;
+                return {
+                    id: `contactNote.${contactNote.id}.created`,
+                    type: CONTACT_NOTE_CREATED,
+                    company: companiesById.get(contact.company_id) as Company,
+                    sale: salesDict.get(contactNote.sales_id) as Sale,
+                    contact,
+                    contactNote,
+                    date: contactNote.date,
+                };
+            })
         );
 }
 

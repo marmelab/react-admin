@@ -10,7 +10,7 @@ type ActivityLogContactNoteCreatedProps = {
 };
 
 export function ActivityLogContactNoteCreated({
-    activity: { sale, contact, contactNote },
+    activity: { sale, contact, contactNote, company },
 }: ActivityLogContactNoteCreatedProps) {
     return (
         <RecordContextProvider value={contact}>
@@ -25,14 +25,15 @@ export function ActivityLogContactNoteCreated({
                             }}
                             variant="body2"
                         >
-                            A note was added to{' '}
+                            A note has been added to{' '}
                             <Link
                                 to={`/contacts/${contact.id}/show`}
                                 variant="body2"
                             >
                                 {contact.first_name} {contact.last_name}
                             </Link>{' '}
-                            contact by {sale.first_name} {sale.last_name}
+                            from <strong>{company.name}</strong> by{' '}
+                            {sale.first_name} {sale.last_name}
                         </Typography>
 
                         <ActivityLogDate date={contactNote.date} />

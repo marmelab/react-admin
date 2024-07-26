@@ -32,8 +32,8 @@ export function ActivityLogCompanyCreated({
                         }}
                         variant="body2"
                     >
-                        <strong>{company.name}</strong> was added to companies
-                        by {sale.first_name} {sale.last_name}
+                        <strong>{company.name}</strong> has been added to{' '}
+                        companies by {sale.first_name} {sale.last_name}
                     </Typography>
 
                     <ActivityLogDate date={company.created_at} />
