@@ -1,18 +1,17 @@
-import * as React from 'react';
-import {
-    TextField,
-    DateField,
-    FunctionField,
-    ReferenceField,
-    UrlField,
-    EditButton,
-    ShowButton,
-    useRecordContext,
-} from 'react-admin';
-import { Typography, Divider, Link, Stack } from '@mui/material';
-import PublicIcon from '@mui/icons-material/Public';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import PhoneIcon from '@mui/icons-material/Phone';
+import PublicIcon from '@mui/icons-material/Public';
+import { Divider, Link, Stack, Typography } from '@mui/material';
+import {
+    DateField,
+    EditButton,
+    FunctionField,
+    ReferenceField,
+    ShowButton,
+    TextField,
+    UrlField,
+    useRecordContext,
+} from 'react-admin';
 
 import { Company } from '../types';
 
@@ -116,14 +115,14 @@ const FinancialInfo = ({ record }: { record: Company }) => {
                     Revenue: <TextField source="revenue" color="textPrimary" />
                 </Typography>
             )}
-            {record.taxe_identifier && (
+            {record.tax_identifier && (
                 <Typography
                     component="span"
                     variant="body2"
                     color="textSecondary"
                 >
                     Tax Identifier:{' '}
-                    <TextField source="taxe_identifier" color="textPrimary" />
+                    <TextField source="tax_identifier" color="textPrimary" />
                 </Typography>
             )}
         </Stack>

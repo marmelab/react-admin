@@ -1,19 +1,17 @@
-import * as React from 'react';
-
+import { Divider, Grid, Stack } from '@mui/material';
 import {
-    ReferenceInput,
-    TextInput,
-    SelectInput,
-    required,
     ArrayInput,
-    SimpleFormIterator,
-    ImageInput,
     ImageField,
+    ImageInput,
+    ReferenceInput,
+    SelectInput,
+    SimpleFormIterator,
+    TextInput,
+    required,
 } from 'react-admin';
-import { Divider, Stack, Grid } from '@mui/material';
 
-import { sizes } from './sizes';
 import { useConfigurationContext } from '../root/ConfigurationContext';
+import { sizes } from './sizes';
 
 export const CompanyForm = () => {
     const { companySectors } = useConfigurationContext();
@@ -79,7 +77,7 @@ export const CompanyForm = () => {
                     <TextInput source="revenue" />
                 </Grid>
                 <Grid item xs={12} sm={4}>
-                    <TextInput source="taxe_identifier" />
+                    <TextInput source="tax_identifier" />
                 </Grid>
             </Grid>
 
