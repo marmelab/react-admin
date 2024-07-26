@@ -346,3 +346,57 @@ In these cases, use [the `<ReferenceOneField>` component](./ReferenceOneField.md
 </ReferenceOneField>
 ```
 {% endraw %}
+
+## Adding or editing a related record
+
+To allow users to create or edit a record without leaving the current view, use the [`<CreateInDialogButton>`](./CreateInDialogButton.md) or the [`<EditInDialogButton>`](./EditInDialogButton.md) component.
+
+{% raw %}
+```jsx
+import { Edit, SimpleForm, TextInput, ReferenceManyField, WithRecord, Datagrid } from 'react-admin';
+import { CreateInDialogButton, EditInDialogButton } from "@react-admin/ra-form-layout";
+
+const EmployerEdit = () => (
+  <Edit>
+      <SimpleForm>
+          <TextInput source="name" />
+          <TextInput source="address" />
+          <TextInput source="city" />
+          <ReferenceManyField
+              target="employer_id"
+              reference="customers"
+          >
+              <WithRecord
+                  render={record => (
+                      <CreateInDialogButton
+                          record={{ employer_id: record.id }}
+                      >
+                          <SimpleForm>
+                              <TextInput source="first_name" />
+                              <TextInput source="last_name" />
+                          </SimpleForm>
+                      </CreateInDialogButton>
+                  )}
+              />
+              <Datagrid>
+                  <TextField source="first_name" />
+                  <TextField source="last_name" />
+                  <WithRecord
+                    render={record => (
+                      <EditInDialogButton>
+                          <SimpleForm
+                            record={{ employer_id: record.id }}
+                          >
+                            <TextInput source="first_name" />
+                            <TextInput source="last_name" />
+                          </SimpleForm>
+                        </EditInDialogButton>
+                      )}
+                  />
+              </Datagrid>
+          </ReferenceManyField>
+      </SimpleForm>
+  </Edit>
+)
+```
+{% endraw %}
