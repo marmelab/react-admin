@@ -84,7 +84,7 @@ function EditHeader() {
 
                 <Stack direction="row" spacing={1} sx={{ pr: 3 }}>
                     <Button component={Link} to={`/deals/${deal.id}/show`}>
-                        Back to show
+                        Back to deal
                     </Button>
                 </Stack>
             </Stack>
