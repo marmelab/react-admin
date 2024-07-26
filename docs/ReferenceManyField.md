@@ -381,14 +381,18 @@ const EmployerEdit = () => (
               <Datagrid>
                   <TextField source="first_name" />
                   <TextField source="last_name" />
-                  <EditInDialogButton>
-                        <SimpleForm
-                          record={{ employer_id: record.id }}
-                        >
+                  <WithRecord
+                    render={record => (
+                      <EditInDialogButton>
+                          <SimpleForm
+                            record={{ employer_id: record.id }}
+                          >
                             <TextInput source="first_name" />
                             <TextInput source="last_name" />
-                        </SimpleForm>
-                    </EditInDialogButton>
+                          </SimpleForm>
+                        </EditInDialogButton>
+                      )}
+                  />
               </Datagrid>
           </ReferenceManyField>
       </SimpleForm>
