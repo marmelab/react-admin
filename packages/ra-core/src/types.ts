@@ -99,7 +99,7 @@ export type DataProvider<ResourceType extends string = string> = {
 
     getMany: <RecordType extends RaRecord = any>(
         resource: ResourceType,
-        params: GetManyParams & QueryFunctionContext
+        params: GetManyParams<RecordType> & QueryFunctionContext
     ) => Promise<GetManyResult<RecordType>>;
 
     getManyReference: <RecordType extends RaRecord = any>(
@@ -172,8 +172,8 @@ export interface GetOneResult<RecordType extends RaRecord = any> {
     data: RecordType;
 }
 
-export interface GetManyParams {
-    ids: Identifier[];
+export interface GetManyParams<RecordType extends RaRecord = any> {
+    ids: RecordType['id'][];
     meta?: any;
     signal?: AbortSignal;
 }
@@ -366,16 +366,18 @@ export interface ResourceProps {
     children?: ReactNode;
 }
 
-export type Exporter = (
-    data: any,
-    fetchRelatedRecords: (
-        data: any,
-        field: string,
-        resource: string
-    ) => Promise<any>,
+export type Exporter<RecordType extends RaRecord = any> = (
+    data: RecordType[],
+    fetchRelatedRecords: FetchRelatedRecords,
     dataProvider: DataProvider,
     resource?: string
 ) => void | Promise<void>;
+
+export type FetchRelatedRecords = <RecordType = any>(
+    data: any[],
+    field: string,
+    resource: string
+) => Promise<{ [key: Identifier]: RecordType }>;
 
 export type SetOnSave = (
     onSave?: (values: object, redirect: any) => void

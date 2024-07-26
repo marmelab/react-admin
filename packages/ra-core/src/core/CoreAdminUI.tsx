@@ -152,8 +152,8 @@ export interface CoreAdminUIProps {
         resetErrorBoundary,
     }: {
         errorInfo?: ErrorInfo;
-        error?: Error;
-        resetErrorBoundary?: (args) => void;
+        error: Error;
+        resetErrorBoundary: (args) => void;
     }) => ReactElement;
 
     /**

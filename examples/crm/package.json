@@ -27,6 +27,7 @@
         "@testing-library/user-event": "^14.5.2",
         "@types/faker": "^5.1.7",
         "@types/jest": "^29.5.2",
+        "@types/jsonexport": "^3.0.5",
         "@types/lodash": "~4.14.168",
         "@types/react": "^18.3.3",
         "@types/react-dom": "^18.3.0",

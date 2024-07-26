@@ -56,7 +56,11 @@ export const useListController = <RecordType extends RaRecord = any>(
             `useListController requires a non-empty resource prop or context`
         );
     }
-    if (filter && isValidElement(filter)) {
+    if (
+        filter &&
+        (isValidElement(filter) ||
+            (Array.isArray(filter) && filter.some(isValidElement)))
+    ) {
         throw new Error(
             'useListController received a React element as `filter` props. If you intended to set the list filter elements, use the `filters` (with an s) prop instead. The `filter` prop is internal and should not be set by the developer.'
         );
@@ -274,7 +278,7 @@ export interface ListControllerProps<RecordType extends RaRecord = any> {
      *     </List>
      * )
      */
-    exporter?: Exporter | false;
+    exporter?: Exporter<RecordType> | false;
 
     /**
      * Permanent filter applied to all getList queries, regardless of the user selected filters.

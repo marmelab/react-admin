@@ -44,6 +44,8 @@ export const DateInput = ({
     parse,
     validate,
     variant,
+    disabled,
+    readOnly,
     ...rest
 }: DateInputProps) => {
     const { field, fieldState, id, isRequired } = useInput({
@@ -56,6 +58,8 @@ export const DateInput = ({
         resource,
         source,
         validate,
+        disabled,
+        readOnly,
         ...rest,
     });
 
@@ -72,6 +76,8 @@ export const DateInput = ({
             variant={variant}
             margin={margin}
             error={invalid}
+            disabled={disabled || readOnly}
+            readOnly={readOnly}
             helperText={
                 renderHelperText ? (
                     <InputHelperText

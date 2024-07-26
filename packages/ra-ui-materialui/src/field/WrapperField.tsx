@@ -33,6 +33,7 @@ WrapperField.displayName = 'WrapperField';
 
 export interface WrapperFieldProps<
     RecordType extends Record<string, any> = Record<string, any>,
-> extends FieldProps<RecordType> {
+> extends Omit<FieldProps<RecordType>, 'source'> {
+    source?: FieldProps<RecordType>['source'];
     children: ReactNode;
 }

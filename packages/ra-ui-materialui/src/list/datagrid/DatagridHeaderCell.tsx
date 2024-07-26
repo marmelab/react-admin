@@ -23,7 +23,10 @@ export const DatagridHeaderCell = (
     const sortLabel = translate('ra.sort.sort_by', {
         field: field
             ? translateLabel({
-                  label: field.props.label,
+                  label:
+                      typeof field.props.label === 'string'
+                          ? field.props.label
+                          : undefined,
                   resource,
                   source: field.props.source,
               })

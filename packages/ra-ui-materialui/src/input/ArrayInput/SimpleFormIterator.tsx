@@ -239,6 +239,7 @@ export interface SimpleFormIteratorProps extends Partial<UseFieldArrayReturn> {
     addButton?: ReactElement;
     children?: ReactNode;
     className?: string;
+    readOnly?: boolean;
     disabled?: boolean;
     disableAdd?: boolean;
     disableClear?: boolean;

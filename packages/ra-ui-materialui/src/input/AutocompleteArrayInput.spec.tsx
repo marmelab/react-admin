@@ -833,7 +833,7 @@ describe('<AutocompleteArrayInput />', () => {
                 selector: 'input',
             })
         );
-        expect(screen.queryAllByRole('option')).toHaveLength(2);
+        expect(screen.queryAllByRole('option')).toHaveLength(3);
         expect(screen.getByText('Technical')).not.toBeNull();
         expect(screen.getByText('Programming')).not.toBeNull();
     });
@@ -880,7 +880,9 @@ describe('<AutocompleteArrayInput />', () => {
         });
         expect(screen.getByText('Technical')).not.toBeNull();
         expect(screen.getByText('Programming')).not.toBeNull();
-        expect(screen.getByText('ra.action.create_item')).not.toBeNull();
+        await waitFor(() => {
+            expect(screen.getByText('ra.action.create_item')).not.toBeNull();
+        });
     });
 
     it('should support creation of a new choice through the onCreate event when optionText is a function', async () => {
@@ -1108,8 +1110,9 @@ describe('<AutocompleteArrayInput />', () => {
                 ]
             );
         });
+        screen.getByRole('combobox').blur();
         expect(screen.getByDisplayValue('Russian')).not.toBeNull();
-        screen.getAllByRole('combobox')[0].focus();
+        screen.getByRole('combobox').focus();
         fireEvent.click(await screen.findByText('Victor Hugo'));
         await waitFor(() => {
             expect(onChange).toHaveBeenCalledWith(

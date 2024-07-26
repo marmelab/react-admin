@@ -1,5 +1,9 @@
 import * as React from 'react';
-import { RecordContextProvider, ResourceContext } from 'ra-core';
+import {
+    I18nContextProvider,
+    RecordContextProvider,
+    ResourceContext,
+} from 'ra-core';
 import { TextField } from './field';
 import { Labeled } from './Labeled';
 import { Box, Stack } from '@mui/material';
@@ -127,4 +131,22 @@ export const FullWidthNoLabel = () => (
             </RecordContextProvider>
         </ResourceContext.Provider>
     </Stack>
+);
+
+export const I18nKey = () => (
+    <I18nContextProvider
+        value={{
+            getLocale: () => 'en',
+            translate: m => m,
+            changeLocale: async () => {},
+        }}
+    >
+        <ResourceContext.Provider value="books">
+            <RecordContextProvider value={record}>
+                <Labeled>
+                    <TextField source="title" />
+                </Labeled>
+            </RecordContextProvider>
+        </ResourceContext.Provider>
+    </I18nContextProvider>
 );

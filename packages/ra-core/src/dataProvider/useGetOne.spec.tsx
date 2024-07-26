@@ -299,4 +299,38 @@ describe('useGetOne', () => {
             expect(abort).toHaveBeenCalled();
         });
     });
+    describe('TypeScript', () => {
+        it('should return the parametric type', () => {
+            type Foo = { id: number; name: string };
+            const _Dummy = () => {
+                const { data, error, isPending } = useGetOne<Foo>('posts', {
+                    id: 1,
+                });
+                if (isPending || error) return null;
+                return <div>{data.name}</div>;
+            };
+            // no render needed, only checking types
+        });
+        it('should accept empty id param', () => {
+            const _Dummy = () => {
+                type Comment = {
+                    id: number;
+                    post_id: number;
+                };
+                const { data: comment } = useGetOne<Comment>('comments', {
+                    id: 1,
+                });
+                type Post = {
+                    id: number;
+                    title: string;
+                };
+                const { data, error, isPending } = useGetOne<Post>('posts', {
+                    id: comment?.post_id,
+                });
+                if (isPending || error) return null;
+                return <div>{data.title}</div>;
+            };
+            // no render needed, only checking types
+        });
+    });
 });

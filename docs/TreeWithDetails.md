@@ -434,7 +434,7 @@ export const ProductEdit = () => (
         <SimpleForm>
             <TextInput source="id" disabled />
             <TextInput source="name" />
-            <TreeInput source="category" treeData={[
+            <TreeInput source="category" data={[
                 { id: 1, title: 'Clothing', isRoot: true, children: [2, 6] },
                 { id: 2, title: 'Men', children: [3] },
                 { id: 3, title: 'Suits', children: [4, 5] },

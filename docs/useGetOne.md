@@ -71,6 +71,8 @@ const UserProfile = () => {
 
 ## Aggregating `getOne` Calls
 
+<iframe src="https://www.youtube-nocookie.com/embed/egBhWqF3sWc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;"></iframe>
+
 If you use `useGetOne` several times on a page for the same resource, replace the `useGetOne` call by `useGetManyAggregate`, as it de-duplicates and aggregates queries for a single record into one batch query for many records.
 
 ```diff
@@ -102,7 +104,7 @@ const UserProfile = () => {
 +   const { referenceRecord: user, isPending, error } = useReference({ reference: 'users', id: record.userId });
     if (isPending) { return <Loading />; }
     if (error) { return <p>ERROR</p>; }
-    return <div>User {data.username}</div>;
+    return <div>User {user.username}</div>;
 };
 ```
 

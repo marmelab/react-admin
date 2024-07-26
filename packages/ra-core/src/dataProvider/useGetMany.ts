@@ -53,7 +53,7 @@ import { useEvent } from '../util';
  */
 export const useGetMany = <RecordType extends RaRecord = any>(
     resource: string,
-    params: Partial<GetManyParams> = {},
+    params: Partial<GetManyParams<RecordType>>,
     options: UseGetManyOptions<RecordType> = {}
 ): UseGetManyHookValue<RecordType> => {
     const { ids, meta } = params;
@@ -64,6 +64,7 @@ export const useGetMany = <RecordType extends RaRecord = any>(
         onError = noop,
         onSuccess = noop,
         onSettled = noop,
+        enabled,
         ...queryOptions
     } = options;
     const onSuccessEvent = useEvent(onSuccess);
@@ -115,6 +116,7 @@ export const useGetMany = <RecordType extends RaRecord = any>(
             }
         },
         retry: false,
+        enabled: enabled ?? ids != null,
         ...queryOptions,
     });
 

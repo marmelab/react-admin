@@ -523,5 +523,5 @@ export type UseUpdateManyResult<
         MutationError,
         Partial<UpdateManyParams<Partial<RecordType>> & { resource?: string }>,
         unknown
-    >,
+    > & { isLoading: boolean },
 ];

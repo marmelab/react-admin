@@ -287,4 +287,5 @@ export const CustomInputs = () => (
 ## Limitations
 
 -  `<ReferenceOneInput>` cannot be used inside an `<ArrayInput>` or a `<ReferenceManyInput>`.
--  `<ReferenceOneInput>` cannot have a `<ReferenceManyInput>` as one of its children.
+-  `<ReferenceOneInput>` cannot have a `<ReferenceManyInput>` or a `<ReferenceManyToManyInput>` as one of its children.
+-  `<ReferenceOneInput>` does not support server side validation.

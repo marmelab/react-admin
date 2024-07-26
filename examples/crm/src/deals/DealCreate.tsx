@@ -118,7 +118,11 @@ export const DealCreate = ({ open }: { open: boolean }) => {
                         validate={validateRequired}
                         defaultValue="opportunity"
                     />
-                    <SelectInput source="type" choices={typeChoices} />
+                    <SelectInput
+                        source="type"
+                        label="Category"
+                        choices={typeChoices}
+                    />
                     <NumberInput source="amount" defaultValue={0} />
                 </SimpleForm>
             </Create>

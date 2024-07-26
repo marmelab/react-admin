@@ -7,7 +7,9 @@ title: "The ReferenceField Component"
 
 `<ReferenceField>` is useful for displaying many-to-one and one-to-one relationships, e.g. the details of a user when rendering a post authored by that user. 
 
-![ReferenceField](./img/reference_field_show.png)
+<iframe src="https://www.youtube-nocookie.com/embed/UeM31-65Wc4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;"></iframe>
+
+## Usage
 
 For instance, let's consider a model where a `post` has one author from the `users` resource, referenced by a `user_id` field.
 
@@ -22,18 +24,35 @@ For instance, let's consider a model where a `post` has one author from the `use
 └──────────────┘
 ```
 
-In that case, use `<ReferenceField>` to display the post author's id as follows:
+In that case, use `<ReferenceField>` to display the post author's as follows:
 
 ```jsx
-<ReferenceField source="user_id" reference="users" />
+import { Show, SimpleShowLayout, ReferenceField, TextField, DateField } from 'react-admin';
+
+export const PostShow = () => (
+    <Show>
+        <SimpleShowLayout>
+            <TextField source="id" />
+            <TextField source="title" />
+            <DateField source="published_at" />
+            <ReferenceField source="user_id" reference="users" label="Author" />
+        </SimpleShowLayout>
+    </Show>
+);
 ```
 
-`<ReferenceField>` fetches the data, puts it in a [`RecordContext`](./useRecordContext.md), and renders the [`recordRepresentation`](./Resource.md#recordrepresentation) (the record `id` field by default). 
+`<ReferenceField>` fetches the data, puts it in a [`RecordContext`](./useRecordContext.md), and renders the [`recordRepresentation`](./Resource.md#recordrepresentation) (the record `id` field by default) wrapped in a link to the related user `<Edit>` page.
+
+![ReferenceField](./img/reference_field_show.png)
 
 So it's a good idea to configure the `<Resource recordRepresentation>` to render related records in a meaningul way. For instance, for the `users` resource, if you want the `<ReferenceField>` to display the full name of the author:
 
 ```jsx
-<Resource name="users" list={UserList} recordRepresentation={(record) => `${record.first_name} ${record.last_name}`} />
+<Resource
+    name="users"
+    list={UserList}
+    recordRepresentation={(record) => `${record.first_name} ${record.last_name}`}
+/>
 ```
 
 Alternately, if you pass a child component, `<ReferenceField>` will render it instead of the `recordRepresentation`. Usual child components for `<ReferenceField>` are other `<Field>` components (e.g. [`<TextField>`](./TextField.md)).
@@ -47,27 +66,6 @@ Alternately, if you pass a child component, `<ReferenceField>` will render it in
 This component fetches a referenced record (`users` in this example) using the `dataProvider.getMany()` method, and passes it to its child. 
 
 It uses `dataProvider.getMany()` instead of `dataProvider.getOne()` [for performance reasons](#performance). When using several `<ReferenceField>` in the same page (e.g. in a `<Datagrid>`), this allows to call the `dataProvider` once instead of once per row. 
-
-## Usage
-
-Here is how to render both a post and the author name in a show view:
-
-```jsx
-import { Show, SimpleShowLayout, ReferenceField, TextField, DateField } from 'react-admin';
-
-export const PostShow = () => (
-    <Show>
-        <SimpleShowLayout>
-            <TextField source="id" />
-            <TextField source="title" />
-            <DateField source="published_at" />
-            <ReferenceField label="Author" source="user_id" reference="users" />
-        </SimpleShowLayout>
-    </Show>
-);
-```
-
-With this configuration, `<ReferenceField>` wraps the user's name in a link to the related user `<Edit>` page.
 
 ## Props
 
@@ -191,6 +189,8 @@ The `<ReferenceField>` component accepts the usual `className` prop. You can als
 To override the style of all instances of `<ReferenceField>` using the [application-wide style overrides](./AppTheme.md#theming-individual-components), use the `RaReferenceField` key.
 
 ## Performance
+
+<iframe src="https://www.youtube-nocookie.com/embed/egBhWqF3sWc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;"></iframe>
 
 When used in a `<Datagrid>`, `<ReferenceField>` fetches the referenced record only once for the entire table. 
 

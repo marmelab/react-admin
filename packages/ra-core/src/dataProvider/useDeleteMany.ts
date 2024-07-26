@@ -504,5 +504,5 @@ export type UseDeleteManyResult<
         MutationError,
         Partial<DeleteManyParams<RecordType> & { resource?: string }>,
         unknown
-    >,
+    > & { isLoading: boolean },
 ];

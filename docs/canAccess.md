@@ -90,7 +90,7 @@ const AccessDashboard = () => {
         <>
             {canAccess({
                 permissions,
-                resource: 'commands',
+                resource: 'orders',
             }) ? (
                 <>List of last orders...</> // no access to this component
             ) : null}
@@ -132,7 +132,7 @@ export const MyApp = () => (
     <Admin authProvider={authProvider} dataProvider={dataProvider}>
         <Resource name="products" list={ListGuesser} />
         <Resource name="categories" list={ListGuesser} edit={EditGuesser} />
-        <Resource name="commands" list={ListGuesser} />
+        <Resource name="orders" list={ListGuesser} />
     </Admin>
 );
 ```
@@ -335,13 +335,13 @@ const MyMenu = () => {
                 }
             />
             <Menu.Item
-                to="/commands"
-                primaryText="Commands"
+                to="/orders"
+                primaryText="Orders"
                 leftIcon={<ShoppingCartCheckoutIcon />}
                 disabled={
                     !canAccess({
                         permissions,
-                        resource: 'commands',
+                        resource: 'orders',
                     })
                 }
             />
@@ -364,7 +364,7 @@ export const App = () => (
     >
         <Resource name="categories" list={ListGuesser} />
         <Resource name="products" list={ListGuesser} />
-        <Resource name="commands" list={ListGuesser} />
+        <Resource name="orders" list={ListGuesser} />
     </Admin>
 );
 ```

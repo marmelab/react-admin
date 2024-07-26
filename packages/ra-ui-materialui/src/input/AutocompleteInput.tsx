@@ -175,6 +175,8 @@ export const AutocompleteInput = <
         validate,
         variant,
         onInputChange,
+        disabled,
+        readOnly,
         ...rest
     } = props;
 
@@ -218,6 +220,8 @@ export const AutocompleteInput = <
         resource,
         source,
         validate,
+        disabled,
+        readOnly,
         ...rest,
     });
 
@@ -464,7 +468,10 @@ If you provided a React element for the optionText prop, you must also provide t
             setFilterValue(newInputValue);
             debouncedSetFilter(newInputValue);
         }
-
+        if (reason === 'clear') {
+            setFilterValue('');
+            debouncedSetFilter('');
+        }
         onInputChange?.(event, newInputValue, reason);
     };
 
@@ -505,25 +512,29 @@ If you provided a React element for the optionText prop, you must also provide t
 
         // add create option if necessary
         const { inputValue } = params;
-        // FIXME pass the allowCreate: true option to useCreateSuggestions instead
-        if (
-            (onCreate || create) &&
-            inputValue !== '' &&
-            !doesQueryMatchSuggestion(filterValue)
-        ) {
-            filteredOptions = filteredOptions.concat(getCreateItem(inputValue));
+        if (onCreate || create) {
+            if (inputValue === '') {
+                // create option with createLabel
+                filteredOptions = filteredOptions.concat(getCreateItem(''));
+            } else if (!doesQueryMatchSuggestion(filterValue)) {
+                filteredOptions = filteredOptions.concat(
+                    // create option with createItemLabel
+                    getCreateItem(inputValue)
+                );
+            }
         }
 
         return filteredOptions;
     };
 
-    const handleAutocompleteChange = (
-        event: any,
-        newValue: any,
-        _reason: string
-    ) => {
-        handleChangeWithCreateSupport(newValue != null ? newValue : emptyValue);
-    };
+    const handleAutocompleteChange = useCallback(
+        (event: any, newValue: any, _reason: string) => {
+            handleChangeWithCreateSupport(
+                newValue != null ? newValue : emptyValue
+            );
+        },
+        [emptyValue, handleChangeWithCreateSupport]
+    );
 
     const oneSecondHasPassed = useTimeout(1000, filterValue);
 
@@ -550,7 +561,6 @@ If you provided a React element for the optionText prop, you must also provide t
     return (
         <>
             <StyledAutocomplete
-                blurOnSelect
                 className={clsx('ra-input', `ra-input-${source}`, className)}
                 clearText={translate(clearText, { _: clearText })}
                 closeText={translate(closeText, { _: closeText })}
@@ -559,8 +569,10 @@ If you provided a React element for the optionText prop, you must also provide t
                 id={id}
                 isOptionEqualToValue={isOptionEqualToValue}
                 filterSelectedOptions
+                disabled={disabled || readOnly}
                 renderInput={params => {
                     const mergedTextFieldProps = {
+                        readOnly,
                         ...params.InputProps,
                         ...TextFieldProps?.InputProps,
                     };
@@ -591,6 +603,7 @@ If you provided a React element for the optionText prop, you must also provide t
                             variant={variant}
                             className={AutocompleteInputClasses.textField}
                             {...params}
+                            {...TextFieldProps}
                             InputProps={mergedTextFieldProps}
                             size={size}
                         />

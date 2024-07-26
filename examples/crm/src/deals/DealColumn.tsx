@@ -41,7 +41,7 @@ export const DealColumn = ({
                     sx={{
                         display: 'flex',
                         flexDirection: 'column',
-                        borderRadius: 5,
+                        borderRadius: 1,
                         padding: '5px',
                         '&.isDraggingOver': {
                             bgcolor: '#dadadf',

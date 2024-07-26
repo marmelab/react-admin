@@ -18,7 +18,15 @@ export const Basic = () => (
 
 export const Disabled = () => (
     <Wrapper>
+        <NullableBooleanInput source="announced" defaultValue={true} disabled />
         <NullableBooleanInput source="published" disabled />
+    </Wrapper>
+);
+
+export const ReadOnly = () => (
+    <Wrapper>
+        <NullableBooleanInput source="announced" defaultValue={true} readOnly />
+        <NullableBooleanInput source="published" readOnly />
     </Wrapper>
 );
 
