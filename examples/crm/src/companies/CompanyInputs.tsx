@@ -139,6 +139,7 @@ const CompanyAccountManagerInput = () => {
                     label="Account manager"
                     helperText={false}
                     optionText={saleOptionRenderer}
+                    validate={required()}
                 />
             </ReferenceInput>
         </Stack>
