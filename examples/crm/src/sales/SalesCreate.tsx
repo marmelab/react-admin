@@ -7,7 +7,7 @@ export function SalesCreate() {
         <Container maxWidth="sm" sx={{ mt: 4 }}>
             <Create redirect="list">
                 <SimpleForm>
-                    <Typography variant="h6">Create sale guy</Typography>
+                    <Typography variant="h6">Create sale person</Typography>
                     <SalesInputs>
                         <PasswordInput
                             source="password"
