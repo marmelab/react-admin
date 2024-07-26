@@ -30,6 +30,10 @@ export const DealArchivedList = () => {
         }
     }, [isPending, total]);
 
+    useEffect(() => {
+        setOpenDialog(false);
+    }, [archivedLists]);
+
     if (!identity || isPending || !total || !archivedLists) return null;
 
     // Group archived lists by date
