@@ -251,11 +251,7 @@ const ArchiveButton = ({ record }: { record: Deal }) => {
     };
 
     return (
-        <Button
-            onClick={handleClick}
-            variant="contained"
-            startIcon={<ArchiveIcon />}
-        >
+        <Button onClick={handleClick} startIcon={<ArchiveIcon />}>
             Archive
         </Button>
     );
@@ -287,11 +283,7 @@ const UnarchiveButton = ({ record }: { record: Deal }) => {
     };
 
     return (
-        <Button
-            onClick={handleClick}
-            variant="contained"
-            startIcon={<UnarchiveIcon />}
-        >
+        <Button onClick={handleClick} startIcon={<UnarchiveIcon />}>
             Send back to the board
         </Button>
     );
