@@ -1,13 +1,22 @@
 import { Create, PasswordInput, required, SimpleForm } from 'react-admin';
-import { SalesForm } from './SalesForm';
+import { SalesInputs } from './SalesInputs';
+import { Container, Typography } from '@mui/material';
 
 export function SalesCreate() {
     return (
-        <Create redirect="list">
-            <SimpleForm>
-                <SalesForm />
-                <PasswordInput source="password" validate={required()} />
-            </SimpleForm>
-        </Create>
+        <Container maxWidth="sm" sx={{ mt: 4 }}>
+            <Create redirect="list">
+                <SimpleForm>
+                    <Typography variant="h6">Create sale guy</Typography>
+                    <SalesInputs>
+                        <PasswordInput
+                            source="password"
+                            validate={required()}
+                            helperText={false}
+                        />
+                    </SalesInputs>
+                </SimpleForm>
+            </Create>
+        </Container>
     );
 }

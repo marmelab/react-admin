@@ -15,7 +15,7 @@ function SalesListActions() {
     return (
         <TopToolbar>
             <ExportButton />
-            <CreateButton variant="contained" label="New Sale" />
+            <CreateButton variant="contained" label="New sales guy" />
         </TopToolbar>
     );
 }
@@ -34,7 +34,7 @@ export function SalesList() {
                     <TextField source="first_name" />
                     <TextField source="last_name" />
                     <TextField source="email" />
-                    <BooleanField source="administrator" />
+                    <BooleanField source="administrator" FalseIcon={null} />
                 </DatagridConfigurable>
             </List>
 
