@@ -100,7 +100,7 @@ const Header = () => {
                                 />
                                 {permissions === 'admin' && (
                                     <Tab
-                                        label={'Sales'}
+                                        label={'Sales Team'}
                                         component={Link}
                                         to="/sales"
                                         value="/sales"

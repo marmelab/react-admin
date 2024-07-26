@@ -8,8 +8,15 @@ import {
     TextField,
     Typography,
 } from '@mui/material';
-import { useGetIdentity, useGetOne, useNotify, useUpdate } from 'react-admin';
+import {
+    Toolbar,
+    useGetIdentity,
+    useGetOne,
+    useNotify,
+    useUpdate,
+} from 'react-admin';
 import { useForm } from 'react-hook-form';
+import { DialogCloseButton } from '../misc/DialogCloseButton';
 
 const PASSWORD_POLICY = {
     regex: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/, // Example policy: Minimum 8 characters, at least one letter and one number
@@ -75,17 +82,18 @@ export const UpdatePassword = ({
 
     return (
         <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
+            <DialogCloseButton onClose={handleClose} />
             <DialogTitle>Change Password</DialogTitle>
-            <DialogContent>
-                <Typography
-                    variant="caption"
-                    color="textSecondary"
-                    gutterBottom
-                >
-                    Password for Jane Doe account is "demo"
-                </Typography>
-                <form onSubmit={handleSubmit(onSubmit)}>
-                    <Stack gap={2}>
+            <form onSubmit={handleSubmit(onSubmit)}>
+                <DialogContent>
+                    <Typography
+                        variant="caption"
+                        color="textSecondary"
+                        gutterBottom
+                    >
+                        Password for Jane Doe account is "demo"
+                    </Typography>
+                    <Stack gap={1}>
                         <TextField
                             {...register('currentPassword', {
                                 required: 'Current password is required',
@@ -139,14 +147,18 @@ export const UpdatePassword = ({
                             }
                         />
                     </Stack>
-                    <DialogActions>
-                        <Button
-                            variant="text"
-                            onClick={handleClose}
-                            color="secondary"
-                        >
-                            Cancel
-                        </Button>
+                </DialogContent>
+                <DialogActions
+                    sx={{
+                        justifyContent: 'flex-start',
+                        p: 0,
+                    }}
+                >
+                    <Toolbar
+                        sx={{
+                            width: '100%',
+                        }}
+                    >
                         <Button
                             type="submit"
                             color="primary"
@@ -155,9 +167,9 @@ export const UpdatePassword = ({
                         >
                             Update
                         </Button>
-                    </DialogActions>
-                </form>
-            </DialogContent>
+                    </Toolbar>
+                </DialogActions>
+            </form>
         </Dialog>
     );
 };
