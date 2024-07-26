@@ -127,7 +127,16 @@ const CompanyAdditionalInformationInputs = () => {
             <Typography variant="h6">Additional information</Typography>
             <TextInput source="description" multiline helperText={false} />
             <ArrayInput source="context_links" helperText={false}>
-                <SimpleFormIterator disableReordering fullWidth>
+                <SimpleFormIterator
+                    disableReordering
+                    fullWidth
+                    sx={{
+                        m: 0,
+                        '& .RaSimpleFormIterator-index': {
+                            m: 0,
+                        },
+                    }}
+                >
                     <TextInput source="" hiddenLabel helperText={false} />
                 </SimpleFormIterator>
             </ArrayInput>
