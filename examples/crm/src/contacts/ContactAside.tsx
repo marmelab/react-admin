@@ -1,27 +1,26 @@
-import * as React from 'react';
-import {
-    TextField,
-    EmailField,
-    DateField,
-    ReferenceManyField,
-    EditButton,
-    ShowButton,
-    ReferenceField,
-    SelectField,
-    FunctionField,
-    useRecordContext,
-    UrlField,
-} from 'react-admin';
-import { Box, Typography, Divider, Stack } from '@mui/material';
 import EmailIcon from '@mui/icons-material/Email';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import PhoneIcon from '@mui/icons-material/Phone';
-import { TagsListEdit } from './TagsListEdit';
+import { Box, Divider, Stack, Typography } from '@mui/material';
+import {
+    DateField,
+    EditButton,
+    EmailField,
+    FunctionField,
+    ReferenceField,
+    ReferenceManyField,
+    SelectField,
+    ShowButton,
+    TextField,
+    UrlField,
+    useRecordContext,
+} from 'react-admin';
 import { AddTask } from '../tasks/AddTask';
 import { TasksIterator } from '../tasks/TasksIterator';
+import { TagsListEdit } from './TagsListEdit';
 
-import { Contact, Sale } from '../types';
 import { useConfigurationContext } from '../root/ConfigurationContext';
+import { Contact, Sale } from '../types';
 
 export const ContactAside = ({ link = 'edit' }: { link?: 'edit' | 'show' }) => {
     const { contactGender } = useConfigurationContext();
@@ -63,6 +62,7 @@ export const ContactAside = ({ link = 'edit' }: { link?: 'edit' | 'show' }) => {
                         content="linkedin_url"
                         target="_blank"
                         rel="noopener"
+                        label="LinkedIn"
                     />
                 </Stack>
             )}

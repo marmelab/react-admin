@@ -1,12 +1,3 @@
-import * as React from 'react';
-import {
-    TextInput,
-    ReferenceInput,
-    SelectInput,
-    required,
-    ArrayInput,
-    SimpleFormIterator,
-} from 'react-admin';
 import {
     Divider,
     Stack,
@@ -14,24 +5,19 @@ import {
     useMediaQuery,
     useTheme,
 } from '@mui/material';
+import {
+    ArrayInput,
+    ReferenceInput,
+    SelectInput,
+    SimpleFormIterator,
+    TextInput,
+    required,
+} from 'react-admin';
+import { isLinkedinUrl } from '../commons/isLinkedInUrl';
 import { useConfigurationContext } from '../root/ConfigurationContext';
 import { Sale } from '../types';
-import { sizes } from './sizes';
 import { CompanyAvatar } from './CompanyAvatar';
-
-const isLinkedinUrl = (url: string) => {
-    if (!url) return;
-    try {
-        // Parse the URL to ensure it is valid
-        const parsedUrl = new URL(url);
-        if (!parsedUrl.hostname.startsWith('https://linkedin.com/')) {
-            return 'URL must be from linkedin.com';
-        }
-    } catch (e) {
-        // If URL parsing fails, return false
-        return 'Must be a valid URL';
-    }
-};
+import { sizes } from './sizes';
 
 export const CompanyInputs = () => {
     const theme = useTheme();
@@ -103,7 +89,7 @@ const CompanyContextInputs = () => {
             />
             <SelectInput source="size" choices={sizes} helperText={false} />
             <TextInput source="revenue" helperText={false} />
-            <TextInput source="taxe_identifier" helperText={false} />
+            <TextInput source="tax_identifier" helperText={false} />
         </Stack>
     );
 };

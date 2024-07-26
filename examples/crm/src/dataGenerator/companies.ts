@@ -1,16 +1,16 @@
 import {
+    address,
     company,
     internet,
-    address,
+    lorem,
     phone,
     random,
-    lorem,
 } from 'faker/locale/en_US';
 import { randomDate } from './utils';
 
-import { Db } from './types';
-import { Company } from '../types';
 import { defaultCompanySectors } from '../root/defaultConfiguration';
+import { Company } from '../types';
+import { Db } from './types';
 
 const sizes = [1, 10, 50, 250, 500];
 
@@ -45,7 +45,7 @@ export const generateCompanies = (db: Db): Company[] => {
             created_at: randomDate().toISOString(),
             description: lorem.paragraph(),
             revenue: random.arrayElement(['$1M', '$10M', '$100M', '$1B']),
-            taxe_identifier: random.alphaNumeric(10),
+            tax_identifier: random.alphaNumeric(10),
             country: random.arrayElement(['USA', 'France', 'UK']),
             context_links: [],
         };

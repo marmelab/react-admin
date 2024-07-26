@@ -1,17 +1,3 @@
-import * as React from 'react';
-import {
-    TextInput,
-    ReferenceInput,
-    AutocompleteInput,
-    BooleanInput,
-    SelectInput,
-    required,
-    email,
-    useCreate,
-    useGetIdentity,
-    useNotify,
-    RadioButtonGroupInput,
-} from 'react-admin';
 import {
     Divider,
     Stack,
@@ -19,23 +5,23 @@ import {
     useMediaQuery,
     useTheme,
 } from '@mui/material';
+import {
+    AutocompleteInput,
+    BooleanInput,
+    RadioButtonGroupInput,
+    ReferenceInput,
+    SelectInput,
+    TextInput,
+    email,
+    required,
+    useCreate,
+    useGetIdentity,
+    useNotify,
+} from 'react-admin';
+import { isLinkedinUrl } from '../commons/isLinkedInUrl';
 import { useConfigurationContext } from '../root/ConfigurationContext';
-import { Avatar } from './Avatar';
 import { Sale } from '../types';
-
-const isLinkedinUrl = (url: string) => {
-    if (!url) return;
-    try {
-        // Parse the URL to ensure it is valid
-        const parsedUrl = new URL(url);
-        if (!parsedUrl.hostname.startsWith('https://linkedin.com/')) {
-            return 'URL must be from linkedin.com';
-        }
-    } catch (e) {
-        // If URL parsing fails, return false
-        return 'Must be a valid URL';
-    }
-};
+import { Avatar } from './Avatar';
 
 export const ContactInputs = () => {
     const theme = useTheme();

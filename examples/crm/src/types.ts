@@ -33,7 +33,7 @@ export interface Company extends RaRecord {
     created_at: string;
     description: string;
     revenue: string;
-    taxe_identifier: string;
+    tax_identifier: string;
     country: string;
     context_links?: string[];
 }
