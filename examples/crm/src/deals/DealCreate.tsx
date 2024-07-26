@@ -92,7 +92,6 @@ export const DealCreate = ({ open }: { open: boolean }) => {
                         sales_id: identity?.id,
                         contact_ids: [],
                         index: 0,
-                        start_at: new Date().toISOString(),
                     }}
                 >
                     <DialogContent>

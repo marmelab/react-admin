@@ -22,10 +22,9 @@ export const generateDeals = (db: Db): Deal[] => {
             new Date(company.created_at)
         ).toISOString();
 
-        const start_at = created_at;
         const expected_closing_date = randomDate(
-            new Date(start_at),
-            add(new Date(start_at), { months: 6 })
+            new Date(created_at),
+            add(new Date(created_at), { months: 6 })
         ).toISOString();
 
         return {
@@ -37,9 +36,8 @@ export const generateDeals = (db: Db): Deal[] => {
             stage: random.arrayElement(defaultDealStages).value,
             description: lorem.paragraphs(random.number({ min: 1, max: 4 })),
             amount: random.number(1000) * 100,
-            created_at: created_at,
+            created_at,
             updated_at: randomDate(new Date(created_at)).toISOString(),
-            start_at,
             expected_closing_date,
             sales_id: company.sales_id,
             index: 0,

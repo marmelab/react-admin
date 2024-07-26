@@ -411,7 +411,6 @@ export const dataProvider = withLifecycleCallbacks(
                     ...params,
                     data: {
                         ...params.data,
-                        start_at: new Date().toISOString(),
                         created_at: new Date().toISOString(),
                         updated_at: new Date().toISOString(),
                     },
