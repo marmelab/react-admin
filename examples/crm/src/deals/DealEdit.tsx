@@ -3,7 +3,7 @@ import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import Typography from '@mui/material/Typography';
 import {
-    DeleteWithConfirmButton,
+    DeleteButton,
     EditBase,
     Form,
     SaveButton,
@@ -96,7 +96,7 @@ function EditToolbar() {
     return (
         <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
             <SaveButton />
-            <DeleteWithConfirmButton />
+            <DeleteButton mutationMode="undoable" />
         </Toolbar>
     );
 }
