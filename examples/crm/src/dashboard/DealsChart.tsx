@@ -18,7 +18,7 @@ export const DealsChart = () => {
     const { data, isPending } = useGetList<Deal>('deals', {
         pagination: { perPage: 100, page: 1 },
         sort: {
-            field: 'start_at',
+            field: 'created_at',
             order: 'ASC',
         },
     });
@@ -27,7 +27,7 @@ export const DealsChart = () => {
         if (!data) return [];
         const dealsByMonth = data.reduce((acc, deal) => {
             const month = startOfMonth(
-                deal.start_at ?? new Date()
+                deal.created_at ?? new Date()
             ).toISOString();
             if (!acc[month]) {
                 acc[month] = [];
