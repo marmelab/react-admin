@@ -13,24 +13,11 @@ import {
     TextInput,
     required,
 } from 'react-admin';
+import { isLinkedinUrl } from '../commons/isLinkedInUrl';
 import { useConfigurationContext } from '../root/ConfigurationContext';
 import { Sale } from '../types';
 import { CompanyAvatar } from './CompanyAvatar';
 import { sizes } from './sizes';
-
-const isLinkedinUrl = (url: string) => {
-    if (!url) return;
-    try {
-        // Parse the URL to ensure it is valid
-        const parsedUrl = new URL(url);
-        if (!parsedUrl.hostname.startsWith('https://linkedin.com/')) {
-            return 'URL must be from linkedin.com';
-        }
-    } catch (e) {
-        // If URL parsing fails, return false
-        return 'Must be a valid URL';
-    }
-};
 
 export const CompanyInputs = () => {
     const theme = useTheme();

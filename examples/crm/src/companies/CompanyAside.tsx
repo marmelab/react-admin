@@ -79,6 +79,7 @@ const CompanyInfo = ({ record }: { record: Company }) => {
                         content="LinkedIn"
                         target="_blank"
                         rel="noopener"
+                        label="LinkedIn"
                     />
                 </Stack>
             )}
