@@ -116,11 +116,9 @@ const CompanyAdditionalInformationInputs = () => {
                 <SimpleFormIterator
                     disableReordering
                     fullWidth
+                    getItemLabel={false}
                     sx={{
                         m: 0,
-                        '& .RaSimpleFormIterator-index': {
-                            m: 0,
-                        },
                     }}
                 >
                     <TextInput source="" hiddenLabel helperText={false} />

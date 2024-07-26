@@ -164,18 +164,20 @@ const ContextInfo = ({ record }: { record: Company }) => {
             <Typography variant="subtitle2">Context</Typography>
             <Divider sx={{ mb: 1 }} />
             <Stack gap={1}>
-                {record.context_links.map((link, index) => (
-                    <Typography
-                        key={index}
-                        variant="body2"
-                        component={Link}
-                        href={link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                    >
-                        {getBaseURL(link)}
-                    </Typography>
-                ))}
+                {record.context_links.map((link, index) =>
+                    link ? (
+                        <Typography
+                            key={index}
+                            variant="body2"
+                            component={Link}
+                            href={link}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            {getBaseURL(link)}
+                        </Typography>
+                    ) : null
+                )}
             </Stack>
         </Stack>
     );
