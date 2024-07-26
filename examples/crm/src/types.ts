@@ -123,6 +123,7 @@ export type ActivityContactCreated = {
 export type ActivityContactNoteCreated = {
     type: typeof CONTACT_NOTE_CREATED;
     sale: Sale;
+    company: Company;
     contact: Contact;
     contactNote: ContactNote;
 };

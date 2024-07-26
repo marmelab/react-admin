@@ -25,11 +25,12 @@ export function ActivityLogDealNoteCreated({
                             }}
                             variant="body2"
                         >
-                            A note was added to{' '}
+                            A note has been added to{' '}
                             <Link to={`/deals/${deal.id}/show`} variant="body2">
                                 {deal.name}
                             </Link>{' '}
-                            deal by {sale.first_name} {sale.last_name}
+                            from <strong>{company.name}</strong> by{' '}
+                            {sale.first_name} {sale.last_name}
                         </Typography>
 
                         <ActivityLogDate date={dealNote.date} />
