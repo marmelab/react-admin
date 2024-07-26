@@ -1,8 +1,8 @@
-import Button from '@mui/material/Button';
+import Link from '@mui/material/Link';
 import ListItem from '@mui/material/ListItem';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import { ReactNode, useState } from 'react';
+import { MouseEventHandler, ReactNode, useState } from 'react';
 
 type ActivityLogContactNoteCreatedProps = {
     header: ReactNode;
@@ -19,6 +19,11 @@ export function ActivityLogNote({
 
     const slicedText =
         text.length > maxDisplayLength ? text.slice(0, maxDisplayLength) : null;
+
+    const handleToggleSeeMore: MouseEventHandler = e => {
+        e.preventDefault();
+        setSeeMore(oldSeeMore => !oldSeeMore);
+    };
 
     return (
         <ListItem>
@@ -39,12 +44,13 @@ export function ActivityLogNote({
                 </Typography>
 
                 {slicedText && (
-                    <Button
-                        size="small"
-                        onClick={() => setSeeMore(oldSeeMore => !oldSeeMore)}
+                    <Link
+                        href="#"
+                        variant="body2"
+                        onClick={handleToggleSeeMore}
                     >
                         {seeMore ? 'See less' : 'See more'}
-                    </Button>
+                    </Link>
                 )}
             </Stack>
         </ListItem>
