@@ -185,6 +185,7 @@ const ContactMiscInputs = () => {
                     helperText={false}
                     label="Account manager"
                     optionText={saleOptionRenderer}
+                    validate={required()}
                 />
             </ReferenceInput>
         </Stack>
