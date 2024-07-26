@@ -146,7 +146,11 @@ const CompanyShowContent = () => {
                         ) : null}
                         {record.description ? (
                             <TabPanel value={tabValue} index={tabIndex++}>
-                                <Stack mt={2} sx={{ whiteSpace: 'pre-line' }}>
+                                <Stack
+                                    pt={2}
+                                    px={2}
+                                    sx={{ whiteSpace: 'pre-line' }}
+                                >
                                     <TextField source="description" />
                                 </Stack>
                             </TabPanel>
