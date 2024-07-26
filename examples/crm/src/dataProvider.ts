@@ -377,7 +377,15 @@ export const dataProvider = withLifecycleCallbacks(
         {
             resource: 'companies',
             beforeCreate: async params => {
-                return await processCompanyLogo(params);
+                const createParams = await processCompanyLogo(params);
+
+                return {
+                    ...createParams,
+                    data: {
+                        ...createParams.data,
+                        created_at: new Date().toISOString(),
+                    },
+                };
             },
             beforeUpdate: async params => {
                 return await processCompanyLogo(params);
