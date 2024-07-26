@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { CreateBase, Form, Toolbar, useGetIdentity } from 'react-admin';
-import { Card, CardContent, Box, Avatar } from '@mui/material';
+import { Card, CardContent, Box } from '@mui/material';
 
 import { ContactInputs } from './ContactInputs';
 import { Contact } from '../types';
@@ -22,14 +22,7 @@ export const ContactCreate = () => {
                     <Form defaultValues={{ sales_id: identity?.id }}>
                         <Card>
                             <CardContent>
-                                <Box>
-                                    <Box display="flex">
-                                        <Box mr={2}>
-                                            <Avatar />
-                                        </Box>
-                                        <ContactInputs />
-                                    </Box>
-                                </Box>
+                                <ContactInputs />
                             </CardContent>
                             <Toolbar />
                         </Card>
