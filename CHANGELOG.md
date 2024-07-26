@@ -1,5 +1,20 @@
 # Changelog
 
+## v5.1.0
+
+* Update `<SelectInput>` to support an array of strings as choices ([#10038](https://github.com/marmelab/react-admin/pull/10038)) ([fzaninotto](https://github.com/fzaninotto))
+* Add ability to disable title in page components ([#9969](https://github.com/marmelab/react-admin/pull/9969)) ([fzaninotto](https://github.com/fzaninotto))
+* Update `<ReferenceField>` to render a link to the show view when relevant ([#9951](https://github.com/marmelab/react-admin/pull/9951)) ([fzaninotto](https://github.com/fzaninotto))
+* Preserve extra query parameters in List view ([#9933](https://github.com/marmelab/react-admin/pull/9933)) ([Nilegfx](https://github.com/Nilegfx))
+* Allow to customize Login page icon with `<Login avatarIcon>` ([#9917](https://github.com/marmelab/react-admin/pull/9917)) ([mjarosch](https://github.com/mjarosch))
+* Add ability to customize the success notification message in delete buttons ([#9868](https://github.com/marmelab/react-admin/pull/9868)) ([ethembynkr](https://github.com/ethembynkr))
+* Allow `<Title>` to be non configurable ([#9836](https://github.com/marmelab/react-admin/pull/9836)) ([markyao6275](https://github.com/markyao6275))
+* [Doc] Mention CreateInDialog in ReferenceManyField documentation ([#10054](https://github.com/marmelab/react-admin/pull/10054)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Doc] Fix wrong link in CreateButton usage ([#10053](https://github.com/marmelab/react-admin/pull/10053)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [DOC] Backport ra-tree updates and overhaul props ([#10049](https://github.com/marmelab/react-admin/pull/10049)) ([adguernier](https://github.com/adguernier))
+* [Doc] Update fullwidth docs for DateInput, DateTimeInput and TimeInput ([#10040](https://github.com/marmelab/react-admin/pull/10040)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Doc] Mention dialogs in Buttons doc ([#10039](https://github.com/marmelab/react-admin/pull/10039)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+
 ## v5.0.5
 
 * Fix `<AutocompleteInput>` clear button does not clear new choice  ([#10023](https://github.com/marmelab/react-admin/pull/10023)) ([adguernier](https://github.com/adguernier))
@@ -124,6 +139,14 @@ We've written a [migration guide](https://marmelab.com/react-admin/doc/5.0/Upgra
 We estimate that a react-admin app with 50,000 lines of code will require about 2 days of work to upgrade to v5.
 
 ### Changelog
+
+* Update `<SelectInput>` to support an array of strings as choices ([#10038](https://github.com/marmelab/react-admin/pull/10038)) ([fzaninotto](https://github.com/fzaninotto))
+* Add ability to disable title in page components ([#9969](https://github.com/marmelab/react-admin/pull/9969)) ([fzaninotto](https://github.com/fzaninotto))
+* Update `<ReferenceField>` to render a link to the show view when relevant ([#9951](https://github.com/marmelab/react-admin/pull/9951)) ([fzaninotto](https://github.com/fzaninotto))
+* Preserve extra query parameters in List view ([#9933](https://github.com/marmelab/react-admin/pull/9933)) ([Nilegfx](https://github.com/Nilegfx))
+* Allow to customize Login page icon with `<Login avatarIcon>` ([#9917](https://github.com/marmelab/react-admin/pull/9917)) ([mjarosch](https://github.com/mjarosch))
+* Add ability to customize the success notification message in delete buttons ([#9868](https://github.com/marmelab/react-admin/pull/9868)) ([ethembynkr](https://github.com/ethembynkr))
+* Allow `<Title>` to be non configurable ([#9836](https://github.com/marmelab/react-admin/pull/9836)) ([markyao6275](https://github.com/markyao6275))
 
 * fix `<AutocompleteInput>` clear button does not clear new choice  ([#10023](https://github.com/marmelab/react-admin/pull/10023)) ([adguernier](https://github.com/adguernier))
 * [Doc] Update ra-relationships documentation ([#10018](https://github.com/marmelab/react-admin/pull/10018)) ([djhi](https://github.com/djhi))
