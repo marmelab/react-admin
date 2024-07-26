@@ -1,4 +1,3 @@
-import * as React from 'react';
 import {
     CreateButton,
     ExportButton,
@@ -15,16 +14,16 @@ import {
 } from 'react-admin';
 import { matchPath, useLocation } from 'react-router';
 
-import { DealListContent } from './DealListContent';
+import { Card, LinearProgress, Stack } from '@mui/material';
+import { hasOtherFiltersThanDefault } from '../misc/hasOtherFiltersThanDefault';
+import { useConfigurationContext } from '../root/ConfigurationContext';
+import { DealArchivedList } from './DealArchivedList';
 import { DealCreate } from './DealCreate';
+import { DealEdit } from './DealEdit';
+import { DealEmpty } from './DealEmpty';
+import { DealListContent } from './DealListContent';
 import { DealShow } from './DealShow';
 import { OnlyMineInput } from './OnlyMineInput';
-import { Card, LinearProgress, Stack } from '@mui/material';
-import { DealEmpty } from './DealEmpty';
-import { hasOtherFiltersThanDefault } from '../misc/hasOtherFiltersThanDefault';
-import { DealEdit } from './DealEdit';
-import { DealArchivedList } from './DealArchivedList';
-import { useConfigurationContext } from '../root/ConfigurationContext';
 
 const DealList = () => {
     const { identity } = useGetIdentity();
@@ -58,7 +57,7 @@ const DealLayout = () => {
         <SearchInput source="q" alwaysOn />,
         <ReferenceInput source="company_id" reference="companies" />,
         <SelectInput
-            source="type"
+            source="category"
             label="Category"
             choices={dealCategories.map(type => ({ id: type, name: type }))}
         />,
