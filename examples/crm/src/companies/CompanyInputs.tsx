@@ -24,7 +24,7 @@ const isLinkedinUrl = (url: string) => {
     try {
         // Parse the URL to ensure it is valid
         const parsedUrl = new URL(url);
-        if (!parsedUrl.hostname.includes('linkedin.com')) {
+        if (!parsedUrl.hostname.startsWith('https://linkedin.com/')) {
             return 'URL must be from linkedin.com';
         }
     } catch (e) {
@@ -35,7 +35,7 @@ const isLinkedinUrl = (url: string) => {
 
 export const CompanyInputs = () => {
     const theme = useTheme();
-    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+    const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
     return (
         <Stack gap={4} p={1}>
