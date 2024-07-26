@@ -58,7 +58,7 @@ export const DealCardContent = ({
                         record={deal}
                         reference="companies"
                     >
-                        <CompanyAvatar size="small" />
+                        <CompanyAvatar width={20} height={20} />
                     </ReferenceField>
                     <Box sx={{ marginLeft: 1 }}>
                         <Typography variant="body2" gutterBottom>

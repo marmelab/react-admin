@@ -6,9 +6,10 @@ import { Company } from '../types';
 
 export const CompanyAvatar = (props: {
     record?: Company;
-    size?: 'small' | 'large';
+    width?: number;
+    height?: number;
 }) => {
-    const { size = 'large' } = props;
+    const { width = 40, height = 40 } = props;
     const record = useRecordContext<Company>(props);
     if (!record) return null;
     return (
@@ -17,8 +18,9 @@ export const CompanyAvatar = (props: {
             alt={record.name}
             sx={{
                 '& img': { objectFit: 'contain' },
+                width,
+                height,
             }}
-            sizes={size}
         >
             {record.name.charAt(0)}
         </Avatar>
