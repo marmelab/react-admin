@@ -13,11 +13,22 @@ import {
     TextInput,
     required,
 } from 'react-admin';
-import { isLinkedinUrl } from '../commons/isLinkedInUrl';
+import { isLinkedinUrl } from '../misc/isLinkedInUrl';
 import { useConfigurationContext } from '../root/ConfigurationContext';
 import { Sale } from '../types';
 import { CompanyAvatar } from './CompanyAvatar';
 import { sizes } from './sizes';
+
+const isUrl = (url: string) => {
+    if (!url) return;
+    try {
+        // Parse the URL to ensure it is valid
+        new URL(url);
+    } catch (e) {
+        // If URL parsing fails, return false
+        return 'Must be a valid URL';
+    }
+};
 
 export const CompanyInputs = () => {
     const theme = useTheme();
@@ -121,7 +132,12 @@ const CompanyAdditionalInformationInputs = () => {
                         m: 0,
                     }}
                 >
-                    <TextInput source="" hiddenLabel helperText={false} />
+                    <TextInput
+                        source=""
+                        hiddenLabel
+                        helperText={false}
+                        validate={isUrl}
+                    />
                 </SimpleFormIterator>
             </ArrayInput>
         </Stack>

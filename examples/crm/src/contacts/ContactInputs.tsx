@@ -18,7 +18,7 @@ import {
     useGetIdentity,
     useNotify,
 } from 'react-admin';
-import { isLinkedinUrl } from '../commons/isLinkedInUrl';
+import { isLinkedinUrl } from '../misc/isLinkedInUrl';
 import { useConfigurationContext } from '../root/ConfigurationContext';
 import { Sale } from '../types';
 import { Avatar } from './Avatar';
