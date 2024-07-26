@@ -176,7 +176,7 @@ export const Note = ({
                         }}
                     >
                         {note.text
-                            .split('\n')
+                            ?.split('\n')
                             .map((paragraph: string, index: number) => (
                                 <Box
                                     component="p"
