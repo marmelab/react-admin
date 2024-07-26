@@ -35,6 +35,7 @@ import {
     defaultTitle,
 } from './defaultConfiguration';
 import sales from '../sales';
+import { deepmerge } from '@mui/utils';
 
 // Define the interface for the CRM component props
 type CRMProps = {
@@ -42,14 +43,44 @@ type CRMProps = {
     darkTheme?: RaThemeOptions;
 } & Partial<ConfigurationContextValue>;
 
-const defaultLightTheme = {
-    ...defaultTheme,
+// const defaultLightTheme = {
+//     ...defaultTheme,
+//     palette: {
+//         background: {
+//             default: '#fafafb',
+//         },
+//     },
+//     components: {
+//         RaFileInput: {
+//             styleOverrides: {
+//                 root: {
+//                     '& .RaFileInput-dropZone': {
+//                         backgroundColor: 'MistyRose',
+//                     },
+//                 },
+//             },
+//         },
+//     },
+// };
+
+const defaultLightTheme = deepmerge(defaultTheme, {
     palette: {
         background: {
             default: '#fafafb',
         },
     },
-};
+    components: {
+        RaFileInput: {
+            styleOverrides: {
+                root: {
+                    '& .RaFileInput-dropZone': {
+                        backgroundColor: 'rgba(0, 0, 0, 0.04)',
+                    },
+                },
+            },
+        },
+    },
+});
 
 /**
  * CRM Component
