@@ -36,8 +36,6 @@ export const DealsChart = () => {
             return acc;
         }, {} as any);
 
-        console.log(dealsByMonth);
-
         const amountByMonth = Object.keys(dealsByMonth).map(month => {
             return {
                 date: format(month, 'MMM'),
