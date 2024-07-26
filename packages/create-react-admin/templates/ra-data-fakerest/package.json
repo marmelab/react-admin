@@ -3,7 +3,7 @@
         "test": "vitest"
     },
     "dependencies": {
-        "ra-data-fakerest": "^5.0.0"
+        "ra-data-fakerest": "^5.1.0"
     },
     "devDependencies": {
         "@testing-library/react": "^15.0.7",
