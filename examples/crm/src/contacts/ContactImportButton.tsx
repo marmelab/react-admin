@@ -203,7 +203,6 @@ export const ContactImportButton = () => {
                                                 label="Download CSV sample"
                                                 color="info"
                                                 to={SAMPLE_URL}
-                                                target="_blank"
                                             />
                                         }
                                     >
