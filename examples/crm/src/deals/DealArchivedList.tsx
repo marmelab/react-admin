@@ -2,6 +2,7 @@ import {
     Button,
     Dialog,
     DialogContent,
+    DialogTitle,
     Grid,
     Stack,
     Typography,
@@ -10,6 +11,7 @@ import { useEffect, useState } from 'react';
 import { useGetIdentity, useGetList } from 'react-admin';
 import { DealCardContent } from './DealCard';
 import { Deal } from '../types';
+import { DialogCloseButton } from '../misc/DialogCloseButton';
 
 export const DealArchivedList = () => {
     const { identity } = useGetIdentity();
@@ -61,9 +63,10 @@ export const DealArchivedList = () => {
                 fullWidth
                 maxWidth="lg"
             >
+                <DialogCloseButton onClose={() => setOpenDialog(false)} />
+                <DialogTitle>Archived Deals</DialogTitle>
                 <DialogContent>
                     <Stack gap={2}>
-                        <Typography variant="h5">Archived Deals</Typography>
                         {Object.entries(archivedListsByDate).map(
                             ([date, deals]) => (
                                 <Stack key={date} gap={1}>

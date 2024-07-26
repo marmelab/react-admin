@@ -1,7 +1,7 @@
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import PhoneIcon from '@mui/icons-material/Phone';
 import PublicIcon from '@mui/icons-material/Public';
-import { Divider, Link, Stack, Typography } from '@mui/material';
+import { Divider, Link, Stack, Tooltip, Typography } from '@mui/material';
 import {
     DateField,
     EditButton,
@@ -74,13 +74,17 @@ const CompanyInfo = ({ record }: { record: Company }) => {
                     minHeight={24}
                 >
                     <LinkedInIcon color="disabled" fontSize="small" />
-                    <UrlField
-                        source="linkedin_url"
-                        content="LinkedIn"
-                        target="_blank"
-                        rel="noopener"
-                        label="LinkedIn"
-                    />
+                    <Tooltip title={record.linkedin_url}>
+                        <Typography
+                            variant="body2"
+                            component={Link}
+                            href={record.linkedin_url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            LinkedIn
+                        </Typography>
+                    </Tooltip>
                 </Stack>
             )}
             {record.phone_number && (
@@ -164,18 +168,22 @@ const ContextInfo = ({ record }: { record: Company }) => {
             <Typography variant="subtitle2">Context</Typography>
             <Divider sx={{ mb: 1 }} />
             <Stack gap={1}>
-                {record.context_links.map((link, index) => (
-                    <Typography
-                        key={index}
-                        variant="body2"
-                        component={Link}
-                        href={link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                    >
-                        {getBaseURL(link)}
-                    </Typography>
-                ))}
+                {record.context_links.map((link, index) =>
+                    link ? (
+                        <Tooltip title={link}>
+                            <Typography
+                                key={index}
+                                variant="body2"
+                                component={Link}
+                                href={link}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                {getBaseURL(link)}
+                            </Typography>
+                        </Tooltip>
+                    ) : null
+                )}
             </Stack>
         </Stack>
     );
