@@ -258,6 +258,23 @@ export const dataProvider = withLifecycleCallbacks(
             beforeCreate: async (params, dataProvider) => {
                 return processContactAvatar(params, dataProvider);
             },
+            afterCreate: async (result, dataProvider) => {
+                const { data: company } = await dataProvider.getOne<Company>(
+                    'companies',
+                    {
+                        id: result.data.company_id,
+                    }
+                );
+                await dataProvider.update('companies', {
+                    id: company.id,
+                    data: {
+                        nb_contacts: (company.nb_contacts ?? 0) + 1,
+                    },
+                    previousData: company,
+                });
+
+                return result;
+            },
             beforeUpdate: async params => {
                 return processContactAvatar(params, dataProvider);
             },
