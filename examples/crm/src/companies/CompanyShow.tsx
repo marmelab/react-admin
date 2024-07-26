@@ -120,7 +120,7 @@ const CompanyShowContent = () => {
                                     spacing={2}
                                     mt={1}
                                 >
-                                    {record.nb_contacts && (
+                                    {!!record.nb_contacts && (
                                         <SortButton
                                             fields={[
                                                 'last_name',

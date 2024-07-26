@@ -278,6 +278,23 @@ export const dataProvider = withLifecycleCallbacks(
             beforeUpdate: async params => {
                 return processContactAvatar(params, dataProvider);
             },
+            afterDelete: async (result, dataProvider) => {
+                const { data: company } = await dataProvider.getOne<Company>(
+                    'companies',
+                    {
+                        id: result.data.company_id,
+                    }
+                );
+                await dataProvider.update('companies', {
+                    id: company.id,
+                    data: {
+                        nb_contacts: (company.nb_contacts ?? 1) - 1,
+                    },
+                    previousData: company,
+                });
+
+                return result;
+            },
         } satisfies ResourceCallbacks<Contact>,
         {
             resource: 'contactNotes',
@@ -466,6 +483,23 @@ export const dataProvider = withLifecycleCallbacks(
                         updated_at: new Date().toISOString(),
                     },
                 };
+            },
+            afterDelete: async (result, dataProvider) => {
+                const { data: company } = await dataProvider.getOne<Company>(
+                    'companies',
+                    {
+                        id: result.data.company_id,
+                    }
+                );
+                await dataProvider.update('companies', {
+                    id: company.id,
+                    data: {
+                        nb_deals: (company.nb_deals ?? 1) - 1,
+                    },
+                    previousData: company,
+                });
+
+                return result;
             },
         } satisfies ResourceCallbacks<Deal>,
     ]
