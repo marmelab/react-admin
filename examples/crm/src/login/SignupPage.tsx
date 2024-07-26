@@ -3,6 +3,7 @@ import { useCreate, useGetList, useLogin, useNotify } from 'react-admin';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Navigate } from 'react-router';
 import { LoginSkeleton } from './LoginSkeleton';
+import { useConfigurationContext } from '../root/ConfigurationContext';
 
 interface UserInput {
     first_name: string;
@@ -12,6 +13,7 @@ interface UserInput {
 }
 
 export const SignupPage = () => {
+    const { logo, title } = useConfigurationContext();
     const { total, isPending } = useGetList('sales', {
         pagination: { page: 1, perPage: 10 },
         sort: { field: 'name', order: 'ASC' },
@@ -63,10 +65,14 @@ export const SignupPage = () => {
     };
 
     return (
-        <Container maxWidth="xl" sx={{ height: '100dvh', pt: 2 }}>
+        <Stack sx={{ height: '100dvh', p: 2 }}>
+            <Stack direction="row" alignItems="center" gap={1}>
+                <img src={logo} alt={title} width={50} />
+                <Typography component="span" variant="h5">
+                    {title}
+                </Typography>
+            </Stack>
             <Stack sx={{ height: '100%' }}>
-                <img src="./logo192.png" alt="Atomic CRM" width={50} />
-
                 <Container
                     maxWidth="sm"
                     sx={{
@@ -78,9 +84,9 @@ export const SignupPage = () => {
                     }}
                 >
                     <Typography variant="h3" component="h1" gutterBottom>
-                        Welcome to Atomic CRM!
+                        Welcome!
                     </Typography>
-                    <Typography variant="h6" gutterBottom>
+                    <Typography variant="body1" gutterBottom>
                         Create your account to manage your contacts, companies,
                         and deals.
                     </Typography>
@@ -122,6 +128,7 @@ export const SignupPage = () => {
                             direction="row"
                             justifyContent="space-between"
                             alignItems="center"
+                            mt={2}
                         >
                             <Button
                                 type="submit"
@@ -134,7 +141,7 @@ export const SignupPage = () => {
                     </form>
                 </Container>
             </Stack>
-        </Container>
+        </Stack>
     );
 };
 
