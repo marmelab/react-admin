@@ -66,33 +66,31 @@ export const ContactAside = ({ link = 'edit' }: { link?: 'edit' | 'show' }) => {
                     />
                 </Stack>
             )}
-            {record.phone_number1 && (
+            {record.phone_number1.number && (
                 <Stack direction="row" alignItems="center" gap={1}>
                     <PhoneIcon color="disabled" fontSize="small" />
                     <Box>
-                        <TextField source="phone_number1" />{' '}
-                        <Typography
-                            variant="body2"
-                            color="textSecondary"
-                            component="span"
-                        >
-                            Work
-                        </Typography>
+                        <TextField source="phone_number1.number" />{' '}
+                        {record.phone_number1.type !== 'Other' && (
+                            <TextField
+                                source="phone_number1.type"
+                                color="textSecondary"
+                            />
+                        )}
                     </Box>
                 </Stack>
             )}
-            {record.phone_number2 && (
+            {record.phone_number2.number && (
                 <Stack direction="row" alignItems="center" gap={1}>
                     <PhoneIcon color="disabled" fontSize="small" />
                     <Box>
-                        <TextField source="phone_number2" />{' '}
-                        <Typography
-                            variant="body2"
-                            color="textSecondary"
-                            component="span"
-                        >
-                            Home
-                        </Typography>
+                        <TextField source="phone_number2.number" />{' '}
+                        {record.phone_number2.type !== 'Other' && (
+                            <TextField
+                                source="phone_number2.type"
+                                color="textSecondary"
+                            />
+                        )}
                     </Box>
                 </Stack>
             )}

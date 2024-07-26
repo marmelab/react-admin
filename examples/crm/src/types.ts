@@ -56,6 +56,8 @@ export interface Contact extends RaRecord {
     nb_notes: number;
     status: string;
     background: string;
+    phone_number1: { number: string; type: 'Work' | 'Home' | 'Other' };
+    phone_number2: { number: string; type: 'Work' | 'Home' | 'Other' };
 }
 
 export interface ContactNote extends RaRecord {
