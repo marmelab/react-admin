@@ -74,7 +74,7 @@ export const SignupPage = () => {
             </Stack>
             <Stack sx={{ height: '100%' }}>
                 <Container
-                    maxWidth="sm"
+                    maxWidth="xs"
                     sx={{
                         height: '100%',
                         display: 'flex',
