@@ -112,30 +112,16 @@ const DealShowContent = ({ handleClose }: { handleClose: () => void }) => {
                             </Stack>
                         </Stack>
 
-                        <Box display="flex" mt={2}>
+                        <Box display="flex" mb={2} mt={2}>
                             <Box display="flex" mr={5} flexDirection="column">
                                 <Typography
                                     color="textSecondary"
                                     variant="caption"
                                 >
-                                    Starting date
+                                    Expected closing date
                                 </Typography>
                                 <Typography variant="body2">
-                                    {format(record.start_at, 'PP')}
-                                </Typography>
-                            </Box>
-                            <Box display="flex" mr={5} flexDirection="column">
-                                <Typography
-                                    color="textSecondary"
-                                    variant="caption"
-                                >
-                                    Expecting closing date
-                                </Typography>
-                                <Typography variant="body2">
-                                    {format(
-                                        record.expecting_closing_date,
-                                        'PP'
-                                    )}
+                                    {format(record.expected_closing_date, 'PP')}
                                 </Typography>
                             </Box>
 
@@ -157,17 +143,23 @@ const DealShowContent = ({ handleClose }: { handleClose: () => void }) => {
                                 </Typography>
                             </Box>
 
-                            <Box display="flex" mr={5} flexDirection="column">
-                                <Typography
-                                    color="textSecondary"
-                                    variant="caption"
+                            {record.category && (
+                                <Box
+                                    display="flex"
+                                    mr={5}
+                                    flexDirection="column"
                                 >
-                                    Category
-                                </Typography>
-                                <Typography variant="body2">
-                                    {record.category}
-                                </Typography>
-                            </Box>
+                                    <Typography
+                                        color="textSecondary"
+                                        variant="caption"
+                                    >
+                                        Category
+                                    </Typography>
+                                    <Typography variant="body2">
+                                        {record.category}
+                                    </Typography>
+                                </Box>
+                            )}
 
                             <Box display="flex" mr={5} flexDirection="column">
                                 <Typography
@@ -182,36 +174,43 @@ const DealShowContent = ({ handleClose }: { handleClose: () => void }) => {
                             </Box>
                         </Box>
 
-                        <Box mt={2} mb={2}>
-                            <Box
-                                display="flex"
-                                mr={5}
-                                flexDirection="column"
-                                minHeight={48}
-                            >
+                        {!!record.contact_ids?.length && (
+                            <Box mb={2}>
+                                <Box
+                                    display="flex"
+                                    mr={5}
+                                    flexDirection="column"
+                                    minHeight={48}
+                                >
+                                    <Typography
+                                        color="textSecondary"
+                                        variant="caption"
+                                    >
+                                        Contacts
+                                    </Typography>
+                                    <ReferenceArrayField
+                                        source="contact_ids"
+                                        reference="contacts"
+                                    >
+                                        <ContactList />
+                                    </ReferenceArrayField>
+                                </Box>
+                            </Box>
+                        )}
+
+                        {record.description && (
+                            <Box mt={2} mb={2} sx={{ whiteSpace: 'pre-line' }}>
                                 <Typography
                                     color="textSecondary"
                                     variant="caption"
                                 >
-                                    Contacts
+                                    Description
                                 </Typography>
-                                <ReferenceArrayField
-                                    source="contact_ids"
-                                    reference="contacts"
-                                >
-                                    <ContactList />
-                                </ReferenceArrayField>
+                                <Typography variant="body2">
+                                    {record.description}
+                                </Typography>
                             </Box>
-                        </Box>
-
-                        <Box mt={2} mb={2} sx={{ whiteSpace: 'pre-line' }}>
-                            <Typography color="textSecondary" variant="caption">
-                                Description
-                            </Typography>
-                            <Typography variant="body2">
-                                {record.description}
-                            </Typography>
-                        </Box>
+                        )}
 
                         <Divider />
 

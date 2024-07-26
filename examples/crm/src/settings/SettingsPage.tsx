@@ -105,7 +105,7 @@ const SettingsForm = ({
                         {isEditMode ? 'Show' : 'Edit'}
                     </Button>
                 </Stack>
-                <Stack gap={2} mb={2}>
+                <Stack gap={1} mb={2}>
                     <TextRender source="first_name" isEditMode={isEditMode} />
                     <TextRender source="last_name" isEditMode={isEditMode} />
                     <TextRender source="email" isEditMode={isEditMode} />

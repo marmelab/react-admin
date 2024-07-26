@@ -108,17 +108,9 @@ export const DealInputs = () => {
             />
             <Divider sx={{ my: 2, width: '100%' }} />
             <DateInput
-                source="expecting_closing_date"
+                source="expected_closing_date"
                 fullWidth
                 validate={[validateRequired]}
-                helperText={false}
-            />
-            <DateInput
-                source="start_at"
-                defaultValue={new Date()}
-                fullWidth
-                label="Starting date"
-                readOnly
                 helperText={false}
             />
         </>

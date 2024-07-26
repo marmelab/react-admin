@@ -43,26 +43,6 @@ type CRMProps = {
     darkTheme?: RaThemeOptions;
 } & Partial<ConfigurationContextValue>;
 
-// const defaultLightTheme = {
-//     ...defaultTheme,
-//     palette: {
-//         background: {
-//             default: '#fafafb',
-//         },
-//     },
-//     components: {
-//         RaFileInput: {
-//             styleOverrides: {
-//                 root: {
-//                     '& .RaFileInput-dropZone': {
-//                         backgroundColor: 'MistyRose',
-//                     },
-//                 },
-//             },
-//         },
-//     },
-// };
-
 const defaultLightTheme = deepmerge(defaultTheme, {
     palette: {
         background: {
