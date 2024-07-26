@@ -11,9 +11,9 @@ import {
     useListContext,
     useRedirect,
 } from 'react-admin';
+import { DialogCloseButton } from '../misc/DialogCloseButton';
 import { Deal } from '../types';
 import { DealInputs } from './DealInputs';
-import { DialogCloseButton } from '../misc/DialogCloseButton';
 
 export const DealCreate = ({ open }: { open: boolean }) => {
     const redirect = useRedirect();

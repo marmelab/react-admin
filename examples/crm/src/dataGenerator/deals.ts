@@ -1,13 +1,13 @@
-import { random, lorem } from 'faker/locale/en_US';
 import { add } from 'date-fns';
+import { lorem, random } from 'faker/locale/en_US';
 
-import { Db } from './types';
-import { Deal } from '../types';
-import { randomDate } from './utils';
 import {
     defaultDealCategories,
     defaultDealStages,
 } from '../root/defaultConfiguration';
+import { Deal } from '../types';
+import { Db } from './types';
+import { randomDate } from './utils';
 
 export const generateDeals = (db: Db): Deal[] => {
     const deals = Array.from(Array(50).keys()).map(id => {
@@ -23,7 +23,7 @@ export const generateDeals = (db: Db): Deal[] => {
         ).toISOString();
 
         const start_at = created_at;
-        const expecting_closing_date = randomDate(
+        const expected_closing_date = randomDate(
             new Date(start_at),
             add(new Date(start_at), { months: 6 })
         ).toISOString();
@@ -40,7 +40,7 @@ export const generateDeals = (db: Db): Deal[] => {
             created_at: created_at,
             updated_at: randomDate(new Date(created_at)).toISOString(),
             start_at,
-            expecting_closing_date,
+            expected_closing_date,
             sales_id: company.sales_id,
             index: 0,
             nb_notes: 0,

@@ -107,21 +107,13 @@ const DealShowContent = () => {
                         </Stack>
                     </Stack>
 
-                    <Box display="flex" mt={2}>
+                    <Box display="flex" mb={2} mt={2}>
                         <Box display="flex" mr={5} flexDirection="column">
                             <Typography color="textSecondary" variant="caption">
-                                Starting date
+                                Expected closing date
                             </Typography>
                             <Typography variant="body2">
-                                {format(record.start_at, 'PP')}
-                            </Typography>
-                        </Box>
-                        <Box display="flex" mr={5} flexDirection="column">
-                            <Typography color="textSecondary" variant="caption">
-                                Expecting closing date
-                            </Typography>
-                            <Typography variant="body2">
-                                {format(record.expecting_closing_date, 'PP')}
+                                {format(record.expected_closing_date, 'PP')}
                             </Typography>
                         </Box>
 
@@ -140,14 +132,19 @@ const DealShowContent = () => {
                             </Typography>
                         </Box>
 
-                        <Box display="flex" mr={5} flexDirection="column">
-                            <Typography color="textSecondary" variant="caption">
-                                Category
-                            </Typography>
-                            <Typography variant="body2">
-                                {record.category}
-                            </Typography>
-                        </Box>
+                        {record.category && (
+                            <Box display="flex" mr={5} flexDirection="column">
+                                <Typography
+                                    color="textSecondary"
+                                    variant="caption"
+                                >
+                                    Category
+                                </Typography>
+                                <Typography variant="body2">
+                                    {record.category}
+                                </Typography>
+                            </Box>
+                        )}
 
                         <Box display="flex" mr={5} flexDirection="column">
                             <Typography color="textSecondary" variant="caption">
@@ -159,33 +156,40 @@ const DealShowContent = () => {
                         </Box>
                     </Box>
 
-                    <Box mt={2} mb={2}>
-                        <Box
-                            display="flex"
-                            mr={5}
-                            flexDirection="column"
-                            minHeight={48}
-                        >
-                            <Typography color="textSecondary" variant="caption">
-                                Contacts
-                            </Typography>
-                            <ReferenceArrayField
-                                source="contact_ids"
-                                reference="contacts"
+                    {!!record.contact_ids?.length && (
+                        <Box mb={2}>
+                            <Box
+                                display="flex"
+                                mr={5}
+                                flexDirection="column"
+                                minHeight={48}
                             >
-                                <ContactList />
-                            </ReferenceArrayField>
+                                <Typography
+                                    color="textSecondary"
+                                    variant="caption"
+                                >
+                                    Contacts
+                                </Typography>
+                                <ReferenceArrayField
+                                    source="contact_ids"
+                                    reference="contacts"
+                                >
+                                    <ContactList />
+                                </ReferenceArrayField>
+                            </Box>
                         </Box>
-                    </Box>
+                    )}
 
-                    <Box mt={2} mb={2} sx={{ whiteSpace: 'pre-line' }}>
-                        <Typography color="textSecondary" variant="caption">
-                            Description
-                        </Typography>
-                        <Typography variant="body2">
-                            {record.description}
-                        </Typography>
-                    </Box>
+                    {record.description && (
+                        <Box mt={2} mb={2} sx={{ whiteSpace: 'pre-line' }}>
+                            <Typography color="textSecondary" variant="caption">
+                                Description
+                            </Typography>
+                            <Typography variant="body2">
+                                {record.description}
+                            </Typography>
+                        </Box>
+                    )}
 
                     <Divider />
 
