@@ -1,8 +1,8 @@
+import Link from '@mui/material/Link';
 import ListItem from '@mui/material/ListItem';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { MouseEventHandler, ReactNode, useState } from 'react';
-import { Link } from 'react-admin';
 
 type ActivityLogContactNoteCreatedProps = {
     header: ReactNode;
@@ -44,14 +44,13 @@ export function ActivityLogNote({
                 </Typography>
 
                 {slicedText && (
-                    <Typography
-                        component={Link}
-                        to="#"
+                    <Link
+                        href="#"
                         variant="body2"
                         onClick={handleToggleSeeMore}
                     >
                         {seeMore ? 'See less' : 'See more'}
-                    </Typography>
+                    </Link>
                 )}
             </Stack>
         </ListItem>
