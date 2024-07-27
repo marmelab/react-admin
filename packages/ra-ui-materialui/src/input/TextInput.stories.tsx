@@ -121,6 +121,12 @@ export const Margin = () => (
     </Wrapper>
 );
 
+export const Multiline = () => (
+    <Wrapper>
+        <TextInput source="title" multiline minRows={3} />
+    </Wrapper>
+);
+
 export const Variant = () => (
     <Wrapper>
         <TextInput source="title" label="default (filled)" />
