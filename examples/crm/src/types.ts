@@ -13,6 +13,7 @@ export interface Sale extends RaRecord {
     email: string;
     password: string;
     administrator: boolean;
+    avatar?: string;
 }
 
 export interface Company extends RaRecord {

@@ -23,6 +23,7 @@ import {
 import { useFormState } from 'react-hook-form';
 import { USER_STORAGE_KEY } from '../authProvider';
 import { UpdatePassword } from './UpdatePassword';
+import ImageEditorField from '../misc/ImageEditorField';
 
 export const SettingsPage = () => {
     const [update] = useUpdate();
@@ -49,7 +50,7 @@ export const SettingsPage = () => {
                         JSON.stringify(data)
                     );
                     refetch();
-                    setEditMode(true);
+                    setEditMode(false);
                     notify('Your profile has been updated');
                 },
                 onError: _ => {
@@ -80,11 +81,44 @@ const SettingsForm = ({
     isEditMode: boolean;
     setEditMode: (value: boolean) => void;
 }) => {
+    const [update] = useUpdate();
+    const notify = useNotify();
+    const { identity, refetch } = useGetIdentity();
     const { isDirty } = useFormState();
     const [openPasswordChange, setOpenPasswordChange] = useState(false);
 
+    if (!identity) return null;
+
     const handleClickOpenPasswordChange = () => {
         setOpenPasswordChange(true);
+    };
+
+    const handleAvatarUpdate = async (values: any) => {
+        await update(
+            'sales',
+            {
+                id: identity.id,
+                data: values,
+                previousData: identity,
+            },
+            {
+                onSuccess: data => {
+                    // Update local user
+                    localStorage.setItem(
+                        USER_STORAGE_KEY,
+                        JSON.stringify(data)
+                    );
+                    refetch();
+                    setEditMode(false);
+                    notify('Your profile has been updated');
+                },
+                onError: _ => {
+                    notify('An error occurred. Please try again', {
+                        type: 'error',
+                    });
+                },
+            }
+        );
     };
 
     return (
@@ -106,6 +140,11 @@ const SettingsForm = ({
                     </Button>
                 </Stack>
                 <Stack gap={1} mb={2}>
+                    <ImageEditorField
+                        source="avatar"
+                        type="avatar"
+                        onSave={handleAvatarUpdate}
+                    />
                     <TextRender source="first_name" isEditMode={isEditMode} />
                     <TextRender source="last_name" isEditMode={isEditMode} />
                     <TextRender source="email" isEditMode={isEditMode} />
@@ -121,7 +160,7 @@ const SettingsForm = ({
                     setOpen={setOpenPasswordChange}
                 />
             </CardContent>
-            {!isEditMode && (
+            {isEditMode && (
                 <CardActions
                     sx={{
                         paddingX: 2,

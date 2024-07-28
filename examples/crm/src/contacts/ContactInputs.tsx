@@ -17,25 +17,20 @@ import {
     useCreate,
     useGetIdentity,
     useNotify,
-    useRecordContext,
 } from 'react-admin';
 import { isLinkedinUrl } from '../misc/isLinkedInUrl';
 import { useConfigurationContext } from '../root/ConfigurationContext';
 import { Sale } from '../types';
 import { Avatar } from './Avatar';
-import AvatarEditor from 'react-avatar-editor';
-import ContactAvatarTest from './ContactAvatarTest';
 
 export const ContactInputs = () => {
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('md'));
-    const record = useRecordContext();
 
     return (
         <Stack gap={4} p={1}>
             <Stack gap={2}>
                 <Avatar />
-                <ContactAvatarTest />
                 <Stack gap={4} flexDirection={isMobile ? 'column' : 'row'}>
                     <ContactIdentityInputs />
                     <Divider
