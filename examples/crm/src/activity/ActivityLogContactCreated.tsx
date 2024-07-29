@@ -15,7 +15,7 @@ export function ActivityLogContactCreated({
 }: ActivityLogContactCreatedProps) {
     return (
         <RecordContextProvider value={contact}>
-            <ListItem>
+            <ListItem disableGutters>
                 <Stack
                     direction="row"
                     spacing={2}

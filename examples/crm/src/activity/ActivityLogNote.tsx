@@ -26,7 +26,7 @@ export function ActivityLogNote({
     };
 
     return (
-        <ListItem>
+        <ListItem disableGutters>
             <Stack direction="column" spacing={2} sx={{ width: '100%' }}>
                 <Stack
                     direction="row"

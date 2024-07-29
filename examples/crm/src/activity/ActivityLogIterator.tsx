@@ -32,10 +32,10 @@ export function ActivityLogIterator({
             sx={{
                 '& .MuiListItem-root': {
                     marginTop: 0,
-                    marginBottom: 2,
+                    marginBottom: 1,
                 },
                 '& .MuiListItem-root:not(:first-child)': {
-                    marginTop: 2,
+                    marginTop: 1,
                 },
             }}
         >

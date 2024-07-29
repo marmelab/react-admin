@@ -15,7 +15,7 @@ export function ActivityLogDealCreated({
 }: ActivityLogDealCreatedProps) {
     return (
         <RecordContextProvider value={company}>
-            <ListItem>
+            <ListItem disableGutters>
                 <Stack
                     direction="row"
                     spacing={2}
