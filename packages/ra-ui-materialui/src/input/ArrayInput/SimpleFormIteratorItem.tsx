@@ -108,7 +108,7 @@ export const SimpleFormIteratorItem = React.forwardRef(
         return (
             <SimpleFormIteratorItemContext.Provider value={context}>
                 <li className={SimpleFormIteratorClasses.line} ref={ref}>
-                    {label != null && (
+                    {label != null && label !== false && (
                         <Typography
                             variant="body2"
                             className={SimpleFormIteratorClasses.index}
