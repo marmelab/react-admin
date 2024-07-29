@@ -18,7 +18,7 @@ import {
     useResourceContext,
     useTranslate,
     useRecordContext,
-    useGetPathForRecord,
+    useGetRouteForRecordCallback,
 } from 'ra-core';
 import { useNavigate } from 'react-router-dom';
 
@@ -115,18 +115,20 @@ const DatagridRow: React.ForwardRefExoticComponent<
         [id, onToggleItem, selectable]
     );
 
-    const linkType =
-        rowClick === 'expand' || rowClick === 'toggleSelection'
-            ? undefined
-            : typeof rowClick === 'function'
-              ? // rowClick doesn't have the same signature as linkTo, so we need to adapt
-                (record, resource) => rowClick(record?.id, resource, record)
-              : rowClick;
-    const path = useGetPathForRecord({ record, resource, link: linkType });
+    const getPathForRecord = useGetRouteForRecordCallback();
 
     const handleClick = useCallback(
         async event => {
             event.persist();
+            const path = await getPathForRecord({
+                record,
+                resource,
+                link:
+                    typeof rowClick === 'function'
+                        ? (record, resource) =>
+                              rowClick(record.id, resource, record)
+                        : rowClick,
+            });
             if (rowClick === 'expand') {
                 handleToggleExpand(event);
                 return;
@@ -142,7 +144,15 @@ const DatagridRow: React.ForwardRefExoticComponent<
                 state: { _scrollToTop: true },
             });
         },
-        [rowClick, navigate, handleToggleExpand, handleToggleSelection, path]
+        [
+            record,
+            resource,
+            rowClick,
+            navigate,
+            handleToggleExpand,
+            handleToggleSelection,
+            getPathForRecord,
+        ]
     );
 
     return (

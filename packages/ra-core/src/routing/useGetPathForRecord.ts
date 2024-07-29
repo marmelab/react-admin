@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { useResourceContext, useResourceDefinition } from '../core';
+import { useResourceContext, useResourceDefinitions } from '../core';
 import { useCreatePath } from './useCreatePath';
 import { useRecordContext } from '../controller';
 import type { RaRecord } from '../types';
@@ -49,81 +49,111 @@ export const useGetPathForRecord = <RecordType extends RaRecord = RaRecord>(
             'Cannot generate a link for a record without a resource. You must use useGetRouteForRecord within a ResourceContextProvider, or pass a resource prop.'
         );
     }
-    const createPath = useCreatePath();
-    const resourceDefinition = useResourceDefinition({ resource });
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    const linkFunc = useCallback(
-        typeof link === 'function' ? link : () => link,
-        []
-    );
-
-    const defaultLink = resourceDefinition.hasShow
-        ? 'show'
-        : resourceDefinition.hasEdit
-          ? 'edit'
-          : false;
-
-    const isLinkFalse =
-        link === false || (link == null && defaultLink === false);
+    const getPathForRecord = useGetRouteForRecordCallback<RecordType>(options);
 
     // we initialize the path with the link value
     const [path, setPath] = useState<string | false | undefined>(() => {
-        if (record == null || isLinkFalse) return false;
-        const linkResult = linkFunc(record, resource) ?? defaultLink;
-        const linkResultIsPromise = isPromise(linkResult);
-        if (linkResultIsPromise) {
-            linkResult.then(resolvedLink => {
-                if (resolvedLink === false) {
-                    // already set to false by default
-                    return;
-                }
-                // update the path when the promise resolves
-                setPath(
-                    createPath({
-                        resource,
-                        id: record.id,
-                        type: resolvedLink,
-                    })
-                );
-            });
-        }
-        return linkResult === false || linkResultIsPromise
-            ? false
-            : createPath({ resource, id: record.id, type: linkResult });
+        getPathForRecord({
+            record,
+            resource,
+            link,
+        }).then(resolvedLink => {
+            if (resolvedLink === false) {
+                // already set to false by default
+                return;
+            }
+            // update the path when the promise resolves
+            setPath(resolvedLink);
+        });
+
+        return false;
     });
 
     // update the path if the record changes
     useEffect(() => {
-        if (record == null || isLinkFalse) {
-            setPath(false);
-            return;
-        }
-        const linkResult = linkFunc(record, resource) ?? defaultLink;
-        const linkResultIsPromise = isPromise(linkResult);
-        if (linkResultIsPromise) {
-            linkResult.then(resolvedLink => {
-                if (resolvedLink === false) {
-                    // already set to false by default
-                    return;
-                }
-                setPath(
-                    createPath({ resource, id: record.id, type: resolvedLink })
-                );
-            });
-        }
-        setPath(
-            linkResult === false || linkResultIsPromise
-                ? false
-                : createPath({ resource, id: record.id, type: linkResult })
-        );
-    }, [createPath, defaultLink, isLinkFalse, linkFunc, record, resource]);
+        getPathForRecord({
+            record,
+            resource,
+            link,
+        }).then(resolvedLink => {
+            // update the path when the promise resolves
+            setPath(resolvedLink);
+        });
+    }, [getPathForRecord, link, record, resource]);
 
     return path;
 };
 
+export const useGetRouteForRecordCallback = <
+    RecordType extends RaRecord = RaRecord,
+>(
+    options: UseGetRouteForRecordCallbackOptions = {}
+) => {
+    const resource = useResourceContext(options);
+    const resourceDefinitions = useResourceDefinitions();
+    const createPath = useCreatePath();
+
+    return useCallback(
+        async (params: UseGetRouteForRecordOptions<RecordType>) => {
+            const { link, record } = params || {};
+            const finalResource = params.resource ?? resource;
+            if (!finalResource) {
+                throw new Error(
+                    'Cannot generate a link for a record without a resource. You must use useGetRouteForRecordCallback within a ResourceContextProvider, or pass a resource parameter.'
+                );
+            }
+            const resourceDefinition = resourceDefinitions[finalResource] ?? {};
+
+            // eslint-disable-next-line react-hooks/exhaustive-deps
+            const linkFunc = typeof link === 'function' ? link : () => link;
+
+            const defaultLink = resourceDefinition.hasShow
+                ? 'show'
+                : resourceDefinition.hasEdit
+                  ? 'edit'
+                  : false;
+
+            const isLinkFalse =
+                link === false || (link == null && defaultLink === false);
+
+            if (record == null || isLinkFalse) {
+                return false;
+            }
+            const linkResult = linkFunc(record, finalResource) ?? defaultLink;
+            const linkResultIsPromise = isPromise(linkResult);
+
+            if (linkResultIsPromise) {
+                return linkResult.then(resolvedLink => {
+                    if (resolvedLink === false) {
+                        // already set to false by default
+                        return;
+                    }
+                    return createPath({
+                        resource: finalResource,
+                        id: record.id,
+                        type: resolvedLink,
+                    });
+                });
+            }
+
+            return linkResult === false || linkResultIsPromise
+                ? false
+                : createPath({
+                      resource: finalResource,
+                      id: record.id,
+                      type: linkResult,
+                  });
+        },
+        [createPath, resourceDefinitions, resource]
+    );
+};
+
 const isPromise = (value: any): value is Promise<any> =>
     value && typeof value.then === 'function';
+
+export interface UseGetRouteForRecordCallbackOptions {
+    resource?: string;
+}
 
 export interface UseGetRouteForRecordOptions<
     RecordType extends RaRecord = RaRecord,
