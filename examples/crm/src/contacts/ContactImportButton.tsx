@@ -12,6 +12,7 @@ import {
     FileField,
     FileInput,
     Form,
+    Toolbar,
     useDataProvider,
     useGetIdentity,
     useNotify,
@@ -20,6 +21,7 @@ import {
 import { Link } from 'react-router-dom';
 import * as sampleCsv from './contacts_export.csv?raw';
 import { ContentImportSchema, useContactImport } from './useContactImport';
+import { DialogCloseButton } from '../misc/DialogCloseButton';
 
 const SAMPLE_URL = `data:text/csv;charset=utf-8,${encodeURIComponent(sampleCsv.default)}`;
 
@@ -156,6 +158,7 @@ export const ContactImportButton = () => {
             />
 
             <Dialog open={importState !== 'hidden'} maxWidth="lg" fullWidth>
+                <DialogCloseButton onClose={handleCancel} />
                 <DialogTitle>Import</DialogTitle>
                 <DialogContent>
                     <Form>
@@ -234,24 +237,34 @@ export const ContactImportButton = () => {
                         </Stack>
                     </Form>
                 </DialogContent>
-                <DialogActions>
-                    {importState === 'idle' ? (
-                        <>
-                            <Button label="Cancel" onClick={handleCancel} />
+                <DialogActions
+                    sx={{
+                        p: 0,
+                        justifyContent: 'flex-start',
+                    }}
+                >
+                    <Toolbar
+                        sx={{
+                            width: '100%',
+                        }}
+                    >
+                        {importState === 'idle' ? (
+                            <>
+                                <Button
+                                    label="Import"
+                                    variant="contained"
+                                    onClick={startImport}
+                                    disabled={!file || importState !== 'idle'}
+                                />
+                            </>
+                        ) : (
                             <Button
-                                label="Import"
-                                variant="contained"
-                                onClick={startImport}
-                                disabled={!file || importState !== 'idle'}
+                                label="Close"
+                                onClick={handleCancel}
+                                disabled={importState === 'running'}
                             />
-                        </>
-                    ) : (
-                        <Button
-                            label="Close"
-                            onClick={handleCancel}
-                            disabled={importState === 'running'}
-                        />
-                    )}
+                        )}
+                    </Toolbar>
                 </DialogActions>
             </Dialog>
         </>

@@ -40,7 +40,7 @@ export const Welcome = () => (
             <Typography variant="body2" gutterBottom>
                 It was built using react-admin, an open-source framework. The
                 code for this demo is also open-source. Reading it is a great
-                way to learn react-admin!
+                way to learn about react-admin!
             </Typography>
         </CardContent>
         <CardActions>

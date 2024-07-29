@@ -15,7 +15,7 @@ export function ActivityLogContactCreated({
 }: ActivityLogContactCreatedProps) {
     return (
         <RecordContextProvider value={contact}>
-            <ListItem>
+            <ListItem disableGutters>
                 <Stack
                     direction="row"
                     spacing={2}
@@ -24,14 +24,16 @@ export function ActivityLogContactCreated({
                         width: '100%',
                     }}
                 >
-                    <Avatar />
+                    <Avatar width={20} height={20} />
                     <Typography
                         component="p"
                         sx={{
                             flexGrow: 1,
                         }}
                         variant="body2"
+                        color="text.secondary"
                     >
+                        {sale.first_name} {sale.last_name} added{' '}
                         <Link
                             component={Link}
                             to={`/contacts/${contact.id}/show`}
@@ -39,8 +41,14 @@ export function ActivityLogContactCreated({
                         >
                             {contact.first_name} {contact.last_name}
                         </Link>{' '}
-                        has been added to <strong>{company.name}</strong> by{' '}
-                        {sale.first_name} {sale.last_name}
+                        to{' '}
+                        <Link
+                            component={Link}
+                            to={`/companies/${contact.company_id}/show`}
+                            variant="body2"
+                        >
+                            {company.name}
+                        </Link>
                     </Typography>
 
                     <ActivityLogDate date={contact.first_seen} />

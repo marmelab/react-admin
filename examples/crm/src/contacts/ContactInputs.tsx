@@ -18,7 +18,7 @@ import {
     useGetIdentity,
     useNotify,
 } from 'react-admin';
-import { isLinkedinUrl } from '../commons/isLinkedInUrl';
+import { isLinkedinUrl } from '../misc/isLinkedInUrl';
 import { useConfigurationContext } from '../root/ConfigurationContext';
 import { Sale } from '../types';
 import { Avatar } from './Avatar';
@@ -66,6 +66,7 @@ const ContactIdentityInputs = () => {
                 optionText="label"
                 optionValue="value"
                 sx={{ '& .MuiRadio-root': { paddingY: 0 } }}
+                defaultValue={contactGender[0].value}
             />
             <TextInput
                 source="first_name"
@@ -139,6 +140,7 @@ const ContactPersonalInformationInputs = () => {
                     helperText={false}
                     optionText={choice => choice.id}
                     choices={[{ id: 'Work' }, { id: 'Home' }, { id: 'Other' }]}
+                    defaultValue={'Work'}
                 />
             </Stack>
             <Stack gap={1} flexDirection="row">
@@ -153,6 +155,7 @@ const ContactPersonalInformationInputs = () => {
                     helperText={false}
                     optionText={choice => choice.id}
                     choices={[{ id: 'Work' }, { id: 'Home' }, { id: 'Other' }]}
+                    defaultValue={'Work'}
                 />
             </Stack>
             <TextInput

@@ -108,7 +108,6 @@ export const Note = ({
                         record={note}
                         variant="body2"
                         showTime
-                        locales="en"
                         options={{
                             dateStyle: 'full',
                             timeStyle: 'short',

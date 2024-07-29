@@ -135,7 +135,7 @@ async function getContactsLog(
                     sale: salesDict.get(contactNote.sales_id) as Sale,
                     contact,
                     contactNote,
-                    date: contactNote.date,
+                    date: contactNote.date.toISOString(),
                 };
             })
         );
@@ -192,7 +192,7 @@ async function getDealsLog(
                     sale: salesDict.get(dealNote.sales_id) as Sale,
                     deal,
                     dealNote,
-                    date: dealNote.date,
+                    date: dealNote.date.toISOString(),
                 };
             })
         );

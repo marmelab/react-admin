@@ -3,7 +3,11 @@ import { useRecordContext } from 'react-admin';
 
 import { Contact } from '../types';
 
-export const Avatar = (props: { record?: Contact }) => {
+export const Avatar = (props: {
+    record?: Contact;
+    width?: number;
+    height?: number;
+}) => {
     const record = useRecordContext<Contact>(props);
     // If we come from company page, the record is defined (to pass the company as a prop),
     // but neither of those fields are and this lead to an error when creating contact.
@@ -12,7 +16,14 @@ export const Avatar = (props: { record?: Contact }) => {
     }
 
     return (
-        <MuiAvatar src={record.avatar ?? undefined}>
+        <MuiAvatar
+            src={record.avatar ?? undefined}
+            sx={{
+                width: props.width,
+                height: props.height,
+                fontSize: props.height ? '0.6rem' : undefined,
+            }}
+        >
             {record.first_name?.charAt(0)}
             {record.last_name?.charAt(0)}
         </MuiAvatar>
