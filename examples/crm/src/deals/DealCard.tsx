@@ -57,6 +57,7 @@ export const DealCardContent = ({
                         source="company_id"
                         record={deal}
                         reference="companies"
+                        link={false}
                     >
                         <CompanyAvatar width={20} height={20} />
                     </ReferenceField>

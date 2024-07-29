@@ -41,7 +41,7 @@ export function ActivityLogDealNoteCreated({
                             </Link>
                         </Typography>
 
-                        <ActivityLogDate date={dealNote.date} />
+                        <ActivityLogDate date={dealNote.date.toISOString()} />
                     </>
                 }
                 text={dealNote.text}
