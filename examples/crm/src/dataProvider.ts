@@ -158,6 +158,23 @@ const dataProviderWithCustomMethod = {
 
 export type CustomDataProvider = typeof dataProviderWithCustomMethod;
 
+async function updateCompany(
+    companyId: Identifier,
+    updateFn: (company: Company) => Partial<Company>
+) {
+    const { data: company } = await dataProvider.getOne<Company>('companies', {
+        id: companyId,
+    });
+
+    return await dataProvider.update('companies', {
+        id: companyId,
+        data: {
+            ...updateFn(company),
+        },
+        previousData: company,
+    });
+}
+
 export const dataProvider = withLifecycleCallbacks(
     dataProviderWithCustomMethod,
     [
@@ -258,40 +275,20 @@ export const dataProvider = withLifecycleCallbacks(
             beforeCreate: async (params, dataProvider) => {
                 return processContactAvatar(params, dataProvider);
             },
-            afterCreate: async (result, dataProvider) => {
-                const { data: company } = await dataProvider.getOne<Company>(
-                    'companies',
-                    {
-                        id: result.data.company_id,
-                    }
-                );
-                await dataProvider.update('companies', {
-                    id: company.id,
-                    data: {
-                        nb_contacts: (company.nb_contacts ?? 0) + 1,
-                    },
-                    previousData: company,
-                });
+            afterCreate: async result => {
+                await updateCompany(result.data.company_id, company => ({
+                    nb_contacts: (company.nb_contacts ?? 0) + 1,
+                }));
 
                 return result;
             },
             beforeUpdate: async params => {
                 return processContactAvatar(params, dataProvider);
             },
-            afterDelete: async (result, dataProvider) => {
-                const { data: company } = await dataProvider.getOne<Company>(
-                    'companies',
-                    {
-                        id: result.data.company_id,
-                    }
-                );
-                await dataProvider.update('companies', {
-                    id: company.id,
-                    data: {
-                        nb_contacts: (company.nb_contacts ?? 1) - 1,
-                    },
-                    previousData: company,
-                });
+            afterDelete: async result => {
+                await updateCompany(result.data.company_id, company => ({
+                    nb_contacts: (company.nb_contacts ?? 1) - 1,
+                }));
 
                 return result;
             },
@@ -458,20 +455,10 @@ export const dataProvider = withLifecycleCallbacks(
                     },
                 };
             },
-            afterCreate: async (result, dataProvider) => {
-                const { data: company } = await dataProvider.getOne<Company>(
-                    'companies',
-                    {
-                        id: result.data.company_id,
-                    }
-                );
-                await dataProvider.update('companies', {
-                    id: company.id,
-                    data: {
-                        nb_deals: (company.nb_deals ?? 0) + 1,
-                    },
-                    previousData: company,
-                });
+            afterCreate: async result => {
+                await updateCompany(result.data.company_id, company => ({
+                    nb_deals: (company.nb_deals ?? 0) + 1,
+                }));
 
                 return result;
             },
@@ -484,20 +471,10 @@ export const dataProvider = withLifecycleCallbacks(
                     },
                 };
             },
-            afterDelete: async (result, dataProvider) => {
-                const { data: company } = await dataProvider.getOne<Company>(
-                    'companies',
-                    {
-                        id: result.data.company_id,
-                    }
-                );
-                await dataProvider.update('companies', {
-                    id: company.id,
-                    data: {
-                        nb_deals: (company.nb_deals ?? 1) - 1,
-                    },
-                    previousData: company,
-                });
+            afterDelete: async result => {
+                await updateCompany(result.data.company_id, company => ({
+                    nb_deals: (company.nb_deals ?? 1) - 1,
+                }));
 
                 return result;
             },
