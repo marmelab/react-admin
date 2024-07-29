@@ -8,6 +8,7 @@ import {
     DialogContent,
     DialogTitle,
     Stack,
+    Tooltip,
 } from '@mui/material';
 import 'cropperjs/dist/cropper.css';
 import { useFieldValue } from 'ra-core';
@@ -21,7 +22,6 @@ import { DialogCloseButton } from './DialogCloseButton';
 const ImageEditorField = (props: ImageEditorFieldProps) => {
     const { getValues } = useFormContext();
     const imageUrl = getValues()[props.source];
-    const [isHovered, setIsHovered] = useState(false);
     const [isDialogOpen, setIsDialogOpen] = useState(false);
 
     if (!imageUrl) {
@@ -30,8 +30,6 @@ const ImageEditorField = (props: ImageEditorFieldProps) => {
 
     const commonProps = {
         src: imageUrl,
-        onMouseEnter: () => setIsHovered(true),
-        onMouseLeave: () => setIsHovered(false),
         onClick: () => setIsDialogOpen(true),
         style: { cursor: 'pointer' },
         sx: {
@@ -42,18 +40,20 @@ const ImageEditorField = (props: ImageEditorFieldProps) => {
     };
 
     return (
-        <>
-            {props.type === 'avatar' ? (
-                <Avatar {...commonProps} />
-            ) : (
-                <Box component={'img'} {...commonProps} />
-            )}
+        <div style={{ position: 'relative', display: 'inline-block' }}>
+            <Tooltip title="Update image" followCursor>
+                {props.type === 'avatar' ? (
+                    <Avatar {...commonProps} />
+                ) : (
+                    <Box component={'img'} {...commonProps} />
+                )}
+            </Tooltip>
             <ImageEditorDialog
                 open={isDialogOpen}
                 onClose={() => setIsDialogOpen(false)}
                 {...props}
             />
-        </>
+        </div>
     );
 };
 
@@ -94,6 +94,16 @@ const ImageEditorDialog = (props: ImageEditorDialogProps) => {
             fullWidth
             maxWidth="md"
         >
+            {props.type === 'avatar' && (
+                <style>
+                    {`
+                        .cropper-crop-box,
+                        .cropper-view-box {
+                            border-radius: 50%;
+                        }
+                    `}
+                </style>
+            )}
             <DialogCloseButton onClose={props.onClose} />
             <DialogTitle>Resize your image</DialogTitle>
             <DialogContent>
@@ -102,7 +112,10 @@ const ImageEditorDialog = (props: ImageEditorDialogProps) => {
                         direction="row"
                         justifyContent="center"
                         {...getRootProps()}
-                        sx={{ backgroundColor: 'rgba(0, 0, 0, 0.05)' }}
+                        sx={{
+                            backgroundColor: 'rgba(0, 0, 0, 0.05)',
+                            cursor: 'pointer',
+                        }}
                     >
                         <input {...getInputProps()} />
                         <p>Drop a file to upload, or click to select it.</p>
