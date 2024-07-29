@@ -14,7 +14,11 @@ export const Avatar = (props: {
     return (
         <MuiAvatar
             src={record.avatar ?? undefined}
-            sx={{ width: props.width, height: props.height }}
+            sx={{
+                width: props.width,
+                height: props.height,
+                fontSize: props.height ? '0.6rem' : undefined,
+            }}
         >
             {record.first_name.charAt(0)}
             {record.last_name.charAt(0)}
