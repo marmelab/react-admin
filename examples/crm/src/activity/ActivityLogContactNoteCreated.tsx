@@ -43,7 +43,9 @@ export function ActivityLogContactNoteCreated({
                             </Link>
                         </Typography>
 
-                        <ActivityLogDate date={contactNote.date} />
+                        <ActivityLogDate
+                            date={contactNote.date.toISOString()}
+                        />
                     </>
                 }
                 text={contactNote.text}
