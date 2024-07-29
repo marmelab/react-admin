@@ -6,6 +6,7 @@ import {
     DEAL_CREATED,
     DEAL_NOTE_CREATED,
 } from './consts';
+import { SvgIconComponent } from '@mui/icons-material';
 
 export interface Sale extends RaRecord {
     first_name: string;
@@ -171,4 +172,5 @@ export interface NoteStatus {
 export interface ContactGender {
     value: string;
     label: string;
+    icon: SvgIconComponent;
 }
