@@ -85,15 +85,15 @@ const CompanyShowContent = () => {
                             textColor="primary"
                             onChange={handleTabChange}
                         >
-                            {record.nb_contacts && (
-                                <Tab
-                                    label={
-                                        record.nb_contacts === 1
-                                            ? '1 Contact'
-                                            : `${record.nb_contacts} Contacts`
-                                    }
-                                />
-                            )}
+                            <Tab
+                                label={
+                                    !record.nb_contacts
+                                        ? 'No Contacts'
+                                        : record.nb_contacts === 1
+                                          ? '1 Contact'
+                                          : `${record.nb_contacts} Contacts`
+                                }
+                            />
                             {record.nb_deals && (
                                 <Tab
                                     label={
@@ -107,19 +107,20 @@ const CompanyShowContent = () => {
                             <Tab label="Activity Log" />
                         </Tabs>
                         <Divider />
-                        {record.nb_contacts ? (
-                            <TabPanel value={tabValue} index={tabIndex++}>
-                                <ReferenceManyField
-                                    reference="contacts"
-                                    target="company_id"
-                                    sort={{ field: 'last_name', order: 'ASC' }}
+
+                        <TabPanel value={tabValue} index={tabIndex++}>
+                            <ReferenceManyField
+                                reference="contacts"
+                                target="company_id"
+                                sort={{ field: 'last_name', order: 'ASC' }}
+                            >
+                                <Stack
+                                    direction="row"
+                                    justifyContent="flex-end"
+                                    spacing={2}
+                                    mt={1}
                                 >
-                                    <Stack
-                                        direction="row"
-                                        justifyContent="flex-end"
-                                        spacing={2}
-                                        mt={1}
-                                    >
+                                    {!!record.nb_contacts && (
                                         <SortButton
                                             fields={[
                                                 'last_name',
@@ -127,12 +128,12 @@ const CompanyShowContent = () => {
                                                 'last_seen',
                                             ]}
                                         />
-                                        <CreateRelatedContactButton />
-                                    </Stack>
-                                    <ContactsIterator />
-                                </ReferenceManyField>
-                            </TabPanel>
-                        ) : null}
+                                    )}
+                                    <CreateRelatedContactButton />
+                                </Stack>
+                                <ContactsIterator />
+                            </ReferenceManyField>
+                        </TabPanel>
                         {record.nb_deals ? (
                             <TabPanel value={tabValue} index={tabIndex++}>
                                 <ReferenceManyField
