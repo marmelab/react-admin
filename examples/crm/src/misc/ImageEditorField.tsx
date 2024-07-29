@@ -21,7 +21,7 @@ import { DialogCloseButton } from './DialogCloseButton';
 
 const ImageEditorField = (props: ImageEditorFieldProps) => {
     const { getValues } = useFormContext();
-    const imageUrl = getValues()[props.source];
+    const imageUrl = getValues(props.source);
     const [isDialogOpen, setIsDialogOpen] = useState(false);
 
     if (!imageUrl) {
@@ -72,7 +72,7 @@ const ImageEditorDialog = (props: ImageEditorDialogProps) => {
         const croppedImage = cropper?.getCroppedCanvas().toDataURL();
         if (croppedImage) {
             setImageSrc(croppedImage);
-            setValue(props.source, croppedImage);
+            setValue(props.source, croppedImage, { shouldDirty: true });
             props.onClose();
 
             if (props.onSave) {

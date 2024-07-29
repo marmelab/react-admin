@@ -16,8 +16,8 @@ import {
 import { isLinkedinUrl } from '../misc/isLinkedInUrl';
 import { useConfigurationContext } from '../root/ConfigurationContext';
 import { Sale } from '../types';
-import { CompanyAvatar } from './CompanyAvatar';
 import { sizes } from './sizes';
+import ImageEditorField from '../misc/ImageEditorField';
 
 const isUrl = (url: string) => {
     if (!url) return;
@@ -64,7 +64,12 @@ export const CompanyInputs = () => {
 const CompanyDisplayInputs = () => {
     return (
         <Stack gap={2} flex={1} direction="row">
-            <CompanyAvatar width={60} height={60} />
+            <ImageEditorField
+                source="logo.src"
+                type="avatar"
+                width={60}
+                height={60}
+            />
             <TextInput source="name" validate={required()} helperText={false} />
         </Stack>
     );
