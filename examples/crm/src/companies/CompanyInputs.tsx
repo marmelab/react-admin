@@ -12,10 +12,11 @@ import {
     SimpleFormIterator,
     TextInput,
     required,
+    useRecordContext,
 } from 'react-admin';
 import { isLinkedinUrl } from '../misc/isLinkedInUrl';
 import { useConfigurationContext } from '../root/ConfigurationContext';
-import { Sale } from '../types';
+import { Company, Sale } from '../types';
 import { sizes } from './sizes';
 import ImageEditorField from '../misc/ImageEditorField';
 
@@ -62,6 +63,7 @@ export const CompanyInputs = () => {
 };
 
 const CompanyDisplayInputs = () => {
+    const record = useRecordContext<Company>();
     return (
         <Stack gap={2} flex={1} direction="row">
             <ImageEditorField
@@ -69,6 +71,7 @@ const CompanyDisplayInputs = () => {
                 type="avatar"
                 width={60}
                 height={60}
+                emptyText={record?.name.charAt(0)}
             />
             <TextInput source="name" validate={required()} helperText={false} />
         </Stack>

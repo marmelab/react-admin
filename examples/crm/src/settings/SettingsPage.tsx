@@ -128,16 +128,6 @@ const SettingsForm = ({
                     <Typography variant="h5" color="textSecondary">
                         My info
                     </Typography>
-                    <Button
-                        variant="text"
-                        size="small"
-                        startIcon={
-                            isEditMode ? <VisibilityIcon /> : <EditIcon />
-                        }
-                        onClick={() => setEditMode(!isEditMode)}
-                    >
-                        {isEditMode ? 'Show' : 'Edit'}
-                    </Button>
                 </Stack>
                 <Stack gap={1} mb={2}>
                     <ImageEditorField
@@ -149,24 +139,30 @@ const SettingsForm = ({
                     <TextRender source="last_name" isEditMode={isEditMode} />
                     <TextRender source="email" isEditMode={isEditMode} />
                 </Stack>
-                <Button
-                    variant="outlined"
-                    onClick={handleClickOpenPasswordChange}
-                >
-                    Change password
-                </Button>
-                <UpdatePassword
-                    open={openPasswordChange}
-                    setOpen={setOpenPasswordChange}
-                />
+                {!isEditMode && (
+                    <>
+                        <Button
+                            variant="outlined"
+                            onClick={handleClickOpenPasswordChange}
+                        >
+                            Change password
+                        </Button>
+                        <UpdatePassword
+                            open={openPasswordChange}
+                            setOpen={setOpenPasswordChange}
+                        />
+                    </>
+                )}
             </CardContent>
-            {isEditMode && (
-                <CardActions
-                    sx={{
-                        paddingX: 2,
-                        background: theme => theme.palette.background.default,
-                    }}
-                >
+
+            <CardActions
+                sx={{
+                    paddingX: 2,
+                    background: theme => theme.palette.background.default,
+                    justifyContent: isEditMode ? 'space-between' : 'flex-end',
+                }}
+            >
+                {isEditMode && (
                     <Button
                         variant="contained"
                         type="submit"
@@ -175,8 +171,16 @@ const SettingsForm = ({
                     >
                         Save
                     </Button>
-                </CardActions>
-            )}
+                )}
+                <Button
+                    variant="text"
+                    size="small"
+                    startIcon={isEditMode ? <VisibilityIcon /> : <EditIcon />}
+                    onClick={() => setEditMode(!isEditMode)}
+                >
+                    {isEditMode ? 'Show' : 'Edit'}
+                </Button>
+            </CardActions>
         </Card>
     );
 };

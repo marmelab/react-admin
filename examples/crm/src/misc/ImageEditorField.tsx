@@ -24,10 +24,6 @@ const ImageEditorField = (props: ImageEditorFieldProps) => {
     const imageUrl = getValues(props.source);
     const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-    if (!imageUrl) {
-        return null;
-    }
-
     const commonProps = {
         src: imageUrl,
         onClick: () => setIsDialogOpen(true),
@@ -43,7 +39,7 @@ const ImageEditorField = (props: ImageEditorFieldProps) => {
         <div style={{ position: 'relative', display: 'inline-block' }}>
             <Tooltip title="Update image" followCursor>
                 {props.type === 'avatar' ? (
-                    <Avatar {...commonProps} />
+                    <Avatar {...commonProps}>{props.emptyText}</Avatar>
                 ) : (
                     <Box component={'img'} {...commonProps} />
                 )}
