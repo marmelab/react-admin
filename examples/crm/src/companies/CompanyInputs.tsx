@@ -75,7 +75,7 @@ const CompanyContactInputs = () => {
         <Stack gap={1} flex={1}>
             <Typography variant="h6">Contact</Typography>
             <TextInput source="phone_number" helperText={false} />
-            <TextInput source="website" helperText={false} />
+            <TextInput source="website" helperText={false} validate={isUrl} />
             <TextInput
                 source="linkedin_url"
                 helperText={false}
