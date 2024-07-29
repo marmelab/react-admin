@@ -11,10 +11,12 @@ import {
 import * as React from 'react';
 import { useState } from 'react';
 import {
+    AutocompleteInput,
     CreateBase,
     DateInput,
     Form,
     RecordRepresentation,
+    ReferenceInput,
     SaveButton,
     SelectInput,
     TextInput,
@@ -24,8 +26,9 @@ import {
 } from 'react-admin';
 import { useConfigurationContext } from '../root/ConfigurationContext';
 import { DialogCloseButton } from '../misc/DialogCloseButton';
+import { contactInputText, contactOptionText } from '../misc/ContactOption';
 
-export const AddTask = () => {
+export const AddTask = ({ selectContact }: { selectContact?: boolean }) => {
     const { taskTypes } = useConfigurationContext();
     const contact = useRecordContext();
     const [open, setOpen] = useState(false);
@@ -64,11 +67,15 @@ export const AddTask = () => {
                     <Form>
                         <DialogCloseButton onClose={() => setOpen(false)} />
                         <DialogTitle id="form-dialog-title">
-                            Create a new task for{' '}
-                            <RecordRepresentation
-                                record={contact}
-                                resource="contacts"
-                            />
+                            {!selectContact
+                                ? 'Create a new task for '
+                                : 'Create a new task'}
+                            {!selectContact && (
+                                <RecordRepresentation
+                                    record={contact}
+                                    resource="contacts"
+                                />
+                            )}
                         </DialogTitle>
                         <DialogContent>
                             <TextInput
@@ -79,6 +86,21 @@ export const AddTask = () => {
                                 multiline
                                 helperText={false}
                             />
+                            {selectContact && (
+                                <ReferenceInput
+                                    source="contact_id"
+                                    reference="contacts"
+                                >
+                                    <AutocompleteInput
+                                        label="Contacts"
+                                        optionText={contactOptionText}
+                                        inputText={contactInputText}
+                                        helperText={false}
+                                        validate={required()}
+                                    />
+                                </ReferenceInput>
+                            )}
+
                             <Stack direction="row" spacing={1} mt={2}>
                                 <DateInput
                                     source="due_date"
