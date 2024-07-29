@@ -24,19 +24,26 @@ export function ActivityLogDealCreated({
                         width: '100%',
                     }}
                 >
-                    <CompanyAvatar />
+                    <CompanyAvatar width={20} height={20} />
                     <Typography
                         component="p"
                         sx={{
                             flexGrow: 1,
                         }}
                         variant="body2"
+                        color="text.secondary"
                     >
+                        {sale.first_name} {sale.last_name} added deal{' '}
                         <Link to={`/deals/${deal.id}/show`} variant="body2">
                             {deal.name}
                         </Link>{' '}
-                        has been added to <strong>{company.name}</strong> by{' '}
-                        {sale.first_name} {sale.last_name}
+                        to company{' '}
+                        <Link
+                            to={`/companies/${company.id}/show`}
+                            variant="body2"
+                        >
+                            {company.name}
+                        </Link>
                     </Typography>
 
                     <ActivityLogDate date={deal.created_at} />

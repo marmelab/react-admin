@@ -17,20 +17,28 @@ export function ActivityLogDealNoteCreated({
             <ActivityLogNote
                 header={
                     <>
-                        <CompanyAvatar />
+                        <CompanyAvatar width={20} height={20} />
                         <Typography
                             component="p"
                             sx={{
                                 flexGrow: 1,
                             }}
                             variant="body2"
+                            color="text.secondary"
                         >
-                            A note has been added to{' '}
+                            {sale.first_name} {sale.last_name} added note about
+                            deal{' '}
                             <Link to={`/deals/${deal.id}/show`} variant="body2">
                                 {deal.name}
                             </Link>{' '}
-                            from <strong>{company.name}</strong> by{' '}
-                            {sale.first_name} {sale.last_name}
+                            at{' '}
+                            <Link
+                                component={Link}
+                                to={`/companies/${deal.company_id}/show`}
+                                variant="body2"
+                            >
+                                {company.name}
+                            </Link>
                         </Typography>
 
                         <ActivityLogDate date={dealNote.date} />

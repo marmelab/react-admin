@@ -40,18 +40,22 @@ export function ActivityLogNote({
                 </Stack>
 
                 <Typography variant="body2">
-                    {slicedText && !seeMore ? `${slicedText}...` : text}
+                    {slicedText && !seeMore ? (
+                        <>
+                            {slicedText}
+                            ...{' '}
+                            <Link
+                                href="#"
+                                variant="body2"
+                                onClick={handleToggleSeeMore}
+                            >
+                                see more
+                            </Link>
+                        </>
+                    ) : (
+                        text
+                    )}
                 </Typography>
-
-                {slicedText && (
-                    <Link
-                        href="#"
-                        variant="body2"
-                        onClick={handleToggleSeeMore}
-                    >
-                        {seeMore ? 'See less' : 'See more'}
-                    </Link>
-                )}
             </Stack>
         </ListItem>
     );
