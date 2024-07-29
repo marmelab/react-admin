@@ -4,6 +4,7 @@ import PhoneIcon from '@mui/icons-material/Phone';
 import { Box, Divider, Stack, Typography } from '@mui/material';
 import {
     DateField,
+    DeleteButton,
     EditButton,
     EmailField,
     FunctionField,
@@ -21,8 +22,10 @@ import { TagsListEdit } from './TagsListEdit';
 
 import { useConfigurationContext } from '../root/ConfigurationContext';
 import { Contact, Sale } from '../types';
+import { useLocation } from 'react-router';
 
 export const ContactAside = ({ link = 'edit' }: { link?: 'edit' | 'show' }) => {
+    const location = useLocation();
     const { contactGender } = useConfigurationContext();
     const record = useRecordContext<Contact>();
     if (!record) return null;
@@ -155,7 +158,7 @@ export const ContactAside = ({ link = 'edit' }: { link?: 'edit' | 'show' }) => {
                 <Divider />
                 <TagsListEdit />
             </Box>
-            <Box>
+            <Box mb={3}>
                 <Typography variant="subtitle2">Tasks</Typography>
                 <Divider />
                 <ReferenceManyField
@@ -167,6 +170,7 @@ export const ContactAside = ({ link = 'edit' }: { link?: 'edit' | 'show' }) => {
                 </ReferenceManyField>
                 <AddTask />
             </Box>
+            <DeleteButton redirect={location.state?.from || undefined} />
         </Box>
     );
 };
