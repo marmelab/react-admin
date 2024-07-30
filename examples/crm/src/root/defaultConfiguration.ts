@@ -1,3 +1,7 @@
+import Man2Icon from '@mui/icons-material/Man2';
+import WcIcon from '@mui/icons-material/Wc';
+import Woman2Icon from '@mui/icons-material/Woman2';
+
 export const defaultLogo =
     'https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg';
 
@@ -56,7 +60,7 @@ export const defaultTaskTypes = [
 ];
 
 export const defaultContactGender = [
-    { value: 'male', label: 'He/Him' },
-    { value: 'female', label: 'She/Her' },
-    { value: 'nonbinary', label: 'They/Them' },
+    { value: 'male', label: 'He/Him', icon: Man2Icon },
+    { value: 'female', label: 'She/Her', icon: Woman2Icon },
+    { value: 'nonbinary', label: 'They/Them', icon: WcIcon },
 ];

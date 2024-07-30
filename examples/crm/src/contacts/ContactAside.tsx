@@ -1,7 +1,7 @@
 import EmailIcon from '@mui/icons-material/Email';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import PhoneIcon from '@mui/icons-material/Phone';
-import { Box, Divider, Stack, Typography } from '@mui/material';
+import { Box, Divider, Stack, SvgIcon, Typography } from '@mui/material';
 import {
     DateField,
     EditButton,
@@ -47,6 +47,16 @@ export const ContactAside = ({ link = 'edit' }: { link?: 'edit' | 'show' }) => {
                     <EmailIcon color="disabled" fontSize="small" />
                     <EmailField source="email" />
                 </Stack>
+            )}
+            {record.has_newsletter && (
+                <Typography
+                    variant="body2"
+                    color="textSecondary"
+                    mb={0.5}
+                    pl={3.5}
+                >
+                    Subscribed to newsletter
+                </Typography>
             )}
 
             {record.linkedin_url && (
@@ -97,7 +107,16 @@ export const ContactAside = ({ link = 'edit' }: { link?: 'edit' | 'show' }) => {
             <SelectField
                 source="gender"
                 choices={contactGender}
-                optionText="label"
+                optionText={choice => (
+                    <Stack direction="row" alignItems="center" gap={1}>
+                        <SvgIcon
+                            component={choice.icon}
+                            color="disabled"
+                            fontSize="small"
+                        ></SvgIcon>
+                        <span>{choice.label}</span>
+                    </Stack>
+                )}
                 optionValue="value"
             />
             <Typography variant="subtitle2" mt={2}>
