@@ -35,7 +35,7 @@ export function TransferAdminRole() {
 
                         <Typography component="p" variant="body2">
                             You are an administrator. Only administrators can
-                            manage access for account managers.
+                            manage access for users.
                         </Typography>
 
                         <Typography component="p" variant="body2">
@@ -48,9 +48,9 @@ export function TransferAdminRole() {
                             >
                                 transfer the administrator role
                             </Link>{' '}
-                            to another account manager. By transfering the
-                            administrator role, you will no longer be able to
-                            manage access for other account managers.
+                            to another user. By transferring the administrator
+                            role, you will no longer be able to manage access
+                            for other users.
                         </Typography>
                     </Stack>
                 </CardContent>

@@ -15,7 +15,7 @@ function SalesListActions() {
     return (
         <TopToolbar>
             <ExportButton />
-            <CreateButton variant="contained" label="New sales person" />
+            <CreateButton variant="contained" label="New user" />
         </TopToolbar>
     );
 }

@@ -1,11 +1,11 @@
 import SettingsIcon from '@mui/icons-material/Settings';
+import PeopleIcon from '@mui/icons-material/People';
 import {
     AppBar,
     Box,
     ListItemIcon,
     ListItemText,
     MenuItem,
-    MenuList,
     Tab,
     Tabs,
     Toolbar,
@@ -98,29 +98,32 @@ const Header = () => {
                                     to="/deals"
                                     value="/deals"
                                 />
-                                {permissions === 'admin' && (
-                                    <Tab
-                                        label={'Sales Team'}
-                                        component={Link}
-                                        to="/sales"
-                                        value="/sales"
-                                    />
-                                )}
                             </Tabs>
                         </Box>
                         <Box display="flex" alignItems="center">
                             <LoadingIndicator />
                             <UserMenu>
-                                <MenuList>
-                                    <ConfigurationMenu />
-                                    <Logout />
-                                </MenuList>
+                                <ConfigurationMenu />
+                                {permissions === 'admin' && <UsersMenu />}
+                                <Logout />
                             </UserMenu>
                         </Box>
                     </Box>
                 </Toolbar>
             </AppBar>
         </Box>
+    );
+};
+
+const UsersMenu = () => {
+    const { onClose } = useUserMenu() ?? {};
+    return (
+        <MenuItem component={Link} to="/sales" onClick={onClose}>
+            <ListItemIcon>
+                <PeopleIcon fontSize="small" />
+            </ListItemIcon>
+            <ListItemText>Users</ListItemText>
+        </MenuItem>
     );
 };
 
