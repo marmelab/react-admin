@@ -12,6 +12,7 @@ import {
 import { TasksIterator } from '../tasks/TasksIterator';
 
 import { Contact } from '../types';
+import { AddTask } from '../tasks/AddTask';
 
 export const TasksList = () => {
     const { identity } = useGetIdentity();
@@ -65,6 +66,7 @@ export const TasksList = () => {
                 </Link>
             </Box>
             <Card sx={{ px: 2, mb: '2em' }}>
+                <AddTask selectContact />
                 <ResourceContextProvider value="tasks">
                     <ListContextProvider value={listContext}>
                         <TasksIterator showContact />

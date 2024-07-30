@@ -1,4 +1,4 @@
-import { Divider, Stack } from '@mui/material';
+import { Divider } from '@mui/material';
 import {
     AutocompleteArrayInput,
     AutocompleteInput,
@@ -12,11 +12,9 @@ import {
     useCreate,
     useGetIdentity,
     useNotify,
-    useRecordContext,
 } from 'react-admin';
-import { Avatar } from '../contacts/Avatar';
 import { useConfigurationContext } from '../root/ConfigurationContext';
-import { Contact } from '../types';
+import { contactInputText, contactOptionText } from '../misc/ContactOption';
 
 const validateRequired = required();
 
@@ -116,17 +114,3 @@ export const DealInputs = () => {
         </>
     );
 };
-
-const ContactOptionRender = () => {
-    const record: Contact | undefined = useRecordContext();
-    if (!record) return null;
-    return (
-        <Stack direction="row" gap={1} alignItems="center">
-            <Avatar record={record} />
-            {record.first_name} {record.last_name}
-        </Stack>
-    );
-};
-const contactOptionText = <ContactOptionRender />;
-const contactInputText = (choice: { first_name: string; last_name: string }) =>
-    `${choice.first_name} ${choice.last_name}`;
