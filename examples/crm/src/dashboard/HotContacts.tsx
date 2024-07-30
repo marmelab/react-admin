@@ -49,13 +49,10 @@ export const HotContacts = () => {
                     }
                     secondaryText={contact => (
                         <Stack>
-                            <Typography variant="caption">
+                            <Typography variant="body2">
                                 {contact.title} at {contact.company_name}
                             </Typography>
-                            <Typography
-                                variant="caption"
-                                color="text.secondary"
-                            >
+                            <Typography variant="body2">
                                 {formatDistance(contact.last_seen, new Date(), {
                                     addSuffix: true,
                                 })}
