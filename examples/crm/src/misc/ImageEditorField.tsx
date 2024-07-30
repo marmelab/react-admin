@@ -101,7 +101,7 @@ const ImageEditorDialog = (props: ImageEditorDialogProps) => {
                 </style>
             )}
             <DialogCloseButton onClose={props.onClose} />
-            <DialogTitle>Resize your image</DialogTitle>
+            <DialogTitle>Upload and resize image</DialogTitle>
             <DialogContent>
                 <Stack gap={2} justifyContent="center">
                     <Stack
