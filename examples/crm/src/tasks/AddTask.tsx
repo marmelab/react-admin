@@ -92,7 +92,7 @@ export const AddTask = ({ selectContact }: { selectContact?: boolean }) => {
                                     reference="contacts"
                                 >
                                     <AutocompleteInput
-                                        label="Contacts"
+                                        label="Contact"
                                         optionText={contactOptionText}
                                         inputText={contactInputText}
                                         helperText={false}
