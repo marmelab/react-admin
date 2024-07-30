@@ -1,4 +1,4 @@
-export default {
+module.exports = {
     "extends": [
         "eslint:recommended",
         "plugin:react/recommended",
@@ -10,8 +10,7 @@ export default {
     "plugins": ["@typescript-eslint"],
     "env": {
         "browser": true,
-        "es2021": true,
-        "node": true
+        "es2021": true
     },
     "settings": {
         "react": {

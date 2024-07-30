@@ -45,7 +45,7 @@ describe('useEditController', () => {
             .mockImplementationOnce(() =>
                 Promise.resolve({ data: { id: 12, title: 'hello' } })
             );
-        const dataProvider = ({ getOne } as unknown) as DataProvider;
+        const dataProvider = { getOne } as unknown as DataProvider;
         render(
             <CoreAdminContext dataProvider={dataProvider}>
                 <EditController {...defaultProps}>
@@ -65,7 +65,7 @@ describe('useEditController', () => {
             .mockImplementationOnce(() =>
                 Promise.resolve({ data: { id: 'test?', title: 'hello' } })
             );
-        const dataProvider = ({ getOne } as unknown) as DataProvider;
+        const dataProvider = { getOne } as unknown as DataProvider;
 
         render(
             <TestMemoryRouter initialEntries={['/posts/test%3F']}>
@@ -99,7 +99,7 @@ describe('useEditController', () => {
             .mockImplementationOnce(() =>
                 Promise.resolve({ data: { id: 0, title: 'hello' } })
             );
-        const dataProvider = ({ getOne } as unknown) as DataProvider;
+        const dataProvider = { getOne } as unknown as DataProvider;
 
         render(
             <TestMemoryRouter initialEntries={['/posts/test%3F']}>
@@ -133,7 +133,7 @@ describe('useEditController', () => {
             .mockImplementationOnce(() =>
                 Promise.resolve({ data: { id: 12, title: 'hello' } })
             );
-        const dataProvider = ({ getOne } as unknown) as DataProvider;
+        const dataProvider = { getOne } as unknown as DataProvider;
         const Component = ({ redirect = undefined }) => (
             <CoreAdminContext dataProvider={dataProvider}>
                 <EditController {...defaultProps} redirect={redirect}>
@@ -162,7 +162,7 @@ describe('useEditController', () => {
                 .fn()
                 .mockImplementationOnce(() => Promise.reject(new Error()));
             const onError = jest.fn();
-            const dataProvider = ({ getOne } as unknown) as DataProvider;
+            const dataProvider = { getOne } as unknown as DataProvider;
             render(
                 <CoreAdminContext dataProvider={dataProvider}>
                     <EditController
@@ -187,7 +187,7 @@ describe('useEditController', () => {
                 .mockImplementationOnce(() =>
                     Promise.resolve({ data: { id: 0, title: 'hello' } })
                 );
-            const dataProvider = ({ getOne } as unknown) as DataProvider;
+            const dataProvider = { getOne } as unknown as DataProvider;
             render(
                 <CoreAdminContext dataProvider={dataProvider}>
                     <EditController
@@ -214,11 +214,11 @@ describe('useEditController', () => {
             .mockImplementationOnce((_, { id, data, previousData }) =>
                 Promise.resolve({ data: { id, ...previousData, ...data } })
             );
-        const dataProvider = ({
+        const dataProvider = {
             getOne: () =>
                 Promise.resolve({ data: { id: 12, test: 'previous' } }),
             update,
-        } as unknown) as DataProvider;
+        } as unknown as DataProvider;
         render(
             <CoreAdminContext dataProvider={dataProvider}>
                 <EditController {...defaultProps} mutationMode="pessimistic">
@@ -259,10 +259,10 @@ describe('useEditController', () => {
                 post = { ...previousData, ...data };
                 return Promise.resolve({ data: post });
             });
-        const dataProvider = ({
+        const dataProvider = {
             getOne: () => Promise.resolve({ data: post }),
             update,
-        } as unknown) as DataProvider;
+        } as unknown as DataProvider;
         render(
             <CoreAdminContext dataProvider={dataProvider}>
                 <EditController {...defaultProps}>
@@ -311,10 +311,10 @@ describe('useEditController', () => {
                 post = { ...previousData, ...data };
                 return Promise.resolve({ data: post });
             });
-        const dataProvider = ({
+        const dataProvider = {
             getOne: () => Promise.resolve({ data: post }),
             update,
-        } as unknown) as DataProvider;
+        } as unknown as DataProvider;
         let saveCallback;
         render(
             <CoreAdminContext dataProvider={dataProvider}>
@@ -339,11 +339,11 @@ describe('useEditController', () => {
 
     it('should execute success side effects on success in pessimistic mode', async () => {
         let saveCallback;
-        const dataProvider = ({
+        const dataProvider = {
             getOne: () => Promise.resolve({ data: { id: 12 } }),
             update: (_, { id, data, previousData }) =>
                 Promise.resolve({ data: { id, ...previousData, ...data } }),
-        } as unknown) as DataProvider;
+        } as unknown as DataProvider;
 
         let notificationsSpy;
         const Notification = () => {
@@ -385,11 +385,11 @@ describe('useEditController', () => {
     describe('mutationOptions', () => {
         it('should allow mutationOptions to override the default success side effects in pessimistic mode', async () => {
             let saveCallback;
-            const dataProvider = ({
+            const dataProvider = {
                 getOne: () => Promise.resolve({ data: { id: 12 } }),
                 update: (_, { id, data, previousData }) =>
                     Promise.resolve({ data: { id, ...previousData, ...data } }),
-            } as unknown) as DataProvider;
+            } as unknown as DataProvider;
             const onSuccess = jest.fn();
 
             let notificationsSpy;
@@ -423,11 +423,11 @@ describe('useEditController', () => {
 
         it('should allow mutationOptions to override the default success side effects in optimistic mode', async () => {
             let saveCallback;
-            const dataProvider = ({
+            const dataProvider = {
                 getOne: () => Promise.resolve({ data: { id: 12 } }),
                 update: (_, { id, data, previousData }) =>
                     Promise.resolve({ data: { id, ...previousData, ...data } }),
-            } as unknown) as DataProvider;
+            } as unknown as DataProvider;
             const onSuccess = jest.fn();
 
             let notificationsSpy;
@@ -461,11 +461,11 @@ describe('useEditController', () => {
 
         it('should allow mutationOptions to override the default success side effects in undoable mode', async () => {
             let saveCallback;
-            const dataProvider = ({
+            const dataProvider = {
                 getOne: () => Promise.resolve({ data: { id: 12 } }),
                 update: (_, { id, data, previousData }) =>
                     Promise.resolve({ data: { id, ...previousData, ...data } }),
-            } as unknown) as DataProvider;
+            } as unknown as DataProvider;
             const onSuccess = jest.fn();
 
             let notificationsSpy;
@@ -499,10 +499,10 @@ describe('useEditController', () => {
         it('should allow mutationOptions to override the default failure side effects in pessimistic mode', async () => {
             jest.spyOn(console, 'error').mockImplementation(() => {});
             let saveCallback;
-            const dataProvider = ({
+            const dataProvider = {
                 getOne: () => Promise.resolve({ data: { id: 12 } }),
                 update: () => Promise.reject({ message: 'not good' }),
-            } as unknown) as DataProvider;
+            } as unknown as DataProvider;
             const onError = jest.fn();
 
             let notificationsSpy;
@@ -538,10 +538,10 @@ describe('useEditController', () => {
         it('should allow mutationOptions to override the default failure side effects in optimistic mode', async () => {
             jest.spyOn(console, 'error').mockImplementation(() => {});
             let saveCallback;
-            const dataProvider = ({
+            const dataProvider = {
                 getOne: () => Promise.resolve({ data: { id: 12 } }),
                 update: () => Promise.reject({ message: 'not good' }),
-            } as unknown) as DataProvider;
+            } as unknown as DataProvider;
             const onError = jest.fn();
 
             let notificationsSpy;
@@ -594,10 +594,10 @@ describe('useEditController', () => {
                 .mockImplementationOnce((_, { id, data, previousData }) =>
                     Promise.resolve({ data: { id, ...previousData, ...data } })
                 );
-            const dataProvider = ({
+            const dataProvider = {
                 getOne: () => Promise.resolve({ data: { id: 12 } }),
                 update,
-            } as unknown) as DataProvider;
+            } as unknown as DataProvider;
 
             render(
                 <CoreAdminContext dataProvider={dataProvider}>
@@ -632,10 +632,10 @@ describe('useEditController', () => {
             .mockImplementationOnce((_, { id, data, previousData }) =>
                 Promise.resolve({ data: { id, ...previousData, ...data } })
             );
-        const dataProvider = ({
+        const dataProvider = {
             getOne: () => Promise.resolve({ data: { id: 12 } }),
             update,
-        } as unknown) as DataProvider;
+        } as unknown as DataProvider;
 
         render(
             <CoreAdminContext dataProvider={dataProvider}>
@@ -662,11 +662,11 @@ describe('useEditController', () => {
 
     it('should allow the save onSuccess option to override the success side effects override', async () => {
         let saveCallback;
-        const dataProvider = ({
+        const dataProvider = {
             getOne: () => Promise.resolve({ data: { id: 12 } }),
             update: (_, { id, data, previousData }) =>
                 Promise.resolve({ data: { id, ...previousData, ...data } }),
-        } as unknown) as DataProvider;
+        } as unknown as DataProvider;
         const onSuccess = jest.fn();
         const onSuccessSave = jest.fn();
 
@@ -710,10 +710,10 @@ describe('useEditController', () => {
     it('should execute error side effects on error in pessimistic mode', async () => {
         jest.spyOn(console, 'error').mockImplementation(() => {});
         let saveCallback;
-        const dataProvider = ({
+        const dataProvider = {
             getOne: () => Promise.resolve({ data: { id: 12 } }),
             update: () => Promise.reject({ message: 'not good' }),
-        } as unknown) as DataProvider;
+        } as unknown as DataProvider;
 
         let notificationsSpy;
         const Notification = () => {
@@ -749,10 +749,10 @@ describe('useEditController', () => {
     it('should allow the save onError option to override the failure side effects override', async () => {
         jest.spyOn(console, 'error').mockImplementation(() => {});
         let saveCallback;
-        const dataProvider = ({
+        const dataProvider = {
             getOne: () => Promise.resolve({ data: { id: 12 } }),
             update: () => Promise.reject({ message: 'not good' }),
-        } as unknown) as DataProvider;
+        } as unknown as DataProvider;
         const onError = jest.fn();
         const onErrorSave = jest.fn();
 
@@ -800,10 +800,10 @@ describe('useEditController', () => {
             .mockImplementationOnce((_, { id, data }) =>
                 Promise.resolve({ data: { id, ...data } })
             );
-        const dataProvider = ({
+        const dataProvider = {
             getOne: () => Promise.resolve({ data: { id: 12 } }),
             update,
-        } as unknown) as DataProvider;
+        } as unknown as DataProvider;
         const transform = jest.fn().mockImplementationOnce(data => ({
             ...data,
             transformed: true,
@@ -842,10 +842,10 @@ describe('useEditController', () => {
             .mockImplementationOnce((_, { id, data }) =>
                 Promise.resolve({ data: { id, ...data } })
             );
-        const dataProvider = ({
+        const dataProvider = {
             getOne: () => Promise.resolve({ data: { id: 12 } }),
             update,
-        } as unknown) as DataProvider;
+        } as unknown as DataProvider;
         const transform = jest.fn();
         const transformSave = jest.fn().mockImplementationOnce(data => ({
             ...data,
@@ -965,10 +965,10 @@ describe('useEditController', () => {
         const update = jest.fn().mockImplementationOnce(() => {
             return Promise.reject({ body: { errors: { foo: 'invalid' } } });
         });
-        const dataProvider = ({
+        const dataProvider = {
             getOne: () => Promise.resolve({ data: post }),
             update,
-        } as unknown) as DataProvider;
+        } as unknown as DataProvider;
         let saveCallback;
         render(
             <CoreAdminContext dataProvider={dataProvider}>

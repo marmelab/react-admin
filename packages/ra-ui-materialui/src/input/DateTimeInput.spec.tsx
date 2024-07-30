@@ -173,6 +173,7 @@ describe('<DateTimeInput />', () => {
         fireEvent.change(input, {
             target: { value: '' },
         });
+        fireEvent.blur(input);
         fireEvent.click(screen.getByLabelText('ra.action.save'));
         await waitFor(() => {
             expect(onSubmit).toHaveBeenCalledWith(
