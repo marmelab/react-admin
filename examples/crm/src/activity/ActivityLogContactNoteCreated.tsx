@@ -1,9 +1,11 @@
 import Typography from '@mui/material/Typography';
-import { Link, RecordContextProvider, DateField } from 'react-admin';
+import { Link, RecordContextProvider } from 'react-admin';
 
 import { Avatar } from '../contacts/Avatar';
 import type { ActivityContactNoteCreated } from '../types';
 import { ActivityLogNote } from './ActivityLogNote';
+import { ActivityLogSale } from './ActivityLogSale';
+import { ActivityLogDate } from './ActivityLogDate';
 
 type ActivityLogContactNoteCreatedProps = {
     activity: ActivityContactNoteCreated;
@@ -26,7 +28,7 @@ export function ActivityLogContactNoteCreated({
                             variant="body2"
                             color="text.secondary"
                         >
-                            {sale.first_name} {sale.last_name} added note about{' '}
+                            <ActivityLogSale sale={sale} /> added a note about{' '}
                             <Link
                                 to={`/contacts/${contact.id}/show`}
                                 variant="body2"
@@ -46,17 +48,7 @@ export function ActivityLogContactNoteCreated({
                                 </>
                             )}
                         </Typography>
-                        <RecordContextProvider value={contactNote}>
-                            <DateField
-                                source="date"
-                                showTime
-                                color="text.secondary"
-                                options={{
-                                    dateStyle: 'full',
-                                    timeStyle: 'short',
-                                }}
-                            />
-                        </RecordContextProvider>
+                        <ActivityLogDate date={contactNote.date} />
                     </>
                 }
                 text={contactNote.text}

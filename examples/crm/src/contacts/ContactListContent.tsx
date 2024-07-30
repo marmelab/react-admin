@@ -22,7 +22,7 @@ import {
 } from '@mui/material';
 import type { Theme } from '@mui/material';
 import { Link } from 'react-router-dom';
-import { formatDistance } from 'date-fns';
+import { formatRelative } from 'date-fns';
 
 import { Avatar } from './Avatar';
 import { Status } from '../misc/Status';
@@ -112,10 +112,11 @@ export const ContactListContent = () => {
                                     title={contact.last_seen}
                                 >
                                     {!isSmall && 'last activity '}
-                                    {formatDistance(
+                                    {formatRelative(
                                         contact.last_seen,
                                         now
-                                    )} ago <Status status={contact.status} />
+                                    )}{' '}
+                                    <Status status={contact.status} />
                                 </Typography>
                             </ListItemSecondaryAction>
                         </ListItem>

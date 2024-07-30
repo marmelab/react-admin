@@ -1,28 +1,10 @@
 import Typography from '@mui/material/Typography';
+import { formatRelative } from 'date-fns';
 
 export function ActivityLogDate({ date }: { date: string }) {
-    const now = new Date();
-    const d = new Date(date);
-
-    if (
-        d.getDay() === now.getDay() &&
-        d.getMonth() === now.getMonth() &&
-        d.getFullYear() === now.getFullYear()
-    ) {
-        return (
-            <Typography color="textSecondary" variant="body2">
-                {new Intl.DateTimeFormat('en-US', {
-                    timeStyle: 'short',
-                }).format(d)}
-            </Typography>
-        );
-    }
-
     return (
-        <Typography color="textSecondary" variant="body2">
-            {new Intl.DateTimeFormat('en-US', {
-                dateStyle: 'short',
-            }).format(d)}
+        <Typography color="textSecondary" variant="body2" title={date}>
+            {formatRelative(new Date(date), new Date())}
         </Typography>
     );
 }

@@ -65,7 +65,7 @@ export interface Contact extends RaRecord {
 export interface ContactNote extends RaRecord {
     contact_id: Identifier;
     text: string;
-    date: Date;
+    date: string;
     sales_id: Identifier;
     status: string;
     attachments?: AttachmentNote[];
@@ -91,7 +91,7 @@ export interface Deal extends RaRecord {
 export interface DealNote extends RaRecord {
     deal_id: Identifier;
     text: string;
-    date: Date;
+    date: string;
     sales_id: Identifier;
     attachments?: AttachmentNote[];
 }

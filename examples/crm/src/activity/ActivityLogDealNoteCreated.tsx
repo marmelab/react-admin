@@ -4,6 +4,8 @@ import { Link, RecordContextProvider, DateField } from 'react-admin';
 import { CompanyAvatar } from '../companies/CompanyAvatar';
 import type { ActivityDealNoteCreated } from '../types';
 import { ActivityLogNote } from './ActivityLogNote';
+import { ActivityLogSale } from './ActivityLogSale';
+import { ActivityLogDate } from './ActivityLogDate';
 
 type ActivityLogDealNoteCreatedProps = {
     activity: ActivityDealNoteCreated;
@@ -28,7 +30,7 @@ export function ActivityLogDealNoteCreated({
                             variant="body2"
                             color="text.secondary"
                         >
-                            {sale.first_name} {sale.last_name} added note about
+                            <ActivityLogSale sale={sale} /> added a note about
                             deal{' '}
                             <Link to={`/deals/${deal.id}/show`} variant="body2">
                                 {deal.name}
@@ -46,18 +48,7 @@ export function ActivityLogDealNoteCreated({
                                 </>
                             )}
                         </Typography>
-
-                        <RecordContextProvider value={dealNote}>
-                            <DateField
-                                source="date"
-                                showTime
-                                color="text.secondary"
-                                options={{
-                                    dateStyle: 'full',
-                                    timeStyle: 'short',
-                                }}
-                            />
-                        </RecordContextProvider>
+                        <ActivityLogDate date={dealNote.date} />
                     </>
                 }
                 text={dealNote.text}

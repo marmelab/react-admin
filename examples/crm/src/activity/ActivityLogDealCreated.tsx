@@ -3,6 +3,8 @@ import { Link, RecordContextProvider, DateField } from 'react-admin';
 
 import { CompanyAvatar } from '../companies/CompanyAvatar';
 import type { ActivityDealCreated } from '../types';
+import { ActivityLogSale } from './ActivityLogSale';
+import { ActivityLogDate } from './ActivityLogDate';
 
 type ActivityLogDealCreatedProps = {
     activity: ActivityDealCreated;
@@ -33,7 +35,7 @@ export function ActivityLogDealCreated({
                         variant="body2"
                         color="text.secondary"
                     >
-                        {sale.first_name} {sale.last_name} added deal{' '}
+                        <ActivityLogSale sale={sale} /> added deal{' '}
                         <Link to={`/deals/${deal.id}/show`} variant="body2">
                             {deal.name}
                         </Link>{' '}
@@ -49,18 +51,7 @@ export function ActivityLogDealCreated({
                             </>
                         )}
                     </Typography>
-
-                    <RecordContextProvider value={deal}>
-                        <DateField
-                            source="created_at"
-                            showTime
-                            color="text.secondary"
-                            options={{
-                                dateStyle: 'full',
-                                timeStyle: 'short',
-                            }}
-                        />
-                    </RecordContextProvider>
+                    <ActivityLogDate date={deal.created_at} />
                 </Stack>
             </ListItem>
         </RecordContextProvider>

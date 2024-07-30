@@ -1,8 +1,10 @@
 import { ListItem, Stack, Typography } from '@mui/material';
-import { Link, RecordContextProvider, DateField } from 'react-admin';
+import { Link, RecordContextProvider } from 'react-admin';
 
 import { CompanyAvatar } from '../companies/CompanyAvatar';
+import { ActivityLogSale } from './ActivityLogSale';
 import type { ActivityCompanyCreated } from '../types';
+import { ActivityLogDate } from './ActivityLogDate';
 
 type ActivityLogCompanyCreatedProps = {
     activity: ActivityCompanyCreated;
@@ -31,7 +33,7 @@ export function ActivityLogCompanyCreated({
                         variant="body2"
                         color="text.secondary"
                     >
-                        {sale.first_name} {sale.last_name} added company{' '}
+                        <ActivityLogSale sale={sale} /> added company{' '}
                         <Link
                             component={Link}
                             to={`/companies/${company.id}/show`}
@@ -41,15 +43,7 @@ export function ActivityLogCompanyCreated({
                         </Link>
                     </Typography>
 
-                    <DateField
-                        source="created_at"
-                        showTime
-                        color="text.secondary"
-                        options={{
-                            dateStyle: 'full',
-                            timeStyle: 'short',
-                        }}
-                    />
+                    <ActivityLogDate date={company.created_at} />
                 </Stack>
             </ListItem>
         </RecordContextProvider>
