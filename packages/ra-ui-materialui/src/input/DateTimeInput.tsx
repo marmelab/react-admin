@@ -1,7 +1,7 @@
 import * as React from 'react';
 import clsx from 'clsx';
 import TextField, { TextFieldProps } from '@mui/material/TextField';
-import { useInput, FieldTitle } from 'ra-core';
+import { useInput, FieldTitle, mergeRefs } from 'ra-core';
 
 import { CommonInputProps } from './CommonInputProps';
 import { sanitizeInputRestProps } from './sanitizeInputRestProps';
@@ -50,7 +50,8 @@ export const DateTimeInput = ({
         ...rest,
     });
     const [renderCount, setRenderCount] = React.useState(1);
-
+    const valueChangedFromInput = React.useRef(false);
+    const localInputRef = React.useRef<HTMLInputElement>();
     const initialDefaultValueRef = React.useRef(field.value);
 
     React.useEffect(() => {
@@ -59,12 +60,16 @@ export const DateTimeInput = ({
 
         const fieldDateValue = new Date(field.value).getTime() || null;
 
-        if (initialDateValue !== fieldDateValue) {
+        if (
+            initialDateValue !== fieldDateValue &&
+            !valueChangedFromInput.current
+        ) {
             setRenderCount(r => r + 1);
             parse
                 ? field.onChange(parse(field.value))
                 : field.onChange(field.value);
             initialDefaultValueRef.current = field.value;
+            valueChangedFromInput.current = false;
         }
     }, [setRenderCount, parse, field]);
 
@@ -95,7 +100,11 @@ export const DateTimeInput = ({
                   ? parse(target.value)
                   : formatDateTime(target.value);
 
-        field.onChange(newValue);
+        // Some browsers will return null for an invalid date so we only change react-hook-form value if it's not null
+        if (newValue !== '' && newValue != null) {
+            field.onChange(newValue);
+            valueChangedFromInput.current = true;
+        }
     };
 
     const handleFocus = (event: React.FocusEvent<HTMLInputElement>) => {
@@ -106,20 +115,41 @@ export const DateTimeInput = ({
     };
 
     const handleBlur = () => {
+        hasFocus.current = false;
+
+        if (!localInputRef.current) {
+            return;
+        }
+
+        const newValue =
+            localInputRef.current.valueAsDate !== undefined &&
+            localInputRef.current.valueAsDate !== null &&
+            !isNaN(new Date(localInputRef.current.valueAsDate).getTime())
+                ? parse
+                    ? parse(localInputRef.current.valueAsDate)
+                    : formatDateTime(localInputRef.current.valueAsDate)
+                : parse
+                  ? parse(localInputRef.current.value)
+                  : formatDateTime(localInputRef.current.value);
+
+        if (newValue !== field.value) {
+            field.onChange(newValue ?? '');
+        }
+
         if (onBlurFromField) {
             onBlurFromField();
         }
-        hasFocus.current = false;
     };
 
     const { error, invalid } = fieldState;
     const renderHelperText = helperText !== false || invalid;
     const { ref, name } = field;
+    const inputRef = mergeRefs([ref, localInputRef]);
 
     return (
         <TextField
             id={id}
-            inputRef={ref}
+            inputRef={inputRef}
             name={name}
             defaultValue={format(initialDefaultValueRef.current)}
             key={renderCount}
