@@ -54,8 +54,12 @@ export const DealArchivedList = () => {
 
     return (
         <>
-            <Button variant="text" onClick={() => setOpenDialog(true)}>
-                View Archived List
+            <Button
+                variant="text"
+                onClick={() => setOpenDialog(true)}
+                sx={{ my: 1 }}
+            >
+                View archived deals
             </Button>
             <Dialog
                 open={openDialog}
@@ -99,7 +103,7 @@ export const DealArchivedList = () => {
     );
 };
 
-export function getRelativeTimeString(dateString: string, lang = 'en'): string {
+export function getRelativeTimeString(dateString: string): string {
     const date = new Date(dateString);
     date.setHours(0, 0, 0, 0);
 
@@ -111,13 +115,17 @@ export function getRelativeTimeString(dateString: string, lang = 'en'): string {
 
     // Check if the date is more than one week old
     if (Math.abs(unitDiff) > 7) {
-        return new Intl.DateTimeFormat(lang, {
+        return new Intl.DateTimeFormat(undefined, {
             day: 'numeric',
             month: 'long',
         }).format(date);
     }
 
     // Intl.RelativeTimeFormat for dates within the last week
-    const rtf = new Intl.RelativeTimeFormat(lang, { numeric: 'auto' });
-    return rtf.format(unitDiff, 'day');
+    const rtf = new Intl.RelativeTimeFormat(undefined, { numeric: 'auto' });
+    return ucFirst(rtf.format(unitDiff, 'day'));
+}
+
+function ucFirst(str: string): string {
+    return str.charAt(0).toUpperCase() + str.slice(1);
 }
