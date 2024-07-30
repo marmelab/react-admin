@@ -38,22 +38,17 @@ export const CompanyInputs = () => {
     return (
         <Stack gap={4} p={1}>
             <CompanyDisplayInputs />
-            <Stack gap={4} flexDirection={isMobile ? 'column' : 'row'}>
-                <CompanyContactInputs />
+            <Stack gap={4} direction={isMobile ? 'column' : 'row'}>
+                <Stack gap={4} flex={1}>
+                    <CompanyContactInputs />
+                    <CompanyContextInputs />
+                </Stack>
                 <Divider
                     orientation={isMobile ? 'horizontal' : 'vertical'}
                     flexItem
                 />
-                <CompanyContextInputs />
-            </Stack>
-
-            <Stack gap={4} flexDirection={isMobile ? 'column' : 'row'}>
-                <CompanyAddressInputs />
-                <Divider
-                    orientation={isMobile ? 'horizontal' : 'vertical'}
-                    flexItem
-                />
-                <Stack gap={1} flex={1}>
+                <Stack gap={4} flex={1}>
+                    <CompanyAddressInputs />
                     <CompanyAdditionalInformationInputs />
                     <CompanyAccountManagerInput />
                 </Stack>
@@ -80,7 +75,7 @@ const CompanyDisplayInputs = () => {
 
 const CompanyContactInputs = () => {
     return (
-        <Stack gap={1} flex={1}>
+        <Stack>
             <Typography variant="h6">Contact</Typography>
             <TextInput source="website" helperText={false} validate={isUrl} />
             <TextInput
@@ -96,7 +91,7 @@ const CompanyContactInputs = () => {
 const CompanyContextInputs = () => {
     const { companySectors } = useConfigurationContext();
     return (
-        <Stack gap={1} flex={1}>
+        <Stack>
             <Typography variant="h6">Context</Typography>
             <SelectInput
                 source="sector"
@@ -115,7 +110,7 @@ const CompanyContextInputs = () => {
 
 const CompanyAddressInputs = () => {
     return (
-        <Stack gap={1} flex={1}>
+        <Stack>
             <Typography variant="h6">Address</Typography>
             <TextInput source="address" helperText={false} />
             <TextInput source="city" helperText={false} />
@@ -128,7 +123,7 @@ const CompanyAddressInputs = () => {
 
 const CompanyAdditionalInformationInputs = () => {
     return (
-        <Stack gap={1} flex={1}>
+        <Stack>
             <Typography variant="h6">Additional information</Typography>
             <TextInput source="description" multiline helperText={false} />
             <ArrayInput source="context_links" helperText={false}>
@@ -154,7 +149,7 @@ const CompanyAdditionalInformationInputs = () => {
 
 const CompanyAccountManagerInput = () => {
     return (
-        <Stack gap={1} flex={1}>
+        <Stack>
             <Typography variant="h6">Account manager</Typography>
             <ReferenceInput source="sales_id" reference="sales">
                 <SelectInput

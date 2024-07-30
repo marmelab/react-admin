@@ -16,7 +16,6 @@ import {
     ReferenceField,
     ReferenceManyField,
     ShowBase,
-    TextField,
     useDataProvider,
     useNotify,
     useRecordContext,
@@ -42,7 +41,7 @@ export const DealShow = ({ open, id }: { open: boolean; id?: string }) => {
     };
 
     return (
-        <Dialog open={open} onClose={handleClose} fullWidth maxWidth="lg">
+        <Dialog open={open} onClose={handleClose} fullWidth maxWidth="md">
             <DialogContent sx={{ padding: 0 }}>
                 {!!id ? (
                     <ShowBase id={id}>
@@ -69,34 +68,20 @@ const DealShowContent = ({ handleClose }: { handleClose: () => void }) => {
             <Stack gap={1}>
                 {record.archived_at ? <ArchivedTitle /> : null}
                 <Box display="flex" p={3}>
-                    <Box
-                        width={100}
-                        display="flex"
-                        flexDirection="column"
-                        alignItems="center"
-                    >
-                        <ReferenceField
-                            source="company_id"
-                            reference="companies"
-                            link="show"
-                        >
-                            <CompanyAvatar />
-                        </ReferenceField>
-                        <ReferenceField
-                            source="company_id"
-                            reference="companies"
-                            link="show"
-                        >
-                            <TextField
-                                source="name"
-                                align="center"
-                                component="div"
-                            />
-                        </ReferenceField>
-                    </Box>
                     <Box ml={2} flex="1">
                         <Stack direction="row" justifyContent="space-between">
-                            <Typography variant="h5">{record.name}</Typography>
+                            <Stack direction="row" alignItems="center" gap={2}>
+                                <ReferenceField
+                                    source="company_id"
+                                    reference="companies"
+                                    link="show"
+                                >
+                                    <CompanyAvatar />
+                                </ReferenceField>
+                                <Typography variant="h5">
+                                    {record.name}
+                                </Typography>
+                            </Stack>
                             <Stack gap={1} direction="row" pr={4}>
                                 {record.archived_at ? (
                                     <>
@@ -277,7 +262,7 @@ const ArchiveButton = ({ record }: { record: Deal }) => {
     };
 
     return (
-        <Button onClick={handleClick} startIcon={<ArchiveIcon />}>
+        <Button onClick={handleClick} startIcon={<ArchiveIcon />} size="small">
             Archive
         </Button>
     );
@@ -309,7 +294,11 @@ const UnarchiveButton = ({ record }: { record: Deal }) => {
     };
 
     return (
-        <Button onClick={handleClick} startIcon={<UnarchiveIcon />}>
+        <Button
+            onClick={handleClick}
+            startIcon={<UnarchiveIcon />}
+            size="small"
+        >
             Send back to the board
         </Button>
     );
