@@ -24,7 +24,7 @@ export const CompanyEmpty = () => {
                     color="text.secondary"
                     gutterBottom
                 >
-                    It looks like your company list is empty.
+                    It seems your company list is empty.
                 </Typography>
             </Stack>
             <Stack spacing={2} direction="row">

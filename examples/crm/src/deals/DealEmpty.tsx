@@ -43,7 +43,7 @@ export const DealEmpty = () => {
                             color="text.secondary"
                             gutterBottom
                         >
-                            It looks like your deal list is empty.
+                            It seems your deal list is empty.
                         </Typography>
                     </Stack>
                     <Stack spacing={2} direction="row">
@@ -52,20 +52,24 @@ export const DealEmpty = () => {
                     <DealCreate open={!!matchCreate} />
                 </>
             ) : (
-                <Typography
-                    variant="body2"
-                    align="center"
-                    color="text.secondary"
-                    gutterBottom
-                >
-                    It looks like your contacts list is currently empty.
-                    <br />
-                    Please{' '}
-                    <Link to="/contacts/create">
-                        add your first contact
-                    </Link>{' '}
-                    before creating a deal.
-                </Typography>
+                <Stack gap={0} alignItems="center">
+                    <Typography variant="h6" fontWeight="bold">
+                        No deals found
+                    </Typography>
+                    <Typography
+                        variant="body2"
+                        align="center"
+                        color="text.secondary"
+                        gutterBottom
+                    >
+                        It seems your contact list is empty.
+                        <br />
+                        <Link to="/contacts/create">
+                            Add your first contact
+                        </Link>{' '}
+                        before creating a deal.
+                    </Typography>
+                </Stack>
             )}
         </Stack>
     );

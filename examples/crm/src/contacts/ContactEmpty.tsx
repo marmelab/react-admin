@@ -25,7 +25,7 @@ export const ContactEmpty = () => {
                     color="text.secondary"
                     gutterBottom
                 >
-                    It looks like your contact list is empty.
+                    It seems your contact list is empty.
                 </Typography>
             </Stack>
             <Stack spacing={2} direction="row">
