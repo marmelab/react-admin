@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Card, Box } from '@mui/material';
+import { Card, Box, Stack, Typography } from '@mui/material';
 import ContactsIcon from '@mui/icons-material/Contacts';
 import { useGetList, Link, SimpleList, useGetIdentity } from 'react-admin';
 import { formatDistance } from 'date-fns';
@@ -43,15 +43,25 @@ export const HotContacts = () => {
                     data={contactData}
                     total={contactTotal}
                     isPending={contactsLoading}
+                    resource="contacts"
                     primaryText={contact =>
                         `${contact.first_name} ${contact.last_name}`
                     }
-                    resource="contacts"
-                    secondaryText={(contact: Contact) =>
-                        formatDistance(contact.last_seen, new Date(), {
-                            addSuffix: true,
-                        })
-                    }
+                    secondaryText={contact => (
+                        <Stack>
+                            <Typography variant="caption">
+                                {contact.title} at {contact.company_name}
+                            </Typography>
+                            <Typography
+                                variant="caption"
+                                color="text.secondary"
+                            >
+                                {formatDistance(contact.last_seen, new Date(), {
+                                    addSuffix: true,
+                                })}
+                            </Typography>
+                        </Stack>
+                    )}
                     leftAvatar={contact => <Avatar record={contact} />}
                     dense
                 />
