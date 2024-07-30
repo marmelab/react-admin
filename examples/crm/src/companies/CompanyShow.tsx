@@ -29,7 +29,7 @@ import {
     useRecordContext,
     useShowContext,
 } from 'react-admin';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useLocation } from 'react-router-dom';
 
 import { ActivityLog } from '../activity/ActivityLog';
 import { Avatar } from '../contacts/Avatar';
@@ -190,7 +190,9 @@ const TabPanel = (props: TabPanelProps) => {
 };
 
 const ContactsIterator = () => {
+    const location = useLocation();
     const { data: contacts, error, isPending } = useListContext<Contact>();
+
     if (isPending || error) return null;
 
     const now = Date.now();
@@ -202,6 +204,7 @@ const ContactsIterator = () => {
                         button
                         component={RouterLink}
                         to={`/contacts/${contact.id}/show`}
+                        state={{ from: location.pathname }}
                     >
                         <ListItemAvatar>
                             <Avatar />

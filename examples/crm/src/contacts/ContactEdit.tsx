@@ -1,5 +1,11 @@
 import * as React from 'react';
-import { EditBase, Form, Toolbar, useEditContext } from 'react-admin';
+import {
+    EditBase,
+    Form,
+    SaveButton,
+    Toolbar,
+    useEditContext,
+} from 'react-admin';
 import { Card, CardContent, Box } from '@mui/material';
 
 import { ContactInputs } from './ContactInputs';
@@ -23,7 +29,9 @@ const ContactEditContent = () => {
                         <CardContent>
                             <ContactInputs />
                         </CardContent>
-                        <Toolbar />
+                        <Toolbar>
+                            <SaveButton />
+                        </Toolbar>
                     </Card>
                 </Form>
             </Box>
