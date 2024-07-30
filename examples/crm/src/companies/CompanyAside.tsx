@@ -5,7 +5,6 @@ import { Divider, Link, Stack, Tooltip, Typography } from '@mui/material';
 import {
     DateField,
     EditButton,
-    FunctionField,
     ReferenceField,
     ShowButton,
     TextField,
@@ -40,8 +39,6 @@ export const CompanyAside = ({ link = 'edit' }: CompanyAsideProps) => {
             <FinancialInfo record={record} />
 
             <BackgroundInfo record={record} />
-
-            <ContextInfo record={record} />
         </Stack>
     );
 };
@@ -109,7 +106,7 @@ const FinancialInfo = ({ record }: { record: Company }) => {
 
     return (
         <Stack>
-            <Typography variant="subtitle2">Financial Info</Typography>
+            <Typography variant="subtitle2">Context</Typography>
             <Divider sx={{ mb: 1 }} />
             {record.revenue && (
                 <Typography
@@ -159,48 +156,67 @@ const AddressInfo = ({ record }: { record: Company }) => {
 
 const ContextInfo = ({ record }: { record: Company }) => {
     if (!record.context_links || record.context_links.length === 0) return null;
-    const getBaseURL = (url: string) => {
-        const urlObject = new URL(url);
-        return urlObject.origin;
-    };
+
     return (
         <Stack>
             <Typography variant="subtitle2">Context</Typography>
             <Divider sx={{ mb: 1 }} />
-            <Stack gap={1}>
-                {record.context_links.map((link, index) =>
-                    link ? (
-                        <Tooltip title={link}>
-                            <Typography
-                                key={index}
-                                variant="body2"
-                                component={Link}
-                                href={link}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                            >
-                                {getBaseURL(link)}
-                            </Typography>
-                        </Tooltip>
-                    ) : null
-                )}
-            </Stack>
         </Stack>
     );
 };
 
 const BackgroundInfo = ({ record }: { record: Company }) => {
-    if (!record.created_at && !record.sales_id) {
+    if (
+        !record.created_at &&
+        !record.sales_id &&
+        !record.description &&
+        !record.context_links
+    ) {
         return null;
     }
+    const getBaseURL = (url: string) => {
+        const urlObject = new URL(url);
+        return urlObject.origin;
+    };
 
     return (
         <Stack>
-            <Typography variant="subtitle2">Background</Typography>
+            <Typography variant="subtitle2">Additional Info</Typography>
             <Divider sx={{ mb: 1 }} />
             {record.description && (
                 <Typography variant="body2" color="textSecondary" gutterBottom>
                     {record.description}
+                </Typography>
+            )}
+            {record.context_links && (
+                <Stack>
+                    {record.context_links.map((link, index) =>
+                        link ? (
+                            <Tooltip title={link}>
+                                <Typography
+                                    key={index}
+                                    variant="body2"
+                                    gutterBottom
+                                    component={Link}
+                                    href={link}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >
+                                    {getBaseURL(link)}
+                                </Typography>
+                            </Tooltip>
+                        ) : null
+                    )}
+                </Stack>
+            )}
+            {record.sales_id !== null && (
+                <Typography variant="body2" color="textSecondary" gutterBottom>
+                    Followed by{' '}
+                    <ReferenceField
+                        source="sales_id"
+                        reference="sales"
+                        record={record}
+                    />
                 </Typography>
             )}
             {record.created_at && (
@@ -215,20 +231,6 @@ const BackgroundInfo = ({ record }: { record: Company }) => {
                             month: 'long',
                             day: 'numeric',
                         }}
-                    />
-                </Typography>
-            )}
-            {record.sales_id !== null && (
-                <Typography
-                    component="span"
-                    variant="body2"
-                    color="textSecondary"
-                >
-                    Followed by{' '}
-                    <ReferenceField
-                        source="sales_id"
-                        reference="sales"
-                        record={record}
                     />
                 </Typography>
             )}
