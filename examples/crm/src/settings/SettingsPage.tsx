@@ -134,6 +134,7 @@ const SettingsForm = ({
                         source="avatar"
                         type="avatar"
                         onSave={handleAvatarUpdate}
+                        linkPosition="right"
                     />
                     <TextRender source="first_name" isEditMode={isEditMode} />
                     <TextRender source="last_name" isEditMode={isEditMode} />

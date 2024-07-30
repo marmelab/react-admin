@@ -65,15 +65,24 @@ export const CompanyInputs = () => {
 const CompanyDisplayInputs = () => {
     const record = useRecordContext<Company>();
     return (
-        <Stack gap={2} flex={1} direction="row">
+        <Stack gap={1} flex={1} direction="row">
             <ImageEditorField
                 source="logo.src"
                 type="avatar"
                 width={60}
                 height={60}
                 emptyText={record?.name.charAt(0)}
+                linkPosition="bottom"
+                backgroundImageColor="#f0f0f0"
             />
-            <TextInput source="name" validate={required()} helperText={false} />
+            <TextInput
+                source="name"
+                validate={required()}
+                helperText={false}
+                sx={{
+                    mt: 0,
+                }}
+            />
         </Stack>
     );
 };

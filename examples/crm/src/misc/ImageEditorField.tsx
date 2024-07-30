@@ -7,8 +7,9 @@ import {
     DialogActions,
     DialogContent,
     DialogTitle,
+    Link,
     Stack,
-    Tooltip,
+    Typography,
 } from '@mui/material';
 import 'cropperjs/dist/cropper.css';
 import { useFieldValue } from 'ra-core';
@@ -24,32 +25,59 @@ const ImageEditorField = (props: ImageEditorFieldProps) => {
     const imageUrl = getValues(props.source);
     const [isDialogOpen, setIsDialogOpen] = useState(false);
 
+    const {
+        type = 'image',
+        emptyText = 'No image',
+        linkPosition = 'none',
+    } = props;
+
     const commonProps = {
         src: imageUrl,
         onClick: () => setIsDialogOpen(true),
         style: { cursor: 'pointer' },
         sx: {
             ...props.sx,
-            width: props.width || (props.type === 'avatar' ? 50 : 200),
-            height: props.height || (props.type === 'avatar' ? 50 : 200),
+            width: props.width || (type === 'avatar' ? 50 : 200),
+            height: props.height || (type === 'avatar' ? 50 : 200),
         },
     };
 
     return (
-        <div style={{ position: 'relative', display: 'inline-block' }}>
-            <Tooltip title="Update image" followCursor>
+        <>
+            <Stack
+                direction={linkPosition === 'right' ? 'row' : 'column'}
+                alignItems={'center'}
+                gap={2}
+                borderRadius={1}
+                p={props.backgroundImageColor ? 1 : 0}
+                sx={{
+                    backgroundColor:
+                        props.backgroundImageColor || 'transparent',
+                }}
+            >
                 {props.type === 'avatar' ? (
-                    <Avatar {...commonProps}>{props.emptyText}</Avatar>
+                    <Avatar {...commonProps}>{emptyText}</Avatar>
                 ) : (
                     <Box component={'img'} {...commonProps} />
                 )}
-            </Tooltip>
+                {linkPosition !== 'none' && (
+                    <Typography
+                        component={Link}
+                        variant="caption"
+                        onClick={() => setIsDialogOpen(true)}
+                        textAlign="center"
+                        sx={{ display: 'inline', cursor: 'pointer' }}
+                    >
+                        Change image
+                    </Typography>
+                )}
+            </Stack>
             <ImageEditorDialog
                 open={isDialogOpen}
                 onClose={() => setIsDialogOpen(false)}
                 {...props}
             />
-        </div>
+        </>
     );
 };
 
@@ -146,6 +174,8 @@ export interface ImageEditorFieldProps<
     height?: number;
     type?: 'avatar' | 'image';
     onSave?: any;
+    linkPosition?: 'right' | 'bottom' | 'none';
+    backgroundImageColor?: string;
 }
 
 export interface ImageEditorDialogProps extends ImageEditorFieldProps {
