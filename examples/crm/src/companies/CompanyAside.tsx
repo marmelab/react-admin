@@ -6,6 +6,7 @@ import {
     DateField,
     EditButton,
     ReferenceField,
+    SelectField,
     ShowButton,
     TextField,
     UrlField,
@@ -13,6 +14,7 @@ import {
 } from 'react-admin';
 
 import { Company } from '../types';
+import { sizes } from './sizes';
 
 interface CompanyAsideProps {
     link?: string;
@@ -36,9 +38,9 @@ export const CompanyAside = ({ link = 'edit' }: CompanyAsideProps) => {
 
             <AddressInfo record={record} />
 
-            <FinancialInfo record={record} />
+            <ContextInfo record={record} />
 
-            <BackgroundInfo record={record} />
+            <AdditionalInfo record={record} />
         </Stack>
     );
 };
@@ -99,7 +101,7 @@ const CompanyInfo = ({ record }: { record: Company }) => {
     );
 };
 
-const FinancialInfo = ({ record }: { record: Company }) => {
+const ContextInfo = ({ record }: { record: Company }) => {
     if (!record.revenue && !record.identifier) {
         return null;
     }
@@ -108,11 +110,37 @@ const FinancialInfo = ({ record }: { record: Company }) => {
         <Stack>
             <Typography variant="subtitle2">Context</Typography>
             <Divider sx={{ mb: 1 }} />
+            {record.sector && (
+                <Typography
+                    component="span"
+                    variant="body2"
+                    color="textSecondary"
+                    gutterBottom
+                >
+                    Sector: <TextField source="sector" color="textPrimary" />
+                </Typography>
+            )}
+            {record.size && (
+                <Typography
+                    component="span"
+                    variant="body2"
+                    color="textSecondary"
+                    gutterBottom
+                >
+                    Size:{' '}
+                    <SelectField
+                        source="size"
+                        color="textPrimary"
+                        choices={sizes}
+                    />
+                </Typography>
+            )}
             {record.revenue && (
                 <Typography
                     component="span"
                     variant="body2"
                     color="textSecondary"
+                    gutterBottom
                 >
                     Revenue: <TextField source="revenue" color="textPrimary" />
                 </Typography>
@@ -122,6 +150,7 @@ const FinancialInfo = ({ record }: { record: Company }) => {
                     component="span"
                     variant="body2"
                     color="textSecondary"
+                    gutterBottom
                 >
                     Tax Identifier:{' '}
                     <TextField source="tax_identifier" color="textPrimary" />
@@ -154,18 +183,7 @@ const AddressInfo = ({ record }: { record: Company }) => {
     );
 };
 
-const ContextInfo = ({ record }: { record: Company }) => {
-    if (!record.context_links || record.context_links.length === 0) return null;
-
-    return (
-        <Stack>
-            <Typography variant="subtitle2">Context</Typography>
-            <Divider sx={{ mb: 1 }} />
-        </Stack>
-    );
-};
-
-const BackgroundInfo = ({ record }: { record: Company }) => {
+const AdditionalInfo = ({ record }: { record: Company }) => {
     if (
         !record.created_at &&
         !record.sales_id &&

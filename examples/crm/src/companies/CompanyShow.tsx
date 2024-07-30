@@ -65,19 +65,9 @@ const CompanyShowContent = () => {
                     <CardContent>
                         <Box display="flex" mb={1}>
                             <CompanyAvatar />
-                            <Box ml={2} flex="1">
-                                <Typography variant="h5">
-                                    {record.name}
-                                </Typography>
-                                <Typography variant="body2">
-                                    <TextField source="sector" />
-                                    {record.size && ', '}
-                                    <SelectField
-                                        source="size"
-                                        choices={sizes}
-                                    />
-                                </Typography>
-                            </Box>
+                            <Typography variant="h5" ml={2} flex="1">
+                                {record.name}
+                            </Typography>
                         </Box>
                         <Tabs
                             value={tabValue}
