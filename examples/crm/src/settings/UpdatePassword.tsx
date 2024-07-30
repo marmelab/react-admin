@@ -6,15 +6,8 @@ import {
     DialogTitle,
     Stack,
     TextField,
-    Typography,
 } from '@mui/material';
-import {
-    Toolbar,
-    useGetIdentity,
-    useGetOne,
-    useNotify,
-    useUpdate,
-} from 'react-admin';
+import { Toolbar, useGetIdentity, useNotify, useUpdate } from 'react-admin';
 import { useForm } from 'react-hook-form';
 import { DialogCloseButton } from '../misc/DialogCloseButton';
 
@@ -43,9 +36,6 @@ export const UpdatePassword = ({
     const newPassword = watch('newPassword');
     const { identity } = useGetIdentity();
     const notify = useNotify();
-    const { data: dataUser, refetch } = useGetOne('sales', {
-        id: identity?.id,
-    });
 
     if (!identity) return null;
 
@@ -63,7 +53,6 @@ export const UpdatePassword = ({
                 onSuccess: _ => {
                     notify('Your password has been updated');
                     setOpen(false);
-                    refetch();
                     reset();
                 },
                 onError: _ => {
@@ -86,19 +75,12 @@ export const UpdatePassword = ({
             <DialogTitle>Change Password</DialogTitle>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <DialogContent>
-                    <Typography
-                        variant="caption"
-                        color="textSecondary"
-                        gutterBottom
-                    >
-                        Password for Jane Doe account is "demo"
-                    </Typography>
                     <Stack gap={1}>
                         <TextField
                             {...register('currentPassword', {
                                 required: 'Current password is required',
-                                validate: value => value === dataUser.password,
                             })}
+                            required
                             autoFocus
                             margin="dense"
                             label="Current Password"
@@ -107,7 +89,7 @@ export const UpdatePassword = ({
                             error={!!errors.currentPassword}
                             helperText={
                                 errors.currentPassword
-                                    ? 'Current password is incorrect'
+                                    ? 'Current password is required'
                                     : ''
                             }
                         />
@@ -122,6 +104,7 @@ export const UpdatePassword = ({
                             margin="dense"
                             label="New Password"
                             type="password"
+                            required
                             fullWidth
                             error={!!errors.newPassword}
                             helperText={
@@ -138,6 +121,7 @@ export const UpdatePassword = ({
                             margin="dense"
                             label="Confirm New Password"
                             type="password"
+                            required
                             fullWidth
                             error={!!errors.confirmNewPassword}
                             helperText={
