@@ -23,7 +23,7 @@ export const HotContacts = () => {
         { enabled: Number.isInteger(identity?.id) }
     );
     return (
-        <>
+        <Stack>
             <Box display="flex" alignItems="center" marginBottom="1em">
                 <Box ml={2} mr={2} display="flex">
                     <ContactsIcon color="disabled" fontSize="large" />
@@ -63,6 +63,6 @@ export const HotContacts = () => {
                     dense
                 />
             </Card>
-        </>
+        </Stack>
     );
 };
