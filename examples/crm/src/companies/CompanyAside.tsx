@@ -198,8 +198,13 @@ const BackgroundInfo = ({ record }: { record: Company }) => {
         <Stack>
             <Typography variant="subtitle2">Background</Typography>
             <Divider sx={{ mb: 1 }} />
-            {record.created_at ? (
-                <Typography variant="body2" color="textSecondary">
+            {record.description && (
+                <Typography variant="body2" color="textSecondary" gutterBottom>
+                    {record.description}
+                </Typography>
+            )}
+            {record.created_at && (
+                <Typography variant="body2" color="textSecondary" gutterBottom>
                     Added on{' '}
                     <DateField
                         source="created_at"
@@ -212,9 +217,8 @@ const BackgroundInfo = ({ record }: { record: Company }) => {
                         }}
                     />
                 </Typography>
-            ) : null}
-
-            {record.sales_id ? (
+            )}
+            {record.sales_id !== null && (
                 <Typography
                     component="span"
                     variant="body2"
@@ -225,17 +229,9 @@ const BackgroundInfo = ({ record }: { record: Company }) => {
                         source="sales_id"
                         reference="sales"
                         record={record}
-                    >
-                        <FunctionField
-                            source="last_name"
-                            color="textPrimary"
-                            render={record =>
-                                `${record.first_name} ${record.last_name}`
-                            }
-                        />
-                    </ReferenceField>
+                    />
                 </Typography>
-            ) : null}
+            )}
         </Stack>
     );
 };

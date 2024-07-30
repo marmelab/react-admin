@@ -1,10 +1,8 @@
-import ListItem from '@mui/material/ListItem';
-import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
-import { Link, RecordContextProvider } from 'react-admin';
+import { ListItem, Stack, Typography } from '@mui/material';
+import { Link, RecordContextProvider, DateField } from 'react-admin';
+
 import { CompanyAvatar } from '../companies/CompanyAvatar';
 import type { ActivityCompanyCreated } from '../types';
-import { ActivityLogDate } from './ActivityLogDate';
 
 type ActivityLogCompanyCreatedProps = {
     activity: ActivityCompanyCreated;
@@ -18,7 +16,7 @@ export function ActivityLogCompanyCreated({
             <ListItem disableGutters>
                 <Stack
                     direction="row"
-                    spacing={2}
+                    spacing={1}
                     sx={{
                         alignItems: 'center',
                         width: '100%',
@@ -43,7 +41,15 @@ export function ActivityLogCompanyCreated({
                         </Link>
                     </Typography>
 
-                    <ActivityLogDate date={company.created_at} />
+                    <DateField
+                        source="created_at"
+                        showTime
+                        color="text.secondary"
+                        options={{
+                            dateStyle: 'full',
+                            timeStyle: 'short',
+                        }}
+                    />
                 </Stack>
             </ListItem>
         </RecordContextProvider>

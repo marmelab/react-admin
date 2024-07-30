@@ -30,9 +30,9 @@ export function ActivityLogNote({
             <Stack direction="column" spacing={2} sx={{ width: '100%' }}>
                 <Stack
                     direction="row"
-                    spacing={2}
+                    spacing={1}
                     sx={{
-                        alignItems: 'center',
+                        alignItems: 'flex-start',
                         width: '100%',
                     }}
                 >

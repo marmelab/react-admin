@@ -7,9 +7,14 @@ import { ActivityLogIterator } from './ActivityLogIterator';
 type ActivityLogProps = {
     companyId?: Identifier;
     pageSize?: number;
+    context?: 'company' | 'contact' | 'deal' | 'all';
 };
 
-export function ActivityLog({ companyId, pageSize = 20 }: ActivityLogProps) {
+export function ActivityLog({
+    companyId,
+    pageSize = 20,
+    context = 'all',
+}: ActivityLogProps) {
     const dataProvider = useDataProvider<CustomDataProvider>();
     const { data, isPending, error } = useQuery({
         queryKey: ['activityLog', companyId],
@@ -45,5 +50,11 @@ export function ActivityLog({ companyId, pageSize = 20 }: ActivityLogProps) {
         return <Alert severity="error">Failed to load acticity log</Alert>;
     }
 
-    return <ActivityLogIterator activities={data} pageSize={pageSize} />;
+    return (
+        <ActivityLogIterator
+            activities={data}
+            pageSize={pageSize}
+            context={context}
+        />
+    );
 }

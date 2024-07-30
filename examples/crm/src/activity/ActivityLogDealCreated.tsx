@@ -1,24 +1,24 @@
-import ListItem from '@mui/material/ListItem';
-import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
-import { Link, RecordContextProvider } from 'react-admin';
+import { ListItem, Stack, Typography } from '@mui/material';
+import { Link, RecordContextProvider, DateField } from 'react-admin';
+
 import { CompanyAvatar } from '../companies/CompanyAvatar';
 import type { ActivityDealCreated } from '../types';
-import { ActivityLogDate } from './ActivityLogDate';
 
 type ActivityLogDealCreatedProps = {
     activity: ActivityDealCreated;
+    context: 'company' | 'contact' | 'deal' | 'all';
 };
 
 export function ActivityLogDealCreated({
     activity: { sale, deal, company },
+    context,
 }: ActivityLogDealCreatedProps) {
     return (
         <RecordContextProvider value={company}>
             <ListItem disableGutters>
                 <Stack
                     direction="row"
-                    spacing={2}
+                    spacing={1}
                     sx={{
                         alignItems: 'center',
                         width: '100%',
@@ -37,16 +37,30 @@ export function ActivityLogDealCreated({
                         <Link to={`/deals/${deal.id}/show`} variant="body2">
                             {deal.name}
                         </Link>{' '}
-                        to company{' '}
-                        <Link
-                            to={`/companies/${company.id}/show`}
-                            variant="body2"
-                        >
-                            {company.name}
-                        </Link>
+                        {context !== 'company' && (
+                            <>
+                                to company{' '}
+                                <Link
+                                    to={`/companies/${company.id}/show`}
+                                    variant="body2"
+                                >
+                                    {company.name}
+                                </Link>
+                            </>
+                        )}
                     </Typography>
 
-                    <ActivityLogDate date={deal.created_at} />
+                    <RecordContextProvider value={deal}>
+                        <DateField
+                            source="created_at"
+                            showTime
+                            color="text.secondary"
+                            options={{
+                                dateStyle: 'full',
+                                timeStyle: 'short',
+                            }}
+                        />
+                    </RecordContextProvider>
                 </Stack>
             </ListItem>
         </RecordContextProvider>

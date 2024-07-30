@@ -1,16 +1,18 @@
 import Typography from '@mui/material/Typography';
-import { Link, RecordContextProvider } from 'react-admin';
+import { Link, RecordContextProvider, DateField } from 'react-admin';
+
 import { Avatar } from '../contacts/Avatar';
 import type { ActivityContactNoteCreated } from '../types';
-import { ActivityLogDate } from './ActivityLogDate';
 import { ActivityLogNote } from './ActivityLogNote';
 
 type ActivityLogContactNoteCreatedProps = {
     activity: ActivityContactNoteCreated;
+    context: 'company' | 'contact' | 'deal' | 'all';
 };
 
 export function ActivityLogContactNoteCreated({
     activity: { sale, contact, contactNote, company },
+    context,
 }: ActivityLogContactNoteCreatedProps) {
     return (
         <RecordContextProvider value={contact}>
@@ -20,9 +22,7 @@ export function ActivityLogContactNoteCreated({
                         <Avatar width={20} height={20} />
                         <Typography
                             component="p"
-                            sx={{
-                                flexGrow: 1,
-                            }}
+                            sx={{ flexGrow: 1 }}
                             variant="body2"
                             color="text.secondary"
                         >
@@ -33,19 +33,30 @@ export function ActivityLogContactNoteCreated({
                             >
                                 {contact.first_name} {contact.last_name}
                             </Link>{' '}
-                            from{' '}
-                            <Link
-                                component={Link}
-                                to={`/companies/${company.id}/show`}
-                                variant="body2"
-                            >
-                                {company.name}
-                            </Link>
+                            {context !== 'company' && (
+                                <>
+                                    from{' '}
+                                    <Link
+                                        component={Link}
+                                        to={`/companies/${company.id}/show`}
+                                        variant="body2"
+                                    >
+                                        {company.name}
+                                    </Link>
+                                </>
+                            )}
                         </Typography>
-
-                        <ActivityLogDate
-                            date={contactNote.date.toISOString()}
-                        />
+                        <RecordContextProvider value={contactNote}>
+                            <DateField
+                                source="date"
+                                showTime
+                                color="text.secondary"
+                                options={{
+                                    dateStyle: 'full',
+                                    timeStyle: 'short',
+                                }}
+                            />
+                        </RecordContextProvider>
                     </>
                 }
                 text={contactNote.text}

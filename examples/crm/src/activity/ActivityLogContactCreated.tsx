@@ -1,24 +1,23 @@
-import ListItem from '@mui/material/ListItem';
-import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
-import { Link, RecordContextProvider } from 'react-admin';
+import { ListItem, Stack, Typography } from '@mui/material';
+import { Link, RecordContextProvider, DateField } from 'react-admin';
 import { Avatar } from '../contacts/Avatar';
 import type { ActivityContactCreated } from '../types';
-import { ActivityLogDate } from './ActivityLogDate';
 
 type ActivityLogContactCreatedProps = {
     activity: ActivityContactCreated;
+    context: 'company' | 'contact' | 'deal' | 'all';
 };
 
 export function ActivityLogContactCreated({
     activity: { sale, contact, company },
+    context,
 }: ActivityLogContactCreatedProps) {
     return (
         <RecordContextProvider value={contact}>
             <ListItem disableGutters>
                 <Stack
                     direction="row"
-                    spacing={2}
+                    spacing={1}
                     sx={{
                         alignItems: 'center',
                         width: '100%',
@@ -41,17 +40,29 @@ export function ActivityLogContactCreated({
                         >
                             {contact.first_name} {contact.last_name}
                         </Link>{' '}
-                        to{' '}
-                        <Link
-                            component={Link}
-                            to={`/companies/${contact.company_id}/show`}
-                            variant="body2"
-                        >
-                            {company.name}
-                        </Link>
+                        {context !== 'company' && (
+                            <>
+                                to{' '}
+                                <Link
+                                    component={Link}
+                                    to={`/companies/${contact.company_id}/show`}
+                                    variant="body2"
+                                >
+                                    {company.name}
+                                </Link>
+                            </>
+                        )}
                     </Typography>
 
-                    <ActivityLogDate date={contact.first_seen} />
+                    <DateField
+                        source="first_seen"
+                        showTime
+                        color="text.secondary"
+                        options={{
+                            dateStyle: 'full',
+                            timeStyle: 'short',
+                        }}
+                    />
                 </Stack>
             </ListItem>
         </RecordContextProvider>

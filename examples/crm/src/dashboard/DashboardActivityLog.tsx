@@ -15,7 +15,7 @@ export function DashboardActivityLog() {
                     Latest Activity
                 </Typography>
             </Box>
-            <Card sx={{ mb: 2 }}>
+            <Card sx={{ mb: 2, px: 2 }}>
                 <ActivityLog pageSize={10} />
             </Card>
         </>

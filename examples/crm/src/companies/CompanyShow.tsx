@@ -85,6 +85,7 @@ const CompanyShowContent = () => {
                             textColor="primary"
                             onChange={handleTabChange}
                         >
+                            <Tab label="Activity" />
                             <Tab
                                 label={
                                     !record.nb_contacts
@@ -103,11 +104,15 @@ const CompanyShowContent = () => {
                                     }
                                 />
                             )}
-                            {record.description && <Tab label="Description" />}
-                            <Tab label="Activity Log" />
                         </Tabs>
                         <Divider />
 
+                        <TabPanel value={tabValue} index={tabIndex++}>
+                            <ActivityLog
+                                companyId={record.id}
+                                context="company"
+                            />
+                        </TabPanel>
                         <TabPanel value={tabValue} index={tabIndex++}>
                             <ReferenceManyField
                                 reference="contacts"
@@ -145,20 +150,6 @@ const CompanyShowContent = () => {
                                 </ReferenceManyField>
                             </TabPanel>
                         ) : null}
-                        {record.description ? (
-                            <TabPanel value={tabValue} index={tabIndex++}>
-                                <Stack
-                                    pt={2}
-                                    px={2}
-                                    sx={{ whiteSpace: 'pre-line' }}
-                                >
-                                    <TextField source="description" />
-                                </Stack>
-                            </TabPanel>
-                        ) : null}
-                        <TabPanel value={tabValue} index={tabIndex++}>
-                            <ActivityLog companyId={record.id} />
-                        </TabPanel>
                     </CardContent>
                 </Card>
             </Box>
