@@ -52,12 +52,7 @@ export const ContactAside = ({ link = 'edit' }: { link?: 'edit' | 'show' }) => {
                 </Stack>
             )}
             {record.has_newsletter && (
-                <Typography
-                    variant="body2"
-                    color="textSecondary"
-                    mb={0.5}
-                    pl={3.5}
-                >
+                <Typography variant="body2" color="textSecondary" pl={3.5}>
                     Subscribed to newsletter
                 </Typography>
             )}
@@ -93,7 +88,12 @@ export const ContactAside = ({ link = 'edit' }: { link?: 'edit' | 'show' }) => {
                 </Stack>
             )}
             {record.phone_number2.number && (
-                <Stack direction="row" alignItems="center" gap={1}>
+                <Stack
+                    direction="row"
+                    alignItems="center"
+                    gap={1}
+                    minHeight={24}
+                >
                     <PhoneIcon color="disabled" fontSize="small" />
                     <Box>
                         <TextField source="phone_number2.number" />{' '}
@@ -110,7 +110,12 @@ export const ContactAside = ({ link = 'edit' }: { link?: 'edit' | 'show' }) => {
                 source="gender"
                 choices={contactGender}
                 optionText={choice => (
-                    <Stack direction="row" alignItems="center" gap={1}>
+                    <Stack
+                        direction="row"
+                        alignItems="center"
+                        gap={1}
+                        minHeight={24}
+                    >
                         <SvgIcon
                             component={choice.icon}
                             color="disabled"
