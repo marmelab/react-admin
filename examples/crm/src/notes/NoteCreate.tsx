@@ -16,7 +16,7 @@ import { useFormContext } from 'react-hook-form';
 
 import { Stack } from '@mui/material';
 import { NoteInputs } from './NoteInputs';
-import { getCurrentDate } from './note';
+import { getCurrentDate } from './utils';
 
 const foreignKeyMapping = {
     contacts: 'contact_id',

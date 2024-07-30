@@ -8,7 +8,7 @@ import {
 } from 'react-admin';
 import { useConfigurationContext } from '../root/ConfigurationContext';
 import { useState } from 'react';
-import { getCurrentDate } from './note';
+import { getCurrentDate } from './utils';
 import { Status } from '../misc/Status';
 
 export const NoteInputs = ({

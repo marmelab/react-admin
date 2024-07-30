@@ -18,7 +18,7 @@ export const generateContactNotes = (db: Db): ContactNote[] => {
             id,
             contact_id: contact.id,
             text: lorem.paragraphs(random.number({ min: 1, max: 4 })),
-            date,
+            date: date.toISOString(),
             sales_id: contact.sales_id,
             status: random.arrayElement(defaultNoteStatuses).value,
         };

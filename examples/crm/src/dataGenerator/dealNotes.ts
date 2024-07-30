@@ -11,7 +11,9 @@ export const generateDealNotes = (db: Db) => {
             id,
             deal_id: deal.id,
             text: lorem.paragraphs(random.number({ min: 1, max: 4 })),
-            date: randomDate(new Date(db.deals[deal.id as number].created_at)),
+            date: randomDate(
+                new Date(db.deals[deal.id as number].created_at)
+            ).toISOString(),
             sales_id: deal.sales_id,
         };
     });
