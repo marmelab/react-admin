@@ -47,7 +47,7 @@ export function ActivityLog({
     }
 
     if (error) {
-        return <Alert severity="error">Failed to load acticity log</Alert>;
+        return <Alert severity="error">Failed to load activity log</Alert>;
     }
 
     return (
