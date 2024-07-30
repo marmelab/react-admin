@@ -110,6 +110,7 @@ export const DateInput = ({
                   : getStringFromDate(target.value);
 
         // Some browsers will return null for an invalid date so we only change react-hook-form value if it's not null
+        // The input reset is handled in the onBlur event handler
         if (newValue !== '' && newValue != null) {
             field.onChange(newValue);
             valueChangedFromInput.current = true;
@@ -130,6 +131,8 @@ export const DateInput = ({
             return;
         }
 
+        // To ensure users can clear the input, we check its value on blur
+        // and submit it to react-hook-form
         const newValue =
             localInputRef.current.valueAsDate !== undefined &&
             localInputRef.current.valueAsDate !== null &&
