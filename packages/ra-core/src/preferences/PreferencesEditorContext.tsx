@@ -2,14 +2,14 @@ import * as React from 'react';
 import { createContext, ReactElement } from 'react';
 
 export const PreferencesEditorContext = createContext<
-    PreferencesEditorContextValue
+    PreferencesEditorContextValue | undefined
 >(undefined);
 
 export type PreferencesEditorContextValue = {
     editor: ReactElement | null;
-    setEditor: React.Dispatch<React.SetStateAction<ReactElement>>;
-    preferenceKey?: string;
-    setPreferenceKey: React.Dispatch<React.SetStateAction<string>>;
+    setEditor: React.Dispatch<React.SetStateAction<ReactElement | null>>;
+    preferenceKey: string | null;
+    setPreferenceKey: React.Dispatch<React.SetStateAction<string | null>>;
     title: string | null;
     titleOptions?: any;
     setTitle: (title: string, titleOptions?: any) => void;

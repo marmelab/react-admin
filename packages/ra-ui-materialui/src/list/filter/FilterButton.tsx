@@ -7,8 +7,12 @@ import {
     HtmlHTMLAttributes,
     useContext,
 } from 'react';
-import PropTypes from 'prop-types';
-import { Menu, MenuItem, styled } from '@mui/material';
+import {
+    Menu,
+    MenuItem,
+    styled,
+    ButtonProps as MuiButtonProps,
+} from '@mui/material';
 import ContentFilter from '@mui/icons-material/FilterList';
 import lodashGet from 'lodash/get';
 import isEqual from 'lodash/isEqual';
@@ -23,17 +27,24 @@ import { extractValidSavedQueries, useSavedQueries } from './useSavedQueries';
 import { AddSavedQueryDialog } from './AddSavedQueryDialog';
 import { RemoveSavedQueryDialog } from './RemoveSavedQueryDialog';
 
-export const FilterButton = (props: FilterButtonProps): JSX.Element => {
+export const FilterButton = (props: FilterButtonProps) => {
     const {
         filters: filtersProp,
         className,
         disableSaveQuery,
+        size,
+        variant,
         ...rest
     } = props;
     const filters = useContext(FilterContext) || filtersProp;
     const resource = useResourceContext(props);
     const translate = useTranslate();
-    const [savedQueries] = useSavedQueries(resource);
+    if (!resource && !disableSaveQuery) {
+        throw new Error(
+            '<FilterButton> must be called inside a ResourceContextProvider, or must provide a resource prop'
+        );
+    }
+    const [savedQueries] = useSavedQueries(resource || '');
     const navigate = useNavigate();
     const {
         displayedFilters = {},
@@ -42,7 +53,7 @@ export const FilterButton = (props: FilterButtonProps): JSX.Element => {
         setFilters,
         showFilter,
         sort,
-    } = useListContext(props);
+    } = useListContext();
     const hasFilterValues = !isEqual(filterValues, {});
     const validSavedQueries = extractValidSavedQueries(savedQueries);
     const hasSavedCurrentQuery = validSavedQueries.some(savedQuery =>
@@ -103,9 +114,8 @@ export const FilterButton = (props: FilterButtonProps): JSX.Element => {
     );
 
     // add query dialog state
-    const [addSavedQueryDialogOpen, setAddSavedQueryDialogOpen] = useState(
-        false
-    );
+    const [addSavedQueryDialogOpen, setAddSavedQueryDialogOpen] =
+        useState(false);
     const hideAddSavedQueryDialog = (): void => {
         setAddSavedQueryDialogOpen(false);
     };
@@ -115,10 +125,8 @@ export const FilterButton = (props: FilterButtonProps): JSX.Element => {
     };
 
     // remove query dialog state
-    const [
-        removeSavedQueryDialogOpen,
-        setRemoveSavedQueryDialogOpen,
-    ] = useState(false);
+    const [removeSavedQueryDialogOpen, setRemoveSavedQueryDialogOpen] =
+        useState(false);
     const hideRemoveSavedQueryDialog = (): void => {
         setRemoveSavedQueryDialogOpen(false);
     };
@@ -141,6 +149,8 @@ export const FilterButton = (props: FilterButtonProps): JSX.Element => {
                 label="ra.action.add_filter"
                 aria-haspopup="true"
                 onClick={handleClickButton}
+                variant={variant}
+                size={size}
             >
                 <ContentFilter />
             </Button>
@@ -185,8 +195,8 @@ export const FilterButton = (props: FilterButtonProps): JSX.Element => {
                                         filter: JSON.stringify(
                                             savedQuery.value.filter
                                         ),
-                                        sort: savedQuery.value.sort.field,
-                                        order: savedQuery.value.sort.order,
+                                        sort: savedQuery.value.sort?.field,
+                                        order: savedQuery.value.sort?.order,
                                         page: 1,
                                         perPage: savedQuery.value.perPage,
                                         displayedFilters: JSON.stringify(
@@ -202,17 +212,19 @@ export const FilterButton = (props: FilterButtonProps): JSX.Element => {
                         </MenuItem>
                     )
                 )}
-                {hasFilterValues && !hasSavedCurrentQuery && !disableSaveQuery && (
-                    <MenuItem onClick={showAddSavedQueryDialog}>
-                        {translate('ra.saved_queries.new_label', {
-                            _: 'Save current query...',
-                        })}
-                    </MenuItem>
-                )}
+                {hasFilterValues &&
+                    !hasSavedCurrentQuery &&
+                    !disableSaveQuery && (
+                        <MenuItem onClick={showAddSavedQueryDialog}>
+                            {translate('ra.saved_queries.new_label', {
+                                _: 'Save current query...',
+                            })}
+                        </MenuItem>
+                    )}
                 {hasFilterValues && (
                     <MenuItem
                         onClick={() => {
-                            setFilters({}, {}, false);
+                            setFilters({}, {});
                             setOpen(false);
                         }}
                     >
@@ -245,25 +257,14 @@ const sanitizeRestProps = ({
     showFilter = null,
     ...rest
 }) => rest;
-/* eslint-enable @typescript-eslint/no-unused-vars */
 
-FilterButton.propTypes = {
-    resource: PropTypes.string,
-    filters: PropTypes.arrayOf(PropTypes.node),
-    displayedFilters: PropTypes.object,
-    filterValues: PropTypes.object,
-    showFilter: PropTypes.func,
-    className: PropTypes.string,
-};
-
-export interface FilterButtonProps extends HtmlHTMLAttributes<HTMLDivElement> {
+export interface FilterButtonProps
+    extends HtmlHTMLAttributes<HTMLDivElement>,
+        Pick<MuiButtonProps, 'variant' | 'size'> {
     className?: string;
-    resource?: string;
-    filterValues?: any;
-    showFilter?: (filterName: string, defaultValue: any) => void;
-    displayedFilters?: any;
-    filters?: ReactNode[];
     disableSaveQuery?: boolean;
+    filters?: ReactNode[];
+    resource?: string;
 }
 
 const PREFIX = 'RaFilterButton';

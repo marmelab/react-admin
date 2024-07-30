@@ -13,7 +13,7 @@ import {
     Form,
     useInput,
 } from 'ra-core';
-import { QueryClient } from 'react-query';
+import { QueryClient } from '@tanstack/react-query';
 
 import { AdminContext } from '../AdminContext';
 import { SimpleForm } from '../form';
@@ -186,10 +186,7 @@ describe('<ReferenceArrayInput />', () => {
                 .getByLabelText('ra.action.select_row')
                 .querySelector('input');
         const getCheckboxAll = () =>
-            screen
-                .getByLabelText('ra.action.select_all')
-                .querySelector('input');
-
+            screen.getByLabelText('ra.action.select_all');
         await waitFor(() => {
             expect(getCheckbox1().checked).toEqual(true);
             expect(getCheckbox2().checked).toEqual(false);
@@ -245,45 +242,46 @@ describe('<ReferenceArrayInput />', () => {
                 pagination: { page: 1, perPage: 25 },
                 sort: { field: 'id', order: 'DESC' },
                 meta: { foo: 'bar' },
+                signal: undefined,
             });
         });
     });
 
     it('should support different types of ids', async () => {
         render(<DifferentIdTypes />);
-        await screen.findByText('#1', {
+        await screen.findByText('artist_1', {
             selector: 'div.MuiChip-root .MuiChip-label',
         });
         expect(
-            screen.queryByText('#2', {
+            screen.queryByText('artist_2', {
                 selector: 'div.MuiChip-root .MuiChip-label',
             })
         ).not.toBeNull();
         expect(
-            screen.queryByText('#3', { selector: 'div.MuiChip-root' })
+            screen.queryByText('artist_3', { selector: 'div.MuiChip-root' })
         ).toBeNull();
     });
 
     it('should unselect a value when types of ids are different', async () => {
         render(<DifferentIdTypes />);
 
-        const chip1 = await screen.findByText('#1', {
+        const chip1 = await screen.findByText('artist_1', {
             selector: '.MuiChip-label',
         });
-        const chip2 = await screen.findByText('#2', {
+        const chip2 = await screen.findByText('artist_2', {
             selector: '.MuiChip-label',
         });
 
         if (chip2.nextSibling) fireEvent.click(chip2.nextSibling);
         expect(
-            screen.queryByText('#2', {
+            screen.queryByText('artist_2', {
                 selector: '.MuiChip-label',
             })
         ).toBeNull();
 
         if (chip1.nextSibling) fireEvent.click(chip1.nextSibling);
         expect(
-            screen.queryByText('#1', {
+            screen.queryByText('artist_1', {
                 selector: '.MuiChip-label',
             })
         ).toBeNull();

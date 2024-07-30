@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
-import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import Typography from '@mui/material/Typography';
-import { useRecordContext, useTranslate } from 'ra-core';
+import { useFieldValue, useTranslate } from 'ra-core';
+import { Call, Objects } from 'hotscript';
 
 import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
-import { FieldProps, fieldPropTypes } from './types';
+import { FieldProps } from './types';
 import { SxProps } from '@mui/system';
 import { Link } from '@mui/material';
 
@@ -24,14 +24,13 @@ import { Link } from '@mui/material';
  * </div>
  */
 export const FileField = <
-    RecordType extends Record<string, any> = Record<string, any>
+    RecordType extends Record<string, any> = Record<string, any>,
 >(
     props: FileFieldProps<RecordType>
 ) => {
     const {
         className,
         emptyText,
-        source,
         title,
         src,
         target,
@@ -40,8 +39,13 @@ export const FileField = <
         rel,
         ...rest
     } = props;
-    const record = useRecordContext(props);
-    const sourceValue = get(record, source);
+    const sourceValue = useFieldValue(props);
+    const titleValue =
+        useFieldValue({
+            ...props,
+            // @ts-ignore We ignore here because title might be a custom label or undefined instead of a field name
+            source: title,
+        })?.toString() ?? title;
     const translate = useTranslate();
 
     if (!sourceValue) {
@@ -63,8 +67,10 @@ export const FileField = <
         return (
             <StyledList className={className} {...sanitizeFieldRestProps(rest)}>
                 {sourceValue.map((file, index) => {
-                    const fileTitleValue = get(file, title) || title;
-                    const srcValue = get(file, src) || title;
+                    const fileTitleValue = title
+                        ? get(file, title, title)
+                        : title;
+                    const srcValue = src ? get(file, src, title) : title;
 
                     return (
                         <li key={index}>
@@ -87,8 +93,6 @@ export const FileField = <
         );
     }
 
-    const titleValue = get(record, title)?.toString() || title;
-
     return (
         <Root className={className} {...sanitizeFieldRestProps(rest)}>
             <Link
@@ -107,26 +111,19 @@ export const FileField = <
 };
 
 export interface FileFieldProps<
-    RecordType extends Record<string, any> = Record<string, any>
+    RecordType extends Record<string, any> = Record<string, any>,
 > extends FieldProps<RecordType> {
     src?: string;
-    title?: string;
+    title?: Call<Objects.AllPaths, RecordType> extends never
+        ? AnyString
+        : Call<Objects.AllPaths, RecordType> | AnyString;
     target?: string;
     download?: boolean | string;
     ping?: string;
     rel?: string;
     sx?: SxProps;
 }
-
-FileField.propTypes = {
-    ...fieldPropTypes,
-    src: PropTypes.string,
-    title: PropTypes.string,
-    target: PropTypes.string,
-    download: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
-    ping: PropTypes.string,
-    rel: PropTypes.string,
-};
+type AnyString = string & {};
 
 const PREFIX = 'RaFileField';
 

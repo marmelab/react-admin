@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import expect from 'expect';
 
 import { Inspector } from './Inspector.stories';
@@ -13,10 +13,14 @@ describe('Inspector', () => {
             )
         ).toBeNull();
     });
-    it('should render when edit mode is turned on', () => {
+    it('should render when edit mode is turned on', async () => {
         render(<Inspector />);
         screen.getByLabelText('Configure mode').click();
-        screen.getByText('Hover the application UI elements to configure them');
+        await waitFor(() => {
+            screen.getByText(
+                'Hover the application UI elements to configure them'
+            );
+        });
     });
     it('should disappear when edit mode is turned off', () => {
         render(<Inspector />);
@@ -28,14 +32,16 @@ describe('Inspector', () => {
             )
         ).toBeNull();
     });
-    it('should disappear when closed by the user', () => {
+    it('should disappear when closed by the user', async () => {
         render(<Inspector />);
         screen.getByLabelText('Configure mode').click();
-        screen.getByLabelText('ra.action.close').click();
-        expect(
-            screen.queryByText(
-                'Hover the application UI elements to configure them'
-            )
-        ).toBeNull();
+        (await screen.findByLabelText('ra.action.close')).click();
+        await waitFor(() => {
+            expect(
+                screen.queryByText(
+                    'Hover the application UI elements to configure them'
+                )
+            ).toBeNull();
+        });
     });
 });

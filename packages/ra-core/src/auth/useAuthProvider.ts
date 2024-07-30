@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 
 import { AuthProvider } from '../types';
-import AuthContext from './AuthContext';
+import { AuthContext } from './AuthContext';
 
 export const defaultAuthParams = {
     loginUrl: '/login',
@@ -12,7 +12,8 @@ export const defaultAuthParams = {
  * Get the authProvider stored in the context
  */
 const useAuthProvider = <
-    AuthProviderType extends AuthProvider = AuthProvider
->(): AuthProviderType => useContext(AuthContext) as AuthProviderType;
+    AuthProviderType extends AuthProvider = AuthProvider,
+>(): AuthProviderType | undefined =>
+    useContext(AuthContext) as AuthProviderType | undefined;
 
 export default useAuthProvider;

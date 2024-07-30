@@ -9,7 +9,6 @@ import {
     ReactNode,
     useState,
 } from 'react';
-import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import {
     Routes,
@@ -84,7 +83,9 @@ export const TabbedFormView = (props: TabbedFormViewProps): ReactElement => {
                     const hidden = syncWithLocation
                         ? !matchPath(
                               `${resolvedPath.pathname}/${tabPath}`,
-                              location.pathname
+                              // The current location might have encoded segments (e.g. the record id) but resolvedPath.pathname doesn't
+                              // and the match would fail.
+                              getDecodedPathname(location.pathname)
                           )
                         : tabValue !== index;
 
@@ -103,18 +104,11 @@ export const TabbedFormView = (props: TabbedFormViewProps): ReactElement => {
     );
 };
 
-TabbedFormView.propTypes = {
-    children: PropTypes.node,
-    className: PropTypes.string,
-    location: PropTypes.object,
-    match: PropTypes.object,
-    // @ts-ignore
-    resource: PropTypes.string,
-    tabs: PropTypes.element,
-    toolbar: PropTypes.oneOfType([PropTypes.element, PropTypes.oneOf([false])]),
-    validate: PropTypes.func,
-    value: PropTypes.number,
-};
+/**
+ * Returns the pathname with each segment decoded
+ */
+const getDecodedPathname = (pathname: string) =>
+    pathname.split('/').map(decodeURIComponent).join('/');
 
 const DefaultTabs = <TabbedFormTabs />;
 const DefaultComponent = ({ children }) => (

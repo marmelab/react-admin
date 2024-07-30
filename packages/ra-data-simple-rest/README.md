@@ -12,6 +12,8 @@ npm install --save ra-data-simple-rest
 
 ## Usage
 
+Create a Data Provider by calling the `simpleRestProvider` function with the API URL as first argument. Then pass this Data Provider to the `<Admin>` component.
+
 ```jsx
 // in src/App.js
 import * as React from "react";
@@ -27,6 +29,31 @@ const App = () => (
 );
 
 export default App;
+```
+
+The `simpleRestProvider` function accepts a second parameter, which is an HTTP client function. By default, it uses react-admin's [`fetchUtils.fetchJson()`](https://marmelab.com/react-admin/fetchJson.html) as HTTP client. It's similar to HTML5 `fetch()`, except it handles JSON decoding and HTTP error codes automatically.
+
+You can wrap this call in your own function to [add custom headers](#adding-custom-headers), for instance to set an `Authorization` bearer token:
+
+```jsx
+import { fetchUtils, Admin, Resource } from 'react-admin';
+import simpleRestProvider from 'ra-data-simple-rest';
+
+const httpClient = (url, options = {}) => {
+    if (!options.headers) {
+        options.headers = new Headers({ Accept: 'application/json' });
+    }
+    const { token } = JSON.parse(localStorage.getItem('auth'));
+    options.headers.set('Authorization', `Bearer ${token}`);
+    return fetchUtils.fetchJson(url, options);
+};
+const dataProvider = simpleRestProvider('http://localhost:3000', httpClient);
+
+const App = () => (
+    <Admin dataProvider={dataProvider} authProvider={authProvider}>
+        ...
+    </Admin>
+);
 ```
 
 ## REST Dialect
@@ -63,13 +90,22 @@ The API response when called by `getList` should look like this:
 ]
 ```
 
-**Note**: The simple REST data provider expects the API to include a `Content-Range` header in the response to `getList` calls. The value must be the total number of resources in the collection. This allows react-admin to know how many pages of resources there are in total, and build the pagination controls.
+### CORS Setup
+
+The simple REST data provider expects the API to include a `Content-Range` header in the response to `getList` calls. The value must be the total number of resources in the collection. This allows react-admin to know how many pages of resources there are in total, and build the pagination controls.
 
 ```txt
 Content-Range: posts 0-24/319
 ```
 
-If your API is on another domain as the JS code, you'll need to whitelist this header with an `Access-Control-Expose-Headers` [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS) header.
+If your API is on another domain as the JS code, the browser won't be able to read the `Content-Range` header unless the server includes [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS) headers in the response. So by default, you'll get an error message like this:
+
+```txt
+Access to fetch at [API_URL] from origin 'http://localhost:3000' has been blocked by CORS policy:
+No 'Access-Control-Allow-Origin' header is present on the requested resource.
+```
+
+To fix this, you need to configure your API server to set the `Access-Control-Expose-Headers` header to `Content-Range` in the CORS response.
 
 ```txt
 Access-Control-Expose-Headers: Content-Range
@@ -327,13 +363,20 @@ const httpClient = (url, options = {}) => {
 
 Now all the requests to the REST API will contain the `Authorization: SRTRDFVESGNJYTUKTYTHRG` header.
 
-## Note about Content-Range
+## Enabling Query Cancellation
 
-Historically, Simple REST Data Provider uses the http `Content-Range` header to retrieve the number of items in a collection. But this is a *hack* of the [primary role of this header](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Range).
+To enable query cancellation, you need to set the `supportAbortSignal` property of the data provider to `true`. This will allow react-admin to cancel queries when the user navigates away from a view before the query is completed.
 
-However this can be problematic, for example within an infrastructure using a Varnish that may use, modify or delete this header. We also have feedback indicating that using this header is problematic when you host your application on [Vercel](https://vercel.com/).
+```tsx
+const dataProvider = simpleRestProvider('https://myapi.com');
+dataProvider.supportAbortSignal = true;
+```
 
-The solution is to use another http header to return the number of collection's items. The other header commonly used for this is `X-Total-Count`. So if you use `X-Total-Count`, you will have to :
+## Replacing Content-Range With Another Header
+
+An infrastructure using a Varnish may use, modify or delete the `Content-Range` header.
+
+The solution is to use another HTTP header to return the number of collection's items. The other header commonly used for this is `X-Total-Count`. So if you use `X-Total-Count`, you will have to :
 
 * Whitelist this header with an `Access-Control-Expose-Headers` [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS) header.
 

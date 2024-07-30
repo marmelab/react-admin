@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { ReactElement } from 'react';
-import PropTypes from 'prop-types';
-import { UseMutationOptions } from 'react-query';
+import { UseMutationOptions } from '@tanstack/react-query';
 import {
     RaRecord,
     MutationMode,
@@ -63,8 +62,8 @@ export const DeleteButton = <RecordType extends RaRecord = any>(
     const finalMutationMode = mutationMode
         ? mutationMode
         : saveContext?.mutationMode
-        ? saveContext.mutationMode
-        : 'undoable';
+          ? saveContext.mutationMode
+          : 'undoable';
 
     return finalMutationMode === 'undoable' ? (
         <DeleteWithUndoButton<RecordType> record={record} {...rest} />
@@ -80,7 +79,7 @@ export const DeleteButton = <RecordType extends RaRecord = any>(
 
 export interface DeleteButtonProps<
     RecordType extends RaRecord = any,
-    MutationOptionsError = unknown
+    MutationOptionsError = unknown,
 > extends ButtonProps,
         SaveContextValue {
     confirmTitle?: React.ReactNode;
@@ -96,18 +95,5 @@ export interface DeleteButtonProps<
     record?: RecordType;
     redirect?: RedirectionSideEffect;
     resource?: string;
+    successMessage?: string;
 }
-
-DeleteButton.propTypes = {
-    label: PropTypes.string,
-    mutationMode: PropTypes.oneOf(['pessimistic', 'optimistic', 'undoable']),
-    record: PropTypes.any,
-    // @ts-ignore
-    redirect: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.bool,
-        PropTypes.func,
-    ]),
-    resource: PropTypes.string,
-    icon: PropTypes.element,
-};

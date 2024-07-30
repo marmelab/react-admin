@@ -27,8 +27,8 @@ import { Typography } from '@mui/material';
 import { useListContext } from 'react-admin';
 
 export const Aside = () => {
-    const { data, isLoading } = useListContext();
-    if (isLoading) return null;
+    const { data, isPending } = useListContext();
+    if (isPending) return null;
     return (
         <div>
             <Typography variant="h6">Posts stats</Typography>
@@ -63,8 +63,9 @@ const {
     // Data
     data, // Array of the list records, e.g. [{ id: 123, title: 'hello world' }, { ... }
     total, // Total number of results for the current filters, excluding pagination. Useful to build the pagination controls, e.g. 23      
+    isPending, // Boolean, true until the data is available
     isFetching, // Boolean, true while the data is being fetched, false once the data is fetched
-    isLoading, // Boolean, true until the data is available for the first time
+    isLoading, // Boolean, true until the data is fetched for the first time
     // Pagination
     page, // Current page. Starts at 1
     perPage, // Number of results per page. Defaults to 25
@@ -102,8 +103,8 @@ import { WithListContext } from 'react-admin';
 import { Typography } from '@mui/material';
 
 export const Aside = () => (
-    <WithListContext render={({ data, isLoading }) => 
-        !isLoading && (
+    <WithListContext render={({ data, isPending }) => 
+        !isPending && (
             <div>
                 <Typography variant="h6">Posts stats</Typography>
                 <Typography variant="body2">
@@ -112,6 +113,47 @@ export const Aside = () => (
             </div>
     )} />
 );
+```
+
+## Using `setFilters` to Update Filters
+
+The `setFilters` method is used to update the filters. It takes three arguments:
+
+- `filters`: an object containing the new filter values
+- `displayedFilters`: an object containing the new displayed filters
+- `debounced`: set to true to debounce the call to setFilters (false by default)
+
+You can use it to update the filters in a custom filter component:
+
+```jsx
+import { useState } from 'react';
+import { useListContext } from 'react-admin';
+
+const CustomFilter = () => {
+    const { filterValues, setFilters } = useListContext();
+    const [formValues, setFormValues] = useState(filterValues);
+
+    const handleChange = (event) => {
+        setFormValues(formValues => ({
+            ...formValues,
+            [event.target.name]: event.target.value
+        }));
+    };
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        setFilters(filterFormValues);
+    };
+
+    return (
+        <form onSubmit={handleSubmit}>
+            <input name="country" value={formValues.country} onChange={handleChange} />
+            <input name="city" value={formValues.city} onChange={handleChange} />
+            <input name="zipcode" value={formValues.zipcode} onChange={handleChange} />
+            <input type="submit">Filter</input>
+        </form>
+    );
+};
 ```
 
 ## TypeScript
@@ -129,8 +171,8 @@ type Post = {
 };
 
 export const Aside = () => {
-    const { data: posts, isLoading } = useListContext<Post>();
-    if (isLoading) return null;
+    const { data: posts, isPending } = useListContext<Post>();
+    if (isPending) return null;
     return (
         <div>
             <Typography variant="h6">Posts stats</Typography>

@@ -86,9 +86,10 @@ describe('<RadioButtonGroupInput />', () => {
         );
         expect(screen.queryByText('People')).not.toBeNull();
         const input1 = screen.getByLabelText('Leo Tolstoi');
-        expect(input1.id).toBe('type_123');
+        expect(input1.id).toMatch(/:r\d:/);
         const input2 = screen.getByLabelText('Jane Austen');
-        expect(input2.id).toBe('type_456');
+        expect(input2.id).toMatch(/:r\d:/);
+        expect(input2.id).not.toEqual(input1.id);
     });
 
     it('should trigger custom onChange when clicking radio button', async () => {
@@ -248,7 +249,7 @@ describe('<RadioButtonGroupInput />', () => {
     it('should use optionText with an element value as text identifier', () => {
         const Foobar = () => {
             const record = useRecordContext();
-            return <span data-testid="label">{record.longname}</span>;
+            return <span data-testid="label">{record?.longname}</span>;
         };
         render(
             <AdminContext dataProvider={testDataProvider()}>
@@ -425,14 +426,14 @@ describe('<RadioButtonGroupInput />', () => {
         });
     });
 
-    it('should not render a LinearProgress if isLoading is true and a second has not passed yet', () => {
+    it('should not render a LinearProgress if isPending is true and a second has not passed yet', () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <SimpleForm
                     defaultValues={{ type: 'visa' }}
                     onSubmit={jest.fn()}
                 >
-                    <RadioButtonGroupInput {...defaultProps} isLoading />
+                    <RadioButtonGroupInput {...defaultProps} isPending />
                 </SimpleForm>
             </AdminContext>
         );
@@ -440,24 +441,24 @@ describe('<RadioButtonGroupInput />', () => {
         expect(screen.queryByRole('progressbar')).toBeNull();
     });
 
-    it('should render a LinearProgress if isLoading is true and a second has passed', async () => {
+    it('should render a LinearProgress if isPending is true and a second has passed', async () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <SimpleForm
                     defaultValues={{ type: 'visa' }}
                     onSubmit={jest.fn()}
                 >
-                    <RadioButtonGroupInput {...defaultProps} isLoading />
+                    <RadioButtonGroupInput {...defaultProps} isPending />
                 </SimpleForm>
             </AdminContext>
         );
 
         await new Promise(resolve => setTimeout(resolve, 1001));
 
-        expect(screen.queryByRole('progressbar')).not.toBeNull();
+        await screen.findByRole('progressbar');
     });
 
-    it('should not render a LinearProgress if isLoading is false', () => {
+    it('should not render a LinearProgress if isPending is false', () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <SimpleForm
@@ -476,9 +477,9 @@ describe('<RadioButtonGroupInput />', () => {
         it('should use the recordRepresentation as optionText', async () => {
             render(<InsideReferenceArrayInput />);
 
-            await screen.findByText('Lifestyle');
-            await screen.findByText('Tech');
-            await screen.findByText('People');
+            await screen.findByText('Lifestyle (Lifestyle details)');
+            await screen.findByText('Tech (Tech details)');
+            await screen.findByText('People (People details)');
         });
     });
 });

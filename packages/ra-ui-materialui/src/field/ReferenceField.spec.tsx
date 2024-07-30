@@ -8,14 +8,19 @@ import {
     useGetMany,
     ResourceDefinitionContextProvider,
 } from 'ra-core';
-import { QueryClient } from 'react-query';
+import { QueryClient } from '@tanstack/react-query';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import { ReferenceField } from './ReferenceField';
 import {
     Children,
-    EmptyWithTranslate,
-    MissingReference,
+    LinkShow,
+    LinkDefaultEditView,
+    LinkDefaultShowView,
+    LinkMissingView,
+    LinkFalse,
+    MissingReferenceIdEmptyTextTranslation,
+    MissingReferenceEmptyText,
     SXLink,
     SXNoLink,
 } from './ReferenceField.stories';
@@ -48,6 +53,7 @@ describe('<ReferenceField />', () => {
                         <ResourceDefinitionContextProvider
                             definitions={{
                                 posts: {
+                                    name: 'posts',
                                     hasEdit: true,
                                 },
                             }}
@@ -90,6 +96,7 @@ describe('<ReferenceField />', () => {
                         <ResourceDefinitionContextProvider
                             definitions={{
                                 posts: {
+                                    name: 'posts',
                                     hasEdit: true,
                                 },
                             }}
@@ -107,7 +114,7 @@ describe('<ReferenceField />', () => {
                 </ThemeProvider>
             );
             await new Promise(resolve => setTimeout(resolve, 1001));
-            expect(screen.queryByRole('progressbar')).not.toBeNull();
+            await screen.findByRole('progressbar');
             expect(screen.queryAllByRole('link')).toHaveLength(0);
         });
 
@@ -157,6 +164,7 @@ describe('<ReferenceField />', () => {
                         <ResourceDefinitionContextProvider
                             definitions={{
                                 posts: {
+                                    name: 'posts',
                                     hasEdit: true,
                                 },
                             }}
@@ -190,6 +198,7 @@ describe('<ReferenceField />', () => {
                         <ResourceDefinitionContextProvider
                             definitions={{
                                 posts: {
+                                    name: 'posts',
                                     hasEdit: true,
                                 },
                             }}
@@ -225,6 +234,7 @@ describe('<ReferenceField />', () => {
                         <ResourceDefinitionContextProvider
                             definitions={{
                                 posts: {
+                                    name: 'posts',
                                     hasEdit: true,
                                 },
                             }}
@@ -257,6 +267,7 @@ describe('<ReferenceField />', () => {
                         <ResourceDefinitionContextProvider
                             definitions={{
                                 posts: {
+                                    name: 'posts',
                                     hasEdit: true,
                                 },
                             }}
@@ -286,6 +297,7 @@ describe('<ReferenceField />', () => {
                     <ReferenceField
                         record={{ id: 123 }}
                         resource="comments"
+                        // @ts-expect-error source prop does not have a valid value
                         source="postId"
                         reference="posts"
                         emptyText="EMPTY"
@@ -299,7 +311,7 @@ describe('<ReferenceField />', () => {
     });
 
     it('should display the emptyText if there is no reference', async () => {
-        render(<MissingReference />);
+        render(<MissingReferenceEmptyText />);
         await screen.findByText('no detail');
     });
 
@@ -315,43 +327,7 @@ describe('<ReferenceField />', () => {
                     <ResourceDefinitionContextProvider
                         definitions={{
                             posts: {
-                                hasEdit: true,
-                            },
-                        }}
-                    >
-                        <RecordContextProvider value={record}>
-                            <ReferenceField
-                                resource="comments"
-                                source="postId"
-                                reference="posts"
-                            />
-                        </RecordContextProvider>
-                    </ResourceDefinitionContextProvider>
-                </CoreAdminContext>
-            </ThemeProvider>
-        );
-        await new Promise(resolve => setTimeout(resolve, 10));
-        expect(screen.queryByRole('progressbar')).toBeNull();
-        expect(screen.getByText('#123')).not.toBeNull();
-        expect(screen.queryAllByRole('link')).toHaveLength(1);
-        expect(screen.queryByRole('link')?.getAttribute('href')).toBe(
-            '#/posts/123'
-        );
-    });
-
-    it('should use recordRepresentation to render the related record', async () => {
-        const dataProvider = testDataProvider({
-            getMany: jest.fn().mockResolvedValue({
-                data: [{ id: 123, title: 'foo' }],
-            }),
-        });
-        render(
-            <ThemeProvider theme={theme}>
-                <CoreAdminContext dataProvider={dataProvider}>
-                    <ResourceDefinitionContextProvider
-                        definitions={{
-                            posts: {
-                                recordRepresentation: 'title',
+                                name: 'posts',
                                 hasEdit: true,
                             },
                         }}
@@ -376,6 +352,44 @@ describe('<ReferenceField />', () => {
         );
     });
 
+    it('should use recordRepresentation to render the related record', async () => {
+        const dataProvider = testDataProvider({
+            getMany: jest.fn().mockResolvedValue({
+                data: [{ id: 123, title: 'foo' }],
+            }),
+        });
+        render(
+            <ThemeProvider theme={theme}>
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <ResourceDefinitionContextProvider
+                        definitions={{
+                            posts: {
+                                name: 'posts',
+                                recordRepresentation: 'title',
+                                hasEdit: true,
+                            },
+                        }}
+                    >
+                        <RecordContextProvider value={record}>
+                            <ReferenceField
+                                resource="comments"
+                                source="postId"
+                                reference="posts"
+                            />
+                        </RecordContextProvider>
+                    </ResourceDefinitionContextProvider>
+                </CoreAdminContext>
+            </ThemeProvider>
+        );
+        await new Promise(resolve => setTimeout(resolve, 10));
+        expect(screen.queryByRole('progressbar')).toBeNull();
+        await screen.findByText('foo');
+        expect(screen.queryAllByRole('link')).toHaveLength(1);
+        expect(screen.queryByRole('link')?.getAttribute('href')).toBe(
+            '#/posts/123'
+        );
+    });
+
     it('should render its child component when given', async () => {
         const dataProvider = testDataProvider({
             getMany: jest.fn().mockResolvedValue({
@@ -388,6 +402,7 @@ describe('<ReferenceField />', () => {
                     <ResourceDefinitionContextProvider
                         definitions={{
                             posts: {
+                                name: 'posts',
                                 hasEdit: true,
                             },
                         }}
@@ -467,152 +482,93 @@ describe('<ReferenceField />', () => {
         expect(ErrorIcon?.getAttribute('aria-errormessage')).toBe('boo');
     });
 
-    it('should render a link to specified link type', async () => {
-        const dataProvider = testDataProvider({
-            getMany: jest.fn().mockResolvedValue({
-                data: [{ id: 123, title: 'foo' }],
-            }),
+    describe('link', () => {
+        it('should render a link to specified link type', async () => {
+            render(<LinkShow />);
+            const referenceField = await screen.findByText('9780393966473');
+            expect(screen.queryAllByRole('link')).toHaveLength(1);
+            expect(referenceField?.parentElement?.getAttribute('href')).toBe(
+                '/book_details/1/show'
+            );
         });
-        render(
-            <ThemeProvider theme={theme}>
-                <CoreAdminContext dataProvider={dataProvider}>
-                    <ResourceDefinitionContextProvider
-                        definitions={{
-                            posts: {
-                                hasShow: true,
-                            },
-                        }}
-                    >
-                        <ReferenceField
-                            record={record}
-                            resource="comments"
-                            source="postId"
-                            reference="posts"
-                            link="show"
-                        >
-                            <TextField source="title" />
-                        </ReferenceField>
-                    </ResourceDefinitionContextProvider>
-                </CoreAdminContext>
-            </ThemeProvider>
-        );
-        await waitFor(() =>
-            expect(dataProvider.getMany).toHaveBeenCalledTimes(1)
-        );
-        expect(screen.queryByRole('link')?.getAttribute('href')).toBe(
-            '#/posts/123/show'
-        );
-    });
 
-    it('should render no link when view to link to does not exist', async () => {
-        const dataProvider = testDataProvider({
-            getMany: jest.fn().mockResolvedValue({
-                data: [{ id: 123, title: 'foo' }],
-            }),
+        it('should link to edit by default if there is an edit view', async () => {
+            render(<LinkDefaultEditView />);
+            const referenceField = await screen.findByText('9780393966473');
+            expect(screen.queryAllByRole('link')).toHaveLength(1);
+            expect(referenceField?.parentElement?.getAttribute('href')).toBe(
+                '/book_details/1'
+            );
         });
-        render(
-            <ThemeProvider theme={theme}>
-                <CoreAdminContext dataProvider={dataProvider}>
-                    <ResourceDefinitionContextProvider
-                        definitions={{
-                            posts: {
-                                hasShow: false,
-                            },
-                        }}
-                    >
-                        <ReferenceField
-                            record={record}
-                            resource="comments"
-                            source="postId"
-                            reference="posts"
-                            link="show"
-                        >
-                            <TextField source="title" />
-                        </ReferenceField>
-                    </ResourceDefinitionContextProvider>
-                </CoreAdminContext>
-            </ThemeProvider>
-        );
-        await waitFor(() =>
-            expect(dataProvider.getMany).toHaveBeenCalledTimes(1)
-        );
-        expect(screen.queryAllByRole('link')).toHaveLength(0);
-    });
 
-    it('should render no link when link is false', async () => {
-        const dataProvider = testDataProvider({
-            getMany: jest.fn().mockResolvedValue({
-                data: [{ id: 123, title: 'foo' }],
-            }),
+        it('should link to edit by default if there is no edit view but a show view', async () => {
+            render(<LinkDefaultShowView />);
+            const referenceField = await screen.findByText('9780393966473');
+            expect(screen.queryAllByRole('link')).toHaveLength(1);
+            expect(referenceField?.parentElement?.getAttribute('href')).toBe(
+                '/book_details/1/show'
+            );
         });
-        render(
-            <ThemeProvider theme={theme}>
-                <CoreAdminContext dataProvider={dataProvider}>
-                    <ResourceDefinitionContextProvider
-                        definitions={{
-                            posts: {
-                                hasEdit: true,
-                            },
-                        }}
-                    >
-                        <ReferenceField
-                            record={record}
-                            resource="comments"
-                            source="postId"
-                            reference="posts"
-                            link={false}
-                        >
-                            <TextField source="title" />
-                        </ReferenceField>
-                    </ResourceDefinitionContextProvider>
-                </CoreAdminContext>
-            </ThemeProvider>
-        );
-        await waitFor(() =>
-            expect(dataProvider.getMany).toHaveBeenCalledTimes(1)
-        );
-        expect(screen.queryAllByRole('link')).toHaveLength(0);
-    });
 
-    it('should call the link function with the referenced record', async () => {
-        const dataProvider = testDataProvider({
-            getMany: jest.fn().mockResolvedValue({
-                data: [{ id: 123, title: 'foo' }],
-            }),
+        it('should render a link even though link view does not exist', async () => {
+            render(<LinkMissingView />);
+            const referenceField = await screen.findByText('9780393966473');
+            expect(screen.queryAllByRole('link')).toHaveLength(1);
+            expect(referenceField?.parentElement?.getAttribute('href')).toBe(
+                '/book_details/1/show'
+            );
         });
-        const link = jest.fn().mockReturnValue('/posts/123');
 
-        render(
-            <ThemeProvider theme={theme}>
-                <CoreAdminContext dataProvider={dataProvider}>
-                    <ResourceDefinitionContextProvider
-                        definitions={{
-                            posts: {
-                                hasEdit: true,
-                            },
-                        }}
-                    >
-                        <ReferenceField
-                            record={record}
-                            resource="comments"
-                            source="postId"
-                            reference="posts"
-                            link={link}
+        it('should render no link when link is false', async () => {
+            render(<LinkFalse />);
+            await screen.findByText('9780393966473');
+            expect(screen.queryAllByRole('link')).toHaveLength(0);
+        });
+
+        it('should call the link function with the referenced record', async () => {
+            const dataProvider = testDataProvider({
+                getMany: jest.fn().mockResolvedValue({
+                    data: [{ id: 123, title: 'foo' }],
+                }),
+            });
+            const link = jest.fn().mockReturnValue('/posts/123');
+
+            render(
+                <ThemeProvider theme={theme}>
+                    <CoreAdminContext dataProvider={dataProvider}>
+                        <ResourceDefinitionContextProvider
+                            definitions={{
+                                posts: {
+                                    name: 'posts',
+                                    hasEdit: true,
+                                },
+                            }}
                         >
-                            <TextField source="title" />
-                        </ReferenceField>
-                    </ResourceDefinitionContextProvider>
-                </CoreAdminContext>
-            </ThemeProvider>
-        );
-        await waitFor(() =>
-            expect(dataProvider.getMany).toHaveBeenCalledTimes(1)
-        );
-        expect(screen.queryByRole('link')?.getAttribute('href')).toBe(
-            '#/posts/123'
-        );
+                            <ReferenceField
+                                record={record}
+                                resource="comments"
+                                source="postId"
+                                reference="posts"
+                                link={link}
+                            >
+                                <TextField source="title" />
+                            </ReferenceField>
+                        </ResourceDefinitionContextProvider>
+                    </CoreAdminContext>
+                </ThemeProvider>
+            );
+            await waitFor(() =>
+                expect(dataProvider.getMany).toHaveBeenCalledTimes(1)
+            );
+            expect(screen.queryByRole('link')?.getAttribute('href')).toBe(
+                '#/posts/123'
+            );
 
-        expect(link).toHaveBeenCalledWith({ id: 123, title: 'foo' }, 'posts');
+            expect(link).toHaveBeenCalledWith(
+                { id: 123, title: 'foo' },
+                'posts'
+            );
+        });
     });
 
     it('should accept multiple children', async () => {
@@ -622,7 +578,7 @@ describe('<ReferenceField />', () => {
     });
 
     it('should translate emptyText', () => {
-        render(<EmptyWithTranslate />);
+        render(<MissingReferenceIdEmptyTextTranslation />);
 
         expect(screen.findByText('Not found')).not.toBeNull();
     });
@@ -652,6 +608,7 @@ describe('<ReferenceField />', () => {
             expect(dataProvider.getMany).toHaveBeenCalledWith('posts', {
                 ids: [123],
                 meta: { foo: 'bar' },
+                signal: undefined,
             });
         });
     });

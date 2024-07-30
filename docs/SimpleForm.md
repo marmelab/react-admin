@@ -7,16 +7,17 @@ title: "SimpleForm"
 
 The `<SimpleForm>` creates a `<form>` to edit a record, and renders its children (usually Input components) in a simple layout, one child per row.
 
-![simple form](./img/simple-form.png)
+<iframe src="https://www.youtube-nocookie.com/embed/QoNjUeLvQ2A" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;"></iframe>
 
 ## Usage
 
-`<SimpleForm>` reads the `record` from the `RecordContext`, uses it to initialize the defaultValues of a `<Form>`, renders its children in a Material UI `<Stack>`, and renders a toolbar with a `<SaveButton>` that calls the `save` callback prepared by the edit or the create controller when pressed. 
+`<SimpleForm>` reads the `record` from the `RecordContext`, uses it to initialize the defaultValues of a `<Form>`, renders its children in a Material UI `<Stack>`, and renders a toolbar with a `<SaveButton>` that calls the `save` callback prepared by the edit or the create controller when pressed.
 
 `<SimpleForm>` is often used as child of `<Create>` or `<Edit>`. It accepts Input and Field components as children. It relies on [react-hook-form](https://react-hook-form.com/) for form handling. It requires no prop by default.
 
 ```jsx
-import { Create, SimpleForm, TextInput, RichTextInput, NumberInput } from 'react-admin';
+import { Create, SimpleForm, TextInput, NumberInput } from 'react-admin';
+import { RichTextInput } from 'ra-input-rich-text';
 
 export const PostCreate = () => (
     <Create>
@@ -107,7 +108,7 @@ export const PostCreate = () => (
 
 **Tip**: You can include properties in the form `defaultValues` that are not listed as input components, like the `created_at` property in the previous example.
 
-**Tip**: React-admin also allows to define default values at the input level. See the [Setting default Values](./EditTutorial.md#setting-default-values) section.
+**Tip**: React-admin also allows to define default values at the input level. See the [Setting default Values](./Forms.md#default-values) section.
 
 ## `id`
 
@@ -205,6 +206,8 @@ For the previous example, the data sent to the `dataProvider` will be:
 
 **Note:** Setting the `sanitizeEmptyValues` prop to `true` will also have a (minor) impact on react-admin inputs (like `<TextInput>`, `<NumberInput>`, etc.): empty values (i.e. values equal to `null`) will be removed from the form state on submit, unless the record actually had a value for that field.
 
+**Note** Even with `sanitizeEmptyValues` set to `true`, deeply nested fields won't be set to `null` nor removed. If you need to sanitize those fields, use [the `transform` prop](./Edit.md#transform) of `<Edit>` or `<Create>` components.
+
 If you need a more fine-grained control over the sanitization, you can use [the `transform` prop](./Edit.md#transform) of `<Edit>` or `<Create>` components, or [the `parse` prop](./Inputs.md#parse) of individual inputs.
 
 ## `sx`: CSS API
@@ -217,7 +220,7 @@ The most common usage is to limit the width of the form, to avoid long inputs on
 ```jsx
 export const PostCreate = () => (
     <Create>
-        <SimpleForm sx={{ maxWidth: 600 }}>
+        <SimpleForm sx={{ maxWidth: { lg: 600 } }}>
             <TextInput source="title" />
             <RichTextInput source="body" />
             <NumberInput source="nb_views" />
@@ -400,9 +403,11 @@ export const TagEdit = () => (
 );
 ```
 
-**Warning**: This feature only works if you have a dependency on react-router 6.3.0 **at most**. The react-router team disabled this possibility in react-router 6.4, so `warnWhenUnsavedChanges` will silently fail with react-router 6.4 or later.
+**Note**: Due to limitations in react-router, this feature only works if you use the default router provided by react-admin, or if you use a [Data Router](https://reactrouter.com/en/6.22.3/routers/picking-a-router).
 
 ## Using Fields As Children
+
+<iframe src="https://www.youtube-nocookie.com/embed/fWc7c0URQMQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;"></iframe>
 
 The basic usage of `<SimpleForm>` is to pass [Input components](./Inputs.md) as children. For non-editable fields, you can pass `disabled` inputs, or even [Field components](./Fields.md). But since `<Field>` components have no label by default, you'll have to wrap your inputs in a `<Labeled>` component in that case:
 
@@ -434,44 +439,35 @@ By default, `<SimpleForm>` renders one child per row. But a given child can be a
 ```jsx
 const UserCreate = () => (
     <Create>
-        <SimpleForm sx={{ maxWidth: 500 }}>
+        <SimpleForm sx={{ maxWidth: { lg: '500' } }}>
             <Typography variant="h6" gutterBottom>
                 Identity
             </Typography>
             <Box display={{ xs: 'block', sm: 'flex', width: '100%' }}>
                 <Box flex={1} mr={{ xs: 0, sm: '0.5em' }}>
-                    <TextInput source="first_name" isRequired fullWidth />
+                    <TextInput source="first_name" isRequired />
                 </Box>
                 <Box flex={1} ml={{ xs: 0, sm: '0.5em' }}>
-                    <TextInput source="last_name" isRequired fullWidth />
+                    <TextInput source="last_name" isRequired />
                 </Box>
             </Box>
-            <TextInput type="email" source="email" isRequired fullWidth />
+            <TextInput type="email" source="email" isRequired />
             <DateInput source="birthday" />
             <Separator />
             
             <Typography variant="h6" gutterBottom>
                 Address
             </Typography>
-            <TextInput
-                source="address"
-                multiline
-                fullWidth
-                helperText={false}
-            />
+            <TextInput source="address" multiline helperText={false} />
             <Box display={{ xs: 'block', sm: 'flex' }}>
                 <Box flex={2} mr={{ xs: 0, sm: '0.5em' }}>
-                    <TextInput source="city" fullWidth helperText={false} />
+                    <TextInput source="city" helperText={false} />
                 </Box>
                 <Box flex={1} mr={{ xs: 0, sm: '0.5em' }}>
-                    <TextInput
-                        source="stateAbbr"
-                        fullWidth
-                        helperText={false}
-                    />
+                    <TextInput source="stateAbbr" helperText={false} />
                 </Box>
                 <Box flex={2}>
-                    <TextInput source="zipcode" fullWidth helperText={false} />
+                    <TextInput source="zipcode" helperText={false} />
                 </Box>
             </Box>
             <Separator />
@@ -481,10 +477,10 @@ const UserCreate = () => (
             </Typography>
             <Box display={{ xs: 'block', sm: 'flex' }}>
                 <Box flex={1} mr={{ xs: 0, sm: '0.5em' }}>
-                    <PasswordInput source="password" fullWidth />
+                    <PasswordInput source="password" />
                 </Box>
                 <Box flex={1} ml={{ xs: 0, sm: '0.5em' }}>
-                    <PasswordInput source="confirm_password" fullWidth />
+                    <PasswordInput source="confirm_password" />
                 </Box>
             </Box>
         </SimpleForm>
@@ -696,7 +692,70 @@ const ProductEdit = () => (
 
 Check [the RBAC `<SimpleForm>` component](./AuthRBAC.md#simpleform) documentation for more details.
 
+## Versioning
+
+By default, `<SimpleForm>` updates the current record (via `dataProvider.update()`), so the previous version of the record is lost. If you want to keep the previous version, you can use the [`<SimpleFormWithRevision>`](https://react-admin-ee.marmelab.com/documentation/ra-history#simpleformwithrevision) component instead:
+
+```diff
+// in src/posts/PostCreate.js
+-import { Create, SimpleForm, TextInput, RichTextInput, NumberInput } from 'react-admin';
++import { Create, TextInput, RichTextInput, NumberInput } from 'react-admin';
++import { SimpleFormWithRevision } from "@react-admin/ra-history";
+
+export const PostCreate = () => (
+    <Create>
+-       <SimpleForm>
++       <SimpleFormWithRevision>
+            <TextInput source="title" />
+            <TextInput source="teaser" />
+            <TextInput multiline source="body" />
+-       </SimpleForm>
++       </SimpleFormWithRevision>
+    </Create>
+);
+```
+
+This won't change the look and feel of the form. But when the user submits the form, they will see a dialog asking them for the reason of the change.
+
+![SimpleFormWithRevision](https://react-admin-ee.marmelab.com/assets/ra-history/latest/SimpleFormWithRevision.png)
+
+After submitting this dialog, react-admin will update the main record and **create a new revision**. A revision represents the state of the record at a given point in time. It is immutable. A revision also records the date, author, and reason of the change. Past revisions can be accessed via the [`<RevisionsButton>`](https://react-admin-ee.marmelab.com/documentation/ra-history#revisionsbutton) component.
+
+<video controls autoplay playsinline muted loop>
+  <source src="https://react-admin-ee.marmelab.com/assets/RevisionsButton.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
+```jsx
+// in src/posts/PostEdit.js
+import { Edit, TextInput, TopToolbar } from "react-admin";
+import {
+  SimpleFormWithRevision,
+  RevisionsButton,
+} from "@react-admin/ra-history";
+
+const PostEditActions = () => (
+  <TopToolbar>
+    <RevisionsButton />
+  </TopToolbar>
+);
+
+export const PostEdit = () => (
+  <Edit actions={<PostEditActions />}>
+    <SimpleFormWithRevision>
+      <TextInput source="title" />
+      <TextInput source="teaser" />
+      <TextInput multiline source="body" />
+    </SimpleFormWithRevision>
+  </Edit>
+);
+```
+
+Check the [`<SimpleFormWithRevision>`](https://react-admin-ee.marmelab.com/documentation/ra-history#simpleformwithrevision) and [`<RevisionsButton>`](https://react-admin-ee.marmelab.com/documentation/ra-history#revisionsbutton) documentation for more details.
+
 ## Linking Two Inputs
+
+<iframe src="https://www.youtube-nocookie.com/embed/YkqjydtmfcU" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;"></iframe>
 
 Edition forms often contain linked inputs, e.g. country and city (the choices of the latter depending on the value of the former).
 
@@ -752,13 +811,13 @@ export const PostCreate = () => (
         <Form>
             <Grid container>
                 <Grid item xs={6}>
-                    <TextInput source="title" fullWidth />
+                    <TextInput source="title" />
                 </Grid>
                 <Grid item xs={6}>
-                    <TextInput source="author" fullWidth />
+                    <TextInput source="author" />
                 </Grid>
                 <Grid item xs={12}>
-                    <RichTextInput source="body" fullWidth />
+                    <RichTextInput source="body" />
                 </Grid>
                 <Grid item xs={12}>
                     <SaveButton />

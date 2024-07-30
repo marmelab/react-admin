@@ -4,6 +4,7 @@ import {
     ExportButton,
     FilterButton,
     List,
+    ReferenceInput,
     SearchInput,
     SelectInput,
     TopToolbar,
@@ -35,8 +36,8 @@ const DealList = () => {
                 component="div"
             >
                 <DealListContent />
+                <DealCreate open={!!matchCreate} />
             </List>
-            <DealCreate open={!!matchCreate} />
             <DealShow open={!!matchShow} id={matchShow?.params.id} />
         </>
     );
@@ -44,8 +45,9 @@ const DealList = () => {
 
 const dealFilters = [
     <SearchInput source="q" alwaysOn />,
-    <OnlyMineInput alwaysOn />,
-    <SelectInput source="type" choices={typeChoices} />,
+    <ReferenceInput source="company_id" reference="companies" />,
+    <SelectInput source="type" label="Category" choices={typeChoices} />,
+    <OnlyMineInput source="sales_id" alwaysOn />,
 ];
 
 const DealActions = () => {

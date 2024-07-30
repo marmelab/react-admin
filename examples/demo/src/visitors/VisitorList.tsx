@@ -1,13 +1,17 @@
 import * as React from 'react';
 import {
     BooleanField,
-    Datagrid,
+    CreateButton,
+    DatagridConfigurable,
     DateField,
     DateInput,
+    ExportButton,
     List,
     NullableBooleanInput,
     NumberField,
     SearchInput,
+    SelectColumnsButton,
+    TopToolbar,
 } from 'react-admin';
 import { useMediaQuery, Theme } from '@mui/material';
 
@@ -26,6 +30,14 @@ const visitorFilters = [
     <SegmentInput source="groups" />,
 ];
 
+const VisitorListActions = () => (
+    <TopToolbar>
+        <CreateButton />
+        <SelectColumnsButton />
+        <ExportButton />
+    </TopToolbar>
+);
+
 const VisitorList = () => {
     const isXsmall = useMediaQuery<Theme>(theme =>
         theme.breakpoints.down('sm')
@@ -37,12 +49,12 @@ const VisitorList = () => {
             sort={{ field: 'last_seen', order: 'DESC' }}
             perPage={25}
             aside={<VisitorListAside />}
+            actions={<VisitorListActions />}
         >
             {isXsmall ? (
                 <MobileGrid />
             ) : (
-                <Datagrid
-                    optimized
+                <DatagridConfigurable
                     rowClick="edit"
                     sx={{
                         '& .column-groups': {
@@ -50,21 +62,27 @@ const VisitorList = () => {
                             lg: { display: 'table-cell' },
                         },
                     }}
+                    omit={['birthday']}
                 >
-                    <CustomerLinkField />
+                    <CustomerLinkField
+                        source="last_name"
+                        label="resources.customers.fields.full_name"
+                    />
                     <DateField source="last_seen" />
                     <NumberField
-                        source="nb_commands"
-                        label="resources.customers.fields.commands"
+                        source="nb_orders"
+                        label="resources.customers.fields.orders"
                     />
                     <ColoredNumberField
                         source="total_spent"
                         options={{ style: 'currency', currency: 'USD' }}
+                        textAlign="right"
                     />
                     <DateField source="latest_purchase" showTime />
                     <BooleanField source="has_newsletter" label="News." />
                     <SegmentsField source="groups" />
-                </Datagrid>
+                    <DateField source="birthday" />
+                </DatagridConfigurable>
             )}
         </List>
     );

@@ -6,21 +6,25 @@ import {
     ReferenceManyField,
     EditButton,
     ShowButton,
-    useListContext,
     ReferenceField,
+    SelectField,
     FunctionField,
     useRecordContext,
 } from 'react-admin';
-import { Box, Typography, Divider, List, ListItem } from '@mui/material';
+import { Box, Typography, Divider } from '@mui/material';
 import { TagsListEdit } from './TagsListEdit';
+import { AddTask } from '../tasks/AddTask';
+import { TasksIterator } from '../tasks/TasksIterator';
 
 import { Contact, Sale } from '../types';
+import { genders } from './constants';
 
 export const ContactAside = ({ link = 'edit' }: { link?: 'edit' | 'show' }) => {
     const record = useRecordContext<Contact>();
+    if (!record) return null;
     return (
         <Box ml={4} width={250} minWidth={250}>
-            <Box textAlign="center" mb={2}>
+            <Box mb={2} ml="-5px">
                 {link === 'edit' ? (
                     <EditButton label="Edit Contact" />
                 ) : (
@@ -29,28 +33,35 @@ export const ContactAside = ({ link = 'edit' }: { link?: 'edit' | 'show' }) => {
             </Box>
             <Typography variant="subtitle2">Personal info</Typography>
             <Divider />
-            <EmailField
-                sx={{ mt: 2, mb: 1, display: 'block' }}
-                source="email"
-            />
-            <TextField source="phone_number1" />{' '}
-            <Typography variant="body2" color="textSecondary" component="span">
-                Work
+            <EmailField sx={{ mt: 2, display: 'block' }} source="email" />
+            {record.phone_number1 && (
+                <Box>
+                    <TextField source="phone_number1" />{' '}
+                    <Typography
+                        variant="body2"
+                        color="textSecondary"
+                        component="span"
+                    >
+                        Work
+                    </Typography>
+                </Box>
+            )}
+            {record.phone_number2 && (
+                <Box>
+                    <TextField source="phone_number2" />{' '}
+                    <Typography
+                        variant="body2"
+                        color="textSecondary"
+                        component="span"
+                    >
+                        Home
+                    </Typography>
+                </Box>
+            )}
+            <SelectField source="gender" choices={genders} />
+            <Typography variant="subtitle2" mt={2}>
+                Background
             </Typography>
-            <Box mb={1}>
-                <TextField source="phone_number2" />{' '}
-                <Typography
-                    variant="body2"
-                    color="textSecondary"
-                    component="span"
-                >
-                    Home
-                </Typography>
-            </Box>
-            <Typography variant="body2" mb={3}>
-                {record.gender === 'male' ? 'He/Him' : 'She/Her'}
-            </Typography>
-            <Typography variant="subtitle2">Background</Typography>
             <Divider />
             <Typography variant="body2" mt={2}>
                 {record && record.background}
@@ -103,34 +114,18 @@ export const ContactAside = ({ link = 'edit' }: { link?: 'edit' | 'show' }) => {
                 <Divider />
                 <TagsListEdit />
             </Box>
-            <ReferenceManyField target="contact_id" reference="tasks">
-                <TasksIterator />
-            </ReferenceManyField>
-        </Box>
-    );
-};
-
-const TasksIterator = () => {
-    const { data, isLoading } = useListContext();
-    if (isLoading || data.length === 0) return null;
-    return (
-        <Box>
-            <Typography variant="subtitle2">Tasks</Typography>
-            <Divider />
-
-            <List>
-                {data.map(task => (
-                    <ListItem key={task.id} disableGutters>
-                        <Box>
-                            <Typography variant="body2">{task.text}</Typography>
-                            <Typography variant="body2" color="textSecondary">
-                                due{' '}
-                                <DateField source="due_date" record={task} />
-                            </Typography>
-                        </Box>
-                    </ListItem>
-                ))}
-            </List>
+            <Box>
+                <Typography variant="subtitle2">Tasks</Typography>
+                <Divider />
+                <ReferenceManyField
+                    target="contact_id"
+                    reference="tasks"
+                    sort={{ field: 'due_date', order: 'ASC' }}
+                >
+                    <TasksIterator />
+                </ReferenceManyField>
+                <AddTask />
+            </Box>
         </Box>
     );
 };

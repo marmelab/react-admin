@@ -20,6 +20,7 @@ import englishMessages from 'ra-language-english';
 
 import { AdminContext } from '../AdminContext';
 import { Edit } from './Edit';
+import { Basic, Title, TitleFalse, TitleElement } from './Edit.stories';
 
 describe('<Edit />', () => {
     const defaultEditProps = {
@@ -810,8 +811,36 @@ describe('<Edit />', () => {
         });
     });
 
+    describe('title', () => {
+        it('should display by default the title of the resource', async () => {
+            render(<Basic />);
+            await screen.findByText('War and Peace');
+            screen.getByText('Book War and Peace');
+        });
+
+        it('should render custom title string when defined', async () => {
+            render(<Title />);
+            await screen.findByText('War and Peace');
+            screen.getByText('Hello');
+            expect(screen.queryByText('Book War and Peace')).toBeNull();
+        });
+
+        it('should render custom title element when defined', async () => {
+            render(<TitleElement />);
+            await screen.findByText('War and Peace');
+            screen.getByText('Hello');
+            expect(screen.queryByText('Book War and Peace')).toBeNull();
+        });
+
+        it('should not render default title when false', async () => {
+            render(<TitleFalse />);
+            await screen.findByText('War and Peace');
+            expect(screen.queryByText('Book War and Peace')).toBeNull();
+        });
+    });
+
     describe('defaultTitle', () => {
-        it('should use the record id by default', async () => {
+        it('should use the record title by default', async () => {
             const dataProvider = {
                 getOne: () =>
                     Promise.resolve({ data: { id: 123, title: 'lorem' } }),
@@ -831,7 +860,7 @@ describe('<Edit />', () => {
                     </Edit>
                 </AdminContext>
             );
-            await screen.findByText('Foo #123');
+            await screen.findByText('Foo lorem');
         });
         it('should use the recordRepresentation when defined', async () => {
             const dataProvider = {

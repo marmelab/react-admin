@@ -11,11 +11,11 @@ import { InputAdornment, Grid } from '@mui/material';
 export const ProductEditDetails = () => (
     <Grid container columnSpacing={2}>
         <Grid item xs={12} sm={8}>
-            <TextInput source="reference" fullWidth validate={req} />
+            <TextInput source="reference" validate={req} />
         </Grid>
         <Grid item xs={12} sm={4}>
             <ReferenceInput source="category_id" reference="categories">
-                <SelectInput optionText="name" validate={req} fullWidth />
+                <SelectInput optionText="name" validate={req} />
             </ReferenceInput>
         </Grid>
         <Grid item xs={12} sm={4}>
@@ -27,7 +27,6 @@ export const ProductEditDetails = () => (
                     ),
                 }}
                 validate={req}
-                fullWidth
             />
         </Grid>
         <Grid item xs={12} sm={4}>
@@ -39,7 +38,6 @@ export const ProductEditDetails = () => (
                     ),
                 }}
                 validate={req}
-                fullWidth
             />
         </Grid>
         <Grid item xs={0} sm={4}></Grid>
@@ -52,14 +50,13 @@ export const ProductEditDetails = () => (
                     ),
                 }}
                 validate={req}
-                fullWidth
             />
         </Grid>
         <Grid item xs={12} sm={4}>
-            <NumberInput source="stock" validate={req} fullWidth />
+            <NumberInput source="stock" validate={req} />
         </Grid>
         <Grid item xs={12} sm={4}>
-            <NumberInput source="sales" validate={req} fullWidth />
+            <NumberInput source="sales" validate={req} />
         </Grid>
     </Grid>
 );

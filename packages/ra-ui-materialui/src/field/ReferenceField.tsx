@@ -1,29 +1,22 @@
 import * as React from 'react';
 import { ReactNode } from 'react';
-import PropTypes from 'prop-types';
-import get from 'lodash/get';
 import { Typography, SxProps } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import ErrorIcon from '@mui/icons-material/Error';
 import {
-    useReference,
-    UseReferenceResult,
     LinkToType,
-    ResourceContextProvider,
-    RecordContextProvider,
-    useRecordContext,
-    useCreatePath,
-    Identifier,
     useGetRecordRepresentation,
-    useResourceDefinition,
     useTranslate,
     RaRecord,
+    ReferenceFieldBase,
+    useReferenceFieldContext,
+    useFieldValue,
 } from 'ra-core';
-import { UseQueryOptions } from 'react-query';
+import { UseQueryOptions } from '@tanstack/react-query';
 
 import { LinearProgress } from '../layout';
 import { Link } from '../Link';
-import { FieldProps, fieldPropTypes } from './types';
+import { FieldProps } from './types';
 import { genericMemo } from './genericMemo';
 
 /**
@@ -59,127 +52,62 @@ import { genericMemo } from './genericMemo';
  */
 export const ReferenceField = <
     RecordType extends Record<string, any> = Record<string, any>,
-    ReferenceRecordType extends RaRecord = RaRecord
+    ReferenceRecordType extends RaRecord = RaRecord,
 >(
     props: ReferenceFieldProps<RecordType, ReferenceRecordType>
 ) => {
-    const { source, emptyText, link = 'edit', ...rest } = props;
-    const record = useRecordContext<RecordType>(props);
-    const id = get(record, source);
+    const { emptyText } = props;
     const translate = useTranslate();
+    const id = useFieldValue(props);
 
-    return id == null ? (
-        emptyText ? (
+    if (id == null) {
+        return emptyText ? (
             <Typography component="span" variant="body2">
                 {emptyText && translate(emptyText, { _: emptyText })}
             </Typography>
-        ) : null
-    ) : (
-        <NonEmptyReferenceField<RecordType, ReferenceRecordType>
-            {...rest}
-            link={link}
-            emptyText={emptyText}
-            record={record}
-            id={id as Identifier}
-        />
-    );
-};
+        ) : null;
+    }
 
-ReferenceField.propTypes = {
-    children: PropTypes.node,
-    className: PropTypes.string,
-    cellClassName: PropTypes.string,
-    headerClassName: PropTypes.string,
-    label: fieldPropTypes.label,
-    record: PropTypes.any,
-    reference: PropTypes.string.isRequired,
-    resource: PropTypes.string,
-    sortBy: PropTypes.string,
-    sortByOrder: fieldPropTypes.sortByOrder,
-    source: PropTypes.string.isRequired,
-    translateChoice: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
-    // @ts-ignore
-    link: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.bool,
-        PropTypes.func,
-    ]),
+    return (
+        <ReferenceFieldBase<ReferenceRecordType> {...props}>
+            <PureReferenceFieldView<RecordType, ReferenceRecordType>
+                {...props}
+            />
+        </ReferenceFieldBase>
+    );
 };
 
 export interface ReferenceFieldProps<
     RecordType extends Record<string, any> = Record<string, any>,
-    ReferenceRecordType extends RaRecord = RaRecord
-> extends Omit<FieldProps<RecordType>, 'source'>,
-        Required<Pick<FieldProps<RecordType>, 'source'>> {
+    ReferenceRecordType extends RaRecord = RaRecord,
+> extends FieldProps<RecordType> {
     children?: ReactNode;
-    queryOptions?: UseQueryOptions<ReferenceRecordType[], Error> & {
-        meta?: any;
-    };
+    queryOptions?: Partial<
+        UseQueryOptions<ReferenceRecordType[], Error> & {
+            meta?: any;
+        }
+    >;
     reference: string;
     translateChoice?: Function | boolean;
     link?: LinkToType<ReferenceRecordType>;
     sx?: SxProps;
 }
 
-/**
- * This intermediate component is made necessary by the useReference hook,
- * which cannot be called conditionally when get(record, source) is empty.
- */
-export const NonEmptyReferenceField = <
-    RecordType extends Record<string, any> = Record<string, any>,
-    ReferenceRecordType extends RaRecord = RaRecord
->({
-    children,
-    id,
-    reference,
-    queryOptions,
-    link,
-    ...props
-}: Omit<ReferenceFieldProps<RecordType, ReferenceRecordType>, 'source'> & {
-    id: Identifier;
-}) => {
-    return (
-        <ResourceContextProvider value={reference}>
-            {/* @ts-ignore */}
-            <PureReferenceFieldView<RecordType, ReferenceRecordType>
-                reference={reference}
-                {...props}
-                {...useReference<ReferenceRecordType>({
-                    reference,
-                    id,
-                    options: queryOptions,
-                })}
-                resourceLinkPath={link}
-            >
-                {children}
-            </PureReferenceFieldView>
-        </ResourceContextProvider>
-    );
-};
-
 // useful to prevent click bubbling in a datagrid with rowClick
 const stopPropagation = e => e.stopPropagation();
 
 export const ReferenceFieldView = <
-    RecordType extends Record<string, any> = Record<string, any>
+    RecordType extends Record<string, any> = Record<string, any>,
+    ReferenceRecordType extends RaRecord = RaRecord,
 >(
-    props: ReferenceFieldViewProps<RecordType>
+    props: ReferenceFieldViewProps<RecordType, ReferenceRecordType>
 ) => {
-    const {
-        children,
-        className,
-        emptyText,
-        error,
-        isLoading,
-        reference,
-        referenceRecord,
-        resourceLinkPath,
-        sx,
-    } = props;
+    const { children, className, emptyText, reference, sx } = props;
+    const { error, link, isLoading, referenceRecord } =
+        useReferenceFieldContext();
+
     const getRecordRepresentation = useGetRecordRepresentation(reference);
     const translate = useTranslate();
-    const createPath = useCreatePath();
-    const resourceDefinition = useResourceDefinition({ resource: reference });
 
     if (error) {
         return (
@@ -193,28 +121,19 @@ export const ReferenceFieldView = <
             /* eslint-enable */
         );
     }
+    // We explicitly check isLoading here as the record may not have an id for the reference,
+    // in which case, the query will not be enabled and isPending will be true
+    // isLoading checks that we are actually loading the reference record
     if (isLoading) {
         return <LinearProgress />;
     }
     if (!referenceRecord) {
         return emptyText ? (
-            <>{emptyText && translate(emptyText, { _: emptyText })}</>
+            <Typography component="span" variant="body2">
+                {emptyText && translate(emptyText, { _: emptyText })}
+            </Typography>
         ) : null;
     }
-
-    const link =
-        resourceLinkPath === false ||
-        (resourceLinkPath === 'edit' && !resourceDefinition.hasEdit) ||
-        (resourceLinkPath === 'show' && !resourceDefinition.hasShow)
-            ? false
-            : createPath({
-                  resource: reference,
-                  id: referenceRecord.id,
-                  type:
-                      typeof resourceLinkPath === 'function'
-                          ? resourceLinkPath(referenceRecord, reference)
-                          : resourceLinkPath,
-              });
 
     let child = children || (
         <Typography component="span" variant="body2">
@@ -225,57 +144,34 @@ export const ReferenceFieldView = <
     if (link) {
         return (
             <Root className={className} sx={sx}>
-                <RecordContextProvider value={referenceRecord}>
-                    <Link
-                        to={link}
-                        className={ReferenceFieldClasses.link}
-                        onClick={stopPropagation}
-                        state={{ _scrollToTop: true }}
-                    >
-                        {child}
-                    </Link>
-                </RecordContextProvider>
+                <Link
+                    to={link}
+                    className={ReferenceFieldClasses.link}
+                    onClick={stopPropagation}
+                    state={{ _scrollToTop: true }}
+                >
+                    {child}
+                </Link>
             </Root>
         );
     }
 
     return (
         <Root className={className} sx={sx}>
-            <RecordContextProvider value={referenceRecord}>
-                {child}
-            </RecordContextProvider>
+            {child}
         </Root>
     );
 };
 
-ReferenceFieldView.propTypes = {
-    children: PropTypes.element,
-    className: PropTypes.string,
-    isLoading: PropTypes.bool,
-    record: PropTypes.any,
-    reference: PropTypes.string,
-    referenceRecord: PropTypes.any,
-    resource: PropTypes.string,
-    // @ts-ignore
-    resourceLinkPath: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.bool,
-        PropTypes.func,
-    ]).isRequired,
-    source: PropTypes.string,
-    translateChoice: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
-};
-
 export interface ReferenceFieldViewProps<
     RecordType extends Record<string, any> = Record<string, any>,
-    ReferenceRecordType extends RaRecord = RaRecord
+    ReferenceRecordType extends RaRecord = RaRecord,
 > extends FieldProps<RecordType>,
-        UseReferenceResult {
+        Omit<ReferenceFieldProps<RecordType, ReferenceRecordType>, 'link'> {
     children?: ReactNode;
     reference: string;
     resource?: string;
     translateChoice?: Function | boolean;
-    resourceLinkPath?: LinkToType<ReferenceRecordType>;
     sx?: SxProps;
 }
 

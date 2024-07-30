@@ -56,16 +56,12 @@ const UseInfiniteComponent = ({
     options = {},
     meta = undefined,
 }) => {
-    const {
-        data,
-        fetchNextPage,
-        hasNextPage,
-        isFetchingNextPage,
-    } = useInfiniteGetList(
-        resource,
-        { pagination, sort, filter, meta },
-        options
-    );
+    const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
+        useInfiniteGetList(
+            resource,
+            { pagination, sort, filter, meta },
+            options
+        );
 
     return (
         <div style={{ width: 250, margin: 'auto' }}>
@@ -172,15 +168,11 @@ export const InfiniteScroll = () => {
 };
 
 const UseInfiniteComponentWithIntersectionObserver = () => {
-    const {
-        data,
-        fetchNextPage,
-        hasNextPage,
-        isFetchingNextPage,
-    } = useInfiniteGetList('countries', {
-        pagination: { page: 1, perPage: 20 },
-        sort: { field: 'id', order: 'DESC' },
-    });
+    const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
+        useInfiniteGetList('countries', {
+            pagination: { page: 1, perPage: 20 },
+            sort: { field: 'id', order: 'DESC' },
+        });
     const observerElem = useRef(null);
 
     const handleObserver = useCallback(

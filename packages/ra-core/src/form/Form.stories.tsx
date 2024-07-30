@@ -8,6 +8,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
+import { Route, Routes, useNavigate, Link, HashRouter } from 'react-router-dom';
 
 import { CoreAdminContext } from '../core';
 import { Form } from './Form';
@@ -16,6 +17,7 @@ import { required } from './validate';
 import ValidationError from './ValidationError';
 import { mergeTranslations } from '../i18n';
 import { I18nProvider } from '../types';
+import { SaveContextProvider, useNotificationContext } from '..';
 
 export default {
     title: 'ra-core/form/Form',
@@ -96,6 +98,7 @@ const CustomInput = (props: UseControllerProps) => {
                 type="text"
                 aria-invalid={fieldState.invalid}
                 {...field}
+                value={field.value ?? ''}
             />
             <p>{fieldState.error?.message}</p>
         </div>
@@ -177,7 +180,11 @@ export const UndefinedValue = () => {
 
 const defaultI18nProvider = polyglotI18nProvider(() =>
     mergeTranslations(englishMessages, {
-        app: { validation: { required: 'This field must be provided' } },
+        app: {
+            validation: {
+                required: 'This field must be provided',
+            },
+        },
     })
 );
 
@@ -287,6 +294,113 @@ export const ZodResolver = ({
                 <button type="submit">Submit</button>
             </Form>
             <pre>{JSON.stringify(result, null, 2)}</pre>
+        </CoreAdminContext>
+    );
+};
+
+const FormUnderTest = () => {
+    const navigate = useNavigate();
+    return (
+        <>
+            <Form
+                record={{ title: 'lorem', body: 'ipsum' }}
+                onSubmit={() => setTimeout(() => navigate('/'), 0)}
+                warnWhenUnsavedChanges
+            >
+                <Input source="title" />
+                <Input source="body" />
+                <button type="submit">Submit</button>
+            </Form>
+            <Link to="/">Leave the form</Link>
+        </>
+    );
+};
+
+export const WarnWhenUnsavedChanges = ({
+    i18nProvider = defaultI18nProvider,
+}: {
+    i18nProvider?: I18nProvider;
+}) => (
+    <CoreAdminContext i18nProvider={i18nProvider}>
+        <Routes>
+            <Route path="/" element={<Link to="/form">Go to form</Link>} />
+            <Route path="/form" element={<FormUnderTest />} />
+        </Routes>
+    </CoreAdminContext>
+);
+
+export const InNonDataRouter = ({
+    i18nProvider = defaultI18nProvider,
+}: {
+    i18nProvider?: I18nProvider;
+}) => (
+    <HashRouter>
+        <CoreAdminContext i18nProvider={i18nProvider}>
+            <Routes>
+                <Route path="/" element={<Link to="/form">Go to form</Link>} />
+                <Route path="/form" element={<FormUnderTest />} />
+            </Routes>
+        </CoreAdminContext>
+    </HashRouter>
+);
+
+const Notifications = () => {
+    const { notifications } = useNotificationContext();
+    return (
+        <ul>
+            {notifications.map(({ message }, id) => (
+                <li key={id}>{message}</li>
+            ))}
+        </ul>
+    );
+};
+
+export const ServerSideValidation = () => {
+    const save = React.useCallback(values => {
+        const errors: any = {};
+        if (!values.defaultMessage) {
+            errors.defaultMessage = 'ra.validation.required';
+        }
+        if (!values.customMessage) {
+            errors.customMessage = 'This field is required';
+        }
+        if (!values.customMessageTranslationKey) {
+            errors.customMessageTranslationKey = 'app.validation.required';
+        }
+        if (!values.missingCustomMessageTranslationKey) {
+            errors.missingCustomMessageTranslationKey =
+                'app.validation.missing';
+        }
+        if (!values.customGlobalMessage) {
+            errors.customGlobalMessage = 'ra.validation.required';
+            errors.root = {
+                serverError: 'There are validation errors. Please fix them.',
+            };
+        }
+        return Object.keys(errors).length > 0 ? errors : undefined;
+    }, []);
+    return (
+        <CoreAdminContext i18nProvider={defaultI18nProvider}>
+            <SaveContextProvider value={{ save }}>
+                <Form
+                    record={{
+                        id: 1,
+                        defaultMessage: 'foo',
+                        customMessage: 'foo',
+                        customMessageTranslationKey: 'foo',
+                        missingCustomMessageTranslationKey: 'foo',
+                        customGlobalMessage: 'foo',
+                    }}
+                >
+                    <Input source="defaultMessage" />
+                    <Input source="customMessage" />
+                    <Input source="customMessageTranslationKey" />
+                    <Input source="missingCustomMessageTranslationKey" />
+                    <Input source="customGlobalMessage" />
+                    <button type="submit">Submit</button>
+                </Form>
+                <Notifications />
+            </SaveContextProvider>
         </CoreAdminContext>
     );
 };

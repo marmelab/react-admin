@@ -11,7 +11,8 @@ import {
     DifferentIdTypes,
     TranslateChoice,
     InsideArrayInput,
-    WithRecordRepresentation,
+    InsideReferenceArrayInput,
+    InsideReferenceArrayInputDefaultValue,
 } from './SelectArrayInput.stories';
 
 describe('<SelectArrayInput />', () => {
@@ -178,7 +179,7 @@ describe('<SelectArrayInput />', () => {
     it('should use optionText with an element value as text identifier', () => {
         const Foobar = () => {
             const record = useRecordContext();
-            return <span>{record.foobar}</span>;
+            return <span>{record?.foobar}</span>;
         };
         render(
             <AdminContext dataProvider={testDataProvider()}>
@@ -306,11 +307,11 @@ describe('<SelectArrayInput />', () => {
             });
         });
 
-        it('should not render a LinearProgress if loading is true and a second has not passed yet', () => {
+        it('should not render a LinearProgress isPending is true and a second has not passed yet', () => {
             render(
                 <AdminContext dataProvider={testDataProvider()}>
                     <SimpleForm onSubmit={jest.fn()}>
-                        <SelectArrayInput {...defaultProps} isLoading />
+                        <SelectArrayInput {...defaultProps} isPending />
                     </SimpleForm>
                 </AdminContext>
             );
@@ -318,21 +319,21 @@ describe('<SelectArrayInput />', () => {
             expect(screen.queryByRole('progressbar')).toBeNull();
         });
 
-        it('should render a LinearProgress if loading is true and a second has passed', async () => {
+        it('should render a LinearProgress if isPending true and a second has passed', async () => {
             render(
                 <AdminContext dataProvider={testDataProvider()}>
                     <SimpleForm onSubmit={jest.fn()}>
-                        <SelectArrayInput {...defaultProps} isLoading />
+                        <SelectArrayInput {...defaultProps} isPending />
                     </SimpleForm>
                 </AdminContext>
             );
 
             await new Promise(resolve => setTimeout(resolve, 1001));
 
-            expect(screen.queryByRole('progressbar')).not.toBeNull();
+            await screen.findByRole('progressbar');
         });
 
-        it('should not render a LinearProgress if loading is false', () => {
+        it('should not render a LinearProgress if isPending is false', () => {
             render(
                 <AdminContext dataProvider={testDataProvider()}>
                     <SimpleForm onSubmit={jest.fn()}>
@@ -371,8 +372,10 @@ describe('<SelectArrayInput />', () => {
 
         fireEvent.click(screen.getByText('ra.action.create'));
         await new Promise(resolve => setTimeout(resolve));
-        // 2 because there is both the chip for the new selected item and the option (event if hidden)
-        expect(screen.queryAllByText(newChoice.name).length).toEqual(2);
+        await waitFor(() => {
+            // 2 because there is both the chip for the new selected item and the option (event if hidden)
+            expect(screen.queryAllByText(newChoice.name).length).toEqual(2);
+        });
     });
 
     it('should support creation of a new choice through the onCreate event with a promise', async () => {
@@ -448,8 +451,10 @@ describe('<SelectArrayInput />', () => {
         fireEvent.click(screen.getByText('ra.action.create'));
         await new Promise(resolve => setTimeout(resolve));
         input.blur();
-        // 2 because there is both the chip for the new selected item and the option (event if hidden)
-        expect(screen.queryAllByText(newChoice.name.en).length).toEqual(2);
+        await waitFor(() => {
+            // 2 because there is both the chip for the new selected item and the option (event if hidden)
+            expect(screen.queryAllByText(newChoice.name.en).length).toEqual(2);
+        });
     });
 
     it('should support creation of a new choice with function optionText', async () => {
@@ -480,8 +485,10 @@ describe('<SelectArrayInput />', () => {
         fireEvent.click(screen.getByText('ra.action.create'));
         await new Promise(resolve => setTimeout(resolve));
         input.blur();
-        // 2 because there is both the chip for the new selected item and the option (event if hidden)
-        expect(screen.queryAllByText(newChoice.name).length).toEqual(2);
+        await waitFor(() => {
+            // 2 because there is both the chip for the new selected item and the option (event if hidden)
+            expect(screen.queryAllByText(newChoice.name).length).toEqual(2);
+        });
     });
 
     it('should support creation of a new choice through the create element', async () => {
@@ -519,11 +526,13 @@ describe('<SelectArrayInput />', () => {
         fireEvent.click(screen.getByText('Get the kid'));
         input.blur();
 
-        // 2 because there is both the chip for the new selected item and the option (event if hidden)
-        expect(screen.queryAllByText(newChoice.name).length).toEqual(2);
+        await waitFor(() => {
+            // 2 because there is both the chip for the new selected item and the option (event if hidden)
+            expect(screen.queryAllByText(newChoice.name).length).toEqual(2);
+        });
     });
 
-    it('should recive an event object on change', async () => {
+    it('should receive an event object on change', async () => {
         const choices = [...defaultProps.choices];
         const onChange = jest.fn();
 
@@ -553,7 +562,7 @@ describe('<SelectArrayInput />', () => {
         });
     });
 
-    it('should recive a value on change when creating a new choice', async () => {
+    it('should receive a value on change when creating a new choice', async () => {
         jest.spyOn(console, 'warn').mockImplementation(() => {});
         const choices = [...defaultProps.choices];
         const newChoice = { id: 'js_fatigue', name: 'New Kid On The Block' };
@@ -596,7 +605,7 @@ describe('<SelectArrayInput />', () => {
         });
     });
 
-    it('should show selected values when ids type are inconsistant', async () => {
+    it('should show selected values when ids type are inconsistent', async () => {
         render(<DifferentIdTypes />);
         await waitFor(() => {
             expect(screen.queryByText('artist_1')).not.toBeNull();
@@ -661,19 +670,26 @@ describe('<SelectArrayInput />', () => {
         expect(await screen.findAllByText('Foo')).toHaveLength(2);
     });
 
-    describe('record representation', () => {
-        it('should use record representation if defined', async () => {
-            render(<WithRecordRepresentation />);
-            await screen.findByText('resources.tags.fields.tag_ids');
-            expect(screen.queryByText('1 - Architecture')).not.toBeNull();
-            expect(screen.queryByText('3 - Painting')).not.toBeNull();
+    describe('inside ReferenceArrayInput', () => {
+        it('should use the recordRepresentation as optionText', async () => {
+            render(<InsideReferenceArrayInput />);
+            await screen.findByText('Leo Tolstoy');
         });
-
-        it('should use option text instead of record representation if defined', async () => {
-            render(<WithRecordRepresentation setOptionText />);
-            await screen.findByText('resources.tags.fields.tag_ids');
-            expect(screen.queryByText('Architecture')).not.toBeNull();
-            expect(screen.queryByText('Painting')).not.toBeNull();
+        it('should not change an undefined value to empty string', async () => {
+            const onSuccess = jest.fn();
+            render(
+                <InsideReferenceArrayInputDefaultValue onSuccess={onSuccess} />
+            );
+            const input = await screen.findByDisplayValue('War and Peace');
+            fireEvent.change(input, { target: { value: 'War' } });
+            screen.getByText('Save').click();
+            await waitFor(() => {
+                expect(onSuccess).toHaveBeenCalledWith(
+                    expect.objectContaining({ authors: undefined }),
+                    expect.anything(),
+                    expect.anything()
+                );
+            });
         });
     });
 });

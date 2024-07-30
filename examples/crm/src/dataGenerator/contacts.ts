@@ -11,7 +11,7 @@ import { randomDate, weightedBoolean } from './utils';
 import { Db } from './types';
 import { Contact } from '../types';
 
-const genders = ['male', 'female'];
+const genders = ['male', 'female', 'nonbinary'];
 const status = ['cold', 'cold', 'cold', 'warm', 'warm', 'hot', 'in-contract'];
 const maxContacts = {
     1: 1,
@@ -77,6 +77,7 @@ export const generateContacts = (db: Db): Contact[] => {
                 .map(tag => tag.id), // finalize
             sales_id: company.sales_id,
             nb_notes: 0,
+            nb_tasks: 0,
         };
     });
 };

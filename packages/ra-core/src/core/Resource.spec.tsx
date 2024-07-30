@@ -1,11 +1,10 @@
 import * as React from 'react';
-import expect from 'expect';
 import { render, screen } from '@testing-library/react';
-import { createMemoryHistory } from 'history';
-
 import { CoreAdminContext } from './CoreAdminContext';
+
 import { Resource } from './Resource';
 import { Route } from 'react-router';
+import { TestMemoryRouter } from '../routing';
 
 const PostList = () => <div>PostList</div>;
 const PostEdit = () => <div>PostEdit</div>;
@@ -27,24 +26,30 @@ const resource = {
 };
 
 describe('<Resource>', () => {
-    it('renders resource routes by default', () => {
-        const history = createMemoryHistory();
+    it('renders resource routes by default', async () => {
+        let navigate;
         render(
-            <CoreAdminContext history={history}>
-                <Resource {...resource} />
-            </CoreAdminContext>
+            <TestMemoryRouter
+                navigateCallback={n => {
+                    navigate = n;
+                }}
+            >
+                <CoreAdminContext>
+                    <Resource {...resource} />
+                </CoreAdminContext>
+            </TestMemoryRouter>
         );
         // Resource does not declare a route matching its name, it only renders its child routes
         // so we don't need to navigate to a path matching its name
-        history.push('/');
-        expect(screen.getByText('PostList')).not.toBeNull();
-        history.push('/123');
-        expect(screen.getByText('PostEdit')).not.toBeNull();
-        history.push('/123/show');
-        expect(screen.getByText('PostShow')).not.toBeNull();
-        history.push('/create');
-        expect(screen.getByText('PostCreate')).not.toBeNull();
-        history.push('/customroute');
-        expect(screen.getByText('PostCustomRoute')).not.toBeNull();
+        navigate('/');
+        await screen.findByText('PostList');
+        navigate('/123');
+        await screen.findByText('PostEdit');
+        navigate('/123/show');
+        await screen.findByText('PostShow');
+        navigate('/create');
+        await screen.findByText('PostCreate');
+        navigate('/customroute');
+        await screen.findByText('PostCustomRoute');
     });
 });

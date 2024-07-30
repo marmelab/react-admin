@@ -33,20 +33,25 @@ describe('useUnique', () => {
         await screen.findByDisplayValue('John Doe');
 
         fireEvent.click(screen.getByText('Submit'));
+        await waitFor(
+            () => {
+                expect(dataProvider.getList).toHaveBeenCalledWith('users', {
+                    filter: {
+                        name: 'John Doe',
+                    },
+                    pagination: {
+                        page: 1,
+                        perPage: 1,
+                    },
+                    sort: {
+                        field: 'id',
+                        order: 'ASC',
+                    },
+                });
+            },
+            { timeout: 5000 }
+        );
         await screen.findByText('Must be unique');
-        expect(dataProvider.getList).toHaveBeenCalledWith('users', {
-            filter: {
-                name: 'John Doe',
-            },
-            pagination: {
-                page: 1,
-                perPage: 1,
-            },
-            sort: {
-                field: 'id',
-                order: 'ASC',
-            },
-        });
         expect(dataProvider.create).not.toHaveBeenCalled();
     });
 
@@ -78,35 +83,40 @@ describe('useUnique', () => {
         await waitFor(() =>
             expect(dataProvider.getOne).toHaveBeenCalledWith('users', {
                 id: 1,
+                signal: undefined,
             })
         );
-        fireEvent.change(screen.getByDisplayValue('John Doe'), {
+        await new Promise(resolve => setTimeout(resolve, 500));
+        fireEvent.change(await screen.findByDisplayValue('John Doe'), {
             target: { value: 'Jane Doe' },
         });
-        fireEvent.blur(screen.getByDisplayValue('Jane Doe'));
+        fireEvent.blur(await screen.findByDisplayValue('Jane Doe'));
         fireEvent.click(screen.getByText('Submit'));
 
-        await waitFor(() =>
-            expect(dataProvider.getList).toHaveBeenCalledWith('users', {
-                filter: {
-                    name: 'Jane Doe',
-                },
-                pagination: {
-                    page: 1,
-                    perPage: 1,
-                },
-                sort: {
-                    field: 'id',
-                    order: 'ASC',
-                },
-            })
+        await waitFor(
+            () =>
+                expect(dataProvider.getList).toHaveBeenCalledWith('users', {
+                    filter: {
+                        name: 'Jane Doe',
+                    },
+                    pagination: {
+                        page: 1,
+                        perPage: 1,
+                    },
+                    sort: {
+                        field: 'id',
+                        order: 'ASC',
+                    },
+                }),
+            { timeout: 5000 }
         );
         await screen.findByText('Must be unique');
         fireEvent.change(screen.getByDisplayValue('Jane Doe'), {
             target: { value: 'John Doe' },
         });
-        await waitFor(() =>
-            expect(screen.queryByText('Must be unique')).toBeNull()
+        await waitFor(
+            () => expect(screen.queryByText('Must be unique')).toBeNull(),
+            { timeout: 5000 }
         );
     });
 
@@ -224,23 +234,26 @@ describe('useUnique', () => {
 
         fireEvent.click(screen.getByText('Submit'));
 
-        await waitFor(() => {
-            expect(dataProvider.getList).toHaveBeenCalledWith('users', {
-                filter: {
-                    identity: {
-                        name: 'John Doe',
+        await waitFor(
+            () => {
+                expect(dataProvider.getList).toHaveBeenCalledWith('users', {
+                    filter: {
+                        identity: {
+                            name: 'John Doe',
+                        },
                     },
-                },
-                pagination: {
-                    page: 1,
-                    perPage: 1,
-                },
-                sort: {
-                    field: 'id',
-                    order: 'ASC',
-                },
-            });
-        });
+                    pagination: {
+                        page: 1,
+                        perPage: 1,
+                    },
+                    sort: {
+                        field: 'id',
+                        order: 'ASC',
+                    },
+                });
+            },
+            { timeout: 5000 }
+        );
         await screen.findByText('Must be unique');
         expect(dataProvider.create).not.toHaveBeenCalled();
     });

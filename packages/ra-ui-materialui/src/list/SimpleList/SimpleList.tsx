@@ -1,9 +1,7 @@
 import * as React from 'react';
-import { isElement } from 'react-is';
 import { styled } from '@mui/material/styles';
 import type { SxProps } from '@mui/material';
 import { isValidElement, ReactNode, ReactElement } from 'react';
-import PropTypes from 'prop-types';
 import {
     Avatar,
     List,
@@ -22,7 +20,7 @@ import {
     RaRecord,
     RecordContextProvider,
     sanitizeListRestProps,
-    useListContext,
+    useListContextWithProps,
     useResourceContext,
     useGetRecordRepresentation,
     useCreatePath,
@@ -86,12 +84,13 @@ export const SimpleList = <RecordType extends RaRecord = any>(
         rowStyle,
         ...rest
     } = props;
-    const { data, isLoading, total } = useListContext<RecordType>(props);
+    const { data, isPending, total } =
+        useListContextWithProps<RecordType>(props);
     const resource = useResourceContext(props);
     const getRecordRepresentation = useGetRecordRepresentation(resource);
     const translate = useTranslate();
 
-    if (isLoading === true) {
+    if (isPending === true) {
         return (
             <SimpleListLoading
                 className={className}
@@ -103,13 +102,6 @@ export const SimpleList = <RecordType extends RaRecord = any>(
         );
     }
 
-    if (data == null || data.length === 0 || total === 0) {
-        if (empty) {
-            return empty;
-        }
-
-        return null;
-    }
     const renderAvatar = (
         record: RecordType,
         avatarCallback: FunctionToElement<RecordType>
@@ -125,7 +117,15 @@ export const SimpleList = <RecordType extends RaRecord = any>(
         }
     };
 
-    return (total == null && data?.length > 0) || total > 0 ? (
+    if (data == null || data.length === 0 || total === 0) {
+        if (empty) {
+            return empty;
+        }
+
+        return null;
+    }
+
+    return (
         <Root className={className} {...sanitizeListRestProps(rest)}>
             {data.map((record, rowIndex) => (
                 <RecordContextProvider key={record.id} value={record}>
@@ -161,9 +161,13 @@ export const SimpleList = <RecordType extends RaRecord = any>(
                                                       ...record,
                                                       _: primaryText,
                                                   })
-                                                : isElement(primaryText)
-                                                ? primaryText
-                                                : primaryText(record, record.id)
+                                                : isValidElement(primaryText)
+                                                  ? primaryText
+                                                  : // @ts-ignore
+                                                    primaryText(
+                                                        record,
+                                                        record.id
+                                                    )
                                             : getRecordRepresentation(record)}
 
                                         {!!tertiaryText &&
@@ -184,14 +188,15 @@ export const SimpleList = <RecordType extends RaRecord = any>(
                                                                   _: tertiaryText,
                                                               }
                                                           )
-                                                        : isElement(
-                                                              tertiaryText
-                                                          )
-                                                        ? tertiaryText
-                                                        : tertiaryText(
-                                                              record,
-                                                              record.id
-                                                          )}
+                                                        : isValidElement(
+                                                                tertiaryText
+                                                            )
+                                                          ? tertiaryText
+                                                          : // @ts-ignore
+                                                            tertiaryText(
+                                                                record,
+                                                                record.id
+                                                            )}
                                                 </span>
                                             ))}
                                     </div>
@@ -203,9 +208,10 @@ export const SimpleList = <RecordType extends RaRecord = any>(
                                               ...record,
                                               _: secondaryText,
                                           })
-                                        : isElement(secondaryText)
-                                        ? secondaryText
-                                        : secondaryText(record, record.id))
+                                        : isValidElement(secondaryText)
+                                          ? secondaryText
+                                          : // @ts-ignore
+                                            secondaryText(record, record.id))
                                 }
                             />
                             {(rightAvatar || rightIcon) && (
@@ -227,37 +233,7 @@ export const SimpleList = <RecordType extends RaRecord = any>(
                 </RecordContextProvider>
             ))}
         </Root>
-    ) : null;
-};
-
-SimpleList.propTypes = {
-    className: PropTypes.string,
-    leftAvatar: PropTypes.func,
-    leftIcon: PropTypes.func,
-    linkType: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.bool,
-        PropTypes.func,
-    ]),
-    primaryText: PropTypes.oneOfType([
-        PropTypes.func,
-        PropTypes.element,
-        PropTypes.string,
-    ]),
-    rightAvatar: PropTypes.func,
-    rightIcon: PropTypes.func,
-    secondaryText: PropTypes.oneOfType([
-        PropTypes.func,
-        PropTypes.element,
-        PropTypes.string,
-    ]),
-    tertiaryText: PropTypes.oneOfType([
-        PropTypes.func,
-        PropTypes.element,
-        PropTypes.string,
-    ]),
-    rowStyle: PropTypes.func,
-    rowSx: PropTypes.func,
+    );
 };
 
 export type FunctionToElement<RecordType extends RaRecord = any> = (
@@ -279,14 +255,12 @@ export interface SimpleListProps<RecordType extends RaRecord = any>
     secondaryText?: FunctionToElement<RecordType> | ReactElement | string;
     tertiaryText?: FunctionToElement<RecordType> | ReactElement | string;
     rowSx?: (record: RecordType, index: number) => SxProps;
-    /**
-     * @deprecated Use rowSx instead
-     */
     rowStyle?: (record: RecordType, index: number) => any;
     // can be injected when using the component without context
     resource?: string;
     data?: RecordType[];
     isLoading?: boolean;
+    isPending?: boolean;
     isLoaded?: boolean;
     total?: number;
 }
@@ -307,15 +281,18 @@ const LinkOrNot = (
     const type =
         typeof linkType === 'function' ? linkType(record, id) : linkType;
 
-    return type === false ? (
-        <ListItemText
-            // @ts-ignore
-            component="div"
-            {...rest}
-        >
-            {children}
-        </ListItemText>
-    ) : (
+    if (type === false) {
+        return (
+            <ListItemText
+                // @ts-ignore
+                component="div"
+                {...rest}
+            >
+                {children}
+            </ListItemText>
+        );
+    }
+    return (
         // @ts-ignore
         <ListItemButton
             component={Link}
@@ -330,8 +307,8 @@ const LinkOrNot = (
 export type FunctionLinkType = (record: RaRecord, id: Identifier) => string;
 
 export interface LinkOrNotProps {
-    linkType?: string | FunctionLinkType | false;
-    resource: string;
+    linkType: string | FunctionLinkType | false;
+    resource?: string;
     id: Identifier;
     record: RaRecord;
     children: ReactNode;

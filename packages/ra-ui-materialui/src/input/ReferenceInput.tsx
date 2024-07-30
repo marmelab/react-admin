@@ -1,12 +1,5 @@
-import React, { Children, ReactElement } from 'react';
-import PropTypes from 'prop-types';
-import {
-    ChoicesContextProvider,
-    useReferenceInputController,
-    InputProps,
-    ResourceContextProvider,
-    UseReferenceInputControllerParams,
-} from 'ra-core';
+import React from 'react';
+import { ReferenceInputBase, ReferenceInputBaseProps } from 'ra-core';
 
 import { AutocompleteInput } from './AutocompleteInput';
 
@@ -22,8 +15,8 @@ import { AutocompleteInput } from './AutocompleteInput';
  * instead of `<AutocompleteInput>`).
  *
  * @example // default selector: AutocompleteInput
- * export const CommentEdit = (props) => (
- *     <Edit {...props}>
+ * export const CommentEdit = () => (
+ *     <Edit>
  *         <SimpleForm>
  *             <ReferenceInput label="Post" source="post_id" reference="posts" />
  *         </SimpleForm>
@@ -31,8 +24,8 @@ import { AutocompleteInput } from './AutocompleteInput';
  * );
  *
  * @example // using a SelectInput as selector
- * export const CommentEdit = (props) => (
- *     <Edit {...props}>
+ * export const CommentEdit = () => (
+ *     <Edit>
  *         <SimpleForm>
  *             <ReferenceInput label="Post" source="post_id" reference="posts">
  *                 <SelectInput optionText="title" />
@@ -71,54 +64,23 @@ import { AutocompleteInput } from './AutocompleteInput';
  * a `setFilters` function. You can call this function to filter the results.
  */
 export const ReferenceInput = (props: ReferenceInputProps) => {
-    const {
-        children = defaultChildren,
-        reference,
-        sort = { field: 'id', order: 'DESC' },
-        filter = {},
-    } = props;
+    const { children = defaultChildren, ...rest } = props;
 
-    const controllerProps = useReferenceInputController({
-        ...props,
-        sort,
-        filter,
-    });
-
-    if (Children.count(children) !== 1) {
-        throw new Error('<ReferenceInput> only accepts a single child');
+    if (props.validate && process.env.NODE_ENV !== 'production') {
+        throw new Error(
+            '<ReferenceInput> does not accept a validate prop. Set the validate prop on the child instead.'
+        );
     }
 
-    return (
-        <ResourceContextProvider value={reference}>
-            <ChoicesContextProvider value={controllerProps}>
-                {children}
-            </ChoicesContextProvider>
-        </ResourceContextProvider>
-    );
-};
-
-ReferenceInput.propTypes = {
-    children: PropTypes.element,
-    filter: PropTypes.object,
-    label: PropTypes.string,
-    page: PropTypes.number,
-    perPage: PropTypes.number,
-    record: PropTypes.object,
-    reference: PropTypes.string.isRequired,
-    resource: PropTypes.string,
-    sort: PropTypes.shape({
-        field: PropTypes.string,
-        order: PropTypes.oneOf(['ASC', 'DESC']),
-    }),
-    source: PropTypes.string,
+    return <ReferenceInputBase {...rest}>{children}</ReferenceInputBase>;
 };
 
 const defaultChildren = <AutocompleteInput />;
 
-export interface ReferenceInputProps
-    extends InputProps,
-        UseReferenceInputControllerParams {
-    children?: ReactElement;
-    label?: string;
+export interface ReferenceInputProps extends ReferenceInputBaseProps {
+    /**
+     * Call validate on the child component instead
+     */
+    validate?: never;
     [key: string]: any;
 }

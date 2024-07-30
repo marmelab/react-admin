@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
-import PropTypes from 'prop-types';
 import { Button, CardContent, CircularProgress } from '@mui/material';
 import {
     Form,
@@ -31,8 +30,8 @@ export const LoginForm = (props: LoginFormProps) => {
                     typeof error === 'string'
                         ? error
                         : typeof error === 'undefined' || !error.message
-                        ? 'ra.auth.sign_in_error'
-                        : error.message,
+                          ? 'ra.auth.sign_in_error'
+                          : error.message,
                     {
                         type: 'error',
                         messageArgs: {
@@ -40,8 +39,8 @@ export const LoginForm = (props: LoginFormProps) => {
                                 typeof error === 'string'
                                     ? error
                                     : error && error.message
-                                    ? error.message
-                                    : undefined,
+                                      ? error.message
+                                      : undefined,
                         },
                     }
                 );
@@ -62,7 +61,6 @@ export const LoginForm = (props: LoginFormProps) => {
                     label={translate('ra.auth.username')}
                     autoComplete="username"
                     validate={required()}
-                    fullWidth
                 />
                 <TextInput
                     source="password"
@@ -70,7 +68,6 @@ export const LoginForm = (props: LoginFormProps) => {
                     type="password"
                     autoComplete="current-password"
                     validate={required()}
-                    fullWidth
                 />
 
                 <Button
@@ -128,6 +125,3 @@ interface FormData {
     username: string;
     password: string;
 }
-LoginForm.propTypes = {
-    redirectTo: PropTypes.string,
-};

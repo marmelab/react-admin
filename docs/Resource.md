@@ -7,6 +7,8 @@ title: "The Resource Component"
 
 `<Resource>` components define the CRUD routes of a react-admin application. 
 
+<iframe src="https://www.youtube-nocookie.com/embed/AURvUMu-Fb4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;"></iframe>
+
 In react-admin terms, a *resource* is a string that refers to an entity type (like 'products', 'subscribers', or 'tags'). *Records* are objects with an `id` field, and two records of the same *resource* have the same field structure (e.g. all posts records have a title, a publication date, etc.). 
 
 A `<Resource>` component has 3 responsibilities:
@@ -90,7 +92,7 @@ The routing will map the component as follows:
 
 * [`name`](#name)
 * [`icon`](#icon)
-* [`options`](#icon)
+* [`options`](#options)
 * [`recordRepresentation`](#recordrepresentation)
 
 ## `children`
@@ -130,7 +132,7 @@ export const BookList = () => {
     const { authorId } = useParams();
     return (
         <List resource="books" filter={{ authorId }}>
-            <Datagrid rowClick="edit">
+            <Datagrid>
                 <TextField source="id" />
                 <TextField source="title" />
                 <TextField source="year" />
@@ -208,7 +210,14 @@ const App = () => (
 
 ## `recordRepresentation`
 
-Whenever react-admin needs to render a record (e.g. in the title of an edition view, or in a `<ReferenceField>`), it uses the `recordRepresentation` to do it. By default, the representation of a record is its `id` field. But you can customize it by specifying the representation you want.
+Whenever react-admin needs to render a record (e.g. in the title of an edition view, or in a `<ReferenceField>`), it uses the `recordRepresentation` to do it. By default, react-admin will use the first available field among the following:
+- `name`
+- `title`
+- `label`
+- `reference`
+- `id`
+
+However, you can customize it by specifying the representation you want.
 
 For instance, to change the default representation of "users" records to render the full name instead of the id:
 
@@ -322,8 +331,8 @@ export const App = () => (
 ```
 
 <video controls autoplay playsinline muted loop width="100%">
-  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-navigation/latest/breadcumb-nested-resource.webm" type="video/webm" />
-  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-navigation/latest/breadcumb-nested-resource.mp4" type="video/mp4" />
+  <source src="https://react-admin-ee.marmelab.com/assets/ra-navigation/latest/breadcumb-nested-resource.webm" type="video/webm" />
+  <source src="https://react-admin-ee.marmelab.com/assets/ra-navigation/latest/breadcumb-nested-resource.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
 
@@ -347,7 +356,7 @@ export const SongList = () => {
     const { id } = useParams();
     return (
         <List resource="songs" filter={{ artistId: id }}>
-            <Datagrid rowClick="edit">
+            <Datagrid>
                 <TextField source="title" />
                 <DateField source="released" />
                 <TextField source="writer" />

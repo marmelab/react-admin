@@ -1,14 +1,20 @@
 import * as React from 'react';
 import expect from 'expect';
 import { render, fireEvent, screen, waitFor } from '@testing-library/react';
-import { CoreAdminContext, testDataProvider, useListContext } from 'ra-core';
-import { createMemoryHistory } from 'history';
+import {
+    CoreAdminContext,
+    testDataProvider,
+    useListContext,
+    TestMemoryRouter,
+} from 'ra-core';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import { defaultTheme } from '../theme/defaultTheme';
 import { List } from './List';
 import { Filter } from './filter';
 import { TextInput } from '../input';
+import { Notification } from '../layout';
+import { Basic, Title, TitleFalse, TitleElement } from './List.stories';
 
 const theme = createTheme(defaultTheme);
 
@@ -16,7 +22,11 @@ describe('<List />', () => {
     it('should render a list page', () => {
         const Datagrid = () => <div>datagrid</div>;
         const { container } = render(
-            <CoreAdminContext dataProvider={testDataProvider()}>
+            <CoreAdminContext
+                dataProvider={testDataProvider({
+                    getList: () => Promise.resolve({ data: [], total: 0 }),
+                })}
+            >
                 <ThemeProvider theme={theme}>
                     <List resource="posts">
                         <Datagrid />
@@ -32,7 +42,11 @@ describe('<List />', () => {
         const Pagination = () => <div>pagination</div>;
         const Datagrid = () => <div>datagrid</div>;
         render(
-            <CoreAdminContext dataProvider={testDataProvider()}>
+            <CoreAdminContext
+                dataProvider={testDataProvider({
+                    getList: () => Promise.resolve({ data: [], total: 0 }),
+                })}
+            >
                 <ThemeProvider theme={theme}>
                     <List
                         filters={<Filters />}
@@ -54,7 +68,11 @@ describe('<List />', () => {
         const Filter = () => <div>filter</div>;
         const Datagrid = () => <div>datagrid</div>;
         render(
-            <CoreAdminContext dataProvider={testDataProvider()}>
+            <CoreAdminContext
+                dataProvider={testDataProvider({
+                    getList: () => Promise.resolve({ data: [], total: 0 }),
+                })}
+            >
                 <ThemeProvider theme={theme}>
                     <List resource="posts">
                         <Filter />
@@ -71,7 +89,11 @@ describe('<List />', () => {
         const Dummy = () => <div />;
         const Aside = () => <div id="aside">Hello</div>;
         render(
-            <CoreAdminContext dataProvider={testDataProvider()}>
+            <CoreAdminContext
+                dataProvider={testDataProvider({
+                    getList: () => Promise.resolve({ data: [], total: 0 }),
+                })}
+            >
                 <ThemeProvider theme={theme}>
                     <List resource="posts" aside={<Aside />}>
                         <Dummy />
@@ -191,17 +213,16 @@ describe('<List />', () => {
                 Promise.resolve({ data: [{ id: 0 }], total: 1 })
             ),
         } as any;
-        const history = createMemoryHistory({
-            initialEntries: [`/posts`],
-        });
         render(
-            <CoreAdminContext dataProvider={dataProvider} history={history}>
-                <ThemeProvider theme={theme}>
-                    <List filters={<DummyFilters />} resource="posts">
-                        <Dummy />
-                    </List>
-                </ThemeProvider>
-            </CoreAdminContext>
+            <TestMemoryRouter initialEntries={[`/posts`]}>
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <ThemeProvider theme={theme}>
+                        <List filters={<DummyFilters />} resource="posts">
+                            <Dummy />
+                        </List>
+                    </ThemeProvider>
+                </CoreAdminContext>
+            </TestMemoryRouter>
         );
         await waitFor(() => new Promise(resolve => setTimeout(resolve, 0)));
         expect(
@@ -227,17 +248,16 @@ describe('<List />', () => {
                 Promise.resolve({ data: [{ id: 0 }], total: 1 })
             ),
         } as any;
-        const history = createMemoryHistory({
-            initialEntries: [`/posts`],
-        });
         render(
-            <CoreAdminContext dataProvider={dataProvider} history={history}>
-                <ThemeProvider theme={theme}>
-                    <List filters={dummyFilters} resource="posts">
-                        <Dummy />
-                    </List>
-                </ThemeProvider>
-            </CoreAdminContext>
+            <TestMemoryRouter initialEntries={[`/posts`]}>
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <ThemeProvider theme={theme}>
+                        <List filters={dummyFilters} resource="posts">
+                            <Dummy />
+                        </List>
+                    </ThemeProvider>
+                </CoreAdminContext>
+            </TestMemoryRouter>
         );
         await waitFor(() => new Promise(resolve => setTimeout(resolve, 0)));
         expect(
@@ -252,13 +272,11 @@ describe('<List />', () => {
         });
     });
 
-    it('should render a list page with an error message when there is an error', async () => {
+    it('should render a list page with an error notification when there is an error', async () => {
         jest.spyOn(console, 'error').mockImplementation(() => {});
         const Datagrid = () => <div>datagrid</div>;
         const dataProvider = {
-            getList: jest.fn(() =>
-                Promise.reject({ error: { key: 'error.unknown' } })
-            ),
+            getList: jest.fn(() => Promise.reject(new Error('Lorem ipsum'))),
         } as any;
         render(
             <CoreAdminContext dataProvider={dataProvider}>
@@ -266,11 +284,38 @@ describe('<List />', () => {
                     <List resource="posts">
                         <Datagrid />
                     </List>
+                    <Notification />
                 </ThemeProvider>
             </CoreAdminContext>
         );
         await waitFor(() => {
-            expect(screen.getByText('ra.page.error'));
+            expect(screen.getByText('Lorem ipsum'));
+        });
+    });
+
+    describe('title', () => {
+        it('should display by default the title of the resource', async () => {
+            render(<Basic />);
+            await screen.findByText('War and Peace');
+            screen.getAllByText('Books');
+        });
+
+        it('should render custom title string when defined', async () => {
+            render(<Title />);
+            await screen.findByText('War and Peace');
+            screen.getByText('Custom list title');
+        });
+
+        it('should render custom title element when defined', async () => {
+            render(<TitleElement />);
+            await screen.findByText('War and Peace');
+            screen.getByText('Custom list title');
+        });
+
+        it('should not render default title when false', async () => {
+            render(<TitleFalse />);
+            await screen.findByText('War and Peace');
+            screen.getByText('Books');
         });
     });
 });

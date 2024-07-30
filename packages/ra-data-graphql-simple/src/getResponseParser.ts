@@ -1,28 +1,41 @@
-import { GET_LIST, GET_MANY, GET_MANY_REFERENCE } from 'ra-core';
+import {
+    DELETE_MANY,
+    GET_LIST,
+    GET_MANY,
+    GET_MANY_REFERENCE,
+    UPDATE_MANY,
+} from 'ra-core';
 import { IntrospectionResult, IntrospectedResource } from 'ra-data-graphql';
 import { IntrospectionField } from 'graphql';
 import { ApolloQueryResult } from '@apollo/client';
 
-export default (_introspectionResults: IntrospectionResult) => (
-    raFetchMethod: string,
-    _resource: IntrospectedResource,
-    _queryType: IntrospectionField
-) => (response: ApolloQueryResult<any>) => {
-    const data = response.data;
+export default (_introspectionResults: IntrospectionResult) =>
+    (
+        raFetchMethod: string,
+        _resource: IntrospectedResource,
+        _queryType: IntrospectionField
+    ) =>
+    (response: ApolloQueryResult<any>) => {
+        const data = response.data;
 
-    if (
-        raFetchMethod === GET_LIST ||
-        raFetchMethod === GET_MANY ||
-        raFetchMethod === GET_MANY_REFERENCE
-    ) {
-        return {
-            data: response.data.items.map(sanitizeResource),
-            total: response.data.total.count,
-        };
-    }
+        if (
+            raFetchMethod === GET_LIST ||
+            raFetchMethod === GET_MANY ||
+            raFetchMethod === GET_MANY_REFERENCE
+        ) {
+            return {
+                data: response.data.items.map(sanitizeResource),
+                total: response.data.total.count,
+            };
+        } else if (
+            raFetchMethod === DELETE_MANY ||
+            raFetchMethod === UPDATE_MANY
+        ) {
+            return { data: sanitizeResource(data.data).ids };
+        }
 
-    return { data: sanitizeResource(data.data) };
-};
+        return { data: sanitizeResource(data.data) };
+    };
 
 const sanitizeResource = (data: any) => {
     const result = Object.keys(data).reduce((acc, key) => {

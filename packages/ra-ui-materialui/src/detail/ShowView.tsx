@@ -1,11 +1,8 @@
 import * as React from 'react';
-import PropTypes from 'prop-types';
-import { Card } from '@mui/material';
-import { styled } from '@mui/material/styles';
+import { ReactElement, ElementType } from 'react';
+import { Card, styled, SxProps } from '@mui/material';
 import clsx from 'clsx';
 import { useShowContext, useResourceDefinition } from 'ra-core';
-
-import { ShowProps } from '../types';
 import { ShowActions } from './ShowActions';
 import { Title } from '../layout';
 
@@ -23,8 +20,8 @@ export const ShowView = (props: ShowViewProps) => {
         ...rest
     } = props;
 
-    const { resource, defaultTitle, record } = useShowContext(props);
-    const { hasEdit } = useResourceDefinition(props);
+    const { resource, defaultTitle, record } = useShowContext();
+    const { hasEdit } = useResourceDefinition();
 
     const finalActions =
         typeof actions === 'undefined' && hasEdit ? defaultActions : actions;
@@ -33,15 +30,14 @@ export const ShowView = (props: ShowViewProps) => {
         return null;
     }
     return (
-        <Root
-            className={clsx('show-page', className)}
-            {...sanitizeRestProps(rest)}
-        >
-            <Title
-                title={title}
-                defaultTitle={defaultTitle}
-                preferenceKey={`${resource}.show.title`}
-            />
+        <Root className={clsx('show-page', className)} {...rest}>
+            {title !== false && (
+                <Title
+                    title={title}
+                    defaultTitle={defaultTitle}
+                    preferenceKey={`${resource}.show.title`}
+                />
+            )}
             {finalActions !== false && finalActions}
             <div
                 className={clsx(ShowClasses.main, {
@@ -55,35 +51,15 @@ export const ShowView = (props: ShowViewProps) => {
     );
 };
 
-export type ShowViewProps = ShowProps;
-
-ShowView.propTypes = {
-    actions: PropTypes.oneOfType([PropTypes.element, PropTypes.bool]),
-    children: PropTypes.node,
-    className: PropTypes.string,
-    emptyWhileLoading: PropTypes.bool,
-    title: PropTypes.any,
-};
-
-/* eslint-disable @typescript-eslint/no-unused-vars */
-const sanitizeRestProps = ({
-    defaultTitle = null,
-    hasCreate = null,
-    hasEdit = null,
-    hasList = null,
-    hasShow = null,
-    history = null,
-    id = null,
-    isLoading = null,
-    isFetching = null,
-    location = null,
-    match = null,
-    options = null,
-    refetch = null,
-    permissions = null,
-    ...rest
-}) => rest;
-/* eslint-enable @typescript-eslint/no-unused-vars */
+export interface ShowViewProps
+    extends Omit<React.HTMLAttributes<HTMLDivElement>, 'id' | 'title'> {
+    actions?: ReactElement | false;
+    aside?: ReactElement;
+    component?: ElementType;
+    emptyWhileLoading?: boolean;
+    title?: string | ReactElement | false;
+    sx?: SxProps;
+}
 
 const PREFIX = 'RaShow';
 

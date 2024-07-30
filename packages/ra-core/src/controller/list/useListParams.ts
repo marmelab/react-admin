@@ -1,7 +1,6 @@
 import { useCallback, useMemo, useEffect, useState, useRef } from 'react';
 import { parse, stringify } from 'query-string';
 import lodashDebounce from 'lodash/debounce';
-import pickBy from 'lodash/pickBy';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 import { useStore } from '../../store';
@@ -157,6 +156,10 @@ export const useListParams = ({
                 tempParams.current = queryReducer(query, action);
                 // schedule side effects for next tick
                 setTimeout(() => {
+                    if (!tempParams.current) {
+                        // the side effects were already processed by another changeParams
+                        return;
+                    }
                     if (disableSyncWithLocation) {
                         setLocalParams(tempParams.current);
                     } else {
@@ -224,7 +227,7 @@ export const useListParams = ({
     }, debounce);
 
     const setFilters = useCallback(
-        (filter, displayedFilters, debounce = true) =>
+        (filter, displayedFilters = undefined, debounce = false) =>
             debounce
                 ? debouncedSetFilters(filter, displayedFilters)
                 : changeParams({
@@ -262,10 +265,10 @@ export const useListParams = ({
 
     return [
         {
-            displayedFilters: displayedFilterValues,
             filterValues,
             requestSignature,
             ...query,
+            displayedFilters: displayedFilterValues,
         },
         {
             changeParams,
@@ -279,15 +282,6 @@ export const useListParams = ({
     ];
 };
 
-export const validQueryParams = [
-    'page',
-    'perPage',
-    'sort',
-    'order',
-    'filter',
-    'displayedFilters',
-];
-
 const parseObject = (query, field) => {
     if (query[field] && typeof query[field] === 'string') {
         try {
@@ -299,10 +293,7 @@ const parseObject = (query, field) => {
 };
 
 export const parseQueryFromLocation = ({ search }): Partial<ListParams> => {
-    const query = pickBy(
-        parse(search),
-        (v, k) => validQueryParams.indexOf(k) !== -1
-    );
+    const query = parse(search);
     parseObject(query, 'filter');
     parseObject(query, 'displayedFilters');
     return query;
@@ -350,8 +341,8 @@ export const getQuery = ({
         Object.keys(queryFromLocation).length > 0
             ? queryFromLocation
             : hasCustomParams(params)
-            ? { ...params }
-            : { filter: filterDefaultValues || {} };
+              ? { ...params }
+              : { filter: filterDefaultValues || {} };
 
     if (!query.sort) {
         query.sort = sort.field;
@@ -375,6 +366,9 @@ export const getNumberOrDefault = (
     possibleNumber: string | number | undefined,
     defaultValue: number
 ) => {
+    if (typeof possibleNumber === 'undefined') {
+        return defaultValue;
+    }
     const parsedNumber =
         typeof possibleNumber === 'string'
             ? parseInt(possibleNumber, 10)
@@ -409,7 +403,11 @@ interface Modifiers {
     setPage: (page: number) => void;
     setPerPage: (pageSize: number) => void;
     setSort: (sort: SortPayload) => void;
-    setFilters: (filters: any, displayedFilters: any) => void;
+    setFilters: (
+        filters: any,
+        displayedFilters?: any,
+        debounce?: boolean
+    ) => void;
     hideFilter: (filterName: string) => void;
     showFilter: (filterName: string, defaultValue: any) => void;
 }

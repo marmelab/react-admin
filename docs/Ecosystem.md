@@ -9,23 +9,23 @@ While most of the react-admin components come from the [marmelab/react-admin](ht
 
 ## Enterprise Packages
 
-[React-admin Enterprise Edition](https://marmelab.com/ra-enterprise) provides additional packages:
+[React-admin Enterprise Edition](https://react-admin-ee.marmelab.com) provides additional packages:
 
-- [@react-admin/ra-ai](https://marmelab.com/ra-enterprise/modules/ra-ai): Components powered by Artificial Intelligence (AI) to boost user productivity. Suggest completion for user inputs, fix and improve large chunks of text in React-Admin forms.
-- [@react-admin/ra-audit-log](https://marmelab.com/ra-enterprise/modules/ra-audit-log): Keep track of user actions, and get an overview of the activity of your admin.
-- [@react-admin/ra-calendar](https://marmelab.com/ra-enterprise/modules/ra-calendar): Display and manipulate events, drag and resize appointments, and browse a calendar in react-admin apps.
-- [@react-admin/ra-editable-datagrid](https://marmelab.com/ra-enterprise/modules/ra-editable-datagrid): Enhance the features of react-admin's `<Datagrid>` component, including an "edit-in-place" experience.
-- [@react-admin/ra-enterprise](https://marmelab.com/ra-enterprise/modules/ra-enterprise): Preconfigured components replacing the default react-admin ones to quickly integrate the Enterprise Edition modules.
-- [@react-admin/ra-form-layout](https://marmelab.com/ra-enterprise/modules/ra-form-layout): New form layouts for complex data entry tasks (accordion, wizard, autosave, etc.).
-- [@react-admin/ra-json-schema-form](https://marmelab.com/ra-enterprise/modules/ra-json-schema-form): Build forms based on a JSON Schema description
-- [@react-admin/ra-markdown](https://marmelab.com/ra-enterprise/modules/ra-markdown): Markdown field and Input
-- [@react-admin/ra-navigation](https://marmelab.com/ra-enterprise/modules/ra-navigation): New page layouts, Menus layouts, Smart Breadcrumb, and hooks to handle the user location.
-- [@react-admin/ra-relationships](https://marmelab.com/ra-enterprise/modules/ra-relationships): A set of alternative inputs and fields to edit relationships, including many-to-many relationships using a join table.
-- [@react-admin/ra-rbac](https://marmelab.com/ra-enterprise/modules/ra-rbac): Role-Based Access Control for React-admin apps. This module extends the authProvider to manage roles and fine-grained permissions, and adds replacement for many react-admin components that use these permissions.
-- [@react-admin/ra-realtime](https://marmelab.com/ra-enterprise/modules/ra-realtime): Hooks and UI components for collaborative applications where several people work in parallel. It allows publishing and subscribing to real-time events, updating views when another user pushes a change, notifying end users of events, and preventing data loss when two editors work on the same resource concurrently.
-- [@react-admin/ra-search](https://marmelab.com/ra-enterprise/modules/ra-search): Plug your search engine and let users search across all resources via a smart Omnibox.
-- [@react-admin/ra-tour](https://marmelab.com/ra-enterprise/modules/ra-tour): Guide users through tutorials to showcase and explain important features of your interfaces.
-- [@react-admin/ra-tree](https://marmelab.com/ra-enterprise/modules/ra-tree): Tree hooks and components for react-admin. Allows to display, edit, and rearrange tree structures like directories, categories, etc.
+- [@react-admin/ra-ai](https://react-admin-ee.marmelab.com/documentation/ra-ai): Components powered by Artificial Intelligence (AI) to boost user productivity. Suggest completion for user inputs, fix and improve large chunks of text in React-Admin forms.
+- [@react-admin/ra-audit-log](https://react-admin-ee.marmelab.com/documentation/ra-audit-log): Keep track of user actions, and get an overview of the activity of your admin.
+- [@react-admin/ra-calendar](https://react-admin-ee.marmelab.com/documentation/ra-calendar): Display and manipulate events, drag and resize appointments, and browse a calendar in react-admin apps.
+- [@react-admin/ra-editable-datagrid](https://react-admin-ee.marmelab.com/documentation/ra-editable-datagrid): Enhance the features of react-admin's `<Datagrid>` component, including an "edit-in-place" experience.
+- [@react-admin/ra-enterprise](https://react-admin-ee.marmelab.com/documentation/ra-enterprise): Preconfigured components replacing the default react-admin ones to quickly integrate the Enterprise Edition modules.
+- [@react-admin/ra-form-layout](https://react-admin-ee.marmelab.com/documentation/ra-form-layout): New form layouts for complex data entry tasks (accordion, wizard, autosave, etc.).
+- [@react-admin/ra-json-schema-form](https://react-admin-ee.marmelab.com/documentation/ra-json-schema-form): Build forms based on a JSON Schema description
+- [@react-admin/ra-markdown](https://react-admin-ee.marmelab.com/documentation/ra-markdown): Markdown field and Input
+- [@react-admin/ra-navigation](https://react-admin-ee.marmelab.com/documentation/ra-navigation): New page layouts, Menus layouts, Smart Breadcrumb, and hooks to handle the user location.
+- [@react-admin/ra-relationships](https://react-admin-ee.marmelab.com/documentation/ra-relationships): A set of alternative inputs and fields to edit relationships, including many-to-many relationships using a join table.
+- [@react-admin/ra-rbac](https://react-admin-ee.marmelab.com/documentation/ra-rbac): Role-Based Access Control for React-admin apps. This module extends the authProvider to manage roles and fine-grained permissions, and adds replacement for many react-admin components that use these permissions.
+- [@react-admin/ra-realtime](https://react-admin-ee.marmelab.com/documentation/ra-realtime): Hooks and UI components for collaborative applications where several people work in parallel. It allows publishing and subscribing to real-time events, updating views when another user pushes a change, notifying end users of events, and preventing data loss when two editors work on the same resource concurrently.
+- [@react-admin/ra-search](https://react-admin-ee.marmelab.com/documentation/ra-search): Plug your search engine and let users search across all resources via a smart Omnibox.
+- [@react-admin/ra-tour](https://react-admin-ee.marmelab.com/documentation/ra-tour): Guide users through tutorials to showcase and explain important features of your interfaces.
+- [@react-admin/ra-tree](https://react-admin-ee.marmelab.com/documentation/ra-tree): Tree hooks and components for react-admin. Allows to display, edit, and rearrange tree structures like directories, categories, etc.
 
 ## Third-Party Packages
 

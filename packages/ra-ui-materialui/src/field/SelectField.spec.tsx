@@ -12,26 +12,27 @@ import polyglotI18nProvider from 'ra-i18n-polyglot';
 import { SelectField } from './SelectField';
 
 const i18nProvider = polyglotI18nProvider(
-    _locale => ({
-        resources: {
-            books: {
-                name: 'Books',
-                fields: {
-                    id: 'Id',
-                    title: 'Title',
-                    author: 'Author',
-                    year: 'Year',
+    _locale =>
+        ({
+            resources: {
+                books: {
+                    name: 'Books',
+                    fields: {
+                        id: 'Id',
+                        title: 'Title',
+                        author: 'Author',
+                        year: 'Year',
+                    },
+                    not_found: 'Not found',
                 },
-                not_found: 'Not found',
             },
-        },
-    }),
+        }) as any,
     'en'
 );
 
 describe('<SelectField />', () => {
     const defaultProps = {
-        source: 'foo',
+        source: 'foo' as const,
         choices: [
             { id: 0, name: 'hello' },
             { id: 1, name: 'world' },
@@ -45,6 +46,7 @@ describe('<SelectField />', () => {
 
     it('should return null when the record has no value for the source', () => {
         const { container } = render(
+            // @ts-expect-error source prop does not have a valid value
             <SelectField {...defaultProps} record={{ id: 123 }} />
         );
         expect(container.firstChild).toBeNull();
@@ -144,7 +146,7 @@ describe('<SelectField />', () => {
     it('should use optionText with an element value as text identifier', () => {
         const Foobar = () => {
             const record = useRecordContext();
-            return <span>{record.foobar}</span>;
+            return <span>{record?.foobar}</span>;
         };
         render(
             <SelectField
@@ -187,6 +189,7 @@ describe('<SelectField />', () => {
                 <SelectField
                     {...defaultProps}
                     record={{ id: 123 }}
+                    // @ts-expect-error source prop does not have a valid value
                     source="foo.bar"
                     emptyText="resources.books.not_found"
                 />

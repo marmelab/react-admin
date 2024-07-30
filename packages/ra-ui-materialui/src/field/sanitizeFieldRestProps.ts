@@ -2,7 +2,6 @@ export const sanitizeFieldRestProps: (props: any) => any = ({
     cellClassName,
     className,
     emptyText,
-    formClassName,
     fullWidth,
     headerClassName,
     label,

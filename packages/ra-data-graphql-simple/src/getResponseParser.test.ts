@@ -6,6 +6,8 @@ import {
     CREATE,
     UPDATE,
     DELETE,
+    DELETE_MANY,
+    UPDATE_MANY,
 } from 'ra-core';
 import getResponseParser from './getResponseParser';
 
@@ -392,6 +394,80 @@ describe('getResponseParser', () => {
                     },
                 },
             });
+        });
+    });
+
+    it('returns the response expected for DELETE_MANY', () => {
+        const introspectionResults = {
+            resources: [
+                {
+                    type: {
+                        name: 'User',
+                        fields: [
+                            { name: 'id', type: { kind: TypeKind.SCALAR } },
+                            {
+                                name: 'firstName',
+                                type: { kind: TypeKind.SCALAR },
+                            },
+                        ],
+                    },
+                },
+            ],
+            types: [{ name: 'User' }],
+        };
+        const response = {
+            data: {
+                data: {
+                    ids: [1, 2, 3, 4],
+                },
+            },
+        };
+
+        expect(
+            getResponseParser(introspectionResults)(
+                DELETE_MANY,
+                undefined,
+                undefined
+            )(response)
+        ).toEqual({
+            data: [1, 2, 3, 4],
+        });
+    });
+
+    it('returns the response expected for UPDATE_MANY', () => {
+        const introspectionResults = {
+            resources: [
+                {
+                    type: {
+                        name: 'User',
+                        fields: [
+                            { name: 'id', type: { kind: TypeKind.SCALAR } },
+                            {
+                                name: 'firstName',
+                                type: { kind: TypeKind.SCALAR },
+                            },
+                        ],
+                    },
+                },
+            ],
+            types: [{ name: 'User' }],
+        };
+        const response = {
+            data: {
+                data: {
+                    ids: [1, 2, 3, 4],
+                },
+            },
+        };
+
+        expect(
+            getResponseParser(introspectionResults)(
+                UPDATE_MANY,
+                undefined,
+                undefined
+            )(response)
+        ).toEqual({
+            data: [1, 2, 3, 4],
         });
     });
 });

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { notifyManager, useQueryClient } from 'react-query';
+import { notifyManager, useQueryClient } from '@tanstack/react-query';
 
 /**
  * Get the state of the dataProvider connection.

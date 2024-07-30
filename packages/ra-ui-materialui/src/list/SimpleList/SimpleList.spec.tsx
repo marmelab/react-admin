@@ -4,7 +4,7 @@ import { ListContext, ResourceContextProvider } from 'ra-core';
 
 import { AdminContext } from '../../AdminContext';
 import { SimpleList } from './SimpleList';
-import { TextField } from '../../field';
+import { TextField } from '../../field/TextField';
 import { NoPrimaryText } from './SimpleList.stories';
 
 const Wrapper = ({ children }: any) => (

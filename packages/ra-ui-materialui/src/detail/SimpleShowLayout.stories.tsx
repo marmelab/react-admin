@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Grid, Divider as MuiDivider } from '@mui/material';
 import {
+    I18nContextProvider,
     RecordContextProvider,
     ResourceContext,
     useRecordContext,
@@ -61,6 +62,20 @@ export const CustomLabel = () => (
                     <TextField source="author" />
                 </Labeled>
                 <TextField label={false} source="summary" />
+                <NumberField source="year" />
+            </SimpleShowLayout>
+        </RecordContextProvider>
+    </ResourceContext.Provider>
+);
+
+export const Direction = () => (
+    <ResourceContext.Provider value="books">
+        <RecordContextProvider value={record}>
+            <SimpleShowLayout direction="row">
+                <TextField source="id" />
+                <TextField source="title" />
+                <TextField source="author" />
+                <TextField source="summary" />
                 <NumberField source="year" />
             </SimpleShowLayout>
         </RecordContextProvider>
@@ -135,4 +150,49 @@ export const SeveralColumns = () => (
             </Grid>
         </RecordContextProvider>
     </ResourceContext.Provider>
+);
+
+export const Nested = () => (
+    <ResourceContext.Provider value="books">
+        <RecordContextProvider value={record}>
+            <SimpleShowLayout>
+                <TextField source="title" />
+                <TextField source="summary" />
+                <SimpleShowLayout
+                    direction="row"
+                    sx={{
+                        padding: 0,
+                        '& .ra-field-id': { width: 50 },
+                        '& .ra-field-author': { width: 150 },
+                    }}
+                >
+                    <TextField source="id" />
+                    <TextField source="author" />
+                    <NumberField source="year" />
+                </SimpleShowLayout>
+            </SimpleShowLayout>
+        </RecordContextProvider>
+    </ResourceContext.Provider>
+);
+
+export const I18nKey = () => (
+    <I18nContextProvider
+        value={{
+            getLocale: () => 'en',
+            translate: m => m,
+            changeLocale: async () => {},
+        }}
+    >
+        <ResourceContext.Provider value="books">
+            <RecordContextProvider value={record}>
+                <SimpleShowLayout>
+                    <TextField source="id" />
+                    <TextField source="title" />
+                    <TextField source="author" />
+                    <TextField source="summary" />
+                    <NumberField source="year" />
+                </SimpleShowLayout>
+            </RecordContextProvider>
+        </ResourceContext.Provider>
+    </I18nContextProvider>
 );

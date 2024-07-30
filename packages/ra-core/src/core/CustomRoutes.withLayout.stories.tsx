@@ -14,14 +14,11 @@ export default {
     },
 };
 
-export const WithLayoutCustomRoute = (argsOrProps, context) => {
-    const history = context?.history || argsOrProps.history;
-
+export const WithLayoutCustomRoute = () => {
     return (
         <CoreAdmin
             authProvider={authProvider}
             dataProvider={dataProvider}
-            history={history}
             loginPage={Login}
             layout={Layout}
         >
@@ -33,7 +30,7 @@ export const WithLayoutCustomRoute = (argsOrProps, context) => {
     );
 };
 
-const dataProvider = {
+const dataProvider: any = {
     getList: () => Promise.resolve({ data: [], total: 0 }),
     getOne: () => Promise.resolve({ data: { id: 0 } }),
     getMany: () => Promise.resolve({ data: [] }),

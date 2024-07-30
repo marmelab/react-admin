@@ -1,26 +1,14 @@
 import * as React from 'react';
 import expect from 'expect';
 import { render, screen, waitFor } from '@testing-library/react';
-import { unstable_HistoryRouter as HistoryRouter } from 'react-router-dom';
-import { QueryClientProvider, QueryClient } from 'react-query';
-import { createMemoryHistory } from 'history';
+import { Route, Routes } from 'react-router-dom';
+import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 
 import { useHandleAuthCallback } from './useHandleAuthCallback';
-import AuthContext from './AuthContext';
-import { useRedirect } from '../routing/useRedirect';
-import useLogout from './useLogout';
+import { AuthContext } from './AuthContext';
 import { AuthProvider } from '../types';
 
-jest.mock('../routing/useRedirect');
-jest.mock('./useLogout');
-
-const redirect = jest.fn();
-// @ts-ignore
-useRedirect.mockImplementation(() => redirect);
-
-const logout = jest.fn();
-// @ts-ignore
-useLogout.mockImplementation(() => logout);
+import { TestMemoryRouter } from '../routing';
 
 const TestComponent = ({ customError }: { customError?: boolean }) => {
     const [error, setError] = React.useState<string>();
@@ -52,33 +40,34 @@ const authProvider: AuthProvider = {
     handleCallback: () => Promise.resolve(),
 };
 
-const queryClient = new QueryClient();
-
 describe('useHandleAuthCallback', () => {
     afterEach(() => {
-        redirect.mockClear();
+        jest.clearAllMocks();
     });
 
     it('should redirect to the home route by default when the callback was successfully handled', async () => {
-        const history = createMemoryHistory({ initialEntries: ['/'] });
         render(
-            <HistoryRouter history={history}>
+            <TestMemoryRouter initialEntries={['/auth-callback']}>
                 <AuthContext.Provider value={authProvider}>
-                    <QueryClientProvider client={queryClient}>
-                        <TestComponent />
+                    <QueryClientProvider client={new QueryClient()}>
+                        <Routes>
+                            <Route path="/" element={<div>Home</div>} />
+                            <Route path="/test" element={<div>Test</div>} />
+                            <Route
+                                path="/auth-callback"
+                                element={<TestComponent />}
+                            />
+                        </Routes>
                     </QueryClientProvider>
                 </AuthContext.Provider>
-            </HistoryRouter>
+            </TestMemoryRouter>
         );
-        await waitFor(() => {
-            expect(redirect).toHaveBeenCalledWith('/');
-        });
+        await screen.findByText('Home');
     });
 
     it('should redirect to the provided route when the callback was successfully handled', async () => {
-        const history = createMemoryHistory({ initialEntries: ['/'] });
         render(
-            <HistoryRouter history={history}>
+            <TestMemoryRouter initialEntries={['/auth-callback']}>
                 <AuthContext.Provider
                     value={{
                         ...authProvider,
@@ -87,21 +76,25 @@ describe('useHandleAuthCallback', () => {
                         },
                     }}
                 >
-                    <QueryClientProvider client={queryClient}>
-                        <TestComponent />
+                    <QueryClientProvider client={new QueryClient()}>
+                        <Routes>
+                            <Route path="/" element={<div>Home</div>} />
+                            <Route path="/test" element={<div>Test</div>} />
+                            <Route
+                                path="/auth-callback"
+                                element={<TestComponent />}
+                            />
+                        </Routes>
                     </QueryClientProvider>
                 </AuthContext.Provider>
-            </HistoryRouter>
+            </TestMemoryRouter>
         );
-        await waitFor(() => {
-            expect(redirect).toHaveBeenCalledWith('/test');
-        });
+        await screen.findByText('Test');
     });
 
     it('should use custom useQuery options such as onError', async () => {
-        const history = createMemoryHistory({ initialEntries: ['/'] });
         render(
-            <HistoryRouter history={history}>
+            <TestMemoryRouter initialEntries={['/auth-callback']}>
                 <AuthContext.Provider
                     value={{
                         ...authProvider,
@@ -109,15 +102,62 @@ describe('useHandleAuthCallback', () => {
                             Promise.reject(new Error('Custom Error')),
                     }}
                 >
-                    <QueryClientProvider client={queryClient}>
-                        <TestComponent customError />
+                    <QueryClientProvider client={new QueryClient()}>
+                        <Routes>
+                            <Route path="/" element={<div>Home</div>} />
+                            <Route
+                                path="/auth-callback"
+                                element={<TestComponent customError />}
+                            />
+                        </Routes>
                     </QueryClientProvider>
                 </AuthContext.Provider>
-            </HistoryRouter>
+            </TestMemoryRouter>
         );
         await waitFor(() => {
             screen.getByText('Custom Error');
         });
-        expect(redirect).not.toHaveBeenCalledWith('/test');
+        expect(screen.queryByText('Home')).toBeNull();
+    });
+
+    it('should abort the request if the query is canceled', async () => {
+        const abort = jest.fn();
+        const testAuthProvider = {
+            ...authProvider,
+            handleCallback: jest.fn(
+                ({ signal }) =>
+                    new Promise(() => {
+                        signal.addEventListener('abort', () => {
+                            abort(signal.reason);
+                        });
+                    })
+            ) as any,
+        };
+        const queryClient = new QueryClient();
+        render(
+            <TestMemoryRouter initialEntries={['/auth-callback']}>
+                <AuthContext.Provider value={testAuthProvider}>
+                    <QueryClientProvider client={queryClient}>
+                        <Routes>
+                            <Route path="/" element={<div>Home</div>} />
+                            <Route path="/test" element={<div>Test</div>} />
+                            <Route
+                                path="/auth-callback"
+                                element={<TestComponent />}
+                            />
+                        </Routes>
+                    </QueryClientProvider>
+                </AuthContext.Provider>
+            </TestMemoryRouter>
+        );
+        await waitFor(() => {
+            expect(testAuthProvider.handleCallback).toHaveBeenCalled();
+        });
+        queryClient.cancelQueries({
+            queryKey: ['auth', 'handleCallback'],
+        });
+        await waitFor(() => {
+            expect(abort).toHaveBeenCalled();
+        });
     });
 });

@@ -24,6 +24,12 @@ export const Disabled = () => (
     </Wrapper>
 );
 
+export const ReadOnly = () => (
+    <Wrapper>
+        <BooleanInput source="published" readOnly />
+    </Wrapper>
+);
+
 export const CustomIcon = () => (
     <Wrapper>
         <BooleanInput source="published" checkedIcon={<FavoriteIcon />} />
@@ -33,7 +39,7 @@ export const CustomIcon = () => (
 const i18nProvider = polyglotI18nProvider(() => englishMessages);
 
 const Wrapper = ({ children }) => (
-    <AdminContext i18nProvider={i18nProvider}>
+    <AdminContext i18nProvider={i18nProvider} defaultTheme="light">
         <Create resource="posts">
             <SimpleForm>{children}</SimpleForm>
         </Create>
@@ -48,7 +54,7 @@ const SetFocusButton = ({ source }) => {
 };
 
 export const SetFocus = () => (
-    <AdminContext>
+    <AdminContext defaultTheme="light">
         <Create resource="posts" sx={{ width: 600 }}>
             <SimpleForm>
                 <TextInput source="title" />

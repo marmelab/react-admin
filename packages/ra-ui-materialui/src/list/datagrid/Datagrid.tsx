@@ -11,11 +11,11 @@ import {
     ReactElement,
     useMemo,
 } from 'react';
-import PropTypes from 'prop-types';
 import {
     sanitizeListRestProps,
-    useListContext,
+    useListContextWithProps,
     Identifier,
+    OptionalResourceContextProvider,
     RaRecord,
     SortPayload,
 } from 'ra-core';
@@ -86,7 +86,7 @@ const defaultBulkActionButtons = <BulkDeleteButton />;
  * const sort = { field: 'published_at', order: 'DESC' };
  *
  * export const MyCustomList = (props) => {
- *     const { data, total, isLoading } = useGetList(
+ *     const { data, total, isPending } = useGetList(
  *         'posts',
  *         { pagination: { page: 1, perPage: 10 }, sort: sort }
  *     );
@@ -95,7 +95,7 @@ const defaultBulkActionButtons = <BulkDeleteButton />;
  *         <Datagrid
  *             data={data}
  *             total={total}
- *             isLoading={isLoading}
+ *             isPending={isPending}
  *             sort={sort}
  *             selectedIds={[]}
  *             setSort={() => {
@@ -114,7 +114,9 @@ const defaultBulkActionButtons = <BulkDeleteButton />;
  *     );
  * }
  */
-export const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
+export const Datagrid: React.ForwardRefExoticComponent<
+    Omit<DatagridProps, 'ref'> & React.RefAttributes<HTMLTableElement>
+> = React.forwardRef<HTMLTableElement, DatagridProps>((props, ref) => {
     const {
         optimized = false,
         body = optimized ? PureDatagridBody : DatagridBody,
@@ -140,20 +142,20 @@ export const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
     const {
         sort,
         data,
-        isLoading,
+        isPending,
         onSelect,
         onToggleItem,
         selectedIds,
         setSort,
         total,
-    } = useListContext(props);
+    } = useListContextWithProps(props);
 
     const hasBulkActions = !!bulkActionButtons !== false;
 
-    const contextValue = useMemo(() => ({ isRowExpandable, expandSingle }), [
-        isRowExpandable,
-        expandSingle,
-    ]);
+    const contextValue = useMemo(
+        () => ({ isRowExpandable, expandSingle }),
+        [isRowExpandable, expandSingle]
+    );
 
     const lastSelected = useRef(null);
 
@@ -166,6 +168,7 @@ export const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
     // we manage row selection at the datagrid level to allow shift+click to select an array of rows
     const handleToggleItem = useCallback(
         (id, event) => {
+            if (!data) return;
             const ids = data.map(record => record.id);
             const lastSelectedIndex = ids.indexOf(lastSelected.current);
             lastSelected.current = event.target.checked ? id : null;
@@ -181,7 +184,7 @@ export const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
                     ? union(selectedIds, idsBetweenSelections)
                     : difference(selectedIds, idsBetweenSelections);
 
-                onSelect(
+                onSelect?.(
                     isRowSelectable
                         ? newSelectedIds.filter((id: Identifier) =>
                               isRowSelectable(
@@ -191,13 +194,13 @@ export const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
                         : newSelectedIds
                 );
             } else {
-                onToggleItem(id);
+                onToggleItem?.(id);
             }
         },
         [data, isRowSelectable, onSelect, onToggleItem, selectedIds]
     );
 
-    if (isLoading === true) {
+    if (isPending === true) {
         return (
             <DatagridLoading
                 className={className}
@@ -229,60 +232,61 @@ export const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
      */
     return (
         <DatagridContextProvider value={contextValue}>
-            <DatagridRoot
-                sx={sx}
-                className={clsx(DatagridClasses.root, className)}
-            >
-                {bulkActionButtons !== false ? (
-                    <BulkActionsToolbar selectedIds={selectedIds}>
-                        {isValidElement(bulkActionButtons)
-                            ? bulkActionButtons
-                            : defaultBulkActionButtons}
-                    </BulkActionsToolbar>
-                ) : null}
-                <div className={DatagridClasses.tableWrapper}>
-                    <Table
-                        ref={ref}
-                        className={DatagridClasses.table}
-                        size={size}
-                        {...sanitizeRestProps(rest)}
-                    >
-                        {createOrCloneElement(
-                            header,
-                            {
-                                children,
-                                sort,
-                                data,
-                                hasExpand: !!expand,
-                                hasBulkActions,
-                                isRowSelectable,
-                                onSelect,
-                                resource,
-                                selectedIds,
-                                setSort,
-                            },
-                            children
-                        )}
-                        {createOrCloneElement(
-                            body,
-                            {
-                                expand,
-                                rowClick,
-                                data,
-                                hasBulkActions,
-                                hover,
-                                onToggleItem: handleToggleItem,
-                                resource,
-                                rowSx,
-                                rowStyle,
-                                selectedIds,
-                                isRowSelectable,
-                            },
-                            children
-                        )}
-                    </Table>
-                </div>
-            </DatagridRoot>
+            <OptionalResourceContextProvider value={resource}>
+                <DatagridRoot
+                    sx={sx}
+                    className={clsx(DatagridClasses.root, className)}
+                >
+                    {bulkActionButtons !== false ? (
+                        <BulkActionsToolbar>
+                            {isValidElement(bulkActionButtons)
+                                ? bulkActionButtons
+                                : defaultBulkActionButtons}
+                        </BulkActionsToolbar>
+                    ) : null}
+                    <div className={DatagridClasses.tableWrapper}>
+                        <Table
+                            ref={ref}
+                            className={DatagridClasses.table}
+                            size={size}
+                            {...sanitizeRestProps(rest)}
+                        >
+                            {createOrCloneElement(
+                                header,
+                                {
+                                    children,
+                                    sort,
+                                    data,
+                                    hasExpand: !!expand,
+                                    hasBulkActions,
+                                    isRowSelectable,
+                                    onSelect,
+                                    selectedIds,
+                                    setSort,
+                                },
+                                children
+                            )}
+                            {createOrCloneElement(
+                                body,
+                                {
+                                    expand,
+                                    rowClick,
+                                    data,
+                                    hasBulkActions,
+                                    hover,
+                                    onToggleItem: handleToggleItem,
+                                    resource,
+                                    rowSx,
+                                    rowStyle,
+                                    selectedIds,
+                                    isRowSelectable,
+                                },
+                                children
+                            )}
+                        </Table>
+                    </div>
+                </DatagridRoot>
+            </OptionalResourceContextProvider>
         </DatagridContextProvider>
     );
 });
@@ -291,44 +295,6 @@ const createOrCloneElement = (element, props, children) =>
     isValidElement(element)
         ? cloneElement(element, props, children)
         : createElement(element, props, children);
-
-Datagrid.propTypes = {
-    // @ts-ignore
-    body: PropTypes.oneOfType([PropTypes.element, PropTypes.elementType]),
-    // @ts-ignore-line
-    bulkActionButtons: PropTypes.oneOfType([PropTypes.bool, PropTypes.element]),
-    children: PropTypes.node.isRequired,
-    className: PropTypes.string,
-    sort: PropTypes.exact({
-        field: PropTypes.string,
-        order: PropTypes.oneOf(['ASC', 'DESC'] as const),
-    }),
-    data: PropTypes.arrayOf(PropTypes.any),
-    empty: PropTypes.element,
-    // @ts-ignore
-    expand: PropTypes.oneOfType([PropTypes.element, PropTypes.elementType]),
-    // @ts-ignore
-    header: PropTypes.oneOfType([PropTypes.element, PropTypes.elementType]),
-    hover: PropTypes.bool,
-    isLoading: PropTypes.bool,
-    onSelect: PropTypes.func,
-    onToggleItem: PropTypes.func,
-    resource: PropTypes.string,
-    // @ts-ignore
-    rowClick: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.func,
-        PropTypes.bool,
-    ]),
-    rowSx: PropTypes.func,
-    rowStyle: PropTypes.func,
-    selectedIds: PropTypes.arrayOf(PropTypes.any),
-    setSort: PropTypes.func,
-    total: PropTypes.number,
-    isRowSelectable: PropTypes.func,
-    isRowExpandable: PropTypes.func,
-    expandSingle: PropTypes.bool,
-};
 
 export interface DatagridProps<RecordType extends RaRecord = any>
     extends Omit<TableProps, 'size' | 'classes' | 'onSelect'> {
@@ -574,6 +540,7 @@ export interface DatagridProps<RecordType extends RaRecord = any>
     sort?: SortPayload;
     data?: RecordType[];
     isLoading?: boolean;
+    isPending?: boolean;
     onSelect?: (ids: Identifier[]) => void;
     onToggleItem?: (id: Identifier) => void;
     setSort?: (sort: SortPayload) => void;
@@ -595,7 +562,9 @@ const injectedProps = [
 
 const sanitizeRestProps = props =>
     Object.keys(sanitizeListRestProps(props))
-        .filter(propName => !injectedProps.includes(propName))
+        .filter(
+            propName => !injectedProps.includes(propName) || propName === 'ref'
+        )
         .reduce((acc, key) => ({ ...acc, [key]: props[key] }), {});
 
 Datagrid.displayName = 'Datagrid';

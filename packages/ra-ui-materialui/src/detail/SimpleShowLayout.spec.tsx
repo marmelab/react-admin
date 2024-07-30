@@ -2,7 +2,12 @@ import * as React from 'react';
 import { render, screen } from '@testing-library/react';
 import { RecordContextProvider } from 'ra-core';
 import { SimpleShowLayout } from './SimpleShowLayout';
-import { Basic, CustomChild, CustomLabel } from './SimpleShowLayout.stories';
+import {
+    Basic,
+    CustomChild,
+    CustomLabel,
+    I18nKey,
+} from './SimpleShowLayout.stories';
 import { TextField } from '../field';
 
 describe('<SimpleShowLayout />', () => {
@@ -15,20 +20,29 @@ describe('<SimpleShowLayout />', () => {
                 </SimpleShowLayout>
             </RecordContextProvider>
         );
-        expect(screen.queryByText('foo')).not.toBeNull();
-        expect(screen.queryByText('bar')).not.toBeNull();
+        screen.getByText('foo');
+        screen.getByText('bar');
     });
 
     it('should add a label for each field', () => {
         render(<Basic />);
-        expect(screen.queryByText('Title')).not.toBeNull();
-        expect(screen.queryByText('War and Peace')).not.toBeNull();
+        screen.getByText('Title');
+        screen.getByText('War and Peace');
+    });
+
+    it('should translate the labels', () => {
+        render(<I18nKey />);
+        screen.getByText('resources.books.fields.id');
+        screen.getByText('resources.books.fields.title');
+        screen.getByText('resources.books.fields.author');
+        screen.getByText('resources.books.fields.summary');
+        screen.getByText('resources.books.fields.year');
     });
 
     it('should accept custom children', () => {
         render(<CustomChild />);
-        expect(screen.queryByText('War and Peace')).not.toBeNull();
-        expect(screen.queryByText('Leo Tolstoy')).not.toBeNull();
+        screen.getByText('War and Peace');
+        screen.getByText('Leo Tolstoy');
     });
 
     it('should allows to customize or disable the label', () => {

@@ -1,11 +1,20 @@
-export const defaultDataProvider = {
-    create: () => Promise.resolve({ data: null }), // avoids adding a context in tests
-    delete: () => Promise.resolve({ data: null }), // avoids adding a context in tests
-    deleteMany: () => Promise.resolve({ data: [] }), // avoids adding a context in tests
-    getList: () => Promise.resolve({ data: [], total: 0 }), // avoids adding a context in tests
-    getMany: () => Promise.resolve({ data: [] }), // avoids adding a context in tests
-    getManyReference: () => Promise.resolve({ data: [], total: 0 }), // avoids adding a context in tests
-    getOne: () => Promise.resolve({ data: null }), // avoids adding a context in tests
-    update: () => Promise.resolve({ data: null }), // avoids adding a context in tests
-    updateMany: () => Promise.resolve({ data: [] }), // avoids adding a context in tests
+import {
+    CreateResult,
+    DataProvider,
+    DeleteResult,
+    GetOneResult,
+    UpdateResult,
+} from '../types';
+
+// avoids adding a context in tests
+export const defaultDataProvider: DataProvider = {
+    create: () => Promise.resolve<CreateResult>({ data: null }),
+    delete: () => Promise.resolve<DeleteResult>({ data: null }),
+    deleteMany: () => Promise.resolve({ data: [] }),
+    getList: () => Promise.resolve({ data: [], total: 0 }),
+    getMany: () => Promise.resolve({ data: [] }),
+    getManyReference: () => Promise.resolve({ data: [], total: 0 }),
+    getOne: () => Promise.resolve<GetOneResult>({ data: null }),
+    update: () => Promise.resolve<UpdateResult>({ data: null }),
+    updateMany: () => Promise.resolve({ data: [] }),
 };

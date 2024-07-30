@@ -1,6 +1,12 @@
-import { RaRecord, GetOneParams } from '../types';
-import { useQuery, UseQueryOptions, UseQueryResult } from 'react-query';
+import { RaRecord, GetOneParams, GetOneResult } from '../types';
+import {
+    useQuery,
+    UseQueryOptions,
+    UseQueryResult,
+} from '@tanstack/react-query';
 import { useDataProvider } from './useDataProvider';
+import { useEffect } from 'react';
+import { useEvent } from '../util';
 
 /**
  * Call the dataProvider.getOne() method and return the resolved value
@@ -8,9 +14,9 @@ import { useDataProvider } from './useDataProvider';
  *
  * The return value updates according to the request state:
  *
- * - start: { isLoading: true, isFetching: true, refetch }
- * - success: { data: [data from response], isLoading: false, refetch }
- * - error: { error: [error from response], isLoading: false, refetch }
+ * - start: { isPending: true, isFetching: true, refetch }
+ * - success: { data: [data from response], isPending: false, refetch }
+ * - error: { error: [error from response], isPending: false, refetch }
  *
  * This hook will return the cached result when called a second time
  * with the same parameters, until the response arrives.
@@ -27,7 +33,7 @@ import { useDataProvider } from './useDataProvider';
  * @prop onSuccess Side effect function to be executed upon success, e.g. { onSuccess: { refresh: true } }
  * @prop onError Side effect function to be executed upon failure, e.g. { onError: error => notify(error.message) }
  *
- * @returns The current request state. Destructure as { data, error, isLoading, refetch }.
+ * @returns The current request state. Destructure as { data, error, isPending, refetch }.
  *
  * @example
  *
@@ -35,31 +41,93 @@ import { useDataProvider } from './useDataProvider';
  *
  * const UserProfile = () => {
  *     const record = useRecordContext();
- *     const { data, isLoading, error } = useGetOne('users', { id: record.id });
- *     if (isLoading) { return <Loading />; }
+ *     const { data, isPending, error } = useGetOne('users', { id: record.id });
+ *     if (isPending) { return <Loading />; }
  *     if (error) { return <p>ERROR</p>; }
  *     return <div>User {data.username}</div>;
  * };
  */
 export const useGetOne = <RecordType extends RaRecord = any>(
     resource: string,
-    { id, meta }: GetOneParams<RecordType>,
-    options?: UseQueryOptions<RecordType>
+    { id, meta }: Partial<GetOneParams<RecordType>>,
+    options: UseGetOneOptions<RecordType> = {}
 ): UseGetOneHookValue<RecordType> => {
     const dataProvider = useDataProvider();
-    return useQuery<RecordType, unknown, RecordType>(
+    const {
+        onError = noop,
+        onSuccess = noop,
+        onSettled = noop,
+        enabled,
+        ...queryOptions
+    } = options;
+    const onSuccessEvent = useEvent(onSuccess);
+    const onErrorEvent = useEvent(onError);
+    const onSettledEvent = useEvent(onSettled);
+
+    const result = useQuery<RecordType>({
         // Sometimes the id comes as a string (e.g. when read from the URL in a Show view).
         // Sometimes the id comes as a number (e.g. when read from a Record in useGetList response).
         // As the react-query cache is type-sensitive, we always stringify the identifier to get a match
-        [resource, 'getOne', { id: String(id), meta }],
-        () =>
-            dataProvider
-                .getOne<RecordType>(resource, { id, meta })
-                .then(({ data }) => data),
-        options
-    );
+        queryKey: [resource, 'getOne', { id: String(id), meta }],
+        queryFn: queryParams =>
+            id == null
+                ? new Promise(() => {})
+                : dataProvider
+                      .getOne<RecordType>(resource, {
+                          id,
+                          meta,
+                          signal:
+                              dataProvider.supportAbortSignal === true
+                                  ? queryParams.signal
+                                  : undefined,
+                      })
+                      .then(({ data }) => data),
+        enabled: enabled ?? id != null,
+        ...queryOptions,
+    });
+
+    useEffect(() => {
+        if (
+            result.data === undefined ||
+            result.error != null ||
+            result.isFetching
+        )
+            return;
+        onSuccessEvent(result.data);
+    }, [onSuccessEvent, result.data, result.error, result.isFetching]);
+
+    useEffect(() => {
+        if (result.error == null || result.isFetching) return;
+        onErrorEvent(result.error);
+    }, [onErrorEvent, result.error, result.isFetching]);
+
+    useEffect(() => {
+        if (result.status === 'pending' || result.isFetching) return;
+        onSettledEvent(result.data, result.error);
+    }, [
+        onSettledEvent,
+        result.data,
+        result.error,
+        result.status,
+        result.isFetching,
+    ]);
+
+    return result;
 };
 
-export type UseGetOneHookValue<
-    RecordType extends RaRecord = any
-> = UseQueryResult<RecordType>;
+const noop = () => undefined;
+
+export type UseGetOneOptions<RecordType extends RaRecord = any> = Omit<
+    UseQueryOptions<GetOneResult<RecordType>['data']>,
+    'queryKey' | 'queryFn'
+> & {
+    onSuccess?: (data: GetOneResult<RecordType>['data']) => void;
+    onError?: (error: Error) => void;
+    onSettled?: (
+        data?: GetOneResult<RecordType>['data'],
+        error?: Error | null
+    ) => void;
+};
+
+export type UseGetOneHookValue<RecordType extends RaRecord = any> =
+    UseQueryResult<GetOneResult<RecordType>['data']>;

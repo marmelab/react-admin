@@ -8,10 +8,12 @@
         "jsx": "react",
         "lib": ["es2017", "dom"],
         "target": "es2016",
+        "module": "esnext",
         "moduleResolution": "node",
         "allowSyntheticDefaultImports": true,
         "esModuleInterop": true,
-        "skipLibCheck": true
+        "skipLibCheck": true,
+        "strictNullChecks": true
     },
     "exclude": ["**/*.spec.ts", "**/*.spec.tsx", "**/*.spec.js"],
     "include": ["src"]

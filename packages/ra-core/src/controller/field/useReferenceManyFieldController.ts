@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef } from 'react';
+import { UseQueryOptions } from '@tanstack/react-query';
 import get from 'lodash/get';
 import isEqual from 'lodash/isEqual';
 import lodashDebounce from 'lodash/debounce';
@@ -14,7 +15,8 @@ import useSortState from '../useSortState';
 import { useResourceContext } from '../../core';
 
 export interface UseReferenceManyFieldControllerParams<
-    RecordType extends RaRecord = RaRecord
+    RecordType extends RaRecord = RaRecord,
+    ReferenceRecordType extends RaRecord = RaRecord,
 > {
     debounce?: number;
     filter?: any;
@@ -26,6 +28,10 @@ export interface UseReferenceManyFieldControllerParams<
     sort?: SortPayload;
     source?: string;
     target: string;
+    queryOptions?: UseQueryOptions<
+        { data: ReferenceRecordType[]; total: number },
+        Error
+    >;
 }
 
 const defaultFilter = {};
@@ -36,7 +42,7 @@ const defaultFilter = {};
  * Uses dataProvider.getManyReference() internally.
  *
  * @example // fetch the comments related to the current post
- * const { isLoading, data } = useReferenceManyFieldController({
+ * const { isPending, data } = useReferenceManyFieldController({
  *     reference: 'comments',
  *     target: 'post_id',
  *     record: { id: 123, title: 'hello, world' },
@@ -53,14 +59,18 @@ const defaultFilter = {};
  * @param {string} props.resource The current resource name
  * @param {Object} props.sort the sort to apply to the referenced records
  * @param {string} props.source The key of the linked resource identifier
+ * @param {UseQuery Options} props.queryOptions `react-query` options`
  *
  * @returns {ListControllerResult} The reference many props
  */
 export const useReferenceManyFieldController = <
     RecordType extends RaRecord = RaRecord,
-    ReferenceRecordType extends RaRecord = RaRecord
+    ReferenceRecordType extends RaRecord = RaRecord,
 >(
-    props: UseReferenceManyFieldControllerParams<RecordType>
+    props: UseReferenceManyFieldControllerParams<
+        RecordType,
+        ReferenceRecordType
+    >
 ): ListControllerResult<ReferenceRecordType> => {
     const {
         debounce = 500,
@@ -68,13 +78,18 @@ export const useReferenceManyFieldController = <
         record,
         target,
         filter = defaultFilter,
-        source,
+        source = 'id',
         page: initialPage,
         perPage: initialPerPage,
         sort: initialSort = { field: 'id', order: 'DESC' },
+        queryOptions = {} as UseQueryOptions<
+            { data: ReferenceRecordType[]; total: number },
+            Error
+        >,
     } = props;
     const notify = useNotify();
     const resource = useResourceContext(props);
+    const { meta, ...otherQueryOptions } = queryOptions;
 
     // pagination logic
     const { page, setPage, perPage, setPerPage } = usePaginationState({
@@ -93,9 +108,9 @@ export const useReferenceManyFieldController = <
     );
 
     // selection logic
-    const [selectedIds, selectionModifiers] = useRecordSelection(
-        `${resource}.${record?.id}.${reference}`
-    );
+    const [selectedIds, selectionModifiers] = useRecordSelection({
+        resource: `${resource}.${record?.id}.${reference}`,
+    });
 
     // filter logic
     const filterRef = useRef(filter);
@@ -143,7 +158,7 @@ export const useReferenceManyFieldController = <
     );
 
     const setFilters = useCallback(
-        (filters, displayedFilters, debounce = true) => {
+        (filters, displayedFilters, debounce = false) => {
             if (debounce) {
                 debouncedSetFilters(filters, displayedFilters);
             } else {
@@ -169,6 +184,7 @@ export const useReferenceManyFieldController = <
         error,
         isFetching,
         isLoading,
+        isPending,
         refetch,
     } = useGetManyReference<ReferenceRecordType>(
         reference,
@@ -178,10 +194,11 @@ export const useReferenceManyFieldController = <
             pagination: { page, perPage },
             sort,
             filter: filterValues,
+            meta,
         },
         {
             enabled: get(record, source) != null,
-            keepPreviousData: true,
+            placeholderData: previousData => previousData,
             onError: error =>
                 notify(
                     typeof error === 'string'
@@ -194,24 +211,26 @@ export const useReferenceManyFieldController = <
                                 typeof error === 'string'
                                     ? error
                                     : error && error.message
-                                    ? error.message
-                                    : undefined,
+                                      ? error.message
+                                      : undefined,
                         },
                     }
                 ),
+            ...otherQueryOptions,
         }
     );
 
     return {
         sort,
         data,
-        defaultTitle: null,
+        defaultTitle: undefined,
         displayedFilters,
         error,
         filterValues,
         hideFilter,
         isFetching,
         isLoading,
+        isPending,
         onSelect: selectionModifiers.select,
         onToggleItem: selectionModifiers.toggle,
         onUnselectItems: selectionModifiers.clearSelection,
@@ -226,11 +245,11 @@ export const useReferenceManyFieldController = <
         hasNextPage: pageInfo
             ? pageInfo.hasNextPage
             : total != null
-            ? page * perPage < total
-            : undefined,
+              ? page * perPage < total
+              : undefined,
         hasPreviousPage: pageInfo ? pageInfo.hasPreviousPage : page > 1,
         setSort,
         showFilter,
         total,
-    };
+    } as ListControllerResult<ReferenceRecordType>;
 };

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { SxProps, styled } from '@mui/material/styles';
-import { StackProps } from '@mui/material';
+import { StackProps, useThemeProps } from '@mui/material';
 import { ReactElement, ReactNode } from 'react';
 import {
     TranslatableContextProvider,
@@ -65,8 +65,12 @@ import { TranslatableInputsTabContent } from './TranslatableInputsTabContent';
  * @param {ReactElement} props.selector The element responsible for selecting a locale. Defaults to Material UI tabs.
  */
 export const TranslatableInputs = (
-    props: TranslatableInputsProps
+    inProps: TranslatableInputsProps
 ): ReactElement => {
+    const props = useThemeProps({
+        props: inProps,
+        name: 'RaTranslatableInputs',
+    });
     const {
         className,
         defaultLocale,

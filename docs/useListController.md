@@ -31,7 +31,7 @@ import {
 import { Link } from 'react-router-dom';
 
 const PostList = () => {
-  const { data, page, total, setPage, isLoading } = useListController({
+  const { data, page, total, setPage, isPending } = useListController({
     sort: { field: 'published_at', order: 'DESC' },
     perPage: 10,
   });
@@ -45,7 +45,7 @@ const PostList = () => {
           <Button icon={<PlusOutlined />}>Create</Button>
         </Link>
       </div>
-      <Card bodyStyle={{ padding: '0' }} loading={isLoading}>
+      <Card bodyStyle={{ padding: '0' }} loading={isPending}>
         <Table
           size="small"
           dataSource={data}
@@ -192,7 +192,7 @@ const OrderedPostList = ({
     return (
         <div>
             <ul style={styles.ul}>
-                {!params.isLoading &&
+                {!params.isPending &&
                     params.data.map(post => (
                         <li key={`post_${post.id}`}>
                             {post.title} - {post.votes} votes
@@ -224,8 +224,9 @@ const {
     // Data
     data, // Array of the list records, e.g. [{ id: 123, title: 'hello world' }, { ... }
     total, // Total number of results for the current filters, excluding pagination. Useful to build the pagination controls, e.g. 23      
+    isPending, // Boolean, true until the data is available
     isFetching, // Boolean, true while the data is being fetched, false once the data is fetched
-    isLoading, // Boolean, true until the data is available for the first time
+    isLoading, // Boolean, true until the data is fetched for the first time
     // Pagination
     page, // Current page. Starts at 1
     perPage, // Number of results per page. Defaults to 25
@@ -252,4 +253,54 @@ const {
     resource, // Resource name, deduced from the location. e.g. 'posts'
     refetch, // Callback for fetching the list data again
 } = useListController();
+```
+
+## Using `setFilters` to Update Filters
+
+The `setFilters` method is used to update the filters. It takes three arguments:
+
+- `filters`: an object containing the new filter values
+- `displayedFilters`: an object containing the new displayed filters
+- `debounced`: set to true to debounce the call to setFilters (false by default)
+
+You can use it to update the list filters:
+
+```jsx
+import { useState } from 'react';
+import { useListController } from 'react-admin';
+
+const OfficeList = () => {
+    const { filterValues, setFilters, data, isLoading } = useListController({ resource: 'offices' });
+    const [formValues, setFormValues] = useState(filterValues);
+
+    const handleChange = (event) => {
+        setFormValues(formValues => ({
+            ...formValues,
+            [event.target.name]: event.target.value
+        }));
+    };
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        setFilters(filterFormValues);
+    };
+
+    if (isLoading) return <div>Loading...</div>;
+
+    return (
+        <>
+            <form onSubmit={handleSubmit}>
+                <input name="country" value={formValues.country} onChange={handleChange} />
+                <input name="city" value={formValues.city} onChange={handleChange} />
+                <input name="zipcode" value={formValues.zipcode} onChange={handleChange} />
+                <input type="submit">Filter</input>
+            </form>
+            <ul>
+                {data.map(record => (
+                    <li key={record.id}>{record.name}</li>
+                ))}
+            </ul>
+        </>
+    );
+};
 ```

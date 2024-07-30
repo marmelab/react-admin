@@ -20,9 +20,9 @@ export const Basic = () => (
     </Wrapper>
 );
 
-export const FullWidth = () => (
+export const NonFullWidth = () => (
     <Wrapper>
-        <TranslatableInputs locales={['en', 'fr']} fullWidth>
+        <TranslatableInputs locales={['en', 'fr']} fullWidth={false}>
             <TextInput source="title" />
             <TextInput source="description" />
         </TranslatableInputs>
@@ -64,7 +64,7 @@ export const Sx = () => (
 const i18nProvider = polyglotI18nProvider(() => englishMessages);
 
 const Wrapper = ({ children }) => (
-    <AdminContext i18nProvider={i18nProvider}>
+    <AdminContext i18nProvider={i18nProvider} defaultTheme="light">
         <Create resource="posts">
             <SimpleForm>
                 {children}

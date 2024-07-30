@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
-import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import {
     FormControl,
@@ -11,7 +10,13 @@ import {
 import { RadioGroupProps } from '@mui/material/RadioGroup';
 import { FormControlProps } from '@mui/material/FormControl';
 import get from 'lodash/get';
-import { useInput, FieldTitle, ChoicesProps, useChoicesContext } from 'ra-core';
+import {
+    useInput,
+    FieldTitle,
+    ChoicesProps,
+    useChoicesContext,
+    useGetRecordRepresentation,
+} from 'ra-core';
 
 import { CommonInputProps } from './CommonInputProps';
 import { sanitizeInputRestProps } from './sanitizeInputRestProps';
@@ -88,12 +93,13 @@ export const RadioButtonGroupInput = (props: RadioButtonGroupInputProps) => {
         helperText,
         isFetching: isFetchingProp,
         isLoading: isLoadingProp,
+        isPending: isPendingProp,
         label,
         margin = 'dense',
         onBlur,
         onChange,
         options = defaultOptions,
-        optionText = 'name',
+        optionText,
         optionValue = 'id',
         parse,
         resource: resourceProp,
@@ -101,12 +107,14 @@ export const RadioButtonGroupInput = (props: RadioButtonGroupInputProps) => {
         source: sourceProp,
         translateChoice,
         validate,
+        disabled,
+        readOnly,
         ...rest
     } = props;
 
     const {
         allChoices,
-        isLoading,
+        isPending,
         error: fetchError,
         resource,
         source,
@@ -115,6 +123,7 @@ export const RadioButtonGroupInput = (props: RadioButtonGroupInputProps) => {
         choices: choicesProp,
         isFetching: isFetchingProp,
         isLoading: isLoadingProp,
+        isPending: isPendingProp,
         resource: resourceProp,
         source: sourceProp,
     });
@@ -125,13 +134,13 @@ export const RadioButtonGroupInput = (props: RadioButtonGroupInputProps) => {
         );
     }
 
-    if (!isLoading && !fetchError && allChoices === undefined) {
+    if (!isPending && !fetchError && allChoices === undefined) {
         throw new Error(
             `If you're not wrapping the RadioButtonGroupInput inside a ReferenceArrayInput, you must provide the choices prop`
         );
     }
 
-    const { id, isRequired, fieldState, field, formState } = useInput({
+    const { id, isRequired, fieldState, field } = useInput({
         format,
         onBlur,
         onChange,
@@ -139,13 +148,16 @@ export const RadioButtonGroupInput = (props: RadioButtonGroupInputProps) => {
         resource,
         source,
         validate,
+        disabled,
+        readOnly,
         ...rest,
     });
 
-    const { error, invalid, isTouched } = fieldState;
-    const { isSubmitted } = formState;
+    const getRecordRepresentation = useGetRecordRepresentation(resource);
 
-    if (isLoading) {
+    const { error, invalid } = fieldState;
+
+    if (isPending) {
         return (
             <Labeled
                 htmlFor={id}
@@ -160,17 +172,16 @@ export const RadioButtonGroupInput = (props: RadioButtonGroupInputProps) => {
         );
     }
 
-    const renderHelperText =
-        !!fetchError ||
-        helperText !== false ||
-        ((isTouched || isSubmitted) && invalid);
+    const renderHelperText = !!fetchError || helperText !== false || invalid;
 
     return (
         <StyledFormControl
             component="fieldset"
             className={clsx('ra-input', `ra-input-${source}`, className)}
             margin={margin}
-            error={fetchError || ((isTouched || isSubmitted) && invalid)}
+            error={fetchError || invalid}
+            disabled={disabled || readOnly}
+            readOnly={readOnly}
             {...sanitizeRestProps(rest)}
         >
             <FormLabel
@@ -196,7 +207,10 @@ export const RadioButtonGroupInput = (props: RadioButtonGroupInputProps) => {
                     <RadioButtonGroupInputItem
                         key={get(choice, optionValue)}
                         choice={choice}
-                        optionText={optionText}
+                        optionText={
+                            optionText ??
+                            (isFromReference ? getRecordRepresentation : 'name')
+                        }
                         optionValue={optionValue}
                         source={id}
                         translateChoice={translateChoice ?? !isFromReference}
@@ -206,7 +220,6 @@ export const RadioButtonGroupInput = (props: RadioButtonGroupInputProps) => {
             {renderHelperText ? (
                 <FormHelperText>
                     <InputHelperText
-                        touched={isTouched || isSubmitted || fetchError}
                         error={error?.message || fetchError?.message}
                         helperText={helperText}
                     />
@@ -214,25 +227,6 @@ export const RadioButtonGroupInput = (props: RadioButtonGroupInputProps) => {
             ) : null}
         </StyledFormControl>
     );
-};
-
-RadioButtonGroupInput.propTypes = {
-    choices: PropTypes.arrayOf(PropTypes.any),
-    label: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.bool,
-        PropTypes.element,
-    ]),
-    options: PropTypes.object,
-    optionText: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.func,
-        PropTypes.element,
-    ]),
-    optionValue: PropTypes.string,
-    resource: PropTypes.string,
-    source: PropTypes.string,
-    translateChoice: PropTypes.bool,
 };
 
 const sanitizeRestProps = ({

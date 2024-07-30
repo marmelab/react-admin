@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useState } from 'react';
-import Box from '@mui/material/Box';
+import { Box } from '@mui/material';
 import LabelIcon from '@mui/icons-material/Label';
 
 import {
@@ -56,9 +56,9 @@ const Menu = ({ dense = false }: MenuProps) => {
                 dense={dense}
             >
                 <MenuItemLink
-                    to="/commands"
+                    to="/orders"
                     state={{ _scrollToTop: true }}
-                    primaryText={translate(`resources.commands.name`, {
+                    primaryText={translate(`resources.orders.name`, {
                         smart_count: 2,
                     })}
                     leftIcon={<orders.icon />}

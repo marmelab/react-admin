@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { Children, cloneElement, isValidElement, ReactElement } from 'react';
-import PropTypes from 'prop-types';
 import Tabs, { TabsProps } from '@mui/material/Tabs';
 import { useParams } from 'react-router-dom';
 
@@ -36,12 +35,6 @@ export const TabbedFormTabs = (props: TabbedFormTabsProps) => {
             })}
         </Tabs>
     );
-};
-
-TabbedFormTabs.propTypes = {
-    children: PropTypes.node,
-    url: PropTypes.string,
-    tabsWithErrors: PropTypes.arrayOf(PropTypes.string),
 };
 
 export const getTabbedFormTabFullPath = (

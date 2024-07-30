@@ -13,9 +13,10 @@ export const ResourceConfigurationProvider = ({
     dataProvider,
     storageKey = STORAGE_KEY,
 }: ResourceConfigurationProviderProps) => {
-    const [resources, setInternalResources] = useState<
-        ResourceConfigurationMap
-    >(() => loadConfigurationsFromLocalStorage(storageKey));
+    const [resources, setInternalResources] =
+        useState<ResourceConfigurationMap>(() =>
+            loadConfigurationsFromLocalStorage(storageKey)
+        );
 
     const setResources = useCallback(
         (

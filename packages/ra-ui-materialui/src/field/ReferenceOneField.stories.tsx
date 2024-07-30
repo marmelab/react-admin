@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { useState } from 'react';
+
 import {
     CoreAdminContext,
     RecordContextProvider,
@@ -8,8 +9,9 @@ import {
     ListContextProvider,
     useRecordContext,
     I18nContextProvider,
+    TestMemoryRouter,
 } from 'ra-core';
-import { createMemoryHistory } from 'history';
+
 import { ThemeProvider, Stack } from '@mui/material';
 import { createTheme } from '@mui/material/styles';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
@@ -49,16 +51,18 @@ const defaultDataProvider = {
         }),
 } as any;
 
-const history = createMemoryHistory({ initialEntries: ['/books/1/show'] });
-
 const Wrapper = ({ children, dataProvider = defaultDataProvider }) => (
-    <CoreAdminContext dataProvider={dataProvider} history={history}>
-        <ResourceContextProvider value="books">
-            <RecordContextProvider value={{ id: 1, title: 'War and Peace' }}>
-                {children}
-            </RecordContextProvider>
-        </ResourceContextProvider>
-    </CoreAdminContext>
+    <TestMemoryRouter initialEntries={['/books/1/show']}>
+        <CoreAdminContext dataProvider={dataProvider}>
+            <ResourceContextProvider value="books">
+                <RecordContextProvider
+                    value={{ id: 1, title: 'War and Peace' }}
+                >
+                    {children}
+                </RecordContextProvider>
+            </ResourceContextProvider>
+        </CoreAdminContext>
+    </TestMemoryRouter>
 );
 
 export const Basic = () => (
@@ -238,6 +242,7 @@ export const InDatagrid = () => (
 
 const BookDetailsRepresentation = () => {
     const record = useRecordContext();
+    if (!record) return null;
     return (
         <>
             <strong>Genre</strong>: {record.genre}, <strong>ISBN</strong>:{' '}
@@ -247,72 +252,76 @@ const BookDetailsRepresentation = () => {
 };
 
 export const RecordRepresentation = () => (
-    <CoreAdminContext dataProvider={defaultDataProvider} history={history}>
-        <ResourceContextProvider value="books">
-            <RecordContextProvider value={{ id: 1, title: 'War and Peace' }}>
-                <Stack spacing={4} direction="row" sx={{ ml: 2 }}>
-                    <div>
-                        <h3>Default</h3>
-                        <ReferenceOneField
-                            reference="book_details"
-                            target="book_id"
-                        />
-                    </div>
-                    <div>
-                        <ResourceDefinitionContextProvider
-                            definitions={{
-                                book_details: {
-                                    name: 'book_details',
-                                    recordRepresentation: 'ISBN',
-                                },
-                            }}
-                        >
-                            <h3>String</h3>
+    <TestMemoryRouter initialEntries={['/books/1/show']}>
+        <CoreAdminContext dataProvider={defaultDataProvider}>
+            <ResourceContextProvider value="books">
+                <RecordContextProvider
+                    value={{ id: 1, title: 'War and Peace' }}
+                >
+                    <Stack spacing={4} direction="row" sx={{ ml: 2 }}>
+                        <div>
+                            <h3>Default</h3>
                             <ReferenceOneField
                                 reference="book_details"
                                 target="book_id"
                             />
-                        </ResourceDefinitionContextProvider>
-                    </div>
-                    <div>
-                        <ResourceDefinitionContextProvider
-                            definitions={{
-                                book_details: {
-                                    name: 'book_details',
-                                    recordRepresentation: record =>
-                                        `Genre: ${record.genre}, ISBN: ${record.ISBN}`,
-                                },
-                            }}
-                        >
-                            <h3>Function</h3>
-                            <ReferenceOneField
-                                reference="book_details"
-                                target="book_id"
-                            />
-                        </ResourceDefinitionContextProvider>
-                    </div>
-                    <div>
-                        <ResourceDefinitionContextProvider
-                            definitions={{
-                                book_details: {
-                                    name: 'book_details',
-                                    recordRepresentation: (
-                                        <BookDetailsRepresentation />
-                                    ),
-                                },
-                            }}
-                        >
-                            <h3>Element</h3>
-                            <ReferenceOneField
-                                reference="book_details"
-                                target="book_id"
-                            />
-                        </ResourceDefinitionContextProvider>
-                    </div>
-                </Stack>
-            </RecordContextProvider>
-        </ResourceContextProvider>
-    </CoreAdminContext>
+                        </div>
+                        <div>
+                            <ResourceDefinitionContextProvider
+                                definitions={{
+                                    book_details: {
+                                        name: 'book_details',
+                                        recordRepresentation: 'ISBN',
+                                    },
+                                }}
+                            >
+                                <h3>String</h3>
+                                <ReferenceOneField
+                                    reference="book_details"
+                                    target="book_id"
+                                />
+                            </ResourceDefinitionContextProvider>
+                        </div>
+                        <div>
+                            <ResourceDefinitionContextProvider
+                                definitions={{
+                                    book_details: {
+                                        name: 'book_details',
+                                        recordRepresentation: record =>
+                                            `Genre: ${record.genre}, ISBN: ${record.ISBN}`,
+                                    },
+                                }}
+                            >
+                                <h3>Function</h3>
+                                <ReferenceOneField
+                                    reference="book_details"
+                                    target="book_id"
+                                />
+                            </ResourceDefinitionContextProvider>
+                        </div>
+                        <div>
+                            <ResourceDefinitionContextProvider
+                                definitions={{
+                                    book_details: {
+                                        name: 'book_details',
+                                        recordRepresentation: (
+                                            <BookDetailsRepresentation />
+                                        ),
+                                    },
+                                }}
+                            >
+                                <h3>Element</h3>
+                                <ReferenceOneField
+                                    reference="book_details"
+                                    target="book_id"
+                                />
+                            </ResourceDefinitionContextProvider>
+                        </div>
+                    </Stack>
+                </RecordContextProvider>
+            </ResourceContextProvider>
+        </CoreAdminContext>
+    </TestMemoryRouter>
 );
 
 export const QueryOptions = ({ dataProvider = defaultDataProvider }) => (

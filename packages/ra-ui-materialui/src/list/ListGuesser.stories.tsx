@@ -112,3 +112,34 @@ export const LinkedShow = () => (
         </AdminUI>
     </AdminContext>
 );
+
+const delayedDataProvider = fakeRestProvider(
+    data,
+    process.env.NODE_ENV !== 'test',
+    300
+);
+
+export const ManyResources = () => (
+    <AdminContext
+        dataProvider={delayedDataProvider}
+        i18nProvider={polyglotI18nProvider(() => defaultMessages, 'en')}
+    >
+        <AdminUI>
+            <Resource
+                name="products"
+                list={ListGuesser}
+                recordRepresentation="name"
+            />
+            <Resource
+                name="categories"
+                list={ListGuesser}
+                recordRepresentation="name"
+            />
+            <Resource
+                name="tags"
+                list={ListGuesser}
+                recordRepresentation="name"
+            />
+        </AdminUI>
+    </AdminContext>
+);

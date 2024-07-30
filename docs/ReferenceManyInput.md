@@ -5,7 +5,7 @@ title: "The ReferenceManyInput Component"
 
 # `<ReferenceManyInput>`
 
-Use `<ReferenceManyInput>` in an `<Edit>` or `<Create>` view to edit one-to-many relationships, e.g. to edit the variants of a product in the product edition view. It's an [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> component, part of the `@react-admin/ra-relationships` package. 
+Use `<ReferenceManyInput>` in an `<Edit>` or `<Create>` view to edit one-to-many relationships, e.g. to edit the variants of a product in the product edition view. It's an [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" /> component, part of the `@react-admin/ra-relationships` package. 
 
 <video controls autoplay playsinline muted loop>
   <source src="./img/reference-many-input.webm" type="video/webm"/>
@@ -293,3 +293,9 @@ const ProductEdit = () => (
     </Edit>
 );
 ```
+
+## Limitations
+
+-   `<ReferenceManyInput>` cannot be used inside an `<ArrayInput>` or a `<ReferenceOneInput>`.
+-   `<ReferenceManyInput>` cannot have a `<ReferenceOneInput>` or a `<ReferenceManyToManyInput>` as one of its children.
+-   `<ReferenceManyInput>` does not support server side validation.

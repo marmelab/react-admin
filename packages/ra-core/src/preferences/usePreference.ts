@@ -14,6 +14,12 @@ import { usePreferenceKey } from './PreferenceKeyContext';
  */
 export const usePreference = <T = any>(key?: string, defaultValue?: T) => {
     const preferenceKey = usePreferenceKey();
+    if (!preferenceKey) {
+        throw new Error(
+            "usePreference cannot be used outside of a Configurable component. Did you forget to wrap your component with <Configurable>? If you don't want to use Configurable, you can use the useStore hook instead."
+        );
+    }
+
     return useStore<T>(
         preferenceKey && key ? `${preferenceKey}.${key}` : preferenceKey ?? key,
         defaultValue

@@ -57,18 +57,18 @@ export const Multiple = () => (
     </Wrapper>
 );
 
-export const FullWidth = () => (
+export const Disabled = () => (
     <Wrapper>
-        <ImageInput source="attachment" fullWidth>
+        <ImageInput source="attachment" disabled>
             <ImageField source="src" title="title" />
         </ImageInput>
         <FormInspector name="attachment" />
     </Wrapper>
 );
 
-export const Disabled = () => (
+export const ReadOnly = () => (
     <Wrapper>
-        <ImageInput source="attachment" options={{ disabled: true }}>
+        <ImageInput source="attachment" readOnly>
             <ImageField source="src" title="title" />
         </ImageInput>
         <FormInspector name="attachment" />
@@ -96,7 +96,7 @@ export const CustomRemoveIcon = () => (
 const i18nProvider = polyglotI18nProvider(() => englishMessages);
 
 const Wrapper = ({ children }) => (
-    <AdminContext i18nProvider={i18nProvider}>
+    <AdminContext i18nProvider={i18nProvider} defaultTheme="light">
         <Create resource="posts">
             <SimpleForm>{children}</SimpleForm>
         </Create>

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useQueryClient, QueryObserver } from 'react-query';
+import { useQueryClient, QueryObserver } from '@tanstack/react-query';
 
 /**
  * Check if react-query has already fetched data for a query key.
@@ -29,7 +29,7 @@ export const useIsDataLoaded = (
         if (queryClient.getQueryData(queryKey) === undefined) {
             const observer = new QueryObserver(queryClient, { queryKey });
             const unsubscribe = observer.subscribe(result => {
-                setDataLoaded(!result.isLoading);
+                setDataLoaded(!result.isPending);
                 unsubscribe();
             });
             return unsubscribe;

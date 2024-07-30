@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import { ReactNode } from 'react';
-import PropTypes from 'prop-types';
 import CardContent from '@mui/material/CardContent';
 
 /**
@@ -15,12 +14,6 @@ export const CardContentInner = (props: CardContentInnerProps): JSX.Element => {
     const { className, children } = props;
 
     return <Root className={className}>{children}</Root>;
-};
-
-CardContentInner.propTypes = {
-    className: PropTypes.string,
-    classes: PropTypes.object,
-    children: PropTypes.node,
 };
 
 export interface CardContentInnerProps {

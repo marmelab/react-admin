@@ -19,8 +19,8 @@ import { ResourceContextProvider } from '../../core';
  *
  * @example // Custom edit layout
  *
- * const PostCreate = props => (
- *     <CreateBase {...props}>
+ * const PostCreate = () => (
+ *     <CreateBase>
  *         <Grid container>
  *             <Grid item xs={8}>
  *                 <SimpleForm>
@@ -39,7 +39,7 @@ import { ResourceContextProvider } from '../../core';
  */
 export const CreateBase = <
     RecordType extends Omit<RaRecord, 'id'> = any,
-    ResultRecordType extends RaRecord = RecordType & { id: Identifier }
+    ResultRecordType extends RaRecord = RecordType & { id: Identifier },
 >({
     children,
     ...props

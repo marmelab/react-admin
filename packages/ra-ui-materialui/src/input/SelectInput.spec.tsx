@@ -7,6 +7,7 @@ import { SimpleForm } from '../form';
 import { SelectInput } from './SelectInput';
 import { useCreateSuggestionContext } from './useSupportCreateSuggestion';
 import {
+    StringChoices,
     EmptyText,
     InsideReferenceInput,
     InsideReferenceInputDefaultValue,
@@ -129,6 +130,14 @@ describe('<SelectInput />', () => {
             const options = screen.queryAllByRole('option');
             expect(options.length).toEqual(6);
             expect(options[1].textContent).toEqual('Created');
+        });
+
+        it('should accept strings as choices', () => {
+            render(<StringChoices />);
+            fireEvent.mouseDown(screen.getByLabelText('Gender'));
+            const options = screen.queryAllByRole('option');
+            expect(options.length).toEqual(3);
+            expect(options[1].textContent).toEqual('Male');
         });
     });
 
@@ -303,7 +312,7 @@ describe('<SelectInput />', () => {
             const Foobar = () => {
                 const record = useRecordContext();
                 return (
-                    <span data-value={record.id} aria-label={record.foobar} />
+                    <span data-value={record?.id} aria-label={record?.foobar} />
                 );
             };
             render(
@@ -457,11 +466,11 @@ describe('<SelectInput />', () => {
     });
 
     describe('loading', () => {
-        it('should not render a LinearProgress if isLoading is true and a second has not passed yet', () => {
+        it('should not render a LinearProgress if isPending is true and a second has not passed yet', () => {
             render(
                 <AdminContext dataProvider={testDataProvider()}>
                     <SimpleForm onSubmit={jest.fn()}>
-                        <SelectInput {...defaultProps} isLoading />
+                        <SelectInput {...defaultProps} isPending />
                     </SimpleForm>
                 </AdminContext>
             );
@@ -469,21 +478,21 @@ describe('<SelectInput />', () => {
             expect(screen.queryByRole('progressbar')).toBeNull();
         });
 
-        it('should render a LinearProgress if isLoading is true and a second has passed', async () => {
+        it('should render a LinearProgress if isPending is true and a second has passed', async () => {
             render(
                 <AdminContext dataProvider={testDataProvider()}>
                     <SimpleForm onSubmit={jest.fn()}>
-                        <SelectInput {...defaultProps} isLoading />
+                        <SelectInput {...defaultProps} isPending />
                     </SimpleForm>
                 </AdminContext>
             );
 
             await new Promise(resolve => setTimeout(resolve, 1001));
 
-            expect(screen.queryByRole('progressbar')).not.toBeNull();
+            await screen.findByRole('progressbar');
         });
 
-        it('should not render a LinearProgress if isLoading is false', () => {
+        it('should not render a LinearProgress if isPending is false', () => {
             render(
                 <AdminContext dataProvider={testDataProvider()}>
                     <SimpleForm onSubmit={jest.fn()}>

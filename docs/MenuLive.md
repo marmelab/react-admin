@@ -5,7 +5,7 @@ title: "The MenuLive Component"
 
 # `<MenuLive>`
 
-`<MenuLive>` is an [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> component that renders a Menu, and displays a badge with the number of updated records on each unactive Menu item.
+`<MenuLive>` is an [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" /> component that renders a Menu, and displays a badge with the number of updated records on each unactive Menu item.
 
 ![MenuLive](./img/MenuLive.png)
 
@@ -14,12 +14,15 @@ title: "The MenuLive Component"
 Use `<MenuLive>` instead of `<Menu>` in a custom layout:
 
 ```tsx
-import { Admin, Layout, LayoutProps, Resource } from 'react-admin';
+import type { ReactNode } from 'react';
+import { Admin, Layout, Resource } from 'react-admin';
 import { MenuLive } from '@react-admin/ra-realtime';
 import { PostList, PostShow, PostEdit, realTimeDataProvider } from '.';
 
-const CustomLayout = (props: LayoutProps) => (
-    <Layout {...props} menu={MenuLive} />
+const CustomLayout = ({ children }: { children: ReactNode }) => (
+    <Layout menu={MenuLive}>
+        {children}
+    </Layout>
 );
 
 const MyReactAdmin = () => (

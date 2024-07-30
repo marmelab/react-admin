@@ -12,8 +12,8 @@ export const NotesIterator = ({
     showStatus?: boolean;
     reference: 'contacts' | 'deals';
 }) => {
-    const { data, isLoading } = useListContext();
-    if (isLoading) return null;
+    const { data, error, isPending } = useListContext();
+    if (isPending || error) return null;
     return (
         <>
             <NewNote showStatus={showStatus} reference={reference} />
@@ -23,7 +23,6 @@ export const NotesIterator = ({
                         note={note}
                         isLast={index === data.length - 1}
                         showStatus={showStatus}
-                        reference={reference}
                         key={index}
                     />
                 ))}

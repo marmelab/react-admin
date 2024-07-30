@@ -34,10 +34,13 @@ Then, create a custom layout using [the `<Layout>` component](./Layout.md) and p
 ```jsx
 // in src/MyLayout.js
 import { Layout } from 'react-admin';
-
 import { MyMenu } from './MyMenu';
 
-export const MyLayout = props => <Layout {...props} menu={MyMenu} />;
+export const MyLayout = ({ children }) => (
+    <Layout menu={MyMenu}>
+        {children}
+    </Layout>
+);
 ```
 
 Finally, pass this custom layout to the `<Admin>` component:
@@ -79,7 +82,11 @@ import PeopleIcon from '@mui/icons-material/People';
 import { dataProvider } from './dataProvider';
 
 const MyMenu = () => <Menu />;
-const MyLayout = (props) => <Layout {...props} menu={MyMenu} />
+const MyLayout = ({ children }) => (
+    <Layout menu={MyMenu}>
+        {children}
+    </Layout>
+);
 
 const App = () => (
     <Admin dataProvider={dataProvider} layout={MyLayout} dashboard={MyDashboard}>
@@ -91,7 +98,7 @@ const App = () => (
 );
 ```
 
-Renders the following menu: 
+Renders the following menu:
 
 ![standard menu with dashboard](./img/menu-with-dashboard.webp)
 
@@ -406,8 +413,8 @@ Just use an empty `filter` query parameter to force empty filters:
 If you need to display a menu item with a submenu, you should use [the `<MultiLevelMenu>` component](./MultiLevelMenu.md) instead of `<Menu>`.
 
 <video controls autoplay playsinline muted loop>
-  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-multilevelmenu-item.webm" type="video/webm" />
-  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-multilevelmenu-item.mp4" type="video/mp4" />
+  <source src="https://react-admin-ee.marmelab.com/assets/ra-multilevelmenu-item.webm" type="video/webm" />
+  <source src="https://react-admin-ee.marmelab.com/assets/ra-multilevelmenu-item.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
 
@@ -416,12 +423,15 @@ If you need to display a menu item with a submenu, you should use [the `<MultiLe
 You can display a badge on the menu item to indicate that new data is available. Use [the `<MenuLive>` component](./MenuLive.md) instead of `<Menu>` to enable this feature.
 
 ```tsx
-import { Admin, Layout, LayoutProps, Resource } from 'react-admin';
+import type { ReactNode } from 'react';
+import { Admin, Layout, Resource } from 'react-admin';
 import { MenuLive } from '@react-admin/ra-realtime';
 import { PostList, PostShow, PostEdit, realTimeDataProvider } from '.';
 
-const CustomLayout = (props: LayoutProps) => (
-    <Layout {...props} menu={MenuLive} />
+const CustomLayout = ({ children}: { children: ReactNode }) => (
+    <Layout menu={MenuLive}>
+        {children}
+    </Layout>
 );
 
 const MyReactAdmin = () => (

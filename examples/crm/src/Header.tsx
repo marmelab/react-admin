@@ -66,14 +66,8 @@ const Header = () => {
                                 />
                             </Tabs>
                         </Box>
-                        <Box display="flex">
-                            <LoadingIndicator
-                                sx={{
-                                    '& .RaLoadingIndicator-loader': {
-                                        marginTop: 2,
-                                    },
-                                }}
-                            />
+                        <Box display="flex" alignItems="center">
+                            <LoadingIndicator />
                             <UserMenu>
                                 <Logout />
                             </UserMenu>

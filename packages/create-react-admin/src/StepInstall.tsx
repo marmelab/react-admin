@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { Text } from 'ink';
 import SelectInput from 'ink-select-input';
-import { ChoiceType, SelectInputChoice } from './SelectInputChoice';
-import { Stack } from './Stack';
+import { ChoiceType, SelectInputChoice } from './SelectInputChoice.js';
+import { Stack } from './Stack.js';
 
 const choices: ChoiceType[] = [
     {
@@ -15,7 +15,7 @@ const choices: ChoiceType[] = [
     },
     {
         label: "Don't install dependencies, I'll do it myself.",
-        value: '',
+        value: 'skip',
     },
 ];
 

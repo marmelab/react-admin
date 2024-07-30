@@ -5,7 +5,7 @@ title: "useUnlock"
 
 # `useUnlock`
 
-`useUnlock` is a low-level [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> hook that returns a callback to call `dataProvider.unlock()`, leveraging react-query's `useMutation`.
+`useUnlock` is a low-level [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" /> hook that returns a callback to call `dataProvider.unlock()`, leveraging react-query's `useMutation`.
 
 ## Usage
 

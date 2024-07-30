@@ -1,12 +1,10 @@
 import * as React from 'react';
-import PropTypes from 'prop-types';
-import get from 'lodash/get';
 import Typography, { TypographyProps } from '@mui/material/Typography';
-import { useRecordContext, useTranslate } from 'ra-core';
+import { useFieldValue, useTranslate } from 'ra-core';
 import purify from 'dompurify';
 
 import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
-import { FieldProps, fieldPropTypes } from './types';
+import { FieldProps } from './types';
 import { genericMemo } from './genericMemo';
 
 /**
@@ -25,20 +23,18 @@ import { genericMemo } from './genericMemo';
  * <RichTextField source="description" stripTags />
  */
 const RichTextFieldImpl = <
-    RecordType extends Record<string, any> = Record<string, any>
+    RecordType extends Record<string, any> = Record<string, any>,
 >(
     props: RichTextFieldProps<RecordType>
 ) => {
     const {
         className,
         emptyText,
-        source,
         stripTags = false,
         purifyOptions,
         ...rest
     } = props;
-    const record = useRecordContext(props);
-    const value = get(record, source)?.toString();
+    const value = useFieldValue(props);
     const translate = useTranslate();
 
     return (
@@ -55,20 +51,12 @@ const RichTextFieldImpl = <
             ) : (
                 <span
                     dangerouslySetInnerHTML={{
-                        __html: purify.sanitize(value, purifyOptions),
+                        __html: purify.sanitize(value, purifyOptions || {}),
                     }}
                 />
             )}
         </Typography>
     );
-};
-
-RichTextFieldImpl.propTypes = {
-    // @ts-ignore
-    ...Typography.propTypes,
-    ...fieldPropTypes,
-    stripTags: PropTypes.bool,
-    purifyOptions: PropTypes.any,
 };
 RichTextFieldImpl.displayName = 'RichTextFieldImpl';
 
@@ -83,7 +71,7 @@ export type PurifyOptions = purify.Config & {
 };
 
 export interface RichTextFieldProps<
-    RecordType extends Record<string, any> = Record<string, any>
+    RecordType extends Record<string, any> = Record<string, any>,
 > extends FieldProps<RecordType>,
         Omit<TypographyProps, 'textAlign'> {
     stripTags?: boolean;

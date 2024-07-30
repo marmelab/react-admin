@@ -3,7 +3,6 @@ import merge from 'lodash/merge';
 
 import {
     Admin,
-    defaultTheme,
     Resource,
     Datagrid,
     List,
@@ -20,10 +19,9 @@ import DateRangeIcon from '@mui/icons-material/DateRange';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
 import frenchMessages from 'ra-language-french';
-import { createMemoryHistory } from 'history';
+import { TestMemoryRouter } from 'ra-core';
 
 import { SavedQueriesList } from './SavedQueriesList';
-import { RaThemeOptions } from '../..';
 import fakeRestProvider from 'ra-data-fakerest';
 
 export default { title: 'ra-ui-materialui/list/filter/SavedQueriesList' };
@@ -152,9 +150,11 @@ const SongList = () => (
 );
 
 export const Basic = () => (
-    <Admin history={createMemoryHistory()} dataProvider={dataProvider}>
-        <Resource name="songs" list={SongList} />
-    </Admin>
+    <TestMemoryRouter>
+        <Admin dataProvider={dataProvider}>
+            <Resource name="songs" list={SongList} />
+        </Admin>
+    </TestMemoryRouter>
 );
 
 /****************** With Theme and Locale Switcher ********************/
@@ -188,29 +188,16 @@ const i18nProvider = polyglotI18nProvider(
     ]
 );
 
-const darkTheme: RaThemeOptions = {
-    ...defaultTheme,
-    palette: {
-        secondary: {
-            light: '#5f5fc4',
-            main: '#283593',
-            dark: '#001064',
-            contrastText: '#fff',
-        },
-        mode: 'dark',
-    },
-};
-
 export const WithThemeAndLocale = () => (
-    <Admin
-        store={memoryStore()}
-        history={createMemoryHistory()}
-        i18nProvider={i18nProvider}
-        dataProvider={dataProvider}
-        darkTheme={darkTheme}
-    >
-        <Resource name="songs" list={SongList} />
-    </Admin>
+    <TestMemoryRouter>
+        <Admin
+            store={memoryStore()}
+            i18nProvider={i18nProvider}
+            dataProvider={dataProvider}
+        >
+            <Resource name="songs" list={SongList} />
+        </Admin>
+    </TestMemoryRouter>
 );
 
 const dataProvider = fakeRestProvider(

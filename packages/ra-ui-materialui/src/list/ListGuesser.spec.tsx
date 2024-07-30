@@ -1,7 +1,7 @@
 import * as React from 'react';
 import expect from 'expect';
 import { render, screen, waitFor } from '@testing-library/react';
-import { CoreAdminContext } from 'ra-core';
+import { CoreAdminContext, testDataProvider } from 'ra-core';
 
 import { ListGuesser } from './ListGuesser';
 import { ThemeProvider } from '../theme/ThemeProvider';
@@ -9,7 +9,7 @@ import { ThemeProvider } from '../theme/ThemeProvider';
 describe('<ListGuesser />', () => {
     it('should log the guessed List view based on the fetched records', async () => {
         const logSpy = jest.spyOn(console, 'log').mockImplementation(() => {});
-        const dataProvider = {
+        const dataProvider = testDataProvider({
             getList: () =>
                 Promise.resolve({
                     data: [
@@ -18,16 +18,16 @@ describe('<ListGuesser />', () => {
                             author: 'john doe',
                             post_id: 6,
                             score: 3,
-                            body:
-                                "Queen, tossing her head through the wood. 'If it had lost something; and she felt sure it.",
+                            body: "Queen, tossing her head through the wood. 'If it had lost something; and she felt sure it.",
                             created_at: new Date('2012-08-02'),
                         },
                     ],
                     total: 1,
                 }),
-        };
+            getMany: () => Promise.resolve({ data: [], total: 0 }),
+        });
         render(
-            <ThemeProvider theme={{}}>
+            <ThemeProvider>
                 <CoreAdminContext dataProvider={dataProvider as any}>
                     <ListGuesser resource="comments" enableLog />
                 </CoreAdminContext>
@@ -42,7 +42,7 @@ import { Datagrid, DateField, List, NumberField, ReferenceField, TextField } fro
 
 export const CommentList = () => (
     <List>
-        <Datagrid rowClick="edit">
+        <Datagrid>
             <TextField source="id" />
             <TextField source="author" />
             <ReferenceField source="post_id" reference="posts" />

@@ -36,7 +36,13 @@ const App = () => (
         <Resource name="contactNotes" />
         <Resource name="dealNotes" />
         <Resource name="tasks" list={ListGuesser} />
-        <Resource name="sales" list={ListGuesser} />
+        <Resource
+            name="sales"
+            list={ListGuesser}
+            recordRepresentation={(record: any) =>
+                `${record.first_name} ${record.last_name}`
+            }
+        />
         <Resource name="tags" list={ListGuesser} />
     </Admin>
 );

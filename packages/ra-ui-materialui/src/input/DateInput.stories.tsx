@@ -17,15 +17,23 @@ export const Basic = () => (
     </Wrapper>
 );
 
-export const FullWidth = () => (
+export const NonFullWidth = () => (
     <Wrapper>
-        <DateInput source="published" fullWidth />
+        <DateInput source="published" fullWidth={false} />
     </Wrapper>
 );
 
 export const Disabled = () => (
     <Wrapper>
         <DateInput source="published" disabled />
+        <DateInput source="announcement" defaultValue="01/01/2000" disabled />
+    </Wrapper>
+);
+
+export const ReadOnly = () => (
+    <Wrapper>
+        <DateInput source="published" readOnly />
+        <DateInput source="announcement" defaultValue="01/01/2000" readOnly />
     </Wrapper>
 );
 
@@ -38,7 +46,7 @@ export const Validate = () => (
 const i18nProvider = polyglotI18nProvider(() => englishMessages);
 
 const Wrapper = ({ children }) => (
-    <AdminContext i18nProvider={i18nProvider}>
+    <AdminContext i18nProvider={i18nProvider} defaultTheme="light">
         <Create resource="posts">
             <SimpleForm>
                 {children}

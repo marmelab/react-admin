@@ -72,7 +72,7 @@ export const DatagridInput = (props: DatagridInputProps) => {
         resource: resourceProp,
         source: sourceProp,
     });
-    const { field, fieldState, formState } = useInput({
+    const { field, fieldState } = useInput({
         ...props,
         ...choicesContext,
         source,
@@ -104,6 +104,8 @@ export const DatagridInput = (props: DatagridInputProps) => {
         () => ({
             ...choicesContext,
             data: availableChoices,
+            total: availableChoices?.length,
+            error: null,
             onSelect,
             onToggleItem,
             onUnselectItems,
@@ -120,6 +122,7 @@ export const DatagridInput = (props: DatagridInputProps) => {
     );
     return (
         <div className={clsx('ra-input', `ra-input-${source}`, className)}>
+            {/* @ts-ignore FIXME cannot find another way to fix this error: "Types of property 'isPending' are incompatible: Type 'boolean' is not assignable to type 'false'." */}
             <ListContextProvider value={listContext}>
                 {filters ? (
                     Array.isArray(filters) ? (
@@ -147,11 +150,6 @@ export const DatagridInput = (props: DatagridInputProps) => {
                     </>
                 )}
                 <InputHelperText
-                    touched={
-                        fieldState.isTouched ||
-                        formState.isSubmitted ||
-                        fetchError
-                    }
                     error={fieldState.error?.message || fetchError?.message}
                 />
             </ListContextProvider>
@@ -159,7 +157,10 @@ export const DatagridInput = (props: DatagridInputProps) => {
     );
 };
 
-export type DatagridInputProps = Omit<CommonInputProps, 'source'> &
+export type DatagridInputProps = Omit<
+    CommonInputProps,
+    'source' | 'readOnly' | 'disabled'
+> &
     ChoicesProps &
     Omit<SupportCreateSuggestionOptions, 'handleChange'> &
     DatagridProps & {

@@ -1,8 +1,12 @@
 import * as React from 'react';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
-import { I18nContextProvider, Resource, testDataProvider } from 'ra-core';
-import { MemoryRouter } from 'react-router-dom';
+import {
+    I18nContextProvider,
+    Resource,
+    testDataProvider,
+    TestMemoryRouter,
+} from 'ra-core';
 
 import { AdminContext } from '../AdminContext';
 import { AdminUI } from '../AdminUI';
@@ -48,7 +52,7 @@ const authProvider = {
 };
 
 export const FullApp = () => (
-    <MemoryRouter>
+    <TestMemoryRouter>
         <AdminContext
             dataProvider={testDataProvider()}
             authProvider={authProvider}
@@ -66,7 +70,7 @@ export const FullApp = () => (
                 }}
             </AdminUI>
         </AdminContext>
-    </MemoryRouter>
+    </TestMemoryRouter>
 );
 
 const LazyPostList = React.lazy(
@@ -78,7 +82,7 @@ const LazyPostList = React.lazy(
 );
 
 export const LazyPage = () => (
-    <MemoryRouter>
+    <TestMemoryRouter>
         <AdminContext
             dataProvider={testDataProvider()}
             i18nProvider={i18nProvider}
@@ -88,7 +92,7 @@ export const LazyPage = () => (
                 <Resource name="posts" list={LazyPostList} />
             </AdminUI>
         </AdminContext>
-    </MemoryRouter>
+    </TestMemoryRouter>
 );
 
 const UserList = () => <div style={{ marginTop: 10 }}>User list</div>;

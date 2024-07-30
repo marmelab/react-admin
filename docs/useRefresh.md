@@ -29,7 +29,7 @@ const DeleteCommentButton = () => {
     const refresh = useRefresh();
     const record = useRecordContext();
     const notify = useNotify();
-    const [deleteOne, { isLoading }] = useDelete(
+    const [deleteOne, { isPending }] = useDelete(
         'comments',
         { id: record.id },
         {
@@ -43,6 +43,6 @@ const DeleteCommentButton = () => {
         }
     );
     
-    return <Button label="delete" onClick={() => deleteOne()} disabled={isLoading} />;
+    return <Button label="delete" onClick={() => deleteOne()} disabled={isPending} />;
 };
 ```

@@ -1,7 +1,6 @@
-import { useContext, useEffect, useRef } from 'react';
-import { useFormState, Control } from 'react-hook-form';
-import { UNSAFE_NavigationContext, useLocation } from 'react-router-dom';
-import { History, Transition } from 'history';
+import { useEffect, useState } from 'react';
+import { Control, useFormState } from 'react-hook-form';
+import { useBlocker } from 'react-router-dom';
 import { useTranslate } from '../i18n';
 
 /**
@@ -14,66 +13,83 @@ export const useWarnWhenUnsavedChanges = (
     formRootPathname?: string,
     control?: Control
 ) => {
-    // react-router v6 does not yet provide a way to block navigation
-    // This is planned for a future release
-    // See https://github.com/remix-run/react-router/issues/8139
-    const navigator = useContext(UNSAFE_NavigationContext).navigator as History;
-    const location = useLocation();
     const translate = useTranslate();
-    const { isSubmitSuccessful, isSubmitting, dirtyFields } = useFormState(
+    const { isSubmitSuccessful, dirtyFields } = useFormState(
         control ? { control } : undefined
     );
     const isDirty = Object.keys(dirtyFields).length > 0;
-    const initialLocation = useRef(formRootPathname || location.pathname);
+    const [shouldNotify, setShouldNotify] = useState(false);
+
+    const shouldNotBlock = !enable || !isDirty || isSubmitSuccessful;
+
+    const blocker = useBlocker(({ currentLocation, nextLocation }) => {
+        if (shouldNotBlock) return false;
+
+        // Also check if the new location is inside the form
+        const initialLocation = formRootPathname || currentLocation.pathname;
+        const newLocationIsInsideCurrentLocation =
+            nextLocation.pathname.startsWith(initialLocation);
+        const newLocationIsShowView = nextLocation.pathname.startsWith(
+            `${initialLocation}/show`
+        );
+        const newLocationIsInsideForm =
+            newLocationIsInsideCurrentLocation && !newLocationIsShowView;
+        if (newLocationIsInsideForm) return false;
+
+        return true;
+    });
 
     useEffect(() => {
-        if (!enable || !isDirty) return;
-        if (!navigator.block) {
-            if (process.env.NODE_ENV !== 'production') {
-                console.warn(
-                    'warnWhenUnsavedChanged is not compatible with react-router >= 6.4. If you need this feature, please downgrade react-router to 6.3.0'
-                );
+        if (blocker.state === 'blocked') {
+            // Corner case: the blocker might be triggered by a redirect in the onSuccess side effect,
+            // happening during the same tick the form is reset after a successful save.
+            // In that case, the blocker will block but shouldNotBlock will be true one tick after.
+            // If we are in that case, we can proceed immediately.
+            if (shouldNotBlock) {
+                blocker.proceed();
+                return;
             }
+
+            setShouldNotify(true);
+        }
+        // This effect should only run when the blocker state changes, not when shouldNotBlock changes.
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [blocker.state]);
+
+    useEffect(() => {
+        if (shouldNotify) {
+            const shouldProceed = window.confirm(
+                translate('ra.message.unsaved_changes')
+            );
+            if (shouldProceed) {
+                blocker.proceed && blocker.proceed();
+            } else {
+                blocker.reset && blocker.reset();
+            }
+        }
+        setShouldNotify(false);
+        // Can't use blocker in the dependency array because it is not stable across rerenders
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [shouldNotify, translate]);
+
+    // This effect handles document navigation, e.g. closing the tab
+    useEffect(() => {
+        const beforeunload = (e: BeforeUnloadEvent) => {
+            // Invoking event.preventDefault() will trigger a warning dialog when the user closes or navigates the tab
+            // https://developer.mozilla.org/en-US/docs/Web/API/Window/beforeunload_event#examples
+            e.preventDefault();
+            // Included for legacy support, e.g. Chrome/Edge < 119
+            e.returnValue = true;
+        };
+
+        if (shouldNotBlock) {
             return;
         }
 
-        let unblock = navigator.block((tx: Transition) => {
-            const newLocationIsInsideCurrentLocation = tx.location.pathname.startsWith(
-                initialLocation.current
-            );
-            const newLocationIsShowView = tx.location.pathname.startsWith(
-                `${initialLocation.current}/show`
-            );
-            const newLocationIsInsideForm =
-                newLocationIsInsideCurrentLocation && !newLocationIsShowView;
+        window.addEventListener('beforeunload', beforeunload);
 
-            if (
-                !isSubmitting &&
-                (newLocationIsInsideForm ||
-                    isSubmitSuccessful ||
-                    window.confirm(translate('ra.message.unsaved_changes')))
-            ) {
-                unblock();
-                tx.retry();
-            } else {
-                if (isSubmitting) {
-                    // Retry the transition (possibly several times) until the form is no longer submitting.
-                    // The value of 100ms is arbitrary, it allows to give some time between retries.
-                    setTimeout(() => {
-                        tx.retry();
-                    }, 100);
-                }
-            }
-        });
-
-        return unblock;
-    }, [
-        enable,
-        location,
-        navigator,
-        isDirty,
-        isSubmitting,
-        isSubmitSuccessful,
-        translate,
-    ]);
+        return () => {
+            window.removeEventListener('beforeunload', beforeunload);
+        };
+    }, [shouldNotBlock]);
 };

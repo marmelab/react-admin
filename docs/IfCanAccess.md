@@ -5,7 +5,7 @@ title: "IfCanAccess"
 
 # `<IfCanAccess>`
 
-This component, part of [the ra-rbac module](https://marmelab.com/ra-enterprise/modules/ra-rbac#ifcanaccess)<img class="icon" src="./img/premium.svg" />, renders its child only if the user has the right permissions.
+This component, part of [the ra-rbac module](https://react-admin-ee.marmelab.com/documentation/ra-rbac#ifcanaccess)<img class="icon" src="./img/premium.svg" />, renders its child only if the user has the right permissions.
 
 ## Usage
 
@@ -114,7 +114,7 @@ const EditCompanyButton = () => {
 
 `ra-rbac` shows a Not Found page when users try to access a page they don't have the permissions for. It is considered good security practice not to disclose to a potentially malicious user that a page exists if they are not allowed to see it.
 
-However, should you prefer to show an Access Denied screen in those cases, you can do so by specifying a `fallback` component in `<IfCanAccess>`:
+However, should you prefer to show an 'Access Denied' screen in those cases, you can do so by specifying a `fallback` component in `<IfCanAccess>`:
 
 ```tsx
 // in src/posts/PostCreate.tsx

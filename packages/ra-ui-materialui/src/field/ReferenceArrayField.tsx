@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { FC, memo, ReactElement, ReactNode } from 'react';
-import PropTypes from 'prop-types';
 import {
     ListContextProvider,
     useListContext,
@@ -14,9 +13,9 @@ import {
 } from 'ra-core';
 import { styled } from '@mui/material/styles';
 import { SxProps } from '@mui/system';
-import { UseQueryOptions } from 'react-query';
+import { UseQueryOptions } from '@tanstack/react-query';
 
-import { fieldPropTypes, FieldProps } from './types';
+import { FieldProps } from './types';
 import { LinearProgress } from '../layout';
 import { SingleFieldList } from '../list/SingleFieldList';
 
@@ -78,7 +77,7 @@ import { SingleFieldList } from '../list/SingleFieldList';
  */
 export const ReferenceArrayField = <
     RecordType extends RaRecord = RaRecord,
-    ReferenceRecordType extends RaRecord = RaRecord
+    ReferenceRecordType extends RaRecord = RaRecord,
 >(
     props: ReferenceArrayFieldProps<RecordType, ReferenceRecordType>
 ) => {
@@ -115,24 +114,9 @@ export const ReferenceArrayField = <
         </ResourceContextProvider>
     );
 };
-
-ReferenceArrayField.propTypes = {
-    ...fieldPropTypes,
-    className: PropTypes.string,
-    children: PropTypes.node,
-    label: fieldPropTypes.label,
-    record: PropTypes.any,
-    reference: PropTypes.string.isRequired,
-    resource: PropTypes.string,
-    sortBy: PropTypes.string,
-    sortByOrder: fieldPropTypes.sortByOrder,
-    source: PropTypes.string.isRequired,
-    queryOptions: PropTypes.any,
-};
-
 export interface ReferenceArrayFieldProps<
     RecordType extends RaRecord = RaRecord,
-    ReferenceRecordType extends RaRecord = RaRecord
+    ReferenceRecordType extends RaRecord = RaRecord,
 > extends FieldProps<RecordType> {
     children?: ReactNode;
     filter?: FilterPayload;
@@ -149,13 +133,15 @@ export interface ReferenceArrayFieldViewProps
     extends Omit<ReferenceArrayFieldProps, 'resource' | 'page' | 'perPage'>,
         Omit<ListControllerProps, 'queryOptions'> {}
 
-export const ReferenceArrayFieldView: FC<ReferenceArrayFieldViewProps> = props => {
+export const ReferenceArrayFieldView: FC<
+    ReferenceArrayFieldViewProps
+> = props => {
     const { children, pagination, className, sx } = props;
-    const { isLoading, total } = useListContext(props);
+    const { isPending, total } = useListContext();
 
     return (
         <Root className={className} sx={sx}>
-            {isLoading ? (
+            {isPending ? (
                 <LinearProgress
                     className={ReferenceArrayFieldClasses.progress}
                 />
@@ -167,12 +153,6 @@ export const ReferenceArrayFieldView: FC<ReferenceArrayFieldViewProps> = props =
             )}
         </Root>
     );
-};
-
-ReferenceArrayFieldView.propTypes = {
-    className: PropTypes.string,
-    children: PropTypes.node,
-    reference: PropTypes.string.isRequired,
 };
 
 const PREFIX = 'RaReferenceArrayField';

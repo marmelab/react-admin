@@ -7,6 +7,8 @@ title: "useRecordContext"
 
 `useRecordContext` grabs the current record. It's available anywhere react-admin manipulates a record, e.g. in a Show page, in a Datagrid row, or in a Reference Field.
 
+<iframe src="https://www.youtube-nocookie.com/embed/YLwx-EZfGFk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;"></iframe>
+
 ## Usage
 
 The most common use case for `useRecordContext` is to build a custom field. For instance, an author field for a book Show view. 
@@ -97,8 +99,8 @@ If you have fetched a `record` and you want to make it available to descendants,
 import { useGetOne, RecordContextProvider } from 'react-admin';
 
 const RecordFetcher = ({ id, resource, children }) => {
-    const { data, isLoading, error } = useGetOne(resource, { id });
-    if (isLoading) return <p>Loading...</p>;
+    const { data, isPending, error } = useGetOne(resource, { id });
+    if (isPending) return <p>Loading...</p>;
     if (error) return <p>Error :(</p>;
     return (
         <RecordContextProvider value={data}>

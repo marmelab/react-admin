@@ -1,5 +1,4 @@
 import { ReactElement } from 'react';
-import PropTypes from 'prop-types';
 import { TableCellProps } from '@mui/material/TableCell';
 import { Call, Objects } from 'hotscript';
 
@@ -8,7 +7,7 @@ type SortOrder = 'ASC' | 'DESC';
 type AnyString = string & {};
 
 export interface FieldProps<
-    RecordType extends Record<string, any> = Record<string, any>
+    RecordType extends Record<string, any> = Record<string, any>,
 > {
     /**
      * The field to use for sorting when users click this column head, if sortable.
@@ -58,7 +57,7 @@ export interface FieldProps<
      *     </List>
      * );
      */
-    source?: Call<Objects.AllPaths, RecordType> extends never
+    source: Call<Objects.AllPaths, RecordType> extends never
         ? AnyString
         : Call<Objects.AllPaths, RecordType>;
 
@@ -112,25 +111,22 @@ export interface FieldProps<
      */
     headerClassName?: string;
 
-    /*
-     * @deprecated this property is not used anymore
-     */
-    formClassName?: string;
-
     /**
      * The text alignment for the cell content, when used inside <Datagrid>.
      *
      * @see https://marmelab.com/react-admin/Fields.html#textalign
      * @example
-     * const BasketTotal = () => {
-     *     const record = useRecordContext();
-     *     if (!record) return null;
-     *     const total = record.items.reduce((total, item) => total + item.price, 0);
-     *     return <span>{total}</span>;
-     * }
-     * BasketTotal.defaultProps = {
-     *     textAlign: 'right',
-     * };
+     * import { List, Datagrid, TextField } from 'react-admin';
+     * const PostList = () => (
+     *     <List>
+     *         <Datagrid>
+     *             <TextField source="id" />
+     *             <TextField source="title" />
+     *             <TextField source="author" />
+     *             <TextField source="year" textAlign="right" />
+     *         </Datagrid>
+     *     </List>
+     * );
      */
     textAlign?: TextAlign;
 
@@ -167,62 +163,3 @@ export interface FieldProps<
      */
     resource?: string;
 }
-
-/**
- * @deprecated use FieldProps instead
- */
-export interface PublicFieldProps<
-    RecordType extends Record<string, any> = Record<string, any>,
-    SortByType = unknown
-> {
-    sortBy?: unknown extends SortByType
-        ? Call<Objects.AllPaths, RecordType>
-        : SortByType;
-    sortByOrder?: SortOrder;
-    source?: Call<Objects.AllPaths, RecordType>;
-    label?: string | ReactElement | boolean;
-    sortable?: boolean;
-    className?: string;
-    cellClassName?: string;
-    headerClassName?: string;
-    /*
-     * @deprecated this property is not used anymore
-     */
-    formClassName?: string;
-    textAlign?: TextAlign;
-    emptyText?: string;
-    fullWidth?: boolean;
-    record?: RecordType;
-    resource?: string;
-}
-
-/**
- * @deprecated use FieldProps instead
- */
-export interface InjectedFieldProps<RecordType = any> {
-    record?: RecordType;
-    resource?: string;
-}
-
-export const fieldPropTypes = {
-    sortBy: PropTypes.string,
-    sortByOrder: PropTypes.oneOf<SortOrder>(['ASC', 'DESC']),
-    source: PropTypes.string,
-    label: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.element,
-        PropTypes.bool,
-    ]),
-    sortable: PropTypes.bool,
-    className: PropTypes.string,
-    cellClassName: PropTypes.string,
-    headerClassName: PropTypes.string,
-    textAlign: PropTypes.oneOf<TextAlign>([
-        'inherit',
-        'left',
-        'center',
-        'right',
-        'justify',
-    ]),
-    emptyText: PropTypes.string,
-};

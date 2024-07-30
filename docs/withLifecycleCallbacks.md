@@ -7,6 +7,8 @@ title: "withLifecycleCallbacks"
 
 This helper function adds logic to an existing [`dataProvider`](./DataProviders.md) for particular resources, using pre- and post- event handlers like `beforeGetOne` and `afterSave`.
 
+<iframe src="https://www.youtube-nocookie.com/embed/o8U-wjfUwGk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;"></iframe>
+
 **Note**: It's always preferable to **define custom business logic on the server side**. This helper is useful when you can't alter the underlying API, but has some serious [limitations](#limitations).
 
 ## Usage
@@ -141,30 +143,35 @@ export const dataProvider = withLifecycleCallbacks(baseDataProvider, [ /* lifecy
 
 ## `lifecycleCallbacks`
 
-The second argument is an array of objects that define the callbacks to execute. One lifecycle callback object is required for each resource that needs to be decorated. One lifecycle callback object can define callbacks for multiple events.
+The second argument is an array of objects that define the callbacks to execute.
+
+A lifecycle callback is an object that defines a resource and callbacks for lifecycle events object. One lifecycle callback object can define callbacks for multiple events. For each event, you can pass a single function, or an array of functions that will be executed in the provided order.
+
+You can also use the wilcard value '*' for the resource to apply the callback to every resource.
+
+Lifecycle callbacks are executed in the order they are defined.
 
 ```jsx
-import jsonServerProvider from "ra-data-json-server";
+import { baseDataProvider } from "./baseDataProvider";
 
 export const dataProvider = withLifecycleCallbacks(
-  jsonServerProvider("http://localhost:3000"),
+  baseDataProvider,
   [
     {
         resource: "posts",
         afterRead: async (data, dataProvider) => { /* ... */ },
-        afterSave: async (record, dataProvider) => { /* ... */ },
-        beforeDelete: async (params, dataProvider) => { /* ... */ },
-    },
-    {
-        resource: "comments",
-        beforeSave: async (data, dataProvider) => { /* ... */ },
-        afterCreate: async (result, dataProvider) => { /* ... */ },
+        afterSave: async (params, dataProvider) => { /* ... */ },
+        beforeDelete: [callback1, callback2, callback3], // You can also pass arrays of callbacks
     },
     {
         resource: "users",
         beforeGetList: async (params, dataProvider) => { /* ... */ },
         afterGetList: async (result, dataProvider) => { /* ... */ },
-    }
+    },
+    {
+        resource: "*", // Wildcard : will be applied for every resource
+        beforeSave: async (data, dataProvider, resource) => { /* ... */ },
+    },
   ]
 );
 ```
@@ -172,32 +179,32 @@ export const dataProvider = withLifecycleCallbacks(
 A lifecycle callback object can have the following properties:
 
 ```jsx
-const fooLifecycleCallback = {
-  resource: /* resource name (required) */,
+const exampleLifecycleCallback = {
+  resource: /* resource name, or wildcard * (required) */,
   // before callbacks
-  beforeGetList: /* async (params, dataProvider) => params */,
-  beforeGetOne: /* async (params, dataProvider) => params */,
-  beforeGetMany : /* async (params, dataProvider) => params */,
-  beforeGetManyReference: /* async (params, dataProvider) => params */,
-  beforeCreate: /* async (params, dataProvider) => params */,
-  beforeUpdate: /* async (params, dataProvider) => params */,
-  beforeUpdateMany: /* async (params, dataProvider) => params */,
-  beforeDelete: /* async (params, dataProvider) => params */,
-  beforeDeleteMany: /* async (params, dataProvider) => params */,
+  beforeGetList: /* a single function, or array or functions : async (params, dataProvider, resource) => params */,
+  beforeGetOne: /* a single function, or array or functions : async (params, dataProvider, resource) => params */,
+  beforeGetMany : /* a single function, or array or functions : async (params, dataProvider, resource) => params */,
+  beforeGetManyReference: /* a single function, or array or functions : async (params, dataProvider, resource) => params */,
+  beforeCreate: /* a single function, or array or functions : async (params, dataProvider, resource) => params */,
+  beforeUpdate: /* a single function, or array or functions : async (params, dataProvider, resource) => params */,
+  beforeUpdateMany: /* a single function, or array or functions : async (params, dataProvider, resource) => params */,
+  beforeDelete: /* a single function, or array or functions : async (params, dataProvider, resource) => params */,
+  beforeDeleteMany: /* a single function, or array or functions : async (params, dataProvider, resource) => params */,
   // after callbacks
-  afterGetList: /* async (result, dataProvider) => result */,
-  afterGetOne: /* async (result, dataProvider) => result */,
-  afterGetMany: /* async (result, dataProvider) => result */,
-  afterGetManyReference: /* async (result, dataProvider) => result */,
-  afterCreate: /* async (result, dataProvider) => result */,
-  afterUpdate: /* async (result, dataProvider) => result */,
-  afterUpdateMany: /* async (result, dataProvider) => result */,
-  afterDelete: /* async (result, dataProvider) => result */,
-  afterDeleteMany: /* async (result, dataProvider) => result */,
+  afterGetList: /* a single function, or array or functions : async (result, dataProvider, resource) => result */,
+  afterGetOne: /* a single function, or array or functions : async (result, dataProvider, resource) => result */,
+  afterGetMany: /* a single function, or array or functions : async (result, dataProvider, resource) => result */,
+  afterGetManyReference: /* a single function, or array or functions : async (result, dataProvider, resource) => result */,
+  afterCreate: /* a single function, or array or functions : async (result, dataProvider, resource) => result */,
+  afterUpdate: /* a single function, or array or functions : async (result, dataProvider, resource) => result */,
+  afterUpdateMany: /* a single function, or array or functions : async (result, dataProvider, resource) => result */,
+  afterDelete: /* a single function, or array or functions : async (result, dataProvider, resource) => result */,
+  afterDeleteMany: /* a single function, or array or functions : async (result, dataProvider, resource) => result */,
   // special callbacks
-  afterRead: /* async (record, dataProvider) => record */,
-  beforeSave: /* async (data, dataProvider) => data */,
-  afterSave: /* async (record, dataProvider) => record */,
+  afterRead: /* a single function, or array or functions : async (record, dataProvider, resource) => record */,
+  beforeSave: /* a single function, or array or functions : async (data, dataProvider, resource) => data */,
+  afterSave: /* a single function, or array or functions : async (record, dataProvider, resource) => record */,
 }
 ```
 
@@ -209,6 +216,7 @@ The `beforeGetList`, `beforeGetOne`, `beforeGetMany `, `beforeGetManyReference`,
 
 - `params`: the parameters passed to the dataProvider method
 - `dataProvider`: the dataProvider itself, so you can call other dataProvider methods
+- `resource`: the resource the callback is applied on (useful when using wildcard resource)
 
 ### After callbacks 
 
@@ -216,6 +224,7 @@ The `afterGetList`, `afterGetOne`, `afterGetMany `, `afterGetManyReference`, `af
 
 - `response`: the response returned by the dataProvider method
 - `dataProvider`: the dataProvider itself, so you can call other dataProvider methods
+- `resource`: the resource the callback is applied on (useful when using wildcard resource)
 
 ### `afterRead` 
 
@@ -223,6 +232,7 @@ Called after any dataProvider method that reads data (`getList`, `getOne`, `getM
 
 - `record`: the record returned by the backend 
 - `dataProvider`: the dataProvider itself, so you can call other dataProvider methods
+- `resource`: the resource the callback is applied on (useful when using wildcard resource)
 
 For methods that return many records (`getList`, `getMany`, `getManyReference`), the callback is called once for each record.
 
@@ -243,6 +253,7 @@ Called before any dataProvider method that saves data (`create`, `update`, `upda
 
 - `data`: the record update to be sent to the backend (often, a diff of the record)
 - `dataProvider`: the dataProvider itself, so you can call other dataProvider methods
+- `resource`: the resource the callback is applied on (useful when using wildcard resource)
 
 ```jsx
 const postLifecycleCallbacks = {
@@ -260,6 +271,7 @@ Called after any dataProvider method that saves data (`create`, `update`, `updat
 
 - `record`: the record returned by the backend 
 - `dataProvider`: the dataProvider itself, so you can call other dataProvider methods
+- `resource`: the resource the callback is applied on (useful when using wildcard resource)
 
 ```jsx
 const postLifecycleCallback = {
@@ -337,6 +349,16 @@ export const dataProvider = withLifecycleCallbacks(baseDataProvider, [
     commentLifecycleCallbacks,
     userLifecycleCallbacks,
 ]);
+```
+
+If you have many callbacks for the same resource and event, this is a good practice to pass arrays of named functions instead of a single function for each event.
+
+```jsx
+// in src/posts/index.js
+export const postLifecycleCallbacks = {
+    resource: 'posts',
+    beforeDelete: [deleteCommentsRelatedToPosts, removeLinksFromOtherPosts],
+};
 ```
 
 You can test isolated lifecycle callbacks by mocking the `dataProvider`:

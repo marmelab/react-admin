@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { useState } from 'react';
+
 import {
     CoreAdminContext,
     RecordContextProvider,
@@ -9,11 +10,12 @@ import {
     useRecordContext,
     I18nContextProvider,
     Resource,
+    TestMemoryRouter,
 } from 'ra-core';
+
 import fakeRestDataProvider from 'ra-data-fakerest';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
-import { createMemoryHistory } from 'history';
 import { ThemeProvider, Stack } from '@mui/material';
 import { createTheme } from '@mui/material/styles';
 
@@ -48,8 +50,6 @@ const i18nProvider = polyglotI18nProvider(
     'en'
 );
 
-const history = createMemoryHistory({ initialEntries: ['/books/1/show'] });
-
 const defaultDataProvider = {
     getMany: () =>
         Promise.resolve({
@@ -57,29 +57,33 @@ const defaultDataProvider = {
         }),
 } as any;
 const defaultRecord = { id: 1, title: 'War and Peace', detail_id: 1 };
+const defaultResourceDefinitions = {
+    book_details: {
+        name: 'book_details',
+        hasShow: true,
+        hasEdit: true,
+    },
+};
 
 const Wrapper = ({
     children,
     dataProvider = defaultDataProvider,
     record = defaultRecord,
+    resourceDefinitions = defaultResourceDefinitions,
 }: any) => (
-    <CoreAdminContext dataProvider={dataProvider} history={history}>
-        <ResourceDefinitionContextProvider
-            definitions={{
-                book_details: {
-                    name: 'book_details',
-                    hasShow: true,
-                    hasEdit: true,
-                },
-            }}
-        >
-            <ResourceContextProvider value="books">
-                <RecordContextProvider value={record}>
-                    {children}
-                </RecordContextProvider>
-            </ResourceContextProvider>
-        </ResourceDefinitionContextProvider>
-    </CoreAdminContext>
+    <TestMemoryRouter initialEntries={['/books/1/show']}>
+        <CoreAdminContext dataProvider={dataProvider}>
+            <ResourceDefinitionContextProvider
+                definitions={resourceDefinitions}
+            >
+                <ResourceContextProvider value="books">
+                    <RecordContextProvider value={record}>
+                        {children}
+                    </RecordContextProvider>
+                </ResourceContextProvider>
+            </ResourceDefinitionContextProvider>
+        </CoreAdminContext>
+    </TestMemoryRouter>
 );
 
 export const Basic = () => (
@@ -108,7 +112,15 @@ export const Loading = () => (
     </Wrapper>
 );
 
-export const Empty = () => (
+export const MissingReferenceId = () => (
+    <Wrapper record={{ id: 1, title: 'War and Peace' }}>
+        <ReferenceField source="detail_id" reference="book_details">
+            <TextField source="ISBN" />
+        </ReferenceField>
+    </Wrapper>
+);
+
+export const MissingReferenceIdEmptyText = () => (
     <Wrapper record={{ id: 1, title: 'War and Peace' }}>
         <ReferenceField
             source="detail_id"
@@ -120,7 +132,7 @@ export const Empty = () => (
     </Wrapper>
 );
 
-export const EmptyWithTranslate = () => (
+export const MissingReferenceIdEmptyTextTranslation = () => (
     <Wrapper record={{ id: 1, title: 'War and Peace' }}>
         <I18nContextProvider value={i18nProvider}>
             <ReferenceField
@@ -143,6 +155,14 @@ const missingReferenceDataProvider = {
 
 export const MissingReference = () => (
     <Wrapper dataProvider={missingReferenceDataProvider}>
+        <ReferenceField source="detail_id" reference="book_details">
+            <TextField source="ISBN" />
+        </ReferenceField>
+    </Wrapper>
+);
+
+export const MissingReferenceEmptyText = () => (
+    <Wrapper dataProvider={missingReferenceDataProvider}>
         <ReferenceField
             source="detail_id"
             reference="book_details"
@@ -153,7 +173,7 @@ export const MissingReference = () => (
     </Wrapper>
 );
 
-export const Link = () => (
+export const LinkShow = () => (
     <Wrapper>
         <ReferenceField source="detail_id" reference="book_details" link="show">
             <TextField source="ISBN" />
@@ -161,25 +181,77 @@ export const Link = () => (
     </Wrapper>
 );
 
-export const LinkWithoutEditView = () => (
-    <CoreAdminContext dataProvider={defaultDataProvider} history={history}>
-        <ResourceDefinitionContextProvider
-            definitions={{
-                book_details: {
-                    name: 'book_details',
-                    hasEdit: false,
-                },
-            }}
+export const LinkMissingView = () => (
+    <Wrapper
+        resourceDefinitions={{
+            book_details: {
+                name: 'book_details',
+                hasShow: false,
+            },
+        }}
+    >
+        <ReferenceField source="detail_id" reference="book_details" link="show">
+            <TextField source="ISBN" />
+        </ReferenceField>
+    </Wrapper>
+);
+
+export const LinkFalse = () => (
+    <Wrapper>
+        <ReferenceField
+            source="detail_id"
+            reference="book_details"
+            link={false}
         >
-            <ResourceContextProvider value="books">
-                <RecordContextProvider value={defaultRecord}>
-                    <ReferenceField source="detail_id" reference="book_details">
-                        <TextField source="ISBN" />
-                    </ReferenceField>
-                </RecordContextProvider>
-            </ResourceContextProvider>
-        </ResourceDefinitionContextProvider>
-    </CoreAdminContext>
+            <TextField source="ISBN" />
+        </ReferenceField>
+    </Wrapper>
+);
+
+export const LinkDefaultEditView = () => (
+    <Wrapper
+        resourceDefinitions={{
+            book_details: {
+                name: 'book_details',
+                hasEdit: true,
+            },
+        }}
+    >
+        <ReferenceField source="detail_id" reference="book_details">
+            <TextField source="ISBN" />
+        </ReferenceField>
+    </Wrapper>
+);
+
+export const LinkDefaultShowView = () => (
+    <Wrapper
+        resourceDefinitions={{
+            book_details: {
+                name: 'book_details',
+                hasShow: true,
+            },
+        }}
+    >
+        <ReferenceField source="detail_id" reference="book_details">
+            <TextField source="ISBN" />
+        </ReferenceField>
+    </Wrapper>
+);
+
+export const LinkDefaultNoDetailView = () => (
+    <Wrapper
+        resourceDefinitions={{
+            book_details: {
+                name: 'book_details',
+                hasShow: false,
+                hasEdit: false,
+            },
+        }}
+    >
+        <ReferenceField source="detail_id" reference="book_details">
+            <TextField source="ISBN" />
+        </ReferenceField>
+    </Wrapper>
 );
 
 export const Children = () => (
@@ -347,6 +419,7 @@ export const SXNoLink = () => (
 
 const BookDetailsRepresentation = () => {
     const record = useRecordContext();
+    if (!record) return null;
     return (
         <>
             <strong>Genre</strong>: {record.genre}, <strong>ISBN</strong>:{' '}
@@ -355,75 +428,77 @@ const BookDetailsRepresentation = () => {
     );
 };
 export const RecordRepresentation = () => (
-    <CoreAdminContext dataProvider={defaultDataProvider} history={history}>
-        <ResourceContextProvider value="books">
-            <RecordContextProvider value={defaultRecord}>
-                <Stack spacing={4} direction="row" sx={{ ml: 2 }}>
-                    <div>
-                        <h3>Default</h3>
-                        <ReferenceField
-                            source="detail_id"
-                            reference="book_details"
-                        />
-                    </div>
-                    <div>
-                        <ResourceDefinitionContextProvider
-                            definitions={{
-                                book_details: {
-                                    name: 'book_details',
-                                    recordRepresentation: 'ISBN',
-                                    hasEdit: true,
-                                },
-                            }}
-                        >
-                            <h3>String</h3>
+    <TestMemoryRouter initialEntries={['/books/1/show']}>
+        <CoreAdminContext dataProvider={defaultDataProvider}>
+            <ResourceContextProvider value="books">
+                <RecordContextProvider value={defaultRecord}>
+                    <Stack spacing={4} direction="row" sx={{ ml: 2 }}>
+                        <div>
+                            <h3>Default</h3>
                             <ReferenceField
                                 source="detail_id"
                                 reference="book_details"
                             />
-                        </ResourceDefinitionContextProvider>
-                    </div>
-                    <div>
-                        <ResourceDefinitionContextProvider
-                            definitions={{
-                                book_details: {
-                                    name: 'book_details',
-                                    recordRepresentation: record =>
-                                        `Genre: ${record.genre}, ISBN: ${record.ISBN}`,
-                                    hasEdit: true,
-                                },
-                            }}
-                        >
-                            <h3>Function</h3>
-                            <ReferenceField
-                                source="detail_id"
-                                reference="book_details"
-                            />
-                        </ResourceDefinitionContextProvider>
-                    </div>
-                    <div>
-                        <ResourceDefinitionContextProvider
-                            definitions={{
-                                book_details: {
-                                    name: 'book_details',
-                                    recordRepresentation: (
-                                        <BookDetailsRepresentation />
-                                    ),
-                                    hasEdit: true,
-                                },
-                            }}
-                        >
-                            <h3>Element</h3>
-                            <ReferenceField
-                                source="detail_id"
-                                reference="book_details"
-                            />
-                        </ResourceDefinitionContextProvider>
-                    </div>
-                </Stack>
-            </RecordContextProvider>
-        </ResourceContextProvider>
-    </CoreAdminContext>
+                        </div>
+                        <div>
+                            <ResourceDefinitionContextProvider
+                                definitions={{
+                                    book_details: {
+                                        name: 'book_details',
+                                        recordRepresentation: 'ISBN',
+                                        hasEdit: true,
+                                    },
+                                }}
+                            >
+                                <h3>String</h3>
+                                <ReferenceField
+                                    source="detail_id"
+                                    reference="book_details"
+                                />
+                            </ResourceDefinitionContextProvider>
+                        </div>
+                        <div>
+                            <ResourceDefinitionContextProvider
+                                definitions={{
+                                    book_details: {
+                                        name: 'book_details',
+                                        recordRepresentation: record =>
+                                            `Genre: ${record.genre}, ISBN: ${record.ISBN}`,
+                                        hasEdit: true,
+                                    },
+                                }}
+                            >
+                                <h3>Function</h3>
+                                <ReferenceField
+                                    source="detail_id"
+                                    reference="book_details"
+                                />
+                            </ResourceDefinitionContextProvider>
+                        </div>
+                        <div>
+                            <ResourceDefinitionContextProvider
+                                definitions={{
+                                    book_details: {
+                                        name: 'book_details',
+                                        recordRepresentation: (
+                                            <BookDetailsRepresentation />
+                                        ),
+                                        hasEdit: true,
+                                    },
+                                }}
+                            >
+                                <h3>Element</h3>
+                                <ReferenceField
+                                    source="detail_id"
+                                    reference="book_details"
+                                />
+                            </ResourceDefinitionContextProvider>
+                        </div>
+                    </Stack>
+                </RecordContextProvider>
+            </ResourceContextProvider>
+        </CoreAdminContext>
+    </TestMemoryRouter>
 );
 
 const relationalDataProvider = fakeRestDataProvider(

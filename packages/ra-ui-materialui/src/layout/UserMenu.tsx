@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { ReactNode, useCallback, useMemo, useState } from 'react';
 import { styled } from '@mui/material/styles';
-import PropTypes from 'prop-types';
 import { useAuthProvider, useGetIdentity, useTranslate } from 'ra-core';
 import {
     Tooltip,
@@ -61,7 +60,7 @@ import { Logout } from '../auth/Logout';
 export const UserMenu = (props: UserMenuProps) => {
     const [anchorEl, setAnchorEl] = useState(null);
     const translate = useTranslate();
-    const { isLoading, identity } = useGetIdentity();
+    const { isPending, identity } = useGetIdentity();
     const authProvider = useAuthProvider();
     const isLargeEnough = useMediaQuery<Theme>(theme =>
         theme.breakpoints.up('sm')
@@ -82,7 +81,7 @@ export const UserMenu = (props: UserMenuProps) => {
 
     return (
         <Root className={className}>
-            {isLargeEnough && !isLoading && identity?.fullName ? (
+            {isLargeEnough && !isPending && identity?.fullName ? (
                 <Button
                     aria-label={label && translate(label, { _: label })}
                     className={UserMenuClasses.userButton}
@@ -107,12 +106,12 @@ export const UserMenu = (props: UserMenuProps) => {
                 <Tooltip title={label && translate(label, { _: 'Profile' })}>
                     <IconButton
                         aria-label={label && translate(label, { _: 'Profile' })}
-                        aria-owns={open ? 'menu-appbar' : null}
+                        aria-owns={open ? 'menu-appbar' : undefined}
                         aria-haspopup={true}
                         color="inherit"
                         onClick={handleMenu}
                     >
-                        {!isLoading && identity?.avatar ? (
+                        {!isPending && identity?.avatar ? (
                             <Avatar
                                 className={UserMenuClasses.avatar}
                                 src={identity.avatar}
@@ -139,13 +138,6 @@ export const UserMenu = (props: UserMenuProps) => {
             </UserMenuContextProvider>
         </Root>
     );
-};
-
-UserMenu.propTypes = {
-    children: PropTypes.node,
-    classes: PropTypes.object,
-    label: PropTypes.string,
-    icon: PropTypes.node,
 };
 
 export interface UserMenuProps {

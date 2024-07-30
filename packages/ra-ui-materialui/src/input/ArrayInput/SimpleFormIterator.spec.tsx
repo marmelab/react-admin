@@ -7,13 +7,18 @@ import {
     getByLabelText,
 } from '@testing-library/react';
 import expect from 'expect';
-import { FormDataConsumer, testDataProvider } from 'ra-core';
+import {
+    FormDataConsumer,
+    ResourceContextProvider,
+    testDataProvider,
+} from 'ra-core';
 
 import { AdminContext } from '../../AdminContext';
 import { SimpleForm } from '../../form';
 import { ArrayInput } from './ArrayInput';
 import { TextInput } from '../TextInput';
 import { SimpleFormIterator } from './SimpleFormIterator';
+import { Basic } from './SimpleFormIterator.stories';
 
 describe('<SimpleFormIterator />', () => {
     // bypass confirm leave form with unsaved changes
@@ -26,7 +31,9 @@ describe('<SimpleFormIterator />', () => {
 
     const Wrapper = ({ children }) => (
         <AdminContext dataProvider={testDataProvider()}>
-            {children}
+            <ResourceContextProvider value="posts">
+                {children}
+            </ResourceContextProvider>
         </AdminContext>
     );
 
@@ -48,39 +55,12 @@ describe('<SimpleFormIterator />', () => {
             </Wrapper>
         );
         const inputElements = screen.queryAllByLabelText(
-            'resources.undefined.fields.emails.email'
+            'resources.posts.fields.emails.email'
         );
         expect(inputElements).toHaveLength(2);
         expect((inputElements[0] as HTMLInputElement).disabled).toBeFalsy();
         expect((inputElements[0] as HTMLInputElement).value).toBe('foo');
         expect((inputElements[1] as HTMLInputElement).disabled).toBeFalsy();
-        expect((inputElements[1] as HTMLInputElement).value).toBe('bar');
-    });
-
-    it('should render disabled inputs when disabled is true', () => {
-        render(
-            <Wrapper>
-                <SimpleForm
-                    record={{
-                        id: 'whatever',
-                        emails: [{ email: 'foo' }, { email: 'bar' }],
-                    }}
-                >
-                    <ArrayInput source="emails" disabled>
-                        <SimpleFormIterator>
-                            <TextInput source="email" />
-                        </SimpleFormIterator>
-                    </ArrayInput>
-                </SimpleForm>
-            </Wrapper>
-        );
-        const inputElements = screen.queryAllByLabelText(
-            'resources.undefined.fields.emails.email'
-        );
-        expect(inputElements).toHaveLength(2);
-        expect((inputElements[0] as HTMLInputElement).disabled).toBeTruthy();
-        expect((inputElements[0] as HTMLInputElement).value).toBe('foo');
-        expect((inputElements[1] as HTMLInputElement).disabled).toBeTruthy();
         expect((inputElements[1] as HTMLInputElement).value).toBe('bar');
     });
 
@@ -102,7 +82,7 @@ describe('<SimpleFormIterator />', () => {
             </Wrapper>
         );
         const inputElements = screen.queryAllByLabelText(
-            'resources.undefined.fields.emails.email'
+            'resources.posts.fields.emails.email'
         );
         expect(inputElements).toHaveLength(2);
         expect((inputElements[0] as HTMLInputElement).disabled).toBeTruthy();
@@ -147,8 +127,8 @@ describe('<SimpleFormIterator />', () => {
         render(
             <Wrapper>
                 <SimpleForm>
-                    <ArrayInput source="emails" disabled>
-                        <SimpleFormIterator>
+                    <ArrayInput source="emails">
+                        <SimpleFormIterator disabled>
                             <TextInput source="email" />
                         </SimpleFormIterator>
                     </ArrayInput>
@@ -214,8 +194,8 @@ describe('<SimpleFormIterator />', () => {
                         emails: [{ email: '' }, { email: '' }],
                     }}
                 >
-                    <ArrayInput source="emails" disabled>
-                        <SimpleFormIterator>
+                    <ArrayInput source="emails">
+                        <SimpleFormIterator disabled>
                             <TextInput source="email" />
                         </SimpleFormIterator>
                     </ArrayInput>
@@ -251,7 +231,7 @@ describe('<SimpleFormIterator />', () => {
         fireEvent.click(screen.getByText('ra.action.confirm'));
         await waitFor(() => {
             const inputElements = screen.queryAllByLabelText(
-                'resources.undefined.fields.emails.email'
+                'resources.posts.fields.emails.email'
             );
             expect(inputElements.length).toBe(0);
         });
@@ -277,7 +257,7 @@ describe('<SimpleFormIterator />', () => {
         fireEvent.click(addItemElement);
         await waitFor(() => {
             const inputElements = screen.queryAllByLabelText(
-                'resources.undefined.fields.emails.email'
+                'resources.posts.fields.emails.email'
             );
 
             expect(inputElements.length).toBe(1);
@@ -286,14 +266,14 @@ describe('<SimpleFormIterator />', () => {
         fireEvent.click(addItemElement);
         await waitFor(() => {
             const inputElements = screen.queryAllByLabelText(
-                'resources.undefined.fields.emails.email'
+                'resources.posts.fields.emails.email'
             );
 
             expect(inputElements.length).toBe(2);
         });
 
         const inputElements = screen.queryAllByLabelText(
-            'resources.undefined.fields.emails.email'
+            'resources.posts.fields.emails.email'
         ) as HTMLInputElement[];
 
         expect(
@@ -501,17 +481,14 @@ describe('<SimpleFormIterator />', () => {
                     <ArrayInput source="emails">
                         <SimpleFormIterator>
                             <FormDataConsumer>
-                                {({ getSource }) => (
+                                {() => (
                                     <>
                                         <TextInput
-                                            source={getSource!('email')}
+                                            source="email"
                                             label="Email"
                                             defaultValue="default@marmelab.com"
                                         />
-                                        <TextInput
-                                            source={getSource!('name')}
-                                            label="Name"
-                                        />
+                                        <TextInput source="name" label="Name" />
                                     </>
                                 )}
                             </FormDataConsumer>
@@ -572,7 +549,7 @@ describe('<SimpleFormIterator />', () => {
         );
 
         const inputElements = screen.queryAllByLabelText(
-            'resources.undefined.fields.emails.email'
+            'resources.posts.fields.emails.email'
         ) as HTMLInputElement[];
 
         expect(
@@ -590,7 +567,7 @@ describe('<SimpleFormIterator />', () => {
         fireEvent.click(removeFirstButton);
         await waitFor(() => {
             const inputElements = screen.queryAllByLabelText(
-                'resources.undefined.fields.emails.email'
+                'resources.posts.fields.emails.email'
             ) as HTMLInputElement[];
 
             expect(
@@ -617,7 +594,7 @@ describe('<SimpleFormIterator />', () => {
         );
 
         const inputElements = screen.queryAllByLabelText(
-            'resources.undefined.fields.emails.email'
+            'resources.posts.fields.emails.email'
         ) as HTMLInputElement[];
 
         expect(
@@ -633,7 +610,7 @@ describe('<SimpleFormIterator />', () => {
         fireEvent.click(moveDownFirstButton[0]);
         await waitFor(() => {
             const inputElements = screen.queryAllByLabelText(
-                'resources.undefined.fields.emails.email'
+                'resources.posts.fields.emails.email'
             ) as HTMLInputElement[];
 
             expect(
@@ -648,7 +625,7 @@ describe('<SimpleFormIterator />', () => {
         fireEvent.click(moveUpButton[1]);
         await waitFor(() => {
             const inputElements = screen.queryAllByLabelText(
-                'resources.undefined.fields.emails.email'
+                'resources.posts.fields.emails.email'
             ) as HTMLInputElement[];
 
             expect(
@@ -859,24 +836,23 @@ describe('<SimpleFormIterator />', () => {
         const save = jest.fn();
         render(
             <AdminContext>
-                <SimpleForm onSubmit={save}>
-                    <ArrayInput source="emails">
-                        <SimpleFormIterator>
-                            <TextInput source="email" />
-                            <FormDataConsumer>
-                                {({ scopedFormData, getSource }) =>
-                                    scopedFormData && scopedFormData.name ? (
-                                        <TextInput
-                                            source={(getSource as (
-                                                arg: string
-                                            ) => string)('role')}
-                                        />
-                                    ) : null
-                                }
-                            </FormDataConsumer>
-                        </SimpleFormIterator>
-                    </ArrayInput>
-                </SimpleForm>
+                <ResourceContextProvider value="bar">
+                    <SimpleForm onSubmit={save}>
+                        <ArrayInput source="emails">
+                            <SimpleFormIterator>
+                                <TextInput source="email" />
+                                <FormDataConsumer>
+                                    {({ scopedFormData }) =>
+                                        scopedFormData &&
+                                        scopedFormData.name ? (
+                                            <TextInput source="role" />
+                                        ) : null
+                                    }
+                                </FormDataConsumer>
+                            </SimpleFormIterator>
+                        </ArrayInput>
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
 
@@ -911,14 +887,7 @@ describe('<SimpleFormIterator />', () => {
                         <SimpleFormIterator>
                             <TextInput source="email" label="Email" />
                             <FormDataConsumer>
-                                {({ getSource }) => (
-                                    <TextInput
-                                        label="Role"
-                                        source={(getSource as (
-                                            arg: string
-                                        ) => string)('role')}
-                                    />
-                                )}
+                                {() => <TextInput label="Role" source="role" />}
                             </FormDataConsumer>
                         </SimpleFormIterator>
                     </ArrayInput>
@@ -977,5 +946,24 @@ describe('<SimpleFormIterator />', () => {
                 expect.anything()
             );
         });
+    });
+
+    it('should have the correct translation keys', async () => {
+        render(<Basic />);
+        const authorsTranslationKey = screen.queryByLabelText(
+            'resources.books.fields.authors'
+        );
+
+        expect(authorsTranslationKey).toBeDefined();
+
+        const authorsNameTranslationKey = await screen.findAllByLabelText(
+            'resources.books.fields.authors.name'
+        );
+        expect(authorsNameTranslationKey).toHaveLength(2);
+
+        const authorsRoleTranslationKey = await screen.findAllByLabelText(
+            'resources.books.fields.authors.role'
+        );
+        expect(authorsRoleTranslationKey).toHaveLength(2);
     });
 });

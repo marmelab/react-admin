@@ -14,10 +14,10 @@ This button lets users show or hide columns in a Datagrid. It must be used in co
 </video>
 
 
-## Usage 
+## Usage
 
 Add the `<SelectColumnsButton>` component to the `<List actions>` prop:
- 
+
 ```jsx
 import {
     DatagridConfigurable,
@@ -66,18 +66,18 @@ If you include `<SelectColumnsButton>` in a page that has more than one `<Datagr
 
 ```jsx
 const BookList = () => {
-    const { data, total, isLoading } = useGetList('books', {
+    const { data, total, isPending } = useGetList('books', {
         pagination: { page: 1, perPage: 10 },
         sort,
     });
     return (
         <div>
-            <SelectColumnsButton preferenceKey="postList1" />
+            <SelectColumnsButton preferenceKey="books.datagrid" />
             <DatagridConfigurable
-                preferenceKey="postList1"
+                preferenceKey="books.datagrid"
                 data={data}
                 total={total}
-                isLoading={isLoading}
+                isPending={isPending}
                 sort={sort}
                 bulkActionButtons={false}
             >

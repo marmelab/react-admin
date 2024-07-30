@@ -9,9 +9,9 @@ describe('<SelectColumnsButton>', () => {
         render(<Basic />);
         screen.getByText('Columns').click();
         expect(screen.queryByText('1869')).not.toBeNull();
-        screen.getByLabelText('Year').click();
+        (await screen.findByLabelText(/Year/, { exact: false })).click();
         expect(screen.queryByText('1869')).toBeNull();
-        screen.getByLabelText('Year').click();
+        (await screen.findByLabelText(/Year/, { exact: false })).click();
         expect(screen.queryByText('1869')).not.toBeNull();
     });
 
@@ -19,9 +19,9 @@ describe('<SelectColumnsButton>', () => {
         render(<WithPreferenceKey />);
         screen.getByText('Columns').click();
         expect(screen.queryByText('1869')).not.toBeNull();
-        screen.getByLabelText('Year').click();
+        (await screen.findByLabelText(/Year/, { exact: false })).click();
         expect(screen.queryByText('1869')).toBeNull();
-        screen.getByLabelText('Year').click();
+        (await screen.findByLabelText(/Year/, { exact: false })).click();
         expect(screen.queryByText('1869')).not.toBeNull();
     });
 });

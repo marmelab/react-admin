@@ -1,10 +1,13 @@
+import { chipClasses } from '@mui/material/Chip';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import expect from 'expect';
 import {
     ListContext,
+    ListContextProvider,
     minLength,
     ResourceContextProvider,
     testDataProvider,
+    ListControllerResult,
 } from 'ra-core';
 import * as React from 'react';
 
@@ -13,8 +16,9 @@ import { ReferenceInput, SelectInput, TextInput } from '../../input';
 import { Filter } from './Filter';
 import {
     Basic,
-    WithAutoCompleteArrayInput,
     WithArrayInput,
+    WithAutoCompleteArrayInput,
+    WithComplexValueFilter,
 } from './FilterButton.stories';
 import {
     FilterForm,
@@ -23,13 +27,20 @@ import {
 } from './FilterForm';
 
 describe('<FilterForm />', () => {
-    const defaultProps = {
+    const defaultListContext = {
         resource: 'post',
-        filters: [],
-        setFilters: () => {},
+        showFilter: () => {},
         hideFilter: () => {},
         displayedFilters: {},
-    };
+    } as unknown as ListControllerResult;
+
+    beforeAll(() => {
+        window.scrollTo = jest.fn();
+    });
+
+    afterAll(() => {
+        jest.clearAllMocks();
+    });
 
     it('should display correctly passed filters', () => {
         const setFilters = jest.fn();
@@ -44,16 +55,54 @@ describe('<FilterForm />', () => {
 
         render(
             <AdminContext>
-                <FilterForm
-                    {...defaultProps}
-                    setFilters={setFilters}
-                    filters={filters}
-                    displayedFilters={displayedFilters}
-                />
+                <ListContextProvider
+                    value={{
+                        ...defaultListContext,
+                        setFilters,
+                        displayedFilters,
+                    }}
+                >
+                    <FilterForm filters={filters} />
+                </ListContextProvider>
             </AdminContext>
         );
         expect(screen.queryAllByLabelText('Title')).toHaveLength(1);
         expect(screen.queryAllByLabelText('Name')).toHaveLength(1);
+    });
+
+    it('should retain key values in the form inputs', () => {
+        // As key is not rendered, we just test that the React warning doesn't occur.
+        const origError = console.error;
+        console.error = message => {
+            throw new Error(message);
+        };
+
+        const setFilters = jest.fn();
+        const filters = [
+            <TextInput source="title" label="Title" key="custom-key" />,
+            <TextInput source="title" label="Title2" key="another-key" />,
+        ];
+        const displayedFilters = {
+            title: true,
+            title2: true,
+        };
+
+        expect(() => {
+            render(
+                <AdminContext>
+                    <ListContextProvider
+                        value={{
+                            ...defaultListContext,
+                            setFilters,
+                            displayedFilters,
+                        }}
+                    >
+                        <FilterForm filters={filters} />
+                    </ListContextProvider>
+                </AdminContext>
+            );
+        }).not.toThrow();
+        console.error = origError;
     });
 
     it('should change the filter when the user updates an input', async () => {
@@ -65,12 +114,15 @@ describe('<FilterForm />', () => {
 
         render(
             <AdminContext>
-                <FilterForm
-                    {...defaultProps}
-                    filters={filters}
-                    displayedFilters={displayedFilters}
-                    setFilters={setFilters}
-                />
+                <ListContextProvider
+                    value={{
+                        ...defaultListContext,
+                        setFilters,
+                        displayedFilters,
+                    }}
+                >
+                    <FilterForm filters={filters} />
+                </ListContextProvider>
             </AdminContext>
         );
         fireEvent.change(screen.queryByLabelText('Title') as Element, {
@@ -79,7 +131,8 @@ describe('<FilterForm />', () => {
         await waitFor(() => {
             expect(setFilters).toHaveBeenCalledWith(
                 { title: 'foo' },
-                { title: true }
+                { title: true },
+                true
             );
         });
     });
@@ -99,12 +152,15 @@ describe('<FilterForm />', () => {
 
         render(
             <AdminContext>
-                <FilterForm
-                    {...defaultProps}
-                    filters={filters}
-                    displayedFilters={displayedFilters}
-                    setFilters={setFilters}
-                />
+                <ListContextProvider
+                    value={{
+                        ...defaultListContext,
+                        setFilters,
+                        displayedFilters,
+                    }}
+                >
+                    <FilterForm filters={filters} />
+                </ListContextProvider>
             </AdminContext>
         );
         fireEvent.change(screen.queryByLabelText('Title') as HTMLElement, {
@@ -161,12 +217,15 @@ describe('<FilterForm />', () => {
 
         render(
             <AdminContext>
-                <FilterForm
-                    {...defaultProps}
-                    filters={filters}
-                    displayedFilters={displayedFilters}
-                    setFilters={setFilters}
-                />
+                <ListContextProvider
+                    value={{
+                        ...defaultListContext,
+                        setFilters,
+                        displayedFilters,
+                    }}
+                >
+                    <FilterForm filters={filters} />
+                </ListContextProvider>
             </AdminContext>
         );
         fireEvent.change(screen.queryByLabelText('Title') as Element, {
@@ -177,7 +236,7 @@ describe('<FilterForm />', () => {
         });
     });
 
-    it('should allow to add and clear a filter with a complex object value', async () => {
+    it('should allow to add and clear a filter with a nested value', async () => {
         render(<Basic />);
 
         const addFilterButton = await screen.findByText('Add filter');
@@ -194,8 +253,29 @@ describe('<FilterForm />', () => {
 
         fireEvent.click(await screen.findByTitle('Remove this filter'));
         await screen.findByText('1-10 of 13');
-        expect(screen.queryByText('Nested')).toBeNull();
+        await waitFor(() => {
+            expect(screen.queryByText('Nested')).toBeNull();
+        });
         expect(screen.queryByLabelText('Nested')).toBeNull();
+    });
+
+    it('should hide a removed filter with a complex object value', async () => {
+        render(<WithComplexValueFilter />);
+
+        const addFilterButton = await screen.findByText('Add filter');
+        fireEvent.click(addFilterButton);
+        fireEvent.click(await screen.findByText('Complex'));
+        await screen.findByText('1-7 of 7');
+        await screen.findByText('Complex', {
+            selector: `.${chipClasses.root} *`,
+        });
+        fireEvent.click(await screen.findByTitle('Remove this filter'));
+        await screen.findByText('1-10 of 13');
+        expect(
+            screen.queryByText('Complex', {
+                selector: `.${chipClasses.root} *`,
+            })
+        ).toBeNull();
     });
 
     it('should provide a FormGroupContext', async () => {

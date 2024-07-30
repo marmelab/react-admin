@@ -1,7 +1,5 @@
 import * as React from 'react';
 import { ReactElement, useCallback, useEffect, ChangeEvent } from 'react';
-import { isElement } from 'react-is';
-import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { MenuItem, TextFieldProps } from '@mui/material';
 import { styled } from '@mui/material/styles';
@@ -120,6 +118,7 @@ export const SelectInput = (props: SelectInputProps) => {
         helperText,
         isFetching: isFetchingProp,
         isLoading: isLoadingProp,
+        isPending: isPendingProp,
         label,
         margin = 'dense',
         onBlur,
@@ -147,7 +146,7 @@ export const SelectInput = (props: SelectInputProps) => {
 
     const {
         allChoices,
-        isLoading,
+        isPending,
         error: fetchError,
         source,
         resource,
@@ -156,6 +155,7 @@ export const SelectInput = (props: SelectInputProps) => {
         choices: choicesProp,
         isLoading: isLoadingProp,
         isFetching: isFetchingProp,
+        isPending: isPendingProp,
         resource: resourceProp,
         source: sourceProp,
     });
@@ -166,7 +166,7 @@ export const SelectInput = (props: SelectInputProps) => {
         );
     }
 
-    if (!isLoading && !fetchError && allChoices === undefined) {
+    if (!isPending && !fetchError && allChoices === undefined) {
         throw new Error(
             `If you're not wrapping the SelectInput inside a ReferenceInput, you must provide the choices prop`
         );
@@ -181,13 +181,7 @@ export const SelectInput = (props: SelectInputProps) => {
         disableValue,
         translateChoice: translateChoice ?? !isFromReference,
     });
-    const {
-        field,
-        fieldState,
-        id,
-        isRequired,
-        formState: { isSubmitted },
-    } = useInput({
+    const { field, fieldState, id, isRequired } = useInput({
         defaultValue,
         parse,
         format,
@@ -199,32 +193,40 @@ export const SelectInput = (props: SelectInputProps) => {
         ...rest,
     });
 
-    const { error, invalid, isTouched } = fieldState;
+    const { error, invalid } = fieldState;
 
     const renderEmptyItemOption = useCallback(() => {
-        return isElement(emptyText)
-            ? emptyText
-            : emptyText === ''
-            ? ' ' // em space, forces the display of an empty line of normal height
-            : translate(emptyText, { _: emptyText });
+        return typeof emptyText === 'string'
+            ? emptyText === ''
+                ? ' ' // em space, forces the display of an empty line of normal height
+                : translate(emptyText, { _: emptyText })
+            : emptyText;
     }, [emptyText, translate]);
 
-    const renderMenuItemOption = useCallback(choice => getChoiceText(choice), [
-        getChoiceText,
-    ]);
+    const renderMenuItemOption = useCallback(
+        choice => getChoiceText(choice),
+        [getChoiceText]
+    );
 
     const handleChange = useCallback(
-        async (eventOrChoice: ChangeEvent<HTMLInputElement> | RaRecord) => {
-            // We might receive an event from the mui component
-            // In this case, it will be the choice id
-            if (eventOrChoice?.target) {
+        async (
+            eventOrChoice: ChangeEvent<HTMLInputElement> | RaRecord | ''
+        ) => {
+            if (typeof eventOrChoice === 'string') {
+                if (eventOrChoice === '') {
+                    // called  by the reset button
+                    field.onChange(emptyValue);
+                }
+            } else if (eventOrChoice?.target) {
+                // We might receive an event from the mui component
+                // In this case, it will be the choice id
                 field.onChange(eventOrChoice);
             } else {
                 // Or we might receive a choice directly, for instance a newly created one
                 field.onChange(getChoiceValue(eventOrChoice));
             }
         },
-        [field, getChoiceValue]
+        [field, getChoiceValue, emptyValue]
     );
 
     const {
@@ -241,10 +243,6 @@ export const SelectInput = (props: SelectInputProps) => {
     });
 
     const createItem = create || onCreate ? getCreateItem() : null;
-    let finalChoices = allChoices;
-    if (create || onCreate) {
-        finalChoices = [...finalChoices, createItem];
-    }
 
     const renderMenuItem = useCallback(
         choice => {
@@ -265,7 +263,7 @@ export const SelectInput = (props: SelectInputProps) => {
         [getChoiceValue, getDisableValue, renderMenuItemOption, createItem]
     );
 
-    if (isLoading) {
+    if (isPending) {
         return (
             <LoadingInput
                 label={
@@ -282,7 +280,6 @@ export const SelectInput = (props: SelectInputProps) => {
                 sx={props.sx}
                 helperText={
                     <InputHelperText
-                        touched={isTouched || isSubmitted}
                         error={error?.message}
                         helperText={helperText}
                     />
@@ -295,10 +292,11 @@ export const SelectInput = (props: SelectInputProps) => {
         );
     }
 
-    const renderHelperText =
-        !!fetchError ||
-        helperText !== false ||
-        ((isTouched || isSubmitted) && invalid);
+    let finalChoices = fetchError ? [] : allChoices;
+    if (create || onCreate) {
+        finalChoices = [...finalChoices, createItem];
+    }
+    const renderHelperText = !!fetchError || helperText !== false || invalid;
 
     return (
         <>
@@ -320,11 +318,10 @@ export const SelectInput = (props: SelectInputProps) => {
                     )
                 }
                 clearAlwaysVisible
-                error={!!fetchError || ((isTouched || isSubmitted) && invalid)}
+                error={!!fetchError || invalid}
                 helperText={
                     renderHelperText ? (
                         <InputHelperText
-                            touched={isTouched || isSubmitted || fetchError}
                             error={error?.message || fetchError?.message}
                             helperText={helperText}
                         />
@@ -348,29 +345,6 @@ export const SelectInput = (props: SelectInputProps) => {
             {createElement}
         </>
     );
-};
-
-SelectInput.propTypes = {
-    emptyText: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
-    emptyValue: PropTypes.any,
-    choices: PropTypes.arrayOf(PropTypes.object),
-    className: PropTypes.string,
-    label: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.bool,
-        PropTypes.element,
-    ]),
-    optionText: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.func,
-        PropTypes.element,
-    ]),
-    optionValue: PropTypes.string,
-    disableValue: PropTypes.string,
-    resettable: PropTypes.bool,
-    resource: PropTypes.string,
-    source: PropTypes.string,
-    translateChoice: PropTypes.bool,
 };
 
 const sanitizeRestProps = ({

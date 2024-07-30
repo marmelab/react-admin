@@ -7,7 +7,7 @@ import debounce from 'lodash/debounce';
  * @returns A debounced function that returns a promise
  */
 export function asyncDebounce<
-    FunctionType extends (...args: any[]) => Promise<any>
+    FunctionType extends (...args: any[]) => Promise<any>,
 >(func: FunctionType, wait?: number) {
     const resolveSet = new Set<(p: any) => void>();
     const rejectSet = new Set<(p: any) => void>();

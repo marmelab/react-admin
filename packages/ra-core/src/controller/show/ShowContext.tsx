@@ -19,13 +19,6 @@ import { ShowControllerResult } from './useShowController';
  *     );
  * };
  */
-export const ShowContext = createContext<ShowControllerResult>({
-    record: null,
-    defaultTitle: null,
-    isFetching: null,
-    isLoading: null,
-    refetch: null,
-    resource: null,
-});
+export const ShowContext = createContext<ShowControllerResult | null>(null);
 
 ShowContext.displayName = 'ShowContext';

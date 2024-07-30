@@ -5,7 +5,7 @@ title: "useSubscribeToRecord"
 
 # `useSubscribeToRecord`
 
-This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> hook is a specialized version of [`useSubscribe`](./useSubscribe.md) that subscribes to events concerning a single record.
+This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" /> hook is a specialized version of [`useSubscribe`](./useSubscribe.md) that subscribes to events concerning a single record.
 
 <video controls autoplay playsinline muted loop>
   <source src="./img/useSubscribeToRecord.webm" type="video/webm"/>
@@ -89,8 +89,8 @@ const PostEdit = () => (
     <Edit>
         <SimpleForm>
             <TextInput source="id" disabled />
-            <TextInput source="title" fullWidth />
-            <TextInput source="body" fullWidth multiline />
+            <TextInput source="title" />
+            <TextInput source="body" multiline />
             <WarnWhenUpdatedBySomeoneElse />
         </SimpleForm>
     </Edit>

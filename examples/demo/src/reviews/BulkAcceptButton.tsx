@@ -17,7 +17,7 @@ const BulkAcceptButton = () => {
     const notify = useNotify();
     const unselectAll = useUnselectAll('reviews');
 
-    const [updateMany, { isLoading }] = useUpdateMany(
+    const [updateMany, { isPending }] = useUpdateMany(
         'reviews',
         { ids: selectedIds, data: { status: 'accepted' } },
         {
@@ -41,7 +41,7 @@ const BulkAcceptButton = () => {
         <Button
             label="resources.reviews.action.accept"
             onClick={() => updateMany()}
-            disabled={isLoading}
+            disabled={isPending}
         >
             <ThumbUp />
         </Button>

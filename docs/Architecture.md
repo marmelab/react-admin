@@ -200,7 +200,11 @@ The trade-off with this approach is that sometimes react-admin may require you t
 import { Layout } from 'react-admin';
 import { Menu } from './Menu';
 
-export const Layout = (props) => <Layout {...props} menu={Menu} />;
+export const Layout = ({ children }) => (
+    <Layout menu={Menu}>
+        {children}
+    </Layout>
+);
 
 // in src/App.js
 import { Layout }  from './Layout';
@@ -227,7 +231,7 @@ const DeleteButton = () => {
     const record = useRecordContext();
     const {
         open,
-        isLoading,
+        isPending,
         handleDialogOpen,
         handleDialogClose,
         handleDelete,
@@ -240,7 +244,7 @@ const DeleteButton = () => {
             </Button>
             <Confirm
                 isOpen={open}
-                loading={isLoading}
+                loading={isPending}
                 title="ra.message.delete_title"
                 content="ra.message.delete_content"
                 translateOptions={{
@@ -339,8 +343,8 @@ export const ContactShow = () => (
 );
 
 const ContactShowContent = () => {
-    const { record, isLoading } = useShowContext<Contact>();
-    if (isLoading || !record) return null;
+    const { record, isPending } = useShowContext<Contact>();
+    if (isPending || !record) return null;
     return (
         <Box mt={2} display="flex">
             <Box flex="1">
@@ -426,7 +430,7 @@ Many excellent open-source libraries already address partial requirements of B2B
 
 Rather than reinventing the wheel, react-admin uses the best tools in each category (in terms of features, developer experience, active maintenance, documentation, user base), and provides a glue around these libraries.
 
-In react-admin v4, these libraries are called [react-query](https://tanstack.com/query/v3), [react-router](https://reactrouter.com/en/main), [react-hook-form](https://react-hook-form.com/), [Material UI](https://mui.com/), [emotion](https://emotion.sh/docs/introduction), [testing-library](https://testing-library.com/docs/react-testing-library/intro), [date-fns](https://date-fns.org/), and [lodash](https://lodash.com/).
+In react-admin v4, these libraries are called [React Query](https://tanstack.com/query/v3), [react-router](https://reactrouter.com/en/main), [react-hook-form](https://react-hook-form.com/), [Material UI](https://mui.com/), [emotion](https://emotion.sh/docs/introduction), [testing-library](https://testing-library.com/docs/react-testing-library/intro), [date-fns](https://date-fns.org/), and [lodash](https://lodash.com/).
 
 When a new requirement arises, the react-admin teams always looks for an existing solution, and prefers integrating it rather than redeveloping it.
 

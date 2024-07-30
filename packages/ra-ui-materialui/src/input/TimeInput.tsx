@@ -1,5 +1,4 @@
 import * as React from 'react';
-import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import TextField, { TextFieldProps } from '@mui/material/TextField';
 import { useInput, FieldTitle } from 'ra-core';
@@ -36,8 +35,8 @@ const parseTime = (value: string) => {
  * @example
  * import { Edit, SimpleForm, TimeInput } from 'react-admin';
  *
- * const PostEdit = (props) => (
- *     <Edit {...props}>
+ * const PostEdit = () => (
+ *     <Edit>
  *         <SimpleForm>
  *             <TimeInput source="published_at" />
  *         </SimpleForm>
@@ -55,12 +54,14 @@ export const TimeInput = ({
     onChange,
     source,
     resource,
+    disabled,
+    readOnly,
     parse = parseTime,
     validate,
     variant,
     ...rest
 }: TimeInputProps) => {
-    const { field, fieldState, formState, id, isRequired } = useInput({
+    const { field, fieldState, id, isRequired } = useInput({
         defaultValue,
         format,
         parse,
@@ -69,14 +70,14 @@ export const TimeInput = ({
         resource,
         source,
         validate,
+        readOnly,
+        disabled,
         ...rest,
     });
 
-    const { error, invalid, isTouched } = fieldState;
-    const { isSubmitted } = formState;
+    const { error, invalid } = fieldState;
 
-    const renderHelperText =
-        helperText !== false || ((isTouched || isSubmitted) && invalid);
+    const renderHelperText = helperText !== false || invalid;
 
     return (
         <TextField
@@ -87,11 +88,12 @@ export const TimeInput = ({
             size="small"
             variant={variant}
             margin={margin}
-            error={(isTouched || isSubmitted) && invalid}
+            error={invalid}
+            disabled={disabled || readOnly}
+            readOnly={readOnly}
             helperText={
                 renderHelperText ? (
                     <InputHelperText
-                        touched={isTouched || isSubmitted}
                         error={error?.message}
                         helperText={helperText}
                     />
@@ -111,16 +113,13 @@ export const TimeInput = ({
     );
 };
 
-TimeInput.propTypes = {
-    label: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
-    resource: PropTypes.string,
-    source: PropTypes.string,
-};
-
 export type TimeInputProps = CommonInputProps &
     Omit<TextFieldProps, 'helperText' | 'label'>;
 
-const leftPad = (nb = 2) => value => ('0'.repeat(nb) + value).slice(-nb);
+const leftPad =
+    (nb = 2) =>
+    value =>
+        ('0'.repeat(nb) + value).slice(-nb);
 const leftPad2 = leftPad(2);
 
 /**

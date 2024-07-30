@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { HtmlHTMLAttributes, ReactNode, useRef, useEffect } from 'react';
-import PropTypes from 'prop-types';
 import { Card, Avatar, SxProps } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import LockIcon from '@mui/icons-material/Lock';
@@ -28,8 +27,13 @@ import { LoginForm as DefaultLoginForm } from './LoginForm';
  *     );
  */
 export const Login = (props: LoginProps) => {
-    const { children = defaultLoginForm, backgroundImage, ...rest } = props;
-    const containerRef = useRef<HTMLDivElement>();
+    const {
+        children = defaultLoginForm,
+        backgroundImage,
+        avatarIcon = defaultAvatarIcon,
+        ...rest
+    } = props;
+    const containerRef = useRef<HTMLDivElement>(null);
     let backgroundImageLoaded = false;
     const checkAuth = useCheckAuth();
     const navigate = useNavigate();
@@ -69,9 +73,7 @@ export const Login = (props: LoginProps) => {
         <Root {...rest} ref={containerRef}>
             <Card className={LoginClasses.card}>
                 <div className={LoginClasses.avatar}>
-                    <Avatar className={LoginClasses.icon}>
-                        <LockIcon />
-                    </Avatar>
+                    <Avatar className={LoginClasses.icon}>{avatarIcon}</Avatar>
                 </div>
                 {children}
             </Card>
@@ -81,7 +83,10 @@ export const Login = (props: LoginProps) => {
 
 const defaultLoginForm = <DefaultLoginForm />;
 
+const defaultAvatarIcon = <LockIcon />;
+
 export interface LoginProps extends HtmlHTMLAttributes<HTMLDivElement> {
+    avatarIcon?: ReactNode;
     backgroundImage?: string;
     children?: ReactNode;
     className?: string;
@@ -123,9 +128,3 @@ const Root = styled('div', {
         backgroundColor: theme.palette.secondary[500],
     },
 }));
-
-Login.propTypes = {
-    backgroundImage: PropTypes.string,
-    children: PropTypes.node,
-    className: PropTypes.string,
-};

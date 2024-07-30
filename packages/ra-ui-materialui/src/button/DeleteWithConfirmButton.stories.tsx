@@ -2,9 +2,8 @@ import * as React from 'react';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
 import frenchMessages from 'ra-language-french';
-import { Resource } from 'ra-core';
+import { Resource, TestMemoryRouter } from 'ra-core';
 import fakeRestDataProvider from 'ra-data-fakerest';
-import { createMemoryHistory } from 'history';
 import { Alert } from '@mui/material';
 
 import { DeleteWithConfirmButton } from './DeleteWithConfirmButton';
@@ -108,8 +107,6 @@ const dataProvider = fakeRestDataProvider({
     authors: [],
 });
 
-const history = createMemoryHistory({ initialEntries: ['/books'] });
-
 const BookList = ({ children }) => {
     return (
         <List>
@@ -125,51 +122,48 @@ const BookList = ({ children }) => {
 };
 
 export const Basic = () => (
-    <AdminContext
-        dataProvider={dataProvider}
-        i18nProvider={i18nProvider}
-        history={history}
-    >
-        <AdminUI>
-            <Resource
-                name="books"
-                list={
-                    <BookList>
-                        <DeleteWithConfirmButton />
-                    </BookList>
-                }
-            />
-        </AdminUI>
-    </AdminContext>
+    <TestMemoryRouter initialEntries={['/books']}>
+        <AdminContext dataProvider={dataProvider} i18nProvider={i18nProvider}>
+            <AdminUI>
+                <Resource
+                    name="books"
+                    list={
+                        <BookList>
+                            <DeleteWithConfirmButton />
+                        </BookList>
+                    }
+                />
+            </AdminUI>
+        </AdminContext>
+    </TestMemoryRouter>
 );
 
 export const WithCustomDialogContent = () => (
-    <AdminContext
-        dataProvider={dataProvider}
-        i18nProvider={i18nProvider}
-        history={history}
-    >
-        <AdminUI>
-            <Resource
-                name="books"
-                list={
-                    <BookList>
-                        <DeleteWithConfirmButton
-                            confirmTitle={
-                                <>
-                                    Delete <strong>Full Name</strong>
-                                </>
-                            }
-                            confirmContent={
-                                <Alert severity="warning">
-                                    Are you sure you want to delete this user?
-                                </Alert>
-                            }
-                            confirmColor="warning"
-                        />
-                    </BookList>
-                }
-            />
-        </AdminUI>
-    </AdminContext>
+    <TestMemoryRouter initialEntries={['/books']}>
+        <AdminContext dataProvider={dataProvider} i18nProvider={i18nProvider}>
+            <AdminUI>
+                <Resource
+                    name="books"
+                    list={
+                        <BookList>
+                            <DeleteWithConfirmButton
+                                confirmTitle={
+                                    <>
+                                        Delete <strong>Full Name</strong>
+                                    </>
+                                }
+                                confirmContent={
+                                    <Alert severity="warning">
+                                        Are you sure you want to delete this
+                                        user?
+                                    </Alert>
+                                }
+                                confirmColor="warning"
+                            />
+                        </BookList>
+                    }
+                />
+            </AdminUI>
+        </AdminContext>
+    </TestMemoryRouter>
 );

@@ -1,4 +1,4 @@
-import { ReactElement, useEffect } from 'react';
+import { ReactElement, useEffect, useId } from 'react';
 import {
     ControllerFieldState,
     ControllerRenderProps,
@@ -16,6 +16,7 @@ import { useFormGroupContext } from './useFormGroupContext';
 import { useFormGroups } from './useFormGroups';
 import { useApplyInputDefaultValues } from './useApplyInputDefaultValues';
 import { useEvent } from '../util';
+import { useWrappedSource } from '../core';
 
 // replace null or undefined values by empty string to avoid controlled/uncontrolled input warning
 const defaultFormat = (value: any) => (value == null ? '' : value);
@@ -33,27 +34,41 @@ export const useInput = <ValueType = any>(
         name,
         onBlur: initialOnBlur,
         onChange: initialOnChange,
-        parse = defaultParse,
+        parse: parseProp = defaultParse,
         source,
         validate,
         ...options
     } = props;
-    const finalName = name || source;
+    const finalSource = useWrappedSource(source);
+    const finalName = name || finalSource;
     const formGroupName = useFormGroupContext();
     const formGroups = useFormGroups();
     const record = useRecordContext();
+    // @ts-ignore
+    const parse = useEvent(parseProp);
+    const defaultId = useId();
+
+    if (
+        !source &&
+        props.label == null &&
+        process.env.NODE_ENV === 'development'
+    ) {
+        console.warn(
+            'Input components require either a source or a label prop.'
+        );
+    }
 
     useEffect(() => {
         if (!formGroups || formGroupName == null) {
             return;
         }
 
-        formGroups.registerField(source, formGroupName);
+        formGroups.registerField(finalSource, formGroupName);
 
         return () => {
-            formGroups.unregisterField(source, formGroupName);
+            formGroups.unregisterField(finalSource, formGroupName);
         };
-    }, [formGroups, formGroupName, source]);
+    }, [formGroups, formGroupName, finalSource]);
 
     const sanitizedValidate = Array.isArray(validate)
         ? composeValidators(validate)
@@ -63,9 +78,13 @@ export const useInput = <ValueType = any>(
     // This ensures dynamically added inputs have their value set correctly (ArrayInput for example).
     // We don't do this for the form level defaultValues so that it works as it should in react-hook-form
     // (i.e. field level defaultValue override form level defaultValues for this field).
-    const { field: controllerField, fieldState, formState } = useController({
+    const {
+        field: controllerField,
+        fieldState,
+        formState,
+    } = useController({
         name: finalName,
-        defaultValue: get(record, source, defaultValue),
+        defaultValue: get(record, finalSource, defaultValue),
         rules: {
             validate: async (value, values) => {
                 if (!sanitizedValidate) return true;
@@ -102,10 +121,11 @@ export const useInput = <ValueType = any>(
     });
 
     const onChange = useEvent((...event: any[]) => {
-        const eventOrValue = (props.type === 'checkbox' &&
-        event[0]?.target?.value === 'on'
-            ? event[0].target.checked
-            : event[0]?.target?.value ?? event[0]) as any;
+        const eventOrValue = (
+            props.type === 'checkbox' && event[0]?.target?.value === 'on'
+                ? event[0].target.checked
+                : event[0]?.target?.value ?? event[0]
+        ) as any;
         controllerField.onChange(parse ? parse(eventOrValue) : eventOrValue);
         if (initialOnChange) {
             initialOnChange(...event);
@@ -120,7 +140,7 @@ export const useInput = <ValueType = any>(
     };
 
     return {
-        id: id || source,
+        id: id || defaultId,
         field,
         fieldState,
         formState,
@@ -148,6 +168,8 @@ export type InputProps<ValueType = any> = Omit<
         resource?: string;
         source: string;
         validate?: Validator | Validator[];
+        readOnly?: boolean;
+        disabled?: boolean;
     };
 
 export type UseInputValue = {

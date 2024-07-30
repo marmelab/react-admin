@@ -11,6 +11,7 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import expect from 'expect';
 import { FormGroupContextProvider } from './FormGroupContextProvider';
 import { testDataProvider } from '../dataProvider';
+import { ResourceContextProvider } from '..';
 
 describe('useFormGroup', () => {
     test.each([
@@ -21,12 +22,14 @@ describe('useFormGroup', () => {
                     isValid: true,
                     isDirty: false,
                     isTouched: false,
+                    isValidating: false,
                     name: 'title',
                 },
                 {
                     isValid: false,
                     isDirty: true,
                     isTouched: true,
+                    isValidating: false,
                     error: 'Invalid',
                     name: 'description',
                 },
@@ -35,6 +38,7 @@ describe('useFormGroup', () => {
                 isValid: false,
                 isDirty: true,
                 isTouched: true,
+                isValidating: false,
                 errors: {
                     description: 'Invalid',
                 },
@@ -47,12 +51,14 @@ describe('useFormGroup', () => {
                     isValid: true,
                     isDirty: false,
                     isTouched: false,
+                    isValidating: false,
                     name: 'title',
                 },
                 {
                     isValid: true,
                     isDirty: false,
                     isTouched: false,
+                    isValidating: false,
                     name: 'description',
                 },
             ],
@@ -60,6 +66,7 @@ describe('useFormGroup', () => {
                 isValid: true,
                 isDirty: false,
                 isTouched: false,
+                isValidating: false,
                 errors: {},
             },
         ],
@@ -70,12 +77,14 @@ describe('useFormGroup', () => {
                     isValid: true,
                     isDirty: false,
                     isTouched: false,
+                    isValidating: false,
                     name: 'title',
                 },
                 {
                     isValid: true,
                     isDirty: true,
                     isTouched: true,
+                    isValidating: false,
                     name: 'description',
                 },
             ],
@@ -83,6 +92,7 @@ describe('useFormGroup', () => {
                 isValid: true,
                 isDirty: true,
                 isTouched: true,
+                isValidating: false,
                 errors: {},
             },
         ],
@@ -102,7 +112,7 @@ describe('useFormGroup', () => {
 
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm>
+                <SimpleForm mode="onChange">
                     <FormGroupContextProvider name="simplegroup">
                         <IsDirty />
                         <TextInput source="url" />
@@ -117,6 +127,7 @@ describe('useFormGroup', () => {
                 isDirty: false,
                 isTouched: false,
                 isValid: true,
+                isValidating: false,
             });
         });
 
@@ -124,6 +135,16 @@ describe('useFormGroup', () => {
         fireEvent.change(input, {
             target: { value: 'test' },
         });
+        await waitFor(() => {
+            expect(state).toEqual({
+                errors: {},
+                isDirty: true,
+                isTouched: false,
+                isValid: true,
+                isValidating: false,
+            });
+        });
+        // This is coherent with how react-hook-form works, inputs are only touched when they lose focus
         fireEvent.blur(input);
         await waitFor(() => {
             expect(state).toEqual({
@@ -131,6 +152,68 @@ describe('useFormGroup', () => {
                 isDirty: true,
                 isTouched: true,
                 isValid: true,
+                isValidating: false,
+            });
+        });
+    });
+
+    it('should return the correct group state when the group changes', async () => {
+        let state;
+        const IsDirty = () => {
+            const [group, setGroup] = React.useState('simplegroup');
+            state = useFormGroup(group);
+            return (
+                <button onClick={() => setGroup('simplegroup2')}>
+                    Change group
+                </button>
+            );
+        };
+
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm mode="onChange">
+                    <FormGroupContextProvider name="simplegroup">
+                        <TextInput source="url" />
+                    </FormGroupContextProvider>
+                    <FormGroupContextProvider name="simplegroup2">
+                        <TextInput source="test" />
+                    </FormGroupContextProvider>
+                    <IsDirty />
+                </SimpleForm>
+            </AdminContext>
+        );
+
+        await waitFor(() => {
+            expect(state).toEqual({
+                errors: {},
+                isDirty: false,
+                isTouched: false,
+                isValid: true,
+                isValidating: false,
+            });
+        });
+
+        const input = screen.getByLabelText('resources.undefined.fields.url');
+        fireEvent.change(input, {
+            target: { value: 'test' },
+        });
+        await waitFor(() => {
+            expect(state).toEqual({
+                errors: {},
+                isDirty: true,
+                isTouched: false,
+                isValid: true,
+                isValidating: false,
+            });
+        });
+        fireEvent.click(screen.getByText('Change group'));
+        await waitFor(() => {
+            expect(state).toEqual({
+                errors: {},
+                isDirty: false,
+                isTouched: false,
+                isValid: true,
+                isValidating: false,
             });
         });
     });
@@ -150,20 +233,22 @@ describe('useFormGroup', () => {
         ];
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm>
-                    <FormGroupContextProvider name="backlinks">
-                        <IsDirty />
-                        <ArrayInput
-                            defaultValue={backlinksDefaultValue}
-                            source="backlinks"
-                        >
-                            <SimpleFormIterator>
-                                <TextInput source="url" />
-                                <TextInput source="date" />
-                            </SimpleFormIterator>
-                        </ArrayInput>
-                    </FormGroupContextProvider>
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm>
+                        <FormGroupContextProvider name="backlinks">
+                            <IsDirty />
+                            <ArrayInput
+                                defaultValue={backlinksDefaultValue}
+                                source="backlinks"
+                            >
+                                <SimpleFormIterator>
+                                    <TextInput source="url" />
+                                    <TextInput source="date" />
+                                </SimpleFormIterator>
+                            </ArrayInput>
+                        </FormGroupContextProvider>
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
 
@@ -173,6 +258,7 @@ describe('useFormGroup', () => {
                 isDirty: false,
                 isTouched: false,
                 isValid: true,
+                isValidating: false,
             });
         });
 
@@ -187,6 +273,7 @@ describe('useFormGroup', () => {
                 isDirty: true,
                 isTouched: false,
                 isValid: true,
+                isValidating: false,
             });
         });
     });

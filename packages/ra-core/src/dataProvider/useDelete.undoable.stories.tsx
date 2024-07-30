@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useState } from 'react';
-import { QueryClient, useIsMutating } from 'react-query';
+import { QueryClient, useIsMutating } from '@tanstack/react-query';
 
 import { CoreAdminContext } from '../core';
 import undoableEventEmitter from './undoableEventEmitter';
@@ -48,7 +48,7 @@ const SuccessCore = () => {
     const [notification, setNotification] = useState<boolean>(false);
     const [success, setSuccess] = useState<string>();
     const { data, refetch } = useGetList('posts');
-    const [deleteOne, { isLoading }] = useDelete();
+    const [deleteOne, { isPending }] = useDelete();
     const handleClick = () => {
         deleteOne(
             'posts',
@@ -65,11 +65,7 @@ const SuccessCore = () => {
     };
     return (
         <>
-            <ul>
-                {data?.map(post => (
-                    <li key={post.id}>{post.title}</li>
-                ))}
-            </ul>
+            <ul>{data?.map(post => <li key={post.id}>{post.title}</li>)}</ul>
             <div>
                 {notification ? (
                     <>
@@ -96,7 +92,7 @@ const SuccessCore = () => {
                         </button>
                     </>
                 ) : (
-                    <button onClick={handleClick} disabled={isLoading}>
+                    <button onClick={handleClick} disabled={isPending}>
                         Delete first post
                     </button>
                 )}
@@ -147,7 +143,7 @@ const ErrorCore = () => {
     const [success, setSuccess] = useState<string>();
     const [error, setError] = useState<any>();
     const { data, refetch } = useGetList('posts');
-    const [deleteOne, { isLoading }] = useDelete();
+    const [deleteOne, { isPending }] = useDelete();
     const handleClick = () => {
         setError(undefined);
         deleteOne(
@@ -169,11 +165,7 @@ const ErrorCore = () => {
     };
     return (
         <>
-            <ul>
-                {data?.map(post => (
-                    <li key={post.id}>{post.title}</li>
-                ))}
-            </ul>
+            <ul>{data?.map(post => <li key={post.id}>{post.title}</li>)}</ul>
             <div>
                 {notification ? (
                     <>
@@ -200,7 +192,7 @@ const ErrorCore = () => {
                         </button>
                     </>
                 ) : (
-                    <button onClick={handleClick} disabled={isLoading}>
+                    <button onClick={handleClick} disabled={isPending}>
                         Delete first post
                     </button>
                 )}

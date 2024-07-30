@@ -135,13 +135,18 @@ describe('<NumberInput />', () => {
 
     describe('field state', () => {
         const FieldState = ({ name = 'views' }) => {
-            const formContext = useFormContext();
+            const { getFieldState, formState } = useFormContext();
+            const { dirtyFields } = formState;
+            const isDirty = Object.keys(dirtyFields).includes(name);
+            const { invalid, isTouched, error } = getFieldState(
+                name,
+                formState
+            );
+
             return (
                 <code>
                     {name}:
-                    {JSON.stringify(
-                        formContext.getFieldState(name, formContext.formState)
-                    )}
+                    {JSON.stringify({ invalid, isDirty, isTouched, error })}
                 </code>
             );
         };

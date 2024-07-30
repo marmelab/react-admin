@@ -19,7 +19,7 @@ React-admin provides the **best-in-class documentation**, demo apps, and support
 
 That probably explains why more than 3,000 new apps are published every month using react-admin.
 
-So react-admin is not just the assembly of [react-query](https://react-query.tanstack.com/), [react-hook-form](https://react-hook-form.com/), [react-router](https://reacttraining.com/react-router/), [Material UI](https://mui.com/material-ui/getting-started/) and [Emotion](https://github.com/emotion-js/emotion). It's a **framework** made to speed up and facilitate the development of single-page apps in React.
+So react-admin is not just the assembly of [React Query](https://react-query.tanstack.com/), [react-hook-form](https://react-hook-form.com/), [react-router](https://reacttraining.com/react-router/), [Material UI](https://mui.com/material-ui/getting-started/) and [Emotion](https://github.com/emotion-js/emotion). It's a **framework** made to speed up and facilitate the development of single-page apps in React.
 
 ## Basic CRUD
 
@@ -70,7 +70,7 @@ import { useDataProvider } from 'react-admin';
 const PostList = () => {
     const [posts, setPosts] = useState([]);
     const [error, setError] = useState();
-    const [isLoading, setIsLoading] = useState(true);
+    const [isPending, setIsPending] = useState(true);
     const dataProvider = useDataProvider();
     useEffect(() => {
         dataProvider.getList('posts', {
@@ -80,9 +80,9 @@ const PostList = () => {
         })
             .then(({ data }) => setPosts(data))
             .catch(error => setError(error))
-            .finally(() => setIsLoading(false));
+            .finally(() => setIsPending(false));
     }, []);
-    if (isLoading) { return <p>Loading</p>; }
+    if (isPending) { return <p>Loading</p>; }
     if (error) { return <p>ERROR</p>; }
     return (
         <ul>
@@ -96,18 +96,18 @@ const PostList = () => {
 
 The data provider object is responsible for translating the data provider method calls into HTTP requests, and for translating the HTTP responses into data provider method results.
 
-And by the way, using `useEffect` for data fetching is cumbersome. Instead, you can rely on the [specialized data provider hooks](./Actions.md#dataprovider-method-hooks), such as `useGetList`:
+And by the way, using `useEffect` for data fetching is cumbersome. Instead, you can rely on the [specialized data provider hooks](./Actions.md#query-hooks), such as `useGetList`:
 
 ```jsx
 import { useGetList } from 'react-admin';
 
 const PostList = () => {
-    const { data, isLoading, error } = useGetList('posts', {
+    const { data, isPending, error } = useGetList('posts', {
         pagination: { page: 1, perPage: 10 },
         sort: { field: 'published_at', order: 'DESC' },
         filter: { status: 'published' }
     });
-    if (isLoading) { return <Loading />; }
+    if (isPending) { return <Loading />; }
     if (error) { return <p>ERROR</p>; }
     return (
         <ul>
@@ -214,7 +214,7 @@ const BookList = () => (
     <List filters={[
         <ReferenceInput source="authorId" reference="authors" alwaysOn />,
     ]}>
-        <Datagrid rowClick="edit">
+        <Datagrid>
             <TextField source="id" />
             <TextField source="title" />
             <ReferenceField source="authorId" reference="authors" />
@@ -295,7 +295,7 @@ import {
 import { Link } from 'react-router-dom';
 
 const PostList = () => {
-  const { data, page, total, setPage, isLoading } = useListController({
+  const { data, page, total, setPage, isPending } = useListController({
     sort: { field: 'published_at', order: 'DESC' },
     perPage: 10,
   });
@@ -309,7 +309,7 @@ const PostList = () => {
           <Button icon={<PlusOutlined />}>Create</Button>
         </Link>
       </div>
-      <Card bodyStyle={{ padding: '0' }} loading={isLoading}>
+      <Card bodyStyle={{ padding: '0' }} loading={isPending}>
         <Table
           size="small"
           dataSource={data}
@@ -396,22 +396,22 @@ Most admins need to display a list of records, letting users sort, filter, and p
 The basic [`<Datagrid>` component](./Datagrid.md) displays a list of records in a table, with a row for each record and a column for each field. It alsosupports an expand panel, a row selection checkbox, and a bulk action toolbar.
 
 <video controls autoplay playsinline muted loop>
-  <source src="./img/Datagrid.mp4" type="video/mp4"/>
+  <source src="./img/datagrid.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
 The [`<EditableDatagrid>` component](./EditableDatagrid.md) lets users edit records in place, without having to navigate to an edit form. It's a great way to speed up data entry.
 
 <video controls autoplay playsinline muted loop>
-  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-editable-datagrid-overview.webm" type="video/webm" />
-  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-editable-datagrid-overview.mp4" type="video/mp4" />
+  <source src="https://react-admin-ee.marmelab.com/assets/ra-editable-datagrid-overview.webm" type="video/webm" />
+  <source src="https://react-admin-ee.marmelab.com/assets/ra-editable-datagrid-overview.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
 
 Finally, the [`<DatagridAG>` component](./DatagridAG.md) integrates the powerful [AG Grid](https://www.ag-grid.com/) library to provide a rich set of features, such as cell editing, aggregation, row grouping, master detail, clipboard, pivoting, column filtering, export to excel, context menu, tree data, charting, and more.
 
 <video controls autoplay playsinline muted loop>
-  <source src="https://marmelab.com/ra-enterprise/modules/assets/DatagridAG-enterprise.mp4" type="video/mp4"/>
+  <source src="https://react-admin-ee.marmelab.com/assets/DatagridAG-enterprise.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
@@ -444,16 +444,16 @@ In most admin and B2B apps, the most common task is to look for a record. React-
 </tr>
 <tr style="border:none;background-color:#fff;">
     <td style="width:50%;border:none;text-align:center">
-        <a title="Stacked Filters" href="https://marmelab.com/ra-enterprise/modules/assets/ra-form-layout/latest/stackedfilters-overview.webm">
+        <a title="Stacked Filters" href="https://react-admin-ee.marmelab.com/assets/ra-form-layout/latest/stackedfilters-overview.webm">
             <video controls autoplay playsinline muted loop width="90%" style="margin:1rem;box-shadow:0px 4px 4px 0px rgb(0 0 0 / 24%);">
-                <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-form-layout/latest/stackedfilters-overview.webm" type="video/mp4" />
+                <source src="https://react-admin-ee.marmelab.com/assets/ra-form-layout/latest/stackedfilters-overview.webm" type="video/mp4" />
                     Your browser does not support the video tag.
             </video>
         </a>
         <a href="./FilteringTutorial.html#the-stackedfilters-component" style="display: block;transform: translateY(-10px);"><code>&lt;StackedFilters&gt;</code> Dialog</a>
     </td>
     <td style="width:50%;border:none;text-align:center;vertical-align:top;">
-        <a title="<Search> input" href="https://marmelab.com/ra-enterprise/modules/assets/ra-search-overview.gif"><img src="https://marmelab.com/ra-enterprise/modules/assets/ra-search-overview.gif" /></a>
+        <a title="<Search> input" href="https://react-admin-ee.marmelab.com/assets/ra-search-overview.gif"><img src="https://react-admin-ee.marmelab.com/assets/ra-search-overview.gif" /></a>
         <a href="./FilteringTutorial.html#global-search" style="display: block;transform: translateY(-10px);">Global <code>&lt;Search&gt;</code></a>
     </td>
 </tr>
@@ -796,7 +796,7 @@ const CustomerEdit = () => (
 ```
 {% endraw %}
 
-![JsonSchemaForm](https://marmelab.com/ra-enterprise/modules/assets/jsonschemaform.webp)
+![JsonSchemaForm](https://react-admin-ee.marmelab.com/assets/jsonschemaform.webp)
 
 And if you want something super custom that react-admin doesn't support out of the box, you can always use [react-hook-form](https://react-hook-form.com/) directly.
 
@@ -833,13 +833,12 @@ const PersonEdit = () => (
 
 You can also use the [`<SmartRichTextInput>`](./SmartRichTextInput.md) component, which lets users edit HTML documents in WYSIWYG with superpowers:
 
-<video controls playsinline muted loop poster="https://marmelab.com/ra-enterprise/modules/assets/SmartRichTextInput.png" >
-  <source src="https://marmelab.com/ra-enterprise/modules/assets/SmartRichTextInput.mp4" type="video/mp4" />
+<video controls playsinline muted loop poster="https://react-admin-ee.marmelab.com/assets/SmartRichTextInput.png" >
+  <source src="https://react-admin-ee.marmelab.com/assets/SmartRichTextInput.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
 
 ## Fast
-
 
 React-admin takes advantage of the Single-Page-Application architecture, implementing various performance optimizations that make react-admin apps incredibly fast by default.
 
@@ -939,13 +938,38 @@ To learn more about authentication, roles, and permissions, check out the follow
 - [`useCanAccess`](./useCanAccess.md)
 - [`canAccess`](./canAccess.md)
 
+## Revisions & Versioning
+
+React-admin lets users **track the changes** made to any record. They can see the **history of revisions**, **compare differences** between any two versions, and **revert to a previous state** if needed.
+
+<video controls autoplay playsinline muted loop>
+  <source src="https://react-admin-ee.marmelab.com/assets/ra-history.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
+In detail, revision tracking lets you:
+
+- Prevent data loss with robust version control
+- Enhance transparency with detailed change logs
+- Uncover insights with the 'diff' feature, a powerful tool for comparing versions
+- Boost confidence in making changes with easy rollback options
+
+These features are available through the following components:
+
+- [`<SimpleFormWithRevision>`](https://react-admin-ee.marmelab.com/documentation/ra-history#simpleformwithrevision)
+- [`<TabbedFormWithRevision>`](https://react-admin-ee.marmelab.com/documentation/ra-history#tabbedformwithrevision)
+- [`<RevisionsButton>`](./RevisionsButton.md)
+- [`<RevisionListWithDetailsInDialog>`](https://react-admin-ee.marmelab.com/documentation/ra-history#revisionlistwithdetailsindialog)
+- [`<FieldDiff>`](https://react-admin-ee.marmelab.com/documentation/ra-history#fielddiff)
+- [`<SmartFieldDiff>`](https://react-admin-ee.marmelab.com/documentation/ra-history#smartfielddiff)
+
 ## Audit Log
 
 Most admin and B2B apps require that user actions are recorded for audit purposes. React-admin provides templates for displaying such audit logs, and helpers to automatically **record user actions**.
 
 <video controls autoplay playsinline muted loop>
-  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-audit-log/latest/ra-audit-log.webm" type="video/webm" />
-  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-audit-log/latest/ra-audit-log.mp4" type="video/mp4" />
+  <source src="https://react-admin-ee.marmelab.com/assets/ra-audit-log/latest/ra-audit-log.webm" type="video/webm" />
+  <source src="https://react-admin-ee.marmelab.com/assets/ra-audit-log/latest/ra-audit-log.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
 
@@ -954,23 +978,31 @@ import { useGetList } from "react-admin";
 import { Timeline } from "@react-admin/ra-audit-log";
 
 const Dashboard = () => {
-  const { data, isLoading } = useGetList(
+  const { data, isPending } = useGetList(
     "events",
     { page: 1, perPage: 25 },
     { field: "date", order: "desc" }
   );
 
-  return <Timeline isLoading={isLoading} records={data} />;
+  return <Timeline isLoading={isPending} records={data} />;
 };
 ```
 
+The Audit Log features let you:
+
+- Comply with data and action traceability regulations
+- Troubleshoot and resolve problems with a clear action trail
+- Boost security by detecting unusual activity
+- Improve accountability with detailed action records
+- Monitor user activity with an aggregated timeline
+
 These features are available through the following components:
 
-- [`<Timeline>`](https://marmelab.com/ra-enterprise/modules/ra-audit-log#timeline) shows a list of all recent changes in the admin. It's a great component for dashboards.
-- [`<RecordTimeline>`](https://marmelab.com/ra-enterprise/modules/ra-audit-log#recordtimeline) shows a list of all recent changes for a given record, usually embedded in a `<Show>` or `<Edit>` view.
-- [`<EventList>`](https://marmelab.com/ra-enterprise/modules/ra-audit-log#eventlist) is a ready-to-use List component for navigating in your admin history, complete with filters and pagination.
+- [`<Timeline>`](https://react-admin-ee.marmelab.com/documentation/ra-audit-log#timeline) shows a list of all recent changes in the admin. It's a great component for dashboards.
+- [`<RecordTimeline>`](https://react-admin-ee.marmelab.com/documentation/ra-audit-log#recordtimeline) shows a list of all recent changes for a given record, usually embedded in a `<Show>` or `<Edit>` view.
+- [`<EventList>`](https://react-admin-ee.marmelab.com/documentation/ra-audit-log#eventlist) is a ready-to-use List component for navigating in your admin history, complete with filters and pagination.
 
-And you can use [the `addEventsForMutations` helper](https://marmelab.com/ra-enterprise/modules/ra-audit-log#client-side-tracking) to record user actions:
+And you can use [the `addEventsForMutations` helper](https://react-admin-ee.marmelab.com/documentation/ra-audit-log#client-side-tracking) to record user actions:
 
 ```jsx
 import { addEventsForMutations } from "@react-admin/ra-audit-log";
@@ -988,8 +1020,8 @@ const dataProvider = addEventsForMutations(
 If your app needs to display **events**, **appointments**, **time intervals**, or any other kind of time-based data, you can use the [`<Calendar>`](./Calendar.md) component.
 
 <video controls autoplay playsinline muted loop>
-  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-calendar.webm" type="video/webm" />
-  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-calendar.mp4" type="video/mp4" />
+  <source src="https://react-admin-ee.marmelab.com/assets/ra-calendar.webm" type="video/webm" />
+  <source src="https://react-admin-ee.marmelab.com/assets/ra-calendar.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
 
@@ -1025,7 +1057,7 @@ The user interface offers everything you expect:
 
 Check the following components for more details:
 
-- [`<CompleteCalendar>`](https://marmelab.com/ra-enterprise/modules/ra-calendar#completecalendar)
+- [`<CompleteCalendar>`](https://react-admin-ee.marmelab.com/documentation/ra-calendar#completecalendar)
 - [`<Calendar>`](./Calendar.md)
 
 ## Tree View
@@ -1071,15 +1103,15 @@ Check out the following components for displaying hierarchical data:
 
 - [`<TreeWithDetails>`](./TreeWithDetails.md): A list view for tree structures, with a details panel.
 - [`<TreeInput>`](./TreeInput.md): An input component for tree structures.
-- [`<Tree>`](https://marmelab.com/ra-enterprise/modules/ra-tree#tree-component): A list view for tree structures, with a Material UI skin.
+- [`<Tree>`](https://react-admin-ee.marmelab.com/documentation/ra-tree#tree-component): A list view for tree structures, with a Material UI skin.
 
 ## Application Building Blocks
 
 A UI kit like Material UI provides basic building blocks like a button, a form, a table, etc. React-admin goes one level higher and provides a set of **[application components](./Reference.md#components)** specifically designed for building admin and B2B *applications*.
 
 <video controls autoplay playsinline muted loop>
-  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-editable-datagrid/latest/ra-editable-datagrid-overview.webm" type="video/webm" />
-  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-editable-datagrid/latest/ra-editable-datagrid-overview.mp4" type="video/mp4" />
+  <source src="https://react-admin-ee.marmelab.com/assets/ra-editable-datagrid/latest/ra-editable-datagrid-overview.webm" type="video/webm" />
+  <source src="https://react-admin-ee.marmelab.com/assets/ra-editable-datagrid/latest/ra-editable-datagrid-overview.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
 
@@ -1089,19 +1121,19 @@ These building blocks include:
 - A smart location framework, simplifying the management of [breadcrumbs](./Breadcrumb.md) and [hierarchical menus](./MultiLevelMenu.md)
 - [Import](https://github.com/benwinding/react-admin-import-csv) / [export](./Buttons.md#exportbutton) buttons
 - An [editable datagrid](./EditableDatagrid.md)
-- A [guided tour system](https://marmelab.com/ra-enterprise/modules/ra-tour)
+- A [guided tour system](https://react-admin-ee.marmelab.com/documentation/ra-tour)
 - A [user menu](./Menu.md)
 - A [rich text editor](./RichTextInput.md),
 - A [markdown editor](./MarkdownInput.md)
 - A [clone button](./Buttons.md#clonebutton)
 - Various navigation menus ([simple](./Menu.md), [hierarchical](./MultiLevelMenu.md), [horizontal](./HorizontalMenu.md), etc.)
-- Various [page](./ContainerLayout.md) and [form](https://marmelab.com/ra-enterprise/modules/ra-form-layout) layouts
+- Various [page](./ContainerLayout.md) and [form](https://react-admin-ee.marmelab.com/documentation/ra-form-layout) layouts
 - ...and many more.
 
 And if you want to create your building blocks, you can use any of the [75+ hooks](./Reference.md#hooks) that carry **headless, reusable logic**. To name a few of them:
 
 - [`useRecordContext`](./useRecordContext.md) to get the current record anywhere in the app
-- [`useWarnWhenUnsavedChanges`](./EditTutorial.md#warning-about-unsaved-changes) to warn the user when he tries to leave a page with unsaved changes
+- [`useWarnWhenUnsavedChanges`](./Forms.md#warning-about-unsaved-changes) to warn the user when he tries to leave a page with unsaved changes
 - [`useSaveContext`](./useSaveContext.md) to tweak form submission
 - [`useTheme`](./useTheme.md) to change the theme programmatically
 
@@ -1191,8 +1223,10 @@ import { MenuLive } from '@react-admin/ra-realtime';
 
 import { PostList, PostShow, PostEdit, realTimeDataProvider } from '.';
 
-const CustomLayout = (props) => (
-    <Layout {...props} menu={MenuLive} />
+const CustomLayout = ({ children }) => (
+    <Layout menu={MenuLive}>
+        {children}
+    </Layout>
 );
 
 const MyReactAdmin = () => (
@@ -1220,7 +1254,7 @@ A user can lock a resource, either by voluntarily asking for a lock or by editin
 
 ```tsx
 export const NewMessageForm = () => {
-    const [create, { isLoading: isCreating }] = useCreate();
+    const [create, { isPending }] = useCreate();
     const record = useRecordContext();
 
     const { data: lock } = useGetLockLive('tickets', { id: record.id });
@@ -1247,7 +1281,7 @@ export const NewMessageForm = () => {
                 choices={statusChoices}
                 disabled={isFormDisabled}
             />
-            <Button type="submit" disabled={isCreating || isFormDisabled}>
+            <Button type="submit" disabled={isPending || isFormDisabled}>
                 Submit
             </Button>
         </Form>
@@ -1676,7 +1710,7 @@ Building react-admin apps with TypeScript brings more safety and productivity to
 
 ## Sustainable
 
-Last but not least, react-admin is here to stay. That's because the development of the open-source project is **funded by the customers** of the [Enterprise Edition](https://marmelab.com/ra-enterprise/).
+Last but not least, react-admin is here to stay. That's because the development of the open-source project is **funded by the customers** of the [Enterprise Edition](https://react-admin-ee.marmelab.com/).
 
 Maintaining a large open-source project in the long term is a challenge. But the react-admin core team, hosted by [Marmelab](https://marmelab.com), doesn't have to worry about the next funding round, or about paying back venture capital by raising prices. React-admin has zero debt, has already **passed the break-even point**, and the team will only grow as the number of customers grows.
 
@@ -1691,4 +1725,4 @@ The core team is fortunate to be able to work full-time on react-admin, and this
 - stay up-to-date with the latest React and libraries versions
 - contribute to the open-source community
 
-At Marmelab, "sustainable" also means **low carbon footprint**. React-admin is regularly audited with [GreenFrame](https://greenframe.io/), a tool that measures the carbon footprint of software projects. Technical choices are also made with the environment in mind. For instance, the use of [React Query](https://react-query-v3.tanstack.com/) for caching data in react-admin reduces the number of HTTP requests, and thus reduces the carbon footprint of the application.
+At Marmelab, "sustainable" also means **low carbon footprint**. React-admin is regularly audited with [GreenFrame](https://greenframe.io/), a tool that measures the carbon footprint of software projects. Technical choices are also made with the environment in mind. For instance, the use of [React Query](https://tanstack.com/query/v5/) for caching data in react-admin reduces the number of HTTP requests, and thus reduces the carbon footprint of the application.

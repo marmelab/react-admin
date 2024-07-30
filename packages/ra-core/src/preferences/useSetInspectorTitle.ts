@@ -8,7 +8,13 @@ import { usePreferencesEditor } from './usePreferencesEditor';
  * useSetInspectorTitle('Datagrid');
  */
 export const useSetInspectorTitle = (title: string, options?: any) => {
-    const { setTitle } = usePreferencesEditor();
+    const preferencesEditorContext = usePreferencesEditor();
+    if (!preferencesEditorContext) {
+        throw new Error(
+            'useSetInspectorTitle cannot be called outside of a PreferencesEditorContext'
+        );
+    }
+    const { setTitle } = preferencesEditorContext;
 
     useEffect(() => {
         setTitle(title, options);

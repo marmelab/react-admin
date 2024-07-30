@@ -91,13 +91,12 @@ export const CoreAdmin = (props: CoreAdminProps) => {
         dashboard,
         dataProvider,
         disableTelemetry,
-        history,
+        error,
         i18nProvider,
         queryClient,
         layout,
         loading,
         loginPage,
-        menu, // deprecated, use a custom layout instead
         ready,
         requireAuth,
         store,
@@ -110,17 +109,16 @@ export const CoreAdmin = (props: CoreAdminProps) => {
             dataProvider={dataProvider}
             i18nProvider={i18nProvider}
             queryClient={queryClient}
-            history={history}
             store={store}
         >
             <CoreAdminUI
                 layout={layout}
                 dashboard={dashboard}
                 disableTelemetry={disableTelemetry}
-                menu={menu}
                 catchAll={catchAll}
                 title={title}
                 loading={loading}
+                error={error}
                 loginPage={loginPage}
                 requireAuth={requireAuth}
                 ready={ready}

@@ -1,9 +1,8 @@
 import * as React from 'react';
 import { ReactElement, ReactEventHandler } from 'react';
-import PropTypes from 'prop-types';
 import ActionDelete from '@mui/icons-material/Delete';
 import clsx from 'clsx';
-import { UseMutationOptions } from 'react-query';
+import { UseMutationOptions } from '@tanstack/react-query';
 import {
     RaRecord,
     useDeleteWithUndoController,
@@ -26,23 +25,25 @@ export const DeleteWithUndoButton = <RecordType extends RaRecord = any>(
         redirect = 'list',
         mutationOptions,
         color = 'error',
+        successMessage,
         ...rest
     } = props;
 
     const record = useRecordContext(props);
     const resource = useResourceContext(props);
-    const { isLoading, handleDelete } = useDeleteWithUndoController({
+    const { isPending, handleDelete } = useDeleteWithUndoController({
         record,
         resource,
         redirect,
         onClick,
         mutationOptions,
+        successMessage,
     });
 
     return (
         <Button
             onClick={handleDelete}
-            disabled={isLoading}
+            disabled={isPending}
             label={label}
             className={clsx('ra-delete-button', className)}
             key="button"
@@ -58,7 +59,7 @@ const defaultIcon = <ActionDelete />;
 
 export interface DeleteWithUndoButtonProps<
     RecordType extends RaRecord = any,
-    MutationOptionsError = unknown
+    MutationOptionsError = unknown,
 > extends ButtonProps {
     icon?: ReactElement;
     onClick?: ReactEventHandler<any>;
@@ -70,17 +71,5 @@ export interface DeleteWithUndoButtonProps<
     record?: RecordType;
     redirect?: RedirectionSideEffect;
     resource?: string;
+    successMessage?: string;
 }
-
-DeleteWithUndoButton.propTypes = {
-    className: PropTypes.string,
-    label: PropTypes.string,
-    record: PropTypes.any,
-    redirect: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.bool,
-        PropTypes.func,
-    ]),
-    resource: PropTypes.string,
-    icon: PropTypes.element,
-};

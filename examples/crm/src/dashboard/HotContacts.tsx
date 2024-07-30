@@ -1,8 +1,7 @@
 import * as React from 'react';
-import { Link as RouterLink } from 'react-router-dom';
-import { Card, Box, Link } from '@mui/material';
+import { Card, Box } from '@mui/material';
 import ContactsIcon from '@mui/icons-material/Contacts';
-import { useGetList, SimpleList, useGetIdentity } from 'react-admin';
+import { useGetList, Link, SimpleList, useGetIdentity } from 'react-admin';
 import { formatDistance } from 'date-fns';
 
 import { Avatar } from '../contacts/Avatar';
@@ -13,7 +12,7 @@ export const HotContacts = () => {
     const {
         data: contactData,
         total: contactTotal,
-        isLoading: contactsLoading,
+        isPending: contactsLoading,
     } = useGetList<Contact>(
         'contacts',
         {
@@ -33,7 +32,6 @@ export const HotContacts = () => {
                     underline="none"
                     variant="h5"
                     color="textSecondary"
-                    component={RouterLink}
                     to="/contacts"
                 >
                     Hot contacts
@@ -44,21 +42,18 @@ export const HotContacts = () => {
                     linkType="show"
                     data={contactData}
                     total={contactTotal}
-                    isLoading={contactsLoading}
+                    isPending={contactsLoading}
                     primaryText={contact =>
                         `${contact.first_name} ${contact.last_name}`
                     }
                     resource="contacts"
                     secondaryText={(contact: Contact) =>
-                        formatDistance(
-                            new Date(contact.last_seen),
-                            new Date(),
-                            {
-                                addSuffix: true,
-                            }
-                        )
+                        formatDistance(contact.last_seen, new Date(), {
+                            addSuffix: true,
+                        })
                     }
                     leftAvatar={contact => <Avatar record={contact} />}
+                    dense
                 />
             </Card>
         </>

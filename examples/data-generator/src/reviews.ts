@@ -2,8 +2,9 @@ import { random, lorem } from 'faker/locale/en';
 import { subDays, isAfter } from 'date-fns';
 
 import { randomDate, weightedArrayElement, weightedBoolean } from './utils';
+import type { Db } from './types';
 
-export default (db, { serializeDate }) => {
+export const generateReviews = (db: Db): Review[] => {
     const today = new Date();
     const aMonthAgo = subDays(today, 30);
 
@@ -13,15 +14,15 @@ export default (db, { serializeDate }) => {
         .filter(() => weightedBoolean(60)) // only 60% of buyers write reviews
         .map(customer => customer.id);
 
-    return db.commands
-        .filter(command => reviewers.indexOf(command.customer_id) !== -1)
+    return db.orders
+        .filter(order => reviewers.indexOf(order.customer_id) !== -1)
         .reduce(
-            (acc, command) => [
+            (acc, order) => [
                 ...acc,
-                ...command.basket
+                ...order.basket
                     .filter(() => weightedBoolean(40)) // reviewers review 40% of their products
                     .map(product => {
-                        const date = randomDate(command.date);
+                        const date = randomDate(order.date);
                         const status = isAfter(aMonthAgo, date)
                             ? weightedArrayElement(
                                   ['accepted', 'rejected'],
@@ -34,11 +35,11 @@ export default (db, { serializeDate }) => {
 
                         return {
                             id: id++,
-                            date: serializeDate ? date.toISOString() : date,
+                            date: date.toISOString(),
                             status: status,
-                            command_id: command.id,
+                            order_id: order.id,
                             product_id: product.product_id,
-                            customer_id: command.customer_id,
+                            customer_id: order.customer_id,
                             rating: random.number({ min: 1, max: 5 }),
                             comment: Array.apply(
                                 null,
@@ -51,4 +52,15 @@ export default (db, { serializeDate }) => {
             ],
             []
         );
+};
+
+export type Review = {
+    id: number;
+    date: string;
+    status: 'accepted' | 'rejected' | 'pending';
+    order_id: number;
+    product_id: number;
+    customer_id: number;
+    rating: number;
+    comment: string;
 };

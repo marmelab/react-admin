@@ -31,6 +31,9 @@ export const softDarkTheme = {
                 },
             },
         },
+        MuiFilledInput: {
+            styleOverrides: undefined,
+        },
         MuiAppBar: {
             styleOverrides: {
                 colorSecondary: {

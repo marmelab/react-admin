@@ -128,14 +128,12 @@ const PostEdit = () => {
                     </SanitizedBox>
                     <TextInput
                         multiline
-                        fullWidth
                         source="teaser"
                         validate={required()}
                         resettable
                     />
                     <CheckboxGroupInput
                         source="notifications"
-                        fullWidth
                         choices={[
                             { id: 12, name: 'Ray Hakt' },
                             { id: 31, name: 'Ann Gullar' },
@@ -145,7 +143,7 @@ const PostEdit = () => {
                     <ImageInput
                         multiple
                         source="pictures"
-                        accept="image/*"
+                        accept={{ 'image/*': ['.jpeg', '.png', '.jpg'] }}
                         helperText=""
                     >
                         <ImageField source="src" title="title" />
@@ -160,11 +158,11 @@ const PostEdit = () => {
                                     <AutocompleteInput helperText={false} />
                                 </ReferenceInput>
                                 <FormDataConsumer>
-                                    {({ scopedFormData, getSource, ...rest }) =>
+                                    {({ scopedFormData }) =>
                                         scopedFormData &&
                                         scopedFormData.user_id ? (
                                             <SelectInput
-                                                source={getSource('role')}
+                                                source="source"
                                                 choices={[
                                                     {
                                                         id: 'headwriter',
@@ -180,7 +178,6 @@ const PostEdit = () => {
                                                     },
                                                 ]}
                                                 helperText={false}
-                                                {...rest}
                                             />
                                         ) : null
                                     }
@@ -249,11 +246,7 @@ const PostEdit = () => {
                         />
                     }
                 >
-                    <ReferenceManyField
-                        reference="comments"
-                        target="post_id"
-                        fullWidth
-                    >
+                    <ReferenceManyField reference="comments" target="post_id">
                         <Datagrid>
                             <DateField source="created_at" />
                             <TextField source="author.name" />

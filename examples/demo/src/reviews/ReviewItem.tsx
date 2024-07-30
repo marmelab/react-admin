@@ -1,16 +1,11 @@
 import * as React from 'react';
 import { Fragment } from 'react';
-import {
-    ListItem,
-    ListItemAvatar,
-    ListItemText,
-    Link as MuiLink,
-} from '@mui/material';
-import { Link } from 'react-router-dom';
+import { ListItem, ListItemAvatar, ListItemText } from '@mui/material';
 import {
     useCreatePath,
     ReferenceField,
     FunctionField,
+    Link,
     TextField,
     useRecordContext,
 } from 'react-admin';
@@ -25,13 +20,12 @@ export const ReviewItem = () => {
         return null;
     }
     return (
-        <MuiLink
+        <Link
             to={createPath({
                 resource: 'reviews',
                 type: 'edit',
                 id: record.id,
             })}
-            component={Link}
             underline="none"
             color="inherit"
         >
@@ -77,6 +71,6 @@ export const ReviewItem = () => {
                     secondaryTypographyProps={{ noWrap: true }}
                 />
             </ListItem>
-        </MuiLink>
+        </Link>
     );
 };

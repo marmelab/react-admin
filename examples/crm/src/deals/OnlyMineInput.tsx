@@ -2,12 +2,9 @@ import * as React from 'react';
 import { useListFilterContext, useGetIdentity } from 'react-admin';
 import { Box, Switch, FormControlLabel } from '@mui/material';
 
-export const OnlyMineInput = (_: { alwaysOn: boolean }) => {
-    const {
-        filterValues,
-        displayedFilters,
-        setFilters,
-    } = useListFilterContext();
+export const OnlyMineInput = (_: { alwaysOn: boolean; source: string }) => {
+    const { filterValues, displayedFilters, setFilters } =
+        useListFilterContext();
     const { identity } = useGetIdentity();
 
     const handleChange = () => {
@@ -35,5 +32,3 @@ export const OnlyMineInput = (_: { alwaysOn: boolean }) => {
         </Box>
     );
 };
-
-OnlyMineInput.defaultProps = { source: 'sales_id' };

@@ -26,7 +26,9 @@ import { createContext } from 'react';
  *     </UserMenu>
  * );
  */
-export const UserMenuContext = createContext<UserMenuContextValue>(undefined);
+export const UserMenuContext = createContext<UserMenuContextValue | undefined>(
+    undefined
+);
 
 export type UserMenuContextValue = {
     /**

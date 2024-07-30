@@ -21,7 +21,7 @@ import { AuthProvider } from '../types';
  * const authProvider = addRefreshAuthToAuthProvider(authProvider, refreshAuth);
  */
 export const addRefreshAuthToAuthProvider = <
-    AuthProviderType extends AuthProvider = AuthProvider
+    AuthProviderType extends AuthProvider = AuthProvider,
 >(
     provider: AuthProviderType,
     refreshAuth: () => Promise<void>

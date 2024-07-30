@@ -5,7 +5,7 @@ title: "useGetLockLive"
 
 # `useGetLockLive`
 
-Use the `useGetLockLive()` hook to get the lock status in real time. This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> hook calls `dataProvider.getLock()` for the current record on mount, and subscribes to live updates on the `lock/[resource]/[id]` topic.
+Use the `useGetLockLive()` hook to get the lock status in real time. This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" /> hook calls `dataProvider.getLock()` for the current record on mount, and subscribes to live updates on the `lock/[resource]/[id]` topic.
 
 This means that if the lock is acquired or released by another user while the current user is on the page, the return value will be updated.
 

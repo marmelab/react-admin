@@ -7,7 +7,15 @@ title: "The ReferenceArrayField Component"
 
 Use `<ReferenceArrayField>` to display a list of related records, via a one-to-many relationship materialized by an array of foreign keys.
 
-![ReferenceArrayField](./img/reference-array-field.png)
+<iframe src="https://www.youtube-nocookie.com/embed/UeM31-65Wc4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;"></iframe>
+
+`<ReferenceArrayField>` fetches a list of referenced records (using the `dataProvider.getMany()` method), and puts them in a [`ListContext`](./useListContext.md). It then renders each related record, using its [`recordRepresentation`](./Resource.md#recordrepresentation), in a [`<ChipField>`](./ChipField.md). 
+
+**Tip**: If the relationship is materialized by a foreign key on the referenced resource, use [the `<ReferenceManyField>` component](./ReferenceManyField.md) instead.
+
+**Tip**: To edit the records of a one-to-many relationship, use [the `<ReferenceArrayInput>` component](./ReferenceArrayInput.md).
+
+## Usage
 
 For instance, let's consider a model where a `post` has many `tags`, materialized to a `tags_ids` field containing an array of ids:
 
@@ -35,24 +43,9 @@ A typical `post` record therefore looks like this:
 }
 ```
 
-In that case, use `<ReferenceArrayField>` to display the post tags names as follows:
+In that case, use `<ReferenceArrayField>` to display the post tag names as Chips as follows:
 
 ```jsx
-<ReferenceArrayField label="Tags" reference="tags" source="tag_ids" />
-```
-
-`<ReferenceArrayField>` fetches a list of referenced records (using the `dataProvider.getMany()` method), and puts them in a [`ListContext`](./useListContext.md). It then renders each related record, using its [`recordRepresentation`](./Resource.md#recordrepresentation), in a [`<ChipField>`](./ChipField.md). 
-
-**Tip**: If the relationship is materialized by a foreign key on the referenced resource, use [the `<ReferenceManyField>` component](./ReferenceManyField.md) instead.
-
-## Usage
-
-`<ReferenceArrayField>` expects a `reference` attribute, which specifies the resource to fetch for the related records. It also expects a `source` attribute, which defines the field containing the list of ids to look for in the referenced resource.
-
-For instance, if each post contains a list of tag ids (e.g. `{ id: 1234, title: 'Lorem Ipsum', tag_ids: [1, 23, 4] }`), here is how to fetch the list of tags for each post in a list, and display the `name` for each `tag` in a `<ChipField>`:
-
-```jsx
-import * as React from "react";
 import { List, Datagrid, ReferenceArrayField, TextField } from 'react-admin';
 
 export const PostList = () => (
@@ -60,16 +53,20 @@ export const PostList = () => (
         <Datagrid>
             <TextField source="id" />
             <TextField source="title" />
-            <ReferenceArrayField label="Tags" reference="tags" source="tag_ids" />
+            <ReferenceArrayField reference="tags" source="tag_ids" label="Tags" />
             <EditButton />
         </Datagrid>
     </List>
 );
 ```
 
+![ReferenceArrayField](./img/reference-array-field.png)
+
+`<ReferenceArrayField>` expects a `reference` attribute, which specifies the resource to fetch for the related records. It also expects a `source` attribute, which defines the field containing the list of ids to look for in the referenced resource.
+
 `<ReferenceArrayField>` fetches the `tag` resources related to each `post` resource by matching `post.tag_ids` to `tag.id`. By default, it renders one string by related record, via a [`<SingleFieldList>`](./SingleFieldList.md) with a [`<ChipField>`](./ChipField.md) child using the resource [`recordRepresentation`](./Resource.md#recordrepresentation) as source
 
-Configure the `<Resource recordRepresentation>` to render related records in a meaningul way. For instance, for the `tags` resource, if you want the `<ReferenceArrayField>` to display the tag `name`:
+Configure the `<Resource recordRepresentation>` to render related records in a meaningful way. For instance, for the `tags` resource, if you want the `<ReferenceArrayField>` to display the tag `name`:
 
 ```jsx
 <Resource name="tags" list={TagList} recordRepresentation="name" />
@@ -87,7 +84,7 @@ You can change how the list of related records is rendered by passing a custom c
 | `filter`       | Optional | `Object`                                                                          | -                                | Filters to use when fetching the related records (the filtering is done client-side)                   |
 | `pagination`   | Optional | `Element`                                                                         | -                                | Pagination element to display pagination controls. empty by default (no pagination)                    |
 | `perPage`      | Optional | `number`                                                                          | 1000                             | Maximum number of results to display                                                                   |
-| `queryOptions` | Optional | [`UseQuery Options`](https://tanstack.com/query/v3/docs/react/reference/useQuery) | `{}`                             | `react-query` options for the `getMany` query                                                                           |
+| `queryOptions` | Optional | [`UseQuery Options`](https://tanstack.com/query/v5/docs/react/reference/useQuery) | `{}`                             | `react-query` options for the `getMany` query                                                                           |
 | `sort`         | Optional | `{ field, order }`                                                                | `{ field: 'id', order: 'DESC' }` | Sort order to use when displaying the related records (the sort is done client-side)                   |
 | `sortBy`       | Optional | `string | Function`                                                               | `source`                         | When used in a `List`, name of the field to use for sorting when the user clicks on the column header. |
 
@@ -290,7 +287,7 @@ The `<ReferenceArrayField>` component accepts the usual `className` prop. You ca
 
 | Rule name                           | Description                                                                              |
 |-------------------------------------|------------------------------------------------------------------------------------------|
-| `& .RaReferenceArrayField-progress` | Applied to the Material UI's `LinearProgress` component while `isLoading` prop is `true` |
+| `& .RaReferenceArrayField-progress` | Applied to the Material UI's `LinearProgress` component while `isPending` prop is `true` |
 
 To override the style of all instances of `<ReferenceArrayField>` using the [application-wide style overrides](./AppTheme.md#theming-individual-components), use the `RaReferenceArrayField` key.
 

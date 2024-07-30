@@ -6,9 +6,9 @@ import {
 } from '@mui/material/styles';
 import { useMediaQuery } from '@mui/material';
 
-import { RaThemeOptions } from './types';
 import { useTheme } from './useTheme';
 import { useThemesContext } from './useThemesContext';
+import { AdminChildren } from 'ra-core';
 
 /**
  * This sets the Material UI theme based on the preferred theme type.
@@ -29,10 +29,7 @@ import { useThemesContext } from './useThemesContext';
  *   </ThemesContext.Provider>
  * );
  */
-export const ThemeProvider = ({
-    children,
-    theme: themeOverride,
-}: ThemeProviderProps) => {
+export const ThemeProvider = ({ children }: ThemeProviderProps) => {
     const { lightTheme, darkTheme, defaultTheme } = useThemesContext();
 
     const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)', {
@@ -44,26 +41,21 @@ export const ThemeProvider = ({
 
     const themeValue = useMemo(() => {
         try {
-            return createTheme(
-                typeof mode === 'object'
-                    ? mode // FIXME: legacy useTheme, to be removed in v5
-                    : mode === 'dark'
-                    ? darkTheme
-                    : lightTheme || themeOverride
-            );
+            return createTheme(mode === 'dark' ? darkTheme : lightTheme);
         } catch (e) {
             console.warn('Failed to reuse custom theme from store', e);
             return createTheme();
         }
-    }, [mode, themeOverride, lightTheme, darkTheme]);
+    }, [mode, lightTheme, darkTheme]);
 
-    return <MuiThemeProvider theme={themeValue}>{children}</MuiThemeProvider>;
+    return (
+        <MuiThemeProvider theme={themeValue}>
+            {/* Had to cast here because Provider only accepts ReactNode but we might have a render function */}
+            {children as ReactNode}
+        </MuiThemeProvider>
+    );
 };
 
 export interface ThemeProviderProps {
-    children: ReactNode;
-    /**
-     * @deprecated Use the `ThemesProvider` component instead.
-     */
-    theme?: RaThemeOptions;
+    children: AdminChildren;
 }

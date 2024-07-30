@@ -11,7 +11,7 @@ This hook calls `dataProvider.getList()` when the component mounts. It's ideal f
 ## Syntax
 
 ```jsx
-const { data, total, isLoading, error, refetch } = useGetList(
+const { data, total, isPending, error, refetch } = useGetList(
     resource,
     {
         pagination: { page, perPage },
@@ -25,7 +25,7 @@ const { data, total, isLoading, error, refetch } = useGetList(
 
 The `meta` argument is optional. It can be anything you want to pass to the data provider, e.g. a list of fields to show in the result.
 
-The `options` parameter is optional, and is passed to [react-query's `useQuery` hook](https://tanstack.com/query/v3/docs/react/reference/useQuery). It may contain the following options:
+The `options` parameter is optional, and is passed to [react-query's `useQuery` hook](https://tanstack.com/query/v5/docs/react/reference/useQuery). It may contain the following options:
 
 * `cacheTime`
 * `enabled`
@@ -55,24 +55,26 @@ The `options` parameter is optional, and is passed to [react-query's `useQuery` 
 * `suspense`
 * `useErrorBoundary`
 
-Check [react-query's `useQuery` hook documentation](https://tanstack.com/query/v3/docs/react/reference/useQuery) for details on each of these options.
+Check [react-query's `useQuery` hook documentation](https://tanstack.com/query/v5/docs/react/reference/useQuery) for details on each of these options.
 
-The react-query [query key](https://react-query-v3.tanstack.com/guides/query-keys) for this hook is `[resource, 'getList', { pagination, sort, filter, meta }]`.
+The react-query [query key](https://tanstack.com/query/v5/docs/react/guides/query-keys) for this hook is `[resource, 'getList', { pagination, sort, filter, meta }]`.
 
 ## Usage
+
+Call the `useGetList` hook when you need to fetch a list of records from the data provider.
 
 ```jsx
 import { useGetList } from 'react-admin';
 
 const LatestNews = () => {
-    const { data, total, isLoading, error } = useGetList(
+    const { data, total, isPending, error } = useGetList(
         'posts',
         { 
             pagination: { page: 1, perPage: 10 },
             sort: { field: 'published_at', order: 'DESC' }
         }
     );
-    if (isLoading) { return <Loading />; }
+    if (isPending) { return <Loading />; }
     if (error) { return <p>ERROR</p>; }
     return (
         <>
@@ -88,6 +90,50 @@ const LatestNews = () => {
 };
 ```
 
+## Rendering Data
+
+If you want to use the result in a react-admin iterator component like [`<Datagrid>`](./Datagrid.md), [`<SimpleList>`](./SimpleList.md), or [`<SingleFieldList>`](./SingleFieldList.md), you must first create a [`ListContext`](./useListContext.md) with the data. The [`useList`](./useList.md) hook does that for you:
+
+```jsx
+import {
+    useGetList,
+    useList,
+    ListContextProvider,
+    Datagrid,
+    TextField,
+    DateField,
+    NumberField,
+    Pagination
+} from 'react-admin';
+
+const LatestNews = () => {
+    const { data, isPending, error } = useGetList(
+        'posts',
+        { pagination: { page: 1, perPage: 100 } },
+    );
+    if (error) { return <p>ERROR</p>; }
+    const listContext = useList({ 
+        data,
+        isPending,
+        perPage: 10,
+        sort: { field: 'published_at', order: 'DESC' }
+    });
+    return (
+        <ListContextProvider value={listContext}>
+            <h1>Latest news</h1>
+            <Datagrid>
+                <TextField source="title" />
+                <DateField source="published_at" />
+                <NumberField source="views" />
+            </Datagrid>
+            <Pagination />
+        </ListContextProvider>
+    );
+};
+```
+
+In this example, the `useGetList` hook fetches all the posts, and displays a list of the 10 most recent posts in a `<Datagrid>`. The `<Pagination>` component allows the user to navigate through the list. Users can also sort the list by clicking on the column headers.
+
 ## Partial Pagination
 
 If your data provider doesn't return the `total` number of records (see [Partial Pagination](./DataProviderWriting.md#partial-pagination)), you can use the `pageInfo` field to determine if there are more records to fetch.
@@ -98,14 +144,14 @@ import { useGetList } from 'react-admin';
 
 const LatestNews = () => {
     const [page, setPage] = useState(1);
-    const { data, pageInfo, isLoading, error } = useGetList(
+    const { data, pageInfo, isPending, error } = useGetList(
         'posts',
         { 
             pagination: { page, perPage: 10 },
             sort: { field: 'published_at', order: 'DESC' }
         }
     );
-    if (isLoading) { return <Loading />; }
+    if (isPending) { return <Loading />; }
     if (error) { return <p>ERROR</p>; }
     const { hasNextPage, hasPreviousPage } = pageInfo;
 
@@ -127,6 +173,52 @@ const LatestNews = () => {
 
 Alternately, you can use [the `useInfiniteGetList` hook](./useInfiniteGetList.md) to keep the previous pages on screen while loading new pages - just like users see older content when they scroll down their feed on social media. 
 
+## Fetching Related Records
+
+If you plan on using `useGetList` to fetch a list of records related to another one (e.g. the comments for a post), you're better off using [the `<ReferenceManyField>` component](./ReferenceManyField.md). It will handle the loading state for you, and display a loading spinner while the data is being fetched.
+
+```jsx
+import { ReferenceManyField } from 'react-admin';
+
+const PostComments = () => {
+    return (
+        <ReferenceManyField reference="comments" target="post_id">
+            <Datagrid>
+                <DateField source="created_at" />
+                <TextField source="author" />
+                <TextField source="body" />
+            </Datagrid>
+        </ReferenceManyField>
+    );
+};
+```
+
+is the equivalent of:
+
+```jsx
+import { useGetList } from 'react-admin';
+
+const PostComments = () => {
+    const record = useRecordContext();
+    const { data, isPending, error } = useGetList(
+        'comments',
+        { filter: { post_id: record.id } }
+    );
+    if (isPending) { return <Loading />; }
+    if (error) { return <p>ERROR</p>; }
+    const listContext = useList({ data });
+    return (
+        <ListContextProvider value={listContext}>
+            <Datagrid>
+                <DateField source="created_at" />
+                <TextField source="author" />
+                <TextField source="body" />
+            </Datagrid>
+        </ListContextProvider>
+    );
+};
+```
+
 ## Refreshing The List
 
 If you want to refresh the list, you can use the `refetch` function returned by the hook:
@@ -135,8 +227,8 @@ If you want to refresh the list, you can use the `refetch` function returned by 
 import { useGetList } from 'react-admin';
 
 const LatestNews = () => {
-    const { data, total, isLoading, error, refetch } = useGetList(/* ... */);
-    if (isLoading) { return <Loading />; }
+    const { data, total, isPending, error, refetch } = useGetList(/* ... */);
+    if (isPending) { return <Loading />; }
     if (error) { return <p>ERROR</p>; }
     return (
         <>
@@ -162,12 +254,12 @@ If you want to subscribe to live updates on the list of records (topic: `resourc
 +import { useGetListLive } from '@react-admin/ra-realtime';
 
 const LatestNews = () => {
--   const { data, total, isLoading, error } = useGetList('posts', {
-+   const { data, total, isLoading, error } = useGetListLive('posts', {
+-   const { data, total, isPending, error } = useGetList('posts', {
++   const { data, total, isPending, error } = useGetListLive('posts', {
         pagination: { page: 1, perPage: 10 },
         sort: { field: 'published_at', order: 'DESC' },
     });
-    if (isLoading) {
+    if (isPending) {
         return <Loading />;
     }
     if (error) {
@@ -199,14 +291,14 @@ type Post = {
 };
 
 const LatestNews = () => {
-    const { data: posts, total, isLoading, error } = useGetList<Post>(
+    const { data: posts, total, isPending, error } = useGetList<Post>(
         'posts',
         { 
             pagination: { page: 1, perPage: 10 },
             sort: { field: 'published_at', order: 'DESC' }
         }
     );
-    if (isLoading) { return <Loading />; }
+    if (isPending) { return <Loading />; }
     if (error) { return <p>ERROR</p>; }
     return (
         <>

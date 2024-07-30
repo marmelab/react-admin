@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
-import PropTypes from 'prop-types';
 import { IconButton } from '@mui/material';
 import ActionHide from '@mui/icons-material/RemoveCircleOutline';
 import clsx from 'clsx';
@@ -42,13 +41,6 @@ export const FilterFormInput = props => {
             <div className={FilterFormInputClasses.spacer}>&nbsp;</div>
         </Root>
     );
-};
-
-FilterFormInput.propTypes = {
-    filterElement: PropTypes.node,
-    handleHide: PropTypes.func,
-    resource: PropTypes.string,
-    className: PropTypes.string,
 };
 
 const PREFIX = 'RaFilterFormInput';

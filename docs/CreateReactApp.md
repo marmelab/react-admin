@@ -5,7 +5,9 @@ title: "Create_React-App Integration"
 
 # Create-React-App Integration
 
-[Create-React-App](https://create-react-app.dev/) is a convenient way to bootstrap single-page React applications. It provides a pre-configured build setup with no configuration.
+[Create-React-App](https://create-react-app.dev/) allows to bootstrap single-page React applications. It provides a pre-configured build setup with no configuration.
+
+**Warning**: We don't recommend using Create-React-App for new applications, as it is not maintained anymore. Prefer [create-react-admin](./CreateReactAdmin.md) (based on [Vite](./Vite.md)), [Remix](./Remix.md), or [Next.js](./NextJs.md) instead.
 
 ## Setting Up Create React App
 
@@ -77,10 +79,11 @@ To enable it, start by creating a custom layout:
 
 ```tsx
 // in src/admin/MyLayout.tsx
-import { CheckForApplicationUpdate, Layout, LayoutProps } from 'react-admin';
+import type { ReactNode } from 'react';
+import { CheckForApplicationUpdate, Layout } from 'react-admin';
 
-export const MyLayout = ({ children, ...props }: LayoutProps) => (
-    <Layout {...props}>
+export const MyLayout = ({ children }: { children: ReactNode}) => (
+    <Layout>
         {children}
         <CheckForApplicationUpdate />
     </Layout>

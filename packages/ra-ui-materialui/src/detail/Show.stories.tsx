@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { Admin } from 'react-admin';
-import { Resource, useRecordContext } from 'ra-core';
-import { createMemoryHistory } from 'history';
+import { Resource, useRecordContext, TestMemoryRouter } from 'ra-core';
 import { Box, Card, Stack } from '@mui/material';
 import { TextField } from '../field';
 import { Labeled } from '../Labeled';
@@ -26,92 +25,135 @@ const dataProvider = {
         }),
 } as any;
 
-const history = createMemoryHistory({ initialEntries: ['/books/1/show'] });
-
 const BookTitle = () => {
     const record = useRecordContext();
     return record ? <span>{record.title}</span> : null;
 };
 
-const PostShowBasic = () => (
-    <Show>
-        <BookTitle />
-    </Show>
-);
-
 export const Basic = () => (
-    <Admin dataProvider={dataProvider} history={history}>
-        <Resource name="books" show={PostShowBasic} />
-    </Admin>
-);
-
-const PostShowWithFields = () => (
-    <Show>
-        <Stack spacing={2} sx={{ padding: 2 }}>
-            <Labeled label="Title">
-                <TextField source="title" />
-            </Labeled>
-            <Labeled label="Author">
-                <TextField source="author" />
-            </Labeled>
-            <Labeled label="Summary">
-                <TextField source="summary" />
-            </Labeled>
-            <Labeled label="Year">
-                <TextField source="year" />
-            </Labeled>
-        </Stack>
-    </Show>
+    <TestMemoryRouter initialEntries={['/books/1/show']}>
+        <Admin dataProvider={dataProvider}>
+            <Resource
+                name="books"
+                show={() => (
+                    <Show>
+                        <BookTitle />
+                    </Show>
+                )}
+            />
+        </Admin>
+    </TestMemoryRouter>
 );
 
 export const WithFields = () => (
-    <Admin dataProvider={dataProvider} history={history}>
-        <Resource name="books" show={PostShowWithFields} />
-    </Admin>
-);
-
-const PostShowWithCustomActions = () => (
-    <Show
-        actions={
-            <TopToolbar>
-                <EditButton />
-            </TopToolbar>
-        }
-    >
-        <BookTitle />
-    </Show>
+    <TestMemoryRouter initialEntries={['/books/1/show']}>
+        <Admin dataProvider={dataProvider}>
+            <Resource
+                name="books"
+                show={() => (
+                    <Show>
+                        <Stack spacing={2} sx={{ padding: 2 }}>
+                            <Labeled label="Title">
+                                <TextField source="title" />
+                            </Labeled>
+                            <Labeled label="Author">
+                                <TextField source="author" />
+                            </Labeled>
+                            <Labeled label="Summary">
+                                <TextField source="summary" />
+                            </Labeled>
+                            <Labeled label="Year">
+                                <TextField source="year" />
+                            </Labeled>
+                        </Stack>
+                    </Show>
+                )}
+            />
+        </Admin>
+    </TestMemoryRouter>
 );
 
 export const Actions = () => (
-    <Admin dataProvider={dataProvider} history={history}>
-        <Resource name="books" show={PostShowWithCustomActions} />
-    </Admin>
-);
-
-const PostShowWithTitle = () => (
-    <Show title="Hello">
-        <BookTitle />
-    </Show>
+    <TestMemoryRouter initialEntries={['/books/1/show']}>
+        <Admin dataProvider={dataProvider}>
+            <Resource
+                name="books"
+                show={() => (
+                    <Show
+                        actions={
+                            <TopToolbar>
+                                <EditButton />
+                            </TopToolbar>
+                        }
+                    >
+                        <BookTitle />
+                    </Show>
+                )}
+            />
+        </Admin>
+    </TestMemoryRouter>
 );
 
 export const Title = () => (
-    <Admin dataProvider={dataProvider} history={history}>
-        <Resource name="books" show={PostShowWithTitle} />
-    </Admin>
+    <TestMemoryRouter initialEntries={['/books/1/show']}>
+        <Admin dataProvider={dataProvider}>
+            <Resource
+                name="books"
+                show={() => (
+                    <Show title="Hello">
+                        <BookTitle />
+                    </Show>
+                )}
+            />
+        </Admin>
+    </TestMemoryRouter>
+);
+
+export const TitleElement = () => (
+    <TestMemoryRouter initialEntries={['/books/1/show']}>
+        <Admin dataProvider={dataProvider}>
+            <Resource
+                name="books"
+                show={() => (
+                    <Show title={<span>Hello</span>}>
+                        <BookTitle />
+                    </Show>
+                )}
+            />
+        </Admin>
+    </TestMemoryRouter>
+);
+
+export const TitleFalse = () => (
+    <TestMemoryRouter initialEntries={['/books/1/show']}>
+        <Admin dataProvider={dataProvider}>
+            <Resource
+                name="books"
+                show={() => (
+                    <Show title={false}>
+                        <BookTitle />
+                    </Show>
+                )}
+            />
+        </Admin>
+    </TestMemoryRouter>
 );
 
 const AsideComponent = () => <Card sx={{ padding: 2 }}>Aside</Card>;
 
-const PostShowWithAside = () => (
-    <Show aside={<AsideComponent />}>
-        <BookTitle />
-    </Show>
-);
-
 export const Aside = () => (
-    <Admin dataProvider={dataProvider} history={history}>
-        <Resource name="books" show={PostShowWithAside} />
-    </Admin>
+    <TestMemoryRouter initialEntries={['/books/1/show']}>
+        <Admin dataProvider={dataProvider}>
+            <Resource
+                name="books"
+                show={() => (
+                    <Show aside={<AsideComponent />}>
+                        <BookTitle />
+                    </Show>
+                )}
+            />
+        </Admin>
+    </TestMemoryRouter>
 );
 
 const CustomWrapper = ({ children }) => (
@@ -123,67 +165,82 @@ const CustomWrapper = ({ children }) => (
     </Box>
 );
 
-const PostShowWithComponent = () => (
-    <Show component={CustomWrapper}>
-        <BookTitle />
-    </Show>
-);
-
 export const Component = () => (
-    <Admin dataProvider={dataProvider} history={history}>
-        <Resource name="books" show={PostShowWithComponent} />
-    </Admin>
-);
-
-const PostShowWithStyles = () => (
-    <Show
-        sx={{
-            padding: 2,
-            border: '1px solid #333',
-        }}
-    >
-        <BookTitle />
-    </Show>
+    <TestMemoryRouter initialEntries={['/books/1/show']}>
+        <Admin dataProvider={dataProvider}>
+            <Resource
+                name="books"
+                show={() => (
+                    <Show component={CustomWrapper}>
+                        <BookTitle />
+                    </Show>
+                )}
+            />
+        </Admin>
+    </TestMemoryRouter>
 );
 
 export const SX = () => (
-    <Admin dataProvider={dataProvider} history={history}>
-        <Resource name="books" show={PostShowWithStyles} />
-    </Admin>
-);
-
-const DefaultPostShow = () => (
-    <Show>
-        <SimpleShowLayout>
-            <TextField source="title" />
-            <TextField source="author" />
-            <TextField source="summary" />
-            <TextField source="year" />
-        </SimpleShowLayout>
-    </Show>
-);
-
-const dataProviderWithLog = {
-    getOne: (resource, params) => {
-        console.log('getOne', resource, params);
-        return dataProvider.getOne(resource, params);
-    },
-} as any;
-
-const PostShowWithMeta = () => (
-    <Show queryOptions={{ meta: { foo: 'bar ' } }}>
-        <BookTitle />
-    </Show>
+    <TestMemoryRouter initialEntries={['/books/1/show']}>
+        <Admin dataProvider={dataProvider}>
+            <Resource
+                name="books"
+                show={() => (
+                    <Show
+                        sx={{
+                            padding: 2,
+                            border: '1px solid #333',
+                        }}
+                    >
+                        <BookTitle />
+                    </Show>
+                )}
+            />
+        </Admin>
+    </TestMemoryRouter>
 );
 
 export const Meta = () => (
-    <Admin dataProvider={dataProviderWithLog} history={history}>
-        <Resource name="books" show={PostShowWithMeta} />
-    </Admin>
+    <TestMemoryRouter initialEntries={['/books/1/show']}>
+        <Admin
+            dataProvider={
+                {
+                    getOne: (resource, params) => {
+                        console.log('getOne', resource, params);
+                        return dataProvider.getOne(resource, params);
+                    },
+                } as any
+            }
+        >
+            <Resource
+                name="books"
+                show={() => (
+                    <Show queryOptions={{ meta: { foo: 'bar ' } }}>
+                        <BookTitle />
+                    </Show>
+                )}
+            />
+        </Admin>
+    </TestMemoryRouter>
 );
 
 export const Default = () => (
-    <Admin dataProvider={dataProvider} history={history}>
-        <Resource name="books" show={DefaultPostShow} edit={() => <span />} />
-    </Admin>
+    <TestMemoryRouter initialEntries={['/books/1/show']}>
+        <Admin dataProvider={dataProvider}>
+            <Resource
+                name="books"
+                show={() => (
+                    <Show>
+                        <SimpleShowLayout>
+                            <TextField source="title" />
+                            <TextField source="author" />
+                            <TextField source="summary" />
+                            <TextField source="year" />
+                        </SimpleShowLayout>
+                    </Show>
+                )}
+                edit={() => <span />}
+            />
+        </Admin>
+    </TestMemoryRouter>
 );

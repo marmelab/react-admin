@@ -2,8 +2,15 @@ import * as React from 'react';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
 import { Typography } from '@mui/material';
-import { FavoriteBorder, Favorite } from '@mui/icons-material';
-import { required, testDataProvider, useRecordContext } from 'ra-core';
+import FavoriteBorder from '@mui/icons-material/FavoriteBorder';
+import Favorite from '@mui/icons-material/Favorite';
+import {
+    Resource,
+    TestMemoryRouter,
+    required,
+    testDataProvider,
+    useRecordContext,
+} from 'ra-core';
 import { useFormContext } from 'react-hook-form';
 
 import { AdminContext } from '../AdminContext';
@@ -12,6 +19,7 @@ import { SimpleForm } from '../form';
 import { CheckboxGroupInput } from './CheckboxGroupInput';
 import { ReferenceArrayInput } from './ReferenceArrayInput';
 import { TextInput } from './TextInput';
+import { Admin } from 'react-admin';
 
 export default { title: 'ra-ui-materialui/input/CheckboxGroupInput' };
 
@@ -26,26 +34,38 @@ const choices = [
     { id: 6, name: 'Option 6', details: 'This is option 6' },
 ];
 
-export const Basic = () => (
-    <AdminContext i18nProvider={i18nProvider}>
+const Wrapper = ({ children }) => (
+    <AdminContext i18nProvider={i18nProvider} defaultTheme="light">
         <Create
             resource="posts"
             record={{ roles: ['u001', 'u003'] }}
             sx={{ width: 600 }}
         >
-            <SimpleForm>
-                <CheckboxGroupInput
-                    source="roles"
-                    choices={[
-                        { id: 'admin', name: 'Admin' },
-                        { id: 'u001', name: 'Editor' },
-                        { id: 'u002', name: 'Moderator' },
-                        { id: 'u003', name: 'Reviewer' },
-                    ]}
-                />
-            </SimpleForm>
+            <SimpleForm>{children}</SimpleForm>
         </Create>
     </AdminContext>
+);
+
+const roleChoices = [
+    { id: 'admin', name: 'Admin' },
+    { id: 'u001', name: 'Editor' },
+    { id: 'u002', name: 'Moderator' },
+    { id: 'u003', name: 'Reviewer' },
+];
+
+export const Basic = () => (
+    <Wrapper>
+        <CheckboxGroupInput source="roles" choices={roleChoices} />
+    </Wrapper>
+);
+
+export const StringChoices = () => (
+    <Wrapper>
+        <CheckboxGroupInput
+            source="roles"
+            choices={['Admin', 'Editor', 'Moderator', 'Reviewer']}
+        />
+    </Wrapper>
 );
 
 const dataProvider = testDataProvider({
@@ -60,98 +80,96 @@ const dataProvider = testDataProvider({
 });
 
 export const InsideReferenceArrayInput = () => (
-    <AdminContext dataProvider={dataProvider} i18nProvider={i18nProvider}>
+    <TestMemoryRouter initialEntries={['/posts/create']}>
+        <Admin
+            dataProvider={dataProvider}
+            i18nProvider={i18nProvider}
+            defaultTheme="light"
+        >
+            <Resource
+                name="options"
+                recordRepresentation={record =>
+                    `${record.name} (${record.details})`
+                }
+            />
+            <Resource
+                name="posts"
+                create={
+                    <Create
+                        resource="posts"
+                        record={{ options: [1, 2] }}
+                        sx={{ width: 600 }}
+                    >
+                        <SimpleForm>
+                            <ReferenceArrayInput
+                                reference="options"
+                                source="options"
+                            >
+                                <CheckboxGroupInput />
+                            </ReferenceArrayInput>
+                        </SimpleForm>
+                    </Create>
+                }
+            />
+        </Admin>
+    </TestMemoryRouter>
+);
+
+export const ReadOnly = () => (
+    <AdminContext i18nProvider={i18nProvider}>
         <Create
             resource="posts"
             record={{ options: [1, 2] }}
             sx={{ width: 600 }}
         >
             <SimpleForm>
-                <ReferenceArrayInput reference="options" source="options">
-                    <CheckboxGroupInput />
-                </ReferenceArrayInput>
+                <CheckboxGroupInput
+                    source="options"
+                    readOnly
+                    choices={choices}
+                />
             </SimpleForm>
         </Create>
     </AdminContext>
 );
 
 export const Disabled = () => (
-    <AdminContext i18nProvider={i18nProvider}>
-        <Create
-            resource="posts"
-            record={{ options: [1, 2] }}
-            sx={{ width: 600 }}
-        >
-            <SimpleForm>
-                <CheckboxGroupInput
-                    source="options"
-                    disabled
-                    choices={choices}
-                />
-            </SimpleForm>
-        </Create>
-    </AdminContext>
+    <Wrapper>
+        <CheckboxGroupInput source="roles" disabled choices={roleChoices} />
+    </Wrapper>
 );
 
 export const LabelPlacement = () => (
-    <AdminContext i18nProvider={i18nProvider}>
-        <Create
-            resource="posts"
-            record={{ options: [1, 2] }}
-            sx={{ width: 600 }}
-        >
-            <SimpleForm>
-                <CheckboxGroupInput
-                    source="options"
-                    choices={choices}
-                    labelPlacement="bottom"
-                />
-            </SimpleForm>
-        </Create>
-    </AdminContext>
+    <Wrapper>
+        <CheckboxGroupInput
+            source="roles"
+            choices={roleChoices}
+            labelPlacement="bottom"
+        />
+    </Wrapper>
 );
 
 export const Column = () => (
-    <AdminContext i18nProvider={i18nProvider}>
-        <Create
-            resource="posts"
-            record={{ options: [1, 2] }}
-            sx={{ width: 600 }}
-        >
-            <SimpleForm>
-                <CheckboxGroupInput
-                    source="options"
-                    choices={choices}
-                    row={false}
-                />
-            </SimpleForm>
-        </Create>
-    </AdminContext>
+    <Wrapper>
+        <CheckboxGroupInput source="roles" choices={roleChoices} row={false} />
+    </Wrapper>
 );
 
 export const Options = () => (
-    <AdminContext i18nProvider={i18nProvider}>
-        <Create
-            resource="posts"
-            record={{ options: [1, 2] }}
-            sx={{ width: 600 }}
-        >
-            <SimpleForm>
-                <CheckboxGroupInput
-                    source="options"
-                    choices={choices}
-                    options={{
-                        icon: <FavoriteBorder />,
-                        checkedIcon: <Favorite />,
-                    }}
-                />
-            </SimpleForm>
-        </Create>
-    </AdminContext>
+    <Wrapper>
+        <CheckboxGroupInput
+            source="roles"
+            choices={roleChoices}
+            options={{
+                icon: <FavoriteBorder />,
+                checkedIcon: <Favorite />,
+            }}
+        />
+    </Wrapper>
 );
 
-export const CustomOptionText = () => (
-    <AdminContext i18nProvider={i18nProvider}>
+export const OptionText = () => (
+    <AdminContext i18nProvider={i18nProvider} defaultTheme="light">
         <Create
             resource="posts"
             record={{ options: [1, 2] }}
@@ -160,7 +178,7 @@ export const CustomOptionText = () => (
             <SimpleForm>
                 <CheckboxGroupInput
                     source="options"
-                    optionText={<OptionText />}
+                    optionText={<OptionTextComponent />}
                     choices={choices}
                     row={false}
                     sx={{
@@ -174,7 +192,7 @@ export const CustomOptionText = () => (
     </AdminContext>
 );
 
-const OptionText = () => {
+const OptionTextComponent = () => {
     const record = useRecordContext();
     return (
         <>
@@ -187,33 +205,23 @@ const OptionText = () => {
 };
 
 export const Validate = () => (
-    <AdminContext i18nProvider={i18nProvider}>
-        <Create resource="posts" sx={{ width: 600 }}>
-            <SimpleForm>
-                <CheckboxGroupInput
-                    source="options"
-                    choices={choices}
-                    validate={[required()]}
-                />
-                <TextInput source="foo" />
-            </SimpleForm>
-        </Create>
-    </AdminContext>
+    <Wrapper>
+        <CheckboxGroupInput
+            source="roles"
+            choices={roleChoices}
+            validate={[required()]}
+        />
+    </Wrapper>
 );
 
 export const HelperText = () => (
-    <AdminContext i18nProvider={i18nProvider}>
-        <Create resource="posts" sx={{ width: 600 }}>
-            <SimpleForm>
-                <CheckboxGroupInput
-                    source="options"
-                    choices={choices}
-                    validate={[required()]}
-                    helperText="Helper text"
-                />
-            </SimpleForm>
-        </Create>
-    </AdminContext>
+    <Wrapper>
+        <CheckboxGroupInput
+            source="roles"
+            choices={roleChoices}
+            helperText="Helper text"
+        />
+    </Wrapper>
 );
 
 export const TranslateChoice = () => {
@@ -246,6 +254,7 @@ export const TranslateChoice = () => {
                         }),
                 } as any
             }
+            defaultTheme="light"
         >
             <Edit resource="posts" id="1">
                 <SimpleForm>
@@ -302,19 +311,9 @@ const SetFocusButton = ({ source }) => {
 };
 
 export const SetFocus = () => (
-    <AdminContext>
-        <Create resource="posts" sx={{ width: 600 }}>
-            <SimpleForm>
-                <TextInput source="title" />
-                <CheckboxGroupInput
-                    source="tags"
-                    choices={[
-                        { id: 'tech', name: 'option.tech' },
-                        { id: 'business', name: 'option.business' },
-                    ]}
-                />
-                <SetFocusButton source="tags" />
-            </SimpleForm>
-        </Create>
-    </AdminContext>
+    <Wrapper>
+        <TextInput source="title" />
+        <CheckboxGroupInput source="roles" choices={roleChoices} />
+        <SetFocusButton source="roles" />
+    </Wrapper>
 );

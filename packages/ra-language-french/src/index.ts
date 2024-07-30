@@ -104,8 +104,7 @@ const frenchMessages: TranslationMessages = {
                 'Êtes-vous sûr(e) de vouloir supprimer cet élément ?',
             delete_title: 'Supprimer %{name} #%{id}',
             details: 'Détails',
-            error:
-                "En raison d'une erreur côté navigateur, votre requête n'a pas pu aboutir.",
+            error: "En raison d'une erreur côté navigateur, votre requête n'a pas pu aboutir.",
 
             invalid_form: "Le formulaire n'est pas valide.",
             loading:

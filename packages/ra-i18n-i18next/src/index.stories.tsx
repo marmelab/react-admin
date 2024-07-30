@@ -1,10 +1,15 @@
 import * as React from 'react';
-import { Admin, EditGuesser, ListGuesser, Resource } from 'react-admin';
+import {
+    Admin,
+    EditGuesser,
+    ListGuesser,
+    Resource,
+    TestMemoryRouter,
+} from 'react-admin';
 import i18n from 'i18next';
 import resourcesToBackend from 'i18next-resources-to-backend';
 import englishMessages from 'ra-language-english';
 import fakeRestDataProvider from 'ra-data-fakerest';
-import { MemoryRouter } from 'react-router-dom';
 import { useI18nextProvider } from './index';
 import { convertRaTranslationsToI18next } from './convertRaTranslationsToI18next';
 
@@ -17,9 +22,8 @@ export const Basic = () => {
         options: {
             resources: {
                 en: {
-                    translation: convertRaTranslationsToI18next(
-                        englishMessages
-                    ),
+                    translation:
+                        convertRaTranslationsToI18next(englishMessages),
                 },
             },
         },
@@ -28,7 +32,7 @@ export const Basic = () => {
     if (!i18nProvider) return null;
 
     return (
-        <MemoryRouter>
+        <TestMemoryRouter>
             <Admin dataProvider={dataProvider} i18nProvider={i18nProvider}>
                 <Resource
                     name="posts"
@@ -41,7 +45,7 @@ export const Basic = () => {
                     edit={<EditGuesser enableLog={false} />}
                 />
             </Admin>
-        </MemoryRouter>
+        </TestMemoryRouter>
     );
 };
 
@@ -70,7 +74,7 @@ export const WithLazyLoadedLanguages = () => {
     if (!i18nProvider) return null;
 
     return (
-        <MemoryRouter>
+        <TestMemoryRouter>
             <Admin dataProvider={dataProvider} i18nProvider={i18nProvider}>
                 <Resource
                     name="posts"
@@ -83,7 +87,7 @@ export const WithLazyLoadedLanguages = () => {
                     edit={<EditGuesser enableLog={false} />}
                 />
             </Admin>
-        </MemoryRouter>
+        </TestMemoryRouter>
     );
 };
 
@@ -112,7 +116,7 @@ export const WithCustomTranslations = () => {
     if (!i18nProvider) return null;
 
     return (
-        <MemoryRouter>
+        <TestMemoryRouter>
             <Admin dataProvider={dataProvider} i18nProvider={i18nProvider}>
                 <Resource
                     name="posts"
@@ -125,7 +129,7 @@ export const WithCustomTranslations = () => {
                     edit={<EditGuesser enableLog={false} />}
                 />
             </Admin>
-        </MemoryRouter>
+        </TestMemoryRouter>
     );
 };
 
@@ -152,7 +156,7 @@ export const WithCustomOptions = () => {
     if (!i18nProvider) return null;
 
     return (
-        <MemoryRouter>
+        <TestMemoryRouter>
             <Admin dataProvider={dataProvider} i18nProvider={i18nProvider}>
                 <Resource
                     name="posts"
@@ -165,7 +169,7 @@ export const WithCustomOptions = () => {
                     edit={<EditGuesser enableLog={false} />}
                 />
             </Admin>
-        </MemoryRouter>
+        </TestMemoryRouter>
     );
 };
 

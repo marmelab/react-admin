@@ -16,22 +16,29 @@ export const Basic = () => (
     </Wrapper>
 );
 
-export const FullWidth = () => (
+export const NonFullWidth = () => (
     <Wrapper>
-        <TimeInput source="published" fullWidth />
+        <TimeInput source="published" fullWidth={false} />
     </Wrapper>
 );
 
 export const Disabled = () => (
     <Wrapper>
         <TimeInput source="published" disabled />
+        <TimeInput source="announcement" defaultValue="12:12" disabled />
+    </Wrapper>
+);
+export const ReadOnly = () => (
+    <Wrapper>
+        <TimeInput source="published" readOnly />
+        <TimeInput source="announcement" defaultValue="12:12" readOnly />
     </Wrapper>
 );
 
 const i18nProvider = polyglotI18nProvider(() => englishMessages);
 
 const Wrapper = ({ children }) => (
-    <AdminContext i18nProvider={i18nProvider}>
+    <AdminContext i18nProvider={i18nProvider} defaultTheme="light">
         <Create resource="posts">
             <SimpleForm>
                 {children}

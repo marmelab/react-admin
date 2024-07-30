@@ -1,5 +1,4 @@
 import * as React from 'react';
-import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import TextField, { TextFieldProps } from '@mui/material/TextField';
 import { useInput, FieldTitle } from 'ra-core';
@@ -36,20 +35,18 @@ export const DateTimeInput = ({
     parse = parseDateTime,
     validate,
     variant,
+    disabled,
+    readOnly,
     ...rest
 }: DateTimeInputProps) => {
-    const {
-        field,
-        fieldState: { error, invalid, isTouched },
-        formState: { isSubmitted },
-        id,
-        isRequired,
-    } = useInput({
+    const { field, fieldState, id, isRequired } = useInput({
         defaultValue,
         onBlur,
         resource,
         source,
         validate,
+        disabled,
+        readOnly,
         ...rest,
     });
     const [renderCount, setRenderCount] = React.useState(1);
@@ -95,8 +92,8 @@ export const DateTimeInput = ({
                     ? parse(target.valueAsDate)
                     : target.valueAsDate
                 : parse
-                ? parse(target.value)
-                : formatDateTime(target.value);
+                  ? parse(target.value)
+                  : formatDateTime(target.value);
 
         field.onChange(newValue);
     };
@@ -115,9 +112,8 @@ export const DateTimeInput = ({
         hasFocus.current = false;
     };
 
-    const renderHelperText =
-        helperText !== false || ((isTouched || isSubmitted) && invalid);
-
+    const { error, invalid } = fieldState;
+    const renderHelperText = helperText !== false || invalid;
     const { ref, name } = field;
 
     return (
@@ -135,11 +131,12 @@ export const DateTimeInput = ({
             size="small"
             variant={variant}
             margin={margin}
-            error={(isTouched || isSubmitted) && invalid}
+            error={invalid}
+            disabled={disabled || readOnly}
+            readOnly={readOnly}
             helperText={
                 renderHelperText ? (
                     <InputHelperText
-                        touched={isTouched || isSubmitted}
                         error={error?.message}
                         helperText={helperText}
                     />
@@ -159,20 +156,13 @@ export const DateTimeInput = ({
     );
 };
 
-DateTimeInput.propTypes = {
-    label: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.bool,
-        PropTypes.element,
-    ]),
-    resource: PropTypes.string,
-    source: PropTypes.string,
-};
-
 export type DateTimeInputProps = CommonInputProps &
     Omit<TextFieldProps, 'helperText' | 'label'>;
 
-const leftPad = (nb = 2) => value => ('0'.repeat(nb) + value).slice(-nb);
+const leftPad =
+    (nb = 2) =>
+    value =>
+        ('0'.repeat(nb) + value).slice(-nb);
 const leftPad4 = leftPad(4);
 const leftPad2 = leftPad(2);
 

@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Admin, AdminContext } from 'react-admin';
+
 import {
     Resource,
     required,
@@ -8,8 +9,9 @@ import {
     ListBase,
     useListContext,
     RecordContextProvider,
+    TestMemoryRouter,
 } from 'ra-core';
-import { createMemoryHistory } from 'history';
+
 import {
     Dialog,
     DialogContent,
@@ -25,6 +27,8 @@ import { useFormContext } from 'react-hook-form';
 import fakeRestProvider from 'ra-data-fakerest';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
+import ExpandCircleDownIcon from '@mui/icons-material/ExpandCircleDown';
+import AttributionIcon from '@mui/icons-material/Attribution';
 
 import { Create, Edit } from '../detail';
 import { SimpleForm } from '../form';
@@ -32,12 +36,10 @@ import { AutocompleteInput, AutocompleteInputProps } from './AutocompleteInput';
 import { ReferenceInput } from './ReferenceInput';
 import { TextInput } from './TextInput';
 import { useCreateSuggestionContext } from './useSupportCreateSuggestion';
-import ExpandCircleDownIcon from '@mui/icons-material/ExpandCircleDown';
-import AttributionIcon from '@mui/icons-material/Attribution';
 
 export default { title: 'ra-ui-materialui/input/AutocompleteInput' };
 
-const dataProvider = {
+const dataProviderDefault = {
     getOne: () =>
         Promise.resolve({
             data: {
@@ -70,205 +72,155 @@ const dataProviderEmpty = {
     update: (_resource, params) => Promise.resolve(params),
 } as any;
 
-const history = createMemoryHistory({ initialEntries: ['/books/1'] });
-
-const BookEdit = () => {
-    const choices = [
-        { id: 1, name: 'Leo Tolstoy' },
-        { id: 2, name: 'Victor Hugo' },
-        { id: 3, name: 'William Shakespeare' },
-        { id: 4, name: 'Charles Baudelaire' },
-        { id: 5, name: 'Marcel Proust' },
-    ];
-    return (
-        <Edit
-            mutationMode="pessimistic"
-            mutationOptions={{
-                onSuccess: data => {
-                    console.log(data);
-                },
-            }}
-        >
-            <SimpleForm>
-                <AutocompleteInput
-                    source="author"
-                    choices={choices}
-                    validate={required()}
-                    fullWidth
-                />
-            </SimpleForm>
-        </Edit>
-    );
-};
-
-export const Basic = () => (
-    <Admin dataProvider={dataProvider} history={history}>
-        <Resource name="books" edit={BookEdit} />
-    </Admin>
-);
-
-export const Nullable = ({ onSuccess = console.log }) => {
-    const choices = [
-        { id: 1, name: 'Leo Tolstoy' },
-        { id: 2, name: 'Victor Hugo' },
-        { id: 3, name: 'William Shakespeare' },
-        { id: 4, name: 'Charles Baudelaire' },
-        { id: 5, name: 'Marcel Proust' },
-    ];
-    return (
-        <Admin dataProvider={dataProvider} history={history}>
+const Wrapper = ({
+    children,
+    dataProvider = dataProviderDefault,
+    onSuccess = data => {
+        console.log(data);
+    },
+}) => (
+    <TestMemoryRouter initialEntries={['/books/1']}>
+        <Admin dataProvider={dataProvider}>
             <Resource
                 name="books"
                 edit={() => (
                     <Edit
                         mutationMode="pessimistic"
-                        mutationOptions={{
-                            onSuccess,
-                        }}
+                        mutationOptions={{ onSuccess }}
                     >
-                        <SimpleForm>
-                            <AutocompleteInput
-                                source="author"
-                                choices={choices}
-                                fullWidth
-                            />
-                        </SimpleForm>
+                        <SimpleForm>{children}</SimpleForm>
                     </Edit>
                 )}
             />
         </Admin>
-    );
-};
+    </TestMemoryRouter>
+);
 
-export const IsLoading = () => {
-    return (
-        <Admin dataProvider={dataProvider} history={history}>
-            <Resource
-                name="books"
-                edit={() => (
-                    <Edit>
-                        <SimpleForm>
-                            <AutocompleteInput source="author" isLoading />
-                        </SimpleForm>
-                    </Edit>
-                )}
-            />
-        </Admin>
-    );
-};
+const defaultChoices = [
+    { id: 1, name: 'Leo Tolstoy' },
+    { id: 2, name: 'Victor Hugo' },
+    { id: 3, name: 'William Shakespeare' },
+    { id: 4, name: 'Charles Baudelaire' },
+    { id: 5, name: 'Marcel Proust' },
+];
+
+export const Basic = ({ onSuccess = console.log }) => (
+    <Wrapper onSuccess={onSuccess}>
+        <AutocompleteInput source="author" choices={defaultChoices} />
+    </Wrapper>
+);
+
+export const StringChoices = () => (
+    <Wrapper>
+        <AutocompleteInput
+            source="author"
+            choices={[
+                'Leo Tolstoy',
+                'Victor Hugo',
+                'William Shakespeare',
+                'Charles Baudelaire',
+                'Marcel Proust',
+            ]}
+        />
+    </Wrapper>
+);
+
+export const ReadOnly = () => (
+    <Wrapper>
+        <AutocompleteInput
+            source="author"
+            choices={defaultChoices}
+            fullWidth
+            readOnly
+        />
+        <AutocompleteInput
+            source="genre"
+            choices={defaultChoices}
+            fullWidth
+            readOnly
+        />
+    </Wrapper>
+);
+
+export const Disabled = () => (
+    <Wrapper>
+        <AutocompleteInput
+            source="author"
+            choices={defaultChoices}
+            fullWidth
+            disabled
+        />
+        <AutocompleteInput
+            source="genre"
+            choices={defaultChoices}
+            fullWidth
+            disabled
+        />
+    </Wrapper>
+);
+
+export const Required = () => (
+    <Wrapper>
+        <AutocompleteInput
+            source="author"
+            choices={defaultChoices}
+            validate={required()}
+        />
+    </Wrapper>
+);
+
+export const IsPending = () => (
+    <Wrapper>
+        <AutocompleteInput source="author" isPending />
+    </Wrapper>
+);
 
 export const OnChange = ({
     onChange = (value, record) => console.log({ value, record }),
-}: Pick<AutocompleteInputProps, 'onChange'>) => {
-    const choices = [
-        { id: 1, name: 'Leo Tolstoy' },
-        { id: 2, name: 'Victor Hugo' },
-        { id: 3, name: 'William Shakespeare' },
-        { id: 4, name: 'Charles Baudelaire' },
-        { id: 5, name: 'Marcel Proust' },
-    ];
-    return (
-        <Admin dataProvider={dataProvider} history={history}>
-            <Resource
-                name="books"
-                edit={() => (
-                    <Edit
-                        mutationMode="pessimistic"
-                        mutationOptions={{
-                            onSuccess: data => {
-                                console.log(data);
-                            },
-                        }}
-                    >
-                        <SimpleForm>
-                            <AutocompleteInput
-                                source="author"
-                                choices={choices}
-                                validate={required()}
-                                fullWidth
-                                onChange={onChange}
-                            />
-                        </SimpleForm>
-                    </Edit>
-                )}
-            />
-        </Admin>
-    );
-};
-
-const BookEditCustomText = () => {
-    const choices = [
-        { id: 1, fullName: 'Leo Tolstoy' },
-        { id: 2, fullName: 'Victor Hugo' },
-        { id: 3, fullName: 'William Shakespeare' },
-        { id: 4, fullName: 'Charles Baudelaire' },
-        { id: 5, fullName: 'Marcel Proust' },
-    ];
-    return (
-        <Edit
-            mutationMode="pessimistic"
-            mutationOptions={{
-                onSuccess: data => {
-                    console.log(data);
-                },
-            }}
-        >
-            <SimpleForm>
-                <AutocompleteInput
-                    source="author"
-                    optionText="fullName"
-                    choices={choices}
-                    fullWidth
-                />
-            </SimpleForm>
-        </Edit>
-    );
-};
-
-export const CustomText = () => (
-    <Admin dataProvider={dataProvider} history={history}>
-        <Resource name="books" edit={BookEditCustomText} />
-    </Admin>
+}: Pick<AutocompleteInputProps, 'onChange'>) => (
+    <Wrapper>
+        <AutocompleteInput
+            source="author"
+            choices={defaultChoices}
+            onChange={onChange}
+        />
+    </Wrapper>
 );
 
-const BookEditCustomTextFunction = () => {
-    const choices = [
-        { id: 1, fullName: 'Leo Tolstoy' },
-        { id: 2, fullName: 'Victor Hugo' },
-        { id: 3, fullName: 'William Shakespeare' },
-        { id: 4, fullName: 'Charles Baudelaire' },
-        { id: 5, fullName: 'Marcel Proust' },
-    ];
-    return (
-        <Edit
-            mutationMode="pessimistic"
-            mutationOptions={{
-                onSuccess: data => {
-                    console.log(data);
-                },
-            }}
-        >
-            <SimpleForm>
-                <AutocompleteInput
-                    source="author"
-                    optionText={choice => choice?.fullName}
-                    choices={choices}
-                    fullWidth
-                />
-            </SimpleForm>
-        </Edit>
-    );
-};
+export const OptionTextString = () => (
+    <Wrapper>
+        <AutocompleteInput
+            source="author"
+            optionText="fullName"
+            choices={[
+                { id: 1, fullName: 'Leo Tolstoy' },
+                { id: 2, fullName: 'Victor Hugo' },
+                { id: 3, fullName: 'William Shakespeare' },
+                { id: 4, fullName: 'Charles Baudelaire' },
+                { id: 5, fullName: 'Marcel Proust' },
+            ]}
+        />
+    </Wrapper>
+);
 
-export const CustomTextFunction = () => (
-    <Admin dataProvider={dataProvider} history={history}>
-        <Resource name="books" edit={BookEditCustomTextFunction} />
-    </Admin>
+export const OptionTextFunction = () => (
+    <Wrapper>
+        <AutocompleteInput
+            source="author"
+            optionText={choice => choice?.fullName}
+            choices={[
+                { id: 1, fullName: 'Leo Tolstoy' },
+                { id: 2, fullName: 'Victor Hugo' },
+                { id: 3, fullName: 'William Shakespeare' },
+                { id: 4, fullName: 'Charles Baudelaire' },
+                { id: 5, fullName: 'Marcel Proust' },
+            ]}
+        />
+    </Wrapper>
 );
 
 const CustomOption = props => {
     const record = useRecordContext();
-
     return (
         <div {...props}>
             {record?.fullName}&nbsp;<i>({record?.language})</i>
@@ -276,52 +228,29 @@ const CustomOption = props => {
     );
 };
 
-const BookEditCustomOptions = () => {
-    const choices = [
-        { id: 1, fullName: 'Leo Tolstoy', language: 'Russian' },
-        { id: 2, fullName: 'Victor Hugo', language: 'French' },
-        { id: 3, fullName: 'William Shakespeare', language: 'English' },
-        { id: 4, fullName: 'Charles Baudelaire', language: 'French' },
-        { id: 5, fullName: 'Marcel Proust', language: 'French' },
-    ];
-    return (
-        <Edit
-            mutationMode="pessimistic"
-            mutationOptions={{
-                onSuccess: data => {
-                    console.log(data);
-                },
+export const OptionTextElement = () => (
+    <Wrapper>
+        <AutocompleteInput
+            source="author"
+            optionText={<CustomOption />}
+            inputText={record => record.fullName}
+            matchSuggestion={(searchText, record) => {
+                const searchTextLower = searchText.toLowerCase();
+                const match =
+                    record.fullName?.toLowerCase().includes(searchTextLower) ||
+                    record.language?.toLowerCase().includes(searchTextLower);
+
+                return match;
             }}
-        >
-            <SimpleForm>
-                <AutocompleteInput
-                    fullWidth
-                    source="author"
-                    optionText={<CustomOption />}
-                    inputText={record => record.fullName}
-                    matchSuggestion={(searchText, record) => {
-                        const searchTextLower = searchText.toLowerCase();
-                        const match =
-                            record.fullName
-                                ?.toLowerCase()
-                                .includes(searchTextLower) ||
-                            record.language
-                                ?.toLowerCase()
-                                .includes(searchTextLower);
-
-                        return match;
-                    }}
-                    choices={choices}
-                />
-            </SimpleForm>
-        </Edit>
-    );
-};
-
-export const CustomOptions = () => (
-    <Admin dataProvider={dataProvider} history={history}>
-        <Resource name="books" edit={BookEditCustomOptions} />
-    </Admin>
+            choices={[
+                { id: 1, fullName: 'Leo Tolstoy', language: 'Russian' },
+                { id: 2, fullName: 'Victor Hugo', language: 'French' },
+                { id: 3, fullName: 'William Shakespeare', language: 'English' },
+                { id: 4, fullName: 'Charles Baudelaire', language: 'French' },
+                { id: 5, fullName: 'Marcel Proust', language: 'French' },
+            ]}
+        />
+    </Wrapper>
 );
 
 const choicesForCreationSupport = [
@@ -331,47 +260,128 @@ const choicesForCreationSupport = [
     { id: 4, name: 'Charles Baudelaire' },
     { id: 5, name: 'Marcel Proust' },
 ];
-const BookEditWithCreationSupport = () => (
-    <Edit
-        mutationMode="pessimistic"
-        mutationOptions={{
-            onSuccess: data => {
-                console.log(data);
-            },
-        }}
-    >
-        <SimpleForm>
-            <AutocompleteInput
-                source="author"
-                choices={choicesForCreationSupport}
-                onCreate={filter => {
-                    const newAuthorName = window.prompt(
-                        'Enter a new author',
-                        filter
-                    );
 
-                    if (newAuthorName) {
-                        const newAuthor = {
-                            id: choicesForCreationSupport.length + 1,
-                            name: newAuthorName,
-                        };
-                        choicesForCreationSupport.push(newAuthor);
-                        return newAuthor;
-                    }
-                }}
-                fullWidth
-                TextFieldProps={{
-                    placeholder: 'Start typing to create a new item',
-                }}
-            />
-        </SimpleForm>
-    </Edit>
+export const OnCreate = () => (
+    <Wrapper>
+        <AutocompleteInput
+            source="author"
+            choices={choicesForCreationSupport}
+            onCreate={filter => {
+                if (!filter) return;
+
+                const newOption = {
+                    id: choicesForCreationSupport.length + 1,
+                    name: filter,
+                };
+                choicesForCreationSupport.push(newOption);
+                return newOption;
+            }}
+            TextFieldProps={{
+                placeholder: 'Start typing to create a new item',
+            }}
+        />
+    </Wrapper>
 );
 
-export const CreationSupport = () => (
-    <Admin dataProvider={dataProvider} history={history}>
-        <Resource name="books" edit={BookEditWithCreationSupport} />
-    </Admin>
+const AutocompleteWithCreateInReferenceInput = () => {
+    const [create] = useCreate();
+    const handleCreateAuthor = async (authorName?: string) => {
+        if (!authorName) return;
+        const newAuthor = await create(
+            'authors',
+            { data: { name: authorName } },
+            { returnPromise: true }
+        );
+        return newAuthor;
+    };
+    return <AutocompleteInput onCreate={handleCreateAuthor} />;
+};
+
+export const OnCreateSlow = () => (
+    <Wrapper
+        dataProvider={fakeRestProvider(
+            {
+                authors: [
+                    { id: 1, name: 'Leo Tolstoy' },
+                    { id: 2, name: 'Victor Hugo' },
+                    { id: 3, name: 'William Shakespeare' },
+                    { id: 4, name: 'Charles Baudelaire' },
+                    { id: 5, name: 'Marcel Proust' },
+                ],
+                books: [
+                    { id: 1, title: 'War and Peace', author: 1 },
+                    { id: 2, title: 'Les Misérables', author: 2 },
+                    { id: 3, title: 'Romeo and Juliet', author: 3 },
+                    { id: 4, title: 'Les Fleurs du Mal', author: 4 },
+                    { id: 5, title: 'In Search of Lost Time', author: 5 },
+                ],
+            },
+            false,
+            1500
+        )}
+    >
+        <ReferenceInput reference="authors" source="author">
+            <AutocompleteWithCreateInReferenceInput />
+        </ReferenceInput>
+    </Wrapper>
+);
+
+export const OnCreatePrompt = () => (
+    <Wrapper>
+        <AutocompleteInput
+            source="author"
+            choices={choicesForCreationSupport}
+            onCreate={filter => {
+                const newAuthorName = window.prompt(
+                    'Enter a new author',
+                    filter
+                );
+
+                if (newAuthorName) {
+                    const newAuthor = {
+                        id: choicesForCreationSupport.length + 1,
+                        name: newAuthorName,
+                    };
+                    choicesForCreationSupport.push(newAuthor);
+                    return newAuthor;
+                }
+            }}
+            TextFieldProps={{
+                placeholder: 'Start typing to create a new item',
+            }}
+        />
+    </Wrapper>
+);
+
+export const CreateLabel = () => (
+    <Wrapper>
+        <AutocompleteInput
+            source="author"
+            choices={[
+                { id: 1, name: 'Leo Tolstoy' },
+                { id: 2, name: 'Victor Hugo' },
+                { id: 3, name: 'William Shakespeare' },
+                { id: 4, name: 'Charles Baudelaire' },
+                { id: 5, name: 'Marcel Proust' },
+            ]}
+            onCreate={filter => {
+                const newAuthorName = window.prompt(
+                    'Enter a new author',
+                    filter
+                );
+
+                if (newAuthorName) {
+                    const newAuthor = {
+                        id: choicesForCreationSupport.length + 1,
+                        name: newAuthorName,
+                    };
+                    choicesForCreationSupport.push(newAuthor);
+                    return newAuthor;
+                }
+            }}
+            createLabel="Start typing to create a new item"
+        />
+    </Wrapper>
 );
 
 const authorsWithFirstAndLastName = [
@@ -470,21 +480,20 @@ const BookEditWithReferenceAndRecordRepresentation = () => (
 );
 
 export const InsideReferenceInputWithRecordRepresentation = () => (
-    <Admin
-        dataProvider={dataProviderWithAuthorsWithFirstAndLastName}
-        history={history}
-    >
-        <Resource
-            name="authors"
-            recordRepresentation={record =>
-                `${record.first_name} ${record.last_name}`
-            }
-        />
-        <Resource
-            name="books"
-            edit={BookEditWithReferenceAndRecordRepresentation}
-        />
-    </Admin>
+    <TestMemoryRouter initialEntries={['/books/1']}>
+        <Admin dataProvider={dataProviderWithAuthorsWithFirstAndLastName}>
+            <Resource
+                name="authors"
+                recordRepresentation={record =>
+                    `${record.first_name} ${record.last_name}`
+                }
+            />
+            <Resource
+                name="books"
+                edit={BookEditWithReferenceAndRecordRepresentation}
+            />
+        </Admin>
+    </TestMemoryRouter>
 );
 
 const authors = [
@@ -554,28 +563,30 @@ const dataProviderWithAuthors = {
 } as any;
 
 export const InsideReferenceInput = () => (
-    <Admin dataProvider={dataProviderWithAuthors} history={history}>
-        <Resource name="authors" />
-        <Resource
-            name="books"
-            edit={() => (
-                <Edit
-                    mutationMode="pessimistic"
-                    mutationOptions={{
-                        onSuccess: data => {
-                            console.log(data);
-                        },
-                    }}
-                >
-                    <SimpleForm>
-                        <ReferenceInput reference="authors" source="author">
-                            <AutocompleteInput fullWidth optionText="name" />
-                        </ReferenceInput>
-                    </SimpleForm>
-                </Edit>
-            )}
-        />
-    </Admin>
+    <TestMemoryRouter initialEntries={['/books/1']}>
+        <Admin dataProvider={dataProviderWithAuthors}>
+            <Resource name="authors" />
+            <Resource
+                name="books"
+                edit={() => (
+                    <Edit
+                        mutationMode="pessimistic"
+                        mutationOptions={{
+                            onSuccess: data => {
+                                console.log(data);
+                            },
+                        }}
+                    >
+                        <SimpleForm>
+                            <ReferenceInput reference="authors" source="author">
+                                <AutocompleteInput optionText="name" />
+                            </ReferenceInput>
+                        </SimpleForm>
+                    </Edit>
+                )}
+            />
+        </Admin>
+    </TestMemoryRouter>
 );
 
 const LanguageChangingAuthorInput = ({ onChange }) => {
@@ -586,11 +597,7 @@ const LanguageChangingAuthorInput = ({ onChange }) => {
     };
     return (
         <ReferenceInput reference="authors" source="author">
-            <AutocompleteInput
-                fullWidth
-                optionText="name"
-                onChange={handleChange}
-            />
+            <AutocompleteInput optionText="name" onChange={handleChange} />
         </ReferenceInput>
     );
 };
@@ -598,102 +605,103 @@ const LanguageChangingAuthorInput = ({ onChange }) => {
 export const InsideReferenceInputOnChange = ({
     onChange = (value, record) => console.log({ value, record }),
 }: Pick<AutocompleteInputProps, 'onChange'>) => (
-    <Admin
-        dataProvider={dataProviderWithAuthors}
-        history={createMemoryHistory({ initialEntries: ['/books/create'] })}
-    >
-        <Resource name="authors" />
-        <Resource
-            name="books"
-            create={() => (
-                <Create
-                    mutationOptions={{
-                        onSuccess: data => {
-                            console.log(data);
-                        },
-                    }}
-                    redirect={false}
-                >
-                    <SimpleForm>
-                        <LanguageChangingAuthorInput onChange={onChange} />
-                        <TextInput source="language" />
-                    </SimpleForm>
-                </Create>
-            )}
-        />
-    </Admin>
+    <TestMemoryRouter initialEntries={['/books/create']}>
+        <Admin dataProvider={dataProviderWithAuthors}>
+            <Resource name="authors" />
+            <Resource
+                name="books"
+                create={() => (
+                    <Create
+                        mutationOptions={{
+                            onSuccess: data => {
+                                console.log(data);
+                            },
+                        }}
+                        redirect={false}
+                    >
+                        <SimpleForm>
+                            <LanguageChangingAuthorInput onChange={onChange} />
+                            <TextInput source="language" />
+                        </SimpleForm>
+                    </Create>
+                )}
+            />
+        </Admin>
+    </TestMemoryRouter>
 );
 
 export const InsideReferenceInputDefaultValue = ({
     onSuccess = console.log,
 }) => (
-    <Admin
-        dataProvider={{
-            ...dataProviderWithAuthors,
-            getOne: () =>
-                Promise.resolve({
-                    data: {
-                        id: 1,
-                        title: 'War and Peace',
-                        // trigger default value
-                        author: undefined,
-                        summary:
-                            "War and Peace broadly focuses on Napoleon's invasion of Russia, and the impact it had on Tsarist society. The book explores themes such as revolution, revolution and empire, the growth and decline of various states and the impact it had on their economies, culture, and society.",
-                        year: 1869,
-                    },
-                }),
-        }}
-        history={history}
-    >
-        <Resource name="authors" />
-        <Resource
-            name="books"
-            edit={() => (
-                <Edit
-                    mutationMode="pessimistic"
-                    mutationOptions={{ onSuccess }}
-                >
-                    <SimpleForm>
-                        <TextInput source="title" />
-                        <ReferenceInput reference="authors" source="author">
-                            <AutocompleteInput fullWidth optionText="name" />
-                        </ReferenceInput>
-                    </SimpleForm>
-                </Edit>
-            )}
-        />
-    </Admin>
+    <TestMemoryRouter initialEntries={['/books/1']}>
+        <Admin
+            dataProvider={{
+                ...dataProviderWithAuthors,
+                getOne: () =>
+                    Promise.resolve({
+                        data: {
+                            id: 1,
+                            title: 'War and Peace',
+                            // trigger default value
+                            author: undefined,
+                            summary:
+                                "War and Peace broadly focuses on Napoleon's invasion of Russia, and the impact it had on Tsarist society. The book explores themes such as revolution, revolution and empire, the growth and decline of various states and the impact it had on their economies, culture, and society.",
+                            year: 1869,
+                        },
+                    }),
+            }}
+        >
+            <Resource name="authors" />
+            <Resource
+                name="books"
+                edit={() => (
+                    <Edit
+                        mutationMode="pessimistic"
+                        mutationOptions={{ onSuccess }}
+                    >
+                        <SimpleForm>
+                            <TextInput source="title" />
+                            <ReferenceInput reference="authors" source="author">
+                                <AutocompleteInput optionText="name" />
+                            </ReferenceInput>
+                        </SimpleForm>
+                    </Edit>
+                )}
+            />
+        </Admin>
+    </TestMemoryRouter>
 );
 
 export const InsideReferenceInputWithError = () => (
-    <Admin
-        dataProvider={{
-            ...dataProviderWithAuthors,
-            getList: () => Promise.reject('error'),
-        }}
-        history={history}
-    >
-        <Resource name="authors" />
-        <Resource
-            name="books"
-            edit={() => (
-                <Edit
-                    mutationMode="pessimistic"
-                    mutationOptions={{
-                        onSuccess: data => {
-                            console.log(data);
-                        },
-                    }}
-                >
-                    <SimpleForm>
-                        <ReferenceInput reference="authors" source="author">
-                            <AutocompleteInput fullWidth optionText="name" />
-                        </ReferenceInput>
-                    </SimpleForm>
-                </Edit>
-            )}
-        />
-    </Admin>
+    <TestMemoryRouter initialEntries={['/books/1']}>
+        <Admin
+            dataProvider={{
+                ...dataProviderWithAuthors,
+                getList: () => Promise.reject('error'),
+            }}
+        >
+            <Resource name="authors" />
+            <Resource
+                name="books"
+                edit={() => (
+                    <Edit
+                        mutationMode="pessimistic"
+                        mutationOptions={{
+                            onSuccess: data => {
+                                console.log(data);
+                            },
+                        }}
+                    >
+                        <SimpleForm>
+                            <ReferenceInput reference="authors" source="author">
+                                <AutocompleteInput optionText="name" />
+                            </ReferenceInput>
+                        </SimpleForm>
+                    </Edit>
+                )}
+            />
+        </Admin>
+    </TestMemoryRouter>
 );
 
 const CreateAuthor = () => {
@@ -766,7 +774,6 @@ const BookEditWithReferenceAndCreationSupport = () => (
                 <AutocompleteInput
                     create={<CreateAuthor />}
                     optionText="name"
-                    fullWidth
                 />
             </ReferenceInput>
         </SimpleForm>
@@ -774,10 +781,15 @@ const BookEditWithReferenceAndCreationSupport = () => (
 );
 
 export const InsideReferenceInputWithCreationSupport = () => (
-    <Admin dataProvider={dataProviderWithAuthors} history={history}>
-        <Resource name="authors" />
-        <Resource name="books" edit={BookEditWithReferenceAndCreationSupport} />
-    </Admin>
+    <TestMemoryRouter initialEntries={['/books/1']}>
+        <Admin dataProvider={dataProviderWithAuthors}>
+            <Resource name="authors" />
+            <Resource
+                name="books"
+                edit={BookEditWithReferenceAndCreationSupport}
+            />
+        </Admin>
+    </TestMemoryRouter>
 );
 
 const BookOptionText = () => {
@@ -789,35 +801,36 @@ const BookOptionText = () => {
 export const InsideReferenceInputWithCustomizedItemRendering = (
     props: Partial<AutocompleteInputProps>
 ) => (
-    <Admin dataProvider={dataProviderWithAuthors} history={history}>
-        <Resource name="authors" />
-        <Resource
-            name="books"
-            edit={() => (
-                <Edit
-                    mutationMode="pessimistic"
-                    mutationOptions={{
-                        onSuccess: data => {
-                            console.log(data);
-                        },
-                    }}
-                >
-                    <SimpleForm>
-                        <ReferenceInput reference="authors" source="author">
-                            <AutocompleteInput
-                                fullWidth
-                                optionText={<BookOptionText />}
-                                inputText={book =>
-                                    `${book.name} - ${book.language}`
-                                }
-                                {...props}
-                            />
-                        </ReferenceInput>
-                    </SimpleForm>
-                </Edit>
-            )}
-        />
-    </Admin>
+    <TestMemoryRouter initialEntries={['/books/1']}>
+        <Admin dataProvider={dataProviderWithAuthors}>
+            <Resource name="authors" />
+            <Resource
+                name="books"
+                edit={() => (
+                    <Edit
+                        mutationMode="pessimistic"
+                        mutationOptions={{
+                            onSuccess: data => {
+                                console.log(data);
+                            },
+                        }}
+                    >
+                        <SimpleForm>
+                            <ReferenceInput reference="authors" source="author">
+                                <AutocompleteInput
+                                    optionText={<BookOptionText />}
+                                    inputText={book =>
+                                        `${book.name} - ${book.language}`
+                                    }
+                                    {...props}
+                                />
+                            </ReferenceInput>
+                        </SimpleForm>
+                    </Edit>
+                )}
+            />
+        </Admin>
+    </TestMemoryRouter>
 );
 
 const OptionItem = props => {
@@ -834,7 +847,6 @@ export const CustomizedItemRendering = () => {
         <AdminContext dataProvider={dataProviderWithAuthors}>
             <SimpleForm onSubmit={() => {}} defaultValues={{ role: 2 }}>
                 <AutocompleteInput
-                    fullWidth
                     source="role"
                     resource="users"
                     optionText={<OptionItem />}
@@ -868,11 +880,7 @@ const DalmatianEdit = () => {
                 <Typography aria-label="count" variant="body2">
                     choices: {dalmatians.length}
                 </Typography>
-                <AutocompleteInput
-                    source="dalmatians"
-                    choices={dalmatians}
-                    fullWidth
-                />
+                <AutocompleteInput source="dalmatians" choices={dalmatians} />
             </SimpleForm>
         </Edit>
     );
@@ -880,74 +888,43 @@ const DalmatianEdit = () => {
 
 export const VeryLargeOptionsNumber = () => {
     return (
-        <Admin
-            dataProvider={dataProvider}
-            history={createMemoryHistory({
-                initialEntries: ['/dalmatians/1'],
-            })}
-        >
-            <Resource name="dalmatians" edit={<DalmatianEdit />} />
-        </Admin>
-    );
-};
-
-const BookEditWithEmptyText = () => {
-    const choices = [
-        { id: 1, name: 'Leo Tolstoy' },
-        { id: 2, name: 'Victor Hugo' },
-        { id: 3, name: 'William Shakespeare' },
-        { id: 4, name: 'Charles Baudelaire' },
-        { id: 5, name: 'Marcel Proust' },
-    ];
-    return (
-        <Edit
-            mutationMode="pessimistic"
-            mutationOptions={{
-                onSuccess: data => {
-                    console.log(data);
-                },
-            }}
-        >
-            <SimpleForm>
-                <AutocompleteInput
-                    label="emptyValue set to 'no-author', emptyText not set"
-                    source="author"
-                    choices={choices}
-                    emptyValue="no-author"
-                    fullWidth
-                />
-                <AutocompleteInput
-                    label="emptyValue set to 'none'"
-                    source="authorNone"
-                    choices={choices}
-                    emptyValue="none"
-                    emptyText="- No author - "
-                    fullWidth
-                />
-                <AutocompleteInput
-                    label="emptyValue set to ''"
-                    source="authorEmpty"
-                    choices={choices}
-                    emptyText="- No author - "
-                    fullWidth
-                />
-                <AutocompleteInput
-                    label="emptyValue set to 0"
-                    source="authorZero"
-                    choices={choices}
-                    emptyValue={0}
-                    emptyText="- No author - "
-                    fullWidth
-                />
-            </SimpleForm>
-        </Edit>
+        <TestMemoryRouter initialEntries={['/dalmatians/1']}>
+            <Admin dataProvider={dataProviderDefault}>
+                <Resource name="dalmatians" edit={<DalmatianEdit />} />
+            </Admin>
+        </TestMemoryRouter>
     );
 };
 
 export const EmptyText = () => (
-    <Admin dataProvider={dataProviderEmpty} history={history}>
-        <Resource name="books" edit={BookEditWithEmptyText} />
-    </Admin>
+    <Wrapper dataProvider={dataProviderEmpty}>
+        <AutocompleteInput
+            label="emptyValue set to 'no-author', emptyText not set"
+            source="author"
+            choices={defaultChoices}
+            emptyValue="no-author"
+        />
+        <AutocompleteInput
+            label="emptyValue set to 'none'"
+            source="authorNone"
+            choices={defaultChoices}
+            emptyValue="none"
+            emptyText="- No author - "
+        />
+        <AutocompleteInput
+            label="emptyValue set to ''"
+            source="authorEmpty"
+            choices={defaultChoices}
+            emptyText="- No author - "
+        />
+        <AutocompleteInput
+            label="emptyValue set to 0"
+            source="authorZero"
+            choices={defaultChoices}
+            emptyValue={0}
+            emptyText="- No author - "
+        />
+    </Wrapper>
 );
 
 const nullishValuesFakeData = {
@@ -987,7 +964,6 @@ const FanList = () => {
                                 <AutocompleteInput
                                     id={`prefers_${fan.id}`}
                                     label={`prefers_${fan.id}`}
-                                    fullWidth
                                     source="prefers"
                                     optionText={option => option.id}
                                     choices={nullishValuesFakeData.artists}
@@ -1088,31 +1064,30 @@ const dataProviderWithDifferentShapeInGetMany = {
 } as any;
 
 export const DifferentShapeInGetMany = () => (
-    <Admin
-        dataProvider={dataProviderWithDifferentShapeInGetMany}
-        history={history}
-    >
-        <Resource name="authors" />
-        <Resource
-            name="books"
-            edit={() => (
-                <Edit
-                    mutationMode="pessimistic"
-                    mutationOptions={{
-                        onSuccess: data => {
-                            console.log(data);
-                        },
-                    }}
-                >
-                    <SimpleForm>
-                        <ReferenceInput reference="authors" source="author">
-                            <AutocompleteInput fullWidth optionText="name" />
-                        </ReferenceInput>
-                    </SimpleForm>
-                </Edit>
-            )}
-        />
-    </Admin>
+    <TestMemoryRouter initialEntries={['/books/1']}>
+        <Admin dataProvider={dataProviderWithDifferentShapeInGetMany}>
+            <Resource name="authors" />
+            <Resource
+                name="books"
+                edit={() => (
+                    <Edit
+                        mutationMode="pessimistic"
+                        mutationOptions={{
+                            onSuccess: data => {
+                                console.log(data);
+                            },
+                        }}
+                    >
+                        <SimpleForm>
+                            <ReferenceInput reference="authors" source="author">
+                                <AutocompleteInput optionText="name" />
+                            </ReferenceInput>
+                        </SimpleForm>
+                    </Edit>
+                )}
+            />
+        </Admin>
+    </TestMemoryRouter>
 );
 
 export const TranslateChoice = () => {
@@ -1145,6 +1120,7 @@ export const TranslateChoice = () => {
                         }),
                 } as any
             }
+            defaultTheme="light"
         >
             <Edit resource="posts" id="1">
                 <SimpleForm>
@@ -1198,45 +1174,38 @@ export const TranslateChoice = () => {
     );
 };
 
-export const WithInputProps = () => {
-    const choices = [
-        { id: 1, name: 'Leo Tolstoy' },
-        { id: 2, name: 'Victor Hugo' },
-        { id: 3, name: 'William Shakespeare' },
-        { id: 4, name: 'Charles Baudelaire' },
-        { id: 5, name: 'Marcel Proust' },
-    ];
-
-    return (
-        <Admin dataProvider={dataProvider} history={history}>
-            <Resource
-                name="books"
-                edit={() => (
-                    <Edit>
-                        <SimpleForm>
-                            <AutocompleteInput
-                                source="author"
-                                fullWidth
-                                choices={choices}
-                                TextFieldProps={{
-                                    InputProps: {
-                                        startAdornment: (
-                                            <InputAdornment position="end">
-                                                <AttributionIcon />
-                                            </InputAdornment>
-                                        ),
-                                        endAdornment: (
-                                            <InputAdornment position="end">
-                                                <ExpandCircleDownIcon />
-                                            </InputAdornment>
-                                        ),
-                                    },
-                                }}
-                            />
-                        </SimpleForm>
-                    </Edit>
-                )}
-            />
-        </Admin>
-    );
-};
+export const WithInputProps = () => (
+    <Wrapper>
+        <AutocompleteInput
+            source="author"
+            choices={defaultChoices}
+            TextFieldProps={{
+                InputProps: {
+                    startAdornment: (
+                        <InputAdornment
+                            position="start"
+                            sx={{
+                                position: 'relative',
+                                top: '-8px',
+                            }}
+                        >
+                            <AttributionIcon />
+                        </InputAdornment>
+                    ),
+                    endAdornment: (
+                        <InputAdornment
+                            position="end"
+                            sx={{
+                                position: 'relative',
+                                top: '-8px',
+                                left: '50px',
+                            }}
+                        >
+                            <ExpandCircleDownIcon />
+                        </InputAdornment>
+                    ),
+                },
+            }}
+        />
+    </Wrapper>
+);

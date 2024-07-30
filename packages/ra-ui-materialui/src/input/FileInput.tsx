@@ -6,7 +6,6 @@ import React, {
     ReactNode,
 } from 'react';
 import { styled } from '@mui/material/styles';
-import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { useDropzone, DropzoneOptions } from 'react-dropzone';
 import FormHelperText from '@mui/material/FormHelperText';
@@ -22,6 +21,7 @@ import { Labeled } from '../Labeled';
 import { FileInputPreview } from './FileInputPreview';
 import { sanitizeInputRestProps } from './sanitizeInputRestProps';
 import { InputHelperText } from './InputHelperText';
+import { useTheme } from '@mui/material/styles';
 import { SxProps } from '@mui/system';
 import { SvgIconProps } from '@mui/material';
 
@@ -48,6 +48,8 @@ export const FileInput = (props: FileInputProps) => {
         source,
         validate,
         validateFileRemoval,
+        disabled,
+        readOnly,
         ...rest
     } = props;
     const { onDrop: onDropProp } = options;
@@ -85,16 +87,17 @@ export const FileInput = (props: FileInputProps) => {
         id,
         field: { onChange, onBlur, value },
         fieldState,
-        formState: { isSubmitted },
         isRequired,
     } = useInput({
         format: format || transformFiles,
         parse: parse || transformFiles,
         source,
         validate,
+        disabled,
+        readOnly,
         ...rest,
     });
-    const { isTouched, error, invalid } = fieldState;
+    const { error, invalid } = fieldState;
     const files = value ? (Array.isArray(value) ? value : [value]) : [];
 
     const onDrop = (newFiles, rejectedFiles, event) => {
@@ -147,12 +150,14 @@ export const FileInput = (props: FileInputProps) => {
         maxSize,
         minSize,
         multiple,
+        disabled: disabled || readOnly,
         ...options,
         onDrop,
     });
 
-    const renderHelperText =
-        helperText !== false || ((isTouched || isSubmitted) && invalid);
+    const renderHelperText = helperText !== false || invalid;
+
+    const theme = useTheme();
 
     return (
         <StyledLabeled
@@ -162,7 +167,11 @@ export const FileInput = (props: FileInputProps) => {
             source={source}
             resource={resource}
             isRequired={isRequired}
-            color={(isTouched || isSubmitted) && invalid ? 'error' : undefined}
+            color={invalid ? 'error' : undefined}
+            sx={{
+                cursor: disabled || readOnly ? 'default' : 'pointer',
+                ...rest.sx,
+            }}
             {...sanitizeInputRestProps(rest)}
         >
             <>
@@ -170,6 +179,17 @@ export const FileInput = (props: FileInputProps) => {
                     {...getRootProps({
                         className: FileInputClasses.dropZone,
                         'data-testid': 'dropzone',
+                        style: {
+                            color:
+                                disabled || readOnly
+                                    ? theme.palette.text.disabled
+                                    : inputPropsOptions?.color ||
+                                      theme.palette.text.primary,
+                            backgroundColor:
+                                disabled || readOnly
+                                    ? theme.palette.action.disabledBackground
+                                    : inputPropsOptions?.backgroundColor,
+                        },
                     })}
                 >
                     <input
@@ -188,11 +208,8 @@ export const FileInput = (props: FileInputProps) => {
                     )}
                 </div>
                 {renderHelperText ? (
-                    <FormHelperText
-                        error={(isTouched || isSubmitted) && invalid}
-                    >
+                    <FormHelperText error={invalid}>
                         <InputHelperText
-                            touched={isTouched || isSubmitted}
                             error={error?.message}
                             helperText={helperText}
                         />
@@ -221,30 +238,6 @@ export const FileInput = (props: FileInputProps) => {
     );
 };
 
-FileInput.propTypes = {
-    accept: PropTypes.string,
-    children: PropTypes.element,
-    className: PropTypes.string,
-    id: PropTypes.string,
-    isRequired: PropTypes.bool,
-    label: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.bool,
-        PropTypes.element,
-    ]),
-    labelMultiple: PropTypes.string,
-    labelSingle: PropTypes.string,
-    maxSize: PropTypes.number,
-    minSize: PropTypes.number,
-    multiple: PropTypes.bool,
-    validateFileRemoval: PropTypes.func,
-    options: PropTypes.object,
-    removeIcon: PropTypes.elementType,
-    resource: PropTypes.string,
-    source: PropTypes.string,
-    placeholder: PropTypes.node,
-};
-
 const PREFIX = 'RaFileInput';
 
 export const FileInputClasses = {
@@ -261,7 +254,6 @@ const StyledLabeled = styled(Labeled, {
         background: theme.palette.background.default,
         borderRadius: theme.shape.borderRadius,
         fontFamily: theme.typography.fontFamily,
-        cursor: 'pointer',
         padding: theme.spacing(1),
         textAlign: 'center',
         color: theme.palette.getContrastText(theme.palette.background.default),

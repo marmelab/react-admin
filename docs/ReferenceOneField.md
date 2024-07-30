@@ -61,10 +61,10 @@ const BookShow = () => (
 | `children`     | Optional | `Element`                                   | -                                | The Field element used to render the referenced record                              |
 | `filter`       | Optional | `Object`                                    | `{}`                             | Used to filter referenced records                                                   |
 | `link`         | Optional | `string | Function`                         | `edit`                           | Target of the link wrapping the rendered child. Set to `false` to disable the link. |
-| `queryOptions` | Optional | [`UseQueryOptions`](https://tanstack.com/query/v3/docs/react/reference/useQuery) | `{}` | `react-query` client options |
+| `queryOptions` | Optional | [`UseQueryOptions`](https://tanstack.com/query/v5/docs/react/reference/useQuery) | `{}` | `react-query` client options |
 | `sort`         | Optional | `{ field: String, order: 'ASC' or 'DESC' }` | `{ field: 'id', order: 'ASC' }`  | Used to order referenced records                                                    |
 
-`<ReferenceOneField>` also accepts the [common field props](./Fields.md#common-field-props), except `emptyText` (use the child `empty` prop instead).
+`<ReferenceOneField>` also accepts the [common field props](./Fields.md#common-field-props).
 
 ## `children`
 
@@ -74,6 +74,24 @@ For instance, if you want to render both the genre and the ISBN for a book:
 
 ```jsx
 <ReferenceOneField label="Details" reference="book_details" target="book_id">
+    <TextField source="genre" /> (<TextField source="ISBN" />)
+</ReferenceOneField>
+```
+
+## `emptyText`
+
+Use `emptyText` to customize the text displayed when the related record is empty.
+
+```jsx
+<ReferenceOneField label="Details" reference="book_details" target="book_id" emptyText="no detail">
+    <TextField source="genre" /> (<TextField source="ISBN" />)
+</ReferenceOneField>
+```
+
+`emptyText` also accepts a translation key.
+
+```jsx
+<ReferenceOneField label="Details" reference="book_details" target="book_id" emptyText="resources.books.not_found">
     <TextField source="genre" /> (<TextField source="ISBN" />)
 </ReferenceOneField>
 ```
@@ -122,7 +140,7 @@ You can also set the `link` prop to a string, which will be used as the link typ
 
 ## `queryOptions`
 
-`<ReferenceOneField>` uses `react-query` to fetch the related record. You can set [any of `useQuery` options](https://tanstack.com/query/v3/docs/react/reference/useQuery) via the `queryOptions` prop.
+`<ReferenceOneField>` uses `react-query` to fetch the related record. You can set [any of `useQuery` options](https://tanstack.com/query/v5/docs/react/reference/useQuery) via the `queryOptions` prop.
 
 For instance, if you want to disable the refetch on window focus for this query, you can use:
 

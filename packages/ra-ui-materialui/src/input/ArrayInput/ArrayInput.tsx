@@ -1,15 +1,18 @@
 import * as React from 'react';
-import { cloneElement, Children, ReactElement, useEffect } from 'react';
+import { ReactElement, useEffect } from 'react';
 import clsx from 'clsx';
 import {
     isRequired,
     FieldTitle,
     composeSyncValidators,
-    RaRecord,
     useApplyInputDefaultValues,
     useGetValidationErrorMessage,
     useFormGroupContext,
     useFormGroups,
+    SourceContextProvider,
+    SourceContextValue,
+    useSourceContext,
+    OptionalResourceContextProvider,
 } from 'ra-core';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 import {
@@ -75,36 +78,34 @@ export const ArrayInput = (props: ArrayInputProps) => {
         label,
         isFetching,
         isLoading,
+        isPending,
         children,
         helperText,
-        record,
         resource: resourceFromProps,
-        source,
+        source: arraySource,
         validate,
         variant,
         disabled,
+        readOnly,
         margin = 'dense',
         ...rest
     } = props;
 
     const formGroupName = useFormGroupContext();
     const formGroups = useFormGroups();
+    const parentSourceContext = useSourceContext();
+    const finalSource = parentSourceContext.getSource(arraySource);
 
     const sanitizedValidate = Array.isArray(validate)
         ? composeSyncValidators(validate)
         : validate;
     const getValidationErrorMessage = useGetValidationErrorMessage();
 
-    const {
-        getFieldState,
-        formState,
-        getValues,
-        register,
-        unregister,
-    } = useFormContext();
+    const { getFieldState, formState, getValues, register, unregister } =
+        useFormContext();
 
     const fieldProps = useFieldArray({
-        name: source,
+        name: finalSource,
         rules: {
             validate: async value => {
                 if (!sanitizedValidate) return true;
@@ -120,18 +121,25 @@ export const ArrayInput = (props: ArrayInputProps) => {
         },
     });
 
-    const { isSubmitted } = formState;
-
     // We need to register the array itself as a field to enable validation at its level
     useEffect(() => {
-        register(source);
-        formGroups.registerField(source, formGroupName);
+        register(finalSource);
+        formGroups &&
+            formGroupName != null &&
+            formGroups.registerField(finalSource, formGroupName);
 
         return () => {
-            unregister(source, { keepValue: true });
-            formGroups.unregisterField(source, formGroupName);
+            unregister(finalSource, {
+                keepValue: true,
+                keepError: true,
+                keepDirty: true,
+                keepTouched: true,
+            });
+            formGroups &&
+                formGroupName != null &&
+                formGroups.unregisterField(finalSource, formGroupName);
         };
-    }, [register, unregister, source, formGroups, formGroupName]);
+    }, [register, unregister, finalSource, formGroups, formGroupName]);
 
     useApplyInputDefaultValues({
         inputProps: props,
@@ -139,17 +147,57 @@ export const ArrayInput = (props: ArrayInputProps) => {
         fieldArrayInputControl: fieldProps,
     });
 
-    const { isDirty, error } = getFieldState(source, formState);
+    const { error } = getFieldState(finalSource, formState);
 
-    if (isLoading) {
+    // The SourceContext will be read by children of ArrayInput to compute their composed source and label
+    //
+    // <ArrayInput source="orders" /> => SourceContext is "orders"
+    //   <SimpleFormIterator> => SourceContext is "orders.0"
+    //     <DateInput source="date" /> => final source for this input will be "orders.0.date"
+    //   </SimpleFormIterator>
+    // </ArrayInput>
+    //
+    const sourceContext = React.useMemo<SourceContextValue>(
+        () => ({
+            // source is the source of the ArrayInput child
+            getSource: (source: string) => {
+                if (!source) {
+                    // SimpleFormIterator calls getSource('') to get the arraySource
+                    return parentSourceContext.getSource(arraySource);
+                }
+
+                // We want to support nesting and composition with other inputs (e.g. TranslatableInputs, ReferenceOneInput, etc),
+                // we must also take into account the parent SourceContext
+                //
+                // <ArrayInput source="orders" /> => SourceContext is "orders"
+                //   <SimpleFormIterator> => SourceContext is "orders.0"
+                //      <DateInput source="date" /> => final source for this input will be "orders.0.date"
+                //      <ArrayInput source="items" /> => SourceContext is "orders.0.items"
+                //          <SimpleFormIterator> => SourceContext is "orders.0.items.0"
+                //              <TextInput source="reference" /> => final source for this input will be "orders.0.items.0.reference"
+                //          </SimpleFormIterator>
+                //      </ArrayInput>
+                //   </SimpleFormIterator>
+                // </ArrayInput>
+                return parentSourceContext.getSource(
+                    `${arraySource}.${source}`
+                );
+            },
+            // if Array source is items, and child source is name, .0.name => resources.orders.fields.items.name
+            getLabel: (source: string) =>
+                parentSourceContext.getLabel(`${arraySource}.${source}`),
+        }),
+        [parentSourceContext, arraySource]
+    );
+
+    if (isPending) {
         return (
             <Labeled label={label} className={className}>
                 <LinearProgress />
             </Labeled>
         );
     }
-    const renderHelperText =
-        helperText !== false || ((isDirty || isSubmitted) && !!error);
+    const renderHelperText = helperText !== false || !!error;
 
     return (
         <Root
@@ -157,41 +205,36 @@ export const ArrayInput = (props: ArrayInputProps) => {
             margin={margin}
             className={clsx(
                 'ra-input',
-                `ra-input-${source}`,
+                `ra-input-${finalSource}`,
                 ArrayInputClasses.root,
                 className
             )}
-            error={(isDirty || isSubmitted) && !!error}
+            error={!!error}
             {...sanitizeInputRestProps(rest)}
         >
             <InputLabel
-                htmlFor={source}
+                component="span"
                 className={ArrayInputClasses.label}
                 shrink
-                error={(isDirty || isSubmitted) && !!error}
+                error={!!error}
             >
                 <FieldTitle
                     label={label}
-                    source={source}
+                    source={arraySource}
                     resource={resourceFromProps}
                     isRequired={isRequired(validate)}
                 />
             </InputLabel>
             <ArrayInputContext.Provider value={fieldProps}>
-                {cloneElement(Children.only(children), {
-                    ...fieldProps,
-                    record,
-                    resource: resourceFromProps,
-                    source,
-                    variant,
-                    margin,
-                    disabled,
-                })}
+                <OptionalResourceContextProvider value={resourceFromProps}>
+                    <SourceContextProvider value={sourceContext}>
+                        {children}
+                    </SourceContextProvider>
+                </OptionalResourceContextProvider>
             </ArrayInputContext.Provider>
             {renderHelperText ? (
-                <FormHelperText error={(isDirty || isSubmitted) && !!error}>
+                <FormHelperText error={!!error}>
                     <InputHelperText
-                        touched={isDirty || isSubmitted}
                         // root property is applicable to built-in validation only,
                         // Resolvers are yet to support useFieldArray root level validation.
                         // Reference: https://react-hook-form.com/docs/usefieldarray
@@ -219,7 +262,7 @@ export interface ArrayInputProps
     disabled?: boolean;
     isFetching?: boolean;
     isLoading?: boolean;
-    record?: Partial<RaRecord>;
+    isPending?: boolean;
 }
 
 const PREFIX = 'RaArrayInput';

@@ -9,12 +9,13 @@ describe('Mobile UI', () => {
     });
 
     describe('Infinite Scroll', () => {
-        it.only('should load more items when scrolling to the bottom of the page', () => {
+        it('should load more items when scrolling to the bottom of the page', () => {
             ListPagePosts.navigate();
+            cy.contains('Sint dignissimos in architecto aut');
+            cy.contains('Fusce massa lorem').should('exist');
             cy.contains('Sed quo et et fugiat modi').should('not.exist');
-            cy.scrollTo('bottom');
             cy.wait(500);
-            cy.scrollTo('bottom');
+            cy.contains('Sint dignissimos in architecto aut').scrollIntoView();
             cy.contains('Sed quo et et fugiat modi');
         });
     });

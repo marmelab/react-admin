@@ -29,6 +29,7 @@ import {
     downloadCSV,
     useListContext,
     useTranslate,
+    Exporter,
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
 
 const commentFilters = [
@@ -36,7 +37,7 @@ const commentFilters = [
     <ReferenceInput source="post_id" reference="posts" />,
 ];
 
-const exporter = (records, fetchRelatedRecords) =>
+const exporter: Exporter = (records, fetchRelatedRecords) =>
     fetchRelatedRecords(records, 'post_id', 'posts').then(posts => {
         const data = records.map(record => {
             const { author, ...recordForExport } = record; // omit author
@@ -133,11 +134,6 @@ const CommentGrid = () => {
             ))}
         </Grid>
     );
-};
-
-CommentGrid.defaultProps = {
-    data: {},
-    ids: [],
 };
 
 const CommentMobileList = () => (

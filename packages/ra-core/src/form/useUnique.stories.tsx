@@ -14,8 +14,8 @@ import {
     mergeTranslations,
     useUnique,
 } from '..';
-import { createMemoryHistory } from 'history';
-import { QueryClient } from 'react-query';
+import { QueryClient } from '@tanstack/react-query';
+import { TestMemoryRouter } from '../routing';
 
 export default {
     title: 'ra-core/form/useUnique',
@@ -82,14 +82,15 @@ const i18nProvider = polyglotI18nProvider(() =>
 
 const Wrapper = ({ children, dataProvider = defaultDataProvider }) => {
     return (
-        <CoreAdminContext
-            dataProvider={dataProvider}
-            i18nProvider={i18nProvider}
-            history={createMemoryHistory()}
-            queryClient={new QueryClient()}
-        >
-            {children}
-        </CoreAdminContext>
+        <TestMemoryRouter>
+            <CoreAdminContext
+                dataProvider={dataProvider}
+                i18nProvider={i18nProvider}
+                queryClient={new QueryClient()}
+            >
+                {children}
+            </CoreAdminContext>
+        </TestMemoryRouter>
     );
 };
 

@@ -3,6 +3,7 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {
     RecordContextProvider,
+    ResourceContextProvider,
     minLength,
     required,
     testDataProvider,
@@ -15,37 +16,21 @@ import { TextInput } from '../TextInput';
 import { ArrayInput } from './ArrayInput';
 import { SimpleFormIterator } from './SimpleFormIterator';
 import { useFormContext } from 'react-hook-form';
-import { GlobalValidation, ValidationInFormTab } from './ArrayInput.stories';
+import {
+    GlobalValidation,
+    ScalarWithValidation,
+    ValidationInFormTab,
+    NestedInline,
+    WithReferenceField,
+    NestedInlineNoTranslation,
+} from './ArrayInput.stories';
+import { useArrayInput } from './useArrayInput';
 
 describe('<ArrayInput />', () => {
-    it('should pass its record props to its child', async () => {
-        let childProps;
-        const MockChild = props => {
-            childProps = props;
-            return null;
-        };
-
-        render(
-            <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm onSubmit={jest.fn}>
-                    <ArrayInput source="foo" record={{ iAmRecord: true }}>
-                        <MockChild />
-                    </ArrayInput>
-                </SimpleForm>
-            </AdminContext>
-        );
-
-        await waitFor(() => {
-            expect(childProps.record).toEqual({
-                iAmRecord: true,
-            });
-        });
-    });
-
     it('should pass array functions to child', async () => {
         let childProps;
-        const MockChild = props => {
-            childProps = props;
+        const MockChild = () => {
+            childProps = useArrayInput();
             return null;
         };
         render(
@@ -84,42 +69,48 @@ describe('<ArrayInput />', () => {
     it('should create one section subform per value in the array', async () => {
         const { baseElement } = render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm
-                    onSubmit={jest.fn}
-                    defaultValues={{
-                        foo: [{}, {}, {}],
-                    }}
-                >
-                    <ArrayInput source="foo">
-                        <SimpleFormIterator />
-                    </ArrayInput>
-                </SimpleForm>
+                <ResourceContextProvider value="bar">
+                    <SimpleForm
+                        onSubmit={jest.fn}
+                        defaultValues={{
+                            foo: [{}, {}, {}],
+                        }}
+                    >
+                        <ArrayInput source="foo">
+                            <SimpleFormIterator />
+                        </ArrayInput>
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
         await waitFor(() => {
-            expect(baseElement.querySelectorAll('section')).toHaveLength(3);
+            expect(
+                baseElement.querySelectorAll('.RaSimpleFormIterator-line')
+            ).toHaveLength(3);
         });
     });
 
-    it('should clone each input once per value in the array', () => {
+    it('should render each input once per value in the array', () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm
-                    onSubmit={jest.fn}
-                    defaultValues={{
-                        arr: [
-                            { id: 123, foo: 'bar' },
-                            { id: 456, foo: 'baz' },
-                        ],
-                    }}
-                >
-                    <ArrayInput resource="bar" source="arr">
-                        <SimpleFormIterator>
-                            <NumberInput source="id" />
-                            <TextInput source="foo" />
-                        </SimpleFormIterator>
-                    </ArrayInput>
-                </SimpleForm>
+                <ResourceContextProvider value="bar">
+                    <SimpleForm
+                        onSubmit={jest.fn}
+                        defaultValues={{
+                            arr: [
+                                { id: 123, foo: 'bar' },
+                                { id: 456, foo: 'baz' },
+                            ],
+                        }}
+                    >
+                        <ArrayInput source="arr">
+                            <SimpleFormIterator>
+                                <NumberInput source="id" />
+                                <TextInput source="foo" />
+                            </SimpleFormIterator>
+                        </ArrayInput>
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
         expect(
@@ -143,29 +134,30 @@ describe('<ArrayInput />', () => {
     it('should apply validation to both itself and its inner inputs', async () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm
-                    onSubmit={jest.fn}
-                    defaultValues={{
-                        arr: [],
-                    }}
-                >
-                    <ArrayInput
-                        resource="bar"
-                        source="arr"
-                        validate={[minLength(2, 'array_min_length')]}
+                <ResourceContextProvider value="bar">
+                    <SimpleForm
+                        onSubmit={jest.fn}
+                        defaultValues={{
+                            arr: [],
+                        }}
                     >
-                        <SimpleFormIterator>
-                            <TextInput
-                                source="id"
-                                validate={[required('id_required')]}
-                            />
-                            <TextInput
-                                source="foo"
-                                validate={[required('foo_required')]}
-                            />
-                        </SimpleFormIterator>
-                    </ArrayInput>
-                </SimpleForm>
+                        <ArrayInput
+                            source="arr"
+                            validate={[minLength(2, 'array_min_length')]}
+                        >
+                            <SimpleFormIterator>
+                                <TextInput
+                                    source="id"
+                                    validate={[required('id_required')]}
+                                />
+                                <TextInput
+                                    source="foo"
+                                    validate={[required('foo_required')]}
+                                />
+                            </SimpleFormIterator>
+                        </ArrayInput>
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
 
@@ -256,6 +248,66 @@ describe('<ArrayInput />', () => {
         });
     });
 
+    it('should not clear errors of children when unmounted', async () => {
+        let setArrayInputVisible;
+
+        const MyArrayInput = () => {
+            const [visible, setVisible] = React.useState(true);
+
+            setArrayInputVisible = setVisible;
+
+            return visible ? (
+                <ArrayInput source="arr">
+                    <SimpleFormIterator>
+                        <TextInput source="id" />
+                        <TextInput source="foo" />
+                    </SimpleFormIterator>
+                </ArrayInput>
+            ) : null;
+        };
+
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <ResourceContextProvider value="bar">
+                    <SimpleForm
+                        onSubmit={jest.fn}
+                        defaultValues={{
+                            arr: [
+                                { id: 1, foo: 'bar' },
+                                { id: 2, foo: 'baz' },
+                            ],
+                        }}
+                        validate={() => ({
+                            arr: [{ foo: 'Must be "baz"' }, {}],
+                        })}
+                    >
+                        <MyArrayInput />
+                    </SimpleForm>
+                </ResourceContextProvider>
+            </AdminContext>
+        );
+
+        // change one input to enable the SaveButton (which is disabled when the form is pristine)
+        fireEvent.change(
+            screen.getAllByLabelText('resources.bar.fields.arr.id')[0],
+            {
+                target: { value: '42' },
+            }
+        );
+        fireEvent.click(await screen.findByLabelText('ra.action.save'));
+
+        await screen.findByText('Must be "baz"');
+
+        setArrayInputVisible(false);
+        await waitFor(() => {
+            expect(screen.queryByText('Must be "baz"')).toBeNull();
+        });
+
+        // ensure errors are still there after re-mount
+        setArrayInputVisible(true);
+        await screen.findByText('Must be "baz"');
+    });
+
     it('should allow to have a helperText', () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
@@ -272,19 +324,24 @@ describe('<ArrayInput />', () => {
     it('should update the form state to dirty, and allow submit, on updating an array input with default value', async () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                {/**
-                 * RecordContextProvider - required to mimic instantiating a form with default data so that the it reset by
-                 * a react admin lifecycle and giving a non dirty form state. This in turn means the submit button is disabled on first render.
-                 */}
-                <RecordContextProvider value={{ foo: 'bar' }}>
-                    <SimpleForm onSubmit={jest.fn}>
-                        <ArrayInput source="arr" defaultValue={[{ id: 'foo' }]}>
-                            <SimpleFormIterator>
-                                <TextInput source="id" />
-                            </SimpleFormIterator>
-                        </ArrayInput>
-                    </SimpleForm>
-                </RecordContextProvider>
+                <ResourceContextProvider value="posts">
+                    {/**
+                     * RecordContextProvider - required to mimic instantiating a form with default data so that the it reset by
+                     * a react admin lifecycle and giving a non dirty form state. This in turn means the submit button is disabled on first render.
+                     */}
+                    <RecordContextProvider value={{ foo: 'bar' }}>
+                        <SimpleForm onSubmit={jest.fn}>
+                            <ArrayInput
+                                source="arr"
+                                defaultValue={[{ id: 'foo' }]}
+                            >
+                                <SimpleFormIterator>
+                                    <TextInput source="id" />
+                                </SimpleFormIterator>
+                            </ArrayInput>
+                        </SimpleForm>
+                    </RecordContextProvider>
+                </ResourceContextProvider>
             </AdminContext>
         );
 
@@ -305,6 +362,19 @@ describe('<ArrayInput />', () => {
         });
     });
 
+    it('should correctly update validation state after removing an item', async () => {
+        render(<ScalarWithValidation />);
+
+        await screen.findByDisplayValue('classic');
+        fireEvent.click(await screen.findByLabelText('Add'));
+        fireEvent.click(await screen.findByText('Save'));
+        await screen.findByText('Required');
+        fireEvent.click((await screen.findAllByLabelText('Remove'))[0]);
+        await waitFor(() => {
+            expect(screen.queryByText('Required')).toBeNull();
+        });
+    });
+
     describe('used within a form with global validation', () => {
         it('should display an error if the array is required and empty', async () => {
             render(<GlobalValidation />);
@@ -312,10 +382,15 @@ describe('<ArrayInput />', () => {
             const RemoveButtons = screen.getAllByLabelText('Remove');
             fireEvent.click(RemoveButtons[1]);
             fireEvent.click(RemoveButtons[0]);
+            await waitFor(() => {
+                expect(screen.queryAllByLabelText('Remove')).toHaveLength(0);
+            });
             const SaveButton = screen.getByText('Save');
             fireEvent.click(SaveButton);
             await screen.findByText(
-                'The form is not valid. Please check for errors'
+                'The form is not valid. Please check for errors',
+                undefined,
+                { timeout: 3000 }
             );
         });
         it('should display an error if one of the required field is empty', async () => {
@@ -346,15 +421,46 @@ describe('<ArrayInput />', () => {
         });
         it('should turn form tab in red if the array is required and empty', async () => {
             render(<ValidationInFormTab />);
-            const input = screen.getByLabelText('Title');
-            userEvent.type(input, 'a');
-            const SaveButton = screen.getByText('Save');
-            fireEvent.click(SaveButton);
+            userEvent.type(screen.getByLabelText('Title'), 'a');
+            await screen.findByDisplayValue('a');
+            fireEvent.click(screen.getByText('Save'));
             const formTab = await screen.findByText('Main');
-            expect(
-                formTab.classList.contains('RaTabbedForm-errorTabButton')
-            ).toBe(true);
+            await screen.findByText('Required');
+            await waitFor(() => {
+                expect(
+                    formTab.classList.contains('RaTabbedForm-errorTabButton')
+                ).toBe(true);
+            });
             expect(formTab.classList.contains('error')).toBe(true);
         });
+    });
+
+    it('should support nested ArrayInput and inputs that set up SourceContexts', async () => {
+        render(<NestedInline />);
+
+        await screen.findByDisplayValue('Office Jeans');
+        await screen.findByDisplayValue('Jean de bureau');
+        await screen.findByDisplayValue('45.99');
+        expect(
+            await screen.findAllByDisplayValue('For you my love')
+        ).toHaveLength(2);
+        expect(
+            await screen.findAllByDisplayValue('Pour toi mon amour')
+        ).toHaveLength(2);
+    });
+
+    it('should support fields', async () => {
+        render(<WithReferenceField />);
+        await screen.findByText('Russia');
+        await screen.findByText('Italy');
+    });
+
+    it('should correctly set inputs and field labels even nested', async () => {
+        render(<NestedInlineNoTranslation />);
+        await screen.findByLabelText('resources.orders.fields.customer');
+        await screen.findByLabelText('resources.orders.fields.date');
+        await screen.findByText('resources.orders.fields.items');
+        await screen.findAllByText('resources.orders.fields.items.name');
+        await screen.findAllByLabelText('resources.orders.fields.items.price');
     });
 });

@@ -5,7 +5,7 @@ title: "useLockOnCall"
 
 # `useLockOnCall`
 
-This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> hook gets a callback to lock a record and get a mutation state.
+This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" /> hook gets a callback to lock a record and get a mutation state.
 
 `useLockOnCall` calls `dataProvider.lock()` when the callback is called. It relies on `authProvider.getIdentity()` to get the identity of the current user. It guesses the current `resource` and `recordId` from the context (or the route) if not provided. It releases the lock when the component unmounts by calling `dataProvider.unlock()`.
 
@@ -51,9 +51,9 @@ const PostAside = () => {
 const PostEdit = () => (
     <Edit aside={<PostAside />}>
         <SimpleForm>
-            <TextInput source="title" fullWidth />
-            <TextInput source="headline" fullWidth multiline />
-            <TextInput source="author" fullWidth />
+            <TextInput source="title" />
+            <TextInput source="headline" multiline />
+            <TextInput source="author" />
         </SimpleForm>
     </Edit>
 );

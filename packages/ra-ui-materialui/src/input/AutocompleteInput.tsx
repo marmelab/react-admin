@@ -116,7 +116,7 @@ export const AutocompleteInput = <
     OptionType extends RaRecord = RaRecord,
     Multiple extends boolean | undefined = false,
     DisableClearable extends boolean | undefined = false,
-    SupportCreate extends boolean | undefined = false
+    SupportCreate extends boolean | undefined = false,
 >(
     props: AutocompleteInputProps<
         OptionType,
@@ -146,6 +146,7 @@ export const AutocompleteInput = <
         inputText,
         isFetching: isFetchingProp,
         isLoading: isLoadingProp,
+        isPending: isPendingProp,
         isRequired: isRequiredOverride,
         label,
         limitChoicesToValue,
@@ -174,6 +175,8 @@ export const AutocompleteInput = <
         validate,
         variant,
         onInputChange,
+        disabled,
+        readOnly,
         ...rest
     } = props;
 
@@ -181,7 +184,7 @@ export const AutocompleteInput = <
 
     const {
         allChoices,
-        isLoading,
+        isPending,
         error: fetchError,
         resource,
         source,
@@ -191,6 +194,7 @@ export const AutocompleteInput = <
         choices: choicesProp,
         isFetching: isFetchingProp,
         isLoading: isLoadingProp,
+        isPending: isPendingProp,
         resource: resourceProp,
         source: sourceProp,
     });
@@ -201,8 +205,7 @@ export const AutocompleteInput = <
         id,
         field,
         isRequired,
-        fieldState: { error, invalid, isTouched },
-        formState: { isSubmitted },
+        fieldState: { error, invalid },
     } = useInput({
         defaultValue,
         id: idOverride,
@@ -217,6 +220,8 @@ export const AutocompleteInput = <
         resource,
         source,
         validate,
+        disabled,
+        readOnly,
         ...rest,
     });
 
@@ -234,7 +239,7 @@ export const AutocompleteInput = <
                               _: emptyText,
                           }),
                       },
-                  ].concat(allChoices),
+                  ].concat(allChoices || []),
         [
             allChoices,
             emptyValue,
@@ -343,7 +348,7 @@ If you provided a React element for the optionText prop, you must also provide t
                 return;
             }
 
-            setFilters(filterToQuery(filter), undefined, true);
+            setFilters(filterToQuery(filter));
         }, debounceDelay),
         [debounceDelay, setFilters, setFilter]
     );
@@ -463,7 +468,10 @@ If you provided a React element for the optionText prop, you must also provide t
             setFilterValue(newInputValue);
             debouncedSetFilter(newInputValue);
         }
-
+        if (reason === 'clear') {
+            setFilterValue('');
+            debouncedSetFilter('');
+        }
         onInputChange?.(event, newInputValue, reason);
     };
 
@@ -504,24 +512,29 @@ If you provided a React element for the optionText prop, you must also provide t
 
         // add create option if necessary
         const { inputValue } = params;
-        if (
-            (onCreate || create) &&
-            inputValue !== '' &&
-            !doesQueryMatchSuggestion(filterValue)
-        ) {
-            filteredOptions = filteredOptions.concat(getCreateItem(inputValue));
+        if (onCreate || create) {
+            if (inputValue === '') {
+                // create option with createLabel
+                filteredOptions = filteredOptions.concat(getCreateItem(''));
+            } else if (!doesQueryMatchSuggestion(filterValue)) {
+                filteredOptions = filteredOptions.concat(
+                    // create option with createItemLabel
+                    getCreateItem(inputValue)
+                );
+            }
         }
 
         return filteredOptions;
     };
 
-    const handleAutocompleteChange = (
-        event: any,
-        newValue: any,
-        _reason: string
-    ) => {
-        handleChangeWithCreateSupport(newValue != null ? newValue : emptyValue);
-    };
+    const handleAutocompleteChange = useCallback(
+        (event: any, newValue: any, _reason: string) => {
+            handleChangeWithCreateSupport(
+                newValue != null ? newValue : emptyValue
+            );
+        },
+        [emptyValue, handleChangeWithCreateSupport]
+    );
 
     const oneSecondHasPassed = useTimeout(1000, filterValue);
 
@@ -543,15 +556,11 @@ If you provided a React element for the optionText prop, you must also provide t
     const isOptionEqualToValue = (option, value) => {
         return String(getChoiceValue(option)) === String(getChoiceValue(value));
     };
-    const renderHelperText =
-        !!fetchError ||
-        helperText !== false ||
-        ((isTouched || isSubmitted) && invalid);
+    const renderHelperText = !!fetchError || helperText !== false || invalid;
 
     return (
         <>
             <StyledAutocomplete
-                blurOnSelect
                 className={clsx('ra-input', `ra-input-${source}`, className)}
                 clearText={translate(clearText, { _: clearText })}
                 closeText={translate(closeText, { _: closeText })}
@@ -560,55 +569,66 @@ If you provided a React element for the optionText prop, you must also provide t
                 id={id}
                 isOptionEqualToValue={isOptionEqualToValue}
                 filterSelectedOptions
-                renderInput={params => (
-                    <TextField
-                        name={field.name}
-                        label={
-                            <FieldTitle
-                                label={label}
-                                source={source}
-                                resource={resourceProp}
-                                isRequired={isRequired}
-                            />
-                        }
-                        error={
-                            !!fetchError ||
-                            ((isTouched || isSubmitted) && invalid)
-                        }
-                        helperText={
-                            renderHelperText ? (
-                                <InputHelperText
-                                    touched={
-                                        isTouched || isSubmitted || fetchError
-                                    }
-                                    error={
-                                        error?.message || fetchError?.message
-                                    }
-                                    helperText={helperText}
+                disabled={disabled || readOnly}
+                renderInput={params => {
+                    const mergedTextFieldProps = {
+                        readOnly,
+                        ...params.InputProps,
+                        ...TextFieldProps?.InputProps,
+                    };
+                    return (
+                        <TextField
+                            name={field.name}
+                            label={
+                                <FieldTitle
+                                    label={label}
+                                    source={source}
+                                    resource={resourceProp}
+                                    isRequired={isRequired}
                                 />
-                            ) : null
-                        }
-                        margin={margin}
-                        variant={variant}
-                        className={AutocompleteInputClasses.textField}
-                        {...params}
-                        {...TextFieldProps}
-                        size={size}
-                    />
-                )}
+                            }
+                            error={!!fetchError || invalid}
+                            helperText={
+                                renderHelperText ? (
+                                    <InputHelperText
+                                        error={
+                                            error?.message ||
+                                            fetchError?.message
+                                        }
+                                        helperText={helperText}
+                                    />
+                                ) : null
+                            }
+                            margin={margin}
+                            variant={variant}
+                            className={AutocompleteInputClasses.textField}
+                            {...params}
+                            {...TextFieldProps}
+                            InputProps={mergedTextFieldProps}
+                            size={size}
+                        />
+                    );
+                }}
                 multiple={multiple}
                 renderTags={(value, getTagProps) =>
-                    value.map((option, index) => (
-                        <Chip
-                            label={
-                                isValidElement(optionText)
-                                    ? inputText(option)
-                                    : getChoiceText(option)
-                            }
-                            size="small"
-                            {...getTagProps({ index })}
-                        />
-                    ))
+                    value.map((option, index) => {
+                        // We have to extract the key because react 19 does not allow to spread the key prop
+                        const { key, ...tagProps } = getTagProps({ index });
+                        return (
+                            <Chip
+                                label={
+                                    isValidElement(optionText)
+                                        ? inputText
+                                            ? inputText(option)
+                                            : ''
+                                        : getChoiceText(option)
+                                }
+                                size="small"
+                                key={key}
+                                {...tagProps}
+                            />
+                        );
+                    })
                 }
                 noOptionsText={
                     typeof noOptionsText === 'string'
@@ -630,7 +650,7 @@ If you provided a React element for the optionText prop, you must also provide t
                 getOptionLabel={getOptionLabel}
                 inputValue={filterValue}
                 loading={
-                    isLoading &&
+                    isPending &&
                     (!finalChoices || finalChoices.length === 0) &&
                     oneSecondHasPassed
                 }
@@ -639,14 +659,15 @@ If you provided a React element for the optionText prop, you must also provide t
                 onBlur={finalOnBlur}
                 onInputChange={handleInputChange}
                 renderOption={(props, record: RaRecord) => {
-                    (props as {
-                        key: string;
-                    }).key = getChoiceValue(record);
-
+                    // We have to extract the key because react 19 does not allow to spread the key prop
+                    // @ts-expect-error The key is indeed inside props but MUI does not provide the correct type
+                    const { key: ignoredKey, ...rest } = props;
+                    // We don't use MUI key which is generated from the option label because we may have options with the same label but with different values
+                    const key = getChoiceValue(record);
                     const optionLabel = getOptionLabel(record, true);
 
                     return (
-                        <li {...props}>
+                        <li key={key} {...rest}>
                             {optionLabel === '' ? ' ' : optionLabel}
                         </li>
                     );
@@ -677,7 +698,7 @@ export interface AutocompleteInputProps<
     OptionType extends any = RaRecord,
     Multiple extends boolean | undefined = false,
     DisableClearable extends boolean | undefined = false,
-    SupportCreate extends boolean | undefined = false
+    SupportCreate extends boolean | undefined = false,
 > extends Omit<CommonInputProps, 'source' | 'onChange'>,
         ChoicesProps,
         UseSuggestionsOptions,
@@ -717,7 +738,7 @@ const useSelectedChoice = <
     OptionType extends any = RaRecord,
     Multiple extends boolean | undefined = false,
     DisableClearable extends boolean | undefined = false,
-    SupportCreate extends boolean | undefined = false
+    SupportCreate extends boolean | undefined = false,
 >(
     value: any,
     {
@@ -764,7 +785,7 @@ const useSelectedChoice = <
 };
 
 const getSelectedItems = (
-    choices = [],
+    choices: RaRecord[] = [],
     value,
     optionValue = 'id',
     multiple
@@ -789,7 +810,7 @@ const areSelectedItemsEqual = (
     selectedChoice: RaRecord | RaRecord[],
     newSelectedChoice: RaRecord | RaRecord[],
     optionValue = 'id',
-    multiple: boolean
+    multiple?: boolean
 ) => {
     if (multiple) {
         const selectedChoiceArray = (selectedChoice as RaRecord[]) ?? [];

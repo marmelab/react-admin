@@ -22,8 +22,7 @@ const customFrenchMessages: TranslationMessages = {
             all_customers: 'Voir tous les clients',
             pending_orders: 'Commandes à traiter',
             order: {
-                items:
-                    'par %{customer_name}, un poster |||| par %{customer_name}, %{nb_items} posters',
+                items: 'par %{customer_name}, un poster |||| par %{customer_name}, %{nb_items} posters',
             },
             welcome: {
                 title: 'Bienvenue sur la démo e-commerce de react-admin',
@@ -55,9 +54,10 @@ const customFrenchMessages: TranslationMessages = {
                 birthday: 'Anniversaire',
                 city: 'Ville',
                 stateAbbr: 'Etat',
-                commands: 'Commandes',
+                orders: 'Commandes',
                 first_name: 'Prénom',
                 first_seen: 'Première visite',
+                full_name: 'Nom',
                 groups: 'Segments',
                 has_newsletter: 'Abonné à la newsletter',
                 has_ordered: 'A commandé',
@@ -99,7 +99,7 @@ const customFrenchMessages: TranslationMessages = {
                     'La confirmation du mot de passe est différent du mot de passe.',
             },
         },
-        commands: {
+        orders: {
             name: 'Commande |||| Commandes',
             amount: '1 commande |||| %{smart_count} commandes',
             title: 'Commande n°%{reference}',
@@ -138,7 +138,7 @@ const customFrenchMessages: TranslationMessages = {
                 id: 'Numéro',
                 date: 'Date de facture',
                 customer_id: 'Client',
-                command_id: 'Commande',
+                order_id: 'Commande',
                 date_gte: 'Emises depuis',
                 date_lte: 'Emises avant',
                 address: 'Adresse',
@@ -199,7 +199,7 @@ const customFrenchMessages: TranslationMessages = {
             detail: 'Détail du commentaire',
             fields: {
                 customer_id: 'Client',
-                command_id: 'Commande',
+                order_id: 'Commande',
                 product_id: 'Produit',
                 date_gte: 'Publié depuis',
                 date_lte: 'Publié avant',

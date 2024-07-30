@@ -1,16 +1,25 @@
-import * as React from 'react';
-import { useList, ListContextProvider, useListContext } from 'ra-core';
 import {
     Box,
+    createTheme,
     List,
     ListItem,
     ListItemText,
     ThemeProvider,
-    createTheme,
 } from '@mui/material';
+import {
+    ListContextProvider,
+    ResourceContextProvider,
+    TestMemoryRouter,
+    useList,
+    useListContext,
+} from 'ra-core';
+import * as React from 'react';
 
-import { FilterLiveSearch } from './FilterLiveSearch';
+import { TextInput } from '../../input';
 import { defaultTheme } from '../../theme/defaultTheme';
+import { FilterButton } from './FilterButton';
+import { FilterForm } from './FilterForm';
+import { FilterLiveSearch } from './FilterLiveSearch';
 
 export default {
     title: 'ra-ui-materialui/list/filter/FilterLiveSearch',
@@ -58,7 +67,7 @@ const CountryList = () => {
     const { data } = useListContext();
     return (
         <List>
-            {data.map(record => (
+            {data?.map(record => (
                 <ListItem key={record.id} disablePadding>
                     <ListItemText>{record.name}</ListItemText>
                 </ListItem>
@@ -95,9 +104,9 @@ export const Variant = () => (
     </Wrapper>
 );
 
-export const FullWidth = () => (
+export const NonFullWidth = () => (
     <Wrapper>
-        <FilterLiveSearch source="q" fullWidth />
+        <FilterLiveSearch source="q" fullWidth={false} />
         <CountryList />
     </Wrapper>
 );
@@ -107,4 +116,18 @@ export const Sx = () => (
         <FilterLiveSearch source="q" sx={{ width: 300 }} />
         <CountryList />
     </Wrapper>
+);
+
+const countryFilters = [<TextInput source="q" alwaysOn />];
+export const WithFilterButton = () => (
+    <TestMemoryRouter>
+        <ResourceContextProvider value="countries">
+            <Wrapper>
+                <FilterLiveSearch source="q" />
+                <FilterForm filters={countryFilters} />
+                <FilterButton filters={countryFilters} />
+                <CountryList />
+            </Wrapper>
+        </ResourceContextProvider>
+    </TestMemoryRouter>
 );

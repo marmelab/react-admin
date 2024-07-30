@@ -15,6 +15,7 @@ The `<SaveButton>` component is a button that is used to submit a form.
 
 Create a `<SaveButton>` with custom UI options, or custom side effects, then use that button in a custom [`<Toolbar>`](./Toolbar.md) that you can inject to `<SimpleForm>` or `<TabbedForm>` using the `toolbar` prop:
 
+{% raw %}
 ```jsx
 import { SaveButton, Toolbar, Edit, SimpleForm, useNotify, useRedirect } from 'react-admin';
 
@@ -45,6 +46,7 @@ const PostEdit = () => (
     </Edit>
 );
 ```
+{% endraw %}
 
 ## Props
 
@@ -253,10 +255,12 @@ const transformUser = data => ({
 
 const UserCreateToolbar = () => (
     <Toolbar>
-        <SaveButton transform={transformUser} />
+        <SaveButton type="button" transform={transformUser} />
     </Toolbar>
 );
 ```
+
+**Tip:** You need to set `type="button"` on the `<SaveButton>` to use `transform`. Without it, the form would be submitted with the default `transform` from the main page.
 
 ## `type`
 

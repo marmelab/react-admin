@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Text } from 'ink';
-import { Stack } from './Stack';
+import { Stack } from './Stack.js';
 
 export type ChoiceType = {
     label: string;

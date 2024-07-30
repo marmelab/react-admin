@@ -37,7 +37,10 @@ yarn add react-admin
 
 ## Documentation
 
-Read the [Tutorial](https://marmelab.com/react-admin/Tutorial.html) for a 30 minutes introduction. After that, head to the [Documentation](https://marmelab.com/react-admin/documentation.html), or checkout the source code of the examples ([e-commerce](https://github.com/marmelab/react-admin/tree/master/examples/demo), [CRM](https://github.com/marmelab/react-admin/tree/master/examples/crm), [blog](https://github.com/marmelab/react-admin/tree/master/examples/simple), [media player](https://github.com/navidrome/navidrome/tree/master/ui)).
+* Read the [Tutorial](https://marmelab.com/react-admin/Tutorial.html) for a 30 minutes introduction
+* Watch the [YouTube video tutorials](https://www.youtube.com/@react-admin)
+* Head to the [Documentation](https://marmelab.com/react-admin/documentation.html) for a complete API reference
+* Checkout the source code of the examples ([e-commerce](https://github.com/marmelab/react-admin/tree/master/examples/demo), [CRM](https://github.com/marmelab/react-admin/tree/master/examples/crm), [blog](https://github.com/marmelab/react-admin/tree/master/examples/simple), [media player](https://github.com/navidrome/navidrome/tree/master/ui))
 
 ## At a Glance
 
@@ -160,7 +163,7 @@ And then browse to the URL displayed in your console.
 
 ## Support
 
-- Get commercial support from Marmelab via [React-Admin Enterprise Edition](https://marmelab.com/ra-enterprise#support)
+- Get commercial support from Marmelab via [React-Admin Enterprise Edition](https://react-admin-ee.marmelab.com#support)
 - Get community support via [Discord](https://discord.gg/GeZF9sqh3N) and [StackOverflow](https://stackoverflow.com/questions/tagged/react-admin). 
 
 ## Versions In This Repository
@@ -190,12 +193,6 @@ For all Pull requests, you must follow the coding style of the existing files (b
 ### Setup
 
 Clone this repository and run `make install` to grab the dependencies, then `make build` to compile the sources from TypeScript to JS.
-
-### Online one-click Setup
-
-You can use Gitpod (an open source, online VS Code-like IDE) for working on issues and making PRs. With a single click it will launch a workspace and automatically clone the repo, run `make install` and `make run` so that you can start straight away.
-
-[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/from-referrer/)
 
 ### Testing Your Changes In The Example Apps
 

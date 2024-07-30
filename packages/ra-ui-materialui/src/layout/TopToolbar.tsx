@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { useMediaQuery, Theme } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import PropTypes from 'prop-types';
 import Toolbar, { ToolbarProps } from '@mui/material/Toolbar';
 
 export const TopToolbar = (props: ToolbarProps) => {
@@ -15,11 +14,6 @@ export const TopToolbar = (props: ToolbarProps) => {
             {...sanitizeToolbarRestProps(props)}
         />
     );
-};
-
-TopToolbar.propTypes = {
-    children: PropTypes.node,
-    className: PropTypes.string,
 };
 
 export default TopToolbar;

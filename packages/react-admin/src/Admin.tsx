@@ -102,13 +102,12 @@ export const Admin = (props: AdminProps) => {
         dashboard,
         dataProvider,
         disableTelemetry,
-        history,
+        error,
         i18nProvider = defaultI18nProvider,
         layout,
         loading,
         loginPage,
         authCallbackPage,
-        menu, // deprecated, use a custom layout instead
         notification,
         queryClient,
         requireAuth,
@@ -134,7 +133,6 @@ export const Admin = (props: AdminProps) => {
             dataProvider={dataProvider}
             i18nProvider={i18nProvider}
             store={store}
-            history={history}
             queryClient={queryClient}
             theme={theme}
             lightTheme={lightTheme}
@@ -145,8 +143,8 @@ export const Admin = (props: AdminProps) => {
                 layout={layout}
                 dashboard={dashboard}
                 disableTelemetry={disableTelemetry}
-                menu={menu}
                 catchAll={catchAll}
+                error={error}
                 title={title}
                 loading={loading}
                 loginPage={loginPage}

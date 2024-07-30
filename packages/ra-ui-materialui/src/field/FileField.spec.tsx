@@ -3,16 +3,18 @@ import expect from 'expect';
 import { render } from '@testing-library/react';
 import { RecordContextProvider, I18nContextProvider } from 'ra-core';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
+import englishMessages from 'ra-language-english';
 
 import { FileField } from './FileField';
 
 const defaultProps = {
     classes: {},
-    source: 'url',
+    source: 'url' as const,
 };
 
 const i18nProvider = polyglotI18nProvider(
     _locale => ({
+        ...englishMessages,
         resources: {
             books: {
                 name: 'Books',
@@ -32,7 +34,7 @@ const i18nProvider = polyglotI18nProvider(
 describe('<FileField />', () => {
     it('should return an empty div when record is not set', () => {
         const { container } = render(<FileField {...defaultProps} />);
-        expect(container.firstChild.textContent).toEqual('');
+        expect(container.firstChild?.textContent).toEqual('');
     });
 
     it.each([null, undefined])(
@@ -176,7 +178,7 @@ describe('<FileField />', () => {
             <FileField
                 {...defaultProps}
                 record={{ id: 123, foo: true }}
-                source="email"
+                source="foo"
                 className="foo"
             />
         );
@@ -187,7 +189,7 @@ describe('<FileField />', () => {
         const { getByText } = render(
             <I18nContextProvider value={i18nProvider}>
                 <FileField
-                    record={{ id: 123 }}
+                    record={{ id: 123, foo: { bar: undefined } }}
                     source="foo.bar"
                     emptyText="resources.books.not_found"
                 />

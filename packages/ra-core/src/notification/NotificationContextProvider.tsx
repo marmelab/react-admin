@@ -15,6 +15,7 @@ export const NotificationContextProvider = ({ children }) => {
     }, []);
 
     const takeNotification = useCallback(() => {
+        if (notifications.length === 0) return;
         const [notification, ...rest] = notifications;
         setNotifications(rest);
         return notification;

@@ -70,7 +70,6 @@ The props are the same as [the `<List>` component](./List.md):
 | `filters`                  | Optional | `ReactElement` | -                       | The filters to display in the toolbar.                                                       |
 | `filter`                   | Optional | `object`       | -                       | The permanent filter values.                                                                 |
 | `filter DefaultValues`     | Optional | `object`       | -                       | The default filter values.                                                                   |
-| `hasCreate`                | Optional | `boolean`      | `false`                 | Set to `true` to show the create button.                                                     |
 | `pagination`               | Optional | `ReactElement` | `<Infinite Pagination>` | The pagination component to use.                                                             |
 | `perPage`                  | Optional | `number`       | `10`                    | The number of records to fetch per page.                                                     |
 | `queryOptions`             | Optional | `object`       | -                       | The options to pass to the `useQuery` hook.                                                  |
@@ -220,8 +219,8 @@ const ProductList = () => (
     <InfiniteListBase>
         <Container>
             <Typography variant="h4">All products</Typography>
-            <WithListContext render={({ isLoading, data }) => (
-                    !isLoading && (
+            <WithListContext render={({ isPending, data }) => (
+                    !isPending && (
                         <Stack spacing={1}>
                             {data.map(product => (
                                 <Card key={product.id}>
@@ -248,11 +247,11 @@ import { useInfiniteListController } from 'react-admin';
 import { Card, CardContent, Container, Stack, Typography } from '@mui/material';
 
 const ProductList = () => {
-    const { isLoading, data } = useInfiniteListController();
+    const { isPending, data } = useInfiniteListController();
     return (
         <Container>
             <Typography variant="h4">All products</Typography>
-                {!isLoading && (
+                {!isPending && (
                     <Stack spacing={1}>
                         {data.map(product => (
                             <Card key={product.id}>

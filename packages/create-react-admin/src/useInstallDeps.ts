@@ -1,6 +1,6 @@
 import execa from 'execa';
 import { useStderr, useStdout } from 'ink';
-import { ProjectConfiguration } from './ProjectState';
+import { ProjectConfiguration } from './ProjectState.js';
 
 export const useInstallDeps = () => {
     const { stdout } = useStdout();

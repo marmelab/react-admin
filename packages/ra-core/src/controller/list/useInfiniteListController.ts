@@ -1,13 +1,16 @@
 import { isValidElement, useEffect, useMemo } from 'react';
 import {
-    UseInfiniteQueryOptions,
     InfiniteQueryObserverBaseResult,
-} from 'react-query';
+    InfiniteData,
+} from '@tanstack/react-query';
 
 import { useAuthenticated } from '../../auth';
 import { useTranslate } from '../../i18n';
 import { useNotify } from '../../notification';
-import { useInfiniteGetList } from '../../dataProvider';
+import {
+    UseInfiniteGetListOptions,
+    useInfiniteGetList,
+} from '../../dataProvider';
 import { defaultExporter } from '../../export';
 import {
     RaRecord,
@@ -50,13 +53,13 @@ export const useInfiniteListController = <RecordType extends RaRecord = any>(
         filter,
         filterDefaultValues,
         perPage = 10,
-        queryOptions = {},
+        queryOptions,
         sort,
         storeKey,
     } = props;
     useAuthenticated({ enabled: !disableAuthentication });
     const resource = useResourceContext(props);
-    const { meta, ...otherQueryOptions } = queryOptions;
+    const { meta, ...otherQueryOptions } = queryOptions ?? {};
 
     if (!resource) {
         throw new Error(
@@ -82,13 +85,14 @@ export const useInfiniteListController = <RecordType extends RaRecord = any>(
         storeKey,
     });
 
-    const [selectedIds, selectionModifiers] = useRecordSelection(resource);
+    const [selectedIds, selectionModifiers] = useRecordSelection({ resource });
 
     const {
         data,
         total,
         error,
         isLoading,
+        isPending,
         isFetching,
         hasNextPage,
         hasPreviousPage,
@@ -109,7 +113,7 @@ export const useInfiniteListController = <RecordType extends RaRecord = any>(
             meta,
         },
         {
-            keepPreviousData: true,
+            placeholderData: previousData => previousData,
             retry: false,
             onError: error =>
                 notify(error?.message || 'ra.notification.http_error', {
@@ -175,6 +179,7 @@ export const useInfiniteListController = <RecordType extends RaRecord = any>(
         hideFilter: queryModifiers.hideFilter,
         isFetching,
         isLoading,
+        isPending,
         onSelect: selectionModifiers.select,
         onToggleItem: selectionModifiers.toggle,
         onUnselectItems: selectionModifiers.clearSelection,
@@ -195,11 +200,11 @@ export const useInfiniteListController = <RecordType extends RaRecord = any>(
         isFetchingNextPage,
         fetchPreviousPage,
         isFetchingPreviousPage,
-    };
+    } as InfiniteListControllerResult<RecordType>;
 };
 
 export interface InfiniteListControllerProps<
-    RecordType extends RaRecord = any
+    RecordType extends RaRecord = any,
 > {
     debounce?: number;
     disableAuthentication?: boolean;
@@ -211,28 +216,24 @@ export interface InfiniteListControllerProps<
     filter?: FilterPayload;
     filterDefaultValues?: object;
     perPage?: number;
-    // FIXME: Make it generic, but Parameters<typeof useInfiniteQuery<RecordType>>[2] doesn't work
-    queryOptions?: UseInfiniteQueryOptions<
-        GetInfiniteListResult<RecordType>,
-        Error
-    >;
+    queryOptions?: UseInfiniteGetListOptions<RecordType>;
     resource?: string;
     sort?: SortPayload;
     storeKey?: string | false;
 }
 
-export interface InfiniteListControllerResult<RecordType extends RaRecord = any>
-    extends ListControllerResult<RecordType> {
-    fetchNextPage: InfiniteQueryObserverBaseResult<
-        GetInfiniteListResult<RecordType>
-    >['fetchNextPage'];
-    fetchPreviousPage: InfiniteQueryObserverBaseResult<
-        GetInfiniteListResult<RecordType>
-    >['fetchPreviousPage'];
-    isFetchingNextPage: InfiniteQueryObserverBaseResult<
-        GetInfiniteListResult<RecordType>
-    >['isFetchingNextPage'];
-    isFetchingPreviousPage: InfiniteQueryObserverBaseResult<
-        GetInfiniteListResult<RecordType>
-    >['isFetchingPreviousPage'];
-}
+export type InfiniteListControllerResult<RecordType extends RaRecord = any> =
+    ListControllerResult<RecordType> & {
+        fetchNextPage: InfiniteQueryObserverBaseResult<
+            InfiniteData<GetInfiniteListResult<RecordType>>
+        >['fetchNextPage'];
+        fetchPreviousPage: InfiniteQueryObserverBaseResult<
+            InfiniteData<GetInfiniteListResult<RecordType>>
+        >['fetchPreviousPage'];
+        isFetchingNextPage: InfiniteQueryObserverBaseResult<
+            InfiniteData<GetInfiniteListResult<RecordType>>
+        >['isFetchingNextPage'];
+        isFetchingPreviousPage: InfiniteQueryObserverBaseResult<
+            InfiniteData<GetInfiniteListResult<RecordType>>
+        >['isFetchingPreviousPage'];
+    };

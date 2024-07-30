@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useState } from 'react';
-import { QueryClient, useIsMutating } from 'react-query';
+import { QueryClient, useIsMutating } from '@tanstack/react-query';
 
 import { CoreAdminContext } from '../core';
 import { useDelete } from './useDelete';
@@ -28,7 +28,7 @@ export const SuccessCase = () => {
                     const index = posts.findIndex(p => p.id === params.id);
                     posts.splice(index, 1);
                     resolve({ data: params.previousData });
-                }, 1000);
+                }, 500);
             });
         },
     } as any;
@@ -46,7 +46,7 @@ const SuccessCore = () => {
     const isMutating = useIsMutating();
     const [success, setSuccess] = useState<string>();
     const { data, refetch } = useGetList('posts');
-    const [deleteOne, { isLoading }] = useDelete();
+    const [deleteOne, { isPending }] = useDelete();
     const handleClick = () => {
         deleteOne(
             'posts',
@@ -62,13 +62,9 @@ const SuccessCore = () => {
     };
     return (
         <>
-            <ul>
-                {data?.map(post => (
-                    <li key={post.id}>{post.title}</li>
-                ))}
-            </ul>
+            <ul>{data?.map(post => <li key={post.id}>{post.title}</li>)}</ul>
             <div>
-                <button onClick={handleClick} disabled={isLoading}>
+                <button onClick={handleClick} disabled={isPending}>
                     Delete first post
                 </button>
                 &nbsp;
@@ -98,7 +94,7 @@ export const ErrorCase = () => {
             return new Promise((resolve, reject) => {
                 setTimeout(() => {
                     reject(new Error('something went wrong'));
-                }, 1000);
+                }, 500);
             });
         },
     } as any;
@@ -117,7 +113,7 @@ const ErrorCore = () => {
     const [success, setSuccess] = useState<string>();
     const [error, setError] = useState<any>();
     const { data, refetch } = useGetList('posts');
-    const [deleteOne, { isLoading }] = useDelete();
+    const [deleteOne, { isPending }] = useDelete();
     const handleClick = () => {
         setError(undefined);
         deleteOne(
@@ -135,13 +131,9 @@ const ErrorCore = () => {
     };
     return (
         <>
-            <ul>
-                {data?.map(post => (
-                    <li key={post.id}>{post.title}</li>
-                ))}
-            </ul>
+            <ul>{data?.map(post => <li key={post.id}>{post.title}</li>)}</ul>
             <div>
-                <button onClick={handleClick} disabled={isLoading}>
+                <button onClick={handleClick} disabled={isPending}>
                     Delete first post
                 </button>
                 &nbsp;

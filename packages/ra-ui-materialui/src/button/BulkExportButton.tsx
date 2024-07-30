@@ -1,14 +1,13 @@
 import * as React from 'react';
 import { useCallback } from 'react';
-import PropTypes from 'prop-types';
 import DownloadIcon from '@mui/icons-material/GetApp';
 import {
     fetchRelatedRecords,
     useDataProvider,
     useNotify,
-    Identifier,
     Exporter,
     useListContext,
+    useResourceContext,
 } from 'ra-core';
 
 import { Button, ButtonProps } from './Button';
@@ -16,23 +15,23 @@ import { Button, ButtonProps } from './Button';
 /**
  * Export the selected rows
  *
- * To be used inside the <List bulkActionButtons> prop.
+ * To be used inside the <Datagrid bulkActionButtons> prop.
  *
  * @example // basic usage
- * import * as React from 'react';
- * import { Fragment } from 'react';
- * import { BulkDeleteButton, BulkExportButton } from 'react-admin';
+ * import { BulkDeleteButton, BulkExportButton, List, Datagrid } from 'react-admin';
  *
  * const PostBulkActionButtons = () => (
- *     <Fragment>
+ *     <>
  *         <BulkExportButton />
  *         <BulkDeleteButton />
- *     </Fragment>
+ *     </>
  * );
  *
  * export const PostList = () => (
- *     <List bulkActionButtons={<PostBulkActionButtons />}>
- *         ...
+ *     <List>
+ *        <Datagrid bulkActionButtons={<PostBulkActionButtons />}>
+ *          ...
+ *       </Datagrid>
  *     </List>
  * );
  */
@@ -45,17 +44,14 @@ export const BulkExportButton = (props: BulkExportButtonProps) => {
         meta,
         ...rest
     } = props;
-    const {
-        exporter: exporterFromContext,
-        resource,
-        selectedIds,
-    } = useListContext(props);
+    const resource = useResourceContext(props);
+    const { exporter: exporterFromContext, selectedIds } = useListContext();
     const exporter = customExporter || exporterFromContext;
     const dataProvider = useDataProvider();
     const notify = useNotify();
     const handleClick = useCallback(
         event => {
-            exporter &&
+            if (exporter && resource) {
                 dataProvider
                     .getMany(resource, { ids: selectedIds, meta })
                     .then(({ data }) =>
@@ -72,6 +68,7 @@ export const BulkExportButton = (props: BulkExportButtonProps) => {
                             type: 'error',
                         });
                     });
+            }
             if (typeof onClick === 'function') {
                 onClick(event);
             }
@@ -93,30 +90,17 @@ export const BulkExportButton = (props: BulkExportButtonProps) => {
 const defaultIcon = <DownloadIcon />;
 
 const sanitizeRestProps = ({
-    filterValues,
-    selectedIds,
     resource,
     ...rest
 }: Omit<BulkExportButtonProps, 'exporter' | 'label' | 'meta'>) => rest;
 
 interface Props {
     exporter?: Exporter;
-    filterValues?: any;
     icon?: JSX.Element;
     label?: string;
     onClick?: (e: Event) => void;
-    selectedIds?: Identifier[];
     resource?: string;
     meta?: any;
 }
 
 export type BulkExportButtonProps = Props & ButtonProps;
-
-BulkExportButton.propTypes = {
-    exporter: PropTypes.func,
-    label: PropTypes.string,
-    resource: PropTypes.string,
-    selectedIds: PropTypes.arrayOf(PropTypes.any),
-    icon: PropTypes.element,
-    meta: PropTypes.any,
-};

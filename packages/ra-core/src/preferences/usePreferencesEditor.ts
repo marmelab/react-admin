@@ -4,5 +4,14 @@ import {
     PreferencesEditorContextValue,
 } from './PreferencesEditorContext';
 
-export const usePreferencesEditor = (): PreferencesEditorContextValue =>
-    useContext(PreferencesEditorContext);
+export const usePreferencesEditor = (): PreferencesEditorContextValue => {
+    const context = useContext(PreferencesEditorContext);
+
+    if (!context) {
+        throw new Error(
+            'usePreferencesEditor must be used within a PreferencesEditorContextProvider'
+        );
+    }
+
+    return context;
+};

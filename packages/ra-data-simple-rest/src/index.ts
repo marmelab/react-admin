@@ -39,8 +39,8 @@ export default (
     countHeader: string = 'Content-Range'
 ): DataProvider => ({
     getList: (resource, params) => {
-        const { page, perPage } = params.pagination;
-        const { field, order } = params.sort;
+        const { page, perPage } = params.pagination || { page: 1, perPage: 10 };
+        const { field, order } = params.sort || { field: 'id', order: 'ASC' };
 
         const rangeStart = (page - 1) * perPage;
         const rangeEnd = page * perPage - 1;
@@ -58,8 +58,9 @@ export default (
                       headers: new Headers({
                           Range: `${resource}=${rangeStart}-${rangeEnd}`,
                       }),
+                      signal: params?.signal,
                   }
-                : {};
+                : { signal: params?.signal };
 
         return httpClient(url, options).then(({ headers, json }) => {
             if (!headers.has(countHeader)) {
@@ -72,16 +73,19 @@ export default (
                 total:
                     countHeader === 'Content-Range'
                         ? parseInt(
-                              headers.get('content-range').split('/').pop(),
+                              headers.get('content-range')!.split('/').pop() ||
+                                  '',
                               10
                           )
-                        : parseInt(headers.get(countHeader.toLowerCase())),
+                        : parseInt(headers.get(countHeader.toLowerCase())!),
             };
         });
     },
 
     getOne: (resource, params) =>
-        httpClient(`${apiUrl}/${resource}/${params.id}`).then(({ json }) => ({
+        httpClient(`${apiUrl}/${resource}/${params.id}`, {
+            signal: params?.signal,
+        }).then(({ json }) => ({
             data: json,
         })),
 
@@ -90,7 +94,9 @@ export default (
             filter: JSON.stringify({ id: params.ids }),
         };
         const url = `${apiUrl}/${resource}?${stringify(query)}`;
-        return httpClient(url).then(({ json }) => ({ data: json }));
+        return httpClient(url, { signal: params?.signal }).then(({ json }) => ({
+            data: json,
+        }));
     },
 
     getManyReference: (resource, params) => {
@@ -116,8 +122,9 @@ export default (
                       headers: new Headers({
                           Range: `${resource}=${rangeStart}-${rangeEnd}`,
                       }),
+                      signal: params?.signal,
                   }
-                : {};
+                : { signal: params?.signal };
 
         return httpClient(url, options).then(({ headers, json }) => {
             if (!headers.has(countHeader)) {
@@ -130,10 +137,11 @@ export default (
                 total:
                     countHeader === 'Content-Range'
                         ? parseInt(
-                              headers.get('content-range').split('/').pop(),
+                              headers.get('content-range')!.split('/').pop() ||
+                                  '',
                               10
                           )
-                        : parseInt(headers.get(countHeader.toLowerCase())),
+                        : parseInt(headers.get(countHeader.toLowerCase())!),
             };
         });
     },
@@ -153,7 +161,9 @@ export default (
                     body: JSON.stringify(params.data),
                 })
             )
-        ).then(responses => ({ data: responses.map(({ json }) => json.id) })),
+        ).then(responses => ({
+            data: responses.map(({ json }) => json.id),
+        })),
 
     create: (resource, params) =>
         httpClient(`${apiUrl}/${resource}`, {

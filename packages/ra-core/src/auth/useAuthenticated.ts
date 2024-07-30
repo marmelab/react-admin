@@ -1,4 +1,4 @@
-import { UseQueryOptions } from 'react-query';
+import { UseQueryOptions } from '@tanstack/react-query';
 import useAuthState from './useAuthState';
 
 /**
@@ -33,11 +33,11 @@ export const useAuthenticated = <ParamsType = any>({
     useAuthState(params ?? emptyParams, true, options);
 };
 
-export type UseAuthenticatedOptions<ParamsType> = UseQueryOptions<
-    boolean,
-    any
-> & {
-    params?: ParamsType;
-};
+export type UseAuthenticatedOptions<ParamsType> = Omit<
+    UseQueryOptions<boolean, any> & {
+        params?: ParamsType;
+    },
+    'queryKey' | 'queryFn'
+>;
 
 const emptyParams = {};

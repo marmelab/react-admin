@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Form } from 'ra-core';
+import { Paper } from '@mui/material';
 
 import { SaveButton } from './SaveButton';
 import { AdminContext } from '../AdminContext';
@@ -11,9 +12,11 @@ export default {
 
 export const Basic = () => (
     <AdminContext>
-        <Form>
-            <SaveButton />
-        </Form>
+        <Paper>
+            <Form>
+                <SaveButton />
+            </Form>
+        </Paper>
     </AdminContext>
 );
 
@@ -27,26 +30,32 @@ const MakeFormChange = () => {
 
 export const Dirty = () => (
     <AdminContext>
-        <Form>
-            <MakeFormChange />
-            <SaveButton />
-        </Form>
+        <Paper>
+            <Form>
+                <MakeFormChange />
+                <SaveButton />
+            </Form>
+        </Paper>
     </AdminContext>
 );
 
 export const AlwaysEnable = () => (
     <AdminContext>
-        <Form>
-            <SaveButton alwaysEnable />
-        </Form>
+        <Paper>
+            <Form>
+                <SaveButton alwaysEnable />
+            </Form>
+        </Paper>
     </AdminContext>
 );
 
 export const Submitting = () => (
     <AdminContext>
-        <Form onSubmit={() => new Promise(() => {})}>
-            <MakeFormChange />
-            <SaveButton />
-        </Form>
+        <Paper>
+            <Form onSubmit={() => new Promise(() => {})}>
+                <MakeFormChange />
+                <SaveButton />
+            </Form>
+        </Paper>
     </AdminContext>
 );

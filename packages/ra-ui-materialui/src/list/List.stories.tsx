@@ -1,11 +1,16 @@
 import * as React from 'react';
 import { Admin, AutocompleteInput } from 'react-admin';
-import { CustomRoutes, Resource, useListContext } from 'ra-core';
+import {
+    CustomRoutes,
+    Resource,
+    useListContext,
+    TestMemoryRouter,
+} from 'ra-core';
 import fakeRestDataProvider from 'ra-data-fakerest';
-import { createMemoryHistory } from 'history';
 import { Box, Card, Stack, Typography, Button } from '@mui/material';
 
 import { List } from './List';
+import { ListActions } from './ListActions';
 import { Datagrid } from './datagrid';
 import { TextField } from '../field';
 import { SearchInput, TextInput } from '../input';
@@ -99,11 +104,9 @@ const data = {
 };
 const dataProvider = fakeRestDataProvider(data);
 
-const history = createMemoryHistory({ initialEntries: ['/books'] });
-
 const BookList = () => {
-    const { data, error, isLoading } = useListContext();
-    if (isLoading) {
+    const { data, error, isPending } = useListContext();
+    if (isPending) {
         return <div>Loading...</div>;
     }
     if (error) {
@@ -120,107 +123,164 @@ const BookList = () => {
     );
 };
 
-const BookListBasic = () => (
-    <List>
-        <BookList />
-    </List>
-);
-
 export const Basic = () => (
-    <Admin dataProvider={dataProvider} history={history}>
-        <Resource name="books" list={BookListBasic} />
-    </Admin>
-);
-
-const BookListBasicWithCustomActions = () => (
-    <List actions={<Box sx={{ backgroundColor: 'info.main' }}>Actions</Box>}>
-        <BookList />
-    </List>
+    <TestMemoryRouter initialEntries={['/books']}>
+        <Admin dataProvider={dataProvider}>
+            <Resource
+                name="books"
+                list={() => (
+                    <List>
+                        <BookList />
+                    </List>
+                )}
+            />
+        </Admin>
+    </TestMemoryRouter>
 );
 
 export const Actions = () => (
-    <Admin dataProvider={dataProvider} history={history}>
-        <Resource name="books" list={BookListBasicWithCustomActions} />
-    </Admin>
-);
-
-const BookListWithFilters = () => (
-    <List
-        filters={[
-            <SearchInput source="q" alwaysOn />,
-            <AutocompleteInput
-                source="title"
-                optionValue="title"
-                optionText="title"
-                choices={data.books}
-            />,
-            <AutocompleteInput
-                source="author"
-                optionValue="author"
-                optionText="author"
-                choices={data.books}
-            />,
-            <TextInput source="year" />,
-        ]}
-    >
-        <BookList />
-    </List>
+    <TestMemoryRouter initialEntries={['/books']}>
+        <Admin dataProvider={dataProvider}>
+            <Resource
+                name="books"
+                list={() => (
+                    <List
+                        actions={
+                            <Box sx={{ backgroundColor: 'info.main' }}>
+                                Actions
+                            </Box>
+                        }
+                    >
+                        <BookList />
+                    </List>
+                )}
+            />
+        </Admin>
+    </TestMemoryRouter>
 );
 
 export const Filters = () => (
-    <Admin dataProvider={dataProvider} history={history}>
-        <Resource name="books" list={BookListWithFilters} />
-    </Admin>
-);
-
-const BookListWithPermanentFilter = () => (
-    <List filter={{ id: 2 }}>
-        <BookList />
-    </List>
+    <TestMemoryRouter initialEntries={['/books']}>
+        <Admin dataProvider={dataProvider}>
+            <Resource
+                name="books"
+                list={() => (
+                    <List
+                        filters={[
+                            <SearchInput source="q" alwaysOn />,
+                            <AutocompleteInput
+                                source="title"
+                                optionValue="title"
+                                optionText="title"
+                                choices={data.books}
+                            />,
+                            <AutocompleteInput
+                                source="author"
+                                optionValue="author"
+                                optionText="author"
+                                choices={data.books}
+                            />,
+                            <TextInput source="year" />,
+                        ]}
+                    >
+                        <BookList />
+                    </List>
+                )}
+            />
+        </Admin>
+    </TestMemoryRouter>
 );
 
 export const Filter = () => (
-    <Admin dataProvider={dataProvider} history={history}>
-        <Resource name="books" list={BookListWithPermanentFilter} />
-    </Admin>
-);
-
-const BookListWithCustomTitle = () => (
-    <List title="Custom list title">
-        <BookList />
-    </List>
+    <TestMemoryRouter initialEntries={['/books']}>
+        <Admin dataProvider={dataProvider}>
+            <Resource
+                name="books"
+                list={() => (
+                    <List filter={{ id: 2 }}>
+                        <BookList />
+                    </List>
+                )}
+            />
+        </Admin>
+    </TestMemoryRouter>
 );
 
 export const Title = () => (
-    <Admin dataProvider={dataProvider} history={history}>
-        <Resource name="books" list={BookListWithCustomTitle} />
-    </Admin>
+    <TestMemoryRouter initialEntries={['/books']}>
+        <Admin dataProvider={dataProvider}>
+            <Resource
+                name="books"
+                list={() => (
+                    <List title="Custom list title">
+                        <BookList />
+                    </List>
+                )}
+            />
+        </Admin>
+    </TestMemoryRouter>
 );
 
-const BookListWithCreate = () => (
-    <List hasCreate={true}>
-        <BookList />
-    </List>
+export const TitleElement = () => (
+    <TestMemoryRouter initialEntries={['/books']}>
+        <Admin dataProvider={dataProvider}>
+            <Resource
+                name="books"
+                list={() => (
+                    <List title={<span>Custom list title</span>}>
+                        <BookList />
+                    </List>
+                )}
+            />
+        </Admin>
+    </TestMemoryRouter>
+);
+
+export const TitleFalse = () => (
+    <TestMemoryRouter initialEntries={['/books']}>
+        <Admin dataProvider={dataProvider}>
+            <Resource
+                name="books"
+                list={() => (
+                    <List title={false}>
+                        <BookList />
+                    </List>
+                )}
+            />
+        </Admin>
+    </TestMemoryRouter>
 );
 
 export const HasCreate = () => (
-    <Admin dataProvider={dataProvider} history={history}>
-        <Resource name="books" list={BookListWithCreate} />
-    </Admin>
+    <TestMemoryRouter initialEntries={['/books']}>
+        <Admin dataProvider={dataProvider}>
+            <Resource
+                name="books"
+                list={() => (
+                    <List actions={<ListActions hasCreate />}>
+                        <BookList />
+                    </List>
+                )}
+            />
+        </Admin>
+    </TestMemoryRouter>
 );
 
 const AsideComponent = () => <Card sx={{ padding: 2 }}>Aside</Card>;
 
-const BookListWithAside = () => (
-    <List aside={<AsideComponent />}>
-        <BookList />
-    </List>
-);
-
 export const Aside = () => (
-    <Admin dataProvider={dataProvider} history={history}>
-        <Resource name="books" list={BookListWithAside} />
-    </Admin>
+    <TestMemoryRouter initialEntries={['/books']}>
+        <Admin dataProvider={dataProvider}>
+            <Resource
+                name="books"
+                list={() => (
+                    <List aside={<AsideComponent />}>
+                        <BookList />
+                    </List>
+                )}
+            />
+        </Admin>
+    </TestMemoryRouter>
 );
 
 const CustomWrapper = ({ children }) => (
@@ -232,92 +292,107 @@ const CustomWrapper = ({ children }) => (
     </Box>
 );
 
-const BookListWithCustomComponent = () => (
-    <List component={CustomWrapper}>
-        <BookList />
-    </List>
-);
-
 export const Component = () => (
-    <Admin dataProvider={dataProvider} history={history}>
-        <Resource name="books" list={BookListWithCustomComponent} />
-    </Admin>
+    <TestMemoryRouter initialEntries={['/books']}>
+        <Admin dataProvider={dataProvider}>
+            <Resource
+                name="books"
+                list={() => (
+                    <List component={CustomWrapper}>
+                        <BookList />
+                    </List>
+                )}
+            />
+        </Admin>
+    </TestMemoryRouter>
 );
-
-const EmptyAuthorList = () => (
-    <List>
-        <span />
-    </List>
-);
-const CreateAuthor = () => <span />;
-
-const historyAuthors = createMemoryHistory({ initialEntries: ['/authors'] });
 
 export const Empty = () => (
-    <Admin dataProvider={dataProvider} history={historyAuthors}>
-        <Resource name="authors" list={EmptyAuthorList} create={CreateAuthor} />
-    </Admin>
-);
-
-const BookListWithStyles = () => (
-    <List
-        sx={{
-            backgroundColor: 'yellow',
-            '& .RaList-content': {
-                backgroundColor: 'red',
-            },
-        }}
-    >
-        <BookList />
-    </List>
+    <TestMemoryRouter initialEntries={['/authors']}>
+        <Admin dataProvider={dataProvider}>
+            <Resource
+                name="authors"
+                list={() => (
+                    <List>
+                        <span />
+                    </List>
+                )}
+                create={() => <span />}
+            />
+        </Admin>
+    </TestMemoryRouter>
 );
 
 export const SX = () => (
-    <Admin dataProvider={dataProvider} history={history}>
-        <Resource name="books" list={BookListWithStyles} />
-    </Admin>
-);
-
-const dataProviderWithLog = {
-    ...dataProvider,
-    getList: (resource, params) => {
-        console.log('getList', resource, params);
-        return dataProvider.getList(resource, params);
-    },
-} as any;
-
-const BookListWithMeta = () => (
-    <List queryOptions={{ meta: { foo: 'bar' } }}>
-        <Datagrid>
-            <TextField source="id" />
-            <TextField source="title" />
-            <TextField source="author" />
-            <TextField source="year" />
-        </Datagrid>
-    </List>
+    <TestMemoryRouter initialEntries={['/books']}>
+        <Admin dataProvider={dataProvider}>
+            <Resource
+                name="books"
+                list={() => (
+                    <List
+                        sx={{
+                            backgroundColor: 'yellow',
+                            '& .RaList-content': {
+                                backgroundColor: 'red',
+                            },
+                        }}
+                    >
+                        <BookList />
+                    </List>
+                )}
+            />
+        </Admin>
+    </TestMemoryRouter>
 );
 
 export const Meta = () => (
-    <Admin dataProvider={dataProviderWithLog} history={history}>
-        <Resource name="books" list={BookListWithMeta} />
-    </Admin>
-);
-
-const BookListWithDatagrid = () => (
-    <List filters={[<SearchInput source="q" alwaysOn />]}>
-        <Datagrid>
-            <TextField source="id" />
-            <TextField source="title" />
-            <TextField source="author" />
-            <TextField source="year" />
-        </Datagrid>
-    </List>
+    <TestMemoryRouter initialEntries={['/books']}>
+        <Admin
+            dataProvider={
+                {
+                    ...dataProvider,
+                    getList: (resource, params) => {
+                        console.log('getList', resource, params);
+                        return dataProvider.getList(resource, params);
+                    },
+                } as any
+            }
+        >
+            <Resource
+                name="books"
+                list={() => (
+                    <List queryOptions={{ meta: { foo: 'bar' } }}>
+                        <Datagrid>
+                            <TextField source="id" />
+                            <TextField source="title" />
+                            <TextField source="author" />
+                            <TextField source="year" />
+                        </Datagrid>
+                    </List>
+                )}
+            />
+        </Admin>
+    </TestMemoryRouter>
 );
 
 export const Default = () => (
-    <Admin dataProvider={dataProvider} history={history}>
-        <Resource name="books" list={BookListWithDatagrid} />
-    </Admin>
+    <TestMemoryRouter initialEntries={['/books']}>
+        <Admin dataProvider={dataProvider}>
+            <Resource
+                name="books"
+                list={() => (
+                    <List filters={[<SearchInput source="q" alwaysOn />]}>
+                        <Datagrid>
+                            <TextField source="id" />
+                            <TextField source="title" />
+                            <TextField source="author" />
+                            <TextField source="year" />
+                        </Datagrid>
+                    </List>
+                )}
+            />
+        </Admin>
+    </TestMemoryRouter>
 );
 
 const NewerBooks = () => (
@@ -373,22 +448,17 @@ const StoreKeyDashboard = () => (
     </>
 );
 
-export const StoreKey = () => {
-    history.push('/');
-    return (
-        <Admin
-            dataProvider={dataProvider}
-            history={history}
-            dashboard={StoreKeyDashboard}
-        >
+export const StoreKey = () => (
+    <TestMemoryRouter initialEntries={['/']}>
+        <Admin dataProvider={dataProvider} dashboard={StoreKeyDashboard}>
             <CustomRoutes>
                 <Route path="/newerBooks" element={<NewerBooks />} />
                 <Route path="/olderBooks" element={<OlderBooks />} />
             </CustomRoutes>
             <Resource name="books" />
         </Admin>
-    );
-};
+    </TestMemoryRouter>
+);
 
 const BooksWithStoreEnabled = () => (
     <List
@@ -444,32 +514,43 @@ const DisabledStoreDashboard = () => (
 );
 
 export const StoreDisabled = () => {
-    history.push('/');
     return (
-        <Admin
-            dataProvider={dataProvider}
-            history={history}
-            dashboard={DisabledStoreDashboard}
-        >
-            <CustomRoutes>
-                <Route path="/store" element={<BooksWithStoreEnabled />} />
-                <Route path="/nostore" element={<BooksWithStoreDisabled />} />
-            </CustomRoutes>
-            <Resource name="books" />
-        </Admin>
+        <TestMemoryRouter initialEntries={['/']}>
+            <Admin
+                dataProvider={dataProvider}
+                dashboard={DisabledStoreDashboard}
+            >
+                <CustomRoutes>
+                    <Route path="/store" element={<BooksWithStoreEnabled />} />
+                    <Route
+                        path="/nostore"
+                        element={<BooksWithStoreDisabled />}
+                    />
+                </CustomRoutes>
+                <Resource name="books" />
+            </Admin>
+        </TestMemoryRouter>
     );
 };
 
 export const ErrorInFetch = () => (
-    <Admin
-        dataProvider={
-            {
-                getList: () =>
-                    Promise.reject(new Error('Error in dataProvider')),
-            } as any
-        }
-        history={history}
-    >
-        <Resource name="books" list={BookListBasic} />
-    </Admin>
+    <TestMemoryRouter initialEntries={['/books']}>
+        <Admin
+            dataProvider={
+                {
+                    getList: () =>
+                        Promise.reject(new Error('Error in dataProvider')),
+                } as any
+            }
+        >
+            <Resource
+                name="books"
+                list={() => (
+                    <List>
+                        <BookList />
+                    </List>
+                )}
+            />
+        </Admin>
+    </TestMemoryRouter>
 );

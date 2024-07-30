@@ -15,9 +15,9 @@ You can use `useShowContext` inside show components to access the data computed 
 import { useShowContext, SimpleShowLayout, Show } from 'react-admin';
 
 const PostShowLayout = () => {
-    const { defaultTitle, error, isLoading } = useShowContext();
+    const { defaultTitle, error, isPending } = useShowContext();
 
-    if (isLoading) {
+    if (isPending) {
         return <div>Loading...</div>;
     }
 
@@ -50,8 +50,9 @@ const PostShow = () => (
 ```jsx
 const {
     defaultTitle, // Translated title based on the resource, e.g. 'Post #123'
+    isPending, // Boolean, true until the record is available
     isFetching, // Boolean, true while the record is being fetched, and false once done fetching
-    isLoading, // Boolean, true until the record is available for the first time
+    isLoading, // Boolean, true until the record is fetched for the first time
     record, // Either the record fetched via dataProvider.getOne() based on the id from the location, a cached version of the record (see also the Caching documentation page) or undefined 
     refetch, // Callback to refetch the record via dataProvider.getOne()
     resource, // The resource name, deduced from the location. e.g. 'posts'
@@ -80,8 +81,8 @@ export const PostShow = () => (
 );
 
 const Aside = () => {
-    const { record: post, isLoading } = useShowContext<Post>();
-    if (isLoading) return null;
+    const { record: post, isPending } = useShowContext<Post>();
+    if (isPending) return null;
     return (
         <div>
             <Typography variant="h6">Posts stats</Typography>

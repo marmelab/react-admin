@@ -5,7 +5,7 @@ title: "useGetLock"
 
 # `useGetLock`
 
-This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> hook gets the lock status for a record. It calls `dataProvider.getLock()` on mount.
+This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" /> hook gets the lock status for a record. It calls `dataProvider.getLock()` on mount.
 
 ## Usage
 
@@ -30,12 +30,12 @@ import { useGetLock } from '@react-admin/ra-enterprise';
 const CustomToolbar = () => {
     const resource = useResourceContext();
     const record = useRecordContext();
-    const { isLoading: identityLoading, identity } = useGetIdentity();
+    const { isPending: isPendingIdentity, identity } = useGetIdentity();
     const { isLoading: lockLoading, data: lock } = useGetLock(resource, {
         id: record.id,
     });
 
-    if (identityLoading || lockLoading) {
+    if (isPendingIdentity || lockLoading) {
         return null;
     }
 

@@ -3,6 +3,7 @@
     "compilerOptions": {
         "outDir": "lib",
         "rootDir": "src",
+        "strictNullChecks": true
     },
     "exclude": ["**/*.spec.ts", "**/*.spec.tsx", "**/*.spec.js", "**/*.stories.tsx"],
     "include": ["src"]

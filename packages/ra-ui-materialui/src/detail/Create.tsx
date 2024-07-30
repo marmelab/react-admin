@@ -1,11 +1,14 @@
 import * as React from 'react';
-import { ReactElement, ReactNode } from 'react';
-import PropTypes from 'prop-types';
-import { Identifier, RaRecord, useCheckMinimumRequiredProps } from 'ra-core';
+import { ReactElement } from 'react';
+import {
+    CreateBase,
+    CreateControllerProps,
+    Identifier,
+    RaRecord,
+    useCheckMinimumRequiredProps,
+} from 'ra-core';
 
-import { CreateProps } from '../types';
-import { CreateView } from './CreateView';
-import { CreateBase } from 'ra-core';
+import { CreateView, CreateViewProps } from './CreateView';
 
 /**
  * Page component for the Create view
@@ -29,8 +32,8 @@ import { CreateBase } from 'ra-core';
  * import * as React from "react";
  * import { Create, SimpleForm, TextInput } from 'react-admin';
  *
- * export const PostCreate = (props) => (
- *     <Create {...props}>
+ * export const PostCreate = () => (
+ *     <Create>
  *         <SimpleForm>
  *             <TextInput source="title" />
  *         </SimpleForm>
@@ -52,11 +55,9 @@ import { CreateBase } from 'ra-core';
  */
 export const Create = <
     RecordType extends Omit<RaRecord, 'id'> = any,
-    ResultRecordType extends RaRecord = RecordType & { id: Identifier }
+    ResultRecordType extends RaRecord = RecordType & { id: Identifier },
 >(
-    props: CreateProps<RecordType, Error, ResultRecordType> & {
-        children: ReactNode;
-    }
+    props: CreateProps<RecordType, Error, ResultRecordType>
 ): ReactElement => {
     useCheckMinimumRequiredProps('Create', ['children'], props);
     const {
@@ -86,23 +87,13 @@ export const Create = <
     );
 };
 
-Create.propTypes = {
-    actions: PropTypes.oneOfType([PropTypes.element, PropTypes.bool]),
-    aside: PropTypes.element,
-    children: PropTypes.node,
-    className: PropTypes.string,
-    disableAuthentication: PropTypes.bool,
-    hasEdit: PropTypes.bool,
-    hasShow: PropTypes.bool,
-    redirect: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.bool,
-        PropTypes.func,
-    ]),
-    resource: PropTypes.string,
-    title: PropTypes.node,
-    record: PropTypes.object,
-    mutationOptions: PropTypes.object,
-    transform: PropTypes.func,
-    sx: PropTypes.any,
-};
+export interface CreateProps<
+    RecordType extends Omit<RaRecord, 'id'> = any,
+    MutationOptionsError = Error,
+    ResultRecordType extends RaRecord = RecordType & { id: Identifier },
+> extends CreateControllerProps<
+            RecordType,
+            MutationOptionsError,
+            ResultRecordType
+        >,
+        CreateViewProps {}

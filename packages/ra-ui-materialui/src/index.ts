@@ -10,6 +10,5 @@ export * from './layout';
 export * from './Link';
 export * from './list';
 export * from './preferences';
-export * from './types';
 export * from './AdminUI';
 export * from './AdminContext';

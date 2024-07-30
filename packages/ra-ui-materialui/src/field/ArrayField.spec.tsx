@@ -37,7 +37,11 @@ describe('<ArrayField />', () => {
     it('should not fail for empty records', () => {
         render(
             <Wrapper>
-                <ArrayField source="arr" record={{ id: 123 }}>
+                <ArrayField
+                    // @ts-expect-error source prop does not have a valid value
+                    source="arr"
+                    record={{ id: 123 }}
+                >
                     <DummyIterator />
                 </ArrayField>
             </Wrapper>

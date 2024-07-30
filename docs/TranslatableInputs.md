@@ -47,7 +47,7 @@ You may have inputs which are translated in multiple languages and want users to
 | ------ | -------- | -------- | ------- | ------------- |
 | `locales` | Required | `Array` | - | An array of locales. |
 | `defaultLocale` | Optional | `string` | `en` | The default locale to display |
-| `fullWidth` | Optional | `boolean` | `false` | If `true`, the inputs will expand to fill the form width |
+| `fullWidth` | Optional | `boolean` | `true` | If `false`, the inputs will not expand to fill the form width |
 | `groupKey` | Optional | `string` | - | A unique key for accessibility purpose |
 | `selector`| Optional | `ReactNode` | - | A selector to choose the locale to display |
 | `StackProps`| Optional | `object` | - | Props passed to the rendered MUI Stack |
@@ -68,10 +68,10 @@ By default, `<TranslatableInputs>` will allow users to select the displayed loca
 
 ## `fullWidth`
 
-If you want the inputs to expand to fill the form width, set the `fullWidth` prop to `true`:
+By default, a `<TranslatableInputs>` group expands to fill the form width. You can disable this behaviour by setting the `fullWidth` prop to `false`:
 
 ```jsx
-<TranslatableInputs locales={['en', 'fr']} fullWidth>
+<TranslatableInputs locales={['en', 'fr']} fullWidth={false}>
     <TextInput source="title" />
     <TextInput source="description" />
 </TranslatableInputs>

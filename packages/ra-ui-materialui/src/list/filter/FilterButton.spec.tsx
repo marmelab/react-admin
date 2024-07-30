@@ -1,7 +1,13 @@
 import * as React from 'react';
 import expect from 'expect';
 import { render, fireEvent, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { createTheme } from '@mui/material/styles';
+import {
+    ListContextProvider,
+    ListControllerResult,
+    ResourceContextProvider,
+} from 'ra-core';
 
 import { AdminContext } from '../../AdminContext';
 import { FilterButton } from './FilterButton';
@@ -11,19 +17,30 @@ import { Basic, WithAutoCompleteArrayInput } from './FilterButton.stories';
 const theme = createTheme();
 
 describe('<FilterButton />', () => {
-    const defaultProps = {
+    const defaultListContext = {
         resource: 'post',
-        filters: [
-            <TextInput source="title" label="Title" />,
-            <TextInput source="customer.name" label="Name" />,
-        ],
         displayedFilters: {
             title: true,
             'customer.name': true,
         },
         showFilter: () => {},
         filterValues: {},
+    } as unknown as ListControllerResult;
+
+    const defaultProps = {
+        filters: [
+            <TextInput source="title" label="Title" />,
+            <TextInput source="customer.name" label="Name" />,
+        ],
     };
+
+    beforeAll(() => {
+        window.scrollTo = jest.fn();
+    });
+
+    afterAll(() => {
+        jest.clearAllMocks();
+    });
 
     describe('filter selection menu', () => {
         it('should display only hidden filters', () => {
@@ -32,10 +49,15 @@ describe('<FilterButton />', () => {
             );
             const { getByLabelText, queryByText } = render(
                 <AdminContext theme={theme}>
-                    <FilterButton
-                        {...defaultProps}
-                        filters={defaultProps.filters.concat(hiddenFilter)}
-                    />
+                    <ResourceContextProvider value="posts">
+                        <ListContextProvider value={defaultListContext}>
+                            <FilterButton
+                                filters={defaultProps.filters.concat(
+                                    hiddenFilter
+                                )}
+                            />
+                        </ListContextProvider>
+                    </ResourceContextProvider>
                 </AdminContext>
             );
 
@@ -48,18 +70,28 @@ describe('<FilterButton />', () => {
         it('should display the filter button if all filters are shown and there is a filter value', () => {
             render(
                 <AdminContext theme={theme}>
-                    <FilterButton
-                        {...defaultProps}
-                        filters={[
-                            <TextInput source="title" label="Title" />,
-                            <TextInput source="customer.name" label="Name" />,
-                        ]}
-                        displayedFilters={{
-                            title: true,
-                            'customer.name': true,
-                        }}
-                        filterValues={{ title: 'foo' }}
-                    />
+                    <ResourceContextProvider value="posts">
+                        <ListContextProvider
+                            value={{
+                                ...defaultListContext,
+                                displayedFilters: {
+                                    title: true,
+                                    'customer.name': true,
+                                },
+                                filterValues: { title: 'foo' },
+                            }}
+                        >
+                            <FilterButton
+                                filters={[
+                                    <TextInput source="title" label="Title" />,
+                                    <TextInput
+                                        source="customer.name"
+                                        label="Name"
+                                    />,
+                                ]}
+                            />
+                        </ListContextProvider>
+                    </ResourceContextProvider>
                 </AdminContext>
             );
             expect(
@@ -75,10 +107,15 @@ describe('<FilterButton />', () => {
             );
             const { getByLabelText, queryByText } = render(
                 <AdminContext theme={theme}>
-                    <FilterButton
-                        {...defaultProps}
-                        filters={defaultProps.filters.concat(hiddenFilter)}
-                    />
+                    <ResourceContextProvider value="posts">
+                        <ListContextProvider value={defaultListContext}>
+                            <FilterButton
+                                filters={defaultProps.filters.concat(
+                                    hiddenFilter
+                                )}
+                            />
+                        </ListContextProvider>
+                    </ResourceContextProvider>
                 </AdminContext>
             );
 
@@ -138,8 +175,7 @@ describe('<FilterButton />', () => {
             // Then we apply a filter to an alwaysOn filter
             fireEvent.change(screen.getByLabelText('Search'), {
                 target: {
-                    value:
-                        'Accusantium qui nihil voluptatum quia voluptas maxime ab similique',
+                    value: 'Accusantium qui nihil voluptatum quia voluptas maxime ab similique',
                 },
             });
             await screen.findByDisplayValue(
@@ -164,14 +200,24 @@ describe('<FilterButton />', () => {
         it('should not display save query in filter button', async () => {
             const { queryByText } = render(
                 <AdminContext theme={theme}>
-                    <FilterButton
-                        {...defaultProps}
-                        filterValues={{ title: 'foo' }}
-                        filters={[
-                            <TextInput source="Returned" label="Returned" />,
-                        ]}
-                        disableSaveQuery
-                    />
+                    <ResourceContextProvider value="posts">
+                        <ListContextProvider
+                            value={{
+                                ...defaultListContext,
+                                filterValues: { title: 'foo' },
+                            }}
+                        >
+                            <FilterButton
+                                filters={[
+                                    <TextInput
+                                        source="Returned"
+                                        label="Returned"
+                                    />,
+                                ]}
+                                disableSaveQuery
+                            />
+                        </ListContextProvider>
+                    </ResourceContextProvider>
                 </AdminContext>
             );
             expect(
@@ -189,14 +235,35 @@ describe('<FilterButton />', () => {
             render(<WithAutoCompleteArrayInput />);
 
             // Open Posts List
-            fireEvent.click(await screen.findByText('Posts'));
+            userEvent.click(await screen.findByText('Posts'));
 
             await waitFor(() => {
                 expect(screen.queryAllByRole('checkbox')).toHaveLength(11);
             });
 
-            fireEvent.click(await screen.findByLabelText('Open'));
-            fireEvent.click(await screen.findByText('Sint...'));
+            userEvent.click(await screen.findByLabelText('Open'));
+            userEvent.click(await screen.findByText('Sint...'));
+
+            await screen.findByLabelText('Add filter');
+            expect(screen.queryAllByText('Close')).toHaveLength(0);
+            await waitFor(
+                () => {
+                    expect(screen.getAllByRole('checkbox')).toHaveLength(2);
+                },
+                { timeout: 10000 }
+            );
+            userEvent.click(screen.getByLabelText('Add filter'));
+            userEvent.click(await screen.findByText('Remove all filters'));
+
+            await waitFor(
+                () => {
+                    expect(screen.getAllByRole('checkbox')).toHaveLength(11);
+                },
+                { timeout: 10000 }
+            );
+
+            userEvent.click(await screen.findByLabelText('Open'));
+            userEvent.click(await screen.findByText('Sint...'));
 
             await waitFor(
                 () => {
@@ -204,22 +271,6 @@ describe('<FilterButton />', () => {
                 },
                 { timeout: 10000 }
             );
-
-            fireEvent.click(screen.getByLabelText('Add filter'));
-            fireEvent.click(screen.getByText('Remove all filters'));
-
-            await waitFor(() => {
-                expect(screen.getAllByRole('checkbox')).toHaveLength(11);
-            });
-
-            fireEvent.click(screen.getByLabelText('Open'));
-            fireEvent.click(screen.getByText('Sint...'));
-
-            await waitFor(() => {
-                expect(
-                    screen.getAllByTestId('CheckBoxOutlineBlankIcon')
-                ).toHaveLength(2);
-            });
 
             expect(screen.queryByText('Save current query...')).toBeNull();
         }, 20000);

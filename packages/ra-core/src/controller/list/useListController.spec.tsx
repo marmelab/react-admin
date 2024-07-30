@@ -7,12 +7,8 @@ import {
     screen,
     act,
 } from '@testing-library/react';
-import lolex from 'lolex';
-// TODO: we shouldn't import mui components in ra-core
-import { TextField } from '@mui/material';
-import { createMemoryHistory } from 'history';
-
 import { testDataProvider } from '../../dataProvider';
+
 import { memoryStore } from '../../store';
 import { ListController } from './ListController';
 import {
@@ -20,6 +16,7 @@ import {
     sanitizeListRestProps,
 } from './useListController';
 import { CoreAdminContext } from '../../core';
+import { TestMemoryRouter } from '../../routing';
 
 describe('useListController', () => {
     const defaultProps = {
@@ -30,9 +27,7 @@ describe('useListController', () => {
 
     describe('queryOptions', () => {
         it('should accept custom client query options', async () => {
-            const mock = jest
-                .spyOn(console, 'error')
-                .mockImplementation(() => {});
+            jest.spyOn(console, 'error').mockImplementationOnce(() => {});
             const getList = jest
                 .fn()
                 .mockImplementationOnce(() => Promise.reject(new Error()));
@@ -49,7 +44,6 @@ describe('useListController', () => {
                 expect(getList).toHaveBeenCalled();
                 expect(onError).toHaveBeenCalled();
             });
-            mock.mockRestore();
         });
 
         it('should accept meta in queryOptions', async () => {
@@ -75,21 +69,24 @@ describe('useListController', () => {
                     pagination: { page: 1, perPage: 10 },
                     sort: { field: 'id', order: 'ASC' },
                     meta: { foo: 'bar' },
+                    signal: undefined,
                 });
             });
         });
 
         it('should reset page when enabled is set to false', async () => {
             const children = jest.fn().mockReturnValue(<span>children</span>);
-            const dataProvider = testDataProvider();
+            const dataProvider = testDataProvider({
+                getList: () => Promise.resolve({ data: [], total: 0 }),
+            });
             const props = { ...defaultProps, children };
             render(
                 <CoreAdminContext dataProvider={dataProvider}>
                     <ListController
                         disableSyncWithLocation
-                        resource="posts"
                         queryOptions={{ enabled: false }}
                         {...props}
+                        resource="posts"
                     />
                 </CoreAdminContext>
             );
@@ -110,13 +107,9 @@ describe('useListController', () => {
     });
 
     describe('setFilters', () => {
-        let clock;
         let childFunction = ({ setFilters, filterValues }) => (
-            // TODO: we shouldn't import mui components in ra-core
-            <TextField
-                inputProps={{
-                    'aria-label': 'search',
-                }}
+            <input
+                aria-label="search"
                 type="text"
                 value={filterValues.q || ''}
                 onChange={event => {
@@ -125,11 +118,7 @@ describe('useListController', () => {
             />
         );
 
-        beforeEach(() => {
-            clock = lolex.install();
-        });
-
-        it('should take only last change in case of a burst of changes (case of inputs being currently edited)', () => {
+        it('should take only last change in case of a burst of changes (case of inputs being currently edited)', async () => {
             const props = {
                 ...defaultProps,
                 children: childFunction,
@@ -139,7 +128,9 @@ describe('useListController', () => {
 
             render(
                 <CoreAdminContext
-                    dataProvider={testDataProvider()}
+                    dataProvider={testDataProvider({
+                        getList: () => Promise.resolve({ data: [], total: 0 }),
+                    })}
                     store={store}
                 >
                     <ListController {...props} />
@@ -150,9 +141,11 @@ describe('useListController', () => {
             fireEvent.change(searchInput, { target: { value: 'hel' } });
             fireEvent.change(searchInput, { target: { value: 'hell' } });
             fireEvent.change(searchInput, { target: { value: 'hello' } });
-            clock.tick(210);
+            await new Promise(resolve => setTimeout(resolve, 210));
 
-            expect(storeSpy).toHaveBeenCalledTimes(1);
+            await waitFor(() => {
+                expect(storeSpy).toHaveBeenCalledTimes(1);
+            });
             expect(storeSpy).toHaveBeenCalledWith('posts.listParams', {
                 filter: { q: 'hello' },
                 order: 'ASC',
@@ -162,29 +155,32 @@ describe('useListController', () => {
             });
         });
 
-        it('should remove empty filters', () => {
+        it('should remove empty filters', async () => {
             const props = {
                 ...defaultProps,
                 children: childFunction,
             };
 
-            const history = createMemoryHistory({
-                initialEntries: [
-                    `/posts?filter=${JSON.stringify({
-                        q: 'hello',
-                    })}&displayedFilters=${JSON.stringify({ q: true })}`,
-                ],
-            });
             const store = memoryStore();
             const storeSpy = jest.spyOn(store, 'setItem');
             render(
-                <CoreAdminContext
-                    dataProvider={testDataProvider()}
-                    history={history}
-                    store={store}
+                <TestMemoryRouter
+                    initialEntries={[
+                        `/posts?filter=${JSON.stringify({
+                            q: 'hello',
+                        })}&displayedFilters=${JSON.stringify({ q: true })}`,
+                    ]}
                 >
-                    <ListController {...props} />
-                </CoreAdminContext>
+                    <CoreAdminContext
+                        dataProvider={testDataProvider({
+                            getList: () =>
+                                Promise.resolve({ data: [], total: 0 }),
+                        })}
+                        store={store}
+                    >
+                        <ListController {...props} />
+                    </CoreAdminContext>
+                </TestMemoryRouter>
             );
             expect(storeSpy).toHaveBeenCalledTimes(1);
 
@@ -192,7 +188,7 @@ describe('useListController', () => {
             // FIXME: For some reason, triggering the change event with an empty string
             // does not call the event handler on childFunction
             fireEvent.change(searchInput, { target: { value: '' } });
-            clock.tick(210);
+            await new Promise(resolve => setTimeout(resolve, 210));
 
             expect(storeSpy).toHaveBeenCalledTimes(2);
 
@@ -219,14 +215,13 @@ describe('useListController', () => {
                     Promise.resolve({ data: [], total: 0 })
                 );
             const dataProvider = testDataProvider({ getList });
-            const history = createMemoryHistory({
-                initialEntries: [`/posts`],
-            });
 
             const { rerender } = render(
-                <CoreAdminContext dataProvider={dataProvider} history={history}>
-                    <ListController {...props} filter={{ foo: 1 }} />
-                </CoreAdminContext>
+                <TestMemoryRouter initialEntries={[`/posts`]}>
+                    <CoreAdminContext dataProvider={dataProvider}>
+                        <ListController {...props} filter={{ foo: 1 }} />
+                    </CoreAdminContext>
+                </TestMemoryRouter>
             );
 
             // Check that the permanent filter was used in the query
@@ -246,9 +241,11 @@ describe('useListController', () => {
             );
 
             rerender(
-                <CoreAdminContext dataProvider={dataProvider} history={history}>
-                    <ListController {...props} filter={{ foo: 2 }} />
-                </CoreAdminContext>
+                <TestMemoryRouter initialEntries={[`/posts`]}>
+                    <CoreAdminContext dataProvider={dataProvider}>
+                        <ListController {...props} filter={{ foo: 2 }} />
+                    </CoreAdminContext>
+                </TestMemoryRouter>
             );
 
             // Check that the permanent filter was used in the query
@@ -258,10 +255,6 @@ describe('useListController', () => {
                 expect.objectContaining({ filter: { foo: 2 } })
             );
             expect(children).toHaveBeenCalledTimes(2);
-        });
-
-        afterEach(() => {
-            clock.uninstall();
         });
     });
 
@@ -295,7 +288,11 @@ describe('useListController', () => {
             };
 
             render(
-                <CoreAdminContext>
+                <CoreAdminContext
+                    dataProvider={testDataProvider({
+                        getList: () => Promise.resolve({ data: [], total: 0 }),
+                    })}
+                >
                     <ListController {...props} />
                 </CoreAdminContext>
             );
@@ -317,7 +314,11 @@ describe('useListController', () => {
 
         it('should support to sync calls', async () => {
             render(
-                <CoreAdminContext>
+                <CoreAdminContext
+                    dataProvider={testDataProvider({
+                        getList: () => Promise.resolve({ data: [], total: 0 }),
+                    })}
+                >
                     <ListController {...defaultProps}>
                         {({ displayedFilters, showFilter }) => (
                             <>

@@ -1,5 +1,4 @@
 import * as React from 'react';
-import PropTypes from 'prop-types';
 
 import { Button } from '@mui/material';
 import IconCancel from '@mui/icons-material/Cancel';
@@ -21,11 +20,6 @@ const PostQuickCreateCancelButton = ({
             {label && translate(label, { _: label })}
         </Button>
     );
-};
-
-PostQuickCreateCancelButton.propTypes = {
-    label: PropTypes.string,
-    onClick: PropTypes.func.isRequired,
 };
 
 export default PostQuickCreateCancelButton;

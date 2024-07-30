@@ -5,7 +5,7 @@ title: "useGetOneLive"
 
 # `useGetOneLive`
 
-This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> hook, alternative to [`useGetOne`](./useGetOne.md), subscribes to live updates on the record.
+This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" /> hook, alternative to [`useGetOne`](./useGetOne.md), subscribes to live updates on the record.
 
 ## Usage
 
@@ -15,8 +15,8 @@ import { useGetOneLive } from '@react-admin/ra-realtime';
 
 const UserProfile = () => {
     const record = useRecordContext();
-    const { data, isLoading, error } = useGetOneLive('users', { id: record.userId });
-    if (isLoading) {
+    const { data, isPending, error } = useGetOneLive('users', { id: record.userId });
+    if (isPending) {
         return <Loading />;
     }
     if (error) {
@@ -51,8 +51,8 @@ type User = {
 
 const UserProfile = () => {
     const ticket = useRecordContext<Ticket>();
-    const { data: user, isLoading, error } = useGetOneLive<User>('users', { id: ticket.userId });
-    if (isLoading) { return <Loading />; }
+    const { data: user, isPending, error } = useGetOneLive<User>('users', { id: ticket.userId });
+    if (isPending) { return <Loading />; }
     if (error) { return <p>ERROR</p>; }
     // TypeScript knows that user is of type User
     return <div>User {user.username}</div>;

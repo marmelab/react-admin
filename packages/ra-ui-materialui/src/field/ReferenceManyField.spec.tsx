@@ -1,8 +1,7 @@
 import * as React from 'react';
 import expect from 'expect';
 import { render, screen, waitFor, fireEvent } from '@testing-library/react';
-import { createMemoryHistory } from 'history';
-import { testDataProvider, useListContext } from 'ra-core';
+import { testDataProvider, useListContext, TestMemoryRouter } from 'ra-core';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import { AdminContext } from '../AdminContext';
@@ -31,27 +30,28 @@ describe('<ReferenceManyField />', () => {
             { id: 1, title: 'hello' },
             { id: 2, title: 'world' },
         ];
-        const history = createMemoryHistory();
         render(
-            <AdminContext
-                dataProvider={testDataProvider({
-                    getManyReference: () => Promise.resolve({ data, total: 2 }),
-                })}
-                history={history}
-            >
-                <ThemeProvider theme={theme}>
-                    <ReferenceManyField {...defaultProps}>
-                        <SingleFieldList>
-                            <TextField source="title" />
-                        </SingleFieldList>
-                    </ReferenceManyField>
-                </ThemeProvider>
-            </AdminContext>
+            <TestMemoryRouter>
+                <AdminContext
+                    dataProvider={testDataProvider({
+                        getManyReference: () =>
+                            Promise.resolve({ data, total: 2 }),
+                    })}
+                >
+                    <ThemeProvider theme={theme}>
+                        <ReferenceManyField {...defaultProps}>
+                            <SingleFieldList>
+                                <TextField source="title" />
+                            </SingleFieldList>
+                        </ReferenceManyField>
+                    </ThemeProvider>
+                </AdminContext>
+            </TestMemoryRouter>
         );
         await waitFor(() => {
             expect(screen.queryAllByRole('progressbar')).toHaveLength(0);
         });
-        const links = screen.queryAllByRole('link');
+        const links = await screen.findAllByRole('link');
         expect(links).toHaveLength(2);
         expect(links[0].textContent).toEqual('hello');
         expect(links[1].textContent).toEqual('world');
@@ -124,26 +124,27 @@ describe('<ReferenceManyField />', () => {
             { id: 'abc-1', title: 'hello' },
             { id: 'abc-2', title: 'world' },
         ];
-        const history = createMemoryHistory();
         render(
-            <AdminContext
-                dataProvider={testDataProvider({
-                    getManyReference: () => Promise.resolve({ data, total: 2 }),
-                })}
-                history={history}
-            >
-                <ReferenceManyField {...defaultProps}>
-                    <SingleFieldList>
-                        <TextField source="title" />
-                    </SingleFieldList>
-                </ReferenceManyField>
-            </AdminContext>
+            <TestMemoryRouter>
+                <AdminContext
+                    dataProvider={testDataProvider({
+                        getManyReference: () =>
+                            Promise.resolve({ data, total: 2 }),
+                    })}
+                >
+                    <ReferenceManyField {...defaultProps}>
+                        <SingleFieldList>
+                            <TextField source="title" />
+                        </SingleFieldList>
+                    </ReferenceManyField>
+                </AdminContext>
+            </TestMemoryRouter>
         );
 
         await waitFor(() => {
             expect(screen.queryAllByRole('progressbar')).toHaveLength(0);
         });
-        const links = screen.queryAllByRole('link');
+        const links = await screen.findAllByRole('link');
         expect(links).toHaveLength(2);
         expect(links[0].textContent).toEqual('hello');
         expect(links[1].textContent).toEqual('world');
@@ -156,25 +157,26 @@ describe('<ReferenceManyField />', () => {
             { id: 1, title: 'hello' },
             { id: 2, title: 'world' },
         ];
-        const history = createMemoryHistory();
         render(
-            <AdminContext
-                dataProvider={testDataProvider({
-                    getManyReference: () => Promise.resolve({ data, total: 2 }),
-                })}
-                history={history}
-            >
-                <ReferenceManyField {...defaultProps}>
-                    <SingleFieldList>
-                        <TextField source="title" />
-                    </SingleFieldList>
-                </ReferenceManyField>
-            </AdminContext>
+            <TestMemoryRouter>
+                <AdminContext
+                    dataProvider={testDataProvider({
+                        getManyReference: () =>
+                            Promise.resolve({ data, total: 2 }),
+                    })}
+                >
+                    <ReferenceManyField {...defaultProps}>
+                        <SingleFieldList>
+                            <TextField source="title" />
+                        </SingleFieldList>
+                    </ReferenceManyField>
+                </AdminContext>
+            </TestMemoryRouter>
         );
         await waitFor(() => {
             expect(screen.queryAllByRole('progressbar')).toHaveLength(0);
         });
-        const links = screen.queryAllByRole('link');
+        const links = await screen.findAllByRole('link');
         expect(links).toHaveLength(2);
         expect(links[0].textContent).toEqual('hello');
         expect(links[1].textContent).toEqual('world');
@@ -204,24 +206,24 @@ describe('<ReferenceManyField />', () => {
                 { id: 1, title: 'hello' },
                 { id: 2, title: 'world' },
             ];
-            const history = createMemoryHistory();
             render(
-                <AdminContext
-                    dataProvider={testDataProvider({
-                        getManyReference: () =>
-                            Promise.resolve({ data, total: 12 }),
-                    })}
-                    history={history}
-                >
-                    <ReferenceManyField
-                        {...defaultProps}
-                        pagination={<Pagination />}
+                <TestMemoryRouter>
+                    <AdminContext
+                        dataProvider={testDataProvider({
+                            getManyReference: () =>
+                                Promise.resolve({ data, total: 12 }),
+                        })}
                     >
-                        <SingleFieldList>
-                            <TextField source="title" />
-                        </SingleFieldList>
-                    </ReferenceManyField>
-                </AdminContext>
+                        <ReferenceManyField
+                            {...defaultProps}
+                            pagination={<Pagination />}
+                        >
+                            <SingleFieldList>
+                                <TextField source="title" />
+                            </SingleFieldList>
+                        </ReferenceManyField>
+                    </AdminContext>
+                </TestMemoryRouter>
             );
             await screen.findByText('hello');
             await screen.findByText('world');
@@ -234,30 +236,30 @@ describe('<ReferenceManyField />', () => {
                 { id: 1, title: 'hello' },
                 { id: 2, title: 'world' },
             ];
-            const history = createMemoryHistory();
             render(
-                <AdminContext
-                    dataProvider={testDataProvider({
-                        getManyReference: () =>
-                            Promise.resolve({
-                                data,
-                                pageInfo: {
-                                    hasPreviousPage: false,
-                                    hasNextPage: true,
-                                },
-                            }),
-                    })}
-                    history={history}
-                >
-                    <ReferenceManyField
-                        {...defaultProps}
-                        pagination={<Pagination />}
+                <TestMemoryRouter>
+                    <AdminContext
+                        dataProvider={testDataProvider({
+                            getManyReference: () =>
+                                Promise.resolve({
+                                    data,
+                                    pageInfo: {
+                                        hasPreviousPage: false,
+                                        hasNextPage: true,
+                                    },
+                                }),
+                        })}
                     >
-                        <SingleFieldList>
-                            <TextField source="title" />
-                        </SingleFieldList>
-                    </ReferenceManyField>
-                </AdminContext>
+                        <ReferenceManyField
+                            {...defaultProps}
+                            pagination={<Pagination />}
+                        >
+                            <SingleFieldList>
+                                <TextField source="title" />
+                            </SingleFieldList>
+                        </ReferenceManyField>
+                    </AdminContext>
+                </TestMemoryRouter>
             );
             await screen.findByText('hello');
             await screen.findByText('world');

@@ -11,13 +11,9 @@ const CustomerLinkField = (_: FieldProps<Customer>) => {
     }
     return (
         <Link to={`/customers/${record.id}`}>
-            <FullNameField />
+            <FullNameField source="last_name" />
         </Link>
     );
-};
-
-CustomerLinkField.defaultProps = {
-    source: 'customer_id',
 };
 
 export default CustomerLinkField;

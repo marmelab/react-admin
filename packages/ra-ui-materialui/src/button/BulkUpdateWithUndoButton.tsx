@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import { ReactElement } from 'react';
-import PropTypes from 'prop-types';
 import ActionUpdate from '@mui/icons-material/Update';
 import { alpha } from '@mui/material/styles';
 import {
@@ -14,15 +13,14 @@ import {
     RaRecord,
     UpdateManyParams,
 } from 'ra-core';
-import { UseMutationOptions } from 'react-query';
+import { UseMutationOptions } from '@tanstack/react-query';
 
 import { Button, ButtonProps } from './Button';
-import { BulkActionProps } from '../types';
 
 export const BulkUpdateWithUndoButton = (
     props: BulkUpdateWithUndoButtonProps
 ) => {
-    const { selectedIds } = useListContext(props);
+    const { selectedIds } = useListContext();
 
     const notify = useNotify();
     const resource = useResourceContext(props);
@@ -41,7 +39,6 @@ export const BulkUpdateWithUndoButton = (
                 undoable: true,
             });
             unselectAll();
-            refresh();
         },
         onError = (error: Error | string) => {
             notify(
@@ -55,8 +52,8 @@ export const BulkUpdateWithUndoButton = (
                             typeof error === 'string'
                                 ? error
                                 : error && error.message
-                                ? error.message
-                                : undefined,
+                                  ? error.message
+                                  : undefined,
                     },
                 }
             );
@@ -67,7 +64,7 @@ export const BulkUpdateWithUndoButton = (
     } = props;
     const { meta: mutationMeta, ...otherMutationOptions } = mutationOptions;
 
-    const [updateMany, { isLoading }] = useUpdateMany(
+    const [updateMany, { isPending }] = useUpdateMany(
         resource,
         { ids: selectedIds, data, meta: mutationMeta },
         {
@@ -89,7 +86,7 @@ export const BulkUpdateWithUndoButton = (
         <StyledButton
             onClick={handleClick}
             label={label}
-            disabled={isLoading}
+            disabled={isPending}
             {...sanitizeRestProps(rest)}
         >
             {icon}
@@ -100,9 +97,7 @@ export const BulkUpdateWithUndoButton = (
 const defaultIcon = <ActionUpdate />;
 
 const sanitizeRestProps = ({
-    filterValues,
     label,
-    selectedIds,
     onSuccess,
     onError,
     ...rest
@@ -110,9 +105,8 @@ const sanitizeRestProps = ({
 
 export interface BulkUpdateWithUndoButtonProps<
     RecordType extends RaRecord = any,
-    MutationOptionsError = unknown
-> extends BulkActionProps,
-        ButtonProps {
+    MutationOptionsError = unknown,
+> extends ButtonProps {
     icon?: ReactElement;
     data: any;
     onSuccess?: () => void;
@@ -123,14 +117,6 @@ export interface BulkUpdateWithUndoButtonProps<
         UpdateManyParams<RecordType>
     > & { meta?: any };
 }
-
-BulkUpdateWithUndoButton.propTypes = {
-    label: PropTypes.string,
-    resource: PropTypes.string,
-    selectedIds: PropTypes.arrayOf(PropTypes.any),
-    icon: PropTypes.element,
-    data: PropTypes.any.isRequired,
-};
 
 const PREFIX = 'RaBulkUpdateWithUndoButton';
 

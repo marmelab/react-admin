@@ -18,7 +18,7 @@ import {
     ErrorCase as ErrorCaseUndoable,
     SuccessCase as SuccessCaseUndoable,
 } from './useDelete.undoable.stories';
-import { QueryClient } from 'react-query';
+import { QueryClient } from '@tanstack/react-query';
 
 describe('useDelete', () => {
     it('returns a callback that can be used with deleteOne arguments', async () => {
@@ -167,6 +167,31 @@ describe('useDelete', () => {
         });
     });
 
+    it('should delete record even if id is zero', async () => {
+        const dataProvider = testDataProvider({
+            delete: jest.fn(() => Promise.resolve({ data: { id: 0 } } as any)),
+        });
+        let localDeleteOne;
+        const Dummy = () => {
+            const [deleteOne] = useDelete();
+            localDeleteOne = deleteOne;
+            return <span />;
+        };
+
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
+                <Dummy />
+            </CoreAdminContext>
+        );
+        localDeleteOne('foo', { id: 0, previousData: { id: 0, bar: 'bar' } });
+        await waitFor(() => {
+            expect(dataProvider.delete).toHaveBeenCalledWith('foo', {
+                id: 0,
+                previousData: { id: 0, bar: 'bar' },
+            });
+        });
+    });
+
     describe('mutationOptions', () => {
         it('when pessimistic, executes success side effects on success', async () => {
             const onSuccess = jest.fn();
@@ -248,38 +273,46 @@ describe('useDelete', () => {
             screen.getByText('Delete first post').click();
             await waitFor(() => {
                 expect(screen.queryByText('success')).toBeNull();
-                expect(screen.queryByText('Hello')).not.toBeNull();
-                expect(screen.queryByText('World')).not.toBeNull();
                 expect(screen.queryByText('mutating')).not.toBeNull();
             });
+            expect(screen.queryByText('Hello')).not.toBeNull();
+            expect(screen.queryByText('World')).not.toBeNull();
             await waitFor(() => {
                 expect(screen.queryByText('success')).not.toBeNull();
-                expect(screen.queryByText('Hello')).toBeNull();
-                expect(screen.queryByText('World')).not.toBeNull();
                 expect(screen.queryByText('mutating')).toBeNull();
             });
+            expect(screen.queryByText('Hello')).toBeNull();
+            expect(screen.queryByText('World')).not.toBeNull();
         });
         it('when pessimistic, displays error and error side effects when dataProvider promise rejects', async () => {
             jest.spyOn(console, 'log').mockImplementation(() => {});
             jest.spyOn(console, 'error').mockImplementation(() => {});
             render(<ErrorCasePessimistic />);
             screen.getByText('Delete first post').click();
-            await waitFor(() => {
-                expect(screen.queryByText('success')).toBeNull();
-                expect(screen.queryByText('something went wrong')).toBeNull();
-                expect(screen.queryByText('Hello')).not.toBeNull();
-                expect(screen.queryByText('World')).not.toBeNull();
-                expect(screen.queryByText('mutating')).not.toBeNull();
-            });
-            await waitFor(() => {
-                expect(screen.queryByText('success')).toBeNull();
-                expect(
-                    screen.queryByText('something went wrong')
-                ).not.toBeNull();
-                expect(screen.queryByText('Hello')).not.toBeNull();
-                expect(screen.queryByText('World')).not.toBeNull();
-                expect(screen.queryByText('mutating')).toBeNull();
-            });
+            await waitFor(
+                () => {
+                    expect(screen.queryByText('success')).toBeNull();
+                    expect(
+                        screen.queryByText('something went wrong')
+                    ).toBeNull();
+                    expect(screen.queryByText('Hello')).not.toBeNull();
+                    expect(screen.queryByText('World')).not.toBeNull();
+                    expect(screen.queryByText('mutating')).not.toBeNull();
+                },
+                { timeout: 4000 }
+            );
+            await waitFor(
+                () => {
+                    expect(screen.queryByText('success')).toBeNull();
+                    expect(
+                        screen.queryByText('something went wrong')
+                    ).not.toBeNull();
+                    expect(screen.queryByText('Hello')).not.toBeNull();
+                    expect(screen.queryByText('World')).not.toBeNull();
+                    expect(screen.queryByText('mutating')).toBeNull();
+                },
+                { timeout: 4000 }
+            );
         });
         it('when optimistic, displays result and success side effects right away', async () => {
             jest.spyOn(console, 'log').mockImplementation(() => {});
@@ -339,12 +372,15 @@ describe('useDelete', () => {
                 expect(screen.queryByText('World')).not.toBeNull();
                 expect(screen.queryByText('mutating')).not.toBeNull();
             });
-            await waitFor(() => {
-                expect(screen.queryByText('success')).not.toBeNull();
-                expect(screen.queryByText('Hello')).toBeNull();
-                expect(screen.queryByText('World')).not.toBeNull();
-                expect(screen.queryByText('mutating')).toBeNull();
-            });
+            await waitFor(
+                () => {
+                    expect(screen.queryByText('success')).not.toBeNull();
+                    expect(screen.queryByText('Hello')).toBeNull();
+                    expect(screen.queryByText('World')).not.toBeNull();
+                    expect(screen.queryByText('mutating')).toBeNull();
+                },
+                { timeout: 4000 }
+            );
         });
         it('when undoable, displays result and success side effects right away and reverts on cancel', async () => {
             jest.spyOn(console, 'log').mockImplementation(() => {});
@@ -383,12 +419,15 @@ describe('useDelete', () => {
                 expect(screen.queryByText('World')).not.toBeNull();
                 expect(screen.queryByText('mutating')).not.toBeNull();
             });
-            await waitFor(() => {
-                expect(screen.queryByText('success')).toBeNull();
-                expect(screen.queryByText('Hello')).not.toBeNull();
-                expect(screen.queryByText('World')).not.toBeNull();
-                expect(screen.queryByText('mutating')).toBeNull();
-            });
+            await waitFor(
+                () => {
+                    expect(screen.queryByText('success')).toBeNull();
+                    expect(screen.queryByText('Hello')).not.toBeNull();
+                    expect(screen.queryByText('World')).not.toBeNull();
+                    expect(screen.queryByText('mutating')).toBeNull();
+                },
+                { timeout: 4000 }
+            );
         });
     });
 

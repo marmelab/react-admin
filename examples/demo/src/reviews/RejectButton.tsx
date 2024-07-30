@@ -1,5 +1,4 @@
 import * as React from 'react';
-import PropTypes from 'prop-types';
 import Button from '@mui/material/Button';
 import ThumbDown from '@mui/icons-material/ThumbDown';
 import {
@@ -20,9 +19,9 @@ const RejectButton = () => {
     const redirectTo = useRedirect();
     const record = useRecordContext<Review>();
 
-    const [reject, { isLoading }] = useUpdate(
+    const [reject, { isPending }] = useUpdate(
         'reviews',
-        { id: record.id, data: { status: 'rejected' }, previousData: record },
+        { id: record?.id, data: { status: 'rejected' }, previousData: record },
         {
             mutationMode: 'undoable',
             onSuccess: () => {
@@ -50,17 +49,13 @@ const RejectButton = () => {
             startIcon={
                 <ThumbDown sx={{ color: theme => theme.palette.error.main }} />
             }
-            disabled={isLoading}
+            disabled={isPending}
         >
             {translate('resources.reviews.action.reject')}
         </Button>
     ) : (
         <span />
     );
-};
-
-RejectButton.propTypes = {
-    record: PropTypes.any,
 };
 
 export default RejectButton;

@@ -1,6 +1,9 @@
 {% assign v = page.dir | split: '/' | last %}
 <a class="dropdown-trigger" href="#" data-target="versions">
     {% if page.dir contains "doc" %}
+    {% if v == '3.19' or v == '2.9' %}
+    {{ v }}
+    {% endif %}
     {% for version in site.data.versions %}
     {% if v == version %}
     {{ version }}
@@ -34,4 +37,13 @@
         {% endif %}
     </li>
     {% endfor %}
+    <li>
+        <a href="{{ site.url }}/doc/3.19/Readme.html">3.19</a>
+    </li>
+    <li>
+        <a href="{{ site.url }}/doc/2.9/Readme.html">2.9</a>
+    </li>
+    <li>
+        <a href="{{ site.url }}/OldVersions.html">Other versions</a>
+    </li>
 </ul>

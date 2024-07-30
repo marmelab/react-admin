@@ -3,8 +3,9 @@ import { DataProvider, withLifecycleCallbacks, HttpError } from 'react-admin';
 import get from 'lodash/get';
 import data from './data';
 import addUploadFeature from './addUploadFeature';
+import { queryClient } from './queryClient';
 
-const dataProvider = withLifecycleCallbacks(fakeRestProvider(data, true), [
+const dataProvider = withLifecycleCallbacks(fakeRestProvider(data, true, 300), [
     {
         resource: 'posts',
         beforeDelete: async ({ id }, dp) => {
@@ -17,6 +18,8 @@ const dataProvider = withLifecycleCallbacks(fakeRestProvider(data, true), [
             await dp.deleteMany('comments', {
                 ids: comments.map(comment => comment.id),
             });
+            // The queryClient would be unaware of the deleted comments without this.
+            queryClient.invalidateQueries({ queryKey: ['comments'] });
             return { id };
         },
     },
@@ -34,7 +37,7 @@ const addTagsSearchSupport = (dataProvider: DataProvider) => ({
                     pageInfo: {
                         hasNextPage:
                             params.pagination.perPage * params.pagination.page <
-                            total,
+                            (total || 0),
                         hasPreviousPage: params.pagination.page > 1,
                     },
                 }));
@@ -108,23 +111,8 @@ const sometimesFailsDataProvider = new Proxy(uploadCapableDataProvider, {
     },
 });
 
-const delayedDataProvider = new Proxy(sometimesFailsDataProvider, {
-    get: (target, name) => (resource, params) => {
-        if (typeof name === 'symbol' || name === 'then') {
-            return;
-        }
-        return new Promise(resolve =>
-            setTimeout(
-                () =>
-                    resolve(sometimesFailsDataProvider[name](resource, params)),
-                300
-            )
-        );
-    },
-});
-
 interface ResponseError extends Error {
     status?: number;
 }
 
-export default delayedDataProvider;
+export default sometimesFailsDataProvider;

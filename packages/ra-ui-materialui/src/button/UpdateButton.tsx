@@ -1,5 +1,4 @@
 import * as React from 'react';
-import PropTypes from 'prop-types';
 import {
     UpdateWithConfirmButton,
     UpdateWithConfirmButtonProps,
@@ -10,7 +9,7 @@ import {
 } from './UpdateWithUndoButton';
 
 /**
- * Updates the selected rows.
+ * Updates the current record.
  *
  * To be used inside the <Edit actions> prop or <Show actions> prop.
  *
@@ -47,11 +46,3 @@ export type UpdateButtonProps =
     | ({
           mutationMode?: 'pessimistic' | 'optimistic';
       } & UpdateWithConfirmButtonProps);
-
-UpdateButton.propTypes = {
-    label: PropTypes.string,
-    resource: PropTypes.string,
-    selectedIds: PropTypes.arrayOf(PropTypes.any),
-    mutationMode: PropTypes.oneOf(['pessimistic', 'optimistic', 'undoable']),
-    icon: PropTypes.element,
-};

@@ -49,9 +49,9 @@ import { useGetIdentity } from 'react-admin';
 import { Loading, Error } from './MyComponents';
 
 const UserName = ({ userId }) => {
-    const { identity, isLoading, error } = useGetIdentity();
+    const { identity, isPending, error } = useGetIdentity();
 
-    if (isLoading) return <Loading />;
+    if (isPending) return <Loading />;
     if (error) return <Error />;
     if (!identity) return null;
 

@@ -15,8 +15,6 @@ import {
 describe('<PrevNextButtons />', () => {
     beforeEach(() => {
         window.scrollTo = jest.fn();
-        // avoid logs due to the use of ListGuesser
-        console.log = jest.fn();
     });
 
     afterEach(() => {
@@ -67,6 +65,7 @@ describe('<PrevNextButtons />', () => {
         render(<Basic />);
         const row = await screen.findByText('Deja');
         fireEvent.click(row);
+        fireEvent.click(screen.getByLabelText('Edit'));
         const next = await screen.findByLabelText('Go to next page');
         fireEvent.click(next);
         expect(screen.getByLabelText('First name').getAttribute('type')).toBe(
@@ -82,7 +81,9 @@ describe('<PrevNextButtons />', () => {
 
     it('should render a loading UI in case of slow data provider response', async () => {
         render(<LoadingState />);
-        const progress = await screen.findByRole('progressbar');
+        const progress = await screen.findByRole('progressbar', undefined, {
+            timeout: 5000,
+        });
         expect(progress).toBeDefined();
     });
 
@@ -91,7 +92,6 @@ describe('<PrevNextButtons />', () => {
             render(<Basic />);
             const row = await screen.findByText('Deja');
             fireEvent.click(row);
-            fireEvent.click(screen.getByLabelText('Show'));
             const next = await screen.findByLabelText('Go to next page');
             fireEvent.click(next);
             expect(screen.queryByLabelText('First name')).toBeNull();
@@ -143,6 +143,7 @@ describe('<PrevNextButtons />', () => {
                 sort: { field: 'id', order: 'ASC' },
                 filter: {},
                 meta: undefined,
+                signal: undefined,
             });
         });
     });

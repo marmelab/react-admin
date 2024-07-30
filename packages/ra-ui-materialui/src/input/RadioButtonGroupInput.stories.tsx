@@ -9,19 +9,41 @@ import { RadioButtonGroupInput } from './RadioButtonGroupInput';
 import { FormInspector } from './common';
 import { ReferenceInput } from './ReferenceInput';
 import { ReferenceArrayInput } from './ReferenceArrayInput';
-import { testDataProvider } from 'ra-core';
+import { Resource, TestMemoryRouter, testDataProvider } from 'ra-core';
+import { Admin } from 'react-admin';
 
 export default { title: 'ra-ui-materialui/input/RadioButtonGroupInput' };
 
 const choices = [
-    { id: 'tech', name: 'Tech' },
-    { id: 'lifestyle', name: 'Lifestyle' },
-    { id: 'people', name: 'People' },
+    { id: 'tech', name: 'Tech', details: 'Tech details' },
+    { id: 'lifestyle', name: 'Lifestyle', details: 'Lifestyle details' },
+    { id: 'people', name: 'People', details: 'People details' },
 ];
 
 export const Basic = () => (
     <Wrapper>
         <RadioButtonGroupInput source="category" choices={choices} />
+    </Wrapper>
+);
+
+export const StringChoices = () => (
+    <Wrapper>
+        <RadioButtonGroupInput
+            source="category"
+            choices={['Tech', 'Lifestyle', 'People']}
+        />
+    </Wrapper>
+);
+
+export const Disabled = () => (
+    <Wrapper>
+        <RadioButtonGroupInput source="category" choices={choices} disabled />
+    </Wrapper>
+);
+
+export const ReadOnly = () => (
+    <Wrapper>
+        <RadioButtonGroupInput source="category" choices={choices} readOnly />
     </Wrapper>
 );
 
@@ -61,9 +83,9 @@ export const Invalid = () => (
     </Wrapper>
 );
 
-export const IsLoading = () => (
+export const IsPending = () => (
     <Wrapper>
-        <RadioButtonGroupInput source="category" isLoading />
+        <RadioButtonGroupInput source="category" isPending />
     </Wrapper>
 );
 
@@ -77,19 +99,39 @@ const dataProvider = testDataProvider({
 } as any);
 
 export const InsideReferenceArrayInput = () => (
-    <AdminContext dataProvider={dataProvider} i18nProvider={i18nProvider}>
-        <Create
-            resource="posts"
-            record={{ options: [1, 2] }}
-            sx={{ width: 600 }}
+    <TestMemoryRouter initialEntries={['/posts/create']}>
+        <Admin
+            dataProvider={dataProvider}
+            i18nProvider={i18nProvider}
+            defaultTheme="light"
         >
-            <SimpleForm>
-                <ReferenceArrayInput reference="categories" source="category">
-                    <RadioButtonGroupInput />
-                </ReferenceArrayInput>
-            </SimpleForm>
-        </Create>
-    </AdminContext>
+            <Resource
+                name="categories"
+                recordRepresentation={record =>
+                    `${record.name} (${record.details})`
+                }
+            />
+            <Resource
+                name="posts"
+                create={
+                    <Create
+                        resource="posts"
+                        record={{ options: [1, 2] }}
+                        sx={{ width: 600 }}
+                    >
+                        <SimpleForm>
+                            <ReferenceArrayInput
+                                reference="categories"
+                                source="category"
+                            >
+                                <RadioButtonGroupInput />
+                            </ReferenceArrayInput>
+                        </SimpleForm>
+                    </Create>
+                }
+            />
+        </Admin>
+    </TestMemoryRouter>
 );
 
 export const InsideReferenceArrayInputWithError = () => (
@@ -99,6 +141,7 @@ export const InsideReferenceArrayInputWithError = () => (
             getList: () => Promise.reject(new Error('fetch error')),
         }}
         i18nProvider={i18nProvider}
+        defaultTheme="light"
     >
         <Create
             resource="posts"
@@ -136,7 +179,7 @@ export const Id = () => (
 const i18nProvider = polyglotI18nProvider(() => englishMessages);
 
 const Wrapper = ({ children }) => (
-    <AdminContext i18nProvider={i18nProvider}>
+    <AdminContext i18nProvider={i18nProvider} defaultTheme="light">
         <Create resource="posts">
             <SimpleForm>
                 {children}
@@ -176,6 +219,7 @@ export const TranslateChoice = () => {
                         }),
                 } as any
             }
+            defaultTheme="light"
         >
             <Edit resource="posts" id="1">
                 <SimpleForm>

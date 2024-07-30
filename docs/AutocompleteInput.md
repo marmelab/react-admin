@@ -66,7 +66,7 @@ The form value for the source must be the selected value, e.g.
 | `emptyText`                | Optional | `string`              | `''`                                                                | The text to use for the empty element                                                                                                                                                                               |
 | `emptyValue`               | Optional | `any`                 | `''`                                                                | The value to use for the empty element                                                                                                                                                                              |
 | `filterToQuery`            | Optional | `string` => `Object`  | `q => ({ q })`                                                      | How to transform the searchText into a parameter for the data provider                                                                                                                                              |
-| `isLoading`                | Optional | `boolean`             | `false`                                                             | If `true`, the component will display a loading indicator.                                                                                                                                                          |
+| `isPending`                | Optional | `boolean`             | `false`                                                             | If `true`, the component will display a loading indicator.                                                                                                                                                          |
 | `inputText`                | Optional | `Function`            | `-`                                                                 | Required if `optionText` is a custom Component, this function must return the text displayed for the current selection.                                                                                             |
 | `matchSuggestion`          | Optional | `Function`            | `-`                                                                 | Required if `optionText` is a React element. Function returning a boolean indicating whether a choice matches the filter. `(filter, choice) => boolean`                                                             |
 | `onChange`                 | Optional | `Function`            | `-`                                                                 | A function called with the new value, along with the selected record, when the input value changes |
@@ -132,13 +132,13 @@ If you need to *fetch* the options from another resource, you're usually editing
 
 See [Selecting a foreign key](#selecting-a-foreign-key) below for more information.
 
-If you have an *array of values* for the options, turn it into an array of objects with the `id` and `name` properties:
+You can also pass an *array of strings* for the choices:
 
 ```jsx
-const possibleValues = ['tech', 'lifestyle', 'people'];
-const ucfirst = name => name.charAt(0).toUpperCase() + name.slice(1);
-const choices = possibleValues.map(value => ({ id: value, name: ucfirst(value) }));
-
+const categories = ['tech', 'lifestyle', 'people'];
+<AutocompleteInput source="category" choices={categories} />
+// is equivalent to
+const choices = categories.map(value => ({ id: value, name: value }));
 <AutocompleteInput source="category" choices={choices} />
 ```
 
@@ -219,7 +219,47 @@ const CreateCategory = () => {
 ```
 {% endraw %}
 
+If you want to customize the label of the "Create XXX" option, use [the `createItemLabel` prop](#createitemlabel).
+
 If you just need to ask users for a single string to create the new option, you can use [the `onCreate` prop](#oncreate) instead.
+
+## `createLabel`
+
+When you set the `create` or `onCreate` prop, `<AutocompleteInput>` lets users create new options. By default, it renders a "Create" menu item at the bottom of the list. You can customize the label of that menu item by setting a custom translation for the `ra.action.create` key in the translation files.
+
+![Create Label](./img/AutocompleteInput-createLabel.png)
+
+Or, if you want to customize it just for this `<AutocompleteInput>`, use the `createLabel` prop:
+
+You can customize the label of that menu item by setting a custom translation for the `ra.action.create` key in the translation files.
+
+```jsx
+<AutocompleteInput
+    source="author"
+    choices={authors}
+    onCreate={onCreate}
+    createLabel="Start typing to create a new item"
+/>
+```
+
+## `createItemLabel`
+
+If you set the `create` or `onCreate` prop, `<AutocompleteInput>` lets users create new options. When the text entered by the user doesn't match any option, the input renders a "Create XXX" menu item at the bottom of the list.
+
+![Create Item Label](./img/AutocompleteInput-createItemLabel.png)
+
+You can customize the label of that menu item by setting a custom translation for the `ra.action.create_item` key in the translation files.
+
+Or, if you want to customize it just for this `<AutocompleteInput>`, use the `createItemLabel` prop:
+
+```jsx
+<AutocompleteInput
+    source="author"
+    choices={authors}
+    onCreate={onCreate}
+    createItemLabel="Add a new author: %{item}"
+/>
+```
 
 ## `debounce`
 
@@ -232,6 +272,8 @@ This delay can be customized by setting the `debounce` prop.
     <AutocompleteInput debounce={500} />
 </ReferenceInput>
 ```
+
+**Tip**: [The `signal` Parameter section](./DataProviderWriting.md#the-signal-parameter) explains how to use the [AbortSignal](https://developer.mozilla.org/en-US/docs/Web/API/AbortSignal) interface to abort the last API call and avoid parallel requests.
 
 ## `emptyText`
 
@@ -277,15 +319,15 @@ const filterToQuery = searchText => ({ name_ilike: `%${searchText}%` });
 </ReferenceInput>
 ```
 
-## `isLoading`
+## `isPending`
 
-When [fetching choices from a remote API](#fetching-choices), the `<AutocompleteInput>` can't be used until the choices are fetched. To let the user know, you can pass the `isLoading` prop to `<AutocompleteInput>`. This displays a loading message in the autocomplete box while the choices are being fetched.
+When [fetching choices from a remote API](#fetching-choices), the `<AutocompleteInput>` can't be used until the choices are fetched. To let the user know, you can pass the `isPending` prop to `<AutocompleteInput>`. This displays a loading message in the autocomplete box while the choices are being fetched.
 
 ```jsx
 import { useGetList, AutocompleteInput } from 'react-admin';
 
 const UserCountry = () => {
-    const { data, isLoading } = useGetList('countries');
+    const { data, isPending } = useGetList('countries');
     // data is an array of { id: 123, code: 'FR', name: 'France' }
     return (
         <AutocompleteInput 
@@ -293,7 +335,7 @@ const UserCountry = () => {
             choices={data}
             optionText="name"
             optionValue="code"
-            isLoading={isLoading}
+            isPending={isPending}
         />
     );
 }
@@ -340,11 +382,7 @@ const LanguageChangingAuthorInput = () => {
     };
     return (
         <ReferenceInput reference="authors" source="author">
-            <AutocompleteInput
-                fullWidth
-                optionText="name"
-                onChange={handleChange}
-            />
+            <AutocompleteInput optionText="name" onChange={handleChange} />
         </ReferenceInput>
     );
 };
@@ -369,39 +407,50 @@ const BookCreate = () => (
 
 ## `onCreate`
 
-Use the `onCreate` prop to allow users to create new options on-the-fly. Its value must be a function. This lets you render a `prompt` to ask users about the new value. You can return either the new choice directly or a Promise resolving to the new choice.
+Use the `onCreate` prop to allow users to create new options on the fly. This is equivalent to MUI's `<AutoComplete freeSolo>` prop. 
 
-{% raw %}
+<video controls playsinline muted>
+  <source src="./img/AutocompleteInput-onCreate.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
+`onCreate` must be a function that adds a new choice and returns it. This function can be async. The added choice must use the same format as the other choices (usually `{ id, name }`).
+
+In the following example, users can create a new company by typing its name in the `<AutocompleteInput>`:
+
 ```js
 import { AutocompleteInput, Create, SimpleForm, TextInput } from 'react-admin';
 
-const PostCreate = () => {
-    const categories = [
-        { name: 'Tech', id: 'tech' },
-        { name: 'Lifestyle', id: 'lifestyle' },
+const ContactCreate = () => {
+    const companies = [
+        { id: 1, name: 'Globex Corp.' },
+        { id: 2, name: 'Soylent Inc.' },
     ];
     return (
         <Create>
             <SimpleForm>
-                <TextInput source="title" />
+                <TextInput source="first_name" />
+                <TextInput source="last_name" />
                 <AutocompleteInput
-                    onCreate={() => {
-                        const newCategoryName = prompt('Enter a new category');
-                        const newCategory = { id: newCategoryName.toLowerCase(), name: newCategoryName };
-                        categories.push(newCategory);
-                        return newCategory;
+                    source="company"
+                    choices={companies}
+                    onCreate={companyName => {
+                        const newCompany = { id: companies.length + 1, name: companyName };
+                        companies.push(newCompany);
+                        return newCompany;
                     }}
-                    source="category"
-                    choices={categories}
                 />
             </SimpleForm>
         </Create>
     );
 }
 ```
-{% endraw %}
 
-If a prompt is not enough, you can use [the `create` prop](#create) to render a custom component instead.
+If you want to customize the label of the "Create XXX" option, use [the `createItemLabel` prop](#createitemlabel).
+
+When used inside a `<ReferenceInput>`, the `onCreate` prop should create a new record in the reference resource, and return it. See [Creating a New Reference](./ReferenceInput.md#creating-a-new-reference) for more details.
+
+If a function is not enough, you can use [the `create` prop](#create) to render a custom component instead.
 
 ## `optionText`
 
@@ -601,7 +650,7 @@ You can use [`useGetList`](./useGetList.md) to fetch choices. For example, to fe
 import { useGetList, AutocompleteInput } from 'react-admin';
 
 const CountryInput = () => {
-    const { data, isLoading } = useGetList('countries');
+    const { data, isPending } = useGetList('countries');
     // data is an array of { id: 123, code: 'FR', name: 'France' }
     return (
         <AutocompleteInput 
@@ -609,13 +658,13 @@ const CountryInput = () => {
             choices={data}
             optionText="name"
             optionValue="code"
-            isLoading={isLoading}
+            isPending={isPending}
         />
     );
 }
 ```
 
-The `isLoading` prop is used to display a loading indicator while the data is being fetched.
+The `isPending` prop is used to display a loading indicator while the data is being fetched.
 
 However, most of the time, if you need to populate a `<AutocompleteInput>` with choices fetched from another resource, it's because you are trying to set a foreign key. In that case, you should use [`<ReferenceInput>`](./ReferenceInput.md) to fetch the choices instead (see next section). 
 
@@ -633,25 +682,26 @@ import { useWatch } from 'react-hook-form';
 const CompanyInput = () => {
     const [filter, setFilter] = useState({ q: '' });
     // fetch possible companies
-    const { data: choices, isLoading: isLoadingChoices } = useGetList('companies', { filter });
+    const { data: choices, isPending: isPendingChoices } = useGetList('companies', { filter });
     // companies are like { id: 123, name: 'Acme' }
     // get the current value of the foreign key
     const companyId = useWatch({ name: 'company_id'})
     // fetch the current company
-    const { data: currentCompany, isLoading: isLoadingCurrentCompany } = useGetOne('companies', { id: companyId });
+    const { data: currentCompany, isPending: isPendingCurrentCompany } = useGetOne('companies', { id: companyId });
     // if the current company is not in the list of possible companies, add it
     const choicesWithCurrentCompany = choices
         ? choices.find(choice => choice.id === companyId)
             ? choices
             : [...choices, currentCompany]
         : [];
+    const isPending = isPendingChoices && isPendingCurrentCompany;
     return (
         <AutocompleteInput 
             label="Company"
             source="company_id"
             choices={choicesWithCurrentCompany}
             optionText="name"
-            disabled={isLoading}
+            disabled={isPending}
             onInputChange={e => setFilter({ q: e.target.value })}
         />
     );
@@ -677,10 +727,10 @@ const CompanyInput = () => (
 `<ReferenceInput>` is a headless component that:
  
  - fetches a list of records with `dataProvider.getList()` and `dataProvider.getOne()`, using the `reference` prop for the resource,
- - puts the result of the fetch in the `ChoiceContext` as the `choices` prop, as well as the `isLoading` state,
+ - puts the result of the fetch in the `ChoiceContext` as the `choices` prop, as well as the `isPending` state,
  - and renders its child component
 
-When rendered as a child of `<ReferenceInput>`, `<AutocompleteInput>` reads that `ChoiceContext` to populate its own `choices` and `isLoading` props. It also sends the current input prop to the `useGetList` hook, so that the list of choices is filtered as the user types.
+When rendered as a child of `<ReferenceInput>`, `<AutocompleteInput>` reads that `ChoiceContext` to populate its own `choices` and `isPending` props. It also sends the current input prop to the `useGetList` hook, so that the list of choices is filtered as the user types.
 
 In fact, you can simplify the code even further:
 

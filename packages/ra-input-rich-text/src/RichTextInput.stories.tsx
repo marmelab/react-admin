@@ -4,6 +4,7 @@ import {
     required,
     useGetManyReference,
     useRecordContext,
+    TestMemoryRouter,
 } from 'ra-core';
 import {
     AdminContext,
@@ -12,12 +13,14 @@ import {
     SimpleForm,
     SimpleFormProps,
     TopToolbar,
+    Toolbar as RAToolbar,
+    SaveButton,
 } from 'ra-ui-materialui';
 import { useWatch } from 'react-hook-form';
 import fakeRestDataProvider from 'ra-data-fakerest';
-import { MemoryRouter, Routes, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import Mention from '@tiptap/extension-mention';
-import { ReactRenderer } from '@tiptap/react';
+import { Editor, ReactRenderer } from '@tiptap/react';
 import tippy, { Instance as TippyInstance } from 'tippy.js';
 import {
     DefaultEditorOptions,
@@ -26,12 +29,14 @@ import {
 } from './RichTextInput';
 import { RichTextInputToolbar } from './RichTextInputToolbar';
 import {
+    Button,
     List,
     ListItem,
     ListItemButton,
     ListItemText,
     Paper,
 } from '@mui/material';
+import { FormatButtons } from './buttons';
 
 export default { title: 'ra-input-rich-text/RichTextInput' };
 
@@ -74,6 +79,19 @@ export const Disabled = (props: Partial<SimpleFormProps>) => (
             {...props}
         >
             <RichTextInput source="body" disabled />
+            <FormInspector />
+        </SimpleForm>
+    </AdminContext>
+);
+
+export const ReadOnly = (props: Partial<SimpleFormProps>) => (
+    <AdminContext i18nProvider={i18nProvider}>
+        <SimpleForm
+            defaultValues={{ body: 'Hello World' }}
+            onSubmit={() => {}}
+            {...props}
+        >
+            <RichTextInput source="body" readOnly />
             <FormInspector />
         </SimpleForm>
     </AdminContext>
@@ -174,6 +192,69 @@ export const Validation = (props: Partial<SimpleFormProps>) => (
     </AdminContext>
 );
 
+const MyRichTextInputToolbar = ({ ...props }) => {
+    return (
+        <RichTextInputToolbar {...props}>
+            <FormatButtons />
+        </RichTextInputToolbar>
+    );
+};
+
+export const Toolbar = (props: Partial<SimpleFormProps>) => (
+    <AdminContext i18nProvider={i18nProvider}>
+        <SimpleForm
+            defaultValues={{ body: 'Hello World' }}
+            onSubmit={() => {}}
+            {...props}
+        >
+            <RichTextInput source="body" toolbar={<MyRichTextInputToolbar />} />
+            <FormInspector />
+        </SimpleForm>
+    </AdminContext>
+);
+
+export const EditorReference = (props: Partial<SimpleFormProps>) => {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const editorRef = React.useRef<Editor>(null);
+
+    const EditorToolbar = () => (
+        <RAToolbar>
+            <SaveButton />
+            <Button
+                onClick={() => {
+                    editorRef.current.commands.setContent(
+                        '<h3>Here is my template</h3>'
+                    );
+                }}
+            >
+                Use template
+            </Button>
+        </RAToolbar>
+    );
+
+    return (
+        <AdminContext i18nProvider={i18nProvider}>
+            <SimpleForm
+                defaultValues={{ body: 'Hello World' }}
+                toolbar={<EditorToolbar />}
+                onSubmit={() => {}}
+                {...props}
+            >
+                <RichTextInput
+                    source="body"
+                    editorOptions={{
+                        ...DefaultEditorOptions,
+                        onCreate: ({ editor }: { editor: Editor }) => {
+                            editorRef.current = editor;
+                        },
+                    }}
+                />
+                <FormInspector />
+            </SimpleForm>
+        </AdminContext>
+    );
+};
+
 const dataProvider = fakeRestDataProvider({
     posts: [
         { id: 1, body: 'Post 1' },
@@ -216,7 +297,7 @@ const MyRichTextInput = (props: RichTextInputProps) => {
 };
 
 export const CustomOptions = () => (
-    <MemoryRouter initialEntries={['/posts/1']}>
+    <TestMemoryRouter initialEntries={['/posts/1']}>
         <AdminContext dataProvider={dataProvider}>
             <Routes>
                 <Route
@@ -238,7 +319,7 @@ export const CustomOptions = () => (
                 />
             </Routes>
         </AdminContext>
-    </MemoryRouter>
+    </TestMemoryRouter>
 );
 
 const MentionList = React.forwardRef<

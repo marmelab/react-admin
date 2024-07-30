@@ -2,7 +2,6 @@ import * as React from 'react';
 import { ComponentType, ErrorInfo, Fragment, HtmlHTMLAttributes } from 'react';
 import { FallbackProps } from 'react-error-boundary';
 import { styled } from '@mui/material/styles';
-import PropTypes from 'prop-types';
 import {
     Button,
     Accordion,
@@ -13,9 +12,14 @@ import {
 import ErrorIcon from '@mui/icons-material/Report';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import History from '@mui/icons-material/History';
-import { TitleComponent, useTranslate } from 'ra-core';
-import { Title, TitlePropType } from './Title';
-import { useResetErrorBoundaryOnLocationChange } from './useResetErrorBoundaryOnLocationChange';
+import {
+    useTranslate,
+    useDefaultTitle,
+    useResetErrorBoundaryOnLocationChange,
+} from 'ra-core';
+import type { TitleComponent } from 'ra-core';
+
+import { Title } from './Title';
 
 export const Error = (
     props: InternalErrorProps & {
@@ -28,11 +32,11 @@ export const Error = (
         errorInfo,
         resetErrorBoundary,
         className,
-        title,
         ...rest
     } = props;
 
     const translate = useTranslate();
+    const title = useDefaultTitle();
     useResetErrorBoundaryOnLocationChange(resetErrorBoundary);
 
     if (ErrorComponent) {
@@ -84,7 +88,7 @@ export const Error = (
                                 <ul>
                                     <li>
                                         Check the{' '}
-                                        <a href="https://marmelab.com/react-admin/Readme.html">
+                                        <a href="https://marmelab.com/react-admin/documentation.html">
                                             react-admin documentation
                                         </a>
                                     </li>
@@ -97,7 +101,7 @@ export const Error = (
                                     </li>
                                     <li>
                                         Get help from the core team via{' '}
-                                        <a href="https://marmelab.com/ra-enterprise/#fromsww">
+                                        <a href="https://react-admin-ee.marmelab.com/#fromsww">
                                             react-admin Enterprise Edition
                                         </a>
                                     </li>
@@ -120,18 +124,11 @@ export const Error = (
     );
 };
 
-Error.propTypes = {
-    className: PropTypes.string,
-    error: PropTypes.object.isRequired,
-    errorInfo: PropTypes.object,
-    title: TitlePropType,
-};
-
 interface InternalErrorProps
     extends Omit<HtmlHTMLAttributes<HTMLDivElement>, 'title'>,
-        FallbackProps,
-        ErrorProps {
+        FallbackProps {
     className?: string;
+    errorInfo?: ErrorInfo;
 }
 
 export interface ErrorProps extends Pick<FallbackProps, 'error'> {

@@ -31,8 +31,8 @@ React-admin Field components also accept a `record` prop. This allows you to use
 // { id: 123, title: "Hello, world", author: "John Doe", body: "..." }
 
 const PostShow = ({ id }) => {
-    const { data, isLoading } = useGetOne('books', { id });
-    if (isLoading) return <span>Loading</span>; 
+    const { data, isPending } = useGetOne('books', { id });
+    if (isPending) return <span>Loading</span>; 
     return (
         <dl>
             <dt>Title</dt>
@@ -288,18 +288,19 @@ And see [the Material UI system documentation](https://mui.com/system/the-sx-pro
 
 This prop defines the text alignment of the field when rendered inside a `<Datagrid>` cell. By default, datagrid values are left-aligned ; for numeric values, it's often better to right-align them. Set `textAlign` to `right` for that.
 
-[`<NumberField>`](./NumberField.md) already uses `textAlign="right"`. Set the default value for this prop if you create a custom numeric field. 
-
 ```jsx
-const BasketTotal = () => {
-    const record = useRecordContext();
-    if (!record) return null;
-    const total = record.items.reduce((total, item) => total + item.price, 0);
-    return <span>{total}</span>;
-}
-BasketTotal.defaultProps = {
-    textAlign: 'right',
-};
+import { List, Datagrid, TextField } from 'react-admin';
+
+const PostList = () => (
+    <List>
+        <Datagrid>
+            <TextField source="id" />
+            <TextField source="title" />
+            <TextField source="author" />
+            <TextField source="year" textAlign="right" />
+        </Datagrid>
+    </List>
+);
 ```
 
 ## Deep Field Source
@@ -325,6 +326,8 @@ Then you can render the author name like this:
 ```
 
 ## Setting A Field Label
+
+<iframe src="https://www.youtube-nocookie.com/embed/fWc7c0URQMQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;"></iframe>
 
 React-admin Field layout components like [`<Datagrid>`](./Datagrid.md) and [`<SimpleShowLayout>`](./SimpleShowLayout.md) inspect their children and use their `label` prop to set the table headers or the field labels.
 
@@ -386,9 +389,6 @@ If you want to format a field depending on the value, create another component w
 const FormattedNumberField = ({ source }) => {
     const record = useRecordContext();
     return <NumberField sx={{ color: record && record[source] < 0 ? 'red' : '' }} source={source} />;
-};
-FormattedNumberField.defaultProps = {
-    textAlign: 'right',
 };
 ```
 {% endraw %}
@@ -457,7 +457,9 @@ const BookList = () => (
 
 If you don't find what you need in the list of available Fields, you can write your own Field component.
 
-It must be a regular React component, accepting a `source` attribute and retrieving the `record` from the `RecordContext` with the `useRecordContext` hook. React-admin will set the `record` in this context based on the API response data at render time. The field component only needs to find the `source` in the `record` and display it.
+<iframe src="https://www.youtube-nocookie.com/embed/tTNDAssRJhU" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;"></iframe>
+
+A custom field must be a regular React component retrieving the `record` from the `RecordContext` with the `useRecordContext` hook. React-admin will set the `record` in this context based on the API response data at render time. If you pass a `source`, the field component needs to find the corresponding value in the `record` and render it.
 
 Let's see an example for an API returning user records with `firstName` and `lastName` properties.
 
@@ -501,21 +503,24 @@ export const UserList = () => (
 
 **Tip**: In such custom fields, the `source` is optional. React-admin uses it to determine which column to use for sorting when the column header is clicked. In case you use the `source` property for additional purposes, the sorting can be overridden by the `sortBy` property on any `Field` component.
 
-If you build a reusable field accepting a `source` props, you will probably want to support deep field sources (e.g. source values like `author.name`). Use [lodash/get](https://www.npmjs.com/package/lodash.get) to replace the simple object lookup. For instance, for a Text field:
+If you build a reusable field accepting a `source` props, you will probably want to support deep field sources (e.g. source values like `author.name`). Use the [`useFieldValue` hook](/useFieldValue.md) to replace the simple object lookup. For instance, for a Text field:
 
 ```diff
 import * as React from 'react';
-+import get from 'lodash/get';
-import { useRecordContext } from 'react-admin';
+-import { useRecordContext } from 'react-admin';
++import { useFieldValue } from 'react-admin';
 
-const TextField = ({ source }) => {
-    const record = useRecordContext();
--   return record ? <span>{record[source]}</span> : null;
-+   return record ? <span>{get(record, source)}</span> : null;
+const TextField = (props) => {
+-    const record = useRecordContext();
++   const value = useFieldValue(props);
+-   return record ? <span>{record[props.source]}</span> : null;
++   return <span>{value}</span> : null;
 }
 
 export default TextField;
 ```
+
+**Tip**: Note that when using `useFieldValue`, you don't need to check that `record` is defined.
 
 ## Hiding A Field Based On The Value Of Another
 
@@ -593,10 +598,10 @@ import { Link } from 'react-router-dom';
 
 const AuthorField = () => {
     const post = useRecordContext();
-    const { data, isLoading } = useGetOne('users', { id: post.user_id });
+    const { data, isPending } = useGetOne('users', { id: post.user_id });
     const userShowPage = `/users/${post.user_id}/show`;
 
-    return isLoading ? null : <Link to={userShowPage}>{data.username}</Link>;
+    return isPending ? null : <Link to={userShowPage}>{data.username}</Link>;
 };
 ```
 

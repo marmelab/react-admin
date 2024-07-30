@@ -5,6 +5,7 @@ import {
     testDataProvider,
     ListContextProvider,
     useRecordContext,
+    ResourceContextProvider,
 } from 'ra-core';
 import { ThemeProvider, createTheme } from '@mui/material';
 import { Datagrid } from './Datagrid';
@@ -17,9 +18,11 @@ const TitleField = (): JSX.Element => {
 const Wrapper = ({ children, listContext }) => (
     <ThemeProvider theme={createTheme()}>
         <CoreAdminContext dataProvider={testDataProvider()}>
-            <ListContextProvider value={listContext}>
-                {children}
-            </ListContextProvider>
+            <ResourceContextProvider value={listContext.resource}>
+                <ListContextProvider value={listContext}>
+                    {children}
+                </ListContextProvider>
+            </ResourceContextProvider>
         </CoreAdminContext>
     </ThemeProvider>
 );
@@ -272,7 +275,9 @@ describe('<Datagrid />', () => {
     it('should display a message when there is no result', () => {
         render(
             <Wrapper listContext={{ ...contextValue, data: [], total: 0 }}>
-                <Datagrid />
+                <Datagrid>
+                    <TitleField />
+                </Datagrid>
             </Wrapper>
         );
         expect(screen.queryByText('ra.navigation.no_results')).not.toBeNull();

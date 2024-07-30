@@ -1,4 +1,4 @@
-# react-admin [![Build Status](https://travis-ci.org/marmelab/react-admin.svg?branch=master)](https://travis-ci.org/marmelab/react-admin) [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fmarmelab%2Freact-admin.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fmarmelab%2Freact-admin?ref=badge_shield) [![Gitpod ready-to-code](https://img.shields.io/badge/Gitpod-ready--to--code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/marmelab/react-admin)
+# react-admin [![Build Status](https://travis-ci.org/marmelab/react-admin.svg?branch=master)](https://travis-ci.org/marmelab/react-admin) [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fmarmelab%2Freact-admin.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fmarmelab%2Freact-admin?ref=badge_shield)
 
 A frontend Framework for building data-driven applications running in the browser on top of REST/GraphQL APIs, using ES6, [React](https://facebook.github.io/react/) and [Material Design](https://material.io/). Previously named [admin-on-rest](https://github.com/marmelab/admin-on-rest). Open sourced and maintained by [marmelab](https://marmelab.com/).
 
@@ -9,7 +9,7 @@ A frontend Framework for building data-driven applications running in the browse
 ## Features
 
 * Adapts to any backend (REST, GraphQL, SOAP, etc.)
-* Powered by [Material UI](https://mui.com/material-ui/getting-started/), [react-query](https://react-query-v3.tanstack.com/), [react-hook-form](https://react-hook-form.com), [react-router](https://reacttraining.com/react-router/) and a few more
+* Powered by [Material UI](https://mui.com/material-ui/getting-started/), [react-query](https://tanstack.com/query/v5), [react-hook-form](https://react-hook-form.com), [react-router](https://reacttraining.com/react-router/) and a few more
 * Super-fast UI thanks to optimistic rendering (renders before the server returns)
 * Undo updates and deletes for a few seconds
 * Relationships (many to one, one to many)
@@ -43,7 +43,7 @@ yarn add react-admin
 
 1. Read the [Tutorial](https://marmelab.com/react-admin/Tutorial.html) for a 30 minutes introduction. 
 2. Read the source code of [the demos](https://marmelab.com/react-admin/Demos.html) for real-life examples.
-3. Read the [Documentation](https://marmelab.com/react-admin/Readme.html) for a deep dive into the react-admin components and hooks.
+3. Read the [Documentation](https://marmelab.com/react-admin/documentation.html) for a deep dive into the react-admin components and hooks.
 4. Red the [Architecture decisions](https://marmelab.com/react-admin/Architecture.html) to better understand why features are implemented that way.
 5. Check out the [API Reference](https://marmelab.com/react-admin/Reference.html) for a complete list of the public API.
 6. Get [Support](#support) for fixing your own problems
@@ -167,7 +167,7 @@ And then browse to the URL displayed in your console.
 
 ## Support
 
-You can get professional support from Marmelab via [React-Admin Enterprise Edition](https://marmelab.com/ra-enterprise), or community support via [StackOverflow](https://stackoverflow.com/questions/tagged/react-admin). 
+You can get professional support from Marmelab via [React-Admin Enterprise Edition](https://react-admin-ee.marmelab.com), or community support via [StackOverflow](https://stackoverflow.com/questions/tagged/react-admin). 
 
 ## Versions In This Repository
 
@@ -196,12 +196,6 @@ For all Pull requests, you must follow the coding style of the existing files (b
 ### Setup
 
 Clone this repository and run `make install` to grab the dependencies, then `make build` to compile the sources from TypeScript to JS.
-
-### Online one-click Setup
-
-You can use Gitpod(An Online Open Source VS Code like IDE which is free for Open Source) for working on issues and making PRs. With a single click it will launch a workspace and automatically clone the repo, run `make install` and `make start` so that you can start straight away.
-
-[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/from-referrer/)
 
 ### Testing Your Changes In The Example Apps
 

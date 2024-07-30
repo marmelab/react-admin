@@ -5,11 +5,11 @@ title: "AccordionForm"
 
 # `<AccordionForm>`
 
-This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> component offers an alternative layout for Edit and Create forms, where Inputs are grouped into expandable panels.
+This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" /> component offers an alternative layout for Edit and Create forms, where Inputs are grouped into expandable panels.
 
 <video controls autoplay playsinline muted loop>
-  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-accordion-form-overview.webm" type="video/webm" />
-  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-accordion-form-overview.mp4" type="video/mp4" />
+  <source src="https://react-admin-ee.marmelab.com/assets/ra-accordion-form-overview.webm" type="video/webm" />
+  <source src="https://react-admin-ee.marmelab.com/assets/ra-accordion-form-overview.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
 
@@ -73,30 +73,30 @@ By default, each child accordion element handles its expanded state independentl
 You can also use the `<AccordionSection>` component as a child of `<SimpleForm>` for secondary inputs:
 
 <video controls autoplay playsinline muted loop>
-  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-accordion-section-overview.webm" type="video/webm" />
-  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-accordion-section-overview.mp4" type="video/mp4" />
+  <source src="https://react-admin-ee.marmelab.com/assets/ra-accordion-section-overview.webm" type="video/webm" />
+  <source src="https://react-admin-ee.marmelab.com/assets/ra-accordion-section-overview.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
 
-Check [the `ra-form-layout` documentation](https://marmelab.com/ra-enterprise/modules/ra-form-layout##accordionform) for more details.
+Check [the `ra-form-layout` documentation](https://react-admin-ee.marmelab.com/documentation/ra-form-layout#accordionform) for more details.
 
 ## Props
 
 Here are all the props you can set on the `<AccordionForm>` component:
 
-| Prop                     | Required | Type              | Default | Description                                                |
-| ------------------------ | -------- | ----------------- | ------- | ---------------------------------------------------------- |
-| `autoClose`              | Optional | `boolean`         | -       | Set to `true` to close the current accordion when opening another one. |
-| `children`               | Required | `ReactNode`       | -       | A list of `<AccordionForm.Panel>` elements.                   |
-| `defaultValues`          | Optional | `object|function` | -       | The default values of the record.                          |
-| `id`                     | Optional | `string`          | -       | The id of the underlying `<form>` tag.                     |
-| `noValidate`             | Optional | `boolean`         | -       | Set to `true` to disable the browser's default validation. |
-| `onSubmit`               | Optional | `function`        | `save`  | A callback to call when the form is submitted.             |
-| `sanitize EmptyValues`    | Optional | `boolean`         | -       | Set to `true` to remove empty values from the form state.  |
-| `toolbar`                | Optional | `ReactElement`    | -       | A custom toolbar element.                                  |
-| `validate`               | Optional | `function`        | -       | A function to validate the form values.                    |
-| `warnWhen UnsavedChanges` | Optional | `boolean`         | -       | Set to `true` to warn the user when leaving the form with unsaved changes. |
-
+| Prop                      | Required | Type              | Default | Description                                                                  |
+| ------------------------- | -------- | ----------------- | ------- | ---------------------------------------------------------------------------- |
+| `autoClose`               | Optional | `boolean`         | -       | Set to `true` to close the current accordion when opening another one.       |
+| `children`                | Required | `ReactNode`       | -       | A list of `<AccordionForm.Panel>` elements.                                  |
+| `defaultValues`           | Optional | `object|function` | -       | The default values of the record.                                            |
+| `id`                      | Optional | `string`          | -       | The id of the underlying `<form>` tag.                                       |
+| `noValidate`              | Optional | `boolean`         | -       | Set to `true` to disable the browser's default validation.                   |
+| `onSubmit`                | Optional | `function`        | `save`  | A callback to call when the form is submitted.                               |
+| `sanitize EmptyValues`    | Optional | `boolean`         | -       | Set to `true` to remove empty values from the form state.                    |
+| `toolbar`                 | Optional | `ReactElement`    | -       | A custom toolbar element.                                                    |
+| `validate`                | Optional | `function`        | -       | A function to validate the form values.                                      |
+| `warnWhen UnsavedChanges` | Optional | `boolean`         | -       | Set to `true` to warn the user when leaving the form with unsaved changes.   |
+| `sx`                      | Optional | `Object`          | -       | An object containing the MUI style overrides to apply to the root component. |
 
 Additional props are passed to `react-hook-form`'s [`useForm` hook](https://react-hook-form.com/docs/useform).
 
@@ -165,7 +165,7 @@ export const PostCreate = () => (
 
 **Tip**: You can include properties in the form `defaultValues` that are not listed as input components, like the `created_at` property in the previous example.
 
-**Tip**: React-admin also allows to define default values at the input level. See the [Setting default Values](./EditTutorial.md#setting-default-values) section.
+**Tip**: React-admin also allows to define default values at the input level. See the [Setting default Values](./Forms.md#default-values) section.
 
 ## `id`
 
@@ -261,6 +261,8 @@ For the previous example, the data sent to the `dataProvider` will be:
 
 **Note:** Setting the `sanitizeEmptyValues` prop to `true` will also have a (minor) impact on react-admin inputs (like `<TextInput>`, `<NumberInput>`, etc.): empty values (i.e. values equal to `null`) will be removed from the form state on submit, unless the record actually had a value for that field.
 
+**Note** Even with `sanitizeEmptyValues` set to `true`, deeply nested fields won't be set to `null` nor removed. If you need to sanitize those fields, use [the `transform` prop](./Edit.md#transform) of `<Edit>` or `<Create>` components.
+
 If you need a more fine-grained control over the sanitization, you can use [the `transform` prop](./Edit.md#transform) of `<Edit>` or `<Create>` components, or [the `parse` prop](./Inputs.md#parse) of individual inputs.
 
 ## `toolbar`
@@ -335,7 +337,7 @@ export const UserCreate = () => (
 
 ## `warnWhenUnsavedChanges`
 
-React-admin keeps track of the form state, so it can detect when the user leaves an `Edit` or `Create` page with unsaved changes. To avoid data loss, you can use this ability to ask the user to confirm before leaving a page with unsaved changes. 
+React-admin keeps track of the form state, so it can detect when the user leaves an `Edit` or `Create` page with unsaved changes. To avoid data loss, you can use this ability to ask the user to confirm before leaving a page with unsaved changes.
 
 ![Warn About Unsaved Changes](./img/warn_when_unsaved_changes.png)
 
@@ -351,7 +353,19 @@ export const TagEdit = () => (
 );
 ```
 
-**Warning**: This feature only works if you have a dependency on react-router 6.3.0 **at most**. The react-router team disabled this possibility in react-router 6.4, so `warnWhenUnsavedChanges` will silently fail with react-router 6.4 or later.
+**Note**: Due to limitations in react-router, this feature only works if you use the default router provided by react-admin, or if you use a [Data Router](https://reactrouter.com/en/6.22.3/routers/picking-a-router).
+
+## `sx`: CSS API
+
+The `<AccordionForm>` component accepts the usual `className` prop. You can also override the styles of the inner components thanks to the `sx` property. This property accepts the following subclasses:
+
+| Rule name                    | Description                        |
+| ---------------------------- | ---------------------------------- |
+| `&.MuiBox-root`              | Applied to the root component      |
+| `&.MuiAccordion-root`        | Applied to all the Accordions      |
+| `&.Mui-expanded`             | Applied to the expanded Accordions |
+| `&.MuiAccordionSummary-root` | Applied to the Accordion's title   |
+| `&.MuiCollapse-root`         | Applied to the Accordion's content |
 
 ## `<AccordionForm.Panel>`
 
@@ -363,14 +377,16 @@ This component renders a [Material UI `<Accordion>` component](https://mui.com/c
 
 Here are all the props you can set on the `<AccordionForm.Panel>` component:
 
-| Prop              | Required | Type        | Default | Description                                                                                      |
-| ----------------- | -------- | ----------- | ------- | ------------------------------------------------------------------------------------------------ |
-| `label`           | Required | `string`    | -       | The main label used as the accordion summary. Appears in red when the accordion has errors       |
-| `children`        | Required | `ReactNode` | -       | A list of `<Input>` elements                                                                     |
-| `secondary`       | Optional | `string`    | -       | The secondary label used as the accordion summary                                                |
-| `defaultExpanded` | Optional | `boolean`   | `false` | Set to true to have the accordion expanded by default (except if autoClose = true on the parent) |
-| `disabled`        | Optional | `boolean`   | `false` | If true, the accordion will be displayed in a disabled state.                                    |
-| `square`          | Optional | `boolean`   | `false` | If true, rounded corners are disabled.                                                           |
+| Prop              | Required | Type                    | Default | Description                                                                                            |
+| ----------------- | -------- | ----------------------- | ------- | ------------------------------------------------------------------------------------------------       |
+| `children`        | Required | `ReactNode`             | -       | A list of `<Input>` elements                                                                           |
+| `defaultExpanded` | Optional | `boolean`               | `false` | Set to true to have the accordion expanded by default (except if autoClose = true on the parent)       |
+| `disabled`        | Optional | `boolean`               | `false` | If true, the accordion will be displayed in a disabled state.                                          |
+| `id`              | Optional | `string`                | -       | An id for this Accordion to be used in the [`useFormGroup`](./Upgrade.md#useformgroup-hook-returned-state-has-changed) hook and for CSS classes. |
+| `label`           | Required | `string` or `ReactNode` | -       | The main label used as the accordion summary. Appears in red when the accordion has errors             |
+| `secondary`       | Optional | `string` or `ReactNode` | -       | The secondary label used as the accordion summary                                                      |
+| `square`          | Optional | `boolean`               | `false` | If true, rounded corners are disabled.                                                                 |
+| `sx`              | Optional | `Object`                | -       | An object containing the MUI style overrides to apply to the root component.                           |
 
 ```tsx
 import {
@@ -400,14 +416,16 @@ const CustomerEdit = () => (
 );
 ```
 
+**Warning**: To use an `<AccordionFormPanel>` with the `autoClose` prop and a React node element as a `label`, you **must** specify an `id`.
+
 ## `<AccordionSection>`
 
 Renders children (Inputs) inside a Material UI `<Accordion>` element without a Card style. To be used as child of a `<SimpleForm>` or a `<TabbedForm>` element.
 
 <video controls autoplay playsinline muted loop>
-  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-accordion-section-overview.webm" type="video/webm"/>
-  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-accordion-section-overview.mp4" type="video/mp4"/>
-  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-accordion-section-overview.mp4" type="video/mp4"/>
+  <source src="https://react-admin-ee.marmelab.com/assets/ra-accordion-section-overview.webm" type="video/webm"/>
+  <source src="https://react-admin-ee.marmelab.com/assets/ra-accordion-section-overview.mp4" type="video/mp4"/>
+  <source src="https://react-admin-ee.marmelab.com/assets/ra-accordion-section-overview.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
@@ -417,19 +435,20 @@ Prefer `<AccordionSection>` to `<AccordionForm>` to always display a list of imp
 
 Here are all the props you can set on the `<AccordionSection>` component:
 
-| Prop               | Required | Type        | Default | Description                                                   |
-| ------------------ | -------- | ----------- | ------- | ------------------------------------------------------------- |
-| `Accordion`        | Optional | `Component` | -       | The component to use as the accordion.                        |
-| `AccordionDetails` | Optional | `Component` | -       | The component to use as the accordion details.                |
-| `AccordionSummary` | Optional | `Component` | -       | The component to use as the accordion summary.                |
-| `label`            | Required | `string`    | -       | The main label used as the accordion summary.                 |
-| `children`         | Required | `ReactNode` | -       | A list of `<Input>` elements                                  |
-| `fullWidth`        | Optional | `boolean`   | `false` | If true, the Accordion takes the entire form width.           |
-| `className`        | Optional | `string`    | -       | A class name to style the underlying `<Accordion>`            |
-| `secondary`        | Optional | `string`    | -       | The secondary label used as the accordion summary             |
-| `defaultExpanded`  | Optional | `boolean`   | `false` | Set to true to have the accordion expanded by default         |
-| `disabled`         | Optional | `boolean`   | `false` | If true, the accordion will be displayed in a disabled state. |
-| `square`           | Optional | `boolean`   | `false` | If true, rounded corners are disabled.                        |
+| Prop               | Required | Type                    | Default | Description                                                   |
+| ------------------ | -------- | ----------------------- | ------- | ------------------------------------------------------------- |
+| `Accordion`        | Optional | `Component`             | -       | The component to use as the accordion.                        |
+| `AccordionDetails` | Optional | `Component`             | -       | The component to use as the accordion details.                |
+| `AccordionSummary` | Optional | `Component`             | -       | The component to use as the accordion summary.                |
+| `children`         | Required | `ReactNode`             | -       | A list of `<Input>` elements                                  |
+| `className`        | Optional | `string`                | -       | A class name to style the underlying `<Accordion>`            |
+| `defaultExpanded`  | Optional | `boolean`               | `false` | Set to true to have the accordion expanded by default         |
+| `disabled`         | Optional | `boolean`               | `false` | If true, the accordion will be displayed in a disabled state. |
+| `fullWidth`        | Optional | `boolean`               | `false` | If true, the Accordion takes the entire form width.           |
+| `id`               | Optional | `string`                | -       | An id for this Accordion to be used for CSS classes.          |
+| `label`            | Required | `string` or `ReactNode` | -       | The main label used as the accordion summary.                 |
+| `secondary`        | Optional | `string` or `ReactNode` | -       | The secondary label used as the accordion summary             |
+| `square`           | Optional | `boolean`               | `false` | If true, rounded corners are disabled.                        |
 
 ```tsx
 import {
@@ -520,7 +539,7 @@ Check [the `<AutoSave>` component](./AutoSave.md) documentation for more details
 
 ## Role-Based Access Control (RBAC)
 
-Fine-grained permissions control can be added by using the [`<AccordionForm>`](./AuthRBAC.md#accordionform), [`<AccordionFormPanel>`](./AuthRBAC.md#accordionform) and [`<AccordionSection>`](./AuthRBAC.md#accordionsection) components provided by the `@react-admin/ra-enterprise` package. 
+Fine-grained permissions control can be added by using the [`<AccordionForm>`](./AuthRBAC.md#accordionform), [`<AccordionFormPanel>`](./AuthRBAC.md#accordionform) and [`<AccordionSection>`](./AuthRBAC.md#accordionsection) components provided by the `@react-admin/ra-enterprise` package.
 
 {% raw %}
 ```tsx

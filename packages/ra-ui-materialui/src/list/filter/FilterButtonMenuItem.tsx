@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { forwardRef, useCallback } from 'react';
-import PropTypes from 'prop-types';
 import MenuItem from '@mui/material/MenuItem';
 import { FieldTitle, useResourceContext } from 'ra-core';
 
@@ -36,16 +35,9 @@ export const FilterButtonMenuItem = forwardRef<any, FilterButtonMenuItemProps>(
     }
 );
 
-FilterButtonMenuItem.propTypes = {
-    filter: PropTypes.element.isRequired,
-    onShow: PropTypes.func.isRequired,
-    resource: PropTypes.string,
-    autoFocus: PropTypes.bool,
-};
-
 export interface FilterButtonMenuItemProps {
     filter: JSX.Element;
     onShow: (params: { source: string; defaultValue: any }) => void;
-    resource: string;
+    resource?: string;
     autoFocus?: boolean;
 }

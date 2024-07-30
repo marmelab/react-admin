@@ -1,11 +1,13 @@
 import * as React from 'react';
-import { createMemoryHistory } from 'history';
+
 import {
     minLength,
     required,
     ResourceContextProvider,
     testDataProvider,
+    TestMemoryRouter,
 } from 'ra-core';
+
 import {
     fireEvent,
     isInaccessible,
@@ -18,46 +20,57 @@ import { AdminContext } from '../AdminContext';
 import { TabbedForm } from './TabbedForm';
 import { TabbedFormClasses } from './TabbedFormView';
 import { TextInput } from '../input';
+import { EncodedPaths } from './TabbedForm.stories';
 
 describe('<TabbedForm />', () => {
     it('should display the tabs', () => {
-        const history = createMemoryHistory();
         render(
-            <AdminContext dataProvider={testDataProvider()} history={history}>
-                <TabbedForm>
-                    <TabbedForm.Tab label="tab1" />
-                    <TabbedForm.Tab label="tab2" />
-                </TabbedForm>
-            </AdminContext>
+            <TestMemoryRouter>
+                <AdminContext dataProvider={testDataProvider()}>
+                    <TabbedForm>
+                        <TabbedForm.Tab label="tab1" />
+                        <TabbedForm.Tab label="tab2" />
+                    </TabbedForm>
+                </AdminContext>
+            </TestMemoryRouter>
         );
 
         const tabs = screen.queryAllByRole('tab');
         expect(tabs.length).toEqual(2);
     });
 
+    it('should display the tabs contents with encoded complex record identifiers', async () => {
+        render(<EncodedPaths />);
+
+        const tabs = await screen.findAllByRole('tab');
+        expect(tabs.length).toEqual(2);
+        await screen.findByLabelText('Title');
+    });
+
     it('should set the style of an inactive Tab button with errors', async () => {
-        const history = createMemoryHistory({ initialEntries: ['/1'] });
         render(
-            <AdminContext dataProvider={testDataProvider()} history={history}>
-                <ResourceContextProvider value="posts">
-                    <TabbedForm mode="onBlur">
-                        <TabbedForm.Tab label="tab1">
-                            <TextInput
-                                defaultValue=""
-                                source="title"
-                                validate={required()}
-                            />
-                        </TabbedForm.Tab>
-                        <TabbedForm.Tab label="tab2">
-                            <TextInput
-                                defaultValue=""
-                                source="description"
-                                validate={minLength(10)}
-                            />
-                        </TabbedForm.Tab>
-                    </TabbedForm>
-                </ResourceContextProvider>
-            </AdminContext>
+            <TestMemoryRouter initialEntries={['/1']}>
+                <AdminContext dataProvider={testDataProvider()}>
+                    <ResourceContextProvider value="posts">
+                        <TabbedForm mode="onBlur">
+                            <TabbedForm.Tab label="tab1">
+                                <TextInput
+                                    defaultValue=""
+                                    source="title"
+                                    validate={required()}
+                                />
+                            </TabbedForm.Tab>
+                            <TabbedForm.Tab label="tab2">
+                                <TextInput
+                                    defaultValue=""
+                                    source="description"
+                                    validate={minLength(10)}
+                                />
+                            </TabbedForm.Tab>
+                        </TabbedForm>
+                    </ResourceContextProvider>
+                </AdminContext>
+            </TestMemoryRouter>
         );
 
         const tabs = screen.getAllByRole('tab');
@@ -81,28 +94,29 @@ describe('<TabbedForm />', () => {
     });
 
     it('should set the style of an active Tab button with errors', async () => {
-        const history = createMemoryHistory({ initialEntries: ['/1'] });
         render(
-            <AdminContext dataProvider={testDataProvider()} history={history}>
-                <ResourceContextProvider value="posts">
-                    <TabbedForm mode="onBlur">
-                        <TabbedForm.Tab label="tab1">
-                            <TextInput
-                                defaultValue=""
-                                source="title"
-                                validate={required()}
-                            />
-                        </TabbedForm.Tab>
-                        <TabbedForm.Tab label="tab2">
-                            <TextInput
-                                defaultValue=""
-                                source="description"
-                                validate={required()}
-                            />
-                        </TabbedForm.Tab>
-                    </TabbedForm>
-                </ResourceContextProvider>
-            </AdminContext>
+            <TestMemoryRouter initialEntries={['/1']}>
+                <AdminContext dataProvider={testDataProvider()}>
+                    <ResourceContextProvider value="posts">
+                        <TabbedForm mode="onBlur">
+                            <TabbedForm.Tab label="tab1">
+                                <TextInput
+                                    defaultValue=""
+                                    source="title"
+                                    validate={required()}
+                                />
+                            </TabbedForm.Tab>
+                            <TabbedForm.Tab label="tab2">
+                                <TextInput
+                                    defaultValue=""
+                                    source="description"
+                                    validate={required()}
+                                />
+                            </TabbedForm.Tab>
+                        </TabbedForm>
+                    </ResourceContextProvider>
+                </AdminContext>
+            </TestMemoryRouter>
         );
 
         const tabs = screen.getAllByRole('tab');
@@ -122,28 +136,29 @@ describe('<TabbedForm />', () => {
     });
 
     it('should set the style of any Tab button with errors on submit', async () => {
-        const history = createMemoryHistory({ initialEntries: ['/1'] });
         render(
-            <AdminContext dataProvider={testDataProvider()} history={history}>
-                <ResourceContextProvider value="posts">
-                    <TabbedForm mode="onBlur">
-                        <TabbedForm.Tab label="tab1">
-                            <TextInput
-                                defaultValue=""
-                                source="title"
-                                validate={required()}
-                            />
-                        </TabbedForm.Tab>
-                        <TabbedForm.Tab label="tab2">
-                            <TextInput
-                                defaultValue=""
-                                source="description"
-                                validate={minLength(10)}
-                            />
-                        </TabbedForm.Tab>
-                    </TabbedForm>
-                </ResourceContextProvider>
-            </AdminContext>
+            <TestMemoryRouter initialEntries={['/1']}>
+                <AdminContext dataProvider={testDataProvider()}>
+                    <ResourceContextProvider value="posts">
+                        <TabbedForm mode="onBlur">
+                            <TabbedForm.Tab label="tab1">
+                                <TextInput
+                                    defaultValue=""
+                                    source="title"
+                                    validate={required()}
+                                />
+                            </TabbedForm.Tab>
+                            <TabbedForm.Tab label="tab2">
+                                <TextInput
+                                    defaultValue=""
+                                    source="description"
+                                    validate={minLength(10)}
+                                />
+                            </TabbedForm.Tab>
+                        </TabbedForm>
+                    </ResourceContextProvider>
+                </AdminContext>
+            </TestMemoryRouter>
         );
 
         const tabs = screen.getAllByRole('tab');
@@ -164,34 +179,40 @@ describe('<TabbedForm />', () => {
     });
 
     it('should sync tabs with location by default', () => {
-        const history = createMemoryHistory({ initialEntries: ['/'] });
-
+        let location;
         render(
-            <AdminContext dataProvider={testDataProvider()} history={history}>
-                <ResourceContextProvider value="posts">
-                    <TabbedForm>
-                        <TabbedForm.Tab label="tab1">
-                            <TextInput
-                                defaultValue=""
-                                source="title"
-                                validate={required()}
-                            />
-                        </TabbedForm.Tab>
-                        <TabbedForm.Tab label="tab2">
-                            <TextInput
-                                defaultValue=""
-                                source="description"
-                                validate={minLength(10)}
-                            />
-                        </TabbedForm.Tab>
-                    </TabbedForm>
-                </ResourceContextProvider>
-            </AdminContext>
+            <TestMemoryRouter
+                initialEntries={['/']}
+                locationCallback={l => {
+                    location = l;
+                }}
+            >
+                <AdminContext dataProvider={testDataProvider()}>
+                    <ResourceContextProvider value="posts">
+                        <TabbedForm>
+                            <TabbedForm.Tab label="tab1">
+                                <TextInput
+                                    defaultValue=""
+                                    source="title"
+                                    validate={required()}
+                                />
+                            </TabbedForm.Tab>
+                            <TabbedForm.Tab label="tab2">
+                                <TextInput
+                                    defaultValue=""
+                                    source="description"
+                                    validate={minLength(10)}
+                                />
+                            </TabbedForm.Tab>
+                        </TabbedForm>
+                    </ResourceContextProvider>
+                </AdminContext>
+            </TestMemoryRouter>
         );
 
         const tabs = screen.getAllByRole('tab');
         fireEvent.click(tabs[1]);
-        expect(history.location.pathname).toEqual('/1');
+        expect(location.pathname).toEqual('/1');
         expect(
             screen.getByLabelText('resources.posts.fields.description')
         ).not.toBeNull();
@@ -201,7 +222,7 @@ describe('<TabbedForm />', () => {
             )
         ).toEqual(true);
         fireEvent.click(tabs[0]);
-        expect(history.location.pathname).toEqual('/');
+        expect(location.pathname).toEqual('/');
         expect(
             screen.getByLabelText('resources.posts.fields.title *')
         ).not.toBeNull();
@@ -213,29 +234,38 @@ describe('<TabbedForm />', () => {
     });
 
     it('should not sync tabs with location if syncWithLocation is false', () => {
-        const history = createMemoryHistory({ initialEntries: ['/'] });
-
+        let location;
         render(
-            <AdminContext dataProvider={testDataProvider()} history={history}>
-                <ResourceContextProvider value="posts">
-                    <TabbedForm syncWithLocation={false}>
-                        <TabbedForm.Tab label="tab1">
-                            <TextInput source="title" validate={required()} />
-                        </TabbedForm.Tab>
-                        <TabbedForm.Tab label="tab2">
-                            <TextInput
-                                source="description"
-                                validate={minLength(10)}
-                            />
-                        </TabbedForm.Tab>
-                    </TabbedForm>
-                </ResourceContextProvider>
-            </AdminContext>
+            <TestMemoryRouter
+                initialEntries={['/']}
+                locationCallback={l => {
+                    location = l;
+                }}
+            >
+                <AdminContext dataProvider={testDataProvider()}>
+                    <ResourceContextProvider value="posts">
+                        <TabbedForm syncWithLocation={false}>
+                            <TabbedForm.Tab label="tab1">
+                                <TextInput
+                                    source="title"
+                                    validate={required()}
+                                />
+                            </TabbedForm.Tab>
+                            <TabbedForm.Tab label="tab2">
+                                <TextInput
+                                    source="description"
+                                    validate={minLength(10)}
+                                />
+                            </TabbedForm.Tab>
+                        </TabbedForm>
+                    </ResourceContextProvider>
+                </AdminContext>
+            </TestMemoryRouter>
         );
 
         const tabs = screen.getAllByRole('tab');
         fireEvent.click(tabs[1]);
-        expect(history.location.pathname).toEqual('/');
+        expect(location.pathname).toEqual('/');
         expect(
             screen.getByLabelText('resources.posts.fields.description')
         ).not.toBeNull();
@@ -245,7 +275,7 @@ describe('<TabbedForm />', () => {
             )
         ).toEqual(true);
         fireEvent.click(tabs[0]);
-        expect(history.location.pathname).toEqual('/');
+        expect(location.pathname).toEqual('/');
         expect(
             screen.getByLabelText('resources.posts.fields.title *')
         ).not.toBeNull();
@@ -257,20 +287,20 @@ describe('<TabbedForm />', () => {
     });
 
     it('should not warn for `toolbar` prop of type `false`', () => {
-        const history = createMemoryHistory({ initialEntries: ['/'] });
-
         const consoleSpy = jest
             .spyOn(console, 'error')
             .mockImplementation(() => {});
 
         render(
-            <AdminContext dataProvider={testDataProvider()} history={history}>
-                <ResourceContextProvider value="posts">
-                    <TabbedForm toolbar={false}>
-                        <TabbedForm.Tab label="tab1"></TabbedForm.Tab>
-                    </TabbedForm>
-                </ResourceContextProvider>
-            </AdminContext>
+            <TestMemoryRouter initialEntries={['/']}>
+                <AdminContext dataProvider={testDataProvider()}>
+                    <ResourceContextProvider value="posts">
+                        <TabbedForm toolbar={false}>
+                            <TabbedForm.Tab label="tab1"></TabbedForm.Tab>
+                        </TabbedForm>
+                    </ResourceContextProvider>
+                </AdminContext>
+            </TestMemoryRouter>
         );
 
         expect(consoleSpy).not.toBeCalledWith(

@@ -64,11 +64,8 @@ describe('<TranslatableFields />', () => {
 
     it('should allow to customize the locale selector', () => {
         const Selector = () => {
-            const {
-                locales,
-                selectLocale,
-                selectedLocale,
-            } = useTranslatableContext();
+            const { locales, selectLocale, selectedLocale } =
+                useTranslatableContext();
 
             const handleChange = (event): void => {
                 selectLocale(event.target.value);

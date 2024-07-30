@@ -82,14 +82,4 @@ describe('ThemeProvider', () => {
         const button = screen.getByText('Test');
         expect(getComputedStyle(button).color).toBe(DARK_MODE_TEXT_COLOR);
     });
-
-    it('should fallback to using theme prop when used outside of a ThemesContext (for backwards compatibility)', () => {
-        render(
-            <ThemeProvider theme={darkTheme}>
-                <Button>Test</Button>
-            </ThemeProvider>
-        );
-        const button = screen.getByText('Test');
-        expect(getComputedStyle(button).color).toBe(DARK_MODE_TEXT_COLOR);
-    });
 });

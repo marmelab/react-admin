@@ -5,11 +5,11 @@ title: "The Breadcrumb Component"
 
 # `<Breadcrumb>`
 
-This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> component renders a breadcrumb path that automatically adapts to the page location. It helps users navigate large web applications. 
+This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" /> component renders a breadcrumb path that automatically adapts to the page location. It helps users navigate large web applications.
 
 <video controls autoplay playsinline muted loop width="100%">
-  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-navigation/latest/breadcumb-nested-resource.webm" type="video/webm" />
-  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-navigation/latest/breadcumb-nested-resource.mp4" type="video/mp4" />
+  <source src="https://react-admin-ee.marmelab.com/assets/ra-navigation/latest/breadcumb-nested-resource.webm" type="video/webm" />
+  <source src="https://react-admin-ee.marmelab.com/assets/ra-navigation/latest/breadcumb-nested-resource.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
 
@@ -28,9 +28,9 @@ Create a custom layout component containing the `<Breadcrumb>` component. For ex
 import { AppLocationContext, Breadcrumb } from '@react-admin/ra-navigation';
 import { Layout } from 'react-admin';
 
-export const MyLayout = ({ children, ...rest }) => (
+export const MyLayout = ({ children }) => (
     <AppLocationContext>
-        <Layout {...rest}>
+        <Layout>
             <Breadcrumb />
             {children}
         </Layout>
@@ -38,10 +38,12 @@ export const MyLayout = ({ children, ...rest }) => (
 );
 ```
 
-**Tip**: The layout must be wrapped with `<AppLocationContext>`, as `<Breadcrumb>` reads the app location from this context and not the URL. Layout components from `ra-navigation` ([`<ContainerLayout>`](./ContainerLayout.md) or `<SolarLayout>`) already include that context, so it's not necessary to include it in the custom layout. 
-    
+**Tip**: The layout must be wrapped with `<AppLocationContext>`, as `<Breadcrumb>` reads the app location from this context and not the URL. Layout components from `ra-navigation` ([`<ContainerLayout>`](./ContainerLayout.md) or [`<SolarLayout>`](./SolarLayout.md)) already include that context, so it's not necessary to include it in the custom layout.
+
+**Tip:** The `ra-enterprise` package exports an alternative `<Layout>`, which contains a pre-configured `<Breadcrumb>` that renders breadcrumb paths for all resources.
+
 Next, set this custom layout as the [`<Admin layout>`](./Admin.md#layout) component:
-    
+
 ```jsx
 import { Admin } from 'react-admin';
 import { DataProvider } from './dataProvider';
@@ -86,29 +88,14 @@ With this setup, the breadcrumb on the post pages will use the `title` field of 
 -   "Posts / Lorem ipsum" on the Post Show page with id = 1
 -   "Posts / Create" on the Post Creation page
 
-If your app has a home or dashboard page, set the `<AppLocationContext hasDashboard>` prop to display the dashboard as the root of the breadcrumb:
+The Breadcrumb component will automatically detect if your app has a home or dashboard page, thanks to `react-admin`'s `useHasDashboard` hook.
 
-```jsx
-// in src/MyLayout.jsx
-import { AppLocationContext, Breadcrumb } from '@react-admin/ra-navigation';
-import { Layout } from 'react-admin';
+With a dashboard, the breadcrumb on the post pages now renders as:
 
-export const MyLayout = ({ children, ...rest }) => (
-    <AppLocationContext hasDashboard>
-        <Layout {...rest}>
-            <Breadcrumb />
-            {children}
-        </Layout>
-    </AppLocationContext>
-);
-```
-
-With this setup, the breadcrumb on the post pages now renders as:
-
--   "Dashboard / Posts" on the Post List page
--   "Dashboard / Posts / Lorem ipsum" on the Post Edition page with id = 1
--   "Dashboard / Posts / Lorem ipsum" on the Post Show page with id = 1
--   "Dashboard / Posts / Create" on the Post Creation page
+-   "🏠️ / Posts" on the Post List page
+-   "🏠️ / Posts / Lorem ipsum" on the Post Edition page with id = 1
+-   "🏠️ / Posts / Lorem ipsum" on the Post Show page with id = 1
+-   "🏠️ / Posts / Create" on the Post Creation page
 
 You can customize the breadcrumb path of each page, as well as add custom pages to the breadcrumb, by adding `children` to the `<Breadcrumb>` component. See [the `children` section](#children) below for more information.
 
@@ -125,15 +112,40 @@ You don't need to define the app location for CRUD pages as react-admin does it 
 -   Edit: `[resource].edit`. The location also contains the current `record`
 -   Show: `[resource].show`. The location also contains the current `record`
 
-However, you can customize these default app locations in your CRUD pages, and you must [define the location for custom pages](#adding-custom-pages). 
+However, you can customize these default app locations in your CRUD pages, and you must [define the location for custom pages](#adding-custom-pages).
+
+To leverage the provided components such as the [`<Breadcrumb>`](#breadcrumb) or [`<MultiLevelMenu>`](./MultiLevelMenu), the layout must be wrapped with `<AppLocationContext>`.
+
+Layout components from `ra-navigation` ([`<ContainerLayout>`](./ContainerLayout) or [`<SolarLayout>`](./SolarLayout)) already include that context, so you can skip that step if you are using one of these layouts.
+
+If, however, you are using the default `<Layout>` component from `react-admin`, or a custom layout, you must wrap it with `<AppLocationContext>`:
+
+```tsx
+import { AppLocationContext } from '@react-admin/ra-navigation';
+import { Admin, Resource, Layout } from 'react-admin';
+
+const MyLayout = ({ children }) => (
+    <AppLocationContext>
+        <Layout>
+            {children}
+        </Layout>
+    </AppLocationContext>
+);
+
+const App = () => (
+    <Admin dataProvider={dataProvider} layout={MyLayout}>
+        <Resource name="posts" list={PostList} />
+    </Admin>
+);
+```
 
 ## Props
 
-| Prop        | Required | Type                | Default  | Description                            |
-| ----------- | -------- | ------------------- | -------- | -------------------------------------- |
-| `children`  | Optional | `ReactNode`         | -        | The Breadcrumb Items to be rendered.   |
-| `separator` | Optional | `string | function` | ' / '    | The character user as separator        |
-| `sx`        | Optional | `SxProps`           | -        | Style overrides, powered by MUI System |
+| Prop           | Required | Type               | Default | Description                                                                          |
+| -------------- | -------- | ------------------ | ------- | ------------------------------------------------------------------------------------ |
+| `children`     | Optional | `ReactNode`        | -       | The Breadcrumb Items to be rendered.                                                 |
+| `separator`    | Optional | string or function | ' / '   | The character user as separator                                                      |
+| `sx`           | Optional | `SxProps`          | -       | Style overrides, powered by MUI System                                               |
 
 Additional props are passed down to the root `<nav>` component.
 
@@ -194,9 +206,9 @@ import { Layout } from 'react-admin';
 
 import { MyBreadcrumb } from './MyBreadcrumb';
 
-export const MyLayout = ({ children, ...rest }) => (
+export const MyLayout = ({ children }) => (
     <AppLocationContext>
-        <Layout {...rest}>
+        <Layout>
             <MyBreadcrumb />
             {children}
         </Layout>
@@ -293,7 +305,7 @@ const MyBreadcrumb = () => (
 
 The `<Breadcrumb.Item>` component is responsible for rendering individual breadcrumb items. It displays the item when the app's location matches the specified `name`. You can nest this component to create breadcrumb paths of varying depths.
 
-![A breadcrumb item](https://marmelab.com/ra-enterprise/modules/assets/breadcrumbItem.png)
+![A breadcrumb item](https://react-admin-ee.marmelab.com/assets/breadcrumbItem.png)
 
 It requires the following props:
 
@@ -325,6 +337,53 @@ const MyBreadcrumb = () => (
                 to={({ record }) => `/posts/${record.id}/show`}
             />
             <Breadcrumb.Item name="list" label="My Post List" />
+            <Breadcrumb.Item name="create" label="Let's write a Post!" />
+        </Breadcrumb.Item>
+    </Breadcrumb>
+);
+```
+
+Here is another example, showing how to use a React component as label:
+
+```jsx
+import { Breadcrumb } from '@react-admin/ra-navigation';
+import { Typography, Stack } from '@mui/material';
+import NewspaperIcon from '@mui/icons-material/Newspaper';
+
+const IconAndLabel = ({
+    label,
+    icon,
+}: {
+    label: string;
+    icon: React.ReactNode;
+}) => (
+    <Stack direction="row" alignItems="center" spacing={1}>
+        {icon}
+        <Typography variant="body2">{label}</Typography>
+    </Stack>
+);
+
+const MyBreadcrumb = () => (
+    <Breadcrumb>
+        <Breadcrumb.Item 
+            name="posts"
+            label={
+                <IconAndLabel
+                    label="My Fabulous Posts"
+                    icon={<NewspaperIcon />}
+                />
+            }
+        >
+            <Breadcrumb.Item
+                name="edit"
+                label={({ record }) => `Edit "${record.title}"`}
+                to={({ record }) => `/posts/${record.id}`}
+            />
+            <Breadcrumb.Item
+                name="show"
+                label={({ record }) => record.title}
+                to={({ record }) => `/posts/${record.id}/show`}
+            />
             <Breadcrumb.Item name="create" label="Let's write a Post!" />
         </Breadcrumb.Item>
     </Breadcrumb>
@@ -451,35 +510,66 @@ const MyBreadcrumb = () => (
 );
 ```
 
-Check the [`<Breadcrumb.ResourceItem>`](#breadcrumbresourceitem) section for more information. 
+Check the [`<Breadcrumb.ResourceItem>`](#breadcrumbresourceitem) section for more information.
 
-## Using A Dashboard As The Root
+## `<Breadcrumb.DashboardItem>`
 
-If the app has a home page defined via the [`<Admin dashboard>`](./Admin.md#dashboard) prop, you can automatically set the root of the Breadcrumb to this page by setting the `hasDashboard` prop in the `<AppLocationContext>` component:
+A version of the `<Breadcrumb.Item>` dedicated to the dashboard.
 
-```jsx
-// in src/MyLayout.jsx
-import { AppLocationContext, Breadcrumb } from '@react-admin/ra-navigation';
-import { Layout } from 'react-admin';
+It is convenient for customizing the dashboard item label.
 
-export const MyLayout = ({ children, ...rest }) => (
-    <AppLocationContext hasDashboard>
-        <Layout {...rest}>
-            <Breadcrumb />
-            {children}
-        </Layout>
-    </AppLocationContext>
+```tsx
+const MyBreadcrumbCustomHome = () => (
+    <Breadcrumb>
+        <Breadcrumb.DashboardItem label="My Home">
+            <Breadcrumb.ResourceItem resource="posts" />
+            <Breadcrumb.ResourceItem resource="comments" />
+        </Breadcrumb.DashboardItem>
+    </Breadcrumb>
 );
 ```
 
-By doing this, the breadcrumb will now show respectively:
+Just like with `<Breadcrumb.Item>`, you can also use a React component as label:
 
--   "Dashboard / Posts" on the Post List page
--   "Dashboard / Posts / Show #1" on the Post Show page with id = 1
--   "Dashboard / Posts / Edit #1" on the Post Edition page with id = 1
--   "Dashboard / Posts / Create" on the Post Creation page
+```tsx
+import { Breadcrumb } from '@react-admin/ra-navigation';
+import { Box, Stack } from '@mui/material';
+import { visuallyHidden } from '@mui/utils';
+import CabinIcon from '@mui/icons-material/Cabin';
 
-If you want to customize the dashboard breadcrumb item label, e.g. to rename "Dashboard" to "Home", provide a [custom translation](./Translation.md) for the `ra.page.dashboard` message. 
+const MyBreadcrumbCustomHome = () => (
+    <Breadcrumb>
+        <Breadcrumb.DashboardItem
+            label={
+                <Stack direction="row" alignItems="center" spacing={1}>
+                    <CabinIcon />
+                    <Box sx={visuallyHidden}>Dashboard</Box>
+                </Stack>
+            }
+        >
+            <Breadcrumb.ResourceItem resource="posts" />
+            <Breadcrumb.ResourceItem resource="comments" />
+        </Breadcrumb.DashboardItem>
+    </Breadcrumb>
+);
+```
+
+**Tip:** It's a good practice to include a visually hidden placeholder ('Dashboard' in this example) for screen readers when using an icon as label.
+
+## Admins With A Dashboard
+
+If the app has a home page defined via the [`<Admin dashboard>`](./Admin.md#dashboard) prop, the Breadcrumb will automatically detect it and set the root of the Breadcrumb to this page.
+
+The breadcrumb will show respectively:
+
+-   "🏠️ / Posts" on the Post List page
+-   "🏠️ / Posts / Show #1" on the Post Show page with id = 1
+-   "🏠️ / Posts / Edit #1" on the Post Edition page with id = 1
+-   "🏠️ / Posts / Create" on the Post Creation page
+
+**Tip:** Even though it is rendered as a 'home' icon (🏠️), the dashboard breadcrumb item also contains the hidden placeholder text 'Dashboard', for screen readers. If you want to customize this text, e.g. to rename "Dashboard" to "Home", provide a [custom translation](https://marmelab.com/react-admin/Translation.html) for the `ra.page.dashboard` message.
+
+If you want to provide your own label for the dashboard breadcrumb item (either a string or a React component), you can use the [`<Breadcrumb.DashboardItem>`](#breadcrumbdashboarditem) component.
 
 ## Adding Custom Pages
 
@@ -540,9 +630,9 @@ import { Layout } from 'react-admin';
 
 import { MyBreadcrumb } from './MyBreadcrumb';
 
-export const MyLayout = ({ children, ...rest }) => (
+export const MyLayout = ({ children }) => (
     <AppLocationContext>
-        <Layout {...rest}>
+        <Layout>
             <MyBreadcrumb />
             {children}
         </Layout>
@@ -559,7 +649,7 @@ import React from 'react';
 import { AppLocationContext, Breadcrumb } from '@react-admin/ra-navigation';
 import { Admin, Resource, Layout, useCreatePath, List } from 'react-admin';
 
-const MyBreadcrumb = ({ children, ...props }) => {
+const MyBreadcrumb = () => {
     const createPath = useCreatePath();
 
     return (
@@ -584,9 +674,9 @@ const MyBreadcrumb = ({ children, ...props }) => {
     );
 };
 
-const MyLayout = ({ children, ...rest }) => (
-    <AppLocationContext hasDashboard={!!props.dashboard}>
-        <Layout {...rest}>
+const MyLayout = ({ children }) => (
+    <AppLocationContext>
+        <Layout>
             <MyBreadcrumb />
             {children}
         </Layout>
@@ -604,7 +694,7 @@ const App = () => (
 
 ## Nested Resources
 
-When using [nested resources](./Resource.md#nested-resources), you should create breadcrumb items for the sub-resources. 
+When using [nested resources](./Resource.md#nested-resources), you should create breadcrumb items for the sub-resources.
 
 For instance, the screencast at the top of this page shows a `songs` resource nested in an `artists` resource, using the following routes:
 
@@ -763,7 +853,7 @@ export const SongList = () => {
     useDefineAppLocation('music.songs');
     return (
         <List>
-            <Datagrid rowClick="edit">
+            <Datagrid>
                 <TextField source="title" />
             </Datagrid>
         </List>
@@ -838,4 +928,4 @@ const MyBreadcrumb = () => (
 );
 ```
 
-As you see, you can compose Breadcrumb item elements at will. 
+As you see, you can compose Breadcrumb item elements at will.

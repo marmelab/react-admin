@@ -51,24 +51,13 @@ import { Admin, Resource } from 'react-admin';
 import buildQuery from './buildQuery'; // see Specify your queries and mutations section below
 import { PostCreate, PostEdit, PostList } from '../components/admin/posts';
 
-const App = () => {
-    const [dataProvider, setDataProvider] = useState(null);
+const dataProvider = buildGraphQLProvider({ buildQuery });
 
-    useEffect(() => {
-        buildGraphQLProvider({ buildQuery })
-            .then(dataProvider => setDataProvider(dataProvider));
-    }, []);
-
-    if (!dataProvider) {
-        return <div>Loading</div>;
-    }
-
-    return (
-        <Admin dataProvider={dataProvider}>
-            <Resource name="Post" list={PostList} edit={PostEdit} create={PostCreate} />
-        </Admin>
-    );
-}
+const App = () =>  (
+    <Admin dataProvider={dataProvider}>
+        <Resource name="Post" list={PostList} edit={PostEdit} create={PostCreate} />
+    </Admin>
+);
 
 export default App;
 ```

@@ -1,29 +1,30 @@
 import get from 'lodash/get';
-import { useMemo } from 'react';
 import { RaRecord, SortPayload } from '../../types';
 import { useGetManyAggregate } from '../../dataProvider';
 import { ListControllerResult, useList } from '../list';
 import { useNotify } from '../../notification';
-import { UseQueryOptions } from 'react-query';
+import { UseQueryOptions } from '@tanstack/react-query';
 
 export interface UseReferenceArrayFieldControllerParams<
     RecordType extends RaRecord = RaRecord,
-    ReferenceRecordType extends RaRecord = RaRecord
+    ReferenceRecordType extends RaRecord = RaRecord,
 > {
     filter?: any;
     page?: number;
     perPage?: number;
     record?: RecordType;
     reference: string;
-    resource: string;
+    resource?: string;
     sort?: SortPayload;
     source: string;
-    queryOptions?: UseQueryOptions<ReferenceRecordType[], Error>;
+    queryOptions?: Omit<
+        UseQueryOptions<ReferenceRecordType[]>,
+        'queryFn' | 'queryKey'
+    >;
 }
 
 const emptyArray = [];
 const defaultFilter = {};
-const defaultSort = { field: null, order: null };
 
 /**
  * Hook that fetches records from another resource specified
@@ -31,7 +32,7 @@ const defaultSort = { field: null, order: null };
  *
  * @example
  *
- * const { data, error, isFetching, isLoading } = useReferenceArrayFieldController({
+ * const { data, error, isFetching, isPending } = useReferenceArrayFieldController({
  *      record: { referenceIds: ['id1', 'id2']};
  *      reference: 'reference';
  *      resource: 'resource';
@@ -50,7 +51,7 @@ const defaultSort = { field: null, order: null };
  */
 export const useReferenceArrayFieldController = <
     RecordType extends RaRecord = RaRecord,
-    ReferenceRecordType extends RaRecord = RaRecord
+    ReferenceRecordType extends RaRecord = RaRecord,
 >(
     props: UseReferenceArrayFieldControllerParams<
         RecordType,
@@ -63,46 +64,40 @@ export const useReferenceArrayFieldController = <
         perPage = 1000,
         record,
         reference,
-        sort = defaultSort,
+        sort,
         source,
         queryOptions = {},
     } = props;
     const notify = useNotify();
     const value = get(record, source);
     const { meta, ...otherQueryOptions } = queryOptions;
+    const ids = Array.isArray(value) ? value : emptyArray;
 
-    const ids = useMemo(() => {
-        if (Array.isArray(value)) return value;
-        console.warn(`Value of field '${source}' is not an array.`, value);
-        return emptyArray;
-    }, [value, source]);
-
-    const { data, error, isLoading, isFetching, refetch } = useGetManyAggregate<
-        ReferenceRecordType
-    >(
-        reference,
-        { ids, meta },
-        {
-            onError: error =>
-                notify(
-                    typeof error === 'string'
-                        ? error
-                        : error.message || 'ra.notification.http_error',
-                    {
-                        type: 'error',
-                        messageArgs: {
-                            _:
-                                typeof error === 'string'
-                                    ? error
-                                    : error && error.message
-                                    ? error.message
-                                    : undefined,
-                        },
-                    }
-                ),
-            ...otherQueryOptions,
-        }
-    );
+    const { data, error, isLoading, isFetching, isPending, refetch } =
+        useGetManyAggregate<ReferenceRecordType>(
+            reference,
+            { ids, meta },
+            {
+                onError: error =>
+                    notify(
+                        typeof error === 'string'
+                            ? error
+                            : error.message || 'ra.notification.http_error',
+                        {
+                            type: 'error',
+                            messageArgs: {
+                                _:
+                                    typeof error === 'string'
+                                        ? error
+                                        : error && error.message
+                                          ? error.message
+                                          : undefined,
+                            },
+                        }
+                    ),
+                ...otherQueryOptions,
+            }
+        );
 
     const listProps = useList<ReferenceRecordType>({
         data,
@@ -110,6 +105,7 @@ export const useReferenceArrayFieldController = <
         filter,
         isFetching,
         isLoading,
+        isPending,
         page,
         perPage,
         sort,
@@ -117,7 +113,7 @@ export const useReferenceArrayFieldController = <
 
     return {
         ...listProps,
-        defaultTitle: null,
+        defaultTitle: undefined,
         refetch,
         resource: reference,
     };

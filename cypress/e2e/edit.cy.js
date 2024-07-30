@@ -148,9 +148,9 @@ describe('Edit Page', () => {
         // it didn't initiate.
         cy.contains('Create post').click();
 
-        cy.get(
-            CreatePostPage.elements.input('body', 'rich-text-input')
-        ).should(el => expect(el.text()).to.equal(''));
+        cy.get(CreatePostPage.elements.input('body', 'rich-text-input')).should(
+            el => expect(el.text()).to.equal('')
+        );
     });
 
     it('should allow to select an item from the AutocompleteInput without showing the choices again after', () => {
@@ -306,6 +306,7 @@ describe('Edit Page', () => {
     it('should refresh the list when the update fails', () => {
         ListPagePosts.navigate();
         ListPagePosts.nextPage(); // Ensure the record is visible in the table
+        cy.contains('Sed quo et et fugiat modi'); // wait for data
 
         EditPostPage.navigate();
         EditPostPage.setInputValue('input', 'title', 'f00bar');

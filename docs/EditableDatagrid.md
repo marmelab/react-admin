@@ -7,11 +7,11 @@ title: "The EditableDatagrid Component"
 
 The default react-admin user experience consists of three pages: List, Edit, and Create. However, in some cases, users may prefer to do all CRUD tasks in one page.
 
-`<EditableDatagrid>` is an [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> component that offers an "edit-in-place" experience, allowing users to edit, create, and delete records in place inside a `<Datagrid>`.
+`<EditableDatagrid>` is an [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" /> component that offers an "edit-in-place" experience, allowing users to edit, create, and delete records in place inside a `<Datagrid>`.
 
 <video controls autoplay playsinline muted loop>
-  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-editable-datagrid-overview.webm" type="video/webm" />
-  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-editable-datagrid-overview.mp4" type="video/mp4" />
+  <source src="https://react-admin-ee.marmelab.com/assets/ra-editable-datagrid-overview.webm" type="video/webm" />
+  <source src="https://react-admin-ee.marmelab.com/assets/ra-editable-datagrid-overview.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
 
@@ -31,25 +31,32 @@ npm install --save @react-admin/ra-editable-datagrid
 yarn add @react-admin/ra-editable-datagrid
 ```
 
-**Tip**: `ra-editable-datagrid` is part of the [React-Admin Enterprise Edition](https://marmelab.com/ra-enterprise/), and hosted in a private npm registry. You need to subscribe to one of the Enterprise Edition plans to access this registry.
+**Tip**: `ra-editable-datagrid` is part of the [React-Admin Enterprise Edition](https://react-admin-ee.marmelab.com/), and hosted in a private npm registry. You need to subscribe to one of the Enterprise Edition plans to access this registry.
 
 Then, replace `<Datagrid>` with `<EditableDatagrid>` in a react-admin `<List>`, `<ReferenceManyField>`, or any other component that creates a `ListContext`. In addition, pass a form component to be displayed when the user switches to edit or create mode.
 
 ```tsx
-import { List, TextField, TextInput, DateField, DateInput, SelectField, SelectInput, required } from 'react-admin';
+import {
+    List,
+    ListActions,
+    TextField,
+    TextInput,
+    DateField,
+    DateInput,
+    SelectField,
+    SelectInput,
+    required,
+} from 'react-admin';
 import { EditableDatagrid, RowForm } from '@react-admin/ra-editable-datagrid';
 
 export const ArtistList = () => (
-    <List hasCreate empty={false}>
-        <EditableDatagrid
-            createForm={<ArtistForm />}
-            editForm={<ArtistForm />}
-        >
+    <List actions={<ListActions hasCreate />} empty={false}>
+        <EditableDatagrid createForm={<ArtistForm />} editForm={<ArtistForm />}>
             <TextField source="id" />
             <TextField source="firstName" />
             <TextField source="lastName" />
             <DateField source="dob" label="born" />
-            <SelectField source="profession" choices={professionChoices} />
+            <SelectField source="profession" choices={professions} />
         </EditableDatagrid>
     </List>
 );
@@ -124,14 +131,19 @@ const RowAction = () => (
 );
 ```
 
+<video controls autoplay playsinline muted loop>
+  <source src="./img/editableDatagrid-actions.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
 ## `createForm`
 
 The component displayed as the first row when a user clicks on the Create button. It's usually a form built with [`<RowForm>`](#rowform), with the same number of children as the `<EditableDatagrid>` has children.
 
 ```tsx
 export const ArtistList = () => (
-    <List hasCreate empty={false}>
-        <EditableDatagrid 
+    <List actions={<ListActions hasCreate />} empty={false}>
+        <EditableDatagrid
             editForm={<ArtistForm />}
             createForm={<ArtistForm />}
         >
@@ -155,13 +167,17 @@ const ArtistForm = () => (
 
 **Tip**: It's a good idea to reuse the same form component for `createForm` and `editForm`, as in the example above.
 
-Since the creation form is embedded in the List view, you shouldn't set the `<Resource create>` prop. But react-admin's `<List>` only displays a Create button if the current `Resource` has a `create` page. That's why you must force the [`<List hasCreate>`](./List.md#hascreate) prop to `true`, as in the example above, to have the Create button show up with `<EditableDatagrid>`.
+Since the creation form is embedded in the List view, you shouldn't set the `<Resource create>` prop. But react-admin's `<List>` only displays a Create button if the current `Resource` has a `create` page. That's why you must force the [`<List actions>`](./List.md#actions) value, as in the example above, to have the Create button show up with `<EditableDatagrid>`.
 
 Also, when the list is empty, the `<List>` component normally doesn't render its children (it renders an `empty` component instead). To bypass this system and see the empty editable datagrid with a create button instead, you need to force the `<List empty={false}>` prop, as in the example above.
 
 `<EditableDatagrid>` renders the `createForm` elements in a `<table>`, so the create form element should render a `<tr>`. We advise you to use the [`<RowForm>`](#rowform) component, which renders a `<tr>` by default. But you can also use your own component to render the creation form ([see `<RowForm>` below](#rowform)).
 
 **Tip**: The `createForm` component must render as many columns as there are children in the `<EditableDatagrid>`. That's why in the example above, the `<ArtistForm>` component renders a `<TextInput>` for each `<TextField>` (except for the read-only `id` field, for which it renders a `<TextField>`).
+
+**Tip**: To display a create button on top of the list, you should add a `<ListActions hasCreate />` component to the `actions` prop of the `<List>` component, as in the example below.
+
+**Tip**: To display a custom create button, pass a custom component as the `empty` prop. It can use the `useEditableDatagridContext` hook to access to `openStandaloneCreateForm` and `closeStandaloneCreateForm` callbacks.
 
 ## `editForm`
 
@@ -197,13 +213,18 @@ The `<EditableDatagrid>` component renders the `editForm` elements in a `<table>
 
 ## `mutationMode`
 
-Use the `mutationMode` prop to specify the [mutation mode](./Edit.html#mutationmode) for the edit and delete actions. By default, the `<EditableDatagrid>` uses the `undoable` mutation mode. You can change it to `optimistic` or `pessimistic` if you prefer.
+Use the `mutationMode` prop to specify the [mutation mode](./Edit.md#mutationmode) for the edit and delete actions. By default, the `<EditableDatagrid>` uses the `undoable` mutation mode. You can change it to `optimistic` or `pessimistic` if you prefer.
 
 ```jsx
 <EditableDatagrid mutationMode="pessimistic">
     {/*...*/}
 </EditableDatagrid>
 ```
+
+<video controls autoplay playsinline muted loop>
+  <source src="./img/editableDatagrid-mutationMode.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
 
 ## `noDelete`
 
@@ -214,17 +235,20 @@ You can disable the delete button by setting the `noDelete` prop to `true`:
     {/*...*/}
 </EditableDatagrid>
 ```
+![EditableDatagrid noDelete](./img/editableDatagrid-noDelete.png)
 
 ## `<RowForm>`
 
 `<RowForm>` renders a form in a table row, with one table cell per child. It is designed to be used as [`editForm`](#editform) and [`createForm`](#createform) element.
 
+`<RowForm>` and `<EditableDatagrid>` should have the same number of children, and these children should concern the same `source`.
+
 ```tsx
-import { List, TextField, TextInput } from 'react-admin';
+import { List, ListActions, TextField, TextInput } from 'react-admin';
 import { EditableDatagrid, RowForm } from '@react-admin/ra-editable-datagrid';
 
 export const ArtistList = () => (
-    <List hasCreate empty={false}>
+    <List actions={<ListActions hasCreate />} empty={false}>
         <EditableDatagrid
             createForm={<ArtistForm />}
             editForm={<ArtistForm />}
@@ -244,8 +268,6 @@ const ArtistForm = () => (
     </RowForm>
 );
 ```
-
-`<RowForm>` and `<EditableDatagrid>` should have the same number of children, and these children should concern the same `source`.
 
 **Tip**: No need to include a `<SaveButton>` in the form, as `<RowForm>` automatically adds a column with save/cancel buttons.
 
@@ -286,7 +308,7 @@ For instance, the following example displays a custom message when the list is e
 ```tsx
 import React from 'react';
 import { Typography, Box } from '@mui/material';
-import { CreateButton, List } from 'react-admin';
+import { CreateButton, List, ListActions } from 'react-admin';
 import {
     EditableDatagrid,
     useEditableDatagridContext,
@@ -307,7 +329,7 @@ const MyCreateButton = () => {
 };
 
 export const BookList = () => (
-    <List hasCreate empty={false}>
+    <List actions={<ListActions hasCreate />} empty={false}>
         <EditableDatagrid empty={<MyCreateButton />}>
            {/*...*/}
         </EditableDatagrid>
@@ -318,6 +340,11 @@ export const BookList = () => (
 Feel free to visit the [dedicated stories](https://react-admin.github.io/ra-enterprise/?path=/story/ra-editable-datagrid-empty--custom-empty-standalone) to see more examples.
 
 ## Using Inside a `<ReferenceManyField>`
+
+<video controls autoplay playsinline muted loop>
+  <source src="./img/editableDatagrid-referenceManyField.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
 
 You can use `<EditableDatagrid>` inside a `<ReferenceManyField>`. The only difference with its usage in a `<List>` is that you have to initialize the foreign key in the creation form using the `defaultValues` prop:
 
@@ -383,6 +410,11 @@ In these examples, the same form component is used in `createForm` and `editForm
 **Tip**: To edit a one-to-many relationship, you can also use [the `<ReferenceManyInput>` component](./ReferenceManyInput.md).
 
 ## Providing Custom Side Effects
+
+<video controls autoplay playsinline muted loop>
+  <source src="./img/editableDatagrid-custom_side_effect.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
 
 You can provide your own side effects in response to successful or failed save and delete actions, by passing functions to the `onSuccess` or `onError` inside the `mutationOptions` prop:
 
@@ -487,6 +519,7 @@ import {
     SelectField,
     required,
     List,
+    ListActions,
 } from 'react-admin';
 import {
     EditableDatagrid,
@@ -516,7 +549,11 @@ const ArtistForm = ({ meta }) => (
 const ArtistListWithMeta = () => {
     const meta = { foo: 'bar' };
     return (
-        <List hasCreate sort={{ field: 'id', order: 'DESC' }} empty={false}>
+        <List
+            actions={<ListActions hasCreate />}
+            sort={{ field: 'id', order: 'DESC' }}
+            empty={false}
+        >
             <EditableDatagrid
                 createForm={<ArtistForm meta={meta} />}
                 editForm={<ArtistForm meta={meta} />}
@@ -544,18 +581,18 @@ const ArtistListWithMeta = () => {
 ```
 {% endraw %}
 
-## Configurable
+## Configurable Variant
 
 You can let end users customize what fields are displayed in the `<EditableDatagrid>` by using the `<EditableDatagridConfigurable>` component instead, together with the `<RowFormConfigurable>` component.
 
 <video controls autoplay playsinline muted loop>
-  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-editable-datagrid-configurable.mp4" type="video/mp4"/>
-  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-editable-datagrid-configurable.webm" type="video/webm"/>
+  <source src="https://react-admin-ee.marmelab.com/assets/ra-editable-datagrid-configurable.mp4" type="video/mp4"/>
+  <source src="https://react-admin-ee.marmelab.com/assets/ra-editable-datagrid-configurable.webm" type="video/webm"/>
   Your browser does not support the video tag.
 </video>
 
 ```diff
-import { List, TextField } from 'react-admin';
+import { List, ListActions, TextField } from 'react-admin';
 import {
 -   EditableDatagrid,
 +   EditableDatagridConfigurable,
@@ -580,7 +617,7 @@ const ArtistForm = ({ meta }) => (
 );
 
 const ArtistList = () => (
-    <List hasCreate empty={false}>
+    <List actions={<ListActions hasCreate />} empty={false}>
 -        <EditableDatagrid
 +        <EditableDatagridConfigurable
             mutationMode="undoable"

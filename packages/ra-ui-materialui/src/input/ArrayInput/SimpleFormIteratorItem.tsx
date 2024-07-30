@@ -1,17 +1,14 @@
 import * as React from 'react';
-import {
-    Children,
-    cloneElement,
-    MouseEvent,
-    MouseEventHandler,
-    isValidElement,
-    ReactElement,
-    ReactNode,
-    useMemo,
-} from 'react';
-import { Typography } from '@mui/material';
+import { ReactElement, ReactNode, useMemo } from 'react';
+import { Typography, Stack } from '@mui/material';
 import clsx from 'clsx';
-import { RaRecord } from 'ra-core';
+import {
+    RaRecord,
+    RecordContextProvider,
+    SourceContextProvider,
+    useResourceContext,
+    useSourceContext,
+} from 'ra-core';
 
 import { SimpleFormIteratorClasses } from './useSimpleFormIteratorStyles';
 import { useSimpleFormIterator } from './useSimpleFormIterator';
@@ -20,6 +17,8 @@ import {
     SimpleFormIteratorItemContext,
     SimpleFormIteratorItemContextValue,
 } from './SimpleFormIteratorItemContext';
+import { RemoveItemButton as DefaultRemoveItemButton } from './RemoveItemButton';
+import { ReOrderButtons as DefaultReOrderButtons } from './ReOrderButtons';
 
 export const SimpleFormIteratorItem = React.forwardRef(
     (props: SimpleFormIteratorItemProps, ref: any) => {
@@ -30,15 +29,17 @@ export const SimpleFormIteratorItem = React.forwardRef(
             disableRemove,
             getItemLabel,
             index,
-            inline = false,
-            member,
+            inline,
             record,
-            removeButton,
-            reOrderButtons,
-            resource,
-            source,
+            removeButton = <DefaultRemoveItemButton />,
+            reOrderButtons = <DefaultReOrderButtons />,
         } = props;
-
+        const resource = useResourceContext(props);
+        if (!resource) {
+            throw new Error(
+                'SimpleFormIteratorItem must be used in a ResourceContextProvider or be passed a resource prop.'
+            );
+        }
         const { total, reOrder, remove } = useSimpleFormIterator();
         // Returns a boolean to indicate whether to disable the remove button for certain fields.
         // If disableRemove is a function, then call the function with the current record to
@@ -49,17 +50,6 @@ export const SimpleFormIteratorItem = React.forwardRef(
                 return disableRemove;
             }
             return disableRemove && disableRemove(record);
-        };
-
-        // remove field and call the onClick event of the button passed as removeButton prop
-        const handleRemoveButtonClick = (
-            originalOnClickHandler: MouseEventHandler,
-            index: number
-        ) => (event: MouseEvent) => {
-            remove(index);
-            if (originalOnClickHandler) {
-                originalOnClickHandler(event);
-            }
         };
 
         const context = useMemo<SimpleFormIteratorItemContextValue>(
@@ -77,10 +67,48 @@ export const SimpleFormIteratorItem = React.forwardRef(
                 ? getItemLabel(index)
                 : getItemLabel;
 
+        const parentSourceContext = useSourceContext();
+        const sourceContext = useMemo(
+            () => ({
+                getSource: (source: string) => {
+                    if (!source) {
+                        // source can be empty for scalar values, e.g.
+                        // <ArrayInput source="tags" /> => SourceContext is "tags"
+                        //   <SimpleFormIterator> => SourceContext is "tags.0"
+                        //      <TextInput /> => use its parent's getSource so finalSource = "tags.0"
+                        //   </SimpleFormIterator>
+                        // </ArrayInput>
+                        return parentSourceContext.getSource(`${index}`);
+                    } else {
+                        // Normal input with source, e.g.
+                        // <ArrayInput source="orders" /> => SourceContext is "orders"
+                        //   <SimpleFormIterator> => SourceContext is "orders.0"
+                        //      <DateInput source="date" /> => use its parent's getSource so finalSource = "orders.0.date"
+                        //   </SimpleFormIterator>
+                        // </ArrayInput>
+                        return parentSourceContext.getSource(
+                            `${index}.${source}`
+                        );
+                    }
+                },
+                getLabel: (source: string) => {
+                    // <ArrayInput source="orders" /> => LabelContext is "orders"
+                    //   <SimpleFormIterator> => LabelContext is ALSO "orders"
+                    //      <DateInput source="date" /> => use its parent's getLabel so finalLabel = "orders.date"
+                    //   </SimpleFormIterator>
+                    // </ArrayInput>
+                    //
+                    // we don't prefix with the index to avoid that translation keys contain it
+                    return parentSourceContext.getLabel(source);
+                },
+            }),
+            [index, parentSourceContext]
+        );
+
         return (
             <SimpleFormIteratorItemContext.Provider value={context}>
                 <li className={SimpleFormIteratorClasses.line} ref={ref}>
-                    {label && (
+                    {label != null && label !== false && (
                         <Typography
                             variant="body2"
                             className={SimpleFormIteratorClasses.index}
@@ -88,55 +116,26 @@ export const SimpleFormIteratorItem = React.forwardRef(
                             {label}
                         </Typography>
                     )}
-                    <section
-                        className={clsx(
-                            SimpleFormIteratorClasses.form,
-                            inline && SimpleFormIteratorClasses.inline
-                        )}
-                    >
-                        {Children.map(
-                            children,
-                            (input: ReactElement, index2) => {
-                                if (!isValidElement<any>(input)) {
-                                    return null;
+                    <SourceContextProvider value={sourceContext}>
+                        <RecordContextProvider value={record}>
+                            <Stack
+                                className={clsx(SimpleFormIteratorClasses.form)}
+                                direction={
+                                    inline
+                                        ? { xs: 'column', sm: 'row' }
+                                        : 'column'
                                 }
-                                const { source, ...inputProps } = input.props;
-                                return cloneElement(input, {
-                                    source: source
-                                        ? `${member}.${source}`
-                                        : member,
-                                    index: source ? undefined : index2,
-                                    resource,
-                                    disabled,
-                                    ...inputProps,
-                                });
-                            }
-                        )}
-                    </section>
+                                gap={inline ? 2 : 0}
+                            >
+                                {children}
+                            </Stack>
+                        </RecordContextProvider>
+                    </SourceContextProvider>
                     {!disabled && (
                         <span className={SimpleFormIteratorClasses.action}>
-                            {!disableReordering &&
-                                cloneElement(reOrderButtons, {
-                                    index,
-                                    max: total,
-                                    reOrder,
-                                    className: clsx(
-                                        'button-reorder',
-                                        `button-reorder-${source}-${index}`
-                                    ),
-                                })}
+                            {!disableReordering && reOrderButtons}
 
-                            {!disableRemoveField(record) &&
-                                cloneElement(removeButton, {
-                                    onClick: handleRemoveButtonClick(
-                                        removeButton.props.onClick,
-                                        index
-                                    ),
-                                    className: clsx(
-                                        'button-remove',
-                                        `button-remove-${source}-${index}`
-                                    ),
-                                })}
+                            {!disableRemoveField(record) && removeButton}
                         </span>
                     )}
                 </li>
@@ -157,12 +156,11 @@ export type SimpleFormIteratorItemProps = Partial<ArrayInputContextValue> & {
     getItemLabel?: boolean | GetItemLabelFunc;
     index: number;
     inline?: boolean;
-    member: string;
     onRemoveField: (index: number) => void;
     onReorder: (origin: number, destination: number) => void;
     record: RaRecord;
     removeButton?: ReactElement;
     reOrderButtons?: ReactElement;
-    resource: string;
-    source: string;
+    resource?: string;
+    source?: string;
 };

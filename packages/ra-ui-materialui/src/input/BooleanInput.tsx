@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { useCallback } from 'react';
-import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormHelperText from '@mui/material/FormHelperText';
@@ -11,7 +10,6 @@ import { FieldTitle, useInput } from 'ra-core';
 import { CommonInputProps } from './CommonInputProps';
 import { sanitizeInputRestProps } from './sanitizeInputRestProps';
 import { InputHelperText } from './InputHelperText';
-import { InputPropTypes } from './InputPropTypes';
 
 export const BooleanInput = (props: BooleanInputProps) => {
     const {
@@ -25,6 +23,7 @@ export const BooleanInput = (props: BooleanInputProps) => {
         onBlur,
         onChange,
         onFocus,
+        readOnly,
         disabled,
         parse,
         resource,
@@ -38,8 +37,7 @@ export const BooleanInput = (props: BooleanInputProps) => {
         id,
         field,
         isRequired,
-        fieldState: { error, invalid, isTouched },
-        formState: { isSubmitted },
+        fieldState: { error, invalid },
     } = useInput({
         defaultValue,
         format,
@@ -50,6 +48,8 @@ export const BooleanInput = (props: BooleanInputProps) => {
         onChange,
         type: 'checkbox',
         validate,
+        disabled,
+        readOnly,
         ...rest,
     });
 
@@ -62,8 +62,7 @@ export const BooleanInput = (props: BooleanInputProps) => {
         [field]
     );
 
-    const renderHelperText =
-        helperText !== false || ((isTouched || isSubmitted) && invalid);
+    const renderHelperText = helperText !== false || invalid;
 
     return (
         <FormGroup
@@ -82,7 +81,8 @@ export const BooleanInput = (props: BooleanInputProps) => {
                         checked={Boolean(field.value)}
                         {...sanitizeInputRestProps(rest)}
                         {...options}
-                        disabled={disabled}
+                        disabled={disabled || readOnly}
+                        readOnly={readOnly}
                     />
                 }
                 label={
@@ -95,9 +95,8 @@ export const BooleanInput = (props: BooleanInputProps) => {
                 }
             />
             {renderHelperText ? (
-                <FormHelperText error={(isTouched || isSubmitted) && invalid}>
+                <FormHelperText error={invalid}>
                     <InputHelperText
-                        touched={isTouched || isSubmitted}
                         error={error?.message}
                         helperText={helperText}
                     />
@@ -107,15 +106,8 @@ export const BooleanInput = (props: BooleanInputProps) => {
     );
 };
 
-BooleanInput.propTypes = {
-    ...InputPropTypes,
-    // @ts-ignore
-    options: PropTypes.shape(Switch.propTypes),
-    disabled: PropTypes.bool,
-};
-
 export type BooleanInputProps = CommonInputProps &
-    SwitchProps &
+    Omit<SwitchProps, 'defaultValue'> &
     Omit<FormGroupProps, 'defaultValue' | 'onChange' | 'onBlur' | 'onFocus'> & {
         options?: SwitchProps;
     };

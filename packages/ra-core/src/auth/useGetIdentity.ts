@@ -1,12 +1,16 @@
-import { useMemo } from 'react';
-import { useQuery, UseQueryOptions, QueryObserverResult } from 'react-query';
+import { useEffect, useMemo } from 'react';
+import {
+    useQuery,
+    UseQueryOptions,
+    QueryObserverResult,
+} from '@tanstack/react-query';
 
 import useAuthProvider from './useAuthProvider';
 import { UserIdentity } from '../types';
+import { useEvent } from '../util';
 
-const defaultIdentity = {
+const defaultIdentity: UserIdentity = {
     id: '',
-    fullName: null,
 };
 const defaultQueryParams = {
     staleTime: 5 * 60 * 1000,
@@ -17,20 +21,20 @@ const defaultQueryParams = {
  *
  * The return value updates according to the call state:
  *
- * - mount: { isLoading: true }
- * - success: { data: Identity, refetch: () => {}, isLoading: false }
- * - error: { error: Error, isLoading: false }
+ * - mount: { isPending: true }
+ * - success: { identity, refetch: () => {}, isPending: false }
+ * - error: { error: Error, isPending: false }
  *
  * The implementation is left to the authProvider.
  *
- * @returns The current user identity. Destructure as { isLoading, data, error, refetch }.
+ * @returns The current user identity. Destructure as { isPending, identity, error, refetch }.
  *
  * @example
  * import { useGetIdentity, useGetOne } from 'react-admin';
  *
  * const PostDetail = ({ id }) => {
- *     const { data: post, isLoading: postLoading } = useGetOne('posts', { id });
- *     const { data: identity, isLoading: identityLoading } = useGetIdentity();
+ *     const { data: post, isPending: postLoading } = useGetOne('posts', { id });
+ *     const { identity, isPending: identityLoading } = useGetIdentity();
  *     if (postLoading || identityLoading) return <>Loading...</>;
  *     if (!post.lockedBy || post.lockedBy === identity.id) {
  *         // post isn't locked, or is locked by me
@@ -41,64 +45,78 @@ const defaultQueryParams = {
  *     }
  * }
  */
-export const useGetIdentity = (
-    queryParams: UseQueryOptions<UserIdentity, Error> = defaultQueryParams
-): UseGetIdentityResult => {
+export const useGetIdentity = <ErrorType extends Error = Error>(
+    options: UseGetIdentityOptions<ErrorType> = defaultQueryParams
+): UseGetIdentityResult<ErrorType> => {
     const authProvider = useAuthProvider();
+    const { onSuccess, onError, onSettled, ...queryOptions } = options;
 
-    const result = useQuery(
-        ['auth', 'getIdentity'],
-        authProvider
-            ? () => authProvider.getIdentity()
-            : async () => defaultIdentity,
-        {
-            enabled: typeof authProvider?.getIdentity === 'function',
-            ...queryParams,
-        }
-    );
+    const result = useQuery({
+        queryKey: ['auth', 'getIdentity'],
+        queryFn: async ({ signal }) => {
+            if (
+                authProvider &&
+                typeof authProvider.getIdentity === 'function'
+            ) {
+                return authProvider.getIdentity({ signal });
+            } else {
+                return defaultIdentity;
+            }
+        },
+        ...queryOptions,
+    });
 
-    // @FIXME: return useQuery's result directly by removing identity prop (BC break - to be done in v5)
+    const onSuccessEvent = useEvent(onSuccess ?? noop);
+    const onErrorEvent = useEvent(onError ?? noop);
+    const onSettledEvent = useEvent(onSettled ?? noop);
+
+    useEffect(() => {
+        if (result.data === undefined || result.isFetching) return;
+        onSuccessEvent(result.data);
+    }, [onSuccessEvent, result.data, result.isFetching]);
+
+    useEffect(() => {
+        if (result.error == null || result.isFetching) return;
+        onErrorEvent(result.error);
+    }, [onErrorEvent, result.error, result.isFetching]);
+
+    useEffect(() => {
+        if (result.status === 'pending' || result.isFetching) return;
+        onSettledEvent(result.data, result.error);
+    }, [
+        onSettledEvent,
+        result.data,
+        result.error,
+        result.status,
+        result.isFetching,
+    ]);
+
     return useMemo(
-        () =>
-            result.isLoading
-                ? { isLoading: true }
-                : result.error
-                ? { error: result.error, isLoading: false }
-                : {
-                      data: result.data,
-                      identity: result.data,
-                      refetch: result.refetch,
-                      isLoading: false,
-                  },
-
+        () => ({
+            ...result,
+            identity: result.data,
+        }),
         [result]
     );
 };
 
-export type UseGetIdentityResult =
-    | {
-          isLoading: true;
-          data?: undefined;
-          identity?: undefined;
-          error?: undefined;
-          refetch?: undefined;
-      }
-    | {
-          isLoading: false;
-          data?: undefined;
-          identity?: undefined;
-          error: Error;
-          refetch?: undefined;
-      }
-    | {
-          isLoading: false;
-          data: UserIdentity;
-          /**
-           * @deprecated Use data instead
-           */
-          identity: UserIdentity;
-          error?: undefined;
-          refetch: () => Promise<QueryObserverResult<UserIdentity, Error>>;
-      };
+export interface UseGetIdentityOptions<ErrorType extends Error = Error>
+    extends Omit<
+        UseQueryOptions<UserIdentity, ErrorType>,
+        'queryKey' | 'queryFn'
+    > {
+    onSuccess?: (data: UserIdentity) => void;
+    onError?: (err: Error) => void;
+    onSettled?: (data?: UserIdentity, error?: Error | null) => void;
+}
+
+export type UseGetIdentityResult<ErrorType = Error> = QueryObserverResult<
+    UserIdentity,
+    ErrorType
+> & {
+    identity: UserIdentity | undefined;
+};
 
 export default useGetIdentity;
+
+const noop = () => {};

@@ -18,14 +18,22 @@ export const Basic = () => (
 
 export const Disabled = () => (
     <Wrapper>
+        <NullableBooleanInput source="announced" defaultValue={true} disabled />
         <NullableBooleanInput source="published" disabled />
+    </Wrapper>
+);
+
+export const ReadOnly = () => (
+    <Wrapper>
+        <NullableBooleanInput source="announced" defaultValue={true} readOnly />
+        <NullableBooleanInput source="published" readOnly />
     </Wrapper>
 );
 
 const i18nProvider = polyglotI18nProvider(() => englishMessages);
 
 const Wrapper = ({ children }) => (
-    <AdminContext i18nProvider={i18nProvider}>
+    <AdminContext i18nProvider={i18nProvider} defaultTheme="light">
         <Create resource="posts">
             <SimpleForm>
                 {children}

@@ -7,7 +7,7 @@ title: "Application Theme"
 
 If you want to override some styles across the entire application, you can use a custom theme, leveraging [the Material UI Theming support](https://mui.com/material-ui/customization/theming/). Custom themes let you override colors, fonts, spacing, and even the style of individual components.
 
-The [e-commerce demo](https://marmelab.com/react-admin-demo/) contains a theme switcher, so you can test them in a real application. 
+The [e-commerce demo](https://marmelab.com/react-admin-demo/) contains a theme switcher, so you can test them in a real application.
 
 <video controls autoplay playsinline muted loop>
   <source src="./img/demo-themes.mp4" type="video/mp4"/>
@@ -20,12 +20,12 @@ You can override the style of the entire application by passing a custom `theme`
 
 ```jsx
 import { Admin, defaultTheme } from 'react-admin';
+import { deepmerge } from '@mui/utils';
 import indigo from '@mui/material/colors/indigo';
 import pink from '@mui/material/colors/pink';
 import red from '@mui/material/colors/red';
 
-const myTheme = {
-    ...defaultTheme,
+const myTheme = deepmerge(defaultTheme, {
     palette: {
         primary: indigo,
         secondary: pink,
@@ -37,10 +37,10 @@ const myTheme = {
         // Use the system font instead of the default Roboto font.
         fontFamily: ['-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', 'Arial', 'sans-serif'].join(','),
     },
-};
+});
 
 const App = () => (
-    <Admin theme={theme}>
+    <Admin theme={myTheme}>
         // ...
     </Admin>
 );
@@ -52,7 +52,7 @@ Note that you don't need to call Material-UI's `createTheme` yourself. React-adm
 
 ## Light And Dark Themes
 
-It's a common practice to support both a light theme and a dark theme in an application, and let users choose which one they prefer. 
+It's a common practice to support both a light theme and a dark theme in an application, and let users choose which one they prefer.
 
 <video controls autoplay playsinline muted loop>
   <source src="./img/ToggleThemeButton.webm" type="video/webm"/>
@@ -60,14 +60,18 @@ It's a common practice to support both a light theme and a dark theme in an appl
   Your browser does not support the video tag.
 </video>
 
+React-admin provides a [built-in dark theme by default](#default), the default application theme depends on the user's system settings. If the user has chosen a dark mode in their OS, react-admin will use the dark theme. Otherwise, it will use the light theme.
 
-React-admin's `<Admin>` component accepts a `darkTheme` prop in addition to the `theme` prop. 
+In addition, users can switch from one theme to the other using [the `<ToggleThemeButton>` component](./ToggleThemeButton.md), that appears in the AppBar as soon as you define a `darkTheme` prop.
 
-```jsx
-import { Admin, defaultTheme } from 'react-admin';
+You can override the dark theme by setting the `<Admin>`'s `darkTheme` prop with your own theme:
 
-const lightTheme = defaultTheme;
-const darkTheme = { ...defaultTheme, palette: { mode: 'dark' } };
+```tsx
+import { Admin, defaultDarkTheme, defaultLightTheme } from 'react-admin';
+import { deepmerge } from '@mui/utils';
+
+const lightTheme = defaultLightTheme;
+const darkTheme = deepmerge(defaultDarkTheme, { palette: { mode: 'dark' } });
 
 const App = () => (
     <Admin
@@ -80,9 +84,25 @@ const App = () => (
 );
 ```
 
-With this setup, the default application theme depends on the user's system settings. If the user has chosen a dark mode in their OS, react-admin will use the dark theme. Otherwise, it will use the light theme.
+**Tip**: If you don't need the default dark theme, you can set the `<Admin>`'s `darkTheme` prop to `null`:
 
-In addition, users can switch from one theme to the other using [the `<ToggleThemeButton>` component](./ToggleThemeButton.md), which appears in the AppBar as soon as you define a `darkTheme` prop.
+```tsx
+const App = () => (
+    <Admin darkTheme={null}>
+        // ...
+    </Admin>
+);
+```
+
+**Tip**: If you provide both a `theme` and a `darkTheme`, react-admin will choose the default theme to use for each user based on their OS preference. If you prefer to always default to the light or the dark theme regardless of the user’s OS preference, you can set the [`<Admin defaultTheme>`](./Admin.md#defaulttheme) prop to either "light" or "dark":
+
+```tsx
+const App = () => (
+    <Admin defaultTheme="light">
+        // ...
+    </Admin>
+);
+```
 
 ## Built-In Themes
 
@@ -90,7 +110,7 @@ React-admin comes with 4 built-in themes, each one having a light and a dark var
 
 ### Default
 
-The default theme is a good fit for every application, and works equally well on desktop and mobile. 
+The default theme is a good fit for every application, and works equally well on desktop and mobile.
 
 [![Default light theme](./img/defaultLightTheme1.jpg)](./img/defaultLightTheme1.jpg)
 [![Default light theme](./img/defaultLightTheme2.jpg)](./img/defaultLightTheme2.jpg)
@@ -101,7 +121,7 @@ You don't need to configure anything to use the default theme - it comes out of 
 
 ### Nano
 
-A dense theme with minimal chrome, ideal for complex apps. It uses a small font size, reduced spacing, text buttons, standard variant inputs, pale colors. Only fit for desktop apps. 
+A dense theme with minimal chrome, ideal for complex apps. It uses a small font size, reduced spacing, text buttons, standard variant inputs, pale colors. Only fit for desktop apps.
 
 [![Nano light theme](./img/nanoLightTheme1.jpg)](./img/nanoLightTheme1.jpg)
 [![Nano light theme](./img/nanoLightTheme2.jpg)](./img/nanoLightTheme2.jpg)
@@ -222,11 +242,10 @@ For instance, to create a custom theme that overrides the style of the `<Datagri
 
 ```jsx
 import { defaultTheme } from 'react-admin';
+import { deepmerge } from '@mui/utils';
 
-const theme = {
-    ...defaultTheme,
+const theme = deepmerge(defaultTheme, {
     components: {
-        ...defaultTheme.components,
         RaDatagrid: {
             styleOverrides: {
               root: {
@@ -238,7 +257,7 @@ const theme = {
            }
         }
     }
-};
+});
 
 const App = () => (
     <Admin theme={theme}>
@@ -262,11 +281,10 @@ You can use this technique to override not only styles, but also defaults for co
 
 ```jsx
 import { defaultTheme } from 'react-admin';
+import { deepmerge } from '@mui/utils';
 
-const theme = {
-    ...defaultTheme,
+const theme = deepmerge(defaultTheme, {
     components: {
-        ...defaultTheme.components,
         MuiTextField: {
             defaultProps: {
                 variant: 'outlined',
@@ -278,18 +296,17 @@ const theme = {
             },
         },
     }
-};
+});
 ```
 
 **Tip**: TypeScript will be picky when overriding the `variant` `defaultProp`. To avoid compilation errors, type the `variant` value as `const`:
 
 ```ts
 import { defaultTheme } from 'react-admin';
+import { deepmerge } from '@mui/utils';
 
-const theme = {
-    ...defaultTheme,
+const theme = deepmerge(defaultTheme, {
     components: {
-        ...defaultTheme.components,
         MuiTextField: {
             defaultProps: {
                 variant: 'outlined' as const,
@@ -301,7 +318,7 @@ const theme = {
             },
         },
     }
-};
+});
 ```
 
 ## Customizing The Sidebar Width
@@ -310,14 +327,14 @@ You can specify the `Sidebar` width by setting the `width` and `closedWidth` pro
 
 ```jsx
 import { defaultTheme } from 'react-admin';
+import { deepmerge } from '@mui/utils';
 
-const theme = {
-    ...defaultTheme,
+const theme = deepmerge(defaultTheme, {
     sidebar: {
         width: 300, // The default value is 240
         closedWidth: 70, // The default value is 55
     },
-};
+});
 
 const App = () => (
     <Admin theme={theme} dataProvider={...}>
@@ -343,7 +360,11 @@ const MySidebar = (props) => (
     />
 );
 
-const MyLayout = props => <Layout {...props} sidebar={MySidebar} />
+const MyLayout = ({ children }) => (
+    <Layout sidebar={MySidebar}>
+        {children}
+    </Layout>
+);
 ```
 {% endraw %}
 
@@ -416,15 +437,14 @@ const App = () => (
 );
 ```
 
-You can write a custom theme from scratch, or start from the [default theme](#default-theme) and override some values:
+You can write a custom theme from scratch, or start from the [default theme](#default-theme) and override some values, using Material UI's utility function deepmerge:
 
 ```jsx
+import { deepmerge } from '@mui/utils';
 import { defaultTheme } from 'react-admin';
 
-const theme = {
-    ...defaultTheme,
+const theme = deepmerge(defaultTheme, {
     components: {
-        ...defaultTheme.components,
         RaDatagrid: {
             styleOverrides: {
               root: {
@@ -436,7 +456,7 @@ const theme = {
            }
         }
     }
-};
+});
 ```
 
 ## Default Theme
@@ -445,22 +465,22 @@ React-admin provides a theme that customizes a few Material-UI settings. You can
 
 ```jsx
 import { defaultTheme } from 'react-admin';
+import { deepmerge } from '@mui/utils';
 
-const myTheme = {
-    ...defaultTheme,
+const myTheme = deepmerge(defaultTheme, {
     palette: {
-        ...defaultTheme.palette,
         secondary: {
             main: '#11cb5f',
         },
     },
-};
+});
 ```
 
 Here is the default theme:
 
 ```tsx
-import { RaThemeOptions } from './layout/Theme';
+import { RaThemeOptions } from './types';
+import { deepmerge } from '@mui/utils';
 
 const defaultThemeInvariants = {
     typography: {
@@ -473,63 +493,100 @@ const defaultThemeInvariants = {
         closedWidth: 50,
     },
     components: {
+        MuiAutocomplete: {
+            defaultProps: {
+                fullWidth: true,
+            },
+            variants: [
+                {
+                    props: {},
+                    style: ({ theme }) => ({
+                        [theme.breakpoints.down('sm')]: { width: '100%' },
+                    }),
+                },
+            ],
+        },
         MuiTextField: {
             defaultProps: {
                 variant: 'filled' as const,
                 margin: 'dense' as const,
                 size: 'small' as const,
+                fullWidth: true,
             },
+            variants: [
+                {
+                    props: {},
+                    style: ({ theme }) => ({
+                        [theme.breakpoints.down('sm')]: { width: '100%' },
+                    }),
+                },
+            ],
         },
         MuiFormControl: {
             defaultProps: {
                 variant: 'filled' as const,
                 margin: 'dense' as const,
                 size: 'small' as const,
+                fullWidth: true,
+            },
+        },
+        RaSimpleFormIterator: {
+            defaultProps: {
+                fullWidth: true,
+            },
+        },
+        RaTranslatableInputs: {
+            defaultProps: {
+                fullWidth: true
             },
         },
     },
 };
 
-export const defaultLightTheme: RaThemeOptions = {
-    palette: {
-        background: {
-            default: '#fafafb',
+export const defaultLightTheme: RaThemeOptions = deepmerge(
+    defaultThemeInvariants,
+    {
+        palette: {
+            background: {
+                default: '#fafafb',
+            },
+            secondary: {
+                light: '#6ec6ff',
+                main: '#2196f3',
+                dark: '#0069c0',
+                contrastText: '#fff',
+            },
         },
-        secondary: {
-            light: '#6ec6ff',
-            main: '#2196f3',
-            dark: '#0069c0',
-            contrastText: '#fff',
-        },
-    },
-    ...defaultThemeInvariants,
-    components: {
-        ...defaultThemeInvariants.components,
-        MuiFilledInput: {
-            styleOverrides: {
-                root: {
-                    backgroundColor: 'rgba(0, 0, 0, 0.04)',
-                    '&$disabled': {
+        components: {
+            MuiFilledInput: {
+                styleOverrides: {
+                    root: {
                         backgroundColor: 'rgba(0, 0, 0, 0.04)',
+                        '&$disabled': {
+                            backgroundColor: 'rgba(0, 0, 0, 0.04)',
+                        },
                     },
                 },
             },
         },
-    },
-};
+    }
+);
 
-export const defaultDarkTheme: RaThemeOptions = {
-    palette: {
-        mode: 'dark',
-        primary: {
-            main: '#90caf9',
+export const defaultDarkTheme: RaThemeOptions = deepmerge(
+    defaultThemeInvariants,
+    {
+        palette: {
+            mode: 'dark',
+            primary: {
+                main: '#90caf9',
+            },
+            background: {
+                default: '#313131',
+            },
         },
-        background: {
-            default: '#313131',
-        },
-    },
-    ...defaultThemeInvariants,
-};
+    }
+);
 
 export const defaultTheme = defaultLightTheme;
+
 ```

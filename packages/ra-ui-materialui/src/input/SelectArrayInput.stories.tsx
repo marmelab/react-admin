@@ -6,6 +6,8 @@ import {
     Dialog,
     DialogActions,
     DialogContent,
+    Stack,
+    Box,
     TextField,
 } from '@mui/material';
 import fakeRestProvider from 'ra-data-fakerest';
@@ -18,128 +20,258 @@ import { ReferenceArrayInput } from './ReferenceArrayInput';
 import { useCreateSuggestionContext } from './useSupportCreateSuggestion';
 import { TextInput } from './TextInput';
 import { ArrayInput, SimpleFormIterator } from './ArrayInput';
-import {
-    DataProvider,
-    FormDataConsumer,
-    ResourceDefinitionContextProvider,
-} from 'ra-core';
-import { useWatch } from 'react-hook-form';
+import { Resource, TestMemoryRouter } from 'ra-core';
+import { Admin } from 'react-admin';
+import { FormInspector } from './common';
 
 export default { title: 'ra-ui-materialui/input/SelectArrayInput' };
 
 const i18nProvider = polyglotI18nProvider(() => englishMessages);
 
-const FormInspector = ({ source }) => {
-    const value = useWatch({ name: source });
-    return (
-        <div style={{ backgroundColor: 'lightgrey' }}>
-            {source} value in form:&nbsp;
-            <code>
-                {JSON.stringify(value)} ({typeof value})
-            </code>
-        </div>
-    );
-};
+const Wrapper = ({ children }) => (
+    <AdminContext i18nProvider={i18nProvider} defaultTheme="light">
+        <Create resource="posts" sx={{ width: 600 }}>
+            <SimpleForm>{children}</SimpleForm>
+        </Create>
+    </AdminContext>
+);
 
 export const Basic = () => (
+    <Wrapper>
+        <SelectArrayInput
+            source="roles"
+            choices={[
+                { id: 'admin', name: 'Admin' },
+                { id: 'u001', name: 'Editor' },
+                { id: 'u002', name: 'Moderator' },
+                { id: 'u003', name: 'Reviewer' },
+            ]}
+        />
+    </Wrapper>
+);
+
+export const StringChoices = () => (
+    <Wrapper>
+        <SelectArrayInput
+            source="roles"
+            choices={['Admin', 'Editor', 'Moderator', 'Reviewer']}
+        />
+    </Wrapper>
+);
+
+export const Variant = () => (
+    <Wrapper>
+        <SelectArrayInput
+            source="roles"
+            choices={[
+                { id: 'admin', name: 'Admin' },
+                { id: 'u001', name: 'Editor' },
+                { id: 'u002', name: 'Moderator' },
+                { id: 'u003', name: 'Reviewer' },
+            ]}
+        />
+        <SelectArrayInput
+            source="roles"
+            variant="outlined"
+            choices={[
+                { id: 'admin', name: 'Admin' },
+                { id: 'u001', name: 'Editor' },
+                { id: 'u002', name: 'Moderator' },
+                { id: 'u003', name: 'Reviewer' },
+            ]}
+        />
+        <SelectArrayInput
+            source="roles"
+            variant="standard"
+            choices={[
+                { id: 'admin', name: 'Admin' },
+                { id: 'u001', name: 'Editor' },
+                { id: 'u002', name: 'Moderator' },
+                { id: 'u003', name: 'Reviewer' },
+            ]}
+        />
+    </Wrapper>
+);
+
+export const Disabled = () => (
     <AdminContext i18nProvider={i18nProvider}>
         <Create
             resource="users"
             record={{ roles: ['u001', 'u003'] }}
-            sx={{ width: 600 }}
+            sx={{ width: 800 }}
         >
             <SimpleForm>
-                <SelectArrayInput
-                    source="roles"
-                    choices={[
-                        { id: 'admin', name: 'Admin' },
-                        { id: 'u001', name: 'Editor' },
-                        { id: 'u002', name: 'Moderator' },
-                        { id: 'u003', name: 'Reviewer' },
-                    ]}
-                    sx={{ width: 300 }}
-                />
-                <SelectArrayInput
-                    source="roles"
-                    variant="outlined"
-                    choices={[
-                        { id: 'admin', name: 'Admin' },
-                        { id: 'u001', name: 'Editor' },
-                        { id: 'u002', name: 'Moderator' },
-                        { id: 'u003', name: 'Reviewer' },
-                    ]}
-                    sx={{ width: 300 }}
-                />
-                <SelectArrayInput
-                    source="roles"
-                    variant="standard"
-                    choices={[
-                        { id: 'admin', name: 'Admin' },
-                        { id: 'u001', name: 'Editor' },
-                        { id: 'u002', name: 'Moderator' },
-                        { id: 'u003', name: 'Reviewer' },
-                    ]}
-                    sx={{ width: 300 }}
-                />
+                <Stack direction="row">
+                    <Box>
+                        <SelectArrayInput
+                            source="roles"
+                            choices={[
+                                { id: 'admin', name: 'Admin' },
+                                { id: 'u001', name: 'Editor' },
+                                { id: 'u002', name: 'Moderator' },
+                                { id: 'u003', name: 'Reviewer' },
+                            ]}
+                            sx={{ width: 300 }}
+                            disabled
+                        />
+                        <SelectArrayInput
+                            source="roles"
+                            variant="outlined"
+                            choices={[
+                                { id: 'admin', name: 'Admin' },
+                                { id: 'u001', name: 'Editor' },
+                                { id: 'u002', name: 'Moderator' },
+                                { id: 'u003', name: 'Reviewer' },
+                            ]}
+                            sx={{ width: 300 }}
+                            disabled
+                        />
+                        <SelectArrayInput
+                            source="roles"
+                            variant="standard"
+                            choices={[
+                                { id: 'admin', name: 'Admin' },
+                                { id: 'u001', name: 'Editor' },
+                                { id: 'u002', name: 'Moderator' },
+                                { id: 'u003', name: 'Reviewer' },
+                            ]}
+                            sx={{ width: 300 }}
+                            disabled
+                        />
+                    </Box>
+                    <Box>
+                        <SelectArrayInput
+                            source="title"
+                            sx={{ width: 300 }}
+                            disabled
+                        />
+                        <SelectArrayInput
+                            source="title"
+                            variant="outlined"
+                            sx={{ width: 300 }}
+                            disabled
+                        />
+                        <SelectArrayInput
+                            source="title"
+                            variant="standard"
+                            sx={{ width: 300 }}
+                            disabled
+                        />
+                    </Box>
+                </Stack>
+            </SimpleForm>
+        </Create>
+    </AdminContext>
+);
+
+export const ReadOnly = () => (
+    <AdminContext i18nProvider={i18nProvider}>
+        <Create
+            resource="users"
+            record={{ roles: ['u001', 'u003'] }}
+            sx={{ width: 800 }}
+        >
+            <SimpleForm>
+                <Stack direction="row">
+                    <Box>
+                        <SelectArrayInput
+                            source="roles"
+                            choices={[
+                                { id: 'admin', name: 'Admin' },
+                                { id: 'u001', name: 'Editor' },
+                                { id: 'u002', name: 'Moderator' },
+                                { id: 'u003', name: 'Reviewer' },
+                            ]}
+                            sx={{ width: 300 }}
+                            readOnly
+                        />
+                        <SelectArrayInput
+                            source="roles"
+                            variant="outlined"
+                            choices={[
+                                { id: 'admin', name: 'Admin' },
+                                { id: 'u001', name: 'Editor' },
+                                { id: 'u002', name: 'Moderator' },
+                                { id: 'u003', name: 'Reviewer' },
+                            ]}
+                            sx={{ width: 300 }}
+                            readOnly
+                        />
+                        <SelectArrayInput
+                            source="roles"
+                            variant="standard"
+                            choices={[
+                                { id: 'admin', name: 'Admin' },
+                                { id: 'u001', name: 'Editor' },
+                                { id: 'u002', name: 'Moderator' },
+                                { id: 'u003', name: 'Reviewer' },
+                            ]}
+                            sx={{ width: 300 }}
+                            readOnly
+                        />
+                    </Box>
+                    <Box>
+                        <SelectArrayInput
+                            source="title"
+                            sx={{ width: 300 }}
+                            readOnly
+                        />
+                        <SelectArrayInput
+                            source="title"
+                            variant="outlined"
+                            sx={{ width: 300 }}
+                            readOnly
+                        />
+                        <SelectArrayInput
+                            source="title"
+                            variant="standard"
+                            sx={{ width: 300 }}
+                            readOnly
+                        />
+                    </Box>
+                </Stack>
             </SimpleForm>
         </Create>
     </AdminContext>
 );
 
 export const DefaultValue = () => (
-    <AdminContext i18nProvider={i18nProvider}>
-        <Create resource="users" sx={{ width: 600 }}>
-            <SimpleForm>
-                <SelectArrayInput
-                    source="roles"
-                    defaultValue={['u001', 'u003']}
-                    choices={[
-                        { id: 'admin', name: 'Admin' },
-                        { id: 'u001', name: 'Editor' },
-                        { id: 'u002', name: 'Moderator' },
-                        { id: 'u003', name: 'Reviewer' },
-                    ]}
-                    sx={{ width: 300 }}
-                />
-            </SimpleForm>
-        </Create>
-    </AdminContext>
+    <Wrapper>
+        <SelectArrayInput
+            source="roles"
+            defaultValue={['u001', 'u003']}
+            choices={[
+                { id: 'admin', name: 'Admin' },
+                { id: 'u001', name: 'Editor' },
+                { id: 'u002', name: 'Moderator' },
+                { id: 'u003', name: 'Reviewer' },
+            ]}
+            sx={{ width: 300 }}
+        />
+    </Wrapper>
 );
 
 export const InsideArrayInput = () => (
-    <AdminContext i18nProvider={i18nProvider}>
-        <Create resource="users" sx={{ width: 600 }}>
-            <SimpleForm>
-                <ArrayInput
-                    source="items"
-                    label="Items"
-                    defaultValue={[{ data: ['foo'] }]}
-                >
-                    <SimpleFormIterator>
-                        <FormDataConsumer>
-                            {({ getSource }) => {
-                                const source = getSource!('data');
-                                return (
-                                    <>
-                                        <SelectArrayInput
-                                            label="data"
-                                            source={source}
-                                            choices={[
-                                                { id: 'foo', name: 'Foo' },
-                                                { id: 'bar', name: 'Bar' },
-                                            ]}
-                                            defaultValue={['foo']}
-                                        />
-                                    </>
-                                );
-                            }}
-                        </FormDataConsumer>
-                    </SimpleFormIterator>
-                </ArrayInput>
-                <FormInspector source="items" />
-            </SimpleForm>
-        </Create>
-    </AdminContext>
+    <Wrapper>
+        <ArrayInput
+            source="items"
+            label="Items"
+            defaultValue={[{ data: ['foo'] }]}
+        >
+            <SimpleFormIterator>
+                <SelectArrayInput
+                    label="data"
+                    source="data"
+                    choices={[
+                        { id: 'foo', name: 'Foo' },
+                        { id: 'bar', name: 'Bar' },
+                    ]}
+                    defaultValue={['foo']}
+                />
+            </SimpleFormIterator>
+        </ArrayInput>
+        <FormInspector name="items" />
+    </Wrapper>
 );
 
 const choices = [
@@ -182,22 +314,14 @@ const CreateRole = () => {
 };
 
 export const CreateProp = () => (
-    <AdminContext i18nProvider={i18nProvider}>
-        <Create
-            resource="users"
-            record={{ roles: ['u001', 'u003'] }}
-            sx={{ width: 600 }}
-        >
-            <SimpleForm>
-                <SelectArrayInput
-                    source="roles"
-                    choices={choices}
-                    sx={{ width: 300 }}
-                    create={<CreateRole />}
-                />
-            </SimpleForm>
-        </Create>
-    </AdminContext>
+    <Wrapper>
+        <SelectArrayInput
+            source="roles"
+            choices={choices}
+            defaultValue={['u001', 'u003']}
+            create={<CreateRole />}
+        />
+    </Wrapper>
 );
 
 export const DifferentIdTypes = () => {
@@ -211,12 +335,11 @@ export const DifferentIdTypes = () => {
     };
     const dataProvider = fakeRestProvider(fakeData, false);
     return (
-        <AdminContext dataProvider={dataProvider}>
+        <AdminContext dataProvider={dataProvider} defaultTheme="light">
             <Edit resource="bands" id={1} sx={{ width: 600 }}>
                 <SimpleForm>
-                    <TextInput source="name" fullWidth />
+                    <TextInput source="name" />
                     <SelectArrayInput
-                        fullWidth
                         source="members"
                         choices={fakeData.artists}
                     ></SelectArrayInput>
@@ -226,7 +349,7 @@ export const DifferentIdTypes = () => {
     );
 };
 
-export const DifferentSizes = () => {
+export const Size = () => {
     const fakeData = {
         bands: [{ id: 1, name: 'band_1', members: [1, '2'] }],
         artists: [
@@ -237,31 +360,27 @@ export const DifferentSizes = () => {
     };
     const dataProvider = fakeRestProvider(fakeData, false);
     return (
-        <AdminContext dataProvider={dataProvider}>
+        <AdminContext dataProvider={dataProvider} defaultTheme="light">
             <Edit resource="bands" id={1} sx={{ width: 600 }}>
                 <SimpleForm>
-                    <TextInput source="name" fullWidth />
+                    <TextInput source="name" />
                     <SelectArrayInput
-                        fullWidth
                         source="members"
                         choices={fakeData.artists}
                         size="small"
                     />
                     <SelectArrayInput
-                        fullWidth
                         source="members"
                         choices={fakeData.artists}
                         size="medium"
                     />
                     <SelectArrayInput
-                        fullWidth
                         source="members"
                         choices={fakeData.artists}
                         size="small"
                         variant="outlined"
                     />
                     <SelectArrayInput
-                        fullWidth
                         source="members"
                         choices={fakeData.artists}
                         size="medium"
@@ -303,6 +422,7 @@ export const TranslateChoice = () => {
                         }),
                 } as any
             }
+            defaultTheme="light"
         >
             <Edit resource="posts" id="1">
                 <SimpleForm>
@@ -356,55 +476,193 @@ export const TranslateChoice = () => {
     );
 };
 
-export const WithRecordRepresentation = ({ setOptionText = false }) => {
-    const tags = [
-        { id: 0, name: '3D' },
-        { id: 1, name: 'Architecture' },
-        { id: 2, name: 'Design' },
-        { id: 3, name: 'Painting' },
-        { id: 4, name: 'Photography' },
-    ];
-    const resouceDefs = {
-        tags: {
-            name: 'tags',
-            recordRepresentation: record => `${record.id} - ${record.name}`,
-        },
-    };
-    return (
-        <AdminContext
-            dataProvider={
-                ({
-                    getList: () =>
-                        Promise.resolve({
-                            data: tags,
-                            total: tags.length,
-                        }),
-                    getMany: (_, params) => {
-                        return Promise.resolve({
-                            data: params.ids.map(id =>
-                                tags.find(tag => tag.id === id)
-                            ),
-                        });
-                    },
-                } as unknown) as DataProvider
-            }
-        >
-            <ResourceDefinitionContextProvider definitions={resouceDefs}>
-                <SimpleForm
-                    defaultValues={{ tag_ids: [1, 3] }}
-                    onSubmit={() => {}}
-                >
-                    <ReferenceArrayInput reference="tags" source="tag_ids">
-                        <SelectArrayInput
-                            optionText={setOptionText ? 'name' : undefined}
-                        />
-                    </ReferenceArrayInput>
-                </SimpleForm>
-            </ResourceDefinitionContextProvider>
-        </AdminContext>
-    );
-};
+const authors = [
+    { id: 1, first_name: 'Leo', last_name: 'Tolstoy', language: 'Russian' },
+    { id: 2, first_name: 'Victor', last_name: 'Hugo', language: 'French' },
+    {
+        id: 3,
+        first_name: 'William',
+        last_name: 'Shakespeare',
+        language: 'English',
+    },
+    {
+        id: 4,
+        first_name: 'Charles',
+        last_name: 'Baudelaire',
+        language: 'French',
+    },
+    { id: 5, first_name: 'Marcel', last_name: 'Proust', language: 'French' },
+];
 
-export const WithRecordRepresentationAndOptionText = () => (
-    <WithRecordRepresentation setOptionText />
+const dataProviderWithAuthors = {
+    getOne: () =>
+        Promise.resolve({
+            data: {
+                id: 1,
+                title: 'War and Peace',
+                authors: [1],
+                summary:
+                    "War and Peace broadly focuses on Napoleon's invasion of Russia, and the impact it had on Tsarist society. The book explores themes such as revolution, revolution and empire, the growth and decline of various states and the impact it had on their economies, culture, and society.",
+                year: 1869,
+            },
+        }),
+    getMany: (_resource, params) =>
+        Promise.resolve({
+            data: authors.filter(author => params.ids.includes(author.id)),
+        }),
+    getList: () =>
+        new Promise(resolve => {
+            // eslint-disable-next-line eqeqeq
+            setTimeout(
+                () =>
+                    resolve({
+                        data: authors,
+                        total: authors.length,
+                    }),
+                500
+            );
+            return;
+        }),
+    update: (_resource, params) => Promise.resolve(params),
+    create: (_resource, params) => {
+        const newAuthor = {
+            id: authors.length + 1,
+            first_name: params.data.first_name,
+            last_name: params.data.last_name,
+            language: params.data.language,
+        };
+        authors.push(newAuthor);
+        return Promise.resolve({ data: newAuthor });
+    },
+} as any;
+
+export const InsideReferenceArrayInput = () => (
+    <TestMemoryRouter initialEntries={['/books/1']}>
+        <Admin dataProvider={dataProviderWithAuthors}>
+            <Resource
+                name="authors"
+                recordRepresentation={record =>
+                    `${record.first_name} ${record.last_name}`
+                }
+            />
+            <Resource
+                name="books"
+                edit={() => (
+                    <Edit
+                        mutationMode="pessimistic"
+                        mutationOptions={{
+                            onSuccess: data => {
+                                console.log(data);
+                            },
+                        }}
+                    >
+                        <SimpleForm>
+                            <ReferenceArrayInput
+                                reference="authors"
+                                source="authors"
+                            >
+                                <SelectArrayInput />
+                            </ReferenceArrayInput>
+                            <FormInspector name="authors" />
+                        </SimpleForm>
+                    </Edit>
+                )}
+            />
+        </Admin>
+    </TestMemoryRouter>
+);
+
+export const InsideReferenceArrayInputDefaultValue = ({
+    onSuccess = console.log,
+}) => (
+    <TestMemoryRouter initialEntries={['/books/1']}>
+        <Admin
+            dataProvider={{
+                ...dataProviderWithAuthors,
+                getOne: () =>
+                    Promise.resolve({
+                        data: {
+                            id: 1,
+                            title: 'War and Peace',
+                            // trigger default value
+                            author: undefined,
+                            summary:
+                                "War and Peace broadly focuses on Napoleon's invasion of Russia, and the impact it had on Tsarist society. The book explores themes such as revolution, revolution and empire, the growth and decline of various states and the impact it had on their economies, culture, and society.",
+                            year: 1869,
+                        },
+                    }),
+            }}
+        >
+            <Resource
+                name="authors"
+                recordRepresentation={record =>
+                    `${record.first_name} ${record.last_name}`
+                }
+            />
+            <Resource
+                name="books"
+                edit={() => (
+                    <Edit
+                        mutationMode="pessimistic"
+                        mutationOptions={{ onSuccess }}
+                    >
+                        <SimpleForm>
+                            <TextInput source="title" />
+                            <ReferenceArrayInput
+                                reference="authors"
+                                source="authors"
+                            >
+                                <SelectArrayInput />
+                            </ReferenceArrayInput>
+                            <FormInspector name="authors" />
+                        </SimpleForm>
+                    </Edit>
+                )}
+            />
+        </Admin>
+    </TestMemoryRouter>
+);
+
+export const InsideReferenceArrayInputWithError = () => (
+    <TestMemoryRouter initialEntries={['/books/1']}>
+        <Admin
+            dataProvider={{
+                ...dataProviderWithAuthors,
+                getList: () =>
+                    Promise.reject(
+                        new Error('Error while fetching the authors')
+                    ),
+            }}
+        >
+            <Resource
+                name="authors"
+                recordRepresentation={record =>
+                    `${record.first_name} ${record.last_name}`
+                }
+            />
+            <Resource
+                name="books"
+                edit={() => (
+                    <Edit
+                        mutationMode="pessimistic"
+                        mutationOptions={{
+                            onSuccess: data => {
+                                console.log(data);
+                            },
+                        }}
+                    >
+                        <SimpleForm>
+                            <ReferenceArrayInput
+                                reference="authors"
+                                source="authors"
+                            >
+                                <SelectArrayInput />
+                            </ReferenceArrayInput>
+                            <FormInspector name="authors" />
+                        </SimpleForm>
+                    </Edit>
+                )}
+            />
+        </Admin>
+    </TestMemoryRouter>
 );

@@ -29,7 +29,7 @@ You can find translation packages for the following languages:
 - Hindi (`hi`): [harshit-budhraja/ra-language-hindi](https://github.com/harshit-budhraja/ra-language-hindi)
 - Hungarian (`hu`): [phelion/ra-language-hungarian](https://github.com/phelion/ra-language-hungarian)
 - Indonesian (`id`): [danangekal/ra-language-indonesian-new](https://github.com/danangekal/ra-language-indonesian-new)
-- Italian (`it`): [stefsava/ra-italian](https://github.com/stefsava/ra-italian)
+- Italian (`it`): [christianascone/ra-language-italian](https://github.com/christianascone/ra-language-italian)
 - Japanese (`ja`): [bicstone/ra-language-japanese](https://github.com/bicstone/ra-language-japanese)
 - Korean (`ko`): [acidsound/ra-language-korean](https://github.com/acidsound/ra-language-korean)
 - Latvian (`lv`): [tui-ru/ra-language-latvian](https://github.com/tui-ru/ra-language-latvian)
@@ -45,7 +45,7 @@ You can find translation packages for the following languages:
 - Swedish (`sv`): [kolben/ra-language-swedish](https://github.com/kolben/ra-language-swedish)
 - Turkish (`tr`): [KamilGunduz/ra-language-turkish](https://github.com/KamilGunduz/ra-language-turkish)
 - Ukrainian (`ua`): [koresar/ra-language-ukrainian](https://github.com/koresar/ra-language-ukrainian)
-- Vietnamese (`vi`): [hieunguyendut/ra-language-vietnamese](https://github.com/hieunguyendut/ra-language-vietnamese)
+- Vietnamese (`vi`): [completejavascript/ra-language-vietnamese](https://github.com/completejavascript/ra-language-vietnamese)
 
 In addition, the previous version of react-admin, called admin-on-rest, was translated into the following languages:
 

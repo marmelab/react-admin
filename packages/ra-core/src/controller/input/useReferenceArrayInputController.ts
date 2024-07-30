@@ -1,18 +1,19 @@
 import { useCallback, useMemo } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
+import type { UseQueryOptions } from '@tanstack/react-query';
 
-import { FilterPayload, RaRecord, SortPayload } from '../../types';
 import { useGetList, useGetManyAggregate } from '../../dataProvider';
 import { useReferenceParams } from './useReferenceParams';
-import { ChoicesContextValue } from '../../form';
-import { UseQueryOptions } from 'react-query';
+import { useWrappedSource } from '../../core';
+import type { FilterPayload, RaRecord, SortPayload } from '../../types';
+import type { ChoicesContextValue } from '../../form';
 
 /**
  * Prepare data for the ReferenceArrayInput components
  *
  * @example
  *
- * const { allChoices, availableChoices, selectedChoices, error, isFetching, isLoading } = useReferenceArrayInputController({
+ * const { allChoices, availableChoices, selectedChoices, error, isFetching, isLoading, isPending } = useReferenceArrayInputController({
  *      record: { referenceIds: ['id1', 'id2']};
  *      reference: 'reference';
  *      resource: 'resource';
@@ -30,7 +31,7 @@ import { UseQueryOptions } from 'react-query';
  * @return {Object} controllerProps Fetched data and callbacks for the ReferenceArrayInput components
  */
 export const useReferenceArrayInputController = <
-    RecordType extends RaRecord = any
+    RecordType extends RaRecord = any,
 >(
     props: UseReferenceArrayInputParams<RecordType>
 ): ChoicesContextValue<RecordType> => {
@@ -46,9 +47,10 @@ export const useReferenceArrayInputController = <
         source,
     } = props;
     const { getValues } = useFormContext();
+    const finalSource = useWrappedSource(source);
     // When we change the defaultValue of the child input using react-hook-form resetField function,
     // useWatch does not seem to get the new value. We fallback to getValues to get it.
-    const value = useWatch({ name: source }) ?? getValues(source);
+    const value = useWatch({ name: finalSource }) ?? getValues(finalSource);
     const { meta, ...otherQueryOptions } = queryOptions;
 
     /**
@@ -59,6 +61,7 @@ export const useReferenceArrayInputController = <
         error: errorGetMany,
         isLoading: isLoadingGetMany,
         isFetching: isFetchingGetMany,
+        isPending: isPendingGetMany,
         refetch: refetchGetMany,
     } = useGetManyAggregate<RecordType>(
         reference,
@@ -96,6 +99,7 @@ export const useReferenceArrayInputController = <
         error: errorGetList,
         isLoading: isLoadingGetList,
         isFetching: isFetchingGetList,
+        isPending: isPendingGetList,
         refetch: refetchGetMatching,
     } = useGetList<RecordType>(
         reference,
@@ -111,7 +115,7 @@ export const useReferenceArrayInputController = <
         {
             retry: false,
             enabled: isGetMatchingEnabled,
-            keepPreviousData: true,
+            placeholderData: previousData => previousData,
             ...otherQueryOptions,
         }
     );
@@ -122,8 +126,8 @@ export const useReferenceArrayInputController = <
         matchingReferences && matchingReferences.length > 0
             ? mergeReferences(matchingReferences, finalReferenceRecords)
             : finalReferenceRecords.length > 0
-            ? finalReferenceRecords
-            : matchingReferences;
+              ? finalReferenceRecords
+              : matchingReferences;
 
     const refetch = useCallback(() => {
         refetchGetMany();
@@ -149,6 +153,7 @@ export const useReferenceArrayInputController = <
         hideFilter: paramsModifiers.hideFilter,
         isFetching: isFetchingGetMany || isFetchingGetList,
         isLoading: isLoadingGetMany || isLoadingGetList,
+        isPending: isPendingGetMany || isPendingGetList,
         page: params.page,
         perPage: params.perPage,
         refetch,
@@ -158,16 +163,17 @@ export const useReferenceArrayInputController = <
         setPerPage: paramsModifiers.setPerPage,
         setSort: paramsModifiers.setSort,
         showFilter: paramsModifiers.showFilter,
+        // we return source and not finalSource because child inputs (e.g. AutocompleteArrayInput) already call useInput and compute the final source
         source,
         total: total,
         hasNextPage: pageInfo
             ? pageInfo.hasNextPage
             : total != null
-            ? params.page * params.perPage < total
-            : undefined,
+              ? params.page * params.perPage < total
+              : undefined,
         hasPreviousPage: pageInfo ? pageInfo.hasPreviousPage : params.page > 1,
         isFromReference: true,
-    };
+    } as ChoicesContextValue<RecordType>;
 };
 
 const EmptyArray = [];
@@ -189,18 +195,21 @@ const mergeReferences = <RecordType extends RaRecord = any>(
 };
 
 export interface UseReferenceArrayInputParams<
-    RecordType extends RaRecord = any
+    RecordType extends RaRecord = any,
 > {
     debounce?: number;
     filter?: FilterPayload;
-    queryOptions?: UseQueryOptions<{
-        data: RecordType[];
-        total?: number;
-        pageInfo?: {
-            hasNextPage?: boolean;
-            hasPreviousPage?: boolean;
-        };
-    }> & { meta?: any };
+    queryOptions?: Omit<
+        UseQueryOptions<{
+            data: RecordType[];
+            total?: number;
+            pageInfo?: {
+                hasNextPage?: boolean;
+                hasPreviousPage?: boolean;
+            };
+        }>,
+        'queryFn' | 'queryKey'
+    > & { meta?: any };
     page?: number;
     perPage?: number;
     record?: RecordType;

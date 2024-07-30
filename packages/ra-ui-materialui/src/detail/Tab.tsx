@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { isValidElement, ReactElement, ReactNode } from 'react';
-import PropTypes from 'prop-types';
 import { Link, useLocation } from 'react-router-dom';
 import {
     Tab as MuiTab,
@@ -32,8 +31,8 @@ import { Labeled } from '../Labeled';
  *     import PersonPinIcon from '@mui/icons-material/PersonPin';
  *     import { Show, TabbedShowLayout, TextField } from 'react-admin';
  *
- *     export const PostShow = (props) => (
- *         <Show {...props}>
+ *     export const PostShow = () => (
+ *         <Show>
  *             <TabbedShowLayout>
  *                 <TabbedShowLayout.Tab label="Content" icon={<FavoriteIcon />}>
  *                     <TextField source="title" />
@@ -143,20 +142,6 @@ const Root = styled(Stack, {
         display: 'inline',
     },
 }));
-
-Tab.propTypes = {
-    children: PropTypes.node,
-    className: PropTypes.string,
-    contentClassName: PropTypes.string,
-    context: PropTypes.oneOf(['header', 'content']),
-    count: PropTypes.node,
-    icon: PropTypes.element,
-    label: PropTypes.oneOfType([PropTypes.string, PropTypes.element])
-        .isRequired,
-    path: PropTypes.string,
-    spacing: PropTypes.any,
-    value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-};
 
 export interface TabProps extends Omit<MuiTabProps, 'children'> {
     children: ReactNode;

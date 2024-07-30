@@ -6,12 +6,11 @@ import {
     useCallback,
     useContext,
 } from 'react';
-import PropTypes from 'prop-types';
 import { styled } from '@mui/material/styles';
 import {
     FormGroupsProvider,
-    LabelPrefixContextProvider,
-    ListFilterContextValue,
+    SourceContextProvider,
+    SourceContextValue,
     useListContext,
     useResourceContext,
 } from 'ra-core';
@@ -33,15 +32,14 @@ import { FilterContext } from '../FilterContext';
 export const FilterForm = (props: FilterFormProps) => {
     const { defaultValues, filters: filtersProps, ...rest } = props;
 
-    const { setFilters, displayedFilters, filterValues } = useListContext(
-        props
-    );
+    const { setFilters, displayedFilters, filterValues } = useListContext();
     const filters = useContext(FilterContext) || filtersProps;
 
-    const mergedInitialValuesWithDefaultValues = mergeInitialValuesWithDefaultValues(
-        defaultValues || filterValues,
-        filters
-    );
+    const mergedInitialValuesWithDefaultValues =
+        mergeInitialValuesWithDefaultValues(
+            defaultValues || filterValues,
+            filters
+        );
 
     const form = useForm({
         defaultValues: mergedInitialValuesWithDefaultValues,
@@ -74,9 +72,9 @@ export const FilterForm = (props: FilterFormProps) => {
                 if (get(values, name) === '') {
                     const newValues = cloneDeep(values);
                     unset(newValues, name);
-                    setFilters(newValues, displayedFilters);
+                    setFilters(newValues, displayedFilters, true);
                 } else {
-                    setFilters(values, displayedFilters);
+                    setFilters(values, displayedFilters, true);
                 }
             }
         });
@@ -104,9 +102,10 @@ export const FilterFormBase = (props: FilterFormBaseProps) => {
     const { className, filters, ...rest } = props;
     const resource = useResourceContext(props);
     const form = useFormContext();
-    const { displayedFilters = {}, hideFilter } = useListContext(props);
+    const { displayedFilters = {}, hideFilter } = useListContext();
 
     useEffect(() => {
+        if (!filters) return;
         filters.forEach((filter: JSX.Element) => {
             if (filter.props.alwaysOn && filter.props.defaultValue) {
                 throw new Error(
@@ -117,13 +116,14 @@ export const FilterFormBase = (props: FilterFormBaseProps) => {
     }, [filters]);
 
     const getShownFilters = () => {
+        if (!filters) return [];
         const values = form.getValues();
         return filters.filter((filterElement: JSX.Element) => {
             const filterValue = get(values, filterElement.props.source);
             return (
                 filterElement.props.alwaysOn ||
                 displayedFilters[filterElement.props.source] ||
-                (filterValue !== '' && typeof filterValue !== 'undefined')
+                !isEmptyValue(filterValue)
             );
         });
     };
@@ -133,8 +133,17 @@ export const FilterFormBase = (props: FilterFormBaseProps) => {
         [hideFilter]
     );
 
+    const sourceContext = React.useMemo<SourceContextValue>(
+        () => ({
+            getSource: (source: string) => source,
+            getLabel: (source: string) =>
+                `resources.${resource}.fields.${source}`,
+        }),
+        [resource]
+    );
+
     return (
-        <LabelPrefixContextProvider prefix={`resources.${resource}.fields`}>
+        <SourceContextProvider value={sourceContext}>
             <StyledForm
                 className={className}
                 {...sanitizeRestProps(rest)}
@@ -142,7 +151,7 @@ export const FilterFormBase = (props: FilterFormBaseProps) => {
             >
                 {getShownFilters().map((filterElement: JSX.Element) => (
                     <FilterFormInput
-                        key={filterElement.props.source}
+                        key={filterElement.key || filterElement.props.source}
                         filterElement={filterElement}
                         handleHide={handleHide}
                         resource={resource}
@@ -151,7 +160,7 @@ export const FilterFormBase = (props: FilterFormBaseProps) => {
                 ))}
                 <div className={FilterFormClasses.clearFix} />
             </StyledForm>
-        </LabelPrefixContextProvider>
+        </SourceContextProvider>
     );
 };
 
@@ -160,21 +169,8 @@ const handleSubmit = event => {
     return false;
 };
 
-FilterFormBase.propTypes = {
-    resource: PropTypes.string,
-    filters: PropTypes.arrayOf(PropTypes.node).isRequired,
-    displayedFilters: PropTypes.object,
-    hideFilter: PropTypes.func,
-    initialValues: PropTypes.object,
-    className: PropTypes.string,
-};
-
 const sanitizeRestProps = ({
-    displayedFilters,
-    filterValues,
     hasCreate,
-    hideFilter,
-    setFilters,
     resource,
     ...props
 }: Partial<FilterFormBaseProps> & { hasCreate?: boolean }) => props;
@@ -182,12 +178,11 @@ const sanitizeRestProps = ({
 export type FilterFormBaseProps = Omit<
     HtmlHTMLAttributes<HTMLFormElement>,
     'children'
-> &
-    Partial<ListFilterContextValue> & {
-        className?: string;
-        resource?: string;
-        filters?: ReactNode[];
-    };
+> & {
+    className?: string;
+    resource?: string;
+    filters?: ReactNode[];
+};
 
 export const mergeInitialValuesWithDefaultValues = (
     initialValues,
@@ -260,10 +255,13 @@ export const getFilterFormValues = (
     formValues: Record<string, any>,
     filterValues: Record<string, any>
 ) => {
-    return Object.keys(formValues).reduce((acc, key) => {
-        acc[key] = getInputValue(formValues, key, filterValues);
-        return acc;
-    }, cloneDeep(filterValues) ?? {});
+    return Object.keys(formValues).reduce(
+        (acc, key) => {
+            acc[key] = getInputValue(formValues, key, filterValues);
+            return acc;
+        },
+        cloneDeep(filterValues) ?? {}
+    );
 };
 
 const getInputValue = (
@@ -297,4 +295,18 @@ const getInputValue = (
         return inputValues;
     }
     return get(filterValues, key, '');
+};
+
+const isEmptyValue = (filterValue: unknown) => {
+    if (filterValue === '' || filterValue == null) return true;
+
+    // If one of the value leaf is not empty
+    // the value is considered not empty
+    if (typeof filterValue === 'object') {
+        return Object.keys(filterValue).every(key =>
+            isEmptyValue(filterValue[key])
+        );
+    }
+
+    return false;
 };

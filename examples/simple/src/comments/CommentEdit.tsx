@@ -49,6 +49,8 @@ const LinkToRelatedPost = () => {
 
 const OptionRenderer = (props: any) => {
     const record = useRecordContext();
+    if (!record) return null;
+
     return record.id === '@@ra-create' ? (
         <div {...props}>{record.name}</div>
     ) : (
@@ -131,7 +133,6 @@ const CommentEdit = props => {
                         >
                             <TextInput
                                 source="id"
-                                fullWidth
                                 InputProps={{ disabled: true }}
                             />
                             <ReferenceInput
@@ -151,7 +152,6 @@ const CommentEdit = props => {
                                     }}
                                     optionText={<OptionRenderer />}
                                     inputText={inputText}
-                                    fullWidth
                                 />
                             </ReferenceInput>
 
@@ -159,14 +159,12 @@ const CommentEdit = props => {
                             <TextInput
                                 source="author.name"
                                 validate={minLength(10)}
-                                fullWidth
                             />
-                            <DateInput source="created_at" fullWidth />
+                            <DateInput source="created_at" />
                             <TextInput
                                 source="body"
                                 validate={minLength(10)}
-                                fullWidth={true}
-                                multiline={true}
+                                multiline
                             />
                         </SimpleForm>
                     )}

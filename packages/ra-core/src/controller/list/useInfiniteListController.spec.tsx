@@ -7,10 +7,6 @@ import {
     screen,
     act,
 } from '@testing-library/react';
-import lolex from 'lolex';
-// TODO: we shouldn't import mui components in ra-core
-import { TextField } from '@mui/material';
-import { createMemoryHistory } from 'history';
 
 import { testDataProvider } from '../../dataProvider';
 import { memoryStore } from '../../store';
@@ -24,6 +20,7 @@ import {
     sanitizeListRestProps,
 } from './useListController';
 import { CoreAdminContext } from '../../core';
+import { TestMemoryRouter } from '../../routing';
 
 const InfiniteListController = ({
     children,
@@ -44,9 +41,7 @@ describe('useInfiniteListController', () => {
 
     describe('queryOptions', () => {
         it('should accept custom client query options', async () => {
-            const mock = jest
-                .spyOn(console, 'error')
-                .mockImplementation(() => {});
+            jest.spyOn(console, 'error').mockImplementationOnce(() => {});
             const getList = jest
                 .fn()
                 .mockImplementationOnce(() => Promise.reject(new Error()));
@@ -66,7 +61,6 @@ describe('useInfiniteListController', () => {
                 expect(getList).toHaveBeenCalled();
                 expect(onError).toHaveBeenCalled();
             });
-            mock.mockRestore();
         });
 
         it('should accept meta in queryOptions', async () => {
@@ -92,13 +86,16 @@ describe('useInfiniteListController', () => {
                     pagination: { page: 1, perPage: 10 },
                     sort: { field: 'id', order: 'ASC' },
                     meta: { foo: 'bar' },
+                    signal: undefined,
                 });
             });
         });
 
         it('should reset page when enabled is set to false', async () => {
             const children = jest.fn().mockReturnValue(<span>children</span>);
-            const dataProvider = testDataProvider();
+            const dataProvider = testDataProvider({
+                getList: () => Promise.resolve({ data: [], total: 0 }),
+            });
             const props = { ...defaultProps, children };
             render(
                 <CoreAdminContext dataProvider={dataProvider}>
@@ -126,13 +123,9 @@ describe('useInfiniteListController', () => {
     });
 
     describe('setFilters', () => {
-        let clock;
         let childFunction = ({ setFilters, filterValues }) => (
-            // TODO: we shouldn't import mui components in ra-core
-            <TextField
-                inputProps={{
-                    'aria-label': 'search',
-                }}
+            <input
+                aria-label="search"
                 type="text"
                 value={filterValues.q || ''}
                 onChange={event => {
@@ -141,12 +134,7 @@ describe('useInfiniteListController', () => {
             />
         );
 
-        beforeEach(() => {
-            // @ts-ignore
-            clock = lolex.install();
-        });
-
-        it('should take only last change in case of a burst of changes (case of inputs being currently edited)', () => {
+        it('should take only last change in case of a burst of changes (case of inputs being currently edited)', async () => {
             const props = {
                 ...defaultProps,
                 children: childFunction,
@@ -156,7 +144,9 @@ describe('useInfiniteListController', () => {
 
             render(
                 <CoreAdminContext
-                    dataProvider={testDataProvider()}
+                    dataProvider={testDataProvider({
+                        getList: () => Promise.resolve({ data: [], total: 0 }),
+                    })}
                     store={store}
                 >
                     <InfiniteListController {...props} />
@@ -167,9 +157,11 @@ describe('useInfiniteListController', () => {
             fireEvent.change(searchInput, { target: { value: 'hel' } });
             fireEvent.change(searchInput, { target: { value: 'hell' } });
             fireEvent.change(searchInput, { target: { value: 'hello' } });
-            clock.tick(210);
+            await new Promise(resolve => setTimeout(resolve, 210));
 
-            expect(storeSpy).toHaveBeenCalledTimes(1);
+            await waitFor(() => {
+                expect(storeSpy).toHaveBeenCalledTimes(1);
+            });
             expect(storeSpy).toHaveBeenCalledWith('posts.listParams', {
                 filter: { q: 'hello' },
                 order: 'ASC',
@@ -179,29 +171,32 @@ describe('useInfiniteListController', () => {
             });
         });
 
-        it('should remove empty filters', () => {
+        it('should remove empty filters', async () => {
             const props = {
                 ...defaultProps,
                 children: childFunction,
             };
 
-            const history = createMemoryHistory({
-                initialEntries: [
-                    `/posts?filter=${JSON.stringify({
-                        q: 'hello',
-                    })}&displayedFilters=${JSON.stringify({ q: true })}`,
-                ],
-            });
             const store = memoryStore();
             const storeSpy = jest.spyOn(store, 'setItem');
             render(
-                <CoreAdminContext
-                    dataProvider={testDataProvider()}
-                    history={history}
-                    store={store}
+                <TestMemoryRouter
+                    initialEntries={[
+                        `/posts?filter=${JSON.stringify({
+                            q: 'hello',
+                        })}&displayedFilters=${JSON.stringify({ q: true })}`,
+                    ]}
                 >
-                    <InfiniteListController {...props} />
-                </CoreAdminContext>
+                    <CoreAdminContext
+                        dataProvider={testDataProvider({
+                            getList: () =>
+                                Promise.resolve({ data: [], total: 0 }),
+                        })}
+                        store={store}
+                    >
+                        <InfiniteListController {...props} />
+                    </CoreAdminContext>
+                </TestMemoryRouter>
             );
             expect(storeSpy).toHaveBeenCalledTimes(1);
 
@@ -209,7 +204,7 @@ describe('useInfiniteListController', () => {
             // FIXME: For some reason, triggering the change event with an empty string
             // does not call the event handler on childFunction
             fireEvent.change(searchInput, { target: { value: '' } });
-            clock.tick(210);
+            await new Promise(resolve => setTimeout(resolve, 410));
 
             expect(storeSpy).toHaveBeenCalledTimes(2);
 
@@ -236,14 +231,16 @@ describe('useInfiniteListController', () => {
                     Promise.resolve({ data: [], total: 0 })
                 );
             const dataProvider = testDataProvider({ getList });
-            const history = createMemoryHistory({
-                initialEntries: [`/posts`],
-            });
 
             const { rerender } = render(
-                <CoreAdminContext dataProvider={dataProvider} history={history}>
-                    <InfiniteListController {...props} filter={{ foo: 1 }} />
-                </CoreAdminContext>
+                <TestMemoryRouter initialEntries={[`/posts`]}>
+                    <CoreAdminContext dataProvider={dataProvider}>
+                        <InfiniteListController
+                            {...props}
+                            filter={{ foo: 1 }}
+                        />
+                    </CoreAdminContext>
+                </TestMemoryRouter>
             );
 
             // Check that the permanent filter was used in the query
@@ -263,9 +260,14 @@ describe('useInfiniteListController', () => {
             );
 
             rerender(
-                <CoreAdminContext dataProvider={dataProvider} history={history}>
-                    <InfiniteListController {...props} filter={{ foo: 2 }} />
-                </CoreAdminContext>
+                <TestMemoryRouter initialEntries={[`/posts`]}>
+                    <CoreAdminContext dataProvider={dataProvider}>
+                        <InfiniteListController
+                            {...props}
+                            filter={{ foo: 2 }}
+                        />
+                    </CoreAdminContext>
+                </TestMemoryRouter>
             );
 
             // Check that the permanent filter was used in the query
@@ -275,10 +277,6 @@ describe('useInfiniteListController', () => {
                 expect.objectContaining({ filter: { foo: 2 } })
             );
             expect(children).toHaveBeenCalledTimes(2);
-        });
-
-        afterEach(() => {
-            clock.uninstall();
         });
     });
 
@@ -312,7 +310,11 @@ describe('useInfiniteListController', () => {
             };
 
             render(
-                <CoreAdminContext>
+                <CoreAdminContext
+                    dataProvider={testDataProvider({
+                        getList: () => Promise.resolve({ data: [], total: 0 }),
+                    })}
+                >
                     <InfiniteListController {...props} />
                 </CoreAdminContext>
             );
@@ -334,7 +336,11 @@ describe('useInfiniteListController', () => {
 
         it('should support to sync calls', async () => {
             render(
-                <CoreAdminContext>
+                <CoreAdminContext
+                    dataProvider={testDataProvider({
+                        getList: () => Promise.resolve({ data: [], total: 0 }),
+                    })}
+                >
                     <InfiniteListController {...defaultProps}>
                         {({ displayedFilters, showFilter }) => (
                             <>
@@ -480,6 +486,7 @@ describe('useInfiniteListController', () => {
                 hideFilter: undefined,
                 isFetching: undefined,
                 isLoading: undefined,
+                isPending: undefined,
                 onSelect: undefined,
                 onToggleItem: undefined,
                 onUnselectItems: undefined,

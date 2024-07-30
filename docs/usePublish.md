@@ -5,7 +5,7 @@ title: "usePublish"
 
 # `usePublish`
 
-This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> hook returns a callback to publish an event on a topic. The callback returns a promise that resolves when the event is published.
+This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" /> hook returns a callback to publish an event on a topic. The callback returns a promise that resolves when the event is published.
 
 `usePublish` calls `dataProvider.publish()` to publish the event. It leverages react-query's `useMutation` hook to provide a callback.
 
@@ -68,7 +68,7 @@ See the [CRUD events](./RealtimeDataProvider.md#crud-events) section for more de
 `usePublish` returns an array with the following values:
 
 -   `publish`: The callback to publish an event to a topic.
--   `state`: The state of the mutation ([see react-query documentation](https://tanstack.com/query/v3/docs/react/reference/useMutation)). Notable properties:
+-   `state`: The state of the mutation ([see react-query documentation](https://tanstack.com/query/v5/docs/react/reference/useMutation)). Notable properties:
     -   `isLoading`: Whether the mutation is loading.
     -   `error`: The error if the mutation failed.
     -   `data`: The published event if the mutation succeeded.
@@ -83,7 +83,7 @@ The `publish` callback accepts the following parameters:
 
 -   `topic`: The topic to publish the event on.
 -   `event`: The event to publish. It must contain a `type` property.
--   `options`: `useMutation` options ([see react-query documentation](https://tanstack.com/query/v3/docs/react/reference/useMutation)). Notable properties:
+-   `options`: `useMutation` options ([see react-query documentation](https://tanstack.com/query/v5/docs/react/reference/useMutation)). Notable properties:
     -   `onSuccess`: A callback to call when the event is published. It receives the published event as its first argument.
     -   `onError`: A callback to call when the event could not be published. It receives the error as its first argument.
     -   `retry`: Whether to retry on failure. Defaults to `0`.

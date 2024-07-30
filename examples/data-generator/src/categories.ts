@@ -1,4 +1,4 @@
-export default () => [
+export const generateCategories = (): Category[] => [
     { id: 0, name: 'animals' },
     { id: 1, name: 'beard' },
     { id: 2, name: 'business' },
@@ -13,3 +13,8 @@ export default () => [
     { id: 11, name: 'travel' },
     { id: 12, name: 'water' },
 ];
+
+export type Category = {
+    id: number;
+    name: string;
+};

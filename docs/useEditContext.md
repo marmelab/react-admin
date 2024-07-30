@@ -30,8 +30,8 @@ export const PostEdit = () => (
 );
 
 const Aside = () => {
-    const { record, isLoading } = useEditContext();
-    if (isLoading) return null;
+    const { record, isPending } = useEditContext();
+    if (isPending) return null;
     return (
         <div>
             <Typography variant="h6">Posts stats</Typography>
@@ -50,8 +50,9 @@ const Aside = () => {
 ```jsx
 const {
     defaultTitle, // Translated title based on the resource, e.g. 'Post #123'
+    error, // Error returned by dataProvider when it failed to fetch the record. Useful if you want to adapt the view instead of just showing a notification using the onError side effect.
     isFetching, // Boolean, true while the record is being fetched, false once done fetching
-    isLoading, // Boolean, true until the record is available for the first time
+    isPending, // Boolean, true until the record is available for the first time
     mutationMode, // Mutation mode argument passed as parameter, or 'undoable' if not defined
     record, // Either the record fetched via dataProvider.getOne() based on the id from the location, a cached version of the record (see also the Caching documentation page) or undefined
     redirect, // Default redirection route. Defaults to 'list'
@@ -59,7 +60,6 @@ const {
     resource, // Resource name deduced from the location. e.g. 'posts'
     save, // Update callback to be passed to the underlying form as submit handler
     saving, // Boolean, true when dataProvider is called to update the record
-    error, // Error returned by dataProvider when it failed to fetch the record. Useful if you want to adapt the view instead of just showing a notification using the onError side effect.
 } = useEditContext();
 ```
 
@@ -84,8 +84,8 @@ export const PostEdit = () => (
 );
 
 const Aside = () => {
-    const { record: post, isLoading } = useEditContext<Post>();
-    if (isLoading) return null;
+    const { record: post, isPending } = useEditContext<Post>();
+    if (isPending) return null;
     return (
         <div>
             <Typography variant="h6">Posts stats</Typography>

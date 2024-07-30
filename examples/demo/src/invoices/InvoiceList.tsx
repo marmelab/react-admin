@@ -1,12 +1,17 @@
 import * as React from 'react';
 import {
     List,
-    Datagrid,
+    DatagridConfigurable,
     TextField,
     DateField,
     ReferenceField,
     NumberField,
     DateInput,
+    TopToolbar,
+    ExportButton,
+    SelectColumnsButton,
+    ReferenceInput,
+    FilterButton,
 } from 'react-admin';
 
 import FullNameField from '../visitors/FullNameField';
@@ -16,15 +21,26 @@ import InvoiceShow from './InvoiceShow';
 const listFilters = [
     <DateInput source="date_gte" alwaysOn />,
     <DateInput source="date_lte" alwaysOn />,
+    <ReferenceInput source="customer_id" reference="customers" />,
+    <ReferenceInput source="order_id" reference="orders" />,
 ];
+
+const ListActions = () => (
+    <TopToolbar>
+        <FilterButton />
+        <SelectColumnsButton />
+        <ExportButton />
+    </TopToolbar>
+);
 
 const InvoiceList = () => (
     <List
         filters={listFilters}
         perPage={25}
         sort={{ field: 'date', order: 'DESC' }}
+        actions={<ListActions />}
     >
-        <Datagrid
+        <DatagridConfigurable
             rowClick="expand"
             expand={<InvoiceShow />}
             sx={{
@@ -45,7 +61,7 @@ const InvoiceList = () => (
             <TextField source="id" />
             <DateField source="date" />
             <ReferenceField source="customer_id" reference="customers">
-                <FullNameField />
+                <FullNameField source="last_name" />
             </ReferenceField>
             <ReferenceField
                 source="customer_id"
@@ -55,14 +71,14 @@ const InvoiceList = () => (
             >
                 <AddressField />
             </ReferenceField>
-            <ReferenceField source="command_id" reference="commands">
+            <ReferenceField source="order_id" reference="orders">
                 <TextField source="reference" />
             </ReferenceField>
             <NumberField source="total_ex_taxes" />
             <NumberField source="delivery_fees" />
             <NumberField source="taxes" />
             <NumberField source="total" />
-        </Datagrid>
+        </DatagridConfigurable>
     </List>
 );
 

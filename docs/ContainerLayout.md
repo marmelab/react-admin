@@ -5,11 +5,11 @@ title: "ContainerLayout"
 
 # `<ContainerLayout>`
 
-This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> component offers an alternative to react-admin's `<Layout>` for applications with a limited number of resources. It displays the content in a centered container, has no sidebar, and uses the top bar for navigation.
+This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" /> component offers an alternative to react-admin's `<Layout>` for applications with a limited number of resources. It displays the content in a centered container, has no sidebar, and uses the top bar for navigation.
 
-![Container layout](https://marmelab.com/ra-enterprise/modules/assets/ra-navigation/latest/container-layout.png)
+![Container layout](https://react-admin-ee.marmelab.com/assets/ra-navigation/latest/container-layout.png)
 
-`<ContainerLayout>` is part of the [ra-navigation](https://marmelab.com/ra-enterprise/modules/ra-navigation#containerlayout) package.
+`<ContainerLayout>` is part of the [ra-navigation](https://react-admin-ee.marmelab.com/documentation/ra-navigation#containerlayout) package.
 
 ## Usage
 
@@ -47,7 +47,12 @@ If you want to use a different color for the AppBar, or to make it sticky, pass 
 import { ContainerLayout, Header } from '@react-admin/ra-navigation';
 
 const myAppBar = <Header color="primary" position="sticky" />;
-const MyLayout = props => <ContainerLayout {...props} appBar={myAppBar} />;
+
+const MyLayout = ({ children }) => (
+    <ContainerLayout appBar={myAppBar}>
+        {children}
+    </ContainerLayout>
+);
 ```
 
 ## `fixed`
@@ -57,7 +62,11 @@ If you prefer to design for a fixed set of sizes instead of trying to accommodat
 ```jsx
 import { ContainerLayout } from '@react-admin/ra-navigation';
 
-const MyLayout = props => <ContainerLayout {...props} fixed />;
+const MyLayout = ({ children }) => (
+    <ContainerLayout fixed>
+        {children}
+    </ContainerLayout>
+);
 ```
 
 ## `maxWidth`
@@ -67,12 +76,16 @@ This prop allows to set the maximum width of the content [`<Container>`](https:/
 ```jsx
 import { ContainerLayout } from '@react-admin/ra-navigation';
 
-const MyLayout = props => <ContainerLayout {...props} maxWidth="md" />;
+const MyLayout = ({ children }) => (
+    <ContainerLayout maxWidth="md">
+        {children}
+    </ContainerLayout>
+);
 ```
 
 ## `menu`
 
-By default, `<ContainerLayout>` renders one menu item per resource in the admin. To reorder the menu, omit resources, or add custom pages, pass a custom menu element to the `menu` prop. This element should be [a `<HorizontalMenu>` component](#horizontalmenu) with `<HorizontalMenu.Item>` children. Each child should have a `value` corresponding to the [application location](https://marmelab.com/ra-enterprise/modules/ra-navigation#concepts) of the target, and can have a `to` prop corresponding to the target location if different from the app location.
+By default, `<ContainerLayout>` renders one menu item per resource in the admin. To reorder the menu, omit resources, or add custom pages, pass a custom menu element to the `menu` prop. This element should be [a `<HorizontalMenu>` component](#horizontalmenu) with `<HorizontalMenu.Item>` children. Each child should have a `value` corresponding to the [application location](https://react-admin-ee.marmelab.com/documentation/ra-navigation#concepts) of the target, and can have a `to` prop corresponding to the target location if different from the app location.
 
 ```jsx
 import {
@@ -98,7 +111,11 @@ const Menu = () => (
     </HorizontalMenu>
 );
 
-const MyLayout = props => <ContainerLayout {...props} menu={<Menu />} />;
+const MyLayout = ({ children }) => (
+    <ContainerLayout menu={<Menu />}>
+        {children}
+    </ContainerLayout>
+);
 
 const CustomPage = () => {
     useDefineAppLocation('custom');
@@ -127,13 +144,14 @@ The `sx` prop allows to customize the style of the layout, and the underlying co
 ```jsx
 import { ContainerLayout } from '@react-admin/ra-navigation';
 
-const MyLayout = props => (
+const MyLayout = ({ children }) => (
     <ContainerLayout
-        {...props}
         sx={{
             '& .MuiToolbar-root': { padding: 0 },
         }}
-    />
+    >
+        {children}
+    </ContainerLayout>
 );
 ```
 {% endraw %}
@@ -152,7 +170,11 @@ const toolbar = (
         <LoadingIndicator />
     </>
 );
-const MyLayout = props => <ContainerLayout {...props} toolbar={toolbar} />;
+const MyLayout = ({ children }) => (
+    <ContainerLayout toolbar={toolbar}>
+        {children}
+    </ContainerLayout>
+);
 ```
 
 ## `userMenu`
@@ -195,8 +217,10 @@ const CustomUserMenu = () => (
     </UserMenu>
 );
 
-export const MyLayout = props => (
-    <ContainerLayout {...props} userMenu={<CustomUserMenu />} />
+export const MyLayout = ({ children }) => (
+    <ContainerLayout userMenu={<CustomUserMenu />}>
+        {children}
+    </ContainerLayout>
 );
 ```
 {% endraw %}
@@ -211,7 +235,7 @@ This menu automatically detects and highlights the current location.
 
 ### Usage
 
-Create a menu component based on `<HorizontalMenu>` and `<HorizontalMenu.Item>` children. Each child should have a `value` corresponding to the [application location](https://marmelab.com/ra-enterprise/modules/ra-navigation#concepts) of the target, and can have a `to` prop corresponding to the target location if different from the app location.
+Create a menu component based on `<HorizontalMenu>` and `<HorizontalMenu.Item>` children. Each child should have a `value` corresponding to the [application location](https://react-admin-ee.marmelab.com/documentation/ra-navigation#concepts) of the target, and can have a `to` prop corresponding to the target location if different from the app location.
 
 ```jsx
 import { HorizontalMenu } from '@react-admin/ra-navigation';
@@ -233,7 +257,11 @@ import { ContainerLayout } from '@react-admin/ra-navigation';
 
 import { Menu } from './Menu';
 
-const MyLayout = props => <ContainerLayout {...props} menu={<Menu />} />;
+const MyLayout = ({ children }) => (
+    <ContainerLayout menu={<Menu />}>
+        {children}
+    </ContainerLayout>
+);
 
 const App = () => (
     <Admin dataProvider={dataProvider} layout={MyLayout}>

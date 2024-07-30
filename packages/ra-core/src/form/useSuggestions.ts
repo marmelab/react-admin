@@ -87,7 +87,7 @@ const escapeRegExp = value =>
 export interface UseSuggestionsOptions extends UseChoicesOptions {
     allowCreate?: boolean;
     allowDuplicates?: boolean;
-    choices: any[];
+    choices?: any[];
     createText?: string;
     createValue?: any;
     limitChoicesToValue?: boolean;
@@ -103,25 +103,23 @@ export interface UseSuggestionsOptions extends UseChoicesOptions {
 /**
  * Default matcher implementation which check whether the suggestion text matches the filter.
  */
-const defaultMatchSuggestion = getChoiceText => (
-    filter,
-    suggestion,
-    exact = false
-) => {
-    const suggestionText = getChoiceText(suggestion);
+const defaultMatchSuggestion =
+    getChoiceText =>
+    (filter, suggestion, exact = false) => {
+        const suggestionText = getChoiceText(suggestion);
 
-    const isReactElement = isValidElement(suggestionText);
-    const regex = escapeRegExp(filter);
+        const isReactElement = isValidElement(suggestionText);
+        const regex = escapeRegExp(filter);
 
-    return isReactElement
-        ? false
-        : suggestionText &&
-              !!suggestionText.match(
-                  // We must escape any RegExp reserved characters to avoid errors
-                  // For example, the filter might contain * which must be escaped as \*
-                  new RegExp(exact ? `^${regex}$` : regex, 'i')
-              );
-};
+        return isReactElement
+            ? false
+            : suggestionText &&
+                  !!suggestionText.match(
+                      // We must escape any RegExp reserved characters to avoid errors
+                      // For example, the filter might contain * which must be escaped as \*
+                      new RegExp(exact ? `^${regex}$` : regex, 'i')
+                  );
+    };
 
 /**
  * Get the suggestions to display after applying a fuzzy search on the available choices
@@ -145,88 +143,90 @@ const defaultMatchSuggestion = getChoiceText => (
  *
  * // Will return [{ id: 2, name: 'publisher' }]
  */
-export const getSuggestionsFactory = ({
-    allowCreate = false,
-    choices = [],
-    createText = 'ra.action.create',
-    createValue = '@@create',
-    optionText = 'name',
-    optionValue = 'id',
-    getChoiceText,
-    getChoiceValue,
-    limitChoicesToValue = false,
-    matchSuggestion = defaultMatchSuggestion(getChoiceText),
-    selectedItem,
-    suggestionLimit = 0,
-}: UseSuggestionsOptions & {
-    getChoiceText: (choice: any) => string | ReactElement;
-    getChoiceValue: (choice: any) => string;
-}) => filter => {
-    let suggestions: any[] = [];
-    // if an item is selected and matches the filter
-    if (
-        selectedItem &&
-        !Array.isArray(selectedItem) &&
-        matchSuggestion(filter, selectedItem)
-    ) {
-        if (limitChoicesToValue) {
-            // display only the selected item
+export const getSuggestionsFactory =
+    ({
+        allowCreate = false,
+        choices = [],
+        createText = 'ra.action.create',
+        createValue = '@@create',
+        optionText = 'name',
+        optionValue = 'id',
+        getChoiceText,
+        getChoiceValue,
+        limitChoicesToValue = false,
+        matchSuggestion = defaultMatchSuggestion(getChoiceText),
+        selectedItem,
+        suggestionLimit = 0,
+    }: UseSuggestionsOptions & {
+        getChoiceText: (choice: any) => string | ReactElement;
+        getChoiceValue: (choice: any) => string;
+    }) =>
+    filter => {
+        let suggestions: any[] = [];
+        // if an item is selected and matches the filter
+        if (
+            selectedItem &&
+            !Array.isArray(selectedItem) &&
+            matchSuggestion(filter, selectedItem)
+        ) {
+            if (limitChoicesToValue) {
+                // display only the selected item
+                suggestions = choices.filter(
+                    choice =>
+                        getChoiceValue(choice) === getChoiceValue(selectedItem)
+                );
+            } else {
+                suggestions = [...choices];
+            }
+        } else {
             suggestions = choices.filter(
                 choice =>
-                    getChoiceValue(choice) === getChoiceValue(selectedItem)
+                    matchSuggestion(filter, choice) ||
+                    (selectedItem != null &&
+                        (!Array.isArray(selectedItem)
+                            ? getChoiceValue(choice) ===
+                              getChoiceValue(selectedItem)
+                            : selectedItem.some(
+                                  selected =>
+                                      getChoiceValue(choice) ===
+                                      getChoiceValue(selected)
+                              )))
             );
-        } else {
-            suggestions = [...choices];
         }
-    } else {
-        suggestions = choices.filter(
-            choice =>
-                matchSuggestion(filter, choice) ||
-                (selectedItem != null &&
-                    (!Array.isArray(selectedItem)
-                        ? getChoiceValue(choice) ===
-                          getChoiceValue(selectedItem)
-                        : selectedItem.some(
-                              selected =>
-                                  getChoiceValue(choice) ===
-                                  getChoiceValue(selected)
-                          )))
+
+        suggestions = limitSuggestions(suggestions, suggestionLimit);
+
+        const hasExactMatch = suggestions.some(suggestion =>
+            matchSuggestion(filter, suggestion, true)
         );
-    }
 
-    suggestions = limitSuggestions(suggestions, suggestionLimit);
-
-    const hasExactMatch = suggestions.some(suggestion =>
-        matchSuggestion(filter, suggestion, true)
-    );
-
-    if (allowCreate) {
-        const filterIsSelectedItem =
-            // If the selectedItem is an array (for example AutocompleteArrayInput)
-            // we shouldn't try to match
-            !!selectedItem && !Array.isArray(selectedItem)
-                ? matchSuggestion(filter, selectedItem, true)
-                : false;
-        if (!hasExactMatch && !filterIsSelectedItem) {
-            suggestions.push(
-                getSuggestion({
-                    optionText,
-                    optionValue,
-                    text: createText,
-                    value: createValue,
-                })
-            );
+        if (allowCreate) {
+            const filterIsSelectedItem =
+                // If the selectedItem is an array (for example AutocompleteArrayInput)
+                // we shouldn't try to match
+                !!selectedItem && !Array.isArray(selectedItem)
+                    ? matchSuggestion(filter, selectedItem, true)
+                    : false;
+            if (!hasExactMatch && !filterIsSelectedItem) {
+                suggestions.push(
+                    getSuggestion({
+                        optionText,
+                        optionValue,
+                        text: createText,
+                        value: createValue,
+                    })
+                );
+            }
         }
-    }
 
-    // Only keep unique items. Necessary because we might have fetched
-    // the currently selected choice in addition of the possible choices
-    // that may also contain it
-    const result = suggestions.filter(
-        (suggestion, index) => suggestions.indexOf(suggestion) === index
-    );
-    return result;
-};
+        // Only keep unique items. Necessary because we might have fetched
+        // the currently selected choice in addition of the possible choices
+        // that may also contain it
+        const result = suggestions.filter(
+            (suggestion, index) => suggestions.indexOf(suggestion) === index
+        );
+        return result;
+    };
 
 /**
  * @example

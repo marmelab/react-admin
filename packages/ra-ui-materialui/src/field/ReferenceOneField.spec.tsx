@@ -43,6 +43,7 @@ describe('ReferenceOneField', () => {
                     pagination: { page: 1, perPage: 1 },
                     filter: {},
                     meta: { foo: 'bar' },
+                    signal: undefined,
                 }
             );
         });

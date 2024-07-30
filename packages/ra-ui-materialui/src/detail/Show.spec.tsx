@@ -1,20 +1,30 @@
 import * as React from 'react';
 import expect from 'expect';
+
 import {
     CoreAdminContext,
     ResourceContextProvider,
     useRecordContext,
     useShowContext,
     ResourceDefinitionContextProvider,
+    TestMemoryRouter,
 } from 'ra-core';
+
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
-import { createMemoryHistory } from 'history';
 import { Route, Routes } from 'react-router-dom';
 import { render, screen, waitFor } from '@testing-library/react';
 
 import { AdminContext } from '../AdminContext';
-import { Default, Actions, Basic, Component } from './Show.stories';
+import {
+    Default,
+    Actions,
+    Basic,
+    Component,
+    Title,
+    TitleFalse,
+    TitleElement,
+} from './Show.stories';
 import { Show } from './Show';
 
 describe('<Show />', () => {
@@ -37,24 +47,23 @@ describe('<Show />', () => {
             const record = useRecordContext();
             return record ? <span>{record.name}</span> : null;
         };
-        const history = createMemoryHistory({
-            initialEntries: ['/books/123/show'],
-        });
         render(
-            <CoreAdminContext dataProvider={dataProvider} history={history}>
-                <Routes>
-                    <Route
-                        path="/books/:id/show"
-                        element={
-                            <ResourceContextProvider value="books">
-                                <Show>
-                                    <BookName />
-                                </Show>
-                            </ResourceContextProvider>
-                        }
-                    />
-                </Routes>
-            </CoreAdminContext>
+            <TestMemoryRouter initialEntries={['/books/123/show']}>
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <Routes>
+                        <Route
+                            path="/books/:id/show"
+                            element={
+                                <ResourceContextProvider value="books">
+                                    <Show>
+                                        <BookName />
+                                    </Show>
+                                </ResourceContextProvider>
+                            }
+                        />
+                    </Routes>
+                </CoreAdminContext>
+            </TestMemoryRouter>
         );
         expect(screen.queryByText('War and Peace')).toBeNull(); // while loading
         await waitFor(() => {
@@ -115,27 +124,46 @@ describe('<Show />', () => {
         await screen.findByText('Edit');
     });
 
-    it('should display a default title based on resource and id', async () => {
-        render(<Basic />);
-        await screen.findByText('Book #1');
-    });
-
     it('should allow to override the root component', () => {
         render(<Component />);
         expect(screen.getByTestId('custom-component')).toBeDefined();
     });
 
+    describe('title', () => {
+        it('should display by default the title of the resource', async () => {
+            render(<Basic />);
+            await screen.findByText('War and Peace');
+            screen.getByText('Book War and Peace');
+        });
+
+        it('should render custom title string when defined', async () => {
+            render(<Title />);
+            await screen.findByText('War and Peace');
+            screen.getByText('Hello');
+            expect(screen.queryByText('Book War and Peace')).toBeNull();
+        });
+
+        it('should render custom title element when defined', async () => {
+            render(<TitleElement />);
+            await screen.findByText('War and Peace');
+            screen.getByText('Hello');
+            expect(screen.queryByText('Book War and Peace')).toBeNull();
+        });
+
+        it('should not render default title when false', async () => {
+            render(<TitleFalse />);
+            await screen.findByText('War and Peace');
+            expect(screen.queryByText('Book War and Peace')).toBeNull();
+        });
+    });
+
     describe('defaultTitle', () => {
-        const defaultShowProps = {
-            id: '123',
-            resource: 'foo',
-        };
         it('should use the record id by default', async () => {
             const dataProvider = {
                 getOne: () =>
                     Promise.resolve({ data: { id: 123, title: 'lorem' } }),
             } as any;
-            const Title = () => {
+            const DefaultTitle = () => {
                 const { defaultTitle } = useShowContext();
                 return <>{defaultTitle}</>;
             };
@@ -145,19 +173,20 @@ describe('<Show />', () => {
                     dataProvider={dataProvider}
                     i18nProvider={i18nProvider}
                 >
-                    <Show {...defaultShowProps}>
-                        <Title />
+                    <Show id="123" resource="foo">
+                        <DefaultTitle />
                     </Show>
                 </AdminContext>
             );
-            await screen.findByText('Foo #123');
+            await screen.findByText('Foo lorem');
         });
+
         it('should use the recordRepresentation when defined', async () => {
             const dataProvider = {
                 getOne: () =>
                     Promise.resolve({ data: { id: 123, title: 'lorem' } }),
             } as any;
-            const Title = () => {
+            const DefaultTitle = () => {
                 const { defaultTitle } = useShowContext();
                 return <>{defaultTitle}</>;
             };
@@ -168,10 +197,12 @@ describe('<Show />', () => {
                     i18nProvider={i18nProvider}
                 >
                     <ResourceDefinitionContextProvider
-                        definitions={{ foo: { recordRepresentation: 'title' } }}
+                        definitions={{
+                            foo: { name: 'foo', recordRepresentation: 'title' },
+                        }}
                     >
-                        <Show {...defaultShowProps}>
-                            <Title />
+                        <Show id="123" resource="foo">
+                            <DefaultTitle />
                         </Show>
                     </ResourceDefinitionContextProvider>
                 </AdminContext>

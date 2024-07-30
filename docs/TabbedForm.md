@@ -13,7 +13,6 @@ title: "TabbedForm"
   Your browser does not support the video tag.
 </video>
 
-
 ## Usage
 
 `<TabbedForm>` reads the `record` from the `RecordContext`, uses it to initialize the defaultValues of a `<Form>`, renders its children in a Material UI `<Stack>`, and renders a toolbar with a `<SaveButton>` that calls the `save` callback prepared by the edit or the create controller when pressed.
@@ -151,7 +150,7 @@ export const PostCreate = () => (
 
 **Tip**: You can include properties in the form `defaultValues` that are not listed as input components, like the `created_at` property in the previous example.
 
-**Tip**: React-admin also allows to define default values at the input level. See the [Setting default Values](./EditTutorial.md#setting-default-values) section.
+**Tip**: React-admin also allows to define default values at the input level. See the [Setting default Values](./forms.md#default-values) section.
 
 ## `id`
 
@@ -260,6 +259,8 @@ For the previous example, the data sent to the `dataProvider` will be:
 ```
 
 **Note:** Setting the `sanitizeEmptyValues` prop to `true` will also have a (minor) impact on react-admin inputs (like `<TextInput>`, `<NumberInput>`, etc.): empty values (i.e. values equal to `null`) will be removed from the form state on submit, unless the record actually had a value for that field.
+
+**Note** Even with `sanitizeEmptyValues` set to `true`, deeply nested fields won't be set to `null` nor removed. If you need to sanitize those fields, use [the `transform` prop](./Edit.md#transform) of `<Edit>` or `<Create>` components.
 
 If you need a more fine-grained control over the sanitization, you can use [the `transform` prop](./Edit.md#transform) of `<Edit>` or `<Create>` components, or [the `parse` prop](./Inputs.md#parse) of individual inputs.
 
@@ -501,7 +502,7 @@ export const TagEdit = () => (
 );
 ```
 
-**Warning**: This feature only works if you have a dependency on react-router 6.3.0 **at most**. The react-router team disabled this possibility in react-router 6.4, so `warnWhenUnsavedChanges` will silently fail with react-router 6.4 or later.
+**Note**: Due to limitations in react-router, this feature only works if you use the default router provided by react-admin, or if you use a [Data Router](https://reactrouter.com/en/6.22.3/routers/picking-a-router).
 
 ## `<TabbedForm.Tab>`
 
@@ -558,6 +559,8 @@ const ProductEdit = () => (
 
 ## Using Fields As Children
 
+<iframe src="https://www.youtube-nocookie.com/embed/fWc7c0URQMQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;"></iframe>
+
 The basic usage of `<TabbedForm>` is to pass [Input components](./Inputs.md) as children of `<TabbedForm.Tab>`. For non-editable fields, you can pass `disabled` inputs, or even [Field components](./Fields.md). But since `<Field>` components have no label by default, you'll have to wrap your inputs in a `<Labeled>` component in that case:
 
 ```jsx
@@ -584,7 +587,7 @@ const PostEdit = () => (
 
 ![complex form layout](./img/TabbedForm-layout.png)
 
-By default, `<TabbedForm.Tab>` renders one child per row. But a given child can be a layout element (e.g. `<Grid>`, `<Stack>`, `<Box>`) and contain several input elements. This lets you build form layouts of any complexity:
+By default, `<TabbedForm.Tab>` renders one child per row. But a given child can be [a layout element](./BoxStackGrid.md) (e.g. `<Grid>`, `<Stack>`, `<Box>`) and contain several input elements. This lets you build form layouts of any complexity:
 
 {% raw %}
 ```jsx
@@ -610,11 +613,11 @@ const ProductEdit = () => (
 const ProductEditDetails = () => (
     <Grid container columnSpacing={2}>
         <Grid item xs={12} sm={8}>
-            <TextInput source="reference" fullWidth validate={req} />
+            <TextInput source="reference" validate={req} />
         </Grid>
         <Grid item xs={12} sm={4}>
             <ReferenceInput source="category_id" reference="categories">
-                <SelectInput source="name" validate={req} fullWidth />
+                <SelectInput source="name" validate={req} />
             </ReferenceInput>
         </Grid>
         <Grid item xs={12} sm={4}>
@@ -626,7 +629,6 @@ const ProductEditDetails = () => (
                     ),
                 }}
                 validate={req}
-                fullWidth
             />
         </Grid>
         <Grid item xs={12} sm={4}>
@@ -638,7 +640,6 @@ const ProductEditDetails = () => (
                     ),
                 }}
                 validate={req}
-                fullWidth
             />
         </Grid>
         <Grid item xs={0} sm={4}></Grid>
@@ -651,14 +652,13 @@ const ProductEditDetails = () => (
                     ),
                 }}
                 validate={req}
-                fullWidth
             />
         </Grid>
         <Grid item xs={12} sm={4}>
-            <NumberInput source="stock" validate={req} fullWidth />
+            <NumberInput source="stock" validate={req} />
         </Grid>
         <Grid item xs={12} sm={4}>
-            <NumberInput source="sales" validate={req} fullWidth />
+            <NumberInput source="sales" validate={req} />
         </Grid>
     </Grid>
 );
@@ -687,7 +687,7 @@ To achieve that, create a custom commponent that renders a `<TabbedForm.Tab>` wi
 ```jsx
 const ReviewsFormTab = props => {
     const record = useRecordContext();
-    const { isLoading, total } = useGetManyReference(
+    const { isPending, total } = useGetManyReference(
         'reviews',
         {
             target: 'product_id',
@@ -699,7 +699,7 @@ const ReviewsFormTab = props => {
     );
     const translate = useTranslate();
     let label = translate('resources.products.tabs.reviews');
-    if (!isLoading) {
+    if (!isPending) {
         label += ` (${total})`;
     }
     return <TabbedForm.Tab label={label} {...props} />;
@@ -756,34 +756,6 @@ const ProductEdit = () => (
 
 **Tip**: In this example, both the `<ReviewsFormTab>` and the `<ReferenceManyField>` issue a `dataProvider.getManyReference()` call to fetch the related reviews. Thanks to react-query's query deduplication logic, the dataProvider only receives one request to fetch the reviews.
 
-## Displaying a Tab Based On Permissions
-
-You can leverage [the `usePermissions` hook](./usePermissions.md) to display a tab only if the user has the required permissions.
-
-{% raw %}
-```jsx
-import { usePermissions, Edit, TabbedForm, FormTab } from 'react-admin';
-
-const UserEdit = () => {
-    const { permissions } = usePermissions();
-    return (
-        <Edit>
-            <TabbedForm>
-                <TabbedForm.Tab label="summary">
-                    ...
-                </TabbedForm.Tab>
-                {permissions === 'admin' &&
-                    <TabbedForm.Tab label="Security">
-                        ...
-                    </TabbedForm.Tab>
-                }
-            </TabbedForm>
-        </Edit>
-    );
-};
-```
-{% endraw %}
-
 ## AutoSave
 
 In forms where users may spend a lot of time, it's a good idea to save the form automatically after a few seconds of inactivity. You can auto save the form content by using [the `<AutoSave>` component](./AutoSave.md).
@@ -821,6 +793,34 @@ Note that you **must** set the `<TabbedForm resetOptions>` prop to `{ keepDirtyV
 If you're using it in an `<Edit>` page, you must also use a `pessimistic` or `optimistic` [`mutationMode`](https://marmelab.com/react-admin/Edit.html#mutationmode) - `<AutoSave>` doesn't work with the default `mutationMode="undoable"`.
 
 Check [the `<AutoSave>` component](./AutoSave.md) documentation for more details.
+
+## Displaying a Tab Based On Permissions
+
+You can leverage [the `usePermissions` hook](./usePermissions.md) to display a tab only if the user has the required permissions.
+
+{% raw %}
+```jsx
+import { usePermissions, Edit, TabbedForm, FormTab } from 'react-admin';
+
+const UserEdit = () => {
+    const { permissions } = usePermissions();
+    return (
+        <Edit>
+            <TabbedForm>
+                <TabbedForm.Tab label="summary">
+                    ...
+                </TabbedForm.Tab>
+                {permissions === 'admin' &&
+                    <TabbedForm.Tab label="Security">
+                        ...
+                    </TabbedForm.Tab>
+                }
+            </TabbedForm>
+        </Edit>
+    );
+};
+```
+{% endraw %}
 
 ## Role-Based Access Control (RBAC)
 
@@ -877,7 +877,44 @@ const ProductEdit = () => (
 
 Check [the RBAC `<TabbedForm>` component](./AuthRBAC.md#tabbedform) documentation for more details.
 
+## Versioning
+
+By default, `<TabbedForm>` updates the current record (via `dataProvider.update()`), so the previous version of the record is lost. If you want to keep track of the previous versions of the record, you can use the [`<TabbedFormWithRevision>`](https://react-admin-ee.marmelab.com/documentation/ra-history#tabbedformwithrevision) component instead.
+
+<video controls autoplay playsinline muted loop>
+  <source src="./img/TabbedFormWithRevision.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
+`<TabbedFormWithRevision>` adds a new "Revisions" tab listing the past revisions. There, users can browse past revisions, compare two revisions, and restore a past revision. 
+
+And when users submit the form, they see a dialog asking them for the reason of the change. After submitting this dialog, react-admin updates the main record and **creates a new revision**. A revision represents the state of the record at a given point in time. It is immutable. A revision also records the date, author, and reason of the change.
+
+`<TabbedFormWithRevision>` is a drop-in replacement for `<TabbedForm>`. It accepts the same props, and renders tabs the same way.
+
+```tsx
+import { Edit } from "react-admin";
+import { TabbedFormWithRevision } from "@react-admin/ra-history";
+
+const ProductEdit = () => (
+  <Edit>
+    <TabbedFormWithRevision>
+        <TabbedFormWithRevision.Tab label="Summary">
+            {/* ... */}
+        </TabbedFormWithRevision.Tab>
+        <TabbedFormWithRevision.Tab label="Preview">
+            {/* ... */}
+        </TabbedFormWithRevision.Tab>
+    </TabbedFormWithRevision>
+  </Edit>
+);
+```
+
+Check the [`<TabbedFormWithRevision>`](https://react-admin-ee.marmelab.com/documentation/ra-history#tabbedformwithrevision) documentation for more details.
+
 ## Linking Two Inputs
+
+<iframe src="https://www.youtube-nocookie.com/embed/YkqjydtmfcU" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;"></iframe>
 
 Edition forms often contain linked inputs, e.g. country and city (the choices of the latter depending on the value of the former).
 

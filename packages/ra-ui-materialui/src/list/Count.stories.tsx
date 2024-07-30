@@ -1,7 +1,10 @@
 import * as React from 'react';
-import { QueryClientProvider, QueryClient } from 'react-query';
-import { DataProviderContext } from 'ra-core';
-import { MemoryRouter } from 'react-router-dom';
+import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
+import {
+    DataProviderContext,
+    ResourceContextProvider,
+    TestMemoryRouter,
+} from 'ra-core';
 
 import { Count } from './Count';
 
@@ -19,7 +22,7 @@ const posts = [
 ];
 
 export const Wrapper = ({ dataProvider, children }) => (
-    <MemoryRouter>
+    <TestMemoryRouter>
         <DataProviderContext.Provider value={dataProvider}>
             <QueryClientProvider
                 client={
@@ -32,10 +35,12 @@ export const Wrapper = ({ dataProvider, children }) => (
                     })
                 }
             >
-                {children}
+                <ResourceContextProvider value="posts">
+                    {children}
+                </ResourceContextProvider>
             </QueryClientProvider>
         </DataProviderContext.Provider>
-    </MemoryRouter>
+    </TestMemoryRouter>
 );
 
 export const Basic = () => (

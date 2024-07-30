@@ -1,76 +1,29 @@
 import {
+    AppBar as RaAppBar,
     Box,
     ListItemIcon,
     ListItemText,
     MenuItem,
     MenuList,
     Skeleton,
-    ThemeProvider,
-    createTheme,
 } from '@mui/material';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import PeopleIcon from '@mui/icons-material/People';
-import {
-    AuthContext,
-    PreferencesEditorContextProvider,
-    StoreContextProvider,
-    memoryStore,
-} from 'ra-core';
+import { Resource } from 'ra-core';
 import * as React from 'react';
-import { QueryClient, QueryClientProvider } from 'react-query';
-import { MemoryRouter } from 'react-router';
 
-import { defaultTheme } from '../theme/defaultTheme';
+import { AdminContext } from '../AdminContext';
+import { AdminUI } from '..';
 import { Layout } from './Layout';
-import { Title } from './Title';
 
 export default {
     title: 'ra-ui-materialui/layout/Layout',
 };
 
-const Content = () => (
-    <Box>
-        <Skeleton
-            variant="text"
-            width="auto"
-            sx={{ fontSize: '2rem', mx: 2 }}
-            animation={false}
-        />
-        <Skeleton
-            variant="rectangular"
-            width="auto"
-            height={1500}
-            sx={{ mx: 2 }}
-            animation={false}
-        />
-    </Box>
-);
+export const Basic = () => <Wrapper layout={Layout} />;
 
-const Wrapper = ({
-    children = <Content />,
-    theme = createTheme(defaultTheme),
-    layout: LayoutProp = Layout,
-}) => (
-    <MemoryRouter>
-        <QueryClientProvider client={new QueryClient()}>
-            <ThemeProvider theme={theme}>
-                <StoreContextProvider value={memoryStore()}>
-                    <PreferencesEditorContextProvider>
-                        <AuthContext.Provider value={undefined as any}>
-                            <LayoutProp>
-                                {children}
-                                <Title title="React Admin" />
-                            </LayoutProp>
-                        </AuthContext.Provider>
-                    </PreferencesEditorContextProvider>
-                </StoreContextProvider>
-            </ThemeProvider>
-        </QueryClientProvider>
-    </MemoryRouter>
-);
-
-const Menu = () => (
+const CustomMenu = () => (
     <MenuList>
         <MenuItem>
             <ListItemIcon>
@@ -93,8 +46,82 @@ const Menu = () => (
     </MenuList>
 );
 
-const BasicLayout = props => <Layout menu={Menu} {...props} />;
-export const Basic = () => <Wrapper layout={BasicLayout} />;
+export const Menu = () => (
+    <Wrapper
+        layout={({ children }) => <Layout menu={CustomMenu}>{children}</Layout>}
+    />
+);
 
-const AppBarAlwaysOnLayout = props => <BasicLayout appBarAlwaysOn {...props} />;
-export const AppBarAlwaysOn = () => <Wrapper layout={AppBarAlwaysOnLayout} />;
+export const AppBar = () => (
+    <Wrapper
+        layout={({ children }) => (
+            <Layout appBar={() => <RaAppBar>Custom AppBar</RaAppBar>}>
+                {children}
+            </Layout>
+        )}
+    />
+);
+
+export const AppBarAlwaysOn = () => (
+    <Wrapper
+        layout={({ children }) => <Layout appBarAlwaysOn>{children}</Layout>}
+    />
+);
+
+export const ErrorDefault = () => (
+    <Wrapper
+        layout={Layout}
+        content={() => {
+            throw new Error('Client error');
+        }}
+    />
+);
+
+export const ErrorCustom = () => (
+    <Wrapper
+        layout={({ children }) => (
+            <Layout
+                error={({ error }) => (
+                    <div>
+                        <h1>Custom error</h1>
+                        <p>{error.message}</p>
+                    </div>
+                )}
+            >
+                {children}
+            </Layout>
+        )}
+        content={() => {
+            throw new Error('Client error');
+        }}
+    />
+);
+
+const DefaultContent = () => (
+    <Box>
+        <Skeleton
+            variant="text"
+            width="auto"
+            sx={{ fontSize: '2rem', mx: 2 }}
+            animation={false}
+        />
+        <Skeleton
+            variant="rectangular"
+            width="auto"
+            height={1500}
+            sx={{ mx: 2 }}
+            animation={false}
+        />
+    </Box>
+);
+
+const Wrapper = ({
+    layout: LayoutComponent,
+    content: ContentComponent = DefaultContent,
+}) => (
+    <AdminContext>
+        <AdminUI layout={LayoutComponent}>
+            <Resource name="posts" list={ContentComponent} />
+        </AdminUI>
+    </AdminContext>
+);

@@ -97,13 +97,14 @@ describe('<TextField />', () => {
                             not_found: 'Not found',
                         },
                     },
-                } as any),
+                }) as any,
             'en'
         );
         render(
             <I18nContextProvider value={i18nProvider}>
                 <TextField
                     record={{ id: 123 }}
+                    // @ts-expect-error source prop does not have a valid value
                     source="foo.bar"
                     emptyText="resources.books.not_found"
                 />
@@ -111,5 +112,16 @@ describe('<TextField />', () => {
         );
 
         expect(screen.getByText('Not found')).not.toBeNull();
+    });
+
+    it('should call toString on a value that is not a string', () => {
+        const record = {
+            id: 123,
+            type: ['Rock', 'Folk Rock'],
+        };
+        const { queryByText } = render(
+            <TextField record={record} source="type" />
+        );
+        expect(queryByText('Rock,Folk Rock')).not.toBeNull();
     });
 });

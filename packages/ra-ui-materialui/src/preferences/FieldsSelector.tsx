@@ -16,7 +16,7 @@ export const FieldsSelector = ({
     const [availableFields, setAvailableFields] = usePreference<
         SelectableField[]
     >(availableName, []);
-    const [omit] = usePreference('omit', []);
+    const [omit] = usePreference<string[]>('omit', []);
 
     const [fields, setFields] = usePreference(
         name,

@@ -6,6 +6,7 @@ import { ListPaginationContext } from 'ra-core';
 
 import { Pagination } from './Pagination';
 import { DeviceTestWrapper } from '../../layout';
+import { RowsPerPageOptions } from './Pagination.stories';
 
 const theme = createTheme();
 
@@ -47,12 +48,14 @@ describe('<Pagination />', () => {
             render(
                 <ThemeProvider theme={theme}>
                     <ListPaginationContext.Provider
-                        value={{
-                            ...defaultProps,
-                            perPage: 1,
-                            total: 2,
-                            page: 2,
-                        }}
+                        value={
+                            {
+                                ...defaultProps,
+                                perPage: 1,
+                                total: 2,
+                                page: 2,
+                            } as any
+                        }
                     >
                         <Pagination rowsPerPageOptions={[1]} />
                     </ListPaginationContext.Provider>
@@ -68,12 +71,14 @@ describe('<Pagination />', () => {
             render(
                 <ThemeProvider theme={theme}>
                     <ListPaginationContext.Provider
-                        value={{
-                            ...defaultProps,
-                            perPage: 1,
-                            total: 2,
-                            page: 2,
-                        }}
+                        value={
+                            {
+                                ...defaultProps,
+                                perPage: 1,
+                                total: 2,
+                                page: 2,
+                            } as any
+                        }
                     >
                         <Pagination rowsPerPageOptions={[1]} />
                     </ListPaginationContext.Provider>
@@ -89,12 +94,14 @@ describe('<Pagination />', () => {
             render(
                 <ThemeProvider theme={theme}>
                     <ListPaginationContext.Provider
-                        value={{
-                            ...defaultProps,
-                            perPage: 1,
-                            total: 2,
-                            page: 1,
-                        }}
+                        value={
+                            {
+                                ...defaultProps,
+                                perPage: 1,
+                                total: 2,
+                                page: 1,
+                            } as any
+                        }
                     >
                         <Pagination rowsPerPageOptions={[1]} />
                     </ListPaginationContext.Provider>
@@ -113,13 +120,15 @@ describe('<Pagination />', () => {
             render(
                 <ThemeProvider theme={theme}>
                     <ListPaginationContext.Provider
-                        value={{
-                            ...defaultProps,
-                            perPage: 1,
-                            total: undefined,
-                            page: 1,
-                            hasNextPage: true,
-                        }}
+                        value={
+                            {
+                                ...defaultProps,
+                                perPage: 1,
+                                total: undefined,
+                                page: 1,
+                                hasNextPage: true,
+                            } as any
+                        }
                     >
                         <Pagination rowsPerPageOptions={[1]} />
                     </ListPaginationContext.Provider>
@@ -135,13 +144,15 @@ describe('<Pagination />', () => {
             render(
                 <ThemeProvider theme={theme}>
                     <ListPaginationContext.Provider
-                        value={{
-                            ...defaultProps,
-                            perPage: 1,
-                            total: undefined,
-                            page: 2,
-                            hasNextPage: false,
-                        }}
+                        value={
+                            {
+                                ...defaultProps,
+                                perPage: 1,
+                                total: undefined,
+                                page: 2,
+                                hasNextPage: false,
+                            } as any
+                        }
                     >
                         <Pagination rowsPerPageOptions={[1]} />
                     </ListPaginationContext.Provider>
@@ -157,13 +168,15 @@ describe('<Pagination />', () => {
             render(
                 <ThemeProvider theme={theme}>
                     <ListPaginationContext.Provider
-                        value={{
-                            ...defaultProps,
-                            perPage: 1,
-                            total: undefined,
-                            page: 2,
-                            hasPreviousPage: true,
-                        }}
+                        value={
+                            {
+                                ...defaultProps,
+                                perPage: 1,
+                                total: undefined,
+                                page: 2,
+                                hasPreviousPage: true,
+                            } as any
+                        }
                     >
                         <Pagination rowsPerPageOptions={[1]} />
                     </ListPaginationContext.Provider>
@@ -179,13 +192,15 @@ describe('<Pagination />', () => {
             render(
                 <ThemeProvider theme={theme}>
                     <ListPaginationContext.Provider
-                        value={{
-                            ...defaultProps,
-                            perPage: 1,
-                            total: undefined,
-                            page: 1,
-                            hasPreviousPage: false,
-                        }}
+                        value={
+                            {
+                                ...defaultProps,
+                                perPage: 1,
+                                total: undefined,
+                                page: 1,
+                                hasPreviousPage: false,
+                            } as any
+                        }
                     >
                         <Pagination rowsPerPageOptions={[1]} />
                     </ListPaginationContext.Provider>
@@ -204,12 +219,14 @@ describe('<Pagination />', () => {
             render(
                 <DeviceTestWrapper width="sm">
                     <ListPaginationContext.Provider
-                        value={{
-                            ...defaultProps,
-                            page: 2,
-                            perPage: 5,
-                            total: 15,
-                        }}
+                        value={
+                            {
+                                ...defaultProps,
+                                page: 2,
+                                perPage: 5,
+                                total: 15,
+                            } as any
+                        }
                     >
                         <Pagination />
                     </ListPaginationContext.Provider>
@@ -226,12 +243,14 @@ describe('<Pagination />', () => {
             render(
                 <DeviceTestWrapper width="lg">
                     <ListPaginationContext.Provider
-                        value={{
-                            ...defaultProps,
-                            page: 2,
-                            perPage: 5,
-                            total: 15,
-                        }}
+                        value={
+                            {
+                                ...defaultProps,
+                                page: 2,
+                                perPage: 5,
+                                total: 15,
+                            } as any
+                        }
                     >
                         <Pagination />
                     </ListPaginationContext.Provider>
@@ -244,32 +263,10 @@ describe('<Pagination />', () => {
         });
     });
 
-    it('should work outside of a ListContext', () => {
-        render(
-            <ThemeProvider theme={theme}>
-                <Pagination
-                    resource="posts"
-                    setPage={() => null}
-                    isLoading={false}
-                    setPerPage={() => {}}
-                    hasNextPage={undefined}
-                    hasPreviousPage={undefined}
-                    perPage={1}
-                    total={2}
-                    page={1}
-                    rowsPerPageOptions={[1]}
-                />
-            </ThemeProvider>
-        );
-        const nextButton = screen.queryByLabelText(
-            'Go to next page'
-        ) as HTMLButtonElement;
-        expect(nextButton).not.toBeNull();
-        expect(nextButton.disabled).toBe(false);
-        const prevButton = screen.queryByLabelText(
-            'Go to previous page'
-        ) as HTMLButtonElement;
-        expect(prevButton).not.toBeNull();
-        expect(prevButton.disabled).toBe(true);
+    describe('rowsPerPageOptions', () => {
+        it('should accept an array of options with label and value', () => {
+            render(<RowsPerPageOptions />);
+            expect(screen.getByText('ten')).not.toBeNull();
+        });
     });
 });

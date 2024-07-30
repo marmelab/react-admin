@@ -7,6 +7,9 @@ title: "Writing A Data Provider"
 
 APIs are so diverse that quite often, none of [the available Data Providers](./DataProviderList.md) suit you API. In such cases, you'll have to write your own Data Provider. Don't worry, it usually takes only a couple of hours. 
 
+<iframe src="https://www.youtube-nocookie.com/embed/sciDJAUEu_M" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;"></iframe>
+
+
 The methods of a Data Provider receive a request, and return a promise for a response. Both the request and the response format are standardized.
 
 ## Data Provider Methods
@@ -53,6 +56,7 @@ interface GetListParams {
     sort: { field: string, order: 'ASC' | 'DESC' };
     filter: any;
     meta?: any;
+    signal?: AbortSignal;
 }
 interface GetListResult {
     data: Record[];
@@ -98,6 +102,7 @@ React-admin calls `dataProvider.getOne()` to fetch a single record by `id`.
 interface GetOneParams {
     id: Identifier;
     meta?: any;
+    signal?: AbortSignal;
 }
 interface GetOneResult {
     data: Record;
@@ -126,6 +131,7 @@ React-admin calls `dataProvider.getMany()` to fetch several records at once usin
 interface GetManyParams {
     ids: Identifier[];
     meta?: any;
+    signal?: AbortSignal;
 }
 interface GetManyResult {
     data: Record[];
@@ -150,7 +156,7 @@ dataProvider.getMany('posts', { ids: [123, 124, 125] })
 
 ## `getManyReference`
 
-React-admin calls `dataProvider.getManyReference()` to fetch several records related to another one.
+React-admin calls `dataProvider.getManyReference()` to fetch the records related to another record. Although similar to `getList`, this method is designed for relationships. It is necessary because some APIs require a different query to fetch related records (e.g. `GET /posts/123/comments` to fetch comments related to post 123).
 
 **Interface**
 
@@ -162,6 +168,7 @@ interface GetManyReferenceParams {
     sort: { field: string, order: 'ASC' | 'DESC' };
     filter: any;
     meta?: any;
+    signal?: AbortSignal;
 }
 interface GetManyReferenceResult {
     data: Record[];
@@ -425,6 +432,30 @@ export default {
 };
 ```
 
+## Handling Authentication
+
+Your API probably requires some form of authentication (e.g. a token in the `Authorization` header). It's the responsibility of [the `authProvider`](./Authentication.md) to log the user in and obtain the authentication data. React-admin doesn't provide any particular way of communicating this authentication data to the Data Provider. Most of the time, storing the authentication data in the  `localStorage` is the best choice - and allows uses to open multiple tabs without having to log in again.
+
+Check the [Handling Authentication](./DataProviders.md#handling-authentication) section in the Data Providers introduction for an example of such a setup.
+
+## Testing Data Provider Methods
+
+A good way to test your data provider is to build a react-admin app with components that depend on it. Here is a list of components calling the data provider methods:
+
+| Method             | Components |
+| ------------------ | --------- |
+| `getList`          | [`<List>`](./List.md), [`<ListGuesser>`](./ListGuesser.md), [`<ListBase>`](./ListBase.md), [`<InfiniteList>`](./InfiniteList.md), [`<Count>`](./Count.md), [`<Calendar>`](./Calendar.md), [`<ReferenceInput>`](./ReferenceInput.md), [`<ReferenceArrayInput>`](./ReferenceArrayInput.md), [`<ExportButton>`](./Buttons.md#exportbutton), [`<PrevNextButtons>`](./PrevNextButtons.md) |
+| `getOne`           | [`<Show>`](./Show.md), [`<ShowGuesser>`](./ShowGuesser.md), [`<ShowBase>`](./ShowBase.md), [`<Edit>`](./Edit.md), [`<EditGuesser>`](./EditGuesser.md), [`<EditBase>`](./EditBase.md) |
+| `getMany`          | [`<ReferenceField>`](./ReferenceField.md), [`<ReferenceArrayField>`](./ReferenceArrayField.md), [`<ReferenceInput>`](./ReferenceInput.md), [`<ReferenceArrayInput>`](./ReferenceArrayInput.md) |
+| `getManyReference` | [`<ReferenceManyField>`](./ReferenceManyField.md), [`<ReferenceOneField>`](./ReferenceOneField.md), [`<ReferenceManyInput>`](./ReferenceManyInput.md), [`<ReferenceOneInput>`](./ReferenceOneInput.md) |
+| `create`           | [`<Create>`](./Create.md), [`<CreateBase>`](./CreateBase.md), [`<EditableDatagrid>`](./EditableDatagrid.md), [`<CreateInDialogButton>`](./CreateInDialogButton.md) |
+| `update`           | [`<Edit>`](./Edit.md), [`<EditGuesser>`](./EditGuesser.md), [`<EditBase>`](./EditBase.md), [`<EditableDatagrid>`](./EditableDatagrid.md), [`<EditInDialogButton>`](./EditInDialogButton.md), [`<UpdateButton>`](./UpdateButton.md) |
+| `updateMany`       | [`<BulkUpdateButton>`](./Buttons.md#bulkupdatebutton) |
+| `delete`           | [`<DeleteButton>`](./Buttons.md#deletebutton), [`<EditableDatagrid>`](./EditableDatagrid.md) |
+| `deleteMany`       | [`<BulkDeleteButton>`](./Buttons.md#bulkdeletebutton) |
+
+A simple react-admin app with one `<Resource>` using [guessers](./Features.md#guessers--scaffolding) for the `list`, `edit`, and `show` pages is a good start.
+
 ## The `meta` Parameter
 
 All data provider methods accept a `meta` parameter. React-admin core components never set this `meta` when calling the data provider. It's designed to let you pass additional parameters to your data provider.
@@ -432,13 +463,59 @@ All data provider methods accept a `meta` parameter. React-admin core components
 For instance, you could pass an option to embed related records in the response:
 
 ```jsx
-const { data, isLoading, error } = useGetOne(
+const { data, isPending, error } = useGetOne(
     'books',
     { id, meta: { _embed: 'authors' } },
 );
 ```
 
 It's up to you to use this `meta` parameter in your data provider.
+
+## The `signal` Parameter
+
+All data provider queries can be called with an extra `signal` parameter. This parameter will receive an [AbortSignal](https://developer.mozilla.org/en-US/docs/Web/API/AbortSignal) that can be used to abort the request.
+
+To enable this feature, your data provider must have a `supportAbortSignal` property set to `true`. This is necessary to avoid queries to be sent twice in `development` mode when rendering your application inside [`<React.StrictMode>`](https://react.dev/reference/react/StrictMode).
+
+```tsx
+const dataProvider = simpleRestProvider('https://myapi.com');
+dataProvider.supportAbortSignal = true;
+// You can set this property depending on the production mode, e.g in Vite
+dataProvider.supportAbortSignal = import.meta.env.MODE === 'production';
+```
+
+When React Admin calls a data provider query method, it wraps it using [React Query](https://tanstack.com/query/v5/docs/react/overview), which supports automatic [Query Cancellation](https://tanstack.com/query/latest/docs/framework/react/guides/query-cancellation) thanks to the `signal` parameter.
+
+You can also benefit from this feature if you wrap your calls to the dataProvider with `useQuery`, and pass the `signal` parameter to the dataProvider:
+
+```jsx
+import * as React from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { useDataProvider, Loading, Error } from 'react-admin';
+
+const UserProfile = ({ userId }) => {
+    const dataProvider = useDataProvider();
+    const { data, isLoading, error } = useQuery({
+        queryKey: ['users', 'getOne', { id: userId }], 
+        queryFn: ({ signal }) => dataProvider.getOne('users', { id: userId, signal })
+    });
+
+    if (isLoading) return <Loading />;
+    if (error) return <Error />;
+    if (!data) return null;
+
+    return (
+        <ul>
+            <li>Name: {data.data.name}</li>
+            <li>Email: {data.data.email}</li>
+        </ul>
+    )
+};
+```
+
+It's then the responsibility of the dataProvider to use this `signal` parameter, and pass it to the library responsible for making the HTTP requests, like `fetch`, `axios`, `XMLHttpRequest` , `apollo`, `graphql-request`, etc.
+
+You can find example implementations in the [Query Cancellation guide](https://tanstack.com/query/latest/docs/framework/react/guides/query-cancellation).
 
 ## `getList` and `getOne` Shared Cache
 
@@ -464,6 +541,44 @@ const { data } = dataProvider.getOne('posts', { id: 123 })
 ```
 
 This will cause the Edit view to blink on load. If you have this problem, modify your Data Provider to return the same shape for all methods. 
+
+## `fetchJson`: Built-In HTTP Client
+
+Although your Data Provider can use any HTTP client (`fetch`, `axios`, etc.), react-admin suggests using a helper function called `fetchJson` that it provides.
+
+`fetchJson` is a wrapper around the `fetch` API that automatically handles JSON deserialization, rejects when the HTTP response isn't 2XX or 3XX, and throws a particular type of error that allows the UI to display a meaningful notification. `fetchJson` also lets you add an `Authorization` header if you pass a `user` option.
+
+Here is how you can use it in your Data Provider:
+
+```diff
++import { fetchUtils } from 'react-admin';
+
++const fetchJson = (url, options = {}) => {
++   options.user = {
++       authenticated: true,
++       // use the authentication token from local storage (given the authProvider added it there)
++       token: localStorage.getItem('token')
++   };
++   return fetchUtils.fetchJson(url, options);
++};
+// ...
+
+const dataProvider = {
+    getList: (resource, params) => {
+        const { page, perPage } = params.pagination;
+        const { field, order } = params.sort;
+        const query = {
+            sort: JSON.stringify([field, order]),
+            range: JSON.stringify([(page - 1) * perPage, page * perPage - 1]),
+            filter: JSON.stringify(params.filter),
+        };
+        const url = `${apiUrl}/${resource}?${stringify(query)}`;
+-       return fetch(url, { method: 'GET' });
++       return fetchJson(url, { method: 'GET' });
+    },
+    // ...
+};
+```
 
 ## Example REST Implementation
 
@@ -596,7 +711,7 @@ export default {
             filter: JSON.stringify(params.filter),
         };
         const url = `${apiUrl}/${resource}?${stringify(query)}`;
-        const { json, headers } = await httpClient(url);
+        const { json, headers } = await httpClient(url, { signal: params.signal });
         return {
             data: json,
             total: parseInt(headers.get('content-range').split('/').pop(), 10),
@@ -605,7 +720,7 @@ export default {
 
     getOne: async (resource, params) => {
         const url = `${apiUrl}/${resource}/${params.id}`
-        const { json } = await httpClient(url);
+        const { json } = await httpClient(url, { signal: params.signal });
         return { data: json };
     },
 
@@ -614,7 +729,7 @@ export default {
             filter: JSON.stringify({ ids: params.ids }),
         };
         const url = `${apiUrl}/${resource}?${stringify(query)}`;
-        const { json } = await httpClient(url);
+        const { json } = await httpClient(url, { signal: params.signal });
         return { data: json };
     },
 
@@ -630,7 +745,7 @@ export default {
             }),
         };
         const url = `${apiUrl}/${resource}?${stringify(query)}`;
-        const { json, headers } = await httpClient(url);
+        const { json, headers } = await httpClient(url, { signal: params.signal });
         return {
             data: json,
             total: parseInt(headers.get('content-range').split('/').pop(), 10),
@@ -687,6 +802,8 @@ export default {
     },
 };
 ```
+
+**Tip:** You may have noticed that we pass the `signal` parameter to the `httpClient` function in all query functions. This is to support automatic [Query Cancellation](https://tanstack.com/query/latest/docs/framework/react/guides/query-cancellation). You can learn more about this parameter in the section dedicated to [the `signal` parameter](#the-signal-parameter).
 
 ## Example GraphQL Implementation
 
@@ -850,7 +967,7 @@ const fields = {
 };
 
 export const dataProvider = {
-  getList: (resource, { sort, pagination, filter }) => {
+  getList: (resource, { sort, pagination, filter, signal }) => {
     const { field, order } = sort;
     const { page, perPage } = pagination;
     return client
@@ -878,6 +995,11 @@ export const dataProvider = {
             {}
           ),
         },
+        context: {
+            fetchOptions: {
+                signal,
+            },
+        },
       })
       .then((result) => ({
         data: result.data[resource],
@@ -896,6 +1018,11 @@ export const dataProvider = {
         variables: {
           id: params.id,
         },
+        context: {
+            fetchOptions: {
+                signal: params.signal,
+            },
+        },
       })
       .then((result) => ({ data: result.data[`${resource}_by_pk`] }));
   },
@@ -913,12 +1040,17 @@ export const dataProvider = {
             id: { _in: params.ids },
           },
         },
+        context: {
+            fetchOptions: {
+                signal: params.signal,
+            },
+        },
       })
       .then((result) => ({ data: result.data[resource] }));
   },
   getManyReference: (
     resource,
-    { target, id, sort, pagination, filter }
+    { target, id, sort, pagination, filter, signal }
   ) => {
     const { field, order } = sort;
     const { page, perPage } = pagination;
@@ -946,6 +1078,11 @@ export const dataProvider = {
             }),
             { [target]: { _eq: id } }
           ),
+        },
+        context: {
+            fetchOptions: {
+                signal,
+            },
         },
       })
       .then((result) => ({
@@ -1046,6 +1183,8 @@ export const dataProvider = {
   },
 };
 ```
+
+**Tip:** You may have noticed that we pass the `signal` parameter to the apollo client in all query functions. This is to support automatic [Query Cancellation](https://tanstack.com/query/latest/docs/framework/react/guides/query-cancellation). You can learn more about this parameter in the section dedicated to [the `signal` parameter](#the-signal-parameter).
 
 ## Resource-Specific Business Logic
 

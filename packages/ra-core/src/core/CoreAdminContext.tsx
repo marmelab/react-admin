@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { useMemo } from 'react';
-import { QueryClientProvider, QueryClient } from 'react-query';
-import { History } from 'history';
+import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 
 import { AdminRouter } from '../routing';
 import { AuthContext, convertLegacyAuthProvider } from '../auth';
@@ -119,7 +118,7 @@ export interface CoreAdminContextProps {
      * @see https://marmelab.com/react-admin/Admin.html#queryclient
      * @example
      * import { Admin } from 'react-admin';
-     * import { QueryClient } from 'react-query';
+     * import { QueryClient } from '@tanstack/react-query';
      *
      * const queryClient = new QueryClient({
      *     defaultOptions: {
@@ -140,12 +139,6 @@ export interface CoreAdminContextProps {
      * );
      */
     queryClient?: QueryClient;
-
-    /**
-     * @deprecated Wrap your Admin inside a Router to change the routing strategy
-     * @see https://marmelab.com/react-admin/Admin.html#using-a-custom-router
-     */
-    history?: History;
 
     /**
      * The internationalization provider for translations
@@ -180,7 +173,6 @@ export const CoreAdminContext = (props: CoreAdminContextProps) => {
         i18nProvider,
         store = defaultStore,
         children,
-        history,
         queryClient,
     } = props;
 
@@ -189,9 +181,10 @@ export const CoreAdminContext = (props: CoreAdminContextProps) => {
 React-admin requires a valid dataProvider function to work.`);
     }
 
-    const finalQueryClient = useMemo(() => queryClient || new QueryClient(), [
-        queryClient,
-    ]);
+    const finalQueryClient = useMemo(
+        () => queryClient || new QueryClient(),
+        [queryClient]
+    );
 
     const finalAuthProvider = useMemo(
         () =>
@@ -215,7 +208,7 @@ React-admin requires a valid dataProvider function to work.`);
                 <StoreContextProvider value={store}>
                     <PreferencesEditorContextProvider>
                         <QueryClientProvider client={finalQueryClient}>
-                            <AdminRouter history={history} basename={basename}>
+                            <AdminRouter basename={basename}>
                                 <I18nContextProvider value={i18nProvider}>
                                     <NotificationContextProvider>
                                         <ResourceDefinitionContextProvider>

@@ -22,34 +22,33 @@ import { FieldValues } from 'react-hook-form';
  *     </Form>
  * );
  */
-export const getSimpleValidationResolver = (validate: ValidateForm) => async (
-    data: FieldValues
-) => {
-    const errors = await validate(data);
+export const getSimpleValidationResolver =
+    (validate: ValidateForm) => async (data: FieldValues) => {
+        const errors = await validate(data);
 
-    // If there are no errors, early return the form values
-    if (!errors || isEmptyObject(errors)) {
-        return { values: data, errors: {} };
-    }
+        // If there are no errors, early return the form values
+        if (!errors || isEmptyObject(errors)) {
+            return { values: data, errors: {} };
+        }
 
-    // Else, we return an error object shaped like errors but having for each leaf
-    // `type: 'manual'` and a `message` prop like react-hook-form expects it
-    const transformedErrors = transformErrorFields(errors);
+        // Else, we return an error object shaped like errors but having for each leaf
+        // `type: 'manual'` and a `message` prop like react-hook-form expects it
+        const transformedErrors = transformErrorFields(errors);
 
-    // Sometimes we still need to transform the error object to realize there are actually
-    // no errors in it.
-    //   e.g. with an ArrayInput we can get something like: `{backlinks: [{}, {}]}`
-    // If, after transformation, there are no errors, we return the form values
-    if (!transformedErrors || isEmptyObject(transformedErrors)) {
-        return { values: data, errors: {} };
-    }
+        // Sometimes we still need to transform the error object to realize there are actually
+        // no errors in it.
+        //   e.g. with an ArrayInput we can get something like: `{backlinks: [{}, {}]}`
+        // If, after transformation, there are no errors, we return the form values
+        if (!transformedErrors || isEmptyObject(transformedErrors)) {
+            return { values: data, errors: {} };
+        }
 
-    // Else return the errors and no values
-    return {
-        values: {},
-        errors: transformedErrors,
+        // Else return the errors and no values
+        return {
+            values: {},
+            errors: transformedErrors,
+        };
     };
-};
 
 const transformErrorFields = (error: object) => {
     return Object.keys(error).reduce((acc, field) => {

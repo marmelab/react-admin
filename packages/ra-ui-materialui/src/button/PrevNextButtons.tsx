@@ -5,7 +5,8 @@ import {
     usePrevNextController,
     UsePrevNextControllerProps,
 } from 'ra-core';
-import { NavigateBefore, NavigateNext } from '@mui/icons-material';
+import NavigateBefore from '@mui/icons-material/NavigateBefore';
+import NavigateNext from '@mui/icons-material/NavigateNext';
 import ErrorIcon from '@mui/icons-material/Error';
 import { Link } from 'react-router-dom';
 import {
@@ -108,12 +109,12 @@ export const PrevNextButtons = <RecordType extends RaRecord = any>(
         index,
         total,
         error,
-        isLoading,
+        isPending,
     } = usePrevNextController<RecordType>(props);
 
     const translate = useTranslate();
 
-    if (isLoading) {
+    if (isPending) {
         return (
             <Box minHeight={34} display="flex" alignItems="center">
                 <LinearProgress />
@@ -141,15 +142,24 @@ export const PrevNextButtons = <RecordType extends RaRecord = any>(
             direction="row"
             className={clsx(PrevNextButtonClasses.root)}
         >
-            <IconButton
-                component={hasPrev ? Link : undefined}
-                to={prevPath}
-                aria-label={translate('ra.navigation.previous')}
-                disabled={!hasPrev}
-                size="small"
-            >
-                <NavigateBefore />
-            </IconButton>
+            {hasPrev && prevPath ? (
+                <IconButton
+                    component={Link}
+                    to={prevPath}
+                    aria-label={translate('ra.navigation.previous')}
+                    size="small"
+                >
+                    <NavigateBefore />
+                </IconButton>
+            ) : (
+                <IconButton
+                    aria-label={translate('ra.navigation.previous')}
+                    disabled
+                    size="small"
+                >
+                    <NavigateBefore />
+                </IconButton>
+            )}
 
             {typeof index === 'number' && (
                 <Typography variant="body2">
@@ -157,15 +167,24 @@ export const PrevNextButtons = <RecordType extends RaRecord = any>(
                 </Typography>
             )}
 
-            <IconButton
-                component={hasNext ? Link : undefined}
-                to={nextPath}
-                aria-label={translate('ra.navigation.next')}
-                disabled={!hasNext}
-                size="small"
-            >
-                <NavigateNext />
-            </IconButton>
+            {hasNext && nextPath ? (
+                <IconButton
+                    component={Link}
+                    to={nextPath}
+                    aria-label={translate('ra.navigation.next')}
+                    size="small"
+                >
+                    <NavigateNext />
+                </IconButton>
+            ) : (
+                <IconButton
+                    aria-label={translate('ra.navigation.next')}
+                    disabled
+                    size="small"
+                >
+                    <NavigateNext />
+                </IconButton>
+            )}
         </Root>
     );
 };

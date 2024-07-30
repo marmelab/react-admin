@@ -11,6 +11,7 @@ import {
 import { AdminContext } from '../AdminContext';
 import { SimpleForm } from '../form';
 import { CheckboxGroupInput } from './CheckboxGroupInput';
+import { InsideReferenceArrayInput } from './CheckboxGroupInput.stories';
 
 describe('<CheckboxGroupInput />', () => {
     const defaultProps = {
@@ -145,7 +146,7 @@ describe('<CheckboxGroupInput />', () => {
     it('should use optionText with an element value as text identifier', () => {
         const Foobar = () => {
             const record = useRecordContext();
-            return <span data-testid="label">{record.foobar}</span>;
+            return <span data-testid="label">{record?.foobar}</span>;
         };
         render(
             <AdminContext dataProvider={testDataProvider()}>
@@ -338,14 +339,14 @@ describe('<CheckboxGroupInput />', () => {
         });
     });
 
-    it('should not render a LinearProgress if loading is true and a second has not passed yet', () => {
+    it('should not render a LinearProgress if isPending is true and a second has not passed yet', () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <SimpleForm onSubmit={jest.fn()}>
                     <CheckboxGroupInput
                         {...defaultProps}
                         isFetching
-                        isLoading
+                        isPending
                     />
                 </SimpleForm>
             </AdminContext>
@@ -354,15 +355,14 @@ describe('<CheckboxGroupInput />', () => {
         expect(screen.queryByRole('progressbar')).toBeNull();
     });
 
-    it('should render a LinearProgress if loading is true, choices are empty and a second has passed', async () => {
+    it('should render a LinearProgress if isPending is true, choices are empty and a second has passed', async () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <SimpleForm mode="onBlur" onSubmit={jest.fn()}>
                     <CheckboxGroupInput
                         {...defaultProps}
                         choices={[]}
-                        isFetching
-                        isLoading
+                        isPending
                     />
                 </SimpleForm>
             </AdminContext>
@@ -370,10 +370,10 @@ describe('<CheckboxGroupInput />', () => {
 
         await new Promise(resolve => setTimeout(resolve, 1001));
 
-        expect(screen.queryByRole('progressbar')).not.toBeNull();
+        await screen.findByRole('progressbar');
     });
 
-    it('should not render a LinearProgress if loading is false', () => {
+    it('should not render a LinearProgress if isPending is false', () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <SimpleForm onSubmit={jest.fn()}>
@@ -383,5 +383,13 @@ describe('<CheckboxGroupInput />', () => {
         );
 
         expect(screen.queryByRole('progressbar')).toBeNull();
+    });
+
+    describe('inside ReferenceArrayInput', () => {
+        it('should use the recordRepresentation as optionText', async () => {
+            render(<InsideReferenceArrayInput />);
+
+            await screen.findByText('Option 1 (This is option 1)');
+        });
     });
 });

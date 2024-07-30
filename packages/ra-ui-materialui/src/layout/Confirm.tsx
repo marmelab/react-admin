@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
-import { useCallback, MouseEventHandler } from 'react';
-import PropTypes, { ReactComponentLike } from 'prop-types';
+import { useCallback, MouseEventHandler, ComponentType } from 'react';
 import Dialog, { DialogProps } from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -117,13 +116,13 @@ export const Confirm = (props: ConfirmProps) => {
 };
 
 export interface ConfirmProps
-    extends Omit<DialogProps, 'open' | 'onClose' | 'title'> {
+    extends Omit<DialogProps, 'open' | 'onClose' | 'title' | 'content'> {
     cancel?: string;
     className?: string;
     confirm?: string;
     confirmColor?: 'primary' | 'warning';
-    ConfirmIcon?: ReactComponentLike;
-    CancelIcon?: ReactComponentLike;
+    ConfirmIcon?: ComponentType;
+    CancelIcon?: ComponentType;
     content: React.ReactNode;
     isOpen?: boolean;
     loading?: boolean;
@@ -132,22 +131,6 @@ export interface ConfirmProps
     title: React.ReactNode;
     translateOptions?: object;
 }
-
-Confirm.propTypes = {
-    cancel: PropTypes.string,
-    className: PropTypes.string,
-    confirm: PropTypes.string,
-    confirmColor: PropTypes.string,
-    ConfirmIcon: PropTypes.elementType,
-    CancelIcon: PropTypes.elementType,
-    content: PropTypes.node.isRequired,
-    isOpen: PropTypes.bool,
-    loading: PropTypes.bool,
-    onClose: PropTypes.func.isRequired,
-    onConfirm: PropTypes.func.isRequired,
-    title: PropTypes.node.isRequired,
-    sx: PropTypes.any,
-};
 
 const PREFIX = 'RaConfirm';
 

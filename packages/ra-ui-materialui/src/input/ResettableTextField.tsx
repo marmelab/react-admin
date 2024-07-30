@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { forwardRef, useCallback } from 'react';
 import { styled } from '@mui/material/styles';
-import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import {
     InputAdornment,
@@ -23,6 +22,7 @@ export const ResettableTextField = forwardRef(
             value,
             resettable,
             disabled,
+            readOnly,
             variant,
             margin,
             className,
@@ -31,27 +31,13 @@ export const ResettableTextField = forwardRef(
 
         const translate = useTranslate();
 
-        const { onChange, onFocus, onBlur } = props;
+        const { onChange } = props;
         const handleClickClearButton = useCallback(
             event => {
                 event.preventDefault();
-                onChange('');
+                onChange && onChange('');
             },
             [onChange]
-        );
-
-        const handleFocus = useCallback(
-            event => {
-                onFocus && onFocus(event);
-            },
-            [onFocus]
-        );
-
-        const handleBlur = useCallback(
-            event => {
-                onBlur && onBlur(event);
-            },
-            [onBlur]
         );
 
         const {
@@ -80,9 +66,9 @@ export const ResettableTextField = forwardRef(
                     return (
                         <InputAdornment
                             position="end"
-                            classes={{
-                                root: props.select ? selectAdornment : null,
-                            }}
+                            className={
+                                props.select ? selectAdornment : undefined
+                            }
                         >
                             <IconButton
                                 className={clearButton}
@@ -110,9 +96,9 @@ export const ResettableTextField = forwardRef(
                         return (
                             <InputAdornment
                                 position="end"
-                                classes={{
-                                    root: props.select ? selectAdornment : null,
-                                }}
+                                className={
+                                    props.select ? selectAdornment : undefined
+                                }
                             >
                                 <span className={clearButton}>&nbsp;</span>
                             </InputAdornment>
@@ -124,9 +110,7 @@ export const ResettableTextField = forwardRef(
                 return (
                     <InputAdornment
                         position="end"
-                        classes={{
-                            root: props.select ? selectAdornment : null,
-                        }}
+                        className={props.select ? selectAdornment : undefined}
                     >
                         <IconButton
                             className={clearButton}
@@ -136,7 +120,7 @@ export const ResettableTextField = forwardRef(
                             title={translate('ra.action.clear_input_value')}
                             onClick={handleClickClearButton}
                             onMouseDown={handleMouseDownClearButton}
-                            disabled={disabled}
+                            disabled={disabled || readOnly}
                             size="large"
                         >
                             <ClearIcon
@@ -155,6 +139,7 @@ export const ResettableTextField = forwardRef(
             <StyledTextField
                 value={value}
                 InputProps={{
+                    readOnly: readOnly,
                     classes:
                         props.select && variant === 'filled'
                             ? { adornedEnd: inputAdornedEnd }
@@ -162,14 +147,11 @@ export const ResettableTextField = forwardRef(
                     endAdornment: getEndAdornment(),
                     ...InputPropsWithoutEndAdornment,
                 }}
-                disabled={disabled}
+                disabled={disabled || readOnly}
                 variant={variant}
                 margin={margin}
                 className={className}
-                size="small"
                 {...rest}
-                onFocus={handleFocus}
-                onBlur={handleBlur}
                 inputRef={ref}
             />
         );
@@ -182,24 +164,17 @@ const handleMouseDownClearButton = event => {
     event.preventDefault();
 };
 
-ResettableTextField.propTypes = {
-    clearAlwaysVisible: PropTypes.bool,
-    disabled: PropTypes.bool,
-    InputProps: PropTypes.object,
-    onBlur: PropTypes.func,
-    onChange: PropTypes.func.isRequired,
-    onFocus: PropTypes.func,
-    resettable: PropTypes.bool,
-    value: PropTypes.any,
-};
-
 interface Props {
     clearAlwaysVisible?: boolean;
     resettable?: boolean;
+    readOnly?: boolean;
 }
 
 export type ResettableTextFieldProps = Props &
-    Omit<TextFieldProps, 'onChange'> & {
+    Omit<
+        TextFieldProps,
+        'onChange' | 'onPointerEnterCapture' | 'onPointerLeaveCapture'
+    > & {
         onChange?: (eventOrValue: any) => void;
     };
 

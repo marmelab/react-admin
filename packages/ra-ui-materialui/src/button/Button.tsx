@@ -7,11 +7,9 @@ import {
     useMediaQuery,
     Theme,
 } from '@mui/material';
-import { styled } from '@mui/material/styles';
-import { To } from 'history';
-import PropTypes from 'prop-types';
+import { styled, useThemeProps } from '@mui/material/styles';
 import { useTranslate } from 'ra-core';
-import { Path } from 'react-router';
+import { Path, To } from 'react-router';
 
 /**
  * A generic Button with side icon. Only the icon is displayed on small screens.
@@ -27,8 +25,9 @@ import { Path } from 'react-router';
  *
  */
 export const Button = <RootComponent extends React.ElementType = 'button'>(
-    props: ButtonProps<RootComponent>
+    inProps: ButtonProps<RootComponent>
 ) => {
+    const props = useThemeProps({ props: inProps, name: 'RaButton' });
     const {
         alignIcon = 'left',
         children,
@@ -40,6 +39,7 @@ export const Button = <RootComponent extends React.ElementType = 'button'>(
         to: locationDescriptor,
         ...rest
     } = props;
+
     const translate = useTranslate();
     const translatedLabel = label ? translate(label, { _: label }) : undefined;
     const linkParams = getLinkParams(locationDescriptor);
@@ -103,31 +103,8 @@ interface Props<RootComponent extends React.ElementType> {
     variant?: string;
 }
 
-export type ButtonProps<
-    RootComponent extends React.ElementType = 'button'
-> = Props<RootComponent> & MuiButtonProps<RootComponent>;
-
-Button.propTypes = {
-    alignIcon: PropTypes.oneOf(['left', 'right']),
-    children: PropTypes.element,
-    className: PropTypes.string,
-    color: PropTypes.oneOfType([
-        PropTypes.oneOf([
-            'inherit',
-            'default',
-            'primary',
-            'secondary',
-            'error',
-            'info',
-            'success',
-            'warning',
-        ]),
-        PropTypes.string,
-    ]),
-    disabled: PropTypes.bool,
-    label: PropTypes.string,
-    size: PropTypes.oneOf(['small', 'medium', 'large']),
-};
+export type ButtonProps<RootComponent extends React.ElementType = 'button'> =
+    Props<RootComponent> & MuiButtonProps<RootComponent>;
 
 const PREFIX = 'RaButton';
 

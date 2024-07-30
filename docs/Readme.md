@@ -23,12 +23,13 @@ yarn add react-admin
 
 ## How To Learn React-Admin
 
-1. Read the [Tutorial](./Tutorial.md) for a 30 minutes introduction. 
-2. Read the source code of [the demos](./Demos.md) for real-life examples.
-3. Read the [Documentation](./Admin.md) for a deep dive into the react-admin components and hooks.
-4. Read the [Architecture decisions](./Architecture.md) to better understand why features are implemented that way.
-5. Check out the [API Reference](./Reference.md) for a complete list of the public API.
-6. Get [Support](#support) for fixing your own problems
+1. Read the [Tutorial](./Tutorial.md) for a 30 minutes introduction.
+2. Watch the [YouTube video tutorials](https://www.youtube.com/@react-admin) for quick introductions to the main features.
+3. Read the source code of [the demos](./Demos.md) for real-life examples.
+4. Read the [Documentation](./Admin.md) for a deep dive into the react-admin components and hooks.
+5. Read the [Architecture decisions](./Architecture.md) to better understand why features are implemented that way.
+6. Check out the [API Reference](./Reference.md) for a complete list of the public API.
+7. Get [Support](#support) for fixing your own problems
 
 ## Usage
 
@@ -127,12 +128,12 @@ Read more about the [Architecture choices](./Architecture.md).
 
 ## Support
 
-* Get professional support from Marmelab via [React-Admin Enterprise Edition](https://marmelab.com/ra-enterprise)
+* Get professional support from Marmelab via [React-Admin Enterprise Edition](https://react-admin-ee.marmelab.com)
 * Get community support via [StackOverflow](https://stackoverflow.com/questions/tagged/react-admin)
 
 ## Enterprise Edition
 
-The [React-Admin Enterprise Edition](https://marmelab.com/ra-enterprise) <img class="icon" src="./img/premium.svg" /> offers additional features and services for react-admin:
+The [React-Admin Enterprise Edition](https://react-admin-ee.marmelab.com) <img class="icon" src="./img/premium.svg" /> offers additional features and services for react-admin:
 
 - Save weeks of development thanks to the **Private Modules**, valid on an unlimited number of domains and projects.
   - `ra-ai`: Components powered by Artificial Intelligence (AI) to boost user productivity. Suggest completion for user inputs, fix and improve large chunks of text in React-Admin forms.
@@ -155,7 +156,7 @@ The [React-Admin Enterprise Edition](https://marmelab.com/ra-enterprise) <img cl
 - Get access to exclusive **Learning Material**, including a Storybook full of examples, and a dedicated demo app.
 - Prioritize your needs in the react-admin **Development Roadmap** thanks to a priority vote.
 
-[![React-admin enterprise Edition](https://marmelab.com/ra-enterprise/assets/ra-enterprise-demo.png)](https://marmelab.com/ra-enterprise/)
+[![React-admin enterprise Edition](https://react-admin-ee.marmelab.com/assets/ra-enterprise-demo.png)](https://react-admin-ee.marmelab.com/)
 
 ## Carbon Footprint
 

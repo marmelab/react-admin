@@ -19,15 +19,15 @@ interface Props {
 export const PendingOrder = (props: Props) => {
     const { order } = props;
     const translate = useTranslate();
-    const { referenceRecord: customer, isLoading } = useReference<Customer>({
+    const { referenceRecord: customer, isPending } = useReference<Customer>({
         reference: 'customers',
         id: order.customer_id,
     });
 
     return (
-        <ListItem button component={Link} to={`/commands/${order.id}`}>
+        <ListItem button component={Link} to={`/orders/${order.id}`}>
             <ListItemAvatar>
-                {isLoading ? (
+                {isPending ? (
                     <Avatar />
                 ) : (
                     <Avatar

@@ -1,4 +1,5 @@
-import { ResourceDefinitions } from './ResourceDefinitionContext';
+import type { ResourceOptions } from '../types';
+import type { ResourceDefinitions } from './ResourceDefinitionContext';
 import { useResourceDefinitionContext } from './useResourceDefinitionContext';
 
 /**
@@ -20,6 +21,6 @@ import { useResourceDefinitionContext } from './useResourceDefinitionContext';
  * // }
  */
 export const useResourceDefinitions = <
-    OptionsType = any
+    OptionsType extends ResourceOptions = any,
 >(): ResourceDefinitions<OptionsType> =>
     useResourceDefinitionContext().definitions;

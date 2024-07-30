@@ -21,7 +21,7 @@ export const SimpleFormConfigurable = ({
 
     const [availableInputs, setAvailableInputs] = useStore<
         SimpleFormConfigurableColumn[]
-    >(`preferences.${finalPreferenceKey}.availableInputs`, []);
+    >(`preferences.${finalPreferenceKey}.availableInputs`, EMPTY_ARRAY);
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [_, setOmit] = useStore<string[]>(
@@ -31,27 +31,28 @@ export const SimpleFormConfigurable = ({
 
     React.useEffect(() => {
         // first render, or the preference have been cleared
-        const inputs = React.Children.map(props.children, (child, index) =>
-            React.isValidElement(child)
-                ? {
-                      index: String(index),
-                      source: child.props.source,
-                      label:
-                          child.props.source || child.props.label
-                              ? child.props.label
-                              : translate(
-                                    'ra.configurable.SimpleForm.unlabeled',
-                                    {
-                                        input: index,
-                                        _: `Unlabeled input #%{input}`,
-                                    }
-                                ),
-                  }
-                : null
-        ).filter(column => column != null);
+        const inputs =
+            React.Children.map(props.children, (child, index) =>
+                React.isValidElement(child)
+                    ? {
+                          index: String(index),
+                          source: child.props.source,
+                          label:
+                              child.props.source || child.props.label
+                                  ? child.props.label
+                                  : translate(
+                                        'ra.configurable.SimpleForm.unlabeled',
+                                        {
+                                            input: index,
+                                            _: `Unlabeled input #%{input}`,
+                                        }
+                                    ),
+                      }
+                    : null
+            )?.filter(column => column != null) ?? EMPTY_ARRAY;
         if (inputs.length !== availableInputs.length) {
             setAvailableInputs(inputs);
-            setOmit(omit);
+            setOmit(omit || EMPTY_ARRAY);
         }
     }, [availableInputs]); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -70,6 +71,8 @@ export const SimpleFormConfigurable = ({
         </Configurable>
     );
 };
+
+const EMPTY_ARRAY: any[] = [];
 
 export interface SimpleFormConfigurableProps extends SimpleFormProps {
     /**
@@ -109,8 +112,11 @@ export interface SimpleFormConfigurableColumn {
  * This SimpleForm filters its children depending on preferences
  */
 const SimpleFormWithPreferences = ({ children, ...props }: SimpleFormProps) => {
-    const [availableInputs] = usePreference('availableInputs', []);
-    const [omit] = usePreference('omit', []);
+    const [availableInputs] = usePreference<SimpleFormConfigurableColumn[]>(
+        'availableInputs',
+        []
+    );
+    const [omit] = usePreference<string[]>('omit', []);
     const [inputs] = usePreference(
         'inputs',
         availableInputs

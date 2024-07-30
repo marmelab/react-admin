@@ -24,13 +24,13 @@ export const PostCreate = () => (
         <Form>
             <Grid container>
                 <Grid item xs={6}>
-                    <TextInput source="title" fullWidth />
+                    <TextInput source="title" />
                 </Grid>
                 <Grid item xs={6}>
-                    <TextInput source="author" fullWidth />
+                    <TextInput source="author" />
                 </Grid>
                 <Grid item xs={12}>
-                    <RichTextInput source="body" fullWidth />
+                    <RichTextInput source="body" />
                 </Grid>
                 <Grid item xs={12}>
                     <SaveButton />
@@ -83,7 +83,7 @@ export const PostCreate = () => (
 
 **Tip**: You can include properties in the form `defaultValues` that are not listed as input components, like the `created_at` property in the previous example.
 
-**Tip**: React-admin also allows to define default values at the input level. See the [Setting default Values](./EditTutorial.md#setting-default-values) section.
+**Tip**: React-admin also allows to define default values at the input level. See the [Setting default Values](./Forms.md#default-values) section.
 
 ## `id`
 
@@ -179,6 +179,8 @@ For the previous example, the data sent to the `dataProvider` will be:
 
 **Note:** Setting the `sanitizeEmptyValues` prop to `true` will also have a (minor) impact on react-admin inputs (like `<TextInput>`, `<NumberInput>`, etc.): empty values (i.e. values equal to `null`) will be removed from the form state on submit, unless the record actually had a value for that field.
 
+**Note** Even with `sanitizeEmptyValues` set to `true`, deeply nested fields won't be set to `null` nor removed. If you need to sanitize those fields, use [the `transform` prop](./Edit.md#transform) of `<Edit>` or `<Create>` components.
+
 If you need a more fine-grained control over the sanitization, you can use [the `transform` prop](./Edit.md#transform) of `<Edit>` or `<Create>` components, or [the `parse` prop](./Inputs.md#parse) of individual inputs.
 
 ## `validate`
@@ -236,7 +238,7 @@ export const TagEdit = () => (
 );
 ```
 
-**Warning**: This feature only works if you have a dependency on react-router 6.3.0 **at most**. The react-router team disabled this possibility in react-router 6.4, so `warnWhenUnsavedChanges` will silently fail with react-router 6.4 or later.
+**Note**: Due to limitations in react-router, this feature only works if you use the default router provided by react-admin, or if you use a [Data Router](https://reactrouter.com/en/6.22.3/routers/picking-a-router).
 
 ## Subscribing To Form Changes
 
@@ -291,6 +293,8 @@ If you're using it in an `<Edit>` page, you must also use a `pessimistic` or `op
 Check [the `<AutoSave>` component](./AutoSave.md) documentation for more details.
 
 ## Linking Two Inputs
+
+<iframe src="https://www.youtube-nocookie.com/embed/YkqjydtmfcU" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;"></iframe>
 
 Edition forms often contain linked inputs, e.g. country and city (the choices of the latter depending on the value of the former).
 

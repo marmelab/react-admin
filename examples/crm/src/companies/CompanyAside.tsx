@@ -21,7 +21,7 @@ export const CompanyAside = ({ link = 'edit' }: CompanyAsideProps) => {
     if (!record) return null;
     return (
         <Box ml={4} width={250} minWidth={250}>
-            <Box textAlign="center" mb={2}>
+            <Box mb={2} ml="-5px">
                 {link === 'edit' ? (
                     <EditButton label="Edit Company" />
                 ) : (
@@ -34,9 +34,19 @@ export const CompanyAside = ({ link = 'edit' }: CompanyAsideProps) => {
 
             <Box mt={2}>
                 <Typography variant="body2">
-                    Website: <Link href={record.website}>{record.website}</Link>
-                    <br />
-                    LinkedIn: <Link href={record.linkedIn}>LinkedIn</Link>
+                    {record.website && (
+                        <>
+                            Website:{' '}
+                            <Link href={record.website}>{record.website}</Link>
+                        </>
+                    )}
+                    {record.linkedIn && (
+                        <>
+                            <br />
+                            LinkedIn:{' '}
+                            <Link href={record.linkedIn}>LinkedIn</Link>
+                        </>
+                    )}
                 </Typography>
             </Box>
 
@@ -47,7 +57,7 @@ export const CompanyAside = ({ link = 'edit' }: CompanyAsideProps) => {
                     color="textSecondary"
                     component="span"
                 >
-                    Main
+                    Main Address
                 </Typography>
             </Box>
 

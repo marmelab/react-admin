@@ -1,6 +1,6 @@
 {
     "name": "ra-data-graphql",
-    "version": "4.16.2",
+    "version": "5.1.0",
     "description": "A GraphQL data provider for react-admin",
     "main": "dist/cjs/index.js",
     "module": "dist/esm/index.js",
@@ -39,7 +39,7 @@
     },
     "peerDependencies": {
         "graphql": "^15.6.0 || ^16",
-        "ra-core": "^4.0.0"
+        "ra-core": "^5.0.0"
     },
     "devDependencies": {
         "cross-env": "^5.2.0",
@@ -47,5 +47,5 @@
         "rimraf": "^3.0.2",
         "typescript": "^5.1.3"
     },
-    "gitHead": "65189b7cea65cc57190f41f77b84fdb290b68e29"
+    "gitHead": "587df4c27bfcec4a756df4f95e5fc14728dfc0d7"
 }

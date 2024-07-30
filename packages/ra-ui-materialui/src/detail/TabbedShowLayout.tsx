@@ -8,7 +8,6 @@ import {
     ReactNode,
     useState,
 } from 'react';
-import PropTypes from 'prop-types';
 import { ResponsiveStyleValue, SxProps } from '@mui/system';
 import { styled } from '@mui/material/styles';
 import { Divider } from '@mui/material';
@@ -195,17 +194,6 @@ export interface TabbedShowLayoutProps {
     tabs?: ReactElement;
     value?: any;
 }
-
-TabbedShowLayout.propTypes = {
-    children: PropTypes.node,
-    className: PropTypes.string,
-    record: PropTypes.object,
-    spacing: PropTypes.any,
-    sx: PropTypes.any,
-    syncWithLocation: PropTypes.bool,
-    tabs: PropTypes.element,
-    value: PropTypes.number,
-};
 
 const DefaultTabs = <TabbedShowLayoutTabs />;
 

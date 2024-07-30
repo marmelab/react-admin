@@ -1,6 +1,5 @@
 import React, {
     isValidElement,
-    cloneElement,
     createElement,
     useState,
     useEffect,
@@ -9,20 +8,17 @@ import React, {
     FC,
     ReactElement,
 } from 'react';
-import { isElement } from 'react-is';
-import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { TableCell, TableRow, TableRowProps, Checkbox } from '@mui/material';
 import {
     Identifier,
     RaRecord,
-    RecordContextProvider,
     shallowEqual,
     useExpanded,
     useResourceContext,
     useTranslate,
-    useCreatePath,
     useRecordContext,
+    useGetPathForRecord,
 } from 'ra-core';
 import { useNavigate } from 'react-router-dom';
 
@@ -38,7 +34,9 @@ const computeNbColumns = (expand, children, hasBulkActions) =>
           React.Children.toArray(children).filter(child => !!child).length // non-null children
         : 0; // we don't need to compute columns if there is no expand panel;
 
-const DatagridRow: FC<DatagridRowProps> = React.forwardRef((props, ref) => {
+const DatagridRow: React.ForwardRefExoticComponent<
+    Omit<DatagridRowProps, 'ref'> & React.RefAttributes<HTMLTableRowElement>
+> = React.forwardRef<HTMLTableRowElement, DatagridRowProps>((props, ref) => {
     const {
         children,
         className,
@@ -55,16 +53,28 @@ const DatagridRow: FC<DatagridRowProps> = React.forwardRef((props, ref) => {
         ...rest
     } = props;
 
+    if (typeof id === 'undefined') {
+        throw new Error('DatagridRow expects an id prop');
+    }
     const context = useDatagridContext();
     const translate = useTranslate();
     const record = useRecordContext(props);
+    if (!record) {
+        throw new Error(
+            'DatagridRow can only be used within a RecordContext or be passed a record prop'
+        );
+    }
+    const resource = useResourceContext(props);
+    if (!resource) {
+        throw new Error(
+            'DatagridRow can only be used within a ResourceContext or be passed a resource prop'
+        );
+    }
     const expandable =
         (!context ||
             !context.isRowExpandable ||
             context.isRowExpandable(record)) &&
         expand;
-    const resource = useResourceContext(props);
-    const createPath = useCreatePath();
     const [expanded, toggleExpanded] = useExpanded(
         resource,
         id,
@@ -98,52 +108,45 @@ const DatagridRow: FC<DatagridRowProps> = React.forwardRef((props, ref) => {
     );
     const handleToggleSelection = useCallback(
         event => {
-            if (!selectable) return;
+            if (!selectable || !onToggleItem) return;
             onToggleItem(id, event);
             event.stopPropagation();
         },
         [id, onToggleItem, selectable]
     );
+
+    const linkType =
+        rowClick === 'expand' || rowClick === 'toggleSelection'
+            ? undefined
+            : typeof rowClick === 'function'
+              ? // rowClick doesn't have the same signature as linkTo, so we need to adapt
+                (record, resource) => rowClick(record?.id, resource, record)
+              : rowClick;
+    const path = useGetPathForRecord({ record, resource, link: linkType });
+
     const handleClick = useCallback(
         async event => {
             event.persist();
-            const type =
-                typeof rowClick === 'function'
-                    ? await rowClick(id, resource, record)
-                    : rowClick;
-            if (type === false || type == null) {
-                return;
-            }
-            if (['edit', 'show'].includes(type)) {
-                navigate(createPath({ resource, id, type }), {
-                    state: { _scrollToTop: true },
-                });
-                return;
-            }
-            if (type === 'expand') {
+            if (rowClick === 'expand') {
                 handleToggleExpand(event);
                 return;
             }
-            if (type === 'toggleSelection') {
+            if (rowClick === 'toggleSelection') {
                 handleToggleSelection(event);
                 return;
             }
-            navigate(type);
+            if (path === false || path == null) {
+                return;
+            }
+            navigate(path, {
+                state: { _scrollToTop: true },
+            });
         },
-        [
-            rowClick,
-            id,
-            resource,
-            record,
-            navigate,
-            createPath,
-            handleToggleExpand,
-            handleToggleSelection,
-        ]
+        [rowClick, navigate, handleToggleExpand, handleToggleSelection, path]
     );
 
     return (
-        <RecordContextProvider value={record}>
+        <>
             <TableRow
                 ref={ref}
                 className={clsx(className, {
@@ -212,47 +215,17 @@ const DatagridRow: FC<DatagridRowProps> = React.forwardRef((props, ref) => {
                     className={DatagridClasses.expandedPanel}
                 >
                     <TableCell colSpan={nbColumns}>
-                        {isElement(expand)
-                            ? cloneElement(expand, {
-                                  // @ts-ignore
-                                  record,
-                                  resource,
-                                  id: String(id),
-                              })
-                            : createElement(expand, {
-                                  record,
-                                  resource,
-                                  id: String(id),
-                              })}
+                        {isValidElement(expand)
+                            ? expand
+                            : createElement(
+                                  expand as React.FunctionComponent<any>
+                              )}
                     </TableCell>
                 </TableRow>
             )}
-        </RecordContextProvider>
+        </>
     );
 });
-
-DatagridRow.propTypes = {
-    children: PropTypes.node,
-    className: PropTypes.string,
-    // @ts-ignore
-    expand: PropTypes.oneOfType([PropTypes.element, PropTypes.elementType]),
-    hasBulkActions: PropTypes.bool,
-    hover: PropTypes.bool,
-    id: PropTypes.any,
-    onToggleItem: PropTypes.func,
-    // @ts-ignore
-    record: PropTypes.object,
-    resource: PropTypes.string,
-    // @ts-ignore
-    rowClick: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.func,
-        PropTypes.bool,
-    ]),
-    selected: PropTypes.bool,
-    style: PropTypes.object,
-    selectable: PropTypes.bool,
-};
 
 export interface DatagridRowProps
     extends Omit<TableRowProps, 'id' | 'classes'> {

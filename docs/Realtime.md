@@ -12,7 +12,7 @@ React-admin provides hooks and UI components for collaborative applications wher
   Your browser does not support the video tag.
 </video>
 
-These features are provided by the `ra-realtime` package, which is part of the [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> 
+These features are provided by the `ra-realtime` package, which is part of the [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" /> 
 
 ## Backend Agnostic
 
@@ -218,8 +218,10 @@ import { MenuLive } from '@react-admin/ra-realtime';
 
 import { PostList, PostShow, PostEdit, realTimeDataProvider } from '.';
 
-const CustomLayout = (props) => (
-    <Layout {...props} menu={MenuLive} />
+const CustomLayout = ({ children }) => (
+    <Layout menu={MenuLive}>
+        {children}
+    </Layout>
 );
 
 const MyReactAdmin = () => (
@@ -249,7 +251,7 @@ A user can lock a resource, either by voluntarily asking for a lock or by editin
 
 ```tsx
 export const NewMessageForm = () => {
-    const [create, { isLoading: isCreating }] = useCreate();
+    const [create, { isPending }] = useCreate();
     const record = useRecordContext();
 
     const { data: lock } = useGetLockLive('tickets', { id: record.id });
@@ -276,7 +278,7 @@ export const NewMessageForm = () => {
                 choices={statusChoices}
                 disabled={isFormDisabled}
             />
-            <Button type="submit" disabled={isCreating || isFormDisabled}>
+            <Button type="submit" disabled={isPending || isFormDisabled}>
                 Submit
             </Button>
         </Form>
@@ -303,7 +305,7 @@ npm install --save @react-admin/ra-realtime
 yarn add @react-admin/ra-realtime
 ```
 
-`ra-realtime` is part of the [React-Admin Enterprise Edition](https://marmelab.com/ra-enterprise/), and hosted in a private npm registry. You need to subscribe to one of the Enterprise Edition plans to install this package.
+`ra-realtime` is part of the [React-Admin Enterprise Edition](https://react-admin-ee.marmelab.com/), and hosted in a private npm registry. You need to subscribe to one of the Enterprise Edition plans to install this package.
 
 You will need a data provider that supports real-time subscriptions. Check out the [Data Provider Requirements](./RealtimeDataProvider.md) section for more information.
 

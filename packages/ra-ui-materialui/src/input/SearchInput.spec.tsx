@@ -1,30 +1,40 @@
 import * as React from 'react';
 import { render } from '@testing-library/react';
-import { testDataProvider } from 'ra-core';
+import {
+    testDataProvider,
+    useList,
+    ListContextProvider,
+    RaRecord,
+} from 'ra-core';
 
 import { AdminContext } from '../AdminContext';
 import { SearchInput } from '.';
 import { FilterForm } from '../list';
 
 describe('<SearchInput />', () => {
-    it('should not render label if passed explicit `undefined` value', async () => {
-        const source = 'test';
-
-        const filters = [<SearchInput source={source} label={undefined} />];
+    const source = 'test';
+    const DummyList = ({ children }) => {
+        const listContext = useList<RaRecord>({ data: [] });
         const displayedFilters = {
             [source]: true,
         };
+        return (
+            <ListContextProvider value={{ ...listContext, displayedFilters }}>
+                {children}
+            </ListContextProvider>
+        );
+    };
+    it('should render a search input', async () => {
+        const filters = [<SearchInput source={source} />];
 
         const { container } = render(
             <AdminContext dataProvider={testDataProvider()}>
-                <FilterForm
-                    setFilters={jest.fn()}
-                    filters={filters}
-                    displayedFilters={displayedFilters}
-                />
+                <DummyList>
+                    <FilterForm filters={filters} />
+                </DummyList>
             </AdminContext>
         );
 
-        expect(container.querySelector(`label`)).toBeNull();
+        expect(container.querySelector(`input[name=test]`)).not.toBeNull();
     });
 });

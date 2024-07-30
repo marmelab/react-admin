@@ -1,10 +1,7 @@
 import * as React from 'react';
 import { ReactElement } from 'react';
-import PropTypes from 'prop-types';
-import { ShowBase, RaRecord } from 'ra-core';
-
-import { ShowProps } from '../types';
-import { ShowView } from './ShowView';
+import { ShowBase, RaRecord, ShowControllerProps } from 'ra-core';
+import { ShowView, ShowViewProps } from './ShowView';
 
 /**
  * Page component for the Show view
@@ -75,14 +72,6 @@ export const Show = <RecordType extends RaRecord = any>({
     </ShowBase>
 );
 
-Show.propTypes = {
-    actions: PropTypes.oneOfType([PropTypes.element, PropTypes.bool]),
-    children: PropTypes.node.isRequired,
-    className: PropTypes.string,
-    disableAuthentication: PropTypes.bool,
-    emptyWhileLoading: PropTypes.bool,
-    component: PropTypes.elementType,
-    resource: PropTypes.string,
-    title: PropTypes.node,
-    sx: PropTypes.any,
-};
+export interface ShowProps<RecordType extends RaRecord = any>
+    extends ShowControllerProps<RecordType>,
+        ShowViewProps {}

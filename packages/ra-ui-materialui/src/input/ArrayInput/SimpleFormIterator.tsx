@@ -1,9 +1,6 @@
 import * as React from 'react';
 import {
     Children,
-    cloneElement,
-    MouseEvent,
-    MouseEventHandler,
     ReactElement,
     ReactNode,
     useCallback,
@@ -11,15 +8,15 @@ import {
     useRef,
     useState,
 } from 'react';
-import { styled, SxProps } from '@mui/material';
+import { styled, SxProps, useThemeProps } from '@mui/material';
 import clsx from 'clsx';
 import get from 'lodash/get';
-import PropTypes from 'prop-types';
 import {
     FormDataConsumer,
     RaRecord,
     useRecordContext,
     useTranslate,
+    useWrappedSource,
 } from 'ra-core';
 import { UseFieldArrayReturn, useFormContext } from 'react-hook-form';
 
@@ -34,20 +31,21 @@ import {
     SimpleFormIteratorItem,
 } from './SimpleFormIteratorItem';
 import { AddItemButton as DefaultAddItemButton } from './AddItemButton';
-import { RemoveItemButton as DefaultRemoveItemButton } from './RemoveItemButton';
-import { ReOrderButtons as DefaultReOrderButtons } from './ReOrderButtons';
 import { ClearArrayButton } from './ClearArrayButton';
 import { Confirm } from '../../layout';
 
-export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
+export const SimpleFormIterator = (inProps: SimpleFormIteratorProps) => {
+    const props = useThemeProps({
+        props: inProps,
+        name: 'RaSimpleFormIterator',
+    });
     const {
         addButton = <DefaultAddItemButton />,
-        removeButton = <DefaultRemoveItemButton />,
-        reOrderButtons = <DefaultReOrderButtons />,
+        removeButton,
+        reOrderButtons,
         children,
         className,
         resource,
-        source,
         disabled,
         disableAdd = false,
         disableClear,
@@ -58,9 +56,17 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
         fullWidth,
         sx,
     } = props;
+
+    const finalSource = useWrappedSource('');
+    if (!finalSource) {
+        throw new Error(
+            'SimpleFormIterator can only be called within an iterator input like ArrayInput'
+        );
+    }
+
     const [confirmIsOpen, setConfirmIsOpen] = useState<boolean>(false);
     const { append, fields, move, remove, replace } = useArrayInput(props);
-    const { resetField } = useFormContext();
+    const { resetField, trigger, getValues } = useFormContext();
     const translate = useTranslate();
     const record = useRecordContext(props);
     const initialDefaultValue = useRef({});
@@ -68,8 +74,16 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
     const removeField = useCallback(
         (index: number) => {
             remove(index);
+            const isScalarArray = getValues(finalSource).every(
+                (value: any) => typeof value !== 'object'
+            );
+            if (isScalarArray) {
+                // Trigger validation on the Array to avoid ghost errors.
+                // Otherwise, validation errors on removed fields might still be displayed
+                trigger(finalSource);
+            }
         },
-        [remove]
+        [remove, trigger, finalSource, getValues]
     );
 
     if (fields.length > 0) {
@@ -90,12 +104,8 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
                     // @ts-ignore
                     !Children.only(children).props.source &&
                     // Make sure it's not a FormDataConsumer
-                    Children.map(
-                        children,
-                        input =>
-                            React.isValidElement(input) &&
-                            input.type !== FormDataConsumer
-                    ).some(Boolean)
+                    // @ts-ignore
+                    !Children.only(children).type !== FormDataConsumer
                 ) {
                     // ArrayInput used for an array of scalar values
                     // (e.g. tags: ['foo', 'bar'])
@@ -119,20 +129,10 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
             }
             append(defaultValue);
             // Make sure the newly added inputs are not considered dirty by react-hook-form
-            resetField(`${source}.${fields.length}`, { defaultValue });
+            resetField(`${finalSource}.${fields.length}`, { defaultValue });
         },
-        [append, children, resetField, source, fields.length]
+        [append, children, resetField, finalSource, fields.length]
     );
-
-    // add field and call the onClick event of the button passed as addButton prop
-    const handleAddButtonClick = (
-        originalOnClickHandler: MouseEventHandler
-    ) => (event: MouseEvent) => {
-        addField();
-        if (originalOnClickHandler) {
-            originalOnClickHandler(event);
-        }
-    };
 
     const handleReorder = useCallback(
         (origin: number, destination: number) => {
@@ -146,7 +146,7 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
         setConfirmIsOpen(false);
     }, [replace]);
 
-    const records = get(record, source);
+    const records = get(record, finalSource);
 
     const context = useMemo(
         () => ({
@@ -154,9 +154,9 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
             add: addField,
             remove: removeField,
             reOrder: handleReorder,
-            source,
+            source: finalSource,
         }),
-        [addField, fields.length, handleReorder, removeField, source]
+        [addField, fields.length, handleReorder, removeField, finalSource]
     );
     return fields ? (
         <SimpleFormIteratorContext.Provider value={context}>
@@ -178,78 +178,59 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
                             fields={fields}
                             getItemLabel={getItemLabel}
                             index={index}
-                            member={`${source}.${index}`}
                             onRemoveField={removeField}
                             onReorder={handleReorder}
                             record={(records && records[index]) || {}}
                             removeButton={removeButton}
                             reOrderButtons={reOrderButtons}
                             resource={resource}
-                            source={source}
                             inline={inline}
                         >
                             {children}
                         </SimpleFormIteratorItem>
                     ))}
                 </ul>
-                {!disabled && !(disableAdd && (disableClear || disableRemove)) && (
-                    <div className={SimpleFormIteratorClasses.buttons}>
-                        {!disableAdd && (
-                            <div className={SimpleFormIteratorClasses.add}>
-                                {cloneElement(addButton, {
-                                    className: clsx(
-                                        'button-add',
-                                        `button-add-${source}`
-                                    ),
-                                    onClick: handleAddButtonClick(
-                                        addButton.props.onClick
-                                    ),
-                                })}
-                            </div>
-                        )}
-                        {fields.length > 0 && !disableClear && !disableRemove && (
-                            <div className={SimpleFormIteratorClasses.clear}>
-                                <Confirm
-                                    isOpen={confirmIsOpen}
-                                    title={translate(
-                                        'ra.action.clear_array_input'
-                                    )}
-                                    content={translate(
-                                        'ra.message.clear_array_input'
-                                    )}
-                                    onConfirm={handleArrayClear}
-                                    onClose={() => setConfirmIsOpen(false)}
-                                />
-                                <ClearArrayButton
-                                    onClick={() => setConfirmIsOpen(true)}
-                                />
-                            </div>
-                        )}
-                    </div>
-                )}
+                {!disabled &&
+                    !(disableAdd && (disableClear || disableRemove)) && (
+                        <div className={SimpleFormIteratorClasses.buttons}>
+                            {!disableAdd && (
+                                <div className={SimpleFormIteratorClasses.add}>
+                                    {addButton}
+                                </div>
+                            )}
+                            {fields.length > 0 &&
+                                !disableClear &&
+                                !disableRemove && (
+                                    <div
+                                        className={
+                                            SimpleFormIteratorClasses.clear
+                                        }
+                                    >
+                                        <Confirm
+                                            isOpen={confirmIsOpen}
+                                            title={translate(
+                                                'ra.action.clear_array_input'
+                                            )}
+                                            content={translate(
+                                                'ra.message.clear_array_input'
+                                            )}
+                                            onConfirm={handleArrayClear}
+                                            onClose={() =>
+                                                setConfirmIsOpen(false)
+                                            }
+                                        />
+                                        <ClearArrayButton
+                                            onClick={() =>
+                                                setConfirmIsOpen(true)
+                                            }
+                                        />
+                                    </div>
+                                )}
+                        </div>
+                    )}
             </Root>
         </SimpleFormIteratorContext.Provider>
     ) : null;
-};
-
-SimpleFormIterator.propTypes = {
-    addButton: PropTypes.element,
-    removeButton: PropTypes.element,
-    children: PropTypes.node,
-    className: PropTypes.string,
-    field: PropTypes.object,
-    fields: PropTypes.array,
-    fieldState: PropTypes.object,
-    formState: PropTypes.object,
-    fullWidth: PropTypes.bool,
-    inline: PropTypes.bool,
-    record: PropTypes.object,
-    source: PropTypes.string,
-    resource: PropTypes.string,
-    translate: PropTypes.func,
-    disableAdd: PropTypes.bool,
-    disableRemove: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
-    TransitionProps: PropTypes.shape({}),
 };
 
 type GetItemLabelFunc = (index: number) => string | ReactElement;
@@ -258,6 +239,7 @@ export interface SimpleFormIteratorProps extends Partial<UseFieldArrayReturn> {
     addButton?: ReactElement;
     children?: ReactNode;
     className?: string;
+    readOnly?: boolean;
     disabled?: boolean;
     disableAdd?: boolean;
     disableClear?: boolean;
@@ -305,18 +287,13 @@ const Root = styled('div', {
         marginTop: theme.spacing(1),
         [theme.breakpoints.down('md')]: { display: 'none' },
     },
-    [`& .${SimpleFormIteratorClasses.form}`]: {
-        alignItems: 'flex-start',
-        display: 'flex',
-        flexDirection: 'column',
-    },
+    [`& .${SimpleFormIteratorClasses.form}`]: {},
     [`&.fullwidth > ul > li > .${SimpleFormIteratorClasses.form}`]: {
         flex: 2,
     },
     [`& .${SimpleFormIteratorClasses.inline}`]: {
         flexDirection: 'row',
         columnGap: '1em',
-        flexWrap: 'wrap',
     },
     [`& .${SimpleFormIteratorClasses.action}`]: {
         marginTop: theme.spacing(0.5),
@@ -334,7 +311,8 @@ const Root = styled('div', {
     [`& .${SimpleFormIteratorClasses.clear}`]: {
         borderBottom: 'none',
     },
-    [`& .${SimpleFormIteratorClasses.line}:hover > .${SimpleFormIteratorClasses.action}`]: {
-        visibility: 'visible',
-    },
+    [`& .${SimpleFormIteratorClasses.line}:hover > .${SimpleFormIteratorClasses.action}`]:
+        {
+            visibility: 'visible',
+        },
 }));

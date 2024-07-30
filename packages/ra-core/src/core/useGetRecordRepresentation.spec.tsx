@@ -93,4 +93,67 @@ describe('useRecordRepresentation', () => {
         );
         screen.getByText('Hello');
     });
+    it('should return the record name at first', () => {
+        render(
+            <UseRecordRepresentation
+                resource="users"
+                record={{
+                    name: 'Ipsum',
+                    title: 'Lorem',
+                    label: 'lorem-ipsum',
+                    reference: '456',
+                    id: '123',
+                    author: 'John Doe',
+                }}
+            />
+        );
+        screen.getByText('Ipsum');
+    });
+    it('should return the record title at second', () => {
+        render(
+            <UseRecordRepresentation
+                resource="users"
+                record={{
+                    title: 'Lorem',
+                    label: 'lorem-ipsum',
+                    reference: '456',
+                    id: '123',
+                    author: 'John Doe',
+                }}
+            />
+        );
+        screen.getByText('Lorem');
+    });
+    it('should return the record label at third', () => {
+        render(
+            <UseRecordRepresentation
+                resource="users"
+                record={{
+                    label: 'lorem-ipsum',
+                    reference: '456',
+                    id: '123',
+                    author: 'John Doe',
+                }}
+            />
+        );
+        screen.getByText('lorem-ipsum');
+    });
+    it('should return the record reference at fourth', () => {
+        render(
+            <UseRecordRepresentation
+                resource="users"
+                record={{ reference: '456', id: '123', author: 'John Doe' }}
+            />
+        );
+        screen.getByText('456');
+    });
+    it('should return the record id by default', () => {
+        render(
+            <UseRecordRepresentation
+                resource="users"
+                record={{ id: '123', author: 'John Doe' }}
+            />
+        );
+        screen.getByText('#123');
+    });
 });

@@ -39,6 +39,8 @@ It also supports [all the other `<Button>` props](#button).
 
 **Tip**: If you want to link to the Edit view manually, use the `/{resource}/{record.id}` location.
 
+**Tip:** To allow users to edit a record without leaving the current view, use the [`<EditInDialogButton>`](./EditInDialogButton.md) component.
+
 ### `<ShowButton>`
 
 Opens the Show view of the current record:
@@ -94,6 +96,8 @@ const CommentCreateButton = () => <CreateButton label="Create comment" />;
 It also supports [all the other `<Button>` props](#button).
 
 **Tip**: If you want to link to the Create view manually, use the `/{resource}/create` location.
+
+**Tip:** To allow users to create a record without leaving the current view, use the [`<CreateInDialogButton>`](./CreateInDialogButton.md) component.
 
 #### `sx`: CSS API
 
@@ -185,6 +189,8 @@ export const PostList = () => (
 | `exporter`   | Optional | `Function`      | -                  | Override the List exporter function |
 | `meta`       | Optional | `any`           | undefined          | Metadata passed to the dataProvider |
 
+**Tip**: If you are looking for an `<ImportButton>`, check out this third-party package: [benwinding/react-admin-import-csv](https://github.com/benwinding/react-admin-import-csv).
+
 ### `<BulkExportButton>`
 
 Same as `<ExportButton>`, except it only exports the selected rows instead of the entire list. To be used inside [the `<Datagrid bulkActionButtons>` prop](./Datagrid.md#bulkactionbuttons).
@@ -246,15 +252,16 @@ export const PostList = () => (
 
 ![Bulk Delete button](./img/bulk-delete-button.png)
 
-| Prop              | Required | Type                                    | Default            | Description                                                                                                                          |
-|-------------------|----------|-----------------------------------------|--------------------|--------------------------------------------------------------------------------------------------------------------------------------|
-| `confirmContent`  | Optional | React node                              | -                  | Lets you customize the content of the confirm dialog. Only used in `'pessimistic'` or `'optimistic'` mutation modes                  |
-| `confirmTitle`    | Optional | `string`                                | -                  | Lets you customize the title of the confirm dialog. Only used in `'pessimistic'` or `'optimistic'` mutation modes                    |
-| `confirmColor`    | Optional | <code>'primary' &#124; 'warning'</code> | 'primary'          | Lets you customize the color of the confirm dialog's "Confirm" button. Only used in `'pessimistic'` or `'optimistic'` mutation modes |
-| `label`           | Optional | `string`                                | 'ra.action.delete' | label or translation message to use                                                                                                  |
-| `icon`            | Optional | `ReactElement`                          | `<DeleteIcon>`     | iconElement, e.g. `<CommentIcon />`                                                                                                  |
-| `mutationMode`    | Optional | `string`                                | `'undoable'`       | Mutation mode (`'undoable'`, `'pessimistic'` or `'optimistic'`)                                                                      |
-| `mutationOptions` | Optional | `object`                                | null               | options for react-query `useMutation` hook                                                                                           |
+| Prop              | Required | Type                                    | Default                  | Description                                                                                                                          |
+|-------------------|----------|-----------------------------------------|--------------------------|--------------------------------------------------------------------------------------------------------------------------------------|
+| `confirmContent`  | Optional | React node                              | -                        | Lets you customize the content of the confirm dialog. Only used in `'pessimistic'` or `'optimistic'` mutation modes                  |
+| `confirmTitle`    | Optional | `string`                                | -                        | Lets you customize the title of the confirm dialog. Only used in `'pessimistic'` or `'optimistic'` mutation modes                    |
+| `confirmColor`    | Optional | <code>'primary' &#124; 'warning'</code> | 'primary'                | Lets you customize the color of the confirm dialog's "Confirm" button. Only used in `'pessimistic'` or `'optimistic'` mutation modes |
+| `label`           | Optional | `string`                                | 'ra.action.delete'       | label or translation message to use                                                                                                  |
+| `icon`            | Optional | `ReactElement`                          | `<DeleteIcon>`           | iconElement, e.g. `<CommentIcon />`                                                                                                  |
+| `mutationMode`    | Optional | `string`                                | `'undoable'`             | Mutation mode (`'undoable'`, `'pessimistic'` or `'optimistic'`)                                                                      |
+| `mutationOptions` | Optional | `object`                                | null                     | options for react-query `useMutation` hook                                                                                           |
+| `successMessage`  | Optional | `string`                                | 'ra.notification.deleted'| Lets you customize the success notification message.                                                                                 |
 
 **Tip:** If you choose the `'pessimistic'` or `'optimistic'` mutation mode, a confirm dialog will be displayed to the user before the mutation is executed.
 
@@ -306,7 +313,7 @@ export const PostList = () => (
 
 ### `<BulkUpdateFormButton>`
 
-This component, part of the [enterprise edition](https://marmelab.com/ra-enterprise/modules/ra-form-layout)<img class="icon" src="./img/premium.svg" />, lets users edit multiple records at once. To be used inside [the `<Datagrid bulkActionButtons>` prop](./Datagrid.md#bulkactionbuttons).
+This component, part of the [enterprise edition](https://react-admin-ee.marmelab.com/documentation/ra-form-layout)<img class="icon" src="./img/premium.svg" />, lets users edit multiple records at once. To be used inside [the `<Datagrid bulkActionButtons>` prop](./Datagrid.md#bulkactionbuttons).
 
 The button opens a dialog containing the form passed as children. When the form is submitted, it will call the dataProvider's `updateMany` method with the ids of the selected records.
 
@@ -375,7 +382,7 @@ const PostList = () => (
 | `children`        | Required (*) | Element  | -               | A form component to render inside the Dialog                                                                                       |
 | `DialogProps`     | -            | Object   | -               | Additional props to pass to the [MUI Dialog](https://mui.com/material-ui/react-dialog/)                                            |
 | `mutationMode`    | -            | `string` | `'pessimistic'` | The mutation mode (`'undoable'`, `'pessimistic'` or `'optimistic'`)                                                                |
-| `mutationOptions` | -            | Object   | -               | Mutation options passed to [react-query](https://tanstack.com/query/v3/docs/react/reference/useMutation) when calling `updateMany` |
+| `mutationOptions` | -            | Object   | -               | Mutation options passed to [React Query](https://tanstack.com/query/v5/docs/react/reference/useMutation) when calling `updateMany` |
 
 
 #### `children`
@@ -659,17 +666,18 @@ See [its documentation](./UpdateButton.md) for more details.
 
 Delete the current record after a confirm dialog has been accepted. To be used inside a `<Toolbar/>` component.
 
-| Prop               | Required | Type                                             | Default                     | Description                                                             |
-|--------------------|----------|--------------------------------------------------|-----------------------------|-------------------------------------------------------------------------|
-| `className`        | Optional | `string`                                         | -                           | Class name to customize the look and feel of the button element itself  |
-| `label`            | Optional | `string`                                         | 'ra.action.delete'          | label or translation message to use                                     |
-| `icon`             | Optional | `ReactElement`                                   | `<DeleteIcon>`              | iconElement, e.g. `<CommentIcon />`                                     |
-| `confirmTitle`     | Optional | `ReactNode`                                      | 'ra.message.delete_title'   | Title of the confirm dialog                                             |
-| `confirmContent`   | Optional | `ReactNode`                                      | 'ra.message.delete_content' | Message or React component to be used as the body of the confirm dialog |
-| `confirmColor`     | Optional | <code>'primary' &#124; 'warning'</code>          | 'primary'                   | The color of the confirm dialog's "Confirm" button                      |
-| `redirect`         | Optional | <code>string &#124; false &#124; Function</code> | 'list'                      | Custom redirection after success side effect                            |
-| `translateOptions` | Optional | `{ id?: string, name?: string }`                 | {}                          | Custom id and name to be used in the confirm dialog's title             |
-| `mutationOptions`  | Optional |                                                  | null                        | options for react-query `useMutation` hook                              |
+| Prop               Required | Type                                             | Default                     | Description                                                             |
+|-----------------------------|--------------------------------------------------|-----------------------------|-------------------------------------------------------------------------|
+| `className`        Optional | `string`                                         | -                           | Class name to customize the look and feel of the button element itself  |
+| `label`            Optional | `string`                                         | 'ra.action.delete'          | label or translation message to use                                     |
+| `icon`             Optional | `ReactElement`                                   | `<DeleteIcon>`              | iconElement, e.g. `<CommentIcon />`                                     |
+| `confirmTitle`     Optional | `ReactNode`                                      | 'ra.message.delete_title'   | Title of the confirm dialog                                             |
+| `confirmContent`   Optional | `ReactNode`                                      | 'ra.message.delete_content' | Message or React component to be used as the body of the confirm dialog |
+| `confirmColor`     Optional | <code>'primary' &#124; 'warning'</code>          | 'primary'                   | The color of the confirm dialog's "Confirm" button                      |
+| `redirect`         Optional | <code>string &#124; false &#124; Function</code> | 'list'                      | Custom redirection after success side effect                            |
+| `translateOptions` Optional | `{ id?: string, name?: string }`                 | {}                          | Custom id and name to be used in the confirm dialog's title             |
+| `mutationOptions`  Optional |                                                  | null                        | options for react-query `useMutation` hook                              |
+| `successMessage`   Optional | `string`                                         | 'ra.notification.deleted'   | Lets you customize the success notification message.                                                                                 |
 
 {% raw %}
 ```jsx
@@ -800,7 +808,11 @@ To use this custom menu component, pass it to a custom Layout:
 import { Layout } from 'react-admin';
 import { Menu } from './Menu';
 
-export const Layout = (props) => <Layout {...props} menu={Menu} />;
+export const Layout = ({ children }) => (
+    <Layout menu={Menu}>
+        {children}
+    </Layout>
+);
 ```
 
 Then, use this layout in the `<Admin>` `layout` prop:
@@ -818,17 +830,17 @@ const App = () => (
 
 See [The Menu documentation](./Menu.md) for more details.
 
-**Tip**: If you need a multi-level menu, or a Mega Menu opening panels with custom content, check out [the `ra-navigation`<img class="icon" src="./img/premium.svg" /> module](https://marmelab.com/ra-enterprise/modules/ra-navigation) (part of the [Enterprise Edition](https://marmelab.com/ra-enterprise))
+**Tip**: If you need a multi-level menu, or a Mega Menu opening panels with custom content, check out [the `ra-navigation`<img class="icon" src="./img/premium.svg" /> module](https://react-admin-ee.marmelab.com/documentation/ra-navigation) (part of the [Enterprise Edition](https://react-admin-ee.marmelab.com))
 
 <video controls autoplay playsinline muted loop>
-  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-multilevelmenu-item.webm" type="video/webm" />
-  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-multilevelmenu-item.mp4" type="video/mp4" />
+  <source src="https://react-admin-ee.marmelab.com/assets/ra-multilevelmenu-item.webm" type="video/webm" />
+  <source src="https://react-admin-ee.marmelab.com/assets/ra-multilevelmenu-item.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
 
 <video controls autoplay playsinline muted loop>
-  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-multilevelmenu-categories.webm" type="video/webm" />
-  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-multilevelmenu-categories.mp4" type="video/mp4" />
+  <source src="https://react-admin-ee.marmelab.com/assets/ra-multilevelmenu-categories.webm" type="video/webm" />
+  <source src="https://react-admin-ee.marmelab.com/assets/ra-multilevelmenu-categories.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
 

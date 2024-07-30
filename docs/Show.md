@@ -71,7 +71,7 @@ That's enough to display the post show view above.
 | `queryOptions`   | Optional | `object`          |         | The options to pass to the `useQuery` hook
 | `resource`       | Optional | `string`          |         | The resource name, e.g. `posts`
 | `sx`             | Optional | `object`          |         | Override or extend the styles applied to the component
-| `title`          | Optional | `string | ReactElement` |   | The title to display in the App Bar
+| `title`          | Optional | `string | ReactElement | false` |   | The title to display in the App Bar
 
 ## `actions`
 
@@ -98,7 +98,7 @@ export const PostShow = () => (
 
 ## `aside`
 
-You can pass an aside element to the `<Show>` component. It will be rendered on the right side of the page, below the actions toolbar.
+You can pass an aside element to the `<Show>` component. It will be rendered on the right side of the page, below the action toolbar.
 
 The aside component renders in the same `RecordContext` as the `Show` child component. That means you can display details of the current `record` in the aside component by calling `useRecordContext`:
 
@@ -237,12 +237,12 @@ const BookShow = () => (
 );
 ```
 
-You can handle this case by getting the `isLoading` variable from the [`useShowContext`](./useShowContext.md) hook:
+You can handle this case by getting the `isPending` variable from the [`useShowContext`](./useShowContext.md) hook:
 
 ```jsx
 const SimpleBookShow = () => {
-    const { record, isLoading } = useShowContext();
-    if (isLoading) return null;
+    const { record, isPending } = useShowContext();
+    if (isPending) return null;
     return (
         <Typography>
             <i>{record.title}</i>, by {record.author} ({record.year})
@@ -385,9 +385,9 @@ To override the style of all instances of `<Show>` using the [application-wide s
 
 ## `title`
 
-By default, the title for the Show view is `"[resource_name] #[record_id]"`.
+By default, the title for the Show view is "[resource_name] [record representation]". Check the [`<Resource recordRepresentation>`](./Resource.md#recordrepresentation) prop for more details.
 
-You can customize this title by specifying a custom `title` prop:
+You can customize this title by specifying a custom `title` string:
 
 ```jsx
 export const PostShow = () => (
@@ -397,7 +397,7 @@ export const PostShow = () => (
 );
 ```
 
-More interestingly, you can pass a component as `title`. React-admin clones this component, which can access the current record via `useRecordContext`. This allows to customize the title according to the current record:
+More interestingly, you can pass an element as `title`. This element can access the current record via `useRecordContext`. This allows to customize the title according to the current record:
 
 ```jsx
 import { useRecordContext, Show } from 'react-admin';
@@ -411,6 +411,16 @@ const PostTitle = () => {
 
 export const PostShow = () => (
     <Show title={<PostTitle />}>
+        ...
+    </Show>
+);
+```
+
+Finally, you can also pass `false` to disable the title:
+
+```jsx
+export const PostShow = () => (
+    <Show title={false}>
         ...
     </Show>
 );
@@ -447,8 +457,8 @@ import { useShowContext, useRecordContext } from 'react-admin';
 
 const PostTitle = () => {
     const record = useRecordContext();
-    const { isLoading } = useShowContext();
-    if (!isLoading) return null;
+    const { isPending } = useShowContext();
+    if (!isPending) return null;
     return <span>{record.title}</span>;
 };
 ```

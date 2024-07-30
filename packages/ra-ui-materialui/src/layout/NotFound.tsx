@@ -1,18 +1,18 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
-import PropTypes from 'prop-types';
 import Button from '@mui/material/Button';
 import HotTub from '@mui/icons-material/HotTub';
 import History from '@mui/icons-material/History';
 
-import { useAuthenticated, useTranslate } from 'ra-core';
+import { useAuthenticated, useDefaultTitle, useTranslate } from 'ra-core';
 import { Title } from './Title';
 
 export const NotFound = props => {
-    const { className, title, ...rest } = props;
+    const { className, ...rest } = props;
 
     const translate = useTranslate();
     useAuthenticated();
+    const title = useDefaultTitle();
     return (
         <Root className={className} {...sanitizeRestProps(rest)}>
             <Title defaultTitle={title} />
@@ -41,12 +41,6 @@ const sanitizeRestProps = ({
     match,
     ...rest
 }) => rest;
-
-NotFound.propTypes = {
-    className: PropTypes.string,
-    title: PropTypes.string,
-    location: PropTypes.object,
-};
 
 const PREFIX = 'RaNotFound';
 

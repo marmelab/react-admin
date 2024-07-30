@@ -5,7 +5,7 @@ title: "useLockOnMount"
 
 # `useLockOnMount`
 
-This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> hook locks the current record on mount.
+This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" /> hook locks the current record on mount.
 
 `useLockOnMount` calls `dataProvider.lock()` on mount and `dataProvider.unlock()` on unmount to lock and unlock the record. It relies on `authProvider.getIdentity()` to get the identity of the current user. It guesses the current `resource` and `recordId` from the context (or the route) if not provided.
 
@@ -48,9 +48,9 @@ const PostAside = () => {
 const PostEdit = () => (
     <Edit aside={<PostAside />}>
         <SimpleForm>
-            <TextInput source="title" fullWidth />
-            <TextInput source="headline" fullWidth multiline />
-            <TextInput source="author" fullWidth />
+            <TextInput source="title" />
+            <TextInput source="headline" multiline />
+            <TextInput source="author" />
         </SimpleForm>
     </Edit>
 );
@@ -83,7 +83,7 @@ const { isLocked, error, isLoading } = useLockOnMount({
 });
 ```
 
-**Tip**: If the record can't be locked because another user is already locking it, you can use [`react-query`'s retry feature](https://react-query-v3.tanstack.com/guides/mutations#retry) to try again later:
+**Tip**: If the record can't be locked because another user is already locking it, you can use [`react-query`'s retry feature](https://tanstack.com/query/v5/docs/react/guides/mutations#retry) to try again later:
 
 ```jsx
 const { isLocked, error, isLoading } = useLockOnMount({

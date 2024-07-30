@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { Fragment, useState, useCallback } from 'react';
 import { useWatch } from 'react-hook-form';
-
 import {
     Button,
     Dialog,
@@ -9,13 +8,17 @@ import {
     DialogContent,
     DialogActions,
 } from '@mui/material';
-
-import { ReferenceInput, SelectInput, useTranslate } from 'react-admin'; // eslint-disable-line import/no-unresolved
+import {
+    ReferenceInput,
+    SelectInput,
+    useTranslate,
+    required,
+} from 'react-admin'; // eslint-disable-line import/no-unresolved
 
 import PostQuickCreate from './PostQuickCreate';
 import PostPreview from './PostPreview';
 
-const PostReferenceInput = props => {
+const PostReferenceInput = () => {
     const translate = useTranslate();
 
     const [showPreviewDialog, setShowPreviewDialog] = useState(false);
@@ -35,11 +38,16 @@ const PostReferenceInput = props => {
 
     return (
         <>
-            <ReferenceInput {...props} defaultValue="">
+            <ReferenceInput
+                source="post_id"
+                reference="posts"
+                perPage={10000}
+                sort={{ field: 'title', order: 'ASC' as const }}
+            >
                 <SelectInput
-                    fullWidth
                     create={<PostQuickCreate />}
                     optionText="title"
+                    validate={required()}
                 />
             </ReferenceInput>
             {postId ? (

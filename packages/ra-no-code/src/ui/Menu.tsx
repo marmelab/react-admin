@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import { FC } from 'react';
-import PropTypes from 'prop-types';
 import lodashGet from 'lodash/get';
 import clsx from 'clsx';
 
@@ -84,9 +83,3 @@ export interface MenuProps {
     dense?: boolean;
     hasDashboard?: boolean;
 }
-
-Menu.propTypes = {
-    className: PropTypes.string,
-    dense: PropTypes.bool,
-    hasDashboard: PropTypes.bool,
-};

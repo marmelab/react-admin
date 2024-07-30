@@ -56,7 +56,7 @@ export const ALL_TYPES = INNER_ALL_TYPES;
  * dataProvider.delete()           // mutation deleteCustomer($id: id) { ... }
  * // note that updateMany and deleteMany aren't mapped in this adapter
  */
-const defaultOptions = {
+export const defaultOptions = {
     resolveIntrospection: introspectSchema,
     introspection: {
         operationNames: {
@@ -74,7 +74,11 @@ const defaultOptions = {
 };
 
 const getOptions = (
-    options: GetQueryOptions | GetMutationOptions | GetWatchQueryOptions,
+    options:
+        | GetQueryOptions
+        | GetMutationOptions
+        | GetWatchQueryOptions
+        | undefined,
     raFetchMethod: string,
     resource: string
 ) => {
@@ -127,10 +131,7 @@ export type Options = {
     watchQuery?: GetWatchQueryOptions;
 };
 
-// @FIXME in v5: This doesn't need to be an async method
-const buildGraphQLProvider = async (
-    options: Options
-): Promise<DataProvider> => {
+const buildGraphQLProvider = (options: Options): DataProvider => {
     const {
         client: clientObject,
         clientOptions,
@@ -187,6 +188,15 @@ const buildGraphQLProvider = async (
                 ...getOptions(otherOptions.query, raFetchMethod, resource),
             };
 
+            apolloQuery.context = merge(
+                {
+                    fetchOptions: {
+                        signal: params?.signal,
+                    },
+                },
+                apolloQuery.context
+            );
+
             return (
                 client
                     // @ts-ignore
@@ -211,7 +221,7 @@ const buildGraphQLProvider = async (
         );
     };
 
-    const raDataProvider = {
+    const raDataProvider: DataProvider = {
         create: (resource, params) => callApollo(CREATE, resource, params),
         delete: (resource, params) => callApollo(DELETE, resource, params),
         deleteMany: (resource, params) =>

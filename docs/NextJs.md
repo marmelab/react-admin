@@ -7,6 +7,8 @@ title: "Next.Js Integration"
 
 React-admin runs seamlessly on [Next.js](https://nextjs.org/), with minimal configuration.
 
+<iframe src="https://www.youtube-nocookie.com/embed/S3eGZEQ0WmQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;"></iframe>
+
 Next.js 13 proposes 2 ways to build a React project: 
 
 - the classic [Pages router](https://nextjs.org/docs/pages/building-your-application/routing/pages-and-layouts),
@@ -199,7 +201,7 @@ async function handler(request: Request) {
     const requestUrl = request.url.split('/api/admin')[1];
 
     // build the CRUD request based on the incoming request
-    const url = `${process.env.SUPABASE_URL}/rest/v1/${requestUrl}`;
+    const url = `${process.env.SUPABASE_URL}/rest/v1${requestUrl}`;
 
     const options: RequestInit = {
         method: request.method,

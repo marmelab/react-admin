@@ -36,9 +36,4 @@ const StarRatingField = ({ size = 'large' }: FieldProps & OwnProps) => {
     );
 };
 
-StarRatingField.defaultProps = {
-    label: 'resources.reviews.fields.rating',
-    source: 'rating',
-};
-
 export default StarRatingField;
