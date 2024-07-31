@@ -1,18 +1,11 @@
 import * as React from 'react';
-import { Card, Box, Typography, Stack } from '@mui/material';
+import { Card, Box, Stack } from '@mui/material';
 import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn';
-import {
-    useGetList,
-    Link,
-    useGetIdentity,
-    useList,
-    ListContextProvider,
-    ResourceContextProvider,
-} from 'react-admin';
-import { TasksIterator } from '../tasks/TasksIterator';
+import { useGetList, Link, useGetIdentity } from 'react-admin';
 import { Contact } from '../types';
 import { AddTask } from '../tasks/AddTask';
 import { startOfToday, endOfToday, addDays } from 'date-fns';
+import { TasksListFilter } from './TasksListFilter';
 
 const today = new Date();
 const startOfTodayDateISO = startOfToday().toISOString();
@@ -66,22 +59,22 @@ export const TasksList = () => {
             <Card sx={{ px: 2, mb: '2em' }}>
                 <AddTask selectContact />
                 <Stack gap={3} mt={2}>
-                    <TaskListFilter
+                    <TasksListFilter
                         title="Overdue"
                         filter={taskFilters.overdue}
                         contacts={contacts}
                     />
-                    <TaskListFilter
+                    <TasksListFilter
                         title="Today"
                         filter={taskFilters.today}
                         contacts={contacts}
                     />
-                    <TaskListFilter
+                    <TasksListFilter
                         title="This week"
                         filter={taskFilters.thisWeek}
                         contacts={contacts}
                     />
-                    <TaskListFilter
+                    <TasksListFilter
                         title="Later"
                         filter={taskFilters.later}
                         contacts={contacts}
@@ -89,68 +82,5 @@ export const TasksList = () => {
                 </Stack>
             </Card>
         </>
-    );
-};
-
-const TaskListFilter = ({
-    title,
-    filter,
-    contacts,
-}: {
-    title: string;
-    filter: any;
-    contacts: Contact[];
-}) => {
-    const {
-        data: tasks,
-        total,
-        isPending,
-    } = useGetList(
-        'tasks',
-        {
-            pagination: { page: 1, perPage: 100 },
-            sort: { field: 'due_date', order: 'ASC' },
-            filter: {
-                ...filter,
-                contact_id: contacts.map(contact => contact.id),
-            },
-        },
-        { enabled: !!contacts }
-    );
-
-    const listContext = useList({
-        data: tasks,
-        isPending,
-        resource: 'tasks',
-        perPage: 5,
-    });
-
-    if (isPending || !tasks || !total) return null;
-
-    return (
-        <Stack>
-            <Typography variant="body1" fontWeight="bold">
-                {title}
-            </Typography>
-            <ResourceContextProvider value="tasks">
-                <ListContextProvider value={listContext}>
-                    <TasksIterator showContact />
-                </ListContextProvider>
-            </ResourceContextProvider>
-            {total > listContext.perPage && (
-                <Stack justifyContent="flex-end" direction="row">
-                    <Typography
-                        onClick={() =>
-                            listContext.setPerPage(listContext.perPage + 10)
-                        }
-                        variant="caption"
-                        sx={{ cursor: 'pointer' }}
-                        color="text.primary"
-                    >
-                        5 more
-                    </Typography>
-                </Stack>
-            )}
-        </Stack>
     );
 };
