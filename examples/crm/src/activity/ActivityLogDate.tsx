@@ -3,7 +3,12 @@ import { formatRelative } from 'date-fns';
 
 export function ActivityLogDate({ date }: { date: string }) {
     return (
-        <Typography color="textSecondary" variant="body2" title={date}>
+        <Typography
+            color="textSecondary"
+            variant="body2"
+            component="span"
+            title={date}
+        >
             {formatRelative(new Date(date), new Date())}
         </Typography>
     );

@@ -17,13 +17,11 @@ import { ActivityLogDealNoteCreated } from './ActivityLogDealNoteCreated';
 type ActivityLogIteratorProps = {
     activities: Activity[];
     pageSize: number;
-    context: 'company' | 'contact' | 'deal' | 'all';
 };
 
 export function ActivityLogIterator({
     activities,
     pageSize,
-    context = 'all',
 }: ActivityLogIteratorProps) {
     const [activitiesDisplayed, setActivityDisplayed] = useState(pageSize);
 
@@ -43,11 +41,7 @@ export function ActivityLogIterator({
         >
             {filteredActivities.map(activity => (
                 <>
-                    <ActivityItem
-                        key={activity.id}
-                        activity={activity}
-                        context={context}
-                    />
+                    <ActivityItem key={activity.id} activity={activity} />
                     <Divider />
                 </>
             ))}
@@ -69,40 +63,25 @@ export function ActivityLogIterator({
     );
 }
 
-function ActivityItem({
-    activity,
-    context,
-}: {
-    activity: Activity;
-    context: 'company' | 'contact' | 'deal' | 'all';
-}) {
+function ActivityItem({ activity }: { activity: Activity }) {
     if (activity.type === COMPANY_CREATED) {
         return <ActivityLogCompanyCreated activity={activity} />;
     }
 
     if (activity.type === CONTACT_CREATED) {
-        return (
-            <ActivityLogContactCreated activity={activity} context={context} />
-        );
+        return <ActivityLogContactCreated activity={activity} />;
     }
 
     if (activity.type === CONTACT_NOTE_CREATED) {
-        return (
-            <ActivityLogContactNoteCreated
-                activity={activity}
-                context={context}
-            />
-        );
+        return <ActivityLogContactNoteCreated activity={activity} />;
     }
 
     if (activity.type === DEAL_CREATED) {
-        return <ActivityLogDealCreated activity={activity} context={context} />;
+        return <ActivityLogDealCreated activity={activity} />;
     }
 
     if (activity.type === DEAL_NOTE_CREATED) {
-        return (
-            <ActivityLogDealNoteCreated activity={activity} context={context} />
-        );
+        return <ActivityLogDealNoteCreated activity={activity} />;
     }
 
     return null;

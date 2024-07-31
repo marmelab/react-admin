@@ -1,7 +1,9 @@
 import { Alert, Divider, Skeleton, Stack } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 import { Identifier, useDataProvider } from 'react-admin';
+
 import { CustomDataProvider } from '../dataProvider';
+import { ActivityLogContext } from './ActivityLogContext';
 import { ActivityLogIterator } from './ActivityLogIterator';
 
 type ActivityLogProps = {
@@ -51,10 +53,8 @@ export function ActivityLog({
     }
 
     return (
-        <ActivityLogIterator
-            activities={data}
-            pageSize={pageSize}
-            context={context}
-        />
+        <ActivityLogContext.Provider value={context}>
+            <ActivityLogIterator activities={data} pageSize={pageSize} />
+        </ActivityLogContext.Provider>
     );
 }

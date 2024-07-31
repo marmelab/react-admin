@@ -1,64 +1,48 @@
 import { ListItem, Stack, Typography } from '@mui/material';
-import { Link, RecordContextProvider } from 'react-admin';
+import { Link } from 'react-admin';
+
 import { Avatar } from '../contacts/Avatar';
 import type { ActivityContactCreated } from '../types';
-import { ActivityLogSale } from './ActivityLogSale';
+import { SaleName } from '../sales/SaleName';
 import { ActivityLogDate } from './ActivityLogDate';
+import { useActivityLogContext } from './ActivityLogContext';
 
 type ActivityLogContactCreatedProps = {
     activity: ActivityContactCreated;
-    context: 'company' | 'contact' | 'deal' | 'all';
 };
 
 export function ActivityLogContactCreated({
     activity: { sale, contact, company },
-    context,
 }: ActivityLogContactCreatedProps) {
+    const context = useActivityLogContext();
     return (
-        <RecordContextProvider value={contact}>
-            <ListItem disableGutters>
-                <Stack
-                    direction="row"
-                    spacing={1}
-                    sx={{
-                        alignItems: 'center',
-                        width: '100%',
-                    }}
+        <ListItem disableGutters>
+            <Stack direction="row" spacing={1} alignItems="center" width="100%">
+                <Avatar width={20} height={20} record={contact} />
+                <Typography
+                    component="p"
+                    variant="body2"
+                    color="text.secondary"
+                    flexGrow={1}
                 >
-                    <Avatar width={20} height={20} />
-                    <Typography
-                        component="p"
-                        sx={{
-                            flexGrow: 1,
-                        }}
-                        variant="body2"
-                        color="text.secondary"
-                    >
-                        <ActivityLogSale sale={sale} /> added{' '}
-                        <Link
-                            component={Link}
-                            to={`/contacts/${contact.id}/show`}
-                            variant="body2"
-                        >
-                            {contact.first_name} {contact.last_name}
-                        </Link>{' '}
-                        {context !== 'company' && (
-                            <>
-                                to{' '}
-                                <Link
-                                    component={Link}
-                                    to={`/companies/${contact.company_id}/show`}
-                                    variant="body2"
-                                >
-                                    {company.name}
-                                </Link>
-                            </>
-                        )}
-                    </Typography>
-
+                    <SaleName sale={sale} /> added{' '}
+                    <Link to={`/contacts/${contact.id}/show`}>
+                        {contact.first_name} {contact.last_name}
+                    </Link>{' '}
+                    {context !== 'company' && (
+                        <>
+                            to{' '}
+                            <Link to={`/companies/${contact.company_id}/show`}>
+                                {company.name}
+                            </Link>{' '}
+                            <ActivityLogDate date={contact.first_seen} />
+                        </>
+                    )}
+                </Typography>
+                {context === 'company' && (
                     <ActivityLogDate date={contact.first_seen} />
-                </Stack>
-            </ListItem>
-        </RecordContextProvider>
+                )}
+            </Stack>
+        </ListItem>
     );
 }

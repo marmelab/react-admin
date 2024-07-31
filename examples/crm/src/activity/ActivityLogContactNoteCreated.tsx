@@ -1,58 +1,52 @@
-import Typography from '@mui/material/Typography';
-import { Link, RecordContextProvider } from 'react-admin';
+import { Typography } from '@mui/material';
+import { Link } from 'react-admin';
 
 import { Avatar } from '../contacts/Avatar';
 import type { ActivityContactNoteCreated } from '../types';
+import { SaleName } from '../sales/SaleName';
 import { ActivityLogNote } from './ActivityLogNote';
-import { ActivityLogSale } from './ActivityLogSale';
 import { ActivityLogDate } from './ActivityLogDate';
+import { useActivityLogContext } from './ActivityLogContext';
 
 type ActivityLogContactNoteCreatedProps = {
     activity: ActivityContactNoteCreated;
-    context: 'company' | 'contact' | 'deal' | 'all';
 };
 
 export function ActivityLogContactNoteCreated({
     activity: { sale, contact, contactNote, company },
-    context,
 }: ActivityLogContactNoteCreatedProps) {
+    const context = useActivityLogContext();
     return (
-        <RecordContextProvider value={contact}>
-            <ActivityLogNote
-                header={
-                    <>
-                        <Avatar width={20} height={20} />
-                        <Typography
-                            component="p"
-                            sx={{ flexGrow: 1 }}
-                            variant="body2"
-                            color="text.secondary"
-                        >
-                            <ActivityLogSale sale={sale} /> added a note about{' '}
-                            <Link
-                                to={`/contacts/${contact.id}/show`}
-                                variant="body2"
-                            >
-                                {contact.first_name} {contact.last_name}
-                            </Link>{' '}
-                            {context !== 'company' && (
-                                <>
-                                    from{' '}
-                                    <Link
-                                        component={Link}
-                                        to={`/companies/${company.id}/show`}
-                                        variant="body2"
-                                    >
-                                        {company.name}
-                                    </Link>
-                                </>
-                            )}
-                        </Typography>
+        <ActivityLogNote
+            header={
+                <>
+                    <Avatar width={20} height={20} record={contact} />
+                    <Typography
+                        component="p"
+                        variant="body2"
+                        color="text.secondary"
+                        flexGrow={1}
+                    >
+                        <SaleName sale={sale} /> added a note about{' '}
+                        <Link to={`/contacts/${contact.id}/show`}>
+                            {contact.first_name} {contact.last_name}
+                        </Link>
+                        {context !== 'company' && (
+                            <>
+                                {' from '}
+                                <Link to={`/companies/${company.id}/show`}>
+                                    {company.name}
+                                </Link>{' '}
+                                <ActivityLogDate date={contactNote.date} />
+                            </>
+                        )}
+                    </Typography>
+                    {context === 'company' && (
                         <ActivityLogDate date={contactNote.date} />
-                    </>
-                }
-                text={contactNote.text}
-            />
-        </RecordContextProvider>
+                    )}
+                </>
+            }
+            text={contactNote.text}
+        />
     );
 }
