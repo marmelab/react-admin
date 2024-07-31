@@ -6,6 +6,7 @@ import {
     DeleteButton,
     EditBase,
     Form,
+    ReferenceField,
     SaveButton,
     Toolbar,
     useNotify,
@@ -16,6 +17,7 @@ import { Link } from 'react-router-dom';
 import { DialogCloseButton } from '../misc/DialogCloseButton';
 import { Deal } from '../types';
 import { DealInputs } from './DealInputs';
+import { CompanyAvatar } from '../companies/CompanyAvatar';
 
 export const DealEdit = ({ open, id }: { open: boolean; id?: string }) => {
     const redirect = useRedirect();
@@ -28,7 +30,7 @@ export const DealEdit = ({ open, id }: { open: boolean; id?: string }) => {
     };
 
     return (
-        <Dialog open={open} onClose={handleClose} fullWidth maxWidth="lg">
+        <Dialog open={open} onClose={handleClose} fullWidth maxWidth="md">
             {!!id ? (
                 <EditBase
                     id={id}
@@ -80,7 +82,16 @@ function EditHeader() {
                 justifyContent="space-between"
                 spacing={1}
             >
-                <Typography variant="h6">Edit {deal.name} deal</Typography>
+                <Stack direction="row" alignItems="center" gap={2}>
+                    <ReferenceField
+                        source="company_id"
+                        reference="companies"
+                        link="show"
+                    >
+                        <CompanyAvatar />
+                    </ReferenceField>
+                    <Typography variant="h6">Edit {deal.name} deal</Typography>
+                </Stack>
 
                 <Stack direction="row" spacing={1} sx={{ pr: 3 }}>
                     <Button component={Link} to={`/deals/${deal.id}/show`}>
