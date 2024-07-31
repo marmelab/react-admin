@@ -26,7 +26,7 @@ export const TagsList = () => (
         source="tags"
         reference="tags"
     >
-        <SingleFieldList linkType={false}>
+        <SingleFieldList linkType={false} component="span">
             <ColoredChipField source="name" variant="outlined" size="small" />
         </SingleFieldList>
     </ReferenceArrayField>

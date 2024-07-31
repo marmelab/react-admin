@@ -1,5 +1,5 @@
 import { ListItem, Stack, Typography } from '@mui/material';
-import { ReactNode } from 'react';
+import { ReactNode, Fragment } from 'react';
 
 type ActivityLogContactNoteCreatedProps = {
     header: ReactNode;
@@ -28,16 +28,16 @@ export function ActivityLogNote({
                         variant="body2"
                         sx={{
                             display: '-webkit-box',
-                            '-webkit-line-clamp': '3',
-                            '-webkit-box-orient': 'vertical',
+                            WebkitLineClamp: '3',
+                            WebkitBoxOrient: 'vertical',
                             overflow: 'hidden',
                         }}
                     >
                         {paragraphs.map((paragraph: string, index: number) => (
-                            <>
+                            <Fragment key={index}>
                                 {paragraph}
                                 {index < paragraphs.length - 1 && <br />}
-                            </>
+                            </Fragment>
                         ))}
                     </Typography>
                 </div>

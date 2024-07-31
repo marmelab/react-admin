@@ -48,16 +48,13 @@ export const HotContacts = () => {
                         `${contact.first_name} ${contact.last_name}`
                     }
                     secondaryText={contact => (
-                        <Stack>
-                            <Typography variant="body2">
-                                {contact.title} at {contact.company_name}
-                            </Typography>
-                            <Typography variant="body2">
-                                {formatDistance(contact.last_seen, new Date(), {
-                                    addSuffix: true,
-                                })}
-                            </Typography>
-                        </Stack>
+                        <>
+                            {contact.title} at {contact.company_name}
+                            <br />
+                            {formatDistance(contact.last_seen, new Date(), {
+                                addSuffix: true,
+                            })}
+                        </>
                     )}
                     leftAvatar={contact => <Avatar record={contact} />}
                     dense

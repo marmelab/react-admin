@@ -161,10 +161,11 @@ export const ReferenceArrayFieldClasses = {
     progress: `${PREFIX}-progress`,
 };
 
-const Root = styled('div', {
+const Root = styled('span', {
     name: PREFIX,
     overridesResolver: (props, styles) => styles.root,
 })(({ theme }) => ({
+    display: 'block',
     [`& .${ReferenceArrayFieldClasses.progress}`]: {
         marginTop: theme.spacing(2),
     },

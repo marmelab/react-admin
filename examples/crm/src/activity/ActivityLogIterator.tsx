@@ -1,5 +1,5 @@
 import { Button, Divider, List } from '@mui/material';
-import { useState } from 'react';
+import { useState, Fragment } from 'react';
 import {
     COMPANY_CREATED,
     CONTACT_CREATED,
@@ -34,16 +34,16 @@ export function ActivityLogIterator({
                     marginTop: 0,
                     marginBottom: 1,
                 },
-                '& .MuiListItem-root:not(:first-child)': {
+                '& .MuiListItem-root:not(:first-of-type)': {
                     marginTop: 1,
                 },
             }}
         >
-            {filteredActivities.map(activity => (
-                <>
+            {filteredActivities.map((activity, index) => (
+                <Fragment key={index}>
                     <ActivityItem key={activity.id} activity={activity} />
                     <Divider />
-                </>
+                </Fragment>
             ))}
 
             {activitiesDisplayed < activities.length && (
