@@ -1,23 +1,35 @@
 import * as React from 'react';
-import { Card, Box, Button, Stack } from '@mui/material';
+import { Card, Box, Stack } from '@mui/material';
 import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn';
-import {
-    useGetList,
-    Link,
-    useGetIdentity,
-    useList,
-    ListContextProvider,
-    ResourceContextProvider,
-} from 'react-admin';
-import { TasksIterator } from '../tasks/TasksIterator';
-
+import { useGetList, Link, useGetIdentity } from 'react-admin';
 import { Contact } from '../types';
 import { AddTask } from '../tasks/AddTask';
+import { startOfToday, endOfToday, addDays } from 'date-fns';
+import { TasksListFilter } from './TasksListFilter';
+
+const today = new Date();
+const startOfTodayDateISO = startOfToday().toISOString();
+const endOfTodayDateISO = endOfToday().toISOString();
+const startOfWeekDateISO = addDays(today, 1).toISOString();
+const endOfWeekDateISO = addDays(today, 7).toISOString();
+
+const taskFilters = {
+    overdue: { done_date: undefined, due_date_lt: startOfTodayDateISO },
+    today: {
+        done_date: undefined,
+        due_date_gte: startOfTodayDateISO,
+        due_date_lte: endOfTodayDateISO,
+    },
+    thisWeek: {
+        done_date: undefined,
+        due_date_gte: startOfWeekDateISO,
+        due_date_lte: endOfWeekDateISO,
+    },
+    later: { done_date: undefined, due_date_gt: endOfWeekDateISO },
+};
 
 export const TasksList = () => {
     const { identity } = useGetIdentity();
-
-    // get all the contacts for this sales
     const { data: contacts, isPending: contactsLoading } = useGetList<Contact>(
         'contacts',
         {
@@ -27,29 +39,8 @@ export const TasksList = () => {
         { enabled: !!identity }
     );
 
-    // get the first 100 upcoming tasks for these contacts
-    const { data: tasks, isPending: tasksLoading } = useGetList(
-        'tasks',
-        {
-            pagination: { page: 1, perPage: 100 },
-            sort: { field: 'due_date', order: 'ASC' },
-            filter: {
-                done_date: undefined,
-                contact_id: contacts?.map(contact => contact.id),
-            },
-        },
-        { enabled: !!contacts }
-    );
+    if (contactsLoading || !contacts) return null;
 
-    const isPending = tasksLoading || contactsLoading;
-
-    // limit to 10 tasks and provide the list context
-    const listContext = useList({
-        data: tasks,
-        isPending,
-        resource: 'tasks',
-        perPage: 10,
-    });
     return (
         <Stack>
             <Box display="flex" alignItems="center" marginBottom="1em">
@@ -67,21 +58,28 @@ export const TasksList = () => {
             </Box>
             <Card sx={{ px: 2, mb: '2em' }}>
                 <AddTask selectContact />
-                <ResourceContextProvider value="tasks">
-                    <ListContextProvider value={listContext}>
-                        <TasksIterator showContact />
-                    </ListContextProvider>
-                </ResourceContextProvider>
-                {!isPending && (
-                    <Button
-                        onClick={() =>
-                            listContext.setPerPage(listContext.perPage + 10)
-                        }
-                        fullWidth
-                    >
-                        Load more
-                    </Button>
-                )}
+                <Stack gap={3} mt={2}>
+                    <TasksListFilter
+                        title="Overdue"
+                        filter={taskFilters.overdue}
+                        contacts={contacts}
+                    />
+                    <TasksListFilter
+                        title="Today"
+                        filter={taskFilters.today}
+                        contacts={contacts}
+                    />
+                    <TasksListFilter
+                        title="This week"
+                        filter={taskFilters.thisWeek}
+                        contacts={contacts}
+                    />
+                    <TasksListFilter
+                        title="Later"
+                        filter={taskFilters.later}
+                        contacts={contacts}
+                    />
+                </Stack>
             </Card>
         </Stack>
     );

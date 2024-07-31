@@ -54,6 +54,15 @@ export const AddTask = ({ selectContact }: { selectContact?: boolean }) => {
                     contact_id: contact?.id,
                     due_date: new Date().toISOString().slice(0, 10),
                 }}
+                transform={data => {
+                    const dueDate = new Date(data.due_date);
+                    dueDate.setHours(0, 0, 0, 0);
+                    data.due_date = dueDate.toISOString();
+                    return {
+                        ...data,
+                        due_date: new Date(data.due_date).toISOString(),
+                    };
+                }}
                 mutationOptions={{ onSuccess: () => setOpen(false) }}
             >
                 <Dialog
