@@ -1,6 +1,7 @@
 import {
     Box,
     Button,
+    Chip,
     Dialog,
     DialogContent,
     Divider,
@@ -110,9 +111,26 @@ const DealShowContent = ({ handleClose }: { handleClose: () => void }) => {
                                 >
                                     Expected closing date
                                 </Typography>
-                                <Typography variant="body2">
-                                    {format(record.expected_closing_date, 'PP')}
-                                </Typography>
+                                <Stack
+                                    direction="row"
+                                    alignItems="center"
+                                    gap={1}
+                                >
+                                    <Typography variant="body2">
+                                        {format(
+                                            record.expected_closing_date,
+                                            'PP'
+                                        )}
+                                    </Typography>
+                                    {new Date(record.expected_closing_date) <
+                                    new Date() ? (
+                                        <Chip
+                                            label="Past"
+                                            color="error"
+                                            size="small"
+                                        />
+                                    ) : null}
+                                </Stack>
                             </Box>
 
                             <Box display="flex" mr={5} flexDirection="column">
