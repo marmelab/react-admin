@@ -21,10 +21,8 @@ import { ChangeEvent, useState } from 'react';
 import {
     RecordContextProvider,
     ReferenceManyField,
-    SelectField,
     ShowBase,
     SortButton,
-    TextField,
     useListContext,
     useRecordContext,
     useShowContext,
@@ -40,7 +38,6 @@ import { useConfigurationContext } from '../root/ConfigurationContext';
 import { Company, Contact, Deal } from '../types';
 import { CompanyAside } from './CompanyAside';
 import { CompanyAvatar } from './CompanyAvatar';
-import { sizes } from './sizes';
 
 export const CompanyShow = () => (
     <ShowBase>

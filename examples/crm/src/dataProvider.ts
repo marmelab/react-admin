@@ -94,37 +94,6 @@ const dataProviderWithCustomMethod = {
         }
         return sale;
     },
-    transferAdministratorRole: async (from: Identifier, to: Identifier) => {
-        const { data: sales } = await baseDataProvider.getList('sales', {
-            filter: { id: [from, to] },
-            pagination: { page: 1, perPage: 2 },
-            sort: { field: 'name', order: 'ASC' },
-        });
-
-        const fromSale = sales.find(sale => sale.id === from);
-        const toSale = sales.find(sale => sale.id === to);
-
-        if (!fromSale || !toSale) {
-            return null;
-        }
-
-        await baseDataProvider.update('sales', {
-            id: to,
-            data: {
-                administrator: true,
-            },
-            previousData: toSale,
-        });
-
-        const updatedUser = await baseDataProvider.update('sales', {
-            id: from,
-            data: {
-                administrator: false,
-            },
-            previousData: fromSale,
-        });
-        return updatedUser.data;
-    },
     unarchiveDeal: async (deal: Deal) => {
         // get all deals where stage is the same as the deal to unarchive
         const { data: deals } = await baseDataProvider.getList<Deal>('deals', {
