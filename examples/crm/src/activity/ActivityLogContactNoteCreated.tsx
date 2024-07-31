@@ -5,7 +5,7 @@ import { Avatar } from '../contacts/Avatar';
 import type { ActivityContactNoteCreated } from '../types';
 import { SaleName } from '../sales/SaleName';
 import { ActivityLogNote } from './ActivityLogNote';
-import { ActivityLogDate } from './ActivityLogDate';
+import { RelativeDate } from '../misc/RelativeDate';
 import { useActivityLogContext } from './ActivityLogContext';
 
 type ActivityLogContactNoteCreatedProps = {
@@ -37,12 +37,18 @@ export function ActivityLogContactNoteCreated({
                                 <Link to={`/companies/${company.id}/show`}>
                                     {company.name}
                                 </Link>{' '}
-                                <ActivityLogDate date={contactNote.date} />
+                                <RelativeDate date={contactNote.date} />
                             </>
                         )}
                     </Typography>
                     {context === 'company' && (
-                        <ActivityLogDate date={contactNote.date} />
+                        <Typography
+                            color="textSecondary"
+                            variant="body2"
+                            component="span"
+                        >
+                            <RelativeDate date={contactNote.date} />
+                        </Typography>
                     )}
                 </>
             }

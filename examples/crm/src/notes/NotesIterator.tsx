@@ -18,16 +18,16 @@ export const NotesIterator = ({
         <Box mt={4}>
             <NoteCreate showStatus={showStatus} reference={reference} />
             {data && (
-                <Stack mt={4} gap={3}>
+                <Stack mt={2} gap={1}>
                     {data.map((note, index) => (
                         <React.Fragment key={index}>
-                            <Divider />
                             <Note
                                 note={note}
                                 isLast={index === data.length - 1}
                                 showStatus={showStatus}
                                 key={index}
                             />
+                            {index < data.length - 1 && <Divider />}
                         </React.Fragment>
                     ))}
                 </Stack>

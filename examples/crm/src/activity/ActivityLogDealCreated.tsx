@@ -4,7 +4,7 @@ import { Link } from 'react-admin';
 import { CompanyAvatar } from '../companies/CompanyAvatar';
 import type { ActivityDealCreated } from '../types';
 import { SaleName } from '../sales/SaleName';
-import { ActivityLogDate } from './ActivityLogDate';
+import { RelativeDate } from '../misc/RelativeDate';
 import { useActivityLogContext } from './ActivityLogContext';
 
 type ActivityLogDealCreatedProps = {
@@ -33,12 +33,18 @@ export function ActivityLogDealCreated({
                             <Link to={`/companies/${company.id}/show`}>
                                 {company.name}
                             </Link>{' '}
-                            <ActivityLogDate date={deal.created_at} />
+                            <RelativeDate date={deal.created_at} />
                         </>
                     )}
                 </Typography>
                 {context === 'company' && (
-                    <ActivityLogDate date={deal.created_at} />
+                    <Typography
+                        color="textSecondary"
+                        variant="body2"
+                        component="span"
+                    >
+                        <RelativeDate date={deal.created_at} />
+                    </Typography>
                 )}
             </Stack>
         </ListItem>
