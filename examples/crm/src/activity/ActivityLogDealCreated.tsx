@@ -1,5 +1,5 @@
 import { ListItem, Stack, Typography } from '@mui/material';
-import { Link, RecordContextProvider, DateField } from 'react-admin';
+import { Link, RecordContextProvider } from 'react-admin';
 
 import { CompanyAvatar } from '../companies/CompanyAvatar';
 import type { ActivityDealCreated } from '../types';
