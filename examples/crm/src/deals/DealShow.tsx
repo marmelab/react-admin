@@ -53,7 +53,7 @@ export const DealShow = ({ open, id }: { open: boolean; id?: string }) => {
     );
 };
 
-const CLOSE_TOP_WITH_ARCHIVED = 64 + 22 + 8; // 22 is initial top, 8 is padding, 64 is the height of the archived title
+const CLOSE_TOP_WITH_ARCHIVED = 14;
 const DealShowContent = ({ handleClose }: { handleClose: () => void }) => {
     const { dealStages } = useConfigurationContext();
     const record = useRecordContext<Deal>();
@@ -62,12 +62,13 @@ const DealShowContent = ({ handleClose }: { handleClose: () => void }) => {
         <>
             <DialogCloseButton
                 onClose={handleClose}
-                top={record.archived_at ? CLOSE_TOP_WITH_ARCHIVED : 22}
+                top={record.archived_at ? CLOSE_TOP_WITH_ARCHIVED : 16}
                 right={20}
+                color={record.archived_at ? 'white' : undefined}
             />
             <Stack gap={1}>
                 {record.archived_at ? <ArchivedTitle /> : null}
-                <Box display="flex" p={3}>
+                <Box display="flex" p={2}>
                     <Box ml={2} flex="1">
                         <Stack direction="row" justifyContent="space-between">
                             <Stack direction="row" alignItems="center" gap={2}>
@@ -82,7 +83,11 @@ const DealShowContent = ({ handleClose }: { handleClose: () => void }) => {
                                     {record.name}
                                 </Typography>
                             </Stack>
-                            <Stack gap={1} direction="row" pr={4}>
+                            <Stack
+                                gap={1}
+                                direction="row"
+                                pr={record.archived_at ? 0 : 4}
+                            >
                                 {record.archived_at ? (
                                     <>
                                         <UnarchiveButton record={record} />

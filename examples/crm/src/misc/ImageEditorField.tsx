@@ -25,11 +25,7 @@ const ImageEditorField = (props: ImageEditorFieldProps) => {
     const imageUrl = getValues(props.source);
     const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-    const {
-        type = 'image',
-        emptyText = 'No image',
-        linkPosition = 'none',
-    } = props;
+    const { type = 'image', emptyText, linkPosition = 'none' } = props;
 
     const commonProps = {
         src: imageUrl,
@@ -47,7 +43,7 @@ const ImageEditorField = (props: ImageEditorFieldProps) => {
             <Stack
                 direction={linkPosition === 'right' ? 'row' : 'column'}
                 alignItems={'center'}
-                gap={2}
+                gap={linkPosition === 'right' ? 2 : 0.5}
                 borderRadius={1}
                 p={props.backgroundImageColor ? 1 : 0}
                 sx={{
@@ -68,7 +64,7 @@ const ImageEditorField = (props: ImageEditorFieldProps) => {
                         textAlign="center"
                         sx={{ display: 'inline', cursor: 'pointer' }}
                     >
-                        Change image
+                        Change
                     </Typography>
                 )}
             </Stack>
