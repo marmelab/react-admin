@@ -43,9 +43,12 @@ export const TasksList = () => {
 
     return (
         <Stack>
-            <Box display="flex" alignItems="center" marginBottom="1em">
-                <Box ml={2} mr={2} display="flex">
-                    <AssignmentTurnedInIcon color="disabled" fontSize="large" />
+            <Box display="flex" alignItems="center" mb={1}>
+                <Box mr={1} display="flex">
+                    <AssignmentTurnedInIcon
+                        color="disabled"
+                        fontSize="medium"
+                    />
                 </Box>
                 <Link
                     underline="none"
@@ -53,12 +56,12 @@ export const TasksList = () => {
                     color="textSecondary"
                     to="/contacts"
                 >
-                    Upcoming tasks
+                    Upcoming Tasks
                 </Link>
             </Box>
-            <Card sx={{ px: 2, mb: '2em' }}>
+            <Card sx={{ px: 2 }}>
                 <AddTask selectContact />
-                <Stack gap={3} mt={2}>
+                <Stack gap={2} mt={2}>
                     <TasksListFilter
                         title="Overdue"
                         filter={taskFilters.overdue}

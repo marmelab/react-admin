@@ -14,6 +14,10 @@ const multiplier = {
     delayed: 0.3,
 };
 
+const threeMonthsAgo = new Date(
+    new Date().setMonth(new Date().getMonth() - 6)
+).toISOString();
+
 export const DealsChart = () => {
     const { data, isPending } = useGetList<Deal>('deals', {
         pagination: { perPage: 100, page: 1 },
@@ -21,8 +25,10 @@ export const DealsChart = () => {
             field: 'created_at',
             order: 'ASC',
         },
+        filter: {
+            created_at_gte: threeMonthsAgo,
+        },
     });
-
     const months = useMemo(() => {
         if (!data) return [];
         const dealsByMonth = data.reduce((acc, deal) => {
@@ -67,7 +73,6 @@ export const DealsChart = () => {
     }, [data]);
 
     if (isPending) return null; // FIXME return skeleton instead
-
     const range = months.reduce(
         (acc, month) => {
             acc.min = Math.min(acc.min, month.lost);
@@ -76,12 +81,11 @@ export const DealsChart = () => {
         },
         { min: 0, max: 0 }
     );
-
     return (
         <Stack>
-            <Box display="flex" alignItems="center">
-                <Box ml={2} mr={2} display="flex">
-                    <AttachMoneyIcon color="disabled" fontSize="large" />
+            <Box display="flex" alignItems="center" mb={1}>
+                <Box mr={1} display="flex">
+                    <AttachMoneyIcon color="disabled" fontSize="medium" />
                 </Box>
                 <Link
                     underline="none"
@@ -92,7 +96,7 @@ export const DealsChart = () => {
                     Upcoming Deal Revenue
                 </Link>
             </Box>
-            <Box height={500}>
+            <Box height={400}>
                 <ResponsiveBar
                     data={months}
                     indexBy="date"

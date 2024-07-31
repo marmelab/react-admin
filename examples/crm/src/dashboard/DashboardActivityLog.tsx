@@ -8,9 +8,9 @@ import { Stack } from '@mui/material';
 export function DashboardActivityLog() {
     return (
         <Stack>
-            <Box display="flex" alignItems="center" marginBottom="1em">
-                <Box ml={2} mr={2} display="flex">
-                    <AccessTimeIcon color="disabled" fontSize="large" />
+            <Box display="flex" alignItems="center" mb={1}>
+                <Box mr={1} display="flex">
+                    <AccessTimeIcon color="disabled" fontSize="medium" />
                 </Box>
                 <Typography variant="h5" color="textSecondary">
                     Latest Activity
