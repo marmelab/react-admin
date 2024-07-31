@@ -7,27 +7,28 @@ import {
     Tooltip,
     Typography,
 } from '@mui/material';
-import * as React from 'react';
 import { useState } from 'react';
 import {
-    DateField,
     Form,
     ReferenceField,
-    TextField,
     useDelete,
     useNotify,
     useResourceContext,
     useUpdate,
+    WithRecord,
 } from 'react-admin';
-
 import TrashIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import { FieldValues, SubmitHandler } from 'react-hook-form';
 
+import { Avatar } from '../contacts/Avatar';
 import { Status } from '../misc/Status';
 import { ContactNote, DealNote } from '../types';
 import { NoteAttachments } from './NoteAttachments';
 import { NoteInputs } from './NoteInputs';
+import { SaleName } from '../sales/SaleName';
+import { RelativeDate } from '../misc/RelativeDate';
+import { CompanyAvatar } from '../companies/CompanyAvatar';
 
 export const Note = ({
     showStatus,
@@ -85,52 +86,63 @@ export const Note = ({
         <Box
             onMouseEnter={() => setHover(true)}
             onMouseLeave={() => setHover(false)}
+            pb={1}
         >
-            <Stack
-                direction="row"
-                justifyContent="space-between"
-                alignItems="center"
-            >
-                <Box color="text.secondary">
+            <Stack direction="row" spacing={1} alignItems="center" width="100%">
+                {resource === 'contactNote' ? (
+                    <Avatar width={20} height={20} />
+                ) : (
+                    <ReferenceField
+                        source="company_id"
+                        reference="companies"
+                        link="show"
+                    >
+                        <CompanyAvatar width={20} height={20} />
+                    </ReferenceField>
+                )}
+                <Typography color="text.secondary" variant="body2">
                     <ReferenceField
                         record={note}
                         resource={resource}
                         source="sales_id"
                         reference="sales"
+                        link={false}
                     >
-                        <TextField source="first_name" variant="body2" />
+                        <WithRecord
+                            render={record => <SaleName sale={record} />}
+                        />
                     </ReferenceField>{' '}
-                    <Typography component="span" variant="body2">
-                        added a note on{' '}
-                    </Typography>
-                    <DateField
-                        source="date"
-                        record={note}
-                        variant="body2"
-                        showTime
-                        options={{
-                            dateStyle: 'full',
-                            timeStyle: 'short',
+                    added a note {showStatus && <Status status={note.status} />}
+                    <Box
+                        component="span"
+                        sx={{
+                            ml: 2,
+                            visibility: isHover ? 'visible' : 'hidden',
                         }}
-                    />{' '}
-                    {showStatus && <Status status={note.status} />}
-                </Box>
-                <Box
-                    sx={{
-                        visibility: isHover ? 'visible' : 'hidden',
-                    }}
+                    >
+                        <Tooltip title="Edit note">
+                            <IconButton
+                                size="small"
+                                onClick={handleEnterEditMode}
+                            >
+                                <EditIcon />
+                            </IconButton>
+                        </Tooltip>
+                        <Tooltip title="Delete note">
+                            <IconButton size="small" onClick={handleDelete}>
+                                <TrashIcon />
+                            </IconButton>
+                        </Tooltip>
+                    </Box>
+                </Typography>
+                <Box flex={1}></Box>
+                <Typography
+                    color="textSecondary"
+                    variant="body2"
+                    component="span"
                 >
-                    <Tooltip title="Edit note">
-                        <IconButton size="small" onClick={handleEnterEditMode}>
-                            <EditIcon />
-                        </IconButton>
-                    </Tooltip>
-                    <Tooltip title="Delete note">
-                        <IconButton size="small" onClick={handleDelete}>
-                            <TrashIcon />
-                        </IconButton>
-                    </Tooltip>
-                </Box>
+                    <RelativeDate date={note.date} />
+                </Typography>
             </Stack>
             {isEditing ? (
                 <Form onSubmit={handleNoteUpdate} record={note}>
@@ -146,7 +158,7 @@ export const Note = ({
                             Update Note
                         </Button>
                         <Button
-                            sx={{ mr: 1 }}
+                            sx={{ ml: 1 }}
                             onClick={handleCancelEdit}
                             color="primary"
                         >
@@ -165,7 +177,6 @@ export const Note = ({
                     <Box
                         flex={1}
                         sx={{
-                            maxWidth: '80%',
                             '& p:first-of-type': {
                                 marginTop: 0,
                             },

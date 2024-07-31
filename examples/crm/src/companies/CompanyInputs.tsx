@@ -67,8 +67,16 @@ const CompanyDisplayInputs = () => {
                 width={60}
                 height={60}
                 emptyText={record?.name.charAt(0)}
+                linkPosition="bottom"
             />
-            <TextInput source="name" validate={required()} helperText={false} />
+            <TextInput
+                source="name"
+                validate={required()}
+                helperText={false}
+                sx={{
+                    mt: 0,
+                }}
+            />
         </Stack>
     );
 };

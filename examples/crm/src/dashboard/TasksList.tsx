@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Card, Box, Button } from '@mui/material';
+import { Card, Box, Button, Stack } from '@mui/material';
 import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn';
 import {
     useGetList,
@@ -51,7 +51,7 @@ export const TasksList = () => {
         perPage: 10,
     });
     return (
-        <>
+        <Stack>
             <Box display="flex" alignItems="center" marginBottom="1em">
                 <Box ml={2} mr={2} display="flex">
                     <AssignmentTurnedInIcon color="disabled" fontSize="large" />
@@ -83,6 +83,6 @@ export const TasksList = () => {
                     </Button>
                 )}
             </Card>
-        </>
+        </Stack>
     );
 };

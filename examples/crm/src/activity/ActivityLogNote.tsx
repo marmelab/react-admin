@@ -1,8 +1,5 @@
-import Link from '@mui/material/Link';
-import ListItem from '@mui/material/ListItem';
-import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
-import { MouseEventHandler, ReactNode, useState } from 'react';
+import { ListItem, Stack, Typography } from '@mui/material';
+import { ReactNode, Fragment } from 'react';
 
 type ActivityLogContactNoteCreatedProps = {
     header: ReactNode;
@@ -13,17 +10,7 @@ export function ActivityLogNote({
     header,
     text,
 }: ActivityLogContactNoteCreatedProps) {
-    const [seeMore, setSeeMore] = useState(false);
-
-    const maxDisplayLength = 600;
-
-    const slicedText =
-        text.length > maxDisplayLength ? text.slice(0, maxDisplayLength) : null;
-
-    const handleToggleSeeMore: MouseEventHandler = e => {
-        e.preventDefault();
-        setSeeMore(oldSeeMore => !oldSeeMore);
-    };
+    const paragraphs = text.split('\n');
 
     return (
         <ListItem disableGutters>
@@ -31,31 +18,29 @@ export function ActivityLogNote({
                 <Stack
                     direction="row"
                     spacing={1}
-                    sx={{
-                        alignItems: 'flex-start',
-                        width: '100%',
-                    }}
+                    alignItems="flex-start"
+                    width="100%"
                 >
                     {header}
                 </Stack>
-
-                <Typography variant="body2">
-                    {slicedText && !seeMore ? (
-                        <>
-                            {slicedText}
-                            ...{' '}
-                            <Link
-                                href="#"
-                                variant="body2"
-                                onClick={handleToggleSeeMore}
-                            >
-                                see more
-                            </Link>
-                        </>
-                    ) : (
-                        text
-                    )}
-                </Typography>
+                <div>
+                    <Typography
+                        variant="body2"
+                        sx={{
+                            display: '-webkit-box',
+                            WebkitLineClamp: '3',
+                            WebkitBoxOrient: 'vertical',
+                            overflow: 'hidden',
+                        }}
+                    >
+                        {paragraphs.map((paragraph: string, index: number) => (
+                            <Fragment key={index}>
+                                {paragraph}
+                                {index < paragraphs.length - 1 && <br />}
+                            </Fragment>
+                        ))}
+                    </Typography>
+                </div>
             </Stack>
         </ListItem>
     );
