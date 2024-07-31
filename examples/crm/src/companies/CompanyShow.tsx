@@ -21,10 +21,8 @@ import { ChangeEvent, useState } from 'react';
 import {
     RecordContextProvider,
     ReferenceManyField,
-    SelectField,
     ShowBase,
     SortButton,
-    TextField,
     useListContext,
     useRecordContext,
     useShowContext,
@@ -40,7 +38,6 @@ import { useConfigurationContext } from '../root/ConfigurationContext';
 import { Company, Contact, Deal } from '../types';
 import { CompanyAside } from './CompanyAside';
 import { CompanyAvatar } from './CompanyAvatar';
-import { sizes } from './sizes';
 
 export const CompanyShow = () => (
     <ShowBase>
@@ -48,12 +45,25 @@ export const CompanyShow = () => (
     </ShowBase>
 );
 
+const KEY_LOCAL_TAB = 'company-tab-value';
+
 const CompanyShowContent = () => {
     const { record, isPending } = useShowContext<Company>();
     const [tabValue, setTabValue] = useState(0);
+
     const handleTabChange = (_: ChangeEvent<{}>, newValue: number) => {
         setTabValue(newValue);
+        localStorage.setItem(KEY_LOCAL_TAB, newValue.toString());
     };
+
+    React.useEffect(() => {
+        const savedTabValue = localStorage.getItem(KEY_LOCAL_TAB);
+        if (savedTabValue) {
+            setTabValue(parseInt(savedTabValue, 10));
+            localStorage.removeItem(KEY_LOCAL_TAB);
+        }
+    }, []);
+
     if (isPending || !record) return null;
 
     let tabIndex = 0;
