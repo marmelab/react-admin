@@ -9,7 +9,6 @@ import {
     TextField,
     TopToolbar,
 } from 'react-admin';
-import { TransferAdminRole } from './TransferAdminRole';
 
 function SalesListActions() {
     return (
@@ -37,8 +36,6 @@ export function SalesList() {
                     <BooleanField source="administrator" FalseIcon={null} />
                 </DatagridConfigurable>
             </List>
-
-            <TransferAdminRole />
         </Stack>
     );
 }

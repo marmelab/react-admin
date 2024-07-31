@@ -1,7 +1,6 @@
 import {
     DeleteWithConfirmButton,
     Edit,
-    PasswordInput,
     SaveButton,
     SimpleForm,
     Toolbar,
@@ -38,12 +37,7 @@ export function SalesEdit() {
             <Edit>
                 <SimpleForm toolbar={<EditToolbar />}>
                     <SaleEditTitle />
-                    <SalesInputs>
-                        <PasswordInput
-                            source="new_password"
-                            helperText={false}
-                        />
-                    </SalesInputs>
+                    <SalesInputs />
                 </SimpleForm>
             </Edit>
         </Container>
