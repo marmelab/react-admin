@@ -25,7 +25,7 @@ export function ActivityLog({
 
     if (isPending) {
         return (
-            <Stack p={2}>
+            <Stack mt={0.5}>
                 {Array.from({ length: 5 }).map((_, index) => (
                     <Stack spacing={2} sx={{ mt: 1 }} key={index}>
                         <Stack
