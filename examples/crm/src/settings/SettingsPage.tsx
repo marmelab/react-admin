@@ -129,11 +129,12 @@ const SettingsForm = ({
                         My info
                     </Typography>
                 </Stack>
-                <Stack gap={1} mb={2}>
+                <Stack gap={2} mb={2}>
                     <ImageEditorField
                         source="avatar"
                         type="avatar"
                         onSave={handleAvatarUpdate}
+                        linkPosition="right"
                     />
                     <TextRender source="first_name" isEditMode={isEditMode} />
                     <TextRender source="last_name" isEditMode={isEditMode} />
@@ -196,7 +197,7 @@ const TextRender = ({
         return <TextInput source={source} helperText={false} />;
     }
     return (
-        <Labeled mb={'20px'}>
+        <Labeled sx={{ mb: 0 }}>
             <TextField source={source} />
         </Labeled>
     );

@@ -5,10 +5,12 @@ export const DialogCloseButton = ({
     onClose,
     top = 8,
     right = 8,
+    color,
 }: {
     onClose: () => void;
     top?: number;
     right?: number;
+    color?: string;
 }) => {
     return (
         <IconButton
@@ -18,7 +20,7 @@ export const DialogCloseButton = ({
                 position: 'absolute',
                 right,
                 top,
-                color: theme => theme.palette.grey[500],
+                color: theme => (color ? color : theme.palette.grey[500]),
             }}
         >
             <CloseIcon />

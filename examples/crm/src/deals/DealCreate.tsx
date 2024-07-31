@@ -73,7 +73,7 @@ export const DealCreate = ({ open }: { open: boolean }) => {
     const { identity } = useGetIdentity();
 
     return (
-        <Dialog open={open} onClose={handleClose} fullWidth maxWidth="lg">
+        <Dialog open={open} onClose={handleClose} fullWidth maxWidth="md">
             <Create<Deal>
                 resource="deals"
                 mutationOptions={{ onSuccess }}

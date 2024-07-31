@@ -42,7 +42,7 @@ export const TasksList = () => {
     if (contactsLoading || !contacts) return null;
 
     return (
-        <>
+        <Stack>
             <Box display="flex" alignItems="center" marginBottom="1em">
                 <Box ml={2} mr={2} display="flex">
                     <AssignmentTurnedInIcon color="disabled" fontSize="large" />
@@ -81,6 +81,6 @@ export const TasksList = () => {
                     />
                 </Stack>
             </Card>
-        </>
+        </Stack>
     );
 };

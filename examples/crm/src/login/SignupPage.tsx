@@ -49,7 +49,6 @@ export const SignupPage = () => {
                     login({
                         email: data.email,
                         password: data.password,
-                        redirectTo: '/contacts',
                     });
                     setTimeout(() => {
                         notify(

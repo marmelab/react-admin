@@ -28,26 +28,21 @@ export const ContactInputs = () => {
     const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
     return (
-        <Stack gap={4} p={1}>
-            <Stack gap={2}>
-                <Avatar />
-                <Stack gap={4} flexDirection={isMobile ? 'column' : 'row'}>
+        <Stack gap={2} p={1}>
+            <Avatar />
+            <Stack gap={4} direction={isMobile ? 'column' : 'row'}>
+                <Stack gap={4} flex={1}>
                     <ContactIdentityInputs />
-                    <Divider
-                        orientation={isMobile ? 'horizontal' : 'vertical'}
-                        flexItem
-                    />
                     <ContactPositionInputs />
                 </Stack>
-            </Stack>
-
-            <Stack gap={4} flexDirection={isMobile ? 'column' : 'row'}>
-                <ContactPersonalInformationInputs />
                 <Divider
                     orientation={isMobile ? 'horizontal' : 'vertical'}
                     flexItem
                 />
-                <ContactMiscInputs />
+                <Stack gap={4} flex={1}>
+                    <ContactPersonalInformationInputs />
+                    <ContactMiscInputs />
+                </Stack>
             </Stack>
         </Stack>
     );
@@ -56,7 +51,7 @@ export const ContactInputs = () => {
 const ContactIdentityInputs = () => {
     const { contactGender } = useConfigurationContext();
     return (
-        <Stack gap={1} flex={1}>
+        <Stack>
             <Typography variant="h6">Identity</Typography>
             <RadioButtonGroupInput
                 label={false}
@@ -108,7 +103,7 @@ const ContactPositionInputs = () => {
         }
     };
     return (
-        <Stack gap={1} flex={1}>
+        <Stack>
             <Typography variant="h6">Position</Typography>
             <TextInput source="title" helperText={false} />
             <ReferenceInput source="company_id" reference="companies">
@@ -125,7 +120,7 @@ const ContactPositionInputs = () => {
 
 const ContactPersonalInformationInputs = () => {
     return (
-        <Stack gap={1} flex={1}>
+        <Stack>
             <Typography variant="h6">Personal info</Typography>
             <TextInput source="email" helperText={false} validate={email()} />
             <Stack gap={1} flexDirection="row">
@@ -170,7 +165,7 @@ const ContactPersonalInformationInputs = () => {
 
 const ContactMiscInputs = () => {
     return (
-        <Stack gap={1} flex={1}>
+        <Stack>
             <Typography variant="h6">Misc</Typography>
             <TextInput
                 source="background"

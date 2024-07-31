@@ -1,7 +1,9 @@
 import { Alert, Divider, Skeleton, Stack } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 import { Identifier, useDataProvider } from 'react-admin';
+
 import { CustomDataProvider } from '../dataProvider';
+import { ActivityLogContext } from './ActivityLogContext';
 import { ActivityLogIterator } from './ActivityLogIterator';
 
 type ActivityLogProps = {
@@ -23,7 +25,7 @@ export function ActivityLog({
 
     if (isPending) {
         return (
-            <Stack p={2}>
+            <Stack mt={0.5}>
                 {Array.from({ length: 5 }).map((_, index) => (
                     <Stack spacing={2} sx={{ mt: 1 }} key={index}>
                         <Stack
@@ -51,10 +53,8 @@ export function ActivityLog({
     }
 
     return (
-        <ActivityLogIterator
-            activities={data}
-            pageSize={pageSize}
-            context={context}
-        />
+        <ActivityLogContext.Provider value={context}>
+            <ActivityLogIterator activities={data} pageSize={pageSize} />
+        </ActivityLogContext.Provider>
     );
 }
