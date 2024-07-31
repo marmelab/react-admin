@@ -60,7 +60,7 @@ export const CompanyInputs = () => {
 const CompanyDisplayInputs = () => {
     const record = useRecordContext<Company>();
     return (
-        <Stack gap={1} flex={1} direction="row">
+        <Stack gap={2} flex={1} direction="row">
             <ImageEditorField
                 source="logo.src"
                 type="avatar"
@@ -68,7 +68,6 @@ const CompanyDisplayInputs = () => {
                 height={60}
                 emptyText={record?.name.charAt(0)}
                 linkPosition="bottom"
-                backgroundImageColor="#f0f0f0"
             />
             <TextInput
                 source="name"
