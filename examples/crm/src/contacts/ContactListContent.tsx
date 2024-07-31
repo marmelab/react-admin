@@ -1,8 +1,6 @@
 /* eslint-disable import/no-anonymous-default-export */
 import * as React from 'react';
 import {
-    BulkActionsToolbar,
-    BulkDeleteButton,
     RecordContextProvider,
     ReferenceField,
     SimpleListLoading,
@@ -50,9 +48,6 @@ export const ContactListContent = () => {
 
     return (
         <>
-            <BulkActionsToolbar>
-                <BulkDeleteButton />
-            </BulkActionsToolbar>
             <List dense>
                 {contacts.map(contact => (
                     <RecordContextProvider key={contact.id} value={contact}>

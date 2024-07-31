@@ -3,6 +3,8 @@ import { Card, LinearProgress, Stack } from '@mui/material';
 import jsonExport from 'jsonexport/dist';
 import type { Exporter } from 'react-admin';
 import {
+    BulkActionsToolbar,
+    BulkDeleteButton,
     CreateButton,
     downloadCSV,
     ExportButton,
@@ -60,6 +62,9 @@ const ContactListLayout = () => {
             <Stack sx={{ width: '100%' }}>
                 <Title title={'Contacts'} />
                 <ListToolbar actions={<ContactListActions />} />
+                <BulkActionsToolbar>
+                    <BulkDeleteButton />
+                </BulkActionsToolbar>
                 <Card>
                     <ContactListContent />
                 </Card>
