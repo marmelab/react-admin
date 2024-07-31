@@ -8,7 +8,7 @@ import {
 } from 'react-admin';
 import { useConfigurationContext } from '../root/ConfigurationContext';
 import { useState } from 'react';
-import { getCurrentDate } from './utils';
+import { formatNoteDate, getCurrentDate } from './utils';
 import { Status } from '../misc/Status';
 
 export const NoteInputs = ({
@@ -67,6 +67,7 @@ export const NoteInputs = ({
                             label="Date"
                             defaultValue={getCurrentDate()}
                             helperText={false}
+                            parse={formatNoteDate}
                         />
                     </Stack>
                     <FileInput source="attachments" multiple>

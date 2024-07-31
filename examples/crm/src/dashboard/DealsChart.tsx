@@ -1,5 +1,5 @@
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
-import { Box } from '@mui/material';
+import { Box, Stack } from '@mui/material';
 import { ResponsiveBar } from '@nivo/bar';
 import { format, startOfMonth } from 'date-fns';
 import { useMemo } from 'react';
@@ -78,7 +78,7 @@ export const DealsChart = () => {
     );
 
     return (
-        <>
+        <Stack>
             <Box display="flex" alignItems="center">
                 <Box ml={2} mr={2} display="flex">
                     <AttachMoneyIcon color="disabled" fontSize="large" />
@@ -151,6 +151,6 @@ export const DealsChart = () => {
                     }
                 />
             </Box>
-        </>
+        </Stack>
     );
 };

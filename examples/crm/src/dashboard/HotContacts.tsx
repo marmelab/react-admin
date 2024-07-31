@@ -23,7 +23,7 @@ export const HotContacts = () => {
         { enabled: Number.isInteger(identity?.id) }
     );
     return (
-        <>
+        <Stack>
             <Box display="flex" alignItems="center" marginBottom="1em">
                 <Box ml={2} mr={2} display="flex">
                     <ContactsIcon color="disabled" fontSize="large" />
@@ -49,13 +49,10 @@ export const HotContacts = () => {
                     }
                     secondaryText={contact => (
                         <Stack>
-                            <Typography variant="caption">
+                            <Typography variant="body2">
                                 {contact.title} at {contact.company_name}
                             </Typography>
-                            <Typography
-                                variant="caption"
-                                color="text.secondary"
-                            >
+                            <Typography variant="body2">
                                 {formatDistance(contact.last_seen, new Date(), {
                                     addSuffix: true,
                                 })}
@@ -66,6 +63,6 @@ export const HotContacts = () => {
                     dense
                 />
             </Card>
-        </>
+        </Stack>
     );
 };

@@ -31,7 +31,12 @@ const LoadedGridList = () => {
     if (isPending || error) return null;
 
     return (
-        <Box display="flex" flexWrap="wrap" width="100%" gap={1}>
+        <Box
+            width="100%"
+            gap={1}
+            display="grid"
+            gridTemplateColumns="repeat(auto-fill, minmax(180px, 1fr))"
+        >
             {data.map(record => (
                 <RecordContextProvider key={record.id} value={record}>
                     <CompanyCard />
