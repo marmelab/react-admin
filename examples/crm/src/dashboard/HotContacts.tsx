@@ -2,7 +2,6 @@ import * as React from 'react';
 import { Card, Box, Stack } from '@mui/material';
 import ContactsIcon from '@mui/icons-material/Contacts';
 import { useGetList, Link, SimpleList, useGetIdentity } from 'react-admin';
-import { formatDistance } from 'date-fns';
 
 import { Avatar } from '../contacts/Avatar';
 import { Contact } from '../types';
@@ -50,10 +49,6 @@ export const HotContacts = () => {
                     secondaryText={contact => (
                         <>
                             {contact.title} at {contact.company_name}
-                            <br />
-                            {formatDistance(contact.last_seen, new Date(), {
-                                addSuffix: true,
-                            })}
                         </>
                     )}
                     leftAvatar={contact => <Avatar record={contact} />}
