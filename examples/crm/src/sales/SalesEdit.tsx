@@ -1,10 +1,8 @@
 import {
-    DeleteWithConfirmButton,
     Edit,
     SaveButton,
     SimpleForm,
     Toolbar,
-    useGetIdentity,
     useRecordContext,
 } from 'react-admin';
 import { Sale } from '../types';
@@ -12,21 +10,9 @@ import { SalesInputs } from './SalesInputs';
 import { Container, Typography } from '@mui/material';
 
 function EditToolbar() {
-    const { identity } = useGetIdentity();
-    const record = useRecordContext<Sale>();
-
     return (
         <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
             <SaveButton />
-
-            <DeleteWithConfirmButton
-                disabled={record?.id === identity?.id}
-                mutationOptions={{
-                    meta: {
-                        identity,
-                    },
-                }}
-            />
         </Toolbar>
     );
 }

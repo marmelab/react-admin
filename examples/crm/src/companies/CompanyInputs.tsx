@@ -159,7 +159,13 @@ const CompanyAccountManagerInput = () => {
     return (
         <Stack>
             <Typography variant="h6">Account manager</Typography>
-            <ReferenceInput source="sales_id" reference="sales">
+            <ReferenceInput
+                source="sales_id"
+                reference="sales"
+                filter={{
+                    disabled_neq: true,
+                }}
+            >
                 <SelectInput
                     label="Account manager"
                     helperText={false}
