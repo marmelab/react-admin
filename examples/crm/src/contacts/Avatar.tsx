@@ -17,7 +17,7 @@ export const Avatar = (props: {
 
     return (
         <MuiAvatar
-            src={record.avatar ?? undefined}
+            src={record.avatar?.src ?? undefined}
             sx={{
                 width: props.width,
                 height: props.height,

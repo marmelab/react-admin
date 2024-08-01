@@ -34,11 +34,13 @@ export const generateContacts = (db: Db): Contact[] => {
         const first_name = name.firstName(gender as any);
         const last_name = name.lastName();
         const email = internet.email(first_name, last_name);
-        const avatar = has_avatar
-            ? 'https://marmelab.com/posters/avatar-' +
-              (223 - numberOfContacts) +
-              '.jpeg'
-            : undefined;
+        const avatar = {
+            src: has_avatar
+                ? 'https://marmelab.com/posters/avatar-' +
+                  (223 - numberOfContacts) +
+                  '.jpeg'
+                : undefined,
+        };
         const title = fakerCompany.bsAdjective();
 
         if (has_avatar) {
