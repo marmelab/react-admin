@@ -24,8 +24,8 @@ let taskUpdateType = TASK_DONE_NOT_CHANGED;
 const processCompanyLogo = async (params: any) => {
     let logo = params.data.logo;
 
-    if (typeof logo !== 'object' || logo === null) {
-        logo = getCompanyAvatar(params.data);
+    if (typeof logo !== 'object' || logo === null || !logo.src) {
+        logo = await getCompanyAvatar(params.data);
     } else if (logo.rawFile instanceof File) {
         const base64Logo = await convertFileToBase64(logo);
         logo = { src: base64Logo, title: logo.title };

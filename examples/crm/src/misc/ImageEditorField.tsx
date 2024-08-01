@@ -101,6 +101,11 @@ const ImageEditorDialog = (props: ImageEditorDialogProps) => {
         }
     };
 
+    const deleteImage = () => {
+        setValue(props.source, undefined, { shouldDirty: true });
+        props.onClose();
+    };
+
     const { getRootProps, getInputProps } = useDropzone({
         accept: { 'image/jpeg': ['.jpeg', '.png'] },
         onDrop,
@@ -150,9 +155,14 @@ const ImageEditorDialog = (props: ImageEditorDialogProps) => {
                 </Stack>
             </DialogContent>
             <DialogActions sx={{ p: 0 }}>
-                <Toolbar sx={{ width: '100%' }}>
+                <Toolbar
+                    sx={{ width: '100%', justifyContent: 'space-between' }}
+                >
                     <Button variant="contained" onClick={updateImage}>
                         Update Image
+                    </Button>
+                    <Button variant="text" color="error" onClick={deleteImage}>
+                        Delete
                     </Button>
                 </Toolbar>
             </DialogActions>

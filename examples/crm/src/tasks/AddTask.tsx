@@ -37,7 +37,7 @@ export const AddTask = ({ selectContact }: { selectContact?: boolean }) => {
     };
     return (
         <>
-            <Box mt={1}>
+            <Box mt={2} mb={2}>
                 <Chip
                     icon={<ControlPointIcon />}
                     size="small"

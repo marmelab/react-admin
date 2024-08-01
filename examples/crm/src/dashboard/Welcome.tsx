@@ -30,7 +30,7 @@ export const Welcome = () => (
     >
         <CardContent>
             <Typography variant="h5" gutterBottom>
-                CRM demo
+                CRM Demo
             </Typography>
             <Typography variant="body2" gutterBottom>
                 This app runs in the browser, and relies on a mock REST API.

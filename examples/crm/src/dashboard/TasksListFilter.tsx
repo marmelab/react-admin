@@ -61,7 +61,7 @@ export const TasksListFilter = ({
                         }
                         variant="caption"
                         sx={{ cursor: 'pointer' }}
-                        color="text.primary"
+                        color="primary"
                     >
                         5 more
                     </Typography>

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Card, Box, Stack, Typography } from '@mui/material';
+import { Card, Box, Stack } from '@mui/material';
 import ContactsIcon from '@mui/icons-material/Contacts';
 import { useGetList, Link, SimpleList, useGetIdentity } from 'react-admin';
 import { formatDistance } from 'date-fns';
@@ -24,9 +24,9 @@ export const HotContacts = () => {
     );
     return (
         <Stack>
-            <Box display="flex" alignItems="center" marginBottom="1em">
-                <Box ml={2} mr={2} display="flex">
-                    <ContactsIcon color="disabled" fontSize="large" />
+            <Box display="flex" alignItems="center" mb={1}>
+                <Box mr={1} display="flex">
+                    <ContactsIcon color="disabled" fontSize="medium" />
                 </Box>
                 <Link
                     underline="none"
@@ -34,7 +34,7 @@ export const HotContacts = () => {
                     color="textSecondary"
                     to="/contacts"
                 >
-                    Hot contacts
+                    Hot Contacts
                 </Link>
             </Box>
             <Card>
