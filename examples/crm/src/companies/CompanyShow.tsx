@@ -58,7 +58,11 @@ const CompanyShowContent = () => {
                             </Typography>
                         </Box>
 
-                        <TabbedShowLayout>
+                        <TabbedShowLayout
+                            sx={{
+                                '& .RaTabbedShowLayout-content': { p: 0 },
+                            }}
+                        >
                             <TabbedShowLayout.Tab label="Activity">
                                 <ActivityLog
                                     companyId={record.id}
