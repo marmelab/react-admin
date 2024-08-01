@@ -4,8 +4,9 @@ import {
     useGetList,
     useList,
 } from 'react-admin';
+import { Link, Stack, Typography } from '@mui/material';
+
 import { Contact } from '../types';
-import { Stack, Typography } from '@mui/material';
 import { TasksIterator } from '../tasks/TasksIterator';
 
 export const TasksListFilter = ({
@@ -45,26 +46,24 @@ export const TasksListFilter = ({
 
     return (
         <Stack>
-            <Typography variant="body1" fontWeight="bold">
-                {title}
-            </Typography>
+            <Typography variant="overline">{title}</Typography>
             <ResourceContextProvider value="tasks">
                 <ListContextProvider value={listContext}>
-                    <TasksIterator showContact />
+                    <TasksIterator showContact sx={{ pt: 0, pb: 0 }} />
                 </ListContextProvider>
             </ResourceContextProvider>
             {total > listContext.perPage && (
                 <Stack justifyContent="flex-end" direction="row">
-                    <Typography
-                        onClick={() =>
-                            listContext.setPerPage(listContext.perPage + 10)
-                        }
-                        variant="caption"
-                        sx={{ cursor: 'pointer' }}
-                        color="primary"
+                    <Link
+                        href="#"
+                        onClick={e => {
+                            listContext.setPerPage(listContext.perPage + 10);
+                            e.preventDefault();
+                        }}
+                        variant="body2"
                     >
-                        5 more
-                    </Typography>
+                        Load more
+                    </Link>
                 </Stack>
             )}
         </Stack>

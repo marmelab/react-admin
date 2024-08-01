@@ -60,8 +60,10 @@ export const TasksList = () => {
                 </Link>
             </Box>
             <Card sx={{ px: 2 }}>
-                <AddTask selectContact />
-                <Stack gap={2} mt={2}>
+                <Box textAlign="center" mb={-2}>
+                    <AddTask selectContact />
+                </Box>
+                <Stack mb={2}>
                     <TasksListFilter
                         title="Overdue"
                         filter={taskFilters.overdue}
