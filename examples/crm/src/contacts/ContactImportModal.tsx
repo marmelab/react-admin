@@ -97,8 +97,8 @@ export function ContactImportModal({ open, onClose }: ContactImportModalProps) {
                                         },
                                     }}
                                 >
-                                    Import is running, please do not close this
-                                    tab.
+                                    The import is running, please do not close
+                                    this tab.
                                 </Alert>
                                 <Typography variant="body2">
                                     Imported{' '}
@@ -109,29 +109,26 @@ export function ContactImportModal({ open, onClose }: ContactImportModalProps) {
                                     contacts, with{' '}
                                     <strong>{importer.errorCount}</strong>{' '}
                                     errors.
+                                    {importer.remainingTime !== null && (
+                                        <>
+                                            {' '}
+                                            Estimated remaining time:{' '}
+                                            <strong>
+                                                {millisecondsToTime(
+                                                    importer.remainingTime
+                                                )}
+                                            </strong>
+                                            .{' '}
+                                            <MuiLink
+                                                href="#"
+                                                onClick={handleReset}
+                                                color="error"
+                                            >
+                                                Stop import
+                                            </MuiLink>
+                                        </>
+                                    )}
                                 </Typography>
-
-                                {importer.remainingTime !== null && (
-                                    <Typography variant="body2">
-                                        Estimated remaining time:{' '}
-                                        <strong>
-                                            {millisecondsToTime(
-                                                importer.remainingTime
-                                            )}
-                                        </strong>
-                                        .{' '}
-                                        <MuiLink
-                                            href="#"
-                                            onClick={handleReset}
-                                            color="error"
-                                            sx={{
-                                                marginLeft: 2,
-                                            }}
-                                        >
-                                            Stop import
-                                        </MuiLink>
-                                    </Typography>
-                                )}
                             </Stack>
                         )}
 
