@@ -41,7 +41,7 @@ export const DashboardStepper = ({
                         direction="row"
                         alignItems="center"
                         justifyContent="space-between"
-                        mb={4}
+                        mb={2}
                     >
                         <Typography variant="h6" fontWeight="bold">
                             What's next?

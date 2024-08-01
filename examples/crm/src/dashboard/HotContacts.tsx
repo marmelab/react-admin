@@ -21,6 +21,7 @@ export const HotContacts = () => {
         },
         { enabled: Number.isInteger(identity?.id) }
     );
+
     return (
         <Stack>
             <Box display="flex" alignItems="center" mb={1}>
