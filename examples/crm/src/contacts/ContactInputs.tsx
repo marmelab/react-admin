@@ -8,7 +8,6 @@ import {
 import {
     AutocompleteInput,
     BooleanInput,
-    FileInput,
     RadioButtonGroupInput,
     ReferenceInput,
     SelectInput,

@@ -74,7 +74,14 @@ const DealLayout = () => {
 
     if (isPending) return <LinearProgress />;
     if (!data?.length && !hasOtherFiltersThanDefaultBoolean)
-        return <DealEmpty />;
+        return (
+            <>
+                <DealEmpty>
+                    <DealShow open={!!matchShow} id={matchShow?.params.id} />
+                    <DealArchivedList />
+                </DealEmpty>
+            </>
+        );
 
     return (
         <Stack component="div" sx={{ width: '100%' }}>

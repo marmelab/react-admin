@@ -12,7 +12,7 @@ import generateData from './dataGenerator';
 import { getActivityLog } from './dataProvider/activity';
 import { getCompanyAvatar } from './misc/getCompanyAvatar';
 import { getContactAvatar } from './misc/getContactAvatar';
-import { Company, Contact, ContactNote, Deal, Sale, Task } from './types';
+import { Company, Contact, Deal, Sale, Task } from './types';
 
 const baseDataProvider = fakeRestDataProvider(generateData(), true, 300);
 
@@ -284,45 +284,6 @@ export const dataProvider = withLifecycleCallbacks(
                 return result;
             },
         } satisfies ResourceCallbacks<Contact>,
-        {
-            resource: 'contactNotes',
-            afterCreate: async (result, dataProvider) => {
-                // update the notes count in the related contact
-                const { contact_id } = result.data;
-                const { data: contact } = await dataProvider.getOne<Contact>(
-                    'contacts',
-                    {
-                        id: contact_id,
-                    }
-                );
-                await dataProvider.update('contacts', {
-                    id: contact_id,
-                    data: {
-                        nb_notes: (contact.nb_notes ?? 0) + 1,
-                    },
-                    previousData: contact,
-                });
-                return result;
-            },
-            afterDelete: async (result, dataProvider) => {
-                // update the notes count in the related contact
-                const { contact_id } = result.data;
-                const { data: contact } = await dataProvider.getOne(
-                    'contacts',
-                    {
-                        id: contact_id,
-                    }
-                );
-                await dataProvider.update('contacts', {
-                    id: contact_id,
-                    data: {
-                        nb_notes: (contact.nb_notes ?? 0) - 1,
-                    },
-                    previousData: contact,
-                });
-                return result;
-            },
-        } satisfies ResourceCallbacks<ContactNote>,
         {
             resource: 'tasks',
             afterCreate: async (result, dataProvider) => {
