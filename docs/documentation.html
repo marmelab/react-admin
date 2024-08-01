@@ -88,14 +88,6 @@
                 font-family: 'Helvetica', sans-serif;
                 color: #c0ccda;
             }
-            #closeBanner {
-                cursor: pointer;
-            }
-            @media screen and (max-width: 576px) {
-                #closeBanner {
-                    display: none;
-                }
-            }
         </style>
         <link
             rel="stylesheet"
@@ -105,37 +97,6 @@
 
     <body>
         <header>
-            <span
-                id="banner"
-                style="
-                    background-color: #db2777;
-                    padding: 3px;
-                    text-align: center;
-                    color: #fff;
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    gap: 0.5rem;
-                    padding: 0.75rem;
-                "
-            >
-                <span aria-hidden="true" id="randomEmoji"></span>
-                <span style="text-align: center">
-                    📣 React-admin v5 is here! Read the
-                    <a
-                        style="text-decoration: underline; color: #fff"
-                        href="https://marmelab.com/blog/2024/06/20/react-admin-v5.html"
-                        >announcement blog post</a
-                    >. 📣
-                </span>
-                <span
-                    id="closeBanner"
-                    aria-label="Close"
-                    style="position: absolute; right: 10px"
-                >
-                    <span aria-hidden="true">X</span>
-                </span>
-            </span>
             {% include nav.html %}
             <ul id="slide-out" class="sidenav sidenav-fixed">
                 <li class="logo">
@@ -391,20 +352,5 @@
             defer
             src="https://unpkg.com/prettier@2.8.8/parser-babel.js"
         ></script>
-        <script>
-            function hideBanner() {
-                const banner = document.getElementById('banner');
-                if (banner) {
-                    banner.style.display = 'none';
-                }
-            }
-            const closeBanner = document.getElementById('closeBanner');
-            if (closeBanner) {
-                closeBanner.addEventListener('click', e => {
-                    e.preventDefault();
-                    hideBanner();
-                });
-            }
-        </script>
     </body>
 </html>
