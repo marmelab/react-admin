@@ -227,7 +227,7 @@ describe('Query Reducer', () => {
                 page: 1,
             });
         });
-        it("should set order as the opposite of the one in previous state even if order is specified in the payload when sort hasn't change", () => {
+        it("shouldn't set order as the opposite of the one in previous state if order is specified in the payload", () => {
             const updatedState = queryReducer(
                 {
                     sort: 'foo',
@@ -241,7 +241,7 @@ describe('Query Reducer', () => {
             );
             expect(updatedState).toEqual({
                 sort: 'foo',
-                order: SORT_ASC,
+                order: SORT_DESC,
                 page: 1,
             });
         });
