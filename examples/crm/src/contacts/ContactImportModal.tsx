@@ -1,9 +1,10 @@
-import { Box, CircularProgress, Stack } from '@mui/material';
+import { Box, CircularProgress, Stack, Typography } from '@mui/material';
 import Alert from '@mui/material/Alert';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
+import MuiLink from '@mui/material/Link';
 import {
     Button,
     FileField,
@@ -17,7 +18,7 @@ import { DialogCloseButton } from '../misc/DialogCloseButton';
 import { usePapaParse } from '../misc/usePapaParse';
 import { ContactImportSchema, useContactImport } from './useContactImport';
 
-import { useEffect, useState } from 'react';
+import { MouseEvent, useEffect, useState } from 'react';
 import * as sampleCsv from './contacts_export.csv?raw';
 
 const SAMPLE_URL = `data:text/csv;name=crm_contacts_sample.csv;charset=utf-8,${encodeURIComponent(sampleCsv.default)}`;
@@ -60,54 +61,89 @@ export function ContactImportModal({ open, onClose }: ContactImportModalProps) {
         onClose();
     };
 
+    const handleReset = (e: MouseEvent<HTMLAnchorElement>) => {
+        e.preventDefault();
+        reset();
+    };
+
     return (
-        <Dialog open={open} maxWidth="lg" fullWidth>
+        <Dialog open={open} maxWidth="md" fullWidth>
             <DialogCloseButton onClose={handleClose} />
             <DialogTitle>Import</DialogTitle>
             <DialogContent>
                 <Form>
                     <Stack spacing={2}>
                         {importer.state === 'running' && (
-                            <Alert
-                                severity="info"
-                                variant="outlined"
-                                action={
-                                    <Box
-                                        sx={{
-                                            display: 'flex',
-                                            height: '100%',
-                                            alignItems: 'center',
-                                        }}
-                                    >
-                                        <CircularProgress size={20} />
-                                    </Box>
-                                }
-                            >
-                                Import is running, please do not close this tab.{' '}
-                                Imported {importer.importCount} /{' '}
-                                {importer.rowCount}, with {importer.errorCount}{' '}
-                                errors.
+                            <Stack gap={2}>
+                                <Alert
+                                    severity="info"
+                                    action={
+                                        <Box
+                                            sx={{
+                                                display: 'flex',
+                                                height: '100%',
+                                                alignItems: 'center',
+                                                padding: '0',
+                                            }}
+                                        >
+                                            <CircularProgress size={20} />
+                                        </Box>
+                                    }
+                                    sx={{
+                                        alignItems: 'center',
+                                        '& .MuiAlert-action': {
+                                            padding: 0,
+                                            marginRight: 0,
+                                        },
+                                    }}
+                                >
+                                    Import is running, please do not close this
+                                    tab.
+                                </Alert>
+                                <Typography variant="body2">
+                                    Imported{' '}
+                                    <strong>
+                                        {importer.importCount} /{' '}
+                                        {importer.rowCount}
+                                    </strong>{' '}
+                                    contacts, with{' '}
+                                    <strong>{importer.errorCount}</strong>{' '}
+                                    errors.
+                                </Typography>
+
                                 {importer.remainingTime !== null && (
-                                    <>
-                                        <br />
+                                    <Typography variant="body2">
                                         Estimated remaining time:{' '}
-                                        {millisecondsToTime(
-                                            importer.remainingTime
-                                        )}
-                                    </>
+                                        <strong>
+                                            {millisecondsToTime(
+                                                importer.remainingTime
+                                            )}
+                                        </strong>
+                                        .{' '}
+                                        <MuiLink
+                                            href="#"
+                                            onClick={handleReset}
+                                            color="error"
+                                            sx={{
+                                                marginLeft: 2,
+                                            }}
+                                        >
+                                            Stop import
+                                        </MuiLink>
+                                    </Typography>
                                 )}
-                            </Alert>
+                            </Stack>
                         )}
 
                         {importer.state === 'error' && (
-                            <Alert severity="error" variant="outlined">
+                            <Alert severity="error">
                                 Failed to import this file, please make sure
                                 your provided a valid CSV file.
                             </Alert>
                         )}
 
                         {importer.state === 'complete' && (
-                            <Alert severity="success" variant="outlined">
+                            <Alert severity="success">
                                 Contacts import complete. Imported{' '}
                                 {importer.importCount} contacts, with{' '}
                                 {importer.errorCount} errors
