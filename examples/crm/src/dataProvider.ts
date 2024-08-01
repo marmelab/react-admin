@@ -41,27 +41,47 @@ const processCompanyLogo = async (params: any) => {
 };
 
 async function processContactAvatar(
-    params: UpdateParams<Contact>,
-    dataProvider: DataProvider
+    params: UpdateParams<Contact>
 ): Promise<UpdateParams<Contact>>;
 
 async function processContactAvatar(
-    params: CreateParams<Contact>,
-    dataProvider: DataProvider
+    params: CreateParams<Contact>
 ): Promise<CreateParams<Contact>>;
 
 async function processContactAvatar(
-    params: CreateParams<Contact> | UpdateParams<Contact>,
-    dataProvider: DataProvider
+    params: CreateParams<Contact> | UpdateParams<Contact>
 ): Promise<CreateParams<Contact> | UpdateParams<Contact>> {
     const { data } = params;
+    if (!data.avatar && !data.email) {
+        return params;
+    }
     const avatarUrl = await getContactAvatar(data);
 
     // Clone the data and modify the clone
     const newData = { ...data, avatar: { src: avatarUrl || undefined } };
 
+    return { ...params, data: newData };
+}
+
+async function fetchAndUpdateCompanyData(
+    params: UpdateParams<Contact>,
+    dataProvider: DataProvider
+): Promise<UpdateParams<Contact>>;
+
+async function fetchAndUpdateCompanyData(
+    params: CreateParams<Contact>,
+    dataProvider: DataProvider
+): Promise<CreateParams<Contact>>;
+
+async function fetchAndUpdateCompanyData(
+    params: CreateParams<Contact> | UpdateParams<Contact>,
+    dataProvider: DataProvider
+): Promise<CreateParams<Contact> | UpdateParams<Contact>> {
+    const { data } = params;
+    const newData = { ...data };
+
     if (!newData.company_id) {
-        return { ...params, data: newData };
+        return params;
     }
 
     const { data: company } = await dataProvider.getOne('companies', {
@@ -69,7 +89,7 @@ async function processContactAvatar(
     });
 
     if (!company) {
-        return { ...params, data: newData };
+        return params;
     }
 
     newData.company_name = company.name;
@@ -242,7 +262,8 @@ export const dataProvider = withLifecycleCallbacks(
         {
             resource: 'contacts',
             beforeCreate: async (params, dataProvider) => {
-                return processContactAvatar(params, dataProvider);
+                const newParams = await processContactAvatar(params);
+                return fetchAndUpdateCompanyData(newParams, dataProvider);
             },
             afterCreate: async result => {
                 await updateCompany(result.data.company_id, company => ({
@@ -252,7 +273,8 @@ export const dataProvider = withLifecycleCallbacks(
                 return result;
             },
             beforeUpdate: async params => {
-                return processContactAvatar(params, dataProvider);
+                const newParams = await processContactAvatar(params);
+                return fetchAndUpdateCompanyData(newParams, dataProvider);
             },
             afterDelete: async result => {
                 await updateCompany(result.data.company_id, company => ({
