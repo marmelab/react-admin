@@ -1,10 +1,17 @@
 import EmailIcon from '@mui/icons-material/Email';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import PhoneIcon from '@mui/icons-material/Phone';
-import { Box, Divider, Stack, SvgIcon, Typography } from '@mui/material';
+import {
+    Box,
+    Button,
+    Divider,
+    Stack,
+    SvgIcon,
+    Typography,
+} from '@mui/material';
+
 import {
     DateField,
-    DeleteButton,
     EditButton,
     EmailField,
     FunctionField,
@@ -14,7 +21,10 @@ import {
     ShowButton,
     TextField,
     UrlField,
+    useNotify,
     useRecordContext,
+    useRedirect,
+    useUpdate,
 } from 'react-admin';
 import { AddTask } from '../tasks/AddTask';
 import { TasksIterator } from '../tasks/TasksIterator';
@@ -23,6 +33,7 @@ import { TagsListEdit } from './TagsListEdit';
 import { useConfigurationContext } from '../root/ConfigurationContext';
 import { Contact, Sale } from '../types';
 import { useLocation } from 'react-router';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 export const ContactAside = ({ link = 'edit' }: { link?: 'edit' | 'show' }) => {
     const location = useLocation();
@@ -193,7 +204,50 @@ export const ContactAside = ({ link = 'edit' }: { link?: 'edit' | 'show' }) => {
                 </ReferenceManyField>
                 <AddTask />
             </Box>
-            <DeleteButton redirect={location.state?.from || undefined} />
+            <ContactDeleteButton redirect={location.state?.from || undefined} />
         </Box>
+    );
+};
+
+const ContactDeleteButton = ({ redirect }: { redirect?: string }) => {
+    const [update] = useUpdate();
+    const record = useRecordContext();
+    const notify = useNotify();
+    const redirectTo = useRedirect();
+
+    if (!record) return null;
+
+    const handleDelete = () => {
+        update(
+            'contacts',
+            {
+                id: record.id,
+                data: { deleted_at: new Date().toISOString() },
+                previousData: record,
+            },
+
+            {
+                mutationMode: 'undoable',
+                onSuccess: () => {
+                    notify('Element deleted', {
+                        undoable: true,
+                    });
+                    redirectTo(redirect || 'list', 'contacts');
+                },
+                onError: error =>
+                    notify(`Error: ${error.message}`, { type: 'error' }),
+            }
+        );
+    };
+
+    return (
+        <Button
+            onClick={handleDelete}
+            startIcon={<DeleteIcon />}
+            color="error"
+            size="small"
+        >
+            Delete
+        </Button>
     );
 };

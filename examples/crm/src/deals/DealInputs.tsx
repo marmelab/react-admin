@@ -100,7 +100,13 @@ const DealLinkedToInputs = () => {
                 />
             </ReferenceInput>
 
-            <ReferenceArrayInput source="contact_ids" reference="contacts">
+            <ReferenceArrayInput
+                source="contact_ids"
+                reference="contacts"
+                filter={{
+                    deleted_at_eq: null,
+                }}
+            >
                 <AutocompleteArrayInput
                     label="Contacts"
                     optionText={contactOptionText}

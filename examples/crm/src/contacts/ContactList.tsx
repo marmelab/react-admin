@@ -34,6 +34,9 @@ export const ContactList = () => {
             perPage={25}
             filterDefaultValues={{ sales_id: identity?.id }}
             sort={{ field: 'last_seen', order: 'DESC' }}
+            filter={{
+                deleted_at_eq: null,
+            }}
             exporter={exporter}
         >
             <ContactListLayout />

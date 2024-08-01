@@ -1,15 +1,18 @@
 import {
-    DeleteWithConfirmButton,
     Edit,
     SaveButton,
     SimpleForm,
     Toolbar,
     useGetIdentity,
+    useNotify,
     useRecordContext,
+    useRedirect,
+    useUpdate,
 } from 'react-admin';
 import { Sale } from '../types';
 import { SalesInputs } from './SalesInputs';
-import { Container, Typography } from '@mui/material';
+import { Button, Container, Typography } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 function EditToolbar() {
     const { identity } = useGetIdentity();
@@ -19,14 +22,7 @@ function EditToolbar() {
         <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
             <SaveButton />
 
-            <DeleteWithConfirmButton
-                disabled={record?.id === identity?.id}
-                mutationOptions={{
-                    meta: {
-                        identity,
-                    },
-                }}
-            />
+            <SaleDeleteButton disabled={record?.id === identity?.id} />
         </Toolbar>
     );
 }
@@ -51,5 +47,48 @@ const SaleEditTitle = () => {
         <Typography variant="h6">
             Edit {record?.first_name} {record?.last_name}
         </Typography>
+    );
+};
+
+const SaleDeleteButton = ({ disabled }: { disabled?: boolean }) => {
+    const [update] = useUpdate();
+    const record = useRecordContext();
+    const notify = useNotify();
+    const redirect = useRedirect();
+    if (!record || record.deleted_at) return null;
+
+    const handleDelete = () => {
+        update(
+            'sales',
+            {
+                id: record.id,
+                data: { deleted_at: new Date().toISOString() },
+                previousData: record,
+            },
+
+            {
+                mutationMode: 'undoable',
+                onSuccess: () => {
+                    notify('Element deleted', {
+                        undoable: true,
+                    });
+                    redirect('list', 'sales');
+                },
+                onError: error =>
+                    notify(`Error: ${error.message}`, { type: 'error' }),
+            }
+        );
+    };
+
+    return (
+        <Button
+            onClick={handleDelete}
+            startIcon={<DeleteIcon />}
+            color="error"
+            size="small"
+            disabled={disabled}
+        >
+            Delete
+        </Button>
     );
 };

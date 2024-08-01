@@ -20,7 +20,7 @@ export const ContactEdit = () => (
 
 const ContactEditContent = () => {
     const { isPending, record } = useEditContext<Contact>();
-    if (isPending || !record) return null;
+    if (isPending || !record || record.deleted_at) return null;
     return (
         <Box mt={2} display="flex">
             <Box flex="1">

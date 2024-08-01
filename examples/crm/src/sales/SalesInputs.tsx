@@ -29,6 +29,7 @@ export function SalesInputs({ children }: { children?: ReactNode }) {
                 source="email"
                 validate={required()}
                 helperText={false}
+                type="email"
             />
             {children}
             <BooleanInput

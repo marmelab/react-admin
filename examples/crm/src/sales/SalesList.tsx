@@ -28,6 +28,7 @@ export function SalesList() {
                 filters={filters}
                 actions={<SalesListActions />}
                 sort={{ field: 'first_name', order: 'ASC' }}
+                filter={{ deleted_at_eq: null }}
             >
                 <DatagridConfigurable rowClick="edit">
                     <TextField source="first_name" />

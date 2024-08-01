@@ -15,6 +15,7 @@ export interface Sale extends RaRecord {
     password: string;
     administrator: boolean;
     avatar?: RAFile;
+    deleted_at?: string;
 }
 
 export interface Company extends RaRecord {
@@ -60,6 +61,7 @@ export interface Contact extends RaRecord {
     background: string;
     phone_number1: { number: string; type: 'Work' | 'Home' | 'Other' };
     phone_number2: { number: string; type: 'Work' | 'Home' | 'Other' };
+    deleted_at?: string;
 }
 
 export interface ContactNote extends RaRecord {

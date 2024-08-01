@@ -101,6 +101,9 @@ export const AddTask = ({ selectContact }: { selectContact?: boolean }) => {
                                     <ReferenceInput
                                         source="contact_id"
                                         reference="contacts"
+                                        filter={{
+                                            deleted_at_eq: null,
+                                        }}
                                     >
                                         <AutocompleteInput
                                             label="Contact"
