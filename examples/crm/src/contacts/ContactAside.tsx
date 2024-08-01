@@ -30,9 +30,9 @@ import { AddTask } from '../tasks/AddTask';
 import { TasksIterator } from '../tasks/TasksIterator';
 import { TagsListEdit } from './TagsListEdit';
 
+import { useLocation } from 'react-router';
 import { useConfigurationContext } from '../root/ConfigurationContext';
 import { Contact, Sale } from '../types';
-import { useLocation } from 'react-router';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 export const ContactAside = ({ link = 'edit' }: { link?: 'edit' | 'show' }) => {
@@ -84,7 +84,7 @@ export const ContactAside = ({ link = 'edit' }: { link?: 'edit' | 'show' }) => {
                     />
                 </Stack>
             )}
-            {record.phone_number1.number && (
+            {record.phone_number1?.number && (
                 <Stack direction="row" alignItems="center" gap={1}>
                     <PhoneIcon color="disabled" fontSize="small" />
                     <Box>
@@ -98,7 +98,7 @@ export const ContactAside = ({ link = 'edit' }: { link?: 'edit' | 'show' }) => {
                     </Box>
                 </Stack>
             )}
-            {record.phone_number2.number && (
+            {record.phone_number2?.number && (
                 <Stack
                     direction="row"
                     alignItems="center"
