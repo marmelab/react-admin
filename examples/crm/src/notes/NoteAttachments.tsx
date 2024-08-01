@@ -9,10 +9,10 @@ export const NoteAttachments = ({ note }: { note: ContactNote | DealNote }) => {
     }
 
     const imageAttachments = note.attachments.filter(
-        (attachment: AttachmentNote) => isImage(attachment.rawFile)
+        (attachment: AttachmentNote) => isImage(attachment.src)
     );
     const otherAttachments = note.attachments.filter(
-        (attachment: AttachmentNote) => !isImage(attachment.rawFile)
+        (attachment: AttachmentNote) => !isImage(attachment.src)
     );
 
     return (
@@ -60,6 +60,10 @@ export const NoteAttachments = ({ note }: { note: ContactNote | DealNote }) => {
     );
 };
 
-const isImage = (file: File) => {
-    return file && file.type.startsWith('image/');
+const isImage = (pathFile: string) => {
+    const extension = pathFile.split('.').pop();
+    if (!extension) {
+        return false;
+    }
+    return ['jpg', 'jpeg', 'png', 'gif', 'svg'].includes(extension);
 };

@@ -58,7 +58,7 @@ async function processContactAvatar(
     const avatarUrl = await getContactAvatar(data);
 
     // Clone the data and modify the clone
-    const newData = { ...data, avatar: avatarUrl || null };
+    const newData = { ...data, avatar: { src: avatarUrl || undefined } };
 
     if (!newData.company_id) {
         return { ...params, data: newData };

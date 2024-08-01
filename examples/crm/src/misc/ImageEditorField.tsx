@@ -22,7 +22,8 @@ import { DialogCloseButton } from './DialogCloseButton';
 
 const ImageEditorField = (props: ImageEditorFieldProps) => {
     const { getValues } = useFormContext();
-    const imageUrl = getValues(props.source);
+    const source = getValues(props.source);
+    const imageUrl = source?.src;
     const [isDialogOpen, setIsDialogOpen] = useState(false);
 
     const { type = 'image', emptyText, linkPosition = 'none' } = props;
@@ -81,9 +82,13 @@ const ImageEditorDialog = (props: ImageEditorDialogProps) => {
     const { setValue, handleSubmit } = useFormContext();
     const cropperRef = createRef<ReactCropperElement>();
     const initialValue = useFieldValue(props);
-    const [imageSrc, setImageSrc] = useState<string | undefined>(initialValue);
+    const [file, setFile] = useState<File | undefined>();
+    const [imageSrc, setImageSrc] = useState<string | undefined>(
+        initialValue?.src
+    );
     const onDrop = useCallback((files: File[]) => {
         const preview = URL.createObjectURL(files[0]);
+        setFile(files[0]);
         setImageSrc(preview);
     }, []);
 
@@ -92,7 +97,15 @@ const ImageEditorDialog = (props: ImageEditorDialogProps) => {
         const croppedImage = cropper?.getCroppedCanvas().toDataURL();
         if (croppedImage) {
             setImageSrc(croppedImage);
-            setValue(props.source, croppedImage, { shouldDirty: true });
+            setValue(
+                props.source,
+                {
+                    src: croppedImage,
+                    title: file?.name,
+                    rawFile: file,
+                },
+                { shouldDirty: true }
+            );
             props.onClose();
 
             if (props.onSave) {

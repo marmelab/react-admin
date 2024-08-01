@@ -14,12 +14,12 @@ export interface Sale extends RaRecord {
     email: string;
     password: string;
     administrator: boolean;
-    avatar?: string;
+    avatar?: RAFile;
 }
 
 export interface Company extends RaRecord {
     name: string;
-    logo: { title: string; src: string };
+    logo: RAFile;
     sector: string;
     size: 1 | 10 | 50 | 250 | 500;
     linkedin_url: string;
@@ -47,7 +47,7 @@ export interface Contact extends RaRecord {
     company_id: Identifier;
     company_name: string;
     email: string;
-    avatar?: string | null;
+    avatar?: Partial<RAFile>;
     linkedin_url?: string;
     first_seen: string;
     last_seen: string;
@@ -153,11 +153,15 @@ export type Activity = RaRecord & { date: string } & (
         | ActivityDealNoteCreated
     );
 
-export interface AttachmentNote {
+export interface RAFile {
     src: string;
-    title: string;
-    rawFile: File;
+    title?: string;
+    path?: string;
+    rawFile?: File;
 }
+
+export type AttachmentNote = RAFile;
+
 export interface DealStage {
     value: string;
     label: string;

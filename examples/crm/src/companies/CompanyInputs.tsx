@@ -62,7 +62,7 @@ const CompanyDisplayInputs = () => {
     return (
         <Stack gap={2} flex={1} direction="row">
             <ImageEditorField
-                source="logo.src"
+                source="logo"
                 type="avatar"
                 width={60}
                 height={60}
