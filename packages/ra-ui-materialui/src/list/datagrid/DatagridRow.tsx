@@ -18,7 +18,7 @@ import {
     useResourceContext,
     useTranslate,
     useRecordContext,
-    useGetRouteForRecordCallback,
+    useGetPathForRecordCallback,
 } from 'ra-core';
 import { useNavigate } from 'react-router-dom';
 
@@ -115,7 +115,7 @@ const DatagridRow: React.ForwardRefExoticComponent<
         [id, onToggleItem, selectable]
     );
 
-    const getPathForRecord = useGetRouteForRecordCallback();
+    const getPathForRecord = useGetPathForRecordCallback();
 
     const handleClick = useCallback(
         async event => {
