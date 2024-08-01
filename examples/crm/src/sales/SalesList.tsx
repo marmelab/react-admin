@@ -34,6 +34,7 @@ export function SalesList() {
                     <TextField source="last_name" />
                     <TextField source="email" />
                     <BooleanField source="administrator" FalseIcon={null} />
+                    <BooleanField source="disabled" FalseIcon={null} />
                 </DatagridConfigurable>
             </List>
         </Stack>

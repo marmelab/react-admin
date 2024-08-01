@@ -89,7 +89,7 @@ const dataProviderWithCustomMethod = {
         }
 
         const sale = sales.data.find(sale => sale.email === email);
-        if (!sale) {
+        if (!sale || sale.disabled) {
             return { ...DEFAULT_USER };
         }
         return sale;

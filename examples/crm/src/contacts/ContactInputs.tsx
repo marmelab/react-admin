@@ -178,6 +178,9 @@ const ContactMiscInputs = () => {
                 reference="sales"
                 source="sales_id"
                 sort={{ field: 'last_name', order: 'ASC' }}
+                filter={{
+                    disabled_neq: true,
+                }}
             >
                 <SelectInput
                     helperText={false}

@@ -15,6 +15,7 @@ export interface Sale extends RaRecord {
     password: string;
     administrator: boolean;
     avatar?: RAFile;
+    disabled?: boolean;
 }
 
 export interface Company extends RaRecord {

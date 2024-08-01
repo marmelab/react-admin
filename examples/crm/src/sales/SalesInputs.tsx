@@ -36,6 +36,11 @@ export function SalesInputs({ children }: { children?: ReactNode }) {
                 readOnly={record?.id === identity?.id}
                 helperText={false}
             />
+            <BooleanInput
+                source="disabled"
+                readOnly={record?.id === identity?.id}
+                helperText={false}
+            />
         </Stack>
     );
 }
