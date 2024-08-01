@@ -85,7 +85,6 @@ export function usePapaParse<T>({
                             totalTime += Date.now() - start;
 
                             const meanTime = totalTime / (i + batch.length);
-                            console.log('meanTime', meanTime);
                             setImporter(previous => {
                                 if (previous.state === 'running') {
                                     const importCount =

@@ -153,7 +153,7 @@ export function useContactImport() {
                         const company = companies.get(companyName.trim());
                         const tagList = parseTags(tagNames)
                             .map(name => tags.get(name))
-                            .filter(tag => !!tag);
+                            .filter((tag): tag is Tag => !!tag);
 
                         // This should not happen, but we silently fail in case of error
                         // TODO: warn user about missing company
