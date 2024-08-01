@@ -4,25 +4,21 @@ import {
     Button,
     Card,
     CardContent,
-    Divider,
     List,
     ListItem,
     ListItemAvatar,
     ListItemSecondaryAction,
     ListItemText,
     Stack,
-    Tab,
-    Tabs,
     Typography,
 } from '@mui/material';
 import { formatDistance } from 'date-fns';
-import * as React from 'react';
-import { ChangeEvent, useState } from 'react';
 import {
     RecordContextProvider,
     ReferenceManyField,
     ShowBase,
     SortButton,
+    TabbedShowLayout,
     useListContext,
     useRecordContext,
     useShowContext,
@@ -47,13 +43,8 @@ export const CompanyShow = () => (
 
 const CompanyShowContent = () => {
     const { record, isPending } = useShowContext<Company>();
-    const [tabValue, setTabValue] = useState(0);
-    const handleTabChange = (_: ChangeEvent<{}>, newValue: number) => {
-        setTabValue(newValue);
-    };
-    if (isPending || !record) return null;
 
-    let tabIndex = 0;
+    if (isPending || !record) return null;
 
     return (
         <Box mt={2} display="flex">
@@ -66,14 +57,19 @@ const CompanyShowContent = () => {
                                 {record.name}
                             </Typography>
                         </Box>
-                        <Tabs
-                            value={tabValue}
-                            indicatorColor="primary"
-                            textColor="primary"
-                            onChange={handleTabChange}
+
+                        <TabbedShowLayout
+                            sx={{
+                                '& .RaTabbedShowLayout-content': { p: 0 },
+                            }}
                         >
-                            <Tab label="Activity" />
-                            <Tab
+                            <TabbedShowLayout.Tab label="Activity">
+                                <ActivityLog
+                                    companyId={record.id}
+                                    context="company"
+                                />
+                            </TabbedShowLayout.Tab>
+                            <TabbedShowLayout.Tab
                                 label={
                                     !record.nb_contacts
                                         ? 'No Contacts'
@@ -81,89 +77,57 @@ const CompanyShowContent = () => {
                                           ? '1 Contact'
                                           : `${record.nb_contacts} Contacts`
                                 }
-                            />
-                            {record.nb_deals && (
-                                <Tab
+                                path="contacts"
+                            >
+                                <ReferenceManyField
+                                    reference="contacts"
+                                    target="company_id"
+                                    sort={{ field: 'last_name', order: 'ASC' }}
+                                >
+                                    <Stack
+                                        direction="row"
+                                        justifyContent="flex-end"
+                                        spacing={2}
+                                        mt={1}
+                                    >
+                                        {!!record.nb_contacts && (
+                                            <SortButton
+                                                fields={[
+                                                    'last_name',
+                                                    'first_name',
+                                                    'last_seen',
+                                                ]}
+                                            />
+                                        )}
+                                        <CreateRelatedContactButton />
+                                    </Stack>
+                                    <ContactsIterator />
+                                </ReferenceManyField>
+                            </TabbedShowLayout.Tab>
+                            {record.nb_deals ? (
+                                <TabbedShowLayout.Tab
                                     label={
                                         record.nb_deals === 1
                                             ? '1 deal'
                                             : `${record.nb_deals} Deals`
                                     }
-                                />
-                            )}
-                        </Tabs>
-                        <Divider />
-
-                        <TabPanel value={tabValue} index={tabIndex++}>
-                            <ActivityLog
-                                companyId={record.id}
-                                context="company"
-                            />
-                        </TabPanel>
-                        <TabPanel value={tabValue} index={tabIndex++}>
-                            <ReferenceManyField
-                                reference="contacts"
-                                target="company_id"
-                                sort={{ field: 'last_name', order: 'ASC' }}
-                            >
-                                <Stack
-                                    direction="row"
-                                    justifyContent="flex-end"
-                                    spacing={2}
-                                    mt={1}
+                                    path="deals"
                                 >
-                                    {!!record.nb_contacts && (
-                                        <SortButton
-                                            fields={[
-                                                'last_name',
-                                                'first_name',
-                                                'last_seen',
-                                            ]}
-                                        />
-                                    )}
-                                    <CreateRelatedContactButton />
-                                </Stack>
-                                <ContactsIterator />
-                            </ReferenceManyField>
-                        </TabPanel>
-                        {record.nb_deals ? (
-                            <TabPanel value={tabValue} index={tabIndex++}>
-                                <ReferenceManyField
-                                    reference="deals"
-                                    target="company_id"
-                                    sort={{ field: 'name', order: 'ASC' }}
-                                >
-                                    <DealsIterator />
-                                </ReferenceManyField>
-                            </TabPanel>
-                        ) : null}
+                                    <ReferenceManyField
+                                        reference="deals"
+                                        target="company_id"
+                                        sort={{ field: 'name', order: 'ASC' }}
+                                    >
+                                        <DealsIterator />
+                                    </ReferenceManyField>
+                                </TabbedShowLayout.Tab>
+                            ) : null}
+                        </TabbedShowLayout>
                     </CardContent>
                 </Card>
             </Box>
             <CompanyAside />
         </Box>
-    );
-};
-
-interface TabPanelProps {
-    children?: React.ReactNode;
-    index: any;
-    value: any;
-}
-
-const TabPanel = (props: TabPanelProps) => {
-    const { children, value, index, ...other } = props;
-
-    return (
-        <div
-            role="tabpanel"
-            hidden={value !== index}
-            id={`wrapped-tabpanel-${index}`}
-            aria-labelledby={`wrapped-tab-${index}`}
-            {...other}
-        >
-            {children}
-        </div>
     );
 };
 
