@@ -9,7 +9,7 @@ import { Sale } from '../types';
 import { ReactNode } from 'react';
 import { Stack } from '@mui/material';
 
-export function SalesInputs({ children }: { children: ReactNode }) {
+export function SalesInputs({ children }: { children?: ReactNode }) {
     const { identity } = useGetIdentity();
     const record = useRecordContext<Sale>();
 

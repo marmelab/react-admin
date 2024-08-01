@@ -17,19 +17,19 @@ export const USER_STORAGE_KEY = 'user';
 localStorage.setItem(USER_STORAGE_KEY, JSON.stringify({ ...DEFAULT_USER }));
 
 export const authProvider: AuthProvider = {
-    login: async ({ email, redirectTo }) => {
+    login: async ({ email }) => {
         const user = await dataProvider.login({ email });
 
         if (user) {
             localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(user));
-            return Promise.resolve(redirectTo ? { redirectTo } : undefined);
+            return Promise.resolve();
         }
 
         localStorage.setItem(
             USER_STORAGE_KEY,
             JSON.stringify({ ...DEFAULT_USER })
         );
-        return Promise.resolve(redirectTo ? { redirectTo } : undefined);
+        return Promise.resolve();
     },
     logout: () => {
         localStorage.removeItem(USER_STORAGE_KEY);

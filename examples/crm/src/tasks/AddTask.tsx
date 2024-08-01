@@ -37,7 +37,7 @@ export const AddTask = ({ selectContact }: { selectContact?: boolean }) => {
     };
     return (
         <>
-            <Box mt={1}>
+            <Box mt={2} mb={2}>
                 <Chip
                     icon={<ControlPointIcon />}
                     size="small"
@@ -53,6 +53,15 @@ export const AddTask = ({ selectContact }: { selectContact?: boolean }) => {
                     type: 'None',
                     contact_id: contact?.id,
                     due_date: new Date().toISOString().slice(0, 10),
+                }}
+                transform={data => {
+                    const dueDate = new Date(data.due_date);
+                    dueDate.setHours(0, 0, 0, 0);
+                    data.due_date = dueDate.toISOString();
+                    return {
+                        ...data,
+                        due_date: new Date(data.due_date).toISOString(),
+                    };
                 }}
                 mutationOptions={{ onSuccess: () => setOpen(false) }}
             >
@@ -78,44 +87,50 @@ export const AddTask = ({ selectContact }: { selectContact?: boolean }) => {
                             )}
                         </DialogTitle>
                         <DialogContent>
-                            <TextInput
-                                autoFocus
-                                source="text"
-                                label="Description"
-                                validate={required()}
-                                multiline
-                                helperText={false}
-                            />
-                            {selectContact && (
-                                <ReferenceInput
-                                    source="contact_id"
-                                    reference="contacts"
-                                >
-                                    <AutocompleteInput
-                                        label="Contact"
-                                        optionText={contactOptionText}
-                                        inputText={contactInputText}
-                                        helperText={false}
-                                        validate={required()}
-                                    />
-                                </ReferenceInput>
-                            )}
+                            <Stack gap={2}>
+                                <TextInput
+                                    autoFocus
+                                    source="text"
+                                    label="Description"
+                                    validate={required()}
+                                    multiline
+                                    sx={{ margin: 0 }}
+                                    helperText={false}
+                                />
+                                {selectContact && (
+                                    <ReferenceInput
+                                        source="contact_id"
+                                        reference="contacts"
+                                    >
+                                        <AutocompleteInput
+                                            label="Contact"
+                                            optionText={contactOptionText}
+                                            inputText={contactInputText}
+                                            helperText={false}
+                                            validate={required()}
+                                            TextFieldProps={{
+                                                margin: 'none',
+                                            }}
+                                        />
+                                    </ReferenceInput>
+                                )}
 
-                            <Stack direction="row" spacing={1} mt={2}>
-                                <DateInput
-                                    source="due_date"
-                                    validate={required()}
-                                    helperText={false}
-                                />
-                                <SelectInput
-                                    source="type"
-                                    validate={required()}
-                                    choices={taskTypes.map(type => ({
-                                        id: type,
-                                        name: type,
-                                    }))}
-                                    helperText={false}
-                                />
+                                <Stack direction="row" spacing={1}>
+                                    <DateInput
+                                        source="due_date"
+                                        validate={required()}
+                                        helperText={false}
+                                    />
+                                    <SelectInput
+                                        source="type"
+                                        validate={required()}
+                                        choices={taskTypes.map(type => ({
+                                            id: type,
+                                            name: type,
+                                        }))}
+                                        helperText={false}
+                                    />
+                                </Stack>
                             </Stack>
                         </DialogContent>
                         <DialogActions sx={{ p: 0 }}>

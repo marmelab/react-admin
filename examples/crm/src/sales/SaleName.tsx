@@ -1,7 +1,7 @@
 import { useGetIdentity } from 'react-admin';
 import { Sale } from '../types';
 
-export const ActivityLogSale = ({ sale }: { sale: Sale }) => {
+export const SaleName = ({ sale }: { sale: Sale }) => {
     const { identity, isPending } = useGetIdentity();
     if (isPending) return null;
     return sale.id === identity?.id

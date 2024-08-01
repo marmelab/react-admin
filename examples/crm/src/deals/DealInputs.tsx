@@ -31,7 +31,7 @@ export const DealInputs = () => {
         <Stack gap={4} p={1}>
             <DealInfoInputs />
 
-            <Stack gap={8} flexDirection={isMobile ? 'column' : 'row'}>
+            <Stack gap={4} flexDirection={isMobile ? 'column' : 'row'}>
                 <DealLinkedToInputs />
                 <Divider
                     orientation={isMobile ? 'horizontal' : 'vertical'}
@@ -90,7 +90,7 @@ const DealLinkedToInputs = () => {
     };
     return (
         <Stack gap={1} flex={1}>
-            <Typography variant="h6">Linked to</Typography>
+            <Typography variant="subtitle1">Linked to</Typography>
             <ReferenceInput source="company_id" reference="companies">
                 <AutocompleteInput
                     optionText="name"
@@ -116,7 +116,7 @@ const DealMiscInputs = () => {
     const { dealStages, dealCategories } = useConfigurationContext();
     return (
         <Stack gap={1} flex={1}>
-            <Typography variant="h6">Misc</Typography>
+            <Typography variant="subtitle1">Misc</Typography>
 
             <SelectInput
                 source="category"
