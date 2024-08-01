@@ -102,8 +102,8 @@ export const DealsChart = () => {
                     indexBy="date"
                     keys={['won', 'pending', 'lost']}
                     colors={['#61cdbb', '#97e3d5', '#e25c3b']}
-                    margin={{ top: 50, right: 50, bottom: 50, left: 0 }}
-                    padding={0.5}
+                    margin={{ top: 30, right: 50, bottom: 30, left: 0 }}
+                    padding={0.3}
                     valueScale={{
                         type: 'linear',
                         min: range.min * 1.2,
