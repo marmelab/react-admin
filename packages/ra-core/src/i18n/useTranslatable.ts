@@ -101,7 +101,7 @@ const getRecordPaths = (
     path: Array<string> = []
 ): Array<Array<string>> => {
     return Object.entries(record).reduce((acc, [key, value]) => {
-        if (typeof value === 'object') {
+        if (value !== null && typeof value === 'object') {
             return [
                 ...acc,
                 [...path, key],
