@@ -10,6 +10,9 @@ export function ActivityLogNote({
     header,
     text,
 }: ActivityLogContactNoteCreatedProps) {
+    if (!text) {
+        return null;
+    }
     const paragraphs = text.split('\n');
 
     return (

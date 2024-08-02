@@ -6,7 +6,6 @@ import { randomDate } from './utils';
 export const generateDealNotes = (db: Db) => {
     return Array.from(Array(300).keys()).map(id => {
         const deal = random.arrayElement(db.deals);
-        deal.nb_notes++;
         return {
             id,
             deal_id: deal.id,

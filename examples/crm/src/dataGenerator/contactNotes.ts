@@ -9,7 +9,6 @@ export const generateContactNotes = (db: Db): ContactNote[] => {
     return Array.from(Array(1200).keys()).map(id => {
         const contact = random.arrayElement(db.contacts);
         const date = randomDate(new Date(contact.first_seen));
-        contact.nb_notes++;
         contact.last_seen =
             date > new Date(contact.last_seen)
                 ? date.toISOString()

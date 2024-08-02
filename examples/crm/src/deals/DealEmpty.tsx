@@ -6,7 +6,7 @@ import { DealCreate } from './DealCreate';
 import { Contact } from '../types';
 import { Link } from 'react-router-dom';
 
-export const DealEmpty = () => {
+export const DealEmpty = ({ children }: { children?: React.ReactNode }) => {
     const location = useLocation();
     const matchCreate = matchPath('/deals/create', location.pathname);
     const appbarHeight = useAppBarHeight();
@@ -50,6 +50,7 @@ export const DealEmpty = () => {
                         <CreateButton variant="contained" label="Create deal" />
                     </Stack>
                     <DealCreate open={!!matchCreate} />
+                    {children}
                 </>
             ) : (
                 <Stack gap={0} alignItems="center">

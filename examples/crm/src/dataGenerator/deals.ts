@@ -41,7 +41,6 @@ export const generateDeals = (db: Db): Deal[] => {
             expected_closing_date,
             sales_id: company.sales_id,
             index: 0,
-            nb_notes: 0,
         };
     });
     // compute index based on stage
