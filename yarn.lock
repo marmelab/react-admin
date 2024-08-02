@@ -6077,6 +6077,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/papaparse@npm:^5":
+  version: 5.3.14
+  resolution: "@types/papaparse@npm:5.3.14"
+  dependencies:
+    "@types/node": "npm:*"
+  checksum: feb4d215903b67442feaa9836a6a5771e78dc6a9da24781e399c6f891622fa82245cd783ab2613c5be43e4a2d6a94da52325538e4485af258166864576ecd0d8
+  languageName: node
+  linkType: hard
+
 "@types/parse-json@npm:^4.0.0":
   version: 4.0.0
   resolution: "@types/parse-json@npm:4.0.0"
@@ -9015,6 +9024,13 @@ __metadata:
   version: 1.0.5
   resolution: "crelt@npm:1.0.5"
   checksum: c2ed4111254b710e8baf328770bcdd50f2a8e7aa8abc8a10497bfc04110f6f80cb4aa9f9008fb800873af9533d65d4b00a44e0546ff7d80138a48561f14bf468
+  languageName: node
+  linkType: hard
+
+"cropperjs@npm:^1.5.13":
+  version: 1.6.2
+  resolution: "cropperjs@npm:1.6.2"
+  checksum: 5002e0cc3a491ceb8a104b2cb7a7c335a03e109fe590653f3aeefa27ca7115466edae62afc8ba21105bbaad4134583f5057ebbf5e8d843c7b2c1c1f0779630e9
   languageName: node
   linkType: hard
 
@@ -16697,6 +16713,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"papaparse@npm:^5.4.1":
+  version: 5.4.1
+  resolution: "papaparse@npm:5.4.1"
+  checksum: 201f37c4813453fed5bfb4c01816696b099d2db9ff1e8fb610acc4771fdde91d2a22b6094721edb0fedb21ca3c46f04263f68be4beb3e35b8c72278f0cedc7b7
+  languageName: node
+  linkType: hard
+
 "param-case@npm:^3.0.4":
   version: 3.0.4
   resolution: "param-case@npm:3.0.4"
@@ -18069,6 +18092,7 @@ __metadata:
     "@types/jest": "npm:^29.5.2"
     "@types/jsonexport": "npm:^3.0.5"
     "@types/lodash": "npm:~4.14.168"
+    "@types/papaparse": "npm:^5"
     "@types/react": "npm:^18.3.3"
     "@types/react-dom": "npm:^18.3.0"
     "@vitejs/plugin-react": "npm:^4.2.1"
@@ -18076,9 +18100,11 @@ __metadata:
     date-fns: "npm:^3.6.0"
     faker: "npm:~5.4.0"
     lodash: "npm:~4.17.5"
+    papaparse: "npm:^5.4.1"
     ra-data-fakerest: "npm:^5.0.0"
     react: "npm:^18.3.1"
     react-admin: "npm:^5.0.0"
+    react-cropper: "npm:^2.3.3"
     react-dom: "npm:^18.3.1"
     react-error-boundary: "npm:^4.0.3"
     react-router: "npm:^6.22.0"
@@ -18173,6 +18199,17 @@ __metadata:
     react: ">=16.8.0"
     react-dom: ">=16.8.0"
   checksum: f5991c675f82d204d73638b49077d710934cc1e6a47f95a6fc8a14761d926bd416346cedc7ac4da98a942561e053b675fa0ab0d52120ec9fbdb25027502d2dde
+  languageName: node
+  linkType: hard
+
+"react-cropper@npm:^2.3.3":
+  version: 2.3.3
+  resolution: "react-cropper@npm:2.3.3"
+  dependencies:
+    cropperjs: "npm:^1.5.13"
+  peerDependencies:
+    react: ">=17.0.2"
+  checksum: 86c09cf35705e853e7fec510b4e65b5030d3f90b537c0c8e0626db584e270a4ae4025e7ba4b5c6b07635c68904bd00b134c8586ce88658a421ced1bb054ab9ef
   languageName: node
   linkType: hard
 

@@ -1,43 +1,83 @@
 /* eslint-disable import/no-anonymous-default-export */
-import * as React from 'react';
+import { Card, LinearProgress, Stack } from '@mui/material';
+import jsonExport from 'jsonexport/dist';
+import type { Exporter } from 'react-admin';
 import {
+    BulkActionsToolbar,
+    BulkDeleteButton,
     CreateButton,
     downloadCSV,
     ExportButton,
-    List as RaList,
+    ListBase,
+    ListToolbar,
     Pagination,
     SortButton,
+    Title,
     TopToolbar,
     useGetIdentity,
+    useListContext,
 } from 'react-admin';
-import type { Exporter } from 'react-admin';
-import jsonExport from 'jsonexport/dist';
-
-import { ContactListFilter } from './ContactListFilter';
+import { hasOtherFiltersThanDefault } from '../misc/hasOtherFiltersThanDefault';
+import { Company, Contact, Sale, Tag } from '../types';
+import { ContactEmpty } from './ContactEmpty';
+import { ContactImportButton } from './ContactImportButton';
 import { ContactListContent } from './ContactListContent';
-import { Contact, Company, Sale, Tag } from '../types';
+import { ContactListFilter } from './ContactListFilter';
 
 export const ContactList = () => {
     const { identity } = useGetIdentity();
+
     if (!identity) return null;
+
     return (
-        <RaList<Contact>
-            actions={<ContactListActions />}
-            aside={<ContactListFilter />}
+        <ListBase
             perPage={25}
-            pagination={<Pagination rowsPerPageOptions={[10, 25, 50, 100]} />}
             filterDefaultValues={{ sales_id: identity?.id }}
             sort={{ field: 'last_seen', order: 'DESC' }}
             exporter={exporter}
         >
-            <ContactListContent />
-        </RaList>
+            <ContactListLayout />
+        </ListBase>
+    );
+};
+
+const ContactListLayout = () => {
+    const { data, isPending, filterValues } = useListContext();
+    const { identity } = useGetIdentity();
+    const hasOtherFiltersThanDefaultBoolean = hasOtherFiltersThanDefault(
+        filterValues,
+        'sales_id',
+        identity?.id
+    );
+
+    if (!identity) return null;
+    if (isPending) return <LinearProgress />;
+
+    if (!data?.length && !hasOtherFiltersThanDefaultBoolean)
+        return <ContactEmpty />;
+
+    return (
+        <Stack direction="row">
+            <ContactListFilter />
+            <Stack sx={{ width: '100%' }}>
+                <Title title={'Contacts'} />
+                <ListToolbar actions={<ContactListActions />} />
+                <BulkActionsToolbar>
+                    <BulkDeleteButton />
+                </BulkActionsToolbar>
+                <Card>
+                    <ContactListContent />
+                </Card>
+                <Pagination rowsPerPageOptions={[10, 25, 50, 100]} />
+            </Stack>
+        </Stack>
     );
 };
 
 const ContactListActions = () => (
     <TopToolbar>
         <SortButton fields={['last_name', 'first_name', 'last_seen']} />
+        <ContactImportButton />
         <ExportButton />
         <CreateButton
             variant="contained"

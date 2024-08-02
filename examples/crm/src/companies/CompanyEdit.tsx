@@ -1,24 +1,16 @@
 import * as React from 'react';
 import { Edit, Form, Toolbar } from 'react-admin';
-import { Box, CardContent, Stack, Avatar } from '@mui/material';
+import { CardContent } from '@mui/material';
 
-import { CompanyForm } from './CompanyForm';
+import { CompanyInputs } from './CompanyInputs';
 
 import { CompanyAside } from './CompanyAside';
-import { LogoField } from './LogoField';
 
 export const CompanyEdit = () => (
     <Edit aside={<CompanyAside link="show" />} actions={false} redirect="show">
         <Form>
             <CardContent>
-                <Stack direction="row">
-                    <Avatar sx={{ mt: 1 }}>
-                        <LogoField />
-                    </Avatar>
-                    <Box ml={2} flex="1" maxWidth={796}>
-                        <CompanyForm />
-                    </Box>
-                </Stack>
+                <CompanyInputs />
             </CardContent>
             <Toolbar />
         </Form>

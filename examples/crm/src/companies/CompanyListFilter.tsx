@@ -12,10 +12,15 @@ import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import SupervisorAccountIcon from '@mui/icons-material/SupervisorAccount';
 
 import { sizes } from './sizes';
-import { sectors } from './sectors';
+import { useConfigurationContext } from '../root/ConfigurationContext';
 
 export const CompanyListFilter = () => {
     const { identity } = useGetIdentity();
+    const { companySectors } = useConfigurationContext();
+    const sectors = companySectors.map(sector => ({
+        id: sector,
+        name: sector,
+    }));
     return (
         <Box width="13em" minWidth="13em" order={-1} mr={2} mt={5}>
             <FilterLiveSearch hiddenLabel />

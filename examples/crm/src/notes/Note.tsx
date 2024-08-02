@@ -1,38 +1,45 @@
-import * as React from 'react';
-import { useState, FormEvent, ChangeEvent } from 'react';
-import {
-    TextField,
-    ReferenceField,
-    DateField,
-    useResourceContext,
-    useDelete,
-    useUpdate,
-    useNotify,
-} from 'react-admin';
+import ContentSave from '@mui/icons-material/Save';
 import {
     Box,
-    Typography,
-    Tooltip,
-    IconButton,
-    FilledInput,
     Button,
+    IconButton,
+    Stack,
+    Tooltip,
+    Typography,
 } from '@mui/material';
-import EditIcon from '@mui/icons-material/Edit';
+import { useState } from 'react';
+import {
+    Form,
+    ReferenceField,
+    useDelete,
+    useNotify,
+    useResourceContext,
+    useUpdate,
+    WithRecord,
+} from 'react-admin';
 import TrashIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
+import { FieldValues, SubmitHandler } from 'react-hook-form';
 
+import { Avatar } from '../contacts/Avatar';
 import { Status } from '../misc/Status';
+import { ContactNote, DealNote } from '../types';
+import { NoteAttachments } from './NoteAttachments';
+import { NoteInputs } from './NoteInputs';
+import { SaleName } from '../sales/SaleName';
+import { RelativeDate } from '../misc/RelativeDate';
+import { CompanyAvatar } from '../companies/CompanyAvatar';
 
 export const Note = ({
     showStatus,
     note,
 }: {
     showStatus?: boolean;
-    note: any;
+    note: DealNote | ContactNote;
     isLast: boolean;
 }) => {
     const [isHover, setHover] = useState(false);
     const [isEditing, setEditing] = useState(false);
-    const [noteText, setNoteText] = useState(note.text);
     const resource = useResourceContext();
     const notify = useNotify();
 
@@ -54,28 +61,21 @@ export const Note = ({
     };
 
     const handleEnterEditMode = () => {
-        setEditing(true);
+        setEditing(!isEditing);
     };
 
     const handleCancelEdit = () => {
         setEditing(false);
-        setNoteText(note.text);
         setHover(false);
     };
 
-    const handleTextChange = (event: ChangeEvent<HTMLInputElement>) => {
-        setNoteText(event.target.value);
-    };
-
-    const handleNoteUpdate = (event: FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
+    const handleNoteUpdate: SubmitHandler<FieldValues> = values => {
         update(
             resource,
-            { id: note.id, data: { text: noteText }, previousData: note },
+            { id: note.id, data: values, previousData: note },
             {
                 onSuccess: () => {
                     setEditing(false);
-                    setNoteText(note.text);
                     setHover(false);
                 },
             }
@@ -84,102 +84,39 @@ export const Note = ({
 
     return (
         <Box
-            mb={2}
             onMouseEnter={() => setHover(true)}
             onMouseLeave={() => setHover(false)}
+            pb={1}
         >
-            <Box mb={1} color="text.secondary">
-                <ReferenceField
-                    record={note}
-                    resource="contactNotes"
-                    source="sales_id"
-                    reference="sales"
-                >
-                    <TextField source="first_name" variant="body1" />
-                </ReferenceField>{' '}
-                <Typography component="span" variant="body1">
-                    added a note on{' '}
-                </Typography>
-                <DateField
-                    source="date"
-                    record={note}
-                    variant="body1"
-                    showTime
-                    locales="en"
-                    options={{
-                        dateStyle: 'full',
-                        timeStyle: 'short',
-                    }}
-                />{' '}
-                {showStatus && <Status status={note.status} />}
-            </Box>
-            {isEditing ? (
-                <form onSubmit={handleNoteUpdate}>
-                    <FilledInput
-                        value={noteText}
-                        onChange={handleTextChange}
-                        fullWidth
-                        multiline
-                        sx={{
-                            paddingTop: '16px',
-                            paddingLeft: '14px',
-                            paddingRight: '60px',
-                            paddingBottom: '14px',
-                            lineHeight: 1.3,
-                        }}
-                        autoFocus
-                    />
-                    <Box display="flex" justifyContent="flex-end" mt={1}>
-                        <Button
-                            sx={{ mr: 1 }}
-                            onClick={handleCancelEdit}
-                            color="primary"
-                        >
-                            Cancel
-                        </Button>
-                        <Button
-                            type="submit"
-                            color="primary"
-                            variant="contained"
-                            disabled={isPending}
-                        >
-                            Update Note
-                        </Button>
-                    </Box>
-                </form>
-            ) : (
-                <Box
-                    sx={{
-                        bgcolor: '#edf3f0',
-                        padding: '0 1em',
-                        borderRadius: '10px',
-                        display: 'flex',
-                        alignItems: 'stretch',
-                        marginBottom: 1,
-                    }}
-                >
-                    <Box flex={1}>
-                        {note.text
-                            .split('\n')
-                            .map((paragraph: string, index: number) => (
-                                <Box
-                                    component="p"
-                                    fontFamily="fontFamily"
-                                    fontSize="body1.fontSize"
-                                    lineHeight={1.3}
-                                    marginBottom={2.4}
-                                    key={index}
-                                >
-                                    {paragraph}
-                                </Box>
-                            ))}
-                    </Box>
+            <Stack direction="row" spacing={1} alignItems="center" width="100%">
+                {resource === 'contactNote' ? (
+                    <Avatar width={20} height={20} />
+                ) : (
+                    <ReferenceField
+                        source="company_id"
+                        reference="companies"
+                        link="show"
+                    >
+                        <CompanyAvatar width={20} height={20} />
+                    </ReferenceField>
+                )}
+                <Typography color="text.secondary" variant="body2">
+                    <ReferenceField
+                        record={note}
+                        resource={resource}
+                        source="sales_id"
+                        reference="sales"
+                        link={false}
+                    >
+                        <WithRecord
+                            render={record => <SaleName sale={record} />}
+                        />
+                    </ReferenceField>{' '}
+                    added a note {showStatus && <Status status={note.status} />}
                     <Box
+                        component="span"
                         sx={{
-                            marginLeft: 2,
-                            display: 'flex',
-                            flexDirection: 'column',
-                            justifyContent: 'space-around',
+                            ml: 2,
                             visibility: isHover ? 'visible' : 'hidden',
                         }}
                     >
@@ -196,6 +133,74 @@ export const Note = ({
                                 <TrashIcon />
                             </IconButton>
                         </Tooltip>
+                    </Box>
+                </Typography>
+                <Box flex={1}></Box>
+                <Typography
+                    color="textSecondary"
+                    variant="body2"
+                    component="span"
+                >
+                    <RelativeDate date={note.date} />
+                </Typography>
+            </Stack>
+            {isEditing ? (
+                <Form onSubmit={handleNoteUpdate} record={note}>
+                    <NoteInputs showStatus={showStatus} edition />
+                    <Box display="flex" justifyContent="flex-start" mt={1}>
+                        <Button
+                            type="submit"
+                            color="primary"
+                            variant="contained"
+                            disabled={isPending}
+                            startIcon={<ContentSave />}
+                        >
+                            Update Note
+                        </Button>
+                        <Button
+                            sx={{ ml: 1 }}
+                            onClick={handleCancelEdit}
+                            color="primary"
+                        >
+                            Cancel
+                        </Button>
+                    </Box>
+                </Form>
+            ) : (
+                <Box
+                    sx={{
+                        paddingTop: '0.5em',
+                        display: 'flex',
+                        alignItems: 'stretch',
+                    }}
+                >
+                    <Box
+                        flex={1}
+                        sx={{
+                            '& p:first-of-type': {
+                                marginTop: 0,
+                            },
+                            '& p:last-of-type': {
+                                marginBottom: 0,
+                            },
+                        }}
+                    >
+                        {note.text
+                            ?.split('\n')
+                            .map((paragraph: string, index: number) => (
+                                <Box
+                                    component="p"
+                                    fontFamily="fontFamily"
+                                    fontSize="body2.fontSize"
+                                    lineHeight={1.5}
+                                    marginBottom={2.4}
+                                    key={index}
+                                >
+                                    {paragraph}
+                                </Box>
+                            ))}
+
+                        {note.attachments && <NoteAttachments note={note} />}
                     </Box>
                 </Box>
             )}

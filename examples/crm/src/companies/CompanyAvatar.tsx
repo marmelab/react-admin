@@ -6,20 +6,23 @@ import { Company } from '../types';
 
 export const CompanyAvatar = (props: {
     record?: Company;
-    size?: 'small' | 'large';
+    width?: number;
+    height?: number;
 }) => {
-    const { size = 'large' } = props;
+    const { width = 40, height = 40 } = props;
     const record = useRecordContext<Company>(props);
     if (!record) return null;
     return (
         <Avatar
-            src={record.logo}
+            src={record.logo?.src}
             alt={record.name}
             sx={{
-                bgcolor: 'aliceblue',
                 '& img': { objectFit: 'contain' },
+                width,
+                height,
             }}
-            imgProps={{ className: size }}
-        />
+        >
+            {record.name.charAt(0)}
+        </Avatar>
     );
 };

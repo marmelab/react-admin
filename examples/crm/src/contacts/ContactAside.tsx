@@ -1,25 +1,32 @@
-import * as React from 'react';
+import EmailIcon from '@mui/icons-material/Email';
+import LinkedInIcon from '@mui/icons-material/LinkedIn';
+import PhoneIcon from '@mui/icons-material/Phone';
+import { Box, Divider, Stack, SvgIcon, Typography } from '@mui/material';
 import {
-    TextField,
-    EmailField,
     DateField,
-    ReferenceManyField,
+    DeleteButton,
     EditButton,
-    ShowButton,
-    ReferenceField,
-    SelectField,
+    EmailField,
     FunctionField,
+    ReferenceField,
+    ReferenceManyField,
+    SelectField,
+    ShowButton,
+    TextField,
+    UrlField,
     useRecordContext,
 } from 'react-admin';
-import { Box, Typography, Divider } from '@mui/material';
-import { TagsListEdit } from './TagsListEdit';
 import { AddTask } from '../tasks/AddTask';
 import { TasksIterator } from '../tasks/TasksIterator';
+import { TagsListEdit } from './TagsListEdit';
 
+import { useLocation } from 'react-router';
+import { useConfigurationContext } from '../root/ConfigurationContext';
 import { Contact, Sale } from '../types';
-import { genders } from './constants';
 
 export const ContactAside = ({ link = 'edit' }: { link?: 'edit' | 'show' }) => {
+    const location = useLocation();
+    const { contactGender } = useConfigurationContext();
     const record = useRecordContext<Contact>();
     if (!record) return null;
     return (
@@ -32,35 +39,95 @@ export const ContactAside = ({ link = 'edit' }: { link?: 'edit' | 'show' }) => {
                 )}
             </Box>
             <Typography variant="subtitle2">Personal info</Typography>
-            <Divider />
-            <EmailField sx={{ mt: 2, display: 'block' }} source="email" />
-            {record.phone_number1 && (
-                <Box>
-                    <TextField source="phone_number1" />{' '}
-                    <Typography
-                        variant="body2"
-                        color="textSecondary"
-                        component="span"
-                    >
-                        Work
-                    </Typography>
-                </Box>
+            <Divider sx={{ mb: 2 }} />
+            {record.email && (
+                <Stack
+                    direction="row"
+                    alignItems="center"
+                    gap={1}
+                    minHeight={24}
+                >
+                    <EmailIcon color="disabled" fontSize="small" />
+                    <EmailField source="email" />
+                </Stack>
             )}
-            {record.phone_number2 && (
-                <Box>
-                    <TextField source="phone_number2" />{' '}
-                    <Typography
-                        variant="body2"
-                        color="textSecondary"
-                        component="span"
-                    >
-                        Home
-                    </Typography>
-                </Box>
+            {record.has_newsletter && (
+                <Typography variant="body2" color="textSecondary" pl={3.5}>
+                    Subscribed to newsletter
+                </Typography>
             )}
-            <SelectField source="gender" choices={genders} />
+
+            {record.linkedin_url && (
+                <Stack
+                    direction="row"
+                    alignItems="center"
+                    gap={1}
+                    minHeight={24}
+                >
+                    <LinkedInIcon color="disabled" fontSize="small" />
+                    <UrlField
+                        source="linkedin_url"
+                        content="LinkedIn profile"
+                        target="_blank"
+                        rel="noopener"
+                    />
+                </Stack>
+            )}
+            {record.phone_number1?.number && (
+                <Stack direction="row" alignItems="center" gap={1}>
+                    <PhoneIcon color="disabled" fontSize="small" />
+                    <Box>
+                        <TextField source="phone_number1.number" />{' '}
+                        {record.phone_number1.type !== 'Other' && (
+                            <TextField
+                                source="phone_number1.type"
+                                color="textSecondary"
+                            />
+                        )}
+                    </Box>
+                </Stack>
+            )}
+            {record.phone_number2?.number && (
+                <Stack
+                    direction="row"
+                    alignItems="center"
+                    gap={1}
+                    minHeight={24}
+                >
+                    <PhoneIcon color="disabled" fontSize="small" />
+                    <Box>
+                        <TextField source="phone_number2.number" />{' '}
+                        {record.phone_number2.type !== 'Other' && (
+                            <TextField
+                                source="phone_number2.type"
+                                color="textSecondary"
+                            />
+                        )}
+                    </Box>
+                </Stack>
+            )}
+            <SelectField
+                source="gender"
+                choices={contactGender}
+                optionText={choice => (
+                    <Stack
+                        direction="row"
+                        alignItems="center"
+                        gap={1}
+                        minHeight={24}
+                    >
+                        <SvgIcon
+                            component={choice.icon}
+                            color="disabled"
+                            fontSize="small"
+                        ></SvgIcon>
+                        <span>{choice.label}</span>
+                    </Stack>
+                )}
+                optionValue="value"
+            />
             <Typography variant="subtitle2" mt={2}>
-                Background
+                Background info
             </Typography>
             <Divider />
             <Typography variant="body2" mt={2}>
@@ -85,7 +152,7 @@ export const ContactAside = ({ link = 'edit' }: { link?: 'edit' | 'show' }) => {
                     variant="body2"
                     color="textSecondary"
                 >
-                    Last seen on
+                    Last activity on
                 </Typography>{' '}
                 <DateField
                     source="last_seen"
@@ -114,7 +181,7 @@ export const ContactAside = ({ link = 'edit' }: { link?: 'edit' | 'show' }) => {
                 <Divider />
                 <TagsListEdit />
             </Box>
-            <Box>
+            <Box mb={3}>
                 <Typography variant="subtitle2">Tasks</Typography>
                 <Divider />
                 <ReferenceManyField
@@ -126,6 +193,7 @@ export const ContactAside = ({ link = 'edit' }: { link?: 'edit' | 'show' }) => {
                 </ReferenceManyField>
                 <AddTask />
             </Box>
+            <DeleteButton redirect={location.state?.from || undefined} />
         </Box>
     );
 };

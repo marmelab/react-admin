@@ -1,11 +1,17 @@
 import * as React from 'react';
 import { useListContext } from 'react-admin';
 import { isAfter } from 'date-fns';
-import { List } from '@mui/material';
+import { List, SxProps } from '@mui/material';
 
 import { Task } from './Task';
 
-export const TasksIterator = ({ showContact }: { showContact?: boolean }) => {
+export const TasksIterator = ({
+    showContact,
+    sx,
+}: {
+    showContact?: boolean;
+    sx?: SxProps;
+}) => {
     const { data, error, isPending } = useListContext();
     if (isPending || error || data.length === 0) return null;
 
@@ -20,7 +26,7 @@ export const TasksIterator = ({ showContact }: { showContact?: boolean }) => {
     );
 
     return (
-        <List dense>
+        <List dense sx={sx}>
             {tasks.map(task => (
                 <Task task={task} showContact={showContact} key={task.id} />
             ))}

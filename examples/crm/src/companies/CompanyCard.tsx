@@ -10,11 +10,12 @@ import {
     Link,
 } from 'react-admin';
 
-import { sectors } from './sectors';
 import { CompanyAvatar } from './CompanyAvatar';
 import { Company } from '../types';
+import { useConfigurationContext } from '../root/ConfigurationContext';
 
 export const CompanyCard = (props: { record?: Company }) => {
+    const { companySectors } = useConfigurationContext();
     const [elevation, setElevation] = useState(1);
     const createPath = useCreatePath();
     const record = useRecordContext<Company>(props);
@@ -34,7 +35,6 @@ export const CompanyCard = (props: { record?: Company }) => {
             <Paper
                 sx={{
                     height: 200,
-                    width: 195,
                     display: 'flex',
                     flexDirection: 'column',
                     justifyContent: 'space-between',
@@ -51,7 +51,10 @@ export const CompanyCard = (props: { record?: Company }) => {
                         <SelectField
                             color="textSecondary"
                             source="sector"
-                            choices={sectors}
+                            choices={companySectors.map(sector => ({
+                                id: sector,
+                                name: sector,
+                            }))}
                         />
                     </Box>
                 </Box>

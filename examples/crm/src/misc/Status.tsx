@@ -1,25 +1,24 @@
 import * as React from 'react';
-import { Box } from '@mui/material';
+import { Box, Tooltip } from '@mui/material';
+import { useConfigurationContext } from '../root/ConfigurationContext';
 
-const getColorFromStatus = (status: string) =>
-    status === 'cold'
-        ? '#7dbde8'
-        : status === 'warm'
-          ? '#e8cb7d'
-          : status === 'hot'
-            ? '#e88b7d'
-            : status === 'in-contract'
-              ? '#a4e87d'
-              : '#000';
+export const Status = ({ status }: { status: string }) => {
+    const { noteStatuses } = useConfigurationContext();
+    if (!status || !noteStatuses) return null;
+    const statusObject = noteStatuses.find((s: any) => s.value === status);
 
-export const Status = ({ status }: { status: string }) => (
-    <Box
-        marginLeft={0.5}
-        width={10}
-        height={10}
-        display="inline-block"
-        borderRadius="5px"
-        bgcolor={getColorFromStatus(status)}
-        component="span"
-    />
-);
+    if (!statusObject) return null;
+    return (
+        <Tooltip title={statusObject.label} placement="top">
+            <Box
+                marginLeft={0.5}
+                width={10}
+                height={10}
+                display="inline-block"
+                borderRadius="5px"
+                bgcolor={statusObject.color}
+                component="span"
+            />
+        </Tooltip>
+    );
+};

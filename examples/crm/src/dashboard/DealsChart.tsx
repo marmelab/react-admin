@@ -1,10 +1,9 @@
-import * as React from 'react';
-import { useMemo } from 'react';
-import { Box } from '@mui/material';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
-import { useGetList, Link } from 'react-admin';
-import { startOfMonth, format } from 'date-fns';
+import { Box, Stack } from '@mui/material';
 import { ResponsiveBar } from '@nivo/bar';
+import { format, startOfMonth } from 'date-fns';
+import { useMemo } from 'react';
+import { Link, useGetList } from 'react-admin';
 
 import { Deal } from '../types';
 
@@ -15,20 +14,26 @@ const multiplier = {
     delayed: 0.3,
 };
 
+const threeMonthsAgo = new Date(
+    new Date().setMonth(new Date().getMonth() - 6)
+).toISOString();
+
 export const DealsChart = () => {
     const { data, isPending } = useGetList<Deal>('deals', {
         pagination: { perPage: 100, page: 1 },
         sort: {
-            field: 'start_at',
+            field: 'created_at',
             order: 'ASC',
         },
+        filter: {
+            created_at_gte: threeMonthsAgo,
+        },
     });
-
     const months = useMemo(() => {
         if (!data) return [];
         const dealsByMonth = data.reduce((acc, deal) => {
             const month = startOfMonth(
-                deal.start_at ?? new Date()
+                deal.created_at ?? new Date()
             ).toISOString();
             if (!acc[month]) {
                 acc[month] = [];
@@ -68,7 +73,6 @@ export const DealsChart = () => {
     }, [data]);
 
     if (isPending) return null; // FIXME return skeleton instead
-
     const range = months.reduce(
         (acc, month) => {
             acc.min = Math.min(acc.min, month.lost);
@@ -77,12 +81,11 @@ export const DealsChart = () => {
         },
         { min: 0, max: 0 }
     );
-
     return (
-        <>
-            <Box display="flex" alignItems="center">
-                <Box ml={2} mr={2} display="flex">
-                    <AttachMoneyIcon color="disabled" fontSize="large" />
+        <Stack>
+            <Box display="flex" alignItems="center" mb={1}>
+                <Box mr={1} display="flex">
+                    <AttachMoneyIcon color="disabled" fontSize="medium" />
                 </Box>
                 <Link
                     underline="none"
@@ -93,13 +96,13 @@ export const DealsChart = () => {
                     Upcoming Deal Revenue
                 </Link>
             </Box>
-            <Box height={500}>
+            <Box height={400}>
                 <ResponsiveBar
                     data={months}
                     indexBy="date"
                     keys={['won', 'pending', 'lost']}
                     colors={['#61cdbb', '#97e3d5', '#e25c3b']}
-                    margin={{ top: 50, right: 50, bottom: 50, left: 0 }}
+                    margin={{ top: 30, right: 50, bottom: 30, left: 0 }}
                     padding={0.3}
                     valueScale={{
                         type: 'linear',
@@ -152,6 +155,6 @@ export const DealsChart = () => {
                     }
                 />
             </Box>
-        </>
+        </Stack>
     );
 };

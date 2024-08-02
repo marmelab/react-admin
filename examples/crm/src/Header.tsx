@@ -1,10 +1,30 @@
-import React from 'react';
-import { Tabs, Tab, Toolbar, AppBar, Box, Typography } from '@mui/material';
+import SettingsIcon from '@mui/icons-material/Settings';
+import PeopleIcon from '@mui/icons-material/People';
+import {
+    AppBar,
+    Box,
+    ListItemIcon,
+    ListItemText,
+    MenuItem,
+    Tab,
+    Tabs,
+    Toolbar,
+    Typography,
+} from '@mui/material';
+import {
+    LoadingIndicator,
+    Logout,
+    usePermissions,
+    UserMenu,
+    useUserMenu,
+} from 'react-admin';
 import { Link, matchPath, useLocation } from 'react-router-dom';
-import { UserMenu, Logout, LoadingIndicator } from 'react-admin';
+import { useConfigurationContext } from './root/ConfigurationContext';
 
 const Header = () => {
+    const { logo, title } = useConfigurationContext();
     const location = useLocation();
+    const { permissions } = usePermissions();
 
     let currentPath = '/';
     if (!!matchPath('/contacts/*', location.pathname)) {
@@ -13,6 +33,10 @@ const Header = () => {
         currentPath = '/companies';
     } else if (!!matchPath('/deals/*', location.pathname)) {
         currentPath = '/deals';
+    } else if (!!matchPath('/settings', location.pathname)) {
+        currentPath = '/settings';
+    } else if (!!matchPath('/sales/*', location.pathname)) {
+        currentPath = '/sales';
     }
 
     return (
@@ -20,17 +44,27 @@ const Header = () => {
             <AppBar position="static" color="primary">
                 <Toolbar variant="dense">
                     <Box flex={1} display="flex" justifyContent="space-between">
-                        <Box display="flex" alignItems="center">
+                        <Box
+                            display="flex"
+                            alignItems="center"
+                            component={Link}
+                            to="/"
+                            sx={{
+                                color: 'inherit',
+                                textDecoration: 'inherit',
+                            }}
+                        >
                             <Box
                                 component="img"
-                                sx={{ marginRight: '1em', height: 30 }}
-                                src={
-                                    'https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg'
-                                }
-                                alt="Bosch Logo"
+                                sx={{
+                                    marginRight: '1em',
+                                    height: 30,
+                                }}
+                                src={logo}
+                                alt="CRM Logo"
                             />
                             <Typography component="span" variant="h5">
-                                Atomic CRM
+                                {title}
                             </Typography>
                         </Box>
                         <Box>
@@ -69,6 +103,8 @@ const Header = () => {
                         <Box display="flex" alignItems="center">
                             <LoadingIndicator />
                             <UserMenu>
+                                <ConfigurationMenu />
+                                {permissions === 'admin' && <UsersMenu />}
                                 <Logout />
                             </UserMenu>
                         </Box>
@@ -79,4 +115,27 @@ const Header = () => {
     );
 };
 
+const UsersMenu = () => {
+    const { onClose } = useUserMenu() ?? {};
+    return (
+        <MenuItem component={Link} to="/sales" onClick={onClose}>
+            <ListItemIcon>
+                <PeopleIcon fontSize="small" />
+            </ListItemIcon>
+            <ListItemText>Users</ListItemText>
+        </MenuItem>
+    );
+};
+
+const ConfigurationMenu = () => {
+    const { onClose } = useUserMenu() ?? {};
+    return (
+        <MenuItem component={Link} to="/settings" onClick={onClose}>
+            <ListItemIcon>
+                <SettingsIcon fontSize="small" />
+            </ListItemIcon>
+            <ListItemText>My info</ListItemText>
+        </MenuItem>
+    );
+};
 export default Header;

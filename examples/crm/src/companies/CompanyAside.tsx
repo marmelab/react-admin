@@ -1,16 +1,20 @@
-import * as React from 'react';
+import LinkedInIcon from '@mui/icons-material/LinkedIn';
+import PhoneIcon from '@mui/icons-material/Phone';
+import PublicIcon from '@mui/icons-material/Public';
+import { Divider, Link, Stack, Tooltip, Typography } from '@mui/material';
 import {
-    TextField,
     DateField,
-    FunctionField,
-    ReferenceField,
     EditButton,
+    ReferenceField,
+    SelectField,
     ShowButton,
+    TextField,
+    UrlField,
     useRecordContext,
 } from 'react-admin';
-import { Box, Typography, Divider, Link } from '@mui/material';
 
-import { Company, Sale } from '../types';
+import { Company } from '../types';
+import { sizes } from './sizes';
 
 interface CompanyAsideProps {
     link?: string;
@@ -19,88 +23,236 @@ interface CompanyAsideProps {
 export const CompanyAside = ({ link = 'edit' }: CompanyAsideProps) => {
     const record = useRecordContext<Company>();
     if (!record) return null;
+
     return (
-        <Box ml={4} width={250} minWidth={250}>
-            <Box mb={2} ml="-5px">
+        <Stack ml={4} width={250} minWidth={250} spacing={2}>
+            <Stack direction="row" spacing={1}>
                 {link === 'edit' ? (
                     <EditButton label="Edit Company" />
                 ) : (
                     <ShowButton label="Show Company" />
                 )}
-            </Box>
+            </Stack>
 
-            <Typography variant="subtitle2">Company info</Typography>
-            <Divider />
+            <CompanyInfo record={record} />
 
-            <Box mt={2}>
-                <Typography variant="body2">
-                    {record.website && (
-                        <>
-                            Website:{' '}
-                            <Link href={record.website}>{record.website}</Link>
-                        </>
-                    )}
-                    {record.linkedIn && (
-                        <>
-                            <br />
-                            LinkedIn:{' '}
-                            <Link href={record.linkedIn}>LinkedIn</Link>
-                        </>
-                    )}
-                </Typography>
-            </Box>
+            <AddressInfo record={record} />
 
-            <Box mt={1}>
-                <TextField source="phone_number" />{' '}
-                <Typography
-                    variant="body2"
-                    color="textSecondary"
-                    component="span"
-                >
-                    Main Address
-                </Typography>
-            </Box>
+            <ContextInfo record={record} />
 
-            <Box mt={1} mb={3}>
-                <TextField source="address" />
-                <br />
-                <TextField source="city" /> <TextField source="zipcode" />{' '}
-                <TextField source="stateAbbr" />
-            </Box>
-
-            <Typography variant="subtitle2">Background</Typography>
-            <Divider />
-
-            <Box mt={1}>
-                <Typography
-                    variant="body2"
-                    color="textSecondary"
-                    component="span"
-                >
-                    Added on
-                </Typography>{' '}
-                <DateField
-                    source="created_at"
-                    options={{ year: 'numeric', month: 'long', day: 'numeric' }}
-                    color="textSecondary"
-                />
-                <br />
-                <Typography
-                    component="span"
-                    variant="body2"
-                    color="textSecondary"
-                >
-                    Followed by
-                </Typography>{' '}
-                <ReferenceField source="sales_id" reference="sales">
-                    <FunctionField<Sale>
-                        source="last_name"
-                        render={record =>
-                            `${record.first_name} ${record.last_name}`
-                        }
-                    />
-                </ReferenceField>
-            </Box>
-        </Box>
+            <AdditionalInfo record={record} />
+        </Stack>
     );
 };
+
+const CompanyInfo = ({ record }: { record: Company }) => {
+    if (!record.website && !record.linkedIn && !record.phone_number) {
+        return null;
+    }
+
+    return (
+        <Stack>
+            <Typography variant="subtitle2">Company Info</Typography>
+            <Divider sx={{ mb: 1 }} />
+            {record.website && (
+                <Stack
+                    direction="row"
+                    alignItems="center"
+                    gap={1}
+                    minHeight={24}
+                >
+                    <PublicIcon color="disabled" fontSize="small" />
+                    <UrlField source="website" target="_blank" rel="noopener" />
+                </Stack>
+            )}
+            {record.linkedin_url && (
+                <Stack
+                    direction="row"
+                    alignItems="center"
+                    gap={1}
+                    minHeight={24}
+                >
+                    <LinkedInIcon color="disabled" fontSize="small" />
+                    <Tooltip title={record.linkedin_url}>
+                        <Typography
+                            variant="body2"
+                            component={Link}
+                            href={record.linkedin_url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            LinkedIn
+                        </Typography>
+                    </Tooltip>
+                </Stack>
+            )}
+            {record.phone_number && (
+                <Stack
+                    direction="row"
+                    alignItems="center"
+                    gap={1}
+                    minHeight={24}
+                >
+                    <PhoneIcon color="disabled" fontSize="small" />
+                    <TextField source="phone_number" color="textSecondary" />
+                </Stack>
+            )}
+        </Stack>
+    );
+};
+
+const ContextInfo = ({ record }: { record: Company }) => {
+    if (!record.revenue && !record.identifier) {
+        return null;
+    }
+
+    return (
+        <Stack>
+            <Typography variant="subtitle2">Context</Typography>
+            <Divider sx={{ mb: 1 }} />
+            {record.sector && (
+                <Typography
+                    component="span"
+                    variant="body2"
+                    color="textSecondary"
+                    gutterBottom
+                >
+                    Sector: <TextField source="sector" color="textPrimary" />
+                </Typography>
+            )}
+            {record.size && (
+                <Typography
+                    component="span"
+                    variant="body2"
+                    color="textSecondary"
+                    gutterBottom
+                >
+                    Size:{' '}
+                    <SelectField
+                        source="size"
+                        color="textPrimary"
+                        choices={sizes}
+                    />
+                </Typography>
+            )}
+            {record.revenue && (
+                <Typography
+                    component="span"
+                    variant="body2"
+                    color="textSecondary"
+                    gutterBottom
+                >
+                    Revenue: <TextField source="revenue" color="textPrimary" />
+                </Typography>
+            )}
+            {record.tax_identifier && (
+                <Typography
+                    component="span"
+                    variant="body2"
+                    color="textSecondary"
+                    gutterBottom
+                >
+                    Tax Identifier:{' '}
+                    <TextField source="tax_identifier" color="textPrimary" />
+                </Typography>
+            )}
+        </Stack>
+    );
+};
+
+const AddressInfo = ({ record }: { record: Company }) => {
+    if (
+        !record.address &&
+        !record.city &&
+        !record.zipcode &&
+        !record.stateAbbr
+    ) {
+        return null;
+    }
+
+    return (
+        <Stack>
+            <Typography variant="subtitle2">Main Address</Typography>
+            <Divider sx={{ mb: 1 }} />
+            <TextField source="address" color="textSecondary" />
+            <TextField source="city" color="textSecondary" />
+            <TextField source="zipcode" color="textSecondary" />
+            <TextField source="stateAbbr" color="textSecondary" />
+            <TextField source="country" color="textSecondary" />
+        </Stack>
+    );
+};
+
+const AdditionalInfo = ({ record }: { record: Company }) => {
+    if (
+        !record.created_at &&
+        !record.sales_id &&
+        !record.description &&
+        !record.context_links
+    ) {
+        return null;
+    }
+    const getBaseURL = (url: string) => {
+        const urlObject = new URL(url);
+        return urlObject.origin;
+    };
+
+    return (
+        <Stack>
+            <Typography variant="subtitle2">Additional Info</Typography>
+            <Divider sx={{ mb: 1 }} />
+            {record.description && (
+                <Typography variant="body2" color="textSecondary" gutterBottom>
+                    {record.description}
+                </Typography>
+            )}
+            {record.context_links && (
+                <Stack>
+                    {record.context_links.map((link, index) =>
+                        link ? (
+                            <Tooltip title={link}>
+                                <Typography
+                                    key={index}
+                                    variant="body2"
+                                    gutterBottom
+                                    component={Link}
+                                    href={link}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >
+                                    {getBaseURL(link)}
+                                </Typography>
+                            </Tooltip>
+                        ) : null
+                    )}
+                </Stack>
+            )}
+            {record.sales_id !== null && (
+                <Typography variant="body2" color="textSecondary" gutterBottom>
+                    Followed by{' '}
+                    <ReferenceField
+                        source="sales_id"
+                        reference="sales"
+                        record={record}
+                    />
+                </Typography>
+            )}
+            {record.created_at && (
+                <Typography variant="body2" color="textSecondary" gutterBottom>
+                    Added on{' '}
+                    <DateField
+                        source="created_at"
+                        record={record}
+                        color="textPrimary"
+                        options={{
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric',
+                        }}
+                    />
+                </Typography>
+            )}
+        </Stack>
+    );
+};
+export default CompanyInfo;

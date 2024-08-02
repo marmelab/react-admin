@@ -1,13 +1,12 @@
-import * as React from 'react';
-import {
-    Typography,
-    Card,
-    CardContent,
-    CardActions,
-    Button,
-} from '@mui/material';
-import HomeIcon from '@mui/icons-material/Home';
 import CodeIcon from '@mui/icons-material/Code';
+import HomeIcon from '@mui/icons-material/Home';
+import {
+    Button,
+    Card,
+    CardActions,
+    CardContent,
+    Typography,
+} from '@mui/material';
 
 export const Welcome = () => (
     <Card
@@ -15,8 +14,6 @@ export const Welcome = () => (
             background: `#c5dedd`,
             color: 'rgba(0, 0, 0, 0.87)',
             padding: '1em',
-            marginBottom: '1em',
-            marginTop: '2em',
             [`& .MuiCardActions-root`]: {
                 p: 2,
                 mt: -2,
@@ -33,17 +30,17 @@ export const Welcome = () => (
     >
         <CardContent>
             <Typography variant="h5" gutterBottom>
-                CRM demo
+                CRM Demo
             </Typography>
-            <Typography gutterBottom>
+            <Typography variant="body2" gutterBottom>
                 This app runs in the browser, and relies on a mock REST API.
                 Feel free to explore and modify the data - it's local to your
                 computer, and will reset each time you reload.
             </Typography>
-            <Typography gutterBottom>
+            <Typography variant="body2" gutterBottom>
                 It was built using react-admin, an open-source framework. The
                 code for this demo is also open-source. Reading it is a great
-                way to learn react-admin!
+                way to learn about react-admin!
             </Typography>
         </CardContent>
         <CardActions>

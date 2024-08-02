@@ -1,45 +1,26 @@
+import { ConfigurationContextValue } from '../root/ConfigurationContext';
 import { Deal } from '../types';
-
-export const stages = [
-    'opportunity',
-    'proposal-sent',
-    'in-negociation',
-    'won',
-    'lost',
-    'delayed',
-];
-
-export const stageNames = {
-    opportunity: 'Opportunity',
-    'proposal-sent': 'Proposal Sent',
-    'in-negociation': 'In Negociation',
-    won: 'Won',
-    lost: 'Lost',
-    delayed: 'Delayed',
-};
-
-export const stageChoices = stages.map(type => ({
-    id: type,
-    /* @ts-ignore */
-    name: stageNames[type],
-}));
 
 export type DealsByStage = Record<Deal['stage'], Deal[]>;
 
-export const getDealsByStage = (unorderedDeals: Deal[]) => {
+export const getDealsByStage = (
+    unorderedDeals: Deal[],
+    dealStages: ConfigurationContextValue['dealStages']
+) => {
+    if (!dealStages) return {};
     const dealsByStage: Record<Deal['stage'], Deal[]> = unorderedDeals.reduce(
         (acc, deal) => {
             acc[deal.stage].push(deal);
             return acc;
         },
-        stages.reduce(
-            (obj, stage) => ({ ...obj, [stage]: [] }),
+        dealStages.reduce(
+            (obj, stage) => ({ ...obj, [stage.value]: [] }),
             {} as Record<Deal['stage'], Deal[]>
         )
     );
     // order each column by index
-    stages.forEach(stage => {
-        dealsByStage[stage] = dealsByStage[stage].sort(
+    dealStages.forEach(stage => {
+        dealsByStage[stage.value] = dealsByStage[stage.value].sort(
             (recordA: Deal, recordB: Deal) => recordA.index - recordB.index
         );
     });

@@ -1,31 +1,58 @@
 import * as React from 'react';
 import {
-    List,
     TopToolbar,
     ExportButton,
     CreateButton,
     Pagination,
     useGetIdentity,
+    ListBase,
+    Title,
+    ListToolbar,
+    useListContext,
 } from 'react-admin';
 
 import { ImageList } from './GridList';
 import { CompanyListFilter } from './CompanyListFilter';
+import { LinearProgress, Stack } from '@mui/material';
+import { CompanyEmpty } from './CompanyEmpty';
+import { hasOtherFiltersThanDefault } from '../misc/hasOtherFiltersThanDefault';
 
 export const CompanyList = () => {
     const { identity } = useGetIdentity();
     if (!identity) return null;
     return (
-        <List
-            actions={<CompanyListActions />}
-            aside={<CompanyListFilter />}
-            filterDefaultValues={{ sales_id: identity?.id }}
-            pagination={<Pagination rowsPerPageOptions={[15, 25, 50, 100]} />}
+        <ListBase
             perPage={25}
+            filterDefaultValues={{ sales_id: identity?.id }}
             sort={{ field: 'name', order: 'ASC' }}
-            component="div"
         >
-            <ImageList />
-        </List>
+            <CompanyListLayout />
+        </ListBase>
+    );
+};
+
+const CompanyListLayout = () => {
+    const { data, isPending, filterValues } = useListContext();
+    const { identity } = useGetIdentity();
+    const hasOtherFiltersThanDefaultBoolean = hasOtherFiltersThanDefault(
+        filterValues,
+        'sales_id',
+        identity?.id
+    );
+    if (isPending) return <LinearProgress />;
+    if (!data?.length && !hasOtherFiltersThanDefaultBoolean)
+        return <CompanyEmpty />;
+
+    return (
+        <Stack direction="row" component="div">
+            <CompanyListFilter />
+            <Stack sx={{ width: '100%' }}>
+                <Title title={'Companies'} />
+                <ListToolbar actions={<CompanyListActions />} />
+                <ImageList />
+                <Pagination rowsPerPageOptions={[10, 25, 50, 100]} />
+            </Stack>
+        </Stack>
     );
 };
 

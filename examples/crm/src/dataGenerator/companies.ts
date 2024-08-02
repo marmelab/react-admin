@@ -1,22 +1,16 @@
-import { company, internet, address, phone, random } from 'faker/locale/en_US';
+import {
+    address,
+    company,
+    internet,
+    lorem,
+    phone,
+    random,
+} from 'faker/locale/en_US';
 import { randomDate } from './utils';
 
-import { Db } from './types';
+import { defaultCompanySectors } from '../root/defaultConfiguration';
 import { Company } from '../types';
-
-const sectors = [
-    'Communication Services',
-    'Consumer Discretionary',
-    'Consumer Staples',
-    'Energy',
-    'Financials',
-    'Health Care',
-    'Industrials',
-    'Information Technology',
-    'Materials',
-    'Real Estate',
-    'Utilities',
-];
+import { Db } from './types';
 
 const sizes = [1, 10, 50, 250, 500];
 
@@ -28,10 +22,13 @@ export const generateCompanies = (db: Db): Company[] => {
         return {
             id,
             name: name,
-            logo: `./logos/${id}.png`,
-            sector: random.arrayElement(sectors),
+            logo: {
+                title: lorem.text(1),
+                src: `./logos/${id}.png`,
+            },
+            sector: random.arrayElement(defaultCompanySectors),
             size: random.arrayElement(sizes) as 1 | 10 | 50 | 250 | 500,
-            linkedIn: `https://www.linkedin.com/company/${name
+            linkedin_url: `https://www.linkedin.com/company/${name
                 .toLowerCase()
                 .replace(regex, '_')}`,
             website: internet.url(),
@@ -46,6 +43,11 @@ export const generateCompanies = (db: Db): Company[] => {
             sales_id:
                 random.number(2) === 0 ? 0 : random.arrayElement(db.sales).id,
             created_at: randomDate().toISOString(),
+            description: lorem.paragraph(),
+            revenue: random.arrayElement(['$1M', '$10M', '$100M', '$1B']),
+            tax_identifier: random.alphaNumeric(10),
+            country: random.arrayElement(['USA', 'France', 'UK']),
+            context_links: [],
         };
     });
 };
