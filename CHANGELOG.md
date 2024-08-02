@@ -1,5 +1,13 @@
 # Changelog
 
+## v5.1.1
+
+* Fix `<TranslatableInputs>` throws error when used with null value ([#10125](https://github.com/marmelab/react-admin/pull/10125)) ([glauff](https://github.com/glauff))
+* Fix `ListContext.setSort` ignores the sort order when the chosen field is the current one ([#10114](https://github.com/marmelab/react-admin/pull/10114)) ([adguernier](https://github.com/adguernier))
+* Fix `<Datagrid rowClick>` is called on mount ([#10102](https://github.com/marmelab/react-admin/pull/10102)) ([djhi](https://github.com/djhi))
+* Fix `<SimpleFormIterator>` adds a left padding when there is no label ([#10092](https://github.com/marmelab/react-admin/pull/10092)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<DateInput>` and `<DateTimeInput>` do not handle partial values correctly on Firefox ([#9543](https://github.com/marmelab/react-admin/pull/9543)) ([arimet](https://github.com/arimet))
+
 ## v5.1.0
 
 * Update `<SelectInput>` to support an array of strings as choices ([#10038](https://github.com/marmelab/react-admin/pull/10038)) ([fzaninotto](https://github.com/fzaninotto))
