@@ -1,46 +1,19 @@
 import { ImageList, ImageListItem, Stack } from '@mui/material';
-import { AttachmentNote, ContactNote, DealNote, RAFile } from '../types';
-import { FileField, useDataProvider } from 'react-admin';
+import { AttachmentNote, ContactNote, DealNote } from '../types';
+import { FileField } from 'react-admin';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
-import { useEffect, useState } from 'react';
+
 export const NoteAttachments = ({ note }: { note: ContactNote | DealNote }) => {
-    const dataProvider = useDataProvider();
-
-    const [imageAttachments, setImageAttachments] = useState<RAFile[]>([]);
-    const [otherAttachments, setOtherAttachments] = useState<RAFile[]>([]);
-
-    useEffect(() => {
-        const filterAttachments = async () => {
-            if (!note.attachments) {
-                return null;
-            }
-            const isImagePromises = note.attachments.map(
-                async (attachment: AttachmentNote) => {
-                    const isImage = await dataProvider.isImage(attachment);
-                    return { attachment, isImage };
-                }
-            );
-
-            const resolvedAttachments = await Promise.all(isImagePromises);
-
-            const imageAttachments = resolvedAttachments
-                .filter(({ isImage }) => isImage)
-                .map(({ attachment }) => attachment);
-
-            const otherAttachments = resolvedAttachments
-                .filter(({ isImage }) => !isImage)
-                .map(({ attachment }) => attachment);
-
-            setImageAttachments(imageAttachments);
-            setOtherAttachments(otherAttachments);
-        };
-
-        filterAttachments();
-    }, [note.attachments, dataProvider]);
-
     if (!note.attachments || note.attachments.length === 0) {
         return null;
     }
+
+    const imageAttachments = note.attachments.filter(
+        (attachment: AttachmentNote) => isImageMimeType(attachment.type)
+    );
+    const otherAttachments = note.attachments.filter(
+        (attachment: AttachmentNote) => !isImageMimeType(attachment.type)
+    );
 
     return (
         <Stack direction="column">
@@ -85,4 +58,11 @@ export const NoteAttachments = ({ note }: { note: ContactNote | DealNote }) => {
                 )}
         </Stack>
     );
+};
+
+const isImageMimeType = (mimeType?: string): boolean => {
+    if (!mimeType) {
+        return false;
+    }
+    return mimeType.startsWith('image/');
 };

@@ -12,7 +12,16 @@ import generateData from './dataGenerator';
 import { getActivityLog } from './dataProvider/activity';
 import { getCompanyAvatar } from './misc/getCompanyAvatar';
 import { getContactAvatar } from './misc/getContactAvatar';
-import { AttachmentNote, Company, Contact, Deal, Sale, Task } from './types';
+import {
+    AttachmentNote,
+    Company,
+    Contact,
+    ContactNote,
+    Deal,
+    DealNote,
+    Sale,
+    Task,
+} from './types';
 
 const baseDataProvider = fakeRestDataProvider(generateData(), true, 300);
 
@@ -444,6 +453,28 @@ export const dataProvider = withLifecycleCallbacks(
                 return result;
             },
         } satisfies ResourceCallbacks<Deal>,
+        {
+            resource: 'contactNotes',
+            beforeSave: async (data: ContactNote, _, __) => {
+                if (data.attachments) {
+                    for (const fi of data.attachments) {
+                        fi.type = fi.rawFile?.type;
+                    }
+                }
+                return data;
+            },
+        },
+        {
+            resource: 'dealNotes',
+            beforeSave: async (data: DealNote, _, __) => {
+                if (data.attachments) {
+                    for (const fi of data.attachments) {
+                        fi.type = fi.rawFile?.type;
+                    }
+                }
+                return data;
+            },
+        },
     ]
 );
 
