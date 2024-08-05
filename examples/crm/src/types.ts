@@ -58,8 +58,10 @@ export interface Contact extends RaRecord {
     sales_id: Identifier;
     status: string;
     background: string;
-    phone_number1: { number: string; type: 'Work' | 'Home' | 'Other' };
-    phone_number2: { number: string; type: 'Work' | 'Home' | 'Other' };
+    phone_1_type: 'Work' | 'Home' | 'Other';
+    phone_1_number: string;
+    phone_2_type: 'Work' | 'Home' | 'Other';
+    phone_2_number: string;
 }
 
 export interface ContactNote extends RaRecord {
