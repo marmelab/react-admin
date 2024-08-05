@@ -2,6 +2,7 @@ import { ImageList, ImageListItem, Stack } from '@mui/material';
 import { AttachmentNote, ContactNote, DealNote } from '../types';
 import { FileField } from 'react-admin';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
+import { isImage } from '../dataProvider';
 
 export const NoteAttachments = ({ note }: { note: ContactNote | DealNote }) => {
     if (!note.attachments || note.attachments.length === 0) {
@@ -9,10 +10,10 @@ export const NoteAttachments = ({ note }: { note: ContactNote | DealNote }) => {
     }
 
     const imageAttachments = note.attachments.filter(
-        (attachment: AttachmentNote) => isImage(attachment.src)
+        (attachment: AttachmentNote) => isImage(attachment)
     );
     const otherAttachments = note.attachments.filter(
-        (attachment: AttachmentNote) => !isImage(attachment.src)
+        (attachment: AttachmentNote) => !isImage(attachment)
     );
 
     return (
@@ -58,12 +59,4 @@ export const NoteAttachments = ({ note }: { note: ContactNote | DealNote }) => {
                 )}
         </Stack>
     );
-};
-
-const isImage = (pathFile: string) => {
-    const extension = pathFile.split('.').pop();
-    if (!extension) {
-        return false;
-    }
-    return ['jpg', 'jpeg', 'png', 'gif', 'svg'].includes(extension);
 };

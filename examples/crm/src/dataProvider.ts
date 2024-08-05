@@ -12,7 +12,7 @@ import generateData from './dataGenerator';
 import { getActivityLog } from './dataProvider/activity';
 import { getCompanyAvatar } from './misc/getCompanyAvatar';
 import { getContactAvatar } from './misc/getContactAvatar';
-import { Company, Contact, Deal, Sale, Task } from './types';
+import { AttachmentNote, Company, Contact, Deal, Sale, Task } from './types';
 
 const baseDataProvider = fakeRestDataProvider(generateData(), true, 300);
 
@@ -446,3 +446,15 @@ const convertFileToBase64 = (file: { rawFile: Blob }) =>
         reader.onerror = reject;
         reader.readAsDataURL(file.rawFile);
     });
+
+/**
+ * Return if an attachment is an image.
+ * @param attachment
+ * @returns boolean
+ */
+export const isImage = (attachment: AttachmentNote) => {
+    if (!attachment || !attachment.rawFile) {
+        return false;
+    }
+    return attachment.rawFile.type.startsWith('image/');
+};
