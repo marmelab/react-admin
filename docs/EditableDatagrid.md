@@ -10,7 +10,6 @@ The default react-admin user experience consists of three pages: List, Edit, and
 `<EditableDatagrid>` is an [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" /> component that offers an "edit-in-place" experience, allowing users to edit, create, and delete records in place inside a `<Datagrid>`.
 
 <video controls autoplay playsinline muted loop>
-  <source src="https://react-admin-ee.marmelab.com/assets/ra-editable-datagrid-overview.webm" type="video/webm" />
   <source src="https://react-admin-ee.marmelab.com/assets/ra-editable-datagrid-overview.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
