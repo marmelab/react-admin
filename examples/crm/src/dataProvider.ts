@@ -152,19 +152,6 @@ const dataProviderWithCustomMethod = {
     getActivityLog: async (companyId?: Identifier) => {
         return getActivityLog(baseDataProvider, companyId);
     },
-    isImage(attachment: AttachmentNote): Promise<boolean> {
-        return new Promise((resolve, reject) => {
-            try {
-                if (!attachment || !attachment.rawFile) {
-                    resolve(false);
-                } else {
-                    resolve(attachment.rawFile.type.startsWith('image/'));
-                }
-            } catch (error) {
-                reject(error);
-            }
-        });
-    },
 };
 
 export type CustomDataProvider = typeof dataProviderWithCustomMethod;
