@@ -8,7 +8,6 @@ title: "The Search Component"
 This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> component, part of [`ra-search`](https://marmelab.com/ra-enterprise/modules/ra-search), lets user do a site-wide search via a smart Omnibox.
 
 <video controls autoplay playsinline muted loop>
-  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-search-demo.webm" type="video/webm" />
   <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-search-demo.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>

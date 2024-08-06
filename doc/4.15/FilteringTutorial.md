@@ -36,7 +36,7 @@ One of the most important features of the List page is the ability to filter the
     <td style="width:50%;border:none;text-align:center">
         <a title="Stacked Filters" href="https://marmelab.com/ra-enterprise/modules/assets/ra-form-layout/latest/stackedfilters-overview.webm">
             <video controls autoplay playsinline muted loop width="90%" style="margin:1rem;box-shadow:0px 4px 4px 0px rgb(0 0 0 / 24%);">
-                <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-form-layout/latest/stackedfilters-overview.webm" type="video/mp4" />
+                <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-form-layout/latest/stackedfilters-overview.mp4" type="video/mp4" />
                     Your browser does not support the video tag.
             </video>
         </a>
@@ -221,7 +221,7 @@ Finally, a filter sidebar is the ideal place to display the user's favorite filt
 ## The `<StackedFilters>` Component
 
 <video controls autoplay playsinline muted loop width="100%">
-    <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-form-layout/latest/stackedfilters-overview.webm" type="video/mp4" />
+    <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-form-layout/latest/stackedfilters-overview.mp4" type="video/mp4" />
         Your browser does not support the video tag.
 </video>
 
@@ -280,7 +280,6 @@ Check the [`<StackedFilters>` documentation](./StackedFilters.md) for more infor
 ## Global Search
 
 <video controls autoplay playsinline muted loop>
-  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-search-overview.webm" type="video/webm" />
   <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-search-overview.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
@@ -292,7 +291,6 @@ If you want to display a full-text search allowing to look for any record in the
 `<Search>` can plug to any existing search engine (ElasticSearch, Lucene, or custom search engine), and lets you customize the search results to provide quick navigation to related items, turning the search engine into an "Omnibox":
 
 <video controls autoplay playsinline muted loop>
-  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-search-demo.webm" type="video/webm" />
   <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-search-demo.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
