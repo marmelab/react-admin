@@ -5,6 +5,7 @@ import expect from 'expect';
 import { testDataProvider } from '../../dataProvider/testDataProvider';
 import { CoreAdminContext } from '../../core';
 import { useReferenceManyFieldController } from './useReferenceManyFieldController';
+import { memoryStore } from '../../store';
 
 const ReferenceManyFieldController = props => {
     const { children, page = 1, perPage = 25, ...rest } = props;
@@ -324,6 +325,43 @@ describe('useReferenceManyFieldController', () => {
             sort: { field: 'id', order: 'DESC' },
             meta: undefined,
             signal: undefined,
+        });
+    });
+
+    it('should support custom storeKey', async () => {
+        const store = memoryStore();
+        const setStore = jest.spyOn(store, 'setItem');
+
+        render(
+            <CoreAdminContext store={store}>
+                <ReferenceManyFieldController
+                    resource="authors"
+                    source="uniqueName"
+                    record={{
+                        id: 123,
+                        uniqueName: 'jamesjoyce256',
+                        name: 'James Joyce',
+                    }}
+                    reference="books"
+                    target="author_id"
+                    storeKey="customKey"
+                >
+                    {({ onToggleItem }) => {
+                        return (
+                            <button onClick={() => onToggleItem(123)}>
+                                Toggle
+                            </button>
+                        );
+                    }}
+                </ReferenceManyFieldController>
+            </CoreAdminContext>
+        );
+
+        fireEvent.click(await screen.findByText('Toggle'));
+        await waitFor(() => {
+            expect(setStore).toHaveBeenCalledWith('customKey.selectedIds', [
+                123,
+            ]);
         });
     });
 });

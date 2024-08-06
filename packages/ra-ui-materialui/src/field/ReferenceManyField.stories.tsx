@@ -5,7 +5,7 @@ import {
     RecordContextProvider,
     ResourceContextProvider,
 } from 'ra-core';
-import { ThemeProvider, Box } from '@mui/material';
+import { ThemeProvider, Box, Stack } from '@mui/material';
 import { createTheme } from '@mui/material/styles';
 
 import { TextField } from '../field';
@@ -115,5 +115,35 @@ export const WithMeta = () => (
                 <TextField source="title" />
             </Datagrid>
         </ReferenceManyField>
+    </Wrapper>
+);
+
+export const StoreKey = () => (
+    <Wrapper>
+        <Stack direction="row" spacing={2}>
+            <ReferenceManyField
+                reference="books"
+                target="author_id"
+                queryOptions={{
+                    meta: { foo: 'bar' },
+                }}
+            >
+                <Datagrid>
+                    <TextField source="title" />
+                </Datagrid>
+            </ReferenceManyField>
+            <ReferenceManyField
+                reference="books"
+                target="author_id"
+                queryOptions={{
+                    meta: { foo: 'bar' },
+                }}
+                storeKey="custom"
+            >
+                <Datagrid>
+                    <TextField source="title" />
+                </Datagrid>
+            </ReferenceManyField>
+        </Stack>
     </Wrapper>
 );

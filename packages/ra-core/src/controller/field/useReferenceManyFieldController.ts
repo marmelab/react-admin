@@ -7,34 +7,12 @@ import lodashDebounce from 'lodash/debounce';
 import { useSafeSetState, removeEmpty } from '../../util';
 import { useGetManyReference } from '../../dataProvider';
 import { useNotify } from '../../notification';
-import { Identifier, RaRecord, SortPayload } from '../../types';
+import { FilterPayload, Identifier, RaRecord, SortPayload } from '../../types';
 import { ListControllerResult } from '../list';
 import usePaginationState from '../usePaginationState';
 import { useRecordSelection } from '../list/useRecordSelection';
 import useSortState from '../useSortState';
 import { useResourceContext } from '../../core';
-
-export interface UseReferenceManyFieldControllerParams<
-    RecordType extends RaRecord = RaRecord,
-    ReferenceRecordType extends RaRecord = RaRecord,
-> {
-    debounce?: number;
-    filter?: any;
-    page?: number;
-    perPage?: number;
-    record?: RecordType;
-    reference: string;
-    resource?: string;
-    sort?: SortPayload;
-    source?: string;
-    target: string;
-    queryOptions?: UseQueryOptions<
-        { data: ReferenceRecordType[]; total: number },
-        Error
-    >;
-}
-
-const defaultFilter = {};
 
 /**
  * Fetch reference records, and return them when available
@@ -89,6 +67,7 @@ export const useReferenceManyFieldController = <
     } = props;
     const notify = useNotify();
     const resource = useResourceContext(props);
+    const storeKey = props.storeKey ?? `${resource}.${record?.id}.${reference}`;
     const { meta, ...otherQueryOptions } = queryOptions;
 
     // pagination logic
@@ -109,7 +88,7 @@ export const useReferenceManyFieldController = <
 
     // selection logic
     const [selectedIds, selectionModifiers] = useRecordSelection({
-        resource: `${resource}.${record?.id}.${reference}`,
+        resource: storeKey,
     });
 
     // filter logic
@@ -253,3 +232,26 @@ export const useReferenceManyFieldController = <
         total,
     } as ListControllerResult<ReferenceRecordType>;
 };
+
+export interface UseReferenceManyFieldControllerParams<
+    RecordType extends Record<string, any> = Record<string, any>,
+    ReferenceRecordType extends Record<string, any> = Record<string, any>,
+> {
+    debounce?: number;
+    filter?: FilterPayload;
+    page?: number;
+    perPage?: number;
+    record?: RecordType;
+    reference: string;
+    resource?: string;
+    sort?: SortPayload;
+    source?: string;
+    storeKey?: string;
+    target: string;
+    queryOptions?: Omit<
+        UseQueryOptions<{ data: ReferenceRecordType[]; total: number }, Error>,
+        'queryKey' | 'queryFn'
+    >;
+}
+
+const defaultFilter = {};
