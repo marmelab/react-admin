@@ -403,7 +403,6 @@ The basic [`<Datagrid>` component](./Datagrid.md) displays a list of records in 
 The [`<EditableDatagrid>` component](./EditableDatagrid.md) lets users edit records in place, without having to navigate to an edit form. It's a great way to speed up data entry.
 
 <video controls autoplay playsinline muted loop>
-  <source src="https://react-admin-ee.marmelab.com/assets/ra-editable-datagrid-overview.webm" type="video/webm" />
   <source src="https://react-admin-ee.marmelab.com/assets/ra-editable-datagrid-overview.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
@@ -968,7 +967,6 @@ These features are available through the following components:
 Most admin and B2B apps require that user actions are recorded for audit purposes. React-admin provides templates for displaying such audit logs, and helpers to automatically **record user actions**.
 
 <video controls autoplay playsinline muted loop>
-  <source src="https://react-admin-ee.marmelab.com/assets/ra-audit-log/latest/ra-audit-log.webm" type="video/webm" />
   <source src="https://react-admin-ee.marmelab.com/assets/ra-audit-log/latest/ra-audit-log.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
@@ -1020,7 +1018,6 @@ const dataProvider = addEventsForMutations(
 If your app needs to display **events**, **appointments**, **time intervals**, or any other kind of time-based data, you can use the [`<Calendar>`](./Calendar.md) component.
 
 <video controls autoplay playsinline muted loop>
-  <source src="https://react-admin-ee.marmelab.com/assets/ra-calendar.webm" type="video/webm" />
   <source src="https://react-admin-ee.marmelab.com/assets/ra-calendar.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
@@ -1110,7 +1107,6 @@ Check out the following components for displaying hierarchical data:
 A UI kit like Material UI provides basic building blocks like a button, a form, a table, etc. React-admin goes one level higher and provides a set of **[application components](./Reference.md#components)** specifically designed for building admin and B2B *applications*.
 
 <video controls autoplay playsinline muted loop>
-  <source src="https://react-admin-ee.marmelab.com/assets/ra-editable-datagrid/latest/ra-editable-datagrid-overview.webm" type="video/webm" />
   <source src="https://react-admin-ee.marmelab.com/assets/ra-editable-datagrid/latest/ra-editable-datagrid-overview.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>

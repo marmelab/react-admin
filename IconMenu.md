@@ -8,7 +8,6 @@ title: "The IconMenu Component"
 This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" /> component offers an alternative menu user interface. It renders a reduced menu bar with a sliding panel for second-level menu items. This menu saves a lot of screen real estate, and allows for sub menus of any level of complexity.
 
 <video controls autoplay playsinline muted loop>
-  <source src="https://react-admin-ee.marmelab.com/assets/ra-multilevelmenu-categories.webm" type="video/webm" />
   <source src="https://react-admin-ee.marmelab.com/assets/ra-multilevelmenu-categories.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>

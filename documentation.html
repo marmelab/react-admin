@@ -88,14 +88,6 @@
                 font-family: 'Helvetica', sans-serif;
                 color: #c0ccda;
             }
-            #closeBanner {
-                cursor: pointer;
-            }
-            @media screen and (max-width: 576px) {
-                #closeBanner {
-                    display: none;
-                }
-            }
         </style>
         <link
             rel="stylesheet"
@@ -360,20 +352,5 @@
             defer
             src="https://unpkg.com/prettier@2.8.8/parser-babel.js"
         ></script>
-        <script>
-            function hideBanner() {
-                const banner = document.getElementById('banner');
-                if (banner) {
-                    banner.style.display = 'none';
-                }
-            }
-            const closeBanner = document.getElementById('closeBanner');
-            if (closeBanner) {
-                closeBanner.addEventListener('click', e => {
-                    e.preventDefault();
-                    hideBanner();
-                });
-            }
-        </script>
     </body>
 </html>

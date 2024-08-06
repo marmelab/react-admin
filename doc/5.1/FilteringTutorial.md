@@ -280,7 +280,6 @@ Check the [`<StackedFilters>` documentation](./StackedFilters.md) for more infor
 ## Global Search
 
 <video controls autoplay playsinline muted loop>
-  <source src="https://react-admin-ee.marmelab.com/assets/ra-search-overview.webm" type="video/webm" />
   <source src="https://react-admin-ee.marmelab.com/assets/ra-search-overview.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
@@ -292,7 +291,6 @@ If you want to display a full-text search allowing to look for any record in the
 `<Search>` can plug to any existing search engine (ElasticSearch, Lucene, or custom search engine), and lets you customize the search results to provide quick navigation to related items, turning the search engine into an "Omnibox":
 
 <video controls autoplay playsinline muted loop>
-  <source src="https://react-admin-ee.marmelab.com/assets/ra-search-demo.webm" type="video/webm" />
   <source src="https://react-admin-ee.marmelab.com/assets/ra-search-demo.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>

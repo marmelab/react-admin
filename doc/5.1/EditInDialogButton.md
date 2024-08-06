@@ -8,7 +8,6 @@ title: "EditInDialogButton"
 This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" /> component renders a button opening an `<Edit>` view inside a dialog, hence allowing to edit a record without leaving the current view.
 
 <video controls autoplay playsinline muted loop>
-  <source src="https://react-admin-ee.marmelab.com/assets/ra-form-layout/latest/InDialogButtons.webm" type="video/webm" />
   <source src="https://react-admin-ee.marmelab.com/assets/ra-form-layout/latest/InDialogButtons.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>

@@ -8,7 +8,6 @@ title: "AccordionForm"
 This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" /> component offers an alternative layout for Edit and Create forms, where Inputs are grouped into expandable panels.
 
 <video controls autoplay playsinline muted loop>
-  <source src="https://react-admin-ee.marmelab.com/assets/ra-accordion-form-overview.webm" type="video/webm" />
   <source src="https://react-admin-ee.marmelab.com/assets/ra-accordion-form-overview.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
@@ -73,7 +72,6 @@ By default, each child accordion element handles its expanded state independentl
 You can also use the `<AccordionSection>` component as a child of `<SimpleForm>` for secondary inputs:
 
 <video controls autoplay playsinline muted loop>
-  <source src="https://react-admin-ee.marmelab.com/assets/ra-accordion-section-overview.webm" type="video/webm" />
   <source src="https://react-admin-ee.marmelab.com/assets/ra-accordion-section-overview.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
