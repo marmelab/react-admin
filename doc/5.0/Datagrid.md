@@ -956,7 +956,6 @@ The separation between list pages and edit pages is not always relevant. Sometim
 ### `<EditableDatagrid>`: Editable Rows
 
 <video controls autoplay playsinline muted loop>
-  <source src="https://react-admin-ee.marmelab.com/assets/ra-editable-datagrid-overview.webm" type="video/webm" />
   <source src="https://react-admin-ee.marmelab.com/assets/ra-editable-datagrid-overview.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>

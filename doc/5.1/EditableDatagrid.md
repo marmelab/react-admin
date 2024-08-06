@@ -586,7 +586,6 @@ You can let end users customize what fields are displayed in the `<EditableDatag
 
 <video controls autoplay playsinline muted loop>
   <source src="https://react-admin-ee.marmelab.com/assets/ra-editable-datagrid-configurable.mp4" type="video/mp4"/>
-  <source src="https://react-admin-ee.marmelab.com/assets/ra-editable-datagrid-configurable.webm" type="video/webm"/>
   Your browser does not support the video tag.
 </video>
 

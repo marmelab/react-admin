@@ -421,8 +421,6 @@ const CustomerEdit = () => (
 Renders children (Inputs) inside a Material UI `<Accordion>` element without a Card style. To be used as child of a `<SimpleForm>` or a `<TabbedForm>` element.
 
 <video controls autoplay playsinline muted loop>
-  <source src="https://react-admin-ee.marmelab.com/assets/ra-accordion-section-overview.webm" type="video/webm"/>
-  <source src="https://react-admin-ee.marmelab.com/assets/ra-accordion-section-overview.mp4" type="video/mp4"/>
   <source src="https://react-admin-ee.marmelab.com/assets/ra-accordion-section-overview.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>

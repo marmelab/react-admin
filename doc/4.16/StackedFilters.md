@@ -8,7 +8,6 @@ title: "The StackedFilters Component"
 This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" /> component provides an alternative filter UI for `<List>` pages. It introduces the concept of operators to allow richer filtering.
 
 <video controls autoplay playsinline muted loop width="100%">
-  <source src="https://react-admin-ee.marmelab.com/assets/ra-form-layout/latest/stackedfilters-overview.webm" type="video/webm"/>
   <source src="https://react-admin-ee.marmelab.com/assets/ra-form-layout/latest/stackedfilters-overview.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
