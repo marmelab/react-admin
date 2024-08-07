@@ -7,7 +7,15 @@ title: "The ReferenceManyField Component"
 
 `<ReferenceManyField>` is useful for displaying a list of related records via a one-to-many relationship, when the foreign key is carried by the referenced resource. 
 
-![referenceManyField](./img/reference_many_field.png)
+<iframe src="https://www.youtube-nocookie.com/embed/UeM31-65Wc4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;"></iframe>
+
+This component fetches a list of referenced records by a reverse lookup of the current `record.id` in the `target` field of another resource (using the `dataProvider.getManyReference()` REST method), and puts them in a [`ListContext`](./useListContext.md). Its children can then use the data from this context. The most common case is to use [`<SingleFieldList>`](./SingleFieldList.md) or [`<Datagrid>`](./Datagrid.md) as child.
+
+**Tip**: If the relationship is materialized by an array of ids in the initial record, use [the `<ReferenceArrayField>` component](./ReferenceArrayField.md) instead.
+
+**Tip**: To edit the records of a one-to-many relationship, use [the `<ReferenceManyInput>` component](./ReferenceManyInput.md).
+
+## Usage
 
 For instance, if an `author` has many `books`, and each book resource exposes an `author_id` field:
 
@@ -25,12 +33,14 @@ For instance, if an `author` has many `books`, and each book resource exposes an
 `<ReferenceManyField>` can render the titles of all the books by a given author.
 
 ```jsx
+import { Show, SimpleShowLayout, ReferenceManyField, Datagrid, TextField, DateField } from 'react-admin';
+
 const AuthorShow = () => (
     <Show>
         <SimpleShowLayout>
             <TextField source="first_name" />
             <TextField source="last_name" />
-            <ReferenceManyField label="Books" reference="books" target="author_id">
+            <ReferenceManyField reference="books" target="author_id" label="Books">
               <Datagrid>
                 <TextField source="title" />
                 <DateField source="published_at" />
@@ -41,42 +51,13 @@ const AuthorShow = () => (
 );
 ```
 
-This component fetches a list of referenced records by a reverse lookup of the current `record.id` in the `target` field of another resource (using the `dataProvider.getManyReference()` REST method), and puts them in a [`ListContext`](./useListContext.md). Its children can then use the data from this context. The most common case is to use [`<SingleFieldList>`](./SingleFieldList.md) or [`<Datagrid>`](./Datagrid.md) as child.
-
-**Tip**: If the relationship is materialized by an array of ids in the initial record, use [the `<ReferenceArrayField>` component](./ReferenceArrayField.md) instead.
-
-**Tip**: To edit the records of a one-to-many relationship, use [the `<ReferenceManyInput>` component](./ReferenceManyInput.md).
-
-## Usage
-
-For instance, here is how to show the title of the books written by a particular author in a show view.
-
-```jsx
-import { Show, SimpleShowLayout, TextField, ReferenceManyField, Datagrid, DateField } from 'react-admin';
-
-export const AuthorShow = () => (
-  <Show>
-    <SimpleShowLayout>
-      <TextField source="first_name" />
-      <TextField source="last_name" />
-      <DateField label="Born" source="dob" />
-      <ReferenceManyField label="Books" reference="books" target="author_id">
-        <Datagrid>
-          <TextField source="title" />
-          <DateField source="published_at" />
-        </Datagrid>
-      </ReferenceManyField>
-    </SimpleShowLayout>
-  </Show>
-);
-```
+![referenceManyField](./img/reference_many_field.png)
 
 `<ReferenceManyField>` accepts a `reference` attribute, which specifies the resource to fetch for the related record. It also accepts a `source` attribute which defines the field containing the value to look for in the `target` field of the referenced resource. By default, this is the `id` of the resource (`authors.id` in the previous example).
 
 You can also use `<ReferenceManyField>` in a list, e.g. to display the authors of the comments related to each post in a list by matching `post.id` to `comment.post_id`:
 
 ```jsx
-import * as React from "react";
 import { List, Datagrid, ChipField, ReferenceManyField, SingleFieldList, TextField } from 'react-admin';
 
 export const PostList = () => (
@@ -363,5 +344,59 @@ In these cases, use [the `<ReferenceOneField>` component](./ReferenceOneField.md
 >
     <NumberField source="price" />
 </ReferenceOneField>
+```
+{% endraw %}
+
+## Adding or editing a related record
+
+To allow users to create or edit a record without leaving the current view, use the [`<CreateInDialogButton>`](./CreateInDialogButton.md) or the [`<EditInDialogButton>`](./EditInDialogButton.md) component.
+
+{% raw %}
+```jsx
+import { Edit, SimpleForm, TextInput, ReferenceManyField, WithRecord, Datagrid } from 'react-admin';
+import { CreateInDialogButton, EditInDialogButton } from "@react-admin/ra-form-layout";
+
+const EmployerEdit = () => (
+  <Edit>
+      <SimpleForm>
+          <TextInput source="name" />
+          <TextInput source="address" />
+          <TextInput source="city" />
+          <ReferenceManyField
+              target="employer_id"
+              reference="customers"
+          >
+              <WithRecord
+                  render={record => (
+                      <CreateInDialogButton
+                          record={{ employer_id: record.id }}
+                      >
+                          <SimpleForm>
+                              <TextInput source="first_name" />
+                              <TextInput source="last_name" />
+                          </SimpleForm>
+                      </CreateInDialogButton>
+                  )}
+              />
+              <Datagrid>
+                  <TextField source="first_name" />
+                  <TextField source="last_name" />
+                  <WithRecord
+                    render={record => (
+                      <EditInDialogButton>
+                          <SimpleForm
+                            record={{ employer_id: record.id }}
+                          >
+                            <TextInput source="first_name" />
+                            <TextInput source="last_name" />
+                          </SimpleForm>
+                        </EditInDialogButton>
+                      )}
+                  />
+              </Datagrid>
+          </ReferenceManyField>
+      </SimpleForm>
+  </Edit>
+)
 ```
 {% endraw %}

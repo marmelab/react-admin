@@ -250,7 +250,6 @@ React-admin provides alternative menu layouts that you can use as a base for you
 - [`<IconMenu>`](./IconMenu.md) for a narrow icon bar with dropdown menus
 
 <video controls autoplay playsinline muted loop>
-  <source src="https://react-admin-ee.marmelab.com/assets/ra-multilevelmenu-categories.webm" type="video/webm" />
   <source src="https://react-admin-ee.marmelab.com/assets/ra-multilevelmenu-categories.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
@@ -369,7 +368,7 @@ This property accepts the following subclasses:
 
 To override the style of `<Layout>` using the [application-wide style overrides](./AppTheme.md#theming-individual-components), use the `RaLayout` key.
 
-**Tip**: If you need to override global styles (like the default font size or family), you should [write a custom theme](./AppTheme.md) rather than override the `<Layout sx>` prop. And if you need to tweak the default layout to add a right column or move the menu to the top, you're probably better off [writing your own layout component](./Layout.md#writing-a-layout-from-scratch). 
+**Tip**: If you need to override global styles (like the default font size or family), you should [write a custom theme](./AppTheme.md#writing-a-custom-theme) rather than override the `<Layout sx>` prop. And if you need to tweak the default layout to add a right column or move the menu to the top, you're probably better off [writing your own layout component](./Layout.md#writing-a-layout-from-scratch). 
 
 ## Adding A Custom Context
 

@@ -490,5 +490,5 @@ export type UseDeleteResult<
         MutationError,
         Partial<DeleteParams<RecordType> & { resource?: string }>,
         unknown
-    >,
+    > & { isLoading: boolean },
 ];

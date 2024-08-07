@@ -7,6 +7,8 @@ title: "Querying the API"
 
 React-admin provides special hooks to emit read and write queries to the [`dataProvider`](./DataProviders.md), which in turn sends requests to your API. Under the hood, it uses [React Query](https://tanstack.com/query/v5/) to call the `dataProvider` and cache the results.
 
+<iframe src="https://www.youtube-nocookie.com/embed/c8tw2sUhKgc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;"></iframe>
+
 ## Getting The `dataProvider` Instance
 
 React-admin stores the `dataProvider` object in a React context, so it's available from anywhere in your application code. The `useDataProvider` hook grabs the Data Provider from that context, so you can call it directly. 

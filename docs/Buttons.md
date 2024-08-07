@@ -39,6 +39,8 @@ It also supports [all the other `<Button>` props](#button).
 
 **Tip**: If you want to link to the Edit view manually, use the `/{resource}/{record.id}` location.
 
+**Tip:** To allow users to edit a record without leaving the current view, use the [`<EditInDialogButton>`](./EditInDialogButton.md) component.
+
 ### `<ShowButton>`
 
 Opens the Show view of the current record:
@@ -94,6 +96,8 @@ const CommentCreateButton = () => <CreateButton label="Create comment" />;
 It also supports [all the other `<Button>` props](#button).
 
 **Tip**: If you want to link to the Create view manually, use the `/{resource}/create` location.
+
+**Tip:** To allow users to create a record without leaving the current view, use the [`<CreateInDialogButton>`](./CreateInDialogButton.md) component.
 
 #### `sx`: CSS API
 
@@ -184,6 +188,8 @@ export const PostList = () => (
 | `icon`       | Optional | `ReactElement`  | `<DownloadIcon>`   | iconElement, e.g. `<CommentIcon />` |
 | `exporter`   | Optional | `Function`      | -                  | Override the List exporter function |
 | `meta`       | Optional | `any`           | undefined          | Metadata passed to the dataProvider |
+
+**Tip**: If you are looking for an `<ImportButton>`, check out this third-party package: [benwinding/react-admin-import-csv](https://github.com/benwinding/react-admin-import-csv).
 
 ### `<BulkExportButton>`
 
@@ -827,13 +833,11 @@ See [The Menu documentation](./Menu.md) for more details.
 **Tip**: If you need a multi-level menu, or a Mega Menu opening panels with custom content, check out [the `ra-navigation`<img class="icon" src="./img/premium.svg" /> module](https://react-admin-ee.marmelab.com/documentation/ra-navigation) (part of the [Enterprise Edition](https://react-admin-ee.marmelab.com))
 
 <video controls autoplay playsinline muted loop>
-  <source src="https://react-admin-ee.marmelab.com/assets/ra-multilevelmenu-item.webm" type="video/webm" />
   <source src="https://react-admin-ee.marmelab.com/assets/ra-multilevelmenu-item.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
 
 <video controls autoplay playsinline muted loop>
-  <source src="https://react-admin-ee.marmelab.com/assets/ra-multilevelmenu-categories.webm" type="video/webm" />
   <source src="https://react-admin-ee.marmelab.com/assets/ra-multilevelmenu-categories.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>

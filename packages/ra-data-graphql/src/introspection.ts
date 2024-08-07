@@ -1,5 +1,6 @@
 import {
     getIntrospectionQuery,
+    IntrospectionField,
     IntrospectionObjectType,
     IntrospectionQuery,
     IntrospectionSchema,
@@ -51,8 +52,8 @@ export type IntrospectionResult = {
 
 const fetchSchema = (
     client: ApolloClient<unknown>
-): Promise<IntrospectionSchema> => {
-    return client
+): Promise<IntrospectionSchema> =>
+    client
         .query<IntrospectionQuery>({
             fetchPolicy: 'network-only',
             query: gql`
@@ -60,12 +61,11 @@ const fetchSchema = (
             `,
         })
         .then(({ data: { __schema } }) => __schema);
-};
 
 const getQueriesFromSchema = (
     schema: IntrospectionSchema
-): IntrospectionObjectType[] => {
-    return schema.types.reduce((acc, type) => {
+): IntrospectionField[] =>
+    schema.types.reduce((acc, type) => {
         if (
             type.name !== schema.queryType?.name &&
             type.name !== schema.mutationType?.name &&
@@ -76,19 +76,17 @@ const getQueriesFromSchema = (
 
         return [...acc, ...((type as IntrospectionObjectType).fields || [])];
     }, []);
-};
 
-const getTypesFromSchema = (schema: IntrospectionSchema) => {
-    return schema.types.filter(
+const getTypesFromSchema = (schema: IntrospectionSchema) =>
+    schema.types.filter(
         type =>
             type.name !== (schema.queryType && schema.queryType.name) &&
             type.name !== (schema.mutationType && schema.mutationType.name)
     );
-};
 
 const getResources = (
     types: IntrospectionType[],
-    queries: IntrospectionObjectType[],
+    queries: IntrospectionField[],
     options: IntrospectionOptions
 ): IntrospectedResource[] => {
     const filteredResources = types.filter(type =>
@@ -101,7 +99,7 @@ const getResources = (
 
 const isResource = (
     type: IntrospectionType,
-    queries: IntrospectionObjectType[],
+    queries: IntrospectionField[],
     options: IntrospectionOptions
 ) => {
     if (isResourceIncluded(type, options)) return true;
@@ -150,10 +148,10 @@ export const isResourceExcluded = (
 
 const buildResource = (
     type: IntrospectionObjectType,
-    queries: IntrospectionObjectType[],
+    queries: IntrospectionField[],
     options: IntrospectionOptions
-): IntrospectedResource => {
-    return ALL_TYPES.reduce(
+): IntrospectedResource =>
+    ALL_TYPES.reduce(
         (acc, raFetchMethod) => {
             const query = queries.find(
                 ({ name }) =>
@@ -170,4 +168,3 @@ const buildResource = (
         },
         { type }
     );
-};

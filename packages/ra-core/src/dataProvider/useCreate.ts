@@ -268,5 +268,5 @@ export type UseCreateResult<
         MutationError,
         Partial<UseCreateMutateParams<RecordType>>,
         unknown
-    >,
+    > & { isLoading: boolean },
 ];

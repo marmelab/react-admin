@@ -110,7 +110,7 @@ const ExpandPanel = () => {
     const book = useRecordContext();
     return (
         <div data-testid="ExpandPanel">
-            <i>{book.title}</i>, by {book.author} ({book.year})
+            <i>{book?.title}</i>, by {book?.author} ({book?.year})
         </div>
     );
 };
@@ -552,4 +552,36 @@ export const CustomDatagridRow = () => (
             <TextField source="year" />
         </MyDatagrid>
     </Wrapper>
+);
+
+export const LabelElements = () => (
+    <TestMemoryRouter initialEntries={['/books']}>
+        <AdminContext
+            dataProvider={dataProvider}
+            i18nProvider={polyglotI18nProvider(() => defaultMessages, 'en')}
+        >
+            <Resource
+                name="books"
+                list={
+                    <List>
+                        <Datagrid>
+                            <TextField source="id" label={<span>ID</span>} />
+                            <TextField
+                                source="title"
+                                label={<span>TITLE</span>}
+                            />
+                            <TextField
+                                source="author"
+                                label={<span>AUTHOR</span>}
+                            />
+                            <TextField
+                                source="year"
+                                label={<span>YEAR</span>}
+                            />
+                        </Datagrid>
+                    </List>
+                }
+            />
+        </AdminContext>
+    </TestMemoryRouter>
 );

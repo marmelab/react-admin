@@ -170,7 +170,8 @@ The following example shows a custom button in the toolbar that displays an aler
 {% raw %}
 ```tsx
 // src/Example.tsx
-import { Edit, SimpleForm, MarkdownInput } from 'react-admin';
+import { Edit, SimpleForm } from 'react-admin';
+import { MarkdownInput } from '@react-admin/ra-markdown';
 
 function createLastButton(): HTMLButtonElement {
     const button = document.createElement('button');
@@ -207,5 +208,44 @@ const Example = () => (
 );
 ```
 {% endraw %}
+
+## Accessing The Editor Instance
+
+If you need to interact with the editor instance, you can access it by using a `ref` prop. 
+
+The following example shows how to access the editor instance and call the `getMarkdown` method to display the markdown content.
+
+```tsx
+import { useRef, useState } from 'react';
+import { Button, Edit, SimpleForm } from 'react-admin';
+import { Alert } from '@mui/material';
+import { Editor, MarkdownInput } from '@react-admin/ra-markdown';
+
+export const PostEdit = () => {
+    const editorRef = useRef<Editor>(null);
+    const [md, setMd] = useState(null);
+    const onClickGetMarkdownButton = () => {
+        const instance = editorRef.current.getInstance();
+        setMd(instance.getMarkdown());
+    };
+    return (
+        <Edit>
+            <SimpleForm>
+                <MarkdownInput
+                    label="Body"
+                    source="body"
+                    ref={editorRef}
+                    defaultValue={'**Hello world**'}
+                />
+                <Button
+                    label="Get markdown value"
+                    onClick={onClickGetMarkdownButton}
+                />
+                {md && <Alert severity="success">Markdown result: {md}</Alert>}
+            </SimpleForm>
+        </Edit>
+    );
+};
+```
 
 Check [the `ra-markdown` documentation](https://react-admin-ee.marmelab.com/documentation/ra-markdown) for more details.

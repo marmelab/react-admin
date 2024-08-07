@@ -1,20 +1,20 @@
-import * as React from 'react';
-import { ReactNode, useCallback, useMemo, useState } from 'react';
-import { styled } from '@mui/material/styles';
-import { useAuthProvider, useGetIdentity, useTranslate } from 'ra-core';
+import AccountCircle from '@mui/icons-material/AccountCircle';
 import {
-    Tooltip,
+    Avatar,
+    Button,
     IconButton,
     Menu,
-    Button,
-    Avatar,
     PopoverOrigin,
-    useMediaQuery,
     Theme,
+    Tooltip,
+    useMediaQuery,
 } from '@mui/material';
-import AccountCircle from '@mui/icons-material/AccountCircle';
-import { UserMenuContextProvider } from './UserMenuContextProvider';
+import { styled } from '@mui/material/styles';
+import { useAuthProvider, useGetIdentity, useTranslate } from 'ra-core';
+import * as React from 'react';
+import { ReactNode, useCallback, useMemo, useState } from 'react';
 import { Logout } from '../auth/Logout';
+import { UserMenuContextProvider } from './UserMenuContextProvider';
 
 /**
  * The UserMenu component renders a Mui Button that shows a Menu.

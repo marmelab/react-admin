@@ -49,7 +49,7 @@ import { useEvent } from '../util';
  */
 export const useGetOne = <RecordType extends RaRecord = any>(
     resource: string,
-    { id, meta }: GetOneParams<RecordType>,
+    { id, meta }: Partial<GetOneParams<RecordType>>,
     options: UseGetOneOptions<RecordType> = {}
 ): UseGetOneHookValue<RecordType> => {
     const dataProvider = useDataProvider();
@@ -57,6 +57,7 @@ export const useGetOne = <RecordType extends RaRecord = any>(
         onError = noop,
         onSuccess = noop,
         onSettled = noop,
+        enabled,
         ...queryOptions
     } = options;
     const onSuccessEvent = useEvent(onSuccess);
@@ -69,16 +70,19 @@ export const useGetOne = <RecordType extends RaRecord = any>(
         // As the react-query cache is type-sensitive, we always stringify the identifier to get a match
         queryKey: [resource, 'getOne', { id: String(id), meta }],
         queryFn: queryParams =>
-            dataProvider
-                .getOne<RecordType>(resource, {
-                    id,
-                    meta,
-                    signal:
-                        dataProvider.supportAbortSignal === true
-                            ? queryParams.signal
-                            : undefined,
-                })
-                .then(({ data }) => data),
+            id == null
+                ? new Promise(() => {})
+                : dataProvider
+                      .getOne<RecordType>(resource, {
+                          id,
+                          meta,
+                          signal:
+                              dataProvider.supportAbortSignal === true
+                                  ? queryParams.signal
+                                  : undefined,
+                      })
+                      .then(({ data }) => data),
+        enabled: enabled ?? id != null,
         ...queryOptions,
     });
 

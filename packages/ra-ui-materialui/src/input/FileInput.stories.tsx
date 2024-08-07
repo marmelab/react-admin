@@ -89,7 +89,16 @@ export const Multiple = () => (
 
 export const Disabled = () => (
     <Wrapper>
-        <FileInput source="attachment" options={{ disabled: true }}>
+        <FileInput source="attachment" disabled>
+            <FileField source="src" title="title" />
+        </FileInput>
+        <FormInspector name="attachment" />
+    </Wrapper>
+);
+
+export const ReadOnly = () => (
+    <Wrapper>
+        <FileInput source="attachment" readOnly>
             <FileField source="src" title="title" />
         </FileInput>
         <FormInspector name="attachment" />

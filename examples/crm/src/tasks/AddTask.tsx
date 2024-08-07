@@ -1,41 +1,35 @@
-import * as React from 'react';
-import { useState } from 'react';
 import ControlPointIcon from '@mui/icons-material/ControlPoint';
 import {
     Box,
-    Button,
     Chip,
     Dialog,
-    DialogTitle,
-    DialogContent,
     DialogActions,
+    DialogContent,
+    DialogTitle,
     Stack,
 } from '@mui/material';
+import * as React from 'react';
+import { useState } from 'react';
 import {
-    RecordRepresentation,
+    AutocompleteInput,
     CreateBase,
-    Form,
-    TextInput,
     DateInput,
+    Form,
+    RecordRepresentation,
+    ReferenceInput,
     SaveButton,
     SelectInput,
+    TextInput,
     Toolbar,
     required,
     useRecordContext,
 } from 'react-admin';
+import { useConfigurationContext } from '../root/ConfigurationContext';
+import { DialogCloseButton } from '../misc/DialogCloseButton';
+import { contactInputText, contactOptionText } from '../misc/ContactOption';
 
-const taskTypes = [
-    'None',
-    'Email',
-    'Demo',
-    'Lunch',
-    'Meeting',
-    'Follow-up',
-    'Thank you',
-    'Ship',
-];
-
-export const AddTask = () => {
+export const AddTask = ({ selectContact }: { selectContact?: boolean }) => {
+    const { taskTypes } = useConfigurationContext();
     const contact = useRecordContext();
     const [open, setOpen] = useState(false);
     const handleOpen = () => {
@@ -43,7 +37,7 @@ export const AddTask = () => {
     };
     return (
         <>
-            <Box mt={1}>
+            <Box mt={2} mb={2}>
                 <Chip
                     icon={<ControlPointIcon />}
                     size="small"
@@ -60,6 +54,15 @@ export const AddTask = () => {
                     contact_id: contact?.id,
                     due_date: new Date().toISOString().slice(0, 10),
                 }}
+                transform={data => {
+                    const dueDate = new Date(data.due_date);
+                    dueDate.setHours(0, 0, 0, 0);
+                    data.due_date = dueDate.toISOString();
+                    return {
+                        ...data,
+                        due_date: new Date(data.due_date).toISOString(),
+                    };
+                }}
                 mutationOptions={{ onSuccess: () => setOpen(false) }}
             >
                 <Dialog
@@ -71,47 +74,71 @@ export const AddTask = () => {
                     maxWidth="sm"
                 >
                     <Form>
+                        <DialogCloseButton onClose={() => setOpen(false)} />
                         <DialogTitle id="form-dialog-title">
-                            Create a new task for{' '}
-                            <RecordRepresentation
-                                record={contact}
-                                resource="contacts"
-                            />
+                            {!selectContact
+                                ? 'Create a new task for '
+                                : 'Create a new task'}
+                            {!selectContact && (
+                                <RecordRepresentation
+                                    record={contact}
+                                    resource="contacts"
+                                />
+                            )}
                         </DialogTitle>
                         <DialogContent>
-                            <TextInput
-                                autoFocus
-                                source="text"
-                                label="Description"
-                                validate={required()}
-                                multiline
-                            />
-                            <Stack direction="row" spacing={1} mt={2}>
-                                <DateInput
-                                    source="due_date"
+                            <Stack gap={2}>
+                                <TextInput
+                                    autoFocus
+                                    source="text"
+                                    label="Description"
                                     validate={required()}
+                                    multiline
+                                    sx={{ margin: 0 }}
+                                    helperText={false}
                                 />
-                                <SelectInput
-                                    source="type"
-                                    validate={required()}
-                                    choices={taskTypes.map(type => ({
-                                        id: type,
-                                        name: type,
-                                    }))}
-                                />
+                                {selectContact && (
+                                    <ReferenceInput
+                                        source="contact_id"
+                                        reference="contacts"
+                                    >
+                                        <AutocompleteInput
+                                            label="Contact"
+                                            optionText={contactOptionText}
+                                            inputText={contactInputText}
+                                            helperText={false}
+                                            validate={required()}
+                                            TextFieldProps={{
+                                                margin: 'none',
+                                            }}
+                                        />
+                                    </ReferenceInput>
+                                )}
+
+                                <Stack direction="row" spacing={1}>
+                                    <DateInput
+                                        source="due_date"
+                                        validate={required()}
+                                        helperText={false}
+                                    />
+                                    <SelectInput
+                                        source="type"
+                                        validate={required()}
+                                        choices={taskTypes.map(type => ({
+                                            id: type,
+                                            name: type,
+                                        }))}
+                                        helperText={false}
+                                    />
+                                </Stack>
                             </Stack>
                         </DialogContent>
                         <DialogActions sx={{ p: 0 }}>
                             <Toolbar
                                 sx={{
                                     width: '100%',
-                                    justifyContent: 'flex-end',
-                                    gap: 1,
                                 }}
                             >
-                                <Button onClick={() => setOpen(false)}>
-                                    Cancel
-                                </Button>
                                 <SaveButton onClick={() => setOpen(false)} />
                             </Toolbar>
                         </DialogActions>

@@ -19,7 +19,12 @@ export default defineConfig(async () => {
             if (dirName === 'create-react-admin') continue;
             // eslint-disable-next-line prettier/prettier
             const packageJson = await import(
-                path.resolve(__dirname, '../../packages', dirName, 'package.json'),
+                path.resolve(
+                    __dirname,
+                    '../../packages',
+                    dirName,
+                    'package.json'
+                ),
                 { assert: { type: 'json' } }
             );
             aliases.push({
@@ -30,9 +35,8 @@ export default defineConfig(async () => {
                 ),
             });
         }
-    } catch {
-    }
-    
+    } catch {}
+
     return {
         plugins: [react()],
         resolve: {

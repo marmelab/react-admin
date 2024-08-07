@@ -86,6 +86,7 @@ export const ArrayInput = (props: ArrayInputProps) => {
         validate,
         variant,
         disabled,
+        readOnly,
         margin = 'dense',
         ...rest
     } = props;
@@ -128,7 +129,12 @@ export const ArrayInput = (props: ArrayInputProps) => {
             formGroups.registerField(finalSource, formGroupName);
 
         return () => {
-            unregister(finalSource, { keepValue: true });
+            unregister(finalSource, {
+                keepValue: true,
+                keepError: true,
+                keepDirty: true,
+                keepTouched: true,
+            });
             formGroups &&
                 formGroupName != null &&
                 formGroups.unregisterField(finalSource, formGroupName);

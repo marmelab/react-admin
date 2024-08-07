@@ -80,8 +80,7 @@ export const ReferenceField = <
 export interface ReferenceFieldProps<
     RecordType extends Record<string, any> = Record<string, any>,
     ReferenceRecordType extends RaRecord = RaRecord,
-> extends Omit<FieldProps<RecordType>, 'source'>,
-        Required<Pick<FieldProps<RecordType>, 'source'>> {
+> extends FieldProps<RecordType> {
     children?: ReactNode;
     queryOptions?: Partial<
         UseQueryOptions<ReferenceRecordType[], Error> & {

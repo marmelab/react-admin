@@ -6,19 +6,21 @@ import { DataProvider, useDataProvider, useListContext } from 'react-admin';
 
 import { Deal } from '../types';
 import { DealColumn } from './DealColumn';
-import { DealsByStage, getDealsByStage, stages } from './stages';
+import { DealsByStage, getDealsByStage } from './stages';
+import { useConfigurationContext } from '../root/ConfigurationContext';
 
 export const DealListContent = () => {
+    const { dealStages } = useConfigurationContext();
     const { data: unorderedDeals, isPending, refetch } = useListContext<Deal>();
     const dataProvider = useDataProvider();
 
     const [dealsByStage, setDealsByStage] = useState<DealsByStage>(
-        getDealsByStage([])
+        getDealsByStage([], dealStages)
     );
 
     useEffect(() => {
         if (unorderedDeals) {
-            const newDealsByStage = getDealsByStage(unorderedDeals);
+            const newDealsByStage = getDealsByStage(unorderedDeals, dealStages);
             if (!isEqual(newDealsByStage, dealsByStage)) {
                 setDealsByStage(newDealsByStage);
             }
@@ -71,11 +73,11 @@ export const DealListContent = () => {
     return (
         <DragDropContext onDragEnd={onDragEnd}>
             <Box display="flex">
-                {stages.map(stage => (
+                {dealStages.map(stage => (
                     <DealColumn
-                        stage={stage}
-                        deals={dealsByStage[stage]}
-                        key={stage}
+                        stage={stage.value}
+                        deals={dealsByStage[stage.value]}
+                        key={stage.value}
                     />
                 ))}
             </Box>

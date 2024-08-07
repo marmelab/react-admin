@@ -1,27 +1,19 @@
-import * as React from 'react';
+import { Dialog, DialogContent, DialogTitle } from '@mui/material';
+import { useQueryClient } from '@tanstack/react-query';
 import {
     Create,
-    SimpleForm,
-    TextInput,
-    SelectInput,
-    NumberInput,
-    ReferenceInput,
-    AutocompleteInput,
-    required,
-    useRedirect,
+    Form,
+    GetListResult,
+    SaveButton,
+    Toolbar,
     useDataProvider,
     useGetIdentity,
     useListContext,
-    GetListResult,
-    DateInput,
+    useRedirect,
 } from 'react-admin';
-import { Dialog } from '@mui/material';
-import { useQueryClient } from '@tanstack/react-query';
-import { stageChoices } from './stages';
-import { typeChoices } from './types';
+import { DialogCloseButton } from '../misc/DialogCloseButton';
 import { Deal } from '../types';
-
-const validateRequired = required();
+import { DealInputs } from './DealInputs';
 
 export const DealCreate = ({ open }: { open: boolean }) => {
     const redirect = useRedirect();
@@ -81,46 +73,34 @@ export const DealCreate = ({ open }: { open: boolean }) => {
     const { identity } = useGetIdentity();
 
     return (
-        <Dialog open={open} onClose={handleClose}>
+        <Dialog open={open} onClose={handleClose} fullWidth maxWidth="md">
             <Create<Deal>
                 resource="deals"
                 mutationOptions={{ onSuccess }}
-                sx={{ width: 500, '& .RaCreate-main': { mt: 0 } }}
+                sx={{ '& .RaCreate-main': { mt: 0 } }}
             >
-                <SimpleForm
-                    defaultValues={{
-                        index: 0,
-                        sales_id: identity && identity?.id,
-                        start_at: new Date().toISOString(),
-                        contact_ids: [],
+                <DialogCloseButton onClose={handleClose} />
+                <DialogTitle
+                    sx={{
+                        paddingBottom: 0,
                     }}
                 >
-                    <TextInput
-                        source="name"
-                        label="Deal name"
-                        validate={validateRequired}
-                    />
-                    <TextInput source="description" multiline rows={3} />
-                    <ReferenceInput source="company_id" reference="companies">
-                        <AutocompleteInput
-                            optionText="name"
-                            validate={validateRequired}
-                        />
-                    </ReferenceInput>
-                    <DateInput
-                        source="start_at"
-                        defaultValue={new Date()}
-                        fullWidth
-                    />
-                    <SelectInput
-                        source="stage"
-                        choices={stageChoices}
-                        validate={validateRequired}
-                        defaultValue="opportunity"
-                    />
-                    <SelectInput source="type" choices={typeChoices} />
-                    <NumberInput source="amount" defaultValue={0} />
-                </SimpleForm>
+                    Create a new deal
+                </DialogTitle>
+                <Form
+                    defaultValues={{
+                        sales_id: identity?.id,
+                        contact_ids: [],
+                        index: 0,
+                    }}
+                >
+                    <DialogContent>
+                        <DealInputs />
+                    </DialogContent>
+                    <Toolbar>
+                        <SaveButton />
+                    </Toolbar>
+                </Form>
             </Create>
         </Dialog>
     );

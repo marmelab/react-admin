@@ -4,6 +4,7 @@ export * from './RestoreScrollPosition';
 export * from './useBasename';
 export * from './useCreatePath';
 export * from './useGetPathForRecord';
+export * from './useGetPathForRecordCallback';
 export * from './useRedirect';
 export * from './useResetErrorBoundaryOnLocationChange';
 export * from './useScrollToTop';

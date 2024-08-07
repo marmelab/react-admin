@@ -9,17 +9,18 @@ export const generateAppTestFile = (
     fs.writeFileSync(
         path.join(projectDirectory, 'src', 'App.spec.tsx'),
         `
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { App } from "./App";
 
 test("should pass", async () => {
-	vi.spyOn(window, "scrollTo").mockImplementation(() => {});
+	vi.spyOn(window, "scrollTo").mockImplementation(() => { /* do nothing */ });
 	render(<App />);
     ${
         state.authProvider !== 'none'
             ? `
 
 	// Sign in
+
 	fireEvent.change(await screen.findByLabelText("Username *"), {
 		target: { value: "janedoe" },
 	});
@@ -33,6 +34,7 @@ test("should pass", async () => {
 	// Open the first post
 	fireEvent.click(await screen.findByText("Post 1"));
 	fireEvent.click(await screen.findByText("Edit"));
+	await screen.findByDisplayValue("Post 1");
 	// Update its title
 	fireEvent.change(await screen.findByDisplayValue("Post 1"), {
 		target: { value: "Post 1 edited" },
@@ -45,6 +47,7 @@ test("should pass", async () => {
 	// Open the first comment
 	fireEvent.click(await screen.findByText("Comment 1"));
 	fireEvent.click(await screen.findByText("Edit"));
+	await screen.findByDisplayValue("Post 1 edited");
 	// Edit the comment selected post
 	fireEvent.click(await screen.findByDisplayValue("Post 1 edited"));
 	fireEvent.click(await screen.findByText("Post 11"));

@@ -168,6 +168,7 @@ describe('<DateInput />', () => {
         fireEvent.change(input, {
             target: { value: '' },
         });
+        fireEvent.blur(input);
         fireEvent.click(screen.getByLabelText('ra.action.save'));
         await waitFor(() => {
             expect(onSubmit).toHaveBeenCalledWith(
@@ -220,6 +221,7 @@ describe('<DateInput />', () => {
         fireEvent.change(input, {
             target: { value: '' },
         });
+        fireEvent.blur(input);
         fireEvent.click(screen.getByLabelText('ra.action.save'));
         await waitFor(() => {
             expect(onSubmit).toHaveBeenCalledWith(
@@ -255,11 +257,7 @@ describe('<DateInput />', () => {
                 'resources.posts.fields.publishedAt *'
             );
             fireEvent.blur(input);
-            await waitFor(() => {
-                expect(
-                    screen.queryByText('ra.validation.required')
-                ).not.toBeNull();
-            });
+            await screen.findByText('ra.validation.required');
         });
     });
 });

@@ -86,6 +86,38 @@ export const Inline = () => (
     </Wrapper>
 );
 
+export const ReadOnly = () => (
+    <AdminContext dataProvider={dataProvider}>
+        <Edit resource="books" id="1">
+            <SimpleForm>
+                <ArrayInput source="authors">
+                    <SimpleFormIterator readOnly>
+                        <TextInput source="name" />
+                        <TextInput source="role" />
+                        <TextInput source="surname" />
+                    </SimpleFormIterator>
+                </ArrayInput>
+            </SimpleForm>
+        </Edit>
+    </AdminContext>
+);
+
+export const Disabled = () => (
+    <AdminContext dataProvider={dataProvider}>
+        <Edit resource="books" id="1">
+            <SimpleForm>
+                <ArrayInput source="authors">
+                    <SimpleFormIterator disabled>
+                        <TextInput source="name" />
+                        <TextInput source="role" />
+                        <TextInput source="surname" />
+                    </SimpleFormIterator>
+                </ArrayInput>
+            </SimpleForm>
+        </Edit>
+    </AdminContext>
+);
+
 export const DisableAdd = () => (
     <Wrapper>
         <SimpleFormIterator disableAdd>

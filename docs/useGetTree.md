@@ -10,7 +10,6 @@ This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" 
 It calls `dataProvider.getTree()` (one of the new `dataProvider` methods supported by `ra-tree`) when the component mounts, and returns the tree nodes in a flat array.
 
 <video controls autoplay playsinline muted loop>
-  <source src="https://react-admin-ee.marmelab.com/assets/ra-tree-overview.webm" type="video/webm" />
   <source src="https://react-admin-ee.marmelab.com/assets/ra-tree-overview.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>

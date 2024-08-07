@@ -55,7 +55,7 @@ export default (params?: LocalStorageDataProviderParams): DataProvider => {
 
     window?.addEventListener('storage', event => {
         if (event.key === localStorageKey) {
-            const newData = JSON.parse(event.newValue);
+            const newData = event.newValue ? JSON.parse(event.newValue) : {};
             data = newData;
             baseDataProvider = fakeRestProvider(
                 newData,

@@ -1,32 +1,20 @@
-import { DataProvider } from '../types';
+import {
+    CreateResult,
+    DataProvider,
+    DeleteResult,
+    GetOneResult,
+    UpdateResult,
+} from '../types';
 
 // avoids adding a context in tests
 export const defaultDataProvider: DataProvider = {
-    create: async () => {
-        throw new Error('create is not implemented');
-    },
-    delete: async () => {
-        throw new Error('delete not implemented');
-    },
-    deleteMany: async () => {
-        throw new Error('deleteMany is not implemented');
-    },
-    getList: async () => {
-        throw new Error('getList is not implemented');
-    },
-    getMany: async () => {
-        throw new Error('getMany is not implemented');
-    },
-    getManyReference: async () => {
-        throw new Error('getManyReference is not implemented');
-    },
-    getOne: async () => {
-        throw new Error('getOne is not implemented');
-    },
-    update: async () => {
-        throw new Error('update not implemented');
-    },
-    updateMany: async () => {
-        throw new Error('updateMany not implemented');
-    },
+    create: () => Promise.resolve<CreateResult>({ data: null }),
+    delete: () => Promise.resolve<DeleteResult>({ data: null }),
+    deleteMany: () => Promise.resolve({ data: [] }),
+    getList: () => Promise.resolve({ data: [], total: 0 }),
+    getMany: () => Promise.resolve({ data: [] }),
+    getManyReference: () => Promise.resolve({ data: [], total: 0 }),
+    getOne: () => Promise.resolve<GetOneResult>({ data: null }),
+    update: () => Promise.resolve<UpdateResult>({ data: null }),
+    updateMany: () => Promise.resolve({ data: [] }),
 };

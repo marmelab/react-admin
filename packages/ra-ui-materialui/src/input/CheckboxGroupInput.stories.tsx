@@ -115,6 +115,24 @@ export const InsideReferenceArrayInput = () => (
     </TestMemoryRouter>
 );
 
+export const ReadOnly = () => (
+    <AdminContext i18nProvider={i18nProvider}>
+        <Create
+            resource="posts"
+            record={{ options: [1, 2] }}
+            sx={{ width: 600 }}
+        >
+            <SimpleForm>
+                <CheckboxGroupInput
+                    source="options"
+                    readOnly
+                    choices={choices}
+                />
+            </SimpleForm>
+        </Create>
+    </AdminContext>
+);
+
 export const Disabled = () => (
     <Wrapper>
         <CheckboxGroupInput source="roles" disabled choices={roleChoices} />

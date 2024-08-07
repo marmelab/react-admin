@@ -58,14 +58,14 @@ describe('<PrevNextButtons />', () => {
         const item = await screen.findByText('217');
         fireEvent.click(item);
         await screen.findByRole('navigation');
-        expect(screen.getByText('10 / 57')).toBeDefined();
+        await screen.findByText('10 / 57');
     });
 
     it('should link to the edit view by default', async () => {
         render(<Basic />);
         const row = await screen.findByText('Deja');
         fireEvent.click(row);
-        fireEvent.click(screen.getByLabelText('Edit'));
+        fireEvent.click(await screen.findByLabelText('Edit'));
         const next = await screen.findByLabelText('Go to next page');
         fireEvent.click(next);
         expect(screen.getByLabelText('First name').getAttribute('type')).toBe(

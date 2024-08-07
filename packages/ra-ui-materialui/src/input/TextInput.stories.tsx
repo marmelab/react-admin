@@ -38,6 +38,38 @@ export const Resettable = () => (
     </Wrapper>
 );
 
+export const Disabled = () => (
+    <AdminContext>
+        <Create
+            resource="posts"
+            record={{ id: 123, title: 'Lorem ipsum' }}
+            sx={{ width: 600 }}
+        >
+            <SimpleForm>
+                <TextInput source="title" disabled />
+                <TextInput source="name" disabled />
+                <FormInspector />
+            </SimpleForm>
+        </Create>
+    </AdminContext>
+);
+
+export const ReadOnly = () => (
+    <AdminContext>
+        <Create
+            resource="posts"
+            record={{ id: 123, title: 'Lorem ipsum' }}
+            sx={{ width: 600 }}
+        >
+            <SimpleForm>
+                <TextInput source="title" readOnly />
+                <TextInput source="name" readOnly />
+                <FormInspector />
+            </SimpleForm>
+        </Create>
+    </AdminContext>
+);
+
 export const DefaultValue = () => (
     <Wrapper>
         <TextInput source="title" defaultValue="hello" />
@@ -86,6 +118,12 @@ export const Margin = () => (
         <TextInput source="title" label="default (dense)" />
         <TextInput source="title" label="none" margin="none" />
         <TextInput source="title" label="normal" margin="normal" />
+    </Wrapper>
+);
+
+export const Multiline = () => (
+    <Wrapper>
+        <TextInput source="title" multiline minRows={3} />
     </Wrapper>
 );
 

@@ -66,7 +66,7 @@ import { AutocompleteInput } from './AutocompleteInput';
 export const ReferenceInput = (props: ReferenceInputProps) => {
     const { children = defaultChildren, ...rest } = props;
 
-    if (props.validate) {
+    if (props.validate && process.env.NODE_ENV !== 'production') {
         throw new Error(
             '<ReferenceInput> does not accept a validate prop. Set the validate prop on the child instead.'
         );

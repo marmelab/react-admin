@@ -59,6 +59,7 @@ const SuccessCore = () => {
         );
         setNotification(true);
     };
+
     return (
         <>
             <dl>

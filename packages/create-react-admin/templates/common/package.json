@@ -1,5 +1,6 @@
 {
     "private": true,
+    "type": "module",
     "scripts": {
         "dev": "vite",
         "build": "vite build",
@@ -10,7 +11,7 @@
     },
     "dependencies": {
         "react": "^18.3.0",
-        "react-admin": "^5.0.0",
+        "react-admin": "^5.1.0",
         "react-dom": "^18.3.0"
     },
     "devDependencies": {
@@ -24,8 +25,8 @@
         "eslint-config-prettier": "^8.8.0",
         "eslint-plugin-react": "^7.32.2",
         "eslint-plugin-react-hooks": "^4.6.0",
-        "prettier": "^2.8.8",
+        "prettier": "^3.3.3",
         "typescript": "^5.1.6",
-        "vite": "^4.3.9"
+        "vite": "^5.3.5"
     }
 }

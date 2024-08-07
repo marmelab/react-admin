@@ -91,6 +91,38 @@ describe('useUpdate', () => {
             });
         });
 
+        it('accepts falsy value that are not null nor undefined as the record id', async () => {
+            const dataProvider = {
+                update: jest.fn(() =>
+                    Promise.resolve({ data: { id: 1 } } as any)
+                ),
+            } as any;
+            let localUpdate;
+            const Dummy = () => {
+                const [update] = useUpdate('foo', {
+                    id: 0,
+                    data: { bar: 'baz' },
+                    previousData: { id: 0, bar: 'bar' },
+                });
+                localUpdate = update;
+                return <span />;
+            };
+
+            render(
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <Dummy />
+                </CoreAdminContext>
+            );
+            localUpdate();
+            await waitFor(() => {
+                expect(dataProvider.update).toHaveBeenCalledWith('foo', {
+                    id: 0,
+                    data: { bar: 'baz' },
+                    previousData: { id: 0, bar: 'bar' },
+                });
+            });
+        });
+
         it('replaces hook call time params by and callback time params', async () => {
             const dataProvider = {
                 update: jest.fn(() =>

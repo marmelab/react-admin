@@ -1,3 +1,8 @@
+/**
+ * This component displays the deals pipeline for the current user.
+ * It's currently not used in the application but can be added to the dashboard.
+ */
+
 import * as React from 'react';
 import { Card, Box } from '@mui/material';
 import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
@@ -10,11 +15,13 @@ import {
 } from 'react-admin';
 
 import { CompanyAvatar } from '../companies/CompanyAvatar';
-import { stages, stageNames } from '../deals/stages';
 import { Deal } from '../types';
+import { useConfigurationContext } from '../root/ConfigurationContext';
+import { findDealLabel } from '../deals/deal';
 
 export const DealsPipeline = () => {
     const { identity } = useGetIdentity();
+    const { dealStages, dealPipelineStatuses } = useConfigurationContext();
     const { data, total, isPending } = useGetList<Deal>(
         'deals',
         {
@@ -30,11 +37,11 @@ export const DealsPipeline = () => {
             return;
         }
         const deals: Deal[] = [];
-        stages
-            .filter(stage => stage !== 'won')
+        dealStages
+            .filter(stage => !dealPipelineStatuses.includes(stage.value))
             .forEach(stage =>
                 data
-                    .filter(deal => deal.stage === stage)
+                    .filter(deal => deal.stage === stage.value)
                     .forEach(deal => deals.push(deal))
             );
         return deals;
@@ -70,8 +77,7 @@ export const DealsPipeline = () => {
                             currency: 'USD',
                             currencyDisplay: 'narrowSymbol',
                             minimumSignificantDigits: 3,
-                            // @ts-ignore
-                        })} , ${stageNames[deal.stage]}`
+                        })} , ${findDealLabel(dealStages, deal.stage)}`
                     }
                     leftAvatar={deal => (
                         <ReferenceField
@@ -81,7 +87,7 @@ export const DealsPipeline = () => {
                             resource="deals"
                             link={false}
                         >
-                            <CompanyAvatar size="small" />
+                            <CompanyAvatar width={20} height={20} />
                         </ReferenceField>
                     )}
                 />

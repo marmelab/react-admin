@@ -63,7 +63,9 @@ export const queryReducer: Reducer<ListParams, ActionTypes> = (
             if (action.payload.field === previousState.sort) {
                 return {
                     ...previousState,
-                    order: oppositeOrder(previousState.order),
+                    order:
+                        action.payload.order ??
+                        oppositeOrder(previousState.order),
                     page: 1,
                 };
             }

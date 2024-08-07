@@ -341,15 +341,30 @@ The Auth Provider also lets you configure redirections after login/logout, anony
 Use this prop to make all routes and links in your Admin relative to a "base" portion of the URL pathname that they all share. This is required when using the [`BrowserRouter`](https://reactrouter.com/en/main/router-components/browser-router) to serve the application under a sub-path of your domain (for example https://marmelab.com/ra-enterprise-demo), or when embedding react-admin inside a single-page app with its own routing.
 
 ```tsx
-import { Admin } from 'react-admin';
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { StoreFront } from './StoreFront';
+import { StoreAdmin } from './StoreAdmin';
 
-const App = () => (
+export const App = () => (
     <BrowserRouter>
-        <Admin basename="/admin">
-            ...
-        </Admin>
+        <Routes>
+            <Route path="/" element={<StoreFront />} />
+            <Route path="/admin/*" element={<StoreAdmin />} />
+        </Routes>
     </BrowserRouter>
+);
+```
+
+React-admin will have to prefix all the internal links with `/admin`. Use the `<Admin basename>` prop for that:
+
+```jsx
+// in src/StoreAdmin.js
+import { Admin, Resource } from 'react-admin';
+
+export const StoreAdmin = () => (
+    <Admin basename="/admin" dataProvider={...}>
+        <Resource name="posts" {...posts} />
+    </Admin>
 );
 ```
 
@@ -407,7 +422,8 @@ import * as React from "react";
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import { Title } from 'react-admin';
-export default () => (
+
+export const Dashboard = () => (
     <Card>
         <Title title="Welcome to the administration" />
         <CardContent>Lorem ipsum sic dolor amet...</CardContent>
@@ -421,7 +437,7 @@ import * as React from "react";
 import { Admin } from 'react-admin';
 import simpleRestProvider from 'ra-data-simple-rest';
 
-import Dashboard from './Dashboard';
+import { Dashboard } from './Dashboard';
 
 const App = () => (
     <Admin dashboard={Dashboard} dataProvider={simpleRestProvider('http://path.to.my.api')}>
@@ -431,6 +447,18 @@ const App = () => (
 ```
 
 ![Custom home page](./img/dashboard.png)
+
+The `dashboard` page requires users to be authenticated and will redirect anonymous users to the login page. If you want to allow anonymous access to the dashboard, edit your `authProvider` to add an exception to the `checkAuth` method, as follows:
+
+```diff
+const authProvider = {
+    // ...
+    checkAuth: (params) => {
++       if (params?.route === 'dashboard') return Promise.resolve();
+        // ...
+    },
+}
+```
 
 ## `darkTheme`
 

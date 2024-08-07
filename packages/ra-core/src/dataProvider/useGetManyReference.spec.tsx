@@ -418,4 +418,31 @@ describe('useGetManyReference', () => {
             expect(abort).toHaveBeenCalled();
         });
     });
+
+    it('should discriminate result type', () => {
+        // this is a TypeScript verification. It should compile.
+        const _ComponentToTest = () => {
+            const { data, error, isPending } = useGetManyReference<{
+                id: number;
+                title: string;
+            }>('posts', {
+                target: 'comments',
+                id: 1,
+            });
+            if (isPending) {
+                return <>Loading</>;
+            }
+            if (error) {
+                return <>Error</>;
+            }
+            return (
+                <ul>
+                    {data.map(post => (
+                        <li key={post.id}>{post.title}</li>
+                    ))}
+                </ul>
+            );
+        };
+        expect(_ComponentToTest).toBeDefined();
+    });
 });

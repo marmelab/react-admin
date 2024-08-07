@@ -1,8 +1,7 @@
 import * as React from 'react';
-import { Card, Box } from '@mui/material';
+import { Card, Box, Stack } from '@mui/material';
 import ContactsIcon from '@mui/icons-material/Contacts';
 import { useGetList, Link, SimpleList, useGetIdentity } from 'react-admin';
-import { formatDistance } from 'date-fns';
 
 import { Avatar } from '../contacts/Avatar';
 import { Contact } from '../types';
@@ -22,11 +21,12 @@ export const HotContacts = () => {
         },
         { enabled: Number.isInteger(identity?.id) }
     );
+
     return (
-        <>
-            <Box display="flex" alignItems="center" marginBottom="1em">
-                <Box ml={2} mr={2} display="flex">
-                    <ContactsIcon color="disabled" fontSize="large" />
+        <Stack>
+            <Box display="flex" alignItems="center" mb={1}>
+                <Box mr={1} display="flex">
+                    <ContactsIcon color="disabled" fontSize="medium" />
                 </Box>
                 <Link
                     underline="none"
@@ -34,7 +34,7 @@ export const HotContacts = () => {
                     color="textSecondary"
                     to="/contacts"
                 >
-                    Hot contacts
+                    Hot Contacts
                 </Link>
             </Box>
             <Card>
@@ -43,19 +43,19 @@ export const HotContacts = () => {
                     data={contactData}
                     total={contactTotal}
                     isPending={contactsLoading}
+                    resource="contacts"
                     primaryText={contact =>
                         `${contact.first_name} ${contact.last_name}`
                     }
-                    resource="contacts"
-                    secondaryText={(contact: Contact) =>
-                        formatDistance(contact.last_seen, new Date(), {
-                            addSuffix: true,
-                        })
-                    }
+                    secondaryText={contact => (
+                        <>
+                            {contact.title} at {contact.company_name}
+                        </>
+                    )}
                     leftAvatar={contact => <Avatar record={contact} />}
                     dense
                 />
             </Card>
-        </>
+        </Stack>
     );
 };

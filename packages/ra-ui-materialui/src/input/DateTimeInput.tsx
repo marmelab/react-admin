@@ -1,7 +1,7 @@
 import * as React from 'react';
 import clsx from 'clsx';
 import TextField, { TextFieldProps } from '@mui/material/TextField';
-import { useInput, FieldTitle } from 'ra-core';
+import { useInput, FieldTitle, mergeRefs } from 'ra-core';
 
 import { CommonInputProps } from './CommonInputProps';
 import { sanitizeInputRestProps } from './sanitizeInputRestProps';
@@ -29,37 +29,144 @@ export const DateTimeInput = ({
     margin,
     onBlur,
     onChange,
+    onFocus,
     source,
     resource,
     parse = parseDateTime,
     validate,
     variant,
+    disabled,
+    readOnly,
     ...rest
 }: DateTimeInputProps) => {
     const { field, fieldState, id, isRequired } = useInput({
         defaultValue,
-        format,
-        parse,
         onBlur,
-        onChange,
         resource,
         source,
         validate,
+        disabled,
+        readOnly,
         ...rest,
     });
+    const [renderCount, setRenderCount] = React.useState(1);
+    const valueChangedFromInput = React.useRef(false);
+    const localInputRef = React.useRef<HTMLInputElement>();
+    const initialDefaultValueRef = React.useRef(field.value);
+
+    React.useEffect(() => {
+        const initialDateValue =
+            new Date(initialDefaultValueRef.current).getTime() || null;
+
+        const fieldDateValue = new Date(field.value).getTime() || null;
+
+        if (
+            initialDateValue !== fieldDateValue &&
+            !valueChangedFromInput.current
+        ) {
+            setRenderCount(r => r + 1);
+            parse
+                ? field.onChange(parse(field.value))
+                : field.onChange(field.value);
+            initialDefaultValueRef.current = field.value;
+            valueChangedFromInput.current = false;
+        }
+    }, [setRenderCount, parse, field]);
+
+    const { onBlur: onBlurFromField } = field;
+    const hasFocus = React.useRef(false);
+
+    // update the input text when the user types in the input
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        if (onChange) {
+            onChange(event);
+        }
+        if (
+            typeof event.target === 'undefined' ||
+            typeof event.target.value === 'undefined'
+        ) {
+            return;
+        }
+        const target = event.target;
+
+        const newValue =
+            target.valueAsDate !== undefined &&
+            target.valueAsDate !== null &&
+            !isNaN(new Date(target.valueAsDate).getTime())
+                ? parse
+                    ? parse(target.valueAsDate)
+                    : target.valueAsDate
+                : parse
+                  ? parse(target.value)
+                  : formatDateTime(target.value);
+
+        // Some browsers will return null for an invalid date so we only change react-hook-form value if it's not null
+        // The input reset is handled in the onBlur event handler
+        if (newValue !== '' && newValue != null) {
+            field.onChange(newValue);
+            valueChangedFromInput.current = true;
+        }
+    };
+
+    const handleFocus = (event: React.FocusEvent<HTMLInputElement>) => {
+        if (onFocus) {
+            onFocus(event);
+        }
+        hasFocus.current = true;
+    };
+
+    const handleBlur = () => {
+        hasFocus.current = false;
+
+        if (!localInputRef.current) {
+            return;
+        }
+
+        // To ensure users can clear the input, we check its value on blur
+        // and submit it to react-hook-form
+        const newValue =
+            localInputRef.current.valueAsDate !== undefined &&
+            localInputRef.current.valueAsDate !== null &&
+            !isNaN(new Date(localInputRef.current.valueAsDate).getTime())
+                ? parse
+                    ? parse(localInputRef.current.valueAsDate)
+                    : formatDateTime(localInputRef.current.valueAsDate)
+                : parse
+                  ? parse(localInputRef.current.value)
+                  : formatDateTime(localInputRef.current.value);
+
+        if (newValue !== field.value) {
+            field.onChange(newValue ?? '');
+        }
+
+        if (onBlurFromField) {
+            onBlurFromField();
+        }
+    };
 
     const { error, invalid } = fieldState;
     const renderHelperText = helperText !== false || invalid;
+    const { ref, name } = field;
+    const inputRef = mergeRefs([ref, localInputRef]);
+
     return (
         <TextField
             id={id}
-            {...field}
-            className={clsx('ra-input', `ra-input-${source}`, className)}
+            inputRef={inputRef}
+            name={name}
+            defaultValue={format(initialDefaultValueRef.current)}
+            key={renderCount}
             type="datetime-local"
+            onChange={handleChange}
+            onFocus={handleFocus}
+            onBlur={handleBlur}
+            className={clsx('ra-input', `ra-input-${source}`, className)}
             size="small"
             variant={variant}
             margin={margin}
             error={invalid}
+            disabled={disabled || readOnly}
+            readOnly={readOnly}
             helperText={
                 renderHelperText ? (
                     <InputHelperText

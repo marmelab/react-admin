@@ -12,6 +12,8 @@ import { AdminContext } from '../AdminContext';
 import { Edit } from '../detail';
 import { NumberInput, TextInput } from '../input';
 import { SimpleForm } from './SimpleForm';
+import { Labeled } from '../Labeled';
+import { TextField, NumberField } from '../field';
 
 export default { title: 'ra-ui-materialui/forms/SimpleForm' };
 
@@ -83,6 +85,31 @@ export const NoToolbar = () => (
             <TextInput source="title" />
             <TextInput source="author" />
             <NumberInput source="year" />
+        </SimpleForm>
+    </Wrapper>
+);
+
+export const WithFields = () => (
+    <Wrapper
+        i18nProvider={{
+            translate: x => x,
+            changeLocale: async () => {},
+            getLocale: () => 'en',
+        }}
+    >
+        <SimpleForm>
+            <TextInput source="title" />
+            <TextInput source="author" />
+            <NumberInput source="year" />
+            <Labeled>
+                <TextField source="title" />
+            </Labeled>
+            <Labeled>
+                <TextField source="author" />
+            </Labeled>
+            <Labeled>
+                <NumberField source="year" />
+            </Labeled>
         </SimpleForm>
     </Wrapper>
 );
