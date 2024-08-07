@@ -24,8 +24,8 @@ export const PostEdit = () => (
     <Edit>
         <SimpleForm>
             <TextInput readOnly source="id" />
-            <ReferenceInput label="User" source="userId" reference="users" validate={[required()]}>
-                <SelectInput optionText="name" />
+            <ReferenceInput label="User" source="userId" reference="users">
+                <SelectInput optionText="name" validate={[required()]} />
             </ReferenceInput>
             <TextInput source="title" label="Post title" validate={[required()]} />
             <TextInput multiline source="body" defaultValue="Lorem Ipsum" />
