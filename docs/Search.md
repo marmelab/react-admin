@@ -169,8 +169,9 @@ The `<Search>` component accepts the following props:
 | Prop           | Required | Type                                                                              | Default                | Description                                                                                        |
 | -------------- | -------- | --------------------------------------------------------------------------------- | ---------------------- | -------------------------------------------------------------------------------------------------- |
 | `children`     | Optional | `Element`                                                                         | `<SearchResultsPanel>` | A component that will display the results.                                                         |
-| `color`        | Optional | `string`                                                                          | `light`                | The color mode for the input, applying light or dark backgrounds. Accept either `light` or `dark`. |
+| `disableHighlight`    | Optional | `boolean`                                                                         | `false`                | Disable the highlight of the search term of each result.           |
 | `historySize`  | Optional | `number`                                                                          | 5                      | The number of past queries to keep in history.                                                     |
+| `isInAppBar`          | Optional | `boolean`                                                                         | `true`                 | Apply a dedicated style to the `<AppBar>` if true                  |
 | `options`      | Optional | `Object`                                                                          | -                      | An object containing options to apply to the search.                                               |
 | `queryOptions` | Optional | [`UseQuery Options`](https://tanstack.com/query/v3/docs/react/reference/useQuery) | -                      | `react-query` options for the search query                                                         |
 | `wait`         | Optional | `number`                                                                          | 500                    | The delay of debounce for the search to launch after typing in ms.                                 |
@@ -219,13 +220,15 @@ export const App = () => (
 );
 ```
 
-## `color`
+### `disableHighlight`
 
-If you need it, you can choose to render the `light` or the `dark` version of search input.
+The search terms in each result are highlighted. You can disable this feature with the `disableHighlight` prop as follows:
 
 ```tsx
-<Search color="dark" />
+<Search disableHighlight />
 ```
+
+**Tip:** To customize the highlight style check out the [Customizing the result items](#customizing-the-result-items) section below. 
 
 ## `historySize`
 
@@ -268,11 +271,12 @@ The number of milliseconds to wait before processing the search request, immedia
 <Search wait={200} />
 ```
 
-## Customizing The Result Items
+
+### Customizing The Result Items
 
 By default, `<Search>` displays the results in `<SearchResultsPanel>`, which displays each results in a `<SearchResultItem>`. So rendering `<Search>` without children is equivalent to rendering:
 
-```jsx
+```tsx
 const MySearch = () => (
     <Search>
         <SearchResultsPanel>
@@ -286,7 +290,7 @@ const MySearch = () => (
 
 For instance:
 
-```jsx
+```tsx
 import {
     Search,
     SearchResultsPanel,
@@ -315,11 +319,11 @@ const MySearch = () => (
 
 You can also completely replace the search result item component:
 
-```jsx
+```tsx
 import { Search, SearchResultsPanel } from '@react-admin/ra-search';
 
 const MySearchResultItem = ({ data, onClose }) => (
-    <li key={data.id}>
+    <li key={data.id} className="highlight">
         <Link to={data.url} onClick={onClose}>
             <strong>{data.content.label}</strong>
         </Link>
@@ -332,6 +336,22 @@ const MySearch = () => (
         <SearchResultsPanel>
             <MySearchResultItem />
         </SearchResultsPanel>
+    </Search>
+);
+```
+
+**Tip:** You can customize the highlight of the search terms by overriding the `<SearchResultsPanel sx>` prop as following:
+
+```jsx
+const CustomSearch = () => (
+    <Search>
+        <SearchResultsPanel
+            sx={{
+                '& ::highlight(search)': {
+                    backgroundColor: '#7de5fa',
+                },
+            }}
+        />
     </Search>
 );
 ```
