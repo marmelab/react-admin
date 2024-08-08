@@ -366,6 +366,7 @@ export const App = () => (
 
 **Tip:** You can customize the highlight of the search terms by overriding the `<SearchResultsPanel sx>` prop as following:
 
+{% raw %}
 ```jsx
 const CustomSearch = () => (
     <SearchWithResult>
@@ -379,6 +380,7 @@ const CustomSearch = () => (
     </SearchWithResult>
 );
 ```
+{% endraw %}
 
 ## Use It With SolarLayout
 

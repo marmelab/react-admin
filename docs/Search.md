@@ -342,6 +342,7 @@ const MySearch = () => (
 
 **Tip:** You can customize the highlight of the search terms by overriding the `<SearchResultsPanel sx>` prop as following:
 
+{% raw %}
 ```jsx
 const CustomSearch = () => (
     <Search>
@@ -355,6 +356,7 @@ const CustomSearch = () => (
     </Search>
 );
 ```
+{% endraw %}
 
 ## Customizing the Entire Search Results
 
