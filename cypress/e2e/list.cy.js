@@ -336,9 +336,9 @@ describe('List Page', () => {
         });
 
         it('should keep filters when sorting a column', () => {
-            ListPagePosts.setFilterValue('q', 'quis culpa impedit');
+            ListPagePosts.setFilterValue('q', 'possimus');
             cy.get(ListPagePosts.elements.recordRows).should(el =>
-                expect(el).to.have.length(1)
+                expect(el).to.have.length(7)
             );
 
             ListPagePosts.toggleColumnSort('title');
@@ -346,7 +346,7 @@ describe('List Page', () => {
 
             cy.get(ListPagePosts.elements.filter('q')).should(
                 'have.value',
-                'quis culpa impedit'
+                'possimus'
             );
         });
     });
