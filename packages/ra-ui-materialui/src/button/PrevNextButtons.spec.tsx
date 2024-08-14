@@ -147,4 +147,55 @@ describe('<PrevNextButtons />', () => {
             });
         });
     });
+
+    describe('pagination', () => {
+        it('should compute the index correctly when opening first record of page 2', async () => {
+            render(<Basic />);
+            await screen.findByText('Deja');
+            fireEvent.click(await screen.findByLabelText('Go to page 2'));
+            const tr = await screen.findByText('Hamill');
+            fireEvent.click(tr);
+            await screen.findByText('11 / 900');
+        });
+        it('should compute the index correctly when opening second record of page 2', async () => {
+            render(<Basic />);
+            await screen.findByText('Deja');
+            fireEvent.click(await screen.findByLabelText('Go to page 2'));
+            const tr = await screen.findByText('Kub');
+            fireEvent.click(tr);
+            await screen.findByText('12 / 900');
+        });
+        it('should compute the index correctly when opening last record of page 2', async () => {
+            render(<Basic />);
+            await screen.findByText('Deja');
+            fireEvent.click(await screen.findByLabelText('Go to page 2'));
+            const tr = await screen.findByText('Langworth');
+            fireEvent.click(tr);
+            await screen.findByText('20 / 900');
+        });
+        it('should compute the index correctly when opening first record of page 3', async () => {
+            render(<Basic />);
+            await screen.findByText('Deja');
+            fireEvent.click(await screen.findByLabelText('Go to page 3'));
+            const tr = await screen.findByText('Spinka');
+            fireEvent.click(tr);
+            await screen.findByText('21 / 900');
+        });
+        it('should compute the index correctly when opening second record of page 3', async () => {
+            render(<Basic />);
+            await screen.findByText('Deja');
+            fireEvent.click(await screen.findByLabelText('Go to page 3'));
+            const tr = await screen.findByText('Lowe');
+            fireEvent.click(tr);
+            await screen.findByText('22 / 900');
+        });
+        it('should compute the index correctly when opening last record of page 3', async () => {
+            render(<Basic />);
+            await screen.findByText('Deja');
+            fireEvent.click(await screen.findByLabelText('Go to page 3'));
+            const tr = await screen.findByText('Grimes');
+            fireEvent.click(tr);
+            await screen.findByText('30 / 900');
+        });
+    });
 });
