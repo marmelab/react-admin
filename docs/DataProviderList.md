@@ -32,6 +32,7 @@ If you can't find a Data Provider for your backend below, no worries! [Writing a
 * ![sheets Logo](./img/backend-logos/sheets.svg "sheets Logo")**[Google Sheets](https://www.google.com/sheets/about/)**: [marmelab/ra-data-google-sheets](https://github.com/marmelab/ra-data-google-sheets)
 * ![graphql Logo](./img/backend-logos/graphql.svg "graphql Logo")**[GraphQL (generic)](https://graphql.org/)**: [marmelab/ra-data-graphql](https://github.com/marmelab/react-admin/tree/master/packages/ra-data-graphql) (uses [Apollo](https://www.apollodata.com/))
 * ![graphql Logo](./img/backend-logos/graphql.svg "graphql Logo")**[GraphQL (simple)](https://graphql.org/)**: [marmelab/ra-data-graphql-simple](https://github.com/marmelab/react-admin/tree/master/packages/ra-data-graphql-simple).
+* ![graphql Logo](./img/backend-logos/graphql.svg "graphql Logo")**[GraphQL (Nestjs-query)](https://tripss.github.io/nestjs-query/)**: [mrnkr/ra-data-nestjs-query](https://github.com/mrnkr/ra-data-nestjs-query).
 * <div class="flex">
     <span class="avatar">H</span>
     <b><a href="http://stateless.co/hal_specification.html">HAL</a></b>: <a href="https://github.com/b-social/ra-data-hal">b-social/ra-data-hal</a>
