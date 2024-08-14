@@ -4,8 +4,8 @@ import { lorem, random } from 'faker/locale/en_US';
 import {
     defaultDealCategories,
     defaultDealStages,
-} from '../root/defaultConfiguration';
-import { Deal } from '../types';
+} from '../../../root/defaultConfiguration';
+import { Deal } from '../../../types';
 import { Db } from './types';
 import { randomDate } from './utils';
 

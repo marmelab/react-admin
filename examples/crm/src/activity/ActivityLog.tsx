@@ -2,7 +2,7 @@ import { Alert, Divider, Skeleton, Stack } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 import { Identifier, useDataProvider } from 'react-admin';
 
-import { CustomDataProvider } from '../dataProvider';
+import { CrmDataProvider } from '../providers/types';
 import { ActivityLogContext } from './ActivityLogContext';
 import { ActivityLogIterator } from './ActivityLogIterator';
 
@@ -17,7 +17,7 @@ export function ActivityLog({
     pageSize = 20,
     context = 'all',
 }: ActivityLogProps) {
-    const dataProvider = useDataProvider<CustomDataProvider>();
+    const dataProvider = useDataProvider<CrmDataProvider>();
     const { data, isPending, error } = useQuery({
         queryKey: ['activityLog', companyId],
         queryFn: () => dataProvider.getActivityLog(companyId),

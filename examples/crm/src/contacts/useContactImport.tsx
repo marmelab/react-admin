@@ -9,18 +9,18 @@ export type ContactImportSchema = {
     title: string;
     company: string;
     email: string;
-    'phone_number1.number': string;
-    'phone_number1.type': string;
-    'phone_number2.number': string;
-    'phone_number2.type': string;
+    phone_1_number: string;
+    phone_1_type: string;
+    phone_2_number: string;
+    phone_2_type: string;
     background: string;
-    acquisition: string;
     avatar: string;
     first_seen: string;
     last_seen: string;
     has_newsletter: string;
     status: string;
     tags: string;
+    linkedin_url: string;
 };
 
 export function useContactImport() {
@@ -49,9 +49,11 @@ export function useContactImport() {
 
             const entities = uncachedEntities.length
                 ? await dataProvider.getList(entity, {
-                      filter: { name: uncachedEntities },
-                      pagination: { page: 1, perPage: 1 },
-                      sort: { field: 'first_name', order: 'ASC' },
+                      filter: {
+                          'name@in': `(${uncachedEntities.map(entity => `"${entity}"`).join(',')})`,
+                      },
+                      pagination: { page: 1, perPage: trimmedNames.length },
+                      sort: { field: 'id', order: 'ASC' },
                   })
                 : { data: [] };
 
@@ -137,18 +139,18 @@ export function useContactImport() {
                         gender,
                         title,
                         email,
-                        'phone_number1.type': phoneNumber1Type,
-                        'phone_number1.number': phoneNumber1Number,
-                        'phone_number2.type': phoneNumber2Type,
-                        'phone_number2.number': phoneNumber2Number,
+                        phone_1_number,
+                        phone_1_type,
+                        phone_2_number,
+                        phone_2_type,
                         background,
-                        acquisition,
                         first_seen,
                         last_seen,
                         has_newsletter,
                         status,
                         company: companyName,
                         tags: tagNames,
+                        linkedin_url,
                     }) => {
                         const company = companies.get(companyName.trim());
                         const tagList = parseTags(tagNames)
@@ -168,16 +170,11 @@ export function useContactImport() {
                                 gender,
                                 title,
                                 email,
-                                phone_number1: {
-                                    number: phoneNumber1Number,
-                                    type: phoneNumber1Type,
-                                },
-                                phone_number2: {
-                                    number: phoneNumber2Number,
-                                    type: phoneNumber2Type,
-                                },
+                                phone_1_number,
+                                phone_1_type,
+                                phone_2_number,
+                                phone_2_type,
                                 background,
-                                acquisition,
                                 first_seen: new Date(first_seen),
                                 last_seen: new Date(last_seen),
                                 has_newsletter,
@@ -185,6 +182,7 @@ export function useContactImport() {
                                 company_id: company.id,
                                 tags: tagList.map(tag => tag.id),
                                 sales_id: user?.identity?.id,
+                                linkedin_url,
                             },
                         });
                     }

@@ -9,7 +9,7 @@ import {
     Typography,
 } from '@mui/material';
 import { useMutation } from '@tanstack/react-query';
-import { format } from 'date-fns';
+import { format, isValid } from 'date-fns';
 import {
     DeleteButton,
     EditButton,
@@ -59,6 +59,7 @@ const DealShowContent = ({ handleClose }: { handleClose: () => void }) => {
     const { dealStages } = useConfigurationContext();
     const record = useRecordContext<Deal>();
     if (!record) return null;
+
     return (
         <>
             <DialogCloseButton
@@ -117,10 +118,18 @@ const DealShowContent = ({ handleClose }: { handleClose: () => void }) => {
                                     gap={1}
                                 >
                                     <Typography variant="body2">
-                                        {format(
-                                            record.expected_closing_date,
-                                            'PP'
-                                        )}
+                                        {isValid(
+                                            new Date(
+                                                record.expected_closing_date
+                                            )
+                                        )
+                                            ? format(
+                                                  new Date(
+                                                      record.expected_closing_date
+                                                  ),
+                                                  'PP'
+                                              )
+                                            : 'Invalid date'}
                                     </Typography>
                                     {new Date(record.expected_closing_date) <
                                     new Date() ? (
@@ -198,7 +207,7 @@ const DealShowContent = ({ handleClose }: { handleClose: () => void }) => {
                                     </Typography>
                                     <ReferenceArrayField
                                         source="contact_ids"
-                                        reference="contacts"
+                                        reference="contacts_summary"
                                     >
                                         <ContactList />
                                     </ReferenceArrayField>

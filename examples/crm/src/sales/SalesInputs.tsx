@@ -6,13 +6,11 @@ import {
     useRecordContext,
 } from 'react-admin';
 import { Sale } from '../types';
-import { ReactNode } from 'react';
 import { Stack } from '@mui/material';
 
-export function SalesInputs({ children }: { children?: ReactNode }) {
+export function SalesInputs() {
     const { identity } = useGetIdentity();
     const record = useRecordContext<Sale>();
-
     return (
         <Stack gap={1} sx={{ width: '100%' }}>
             <TextInput
@@ -30,7 +28,6 @@ export function SalesInputs({ children }: { children?: ReactNode }) {
                 validate={required()}
                 helperText={false}
             />
-            {children}
             <BooleanInput
                 source="administrator"
                 readOnly={record?.id === identity?.id}

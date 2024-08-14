@@ -1,6 +1,6 @@
 import { AuthProvider } from 'react-admin';
+import { Sale } from '../../types';
 import { dataProvider } from './dataProvider';
-import { Sale } from './types';
 
 export const DEFAULT_USER = {
     id: 0,
@@ -18,19 +18,27 @@ export const USER_STORAGE_KEY = 'user';
 
 localStorage.setItem(USER_STORAGE_KEY, JSON.stringify({ ...DEFAULT_USER }));
 
+async function getUser(email: string) {
+    const sales = await dataProvider.getList('sales', {
+        pagination: { page: 1, perPage: 200 },
+        sort: { field: 'name', order: 'ASC' },
+    });
+
+    if (!sales.data.length) {
+        return { ...DEFAULT_USER };
+    }
+
+    const user = sales.data.find(sale => sale.email === email);
+    if (!user || user.disabled) {
+        return { ...DEFAULT_USER };
+    }
+    return user;
+}
+
 export const authProvider: AuthProvider = {
     login: async ({ email }) => {
-        const user = await dataProvider.login({ email });
-
-        if (user) {
-            localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(user));
-            return Promise.resolve();
-        }
-
-        localStorage.setItem(
-            USER_STORAGE_KEY,
-            JSON.stringify({ ...DEFAULT_USER })
-        );
+        const user = await getUser(email);
+        localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(user));
         return Promise.resolve();
     },
     logout: () => {

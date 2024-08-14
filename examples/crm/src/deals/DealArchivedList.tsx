@@ -22,7 +22,7 @@ export const DealArchivedList = () => {
     } = useGetList('deals', {
         pagination: { page: 1, perPage: 1000 },
         sort: { field: 'archived_at', order: 'DESC' },
-        filter: { archived_at_neq: null },
+        filter: { 'archived_at@not.is': null },
     });
     const [openDialog, setOpenDialog] = useState(false);
 

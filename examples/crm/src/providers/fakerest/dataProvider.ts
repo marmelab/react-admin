@@ -7,12 +7,22 @@ import {
     UpdateParams,
     withLifecycleCallbacks,
 } from 'react-admin';
-import { DEFAULT_USER } from './authProvider';
+import {
+    Company,
+    Contact,
+    Deal,
+    Sale,
+    SalesFormData,
+    SignUpData,
+    Task,
+} from '../../types';
+import { getActivityLog } from '../commons/activity';
+import { getCompanyAvatar } from '../commons/getCompanyAvatar';
+import { getContactAvatar } from '../commons/getContactAvatar';
+import { CrmDataProvider } from '../types';
+import { authProvider, USER_STORAGE_KEY } from './authProvider';
 import generateData from './dataGenerator';
-import { getActivityLog } from './dataProvider/activity';
-import { getCompanyAvatar } from './misc/getCompanyAvatar';
-import { getContactAvatar } from './misc/getContactAvatar';
-import { Company, Contact, Deal, Sale, Task } from './types';
+import { withSupabaseFilterAdapter } from './internal/supabaseAdapter';
 
 const baseDataProvider = fakeRestDataProvider(generateData(), true, 300);
 
@@ -96,24 +106,8 @@ async function fetchAndUpdateCompanyData(
     return { ...params, data: newData };
 }
 
-const dataProviderWithCustomMethod = {
+const dataProviderWithCustomMethod: CrmDataProvider = {
     ...baseDataProvider,
-    login: async ({ email }: { email: string }) => {
-        const sales = await baseDataProvider.getList('sales', {
-            pagination: { page: 1, perPage: 200 },
-            sort: { field: 'name', order: 'ASC' },
-        });
-
-        if (!sales.data.length) {
-            return { ...DEFAULT_USER };
-        }
-
-        const sale = sales.data.find(sale => sale.email === email);
-        if (!sale || sale.disabled) {
-            return { ...DEFAULT_USER };
-        }
-        return sale;
-    },
     unarchiveDeal: async (deal: Deal) => {
         // get all deals where stage is the same as the deal to unarchive
         const { data: deals } = await baseDataProvider.getList<Deal>('deals', {
@@ -131,7 +125,7 @@ const dataProviderWithCustomMethod = {
 
         return await Promise.all(
             updatedDeals.map(updatedDeal =>
-                baseDataProvider.update('deals', {
+                dataProvider.update('deals', {
                     id: updatedDeal.id,
                     data: updatedDeal,
                     previousData: deals.find(d => d.id === updatedDeal.id),
@@ -141,11 +135,99 @@ const dataProviderWithCustomMethod = {
     },
     // We simulate a remote endpoint that is in charge of returning activity log
     getActivityLog: async (companyId?: Identifier) => {
-        return getActivityLog(baseDataProvider, companyId);
+        return getActivityLog(dataProvider, companyId);
+    },
+    async signUp({
+        email,
+        password,
+        first_name,
+        last_name,
+    }: SignUpData): Promise<{ id: string; email: string; password: string }> {
+        const user = await baseDataProvider.create('sales', {
+            data: {
+                email,
+                first_name,
+                last_name,
+            },
+        });
+
+        return {
+            ...user.data,
+            password,
+        };
+    },
+    async salesCreate({ ...data }: SalesFormData): Promise<Sale> {
+        const user = await dataProvider.create('sales', {
+            data: {
+                ...data,
+                password: 'new_password',
+            },
+        });
+
+        return {
+            ...user.data,
+        };
+    },
+    async salesUpdate(
+        id: Identifier,
+        data: Partial<Omit<SalesFormData, 'password'>>
+    ): Promise<Partial<Omit<SalesFormData, 'password'>>> {
+        const { data: previousData } = await dataProvider.getOne<Sale>(
+            'sales',
+            {
+                id,
+            }
+        );
+
+        if (!previousData) {
+            throw new Error('User not found');
+        }
+
+        const { data: sale } = await dataProvider.update('sales', {
+            id,
+            data,
+            previousData,
+        });
+        return sale;
+    },
+    async isInitialized(): Promise<boolean> {
+        const sales = await dataProvider.getList<Sale>('sales', {
+            filter: {},
+            pagination: { page: 1, perPage: 1 },
+            sort: { field: 'id', order: 'ASC' },
+        });
+        if (sales.data.length === 0) {
+            return false;
+        }
+        return true;
+    },
+    updatePassword: async (id: Identifier): Promise<true> => {
+        const currentUser = await authProvider.getIdentity?.();
+        if (!currentUser) {
+            throw new Error('User not found');
+        }
+        const { data: previousData } = await dataProvider.getOne<Sale>(
+            'sales',
+            {
+                id: currentUser.id,
+            }
+        );
+
+        if (!previousData) {
+            throw new Error('User not found');
+        }
+
+        await dataProvider.update('sales', {
+            id,
+            data: {
+                password: 'demo_newPassword',
+            },
+            previousData,
+        });
+
+        return true;
     },
 };
-
-export type CustomDataProvider = typeof dataProviderWithCustomMethod;
 
 async function updateCompany(
     companyId: Identifier,
@@ -165,7 +247,7 @@ async function updateCompany(
 }
 
 export const dataProvider = withLifecycleCallbacks(
-    dataProviderWithCustomMethod,
+    withSupabaseFilterAdapter(dataProviderWithCustomMethod),
     [
         {
             resource: 'sales',
@@ -177,14 +259,17 @@ export const dataProvider = withLifecycleCallbacks(
                 }
                 return params;
             },
-            beforeUpdate: async params => {
-                const { data } = params;
-                if (data.new_password) {
-                    data.password = data.new_password;
-                    delete data.new_password;
+            afterSave: async data => {
+                // Since the current user is stored in localStorage in fakerest authProvider
+                // we need to update it to keep information up to date in the UI
+                const currentUser = await authProvider.getIdentity?.();
+                if (currentUser?.id === data.id) {
+                    localStorage.setItem(
+                        USER_STORAGE_KEY,
+                        JSON.stringify(data)
+                    );
                 }
-
-                return params;
+                return data;
             },
             beforeDelete: async params => {
                 if (params.meta?.identity?.id == null) {

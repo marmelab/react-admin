@@ -1,7 +1,7 @@
 /* eslint-disable import/no-anonymous-default-export */
 import { Card, LinearProgress, Stack } from '@mui/material';
 import jsonExport from 'jsonexport/dist';
-import type { Exporter } from 'react-admin';
+import type { Exporter, Identifier, RaRecord } from 'react-admin';
 import {
     BulkActionsToolbar,
     BulkDeleteButton,
@@ -17,7 +17,6 @@ import {
     useGetIdentity,
     useListContext,
 } from 'react-admin';
-import { hasOtherFiltersThanDefault } from '../misc/hasOtherFiltersThanDefault';
 import { Company, Contact, Sale, Tag } from '../types';
 import { ContactEmpty } from './ContactEmpty';
 import { ContactImportButton } from './ContactImportButton';
@@ -32,7 +31,6 @@ export const ContactList = () => {
     return (
         <ListBase
             perPage={25}
-            filterDefaultValues={{ sales_id: identity?.id }}
             sort={{ field: 'last_seen', order: 'DESC' }}
             exporter={exporter}
         >
@@ -44,17 +42,13 @@ export const ContactList = () => {
 const ContactListLayout = () => {
     const { data, isPending, filterValues } = useListContext();
     const { identity } = useGetIdentity();
-    const hasOtherFiltersThanDefaultBoolean = hasOtherFiltersThanDefault(
-        filterValues,
-        'sales_id',
-        identity?.id
-    );
+
+    const hasFilters = filterValues && Object.keys(filterValues).length > 0;
 
     if (!identity) return null;
     if (isPending) return <LinearProgress />;
 
-    if (!data?.length && !hasOtherFiltersThanDefaultBoolean)
-        return <ContactEmpty />;
+    if (!data?.length && !hasFilters) return <ContactEmpty />;
 
     return (
         <Stack direction="row">
@@ -87,14 +81,23 @@ const ContactListActions = () => (
     </TopToolbar>
 );
 
-const exporter: Exporter<Contact> = async (records, fetchRelatedRecords) => {
+const exporter: Exporter<Contact> = async (
+    records,
+    fetchRelatedRecords,
+    dataProvider
+) => {
     const companies = await fetchRelatedRecords<Company>(
         records,
         'company_id',
         'companies'
     );
     const sales = await fetchRelatedRecords<Sale>(records, 'sales_id', 'sales');
-    const tags = await fetchRelatedRecords<Tag>(records, 'tags', 'tags');
+    const tagsIds = getRelatedIds(records, 'tags');
+    const tags = await dataProvider.getList<Tag>('tags', {
+        filter: { 'id@in': `(${tagsIds.flat()})` },
+        pagination: { page: 1, perPage: 1000 },
+        sort: { field: 'name', order: 'ASC' },
+    });
 
     const contacts = records.map(contact => ({
         ...contact,
@@ -102,9 +105,24 @@ const exporter: Exporter<Contact> = async (records, fetchRelatedRecords) => {
         sales: `${sales[contact.sales_id].first_name} ${
             sales[contact.sales_id].last_name
         }`,
-        tags: contact.tags.map(tagId => tags[tagId].name).join(', '),
+        tags: contact.tags
+            .map(tagId => tags.data.find(tag => tag.id === tagId)?.name)
+            .join(', '),
     }));
     return jsonExport(contacts, {}, (_err: any, csv: string) => {
         downloadCSV(csv, 'contacts');
     });
 };
+
+export const getRelatedIds = (
+    records: RaRecord[],
+    field: string
+): Identifier[] =>
+    Array.from(
+        new Set(
+            records
+                .filter(record => record[field] != null)
+                .map(record => record[field])
+                .reduce((ids, value) => ids.concat(value), [])
+        )
+    );

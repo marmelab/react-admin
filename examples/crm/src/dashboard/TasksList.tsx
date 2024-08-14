@@ -1,46 +1,46 @@
 import * as React from 'react';
-import { Card, Box, Stack } from '@mui/material';
+import { Card, Box, Stack, Typography } from '@mui/material';
 import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn';
-import { useGetList, Link, useGetIdentity } from 'react-admin';
-import { Contact } from '../types';
 import { AddTask } from '../tasks/AddTask';
-import { startOfToday, endOfToday, addDays } from 'date-fns';
+import {
+    startOfToday,
+    endOfToday,
+    endOfTomorrow,
+    endOfWeek,
+    getDay,
+} from 'date-fns';
 import { TasksListFilter } from './TasksListFilter';
+import { TasksListEmpty } from './TasksListEmpty';
 
 const today = new Date();
+const todayDayOfWeek = getDay(today);
+const isBeforeFriday = todayDayOfWeek < 5; // Friday is represented by 5
 const startOfTodayDateISO = startOfToday().toISOString();
 const endOfTodayDateISO = endOfToday().toISOString();
-const startOfWeekDateISO = addDays(today, 1).toISOString();
-const endOfWeekDateISO = addDays(today, 7).toISOString();
+const endOfTomorrowDateISO = endOfTomorrow().toISOString();
+const endOfWeekDateISO = endOfWeek(today, { weekStartsOn: 0 }).toISOString();
 
 const taskFilters = {
-    overdue: { done_date: undefined, due_date_lt: startOfTodayDateISO },
+    overdue: { 'done_date@is': null, 'due_date@lt': startOfTodayDateISO },
     today: {
-        done_date: undefined,
-        due_date_gte: startOfTodayDateISO,
-        due_date_lte: endOfTodayDateISO,
+        'done_date@is': null,
+        'due_date@gte': startOfTodayDateISO,
+        'due_date@lte': endOfTodayDateISO,
+    },
+    tomorrow: {
+        'done_date@is': null,
+        'due_date@gt': endOfTodayDateISO,
+        'due_date@lt': endOfTomorrowDateISO,
     },
     thisWeek: {
-        done_date: undefined,
-        due_date_gte: startOfWeekDateISO,
-        due_date_lte: endOfWeekDateISO,
+        'done_date@is': null,
+        'due_date@gte': endOfTomorrowDateISO,
+        'due_date@lte': endOfWeekDateISO,
     },
-    later: { done_date: undefined, due_date_gt: endOfWeekDateISO },
+    later: { 'done_date@is': null, 'due_date@gt': endOfWeekDateISO },
 };
 
 export const TasksList = () => {
-    const { identity } = useGetIdentity();
-    const { data: contacts, isPending: contactsLoading } = useGetList<Contact>(
-        'contacts',
-        {
-            pagination: { page: 1, perPage: 500 },
-            filter: { sales_id: identity?.id },
-        },
-        { enabled: !!identity }
-    );
-
-    if (contactsLoading || !contacts) return null;
-
     return (
         <Stack>
             <Box display="flex" alignItems="center" mb={1}>
@@ -50,40 +50,30 @@ export const TasksList = () => {
                         fontSize="medium"
                     />
                 </Box>
-                <Link
-                    underline="none"
-                    variant="h5"
-                    color="textSecondary"
-                    to="/contacts"
-                >
+                <Typography variant="h5" color="textSecondary">
                     Upcoming Tasks
-                </Link>
+                </Typography>
+                <AddTask display="icon" selectContact />
             </Box>
-            <Card sx={{ px: 2 }}>
-                <Box textAlign="center" mb={-2}>
-                    <AddTask selectContact />
-                </Box>
-                <Stack mb={2}>
+            <Card sx={{ p: 2 }}>
+                <Stack>
+                    <TasksListEmpty />
                     <TasksListFilter
                         title="Overdue"
                         filter={taskFilters.overdue}
-                        contacts={contacts}
                     />
+                    <TasksListFilter title="Today" filter={taskFilters.today} />
                     <TasksListFilter
-                        title="Today"
-                        filter={taskFilters.today}
-                        contacts={contacts}
+                        title="Tomorrow"
+                        filter={taskFilters.tomorrow}
                     />
-                    <TasksListFilter
-                        title="This week"
-                        filter={taskFilters.thisWeek}
-                        contacts={contacts}
-                    />
-                    <TasksListFilter
-                        title="Later"
-                        filter={taskFilters.later}
-                        contacts={contacts}
-                    />
+                    {isBeforeFriday && (
+                        <TasksListFilter
+                            title="This week"
+                            filter={taskFilters.thisWeek}
+                        />
+                    )}
+                    <TasksListFilter title="Later" filter={taskFilters.later} />
                 </Stack>
             </Card>
         </Stack>

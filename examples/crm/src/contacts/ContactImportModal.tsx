@@ -157,6 +157,7 @@ export function ContactImportModal({ open, onClose }: ContactImportModalProps) {
                                             label="Download CSV sample"
                                             color="info"
                                             to={SAMPLE_URL}
+                                            download={'crm_contacts_sample.csv'}
                                         />
                                     }
                                 >

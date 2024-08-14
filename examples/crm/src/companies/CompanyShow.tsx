@@ -80,7 +80,7 @@ const CompanyShowContent = () => {
                                 path="contacts"
                             >
                                 <ReferenceManyField
-                                    reference="contacts"
+                                    reference="contacts_summary"
                                     target="company_id"
                                     sort={{ field: 'last_name', order: 'ASC' }}
                                 >
@@ -228,7 +228,7 @@ const DealsIterator = () => {
                                         currencyDisplay: 'narrowSymbol',
                                         minimumSignificantDigits: 3,
                                     })}
-                                    , {deal.type}
+                                    {deal.category ? `, ${deal.category}` : ''}
                                 </>
                             }
                         />

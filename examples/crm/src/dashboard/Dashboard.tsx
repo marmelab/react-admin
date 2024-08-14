@@ -48,7 +48,9 @@ export const Dashboard = () => {
         <Grid container spacing={2} mt={1} rowGap={4}>
             <Grid item xs={12} md={3}>
                 <Stack gap={4}>
-                    <Welcome />
+                    {import.meta.env.VITE_IS_DEMO === 'true' ? (
+                        <Welcome />
+                    ) : null}
                     <HotContacts />
                 </Stack>
             </Grid>

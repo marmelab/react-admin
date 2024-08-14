@@ -73,21 +73,21 @@ export const ContactAside = ({ link = 'edit' }: { link?: 'edit' | 'show' }) => {
                     />
                 </Stack>
             )}
-            {record.phone_number1?.number && (
+            {record.phone_1_number && (
                 <Stack direction="row" alignItems="center" gap={1}>
                     <PhoneIcon color="disabled" fontSize="small" />
                     <Box>
-                        <TextField source="phone_number1.number" />{' '}
-                        {record.phone_number1.type !== 'Other' && (
+                        <TextField source="phone_1_number" />{' '}
+                        {record.phone_1_type !== 'Other' && (
                             <TextField
-                                source="phone_number1.type"
+                                source="phone_1_type"
                                 color="textSecondary"
                             />
                         )}
                     </Box>
                 </Stack>
             )}
-            {record.phone_number2?.number && (
+            {record.phone_2_number && (
                 <Stack
                     direction="row"
                     alignItems="center"
@@ -96,10 +96,10 @@ export const ContactAside = ({ link = 'edit' }: { link?: 'edit' | 'show' }) => {
                 >
                     <PhoneIcon color="disabled" fontSize="small" />
                     <Box>
-                        <TextField source="phone_number2.number" />{' '}
-                        {record.phone_number2.type !== 'Other' && (
+                        <TextField source="phone_2_number" />{' '}
+                        {record.phone_2_type !== 'Other' && (
                             <TextField
-                                source="phone_number2.type"
+                                source="phone_2_type"
                                 color="textSecondary"
                             />
                         )}

@@ -100,7 +100,10 @@ const DealLinkedToInputs = () => {
                 />
             </ReferenceInput>
 
-            <ReferenceArrayInput source="contact_ids" reference="contacts">
+            <ReferenceArrayInput
+                source="contact_ids"
+                reference="contacts_summary"
+            >
                 <AutocompleteArrayInput
                     label="Contacts"
                     optionText={contactOptionText}
@@ -138,6 +141,8 @@ const DealMiscInputs = () => {
                 fullWidth
                 validate={[validateRequired]}
                 helperText={false}
+                inputProps={{ max: '9999-12-31' }}
+                defaultValue={new Date().toISOString().split('T')[0]}
             />
             <SelectInput
                 source="stage"

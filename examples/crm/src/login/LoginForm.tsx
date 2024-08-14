@@ -5,10 +5,13 @@ import {
     CardActions,
     CardContent,
     CircularProgress,
+    Typography,
 } from '@mui/material';
 import { Form, useLogin, useNotify, useSafeSetState } from 'ra-core';
 import { Login, TextInput } from 'react-admin';
 import { SubmitHandler } from 'react-hook-form';
+import { Link } from 'react-router-dom';
+import { ForgotPasswordPage } from 'ra-supabase';
 
 const PREFIX = 'RaLoginForm';
 
@@ -74,7 +77,7 @@ export const LoginForm = () => {
                     <TextInput
                         autoFocus
                         source="email"
-                        label="email"
+                        label="Email"
                         autoComplete="email"
                     />
                     <TextInput
@@ -103,6 +106,13 @@ export const LoginForm = () => {
                             'Sign In'
                         )}
                     </Button>
+                    <Typography
+                        component={Link}
+                        to={ForgotPasswordPage.path}
+                        variant="caption"
+                    >
+                        Forgot your password?
+                    </Typography>
                 </CardActions>
             </StyledForm>
         </Login>

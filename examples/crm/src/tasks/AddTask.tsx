@@ -6,9 +6,10 @@ import {
     DialogActions,
     DialogContent,
     DialogTitle,
+    IconButton,
     Stack,
+    Tooltip,
 } from '@mui/material';
-import * as React from 'react';
 import { useState } from 'react';
 import {
     AutocompleteInput,
@@ -22,37 +23,90 @@ import {
     TextInput,
     Toolbar,
     required,
+    useDataProvider,
+    useGetIdentity,
+    useNotify,
     useRecordContext,
+    useUpdate,
 } from 'react-admin';
-import { useConfigurationContext } from '../root/ConfigurationContext';
-import { DialogCloseButton } from '../misc/DialogCloseButton';
+import { Link } from 'react-router-dom';
 import { contactInputText, contactOptionText } from '../misc/ContactOption';
+import { DialogCloseButton } from '../misc/DialogCloseButton';
+import { useConfigurationContext } from '../root/ConfigurationContext';
 
-export const AddTask = ({ selectContact }: { selectContact?: boolean }) => {
+export const AddTask = ({
+    selectContact,
+    display = 'chip',
+}: {
+    selectContact?: boolean;
+    display?: 'chip' | 'icon';
+}) => {
+    const { identity } = useGetIdentity();
+    const dataProvider = useDataProvider();
+    const [update] = useUpdate();
+    const notify = useNotify();
     const { taskTypes } = useConfigurationContext();
     const contact = useRecordContext();
     const [open, setOpen] = useState(false);
     const handleOpen = () => {
         setOpen(true);
     };
+
+    const handleSuccess = async (data: any) => {
+        setOpen(false);
+        const contact = await dataProvider.getOne('contacts', {
+            id: data.contact_id,
+        });
+        if (!contact.data) return;
+
+        await update('contacts', {
+            id: contact.data.id,
+            data: { last_seen: new Date().toISOString() },
+            previousData: contact.data,
+        });
+
+        notify('Note added');
+    };
+
+    if (!identity) return null;
+
     return (
         <>
-            <Box mt={2} mb={2}>
-                <Chip
-                    icon={<ControlPointIcon />}
-                    size="small"
-                    variant="outlined"
-                    onClick={handleOpen}
-                    label="Add task"
-                    color="primary"
-                />
-            </Box>
+            {display === 'icon' ? (
+                <Tooltip title="Create task">
+                    <IconButton
+                        size="small"
+                        sx={{
+                            color: 'text.secondary',
+                            ml: 'auto',
+                        }}
+                        component={Link}
+                        to={'#'}
+                        onClick={handleOpen}
+                    >
+                        <ControlPointIcon fontSize="inherit" color="primary" />
+                    </IconButton>
+                </Tooltip>
+            ) : (
+                <Box mt={2} mb={2}>
+                    <Chip
+                        icon={<ControlPointIcon />}
+                        size="small"
+                        variant="outlined"
+                        onClick={handleOpen}
+                        label="Add task"
+                        color="primary"
+                    />
+                </Box>
+            )}
+
             <CreateBase
                 resource="tasks"
                 record={{
                     type: 'None',
                     contact_id: contact?.id,
                     due_date: new Date().toISOString().slice(0, 10),
+                    sales_id: identity.id,
                 }}
                 transform={data => {
                     const dueDate = new Date(data.due_date);
@@ -63,7 +117,7 @@ export const AddTask = ({ selectContact }: { selectContact?: boolean }) => {
                         due_date: new Date(data.due_date).toISOString(),
                     };
                 }}
-                mutationOptions={{ onSuccess: () => setOpen(false) }}
+                mutationOptions={{ onSuccess: handleSuccess }}
             >
                 <Dialog
                     open={open}
@@ -100,7 +154,7 @@ export const AddTask = ({ selectContact }: { selectContact?: boolean }) => {
                                 {selectContact && (
                                     <ReferenceInput
                                         source="contact_id"
-                                        reference="contacts"
+                                        reference="contacts_summary"
                                     >
                                         <AutocompleteInput
                                             label="Contact"

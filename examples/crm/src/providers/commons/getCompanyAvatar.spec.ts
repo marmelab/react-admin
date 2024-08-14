@@ -2,7 +2,7 @@
  * @jest-environment node
  */
 
-import { Company } from '../types';
+import { Company } from '../../types';
 import { getCompanyAvatar } from './getCompanyAvatar';
 
 it('should return favicon URL if website url exist', async () => {

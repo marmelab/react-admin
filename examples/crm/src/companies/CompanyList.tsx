@@ -15,17 +15,12 @@ import { ImageList } from './GridList';
 import { CompanyListFilter } from './CompanyListFilter';
 import { LinearProgress, Stack } from '@mui/material';
 import { CompanyEmpty } from './CompanyEmpty';
-import { hasOtherFiltersThanDefault } from '../misc/hasOtherFiltersThanDefault';
 
 export const CompanyList = () => {
     const { identity } = useGetIdentity();
     if (!identity) return null;
     return (
-        <ListBase
-            perPage={25}
-            filterDefaultValues={{ sales_id: identity?.id }}
-            sort={{ field: 'name', order: 'ASC' }}
-        >
+        <ListBase perPage={25} sort={{ field: 'name', order: 'ASC' }}>
             <CompanyListLayout />
         </ListBase>
     );
@@ -33,15 +28,10 @@ export const CompanyList = () => {
 
 const CompanyListLayout = () => {
     const { data, isPending, filterValues } = useListContext();
-    const { identity } = useGetIdentity();
-    const hasOtherFiltersThanDefaultBoolean = hasOtherFiltersThanDefault(
-        filterValues,
-        'sales_id',
-        identity?.id
-    );
+    const hasFilters = filterValues && Object.keys(filterValues).length > 0;
+
     if (isPending) return <LinearProgress />;
-    if (!data?.length && !hasOtherFiltersThanDefaultBoolean)
-        return <CompanyEmpty />;
+    if (!data?.length && !hasFilters) return <CompanyEmpty />;
 
     return (
         <Stack direction="row" component="div">
