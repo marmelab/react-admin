@@ -250,7 +250,7 @@ export const usePrevNextController = <RecordType extends RaRecord = any>(
                 : index +
                   (canUseCacheData
                       ? (storedParams.perPage ?? 0) *
-                        ((storedParams.page ?? 0) - 1)
+                        ((storedParams.page ?? 1) - 1)
                       : 0),
         total: canUseCacheData ? queryData?.total : data?.total,
         error,
