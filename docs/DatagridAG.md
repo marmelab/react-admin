@@ -507,7 +507,6 @@ const CarList = () => {
 
 <video controls autoplay playsinline muted loop>
   <source src="https://react-admin-ee.marmelab.com/assets/DatagridAG-without-pagination.mp4" type="video/mp4"/>
-  <source src="https://react-admin-ee.marmelab.com/assets/DatagridAG-without-pagination.webm" type="video/webm"/>
   Your browser does not support the video tag.
 </video>
 
@@ -873,7 +872,6 @@ By default, `<DatagridAG>` renders pagination controls at the bottom of the list
 
 <video controls autoplay playsinline muted loop>
   <source src="https://react-admin-ee.marmelab.com/assets/DatagridAG-without-pagination.mp4" type="video/mp4"/>
-  <source src="https://react-admin-ee.marmelab.com/assets/DatagridAG-without-pagination.webm" type="video/webm"/>
   Your browser does not support the video tag.
 </video>
 
