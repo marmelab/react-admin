@@ -32,7 +32,6 @@ If you can't find a Data Provider for your backend below, no worries! [Writing a
 * ![sheets Logo](./img/backend-logos/sheets.svg "sheets Logo")**[Google Sheets](https://www.google.com/sheets/about/)**: [marmelab/ra-data-google-sheets](https://github.com/marmelab/ra-data-google-sheets)
 * ![graphql Logo](./img/backend-logos/graphql.svg "graphql Logo")**[GraphQL (generic)](https://graphql.org/)**: [marmelab/ra-data-graphql](https://github.com/marmelab/react-admin/tree/master/packages/ra-data-graphql) (uses [Apollo](https://www.apollodata.com/))
 * ![graphql Logo](./img/backend-logos/graphql.svg "graphql Logo")**[GraphQL (simple)](https://graphql.org/)**: [marmelab/ra-data-graphql-simple](https://github.com/marmelab/react-admin/tree/master/packages/ra-data-graphql-simple).
-* ![graphql Logo](./img/backend-logos/graphql.svg "graphql Logo")**[GraphQL (Nestjs-query)](https://tripss.github.io/nestjs-query/)**: [mrnkr/ra-data-nestjs-query](https://github.com/mrnkr/ra-data-nestjs-query).
 * <div class="flex">
     <span class="avatar">H</span>
     <b><a href="http://stateless.co/hal_specification.html">HAL</a></b>: <a href="https://github.com/b-social/ra-data-hal">b-social/ra-data-hal</a>
@@ -56,6 +55,7 @@ If you can't find a Data Provider for your backend below, no worries! [Writing a
 * ![mixer Logo](./img/backend-logos/github.svg "mixer Logo")**[Mixer](https://github.com/ckoliber/ra-data-mixer)**: [ckoliber/ra-data-mixer](https://github.com/ckoliber/ra-data-mixer)
 * ![moleculer Logo](./img/backend-logos/github.svg "moleculer Logo")**[Moleculer Microservices](https://github.com/RancaguaInnova/moleculer-data-provider)**: [RancaguaInnova/moleculer-data-provider](https://github.com/RancaguaInnova/moleculer-data-provider)
 * ![nestJs Logo](./img/backend-logos/nestjs.png "nestJs Logo")**[NestJS CRUD](https://github.com/nestjsx/crud)**: [rayman1104/ra-data-nestjsx-crud](https://github.com/rayman1104/ra-data-nestjsx-crud)
+* ![Nestjs-query Logo](./img/backend-logos/nestjs-query.svg "Nestjs-query Logo")**[Nestjs-query (GraphQL)](https://tripss.github.io/nestjs-query/)**: [mrnkr/ra-data-nestjs-query](https://github.com/mrnkr/ra-data-nestjs-query)
 * ![oData Logo](./img/backend-logos/odata.png "oData Logo")**[OData](https://www.odata.org/)**: [Groopit/ra-data-odata-server](https://github.com/Groopit/ra-data-odata-server)
 * ![open Logo](./img/backend-logos/open.png "open Logo")**[OpenCRUD](https://www.opencrud.org/)**: [weakky/ra-data-opencrud](https://github.com/Weakky/ra-data-opencrud)
 * ![parse Logo](./img/backend-logos/parse.png "parse Logo")**[Parse](https://parseplatform.org/)**: [almahdi/ra-data-parse](https://github.com/almahdi/ra-data-parse)
