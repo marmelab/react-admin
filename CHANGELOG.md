@@ -3,6 +3,7 @@
 ## v5.1.2
 
 * Fix `<PrevNextButtons>` index when using paginated results ([#10144](https://github.com/marmelab/react-admin/pull/10144)) ([slax57](https://github.com/slax57))
+* Fix `useInput` should call a custom validator with the final source in respect to the `<SourceContext>` ([#10148](https://github.com/marmelab/react-admin/pull/10148)) ([slax57](https://github.com/slax57))
 * Fix `ra-data-graphql` incorrectly warns about deprecated `override` option being set ([#10138](https://github.com/marmelab/react-admin/pull/10138)) ([JonasDoe](https://github.com/JonasDoe))
 * Fix `create-react-admin` CLI to generate valid react-admin v5 apps ([#10131](https://github.com/marmelab/react-admin/pull/10131)) ([djhi](https://github.com/djhi))
 * [Doc] Fix `<ReferenceInput>` usage incorrectly mentions the `validate` prop ([#10134](https://github.com/marmelab/react-admin/pull/10134)) ([fzaninotto](https://github.com/fzaninotto))
