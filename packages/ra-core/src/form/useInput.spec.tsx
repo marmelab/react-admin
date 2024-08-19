@@ -513,6 +513,7 @@ describe('useInput', () => {
                     expect.objectContaining({
                         defaultValue: 'A title',
                         source: 'title',
+                        finalSource: 'title',
                         resource: 'posts',
                     })
                 );
@@ -558,7 +559,8 @@ describe('useInput', () => {
                     { posts: [{ title: 'A new title' }] },
                     expect.objectContaining({
                         defaultValue: 'A title',
-                        source: 'posts.0.title',
+                        source: 'title',
+                        finalSource: 'posts.0.title',
                         resource: 'posts',
                     })
                 );

@@ -90,7 +90,7 @@ export const useInput = <ValueType = any>(
                 if (!sanitizedValidate) return true;
                 const error = await sanitizedValidate(value, values, {
                     ...props,
-                    source: finalSource,
+                    finalSource,
                 });
 
                 if (!error) return true;
