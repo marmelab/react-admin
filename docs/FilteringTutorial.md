@@ -123,11 +123,17 @@ Users usually dislike using their keyboard to filter a list (especially on mobil
 Here is how to implement a generic `<QuickFilter>` component:
 
 {% raw %}
-```jsx
+```tsx
 import { SearchInput } from 'react-admin';
 import { Chip } from '@mui/material';
 
-const QuickFilter = ({ label }) => {
+const QuickFilter = ({
+    label,
+}: {
+    label: string;
+    source?: string;
+    defaultValue?: any;
+}) => {
     const translate = useTranslate();
     return <Chip sx={{ marginBottom: 1 }} label={translate(label)} />;
 };
