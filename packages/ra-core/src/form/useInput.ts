@@ -88,7 +88,10 @@ export const useInput = <ValueType = any>(
         rules: {
             validate: async (value, values) => {
                 if (!sanitizedValidate) return true;
-                const error = await sanitizedValidate(value, values, props);
+                const error = await sanitizedValidate(value, values, {
+                    ...props,
+                    finalSource,
+                });
 
                 if (!error) return true;
                 // react-hook-form expects errors to be plain strings but our validators can return objects
