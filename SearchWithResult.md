@@ -105,7 +105,7 @@ Check [the `ra-search` documentation](https://react-admin-ee.marmelab.com/docume
 | Prop           | Required | Type                                                                              | Default                                                                         | Description                                                                                        |
 | ------------   | -------- | --------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
 | `children`     | Optional | `Element`                                                                         | `<SearchResultsPanel>`                                                          | A component that will display the results.                                                         |
-| `color`        | Optional | `string`                                                                          | The opposite of theme mode. If mode is `light` default is `dark` and vice versa | The color mode for the input, applying light or dark backgrounds. Accept either `light` or `dark`. |
+| `disableHighlight`    | Optional | `boolean`                                                                         | `false`                | Disable the highlight of the search term of each result.                                                           |
 | `onNavigate`   | Optional | `function`                                                                        | `() => undefined`                                                               | A callback function to run when the user navigate to a result.                                     |
 | `options`      | Optional | `Object`                                                                          | -                                                                               | An object containing options to apply to the search.                                               |
 | `queryOptions` | Optional | [`UseQuery Options`](https://tanstack.com/query/v3/docs/react/reference/useQuery) | -                                                                               | `react-query` options for the search query                                                         |
@@ -144,13 +144,15 @@ export const App = () => (
 );
 ```
 
-## `color`
+### `disableHighlight`
 
-If you need it, you can choose to render the `light` or the `dark` version of search input.
+The search terms in each result are highlighted. You can disable this feature with the `disableHighlight` prop as follows:
 
 ```tsx
-<SearchWithResult color="light" />
+<SearchWithResults disableHighlight />
 ```
+
+**Tip:** To customize the highlight style check out the [Customizing the result items](#customizing-the-result-items) section below.
 
 ## `onNavigate`
 
@@ -260,7 +262,7 @@ export const App = () => (
 ```
 {% endraw %}
 
-## Customizing The Result Items
+### Customizing The Result Items
 
 By default, `<SearchWithResult>` displays the results in `<SearchResultsPanel>`, which displays each results in a `<SearchResultItem>`. So rendering `<SearchWithResult>` without children is equivalent to rendering:
 
@@ -335,7 +337,7 @@ import {
 import { searchDataProvider } from './searchDataProvider';
 
 const MySearchResultItem = ({ data }) => (
-    <li key={data.id}>
+    <li key={data.id} className="highlight">
         <Link to={data.url}>
             <strong>{data.content.label}</strong>
         </Link>
@@ -361,6 +363,24 @@ export const App = () => (
     </Admin>
 );
 ```
+
+**Tip:** You can customize the highlight of the search terms by overriding the `<SearchResultsPanel sx>` prop as following:
+
+{% raw %}
+```jsx
+const CustomSearch = () => (
+    <SearchWithResult>
+        <SearchResultsPanel
+            sx={{
+                '& ::highlight(search)': {
+                    backgroundColor: '#7de5fa',
+                },
+            }}
+        />
+    </SearchWithResult>
+);
+```
+{% endraw %}
 
 ## Use It With SolarLayout
 
