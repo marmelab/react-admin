@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { FunctionComponent, ReactElement } from 'react';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { useFormContext, useWatch } from 'react-hook-form';
-import { CoreAdminContext } from '../core';
+import { CoreAdminContext, SourceContextProvider } from '../core';
 import { testDataProvider } from '../dataProvider';
 import { Form } from './Form';
 import { useInput, InputProps } from './useInput';
@@ -469,6 +469,100 @@ describe('useInput', () => {
             );
             fireEvent.click(screen.getByText('Set to empty'));
             await screen.findByText('null (object)');
+        });
+    });
+
+    describe('validate', () => {
+        it('calls a custom validator with value, allValues, props', async () => {
+            let validator = jest.fn();
+            render(
+                <CoreAdminContext dataProvider={testDataProvider()}>
+                    <Form onSubmit={jest.fn()} mode="onChange">
+                        <Input
+                            defaultValue="A title"
+                            source="title"
+                            resource="posts"
+                            validate={validator}
+                        >
+                            {props => (
+                                <input
+                                    type="text"
+                                    onChange={props.field.onChange}
+                                    data-testid="title-input"
+                                />
+                            )}
+                        </Input>
+                        <Input
+                            defaultValue="A description"
+                            source="description"
+                            resource="posts"
+                        >
+                            {() => <div />}
+                        </Input>
+                    </Form>
+                </CoreAdminContext>
+            );
+
+            fireEvent.change(await screen.findByTestId('title-input'), {
+                target: { value: 'A new title' },
+            });
+            await waitFor(() => {
+                expect(validator).toHaveBeenCalledWith(
+                    'A new title',
+                    { title: 'A new title', description: 'A description' },
+                    expect.objectContaining({
+                        defaultValue: 'A title',
+                        source: 'title',
+                        resource: 'posts',
+                    })
+                );
+            });
+        });
+
+        it('calls a custom validator with the final source in respect to the SourceContext', async () => {
+            let validator = jest.fn();
+            render(
+                <CoreAdminContext dataProvider={testDataProvider()}>
+                    <Form onSubmit={jest.fn()} mode="onChange">
+                        <SourceContextProvider
+                            value={{
+                                getSource: source => `posts.0.${source}`,
+                                getLabel: label => label,
+                            }}
+                        >
+                            <Input
+                                defaultValue="A title"
+                                source="title"
+                                resource="posts"
+                                validate={validator}
+                            >
+                                {props => (
+                                    <input
+                                        type="text"
+                                        onChange={props.field.onChange}
+                                        data-testid="title-input"
+                                    />
+                                )}
+                            </Input>
+                        </SourceContextProvider>
+                    </Form>
+                </CoreAdminContext>
+            );
+
+            fireEvent.change(await screen.findByTestId('title-input'), {
+                target: { value: 'A new title' },
+            });
+            await waitFor(() => {
+                expect(validator).toHaveBeenCalledWith(
+                    'A new title',
+                    { posts: [{ title: 'A new title' }] },
+                    expect.objectContaining({
+                        defaultValue: 'A title',
+                        source: 'posts.0.title',
+                        resource: 'posts',
+                    })
+                );
+            });
         });
     });
 });
