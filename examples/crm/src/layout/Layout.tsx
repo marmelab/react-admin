@@ -1,4 +1,4 @@
-import React, { Suspense, ReactNode } from 'react';
+import { Suspense, ReactNode } from 'react';
 import { CssBaseline, Container } from '@mui/material';
 import { CheckForApplicationUpdate } from 'react-admin';
 import { ErrorBoundary } from 'react-error-boundary';

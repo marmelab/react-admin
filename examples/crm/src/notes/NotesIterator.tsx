@@ -15,7 +15,7 @@ export const NotesIterator = ({
     const { data, error, isPending } = useListContext();
     if (isPending || error) return null;
     return (
-        <Box mt={4}>
+        <Box mt={2}>
             <NoteCreate showStatus={showStatus} reference={reference} />
             {data && (
                 <Stack mt={2} gap={1}>

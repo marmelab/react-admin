@@ -24,17 +24,7 @@ export const CompanyListFilter = () => {
     return (
         <Box width="13em" minWidth="13em" order={-1} mr={2} mt={5}>
             <FilterLiveSearch hiddenLabel />
-            <FilterList
-                label="Account manager"
-                icon={<SupervisorAccountIcon />}
-            >
-                <FilterListItem
-                    label="Me"
-                    value={{
-                        sales_id: identity?.id,
-                    }}
-                />
-            </FilterList>
+
             <FilterList label="Size" icon={<BusinessIcon />}>
                 {sizes.map(size => (
                     <FilterListItem
@@ -53,6 +43,18 @@ export const CompanyListFilter = () => {
                         value={{ sector: sector.id }}
                     />
                 ))}
+            </FilterList>
+
+            <FilterList
+                label="Account manager"
+                icon={<SupervisorAccountIcon />}
+            >
+                <FilterListItem
+                    label="Me"
+                    value={{
+                        sales_id: identity?.id,
+                    }}
+                />
             </FilterList>
         </Box>
     );

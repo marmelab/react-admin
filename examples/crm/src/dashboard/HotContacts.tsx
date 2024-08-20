@@ -77,6 +77,17 @@ export const HotContacts = () => {
                     )}
                     leftAvatar={contact => <Avatar record={contact} />}
                     dense
+                    empty={
+                        <Box p={2}>
+                            <Typography variant="body2" gutterBottom>
+                                Contacts with a "hot" status will appear here.
+                            </Typography>
+                            <Typography variant="body2">
+                                Change the status of a contact by adding a note
+                                to that contact and clicking on "show options".
+                            </Typography>
+                        </Box>
+                    }
                 />
             </Card>
         </Stack>

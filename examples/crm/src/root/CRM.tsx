@@ -12,7 +12,7 @@ import { deepmerge } from '@mui/utils';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
 import { Route } from 'react-router';
-import Layout from '../Layout';
+import Layout from '../layout/Layout';
 import companies from '../companies';
 import contacts from '../contacts';
 import { Dashboard } from '../dashboard/Dashboard';

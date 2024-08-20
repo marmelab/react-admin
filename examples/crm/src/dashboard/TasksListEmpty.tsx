@@ -17,5 +17,9 @@ export const TasksListEmpty = () => {
 
     if (total) return null;
 
-    return <Typography variant="body2">No results found</Typography>;
+    return (
+        <Typography variant="body2">
+            Tasks added to your contacts will appear here.
+        </Typography>
+    );
 };

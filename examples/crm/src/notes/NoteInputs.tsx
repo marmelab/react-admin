@@ -6,8 +6,10 @@ import {
     SelectInput,
     TextInput,
 } from 'react-admin';
-import { useConfigurationContext } from '../root/ConfigurationContext';
 import { useState } from 'react';
+import { useFormContext } from 'react-hook-form';
+
+import { useConfigurationContext } from '../root/ConfigurationContext';
 import { formatNoteDate, getCurrentDate } from './utils';
 import { Status } from '../misc/Status';
 
@@ -19,6 +21,7 @@ export const NoteInputs = ({
     edition?: boolean;
 }) => {
     const { noteStatuses } = useConfigurationContext();
+    const { setValue } = useFormContext();
     const [displayMore, setDisplayMore] = useState(false);
     return (
         <>
@@ -38,6 +41,7 @@ export const NoteInputs = ({
                         href="#"
                         onClick={e => {
                             setDisplayMore(!displayMore);
+                            setValue('date', getCurrentDate());
                             e.preventDefault();
                         }}
                     >
@@ -65,7 +69,6 @@ export const NoteInputs = ({
                         <DateTimeInput
                             source="date"
                             label="Date"
-                            defaultValue={getCurrentDate()}
                             helperText={false}
                             parse={formatNoteDate}
                         />

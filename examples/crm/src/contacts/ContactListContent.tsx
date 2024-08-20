@@ -1,5 +1,17 @@
 /* eslint-disable import/no-anonymous-default-export */
-import * as React from 'react';
+import type { Theme } from '@mui/material';
+import {
+    Checkbox,
+    List,
+    ListItem,
+    ListItemAvatar,
+    ListItemIcon,
+    ListItemSecondaryAction,
+    ListItemText,
+    Typography,
+    useMediaQuery,
+} from '@mui/material';
+import { formatRelative } from 'date-fns';
 import {
     RecordContextProvider,
     ReferenceField,
@@ -7,25 +19,12 @@ import {
     TextField,
     useListContext,
 } from 'react-admin';
-import {
-    List,
-    ListItem,
-    ListItemAvatar,
-    ListItemIcon,
-    ListItemSecondaryAction,
-    ListItemText,
-    Checkbox,
-    Typography,
-    useMediaQuery,
-} from '@mui/material';
-import type { Theme } from '@mui/material';
 import { Link } from 'react-router-dom';
-import { formatRelative } from 'date-fns';
 
-import { Avatar } from './Avatar';
 import { Status } from '../misc/Status';
-import { TagsList } from './TagsList';
 import { Contact } from '../types';
+import { Avatar } from './Avatar';
+import { TagsList } from './TagsList';
 
 export const ContactListContent = () => {
     const {

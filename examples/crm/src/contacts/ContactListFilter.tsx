@@ -34,12 +34,6 @@ export const ContactListFilter = () => {
                 }}
                 placeholder="Search name, company, etc."
             />
-            <FilterList
-                label="Account manager"
-                icon={<SupervisorAccountIcon />}
-            >
-                <FilterListItem label="Me" value={{ sales_id: identity?.id }} />
-            </FilterList>
             <FilterList label="Last activity" icon={<AccessTimeIcon />}>
                 <FilterListItem
                     label="Today"
@@ -112,6 +106,12 @@ export const ContactListFilter = () => {
                             value={{ 'tags@cs': `{${record.id}}` }}
                         />
                     ))}
+            </FilterList>
+            <FilterList
+                label="Account manager"
+                icon={<SupervisorAccountIcon />}
+            >
+                <FilterListItem label="Me" value={{ sales_id: identity?.id }} />
             </FilterList>
         </Box>
     );

@@ -65,7 +65,7 @@ export const AddTask = ({
             previousData: contact.data,
         });
 
-        notify('Note added');
+        notify('Task added');
     };
 
     if (!identity) return null;

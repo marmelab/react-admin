@@ -19,7 +19,7 @@ import {
     useUserMenu,
 } from 'react-admin';
 import { Link, matchPath, useLocation } from 'react-router-dom';
-import { useConfigurationContext } from './root/ConfigurationContext';
+import { useConfigurationContext } from '../root/ConfigurationContext';
 
 const Header = () => {
     const { logo, title } = useConfigurationContext();
