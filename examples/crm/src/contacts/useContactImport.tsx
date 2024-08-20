@@ -175,8 +175,12 @@ export function useContactImport() {
                                 phone_2_number,
                                 phone_2_type,
                                 background,
-                                first_seen: new Date(first_seen),
-                                last_seen: new Date(last_seen),
+                                first_seen: first_seen
+                                    ? new Date(first_seen).toISOString()
+                                    : undefined,
+                                last_seen: last_seen
+                                    ? new Date(last_seen).toISOString()
+                                    : undefined,
                                 has_newsletter,
                                 status,
                                 company_id: company.id,
