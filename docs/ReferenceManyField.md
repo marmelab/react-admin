@@ -351,6 +351,11 @@ In these cases, use [the `<ReferenceOneField>` component](./ReferenceOneField.md
 
 To allow users to create or edit a record without leaving the current view, use the [`<CreateInDialogButton>`](./CreateInDialogButton.md) or the [`<EditInDialogButton>`](./EditInDialogButton.md) component.
 
+<video controls autoplay playsinline muted loop>
+  <source src="https://react-admin-ee.marmelab.com/assets/ra-form-layout/latest/InDialogButtons.mp4" type="video/mp4" />
+  Your browser does not support the video tag.
+</video>
+
 {% raw %}
 ```jsx
 import { Edit, SimpleForm, TextInput, ReferenceManyField, WithRecord, Datagrid } from 'react-admin';
