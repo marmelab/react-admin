@@ -19,7 +19,6 @@ import {
 import { getActivityLog } from '../commons/activity';
 import { getCompanyAvatar } from '../commons/getCompanyAvatar';
 import { getContactAvatar } from '../commons/getContactAvatar';
-import { CrmDataProvider } from '../types';
 import { authProvider, USER_STORAGE_KEY } from './authProvider';
 import generateData from './dataGenerator';
 import { withSupabaseFilterAdapter } from './internal/supabaseAdapter';
@@ -106,7 +105,7 @@ async function fetchAndUpdateCompanyData(
     return { ...params, data: newData };
 }
 
-const dataProviderWithCustomMethod: CrmDataProvider = {
+const dataProviderWithCustomMethod = {
     ...baseDataProvider,
     unarchiveDeal: async (deal: Deal) => {
         // get all deals where stage is the same as the deal to unarchive
@@ -531,3 +530,5 @@ const convertFileToBase64 = (file: { rawFile: Blob }) =>
         reader.onerror = reject;
         reader.readAsDataURL(file.rawFile);
     });
+
+export type CrmDataProvider = typeof dataProviderWithCustomMethod;

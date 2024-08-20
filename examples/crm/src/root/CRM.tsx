@@ -6,7 +6,6 @@ import {
     Resource,
     defaultTheme,
     localStorageStore,
-    mergeTranslations,
 } from 'react-admin';
 
 import { deepmerge } from '@mui/utils';
@@ -39,12 +38,6 @@ import {
     defaultTitle,
 } from './defaultConfiguration';
 
-import {
-    ForgotPasswordPage,
-    SetPasswordPage,
-    raSupabaseEnglishMessages,
-} from 'ra-supabase';
-
 // Define the interface for the CRM component props
 type CRMProps = {
     lightTheme?: RaThemeOptions;
@@ -72,6 +65,8 @@ const defaultLightTheme = deepmerge(defaultTheme, {
         },
     },
 });
+
+const i18nProvider = polyglotI18nProvider(() => englishMessages, 'en');
 
 /**
  * CRM Component
@@ -151,14 +146,6 @@ export const CRM = ({
         >
             <CustomRoutes noLayout>
                 <Route path={SignupPage.path} element={<SignupPage />} />
-                <Route
-                    path={SetPasswordPage.path}
-                    element={<SetPasswordPage />}
-                />
-                <Route
-                    path={ForgotPasswordPage.path}
-                    element={<ForgotPasswordPage />}
-                />
             </CustomRoutes>
 
             <CustomRoutes>
@@ -175,19 +162,3 @@ export const CRM = ({
         </Admin>
     </ConfigurationProvider>
 );
-
-export const raSupabaseEnglishMessagesOverride = {
-    'ra-supabase': {
-        auth: {
-            password_reset: 'Check your emails for a Reset Password message.',
-        },
-    },
-};
-
-const i18nProvider = polyglotI18nProvider(() => {
-    return mergeTranslations(
-        englishMessages,
-        raSupabaseEnglishMessages,
-        raSupabaseEnglishMessagesOverride
-    );
-}, 'en');

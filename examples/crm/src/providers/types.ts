@@ -1,1 +1,1 @@
-export type { CrmDataProvider } from './supabase/dataProvider';
+export type { CrmDataProvider } from './fakerest/dataProvider';
