@@ -26,17 +26,17 @@ const Header = () => {
     const location = useLocation();
     const { permissions } = usePermissions();
 
-    let currentPath = '/';
-    if (!!matchPath('/contacts/*', location.pathname)) {
+    let currentPath: string | boolean = '/';
+    if (!!matchPath('/', location.pathname)) {
+        currentPath = '/';
+    } else if (!!matchPath('/contacts/*', location.pathname)) {
         currentPath = '/contacts';
     } else if (!!matchPath('/companies/*', location.pathname)) {
         currentPath = '/companies';
     } else if (!!matchPath('/deals/*', location.pathname)) {
         currentPath = '/deals';
-    } else if (!!matchPath('/settings', location.pathname)) {
-        currentPath = '/settings';
-    } else if (!!matchPath('/sales/*', location.pathname)) {
-        currentPath = '/sales';
+    } else {
+        currentPath = false;
     }
 
     return (

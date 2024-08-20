@@ -100,7 +100,7 @@ const SettingsForm = ({
         },
         onSuccess: () => {
             notify(
-                'An reset password email has been sent to your email address'
+                'A reset password email has been sent to your email address'
             );
         },
         onError: e => {

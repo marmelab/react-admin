@@ -66,7 +66,12 @@ const defaultLightTheme = deepmerge(defaultTheme, {
     },
 });
 
-const i18nProvider = polyglotI18nProvider(() => englishMessages, 'en');
+const i18nProvider = polyglotI18nProvider(
+    () => englishMessages,
+    'en',
+    [{ locale: 'en', name: 'English' }],
+    { allowMissing: true }
+);
 
 /**
  * CRM Component
