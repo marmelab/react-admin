@@ -47,18 +47,18 @@ export const Welcome = () => (
             <Button
                 variant="contained"
                 fullWidth
-                href="https://marmelab.com/react-admin"
-                startIcon={<HomeIcon />}
+                href="https://github.com/marmelab/react-admin/tree/master/examples/crm"
+                startIcon={<CodeIcon />}
             >
-                React-admin site
+                Source
             </Button>
             <Button
                 variant="contained"
                 fullWidth
-                href="https://github.com/marmelab/react-admin/tree/master/examples/crm"
-                startIcon={<CodeIcon />}
+                href="https://marmelab.com/react-admin"
+                startIcon={<HomeIcon />}
             >
-                Source of this demo
+                React-admin site
             </Button>
         </CardActions>
     </Card>
