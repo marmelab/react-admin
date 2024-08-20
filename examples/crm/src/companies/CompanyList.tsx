@@ -1,4 +1,3 @@
-import * as React from 'react';
 import {
     TopToolbar,
     ExportButton,
@@ -13,7 +12,7 @@ import {
 
 import { ImageList } from './GridList';
 import { CompanyListFilter } from './CompanyListFilter';
-import { LinearProgress, Stack } from '@mui/material';
+import { Stack } from '@mui/material';
 import { CompanyEmpty } from './CompanyEmpty';
 
 export const CompanyList = () => {
@@ -30,7 +29,7 @@ const CompanyListLayout = () => {
     const { data, isPending, filterValues } = useListContext();
     const hasFilters = filterValues && Object.keys(filterValues).length > 0;
 
-    if (isPending) return <LinearProgress />;
+    if (isPending) return null;
     if (!data?.length && !hasFilters) return <CompanyEmpty />;
 
     return (

@@ -14,7 +14,7 @@ import {
 } from 'react-admin';
 import { matchPath, useLocation } from 'react-router';
 
-import { Card, LinearProgress, Stack } from '@mui/material';
+import { Card, Stack } from '@mui/material';
 import { useConfigurationContext } from '../root/ConfigurationContext';
 import { DealArchivedList } from './DealArchivedList';
 import { DealCreate } from './DealCreate';
@@ -63,7 +63,7 @@ const DealLayout = () => {
     const { data, isPending, filterValues } = useListContext();
     const hasFilters = filterValues && Object.keys(filterValues).length > 0;
 
-    if (isPending) return <LinearProgress />;
+    if (isPending) return null;
     if (!data?.length && !hasFilters)
         return (
             <>

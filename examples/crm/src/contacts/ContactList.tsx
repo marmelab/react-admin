@@ -1,5 +1,5 @@
 /* eslint-disable import/no-anonymous-default-export */
-import { Card, LinearProgress, Stack } from '@mui/material';
+import { Card, Stack } from '@mui/material';
 import jsonExport from 'jsonexport/dist';
 import type { Exporter, Identifier, RaRecord } from 'react-admin';
 import {
@@ -17,6 +17,7 @@ import {
     useGetIdentity,
     useListContext,
 } from 'react-admin';
+
 import { Company, Contact, Sale, Tag } from '../types';
 import { ContactEmpty } from './ContactEmpty';
 import { ContactImportButton } from './ContactImportButton';
@@ -45,8 +46,7 @@ const ContactListLayout = () => {
 
     const hasFilters = filterValues && Object.keys(filterValues).length > 0;
 
-    if (!identity) return null;
-    if (isPending) return <LinearProgress />;
+    if (!identity || isPending) return null;
 
     if (!data?.length && !hasFilters) return <ContactEmpty />;
 
