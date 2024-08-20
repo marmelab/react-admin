@@ -49,7 +49,7 @@ export const useInput = <ValueType = any>(
     const defaultId = useId();
 
     if (
-        !source &&
+        !finalSource &&
         props.label == null &&
         process.env.NODE_ENV === 'development'
     ) {
