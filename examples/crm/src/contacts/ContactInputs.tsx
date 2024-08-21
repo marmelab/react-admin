@@ -125,12 +125,12 @@ const ContactPersonalInformationInputs = () => {
             <TextInput source="email" helperText={false} validate={email()} />
             <Stack gap={1} flexDirection="row">
                 <TextInput
-                    source="phone_number1.number"
+                    source="phone_1_number"
                     label="Phone number 1"
                     helperText={false}
                 />
                 <SelectInput
-                    source="phone_number1.type"
+                    source="phone_1_type"
                     label="Type"
                     helperText={false}
                     optionText={choice => choice.id}
@@ -140,12 +140,12 @@ const ContactPersonalInformationInputs = () => {
             </Stack>
             <Stack gap={1} flexDirection="row">
                 <TextInput
-                    source="phone_number2.number"
+                    source="phone_2_number"
                     label="Phone number 2"
                     helperText={false}
                 />
                 <SelectInput
-                    source="phone_number2.type"
+                    source="phone_2_type"
                     label="Type"
                     helperText={false}
                     optionText={choice => choice.id}
@@ -179,7 +179,7 @@ const ContactMiscInputs = () => {
                 source="sales_id"
                 sort={{ field: 'last_name', order: 'ASC' }}
                 filter={{
-                    disabled_neq: true,
+                    'disabled@neq': true,
                 }}
             >
                 <SelectInput

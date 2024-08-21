@@ -8,15 +8,15 @@ import {
 } from 'faker/locale/en_US';
 import { randomDate } from './utils';
 
-import { defaultCompanySectors } from '../root/defaultConfiguration';
-import { Company } from '../types';
+import { defaultCompanySectors } from '../../../root/defaultConfiguration';
+import { Company, RAFile } from '../../../types';
 import { Db } from './types';
 
 const sizes = [1, 10, 50, 250, 500];
 
 const regex = /\W+/;
 
-export const generateCompanies = (db: Db): Company[] => {
+export const generateCompanies = (db: Db): Required<Company>[] => {
     return Array.from(Array(55).keys()).map(id => {
         const name = company.companyName();
         return {
@@ -25,7 +25,7 @@ export const generateCompanies = (db: Db): Company[] => {
             logo: {
                 title: lorem.text(1),
                 src: `./logos/${id}.png`,
-            },
+            } as RAFile,
             sector: random.arrayElement(defaultCompanySectors),
             size: random.arrayElement(sizes) as 1 | 10 | 50 | 250 | 500,
             linkedin_url: `https://www.linkedin.com/company/${name

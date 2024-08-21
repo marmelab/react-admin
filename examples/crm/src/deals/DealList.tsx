@@ -14,8 +14,7 @@ import {
 } from 'react-admin';
 import { matchPath, useLocation } from 'react-router';
 
-import { Card, LinearProgress, Stack } from '@mui/material';
-import { hasOtherFiltersThanDefault } from '../misc/hasOtherFiltersThanDefault';
+import { Card, Stack } from '@mui/material';
 import { useConfigurationContext } from '../root/ConfigurationContext';
 import { DealArchivedList } from './DealArchivedList';
 import { DealCreate } from './DealCreate';
@@ -32,11 +31,8 @@ const DealList = () => {
     return (
         <ListBase
             perPage={100}
-            filterDefaultValues={{
-                sales_id: identity?.id,
-            }}
             filter={{
-                archived_at_eq: null,
+                'archived_at@is': null,
             }}
             sort={{ field: 'index', order: 'DESC' }}
         >
@@ -65,15 +61,10 @@ const DealLayout = () => {
     ];
 
     const { data, isPending, filterValues } = useListContext();
-    const { identity } = useGetIdentity();
-    const hasOtherFiltersThanDefaultBoolean = hasOtherFiltersThanDefault(
-        filterValues,
-        'sales_id',
-        identity?.id
-    );
+    const hasFilters = filterValues && Object.keys(filterValues).length > 0;
 
-    if (isPending) return <LinearProgress />;
-    if (!data?.length && !hasOtherFiltersThanDefaultBoolean)
+    if (isPending) return null;
+    if (!data?.length && !hasFilters)
         return (
             <>
                 <DealEmpty>

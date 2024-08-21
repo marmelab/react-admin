@@ -1,10 +1,19 @@
 import * as React from 'react';
-import { Card, Box, Stack } from '@mui/material';
+import {
+    Card,
+    Box,
+    Stack,
+    Typography,
+    IconButton,
+    Tooltip,
+} from '@mui/material';
 import ContactsIcon from '@mui/icons-material/Contacts';
-import { useGetList, Link, SimpleList, useGetIdentity } from 'react-admin';
+import { useGetList, SimpleList, useGetIdentity } from 'react-admin';
 
 import { Avatar } from '../contacts/Avatar';
 import { Contact } from '../types';
+import ControlPointIcon from '@mui/icons-material/ControlPoint';
+import { Link } from 'react-router-dom';
 
 export const HotContacts = () => {
     const { identity } = useGetIdentity();
@@ -28,16 +37,30 @@ export const HotContacts = () => {
                 <Box mr={1} display="flex">
                     <ContactsIcon color="disabled" fontSize="medium" />
                 </Box>
-                <Link
-                    underline="none"
-                    variant="h5"
-                    color="textSecondary"
-                    to="/contacts"
-                >
+                <Typography variant="h5" color="textSecondary">
                     Hot Contacts
-                </Link>
+                </Typography>
+                <Tooltip title="Create contact">
+                    <IconButton
+                        size="small"
+                        sx={{
+                            color: 'text.secondary',
+                            ml: 'auto',
+                        }}
+                        component={Link}
+                        to="/contacts/create"
+                    >
+                        <ControlPointIcon fontSize="inherit" color="primary" />
+                    </IconButton>
+                </Tooltip>
             </Box>
-            <Card>
+            <Card
+                sx={{
+                    '& .MuiCardContent-root': {
+                        padding: '16px !important',
+                    },
+                }}
+            >
                 <SimpleList<Contact>
                     linkType="show"
                     data={contactData}
@@ -54,6 +77,17 @@ export const HotContacts = () => {
                     )}
                     leftAvatar={contact => <Avatar record={contact} />}
                     dense
+                    empty={
+                        <Box p={2}>
+                            <Typography variant="body2" gutterBottom>
+                                Contacts with a "hot" status will appear here.
+                            </Typography>
+                            <Typography variant="body2">
+                                Change the status of a contact by adding a note
+                                to that contact and clicking on "show options".
+                            </Typography>
+                        </Box>
+                    }
                 />
             </Card>
         </Stack>

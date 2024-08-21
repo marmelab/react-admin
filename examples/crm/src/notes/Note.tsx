@@ -1,3 +1,5 @@
+import TrashIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
 import ContentSave from '@mui/icons-material/Save';
 import {
     Box,
@@ -17,18 +19,16 @@ import {
     useUpdate,
     WithRecord,
 } from 'react-admin';
-import TrashIcon from '@mui/icons-material/Delete';
-import EditIcon from '@mui/icons-material/Edit';
 import { FieldValues, SubmitHandler } from 'react-hook-form';
 
+import { CompanyAvatar } from '../companies/CompanyAvatar';
 import { Avatar } from '../contacts/Avatar';
+import { RelativeDate } from '../misc/RelativeDate';
 import { Status } from '../misc/Status';
+import { SaleName } from '../sales/SaleName';
 import { ContactNote, DealNote } from '../types';
 import { NoteAttachments } from './NoteAttachments';
 import { NoteInputs } from './NoteInputs';
-import { SaleName } from '../sales/SaleName';
-import { RelativeDate } from '../misc/RelativeDate';
-import { CompanyAvatar } from '../companies/CompanyAvatar';
 
 export const Note = ({
     showStatus,
@@ -112,7 +112,10 @@ export const Note = ({
                             render={record => <SaleName sale={record} />}
                         />
                     </ReferenceField>{' '}
-                    added a note {showStatus && <Status status={note.status} />}
+                    added a note{' '}
+                    {showStatus && note.status && (
+                        <Status status={note.status} />
+                    )}
                     <Box
                         component="span"
                         sx={{
@@ -167,42 +170,31 @@ export const Note = ({
                     </Box>
                 </Form>
             ) : (
-                <Box
+                <Stack
                     sx={{
                         paddingTop: '0.5em',
                         display: 'flex',
-                        alignItems: 'stretch',
+                        '& p:empty': {
+                            minHeight: '0.75em',
+                        },
                     }}
                 >
-                    <Box
-                        flex={1}
-                        sx={{
-                            '& p:first-of-type': {
-                                marginTop: 0,
-                            },
-                            '& p:last-of-type': {
-                                marginBottom: 0,
-                            },
-                        }}
-                    >
-                        {note.text
-                            ?.split('\n')
-                            .map((paragraph: string, index: number) => (
-                                <Box
-                                    component="p"
-                                    fontFamily="fontFamily"
-                                    fontSize="body2.fontSize"
-                                    lineHeight={1.5}
-                                    marginBottom={2.4}
-                                    key={index}
-                                >
-                                    {paragraph}
-                                </Box>
-                            ))}
+                    {note.text
+                        ?.split('\n')
+                        .map((paragraph: string, index: number) => (
+                            <Typography
+                                component="p"
+                                variant="body2"
+                                lineHeight={1.5}
+                                margin={0}
+                                key={index}
+                            >
+                                {paragraph}
+                            </Typography>
+                        ))}
 
-                        {note.attachments && <NoteAttachments note={note} />}
-                    </Box>
-                </Box>
+                    {note.attachments && <NoteAttachments note={note} />}
+                </Stack>
             )}
         </Box>
     );

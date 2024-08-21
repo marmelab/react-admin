@@ -97,12 +97,14 @@ const ImageEditorDialog = (props: ImageEditorDialogProps) => {
         const croppedImage = cropper?.getCroppedCanvas().toDataURL();
         if (croppedImage) {
             setImageSrc(croppedImage);
+
+            const newFile = file ?? new File([], initialValue?.src);
             setValue(
                 props.source,
                 {
                     src: croppedImage,
-                    title: file?.name,
-                    rawFile: file,
+                    title: newFile.name,
+                    rawFile: newFile,
                 },
                 { shouldDirty: true }
             );
@@ -115,7 +117,10 @@ const ImageEditorDialog = (props: ImageEditorDialogProps) => {
     };
 
     const deleteImage = () => {
-        setValue(props.source, undefined, { shouldDirty: true });
+        setValue(props.source, null, { shouldDirty: true });
+        if (props.onSave) {
+            handleSubmit(props.onSave)();
+        }
         props.onClose();
     };
 

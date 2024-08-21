@@ -20,6 +20,7 @@ export const CompanyAvatar = (props: {
                 '& img': { objectFit: 'contain' },
                 width,
                 height,
+                fontSize: height !== 40 ? '0.6rem' : undefined,
             }}
         >
             {record.name.charAt(0)}

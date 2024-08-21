@@ -8,7 +8,9 @@ import {
     SearchInput,
     TextField,
     TopToolbar,
+    usePermissions,
 } from 'react-admin';
+import { Navigate } from 'react-router';
 
 function SalesListActions() {
     return (
@@ -22,6 +24,15 @@ function SalesListActions() {
 const filters = [<SearchInput source="q" alwaysOn />];
 
 export function SalesList() {
+    const { isPending, permissions } = usePermissions();
+    if (isPending) {
+        return null;
+    }
+
+    if (permissions !== 'admin') {
+        return <Navigate to="/" />;
+    }
+
     return (
         <Stack gap={4}>
             <List

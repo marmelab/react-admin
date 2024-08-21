@@ -1,9 +1,8 @@
-import * as React from 'react';
-import { ReferenceField, useRedirect } from 'react-admin';
-import { Box, Card, Typography } from '@mui/material';
 import { Draggable } from '@hello-pangea/dnd';
-import { Deal } from '../types';
+import { Box, Card, Typography } from '@mui/material';
+import { ReferenceField, useRedirect } from 'react-admin';
 import { CompanyAvatar } from '../companies/CompanyAvatar';
+import { Deal } from '../types';
 
 export const DealCard = ({ deal, index }: { deal: Deal; index: number }) => {
     if (!deal) return null;
@@ -73,7 +72,7 @@ export const DealCardContent = ({
                                 currencyDisplay: 'narrowSymbol',
                                 minimumSignificantDigits: 3,
                             })}
-                            , {deal.category}
+                            {deal.category ? `, ${deal.category}` : ''}
                         </Typography>
                     </Box>
                 </Box>

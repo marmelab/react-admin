@@ -1,33 +1,64 @@
-import { Button, Container, Stack, TextField, Typography } from '@mui/material';
-import { useCreate, useGetList, useLogin, useNotify } from 'react-admin';
+import {
+    Button,
+    CircularProgress,
+    Container,
+    Stack,
+    TextField,
+    Typography,
+} from '@mui/material';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import {
+    useDataProvider,
+    useLogin,
+    useNotify,
+    usePermissions,
+} from 'react-admin';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Navigate } from 'react-router';
-import { LoginSkeleton } from './LoginSkeleton';
+import { CrmDataProvider } from '../providers/types';
 import { useConfigurationContext } from '../root/ConfigurationContext';
-
-interface UserInput {
-    first_name: string;
-    last_name: string;
-    email: string;
-    password: string;
-}
+import { SignUpData } from '../types';
+import { LoginSkeleton } from './LoginSkeleton';
 
 export const SignupPage = () => {
+    const { refetch } = usePermissions();
+    const dataProvider = useDataProvider<CrmDataProvider>();
     const { logo, title } = useConfigurationContext();
-    const { total, isPending } = useGetList('sales', {
-        pagination: { page: 1, perPage: 10 },
-        sort: { field: 'name', order: 'ASC' },
+    const { data: isInitialized, isPending } = useQuery({
+        queryKey: ['init'],
+        queryFn: async () => {
+            return dataProvider.isInitialized();
+        },
+    });
+
+    const { isPending: isSignUpPending, mutate } = useMutation({
+        mutationKey: ['signup'],
+        mutationFn: async (data: SignUpData) => {
+            return dataProvider.signUp(data);
+        },
+        onSuccess: data => {
+            login({
+                email: data.email,
+                password: data.password,
+                redirectTo: '/contacts',
+            }).then(() => {
+                notify('Initial user successfully created');
+                refetch();
+            });
+        },
+        onError: () => {
+            notify('An error occurred. Please try again.');
+        },
     });
 
     const login = useLogin();
     const notify = useNotify();
-    const [create] = useCreate();
 
     const {
         register,
         handleSubmit,
         formState: { isValid },
-    } = useForm<UserInput>({
+    } = useForm<SignUpData>({
         mode: 'onChange',
     });
 
@@ -36,37 +67,23 @@ export const SignupPage = () => {
     }
 
     // For the moment, we only allow one user to sign up. Other users must be created by the administrator.
-    if (total) {
+    if (isInitialized) {
         return <Navigate to="/login" />;
     }
 
-    const onSubmit: SubmitHandler<UserInput> = async data => {
-        await create(
-            'sales',
-            { data: { ...data, administrator: true } }, // The first sale is an administrator
-            {
-                onSuccess: () => {
-                    login({
-                        email: data.email,
-                        password: data.password,
-                    });
-                    setTimeout(() => {
-                        notify(
-                            'Welcome! You can now start entering contacts, write notes and plan deals'
-                        );
-                    }, 0);
-                },
-                onError: () => {
-                    notify('An error occurred. Please try again.');
-                },
-            }
-        );
+    const onSubmit: SubmitHandler<SignUpData> = async data => {
+        mutate(data);
     };
 
     return (
         <Stack sx={{ height: '100dvh', p: 2 }}>
             <Stack direction="row" alignItems="center" gap={1}>
-                <img src={logo} alt={title} width={50} />
+                <img
+                    src={logo}
+                    alt={title}
+                    width={24}
+                    style={{ filter: 'invert(0.9)' }}
+                />
                 <Typography component="span" variant="h5">
                     {title}
                 </Typography>
@@ -82,28 +99,23 @@ export const SignupPage = () => {
                         gap: 1,
                     }}
                 >
-                    <Typography variant="h3" component="h1" gutterBottom>
-                        Welcome!
+                    <Typography variant="h4" component="h1" gutterBottom>
+                        Welcome to Atomic CRM
                     </Typography>
                     <Typography variant="body1" gutterBottom>
-                        Create your account to manage your contacts, companies,
-                        and deals.
+                        Create the first user account to complete the setup.
                     </Typography>
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <TextField
                             {...register('first_name', { required: true })}
                             label="First name"
                             variant="outlined"
-                            helperText={false}
-                            InputLabelProps={{ shrink: true }}
                             required
                         />
                         <TextField
                             {...register('last_name', { required: true })}
                             label="Last name"
                             variant="outlined"
-                            helperText={false}
-                            InputLabelProps={{ shrink: true }}
                             required
                         />
                         <TextField
@@ -111,8 +123,6 @@ export const SignupPage = () => {
                             label="Email"
                             type="email"
                             variant="outlined"
-                            helperText={false}
-                            InputLabelProps={{ shrink: true }}
                             required
                         />
                         <TextField
@@ -120,7 +130,6 @@ export const SignupPage = () => {
                             label="Password"
                             type="password"
                             variant="outlined"
-                            InputLabelProps={{ shrink: true }}
                             required
                         />
                         <Stack
@@ -132,9 +141,14 @@ export const SignupPage = () => {
                             <Button
                                 type="submit"
                                 variant="contained"
-                                disabled={!isValid}
+                                disabled={!isValid || isSignUpPending}
+                                fullWidth
                             >
-                                Create account
+                                {isSignUpPending ? (
+                                    <CircularProgress />
+                                ) : (
+                                    'Create account'
+                                )}
                             </Button>
                         </Stack>
                     </form>

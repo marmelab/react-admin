@@ -30,7 +30,17 @@ export const DealEdit = ({ open, id }: { open: boolean; id?: string }) => {
     };
 
     return (
-        <Dialog open={open} onClose={handleClose} fullWidth maxWidth="md">
+        <Dialog
+            open={open}
+            onClose={handleClose}
+            fullWidth
+            maxWidth="md"
+            sx={{
+                '& .MuiDialog-container': {
+                    alignItems: 'flex-start',
+                },
+            }}
+        >
             {!!id ? (
                 <EditBase
                     id={id}
@@ -94,7 +104,11 @@ function EditHeader() {
                 </Stack>
 
                 <Stack direction="row" spacing={1} sx={{ pr: 3 }}>
-                    <Button component={Link} to={`/deals/${deal.id}/show`}>
+                    <Button
+                        component={Link}
+                        to={`/deals/${deal.id}/show`}
+                        size="small"
+                    >
                         Back to deal
                     </Button>
                 </Stack>

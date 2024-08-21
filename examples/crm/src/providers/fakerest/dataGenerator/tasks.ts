@@ -1,9 +1,9 @@
 import { lorem, random } from 'faker/locale/en_US';
 
-import { Task } from '../types';
+import { defaultTaskTypes } from '../../../root/defaultConfiguration';
+import { Task } from '../../../types';
 import { Db } from './types';
 import { randomDate } from './utils';
-import { defaultTaskTypes } from '../root/defaultConfiguration';
 
 type TaskType = (typeof defaultTaskTypes)[number];
 
@@ -49,6 +49,7 @@ export const generateTasks = (db: Db) => {
                 new Date(Date.now() + 100 * 24 * 60 * 60 * 1000)
             ).toISOString(),
             done_date: undefined,
+            sales_id: 0,
         };
     });
 };

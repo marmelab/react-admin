@@ -1,9 +1,9 @@
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
-import { Box, Stack } from '@mui/material';
+import { Box, Stack, Typography } from '@mui/material';
 import { ResponsiveBar } from '@nivo/bar';
 import { format, startOfMonth } from 'date-fns';
 import { useMemo } from 'react';
-import { Link, useGetList } from 'react-admin';
+import { useGetList } from 'react-admin';
 
 import { Deal } from '../types';
 
@@ -26,7 +26,7 @@ export const DealsChart = () => {
             order: 'ASC',
         },
         filter: {
-            created_at_gte: threeMonthsAgo,
+            'created_at@gte': threeMonthsAgo,
         },
     });
     const months = useMemo(() => {
@@ -87,14 +87,9 @@ export const DealsChart = () => {
                 <Box mr={1} display="flex">
                     <AttachMoneyIcon color="disabled" fontSize="medium" />
                 </Box>
-                <Link
-                    underline="none"
-                    variant="h5"
-                    color="textSecondary"
-                    to="/deals"
-                >
+                <Typography variant="h5" color="textSecondary">
                     Upcoming Deal Revenue
-                </Link>
+                </Typography>
             </Box>
             <Box height={400}>
                 <ResponsiveBar

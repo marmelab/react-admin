@@ -7,11 +7,11 @@ import {
     Sale,
     Tag,
     Task,
-} from '../types';
+} from '../../../types';
 
 export interface Db {
-    companies: Company[];
-    contacts: Contact[];
+    companies: Required<Company>[];
+    contacts: Required<Contact>[];
     contactNotes: ContactNote[];
     deals: Deal[];
     dealNotes: DealNote[];
