@@ -11,7 +11,6 @@ type FieldState = {
     isDirty: boolean;
     isTouched: boolean;
     isValid: boolean;
-    isValidating: boolean;
 };
 
 type FormGroupState = {
@@ -19,7 +18,6 @@ type FormGroupState = {
     isDirty: boolean;
     isTouched: boolean;
     isValid: boolean;
-    isValidating: boolean;
 };
 
 /**
@@ -83,7 +81,6 @@ export const useFormGroup = (name: string): FormGroupState => {
         isDirty: false,
         isTouched: false,
         isValid: true,
-        isValidating: true,
     });
 
     const updateGroupState = useEvent(() => {
@@ -96,8 +93,6 @@ export const useFormGroup = (name: string): FormGroupState => {
                     error: get(errors, field, undefined),
                     isDirty: get(dirtyFields, field, false) !== false,
                     isValid: get(errors, field, undefined) == null,
-                    isValidating:
-                        get(validatingFields, field, undefined) == null,
                     isTouched: get(touchedFields, field, false) !== false,
                 };
             })
@@ -167,7 +162,6 @@ export const getFormGroupState = (
                 errors,
                 isTouched: acc.isTouched || fieldState.isTouched,
                 isValid: acc.isValid && fieldState.isValid,
-                isValidating: acc.isValidating && fieldState.isValidating,
             };
 
             return newState;
@@ -177,7 +171,6 @@ export const getFormGroupState = (
             errors: undefined,
             isValid: true,
             isTouched: false,
-            isValidating: false,
         }
     );
 };

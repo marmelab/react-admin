@@ -22,14 +22,12 @@ describe('useFormGroup', () => {
                     isValid: true,
                     isDirty: false,
                     isTouched: false,
-                    isValidating: false,
                     name: 'title',
                 },
                 {
                     isValid: false,
                     isDirty: true,
                     isTouched: true,
-                    isValidating: false,
                     error: 'Invalid',
                     name: 'description',
                 },
@@ -38,7 +36,6 @@ describe('useFormGroup', () => {
                 isValid: false,
                 isDirty: true,
                 isTouched: true,
-                isValidating: false,
                 errors: {
                     description: 'Invalid',
                 },
@@ -51,14 +48,12 @@ describe('useFormGroup', () => {
                     isValid: true,
                     isDirty: false,
                     isTouched: false,
-                    isValidating: false,
                     name: 'title',
                 },
                 {
                     isValid: true,
                     isDirty: false,
                     isTouched: false,
-                    isValidating: false,
                     name: 'description',
                 },
             ],
@@ -66,7 +61,6 @@ describe('useFormGroup', () => {
                 isValid: true,
                 isDirty: false,
                 isTouched: false,
-                isValidating: false,
                 errors: {},
             },
         ],
@@ -77,14 +71,12 @@ describe('useFormGroup', () => {
                     isValid: true,
                     isDirty: false,
                     isTouched: false,
-                    isValidating: false,
                     name: 'title',
                 },
                 {
                     isValid: true,
                     isDirty: true,
                     isTouched: true,
-                    isValidating: false,
                     name: 'description',
                 },
             ],
@@ -92,7 +84,6 @@ describe('useFormGroup', () => {
                 isValid: true,
                 isDirty: true,
                 isTouched: true,
-                isValidating: false,
                 errors: {},
             },
         ],
@@ -127,7 +118,6 @@ describe('useFormGroup', () => {
                 isDirty: false,
                 isTouched: false,
                 isValid: true,
-                isValidating: false,
             });
         });
 
@@ -141,7 +131,6 @@ describe('useFormGroup', () => {
                 isDirty: true,
                 isTouched: false,
                 isValid: true,
-                isValidating: false,
             });
         });
         // This is coherent with how react-hook-form works, inputs are only touched when they lose focus
@@ -152,7 +141,6 @@ describe('useFormGroup', () => {
                 isDirty: true,
                 isTouched: true,
                 isValid: true,
-                isValidating: false,
             });
         });
     });
@@ -189,7 +177,6 @@ describe('useFormGroup', () => {
                 isDirty: false,
                 isTouched: false,
                 isValid: true,
-                isValidating: false,
             });
         });
 
@@ -203,7 +190,6 @@ describe('useFormGroup', () => {
                 isDirty: true,
                 isTouched: false,
                 isValid: true,
-                isValidating: false,
             });
         });
         fireEvent.click(screen.getByText('Change group'));
@@ -213,7 +199,6 @@ describe('useFormGroup', () => {
                 isDirty: false,
                 isTouched: false,
                 isValid: true,
-                isValidating: false,
             });
         });
     });
@@ -258,7 +243,6 @@ describe('useFormGroup', () => {
                 isDirty: false,
                 isTouched: false,
                 isValid: true,
-                isValidating: false,
             });
         });
 
@@ -273,7 +257,6 @@ describe('useFormGroup', () => {
                 isDirty: true,
                 isTouched: false,
                 isValid: true,
-                isValidating: false,
             });
         });
     });
