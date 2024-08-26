@@ -64,8 +64,7 @@ type FormGroupState = {
  * @returns {FormGroupState} The form group state
  */
 export const useFormGroup = (name: string): FormGroupState => {
-    const { dirtyFields, touchedFields, validatingFields, errors } =
-        useFormState();
+    const { dirtyFields, touchedFields, errors } = useFormState();
 
     // dirtyFields, touchedFields and validatingFields are objects with keys being the field names
     // Ex: { title: true }
@@ -73,7 +72,6 @@ export const useFormGroup = (name: string): FormGroupState => {
     // To avoid our effects to not be triggered when they should, we extract the keys and use that as a dependency
     const dirtyFieldsNames = Object.keys(dirtyFields);
     const touchedFieldsNames = Object.keys(touchedFields);
-    const validatingFieldsNames = Object.keys(validatingFields);
 
     const formGroups = useFormGroups();
     const [state, setState] = useState<FormGroupState>({
@@ -119,8 +117,6 @@ export const useFormGroup = (name: string): FormGroupState => {
             errors,
             // eslint-disable-next-line react-hooks/exhaustive-deps
             JSON.stringify(touchedFieldsNames),
-            // eslint-disable-next-line react-hooks/exhaustive-deps
-            JSON.stringify(validatingFieldsNames),
             updateGroupState,
             name,
             formGroups,
