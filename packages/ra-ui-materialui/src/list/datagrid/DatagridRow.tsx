@@ -19,6 +19,7 @@ import {
     useTranslate,
     useRecordContext,
     useGetPathForRecordCallback,
+    useResourceDefinition,
 } from 'ra-core';
 import { useNavigate } from 'react-router-dom';
 
@@ -65,6 +66,9 @@ const DatagridRow: React.ForwardRefExoticComponent<
         );
     }
     const resource = useResourceContext(props);
+    const resourceDefinition = useResourceDefinition(props);
+    const hasDetailView =
+        resourceDefinition.hasShow || resourceDefinition.hasEdit;
     if (!resource) {
         throw new Error(
             'DatagridRow can only be used within a ResourceContext or be passed a resource prop'
@@ -162,8 +166,7 @@ const DatagridRow: React.ForwardRefExoticComponent<
                 className={clsx(className, {
                     [DatagridClasses.expandable]: expandable,
                     [DatagridClasses.selectable]: selectable,
-                    [DatagridClasses.clickableRow]:
-                        typeof rowClick === 'function' ? true : rowClick,
+                    [DatagridClasses.clickableRow]: rowClick ?? hasDetailView,
                 })}
                 key={id}
                 style={style}
