@@ -307,7 +307,10 @@
                 appId: 'QY9T9CVM2N',
                 indexName: 'marmelab-react-admin',
                 apiKey: '75332227370be3dc35777cee6244881a',
-                searchParameters: { facetFilters: ['version:  {{ version }}'] },
+                searchParameters: {
+                    facetFilters: ['version:  {{ version }}'],
+                    attributesToHighlight: ['hierarchy.lvl0'],
+                },
             });
         </script>
 
