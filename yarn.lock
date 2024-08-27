@@ -9011,6 +9011,7 @@ __metadata:
     ink: "npm:^5.0.0"
     ink-select-input: "npm:^6.0.0"
     ink-text-input: "npm:^6.0.0"
+    lodash: "npm:~4.17.5"
     meow: "npm:^9.0.0"
     react: "npm:^18.3.1"
     typescript: "npm:^5.1.3"
