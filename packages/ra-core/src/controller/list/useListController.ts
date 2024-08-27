@@ -1,6 +1,6 @@
 import { isValidElement, useEffect, useMemo } from 'react';
 
-import { useAuthenticated } from '../../auth';
+import { useAuthenticated, useAuthProvider } from '../../auth';
 import { useTranslate } from '../../i18n';
 import { useNotify } from '../../notification';
 import {
@@ -9,11 +9,12 @@ import {
     UseGetListOptions,
 } from '../../dataProvider';
 import { SORT_ASC } from './queryReducer';
-import { defaultExporter } from '../../export';
+import { downloadCSV } from '../../export';
 import { FilterPayload, SortPayload, RaRecord, Exporter } from '../../types';
 import { useResourceContext, useGetResourceLabel } from '../../core';
 import { useRecordSelection } from './useRecordSelection';
 import { useListParams } from './useListParams';
+import jsonexport from 'jsonexport';
 
 /**
  * Prepare data for the List view
@@ -39,7 +40,7 @@ export const useListController = <RecordType extends RaRecord = any>(
         debounce = 500,
         disableAuthentication,
         disableSyncWithLocation,
-        exporter = defaultExporter,
+        exporter,
         filter,
         filterDefaultValues,
         perPage = 10,
@@ -47,7 +48,7 @@ export const useListController = <RecordType extends RaRecord = any>(
         sort = defaultSort,
         storeKey,
     } = props;
-    useAuthenticated({ enabled: !disableAuthentication });
+
     const resource = useResourceContext(props);
     const { meta, ...otherQueryOptions } = queryOptions;
 
@@ -83,6 +84,17 @@ export const useListController = <RecordType extends RaRecord = any>(
         resource,
         disableSyncWithStore: storeKey === false,
     });
+    useAuthenticated({ enabled: !disableAuthentication });
+
+    const authProvider = useAuthProvider();
+
+    const isAccessible =
+        authProvider && authProvider.canAccess
+            ? authProvider.canAccess({
+                  action: 'read',
+                  resource: `${props.resource}`,
+              })
+            : true;
 
     const {
         data,
@@ -107,6 +119,7 @@ export const useListController = <RecordType extends RaRecord = any>(
         {
             placeholderData: previousData => previousData,
             retry: false,
+            enabled: isAccessible,
             onError: error =>
                 notify(error?.message || 'ra.notification.http_error', {
                     type: 'error',
@@ -154,13 +167,34 @@ export const useListController = <RecordType extends RaRecord = any>(
         name: getResourceLabel(resource, 2),
     });
 
+    const defaultExporter = (records: RecordType[]) => {
+        const recordsWithAuthorizedColumns = records.map(record => {
+            if (!authProvider || !authProvider.canAccess) {
+                return record;
+            }
+            return Object.keys(record)
+                .filter(key =>
+                    authProvider.canAccess!({
+                        action: 'read',
+                        resource: `${resource}.${key}`,
+                    })
+                )
+                .reduce((obj, key) => ({ ...obj, [key]: record[key] }), {});
+        });
+        jsonexport(recordsWithAuthorizedColumns, (err, csv) =>
+            downloadCSV(csv, resource)
+        );
+    };
+    const exporterWithAccess =
+        exporter === false ? false : exporter ?? defaultExporter;
+
     return {
         sort: currentSort,
         data,
         defaultTitle,
         displayedFilters: query.displayedFilters,
         error,
-        exporter,
+        exporter: exporterWithAccess,
         filter,
         filterValues: query.filterValues,
         hideFilter: queryModifiers.hideFilter,

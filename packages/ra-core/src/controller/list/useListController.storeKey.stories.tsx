@@ -72,7 +72,7 @@ const OrderedPostList = ({
             <br />
             <button
                 aria-label="incrementPerPage"
-                disabled={params.perPage > params.data?.length ?? false}
+                disabled={params.perPage > (params.data?.length ?? 0)}
                 onClick={() => params.setPerPage(++params.perPage)}
             >
                 Increment perPage
@@ -86,7 +86,7 @@ const OrderedPostList = ({
             </button>
             <ul style={styles.ul}>
                 {!params.isPending &&
-                    params.data.map(post => (
+                    params.data!.map(post => (
                         <li key={`post_${post.id}`}>
                             {post.title} - {post.votes} votes
                         </li>
