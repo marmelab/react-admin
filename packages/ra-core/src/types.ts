@@ -69,11 +69,13 @@ export type AuthProvider = {
     handleCallback?: (
         params?: QueryFunctionContext
     ) => Promise<AuthRedirectResult | void | any>;
-    canAccess?: (params: {
-        action?: string;
-        resource: string;
-        record?: unknown;
-    }) => boolean;
+    canAccess?: (
+        params: QueryFunctionContext & {
+            action?: string;
+            resource: string;
+            record?: unknown;
+        }
+    ) => Promise<boolean>;
     [key: string]: any;
 };
 
