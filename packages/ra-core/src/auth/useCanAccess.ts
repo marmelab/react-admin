@@ -52,7 +52,7 @@ const useCanAccess = <ErrorType = Error>(
         queryKey: ['auth', 'canAccess', params],
         queryFn: async ({ signal }) => {
             if (!authProvider || !authProvider.canAccess) {
-                return Promise.resolve(true);
+                return true;
             }
             const canAccess = await authProvider.canAccess({
                 ...params,

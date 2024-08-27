@@ -493,4 +493,22 @@ describe('useListController', () => {
             });
         });
     });
+
+    describe('with authProvider canAccess', () => {
+        it('should', () => {
+            const getList = () => Promise.resolve({ data: [], total: 0 });
+            const onError = jest.fn();
+            const dataProvider = testDataProvider({ getList });
+            const authProvider = {
+                canAccess: () => true,
+            };
+            render(
+                <CoreAdminContext dataProvider={dataProvider} authProvider={}>
+                    <ListController resource="posts" queryOptions={{ onError }}>
+                        {() => <div />}
+                    </ListController>
+                </CoreAdminContext>
+            );
+        });
+    });
 });

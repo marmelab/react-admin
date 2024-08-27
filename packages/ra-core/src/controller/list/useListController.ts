@@ -15,6 +15,7 @@ import { useResourceContext, useGetResourceLabel } from '../../core';
 import { useRecordSelection } from './useRecordSelection';
 import { useListParams } from './useListParams';
 import jsonexport from 'jsonexport';
+import useCanAccess from '../../auth/useCanAccess';
 
 /**
  * Prepare data for the List view
@@ -86,15 +87,10 @@ export const useListController = <RecordType extends RaRecord = any>(
     });
     useAuthenticated({ enabled: !disableAuthentication });
 
-    const authProvider = useAuthProvider();
-
-    const isAccessible =
-        authProvider && authProvider.canAccess
-            ? authProvider.canAccess({
-                  action: 'read',
-                  resource: `${props.resource}`,
-              })
-            : true;
+    const { isAccessible, isPending: isAccessPending } = useCanAccess({
+        resource,
+        action: 'read',
+    });
 
     const {
         data,
@@ -119,7 +115,7 @@ export const useListController = <RecordType extends RaRecord = any>(
         {
             placeholderData: previousData => previousData,
             retry: false,
-            enabled: isAccessible,
+            enabled: !isAccessPending && isAccessible,
             onError: error =>
                 notify(error?.message || 'ra.notification.http_error', {
                     type: 'error',
@@ -166,6 +162,8 @@ export const useListController = <RecordType extends RaRecord = any>(
     const defaultTitle = translate('ra.page.list', {
         name: getResourceLabel(resource, 2),
     });
+
+    const authProvider = useAuthProvider();
 
     const defaultExporter = (records: RecordType[]) => {
         const recordsWithAuthorizedColumns = records.map(record => {
