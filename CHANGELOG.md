@@ -1,5 +1,17 @@
 # Changelog
 
+## v5.1.2
+
+* Fix `<PrevNextButtons>` index when using paginated results ([#10144](https://github.com/marmelab/react-admin/pull/10144)) ([slax57](https://github.com/slax57))
+* Fix `useInput` should call a custom validator with the final source in respect to the `<SourceContext>` ([#10148](https://github.com/marmelab/react-admin/pull/10148)) ([slax57](https://github.com/slax57))
+* Fix `ra-data-graphql` incorrectly warns about deprecated `override` option being set ([#10138](https://github.com/marmelab/react-admin/pull/10138)) ([JonasDoe](https://github.com/JonasDoe))
+* Fix `create-react-admin` CLI to generate valid react-admin v5 apps ([#10131](https://github.com/marmelab/react-admin/pull/10131)) ([djhi](https://github.com/djhi))
+* [Doc] Fix `<ReferenceInput>` usage incorrectly mentions the `validate` prop ([#10134](https://github.com/marmelab/react-admin/pull/10134)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix broken links to webm videos ([#10143](https://github.com/marmelab/react-admin/pull/10143)) ([slax57](https://github.com/slax57))
+* [Doc] Improve types in QuickFilter doc ([#10150](https://github.com/marmelab/react-admin/pull/10150)) ([slax57](https://github.com/slax57))
+* [Doc] Update ra-search documentation to mention disableHighlight ([#10135](https://github.com/marmelab/react-admin/pull/10135)) ([djhi](https://github.com/djhi))
+* [Doc] Add `ra-data-nestjs-query` to the list of Data Providers ([#10145](https://github.com/marmelab/react-admin/pull/10145)) ([mrnkr](https://github.com/mrnkr))
+
 ## v5.1.1
 
 * Fix `<TranslatableInputs>` throws error when used with null value ([#10125](https://github.com/marmelab/react-admin/pull/10125)) ([glauff](https://github.com/glauff))
@@ -147,6 +159,15 @@ We've written a [migration guide](https://marmelab.com/react-admin/doc/5.0/Upgra
 We estimate that a react-admin app with 50,000 lines of code will require about 2 days of work to upgrade to v5.
 
 ### Changelog
+* [Doc] Improve types in QuickFilter doc ([#10150](https://github.com/marmelab/react-admin/pull/10150)) ([slax57](https://github.com/slax57))
+* [Doc] Add `ra-data-nestjs-query` to the list of Data Providers ([#10145](https://github.com/marmelab/react-admin/pull/10145)) ([mrnkr](https://github.com/mrnkr))
+* Fix `<PrevNextButtons>` index when using paginated results ([#10144](https://github.com/marmelab/react-admin/pull/10144)) ([slax57](https://github.com/slax57))
+* [Doc] Fix broken links to webm videos ([#10143](https://github.com/marmelab/react-admin/pull/10143)) ([slax57](https://github.com/slax57))
+* Fix `ra-data-graphql` incorrectly warns about deprecated `override` option being set ([#10138](https://github.com/marmelab/react-admin/pull/10138)) ([JonasDoe](https://github.com/JonasDoe))
+* [Doc] Update ra-search documentation to mention disableHighlight ([#10135](https://github.com/marmelab/react-admin/pull/10135)) ([djhi](https://github.com/djhi))
+* [Doc] Fix `<ReferenceInput>` usage incorrectly mentions the `validate` prop ([#10134](https://github.com/marmelab/react-admin/pull/10134)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `create-react-admin` CLI to generate valid react-admin v5 apps ([#10131](https://github.com/marmelab/react-admin/pull/10131)) ([djhi](https://github.com/djhi))
+
 
 * Update `<SelectInput>` to support an array of strings as choices ([#10038](https://github.com/marmelab/react-admin/pull/10038)) ([fzaninotto](https://github.com/fzaninotto))
 * Add ability to disable title in page components ([#9969](https://github.com/marmelab/react-admin/pull/9969)) ([fzaninotto](https://github.com/fzaninotto))

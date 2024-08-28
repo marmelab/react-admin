@@ -50,7 +50,10 @@ const data = {
     }),
 };
 
-const dataProvider = fakeRestDataProvider(data);
+const dataProvider = fakeRestDataProvider(
+    data,
+    process.env.NODE_ENV !== 'test'
+);
 
 const MyTopToolbar = ({ children }) => (
     <TopToolbar sx={{ justifyContent: 'space-between' }}>{children}</TopToolbar>
@@ -156,7 +159,7 @@ export const WithFilter = () => (
                     name="customers"
                     list={
                         <ListGuesser
-                            filter={{ q: 'East a' }}
+                            filter={{ city_q: 'East A' }}
                             sort={{ field: 'first_name', order: 'DESC' }}
                         />
                     }
@@ -169,7 +172,7 @@ export const WithFilter = () => (
                                             field: 'first_name',
                                             order: 'DESC',
                                         }}
-                                        filter={{ q: 'East a' }}
+                                        filter={{ city_q: 'East A' }}
                                     />
                                     <ShowButton />
                                 </MyTopToolbar>
@@ -186,7 +189,7 @@ export const WithFilter = () => (
                                             field: 'first_name',
                                             order: 'DESC',
                                         }}
-                                        filter={{ q: 'East a' }}
+                                        filter={{ city_q: 'East A' }}
                                     />
                                     <EditButton />
                                 </MyTopToolbar>

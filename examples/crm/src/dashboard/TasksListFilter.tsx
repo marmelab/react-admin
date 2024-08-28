@@ -1,23 +1,23 @@
 import {
     ListContextProvider,
     ResourceContextProvider,
+    useGetIdentity,
     useGetList,
     useList,
 } from 'react-admin';
 import { Link, Stack, Typography } from '@mui/material';
 
-import { Contact } from '../types';
 import { TasksIterator } from '../tasks/TasksIterator';
 
 export const TasksListFilter = ({
     title,
     filter,
-    contacts,
 }: {
     title: string;
     filter: any;
-    contacts: Contact[];
 }) => {
+    const { identity } = useGetIdentity();
+
     const {
         data: tasks,
         total,
@@ -29,10 +29,10 @@ export const TasksListFilter = ({
             sort: { field: 'due_date', order: 'ASC' },
             filter: {
                 ...filter,
-                contact_id: contacts.map(contact => contact.id),
+                sales_id: identity?.id,
             },
         },
-        { enabled: !!contacts }
+        { enabled: !!identity }
     );
 
     const listContext = useList({

@@ -9,10 +9,10 @@ export const NoteAttachments = ({ note }: { note: ContactNote | DealNote }) => {
     }
 
     const imageAttachments = note.attachments.filter(
-        (attachment: AttachmentNote) => isImage(attachment.src)
+        (attachment: AttachmentNote) => isImageMimeType(attachment.type)
     );
     const otherAttachments = note.attachments.filter(
-        (attachment: AttachmentNote) => !isImage(attachment.src)
+        (attachment: AttachmentNote) => !isImageMimeType(attachment.type)
     );
 
     return (
@@ -60,10 +60,9 @@ export const NoteAttachments = ({ note }: { note: ContactNote | DealNote }) => {
     );
 };
 
-const isImage = (pathFile: string) => {
-    const extension = pathFile.split('.').pop();
-    if (!extension) {
+const isImageMimeType = (mimeType?: string): boolean => {
+    if (!mimeType) {
         return false;
     }
-    return ['jpg', 'jpeg', 'png', 'gif', 'svg'].includes(extension);
+    return mimeType.startsWith('image/');
 };

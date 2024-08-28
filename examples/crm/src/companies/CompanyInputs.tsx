@@ -163,7 +163,7 @@ const CompanyAccountManagerInput = () => {
                 source="sales_id"
                 reference="sales"
                 filter={{
-                    disabled_neq: true,
+                    'disabled@neq': true,
                 }}
             >
                 <SelectInput

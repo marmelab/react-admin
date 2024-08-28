@@ -5,7 +5,7 @@ import {
     CONTACT_NOTE_CREATED,
     DEAL_CREATED,
     DEAL_NOTE_CREATED,
-} from '../consts';
+} from '../../consts';
 import {
     Activity,
     Company,
@@ -14,7 +14,7 @@ import {
     Deal,
     DealNote,
     Sale,
-} from '../types';
+} from '../../types';
 
 export async function getActivityLog(
     dataProvider: DataProvider,
@@ -35,8 +35,9 @@ export async function getActivityLog(
 async function getSales(dataProvider: DataProvider) {
     const salesById = await dataProvider
         .getList<Sale>('sales', {
-            pagination: { page: 1, perPage: 10_000 },
+            pagination: { page: 1, perPage: 200 },
             sort: { field: 'id', order: 'ASC' },
+            filter: {},
         })
         .then(({ data }) =>
             data.reduce((acc, sale) => {
@@ -59,8 +60,8 @@ async function getCompaniesLog(
     const companies = await dataProvider
         .getList<Company>('companies', {
             filter: companyId
-                ? { id: companyId, sales_id: salesIds }
-                : { sales_id: salesIds },
+                ? { id: companyId, 'sales_id@in': `(${salesIds})` }
+                : { 'sales_id@in': `(${salesIds})` },
             pagination: { page: 1, perPage: 10_000 },
             sort: { field: 'created_at', order: 'DESC' },
         })
@@ -90,8 +91,8 @@ async function getContactsLog(
     const contacts = await dataProvider
         .getList<Contact>('contacts', {
             filter: {
-                company_id: companiesIds,
-                sales_id: salesIds,
+                'company_id@in': `(${companiesIds})`,
+                'sales_id@in': `(${salesIds})`,
             },
             pagination: { page: 1, perPage: 10_000 },
             sort: { field: 'first_seen', order: 'DESC' },
@@ -106,8 +107,8 @@ async function getContactsLog(
     const contactNotes = await dataProvider
         .getList<ContactNote>('contactNotes', {
             filter: {
-                contact_id: contacts.map(({ id }) => id),
-                sales_id: salesIds,
+                'contact_id@in': `(${contacts.map(({ id }) => id)})`,
+                'sales_id@in': `(${salesIds})`,
             },
             pagination: { page: 1, perPage: 10_000 },
             sort: { field: 'date', order: 'DESC' },
@@ -149,8 +150,8 @@ async function getDealsLog(
     const deals = await dataProvider
         .getList<Deal>('deals', {
             filter: {
-                company_id: companiesIds,
-                sales_id: salesIds,
+                'company_id@in': `(${companiesIds})`,
+                'sales_id@in': `(${salesIds})`,
             },
             pagination: { page: 1, perPage: 10_000 },
             sort: { field: 'created_at', order: 'DESC' },
@@ -165,8 +166,8 @@ async function getDealsLog(
     const dealsNotes = await dataProvider
         .getList<DealNote>('dealNotes', {
             filter: {
-                deal_id: deals.map(({ id }) => id),
-                sales_id: salesIds,
+                'deal_id@in': `(${deals.map(({ id }) => id)})`,
+                'sales_id@in': `(${salesIds})`,
             },
             pagination: { page: 1, perPage: 10_000 },
             sort: { field: 'date', order: 'DESC' },

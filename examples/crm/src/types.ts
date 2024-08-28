@@ -1,3 +1,4 @@
+import { SvgIconComponent } from '@mui/icons-material';
 import { Identifier, RaRecord } from 'react-admin';
 import {
     COMPANY_CREATED,
@@ -6,19 +7,46 @@ import {
     DEAL_CREATED,
     DEAL_NOTE_CREATED,
 } from './consts';
-import { SvgIconComponent } from '@mui/icons-material';
 
-export interface Sale extends RaRecord {
-    first_name: string;
-    last_name: string;
+export type SignUpData = {
     email: string;
     password: string;
+    first_name: string;
+    last_name: string;
+};
+
+export type SalesFormData = {
+    email: string;
+    password: string;
+    first_name: string;
+    last_name: string;
+    administrator: boolean;
+    disabled: boolean;
+};
+
+export type Sale = {
+    first_name: string;
+    last_name: string;
     administrator: boolean;
     avatar?: RAFile;
     disabled?: boolean;
-}
+    user_id: string;
 
-export interface Company extends RaRecord {
+    /**
+     * This is a copy of the user's email, to make it easier to handle by react admin
+     * DO NOT UPDATE this field directly, it should be updated by the backend
+     */
+    email: string;
+
+    /**
+     * This is used by the fake rest provider to store the password
+     * DO NOT USE this field in your code besides the fake rest provider
+     * @deprecated
+     */
+    password?: string;
+} & Pick<RaRecord, 'id'>;
+
+export type Company = {
     name: string;
     logo: RAFile;
     sector: string;
@@ -30,8 +58,6 @@ export interface Company extends RaRecord {
     zipcode: string;
     city: string;
     stateAbbr: string;
-    nb_contacts: number;
-    nb_deals: number;
     sales_id: Identifier;
     created_at: string;
     description: string;
@@ -39,17 +65,18 @@ export interface Company extends RaRecord {
     tax_identifier: string;
     country: string;
     context_links?: string[];
-}
+    nb_contacts?: number;
+    nb_deals?: number;
+} & Pick<RaRecord, 'id'>;
 
-export interface Contact extends RaRecord {
+export type Contact = {
     first_name: string;
     last_name: string;
     title: string;
     company_id: Identifier;
-    company_name: string;
     email: string;
     avatar?: Partial<RAFile>;
-    linkedin_url?: string;
+    linkedin_url?: string | null;
     first_seen: string;
     last_seen: string;
     has_newsletter: Boolean;
@@ -58,20 +85,25 @@ export interface Contact extends RaRecord {
     sales_id: Identifier;
     status: string;
     background: string;
-    phone_number1: { number: string; type: 'Work' | 'Home' | 'Other' };
-    phone_number2: { number: string; type: 'Work' | 'Home' | 'Other' };
-}
+    phone_1_type: 'Work' | 'Home' | 'Other';
+    phone_1_number: string;
+    phone_2_type: 'Work' | 'Home' | 'Other';
+    phone_2_number: string;
 
-export interface ContactNote extends RaRecord {
+    nb_tasks?: number;
+    company_name?: string;
+} & Pick<RaRecord, 'id'>;
+
+export type ContactNote = {
     contact_id: Identifier;
     text: string;
     date: string;
     sales_id: Identifier;
     status: string;
     attachments?: AttachmentNote[];
-}
+} & Pick<RaRecord, 'id'>;
 
-export interface Deal extends RaRecord {
+export type Deal = {
     name: string;
     company_id: Identifier;
     contact_ids: Identifier[];
@@ -85,28 +117,32 @@ export interface Deal extends RaRecord {
     expected_closing_date: string;
     sales_id: Identifier;
     index: number;
-}
+} & Pick<RaRecord, 'id'>;
 
-export interface DealNote extends RaRecord {
+export type DealNote = {
     deal_id: Identifier;
     text: string;
     date: string;
     sales_id: Identifier;
     attachments?: AttachmentNote[];
-}
 
-export interface Tag extends RaRecord {
+    // This is defined for compatibility with `ContactNote`
+    status?: undefined;
+} & Pick<RaRecord, 'id'>;
+
+export type Tag = {
     name: string;
     color: string;
-}
+} & Pick<RaRecord, 'id'>;
 
-export interface Task extends RaRecord {
+export type Task = {
     contact_id: Identifier;
     type: string;
     text: string;
     due_date: string;
     done_date?: string | null;
-}
+    sales_id?: Identifier;
+} & Pick<RaRecord, 'id'>;
 
 export type ActivityCompanyCreated = {
     type: typeof COMPANY_CREATED;
@@ -154,13 +190,13 @@ export type Activity = RaRecord & { date: string } & (
 
 export interface RAFile {
     src: string;
-    title?: string;
+    title: string;
     path?: string;
-    rawFile?: File;
+    rawFile: File;
+    type?: string;
 }
 
 export type AttachmentNote = RAFile;
-
 export interface DealStage {
     value: string;
     label: string;

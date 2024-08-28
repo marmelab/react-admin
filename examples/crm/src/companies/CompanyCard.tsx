@@ -66,8 +66,10 @@ export const CompanyCard = (props: { record?: Company }) => {
                                 {record.nb_contacts}
                             </Typography>
                             <Typography variant="caption" color="textSecondary">
-                                {record.nb_contacts > 1
-                                    ? 'contacts'
+                                {record.nb_contacts
+                                    ? record.nb_contacts > 1
+                                        ? 'contacts'
+                                        : 'contact'
                                     : 'contact'}
                             </Typography>
                         </div>
@@ -79,7 +81,11 @@ export const CompanyCard = (props: { record?: Company }) => {
                                 {record.nb_deals}
                             </Typography>
                             <Typography variant="caption" color="textSecondary">
-                                {record.nb_deals > 1 ? 'deals' : 'deal'}
+                                {record.nb_deals
+                                    ? record.nb_deals > 1
+                                        ? 'deals'
+                                        : 'deal'
+                                    : 'deal'}
                             </Typography>
                         </div>
                     </Box>

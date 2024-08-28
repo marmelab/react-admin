@@ -34,16 +34,19 @@ One of the most important features of the List page is the ability to filter the
 </tr>
 <tr style="border:none;background-color:#fff;">
     <td style="width:50%;border:none;text-align:center">
-        <a title="Stacked Filters" href="https://react-admin-ee.marmelab.com/assets/ra-form-layout/latest/stackedfilters-overview.webm">
+        <a title="Stacked Filters" href="https://react-admin-ee.marmelab.com/assets/ra-form-layout/latest/stackedfilters-overview.mp4">
             <video controls autoplay playsinline muted loop width="90%" style="margin:1rem;box-shadow:0px 4px 4px 0px rgb(0 0 0 / 24%);">
-                <source src="https://react-admin-ee.marmelab.com/assets/ra-form-layout/latest/stackedfilters-overview.webm" type="video/mp4" />
+                <source src="https://react-admin-ee.marmelab.com/assets/ra-form-layout/latest/stackedfilters-overview.mp4" type="video/mp4" />
                     Your browser does not support the video tag.
             </video>
         </a>
         <a href="#the-stackedfilters-component" style="display: block;transform: translateY(-10px);">The <code>&lt;StackedFilters&gt;</code> Dialog</a>
     </td>
     <td style="width:50%;border:none;text-align:center;vertical-align:top;">
-        <a title="<Search> input" href="https://react-admin-ee.marmelab.com/assets/ra-search-overview.gif"><img src="https://react-admin-ee.marmelab.com/assets/ra-search-overview.gif" /></a>
+        <a title="<Search> input" href="https://react-admin-ee.marmelab.com/assets/ra-search-overview.mp4"><video controls autoplay playsinline muted loop width="90%" style="margin:1rem;box-shadow:0px 4px 4px 0px rgb(0 0 0 / 24%);">
+                <source src="https://react-admin-ee.marmelab.com/assets/ra-search-overview.mp4" type="video/mp4" />
+                    Your browser does not support the video tag.
+            </video></a>
         <a href="#global-search" style="display: block;transform: translateY(-10px);">The Global <code>&lt;Search&gt;</code></a>
     </td>
 </tr>
@@ -123,11 +126,17 @@ Users usually dislike using their keyboard to filter a list (especially on mobil
 Here is how to implement a generic `<QuickFilter>` component:
 
 {% raw %}
-```jsx
+```tsx
 import { SearchInput } from 'react-admin';
 import { Chip } from '@mui/material';
 
-const QuickFilter = ({ label }) => {
+const QuickFilter = ({
+    label,
+}: {
+    label: string;
+    source?: string;
+    defaultValue?: any;
+}) => {
     const translate = useTranslate();
     return <Chip sx={{ marginBottom: 1 }} label={translate(label)} />;
 };
@@ -221,7 +230,7 @@ Finally, a filter sidebar is the ideal place to display the user's favorite filt
 ## The `<StackedFilters>` Component
 
 <video controls autoplay playsinline muted loop width="100%">
-    <source src="https://react-admin-ee.marmelab.com/assets/ra-form-layout/latest/stackedfilters-overview.webm" type="video/mp4" />
+    <source src="https://react-admin-ee.marmelab.com/assets/ra-form-layout/latest/stackedfilters-overview.mp4" type="video/mp4" />
         Your browser does not support the video tag.
 </video>
 

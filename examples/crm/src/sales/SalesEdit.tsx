@@ -1,13 +1,21 @@
+import { Card, Container, Typography } from '@mui/material';
+import { useMutation } from '@tanstack/react-query';
 import {
-    Edit,
     SaveButton,
     SimpleForm,
     Toolbar,
+    useDataProvider,
+    useEditController,
+    useNotify,
+    usePermissions,
     useRecordContext,
+    useRedirect,
 } from 'react-admin';
-import { Sale } from '../types';
+import { SubmitHandler } from 'react-hook-form';
+import { Navigate } from 'react-router';
+import { CrmDataProvider } from '../providers/types';
+import { Sale, SalesFormData } from '../types';
 import { SalesInputs } from './SalesInputs';
-import { Container, Typography } from '@mui/material';
 
 function EditToolbar() {
     return (
@@ -18,14 +26,54 @@ function EditToolbar() {
 }
 
 export function SalesEdit() {
+    const { isPending, permissions } = usePermissions();
+
+    const { record } = useEditController();
+
+    const dataProvider = useDataProvider<CrmDataProvider>();
+    const notify = useNotify();
+    const redirect = useRedirect();
+
+    const { mutate } = useMutation({
+        mutationKey: ['signup'],
+        mutationFn: async (data: SalesFormData) => {
+            if (!record) {
+                throw new Error('Record not found');
+            }
+            return dataProvider.salesUpdate(record.id, data);
+        },
+        onSuccess: () => {
+            redirect('/sales');
+        },
+        onError: () => {
+            notify('An error occurred. Please try again.');
+        },
+    });
+
+    const onSubmit: SubmitHandler<SalesFormData> = async data => {
+        mutate(data);
+    };
+
+    if (isPending) {
+        return null;
+    }
+
+    if (permissions !== 'admin') {
+        return <Navigate to="/" />;
+    }
+
     return (
         <Container maxWidth="sm" sx={{ mt: 4 }}>
-            <Edit>
-                <SimpleForm toolbar={<EditToolbar />}>
+            <Card>
+                <SimpleForm
+                    toolbar={<EditToolbar />}
+                    onSubmit={onSubmit as SubmitHandler<any>}
+                    record={record}
+                >
                     <SaleEditTitle />
                     <SalesInputs />
                 </SimpleForm>
-            </Edit>
+            </Card>
         </Container>
     );
 }

@@ -1,9 +1,8 @@
-import React, { Suspense, ReactNode } from 'react';
+import { Suspense, ReactNode } from 'react';
 import { CssBaseline, Container } from '@mui/material';
-import { CheckForApplicationUpdate } from 'react-admin';
+import { Error, Loading, CheckForApplicationUpdate } from 'react-admin';
 import { ErrorBoundary } from 'react-error-boundary';
 
-import { Error, Loading } from 'react-admin';
 import Header from './Header';
 
 const Layout = ({ children }: { children: ReactNode }) => (

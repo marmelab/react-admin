@@ -244,7 +244,14 @@ export const usePrevNextController = <RecordType extends RaRecord = any>(
                       id: nextId,
                   })
                 : undefined,
-        index: index === -1 ? undefined : index,
+        index:
+            index === -1
+                ? undefined
+                : index +
+                  (canUseCacheData
+                      ? (storedParams.perPage ?? 0) *
+                        ((storedParams.page ?? 1) - 1)
+                      : 0),
         total: canUseCacheData ? queryData?.total : data?.total,
         error,
         isFetching: canUseCacheData ? false : isFetching,

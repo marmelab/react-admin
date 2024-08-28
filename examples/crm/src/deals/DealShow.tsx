@@ -9,7 +9,7 @@ import {
     Typography,
 } from '@mui/material';
 import { useMutation } from '@tanstack/react-query';
-import { format } from 'date-fns';
+import { format, isValid } from 'date-fns';
 import {
     DeleteButton,
     EditButton,
@@ -42,7 +42,17 @@ export const DealShow = ({ open, id }: { open: boolean; id?: string }) => {
     };
 
     return (
-        <Dialog open={open} onClose={handleClose} fullWidth maxWidth="md">
+        <Dialog
+            open={open}
+            onClose={handleClose}
+            fullWidth
+            maxWidth="md"
+            sx={{
+                '& .MuiDialog-container': {
+                    alignItems: 'flex-start',
+                },
+            }}
+        >
             <DialogContent sx={{ padding: 0 }}>
                 {!!id ? (
                     <ShowBase id={id}>
@@ -59,19 +69,24 @@ const DealShowContent = ({ handleClose }: { handleClose: () => void }) => {
     const { dealStages } = useConfigurationContext();
     const record = useRecordContext<Deal>();
     if (!record) return null;
+
     return (
         <>
             <DialogCloseButton
                 onClose={handleClose}
                 top={record.archived_at ? CLOSE_TOP_WITH_ARCHIVED : 16}
-                right={20}
+                right={10}
                 color={record.archived_at ? 'white' : undefined}
             />
             <Stack gap={1}>
                 {record.archived_at ? <ArchivedTitle /> : null}
                 <Box display="flex" p={2}>
-                    <Box ml={2} flex="1">
-                        <Stack direction="row" justifyContent="space-between">
+                    <Box flex="1">
+                        <Stack
+                            direction="row"
+                            justifyContent="space-between"
+                            mb={4}
+                        >
                             <Stack direction="row" alignItems="center" gap={2}>
                                 <ReferenceField
                                     source="company_id"
@@ -87,7 +102,7 @@ const DealShowContent = ({ handleClose }: { handleClose: () => void }) => {
                             <Stack
                                 gap={1}
                                 direction="row"
-                                pr={record.archived_at ? 0 : 4}
+                                pr={record.archived_at ? 0 : 6}
                             >
                                 {record.archived_at ? (
                                     <>
@@ -103,7 +118,7 @@ const DealShowContent = ({ handleClose }: { handleClose: () => void }) => {
                             </Stack>
                         </Stack>
 
-                        <Box display="flex" mb={2} mt={2}>
+                        <Box display="flex" m={2}>
                             <Box display="flex" mr={5} flexDirection="column">
                                 <Typography
                                     color="textSecondary"
@@ -117,10 +132,18 @@ const DealShowContent = ({ handleClose }: { handleClose: () => void }) => {
                                     gap={1}
                                 >
                                     <Typography variant="body2">
-                                        {format(
-                                            record.expected_closing_date,
-                                            'PP'
-                                        )}
+                                        {isValid(
+                                            new Date(
+                                                record.expected_closing_date
+                                            )
+                                        )
+                                            ? format(
+                                                  new Date(
+                                                      record.expected_closing_date
+                                                  ),
+                                                  'PP'
+                                              )
+                                            : 'Invalid date'}
                                     </Typography>
                                     {new Date(record.expected_closing_date) <
                                     new Date() ? (
@@ -183,7 +206,7 @@ const DealShowContent = ({ handleClose }: { handleClose: () => void }) => {
                         </Box>
 
                         {!!record.contact_ids?.length && (
-                            <Box mb={2}>
+                            <Box m={2}>
                                 <Box
                                     display="flex"
                                     mr={5}
@@ -198,7 +221,7 @@ const DealShowContent = ({ handleClose }: { handleClose: () => void }) => {
                                     </Typography>
                                     <ReferenceArrayField
                                         source="contact_ids"
-                                        reference="contacts"
+                                        reference="contacts_summary"
                                     >
                                         <ContactList />
                                     </ReferenceArrayField>
@@ -207,7 +230,7 @@ const DealShowContent = ({ handleClose }: { handleClose: () => void }) => {
                         )}
 
                         {record.description && (
-                            <Box mt={2} mb={2} sx={{ whiteSpace: 'pre-line' }}>
+                            <Box m={2} sx={{ whiteSpace: 'pre-line' }}>
                                 <Typography
                                     color="textSecondary"
                                     variant="caption"
@@ -220,9 +243,8 @@ const DealShowContent = ({ handleClose }: { handleClose: () => void }) => {
                             </Box>
                         )}
 
-                        <Divider />
-
-                        <Box mt={2}>
+                        <Box m={2}>
+                            <Divider />
                             <ReferenceManyField
                                 target="deal_id"
                                 reference="dealNotes"

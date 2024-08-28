@@ -1,5 +1,5 @@
-import SettingsIcon from '@mui/icons-material/Settings';
 import PeopleIcon from '@mui/icons-material/People';
+import SettingsIcon from '@mui/icons-material/Settings';
 import {
     AppBar,
     Box,
@@ -19,24 +19,24 @@ import {
     useUserMenu,
 } from 'react-admin';
 import { Link, matchPath, useLocation } from 'react-router-dom';
-import { useConfigurationContext } from './root/ConfigurationContext';
+import { useConfigurationContext } from '../root/ConfigurationContext';
 
 const Header = () => {
     const { logo, title } = useConfigurationContext();
     const location = useLocation();
     const { permissions } = usePermissions();
 
-    let currentPath = '/';
-    if (!!matchPath('/contacts/*', location.pathname)) {
+    let currentPath: string | boolean = '/';
+    if (!!matchPath('/', location.pathname)) {
+        currentPath = '/';
+    } else if (!!matchPath('/contacts/*', location.pathname)) {
         currentPath = '/contacts';
     } else if (!!matchPath('/companies/*', location.pathname)) {
         currentPath = '/companies';
     } else if (!!matchPath('/deals/*', location.pathname)) {
         currentPath = '/deals';
-    } else if (!!matchPath('/settings', location.pathname)) {
-        currentPath = '/settings';
-    } else if (!!matchPath('/sales/*', location.pathname)) {
-        currentPath = '/sales';
+    } else {
+        currentPath = false;
     }
 
     return (
@@ -53,15 +53,13 @@ const Header = () => {
                                 color: 'inherit',
                                 textDecoration: 'inherit',
                             }}
+                            gap={1.5}
                         >
                             <Box
                                 component="img"
-                                sx={{
-                                    marginRight: '1em',
-                                    height: 30,
-                                }}
+                                sx={{ height: 24 }}
                                 src={logo}
-                                alt="CRM Logo"
+                                alt={title}
                             />
                             <Typography component="span" variant="h5">
                                 {title}

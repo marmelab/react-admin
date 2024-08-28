@@ -52,15 +52,13 @@ export const DashboardStepper = ({
                                 value={(step / 3) * 100}
                                 color="success"
                             />
-                            <Typography variant="body2" align="right">
-                                {step}/3 done
-                            </Typography>
+                            <Typography align="right">{step}/3 done</Typography>
                         </Box>
                     </Stack>
                     <Stack gap={3}>
                         <Stack gap={2} direction="row">
                             <CheckCircleIcon color="success" fontSize="small" />
-                            <Typography variant="body2" fontWeight="bold">
+                            <Typography fontWeight="bold">
                                 Install Atomic CRM
                             </Typography>
                         </Stack>
@@ -78,12 +76,10 @@ export const DashboardStepper = ({
                             )}
 
                             <Stack gap={1}>
-                                <Typography variant="body2" fontWeight="bold">
+                                <Typography fontWeight="bold">
                                     Add your first contact
                                 </Typography>
-                                <Typography variant="caption">
-                                    Create or import your contacts
-                                </Typography>
+
                                 <Stack spacing={2} direction="row">
                                     <CreateButton
                                         variant="contained"
@@ -101,11 +97,11 @@ export const DashboardStepper = ({
                                 color="disabled"
                             />
                             <Stack gap={1}>
-                                <Typography variant="body2" fontWeight="bold">
+                                <Typography fontWeight="bold">
                                     Add your first note
                                 </Typography>
-                                <Typography variant="caption">
-                                    Got to a contact page and add a note
+                                <Typography>
+                                    Go to a contact page and add a note
                                 </Typography>
                                 <Button
                                     component={Link}

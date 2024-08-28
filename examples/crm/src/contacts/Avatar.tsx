@@ -24,8 +24,8 @@ export const Avatar = (props: {
                 fontSize: props.height ? '0.6rem' : undefined,
             }}
         >
-            {record.first_name?.charAt(0)}
-            {record.last_name?.charAt(0)}
+            {record.first_name?.charAt(0).toUpperCase()}
+            {record.last_name?.charAt(0).toUpperCase()}
         </MuiAvatar>
     );
 };

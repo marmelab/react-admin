@@ -57,9 +57,7 @@ export const Task = ({
         update('tasks', {
             id: task.id,
             data: {
-                done_date: task.done_date
-                    ? undefined
-                    : new Date().toISOString(),
+                done_date: task.done_date ? null : new Date().toISOString(),
             },
             previousData: task,
         });

@@ -8,16 +8,19 @@ import {
     localStorageStore,
 } from 'react-admin';
 
+import { deepmerge } from '@mui/utils';
+import polyglotI18nProvider from 'ra-i18n-polyglot';
+import englishMessages from 'ra-language-english';
 import { Route } from 'react-router';
-import Layout from '../Layout';
-import { authProvider } from '../authProvider';
+import Layout from '../layout/Layout';
 import companies from '../companies';
 import contacts from '../contacts';
 import { Dashboard } from '../dashboard/Dashboard';
-import { dataProvider } from '../dataProvider';
 import deals from '../deals';
 import { LoginPage } from '../login/LoginPage';
 import { SignupPage } from '../login/SignupPage';
+import { authProvider, dataProvider } from '../providers/fakerest';
+import sales from '../sales';
 import { SettingsPage } from '../settings/SettingsPage';
 import {
     ConfigurationContextValue,
@@ -34,8 +37,6 @@ import {
     defaultTaskTypes,
     defaultTitle,
 } from './defaultConfiguration';
-import sales from '../sales';
-import { deepmerge } from '@mui/utils';
 
 // Define the interface for the CRM component props
 type CRMProps = {
@@ -47,6 +48,9 @@ const defaultLightTheme = deepmerge(defaultTheme, {
     palette: {
         background: {
             default: '#fafafb',
+        },
+        primary: {
+            main: '#2F68AC',
         },
     },
     components: {
@@ -61,6 +65,13 @@ const defaultLightTheme = deepmerge(defaultTheme, {
         },
     },
 });
+
+const i18nProvider = polyglotI18nProvider(
+    () => englishMessages,
+    'en',
+    [{ locale: 'en', name: 'English' }],
+    { allowMissing: true }
+);
 
 /**
  * CRM Component
@@ -135,33 +146,24 @@ export const CRM = ({
             dashboard={Dashboard}
             theme={lightTheme}
             darkTheme={darkTheme || null}
+            i18nProvider={i18nProvider}
+            requireAuth
         >
-            {permissions => (
-                <>
-                    <CustomRoutes noLayout>
-                        <Route
-                            path={SignupPage.path}
-                            element={<SignupPage />}
-                        />
-                    </CustomRoutes>
-                    <CustomRoutes>
-                        <Route
-                            path={SettingsPage.path}
-                            element={<SettingsPage />}
-                        />
-                    </CustomRoutes>
-                    <Resource name="deals" {...deals} />
-                    <Resource name="contacts" {...contacts} />
-                    <Resource name="companies" {...companies} />
-                    <Resource name="contactNotes" />
-                    <Resource name="dealNotes" />
-                    <Resource name="tasks" list={ListGuesser} />
-                    {permissions === 'admin' ? (
-                        <Resource name="sales" {...sales} />
-                    ) : null}
-                    <Resource name="tags" list={ListGuesser} />
-                </>
-            )}
+            <CustomRoutes noLayout>
+                <Route path={SignupPage.path} element={<SignupPage />} />
+            </CustomRoutes>
+
+            <CustomRoutes>
+                <Route path={SettingsPage.path} element={<SettingsPage />} />
+            </CustomRoutes>
+            <Resource name="deals" {...deals} />
+            <Resource name="contacts" {...contacts} />
+            <Resource name="companies" {...companies} />
+            <Resource name="contactNotes" />
+            <Resource name="dealNotes" />
+            <Resource name="tasks" list={ListGuesser} />
+            <Resource name="sales" {...sales} />
+            <Resource name="tags" list={ListGuesser} />
         </Admin>
     </ConfigurationProvider>
 );

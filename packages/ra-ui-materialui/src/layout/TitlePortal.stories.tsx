@@ -1,9 +1,5 @@
 import * as React from 'react';
-import {
-    PreferencesEditorContextProvider,
-    RecordContextProvider,
-    TestMemoryRouter,
-} from 'ra-core';
+import { PreferencesEditorContextProvider, TestMemoryRouter } from 'ra-core';
 
 import { TitlePortal } from './TitlePortal';
 import { Title } from './Title';
