@@ -13,6 +13,7 @@ import { localStorageStore } from '../../store';
 import { FakeBrowserDecorator } from '../../storybook/FakeBrowser';
 import { CoreLayoutProps, SortPayload } from '../../types';
 import { useListController } from './useListController';
+import { PerPage } from 'ra-ui-materialui/src/field/ArrayField.stories';
 
 export default {
     title: 'ra-core/controller/list/useListController',
@@ -59,11 +60,6 @@ const OrderedPostList = ({
         sort,
         storeKey,
     });
-    console.log({ params });
-    console.log(
-        'incrementPerPage disable ?',
-        params.perPage > (params.data?.length ?? 0)
-    );
     return (
         <div>
             <span aria-label="storeKey" data-value={storeKey}>
@@ -77,11 +73,8 @@ const OrderedPostList = ({
             <br />
             <button
                 aria-label="incrementPerPage"
-                disabled={params.perPage > (params.data?.length ?? 0)}
-                onClick={() =>
-                    console.log('onClick setPerPage', params.perPage + 1) ||
-                    params.setPerPage(params.perPage + 1)
-                }
+                disabled={params.perPage * params.page > (params.total ?? 0)}
+                onClick={() => params.setPerPage(params.perPage + 1)}
             >
                 Increment perPage
             </button>{' '}

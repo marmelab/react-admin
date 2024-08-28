@@ -82,8 +82,6 @@ export const useListController = <RecordType extends RaRecord = any>(
         storeKey,
     });
 
-    console.log({ perPage }, query.perPage);
-
     const [selectedIds, selectionModifiers] = useRecordSelection({
         resource,
         disableSyncWithStore: storeKey === false,
@@ -94,8 +92,6 @@ export const useListController = <RecordType extends RaRecord = any>(
         resource,
         action: 'read',
     });
-
-    console.log({ isAccessible });
 
     const {
         data,
@@ -171,16 +167,22 @@ export const useListController = <RecordType extends RaRecord = any>(
     const canAccess = useCanAccessCallback();
 
     const defaultExporter = (records: RecordType[]) => {
-        const recordsWithAuthorizedColumns = records.map(record => {
-            return Object.keys(record)
-                .filter(key =>
-                    canAccess!({
+        const recordsWithAuthorizedColumns = Promise.all(
+            records.map(async record => {
+                return Object.keys(record).reduce(async (prev, key) => {
+                    const { isAccessible } = await canAccess({
                         action: 'read',
                         resource: `${resource}.${key}`,
-                    })
-                )
-                .reduce((obj, key) => ({ ...obj, [key]: record[key] }), {});
-        });
+                    });
+                    if (!isAccessible) {
+                        return prev;
+                    }
+                    const obj = await prev;
+
+                    return { ...obj, [key]: record[key] };
+                }, Promise.resolve({}));
+            })
+        );
         jsonexport(recordsWithAuthorizedColumns, (err, csv) =>
             downloadCSV(csv, resource)
         );
@@ -211,9 +213,7 @@ export const useListController = <RecordType extends RaRecord = any>(
         selectedIds,
         setFilters: queryModifiers.setFilters,
         setPage: queryModifiers.setPage,
-        setPerPage: (...args) =>
-            console.log('setPerPage', { args }) ||
-            queryModifiers.setPerPage(...args),
+        setPerPage: queryModifiers.setPerPage,
         setSort: queryModifiers.setSort,
         showFilter: queryModifiers.showFilter,
         total: total,
