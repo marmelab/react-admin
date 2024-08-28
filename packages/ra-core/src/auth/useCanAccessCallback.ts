@@ -55,14 +55,12 @@ const useCanAccessCallback = <ErrorType = Error>() => {
                 return { isAccessible: true, error: undefined };
             }
 
-            const cachedResult = queryClient.getQueryData([
-                params.resource,
-                params.action,
-                params.record,
-            ]);
+            const cachedResult = queryClient.getQueryData<
+                UseCanAccessCallbackResult<ErrorType>
+            >([params.resource, params.action, params.record]);
 
-            if (cachedResult) {
-                return cachedResult as UseCanAccessCallbackResult<ErrorType>;
+            if (cachedResult && cachedResult.isAccessible !== undefined) {
+                return cachedResult;
             }
             return authProvider
                 .canAccess(params)
