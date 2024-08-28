@@ -202,7 +202,7 @@ describe('useListController', () => {
             });
         });
 
-        it('should update data if permanent filters change', () => {
+        it('should update data if permanent filters change', async () => {
             const children = jest.fn().mockReturnValue(<span>children</span>);
             const props = {
                 ...defaultProps,
@@ -223,6 +223,7 @@ describe('useListController', () => {
                     </CoreAdminContext>
                 </TestMemoryRouter>
             );
+            await new Promise(resolve => setTimeout(resolve, 100));
 
             // Check that the permanent filter was used in the query
             expect(getList).toHaveBeenCalledTimes(1);
@@ -232,7 +233,7 @@ describe('useListController', () => {
             );
 
             // Check that the permanent filter is not included in the displayedFilters and filterValues (passed to Filter form and button)
-            expect(children).toHaveBeenCalledTimes(1);
+            expect(children).toHaveBeenCalledTimes(3);
             expect(children).toHaveBeenCalledWith(
                 expect.objectContaining({
                     displayedFilters: {},
@@ -254,7 +255,7 @@ describe('useListController', () => {
                 'posts',
                 expect.objectContaining({ filter: { foo: 2 } })
             );
-            expect(children).toHaveBeenCalledTimes(2);
+            expect(children).toHaveBeenCalledTimes(4);
         });
     });
 
@@ -500,10 +501,18 @@ describe('useListController', () => {
             const onError = jest.fn();
             const dataProvider = testDataProvider({ getList });
             const authProvider = {
-                canAccess: () => true,
+                login: () => Promise.reject('bad method'),
+                logout: () => Promise.reject('bad method'),
+                checkAuth: () => Promise.reject('bad method'),
+                checkError: () => Promise.reject('bad method'),
+                getPermissions: () => Promise.reject('bad method'),
+                canAccess: async () => true,
             };
             render(
-                <CoreAdminContext dataProvider={dataProvider} authProvider={}>
+                <CoreAdminContext
+                    dataProvider={dataProvider}
+                    authProvider={authProvider}
+                >
                     <ListController resource="posts" queryOptions={{ onError }}>
                         {() => <div />}
                     </ListController>

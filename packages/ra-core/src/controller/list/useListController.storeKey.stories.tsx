@@ -59,6 +59,11 @@ const OrderedPostList = ({
         sort,
         storeKey,
     });
+    console.log({ params });
+    console.log(
+        'incrementPerPage disable ?',
+        params.perPage > (params.data?.length ?? 0)
+    );
     return (
         <div>
             <span aria-label="storeKey" data-value={storeKey}>
@@ -73,7 +78,10 @@ const OrderedPostList = ({
             <button
                 aria-label="incrementPerPage"
                 disabled={params.perPage > (params.data?.length ?? 0)}
-                onClick={() => params.setPerPage(++params.perPage)}
+                onClick={() =>
+                    console.log('onClick setPerPage', params.perPage + 1) ||
+                    params.setPerPage(params.perPage + 1)
+                }
             >
                 Increment perPage
             </button>{' '}

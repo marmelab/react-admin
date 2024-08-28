@@ -1,6 +1,6 @@
 import { isValidElement, useEffect, useMemo } from 'react';
 
-import { useAuthenticated, useAuthProvider } from '../../auth';
+import { useAuthenticated } from '../../auth';
 import { useTranslate } from '../../i18n';
 import { useNotify } from '../../notification';
 import {
@@ -14,8 +14,9 @@ import { FilterPayload, SortPayload, RaRecord, Exporter } from '../../types';
 import { useResourceContext, useGetResourceLabel } from '../../core';
 import { useRecordSelection } from './useRecordSelection';
 import { useListParams } from './useListParams';
-import jsonexport from 'jsonexport';
+import jsonexport from 'jsonexport/dist';
 import useCanAccess from '../../auth/useCanAccess';
+import useCanAccessCallback from '../../auth/useCanAccessCallback';
 
 /**
  * Prepare data for the List view
@@ -81,6 +82,8 @@ export const useListController = <RecordType extends RaRecord = any>(
         storeKey,
     });
 
+    console.log({ perPage }, query.perPage);
+
     const [selectedIds, selectionModifiers] = useRecordSelection({
         resource,
         disableSyncWithStore: storeKey === false,
@@ -91,6 +94,8 @@ export const useListController = <RecordType extends RaRecord = any>(
         resource,
         action: 'read',
     });
+
+    console.log({ isAccessible });
 
     const {
         data,
@@ -163,16 +168,13 @@ export const useListController = <RecordType extends RaRecord = any>(
         name: getResourceLabel(resource, 2),
     });
 
-    const authProvider = useAuthProvider();
+    const canAccess = useCanAccessCallback();
 
     const defaultExporter = (records: RecordType[]) => {
         const recordsWithAuthorizedColumns = records.map(record => {
-            if (!authProvider || !authProvider.canAccess) {
-                return record;
-            }
             return Object.keys(record)
                 .filter(key =>
-                    authProvider.canAccess!({
+                    canAccess!({
                         action: 'read',
                         resource: `${resource}.${key}`,
                     })
@@ -209,7 +211,9 @@ export const useListController = <RecordType extends RaRecord = any>(
         selectedIds,
         setFilters: queryModifiers.setFilters,
         setPage: queryModifiers.setPage,
-        setPerPage: queryModifiers.setPerPage,
+        setPerPage: (...args) =>
+            console.log('setPerPage', { args }) ||
+            queryModifiers.setPerPage(...args),
         setSort: queryModifiers.setSort,
         showFilter: queryModifiers.showFilter,
         total: total,

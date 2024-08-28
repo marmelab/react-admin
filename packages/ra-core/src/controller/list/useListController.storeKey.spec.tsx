@@ -14,7 +14,7 @@ import { TestMemoryRouter } from '../../routing';
 
 describe('useListController', () => {
     describe('storeKey', () => {
-        it('should keep distinct two lists of the same resource given different keys', async () => {
+        it.only('should keep distinct two lists of the same resource given different keys', async () => {
             render(
                 <TestMemoryRouter initialEntries={['/top']}>
                     <ListsUsingSameResource />
@@ -25,6 +25,9 @@ describe('useListController', () => {
                 expect(
                     screen.getByLabelText('perPage').getAttribute('data-value')
                 ).toEqual('3');
+                expect(
+                    screen.getByLabelText('incrementPerPage')
+                ).not.toBeDisabled();
             });
 
             act(() => {
