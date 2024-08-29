@@ -19,17 +19,17 @@ const combine = results => {
 };
 
 /**
- * Checks if the user can access a resource.
+ * Checks if the user can access a resource keys.
  *
- * `useCanAccessForRecord` returns an object describing the state of the RBAC request.
+ * `useCanAccessRecordSources` returns an object describing the state of the RBAC request.
  * As calls to the `authProvider` are asynchronous, the hook returns
  * a `loading` state in addition to the `canAccess` key.
  *
  * @example
- * import { useCanAccessForRecord } from '@react-admin/ra-rbac';
+ * import { useCanAccessRecordSources } from '@react-admin/ra-rbac';
  *
  * const DeleteUserButton = ({ record }) => {
- *     const { isPending, canAccess } = useCanAccessForRecord([{ action: 'delete', resource: 'users', record, source: ['id', 'name', 'email'] }]);
+ *     const { isPending, canAccess } = useCanAccessRecordSources([{ action: 'delete', resource: 'users', record, sources: ['id', 'name', 'email'] }]);
  *
  *     if (isPending) {
  *         return null;
@@ -43,9 +43,9 @@ const combine = results => {
  *     );
  * };
  */
-const useCanAccessForRecord = <ErrorType = Error>(
-    params: useCanAccessForRecordOptions<ErrorType>
-): useCanAccessForRecordResult<ErrorType> => {
+const useCanAccessRecordSources = <ErrorType = Error>(
+    params: useCanAccessRecordSourcesOptions<ErrorType>
+): useCanAccessRecordSourcesResult<ErrorType> => {
     const authProvider = useAuthProvider();
     const { action, sources, record } = params;
     const logoutIfAccessDenied = useLogoutIfAccessDenied();
@@ -106,9 +106,9 @@ const useCanAccessForRecord = <ErrorType = Error>(
     );
 };
 
-export default useCanAccessForRecord;
+export default useCanAccessRecordSources;
 
-export interface useCanAccessForRecordOptions<ErrorType = Error>
+export interface useCanAccessRecordSourcesOptions<ErrorType = Error>
     extends Omit<UseQueryOptions<boolean, ErrorType>, 'queryKey' | 'queryFn'> {
     resource: string;
     action: string;
@@ -116,7 +116,7 @@ export interface useCanAccessForRecordOptions<ErrorType = Error>
     sources: string[];
 }
 
-export type useCanAccessForRecordResult<ErrorType = Error> = {
+export type useCanAccessRecordSourcesResult<ErrorType = Error> = {
     canAccess: Record<string, boolean>;
     isPending: boolean;
     isError: boolean;

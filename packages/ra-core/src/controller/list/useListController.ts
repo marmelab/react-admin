@@ -1,4 +1,4 @@
-import { isValidElement, useEffect, useMemo, useState } from 'react';
+import { isValidElement, useEffect, useMemo } from 'react';
 
 import { useAuthenticated } from '../../auth';
 import { useTranslate } from '../../i18n';
@@ -9,25 +9,12 @@ import {
     UseGetListOptions,
 } from '../../dataProvider';
 import { SORT_ASC } from './queryReducer';
-import { downloadCSV } from '../../export';
 import { FilterPayload, SortPayload, RaRecord, Exporter } from '../../types';
 import { useResourceContext, useGetResourceLabel } from '../../core';
 import { useRecordSelection } from './useRecordSelection';
 import { useListParams } from './useListParams';
-import jsonexport from 'jsonexport/dist';
 import useCanAccess from '../../auth/useCanAccess';
-import useCanAccessCallback from '../../auth/useCanAccessCallback';
-
-const getAllKeys = (recordList: Record<string, unknown>[]): string[] => {
-    const keys = recordList.reduce((acc: Set<string>, record) => {
-        const keys = Object.keys(record);
-        keys.forEach(acc.add);
-
-        return acc;
-    }, new Set<string>());
-
-    return Array.from(keys);
-};
+import { useExporter } from '../../export/useExporter';
 
 /**
  * Prepare data for the List view
@@ -175,38 +162,7 @@ export const useListController = <RecordType extends RaRecord = any>(
         name: getResourceLabel(resource, 2),
     });
 
-    const canAccess = useCanAccessCallback();
-
-    const defaultExporter = async (records: RecordType[]) => {
-        const keys = getAllKeys(records);
-
-        const accessRecord = await keys.reduce(async (acc, key) => {
-            const record = await acc;
-            const canAccessResult = await canAccess({
-                action: 'read',
-                resource: `${resource}.${key}`,
-            });
-
-            return {
-                ...record,
-                [key]: !!canAccessResult.isAccessible,
-            };
-        }, Promise.resolve({}));
-
-        const recordsWithAuthorizedColumns = records.map(record => {
-            return Object.keys(record).reduce((acc, key) => {
-                if (!accessRecord[key]) {
-                    return acc;
-                }
-
-                return { ...acc, [key]: record[key] };
-            }, {});
-        });
-
-        jsonexport(recordsWithAuthorizedColumns, (err, csv) =>
-            downloadCSV(csv, resource)
-        );
-    };
+    const defaultExporter = useExporter();
 
     const exporterWithAccess =
         exporter === false ? false : exporter ?? defaultExporter;
