@@ -7,6 +7,8 @@ import useLogout from './useLogout';
 import useGetPermissions from './useGetPermissions';
 import useLogoutIfAccessDenied from './useLogoutIfAccessDenied';
 import convertLegacyAuthProvider from './convertLegacyAuthProvider';
+import useCanAccess from './useCanAccess';
+import useCanAccessCallback from './useCanAccessCallback';
 
 export * from './Authenticated';
 export * from './AuthContext';
@@ -33,6 +35,8 @@ export {
     useLogoutIfAccessDenied,
     // components
     WithPermissions,
+    useCanAccess,
+    useCanAccessCallback,
 };
 
 export type { WithPermissionsProps };

@@ -150,6 +150,14 @@ export const Datagrid: React.ForwardRefExoticComponent<
         total,
     } = useListContextWithProps(props);
 
+    const resourceKeys = React.Children.map(children, field => {
+        if (!isValidElement(field)) {
+            return null;
+        }
+
+        return field.props.source;
+    });
+
     const hasBulkActions = !!bulkActionButtons !== false;
 
     const contextValue = useMemo(
