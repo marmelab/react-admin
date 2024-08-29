@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { address, internet, name } from 'faker/locale/en_GB';
 import fakeRestDataProvider from 'ra-data-fakerest';
 
@@ -68,6 +68,10 @@ describe('<PrevNextButtons />', () => {
         fireEvent.click(await screen.findByLabelText('Edit'));
         const next = await screen.findByLabelText('Go to next page');
         fireEvent.click(next);
+        await waitFor(() => {
+            expect(screen.getByLabelText('First name')).toBeDefined();
+        });
+
         expect(screen.getByLabelText('First name').getAttribute('type')).toBe(
             'text'
         );

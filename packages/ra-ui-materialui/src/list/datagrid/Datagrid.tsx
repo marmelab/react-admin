@@ -18,6 +18,7 @@ import {
     OptionalResourceContextProvider,
     RaRecord,
     SortPayload,
+    useCanAccessRecordSources,
 } from 'ra-core';
 import { Table, TableProps, SxProps } from '@mui/material';
 import clsx from 'clsx';
@@ -150,13 +151,22 @@ export const Datagrid: React.ForwardRefExoticComponent<
         total,
     } = useListContextWithProps(props);
 
-    const resourceKeys = React.Children.map(children, field => {
-        if (!isValidElement(field)) {
-            return null;
-        }
+    const resourceKeys =
+        React.Children.map(children, field => {
+            if (!isValidElement(field)) {
+                return null;
+            }
 
-        return field.props.source;
-    });
+            return field.props.source;
+        })?.filter(value => typeof value === 'string') || [];
+
+    const { canAccess, isPending: isPendingAccess } = useCanAccessRecordSources(
+        {
+            resource,
+            action: 'read',
+            sources: resourceKeys,
+        }
+    );
 
     const hasBulkActions = !!bulkActionButtons !== false;
 
@@ -208,7 +218,24 @@ export const Datagrid: React.ForwardRefExoticComponent<
         [data, isRowSelectable, onSelect, onToggleItem, selectedIds]
     );
 
-    if (isPending === true) {
+    const accessibleChildren = useMemo(() => {
+        if (isPendingAccess || !canAccess) {
+            return [];
+        }
+        return React.Children.toArray(children).filter(child => {
+            if (!isValidElement(child)) {
+                return false;
+            }
+
+            if (!child.props.source) {
+                return true;
+            }
+
+            return canAccess[child.props.source] === true;
+        });
+    }, [isPendingAccess, canAccess, children]);
+
+    if (isPending === true || isPendingAccess === true) {
         return (
             <DatagridLoading
                 className={className}
@@ -262,7 +289,7 @@ export const Datagrid: React.ForwardRefExoticComponent<
                             {createOrCloneElement(
                                 header,
                                 {
-                                    children,
+                                    children: accessibleChildren,
                                     sort,
                                     data,
                                     hasExpand: !!expand,
@@ -272,7 +299,7 @@ export const Datagrid: React.ForwardRefExoticComponent<
                                     selectedIds,
                                     setSort,
                                 },
-                                children
+                                accessibleChildren
                             )}
                             {createOrCloneElement(
                                 body,
@@ -289,7 +316,7 @@ export const Datagrid: React.ForwardRefExoticComponent<
                                     selectedIds,
                                     isRowSelectable,
                                 },
-                                children
+                                accessibleChildren
                             )}
                         </Table>
                     </div>

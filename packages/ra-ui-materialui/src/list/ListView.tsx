@@ -33,6 +33,7 @@ export const ListView = <RecordType extends RaRecord = any>(
         empty = defaultEmpty,
         ...rest
     } = props;
+
     const { defaultTitle, data, error, isPending, filterValues, resource } =
         useListContext<RecordType>();
 

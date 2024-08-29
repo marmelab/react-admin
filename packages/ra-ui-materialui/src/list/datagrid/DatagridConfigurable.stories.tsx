@@ -12,6 +12,7 @@ import { Inspector, InspectorButton } from '../../preferences';
 import { TextField } from '../../field';
 import { EditButton } from '../../button';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 export default { title: 'ra-ui-materialui/list/DatagridConfigurable' };
 
@@ -51,11 +52,13 @@ const Wrapper = ({ children }) => (
         <ThemeProvider theme={theme}>
             <PreferencesEditorContextProvider>
                 <TestMemoryRouter>
-                    <Inspector />
-                    <Box display="flex" justifyContent="flex-end">
-                        <InspectorButton />
-                    </Box>
-                    <Box p={2}>{children}</Box>
+                    <QueryClientProvider client={new QueryClient()}>
+                        <Inspector />
+                        <Box display="flex" justifyContent="flex-end">
+                            <InspectorButton />
+                        </Box>
+                        <Box p={2}>{children}</Box>
+                    </QueryClientProvider>
                 </TestMemoryRouter>
             </PreferencesEditorContextProvider>
         </ThemeProvider>

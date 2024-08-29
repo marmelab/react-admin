@@ -49,7 +49,7 @@ const useCanAccess = <ErrorType = Error>(
     const { onSuccess, onError, onSettled, ...queryOptions } = params ?? {};
 
     const result = useQuery({
-        queryKey: ['auth', 'canAccess', params],
+        queryKey: ['auth', 'canAccess', JSON.stringify(params)],
         queryFn: async ({ signal }) => {
             if (!authProvider || !authProvider.canAccess) {
                 return true;
@@ -99,13 +99,12 @@ const useCanAccess = <ErrorType = Error>(
         result.isFetching,
     ]);
 
-    return useMemo(
-        () => ({
+    return useMemo(() => {
+        return {
             ...result,
             isAccessible: result.data,
-        }),
-        [result]
-    );
+        };
+    }, [result]);
 };
 
 export default useCanAccess;

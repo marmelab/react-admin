@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import expect from 'expect';
 
 import {
@@ -79,21 +79,28 @@ describe('<DatagridConfigurable>', () => {
     describe('omit', () => {
         it('should not render omitted columns by default', async () => {
             render(<Omit />);
-            expect(screen.queryByText('Original title')).toBeNull();
-            expect(screen.queryByText('War and Peace')).toBeNull();
+            await waitFor(() => {
+                expect(screen.queryByText('Original title')).toBeNull();
+                expect(screen.queryByText('War and Peace')).toBeNull();
+            });
             screen.getByLabelText('Configure mode').click();
             await screen.findByText('Inspector');
             fireEvent.mouseOver(screen.getByText('Leo Tolstoy'));
             await screen.getByTitle('ra.configurable.customize').click();
             await screen.findByText('Datagrid');
             screen.getByLabelText('Original title').click();
-            expect(screen.queryByText('War and Peace')).not.toBeNull();
+
+            await waitFor(() => {
+                expect(screen.queryByText('War and Peace')).not.toBeNull();
+            });
         });
     });
     describe('preferenceKey', () => {
         it('should allow two ConfigurableDatagrid not to share the same preferences', async () => {
             render(<PreferenceKey />);
-            expect(screen.queryAllByText('War and Peace')).toHaveLength(2);
+            await waitFor(() => {
+                expect(screen.queryAllByText('War and Peace')).toHaveLength(2);
+            });
             screen.getByLabelText('Configure mode').click();
             await screen.findByText('Inspector');
             fireEvent.mouseOver(screen.getAllByText('Leo Tolstoy')[0]);

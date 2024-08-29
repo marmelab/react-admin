@@ -6,6 +6,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { DatagridConfigurable } from './DatagridConfigurable';
 import { SelectColumnsButton } from './SelectColumnsButton';
 import { TextField } from '../../field';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 export default { title: 'ra-ui-materialui/list/SelectColumnsButton' };
 
@@ -42,22 +43,24 @@ export const Basic = () => (
     <ThemeProvider theme={theme}>
         <PreferencesEditorContextProvider>
             <TestMemoryRouter>
-                <Box p={2}>
-                    <Box textAlign="right">
-                        <SelectColumnsButton resource="books" />
+                <QueryClientProvider client={new QueryClient()}>
+                    <Box p={2}>
+                        <Box textAlign="right">
+                            <SelectColumnsButton resource="books" />
+                        </Box>
+                        <DatagridConfigurable
+                            resource="books"
+                            data={data}
+                            sort={{ field: 'title', order: 'ASC' }}
+                            bulkActionButtons={false}
+                        >
+                            <TextField source="id" />
+                            <TextField source="title" label="Original title" />
+                            <TextField source="author" />
+                            <TextField source="year" />
+                        </DatagridConfigurable>
                     </Box>
-                    <DatagridConfigurable
-                        resource="books"
-                        data={data}
-                        sort={{ field: 'title', order: 'ASC' }}
-                        bulkActionButtons={false}
-                    >
-                        <TextField source="id" />
-                        <TextField source="title" label="Original title" />
-                        <TextField source="author" />
-                        <TextField source="year" />
-                    </DatagridConfigurable>
-                </Box>
+                </QueryClientProvider>
             </TestMemoryRouter>
         </PreferencesEditorContextProvider>
     </ThemeProvider>
@@ -67,23 +70,25 @@ export const WithPreferenceKey = () => (
     <ThemeProvider theme={theme}>
         <PreferencesEditorContextProvider>
             <TestMemoryRouter>
-                <Box p={2}>
-                    <Box textAlign="right">
-                        <SelectColumnsButton preferenceKey="just-a-key.to_test_with" />
+                <QueryClientProvider client={new QueryClient()}>
+                    <Box p={2}>
+                        <Box textAlign="right">
+                            <SelectColumnsButton preferenceKey="just-a-key.to_test_with" />
+                        </Box>
+                        <DatagridConfigurable
+                            resource="books"
+                            preferenceKey="just-a-key.to_test_with"
+                            data={data}
+                            sort={{ field: 'title', order: 'ASC' }}
+                            bulkActionButtons={false}
+                        >
+                            <TextField source="id" />
+                            <TextField source="title" label="Original title" />
+                            <TextField source="author" />
+                            <TextField source="year" />
+                        </DatagridConfigurable>
                     </Box>
-                    <DatagridConfigurable
-                        resource="books"
-                        preferenceKey="just-a-key.to_test_with"
-                        data={data}
-                        sort={{ field: 'title', order: 'ASC' }}
-                        bulkActionButtons={false}
-                    >
-                        <TextField source="id" />
-                        <TextField source="title" label="Original title" />
-                        <TextField source="author" />
-                        <TextField source="year" />
-                    </DatagridConfigurable>
-                </Box>
+                </QueryClientProvider>
             </TestMemoryRouter>
         </PreferencesEditorContextProvider>
     </ThemeProvider>

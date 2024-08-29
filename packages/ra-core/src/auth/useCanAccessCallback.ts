@@ -1,8 +1,4 @@
-import {
-    QueryObserverResult,
-    useMutation,
-    useQueryClient,
-} from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import useAuthProvider from './useAuthProvider';
 
 /**

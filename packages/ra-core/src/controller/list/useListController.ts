@@ -162,7 +162,9 @@ export const useListController = <RecordType extends RaRecord = any>(
         name: getResourceLabel(resource, 2),
     });
 
-    const defaultExporter = useExporter();
+    const defaultExporter = useExporter({
+        resource,
+    });
 
     const exporterWithAccess =
         exporter === false ? false : exporter ?? defaultExporter;

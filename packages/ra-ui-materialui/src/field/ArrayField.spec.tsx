@@ -58,7 +58,7 @@ describe('<ArrayField />', () => {
         );
     });
 
-    it('should render the alternative empty component', () => {
+    it('should render the alternative empty component', async () => {
         const { queryByText } = render(
             <Wrapper>
                 <ArrayField
@@ -74,10 +74,12 @@ describe('<ArrayField />', () => {
                 </ArrayField>
             </Wrapper>
         );
-        expect(queryByText('No posts')).not.toBeNull();
+        await waitFor(() => {
+            expect(queryByText('No posts')).not.toBeNull();
+        });
     });
 
-    it('should render the <Datagrid> iterator component', () => {
+    it('should render the <Datagrid> iterator component', async () => {
         const { queryByText } = render(
             <Wrapper>
                 <ArrayField
@@ -95,9 +97,11 @@ describe('<ArrayField />', () => {
             </Wrapper>
         );
 
-        // Test the datagrid know about the fields
-        expect(queryByText('resources.posts.fields.id')).not.toBeNull();
-        expect(queryByText('resources.posts.fields.foo')).not.toBeNull();
+        await waitFor(() => {
+            // Test the datagrid know about the fields
+            expect(queryByText('resources.posts.fields.id')).not.toBeNull();
+            expect(queryByText('resources.posts.fields.foo')).not.toBeNull();
+        });
 
         // Test the fields values
         expect(queryByText('bar')).not.toBeNull();

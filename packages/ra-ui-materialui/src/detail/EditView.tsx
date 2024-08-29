@@ -86,6 +86,7 @@ export const EditView = (props: EditViewProps) => {
         resource,
         action: 'edit',
         record,
+        enabled: !!record,
     });
 
     const finalActions =

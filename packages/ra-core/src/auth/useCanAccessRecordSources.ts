@@ -1,20 +1,47 @@
-import { useQueries, UseQueryOptions } from '@tanstack/react-query';
+import {
+    useQueries,
+    UseQueryOptions,
+    UseQueryResult,
+} from '@tanstack/react-query';
 import useAuthProvider from './useAuthProvider';
 import useLogoutIfAccessDenied from './useLogoutIfAccessDenied';
 import { useEvent } from '../util';
-import { useEffect, useMemo } from 'react';
+import { useEffect } from 'react';
+import { useResourceContext } from '../core';
 
-const combine = results => {
+const combine = <ErrorType>(
+    results: UseQueryResult<
+        {
+            canAccess: boolean;
+            source: string;
+        },
+        ErrorType
+    >[]
+): {
+    data?: Record<string, boolean>;
+    isPending: boolean;
+    isError: boolean;
+    error?: ErrorType;
+} => {
     return {
-        data: results.data
-            ? results.data.reduce((acc, { canAccess, source }) => ({
-                  ...acc,
-                  [source]: canAccess,
-              }))
+        data: results
+            ? results.reduce(
+                  (acc, { data }) => {
+                      if (!data) {
+                          return acc;
+                      }
+                      const { source, canAccess } = data;
+                      return {
+                          ...acc,
+                          [source]: canAccess,
+                      };
+                  },
+                  {} as Record<string, boolean>
+              )
             : undefined,
         isPending: results.some(result => result.isPending),
         isError: results.some(result => result.isError),
-        error: results.find(result => result.error)?.error,
+        error: results.find(result => result.error)?.error || undefined,
     };
 };
 
@@ -43,32 +70,40 @@ const combine = results => {
  *     );
  * };
  */
-const useCanAccessRecordSources = <ErrorType = Error>(
+const useCanAccessRecordSources = <ErrorType extends Error = Error>(
     params: useCanAccessRecordSourcesOptions<ErrorType>
 ): useCanAccessRecordSourcesResult<ErrorType> => {
     const authProvider = useAuthProvider();
+
     const { action, sources, record } = params;
+    const resource = useResourceContext(params);
+    if (!resource) {
+        throw new Error(
+            `useCanAccessRecordSources was called outside of a ResourceContext and without a resource prop. You must set the resource prop.`
+        );
+    }
+
     const logoutIfAccessDenied = useLogoutIfAccessDenied();
 
     const result = useQueries({
         queries: sources.map(source => {
-            const resource = `${params.resource}.${source}`;
+            const resourceKey = `${params.resource}.${source}`;
             return {
                 queryKey: [
                     'auth',
                     'canAccess',
                     {
-                        resource,
+                        resource: resourceKey,
                         action,
                         record,
                     },
                 ],
                 queryFn: async ({ signal }) => {
                     if (!authProvider || !authProvider.canAccess) {
-                        return true;
+                        return { canAccess: true, source };
                     }
                     const canAccess = await authProvider.canAccess({
-                        resource,
+                        resource: resourceKey,
                         action,
                         record,
                         signal,
@@ -78,7 +113,7 @@ const useCanAccessRecordSources = <ErrorType = Error>(
                 },
             };
         }),
-        combine,
+        combine: combine<ErrorType>,
     });
 
     const onErrorEvent = useEvent((error: ErrorType) => {
@@ -92,33 +127,30 @@ const useCanAccessRecordSources = <ErrorType = Error>(
         if (result.isError === false) {
             return;
         }
-        onErrorEvent(result.error);
+        onErrorEvent(result.error as ErrorType);
     }, [onErrorEvent, result.error, result.isError]);
 
-    return useMemo(
-        () => ({
-            canAccess: result.data,
-            isPending: result.isPending,
-            isError: result.isError,
-            error: result.error,
-        }),
-        [result]
-    );
+    return {
+        canAccess: result.data,
+        isPending: result.isPending,
+        isError: result.isError,
+        error: result.error,
+    };
 };
 
 export default useCanAccessRecordSources;
 
 export interface useCanAccessRecordSourcesOptions<ErrorType = Error>
     extends Omit<UseQueryOptions<boolean, ErrorType>, 'queryKey' | 'queryFn'> {
-    resource: string;
+    resource?: string;
     action: string;
     record?: unknown;
     sources: string[];
 }
 
 export type useCanAccessRecordSourcesResult<ErrorType = Error> = {
-    canAccess: Record<string, boolean>;
+    canAccess?: Record<string, boolean>;
     isPending: boolean;
     isError: boolean;
-    error: ErrorType;
+    error?: ErrorType;
 };

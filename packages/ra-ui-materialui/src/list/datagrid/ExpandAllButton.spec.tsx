@@ -1,11 +1,16 @@
 import * as React from 'react';
-import { render, fireEvent, screen } from '@testing-library/react';
+import { render, fireEvent, screen, waitFor } from '@testing-library/react';
 
 import { Expand } from './Datagrid.stories';
 
 describe('ExpandAllButton', () => {
     it('should expand all rows at once', async () => {
         render(<Expand />);
+        await waitFor(() => {
+            expect(
+                screen.getAllByLabelText('ra.action.expand')[0]
+            ).toBeDefined();
+        });
         const expand = () => {
             const button = screen.getAllByLabelText('ra.action.expand')[0];
             fireEvent.click(button);

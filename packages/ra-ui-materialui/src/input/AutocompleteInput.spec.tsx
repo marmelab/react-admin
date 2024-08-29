@@ -515,7 +515,7 @@ describe('<AutocompleteInput />', () => {
             ];
             const OptionText = () => {
                 const record = useRecordContext();
-                return <span>option:{record.name}</span>;
+                return <span>option:{record!.name}</span>;
             };
             render(
                 <AdminContext>

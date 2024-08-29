@@ -29,8 +29,8 @@ const getAllKeys = (recordList: Record<string, unknown>[]): string[] => {
  *     return <ListView exporter={exporter} {...props} />;
  * }
  */
-export const useExporter = () => {
-    const resource = useResourceContext();
+export const useExporter = (params: { resource: string }) => {
+    const resource = useResourceContext(params);
 
     if (!resource) {
         throw new Error(

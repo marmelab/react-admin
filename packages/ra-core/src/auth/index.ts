@@ -9,6 +9,7 @@ import useLogoutIfAccessDenied from './useLogoutIfAccessDenied';
 import convertLegacyAuthProvider from './convertLegacyAuthProvider';
 import useCanAccess from './useCanAccess';
 import useCanAccessCallback from './useCanAccessCallback';
+import useCanAccessRecordSources from './useCanAccessRecordSources';
 
 export * from './Authenticated';
 export * from './AuthContext';
@@ -37,6 +38,7 @@ export {
     WithPermissions,
     useCanAccess,
     useCanAccessCallback,
+    useCanAccessRecordSources,
 };
 
 export type { WithPermissionsProps };
