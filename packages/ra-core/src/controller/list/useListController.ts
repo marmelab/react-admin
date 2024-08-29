@@ -1,4 +1,4 @@
-import { isValidElement, useEffect, useMemo } from 'react';
+import { isValidElement, useEffect, useMemo, useState } from 'react';
 
 import { useAuthenticated } from '../../auth';
 import { useTranslate } from '../../i18n';
@@ -17,6 +17,17 @@ import { useListParams } from './useListParams';
 import jsonexport from 'jsonexport/dist';
 import useCanAccess from '../../auth/useCanAccess';
 import useCanAccessCallback from '../../auth/useCanAccessCallback';
+
+const getAllKeys = (recordList: Record<string, unknown>[]): string[] => {
+    const keys = recordList.reduce((acc: Set<string>, record) => {
+        const keys = Object.keys(record);
+        keys.forEach(acc.add);
+
+        return acc;
+    }, new Set<string>());
+
+    return Array.from(keys);
+};
 
 /**
  * Prepare data for the List view
@@ -166,27 +177,37 @@ export const useListController = <RecordType extends RaRecord = any>(
 
     const canAccess = useCanAccessCallback();
 
-    const defaultExporter = (records: RecordType[]) => {
-        const recordsWithAuthorizedColumns = Promise.all(
-            records.map(async record => {
-                return Object.keys(record).reduce(async (prev, key) => {
-                    const { isAccessible } = await canAccess({
-                        action: 'read',
-                        resource: `${resource}.${key}`,
-                    });
-                    if (!isAccessible) {
-                        return prev;
-                    }
-                    const obj = await prev;
+    const defaultExporter = async (records: RecordType[]) => {
+        const keys = getAllKeys(records);
 
-                    return { ...obj, [key]: record[key] };
-                }, Promise.resolve({}));
-            })
-        );
+        const accessRecord = await keys.reduce(async (acc, key) => {
+            const record = await acc;
+            const canAccessResult = await canAccess({
+                action: 'read',
+                resource: `${resource}.${key}`,
+            });
+
+            return {
+                ...record,
+                [key]: !!canAccessResult.isAccessible,
+            };
+        }, Promise.resolve({}));
+
+        const recordsWithAuthorizedColumns = records.map(record => {
+            return Object.keys(record).reduce((acc, key) => {
+                if (!accessRecord[key]) {
+                    return acc;
+                }
+
+                return { ...acc, [key]: record[key] };
+            }, {});
+        });
+
         jsonexport(recordsWithAuthorizedColumns, (err, csv) =>
             downloadCSV(csv, resource)
         );
     };
+
     const exporterWithAccess =
         exporter === false ? false : exporter ?? defaultExporter;
 
