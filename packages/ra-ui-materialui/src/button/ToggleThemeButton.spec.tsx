@@ -11,9 +11,7 @@ describe('ToggleThemeButton', () => {
     });
     it('should allow to change the theme between light and dark', async () => {
         const { container } = render(<Basic />);
-        const root = container.querySelector<HTMLDivElement>(
-            '.MuiScopedCssBaseline-root'
-        );
+        const root = container.parentElement!.parentElement;
         if (!root) {
             throw new Error('No root element found');
         }

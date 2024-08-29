@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { createElement, ComponentType } from 'react';
 import { CoreAdminUI, CoreAdminUIProps } from 'ra-core';
-import { ScopedCssBaseline } from '@mui/material';
+import { CssBaseline } from '@mui/material';
 
 import {
     Layout as DefaultLayout,
@@ -22,7 +22,7 @@ export const AdminUI = ({
     error = Error,
     ...props
 }: AdminUIProps) => (
-    <ScopedCssBaseline enableColorScheme>
+    <CssBaseline enableColorScheme>
         <CoreAdminUI
             layout={layout}
             catchAll={catchAll}
@@ -33,7 +33,7 @@ export const AdminUI = ({
             {...props}
         />
         {createElement(notification)}
-    </ScopedCssBaseline>
+    </CssBaseline>
 );
 
 export interface AdminUIProps extends CoreAdminUIProps {

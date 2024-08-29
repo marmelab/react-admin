@@ -66,8 +66,8 @@ export default defineConfig({
 {
   // ...
   "resolutions": {
-    "react-router": "6.24.1",
-    "react-router-dom": "6.24.1"
+    "react-router": "6.26.1",
+    "react-router-dom": "6.26.1"
   }
 }
 ```
@@ -88,11 +88,6 @@ To do so, add a [splat route](https://remix.run/docs/en/main/file-conventions/ro
 // in app/routes/admin.$.tsx
 import { Admin, Resource, ListGuesser } from "react-admin";
 import jsonServerProvider from "ra-data-json-server";
-import styles from "~/styles/admin.css";
-
-export function links() {
-  return [{ rel: "stylesheet", href: styles }];
-}
 
 const dataProvider = jsonServerProvider("https://jsonplaceholder.typicode.com");
 
@@ -104,12 +99,6 @@ export default function App() {
     </Admin>
   );
 }
-```
-
-The stylesheet link is necessary to reset the default styles of the admin app. Create it in `app/styles/admin.css`:
-
-```css
-body { margin: 0; }
 ```
 
 **Tip** Don't forget to set the `<Admin basename>` prop, so that react-admin generates links relative to the "/admin" subpath:
