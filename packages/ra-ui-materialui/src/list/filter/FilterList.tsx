@@ -46,7 +46,9 @@ export const FilterList = (props: FilterListProps) => {
     return (
         <Box {...rest}>
             <Box mt={2} display="flex" alignItems="center">
-                <Box mr={1}>{icon}</Box>
+                <Box mr={1} lineHeight="initial">
+                    {icon}
+                </Box>
                 <Typography variant="overline">
                     {translate(label, { _: label })}
                 </Typography>
