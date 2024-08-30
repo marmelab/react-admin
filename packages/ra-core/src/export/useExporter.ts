@@ -31,8 +31,11 @@ export const getAllKeys = (
  * }
  */
 const useExporter = (params: { exporter?: Exporter | false }) => {
-    const exporter = params.exporter || defaultExporter;
     const canAccess = useCanAccessCallback();
+    if (params.exporter === false) {
+        return false;
+    }
+    const exporter = params.exporter || defaultExporter;
 
     const exporterWithAccessControl = async (
         records: Record<string, unknown>[],

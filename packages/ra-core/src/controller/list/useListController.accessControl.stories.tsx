@@ -4,9 +4,10 @@ import fakeDataProvider from 'ra-data-fakerest';
 import { CoreAdminContext, Resource } from '../../core';
 import { localStorageStore } from '../../store';
 import { FakeBrowserDecorator } from '../../storybook/FakeBrowser';
-import { AuthProvider, SortPayload } from '../../types';
+import { AuthProvider, Exporter, SortPayload } from '../../types';
 import { useListController } from './useListController';
 import { QueryClient } from '@tanstack/react-query';
+import { defaultExporter } from '../../export';
 
 export default {
     title: 'ra-core/controller/list/useListController',
@@ -42,9 +43,11 @@ const dataProvider = fakeDataProvider({
 const OrderedPostList = ({
     storeKey,
     sort,
+    exporter,
 }: {
     storeKey: string | false;
     sort?: SortPayload;
+    exporter?: Exporter;
 }) => {
     const params = useListController({
         resource: 'posts',
@@ -52,6 +55,7 @@ const OrderedPostList = ({
         perPage: 5,
         sort,
         storeKey,
+        exporter,
     });
     return (
         <div>
@@ -59,7 +63,6 @@ const OrderedPostList = ({
             <br />
             <button
                 aria-label="export"
-                disabled={params.perPage <= 0}
                 onClick={() =>
                     (params.exporter as Function)(
                         params.data,
@@ -75,7 +78,7 @@ const OrderedPostList = ({
                 {!params.isPending &&
                     params.data!.map(post => (
                         <li key={`post_${post.id}`}>
-                            {post.title} - {post.votes} votes
+                            {`${post.title} - ${post.votes} votes`}
                         </li>
                     ))}
             </ul>
@@ -106,7 +109,7 @@ const AccessControlUI = ({
                     <input
                         type="checkbox"
                         checked={authorizedResources.posts}
-                        onClick={() => {
+                        onChange={() => {
                             setAuthorizedResources(state => ({
                                 ...state,
                                 posts: !authorizedResources.posts,
@@ -121,7 +124,7 @@ const AccessControlUI = ({
                     <input
                         type="checkbox"
                         checked={authorizedResources['posts.id']}
-                        onClick={() => {
+                        onChange={() => {
                             setAuthorizedResources(state => ({
                                 ...state,
                                 'posts.id': !authorizedResources['posts.id'],
@@ -137,7 +140,7 @@ const AccessControlUI = ({
                     <input
                         type="checkbox"
                         checked={authorizedResources['posts.title']}
-                        onClick={() => {
+                        onChange={() => {
                             setAuthorizedResources(state => ({
                                 ...state,
                                 'posts.title':
@@ -154,7 +157,7 @@ const AccessControlUI = ({
                     <input
                         type="checkbox"
                         checked={authorizedResources['posts.votes']}
-                        onClick={() => {
+                        onChange={() => {
                             setAuthorizedResources(state => ({
                                 ...state,
                                 'posts.votes':
@@ -172,13 +175,27 @@ const AccessControlUI = ({
     );
 };
 
-export const ListsWithAccessControl = () => {
-    const [authorizedResources, setAuthorizedResources] = React.useState({
+export const ListsWithAccessControl = ({
+    exporter,
+    initialAuthorizedResources = {
         posts: false,
         'posts.id': true,
         'posts.title': true,
         'posts.votes': true,
-    });
+    },
+}: {
+    exporter?: Exporter;
+    initialAuthorizedResources?: {
+        posts: boolean;
+        'posts.id': boolean;
+        'posts.title': boolean;
+        'posts.votes': boolean;
+    };
+}) => {
+    const [authorizedResources, setAuthorizedResources] = React.useState(
+        initialAuthorizedResources
+    );
+
     const authProvider: AuthProvider = {
         canAccess: async ({ resource }) => {
             return new Promise(resolve =>
@@ -187,7 +204,7 @@ export const ListsWithAccessControl = () => {
         },
         logout: () => Promise.reject(new Error('Not implemented')),
         checkError: () => Promise.reject(new Error('Not implemented')),
-        checkAuth: () => Promise.reject(new Error('Not implemented')),
+        checkAuth: () => Promise.resolve(),
         getPermissions: () => Promise.reject(new Error('Not implemented')),
         login: () => Promise.reject(new Error('Not implemented')),
     };
@@ -205,7 +222,12 @@ export const ListsWithAccessControl = () => {
                 setAuthorizedResources={setAuthorizedResources}
                 queryClient={queryClient}
             >
-                <Resource name="posts" list={OrderedPostList} />
+                <Resource
+                    name="posts"
+                    list={props => (
+                        <OrderedPostList {...props} exporter={exporter} />
+                    )}
+                />
             </AccessControlUI>
         </CoreAdminContext>
     );

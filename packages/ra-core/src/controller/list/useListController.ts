@@ -162,12 +162,9 @@ export const useListController = <RecordType extends RaRecord = any>(
         name: getResourceLabel(resource, 2),
     });
 
-    const defaultExporter = useExporter({
+    const exporterWithAccessControl = useExporter({
         exporter,
     });
-
-    const exporterWithAccess =
-        exporter === false ? false : exporter ?? defaultExporter;
 
     return {
         sort: currentSort,
@@ -175,7 +172,7 @@ export const useListController = <RecordType extends RaRecord = any>(
         defaultTitle,
         displayedFilters: query.displayedFilters,
         error,
-        exporter: exporterWithAccess,
+        exporter: exporterWithAccessControl,
         filter,
         filterValues: query.filterValues,
         hideFilter: queryModifiers.hideFilter,
