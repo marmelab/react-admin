@@ -92,11 +92,11 @@ const useCanAccessRecordSources = <ErrorType extends Error = Error>(
                 queryKey: [
                     'auth',
                     'canAccess',
-                    {
+                    JSON.stringify({
                         resource: resourceKey,
                         action,
                         record,
-                    },
+                    }),
                 ],
                 queryFn: async ({ signal }) => {
                     if (!authProvider || !authProvider.canAccess) {

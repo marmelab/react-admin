@@ -53,7 +53,7 @@ const useCanAccessCallback = <ErrorType = Error>() => {
 
             const cachedResult = queryClient.getQueryData<
                 UseCanAccessCallbackResult<ErrorType>
-            >([params.resource, params.action, params.record]);
+            >(['auth', 'canAccess', JSON.stringify(params)]);
 
             if (cachedResult && cachedResult.isAccessible !== undefined) {
                 return cachedResult;
@@ -65,7 +65,7 @@ const useCanAccessCallback = <ErrorType = Error>() => {
         },
         onSuccess: (data, params) => {
             queryClient.setQueryData(
-                [params.resource, params.action, params.record],
+                ['auth', 'canAccess', JSON.stringify(params)],
                 data
             );
         },

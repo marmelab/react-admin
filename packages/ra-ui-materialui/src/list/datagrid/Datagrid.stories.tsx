@@ -11,6 +11,7 @@ import {
     useList,
     TestMemoryRouter,
     SortPayload,
+    AuthProvider,
 } from 'ra-core';
 import fakeRestDataProvider from 'ra-data-fakerest';
 import defaultMessages from 'ra-language-english';
@@ -29,6 +30,7 @@ import { List } from '../List';
 import { EditGuesser } from '../../detail';
 import { DatagridRowProps } from './DatagridRow';
 import DatagridBody, { DatagridBodyProps } from './DatagridBody';
+import { QueryClient } from '@tanstack/react-query';
 
 export default { title: 'ra-ui-materialui/list/Datagrid' };
 
@@ -585,3 +587,71 @@ export const LabelElements = () => (
         </AdminContext>
     </TestMemoryRouter>
 );
+
+export const AccessControl = ({
+    authorizedResources = {
+        books: true,
+        'books.id': false,
+        'books.title': true,
+        'books.author': true,
+        'books.year': true,
+    },
+}: {
+    authorizedResources?: {
+        books: boolean;
+        'books.id': boolean;
+        'books.title': boolean;
+        'books.author': boolean;
+        'books.year': boolean;
+    };
+}) => {
+    const authProvider: AuthProvider = {
+        canAccess: async ({ resource }) => {
+            return new Promise(resolve =>
+                setTimeout(resolve, 100, authorizedResources[resource])
+            );
+        },
+        logout: () => Promise.reject(new Error('Not implemented')),
+        checkError: () => Promise.reject(new Error('Not implemented')),
+        checkAuth: () => Promise.resolve(),
+        getPermissions: () => Promise.reject(new Error('Not implemented')),
+        login: () => Promise.reject(new Error('Not implemented')),
+    };
+    const queryClient = new QueryClient();
+    return (
+        <TestMemoryRouter initialEntries={['/books']}>
+            <AdminContext
+                queryClient={queryClient}
+                dataProvider={dataProvider}
+                authProvider={authProvider}
+                i18nProvider={polyglotI18nProvider(() => defaultMessages, 'en')}
+            >
+                <Resource
+                    name="books"
+                    list={
+                        <List>
+                            <Datagrid>
+                                <TextField
+                                    source="id"
+                                    label={<span>ID</span>}
+                                />
+                                <TextField
+                                    source="title"
+                                    label={<span>TITLE</span>}
+                                />
+                                <TextField
+                                    source="author"
+                                    label={<span>AUTHOR</span>}
+                                />
+                                <TextField
+                                    source="year"
+                                    label={<span>YEAR</span>}
+                                />
+                            </Datagrid>
+                        </List>
+                    }
+                />
+            </AdminContext>
+        </TestMemoryRouter>
+    );
+};

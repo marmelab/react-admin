@@ -19,6 +19,7 @@ import {
     RaRecord,
     SortPayload,
     useCanAccessRecordSources,
+    useResourceContext,
 } from 'ra-core';
 import { Table, TableProps, SxProps } from '@mui/material';
 import clsx from 'clsx';
@@ -130,7 +131,6 @@ export const Datagrid: React.ForwardRefExoticComponent<
         hover,
         isRowSelectable,
         isRowExpandable,
-        resource,
         rowClick,
         rowSx,
         rowStyle,
@@ -139,6 +139,8 @@ export const Datagrid: React.ForwardRefExoticComponent<
         expandSingle = false,
         ...rest
     } = props;
+
+    const resource = useResourceContext(props);
 
     const {
         sort,
