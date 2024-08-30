@@ -220,7 +220,7 @@ export const App = () => (
 );
 ```
 
-### `disableHighlight`
+## `disableHighlight`
 
 The search terms in each result are highlighted. You can disable this feature with the `disableHighlight` prop as follows:
 
@@ -271,8 +271,7 @@ The number of milliseconds to wait before processing the search request, immedia
 <Search wait={200} />
 ```
 
-
-### Customizing The Result Items
+## Customizing The Result Items
 
 By default, `<Search>` displays the results in `<SearchResultsPanel>`, which displays each results in a `<SearchResultItem>`. So rendering `<Search>` without children is equivalent to rendering:
 
