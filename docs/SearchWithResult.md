@@ -144,7 +144,7 @@ export const App = () => (
 );
 ```
 
-### `disableHighlight`
+## `disableHighlight`
 
 The search terms in each result are highlighted. You can disable this feature with the `disableHighlight` prop as follows:
 
@@ -262,7 +262,7 @@ export const App = () => (
 ```
 {% endraw %}
 
-### Customizing The Result Items
+## Customizing The Result Items
 
 By default, `<SearchWithResult>` displays the results in `<SearchResultsPanel>`, which displays each results in a `<SearchResultItem>`. So rendering `<SearchWithResult>` without children is equivalent to rendering:
 
