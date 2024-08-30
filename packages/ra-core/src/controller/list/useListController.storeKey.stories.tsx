@@ -13,7 +13,6 @@ import { localStorageStore } from '../../store';
 import { FakeBrowserDecorator } from '../../storybook/FakeBrowser';
 import { CoreLayoutProps, SortPayload } from '../../types';
 import { useListController } from './useListController';
-import { PerPage } from 'ra-ui-materialui/src/field/ArrayField.stories';
 
 export default {
     title: 'ra-core/controller/list/useListController',

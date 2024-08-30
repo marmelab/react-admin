@@ -3,10 +3,12 @@ import { useResourceContext } from '../core';
 import jsonexport from 'jsonexport/dist';
 import useCanAccessCallback from '../auth/useCanAccessCallback';
 
-const getAllKeys = (recordList: Record<string, unknown>[]): string[] => {
-    const keys = recordList.reduce((acc: Set<string>, record) => {
+const getAllKeys = (
+    recordList: Record<string, unknown>[] | undefined
+): string[] => {
+    const keys = (recordList || []).reduce((acc: Set<string>, record) => {
         const keys = Object.keys(record);
-        keys.forEach(acc.add);
+        keys.forEach(key => acc.add(key));
 
         return acc;
     }, new Set<string>());
@@ -54,6 +56,10 @@ export const useExporter = (params: { resource: string }) => {
                 [key]: !!canAccessResult.isAccessible,
             };
         }, Promise.resolve({}));
+
+        if (!records) {
+            return;
+        }
 
         const recordsWithAuthorizedColumns = records.map(record => {
             return Object.keys(record).reduce((acc, key) => {
