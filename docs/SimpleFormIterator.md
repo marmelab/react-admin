@@ -103,7 +103,7 @@ This prop lets you pass a custom element to replace the default Add button.
 You need to provide an element that triggers the `add` function from `useSimpleFormIterator` when clicked. Here is an example:
 
 ```jsx
-import {ButtonProps, useSimpleFormIterator, useTranslate} from "react-admin";
+import { ButtonProps, useSimpleFormIterator, useTranslate } from "react-admin";
 import React from "react";
 import Button from "@mui/material/Button";
 
@@ -112,11 +112,7 @@ export const MyAddButton = (props: ButtonProps) => {
     const translate = useTranslate();
 
     return (
-        <Button
-            onClick={() => add()}
-            variant={'outlined'}
-            {...props}
-        >
+        <Button onClick={() => add()} {...props}>
             {translate(props.label ?? 'ra.action.add')}
         </Button>
     );
@@ -329,33 +325,25 @@ You need to provide an element that triggers the `remove` function from `useSimp
 ```jsx
 import * as React from 'react';
 import clsx from 'clsx';
-import {ButtonProps, useSimpleFormIterator, useSimpleFormIteratorItem, useTranslate} from "react-admin";
+import { ButtonProps, useSimpleFormIteratorItem, useTranslate } from "react-admin";
 import Button from "@mui/material/Button";
 
 export const MyRemoveButton = (props: Omit<ButtonProps, 'onClick'>) => {
-    const { remove, index } = useSimpleFormIteratorItem();
-    const { source } = useSimpleFormIterator();
-    const { className, ...rest } = props;
+    const { remove } = useSimpleFormIteratorItem();
     const translate = useTranslate();
 
     return (
         <Button
-            label="ra.action.remove"
-            size="small"
             onClick={() => remove()}
             color="warning"
-            variant={'outlined'}
-            className={clsx(
-                `button-remove button-remove-${source}-${index}`,
-                className
-            )}
-            {...rest}
+            {...props}
         >
             {translate(props.label ?? 'ra.action.remove')}
         </Button>
     );
 };
 ```
+
 ## `reOrderButtons`
 
 This prop lets you pass a custom element to replace the default Up and Down buttons. This custom element must use the `useSimpleFormIteratorItem` hook to access the current row index and reorder callback.
