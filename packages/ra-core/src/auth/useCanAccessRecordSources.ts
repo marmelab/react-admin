@@ -9,7 +9,7 @@ import { useEvent } from '../util';
 import { useEffect } from 'react';
 import { useResourceContext } from '../core';
 
-const combine = <ErrorType>(
+export const combine = <ErrorType>(
     results: UseQueryResult<
         {
             canAccess: boolean;
