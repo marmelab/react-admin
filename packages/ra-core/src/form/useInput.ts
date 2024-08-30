@@ -49,8 +49,7 @@ export const useInput = <ValueType = any>(
     const defaultId = useId();
 
     if (
-        !finalSource &&
-        props.label == null &&
+        !finalName &&
         process.env.NODE_ENV === 'development'
     ) {
         console.warn(
