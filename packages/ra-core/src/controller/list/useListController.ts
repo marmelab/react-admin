@@ -14,7 +14,7 @@ import { useResourceContext, useGetResourceLabel } from '../../core';
 import { useRecordSelection } from './useRecordSelection';
 import { useListParams } from './useListParams';
 import useCanAccess from '../../auth/useCanAccess';
-import { useExporter } from '../../export/useExporter';
+import useExporter from '../../export/useExporter';
 
 /**
  * Prepare data for the List view
@@ -163,7 +163,7 @@ export const useListController = <RecordType extends RaRecord = any>(
     });
 
     const defaultExporter = useExporter({
-        resource,
+        exporter,
     });
 
     const exporterWithAccess =

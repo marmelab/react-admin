@@ -1,9 +1,8 @@
-import { downloadCSV } from './';
-import { useResourceContext } from '../core';
-import jsonexport from 'jsonexport/dist';
+import { defaultExporter } from './defaultExporter';
 import useCanAccessCallback from '../auth/useCanAccessCallback';
+import { Exporter } from '../types';
 
-const getAllKeys = (
+export const getAllKeys = (
     recordList: Record<string, unknown>[] | undefined
 ): string[] => {
     const keys = (recordList || []).reduce((acc: Set<string>, record) => {
@@ -31,17 +30,16 @@ const getAllKeys = (
  *     return <ListView exporter={exporter} {...props} />;
  * }
  */
-export const useExporter = (params: { resource: string }) => {
-    const resource = useResourceContext(params);
-
-    if (!resource) {
-        throw new Error(
-            `useExporter requires a non-empty resource prop or context`
-        );
-    }
+const useExporter = (params: { exporter?: Exporter | false }) => {
+    const exporter = params.exporter || defaultExporter;
     const canAccess = useCanAccessCallback();
 
-    const defaultExporter = async (records: Record<string, unknown>[]) => {
+    const exporterWithAccessControl = async (
+        records: Record<string, unknown>[],
+        _,
+        __,
+        resource
+    ) => {
         const keys = getAllKeys(records);
 
         const accessRecord = await keys.reduce(async (acc, key) => {
@@ -71,10 +69,10 @@ export const useExporter = (params: { resource: string }) => {
             }, {});
         });
 
-        jsonexport(recordsWithAuthorizedColumns, (err, csv) =>
-            downloadCSV(csv, resource)
-        );
+        exporter(recordsWithAuthorizedColumns, _, __, resource);
     };
 
-    return defaultExporter;
+    return exporterWithAccessControl;
 };
+
+export default useExporter;

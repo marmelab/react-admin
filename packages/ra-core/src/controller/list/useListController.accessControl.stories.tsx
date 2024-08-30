@@ -60,7 +60,14 @@ const OrderedPostList = ({
             <button
                 aria-label="export"
                 disabled={params.perPage <= 0}
-                onClick={() => (params.exporter as Function)(params.data)}
+                onClick={() =>
+                    (params.exporter as Function)(
+                        params.data,
+                        null,
+                        null,
+                        params.resource
+                    )
+                }
             >
                 Export
             </button>
