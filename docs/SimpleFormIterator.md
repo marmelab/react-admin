@@ -93,11 +93,34 @@ const OrderEdit = () => (
 This prop lets you pass a custom element to replace the default Add button. 
 
 ```jsx
-<SimpleFormIterator addButton={<Button>Add</Button>}>
+<SimpleFormIterator addButton={<MyAddButton label={"Add a line"} />}>
     <TextInput source="name" />
     <NumberInput source="price" />
     <NumberInput source="quantity" />
 </SimpleFormIterator>
+```
+
+You need to provide an element that triggers the `add` function from `useSimpleFormIterator` when clicked. Here is an example:
+
+```jsx
+import {ButtonProps, useSimpleFormIterator, useTranslate} from "react-admin";
+import React from "react";
+import Button from "@mui/material/Button";
+
+export const MyAddButton = (props: ButtonProps) => {
+    const { add } = useSimpleFormIterator();
+    const translate = useTranslate();
+
+    return (
+        <Button
+            onClick={() => add()}
+            variant={'outlined'}
+            {...props}
+        >
+            {translate(props.label ?? 'ra.action.add')}
+        </Button>
+    );
+};
 ```
 
 ## `children`
@@ -294,13 +317,45 @@ Without this prop, `<SimpleFormIterator>` will render one input per line.
 This prop lets you pass a custom element to replace the default Remove button. 
 
 ```jsx
-<SimpleFormIterator removeButton={<Button>Remove</Button>}>
+<SimpleFormIterator removeButton={<MyRemoveButton label="Remove this line" />}>
     <TextInput source="name" />
     <NumberInput source="price" />
     <NumberInput source="quantity" />
 </SimpleFormIterator>
 ```
 
+You need to provide an element that triggers the `remove` function from `useSimpleFormIteratorItem` when clicked. Here is an example:
+
+```jsx
+import * as React from 'react';
+import clsx from 'clsx';
+import {ButtonProps, useSimpleFormIterator, useSimpleFormIteratorItem, useTranslate} from "react-admin";
+import Button from "@mui/material/Button";
+
+export const MyRemoveButton = (props: Omit<ButtonProps, 'onClick'>) => {
+    const { remove, index } = useSimpleFormIteratorItem();
+    const { source } = useSimpleFormIterator();
+    const { className, ...rest } = props;
+    const translate = useTranslate();
+
+    return (
+        <Button
+            label="ra.action.remove"
+            size="small"
+            onClick={() => remove()}
+            color="warning"
+            variant={'outlined'}
+            className={clsx(
+                `button-remove button-remove-${source}-${index}`,
+                className
+            )}
+            {...rest}
+        >
+            {translate(props.label ?? 'ra.action.remove')}
+        </Button>
+    );
+};
+```
 ## `reOrderButtons`
 
 This prop lets you pass a custom element to replace the default Up and Down buttons. This custom element must use the `useSimpleFormIteratorItem` hook to access the current row index and reorder callback.
