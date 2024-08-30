@@ -53,7 +53,7 @@ export const useInput = <ValueType = any>(
         process.env.NODE_ENV === 'development'
     ) {
         console.warn(
-            'Input components require either a source or a label prop.'
+            'Input components require either a source or a name prop.'
         );
     }
 
