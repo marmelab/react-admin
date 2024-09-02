@@ -101,7 +101,8 @@ As a reminder, the [`ListContext`](./useListContext.md) is an object with the fo
 <WithListContext render={({
     // fetched data
     data, // an array of the list records, e.g. [{ id: 123, title: 'hello world' }, { ... }]
-    total, // the total number of results for the current filters, excluding pagination. Useful to build the pagination controls, e.g. 23      
+    total, // the total number of results for the current filters, excluding pagination. Useful to build the pagination controls, e.g. 23
+    meta, // Additional information about the list, like facets & statistics
     isPending, // boolean that is true until the data is available for the first time
     isLoading, // boolean that is true until the data is fetched for the first time
     isFetching, // boolean that is true while the data is being fetched, and false once the data is fetched
