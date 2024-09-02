@@ -114,10 +114,11 @@ export const useGetManyReference = <RecordType extends RaRecord = any>(
                             ? queryParams.signal
                             : undefined,
                 })
-                .then(({ data, total, pageInfo }) => ({
+                .then(({ data, total, pageInfo, meta }) => ({
                     data,
                     total,
                     pageInfo,
+                    meta,
                 }));
         },
         ...queryOptions,
@@ -151,9 +152,7 @@ export const useGetManyReference = <RecordType extends RaRecord = any>(
             result.data
                 ? {
                       ...result,
-                      data: result.data?.data,
-                      total: result.data?.total,
-                      pageInfo: result.data?.pageInfo,
+                      ...result.data,
                   }
                 : result,
         [result]
@@ -163,6 +162,7 @@ export const useGetManyReference = <RecordType extends RaRecord = any>(
             hasNextPage?: boolean;
             hasPreviousPage?: boolean;
         };
+        meta?: any;
     };
 };
 
@@ -186,6 +186,7 @@ export type UseGetManyReferenceHookValue<RecordType extends RaRecord = any> =
             hasNextPage?: boolean;
             hasPreviousPage?: boolean;
         };
+        meta?: any;
     };
 
 const noop = () => undefined;
