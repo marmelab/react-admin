@@ -588,8 +588,116 @@ export const LabelElements = () => (
     </TestMemoryRouter>
 );
 
+const AccessControlUI = ({
+    children,
+    setAuthorizedResources,
+    authorizedResources,
+    queryClient,
+}: {
+    children: React.ReactNode;
+    setAuthorizedResources: Function;
+    authorizedResources: {
+        books: boolean;
+        'books.id': boolean;
+        'books.title': boolean;
+        'books.author': boolean;
+        'books.year': boolean;
+    };
+    queryClient: QueryClient;
+}) => {
+    return (
+        <div>
+            <div>
+                <label>
+                    <input
+                        type="checkbox"
+                        checked={authorizedResources.books}
+                        onChange={() => {
+                            setAuthorizedResources(state => ({
+                                ...state,
+                                books: !authorizedResources.books,
+                            }));
+                            queryClient.clear();
+                        }}
+                    />
+                    books access
+                </label>
+                <br />
+                <label>
+                    <input
+                        type="checkbox"
+                        checked={authorizedResources['books.id']}
+                        onChange={() => {
+                            setAuthorizedResources(state => ({
+                                ...state,
+                                'books.id': !authorizedResources['books.id'],
+                            }));
+
+                            queryClient.clear();
+                        }}
+                    />
+                    books.id access
+                </label>
+                <br />
+                <label>
+                    <input
+                        type="checkbox"
+                        checked={authorizedResources['books.title']}
+                        onChange={() => {
+                            setAuthorizedResources(state => ({
+                                ...state,
+                                'books.title':
+                                    !authorizedResources['books.title'],
+                            }));
+
+                            queryClient.clear();
+                        }}
+                    />
+                    books.title access
+                </label>
+                <br />
+                <label>
+                    <input
+                        type="checkbox"
+                        checked={authorizedResources['books.author']}
+                        onChange={() => {
+                            setAuthorizedResources(state => ({
+                                ...state,
+                                'books.author':
+                                    !authorizedResources['books.author'],
+                            }));
+
+                            queryClient.clear();
+                        }}
+                    />
+                    books.author access
+                </label>
+                <br />
+                <label>
+                    <input
+                        type="checkbox"
+                        checked={authorizedResources['books.year']}
+                        onChange={() => {
+                            setAuthorizedResources(state => ({
+                                ...state,
+                                'books.year':
+                                    !authorizedResources['books.year'],
+                            }));
+
+                            queryClient.clear();
+                            queryClient.refetchQueries();
+                        }}
+                    />
+                    books.year access
+                </label>
+            </div>
+            <div>{children}</div>
+        </div>
+    );
+};
+
 export const AccessControl = ({
-    authorizedResources = {
+    initialAuthorizedResources = {
         books: true,
         'books.id': false,
         'books.title': true,
@@ -597,7 +705,7 @@ export const AccessControl = ({
         'books.year': true,
     },
 }: {
-    authorizedResources?: {
+    initialAuthorizedResources?: {
         books: boolean;
         'books.id': boolean;
         'books.title': boolean;
@@ -605,6 +713,35 @@ export const AccessControl = ({
         'books.year': boolean;
     };
 }) => {
+    const queryClient = new QueryClient();
+
+    return (
+        <TestMemoryRouter initialEntries={['/books']}>
+            <AdminWithAccessControl
+                queryClient={queryClient}
+                initialAuthorizedResources={initialAuthorizedResources}
+            />
+        </TestMemoryRouter>
+    );
+};
+
+const AdminWithAccessControl = ({
+    queryClient,
+    initialAuthorizedResources,
+}: {
+    queryClient: QueryClient;
+    initialAuthorizedResources: {
+        books: boolean;
+        'books.id': boolean;
+        'books.title': boolean;
+        'books.author': boolean;
+        'books.year': boolean;
+    };
+}) => {
+    const [authorizedResources, setAuthorizedResources] = React.useState(
+        initialAuthorizedResources
+    );
+
     const authProvider: AuthProvider = {
         canAccess: async ({ resource }) => {
             return new Promise(resolve =>
@@ -617,41 +754,31 @@ export const AccessControl = ({
         getPermissions: () => Promise.reject(new Error('Not implemented')),
         login: () => Promise.reject(new Error('Not implemented')),
     };
-    const queryClient = new QueryClient();
     return (
-        <TestMemoryRouter initialEntries={['/books']}>
-            <AdminContext
+        <AdminContext
+            queryClient={queryClient}
+            dataProvider={dataProvider}
+            authProvider={authProvider}
+            i18nProvider={polyglotI18nProvider(() => defaultMessages, 'en')}
+        >
+            <AccessControlUI
+                authorizedResources={authorizedResources}
+                setAuthorizedResources={setAuthorizedResources}
                 queryClient={queryClient}
-                dataProvider={dataProvider}
-                authProvider={authProvider}
-                i18nProvider={polyglotI18nProvider(() => defaultMessages, 'en')}
             >
-                <Resource
-                    name="books"
-                    list={
-                        <List>
-                            <Datagrid>
-                                <TextField
-                                    source="id"
-                                    label={<span>ID</span>}
-                                />
-                                <TextField
-                                    source="title"
-                                    label={<span>TITLE</span>}
-                                />
-                                <TextField
-                                    source="author"
-                                    label={<span>AUTHOR</span>}
-                                />
-                                <TextField
-                                    source="year"
-                                    label={<span>YEAR</span>}
-                                />
-                            </Datagrid>
-                        </List>
-                    }
-                />
-            </AdminContext>
-        </TestMemoryRouter>
+                <Resource name="books" list={BookList} />
+            </AccessControlUI>
+        </AdminContext>
     );
 };
+
+const BookList = () => (
+    <List>
+        <Datagrid>
+            <TextField source="id" label={<span>ID</span>} />
+            <TextField source="title" label={<span>TITLE</span>} />
+            <TextField source="author" label={<span>AUTHOR</span>} />
+            <TextField source="year" label={<span>YEAR</span>} />
+        </Datagrid>
+    </List>
+);

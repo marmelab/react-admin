@@ -13,7 +13,7 @@ export default {
     title: 'ra-core/controller/list/useListController',
     decorators: [FakeBrowserDecorator],
     parameters: {
-        initialEntries: ['/top'],
+        initialEntries: ['/posts'],
     },
 };
 
@@ -28,29 +28,31 @@ const styles = {
     },
 };
 
-const dataProvider = fakeDataProvider({
-    posts: [
-        { id: 1, title: 'Post #1', votes: 90 },
-        { id: 2, title: 'Post #2', votes: 20 },
-        { id: 3, title: 'Post #3', votes: 30 },
-        { id: 4, title: 'Post #4', votes: 40 },
-        { id: 5, title: 'Post #5', votes: 50 },
-        { id: 6, title: 'Post #6', votes: 60 },
-        { id: 7, title: 'Post #7', votes: 70 },
-    ],
-});
+const dataProvider = fakeDataProvider(
+    {
+        posts: [
+            { id: 1, title: 'Post #1', votes: 90 },
+            { id: 2, title: 'Post #2', votes: 20 },
+            { id: 3, title: 'Post #3', votes: 30 },
+            { id: 4, title: 'Post #4', votes: 40 },
+            { id: 5, title: 'Post #5', votes: 50 },
+            { id: 6, title: 'Post #6', votes: 60 },
+            { id: 7, title: 'Post #7', votes: 70 },
+        ],
+    },
+    process.env.NODE_ENV === 'development'
+);
 
 const OrderedPostList = ({
     storeKey,
     sort,
-    exporter,
+    exporter = defaultExporter,
 }: {
     storeKey: string | false;
     sort?: SortPayload;
     exporter?: Exporter;
 }) => {
     const params = useListController({
-        resource: 'posts',
         debounce: 200,
         perPage: 5,
         sort,
