@@ -1112,6 +1112,45 @@ const ProductList = () => (
 )
 ```
 
+## Accessing Extra Response Data
+
+IF `dataProvider.getList()` returns additional metadata in the response under the `meta` key, you can access it in the list view using the `meta` property of the `ListContext`.
+
+This is often used by APIs to return statistics or other metadata about the list of records.
+
+```tsx
+// dataProvider.getLists('posts') returns response like
+// {
+//     data: [ ... ],
+//     total: 293,
+//     meta: {
+//         facets: [
+//             { value: 'Novels', count: 245 },
+//             { value: 'Essays', count: 23 },
+//             { value: 'Short stories', count: 25 },
+//         ],
+//     },
+// }
+const Facets = () => {
+    const { isLoading, error, meta } = useListContext();
+    if (isLoading || error) return null;
+    const facets = meta.facets;
+    return (
+        <Stack direction="row" gap={3} mt={2} ml={1}>
+            {facets.map(facet => (
+                <Badge
+                    key={facet.value}
+                    badgeContent={facet.count}
+                    color="primary"
+                >
+                    <Chip label={facet.value} size="small" />
+                </Badge>
+            ))}
+        </Stack>
+    );
+};
+```
+
 ## Controlled Mode
 
 `<List>` deduces the resource and the list parameters from the URL. This is fine for a page showing a single list of records, but if you need to display more than one list in a page, you probably want to define the list parameters yourself. 
