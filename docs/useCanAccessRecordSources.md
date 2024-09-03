@@ -9,7 +9,7 @@ This hook calls the authProvider.canAccess() method using react-query for a prov
 
 ## Usage
 
-`useCanAccessRecordSources` returns takes an object `{ action, resource, record, sources }` as argument. In addition to react-query result properties, it returns a `canAccess` object that has a property for each provided source determining whether the user has access to it.
+`useCanAccessRecordSources` takes an object `{ action, resource, record, sources }` as argument. In addition to react-query result properties, it returns a `canAccess` object that has a property for each provided source determining whether the user has access to it.
 
 ```jsx
 import { useCanAccessRecordSources, SimpleList } from 'react-admin';

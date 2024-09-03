@@ -9,7 +9,7 @@ This hook calls the authProvider.canAccess() method using react-query for a prov
 
 ## Usage
 
-`useCanAccess` takes an object `{ action, resource, record }` as argument. It returns an object describing the state of the request. As calls to the `authProvider` are asynchronous, the hook returns a `isPending` state in addition to the `isAccessible` key.
+`useCanAccess` takes an object `{ action, resource, record }` as argument. It returns an object describing the state of the request. As calls to the `authProvider` are asynchronous, the hook returns a `isPending` state in addition to the `canAccess` key.
 
 ```jsx
 import { useCanAccess, useRecordContext, DeleteButton } from 'react-admin';

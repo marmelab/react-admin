@@ -5,11 +5,11 @@ title: "useCanAccessCallback"
 
 # `useCanAccessCallback`
 
-This hook calls the authProvider.canAccess() method using react-query for a provided resource and action (and optionally a record).
+This hook returns a callback to call the `authProvider.canAccess()` method for a provided resource and action (and optionally a record).
 
 ## Usage
 
-`useCanAccessCallback` returns a function that takes an object `{ action, resource, record }` as argument. This function returns an object with the following properties:
+`useCanAccessCallback` returns an async function that takes an object `{ action, resource, record }` as argument. This function returns an object with the following properties:
 
 - `canAccess`: a boolean determining whether the user has access to the resource.
 - `error`: the error that might have occurred.
@@ -21,8 +21,8 @@ const ResetViewsButton = () => {
     const record = useRecordContext();
     const dataProvider = useDataProvider();
     const checkAccess = useCanAccessCallback();
-    const resetViews = () => {
-        const { canAccess, error } = checkAccess({ action: 'resetViews', resource: 'users', record });
+    const resetViews = async () => {
+        const { canAccess, error } = await checkAccess({ action: 'resetViews', resource: 'users', record });
 
         if (canAccess) {
             dataProvider.resetViews('users', { id: record.id });
