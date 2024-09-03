@@ -9,10 +9,11 @@ import {
 } from 'ra-core';
 import { ThemeProvider, createTheme } from '@mui/material';
 import { Datagrid } from './Datagrid';
+import { AccessControl } from './Datagrid.stories';
 
 const TitleField = (): JSX.Element => {
     const record = useRecordContext();
-    return <span>{record.title}</span>;
+    return <span>{record?.title}</span>;
 };
 
 const Wrapper = ({ children, listContext }) => (
@@ -114,7 +115,7 @@ describe('<Datagrid />', () => {
 
     describe('selecting items with the shift key', () => {
         it('should call onSelect with the correct ids when the last selection is after the first', () => {
-            const Test = ({ selectedIds = [] }) => (
+            const Test = ({ selectedIds = [] }: { selectedIds?: number[] }) => (
                 <Wrapper listContext={{ ...contextValue, selectedIds }}>
                     <Datagrid>
                         <TitleField />
@@ -134,7 +135,7 @@ describe('<Datagrid />', () => {
         });
 
         it('should call onSelect with the correct ids when the last selection is before the first', () => {
-            const Test = ({ selectedIds = [] }) => (
+            const Test = ({ selectedIds = [] }: { selectedIds?: number[] }) => (
                 <Wrapper listContext={{ ...contextValue, selectedIds }}>
                     <Datagrid>
                         <TitleField />
@@ -154,7 +155,7 @@ describe('<Datagrid />', () => {
         });
 
         it('should call onSelect with the correct ids when unselecting items', () => {
-            const Test = ({ selectedIds = [] }) => (
+            const Test = ({ selectedIds = [] }: { selectedIds?: number[] }) => (
                 <Wrapper listContext={{ ...contextValue, selectedIds }}>
                     <Datagrid>
                         <TitleField />
@@ -171,7 +172,13 @@ describe('<Datagrid />', () => {
         });
 
         it('should call onToggeItem when the last selected id is not in the ids', () => {
-            const Test = ({ selectedIds = [], data = defaultData }: any) => (
+            const Test = ({
+                selectedIds = [],
+                data = defaultData,
+            }: {
+                selectedIds?: number[];
+                data?: any;
+            }) => (
                 <Wrapper listContext={{ ...contextValue, selectedIds, data }}>
                     <Datagrid>
                         <TitleField />
@@ -197,7 +204,7 @@ describe('<Datagrid />', () => {
         });
 
         it('should not extend selection when selectedIds is cleared', () => {
-            const Test = ({ selectedIds = [] }) => (
+            const Test = ({ selectedIds = [] }: { selectedIds?: number[] }) => (
                 <Wrapper listContext={{ ...contextValue, selectedIds }}>
                     <Datagrid>
                         <TitleField />
@@ -243,7 +250,7 @@ describe('<Datagrid />', () => {
         });
 
         it('should not use as last selected the item that was unselected', () => {
-            const Test = ({ selectedIds = [] }) => (
+            const Test = ({ selectedIds = [] }: { selectedIds?: number[] }) => (
                 <Wrapper listContext={{ ...contextValue, selectedIds }}>
                     <Datagrid>
                         <TitleField />
@@ -281,5 +288,17 @@ describe('<Datagrid />', () => {
             </Wrapper>
         );
         expect(screen.queryByText('ra.navigation.no_results')).not.toBeNull();
+    });
+
+    it('should display the list only when access is granted to the resource', async () => {
+        render(<AccessControl />);
+
+        await screen.findByText('Le Petit Prince');
+        expect(screen.queryByText('ID')).toBeNull();
+        expect(screen.getByLabelText('books.id access')).not.toBeChecked();
+        fireEvent.click(screen.getByLabelText('books.id access'));
+        expect(screen.queryByText('ID')).toBeNull();
+        fireEvent.click(screen.getByLabelText('books.author access'));
+        expect(screen.queryByText('Antoine de Saint-Exupéry')).toBeNull();
     });
 });
