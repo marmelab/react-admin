@@ -1,40 +1,38 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import {
+    UseMutateAsyncFunction,
+    useMutation,
+    useQueryClient,
+} from '@tanstack/react-query';
 import useAuthProvider from './useAuthProvider';
 
 /**
- * Hook for determining if user can access given resource
+ * A hook that returns a function you can call to determine whether user has access to the given resource
  *
  * Calls the authProvider.canAccess() method using react-query.
  * If the authProvider returns a rejected promise, returns false.
  *
- * The return value updates according to the request state:
- *
- * - start: { isPending: true }
- * - success: { permissions: [any], isPending: false }
- * - error: { error: [error from provider], isPending: false }
- *
- * Useful to enable features based on user role
- *
- * @param {Object} params Any params you want to pass to the authProvider
- *
- * @returns The current auth check state. Destructure as { isAccessible, error, isPending, refetch }.
+ * @returns The canAccess result as { canAccess, error }.
  *
  * @example
- *     import { useCanAccess } from 'react-admin';
+ *     import { useCanAccessCallback, useDataProvider } from 'react-admin';
  *
- *     const PostDetail = () => {
- *         const { isPending, permissions } = useCanAccess({
- *             resource: 'posts',
- *             action: 'read',
- *         });
- *         if (!isPending && isAccessible) {
- *             return <PostEdit />
- *         } else {
- *             return null;
- *         }
+ *     const ResetViewsButton = () => {
+ *         const checkAccess = useCanAccessCallback();
+ *         const dataProvider = useDataProvider();
+ *
+ *         const resetViews = () => {
+ *             const { canAccess, error } = checkAccess({ resource: 'posts', action: 'read' });
+ *             if (canAccess) {
+ *                 dataProvider.resetViews('users', { id: record.id });
+ *             } else {
+ *                 console.log('You are not authorized to reset views');
+ *             }
+ *         };
+ *
+ *         return <button onClick={resetViews}>Reset Views</button>;
  *     };
  */
-const useCanAccessCallback = <ErrorType = Error>() => {
+export const useCanAccessCallback = <ErrorType = Error>() => {
     const authProvider = useAuthProvider();
 
     const queryClient = useQueryClient();
@@ -48,20 +46,20 @@ const useCanAccessCallback = <ErrorType = Error>() => {
             params: UseCanAccessCallbackOptions
         ): Promise<UseCanAccessCallbackResult<ErrorType>> => {
             if (!authProvider || !authProvider.canAccess) {
-                return { isAccessible: true, error: undefined };
+                return { canAccess: true, error: undefined };
             }
 
             const cachedResult = queryClient.getQueryData<
                 UseCanAccessCallbackResult<ErrorType>
             >(['auth', 'canAccess', JSON.stringify(params)]);
 
-            if (cachedResult && cachedResult.isAccessible !== undefined) {
+            if (cachedResult && cachedResult.canAccess !== undefined) {
                 return cachedResult;
             }
             return authProvider
                 .canAccess(params)
-                .then(data => ({ isAccessible: data, error: undefined }))
-                .catch(error => ({ isAccessible: undefined, error }));
+                .then(data => ({ canAccess: data, error: undefined }))
+                .catch(error => ({ canAccess: undefined, error }));
         },
         onSuccess: (data, params) => {
             queryClient.setQueryData(
@@ -74,7 +72,12 @@ const useCanAccessCallback = <ErrorType = Error>() => {
     return mutateAsync;
 };
 
-export default useCanAccessCallback;
+export type UseCanAccessCallback<ErrorType = Error> = UseMutateAsyncFunction<
+    UseCanAccessCallbackResult<ErrorType>,
+    ErrorType,
+    UseCanAccessCallbackOptions,
+    unknown
+>;
 
 export type UseCanAccessCallbackOptions = {
     resource: string;
@@ -84,10 +87,10 @@ export type UseCanAccessCallbackOptions = {
 
 export type UseCanAccessCallbackResult<ErrorType = Error> =
     | {
-          isAccessible: boolean;
+          canAccess: boolean;
           error: undefined;
       }
     | {
-          isAccessible: undefined;
+          canAccess: undefined;
           error: ErrorType;
       };

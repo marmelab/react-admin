@@ -53,7 +53,7 @@ export const combine = <ErrorType>(
  * a `loading` state in addition to the `canAccess` key.
  *
  * @example
- * import { useCanAccessRecordSources } from '@react-admin/ra-rbac';
+ * import { useCanAccessRecordSources } from 'react-admin';
  *
  * const DeleteUserButton = ({ record }) => {
  *     const { isPending, canAccess } = useCanAccessRecordSources([{ action: 'delete', resource: 'users', record, sources: ['id', 'name', 'email'] }]);
@@ -62,17 +62,17 @@ export const combine = <ErrorType>(
  *         return null;
  *     }
  *     return (
- *         <DataGrid>
- *             {canAccess.id && <TextField source="id" />}
- *             {canAccess.name && <TextField source="name" />}
- *             {canAccess.email && <TextField source="email" />}
- *         </Datagrid>
+ *         <SimpleList
+ *              primaryText={record => canAccess.name ? record.name : ''}
+ *              secondaryText={record => canAccess.email ? record.email : ''}
+ *              tertiaryText={record => canAccess.id ? record.id : ''}
+ *          />
  *     );
  * };
  */
-const useCanAccessRecordSources = <ErrorType extends Error = Error>(
-    params: useCanAccessRecordSourcesOptions<ErrorType>
-): useCanAccessRecordSourcesResult<ErrorType> => {
+export const useCanAccessRecordSources = <ErrorType extends Error = Error>(
+    params: UseCanAccessRecordSourcesOptions<ErrorType>
+): UseCanAccessRecordSourcesResult<ErrorType> => {
     const authProvider = useAuthProvider();
 
     const { action, sources, record } = params;
@@ -132,15 +132,11 @@ const useCanAccessRecordSources = <ErrorType extends Error = Error>(
 
     return {
         canAccess: result.data,
-        isPending: result.isPending,
-        isError: result.isError,
-        error: result.error,
-    };
+        ...result,
+    } as UseCanAccessRecordSourcesResult<ErrorType>;
 };
 
-export default useCanAccessRecordSources;
-
-export interface useCanAccessRecordSourcesOptions<ErrorType = Error>
+export interface UseCanAccessRecordSourcesOptions<ErrorType = Error>
     extends Omit<UseQueryOptions<boolean, ErrorType>, 'queryKey' | 'queryFn'> {
     resource?: string;
     action: string;
@@ -148,9 +144,9 @@ export interface useCanAccessRecordSourcesOptions<ErrorType = Error>
     sources: string[];
 }
 
-export type useCanAccessRecordSourcesResult<ErrorType = Error> = {
+export type UseCanAccessRecordSourcesResult<ErrorType = Error> = UseQueryResult<
+    Record<string, boolean>,
+    ErrorType
+> & {
     canAccess?: Record<string, boolean>;
-    isPending: boolean;
-    isError: boolean;
-    error?: ErrorType;
 };

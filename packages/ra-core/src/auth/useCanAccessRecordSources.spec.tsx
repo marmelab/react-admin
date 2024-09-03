@@ -1,33 +1,7 @@
 import * as React from 'react';
 import expect from 'expect';
-import { waitFor, render } from '@testing-library/react';
-import { CoreAdminContext } from '../core/CoreAdminContext';
-
-import useCanAccessRecordSources from './useCanAccessRecordSources';
-
-const UseCanAccessRecordSources = ({
-    children,
-    action,
-    resource,
-    sources,
-}: {
-    children: any;
-    action: string;
-    resource: string;
-    sources: string[];
-}) => {
-    const { canAccess, isPending } = useCanAccessRecordSources({
-        action,
-        resource,
-        sources,
-    });
-
-    return children({ canAccess, isPending });
-};
-
-const StateInpector = result => {
-    return <div>{JSON.stringify(result)}</div>;
-};
+import { waitFor, render, screen } from '@testing-library/react';
+import { Basic } from './useCanAccessRecordSources.stories';
 
 describe('useCanAccessRecordSources', () => {
     it('should call authProvider.canAccess for every resource sources', async () => {
@@ -40,17 +14,7 @@ describe('useCanAccessRecordSources', () => {
             getPermissions: () => Promise.reject('bad method'),
             canAccess,
         };
-        const screen = render(
-            <CoreAdminContext authProvider={authProvider}>
-                <UseCanAccessRecordSources
-                    action="read"
-                    resource="posts"
-                    sources={['id', 'title', 'author']}
-                >
-                    {StateInpector}
-                </UseCanAccessRecordSources>
-            </CoreAdminContext>
-        );
+        render(<Basic authProvider={authProvider} />);
 
         expect(
             screen.getByText(JSON.stringify({ canAccess: {}, isPending: true }))
@@ -99,17 +63,7 @@ describe('useCanAccessRecordSources', () => {
             getPermissions: () => Promise.reject('bad method'),
             canAccess,
         };
-        const screen = render(
-            <CoreAdminContext authProvider={authProvider}>
-                <UseCanAccessRecordSources
-                    action="read"
-                    resource="posts"
-                    sources={['id', 'title', 'author']}
-                >
-                    {StateInpector}
-                </UseCanAccessRecordSources>
-            </CoreAdminContext>
-        );
+        render(<Basic authProvider={authProvider} />);
 
         expect(
             screen.getByText(JSON.stringify({ canAccess: {}, isPending: true }))
@@ -128,17 +82,7 @@ describe('useCanAccessRecordSources', () => {
     });
 
     it('should grant access to all if no authProvider', async () => {
-        const screen = render(
-            <CoreAdminContext>
-                <UseCanAccessRecordSources
-                    action="read"
-                    resource="posts"
-                    sources={['id', 'title', 'author']}
-                >
-                    {StateInpector}
-                </UseCanAccessRecordSources>
-            </CoreAdminContext>
-        );
+        render(<Basic authProvider={null} />);
 
         expect(
             screen.getByText(JSON.stringify({ canAccess: {}, isPending: true }))
@@ -164,17 +108,7 @@ describe('useCanAccessRecordSources', () => {
             checkError: () => Promise.reject('bad method'),
             getPermissions: () => Promise.reject('bad method'),
         };
-        const screen = render(
-            <CoreAdminContext authProvider={authProvider}>
-                <UseCanAccessRecordSources
-                    action="read"
-                    resource="posts"
-                    sources={['id', 'title', 'author']}
-                >
-                    {StateInpector}
-                </UseCanAccessRecordSources>
-            </CoreAdminContext>
-        );
+        render(<Basic authProvider={authProvider} />);
 
         expect(
             screen.getByText(JSON.stringify({ canAccess: {}, isPending: true }))

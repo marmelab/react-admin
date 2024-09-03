@@ -1,5 +1,5 @@
 import { defaultExporter } from './defaultExporter';
-import useCanAccessCallback from '../auth/useCanAccessCallback';
+import { useCanAccessCallback } from '../auth/useCanAccessCallback';
 import { Exporter } from '../types';
 
 export const getAllKeys = (
@@ -54,7 +54,7 @@ const useExporter = (params: { exporter?: Exporter | false }) => {
 
             return {
                 ...record,
-                [key]: !!canAccessResult.isAccessible,
+                [key]: !!canAccessResult.canAccess,
             };
         }, Promise.resolve({}));
 

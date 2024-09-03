@@ -1,80 +1,7 @@
 import * as React from 'react';
 import expect from 'expect';
-import { waitFor, render, fireEvent } from '@testing-library/react';
-import { CoreAdminContext } from '../core/CoreAdminContext';
-
-import useCanAccessCallback from './useCanAccessCallback';
-import { useState } from 'react';
-
-const UseCanAccessCallback = ({ children }: { children: any }) => {
-    const canAccess = useCanAccessCallback();
-
-    return children(canAccess);
-};
-
-const StateInpector = canAccess => {
-    const [result, setResult] = useState<any>();
-
-    return (
-        <div>
-            <ul>
-                <li>
-                    <button
-                        onClick={async () => {
-                            const result = await canAccess({
-                                resource: 'posts',
-                                action: 'read',
-                            });
-                            setResult(result);
-                        }}
-                    >
-                        Can I read posts
-                    </button>
-                </li>
-                <li>
-                    <button
-                        onClick={async () => {
-                            const result = await canAccess({
-                                resource: 'posts',
-                                action: 'write',
-                            });
-                            setResult(result);
-                        }}
-                    >
-                        Can I write posts
-                    </button>
-                </li>
-                <li>
-                    <button
-                        onClick={async () => {
-                            const result = await canAccess({
-                                resource: 'comments',
-                                action: 'read',
-                                record: {
-                                    foo: 'bar',
-                                },
-                            });
-                            setResult(result);
-                        }}
-                    >
-                        Can I read comments
-                    </button>
-                </li>
-            </ul>
-            {result && (
-                <div>
-                    <span>{result.isPending && 'LOADING'}</span>
-                    {result.isAccessible !== undefined && (
-                        <span>
-                            isAccessible: {result.isAccessible ? 'YES' : 'NO'}
-                        </span>
-                    )}
-                    {result.error && <span>{result.error.message}</span>}
-                </div>
-            )}
-        </div>
-    );
-};
+import { waitFor, render, fireEvent, screen } from '@testing-library/react';
+import { Basic } from './useCanAccessCallback.stories';
 
 describe('useCanAccessCallback', () => {
     it('should return a function allowing to call authProvider.canAccess', async () => {
@@ -89,11 +16,7 @@ describe('useCanAccessCallback', () => {
             getPermissions: () => Promise.reject('bad method'),
             canAccess,
         };
-        const screen = render(
-            <CoreAdminContext authProvider={authProvider}>
-                <UseCanAccessCallback>{StateInpector}</UseCanAccessCallback>
-            </CoreAdminContext>
-        );
+        render(<Basic authProvider={authProvider} />);
 
         fireEvent.click(screen.getByText('Can I read posts'));
 
@@ -142,11 +65,7 @@ describe('useCanAccessCallback', () => {
             getPermissions: () => Promise.reject('bad method'),
             canAccess,
         };
-        const screen = render(
-            <CoreAdminContext authProvider={authProvider}>
-                <UseCanAccessCallback>{StateInpector}</UseCanAccessCallback>
-            </CoreAdminContext>
-        );
+        render(<Basic authProvider={authProvider} />);
 
         fireEvent.click(screen.getByText('Can I read posts'));
 
@@ -175,11 +94,7 @@ describe('useCanAccessCallback', () => {
             getPermissions: () => Promise.reject('bad method'),
             canAccess,
         };
-        const screen = render(
-            <CoreAdminContext authProvider={authProvider}>
-                <UseCanAccessCallback>{StateInpector}</UseCanAccessCallback>
-            </CoreAdminContext>
-        );
+        render(<Basic authProvider={authProvider} />);
 
         fireEvent.click(screen.getByText('Can I read posts'));
 
@@ -205,11 +120,7 @@ describe('useCanAccessCallback', () => {
             getPermissions: () => Promise.reject('bad method'),
             canAccess,
         };
-        const screen = render(
-            <CoreAdminContext authProvider={authProvider}>
-                <UseCanAccessCallback>{StateInpector}</UseCanAccessCallback>
-            </CoreAdminContext>
-        );
+        render(<Basic authProvider={authProvider} />);
 
         fireEvent.click(screen.getByText('Can I read posts'));
 
@@ -226,11 +137,7 @@ describe('useCanAccessCallback', () => {
     });
 
     it('should return a function always allowing access when no authProvider', async () => {
-        const screen = render(
-            <CoreAdminContext>
-                <UseCanAccessCallback>{StateInpector}</UseCanAccessCallback>
-            </CoreAdminContext>
-        );
+        render(<Basic authProvider={null} />);
 
         fireEvent.click(screen.getByText('Can I read posts'));
         await waitFor(() => {
@@ -256,11 +163,7 @@ describe('useCanAccessCallback', () => {
             checkError: () => Promise.reject('bad method'),
             getPermissions: () => Promise.reject('bad method'),
         };
-        const screen = render(
-            <CoreAdminContext authProvider={authProvider}>
-                <UseCanAccessCallback>{StateInpector}</UseCanAccessCallback>
-            </CoreAdminContext>
-        );
+        render(<Basic authProvider={authProvider} />);
 
         fireEvent.click(screen.getByText('Can I read posts'));
         await waitFor(() => {

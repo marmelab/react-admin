@@ -7,15 +7,15 @@ import useLogout from './useLogout';
 import useGetPermissions from './useGetPermissions';
 import useLogoutIfAccessDenied from './useLogoutIfAccessDenied';
 import convertLegacyAuthProvider from './convertLegacyAuthProvider';
-import useCanAccess from './useCanAccess';
-import useCanAccessCallback from './useCanAccessCallback';
-import useCanAccessRecordSources from './useCanAccessRecordSources';
 
 export * from './Authenticated';
 export * from './AuthContext';
 export * from './LogoutOnMount';
 export * from './types';
 export * from './useAuthenticated';
+export * from './useCanAccess';
+export * from './useCanAccessCallback';
+export * from './useCanAccessRecordSources';
 export * from './useCheckAuth';
 export * from './useGetIdentity';
 export * from './useHandleAuthCallback';
@@ -36,9 +36,6 @@ export {
     useLogoutIfAccessDenied,
     // components
     WithPermissions,
-    useCanAccess,
-    useCanAccessCallback,
-    useCanAccessRecordSources,
 };
 
 export type { WithPermissionsProps };

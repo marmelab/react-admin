@@ -13,7 +13,7 @@ import { FilterPayload, SortPayload, RaRecord, Exporter } from '../../types';
 import { useResourceContext, useGetResourceLabel } from '../../core';
 import { useRecordSelection } from './useRecordSelection';
 import { useListParams } from './useListParams';
-import useCanAccess from '../../auth/useCanAccess';
+import { useCanAccess } from '../../auth/useCanAccess';
 import useExporter from '../../export/useExporter';
 
 /**
@@ -86,7 +86,7 @@ export const useListController = <RecordType extends RaRecord = any>(
     });
     useAuthenticated({ enabled: !disableAuthentication });
 
-    const { isAccessible, isPending: isAccessPending } = useCanAccess({
+    const { canAccess, isPending: isAccessPending } = useCanAccess({
         resource,
         action: 'read',
     });
@@ -114,7 +114,7 @@ export const useListController = <RecordType extends RaRecord = any>(
         {
             placeholderData: previousData => previousData,
             retry: false,
-            enabled: !isAccessPending && isAccessible,
+            enabled: !isAccessPending && canAccess,
             onError: error =>
                 notify(error?.message || 'ra.notification.http_error', {
                     type: 'error',

@@ -82,7 +82,7 @@ export const EditView = (props: EditViewProps) => {
 
     const { hasShow } = useResourceDefinition();
     const { resource, defaultTitle, record } = useEditContext();
-    const { isAccessible, isPending } = useCanAccess({
+    const { canAccess, isPending } = useCanAccess({
         resource,
         action: 'edit',
         record,
@@ -95,7 +95,7 @@ export const EditView = (props: EditViewProps) => {
         return null;
     }
 
-    if (!isAccessible) {
+    if (!canAccess) {
         return unauthorizedView;
     }
 

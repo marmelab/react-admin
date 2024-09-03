@@ -1,63 +1,19 @@
 import * as React from 'react';
 import expect from 'expect';
 import { waitFor, render, screen } from '@testing-library/react';
-import { CoreAdminContext } from '../core/CoreAdminContext';
 
-import useCanAccess from './useCanAccess';
 import { QueryClient } from '@tanstack/react-query';
-
-const UseCanAccess = ({
-    children,
-    action,
-    resource,
-    record,
-}: {
-    children: any;
-    action: string;
-    resource: string;
-    record?: unknown;
-}) => {
-    const res = useCanAccess({
-        action,
-        resource,
-        record,
-        retry: false,
-    });
-
-    return children(res);
-};
-
-const stateInpector = state => (
-    <div>
-        <span>{state.isPending && 'LOADING'}</span>
-        {state.isAccessible !== undefined && (
-            <span>isAccessible: {state.isAccessible ? 'YES' : 'NO'}</span>
-        )}
-        <span>{state.error && 'ERROR'}</span>
-    </div>
-);
+import { Basic } from './useCanAccess.stories';
 
 describe('useCanAccess', () => {
     it('should return a loading state on mount', () => {
-        render(
-            <CoreAdminContext>
-                <UseCanAccess action="read" resource="test">
-                    {stateInpector}
-                </UseCanAccess>
-            </CoreAdminContext>
-        );
+        render(<Basic authProvider={null} />);
         expect(screen.queryByText('LOADING')).not.toBeNull();
         expect(screen.queryByText('AUTHENTICATED')).toBeNull();
     });
 
     it('should return nothing by default after a tick', async () => {
-        render(
-            <CoreAdminContext>
-                <UseCanAccess action="read" resource="test">
-                    {stateInpector}
-                </UseCanAccess>
-            </CoreAdminContext>
-        );
+        render(<Basic authProvider={null} />);
         await waitFor(() => {
             expect(screen.queryByText('LOADING')).toBeNull();
         });
@@ -72,13 +28,7 @@ describe('useCanAccess', () => {
             getPermissions: () => Promise.reject('bad method'),
             canAccess: () => Promise.resolve(true),
         };
-        render(
-            <CoreAdminContext authProvider={authProvider}>
-                <UseCanAccess action="read" resource="test">
-                    {stateInpector}
-                </UseCanAccess>
-            </CoreAdminContext>
-        );
+        render(<Basic authProvider={authProvider} />);
         await waitFor(() => {
             expect(screen.queryByText('LOADING')).toBeNull();
             expect(screen.queryByText('isAccessible: YES')).not.toBeNull();
@@ -94,13 +44,8 @@ describe('useCanAccess', () => {
             getPermissions: () => Promise.reject('bad method'),
             canAccess: undefined,
         };
-        render(
-            <CoreAdminContext authProvider={authProvider}>
-                <UseCanAccess action="read" resource="test">
-                    {stateInpector}
-                </UseCanAccess>
-            </CoreAdminContext>
-        );
+        render(<Basic authProvider={authProvider} />);
+
         await waitFor(() => {
             expect(screen.queryByText('LOADING')).toBeNull();
             expect(screen.queryByText('isAccessible: YES')).not.toBeNull();
@@ -116,13 +61,8 @@ describe('useCanAccess', () => {
             getPermissions: () => Promise.reject('bad method'),
             canAccess: () => Promise.resolve(false),
         };
-        render(
-            <CoreAdminContext authProvider={authProvider}>
-                <UseCanAccess action="read" resource="test">
-                    {stateInpector}
-                </UseCanAccess>
-            </CoreAdminContext>
-        );
+        render(<Basic authProvider={authProvider} />);
+
         await waitFor(() => {
             expect(screen.queryByText('LOADING')).toBeNull();
             expect(screen.queryByText('isAccessible: NO')).not.toBeNull();
@@ -138,13 +78,8 @@ describe('useCanAccess', () => {
             checkError: () => Promise.resolve(),
             canAccess: () => Promise.reject('not good'),
         };
-        render(
-            <CoreAdminContext authProvider={authProvider}>
-                <UseCanAccess action="read" resource="test">
-                    {stateInpector}
-                </UseCanAccess>
-            </CoreAdminContext>
-        );
+        render(<Basic authProvider={authProvider} />);
+
         await waitFor(() => {
             expect(screen.queryByText('LOADING')).toBeNull();
         });
@@ -162,13 +97,8 @@ describe('useCanAccess', () => {
             checkError: () => Promise.reject(),
             canAccess: () => Promise.reject('not good'),
         };
-        render(
-            <CoreAdminContext authProvider={authProvider}>
-                <UseCanAccess action="read" resource="test">
-                    {stateInpector}
-                </UseCanAccess>
-            </CoreAdminContext>
-        );
+        render(<Basic authProvider={authProvider} />);
+
         await waitFor(() => {
             expect(screen.queryByText('LOADING')).toBeNull();
         });
@@ -188,16 +118,7 @@ describe('useCanAccess', () => {
             ) as any,
         } as any;
         const queryClient = new QueryClient();
-        render(
-            <CoreAdminContext
-                authProvider={authProvider}
-                queryClient={queryClient}
-            >
-                <UseCanAccess action="read" resource="test">
-                    {stateInpector}
-                </UseCanAccess>
-            </CoreAdminContext>
-        );
+        render(<Basic authProvider={authProvider} queryClient={queryClient} />);
         await waitFor(() => {
             expect(authProvider.canAccess).toHaveBeenCalled();
         });

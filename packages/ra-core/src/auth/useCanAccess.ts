@@ -9,9 +9,7 @@ import useLogoutIfAccessDenied from './useLogoutIfAccessDenied';
 import { useEvent } from '../util';
 
 /**
- * Hook for determining if user can access given resource
- *
- * Calls the authProvider.canAccess() method using react-query.
+ * A hook that calls the authProvider.canAccess() method using react-query for a provided resource and action (and optionally a record).
  * If the authProvider returns a rejected promise, returns false.
  *
  * The return value updates according to the request state:
@@ -23,8 +21,11 @@ import { useEvent } from '../util';
  * Useful to enable features based on user role
  *
  * @param {Object} params Any params you want to pass to the authProvider
+ * @param {string} params.resource The resource to check access for
+ * @param {string} params.action The action to check access for
+ * @param {Object} params.record Optional. The record to check access for
  *
- * @returns The current auth check state. Destructure as { isAccessible, error, isPending, refetch }.
+ * @returns The current auth check state. Destructure as { canAccess, error, isPending, refetch }.
  *
  * @example
  *     import { useCanAccess } from 'react-admin';
@@ -34,14 +35,14 @@ import { useEvent } from '../util';
  *             resource: 'posts',
  *             action: 'read',
  *         });
- *         if (!isPending && isAccessible) {
+ *         if (!isPending && canAccess) {
  *             return <PostEdit />
  *         } else {
  *             return null;
  *         }
  *     };
  */
-const useCanAccess = <ErrorType = Error>(
+export const useCanAccess = <ErrorType = Error>(
     params: UseCanAccessOptions<ErrorType>
 ): UseCanAccessResult<ErrorType> => {
     const authProvider = useAuthProvider();
@@ -102,12 +103,10 @@ const useCanAccess = <ErrorType = Error>(
     return useMemo(() => {
         return {
             ...result,
-            isAccessible: result.data,
+            canAccess: result.data,
         };
     }, [result]);
 };
-
-export default useCanAccess;
 
 export interface UseCanAccessOptions<ErrorType = Error>
     extends Omit<UseQueryOptions<boolean, ErrorType>, 'queryKey' | 'queryFn'> {
@@ -123,7 +122,7 @@ export type UseCanAccessResult<ErrorType = Error> = QueryObserverResult<
     boolean,
     ErrorType
 > & {
-    isAccessible: boolean | undefined;
+    canAccess: boolean | undefined;
 };
 
 const noop = () => {};
