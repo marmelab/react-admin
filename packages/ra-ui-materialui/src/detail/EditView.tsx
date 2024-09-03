@@ -14,60 +14,6 @@ import { EditActions } from './EditActions';
 import { Title } from '../layout';
 import { History } from '@mui/icons-material';
 
-const defaultActions = <EditActions />;
-
-function goBack() {
-    window.history.go(-1);
-}
-
-const DefaultUnauthorizedView = () => {
-    const translate = useTranslate();
-    return (
-        <Box
-            sx={theme => ({
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                [theme.breakpoints.down('md')]: {
-                    padding: '1em',
-                },
-                fontFamily: 'Roboto, sans-serif',
-                opacity: 0.5,
-                '& h1': {
-                    display: 'flex',
-                    alignItems: 'center',
-                },
-            })}
-        >
-            <h1 role="alert">
-                <LockIcon
-                    sx={{
-                        width: '2em',
-                        height: '2em',
-                        marginRight: '0.5em',
-                    }}
-                />
-                {translate('ra-rbac.page.unauthorized')}
-            </h1>
-            <div>{translate('ra-rbac.message.unauthorized')}</div>
-            <Box
-                sx={{
-                    marginTop: '2em',
-                }}
-            >
-                <Button
-                    variant="contained"
-                    startIcon={<History />}
-                    onClick={goBack}
-                >
-                    {translate('ra.action.back')}
-                </Button>
-            </Box>
-        </Box>
-    );
-};
-
 export const EditView = (props: EditViewProps) => {
     const {
         actions,
@@ -132,6 +78,60 @@ export interface EditViewProps
     sx?: SxProps;
     unauthorizedView?: ReactElement;
 }
+
+const defaultActions = <EditActions />;
+
+function goBack() {
+    window.history.go(-1);
+}
+
+const DefaultUnauthorizedView = () => {
+    const translate = useTranslate();
+    return (
+        <Box
+            sx={theme => ({
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                [theme.breakpoints.down('md')]: {
+                    padding: '1em',
+                },
+                fontFamily: 'Roboto, sans-serif',
+                opacity: 0.5,
+                '& h1': {
+                    display: 'flex',
+                    alignItems: 'center',
+                },
+            })}
+        >
+            <h1 role="alert">
+                <LockIcon
+                    sx={{
+                        width: '2em',
+                        height: '2em',
+                        marginRight: '0.5em',
+                    }}
+                />
+                {translate('ra-rbac.page.unauthorized')}
+            </h1>
+            <div>{translate('ra-rbac.message.unauthorized')}</div>
+            <Box
+                sx={{
+                    marginTop: '2em',
+                }}
+            >
+                <Button
+                    variant="contained"
+                    startIcon={<History />}
+                    onClick={goBack}
+                >
+                    {translate('ra.action.back')}
+                </Button>
+            </Box>
+        </Box>
+    );
+};
 
 const PREFIX = 'RaEdit';
 
