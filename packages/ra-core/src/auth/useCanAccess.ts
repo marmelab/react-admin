@@ -31,7 +31,7 @@ import { useEvent } from '../util';
  *     import { useCanAccess } from 'react-admin';
  *
  *     const PostDetail = () => {
- *         const { isPending, permissions } = useCanAccess({
+ *         const { isPending, canAccess } = useCanAccess({
  *             resource: 'posts',
  *             action: 'read',
  *         });
