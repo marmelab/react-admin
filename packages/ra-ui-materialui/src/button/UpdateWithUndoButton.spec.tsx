@@ -106,13 +106,6 @@ describe('<UpdateWithUndoButton />', () => {
 
     it('should prevent click propagation', async () => {
         render(<InsideAList />);
-        await waitFor(() => {
-            expect(
-                screen.getByRole('button', {
-                    name: 'Reset views',
-                })
-            ).toBeDefined();
-        });
         const resetButton = await screen.findByRole('button', {
             name: 'Reset views',
         });
