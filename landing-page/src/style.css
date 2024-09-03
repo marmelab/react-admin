@@ -18,6 +18,66 @@
   }
 }
 
+@keyframes slideLeft1 {
+  0% {
+    transform: translateX(0);
+  }
+
+  50% {
+    transform: translateX(-500px);
+  }
+
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@media screen and (max-width: 576px) {
+  @keyframes slideLeft1 {
+    0% {
+      transform: translateX(0);
+    }
+
+    50% {
+      transform: translateX(-50px);
+    }
+
+    100% {
+      transform: translateX(0);
+    }
+  }
+}
+
+@keyframes slideLeft2 {
+  0% {
+    transform: translateX(0);
+  }
+
+  50% {
+    transform: translateX(-880px);
+  }
+
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@media screen and (max-width: 576px) {
+  @keyframes slideLeft2 {
+    0% {
+      transform: translateX(0);
+    }
+
+    50% {
+      transform: translateX(-200px);
+    }
+
+    100% {
+      transform: translateX(0);
+    }
+  }
+}
+
 @keyframes slideRight {
   0% {
     transform: translateX(0);
