@@ -1,6 +1,12 @@
 import * as React from 'react';
 import { Admin } from 'react-admin';
-import { Resource, Form, useRecordContext, TestMemoryRouter } from 'ra-core';
+import {
+    Resource,
+    Form,
+    useRecordContext,
+    TestMemoryRouter,
+    AuthProvider,
+} from 'ra-core';
 import { Box, Card, Stack } from '@mui/material';
 
 import { TextInput } from '../input';
@@ -222,6 +228,76 @@ export const Meta = () => (
 export const Default = () => (
     <TestMemoryRouter initialEntries={['/books/1/Edit']}>
         <Admin dataProvider={dataProvider}>
+            <Resource
+                name="books"
+                edit={() => (
+                    <Edit>
+                        <SimpleForm>
+                            <TextInput source="title" />
+                            <TextInput source="author" />
+                            <TextInput source="summary" />
+                            <TextInput source="year" />
+                        </SimpleForm>
+                    </Edit>
+                )}
+                show={() => <span />}
+            />
+        </Admin>
+    </TestMemoryRouter>
+);
+
+const defaultAuthProviderNoAccess = {
+    canAccess: () =>
+        new Promise<boolean>(resolve => setTimeout(() => resolve(false), 500)),
+    logout: () => Promise.reject(new Error('Not implemented')),
+    checkError: () => Promise.resolve(),
+    checkAuth: () => Promise.resolve(),
+    getPermissions: () => Promise.resolve(undefined),
+    login: () => Promise.reject(new Error('Not implemented')),
+};
+
+export const AccessControlNoAccess = ({
+    authProvider = defaultAuthProviderNoAccess,
+}: {
+    authProvider?: AuthProvider;
+}) => (
+    <TestMemoryRouter initialEntries={['/books/1/Edit']}>
+        <Admin dataProvider={dataProvider} authProvider={authProvider}>
+            <Resource
+                name="books"
+                edit={() => (
+                    <Edit>
+                        <SimpleForm>
+                            <TextInput source="title" />
+                            <TextInput source="author" />
+                            <TextInput source="summary" />
+                            <TextInput source="year" />
+                        </SimpleForm>
+                    </Edit>
+                )}
+                show={() => <span />}
+            />
+        </Admin>
+    </TestMemoryRouter>
+);
+
+const defaultAuthProviderWithAccess = {
+    canAccess: () =>
+        new Promise<boolean>(resolve => setTimeout(() => resolve(true), 500)),
+    logout: () => Promise.reject(new Error('Not implemented')),
+    checkError: () => Promise.resolve(),
+    checkAuth: () => Promise.resolve(),
+    getPermissions: () => Promise.resolve(undefined),
+    login: () => Promise.reject(new Error('Not implemented')),
+};
+
+export const AccessControlWithAccess = ({
+    authProvider = defaultAuthProviderWithAccess,
+}: {
+    authProvider?: AuthProvider;
+}) => (
+    <TestMemoryRouter initialEntries={['/books/1/Edit']}>
+        <Admin dataProvider={dataProvider} authProvider={authProvider}>
             <Resource
                 name="books"
                 edit={() => (

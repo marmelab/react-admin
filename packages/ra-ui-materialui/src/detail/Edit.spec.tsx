@@ -20,7 +20,14 @@ import englishMessages from 'ra-language-english';
 
 import { AdminContext } from '../AdminContext';
 import { Edit } from './Edit';
-import { Basic, Title, TitleFalse, TitleElement } from './Edit.stories';
+import {
+    Basic,
+    Title,
+    TitleFalse,
+    TitleElement,
+    AccessControlWithAccess,
+    AccessControlNoAccess,
+} from './Edit.stories';
 
 describe('<Edit />', () => {
     const defaultEditProps = {
@@ -808,7 +815,6 @@ describe('<Edit />', () => {
                 </AdminContext>
             );
             await waitFor(() => {
-                console.log('retry');
                 expect(screen.getAllByText('Hello')).toHaveLength(1);
             });
             expect(screen.queryAllByText('Hello')).toHaveLength(1);
@@ -893,6 +899,33 @@ describe('<Edit />', () => {
                 </AdminContext>
             );
             await screen.findByText('Foo lorem');
+        });
+    });
+
+    describe('Access control', () => {
+        it('should display the edit page when the user has access', async () => {
+            const authProvider = {
+                canAccess: () => Promise.resolve(true),
+                logout: () => Promise.reject(new Error('Not implemented')),
+                checkError: () => Promise.resolve(),
+                checkAuth: () => Promise.resolve(),
+                getPermissions: () => Promise.resolve(undefined),
+                login: () => Promise.reject(new Error('Not implemented')),
+            };
+            render(<AccessControlWithAccess authProvider={authProvider} />);
+            await screen.findByDisplayValue('War and Peace');
+        });
+        it('should display the unauthorized page when the user has no access', async () => {
+            const authProvider = {
+                canAccess: () => Promise.resolve(false),
+                logout: () => Promise.reject(new Error('Not implemented')),
+                checkError: () => Promise.resolve(),
+                checkAuth: () => Promise.resolve(),
+                getPermissions: () => Promise.resolve(undefined),
+                login: () => Promise.reject(new Error('Not implemented')),
+            };
+            render(<AccessControlNoAccess authProvider={authProvider} />);
+            await screen.findByText('ra-rbac.page.unauthorized');
         });
     });
 });
