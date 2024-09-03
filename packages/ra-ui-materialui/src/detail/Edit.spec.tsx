@@ -25,8 +25,7 @@ import {
     Title,
     TitleFalse,
     TitleElement,
-    AccessControlWithAccess,
-    AccessControlNoAccess,
+    AccessControl,
 } from './Edit.stories';
 
 describe('<Edit />', () => {
@@ -903,28 +902,10 @@ describe('<Edit />', () => {
     });
 
     describe('Access control', () => {
-        it('should display the edit page when the user has access', async () => {
-            const authProvider = {
-                canAccess: () => Promise.resolve(true),
-                logout: () => Promise.reject(new Error('Not implemented')),
-                checkError: () => Promise.resolve(),
-                checkAuth: () => Promise.resolve(),
-                getPermissions: () => Promise.resolve(undefined),
-                login: () => Promise.reject(new Error('Not implemented')),
-            };
-            render(<AccessControlWithAccess authProvider={authProvider} />);
+        it('should display the edit page when the user has access to the resource', async () => {
+            render(<AccessControl />);
             await screen.findByDisplayValue('War and Peace');
-        });
-        it('should display the unauthorized page when the user has no access', async () => {
-            const authProvider = {
-                canAccess: () => Promise.resolve(false),
-                logout: () => Promise.reject(new Error('Not implemented')),
-                checkError: () => Promise.resolve(),
-                checkAuth: () => Promise.resolve(),
-                getPermissions: () => Promise.resolve(undefined),
-                login: () => Promise.reject(new Error('Not implemented')),
-            };
-            render(<AccessControlNoAccess authProvider={authProvider} />);
+            fireEvent.click(await screen.findByLabelText('books access'));
             await screen.findByText('ra-rbac.page.unauthorized');
         });
     });

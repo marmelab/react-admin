@@ -14,6 +14,7 @@ import { SimpleForm } from '../form/SimpleForm';
 import { ShowButton, SaveButton } from '../button';
 import TopToolbar from '../layout/TopToolbar';
 import { Edit } from './Edit';
+import { QueryClient } from '@tanstack/react-query';
 
 export default { title: 'ra-ui-materialui/detail/Edit' };
 
@@ -246,72 +247,103 @@ export const Default = () => (
     </TestMemoryRouter>
 );
 
-const defaultAuthProviderNoAccess = {
-    canAccess: () =>
-        new Promise<boolean>(resolve => setTimeout(() => resolve(false), 500)),
-    logout: () => Promise.reject(new Error('Not implemented')),
-    checkError: () => Promise.resolve(),
-    checkAuth: () => Promise.resolve(),
-    getPermissions: () => Promise.resolve(undefined),
-    login: () => Promise.reject(new Error('Not implemented')),
+const AccessControlUI = ({
+    children,
+    setAuthorizedResources,
+    authorizedResources,
+    queryClient,
+}: {
+    children: React.ReactNode;
+    setAuthorizedResources: Function;
+    authorizedResources: {
+        books: boolean;
+    };
+    queryClient: QueryClient;
+}) => {
+    return (
+        <div>
+            <div>
+                <label>
+                    <input
+                        type="checkbox"
+                        checked={authorizedResources.books}
+                        onChange={() => {
+                            setAuthorizedResources(state => ({
+                                ...state,
+                                books: !authorizedResources.books,
+                            }));
+                            queryClient.clear();
+                        }}
+                    />
+                    books access
+                </label>
+            </div>
+            <div>{children}</div>
+        </div>
+    );
 };
 
-export const AccessControlNoAccess = ({
-    authProvider = defaultAuthProviderNoAccess,
+export const AccessControl = ({
+    queryClient = new QueryClient(),
 }: {
-    authProvider?: AuthProvider;
+    queryClient?: QueryClient;
 }) => (
     <TestMemoryRouter initialEntries={['/books/1/Edit']}>
-        <Admin dataProvider={dataProvider} authProvider={authProvider}>
-            <Resource
-                name="books"
-                edit={() => (
-                    <Edit>
-                        <SimpleForm>
-                            <TextInput source="title" />
-                            <TextInput source="author" />
-                            <TextInput source="summary" />
-                            <TextInput source="year" />
-                        </SimpleForm>
-                    </Edit>
-                )}
-                show={() => <span />}
-            />
-        </Admin>
+        <AdminWithAccessControl queryClient={queryClient} />
     </TestMemoryRouter>
 );
 
-const defaultAuthProviderWithAccess = {
-    canAccess: () =>
-        new Promise<boolean>(resolve => setTimeout(() => resolve(true), 500)),
-    logout: () => Promise.reject(new Error('Not implemented')),
-    checkError: () => Promise.resolve(),
-    checkAuth: () => Promise.resolve(),
-    getPermissions: () => Promise.resolve(undefined),
-    login: () => Promise.reject(new Error('Not implemented')),
-};
-
-export const AccessControlWithAccess = ({
-    authProvider = defaultAuthProviderWithAccess,
+const AdminWithAccessControl = ({
+    queryClient,
+    initialAuthorizedResources = {
+        books: true,
+    },
 }: {
-    authProvider?: AuthProvider;
-}) => (
-    <TestMemoryRouter initialEntries={['/books/1/Edit']}>
-        <Admin dataProvider={dataProvider} authProvider={authProvider}>
+    queryClient: QueryClient;
+    initialAuthorizedResources?: {
+        books: boolean;
+    };
+}) => {
+    const [authorizedResources, setAuthorizedResources] = React.useState(
+        initialAuthorizedResources
+    );
+
+    const authProvider: AuthProvider = {
+        canAccess: async ({ resource }) => {
+            return new Promise(resolve =>
+                setTimeout(resolve, 100, authorizedResources[resource])
+            );
+        },
+        logout: () => Promise.reject(new Error('Not implemented')),
+        checkError: () => Promise.reject(new Error('Not implemented')),
+        checkAuth: () => Promise.resolve(),
+        getPermissions: () => Promise.resolve(),
+        login: () => Promise.reject(new Error('Not implemented')),
+    };
+    return (
+        <Admin
+            dataProvider={dataProvider}
+            authProvider={authProvider}
+            queryClient={queryClient}
+        >
             <Resource
                 name="books"
-                edit={() => (
-                    <Edit>
-                        <SimpleForm>
-                            <TextInput source="title" />
-                            <TextInput source="author" />
-                            <TextInput source="summary" />
-                            <TextInput source="year" />
-                        </SimpleForm>
-                    </Edit>
-                )}
-                show={() => <span />}
+                edit={
+                    <AccessControlUI
+                        authorizedResources={authorizedResources}
+                        setAuthorizedResources={setAuthorizedResources}
+                        queryClient={queryClient}
+                    >
+                        <Edit>
+                            <SimpleForm>
+                                <TextInput source="title" />
+                                <TextInput source="author" />
+                                <TextInput source="year" />
+                            </SimpleForm>
+                        </Edit>
+                    </AccessControlUI>
+                }
             />
         </Admin>
-    </TestMemoryRouter>
-);
+    );
+};
