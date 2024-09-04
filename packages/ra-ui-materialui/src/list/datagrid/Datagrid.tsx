@@ -18,7 +18,7 @@ import {
     OptionalResourceContextProvider,
     RaRecord,
     SortPayload,
-    useCanAccessRecordSources,
+    useCanAccessResources,
     useResourceContext,
 } from 'ra-core';
 import { Table, TableProps, SxProps } from '@mui/material';
@@ -162,13 +162,10 @@ export const Datagrid: React.ForwardRefExoticComponent<
             return field.props.source;
         })?.filter(value => typeof value === 'string') || [];
 
-    const { canAccess, isPending: isPendingAccess } = useCanAccessRecordSources(
-        {
-            resource,
-            action: 'read',
-            sources: resourceKeys,
-        }
-    );
+    const { canAccess, isPending: isPendingAccess } = useCanAccessResources({
+        resources: resourceKeys.map(key => `${resource}.${key}`),
+        action: 'read',
+    });
 
     const hasBulkActions = !!bulkActionButtons !== false;
 
@@ -233,9 +230,9 @@ export const Datagrid: React.ForwardRefExoticComponent<
                 return true;
             }
 
-            return canAccess[child.props.source] === true;
+            return canAccess[`${resource}.${child.props.source}`] === true;
         });
-    }, [isPendingAccess, canAccess, children]);
+    }, [isPendingAccess, canAccess, children, resource]);
 
     if (isPending === true || isPendingAccess === true) {
         return (

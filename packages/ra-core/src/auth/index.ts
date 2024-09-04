@@ -15,7 +15,7 @@ export * from './types';
 export * from './useAuthenticated';
 export * from './useCanAccess';
 export * from './useCanAccessCallback';
-export * from './useCanAccessRecordSources';
+export * from './useCanAccessResources';
 export * from './useCheckAuth';
 export * from './useGetIdentity';
 export * from './useHandleAuthCallback';

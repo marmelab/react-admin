@@ -1,10 +1,10 @@
 import * as React from 'react';
 import expect from 'expect';
 import { waitFor, render, screen } from '@testing-library/react';
-import { Basic } from './useCanAccessRecordSources.stories';
+import { Basic } from './useCanAccessResources.stories';
 
-describe('useCanAccessRecordSources', () => {
-    it('should call authProvider.canAccess for every resource sources', async () => {
+describe('useCanAccessResources', () => {
+    it('should call authProvider.canAccess for every resources', async () => {
         const canAccess = jest.fn().mockImplementation(async () => true);
         const authProvider = {
             login: () => Promise.reject('bad method'),
@@ -41,7 +41,11 @@ describe('useCanAccessRecordSources', () => {
             expect(
                 screen.getByText(
                     JSON.stringify({
-                        canAccess: { id: true, title: true, author: true },
+                        canAccess: {
+                            'posts.id': true,
+                            'posts.title': true,
+                            'posts.author': true,
+                        },
                         isPending: false,
                     })
                 )
@@ -49,7 +53,7 @@ describe('useCanAccessRecordSources', () => {
         });
     });
 
-    it('should grant access to each sources based on canAccess result', async () => {
+    it('should grant access to each resource based on canAccess result', async () => {
         const canAccess = jest
             .fn()
             .mockImplementation(
@@ -73,7 +77,11 @@ describe('useCanAccessRecordSources', () => {
             expect(
                 screen.getByText(
                     JSON.stringify({
-                        canAccess: { id: false, title: true, author: true },
+                        canAccess: {
+                            'posts.id': false,
+                            'posts.title': true,
+                            'posts.author': true,
+                        },
                         isPending: false,
                     })
                 )
@@ -81,7 +89,7 @@ describe('useCanAccessRecordSources', () => {
         });
     });
 
-    it('should grant access to all if no authProvider', async () => {
+    it('should grant access to all resources if no authProvider', async () => {
         render(<Basic authProvider={null} />);
 
         expect(
@@ -92,7 +100,11 @@ describe('useCanAccessRecordSources', () => {
             expect(
                 screen.getByText(
                     JSON.stringify({
-                        canAccess: { id: true, title: true, author: true },
+                        canAccess: {
+                            'posts.id': true,
+                            'posts.title': true,
+                            'posts.author': true,
+                        },
                         isPending: false,
                     })
                 )
@@ -100,7 +112,7 @@ describe('useCanAccessRecordSources', () => {
         });
     });
 
-    it('should grant access to all if no authProvider.canAccess', async () => {
+    it('should grant access to all resources if no authProvider.canAccess', async () => {
         const authProvider = {
             login: () => Promise.reject('bad method'),
             logout: () => Promise.reject('bad method'),
@@ -118,7 +130,11 @@ describe('useCanAccessRecordSources', () => {
             expect(
                 screen.getByText(
                     JSON.stringify({
-                        canAccess: { id: true, title: true, author: true },
+                        canAccess: {
+                            'posts.id': true,
+                            'posts.title': true,
+                            'posts.author': true,
+                        },
                         isPending: false,
                     })
                 )

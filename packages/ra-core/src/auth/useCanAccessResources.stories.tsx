@@ -2,33 +2,37 @@ import * as React from 'react';
 import { AuthProvider } from '../types';
 import { CoreAdminContext } from '../core';
 import { QueryClient } from '@tanstack/react-query';
-import { useCanAccessRecordSources } from './useCanAccessRecordSources';
+import {
+    useCanAccessResources,
+    UseCanAccessResourcesResult,
+} from './useCanAccessResources';
 
 export default {
-    title: 'ra-core/auth/useCanAccessRecordSources',
+    title: 'ra-core/auth/useCanAccessResources',
 };
 
-const UseCanAccessRecordSources = ({
+const UseCanAccessResources = ({
     children,
     action,
-    resource,
-    sources,
+    resources,
 }: {
     children: any;
     action: string;
-    resource: string;
-    sources: string[];
+    resources: string[];
 }) => {
-    const { canAccess, isPending } = useCanAccessRecordSources({
+    const { canAccess, isPending } = useCanAccessResources({
         action,
-        resource,
-        sources,
+        resources,
     });
 
     return children({ canAccess, isPending });
 };
 
-const StateInpector = result => {
+const StateInspector = ({
+    result,
+}: {
+    result: UseCanAccessResourcesResult;
+}) => {
     return <div>{JSON.stringify(result)}</div>;
 };
 
@@ -52,12 +56,26 @@ export const Basic = ({
         authProvider={authProvider != null ? authProvider : undefined}
         queryClient={queryClient}
     >
-        <UseCanAccessRecordSources
+        <UseCanAccessResources
             action="read"
-            resource="posts"
-            sources={['id', 'title', 'author']}
+            resources={['posts.id', 'posts.title', 'posts.author']}
         >
-            {StateInpector}
-        </UseCanAccessRecordSources>
+            {result => <StateInspector result={result} />}
+        </UseCanAccessResources>
+    </CoreAdminContext>
+);
+
+export const NoAuthProvider = ({
+    queryClient,
+}: {
+    queryClient?: QueryClient;
+}) => (
+    <CoreAdminContext queryClient={queryClient}>
+        <UseCanAccessResources
+            action="read"
+            resources={['posts.id', 'posts.title', 'posts.author']}
+        >
+            {result => <StateInspector result={result} />}
+        </UseCanAccessResources>
     </CoreAdminContext>
 );
