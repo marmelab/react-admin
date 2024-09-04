@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { useState } from 'react';
 import {
-    UseCanAccessCallback,
     useCanAccessCallback,
     UseCanAccessCallbackResult,
 } from './useCanAccessCallback';
@@ -12,13 +11,9 @@ export default {
     title: 'ra-core/auth/useCanAccessCallback',
 };
 
-const UseCanAccessCallbackComponent = ({ children }: { children: any }) => {
+const UseCanAccessCallbackComponent = () => {
     const canAccess = useCanAccessCallback();
 
-    return children(canAccess);
-};
-
-const StateInpector = (canAccess: UseCanAccessCallback) => {
     const [result, setResult] = useState<UseCanAccessCallbackResult<Error>>();
 
     return (
@@ -71,7 +66,7 @@ const StateInpector = (canAccess: UseCanAccessCallback) => {
                 <div>
                     {result.canAccess !== undefined && (
                         <span>
-                            isAccessible: {result.canAccess ? 'YES' : 'NO'}
+                            canAccess: {result.canAccess ? 'YES' : 'NO'}
                         </span>
                     )}
                     {result.error && <span>{result.error.message}</span>}
@@ -98,8 +93,6 @@ export const Basic = ({
     <CoreAdminContext
         authProvider={authProvider != null ? authProvider : undefined}
     >
-        <UseCanAccessCallbackComponent>
-            {StateInpector}
-        </UseCanAccessCallbackComponent>
+        <UseCanAccessCallbackComponent />
     </CoreAdminContext>
 );

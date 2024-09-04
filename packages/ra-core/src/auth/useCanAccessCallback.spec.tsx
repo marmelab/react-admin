@@ -26,7 +26,7 @@ describe('useCanAccessCallback', () => {
                 action: 'read',
             });
         });
-        expect(screen.getByText('isAccessible: YES')).toBeDefined();
+        expect(screen.getByText('canAccess: YES')).toBeDefined();
 
         fireEvent.click(screen.getByText('Can I write posts'));
 
@@ -36,7 +36,7 @@ describe('useCanAccessCallback', () => {
                 action: 'write',
             });
         });
-        expect(screen.getByText('isAccessible: NO')).toBeDefined();
+        expect(screen.getByText('canAccess: NO')).toBeDefined();
 
         fireEvent.click(screen.getByText('Can I read comments'));
 
@@ -49,7 +49,7 @@ describe('useCanAccessCallback', () => {
                 },
             });
         });
-        expect(screen.getByText('isAccessible: YES')).toBeDefined();
+        expect(screen.getByText('canAccess: YES')).toBeDefined();
         expect(canAccess).toBeCalledTimes(3);
     });
 
@@ -75,14 +75,14 @@ describe('useCanAccessCallback', () => {
                 action: 'read',
             });
         });
-        expect(screen.getByText('isAccessible: YES')).toBeDefined();
+        expect(screen.getByText('canAccess: YES')).toBeDefined();
         expect(canAccess).toBeCalledTimes(1);
         fireEvent.click(screen.getByText('Can I read posts'));
         await new Promise(resolve => setTimeout(resolve, 0)); // need to wait for the click to take effect
         expect(canAccess).toBeCalledTimes(1);
     });
 
-    it('should return error thrown by canAccess in a error key', async () => {
+    it('should return error thrown by canAccess in an error key', async () => {
         const canAccess = jest
             .fn()
             .mockRejectedValue(new Error('uh oh, something went wrong'));
@@ -104,7 +104,7 @@ describe('useCanAccessCallback', () => {
                 action: 'read',
             });
         });
-        expect(screen.queryByText('isAccessible: YES')).toBeNull();
+        expect(screen.queryByText('canAccess: YES')).toBeNull();
         expect(screen.getByText('uh oh, something went wrong')).toBeDefined();
     });
 
@@ -140,19 +140,13 @@ describe('useCanAccessCallback', () => {
         render(<Basic authProvider={null} />);
 
         fireEvent.click(screen.getByText('Can I read posts'));
-        await waitFor(() => {
-            expect(screen.queryByText('isAccessible: YES')).not.toBeNull();
-        });
+        await screen.findByText('canAccess: YES');
 
         fireEvent.click(screen.getByText('Can I write posts'));
-        await waitFor(() => {
-            expect(screen.queryByText('isAccessible: YES')).not.toBeNull();
-        });
+        await screen.findByText('canAccess: YES');
 
         fireEvent.click(screen.getByText('Can I read comments'));
-        await waitFor(() => {
-            expect(screen.queryByText('isAccessible: YES')).not.toBeNull();
-        });
+        await screen.findByText('canAccess: YES');
     });
 
     it('should return a function always allowing access when authProvider has no canAccess method', async () => {
@@ -167,17 +161,17 @@ describe('useCanAccessCallback', () => {
 
         fireEvent.click(screen.getByText('Can I read posts'));
         await waitFor(() => {
-            expect(screen.queryByText('isAccessible: YES')).not.toBeNull();
+            expect(screen.queryByText('canAccess: YES')).not.toBeNull();
         });
 
         fireEvent.click(screen.getByText('Can I write posts'));
         await waitFor(() => {
-            expect(screen.queryByText('isAccessible: YES')).not.toBeNull();
+            expect(screen.queryByText('canAccess: YES')).not.toBeNull();
         });
 
         fireEvent.click(screen.getByText('Can I read comments'));
         await waitFor(() => {
-            expect(screen.queryByText('isAccessible: YES')).not.toBeNull();
+            expect(screen.queryByText('canAccess: YES')).not.toBeNull();
         });
     });
 });

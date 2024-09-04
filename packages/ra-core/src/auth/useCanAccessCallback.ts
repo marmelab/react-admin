@@ -11,8 +11,6 @@ import useAuthProvider from './useAuthProvider';
  * Calls the authProvider.canAccess() method using react-query.
  * If the authProvider returns a rejected promise, returns false.
  *
- * @returns The canAccess result as { canAccess, error }.
- *
  * @example
  *     import { useCanAccessCallback, useDataProvider } from 'react-admin';
  *
