@@ -12,6 +12,7 @@ import {
     MenuItem,
     styled,
     ButtonProps as MuiButtonProps,
+    Box,
 } from '@mui/material';
 import ContentFilter from '@mui/icons-material/FilterList';
 import lodashGet from 'lodash/get';
@@ -211,6 +212,16 @@ export const FilterButton = (props: FilterButtonProps) => {
                             {savedQuery.label}
                         </MenuItem>
                     )
+                )}
+                {hasFilterValues && (
+                    <Box
+                        sx={{
+                            height: 3,
+                            bgcolor: 'background.default',
+                            margin: 0,
+                            width: '100%',
+                        }}
+                    />
                 )}
                 {hasFilterValues &&
                     !hasSavedCurrentQuery &&

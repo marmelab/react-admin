@@ -196,6 +196,7 @@ export const Basic = (args: { disableSaveQuery?: boolean }) => {
             defaultValue="Accusantium qui nihil voluptatum quia voluptas maxime ab similique"
         />,
         <TextInput label="Nested" source="nested.foo" defaultValue="bar" />,
+        <TextInput label="Body" source="body" />,
     ];
     return (
         <TestMemoryRouter>
