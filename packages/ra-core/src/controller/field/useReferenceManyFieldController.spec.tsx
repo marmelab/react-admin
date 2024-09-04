@@ -364,4 +364,52 @@ describe('useReferenceManyFieldController', () => {
             ]);
         });
     });
+
+    describe('response metadata', () => {
+        it('should return response metadata as meta', async () => {
+            const dataProvider = testDataProvider({
+                getManyReference: () =>
+                    Promise.resolve({
+                        data: [
+                            { id: 1, title: 'hello' },
+                            { id: 2, title: 'world' },
+                        ],
+                        total: 2,
+                        meta: {
+                            facets: [
+                                { foo: 'bar', count: 1 },
+                                { foo: 'baz', count: 2 },
+                            ],
+                        },
+                    }) as any,
+            });
+
+            const ListMetadataInspector = () => {
+                const listContext = useReferenceManyFieldController({
+                    resource: 'authors',
+                    source: 'id',
+                    record: { id: 123, name: 'James Joyce' },
+                    reference: 'books',
+                    target: 'author_id',
+                });
+
+                return (
+                    <>
+                        Response metadata:{' '}
+                        <pre>{JSON.stringify(listContext.meta, null)}</pre>
+                    </>
+                );
+            };
+
+            render(
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <ListMetadataInspector />
+                </CoreAdminContext>
+            );
+
+            await screen.findByText(
+                '{"facets":[{"foo":"bar","count":1},{"foo":"baz","count":2}]}'
+            );
+        });
+    });
 });

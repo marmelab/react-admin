@@ -95,10 +95,11 @@ export const useGetList = <RecordType extends RaRecord = any>(
                             ? queryParams.signal
                             : undefined,
                 })
-                .then(({ data, total, pageInfo }) => ({
+                .then(({ data, total, pageInfo, meta }) => ({
                     data,
                     total,
                     pageInfo,
+                    meta,
                 })),
         ...queryOptions,
     });
@@ -168,9 +169,7 @@ export const useGetList = <RecordType extends RaRecord = any>(
             result.data
                 ? {
                       ...result,
-                      data: result.data?.data,
-                      total: result.data?.total,
-                      pageInfo: result.data?.pageInfo,
+                      ...result.data,
                   }
                 : result,
         [result]
@@ -180,6 +179,7 @@ export const useGetList = <RecordType extends RaRecord = any>(
             hasNextPage?: boolean;
             hasPreviousPage?: boolean;
         };
+        meta?: any;
     };
 };
 
@@ -204,4 +204,5 @@ export type UseGetListHookValue<RecordType extends RaRecord = any> =
             hasNextPage?: boolean;
             hasPreviousPage?: boolean;
         };
+        meta?: any;
     };

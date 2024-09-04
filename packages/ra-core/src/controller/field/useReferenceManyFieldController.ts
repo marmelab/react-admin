@@ -159,6 +159,7 @@ export const useReferenceManyFieldController = <
     const {
         data,
         total,
+        meta: responseMeta,
         pageInfo,
         error,
         isFetching,
@@ -202,6 +203,7 @@ export const useReferenceManyFieldController = <
     return {
         sort,
         data,
+        meta: responseMeta,
         defaultTitle: undefined,
         displayedFilters,
         error,
