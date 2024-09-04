@@ -1,11 +1,5 @@
 import * as React from 'react';
-import {
-    render,
-    fireEvent,
-    screen,
-    waitFor,
-    act,
-} from '@testing-library/react';
+import { render, fireEvent, screen, waitFor } from '@testing-library/react';
 import { ListsWithAccessControl } from './useListController.accessControl.stories';
 
 describe('useListController', () => {
@@ -17,12 +11,10 @@ describe('useListController', () => {
         expect(screen.getByLabelText('posts access')).not.toBeChecked();
         fireEvent.click(screen.getByLabelText('posts access'));
 
-        await waitFor(() => {
-            expect(screen.queryByText('Post #1 - 90 votes')).not.toBeNull();
-        });
+        await screen.findByText('Post #1 - 90 votes');
     });
 
-    it('should export fields for which access is granted', async () => {
+    it('should only export fields for which access is granted', async () => {
         const exporter = jest.fn();
         render(
             <ListsWithAccessControl
@@ -36,13 +28,9 @@ describe('useListController', () => {
             />
         );
 
-        await waitFor(() => {
-            expect(screen.queryByText('Post #1 - 90 votes')).not.toBeNull();
-        });
+        await screen.findByText('Post #1 - 90 votes');
 
-        act(() => {
-            fireEvent.click(screen.getByLabelText('export'));
-        });
+        fireEvent.click(screen.getByLabelText('export'));
         await waitFor(() => {
             expect(exporter).toBeCalledTimes(1);
         });
@@ -79,20 +67,14 @@ describe('useListController', () => {
             'posts'
         );
 
-        act(() => {
-            fireEvent.click(screen.getByLabelText('posts.id access'));
-        });
+        fireEvent.click(screen.getByLabelText('posts.id access'));
         await waitFor(() => {
             expect(screen.getByLabelText('posts.id access')).not.toBeChecked();
         });
 
-        await waitFor(() => {
-            expect(screen.queryByText('Post #1 - 90 votes')).not.toBeNull();
-        });
+        await screen.findByText('Post #1 - 90 votes');
 
-        act(() => {
-            fireEvent.click(screen.getByLabelText('export'));
-        });
+        fireEvent.click(screen.getByLabelText('export'));
         await waitFor(() => {
             expect(exporter).toBeCalledTimes(2);
         });

@@ -81,6 +81,10 @@ const OrderedPostList = ({
                         </li>
                     ))}
             </ul>
+            <p>
+                Note that this simple component does not react to the record
+                properties access rights changes. The export does though.
+            </p>
         </div>
     );
 };

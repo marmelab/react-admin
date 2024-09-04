@@ -1,8 +1,8 @@
 import React from 'react';
 import { QueryClient } from '@tanstack/react-query';
 import { AuthProvider, Exporter } from '../types';
-import { CoreAdminContext, defaultExporter, TestMemoryRouter } from '..';
-import useExporter from './useExporter';
+import { CoreAdminContext, TestMemoryRouter } from '..';
+import { useExporter } from './useExporter';
 
 export default {
     title: 'ra-core/export/useExporter',
@@ -98,7 +98,7 @@ const AccessControlUI = ({
 };
 
 export const AccessControl = ({
-    customExporter = defaultExporter,
+    customExporter,
     initialAuthorizedResources = {
         posts: true,
         'posts.id': false,
@@ -188,7 +188,7 @@ const AdminWithAccessControl = ({
     queryClient,
     initialAuthorizedResources,
 }: {
-    customExporter: Exporter;
+    customExporter?: Exporter;
     queryClient: QueryClient;
     initialAuthorizedResources: {
         posts: boolean;
@@ -245,23 +245,29 @@ const UseExporter = ({
     records,
     resource,
 }: {
-    customExporter: Exporter;
+    customExporter?: Exporter;
     records: Record<string, unknown>[];
     resource: string;
 }) => {
-    const exporter = useExporter({ exporter: customExporter });
+    const [exportResult, setExportResult] = React.useState<any>(null);
+    const finalExporter =
+        customExporter ?? ((records: any[]) => setExportResult(records));
+    const exporter = useExporter({ exporter: finalExporter });
 
     return (
-        <button
-            onClick={() => {
-                if (!exporter) {
-                    return;
-                }
-                exporter(records, null, null, resource);
-                // eslint-disable-next-line react-hooks/exhaustive-deps
-            }}
-        >
-            Export
-        </button>
+        <>
+            <button
+                onClick={() => {
+                    if (!exporter) {
+                        return;
+                    }
+                    exporter(records, null, null, resource);
+                    // eslint-disable-next-line react-hooks/exhaustive-deps
+                }}
+            >
+                Export
+            </button>
+            {exportResult && <pre>{JSON.stringify(exportResult, null, 2)}</pre>}
+        </>
     );
 };

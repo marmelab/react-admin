@@ -2,19 +2,6 @@ import { defaultExporter } from './defaultExporter';
 import { useCanAccessCallback } from '../auth/useCanAccessCallback';
 import { Exporter } from '../types';
 
-export const getAllKeys = (
-    recordList: Record<string, unknown>[] | undefined
-): string[] => {
-    const keys = (recordList || []).reduce((acc: Set<string>, record) => {
-        const keys = Object.keys(record);
-        keys.forEach(key => acc.add(key));
-
-        return acc;
-    }, new Set<string>());
-
-    return Array.from(keys);
-};
-
 /**
  * Initialize default exporter with access control
  *
@@ -30,7 +17,7 @@ export const getAllKeys = (
  *     return <ListView exporter={exporter} {...props} />;
  * }
  */
-const useExporter = (params: { exporter?: Exporter | false }) => {
+export const useExporter = (params: { exporter?: Exporter | false }) => {
     const canAccess = useCanAccessCallback();
     if (params.exporter === false) {
         return false;
@@ -39,13 +26,13 @@ const useExporter = (params: { exporter?: Exporter | false }) => {
 
     const exporterWithAccessControl = async (
         records: Record<string, unknown>[],
-        _,
-        __,
+        fetchRelatedRecords,
+        dataProvider,
         resource
     ) => {
         const keys = getAllKeys(records);
 
-        const accessRecord = await keys.reduce(async (acc, key) => {
+        const authorizedKeys = await keys.reduce(async (acc, key) => {
             const record = await acc;
             const canAccessResult = await canAccess({
                 action: 'read',
@@ -64,7 +51,7 @@ const useExporter = (params: { exporter?: Exporter | false }) => {
 
         const recordsWithAuthorizedColumns = records.map(record => {
             return Object.keys(record).reduce((acc, key) => {
-                if (!accessRecord[key]) {
+                if (!authorizedKeys[key]) {
                     return acc;
                 }
 
@@ -72,10 +59,26 @@ const useExporter = (params: { exporter?: Exporter | false }) => {
             }, {});
         });
 
-        exporter(recordsWithAuthorizedColumns, _, __, resource);
+        return exporter(
+            recordsWithAuthorizedColumns,
+            fetchRelatedRecords,
+            dataProvider,
+            resource
+        );
     };
 
     return exporterWithAccessControl;
 };
 
-export default useExporter;
+export const getAllKeys = (
+    recordList: Record<string, unknown>[] | undefined
+): string[] => {
+    const keys = (recordList || []).reduce((acc: Set<string>, record) => {
+        const keys = Object.keys(record);
+        keys.forEach(key => acc.add(key));
+
+        return acc;
+    }, new Set<string>());
+
+    return Array.from(keys);
+};

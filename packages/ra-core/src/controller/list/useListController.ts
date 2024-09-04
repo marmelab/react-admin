@@ -14,7 +14,7 @@ import { useResourceContext, useGetResourceLabel } from '../../core';
 import { useRecordSelection } from './useRecordSelection';
 import { useListParams } from './useListParams';
 import { useCanAccess } from '../../auth/useCanAccess';
-import useExporter from '../../export/useExporter';
+import { useExporter } from '../../export/useExporter';
 
 /**
  * Prepare data for the List view
@@ -48,7 +48,7 @@ export const useListController = <RecordType extends RaRecord = any>(
         sort = defaultSort,
         storeKey,
     } = props;
-
+    useAuthenticated({ enabled: !disableAuthentication });
     const resource = useResourceContext(props);
     const { meta, ...otherQueryOptions } = queryOptions;
 
@@ -84,7 +84,6 @@ export const useListController = <RecordType extends RaRecord = any>(
         resource,
         disableSyncWithStore: storeKey === false,
     });
-    useAuthenticated({ enabled: !disableAuthentication });
 
     const { canAccess, isPending: isAccessPending } = useCanAccess({
         resource,
