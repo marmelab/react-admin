@@ -9,11 +9,11 @@ describe('useCanAccess', () => {
     it('should return a loading state on mount', () => {
         render(<Basic authProvider={null} />);
         expect(screen.queryByText('LOADING')).not.toBeNull();
-        expect(screen.queryByText('AUTHENTICATED')).toBeNull();
     });
 
-    it('should return nothing by default after a tick', async () => {
+    it('should return isPending: true by default after a tick', async () => {
         render(<Basic authProvider={null} />);
+        expect(screen.queryByText('LOADING')).not.toBeNull();
         await waitFor(() => {
             expect(screen.queryByText('LOADING')).toBeNull();
         });
@@ -31,7 +31,7 @@ describe('useCanAccess', () => {
         render(<Basic authProvider={authProvider} />);
         await waitFor(() => {
             expect(screen.queryByText('LOADING')).toBeNull();
-            expect(screen.queryByText('isAccessible: YES')).not.toBeNull();
+            expect(screen.queryByText('canAccess: YES')).not.toBeNull();
         });
     });
 
@@ -48,7 +48,7 @@ describe('useCanAccess', () => {
 
         await waitFor(() => {
             expect(screen.queryByText('LOADING')).toBeNull();
-            expect(screen.queryByText('isAccessible: YES')).not.toBeNull();
+            expect(screen.queryByText('canAccess: YES')).not.toBeNull();
         });
     });
 
@@ -65,7 +65,7 @@ describe('useCanAccess', () => {
 
         await waitFor(() => {
             expect(screen.queryByText('LOADING')).toBeNull();
-            expect(screen.queryByText('isAccessible: NO')).not.toBeNull();
+            expect(screen.queryByText('canAccess: NO')).not.toBeNull();
         });
     });
 
@@ -88,7 +88,7 @@ describe('useCanAccess', () => {
         });
     });
 
-    it('should call logout when the auth.getPermissions call fails and checkError rejects', async () => {
+    it('should call logout when the auth.canAccess call fails and checkError rejects', async () => {
         const authProvider = {
             login: () => Promise.reject('bad method'),
             logout: jest.fn(() => Promise.resolve()),

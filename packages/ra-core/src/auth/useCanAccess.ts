@@ -10,22 +10,21 @@ import { useEvent } from '../util';
 
 /**
  * A hook that calls the authProvider.canAccess() method using react-query for a provided resource and action (and optionally a record).
- * If the authProvider returns a rejected promise, returns false.
  *
  * The return value updates according to the request state:
  *
  * - start: { isPending: true }
- * - success: { permissions: [any], isPending: false }
+ * - success: { canAccess: true, isPending: false }
  * - error: { error: [error from provider], isPending: false }
  *
- * Useful to enable features based on user role
+ * Useful to enable or disable features based on users permissions.
  *
  * @param {Object} params Any params you want to pass to the authProvider
  * @param {string} params.resource The resource to check access for
  * @param {string} params.action The action to check access for
  * @param {Object} params.record Optional. The record to check access for
  *
- * @returns The current auth check state. Destructure as { canAccess, error, isPending, refetch }.
+ * @returns Return the react-query result and a canAccess property which is a boolean indicating the access status
  *
  * @example
  *     import { useCanAccess } from 'react-admin';
@@ -35,11 +34,10 @@ import { useEvent } from '../util';
  *             resource: 'posts',
  *             action: 'read',
  *         });
- *         if (!isPending && canAccess) {
- *             return <PostEdit />
- *         } else {
+ *         if (isPending || canAccess) {
  *             return null;
  *         }
+ *         return <PostEdit />;
  *     };
  */
 export const useCanAccess = <ErrorType = Error>(
@@ -55,12 +53,10 @@ export const useCanAccess = <ErrorType = Error>(
             if (!authProvider || !authProvider.canAccess) {
                 return true;
             }
-            const canAccess = await authProvider.canAccess({
+            return authProvider.canAccess({
                 ...params,
                 signal,
             });
-
-            return canAccess;
         },
         ...queryOptions,
     });

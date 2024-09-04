@@ -29,11 +29,11 @@ const UseCanAccess = ({
     return children(res);
 };
 
-const StateInpector = (state: UseCanAccessResult) => (
+const StateInspector = ({ state }: { state: UseCanAccessResult }) => (
     <div>
         <span>{state.isPending && 'LOADING'}</span>
         {state.canAccess !== undefined && (
-            <span>isAccessible: {state.canAccess ? 'YES' : 'NO'}</span>
+            <span>canAccess: {state.canAccess ? 'YES' : 'NO'}</span>
         )}
         <span>{state.error && 'ERROR'}</span>
     </div>
@@ -60,7 +60,7 @@ export const Basic = ({
         queryClient={queryClient}
     >
         <UseCanAccess action="read" resource="test">
-            {StateInpector}
+            {state => <StateInspector state={state} />}
         </UseCanAccess>
     </CoreAdminContext>
 );
