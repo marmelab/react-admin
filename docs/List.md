@@ -1114,7 +1114,7 @@ const ProductList = () => (
 
 ## Accessing Extra Response Data
 
-IF `dataProvider.getList()` returns additional metadata in the response under the `meta` key, you can access it in the list view using the `meta` property of the `ListContext`.
+If `dataProvider.getList()` returns additional metadata in the response under the `meta` key, you can access it in the list view using the `meta` property of the `ListContext`.
 
 This is often used by APIs to return statistics or other metadata about the list of records.
 
