@@ -12,7 +12,6 @@ import {
     MenuItem,
     styled,
     ButtonProps as MuiButtonProps,
-    Box,
     Divider,
 } from '@mui/material';
 import ContentFilter from '@mui/icons-material/FilterList';
