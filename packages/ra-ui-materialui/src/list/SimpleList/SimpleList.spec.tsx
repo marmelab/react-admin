@@ -1,17 +1,25 @@
 import * as React from 'react';
-import { render, screen, waitFor, within } from '@testing-library/react';
+import {
+    fireEvent,
+    render,
+    screen,
+    waitFor,
+    within,
+} from '@testing-library/react';
 import {
     ListContext,
     Resource,
     ResourceContextProvider,
     TestMemoryRouter,
+    useListFilterContext,
 } from 'ra-core';
+import fakerestDataProvider from 'ra-data-fakerest';
 
 import { AdminContext } from '../../AdminContext';
 import { SimpleList } from './SimpleList';
 import { TextField } from '../../field/TextField';
 import { NoPrimaryText } from './SimpleList.stories';
-import { Admin } from 'react-admin';
+import { Admin, List } from 'react-admin';
 
 const Wrapper = ({ children }: any) => (
     <AdminContext>
@@ -163,6 +171,36 @@ describe('<SimpleList />', () => {
         expect(
             screen.queryByText('No posts found using the current filters.')
         ).not.toBeNull();
+    });
+
+    it('should display a message when there is no result but filters applied', async () => {
+        const MyListView = () => {
+            const { setFilters } = useListFilterContext();
+            setFilters({ title: 'foo' }, ['title']);
+            return <SimpleList />;
+        };
+
+        render(
+            <TestMemoryRouter>
+                <Admin
+                    dataProvider={fakerestDataProvider({
+                        posts: [{ id: 1, title: 'bar' }],
+                    })}
+                >
+                    <Resource
+                        name="posts"
+                        list={
+                            <List>
+                                <MyListView />
+                            </List>
+                        }
+                    />
+                </Admin>
+            </TestMemoryRouter>
+        );
+
+        await screen.findByText('No posts found using the current filters.');
+        screen.getByText('Clear filters.');
     });
 
     it('should fall back to record representation when no primaryText is provided', async () => {
