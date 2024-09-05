@@ -43,28 +43,27 @@ describe('<FilterButton />', () => {
     });
 
     describe('filter selection menu', () => {
-        it('should display only hidden filters', () => {
-            const hiddenFilter = (
-                <TextInput source="Returned" label="Returned" />
-            );
-            const { getByLabelText, queryByText } = render(
-                <AdminContext theme={theme}>
-                    <ResourceContextProvider value="posts">
-                        <ListContextProvider value={defaultListContext}>
-                            <FilterButton
-                                filters={defaultProps.filters.concat(
-                                    hiddenFilter
-                                )}
-                            />
-                        </ListContextProvider>
-                    </ResourceContextProvider>
-                </AdminContext>
-            );
+        it('should disable applied filters', async () => {
+            render(<Basic />);
 
-            fireEvent.click(getByLabelText('ra.action.add_filter'));
+            fireEvent.click(await screen.findByLabelText('Add filter'));
 
-            expect(queryByText('Returned')).not.toBeNull();
-            expect(queryByText('Name')).toBeNull();
+            let filters = screen.getAllByRole('menuitem');
+            expect(filters[0]).not.toHaveAttribute('aria-disabled');
+            expect(filters[1]).not.toHaveAttribute('aria-disabled');
+            expect(filters[2]).not.toHaveAttribute('aria-disabled');
+
+            fireEvent.click(filters[0]);
+
+            await screen.findByDisplayValue(
+                'Accusantium qui nihil voluptatum quia voluptas maxime ab similique'
+            );
+            fireEvent.click(screen.getByLabelText('Add filter'));
+
+            filters = screen.getAllByRole('menuitem');
+            expect(filters[0]).toHaveAttribute('aria-disabled', 'true');
+            expect(filters[1]).not.toHaveAttribute('aria-disabled');
+            expect(filters[2]).not.toHaveAttribute('aria-disabled');
         });
 
         it('should display the filter button if all filters are shown and there is a filter value', () => {
