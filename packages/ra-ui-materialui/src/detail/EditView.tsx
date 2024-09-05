@@ -2,11 +2,12 @@ import * as React from 'react';
 import { ReactElement, ElementType } from 'react';
 import { Card, CardContent, styled, SxProps } from '@mui/material';
 import clsx from 'clsx';
-import { useEditContext, useResourceDefinition, useCanAccess } from 'ra-core';
+import { useEditContext, useResourceDefinition } from 'ra-core';
 
 import { EditActions } from './EditActions';
 import { Title } from '../layout';
-import { DefaultUnauthorizedView } from './DefaultUnauthorizedView';
+
+const defaultActions = <EditActions />;
 
 export const EditView = (props: EditViewProps) => {
     const {
@@ -16,27 +17,16 @@ export const EditView = (props: EditViewProps) => {
         className,
         component: Content = Card,
         title,
-        unauthorized = <DefaultUnauthorizedView />,
         ...rest
     } = props;
 
     const { hasShow } = useResourceDefinition();
     const { resource, defaultTitle, record } = useEditContext();
-    const { canAccess, isPending } = useCanAccess({
-        resource,
-        action: 'edit',
-        record,
-        enabled: !!record,
-    });
 
     const finalActions =
         typeof actions === 'undefined' && hasShow ? defaultActions : actions;
-    if (!children || isPending) {
+    if (!children) {
         return null;
-    }
-
-    if (!canAccess) {
-        return unauthorized;
     }
 
     return (
@@ -70,10 +60,7 @@ export interface EditViewProps
     component?: ElementType;
     title?: string | ReactElement | false;
     sx?: SxProps;
-    unauthorized?: ReactElement;
 }
-
-const defaultActions = <EditActions />;
 
 const PREFIX = 'RaEdit';
 

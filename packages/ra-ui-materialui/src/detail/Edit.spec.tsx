@@ -20,13 +20,7 @@ import englishMessages from 'ra-language-english';
 
 import { AdminContext } from '../AdminContext';
 import { Edit } from './Edit';
-import {
-    Basic,
-    Title,
-    TitleFalse,
-    TitleElement,
-    AccessControl,
-} from './Edit.stories';
+import { Basic, Title, TitleFalse, TitleElement } from './Edit.stories';
 
 describe('<Edit />', () => {
     const defaultEditProps = {
@@ -897,17 +891,6 @@ describe('<Edit />', () => {
                 </AdminContext>
             );
             await screen.findByText('Foo lorem');
-        });
-    });
-
-    describe('Access control', () => {
-        it('should display the edit page when the user has access to the resource', async () => {
-            render(<AccessControl />);
-            // First test that we have access to the resource
-            await screen.findByDisplayValue('War and Peace');
-            // Then test that we react to the access control change
-            fireEvent.click(await screen.findByLabelText('books access'));
-            await screen.findByText('ra.page.unauthorized');
         });
     });
 });
