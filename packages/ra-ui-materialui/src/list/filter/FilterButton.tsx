@@ -13,7 +13,10 @@ import {
     styled,
     ButtonProps as MuiButtonProps,
     Divider,
+    ListItemIcon,
 } from '@mui/material';
+import ContentSave from '@mui/icons-material/Save';
+import ActionDelete from '@mui/icons-material/Delete';
 import ContentFilter from '@mui/icons-material/FilterList';
 import lodashGet from 'lodash/get';
 import isEqual from 'lodash/isEqual';
@@ -75,12 +78,17 @@ export const FilterButton = (props: FilterButtonProps) => {
     }
 
     const hiddenFilters = filters.filter(
-        (filterElement: JSX.Element) =>
-            !filterElement.props.alwaysOn &&
-            !displayedFilters[filterElement.props.source] &&
-            typeof lodashGet(filterValues, filterElement.props.source) ===
-                'undefined'
+        (filterElement: JSX.Element) => !filterElement.props.alwaysOn
     );
+
+    const appliedFilters = hiddenFilters
+        .filter(
+            (filterElement: JSX.Element) =>
+                !!displayedFilters[filterElement.props.source] &&
+                typeof lodashGet(filterValues, filterElement.props.source) !==
+                    'undefined'
+        )
+        .map((filterElement: JSX.Element) => filterElement.props.source);
 
     const handleClickButton = useCallback(
         event => {
@@ -163,7 +171,17 @@ export const FilterButton = (props: FilterButtonProps) => {
                 {hiddenFilters.map((filterElement: JSX.Element, index) => (
                     <FilterButtonMenuItem
                         key={filterElement.props.source}
-                        filter={filterElement}
+                        filter={{
+                            ...filterElement,
+                            props: {
+                                ...filterElement.props,
+                                disabled:
+                                    filterElement.props.disabled ??
+                                    appliedFilters.includes(
+                                        filterElement.props.source
+                                    ),
+                            },
+                        }}
                         resource={resource}
                         onShow={handleShow}
                         autoFocus={index === 0}
@@ -180,6 +198,9 @@ export const FilterButton = (props: FilterButtonProps) => {
                             onClick={showRemoveSavedQueryDialog}
                             key={index}
                         >
+                            <ListItemIcon>
+                                <ActionDelete fontSize="small" />
+                            </ListItemIcon>
                             {translate(
                                 'ra.saved_queries.remove_label_with_name',
                                 {
@@ -218,6 +239,9 @@ export const FilterButton = (props: FilterButtonProps) => {
                     !hasSavedCurrentQuery &&
                     !disableSaveQuery && (
                         <MenuItem onClick={showAddSavedQueryDialog}>
+                            <ListItemIcon>
+                                <ContentSave fontSize="small" />
+                            </ListItemIcon>
                             {translate('ra.saved_queries.new_label', {
                                 _: 'Save current query...',
                             })}
@@ -230,6 +254,9 @@ export const FilterButton = (props: FilterButtonProps) => {
                             setOpen(false);
                         }}
                     >
+                        <ListItemIcon>
+                            <ActionDelete fontSize="small" />
+                        </ListItemIcon>
                         {translate('ra.action.remove_all_filters', {
                             _: 'Remove all filters',
                         })}
