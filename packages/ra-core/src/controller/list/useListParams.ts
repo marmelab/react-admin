@@ -82,7 +82,7 @@ export const useListParams = ({
     perPage = 10,
     resource,
     sort = defaultSort,
-    storeKey = `${resource}.listParams`,
+    storeKey = disableSyncWithLocation ? '' : `${resource}.listParams`,
 }: ListParamsOptions): [Parameters, Modifiers] => {
     const location = useLocation();
     const navigate = useNavigate();
@@ -95,16 +95,13 @@ export const useListParams = ({
     );
     const tempParams = useRef<ListParams>();
     const isMounted = useIsMounted();
-    const disableSyncWithStore = storeKey === false;
 
     const requestSignature = [
         location.search,
         resource,
         storeKey,
         JSON.stringify(
-            disableSyncWithLocation || disableSyncWithStore
-                ? localParams
-                : params
+            disableSyncWithLocation && storeKey === '' ? localParams : params
         ),
         JSON.stringify(filterDefaultValues),
         JSON.stringify(sort),
@@ -121,7 +118,7 @@ export const useListParams = ({
             getQuery({
                 queryFromLocation,
                 params:
-                    disableSyncWithLocation || disableSyncWithStore
+                    disableSyncWithLocation && storeKey === ''
                         ? localParams
                         : params,
                 filterDefaultValues,
@@ -136,10 +133,7 @@ export const useListParams = ({
     // store as well so that we don't lose them after a redirection back
     // to the list
     useEffect(() => {
-        if (
-            Object.keys(queryFromLocation).length > 0 &&
-            !disableSyncWithStore
-        ) {
+        if (Object.keys(queryFromLocation).length > 0) {
             setParams(query);
         }
     }, [location.search]); // eslint-disable-line
@@ -160,8 +154,10 @@ export const useListParams = ({
                         // the side effects were already processed by another changeParams
                         return;
                     }
-                    if (disableSyncWithLocation) {
+                    if (disableSyncWithLocation && storeKey === '') {
                         setLocalParams(tempParams.current);
+                    } else if (disableSyncWithLocation && storeKey !== '') {
+                        setParams(tempParams.current);
                     } else {
                         // the useEffect above will apply the changes to the params in the store
                         navigate(
