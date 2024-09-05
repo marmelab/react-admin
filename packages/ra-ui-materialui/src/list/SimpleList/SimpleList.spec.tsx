@@ -1,11 +1,17 @@
 import * as React from 'react';
 import { render, screen, waitFor, within } from '@testing-library/react';
-import { ListContext, ResourceContextProvider } from 'ra-core';
+import {
+    ListContext,
+    Resource,
+    ResourceContextProvider,
+    TestMemoryRouter,
+} from 'ra-core';
 
 import { AdminContext } from '../../AdminContext';
 import { SimpleList } from './SimpleList';
 import { TextField } from '../../field/TextField';
 import { NoPrimaryText } from './SimpleList.stories';
+import { Admin } from 'react-admin';
 
 const Wrapper = ({ children }: any) => (
     <AdminContext>
@@ -134,18 +140,29 @@ describe('<SimpleList />', () => {
 
     it('should display a message when there is no result', () => {
         render(
-            <ListContext.Provider
-                value={{
-                    isLoading: false,
-                    data: [],
-                    total: 0,
-                    resource: 'posts',
-                }}
-            >
-                <SimpleList />
-            </ListContext.Provider>
+            <TestMemoryRouter>
+                <Admin>
+                    <Resource
+                        name="posts"
+                        list={
+                            <ListContext.Provider
+                                value={{
+                                    isLoading: false,
+                                    data: [],
+                                    total: 0,
+                                    resource: 'posts',
+                                }}
+                            >
+                                <SimpleList />
+                            </ListContext.Provider>
+                        }
+                    />
+                </Admin>
+            </TestMemoryRouter>
         );
-        expect(screen.queryByText('ra.navigation.no_results')).not.toBeNull();
+        expect(
+            screen.queryByText('No posts found using the current filters.')
+        ).not.toBeNull();
     });
 
     it('should fall back to record representation when no primaryText is provided', async () => {
