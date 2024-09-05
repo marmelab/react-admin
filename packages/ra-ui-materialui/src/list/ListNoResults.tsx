@@ -2,15 +2,20 @@ import * as React from 'react';
 import { memo } from 'react';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
-import { useResourceContext, useTranslate } from 'ra-core';
+import { useListController, useResourceContext, useTranslate } from 'ra-core';
+import { Link } from '@mui/material';
 
 export const ListNoResults = memo(() => {
     const translate = useTranslate();
     const resource = useResourceContext();
+    const { setFilters } = useListController({ resource });
     return (
         <CardContent>
             <Typography variant="body2">
-                {translate('ra.navigation.no_results', { resource })}
+                {translate('ra.navigation.no_results', { resource })}{' '}
+                <Link component="button" onClick={() => setFilters({}, [])}>
+                    {translate('ra.navigation.clear_filters')}
+                </Link>
             </Typography>
         </CardContent>
     );
