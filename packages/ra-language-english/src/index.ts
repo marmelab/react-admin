@@ -112,7 +112,8 @@ const englishMessages: TranslationMessages = {
                 "Some of your changes weren't saved. Are you sure you want to ignore them?",
         },
         navigation: {
-            no_results: 'No results found',
+            clear_filters: 'Clear filters.',
+            no_results: 'No %{resource} found using the current filters.',
             no_more_results:
                 'The page number %{page} is out of boundaries. Try the previous page.',
             page_out_of_boundaries: 'Page number %{page} out of boundaries',

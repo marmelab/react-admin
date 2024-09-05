@@ -117,7 +117,8 @@ const frenchMessages: TranslationMessages = {
                 "Certains changements n'ont pas été enregistrés. Êtes-vous sûr(e) de vouloir quitter cette page ?",
         },
         navigation: {
-            no_results: 'Aucun résultat',
+            clear_filters: 'Effacer les filtres.',
+            no_results: 'Aucun %{resource} trouvé avec les filtres actuels.',
             no_more_results:
                 'La page numéro %{page} est en dehors des limites. Essayez la page précédente.',
             page_out_of_boundaries: 'La page %{page} est en dehors des limites',
