@@ -597,7 +597,6 @@ const AccessControlUI = ({
     children: React.ReactNode;
     setAuthorizedResources: Function;
     authorizedResources: {
-        books: boolean;
         'books.id': boolean;
         'books.title': boolean;
         'books.author': boolean;
@@ -608,21 +607,6 @@ const AccessControlUI = ({
     return (
         <div>
             <div>
-                <label>
-                    <input
-                        type="checkbox"
-                        checked={authorizedResources.books}
-                        onChange={() => {
-                            setAuthorizedResources(state => ({
-                                ...state,
-                                books: !authorizedResources.books,
-                            }));
-                            queryClient.clear();
-                        }}
-                    />
-                    books access
-                </label>
-                <br />
                 <label>
                     <input
                         type="checkbox"
@@ -698,7 +682,6 @@ const AccessControlUI = ({
 
 export const AccessControl = ({
     initialAuthorizedResources = {
-        books: true,
         'books.id': false,
         'books.title': true,
         'books.author': true,
@@ -706,7 +689,6 @@ export const AccessControl = ({
     },
 }: {
     initialAuthorizedResources?: {
-        books: boolean;
         'books.id': boolean;
         'books.title': boolean;
         'books.author': boolean;
@@ -731,7 +713,6 @@ const AdminWithAccessControl = ({
 }: {
     queryClient: QueryClient;
     initialAuthorizedResources: {
-        books: boolean;
         'books.id': boolean;
         'books.title': boolean;
         'books.author': boolean;
