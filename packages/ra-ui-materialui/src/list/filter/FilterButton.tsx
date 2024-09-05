@@ -13,6 +13,7 @@ import {
     styled,
     ButtonProps as MuiButtonProps,
     Box,
+    Divider,
 } from '@mui/material';
 import ContentFilter from '@mui/icons-material/FilterList';
 import lodashGet from 'lodash/get';
@@ -213,16 +214,7 @@ export const FilterButton = (props: FilterButtonProps) => {
                         </MenuItem>
                     )
                 )}
-                {hasFilterValues && (
-                    <Box
-                        sx={{
-                            height: 3,
-                            bgcolor: 'background.default',
-                            margin: 0,
-                            width: '100%',
-                        }}
-                    />
-                )}
+                {hasFilterValues && <Divider />}
                 {hasFilterValues &&
                     !hasSavedCurrentQuery &&
                     !disableSaveQuery && (
