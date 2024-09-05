@@ -1266,3 +1266,14 @@ const ProductList = () => {
 ```
 
 `useListController` returns callbacks to sort, filter, and paginate the list, so you can build a complete List page. Check [the `useListController`hook documentation](./useListController.md) for details.
+
+## Controlling Access To The List
+
+### Controlling Access In Exports
+
+Should your authProvider implements the [`canAccess` method](./AuthProviderWriting.md#canaccess), the [`exporter`](#exporter) will call it for each record property to ensure it only exports fields to which users have access to.
+
+The calls to the [`canAccess` method](./AuthProviderWriting.md#canaccess) will receive the following parameters:
+
+- `action`: `read`
+- `resource`: `[RESOURCE].[PROPERTY]` where `RESOURCE` will be the current React-Admin resource and `PROPERTY` one of the record property.
