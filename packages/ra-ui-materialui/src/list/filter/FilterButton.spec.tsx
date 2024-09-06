@@ -1,6 +1,12 @@
 import * as React from 'react';
 import expect from 'expect';
-import { render, fireEvent, screen, waitFor } from '@testing-library/react';
+import {
+    render,
+    fireEvent,
+    screen,
+    waitFor,
+    within,
+} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { createTheme } from '@mui/material/styles';
 import {
@@ -43,27 +49,29 @@ describe('<FilterButton />', () => {
     });
 
     describe('filter selection menu', () => {
-        it('should disable applied filters', async () => {
+        it('should check applied filters', async () => {
             render(<Basic />);
 
             fireEvent.click(await screen.findByLabelText('Add filter'));
 
-            let filters = screen.getAllByRole('menuitem');
-            expect(filters[0]).not.toHaveAttribute('aria-disabled');
-            expect(filters[1]).not.toHaveAttribute('aria-disabled');
-            expect(filters[2]).not.toHaveAttribute('aria-disabled');
+            let checkboxs = screen.getAllByRole('checkbox');
+            expect(checkboxs).toHaveLength(3);
+            expect(checkboxs[0]).not.toBeChecked();
+            expect(checkboxs[1]).not.toBeChecked();
+            expect(checkboxs[2]).not.toBeChecked();
 
-            fireEvent.click(filters[0]);
+            fireEvent.click(checkboxs[0]);
 
             await screen.findByDisplayValue(
                 'Accusantium qui nihil voluptatum quia voluptas maxime ab similique'
             );
             fireEvent.click(screen.getByLabelText('Add filter'));
 
-            filters = screen.getAllByRole('menuitem');
-            expect(filters[0]).toHaveAttribute('aria-disabled', 'true');
-            expect(filters[1]).not.toHaveAttribute('aria-disabled');
-            expect(filters[2]).not.toHaveAttribute('aria-disabled');
+            checkboxs = screen.getAllByRole('checkbox');
+            expect(checkboxs).toHaveLength(3);
+            expect(checkboxs[0]).toBeChecked();
+            expect(checkboxs[1]).not.toBeChecked();
+            expect(checkboxs[2]).not.toBeChecked();
         });
 
         it('should display the filter button if all filters are shown and there is a filter value', () => {
