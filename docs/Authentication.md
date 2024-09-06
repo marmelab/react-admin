@@ -49,7 +49,7 @@ const authProvider = {
     getIdentity: () => Promise.resolve(),
     // get the user permissions (optional)
     getPermissions: () => Promise.resolve(),
-    // get the user authorization to perform an action on a resource (optional)
+    // check whether users have the right to perform an action on a resource (optional)
     canAccess: () => Promise.resolve(),
 };
 ```
