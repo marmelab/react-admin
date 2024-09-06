@@ -14,7 +14,7 @@ import { useEvent } from '../util';
  * `useCanAccessResources` returns an object describing the state of the request:
  *
  * - start: { isPending: true }
- * - success: { canAccess: true, isPending: false }
+ * - success: { canAccess: Object<string, boolean>, isPending: false }
  * - error: { error: [error from provider], isPending: false }
  *
  * @param {Object} params Any params you want to pass to the authProvider

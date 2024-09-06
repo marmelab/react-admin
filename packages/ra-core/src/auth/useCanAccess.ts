@@ -14,7 +14,7 @@ import { useEvent } from '../util';
  * The return value updates according to the request state:
  *
  * - start: { isPending: true }
- * - success: { canAccess: true, isPending: false }
+ * - success: { canAccess: true | false, isPending: false }
  * - error: { error: [error from provider], isPending: false }
  *
  * Useful to enable or disable features based on users permissions.
