@@ -27,7 +27,7 @@ import { useEvent } from '../util';
  * @example
  * import { useCanAccessResources } from 'react-admin';
  *
- * const DeleteUserButton = ({ record }) => {
+ * const UserList = ({ record }) => {
  *     const { isPending, canAccess } = useCanAccessResources({
  *         action: 'delete',
  *         resources: ['users.id', 'users.name', 'users.email'],
