@@ -1271,9 +1271,18 @@ const ProductList = () => {
 
 ### Controlling Access In Exports
 
-Should your authProvider implements the [`canAccess` method](./AuthProviderWriting.md#canaccess), the [`exporter`](#exporter) will call it for each record property to ensure it only exports fields to which users have access to.
+Should your authProvider implements the [`canAccess` method](./AuthProviderWriting.md#canaccess), the [`exporter`](#exporter) will call it for each record property to ensure it only exports fields to which users have access to. For instance, given the following record shape:
 
-The calls to the [`canAccess` method](./AuthProviderWriting.md#canaccess) will receive the following parameters:
+```json
+{
+    "id": 0,
+    "title": "Never Gonna Give You Up",
+    "author": "Rick Astley",
+}
+```
 
-- `action`: `read`
-- `resource`: `[RESOURCE].[PROPERTY]` where `RESOURCE` will be the current React-Admin resource and `PROPERTY` one of the record property.
+The `authProvider.canAccess` method will be called 3 times with the following parameters:
+
+1. `{ action: "read", resource: "posts.id" }`
+2. `{ action: "read", resource: "posts.title" }`
+3. `{ action: "read", resource: "posts.author" }`
