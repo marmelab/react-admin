@@ -41,7 +41,7 @@ export const useExporter = (params: { exporter?: Exporter | false }) => {
 
             return {
                 ...record,
-                [key]: !!canAccessResult.canAccess,
+                [key]: !!canAccessResult,
             };
         }, Promise.resolve({}));
 

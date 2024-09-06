@@ -9,10 +9,7 @@ This hook returns a callback to call the `authProvider.canAccess()` method for a
 
 ## Usage
 
-`useCanAccessCallback` returns an async function that takes an object `{ action, resource, record }` as argument. This function returns an object with the following properties:
-
-- `canAccess`: a boolean determining whether the user has access to the resource.
-- `error`: the error that might have occurred.
+`useCanAccessCallback` returns an async function that takes an object `{ action, resource, record }` as argument. This function returns a boolean indicating whether users have access to the provided resource and action.
 
 ```jsx
 import { useCanAccessCallback, useRecordContext, useDataProvider, Button } from 'react-admin';
@@ -22,10 +19,14 @@ const ResetViewsButton = () => {
     const dataProvider = useDataProvider();
     const checkAccess = useCanAccessCallback();
     const resetViews = async () => {
-        const { canAccess, error } = await checkAccess({ action: 'resetViews', resource: 'users', record });
+        try {
+            const canAccess = await checkAccess({ action: 'resetViews', resource: 'users', record });
 
-        if (canAccess) {
-            dataProvider.resetViews('users', { id: record.id });
+            if (canAccess) {
+                dataProvider.resetViews('users', { id: record.id });
+            }
+        } catch (error) {
+            console.error(error);
         }
     }
     return <Button onClick={resetViews} label="Reset Views" />;

@@ -1,8 +1,4 @@
-import {
-    UseMutateAsyncFunction,
-    useMutation,
-    useQueryClient,
-} from '@tanstack/react-query';
+import { UseMutateAsyncFunction, useMutation } from '@tanstack/react-query';
 import useAuthProvider from './useAuthProvider';
 
 /**
@@ -19,11 +15,15 @@ import useAuthProvider from './useAuthProvider';
  *         const dataProvider = useDataProvider();
  *
  *         const resetViews = () => {
- *             const { canAccess, error } = checkAccess({ resource: 'posts', action: 'read' });
- *             if (canAccess) {
- *                 dataProvider.resetViews('users', { id: record.id });
- *             } else {
- *                 console.log('You are not authorized to reset views');
+ *             try {
+ *                 const canAccess = checkAccess({ resource: 'posts', action: 'read' });
+ *                 if (canAccess) {
+ *                     dataProvider.resetViews('users', { id: record.id });
+ *                 } else {
+ *                     console.log('You are not authorized to reset views');
+ *                 }
+ *             } catch (error) {
+ *                 console.error(error);
  *             }
  *         };
  *
@@ -33,45 +33,27 @@ import useAuthProvider from './useAuthProvider';
 export const useCanAccessCallback = <ErrorType = Error>() => {
     const authProvider = useAuthProvider();
 
-    const queryClient = useQueryClient();
-
     const { mutateAsync } = useMutation<
-        UseCanAccessCallbackResult<ErrorType>,
+        UseCanAccessCallbackResult,
         ErrorType,
         UseCanAccessCallbackOptions
     >({
         mutationFn: async (
             params: UseCanAccessCallbackOptions
-        ): Promise<UseCanAccessCallbackResult<ErrorType>> => {
+        ): Promise<UseCanAccessCallbackResult> => {
             if (!authProvider || !authProvider.canAccess) {
-                return { canAccess: true, error: undefined };
+                return true;
             }
-
-            const cachedResult = queryClient.getQueryData<
-                UseCanAccessCallbackResult<ErrorType>
-            >(['auth', 'canAccess', JSON.stringify(params)]);
-
-            if (cachedResult && cachedResult.canAccess !== undefined) {
-                return cachedResult;
-            }
-            return authProvider
-                .canAccess(params)
-                .then(data => ({ canAccess: data, error: undefined }))
-                .catch(error => ({ canAccess: undefined, error }));
+            return authProvider.canAccess(params);
         },
-        onSuccess: (data, params) => {
-            queryClient.setQueryData(
-                ['auth', 'canAccess', JSON.stringify(params)],
-                data
-            );
-        },
+        retry: false,
     });
 
     return mutateAsync;
 };
 
 export type UseCanAccessCallback<ErrorType = Error> = UseMutateAsyncFunction<
-    UseCanAccessCallbackResult<ErrorType>,
+    UseCanAccessCallbackResult,
     ErrorType,
     UseCanAccessCallbackOptions,
     unknown
@@ -83,12 +65,4 @@ export type UseCanAccessCallbackOptions = {
     record?: unknown;
 };
 
-export type UseCanAccessCallbackResult<ErrorType = Error> =
-    | {
-          canAccess: boolean;
-          error: undefined;
-      }
-    | {
-          canAccess: undefined;
-          error: ErrorType;
-      };
+export type UseCanAccessCallbackResult = boolean;

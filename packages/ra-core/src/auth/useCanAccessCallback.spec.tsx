@@ -26,7 +26,7 @@ describe('useCanAccessCallback', () => {
                 action: 'read',
             });
         });
-        expect(screen.getByText('canAccess: YES')).toBeDefined();
+        await screen.findByText('canAccess: YES');
 
         fireEvent.click(screen.getByText('Can I write posts'));
 
@@ -36,7 +36,7 @@ describe('useCanAccessCallback', () => {
                 action: 'write',
             });
         });
-        expect(screen.getByText('canAccess: NO')).toBeDefined();
+        await screen.findByText('canAccess: NO');
 
         fireEvent.click(screen.getByText('Can I read comments'));
 
@@ -49,40 +49,11 @@ describe('useCanAccessCallback', () => {
                 },
             });
         });
-        expect(screen.getByText('canAccess: YES')).toBeDefined();
+        await screen.findByText('canAccess: YES');
         expect(canAccess).toBeCalledTimes(3);
     });
 
-    it('should call authProvider.canAccess once for each params', async () => {
-        const canAccess = jest
-            .fn()
-            .mockImplementation(async ({ action }) => action === 'read');
-        const authProvider = {
-            login: () => Promise.reject('bad method'),
-            logout: () => Promise.reject('bad method'),
-            checkAuth: () => Promise.reject('bad method'),
-            checkError: () => Promise.reject('bad method'),
-            getPermissions: () => Promise.reject('bad method'),
-            canAccess,
-        };
-        render(<Basic authProvider={authProvider} />);
-
-        fireEvent.click(screen.getByText('Can I read posts'));
-
-        await waitFor(() => {
-            expect(canAccess).toBeCalledWith({
-                resource: 'posts',
-                action: 'read',
-            });
-        });
-        expect(screen.getByText('canAccess: YES')).toBeDefined();
-        expect(canAccess).toBeCalledTimes(1);
-        fireEvent.click(screen.getByText('Can I read posts'));
-        await new Promise(resolve => setTimeout(resolve, 0)); // need to wait for the click to take effect
-        expect(canAccess).toBeCalledTimes(1);
-    });
-
-    it('should return error thrown by canAccess in an error key', async () => {
+    it('should reject when an error is thrown by canAccess', async () => {
         const canAccess = jest
             .fn()
             .mockRejectedValue(new Error('uh oh, something went wrong'));
@@ -104,36 +75,8 @@ describe('useCanAccessCallback', () => {
                 action: 'read',
             });
         });
+        await screen.findByText('uh oh, something went wrong');
         expect(screen.queryByText('canAccess: YES')).toBeNull();
-        expect(screen.getByText('uh oh, something went wrong')).toBeDefined();
-    });
-
-    it('should retry call when previous try returned an error', async () => {
-        const canAccess = jest
-            .fn()
-            .mockRejectedValue(new Error('uh oh, something went wrong'));
-        const authProvider = {
-            login: () => Promise.reject('bad method'),
-            logout: () => Promise.reject('bad method'),
-            checkAuth: () => Promise.reject('bad method'),
-            checkError: () => Promise.reject('bad method'),
-            getPermissions: () => Promise.reject('bad method'),
-            canAccess,
-        };
-        render(<Basic authProvider={authProvider} />);
-
-        fireEvent.click(screen.getByText('Can I read posts'));
-
-        await waitFor(() => {
-            expect(canAccess).toBeCalledWith({
-                resource: 'posts',
-                action: 'read',
-            });
-        });
-        expect(screen.getByText('uh oh, something went wrong')).toBeDefined();
-        fireEvent.click(screen.getByText('Can I read posts'));
-        await new Promise(resolve => setTimeout(resolve, 0)); // need to wait for the click to take effect
-        expect(canAccess).toBeCalledTimes(2);
     });
 
     it('should return a function always allowing access when no authProvider', async () => {
