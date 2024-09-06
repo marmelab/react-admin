@@ -1,10 +1,5 @@
 import * as React from 'react';
-import {
-    render,
-    screen,
-    waitFor,
-    within,
-} from '@testing-library/react';
+import { render, screen, waitFor, within } from '@testing-library/react';
 import {
     ListContext,
     Resource,
