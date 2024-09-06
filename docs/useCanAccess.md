@@ -5,7 +5,7 @@ title: "useCanAccess"
 
 # `useCanAccess`
 
-This hook calls the authProvider.canAccess() method using react-query for a provided resource and action (and optionally a record).
+This hook calls the `authProvider.canAccess()` method on mount for a provided resource and action (and optionally a record). It returns an object containing a `canAccess` boolean set to `true` is the current user can access the resource and action. 
 
 ## Usage
 

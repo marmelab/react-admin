@@ -1267,11 +1267,11 @@ const ProductList = () => {
 
 `useListController` returns callbacks to sort, filter, and paginate the list, so you can build a complete List page. Check [the `useListController`hook documentation](./useListController.md) for details.
 
-## Controlling Access To The List
+## Access Control
 
-### Controlling Access In Exports
+### Exported Fields
 
-Should your authProvider implements the [`canAccess` method](./AuthProviderWriting.md#canaccess), the [`exporter`](#exporter) will call it for each record property to ensure it only exports fields to which users have access to. For instance, given the following record shape:
+Should your authProvider implement the [`canAccess` method](./AuthProviderWriting.md#canaccess), the [`exporter`](#exporter) will call it to export only fields to which the current user has access to. For instance, given the following record shape:
 
 ```json
 {

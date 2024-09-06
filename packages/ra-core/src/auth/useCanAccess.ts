@@ -34,7 +34,7 @@ import { useEvent } from '../util';
  *             resource: 'posts',
  *             action: 'read',
  *         });
- *         if (isPending || canAccess) {
+ *         if (isPending || !canAccess) {
  *             return null;
  *         }
  *         return <PostEdit />;

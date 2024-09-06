@@ -1369,9 +1369,9 @@ export const PostList = () => (
 );
 ```
 
-### Controlling Access To The Columns
+## Access Control
 
-Should your `authProvider` implements the [`canAccess` method](./AuthProviderWriting.md#canaccess), the `<Datagrid>` will call it for each record property to ensure it only display the columns users have access to. For instance, given the following `<Datagrid>`:
+Should your `authProvider` implement the [`canAccess` method](./AuthProviderWriting.md#canaccess), the `<Datagrid>` will call to display only the columns users have access to. For instance, given the following `<Datagrid>`:
 
 ```tsx
 import { List, Datagrid, TextField } from 'react-admin';
@@ -1388,10 +1388,10 @@ const PostList = () => (
 );
 ```
 
-The `authProvider.canAccess` method will be called 3 times with the following parameters:
+The `<Datagrid>` will call `authProvider.canAccess()` 3 times, using the following parameters:
 
 1. `{ action: "read", resource: "posts.title" }`
 2. `{ action: "read", resource: "posts.author" }`
 3. `{ action: "read", resource: "posts.published_at" }`
 
-**Note**: `<Datagrid>` children that don't have a `source` prop will always be displayed.
+**Note**: `<Datagrid>` children that don't have a `source` prop will always be displayed regardless of access control.
