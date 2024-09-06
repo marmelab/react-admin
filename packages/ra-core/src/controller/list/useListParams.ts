@@ -118,7 +118,8 @@ export const useListParams = ({
             getQuery({
                 queryFromLocation,
                 params:
-                    disableSyncWithLocation && storeKey === ''
+                    storeKey === false ||
+                    (disableSyncWithLocation && storeKey === '')
                         ? localParams
                         : params,
                 filterDefaultValues,
