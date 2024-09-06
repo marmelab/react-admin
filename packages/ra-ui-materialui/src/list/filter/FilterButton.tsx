@@ -14,9 +14,10 @@ import {
     ButtonProps as MuiButtonProps,
     Divider,
     ListItemIcon,
+    Checkbox,
 } from '@mui/material';
 import ContentSave from '@mui/icons-material/Save';
-import ActionDelete from '@mui/icons-material/Delete';
+import ClearIcon from '@mui/icons-material/Clear';
 import ContentFilter from '@mui/icons-material/FilterList';
 import lodashGet from 'lodash/get';
 import isEqual from 'lodash/isEqual';
@@ -56,6 +57,7 @@ export const FilterButton = (props: FilterButtonProps) => {
         perPage,
         setFilters,
         showFilter,
+        hideFilter,
         sort,
     } = useListContext();
     const hasFilterValues = !isEqual(filterValues, {});
@@ -122,6 +124,24 @@ export const FilterButton = (props: FilterButtonProps) => {
         [showFilter, setOpen]
     );
 
+    const handleRemove = useCallback(
+        ({ source }) => {
+            hideFilter(source);
+            // We have to fallback to imperative code because the new FilterFormInput
+            // has no way of knowing it has just been displayed (and thus that it should focus its input)
+            setTimeout(() => {
+                const inputElement = document.querySelector(
+                    `input[name='${source}']`
+                ) as HTMLInputElement;
+                if (inputElement) {
+                    inputElement.focus();
+                }
+            }, 50);
+            setOpen(false);
+        },
+        [hideFilter, setOpen]
+    );
+
     // add query dialog state
     const [addSavedQueryDialogOpen, setAddSavedQueryDialogOpen] =
         useState(false);
@@ -175,15 +195,14 @@ export const FilterButton = (props: FilterButtonProps) => {
                             ...filterElement,
                             props: {
                                 ...filterElement.props,
-                                disabled:
-                                    filterElement.props.disabled ??
-                                    appliedFilters.includes(
-                                        filterElement.props.source
-                                    ),
+                                applied: appliedFilters.includes(
+                                    filterElement.props.source
+                                ),
                             },
                         }}
                         resource={resource}
                         onShow={handleShow}
+                        onHide={handleRemove}
                         autoFocus={index === 0}
                     />
                 ))}
@@ -199,7 +218,7 @@ export const FilterButton = (props: FilterButtonProps) => {
                             key={index}
                         >
                             <ListItemIcon>
-                                <ActionDelete fontSize="small" />
+                                <ClearIcon fontSize="small" />
                             </ListItemIcon>
                             {translate(
                                 'ra.saved_queries.remove_label_with_name',
@@ -230,6 +249,15 @@ export const FilterButton = (props: FilterButtonProps) => {
                             }}
                             key={index}
                         >
+                            <Checkbox
+                                size="small"
+                                sx={{
+                                    marginLeft: 0,
+                                    paddingLeft: 0,
+                                    paddingTop: 0,
+                                    paddingBottom: 0,
+                                }}
+                            />
                             {savedQuery.label}
                         </MenuItem>
                     )
@@ -255,7 +283,7 @@ export const FilterButton = (props: FilterButtonProps) => {
                         }}
                     >
                         <ListItemIcon>
-                            <ActionDelete fontSize="small" />
+                            <ClearIcon fontSize="small" />
                         </ListItemIcon>
                         {translate('ra.action.remove_all_filters', {
                             _: 'Remove all filters',
