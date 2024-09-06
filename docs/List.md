@@ -445,7 +445,7 @@ const Dashboard = () => (
 ```
 {% endraw %}
 
-**Tip**: As `disableSyncWithLocation` also disables the persistence of the list parameters in the Store, any custom string specified in the `storeKey` prop is ignored when `disableSyncWithLocation` is set to `true`. To solve this, you can pass a custom `storeKey` prop. react-admin will store and sync the parameters using the passed storeKey.
+**Tip**: `disableSyncWithLocation` also disables the persistence of the list parameters in the Store by default. To enable the persistence of the list parameters in the Store, you can pass a custom `storeKey` prop.
 
 ```diff
 const Dashboard = () => (
