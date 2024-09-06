@@ -153,7 +153,7 @@ export const Datagrid: React.ForwardRefExoticComponent<
         total,
     } = useListContextWithProps(props);
 
-    const resourceKeys =
+    const sourceKeys =
         React.Children.map(children, field => {
             if (!isValidElement(field)) {
                 return null;
@@ -163,7 +163,7 @@ export const Datagrid: React.ForwardRefExoticComponent<
         })?.filter(value => typeof value === 'string') || [];
 
     const { canAccess, isPending: isPendingAccess } = useCanAccessResources({
-        resources: resourceKeys.map(key => `${resource}.${key}`),
+        resources: sourceKeys.map(key => `${resource}.${key}`),
         action: 'read',
     });
 
