@@ -1271,7 +1271,7 @@ const ProductList = () => {
 
 ### Exported Fields
 
-Should your authProvider implement the [`canAccess` method](./AuthProviderWriting.md#canaccess), the [`exporter`](#exporter) will call it to export only fields to which the current user has access to. For instance, given the following record shape:
+Should your authProvider implement the [`canAccess` method](./AuthProviderWriting.md#canaccess), the [`exporter`](#exporter) will call it to export only fields the current user has the right to export. For instance, given the following record shape:
 
 ```json
 {
@@ -1283,6 +1283,6 @@ Should your authProvider implement the [`canAccess` method](./AuthProviderWritin
 
 The `authProvider.canAccess` method will be called 3 times with the following parameters:
 
-1. `{ action: "read", resource: "posts.id" }`
-2. `{ action: "read", resource: "posts.title" }`
-3. `{ action: "read", resource: "posts.author" }`
+1. `{ action: "export", resource: "posts.id" }`
+2. `{ action: "export", resource: "posts.title" }`
+3. `{ action: "export", resource: "posts.author" }`

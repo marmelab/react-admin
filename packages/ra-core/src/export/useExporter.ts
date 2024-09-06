@@ -35,7 +35,7 @@ export const useExporter = (params: { exporter?: Exporter | false }) => {
         const authorizedKeys = await keys.reduce(async (acc, key) => {
             const record = await acc;
             const canAccessResult = await canAccess({
-                action: 'read',
+                action: 'export',
                 resource: `${resource}.${key}`,
             });
 
