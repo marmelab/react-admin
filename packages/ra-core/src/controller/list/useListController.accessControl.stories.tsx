@@ -3,7 +3,6 @@ import fakeDataProvider from 'ra-data-fakerest';
 
 import { CoreAdminContext, Resource } from '../../core';
 import { localStorageStore } from '../../store';
-import { FakeBrowserDecorator } from '../../storybook/FakeBrowser';
 import { AuthProvider, Exporter, SortPayload } from '../../types';
 import { useListController } from './useListController';
 import { QueryClient } from '@tanstack/react-query';
@@ -11,7 +10,6 @@ import { defaultExporter } from '../../export';
 
 export default {
     title: 'ra-core/controller/list/useListController',
-    decorators: [FakeBrowserDecorator],
     parameters: {
         initialEntries: ['/posts'],
     },
