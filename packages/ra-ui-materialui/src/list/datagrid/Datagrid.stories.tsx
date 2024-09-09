@@ -108,6 +108,17 @@ export const Basic = () => (
     </Wrapper>
 );
 
+export const Optimized = () => (
+    <Wrapper>
+        <Datagrid optimized>
+            <TextField source="id" />
+            <TextField source="title" />
+            <TextField source="author" />
+            <TextField source="year" />
+        </Datagrid>
+    </Wrapper>
+);
+
 const ExpandPanel = () => {
     const book = useRecordContext();
     return (
@@ -707,9 +718,38 @@ export const AccessControl = ({
     );
 };
 
+export const AccessControlOptimized = ({
+    initialAuthorizedResources = {
+        'books.id': false,
+        'books.title': true,
+        'books.author': true,
+        'books.year': true,
+    },
+}: {
+    initialAuthorizedResources?: {
+        'books.id': boolean;
+        'books.title': boolean;
+        'books.author': boolean;
+        'books.year': boolean;
+    };
+}) => {
+    const queryClient = new QueryClient();
+
+    return (
+        <TestMemoryRouter initialEntries={['/books']}>
+            <AdminWithAccessControl
+                queryClient={queryClient}
+                initialAuthorizedResources={initialAuthorizedResources}
+                optimized
+            />
+        </TestMemoryRouter>
+    );
+};
+
 const AdminWithAccessControl = ({
     queryClient,
     initialAuthorizedResources,
+    optimized,
 }: {
     queryClient: QueryClient;
     initialAuthorizedResources: {
@@ -718,6 +758,7 @@ const AdminWithAccessControl = ({
         'books.author': boolean;
         'books.year': boolean;
     };
+    optimized?: boolean;
 }) => {
     const [authorizedResources, setAuthorizedResources] = React.useState(
         initialAuthorizedResources
@@ -747,15 +788,18 @@ const AdminWithAccessControl = ({
                 setAuthorizedResources={setAuthorizedResources}
                 queryClient={queryClient}
             >
-                <Resource name="books" list={BookList} />
+                <Resource
+                    name="books"
+                    list={<BookList optimized={optimized} />}
+                />
             </AccessControlUI>
         </AdminContext>
     );
 };
 
-const BookList = () => (
+const BookList = ({ optimized }: { optimized?: boolean }) => (
     <List>
-        <Datagrid>
+        <Datagrid optimized={optimized}>
             <TextField source="id" label={<span>ID</span>} />
             <TextField source="title" label={<span>TITLE</span>} />
             <TextField source="author" label={<span>AUTHOR</span>} />
