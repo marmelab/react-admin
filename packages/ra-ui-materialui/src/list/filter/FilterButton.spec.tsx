@@ -44,7 +44,7 @@ describe('<FilterButton />', () => {
     });
 
     describe('filter selection menu', () => {
-        it('should check applied filters adn display decdicated inputs', async () => {
+        it('should control filters display by checking/unchecking it in the menu', async () => {
             render(<Basic />);
 
             fireEvent.click(await screen.findByLabelText('Add filter'));
@@ -89,7 +89,7 @@ describe('<FilterButton />', () => {
             expect(checkboxs[2].checked).toBe(false);
         }, 7000);
 
-        it('should uncheck removed filters by removing dedicated inputs', async () => {
+        it('should remove the checked state of the menu item when removing its matching filter', async () => {
             render(<Basic />);
 
             fireEvent.click(await screen.findByLabelText('Add filter'));
