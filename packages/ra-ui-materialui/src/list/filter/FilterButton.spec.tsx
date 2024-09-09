@@ -1,12 +1,6 @@
 import * as React from 'react';
 import expect from 'expect';
-import {
-    render,
-    fireEvent,
-    screen,
-    waitFor,
-    within,
-} from '@testing-library/react';
+import { render, fireEvent, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { createTheme } from '@mui/material/styles';
 import {
