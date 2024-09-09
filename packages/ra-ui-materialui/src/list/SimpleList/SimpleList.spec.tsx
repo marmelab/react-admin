@@ -162,9 +162,7 @@ describe('<SimpleList />', () => {
                 </Admin>
             </TestMemoryRouter>
         );
-        expect(
-            screen.queryByText('No posts found using the current filters.')
-        ).not.toBeNull();
+        expect(screen.queryByText('No posts found')).not.toBeNull();
     });
 
     it('should display a message when there is no result but filters applied', async () => {
