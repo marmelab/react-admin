@@ -16,7 +16,7 @@ export const ListNoResults = memo(() => {
                     <>
                         {translate('ra.navigation.no_filtred_results', {
                             resource,
-                        })}
+                        })}{' '}
                         <Link
                             component="button"
                             onClick={() => setFilters({}, [])}
