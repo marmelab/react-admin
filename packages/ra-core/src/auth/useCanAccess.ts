@@ -58,7 +58,7 @@ export const useCanAccess = <ErrorType = Error>(
             }
             return authProvider.canAccess({
                 ...params,
-                signal,
+                signal: authProvider.supportAbortSignal ? signal : undefined,
             });
         },
         ...queryOptions,

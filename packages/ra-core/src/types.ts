@@ -77,6 +77,7 @@ export type AuthProvider = {
         }
     ) => Promise<boolean>;
     [key: string]: any;
+    supportAbortSignal?: boolean;
 };
 
 export type AuthRedirectResult = {

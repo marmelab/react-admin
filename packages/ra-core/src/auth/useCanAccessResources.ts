@@ -67,7 +67,9 @@ export const useCanAccessResources = <ErrorType extends Error = Error>(
                         resource,
                         action,
                         record,
-                        signal,
+                        signal: authProvider.supportAbortSignal
+                            ? signal
+                            : undefined,
                     });
 
                     return { canAccess, resource };
