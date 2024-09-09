@@ -48,11 +48,11 @@ describe('<FilterButton />', () => {
 
             fireEvent.click(await screen.findByLabelText('Add filter'));
 
-            let checkboxs = screen.getAllByRole('checkbox');
+            let checkboxs: HTMLInputElement[] = screen.getAllByRole('checkbox');
             expect(checkboxs).toHaveLength(3);
-            expect(checkboxs[0]).not.toBeChecked();
-            expect(checkboxs[1]).not.toBeChecked();
-            expect(checkboxs[2]).not.toBeChecked();
+            expect(checkboxs[0].checked).toBe(false);
+            expect(checkboxs[1].checked).toBe(false);
+            expect(checkboxs[2].checked).toBe(false);
 
             fireEvent.click(checkboxs[0]);
 
@@ -63,9 +63,9 @@ describe('<FilterButton />', () => {
 
             checkboxs = screen.getAllByRole('checkbox');
             expect(checkboxs).toHaveLength(3);
-            expect(checkboxs[0]).toBeChecked();
-            expect(checkboxs[1]).not.toBeChecked();
-            expect(checkboxs[2]).not.toBeChecked();
+            expect(checkboxs[0].checked).toBe(true);
+            expect(checkboxs[1].checked).toBe(false);
+            expect(checkboxs[2].checked).toBe(false);
         });
 
         it('should display the filter button if all filters are shown and there is a filter value', () => {
