@@ -29,7 +29,7 @@ import { useEvent } from '../util';
  *
  * const UserList = ({ record }) => {
  *     const { isPending, canAccess } = useCanAccessResources({
- *         action: 'delete',
+ *         action: 'read',
  *         resources: ['users.id', 'users.name', 'users.email'],
  *         record
  *     });

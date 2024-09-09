@@ -14,7 +14,6 @@ import useAuthProvider from './useAuthProvider';
  *     const UserList = () => {
  *         const checkAccess = useCanAccessCallback();
  *
- *
  *         const handleRowClick = (id: Identifier, resource: string, record: Record) => {
  *             try {
  *                 const canAccess = checkAccess({ resource: 'users', action: 'edit', record });

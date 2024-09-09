@@ -5,7 +5,9 @@ title: "useCanAccessResources"
 
 # `useCanAccessResources`
 
-This hook calls the `authProvider.canAccess()` method on mount for the provided resources and action (and optionally a record). It returns an object containing a `canAccess` object which is a map of the provided resources where the value is set to `true` when users have access to it. 
+This hook calls the `authProvider.canAccess()` method on mount for an array of resources, an action, and optionally a record. It's ideal for checking the access to several resources in parallel (e.g. all the columns of a `<Datagrid>`). 
+
+`useCanAccessResources` returns an object containing a `canAccess` object, which is a map of the provided resources where the value is set to `true` when users have access to it. 
 
 ## Usage
 

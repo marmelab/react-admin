@@ -1371,7 +1371,7 @@ export const PostList = () => (
 
 ## Access Control
 
-Should your `authProvider` implement the [`canAccess` method](./AuthProviderWriting.md#canaccess), the `<Datagrid>` will call to display only the columns users have access to. For instance, given the following `<Datagrid>`:
+Should your `authProvider` implement the [`canAccess` method](./AuthProviderWriting.md#canaccess), the `<Datagrid>` will call it to display only the columns users have access to. For instance, given the following `<Datagrid>`:
 
 ```tsx
 import { List, Datagrid, TextField } from 'react-admin';
