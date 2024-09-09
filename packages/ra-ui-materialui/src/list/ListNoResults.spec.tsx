@@ -2,7 +2,7 @@ import * as React from 'react';
 import { render, screen } from '@testing-library/react';
 import { NoFilter, WithFilter } from './ListNoResults.stories';
 
-describe('List?oResults', () => {
+describe('ListNoResults', () => {
     it('should display no results found message when no filter', async () => {
         render(<NoFilter />);
         await screen.findByText('No results found.');
