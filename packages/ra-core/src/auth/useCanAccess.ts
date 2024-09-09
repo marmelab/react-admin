@@ -1,5 +1,6 @@
 import { useEffect, useMemo } from 'react';
 import {
+    QueryObserverLoadingErrorResult,
     QueryObserverLoadingResult,
     QueryObserverRefetchErrorResult,
     QueryObserverSuccessResult,
@@ -125,9 +126,13 @@ export interface UseCanAccessLoadingResult<ErrorType = Error>
     extends QueryObserverLoadingResult<boolean, ErrorType> {
     canAccess: undefined;
 }
+export interface UseCanAccessErrorResult<ErrorType = Error>
+    extends QueryObserverLoadingErrorResult<boolean, ErrorType> {
+    canAccess: undefined;
+}
 export interface UseCanAccessRefetchErrorResult<ErrorType = Error>
     extends QueryObserverRefetchErrorResult<boolean, ErrorType> {
-    canAccess: undefined;
+    canAccess: boolean;
 }
 export interface UseCanAccessSuccessResult<ErrorType = Error>
     extends QueryObserverSuccessResult<boolean, ErrorType> {

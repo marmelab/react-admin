@@ -116,8 +116,13 @@ export interface UseCanAccessResourcesLoadingResult {
     error: null;
     isPending: true;
 }
-export interface UseCanAccessResourcesRefetchErrorResult<ErrorType = Error> {
+export interface UseCanAccessResourcesLoadingErrorResult<ErrorType = Error> {
     canAccess: undefined;
+    error: ErrorType;
+    isPending: false;
+}
+export interface UseCanAccessResourcesRefetchErrorResult<ErrorType = Error> {
+    canAccess: Record<string, boolean>;
     error: ErrorType;
     isPending: false;
 }
