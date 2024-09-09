@@ -68,6 +68,39 @@ describe('<FilterButton />', () => {
             expect(checkboxs[2].checked).toBe(false);
         });
 
+        it('should uncheck removed filters by removing dedicated inputs', async () => {
+            render(<Basic />);
+
+            fireEvent.click(await screen.findByLabelText('Add filter'));
+
+            let checkboxs: HTMLInputElement[] = screen.getAllByRole('checkbox');
+            fireEvent.click(checkboxs[0]);
+
+            await screen.findByRole('textbox', {
+                name: 'Title',
+            });
+
+            fireEvent.click(screen.getByTitle('Remove this filter'));
+
+            await waitFor(
+                () => {
+                    expect(
+                        screen.queryByRole('textbox', {
+                            name: 'Title',
+                        })
+                    ).toBeNull();
+                },
+                { timeout: 2000 }
+            );
+
+            fireEvent.click(screen.getByLabelText('Add filter'));
+            checkboxs = screen.getAllByRole('checkbox');
+            expect(checkboxs).toHaveLength(3);
+            expect(checkboxs[0].checked).toBe(false);
+            expect(checkboxs[1].checked).toBe(false);
+            expect(checkboxs[2].checked).toBe(false);
+        });
+
         it('should display the filter button if all filters are shown and there is a filter value', () => {
             render(
                 <AdminContext theme={theme}>
