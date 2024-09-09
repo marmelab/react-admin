@@ -1374,7 +1374,7 @@ export const PostList = () => (
 Should your `authProvider` implement the [`canAccess` method](./AuthProviderWriting.md#canaccess), the `<Datagrid>` will call it to display only the columns users have access to. For instance, given the following `<Datagrid>`:
 
 ```tsx
-import { List, Datagrid, TextField } from 'react-admin';
+import { List, Datagrid, DateField, TextField } from 'react-admin';
 
 // Resource name is "posts"
 const PostList = () => (
@@ -1382,7 +1382,7 @@ const PostList = () => (
         <Datagrid>
             <TextField source="title" />
             <TextField source="author" />
-            <TextField source="published_at" />
+            <DateField source="published_at" />
         </Datagrid>
     </List>
 );
