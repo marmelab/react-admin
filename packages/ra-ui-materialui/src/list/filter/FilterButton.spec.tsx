@@ -36,6 +36,7 @@ describe('<FilterButton />', () => {
 
     beforeAll(() => {
         window.scrollTo = jest.fn();
+        jest.spyOn(console, 'error').mockImplementation(() => {});
     });
 
     afterAll(() => {
@@ -43,7 +44,7 @@ describe('<FilterButton />', () => {
     });
 
     describe('filter selection menu', () => {
-        it('should check applied filters', async () => {
+        it('should check applied filters adn display decdicated inputs', async () => {
             render(<Basic />);
 
             fireEvent.click(await screen.findByLabelText('Add filter'));
@@ -56,9 +57,9 @@ describe('<FilterButton />', () => {
 
             fireEvent.click(checkboxs[0]);
 
-            await screen.findByDisplayValue(
-                'Accusantium qui nihil voluptatum quia voluptas maxime ab similique'
-            );
+            await screen.findByRole('textbox', {
+                name: 'Title',
+            });
             fireEvent.click(screen.getByLabelText('Add filter'));
 
             checkboxs = screen.getAllByRole('checkbox');
@@ -66,7 +67,27 @@ describe('<FilterButton />', () => {
             expect(checkboxs[0].checked).toBe(true);
             expect(checkboxs[1].checked).toBe(false);
             expect(checkboxs[2].checked).toBe(false);
-        });
+
+            fireEvent.click(checkboxs[0]);
+
+            await waitFor(
+                () => {
+                    expect(
+                        screen.queryByRole('textbox', {
+                            name: 'Title',
+                        })
+                    ).toBeNull();
+                },
+                { timeout: 2000 }
+            );
+
+            fireEvent.click(screen.getByLabelText('Add filter'));
+            checkboxs = screen.getAllByRole('checkbox');
+            expect(checkboxs).toHaveLength(3);
+            expect(checkboxs[0].checked).toBe(false);
+            expect(checkboxs[1].checked).toBe(false);
+            expect(checkboxs[2].checked).toBe(false);
+        }, 7000);
 
         it('should uncheck removed filters by removing dedicated inputs', async () => {
             render(<Basic />);
