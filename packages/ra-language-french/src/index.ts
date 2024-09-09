@@ -118,7 +118,9 @@ const frenchMessages: TranslationMessages = {
         },
         navigation: {
             clear_filters: 'Effacer les filtres.',
-            no_results: 'Aucun résultat trouvé avec les filtres actuels.',
+            no_filtred_results:
+                'Aucun résultat trouvé avec les filtres actuels.',
+            no_results: 'Aucun résultat',
             no_more_results:
                 'La page numéro %{page} est en dehors des limites. Essayez la page précédente.',
             page_out_of_boundaries: 'La page %{page} est en dehors des limites',
