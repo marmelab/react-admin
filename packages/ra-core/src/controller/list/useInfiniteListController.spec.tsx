@@ -218,7 +218,7 @@ describe('useInfiniteListController', () => {
             });
         });
 
-        it('should update data if permanent filters change', () => {
+        it('should update data if permanent filters change', async () => {
             const children = jest.fn().mockReturnValue(<span>children</span>);
             const props = {
                 ...defaultProps,
@@ -244,14 +244,16 @@ describe('useInfiniteListController', () => {
             );
 
             // Check that the permanent filter was used in the query
-            expect(getList).toHaveBeenCalledTimes(1);
+            await waitFor(() => {
+                expect(getList).toHaveBeenCalledTimes(1);
+            });
             expect(getList).toHaveBeenCalledWith(
                 'posts',
                 expect.objectContaining({ filter: { foo: 1 } })
             );
 
             // Check that the permanent filter is not included in the displayedFilters and filterValues (passed to Filter form and button)
-            expect(children).toHaveBeenCalledTimes(1);
+            expect(children).toHaveBeenCalledTimes(3);
             expect(children).toHaveBeenCalledWith(
                 expect.objectContaining({
                     displayedFilters: {},
@@ -276,7 +278,7 @@ describe('useInfiniteListController', () => {
                 'posts',
                 expect.objectContaining({ filter: { foo: 2 } })
             );
-            expect(children).toHaveBeenCalledTimes(2);
+            expect(children).toHaveBeenCalledTimes(4);
         });
     });
 

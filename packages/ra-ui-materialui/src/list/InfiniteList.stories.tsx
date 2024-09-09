@@ -7,6 +7,8 @@ import {
     useListContext,
     useInfinitePaginationContext,
     TestMemoryRouter,
+    ResourceContextProvider,
+    AuthProvider,
 } from 'ra-core';
 import { Box, Button, Card, Typography } from '@mui/material';
 
@@ -23,6 +25,7 @@ import { TextField } from '../field';
 import { SearchInput } from '../input';
 import { SortButton } from '../button';
 import { TopToolbar, Layout } from '../layout';
+import { QueryClient } from '@tanstack/react-query';
 
 export default {
     title: 'ra-ui-materialui/list/InfiniteList',
@@ -220,7 +223,7 @@ const CustomPagination = () => {
     return (
         <>
             <InfinitePagination />
-            {total > 0 && (
+            {total != null && total > 0 && (
                 <Box position="sticky" bottom={0} textAlign="center">
                     <Card
                         elevation={2}
@@ -383,3 +386,107 @@ export const WithSimpleList = () => (
         />
     </Admin>
 );
+
+export const AccessControl = ({
+    initialAuthorizedResources = {
+        books: true,
+    },
+}: {
+    initialAuthorizedResources?: {
+        books: boolean;
+    };
+}) => {
+    const queryClient = new QueryClient();
+    return (
+        <AdminWithAccessControl
+            initialAuthorizedResources={initialAuthorizedResources}
+            queryClient={queryClient}
+        />
+    );
+};
+
+const AdminWithAccessControl = ({
+    initialAuthorizedResources,
+    queryClient,
+}: {
+    initialAuthorizedResources: { books: boolean };
+    queryClient: QueryClient;
+}) => {
+    const [authorizedResources, setAuthorizedResources] = React.useState(
+        initialAuthorizedResources
+    );
+
+    const authProvider: AuthProvider = {
+        canAccess: async ({ resource }) => {
+            return new Promise(resolve =>
+                setTimeout(resolve, 100, authorizedResources[resource])
+            );
+        },
+        logout: () => Promise.reject(new Error('Not implemented')),
+        checkError: () => Promise.resolve(),
+        checkAuth: () => Promise.resolve(),
+        getPermissions: () => Promise.resolve(),
+        login: () => Promise.reject(new Error('Not implemented')),
+    };
+
+    return (
+        <AdminContext
+            queryClient={queryClient}
+            dataProvider={dataProvider}
+            authProvider={authProvider}
+            i18nProvider={polyglotI18nProvider(() => defaultMessages, 'en')}
+        >
+            <ResourceContextProvider value="books">
+                <AccessControlUI
+                    authorizedResources={authorizedResources}
+                    setAuthorizedResources={setAuthorizedResources}
+                    queryClient={queryClient}
+                >
+                    <InfiniteList>
+                        <SimpleList
+                            primaryText="%{title}"
+                            secondaryText="%{author}"
+                        />
+                    </InfiniteList>
+                </AccessControlUI>
+            </ResourceContextProvider>
+        </AdminContext>
+    );
+};
+
+const AccessControlUI = ({
+    children,
+    setAuthorizedResources,
+    authorizedResources,
+    queryClient,
+}: {
+    children: React.ReactNode;
+    setAuthorizedResources: Function;
+    authorizedResources: {
+        books: boolean;
+    };
+    queryClient: QueryClient;
+}) => {
+    return (
+        <div>
+            <div>
+                <label>
+                    <input
+                        type="checkbox"
+                        checked={authorizedResources['books']}
+                        onChange={() => {
+                            setAuthorizedResources(state => ({
+                                ...state,
+                                books: !authorizedResources['books'],
+                            }));
+
+                            queryClient.clear();
+                        }}
+                    />
+                    books access
+                </label>
+            </div>
+            <div>{children}</div>
+        </div>
+    );
+};

@@ -268,3 +268,44 @@ const ProductList = () => {
 ```
 
 `useInfiniteListController` returns callbacks to sort, filter, and paginate the list, so you can build a complete List page.
+
+## Access Control
+
+Should your authProvider implement the [`canAccess` method](./AuthProviderWriting.md#canaccess), the `<InfiniteList>` component will call it to ensure users have the right to access to its data. For instance, given the following `<List>`: 
+
+```tsx
+import { InfiniteList, Datagrid, TextField } from 'react-admin';
+
+// Resource name is "posts"
+const PostList = () => (
+    <InfiniteList>
+        <Datagrid>
+            <TextField source="title" />
+            <TextField source="author" />
+            <TextField source="published_at" />
+        </Datagrid>
+    </InfiniteList>
+);
+```
+
+The `<InfiniteList>` will call `authProvider.canAccess()` using the following parameters: `{ action: "read", resource: "posts" }`.
+
+**Tip**: If you want to control what columns users can see in the `<Datagrid>`, leverage [its access control feature](./Datagrid.md#access-control).
+
+### Exported Fields
+
+Should your authProvider implement the [`canAccess` method](./AuthProviderWriting.md#canaccess), the [`exporter`](#exporter) hook will call it to export only fields the current user has the right to export. For instance, given the following record shape:
+
+```json
+{
+    "id": 0,
+    "title": "Never Gonna Give You Up",
+    "author": "Rick Astley",
+}
+```
+
+The `authProvider.canAccess` method will be called 3 times with the following parameters:
+
+1. `{ action: "export", resource: "posts.id" }`
+2. `{ action: "export", resource: "posts.title" }`
+3. `{ action: "export", resource: "posts.author" }`

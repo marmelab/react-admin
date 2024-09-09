@@ -4,12 +4,14 @@ import { QueryClient } from '@tanstack/react-query';
 
 import { CoreAdminContext, Resource } from '../../core';
 import { localStorageStore } from '../../store';
+import { FakeBrowserDecorator } from '../../storybook/FakeBrowser';
 import { AuthProvider, Exporter, SortPayload } from '../../types';
-import { useListController } from './useListController';
+import { useInfiniteListController } from './useInfiniteListController';
 import { defaultExporter } from '../../export';
 
 export default {
-    title: 'ra-core/controller/list/useListController',
+    title: 'ra-core/controller/list/useInfiniteListController',
+    decorators: [FakeBrowserDecorator],
     parameters: {
         initialEntries: ['/posts'],
     },
@@ -47,7 +49,7 @@ const OrderedPostList = ({
     sort?: SortPayload;
     exporter?: Exporter;
 }) => {
-    const params = useListController({
+    const params = useInfiniteListController({
         debounce: 200,
         perPage: 5,
         sort,

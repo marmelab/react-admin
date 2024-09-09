@@ -4,7 +4,7 @@ import {
     InfiniteData,
 } from '@tanstack/react-query';
 
-import { useAuthenticated } from '../../auth';
+import { useAuthenticated, useCanAccess } from '../../auth';
 import { useTranslate } from '../../i18n';
 import { useNotify } from '../../notification';
 import {
@@ -22,7 +22,7 @@ import {
 import { useResourceContext, useGetResourceLabel } from '../../core';
 import { useRecordSelection } from './useRecordSelection';
 import { useListParams } from './useListParams';
-
+import { useExporter } from '../../export/useExporter';
 import { ListControllerResult } from './useListController';
 
 /**
@@ -88,6 +88,15 @@ export const useInfiniteListController = <RecordType extends RaRecord = any>(
     const [selectedIds, selectionModifiers] = useRecordSelection({ resource });
 
     const {
+        canAccess,
+        isPending: canAccessPending,
+        isLoading: canAccessLoading,
+    } = useCanAccess({
+        resource,
+        action: 'read',
+    });
+
+    const {
         data,
         total,
         error,
@@ -113,6 +122,7 @@ export const useInfiniteListController = <RecordType extends RaRecord = any>(
             meta,
         },
         {
+            enabled: !canAccessPending && canAccess,
             placeholderData: previousData => previousData,
             retry: false,
             onError: error =>
@@ -167,19 +177,25 @@ export const useInfiniteListController = <RecordType extends RaRecord = any>(
         [data]
     );
 
+    const exporterWithAccessControl = useExporter({
+        exporter,
+    });
     return {
+        canAccess,
         sort: currentSort,
         data: unwrappedData,
         defaultTitle,
         displayedFilters: query.displayedFilters,
         error,
-        exporter,
+        exporter: exporterWithAccessControl,
         filter,
         filterValues: query.filterValues,
         hideFilter: queryModifiers.hideFilter,
-        isFetching,
-        isLoading,
-        isPending,
+        isFetching: canAccessLoading || (canAccess && isFetching),
+        isLoading: canAccessLoading || (canAccess && isLoading),
+        // When canAccess is false, isPending will always be true as the underlying query is not enabled
+        // This can be an issue when the List emptyWhileLoading prop is set to true
+        isPending: canAccessPending || (canAccess && isPending),
         onSelect: selectionModifiers.select,
         onToggleItem: selectionModifiers.toggle,
         onUnselectItems: selectionModifiers.clearSelection,
