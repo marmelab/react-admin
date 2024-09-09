@@ -32,18 +32,18 @@ export const useExporter = (params: { exporter?: Exporter | false }) => {
     ) => {
         const keys = getAllKeys(records);
 
-        const authorizedKeys = await keys.reduce(async (acc, key) => {
-            const record = await acc;
-            const canAccessResult = await canAccess({
-                action: 'export',
-                resource: `${resource}.${key}`,
-            });
+        const authorizedKeys = (
+            await Promise.all(
+                keys.map(async key => {
+                    const canAccessResult = await canAccess({
+                        action: 'export',
+                        resource: `${resource}.${key}`,
+                    });
 
-            return {
-                ...record,
-                [key]: !!canAccessResult,
-            };
-        }, Promise.resolve({}));
+                    return canAccessResult ? key : undefined;
+                })
+            )
+        ).filter(key => key !== undefined);
 
         if (!records) {
             return;
@@ -51,7 +51,7 @@ export const useExporter = (params: { exporter?: Exporter | false }) => {
 
         const recordsWithAuthorizedColumns = records.map(record => {
             return Object.keys(record).reduce((acc, key) => {
-                if (!authorizedKeys[key]) {
+                if (!authorizedKeys.includes(key)) {
                     return acc;
                 }
 
