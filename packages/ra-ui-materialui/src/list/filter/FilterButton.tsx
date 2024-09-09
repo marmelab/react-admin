@@ -79,11 +79,11 @@ export const FilterButton = (props: FilterButtonProps) => {
         );
     }
 
-    const hiddenFilters = filters.filter(
+    const allTogglableFilters = filters.filter(
         (filterElement: JSX.Element) => !filterElement.props.alwaysOn
     );
 
-    const appliedFilters = hiddenFilters
+    const appliedFilters = allTogglableFilters
         .filter(
             (filterElement: JSX.Element) =>
                 !!displayedFilters[filterElement.props.source] &&
@@ -165,7 +165,7 @@ export const FilterButton = (props: FilterButtonProps) => {
     };
 
     if (
-        hiddenFilters.length === 0 &&
+        allTogglableFilters.length === 0 &&
         validSavedQueries.length === 0 &&
         !hasFilterValues
     ) {
@@ -188,24 +188,26 @@ export const FilterButton = (props: FilterButtonProps) => {
                 anchorEl={anchorEl.current}
                 onClose={handleRequestClose}
             >
-                {hiddenFilters.map((filterElement: JSX.Element, index) => (
-                    <FilterButtonMenuItem
-                        key={filterElement.props.source}
-                        filter={{
-                            ...filterElement,
-                            props: {
-                                ...filterElement.props,
-                                applied: appliedFilters.includes(
-                                    filterElement.props.source
-                                ),
-                            },
-                        }}
-                        resource={resource}
-                        onShow={handleShow}
-                        onHide={handleRemove}
-                        autoFocus={index === 0}
-                    />
-                ))}
+                {allTogglableFilters.map(
+                    (filterElement: JSX.Element, index) => (
+                        <FilterButtonMenuItem
+                            key={filterElement.props.source}
+                            filter={{
+                                ...filterElement,
+                                props: {
+                                    ...filterElement.props,
+                                    applied: appliedFilters.includes(
+                                        filterElement.props.source
+                                    ),
+                                },
+                            }}
+                            resource={resource}
+                            onShow={handleShow}
+                            onHide={handleRemove}
+                            autoFocus={index === 0}
+                        />
+                    )
+                )}
                 {validSavedQueries.map((savedQuery, index) =>
                     isEqual(savedQuery.value, {
                         filter: filterValues,
