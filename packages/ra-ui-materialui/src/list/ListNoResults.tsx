@@ -1,33 +1,36 @@
 import * as React from 'react';
-import { memo } from 'react';
-import CardContent from '@mui/material/CardContent';
-import Typography from '@mui/material/Typography';
-import { useListController, useResourceContext, useTranslate } from 'ra-core';
-import { Link } from '@mui/material';
+import { CardContent, Typography } from '@mui/material';
+import { useListContext, useResourceContext, useTranslate } from 'ra-core';
 
-export const ListNoResults = memo(() => {
+import { Button } from '../button';
+
+export const ListNoResults = () => {
     const translate = useTranslate();
     const resource = useResourceContext();
-    const { filterValues, setFilters } = useListController({ resource });
+    const { filterValues, setFilters } = useListContext();
     return (
         <CardContent>
             <Typography variant="body2">
                 {filterValues && Object.keys(filterValues).length > 0 ? (
                     <>
-                        {translate('ra.navigation.no_filtred_results', {
+                        {translate('ra.navigation.no_filtered_results', {
                             resource,
+                            _: 'No results found with the current filters.',
                         })}{' '}
-                        <Link
-                            component="button"
+                        <Button
                             onClick={() => setFilters({}, [])}
-                        >
-                            {translate('ra.navigation.clear_filters')}
-                        </Link>
+                            label={translate('ra.navigation.clear_filters', {
+                                _: 'Clear filters',
+                            })}
+                        />
                     </>
                 ) : (
-                    translate('ra.navigation.no_results', { resource })
+                    translate('ra.navigation.no_results', {
+                        resource,
+                        _: 'No results found.',
+                    })
                 )}
             </Typography>
         </CardContent>
     );
-});
+};

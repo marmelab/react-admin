@@ -112,8 +112,8 @@ const englishMessages: TranslationMessages = {
                 "Some of your changes weren't saved. Are you sure you want to ignore them?",
         },
         navigation: {
-            clear_filters: 'Clear filters.',
-            no_filtred_results:
+            clear_filters: 'Clear filters',
+            no_filtered_results:
                 'No %{resource} found using the current filters.',
             no_results: 'No %{resource} found',
             no_more_results:

@@ -113,6 +113,8 @@ export interface TranslationMessages extends StringMap {
         navigation: {
             [key: string]: StringMap | string;
             no_results: string;
+            no_filtered_results: string;
+            clear_filters: string;
             no_more_results: string;
             page_out_of_boundaries: string;
             page_out_from_end: string;
