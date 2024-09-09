@@ -9,7 +9,7 @@ import useLogoutIfAccessDenied from './useLogoutIfAccessDenied';
 import { useEvent } from '../util';
 
 /**
- * Checks whether users can access the provided resources (resource in the RBAC sense).
+ * Checks whether users can access the provided resources.
  *
  * `useCanAccessResources` returns an object describing the state of the request:
  *
