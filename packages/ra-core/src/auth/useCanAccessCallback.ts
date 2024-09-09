@@ -1,11 +1,12 @@
-import { UseMutateAsyncFunction, useMutation } from '@tanstack/react-query';
+import {
+    UseMutateAsyncFunction,
+    useMutation,
+    UseMutationOptions,
+} from '@tanstack/react-query';
 import useAuthProvider from './useAuthProvider';
 
 /**
  * A hook that returns a function you can call to determine whether user has access to the given resource
- *
- * Calls the authProvider.canAccess() method using react-query.
- * If the authProvider returns a rejected promise, returns false.
  *
  * @example
  *     import { useCanAccessCallback, useDataProvider } from 'react-admin';
@@ -30,7 +31,16 @@ import useAuthProvider from './useAuthProvider';
  *         return <button onClick={resetViews}>Reset Views</button>;
  *     };
  */
-export const useCanAccessCallback = <ErrorType = Error>() => {
+export const useCanAccessCallback = <ErrorType = Error>(
+    options: Omit<
+        UseMutationOptions<
+            UseCanAccessCallbackResult,
+            ErrorType,
+            UseCanAccessCallbackOptions
+        >,
+        'mutationFn'
+    >
+) => {
     const authProvider = useAuthProvider();
 
     const { mutateAsync } = useMutation<
@@ -47,6 +57,7 @@ export const useCanAccessCallback = <ErrorType = Error>() => {
             return authProvider.canAccess(params);
         },
         retry: false,
+        ...options,
     });
 
     return mutateAsync;
