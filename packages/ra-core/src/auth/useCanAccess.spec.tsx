@@ -66,6 +66,7 @@ describe('useCanAccess', () => {
         await waitFor(() => {
             expect(screen.queryByText('LOADING')).toBeNull();
             expect(screen.queryByText('canAccess: NO')).not.toBeNull();
+            expect(screen.queryByText('ERROR')).toBeNull();
         });
     });
 
