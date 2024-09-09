@@ -16,9 +16,9 @@ import { Datagrid, List, TextField, useCanAccessCallback } from 'react-admin';
 
 export const UserList = () => {
     const checkAccess = useCanAccessCallback();
-    const handleRowClick = (id: Identifier, resource: string, record: Record) => {
+    const handleRowClick = async (id: Identifier, resource: string, record: Record) => {
         try {
-            const canAccess = checkAccess({ resource: 'users', action: 'edit', record });
+            const canAccess = await checkAccess({ resource: 'users', action: 'edit', record });
             return canAccess ? "edit" : "show";
         } catch (error) {
             console.error(error);
