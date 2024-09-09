@@ -1,19 +1,18 @@
 import * as React from 'react';
-import { render, screen, waitFor, within } from '@testing-library/react';
 import {
-    ListContext,
-    Resource,
-    ResourceContextProvider,
-    TestMemoryRouter,
-    useListFilterContext,
-} from 'ra-core';
-import fakerestDataProvider from 'ra-data-fakerest';
+    fireEvent,
+    render,
+    screen,
+    waitFor,
+    within,
+} from '@testing-library/react';
+import { ListContext, ResourceContextProvider } from 'ra-core';
 
 import { AdminContext } from '../../AdminContext';
 import { SimpleList } from './SimpleList';
 import { TextField } from '../../field/TextField';
 import { NoPrimaryText } from './SimpleList.stories';
-import { Admin, List } from 'react-admin';
+import { Basic } from '../filter/FilterButton.stories';
 
 const Wrapper = ({ children }: any) => (
     <AdminContext>
@@ -142,57 +141,36 @@ describe('<SimpleList />', () => {
 
     it('should display a message when there is no result', () => {
         render(
-            <TestMemoryRouter>
-                <Admin>
-                    <Resource
-                        name="posts"
-                        list={
-                            <ListContext.Provider
-                                value={{
-                                    isLoading: false,
-                                    data: [],
-                                    total: 0,
-                                    resource: 'posts',
-                                }}
-                            >
-                                <SimpleList />
-                            </ListContext.Provider>
-                        }
-                    />
-                </Admin>
-            </TestMemoryRouter>
+            <ListContext.Provider
+                value={{
+                    isLoading: false,
+                    data: [],
+                    total: 0,
+                    resource: 'posts',
+                }}
+            >
+                <SimpleList />
+            </ListContext.Provider>,
+            { wrapper: Wrapper }
         );
-        expect(screen.queryByText('No posts found')).not.toBeNull();
+        expect(screen.queryByText('ra.navigation.no_results')).not.toBeNull();
     });
 
     it('should display a message when there is no result but filters applied', async () => {
-        const MyListView = () => {
-            const { setFilters } = useListFilterContext();
-            setFilters({ title: 'foo' }, ['title']);
-            return <SimpleList />;
-        };
+        render(<Basic />);
 
-        render(
-            <TestMemoryRouter>
-                <Admin
-                    dataProvider={fakerestDataProvider({
-                        posts: [{ id: 1, title: 'bar' }],
-                    })}
-                >
-                    <Resource
-                        name="posts"
-                        list={
-                            <List>
-                                <MyListView />
-                            </List>
-                        }
-                    />
-                </Admin>
-            </TestMemoryRouter>
+        await screen.findByText(
+            'Accusantium qui nihil voluptatum quia voluptas maxime ab similique'
         );
 
-        await screen.findByText('No posts found using the current filters.');
-        screen.getByText('Clear filters.');
+        fireEvent.change(screen.getByLabelText('Search'), {
+            target: { value: 'w' },
+        });
+
+        expect(
+            await screen.findByText('No posts found using the current filters.')
+        ).not.toBeNull();
+        expect(screen.getByText('Clear filters.')).not.toBeNull();
     });
 
     it('should fall back to record representation when no primaryText is provided', async () => {
