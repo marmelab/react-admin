@@ -544,7 +544,7 @@ export const StoreDisabled = () => {
     );
 };
 
-const BooksWithLocationDsiabled = () => (
+const BooksWithLocationDisabled = () => (
     <List
         resource="books"
         storeKey="booksParams"
@@ -572,7 +572,7 @@ export const LocationNotSyncWithStore = () => {
             <Admin dataProvider={dataProvider}>
                 <Resource
                     name="books"
-                    list={<BooksWithLocationDsiabled />}
+                    list={<BooksWithLocationDisabled />}
                     edit={
                         <ShowGuesser
                             enableLog={false}
