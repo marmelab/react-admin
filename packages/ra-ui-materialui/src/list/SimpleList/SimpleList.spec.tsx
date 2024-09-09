@@ -170,9 +170,9 @@ describe('<SimpleList />', () => {
         expect(
             await screen.findByText('No posts found using the current filters.')
         ).not.toBeNull();
-        expect(screen.getByText('Clear filters.')).not.toBeNull();
+        expect(screen.getByText('Clear filters')).not.toBeNull();
 
-        fireEvent.click(screen.getByText('Clear filters.'));
+        fireEvent.click(screen.getByText('Clear filters'));
 
         await screen.findByText(
             'Accusantium qui nihil voluptatum quia voluptas maxime ab similique'
@@ -181,7 +181,7 @@ describe('<SimpleList />', () => {
         expect(
             screen.queryByText('No posts found using the current filters.')
         ).toBeNull();
-        expect(screen.queryByText('Clear filters.')).toBeNull();
+        expect(screen.queryByText('Clear filters')).toBeNull();
         expect(
             screen.queryByText(
                 'In facilis aut aut odit hic doloribus. Fugit possimus perspiciatis sit molestias in. Sunt dignissimos sed quis at vitae veniam amet. Sint sunt perspiciatis quis doloribus aperiam numquam consequatur et. Blanditiis aut earum incidunt eos magnam et voluptatem. Minima iure voluptatum autem. At eaque sit aperiam minima aut in illum.'
