@@ -9,26 +9,30 @@ import useAuthProvider from './useAuthProvider';
  * A hook that returns a function you can call to determine whether user has access to the given resource
  *
  * @example
- *     import { useCanAccessCallback, useDataProvider } from 'react-admin';
+ *     import { Datagrid, List, TextField, useCanAccessCallback } from 'react-admin';
  *
- *     const ResetViewsButton = () => {
+ *     const UserList = () => {
  *         const checkAccess = useCanAccessCallback();
- *         const dataProvider = useDataProvider();
  *
- *         const resetViews = () => {
+ *
+ *         const handleRowClick = (id: Identifier, resource: string, record: Record) => {
  *             try {
- *                 const canAccess = checkAccess({ resource: 'posts', action: 'read' });
- *                 if (canAccess) {
- *                     dataProvider.resetViews('users', { id: record.id });
- *                 } else {
- *                     console.log('You are not authorized to reset views');
- *                 }
+ *                 const canAccess = checkAccess({ resource: 'users', action: 'edit', record });
+ *                 return canAccess ? "edit" : "show";
  *             } catch (error) {
  *                 console.error(error);
  *             }
  *         };
  *
- *         return <button onClick={resetViews}>Reset Views</button>;
+ *         return (
+ *             <List>
+ *                 <Datagrid onClick={handleRowClick}>
+ *                     <TextField source="id" />
+ *                     <TextField source="name" />
+ *                     <TextField source="email" />
+ *                 </Datagrid>
+ *             </List>
+ *         );
  *     };
  */
 export const useCanAccessCallback = <ErrorType = Error>(
