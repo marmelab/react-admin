@@ -127,16 +127,6 @@ export const FilterButton = (props: FilterButtonProps) => {
     const handleRemove = useCallback(
         ({ source }) => {
             hideFilter(source);
-            // We have to fallback to imperative code because the new FilterFormInput
-            // has no way of knowing it has just been displayed (and thus that it should focus its input)
-            setTimeout(() => {
-                const inputElement = document.querySelector(
-                    `input[name='${source}']`
-                ) as HTMLInputElement;
-                if (inputElement) {
-                    inputElement.focus();
-                }
-            }, 50);
             setOpen(false);
         },
         [hideFilter, setOpen]
