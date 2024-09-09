@@ -103,18 +103,12 @@ describe('useCanAccessCallback', () => {
         render(<Basic authProvider={authProvider} />);
 
         fireEvent.click(screen.getByText('Can I read posts'));
-        await waitFor(() => {
-            expect(screen.queryByText('canAccess: YES')).not.toBeNull();
-        });
+        await screen.findByText('canAccess: YES');
 
         fireEvent.click(screen.getByText('Can I write posts'));
-        await waitFor(() => {
-            expect(screen.queryByText('canAccess: YES')).not.toBeNull();
-        });
+        await screen.findByText('canAccess: YES');
 
         fireEvent.click(screen.getByText('Can I read comments'));
-        await waitFor(() => {
-            expect(screen.queryByText('canAccess: YES')).not.toBeNull();
-        });
+        await screen.findByText('canAccess: YES');
     });
 });
