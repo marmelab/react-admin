@@ -1,6 +1,8 @@
 import { useEffect, useMemo } from 'react';
 import {
-    QueryObserverResult,
+    QueryObserverLoadingResult,
+    QueryObserverRefetchErrorResult,
+    QueryObserverSuccessResult,
     useQuery,
     UseQueryOptions,
 } from '@tanstack/react-query';
@@ -100,7 +102,7 @@ export const useCanAccess = <ErrorType = Error>(
         return {
             ...result,
             canAccess: result.data,
-        };
+        } as UseCanAccessResult<ErrorType>;
     }, [result]);
 };
 
@@ -114,11 +116,22 @@ export interface UseCanAccessOptions<ErrorType = Error>
     onSettled?: (data?: boolean, error?: ErrorType | null) => void;
 }
 
-export type UseCanAccessResult<ErrorType = Error> = QueryObserverResult<
-    boolean,
-    ErrorType
-> & {
-    canAccess: boolean | undefined;
-};
+export type UseCanAccessResult<ErrorType = Error> =
+    | UseCanAccessLoadingResult<ErrorType>
+    | UseCanAccessRefetchErrorResult<ErrorType>
+    | UseCanAccessSuccessResult<ErrorType>;
+
+export interface UseCanAccessLoadingResult<ErrorType = Error>
+    extends QueryObserverLoadingResult<boolean, ErrorType> {
+    canAccess: undefined;
+}
+export interface UseCanAccessRefetchErrorResult<ErrorType = Error>
+    extends QueryObserverRefetchErrorResult<boolean, ErrorType> {
+    canAccess: undefined;
+}
+export interface UseCanAccessSuccessResult<ErrorType = Error>
+    extends QueryObserverSuccessResult<boolean, ErrorType> {
+    canAccess: boolean;
+}
 
 const noop = () => {};

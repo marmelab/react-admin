@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import {
     useQueries,
     UseQueryOptions,
@@ -91,10 +91,12 @@ export const useCanAccessResources = <ErrorType extends Error = Error>(
         onErrorEvent(result.error as ErrorType);
     }, [onErrorEvent, result.error, result.isError]);
 
-    return {
-        canAccess: result.data,
-        ...result,
-    } as UseCanAccessResourcesResult<ErrorType>;
+    return useMemo(() => {
+        return {
+            canAccess: result.data,
+            ...result,
+        } as UseCanAccessResourcesResult<ErrorType>;
+    }, [result]);
 };
 
 export interface UseCanAccessResourcesOptions<ErrorType = Error>
@@ -104,12 +106,26 @@ export interface UseCanAccessResourcesOptions<ErrorType = Error>
     record?: unknown;
 }
 
-export type UseCanAccessResourcesResult<ErrorType = Error> = UseQueryResult<
-    Record<string, boolean>,
-    ErrorType
-> & {
-    canAccess?: Record<string, boolean>;
-};
+export type UseCanAccessResourcesResult<ErrorType = Error> =
+    | UseCanAccessResourcesLoadingResult
+    | UseCanAccessResourcesRefetchErrorResult<ErrorType>
+    | UseCanAccessResourcesSuccessResult;
+
+export interface UseCanAccessResourcesLoadingResult {
+    canAccess: undefined;
+    error: null;
+    isPending: true;
+}
+export interface UseCanAccessResourcesRefetchErrorResult<ErrorType = Error> {
+    canAccess: undefined;
+    error: ErrorType;
+    isPending: false;
+}
+export interface UseCanAccessResourcesSuccessResult {
+    canAccess: Record<string, boolean>;
+    error: null;
+    isPending: false;
+}
 
 const combineSourceAccessResults = <ErrorType>(
     results: UseQueryResult<
