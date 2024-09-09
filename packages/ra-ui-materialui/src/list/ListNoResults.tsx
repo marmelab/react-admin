@@ -12,11 +12,20 @@ export const ListNoResults = memo(() => {
     return (
         <CardContent>
             <Typography variant="body2">
-                {translate('ra.navigation.no_results', { resource })}{' '}
-                {filterValues && Object.keys(filterValues).length > 0 && (
-                    <Link component="button" onClick={() => setFilters({}, [])}>
-                        {translate('ra.navigation.clear_filters')}
-                    </Link>
+                {filterValues && Object.keys(filterValues).length > 0 ? (
+                    <>
+                        {translate('ra.navigation.no_filtred_results', {
+                            resource,
+                        })}
+                        <Link
+                            component="button"
+                            onClick={() => setFilters({}, [])}
+                        >
+                            {translate('ra.navigation.clear_filters')}
+                        </Link>
+                    </>
+                ) : (
+                    translate('ra.navigation.no_results', { resource })
                 )}
             </Typography>
         </CardContent>
