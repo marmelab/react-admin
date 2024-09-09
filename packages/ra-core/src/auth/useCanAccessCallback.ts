@@ -39,7 +39,7 @@ export const useCanAccessCallback = <ErrorType = Error>(
             UseCanAccessCallbackOptions
         >,
         'mutationFn'
-    >
+    > = {}
 ) => {
     const authProvider = useAuthProvider();
 
