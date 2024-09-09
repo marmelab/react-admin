@@ -252,10 +252,11 @@ export const FilterButton = (props: FilterButtonProps) => {
                             <Checkbox
                                 size="small"
                                 sx={{
-                                    marginLeft: 0,
                                     paddingLeft: 0,
                                     paddingTop: 0,
                                     paddingBottom: 0,
+                                    marginLeft: 0,
+                                    marginRight: '7px',
                                 }}
                             />
                             {savedQuery.label}
