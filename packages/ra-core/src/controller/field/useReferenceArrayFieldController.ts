@@ -4,6 +4,7 @@ import { useGetManyAggregate } from '../../dataProvider';
 import { ListControllerResult, useList } from '../list';
 import { useNotify } from '../../notification';
 import { UseQueryOptions } from '@tanstack/react-query';
+import { useCanAccess } from '../../auth';
 
 export interface UseReferenceArrayFieldControllerParams<
     RecordType extends RaRecord = RaRecord,
@@ -73,11 +74,22 @@ export const useReferenceArrayFieldController = <
     const { meta, ...otherQueryOptions } = queryOptions;
     const ids = Array.isArray(value) ? value : emptyArray;
 
+    const {
+        canAccess,
+        isPending: canAccessPending,
+        isLoading: canAccessLoading,
+        isFetching: canAccessFetching,
+    } = useCanAccess({
+        resource: reference,
+        action: 'read',
+    });
+
     const { data, error, isLoading, isFetching, isPending, refetch } =
         useGetManyAggregate<ReferenceRecordType>(
             reference,
             { ids, meta },
             {
+                enabled: !canAccessPending && canAccess,
                 onError: error =>
                     notify(
                         typeof error === 'string'
@@ -113,8 +125,13 @@ export const useReferenceArrayFieldController = <
 
     return {
         ...listProps,
+        canAccess,
+        // When canAccess is false, isPending will always be true as the underlying query is not enabled
+        isPending: canAccessPending || (canAccess && isPending),
+        isLoading: canAccessLoading || (canAccess && isLoading),
+        isFetching: canAccessFetching || (canAccess && isFetching),
         defaultTitle: undefined,
         refetch,
         resource: reference,
-    };
+    } as ListControllerResult<ReferenceRecordType>;
 };

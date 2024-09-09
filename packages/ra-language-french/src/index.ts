@@ -115,6 +115,9 @@ const frenchMessages: TranslationMessages = {
             yes: 'Oui',
             unsaved_changes:
                 "Certains changements n'ont pas été enregistrés. Êtes-vous sûr(e) de vouloir quitter cette page ?",
+            unauthorized: "Vous n'êtes pas autorisé(e) à accéder à cette page.",
+            unauthorized_reference:
+                "Vous n'êtes pas autorisé(e) à accéder à cette ressource.",
         },
         navigation: {
             no_results: 'Aucun résultat',

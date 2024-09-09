@@ -8,6 +8,7 @@ import { ListControllerResult } from './useListController';
  * List components do in react-admin (e.g. <Datagrid>, <FilterForm>, <Pagination>).
  *
  * @typedef {Object} ListControllerProps
+ * @prop {Boolean}  canAccess boolean that is true if the user can access the resource, false otherwise
  * @prop {Array}    data an array of the list records, e.g. [{ id: 123, title: 'hello world' }, { ... }]
  * @prop {integer}  total the total number of results for the current filters, excluding pagination. Useful to build the pagination controls. e.g. 23
  * @prop {boolean}  isFetching boolean that is true on mount, and false once the data was fetched

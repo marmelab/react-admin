@@ -110,6 +110,9 @@ const englishMessages: TranslationMessages = {
             yes: 'Yes',
             unsaved_changes:
                 "Some of your changes weren't saved. Are you sure you want to ignore them?",
+            unauthorized: 'You are not authorized to access this page.',
+            unauthorized_reference:
+                'You are not authorized to access this resource.',
         },
         navigation: {
             no_results: 'No results found',

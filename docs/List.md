@@ -72,9 +72,10 @@ You can find more advanced examples of `<List>` usage in the [demos](./Demos.md)
 | `queryOptions`            | Optional | `object`       | -              | The options to pass to the `useQuery` hook.                                                  |
 | `resource`                | Optional | `string`       | -              | The resource name, e.g. `posts`.                                                             |
 | `sort`                    | Optional | `object`       | -              | The initial sort parameters.                                                                 |
-| `storeKey`                | Optional | `string | false` | -           | The key to use to store the current filter & sort. Pass `false` to disable store synchronization |
+| `storeKey`                | Optional | `string | false` | -            | The key to use to store the current filter & sort. Pass `false` to disable store synchronization |
 | `title`                   | Optional | `string | ReactElement | false` | -              | The title to display in the App Bar.                                                         |
 | `sx`                      | Optional | `object`       | -              | The CSS styles to apply to the component.                                                    |
+| `unauthorized`            | Optional | `ReactElement` | -              | The component to display when users are not authorized to see the resource                   |
 
 Additional props are passed down to the root component (a MUI `<Card>` by default).
 
@@ -983,6 +984,34 @@ const PostList = () => (
 
 **Tip**: The `List` component `classes` can also be customized for all instances of the component with its global css name `RaList` as [describe here](https://marmelab.com/blog/2019/12/18/react-admin-3-1.html#theme-overrides)
 
+## `unauthorized`
+
+The component to display when users don't have access to the list:
+
+```tsx
+import { CreateButton, List } from 'react-admin';
+import { Box, Button, Typography } from '@mui/material';
+
+const Unauthorized = () => (
+    <Box textAlign="center" m={1}>
+        <Typography variant="h4" paragraph>
+            You don't have access to this list
+        </Typography>
+        <Typography variant="body1">
+            Contact the administrator to request access
+        </Typography>
+        <CreateButton />
+        <Button onClick={...}>Import</Button>
+    </Box>
+);
+
+const ProductList = () => (
+    <List unauthorized={<Unauthorized />}>
+        ...
+    </List>
+);
+```
+
 ## Scaffolding a List page
 
 You can use [`<ListGuesser>`](./ListGuesser.md) to quickly bootstrap a List view on top of an existing API, without adding the fields one by one.
@@ -1269,9 +1298,30 @@ const ProductList = () => {
 
 ## Access Control
 
+Should your authProvider implement the [`canAccess` method](./AuthProviderWriting.md#canaccess), the `<List>` component will call it to ensure users have the right to access to its data. For instance, given the following `<List>`: 
+
+```tsx
+import { List, Datagrid, TextField } from 'react-admin';
+
+// Resource name is "posts"
+const PostList = () => (
+    <List>
+        <Datagrid>
+            <TextField source="title" />
+            <TextField source="author" />
+            <TextField source="published_at" />
+        </Datagrid>
+    </List>
+);
+```
+
+The `<List>` will call `authProvider.canAccess()` using the following parameters: `{ action: "read", resource: "posts" }`.
+
+**Tip**: If you want to control what columns users can see in the `<Datagrid>`, leverage [its access control feature](./Datagrid.md#access-control).
+
 ### Exported Fields
 
-Should your authProvider implement the [`canAccess` method](./AuthProviderWriting.md#canaccess), the [`exporter`](#exporter) will call it to export only fields the current user has the right to export. For instance, given the following record shape:
+Should your authProvider implement the [`canAccess` method](./AuthProviderWriting.md#canaccess), the [`exporter`](#exporter) hook will call it to export only fields the current user has the right to export. For instance, given the following record shape:
 
 ```json
 {

@@ -264,6 +264,7 @@ export const useList = <RecordType extends RaRecord = any>(
     }, [isPending, pendingState, setPendingState]);
 
     return {
+        canAccess: true,
         sort,
         data: pendingState ? undefined : finalItems?.data ?? [],
         defaultTitle: '',

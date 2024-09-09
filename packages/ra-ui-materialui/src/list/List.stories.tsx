@@ -5,6 +5,8 @@ import {
     Resource,
     useListContext,
     TestMemoryRouter,
+    AuthProvider,
+    ResourceContextProvider,
 } from 'ra-core';
 import fakeRestDataProvider from 'ra-data-fakerest';
 import { Box, Card, Stack, Typography, Button } from '@mui/material';
@@ -16,6 +18,8 @@ import { TextField } from '../field';
 import { SearchInput, TextInput } from '../input';
 import { Route } from 'react-router';
 import { Link } from 'react-router-dom';
+import { QueryClient } from '@tanstack/react-query';
+import { AdminContext } from '../AdminContext';
 
 export default { title: 'ra-ui-materialui/list/List' };
 
@@ -554,3 +558,103 @@ export const ErrorInFetch = () => (
         </Admin>
     </TestMemoryRouter>
 );
+
+export const AccessControl = ({
+    initialAuthorizedResources = {
+        books: true,
+    },
+}: {
+    initialAuthorizedResources?: {
+        books: boolean;
+    };
+}) => {
+    const queryClient = new QueryClient();
+    return (
+        <AdminWithAccessControl
+            initialAuthorizedResources={initialAuthorizedResources}
+            queryClient={queryClient}
+        />
+    );
+};
+
+const AdminWithAccessControl = ({
+    initialAuthorizedResources,
+    queryClient,
+}: {
+    initialAuthorizedResources: { books: boolean };
+    queryClient: QueryClient;
+}) => {
+    const [authorizedResources, setAuthorizedResources] = React.useState(
+        initialAuthorizedResources
+    );
+
+    const authProvider: AuthProvider = {
+        canAccess: async ({ resource }) => {
+            return new Promise(resolve =>
+                setTimeout(resolve, 100, authorizedResources[resource])
+            );
+        },
+        logout: () => Promise.reject(new Error('Not implemented')),
+        checkError: () => Promise.resolve(),
+        checkAuth: () => Promise.resolve(),
+        getPermissions: () => Promise.resolve(),
+        login: () => Promise.reject(new Error('Not implemented')),
+    };
+
+    return (
+        <AdminContext
+            queryClient={queryClient}
+            dataProvider={dataProvider}
+            authProvider={authProvider}
+        >
+            <ResourceContextProvider value="books">
+                <AccessControlUI
+                    authorizedResources={authorizedResources}
+                    setAuthorizedResources={setAuthorizedResources}
+                    queryClient={queryClient}
+                >
+                    <List>
+                        <BookList />
+                    </List>
+                </AccessControlUI>
+            </ResourceContextProvider>
+        </AdminContext>
+    );
+};
+
+const AccessControlUI = ({
+    children,
+    setAuthorizedResources,
+    authorizedResources,
+    queryClient,
+}: {
+    children: React.ReactNode;
+    setAuthorizedResources: Function;
+    authorizedResources: {
+        books: boolean;
+    };
+    queryClient: QueryClient;
+}) => {
+    return (
+        <div>
+            <div>
+                <label>
+                    <input
+                        type="checkbox"
+                        checked={authorizedResources['books']}
+                        onChange={() => {
+                            setAuthorizedResources(state => ({
+                                ...state,
+                                books: !authorizedResources['books'],
+                            }));
+
+                            queryClient.clear();
+                        }}
+                    />
+                    books access
+                </label>
+            </div>
+            <div>{children}</div>
+        </div>
+    );
+};

@@ -3,21 +3,19 @@ import { FC, memo, ReactElement, ReactNode } from 'react';
 import {
     ListContextProvider,
     useListContext,
-    ListControllerProps,
     useReferenceArrayFieldController,
-    SortPayload,
-    FilterPayload,
     ResourceContextProvider,
     useRecordContext,
     RaRecord,
+    UseReferenceArrayFieldControllerParams,
 } from 'ra-core';
 import { styled } from '@mui/material/styles';
 import { SxProps } from '@mui/system';
-import { UseQueryOptions } from '@tanstack/react-query';
 
 import { FieldProps } from './types';
 import { LinearProgress } from '../layout';
 import { SingleFieldList } from '../list/SingleFieldList';
+import { UnauthorizedReference } from '../UnauthorizedReference';
 
 /**
  * A container component that fetches records from another resource specified
@@ -117,27 +115,38 @@ export const ReferenceArrayField = <
 export interface ReferenceArrayFieldProps<
     RecordType extends RaRecord = RaRecord,
     ReferenceRecordType extends RaRecord = RaRecord,
-> extends FieldProps<RecordType> {
+> extends FieldProps<RecordType>,
+        Omit<
+            UseReferenceArrayFieldControllerParams<
+                RecordType,
+                ReferenceRecordType
+            >,
+            'source'
+        > {
     children?: ReactNode;
-    filter?: FilterPayload;
-    page?: number;
     pagination?: ReactElement;
-    perPage?: number;
-    reference: string;
-    sort?: SortPayload;
     sx?: SxProps;
-    queryOptions?: UseQueryOptions<ReferenceRecordType[], Error>;
+    unauthorized?: ReactElement | false;
 }
 
-export interface ReferenceArrayFieldViewProps
-    extends Omit<ReferenceArrayFieldProps, 'resource' | 'page' | 'perPage'>,
-        Omit<ListControllerProps, 'queryOptions'> {}
+export interface ReferenceArrayFieldViewProps<
+    RecordType extends RaRecord = RaRecord,
+> extends Omit<
+        ReferenceArrayFieldProps<RecordType>,
+        'resource' | 'page' | 'perPage'
+    > {}
 
 export const ReferenceArrayFieldView: FC<
     ReferenceArrayFieldViewProps
 > = props => {
-    const { children, pagination, className, sx } = props;
-    const { isPending, total } = useListContext();
+    const {
+        children,
+        pagination,
+        className,
+        sx,
+        unauthorized = defaultUnauthorized,
+    } = props;
+    const { canAccess, isPending, total } = useListContext();
 
     return (
         <Root className={className} sx={sx}>
@@ -145,12 +154,14 @@ export const ReferenceArrayFieldView: FC<
                 <LinearProgress
                     className={ReferenceArrayFieldClasses.progress}
                 />
-            ) : (
+            ) : canAccess ? (
                 <span>
                     {children || <SingleFieldList />}
                     {pagination && total !== undefined ? pagination : null}
                 </span>
-            )}
+            ) : unauthorized !== false ? (
+                unauthorized
+            ) : null}
         </Root>
     );
 };
@@ -172,3 +183,5 @@ const Root = styled('span', {
 }));
 
 const PureReferenceArrayFieldView = memo(ReferenceArrayFieldView);
+
+const defaultUnauthorized = <UnauthorizedReference />;

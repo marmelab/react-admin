@@ -1,13 +1,18 @@
 import * as React from 'react';
 import fakeRestProvider from 'ra-data-fakerest';
 import { CardContent } from '@mui/material';
-import { ResourceDefinitionContextProvider } from 'ra-core';
+import {
+    AuthProvider,
+    ResourceContextProvider,
+    ResourceDefinitionContextProvider,
+} from 'ra-core';
 
 import { AdminContext } from '../AdminContext';
 import { Datagrid } from '../list';
 import { ReferenceArrayField } from './ReferenceArrayField';
 import { TextField } from './TextField';
 import { Show, SimpleShowLayout } from '../detail';
+import { QueryClient } from '@tanstack/react-query';
 
 export default { title: 'ra-ui-materialui/fields/ReferenceArrayField' };
 
@@ -130,5 +135,119 @@ export const WithMeta = () => {
                 </Show>
             </CardContent>
         </AdminContext>
+    );
+};
+
+export const AccessControl = ({
+    initialAuthorizedResources = {
+        artists: true,
+    },
+}: {
+    initialAuthorizedResources?: {
+        artists: boolean;
+    };
+}) => {
+    const queryClient = new QueryClient();
+    return (
+        <AdminWithAccessControl
+            initialAuthorizedResources={initialAuthorizedResources}
+            queryClient={queryClient}
+        />
+    );
+};
+
+const AdminWithAccessControl = ({
+    initialAuthorizedResources,
+    queryClient,
+}: {
+    initialAuthorizedResources: { artists: boolean };
+    queryClient: QueryClient;
+}) => {
+    const [authorizedResources, setAuthorizedResources] = React.useState(
+        initialAuthorizedResources
+    );
+
+    const authProvider: AuthProvider = {
+        canAccess: async ({ resource }) => {
+            return new Promise(resolve =>
+                setTimeout(resolve, 100, authorizedResources[resource])
+            );
+        },
+        logout: () => Promise.reject(new Error('Not implemented')),
+        checkError: () => Promise.resolve(),
+        checkAuth: () => Promise.resolve(),
+        getPermissions: () => Promise.resolve(),
+        login: () => Promise.reject(new Error('Not implemented')),
+    };
+
+    return (
+        <AdminContext
+            queryClient={queryClient}
+            dataProvider={dataProvider}
+            authProvider={authProvider}
+        >
+            <ResourceContextProvider value="books">
+                <AccessControlUI
+                    authorizedResources={authorizedResources}
+                    setAuthorizedResources={setAuthorizedResources}
+                    queryClient={queryClient}
+                >
+                    <CardContent>
+                        <Show resource="bands" id={1} sx={{ width: 600 }}>
+                            <TextField source="name" />
+                            <ReferenceArrayField
+                                source="members"
+                                reference="artists"
+                                queryOptions={{
+                                    meta: { foo: 'bar' },
+                                }}
+                            >
+                                <Datagrid bulkActionButtons={false}>
+                                    <TextField source="id" />
+                                    <TextField source="name" />
+                                </Datagrid>
+                            </ReferenceArrayField>
+                        </Show>
+                    </CardContent>
+                </AccessControlUI>
+            </ResourceContextProvider>
+        </AdminContext>
+    );
+};
+
+const AccessControlUI = ({
+    children,
+    setAuthorizedResources,
+    authorizedResources,
+    queryClient,
+}: {
+    children: React.ReactNode;
+    setAuthorizedResources: Function;
+    authorizedResources: {
+        artists: boolean;
+    };
+    queryClient: QueryClient;
+}) => {
+    return (
+        <div>
+            <div>
+                <label>
+                    <input
+                        type="checkbox"
+                        checked={authorizedResources['artists']}
+                        onChange={() => {
+                            setAuthorizedResources(state => ({
+                                ...state,
+                                artists: !authorizedResources['artists'],
+                            }));
+
+                            queryClient.clear();
+                        }}
+                    />
+                    artists access
+                </label>
+            </div>
+            <div>{children}</div>
+        </div>
     );
 };

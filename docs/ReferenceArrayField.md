@@ -291,3 +291,33 @@ The `<ReferenceArrayField>` component accepts the usual `className` prop. You ca
 
 To override the style of all instances of `<ReferenceArrayField>` using the [application-wide style overrides](./AppTheme.md#theming-individual-components), use the `RaReferenceArrayField` key.
 
+## `unauthorized`
+
+The component to display when users don't have access to the referenced resource:
+
+```tsx
+import { List, Datagrid, ReferenceArrayField, TextField } from 'react-admin';
+import { Box, Button, Typography } from '@mui/material';
+
+const Unauthorized = () => (
+    <Box textAlign="center" m={1}>
+        <Typography variant="h4" paragraph>
+            You don't have access to the tags
+        </Typography>
+        <Typography variant="body1">
+            Contact the administrator to request access
+        </Typography>
+    </Box>
+);
+
+export const PostList = () => (
+    <List>
+        <Datagrid>
+            <TextField source="id" />
+            <TextField source="title" />
+            <ReferenceArrayField reference="tags" source="tag_ids" label="Tags" />
+            <EditButton />
+        </Datagrid>
+    </List>
+);
+```

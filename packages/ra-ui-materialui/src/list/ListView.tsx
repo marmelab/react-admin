@@ -11,10 +11,12 @@ import { ListToolbar } from './ListToolbar';
 import { Pagination as DefaultPagination } from './pagination';
 import { ListActions as DefaultActions } from './ListActions';
 import { Empty } from './Empty';
+import { Unauthorized } from '../Unauthorized';
 
 const defaultActions = <DefaultActions />;
 const defaultPagination = <DefaultPagination />;
 const defaultEmpty = <Empty />;
+const defaultUnauthorized = <Unauthorized />;
 const DefaultComponent = Card;
 
 export const ListView = <RecordType extends RaRecord = any>(
@@ -31,13 +33,25 @@ export const ListView = <RecordType extends RaRecord = any>(
         component: Content = DefaultComponent,
         title,
         empty = defaultEmpty,
+        unauthorized = defaultUnauthorized,
         ...rest
     } = props;
-    const { defaultTitle, data, error, isPending, filterValues, resource } =
-        useListContext<RecordType>();
+    const {
+        canAccess,
+        defaultTitle,
+        data,
+        error,
+        isPending,
+        filterValues,
+        resource,
+    } = useListContext<RecordType>();
 
     if (!children || (!data && isPending && emptyWhileLoading)) {
         return null;
+    }
+
+    if (canAccess === false) {
+        return unauthorized;
     }
 
     const renderList = () => (
@@ -300,6 +314,35 @@ export interface ListViewProps {
      * );
      */
     sx?: SxProps;
+
+    /**
+     * The component to display when users don't have access to the list.
+     *
+     * @see https://marmelab.com/react-admin/List.html#unauthorized
+     * @example
+     * import { CreateButton, List } from 'react-admin';
+     * import { Box, Button, Typography } from '@mui/material';
+     *
+     * const Unauthorized = () => (
+     *     <Box textAlign="center" m={1}>
+     *         <Typography variant="h4" paragraph>
+     *             You don't have access to this list
+     *         </Typography>
+     *         <Typography variant="body1">
+     *             Contact the administrator to request access
+     *         </Typography>
+     *         <CreateButton />
+     *         <Button onClick={...}>Import</Button>
+     *     </Box>
+     * );
+     *
+     * const ProductList = () => (
+     *     <List unauthorized={<Unauthorized />}>
+     *         ...
+     *     </List>
+     * );
+     */
+    unauthorized?: ReactElement | false;
 }
 
 const PREFIX = 'RaList';

@@ -18,7 +18,7 @@ const ReferenceArrayFieldController = props => {
     return children(controllerProps);
 };
 
-describe('<useReferenceArrayFieldController />', () => {
+describe('useReferenceArrayFieldController', () => {
     const dataProvider = testDataProvider({
         getMany: jest.fn().mockResolvedValue({
             data: [
@@ -64,7 +64,7 @@ describe('<useReferenceArrayFieldController />', () => {
         );
     });
 
-    it('should call dataProvider.getMAny on mount and return the result in the data prop', async () => {
+    it('should call dataProvider.getMany on mount and return the result in the data prop', async () => {
         const children = jest.fn().mockReturnValue('child');
         render(
             <CoreAdminContext dataProvider={dataProvider}>
@@ -93,6 +93,45 @@ describe('<useReferenceArrayFieldController />', () => {
                 error: null,
             })
         );
+    });
+
+    it('should not call dataProvider.getMany when users are not authorized to access the resource', async () => {
+        const children = jest.fn().mockReturnValue('child');
+        const authProvider = {
+            canAccess: jest.fn(() => Promise.resolve(false)),
+        };
+        render(
+            <CoreAdminContext
+                dataProvider={dataProvider}
+                authProvider={authProvider}
+            >
+                <ReferenceArrayFieldController
+                    resource="foo"
+                    reference="bar"
+                    record={{ id: 1, barIds: [1, 2] }}
+                    source="barIds"
+                >
+                    {children}
+                </ReferenceArrayFieldController>
+            </CoreAdminContext>
+        );
+        await waitFor(() =>
+            expect(authProvider.canAccess).toHaveBeenCalledTimes(1)
+        );
+        await waitFor(() =>
+            expect(children).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    canAccess: false,
+                    sort: { field: 'id', order: 'ASC' },
+                    isFetching: false,
+                    isLoading: false,
+                    data: undefined,
+                    error: null,
+                })
+            )
+        );
+
+        expect(dataProvider.getMany).toHaveBeenCalledTimes(0);
     });
 
     it('should filter string data based on the filter props', async () => {

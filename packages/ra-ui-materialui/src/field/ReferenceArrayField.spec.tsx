@@ -1,6 +1,12 @@
 import * as React from 'react';
 import expect from 'expect';
-import { render, screen, act, waitFor } from '@testing-library/react';
+import {
+    render,
+    screen,
+    act,
+    waitFor,
+    fireEvent,
+} from '@testing-library/react';
 import {
     ListContextProvider,
     CoreAdminContext,
@@ -8,6 +14,7 @@ import {
     useRecordContext,
     useListContext,
     TestMemoryRouter,
+    testDataProvider,
 } from 'ra-core';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
@@ -18,7 +25,7 @@ import {
 import { TextField } from './TextField';
 import { SingleFieldList } from '../list';
 import { AdminContext } from '../AdminContext';
-import { DifferentIdTypes } from './ReferenceArrayField.stories';
+import { AccessControl, DifferentIdTypes } from './ReferenceArrayField.stories';
 
 const theme = createTheme({});
 
@@ -60,6 +67,7 @@ describe('<ReferenceArrayField />', () => {
                 <ThemeProvider theme={theme}>
                     <ListContextProvider
                         value={{
+                            canAccess: true,
                             resource: 'foo',
                             data,
                             isLoading: false,
@@ -89,6 +97,7 @@ describe('<ReferenceArrayField />', () => {
             <ThemeProvider theme={theme}>
                 <ListContextProvider
                     value={{
+                        canAccess: true,
                         resource: 'foo',
                         data: [],
                         isLoading: false,
@@ -120,6 +129,7 @@ describe('<ReferenceArrayField />', () => {
                 <ThemeProvider theme={theme}>
                     <ListContextProvider
                         value={{
+                            canAccess: true,
                             resource: 'foo',
                             data,
                             isLoading: false,
@@ -154,6 +164,7 @@ describe('<ReferenceArrayField />', () => {
                 <ThemeProvider theme={theme}>
                     <ListContextProvider
                         value={{
+                            canAccess: true,
                             resource: 'foo',
                             data,
                             isLoading: false,
@@ -161,7 +172,6 @@ describe('<ReferenceArrayField />', () => {
                     >
                         <ReferenceArrayFieldView
                             record={{ id: 123, barIds: [1, 2] }}
-                            resource="foo"
                             reference="bar"
                             source="barIds"
                         >
@@ -189,6 +199,7 @@ describe('<ReferenceArrayField />', () => {
                 <ThemeProvider theme={theme}>
                     <ListContextProvider
                         value={{
+                            canAccess: true,
                             resource: 'foo',
                             data,
                             isLoading: false,
@@ -197,7 +208,6 @@ describe('<ReferenceArrayField />', () => {
                         <ReferenceArrayFieldView
                             record={{ id: 123, barIds: [1, 2] }}
                             className="myClass"
-                            resource="foo"
                             reference="bar"
                             source="barIds"
                         >
@@ -255,7 +265,7 @@ describe('<ReferenceArrayField />', () => {
     });
 
     it('should accept more than one child', async () => {
-        const dataProvider = {
+        const dataProvider = testDataProvider({
             getMany: () =>
                 Promise.resolve({
                     data: [
@@ -264,7 +274,7 @@ describe('<ReferenceArrayField />', () => {
                         { id: 12, title: 'design' },
                     ],
                 }),
-        };
+        });
         const ListContextWatcher = () => {
             const { data } = useListContext();
             if (!data) return null;
@@ -309,5 +319,15 @@ describe('<ReferenceArrayField />', () => {
         expect(await screen.findByText('artist_1')).not.toBeNull();
         expect(await screen.findByText('artist_2')).not.toBeNull();
         expect(await screen.findByText('artist_3')).not.toBeNull();
+    });
+
+    it('should display the reference only when access is granted to the referenced resource', async () => {
+        render(<AccessControl />);
+
+        expect(screen.queryByText('The Beatles')).toBeNull();
+        expect(screen.getByLabelText('artists access')).toBeChecked();
+        fireEvent.click(screen.getByLabelText('artists access'));
+
+        await screen.findByText('ra.message.unauthorized_reference');
     });
 });

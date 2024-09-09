@@ -3,6 +3,17 @@ import { render, fireEvent, screen, waitFor } from '@testing-library/react';
 import { ListsWithAccessControl } from './useListController.accessControl.stories';
 
 describe('useListController', () => {
+    it('should display the list only when access is granted to the resource', async () => {
+        const exporter = jest.fn();
+        render(<ListsWithAccessControl exporter={exporter} />);
+
+        expect(screen.queryByText('Post #1 - 90 votes')).toBeNull();
+        expect(screen.getByLabelText('posts access')).not.toBeChecked();
+        fireEvent.click(screen.getByLabelText('posts access'));
+
+        await screen.findByText('Post #1 - 90 votes');
+    });
+
     it('should only export fields for which access is granted', async () => {
         const exporter = jest.fn();
         render(

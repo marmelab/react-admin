@@ -1,6 +1,6 @@
 import { isValidElement, useEffect, useMemo } from 'react';
 
-import { useAuthenticated } from '../../auth';
+import { useAuthenticated, useCanAccess } from '../../auth';
 import { useTranslate } from '../../i18n';
 import { useNotify } from '../../notification';
 import {
@@ -85,6 +85,15 @@ export const useListController = <RecordType extends RaRecord = any>(
     });
 
     const {
+        canAccess,
+        isPending: canAccessPending,
+        isLoading: canAccessLoading,
+    } = useCanAccess({
+        resource,
+        action: 'read',
+    });
+
+    const {
         data,
         pageInfo,
         total,
@@ -105,6 +114,7 @@ export const useListController = <RecordType extends RaRecord = any>(
             meta,
         },
         {
+            enabled: !canAccessPending && canAccess,
             placeholderData: previousData => previousData,
             retry: false,
             onError: error =>
@@ -159,6 +169,7 @@ export const useListController = <RecordType extends RaRecord = any>(
     });
 
     return {
+        canAccess,
         sort: currentSort,
         data,
         defaultTitle,
@@ -168,9 +179,11 @@ export const useListController = <RecordType extends RaRecord = any>(
         filter,
         filterValues: query.filterValues,
         hideFilter: queryModifiers.hideFilter,
-        isFetching,
-        isLoading,
-        isPending,
+        isFetching: canAccessLoading || (canAccess && isFetching),
+        isLoading: canAccessLoading || (canAccess && isLoading),
+        // When canAccess is false, isPending will always be true as the underlying query is not enabled
+        // This can be an issue when the List emptyWhileLoading prop is set to true
+        isPending: canAccessPending || (canAccess && isPending),
         onSelect: selectionModifiers.select,
         onToggleItem: selectionModifiers.toggle,
         onUnselectItems: selectionModifiers.clearSelection,
@@ -456,6 +469,7 @@ export const sanitizeListRestProps = props =>
         .reduce((acc, key) => ({ ...acc, [key]: props[key] }), {});
 
 export interface ListControllerBaseResult<RecordType extends RaRecord = any> {
+    canAccess?: boolean;
     sort: SortPayload;
     defaultTitle?: string;
     displayedFilters: any;

@@ -252,6 +252,8 @@ const {
     defaultTitle, // Translated title based on the resource, e.g. 'Posts'
     resource, // Resource name, deduced from the location. e.g. 'posts'
     refetch, // Callback for fetching the list data again
+    // Authorization
+    canAccess, // Boolean indicating whether users have access to this resource
 } = useListController();
 ```
 
@@ -270,7 +272,7 @@ import { useState } from 'react';
 import { useListController } from 'react-admin';
 
 const OfficeList = () => {
-    const { filterValues, setFilters, data, isLoading } = useListController({ resource: 'offices' });
+    const { filterValues, setFilters, data, isPending } = useListController({ resource: 'offices' });
     const [formValues, setFormValues] = useState(filterValues);
 
     const handleChange = (event) => {
@@ -285,7 +287,7 @@ const OfficeList = () => {
         setFilters(filterFormValues);
     };
 
-    if (isLoading) return <div>Loading...</div>;
+    if (isPending) return <div>Loading...</div>;
 
     return (
         <>
@@ -304,3 +306,30 @@ const OfficeList = () => {
     );
 };
 ```
+
+## Controlling Access To The List
+
+Should your authProvider implements the [`canAccess` method](./AuthProviderWriting.md#canaccess), the `useListController` hook will call it with the resource name to ensure users cannot access data they're no allowed to see. For instance, given the following `<List>`:
+
+```tsx
+import { useState } from 'react';
+import { useListController } from 'react-admin';
+
+const OfficeList = () => {
+    const { canAccess, data, isPending } = useListController({ resource: 'offices' });
+
+    if (isPending) return <div>Loading...</div>;
+    if (!canAccess) return <div>You're not authorized to see the offices</div>;
+
+    return (
+      <ul>
+          {data.map(record => (
+              <li key={record.id}>{record.name}</li>
+          ))}
+      </ul>
+    );
+};
+```
+
+e `authProvider.canAccess` method will be called times with the following parameters: `{ action: "read", resource: "offices" }`.
+

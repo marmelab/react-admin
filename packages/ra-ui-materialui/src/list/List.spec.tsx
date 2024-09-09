@@ -19,7 +19,7 @@ import { Basic, Title, TitleFalse, TitleElement } from './List.stories';
 const theme = createTheme(defaultTheme);
 
 describe('<List />', () => {
-    it('should render a list page', () => {
+    it('should render a list page', async () => {
         const Datagrid = () => <div>datagrid</div>;
         const { container } = render(
             <CoreAdminContext
@@ -34,10 +34,12 @@ describe('<List />', () => {
                 </ThemeProvider>
             </CoreAdminContext>
         );
-        expect(container.querySelectorAll('.list-page')).toHaveLength(1);
+        await waitFor(() =>
+            expect(container.querySelectorAll('.list-page')).toHaveLength(1)
+        );
     });
 
-    it('should render a toolbar, children and pagination', () => {
+    it('should render a toolbar, children and pagination', async () => {
         const Filters = () => <div>filters</div>;
         const Pagination = () => <div>pagination</div>;
         const Datagrid = () => <div>datagrid</div>;
@@ -58,13 +60,15 @@ describe('<List />', () => {
                 </ThemeProvider>
             </CoreAdminContext>
         );
-        expect(screen.queryAllByText('filters')).toHaveLength(2);
+        await waitFor(() =>
+            expect(screen.queryAllByText('filters')).toHaveLength(2)
+        );
         expect(screen.queryAllByLabelText('ra.action.export')).toHaveLength(1);
         expect(screen.queryAllByText('pagination')).toHaveLength(1);
         expect(screen.queryAllByText('datagrid')).toHaveLength(1);
     });
 
-    it('should accept more than one child', () => {
+    it('should accept more than one child', async () => {
         const Filter = () => <div>filter</div>;
         const Datagrid = () => <div>datagrid</div>;
         render(
@@ -81,11 +85,13 @@ describe('<List />', () => {
                 </ThemeProvider>
             </CoreAdminContext>
         );
-        expect(screen.queryAllByText('filter')).toHaveLength(1);
+        await waitFor(() =>
+            expect(screen.queryAllByText('filter')).toHaveLength(1)
+        );
         expect(screen.queryAllByText('datagrid')).toHaveLength(1);
     });
 
-    it('should display aside component', () => {
+    it('should display aside component', async () => {
         const Dummy = () => <div />;
         const Aside = () => <div id="aside">Hello</div>;
         render(
@@ -101,7 +107,9 @@ describe('<List />', () => {
                 </ThemeProvider>
             </CoreAdminContext>
         );
-        expect(screen.queryAllByText('Hello')).toHaveLength(1);
+        await waitFor(() =>
+            expect(screen.queryAllByText('Hello')).toHaveLength(1)
+        );
     });
 
     it('should render an invite when the list is empty', async () => {
