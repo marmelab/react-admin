@@ -182,15 +182,10 @@ export const FilterButton = (props: FilterButtonProps) => {
                     (filterElement: JSX.Element, index) => (
                         <FilterButtonMenuItem
                             key={filterElement.props.source}
-                            filter={{
-                                ...filterElement,
-                                props: {
-                                    ...filterElement.props,
-                                    applied: appliedFilters.includes(
-                                        filterElement.props.source
-                                    ),
-                                },
-                            }}
+                            filter={filterElement}
+                            displayed={
+                                !!displayedFilters[filterElement.props.source]
+                            }
                             resource={resource}
                             onShow={handleShow}
                             onHide={handleRemove}
