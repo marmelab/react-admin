@@ -83,15 +83,6 @@ export const FilterButton = (props: FilterButtonProps) => {
         (filterElement: JSX.Element) => !filterElement.props.alwaysOn
     );
 
-    const appliedFilters = allTogglableFilters
-        .filter(
-            (filterElement: JSX.Element) =>
-                !!displayedFilters[filterElement.props.source] &&
-                typeof lodashGet(filterValues, filterElement.props.source) !==
-                    'undefined'
-        )
-        .map((filterElement: JSX.Element) => filterElement.props.source);
-
     const handleClickButton = useCallback(
         event => {
             // This prevents ghost click.
