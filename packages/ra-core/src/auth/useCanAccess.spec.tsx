@@ -89,23 +89,6 @@ describe('useCanAccess', () => {
         });
     });
 
-    it('should call logout when the auth.canAccess call fails and checkError rejects', async () => {
-        const authProvider = {
-            login: () => Promise.reject('bad method'),
-            logout: jest.fn(() => Promise.resolve()),
-            checkAuth: () => Promise.reject('bad method'),
-            getPermissions: () => Promise.reject('bad method'),
-            checkError: () => Promise.reject(),
-            canAccess: () => Promise.reject('not good'),
-        };
-        render(<Basic authProvider={authProvider} />);
-
-        await waitFor(() => {
-            expect(screen.queryByText('LOADING')).toBeNull();
-        });
-        expect(authProvider.logout).toHaveBeenCalled();
-    });
-
     it('should abort the request if the query is canceled', async () => {
         const abort = jest.fn();
         const authProvider = {

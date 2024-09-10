@@ -16,8 +16,9 @@ import { useCanAccess, useRecordContext, DeleteButton } from 'react-admin';
 
 const DeleteUserButton = () => {
     const record = useRecordContext();
-    const { isPending, canAccess } = useCanAccess({ action: 'delete', resource: 'users', record });
+    const { isPending, canAccess, error } = useCanAccess({ action: 'delete', resource: 'users', record });
     if (isPending || !canAccess) return null;
+    if (error) return <div>{error.message}</div>
     return <DeleteButton record={record} resource="users" />;
 };
 ```

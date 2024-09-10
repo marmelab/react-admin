@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
 import {
     QueryObserverLoadingErrorResult,
     QueryObserverLoadingResult,
@@ -8,8 +8,6 @@ import {
     UseQueryOptions,
 } from '@tanstack/react-query';
 import useAuthProvider from './useAuthProvider';
-import useLogoutIfAccessDenied from './useLogoutIfAccessDenied';
-import { useEvent } from '../util';
 
 /**
  * A hook that calls the authProvider.canAccess() method using react-query for a provided resource and action (and optionally a record).
@@ -33,12 +31,15 @@ import { useEvent } from '../util';
  *     import { useCanAccess } from 'react-admin';
  *
  *     const PostDetail = () => {
- *         const { isPending, canAccess } = useCanAccess({
+ *         const { isPending, canAccess, error } = useCanAccess({
  *             resource: 'posts',
  *             action: 'read',
  *         });
  *         if (isPending || !canAccess) {
  *             return null;
+ *         }
+ *         if (error) {
+ *             return <div>{error.message}</div>;
  *         }
  *         return <PostEdit />;
  *     };
@@ -47,8 +48,6 @@ export const useCanAccess = <ErrorType = Error>(
     params: UseCanAccessOptions<ErrorType>
 ): UseCanAccessResult<ErrorType> => {
     const authProvider = useAuthProvider();
-    const logoutIfAccessDenied = useLogoutIfAccessDenied();
-    const { onSuccess, onError, onSettled, ...queryOptions } = params ?? {};
 
     const result = useQuery({
         queryKey: ['auth', 'canAccess', JSON.stringify(params)],
@@ -61,43 +60,8 @@ export const useCanAccess = <ErrorType = Error>(
                 signal: authProvider.supportAbortSignal ? signal : undefined,
             });
         },
-        ...queryOptions,
+        ...params,
     });
-
-    const onSuccessEvent = useEvent(onSuccess ?? noop);
-    const onSettledEvent = useEvent(onSettled ?? noop);
-    const onErrorEvent = useEvent(
-        onError ??
-            ((error: ErrorType) => {
-                if (process.env.NODE_ENV === 'development') {
-                    console.error(error);
-                }
-                logoutIfAccessDenied(error);
-            })
-    );
-
-    useEffect(() => {
-        if (result.data === undefined || result.isFetching) return;
-        onSuccessEvent(result.data);
-    }, [onSuccessEvent, result.data, result.isFetching]);
-
-    useEffect(() => {
-        if (result.isError === false) {
-            return;
-        }
-        onErrorEvent(result.error);
-    }, [onErrorEvent, result.error, result.isError]);
-
-    useEffect(() => {
-        if (result.status === 'pending' || result.isFetching) return;
-        onSettledEvent(result.data, result.error);
-    }, [
-        onSettledEvent,
-        result.data,
-        result.error,
-        result.status,
-        result.isFetching,
-    ]);
 
     return useMemo(() => {
         return {
@@ -112,9 +76,6 @@ export interface UseCanAccessOptions<ErrorType = Error>
     resource: string;
     action: string;
     record?: unknown;
-    onSuccess?: (data: boolean) => void;
-    onError?: (err: ErrorType) => void;
-    onSettled?: (data?: boolean, error?: ErrorType | null) => void;
 }
 
 export type UseCanAccessResult<ErrorType = Error> =
@@ -139,5 +100,3 @@ export interface UseCanAccessSuccessResult<ErrorType = Error>
     extends QueryObserverSuccessResult<boolean, ErrorType> {
     canAccess: boolean;
 }
-
-const noop = () => {};
