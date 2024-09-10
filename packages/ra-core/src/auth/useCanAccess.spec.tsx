@@ -117,6 +117,8 @@ describe('useCanAccess', () => {
                         });
                     })
             ) as any,
+            checkError: () => Promise.resolve(),
+            supportAbortSignal: true,
         } as any;
         const queryClient = new QueryClient();
         render(<Basic authProvider={authProvider} queryClient={queryClient} />);
