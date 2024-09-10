@@ -44,7 +44,7 @@ describe('<FilterButton />', () => {
     });
 
     describe('filter selection menu', () => {
-        it('should control filters display by checking/unchecking it in the menu', async () => {
+        it('should control filters display by checking/unchecking them in the menu', async () => {
             render(<Basic />);
 
             fireEvent.click(await screen.findByLabelText('Add filter'));
