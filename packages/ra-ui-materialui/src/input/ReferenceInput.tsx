@@ -1,9 +1,8 @@
 import React from 'react';
 import {
-    ChoicesContextProvider,
+    ReferenceInputBase,
     ReferenceInputBaseProps,
-    ResourceContextProvider,
-    useReferenceInputController,
+    useChoicesContext,
 } from 'ra-core';
 
 import { AutocompleteInput } from './AutocompleteInput';
@@ -70,13 +69,7 @@ import { UnauthorizedReference } from '../UnauthorizedReference';
  * a `setFilters` function. You can call this function to filter the results.
  */
 export const ReferenceInput = (props: ReferenceInputProps) => {
-    const {
-        children = defaultChildren,
-        reference,
-        sort = { field: 'id', order: 'DESC' },
-        filter = {},
-        unauthorized = defaultUnauthorized,
-    } = props;
+    const { children = defaultChildren } = props;
 
     if (props.validate && process.env.NODE_ENV !== 'production') {
         throw new Error(
@@ -84,23 +77,24 @@ export const ReferenceInput = (props: ReferenceInputProps) => {
         );
     }
 
-    const controllerProps = useReferenceInputController({
-        ...props,
-        sort,
-        filter,
-    });
+    return (
+        <ReferenceInputBase {...props}>
+            <ReferenceInputView>{children}</ReferenceInputView>
+        </ReferenceInputBase>
+    );
+};
 
-    if (!controllerProps.isPending && !controllerProps.canAccess) {
+const ReferenceInputView = ({
+    children,
+    unauthorized = defaultUnauthorized,
+}: ReferenceInputViewProps) => {
+    const { canAccess, isPending } = useChoicesContext();
+
+    if (!isPending && !canAccess) {
         return unauthorized;
     }
 
-    return (
-        <ResourceContextProvider value={reference}>
-            <ChoicesContextProvider value={controllerProps}>
-                {children}
-            </ChoicesContextProvider>
-        </ResourceContextProvider>
-    );
+    return children;
 };
 
 const defaultChildren = <AutocompleteInput />;
@@ -110,6 +104,12 @@ export interface ReferenceInputProps extends ReferenceInputBaseProps {
      * Call validate on the child component instead
      */
     validate?: never;
+    unauthorized?: React.ReactNode;
+    [key: string]: any;
+}
+
+export interface ReferenceInputViewProps {
+    children: React.ReactNode;
     unauthorized?: React.ReactNode;
 }
 
