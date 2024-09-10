@@ -8,6 +8,7 @@ import { useReferenceParams } from './useReferenceParams';
 import { useWrappedSource } from '../../core';
 import type { FilterPayload, RaRecord, SortPayload } from '../../types';
 import type { ChoicesContextValue } from '../../form';
+import { useCanAccess } from '../../auth';
 
 /**
  * A hook for choosing a reference record. Useful for foreign keys.
@@ -72,11 +73,19 @@ export const useReferenceInputController = <RecordType extends RaRecord = any>(
     // selection logic
     const finalSource = useWrappedSource(source);
     const currentValue = useWatch({ name: finalSource });
-
     const isGetMatchingEnabled = enableGetChoices
         ? enableGetChoices(params.filterValues)
         : true;
 
+    const {
+        canAccess,
+        isPending: canAccessPending,
+        isLoading: canAccessLoading,
+        isFetching: canAccessFetching,
+    } = useCanAccess({
+        resource: reference,
+        action: 'read',
+    });
     // fetch possible values
     const {
         data: possibleValuesData = [],
@@ -99,7 +108,7 @@ export const useReferenceInputController = <RecordType extends RaRecord = any>(
             meta,
         },
         {
-            enabled: isGetMatchingEnabled,
+            enabled: isGetMatchingEnabled && !canAccessLoading && canAccess,
             placeholderData: previousData => previousData,
             ...otherQueryOptions,
         }
@@ -116,9 +125,13 @@ export const useReferenceInputController = <RecordType extends RaRecord = any>(
     } = useReference<RecordType>({
         id: currentValue,
         reference,
-        // @ts-ignore the types of the queryOptions for the getMAny and getList are not compatible
+        // @ts-ignore the types of the queryOptions for the getMany and getList are not compatible
         options: {
-            enabled: currentValue != null && currentValue !== '',
+            enabled:
+                currentValue != null &&
+                currentValue !== '' &&
+                !canAccessLoading &&
+                canAccess,
             meta,
             ...otherQueryOptions,
         },
@@ -127,6 +140,7 @@ export const useReferenceInputController = <RecordType extends RaRecord = any>(
     const isPending =
         // The reference query isn't enabled when there is no value yet but as it has no data, react-query will flag it as pending
         (currentValue != null && currentValue !== '' && isPendingReference) ||
+        canAccessPending ||
         isPendingPossibleValues;
 
     // We need to delay the update of the referenceRecord and the finalData
@@ -165,6 +179,7 @@ export const useReferenceInputController = <RecordType extends RaRecord = any>(
         [params.sort, params.order]
     );
     return {
+        canAccess,
         sort: currentSort,
         allChoices: finalData,
         availableChoices: possibleValuesData,
@@ -174,9 +189,13 @@ export const useReferenceInputController = <RecordType extends RaRecord = any>(
         filter: params.filter,
         filterValues: params.filterValues,
         hideFilter: paramsModifiers.hideFilter,
-        isFetching: isFetchingReference || isFetchingPossibleValues,
-        isLoading: isLoadingReference || isLoadingPossibleValues,
-        isPending: isPending,
+        isFetching:
+            canAccessFetching ||
+            (canAccess && (isFetchingReference || isFetchingPossibleValues)),
+        isLoading:
+            canAccessLoading ||
+            (canAccess && (isLoadingReference || isLoadingPossibleValues)),
+        isPending: canAccessPending || (canAccess && isPending),
         page: params.page,
         perPage: params.perPage,
         refetch,

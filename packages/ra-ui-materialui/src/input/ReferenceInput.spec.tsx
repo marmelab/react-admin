@@ -19,6 +19,7 @@ import {
     SelfReference,
     QueryOptions,
     InArrayInput,
+    AccessControl,
 } from './ReferenceInput.stories';
 
 describe('<ReferenceInput />', () => {
@@ -268,7 +269,8 @@ describe('<ReferenceInput />', () => {
                 <Form>
                     <ReferenceInput
                         {...defaultProps}
-                        validate={() => undefined}
+                        // @ts-ignore
+                        validate={[() => undefined]}
                     />
                 </Form>
             </CoreAdminContext>
@@ -286,4 +288,15 @@ describe('<ReferenceInput />', () => {
         await screen.findByDisplayValue('Les misérables');
         await screen.findByDisplayValue('Victor Hugo');
     });
+
+    it('should display the references only when access is granted to the referenced resource', async () => {
+        render(<AccessControl />);
+        await screen.findByDisplayValue('War and Peace');
+        await screen.findByText('Tolstoy');
+        expect(screen.getByLabelText('authors access')).toBeChecked();
+        fireEvent.click(screen.getByLabelText('authors access'));
+
+        await screen.findByText('ra.message.unauthorized_reference');
+        expect(screen.queryByText('Tolstoy')).toBeNull();
+    }, 10000);
 });

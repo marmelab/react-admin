@@ -7,6 +7,8 @@ import {
     testDataProvider,
     useRedirect,
     TestMemoryRouter,
+    ResourceContextProvider,
+    AuthProvider,
 } from 'ra-core';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
@@ -727,3 +729,108 @@ export const InArrayInput = () => (
         </Admin>
     </TestMemoryRouter>
 );
+
+export const AccessControl = ({
+    initialAuthorizedResources = {
+        authors: true,
+    },
+}: {
+    initialAuthorizedResources?: {
+        authors: boolean;
+    };
+}) => {
+    const queryClient = new QueryClient();
+    return (
+        <AdminWithAccessControl
+            initialAuthorizedResources={initialAuthorizedResources}
+            queryClient={queryClient}
+        />
+    );
+};
+
+const AdminWithAccessControl = ({
+    initialAuthorizedResources,
+    queryClient,
+}: {
+    initialAuthorizedResources: { authors: boolean };
+    queryClient: QueryClient;
+}) => {
+    const [authorizedResources, setAuthorizedResources] = React.useState(
+        initialAuthorizedResources
+    );
+
+    const authProvider: AuthProvider = {
+        canAccess: async ({ resource }) => {
+            return new Promise(resolve =>
+                setTimeout(resolve, 100, authorizedResources[resource])
+            );
+        },
+        logout: () => Promise.reject(new Error('Not implemented')),
+        checkError: () => Promise.resolve(),
+        checkAuth: () => Promise.resolve(),
+        getPermissions: () => Promise.resolve(),
+        login: () => Promise.reject(new Error('Not implemented')),
+    };
+
+    return (
+        <AdminContext
+            queryClient={queryClient}
+            dataProvider={dataProviderWithAuthors}
+            authProvider={authProvider}
+        >
+            <ResourceContextProvider value="books">
+                <AccessControlUI
+                    authorizedResources={authorizedResources}
+                    setAuthorizedResources={setAuthorizedResources}
+                    queryClient={queryClient}
+                >
+                    <Edit id={1}>
+                        <SimpleForm>
+                            <TextInput source="title" />
+                            <ReferenceInput reference="authors" source="author">
+                                <SelectInput optionText="last_name" />
+                            </ReferenceInput>
+                        </SimpleForm>
+                    </Edit>
+                </AccessControlUI>
+            </ResourceContextProvider>
+        </AdminContext>
+    );
+};
+
+const AccessControlUI = ({
+    children,
+    setAuthorizedResources,
+    authorizedResources,
+    queryClient,
+}: {
+    children: React.ReactNode;
+    setAuthorizedResources: Function;
+    authorizedResources: {
+        authors: boolean;
+    };
+    queryClient: QueryClient;
+}) => {
+    return (
+        <div>
+            <div>
+                <label>
+                    <input
+                        type="checkbox"
+                        checked={authorizedResources['authors']}
+                        onChange={() => {
+                            setAuthorizedResources(state => ({
+                                ...state,
+                                authors: !authorizedResources['authors'],
+                            }));
+
+                            queryClient.clear();
+                        }}
+                    />
+                    authors access
+                </label>
+            </div>
+            <div>{children}</div>
+        </div>
+    );
+};
