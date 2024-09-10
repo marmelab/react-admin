@@ -12,7 +12,12 @@ import {
     MenuItem,
     styled,
     ButtonProps as MuiButtonProps,
+    Divider,
+    ListItemIcon,
+    Checkbox,
 } from '@mui/material';
+import ContentSave from '@mui/icons-material/Save';
+import ClearIcon from '@mui/icons-material/Clear';
 import ContentFilter from '@mui/icons-material/FilterList';
 import lodashGet from 'lodash/get';
 import isEqual from 'lodash/isEqual';
@@ -52,6 +57,7 @@ export const FilterButton = (props: FilterButtonProps) => {
         perPage,
         setFilters,
         showFilter,
+        hideFilter,
         sort,
     } = useListContext();
     const hasFilterValues = !isEqual(filterValues, {});
@@ -73,13 +79,18 @@ export const FilterButton = (props: FilterButtonProps) => {
         );
     }
 
-    const hiddenFilters = filters.filter(
-        (filterElement: JSX.Element) =>
-            !filterElement.props.alwaysOn &&
-            !displayedFilters[filterElement.props.source] &&
-            typeof lodashGet(filterValues, filterElement.props.source) ===
-                'undefined'
+    const allTogglableFilters = filters.filter(
+        (filterElement: JSX.Element) => !filterElement.props.alwaysOn
     );
+
+    const appliedFilters = allTogglableFilters
+        .filter(
+            (filterElement: JSX.Element) =>
+                !!displayedFilters[filterElement.props.source] &&
+                typeof lodashGet(filterValues, filterElement.props.source) !==
+                    'undefined'
+        )
+        .map((filterElement: JSX.Element) => filterElement.props.source);
 
     const handleClickButton = useCallback(
         event => {
@@ -113,6 +124,14 @@ export const FilterButton = (props: FilterButtonProps) => {
         [showFilter, setOpen]
     );
 
+    const handleRemove = useCallback(
+        ({ source }) => {
+            hideFilter(source);
+            setOpen(false);
+        },
+        [hideFilter, setOpen]
+    );
+
     // add query dialog state
     const [addSavedQueryDialogOpen, setAddSavedQueryDialogOpen] =
         useState(false);
@@ -136,7 +155,7 @@ export const FilterButton = (props: FilterButtonProps) => {
     };
 
     if (
-        hiddenFilters.length === 0 &&
+        allTogglableFilters.length === 0 &&
         validSavedQueries.length === 0 &&
         !hasFilterValues
     ) {
@@ -159,15 +178,26 @@ export const FilterButton = (props: FilterButtonProps) => {
                 anchorEl={anchorEl.current}
                 onClose={handleRequestClose}
             >
-                {hiddenFilters.map((filterElement: JSX.Element, index) => (
-                    <FilterButtonMenuItem
-                        key={filterElement.props.source}
-                        filter={filterElement}
-                        resource={resource}
-                        onShow={handleShow}
-                        autoFocus={index === 0}
-                    />
-                ))}
+                {allTogglableFilters.map(
+                    (filterElement: JSX.Element, index) => (
+                        <FilterButtonMenuItem
+                            key={filterElement.props.source}
+                            filter={{
+                                ...filterElement,
+                                props: {
+                                    ...filterElement.props,
+                                    applied: appliedFilters.includes(
+                                        filterElement.props.source
+                                    ),
+                                },
+                            }}
+                            resource={resource}
+                            onShow={handleShow}
+                            onHide={handleRemove}
+                            autoFocus={index === 0}
+                        />
+                    )
+                )}
                 {validSavedQueries.map((savedQuery, index) =>
                     isEqual(savedQuery.value, {
                         filter: filterValues,
@@ -179,6 +209,9 @@ export const FilterButton = (props: FilterButtonProps) => {
                             onClick={showRemoveSavedQueryDialog}
                             key={index}
                         >
+                            <ListItemIcon>
+                                <ClearIcon fontSize="small" />
+                            </ListItemIcon>
                             {translate(
                                 'ra.saved_queries.remove_label_with_name',
                                 {
@@ -208,14 +241,28 @@ export const FilterButton = (props: FilterButtonProps) => {
                             }}
                             key={index}
                         >
+                            <Checkbox
+                                size="small"
+                                sx={{
+                                    paddingLeft: 0,
+                                    paddingTop: 0,
+                                    paddingBottom: 0,
+                                    marginLeft: 0,
+                                    marginRight: '7px',
+                                }}
+                            />
                             {savedQuery.label}
                         </MenuItem>
                     )
                 )}
+                {hasFilterValues && <Divider />}
                 {hasFilterValues &&
                     !hasSavedCurrentQuery &&
                     !disableSaveQuery && (
                         <MenuItem onClick={showAddSavedQueryDialog}>
+                            <ListItemIcon>
+                                <ContentSave fontSize="small" />
+                            </ListItemIcon>
                             {translate('ra.saved_queries.new_label', {
                                 _: 'Save current query...',
                             })}
@@ -228,6 +275,9 @@ export const FilterButton = (props: FilterButtonProps) => {
                             setOpen(false);
                         }}
                     >
+                        <ListItemIcon>
+                            <ClearIcon fontSize="small" />
+                        </ListItemIcon>
                         {translate('ra.action.remove_all_filters', {
                             _: 'Remove all filters',
                         })}
