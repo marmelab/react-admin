@@ -24,33 +24,29 @@ describe('useCanAccessResources', () => {
         expect(canAccess).toBeCalledWith({
             action: 'read',
             resource: 'posts.id',
-            signal: expect.any(AbortSignal),
+            signal: undefined,
         });
         expect(canAccess).toBeCalledWith({
             action: 'read',
             resource: 'posts.title',
-            signal: expect.any(AbortSignal),
+            signal: undefined,
         });
         expect(canAccess).toBeCalledWith({
             action: 'read',
             resource: 'posts.author',
-            signal: expect.any(AbortSignal),
+            signal: undefined,
         });
 
-        await waitFor(() => {
-            expect(
-                screen.getByText(
-                    JSON.stringify({
-                        canAccess: {
-                            'posts.id': true,
-                            'posts.title': true,
-                            'posts.author': true,
-                        },
-                        isPending: false,
-                    })
-                )
-            );
-        });
+        await screen.findByText(
+            JSON.stringify({
+                canAccess: {
+                    'posts.id': true,
+                    'posts.title': true,
+                    'posts.author': true,
+                },
+                isPending: false,
+            })
+        );
     });
 
     it('should grant access to each resource based on canAccess result', async () => {
@@ -73,20 +69,16 @@ describe('useCanAccessResources', () => {
             screen.getByText(JSON.stringify({ canAccess: {}, isPending: true }))
         );
 
-        await waitFor(() => {
-            expect(
-                screen.getByText(
-                    JSON.stringify({
-                        canAccess: {
-                            'posts.id': false,
-                            'posts.title': true,
-                            'posts.author': true,
-                        },
-                        isPending: false,
-                    })
-                )
-            );
-        });
+        await screen.findByText(
+            JSON.stringify({
+                canAccess: {
+                    'posts.id': false,
+                    'posts.title': true,
+                    'posts.author': true,
+                },
+                isPending: false,
+            })
+        );
     });
 
     it('should grant access to all resources if no authProvider', async () => {
@@ -96,20 +88,16 @@ describe('useCanAccessResources', () => {
             screen.getByText(JSON.stringify({ canAccess: {}, isPending: true }))
         );
 
-        await waitFor(() => {
-            expect(
-                screen.getByText(
-                    JSON.stringify({
-                        canAccess: {
-                            'posts.id': true,
-                            'posts.title': true,
-                            'posts.author': true,
-                        },
-                        isPending: false,
-                    })
-                )
-            );
-        });
+        await screen.findByText(
+            JSON.stringify({
+                canAccess: {
+                    'posts.id': true,
+                    'posts.title': true,
+                    'posts.author': true,
+                },
+                isPending: false,
+            })
+        );
     });
 
     it('should grant access to all resources if no authProvider.canAccess', async () => {
