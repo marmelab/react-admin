@@ -100,11 +100,7 @@ export const useListParams = ({
         location.search,
         resource,
         storeKey,
-        JSON.stringify(
-            storeKey === false || (disableSyncWithLocation && !storeKey)
-                ? localParams
-                : params
-        ),
+        JSON.stringify(!storeKey ? localParams : params),
         JSON.stringify(filterDefaultValues),
         JSON.stringify(sort),
         perPage,
@@ -119,10 +115,7 @@ export const useListParams = ({
         () =>
             getQuery({
                 queryFromLocation,
-                params:
-                    storeKey === false || (disableSyncWithLocation && !storeKey)
-                        ? localParams
-                        : params,
+                params: !storeKey ? localParams : params,
                 filterDefaultValues,
                 sort,
                 perPage,
