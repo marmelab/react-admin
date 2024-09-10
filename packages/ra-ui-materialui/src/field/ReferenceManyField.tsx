@@ -11,6 +11,7 @@ import {
 import { UseQueryOptions } from '@tanstack/react-query';
 
 import { FieldProps } from './types';
+import { UnauthorizedReference } from '../UnauthorizedReference';
 
 /**
  * Render related records to the current one.
@@ -77,6 +78,7 @@ export const ReferenceManyField = <
         source = 'id',
         target,
         queryOptions,
+        unauthorized = defaultUnauthorized,
     } = props;
     const record = useRecordContext(props);
 
@@ -96,6 +98,10 @@ export const ReferenceManyField = <
         target,
         queryOptions,
     });
+
+    if (!controllerProps.isPending && !controllerProps.canAccess) {
+        return unauthorized;
+    }
 
     return (
         <ResourceContextProvider value={reference}>
@@ -121,11 +127,13 @@ export interface ReferenceManyFieldProps<
     sort?: SortPayload;
     source?: string;
     target: string;
-    queryOptions?: UseQueryOptions<
-        { data: ReferenceRecordType[]; total: number },
-        Error
+    queryOptions?: Omit<
+        UseQueryOptions<{ data: ReferenceRecordType[]; total: number }, Error>,
+        'queryKey' | 'queryFn'
     >;
+    unauthorized?: ReactElement | false;
 }
 
 const defaultFilter = {};
 const defaultSort = { field: 'id', order: 'DESC' as const };
+const defaultUnauthorized = <UnauthorizedReference />;

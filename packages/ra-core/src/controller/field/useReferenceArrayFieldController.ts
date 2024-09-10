@@ -1,9 +1,9 @@
 import get from 'lodash/get';
+import { UseQueryOptions } from '@tanstack/react-query';
 import { RaRecord, SortPayload } from '../../types';
 import { useGetManyAggregate } from '../../dataProvider';
 import { ListControllerResult, useList } from '../list';
 import { useNotify } from '../../notification';
-import { UseQueryOptions } from '@tanstack/react-query';
 import { useCanAccess } from '../../auth';
 
 export interface UseReferenceArrayFieldControllerParams<

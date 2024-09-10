@@ -13,28 +13,7 @@ import usePaginationState from '../usePaginationState';
 import { useRecordSelection } from '../list/useRecordSelection';
 import useSortState from '../useSortState';
 import { useResourceContext } from '../../core';
-
-export interface UseReferenceManyFieldControllerParams<
-    RecordType extends RaRecord = RaRecord,
-    ReferenceRecordType extends RaRecord = RaRecord,
-> {
-    debounce?: number;
-    filter?: any;
-    page?: number;
-    perPage?: number;
-    record?: RecordType;
-    reference: string;
-    resource?: string;
-    sort?: SortPayload;
-    source?: string;
-    target: string;
-    queryOptions?: UseQueryOptions<
-        { data: ReferenceRecordType[]; total: number },
-        Error
-    >;
-}
-
-const defaultFilter = {};
+import { useCanAccess } from '../../auth';
 
 /**
  * Fetch reference records, and return them when available
@@ -178,6 +157,15 @@ export const useReferenceManyFieldController = <
     });
 
     const {
+        canAccess,
+        isPending: canAccessPending,
+        isLoading: canAccessLoading,
+        isFetching: canAccessFetching,
+    } = useCanAccess({
+        resource: reference,
+        action: 'read',
+    });
+    const {
         data,
         total,
         pageInfo,
@@ -197,7 +185,8 @@ export const useReferenceManyFieldController = <
             meta,
         },
         {
-            enabled: get(record, source) != null,
+            enabled:
+                get(record, source) != null && !canAccessPending && canAccess,
             placeholderData: previousData => previousData,
             onError: error =>
                 notify(
@@ -221,6 +210,7 @@ export const useReferenceManyFieldController = <
     );
 
     return {
+        canAccess,
         sort,
         data,
         defaultTitle: undefined,
@@ -228,9 +218,10 @@ export const useReferenceManyFieldController = <
         error,
         filterValues,
         hideFilter,
-        isFetching,
-        isLoading,
-        isPending,
+        // When canAccess is false, isPending will always be true as the underlying query is not enabled
+        isPending: canAccessPending || (canAccess && isPending),
+        isLoading: canAccessLoading || (canAccess && isLoading),
+        isFetching: canAccessFetching || (canAccess && isFetching),
         onSelect: selectionModifiers.select,
         onToggleItem: selectionModifiers.toggle,
         onUnselectItems: selectionModifiers.clearSelection,
@@ -253,3 +244,25 @@ export const useReferenceManyFieldController = <
         total,
     } as ListControllerResult<ReferenceRecordType>;
 };
+
+export interface UseReferenceManyFieldControllerParams<
+    RecordType extends RaRecord = RaRecord,
+    ReferenceRecordType extends RaRecord = RaRecord,
+> {
+    debounce?: number;
+    filter?: any;
+    page?: number;
+    perPage?: number;
+    record?: RecordType;
+    reference: string;
+    resource?: string;
+    sort?: SortPayload;
+    source?: string;
+    target: string;
+    queryOptions?: Omit<
+        UseQueryOptions<{ data: ReferenceRecordType[]; total: number }, Error>,
+        'queryKey' | 'queryFn'
+    >;
+}
+
+const defaultFilter = {};

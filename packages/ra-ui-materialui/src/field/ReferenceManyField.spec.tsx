@@ -9,7 +9,7 @@ import { ReferenceManyField } from './ReferenceManyField';
 import { TextField } from './TextField';
 import { SingleFieldList } from '../list/SingleFieldList';
 import { Pagination } from '../list/pagination/Pagination';
-import { Basic } from './ReferenceManyField.stories';
+import { AccessControl, Basic } from './ReferenceManyField.stories';
 
 const theme = createTheme();
 
@@ -267,5 +267,15 @@ describe('<ReferenceManyField />', () => {
             await screen.findByLabelText('ra.navigation.previous');
             await screen.findByLabelText('ra.navigation.next');
         });
+    });
+
+    it('should display the reference only when access is granted to the referenced resource', async () => {
+        render(<AccessControl />);
+
+        await screen.findByText('War and Peace');
+        expect(screen.getByLabelText('books access')).toBeChecked();
+        fireEvent.click(screen.getByLabelText('books access'));
+
+        await screen.findByText('ra.message.unauthorized_reference');
     });
 });

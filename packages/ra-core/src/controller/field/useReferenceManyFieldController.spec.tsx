@@ -116,6 +116,51 @@ describe('useReferenceManyFieldController', () => {
         });
     });
 
+    it('should not call dataProvider.getManyReferences when users are not authorized to access the resource', async () => {
+        const children = jest.fn().mockReturnValue('child');
+        const authProvider = {
+            canAccess: jest.fn(() => Promise.resolve(false)),
+        };
+        const dataProvider = testDataProvider({
+            getManyReference: jest
+                .fn()
+                .mockResolvedValue({ data: [], total: 0 }),
+        });
+        render(
+            <CoreAdminContext
+                dataProvider={dataProvider}
+                authProvider={authProvider}
+            >
+                <ReferenceManyFieldController
+                    resource="authors"
+                    source="id"
+                    record={{ id: 123, name: 'James Joyce' }}
+                    reference="books"
+                    target="author_id"
+                >
+                    {children}
+                </ReferenceManyFieldController>
+            </CoreAdminContext>
+        );
+        await waitFor(() =>
+            expect(authProvider.canAccess).toHaveBeenCalledTimes(1)
+        );
+        await waitFor(() =>
+            expect(children).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    canAccess: false,
+                    sort: { field: 'id', order: 'DESC' },
+                    isFetching: false,
+                    isLoading: false,
+                    data: undefined,
+                    error: null,
+                })
+            )
+        );
+
+        expect(dataProvider.getManyReference).toHaveBeenCalledTimes(0);
+    });
+
     it('should pass data to children function', async () => {
         const children = jest.fn().mockReturnValue('children');
         const dataProvider = testDataProvider({
@@ -259,7 +304,9 @@ describe('useReferenceManyFieldController', () => {
         );
 
         const { rerender } = render(<ControllerWrapper />);
-        expect(dataProvider.getManyReference).toBeCalledTimes(1);
+        await waitFor(() => {
+            expect(dataProvider.getManyReference).toBeCalledTimes(1);
+        });
         rerender(<ControllerWrapper sort={{ field: 'id', order: 'ASC' }} />);
         await waitFor(() => {
             expect(dataProvider.getManyReference).toBeCalledTimes(2);

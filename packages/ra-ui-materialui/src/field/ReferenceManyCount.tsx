@@ -13,6 +13,7 @@ import ErrorIcon from '@mui/icons-material/Error';
 import { FieldProps } from './types';
 import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
 import { Link } from '../Link';
+import { UnauthorizedReference } from '../UnauthorizedReference';
 
 /**
  * Fetch and render the number of records related to the current one
@@ -40,13 +41,14 @@ export const ReferenceManyCount = <RecordType extends RaRecord = RaRecord>(
         resource,
         source = 'id',
         timeout = 1000,
+        unauthorized = defaultUnauthorized,
         ...rest
     } = props;
     const record = useRecordContext(props);
     const oneSecondHasPassed = useTimeout(timeout);
     const createPath = useCreatePath();
 
-    const { isPending, error, total } =
+    const { canAccess, isPending, error, total } =
         useReferenceManyFieldController<RecordType>({
             filter,
             sort,
@@ -71,6 +73,10 @@ export const ReferenceManyCount = <RecordType extends RaRecord = RaRecord>(
     ) : (
         total
     );
+
+    if (!canAccess) {
+        return unauthorized;
+    }
 
     return link && record ? (
         <Link
@@ -111,4 +117,7 @@ export interface ReferenceManyCountProps<RecordType extends RaRecord = RaRecord>
     filter?: any;
     link?: boolean;
     timeout?: number;
+    unauthorized?: React.ReactNode;
 }
+
+const defaultUnauthorized = <UnauthorizedReference />;

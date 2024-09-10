@@ -1,11 +1,12 @@
 import * as React from 'react';
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 
 import {
     Basic,
     ErrorState,
     WithFilter,
     Wrapper,
+    AccessControl,
 } from './ReferenceManyCount.stories';
 import { ReferenceManyCount } from './ReferenceManyCount';
 
@@ -36,14 +37,29 @@ describe('<ReferenceManyCount />', () => {
                 />
             </Wrapper>
         );
-        expect(dataProvider.getManyReference).toHaveBeenCalledWith('comments', {
-            target: 'post_id',
-            id: 1,
-            filter: {},
-            pagination: { page: 1, perPage: 1 },
-            sort: { field: 'custom_id', order: 'ASC' },
-            meta: undefined,
-            signal: undefined,
+        await waitFor(() => {
+            expect(dataProvider.getManyReference).toHaveBeenCalledWith(
+                'comments',
+                {
+                    target: 'post_id',
+                    id: 1,
+                    filter: {},
+                    pagination: { page: 1, perPage: 1 },
+                    sort: { field: 'custom_id', order: 'ASC' },
+                    meta: undefined,
+                    signal: undefined,
+                }
+            );
         });
+    });
+
+    it('should display the reference count only when access is granted to the referenced resource', async () => {
+        render(<AccessControl />);
+
+        await screen.findByText('3');
+        expect(screen.getByLabelText('comments access')).toBeChecked();
+        fireEvent.click(screen.getByLabelText('comments access'));
+
+        await screen.findByText('ra.message.unauthorized_reference');
     });
 });
