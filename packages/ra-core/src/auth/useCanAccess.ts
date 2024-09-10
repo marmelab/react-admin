@@ -119,6 +119,7 @@ export interface UseCanAccessOptions<ErrorType = Error>
 
 export type UseCanAccessResult<ErrorType = Error> =
     | UseCanAccessLoadingResult<ErrorType>
+    | UseCanAccessLoadingErrorResult<ErrorType>
     | UseCanAccessRefetchErrorResult<ErrorType>
     | UseCanAccessSuccessResult<ErrorType>;
 
@@ -126,7 +127,7 @@ export interface UseCanAccessLoadingResult<ErrorType = Error>
     extends QueryObserverLoadingResult<boolean, ErrorType> {
     canAccess: undefined;
 }
-export interface UseCanAccessErrorResult<ErrorType = Error>
+export interface UseCanAccessLoadingErrorResult<ErrorType = Error>
     extends QueryObserverLoadingErrorResult<boolean, ErrorType> {
     canAccess: undefined;
 }

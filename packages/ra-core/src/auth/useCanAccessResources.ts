@@ -110,6 +110,7 @@ export interface UseCanAccessResourcesOptions<ErrorType = Error>
 
 export type UseCanAccessResourcesResult<ErrorType = Error> =
     | UseCanAccessResourcesLoadingResult
+    | UseCanAccessResourcesLoadingErrorResult<ErrorType>
     | UseCanAccessResourcesRefetchErrorResult<ErrorType>
     | UseCanAccessResourcesSuccessResult;
 
