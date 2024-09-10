@@ -6,7 +6,7 @@ import { Checkbox } from '@mui/material';
 
 export const FilterButtonMenuItem = forwardRef<any, FilterButtonMenuItemProps>(
     (props, ref) => {
-        const { filter, onShow, onHide, autoFocus } = props;
+        const { filter, onShow, onHide, autoFocus, displayed } = props;
         const resource = useResourceContext(props);
         const handleShow = useCallback(() => {
             onShow({
@@ -26,7 +26,7 @@ export const FilterButtonMenuItem = forwardRef<any, FilterButtonMenuItemProps>(
                 data-key={filter.props.source}
                 data-default-value={filter.props.defaultValue}
                 key={filter.props.source}
-                onClick={filter.props.applied ? handleHide : handleShow}
+                onClick={displayed ? handleHide : handleShow}
                 autoFocus={autoFocus}
                 ref={ref}
                 disabled={filter.props.disabled}
@@ -40,7 +40,8 @@ export const FilterButtonMenuItem = forwardRef<any, FilterButtonMenuItemProps>(
                         marginLeft: 0,
                         marginRight: '7px',
                     }}
-                    defaultChecked={filter.props.applied}
+                    disableRipple
+                    defaultChecked={displayed}
                 />
                 <FieldTitle
                     label={filter.props.label}
@@ -54,6 +55,7 @@ export const FilterButtonMenuItem = forwardRef<any, FilterButtonMenuItemProps>(
 
 export interface FilterButtonMenuItemProps {
     filter: JSX.Element;
+    displayed: boolean;
     onShow: (params: { source: string; defaultValue: any }) => void;
     onHide: (params: { source: string }) => void;
     resource?: string;
