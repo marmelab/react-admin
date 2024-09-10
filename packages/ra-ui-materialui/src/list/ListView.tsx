@@ -33,8 +33,17 @@ export const ListView = <RecordType extends RaRecord = any>(
         empty = defaultEmpty,
         ...rest
     } = props;
-    const { defaultTitle, data, error, isPending, filterValues, resource } =
-        useListContext<RecordType>();
+    const {
+        defaultTitle,
+        data,
+        error,
+        isPending,
+        filterValues,
+        resource,
+        total,
+        hasNextPage,
+        hasPreviousPage,
+    } = useListContext<RecordType>();
 
     if (!children || (!data && isPending && emptyWhileLoading)) {
         return null;
@@ -58,9 +67,16 @@ export const ListView = <RecordType extends RaRecord = any>(
         empty !== false && <div className={ListClasses.noResults}>{empty}</div>;
 
     const shouldRenderEmptyPage =
+        // the list is not loading data for the first time
         !isPending &&
-        data?.length === 0 &&
+        // the API returned no data (using either normal or partial pagination)
+        (total === 0 ||
+            (total == null &&
+                hasPreviousPage === false &&
+                hasNextPage === false)) &&
+        // the user didn't set any filters
         !Object.keys(filterValues).length &&
+        // there is an empty page component
         empty !== false;
 
     return (
