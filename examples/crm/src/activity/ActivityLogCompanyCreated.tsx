@@ -1,5 +1,5 @@
 import { ListItem, Stack, Typography } from '@mui/material';
-import { Link } from 'react-admin';
+import { Link, ReferenceField } from 'react-admin';
 
 import { CompanyAvatar } from '../companies/CompanyAvatar';
 import { SaleName } from '../sales/SaleName';
@@ -12,9 +12,10 @@ type ActivityLogCompanyCreatedProps = {
 };
 
 export function ActivityLogCompanyCreated({
-    activity: { sale, company },
+    activity,
 }: ActivityLogCompanyCreatedProps) {
     const context = useActivityLogContext();
+    const { company } = activity;
     return (
         <ListItem disableGutters>
             <Stack direction="row" spacing={1} alignItems="center" width="100%">
@@ -25,14 +26,22 @@ export function ActivityLogCompanyCreated({
                     color="text.secondary"
                     flexGrow={1}
                 >
-                    <SaleName sale={sale} /> added company{' '}
+                    <ReferenceField
+                        source="sales_id"
+                        reference="sales"
+                        record={activity}
+                        link={false}
+                    >
+                        <SaleName />
+                    </ReferenceField>{' '}
+                    added company{' '}
                     <Link to={`/companies/${company.id}/show`}>
                         {company.name}
                     </Link>
                     {context === 'all' && (
                         <>
                             {' '}
-                            <RelativeDate date={company.created_at} />
+                            <RelativeDate date={activity.date} />
                         </>
                     )}
                 </Typography>
@@ -42,7 +51,7 @@ export function ActivityLogCompanyCreated({
                         variant="body2"
                         component="span"
                     >
-                        <RelativeDate date={company.created_at} />
+                        <RelativeDate date={activity.date} />
                     </Typography>
                 )}
             </Stack>

@@ -1,3 +1,4 @@
+import * as React from 'react';
 import {
     Divider,
     Stack,
@@ -18,6 +19,8 @@ import {
     useGetIdentity,
     useNotify,
 } from 'react-admin';
+import { useFormContext } from 'react-hook-form';
+
 import { isLinkedinUrl } from '../misc/isLinkedInUrl';
 import { useConfigurationContext } from '../root/ConfigurationContext';
 import { Sale } from '../types';
@@ -109,7 +112,6 @@ const ContactPositionInputs = () => {
             <ReferenceInput source="company_id" reference="companies">
                 <AutocompleteInput
                     optionText="name"
-                    validate={required()}
                     onCreate={handleCreateCompany}
                     helperText={false}
                 />
@@ -119,10 +121,37 @@ const ContactPositionInputs = () => {
 };
 
 const ContactPersonalInformationInputs = () => {
+    const { getValues, setValue } = useFormContext();
+
+    // set first and last name based on email
+    const handleEmailChange = (email: string) => {
+        const { first_name, last_name } = getValues();
+        if (first_name || last_name || !email) return;
+        const [first, last] = email.split('@')[0].split('.');
+        setValue('first_name', first.charAt(0).toUpperCase() + first.slice(1));
+        setValue('last_name', last.charAt(0).toUpperCase() + last.slice(1));
+    };
+
+    const handleEmailPaste: React.ClipboardEventHandler<HTMLDivElement> = e => {
+        const email = e.clipboardData?.getData('text/plain');
+        handleEmailChange(email);
+    };
+
+    const handleEmailBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+        const email = e.target.value;
+        handleEmailChange(email);
+    };
+
     return (
         <Stack>
             <Typography variant="h6">Personal info</Typography>
-            <TextInput source="email" helperText={false} validate={email()} />
+            <TextInput
+                source="email"
+                helperText={false}
+                validate={email()}
+                onPaste={handleEmailPaste}
+                onBlur={handleEmailBlur}
+            />
             <Stack gap={1} flexDirection="row">
                 <TextInput
                     source="phone_1_number"

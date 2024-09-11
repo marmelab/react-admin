@@ -21,6 +21,9 @@ export const CompanyAvatar = (props: {
                 width,
                 height,
                 fontSize: height !== 40 ? '0.6rem' : undefined,
+                '&.MuiAvatar-colorDefault': {
+                    color: 'primary.contrastText',
+                },
             }}
         >
             {record.name.charAt(0)}

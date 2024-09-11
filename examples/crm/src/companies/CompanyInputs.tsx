@@ -22,11 +22,10 @@ import ImageEditorField from '../misc/ImageEditorField';
 
 const isUrl = (url: string) => {
     if (!url) return;
-    try {
-        // Parse the URL to ensure it is valid
-        new URL(url);
-    } catch (e) {
-        // If URL parsing fails, return false
+    const UrlRegex = new RegExp(
+        /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/i
+    );
+    if (!UrlRegex.test(url)) {
         return 'Must be a valid URL';
     }
 };

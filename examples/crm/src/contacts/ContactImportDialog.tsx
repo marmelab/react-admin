@@ -28,9 +28,12 @@ type ContactImportModalProps = {
     onClose(): void;
 };
 
-export function ContactImportModal({ open, onClose }: ContactImportModalProps) {
+export function ContactImportDialog({
+    open,
+    onClose,
+}: ContactImportModalProps) {
     const refresh = useRefresh();
-    const { processBatch } = useContactImport();
+    const processBatch = useContactImport();
     const { importer, parseCsv, reset } = usePapaParse<ContactImportSchema>({
         batchSize: 10,
         processBatch,
@@ -48,11 +51,8 @@ export function ContactImportModal({ open, onClose }: ContactImportModalProps) {
         setFile(file);
     };
 
-    const startImport = async () => {
-        if (!file) {
-            return;
-        }
-
+    const startImport = () => {
+        if (!file) return;
         parseCsv(file);
     };
 
@@ -184,20 +184,14 @@ export function ContactImportModal({ open, onClose }: ContactImportModalProps) {
                     justifyContent: 'flex-start',
                 }}
             >
-                <Toolbar
-                    sx={{
-                        width: '100%',
-                    }}
-                >
+                <Toolbar sx={{ width: '100%' }}>
                     {importer.state === 'idle' ? (
-                        <>
-                            <Button
-                                label="Import"
-                                variant="contained"
-                                onClick={startImport}
-                                disabled={!file}
-                            />
-                        </>
+                        <Button
+                            label="Import"
+                            variant="contained"
+                            onClick={startImport}
+                            disabled={!file}
+                        />
                     ) : (
                         <Button
                             label="Close"

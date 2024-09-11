@@ -48,13 +48,9 @@ export const useInput = <ValueType = any>(
     const parse = useEvent(parseProp);
     const defaultId = useId();
 
-    if (
-        !source &&
-        props.label == null &&
-        process.env.NODE_ENV === 'development'
-    ) {
+    if (!finalName && process.env.NODE_ENV === 'development') {
         console.warn(
-            'Input components require either a source or a label prop.'
+            'Input components require either a source or a name prop.'
         );
     }
 

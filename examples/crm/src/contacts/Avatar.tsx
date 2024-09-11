@@ -7,6 +7,7 @@ export const Avatar = (props: {
     record?: Contact;
     width?: number;
     height?: number;
+    title?: string;
 }) => {
     const record = useRecordContext<Contact>(props);
     // If we come from company page, the record is defined (to pass the company as a prop),
@@ -23,6 +24,7 @@ export const Avatar = (props: {
                 height: props.height,
                 fontSize: props.height ? '0.6rem' : undefined,
             }}
+            title={props.title}
         >
             {record.first_name?.charAt(0).toUpperCase()}
             {record.last_name?.charAt(0).toUpperCase()}
