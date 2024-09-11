@@ -24,6 +24,9 @@ import { TextField } from '../field';
 import { SearchInput, TextInput } from '../input';
 import { Route } from 'react-router';
 import { Link } from 'react-router-dom';
+import { ListButton } from '../button';
+import { ShowGuesser } from '../detail';
+import TopToolbar from '../layout/TopToolbar';
 
 export default { title: 'ra-ui-materialui/list/List' };
 
@@ -536,6 +539,47 @@ export const StoreDisabled = () => {
                     />
                 </CustomRoutes>
                 <Resource name="books" />
+            </Admin>
+        </TestMemoryRouter>
+    );
+};
+
+const BooksWithLocationDisabled = () => (
+    <List
+        resource="books"
+        storeKey="booksParams"
+        disableSyncWithLocation
+        sort={{ field: 'year', order: 'ASC' }}
+    >
+        <Datagrid>
+            <TextField source="id" />
+            <TextField source="title" />
+            <TextField source="author" />
+            <TextField source="year" />
+        </Datagrid>
+    </List>
+);
+
+export const LocationNotSyncWithStore = () => {
+    const ShowActions = () => (
+        <TopToolbar>
+            <ListButton label="ra.action.back" />
+        </TopToolbar>
+    );
+
+    return (
+        <TestMemoryRouter initialEntries={['/']}>
+            <Admin dataProvider={dataProvider}>
+                <Resource
+                    name="books"
+                    list={<BooksWithLocationDisabled />}
+                    edit={
+                        <ShowGuesser
+                            enableLog={false}
+                            actions={<ShowActions />}
+                        />
+                    }
+                />
             </Admin>
         </TestMemoryRouter>
     );

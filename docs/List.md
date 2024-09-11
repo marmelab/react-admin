@@ -415,7 +415,7 @@ const BoolkList = () => (
 
 By default, react-admin synchronizes the `<List>` parameters (sort, pagination, filters) with the query string in the URL (using `react-router` location) and the [Store](./Store.md).
 
-When you use a `<List>` component anywhere else than as `<Resource list>`, you may want to disable this synchronization to keep the parameters in a local state, independent for each `<List>` instance. This allows to have multiple lists on a single page. The drawback is that a hit on the "back" button doesn't restore the previous list parameters. To do so, pass the `disableSyncWithLocation` prop.
+When you use a `<List>` component anywhere else than as `<Resource list>`, you may want to disable this synchronization to keep the parameters in a local state, independent for each `<List>` instance. This allows to have multiple lists on a single page. To do so, pass the `disableSyncWithLocation` prop. The drawback is that a hit on the "back" button doesn't restore the previous list parameters.
 
 {% raw %}
 ```jsx
@@ -445,7 +445,35 @@ const Dashboard = () => (
 ```
 {% endraw %}
 
-**Tip**: As `disableSyncWithLocation` also disables the persistence of the list parameters in the Store, any custom string specified in the `storeKey` prop is ignored when `disableSyncWithLocation` is set to `true`.
+**Tip**: `disableSyncWithLocation` also disables the persistence of the list parameters in the Store by default. To enable the persistence of the list parameters in the Store, you can pass a custom `storeKey` prop.
+
+```diff
+const Dashboard = () => (
+    <div>
+        // ...
+        <ResourceContextProvider value="posts">
+-           <List disableSyncWithLocation>
++           <List disableSyncWithLocation storeKey="postsListParams">
+                <SimpleList
+                    primaryText={record => record.title}
+                    secondaryText={record => `${record.views} views`}
+                    tertiaryText={record => new Date(record.published_at).toLocaleDateString()}
+                />
+            </List>
+        </ResourceContextProvider>
+        <ResourceContextProvider value="comments">
+-           <List disableSyncWithLocation>
++           <List disableSyncWithLocation storeKey="commentsListParams">
+                <SimpleList
+                    primaryText={record => record.title}
+                    secondaryText={record => `${record.views} views`}
+                    tertiaryText={record => new Date(record.published_at).toLocaleDateString()}
+                />
+            </List>
+        </ResourceContextProvider>
+    </div>
+)
+```
 
 Please note that the selection state is not synced in the URL but in a global store using the resource as key. Thus, all lists in the page using the same resource will share the same synced selection state. This is a design choice because if row selection is not tied to a resource, then when a user deletes a record it may remain selected without any ability to unselect it. If you want to allow custom `storeKey`'s for managing selection state, you will have to implement your own `useListController` hook and pass a custom key to the `useRecordSelection` hook. You will then need to implement your own `DeleteButton` and `BulkDeleteButton` to manually unselect rows when deleting records. You can still opt out of all store interactions including selection if you set it to `false`.
 
