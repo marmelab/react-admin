@@ -131,14 +131,14 @@ If you want to see what react-admin is capable of, or if you want to learn from 
         <a href="#crm" class="no-decoration"><img src="./img/demo-CRM.png" alt="CRM"></a>
         <div class="content-card">
             <a href="#crm" class="no-decoration">
-                <p class="title-card"><b>CRM</b></p>
-                <p  class="description-card">A complete CRM app with an address book and a Kanban board for deals. Built by the core team.</p>
+                <p class="title-card"><b>Atomic CRM</b></p>
+                <p  class="description-card">A complete CRM app allowing to manage contacts, companies, deals, notes, tasks, and tags. Uses Supabase as backend. Built by the core team.</p>
             </a>
         </div>
         <div class="card-footer">
             <div class="links-container">
                 <p><b><a href="https://marmelab.com/react-admin-crm/" class="demo link">Demo</a></b></p>
-                <p><b><a href="https://github.com/marmelab/react-admin/tree/master/examples/crm" class="source-code link">Source code</a></b></p>
+                <p><b><a href="https://github.com/marmelab/atomic-crm" class="source-code link">Source code</a></b></p>
             </div>
         </div>
     </div>
@@ -254,12 +254,12 @@ The source shows example implementation of the following features:
 
 ## CRM
 
-A complete CRM app allowing to manage contacts, companies, deals, notes, tasks, and tags. Built by the core team.
+Atomic CRM is a complete CRM app allowing to manage contacts, companies, deals, notes, tasks, and tags. Built by the core team. You can use it as a template to build your own CRM.
 
 <video src="https://user-images.githubusercontent.com/99944/116970434-4a926480-acb8-11eb-8ce2-0602c680e45e.mp4" controls="controls"></video>
 
 * Demo: [https://marmelab.com/react-admin-crm/](https://marmelab.com/react-admin-crm/)
-* Source code: [https://github.com/marmelab/react-admin/tree/master/examples/crm](https://github.com/marmelab/react-admin/tree/master/examples/crm)
+* Source code: [https://github.com/marmelab/atomic-crm](https://github.com/marmelab/atomic-crm)
 
 The source shows how to implement the following features:
 
