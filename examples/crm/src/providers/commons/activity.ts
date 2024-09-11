@@ -13,188 +13,164 @@ import {
     ContactNote,
     Deal,
     DealNote,
-    Sale,
 } from '../../types';
 
+// FIXME: Requires 5 large queries to get the latest activities.
+// Replace with a server-side view or a custom API endpoint.
 export async function getActivityLog(
     dataProvider: DataProvider,
-    companyId?: Identifier
+    companyId?: Identifier,
+    salesId?: Identifier
 ) {
-    const sales = await getSales(dataProvider);
-    const companies = await getCompaniesLog(dataProvider, sales, companyId);
+    let companyFilter = {} as any;
+    if (companyId) {
+        companyFilter.id = companyId;
+    } else if (salesId) {
+        companyFilter['sales_id@in'] = `(${salesId})`;
+    }
 
-    const [contactsLog, dealsLog] = await Promise.all([
-        getContactsLog(dataProvider, sales, companies),
-        getDealsLog(dataProvider, sales, companies),
-    ]);
-    return companies.companiesLog.concat(contactsLog, dealsLog).sort(
-        (a, b) => a.date.localeCompare(b.date) * -1 // sort by date desc
+    let filter = {} as any;
+    if (companyId) {
+        filter.company_id = companyId;
+    } else if (salesId) {
+        filter['sales_id@in'] = `(${salesId})`;
+    }
+
+    const [newCompanies, newContactsAndNotes, newDealsAndNotes] =
+        await Promise.all([
+            getNewCompanies(dataProvider, companyFilter),
+            getNewContactsAndNotes(dataProvider, filter),
+            getNewDealsAndNotes(dataProvider, filter),
+        ]);
+    return (
+        [...newCompanies, ...newContactsAndNotes, ...newDealsAndNotes]
+            // sort by date desc
+            .sort((a, b) =>
+                a.date && b.date ? a.date.localeCompare(b.date) * -1 : 0
+            )
+            // limit to 250 activities
+            .slice(0, 250)
     );
 }
 
-async function getSales(dataProvider: DataProvider) {
-    const salesById = await dataProvider
-        .getList<Sale>('sales', {
-            pagination: { page: 1, perPage: 200 },
-            sort: { field: 'id', order: 'ASC' },
-            filter: {},
-        })
-        .then(({ data }) =>
-            data.reduce((acc, sale) => {
-                acc.set(sale.id, sale);
-                return acc;
-            }, new Map<Identifier, Sale>())
-        );
-
-    return {
-        salesById,
-        salesIds: [...salesById.keys()],
-    };
-}
-
-async function getCompaniesLog(
+const getNewCompanies = async (
     dataProvider: DataProvider,
-    { salesById, salesIds }: Awaited<ReturnType<typeof getSales>>,
-    companyId?: Identifier
-) {
-    const companies = await dataProvider
-        .getList<Company>('companies', {
-            filter: companyId
-                ? { id: companyId, 'sales_id@in': `(${salesIds})` }
-                : { 'sales_id@in': `(${salesIds})` },
-            pagination: { page: 1, perPage: 10_000 },
+    filter: any
+): Promise<Activity[]> => {
+    const { data: companies } = await dataProvider.getList<Company>(
+        'companies',
+        {
+            filter,
+            pagination: { page: 1, perPage: 250 },
             sort: { field: 'created_at', order: 'DESC' },
-        })
-        .then(({ data }) => data);
+        }
+    );
+    return companies.map(company => ({
+        id: `company.${company.id}.created`,
+        type: COMPANY_CREATED,
+        company_id: company.id,
+        company,
+        sales_id: company.sales_id,
+        date: company.created_at,
+    }));
+};
 
-    return {
-        companiesLog: companies.map<Activity>(company => ({
-            id: `company.${company.id}.created`,
-            type: COMPANY_CREATED,
-            company,
-            sale: salesById.get(company.sales_id) as Sale,
-            date: company.created_at,
-        })),
-        companiesIds: companies.map(({ id }) => id),
-        companiesById: companies.reduce((acc, company) => {
-            acc.set(company.id, company);
-            return acc;
-        }, new Map<Identifier, Company>()),
-    };
+async function getNewContactsAndNotes(
+    dataProvider: DataProvider,
+    filter: any
+): Promise<Activity[]> {
+    const { data: contacts } = await dataProvider.getList<Contact>('contacts', {
+        filter,
+        pagination: { page: 1, perPage: 250 },
+        sort: { field: 'first_seen', order: 'DESC' },
+    });
+
+    let recentContactNotesFilter = {} as any;
+    if (filter.sales_id) {
+        recentContactNotesFilter.sales_id = filter.sales_id;
+    }
+    if (filter.company_id) {
+        // No company_id field in contactNote, filtering by related contacts instead.
+        // This filter is only valid if a company has less than 250 contact.
+        const contactIds = contacts.map(contact => contact.id).join(',');
+        recentContactNotesFilter['contact_id@in'] = `(${contactIds})`;
+    }
+
+    const { data: contactNotes } = await dataProvider.getList<ContactNote>(
+        'contactNotes',
+        {
+            filter: recentContactNotesFilter,
+            pagination: { page: 1, perPage: 250 },
+            sort: { field: 'date', order: 'DESC' },
+        }
+    );
+
+    const newContacts = contacts.map(contact => ({
+        id: `contact.${contact.id}.created`,
+        type: CONTACT_CREATED,
+        company_id: contact.company_id,
+        sales_id: contact.sales_id,
+        contact,
+        date: contact.first_seen,
+    }));
+
+    const newContactNotes = contactNotes.map(contactNote => ({
+        id: `contactNote.${contactNote.id}.created`,
+        type: CONTACT_NOTE_CREATED,
+        sales_id: contactNote.sales_id,
+        contactNote,
+        date: contactNote.date,
+    }));
+
+    return [...newContacts, ...newContactNotes];
 }
 
-async function getContactsLog(
+async function getNewDealsAndNotes(
     dataProvider: DataProvider,
-    { salesById: salesDict, salesIds }: Awaited<ReturnType<typeof getSales>>,
-    { companiesIds, companiesById }: Awaited<ReturnType<typeof getCompaniesLog>>
-) {
-    const contacts = await dataProvider
-        .getList<Contact>('contacts', {
-            filter: {
-                'company_id@in': `(${companiesIds})`,
-                'sales_id@in': `(${salesIds})`,
-            },
-            pagination: { page: 1, perPage: 10_000 },
-            sort: { field: 'first_seen', order: 'DESC' },
-        })
-        .then(({ data }) => data);
+    filter: any
+): Promise<Activity[]> {
+    const { data: deals } = await dataProvider.getList<Deal>('deals', {
+        filter,
+        pagination: { page: 1, perPage: 250 },
+        sort: { field: 'created_at', order: 'DESC' },
+    });
 
-    const contactsDict = contacts.reduce((acc, contact) => {
-        acc.set(contact.id, contact);
-        return acc;
-    }, new Map<Identifier, Contact>());
+    let recentDealNotesFilter = {} as any;
+    if (filter.sales_id) {
+        recentDealNotesFilter.sales_id = filter.sales_id;
+    }
+    if (filter.company_id) {
+        // No company_id field in dealNote, filtering by related deals instead.
+        // This filter is only valid if a deal has less than 250 notes.
+        const dealIds = deals.map(deal => deal.id).join(',');
+        recentDealNotesFilter['deal_id@in'] = `(${dealIds})`;
+    }
 
-    const contactNotes = await dataProvider
-        .getList<ContactNote>('contactNotes', {
-            filter: {
-                'contact_id@in': `(${contacts.map(({ id }) => id)})`,
-                'sales_id@in': `(${salesIds})`,
-            },
-            pagination: { page: 1, perPage: 10_000 },
+    const { data: dealNotes } = await dataProvider.getList<DealNote>(
+        'dealNotes',
+        {
+            filter: recentDealNotesFilter,
+            pagination: { page: 1, perPage: 250 },
             sort: { field: 'date', order: 'DESC' },
-        })
-        .then(({ data }) => data);
+        }
+    );
 
-    return contacts
-        .map<Activity>(contact => ({
-            id: `contact.${contact.id}.created`,
-            type: CONTACT_CREATED,
-            company: companiesById.get(contact.company_id) as Company,
-            sale: salesDict.get(contact.sales_id) as Sale,
-            contact,
-            date: contact.first_seen,
-        }))
-        .concat(
-            contactNotes.map<Activity>(contactNote => {
-                const contact = contactsDict.get(
-                    contactNote.contact_id
-                ) as Contact;
-                return {
-                    id: `contactNote.${contactNote.id}.created`,
-                    type: CONTACT_NOTE_CREATED,
-                    company: companiesById.get(contact.company_id) as Company,
-                    sale: salesDict.get(contactNote.sales_id) as Sale,
-                    contact,
-                    contactNote,
-                    date: contactNote.date,
-                };
-            })
-        );
-}
+    const newDeals = deals.map(deal => ({
+        id: `deal.${deal.id}.created`,
+        type: DEAL_CREATED,
+        company_id: deal.company_id,
+        sales_id: deal.sales_id,
+        deal,
+        date: deal.created_at,
+    }));
 
-async function getDealsLog(
-    dataProvider: DataProvider,
-    { salesById: salesDict, salesIds }: Awaited<ReturnType<typeof getSales>>,
-    { companiesIds, companiesById }: Awaited<ReturnType<typeof getCompaniesLog>>
-) {
-    const deals = await dataProvider
-        .getList<Deal>('deals', {
-            filter: {
-                'company_id@in': `(${companiesIds})`,
-                'sales_id@in': `(${salesIds})`,
-            },
-            pagination: { page: 1, perPage: 10_000 },
-            sort: { field: 'created_at', order: 'DESC' },
-        })
-        .then(({ data }) => data);
+    const newDealNotes = dealNotes.map(dealNote => ({
+        id: `dealNote.${dealNote.id}.created`,
+        type: DEAL_NOTE_CREATED,
+        sales_id: dealNote.sales_id,
+        dealNote,
+        date: dealNote.date,
+    }));
 
-    const dealsDict = deals.reduce((acc, deals) => {
-        acc.set(deals.id, deals);
-        return acc;
-    }, new Map<Identifier, Deal>());
-
-    const dealsNotes = await dataProvider
-        .getList<DealNote>('dealNotes', {
-            filter: {
-                'deal_id@in': `(${deals.map(({ id }) => id)})`,
-                'sales_id@in': `(${salesIds})`,
-            },
-            pagination: { page: 1, perPage: 10_000 },
-            sort: { field: 'date', order: 'DESC' },
-        })
-        .then(({ data }) => data);
-
-    return deals
-        .map<Activity>(deal => ({
-            id: `deal.${deal.id}.created`,
-            type: DEAL_CREATED,
-            company: companiesById.get(deal.company_id) as Company,
-            sale: salesDict.get(deal.sales_id) as Sale,
-            deal,
-            date: deal.created_at,
-        }))
-        .concat(
-            dealsNotes.map<Activity>(dealNote => {
-                const deal = dealsDict.get(dealNote.deal_id) as Deal;
-                return {
-                    id: `dealNote.${dealNote.id}.created`,
-                    type: DEAL_NOTE_CREATED,
-                    company: companiesById.get(deal.company_id) as Company,
-                    sale: salesDict.get(dealNote.sales_id) as Sale,
-                    deal,
-                    dealNote,
-                    date: dealNote.date,
-                };
-            })
-        );
+    return [...newDeals, ...newDealNotes];
 }

@@ -1,5 +1,5 @@
 import { ListItem, Stack, Typography } from '@mui/material';
-import { Link } from 'react-admin';
+import { Link, ReferenceField } from 'react-admin';
 
 import { CompanyAvatar } from '../companies/CompanyAvatar';
 import type { ActivityDealCreated } from '../types';
@@ -12,28 +12,47 @@ type ActivityLogDealCreatedProps = {
 };
 
 export function ActivityLogDealCreated({
-    activity: { sale, deal, company },
+    activity,
 }: ActivityLogDealCreatedProps) {
     const context = useActivityLogContext();
+    const { deal } = activity;
     return (
         <ListItem disableGutters>
             <Stack direction="row" spacing={1} alignItems="center" width="100%">
-                <CompanyAvatar width={20} height={20} record={company} />
+                <ReferenceField
+                    source="company_id"
+                    reference="companies"
+                    record={activity}
+                    link={false}
+                >
+                    <CompanyAvatar width={20} height={20} />
+                </ReferenceField>
                 <Typography
                     component="p"
                     variant="body2"
                     color="text.secondary"
                     flexGrow={1}
                 >
-                    <SaleName sale={sale} /> added deal{' '}
+                    <ReferenceField
+                        source="sales_id"
+                        reference="sales"
+                        record={activity}
+                        link={false}
+                    >
+                        <SaleName />
+                    </ReferenceField>{' '}
+                    added deal{' '}
                     <Link to={`/deals/${deal.id}/show`}>{deal.name}</Link>{' '}
                     {context !== 'company' && (
                         <>
                             to company{' '}
-                            <Link to={`/companies/${company.id}/show`}>
-                                {company.name}
-                            </Link>{' '}
-                            <RelativeDate date={deal.created_at} />
+                            <ReferenceField
+                                source="company_id"
+                                reference="companies"
+                                record={activity}
+                                link="show"
+                            />{' '}
+                            <RelativeDate date={activity.date} />
                         </>
                     )}
                 </Typography>
@@ -43,7 +62,7 @@ export function ActivityLogDealCreated({
                         variant="body2"
                         component="span"
                     >
-                        <RelativeDate date={deal.created_at} />
+                        <RelativeDate date={activity.date} />
                     </Typography>
                 )}
             </Stack>

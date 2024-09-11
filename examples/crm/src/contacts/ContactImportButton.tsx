@@ -1,7 +1,7 @@
 import UploadIcon from '@mui/icons-material/Upload';
 import { useState } from 'react';
 import { Button } from 'react-admin';
-import { ContactImportModal } from './ContactImportModal';
+import { ContactImportDialog } from './ContactImportDialog';
 
 export const ContactImportButton = () => {
     const [modalOpen, setModalOpen] = useState(false);
@@ -21,8 +21,7 @@ export const ContactImportButton = () => {
                 label="Import"
                 onClick={handleOpenModal}
             />
-
-            <ContactImportModal open={modalOpen} onClose={handleCloseModal} />
+            <ContactImportDialog open={modalOpen} onClose={handleCloseModal} />
         </>
     );
 };

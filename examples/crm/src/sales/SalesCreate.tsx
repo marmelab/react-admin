@@ -25,10 +25,15 @@ export function SalesCreate() {
             return dataProvider.salesCreate(data);
         },
         onSuccess: () => {
+            notify(
+                'User created. They will soon receive an email to set their password.'
+            );
             redirect('/sales');
         },
         onError: () => {
-            notify('An error occurred. Please try again.');
+            notify('An error occurred while creating the user.', {
+                type: 'error',
+            });
         },
     });
     const onSubmit: SubmitHandler<SalesFormData> = async data => {
@@ -47,7 +52,7 @@ export function SalesCreate() {
         <Container maxWidth="sm" sx={{ mt: 4 }}>
             <Card>
                 <SimpleForm onSubmit={onSubmit as SubmitHandler<any>}>
-                    <Typography variant="h6">Create sale person</Typography>
+                    <Typography variant="h6">Create a new user</Typography>
                     <SalesInputs />
                 </SimpleForm>
             </Card>
