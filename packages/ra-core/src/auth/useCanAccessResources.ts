@@ -51,7 +51,7 @@ export const useCanAccessResources = <ErrorType extends Error = Error>(
 
     const { action, resources, record } = params;
 
-    const result = useQueries({
+    const queryResult = useQueries({
         queries: resources.map(resource => {
             return {
                 queryKey: ['auth', 'canAccess', resource, action, record],
@@ -75,12 +75,31 @@ export const useCanAccessResources = <ErrorType extends Error = Error>(
         combine: combineSourceAccessResults<ErrorType>,
     });
 
-    return useMemo(() => {
+    const result = useMemo(() => {
         return {
-            canAccess: result.data,
-            ...result,
+            canAccess: queryResult.data,
+            ...queryResult,
         } as UseCanAccessResourcesResult<ErrorType>;
-    }, [result]);
+    }, [queryResult]);
+
+    const resultWithoutAuthProvider = useMemo(() => {
+        return {
+            canAccess: resources.reduce(
+                (acc, resource) => {
+                    acc[resource] = true;
+                    return acc;
+                },
+                {} as Record<string, boolean>
+            ),
+            isPending: false,
+            isError: false,
+            error: null,
+        } as UseCanAccessResourcesResult<ErrorType>;
+    }, [resources]);
+
+    return !authProvider || !authProvider.canAccess
+        ? resultWithoutAuthProvider
+        : result;
 };
 
 export interface UseCanAccessResourcesOptions<ErrorType = Error>

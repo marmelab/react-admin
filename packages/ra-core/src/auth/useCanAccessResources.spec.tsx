@@ -1,6 +1,6 @@
 import * as React from 'react';
 import expect from 'expect';
-import { waitFor, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { Basic } from './useCanAccessResources.stories';
 
 describe('useCanAccessResources', () => {
@@ -84,11 +84,7 @@ describe('useCanAccessResources', () => {
     it('should grant access to all resources if no authProvider', async () => {
         render(<Basic authProvider={null} />);
 
-        expect(
-            screen.getByText(JSON.stringify({ canAccess: {}, isPending: true }))
-        );
-
-        await screen.findByText(
+        screen.getByText(
             JSON.stringify({
                 canAccess: {
                     'posts.id': true,
@@ -110,23 +106,15 @@ describe('useCanAccessResources', () => {
         };
         render(<Basic authProvider={authProvider} />);
 
-        expect(
-            screen.getByText(JSON.stringify({ canAccess: {}, isPending: true }))
+        screen.getByText(
+            JSON.stringify({
+                canAccess: {
+                    'posts.id': true,
+                    'posts.title': true,
+                    'posts.author': true,
+                },
+                isPending: false,
+            })
         );
-
-        await waitFor(() => {
-            expect(
-                screen.getByText(
-                    JSON.stringify({
-                        canAccess: {
-                            'posts.id': true,
-                            'posts.title': true,
-                            'posts.author': true,
-                        },
-                        isPending: false,
-                    })
-                )
-            );
-        });
     });
 });
