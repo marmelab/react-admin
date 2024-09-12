@@ -26,6 +26,7 @@ import {
     useRedirect,
     useCreate,
     useCreateSuggestionContext,
+    useGetResourceLabel,
 } from 'react-admin';
 import { useFormContext, useWatch } from 'react-hook-form';
 import { Button, Dialog, DialogActions, DialogContent } from '@mui/material';
@@ -34,6 +35,8 @@ const PostCreateToolbar = () => {
     const notify = useNotify();
     const redirect = useRedirect();
     const { reset } = useFormContext();
+    const getResourceLabel = useGetResourceLabel();
+    const resourceLabel = getResourceLabel('posts', 1);
 
     return (
         <Toolbar>
@@ -46,7 +49,10 @@ const PostCreateToolbar = () => {
                     onSuccess: data => {
                         notify('ra.notification.created', {
                             type: 'info',
-                            messageArgs: { smart_count: 1 },
+                            messageArgs: {
+                                smart_count: 1,
+                                name: resourceLabel,
+                            },
                         });
                         redirect('show', 'posts', data.id);
                     },
@@ -63,7 +69,10 @@ const PostCreateToolbar = () => {
                         window.scrollTo(0, 0);
                         notify('ra.notification.created', {
                             type: 'info',
-                            messageArgs: { smart_count: 1 },
+                            messageArgs: {
+                                smart_count: 1,
+                                name: resourceLabel,
+                            },
                         });
                     },
                 }}
@@ -76,7 +85,10 @@ const PostCreateToolbar = () => {
                     onSuccess: data => {
                         notify('ra.notification.created', {
                             type: 'info',
-                            messageArgs: { smart_count: 1 },
+                            messageArgs: {
+                                smart_count: 1,
+                                name: resourceLabel,
+                            },
                         });
                         redirect('show', 'posts', data.id);
                     },
