@@ -42,7 +42,8 @@ const defaultAuthProvider: AuthProvider = {
     checkAuth: () => Promise.reject('bad method'),
     checkError: () => Promise.reject('bad method'),
     getPermissions: () => Promise.reject('bad method'),
-    canAccess: ({ action }) => Promise.resolve(action === 'read'),
+    canAccess: ({ action }) =>
+        new Promise(resolve => setTimeout(resolve, 1000, action === 'read')),
 };
 
 export const Basic = ({
