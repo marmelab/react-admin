@@ -5,13 +5,14 @@ import {
     SyntheticEvent,
 } from 'react';
 import { UseMutationOptions } from '@tanstack/react-query';
+import lowerFirst from 'lodash/lowerFirst';
 
 import { useDelete } from '../../dataProvider';
 import { useUnselect } from '../../controller';
 import { useRedirect, RedirectionSideEffect } from '../../routing';
 import { useNotify } from '../../notification';
 import { RaRecord, MutationMode, DeleteParams } from '../../types';
-import { useResourceContext } from '../../core';
+import { useGetResourceLabel, useResourceContext } from '../../core';
 
 /**
  * Prepare a set of callbacks for a delete button guarded by confirmation dialog
@@ -80,6 +81,8 @@ const useDeleteWithConfirmController = <RecordType extends RaRecord = any>(
     const notify = useNotify();
     const unselect = useUnselect(resource);
     const redirect = useRedirect();
+    const getResourceLabel = useGetResourceLabel();
+    const resourceLabel = resource ? getResourceLabel(resource, 1) : 'Element';
     const [deleteOne, { isPending }] = useDelete<RecordType>(
         resource,
         undefined,
@@ -88,7 +91,11 @@ const useDeleteWithConfirmController = <RecordType extends RaRecord = any>(
                 setOpen(false);
                 notify(successMessage, {
                     type: 'info',
-                    messageArgs: { smart_count: 1 },
+                    messageArgs: {
+                        smart_count: 1,
+                        name: resourceLabel,
+                        nameLcFirst: lowerFirst(resourceLabel),
+                    },
                     undoable: mutationMode === 'undoable',
                 });
                 record && unselect([record.id]);

@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Fragment, ReactElement } from 'react';
 import ActionDelete from '@mui/icons-material/Delete';
+import lowerFirst from 'lodash/lowerFirst';
 
 import { alpha, styled } from '@mui/material/styles';
 import {
@@ -14,6 +15,7 @@ import {
     useSafeSetState,
     RaRecord,
     DeleteManyParams,
+    useGetResourceLabel,
 } from 'ra-core';
 
 import { Confirm } from '../layout';
@@ -43,6 +45,10 @@ export const BulkDeleteWithConfirmButton = (
     const resource = useResourceContext(props);
     const refresh = useRefresh();
     const translate = useTranslate();
+    const getResourceLabel = useGetResourceLabel();
+    const resourceLabel = resource
+        ? getResourceLabel(resource, selectedIds.length)
+        : 'Element' + (selectedIds.length > 1 ? 's' : '');
     const [deleteMany, { isPending }] = useDeleteMany(
         resource,
         { ids: selectedIds, meta: mutationMeta },
@@ -51,7 +57,11 @@ export const BulkDeleteWithConfirmButton = (
                 refresh();
                 notify(successMessage, {
                     type: 'info',
-                    messageArgs: { smart_count: selectedIds.length },
+                    messageArgs: {
+                        smart_count: selectedIds.length,
+                        name: resourceLabel,
+                        nameLcFirst: lowerFirst(resourceLabel),
+                    },
                     undoable: mutationMode === 'undoable',
                 });
                 onUnselectItems();
