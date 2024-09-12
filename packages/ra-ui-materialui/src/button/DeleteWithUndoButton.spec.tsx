@@ -151,7 +151,11 @@ describe('<DeleteWithUndoButton />', () => {
                     message: successMessage,
                     type: 'info',
                     notificationOptions: {
-                        messageArgs: { smart_count: 1 },
+                        messageArgs: {
+                            smart_count: 1,
+                            name: 'resources.comments.name',
+                            nameLcFirst: 'resources.comments.name',
+                        },
                         undoable: true,
                     },
                 },

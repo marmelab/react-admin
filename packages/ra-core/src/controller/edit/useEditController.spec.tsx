@@ -374,6 +374,8 @@ describe('useEditController', () => {
                     notificationOptions: {
                         messageArgs: {
                             smart_count: 1,
+                            name: 'resources.posts.name',
+                            nameLcFirst: 'resources.posts.name',
                         },
                         undoable: false,
                     },
@@ -580,6 +582,8 @@ describe('useEditController', () => {
                     notificationOptions: {
                         messageArgs: {
                             smart_count: 1,
+                            name: 'resources.posts.name',
+                            nameLcFirst: 'resources.posts.name',
                         },
                         undoable: false,
                     },

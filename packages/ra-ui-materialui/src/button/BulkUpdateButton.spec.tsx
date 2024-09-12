@@ -18,7 +18,7 @@ describe('BulkUpdateButton', () => {
             );
             const confirmButton = await screen.findByText('Confirm');
             confirmButton.click();
-            await screen.findByText('10 elements updated');
+            await screen.findByText('10 books updated');
             expect(
                 screen.queryByText(
                     'Are you sure you want to update these 10 items?'

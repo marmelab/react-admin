@@ -137,7 +137,13 @@ describe('useCreateController', () => {
             {
                 message: 'ra.notification.created',
                 type: 'info',
-                notificationOptions: { messageArgs: { smart_count: 1 } },
+                notificationOptions: {
+                    messageArgs: {
+                        smart_count: 1,
+                        name: 'resources.posts.name',
+                        nameLcFirst: 'resources.posts.name',
+                    },
+                },
             },
         ]);
     });

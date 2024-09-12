@@ -91,7 +91,11 @@ describe('useDeleteWithUndoController', () => {
                     message: successMessage,
                     type: 'info',
                     notificationOptions: {
-                        messageArgs: { smart_count: 1 },
+                        messageArgs: {
+                            smart_count: 1,
+                            name: 'resources.posts.name',
+                            nameLcFirst: 'resources.posts.name',
+                        },
                         undoable: true,
                     },
                 },

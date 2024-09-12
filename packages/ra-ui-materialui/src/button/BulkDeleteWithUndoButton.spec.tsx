@@ -57,7 +57,11 @@ describe('<BulkDeleteWithUndoButton />', () => {
                     message: successMessage,
                     type: 'info',
                     notificationOptions: {
-                        messageArgs: { smart_count: 1 },
+                        messageArgs: {
+                            smart_count: 1,
+                            name: 'resources.test.name',
+                            nameLcFirst: 'resources.test.name',
+                        },
                         undoable: true,
                     },
                 },
