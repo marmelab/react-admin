@@ -2,6 +2,7 @@ import { useCallback } from 'react';
 import { parse } from 'query-string';
 import { useLocation, Location } from 'react-router-dom';
 import { UseMutationOptions } from '@tanstack/react-query';
+import lowerFirst from 'lodash/lowerFirst';
 
 import { useAuthenticated } from '../../auth';
 import {
@@ -82,6 +83,8 @@ export const useCreateController = <
         getMutateWithMiddlewares,
         unregisterMutationMiddleware,
     } = useMutationMiddlewares();
+    const getResourceLabel = useGetResourceLabel();
+    const resourceLabel = getResourceLabel(resource, 1);
 
     const [create, { isPending: saving }] = useCreate<
         RecordType,
@@ -95,7 +98,11 @@ export const useCreateController = <
 
             notify('ra.notification.created', {
                 type: 'info',
-                messageArgs: { smart_count: 1 },
+                messageArgs: {
+                    smart_count: 1,
+                    name: resourceLabel,
+                    nameLcFirst: lowerFirst(resourceLabel),
+                },
             });
             redirect(finalRedirectTo, resource, data.id, data);
         },
@@ -174,9 +181,8 @@ export const useCreateController = <
         [create, meta, resource, transform]
     );
 
-    const getResourceLabel = useGetResourceLabel();
     const defaultTitle = translate('ra.page.create', {
-        name: getResourceLabel(resource, 1),
+        name: resourceLabel,
     });
 
     return {

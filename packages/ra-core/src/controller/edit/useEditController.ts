@@ -1,5 +1,6 @@
 import { useCallback } from 'react';
 import { useParams } from 'react-router-dom';
+import lowerFirst from 'lodash/lowerFirst';
 
 import { useAuthenticated } from '../../auth';
 import { RaRecord, MutationMode, TransformData } from '../../types';
@@ -127,9 +128,11 @@ export const useEditController = <
     }
 
     const getResourceLabel = useGetResourceLabel();
+    const resourceLabel = getResourceLabel(resource, 1);
     const recordRepresentation = getRecordRepresentation(record);
     const defaultTitle = translate('ra.page.edit', {
-        name: getResourceLabel(resource, 1),
+        name: resourceLabel,
+        nameLcFirst: lowerFirst(resourceLabel),
         id,
         record,
         recordRepresentation:
@@ -150,7 +153,11 @@ export const useEditController = <
                 }
                 notify('ra.notification.updated', {
                     type: 'info',
-                    messageArgs: { smart_count: 1 },
+                    messageArgs: {
+                        smart_count: 1,
+                        name: getResourceLabel(resource, 1),
+                        nameLcFirst: lowerFirst(getResourceLabel(resource, 1)),
+                    },
                     undoable: mutationMode === 'undoable',
                 });
                 redirect(redirectTo, resource, data.id, data);

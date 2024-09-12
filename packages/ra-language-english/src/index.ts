@@ -148,9 +148,11 @@ const englishMessages: TranslationMessages = {
             logout: 'Logout',
         },
         notification: {
-            updated: 'Element updated |||| %{smart_count} elements updated',
-            created: 'Element created',
-            deleted: 'Element deleted |||| %{smart_count} elements deleted',
+            updated:
+                '%{name} updated |||| %{smart_count} %{nameLcFirst} updated',
+            created: '%{name} created',
+            deleted:
+                '%{name} deleted |||| %{smart_count} %{nameLcFirst} deleted',
             bad_item: 'Incorrect element',
             item_doesnt_exist: 'Element does not exist',
             http_error: 'Server communication error',

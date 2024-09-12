@@ -154,9 +154,10 @@ const frenchMessages: TranslationMessages = {
         },
         notification: {
             updated:
-                'Élément mis à jour |||| %{smart_count} éléments mis à jour',
-            created: 'Élément créé',
-            deleted: 'Élément supprimé |||| %{smart_count} éléments supprimés',
+                '%{name} mis à jour |||| %{smart_count} %{nameLcFirst} mis à jour',
+            created: '%{name} créé',
+            deleted:
+                '%{name} supprimé |||| %{smart_count} %{nameLcFirst} supprimés',
             bad_item: 'Élément inconnu',
             item_doesnt_exist: "L'élément n'existe pas",
             http_error: 'Erreur de communication avec le serveur',

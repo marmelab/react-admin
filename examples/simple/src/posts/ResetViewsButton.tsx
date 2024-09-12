@@ -19,7 +19,11 @@ const ResetViewsButton = () => {
             onSuccess: () => {
                 notify('ra.notification.updated', {
                     type: 'info',
-                    messageArgs: { smart_count: selectedIds.length },
+                    messageArgs: {
+                        smart_count: selectedIds.length,
+                        name: selectedIds.length > 1 ? 'Posts' : 'Post',
+                        nameLcFirst: selectedIds.length > 1 ? 'posts' : 'post',
+                    },
                     undoable: true,
                 });
                 unselectAll();

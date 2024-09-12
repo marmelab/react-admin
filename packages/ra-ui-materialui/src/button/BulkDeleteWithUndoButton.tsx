@@ -11,7 +11,9 @@ import {
     useListContext,
     RaRecord,
     DeleteManyParams,
+    useGetResourceLabel,
 } from 'ra-core';
+import lowerFirst from 'lodash/lowerFirst';
 
 import { Button, ButtonProps } from './Button';
 import { UseMutationOptions } from '@tanstack/react-query';
@@ -32,10 +34,14 @@ export const BulkDeleteWithUndoButton = (
 
     const notify = useNotify();
     const resource = useResourceContext(props);
+    const getResourceLabel = useGetResourceLabel();
     const refresh = useRefresh();
     const [deleteMany, { isPending }] = useDeleteMany();
 
     const handleClick = e => {
+        const resourceLabel = resource
+            ? getResourceLabel(resource, selectedIds.length)
+            : 'Element' + (selectedIds.length > 1 ? 's' : '');
         deleteMany(
             resource,
             { ids: selectedIds, meta: mutationMeta },
@@ -43,7 +49,11 @@ export const BulkDeleteWithUndoButton = (
                 onSuccess: () => {
                     notify(successMessage, {
                         type: 'info',
-                        messageArgs: { smart_count: selectedIds.length },
+                        messageArgs: {
+                            smart_count: selectedIds.length,
+                            name: resourceLabel,
+                            nameLcFirst: lowerFirst(resourceLabel),
+                        },
                         undoable: true,
                     });
                     onUnselectItems();

@@ -37,19 +37,7 @@ const ReviewEditToolbar = (props: ToolbarProps) => {
                 </Fragment>
             ) : (
                 <Fragment>
-                    <SaveButton
-                        mutationOptions={{
-                            onSuccess: () => {
-                                notify('ra.notification.updated', {
-                                    type: 'info',
-                                    messageArgs: { smart_count: 1 },
-                                    undoable: true,
-                                });
-                                redirect('list', 'reviews');
-                            },
-                        }}
-                        type="button"
-                    />
+                    <SaveButton type="button" />
                     <DeleteButton record={record} resource={resource} />
                 </Fragment>
             )}

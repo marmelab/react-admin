@@ -1,12 +1,13 @@
 import { useCallback, ReactEventHandler } from 'react';
 import { UseMutationOptions } from '@tanstack/react-query';
+import lowerFirst from 'lodash/lowerFirst';
 
 import { useDelete } from '../../dataProvider';
 import { useUnselect } from '../../controller';
 import { useRedirect, RedirectionSideEffect } from '../../routing';
 import { useNotify } from '../../notification';
 import { RaRecord, DeleteParams } from '../../types';
-import { useResourceContext } from '../../core';
+import { useResourceContext, useGetResourceLabel } from '../../core';
 
 /**
  * Prepare callback for a Delete button with undo support
@@ -58,6 +59,8 @@ const useDeleteWithUndoController = <RecordType extends RaRecord = any>(
     const notify = useNotify();
     const unselect = useUnselect(resource);
     const redirect = useRedirect();
+    const getResourceLabel = useGetResourceLabel();
+    const resourceLabel = resource ? getResourceLabel(resource, 1) : 'Element';
     const [deleteOne, { isPending }] = useDelete<RecordType>(
         resource,
         undefined,
@@ -65,7 +68,11 @@ const useDeleteWithUndoController = <RecordType extends RaRecord = any>(
             onSuccess: () => {
                 notify(successMessage, {
                     type: 'info',
-                    messageArgs: { smart_count: 1 },
+                    messageArgs: {
+                        smart_count: 1,
+                        name: resourceLabel,
+                        nameLcFirst: lowerFirst(resourceLabel),
+                    },
                     undoable: true,
                 });
                 record && unselect([record.id]);

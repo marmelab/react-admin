@@ -12,8 +12,10 @@ import {
     useListContext,
     RaRecord,
     UpdateManyParams,
+    useGetResourceLabel,
 } from 'ra-core';
 import { UseMutationOptions } from '@tanstack/react-query';
+import lowerFirst from 'lodash/lowerFirst';
 
 import { Button, ButtonProps } from './Button';
 
@@ -24,6 +26,10 @@ export const BulkUpdateWithUndoButton = (
 
     const notify = useNotify();
     const resource = useResourceContext(props);
+    const getResourceLabel = useGetResourceLabel();
+    const resourceLabel = resource
+        ? getResourceLabel(resource, selectedIds.length)
+        : 'Element' + (selectedIds.length > 1 ? 's' : '');
     const unselectAll = useUnselectAll(resource);
     const refresh = useRefresh();
 
@@ -35,7 +41,11 @@ export const BulkUpdateWithUndoButton = (
         onSuccess = () => {
             notify('ra.notification.updated', {
                 type: 'info',
-                messageArgs: { smart_count: selectedIds.length },
+                messageArgs: {
+                    smart_count: selectedIds.length,
+                    name: resourceLabel,
+                    nameLcFirst: lowerFirst(resourceLabel),
+                },
                 undoable: true,
             });
             unselectAll();

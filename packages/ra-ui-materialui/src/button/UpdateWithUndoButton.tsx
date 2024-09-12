@@ -10,8 +10,10 @@ import {
     useRecordContext,
     useUpdate,
     UpdateParams,
+    useGetResourceLabel,
 } from 'ra-core';
 import { UseMutationOptions } from '@tanstack/react-query';
+import lowerFirst from 'lodash/lowerFirst';
 
 import { Button, ButtonProps } from './Button';
 
@@ -19,6 +21,8 @@ export const UpdateWithUndoButton = (props: UpdateWithUndoButtonProps) => {
     const record = useRecordContext(props);
     const notify = useNotify();
     const resource = useResourceContext(props);
+    const getResourceLabel = useGetResourceLabel();
+    const resourceLabel = resource ? getResourceLabel(resource, 1) : 'Element';
     const refresh = useRefresh();
 
     const {
@@ -37,7 +41,11 @@ export const UpdateWithUndoButton = (props: UpdateWithUndoButtonProps) => {
         onSuccess = () => {
             notify('ra.notification.updated', {
                 type: 'info',
-                messageArgs: { smart_count: 1 },
+                messageArgs: {
+                    smart_count: 1,
+                    name: resourceLabel,
+                    nameLcFirst: lowerFirst(resourceLabel),
+                },
                 undoable: true,
             });
         },

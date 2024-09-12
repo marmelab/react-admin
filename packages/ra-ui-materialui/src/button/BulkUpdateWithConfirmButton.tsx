@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { Fragment, useState, ReactElement } from 'react';
 import ActionUpdate from '@mui/icons-material/Update';
-
 import { alpha, styled } from '@mui/material/styles';
 import {
     useListContext,
@@ -13,12 +12,14 @@ import {
     MutationMode,
     RaRecord,
     UpdateManyParams,
+    useGetResourceLabel,
 } from 'ra-core';
+import { UseMutationOptions } from '@tanstack/react-query';
+import { humanize, inflect } from 'inflection';
+import lowerFirst from 'lodash/lowerFirst';
 
 import { Confirm } from '../layout';
 import { Button, ButtonProps } from './Button';
-import { UseMutationOptions } from '@tanstack/react-query';
-import { humanize, inflect } from 'inflection';
 
 export const BulkUpdateWithConfirmButton = (
     props: BulkUpdateWithConfirmButtonProps
@@ -29,6 +30,10 @@ export const BulkUpdateWithConfirmButton = (
     const unselectAll = useUnselectAll(resource);
     const [isOpen, setOpen] = useState(false);
     const { selectedIds } = useListContext();
+    const getResourceLabel = useGetResourceLabel();
+    const resourceLabel = resource
+        ? getResourceLabel(resource, selectedIds.length)
+        : 'Element' + (selectedIds.length > 1 ? 's' : '');
 
     const {
         confirmTitle = 'ra.message.bulk_update_title',
@@ -41,7 +46,11 @@ export const BulkUpdateWithConfirmButton = (
         onSuccess = () => {
             notify('ra.notification.updated', {
                 type: 'info',
-                messageArgs: { smart_count: selectedIds.length },
+                messageArgs: {
+                    smart_count: selectedIds.length,
+                    name: resourceLabel,
+                    nameLcFirst: lowerFirst(resourceLabel),
+                },
                 undoable: mutationMode === 'undoable',
             });
             unselectAll();

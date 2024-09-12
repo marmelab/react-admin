@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { Fragment, useState, ReactElement } from 'react';
 import ActionUpdate from '@mui/icons-material/Update';
-
 import { alpha, styled } from '@mui/material/styles';
 import {
     useTranslate,
@@ -12,12 +11,14 @@ import {
     useRecordContext,
     useUpdate,
     UpdateParams,
+    useGetResourceLabel,
 } from 'ra-core';
+import { UseMutationOptions } from '@tanstack/react-query';
+import { humanize, inflect } from 'inflection';
+import lowerFirst from 'lodash/lowerFirst';
 
 import { Confirm } from '../layout';
 import { Button, ButtonProps } from './Button';
-import { UseMutationOptions } from '@tanstack/react-query';
-import { humanize, inflect } from 'inflection';
 
 export const UpdateWithConfirmButton = (
     props: UpdateWithConfirmButtonProps
@@ -27,6 +28,8 @@ export const UpdateWithConfirmButton = (
     const resource = useResourceContext(props);
     const [isOpen, setOpen] = useState(false);
     const record = useRecordContext(props);
+    const getResourceLabel = useGetResourceLabel();
+    const resourceLabel = resource ? getResourceLabel(resource, 1) : 'Element';
 
     const {
         confirmTitle = 'ra.message.bulk_update_title',
@@ -44,7 +47,11 @@ export const UpdateWithConfirmButton = (
         onSuccess = () => {
             notify('ra.notification.updated', {
                 type: 'info',
-                messageArgs: { smart_count: 1 },
+                messageArgs: {
+                    smart_count: 1,
+                    name: resourceLabel,
+                    nameLcFirst: lowerFirst(resourceLabel),
+                },
                 undoable: mutationMode === 'undoable',
             });
         },
