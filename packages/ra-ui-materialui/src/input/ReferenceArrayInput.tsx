@@ -8,6 +8,7 @@ import {
     UseReferenceArrayInputParams,
 } from 'ra-core';
 import { AutocompleteArrayInput } from './AutocompleteArrayInput';
+import { UnauthorizedReference } from '../UnauthorizedReference';
 
 /**
  * An Input component for fields containing a list of references to another resource.
@@ -82,6 +83,7 @@ export const ReferenceArrayInput = (props: ReferenceArrayInputProps) => {
         reference,
         sort,
         filter = defaultFilter,
+        unauthorized = defaultUnauthorized,
     } = props;
     if (React.Children.count(children) !== 1) {
         throw new Error(
@@ -95,6 +97,9 @@ export const ReferenceArrayInput = (props: ReferenceArrayInputProps) => {
         filter,
     });
 
+    if (!controllerProps.isPending && !controllerProps.canAccess) {
+        return unauthorized;
+    }
     return (
         <ResourceContextProvider value={reference}>
             <ChoicesContextProvider value={controllerProps}>
@@ -112,5 +117,8 @@ export interface ReferenceArrayInputProps
         UseReferenceArrayInputParams {
     children?: ReactElement;
     label?: string;
+    unauthorized?: React.ReactNode;
     [key: string]: any;
 }
+
+const defaultUnauthorized = <UnauthorizedReference />;

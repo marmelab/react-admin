@@ -21,7 +21,7 @@ import { DatagridInput } from './DatagridInput';
 import { TextField } from '../field';
 import { ReferenceArrayInput } from './ReferenceArrayInput';
 import { SelectArrayInput } from './SelectArrayInput';
-import { DifferentIdTypes } from './ReferenceArrayInput.stories';
+import { AccessControl, DifferentIdTypes } from './ReferenceArrayInput.stories';
 
 describe('<ReferenceArrayInput />', () => {
     const defaultProps = {
@@ -286,4 +286,13 @@ describe('<ReferenceArrayInput />', () => {
             })
         ).toBeNull();
     });
+
+    it('should display the references only when access is granted to the referenced resource', async () => {
+        render(<AccessControl />);
+        await screen.findByLabelText('resources.posts.fields.tags');
+        expect(screen.getByLabelText('tags access')).toBeChecked();
+        fireEvent.click(screen.getByLabelText('tags access'));
+
+        await screen.findByText('ra.message.unauthorized_reference');
+    }, 10000);
 });

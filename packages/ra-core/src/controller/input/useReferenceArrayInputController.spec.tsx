@@ -194,18 +194,20 @@ describe('useReferenceArrayInputController', () => {
                 </Form>
             </CoreAdminContext>
         );
-        expect(dataProvider.getList).toHaveBeenCalledWith('tags', {
-            pagination: {
-                page: 1,
-                perPage: 25,
-            },
-            sort: {
-                field: 'id',
-                order: 'DESC',
-            },
-            filter: {},
-            meta: undefined,
-            signal: undefined,
+        await waitFor(() => {
+            expect(dataProvider.getList).toHaveBeenCalledWith('tags', {
+                pagination: {
+                    page: 1,
+                    perPage: 25,
+                },
+                sort: {
+                    field: 'id',
+                    order: 'DESC',
+                },
+                filter: {},
+                meta: undefined,
+                signal: undefined,
+            });
         });
     });
 
@@ -229,22 +231,24 @@ describe('useReferenceArrayInputController', () => {
                 </Form>
             </CoreAdminContext>
         );
-        expect(dataProvider.getList).toHaveBeenCalledWith('tags', {
-            pagination: {
-                page: 1,
-                perPage: 25,
-            },
-            sort: {
-                field: 'id',
-                order: 'DESC',
-            },
-            filter: {},
-            meta: { value: 'a' },
-            signal: undefined,
+        await waitFor(() => {
+            expect(dataProvider.getList).toHaveBeenCalledWith('tags', {
+                pagination: {
+                    page: 1,
+                    perPage: 25,
+                },
+                sort: {
+                    field: 'id',
+                    order: 'DESC',
+                },
+                filter: {},
+                meta: { value: 'a' },
+                signal: undefined,
+            });
         });
     });
 
-    it('should allow to customize getList arguments with perPage, sort, and filter props', () => {
+    it('should allow to customize getList arguments with perPage, sort, and filter props', async () => {
         const children = jest.fn(() => <div />);
         const dataProvider = testDataProvider({
             getList: jest
@@ -266,18 +270,20 @@ describe('useReferenceArrayInputController', () => {
                 </Form>
             </CoreAdminContext>
         );
-        expect(dataProvider.getList).toHaveBeenCalledWith('tags', {
-            pagination: {
-                page: 2,
-                perPage: 5,
-            },
-            sort: {
-                field: 'foo',
-                order: 'ASC',
-            },
-            filter: { permanentFilter: 'foo' },
-            meta: undefined,
-            signal: undefined,
+        await waitFor(() => {
+            expect(dataProvider.getList).toHaveBeenCalledWith('tags', {
+                pagination: {
+                    page: 2,
+                    perPage: 5,
+                },
+                sort: {
+                    field: 'foo',
+                    order: 'ASC',
+                },
+                filter: { permanentFilter: 'foo' },
+                meta: undefined,
+                signal: undefined,
+            });
         });
     });
 
@@ -453,7 +459,7 @@ describe('useReferenceArrayInputController', () => {
         );
 
         await waitFor(() => {
-            expect(dataProvider.getList).toHaveBeenCalledTimes(2);
+            expect(dataProvider.getList).toHaveBeenCalledTimes(1);
         });
         await waitFor(() => {
             expect(dataProvider.getMany).toHaveBeenCalledTimes(1);
@@ -474,7 +480,7 @@ describe('useReferenceArrayInputController', () => {
         );
 
         await waitFor(() => {
-            expect(dataProvider.getList).toHaveBeenCalledTimes(3);
+            expect(dataProvider.getList).toHaveBeenCalledTimes(2);
         });
         await waitFor(() => {
             expect(dataProvider.getMany).toHaveBeenCalledTimes(1);
@@ -496,7 +502,7 @@ describe('useReferenceArrayInputController', () => {
         );
 
         await waitFor(() => {
-            expect(dataProvider.getList).toHaveBeenCalledTimes(4);
+            expect(dataProvider.getList).toHaveBeenCalledTimes(3);
         });
         await waitFor(() => {
             expect(dataProvider.getMany).toHaveBeenCalledTimes(1);

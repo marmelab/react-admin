@@ -7,6 +7,7 @@ import { useReferenceParams } from './useReferenceParams';
 import { useWrappedSource } from '../../core';
 import type { FilterPayload, RaRecord, SortPayload } from '../../types';
 import type { ChoicesContextValue } from '../../form';
+import { useCanAccess } from '../../auth';
 
 /**
  * Prepare data for the ReferenceArrayInput components
@@ -53,6 +54,15 @@ export const useReferenceArrayInputController = <
     const value = useWatch({ name: finalSource }) ?? getValues(finalSource);
     const { meta, ...otherQueryOptions } = queryOptions;
 
+    const {
+        canAccess,
+        isPending: canAccessPending,
+        isLoading: canAccessLoading,
+        isFetching: canAccessFetching,
+    } = useCanAccess({
+        resource: reference,
+        action: 'read',
+    });
     /**
      * Get the records related to the current value (with getMany)
      */
@@ -70,7 +80,11 @@ export const useReferenceArrayInputController = <
             meta,
         },
         {
-            enabled: value != null && value.length > 0,
+            enabled:
+                value != null &&
+                value.length > 0 &&
+                !canAccessPending &&
+                canAccess,
         }
     );
 
@@ -114,7 +128,7 @@ export const useReferenceArrayInputController = <
         },
         {
             retry: false,
-            enabled: isGetMatchingEnabled,
+            enabled: isGetMatchingEnabled && !canAccessPending && canAccess,
             placeholderData: previousData => previousData,
             ...otherQueryOptions,
         }
@@ -142,6 +156,7 @@ export const useReferenceArrayInputController = <
         [params.sort, params.order]
     );
     return {
+        canAccess,
         sort: currentSort,
         allChoices: finalMatchingReferences,
         availableChoices: matchingReferences,
@@ -151,9 +166,15 @@ export const useReferenceArrayInputController = <
         filter,
         filterValues: params.filterValues,
         hideFilter: paramsModifiers.hideFilter,
-        isFetching: isFetchingGetMany || isFetchingGetList,
-        isLoading: isLoadingGetMany || isLoadingGetList,
-        isPending: isPendingGetMany || isPendingGetList,
+        isFetching:
+            canAccessFetching ||
+            (canAccess && (isFetchingGetMany || isFetchingGetList)),
+        isLoading:
+            canAccessLoading ||
+            (canAccess && (isLoadingGetMany || isLoadingGetList)),
+        isPending:
+            canAccessPending ||
+            (canAccess && (isPendingGetMany || isPendingGetList)),
         page: params.page,
         perPage: params.perPage,
         refetch,

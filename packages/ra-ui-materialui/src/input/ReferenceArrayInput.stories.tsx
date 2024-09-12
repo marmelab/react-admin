@@ -1,7 +1,9 @@
 import * as React from 'react';
 import {
+    AuthProvider,
     DataProvider,
     Form,
+    ResourceContextProvider,
     testDataProvider,
     TestMemoryRouter,
 } from 'ra-core';
@@ -19,6 +21,7 @@ import { ReferenceArrayInput } from './ReferenceArrayInput';
 import { AutocompleteArrayInput } from './AutocompleteArrayInput';
 import { SelectArrayInput } from './SelectArrayInput';
 import { CheckboxGroupInput } from './CheckboxGroupInput';
+import { QueryClient } from '@tanstack/react-query';
 
 export default { title: 'ra-ui-materialui/input/ReferenceArrayInput' };
 
@@ -269,5 +272,111 @@ export const DifferentIdTypes = () => {
                 </SimpleForm>
             </Edit>
         </AdminContext>
+    );
+};
+
+export const AccessControl = ({
+    initialAuthorizedResources = {
+        tags: true,
+    },
+}: {
+    initialAuthorizedResources?: {
+        tags: boolean;
+    };
+}) => {
+    const queryClient = new QueryClient();
+    return (
+        <AdminWithAccessControl
+            initialAuthorizedResources={initialAuthorizedResources}
+            queryClient={queryClient}
+        />
+    );
+};
+
+const AdminWithAccessControl = ({
+    initialAuthorizedResources,
+    queryClient,
+}: {
+    initialAuthorizedResources: { tags: boolean };
+    queryClient: QueryClient;
+}) => {
+    const [authorizedResources, setAuthorizedResources] = React.useState(
+        initialAuthorizedResources
+    );
+
+    const authProvider: AuthProvider = {
+        canAccess: async ({ resource }) => {
+            return new Promise(resolve =>
+                setTimeout(resolve, 100, authorizedResources[resource])
+            );
+        },
+        logout: () => Promise.reject(new Error('Not implemented')),
+        checkError: () => Promise.resolve(),
+        checkAuth: () => Promise.resolve(),
+        getPermissions: () => Promise.resolve(),
+        login: () => Promise.reject(new Error('Not implemented')),
+    };
+
+    return (
+        <AdminContext
+            queryClient={queryClient}
+            dataProvider={dataProvider}
+            authProvider={authProvider}
+        >
+            <ResourceContextProvider value="posts">
+                <AccessControlUI
+                    authorizedResources={authorizedResources}
+                    setAuthorizedResources={setAuthorizedResources}
+                    queryClient={queryClient}
+                >
+                    <Create>
+                        <SimpleForm>
+                            <TextInput source="title" />
+                            <ReferenceArrayInput
+                                source="tags"
+                                reference="tags"
+                            />
+                        </SimpleForm>
+                    </Create>
+                </AccessControlUI>
+            </ResourceContextProvider>
+        </AdminContext>
+    );
+};
+
+const AccessControlUI = ({
+    children,
+    setAuthorizedResources,
+    authorizedResources,
+    queryClient,
+}: {
+    children: React.ReactNode;
+    setAuthorizedResources: Function;
+    authorizedResources: {
+        tags: boolean;
+    };
+    queryClient: QueryClient;
+}) => {
+    return (
+        <div>
+            <div>
+                <label>
+                    <input
+                        type="checkbox"
+                        checked={authorizedResources['tags']}
+                        onChange={() => {
+                            setAuthorizedResources(state => ({
+                                ...state,
+                                tags: !authorizedResources['tags'],
+                            }));
+
+                            queryClient.clear();
+                        }}
+                    />
+                    tags access
+                </label>
+            </div>
+            <div>{children}</div>
+        </div>
     );
 };
