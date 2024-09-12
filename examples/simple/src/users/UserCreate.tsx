@@ -12,13 +12,16 @@ import {
     useNotify,
     usePermissions,
     useUnique,
+    useGetResourceLabel,
 } from 'react-admin';
 
 import Aside from './Aside';
 
-const UserEditToolbar = ({ permissions, ...props }) => {
+const UserCreateToolbar = ({ permissions, ...props }) => {
     const notify = useNotify();
     const { reset } = useFormContext();
+    const getResourceLabel = useGetResourceLabel();
+    const resourceLabel = getResourceLabel('users', 1);
 
     return (
         <Toolbar {...props}>
@@ -32,6 +35,7 @@ const UserEditToolbar = ({ permissions, ...props }) => {
                                 type: 'info',
                                 messageArgs: {
                                     smart_count: 1,
+                                    name: resourceLabel,
                                 },
                             });
                             reset();
@@ -60,7 +64,7 @@ const UserCreate = () => {
             <TabbedForm
                 mode="onBlur"
                 warnWhenUnsavedChanges
-                toolbar={<UserEditToolbar permissions={permissions} />}
+                toolbar={<UserCreateToolbar permissions={permissions} />}
             >
                 <TabbedForm.Tab label="user.form.summary" path="">
                     <TextInput

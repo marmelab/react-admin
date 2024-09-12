@@ -10,6 +10,7 @@ import {
     useNotify,
     useRedirect,
     getRecordFromLocation,
+    useGetResourceLabel,
 } from 'react-admin';
 import { useLocation } from 'react-router';
 
@@ -19,10 +20,16 @@ const ReviewCreate = () => {
     const notify = useNotify();
     const redirect = useRedirect();
     const location = useLocation();
+    const getResourceLabel = useGetResourceLabel();
 
     const onSuccess = (_: any) => {
         const record = getRecordFromLocation(location);
-        notify('ra.notification.created');
+        notify('ra.notification.created', {
+            messageArgs: {
+                smart_count: 1,
+                name: getResourceLabel('reviews', 1),
+            },
+        });
         if (record && record.product_id) {
             redirect(`/products/${record.product_id}/reviews`);
         } else {
