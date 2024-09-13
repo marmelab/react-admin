@@ -253,7 +253,7 @@ const {
     resource, // Resource name, deduced from the location. e.g. 'posts'
     refetch, // Callback for fetching the list data again
     // Authorization
-    canAccess, // Boolean indicating whether users have access to this resource
+    canAccess, // Boolean indicating whether the current user has access to this resource
 } = useListController();
 ```
 
@@ -307,9 +307,13 @@ const OfficeList = () => {
 };
 ```
 
-## Controlling Access To The List
+## Access Control
 
-Should your authProvider implements the [`canAccess` method](./AuthProviderWriting.md#canaccess), the `useListController` hook will call it with the resource name to ensure users cannot access data they're no allowed to see. For instance, given the following code:
+Should your authProvider implement the [`canAccess` method](./AuthProviderWriting.md#canaccess), the `useListController` hook will call it with the resource name to determine if the current user can access data from the current resource.
+
+ 
+  
+    For instance, given the following code:
 
 ```tsx
 import { useState } from 'react';
@@ -331,5 +335,7 @@ const OfficeList = () => {
 };
 ```
 
-e `authProvider.canAccess` method will be called times with the following parameters: `{ action: "read", resource: "offices" }`.
+`useListController` calls `authProvider.canAccess()` with the following parameters: 
+
+- `{ action: "read", resource: "offices" }`.
 
