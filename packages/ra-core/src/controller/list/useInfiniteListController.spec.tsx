@@ -253,7 +253,7 @@ describe('useInfiniteListController', () => {
             );
 
             // Check that the permanent filter is not included in the displayedFilters and filterValues (passed to Filter form and button)
-            expect(children).toHaveBeenCalledTimes(3);
+            expect(children).toHaveBeenCalledTimes(2);
             expect(children).toHaveBeenCalledWith(
                 expect.objectContaining({
                     displayedFilters: {},
@@ -278,7 +278,7 @@ describe('useInfiniteListController', () => {
                 'posts',
                 expect.objectContaining({ filter: { foo: 2 } })
             );
-            expect(children).toHaveBeenCalledTimes(4);
+            expect(children).toHaveBeenCalledTimes(3);
         });
     });
 

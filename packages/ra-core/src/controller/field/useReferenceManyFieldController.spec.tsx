@@ -304,9 +304,7 @@ describe('useReferenceManyFieldController', () => {
         );
 
         const { rerender } = render(<ControllerWrapper />);
-        await waitFor(() => {
-            expect(dataProvider.getManyReference).toBeCalledTimes(1);
-        });
+        expect(dataProvider.getManyReference).toBeCalledTimes(1);
         rerender(<ControllerWrapper sort={{ field: 'id', order: 'ASC' }} />);
         await waitFor(() => {
             expect(dataProvider.getManyReference).toBeCalledTimes(2);

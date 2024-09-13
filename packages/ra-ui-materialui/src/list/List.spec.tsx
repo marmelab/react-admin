@@ -19,7 +19,7 @@ import { Basic, Title, TitleFalse, TitleElement } from './List.stories';
 const theme = createTheme(defaultTheme);
 
 describe('<List />', () => {
-    it('should render a list page', async () => {
+    it('should render a list page', () => {
         const Datagrid = () => <div>datagrid</div>;
         const { container } = render(
             <CoreAdminContext
@@ -34,9 +34,7 @@ describe('<List />', () => {
                 </ThemeProvider>
             </CoreAdminContext>
         );
-        await waitFor(() =>
-            expect(container.querySelectorAll('.list-page')).toHaveLength(1)
-        );
+        expect(container.querySelectorAll('.list-page')).toHaveLength(1);
     });
 
     it('should render a toolbar, children and pagination', async () => {
@@ -46,7 +44,8 @@ describe('<List />', () => {
         render(
             <CoreAdminContext
                 dataProvider={testDataProvider({
-                    getList: () => Promise.resolve({ data: [], total: 0 }),
+                    getList: () =>
+                        Promise.resolve({ data: [{ id: 1 }], total: 0 }),
                 })}
             >
                 <ThemeProvider theme={theme}>
@@ -60,9 +59,7 @@ describe('<List />', () => {
                 </ThemeProvider>
             </CoreAdminContext>
         );
-        await waitFor(() =>
-            expect(screen.queryAllByText('filters')).toHaveLength(2)
-        );
+        expect(screen.queryAllByText('filters')).toHaveLength(2);
         expect(screen.queryAllByLabelText('ra.action.export')).toHaveLength(1);
         expect(screen.queryAllByText('pagination')).toHaveLength(1);
         expect(screen.queryAllByText('datagrid')).toHaveLength(1);
@@ -74,7 +71,8 @@ describe('<List />', () => {
         render(
             <CoreAdminContext
                 dataProvider={testDataProvider({
-                    getList: () => Promise.resolve({ data: [], total: 0 }),
+                    getList: () =>
+                        Promise.resolve({ data: [{ id: 0 }], total: 0 }),
                 })}
             >
                 <ThemeProvider theme={theme}>
@@ -85,9 +83,7 @@ describe('<List />', () => {
                 </ThemeProvider>
             </CoreAdminContext>
         );
-        await waitFor(() =>
-            expect(screen.queryAllByText('filter')).toHaveLength(1)
-        );
+        expect(screen.queryAllByText('filter')).toHaveLength(1);
         expect(screen.queryAllByText('datagrid')).toHaveLength(1);
     });
 
@@ -107,9 +103,7 @@ describe('<List />', () => {
                 </ThemeProvider>
             </CoreAdminContext>
         );
-        await waitFor(() =>
-            expect(screen.queryAllByText('Hello')).toHaveLength(1)
-        );
+        expect(screen.queryAllByText('Hello')).toHaveLength(1);
     });
 
     it('should render an invite when the list is empty', async () => {
