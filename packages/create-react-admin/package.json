@@ -1,7 +1,7 @@
 {
     "name": "create-react-admin",
     "description": "A CLI to quickly start a new react-admin project",
-    "version": "5.1.4",
+    "version": "5.1.5",
     "license": "MIT",
     "bin": "lib/cli.js",
     "type": "module",

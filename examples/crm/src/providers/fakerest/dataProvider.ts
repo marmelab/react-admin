@@ -350,9 +350,11 @@ export const dataProvider = withLifecycleCallbacks(
                 return fetchAndUpdateCompanyData(newParams, dataProvider);
             },
             afterCreate: async result => {
-                await updateCompany(result.data.company_id, company => ({
-                    nb_contacts: (company.nb_contacts ?? 0) + 1,
-                }));
+                if (result.data.company_id != null) {
+                    await updateCompany(result.data.company_id, company => ({
+                        nb_contacts: (company.nb_contacts ?? 0) + 1,
+                    }));
+                }
 
                 return result;
             },
@@ -361,9 +363,11 @@ export const dataProvider = withLifecycleCallbacks(
                 return fetchAndUpdateCompanyData(newParams, dataProvider);
             },
             afterDelete: async result => {
-                await updateCompany(result.data.company_id, company => ({
-                    nb_contacts: (company.nb_contacts ?? 1) - 1,
-                }));
+                if (result.data.company_id != null) {
+                    await updateCompany(result.data.company_id, company => ({
+                        nb_contacts: (company.nb_contacts ?? 1) - 1,
+                    }));
+                }
 
                 return result;
             },
@@ -375,9 +379,7 @@ export const dataProvider = withLifecycleCallbacks(
                 const { contact_id } = result.data;
                 const { data: contact } = await dataProvider.getOne(
                     'contacts',
-                    {
-                        id: contact_id,
-                    }
+                    { id: contact_id }
                 );
                 await dataProvider.update('contacts', {
                     id: contact_id,
@@ -404,9 +406,7 @@ export const dataProvider = withLifecycleCallbacks(
                 const { contact_id } = result.data;
                 const { data: contact } = await dataProvider.getOne(
                     'contacts',
-                    {
-                        id: contact_id,
-                    }
+                    { id: contact_id }
                 );
                 if (taskUpdateType !== TASK_DONE_NOT_CHANGED) {
                     await dataProvider.update('contacts', {
@@ -427,9 +427,7 @@ export const dataProvider = withLifecycleCallbacks(
                 const { contact_id } = result.data;
                 const { data: contact } = await dataProvider.getOne(
                     'contacts',
-                    {
-                        id: contact_id,
-                    }
+                    { id: contact_id }
                 );
                 await dataProvider.update('contacts', {
                     id: contact_id,
@@ -472,9 +470,7 @@ export const dataProvider = withLifecycleCallbacks(
                 const contactIds = contacts.map(contact => contact.id);
                 await dataProvider.updateMany('contacts', {
                     ids: contactIds,
-                    data: {
-                        company_name: name,
-                    },
+                    data: { company_name: name },
                 });
                 return result;
             },
