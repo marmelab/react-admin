@@ -31,6 +31,8 @@ export const FilterButtonMenuItem = forwardRef<any, FilterButtonMenuItemProps>(
                 autoFocus={autoFocus}
                 ref={ref}
                 disabled={filter.props.disabled}
+                role="menuitemcheckbox"
+                aria-checked={displayed}
             >
                 <ListItemIcon>
                     {displayed ? (
