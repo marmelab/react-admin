@@ -198,13 +198,13 @@ npx jscodeshift@latest ./path/to/src/ \
 
 Here are the available codemods you may need to run on your codebase:
 
-- `v4/replace-import-specifier.js`
-- `v4/key-transformation.js`
-- `v5/remove-overloads/remove-overloads.js`
-- `v5/is-loading/is-loading.js`
-- `v5/keep-previous-data/keep-previous-data.js`
-- `v5/rename-properties/rename-properties.js`
-- `v5/rename-hydrate/rename-hydrate.js`
+- `v4/replace-import-specifier.cjs`
+- `v4/key-transformation.cjs`
+- `v5/remove-overloads/remove-overloads.cjs`
+- `v5/is-loading/is-loading.cjs`
+- `v5/keep-previous-data/keep-previous-data.cjs`
+- `v5/rename-properties/rename-properties.cjs`
+- `v5/rename-hydrate/rename-hydrate.cjs`
 
 Check out React Query [codemod documentation](https://tanstack.com/query/latest/docs/react/guides/migrating-to-v5#codemod) for more information.
 
