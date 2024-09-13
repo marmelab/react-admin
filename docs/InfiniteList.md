@@ -78,6 +78,7 @@ The props are the same as [the `<List>` component](./List.md):
 | `storeKey`                 | Optional | `string`       | -                       | The key to use to store the current filter & sort.                                           |
 | `title`                    | Optional | `string`       | -                       | The title to display in the App Bar.                                                         |
 | `sx`                       | Optional | `object`       | -                       | The CSS styles to apply to the component.                                                    |
+| `unauthorized`             | Optional | `ReactElement` | -                       | The component to display when users are not authorized to see the resource                   |
 
 Check the [`<List>` component](./List.md) for details about each prop.
 
