@@ -94,6 +94,7 @@ This example leverages [`<SingleFieldList>`](./SingleFieldList.md) to display an
 | `sort`         | Optional | `{ field, order }`                                                                | `{ field: 'id', order: 'DESC' }` | Sort order to use when fetching the related records, passed to `getManyReference()` |
 | `source`       | Optional | `string`                                                                          | `id`                             | Target field carrying the relationship on the source record (usually 'id')          |
 | `target`       | Required | `string`                                                                          | -                                | Target field carrying the relationship on the referenced resource, e.g. 'user_id'   |
+| `unauthorized` | Optional | `ReactNode`                                                                       | -        | The component to display when users don't have access to the referenced resource |
 
 `<ReferenceManyField>` also accepts the [common field props](./Fields.md#common-field-props), except `emptyText` (use the child `empty` prop instead).
 
@@ -307,6 +308,33 @@ Name of the field carrying the relationship on the referenced resource. For inst
 
 ```jsx
 <ReferenceManyField label="Books" reference="books" target="author_id">
+  <Datagrid>
+    <TextField source="title" />
+    <DateField source="published_at" />
+  </Datagrid>
+</ReferenceManyField>
+```
+
+## `unauthorized`
+
+The component to display when users don't have access to the referenced resource:
+
+```tsx
+import { Datagrid, ReferenceArrayField, TextField } from 'react-admin';
+import { Box, Button, Typography } from '@mui/material';
+
+const Unauthorized = () => (
+    <Box textAlign="center" m={1}>
+        <Typography variant="h4" paragraph>
+            You don't have access to the tags
+        </Typography>
+        <Typography variant="body1">
+            Contact the administrator to request access
+        </Typography>
+    </Box>
+);
+
+<ReferenceManyField label="Books" reference="books" target="author_id" unauthorized={<Unauthorized />}>
   <Datagrid>
     <TextField source="title" />
     <DateField source="published_at" />

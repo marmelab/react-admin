@@ -71,14 +71,15 @@ It uses `dataProvider.getMany()` instead of `dataProvider.getOne()` [for perform
 
 | Prop        | Required | Type                | Default  | Description                                                                                                         |
 | ----------- | -------- | ------------------- | -------- | ------------------------------------------------------------------------------------------------------------------- |
-| `source`    | Required | `string`            | -        | Name of the property to display |
-| `reference` | Required | `string`            | -        | The name of the resource for the referenced records, e.g. 'posts' |
-| `children`  | Optional | `ReactNode`         | -        | One or more Field elements used to render the referenced record |
-| `emptyText` | Optional | `string`            | ''       | Defines a text to be shown when the field has no value or when the reference is missing |
-| `label`     | Optional | `string | Function` | `resources. [resource]. fields.[source]`   | Label to use for the field when rendered in layout components  |
-| `link`      | Optional | `string | Function` | `edit`   | Target of the link wrapping the rendered child. Set to `false` to disable the link. |
+| `source`           | Required | `string`            | -        | Name of the property to display |
+| `reference`        | Required | `string`            | -        | The name of the resource for the referenced records, e.g. 'posts' |
+| `children`         | Optional | `ReactNode`         | -        | One or more Field elements used to render the referenced record |
+| `emptyText`        | Optional | `string`            | ''       | Defines a text to be shown when the field has no value or when the reference is missing |
+| `label`            | Optional | `string | Function` | `resources. [resource]. fields.[source]`   | Label to use for the field when rendered in layout components  |
+| `link`             | Optional | `string | Function` | `edit`   | Target of the link wrapping the rendered child. Set to `false` to disable the link. |
 | `queryOptions`     | Optional | [`UseQuery Options`](https://tanstack.com/query/v5/docs/react/reference/useQuery)                       | `{}`                             | `react-query` client options                                                                   |
-| `sortBy`    | Optional | `string | Function` | `source` | Name of the field to use for sorting when used in a Datagrid |
+| `sortBy`           | Optional | `string | Function` | `source` | Name of the field to use for sorting when used in a Datagrid |
+| `unauthorized`     | Optional | `ReactNode`         | -        | The component to display when users don't have access to the referenced resource |
 
 `<ReferenceField>` also accepts the [common field props](./Fields.md#common-field-props).
 
@@ -187,6 +188,28 @@ The `<ReferenceField>` component accepts the usual `className` prop. You can als
 | `& .RaReferenceField-link` | Applied to each child element |
 
 To override the style of all instances of `<ReferenceField>` using the [application-wide style overrides](./AppTheme.md#theming-individual-components), use the `RaReferenceField` key.
+
+## `unauthorized`
+
+The component to display when users don't have access to the referenced resource:
+
+```tsx
+import { List, Datagrid, ReferenceArrayField, TextField } from 'react-admin';
+import { Box, Button, Typography } from '@mui/material';
+
+const Unauthorized = () => (
+    <Box textAlign="center" m={1}>
+        <Typography variant="h4" paragraph>
+            You don't have access to the tags
+        </Typography>
+        <Typography variant="body1">
+            Contact the administrator to request access
+        </Typography>
+    </Box>
+);
+
+<ReferenceField source="user_id" reference="users" unauthorized={<Unauthorized />} />
+```
 
 ## Performance
 

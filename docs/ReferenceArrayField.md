@@ -87,6 +87,7 @@ You can change how the list of related records is rendered by passing a custom c
 | `queryOptions` | Optional | [`UseQuery Options`](https://tanstack.com/query/v5/docs/react/reference/useQuery) | `{}`                             | `react-query` options for the `getMany` query                                                                           |
 | `sort`         | Optional | `{ field, order }`                                                                | `{ field: 'id', order: 'DESC' }` | Sort order to use when displaying the related records (the sort is done client-side)                   |
 | `sortBy`       | Optional | `string | Function`                                                               | `source`                         | When used in a `List`, name of the field to use for sorting when the user clicks on the column header. |
+| `unauthorized` | Optional | `ReactNode`                                                                       | -        | The component to display when users don't have access to the referenced resource |
 
 `<ReferenceArrayField>` also accepts the [common field props](./Fields.md#common-field-props), except `emptyText` (use the child `empty` prop instead).
 
@@ -296,7 +297,7 @@ To override the style of all instances of `<ReferenceArrayField>` using the [app
 The component to display when users don't have access to the referenced resource:
 
 ```tsx
-import { List, Datagrid, ReferenceArrayField, TextField } from 'react-admin';
+import { ReferenceArrayField } from 'react-admin';
 import { Box, Button, Typography } from '@mui/material';
 
 const Unauthorized = () => (
@@ -310,14 +311,5 @@ const Unauthorized = () => (
     </Box>
 );
 
-export const PostList = () => (
-    <List>
-        <Datagrid>
-            <TextField source="id" />
-            <TextField source="title" />
-            <ReferenceArrayField reference="tags" source="tag_ids" label="Tags" />
-            <EditButton />
-        </Datagrid>
-    </List>
-);
+<ReferenceArrayField reference="tags" source="tag_ids" label="Tags" />
 ```
