@@ -1,8 +1,9 @@
 import * as React from 'react';
 import { forwardRef, useCallback } from 'react';
-import MenuItem from '@mui/material/MenuItem';
+import { MenuItem, ListItemIcon, ListItemText } from '@mui/material';
+import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
+import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import { FieldTitle, useResourceContext } from 'ra-core';
-import { Checkbox } from '@mui/material';
 
 export const FilterButtonMenuItem = forwardRef<any, FilterButtonMenuItemProps>(
     (props, ref) => {
@@ -31,23 +32,20 @@ export const FilterButtonMenuItem = forwardRef<any, FilterButtonMenuItemProps>(
                 ref={ref}
                 disabled={filter.props.disabled}
             >
-                <Checkbox
-                    size="small"
-                    sx={{
-                        paddingLeft: 0,
-                        paddingTop: 0,
-                        paddingBottom: 0,
-                        marginLeft: 0,
-                        marginRight: '7px',
-                    }}
-                    disableRipple
-                    defaultChecked={displayed}
-                />
-                <FieldTitle
-                    label={filter.props.label}
-                    source={filter.props.source}
-                    resource={resource}
-                />
+                <ListItemIcon>
+                    {displayed ? (
+                        <CheckBoxIcon fontSize="small" />
+                    ) : (
+                        <CheckBoxOutlineBlankIcon fontSize="small" />
+                    )}
+                </ListItemIcon>
+                <ListItemText>
+                    <FieldTitle
+                        label={filter.props.label}
+                        source={filter.props.source}
+                        resource={resource}
+                    />
+                </ListItemText>
             </MenuItem>
         );
     }
