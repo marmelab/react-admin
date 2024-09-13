@@ -12,13 +12,13 @@ title: "Installing React-admin With Vite"
 Create a new Vite project with React template using the command line:
 
 ```sh
-yarn create vite my-admin --template react
+yarn create vite my-admin --template react-ts
 ```
 
-We recommend using the TypeScript template:
+**Tip**: If you prefer using JavaScript instead of TypeScript, change the template to `react`.
 
 ```sh
-yarn create vite my-admin --template react-ts
+yarn create vite my-admin --template react
 ```
 
 ## Setting Up React-Admin
@@ -61,16 +61,22 @@ const App = () => <MyAdmin />;
 export default App;
 ```
 
-Then, change the `index.css` file to look like this:
+Remove the `index.css` import in the `main.tsx` file:
 
-```css
-/* in src/index.css */
-body {
-    margin: 0;
-}
+```diff
+import { StrictMode } from 'react'
+import { createRoot } from 'react-dom/client'
+import App from './App.tsx'
+-import './index.css'
+
+createRoot(document.getElementById('root')!).render(
+  <StrictMode>
+    <App />
+  </StrictMode>,
+)
 ```
 
-Next, add the `Roboto` font to your `index.html` file:
+Finally, add the `Roboto` font to your `index.html` file:
 
 ```diff
 // in ./index.html

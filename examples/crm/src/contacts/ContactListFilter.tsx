@@ -11,6 +11,7 @@ import { Box, Chip } from '@mui/material';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import LocalOfferIcon from '@mui/icons-material/LocalOffer';
+import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn';
 import SupervisorAccountIcon from '@mui/icons-material/SupervisorAccount';
 import { endOfYesterday, startOfWeek, startOfMonth, subMonths } from 'date-fns';
 
@@ -106,6 +107,12 @@ export const ContactListFilter = () => {
                             value={{ 'tags@cs': `{${record.id}}` }}
                         />
                     ))}
+            </FilterList>
+            <FilterList label="Tasks" icon={<AssignmentTurnedInIcon />}>
+                <FilterListItem
+                    label="With pending tasks"
+                    value={{ 'nb_tasks@gt': 0 }}
+                />
             </FilterList>
             <FilterList
                 label="Account manager"

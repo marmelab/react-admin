@@ -7,7 +7,15 @@ import {
     TestMemoryRouter,
 } from 'ra-core';
 import fakeRestDataProvider from 'ra-data-fakerest';
-import { Box, Card, Stack, Typography, Button } from '@mui/material';
+import {
+    Box,
+    Card,
+    Stack,
+    Typography,
+    Button,
+    Badge,
+    Chip,
+} from '@mui/material';
 
 import { List } from './List';
 import { ListActions } from './ListActions';
@@ -16,6 +24,9 @@ import { TextField } from '../field';
 import { SearchInput, TextInput } from '../input';
 import { Route } from 'react-router';
 import { Link } from 'react-router-dom';
+import { ListButton } from '../button';
+import { ShowGuesser } from '../detail';
+import TopToolbar from '../layout/TopToolbar';
 
 export default { title: 'ra-ui-materialui/list/List' };
 
@@ -533,6 +544,47 @@ export const StoreDisabled = () => {
     );
 };
 
+const BooksWithLocationDisabled = () => (
+    <List
+        resource="books"
+        storeKey="booksParams"
+        disableSyncWithLocation
+        sort={{ field: 'year', order: 'ASC' }}
+    >
+        <Datagrid>
+            <TextField source="id" />
+            <TextField source="title" />
+            <TextField source="author" />
+            <TextField source="year" />
+        </Datagrid>
+    </List>
+);
+
+export const LocationNotSyncWithStore = () => {
+    const ShowActions = () => (
+        <TopToolbar>
+            <ListButton label="ra.action.back" />
+        </TopToolbar>
+    );
+
+    return (
+        <TestMemoryRouter initialEntries={['/']}>
+            <Admin dataProvider={dataProvider}>
+                <Resource
+                    name="books"
+                    list={<BooksWithLocationDisabled />}
+                    edit={
+                        <ShowGuesser
+                            enableLog={false}
+                            actions={<ShowActions />}
+                        />
+                    }
+                />
+            </Admin>
+        </TestMemoryRouter>
+    );
+};
+
 export const ErrorInFetch = () => (
     <TestMemoryRouter initialEntries={['/books']}>
         <Admin
@@ -550,6 +602,57 @@ export const ErrorInFetch = () => (
                         <BookList />
                     </List>
                 )}
+            />
+        </Admin>
+    </TestMemoryRouter>
+);
+
+const Facets = () => {
+    const { isLoading, error, meta } = useListContext();
+    if (isLoading || error) return null;
+    const facets = meta.facets;
+    return (
+        <Stack direction="row" gap={3} mt={2} ml={1}>
+            {facets.map(facet => (
+                <Badge
+                    key={facet.value}
+                    badgeContent={facet.count}
+                    color="primary"
+                >
+                    <Chip label={facet.value} size="small" />
+                </Badge>
+            ))}
+        </Stack>
+    );
+};
+export const ResponseMetadata = () => (
+    <TestMemoryRouter initialEntries={['/books']}>
+        <Admin
+            dataProvider={{
+                ...dataProvider,
+                getList: async (resource, params) => {
+                    const result = await dataProvider.getList(resource, params);
+                    return {
+                        ...result,
+                        meta: {
+                            facets: [
+                                { value: 'Novels', count: 13 },
+                                { value: 'Essays', count: 0 },
+                                { value: 'Short stories', count: 0 },
+                            ],
+                        },
+                    };
+                },
+            }}
+        >
+            <Resource
+                name="books"
+                list={
+                    <List>
+                        <Facets />
+                        <BookList />
+                    </List>
+                }
             />
         </Admin>
     </TestMemoryRouter>

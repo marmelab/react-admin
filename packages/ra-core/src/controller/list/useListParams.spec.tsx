@@ -497,7 +497,7 @@ describe('useListParams', () => {
             });
         });
 
-        test('should not synchronize parameters with location and store when sync is not enabled', async () => {
+        it('should not synchronize parameters with location and store when sync is not enabled', async () => {
             let location;
             let storeValue;
             const StoreReader = () => {
@@ -540,6 +540,62 @@ describe('useListParams', () => {
                 })
             );
             expect(storeValue).toBeUndefined();
+        });
+
+        it('should synchronize parameters with store when sync is not enabled and storeKey is passed', async () => {
+            let storeValue;
+            const Component = ({
+                disableSyncWithLocation = false,
+                storeKey = undefined,
+            }) => {
+                const [{ page }, { setPage }] = useListParams({
+                    resource: 'posts',
+                    disableSyncWithLocation,
+                    storeKey,
+                });
+
+                const handleClick = () => {
+                    setPage(10);
+                };
+
+                return (
+                    <>
+                        <p>page: {page}</p>
+                        <button onClick={handleClick}>update</button>
+                    </>
+                );
+            };
+            const StoreReader = () => {
+                const [value] = useStore('myListParams');
+                React.useEffect(() => {
+                    storeValue = value;
+                }, [value]);
+                return null;
+            };
+
+            render(
+                <TestMemoryRouter>
+                    <CoreAdminContext dataProvider={testDataProvider()}>
+                        <Component
+                            disableSyncWithLocation
+                            storeKey="myListParams"
+                        />
+                        <StoreReader />
+                    </CoreAdminContext>
+                </TestMemoryRouter>
+            );
+
+            fireEvent.click(screen.getByText('update'));
+
+            await screen.findByText('page: 10');
+
+            expect(storeValue).toEqual({
+                filter: {},
+                order: 'ASC',
+                page: 10,
+                perPage: 10,
+                sort: 'id',
+            });
         });
     });
 });

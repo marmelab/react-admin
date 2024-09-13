@@ -1,5 +1,22 @@
 # Changelog
 
+## 5.1.4
+
+* Fix `useFormGroup` doesn't return validation errors with react-hook-form 7.53.0 ([#10168](https://github.com/marmelab/react-admin/pull/10168)) ([slax57](https://github.com/slax57))
+* Avoid "no source" warning when theres a finalSource in `useInput` ([#10153](https://github.com/marmelab/react-admin/pull/10153)) ([GuilhermeCarra](https://github.com/GuilhermeCarra))
+* [chore] Bump webpack from 5.83.1 to 5.94.0 ([#10175](https://github.com/marmelab/react-admin/pull/10175)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* [Doc]: Fix `<SimpleFormIterator>` add and remove buttons snippets ([#10173](https://github.com/marmelab/react-admin/pull/10173)) ([julienV](https://github.com/julienV))
+
+## v5.1.3
+
+* Fix `create-react-admin` fails with Yarn PnP ([#10161](https://github.com/marmelab/react-admin/pull/10161)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix Datagrid row does not appear clickable although it is ([#10160](https://github.com/marmelab/react-admin/pull/10160)) ([fzaninotto](https://github.com/fzaninotto))
+* [chore] Bump micromatch from 4.0.5 to 4.0.8 ([#10165](https://github.com/marmelab/react-admin/pull/10165)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* [chore] Bump axios from 1.6.1 to 1.7.4 ([#10151](https://github.com/marmelab/react-admin/pull/10151)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* [chore] Unit tests: Expand `expect` with testing-library helpers ([#10169](https://github.com/marmelab/react-admin/pull/10169)) ([ThieryMichel](https://github.com/ThieryMichel))
+* [Doc] Add screencast for EditInDialogButton in ReferenceManyField documentation ([#10137](https://github.com/marmelab/react-admin/pull/10137)) ([djhi](https://github.com/djhi))
+* [Doc] Fix video playback on Firefox ([#10152](https://github.com/marmelab/react-admin/pull/10152)) ([ThieryMichel](https://github.com/ThieryMichel))
+
 ## v5.1.2
 
 * Fix `<PrevNextButtons>` index when using paginated results ([#10144](https://github.com/marmelab/react-admin/pull/10144)) ([slax57](https://github.com/slax57))
@@ -159,6 +176,19 @@ We've written a [migration guide](https://marmelab.com/react-admin/doc/5.0/Upgra
 We estimate that a react-admin app with 50,000 lines of code will require about 2 days of work to upgrade to v5.
 
 ### Changelog
+
+* Build(deps): Bump webpack from 5.83.1 to 5.94.0 ([#10175](https://github.com/marmelab/react-admin/pull/10175)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* [Doc]: Fix SimpleFormIterator add and remove buttons snippets ([#10173](https://github.com/marmelab/react-admin/pull/10173)) ([julienV](https://github.com/julienV))
+* Fix `useFormGroup` doesn't return validation errors with react-hook-form 7.53.0 ([#10168](https://github.com/marmelab/react-admin/pull/10168)) ([slax57](https://github.com/slax57))
+* Avoid "no source" warning when theres a finalSource in useInput ([#10153](https://github.com/marmelab/react-admin/pull/10153)) ([GuilhermeCarra](https://github.com/GuilhermeCarra))
+* [chore] Unit tests: Expand `expect` with testing-library helpers ([#10169](https://github.com/marmelab/react-admin/pull/10169)) ([ThieryMichel](https://github.com/ThieryMichel))
+* Build(deps): Bump micromatch from 4.0.5 to 4.0.8 ([#10165](https://github.com/marmelab/react-admin/pull/10165)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* Fix `create-react-admin` fails with Yarn PnP ([#10161](https://github.com/marmelab/react-admin/pull/10161)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix Datagrid row does not appear clickable although it is ([#10160](https://github.com/marmelab/react-admin/pull/10160)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix video playback on Firefox ([#10152](https://github.com/marmelab/react-admin/pull/10152)) ([ThieryMichel](https://github.com/ThieryMichel))
+* Build(deps): Bump axios from 1.6.1 to 1.7.4 ([#10151](https://github.com/marmelab/react-admin/pull/10151)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* [Doc] Add screencast for EditInDialogButton in ReferenceManyField documentation ([#10137](https://github.com/marmelab/react-admin/pull/10137)) ([djhi](https://github.com/djhi))
+
 * [Doc] Improve types in QuickFilter doc ([#10150](https://github.com/marmelab/react-admin/pull/10150)) ([slax57](https://github.com/slax57))
 * [Doc] Add `ra-data-nestjs-query` to the list of Data Providers ([#10145](https://github.com/marmelab/react-admin/pull/10145)) ([mrnkr](https://github.com/mrnkr))
 * Fix `<PrevNextButtons>` index when using paginated results ([#10144](https://github.com/marmelab/react-admin/pull/10144)) ([slax57](https://github.com/slax57))

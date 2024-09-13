@@ -1,10 +1,12 @@
-import { useGetIdentity } from 'react-admin';
+import { useGetIdentity, useRecordContext } from 'react-admin';
 import { Sale } from '../types';
 
-export const SaleName = ({ sale }: { sale: Sale }) => {
+export const SaleName = ({ sale }: { sale?: Sale }) => {
     const { identity, isPending } = useGetIdentity();
-    if (isPending) return null;
-    return sale.id === identity?.id
+    const saleFromContext = useRecordContext<Sale>();
+    const finalSale = sale || saleFromContext;
+    if (isPending || !finalSale) return null;
+    return finalSale.id === identity?.id
         ? 'You'
-        : `${sale.first_name} ${sale.last_name}`;
+        : `${finalSale.first_name} ${finalSale.last_name}`;
 };

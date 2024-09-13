@@ -44,7 +44,8 @@ const dataProvider = fakeRestProvider(data, true, 300);
 const BookListView = () => {
     const {
         data,
-        isLoading,
+        error,
+        isPending,
         sort,
         filterValues,
         page,
@@ -61,8 +62,11 @@ const BookListView = () => {
         sort,
         filterValues,
     });
-    if (isLoading) {
+    if (isPending) {
         return <div>Loading...</div>;
+    }
+    if (error) {
+        return <div>Error...</div>;
     }
 
     const handleClick = () => {
@@ -111,6 +115,41 @@ export const SetParams = () => (
     <CoreAdminContext dataProvider={dataProvider}>
         <ListBase resource="books" perPage={5}>
             <BookListView />
+        </ListBase>
+    </CoreAdminContext>
+);
+
+const ListMetadataInspector = () => {
+    const listContext = useListContext();
+    return (
+        <>
+            Response metadata:{' '}
+            <pre>{JSON.stringify(listContext.meta, null, 2)}</pre>
+        </>
+    );
+};
+
+export const WithResponseMetadata = () => (
+    <CoreAdminContext
+        dataProvider={{
+            ...dataProvider,
+            getList: async (resource, params) => {
+                const result = await dataProvider.getList(resource, params);
+                return {
+                    ...result,
+                    meta: {
+                        facets: [
+                            { value: 'bar', count: 2 },
+                            { value: 'baz', count: 1 },
+                        ],
+                    },
+                };
+            },
+        }}
+    >
+        <ListBase resource="books" perPage={5}>
+            <BookListView />
+            <ListMetadataInspector />
         </ListBase>
     </CoreAdminContext>
 );

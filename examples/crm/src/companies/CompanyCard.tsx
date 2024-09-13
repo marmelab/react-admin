@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useState } from 'react';
-import { Paper, Typography, Box } from '@mui/material';
+import { AvatarGroup, Paper, Typography, Box } from '@mui/material';
 import ContactsIcon from '@mui/icons-material/AccountCircle';
 import DealIcon from '@mui/icons-material/MonetizationOn';
 import {
@@ -8,11 +8,15 @@ import {
     SelectField,
     useRecordContext,
     Link,
+    ReferenceManyField,
+    SingleFieldList,
+    useListContext,
 } from 'react-admin';
 
 import { CompanyAvatar } from './CompanyAvatar';
 import { Company } from '../types';
 import { useConfigurationContext } from '../root/ConfigurationContext';
+import { Avatar } from '../contacts/Avatar';
 
 export const CompanyCard = (props: { record?: Company }) => {
     const { companySectors } = useConfigurationContext();
@@ -58,26 +62,28 @@ export const CompanyCard = (props: { record?: Company }) => {
                         />
                     </Box>
                 </Box>
-                <Box display="flex" justifyContent="space-around" width="100%">
+                <Box display="flex" width="100%">
                     <Box display="flex" alignItems="center">
-                        <ContactsIcon color="disabled" sx={{ mr: 1 }} />
-                        <div>
-                            <Typography variant="subtitle2" sx={{ mb: -1 }}>
-                                {record.nb_contacts}
-                            </Typography>
-                            <Typography variant="caption" color="textSecondary">
-                                {record.nb_contacts
-                                    ? record.nb_contacts > 1
-                                        ? 'contacts'
-                                        : 'contact'
-                                    : 'contact'}
-                            </Typography>
-                        </div>
+                        {record.nb_contacts ? (
+                            <ReferenceManyField
+                                reference="contacts"
+                                target="company_id"
+                            >
+                                <AvatarGroupIterator />
+                            </ReferenceManyField>
+                        ) : null}
                     </Box>
-                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                        <DealIcon color="disabled" sx={{ mr: 1 }} />
-                        <div>
-                            <Typography variant="subtitle2" sx={{ mb: -1 }}>
+                    {record.nb_deals ? (
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                ml: 2,
+                                gap: 0.5,
+                            }}
+                        >
+                            <DealIcon color="disabled" />
+                            <Typography variant="subtitle2">
                                 {record.nb_deals}
                             </Typography>
                             <Typography variant="caption" color="textSecondary">
@@ -87,10 +93,39 @@ export const CompanyCard = (props: { record?: Company }) => {
                                         : 'deal'
                                     : 'deal'}
                             </Typography>
-                        </div>
-                    </Box>
+                        </Box>
+                    ) : null}
                 </Box>
             </Paper>
         </Link>
+    );
+};
+
+const AvatarGroupIterator = () => {
+    const { data, total, error, isPending } = useListContext();
+    if (isPending || error) return null;
+    return (
+        <AvatarGroup
+            max={4}
+            total={total}
+            spacing="medium"
+            sx={{
+                '& .MuiAvatar-circular': {
+                    width: 20,
+                    height: 20,
+                    fontSize: '0.6rem',
+                },
+            }}
+        >
+            {data.map((record: any) => (
+                <Avatar
+                    key={record.id}
+                    record={record}
+                    width={20}
+                    height={20}
+                    title={`${record.first_name} ${record.last_name}`}
+                />
+            ))}
+        </AvatarGroup>
     );
 };

@@ -1,14 +1,12 @@
 import React, { ReactElement, ReactNode } from 'react';
 import {
-    FilterPayload,
-    SortPayload,
     useReferenceManyFieldController,
     ListContextProvider,
     ResourceContextProvider,
     useRecordContext,
     RaRecord,
+    UseReferenceManyFieldControllerParams,
 } from 'ra-core';
-import { UseQueryOptions } from '@tanstack/react-query';
 
 import { FieldProps } from './types';
 
@@ -75,6 +73,7 @@ export const ReferenceManyField = <
         resource,
         sort = defaultSort,
         source = 'id',
+        storeKey,
         target,
         queryOptions,
     } = props;
@@ -93,6 +92,7 @@ export const ReferenceManyField = <
         resource,
         sort,
         source,
+        storeKey,
         target,
         queryOptions,
     });
@@ -110,21 +110,10 @@ export const ReferenceManyField = <
 export interface ReferenceManyFieldProps<
     RecordType extends Record<string, any> = Record<string, any>,
     ReferenceRecordType extends Record<string, any> = Record<string, any>,
-> extends Omit<FieldProps<RecordType>, 'source'> {
+> extends Omit<FieldProps<RecordType>, 'source'>,
+        UseReferenceManyFieldControllerParams<RecordType, ReferenceRecordType> {
     children: ReactNode;
-    debounce?: number;
-    filter?: FilterPayload;
-    page?: number;
     pagination?: ReactElement;
-    perPage?: number;
-    reference: string;
-    sort?: SortPayload;
-    source?: string;
-    target: string;
-    queryOptions?: UseQueryOptions<
-        { data: ReferenceRecordType[]; total: number },
-        Error
-    >;
 }
 
 const defaultFilter = {};

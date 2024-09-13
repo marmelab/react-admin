@@ -165,6 +165,7 @@ export interface GetListResult<RecordType extends RaRecord = any> {
         hasNextPage?: boolean;
         hasPreviousPage?: boolean;
     };
+    meta?: any;
 }
 
 export interface GetInfiniteListResult<RecordType extends RaRecord = any>
@@ -205,6 +206,7 @@ export interface GetManyReferenceResult<RecordType extends RaRecord = any> {
         hasNextPage?: boolean;
         hasPreviousPage?: boolean;
     };
+    meta?: any;
 }
 
 export interface UpdateParams<RecordType extends RaRecord = any> {
