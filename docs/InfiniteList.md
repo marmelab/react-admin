@@ -125,6 +125,34 @@ export const BookList = () => (
 );
 ```
 
+## `unauthorized`
+
+The component to display when users don't have access to the list:
+
+```tsx
+import { CreateButton, InfiniteList } from 'react-admin';
+import { Box, Button, Typography } from '@mui/material';
+
+const Unauthorized = () => (
+    <Box textAlign="center" m={1}>
+        <Typography variant="h4" paragraph>
+            You don't have access to this list
+        </Typography>
+        <Typography variant="body1">
+            Contact the administrator to request access
+        </Typography>
+        <CreateButton />
+        <Button onClick={...}>Import</Button>
+    </Box>
+);
+
+const ProductList = () => (
+    <InfiniteList unauthorized={<Unauthorized />}>
+        ...
+    </InfiniteList>
+);
+```
+
 ## Showing The Record Count
 
 One drawback of the `<InfiniteList>` component is that it doesn't show the number of results. To fix this, you can use `useListContext` to access the `total` property of the list, and render the total number of results in a sticky footer:
