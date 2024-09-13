@@ -194,7 +194,7 @@ To override the style of all instances of `<ReferenceField>` using the [applicat
 The component to display when users don't have access to the referenced resource:
 
 ```tsx
-import { List, Datagrid, ReferenceArrayField, TextField } from 'react-admin';
+import { List, Datagrid, ReferenceField, TextField } from 'react-admin';
 import { Box, Button, Typography } from '@mui/material';
 
 const Unauthorized = () => (

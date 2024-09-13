@@ -272,7 +272,7 @@ const ProductList = () => {
 
 ## Access Control
 
-Should your authProvider implement the [`canAccess` method](./AuthProviderWriting.md#canaccess), the `<InfiniteList>` component will call it to ensure users have the right to access to its data. For instance, given the following `<List>`: 
+Should your authProvider implement the [`canAccess` method](./AuthProviderWriting.md#canaccess), the `<InfiniteList>` component will call it to ensure users have the right to access to its data. For instance, given the following `<InfiniteList>`: 
 
 ```tsx
 import { InfiniteList, Datagrid, TextField } from 'react-admin';

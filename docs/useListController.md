@@ -309,7 +309,7 @@ const OfficeList = () => {
 
 ## Controlling Access To The List
 
-Should your authProvider implements the [`canAccess` method](./AuthProviderWriting.md#canaccess), the `useListController` hook will call it with the resource name to ensure users cannot access data they're no allowed to see. For instance, given the following `<List>`:
+Should your authProvider implements the [`canAccess` method](./AuthProviderWriting.md#canaccess), the `useListController` hook will call it with the resource name to ensure users cannot access data they're no allowed to see. For instance, given the following code:
 
 ```tsx
 import { useState } from 'react';

@@ -311,5 +311,5 @@ const Unauthorized = () => (
     </Box>
 );
 
-<ReferenceArrayField reference="tags" source="tag_ids" label="Tags" />
+<ReferenceArrayField reference="tags" source="tag_ids" label="Tags" unauthorized={<Unauthorized />} />
 ```
