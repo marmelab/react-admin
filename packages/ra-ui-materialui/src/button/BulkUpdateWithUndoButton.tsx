@@ -12,6 +12,7 @@ import {
     useListContext,
     RaRecord,
     UpdateManyParams,
+    useTranslate,
 } from 'ra-core';
 import { UseMutationOptions } from '@tanstack/react-query';
 
@@ -26,6 +27,7 @@ export const BulkUpdateWithUndoButton = (
     const resource = useResourceContext(props);
     const unselectAll = useUnselectAll(resource);
     const refresh = useRefresh();
+    const translate = useTranslate();
 
     const {
         data,
@@ -33,9 +35,14 @@ export const BulkUpdateWithUndoButton = (
         icon = defaultIcon,
         onClick,
         onSuccess = () => {
-            notify('ra.notification.updated', {
+            notify(`resources.${resource}.notifications.updated`, {
                 type: 'info',
-                messageArgs: { smart_count: selectedIds.length },
+                messageArgs: {
+                    smart_count: selectedIds.length,
+                    _: translate('ra.notification.updated', {
+                        smart_count: selectedIds.length,
+                    }),
+                },
                 undoable: true,
             });
             unselectAll();

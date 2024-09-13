@@ -23,6 +23,7 @@ import {
     useResourceDefinition,
     useGetResourceLabel,
 } from '../../core';
+import _ from 'lodash';
 
 /**
  * Prepare data for the Create view
@@ -93,9 +94,14 @@ export const useCreateController = <
                 return onSuccess(data, variables, context);
             }
 
-            notify('ra.notification.created', {
+            notify(`resources.${resource}.notifications.created`, {
                 type: 'info',
-                messageArgs: { smart_count: 1 },
+                messageArgs: {
+                    smart_count: 1,
+                    _: translate(`ra.notification.created`, {
+                        smart_count: 1,
+                    }),
+                },
             });
             redirect(finalRedirectTo, resource, data.id, data);
         },

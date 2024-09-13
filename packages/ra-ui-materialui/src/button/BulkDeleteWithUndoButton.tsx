@@ -11,6 +11,7 @@ import {
     useListContext,
     RaRecord,
     DeleteManyParams,
+    useTranslate,
 } from 'ra-core';
 
 import { Button, ButtonProps } from './Button';
@@ -24,7 +25,7 @@ export const BulkDeleteWithUndoButton = (
         icon = defaultIcon,
         onClick,
         mutationOptions = {},
-        successMessage = 'ra.notification.deleted',
+        successMessage,
         ...rest
     } = props;
     const { meta: mutationMeta, ...otherMutationOptions } = mutationOptions;
@@ -33,6 +34,7 @@ export const BulkDeleteWithUndoButton = (
     const notify = useNotify();
     const resource = useResourceContext(props);
     const refresh = useRefresh();
+    const translate = useTranslate();
     const [deleteMany, { isPending }] = useDeleteMany();
 
     const handleClick = e => {
@@ -41,11 +43,20 @@ export const BulkDeleteWithUndoButton = (
             { ids: selectedIds, meta: mutationMeta },
             {
                 onSuccess: () => {
-                    notify(successMessage, {
-                        type: 'info',
-                        messageArgs: { smart_count: selectedIds.length },
-                        undoable: true,
-                    });
+                    notify(
+                        successMessage ??
+                            `resources.${resource}.notifications.deleted`,
+                        {
+                            type: 'info',
+                            messageArgs: {
+                                smart_count: selectedIds.length,
+                                _: translate('ra.notification.deleted', {
+                                    smart_count: selectedIds.length,
+                                }),
+                            },
+                            undoable: true,
+                        }
+                    );
                     onUnselectItems();
                 },
                 onError: (error: Error) => {
