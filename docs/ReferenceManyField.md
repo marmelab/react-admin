@@ -159,7 +159,8 @@ export const AuthorShow = () => (
 
 ## `debounce`
 
-By default, `<ReferenceManyField>` does not refresh the data as soon as the user enters data in the filter form. Instead, it waits for half a second of user inactivity (via `lodash.debounce`) before calling the `dataProvider` on filter change. This is to prevent repeated (and useless) calls to the API.
+By default, `<R
+For instance, given the following `<List>`: eferenceManyField>` does not refresh the data as soon as the user enters data in the filter form. Instead, it waits for half a second of user inactivity (via `lodash.debounce`) before calling the `dataProvider` on filter change. This is to prevent repeated (and useless) calls to the API.
 
 You can customize the debounce duration in milliseconds - or disable it completely - by passing a `debounce` prop to the `<ReferenceManyField>` component:
 
@@ -472,3 +473,22 @@ const EmployerEdit = () => (
 )
 ```
 {% endraw %}
+
+## Access Control
+
+Should your authProvider implement the [`canAccess` method](./AuthProviderWriting.md#canaccess), the `<ReferenceManyField>` component call it to only display data the current user has the right to access. For instance, given the following `<ReferenceManyField>`: 
+
+```tsx
+<ReferenceManyField label="Books" reference="books" target="author_id">
+  <Datagrid>
+    <TextField source="title" />
+    <DateField source="published_at" />
+  </Datagrid>
+</ReferenceManyField>
+```
+
+The `<ReferenceManyField>` will call `authProvider.canAccess()` using the following parameters: 
+
+- `{ action: "read", resource: "books" }`.
+
+**Tip**: If you want to control what columns users can see in the `<Datagrid>`, leverage [its access control feature](./Datagrid.md#access-control).

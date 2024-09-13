@@ -333,3 +333,15 @@ You can prevent `<ReferenceField>` from adding a link to its children by setting
 // No link
 <ReferenceField source="user_id" reference="users" link={false} />
 ```
+
+## Access Control
+
+Should your authProvider implement the [`canAccess` method](./AuthProviderWriting.md#canaccess), the `<ReferenceField>` component call it to only display data the current user has the right to access. For instance, given the following `<ReferenceField>`: 
+
+```tsx
+<ReferenceField source="user_id" reference="users" />
+```
+
+The `<ReferenceField>` will call `authProvider.canAccess()` using the following parameters:
+
+- `{ action: "read", resource: "users" }`.

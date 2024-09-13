@@ -313,3 +313,15 @@ const Unauthorized = () => (
 
 <ReferenceArrayField reference="tags" source="tag_ids" label="Tags" unauthorized={<Unauthorized />} />
 ```
+
+## Access Control
+
+Should your authProvider implement the [`canAccess` method](./AuthProviderWriting.md#canaccess), the `<ReferenceArrayField>` component call it to only display data the current user has the right to access. For instance, given the following `<ReferenceArrayField>`: 
+
+```tsx
+<ReferenceArrayField reference="tags" source="tag_ids" label="Tags" />
+```
+
+The `<ReferenceArrayField>` will call `authProvider.canAccess()` using the following parameters:
+
+- `{ action: "read", resource: "tags" }`.

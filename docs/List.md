@@ -1029,7 +1029,6 @@ const Unauthorized = () => (
             Contact the administrator to request access
         </Typography>
         <CreateButton />
-        <Button onClick={...}>Import</Button>
     </Box>
 );
 
@@ -1365,7 +1364,14 @@ const ProductList = () => {
 
 ## Access Control
 
-Should your authProvider implement the [`canAccess` method](./AuthProviderWriting.md#canaccess), the `<List>` component will call it to ensure users have the right to access to its data. For instance, given the following `<List>`: 
+Should your authProvider implement the [`canAccess` method](./AuthProviderWriting.md#canaccess), the `<List>` component will call it to only display data the current user has the right to access. 
+
+
+### Page Access
+
+`<List>` only renders if the user has the right to display the page (`{ action: "read", resource: "[resourceName]" }`).
+
+For instance, given the following `<List>`: 
 
 ```tsx
 import { List, Datagrid, TextField } from 'react-admin';
@@ -1382,7 +1388,9 @@ const PostList = () => (
 );
 ```
 
-The `<List>` will call `authProvider.canAccess()` using the following parameters: `{ action: "read", resource: "posts" }`.
+The `<List>` will call `authProvider.canAccess()` using the following parameters: 
+
+- `{ action: "read", resource: "posts" }`.
 
 **Tip**: If you want to control what columns users can see in the `<Datagrid>`, leverage [its access control feature](./Datagrid.md#access-control).
 
