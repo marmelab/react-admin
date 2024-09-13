@@ -369,11 +369,12 @@ describe('useEditController', () => {
         await waitFor(() =>
             expect(notificationsSpy).toEqual([
                 {
-                    message: 'ra.notification.updated',
+                    message: 'resources.posts.notifications.updated',
                     type: 'info',
                     notificationOptions: {
                         messageArgs: {
                             smart_count: 1,
+                            _: 'ra.notification.updated',
                         },
                         undoable: false,
                     },
@@ -575,11 +576,12 @@ describe('useEditController', () => {
             // we get the (optimistic) success notification but not the error notification
             expect(notificationsSpy).toEqual([
                 {
-                    message: 'ra.notification.updated',
+                    message: 'resources.posts.notifications.updated',
                     type: 'info',
                     notificationOptions: {
                         messageArgs: {
                             smart_count: 1,
+                            _: 'ra.notification.updated',
                         },
                         undoable: false,
                     },
