@@ -1,6 +1,6 @@
 import * as React from 'react';
 import expect from 'expect';
-import { waitFor, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { Basic } from './useCanAccessResources.stories';
 
 describe('useCanAccessResources', () => {
@@ -16,9 +16,7 @@ describe('useCanAccessResources', () => {
         };
         render(<Basic authProvider={authProvider} />);
 
-        expect(
-            screen.getByText(JSON.stringify({ canAccess: {}, isPending: true }))
-        );
+        screen.getByText('LOADING');
 
         expect(canAccess).toBeCalledTimes(3);
         expect(canAccess).toBeCalledWith({
@@ -39,14 +37,13 @@ describe('useCanAccessResources', () => {
 
         await screen.findByText(
             JSON.stringify({
-                canAccess: {
-                    'posts.id': true,
-                    'posts.title': true,
-                    'posts.author': true,
-                },
-                isPending: false,
+                'posts.id': true,
+                'posts.title': true,
+                'posts.author': true,
             })
         );
+
+        expect(screen.queryByText('LOADING')).toBeNull();
     });
 
     it('should grant access to each resource based on canAccess result', async () => {
@@ -65,37 +62,27 @@ describe('useCanAccessResources', () => {
         };
         render(<Basic authProvider={authProvider} />);
 
-        expect(
-            screen.getByText(JSON.stringify({ canAccess: {}, isPending: true }))
-        );
+        screen.getByText('LOADING');
 
         await screen.findByText(
             JSON.stringify({
-                canAccess: {
-                    'posts.id': false,
-                    'posts.title': true,
-                    'posts.author': true,
-                },
-                isPending: false,
+                'posts.id': false,
+                'posts.title': true,
+                'posts.author': true,
             })
         );
+        expect(screen.queryByText('LOADING')).toBeNull();
     });
 
     it('should grant access to all resources if no authProvider', async () => {
         render(<Basic authProvider={null} />);
+        expect(screen.queryByText('LOADING')).toBeNull();
 
-        expect(
-            screen.getByText(JSON.stringify({ canAccess: {}, isPending: true }))
-        );
-
-        await screen.findByText(
+        screen.getByText(
             JSON.stringify({
-                canAccess: {
-                    'posts.id': true,
-                    'posts.title': true,
-                    'posts.author': true,
-                },
-                isPending: false,
+                'posts.id': true,
+                'posts.title': true,
+                'posts.author': true,
             })
         );
     });
@@ -109,24 +96,14 @@ describe('useCanAccessResources', () => {
             getPermissions: () => Promise.reject('bad method'),
         };
         render(<Basic authProvider={authProvider} />);
+        expect(screen.queryByText('LOADING')).toBeNull();
 
-        expect(
-            screen.getByText(JSON.stringify({ canAccess: {}, isPending: true }))
+        screen.getByText(
+            JSON.stringify({
+                'posts.id': true,
+                'posts.title': true,
+                'posts.author': true,
+            })
         );
-
-        await waitFor(() => {
-            expect(
-                screen.getByText(
-                    JSON.stringify({
-                        canAccess: {
-                            'posts.id': true,
-                            'posts.title': true,
-                            'posts.author': true,
-                        },
-                        isPending: false,
-                    })
-                )
-            );
-        });
     });
 });

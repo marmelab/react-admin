@@ -7,16 +7,22 @@ import { Basic } from './useCanAccess.stories';
 
 describe('useCanAccess', () => {
     it('should return a loading state on mount', () => {
-        render(<Basic authProvider={null} />);
-        expect(screen.queryByText('LOADING')).not.toBeNull();
+        render(<Basic />);
+        screen.getByText('LOADING');
     });
 
     it('should return isPending: true by default after a tick', async () => {
-        render(<Basic authProvider={null} />);
-        expect(screen.queryByText('LOADING')).not.toBeNull();
+        render(<Basic />);
+        screen.getByText('LOADING');
         await waitFor(() => {
             expect(screen.queryByText('LOADING')).toBeNull();
         });
+    });
+
+    it('should allow access on mount when there is no authProvider', () => {
+        render(<Basic authProvider={null} />);
+        expect(screen.queryByText('LOADING')).toBeNull();
+        screen.getByText('canAccess: YES');
     });
 
     it('should return that the resource is accessible when canAccess return true', async () => {
