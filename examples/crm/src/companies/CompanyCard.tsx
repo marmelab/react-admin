@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { useState } from 'react';
 import { AvatarGroup, Paper, Typography, Box } from '@mui/material';
-import ContactsIcon from '@mui/icons-material/AccountCircle';
 import DealIcon from '@mui/icons-material/MonetizationOn';
 import {
     useCreatePath,
@@ -9,7 +8,6 @@ import {
     useRecordContext,
     Link,
     ReferenceManyField,
-    SingleFieldList,
     useListContext,
 } from 'react-admin';
 
