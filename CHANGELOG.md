@@ -1,5 +1,12 @@
 # Changelog
 
+## 5.1.5
+
+* Fix List shows empty page too often ([#10190](https://github.com/marmelab/react-admin/pull/10190)) ([fzaninotto](https://github.com/fzaninotto))
+* [Demo] Fix clear filters option in tabbed datagrid ([#10193](https://github.com/marmelab/react-admin/pull/10193)) ([fzaninotto](https://github.com/fzaninotto))
+* Build(deps): Bump dset from 3.1.3 to 3.1.4 ([#10196](https://github.com/marmelab/react-admin/pull/10196)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* [Doc] Fix codemod filename extensions in upgrade guide ([#10199](https://github.com/marmelab/react-admin/pull/10199)) ([afilp](https://github.com/afilp))
+
 ## 5.1.4
 
 * Fix `useFormGroup` doesn't return validation errors with react-hook-form 7.53.0 ([#10168](https://github.com/marmelab/react-admin/pull/10168)) ([slax57](https://github.com/slax57))
@@ -176,6 +183,11 @@ We've written a [migration guide](https://marmelab.com/react-admin/doc/5.0/Upgra
 We estimate that a react-admin app with 50,000 lines of code will require about 2 days of work to upgrade to v5.
 
 ### Changelog
+
+* [Doc] Fix codemod filename extensions in upgrade guide ([#10199](https://github.com/marmelab/react-admin/pull/10199)) ([afilp](https://github.com/afilp))
+* Build(deps): Bump dset from 3.1.3 to 3.1.4 ([#10196](https://github.com/marmelab/react-admin/pull/10196)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* [Demo] Fix clear filters option in tabbed datagrid ([#10193](https://github.com/marmelab/react-admin/pull/10193)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix List shows empty page too often ([#10190](https://github.com/marmelab/react-admin/pull/10190)) ([fzaninotto](https://github.com/fzaninotto))
 
 * Build(deps): Bump webpack from 5.83.1 to 5.94.0 ([#10175](https://github.com/marmelab/react-admin/pull/10175)) ([dependabot[bot]](https://github.com/apps/dependabot))
 * [Doc]: Fix SimpleFormIterator add and remove buttons snippets ([#10173](https://github.com/marmelab/react-admin/pull/10173)) ([julienV](https://github.com/julienV))
