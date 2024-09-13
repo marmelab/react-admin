@@ -109,7 +109,15 @@ describe('<DatagridRow />', () => {
                     </RecordContextProvider>
                 </LocationSpy>
             );
-            fireEvent.click(screen.getByText('hello'));
+            const cell = screen.getByText('hello');
+            const row = cell.closest('tr');
+            if (!row) {
+                throw new Error('row not found');
+            }
+            expect(
+                row.classList.contains('RaDatagrid-clickableRow')
+            ).toBeTruthy();
+            fireEvent.click(row);
 
             await waitFor(() => {
                 expect(spy).toHaveBeenCalledWith(
@@ -129,7 +137,16 @@ describe('<DatagridRow />', () => {
                     </RecordContextProvider>
                 </LocationSpy>
             );
-            fireEvent.click(screen.getByText('hello'));
+            const cell = screen.getByText('hello');
+            const row = cell.closest('tr');
+            if (!row) {
+                throw new Error('row not found');
+            }
+            expect(
+                row.classList.contains('RaDatagrid-clickableRow')
+            ).toBeTruthy();
+            fireEvent.click(row);
+
             await waitFor(() => {
                 expect(spy).toHaveBeenCalledWith(
                     expect.objectContaining({ pathname: '/posts/15/show' })
@@ -150,11 +167,19 @@ describe('<DatagridRow />', () => {
                 </RecordContextProvider>
             );
             expect(screen.queryAllByText('expanded')).toHaveLength(0);
-            fireEvent.click(screen.getByText('hello'));
+            const cell = screen.getByText('hello');
+            const row = cell.closest('tr');
+            if (!row) {
+                throw new Error('row not found');
+            }
+            expect(
+                row.classList.contains('RaDatagrid-clickableRow')
+            ).toBeTruthy();
+            fireEvent.click(row);
             await waitFor(() => {
                 expect(screen.queryAllByText('expanded')).toHaveLength(1);
             });
-            fireEvent.click(screen.getByText('hello'));
+            fireEvent.click(row);
             await waitFor(() => {
                 expect(screen.queryAllByText('expanded')).toHaveLength(0);
             });
@@ -162,7 +187,7 @@ describe('<DatagridRow />', () => {
 
         it("should execute the onToggleItem function if the 'toggleSelection' option is selected", async () => {
             const onToggleItem = jest.fn();
-            const { getByText } = render(
+            render(
                 <RecordContextProvider value={defaultRecord}>
                     <DatagridRow
                         {...defaultProps}
@@ -173,7 +198,15 @@ describe('<DatagridRow />', () => {
                     </DatagridRow>
                 </RecordContextProvider>
             );
-            fireEvent.click(getByText('hello'));
+            const cell = screen.getByText('hello');
+            const row = cell.closest('tr');
+            if (!row) {
+                throw new Error('row not found');
+            }
+            expect(
+                row.classList.contains('RaDatagrid-clickableRow')
+            ).toBeTruthy();
+            fireEvent.click(row);
             await waitFor(() => {
                 expect(onToggleItem.mock.calls.length).toEqual(1);
             });
@@ -181,7 +214,7 @@ describe('<DatagridRow />', () => {
 
         it('should not execute the onToggleItem function if the row is not selectable', () => {
             const onToggleItem = jest.fn();
-            const { getByText } = render(
+            render(
                 <RecordContextProvider value={defaultRecord}>
                     <DatagridRow
                         {...defaultProps}
@@ -193,7 +226,16 @@ describe('<DatagridRow />', () => {
                     </DatagridRow>
                 </RecordContextProvider>
             );
-            fireEvent.click(getByText('hello'));
+            const cell = screen.getByText('hello');
+            const row = cell.closest('tr');
+            if (!row) {
+                throw new Error('row not found');
+            }
+            // FIXME ideally, the row style shouldn't show a pointer in this case
+            expect(
+                row.classList.contains('RaDatagrid-clickableRow')
+            ).toBeTruthy();
+            fireEvent.click(row);
             expect(onToggleItem).not.toHaveBeenCalled();
         });
 
@@ -209,7 +251,15 @@ describe('<DatagridRow />', () => {
                     </RecordContextProvider>
                 </LocationSpy>
             );
-            fireEvent.click(screen.getByText('hello'));
+            const cell = screen.getByText('hello');
+            const row = cell.closest('tr');
+            if (!row) {
+                throw new Error('row not found');
+            }
+            expect(
+                row.classList.contains('RaDatagrid-clickableRow')
+            ).toBeTruthy();
+            fireEvent.click(row);
             await waitFor(() => {
                 expect(spy).toHaveBeenCalledWith(
                     expect.objectContaining({ pathname: path })
@@ -232,7 +282,15 @@ describe('<DatagridRow />', () => {
                     </RecordContextProvider>
                 </LocationSpy>
             );
-            fireEvent.click(screen.getByText('hello'));
+            const cell = screen.getByText('hello');
+            const row = cell.closest('tr');
+            if (!row) {
+                throw new Error('row not found');
+            }
+            expect(
+                row.classList.contains('RaDatagrid-clickableRow')
+            ).toBeTruthy();
+            fireEvent.click(row);
             await new Promise(resolve => setTimeout(resolve)); // waitFor one tick
             await waitFor(() => {
                 expect(spy).toHaveBeenCalledWith(
@@ -252,7 +310,15 @@ describe('<DatagridRow />', () => {
                     </RecordContextProvider>
                 </LocationSpy>
             );
-            fireEvent.click(screen.getByText('hello'));
+            const cell = screen.getByText('hello');
+            const row = cell.closest('tr');
+            if (!row) {
+                throw new Error('row not found');
+            }
+            expect(
+                row.classList.contains('RaDatagrid-clickableRow')
+            ).toBeFalsy();
+            fireEvent.click(row);
             expect(spy).toHaveBeenCalledWith(
                 expect.objectContaining({ pathname: '/' })
             );
@@ -269,7 +335,15 @@ describe('<DatagridRow />', () => {
                     </RecordContextProvider>
                 </LocationSpy>
             );
-            fireEvent.click(screen.getByText('hello'));
+            const cell = screen.getByText('hello');
+            const row = cell.closest('tr');
+            if (!row) {
+                throw new Error('row not found');
+            }
+            expect(
+                row.classList.contains('RaDatagrid-clickableRow')
+            ).toBeFalsy();
+            fireEvent.click(row);
             expect(spy).toHaveBeenCalledWith(
                 expect.objectContaining({ pathname: '/' })
             );
@@ -292,7 +366,15 @@ describe('<DatagridRow />', () => {
                     </ResourceDefinitionContextProvider>
                 </LocationSpy>
             );
-            fireEvent.click(screen.getByText('hello'));
+            const cell = screen.getByText('hello');
+            const row = cell.closest('tr');
+            if (!row) {
+                throw new Error('row not found');
+            }
+            expect(
+                row.classList.contains('RaDatagrid-clickableRow')
+            ).toBeTruthy();
+            fireEvent.click(row);
             await waitFor(() => {
                 expect(spy).toHaveBeenCalledWith(
                     expect.objectContaining({ pathname: '/posts/15' })
@@ -317,7 +399,15 @@ describe('<DatagridRow />', () => {
                     </ResourceDefinitionContextProvider>
                 </LocationSpy>
             );
-            fireEvent.click(screen.getByText('hello'));
+            const cell = screen.getByText('hello');
+            const row = cell.closest('tr');
+            if (!row) {
+                throw new Error('row not found');
+            }
+            expect(
+                row.classList.contains('RaDatagrid-clickableRow')
+            ).toBeTruthy();
+            fireEvent.click(row);
             await waitFor(() => {
                 expect(spy).toHaveBeenCalledWith(
                     expect.objectContaining({ pathname: '/posts/15/show' })
@@ -346,7 +436,15 @@ describe('<DatagridRow />', () => {
                     </ResourceDefinitionContextProvider>
                 </LocationSpy>
             );
-            fireEvent.click(screen.getByText('hello'));
+            const cell = screen.getByText('hello');
+            const row = cell.closest('tr');
+            if (!row) {
+                throw new Error('row not found');
+            }
+            expect(
+                row.classList.contains('RaDatagrid-clickableRow')
+            ).toBeTruthy();
+            fireEvent.click(row);
             await waitFor(() => {
                 expect(spy).toHaveBeenCalledWith(
                     expect.objectContaining({ pathname: '/posts/15/show' })
@@ -374,7 +472,15 @@ describe('<DatagridRow />', () => {
                     </ResourceDefinitionContextProvider>
                 </LocationSpy>
             );
-            fireEvent.click(screen.getByText('hello'));
+            const cell = screen.getByText('hello');
+            const row = cell.closest('tr');
+            if (!row) {
+                throw new Error('row not found');
+            }
+            expect(
+                row.classList.contains('RaDatagrid-clickableRow')
+            ).toBeFalsy();
+            fireEvent.click(row);
             expect(spy).toHaveBeenCalledWith(
                 expect.objectContaining({ pathname: '/' })
             );

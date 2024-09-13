@@ -11,7 +11,7 @@ This hook calls `dataProvider.getList()` when the component mounts. It's ideal f
 ## Syntax
 
 ```jsx
-const { data, total, isPending, error, refetch } = useGetList(
+const { data, total, isPending, error, refetch, meta } = useGetList(
     resource,
     {
         pagination: { page, perPage },
@@ -23,7 +23,7 @@ const { data, total, isPending, error, refetch } = useGetList(
 );
 ```
 
-The `meta` argument is optional. It can be anything you want to pass to the data provider, e.g. a list of fields to show in the result.
+The `meta` argument is optional. It can be anything you want to pass to the data provider, e.g. a list of fields to show in the result. It is distinct from the `meta` property of the response, which may contain additional metadata returned by the data provider.
 
 The `options` parameter is optional, and is passed to [react-query's `useQuery` hook](https://tanstack.com/query/v5/docs/react/reference/useQuery). It may contain the following options:
 
@@ -133,6 +133,43 @@ const LatestNews = () => {
 ```
 
 In this example, the `useGetList` hook fetches all the posts, and displays a list of the 10 most recent posts in a `<Datagrid>`. The `<Pagination>` component allows the user to navigate through the list. Users can also sort the list by clicking on the column headers.
+
+## Passing Additional Arguments
+
+If you need to pass additional arguments to the data provider, you can pass them in the `meta` argument.
+
+For example, if you want to embed related records in the response, and your data provider supports the `embed` meta parameter, you can pass it like this:
+
+```jsx
+const { data, total, isPending, error } = useGetList(
+    'posts',
+    { 
+        pagination: { page: 1, perPage: 10 },
+        sort: { field: 'published_at', order: 'DESC' },
+        // Pass extra parameters using the meta argument
+        meta: { embed: ['author', 'category'] }
+    }
+);
+```
+
+**Tip**: Don't mix the `meta` parameter with the `meta` property of the response (see below). Although they share the same name, they are not related.
+
+## Accessing Response Metadata
+
+If your backend returns additional metadata along with the records, you can access it in the `meta` property of the result.
+
+```jsx
+const { 
+    data,
+    total,
+    isPending,
+    error,
+    // access the extra response details in the meta property
+    meta
+} = useGetList('posts', { pagination: { page: 1, perPage: 10 }});
+```
+
+**Tip**: Don't mix the `meta` property of the response with the `meta` parameter (see above). Although they share the same name, they are not related.
 
 ## Partial Pagination
 

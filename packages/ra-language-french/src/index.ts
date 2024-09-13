@@ -120,6 +120,9 @@ const frenchMessages: TranslationMessages = {
                 "Vous n'êtes pas autorisé(e) à accéder à cette ressource.",
         },
         navigation: {
+            clear_filters: 'Effacer les filtres',
+            no_filtered_results:
+                'Aucun résultat trouvé avec les filtres actuels.',
             no_results: 'Aucun résultat',
             no_more_results:
                 'La page numéro %{page} est en dehors des limites. Essayez la page précédente.',

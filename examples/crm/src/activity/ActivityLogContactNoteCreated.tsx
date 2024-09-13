@@ -1,5 +1,5 @@
 import { Typography } from '@mui/material';
-import { Link } from 'react-admin';
+import { ReferenceField } from 'react-admin';
 
 import { Avatar } from '../contacts/Avatar';
 import type { ActivityContactNoteCreated } from '../types';
@@ -13,31 +13,58 @@ type ActivityLogContactNoteCreatedProps = {
 };
 
 export function ActivityLogContactNoteCreated({
-    activity: { sale, contact, contactNote, company },
+    activity,
 }: ActivityLogContactNoteCreatedProps) {
     const context = useActivityLogContext();
+    const { contactNote } = activity;
     return (
         <ActivityLogNote
             header={
                 <>
-                    <Avatar width={20} height={20} record={contact} />
+                    <ReferenceField
+                        source="contact_id"
+                        reference="contacts"
+                        record={contactNote}
+                        link={false}
+                    >
+                        <Avatar width={20} height={20} />
+                    </ReferenceField>
                     <Typography
                         component="p"
                         variant="body2"
                         color="text.secondary"
                         flexGrow={1}
                     >
-                        <SaleName sale={sale} /> added a note about{' '}
-                        <Link to={`/contacts/${contact.id}/show`}>
-                            {contact.first_name} {contact.last_name}
-                        </Link>
+                        <ReferenceField
+                            source="sales_id"
+                            reference="sales"
+                            record={activity}
+                            link={false}
+                        >
+                            <SaleName />
+                        </ReferenceField>{' '}
+                        added a note about{' '}
+                        <ReferenceField
+                            source="contact_id"
+                            reference="contacts"
+                            record={contactNote}
+                        />
                         {context !== 'company' && (
                             <>
                                 {' from '}
-                                <Link to={`/companies/${company.id}/show`}>
-                                    {company.name}
-                                </Link>{' '}
-                                <RelativeDate date={contactNote.date} />
+                                <ReferenceField
+                                    source="contact_id"
+                                    reference="contacts"
+                                    record={contactNote}
+                                    link={false}
+                                >
+                                    <ReferenceField
+                                        source="company_id"
+                                        reference="companies"
+                                        link="show"
+                                    />
+                                </ReferenceField>{' '}
+                                <RelativeDate date={activity.date} />
                             </>
                         )}
                     </Typography>
@@ -47,7 +74,7 @@ export function ActivityLogContactNoteCreated({
                             variant="body2"
                             component="span"
                         >
-                            <RelativeDate date={contactNote.date} />
+                            <RelativeDate date={activity.date} />
                         </Typography>
                     )}
                 </>

@@ -115,7 +115,10 @@ const englishMessages: TranslationMessages = {
                 'You are not authorized to access this resource.',
         },
         navigation: {
-            no_results: 'No results found',
+            clear_filters: 'Clear filters',
+            no_filtered_results:
+                'No %{resource} found using the current filters.',
+            no_results: 'No %{resource} found',
             no_more_results:
                 'The page number %{page} is out of boundaries. Try the previous page.',
             page_out_of_boundaries: 'Page number %{page} out of boundaries',

@@ -1,11 +1,18 @@
 import * as React from 'react';
-import { render, screen, waitFor, within } from '@testing-library/react';
+import {
+    fireEvent,
+    render,
+    screen,
+    waitFor,
+    within,
+} from '@testing-library/react';
 import { ListContext, ResourceContextProvider } from 'ra-core';
 
 import { AdminContext } from '../../AdminContext';
 import { SimpleList } from './SimpleList';
 import { TextField } from '../../field/TextField';
 import { NoPrimaryText } from './SimpleList.stories';
+import { Basic } from '../filter/FilterButton.stories';
 
 const Wrapper = ({ children }: any) => (
     <AdminContext>
@@ -143,9 +150,43 @@ describe('<SimpleList />', () => {
                 }}
             >
                 <SimpleList />
-            </ListContext.Provider>
+            </ListContext.Provider>,
+            { wrapper: Wrapper }
         );
         expect(screen.queryByText('ra.navigation.no_results')).not.toBeNull();
+    });
+
+    it('should display a message when there is no result but filters applied', async () => {
+        render(<Basic />);
+
+        await screen.findByText(
+            'Accusantium qui nihil voluptatum quia voluptas maxime ab similique'
+        );
+
+        fireEvent.change(screen.getByLabelText('Search'), {
+            target: { value: 'w' },
+        });
+
+        expect(
+            await screen.findByText('No posts found using the current filters.')
+        ).not.toBeNull();
+        expect(screen.getByText('Clear filters')).not.toBeNull();
+
+        fireEvent.click(screen.getByText('Clear filters'));
+
+        await screen.findByText(
+            'Accusantium qui nihil voluptatum quia voluptas maxime ab similique'
+        );
+
+        expect(
+            screen.queryByText('No posts found using the current filters.')
+        ).toBeNull();
+        expect(screen.queryByText('Clear filters')).toBeNull();
+        expect(
+            screen.queryByText(
+                'In facilis aut aut odit hic doloribus. Fugit possimus perspiciatis sit molestias in. Sunt dignissimos sed quis at vitae veniam amet. Sint sunt perspiciatis quis doloribus aperiam numquam consequatur et. Blanditiis aut earum incidunt eos magnam et voluptatem. Minima iure voluptatum autem. At eaque sit aperiam minima aut in illum.'
+            )
+        ).not.toBeNull();
     });
 
     it('should fall back to record representation when no primaryText is provided', async () => {

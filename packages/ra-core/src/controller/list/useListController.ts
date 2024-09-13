@@ -97,6 +97,7 @@ export const useListController = <RecordType extends RaRecord = any>(
         data,
         pageInfo,
         total,
+        meta: responseMeta,
         error,
         isLoading,
         isFetching,
@@ -172,6 +173,7 @@ export const useListController = <RecordType extends RaRecord = any>(
         canAccess,
         sort: currentSort,
         data,
+        meta: responseMeta,
         defaultTitle,
         displayedFilters: query.displayedFilters,
         error,
@@ -504,6 +506,7 @@ export interface ListControllerLoadingResult<RecordType extends RaRecord = any>
     extends ListControllerBaseResult<RecordType> {
     data: undefined;
     total: undefined;
+    meta: undefined;
     error: null;
     isPending: true;
 }
@@ -513,6 +516,7 @@ export interface ListControllerErrorResult<
 > extends ListControllerBaseResult<RecordType> {
     data: undefined;
     total: undefined;
+    meta: undefined;
     error: TError;
     isPending: false;
 }
@@ -522,6 +526,7 @@ export interface ListControllerRefetchErrorResult<
 > extends ListControllerBaseResult<RecordType> {
     data: RecordType[];
     total: number;
+    meta?: any;
     error: TError;
     isPending: false;
 }
@@ -529,6 +534,7 @@ export interface ListControllerSuccessResult<RecordType extends RaRecord = any>
     extends ListControllerBaseResult<RecordType> {
     data: RecordType[];
     total: number;
+    meta?: any;
     error: null;
     isPending: false;
 }

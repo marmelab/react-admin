@@ -7,7 +7,7 @@ import lodashDebounce from 'lodash/debounce';
 import { useSafeSetState, removeEmpty } from '../../util';
 import { useGetManyReference } from '../../dataProvider';
 import { useNotify } from '../../notification';
-import { Identifier, RaRecord, SortPayload } from '../../types';
+import { FilterPayload, Identifier, RaRecord, SortPayload } from '../../types';
 import { ListControllerResult } from '../list';
 import usePaginationState from '../usePaginationState';
 import { useRecordSelection } from '../list/useRecordSelection';
@@ -68,6 +68,7 @@ export const useReferenceManyFieldController = <
     } = props;
     const notify = useNotify();
     const resource = useResourceContext(props);
+    const storeKey = props.storeKey ?? `${resource}.${record?.id}.${reference}`;
     const { meta, ...otherQueryOptions } = queryOptions;
 
     // pagination logic
@@ -88,7 +89,7 @@ export const useReferenceManyFieldController = <
 
     // selection logic
     const [selectedIds, selectionModifiers] = useRecordSelection({
-        resource: `${resource}.${record?.id}.${reference}`,
+        resource: storeKey,
     });
 
     // filter logic
@@ -168,6 +169,7 @@ export const useReferenceManyFieldController = <
     const {
         data,
         total,
+        meta: responseMeta,
         pageInfo,
         error,
         isFetching,
@@ -213,6 +215,7 @@ export const useReferenceManyFieldController = <
         canAccess,
         sort,
         data,
+        meta: responseMeta,
         defaultTitle: undefined,
         displayedFilters,
         error,
@@ -246,11 +249,11 @@ export const useReferenceManyFieldController = <
 };
 
 export interface UseReferenceManyFieldControllerParams<
-    RecordType extends RaRecord = RaRecord,
-    ReferenceRecordType extends RaRecord = RaRecord,
+    RecordType extends Record<string, any> = Record<string, any>,
+    ReferenceRecordType extends Record<string, any> = Record<string, any>,
 > {
     debounce?: number;
-    filter?: any;
+    filter?: FilterPayload;
     page?: number;
     perPage?: number;
     record?: RecordType;
@@ -258,6 +261,7 @@ export interface UseReferenceManyFieldControllerParams<
     resource?: string;
     sort?: SortPayload;
     source?: string;
+    storeKey?: string;
     target: string;
     queryOptions?: Omit<
         UseQueryOptions<{ data: ReferenceRecordType[]; total: number }, Error>,

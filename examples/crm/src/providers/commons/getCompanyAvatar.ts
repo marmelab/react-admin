@@ -1,4 +1,5 @@
-import { Company } from '../../types';
+import type { Company } from '../../types';
+import { fetchWithTimeout } from '../../misc/fetchWithTimeout';
 
 // Helper function to get the favicon URL
 async function getFaviconUrl(website: string): Promise<string | null> {
@@ -7,7 +8,7 @@ async function getFaviconUrl(website: string): Promise<string | null> {
         const url = new URL(website);
         const domain = url.origin;
         const faviconUrl = `${domain}/favicon.ico`;
-        const response = await fetch(faviconUrl);
+        const response = await fetchWithTimeout(faviconUrl);
         if (response.ok) {
             return faviconUrl;
         }

@@ -62,7 +62,14 @@ const CompanyInfo = ({ record }: { record: Company }) => {
                     minHeight={24}
                 >
                     <PublicIcon color="disabled" fontSize="small" />
-                    <UrlField source="website" target="_blank" rel="noopener" />
+                    <UrlField
+                        source="website"
+                        target="_blank"
+                        rel="noopener"
+                        content={record.website
+                            .replace('http://', '')
+                            .replace('https://', '')}
+                    />
                 </Stack>
             )}
             {record.linkedin_url && (

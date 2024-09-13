@@ -117,11 +117,12 @@ export const useInfiniteGetList = <RecordType extends RaRecord = any>(
                             ? queryParams.signal
                             : undefined,
                 })
-                .then(({ data, pageInfo, total }) => ({
+                .then(({ data, pageInfo, total, meta }) => ({
                     data,
                     total,
                     pageParam,
                     pageInfo,
+                    meta,
                 }));
         },
         initialPageParam: pagination.page,
@@ -222,6 +223,7 @@ export const useInfiniteGetList = <RecordType extends RaRecord = any>(
                   ...result,
                   data: result.data,
                   total: result.data?.pages[0]?.total ?? undefined,
+                  meta: result.data?.pages[0]?.meta,
               }
             : result
     ) as UseInfiniteQueryResult<
@@ -229,6 +231,7 @@ export const useInfiniteGetList = <RecordType extends RaRecord = any>(
         Error
     > & {
         total?: number;
+        meta?: any;
     };
 };
 
