@@ -49,7 +49,7 @@ export const useCanAccess = <ErrorType = Error>(
 ): UseCanAccessResult<ErrorType> => {
     const authProvider = useAuthProvider();
 
-    const result = useQuery({
+    const queryResult = useQuery({
         queryKey: ['auth', 'canAccess', JSON.stringify(params)],
         queryFn: async ({ signal }) => {
             if (!authProvider || !authProvider.canAccess) {
@@ -63,12 +63,46 @@ export const useCanAccess = <ErrorType = Error>(
         ...params,
     });
 
-    return useMemo(() => {
+    const result = useMemo(() => {
+        // Don't check for the authProvider or authProvider.canAccess method in the useMemo
+        // to avoid unnecessary re-renders
         return {
-            ...result,
-            canAccess: result.data,
+            ...queryResult,
+            canAccess: queryResult.data,
         } as UseCanAccessResult<ErrorType>;
-    }, [result]);
+    }, [queryResult]);
+
+    return !authProvider || !authProvider.canAccess
+        ? (emptyQueryObserverResult as UseCanAccessResult<ErrorType>)
+        : result;
+};
+
+const emptyQueryObserverResult = {
+    canAccess: true,
+    data: true,
+    dataUpdatedAt: 0,
+    error: null,
+    errorUpdatedAt: 0,
+    errorUpdateCount: 0,
+    failureCount: 0,
+    failureReason: null,
+    fetchStatus: 'idle',
+    isError: false,
+    isInitialLoading: false,
+    isLoading: false,
+    isLoadingError: false,
+    isFetched: true,
+    isFetchedAfterMount: true,
+    isFetching: false,
+    isPaused: false,
+    isPlaceholderData: false,
+    isPending: false,
+    isRefetchError: false,
+    isRefetching: false,
+    isStale: false,
+    isSuccess: true,
+    status: 'success',
+    refetch: () => Promise.resolve(emptyQueryObserverResult),
 };
 
 export interface UseCanAccessOptions<ErrorType = Error>

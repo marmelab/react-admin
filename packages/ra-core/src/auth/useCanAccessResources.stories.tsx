@@ -28,12 +28,16 @@ const UseCanAccessResources = ({
     return children({ canAccess, isPending });
 };
 
-const StateInspector = ({
-    result,
-}: {
-    result: UseCanAccessResourcesResult;
-}) => {
-    return <div>{JSON.stringify(result)}</div>;
+const StateInspector = ({ state }: { state: UseCanAccessResourcesResult }) => {
+    return (
+        <div>
+            <span>{state.isPending && 'LOADING'}</span>
+            {state.canAccess !== undefined && (
+                <span>{JSON.stringify(state.canAccess)}</span>
+            )}
+            <span>{state.error && 'ERROR'}</span>
+        </div>
+    );
 };
 
 const defaultAuthProvider: AuthProvider = {
@@ -42,7 +46,8 @@ const defaultAuthProvider: AuthProvider = {
     checkAuth: () => Promise.reject('bad method'),
     checkError: () => Promise.reject('bad method'),
     getPermissions: () => Promise.reject('bad method'),
-    canAccess: ({ action }) => Promise.resolve(action === 'read'),
+    canAccess: ({ action }) =>
+        new Promise(resolve => setTimeout(resolve, 500, action === 'read')),
 };
 
 export const Basic = ({
@@ -60,7 +65,7 @@ export const Basic = ({
             action="read"
             resources={['posts.id', 'posts.title', 'posts.author']}
         >
-            {result => <StateInspector result={result} />}
+            {result => <StateInspector state={result} />}
         </UseCanAccessResources>
     </CoreAdminContext>
 );
@@ -75,7 +80,7 @@ export const NoAuthProvider = ({
             action="read"
             resources={['posts.id', 'posts.title', 'posts.author']}
         >
-            {result => <StateInspector result={result} />}
+            {result => <StateInspector state={result} />}
         </UseCanAccessResources>
     </CoreAdminContext>
 );

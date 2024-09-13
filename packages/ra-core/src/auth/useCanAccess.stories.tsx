@@ -45,7 +45,8 @@ const defaultAuthProvider: AuthProvider = {
     checkAuth: () => Promise.reject('bad method'),
     checkError: () => Promise.reject('bad method'),
     getPermissions: () => Promise.reject('bad method'),
-    canAccess: ({ action }) => Promise.resolve(action === 'read'),
+    canAccess: ({ action }) =>
+        new Promise(resolve => setTimeout(resolve, 500, action === 'read')),
 };
 
 export const Basic = ({
@@ -59,6 +60,18 @@ export const Basic = ({
         authProvider={authProvider != null ? authProvider : undefined}
         queryClient={queryClient}
     >
+        <UseCanAccess action="read" resource="test">
+            {state => <StateInspector state={state} />}
+        </UseCanAccess>
+    </CoreAdminContext>
+);
+
+export const NoAuthProvider = ({
+    queryClient,
+}: {
+    queryClient?: QueryClient;
+}) => (
+    <CoreAdminContext authProvider={undefined} queryClient={queryClient}>
         <UseCanAccess action="read" resource="test">
             {state => <StateInspector state={state} />}
         </UseCanAccess>
