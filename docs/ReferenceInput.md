@@ -109,6 +109,7 @@ See the [`children`](#children) section for more details.
 | `perPage`          | Optional | `number`                                    | 25                               | Number of suggestions to show                                                                  |
 | `queryOptions`     | Optional | [`UseQueryOptions`](https://tanstack.com/query/v5/docs/react/reference/useQuery)                       | `{}`                             | `react-query` client options                                                                   |
 | `sort`             | Optional | `{ field: String, order: 'ASC' or 'DESC' }` | `{ field:'id', order:'DESC' }` | How to order the list of suggestions                                                           |
+| `unauthorized`     | Optional | `ReactNode`                                 |            | The component to display when users don't have access to the referenced resource  |
 
 **Note**: `<ReferenceInput>` doesn't accept the [common input props](./Inputs.md#common-input-props) (like `label`) ; it is the responsibility of the child component to apply them.
 
@@ -299,6 +300,28 @@ Then to display a selector for the contact company, you should call `<ReferenceI
 
 ```jsx
 <ReferenceInput source="company_id" reference="companies" />
+```
+
+## `unauthorized`
+
+The component to display when users don't have access to the referenced resource:
+
+```tsx
+import { ReferenceInput } from 'react-admin';
+import { Box, Button, Typography } from '@mui/material';
+
+const Unauthorized = () => (
+    <Box textAlign="center" m={1}>
+        <Typography variant="h4" paragraph>
+            You don't have access to the posts
+        </Typography>
+        <Typography variant="body1">
+            Contact the administrator to request access
+        </Typography>
+    </Box>
+);
+
+<ReferenceInput source="post_id" reference="posts" unauthorized={<Unauthorized />} />
 ```
 
 ## Transforming The Input Value

@@ -108,6 +108,7 @@ See the [`children`](#children) section for more details.
 | `perPage`          | Optional | `number`                                    | 25                                 | Number of suggestions to show                                                                                       |
 | `queryOptions`     | Optional | [`UseQueryOptions`](https://tanstack.com/query/v5/docs/react/reference/useQuery) | `{}` | `react-query` client options     |
 | `sort`             | Optional | `{ field: String, order: 'ASC' or 'DESC' }` | `{ field: 'id', order: 'DESC' }`   | How to order the list of suggestions                                                                                |
+| `unauthorized`     | Optional | `ReactNode`                                 |            | The component to display when users don't have access to the referenced resource  |
 
 **Note**: `<ReferenceArrayInput>` doesn't accept the [common input props](./Inputs.md#common-input-props) ; it is the responsability of children to apply them.
 
@@ -326,6 +327,28 @@ Then to display a selector for the post tags, you should call `<ReferenceArrayIn
 
 ```jsx
 <ReferenceArrayInput source="tags_ids" reference="tags" />
+```
+
+## `unauthorized`
+
+The component to display when users don't have access to the referenced resource:
+
+```tsx
+import { ReferenceArrayInput } from 'react-admin';
+import { Box, Button, Typography } from '@mui/material';
+
+const Unauthorized = () => (
+    <Box textAlign="center" m={1}>
+        <Typography variant="h4" paragraph>
+            You don't have access to the tags
+        </Typography>
+        <Typography variant="body1">
+            Contact the administrator to request access
+        </Typography>
+    </Box>
+);
+
+<ReferenceArrayInput source="tags_ids" reference="tags" unauthorized={<Unauthorized />} />
 ```
 
 ## Customizing The Filter Query
