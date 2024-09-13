@@ -3,8 +3,10 @@ import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
 import frenchMessages from 'ra-language-french';
 import * as React from 'react';
+
 import { AdminContext } from '../AdminContext';
 import { DeleteButton } from './DeleteButton';
+import { Notification } from '../layout';
 
 const theme = createTheme({
     palette: {
@@ -80,3 +82,31 @@ export const ContainedWithUserDefinedPalette = () => (
         />
     </AdminContext>
 );
+
+export const NotificationDefault = () => {
+    const dataProvider = {
+        delete: () => Promise.resolve({ data: { id: 1 } }),
+    } as any;
+    return (
+        <AdminContext dataProvider={dataProvider}>
+            <DeleteButton record={{ id: 1 }} resource="post" />
+            <Notification />
+        </AdminContext>
+    );
+};
+
+export const SuccessMessage = () => {
+    const dataProvider = {
+        delete: () => Promise.resolve({ data: { id: 1 } }),
+    } as any;
+    return (
+        <AdminContext dataProvider={dataProvider}>
+            <DeleteButton
+                record={{ id: 1 }}
+                resource="post"
+                successMessage="Post deleted!"
+            />
+            <Notification />
+        </AdminContext>
+    );
+};
