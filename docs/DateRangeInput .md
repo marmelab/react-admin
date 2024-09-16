@@ -7,7 +7,7 @@ title: "The DateRangeInput Component"
 
 This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" /> component `<DateRangeInput>` is a date range picker, allowing users to pick an interval by selecting a start and an end date. It is ideal for filtering records based on a date range. It is designed to work with various locales and date formats.
 
-![DateRangeInput](https://react-admin-ee.marmelab.com/assets/assets/DateRangeInput.png)
+![DateRangeInput](https://react-admin-ee.marmelab.com/assets/DateRangeInput.png)
 
 **Note**: `<DateRangeInput>` is a wrapper around the [Material UI X Date Range Picker](https://mui.com/x/react-date-pickers/date-range-picker/), which is a MUI X Pro package. This means that you need to own a [MUI X Pro license](https://mui.com/x/introduction/licensing/#pro-plan) to use it.
 
