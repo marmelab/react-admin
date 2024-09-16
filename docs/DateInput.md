@@ -106,7 +106,7 @@ Here is how to set up the pickers to use the `fr` locale:
 import { Admin, Resource } from 'react-admin';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { fr } from 'date-fns/locale';
+import { fr } from 'date-fns/locale/fr';
 import { EventEdit } from './events';
 
 export const App = () => (

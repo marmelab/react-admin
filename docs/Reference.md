@@ -53,6 +53,7 @@ title: "Index"
 * [`<DatagridHeader>`](./Datagrid.md#header)
 * [`<DateField>`](./DateField.md)
 * [`<DateInput>`](./DateInput.md)
+* [`<DateRangeInput>`](./DateRangeInput.md)
 * [`<DateTimeInput>`](./DateTimeInput.md)
 * `<DeleteButton>`
 * [`<DualListInput>`](./DualListInput.md)<img class="icon" src="./img/premium.svg" />
