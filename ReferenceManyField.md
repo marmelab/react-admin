@@ -93,6 +93,7 @@ This example leverages [`<SingleFieldList>`](./SingleFieldList.md) to display an
 | `reference`    | Required | `string`                                                                          | -                                | The name of the resource for the referenced records, e.g. 'books'                   |
 | `sort`         | Optional | `{ field, order }`                                                                | `{ field: 'id', order: 'DESC' }` | Sort order to use when fetching the related records, passed to `getManyReference()` |
 | `source`       | Optional | `string`                                                                          | `id`                             | Target field carrying the relationship on the source record (usually 'id')          |
+| `storeKey`     | Optional | `string`                                                                          | -                                | The key to use to store the records selection state                                 |
 | `target`       | Required | `string`                                                                          | -                                | Target field carrying the relationship on the referenced resource, e.g. 'user_id'   |
 
 `<ReferenceManyField>` also accepts the [common field props](./Fields.md#common-field-props), except `emptyText` (use the child `empty` prop instead).
@@ -300,6 +301,44 @@ By default, `ReferenceManyField` uses the `id` field as target for the reference
    ...
 </ReferenceManyField>
 ```
+
+## `storeKey`
+
+By default, react-admin stores the reference list selection state in localStorage so that users can come back to the list and find it in the same state as when they left it. React-admin uses the main resource, record id and reference resource as the identifier to store the selection state (under the key `${resource}.${record.id}.${reference}.selectedIds`).
+
+If you want to display multiple lists of the same reference and keep distinct selection states for each one, you must give each list a unique `storeKey` property.
+
+In the example below, both lists use the same reference ('books'), but their selection states are stored separately (under the store keys `'authors.1.books.selectedIds'` and `'custom.selectedIds'` respectively). This allows to use both components in the same page, each having its own state.
+
+{% raw %}
+```jsx
+<Stack direction="row" spacing={2}>
+    <ReferenceManyField
+        reference="books"
+        target="author_id"
+        queryOptions={{
+            meta: { foo: 'bar' },
+        }}
+    >
+        <Datagrid>
+            <TextField source="title" />
+        </Datagrid>
+    </ReferenceManyField>
+    <ReferenceManyField
+        reference="books"
+        target="author_id"
+        queryOptions={{
+            meta: { foo: 'bar' },
+        }}
+        storeKey="custom"
+    >
+        <Datagrid>
+            <TextField source="title" />
+        </Datagrid>
+    </ReferenceManyField>
+</Stack>
+```
+{% endraw %}
 
 ## `target`
 

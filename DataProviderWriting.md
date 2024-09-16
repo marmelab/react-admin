@@ -55,7 +55,7 @@ interface GetListParams {
     pagination: { page: number, perPage: number };
     sort: { field: string, order: 'ASC' | 'DESC' };
     filter: any;
-    meta?: any;
+    meta?: any; // request metadata
     signal?: AbortSignal;
 }
 interface GetListResult {
@@ -66,6 +66,7 @@ interface GetListResult {
         hasNextPage?: boolean;
         hasPreviousPage?: boolean;
     };
+    meta?: any; // response metadata
 }
 function getList(resource: string, params: GetListParams): Promise<GetListResult>
 ```
@@ -88,7 +89,13 @@ dataProvider.getList('posts', {
 //         { id: 123, title: "hello, world", author_id: 12 },
 //         { id: 125, title: "howdy partner", author_id: 12 },
 //     ],
-//     total: 27
+//     total: 27,
+//     meta: {
+//         facets: [
+//             { name: "published", count: 12 },
+//             { name: "draft", count: 15 },
+//         ],
+//     },
 // }
 ```
 
@@ -167,7 +174,7 @@ interface GetManyReferenceParams {
     pagination: { page: number, perPage: number };
     sort: { field: string, order: 'ASC' | 'DESC' };
     filter: any;
-    meta?: any;
+    meta?: any; // request metadata
     signal?: AbortSignal;
 }
 interface GetManyReferenceResult {
@@ -178,6 +185,7 @@ interface GetManyReferenceResult {
         hasNextPage?: boolean;
         hasPreviousPage?: boolean;
     };
+    meta?: any; // response metadata
 }
 function getManyReference(resource: string, params: GetManyReferenceParams): Promise<GetManyReferenceResult>
 ```
