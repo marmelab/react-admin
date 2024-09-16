@@ -1144,37 +1144,58 @@ const ProductList = () => (
 
 If `dataProvider.getList()` returns additional metadata in the response under the `meta` key, you can access it in the list view using the `meta` property of the `ListContext`.
 
-This is often used by APIs to return statistics or other metadata about the list of records.
+![List metadata](./img/List-facets.png)
+
+This is often used by APIs to return facets, aggregations, statistics, or other metadata about the list of records.
 
 ```tsx
-// dataProvider.getLists('posts') returns response like
+// dataProvider.getLists('books') returns response like
 // {
 //     data: [ ... ],
 //     total: 293,
 //     meta: {
-//         facets: [
-//             { value: 'Novels', count: 245 },
-//             { value: 'Essays', count: 23 },
-//             { value: 'Short stories', count: 25 },
+//         genres: [
+//             { value: 'Fictions', count: 134 },
+//             { value: 'Essays', count: 24 },
+//         ],
+//         centuries: [
+//             { value: '18th', count: 23 },
+//             { value: '19th', count: 78 },
+//             { value: '20th', count: 57 },
+//             { value: '21st', count: 34 },
 //         ],
 //     },
 // }
 const Facets = () => {
     const { isLoading, error, meta } = useListContext();
     if (isLoading || error) return null;
-    const facets = meta.facets;
     return (
-        <Stack direction="row" gap={3} mt={2} ml={1}>
-            {facets.map(facet => (
-                <Badge
-                    key={facet.value}
-                    badgeContent={facet.count}
-                    color="primary"
-                >
-                    <Chip label={facet.value} size="small" />
-                </Badge>
-            ))}
-        </Stack>
+        <Box>
+            <Typography variant="subtitle2">
+                Genres
+            </Typography>
+            <Typography component="ul">
+                {meta.genres.map(facet => (
+                    <li key={facet.value}>
+                        <Link href="#">
+                            {facet.value} ({facet.count})
+                        </Link>
+                    </li>
+                ))}
+            </Typography>
+            <Typography variant="subtitle2">
+                Century
+            </Typography>
+            <Typography component="ul">
+                {meta.centuries.map(facet => (
+                    <li key={facet.value}>
+                        <Link href="#">
+                            {facet.value} ({facet.count})
+                        </Link>
+                    </li>
+                ))}
+            </Typography>
+        </Box>
     );
 };
 ```
