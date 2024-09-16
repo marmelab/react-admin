@@ -68,6 +68,65 @@ describe('Data Simple REST Client', () => {
             expect(result.total).toEqual(42);
         });
     });
+    describe('getOne', () => {
+        it('should allow numeric id in path', async () => {
+            const httpClient = jest.fn().mockResolvedValue({ id: 'Post#123' });
+            const client = simpleClient('http://localhost:3000', httpClient);
+
+            await client.getOne('posts', { id: 123 });
+
+            expect(httpClient).toHaveBeenCalledWith(
+                'http://localhost:3000/posts/123',
+                expect.any(Object)
+            );
+        });
+        it('should escape id in path', async () => {
+            const httpClient = jest.fn().mockResolvedValue({ id: 'Post#123' });
+            const client = simpleClient('http://localhost:3000', httpClient);
+
+            await client.getOne('posts', { id: 'Post#123' });
+
+            expect(httpClient).toHaveBeenCalledWith(
+                'http://localhost:3000/posts/Post%23123',
+                expect.any(Object)
+            );
+        });
+    });
+    describe('update', () => {
+        it('should escape id in path', async () => {
+            const httpClient = jest.fn().mockResolvedValue({ id: 'Post#123' });
+            const client = simpleClient('http://localhost:3000', httpClient);
+
+            await client.update('posts', {
+                previousData: undefined,
+                id: 'Post#123',
+                data: { body: '' },
+            });
+
+            expect(httpClient).toHaveBeenCalledWith(
+                'http://localhost:3000/posts/Post%23123',
+                expect.any(Object)
+            );
+        });
+    });
+    describe('updateMany', () => {
+        it('should escape id in path', async () => {
+            const httpClient = jest
+                .fn()
+                .mockResolvedValue({ json: { id: 'Post#123' } });
+            const client = simpleClient('http://localhost:3000', httpClient);
+
+            await client.updateMany('posts', {
+                data: undefined,
+                ids: [{ id: 'Post#123' }],
+            });
+
+            expect(httpClient).toHaveBeenCalledWith(
+                'http://localhost:3000/posts/Post%23123',
+                expect.any(Object)
+            );
+        });
+    });
     describe('delete', () => {
         it('should set the `Content-Type` header to `text/plain`', async () => {
             const httpClient = jest.fn().mockResolvedValue({ json: { id: 1 } });
@@ -87,6 +146,20 @@ describe('Data Simple REST Client', () => {
                         'Content-Type': 'text/plain',
                     }),
                 }
+            );
+        });
+        it('should escape id in path', async () => {
+            const httpClient = jest.fn().mockResolvedValue({ id: 'Post#123' });
+            const client = simpleClient('http://localhost:3000', httpClient);
+
+            await client.delete('posts', {
+                previousData: undefined,
+                id: 'Post#123',
+            });
+
+            expect(httpClient).toHaveBeenCalledWith(
+                'http://localhost:3000/posts/Post%23123',
+                expect.any(Object)
             );
         });
     });
@@ -118,6 +191,21 @@ describe('Data Simple REST Client', () => {
                         'Content-Type': 'text/plain',
                     }),
                 }
+            );
+        });
+        it('should escape id in path', async () => {
+            const httpClient = jest
+                .fn()
+                .mockResolvedValue({ json: { id: 'Post#123' } });
+            const client = simpleClient('http://localhost:3000', httpClient);
+
+            await client.deleteMany('posts', {
+                ids: [{ id: 'Post#123' }],
+            });
+
+            expect(httpClient).toHaveBeenCalledWith(
+                'http://localhost:3000/posts/Post%23123',
+                expect.any(Object)
             );
         });
     });
