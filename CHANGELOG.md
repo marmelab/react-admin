@@ -4,10 +4,10 @@
 
 * Add support for response metadata in `dataProvider.getList()` ([#10179](https://github.com/marmelab/react-admin/pull/10179)) ([fzaninotto](https://github.com/fzaninotto))
 * Add icons to `<FilterButton>` dropdown ([#10186](https://github.com/marmelab/react-admin/pull/10186)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* Add reset button to `<Datagrid>` and `<SimpleList>` when the current filter brings to no result ([#10184](https://github.com/marmelab/react-admin/pull/10184)) ([erwanMarmelab](https://github.com/erwanMarmelab))
 * Add global Reset CSS ([#10164](https://github.com/marmelab/react-admin/pull/10164)) ([fzaninotto](https://github.com/fzaninotto))
 * Add `<ReferenceManyField storeKey>` to allow more than one reference for the same resource ([#10132](https://github.com/marmelab/react-admin/pull/10132)) ([djhi](https://github.com/djhi))
 * Add support for computed fields in `ra-data-json-server`'s `dataProvider.create()` ([#10162](https://github.com/marmelab/react-admin/pull/10162)) ([fzaninotto](https://github.com/fzaninotto))
-* Update `<Datagrid>` and `<SimpleList>` empty message when a filter is active ([#10184](https://github.com/marmelab/react-admin/pull/10184)) ([erwanMarmelab](https://github.com/erwanMarmelab))
 * Enable Store sync when `disableSyncWithLocation` is true ([#10187](https://github.com/marmelab/react-admin/pull/10187)) ([WiXSL](https://github.com/WiXSL))
 * Fix `<FilterButton>` accessibility ([#10204](https://github.com/marmelab/react-admin/pull/10204)) ([djhi](https://github.com/djhi))
 * Fix `<FilterButton>` checked status ([#10191](https://github.com/marmelab/react-admin/pull/10191)) ([fzaninotto](https://github.com/fzaninotto))
