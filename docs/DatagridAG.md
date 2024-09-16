@@ -93,7 +93,7 @@ export const PostList = () => {
 ```
 {% endraw %}
 
-![DatagridAG PostList](https://react-admin-ee.marmelab.com/assets/DatagridAG-PostList.png)
+![DatagridAG PostList](./img/DatagridAG-PostList.png)
 
 Here are the important things to note:
 
@@ -386,7 +386,7 @@ export const CommentList = () => {
 };
 ```
 
-![DatagridAG RA Fields](https://react-admin-ee.marmelab.com/assets/DatagridAG-ra-fields.png)
+![DatagridAG RA Fields](./img/DatagridAG-ra-fields.png)
 
 **Note:** You still need to pass the `source` prop to the field.
 
@@ -439,7 +439,7 @@ export const PostList = () => {
 ```
 {% endraw %}
 
-![DatagridAG custom columnDefs](https://react-admin-ee.marmelab.com/assets/DatagridAG-select-rows.png)
+![DatagridAG custom columnDefs](./img/DatagridAG-select-rows.png)
 
 Have a look at [the ag-grid documentation](https://www.ag-grid.com/react-data-grid/column-properties/) for the exhaustive list of column properties.
 
@@ -475,7 +475,7 @@ export const PostList = () => {
 ```
 {% endraw %}
 
-![DatagridAG Dark](https://react-admin-ee.marmelab.com/assets/DatagridAG-dark.png)
+![DatagridAG Dark](./img/DatagridAG-dark.png)
 
 **Tip:** Remember to import the corresponding stylesheet (e.g. `ag-theme-balham[.min].css` for `ag-theme-balham`).
 
@@ -511,7 +511,7 @@ export const PostList = () => {
 ```
 {% endraw %}
 
-![DatagridAG defaultColDef](https://react-admin-ee.marmelab.com/assets/DatagridAG-PostList.png)
+![DatagridAG defaultColDef](./img/DatagridAG-PostList.png)
 
 ### `getAgGridFilters`
 
@@ -751,7 +751,7 @@ export const PostList = () => {
 
 You can use the `mutationOptions` prop to provide options to the `dataProvider.update()` call triggered when a cell or a row is edited.
 
-In particular, this allows to choose the [`mutationMode`](./Edit.html#mutationmode), and/or to pass a `meta` object to the dataProvider.
+In particular, this allows to choose the [`mutationMode`](./Edit.md#mutationmode), and/or to pass a `meta` object to the dataProvider.
 
 {% raw %}
 ```tsx
@@ -875,7 +875,7 @@ export const PostList = () => {
 ```
 {% endraw %}
 
-![DatagridAG sx](https://react-admin-ee.marmelab.com/assets/DatagridAG-sx.png)
+![DatagridAG sx](./img/DatagridAG-sx.png)
 
 It can also be helpful to change the default grid's height (`calc(100vh - 96px - ${theme.spacing(1)})`):
 
@@ -903,7 +903,7 @@ export const PostList = () => {
 ```
 {% endraw %}
 
-![DatagridAG sx height](https://react-admin-ee.marmelab.com/assets/DatagridAG-sx-height.png)
+![DatagridAG sx height](./img/DatagridAG-sx-height.png)
 
 ### `theme`
 
@@ -932,7 +932,7 @@ export const PostList = () => {
 ```
 {% endraw %}
 
-![DatagridAG Dark](https://react-admin-ee.marmelab.com/assets/DatagridAG-dark.png)
+![DatagridAG Dark](./img/DatagridAG-dark.png)
 
 **Tip:** Remember to import the corresponding stylesheet (e.g. `ag-theme-balham[.min].css` for `ag-theme-balham`).
 
@@ -1008,7 +1008,7 @@ export const PostList = () => {
 ```
 {% endraw %}
 
-![DatagridAG flex](https://react-admin-ee.marmelab.com/assets/DatagridAG-flex.png)
+![DatagridAG flex](./img/DatagridAG-flex.png)
 
 Alternatively, you can use the grid's `api` to call `autoSizeAllColumns` to automatically resize all columns to fit their content:
 
@@ -1044,7 +1044,7 @@ export const PostList = () => {
 ```
 {% endraw %}
 
-![DatagridAG auto size](https://react-admin-ee.marmelab.com/assets/DatagridAG-auto-size.png)
+![DatagridAG auto size](./img/DatagridAG-auto-size.png)
 
 Check out the [Column Sizing](https://www.ag-grid.com/react-data-grid/column-sizing/) documentation for more information and more alternatives.
 
@@ -1102,7 +1102,7 @@ export const PostList = () => {
 ```
 {% endraw %}
 
-![DatagridAG selected rows](https://react-admin-ee.marmelab.com/assets/DatagridAG-selected-rows.png)
+![DatagridAG selected rows](./img/DatagridAG-selected-rows.png)
 
 Just like with `<Datagrid>`, you can customize the bulk actions by passing a [`bulkActionButtons`](./Datagrid.md#bulkactionbuttons) prop to `<DatagridAG>`.
 
@@ -1152,7 +1152,7 @@ export const PostList = () => {
 
 By default, editing is enabled on cells, which means you can edit a cell by double-clicking on it, and it will trigger a call to the dataProvider's `update` function.
 
-![DatagridAG edit cell](https://react-admin-ee.marmelab.com/assets/DatagridAG-edit-cell.png)
+![DatagridAG edit cell](./img/DatagridAG-edit-cell.png)
 
 However, if you'd like to update the full row at once instead, you can enable full row editing by passing `editType="fullRow"` to `<DatagridAG>`:
 
@@ -1177,7 +1177,7 @@ export const PostList = () => {
 ```
 {% endraw %}
 
-![DatagridAG edit row](https://react-admin-ee.marmelab.com/assets/DatagridAG-edit-row.png)
+![DatagridAG edit row](./img/DatagridAG-edit-row.png)
 
 ### Disabling Cell Edition
 
@@ -1307,7 +1307,7 @@ You can leverage [ag-grid Master Detail Module](https://www.ag-grid.com/react-da
 
 For instance, here's how to show the comments of a post in an expandable panel:
 
-![DatagridAG Master Detail](https://react-admin-ee.marmelab.com/assets/DatagridAG-MasterDetail.png)
+![DatagridAG Master Detail](./img/DatagridAG-MasterDetail.png)
 
 {% raw %}
 ```tsx
@@ -1417,7 +1417,7 @@ export const PostList = () => {
 ```
 {% endraw %}
 
-![DatagridAGClient PostList](https://react-admin-ee.marmelab.com/assets/DatagridAG-PostList.png)
+![DatagridAGClient PostList](./img/DatagridAG-PostList.png)
 
 Here are the important things to note:
 
@@ -1607,7 +1607,7 @@ export const CommentList = () => {
 ```
 {% endraw %}
 
-![DatagridAGClient RA Fields](https://react-admin-ee.marmelab.com/assets/DatagridAG-ra-fields.png)
+![DatagridAGClient RA Fields](./img/DatagridAG-ra-fields.png)
 
 **Note:** You still need to pass the `source` prop to the field.
 
@@ -1660,7 +1660,7 @@ export const PostList = () => {
 ```
 {% endraw %}
 
-![DatagridAGClient custom columnDefs](https://react-admin-ee.marmelab.com/assets/DatagridAG-select-rows.png)
+![DatagridAGClient custom columnDefs](./img/DatagridAG-select-rows.png)
 
 Have a look at [the ag-grid documentation](https://www.ag-grid.com/react-data-grid/column-properties/) for the exhaustive list of column properties.
 
@@ -1696,7 +1696,7 @@ export const PostList = () => {
 ```
 {% endraw %}
 
-![DatagridAGClient Dark](https://react-admin-ee.marmelab.com/assets/DatagridAG-dark.png)
+![DatagridAGClient Dark](./img/DatagridAG-dark.png)
 
 **Tip:** Remember to import the corresponding stylesheet (e.g. `ag-theme-balham[.min].css` for `ag-theme-balham`).
 
@@ -1732,7 +1732,7 @@ export const PostList = () => {
 ```
 {% endraw %}
 
-![DatagridAGClient defaultColDef](https://react-admin-ee.marmelab.com/assets/DatagridAG-PostList.png)
+![DatagridAGClient defaultColDef](./img/DatagridAG-PostList.png)
 
 ### `mutationOptions`
 
@@ -1897,7 +1897,7 @@ const CarList = () => {
 ```
 {% endraw %}
 
-![DatagridAGClient with status bar](https://react-admin-ee.marmelab.com/assets/DatagridAG-status-bar.png)
+![DatagridAGClient with status bar](./img/DatagridAG-status-bar.png)
 
 ### `preferenceKey`
 
@@ -1952,7 +1952,7 @@ export const PostList = () => {
 ```
 {% endraw %}
 
-![DatagridAGClient sx](https://react-admin-ee.marmelab.com/assets/DatagridAG-sx.png)
+![DatagridAGClient sx](./img/DatagridAG-sx.png)
 
 It can also be helpful to change the default grid's height (`calc(100vh - 96px - ${theme.spacing(1)})`):
 
@@ -1980,7 +1980,7 @@ export const PostList = () => {
 ```
 {% endraw %}
 
-![DatagridAGClient sx height](https://react-admin-ee.marmelab.com/assets/DatagridAG-sx-height.png)
+![DatagridAGClient sx height](./img/DatagridAG-sx-height.png)
 
 ### `theme`
 
@@ -2009,7 +2009,7 @@ export const PostList = () => {
 ```
 {% endraw %}
 
-![DatagridAGClient Dark](https://react-admin-ee.marmelab.com/assets/DatagridAG-dark.png)
+![DatagridAGClient Dark](./img/DatagridAG-dark.png)
 
 **Tip:** Remember to import the corresponding stylesheet (e.g. `ag-theme-balham[.min].css` for `ag-theme-balham`).
 
@@ -2085,7 +2085,7 @@ export const PostList = () => {
 ```
 {% endraw %}
 
-![DatagridAGClient flex](https://react-admin-ee.marmelab.com/assets/DatagridAG-flex.png)
+![DatagridAGClient flex](./img/DatagridAG-flex.png)
 
 Alternatively, you can use the grid's `api` to call `autoSizeAllColumns` to automatically resize all columns to fit their content:
 
@@ -2121,7 +2121,7 @@ export const PostList = () => {
 ```
 {% endraw %}
 
-![DatagridAGClient auto size](https://react-admin-ee.marmelab.com/assets/DatagridAG-auto-size.png)
+![DatagridAGClient auto size](./img/DatagridAG-auto-size.png)
 
 Check out the [Column Sizing](https://www.ag-grid.com/react-data-grid/column-sizing/) documentation for more information and more alternatives.
 
@@ -2179,7 +2179,7 @@ export const PostList = () => {
 ```
 {% endraw %}
 
-![DatagridAGClient selected rows](https://react-admin-ee.marmelab.com/assets/DatagridAG-selected-rows.png)
+![DatagridAGClient selected rows](./img/DatagridAG-selected-rows.png)
 
 Just like with `<Datagrid>`, you can customize the bulk actions by passing a [`bulkActionButtons`](./Datagrid.md#bulkactionbuttons) prop to `<DatagridAGClient>`.
 
@@ -2269,7 +2269,7 @@ const CarList = () => {
 
 If you have subscribed to the [Enterprise version of ag-grid](https://www.ag-grid.com/react-data-grid/licensing/), you can also add a [Status Bar](https://www.ag-grid.com/react-data-grid/status-bar/) to show the total number of rows.
 
-![DatagridAGClient with status bar](https://react-admin-ee.marmelab.com/assets/DatagridAG-status-bar.png)
+![DatagridAGClient with status bar](./img/DatagridAG-status-bar.png)
 
 {% raw %}
 ```tsx
@@ -2311,7 +2311,7 @@ const CarList = () => {
 
 By default, editing is enabled on cells, which means you can edit a cell by double-clicking on it, and it will trigger a call to the dataProvider's `update` function.
 
-![DatagridAGClient edit cell](https://react-admin-ee.marmelab.com/assets/DatagridAG-edit-cell.png)
+![DatagridAGClient edit cell](./img/DatagridAG-edit-cell.png)
 
 However, if you'd like to update the full row at once instead, you can enable full row editing by passing `editType="fullRow"` to `<DatagridAGClient>`:
 
@@ -2336,7 +2336,7 @@ export const PostList = () => {
 ```
 {% endraw %}
 
-![DatagridAGClient edit row](https://react-admin-ee.marmelab.com/assets/DatagridAG-edit-row.png)
+![DatagridAGClient edit row](./img/DatagridAG-edit-row.png)
 
 ### Disabling Cell Edition
 
@@ -2465,7 +2465,7 @@ You can leverage [ag-grid Master Detail Module](https://www.ag-grid.com/react-da
 
 For instance, here's how to show the comments of a post in an expandable panel:
 
-![DatagridAGClient Master Detail](https://react-admin-ee.marmelab.com/assets/DatagridAG-MasterDetail.png)
+![DatagridAGClient Master Detail](./img/DatagridAG-MasterDetail.png)
 
 {% raw %}
 ```tsx
