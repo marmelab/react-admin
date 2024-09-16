@@ -1,5 +1,20 @@
 # Changelog
 
+## 5.2.0
+
+* Enable Store sync when `disableSyncWithLocation` is true ([#10187](https://github.com/marmelab/react-admin/pull/10187)) ([WiXSL](https://github.com/WiXSL))
+* Add icons to `<FilterButton>` dropdown ([#10186](https://github.com/marmelab/react-admin/pull/10186)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* Update `<Datagrid>` and `<SimpleList>` empty message when a filter is active ([#10184](https://github.com/marmelab/react-admin/pull/10184)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* Add support for response metadata in `dataProvider.getList()` ([#10179](https://github.com/marmelab/react-admin/pull/10179)) ([fzaninotto](https://github.com/fzaninotto))
+* Add global Reset CSS ([#10164](https://github.com/marmelab/react-admin/pull/10164)) ([fzaninotto](https://github.com/fzaninotto))
+* Add support for computed fields in `ra-data-json-server`'s `dataProvider.create()` ([#10162](https://github.com/marmelab/react-admin/pull/10162)) ([fzaninotto](https://github.com/fzaninotto))
+* Add `<ReferenceManyField storeKey>` to allow more than one reference for the same resource ([#10132](https://github.com/marmelab/react-admin/pull/10132)) ([djhi](https://github.com/djhi))
+* Fix `<FilterButton>` accessibility ([#10204](https://github.com/marmelab/react-admin/pull/10204)) ([djhi](https://github.com/djhi))
+* Fix `<FilterButton>` checked status ([#10191](https://github.com/marmelab/react-admin/pull/10191)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix input validation and dirty state after re-enabling disabled fields ([#10163](https://github.com/marmelab/react-admin/pull/10163)) ([michel-paiva](https://github.com/michel-paiva))
+* [Doc] Create a doc page for `<DateRangeInput>` ([#10202](https://github.com/marmelab/react-admin/pull/10202)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Doc] Document `<ReferenceManyField storeKey>` prop ([#10142](https://github.com/marmelab/react-admin/pull/10142)) ([slax57](https://github.com/slax57))
+
 ## 5.1.5
 
 * Fix List shows empty page too often ([#10190](https://github.com/marmelab/react-admin/pull/10190)) ([fzaninotto](https://github.com/fzaninotto))
@@ -183,6 +198,19 @@ We've written a [migration guide](https://marmelab.com/react-admin/doc/5.0/Upgra
 We estimate that a react-admin app with 50,000 lines of code will require about 2 days of work to upgrade to v5.
 
 ### Changelog
+
+* Fix filter button accessibility ([#10204](https://github.com/marmelab/react-admin/pull/10204)) ([djhi](https://github.com/djhi))
+* [Doc] Create a doc page for `<DateRangeInput>` ([#10202](https://github.com/marmelab/react-admin/pull/10202)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* Fix FilterButton checked status ([#10191](https://github.com/marmelab/react-admin/pull/10191)) ([fzaninotto](https://github.com/fzaninotto))
+* Enable Store sync when `disableSyncWithLocation` is true ([#10187](https://github.com/marmelab/react-admin/pull/10187)) ([WiXSL](https://github.com/WiXSL))
+* Add icons to FilterButton dropdown ([#10186](https://github.com/marmelab/react-admin/pull/10186)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* Update `<Datagrid>` and `<SimpleList>` empty message when a filter is active ([#10184](https://github.com/marmelab/react-admin/pull/10184)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* Add support for response metadata in dataProvider.getList() ([#10179](https://github.com/marmelab/react-admin/pull/10179)) ([fzaninotto](https://github.com/fzaninotto))
+* Add global Reset CSS ([#10164](https://github.com/marmelab/react-admin/pull/10164)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix input validation and dirty state after re-enabling disabled fields ([#10163](https://github.com/marmelab/react-admin/pull/10163)) ([michel-paiva](https://github.com/michel-paiva))
+* Add support for computed fields in `ra-data-json-server`'s `dataProvider.create()` ([#10162](https://github.com/marmelab/react-admin/pull/10162)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Document `<ReferenceManyField storeKey>` prop ([#10142](https://github.com/marmelab/react-admin/pull/10142)) ([slax57](https://github.com/slax57))
+* Add `<ReferenceManyField storeKey>` to allow more than one reference for the same resource ([#10132](https://github.com/marmelab/react-admin/pull/10132)) ([djhi](https://github.com/djhi))
 
 * [Doc] Fix codemod filename extensions in upgrade guide ([#10199](https://github.com/marmelab/react-admin/pull/10199)) ([afilp](https://github.com/afilp))
 * Build(deps): Bump dset from 3.1.3 to 3.1.4 ([#10196](https://github.com/marmelab/react-admin/pull/10196)) ([dependabot[bot]](https://github.com/apps/dependabot))
