@@ -7,7 +7,7 @@ title: "The DateRangeInput Component"
 
 This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" /> component `<DateRangeInput>` is a date range picker, allowing users to pick an interval by selecting a start and an end date. It is ideal for filtering records based on a date range. It is designed to work with various locales and date formats.
 
-![DateRangeInput](./assets/DateRangeInput.png)
+![DateRangeInput](https://react-admin-ee.marmelab.com/assets/assets/DateRangeInput.png)
 
 **Note**: `<DateRangeInput>` is a wrapper around the [Material UI X Date Range Picker](https://mui.com/x/react-date-pickers/date-range-picker/), which is a MUI X Pro package. This means that you need to own a [MUI X Pro license](https://mui.com/x/introduction/licensing/#pro-plan) to use it.
 
@@ -54,11 +54,11 @@ export const EventEdit = () => (
 | `parse`       | -        | Function         | -       | Callback taking the input values, and returning the values you want stored in the form state.                                                                                                |
 | `readOnly`    | -        | boolean          | -       | If `true`, the input will be read-only.                                                                                                                                                      |
 | `sx`          | -        | `SxProps`        | -       | The style to apply to the component.                                                                                                                                                         |
-| `validate`    | -        | `function|Array` | -       | Validation rules for the input. See the [Validation Documentation](https://marmelab.com/react-admin/Validation.html#per-input-validation-built-in-field-validators) for details.             |
+| `validate`    | -        | `function|Array` | -       | Validation rules for the input. See the [Validation Documentation](./Validation.md#per-input-validation-built-in-field-validators) for details.             |
 
 `<DateRangeInput>` also accept the same props as [MUI X's `<DateRangePicker>`](https://mui.com/x/api/date-pickers/date-range-picker/), except for the `format` prop (renamed `mask`), 
 
-**Tip:** Since `<DateRangeInput>` stores its value as a date array, [react-admin's validators](https://marmelab.com/react-admin/Validation.html#per-input-validation-built-in-field-validators) like `minValue` or `maxValue` won't work out of the box.
+**Tip:** Since `<DateRangeInput>` stores its value as a date array, [react-admin's validators](./Validation.md#per-input-validation-built-in-field-validators) like `minValue` or `maxValue` won't work out of the box.
 
 ## `parse` and `format`
 
@@ -94,7 +94,7 @@ import { parse } from 'date-fns';
 
 ## `validate`
 
-The value of the `validate` prop must be a function taking the record as input, and returning an object with error messages indexed by fields. The record could be null or an array of objects that could be null or a `Date` object. So the [react-admin's built-in field validators](https://marmelab.com/react-admin/Validation.html#per-input-validation-built-in-field-validators) will not be useful for `<DateRageInput>`, you will need to build your own.
+The value of the `validate` prop must be a function taking the record as input, and returning an object with error messages indexed by fields. The record could be null or an array of objects that could be null or a `Date` object. So the [react-admin's built-in field validators](./Validation.md#per-input-validation-built-in-field-validators) will not be useful for `<DateRageInput>`, you will need to build your own.
 
 Here is an example of custom validators for a `<DateRangeInput>`:
 
