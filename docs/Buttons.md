@@ -35,17 +35,33 @@ React-Admin provides button components for all the common uses.
 
 ## `<EditButton>`
 
-Opens the Edit view of the current record:
-
-```js
-import { EditButton } from 'react-admin';
-
-const CommentEditButton = () => <EditButton label="Edit comment" />;
-```
+Opens the Edit view of the current record. 
 
 ![Edit button](./img/edit-button.png)
 
+### Usage
+
+`<EditButton>` reads the current record from `RecordContext`, and the current resource from `ResourceContext`, so in general it doesn't need any props:
+
+```jsx
+import { EditButton, TopToolbar } from 'react-admin';
+
+const ShowActions = () => (
+    <TopToolbar>
+        <EditButton />
+    </TopToolbar>
+);
+
+const CommentShow = () => (
+    <Show actions={<ShowActions />}>
+        {/* ... */}
+    </Show>
+);
+```
+
 `<EditButton>` is based on react-admin's base `<Button>`, so it's responsive, accessible, and the label is translatable.
+
+### Props
 
 | Prop          | Required | Type            | Default          | Description                                      |
 | ------------- | -------- | --------------- | ---------------- | ------------------------------------------------ |
@@ -67,15 +83,31 @@ It also supports [all the other `<Button>` props](#button).
 
 Opens the Show view of the current record:
 
-```js
-import { ShowButton } from 'react-admin';
-
-const CommentShowButton = () => <ShowButton label="Show comment" />;
-```
-
 ![Show button](./img/show-button.png)
 
+### Usage
+
+`<ShowButton>` reads the current record from `RecordContext`, and the current resource from `ResourceContext`, so in general it doesn't need any props:
+
+```jsx
+import { ShowButton, TopToolbar, Edit } from 'react-admin';
+
+const EditActions = () => (
+    <TopToolbar>
+        <ShowButton />
+    </TopToolbar>
+);
+
+const CommentEdit = () => (
+    <Edit actions={<EditActions />}>
+        {/* ... */}
+    </Edit>
+);
+```
+
 `<ShowButton>` is based on react-admin's base `<Button>`, so it's responsive, accessible, and the label is translatable.
+
+### Props
 
 | Prop          | Required | Type            | Default          | Description                                      |
 | ------------- | -------- | --------------- | ---------------- | ------------------------------------------------ |
@@ -96,17 +128,35 @@ It also supports [all the other `<Button>` props](#button).
 
 Opens the Create view of the current resource:
 
-```js
-import { CreateButton } from 'react-admin';
-
-const CommentCreateButton = () => <CreateButton label="Create comment" />;
-```
-
 ![Create button](./img/create-button.png)
 
-`<CreateButton>` is based on react-admin's base `<Button>`, so it's responsive, accessible, and the label is translatable. On mobile, it turns into a "Floating Action Button".
+On mobile, it turns into a "Floating Action Button".
 
 ![Create button FAB](./img/create-button-fab.png)
+
+### Usage
+
+`<CreateButton>` reads the current resource from `ResourceContext`, so in general it doesn't need any props:
+
+```jsx
+import { CreateButton, TopToolbar, List } from 'react-admin';
+
+const ListActions = () => (
+    <TopToolbar>
+        <CreateButton />
+    </TopToolbar>
+);
+
+const CommentList = () => (
+    <List actions={<ListActions />}>
+        {/* ... */}
+    </List>
+);
+```
+
+`<CreateButton>` is based on react-admin's base `<Button>`, so it's responsive, accessible, and the label is translatable.
+
+### Props
 
 | Prop          | Required | Type            | Default            | Description                                  |
 | ------------- | -------- | --------------- | ------------------ | -------------------------------------------- |
@@ -131,37 +181,38 @@ To override the style of all instances of `<CreateButton>` using the [applicatio
 
 ## `<ListButton>`
 
-Opens the List view of a given resource:
-
-```js
-import { ListButton } from 'react-admin';
-
-const CommentListButton = () => <ListButton label="Comments" />;
-```
+Opens the List view of a given resource.
 
 ![List button](./img/list-button.png)
 
 `<ListButton>` is based on react-admin's base `<Button>`, so it's responsive, accessible, and the label is translatable.
 
-By default, react-admin doesn't display a `<ListButton>` in Edit and Show views action toolbar. This saves visual clutter, and users can always use the back button. You can add it by specifying your own `actions`:
+### Usage
+
+By default, react-admin doesn't display a `<ListButton>` in Edit and Show views action toolbar. This saves visual clutter, and users can always use the back button.
+
+You can add it by specifying your own `actions`:
 
 ```jsx
-// linking back to the list from the Edit view
-import { TopToolbar, ListButton, ShowButton, Edit } from 'react-admin';
+// linking back to the list from the Show view
+import { TopToolbar, ListButton, Show } from 'react-admin';
 
-const PostEditActions = () => (
+const PostShowActions = () => (
     <TopToolbar>
         <ListButton />
-        <ShowButton />
     </TopToolbar>
 );
 
-export const PostEdit = () => (
-    <Edit actions={<PostEditActions />}>
+export const PostShow = () => (
+    <Show actions={<PostShowActions />}>
         ...
-    </Edit>
+    </Show>
 );
 ```
+
+**Tip**: If you want to link to the List view manually, use the `/{resource}` location.
+
+### Props
 
 | Prop       | Required | Type            | Default          | Description                                  |
 | ---------- | -------- | --------------- | ---------------- | -------------------------------------------- |
@@ -171,13 +222,19 @@ export const PostEdit = () => (
 
 It also supports [all the other `<Button>` props](#button).
 
-**Tip**: If you want to link to the List view manually, use the `/{resource}` location.
-
 ## `<ExportButton>`
 
-Exports the current list, with filters applied, but without pagination. It relies on [the `exporter` function](./List.md#exporter) passed to the `<List>` component, via the `ListContext`. It's disabled for empty lists.
+Exports the current list, with filters applied, but without pagination.
+
+![Export button](./img/export-button.png)
+
+It relies on [the `exporter` function](./List.md#exporter) passed to the `<List>` component, via the `ListContext`. It's disabled for empty lists.
+
+### Usage
 
 By default, the `<ExportButton>` is included in the List actions.
+
+You can add it to a custom actions toolbar:
 
 ```jsx
 import { CreateButton, ExportButton, TopToolbar } from 'react-admin';
@@ -197,7 +254,7 @@ export const PostList = () => (
 );
 ```
 
-![Export button](./img/export-button.png)
+### Props
 
 | Prop         | Required | Type            | Default            | Description                         |
 | ------------ | -------- | --------------- | ------------------ | ----------------------------------- |
@@ -213,6 +270,10 @@ export const PostList = () => (
 
 Same as `<ExportButton>`, except it only exports the selected rows instead of the entire list. To be used inside [the `<Datagrid bulkActionButtons>` prop](./Datagrid.md#bulkactionbuttons).
 
+![Bulk Export button](./img/bulk-export-button.png)
+
+### Usage
+
 ```jsx
 import * as React from 'react';
 import { Fragment } from 'react';
@@ -234,7 +295,7 @@ export const PostList = () => (
 );
 ```
 
-![Bulk Export button](./img/bulk-export-button.png)
+### Props
 
 | Prop         | Required | Type            | Default            | Description                         |
 | ------------ | -------- | --------------- | ------------------ | ----------------------------------- |
@@ -247,6 +308,10 @@ export const PostList = () => (
 
 Deletes the selected rows. To be used inside [the `<Datagrid bulkActionButtons>` prop](./Datagrid.md#bulkactionbuttons) (where it's enabled by default).
 
+![Bulk Delete button](./img/bulk-delete-button.png)
+
+### Usage
+
 ```jsx
 import * as React from 'react';
 import { Fragment } from 'react';
@@ -268,7 +333,7 @@ export const PostList = () => (
 );
 ```
 
-![Bulk Delete button](./img/bulk-delete-button.png)
+### Props
 
 | Prop              | Required | Type                                    | Default                  | Description                                                                                                                          |
 |-------------------|----------|-----------------------------------------|--------------------------|--------------------------------------------------------------------------------------------------------------------------------------|
@@ -333,13 +398,13 @@ export const PostList = () => (
 
 This component, part of the [enterprise edition](https://react-admin-ee.marmelab.com/documentation/ra-form-layout)<img class="icon" src="./img/premium.svg" />, lets users edit multiple records at once. To be used inside [the `<Datagrid bulkActionButtons>` prop](./Datagrid.md#bulkactionbuttons).
 
-The button opens a dialog containing the form passed as children. When the form is submitted, it will call the dataProvider's `updateMany` method with the ids of the selected records.
-
 <video controls autoplay playsinline muted loop>
   <source src="./img/BulkUpdateButton-SimpleForm.webm" type="video/webm"/>
   <source src="./img/BulkUpdateButton-SimpleForm.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
+
+The button opens a dialog containing the form passed as children. When the form is submitted, it will call the dataProvider's `updateMany` method with the ids of the selected records.
 
 ### Usage
 
@@ -653,6 +718,16 @@ To override the style of all instances of `<FilterButton>` using the [applicatio
 
 This component allows to create a button that updates a record by calling the [`useUpdate hook`](./useUpdate.md).
 
+<video controls playsinline muted loop poster="./img/updatebutton.png" >
+  <source src="./img/updatebutton.webm" type="video/webm" />
+  <source src="./img/updatebutton.mp4" type="video/mp4" />
+  Your browser does not support the video tag.
+</video>
+
+### Usage
+
+Use `<UpdateButton>` inside the actions toolbar of the [`Edit`](./Edit.md#actions) or [`Show`](./Show.md#actions) views.
+
 {% raw %}
 ```jsx
 import { Edit, SimpleForm, TextInput, TopToolbar, UpdateButton } from 'react-admin';
@@ -674,7 +749,266 @@ export const PostEdit = () => (
 ```
 {% endraw %}
 
-See [its documentation](./UpdateButton.md) for more details.
+### Props
+
+`<UpdateButton>` accepts the following props:
+
+| Prop             | Required | Type        | Default    | Description                                              |
+| ---------------- | -------- | ----------- | ---------- | -------------------------------------------------------- |
+| `data`           | Required | `object`    |            | The data used to update the record                       |
+| `mutationMode`   | Optional | `string`    | `undoable` | Mutation mode (`'undoable'`, `'pessimistic'` or `'optimistic'`) |
+| `confirmTitle`   | Optional | `ReactNode` | `ra.message.bulk_update_title` | The title of the confirmation dialog when `mutationMode` is not `undoable` |
+| `confirmContent` | Optional | `ReactNode` | `ra.message.bulk_update_content` | The content of the confirmation dialog when `mutationMode` is not `undoable` |
+| `mutationOptions` | Optional | `Object`  |        | The react-query mutation options |
+
+`<UpdateButton>` also accepts the [Button props](./Buttons.md#button).
+
+### `data`
+
+The data used to update the record. Passed to the `dataProvider.update` method. This prop is required.
+
+{% raw %}
+```tsx
+import { TopToolbar, UpdateButton } from 'react-admin';
+
+const PostEditActions = () => (
+    <TopToolbar>
+        <UpdateButton label="Reset views" data={{ views: 0 }} />
+    </TopToolbar>
+);
+```
+{% endraw %}
+
+### `mutationMode`
+
+The mutation mode determines when the side effects (redirection, notifications, etc.) are executed:
+
+- `pessimistic`: The mutation is passed to the dataProvider first. When the dataProvider returns successfully, the mutation is applied locally, and the side effects are executed. 
+- `optimistic`: The mutation is applied locally and the side effects are executed immediately. Then the mutation is passed to the dataProvider. If the dataProvider returns successfully, nothing happens (as the mutation was already applied locally). If the dataProvider returns in error, the page is refreshed and an error notification is shown. 
+- `undoable` (default): The mutation is applied locally and the side effects are executed immediately. Then a notification is shown with an undo button. If the user clicks on undo, the mutation is never sent to the dataProvider, and the page is refreshed. Otherwise, after a 5 seconds delay, the mutation is passed to the dataProvider. If the dataProvider returns successfully, nothing happens (as the mutation was already applied locally). If the dataProvider returns in error, the page is refreshed and an error notification is shown.
+
+By default, the `<UpdateButton>` uses the `undoable` mutation mode. This is part of the "optimistic rendering" strategy of react-admin ; it makes user interactions more reactive. 
+
+You can change this default by setting the `mutationMode` prop. For instance, to remove the ability to undo the changes, use the `optimistic` mode:
+
+{% raw %}
+```jsx
+import { TopToolbar, UpdateButton } from 'react-admin';
+
+const PostEditActions = () => (
+    <TopToolbar>
+        <UpdateButton label="Reset views" data={{ views: 0 }} mutationMode="optimistic" />
+    </TopToolbar>
+);
+```
+{% endraw %}
+
+And to make the action blocking, and wait for the dataProvider response to continue, use the `pessimistic` mode:
+
+{% raw %}
+```jsx
+import { TopToolbar, UpdateButton } from 'react-admin';
+
+const PostEditActions = () => (
+    <TopToolbar>
+        <UpdateButton label="Reset views" data={{ views: 0 }} mutationMode="pessimistic" />
+    </TopToolbar>
+);
+```
+{% endraw %}
+
+
+**Tip**: When using any other mode than `undoable`, the `<UpdateButton>` displays a confirmation dialog before calling the dataProvider. 
+
+### `confirmTitle`
+
+Only used when `mutationMode` is either `optimistic` or `pessimistic` to change the confirmation dialog title:
+
+{% raw %}
+```jsx
+import { TopToolbar, UpdateButton } from 'react-admin';
+
+const PostEditActions = () => (
+    <TopToolbar>
+        <UpdateButton
+            label="Reset views"
+            data={{ views: 0 }}
+            mutationMode="optimistic"
+            confirmTitle="Reset views"
+        />
+    </TopToolbar>
+);
+```
+{% endraw %}
+
+### `confirmContent`
+
+Only used when `mutationMode` is either `optimistic` or `pessimistic` to change the confirmation dialog content:
+
+{% raw %}
+```jsx
+import { TopToolbar, UpdateButton } from 'react-admin';
+
+const PostEditActions = () => (
+    <TopToolbar>
+        <UpdateButton
+            label="Reset views"
+            data={{ views: 0 }}
+            mutationMode="optimistic"
+            confirmContent="Do you really want to reset the views?"
+        />
+    </TopToolbar>
+);
+```
+{% endraw %}
+
+### `mutationOptions`
+
+`<UpdateButton>` calls `dataProvider.update()` via react-query's `useMutation` hook. You can customize the options you pass to this hook, e.g. to pass [a custom `meta`](./Actions.md#meta-parameter) to the `dataProvider.update()` call.
+
+{% raw %}
+```jsx
+import { TopToolbar, UpdateButton } from 'react-admin';
+
+const PostEditActions = () => (
+    <TopToolbar>
+        <UpdateButton
+            label="Reset views"
+            data={{ views: 0 }}
+            mutationOptions={{ meta: { foo: 'bar' } }}
+        />
+    </TopToolbar>
+);
+```
+{% endraw %}
+
+You can also use `mutationOptions` to override success or error side effects, by setting the `mutationOptions` prop. Refer to the [useMutation documentation](https://tanstack.com/query/v5/docs/react/reference/useMutation) in the react-query website for a list of the possible options.
+
+Let's see an example with the success side effect. By default, when the action succeeds, react-admin shows a notification, and refreshes the view. You can override this behavior and pass custom success side effects by providing a `mutationOptions` prop with an `onSuccess` key:
+
+{% raw %}
+```jsx
+import * as React from 'react';
+import { useNotify, useRefresh, useRedirect, TopToolbar, UpdateButton } from 'react-admin';
+
+const PostEditActions = () => {
+    const notify = useNotify();
+    const redirect = useRedirect();
+
+    const onSuccess = () => {
+        notify(`Changes saved`);
+        redirect('/posts');
+    };
+
+    return (
+        <TopToolbar>
+            <UpdateButton
+                label="Reset views"
+                data={{ views: 0 }}
+                mutationOptions={{ onSuccess }}
+            />
+        </TopToolbar>
+    );
+}
+```
+{% endraw %}
+
+The default `onSuccess` function is:
+
+```js
+() => {
+    notify('ra.notification.updated', {
+        messageArgs: { smart_count: 1 },
+        undoable: mutationMode === 'undoable'
+    });
+}
+```
+
+**Tip**: When you use `mutationMode="pessimistic"`, the `onSuccess` function receives the response from the `dataProvider.update()` call, which is the edited record (see [the dataProvider documentation for details](./DataProviderWriting.md#update)). You can use that response in the success side effects: 
+
+{% raw %}
+```jsx
+import * as React from 'react';
+import { useNotify, useRefresh, useRedirect, TopToolbar, UpdateButton } from 'react-admin';
+
+const PostEditActions = () => {
+    const notify = useNotify();
+    const redirect = useRedirect();
+
+    const onSuccess = (data) => {
+        notify(`Changes to post "${data.title}" saved`);
+        redirect('/posts');
+    };
+
+    return (
+        <TopToolbar>
+            <UpdateButton
+                label="Reset views"
+                data={{ views: 0 }}
+                mutationOptions={{ onSuccess }}
+            />
+        </TopToolbar>
+    );
+}
+```
+{% endraw %}
+
+Similarly, you can override the failure side effects with an `onError` option. By default, when the save action fails at the dataProvider level, react-admin shows a notification error.
+
+{% raw %}
+```jsx
+import * as React from 'react';
+import { useNotify, useRefresh, useRedirect, TopToolbar, UpdateButton } from 'react-admin';
+
+const PostEditActions = () => {
+    const notify = useNotify();
+    const refresh = useRefresh();
+    const redirect = useRedirect();
+
+    const onError = (error) => {
+        notify(`Could not edit post: ${error.message}`);
+        redirect('/posts');
+        refresh();
+    };
+
+    return (
+        <TopToolbar>
+            <UpdateButton
+                label="Reset views"
+                data={{ views: 0 }}
+                mutationOptions={{ onError }}
+            />
+        </TopToolbar>
+    );
+}
+```
+{% endraw %}
+
+The `onError` function receives the error from the `dataProvider.update()` call. It is a JavaScript Error object (see [the dataProvider documentation for details](./DataProviderWriting.md#error-format)).
+
+The default `onError` function is:
+
+```jsx
+(error) => {
+    notify(typeof error === 'string' ? error : error.message || 'ra.notification.http_error', { type: 'error' });
+}
+```
+
+### `sx`
+
+The sx prop lets you style the component and its children using Material-ui's [sx syntax](https://mui.com/system/the-sx-prop/).
+
+{% raw %}
+```jsx
+import { TopToolbar, UpdateButton } from 'react-admin';
+
+const PostEditActions = () => (
+    <TopToolbar>
+        <UpdateButton label="Reset views" data={{ views: 0 }} sx={{ width: 500 }} />
+    </TopToolbar>
+);
+```
+{% endraw %}
 
 ## `<DeleteButton>`
 
@@ -937,9 +1271,8 @@ See [The AppBar documentation](./AppBar.md#usermenu) for more details.
 
 ## Performance
 
-The ripple effect can cause [performance issues](https://github.com/marmelab/react-admin/issues/5587) for large datagrids. It's possible to remove the ripple effect from within your Material UI theme. The [Material UI docs](https://mui.com/material-ui/getting-started/faq/#how-can-i-disable-the-ripple-effect-globally) provide instructions on how to do this.
+The ripple effect can cause [performance issues](https://github.com/marmelab/react-admin/issues/5587) when displaying a large number of buttons (e.g. in a large datagrid). It's possible to remove the ripple effect from within your Material UI theme. The [Material UI docs](https://mui.com/material-ui/getting-started/faq/#how-can-i-disable-the-ripple-effect-globally) provide instructions on how to do this.
 
-It's worth noting that removing the ripple will cause accessibility issues, including a lack of focus states during tab navigating for components like `BooleanInput` and `CheckboxGroupInput`. 
+It's worth noting that removing the ripple will cause accessibility issues, including a lack of focus states during tab navigating for components like `BooleanInput` and `CheckboxGroupInput`.
 
-Note: The `disableRipple` was set to `true` in React Admin for a time, but was reimplemented due to accessibility concerns. If you'd like to reimplement the static ripple colour effect, you can use the [React Admin's previous implementation](https://github.com/marmelab/react-admin/blob/994079cbca810a2e74d85329e684811645b04ae2/packages/ra-ui-materialui/src/defaultTheme.ts#L31) as a starting point. [The Material UI docs](https://mui.com/material-ui/api/button-base/#props) also gives details on how to reimplement focus styles using the `Mui-focusVisible` class.
-
+Note: The `disableRipple` was set to `true` in React Admin for a time, but was reimplemented due to accessibility concerns. If you'd like to reimplement the static ripple color effect, you can use [React Admin's previous implementation](https://github.com/marmelab/react-admin/blob/994079cbca810a2e74d85329e684811645b04ae2/packages/ra-ui-materialui/src/defaultTheme.ts#L31) as a starting point. [The Material UI docs](https://mui.com/material-ui/api/button-base/#props) also gives details on how to reimplement focus styles using the `Mui-focusVisible` class.
