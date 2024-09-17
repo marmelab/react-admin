@@ -33,18 +33,22 @@ export const BulkUpdateWithUndoButton = (
         data,
         label = 'ra.action.update',
         icon = defaultIcon,
+        successMessage,
         onClick,
         onSuccess = () => {
-            notify(`resources.${resource}.notifications.updated`, {
-                type: 'info',
-                messageArgs: {
-                    smart_count: selectedIds.length,
-                    _: translate('ra.notification.updated', {
+            notify(
+                successMessage ?? `resources.${resource}.notifications.updated`,
+                {
+                    type: 'info',
+                    messageArgs: {
                         smart_count: selectedIds.length,
-                    }),
-                },
-                undoable: true,
-            });
+                        _: translate('ra.notification.updated', {
+                            smart_count: selectedIds.length,
+                        }),
+                    },
+                    undoable: true,
+                }
+            );
             unselectAll();
         },
         onError = (error: Error | string) => {
@@ -123,6 +127,7 @@ export interface BulkUpdateWithUndoButtonProps<
         MutationOptionsError,
         UpdateManyParams<RecordType>
     > & { meta?: any };
+    successMessage?: string;
 }
 
 const PREFIX = 'RaBulkUpdateWithUndoButton';

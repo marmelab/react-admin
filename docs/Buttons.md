@@ -425,8 +425,44 @@ export const PostList = () => (
 | `label`           | Optional | `string`       | 'ra.action.update' | Label or translation message to use                                                                                 |
 | `mutationMode`    | Optional | `string`       | `'undoable'`       | Mutation mode (`'undoable'`, `'pessimistic'` or `'optimistic'`)                                                     |
 | `mutationOptions` | Optional | `object`       | null               | Options for react-query `useMutation` hook                                                                          |
+| `successMessage`  | Optional | `string`       | 'ra.notification.updated'| Lets you customize the success notification message.                                                          |
 
 **Tip:** If you choose the `'pessimistic'` or `'optimistic'` mutation mode, a confirm dialog will be displayed to the user before the mutation is executed.
+
+### `successMessage`
+
+On success, `<BulkUpdateButton>` displays a "XX elements updated" notification in English. `<BulkUpdateButton>` uses two successive translation keys to build the success message:
+
+- `resources.{resource}.notifications.updated` as a first choice
+- `ra.notification.updated` as a fallback
+
+To customize the notification message, you can set custom translation for these keys in your i18nProvider.
+
+**Tip**: If you choose to use a custom translation, be aware that react-admin uses the same translation message for the `<Edit>` success notification, so the message must support [pluralization](./TranslationTranslating.md#interpolation-pluralization-and-default-translation):
+
+```jsx
+const englishMessages = {
+    resources: {
+        posts: {
+            notifications: {
+                updated: 'Post updated |||| %{smart_count} postss updated',
+                // ...
+            },
+        },
+    },
+};
+```
+
+Alternately, pass a `successMessage` prop:
+
+{% raw %}
+```jsx
+<BulkUpdateButton
+    data={{ published_at: new Date() }}
+    successMessage="Posts deleted successfully"
+/>
+```
+{% endraw %}
 
 ## `<BulkUpdateFormButton>`
 
