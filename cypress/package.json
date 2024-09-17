@@ -10,6 +10,6 @@
         "cypress": "^10.9.0",
         "cypress-plugin-tab": "^1.0.5",
         "cypress-vite": "^1.4.0",
-        "express": "~4.20.0"
+        "express": "^4.20.0"
     }
 }
