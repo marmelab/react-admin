@@ -312,6 +312,8 @@ Deletes the selected rows. To be used inside [the `<Datagrid bulkActionButtons>`
 
 ### Usage
 
+`<BulkDeleteButton>` reads the current record from `RecordContext`, and the current resource from `ResourceContext`, so in general it doesn’t need any props:
+
 ```jsx
 import * as React from 'react';
 import { Fragment } from 'react';
@@ -347,6 +349,38 @@ export const PostList = () => (
 | `successMessage`  | Optional | `string`                                | 'ra.notification.deleted'| Lets you customize the success notification message.                                                                                 |
 
 **Tip:** If you choose the `'pessimistic'` or `'optimistic'` mutation mode, a confirm dialog will be displayed to the user before the mutation is executed.
+
+### `successMessage`
+
+![Delete button success message](./img/BulkDeleteButton_Success.png)
+
+On success, `<BulkDeleteButton>` displays a "XX elements deleted" notification in English. `<BulkDeleteButton>` uses two successive translation keys to build the success message:
+
+- `resources.{resource}.notifications.deleted` as a first choice
+- `ra.notification.deleted` as a fallback
+
+To customize the notification message, you can set custom translation for these keys in your i18nProvider.
+
+**Tip**: If you choose to use a custom translation, be aware that react-admin uses the same translation message for the `<DeleteButton>`, so the message must support [pluralization](./TranslationTranslating.md#interpolation-pluralization-and-default-translation):
+
+```jsx
+const englishMessages = {
+    resources: {
+        posts: {
+            notifications: {
+                deleted: 'Post deleted |||| %{smart_count} postss deleted',
+                // ...
+            },
+        },
+    },
+};
+```
+
+Alternately, pass a `successMessage` prop:
+
+```jsx
+<BulkDeleteButton successMessage="Posts deleted successfully" />
+```
 
 ## `<BulkUpdateButton>`
 
