@@ -7,11 +7,27 @@ title: "Buttons"
 
 React-Admin provides button components for all the common uses.
 
-## Navigation Buttons
+- **Navigation Buttons**: to navigate between the various react-admin views.
+    - [`<EditButton>`](#editbutton)
+    - [`<ShowButton>`](#showbutton)
+    - [`<CreateButton>`](#createbutton)
+    - [`<ListButton>`](#listbutton)
 
-These buttons allow users to navigate between the various react-admin views.
+- **List Buttons**: to be used in List views.
+    - [`<ExportButton>`](#exportbutton)
+    - [`<BulkExportButton>`](#bulkexportbutton)
+    - [`<BulkDeleteButton>`](#bulkdeletebutton)
+    - [`<BulkUpdateButton>`](#bulkupdatebutton)
+    - [`<BulkUpdateFormButton>`](#bulkupdateformbutton)
+    - [`<FilterButton>`](#filterbutton)
 
-### `<EditButton>`
+- **Record Buttons**: To be used in detail views
+    - [`<UpdateButton>`](#updatebutton)
+    - [`<DeleteButton>`](#deletebutton)
+    - [`<DeleteWithConfirmButton>`](#deletewithconfirmbutton)
+    - [`<CloneButton>`](#clonebutton)
+
+## `<EditButton>`
 
 Opens the Edit view of the current record:
 
@@ -41,7 +57,7 @@ It also supports [all the other `<Button>` props](#button).
 
 **Tip:** To allow users to edit a record without leaving the current view, use the [`<EditInDialogButton>`](./EditInDialogButton.md) component.
 
-### `<ShowButton>`
+## `<ShowButton>`
 
 Opens the Show view of the current record:
 
@@ -70,7 +86,7 @@ It also supports [all the other `<Button>` props](#button).
 
 **Tip**: If you want to link to the Show view manually, use the `/{resource}/{record.id}/show` location.
 
-### `<CreateButton>`
+## `<CreateButton>`
 
 Opens the Create view of the current resource:
 
@@ -99,7 +115,7 @@ It also supports [all the other `<Button>` props](#button).
 
 **Tip:** To allow users to create a record without leaving the current view, use the [`<CreateInDialogButton>`](./CreateInDialogButton.md) component.
 
-#### `sx`: CSS API
+### `sx`: CSS API
 
 | Rule name                   | Description                                                        |
 |-----------------------------|--------------------------------------------------------------------|
@@ -107,7 +123,7 @@ It also supports [all the other `<Button>` props](#button).
 
 To override the style of all instances of `<CreateButton>` using the [application-wide style overrides](./AppTheme.md#theming-individual-components), use the `RaCreateButton` key.
 
-### `<ListButton>`
+## `<ListButton>`
 
 Opens the List view of a given resource:
 
@@ -151,11 +167,7 @@ It also supports [all the other `<Button>` props](#button).
 
 **Tip**: If you want to link to the List view manually, use the `/{resource}` location.
 
-## List Buttons
-
-The following buttons are designed to be used in List views.
-
-### `<ExportButton>`
+## `<ExportButton>`
 
 Exports the current list, with filters applied, but without pagination. It relies on [the `exporter` function](./List.md#exporter) passed to the `<List>` component, via the `ListContext`. It's disabled for empty lists.
 
@@ -191,7 +203,7 @@ export const PostList = () => (
 
 **Tip**: If you are looking for an `<ImportButton>`, check out this third-party package: [benwinding/react-admin-import-csv](https://github.com/benwinding/react-admin-import-csv).
 
-### `<BulkExportButton>`
+## `<BulkExportButton>`
 
 Same as `<ExportButton>`, except it only exports the selected rows instead of the entire list. To be used inside [the `<Datagrid bulkActionButtons>` prop](./Datagrid.md#bulkactionbuttons).
 
@@ -225,7 +237,7 @@ export const PostList = () => (
 | `exporter`   | Optional | `Function`      | -                  | Override the List exporter function |
 | `meta`       | Optional | `any`           | undefined          | Metadata passed to the dataProvider |
 
-### `<BulkDeleteButton>`
+## `<BulkDeleteButton>`
 
 Deletes the selected rows. To be used inside [the `<Datagrid bulkActionButtons>` prop](./Datagrid.md#bulkactionbuttons) (where it's enabled by default).
 
@@ -265,13 +277,13 @@ export const PostList = () => (
 
 **Tip:** If you choose the `'pessimistic'` or `'optimistic'` mutation mode, a confirm dialog will be displayed to the user before the mutation is executed.
 
-### `<BulkUpdateButton>`
+## `<BulkUpdateButton>`
 
 Partially updates the selected rows. To be used inside [the `<Datagrid bulkActionButtons>` prop](./Datagrid.md#bulkactionbuttons).
 
 ![Bulk Update button](./img/bulk-update-button.png)
 
-#### Usage
+### Usage
 
 {% raw %}
 ```jsx
@@ -297,7 +309,7 @@ export const PostList = () => (
 ```
 {% endraw %}
 
-#### Props
+### Props
 
 | Prop              | Required | Type           | Default            | Description                                                                                                         |
 |-------------------|----------|----------------|--------------------|---------------------------------------------------------------------------------------------------------------------|
@@ -311,7 +323,7 @@ export const PostList = () => (
 
 **Tip:** If you choose the `'pessimistic'` or `'optimistic'` mutation mode, a confirm dialog will be displayed to the user before the mutation is executed.
 
-### `<BulkUpdateFormButton>`
+## `<BulkUpdateFormButton>`
 
 This component, part of the [enterprise edition](https://react-admin-ee.marmelab.com/documentation/ra-form-layout)<img class="icon" src="./img/premium.svg" />, lets users edit multiple records at once. To be used inside [the `<Datagrid bulkActionButtons>` prop](./Datagrid.md#bulkactionbuttons).
 
@@ -323,7 +335,7 @@ The button opens a dialog containing the form passed as children. When the form 
   Your browser does not support the video tag.
 </video>
 
-#### Usage
+### Usage
 
 `<BulkUpdateFormButton>` can be used inside `<Datagrid>`'s `bulkActionButtons`.
 
@@ -375,7 +387,7 @@ const PostList = () => (
 
 **Tip:** You are not limited to using a `<SimpleForm>` as children. You can for instance use an `<InputSelectorForm>`, which allows to select the fields to update. Check out the [`<InputSelectorForm>`](#usage-with-inputselectorform) below for more information.
 
-#### Props
+### Props
 
 | Prop              | Required     | Type     | Default         | Description                                                                                                                        |
 |-------------------|--------------|----------|-----------------|------------------------------------------------------------------------------------------------------------------------------------|
@@ -385,7 +397,7 @@ const PostList = () => (
 | `mutationOptions` | -            | Object   | -               | Mutation options passed to [React Query](https://tanstack.com/query/v5/docs/react/reference/useMutation) when calling `updateMany` |
 
 
-#### `children`
+### `children`
 
 `<BulkUpdateFormButton>` expects a form component as children, such as `<SimpleForm>` or `<InputSelectorForm>`.
 
@@ -404,7 +416,7 @@ const PostBulkUpdateButton = () => (
 );
 ```
 
-#### `DialogProps`
+### `DialogProps`
 
 The `DialogProps` prop can be used to pass additional props to the [MUI Dialog](https://mui.com/material-ui/react-dialog/).
 {% raw %}
@@ -435,7 +447,7 @@ const PostBulkUpdateButtonWithTransition = () => (
 ```
 {% endraw %}
 
-#### `mutationMode`
+### `mutationMode`
 
 Use the `mutationMode` prop to specify the [mutation mode](https://marmelab.com/react-admin/Edit.html#mutationmode).
 
@@ -454,7 +466,7 @@ const PostBulkUpdateButton = () => (
 );
 ```
 
-#### `mutationOptions` and `meta`
+### `mutationOptions` and `meta`
 
 The `mutationOptions` prop can be used to pass options to the [react-query mutation](https://react-query.tanstack.com/reference/useMutation#options) used to call the dataProvider's `updateMany` method.
 
@@ -493,7 +505,7 @@ const PostBulkUpdateButton = () => (
 ```
 {% endraw %}
 
-#### Usage with `<TabbedForm>` or other location based form layouts
+### Usage with `<TabbedForm>` or other location based form layouts
 
 `<BulkUpdateFormButton>` can be used with any form layout. However, for form layouts that are based on location by default, such as [`<TabbedForm>`](https://marmelab.com/react-admin/TabbedForm.html), you will need to disable the location syncing feature, as it may conflict with the Edit route declared by React Admin (`/<resource>/<id>`).
 
@@ -518,7 +530,7 @@ const PostBulkUpdateButton = () => (
 );
 ```
 
-#### Usage With `<InputSelectorForm>`
+### Usage With `<InputSelectorForm>`
 
 `<BulkUpdateFormButton>` works best with `<InputSelectorForm>`, which component renders a form allowing to select the fields to update in a record.
 
@@ -606,7 +618,7 @@ const PostEdit = () => (
 );
 ```
 
-#### Limitations
+### Limitations
 
 If you look under the hood, you will see that `<BulkUpdateFormButton>` provides a `<SaveContext>` to its children, which allows them to call `updateMany` with the ids of the selected records.
 
@@ -616,7 +628,7 @@ However since we are in the context of a list, there is no `<RecordContext>` ava
 - `<ReferenceManyInput>`
 - `<ReferenceManyToManyInput>`
 
-### `<FilterButton>`
+## `<FilterButton>`
 
 This button is an internal component used by react-admin in [the Filter button/form combo](./FilteringTutorial.md#the-filter-buttonform-combo).
 
@@ -627,13 +639,11 @@ This button is an internal component used by react-admin in [the Filter button/f
 </video>
 
 
-#### `sx`: CSS API
+### `sx`: CSS API
 
 To override the style of all instances of `<FilterButton>` using the [application-wide style overrides](./AppTheme.md#theming-individual-components), use the `RaFilterButton` key.
 
-## Record Buttons
-
-### `<UpdateButton>`
+## `<UpdateButton>`
 
 This component allows to create a button that updates a record by calling the [`useUpdate hook`](./useUpdate.md).
 
@@ -660,24 +670,176 @@ export const PostEdit = () => (
 
 See [its documentation](./UpdateButton.md) for more details.
 
-### `<DeleteButton>`
+## `<DeleteButton>`
 
-### `<DeleteWithConfirmButton>`
+Delete the current record.
+
+![Delete button](./img/DeleteButton.png)
+
+### Usage
+
+`<DeleteButton>` reads the current record from `RecordContext`, and the current resource from `ResourceContext`, so in general it doesn't need any props:
+
+```jsx
+import { DeleteButton } from 'react-admin';
+
+const CommentShow = () => (
+    <>
+        {/* ... */}
+        <DeleteButton />
+    </>
+);
+```
+
+When pressed, it will call `dataProvider.delete()` with the current record's `id`.
+
+You can also call it with a record and a resource:
+
+{% raw %}
+```jsx
+<DeleteButton record={{ id: 123, author: 'John Doe' }} resource="comments" />
+```
+{% endraw %}
+
+### Props
+
+| Prop                | Required | Type                             | Default           | Description                                                             |
+|-------------------- |----------|--------------------------------- |-------------------|-------------------------------------------------------------------------|
+| `className`         | Optional | `string`                         | -                 | Class name to customize the look and feel of the button element itself  |
+| `label`             | Optional | `string`                         | 'Delete'          | label or translation message to use                                     |
+| `icon`              | Optional | `ReactElement`                   | `<DeleteIcon>`    | iconElement, e.g. `<CommentIcon />`                                     |
+| `mutationMode`      | Optional | `string`                         | `'undoable'`      | Mutation mode (`'undoable'`, `'pessimistic'` or `'optimistic'`)         |
+| `mutation Options`  | Optional |                                  | null              | options for react-query `useMutation` hook                              |
+| `record`            | Optional | `Object`                         | -                 | Record to delete, e.g. `{ id: 12, foo: 'bar' }`                         |
+| `redirect`          | Optional | `string | false | Function`      | 'list'            | Custom redirection after success side effect                            |
+| `resource`          | Optional | `string`                         | -                 | Resource to delete, e.g. 'posts'                                        |
+| `sx`                | Optional | `SxProps`                        | -                 | The custom styling for the button                                       |
+| `success Message`   | Optional | `string`                         | 'Element deleted' | Lets you customize the success notification message.                    |
+
+### `label`
+
+By default, the label is `Delete` in English. In other languages, it's the translation of the `'ra.action.delete'` key.
+
+To customize the `<DeleteButton>` label, you can either change the translation in your i18nProvider, or pass a `label` prop:
+
+```jsx
+<DeleteButton label="Delete this comment" />
+```
+
+Custom labels are automatically translated, so you can use a translation key, too:
+
+```jsx
+<DeleteButton label="resources.comments.actions.delete" />
+```
+
+### `icon`
+
+Customize the icon of the button by passing an `icon` prop:
+
+```jsx
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+
+<DeleteButton icon={<DeleteForeverIcon />} />
+```
+
+### `mutationMode`
+
+`<DeleteButton>` has three modes, depending on the `mutationMode` prop:
+
+- `'undoable'` (default): Clicking the button will update the UI optimistically and display a confirmation snackbar with an undo button. If the user clicks the undo button, the record will not be deleted and the UI will be rolled back. Otherwise, the record will be deleted after 5 seconds.
+- `optimistic`: Clicking the button will update the UI optimistically and delete the record. If the deletion fails, the UI will be rolled back.
+- `pessimistic`: Clicking the button will display a confirmation dialog. If the user confirms, the record will be deleted. If the user cancels, nothing will happen.
+
+**Note**: When choosing the `pessimistic` mode, `<DeleteButton>` will actually render a `<DeleteWithConfirmButton>` component and accept additional props to customize the confirm dialog (see below).
+
+### `mutationOptions`
+
+`<DeleteButton>` calls the `useMutation` hook internally to delete the record. You can pass options to this hook using the `mutationOptions` prop.
+
+{% raw %}
+```jsx
+<DeleteButton mutationOptions={{ onError: () => alert('Record not deleted, please retry') }} />
+```
+{% endraw %}
+
+Check out the [useMutation documentation](https://tanstack.com/query/latest/docs/framework/react/reference/useMutation) for more information on the available options.
+
+### `record`
+
+By default, `<DeleteButton>` reads the current record from the `RecordContext`. If you want to delete a different record, you can pass it as a prop:
+
+{% raw %}
+```jsx
+<DeleteButton record={{ id: 123, author: 'John Doe' }} />
+```
+{% endraw %}
+
+### `redirect`
+
+By default, `<DeleteButton>` redirects to the list page after a successful deletion. You can customize the redirection by passing a path as the `redirect` prop:
+
+```jsx
+<DeleteButton redirect="/comments" />
+```
+
+### `resource`
+
+By default, `<DeleteButton>` reads the current resource from the `ResourceContext`. If you want to delete a record from a different resource, you can pass it as a prop:
+
+{% raw %}
+```jsx
+<DeleteButton record={{ id: 123, author: 'John Doe' }} resource="comments" />
+```
+{% endraw %}
+
+### `successMessage`
+
+![Delete button success message](./img/DeleteButton_success.png)
+
+On success, `<DeleteButton>` displays a "Element deleted" notification in English. `<DeleteButton>` uses two successive translation keys to build the success message:
+
+- `resources.{resource}.notifications.deleted` as a first choice
+- `ra.notification.deleted` as a fallback
+
+To customize the notification message, you can set custom translation for these keys in your i18nProvider.
+
+**Tip**: If you choose to use a custom translation, be aware that react-admin uses the same translation message for the `<BulkDeleteButton>`, so the message must support [pluralization](./TranslationTranslating.md#interpolation-pluralization-and-default-translation):
+
+```jsx
+const englishMessages = {
+    resources: {
+        comments: {
+            notifications: {
+                deleted: 'Comment deleted |||| %{smart_count} comments deleted',
+                // ...
+            },
+        },
+    },
+};
+```
+
+Alternately, pass a `successMessage` prop:
+
+```jsx
+<DeleteButton successMessage="Comment deleted successfully" />
+```
+
+## `<DeleteWithConfirmButton>`
 
 Delete the current record after a confirm dialog has been accepted. To be used inside a `<Toolbar/>` component.
 
-| Prop               Required | Type                                             | Default                     | Description                                                             |
-|-----------------------------|--------------------------------------------------|-----------------------------|-------------------------------------------------------------------------|
-| `className`        Optional | `string`                                         | -                           | Class name to customize the look and feel of the button element itself  |
-| `label`            Optional | `string`                                         | 'ra.action.delete'          | label or translation message to use                                     |
-| `icon`             Optional | `ReactElement`                                   | `<DeleteIcon>`              | iconElement, e.g. `<CommentIcon />`                                     |
-| `confirmTitle`     Optional | `ReactNode`                                      | 'ra.message.delete_title'   | Title of the confirm dialog                                             |
-| `confirmContent`   Optional | `ReactNode`                                      | 'ra.message.delete_content' | Message or React component to be used as the body of the confirm dialog |
-| `confirmColor`     Optional | <code>'primary' &#124; 'warning'</code>          | 'primary'                   | The color of the confirm dialog's "Confirm" button                      |
-| `redirect`         Optional | <code>string &#124; false &#124; Function</code> | 'list'                      | Custom redirection after success side effect                            |
-| `translateOptions` Optional | `{ id?: string, name?: string }`                 | {}                          | Custom id and name to be used in the confirm dialog's title             |
-| `mutationOptions`  Optional |                                                  | null                        | options for react-query `useMutation` hook                              |
-| `successMessage`   Optional | `string`                                         | 'ra.notification.deleted'   | Lets you customize the success notification message.                                                                                 |
+| Prop               | Required | Type                                             | Default                     | Description                                                             |
+|------------------- |----------|--------------------------------------------------|-----------------------------|-------------------------------------------------------------------------|
+| `className`        | Optional | `string`                                         | -                           | Class name to customize the look and feel of the button element itself  |
+| `label`            | Optional | `string`                                         | 'ra.action.delete'          | label or translation message to use                                     |
+| `icon`             | Optional | `ReactElement`                                   | `<DeleteIcon>`              | iconElement, e.g. `<CommentIcon />`                                     |
+| `confirmTitle`     | Optional | `ReactNode`                                      | 'ra.message.delete_title'   | Title of the confirm dialog                                             |
+| `confirmContent`   | Optional | `ReactNode`                                      | 'ra.message.delete_content' | Message or React component to be used as the body of the confirm dialog |
+| `confirmColor`     | Optional | <code>'primary' &#124; 'warning'</code>          | 'primary'                   | The color of the confirm dialog's "Confirm" button                      |
+| `redirect`         | Optional | <code>string &#124; false &#124; Function</code> | 'list'                      | Custom redirection after success side effect                            |
+| `translateOptions` | Optional | `{ id?: string, name?: string }`                 | {}                          | Custom id and name to be used in the confirm dialog's title             |
+| `mutationOptions`  | Optional |                                                  | null                        | options for react-query `useMutation` hook                              |
+| `successMessage`   | Optional | `string`                                         | 'ra.notification.deleted'   | Lets you customize the success notification message.                                                                                 |
 
 {% raw %}
 ```jsx
@@ -707,11 +869,11 @@ const MyEdit = () => (
 ```
 {% endraw %}
 
-### `<CloneButton>`
+## `<CloneButton>`
 
 ## Performance
 
-### `disableRipple`
+## `disableRipple`
 
 The ripple effect can cause [performance issues](https://github.com/marmelab/react-admin/issues/5587) for large datagrids. It's possible to remove the ripple effect from within your Material UI theme. The [Material UI docs](https://mui.com/material-ui/getting-started/faq/#how-can-i-disable-the-ripple-effect-globally) provide instructions on how to do this.
 
@@ -721,7 +883,7 @@ Note: The `disableRipple` was set to `true` in React Admin for a time, but was r
 
 ## Miscellaneous
 
-### `<Button>`
+## `<Button>`
 
 Base component for most react-admin buttons. Responsive (displays only the icon with a tooltip on mobile) and accessible.
 
@@ -736,7 +898,7 @@ Base component for most react-admin buttons. Responsive (displays only the icon 
 
 Other props are passed down to [the underlying Material UI `<Button>`](https://mui.com/material-ui/api/button/).
 
-#### `sx`: CSS API
+### `sx`: CSS API
 
 | Rule name                    | Description                                                                                     |
 |------------------------------|-------------------------------------------------------------------------------------------------|
@@ -749,10 +911,10 @@ Other props are passed down to [the underlying Material UI `<Button>`](https://m
 
 To override the style of all instances of `<Button>` using the [application-wide style overrides](./AppTheme.md#theming-individual-components), use the `RaButton` key.
 
-### `<RefreshButton>`
-### `<SkipNavigationButton>`
+## `<RefreshButton>`
+## `<SkipNavigationButton>`
 
-#### `sx`: CSS API
+### `sx`: CSS API
 
 | Rule name                                     | Description                                     |
 |-----------------------------------------------|-------------------------------------------------|
@@ -760,7 +922,7 @@ To override the style of all instances of `<Button>` using the [application-wide
 
 To override the style of all instances of `<SkipNavigationButton>` using the [application-wide style overrides](./AppTheme.md#theming-individual-components), use the `RaSkipNavigationButton` key.
 
-### `<MenuItemLink>`
+## `<MenuItemLink>`
 
 The `<MenuItemLink>` component displays a menu item with a label and an icon - or only the icon with a tooltip when the sidebar is minimized. It also handles the automatic closing of the menu on tap on mobile.
 
@@ -842,7 +1004,7 @@ See [The Menu documentation](./Menu.md) for more details.
   Your browser does not support the video tag.
 </video>
 
-#### `sx`: CSS API
+### `sx`: CSS API
 
 | Rule name                   | Description                                                         |
 |-----------------------------|---------------------------------------------------------------------|
@@ -851,7 +1013,7 @@ See [The Menu documentation](./Menu.md) for more details.
 
 To override the style of all instances of `<MenuItemLink>` using the [application-wide style overrides](./AppTheme.md#theming-individual-components), use the `RaMenuItemLink` key.
 
-### `<UserMenu>`
+## `<UserMenu>`
 
 | Prop         | Required | Type            | Default             | Description                         |
 | ------------ | -------- | --------------- | ------------------- | ----------------------------------- |
@@ -859,7 +1021,7 @@ To override the style of all instances of `<MenuItemLink>` using the [applicatio
 | `label`      | Required | `string`        | 'ra.auth.user_menu' | label or translation message to use |
 | `icon`       | Optional | `ReactElement`  | `<AccountCircle>`   | iconElement, e.g. `<CommentIcon />` |
 
-#### `sx`: CSS API
+### `sx`: CSS API
 
 | Rule name                  | Description                                                                                                                              |
 |----------------------------|------------------------------------------------------------------------------------------------------------------------------------------|
